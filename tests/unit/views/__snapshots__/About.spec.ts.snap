@@ -1,0 +1,147 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`About.vue should renders correctly 1`] = `
+<div
+  class="layout s-flex"
+>
+  <div
+    class="background s-flex"
+  />
+   
+  <div
+    class="content"
+  >
+    <div
+      class="terms s-flex"
+    >
+      <span>
+        
+      </span>
+       
+      <div
+        class="web3-logo s-flex"
+      >
+        <span>
+          
+        </span>
+         
+        <i
+          class="logo"
+        />
+      </div>
+    </div>
+     
+    <s-divider />
+     
+    <div
+      class="links s-flex"
+    >
+      <s-button
+        size="medium"
+        type="primary"
+      >
+        
+        
+      
+      </s-button>
+       
+      <s-button
+        icon="external-link"
+        size="medium"
+        type="link"
+      >
+        
+        
+      
+      </s-button>
+       
+      <s-button
+        icon="external-link"
+        size="medium"
+        type="link"
+      >
+        
+        
+      
+      </s-button>
+    </div>
+     
+    <s-divider />
+     
+    <div
+      class="articles s-flex"
+    >
+      <s-row>
+        <s-col
+          lg="3"
+          md="4"
+          sm="6"
+          xl="3"
+          xs="12"
+        >
+          <s-card
+            class="article-card"
+            clickable=""
+          >
+             
+            <span>
+              
+            </span>
+          </s-card>
+        </s-col>
+        <s-col
+          lg="3"
+          md="4"
+          sm="6"
+          xl="3"
+          xs="12"
+        >
+          <s-card
+            class="article-card"
+            clickable=""
+          >
+             
+            <span>
+              
+            </span>
+          </s-card>
+        </s-col>
+        <s-col
+          lg="3"
+          md="4"
+          sm="6"
+          xl="3"
+          xs="12"
+        >
+          <s-card
+            class="article-card"
+            clickable=""
+          >
+             
+            <span>
+              
+            </span>
+          </s-card>
+        </s-col>
+        <s-col
+          lg="3"
+          md="4"
+          sm="6"
+          xl="3"
+          xs="12"
+        >
+          <s-card
+            class="article-card"
+            clickable=""
+          >
+             
+            <span>
+              
+            </span>
+          </s-card>
+        </s-col>
+      </s-row>
+    </div>
+  </div>
+</div>
+`;
