@@ -1141,10 +1141,10 @@
   resolved "https://registry.yarnpkg.com/@soda/get-current-script/-/get-current-script-1.0.2.tgz#a53515db25d8038374381b73af20bb4f2e508d87"
   integrity sha512-T7VNNlYVM1SgQ+VsMYhnDkcGmWhQdL0bDyGm5TlQ3GBXnJscEClUUOKduWTmm2zCnvNLC1hc3JpuXjs/nFOc5w==
 
-"@soramitsu/soramitsu-js-ui@^0.4.0":
-  version "0.4.0"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-0.4.0.tgz#25df38df9d782f47cfb9e54004461c42ce0d8d2a"
-  integrity sha512-FJYj5nw//KCFXkEcBajWYxPrv12uiAjaRuyGgl9Nyr+uthDQ3bzg+dwL3RIsMEgz4fZoKQ9gnCQKhx2Tgjnfqw==
+"@soramitsu/soramitsu-js-ui@^0.4.1":
+  version "0.4.1"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-0.4.1.tgz#c6ba6896faba5a72a2c90c8f2342828ea1add231"
+  integrity sha512-ti1Js+VjZa0IDQjKa/rMQqWIqZGztCeWGK24Uy8lJh4pw0Mv9f4l0rLXjZzeLlz6fM99PeuqGVWRFO/yy0IGbw==
   dependencies:
     core-js "^3.6.4"
     element-ui "^2.13.2"
