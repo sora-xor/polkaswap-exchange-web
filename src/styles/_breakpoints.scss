@@ -1,0 +1,17 @@
+// TODO: ask designers about breakpoint values
+$breakpoint_mobile: 600px;
+$breakpoint_tablet: 900px;
+$breakpoint_desktop: 1024px;
+$breakpoint_large-desktop: 1200px;
+
+@mixin tablet {
+  @media (min-width: #{$breakpoint_tablet}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$breakpoint_desktop}) {
+    @content;
+  }
+}

@@ -15,7 +15,7 @@
         :key="item"
         :index="item"
       >
-        <span style="font-size: 18px;">{{ t(`mainMenu.${item}`) }}</span>
+        {{ t(`mainMenu.${item}`) }}
       </s-menu-item>
       <div class="controls">
         <div class="buttons">
@@ -25,7 +25,7 @@
         </div>
       </div>
     </s-menu>
-    <i class="polkaswap" />
+    <i class="polkaswap-logo" />
     <div class="app-content"><router-view /></div>
   </div>
 </template>
@@ -55,6 +55,8 @@ export default class App extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss">
+@import './styles/typography';
+
 @font-face {
   font-family: "SoraB";
   src: url("~@/assets/fonts/Sora-Bold.otf");
@@ -80,8 +82,9 @@ export default class App extends Mixins(TranslationMixin) {
   font-style: normal;
 }
 html {
-  box-sizing: border-box;
   overflow-y: hidden;
+  font-size: $font-size_basic;
+  line-height: $line-height_basic;
 }
 *, *:before, *:after {
   box-sizing: border-box;
@@ -97,25 +100,36 @@ html {
 </style>
 
 <style lang="scss" scoped>
-.polkaswap {
+@import '/styles/soramitsu-variables';
+@import '/styles/colors';
+@import '/styles/breakpoints';
+@import '/styles/layout';
+
+$logo-width: 151px;
+
+.polkaswap-logo {
+  display: none;
   position: absolute;
-  background-image: url('~@/assets/polkaswap-logo.svg');
-  width: 151px;
+  background-image: url('~@/assets/img/polkaswap-logo.svg');
+  width: $logo-width;
   height: 40px;
   top: 6px;
-  left: calc(50% - 75px);
+  left: calc(50% - #{$logo-width / 2});
 }
 .menu {
   padding: 2px 12px;
   flex: 1;
+  .el-menu-item {
+    font-size: 1.285rem;
+  }
   .controls {
     position: relative;
     .buttons {
       position: absolute;
-      right: 10px;
+      right: $basic-spacing;
       top: 12px;
       .wallet {
-        color: #FFF;
+        color: $color-wight;
         background-color: var(--s-color-main-brand);
         &:hover, &:active, &:focus {
           background-color: var(--s-color-main-hover);
@@ -128,8 +142,8 @@ html {
   overflow-y: auto;
   height: calc(100vh - 65px);
 }
-@media (max-width: 1050px) {
-  .polkaswap {
+@include desktop {
+  .polkaswap-logo {
     display: none; // TODO: add collapse state for s-menu component
   }
 }

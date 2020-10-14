@@ -1,6 +1,6 @@
 <template>
   <div class="layout s-flex">
-    <div class="background s-flex"></div>
+    <div class="banner s-flex"></div>
     <div class="content">
       <div class="terms s-flex">
         <span>{{ t('about.polkaswapText') }}</span>
@@ -28,7 +28,7 @@
             <s-card class="article-card" clickable>
               <template #header>
                 <div class="article-header">
-                  <span class="bold" style="font-size: 18px;">{{ t(`about.${topic.title}.title`) }}</span>
+                  {{ t(`about.${topic.title}.title`) }}
                   <s-icon :size="24" :name="topic.icon" />
                 </div>
               </template>
@@ -64,34 +64,40 @@ export default class About extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
+@import '../styles/colors';
+@import '../styles/breakpoints';
+@import '../styles/typography';
+@import '../styles/layout';
+
 .layout {
   flex-direction: column;
   height: 100%;
-  .background {
+  .banner {
     min-height: 120px;
     height: 256px;
-    background-image: url("~@/assets/background.png");
+    background-image: url("~@/assets/img/about-banner.png");
     background-size: cover;
     background-repeat: no-repeat;
     align-items: center;
     justify-content: center;
   }
   .content {
-    padding: 30px 60px;
+    padding: $basic-spacing_medium $basic-spacing_large;
     .terms {
       > span {
-        font-size: 36px;
+        font-size: $font-size_normal;
+        font-weight: bold;
       }
       .web3-logo {
         flex-direction: column;
         margin-left: 10%;
         > span {
-          color: #A1A1A0;
-          font-size: 12px;
+          color: $color-grey;
+          font-size: $font-size_small;
         }
         .logo {
           margin-top: 12px;
-          background-image: url('~@/assets/web3-logo.svg');
+          background-image: url('~@/assets/img/web3-logo.svg');
           width: 112px;
           height: 48px;
         }
@@ -99,13 +105,13 @@ export default class About extends Mixins(TranslationMixin) {
     }
     .articles {
       .article-card {
-        background-color: #F5F7F8;
+        background-color: $color-grey_light;
         border-color: transparent;
         border-radius: 24px;
         margin: 4px;
         height: 140px;
-        font-size: 14px;
         .article-header {
+          font-size: 1.285rem;
           display: flex;
           justify-content: space-between;
           i {
@@ -116,15 +122,15 @@ export default class About extends Mixins(TranslationMixin) {
     }
   }
 }
-@media (max-width: 900px) {
+@include tablet {
   .layout .content .terms > span {
-    font-size: 24px;
+    font-size: $font-size_medium;
+    font-weight: normal;
   }
 }
-@media (max-width: 600px) {
+@include desktop {
   .layout .content .terms > span {
-    font-size: 16px;
-    font-weight: bold;
+    font-size: $font-size_large;
   }
 }
 </style>
