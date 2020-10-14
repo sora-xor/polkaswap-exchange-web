@@ -112,6 +112,7 @@ export default class About extends Mixins(TranslationMixin) {
         height: 140px;
         .article-header {
           font-size: 1.285rem;
+          font-weight: bold;
           display: flex;
           justify-content: space-between;
           i {
