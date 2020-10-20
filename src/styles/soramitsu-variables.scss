@@ -1,0 +1,16 @@
+// Main colors
+$s-color-main-brand: #ED145B;
+$s-color-main-hover: #D51252;
+// Basic colors
+$s-color-basic-black: #0D0248;
+
+
+// TODO: check how we can avoid important here or/and css variables
+// (if we don't need theme switching here)
+:root {
+  --s-color-main-brand: #{$s-color-main-brand} !important;
+  --s-color-main-hover: #{$s-color-main-hover} !important;
+  --s-color-basic-black: #{$s-color-basic-black} !important;
+}
+
+@import '../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index';
