@@ -144,7 +144,7 @@ $logo-width: 151px;
 }
 @include desktop {
   .polkaswap-logo {
-    display: none; // TODO: add collapse state for s-menu component
+    display: initial; // TODO: add collapse state for s-menu component
   }
 }
 </style>

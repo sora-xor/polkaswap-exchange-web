@@ -7,6 +7,7 @@ $s-color-basic-black: #0D0248;
 
 // TODO: check how we can avoid important here or/and css variables
 // (if we don't need theme switching here)
+// IT WILL BE FIXED IN 0.5.0 version
 :root {
   --s-color-main-brand: #{$s-color-main-brand} !important;
   --s-color-main-hover: #{$s-color-main-hover} !important;
