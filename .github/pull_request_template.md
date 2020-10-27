@@ -1,6 +1,6 @@
 # Task
 
-[DOPS-XXXX]: Title.
+[PSS-XXXX]: Title.
 
 ## Changes
 
@@ -10,4 +10,4 @@
 
 Signed-off-by: name <name@soramitsu.co.jp>
 
-[DOPS-XXXX]: https://soramitsu.atlassian.net/browse/DOPS-XXXX
+[PSS-XXXX]: https://soramitsu.atlassian.net/browse/PSS-XXXX
