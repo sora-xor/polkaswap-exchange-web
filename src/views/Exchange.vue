@@ -20,7 +20,7 @@
               </div>
             </div>
           </div>
-          <s-button class="el-button--switch-tokens" type="action" size="medium" icon="change-positions" @click="handleSwitchTokens"></s-button>
+          <s-button class="el-button--switch-tokens" type="action" size="medium" icon="change-positions" :disabled="!areTokensSelected" @click="handleSwitchTokens"></s-button>
           <div class="actions">
             <div class="line">
               <!-- TODO: add isEstimated -->
@@ -92,11 +92,12 @@ import router from '@/router'
 @Component
 export default class Exchange extends Mixins(TranslationMixin) {
   model = 'swap';
-  tokenFrom = 0;
-  tokenTo = 0;
+  isEstimated = false;
+  tokenFrom = 0.0;
+  tokenTo = 0.0;
   // TODO: add watchers for tokens selection or alternative way to check it
   slippageToleranceValue = 0.5;
-  tokens = {
+  tokens: any = {
     XOR: {
       name: 'Sora',
       symbol: 'XOR',
@@ -117,9 +118,9 @@ export default class Exchange extends Mixins(TranslationMixin) {
     }
   };
 
-  defaultToken = this.tokens.XOR;
+  defaultToken: any = this.tokens.XOR;
   // swapToken = this.tokens.KSM;
-  swapToken = null;
+  swapToken: any = null;
   areTokensSelected = this.defaultToken && this.swapToken;
 
   handleMaxValue (): void {
@@ -151,6 +152,7 @@ export default class Exchange extends Mixins(TranslationMixin) {
 @import '../styles/soramitsu-variables';
 
 $tabs-class: ".el-tabs";
+$swap-input-class: ".el-input";
 $tabs-container-height: $basic-spacing * 4;
 $tabs-container-padding: 2px;
 $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
@@ -206,6 +208,36 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
     &__item {
       width: 50%;
       text-align: center;
+    }
+  }
+  .s-input {
+    #{$swap-input-class} {
+      &__inner {
+        height: 32px;
+        padding-top: 0;
+        padding-right: $inner-spacing_mini;
+        padding-left: $inner-spacing_mini;
+        border-radius: $border-radius_mini;
+        background-color: var(--s-color-background);
+        border-color: var(--s-color-background);
+        color: var(--s-color-text-dark);
+        font-size: 20px;
+        line-height: 1.26;
+        &:hover {
+          background-color: var(--s-color-background-hover);
+          border-color: var(--s-color-background-hover);
+        }
+        &:focus {
+          background-color: var(--s-color-standard-white);
+          border-color: var(--s-color-standard-white);
+        }
+      }
+      #{$swap-input-class}__inner {
+        padding-top: 0;
+      }
+    }
+    .s-placeholder {
+      display: none;
     }
   }
   .el-button--choose-token {
@@ -271,23 +303,24 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
     .wallet {
       font-weight: 700;
     }
-    .s-input {
-      color: var(--s-color-text-dark);
-      font-size: 20px;
-      line-height: 1.26;
-    }
   }
   .actions,
   .el-button--switch-tokens {
     margin-top: $inner-spacing_mini;
   }
+  .s-input {
+    min-height: 0;
+    margin-left: -$inner-spacing_mini;
+  }
   .s-action {
     background-color: var(--s-color-background);
     border-color: var(--s-color-background);
     border-radius: $border-radius_small;
-    &:hover, &:focus {
-      background-color: var(--s-color-background-hover);
-      border-color: var(--s-color-background-hover);
+    &:not(:disabled) {
+      &:hover, &:focus {
+        background-color: var(--s-color-background-hover);
+        border-color: var(--s-color-background-hover);
+      }
     }
   }
   .s-tertiary {
