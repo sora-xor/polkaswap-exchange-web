@@ -4,6 +4,7 @@
       class="menu"
       mode="horizontal"
       background-color="#FFF"
+      box-shadow="0px 1px 1px rgba(0, 0, 0, 0.05), 0px 1px 4px rgba(0, 0, 0, 0.05), 0px 1px 25px rgba(0, 0, 0, 0.1)"
       text-color="#0D0248"
       active-text-color="#ED145B"
       active-hover-color="#FFF"
@@ -25,6 +26,7 @@
         </div>
       </div>
     </s-menu>
+    <!-- TODO: convert to the About page link and add active state for the menu item -->
     <i class="polkaswap-logo" />
     <div class="app-content"><router-view /></div>
   </div>
@@ -101,7 +103,6 @@ html {
 
 <style lang="scss" scoped>
 @import '/styles/soramitsu-variables';
-@import '/styles/colors';
 @import '/styles/breakpoints';
 @import '/styles/layout';
 
@@ -129,7 +130,7 @@ $logo-width: 151px;
       right: $basic-spacing;
       top: 12px;
       .wallet {
-        color: $color-wight;
+        color: var(--s-color-standard-white);
         background-color: var(--s-color-main-brand);
         &:hover, &:active, &:focus {
           background-color: var(--s-color-main-hover);

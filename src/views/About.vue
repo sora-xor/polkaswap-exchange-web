@@ -1,5 +1,6 @@
 <template>
   <div class="layout s-flex">
+    <!-- TODO: Move the text below above the banner for mobile devices, add background layer with opacity for the banner -->
     <div class="banner s-flex"></div>
     <div class="content">
       <div class="terms s-flex">
@@ -64,7 +65,7 @@ export default class About extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/colors';
+@import '../styles/soramitsu-variables';
 @import '../styles/breakpoints';
 @import '../styles/typography';
 @import '../styles/layout';
@@ -92,7 +93,7 @@ export default class About extends Mixins(TranslationMixin) {
         flex-direction: column;
         margin-left: 10%;
         > span {
-          color: $color-grey;
+          color: var(--s-color-text-light);
           font-size: $font-size_small;
         }
         .logo {
@@ -105,9 +106,9 @@ export default class About extends Mixins(TranslationMixin) {
     }
     .articles {
       .article-card {
-        background-color: $color-grey_light;
+        background-color: var(--s-color-background);
         border-color: transparent;
-        border-radius: 24px;
+        border-radius: $border-radius_big;
         margin: 4px;
         height: 140px;
         .article-header {

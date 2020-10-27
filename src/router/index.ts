@@ -20,7 +20,8 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/exchange',
-    name: PageNames.Exchange
+    name: PageNames.Exchange,
+    component: lazyView(PageNames.Exchange)
   },
   {
     path: '/stats',
