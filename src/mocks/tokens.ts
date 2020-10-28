@@ -2,5 +2,28 @@ export const tokens = [{
   logo: '#',
   name: 'Sora',
   shortName: 'XOR',
-  price: 12
+  address: '',
+  price: 12,
+  priceChange: 1.44
+}, {
+  logo: '#',
+  name: 'Kusama',
+  shortName: 'KSM',
+  address: '',
+  price: 12,
+  priceChange: -1.44
+}, {
+  logo: '#',
+  name: 'Val',
+  shortName: 'VAL',
+  address: '',
+  price: 12,
+  priceChange: -1.44
+}, {
+  logo: '#',
+  name: 'PSWAP',
+  shortName: 'PSWAP',
+  address: '',
+  price: 12,
+  priceChange: -1.44
 }]
