@@ -9,14 +9,14 @@
       placeholder="Search Token Name, Symbol, or Address"
     />
     <div class="token-list">
-      <div v-for="token in filteredTokens" @click="selectToken($event, token)" :key="token.shortName" class="token-item">
+      <div v-for="token in filteredTokens" @click="selectToken($event, token)" :key="token.symbol" class="token-item">
         <el-col>
           <s-row flex justify="start" align="middle">
             <div class="token-item_logo">
               <!-- TODO: Implement logo image -->
             </div>
             <div>
-              <div class="token-item_name">{{ token.name }} ({{ token.shortName }})</div>
+              <div class="token-item_name">{{ token.name }} ({{ token.symbol }})</div>
 
               <s-row flex align="middle">
                 <div class="token-item_price">${{ token.price }}</div>
@@ -54,7 +54,7 @@ export default class SelectToken extends Mixins(TranslationMixin) {
       const query = this.query.toLowerCase().trim()
       return this.tokens.filter(t =>
         t.name.toLowerCase().includes(query) ||
-        t.shortName.toLowerCase().includes(query) ||
+        t.symbol.toLowerCase().includes(query) ||
         t.address.toLowerCase().includes(query)
       )
     } else {

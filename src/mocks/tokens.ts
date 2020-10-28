@@ -1,29 +1,25 @@
 export const tokens = [{
-  logo: '#',
   name: 'Sora',
-  shortName: 'XOR',
-  address: '',
-  price: 12,
-  priceChange: 1.44
-}, {
-  logo: '#',
+  symbol: 'XOR',
+  address: '1f9840a85d5af5bf1d1762f925bdaddc4201f984',
+  balance: 10000,
+  price: 55.10,
+  priceChange: 12
+},
+{
   name: 'Kusama',
-  shortName: 'KSM',
-  address: '',
-  price: 12,
-  priceChange: -1.44
-}, {
-  logo: '#',
-  name: 'Val',
-  shortName: 'VAL',
-  address: '',
-  price: 12,
-  priceChange: -1.44
-}, {
-  logo: '#',
-  name: 'PSWAP',
-  shortName: 'PSWAP',
-  address: '',
-  price: 12,
-  priceChange: -1.44
+  symbol: 'KSM',
+  address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
+  balance: 0,
+  price: 0.0055,
+  priceChange: 12
+
+},
+{
+  name: 'Ether',
+  symbol: 'ETH',
+  address: '8adaca8ea8192656a15c88797e04c8771c4576b3',
+  balance: 20000.45,
+  price: 0.0099,
+  priceChange: -12
 }]
