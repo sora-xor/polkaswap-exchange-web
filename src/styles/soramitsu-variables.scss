@@ -1,43 +1,26 @@
 // Standard colors
-$s-color-standard-white: #ffffff;
 $s-color-standard-black: #000000;
 $s-color-standard-black-rgb: 0, 0, 0;
-$s-color-status-success: #009900;
+// Primary theme colors
+$s-color-theme-accent: #ed145b !default; // Primary button, links
 
 // Main colors
-$s-color-main-brand: #ed145b;
-$s-color-main-hover: #d51252;
-$s-color-main-light: #f4e0e8;
-$s-color-main-light-hover: #f3ccda;
-// Basic colors
-$s-color-basic-black: #0d0248;
-$s-color-basic-dark: #26262d;
+$s-color-main-hover: #0c0a0b;
+$s-color-theme-accent-light: #f4e0e8 !default; // Primary button, links
+$s-color-theme-accent-light-hover: #f3ccda !default; // Primary button, links
 // Project specified colors
 $s-color-text-light: #a1a1a0;
-$s-color-text-dark: #75787b;
-$s-color-text-info: #53565a;
-$s-color-background: #f5f7f8;
-$s-color-background-hover: #eceff0;
 
 // TODO: check how we can avoid important here or/and css variables
 // (if we don't need theme switching here)
 // IT WILL BE FIXED IN 0.5.0 version
 :root {
-  --s-color-standard-white: #{$s-color-standard-white} !important;
   --s-color-standard-black: #{$s-color-standard-black} !important;
   --s-color-standard-black-rgb: #{$s-color-standard-black-rgb} !important;
-  --s-color-status-success: #{$s-color-status-success} !important;
-  --s-color-main-brand: #{$s-color-main-brand} !important;
   --s-color-main-hover: #{$s-color-main-hover} !important;
-  --s-color-main-light: #{$s-color-main-light} !important;
-  --s-color-main-light-hover: #{$s-color-main-light-hover} !important;
-  --s-color-basic-black: #{$s-color-basic-black} !important;
-  --s-color-basic-dark: #{$s-color-basic-dark} !important;
+  --s-color-theme-accent-light: #{$s-color-theme-accent-light} !important;
+  --s-color-theme-accent-light-hover: #{$s-color-theme-accent-light-hover} !important;
   --s-color-text-light: #{$s-color-text-light} !important;
-  --s-color-text-dark: #{$s-color-text-dark} !important;
-  --s-color-text-info: #{$s-color-text-info} !important;
-  --s-color-background: #{$s-color-background} !important;
-  --s-color-background-hover: #{$s-color-background-hover} !important;
 }
 
 @import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";

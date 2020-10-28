@@ -34,6 +34,7 @@ export default {
     swap: 'Swap',
     pool: 'Pool',
     from: 'From',
+    input: 'Input',
     to: 'To',
     balance: 'Balance',
     max: 'MAX',

@@ -1,16 +1,14 @@
 $basic-spacing: 10px;
-$basic-spacing_medium: $basic-spacing * 3;
-$basic-spacing_large: $basic-spacing * 6;
 
 $inner-window-width: 448px;
 $inner-window-height: 352px;
 
-$inner-spacing_mini: 8px;
-$inner-spacing_small: $inner-spacing_mini * 1.5;
-$inner-spacing_medium: $inner-spacing_mini * 2;
-$inner-spacing_big: $inner-spacing_mini * 3;
+$inner-spacing-mini: 8px;
+$inner-spacing-small: $inner-spacing-mini * 1.5;
+$inner-spacing-medium: $inner-spacing-mini * 2;
+$inner-spacing-big: $inner-spacing-mini * 3;
 
-$border-radius_mini: 8px;
-$border-radius_small: $border-radius_mini * 1.5;
-$border-radius_medium: $border-radius_mini * 2;
-$border-radius_big: $border-radius_mini * 3;
+$border-radius-mini: 8px;
+$border-radius-small: $border-radius-mini * 1.5;
+$border-radius-medium: $border-radius-mini * 2;
+$border-radius-big: $border-radius-mini * 3;

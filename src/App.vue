@@ -58,6 +58,7 @@ export default class App extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 @import './styles/typography';
+@import './styles/soramitsu-variables';
 
 @font-face {
   font-family: "SoraB";
@@ -85,8 +86,8 @@ export default class App extends Mixins(TranslationMixin) {
 }
 html {
   overflow-y: hidden;
-  font-size: $font-size_basic;
-  line-height: $line-height_basic;
+  font-size: $s-font-size-small;
+  line-height: $s-line-height-small;
 }
 *, *:before, *:after {
   box-sizing: border-box;
@@ -96,7 +97,7 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Sora', sans-serif;
-  color: var(--s-color-basic-black);
+  color: $s-color-base-content-primary;
   height: 100vh;
 }
 </style>
@@ -130,8 +131,8 @@ $logo-width: 151px;
       right: $basic-spacing;
       top: 12px;
       .wallet {
-        color: var(--s-color-standard-white);
-        background-color: var(--s-color-main-brand);
+        color: $s-color-utility-surface;
+        background-color: $s-color-theme-accent;
         &:hover, &:active, &:focus {
           background-color: var(--s-color-main-hover);
         }
