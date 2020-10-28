@@ -1,12 +1,12 @@
 <template>
   <s-dialog
-    title="Select a token"
+    :title="t('selectToken.title')"
     :visible.sync="visible"
     width="600px"
   >
     <s-input
       v-model="query"
-      placeholder="Search Token Name, Symbol, or Address"
+      :placeholder="t('selectToken.searchPlaceholder')"
     />
     <div class="token-list">
       <div v-for="token in filteredTokens" @click="selectToken($event, token)" :key="token.symbol" class="token-item">

@@ -29,5 +29,9 @@ export default {
       title: 'Build decentralized price feeds',
       text: 'Use Polkaswap exchange or integrate into your project using the SDK'
     }
+  },
+  selectToken: {
+    title: 'Select a token',
+    searchPlaceholder: 'Search Token Name, Symbol, or Address'
   }
 }
