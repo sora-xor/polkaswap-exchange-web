@@ -34,7 +34,6 @@ export default {
     swap: 'Swap',
     pool: 'Pool',
     from: 'From',
-    input: 'Input',
     to: 'To',
     balance: 'Balance',
     max: 'MAX',
@@ -42,6 +41,7 @@ export default {
   },
   swap: {
     chooseToken: 'Choose token',
+    chooseTokens: 'Choose tokens',
     connectWallet: 'Connect wallet',
     estimated: 'estimated',
     slippageTolerance: 'Slippage Tolerance',

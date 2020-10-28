@@ -3,15 +3,13 @@
     <div class="input-container">
       <div class="input-line">
         <div class="input-title">{{ t('exchange.from') }}</div>
-        <!-- TODO: Ask when we have Input title -->
-        <!-- <div class="input-title">{{t('exchange.input')}}</div> -->
         <div v-if="tokenFrom" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
           <span class="token-balance-value">{{ formatNumber(tokenFrom.balance, 2) }}</span>
         </div>
       </div>
       <div class="input-line">
-        <s-input v-model="tokenFromValue" :placeholder="formatNumber(0, 2)" :disabled="!tokensSelected" @change="handleChangeFromValue"/>
+        <s-input v-model="tokenFromValue" :placeholder="formatNumber(0, 2)" :disabled="!tokensSelected" @blur="handleBlurFromValue"/>
         <div v-if="tokenFrom" class="token">
           <!-- TODO: Add MAX functionlaity (show the button if we could increase the amount to max value) -->
           <s-button class="el-button--max" type="tertiary" size="small" @click="handleMaxValue">
@@ -20,7 +18,6 @@
           <!-- TODO: Add icon and token info -->
           <span>{{ tokenFrom.symbol }}</span>
         </div>
-        <!-- TODO: Ask is it possible to have this button for From area? -->
         <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken">
           {{ t('swap.chooseToken') }}
         </s-button>
@@ -39,16 +36,16 @@
         </div>
       </div>
       <div class="input-line">
-        <s-input v-model="tokenToValue" :placeholder="formatNumber(0, 2)" :disabled="!tokensSelected" @change="handleChangeToValue"/>
+        <s-input v-model="tokenToValue" :placeholder="formatNumber(0, 2)" :disabled="!tokensSelected" @blur="handleBlurToValue"/>
         <div v-if="tokenTo" class="token">
           <!-- TODO: Add MAX functionlaity (show the button if we could increase the amount to max value) -->
-          <!-- <s-button class="el-button--max" type="tertiary" size="small" @click="handleMaxValue">
+          <s-button class="el-button--max" type="tertiary" size="small" @click="handleMaxValue">
             {{t('exchange.max')}}
-          </s-button> -->
+          </s-button>
           <!-- TODO: Add icon and token info -->
           <span>{{ tokenTo.symbol }}</span>
         </div>
-        <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken">
+        <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken(true)">
           {{t('swap.chooseToken')}}
         </s-button>
       </div>
@@ -64,12 +61,14 @@
         <span class="swap-info-value">{{ slippageToleranceValue }}%</span>
       </div>
     </template>
-    <!-- TODO: Ask when we should see this button -->
-    <s-button v-if="isConnectWalletStage" type="primary" size="medium" @click="handleConnectWallet">
+    <s-button v-if="!isWalletConnected" type="primary" size="medium" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
-    <s-button v-else type="primary" size="medium" :disabled="isEmptyBalance || isInsufficientBalance" @click="handleSwap">
-      <template v-if="isEmptyBalance">
+    <s-button v-else type="primary" size="medium" :disabled="!tokensSelected || isEmptyBalance || isInsufficientBalance" @click="handleSwap">
+      <template v-if="!tokensSelected">
+        {{ t('swap.chooseTokens') }}
+      </template>
+      <template v-else-if="isEmptyBalance">
         {{ t('swap.enterAmount') }}
       </template>
       <template v-else-if="isInsufficientBalance">
@@ -85,24 +84,21 @@
           <s-icon name="info" size="16"/>
         </s-tooltip>
         <span>{{ t('swap.minReceived') }}</span>
-        <!-- TODO: Ask where to get info for this value -->
-        <span class="swap-info-value">24,351.25 {{ tokenFrom.symbol }}</span>
+        <span class="swap-info-value">{{ minReceived }}</span>
       </div>
       <div class="swap-info">
         <s-tooltip class="swap-info-icon" :content="t('swap.priceImpactTooltip')" theme="light" placement="right-start" :show-arrow="false">
           <s-icon name="info" size="16"/>
         </s-tooltip>
         <span>{{ t('swap.priceImpact') }}</span>
-        <!-- TODO: Ask where to get info for this value -->
-        <span class="swap-info-value price-impact-value">0.02%</span>
+        <span :class="'swap-info-value ' + priceImpactClass">{{ priceImpact }}%</span>
       </div>
       <div class="swap-info">
         <s-tooltip class="swap-info-icon" :content="t('swap.liquidityProviderFeeTooltip')" theme="light" placement="right-start" :show-arrow="false">
           <s-icon name="info" size="16"/>
         </s-tooltip>
-        <!-- TODO: Ask where to get info for this value -->
         <span>{{ t('swap.liquidityProviderFee') }}</span>
-        <span class="swap-info-value">0.00067 {{ tokenFrom.symbol }}</span>
+        <span class="swap-info-value">{{ liquidityProviderFee }}</span>
       </div>
     </template>
   </div>
@@ -114,6 +110,8 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 
 @Component
 export default class Swap extends Mixins(TranslationMixin) {
+  // ------------------ Mock data start ------------------
+  // TODO: Add icon field to tokens
   tokens: any = {
     XOR: {
       name: 'Sora',
@@ -138,18 +136,20 @@ export default class Swap extends Mixins(TranslationMixin) {
     }
   };
 
-  tokenFromValue = this.formatNumber(0, 1);
-  tokenToValue = this.formatNumber(0, 1);
-  // TODO: add watchers for tokens selection or alternative way to check it
+  // TODO: Add Slippage Tolerance value for appropriate place
   slippageToleranceValue = 0.5;
+  // ------------------ Mock data end ------------------
 
-  tokenFrom: any = this.tokens.XOR;
-  // tokenFrom: any = null;
-  tokenTo = this.tokens.ETH;
-  // tokenTo: any = null;
-  tokensSelected = this.tokenFrom && this.tokenTo;
-  isConnectWalletStage = true;
+  tokenFrom: any = null;
+  tokenTo: any = null;
+  tokenFromValue: string = this.formatNumber(0, 1);
+  tokenToValue: string = this.formatNumber(0, 1);
   isTokenFromPrice = true;
+  isWalletConnected = false;
+
+  get tokensSelected (): boolean {
+    return this.tokenFrom && this.tokenTo
+  }
 
   get priceValue (): string {
     if (this.isTokenFromPrice) {
@@ -163,20 +163,53 @@ export default class Swap extends Mixins(TranslationMixin) {
   }
 
   get isInsufficientBalance (): boolean {
-    // TODO: Check balance value
-    return false
+    if (this.tokensSelected) {
+      return +this.tokenFromValue > this.tokenFrom.balance
+    }
+    return true
+  }
+
+  get minReceived (): string {
+    // TODO: Generate min received value
+    return this.tokenFrom ? `${this.formatNumber(24351.25123, 4)} ${this.tokenFrom.symbol}` : ''
+  }
+
+  get priceImpact (): string {
+    // TODO: Generate price impact value, is could be positive or negative, use appropriate class to show it in layout
+    return this.formatNumber(0.0222, 2)
+  }
+
+  get priceImpactClass (): string {
+    if (+this.priceImpact > 0) {
+      return 'price-impact-positive'
+    }
+    if (+this.priceImpact < 0) {
+      return 'price-impact-negative'
+    }
+    return ''
+  }
+
+  get liquidityProviderFee (): string {
+    // TODO: Generate liquidity provider fee
+    return this.tokenFrom ? `${this.formatNumber(0.0006777, 4)} ${this.tokenFrom.symbol}` : ''
   }
 
   handleMaxValue (): void {
     alert(this.t('exchange.max'))
   }
 
-  handleChangeFromValue (): void {
-    // TODO: Automatically calculate To Value
+  handleBlurFromValue (): void {
+    // TODO: Add on change event with delay
+    if (this.tokensSelected && +this.tokenFromValue !== 0) {
+      this.tokenToValue = this.formatNumber(+this.tokenFromValue * this.tokenFrom.price / this.tokenTo.price, 4)
+    }
   }
 
-  handleChangeToValue (): void {
-    // TODO: Automatically calculate To Value
+  handleBlurToValue (): void {
+    // TODO: Add on change event with delay
+    if (this.tokensSelected && +this.tokenToValue !== 0) {
+      this.tokenFromValue = this.formatNumber(+this.tokenToValue * this.tokenTo.price / this.tokenFrom.price, 4)
+    }
   }
 
   handleSwitchTokens (): void {
@@ -184,11 +217,18 @@ export default class Swap extends Mixins(TranslationMixin) {
     this.tokenFrom = this.tokenTo
     this.tokenTo = tokenFromValue
     this.isTokenFromPrice = true
+    this.handleBlurFromValue()
   }
 
-  handleChooseToken (): void {
-    // TODO: Add Select Token functionality here
-    alert(this.t('swap.chooseToken'))
+  handleChooseToken (isTokenTo: boolean): void {
+    // TODO: Add Select Token functionality here, default token for tokenFrom is XOR
+    if (!isTokenTo) {
+      this.tokenFrom = this.tokenTo !== this.tokens.XOR ? this.tokens.XOR : this.tokens.ETH
+      this.$alert(`Token ${this.tokenFrom.symbol} is successfully selected!`, 'Success')
+    } else {
+      this.tokenTo = this.tokenFrom !== this.tokens.ETH ? this.tokens.ETH : this.tokens.XOR
+      this.$alert(`Token ${this.tokenTo.symbol} is successfully selected!`, 'Success')
+    }
   }
 
   handleSwitchPrice (): void {
@@ -197,12 +237,15 @@ export default class Swap extends Mixins(TranslationMixin) {
 
   handleConnectWallet (): void {
     // TODO: Add Connect Wallet functionality
-    alert(this.t('swap.connectWallet'))
+    this.isWalletConnected = true
+    this.$alert('The wallet is successfully connected!', 'Success')
   }
 
   handleSwap (): void {
     // TODO: Add Swap functionality and show confirmation windows
-    alert(this.t('swap.swap'))
+    this.$alert(`Output is estimated. You will receive at least ${this.tokenToValue} or the transaction will revert.`, 'Confirm Swap')
+    this.tokenFrom.balance -= +this.tokenFromValue
+    this.tokenTo.balance += +this.tokenToValue
   }
 
   // TODO: move to utils or another appropriate place, check for BigInt values
@@ -358,8 +401,13 @@ $swap-input-class: ".el-input";
     &-value {
       margin-left: auto;
     }
-    .price-impact-value {
-      color: $s-color-status-success;
+    .price-impact {
+      &-positive {
+        color: $s-color-status-success;
+      }
+      &-negative {
+        color: $s-color-status-error;
+      }
     }
     .el-tooltip {
       margin-right: $inner-spacing-small;
