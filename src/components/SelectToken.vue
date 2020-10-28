@@ -1,7 +1,7 @@
 <template>
   <s-dialog
     title="Select a token"
-    :visible.sync="dialogVisible"
+    :visible.sync="visible"
     width="600px"
   >
     <s-input
@@ -13,6 +13,7 @@
         <el-col>
           <s-row flex justify="start" align="middle">
             <div class="token-item_logo">
+              <!-- TODO: Implement logo image -->
             </div>
             <div>
               <div class="token-item_name">{{ token.name }} ({{ token.shortName }})</div>
@@ -24,6 +25,7 @@
             </div>
           </s-row>
         </el-col>
+        <!-- TODO: Implement current amount -->
       </div>
     </div>
   </s-dialog>
@@ -38,13 +40,14 @@ import router from '@/router'
 
 @Component
 export default class SelectToken extends Mixins(TranslationMixin) {
-  dialogVisible = false
+  @Prop({ required: true }) visible
+  @Prop() defaultToken
+
   query = ''
   selectedToken = null
 
   @Action getTokens
   @Getter tokens!: any
-  @Prop() defaultToken
 
   get filteredTokens () {
     if (this.query) {
@@ -66,14 +69,10 @@ export default class SelectToken extends Mixins(TranslationMixin) {
     this.getTokens()
   }
 
-  togleModal () {
-    this.dialogVisible = !this.dialogVisible
-  }
-
   selectToken (event, token) {
     this.selectedToken = token
     this.$emit('select', this.selectedToken)
-    this.togleModal()
+    this.visible = false
   }
 }
 </script>
@@ -81,6 +80,8 @@ export default class SelectToken extends Mixins(TranslationMixin) {
 <style lang="scss" scoped>
 .token-item {
   padding: 8px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
