@@ -9,7 +9,15 @@
         </div>
       </div>
       <div class="input-line">
-        <s-input v-model="tokenFromValue" :placeholder="formatNumber(0, 2)" :disabled="!tokensSelected" @blur="handleBlurFromValue"/>
+        <!-- TODO: Think about validation (only positive numbers and so on) -->
+        <s-input
+          v-model="tokenFromValue"
+          type="number"
+          :placeholder="formatNumber(0, 2)"
+          :disabled="!tokensSelected"
+          @change="handleChangeFromValue"
+          @blur="handleBlurFromValue"
+        />
         <div v-if="tokenFrom" class="token">
           <!-- TODO: Add MAX functionlaity (show the button if we could increase the amount to max value) -->
           <s-button class="el-button--max" type="tertiary" size="small" @click="handleMaxValue">
@@ -36,7 +44,15 @@
         </div>
       </div>
       <div class="input-line">
-        <s-input v-model="tokenToValue" :placeholder="formatNumber(0, 2)" :disabled="!tokensSelected" @blur="handleBlurToValue"/>
+        <!-- TODO: Think about validation (only positive numbers and so on) -->
+        <s-input
+          v-model="tokenToValue"
+          type="number"
+          :placeholder="formatNumber(0, 2)"
+          :disabled="!tokensSelected"
+          @change="handleChangeToValue"
+          @blur="handleBlurToValue"
+        />
         <div v-if="tokenTo" class="token">
           <!-- TODO: Add MAX functionlaity (show the button if we could increase the amount to max value) -->
           <s-button class="el-button--max" type="tertiary" size="small" @click="handleMaxValue">
@@ -144,6 +160,9 @@ export default class Swap extends Mixins(TranslationMixin) {
   tokenTo: any = null;
   tokenFromValue: string = this.formatNumber(0, 1);
   tokenToValue: string = this.formatNumber(0, 1);
+  isTokenFromFocused = false;
+  isTokenToFocused = false;
+  isSwitchTokensClicked = false;
   isTokenFromPrice = true;
   isWalletConnected = false;
 
@@ -198,26 +217,44 @@ export default class Swap extends Mixins(TranslationMixin) {
     alert(this.t('exchange.max'))
   }
 
-  handleBlurFromValue (): void {
-    // TODO: Add on change event with delay
-    if (this.tokensSelected && +this.tokenFromValue !== 0) {
+  handleChangeFromValue (): void {
+    if (this.tokensSelected && +this.tokenFromValue !== 0 && !this.isTokenToFocused) {
+      this.isTokenFromFocused = true
       this.tokenToValue = this.formatNumber(+this.tokenFromValue * this.tokenFrom.price / this.tokenTo.price, 4)
     }
   }
 
-  handleBlurToValue (): void {
-    // TODO: Add on change event with delay
-    if (this.tokensSelected && +this.tokenToValue !== 0) {
+  handleChangeToValue (): void {
+    if (this.tokensSelected && +this.tokenToValue !== 0 && !this.isTokenFromFocused) {
+      this.isTokenToFocused = true
       this.tokenFromValue = this.formatNumber(+this.tokenToValue * this.tokenTo.price / this.tokenFrom.price, 4)
+    }
+    if (this.isSwitchTokensClicked) {
+      this.handleBlurFromValue()
+      this.handleBlurToValue()
+      this.isSwitchTokensClicked = false
     }
   }
 
+  handleBlurFromValue (): void {
+    this.isTokenFromFocused = false
+  }
+
+  handleBlurToValue (): void {
+    this.isTokenToFocused = false
+  }
+
   handleSwitchTokens (): void {
-    const tokenFromValue = this.tokenFrom
+    const currentTokenFrom = this.tokenFrom
+    const currentTokenFromValue = this.tokenFromValue
+    this.isTokenFromFocused = true
+    this.isTokenToFocused = true
     this.tokenFrom = this.tokenTo
-    this.tokenTo = tokenFromValue
+    this.tokenTo = currentTokenFrom
+    this.tokenFromValue = this.tokenToValue
+    this.tokenToValue = currentTokenFromValue
+    this.isSwitchTokensClicked = true
     this.isTokenFromPrice = true
-    this.handleBlurFromValue()
   }
 
   handleChooseToken (isTokenTo: boolean): void {
