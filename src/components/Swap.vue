@@ -19,14 +19,13 @@
           @blur="handleBlurFromValue"
         />
         <div v-if="tokenFrom" class="token">
-          <!-- TODO: Add MAX functionlaity (show the button if we could increase the amount to max value) -->
-          <s-button class="el-button--max" type="tertiary" size="small" @click="handleMaxValue">
+          <s-button v-if="+tokenFromValue !== 0" class="el-button--max" type="tertiary" size="small" @click="handleMaxValue(true)">
             {{ t('exchange.max') }}
           </s-button>
           <!-- TODO: Add icon and token info -->
           <span>{{ tokenFrom.symbol }}</span>
         </div>
-        <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken">
+        <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken(true)">
           {{ t('swap.chooseToken') }}
         </s-button>
       </div>
@@ -54,14 +53,13 @@
           @blur="handleBlurToValue"
         />
         <div v-if="tokenTo" class="token">
-          <!-- TODO: Add MAX functionlaity (show the button if we could increase the amount to max value) -->
-          <s-button class="el-button--max" type="tertiary" size="small" @click="handleMaxValue">
+          <s-button v-if="+tokenToValue !== 0" class="el-button--max" type="tertiary" size="small" @click="handleMaxValue">
             {{t('exchange.max')}}
           </s-button>
           <!-- TODO: Add icon and token info -->
           <span>{{ tokenTo.symbol }}</span>
         </div>
-        <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken(true)">
+        <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken">
           {{t('swap.chooseToken')}}
         </s-button>
       </div>
@@ -72,7 +70,7 @@
         <span class="swap-info-value">{{ priceValue }}</span>
         <s-button class="el-button--switch-price" type="action" size="small" icon="swap" @click="handleSwitchPrice"></s-button>
       </div>
-      <div class="swap-info">
+      <div class="swap-info swap-info--slippage-tolerance">
         <span>{{ t('swap.slippageTolerance') }}</span>
         <span class="swap-info-value">{{ slippageToleranceValue }}%</span>
       </div>
@@ -213,10 +211,6 @@ export default class Swap extends Mixins(TranslationMixin) {
     return this.tokenFrom ? `${this.formatNumber(0.0006777, 4)} ${this.tokenFrom.symbol}` : ''
   }
 
-  handleMaxValue (): void {
-    alert(this.t('exchange.max'))
-  }
-
   handleChangeFromValue (): void {
     if (this.tokensSelected && +this.tokenFromValue !== 0 && !this.isTokenToFocused) {
       this.isTokenFromFocused = true
@@ -257,9 +251,14 @@ export default class Swap extends Mixins(TranslationMixin) {
     this.isTokenFromPrice = true
   }
 
-  handleChooseToken (isTokenTo: boolean): void {
+  handleMaxValue (isTokenFromMax: boolean): void {
+    // TODO: It seems that we need to change only one value to max and this is tokenFrom value. Do we really need 2 max buttons?
+    this.tokenFromValue = this.tokenFrom.balance
+  }
+
+  handleChooseToken (isTokenFrom: boolean): void {
     // TODO: Add Select Token functionality here, default token for tokenFrom is XOR
-    if (!isTokenTo) {
+    if (isTokenFrom) {
       this.tokenFrom = this.tokenTo !== this.tokens.XOR ? this.tokens.XOR : this.tokens.ETH
       this.$alert(`Token ${this.tokenFrom.symbol} is successfully selected!`, 'Success')
     } else {
@@ -301,9 +300,13 @@ $swap-input-class: ".el-input";
 
 .swap-container {
   .s-input {
+    .el-input {
+      #{$swap-input-class}__inner {
+        padding-top: 0;
+      }
+    }
     #{$swap-input-class}__inner {
       height: $s-size-small;
-      padding-top: 0;
       padding-right: 0;
       padding-left: 0;
       border-radius: 0;
@@ -330,7 +333,9 @@ $swap-input-class: ".el-input";
     }
   }
   .el-button--choose-token {
-    margin-right: -$inner-spacing-mini;
+    position: absolute;
+    right: $inner-spacing-mini;
+    bottom: $inner-spacing-mini;
     > span {
       display: inline-flex;
       flex-direction: row-reverse;
@@ -352,13 +357,15 @@ $swap-input-class: ".el-input";
   flex-direction: column;
   align-items: center;
   .input-container {
-    padding: $inner-spacing-small $inner-spacing-medium;
+    position: relative;
+    padding: $inner-spacing-small $inner-spacing-medium $inner-spacing-mini;
     width: 100%;
     background-color: $s-color-base-background;
     border-radius: $border-radius-mini;
     .input-line {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       + .input-line {
         margin-top: $inner-spacing-small;
       }
@@ -411,7 +418,6 @@ $swap-input-class: ".el-input";
     }
   }
   .s-tertiary {
-    height: 24px;
     padding: $inner-spacing-mini / 2 $inner-spacing-mini;
     background-color: var(--s-color-theme-accent-light);
     border-color: var(--s-color-theme-accent-light);
@@ -435,6 +441,9 @@ $swap-input-class: ".el-input";
     padding-right: $border-radius-mini;
     padding-left: $border-radius-mini;
     color: $s-color-base-content-secondary;
+    &--slippage-tolerance {
+      margin-top: $inner-spacing-small;
+    }
     &-value {
       margin-left: auto;
     }
@@ -474,6 +483,7 @@ $swap-input-class: ".el-input";
   }
   .el-button {
     &--max {
+      height: 24px;
       margin-right: $inner-spacing-mini;
     }
     &.el-button--switch-price {
@@ -489,7 +499,7 @@ $swap-input-class: ".el-input";
       color: $s-color-base-on-disabled;
     }
     & + .swap-info {
-      margin-top: $inner-spacing-mini;
+      margin-top: $inner-spacing-small;
     }
   }
 }
