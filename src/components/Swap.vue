@@ -3,7 +3,7 @@
     <div class="input-container">
       <div class="input-line">
         <div class="input-title">{{ t('exchange.from') }}</div>
-        <div v-if="tokenFrom" class="token-balance">
+        <div v-if="isWalletConnected && tokenFrom" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
           <span class="token-balance-value">{{ formatNumber(tokenFrom.balance, 2) }}</span>
         </div>
@@ -19,13 +19,15 @@
           @blur="handleBlurFromValue"
         />
         <div v-if="tokenFrom" class="token">
-          <s-button v-if="+tokenFromValue !== 0" class="el-button--max" type="tertiary" size="small" @click="handleMaxValue(true)">
+          <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" @click="handleMaxValue">
             {{ t('exchange.max') }}
           </s-button>
-          <!-- TODO: Add icon and token info -->
-          <span>{{ tokenFrom.symbol }}</span>
+          <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken(true)">
+            <span class="logo">{{ tokenFrom.logo }}</span>
+            {{ tokenFrom.symbol }}
+          </s-button>
         </div>
-        <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken(true)">
+        <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="handleChooseToken(true)">
           {{ t('swap.chooseToken') }}
         </s-button>
       </div>
@@ -37,7 +39,7 @@
           <span>{{ t('exchange.to') }}</span>
           <span v-if="tokenTo" class="input-title-estimated">({{ t('swap.estimated') }})</span>
         </div>
-        <div v-if="tokenTo" class="token-balance">
+        <div v-if="isWalletConnected && tokenTo" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
           <span class="token-balance-value">{{ formatNumber(tokenTo.balance, 2) }}</span>
         </div>
@@ -53,13 +55,12 @@
           @blur="handleBlurToValue"
         />
         <div v-if="tokenTo" class="token">
-          <s-button v-if="+tokenToValue !== 0" class="el-button--max" type="tertiary" size="small" @click="handleMaxValue">
-            {{t('exchange.max')}}
+          <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken">
+            <span class="logo">{{ tokenTo.logo }}</span>
+            {{ tokenTo.symbol }}
           </s-button>
-          <!-- TODO: Add icon and token info -->
-          <span>{{ tokenTo.symbol }}</span>
         </div>
-        <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken">
+        <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="handleChooseToken">
           {{t('swap.chooseToken')}}
         </s-button>
       </div>
@@ -129,6 +130,7 @@ export default class Swap extends Mixins(TranslationMixin) {
   tokens: any = {
     XOR: {
       name: 'Sora',
+      logo: '',
       symbol: 'XOR',
       address: '1f9840a85d5af5bf1d1762f925bdaddc4201f984',
       balance: 10000,
@@ -136,6 +138,7 @@ export default class Swap extends Mixins(TranslationMixin) {
     },
     KSM: {
       name: 'Kusama',
+      logo: '',
       symbol: 'KSM',
       address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
       balance: 0,
@@ -143,6 +146,7 @@ export default class Swap extends Mixins(TranslationMixin) {
     },
     ETH: {
       name: 'Ether',
+      logo: '',
       symbol: 'ETH',
       address: '8adaca8ea8192656a15c88797e04c8771c4576b3',
       balance: 20000.45,
@@ -251,8 +255,7 @@ export default class Swap extends Mixins(TranslationMixin) {
     this.isTokenFromPrice = true
   }
 
-  handleMaxValue (isTokenFromMax: boolean): void {
-    // TODO: It seems that we need to change only one value to max and this is tokenFrom value. Do we really need 2 max buttons?
+  handleMaxValue (): void {
     this.tokenFromValue = this.tokenFrom.balance
   }
 
@@ -332,10 +335,8 @@ $swap-input-class: ".el-input";
       display: none;
     }
   }
-  .el-button--choose-token {
-    position: absolute;
-    right: $inner-spacing-mini;
-    bottom: $inner-spacing-mini;
+  .el-button--choose-token,
+  .el-button--empty-token {
     > span {
       display: inline-flex;
       flex-direction: row-reverse;
@@ -392,10 +393,17 @@ $swap-input-class: ".el-input";
         font-size: $s-font-size-small;
       }
     }
-    .token {
-      font-weight: 700;
-    }
+    .logo {
+      margin-right: $inner-spacing-mini / 2;
+      order: 1;
+      height: 24px;
+      width: 24px;
+      background-color: $s-color-utility-surface;
+      border: 1px solid $s-color-utility-surface;
+      border-radius: $border-radius-small;
+      box-shadow: 0px 1px 4px 0px rgba(var(--s-color-standard-black-rgb), 0.35);
   }
+    }
   .el-button--switch-tokens {
     &,
     & + .input-container {
@@ -417,20 +425,26 @@ $swap-input-class: ".el-input";
       }
     }
   }
+  .el-button {
+    &--empty-token,
+    &--choose-token {
+      font-weight: 700;
+    }
+  }
+  .el-button--empty-token {
+    position: absolute;
+    right: $inner-spacing-mini;
+    bottom: $inner-spacing-mini;
+  }
   .s-tertiary {
     padding: $inner-spacing-mini / 2 $inner-spacing-mini;
     background-color: var(--s-color-theme-accent-light);
     border-color: var(--s-color-theme-accent-light);
     border-radius: $border-radius-mini;
     color: $s-color-theme-accent;
-    font-weight: 700;
     &:hover, &:focus {
       background-color: var(--s-color-theme-accent-light-hover);
       border-color: var(--s-color-theme-accent-light-hover);
-    }
-    .s-icon-change-positions {
-      margin-right: 0;
-      margin-left: $inner-spacing-mini / 2;
     }
   }
   .swap-info {
