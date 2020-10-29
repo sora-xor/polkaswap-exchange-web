@@ -1,0 +1,135 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SelectToken.vue should renders correctly 1`] = `
+<s-dialog
+  visible="true"
+  width="600px"
+>
+  <s-input />
+   
+  <div
+    class="token-list"
+  >
+    <div
+      class="token-item"
+    >
+      <s-col>
+        <s-row
+          align="middle"
+          flex=""
+          justify="start"
+        >
+          <div
+            class="token-item_logo"
+          />
+           
+          <div>
+            <div
+              class="token-item_name"
+            >
+              Sora (XOR)
+            </div>
+             
+            <s-row
+              align="middle"
+              flex=""
+            >
+              <div
+                class="token-item_price"
+              >
+                $55.1
+              </div>
+               
+              <div
+                class="token-item_price-change positive"
+              >
+                +12%
+              </div>
+            </s-row>
+          </div>
+        </s-row>
+      </s-col>
+    </div>
+    <div
+      class="token-item"
+    >
+      <s-col>
+        <s-row
+          align="middle"
+          flex=""
+          justify="start"
+        >
+          <div
+            class="token-item_logo"
+          />
+           
+          <div>
+            <div
+              class="token-item_name"
+            >
+              Kusama (KSM)
+            </div>
+             
+            <s-row
+              align="middle"
+              flex=""
+            >
+              <div
+                class="token-item_price"
+              >
+                $0.0055
+              </div>
+               
+              <div
+                class="token-item_price-change positive"
+              >
+                +12%
+              </div>
+            </s-row>
+          </div>
+        </s-row>
+      </s-col>
+    </div>
+    <div
+      class="token-item"
+    >
+      <s-col>
+        <s-row
+          align="middle"
+          flex=""
+          justify="start"
+        >
+          <div
+            class="token-item_logo"
+          />
+           
+          <div>
+            <div
+              class="token-item_name"
+            >
+              Ether (ETH)
+            </div>
+             
+            <s-row
+              align="middle"
+              flex=""
+            >
+              <div
+                class="token-item_price"
+              >
+                $0.0099
+              </div>
+               
+              <div
+                class="token-item_price-change negative"
+              >
+                -12%
+              </div>
+            </s-row>
+          </div>
+        </s-row>
+      </s-col>
+    </div>
+  </div>
+</s-dialog>
+`;

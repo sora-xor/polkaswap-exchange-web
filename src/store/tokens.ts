@@ -3,6 +3,7 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import tokensApi from '@/api/tokens'
+import { Token } from '@/types'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -31,7 +32,7 @@ const mutations = {
     state.tokens = null
   },
 
-  [types.GET_TOKENS_LIST_SUCCESS] (state, tokens) {
+  [types.GET_TOKENS_LIST_SUCCESS] (state, tokens: Array<Token>) {
     state.tokens = tokens
   },
 
@@ -44,7 +45,7 @@ const actions = {
   async getTokens ({ commit }) {
     commit(types.GET_TOKENS_LIST_REQUEST)
     try {
-      const tokens = await tokensApi.getTokens()
+      const tokens = await tokensApi.getTokens() as Array<Token>
       commit(types.GET_TOKENS_LIST_SUCCESS, tokens)
     } catch (error) {
       commit(types.GET_TOKENS_LIST_FAILURE, error)

@@ -10,7 +10,7 @@
     />
     <div class="token-list">
       <div v-for="token in filteredTokens" @click="selectToken($event, token)" :key="token.symbol" class="token-item">
-        <el-col>
+        <s-col>
           <s-row flex justify="start" align="middle">
             <div class="token-item_logo">
               <!-- TODO: Implement logo image -->
@@ -24,7 +24,7 @@
               </s-row>
             </div>
           </s-row>
-        </el-col>
+        </s-col>
         <!-- TODO: Implement current amount -->
       </div>
     </div>
@@ -32,11 +32,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import router from '@/router'
+import { Token } from '@/types'
 
 @Component
 export default class SelectToken extends Mixins(TranslationMixin) {
@@ -45,9 +45,15 @@ export default class SelectToken extends Mixins(TranslationMixin) {
 
   query = ''
   selectedToken = null
+  dialogVisible = false
+
+  @Watch('visible')
+  visibleChange (value: boolean) {
+    this.dialogVisible = value
+  }
 
   @Action getTokens
-  @Getter tokens!: any
+  @Getter tokens!: Array<Token>
 
   get filteredTokens () {
     if (this.query) {
@@ -72,7 +78,7 @@ export default class SelectToken extends Mixins(TranslationMixin) {
   selectToken (event, token) {
     this.selectedToken = token
     this.$emit('select', this.selectedToken)
-    this.visible = false
+    this.$emit('close')
   }
 }
 </script>
