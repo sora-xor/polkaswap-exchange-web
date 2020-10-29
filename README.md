@@ -1,5 +1,12 @@
 # polkaswap-exchange-web
 
+## Project deploy info
+There is `public/env.json` file which contains `BASE_API_URL` and `BLOCKCHAIN_URL` variables.
+
+`BASE_API_URL` is used for the address of the current stand.
+
+`BLOCKCHAIN_URL` is used for the address of the blockchain to which the frontend project will be connected.
+
 ## Project setup
 ```
 yarn install
