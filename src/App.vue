@@ -133,8 +133,14 @@ $logo-width: 151px;
       .wallet {
         color: $s-color-utility-surface;
         background-color: $s-color-theme-accent;
-        &:hover, &:active, &:focus {
-          background-color: var(--s-color-main-hover);
+        &:hover {
+          background-color: $s-color-theme-accent-hover;
+        }
+        &:active {
+          background-color: $s-color-theme-accent-pressed;
+        }
+        &:focus {
+          background-color: $s-color-theme-accent-focused;
         }
       }
     }

@@ -344,14 +344,25 @@ $swap-input-class: ".el-input";
       display: none;
     }
   }
-  .el-button--choose-token,
-  .el-button--empty-token {
-    > span {
-      display: inline-flex;
-      flex-direction: row-reverse;
-      > i[class^=s-icon-] {
-        margin-left: $inner-spacing-mini;
-        margin-right: 0;
+  .el-button {
+    &--choose-token,
+    &--empty-token {
+      > span {
+        display: inline-flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        > i[class^=s-icon-] {
+          margin-left: $inner-spacing-mini / 2;
+          margin-right: 0;
+          font-size: 20px;
+        }
+      }
+    }
+    &--choose-token {
+      > span {
+        > i[class^=s-icon-] {
+          margin-left: $inner-spacing-mini;
+        }
       }
     }
   }
@@ -380,6 +391,14 @@ $swap-input-class: ".el-input";
         margin-top: $inner-spacing-small;
       }
     }
+    .el-form-item {
+      margin-bottom: 0;
+      width: 50%;
+    }
+    .token {
+      display: flex;
+      align-items: center;
+    }
     .input-title,
     .token-balance {
       display: inline-flex;
@@ -403,25 +422,18 @@ $swap-input-class: ".el-input";
       }
     }
     .logo {
-      margin-right: $inner-spacing-mini / 2;
+      margin-right: $inner-spacing-mini;
       order: 1;
-      height: 24px;
-      width: 24px;
+      height: 23px;
+      width: 23px;
       background-color: $s-color-utility-surface;
       border: 1px solid $s-color-utility-surface;
       border-radius: $border-radius-small;
-      box-shadow: 0px 1px 4px 0px rgba(var(--s-color-standard-black-rgb), 0.35);
-  }
-    }
-  .el-button--switch-tokens {
-    &,
-    & + .input-container {
-      margin-top: $inner-spacing-mini;
+      box-shadow: $s-shadow-tooltip;
     }
   }
   .s-input {
     min-height: 0;
-    max-width: 50%;
   }
   .s-action {
     background-color: $s-color-base-background;
@@ -434,27 +446,25 @@ $swap-input-class: ".el-input";
       }
     }
   }
-  .el-button {
-    &--empty-token,
-    &--choose-token {
-      font-weight: 700;
-    }
-  }
-  .el-button--empty-token {
-    position: absolute;
-    right: $inner-spacing-mini;
-    bottom: $inner-spacing-mini;
-  }
   .s-tertiary {
-    padding: $inner-spacing-mini / 2 $inner-spacing-mini;
-    // background-color: $s-color-theme-secondary;
-    // border-color: $s-color-theme-secondary;
+    padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
+    background-color: $s-color-button-tertiary-background;
+    border-color: $s-color-button-tertiary-background;
     border-radius: $border-radius-mini;
-    // color: $s-color-theme-accent;
-    // &:hover, &:focus {
-    //   background-color: var(--s-color-theme-accent-light-hover);
-    //   border-color: var(--s-color-theme-accent-light-hover);
-    // }
+    color: $s-color-button-tertiary-color;
+    &:hover {
+      background-color: $s-color-button-tertiary-background-hover;
+      border-color: $s-color-button-tertiary-background-hover;
+    }
+    &:active {
+      background-color: $s-color-button-tertiary-background-pressed;
+      border-color: $s-color-button-tertiary-background-pressed;
+      color: $s-color-button-tertiary-color-active;
+    }
+    &:focus {
+      background-color: $s-color-button-tertiary-background-focused;
+      border-color: $s-color-button-tertiary-background-focused;
+    }
   }
   .swap-info {
     display: flex;
@@ -505,9 +515,40 @@ $swap-input-class: ".el-input";
     }
   }
   .el-button {
+    &--switch-tokens {
+      &,
+      & + .input-container {
+        margin-top: $inner-spacing-mini;
+      }
+    }
+    &--max,
+    &--empty-token,
+    &--choose-token {
+      font-weight: 700;
+    }
     &--max {
-      height: 24px;
       margin-right: $inner-spacing-mini;
+      padding-right: $inner-spacing-mini;
+      height: 24px;
+    }
+    &--empty-token {
+      position: absolute;
+      right: $inner-spacing-mini;
+      bottom: $inner-spacing-mini;
+    }
+    &--choose-token {
+      margin-left: 0;
+      margin-right: -$inner-spacing-mini;
+      padding-left: $inner-spacing-mini / 2;
+      background-color: $s-color-base-background;
+      border-color: $s-color-base-background;
+      border-radius: $border-radius-medium;
+      color: $s-color-base-content-primary;
+      &:hover, &:active, &:focus {
+        background-color: $s-color-base-background-hover;
+        border-color: $s-color-base-background-hover;
+        color: $s-color-base-content-primary;
+      }
     }
     &.el-button--switch-price {
       margin-right: 0;

@@ -49,7 +49,8 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
           padding-right: $inner-spacing-medium;
           padding-left: $inner-spacing-medium;
           &.is-active {
-            box-shadow: 0px 1px 1px 0px rgba(var(--s-color-standard-black), 0.1);
+            margin: 0;
+            box-shadow: $s-shadow-tab;
             &:hover {
               box-shadow: none;
             }
@@ -107,7 +108,7 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
   width: $inner-window-width;
   background-color: $s-color-utility-surface;
   border-radius: $border-radius-medium;
-  box-shadow: 0px 1px 4px 0px rgba(var(--s-color-standard-black-rgb), 0.35);
+  box-shadow: $s-shadow-surface;
   color: $s-color-base-content-primary;
   .s-tabs {
     width: 100%;

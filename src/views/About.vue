@@ -93,7 +93,7 @@ export default class About extends Mixins(TranslationMixin) {
         flex-direction: column;
         margin-left: 10%;
         > span {
-          color: var(--s-color-text-light);
+          color: $s-color-base-content-secondary;
           font-size: $s-font-size-mini;
         }
         .logo {
