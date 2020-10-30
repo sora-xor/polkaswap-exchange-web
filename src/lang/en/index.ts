@@ -29,5 +29,29 @@ export default {
       title: 'Build decentralized price feeds',
       text: 'Use Polkaswap exchange or integrate into your project using the SDK'
     }
+  },
+  exchange: {
+    swap: 'Swap',
+    pool: 'Pool',
+    from: 'From',
+    to: 'To',
+    balance: 'Balance',
+    max: 'MAX',
+    price: 'Price'
+  },
+  swap: {
+    chooseToken: 'Choose token',
+    chooseTokens: 'Choose tokens',
+    connectWallet: 'Connect wallet',
+    estimated: 'estimated',
+    slippageTolerance: 'Slippage Tolerance',
+    minReceived: 'Minimum Received',
+    minReceivedTooltip: 'Your transaction will revert if there is a large, unfavorable price movement before it is confirmed.',
+    priceImpact: 'Price Impact',
+    priceImpactTooltip: 'The difference between the market price and estimated price due to trade size.',
+    liquidityProviderFee: 'Liquidity Provider Fee',
+    liquidityProviderFeeTooltip: 'A portion of each trade (0.3%) goes to liquidity providers as a protocol incentive.',
+    enterAmount: 'Enter an amount',
+    insufficientBalance: 'Insufficient XOR balance'
   }
 }

@@ -4,6 +4,7 @@
       class="menu"
       mode="horizontal"
       background-color="#FFF"
+      box-shadow="0px 1px 1px rgba(0, 0, 0, 0.05), 0px 1px 4px rgba(0, 0, 0, 0.05), 0px 1px 25px rgba(0, 0, 0, 0.1)"
       text-color="#0D0248"
       active-text-color="#ED145B"
       active-hover-color="#FFF"
@@ -25,6 +26,7 @@
         </div>
       </div>
     </s-menu>
+    <!-- TODO: convert to the About page link and add active state for the menu item -->
     <i class="polkaswap-logo" />
     <div class="app-content"><router-view /></div>
   </div>
@@ -56,6 +58,7 @@ export default class App extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 @import './styles/typography';
+@import './styles/soramitsu-variables';
 
 @font-face {
   font-family: "SoraB";
@@ -83,8 +86,8 @@ export default class App extends Mixins(TranslationMixin) {
 }
 html {
   overflow-y: hidden;
-  font-size: $font-size_basic;
-  line-height: $line-height_basic;
+  font-size: $s-font-size-small;
+  line-height: $s-line-height-small;
 }
 *, *:before, *:after {
   box-sizing: border-box;
@@ -94,14 +97,13 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Sora', sans-serif;
-  color: var(--s-color-basic-black);
+  color: $s-color-base-content-primary;
   height: 100vh;
 }
 </style>
 
 <style lang="scss" scoped>
 @import '/styles/soramitsu-variables';
-@import '/styles/colors';
 @import '/styles/breakpoints';
 @import '/styles/layout';
 
@@ -129,10 +131,16 @@ $logo-width: 151px;
       right: $basic-spacing;
       top: 12px;
       .wallet {
-        color: $color-wight;
-        background-color: var(--s-color-main-brand);
-        &:hover, &:active, &:focus {
-          background-color: var(--s-color-main-hover);
+        color: $s-color-utility-surface;
+        background-color: $s-color-theme-accent;
+        &:hover {
+          background-color: $s-color-theme-accent-hover;
+        }
+        &:active {
+          background-color: $s-color-theme-accent-pressed;
+        }
+        &:focus {
+          background-color: $s-color-theme-accent-focused;
         }
       }
     }
