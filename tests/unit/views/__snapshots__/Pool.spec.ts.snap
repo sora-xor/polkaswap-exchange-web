@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Pool.vue should renders correctly 1`] = `
+<s-form>
+  <s-form-item>
+    Pool content
+  </s-form-item>
+</s-form>
+`;

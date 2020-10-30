@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Exchange.vue should renders correctly 1`] = `
+<div
+  class="exchange-container"
+>
+  <s-tabs
+    type="rounded"
+  >
+    <s-tab
+      name="swap"
+    >
+      <swap-stub />
+    </s-tab>
+     
+    <s-tab
+      name="pool"
+    >
+      <pool-stub />
+    </s-tab>
+  </s-tabs>
+</div>
+`;
