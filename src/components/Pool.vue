@@ -1,7 +1,7 @@
 <template>
-  <div>
-    Pool content
-  </div>
+  <s-form>
+    <s-form-item>Pool content</s-form-item>
+  </s-form>
 </template>
 
 <script lang="ts">

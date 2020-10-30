@@ -1,5 +1,9 @@
 <template>
-  <div class="swap-container">
+  <s-form
+    v-model="swapForm"
+    class="el-form--swap"
+    :show-message="false"
+  >
     <div class="input-container">
       <div class="input-line">
         <div class="input-title">{{ t('exchange.from') }}</div>
@@ -9,15 +13,16 @@
         </div>
       </div>
       <div class="input-line">
-        <!-- TODO: Think about validation (only positive numbers and so on) -->
-        <s-input
-          v-model="tokenFromValue"
-          type="number"
-          :placeholder="formatNumber(0, 2)"
-          :disabled="!tokensSelected"
-          @change="handleChangeFromValue"
-          @blur="handleBlurFromValue"
-        />
+        <s-form-item>
+          <s-input
+            v-model="swapForm.tokenFromValue"
+            v-float="swapForm.tokenFromValue"
+            :placeholder="formatNumber(0, 2)"
+            :disabled="!tokensSelected"
+            @change="handleChangeFromValue"
+            @blur="handleBlurFromValue"
+          />
+        </s-form-item>
         <div v-if="tokenFrom" class="token">
           <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" @click="handleMaxValue">
             {{ t('exchange.max') }}
@@ -45,15 +50,16 @@
         </div>
       </div>
       <div class="input-line">
-        <!-- TODO: Think about validation (only positive numbers and so on) -->
-        <s-input
-          v-model="tokenToValue"
-          type="number"
-          :placeholder="formatNumber(0, 2)"
-          :disabled="!tokensSelected"
-          @change="handleChangeToValue"
-          @blur="handleBlurToValue"
-        />
+        <s-form-item>
+          <s-input
+            v-model="swapForm.tokenToValue"
+            v-float="swapForm.tokenToValue"
+            :placeholder="formatNumber(0, 2)"
+            :disabled="!tokensSelected"
+            @change="handleChangeToValue"
+            @blur="handleBlurToValue"
+          />
+        </s-form-item>
         <div v-if="tokenTo" class="token">
           <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken">
             <span class="logo">{{ tokenTo.logo }}</span>
@@ -116,7 +122,7 @@
         <span class="swap-info-value">{{ liquidityProviderFee }}</span>
       </div>
     </template>
-  </div>
+  </s-form>
 </template>
 
 <script lang="ts">
@@ -160,8 +166,11 @@ export default class Swap extends Mixins(TranslationMixin) {
 
   tokenFrom: any = null;
   tokenTo: any = null;
-  tokenFromValue: string = this.formatNumber(0, 1);
-  tokenToValue: string = this.formatNumber(0, 1);
+  swapForm: any = {
+    tokenFromValue: this.formatNumber(0, 1),
+    tokenToValue: this.formatNumber(0, 1)
+  };
+
   isTokenFromFocused = false;
   isTokenToFocused = false;
   isSwitchTokensClicked = false;
@@ -180,12 +189,12 @@ export default class Swap extends Mixins(TranslationMixin) {
   }
 
   get isEmptyBalance (): boolean {
-    return +this.tokenFromValue === 0 || +this.tokenToValue === 0
+    return +this.swapForm.tokenFromValue === 0 || +this.swapForm.tokenToValue === 0
   }
 
   get isInsufficientBalance (): boolean {
     if (this.tokensSelected) {
-      return +this.tokenFromValue > this.tokenFrom.balance
+      return +this.swapForm.tokenFromValue > this.tokenFrom.balance
     }
     return true
   }
@@ -216,16 +225,16 @@ export default class Swap extends Mixins(TranslationMixin) {
   }
 
   handleChangeFromValue (): void {
-    if (this.tokensSelected && +this.tokenFromValue !== 0 && !this.isTokenToFocused) {
+    if (this.tokensSelected && +this.swapForm.tokenFromValue !== 0 && !this.isTokenToFocused) {
       this.isTokenFromFocused = true
-      this.tokenToValue = this.formatNumber(+this.tokenFromValue * this.tokenFrom.price / this.tokenTo.price, 4)
+      this.swapForm.tokenToValue = this.formatNumber(+this.swapForm.tokenFromValue * this.tokenFrom.price / this.tokenTo.price, 4)
     }
   }
 
   handleChangeToValue (): void {
-    if (this.tokensSelected && +this.tokenToValue !== 0 && !this.isTokenFromFocused) {
+    if (this.tokensSelected && +this.swapForm.tokenToValue !== 0 && !this.isTokenFromFocused) {
       this.isTokenToFocused = true
-      this.tokenFromValue = this.formatNumber(+this.tokenToValue * this.tokenTo.price / this.tokenFrom.price, 4)
+      this.swapForm.tokenFromValue = this.formatNumber(+this.swapForm.tokenToValue * this.tokenTo.price / this.tokenFrom.price, 4)
     }
     if (this.isSwitchTokensClicked) {
       this.handleBlurFromValue()
@@ -244,19 +253,19 @@ export default class Swap extends Mixins(TranslationMixin) {
 
   handleSwitchTokens (): void {
     const currentTokenFrom = this.tokenFrom
-    const currentTokenFromValue = this.tokenFromValue
+    const currentTokenFromValue = this.swapForm.tokenFromValue
     this.isTokenFromFocused = true
     this.isTokenToFocused = true
     this.tokenFrom = this.tokenTo
     this.tokenTo = currentTokenFrom
-    this.tokenFromValue = this.tokenToValue
-    this.tokenToValue = currentTokenFromValue
+    this.swapForm.tokenFromValue = this.swapForm.tokenToValue
+    this.swapForm.tokenToValue = currentTokenFromValue
     this.isSwitchTokensClicked = true
     this.isTokenFromPrice = true
   }
 
   handleMaxValue (): void {
-    this.tokenFromValue = this.tokenFrom.balance
+    this.swapForm.tokenFromValue = this.tokenFrom.balance
   }
 
   handleChooseToken (isTokenFrom: boolean): void {
@@ -282,9 +291,9 @@ export default class Swap extends Mixins(TranslationMixin) {
 
   handleSwap (): void {
     // TODO: Add Swap functionality and show confirmation windows
-    this.$alert(`Output is estimated. You will receive at least ${this.tokenToValue} or the transaction will revert.`, 'Confirm Swap')
-    this.tokenFrom.balance -= +this.tokenFromValue
-    this.tokenTo.balance += +this.tokenToValue
+    this.$alert(`Output is estimated. You will receive at least ${this.swapForm.tokenToValue} or the transaction will revert.`, 'Confirm Swap')
+    this.tokenFrom.balance -= +this.swapForm.tokenFromValue
+    this.tokenTo.balance += +this.swapForm.tokenToValue
   }
 
   // TODO: move to utils or another appropriate place, check for BigInt values
@@ -301,7 +310,7 @@ export default class Swap extends Mixins(TranslationMixin) {
 
 $swap-input-class: ".el-input";
 
-.swap-container {
+.el-form--swap {
   .s-input {
     .el-input {
       #{$swap-input-class}__inner {
@@ -353,7 +362,7 @@ $swap-input-class: ".el-input";
 @import '../styles/layout';
 @import '../styles/soramitsu-variables';
 
-.swap-container {
+.el-form--swap {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -438,14 +447,14 @@ $swap-input-class: ".el-input";
   }
   .s-tertiary {
     padding: $inner-spacing-mini / 2 $inner-spacing-mini;
-    background-color: var(--s-color-theme-accent-light);
-    border-color: var(--s-color-theme-accent-light);
+    // background-color: $s-color-theme-secondary;
+    // border-color: $s-color-theme-secondary;
     border-radius: $border-radius-mini;
-    color: $s-color-theme-accent;
-    &:hover, &:focus {
-      background-color: var(--s-color-theme-accent-light-hover);
-      border-color: var(--s-color-theme-accent-light-hover);
-    }
+    // color: $s-color-theme-accent;
+    // &:hover, &:focus {
+    //   background-color: var(--s-color-theme-accent-light-hover);
+    //   border-color: var(--s-color-theme-accent-light-hover);
+    // }
   }
   .swap-info {
     display: flex;
