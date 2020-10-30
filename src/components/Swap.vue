@@ -175,7 +175,10 @@ export default class Swap extends Mixins(TranslationMixin) {
   isTokenToFocused = false;
   isSwitchTokensClicked = false;
   isTokenFromPrice = true;
-  isWalletConnected = false;
+
+  get isWalletConnected (): boolean {
+    return localStorage.getItem('walletAddress') !== null
+  }
 
   get tokensSelected (): boolean {
     return this.tokenFrom && this.tokenTo
@@ -284,8 +287,8 @@ export default class Swap extends Mixins(TranslationMixin) {
   }
 
   handleConnectWallet (): void {
-    // TODO: Add Connect Wallet functionality
-    this.isWalletConnected = true
+    // TODO: Add Connect Wallet functionality, right now updated the value only on page reloading
+    localStorage.setItem('walletAddress', '43f65bccca11ff53840a85d5af5bf1d1762f92a8e03')
     this.$alert('The wallet is successfully connected!', 'Success')
   }
 
