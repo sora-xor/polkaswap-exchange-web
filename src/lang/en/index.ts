@@ -37,7 +37,9 @@ export default {
     to: 'To',
     balance: 'Balance',
     max: 'MAX',
-    price: 'Price'
+    price: 'Price',
+    transactionSubmitted: 'Transaction submitted',
+    ok: 'OK'
   },
   swap: {
     chooseToken: 'Choose token',
@@ -50,8 +52,10 @@ export default {
     priceImpact: 'Price Impact',
     priceImpactTooltip: 'The difference between the market price and estimated price due to trade size.',
     liquidityProviderFee: 'Liquidity Provider Fee',
-    liquidityProviderFeeTooltip: 'A portion of each trade (0.3%) goes to liquidity providers as a protocol incentive.',
+    liquidityProviderFeeTooltip: 'A portion of each trade ({liquidityProviderFeeValue}%) goes to liquidity providers as a protocol incentive.',
     enterAmount: 'Enter an amount',
-    insufficientBalance: 'Insufficient XOR balance'
+    insufficientBalance: 'Insufficient {tokenSymbol} balance',
+    confirmSwap: 'Confirm Swap',
+    swapOutputMessage: 'Output is estimated. You will receive at least {transactionValue} or the transaction will revert.'
   }
 }
