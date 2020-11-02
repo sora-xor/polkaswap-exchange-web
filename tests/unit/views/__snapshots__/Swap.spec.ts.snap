@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Swap.vue should renders correctly 1`] = `
+<s-form
+  class="el-form--swap"
+>
+  <div
+    class="input-container"
+  >
+    <div
+      class="input-line"
+    >
+      <div
+        class="input-title"
+      >
+        
+      </div>
+       
+      <!---->
+    </div>
+     
+    <div
+      class="input-line"
+    >
+      <s-form-item>
+        <s-input
+          disabled="true"
+          placeholder="0.00"
+        />
+      </s-form-item>
+       
+      <s-button
+        class="el-button--empty-token"
+        icon="chevron-bottom-rounded"
+        size="small"
+        type="tertiary"
+      >
+        
+        
+      
+      </s-button>
+    </div>
+  </div>
+   
+  <s-button
+    class="el-button--switch-tokens"
+    icon="change-positions"
+    size="medium"
+    type="action"
+  />
+   
+  <div
+    class="input-container"
+  >
+    <div
+      class="input-line"
+    >
+      <div
+        class="input-title"
+      >
+        <span>
+          
+        </span>
+         
+        <!---->
+      </div>
+       
+      <!---->
+    </div>
+     
+    <div
+      class="input-line"
+    >
+      <s-form-item>
+        <s-input
+          disabled="true"
+          placeholder="0.00"
+        />
+      </s-form-item>
+       
+      <s-button
+        class="el-button--empty-token"
+        icon="chevron-bottom-rounded"
+        size="small"
+        type="tertiary"
+      >
+        
+        
+      
+      </s-button>
+    </div>
+  </div>
+   
+  <!---->
+   
+  <s-button
+    size="medium"
+    type="primary"
+  >
+    
+    
+  
+  </s-button>
+   
+  <!---->
+</s-form>
+`;

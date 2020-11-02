@@ -1,5 +1,6 @@
 <template>
   <div class="layout s-flex">
+    <!-- TODO: Move the text below above the banner for mobile devices, add background layer with opacity for the banner -->
     <div class="banner s-flex"></div>
     <div class="content">
       <div class="terms s-flex">
@@ -64,7 +65,7 @@ export default class About extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/colors';
+@import '../styles/soramitsu-variables';
 @import '../styles/breakpoints';
 @import '../styles/typography';
 @import '../styles/layout';
@@ -82,18 +83,18 @@ export default class About extends Mixins(TranslationMixin) {
     justify-content: center;
   }
   .content {
-    padding: $basic-spacing_medium $basic-spacing_large;
+    padding: $basic-spacing * 3 $basic-spacing * 6;
     .terms {
       > span {
-        font-size: $font-size_normal;
+        font-size: $s-font-size-medium;
         font-weight: bold;
       }
       .web3-logo {
         flex-direction: column;
         margin-left: 10%;
         > span {
-          color: $color-grey;
-          font-size: $font-size_small;
+          color: $s-color-base-content-secondary;
+          font-size: $s-font-size-mini;
         }
         .logo {
           margin-top: 12px;
@@ -105,9 +106,9 @@ export default class About extends Mixins(TranslationMixin) {
     }
     .articles {
       .article-card {
-        background-color: $color-grey_light;
+        background-color: $s-color-base-background;
         border-color: transparent;
-        border-radius: 24px;
+        border-radius: $border-radius-big;
         margin: 4px;
         height: 140px;
         .article-header {
@@ -116,7 +117,7 @@ export default class About extends Mixins(TranslationMixin) {
           display: flex;
           justify-content: space-between;
           i {
-            color: var(--s-color-main-brand);
+            color: $s-color-theme-accent;
           }
         }
       }
@@ -125,13 +126,13 @@ export default class About extends Mixins(TranslationMixin) {
 }
 @include tablet {
   .layout .content .terms > span {
-    font-size: $font-size_medium;
+    font-size: $s-font-size-big;
     font-weight: normal;
   }
 }
 @include desktop {
   .layout .content .terms > span {
-    font-size: $font-size_large;
+    font-size: $s-font-size-big-heading;
   }
 }
 </style>

@@ -1,17 +1,19 @@
-// Main colors
-$s-color-main-brand: #ED145B;
-$s-color-main-hover: #D51252;
-// Basic colors
-$s-color-basic-black: #0D0248;
+@import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";
 
+$s-color-theme-accent: #ed145b;
+$s-color-button-tertiary-color: $s-color-theme-accent;
+$s-color-button-tertiary-color-active: $s-color-theme-accent;
+$s-color-button-tertiary-background: $s-color-theme-secondary;
+$s-color-button-tertiary-background-hover: $s-color-theme-secondary-hover;
+$s-color-button-tertiary-background-pressed: $s-color-theme-secondary-pressed;
+$s-color-button-tertiary-background-focused: $s-color-theme-secondary-focused;
 
-// TODO: check how we can avoid important here or/and css variables
-// (if we don't need theme switching here)
-// IT WILL BE FIXED IN 0.5.0 version
 :root {
-  --s-color-main-brand: #{$s-color-main-brand} !important;
-  --s-color-main-hover: #{$s-color-main-hover} !important;
-  --s-color-basic-black: #{$s-color-basic-black} !important;
+  --s-color-theme-accent: #{$s-color-theme-accent};
+  --s-color-button-tertiary-color: #{$s-color-button-tertiary-color};
+  --s-color-button-tertiary-color-active: #{$s-color-button-tertiary-color-active};
+  --s-color-button-tertiary-background: #{$s-color-button-tertiary-background};
+  --s-color-button-tertiary-background-hover: #{$s-color-button-tertiary-background-hover};
+  --s-color-button-tertiary-background-pressed: #{$s-color-button-tertiary-background-pressed};
+  --s-color-button-tertiary-background-focused: #{$s-color-button-tertiary-background-focused};
 }
-
-@import '../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index';
