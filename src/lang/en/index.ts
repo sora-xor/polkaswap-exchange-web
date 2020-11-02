@@ -5,7 +5,8 @@ export default {
     [PageNames.About]: 'About',
     [PageNames.Exchange]: 'Exchange',
     [PageNames.Stats]: 'Stats',
-    [PageNames.Support]: 'Support'
+    [PageNames.Support]: 'Support',
+    [PageNames.CreatePair]: 'Create Pair'
   },
   about: {
     polkaswapText: 'Polkaswap — automated token exchange. Swap any token on SoraNet, add liquidity, create exchanges, earn through passive market making, build decentralized price feeds.',
@@ -30,8 +31,48 @@ export default {
       text: 'Use Polkaswap exchange or integrate into your project using the SDK'
     }
   },
+  exchange: {
+    swap: 'Swap',
+    pool: 'Pool',
+    from: 'From',
+    to: 'To',
+    balance: 'Balance',
+    max: 'MAX',
+    price: 'Price'
+  },
+  swap: {
+    chooseToken: 'Choose token',
+    chooseTokens: 'Choose tokens',
+    connectWallet: 'Connect wallet',
+    estimated: 'estimated',
+    slippageTolerance: 'Slippage Tolerance',
+    minReceived: 'Minimum Received',
+    minReceivedTooltip: 'Your transaction will revert if there is a large, unfavorable price movement before it is confirmed.',
+    priceImpact: 'Price Impact',
+    priceImpactTooltip: 'The difference between the market price and estimated price due to trade size.',
+    liquidityProviderFee: 'Liquidity Provider Fee',
+    liquidityProviderFeeTooltip: 'A portion of each trade (0.3%) goes to liquidity providers as a protocol incentive.',
+    enterAmount: 'Enter an amount',
+    insufficientBalance: 'Insufficient XOR balance'
+  },
   selectToken: {
     title: 'Select a token',
     searchPlaceholder: 'Search Token Name, Symbol, or Address'
+  },
+  createPair: {
+    title: 'Create a pair',
+    deposit: 'Deposit',
+    balance: 'Balance',
+    pricePoolShare: 'Prices and pool share',
+    shareOfPool: 'Share of pool',
+    per: 'per',
+    connect: 'Connect wallet',
+    enterAmount: 'Enter an amount',
+    supply: 'Supply',
+    confirmSupply: 'Confirm supply',
+    yourPosition: 'Your position',
+    youWillRecieve: 'You will receive',
+    outputDescription: 'Output is estimated. If the price changes more than 0.5% your transaction will revert.',
+    description: 'When you add liquidity, you are awarded with token pair specific PSWAP tokens that represent your pool share.'
   }
 }

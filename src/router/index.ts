@@ -29,6 +29,11 @@ const routes: Array<RouteConfig> = [
   {
     path: '/support',
     name: PageNames.Support
+  },
+  {
+    path: '/create-pair',
+    name: PageNames.CreatePair,
+    component: lazyView(PageNames.CreatePair)
   }
 ]
 

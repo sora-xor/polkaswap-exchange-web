@@ -3,9 +3,11 @@ import Vuex from 'vuex'
 import { tokens } from '@/mocks/tokens'
 import SelectToken from '@/components/SelectToken.vue'
 import { TranslationMock } from '../../utils'
+import SoramitsuElements from '@soramitsu/soramitsu-js-ui'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
+localVue.use(SoramitsuElements)
 
 describe('SelectToken.vue', () => {
   let actions

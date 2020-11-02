@@ -26,6 +26,7 @@
       </div>
     </s-menu>
     <i class="polkaswap-logo" />
+    <select-token :visible="dialogVisible" @close="onClose" />
     <div class="app-content"><router-view /></div>
   </div>
 </template>
@@ -36,13 +37,22 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { PageNames, MainMenu } from '@/consts'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import router from '@/router'
+import SelectToken from '@/components/SelectToken.vue'
 
-@Component
+@Component({
+  components: {
+    SelectToken
+  }
+})
 export default class App extends Mixins(TranslationMixin) {
   readonly MainMenu = MainMenu
-
+  dialogVisible = true
   get currentPath (): string {
     return router.currentRoute.name || PageNames.About
+  }
+
+  onClose () {
+    this.dialogVisible = false
   }
 
   goTo (name: string): void {

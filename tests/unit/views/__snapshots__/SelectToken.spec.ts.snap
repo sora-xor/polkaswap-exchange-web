@@ -1,11 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SelectToken.vue should renders correctly 1`] = `
-<s-dialog
+<s-dialog-stub
+  closeonclickmodal="true"
+  closeonesc="true"
+  customclass=""
+  lockscroll="true"
+  modal="true"
+  modalappendtobody="true"
+  showclose="true"
+  title=""
+  top="auto"
   visible="true"
   width="600px"
 >
-  <s-input />
+  <s-input-stub
+    accept=""
+    autocomplete="off"
+    form=""
+    label=""
+    name=""
+    placeholder=""
+    tabindex=""
+    type="text"
+    value=""
+  />
    
   <div
     class="token-list"
@@ -13,10 +32,16 @@ exports[`SelectToken.vue should renders correctly 1`] = `
     <div
       class="token-item"
     >
-      <s-col>
-        <s-row
+      <s-col-stub
+        offset="0"
+        pull="0"
+        push="0"
+        span="12"
+      >
+        <s-row-stub
           align="middle"
-          flex=""
+          flex="true"
+          gutter="0"
           justify="start"
         >
           <div
@@ -30,9 +55,11 @@ exports[`SelectToken.vue should renders correctly 1`] = `
               Sora (XOR)
             </div>
              
-            <s-row
+            <s-row-stub
               align="middle"
-              flex=""
+              flex="true"
+              gutter="0"
+              justify="start"
             >
               <div
                 class="token-item_price"
@@ -45,18 +72,24 @@ exports[`SelectToken.vue should renders correctly 1`] = `
               >
                 +12%
               </div>
-            </s-row>
+            </s-row-stub>
           </div>
-        </s-row>
-      </s-col>
+        </s-row-stub>
+      </s-col-stub>
     </div>
     <div
       class="token-item"
     >
-      <s-col>
-        <s-row
+      <s-col-stub
+        offset="0"
+        pull="0"
+        push="0"
+        span="12"
+      >
+        <s-row-stub
           align="middle"
-          flex=""
+          flex="true"
+          gutter="0"
           justify="start"
         >
           <div
@@ -70,9 +103,11 @@ exports[`SelectToken.vue should renders correctly 1`] = `
               Kusama (KSM)
             </div>
              
-            <s-row
+            <s-row-stub
               align="middle"
-              flex=""
+              flex="true"
+              gutter="0"
+              justify="start"
             >
               <div
                 class="token-item_price"
@@ -85,18 +120,24 @@ exports[`SelectToken.vue should renders correctly 1`] = `
               >
                 +12%
               </div>
-            </s-row>
+            </s-row-stub>
           </div>
-        </s-row>
-      </s-col>
+        </s-row-stub>
+      </s-col-stub>
     </div>
     <div
       class="token-item"
     >
-      <s-col>
-        <s-row
+      <s-col-stub
+        offset="0"
+        pull="0"
+        push="0"
+        span="12"
+      >
+        <s-row-stub
           align="middle"
-          flex=""
+          flex="true"
+          gutter="0"
           justify="start"
         >
           <div
@@ -110,9 +151,11 @@ exports[`SelectToken.vue should renders correctly 1`] = `
               Ether (ETH)
             </div>
              
-            <s-row
+            <s-row-stub
               align="middle"
-              flex=""
+              flex="true"
+              gutter="0"
+              justify="start"
             >
               <div
                 class="token-item_price"
@@ -125,11 +168,11 @@ exports[`SelectToken.vue should renders correctly 1`] = `
               >
                 -12%
               </div>
-            </s-row>
+            </s-row-stub>
           </div>
-        </s-row>
-      </s-col>
+        </s-row-stub>
+      </s-col-stub>
     </div>
   </div>
-</s-dialog>
+</s-dialog-stub>
 `;
