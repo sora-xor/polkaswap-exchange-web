@@ -3,30 +3,31 @@
     :title="t('selectToken.title')"
     :visible.sync="visible"
     width="600px"
+    class="token-select"
   >
     <s-input
       v-model="query"
       :placeholder="t('selectToken.searchPlaceholder')"
+      class="token-search"
     />
-    <div class="token-list">
+    <div v-if="filteredTokens.length > 0" class="token-list">
       <div v-for="token in filteredTokens" @click="selectToken($event, token)" :key="token.symbol" class="token-item">
         <s-col>
           <s-row flex justify="start" align="middle">
-            <div class="token-item_logo">
-              <!-- TODO: Implement logo image -->
-            </div>
+            <img v-if="token.logo" :src="token.logo" :alt="token.name" class="token-item_logo">
+            <div v-else class="token-item_empty-logo"></div>
             <div>
               <div class="token-item_name">{{ token.name }} ({{ token.symbol }})</div>
-
-              <s-row flex align="middle">
-                <div class="token-item_price">${{ token.price }}</div>
-                <div :class="{'token-item_price-change': true, 'positive': token.priceChange > 0, 'negative': token.priceChange < 0}">{{ token.priceChange > 0 ? '+' : ''}}{{ token.priceChange }}%</div>
-              </s-row>
             </div>
           </s-row>
         </s-col>
-        <!-- TODO: Implement current amount -->
+        <div>
+          <span class="token-item_amount">{{ token.amount || '-' }}</span>
+        </div>
       </div>
+    </div>
+    <div v-else class="token-empty-list">
+      {{ t('selectToken.emptyListMessage') }}
     </div>
   </s-dialog>
 </template>
@@ -40,8 +41,8 @@ import { Token } from '@/types'
 
 @Component
 export default class SelectToken extends Mixins(TranslationMixin) {
-  @Prop({ required: true }) visible
-  @Prop() defaultToken
+  @Prop({ type: Boolean, default: false, required: true }) readonly visible!: boolean
+  @Prop() readonly defaultToken
 
   query = ''
   selectedToken = null
@@ -63,9 +64,9 @@ export default class SelectToken extends Mixins(TranslationMixin) {
         t.symbol.toLowerCase().includes(query) ||
         t.address.toLowerCase().includes(query)
       )
-    } else {
-      return this.tokens
     }
+
+    return this.tokens
   }
 
   created () {
@@ -83,11 +84,26 @@ export default class SelectToken extends Mixins(TranslationMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+@import '../styles/layout';
+@import '../styles/soramitsu-variables';
+
+$container-spacing: 24px;
+
+.token-select {
+  .el-dialog__body {
+    padding: 0px;
+  }
+}
+
+.token-search {
+  padding-left: $container-spacing;
+  padding-right: $container-spacing;
+}
+
 .token-item {
-  padding: 8px;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  padding-left: $container-spacing;
+  padding-right: $container-spacing;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -95,24 +111,37 @@ export default class SelectToken extends Mixins(TranslationMixin) {
 }
 
 .token-item:hover {
-  background-color: rgba(0, 0, 0, 0.05);;
+  background-color: $s-color-base-background-hover;
 }
 
 .token-item_logo {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #ECEFF0;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.35);
-  margin-right: 16px;
+  margin-right: $inner-spacing-medium;
+  margin-top: $inner-spacing-medium;
+  margin-bottom: $inner-spacing-medium;
   position: relative;
 }
 
-.token-item_logo::after {
+.token-item_empty-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: $s-color-base-background-hover;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.35);
+  margin-right: $inner-spacing-medium;
+  margin-top: $inner-spacing-medium;
+  margin-bottom: $inner-spacing-medium;
+  position: relative;
+}
+
+.token-item_empty-logo::after {
   content: " ";
   width: 14px;
   height: 14px;
-  background: #53565A;
+  background: $s-color-base-content-secondary;
   border-radius: 2px;
   transform: rotate(45deg);
   position: absolute;
@@ -124,17 +153,20 @@ export default class SelectToken extends Mixins(TranslationMixin) {
 
 .token-item_name {
   font-weight: 600;
+  font-size: $s-font-size-small;
 }
 
-.token-item_price-change {
-  margin-left: 0.25rem;
+.token-item_amount {
+  font-weight: 600;
+  font-size: $s-font-size-small;
+}
 
-  &.positive {
-    color: rgb(67, 150, 42)
-  }
+.token-list {
+  height: 50vh;
+  overflow: auto;
+}
 
-  &.negative {
-    color: rgb(230, 49, 24)
-  }
+.token-empty-list {
+  //TODO: Implement empty list design
 }
 </style>

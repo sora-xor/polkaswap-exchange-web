@@ -16,6 +16,69 @@ export const tokens = [{
 
 },
 {
+  name: 'Kusama',
+  symbol: 'KSM1',
+  address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
+  balance: 0,
+  price: 0.0055,
+  priceChange: 12
+
+},
+{
+  name: 'Kusama',
+  symbol: 'KSM2',
+  address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
+  balance: 0,
+  price: 0.0055,
+  priceChange: 12
+
+},
+{
+  name: 'Kusama',
+  symbol: 'KSM3',
+  address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
+  balance: 0,
+  price: 0.0055,
+  priceChange: 12
+
+},
+{
+  name: 'Kusama',
+  symbol: 'KSM4',
+  address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
+  balance: 0,
+  price: 0.0055,
+  priceChange: 12
+
+},
+{
+  name: 'Kusama',
+  symbol: 'KSM5',
+  address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
+  balance: 0,
+  price: 0.0055,
+  priceChange: 12
+
+},
+{
+  name: 'Kusama',
+  symbol: 'KSM6',
+  address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
+  balance: 0,
+  price: 0.0055,
+  priceChange: 12
+
+},
+{
+  name: 'Kusama',
+  symbol: 'KSM7',
+  address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
+  balance: 0,
+  price: 0.0055,
+  priceChange: 12
+
+},
+{
   name: 'Ether',
   symbol: 'ETH',
   address: '8adaca8ea8192656a15c88797e04c8771c4576b3',
