@@ -1,11 +1,23 @@
 import swapApi from '@/api/swap'
 
 const state = {
+  tokenFrom: null,
+  tokenTo: null,
   slippageTolerance: 0,
-  liquidityProviderFee: 0
+  liquidityProviderFee: 0,
+  isTokenFromPrice: true
 }
 
 const getters = {
+  tokenFrom (state) {
+    return state.tokenFrom
+  },
+  tokenTo (state) {
+    return state.tokenTo
+  },
+  isTokenFromPrice (state) {
+    return state.isTokenFromPrice
+  },
   slippageTolerance (state) {
     return state.slippageTolerance
   },
@@ -15,6 +27,15 @@ const getters = {
 }
 
 const mutations = {
+  GET_TOKEN_FROM (state, tokenFrom: any) {
+    state.tokenFrom = tokenFrom
+  },
+  GET_TOKEN_TO (state, tokenTo: any) {
+    state.tokenTo = tokenTo
+  },
+  GET_TOKEN_FROM_PRICE (state, isTokenFromPrice: boolean) {
+    state.isTokenFromPrice = isTokenFromPrice
+  },
   GET_SLIPPAGE_TOLERANCE (state, slippageTolerance: number) {
     state.slippageTolerance = slippageTolerance
   },
@@ -30,6 +51,25 @@ const mutations = {
 }
 
 const actions = {
+  async getTokenFrom ({ commit }) {
+    try {
+      const tokenFrom = await swapApi.getTokens()
+      commit('GET_TOKEN_FROM', tokenFrom.XOR)
+    } catch (error) {
+      // Add on Error
+    }
+  },
+  async getTokenTo ({ commit }) {
+    try {
+      const tokenTo = await swapApi.getTokens()
+      commit('GET_TOKEN_TO', tokenTo.ETH)
+    } catch (error) {
+      // Add on Error
+    }
+  },
+  getTokenFromPrice ({ commit }) {
+    commit('GET_TOKEN_FROM_PRICE', state.isTokenFromPrice)
+  },
   async getSlippageTolerance ({ commit }) {
     try {
       const slippageTolerance = await swapApi.getSlippageTolerance() as number

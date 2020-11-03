@@ -1,4 +1,8 @@
-import { slippageTolerance, liquidityProviderFee } from '@/mocks/swap'
+import { tokens, slippageTolerance, liquidityProviderFee } from '@/mocks/swap'
+
+const getTokens = () => {
+  return Promise.resolve(tokens)
+}
 
 const getSlippageTolerance = () => {
   return Promise.resolve(slippageTolerance)
@@ -9,6 +13,7 @@ const getLiquidityProviderFee = () => {
 }
 
 export default {
+  getTokens,
   getSlippageTolerance,
   getLiquidityProviderFee
 }
