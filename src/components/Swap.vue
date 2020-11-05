@@ -91,8 +91,8 @@
       </template>
     </s-button>
     <swap-info v-if="areTokensSelected" />
-    <confirm-swap :visible="showConfirmSwapDialog && !isSwapConfirmed" @after-closed="handleAfterConfirmSwapClosed" />
-    <transaction-submit :visible="isSwapConfirmed" />
+    <confirm-swap :visible="showConfirmSwapDialog && !isSwapConfirmed" @close="onConfirmSwapDialogClose" />
+    <transaction-submit :visible="isSwapConfirmed" @close="onTransactionSubmitClose" />
   </s-form>
 </template>
 
@@ -235,11 +235,15 @@ export default class Swap extends Mixins(TranslationMixin) {
     this.showConfirmSwapDialog = true
   }
 
-  handleAfterConfirmSwapClosed (): void {
+  onConfirmSwapDialogClose () {
     this.showConfirmSwapDialog = false
     if (this.isSwapConfirmed) {
       this.showTransactionSubmitDialog = true
     }
+  }
+
+  onTransactionSubmitClose () {
+    this.showTransactionSubmitDialog = false
   }
 }
 </script>

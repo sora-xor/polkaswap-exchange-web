@@ -44,7 +44,7 @@ export default class ConfirmSwap extends Mixins(TranslationMixin) {
   @Getter toValue!: number
   @Action setSwapConfirm
 
-  @Prop({ default: false, type: Boolean }) visible!: boolean
+  @Prop({ default: false, type: Boolean }) readonly visible!: boolean
 
   get formattedFromValue (): string {
     return formatNumber(this.fromValue, 4)
@@ -55,7 +55,9 @@ export default class ConfirmSwap extends Mixins(TranslationMixin) {
   }
 
   handleConfirmSwap (): void {
+    // TODO: Make Swap here
     this.setSwapConfirm(true)
+    this.$emit('close')
   }
 }
 </script>
@@ -110,6 +112,13 @@ $el-dialog-button-size: 40px;
       }
     }
   }
+  #{$el-dialog-class}__footer {
+    .el-button {
+      padding: $inner-spacing-mini;
+      border-radius: $border-radius-small;
+      width: 100%;
+    }
+  }
 }
 </style>
 
@@ -130,11 +139,6 @@ $token-logo-size: 40px;
     }
     &__footer {
       padding: $inner-spacing-big;
-      .el-button {
-        padding: $inner-spacing-mini;
-        border-radius: $border-radius-small;
-        width: 100%;
-      }
     }
   }
   .token {
