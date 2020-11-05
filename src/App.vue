@@ -28,7 +28,6 @@
     </s-menu>
     <!-- TODO: convert to the About page link and add active state for the menu item -->
     <i class="polkaswap-logo" />
-    <select-token :visible="dialogVisible" @close="onClose" />
     <div class="app-content"><router-view /></div>
   </div>
 </template>
@@ -48,13 +47,9 @@ import SelectToken from '@/components/SelectToken.vue'
 })
 export default class App extends Mixins(TranslationMixin) {
   readonly MainMenu = MainMenu
-  dialogVisible = true
+
   get currentPath (): string {
     return router.currentRoute.name || PageNames.About
-  }
-
-  onClose () {
-    this.dialogVisible = false
   }
 
   goTo (name: string): void {

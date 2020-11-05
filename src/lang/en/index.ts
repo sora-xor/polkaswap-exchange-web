@@ -57,7 +57,8 @@ export default {
   },
   selectToken: {
     title: 'Select a token',
-    searchPlaceholder: 'Search Token Name, Symbol, or Address'
+    searchPlaceholder: 'Search Token Name, Symbol, or Address',
+    emptyListMessage: 'Nothing found'
   },
   createPair: {
     title: 'Create a pair',

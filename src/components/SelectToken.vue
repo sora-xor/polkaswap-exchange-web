@@ -1,32 +1,37 @@
 <template>
   <s-dialog
-    :title="t('selectToken.title')"
     :visible.sync="visible"
     width="600px"
     class="token-select"
   >
+    <template #title>
+      <div class="token-select__title">
+      {{ t('selectToken.title') }}
+      </div>
+    </template>
+
     <s-input
       v-model="query"
       :placeholder="t('selectToken.searchPlaceholder')"
       class="token-search"
     />
-    <div v-if="filteredTokens.length > 0" class="token-list">
+    <div v-if="filteredTokens && filteredTokens.length > 0" class="token-list">
       <div v-for="token in filteredTokens" @click="selectToken($event, token)" :key="token.symbol" class="token-item">
         <s-col>
           <s-row flex justify="start" align="middle">
-            <img v-if="token.logo" :src="token.logo" :alt="token.name" class="token-item_logo">
-            <div v-else class="token-item_empty-logo"></div>
+            <img v-if="token.logo" :src="token.logo" :alt="token.name" class="token-item__logo">
+            <div v-else class="token-item__empty-logo"></div>
             <div>
-              <div class="token-item_name">{{ token.name }} ({{ token.symbol }})</div>
+              <div class="token-item__name">{{ token.name }} ({{ token.symbol }})</div>
             </div>
           </s-row>
         </s-col>
         <div>
-          <span class="token-item_amount">{{ token.amount || '-' }}</span>
+          <span class="token-item__amount">{{ token.amount || '-' }}</span>
         </div>
       </div>
     </div>
-    <div v-else class="token-empty-list">
+    <div v-else class="token-list token-list__empty">
       {{ t('selectToken.emptyListMessage') }}
     </div>
   </s-dialog>
@@ -85,11 +90,6 @@ export default class SelectToken extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss">
-@import '../styles/layout';
-@import '../styles/soramitsu-variables';
-
-$container-spacing: 24px;
-
 .token-select {
   .el-dialog__body {
     padding: 0px;
@@ -97,8 +97,30 @@ $container-spacing: 24px;
 }
 
 .token-search {
-  padding-left: $container-spacing;
-  padding-right: $container-spacing;
+  .el-input__inner {
+    height: 40px !important;
+    border-radius: 8px;
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+@import '../styles/layout';
+@import '../styles/soramitsu-variables';
+
+$container-spacing: 24px;
+
+.token-select__title {
+  margin-left: 4px;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+}
+
+.token-search {
+  margin-left: $container-spacing;
+  // dont forget 24px is $container-spacing
+  width: calc(100% - 2 * 24px);
+  min-height: 40px;
 }
 
 .token-item {
@@ -114,7 +136,7 @@ $container-spacing: 24px;
   background-color: $s-color-base-background-hover;
 }
 
-.token-item_logo {
+.token-item__logo {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -125,7 +147,7 @@ $container-spacing: 24px;
   position: relative;
 }
 
-.token-item_empty-logo {
+.token-item__empty-logo {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -137,7 +159,7 @@ $container-spacing: 24px;
   position: relative;
 }
 
-.token-item_empty-logo::after {
+.token-item__empty-logo::after {
   content: " ";
   width: 14px;
   height: 14px;
@@ -151,12 +173,12 @@ $container-spacing: 24px;
   margin-left: -7px;
 }
 
-.token-item_name {
+.token-item__name {
   font-weight: 600;
   font-size: $s-font-size-small;
 }
 
-.token-item_amount {
+.token-item__amount {
   font-weight: 600;
   font-size: $s-font-size-small;
 }
@@ -166,7 +188,10 @@ $container-spacing: 24px;
   overflow: auto;
 }
 
-.token-empty-list {
+.token-list__empty {
   //TODO: Implement empty list design
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
