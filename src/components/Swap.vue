@@ -91,8 +91,8 @@
       </template>
     </s-button>
     <swap-info v-if="areTokensSelected" />
-    <confirm-swap :visible="showConfirmSwapDialog" @after-closed="handleAfterConfirmSwapClosed" />
-    <transaction-submit :visible="showTransactionSubmitDialog" />
+    <confirm-swap :visible="showConfirmSwapDialog && !isSwapConfirmed" @after-closed="handleAfterConfirmSwapClosed" />
+    <transaction-submit :visible="isSwapConfirmed" />
   </s-form>
 </template>
 
@@ -113,7 +113,8 @@ export default class Swap extends Mixins(TranslationMixin) {
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
   @Getter fromValue!: number
-  @Getter toValue!: any
+  @Getter toValue!: number
+  @Getter isSwapConfirmed!: boolean
   @Action connectWallet
   @Action getTokenFrom
   @Action getTokenTo
@@ -235,8 +236,10 @@ export default class Swap extends Mixins(TranslationMixin) {
   }
 
   handleAfterConfirmSwapClosed (): void {
-    // TODO: show dialog only if transaction was confirmed
-    // this.showTransactionSubmitDialog = true
+    this.showConfirmSwapDialog = false
+    if (this.isSwapConfirmed) {
+      this.showTransactionSubmitDialog = true
+    }
   }
 }
 </script>
@@ -321,6 +324,8 @@ $swap-input-class: ".el-input";
 @import '../styles/layout';
 @import '../styles/soramitsu-variables';
 
+$token-logo-size: 23px;
+
 .el-form--swap {
   display: flex;
   flex-direction: column;
@@ -372,13 +377,13 @@ $swap-input-class: ".el-input";
     .token-logo {
       margin-right: $inner-spacing-mini;
       order: 1;
-      height: 23px;
-      width: 23px;
+      height: $token-logo-size;
+      width: $token-logo-size;
       background-color: $s-color-utility-surface;
       background-size: 100%;
       background-repeat: no-repeat;
       border: 1px solid $s-color-utility-surface;
-      border-radius: $border-radius-small;
+      border-radius: 50%;
       box-shadow: $s-shadow-tooltip;
       &--ksm {
         background-image: url('~@/assets/img/ksm.svg');

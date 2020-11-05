@@ -13,7 +13,8 @@ const types = flow(
     'GET_WALLET_CONNECTED',
     'GET_FROM_VALUE',
     'GET_TO_VAUE',
-    'GET_TOKEN_FROM_PRICE'
+    'GET_TOKEN_FROM_PRICE',
+    'GET_SWAP_CONFIRM'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -31,7 +32,8 @@ function initialState () {
     toValue: 0,
     isTokenFromPrice: true,
     slippageTolerance: 0.5,
-    liquidityProviderFee: 0.3
+    liquidityProviderFee: 0.3,
+    isSwapConfirmed: false
   }
 }
 
@@ -61,6 +63,9 @@ const getters = {
   },
   liquidityProviderFee (state) {
     return state.liquidityProviderFee
+  },
+  isSwapConfirmed (state) {
+    return state.isSwapConfirmed
   }
 }
 
@@ -94,6 +99,9 @@ const mutations = {
   },
   [types.GET_TOKEN_FROM_PRICE] (state, isTokenFromPrice: boolean) {
     state.isTokenFromPrice = isTokenFromPrice
+  },
+  [types.GET_SWAP_CONFIRM] (state, isSwapConfirmed: boolean) {
+    state.isSwapConfirmed = isSwapConfirmed
   }
 }
 
@@ -128,6 +136,9 @@ const actions = {
   },
   setTokenFromPrice ({ commit }, isTokenFromPrice: boolean) {
     commit(types.GET_TOKEN_FROM_PRICE, isTokenFromPrice)
+  },
+  setSwapConfirm ({ commit }, isSwapConfirmed: boolean) {
+    commit(types.GET_SWAP_CONFIRM, isSwapConfirmed)
   }
 }
 
