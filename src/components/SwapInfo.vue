@@ -3,17 +3,17 @@
     <template v-if="showPrice || showSlippageTolerance">
       <div v-if="showPrice" class="swap-info">
         <span>{{ t('exchange.price') }}</span>
-        <span class="swap-info-value">{{ priceValue }}</span>
+        <span class="swap-info-value">{{ price }}</span>
         <s-button class="el-button--switch-price" type="action" size="small" icon="swap" @click="handleSwitchPrice"></s-button>
       </div>
       <div v-if="showSlippageTolerance" class="swap-info swap-info--slippage-tolerance">
         <span>{{ t('swap.slippageTolerance') }}</span>
-        <span class="swap-info-value">{{ slippageToleranceValue }}%</span>
+        <span class="swap-info-value">{{ slippageTolerance }}%</span>
       </div>
     </template>
     <template v-else>
       <div class="swap-info">
-        <s-tooltip class="swap-info-icon" :closeDelay="10000" :content="t('swap.minReceivedTooltip')" theme="light" placement="right-start" :show-arrow="false">
+        <s-tooltip class="swap-info-icon" :content="t('swap.minReceivedTooltip')" theme="light" placement="right-start" :show-arrow="false">
           <s-icon name="info" size="16"/>
         </s-tooltip>
         <span>{{ t('swap.minReceived') }}</span>
@@ -27,11 +27,11 @@
         <span :class="'swap-info-value ' + priceImpactClass">{{ priceImpact }}%</span>
       </div>
       <div class="swap-info">
-        <s-tooltip class="swap-info-icon" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFeeValue: liquidityProviderFeeValue})" theme="light" placement="right-start" :show-arrow="false">
+        <s-tooltip class="swap-info-icon" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: liquidityProviderFee})" theme="light" placement="right-start" :show-arrow="false">
           <s-icon name="info" size="16"/>
         </s-tooltip>
         <span>{{ t('swap.liquidityProviderFee') }}</span>
-        <span class="swap-info-value">{{ liquidityProviderFeeFormattedValue }}</span>
+        <span class="swap-info-value">{{ liquidityProviderFeeValue }}</span>
       </div>
     </template>
   </div>
@@ -45,46 +45,27 @@ import { formatNumber } from '@/utils'
 
 @Component
 export default class SwapInfo extends Mixins(TranslationMixin) {
-  @Prop({ type: Boolean, default: false }) showPrice!: boolean
-  @Prop({ type: Boolean, default: false }) showSlippageTolerance!: boolean
-
-  @Action getTokenFrom
-  @Action getTokenTo
-  @Action getTokenFromPrice
-  @Action getSlippageTolerance
-  @Action getLiquidityProviderFee
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
+  @Getter toValue!: number
   @Getter isTokenFromPrice!: boolean
   @Getter slippageTolerance!: number
   @Getter liquidityProviderFee!: number
+  @Action setTokenFromPrice
 
-  get tokenFromValue (): any {
-    return this.tokenFrom
-  }
+  @Prop({ default: false, type: Boolean }) readonly showPrice!: boolean
+  @Prop({ default: false, type: Boolean }) readonly showSlippageTolerance!: boolean
 
-  get tokenToValue (): any {
-    return this.tokenTo
-  }
-
-  get isTokenFromPriceValue (): any {
-    return this.isTokenFromPrice
-  }
-
-  get priceValue (): string {
-    if (this.isTokenFromPriceValue) {
-      return formatNumber(this.tokenFromValue.price / this.tokenToValue.price, 4) + ` ${this.tokenFromValue.symbol + ' / ' + this.tokenToValue.symbol}`
+  get price (): string {
+    if (this.isTokenFromPrice) {
+      return formatNumber(this.tokenFrom.price / this.tokenTo.price, 4) + ` ${this.tokenFrom.symbol + ' / ' + this.tokenTo.symbol}`
     }
-    return formatNumber(this.tokenToValue.price / this.tokenFromValue.price, 4) + ` ${this.tokenToValue.symbol + ' / ' + this.tokenFromValue.symbol}`
-  }
-
-  get slippageToleranceValue (): any {
-    return this.slippageTolerance
+    return formatNumber(this.tokenTo.price / this.tokenFrom.price, 4) + ` ${this.tokenTo.symbol + ' / ' + this.tokenFrom.symbol}`
   }
 
   get minReceived (): string {
-    // TODO: Generate min received value
-    return this.tokenFromValue ? `${formatNumber(24351.25123, 4)} ${this.tokenFromValue.symbol}` : ''
+    // TODO: Generate value from tokenFromValue
+    return this.tokenFrom ? `${formatNumber(this.toValue, 4)} ${this.tokenTo.symbol}` : ''
   }
 
   get priceImpact (): string {
@@ -102,23 +83,13 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
     return ''
   }
 
-  get liquidityProviderFeeValue (): any {
-    return this.liquidityProviderFee
-  }
-
-  get liquidityProviderFeeFormattedValue (): string {
+  get liquidityProviderFeeValue (): string {
     // TODO: Generate liquidity provider fee
-    return this.tokenFromValue ? `${formatNumber(0.0006777, 4)} ${this.tokenFromValue.symbol}` : ''
-  }
-
-  created () {
-    this.getTokenFromPrice()
-    this.getLiquidityProviderFee()
-    this.getSlippageTolerance()
+    return this.tokenFrom ? `${formatNumber(0.0006245, 4)} ${this.tokenTo.symbol}` : ''
   }
 
   handleSwitchPrice (): void {
-    this.$store.commit('GET_TOKEN_FROM_PRICE', !this.isTokenFromPriceValue)
+    this.setTokenFromPrice(!this.isTokenFromPrice)
   }
 }
 </script>
@@ -138,7 +109,6 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   &-container {
     width: 100%;
   }
-
   &--slippage-tolerance {
     margin-top: $inner-spacing-small;
   }

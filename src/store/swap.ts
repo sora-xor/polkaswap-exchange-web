@@ -1,19 +1,57 @@
-import swapApi from '@/api/swap'
+import map from 'lodash/fp/map'
+import flatMap from 'lodash/fp/flatMap'
+import fromPairs from 'lodash/fp/fromPairs'
+import flow from 'lodash/fp/flow'
+import concat from 'lodash/fp/concat'
 
-const state = {
-  tokenFrom: null,
-  tokenTo: null,
-  slippageTolerance: 0,
-  liquidityProviderFee: 0,
-  isTokenFromPrice: true
+import swapApi from '@/api/swap'
+import * as storage from '@/utils/storage'
+
+const types = flow(
+  flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
+  concat([
+    'GET_WALLET_CONNECTED',
+    'GET_FROM_VALUE',
+    'GET_TO_VAUE',
+    'GET_TOKEN_FROM_PRICE'
+  ]),
+  map(x => [x, x]),
+  fromPairs
+)([
+  'GET_TOKEN_FROM',
+  'GET_TOKEN_TO'
+])
+
+function initialState () {
+  return {
+    isWalletConnected: false,
+    tokenFrom: null,
+    tokenTo: null,
+    fromValue: 0,
+    toValue: 0,
+    isTokenFromPrice: true,
+    slippageTolerance: 0.5,
+    liquidityProviderFee: 0.3
+  }
 }
 
+const state = initialState()
+
 const getters = {
+  isWalletConnected (state) {
+    return storage.getItem('walletAddress')
+  },
   tokenFrom (state) {
     return state.tokenFrom
   },
   tokenTo (state) {
     return state.tokenTo
+  },
+  fromValue (state) {
+    return state.fromValue
+  },
+  toValue (state) {
+    return state.toValue
   },
   isTokenFromPrice (state) {
     return state.isTokenFromPrice
@@ -27,64 +65,69 @@ const getters = {
 }
 
 const mutations = {
-  GET_TOKEN_FROM (state, tokenFrom: any) {
+  [types.GET_WALLET_CONNECTED] (state, isWalletConnected: boolean) {
+    state.isWalletConnected = isWalletConnected
+  },
+  [types.GET_TOKEN_FROM_REQUEST] (state) {
+    state.tokenFrom = null
+  },
+  [types.GET_TOKEN_FROM_SUCCESS] (state, tokenFrom: any) {
     state.tokenFrom = tokenFrom
   },
-  GET_TOKEN_TO (state, tokenTo: any) {
+  [types.GET_TOKEN_FROM_FAILURE] (state) {
+    state.tokenFrom = null
+  },
+  [types.GET_TOKEN_TO_REQUEST] (state) {
+    state.tokenTo = null
+  },
+  [types.GET_TOKEN_TO_SUCCESS] (state, tokenTo: any) {
     state.tokenTo = tokenTo
   },
-  GET_TOKEN_FROM_PRICE (state, isTokenFromPrice: boolean) {
+  [types.GET_TOKEN_TO_FAILURE] (state) {
+    state.tokenTo = null
+  },
+  [types.GET_FROM_VALUE] (state, fromValue: string | number) {
+    state.fromValue = fromValue
+  },
+  [types.GET_TO_VAUE] (state, toValue: string | number) {
+    state.toValue = toValue
+  },
+  [types.GET_TOKEN_FROM_PRICE] (state, isTokenFromPrice: boolean) {
     state.isTokenFromPrice = isTokenFromPrice
-  },
-  GET_SLIPPAGE_TOLERANCE (state, slippageTolerance: number) {
-    state.slippageTolerance = slippageTolerance
-  },
-  GET_SLIPPAGE_TOLERANCE_FAILURE (state) {
-    state.slippageTolerance = 0
-  },
-  GET_LIQUIDITY_PROVIDER_FEE (state, liquidityProviderFee: number) {
-    state.liquidityProviderFee = liquidityProviderFee
-  },
-  GET_LIQUIDITY_PROVIDER_FEE_FAILURE (state) {
-    state.liquidityProviderFee = 0
   }
 }
 
 const actions = {
-  async getTokenFrom ({ commit }) {
+  connectWallet ({ commit }, walletAddress: string) {
+    storage.setItem('walletAddress', walletAddress)
+    commit(types.GET_WALLET_CONNECTED, true)
+  },
+  async getTokenFrom ({ commit }, tokenSymbol: string) {
+    commit(types.GET_TOKEN_FROM_REQUEST)
     try {
-      const tokenFrom = await swapApi.getTokens()
-      commit('GET_TOKEN_FROM', tokenFrom.XOR)
+      const tokens = await swapApi.getTokens()
+      commit(types.GET_TOKEN_FROM_SUCCESS, tokens[tokenSymbol])
     } catch (error) {
-      // Add on Error
+      commit(types.GET_TOKEN_FROM_FAILURE)
     }
   },
-  async getTokenTo ({ commit }) {
+  async getTokenTo ({ commit }, tokenSymbol: string) {
+    commit(types.GET_TOKEN_TO_REQUEST)
     try {
-      const tokenTo = await swapApi.getTokens()
-      commit('GET_TOKEN_TO', tokenTo.ETH)
+      const tokens = await swapApi.getTokens()
+      commit(types.GET_TOKEN_TO_SUCCESS, tokens[tokenSymbol])
     } catch (error) {
-      // Add on Error
+      commit(types.GET_TOKEN_TO_FAILURE)
     }
   },
-  getTokenFromPrice ({ commit }) {
-    commit('GET_TOKEN_FROM_PRICE', state.isTokenFromPrice)
+  setFromValue ({ commit }, fromValue: string | number) {
+    commit(types.GET_FROM_VALUE, fromValue)
   },
-  async getSlippageTolerance ({ commit }) {
-    try {
-      const slippageTolerance = await swapApi.getSlippageTolerance() as number
-      commit('GET_SLIPPAGE_TOLERANCE', slippageTolerance)
-    } catch (error) {
-      commit('GET_SLIPPAGE_TOLERANCE_FAILURE', error)
-    }
+  setToValue ({ commit }, toValue: string | number) {
+    commit(types.GET_TO_VAUE, toValue)
   },
-  async getLiquidityProviderFee ({ commit }) {
-    try {
-      const liquidityProviderFee = await swapApi.getLiquidityProviderFee() as number
-      commit('GET_LIQUIDITY_PROVIDER_FEE', liquidityProviderFee)
-    } catch (error) {
-      commit('GET_LIQUIDITY_PROVIDER_FEE_FAILURE', error)
-    }
+  setTokenFromPrice ({ commit }, isTokenFromPrice: boolean) {
+    commit(types.GET_TOKEN_FROM_PRICE, isTokenFromPrice)
   }
 }
 

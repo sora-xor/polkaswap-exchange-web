@@ -7,9 +7,9 @@
     <div class="input-container">
       <div class="input-line">
         <div class="input-title">{{ t('exchange.from') }}</div>
-        <div v-if="isWalletConnected && tokenFromValue" class="token-balance">
+        <div v-if="isWalletConnected && tokenFrom" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
-          <span class="token-balance-value">{{ getTokenBalance(tokenFromValue) }}</span>
+          <span class="token-balance-value">{{ getTokenBalance(tokenFrom) }}</span>
         </div>
       </div>
       <div class="input-line">
@@ -23,14 +23,14 @@
             @blur="handleBlurFieldFrom"
           />
         </s-form-item>
-        <div v-if="tokenFromValue" class="token">
+        <div v-if="tokenFrom" class="token">
           <!-- TODO: Fix secondary сolors in UI Library and project -->
           <s-button v-if="isWalletConnected && areTokensSelected" class="el-button--max" type="tertiary" size="small" @click="handleMaxFromValue">
             {{ t('exchange.max') }}
           </s-button>
           <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken(true)">
-            <span class="logo">{{ tokenFromValue.logo }}</span>
-            {{ tokenFromValue.symbol }}
+            <span :class="getTokenLogoClasses(tokenFrom.logo)" />
+            {{ tokenFrom.symbol }}
           </s-button>
         </div>
         <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="handleChooseToken(true)">
@@ -43,11 +43,11 @@
       <div class="input-line">
         <div class="input-title">
           <span>{{ t('exchange.to') }}</span>
-          <span v-if="tokenToValue" class="input-title-estimated">({{ t('swap.estimated') }})</span>
+          <span v-if="tokenTo" class="input-title-estimated">({{ t('swap.estimated') }})</span>
         </div>
-        <div v-if="isWalletConnected && tokenToValue" class="token-balance">
+        <div v-if="isWalletConnected && tokenTo" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
-          <span class="token-balance-value">{{ getTokenBalance(tokenToValue) }}</span>
+          <span class="token-balance-value">{{ getTokenBalance(tokenTo) }}</span>
         </div>
       </div>
       <div class="input-line">
@@ -61,14 +61,14 @@
             @blur="handleBlurFieldTo"
           />
         </s-form-item>
-        <div v-if="tokenToValue" class="token">
+        <div v-if="tokenTo" class="token">
           <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken">
-            <span class="logo">{{ tokenToValue.logo }}</span>
-            {{ tokenToValue.symbol }}
+            <span :class="getTokenLogoClasses(tokenTo.logo)" />
+            {{ tokenTo.symbol }}
           </s-button>
         </div>
         <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="handleChooseToken">
-          {{t('swap.chooseToken')}}
+          {{ t('swap.chooseToken') }}
         </s-button>
       </div>
     </div>
@@ -76,7 +76,7 @@
     <s-button v-if="!isWalletConnected" type="primary" size="medium" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
-    <s-button v-else type="primary" size="medium" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="handleSwap">
+    <s-button v-else type="primary" size="medium" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="handleConfirmSwap">
       <template v-if="!areTokensSelected">
         {{ t('swap.chooseTokens') }}
       </template>
@@ -84,14 +84,14 @@
         {{ t('swap.enterAmount') }}
       </template>
       <template v-else-if="isInsufficientBalance">
-        {{ t('swap.insufficientBalance', { tokenSymbol: tokenFromValue.symbol }) }}
+        {{ t('swap.insufficientBalance', { tokenSymbol: tokenFrom.symbol }) }}
       </template>
       <template v-else>
         {{ t('exchange.swap') }}
       </template>
     </s-button>
     <swap-info v-if="areTokensSelected" />
-    <confirm-swap :visible="showConfirmSwapDialog" :transactionValue="transactionValue" @after-closed="handleAfterConfirmSwapClosed" />
+    <confirm-swap :visible="showConfirmSwapDialog" @after-closed="handleAfterConfirmSwapClosed" />
     <transaction-submit :visible="showTransactionSubmitDialog" />
   </s-form>
 </template>
@@ -109,10 +109,17 @@ import TransactionSubmit from '@/components/TransactionSubmit.vue'
   components: { SwapInfo, ConfirmSwap, TransactionSubmit }
 })
 export default class Swap extends Mixins(TranslationMixin) {
-  formModel: any = {
-    from: formatNumber(0, 1),
-    to: formatNumber(0, 1)
-  };
+  @Getter isWalletConnected!: any
+  @Getter tokenFrom!: any
+  @Getter tokenTo!: any
+  @Getter fromValue!: number
+  @Getter toValue!: any
+  @Action connectWallet
+  @Action getTokenFrom
+  @Action getTokenTo
+  @Action setFromValue
+  @Action setToValue
+  @Action setTokenFromPrice
 
   inputPlaceholder: string = formatNumber(0, 2);
   isFieldFromFocused = false;
@@ -121,27 +128,13 @@ export default class Swap extends Mixins(TranslationMixin) {
   showConfirmSwapDialog = false;
   showTransactionSubmitDialog = false;
 
-  @Action getTokenFrom
-  @Action getTokenTo
-  @Getter tokenFrom!: any
-  @Getter tokenTo!: any
-
-  get isWalletConnected (): boolean {
-    return localStorage.getItem('walletAddress') !== null
-  }
-
-  // TODO rename this computed variable
-  get tokenFromValue (): any {
-    return this.tokenFrom
-  }
-
-  // TODO rename this computed variable
-  get tokenToValue (): any {
-    return this.tokenTo
+  formModel = {
+    from: formatNumber(0, 1),
+    to: formatNumber(0, 1)
   }
 
   get areTokensSelected (): boolean {
-    return this.tokenFromValue && this.tokenToValue
+    return this.tokenFrom && this.tokenTo
   }
 
   get isEmptyBalance (): boolean {
@@ -150,39 +143,43 @@ export default class Swap extends Mixins(TranslationMixin) {
 
   get isInsufficientBalance (): boolean {
     if (this.areTokensSelected) {
-      return +this.formModel.from > this.tokenFromValue.balance
+      return +this.formModel.from > this.tokenFrom.balance
     }
     return true
   }
 
-  get transactionValue (): any {
-    return this.formModel.to
-  }
-
   getTokenBalance (token: any): string {
-    if (token && token.balance) {
+    if (token) {
       return formatNumber(token.balance, 2)
     }
     return ''
   }
 
+  getTokenLogoClasses (tokenLogo: string): string {
+    return 'token-logo token-logo--' + tokenLogo
+  }
+
   handleChangeFieldFrom (): void {
     if (this.areTokensSelected && +this.formModel.from !== 0 && !this.isFieldToFocused) {
       this.isFieldFromFocused = true
-      this.formModel.to = formatNumber(+this.formModel.from * this.tokenFromValue.price / this.tokenToValue.price, 4)
+      this.formModel.to = formatNumber(+this.formModel.from * this.tokenFrom.price / this.tokenTo.price, 4)
+      this.setToValue(this.formModel.to)
     }
+    this.setFromValue(this.formModel.from)
   }
 
   handleChangeFieldTo (): void {
     if (this.areTokensSelected && +this.formModel.to !== 0 && !this.isFieldFromFocused) {
       this.isFieldToFocused = true
-      this.formModel.from = formatNumber(+this.formModel.to * this.tokenToValue.price / this.tokenFromValue.price, 4)
+      this.formModel.from = formatNumber(+this.formModel.to * this.tokenTo.price / this.tokenFrom.price, 4)
+      this.setFromValue(this.formModel.from)
     }
     if (this.isSwitchTokensClicked) {
       this.handleBlurFieldFrom()
       this.handleBlurFieldTo()
       this.isSwitchTokensClicked = false
     }
+    this.setToValue(this.formModel.to)
   }
 
   handleBlurFieldFrom (): void {
@@ -194,46 +191,46 @@ export default class Swap extends Mixins(TranslationMixin) {
   }
 
   handleSwitchTokens (): void {
-    const currentTokenFrom = this.tokenFromValue
+    const currentTokenFrom = this.tokenFrom
     const currentFieldFromValue = this.formModel.from
     this.isFieldFromFocused = true
     this.isFieldToFocused = true
-    this.$store.commit('GET_TOKEN_FROM', this.tokenToValue)
-    this.$store.commit('GET_TOKEN_TO', currentTokenFrom)
+    this.getTokenFrom(this.tokenTo ? this.tokenTo.symbol : '')
+    this.getTokenTo(currentTokenFrom ? currentTokenFrom.symbol : '')
     this.formModel.from = this.formModel.to
     this.formModel.to = currentFieldFromValue
     this.isSwitchTokensClicked = true
-    this.$store.commit('GET_TOKEN_FROM_PRICE', true)
+    this.setTokenFromPrice(true)
   }
 
   handleMaxFromValue (): void {
-    this.formModel.from = this.tokenFromValue.balance
+    this.formModel.from = this.tokenFrom.balance
   }
 
   handleChooseToken (isTokenFrom: boolean): void {
     // TODO: Add Select Token functionality here, default token for tokenFrom is XOR
     if (isTokenFrom) {
-      // this.tokenFromValue && this.tokenFromValue.XOR
-      this.getTokenFrom()
-      // this.tokenFrom = this.tokenTo !== this.tokens.XOR ? this.tokens.XOR : this.tokens.ETH
-      // this.$alert(`Token ${this.tokenFrom.symbol} is successfully selected!`, 'Success')
+      if (this.tokenTo && this.tokenTo.symbol === 'XOR') {
+        this.getTokenFrom('KSM')
+      } else {
+        this.getTokenFrom('XOR')
+      }
     } else {
-      this.getTokenTo()
-      // this.tokenTo = this.tokenFrom !== this.tokens.ETH ? this.tokens.ETH : this.tokens.XOR
-      // this.$alert(`Token ${this.tokenTo.symbol} is successfully selected!`, 'Success')
+      if (this.tokenFrom && this.tokenFrom.symbol === 'XOR') {
+        this.getTokenTo('KSM')
+      } else {
+        this.getTokenTo('XOR')
+      }
     }
   }
 
   handleConnectWallet (): void {
     // TODO: Add Connect Wallet functionality, right now updated the value only on page reloading
-    localStorage.setItem('walletAddress', '43f65bccca11ff53840a85d5af5bf1d1762f92a8e03')
-    this.$alert('The wallet is successfully connected!', 'Success')
+    this.connectWallet('43f65bccca11ff53840a85d5af5bf1d1762f92a8e03')
+    location.reload()
   }
 
-  handleSwap (): void {
-    // TODO: Add Swap functionality and show confirmation windows
-    this.tokenFromValue.balance -= +this.formModel.from
-    this.tokenToValue.balance += +this.formModel.to
+  handleConfirmSwap (): void {
     this.showConfirmSwapDialog = true
   }
 
@@ -372,15 +369,23 @@ $swap-input-class: ".el-input";
         font-size: $s-font-size-small;
       }
     }
-    .logo {
+    .token-logo {
       margin-right: $inner-spacing-mini;
       order: 1;
       height: 23px;
       width: 23px;
       background-color: $s-color-utility-surface;
+      background-size: 100%;
+      background-repeat: no-repeat;
       border: 1px solid $s-color-utility-surface;
       border-radius: $border-radius-small;
       box-shadow: $s-shadow-tooltip;
+      &--ksm {
+        background-image: url('~@/assets/img/ksm.svg');
+      }
+      &--xor {
+        background-image: url('~@/assets/img/xor.svg');
+      }
     }
   }
   .s-input {

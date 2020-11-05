@@ -1,7 +1,7 @@
 export const tokens: any = {
   XOR: {
     name: 'Sora',
-    logo: '',
+    logo: 'xor',
     symbol: 'XOR',
     address: '1f9840a85d5af5bf1d1762f925bdaddc4201f984',
     balance: 10000,
@@ -9,7 +9,7 @@ export const tokens: any = {
   },
   KSM: {
     name: 'Kusama',
-    logo: '',
+    logo: 'ksm',
     symbol: 'KSM',
     address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
     balance: 0,
@@ -17,7 +17,7 @@ export const tokens: any = {
   },
   ETH: {
     name: 'Ether',
-    logo: '',
+    logo: 'eth',
     symbol: 'ETH',
     address: '8adaca8ea8192656a15c88797e04c8771c4576b3',
     balance: 20000.45,
