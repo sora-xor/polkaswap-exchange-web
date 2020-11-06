@@ -1,8 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Swap.vue should renders correctly 1`] = `
-<s-form
+<s-form-stub
   class="el-form--swap"
+  labelposition="right"
+  validateonrulechange="true"
+  value="[object Object]"
 >
   <div
     class="input-container"
@@ -22,30 +25,57 @@ exports[`Swap.vue should renders correctly 1`] = `
     <div
       class="input-line"
     >
-      <s-form-item>
-        <s-input
-          disabled="true"
-          placeholder="0.00"
-        />
-      </s-form-item>
-       
-      <s-button
-        class="el-button--empty-token"
-        icon="chevron-bottom-rounded"
-        size="small"
-        type="tertiary"
+      <s-form-item-stub
+        prop=""
+        showmessage="true"
       >
+        <s-input-stub
+          accept=""
+          autocomplete="off"
+          form=""
+          label=""
+          name=""
+          placeholder="0.00"
+          tabindex=""
+          type="text"
+          value="0.0"
+        />
+      </s-form-item-stub>
+       
+      <div
+        class="token"
+      >
+        <!---->
+         
+        <s-button-stub
+          class="el-button--choose-token"
+          icon="chevron-bottom-rounded"
+          nativetype="button"
+          size="small"
+          tabindex="0"
+          tooltip=""
+          tooltipplacement="top"
+          type="tertiary"
+        >
+          <span
+            class="token-logo token-logo--xor"
+          />
+          
+          XOR
         
-        
-      
-      </s-button>
+        </s-button-stub>
+      </div>
     </div>
   </div>
    
-  <s-button
+  <s-button-stub
     class="el-button--switch-tokens"
     icon="change-positions"
+    nativetype="button"
     size="medium"
+    tabindex="0"
+    tooltip=""
+    tooltipplacement="top"
     type="action"
   />
    
@@ -62,7 +92,11 @@ exports[`Swap.vue should renders correctly 1`] = `
           
         </span>
          
-        <!---->
+        <span
+          class="input-title-estimated"
+        >
+          ()
+        </span>
       </div>
        
       <!---->
@@ -71,37 +105,70 @@ exports[`Swap.vue should renders correctly 1`] = `
     <div
       class="input-line"
     >
-      <s-form-item>
-        <s-input
-          disabled="true"
-          placeholder="0.00"
-        />
-      </s-form-item>
-       
-      <s-button
-        class="el-button--empty-token"
-        icon="chevron-bottom-rounded"
-        size="small"
-        type="tertiary"
+      <s-form-item-stub
+        prop=""
+        showmessage="true"
       >
+        <s-input-stub
+          accept=""
+          autocomplete="off"
+          form=""
+          label=""
+          name=""
+          placeholder="0.00"
+          tabindex=""
+          type="text"
+          value="0.0"
+        />
+      </s-form-item-stub>
+       
+      <div
+        class="token"
+      >
+        <s-button-stub
+          class="el-button--choose-token"
+          icon="chevron-bottom-rounded"
+          nativetype="button"
+          size="small"
+          tabindex="0"
+          tooltip=""
+          tooltipplacement="top"
+          type="tertiary"
+        >
+          <span
+            class="token-logo token-logo--ksm"
+          />
+          
+          KSM
         
-        
-      
-      </s-button>
+        </s-button-stub>
+      </div>
     </div>
   </div>
    
-  <!---->
+  <swap-info-stub
+    showprice="true"
+    showslippagetolerance="true"
+  />
    
-  <s-button
+  <s-button-stub
+    icon=""
+    nativetype="button"
     size="medium"
+    tabindex="0"
+    tooltip=""
+    tooltipplacement="top"
     type="primary"
   >
     
     
   
-  </s-button>
+  </s-button-stub>
    
-  <!---->
-</s-form>
+  <swap-info-stub />
+   
+  <confirm-swap-stub />
+   
+  <transaction-submit-stub />
+</s-form-stub>
 `;
