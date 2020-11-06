@@ -118,8 +118,7 @@ $container-spacing: 24px;
 
 .token-search {
   margin-left: $container-spacing;
-  // dont forget 24px is $container-spacing
-  width: calc(100% - 2 * 24px);
+  width: calc(100% - 2 * #{$container-spacing});
   min-height: 40px;
 }
 
