@@ -328,10 +328,9 @@ $swap-input-class: ".el-input";
 </style>
 
 <style lang="scss" scoped>
+@import '../styles/mixins';
 @import '../styles/layout';
 @import '../styles/soramitsu-variables';
-
-$token-logo-size: 23px;
 
 .el-form--swap {
   display: flex;
@@ -384,26 +383,7 @@ $token-logo-size: 23px;
     .token-logo {
       margin-right: $inner-spacing-mini;
       order: 1;
-      height: $token-logo-size;
-      width: $token-logo-size;
-      background-color: $s-color-base-border-secondary;
-      background-image: url('~@/assets/img/token-logo-default.svg');
-      background-size: 60%;
-      background-repeat: no-repeat;
-      background-position: 50%;
-      border: 1px solid $s-color-base-border-secondary;
-      border-radius: 50%;
-      box-shadow: $s-shadow-tooltip;
-      &--ksm,
-      &--xor {
-        background-size: 100%;
-      }
-      &--ksm {
-        background-image: url('~@/assets/img/ksm.svg');
-      }
-      &--xor {
-        background-image: url('~@/assets/img/xor.svg');
-      }
+      @include token-logo-styles(23px);
     }
   }
   .s-input {

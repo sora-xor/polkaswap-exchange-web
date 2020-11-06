@@ -14,9 +14,6 @@ describe('ConfirmSwap.vue', () => {
   let getters
   let store
 
-  console.log(tokens.XOR)
-  console.log(tokens.KSM)
-
   beforeEach(() => {
     TranslationMock(ConfirmSwap)
 

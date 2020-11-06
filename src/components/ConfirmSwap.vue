@@ -5,19 +5,24 @@
     class="el-dialog--swap-confirm"
     width="496px"
   >
-    <div v-if="tokenFrom" class="token">
-      <span class="token-value">{{ formattedFromValue }}</span>
-      <span :class="'token-logo token-logo--' + tokenFrom.logo" />
-      {{ tokenFrom ? tokenFrom.symbol : '' }}
+    <div class="tokens">
+      <div class="tokens-info-container">
+        <span class="token-value">{{ formattedFromValue }}</span>
+        <s-icon name="arrow-bottom-rounded" />
+        <span class="token-value">{{ formattedToValue }}</span>
+      </div>
+      <div class="tokens-info-container">
+        <div v-if="tokenFrom" class="token">
+          <span :class="'token-logo token-logo--' + tokenFrom.logo" />
+          {{ tokenFrom ? tokenFrom.symbol : '' }}
+        </div>
+        <div v-if="tokenTo" class="token">
+          <span :class="'token-logo token-logo--' + tokenTo.logo" />
+          {{ tokenTo ? tokenTo.symbol : '' }}
+        </div>
+      </div>
     </div>
-    <s-icon name="arrow-bottom-rounded" />
-    <div v-if="tokenTo" class="token">
-      <span class="token-value">{{ formattedToValue }}</span>
-      <span :class="'token-logo token-logo--' + tokenTo.logo" />
-      {{ tokenTo ? tokenTo.symbol : '' }}
-    </div>
-    <!-- TODO: Make value text bold -->
-    <p class="transaction-message">{{ t('swap.swapOutputMessage', { transactionValue: toValue }) }}</p>
+    <p class="transaction-message" v-html="t('swap.swapOutputMessage', { transactionValue : `<span class='transaction-number'>${toValue}</span>` })"/>
     <s-divider />
     <swap-info :showPrice="true" />
     <swap-info />
@@ -90,6 +95,10 @@ $el-dialog-button-size: 40px;
       font-weight: normal;
     }
   }
+  .transaction-number {
+    color: $s-color-base-content-primary;
+    font-weight: bold;
+  }
   #{$el-dialog-class}__headerbtn {
     position: static;
     margin-left: auto;
@@ -123,11 +132,10 @@ $el-dialog-button-size: 40px;
 </style>
 
 <style lang="scss" scoped>
+@import '../styles/mixins';
 @import '../styles/layout';
 @import '../styles/typography';
 @import '../styles/soramitsu-variables';
-
-$token-logo-size: 40px;
 
 .el-dialog--swap-confirm {
   .el-dialog {
@@ -141,30 +149,25 @@ $token-logo-size: 40px;
       padding: $inner-spacing-big;
     }
   }
+  .tokens {
+    display: flex;
+    justify-content: space-between;
+    font-size: 30px;
+    &-info-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  }
   .token {
     display: flex;
     align-items: center;
-    font-size: 30px;
-    &-value {
-      margin-right: auto;
-    }
+    white-space: nowrap;
     &-logo {
       display: block;
       margin-right: $inner-spacing-medium;
-      height: $token-logo-size;
-      width: $token-logo-size;
-      background-color: $s-color-utility-surface;
-      background-size: 100%;
-      background-repeat: no-repeat;
-      border: 1px solid $s-color-utility-surface;
-      border-radius: 50%;
-      box-shadow: $s-shadow-tooltip;
-      &--ksm {
-        background-image: url('~@/assets/img/ksm.svg');
-      }
-      &--xor {
-        background-image: url('~@/assets/img/xor.svg');
-      }
+      flex-shrink: 0;
+      @include token-logo-styles;
     }
   }
   .s-icon-arrow-bottom-rounded {

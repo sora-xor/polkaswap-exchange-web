@@ -15,48 +15,58 @@ exports[`ConfirmSwap.vue should renders correctly 1`] = `
   width="496px"
 >
   <div
-    class="token"
+    class="tokens"
   >
-    <span
-      class="token-value"
+    <div
+      class="tokens-info-container"
     >
-      150.1237
-    </span>
+      <span
+        class="token-value"
+      >
+        150.1237
+      </span>
+       
+      <s-icon-stub
+        name="arrow-bottom-rounded"
+      />
+       
+      <span
+        class="token-value"
+      >
+        0.0000
+      </span>
+    </div>
      
-    <span
-      class="token-logo token-logo--xor"
-    />
-    
-    XOR
-  
-  </div>
-   
-  <s-icon-stub
-    name="arrow-bottom-rounded"
-  />
-   
-  <div
-    class="token"
-  >
-    <span
-      class="token-value"
+    <div
+      class="tokens-info-container"
     >
-      0.0000
-    </span>
-     
-    <span
-      class="token-logo token-logo--ksm"
-    />
-    
-    KSM
-  
+      <div
+        class="token"
+      >
+        <span
+          class="token-logo token-logo--xor"
+        />
+        
+        XOR
+      
+      </div>
+       
+      <div
+        class="token"
+      >
+        <span
+          class="token-logo token-logo--ksm"
+        />
+        
+        KSM
+      
+      </div>
+    </div>
   </div>
    
   <p
     class="transaction-message"
-  >
-    
-  </p>
+  />
    
   <s-divider-stub
     contentposition="center"
