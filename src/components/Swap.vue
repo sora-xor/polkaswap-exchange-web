@@ -125,7 +125,6 @@ export default class Swap extends Mixins(TranslationMixin) {
   inputPlaceholder: string = formatNumber(0, 2);
   isFieldFromFocused = false;
   isFieldToFocused = false;
-  isSwitchTokensClicked = false;
   showConfirmSwapDialog = false;
   showTransactionSubmitDialog = false;
 
@@ -161,24 +160,27 @@ export default class Swap extends Mixins(TranslationMixin) {
   }
 
   handleChangeFieldFrom (): void {
-    if (this.areTokensSelected && +this.formModel.from !== 0 && !this.isFieldToFocused) {
+    if (this.areTokensSelected && !this.isFieldToFocused) {
       this.isFieldFromFocused = true
-      this.formModel.to = formatNumber(+this.formModel.from * this.tokenFrom.price / this.tokenTo.price, 4)
+      if (+this.formModel.from === 0) {
+        this.formModel.to = formatNumber(0, 4)
+      } else {
+        this.formModel.to = formatNumber(+this.formModel.from * this.tokenFrom.price / this.tokenTo.price, 4)
+      }
       this.setToValue(this.formModel.to)
     }
     this.setFromValue(this.formModel.from)
   }
 
   handleChangeFieldTo (): void {
-    if (this.areTokensSelected && +this.formModel.to !== 0 && !this.isFieldFromFocused) {
+    if (this.areTokensSelected && !this.isFieldFromFocused) {
       this.isFieldToFocused = true
-      this.formModel.from = formatNumber(+this.formModel.to * this.tokenTo.price / this.tokenFrom.price, 4)
+      if (+this.formModel.to === 0) {
+        this.formModel.from = formatNumber(0, 4)
+      } else {
+        this.formModel.from = formatNumber(+this.formModel.to * this.tokenTo.price / this.tokenFrom.price, 4)
+      }
       this.setFromValue(this.formModel.from)
-    }
-    if (this.isSwitchTokensClicked) {
-      this.handleBlurFieldFrom()
-      this.handleBlurFieldTo()
-      this.isSwitchTokensClicked = false
     }
     this.setToValue(this.formModel.to)
   }
@@ -200,7 +202,8 @@ export default class Swap extends Mixins(TranslationMixin) {
     this.getTokenTo(currentTokenFrom ? currentTokenFrom.symbol : '')
     this.formModel.from = this.formModel.to
     this.formModel.to = currentFieldFromValue
-    this.isSwitchTokensClicked = true
+    this.isFieldFromFocused = false
+    this.isFieldToFocused = false
     this.setTokenFromPrice(true)
   }
 
