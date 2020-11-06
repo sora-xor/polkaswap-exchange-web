@@ -2,7 +2,8 @@ export enum PageNames {
   About = 'About',
   Exchange = 'Exchange',
   Stats = 'Stats',
-  Support = 'Support'
+  Support = 'Support',
+  CreatePair = 'CreatePair'
 }
 
 export const MainMenu = [

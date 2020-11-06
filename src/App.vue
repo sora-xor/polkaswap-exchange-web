@@ -38,8 +38,13 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { PageNames, MainMenu } from '@/consts'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import router from '@/router'
+import SelectToken from '@/components/SelectToken.vue'
 
-@Component
+@Component({
+  components: {
+    SelectToken
+  }
+})
 export default class App extends Mixins(TranslationMixin) {
   readonly MainMenu = MainMenu
 
