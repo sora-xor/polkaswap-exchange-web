@@ -39,6 +39,7 @@ const state = initialState()
 
 const getters = {
   isWalletConnected (state) {
+    // TODO: Add Connect Wallet functionality
     return !!storage.getItem('address')
   },
   tokenFrom (state) {
