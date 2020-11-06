@@ -5,7 +5,8 @@ export default {
     [PageNames.About]: 'About',
     [PageNames.Exchange]: 'Exchange',
     [PageNames.Stats]: 'Stats',
-    [PageNames.Support]: 'Support'
+    [PageNames.Support]: 'Support',
+    [PageNames.CreatePair]: 'Create Pair'
   },
   about: {
     polkaswapText: 'Polkaswap — automated token exchange. Swap any token on SoraNet, add liquidity, create exchanges, earn through passive market making, build decentralized price feeds.',
@@ -53,5 +54,26 @@ export default {
     liquidityProviderFeeTooltip: 'A portion of each trade (0.3%) goes to liquidity providers as a protocol incentive.',
     enterAmount: 'Enter an amount',
     insufficientBalance: 'Insufficient XOR balance'
+  },
+  selectToken: {
+    title: 'Select a token',
+    searchPlaceholder: 'Search Token Name, Symbol, or Address',
+    emptyListMessage: 'Nothing found'
+  },
+  createPair: {
+    title: 'Create a pair',
+    deposit: 'Deposit',
+    balance: 'Balance',
+    pricePoolShare: 'Prices and pool share',
+    shareOfPool: 'Share of pool',
+    per: 'per',
+    connect: 'Connect wallet',
+    enterAmount: 'Enter an amount',
+    supply: 'Supply',
+    confirmSupply: 'Confirm supply',
+    yourPosition: 'Your position',
+    youWillRecieve: 'You will receive',
+    outputDescription: 'Output is estimated. If the price changes more than 0.5% your transaction will revert.',
+    description: 'When you add liquidity, you are awarded with token pair specific PSWAP tokens that represent your pool share.'
   }
 }
