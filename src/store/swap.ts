@@ -41,7 +41,7 @@ const state = initialState()
 
 const getters = {
   isWalletConnected (state) {
-    return storage.getItem('walletAddress')
+    return !!storage.getItem('address')
   },
   tokenFrom (state) {
     return state.tokenFrom
@@ -106,8 +106,8 @@ const mutations = {
 }
 
 const actions = {
-  connectWallet ({ commit }, walletAddress: string) {
-    storage.setItem('walletAddress', walletAddress)
+  connectWallet ({ commit }, address: string) {
+    storage.setItem('address', address)
     commit(types.GET_WALLET_CONNECTED, true)
   },
   async getTokenFrom ({ commit }, tokenSymbol: string) {
