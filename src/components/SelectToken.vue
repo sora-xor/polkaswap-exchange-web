@@ -152,7 +152,7 @@ $container-spacing: 24px;
   height: 40px;
   border-radius: 50%;
   background-color: $s-color-base-background-hover;
-  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.35);
+  box-shadow: $s-shadow-tooltip;
   margin-right: $inner-spacing-medium;
   margin-top: $inner-spacing-medium;
   margin-bottom: $inner-spacing-medium;
