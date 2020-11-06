@@ -212,13 +212,13 @@ export default class Swap extends Mixins(TranslationMixin) {
     // TODO: Add Select Token functionality here, default token for tokenFrom is XOR
     if (isTokenFrom) {
       if (this.tokenTo && this.tokenTo.symbol === 'XOR') {
-        this.getTokenFrom('KSM')
+        this.getTokenFrom('ETH')
       } else {
         this.getTokenFrom('XOR')
       }
     } else {
       if (this.tokenFrom && this.tokenFrom.symbol === 'XOR') {
-        this.getTokenTo('KSM')
+        this.getTokenTo('ETH')
       } else {
         this.getTokenTo('XOR')
       }
@@ -383,12 +383,18 @@ $token-logo-size: 23px;
       order: 1;
       height: $token-logo-size;
       width: $token-logo-size;
-      background-color: $s-color-utility-surface;
-      background-size: 100%;
+      background-color: $s-color-base-border-secondary;
+      background-image: url('~@/assets/img/token-logo-default.svg');
+      background-size: 60%;
       background-repeat: no-repeat;
-      border: 1px solid $s-color-utility-surface;
+      background-position: 50%;
+      border: 1px solid $s-color-base-border-secondary;
       border-radius: 50%;
       box-shadow: $s-shadow-tooltip;
+      &--ksm,
+      &--xor {
+        background-size: 100%;
+      }
       &--ksm {
         background-image: url('~@/assets/img/ksm.svg');
       }

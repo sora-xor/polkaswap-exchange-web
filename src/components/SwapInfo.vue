@@ -27,7 +27,7 @@
         <span :class="'swap-info-value ' + priceImpactClass">{{ priceImpact }}%</span>
       </div>
       <div class="swap-info">
-        <s-tooltip class="swap-info-icon" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: liquidityProviderFee})" theme="light" placement="right-start" :show-arrow="false">
+        <s-tooltip class="swap-info-icon" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee })" theme="light" placement="right-start" :show-arrow="false">
           <s-icon name="info" size="16"/>
         </s-tooltip>
         <span>{{ t('swap.liquidityProviderFee') }}</span>
