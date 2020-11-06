@@ -2,7 +2,7 @@ import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 import SoramitsuElements from '@soramitsu/soramitsu-js-ui'
 import ConfirmSwap from '@/components/ConfirmSwap.vue'
-import { tokens } from '@/mocks/swap'
+import { tokens } from '@/mocks/tokens'
 import { TranslationMock } from '../../utils'
 
 const localVue = createLocalVue()
@@ -22,8 +22,8 @@ describe('ConfirmSwap.vue', () => {
     }
 
     getters = {
-      tokenFrom: () => tokens.XOR,
-      tokenTo: () => tokens.KSM,
+      tokenFrom: () => tokens[0],
+      tokenTo: () => tokens[1],
       fromValue: () => 150.123654,
       toValue: () => 0
     }

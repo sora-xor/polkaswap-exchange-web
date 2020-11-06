@@ -2,7 +2,8 @@ import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 import SoramitsuElements from '@soramitsu/soramitsu-js-ui'
 import SwapInfo from '@/components/SwapInfo.vue'
-import { tokens, slippageTolerance, liquidityProviderFee } from '@/mocks/swap'
+import { slippageTolerance, liquidityProviderFee } from '@/mocks/swap'
+import { tokens } from '@/mocks/tokens'
 import { TranslationMock } from '../../utils'
 
 const localVue = createLocalVue()
@@ -17,8 +18,8 @@ describe('SwapInfo.vue', () => {
     TranslationMock(SwapInfo)
 
     getters = {
-      tokenFrom: () => tokens.XOR,
-      tokenTo: () => tokens.KSM,
+      tokenFrom: () => tokens[0],
+      tokenTo: () => tokens[1],
       toValue: () => 100,
       isTokenFromPrice: () => true,
       slippageTolerance: () => slippageTolerance,

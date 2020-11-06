@@ -167,6 +167,8 @@ exports[`Swap.vue should renders correctly 1`] = `
    
   <swap-info-stub />
    
+  <select-token-stub />
+   
   <confirm-swap-stub />
    
   <transaction-submit-stub />

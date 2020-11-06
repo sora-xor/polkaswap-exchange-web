@@ -4,13 +4,14 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 
-import swapApi from '@/api/swap'
 import * as storage from '@/utils/storage'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
     'GET_WALLET_CONNECTED',
+    'GET_TOKEN_FROM',
+    'GET_TOKEN_TO',
     'GET_FROM_VALUE',
     'GET_TO_VAUE',
     'GET_TOKEN_FROM_PRICE',
@@ -18,10 +19,7 @@ const types = flow(
   ]),
   map(x => [x, x]),
   fromPairs
-)([
-  'GET_TOKEN_FROM',
-  'GET_TOKEN_TO'
-])
+)([])
 
 function initialState () {
   return {
@@ -73,23 +71,11 @@ const mutations = {
   [types.GET_WALLET_CONNECTED] (state, isWalletConnected: boolean) {
     state.isWalletConnected = isWalletConnected
   },
-  [types.GET_TOKEN_FROM_REQUEST] (state) {
-    state.tokenFrom = null
-  },
-  [types.GET_TOKEN_FROM_SUCCESS] (state, tokenFrom: any) {
+  [types.GET_TOKEN_FROM] (state, tokenFrom: any) {
     state.tokenFrom = tokenFrom
   },
-  [types.GET_TOKEN_FROM_FAILURE] (state) {
-    state.tokenFrom = null
-  },
-  [types.GET_TOKEN_TO_REQUEST] (state) {
-    state.tokenTo = null
-  },
-  [types.GET_TOKEN_TO_SUCCESS] (state, tokenTo: any) {
+  [types.GET_TOKEN_TO] (state, tokenTo: any) {
     state.tokenTo = tokenTo
-  },
-  [types.GET_TOKEN_TO_FAILURE] (state) {
-    state.tokenTo = null
   },
   [types.GET_FROM_VALUE] (state, fromValue: string | number) {
     state.fromValue = fromValue
@@ -110,23 +96,11 @@ const actions = {
     storage.setItem('address', address)
     commit(types.GET_WALLET_CONNECTED, true)
   },
-  async getTokenFrom ({ commit }, tokenSymbol: string) {
-    commit(types.GET_TOKEN_FROM_REQUEST)
-    try {
-      const tokens = await swapApi.getTokens()
-      commit(types.GET_TOKEN_FROM_SUCCESS, tokens[tokenSymbol])
-    } catch (error) {
-      commit(types.GET_TOKEN_FROM_FAILURE)
-    }
+  setTokenFrom ({ commit }, token: any) {
+    commit(types.GET_TOKEN_FROM, token)
   },
-  async getTokenTo ({ commit }, tokenSymbol: string) {
-    commit(types.GET_TOKEN_TO_REQUEST)
-    try {
-      const tokens = await swapApi.getTokens()
-      commit(types.GET_TOKEN_TO_SUCCESS, tokens[tokenSymbol])
-    } catch (error) {
-      commit(types.GET_TOKEN_TO_FAILURE)
-    }
+  setTokenTo ({ commit }, token: any) {
+    commit(types.GET_TOKEN_TO, token)
   },
   setFromValue ({ commit }, fromValue: string | number) {
     commit(types.GET_FROM_VALUE, fromValue)

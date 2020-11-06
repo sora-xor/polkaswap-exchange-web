@@ -13,11 +13,11 @@
       </div>
       <div class="tokens-info-container">
         <div v-if="tokenFrom" class="token">
-          <span :class="'token-logo token-logo--' + tokenFrom.logo" />
+          <span :class="getTokenClasses(tokenFrom)" />
           {{ tokenFrom ? tokenFrom.symbol : '' }}
         </div>
         <div v-if="tokenTo" class="token">
-          <span :class="'token-logo token-logo--' + tokenTo.logo" />
+          <span :class="getTokenClasses(tokenTo)" />
           {{ tokenTo ? tokenTo.symbol : '' }}
         </div>
       </div>
@@ -57,6 +57,14 @@ export default class ConfirmSwap extends Mixins(TranslationMixin) {
 
   get formattedToValue (): string {
     return formatNumber(this.toValue, 4)
+  }
+
+  getTokenClasses (token): string {
+    let classes = 'token-logo'
+    if (token && token.symbol) {
+      classes += ' token-logo--' + token.symbol.toLowerCase()
+    }
+    return classes
   }
 
   handleConfirmSwap (): void {

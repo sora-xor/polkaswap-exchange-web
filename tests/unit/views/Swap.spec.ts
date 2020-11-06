@@ -2,7 +2,7 @@ import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 import SoramitsuElements from '@soramitsu/soramitsu-js-ui'
 import Swap from '@/components/Swap.vue'
-import { tokens } from '@/mocks/swap'
+import { tokens } from '@/mocks/tokens'
 import { TranslationMock } from '../../utils'
 
 const localVue = createLocalVue()
@@ -19,8 +19,8 @@ describe('Swap.vue', () => {
 
     actions = {
       connectWallet: jest.fn(),
-      getTokenFrom: jest.fn(),
-      getTokenTo: jest.fn(),
+      setTokenFrom: jest.fn(),
+      setTokenTo: jest.fn(),
       setFromValue: jest.fn(),
       setToValue: jest.fn(),
       setTokenFromPrice: jest.fn()
@@ -28,8 +28,8 @@ describe('Swap.vue', () => {
 
     getters = {
       isWalletConnected: () => false,
-      tokenFrom: () => tokens.XOR,
-      tokenTo: () => tokens.KSM,
+      tokenFrom: () => tokens[0],
+      tokenTo: () => tokens[1],
       fromValue: () => 100,
       toValue: () => 45.4545,
       isSwapConfirmed: () => false

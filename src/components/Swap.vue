@@ -29,7 +29,7 @@
             {{ t('exchange.max') }}
           </s-button>
           <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken(true)">
-            <span :class="getTokenLogoClasses(tokenFrom.logo)" />
+            <span :class="getTokenClasses(tokenFrom)" />
             {{ tokenFrom.symbol }}
           </s-button>
         </div>
@@ -63,7 +63,7 @@
         </s-form-item>
         <div v-if="tokenTo" class="token">
           <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken">
-            <span :class="getTokenLogoClasses(tokenTo.logo)" />
+            <span :class="getTokenClasses(tokenTo)" />
             {{ tokenTo.symbol }}
           </s-button>
         </div>
@@ -91,8 +91,9 @@
       </template>
     </s-button>
     <swap-info v-if="areTokensSelected" />
-    <confirm-swap :visible="showConfirmSwapDialog && !isSwapConfirmed" @close="onConfirmSwapDialogClose" />
-    <transaction-submit :visible="isSwapConfirmed" @close="onTransactionSubmitClose" />
+    <select-token :visible="showSelectTokenDialog" @select="handleSelectToken" @close="closeSelectToken"/>
+    <confirm-swap :visible="showConfirmSwapDialog && !isSwapConfirmed" @close="closeConfirmSwapDialog" />
+    <transaction-submit :visible="isSwapConfirmed" @close="closeTransactionSubmitDialog" />
   </s-form>
 </template>
 
@@ -102,11 +103,12 @@ import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { formatNumber } from '@/utils'
 import SwapInfo from '@/components/SwapInfo.vue'
+import SelectToken from '@/components/SelectToken.vue'
 import ConfirmSwap from '@/components/ConfirmSwap.vue'
 import TransactionSubmit from '@/components/TransactionSubmit.vue'
 
 @Component({
-  components: { SwapInfo, ConfirmSwap, TransactionSubmit }
+  components: { SwapInfo, SelectToken, ConfirmSwap, TransactionSubmit }
 })
 export default class Swap extends Mixins(TranslationMixin) {
   @Getter isWalletConnected!: any
@@ -116,8 +118,8 @@ export default class Swap extends Mixins(TranslationMixin) {
   @Getter toValue!: number
   @Getter isSwapConfirmed!: boolean
   @Action connectWallet
-  @Action getTokenFrom
-  @Action getTokenTo
+  @Action setTokenFrom
+  @Action setTokenTo
   @Action setFromValue
   @Action setToValue
   @Action setTokenFromPrice
@@ -125,6 +127,8 @@ export default class Swap extends Mixins(TranslationMixin) {
   inputPlaceholder: string = formatNumber(0, 2);
   isFieldFromFocused = false;
   isFieldToFocused = false;
+  isTokenFromSelected = false;
+  showSelectTokenDialog = false;
   showConfirmSwapDialog = false;
   showTransactionSubmitDialog = false;
 
@@ -155,8 +159,12 @@ export default class Swap extends Mixins(TranslationMixin) {
     return ''
   }
 
-  getTokenLogoClasses (tokenLogo: string): string {
-    return 'token-logo token-logo--' + tokenLogo
+  getTokenClasses (token): string {
+    let classes = 'token-logo'
+    if (token && token.symbol) {
+      classes += ' token-logo--' + token.symbol.toLowerCase()
+    }
+    return classes
   }
 
   handleChangeFieldFrom (): void {
@@ -198,8 +206,8 @@ export default class Swap extends Mixins(TranslationMixin) {
     const currentFieldFromValue = this.formModel.from
     this.isFieldFromFocused = true
     this.isFieldToFocused = true
-    this.getTokenFrom(this.tokenTo ? this.tokenTo.symbol : '')
-    this.getTokenTo(currentTokenFrom ? currentTokenFrom.symbol : '')
+    this.setTokenFrom(this.tokenTo)
+    this.setTokenTo(currentTokenFrom)
     this.formModel.from = this.formModel.to
     this.formModel.to = currentFieldFromValue
     this.isFieldFromFocused = false
@@ -209,23 +217,6 @@ export default class Swap extends Mixins(TranslationMixin) {
 
   handleMaxFromValue (): void {
     this.formModel.from = this.tokenFrom.balance
-  }
-
-  handleChooseToken (isTokenFrom: boolean): void {
-    // TODO: Add Select Token functionality here, default token for tokenFrom is XOR
-    if (isTokenFrom) {
-      if (this.tokenTo && this.tokenTo.symbol === 'XOR') {
-        this.getTokenFrom('ETH')
-      } else {
-        this.getTokenFrom('XOR')
-      }
-    } else {
-      if (this.tokenFrom && this.tokenFrom.symbol === 'XOR') {
-        this.getTokenTo('ETH')
-      } else {
-        this.getTokenTo('XOR')
-      }
-    }
   }
 
   handleConnectWallet (): void {
@@ -238,14 +229,36 @@ export default class Swap extends Mixins(TranslationMixin) {
     this.showConfirmSwapDialog = true
   }
 
-  onConfirmSwapDialogClose () {
+  handleChooseToken (isTokenFrom: boolean): void {
+    if (isTokenFrom) {
+      this.isTokenFromSelected = true
+    }
+    this.showSelectTokenDialog = true
+  }
+
+  handleSelectToken (token: any): void {
+    if (token) {
+      if (this.isTokenFromSelected) {
+        this.setTokenFrom(token)
+        this.isTokenFromSelected = false
+      } else {
+        this.setTokenTo(token)
+      }
+    }
+  }
+
+  closeSelectToken () {
+    this.showSelectTokenDialog = false
+  }
+
+  closeConfirmSwapDialog () {
     this.showConfirmSwapDialog = false
     if (this.isSwapConfirmed) {
       this.showTransactionSubmitDialog = true
     }
   }
 
-  onTransactionSubmitClose () {
+  closeTransactionSubmitDialog () {
     this.showTransactionSubmitDialog = false
   }
 }
