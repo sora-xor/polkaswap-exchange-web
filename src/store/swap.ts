@@ -13,7 +13,7 @@ const types = flow(
     'GET_TOKEN_FROM',
     'GET_TOKEN_TO',
     'GET_FROM_VALUE',
-    'GET_TO_VAUE',
+    'GET_TO_VALUE',
     'GET_TOKEN_FROM_PRICE',
     'GET_SWAP_CONFIRM'
   ]),
@@ -81,7 +81,7 @@ const mutations = {
   [types.GET_FROM_VALUE] (state, fromValue: string | number) {
     state.fromValue = fromValue
   },
-  [types.GET_TO_VAUE] (state, toValue: string | number) {
+  [types.GET_TO_VALUE] (state, toValue: string | number) {
     state.toValue = toValue
   },
   [types.GET_TOKEN_FROM_PRICE] (state, isTokenFromPrice: boolean) {
@@ -107,7 +107,7 @@ const actions = {
     commit(types.GET_FROM_VALUE, fromValue)
   },
   setToValue ({ commit }, toValue: string | number) {
-    commit(types.GET_TO_VAUE, toValue)
+    commit(types.GET_TO_VALUE, toValue)
   },
   setTokenFromPrice ({ commit }, isTokenFromPrice: boolean) {
     commit(types.GET_TOKEN_FROM_PRICE, isTokenFromPrice)
