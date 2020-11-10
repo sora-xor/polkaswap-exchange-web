@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TransactionSubmit.vue should renders correctly 1`] = `
+<s-dialog-stub
+  class="el-dialog--transaction-submit"
+  closeonclickmodal="true"
+  closeonesc="true"
+  customclass=""
+  lockscroll="true"
+  modal="true"
+  modalappendtobody="true"
+  showclose="true"
+  title=""
+  top="auto"
+  width="496px"
+>
+  <s-icon-stub
+    name="arrow-top-right-rounded"
+  />
+   
+  <s-divider-stub
+    contentposition="center"
+    direction="horizontal"
+    type="secondary"
+  />
+   
+  <div
+    class="transaction"
+  >
+    <div
+      class="transaction-type"
+    >
+      
+    </div>
+     
+    <div
+      class="transaction-info"
+    >
+      
+    </div>
+     
+    <s-icon-stub
+      name="external-link"
+    />
+  </div>
+   
+  <s-divider-stub
+    contentposition="center"
+    direction="horizontal"
+    type="secondary"
+  />
+</s-dialog-stub>
+`;

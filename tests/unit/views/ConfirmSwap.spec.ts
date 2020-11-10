@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 import SoramitsuElements from '@soramitsu/soramitsu-js-ui'
-import Swap from '@/components/Swap.vue'
+import ConfirmSwap from '@/components/ConfirmSwap.vue'
 import { tokens } from '@/mocks/tokens'
 import { TranslationMock } from '../../utils'
 
@@ -9,30 +9,23 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 localVue.use(SoramitsuElements)
 
-describe('Swap.vue', () => {
+describe('ConfirmSwap.vue', () => {
   let actions
   let getters
   let store
 
   beforeEach(() => {
-    TranslationMock(Swap)
+    TranslationMock(ConfirmSwap)
 
     actions = {
-      connectWallet: jest.fn(),
-      setTokenFrom: jest.fn(),
-      setTokenTo: jest.fn(),
-      setFromValue: jest.fn(),
-      setToValue: jest.fn(),
-      setTokenFromPrice: jest.fn()
+      setSwapConfirm: jest.fn()
     }
 
     getters = {
-      isWalletConnected: () => false,
       tokenFrom: () => tokens[0],
       tokenTo: () => tokens[1],
-      fromValue: () => 100,
-      toValue: () => 45.4545,
-      isSwapConfirmed: () => false
+      fromValue: () => 150.123654,
+      toValue: () => 0
     }
 
     store = new Vuex.Store({
@@ -42,7 +35,7 @@ describe('Swap.vue', () => {
   })
 
   it('should renders correctly', () => {
-    const wrapper = shallowMount(Swap, { localVue, store })
+    const wrapper = shallowMount(ConfirmSwap, { localVue, store })
     expect(wrapper.element).toMatchSnapshot()
   })
 })

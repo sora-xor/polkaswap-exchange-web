@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConfirmSwap.vue should renders correctly 1`] = `
+<s-dialog-stub
+  class="el-dialog--swap-confirm"
+  closeonclickmodal="true"
+  closeonesc="true"
+  customclass=""
+  lockscroll="true"
+  modal="true"
+  modalappendtobody="true"
+  showclose="true"
+  title=""
+  top="auto"
+  width="496px"
+>
+  <div
+    class="tokens"
+  >
+    <div
+      class="tokens-info-container"
+    >
+      <span
+        class="token-value"
+      >
+        150.1237
+      </span>
+       
+      <s-icon-stub
+        name="arrow-bottom-rounded"
+      />
+       
+      <span
+        class="token-value"
+      >
+        0.0000
+      </span>
+    </div>
+     
+    <div
+      class="tokens-info-container"
+    >
+      <div
+        class="token"
+      >
+        <span
+          class="token-logo token-logo--xor"
+        />
+        
+        XOR
+      
+      </div>
+       
+      <div
+        class="token"
+      >
+        <span
+          class="token-logo token-logo--ksm"
+        />
+        
+        KSM
+      
+      </div>
+    </div>
+  </div>
+   
+  <p
+    class="transaction-message"
+  />
+   
+  <s-divider-stub
+    contentposition="center"
+    direction="horizontal"
+    type="secondary"
+  />
+   
+  <swap-info-stub
+    showprice="true"
+  />
+   
+  <swap-info-stub />
+</s-dialog-stub>
+`;
