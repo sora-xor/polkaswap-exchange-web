@@ -4,20 +4,22 @@ exports[`Exchange.vue should renders correctly 1`] = `
 <div
   class="exchange-container"
 >
-  <s-tabs
+  <s-tabs-stub
+    position="top"
     type="rounded"
+    value="swap"
   >
-    <s-tab
+    <s-tab-stub
       name="swap"
     >
       <swap-stub />
-    </s-tab>
+    </s-tab-stub>
      
-    <s-tab
+    <s-tab-stub
       name="pool"
     >
       <pool-stub />
-    </s-tab>
-  </s-tabs>
+    </s-tab-stub>
+  </s-tabs-stub>
 </div>
 `;
