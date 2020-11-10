@@ -72,8 +72,11 @@ export default {
     supply: 'Supply',
     confirmSupply: 'Confirm supply',
     yourPosition: 'Your position',
-    youWillRecieve: 'You will receive',
+    youWillReceive: 'You will receive',
     outputDescription: 'Output is estimated. If the price changes more than 0.5% your transaction will revert.',
     description: 'When you add liquidity, you are awarded with token pair specific PSWAP tokens that represent your pool share.'
+  },
+  confirmSupply: {
+    title: 'You will receive'
   }
 }
