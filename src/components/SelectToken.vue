@@ -14,7 +14,7 @@
       v-model="query"
       :placeholder="t('selectToken.searchPlaceholder')"
       class="token-search"
-      prefix="s-icon-search"
+      prefix="el-icon-search"
       size="medium"
     />
     <div v-if="filteredTokens && filteredTokens.length > 0" class="token-list">

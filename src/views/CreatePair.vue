@@ -9,7 +9,7 @@
     </s-row>
     <s-form
       v-model="formModel"
-      class="el-form--swap"
+      class="el-form--create-pair"
       :show-message="false"
     >
       <div class="input-container">
@@ -258,7 +258,7 @@ $swap-input-class: ".el-input";
   padding: 16px;
 }
 
-.el-form--swap {
+.el-form--create-pair {
   .s-input {
     .el-input {
       #{$swap-input-class}__inner {
@@ -315,6 +315,7 @@ $swap-input-class: ".el-input";
     }
   }
 }
+
 .create-pair-container {
   .header {
     margin-bottom: 16px;
@@ -373,7 +374,7 @@ $swap-input-class: ".el-input";
   }
 }
 
-.el-form--swap {
+.el-form--create-pair {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -410,7 +411,6 @@ $swap-input-class: ".el-input";
         font-weight: 400;
       }
     }
-    .input-title-estimated,
     .token-balance-value {
       margin-left: $inner-spacing-mini / 2;
     }
@@ -466,54 +466,6 @@ $swap-input-class: ".el-input";
       border-color: $s-color-button-tertiary-background-focused;
     }
   }
-  .swap-info {
-    display: flex;
-    align-items: center;
-    margin-top: $inner-spacing-mini;
-    width: 100%;
-    padding-right: $border-radius-mini;
-    padding-left: $border-radius-mini;
-    color: $s-color-base-content-secondary;
-    &--slippage-tolerance {
-      margin-top: $inner-spacing-small;
-    }
-    &-value {
-      margin-left: auto;
-    }
-    .price-impact {
-      &-positive {
-        color: $s-color-status-success;
-      }
-      &-negative {
-        color: $s-color-status-error;
-      }
-    }
-    .el-tooltip {
-      margin-right: $inner-spacing-small;
-    }
-    &-icon {
-      position: relative;
-      height: $inner-spacing-big;
-      width: $inner-spacing-big;
-      background-color: $s-color-base-background;
-      border-radius: $border-radius-small;
-      &:hover {
-        background-color: $s-color-base-background-hover;
-        cursor: pointer;
-      }
-      &:before {
-        position: absolute;
-        display: block;
-        height: 14px;
-        width: 14px;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        margin: auto;
-      }
-    }
-  }
   .el-button {
     &--switch-tokens {
       &,
@@ -561,9 +513,6 @@ $swap-input-class: ".el-input";
     border-radius: $border-radius-small;
     &:disabled {
       color: $s-color-base-on-disabled;
-    }
-    & + .swap-info {
-      margin-top: $inner-spacing-small;
     }
   }
 }

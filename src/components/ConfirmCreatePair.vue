@@ -11,35 +11,40 @@
     </template>
 
     <div class="tokens">
-      <div class="token">
-        <span class="token-value">{{ formatNumber(firstTokenValue, 2) }}</span>
-        <span class="token-logo"></span>
-        <span class="token-symbol">{{ firstToken.symbol }}</span>
-      </div>
-      <div class="token-divider"></div>
-      <div class="token">
-        <span class="token-value">{{ formatNumber(secondTokenValue, 2) }}</span>
-        <span class="token-logo"></span>
-        <span class="token-symbol">{{ secondToken.symbol }}</span>
-      </div>
+      <s-row flex justify="space-between" class="token">
+        <div class="token-value">{{ formatNumber(firstTokenValue, 2) }}</div>
+        <div>
+          <span class="token-logo"></span>
+          <span class="token-symbol">{{ firstToken.symbol }}</span>
+        </div>
+      </s-row>
+      <div class="token-divider">+</div>
+      <s-row flex justify="space-between" class="token">
+        <div class="token-value">{{ formatNumber(secondTokenValue, 2) }}</div>
+        <div>
+          <span class="token-logo"></span>
+          <span class="token-symbol">{{ secondToken.symbol }}</span>
+        </div>
+      </s-row>
     </div>
     <div class="output-description">
       {{ t('confirmSupply.outputDescription') }}
     </div>
 
     <s-divider />
-
-    <s-row flex justify="space-between">
-      <div>{{ t('confirmSupply.poolTokensBurned', {first: firstToken.symbol, second: secondToken.symbol}) }}</div>
-      <div>{{ poolTokensBurned }}</div>
-    </s-row>
-    <s-row flex justify="space-between">
-      <div>{{ t('confirmSupply.price') }}</div>
-      <div class="price">
-        <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price) }} {{ secondToken.symbol }}</div>
-        <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price) }} {{ firstToken.symbol }}</div>
-      </div>
-    </s-row>
+    <div class="pair-info">
+      <s-row flex justify="space-between" class="pair-info__line">
+        <div>{{ t('confirmSupply.poolTokensBurned', {first: firstToken.symbol, second: secondToken.symbol}) }}</div>
+        <div>{{ poolTokensBurned }}</div>
+      </s-row>
+      <s-row flex justify="space-between" class="pair-info__line">
+        <div>{{ t('confirmSupply.price') }}</div>
+        <div class="price">
+          <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price) }} {{ secondToken.symbol }}</div>
+          <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price) }} {{ firstToken.symbol }}</div>
+        </div>
+      </s-row>
+    </div>
     <template #footer>
       <s-button type="primary" size="medium" @click="handleConfirmCreatePair">{{ t('confirmSupply.confirm') }}</s-button>
     </template>
@@ -84,6 +89,7 @@ export default class ConfirmCreatePair extends Mixins(TranslationMixin) {
 @import '../styles/layout';
 @import '../styles/typography';
 @import '../styles/soramitsu-variables';
+
 $el-dialog-class: '.el-dialog';
 $el-dialog-button-size: 40px;
 #{$el-dialog-class} {
@@ -153,58 +159,29 @@ $el-dialog-button-size: 40px;
   letter-spacing: -0.02em;
 }
 
+.tokens {
+  font-size: 30px;
+  line-height: 130%;
+}
+
+.output-description {
+  font-size: $s-font-size-mini;
+  line-height: 180%;
+  margin-top: $inner-spacing-mini;
+  margin-bottom: $inner-spacing-mini;
+}
+
+.pair-info {
+  line-height: 180%;
+
+  .pair-info__line {
+    margin-top: $inner-spacing-medium;
+    margin-bottom: $inner-spacing-medium;
+  }
+}
+
 .supply-info {
   display: flex;
   justify-content: space-between;
-}
-
-.el-dialog--swap-confirm {
-  .el-dialog {
-    &__header {
-      padding: $inner-spacing-big;
-    }
-    &__body {
-      padding: $inner-spacing-mini $inner-spacing-big;
-    }
-    &__footer {
-      padding: $inner-spacing-big;
-    }
-  }
-  .tokens {
-    display: flex;
-    justify-content: space-between;
-    font-size: 30px;
-    &-info-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-  }
-  .token {
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-    &-logo {
-      display: block;
-      margin-right: $inner-spacing-medium;
-      flex-shrink: 0;
-      @include token-logo-styles;
-    }
-  }
-  .s-icon-arrow-bottom-rounded {
-    margin-top: $inner-spacing-mini;
-    margin-bottom: $inner-spacing-mini;
-    display: block;
-    font-size: $s-font-size-medium;
-  }
-  .transaction-message {
-    margin-top: $inner-spacing-big;
-    color: $s-color-base-content-tertiary;
-    line-height: 1.8;
-  }
-  .el-divider {
-    margin-top: $inner-spacing-mini;
-    margin-bottom: $inner-spacing-big;
-  }
 }
 </style>

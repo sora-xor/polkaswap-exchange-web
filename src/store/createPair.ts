@@ -10,12 +10,13 @@ const types = flow(
     'GET_FIRST_TOKEN',
     'GET_SECOND_TOKEN',
     'GET_FIRST_TOKEN_VALUE',
-    'GET_SECOND_TOKEN_VALUE',
-    'CREATE_PAIR'
+    'GET_SECOND_TOKEN_VALUE'
   ]),
   map(x => [x, x]),
   fromPairs
-)([])
+)([
+  'CREATE_PAIR'
+])
 
 function initialState () {
   return {
@@ -55,6 +56,16 @@ const mutations = {
   },
   [types.GET_SECOND_TOKEN_VALUE] (state, secondTokenValue: string | number) {
     state.secondTokenValue = secondTokenValue
+  },
+  [types.CREATE_PAIR_REQUEST] (state) {
+  },
+  [types.CREATE_PAIR_SUCCESS] (state) {
+    state.firstToken = null
+    state.secondToken = null
+    state.firstTokenValue = 0
+    state.secondTokenValue = 0
+  },
+  [types.CREATE_PAIR_FAILURE] (state, error) {
   }
 }
 
