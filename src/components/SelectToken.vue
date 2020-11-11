@@ -1,7 +1,7 @@
 <template>
   <s-dialog
     :visible.sync="visible"
-    width="600px"
+    width="496px"
     class="token-select"
   >
     <template #title>
@@ -14,6 +14,8 @@
       v-model="query"
       :placeholder="t('selectToken.searchPlaceholder')"
       class="token-search"
+      prefix="s-icon-search"
+      size="medium"
     />
     <div v-if="filteredTokens && filteredTokens.length > 0" class="token-list">
       <div v-for="token in filteredTokens" @click="selectToken($event, token)" :key="token.symbol" class="token-item">
@@ -92,13 +94,12 @@ export default class SelectToken extends Mixins(TranslationMixin) {
 <style lang="scss">
 .token-select {
   .el-dialog__body {
-    padding: 0px;
+    padding: 0px !important;
   }
 }
 
 .token-search {
   .el-input__inner {
-    height: 40px !important;
     border-radius: 8px;
   }
 }
@@ -119,7 +120,6 @@ $container-spacing: 24px;
 .token-search {
   margin-left: $container-spacing;
   width: calc(100% - 2 * #{$container-spacing});
-  min-height: 40px;
 }
 
 .token-item {

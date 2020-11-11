@@ -10,7 +10,7 @@ export const tokens = [{
   name: 'Kusama',
   symbol: 'KSM',
   address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
-  balance: 0,
+  balance: 1000,
   price: 0.0055,
   priceChange: 12
 
@@ -19,7 +19,7 @@ export const tokens = [{
   name: 'Kusama',
   symbol: 'KSM1',
   address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
-  balance: 0,
+  balance: 100,
   price: 0.0055,
   priceChange: 12
 
@@ -28,7 +28,7 @@ export const tokens = [{
   name: 'Kusama',
   symbol: 'KSM2',
   address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
-  balance: 0,
+  balance: 10,
   price: 0.0055,
   priceChange: 12
 
@@ -37,7 +37,7 @@ export const tokens = [{
   name: 'Kusama',
   symbol: 'KSM3',
   address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
-  balance: 0,
+  balance: 1,
   price: 0.0055,
   priceChange: 12
 

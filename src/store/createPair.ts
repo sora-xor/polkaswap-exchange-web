@@ -7,10 +7,11 @@ import concat from 'lodash/fp/concat'
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
-    'GET_TOKEN_FROM',
-    'GET_TOKEN_TO',
-    'GET_FROM_VALUE',
-    'GET_TO_VALUE'
+    'GET_FIRST_TOKEN',
+    'GET_SECOND_TOKEN',
+    'GET_FIRST_TOKEN_VALUE',
+    'GET_SECOND_TOKEN_VALUE',
+    'CREATE_PAIR'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -18,61 +19,71 @@ const types = flow(
 
 function initialState () {
   return {
-    tokenFrom: null,
-    tokenTo: null,
-    fromValue: 0,
-    toValue: 0
+    firstToken: null,
+    secondToken: null,
+    firstTokenValue: 0,
+    secondTokenValue: 0
   }
 }
 
 const state = initialState()
 
 const getters = {
-  tokenFrom (state) {
-    return state.tokenFrom
+  firstToken (state) {
+    return state.firstToken
   },
-  tokenTo (state) {
-    return state.tokenTo
+  secondToken (state) {
+    return state.secondToken
   },
-  fromValue (state) {
-    return state.fromValue
+  firstTokenValue (state) {
+    return state.firstTokenValue
   },
-  toValue (state) {
-    return state.toValue
+  secondTokenValue (state) {
+    return state.secondTokenValue
   }
 }
 
 const mutations = {
-  [types.GET_TOKEN_FROM] (state, tokenFrom: any) {
-    state.tokenFrom = tokenFrom
+  [types.GET_FIRST_TOKEN] (state, firstToken: any) {
+    state.firstToken = firstToken
   },
-  [types.GET_TOKEN_TO] (state, tokenTo: any) {
-    state.tokenTo = tokenTo
+  [types.GET_SECOND_TOKEN] (state, secondToken: any) {
+    state.secondToken = secondToken
   },
-  [types.GET_FROM_VALUE] (state, fromValue: string | number) {
-    state.fromValue = fromValue
+  [types.GET_FIRST_TOKEN_VALUE] (state, firstTokenValue: string | number) {
+    state.firstTokenValue = firstTokenValue
   },
-  [types.GET_TO_VALUE] (state, toValue: string | number) {
-    state.toValue = toValue
+  [types.GET_SECOND_TOKEN_VALUE] (state, secondTokenValue: string | number) {
+    state.secondTokenValue = secondTokenValue
   }
 }
 
 const actions = {
-  setTokenFrom ({ commit }, token: any) {
-    commit(types.GET_TOKEN_FROM, token)
+  setFirstToken ({ commit }, token: any) {
+    commit(types.GET_FIRST_TOKEN, token)
   },
-  setTokenTo ({ commit }, token: any) {
-    commit(types.GET_TOKEN_TO, token)
+  setSecondToken ({ commit }, token: any) {
+    commit(types.GET_SECOND_TOKEN, token)
   },
-  setFromValue ({ commit }, fromValue: string | number) {
-    commit(types.GET_FROM_VALUE, fromValue)
+  setFirstTokenValue ({ commit }, fromValue: string | number) {
+    commit(types.GET_FIRST_TOKEN_VALUE, fromValue)
   },
-  setToValue ({ commit }, toValue: string | number) {
-    commit(types.GET_TO_VALUE, toValue)
+  setSecondTokenValue ({ commit }, toValue: string | number) {
+    commit(types.GET_SECOND_TOKEN_VALUE, toValue)
+  },
+  createPair ({ commit }) {
+    commit(types.CREATE_PAIR_REQUEST)
+
+    try {
+      commit(types.CREATE_PAIR_SUCCESS)
+    } catch (error) {
+      commit(types.CREATE_PAIR_FAILURE)
+    }
   }
 }
 
 export default {
+  namespaced: true,
   state,
   getters,
   mutations,

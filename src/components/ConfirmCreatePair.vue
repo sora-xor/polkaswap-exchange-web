@@ -11,29 +11,37 @@
     </template>
 
     <div class="tokens">
-      <div class="tokens-info-container">
-        <span class="token-value">{{ formattedFromValue }}</span>
-        <s-icon name="arrow-bottom-rounded" />
-        <span class="token-value">{{ formattedToValue }}</span>
+      <div class="token">
+        <span class="token-value">{{ formatNumber(firstTokenValue, 2) }}</span>
+        <span class="token-logo"></span>
+        <span class="token-symbol">{{ firstToken.symbol }}</span>
       </div>
-      <div class="tokens-info-container">
-        <div v-if="tokenFrom" class="token">
-          <span :class="getTokenClasses(tokenFrom)" />
-          {{ tokenFrom ? tokenFrom.symbol : '' }}
-        </div>
-        <div v-if="tokenTo" class="token">
-          <span :class="getTokenClasses(tokenTo)" />
-          {{ tokenTo ? tokenTo.symbol : '' }}
-        </div>
+      <div class="token-divider"></div>
+      <div class="token">
+        <span class="token-value">{{ formatNumber(secondTokenValue, 2) }}</span>
+        <span class="token-logo"></span>
+        <span class="token-symbol">{{ secondToken.symbol }}</span>
       </div>
     </div>
-    <p class="transaction-message" v-html="t('swap.swapOutputMessage', { transactionValue : `<span class='transaction-number'>${toValue}</span>` })"/>
-    <s-divider />
-    <swap-info :showPrice="true" />
-    <swap-info />
+    <div class="output-description">
+      {{ t('confirmSupply.outputDescription') }}
+    </div>
 
+    <s-divider />
+
+    <s-row flex justify="space-between">
+      <div>{{ t('confirmSupply.poolTokensBurned', {first: firstToken.symbol, second: secondToken.symbol}) }}</div>
+      <div>{{ poolTokensBurned }}</div>
+    </s-row>
+    <s-row flex justify="space-between">
+      <div>{{ t('confirmSupply.price') }}</div>
+      <div class="price">
+        <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price) }} {{ secondToken.symbol }}</div>
+        <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price) }} {{ firstToken.symbol }}</div>
+      </div>
+    </s-row>
     <template #footer>
-      <s-button type="primary" size="medium" @click="handleConfirmSupply">{{ t('confirmSupply.confirmSupply') }}</s-button>
+      <s-button type="primary" size="medium" @click="handleConfirmCreatePair">{{ t('confirmSupply.confirm') }}</s-button>
     </template>
   </s-dialog>
 </template>
@@ -43,26 +51,17 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { formatNumber } from '@/utils'
-import SwapInfo from '@/components/SwapInfo.vue'
-@Component({
-  components: { SwapInfo }
-})
-export default class ConfirmSwap extends Mixins(TranslationMixin) {
-  @Getter tokenFrom!: any
-  @Getter tokenTo!: any
-  @Getter fromValue!: number
-  @Getter toValue!: number
-  @Action setSwapConfirm
+const namespace = 'createPair'
+
+@Component
+export default class ConfirmCreatePair extends Mixins(TranslationMixin) {
+  @Getter('firstToken', { namespace }) firstToken!: any
+  @Getter('secondToken', { namespace }) secondToken!: any
+  @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
+  @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
+
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean
-
-  get formattedFromValue (): string {
-    return formatNumber(this.fromValue, 4)
-  }
-
-  get formattedToValue (): string {
-    return formatNumber(this.toValue, 4)
-  }
-
+  formatNumber = formatNumber
   getTokenClasses (token): string {
     let classes = 'token-logo'
     if (token && token.symbol) {
@@ -71,9 +70,11 @@ export default class ConfirmSwap extends Mixins(TranslationMixin) {
     return classes
   }
 
-  handleConfirmSwap (): void {
-    // TODO: Make Swap here
-    this.setSwapConfirm(true)
+  get poolTokensBurned (): string {
+    return formatNumber(1000, 2)
+  }
+
+  handleConfirmCreatePair (): void {
     this.$emit('close')
   }
 }
@@ -146,6 +147,17 @@ $el-dialog-button-size: 40px;
 @import '../styles/layout';
 @import '../styles/typography';
 @import '../styles/soramitsu-variables';
+
+.supply-confirm__title {
+  font-size: 24px;
+  letter-spacing: -0.02em;
+}
+
+.supply-info {
+  display: flex;
+  justify-content: space-between;
+}
+
 .el-dialog--swap-confirm {
   .el-dialog {
     &__header {

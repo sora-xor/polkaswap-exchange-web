@@ -69,19 +69,25 @@ export default {
     title: 'Create a pair',
     deposit: 'Deposit',
     balance: 'Balance',
-    pricePoolShare: 'Prices and pool share',
+    pricePool: 'Prices and pool share',
     shareOfPool: 'Share of pool',
-    per: 'per',
+    firstPerSecond: '{first} per {second}',
+    firstSecondPoolTokens: '{first}-{second} Pool tokens:',
     connect: 'Connect wallet',
     enterAmount: 'Enter an amount',
     supply: 'Supply',
     confirmSupply: 'Confirm supply',
     yourPosition: 'Your position',
     youWillReceive: 'You will receive',
-    outputDescription: 'Output is estimated. If the price changes more than 0.5% your transaction will revert.',
+    remove: 'remove',
+    ok: 'OK',
     description: 'When you add liquidity, you are awarded with token pair specific PSWAP tokens that represent your pool share.'
   },
   confirmSupply: {
-    title: 'You will receive'
+    title: 'You will receive',
+    outputDescription: 'Output is estimated. If the price changes more than 0.5% your transaction will revert.',
+    poolTokensBurned: '{first}-{second} Pool Tokens Burned:',
+    price: 'Price:',
+    confirm: 'Confirm'
   }
 }
