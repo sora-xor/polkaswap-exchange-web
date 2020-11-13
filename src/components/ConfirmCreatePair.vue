@@ -1,30 +1,25 @@
 <template>
   <s-dialog
+    :title="t('confirmSupply.title')"
     :visible.sync="visible"
     class="el-dialog__supply-confirm"
     width="496px"
   >
-    <template #title>
-      <div class="supply-confirm__title">
-      {{ t('confirmSupply.title') }}
-      </div>
-    </template>
-
     <div class="tokens">
       <s-row flex justify="space-between" class="token">
         <div class="token-value">{{ formatNumber(firstTokenValue, 2) }}</div>
-        <div>
-          <span class="token-logo"></span>
+        <s-row flex align="center">
+          <token-logo :token="firstToken.symbol" size="medium" />
           <span class="token-symbol">{{ firstToken.symbol }}</span>
-        </div>
+        </s-row>
       </s-row>
       <div class="token-divider">+</div>
       <s-row flex justify="space-between" class="token">
         <div class="token-value">{{ formatNumber(secondTokenValue, 2) }}</div>
-        <div>
-          <span class="token-logo"></span>
+        <s-row flex align="center">
+          <token-logo :token="secondToken.symbol" size="medium" />
           <span class="token-symbol">{{ secondToken.symbol }}</span>
-        </div>
+        </s-row>
       </s-row>
     </div>
     <div class="output-description">
@@ -55,10 +50,13 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import TokenLogo from '@/components/TokenLogo.vue'
 import { formatNumber } from '@/utils'
 const namespace = 'createPair'
 
-@Component
+@Component({
+  components: { TokenLogo }
+})
 export default class ConfirmCreatePair extends Mixins(TranslationMixin) {
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
@@ -67,13 +65,6 @@ export default class ConfirmCreatePair extends Mixins(TranslationMixin) {
 
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean
   formatNumber = formatNumber
-  getTokenClasses (token): string {
-    let classes = 'token-logo'
-    if (token && token.symbol) {
-      classes += ' token-logo--' + token.symbol.toLowerCase()
-    }
-    return classes
-  }
 
   get poolTokensBurned (): string {
     return formatNumber(1000, 2)
@@ -154,14 +145,15 @@ $el-dialog-button-size: 40px;
 @import '../styles/typography';
 @import '../styles/soramitsu-variables';
 
-.supply-confirm__title {
-  font-size: 24px;
-  letter-spacing: -0.02em;
-}
-
 .tokens {
   font-size: 30px;
   line-height: 130%;
+
+  .token {
+    .token-logo {
+      display: inline-block;
+    }
+  }
 }
 
 .output-description {

@@ -1,11 +1,9 @@
 <template>
   <div class="create-pair-container">
     <s-row class="header" flex justify="space-between" align="middle">
-      <s-button type="action" size="small" icon="arrow-left">
-      </s-button>
+      <s-button type="action" size="small" icon="arrow-left" />
       <div class="title">{{ t('createPair.title') }}</div>
-      <s-button type="action" size="small" icon="info">
-      </s-button>
+      <s-button type="action" size="small" icon="info" />
     </s-row>
     <s-form
       v-model="formModel"
@@ -35,7 +33,7 @@
               {{ t('exchange.max') }}
             </s-button>
             <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="firstModalVisible = true">
-              <span class="logo">{{ firstToken.logo }}</span>
+              <token-logo :token="firstToken.symbol" size="small" />
               {{ firstToken.symbol }}
             </s-button>
           </div>
@@ -70,7 +68,7 @@
               {{ t('exchange.max') }}
             </s-button>
             <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="secondModalVisible = true">
-              <span class="logo">{{ secondToken.logo }}</span>
+              <token-logo :token="secondToken.symbol" size="small" />
               {{ secondToken.symbol }}
             </s-button>
           </div>
@@ -144,13 +142,14 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import SelectToken from '@/components/SelectToken.vue'
 import ConfirmCreatePair from '@/components/ConfirmCreatePair.vue'
 import CreatePairSubmit from '@/components/CreatePairSubmit.vue'
+import TokenLogo from '@/components/TokenLogo.vue'
 
 import router from '@/router'
 import { formatNumber } from '@/utils'
 const namespace = 'createPair'
 
 @Component({
-  components: { SelectToken, ConfirmCreatePair, CreatePairSubmit }
+  components: { SelectToken, ConfirmCreatePair, CreatePairSubmit, TokenLogo }
 })
 export default class CreatePair extends Mixins(TranslationMixin) {
   isWalletConnected = true
@@ -247,15 +246,10 @@ export default class CreatePair extends Mixins(TranslationMixin) {
 @import '../styles/layout';
 @import '../styles/soramitsu-variables';
 
-$tabs-class: ".el-tabs";
-$tabs-container-height: $basic-spacing * 4;
-$tabs-container-padding: 2px;
-$tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
-
 $swap-input-class: ".el-input";
 
 .plus {
-  padding: 16px;
+  padding: $inner-spacing-medium;
 }
 
 .el-form--create-pair {
@@ -318,7 +312,7 @@ $swap-input-class: ".el-input";
 
 .create-pair-container {
   .header {
-    margin-bottom: 16px;
+    margin-bottom: $inner-spacing-medium;
 
     .title {
       font-size: 24px;
@@ -338,7 +332,7 @@ $swap-input-class: ".el-input";
   border: 1px solid $s-color-base-background-hover;
   box-sizing: border-box;
   border-radius: 12px;
-  margin: $inner-spacing-mini 0px;
+  margin: $inner-spacing-mini 0;
   padding: $inner-spacing-medium;
 
   .card__title {
@@ -369,9 +363,6 @@ $swap-input-class: ".el-input";
   border-radius: $border-radius-medium;
   box-shadow: $s-shadow-surface;
   color: $s-color-base-content-primary;
-  .s-tabs {
-    width: 100%;
-  }
 }
 
 .el-form--create-pair {
@@ -399,6 +390,11 @@ $swap-input-class: ".el-input";
     .token {
       display: flex;
       align-items: center;
+
+      .token-logo {
+        order: 1;
+        margin-right: $inner-spacing-mini;
+      }
     }
     .input-title,
     .token-balance {

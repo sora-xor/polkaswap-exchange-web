@@ -1,6 +1,6 @@
 <template>
   <s-dialog
-    :visible.sync="visible"
+    :visible.sync="dialogVisible"
     width="496px"
     class="token-select"
   >
@@ -85,7 +85,8 @@ export default class SelectToken extends Mixins(TranslationMixin) {
 
   selectToken (event, token) {
     this.selectedToken = token
-    this.$emit('select', this.selectedToken)
+    this.query = ''
+    this.$emit('select', token)
     this.$emit('close')
   }
 }
@@ -94,7 +95,7 @@ export default class SelectToken extends Mixins(TranslationMixin) {
 <style lang="scss">
 .token-select {
   .el-dialog__body {
-    padding: 0px !important;
+    padding: 0 !important;
   }
 }
 

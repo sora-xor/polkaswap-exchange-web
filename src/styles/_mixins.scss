@@ -24,3 +24,8 @@
     background-image: url("~@/assets/img/xor.svg");
   }
 }
+
+@mixin token-logo-size($size: 40px) {
+  height: $size;
+  width: $size;
+}
