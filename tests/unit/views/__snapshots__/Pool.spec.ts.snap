@@ -1,9 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Pool.vue should renders correctly 1`] = `
-<s-form>
-  <s-form-item>
+<s-form-stub
+  labelposition="right"
+  showmessage="true"
+  validateonrulechange="true"
+>
+  <s-form-item-stub
+    prop=""
+    showmessage="true"
+  >
     Pool content
-  </s-form-item>
-</s-form>
+  </s-form-item-stub>
+</s-form-stub>
 `;

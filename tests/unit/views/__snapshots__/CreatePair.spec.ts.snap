@@ -1,0 +1,360 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreatePair.vue should renders correctly 1`] = `
+<div
+  class="create-pair-container"
+>
+  <s-row-stub
+    align="middle"
+    class="header"
+    flex="true"
+    gutter="0"
+    justify="space-between"
+  >
+    <s-button-stub
+      icon="arrow-left"
+      nativetype="button"
+      size="small"
+      tabindex="0"
+      tooltip=""
+      tooltipplacement="top"
+      type="action"
+    />
+     
+    <div
+      class="title"
+    >
+      
+    </div>
+     
+    <s-button-stub
+      icon="info"
+      nativetype="button"
+      size="small"
+      tabindex="0"
+      tooltip=""
+      tooltipplacement="top"
+      type="action"
+    />
+  </s-row-stub>
+   
+  <s-form-stub
+    class="el-form--create-pair"
+    labelposition="right"
+    validateonrulechange="true"
+    value="[object Object]"
+  >
+    <div
+      class="input-container"
+    >
+      <div
+        class="input-line"
+      >
+        <div
+          class="input-title"
+        >
+          
+        </div>
+         
+        <div
+          class="token-balance"
+        >
+          <span
+            class="token-balance-title"
+          >
+            
+          </span>
+           
+          <span
+            class="token-balance-value"
+          >
+            10000.00
+          </span>
+        </div>
+      </div>
+       
+      <div
+        class="input-line"
+      >
+        <s-form-item-stub
+          prop=""
+          showmessage="true"
+        >
+          <s-input-stub
+            accept=""
+            autocomplete="off"
+            form=""
+            label=""
+            name=""
+            placeholder="0.00"
+            prefix=""
+            size="big"
+            suffix=""
+            tabindex=""
+            type="text"
+            value="0.0"
+          />
+        </s-form-item-stub>
+         
+        <div
+          class="token"
+        >
+          <s-button-stub
+            class="el-button--max"
+            icon=""
+            nativetype="button"
+            size="small"
+            tabindex="0"
+            tooltip=""
+            tooltipplacement="top"
+            type="tertiary"
+          >
+            
+            
+          
+          </s-button-stub>
+           
+          <s-button-stub
+            class="el-button--choose-token"
+            icon="chevron-bottom-rounded"
+            nativetype="button"
+            size="small"
+            tabindex="0"
+            tooltip=""
+            tooltipplacement="top"
+            type="tertiary"
+          >
+            <token-logo-stub
+              size="small"
+              token="XOR"
+            />
+            
+            XOR
+          
+          </s-button-stub>
+        </div>
+      </div>
+    </div>
+     
+    <s-icon-stub
+      class="plus"
+      name="plus"
+      size="medium"
+    />
+     
+    <div
+      class="input-container"
+    >
+      <div
+        class="input-line"
+      >
+        <div
+          class="input-title"
+        >
+          <span>
+            
+          </span>
+        </div>
+         
+        <div
+          class="token-balance"
+        >
+          <span
+            class="token-balance-title"
+          >
+            
+          </span>
+           
+          <span
+            class="token-balance-value"
+          >
+            NaN
+          </span>
+        </div>
+      </div>
+       
+      <div
+        class="input-line"
+      >
+        <s-form-item-stub
+          prop=""
+          showmessage="true"
+        >
+          <s-input-stub
+            accept=""
+            autocomplete="off"
+            form=""
+            label=""
+            name=""
+            placeholder="0.00"
+            prefix=""
+            size="big"
+            suffix=""
+            tabindex=""
+            type="text"
+            value="0.0"
+          />
+        </s-form-item-stub>
+         
+        <div
+          class="token"
+        >
+          <s-button-stub
+            class="el-button--max"
+            icon=""
+            nativetype="button"
+            size="small"
+            tabindex="0"
+            tooltip=""
+            tooltipplacement="top"
+            type="tertiary"
+          >
+            
+            
+          
+          </s-button-stub>
+           
+          <s-button-stub
+            class="el-button--choose-token"
+            icon="chevron-bottom-rounded"
+            nativetype="button"
+            size="small"
+            tabindex="0"
+            tooltip=""
+            tooltipplacement="top"
+            type="tertiary"
+          >
+            <token-logo-stub
+              size="small"
+              token="KSM"
+            />
+            
+            KSM
+          
+          </s-button-stub>
+        </div>
+      </div>
+    </div>
+     
+    <s-button-stub
+      icon=""
+      nativetype="button"
+      size="medium"
+      tabindex="0"
+      tooltip=""
+      tooltipplacement="top"
+      type="primary"
+    >
+      
+        
+      
+    </s-button-stub>
+  </s-form-stub>
+   
+  <div
+    class="card"
+  >
+    <div
+      class="card__title"
+    >
+      
+    </div>
+     
+    <div
+      class="card__data"
+    >
+      <div>
+        
+      </div>
+       
+      <div>
+        10018.18 XOR
+      </div>
+    </div>
+     
+    <div
+      class="card__data"
+    >
+      <div>
+        
+      </div>
+       
+      <div>
+        0.00 KSM
+      </div>
+    </div>
+     
+    <div
+      class="card__data"
+    >
+      <div>
+        
+      </div>
+       
+      <div>
+        &lt;0.01%
+      </div>
+    </div>
+  </div>
+   
+  <div
+    class="card"
+  >
+    <div
+      class="card__title"
+    >
+      
+    </div>
+     
+    <div
+      class="card__data"
+    >
+      <div>
+        
+      </div>
+       
+      <div>
+        0.00
+      </div>
+    </div>
+     
+    <s-divider-stub
+      contentposition="center"
+      direction="horizontal"
+      type="secondary"
+    />
+     
+    <div
+      class="card__data"
+    >
+      <div>
+        XOR
+      </div>
+       
+      <div>
+        0.00
+      </div>
+    </div>
+     
+    <div
+      class="card__data"
+    >
+      <div>
+        KSM
+      </div>
+       
+      <div>
+        0.00
+      </div>
+    </div>
+  </div>
+   
+  <select-token-stub />
+   
+  <select-token-stub />
+   
+  <confirm-create-pair-stub />
+   
+  <create-pair-submit-stub />
+</div>
+`;

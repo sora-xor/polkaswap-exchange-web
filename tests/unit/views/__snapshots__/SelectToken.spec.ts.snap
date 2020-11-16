@@ -12,8 +12,7 @@ exports[`SelectToken.vue should renders correctly 1`] = `
   showclose="true"
   title=""
   top="auto"
-  visible="true"
-  width="600px"
+  width="496px"
 >
    
   <s-input-stub
@@ -24,6 +23,9 @@ exports[`SelectToken.vue should renders correctly 1`] = `
     label=""
     name=""
     placeholder=""
+    prefix="el-icon-search"
+    size="medium"
+    suffix=""
     tabindex=""
     type="text"
     value=""
