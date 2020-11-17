@@ -1,1 +1,2 @@
 import './soramitsuUI'
+import './wallet'
