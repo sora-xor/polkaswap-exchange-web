@@ -26,3 +26,8 @@ export const AboutTopics = [
   { title: Topics.AddLiquidity, icon: 'liquidity' },
   { title: Topics.PriceFeeds, icon: 'build' }
 ]
+
+export enum LogoSize {
+  SMALL = 'small',
+  MEDIUM = 'medium',
+}
