@@ -6,12 +6,18 @@
         <s-icon name="info" size="16"/>
       </s-tooltip>
     </div>
-    <p class="pool-info" v-if="!isWalletConnected">
+    <p v-if="!isWalletConnected" class="pool-info">
       {{ t('pool.connectToWallet') }}
     </p>
-    <p class="pool-info" v-else-if="!liquidity">
+    <p v-else-if="!liquidity" class="pool-info">
       {{ t('pool.liquidityNotFound') }}
     </p>
+    <s-collapse v-else class="pool-info" :borders="true" @change="handleChoosePair">
+      <!-- TODO: make for with pairs here -->
+      <s-collapse-item title="Consistency" name="1">
+        <div>Lorem Ipsum</div>
+      </s-collapse-item>
+    </s-collapse>
     <s-button type="primary" size="medium" @click="handleAddLiquidity">
       {{ t('pool.addLiquidity') }}
     </s-button>
@@ -37,6 +43,10 @@ export default class Pool extends Mixins(TranslationMixin) {
 
   handleCreatePair (): void {
     // TODO: Link with Create Pair functionality
+  }
+
+  handleChoosePair (): void {
+    console.log('handleChoosePair')
   }
 }
 </script>
