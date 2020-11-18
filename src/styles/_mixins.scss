@@ -3,20 +3,18 @@
 @mixin token-logo-styles($size: 40px) {
   height: $size;
   width: $size;
-  background-color: $s-color-base-border-secondary;
+  background-color: var(--s-color-base-border-secondary);
   background-image: url("~@/assets/img/token-logo-default.svg");
   background-size: 60%;
   background-repeat: no-repeat;
   background-position: 50%;
-  border: 1px solid $s-color-base-border-secondary;
+  border: 1px solid var(--s-color-base-border-secondary);
   border-radius: 50%;
-  box-shadow: $s-shadow-tooltip;
-
+  box-shadow: var(--s-shadow-tooltip);
   &--ksm,
   &--xor {
     background-size: 100%;
   }
-
   &--ksm {
     background-image: url("~@/assets/img/ksm.svg");
   }

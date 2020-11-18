@@ -34,9 +34,6 @@ export default class Exchange extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss">
-@import '../styles/layout';
-@import '../styles/soramitsu-variables';
-
 $tabs-class: ".el-tabs";
 $tabs-container-height: $basic-spacing * 4;
 $tabs-container-padding: 2px;
@@ -56,7 +53,7 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
           padding-left: $inner-spacing-medium;
           &.is-active {
             margin: 0;
-            box-shadow: $s-shadow-tab;
+            box-shadow: var(--s-shadow-tab);
             &:hover {
               box-shadow: none;
             }
@@ -64,7 +61,7 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
           &:focus,
           &.is-focus {
             box-shadow: none;
-            background-color: $s-color-base-background-hover;
+            background-color: var(--s-color-base-background-hover);
           }
           &,
           &.is-active,
@@ -76,14 +73,14 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
           height: $tabs-item-height;
           line-height: $tabs-item-height;
           &:hover {
-            background-color: $s-color-base-background-hover;
+            background-color: var(--s-color-base-background-hover);
           }
         }
       }
       &__nav-wrap {
         height: $tabs-container-height;
         padding: $tabs-container-padding;
-        background-color: $s-color-base-background;
+        background-color: var(--s-color-base-background);
         border-radius: $border-radius-small;
       }
     }
@@ -104,18 +101,15 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
 </style>
 
 <style lang="scss" scoped>
-@import '../styles/layout';
-@import '../styles/soramitsu-variables';
-
 .exchange-container {
   margin: $inner-spacing-big auto;
   padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
   min-height: $inner-window-height;
   width: $inner-window-width;
-  background-color: $s-color-utility-surface;
+  background-color: var(--s-color-utility-surface);
   border-radius: $border-radius-medium;
-  box-shadow: $s-shadow-surface;
-  color: $s-color-base-content-primary;
+  box-shadow: var(--s-shadow-surface);
+  color: var(--s-color-base-content-primary);
   .s-tabs {
     width: 100%;
   }

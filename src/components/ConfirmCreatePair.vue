@@ -77,12 +77,9 @@ export default class ConfirmCreatePair extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss">
-@import '../styles/layout';
-@import '../styles/typography';
-@import '../styles/soramitsu-variables';
-
 $el-dialog-class: '.el-dialog';
 $el-dialog-button-size: 40px;
+
 #{$el-dialog-class} {
   &__wrapper #{$el-dialog-class} {
     border-radius: $border-radius-medium;
@@ -104,7 +101,7 @@ $el-dialog-button-size: 40px;
     }
   }
   .transaction-number {
-    color: $s-color-base-content-primary;
+    color: var(--s-color-base-content-primary);
     font-weight: bold;
   }
   #{$el-dialog-class}__headerbtn {
@@ -112,20 +109,20 @@ $el-dialog-button-size: 40px;
     margin-left: auto;
     height: $el-dialog-button-size;
     width: $el-dialog-button-size;
-    background-color: $s-color-base-background;
-    border-color: $s-color-base-background;
+    background-color: var(--s-color-base-background);
+    border-color: var(--s-color-base-background);
     border-radius: $inner-spacing-small;
     #{$el-dialog-class}__close {
-      color: $s-color-base-content-primary;
+      color: var(--s-color-base-content-primary);
       font-weight: bold;
       font-size: $el-dialog-button-size / 2;
     }
-    color: $s-color-base-content-primary;
+    color: var(--s-color-base-content-primary);
     &:hover, &:active, &:focus {
-      background-color: $s-color-base-background-hover;
-      border-color: $s-color-base-background-hover;
+      background-color: var(--s-color-base-background-hover);
+      border-color: var(--s-color-base-background-hover);
       #{$el-dialog-class}__close {
-        color: $s-color-base-content-primary;
+        color: var(--s-color-base-content-primary);
       }
     }
   }
@@ -140,38 +137,28 @@ $el-dialog-button-size: 40px;
 </style>
 
 <style lang="scss" scoped>
-@import '../styles/mixins';
-@import '../styles/layout';
-@import '../styles/typography';
-@import '../styles/soramitsu-variables';
-
 .tokens {
   font-size: 30px;
-  line-height: 130%;
-
+  line-height: 1.3;
   .token {
-    .token-logo {
+    &-logo {
       display: inline-block;
     }
   }
 }
-
 .output-description {
   font-size: $s-font-size-mini;
-  line-height: 180%;
+  line-height: 1.8;
   margin-top: $inner-spacing-mini;
   margin-bottom: $inner-spacing-mini;
 }
-
 .pair-info {
-  line-height: 180%;
-
-  .pair-info__line {
+  line-height: 1.8;
+  &__line {
     margin-top: $inner-spacing-medium;
     margin-bottom: $inner-spacing-medium;
   }
 }
-
 .supply-info {
   display: flex;
   justify-content: space-between;

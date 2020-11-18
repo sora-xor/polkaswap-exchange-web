@@ -67,9 +67,6 @@ export default class App extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss">
-@import './styles/typography';
-@import './styles/soramitsu-variables';
-
 @font-face {
   font-family: "SoraB";
   src: url("~@/assets/fonts/Sora-Bold.otf");
@@ -107,17 +104,14 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Sora', sans-serif;
-  color: $s-color-base-content-primary;
+  color: var(--s-color-base-content-primary);
   height: 100vh;
 }
 </style>
 
 <style lang="scss" scoped>
-@import '/styles/soramitsu-variables';
-@import '/styles/breakpoints';
-@import '/styles/layout';
-
 $logo-width: 151px;
+$menu-height: 65px;
 
 .polkaswap-logo {
   display: none;
@@ -141,16 +135,16 @@ $logo-width: 151px;
       right: $basic-spacing;
       top: 12px;
       .wallet {
-        color: $s-color-utility-surface;
-        background-color: $s-color-theme-accent;
+        color: var(--s-color-utility-surface);
+        background-color: var(--s-color-theme-accent);
         &:hover {
-          background-color: $s-color-theme-accent-hover;
+          background-color: var(--s-color-theme-accent-hover);
         }
         &:active {
-          background-color: $s-color-theme-accent-pressed;
+          background-color: var(--s-color-theme-accent-pressed);
         }
         &:focus {
-          background-color: $s-color-theme-accent-focused;
+          background-color: var(--s-color-theme-accent-focused);
         }
       }
     }
@@ -158,7 +152,7 @@ $logo-width: 151px;
 }
 .app-content {
   overflow-y: auto;
-  height: calc(100vh - 65px);
+  height: calc(100vh - #{$menu-height});
 }
 @include desktop {
   .polkaswap-logo {

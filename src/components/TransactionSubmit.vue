@@ -56,15 +56,12 @@ export default class TransactionSubmit extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/layout';
-@import '../styles/soramitsu-variables';
-
 $transactionIconSize: 68px;
 
 .el-dialog--transaction-submit {
   .s-icon-arrow-top-right-rounded {
     font-size: $transactionIconSize;
-    color: $s-color-theme-accent;
+    color: var(--s-color-theme-accent);
   }
   .transaction {
     display: flex;
@@ -72,7 +69,7 @@ $transactionIconSize: 68px;
     width: 100%;
     &-type,
     .s-icon-external-link {
-      color: $s-color-base-content-secondary;
+      color: var(--s-color-base-content-secondary);
     }
     &-type {
       display: block;
@@ -81,7 +78,7 @@ $transactionIconSize: 68px;
       text-transform: uppercase;
       font-size: 10px;
       font-weight: bold;
-      background-color: $s-color-base-background;
+      background-color: var(--s-color-base-background);
       border-radius: $border-radius-mini;
     }
     &-info {

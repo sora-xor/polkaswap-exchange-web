@@ -15,9 +15,6 @@ export default class Wallet extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/layout';
-@import '../styles/soramitsu-variables';
-
 $menu-height: 65px;
 
 .wallet-container {

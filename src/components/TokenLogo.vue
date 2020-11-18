@@ -34,36 +34,28 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/mixins';
-@import '../styles/layout';
-@import '../styles/soramitsu-variables';
-
 .token-logo {
-  background-color: $s-color-base-border-secondary;
+  background-color: var(--s-color-base-border-secondary);
   background-image: url("~@/assets/img/token-logo-default.svg");
   background-size: 60%;
   background-repeat: no-repeat;
   background-position: 50%;
-  border: 1px solid $s-color-base-border-secondary;
+  border: 1px solid var(--s-color-base-border-secondary);
   border-radius: 50%;
-  box-shadow: $s-shadow-tooltip;
-
+  box-shadow: var(--s-shadow-tooltip);
   &--ksm,
   &--xor {
     background-size: 100%;
   }
-
   &--ksm {
     background-image: url("~@/assets/img/ksm.svg");
   }
   &--xor {
     background-image: url("~@/assets/img/xor.svg");
   }
-
   &.token-logo--small {
     @include token-logo-size(23px);
   }
-
   &.token-logo--medium {
     @include token-logo-size(40px);
   }
