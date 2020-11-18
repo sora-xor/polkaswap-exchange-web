@@ -1141,10 +1141,23 @@
   resolved "https://registry.yarnpkg.com/@soda/get-current-script/-/get-current-script-1.0.2.tgz#a53515db25d8038374381b73af20bb4f2e508d87"
   integrity sha512-T7VNNlYVM1SgQ+VsMYhnDkcGmWhQdL0bDyGm5TlQ3GBXnJscEClUUOKduWTmm2zCnvNLC1hc3JpuXjs/nFOc5w==
 
-"@soramitsu/soramitsu-js-ui@^0.5.6":
-  version "0.5.6"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-0.5.6.tgz#02dce77e5aa48a149a989c08df9a05a470abe645"
-  integrity sha512-RKdI6OYbMk45HWIbM5CY9KouypK+KDEH4r14/2uuvh0vDqHOmtNLFbuJJEBNOHx41Df54SMHzOYAoyUMMoRsFw==
+"@soramitsu/soramitsu-js-ui@^0.5.4":
+  version "0.5.8"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-0.5.8.tgz#3518f5fcf24a4eac7ae8440178063b4077762e5a"
+  integrity sha512-57TrORijGvSYyez5hOLimtsrHsMLl7cs4oR1gGHWInM9LUlZI6911nv4mdzj367cLOHmuGODADUq+PrrNrT0+A==
+  dependencies:
+    core-js "^3.6.4"
+    element-ui "^2.13.2"
+    lodash "^4.17.15"
+    v-jsoneditor "^1.4.1"
+    vue "^2.6.11"
+    vue-class-component "^7.2.3"
+    vue-property-decorator "^8.4.1"
+
+"@soramitsu/soramitsu-js-ui@^0.6.0":
+  version "0.6.0"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-0.6.0.tgz#d4e0d3ad4ebc1e5b84ec451df6f75c6fab6b3c47"
+  integrity sha512-6F8MR2/OgD7tCwc4PGfMm4Id1/5IPwdfW+EtLMBCNEnSyNNxPYk0mBPMU+w/KEYqrbiI+Z3T4xZzCK66BHEY0g==
   dependencies:
     core-js "^3.6.4"
     element-ui "^2.13.2"
