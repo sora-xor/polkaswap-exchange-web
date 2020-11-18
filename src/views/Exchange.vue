@@ -1,13 +1,14 @@
 <template>
   <div class="exchange-container">
-    <s-tabs v-model="model" type="rounded">
-      <s-tab :label="t('exchange.swap')" name="swap">
-        <swap />
-      </s-tab>
-      <s-tab :label="t('exchange.pool')" name="pool">
-        <pool />
-      </s-tab>
+    <s-tabs type="rounded" :value="router.currentRoute.name" @click="handleTabClick">
+      <s-tab
+        v-for="tab in ExchangeTabs"
+        :key="tab"
+        :label="t(`exchange.${tab}`)"
+        :name="tab"
+      />
     </s-tabs>
+    <router-view />
   </div>
 </template>
 
@@ -15,15 +16,20 @@
 import { Component, Mixins } from 'vue-property-decorator'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import Swap from '@/components/Swap.vue'
-import Pool from '@/components/Pool.vue'
-import router from '@/router'
+import router, { lazyComponent } from '@/router'
+import { ExchangeTabs, PageNames } from '@/consts'
 
-@Component({
-  components: { Swap, Pool }
-})
+@Component
 export default class Exchange extends Mixins(TranslationMixin) {
-  model = 'swap';
+  readonly ExchangeTabs = ExchangeTabs
+  readonly router = router
+
+  handleTabClick ({ name }): void {
+    if (router.currentRoute.name === name) {
+      return
+    }
+    router.push({ name })
+  }
 }
 </script>
 

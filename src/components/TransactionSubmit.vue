@@ -8,7 +8,7 @@
     <s-icon name="arrow-top-right-rounded" />
     <s-divider />
     <div class="transaction">
-      <div class="transaction-type">{{ t('exchange.swap') }}</div>
+      <div class="transaction-type">{{ t('exchange.Swap') }}</div>
       <div class="transaction-info">{{ transactionInfo }}</div>
       <!-- TODO: Add correct icons and add functionality -->
       <s-icon name="external-link" @click="handleTransactionInfo" />

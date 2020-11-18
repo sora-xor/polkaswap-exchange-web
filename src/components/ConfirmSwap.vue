@@ -37,10 +37,13 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { formatNumber } from '@/utils'
-import SwapInfo from '@/components/SwapInfo.vue'
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
 
 @Component({
-  components: { SwapInfo }
+  components: {
+    SwapInfo: lazyComponent(Components.SwapInfo)
+  }
 })
 export default class ConfirmSwap extends Mixins(TranslationMixin) {
   @Getter tokenFrom!: any

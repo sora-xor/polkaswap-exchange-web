@@ -32,8 +32,8 @@ export default {
     }
   },
   exchange: {
-    swap: 'Swap',
-    pool: 'Pool',
+    [PageNames.Swap]: 'Swap',
+    [PageNames.Pool]: 'Pool',
     from: 'From',
     to: 'To',
     balance: 'Balance',

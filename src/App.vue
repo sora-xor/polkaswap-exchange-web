@@ -8,7 +8,7 @@
       text-color="#0D0248"
       active-text-color="#ED145B"
       active-hover-color="#FFF"
-      :default-active="currentPath"
+      :default-active="getCurrentPath()"
       @select="goTo"
     >
       <s-menu-item
@@ -20,7 +20,7 @@
       </s-menu-item>
       <div class="controls">
         <div class="buttons">
-          <s-button class="wallet" type="action" size="medium" icon="wallet" rounded />
+          <s-button class="wallet" type="action" size="medium" icon="wallet" rounded @click="goTo(PageNames.Wallet)" />
           <s-button type="action" size="medium" icon="settings" rounded />
           <s-button type="action" size="medium" icon="search" rounded />
         </div>
@@ -38,25 +38,30 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { PageNames, MainMenu } from '@/consts'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import router from '@/router'
-import SelectToken from '@/components/SelectToken.vue'
 
-@Component({
-  components: {
-    SelectToken
-  }
-})
+@Component
 export default class App extends Mixins(TranslationMixin) {
   readonly MainMenu = MainMenu
+  readonly PageNames = PageNames
 
-  get currentPath (): string {
-    return router.currentRoute.name || PageNames.About
+  getCurrentPath (): string {
+    if ([PageNames.Swap, PageNames.Pool, PageNames.Wallet].includes(router.currentRoute.name as PageNames)) {
+      return PageNames.Exchange
+    }
+    return router.currentRoute.name as string
   }
 
-  goTo (name: string): void {
+  goTo (name: PageNames): void {
     if (router.currentRoute.name === name) {
       return
     }
-    router.push({ name })
+    if (name !== PageNames.Exchange) {
+      router.push({ name })
+      return
+    }
+    if (name === PageNames.Exchange && router.currentRoute.name !== PageNames.Swap) {
+      router.push({ name: PageNames.Swap })
+    }
   }
 }
 </script>

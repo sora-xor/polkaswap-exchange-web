@@ -87,7 +87,7 @@
         {{ t('swap.insufficientBalance', { tokenSymbol: tokenFrom.symbol }) }}
       </template>
       <template v-else>
-        {{ t('exchange.swap') }}
+        {{ t('exchange.Swap') }}
       </template>
     </s-button>
     <swap-info v-if="areTokensSelected" />
@@ -102,13 +102,16 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { formatNumber } from '@/utils'
-import SwapInfo from '@/components/SwapInfo.vue'
-import SelectToken from '@/components/SelectToken.vue'
-import ConfirmSwap from '@/components/ConfirmSwap.vue'
-import TransactionSubmit from '@/components/TransactionSubmit.vue'
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
 
 @Component({
-  components: { SwapInfo, SelectToken, ConfirmSwap, TransactionSubmit }
+  components: {
+    SwapInfo: lazyComponent(Components.SwapInfo),
+    SelectToken: lazyComponent(Components.SelectToken),
+    ConfirmSwap: lazyComponent(Components.ConfirmSwap),
+    TransactionSubmit: lazyComponent(Components.TransactionSubmit)
+  }
 })
 export default class Swap extends Mixins(TranslationMixin) {
   @Getter isWalletConnected!: any

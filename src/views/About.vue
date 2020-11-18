@@ -22,7 +22,6 @@
           {{ t('about.githubLink') }}
         </s-button>
       </div>
-      <sora-neo-wallet />
       <s-divider />
       <div class="articles s-flex">
         <s-row>
