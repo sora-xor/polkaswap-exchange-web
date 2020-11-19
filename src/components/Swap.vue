@@ -7,7 +7,7 @@
     <div class="input-container">
       <div class="input-line">
         <div class="input-title">{{ t('exchange.from') }}</div>
-        <div v-if="isWalletConnected && tokenFrom" class="token-balance">
+        <div v-if="connected && tokenFrom" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
           <span class="token-balance-value">{{ getTokenBalance(tokenFrom) }}</span>
         </div>
@@ -25,7 +25,7 @@
         </s-form-item>
         <div v-if="tokenFrom" class="token">
           <!-- TODO: Fix secondary сolors in UI Library and project -->
-          <s-button v-if="isWalletConnected && areTokensSelected" class="el-button--max" type="tertiary" size="small" @click="handleMaxFromValue">
+          <s-button v-if="connected && areTokensSelected" class="el-button--max" type="tertiary" size="small" @click="handleMaxFromValue">
             {{ t('exchange.max') }}
           </s-button>
           <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken(true)">
@@ -45,7 +45,7 @@
           <span>{{ t('exchange.to') }}</span>
           <span v-if="tokenTo" class="input-title-estimated">({{ t('swap.estimated') }})</span>
         </div>
-        <div v-if="isWalletConnected && tokenTo" class="token-balance">
+        <div v-if="connected && tokenTo" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
           <span class="token-balance-value">{{ getTokenBalance(tokenTo) }}</span>
         </div>
@@ -73,7 +73,7 @@
       </div>
     </div>
     <swap-info v-if="areTokensSelected" :showPrice="true" :showSlippageTolerance="true" />
-    <s-button v-if="!isWalletConnected" type="primary" size="medium" @click="handleConnectWallet">
+    <s-button v-if="!connected" type="primary" size="medium" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
     <s-button v-else type="primary" size="medium" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="handleConfirmSwap">
@@ -101,9 +101,9 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import { formatNumber } from '@/utils'
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
+import { formatNumber, isWalletConnected } from '@/utils'
+import router, { lazyComponent } from '@/router'
+import { Components, PageNames } from '@/consts'
 
 @Component({
   components: {
@@ -114,13 +114,11 @@ import { Components } from '@/consts'
   }
 })
 export default class Swap extends Mixins(TranslationMixin) {
-  @Getter isWalletConnected!: any
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
   @Getter fromValue!: number
   @Getter toValue!: number
   @Getter isSwapConfirmed!: boolean
-  @Action connectWallet
   @Action setTokenFrom
   @Action setTokenTo
   @Action setFromValue
@@ -138,6 +136,10 @@ export default class Swap extends Mixins(TranslationMixin) {
   formModel = {
     from: formatNumber(0, 1),
     to: formatNumber(0, 1)
+  }
+
+  get connected (): boolean {
+    return isWalletConnected()
   }
 
   get areTokensSelected (): boolean {
@@ -223,9 +225,7 @@ export default class Swap extends Mixins(TranslationMixin) {
   }
 
   handleConnectWallet (): void {
-    // TODO: Add Connect Wallet functionality, right now updated the value only on page reloading
-    this.connectWallet('43f65bccca11ff53840a85d5af5bf1d1762f92a8e03')
-    location.reload()
+    router.push({ name: PageNames.Wallet })
   }
 
   handleConfirmSwap (): void {

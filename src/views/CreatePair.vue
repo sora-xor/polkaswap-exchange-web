@@ -13,7 +13,7 @@
       <div class="input-container">
         <div class="input-line">
           <div class="input-title">{{ t('createPair.deposit') }}</div>
-          <div v-if="isWalletConnected && firstToken" class="token-balance">
+          <div v-if="connected && firstToken" class="token-balance">
             <span class="token-balance-title">{{ t('createPair.balance') }}</span>
             <span class="token-balance-value">{{ getTokenBalance(firstToken) }}</span>
           </div>
@@ -29,7 +29,7 @@
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
-            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" @click="handleFirstMaxValue">
+            <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
             <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="firstModalVisible = true">
@@ -48,7 +48,7 @@
           <div class="input-title">
             <span>{{ t('createPair.deposit') }}</span>
           </div>
-          <div v-if="isWalletConnected && secondToken" class="token-balance">
+          <div v-if="connected && secondToken" class="token-balance">
             <span class="token-balance-title">{{ t('exchange.balance') }}</span>
             <span class="token-balance-value">{{ getTokenBalance(secondToken.balance) }}</span>
           </div>
@@ -64,7 +64,7 @@
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
-            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" @click="handleSecondMaxValue">
+            <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" @click="handleSecondMaxValue">
               {{ t('exchange.max') }}
             </s-button>
             <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="secondModalVisible = true">
@@ -145,15 +145,13 @@ import CreatePairSubmit from '@/components/CreatePairSubmit.vue'
 import TokenLogo from '@/components/TokenLogo.vue'
 
 import router from '@/router'
-import { formatNumber } from '@/utils'
+import { formatNumber, isWalletConnected } from '@/utils'
 const namespace = 'createPair'
 
 @Component({
   components: { SelectToken, ConfirmCreatePair, CreatePairSubmit, TokenLogo }
 })
 export default class CreatePair extends Mixins(TranslationMixin) {
-  isWalletConnected = true
-
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
@@ -176,6 +174,10 @@ export default class CreatePair extends Mixins(TranslationMixin) {
   }
 
   formatNumber = formatNumber
+
+  get connected (): boolean {
+    return isWalletConnected()
+  }
 
   get firstPerSecondPrice (): string {
     return formatNumber(this.firstToken.price / this.secondToken.price, 2)
