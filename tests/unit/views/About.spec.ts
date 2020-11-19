@@ -1,9 +1,10 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 
 import About from '@/views/About.vue'
-import { TranslationMock } from '../../utils'
+import { SoramitsuElementsImport, TranslationMock } from '../../utils'
 
 const localVue = createLocalVue()
+SoramitsuElementsImport(localVue)
 
 describe('About.vue', () => {
   beforeEach(() => {

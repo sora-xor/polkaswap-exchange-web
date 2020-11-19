@@ -1,10 +1,6 @@
-import Vue from 'vue'
-
-// TODO: think how not to ignore it
-Vue.config.ignoredElements = [
-  's-button',
-  's-card',
-  's-col',
-  's-divider',
-  's-row'
-]
+const constantDate = new Date(2020, 10, 27, 23, 59, 59)
+global.Date = class extends Date {
+  constructor () {
+    return constantDate
+  }
+}

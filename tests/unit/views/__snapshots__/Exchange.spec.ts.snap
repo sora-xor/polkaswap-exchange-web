@@ -5,21 +5,20 @@ exports[`Exchange.vue should renders correctly 1`] = `
   class="exchange-container"
 >
   <s-tabs-stub
+    borderradius="small"
     position="top"
     type="rounded"
-    value="swap"
   >
     <s-tab-stub
-      name="swap"
-    >
-      <swap-stub />
-    </s-tab-stub>
-     
+      name="Swap"
+    />
     <s-tab-stub
-      name="pool"
-    >
-      <pool-stub />
-    </s-tab-stub>
+      name="Pool"
+    />
   </s-tabs-stub>
+   
+  <router-view-stub
+    name="default"
+  />
 </div>
 `;

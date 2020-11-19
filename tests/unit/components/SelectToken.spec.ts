@@ -1,13 +1,13 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
+
 import { tokens } from '@/mocks/tokens'
 import SelectToken from '@/components/SelectToken.vue'
-import { TranslationMock } from '../../utils'
-import SoramitsuElements from '@soramitsu/soramitsu-js-ui'
+import { SoramitsuElementsImport, TranslationMock } from '../../utils'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
-localVue.use(SoramitsuElements)
+SoramitsuElementsImport(localVue)
 
 describe('SelectToken.vue', () => {
   let actions

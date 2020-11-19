@@ -32,6 +32,7 @@ exports[`Swap.vue should renders correctly 1`] = `
         <s-input-stub
           accept=""
           autocomplete="off"
+          borderradius="small"
           form=""
           label=""
           name=""
@@ -51,6 +52,7 @@ exports[`Swap.vue should renders correctly 1`] = `
         <!---->
          
         <s-button-stub
+          borderradius="small"
           class="el-button--choose-token"
           icon="chevron-bottom-rounded"
           nativetype="button"
@@ -72,6 +74,7 @@ exports[`Swap.vue should renders correctly 1`] = `
   </div>
    
   <s-button-stub
+    borderradius="small"
     class="el-button--switch-tokens"
     icon="change-positions"
     nativetype="button"
@@ -115,6 +118,7 @@ exports[`Swap.vue should renders correctly 1`] = `
         <s-input-stub
           accept=""
           autocomplete="off"
+          borderradius="small"
           form=""
           label=""
           name=""
@@ -132,6 +136,7 @@ exports[`Swap.vue should renders correctly 1`] = `
         class="token"
       >
         <s-button-stub
+          borderradius="small"
           class="el-button--choose-token"
           icon="chevron-bottom-rounded"
           nativetype="button"
@@ -152,12 +157,10 @@ exports[`Swap.vue should renders correctly 1`] = `
     </div>
   </div>
    
-  <swap-info-stub
-    showprice="true"
-    showslippagetolerance="true"
-  />
+  <!---->
    
   <s-button-stub
+    borderradius="small"
     icon=""
     nativetype="button"
     size="medium"
@@ -171,12 +174,12 @@ exports[`Swap.vue should renders correctly 1`] = `
   
   </s-button-stub>
    
-  <swap-info-stub />
+  <!---->
    
-  <select-token-stub />
+  <!---->
    
-  <confirm-swap-stub />
+  <!---->
    
-  <transaction-submit-stub />
+  <!---->
 </s-form-stub>
 `;

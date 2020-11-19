@@ -1,13 +1,13 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
-import SoramitsuElements from '@soramitsu/soramitsu-js-ui'
+
 import CreatePair from '@/views/CreatePair.vue'
 import { tokens } from '@/mocks/tokens'
-import { TranslationMock } from '../../utils'
+import { SoramitsuElementsImport, TranslationMock } from '../../utils'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
-localVue.use(SoramitsuElements)
+SoramitsuElementsImport(localVue)
 
 describe('CreatePair.vue', () => {
   let actions

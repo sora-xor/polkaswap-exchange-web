@@ -12,6 +12,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
     justify="space-between"
   >
     <s-button-stub
+      borderradius="small"
       icon="arrow-left"
       nativetype="button"
       size="small"
@@ -28,6 +29,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
     </div>
      
     <s-button-stub
+      borderradius="small"
       icon="info"
       nativetype="button"
       size="small"
@@ -83,6 +85,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
           <s-input-stub
             accept=""
             autocomplete="off"
+            borderradius="small"
             form=""
             label=""
             name=""
@@ -100,6 +103,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
           class="token"
         >
           <s-button-stub
+            borderradius="small"
             class="el-button--max"
             icon=""
             nativetype="button"
@@ -115,6 +119,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
           </s-button-stub>
            
           <s-button-stub
+            borderradius="small"
             class="el-button--choose-token"
             icon="chevron-bottom-rounded"
             nativetype="button"
@@ -183,6 +188,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
           <s-input-stub
             accept=""
             autocomplete="off"
+            borderradius="small"
             form=""
             label=""
             name=""
@@ -200,6 +206,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
           class="token"
         >
           <s-button-stub
+            borderradius="small"
             class="el-button--max"
             icon=""
             nativetype="button"
@@ -215,6 +222,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
           </s-button-stub>
            
           <s-button-stub
+            borderradius="small"
             class="el-button--choose-token"
             icon="chevron-bottom-rounded"
             nativetype="button"
@@ -237,6 +245,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
     </div>
      
     <s-button-stub
+      borderradius="small"
       icon=""
       nativetype="button"
       size="medium"
