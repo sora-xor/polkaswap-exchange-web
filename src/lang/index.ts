@@ -7,7 +7,7 @@ import en from './en'
 Vue.use(VueI18n)
 
 const messages = {
-  en: { ...en, ...walletEn }
+  en: { ...walletEn, ...en }
 }
 
 const i18n = new VueI18n({
