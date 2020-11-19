@@ -1,20 +1,25 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
-import SoramitsuElements from '@soramitsu/soramitsu-js-ui'
-import ConfirmCreatePair from '@/components/ConfirmCreatePair.vue'
+
+import CreatePairSubmit from '@/components/CreatePairSubmit.vue'
 import { tokens } from '@/mocks/tokens'
-import { TranslationMock } from '../../utils'
+import { SoramitsuElementsImport, TranslationMock } from '../../utils'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
-localVue.use(SoramitsuElements)
+SoramitsuElementsImport(localVue)
 
-describe('ConfirmCreatePair.vue', () => {
+describe('CreatePairSubmit.vue', () => {
+  let actions
   let getters
   let store
 
   beforeEach(() => {
-    TranslationMock(ConfirmCreatePair)
+    TranslationMock(CreatePairSubmit)
+
+    actions = {
+      createPair: jest.fn()
+    }
 
     getters = {
       firstToken: () => tokens[0],
@@ -27,6 +32,7 @@ describe('ConfirmCreatePair.vue', () => {
       modules: {
         createPair: {
           namespaced: true,
+          actions,
           getters
         }
       }
@@ -34,7 +40,7 @@ describe('ConfirmCreatePair.vue', () => {
   })
 
   it('should renders correctly', () => {
-    const wrapper = shallowMount(ConfirmCreatePair, { localVue, store, propsData: { visible: true } })
+    const wrapper = shallowMount(CreatePairSubmit, { localVue, store })
     expect(wrapper.element).toMatchSnapshot()
   })
 })

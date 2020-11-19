@@ -12,6 +12,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
     justify="space-between"
   >
     <s-button-stub
+      borderradius="small"
       icon="arrow-left"
       nativetype="button"
       size="small"
@@ -28,6 +29,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
     </div>
      
     <s-button-stub
+      borderradius="small"
       icon="info"
       nativetype="button"
       size="small"
@@ -56,21 +58,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
           
         </div>
          
-        <div
-          class="token-balance"
-        >
-          <span
-            class="token-balance-title"
-          >
-            
-          </span>
-           
-          <span
-            class="token-balance-value"
-          >
-            10000.00
-          </span>
-        </div>
+        <!---->
       </div>
        
       <div
@@ -83,6 +71,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
           <s-input-stub
             accept=""
             autocomplete="off"
+            borderradius="small"
             form=""
             label=""
             name=""
@@ -99,22 +88,10 @@ exports[`CreatePair.vue should renders correctly 1`] = `
         <div
           class="token"
         >
-          <s-button-stub
-            class="el-button--max"
-            icon=""
-            nativetype="button"
-            size="small"
-            tabindex="0"
-            tooltip=""
-            tooltipplacement="top"
-            type="tertiary"
-          >
-            
-            
-          
-          </s-button-stub>
+          <!---->
            
           <s-button-stub
+            borderradius="small"
             class="el-button--choose-token"
             icon="chevron-bottom-rounded"
             nativetype="button"
@@ -156,21 +133,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
           </span>
         </div>
          
-        <div
-          class="token-balance"
-        >
-          <span
-            class="token-balance-title"
-          >
-            
-          </span>
-           
-          <span
-            class="token-balance-value"
-          >
-            NaN
-          </span>
-        </div>
+        <!---->
       </div>
        
       <div
@@ -183,6 +146,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
           <s-input-stub
             accept=""
             autocomplete="off"
+            borderradius="small"
             form=""
             label=""
             name=""
@@ -199,22 +163,10 @@ exports[`CreatePair.vue should renders correctly 1`] = `
         <div
           class="token"
         >
-          <s-button-stub
-            class="el-button--max"
-            icon=""
-            nativetype="button"
-            size="small"
-            tabindex="0"
-            tooltip=""
-            tooltipplacement="top"
-            type="tertiary"
-          >
-            
-            
-          
-          </s-button-stub>
+          <!---->
            
           <s-button-stub
+            borderradius="small"
             class="el-button--choose-token"
             icon="chevron-bottom-rounded"
             nativetype="button"
@@ -237,6 +189,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
     </div>
      
     <s-button-stub
+      borderradius="small"
       icon=""
       nativetype="button"
       size="medium"

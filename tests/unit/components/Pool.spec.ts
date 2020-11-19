@@ -1,11 +1,10 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
-import SoramitsuElements from '@soramitsu/soramitsu-js-ui'
 
 import Pool from '@/components/Pool.vue'
-import { TranslationMock } from '../../utils'
+import { SoramitsuElementsImport, TranslationMock } from '../../utils'
 
 const localVue = createLocalVue()
-localVue.use(SoramitsuElements)
+SoramitsuElementsImport(localVue)
 
 describe('Pool.vue', () => {
   beforeEach(() => {

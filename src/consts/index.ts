@@ -1,9 +1,19 @@
 export enum PageNames {
   About = 'About',
   Exchange = 'Exchange',
+  Swap = 'Swap',
+  Pool = 'Pool',
   Stats = 'Stats',
   Support = 'Support',
+  Wallet = 'Wallet',
   CreatePair = 'CreatePair'
+}
+
+export enum Components {
+  SwapInfo = 'SwapInfo',
+  SelectToken = 'SelectToken',
+  ConfirmSwap = 'ConfirmSwap',
+  TransactionSubmit = 'TransactionSubmit'
 }
 
 export const MainMenu = [
@@ -11,6 +21,11 @@ export const MainMenu = [
   PageNames.Exchange,
   PageNames.Stats,
   PageNames.Support
+]
+
+export const ExchangeTabs = [
+  PageNames.Swap,
+  PageNames.Pool
 ]
 
 export enum Topics {

@@ -37,10 +37,13 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { formatNumber } from '@/utils'
-import SwapInfo from '@/components/SwapInfo.vue'
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
 
 @Component({
-  components: { SwapInfo }
+  components: {
+    SwapInfo: lazyComponent(Components.SwapInfo)
+  }
 })
 export default class ConfirmSwap extends Mixins(TranslationMixin) {
   @Getter tokenFrom!: any
@@ -76,10 +79,6 @@ export default class ConfirmSwap extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss">
-@import '../styles/layout';
-@import '../styles/typography';
-@import '../styles/soramitsu-variables';
-
 $el-dialog-class: '.el-dialog';
 $el-dialog-button-size: 40px;
 
@@ -104,7 +103,7 @@ $el-dialog-button-size: 40px;
     }
   }
   .transaction-number {
-    color: $s-color-base-content-primary;
+    color: var(--s-color-base-content-primary);
     font-weight: bold;
   }
   #{$el-dialog-class}__headerbtn {
@@ -112,20 +111,20 @@ $el-dialog-button-size: 40px;
     margin-left: auto;
     height: $el-dialog-button-size;
     width: $el-dialog-button-size;
-    background-color: $s-color-base-background;
-    border-color: $s-color-base-background;
+    background-color: var(--s-color-base-background);
+    border-color: var(--s-color-base-background);
     border-radius: $inner-spacing-small;
     #{$el-dialog-class}__close {
-      color: $s-color-base-content-primary;
+      color: var(--s-color-base-content-primary);
       font-weight: bold;
       font-size: $el-dialog-button-size / 2;
     }
-    color: $s-color-base-content-primary;
+    color: var(--s-color-base-content-primary);
     &:hover, &:active, &:focus {
-      background-color: $s-color-base-background-hover;
-      border-color: $s-color-base-background-hover;
+      background-color: var(--s-color-base-background-hover);
+      border-color: var(--s-color-base-background-hover);
       #{$el-dialog-class}__close {
-        color: $s-color-base-content-primary;
+        color: var(--s-color-base-content-primary);
       }
     }
   }
@@ -140,11 +139,6 @@ $el-dialog-button-size: 40px;
 </style>
 
 <style lang="scss" scoped>
-@import '../styles/mixins';
-@import '../styles/layout';
-@import '../styles/typography';
-@import '../styles/soramitsu-variables';
-
 .el-dialog--swap-confirm {
   .el-dialog {
     &__header {
@@ -186,7 +180,7 @@ $el-dialog-button-size: 40px;
   }
   .transaction-message {
     margin-top: $inner-spacing-big;
-    color: $s-color-base-content-tertiary;
+    color: var(--s-color-base-content-tertiary);
     line-height: 1.8;
   }
   .el-divider {

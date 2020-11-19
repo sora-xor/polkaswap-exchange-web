@@ -54,6 +54,7 @@ export default class About extends Mixins(TranslationMixin) {
   readonly AboutTopics = AboutTopics
 
   handleClickExchange (): void {
+    router.push({ name: PageNames.Swap })
   }
 
   handleGoToMedium (): void {
@@ -65,11 +66,6 @@ export default class About extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/soramitsu-variables';
-@import '../styles/breakpoints';
-@import '../styles/typography';
-@import '../styles/layout';
-
 .layout {
   flex-direction: column;
   height: 100%;
@@ -93,7 +89,7 @@ export default class About extends Mixins(TranslationMixin) {
         flex-direction: column;
         margin-left: 10%;
         > span {
-          color: $s-color-base-content-secondary;
+          color: var(--s-color-base-content-secondary);
           font-size: $s-font-size-mini;
         }
         .logo {
@@ -106,7 +102,7 @@ export default class About extends Mixins(TranslationMixin) {
     }
     .articles {
       .article-card {
-        background-color: $s-color-base-background;
+        background-color: var(--s-color-base-background);
         border-color: transparent;
         border-radius: $border-radius-big;
         margin: 4px;
@@ -117,7 +113,7 @@ export default class About extends Mixins(TranslationMixin) {
           display: flex;
           justify-content: space-between;
           i {
-            color: $s-color-theme-accent;
+            color: var(--s-color-theme-accent);
           }
         }
       }

@@ -4,12 +4,9 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 
-import * as storage from '@/utils/storage'
-
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
-    'GET_WALLET_CONNECTED',
     'GET_TOKEN_FROM',
     'GET_TOKEN_TO',
     'GET_FROM_VALUE',
@@ -23,7 +20,6 @@ const types = flow(
 
 function initialState () {
   return {
-    isWalletConnected: false,
     tokenFrom: null,
     tokenTo: null,
     fromValue: 0,
@@ -38,10 +34,6 @@ function initialState () {
 const state = initialState()
 
 const getters = {
-  isWalletConnected (state) {
-    // TODO: Add Connect Wallet functionality
-    return !!storage.getItem('address')
-  },
   tokenFrom (state) {
     return state.tokenFrom
   },
@@ -69,9 +61,6 @@ const getters = {
 }
 
 const mutations = {
-  [types.GET_WALLET_CONNECTED] (state, isWalletConnected: boolean) {
-    state.isWalletConnected = isWalletConnected
-  },
   [types.GET_TOKEN_FROM] (state, tokenFrom: any) {
     state.tokenFrom = tokenFrom
   },
@@ -93,10 +82,6 @@ const mutations = {
 }
 
 const actions = {
-  connectWallet ({ commit }, address: string) {
-    storage.setItem('address', address)
-    commit(types.GET_WALLET_CONNECTED, true)
-  },
   setTokenFrom ({ commit }, token: any) {
     commit(types.GET_TOKEN_FROM, token)
   },

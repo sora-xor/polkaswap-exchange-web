@@ -95,9 +95,6 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/layout';
-@import '../styles/soramitsu-variables';
-
 .swap-info {
   display: flex;
   align-items: center;
@@ -105,7 +102,7 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   width: 100%;
   padding-right: $border-radius-mini;
   padding-left: $border-radius-mini;
-  color: $s-color-base-content-secondary;
+  color: var(--s-color-base-content-secondary);
   &-container {
     width: 100%;
   }
@@ -117,10 +114,10 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   }
   .price-impact {
     &-positive {
-      color: $s-color-status-success;
+      color: var(--s-color-status-success);
     }
     &-negative {
-      color: $s-color-status-error;
+      color: var(--s-color-status-error);
     }
   }
   .el-tooltip {
@@ -130,10 +127,10 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
     position: relative;
     height: $inner-spacing-big;
     width: $inner-spacing-big;
-    background-color: $s-color-base-background;
+    background-color: var(--s-color-base-background);
     border-radius: $border-radius-small;
     &:hover {
-      background-color: $s-color-base-background-hover;
+      background-color: var(--s-color-base-background-hover);
       cursor: pointer;
     }
     &:before {

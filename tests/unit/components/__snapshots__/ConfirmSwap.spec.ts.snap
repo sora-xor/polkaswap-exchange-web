@@ -2,6 +2,7 @@
 
 exports[`ConfirmSwap.vue should renders correctly 1`] = `
 <s-dialog-stub
+  borderradius="small"
   class="el-dialog--swap-confirm"
   closeonclickmodal="true"
   closeonesc="true"
@@ -74,10 +75,8 @@ exports[`ConfirmSwap.vue should renders correctly 1`] = `
     type="secondary"
   />
    
-  <swap-info-stub
-    showprice="true"
-  />
+  <!---->
    
-  <swap-info-stub />
+  <!---->
 </s-dialog-stub>
 `;
