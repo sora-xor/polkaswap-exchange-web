@@ -1141,7 +1141,7 @@
   resolved "https://registry.yarnpkg.com/@soda/get-current-script/-/get-current-script-1.0.2.tgz#a53515db25d8038374381b73af20bb4f2e508d87"
   integrity sha512-T7VNNlYVM1SgQ+VsMYhnDkcGmWhQdL0bDyGm5TlQ3GBXnJscEClUUOKduWTmm2zCnvNLC1hc3JpuXjs/nFOc5w==
 
-"@soramitsu/soramitsu-js-ui@^0.5.4":
+"@soramitsu/soramitsu-js-ui@^0.5.8":
   version "0.5.8"
   resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-0.5.8.tgz#3518f5fcf24a4eac7ae8440178063b4077762e5a"
   integrity sha512-57TrORijGvSYyez5hOLimtsrHsMLl7cs4oR1gGHWInM9LUlZI6911nv4mdzj367cLOHmuGODADUq+PrrNrT0+A==
@@ -1167,16 +1167,17 @@
     vue-class-component "^7.2.3"
     vue-property-decorator "^8.4.1"
 
-"@soramitsu/soraneo-wallet-web@^0.1.1":
-  version "0.1.1"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-0.1.1.tgz#7e6d9a6b5043b4325d8e04081e2fed4cdf204867"
-  integrity sha512-JieP0GYEvCliwSkgHx1H6koeoZIA/r/mH6dEJrmPcTNH/qj7U5kk3QRU8W+ql8rYHwH1kmFpHJM7BR1W9wiIWQ==
+"@soramitsu/soraneo-wallet-web@^0.2.2":
+  version "0.2.2"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-0.2.2.tgz#f8b899f991d4f8a3d3afadd757d6f84868dac24d"
+  integrity sha512-0hC1IQSH8884UIvYg/MIySReXnHE1VnMfr7y1VCamwiHL/MatrUW5IpLV+B6aDDUIYmM98+DQ7mERII13s7HFw==
   dependencies:
-    "@soramitsu/soramitsu-js-ui" "^0.5.4"
+    "@soramitsu/soramitsu-js-ui" "^0.5.8"
     axios "^0.19.2"
     core-js "^3.6.4"
     crypto-js "^4.0.0"
     lodash "^4.17.15"
+    moment "^2.29.1"
     vue "^2.6.11"
     vue-class-component "^7.2.3"
     vue-property-decorator "^8.4.1"
@@ -8072,6 +8073,11 @@ moment@2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
+
+moment@^2.29.1:
+  version "2.29.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
+  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
