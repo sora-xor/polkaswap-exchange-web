@@ -82,8 +82,8 @@ $tooltip-button-height: var(--s-size-small);
     margin-bottom: $inner-spacing-mini;
     &-title {
       width: 100%;
-      padding-right: var(--s-size-small) + $inner-spacing-small;
-      padding-left: var(--s-size-small) + $inner-spacing-small;
+      padding-right: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
+      padding-left: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
       text-align: center;
       line-height: $tooltip-button-height;
     }

@@ -17,6 +17,7 @@
           <s-input
             v-model="formModel.from"
             v-float="formModel.from"
+            class="s-input--swap"
             :placeholder="inputPlaceholder"
             :disabled="!areTokensSelected"
             @change="handleChangeFieldFrom"
@@ -55,6 +56,7 @@
           <s-input
             v-model="formModel.to"
             v-float="formModel.to"
+            class="s-input--swap"
             :placeholder="inputPlaceholder"
             :disabled="!areTokensSelected"
             @change="handleChangeFieldTo"
@@ -271,7 +273,7 @@ export default class Swap extends Mixins(TranslationMixin) {
 $swap-input-class: ".el-input";
 
 .el-form--swap {
-  .s-input {
+  .s-input--swap {
     .el-input {
       #{$swap-input-class}__inner {
         padding-top: 0;

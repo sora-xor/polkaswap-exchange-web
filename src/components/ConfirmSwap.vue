@@ -80,61 +80,7 @@ export default class ConfirmSwap extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss">
-$el-dialog-class: '.el-dialog';
-$el-dialog-button-size: 40px;
-
-#{$el-dialog-class} {
-  &__wrapper #{$el-dialog-class} {
-    &__header,
-    &__footer {
-      padding: $inner-spacing-big;
-    }
-    &__body {
-      padding: $inner-spacing-mini $inner-spacing-big;
-    }
-  }
-  #{$el-dialog-class}__header {
-    display: inline-flex;
-    align-items: center;
-    width: 100%;
-    #{$el-dialog-class}__title {
-      font-size: $s-font-size-big;
-      font-weight: normal;
-    }
-  }
-  .transaction-number {
-    color: var(--s-color-base-content-primary);
-    font-weight: bold;
-  }
-  #{$el-dialog-class}__headerbtn {
-    position: static;
-    margin-left: auto;
-    height: $el-dialog-button-size;
-    width: $el-dialog-button-size;
-    background-color: var(--s-color-base-background);
-    border-color: var(--s-color-base-background);
-    border-radius: $inner-spacing-small;
-    #{$el-dialog-class}__close {
-      color: var(--s-color-base-content-primary);
-      font-weight: bold;
-      font-size: $el-dialog-button-size / 2;
-    }
-    color: var(--s-color-base-content-primary);
-    &:hover, &:active, &:focus {
-      background-color: var(--s-color-base-background-hover);
-      border-color: var(--s-color-base-background-hover);
-      #{$el-dialog-class}__close {
-        color: var(--s-color-base-content-primary);
-      }
-    }
-  }
-  #{$el-dialog-class}__footer {
-    .el-button {
-      padding: $inner-spacing-mini;
-      width: 100%;
-    }
-  }
-}
+  @include popup-styles('el-dialog--swap-confirm');
 </style>
 
 <style lang="scss" scoped>

@@ -5,7 +5,6 @@
     class="token-select"
     width="496px"
   >
-    <!-- TODO 4 alexnatalia: Fix styles (some of them are broken after merge) -->
     <template #title>
       <div class="token-select__title">
         {{ t('selectToken.title') }}
@@ -104,6 +103,7 @@ export default class SelectToken extends Mixins(TranslationMixin) {
     }
   }
 }
+@include popup-styles('token-select');
 </style>
 
 <style lang="scss" scoped>

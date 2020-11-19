@@ -56,6 +56,10 @@ export default class TransactionSubmit extends Mixins(TranslationMixin) {
 }
 </script>
 
+<style lang="scss">
+  @include popup-styles('el-dialog--transaction-submit');
+</style>
+
 <style lang="scss" scoped>
 $transactionIconSize: 68px;
 
