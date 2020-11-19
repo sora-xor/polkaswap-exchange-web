@@ -91,7 +91,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
           <!---->
            
           <s-button-stub
-            borderradius="small"
+            borderradius="medium"
             class="el-button--choose-token"
             icon="chevron-bottom-rounded"
             nativetype="button"
@@ -166,7 +166,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
           <!---->
            
           <s-button-stub
-            borderradius="small"
+            borderradius="medium"
             class="el-button--choose-token"
             icon="chevron-bottom-rounded"
             nativetype="button"

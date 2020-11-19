@@ -52,7 +52,7 @@ exports[`Swap.vue should renders correctly 1`] = `
         <!---->
          
         <s-button-stub
-          borderradius="small"
+          borderradius="medium"
           class="el-button--choose-token"
           icon="chevron-bottom-rounded"
           nativetype="button"
@@ -136,7 +136,7 @@ exports[`Swap.vue should renders correctly 1`] = `
         class="token"
       >
         <s-button-stub
-          borderradius="small"
+          borderradius="medium"
           class="el-button--choose-token"
           icon="chevron-bottom-rounded"
           nativetype="button"

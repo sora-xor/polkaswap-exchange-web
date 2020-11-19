@@ -2,7 +2,7 @@
 
 exports[`SelectToken.vue should renders correctly 1`] = `
 <s-dialog-stub
-  borderradius="small"
+  borderradius="medium"
   class="token-select"
   closeonclickmodal="true"
   closeonesc="true"
@@ -19,7 +19,7 @@ exports[`SelectToken.vue should renders correctly 1`] = `
   <s-input-stub
     accept=""
     autocomplete="off"
-    borderradius="small"
+    borderradius="mini"
     class="token-search"
     form=""
     label=""

@@ -2,7 +2,7 @@
 
 exports[`CreatePairSubmit.vue should renders correctly 1`] = `
 <s-dialog-stub
-  borderradius="small"
+  borderradius="medium"
   class="el-dialog--transaction-submit"
   closeonclickmodal="true"
   closeonesc="true"
