@@ -29,15 +29,16 @@
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
-            <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" @click="handleFirstMaxValue">
+            <!-- TODO 4 alexnatalia, stefashkaa: Add mini size here -->
+            <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="firstModalVisible = true">
+            <s-button type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="firstModalVisible = true">
               <token-logo :token="firstToken.symbol" size="small" />
               {{ firstToken.symbol }}
             </s-button>
           </div>
-          <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="firstModalVisible = true">
+          <s-button v-else type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="firstModalVisible = true">
             {{ t('swap.chooseToken') }}
           </s-button>
         </div>
@@ -64,20 +65,21 @@
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
-            <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" @click="handleSecondMaxValue">
+            <!-- TODO 4 alexnatalia, stefashkaa: Add mini size here -->
+            <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleSecondMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="secondModalVisible = true">
+            <s-button type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="secondModalVisible = true">
               <token-logo :token="secondToken.symbol" size="small" />
               {{ secondToken.symbol }}
             </s-button>
           </div>
-          <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="secondModalVisible = true">
+          <s-button v-else type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="secondModalVisible = true">
             {{t('swap.chooseToken')}}
           </s-button>
         </div>
       </div>
-        <s-button type="primary" size="medium" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="showConfirmDialog = true">
+        <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="showConfirmDialog = true">
         <template v-if="!areTokensSelected">
           {{ t('swap.chooseTokens') }}
         </template>
@@ -311,8 +313,8 @@ $swap-input-class: ".el-input";
   .header {
     margin-bottom: $inner-spacing-medium;
     .title {
-      font-size: 24px;
-      line-height: 130%;
+      font-size: $s-font-size-big;
+      line-height: $s-line-height-mini;
       letter-spacing: -0.02em;
       font-feature-settings: 'tnum' on, 'lnum' on, 'salt' on, 'case' on;
     }
@@ -324,17 +326,17 @@ $swap-input-class: ".el-input";
 .card {
   border: 1px solid var(--s-color-base-background-hover);
   box-sizing: border-box;
-  border-radius: 12px;
+  border-radius: var(--s-border-radius-small);
   margin: $inner-spacing-mini 0;
   padding: $inner-spacing-medium;
   &__title {
     font-weight: 600;
-    line-height: 1.8;
+    line-height: $s-line-height-medium;
     color: var(--s-color-base-content-primary);
   }
   &__data {
     color: var(--s-color-base-content-tertiary);
-    line-height: 1.8;
+    line-height: $s-line-height-medium;
     display: flex;
     justify-content: space-between;
   }
@@ -349,7 +351,7 @@ $swap-input-class: ".el-input";
   min-height: $inner-window-height;
   width: $inner-window-width;
   background-color: var(--s-color-utility-surface);
-  border-radius: $border-radius-medium;
+  border-radius: var(--s-border-radius-medium);
   box-shadow: var(--s-shadow-surface);
   color: var(--s-color-base-content-primary);
 }
@@ -362,7 +364,7 @@ $swap-input-class: ".el-input";
     padding: $inner-spacing-small $inner-spacing-medium $inner-spacing-mini;
     width: 100%;
     background-color: var(--s-color-base-background);
-    border-radius: $border-radius-mini;
+    border-radius: var(--s-border-radius-mini);
     .input-line {
       display: flex;
       justify-content: space-between;
@@ -405,34 +407,12 @@ $swap-input-class: ".el-input";
         font-size: $s-font-size-small;
       }
     }
-    .logo {
-      margin-right: $inner-spacing-mini;
-      order: 1;
-      height: 23px;
-      width: 23px;
-      background-color: var(--s-color-utility-surface);
-      border: 1px solid var(--s-color-utility-surface);
-      border-radius: $border-radius-small;
-      box-shadow: var(--s-shadow-tooltip);
-    }
   }
   .s-input {
     min-height: 0;
   }
-  .s-action {
-    background-color: var(--s-color-base-background);
-    border-color: var(--s-color-base-background);
-    border-radius: $border-radius-small;
-    &:not(:disabled) {
-      &:hover, &:focus {
-        background-color: var(--s-color-base-background-hover);
-        border-color: var(--s-color-base-background-hover);
-      }
-    }
-  }
   .s-tertiary {
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
-    border-radius: $border-radius-mini;
   }
   .el-button {
     &--switch-tokens {
@@ -449,7 +429,8 @@ $swap-input-class: ".el-input";
     &--max {
       margin-right: $inner-spacing-mini;
       padding-right: $inner-spacing-mini;
-      height: 24px;
+      font-size: $s-font-size-mini;
+      height: var(--s-size-mini)
     }
     &--empty-token {
       position: absolute;
@@ -462,7 +443,6 @@ $swap-input-class: ".el-input";
       padding-left: $inner-spacing-mini / 2;
       background-color: var(--s-color-base-background);
       border-color: var(--s-color-base-background);
-      border-radius: $border-radius-medium;
       color: var(--s-color-base-content-primary);
       &:hover, &:active, &:focus {
         background-color: var(--s-color-base-background-hover);
@@ -478,7 +458,6 @@ $swap-input-class: ".el-input";
   .s-primary {
     margin-top: $inner-spacing-medium;
     width: 100%;
-    border-radius: $border-radius-small;
     &:disabled {
       color: var(--s-color-base-on-disabled);
     }

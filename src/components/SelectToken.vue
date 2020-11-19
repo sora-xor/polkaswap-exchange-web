@@ -1,12 +1,14 @@
 <template>
   <s-dialog
     :visible.sync="dialogVisible"
-    width="496px"
+    borderRadius="medium"
     class="token-select"
+    width="496px"
   >
+    <!-- TODO 4 alexnatalia: Fix styles (some of them are broken after merge) -->
     <template #title>
       <div class="token-select__title">
-      {{ t('selectToken.title') }}
+        {{ t('selectToken.title') }}
       </div>
     </template>
 
@@ -16,6 +18,7 @@
       class="token-search"
       prefix="el-icon-search"
       size="medium"
+      borderRadius="mini"
     />
     <div v-if="filteredTokens && filteredTokens.length > 0" class="token-list">
       <div v-for="token in filteredTokens" @click="selectToken($event, token)" :key="token.symbol" class="token-item">
@@ -94,13 +97,11 @@ export default class SelectToken extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .token-select {
-  .el-dialog__body {
-    padding: 0 !important;
-  }
-}
-.token-search {
-  .el-input__inner {
-    border-radius: 8px;
+  .el-dialog {
+    overflow: hidden;
+    &__body {
+      padding: 0 !important;
+    }
   }
 }
 </style>
@@ -109,8 +110,8 @@ export default class SelectToken extends Mixins(TranslationMixin) {
 $container-spacing: 24px;
 
 .token-select__title {
-  margin-left: 4px;
-  font-size: 24px;
+  margin-left: $inner-spacing-mini / 2;
+  font-size: $s-font-size-big;
   letter-spacing: -0.02em;
 }
 .token-search {

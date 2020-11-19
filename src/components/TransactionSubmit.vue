@@ -2,6 +2,7 @@
   <s-dialog
     :visible.sync="visible"
     :title="t('exchange.transactionSubmitted')"
+    borderRadius="medium"
     class="el-dialog--transaction-submit"
     width="496px"
   >
@@ -16,7 +17,7 @@
     </div>
     <s-divider />
     <template #footer>
-      <s-button type="primary" size="medium" @click="handleClose">{{ t('exchange.ok') }}</s-button>
+      <s-button type="primary" @click="handleClose">{{ t('exchange.ok') }}</s-button>
     </template>
   </s-dialog>
 </template>
@@ -79,7 +80,7 @@ $transactionIconSize: 68px;
       font-size: 10px;
       font-weight: bold;
       background-color: var(--s-color-base-background);
-      border-radius: $border-radius-mini;
+      border-radius: var(--s-border-radius-mini);
     }
     &-info {
       margin-right: $inner-spacing-mini;

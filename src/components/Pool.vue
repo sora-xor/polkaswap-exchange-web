@@ -2,11 +2,11 @@
   <div class="el-form--pool">
     <div class="pool-header">
       <h3 class="pool-header-title">{{ t('pool.yourLiquidity') }}</h3>
-      <s-tooltip class="pool-header-icon" :content="t('pool.yourLiquidityTooltip')" theme="light" placement="bottom-end" :show-arrow="false">
+      <s-tooltip class="pool-header-icon" borderRadius="mini" :content="t('pool.yourLiquidityTooltip')" theme="light" placement="bottom-end" :show-arrow="false">
         <s-icon name="info" size="16"/>
       </s-tooltip>
     </div>
-    <p v-if="!isWalletConnected" class="pool-info">
+    <p v-if="!connected" class="pool-info">
       {{ t('pool.connectToWallet') }}
     </p>
     <p v-else-if="!liquidity" class="pool-info">
@@ -18,10 +18,10 @@
         <div>Lorem Ipsum</div>
       </s-collapse-item>
     </s-collapse>
-    <s-button type="primary" size="medium" @click="handleAddLiquidity">
+    <s-button type="primary" @click="handleAddLiquidity">
       {{ t('pool.addLiquidity') }}
     </s-button>
-    <s-button v-if="isWalletConnected" type="secondary" size="medium" @click="handleCreatePair">
+    <s-button v-if="connected" type="secondary" @click="handleCreatePair">
       {{ t('pool.createPair') }}
     </s-button>
   </div>
@@ -31,18 +31,24 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import { isWalletConnected } from '@/utils'
 
 @Component
 export default class Pool extends Mixins(TranslationMixin) {
-  @Getter isWalletConnected!: any
   @Getter liquidity!: any
+
+  get connected (): boolean {
+    return isWalletConnected()
+  }
 
   handleAddLiquidity (): void {
     // TODO: Add Liquidity here
+    console.log('handleAddLiquidity')
   }
 
   handleCreatePair (): void {
     // TODO: Link with Create Pair functionality
+    console.log('handleCreatePair')
   }
 
   handleChoosePair (): void {
@@ -52,13 +58,7 @@ export default class Pool extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
-// TODO: check this imports after imports fixing
-@import '../styles/mixins';
-@import '../styles/layout';
-@import '../styles/typography';
-@import '../styles/soramitsu-variables';
-
-$tooltip-button-height: $s-size-small;
+$tooltip-button-height: var(--s-size-small);
 
 .el-form--pool {
   display: flex;
@@ -67,7 +67,6 @@ $tooltip-button-height: $s-size-small;
   .el-button {
     margin-top: $inner-spacing-mini;
     width: 100%;
-    border-radius: $border-radius-small;
     & ~ .el-button {
       margin-left: 0;
       color: var(--s-color-theme-accent);
@@ -83,8 +82,8 @@ $tooltip-button-height: $s-size-small;
     margin-bottom: $inner-spacing-mini;
     &-title {
       width: 100%;
-      padding-right: $s-size-small + $inner-spacing-small;
-      padding-left: $s-size-small + $inner-spacing-small;
+      padding-right: var(--s-size-small) + $inner-spacing-small;
+      padding-left: var(--s-size-small) + $inner-spacing-small;
       text-align: center;
       line-height: $tooltip-button-height;
     }
@@ -95,7 +94,7 @@ $tooltip-button-height: $s-size-small;
       height: $tooltip-button-height;
       width: $tooltip-button-height;
       background-color: var(--s-color-base-background);
-      border-radius: $border-radius-small;
+      border-radius: var(--s-border-radius-small);
       text-align: center;
       cursor: pointer;
       &:before {
@@ -106,8 +105,8 @@ $tooltip-button-height: $s-size-small;
   }
   &-info {
     width: 100%;
-    padding: 21px;
-    border-radius: $border-radius-small;
+    padding: $inner-spacing-big;
+    border-radius: var(--s-border-radius-small);
     border: 1px solid var(--s-color-base-border-secondary);
     color: var(--s-color-base-content-tertiary);
     font-size: $s-font-size-mini;

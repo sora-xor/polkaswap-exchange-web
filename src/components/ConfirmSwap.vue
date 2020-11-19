@@ -2,6 +2,7 @@
   <s-dialog
     :visible.sync="visible"
     :title="t('swap.confirmSwap')"
+    borderRadius="medium"
     class="el-dialog--swap-confirm"
     width="496px"
   >
@@ -27,7 +28,7 @@
     <swap-info :showPrice="true" />
     <swap-info />
     <template #footer>
-      <s-button type="primary" size="medium" @click="handleConfirmSwap">{{ t('swap.confirmSwap') }}</s-button>
+      <s-button type="primary" @click="handleConfirmSwap">{{ t('swap.confirmSwap') }}</s-button>
     </template>
   </s-dialog>
 </template>
@@ -84,7 +85,6 @@ $el-dialog-button-size: 40px;
 
 #{$el-dialog-class} {
   &__wrapper #{$el-dialog-class} {
-    border-radius: $border-radius-medium;
     &__header,
     &__footer {
       padding: $inner-spacing-big;
@@ -131,7 +131,6 @@ $el-dialog-button-size: 40px;
   #{$el-dialog-class}__footer {
     .el-button {
       padding: $inner-spacing-mini;
-      border-radius: $border-radius-small;
       width: 100%;
     }
   }
@@ -181,7 +180,7 @@ $el-dialog-button-size: 40px;
   .transaction-message {
     margin-top: $inner-spacing-big;
     color: var(--s-color-base-content-tertiary);
-    line-height: 1.8;
+    line-height: $s-line-height-medium;
   }
   .el-divider {
     margin-top: $inner-spacing-mini;

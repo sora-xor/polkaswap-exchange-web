@@ -2,6 +2,7 @@
   <s-dialog
     :title="t('confirmSupply.title')"
     :visible.sync="visible"
+    borderRadius="medium"
     class="el-dialog__supply-confirm"
     width="496px"
   >
@@ -41,7 +42,7 @@
       </s-row>
     </div>
     <template #footer>
-      <s-button type="primary" size="medium" @click="handleConfirmCreatePair">{{ t('confirmSupply.confirm') }}</s-button>
+      <s-button type="primary" @click="handleConfirmCreatePair">{{ t('confirmSupply.confirm') }}</s-button>
     </template>
   </s-dialog>
 </template>
@@ -82,7 +83,6 @@ $el-dialog-button-size: 40px;
 
 #{$el-dialog-class} {
   &__wrapper #{$el-dialog-class} {
-    border-radius: $border-radius-medium;
     &__header,
     &__footer {
       padding: $inner-spacing-big;
@@ -129,7 +129,6 @@ $el-dialog-button-size: 40px;
   #{$el-dialog-class}__footer {
     .el-button {
       padding: $inner-spacing-mini;
-      border-radius: $border-radius-small;
       width: 100%;
     }
   }
@@ -139,7 +138,7 @@ $el-dialog-button-size: 40px;
 <style lang="scss" scoped>
 .tokens {
   font-size: 30px;
-  line-height: 1.3;
+  line-height: $s-line-height-mini;
   .token {
     &-logo {
       display: inline-block;
@@ -148,12 +147,12 @@ $el-dialog-button-size: 40px;
 }
 .output-description {
   font-size: $s-font-size-mini;
-  line-height: 1.8;
+  line-height: $s-line-height-medium;
   margin-top: $inner-spacing-mini;
   margin-bottom: $inner-spacing-mini;
 }
 .pair-info {
-  line-height: 1.8;
+  line-height: $s-line-height-medium;
   &__line {
     margin-top: $inner-spacing-medium;
     margin-bottom: $inner-spacing-medium;

@@ -25,20 +25,20 @@
         </s-form-item>
         <div v-if="tokenFrom" class="token">
           <!-- TODO: Fix secondary сolors in UI Library and project -->
-          <s-button v-if="connected && areTokensSelected" class="el-button--max" type="tertiary" size="small" @click="handleMaxFromValue">
+          <s-button v-if="connected && areTokensSelected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleMaxFromValue">
             {{ t('exchange.max') }}
           </s-button>
-          <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken(true)">
+          <s-button type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken(true)">
             <span :class="getTokenClasses(tokenFrom)" />
             {{ tokenFrom.symbol }}
           </s-button>
         </div>
-        <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="handleChooseToken(true)">
+        <s-button v-else type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="handleChooseToken(true)">
           {{ t('swap.chooseToken') }}
         </s-button>
       </div>
     </div>
-    <s-button class="el-button--switch-tokens" type="action" size="medium" icon="change-positions" @click="handleSwitchTokens" />
+    <s-button class="el-button--switch-tokens" type="action" icon="change-positions" @click="handleSwitchTokens" />
     <div class="input-container">
       <div class="input-line">
         <div class="input-title">
@@ -62,21 +62,21 @@
           />
         </s-form-item>
         <div v-if="tokenTo" class="token">
-          <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken">
+          <s-button type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken">
             <span :class="getTokenClasses(tokenTo)" />
             {{ tokenTo.symbol }}
           </s-button>
         </div>
-        <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="handleChooseToken">
+        <s-button v-else type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="handleChooseToken">
           {{ t('swap.chooseToken') }}
         </s-button>
       </div>
     </div>
     <swap-info v-if="areTokensSelected" :showPrice="true" :showSlippageTolerance="true" />
-    <s-button v-if="!connected" type="primary" size="medium" @click="handleConnectWallet">
+    <s-button v-if="!connected" type="primary" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
-    <s-button v-else type="primary" size="medium" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="handleConfirmSwap">
+    <s-button v-else type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="handleConfirmSwap">
       <template v-if="!areTokensSelected">
         {{ t('swap.chooseTokens') }}
       </template>
@@ -159,7 +159,7 @@ export default class Swap extends Mixins(TranslationMixin) {
 
   getTokenBalance (token: any): string {
     if (token) {
-      return formatNumber(token.balance, 2)
+      return formatNumber(token.balance ? token.balance : 0, 2)
     }
     return ''
   }
@@ -331,7 +331,6 @@ $swap-input-class: ".el-input";
   padding: $inner-spacing-mini;
   max-width: 320px;
   border: none !important;
-  border-radius: $border-radius-mini;
   box-shadow: var(--s-shadow-tooltip);
   font-size: $s-font-size-small;
   line-height: 1.785;
@@ -348,7 +347,7 @@ $swap-input-class: ".el-input";
     padding: $inner-spacing-small $inner-spacing-medium $inner-spacing-mini;
     width: 100%;
     background-color: var(--s-color-base-background);
-    border-radius: $border-radius-mini;
+    border-radius: var(--s-border-radius-mini);
     .input-line {
       display: flex;
       justify-content: space-between;
@@ -396,12 +395,8 @@ $swap-input-class: ".el-input";
   .s-input {
     min-height: 0;
   }
-  .s-action {
-    border-radius: $border-radius-small;
-  }
   .s-tertiary {
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
-    border-radius: $border-radius-mini;
   }
   .el-button {
     &--switch-tokens {
@@ -431,7 +426,6 @@ $swap-input-class: ".el-input";
       padding-left: $inner-spacing-mini / 2;
       background-color: var(--s-color-base-background);
       border-color: var(--s-color-base-background);
-      border-radius: $border-radius-medium;
       color: var(--s-color-base-content-primary);
       &:hover, &:active, &:focus {
         background-color: var(--s-color-base-background-hover);
@@ -443,7 +437,6 @@ $swap-input-class: ".el-input";
   .s-primary {
     margin-top: $inner-spacing-medium;
     width: 100%;
-    border-radius: $border-radius-small;
     &:disabled {
       color: var(--s-color-base-on-disabled);
     }

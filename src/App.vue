@@ -20,9 +20,9 @@
       </s-menu-item>
       <div class="controls">
         <div class="buttons">
-          <s-button class="wallet" type="action" size="medium" icon="wallet" rounded @click="goTo(PageNames.Wallet)" />
-          <s-button type="action" size="medium" icon="settings" rounded />
-          <s-button type="action" size="medium" icon="search" rounded />
+          <s-button class="wallet" type="action" icon="wallet" rounded @click="goTo(PageNames.Wallet)" />
+          <s-button type="action" icon="settings" rounded />
+          <s-button type="action" icon="search" rounded />
         </div>
       </div>
     </s-menu>
