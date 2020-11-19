@@ -20,8 +20,29 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/exchange',
+    redirect: '/exchange/swap'
+  },
+  {
+    path: '/exchange',
     name: PageNames.Exchange,
-    component: lazyView(PageNames.Exchange)
+    component: lazyView(PageNames.Exchange),
+    children: [
+      {
+        path: 'swap',
+        name: PageNames.Swap,
+        component: lazyComponent(PageNames.Swap)
+      },
+      {
+        path: 'pool',
+        name: PageNames.Pool,
+        component: lazyComponent(PageNames.Pool)
+      }
+    ]
+  },
+  {
+    path: '/exchange/wallet',
+    name: PageNames.Wallet,
+    component: lazyView(PageNames.Wallet)
   },
   {
     path: '/stats',

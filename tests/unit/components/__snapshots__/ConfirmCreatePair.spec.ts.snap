@@ -2,6 +2,7 @@
 
 exports[`ConfirmCreatePair.vue should renders correctly 1`] = `
 <s-dialog-stub
+  borderradius="small"
   class="el-dialog__supply-confirm"
   closeonclickmodal="true"
   closeonesc="true"

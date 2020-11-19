@@ -13,7 +13,7 @@
       <div class="input-container">
         <div class="input-line">
           <div class="input-title">{{ t('createPair.deposit') }}</div>
-          <div v-if="isWalletConnected && firstToken" class="token-balance">
+          <div v-if="connected && firstToken" class="token-balance">
             <span class="token-balance-title">{{ t('createPair.balance') }}</span>
             <span class="token-balance-value">{{ getTokenBalance(firstToken) }}</span>
           </div>
@@ -29,7 +29,7 @@
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
-            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" @click="handleFirstMaxValue">
+            <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
             <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="firstModalVisible = true">
@@ -48,7 +48,7 @@
           <div class="input-title">
             <span>{{ t('createPair.deposit') }}</span>
           </div>
-          <div v-if="isWalletConnected && secondToken" class="token-balance">
+          <div v-if="connected && secondToken" class="token-balance">
             <span class="token-balance-title">{{ t('exchange.balance') }}</span>
             <span class="token-balance-value">{{ getTokenBalance(secondToken.balance) }}</span>
           </div>
@@ -64,7 +64,7 @@
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
-            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" @click="handleSecondMaxValue">
+            <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" @click="handleSecondMaxValue">
               {{ t('exchange.max') }}
             </s-button>
             <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="secondModalVisible = true">
@@ -145,15 +145,13 @@ import CreatePairSubmit from '@/components/CreatePairSubmit.vue'
 import TokenLogo from '@/components/TokenLogo.vue'
 
 import router from '@/router'
-import { formatNumber } from '@/utils'
+import { formatNumber, isWalletConnected } from '@/utils'
 const namespace = 'createPair'
 
 @Component({
   components: { SelectToken, ConfirmCreatePair, CreatePairSubmit, TokenLogo }
 })
 export default class CreatePair extends Mixins(TranslationMixin) {
-  isWalletConnected = true
-
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
@@ -176,6 +174,10 @@ export default class CreatePair extends Mixins(TranslationMixin) {
   }
 
   formatNumber = formatNumber
+
+  get connected (): boolean {
+    return isWalletConnected()
+  }
 
   get firstPerSecondPrice (): string {
     return formatNumber(this.firstToken.price / this.secondToken.price, 2)
@@ -243,15 +245,11 @@ export default class CreatePair extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss">
-@import '../styles/layout';
-@import '../styles/soramitsu-variables';
-
 $swap-input-class: ".el-input";
 
 .plus {
   padding: $inner-spacing-medium;
 }
-
 .el-form--create-pair {
   .s-input {
     .el-input {
@@ -260,25 +258,25 @@ $swap-input-class: ".el-input";
       }
     }
     #{$swap-input-class}__inner {
-      height: $s-size-small;
+      height: var(--s-size-small);
       padding-right: 0;
       padding-left: 0;
       border-radius: 0;
       border-bottom-width: 2px;
-      color: $s-color-base-content-primary;
+      color: var(--s-color-base-content-primary);
       font-size: 20px;
       line-height: 1.26;
       &, &:hover, &:focus {
-        background-color: $s-color-base-background;
-        border-color: $s-color-base-background;
+        background-color: var(--s-color-base-background);
+        border-color: var(--s-color-base-background);
       }
       &:disabled {
-        color: $s-color-base-content-tertiary;
+        color: var(--s-color-base-content-tertiary);
       }
       &:not(:disabled) {
         &:hover, &:focus {
-          border-bottom-color: $s-color-base-content-primary;
-          color: $s-color-base-content-primary;
+          border-bottom-color: var(--s-color-base-content-primary);
+          color: var(--s-color-base-content-primary);
         }
       }
     }
@@ -309,11 +307,9 @@ $swap-input-class: ".el-input";
     }
   }
 }
-
 .create-pair-container {
   .header {
     margin-bottom: $inner-spacing-medium;
-
     .title {
       font-size: 24px;
       line-height: 130%;
@@ -325,46 +321,38 @@ $swap-input-class: ".el-input";
 </style>
 
 <style lang="scss" scoped>
-@import '../styles/layout';
-@import '../styles/soramitsu-variables';
-
 .card {
-  border: 1px solid $s-color-base-background-hover;
+  border: 1px solid var(--s-color-base-background-hover);
   box-sizing: border-box;
   border-radius: 12px;
   margin: $inner-spacing-mini 0;
   padding: $inner-spacing-medium;
-
-  .card__title {
+  &__title {
     font-weight: 600;
-    line-height: 180%;
-    color: #26262D;
+    line-height: 1.8;
+    color: var(--s-color-base-content-primary);
   }
-
-  .card__data {
-    color: #53565A;
-    line-height: 180%;
+  &__data {
+    color: var(--s-color-base-content-tertiary);
+    line-height: 1.8;
     display: flex;
     justify-content: space-between;
   }
-
   .el-divider {
     margin-top: $inner-spacing-mini;
     margin-bottom: $inner-spacing-mini;
   }
 }
-
 .create-pair-container {
   margin: $inner-spacing-big auto;
   padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
   min-height: $inner-window-height;
   width: $inner-window-width;
-  background-color: $s-color-utility-surface;
+  background-color: var(--s-color-utility-surface);
   border-radius: $border-radius-medium;
-  box-shadow: $s-shadow-surface;
-  color: $s-color-base-content-primary;
+  box-shadow: var(--s-shadow-surface);
+  color: var(--s-color-base-content-primary);
 }
-
 .el-form--create-pair {
   display: flex;
   flex-direction: column;
@@ -373,7 +361,7 @@ $swap-input-class: ".el-input";
     position: relative;
     padding: $inner-spacing-small $inner-spacing-medium $inner-spacing-mini;
     width: 100%;
-    background-color: $s-color-base-background;
+    background-color: var(--s-color-base-background);
     border-radius: $border-radius-mini;
     .input-line {
       display: flex;
@@ -413,7 +401,7 @@ $swap-input-class: ".el-input";
     .token-balance {
       margin-left: auto;
       &-title {
-        color: $s-color-base-content-tertiary;
+        color: var(--s-color-base-content-tertiary);
         font-size: $s-font-size-small;
       }
     }
@@ -422,45 +410,29 @@ $swap-input-class: ".el-input";
       order: 1;
       height: 23px;
       width: 23px;
-      background-color: $s-color-utility-surface;
-      border: 1px solid $s-color-utility-surface;
+      background-color: var(--s-color-utility-surface);
+      border: 1px solid var(--s-color-utility-surface);
       border-radius: $border-radius-small;
-      box-shadow: $s-shadow-tooltip;
+      box-shadow: var(--s-shadow-tooltip);
     }
   }
   .s-input {
     min-height: 0;
   }
   .s-action {
-    background-color: $s-color-base-background;
-    border-color: $s-color-base-background;
+    background-color: var(--s-color-base-background);
+    border-color: var(--s-color-base-background);
     border-radius: $border-radius-small;
     &:not(:disabled) {
       &:hover, &:focus {
-        background-color: $s-color-base-background-hover;
-        border-color: $s-color-base-background-hover;
+        background-color: var(--s-color-base-background-hover);
+        border-color: var(--s-color-base-background-hover);
       }
     }
   }
   .s-tertiary {
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
-    background-color: $s-color-button-tertiary-background;
-    border-color: $s-color-button-tertiary-background;
     border-radius: $border-radius-mini;
-    color: $s-color-button-tertiary-color;
-    &:hover {
-      background-color: $s-color-button-tertiary-background-hover;
-      border-color: $s-color-button-tertiary-background-hover;
-    }
-    &:active {
-      background-color: $s-color-button-tertiary-background-pressed;
-      border-color: $s-color-button-tertiary-background-pressed;
-      color: $s-color-button-tertiary-color-active;
-    }
-    &:focus {
-      background-color: $s-color-button-tertiary-background-focused;
-      border-color: $s-color-button-tertiary-background-focused;
-    }
   }
   .el-button {
     &--switch-tokens {
@@ -488,14 +460,14 @@ $swap-input-class: ".el-input";
       margin-left: 0;
       margin-right: -$inner-spacing-mini;
       padding-left: $inner-spacing-mini / 2;
-      background-color: $s-color-base-background;
-      border-color: $s-color-base-background;
+      background-color: var(--s-color-base-background);
+      border-color: var(--s-color-base-background);
       border-radius: $border-radius-medium;
-      color: $s-color-base-content-primary;
+      color: var(--s-color-base-content-primary);
       &:hover, &:active, &:focus {
-        background-color: $s-color-base-background-hover;
-        border-color: $s-color-base-background-hover;
-        color: $s-color-base-content-primary;
+        background-color: var(--s-color-base-background-hover);
+        border-color: var(--s-color-base-background-hover);
+        color: var(--s-color-base-content-primary);
       }
     }
     &.el-button--switch-price {
@@ -508,9 +480,8 @@ $swap-input-class: ".el-input";
     width: 100%;
     border-radius: $border-radius-small;
     &:disabled {
-      color: $s-color-base-on-disabled;
+      color: var(--s-color-base-on-disabled);
     }
   }
 }
-
 </style>

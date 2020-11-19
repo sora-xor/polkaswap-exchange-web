@@ -7,7 +7,7 @@
     <div class="input-container">
       <div class="input-line">
         <div class="input-title">{{ t('exchange.from') }}</div>
-        <div v-if="isWalletConnected && tokenFrom" class="token-balance">
+        <div v-if="connected && tokenFrom" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
           <span class="token-balance-value">{{ getTokenBalance(tokenFrom) }}</span>
         </div>
@@ -25,7 +25,7 @@
         </s-form-item>
         <div v-if="tokenFrom" class="token">
           <!-- TODO: Fix secondary сolors in UI Library and project -->
-          <s-button v-if="isWalletConnected && areTokensSelected" class="el-button--max" type="tertiary" size="small" @click="handleMaxFromValue">
+          <s-button v-if="connected && areTokensSelected" class="el-button--max" type="tertiary" size="small" @click="handleMaxFromValue">
             {{ t('exchange.max') }}
           </s-button>
           <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken(true)">
@@ -45,7 +45,7 @@
           <span>{{ t('exchange.to') }}</span>
           <span v-if="tokenTo" class="input-title-estimated">({{ t('swap.estimated') }})</span>
         </div>
-        <div v-if="isWalletConnected && tokenTo" class="token-balance">
+        <div v-if="connected && tokenTo" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
           <span class="token-balance-value">{{ getTokenBalance(tokenTo) }}</span>
         </div>
@@ -73,7 +73,7 @@
       </div>
     </div>
     <swap-info v-if="areTokensSelected" :showPrice="true" :showSlippageTolerance="true" />
-    <s-button v-if="!isWalletConnected" type="primary" size="medium" @click="handleConnectWallet">
+    <s-button v-if="!connected" type="primary" size="medium" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
     <s-button v-else type="primary" size="medium" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="handleConfirmSwap">
@@ -87,7 +87,7 @@
         {{ t('swap.insufficientBalance', { tokenSymbol: tokenFrom.symbol }) }}
       </template>
       <template v-else>
-        {{ t('exchange.swap') }}
+        {{ t('exchange.Swap') }}
       </template>
     </s-button>
     <swap-info v-if="areTokensSelected" />
@@ -101,23 +101,24 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import { formatNumber } from '@/utils'
-import SwapInfo from '@/components/SwapInfo.vue'
-import SelectToken from '@/components/SelectToken.vue'
-import ConfirmSwap from '@/components/ConfirmSwap.vue'
-import TransactionSubmit from '@/components/TransactionSubmit.vue'
+import { formatNumber, isWalletConnected } from '@/utils'
+import router, { lazyComponent } from '@/router'
+import { Components, PageNames } from '@/consts'
 
 @Component({
-  components: { SwapInfo, SelectToken, ConfirmSwap, TransactionSubmit }
+  components: {
+    SwapInfo: lazyComponent(Components.SwapInfo),
+    SelectToken: lazyComponent(Components.SelectToken),
+    ConfirmSwap: lazyComponent(Components.ConfirmSwap),
+    TransactionSubmit: lazyComponent(Components.TransactionSubmit)
+  }
 })
 export default class Swap extends Mixins(TranslationMixin) {
-  @Getter isWalletConnected!: any
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
   @Getter fromValue!: number
   @Getter toValue!: number
   @Getter isSwapConfirmed!: boolean
-  @Action connectWallet
   @Action setTokenFrom
   @Action setTokenTo
   @Action setFromValue
@@ -135,6 +136,10 @@ export default class Swap extends Mixins(TranslationMixin) {
   formModel = {
     from: formatNumber(0, 1),
     to: formatNumber(0, 1)
+  }
+
+  get connected (): boolean {
+    return isWalletConnected()
   }
 
   get areTokensSelected (): boolean {
@@ -220,9 +225,7 @@ export default class Swap extends Mixins(TranslationMixin) {
   }
 
   handleConnectWallet (): void {
-    // TODO: Add Connect Wallet functionality, right now updated the value only on page reloading
-    this.connectWallet('43f65bccca11ff53840a85d5af5bf1d1762f92a8e03')
-    location.reload()
+    router.push({ name: PageNames.Wallet })
   }
 
   handleConfirmSwap (): void {
@@ -265,10 +268,6 @@ export default class Swap extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss">
-@import '../styles/layout';
-@import '../styles/typography';
-@import '../styles/soramitsu-variables';
-
 $swap-input-class: ".el-input";
 
 .el-form--swap {
@@ -279,25 +278,25 @@ $swap-input-class: ".el-input";
       }
     }
     #{$swap-input-class}__inner {
-      height: $s-size-small;
+      height: var(--s-size-small);
       padding-right: 0;
       padding-left: 0;
       border-radius: 0;
       border-bottom-width: 2px;
-      color: $s-color-base-content-primary;
+      color: var(--s-color-base-content-primary);
       font-size: 20px;
       line-height: 1.26;
       &, &:hover, &:focus {
-        background-color: $s-color-base-background;
-        border-color: $s-color-base-background;
+        background-color: var(--s-color-base-background);
+        border-color: var(--s-color-base-background);
       }
       &:disabled {
-        color: $s-color-base-content-tertiary;
+        color: var(--s-color-base-content-tertiary);
       }
       &:not(:disabled) {
         &:hover, &:focus {
-          border-bottom-color: $s-color-base-content-primary;
-          color: $s-color-base-content-primary;
+          border-bottom-color: var(--s-color-base-content-primary);
+          color: var(--s-color-base-content-primary);
         }
       }
     }
@@ -328,23 +327,18 @@ $swap-input-class: ".el-input";
     }
   }
 }
-
 .el-tooltip__popper.is-light {
   padding: $inner-spacing-mini;
   max-width: 320px;
   border: none !important;
   border-radius: $border-radius-mini;
-  box-shadow: $s-shadow-tooltip;
+  box-shadow: var(--s-shadow-tooltip);
   font-size: $s-font-size-small;
   line-height: 1.785;
 }
 </style>
 
 <style lang="scss" scoped>
-@import '../styles/mixins';
-@import '../styles/layout';
-@import '../styles/soramitsu-variables';
-
 .el-form--swap {
   display: flex;
   flex-direction: column;
@@ -353,7 +347,7 @@ $swap-input-class: ".el-input";
     position: relative;
     padding: $inner-spacing-small $inner-spacing-medium $inner-spacing-mini;
     width: 100%;
-    background-color: $s-color-base-background;
+    background-color: var(--s-color-base-background);
     border-radius: $border-radius-mini;
     .input-line {
       display: flex;
@@ -389,7 +383,7 @@ $swap-input-class: ".el-input";
     .token-balance {
       margin-left: auto;
       &-title {
-        color: $s-color-base-content-tertiary;
+        color: var(--s-color-base-content-tertiary);
         font-size: $s-font-size-small;
       }
     }
@@ -403,35 +397,11 @@ $swap-input-class: ".el-input";
     min-height: 0;
   }
   .s-action {
-    background-color: $s-color-base-background;
-    border-color: $s-color-base-background;
     border-radius: $border-radius-small;
-    &:not(:disabled) {
-      &:hover, &:focus {
-        background-color: $s-color-base-background-hover;
-        border-color: $s-color-base-background-hover;
-      }
-    }
   }
   .s-tertiary {
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
-    background-color: $s-color-button-tertiary-background;
-    border-color: $s-color-button-tertiary-background;
     border-radius: $border-radius-mini;
-    color: $s-color-button-tertiary-color;
-    &:hover {
-      background-color: $s-color-button-tertiary-background-hover;
-      border-color: $s-color-button-tertiary-background-hover;
-    }
-    &:active {
-      background-color: $s-color-button-tertiary-background-pressed;
-      border-color: $s-color-button-tertiary-background-pressed;
-      color: $s-color-button-tertiary-color-active;
-    }
-    &:focus {
-      background-color: $s-color-button-tertiary-background-focused;
-      border-color: $s-color-button-tertiary-background-focused;
-    }
   }
   .el-button {
     &--switch-tokens {
@@ -459,14 +429,14 @@ $swap-input-class: ".el-input";
       margin-left: 0;
       margin-right: -$inner-spacing-mini;
       padding-left: $inner-spacing-mini / 2;
-      background-color: $s-color-base-background;
-      border-color: $s-color-base-background;
+      background-color: var(--s-color-base-background);
+      border-color: var(--s-color-base-background);
       border-radius: $border-radius-medium;
-      color: $s-color-base-content-primary;
+      color: var(--s-color-base-content-primary);
       &:hover, &:active, &:focus {
-        background-color: $s-color-base-background-hover;
-        border-color: $s-color-base-background-hover;
-        color: $s-color-base-content-primary;
+        background-color: var(--s-color-base-background-hover);
+        border-color: var(--s-color-base-background-hover);
+        color: var(--s-color-base-content-primary);
       }
     }
   }
@@ -475,7 +445,7 @@ $swap-input-class: ".el-input";
     width: 100%;
     border-radius: $border-radius-small;
     &:disabled {
-      color: $s-color-base-on-disabled;
+      color: var(--s-color-base-on-disabled);
     }
     & + .swap-info {
       margin-top: $inner-spacing-small;

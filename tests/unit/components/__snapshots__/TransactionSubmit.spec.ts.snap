@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CreatePairSubmit.vue should renders correctly 1`] = `
+exports[`TransactionSubmit.vue should renders correctly 1`] = `
 <s-dialog-stub
+  borderradius="small"
   class="el-dialog--transaction-submit"
   closeonclickmodal="true"
   closeonesc="true"
