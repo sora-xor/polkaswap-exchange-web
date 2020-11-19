@@ -58,21 +58,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
           
         </div>
          
-        <div
-          class="token-balance"
-        >
-          <span
-            class="token-balance-title"
-          >
-            
-          </span>
-           
-          <span
-            class="token-balance-value"
-          >
-            10000.00
-          </span>
-        </div>
+        <!---->
       </div>
        
       <div
@@ -102,21 +88,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
         <div
           class="token"
         >
-          <s-button-stub
-            borderradius="small"
-            class="el-button--max"
-            icon=""
-            nativetype="button"
-            size="small"
-            tabindex="0"
-            tooltip=""
-            tooltipplacement="top"
-            type="tertiary"
-          >
-            
-            
-          
-          </s-button-stub>
+          <!---->
            
           <s-button-stub
             borderradius="small"
@@ -161,21 +133,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
           </span>
         </div>
          
-        <div
-          class="token-balance"
-        >
-          <span
-            class="token-balance-title"
-          >
-            
-          </span>
-           
-          <span
-            class="token-balance-value"
-          >
-            NaN
-          </span>
-        </div>
+        <!---->
       </div>
        
       <div
@@ -205,21 +163,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
         <div
           class="token"
         >
-          <s-button-stub
-            borderradius="small"
-            class="el-button--max"
-            icon=""
-            nativetype="button"
-            size="small"
-            tabindex="0"
-            tooltip=""
-            tooltipplacement="top"
-            type="tertiary"
-          >
-            
-            
-          
-          </s-button-stub>
+          <!---->
            
           <s-button-stub
             borderradius="small"
