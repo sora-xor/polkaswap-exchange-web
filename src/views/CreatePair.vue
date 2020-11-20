@@ -1,8 +1,9 @@
 <template>
   <div class="create-pair-container">
     <s-row class="header" flex justify="space-between" align="middle">
-      <s-button type="action" size="small" icon="arrow-left" />
+      <s-button type="action" size="small" icon="arrow-left" @click="handleBack" />
       <div class="title">{{ t('createPair.title') }}</div>
+      <!-- TODO: ask designers is this a tooltip like for Pool Interface start screen -->
       <s-button type="action" size="small" icon="info" />
     </s-row>
     <s-form
@@ -141,17 +142,19 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import SelectToken from '@/components/SelectToken.vue'
-import ConfirmCreatePair from '@/components/ConfirmCreatePair.vue'
-import CreatePairSubmit from '@/components/CreatePairSubmit.vue'
-import TokenLogo from '@/components/TokenLogo.vue'
-
-import router from '@/router'
 import { formatNumber, isWalletConnected } from '@/utils'
+import router, { lazyComponent } from '@/router'
+import { Components, PageNames } from '@/consts'
+
 const namespace = 'createPair'
 
 @Component({
-  components: { SelectToken, ConfirmCreatePair, CreatePairSubmit, TokenLogo }
+  components: {
+    SelectToken: lazyComponent(Components.SelectToken),
+    ConfirmCreatePair: lazyComponent(Components.ConfirmCreatePair),
+    CreatePairSubmit: lazyComponent(Components.CreatePairSubmit),
+    TokenLogo: lazyComponent(Components.TokenLogo)
+  }
 })
 export default class CreatePair extends Mixins(TranslationMixin) {
   @Getter('firstToken', { namespace }) firstToken!: any
@@ -221,6 +224,10 @@ export default class CreatePair extends Mixins(TranslationMixin) {
     return true
   }
 
+  handleBack (): void {
+    router.push({ name: PageNames.Pool })
+  }
+
   handleChangeFirstField (): void {
     this.setFirstTokenValue(this.formModel.first)
   }
@@ -239,7 +246,7 @@ export default class CreatePair extends Mixins(TranslationMixin) {
 
   getTokenBalance (token: any): string {
     if (token) {
-      return formatNumber(token.balance, 2)
+      return formatNumber(token.balance ? token.balance : 0, 2)
     }
     return ''
   }

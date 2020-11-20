@@ -12,8 +12,11 @@ export enum PageNames {
 export enum Components {
   SwapInfo = 'SwapInfo',
   SelectToken = 'SelectToken',
+  TokenLogo = 'TokenLogo',
   ConfirmSwap = 'ConfirmSwap',
-  TransactionSubmit = 'TransactionSubmit'
+  TransactionSubmit = 'TransactionSubmit',
+  ConfirmCreatePair = 'ConfirmCreatePair',
+  CreatePairSubmit = 'CreatePairSubmit'
 }
 
 export const MainMenu = [

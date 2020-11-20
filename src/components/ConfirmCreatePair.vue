@@ -51,12 +51,13 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import TokenLogo from '@/components/TokenLogo.vue'
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
 import { formatNumber } from '@/utils'
 const namespace = 'createPair'
 
 @Component({
-  components: { TokenLogo }
+  components: { TokenLogo: lazyComponent(Components.TokenLogo) }
 })
 export default class ConfirmCreatePair extends Mixins(TranslationMixin) {
   @Getter('firstToken', { namespace }) firstToken!: any
