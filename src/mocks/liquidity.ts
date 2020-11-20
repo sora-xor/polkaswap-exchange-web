@@ -1,1 +1,1 @@
-export const liquidity = null
+export const liquidity = 1.5

@@ -9,7 +9,10 @@
     <p v-if="!connected" class="pool-info-container">
       {{ t('pool.connectToWallet') }}
     </p>
-    <s-collapse v-if="firstToken && secondToken" class="pool-info-container" :borders="true" @change="handleChoosePair">
+    <p v-else-if="!liquidity" class="pool-info-container">
+      {{ t('pool.liquidityNotFound') }}
+    </p>
+    <s-collapse v-else-if="firstToken && secondToken" class="pool-info-container" :borders="true" @change="handleChoosePair">
       <!-- TODO: make for with pairs here -->
       <s-collapse-item name="1">
         <template #title>
@@ -51,9 +54,6 @@
         </div>
       </s-collapse-item>
     </s-collapse>
-    <p v-else-if="!liquidity" class="pool-info-container">
-      {{ t('pool.liquidityNotFound') }}
-    </p>
     <s-button class="el-button--add-liquidity" type="primary" @click="handleAddLiquidity">
       {{ t('pool.addLiquidity') }}
     </s-button>
@@ -96,7 +96,8 @@ export default class Pool extends Mixins(TranslationMixin) {
   }
 
   handleAddLiquidity (): void {
-    // TODO: Add Liquidity here
+    // TODO: Add Liquidity functionality goes here
+    this.getLiquidity()
   }
 
   handleCreatePair (): void {
@@ -121,40 +122,24 @@ export default class Pool extends Mixins(TranslationMixin) {
     }
     return ''
   }
-
-  created () {
-    this.getLiquidity()
-  }
 }
 </script>
 
 <style lang="scss">
+$pool-collapse-icon-height: 2px;
+$pool-collapse-icon-width: 10px;
+
 .pool-info-container {
   .el-collapse-item {
     &__header,
     &__wrap {
       border-bottom: none;
     }
-    &__header {
-      position: relative;
-      &:after {
-        bottom: -$inner-spacing-mini;
-        left: 0;
-        position: absolute;
-        content: '';
-        height: 1px;
-        width: 100%;
-      }
-      &.is-active {
-        margin-bottom: $inner-spacing-mini;
-        &:after {
-          background-color: var(--s-color-base-border-primary);
-        }
-      }
-    }
     &__content {
+      margin-top: $inner-spacing-mini;
       padding-top: $basic-spacing * 2;
       padding-bottom: 0;
+      border-top: 1px solid var(--s-color-base-border-primary);
     }
     .el-collapse-item__header {
       height: 50px;
@@ -167,6 +152,33 @@ export default class Pool extends Mixins(TranslationMixin) {
           height: 24px;
           width: 24px;
         }
+      }
+    }
+    .el-icon-arrow-right {
+      position: relative;
+      &:before,
+      &:after {
+        position: absolute;
+        display: block;
+        content: '';
+        border-radius: 2px;
+        background-color: var(--s-color-base-content-primary);
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+      }
+      &:before {
+        height: $pool-collapse-icon-height;
+        width: $pool-collapse-icon-width;
+      }
+      &:after {
+        height: $pool-collapse-icon-width;
+        width: $pool-collapse-icon-height;
+      }
+      &.is-active:after {
+        background-color: transparent;
       }
     }
   }
@@ -282,7 +294,7 @@ $tooltip-button-height: var(--s-size-small);
     &--buttons {
       display: flex;
       margin-top: $inner-spacing-medium;
-      margin-bottom: $inner-spacing-small;
+      margin-bottom: $inner-spacing-mini;
       .el-button {
         padding-left: $inner-spacing-small;
         padding-right: $inner-spacing-small;

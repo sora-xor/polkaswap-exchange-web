@@ -36,7 +36,7 @@ describe('Pool.vue', () => {
   })
 
   it('should renders correctly', () => {
-    const wrapper = shallowMount(Pool, { localVue })
+    const wrapper = shallowMount(Pool, { localVue, store })
     expect(wrapper.element).toMatchSnapshot()
   })
 })

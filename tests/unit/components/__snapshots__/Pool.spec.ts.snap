@@ -33,7 +33,7 @@ exports[`Pool.vue should renders correctly 1`] = `
   </div>
    
   <p
-    class="pool-info"
+    class="pool-info-container"
   >
     
     
@@ -42,6 +42,7 @@ exports[`Pool.vue should renders correctly 1`] = `
    
   <s-button-stub
     borderradius="small"
+    class="el-button--add-liquidity"
     icon=""
     nativetype="button"
     size="medium"

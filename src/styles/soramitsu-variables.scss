@@ -16,7 +16,6 @@ $local-border-radius-medium: $local-border-radius-base * 2 !default;
 $local-border-radius-big: $local-border-radius-base * 3 !default;
 
 :root {
-  // TODO 4 alexnatalia: check colors they could be wrong
   --s-color-theme-accent: #{$s-color-theme-accent};
   --s-color-button-tertiary-color: #{$s-color-button-tertiary-color};
   --s-color-button-tertiary-color-active: #{$s-color-button-tertiary-color-active};
