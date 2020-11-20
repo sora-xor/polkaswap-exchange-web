@@ -97,7 +97,6 @@ export default class Pool extends Mixins(TranslationMixin) {
 
   handleAddLiquidity (): void {
     // TODO: Add Liquidity here
-    console.log('handleAddLiquidity')
   }
 
   handleCreatePair (): void {

@@ -38,10 +38,7 @@ exports[`ConfirmCreatePair.vue should renders correctly 1`] = `
         gutter="0"
         justify="start"
       >
-        <token-logo-stub
-          size="medium"
-          token="XOR"
-        />
+        <!---->
          
         <span
           class="token-symbol"
@@ -76,10 +73,7 @@ exports[`ConfirmCreatePair.vue should renders correctly 1`] = `
         gutter="0"
         justify="start"
       >
-        <token-logo-stub
-          size="medium"
-          token="KSM"
-        />
+        <!---->
          
         <span
           class="token-symbol"
