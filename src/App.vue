@@ -26,8 +26,7 @@
         </div>
       </div>
     </s-menu>
-    <!-- TODO: convert to the About page link and add active state for the menu item -->
-    <i class="polkaswap-logo" />
+    <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.About)" />
     <div class="app-content"><router-view /></div>
   </div>
 </template>
