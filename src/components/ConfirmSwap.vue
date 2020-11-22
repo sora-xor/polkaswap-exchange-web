@@ -1,11 +1,5 @@
 <template>
-  <s-dialog
-    :visible.sync="visible"
-    :title="t('swap.confirmSwap')"
-    borderRadius="medium"
-    class="el-dialog--swap-confirm"
-    width="496px"
-  >
+  <dialog-base :visible.sync="visible" :title="t('swap.confirmSwap')">
     <div class="tokens">
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedFromValue }}</span>
@@ -30,7 +24,7 @@
     <template #footer>
       <s-button type="primary" @click="handleConfirmSwap">{{ t('swap.confirmSwap') }}</s-button>
     </template>
-  </s-dialog>
+  </dialog-base>
 </template>
 
 <script lang="ts">
@@ -43,6 +37,7 @@ import { Components } from '@/consts'
 
 @Component({
   components: {
+    DialogBase: lazyComponent(Components.DialogBase),
     SwapInfo: lazyComponent(Components.SwapInfo)
   }
 })
@@ -79,58 +74,41 @@ export default class ConfirmSwap extends Mixins(TranslationMixin) {
 }
 </script>
 
-<style lang="scss">
-  @include popup-styles('el-dialog--swap-confirm');
-</style>
-
 <style lang="scss" scoped>
-.el-dialog--swap-confirm {
-  .el-dialog {
-    &__header {
-      padding: $inner-spacing-big;
-    }
-    &__body {
-      padding: $inner-spacing-mini $inner-spacing-big;
-    }
-    &__footer {
-      padding: $inner-spacing-big;
-    }
-  }
-  .tokens {
+.tokens {
+  display: flex;
+  justify-content: space-between;
+  font-size: 30px;
+  &-info-container {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    font-size: 30px;
-    &-info-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
   }
-  .token {
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-    &-logo {
-      display: block;
-      margin-right: $inner-spacing-medium;
-      flex-shrink: 0;
-      @include token-logo-styles;
-    }
-  }
-  .s-icon-arrow-bottom-rounded {
-    margin-top: $inner-spacing-mini;
-    margin-bottom: $inner-spacing-mini;
+}
+.token {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  &-logo {
     display: block;
-    font-size: $s-font-size-medium;
+    margin-right: $inner-spacing-medium;
+    flex-shrink: 0;
+    @include token-logo-styles;
   }
-  .transaction-message {
-    margin-top: $inner-spacing-big;
-    color: var(--s-color-base-content-tertiary);
-    line-height: $s-line-height-medium;
-  }
-  .el-divider {
-    margin-top: $inner-spacing-mini;
-    margin-bottom: $inner-spacing-big;
-  }
+}
+.s-icon-arrow-bottom-rounded {
+  margin-top: $inner-spacing-mini;
+  margin-bottom: $inner-spacing-mini;
+  display: block;
+  font-size: $s-font-size-medium;
+}
+.transaction-message {
+  margin-top: $inner-spacing-big;
+  color: var(--s-color-base-content-tertiary);
+  line-height: $s-line-height-medium;
+}
+.el-divider {
+  margin-top: $inner-spacing-mini;
+  margin-bottom: $inner-spacing-big;
 }
 </style>

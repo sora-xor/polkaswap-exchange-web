@@ -1,11 +1,5 @@
 <template>
-  <s-dialog
-    :visible.sync="visible"
-    :title="t('exchange.transactionSubmitted')"
-    borderRadius="medium"
-    class="el-dialog--transaction-submit"
-    width="496px"
-  >
+  <dialog-base :visible.sync="visible" :title="t('exchange.transactionSubmitted')">
     <s-icon name="arrow-top-right-rounded" />
     <s-divider />
     <div class="transaction">
@@ -19,15 +13,21 @@
     <template #footer>
       <s-button type="primary" @click="handleClose">{{ t('exchange.ok') }}</s-button>
     </template>
-  </s-dialog>
+  </dialog-base>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
 
-@Component
+@Component({
+  components: {
+    DialogBase: lazyComponent(Components.DialogBase)
+  }
+})
 export default class TransactionSubmit extends Mixins(TranslationMixin) {
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
@@ -56,43 +56,37 @@ export default class TransactionSubmit extends Mixins(TranslationMixin) {
 }
 </script>
 
-<style lang="scss">
-  @include popup-styles('el-dialog--transaction-submit');
-</style>
-
 <style lang="scss" scoped>
 $transactionIconSize: 68px;
 
-.el-dialog--transaction-submit {
-  .s-icon-arrow-top-right-rounded {
-    font-size: $transactionIconSize;
-    color: var(--s-color-theme-accent);
+.s-icon-arrow-top-right-rounded {
+  font-size: $transactionIconSize;
+  color: var(--s-color-theme-accent);
+}
+.transaction {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  &-type,
+  .s-icon-external-link {
+    color: var(--s-color-base-content-secondary);
   }
-  .transaction {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    &-type,
-    .s-icon-external-link {
-      color: var(--s-color-base-content-secondary);
-    }
-    &-type {
-      display: block;
-      padding: $inner-spacing-mini / 2 $inner-spacing-mini;
-      margin-right: $inner-spacing-mini / 2;
-      text-transform: uppercase;
-      font-size: 10px;
-      font-weight: bold;
-      background-color: var(--s-color-base-background);
-      border-radius: var(--s-border-radius-mini);
-    }
-    &-info {
-      margin-right: $inner-spacing-mini;
-      font-weight: bold;
-    }
-    .s-icon-external-link {
-      cursor: pointer;
-    }
+  &-type {
+    display: block;
+    padding: $inner-spacing-mini / 2 $inner-spacing-mini;
+    margin-right: $inner-spacing-mini / 2;
+    text-transform: uppercase;
+    font-size: 10px;
+    font-weight: bold;
+    background-color: var(--s-color-base-background);
+    border-radius: var(--s-border-radius-mini);
+  }
+  &-info {
+    margin-right: $inner-spacing-mini;
+    font-weight: bold;
+  }
+  .s-icon-external-link {
+    cursor: pointer;
   }
 }
 </style>

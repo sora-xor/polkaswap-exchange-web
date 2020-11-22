@@ -1,16 +1,5 @@
 <template>
-  <s-dialog
-    :visible.sync="dialogVisible"
-    borderRadius="medium"
-    class="token-select"
-    width="496px"
-  >
-    <template #title>
-      <div class="token-select__title">
-        {{ t('selectToken.title') }}
-      </div>
-    </template>
-
+  <dialog-base :visible.sync="visible" customClass="token-select" :title="t('selectToken.title')">
     <s-input
       v-model="query"
       :placeholder="t('selectToken.searchPlaceholder')"
@@ -38,7 +27,7 @@
     <div v-else class="token-list token-list__empty">
       {{ t('selectToken.emptyListMessage') }}
     </div>
-  </s-dialog>
+  </dialog-base>
 </template>
 
 <script lang="ts">
@@ -47,8 +36,14 @@ import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { Token } from '@/types'
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
 
-@Component
+@Component({
+  components: {
+    DialogBase: lazyComponent(Components.DialogBase)
+  }
+})
 export default class SelectToken extends Mixins(TranslationMixin) {
   @Prop({ type: Boolean, default: false, required: true }) readonly visible!: boolean
   @Prop() readonly defaultToken
@@ -98,22 +93,20 @@ export default class SelectToken extends Mixins(TranslationMixin) {
 .token-select {
   .el-dialog {
     overflow: hidden;
+    &__title {
+      letter-spacing: -0.02em;
+    }
     &__body {
       padding: 0 !important;
     }
   }
 }
-@include popup-styles('token-select');
 </style>
 
 <style lang="scss" scoped>
 $container-spacing: 24px;
 
-.token-select__title {
-  margin-left: $inner-spacing-mini / 2;
-  font-size: $s-font-size-big;
-  letter-spacing: -0.02em;
-}
+// TODO 4 alexnatalia: check styles for all dialogs
 .token-search {
   margin-left: $container-spacing;
   width: calc(100% - 2 * #{$container-spacing});

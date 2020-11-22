@@ -1,11 +1,5 @@
 <template>
-  <s-dialog
-    :title="t('confirmSupply.title')"
-    :visible.sync="visible"
-    borderRadius="medium"
-    class="el-dialog__supply-confirm"
-    width="496px"
-  >
+  <dialog-base :visible.sync="visible" :title="t('confirmSupply.title')">
     <div class="tokens">
       <s-row flex justify="space-between" class="token">
         <div class="token-value">{{ formatNumber(firstTokenValue, 2) }}</div>
@@ -44,7 +38,7 @@
     <template #footer>
       <s-button type="primary" @click="handleConfirmCreatePair">{{ t('confirmSupply.confirm') }}</s-button>
     </template>
-  </s-dialog>
+  </dialog-base>
 </template>
 
 <script lang="ts">
@@ -57,7 +51,10 @@ import { formatNumber } from '@/utils'
 const namespace = 'createPair'
 
 @Component({
-  components: { TokenLogo: lazyComponent(Components.TokenLogo) }
+  components: {
+    DialogBase: lazyComponent(Components.DialogBase),
+    TokenLogo: lazyComponent(Components.TokenLogo)
+  }
 })
 export default class ConfirmCreatePair extends Mixins(TranslationMixin) {
   @Getter('firstToken', { namespace }) firstToken!: any
@@ -77,10 +74,6 @@ export default class ConfirmCreatePair extends Mixins(TranslationMixin) {
   }
 }
 </script>
-
-<style lang="scss">
-  @include popup-styles('el-dialog__supply-confirm');
-</style>
 
 <style lang="scss" scoped>
 .tokens {
