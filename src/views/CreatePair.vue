@@ -246,7 +246,7 @@ export default class CreatePair extends Mixins(TranslationMixin) {
 
   getTokenBalance (token: any): string {
     if (token) {
-      return formatNumber(token.balance ? token.balance : 0, 2)
+      return formatNumber(token.balance, 2)
     }
     return ''
   }
