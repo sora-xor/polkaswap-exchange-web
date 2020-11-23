@@ -404,12 +404,19 @@ $swap-input-class: ".el-input";
             top: 0;
             left: 0;
             z-index: 1;
+            margin: 0;
           }
           &:last-child {
             bottom: 0;
             right: 0;
+            margin: 0
           }
         }
+      }
+
+      .token-logo {
+        order: 1;
+        margin-right: $inner-spacing-mini;
       }
     }
     .input-title,
