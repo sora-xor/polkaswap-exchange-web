@@ -1,6 +1,16 @@
 import { PageNames, Topics } from '@/consts'
 
 export default {
+  pageTitle: {
+    [PageNames.About]: 'About',
+    [PageNames.Exchange]: 'Exchange',
+    [PageNames.Swap]: 'Swap',
+    [PageNames.Pool]: 'Pool',
+    [PageNames.Stats]: 'Stats',
+    [PageNames.Support]: 'Support',
+    [PageNames.Wallet]: 'Wallet',
+    [PageNames.CreatePair]: 'Create Pair'
+  },
   mainMenu: {
     [PageNames.About]: 'About',
     [PageNames.Exchange]: 'Exchange',

@@ -33,9 +33,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 
-import { PageNames, MainMenu } from '@/consts'
+import { AppName, PageNames, MainMenu } from '@/consts'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import router from '@/router'
 
@@ -43,6 +43,15 @@ import router from '@/router'
 export default class App extends Mixins(TranslationMixin) {
   readonly MainMenu = MainMenu
   readonly PageNames = PageNames
+
+  @Watch('$route', { immediate: true, deep: true })
+  onRouteChange (newRoute: any) {
+    if (newRoute.name) {
+      document.title = `${this.t(`pageTitle.${newRoute.name}`)} - ${AppName}`
+    } else {
+      document.title = AppName
+    }
+  }
 
   getCurrentPath (): string {
     if ([PageNames.Swap, PageNames.Pool, PageNames.Wallet].includes(router.currentRoute.name as PageNames)) {
