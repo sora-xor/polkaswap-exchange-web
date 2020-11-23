@@ -33,7 +33,7 @@
               {{ t('exchange.max') }}
             </s-button>
             <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="firstModalVisible = true">
-              <token-logo :token="firstToken.symbol" size="small" />
+              <token-logo :token="firstToken.symbol || ''" size="small" />
               {{ firstToken.symbol }}
             </s-button>
           </div>
@@ -68,7 +68,7 @@
               {{ t('exchange.max') }}
             </s-button>
             <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="secondModalVisible = true">
-              <token-logo :token="secondToken.symbol" size="small" />
+              <token-logo :token="secondToken.symbol || ''" size="small" />
               {{ secondToken.symbol }}
             </s-button>
           </div>
