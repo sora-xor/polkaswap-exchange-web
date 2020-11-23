@@ -56,6 +56,16 @@ const routes: Array<RouteConfig> = [
     path: '/create-pair',
     name: PageNames.CreatePair,
     component: lazyView(PageNames.CreatePair)
+  },
+  {
+    path: '/add-liquidity',
+    name: PageNames.AddLiquidity,
+    component: lazyView(PageNames.AddLiquidity)
+  },
+  {
+    path: '/remove-liquidity/:id',
+    name: PageNames.RemoveLiquidity,
+    component: lazyView(PageNames.RemoveLiquidity)
   }
 ]
 

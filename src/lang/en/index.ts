@@ -89,5 +89,22 @@ export default {
     poolTokensBurned: '{first}-{second} Pool Tokens Burned:',
     price: 'Price:',
     confirm: 'Confirm'
+  },
+  addLiquidity: {
+    title: 'Add liquidity'
+  },
+  removeLiquidity: {
+    title: 'Remove liquidity',
+    balance: 'Balance',
+    amount: 'Amount',
+    input: 'Input',
+    output: 'Output',
+    price: 'Price:',
+    remove: 'Remove',
+    enterAmount: 'Enter an amount',
+    description: 'Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.',
+    outputMessage: 'Output is estimated. If the price changes more than 0.5% your transaction will revert.',
+    confirmTitle: 'You will receive',
+    confirm: 'Confirm'
   }
 }

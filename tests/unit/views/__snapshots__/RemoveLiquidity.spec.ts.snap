@@ -1,0 +1,453 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RemoveLiquidity.vue should renders correctly 1`] = `
+<div
+  class="remove-liquidity-container"
+>
+  <s-row-stub
+    align="middle"
+    class="header"
+    flex="true"
+    gutter="0"
+    justify="space-between"
+  >
+    <s-button-stub
+      borderradius="small"
+      icon="arrow-left"
+      nativetype="button"
+      size="small"
+      tabindex="0"
+      tooltip=""
+      tooltipplacement="top"
+      type="action"
+    />
+     
+    <div
+      class="title"
+    >
+      
+    </div>
+     
+    <s-tooltip-stub
+      animation="el-fade-in-linear"
+      borderradius="small"
+      closedelay="0"
+      content=""
+      offset="0"
+      opendelay="0"
+      placement="bottom-end"
+      popperclass="remove-liquidity__description"
+      showarrow="true"
+      tabindex="0"
+      theme="light"
+    >
+      <s-button-stub
+        borderradius="small"
+        icon="info"
+        nativetype="button"
+        size="small"
+        tabindex="0"
+        tooltip=""
+        tooltipplacement="top"
+        type="action"
+      />
+    </s-tooltip-stub>
+  </s-row-stub>
+   
+  <s-form-stub
+    class="el-form--remove-liquidity"
+    labelposition="right"
+    validateonrulechange="true"
+  >
+    <div
+      class="slider-container card"
+    >
+      <div
+        class="card__title"
+      >
+        
+        
+      
+      </div>
+       
+      <div
+        class="slider-container__amount"
+      >
+        
+        0
+        <span
+          class="percent"
+        >
+          %
+        </span>
+      </div>
+       
+      <div>
+        <s-slider-stub
+          debounce="300"
+          height=""
+          inputsize="small"
+          isvertical="true"
+          label=""
+          max="100"
+          min="0"
+          showinputcontrols="true"
+          showtooltip="true"
+          step="1"
+          tooltipclass=""
+          value="0"
+        />
+      </div>
+    </div>
+     
+    <div
+      class="input-container"
+    >
+      <div
+        class="input-line"
+      >
+        <div
+          class="input-title"
+        >
+          
+        </div>
+         
+        <div
+          class="token-balance"
+        >
+          <span
+            class="token-balance-title"
+          >
+            
+          </span>
+           
+          <span
+            class="token-balance-value"
+          >
+            1000.00
+          </span>
+        </div>
+      </div>
+       
+      <div
+        class="input-line"
+      >
+        <s-form-item-stub
+          prop=""
+          showmessage="true"
+        >
+          <s-input-stub
+            accept=""
+            autocomplete="off"
+            borderradius="small"
+            disabled="true"
+            form=""
+            label=""
+            name=""
+            placeholder="0.00"
+            prefix=""
+            size="big"
+            suffix=""
+            tabindex=""
+            type="text"
+            value="0.00"
+          />
+        </s-form-item-stub>
+         
+        <div
+          class="token"
+        >
+          <s-button-stub
+            borderradius="small"
+            class="el-button--max"
+            icon=""
+            nativetype="button"
+            size="small"
+            tabindex="0"
+            tooltip=""
+            tooltipplacement="top"
+            type="tertiary"
+          >
+            
+            
+          
+          </s-button-stub>
+           
+          <s-button-stub
+            borderradius="small"
+            class="el-button--choose-token"
+            icon=""
+            nativetype="button"
+            size="small"
+            tabindex="0"
+            tooltip=""
+            tooltipplacement="top"
+            type="tertiary"
+          >
+            <div
+              class="liquidity-logo"
+            >
+              <token-logo-stub
+                size="mini"
+                token="XOR"
+              />
+               
+              <token-logo-stub
+                size="mini"
+                token="KSM"
+              />
+            </div>
+            
+            XOR-KSM
+          
+          </s-button-stub>
+        </div>
+      </div>
+    </div>
+     
+    <s-icon-stub
+      class="icon-divider"
+      name="arrow-bottom"
+      size="medium"
+    />
+     
+    <div
+      class="input-container"
+    >
+      <div
+        class="input-line"
+      >
+        <div
+          class="input-title"
+        >
+          
+        </div>
+         
+        <div
+          class="token-balance"
+        >
+          <span
+            class="token-balance-title"
+          >
+            
+          </span>
+           
+          <span
+            class="token-balance-value"
+          >
+            10000.00
+          </span>
+        </div>
+      </div>
+       
+      <div
+        class="input-line"
+      >
+        <s-form-item-stub
+          prop=""
+          showmessage="true"
+        >
+          <s-input-stub
+            accept=""
+            autocomplete="off"
+            borderradius="small"
+            disabled="true"
+            form=""
+            label=""
+            name=""
+            placeholder="0.00"
+            prefix=""
+            size="big"
+            suffix=""
+            tabindex=""
+            type="text"
+            value="0.00"
+          />
+        </s-form-item-stub>
+         
+        <div
+          class="token"
+        >
+          <s-button-stub
+            borderradius="small"
+            class="el-button--max"
+            icon=""
+            nativetype="button"
+            size="small"
+            tabindex="0"
+            tooltip=""
+            tooltipplacement="top"
+            type="tertiary"
+          >
+            
+            
+          
+          </s-button-stub>
+           
+          <s-button-stub
+            borderradius="small"
+            class="el-button--choose-token"
+            icon=""
+            nativetype="button"
+            size="small"
+            tabindex="0"
+            tooltip=""
+            tooltipplacement="top"
+            type="tertiary"
+          >
+            <token-logo-stub
+              size="small"
+              token="XOR"
+            />
+            
+            XOR
+          
+          </s-button-stub>
+        </div>
+      </div>
+    </div>
+     
+    <s-icon-stub
+      class="icon-divider"
+      name="plus"
+      size="medium"
+    />
+     
+    <div
+      class="input-container"
+    >
+      <div
+        class="input-line"
+      >
+        <div
+          class="input-title"
+        >
+          <span>
+            
+          </span>
+        </div>
+         
+        <div
+          class="token-balance"
+        >
+          <span
+            class="token-balance-title"
+          >
+            
+          </span>
+           
+          <span
+            class="token-balance-value"
+          >
+            1000.00
+          </span>
+        </div>
+      </div>
+       
+      <div
+        class="input-line"
+      >
+        <s-form-item-stub
+          prop=""
+          showmessage="true"
+        >
+          <s-input-stub
+            accept=""
+            autocomplete="off"
+            borderradius="small"
+            disabled="true"
+            form=""
+            label=""
+            name=""
+            placeholder="0.00"
+            prefix=""
+            size="big"
+            suffix=""
+            tabindex=""
+            type="text"
+            value="0.00"
+          />
+        </s-form-item-stub>
+         
+        <div
+          class="token"
+        >
+          <s-button-stub
+            borderradius="small"
+            class="el-button--max"
+            icon=""
+            nativetype="button"
+            size="small"
+            tabindex="0"
+            tooltip=""
+            tooltipplacement="top"
+            type="tertiary"
+          >
+            
+            
+          
+          </s-button-stub>
+           
+          <s-button-stub
+            borderradius="small"
+            class="el-button--choose-token"
+            icon=""
+            nativetype="button"
+            size="small"
+            tabindex="0"
+            tooltip=""
+            tooltipplacement="top"
+            type="tertiary"
+          >
+            <token-logo-stub
+              size="small"
+              token="KSM"
+            />
+            
+            KSM
+          
+          </s-button-stub>
+        </div>
+      </div>
+    </div>
+     
+    <s-button-stub
+      borderradius="small"
+      disabled="true"
+      icon=""
+      nativetype="button"
+      size="medium"
+      tabindex="0"
+      tooltip=""
+      tooltipplacement="top"
+      type="primary"
+    >
+      
+        
+      
+    </s-button-stub>
+  </s-form-stub>
+   
+  <s-row-stub
+    align="top"
+    class="price-container"
+    flex="true"
+    gutter="0"
+    justify="space-between"
+  >
+    <div>
+      
+    </div>
+     
+    <div>
+      <div>
+        1 XOR = 10018.18 KSM
+      </div>
+       
+      <div>
+        1 KSM = 0.00 XOR
+      </div>
+    </div>
+  </s-row-stub>
+</div>
+`;

@@ -17,18 +17,13 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
 
   get tokenClasses (): string {
-    let classes = 'token-logo'
+    const classes = ['token-logo']
     if (this.token && tokens.includes(this.token)) {
-      classes += ' token-logo--' + this.token.toLowerCase()
+      classes.push('token-logo--' + this.token.toLowerCase())
     }
 
-    if (this.size === LogoSize.MEDIUM) {
-      classes += ' token-logo--medium'
-    } else {
-      classes += ' token-logo--small'
-    }
-
-    return classes
+    classes.push('token-logo--' + this.size.toLowerCase())
+    return classes.join(' ')
   }
 }
 </script>
@@ -52,6 +47,9 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
   }
   &--xor {
     background-image: url("~@/assets/img/xor.svg");
+  }
+  &.token-logo--mini {
+    @include token-logo-size(15px);
   }
   &.token-logo--small {
     @include token-logo-size(23px);
