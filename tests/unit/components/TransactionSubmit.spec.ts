@@ -1,6 +1,7 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
+import { shallowMount, createLocalVue, mount } from '@vue/test-utils'
 import Vuex from 'vuex'
 
+import DialogBase from '@/components/DialogBase.vue'
 import TransactionSubmit from '@/components/TransactionSubmit.vue'
 import { tokens } from '@/mocks/tokens'
 import { SoramitsuElementsImport, TranslationMock } from '../../utils'
@@ -29,7 +30,16 @@ describe('TransactionSubmit.vue', () => {
   })
 
   it('should renders correctly', () => {
-    const wrapper = shallowMount(TransactionSubmit, { localVue, store })
+    const wrapper = shallowMount(DialogBase, {
+      propsData: {
+        visible: true,
+        customClass: '',
+        title: 'Transaction submitted'
+      },
+      slots: {
+        // Add TransactionSubmit slot
+      }
+    })
     expect(wrapper.element).toMatchSnapshot()
   })
 })

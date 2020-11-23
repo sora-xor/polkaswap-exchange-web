@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TransactionSubmit.vue should renders correctly 1`] = `
+exports[`DialogBase.vue should renders correctly 1`] = `
 <s-dialog
   borderradius="medium"
   class="dialog-wrapper"
-  customclass=""
-  title="Transaction submitted"
+  customclass="custom-dialog-class"
+  title="Dialog title"
   top="80px"
   visible="true"
   width="496px"

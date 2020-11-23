@@ -5,6 +5,7 @@
     class="dialog-wrapper"
     :customClass="customClass"
     borderRadius="medium"
+    top="80px"
     width="496px"
   >
     <slot></slot>

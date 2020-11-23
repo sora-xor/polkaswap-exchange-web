@@ -1,6 +1,7 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 
+import DialogBase from '@/components/DialogBase.vue'
 import CreatePairSubmit from '@/components/CreatePairSubmit.vue'
 import { tokens } from '@/mocks/tokens'
 import { SoramitsuElementsImport, TranslationMock } from '../../utils'
@@ -40,7 +41,16 @@ describe('CreatePairSubmit.vue', () => {
   })
 
   it('should renders correctly', () => {
-    const wrapper = shallowMount(CreatePairSubmit, { localVue, store })
+    const wrapper = shallowMount(DialogBase, {
+      propsData: {
+        visible: true,
+        customClass: '',
+        title: 'Transaction submitted'
+      },
+      slots: {
+        // Add ConfirmCreatePair slot
+      }
+    })
     expect(wrapper.element).toMatchSnapshot()
   })
 })
