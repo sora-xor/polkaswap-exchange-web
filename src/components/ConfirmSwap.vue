@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <p class="transaction-message" v-html="t('swap.swapOutputMessage', { transactionValue : `<span class='transaction-number'>${toValue}</span>` })"/>
+    <p class="transaction-message" v-html="t('swap.swapOutputMessage', { transactionValue : `<span class='transaction-number'>${toValue}</span>` })" />
     <s-divider />
     <swap-info :showPrice="true" />
     <swap-info />

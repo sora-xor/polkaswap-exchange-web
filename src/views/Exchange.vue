@@ -99,14 +99,7 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
 
 <style lang="scss" scoped>
 .exchange-container {
-  margin: $inner-spacing-big auto;
-  padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
-  min-height: $inner-window-height;
-  width: $inner-window-width;
-  background-color: var(--s-color-utility-surface);
-  border-radius: var(--s-border-radius-medium);
-  box-shadow: var(--s-shadow-surface);
-  color: var(--s-color-base-content-primary);
+  @include container-styles;
   .s-tabs {
     width: 100%;
   }

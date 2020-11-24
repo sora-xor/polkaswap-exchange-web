@@ -3,7 +3,7 @@
     <div class="pool-header">
       <h3 class="pool-header-title">{{ t('pool.yourLiquidity') }}</h3>
       <s-tooltip class="pool-header-icon" borderRadius="mini" :content="t('pool.yourLiquidityTooltip')" theme="light" placement="bottom-end" :show-arrow="false">
-        <s-icon name="info" size="16"/>
+        <s-icon name="info" size="16" />
       </s-tooltip>
     </div>
     <p v-if="!connected" class="pool-info-container">

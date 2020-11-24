@@ -29,12 +29,12 @@
           <s-button v-if="connected && areTokensSelected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleMaxFromValue">
             {{ t('exchange.max') }}
           </s-button>
-          <s-button type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken(true)">
+          <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="handleChooseToken(true)">
             <span :class="getTokenClasses(tokenFrom)" />
             {{ tokenFrom.symbol }}
           </s-button>
         </div>
-        <s-button v-else type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="handleChooseToken(true)">
+        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" @click="handleChooseToken(true)">
           {{ t('swap.chooseToken') }}
         </s-button>
       </div>
@@ -64,12 +64,12 @@
           />
         </s-form-item>
         <div v-if="tokenTo" class="token">
-          <s-button type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken">
+          <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="handleChooseToken">
             <span :class="getTokenClasses(tokenTo)" />
             {{ tokenTo.symbol }}
           </s-button>
         </div>
-        <s-button v-else type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="handleChooseToken">
+        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" @click="handleChooseToken">
           {{ t('swap.chooseToken') }}
         </s-button>
       </div>
@@ -93,7 +93,7 @@
       </template>
     </s-button>
     <swap-info v-if="areTokensSelected" />
-    <select-token :visible="showSelectTokenDialog" @select="handleSelectToken" @close="closeSelectToken"/>
+    <select-token :visible="showSelectTokenDialog" @select="handleSelectToken" @close="closeSelectToken" />
     <confirm-swap :visible="showConfirmSwapDialog && !isSwapConfirmed" @close="closeConfirmSwapDialog" />
     <transaction-submit :visible="isSwapConfirmed" @close="closeTransactionSubmitDialog" />
   </s-form>
@@ -335,7 +335,7 @@ $swap-input-class: ".el-input";
   border: none !important;
   box-shadow: var(--s-shadow-tooltip);
   font-size: $s-font-size-small;
-  line-height: 1.785;
+  line-height: $s-line-height-medium;
 }
 </style>
 
@@ -415,7 +415,7 @@ $swap-input-class: ".el-input";
     &--max {
       margin-right: $inner-spacing-mini;
       padding-right: $inner-spacing-mini;
-      height: 24px;
+      height: var(--s-size-mini);
     }
     &--empty-token {
       position: absolute;

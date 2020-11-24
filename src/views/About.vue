@@ -1,7 +1,7 @@
 <template>
   <div class="layout s-flex">
     <!-- TODO: Move the text below above the banner for mobile devices, add background layer with opacity for the banner -->
-    <div class="banner s-flex"></div>
+    <div class="banner s-flex" />
     <div class="content">
       <div class="terms s-flex">
         <span>{{ t('about.polkaswapText') }}</span>

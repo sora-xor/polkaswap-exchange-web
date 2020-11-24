@@ -31,7 +31,7 @@ const mutations = {
     state.liquidity = null
   },
 
-  [types.GET_LIQUIDITY_SUCCESS] (state, liquidity: number) {
+  [types.GET_LIQUIDITY_SUCCESS] (state, liquidity) {
     state.liquidity = liquidity
   },
 
@@ -41,10 +41,10 @@ const mutations = {
 }
 
 const actions = {
-  async getLiquidity ({ commit }) {
+  async getLiquidity ({ commit }, id) {
     commit(types.GET_LIQUIDITY_REQUEST)
     try {
-      const liquidity = await liquidityApi.getLiquidity()
+      const liquidity = await liquidityApi.getLiquidityById(id)
       commit(types.GET_LIQUIDITY_SUCCESS, liquidity)
     } catch (error) {
       commit(types.GET_LIQUIDITY_FAILURE, error)

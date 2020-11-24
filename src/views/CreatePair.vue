@@ -3,7 +3,7 @@
     <s-row class="header" flex justify="space-between" align="middle">
       <s-button type="action" size="small" icon="arrow-left" @click="handleBack" />
       <div class="title">{{ t('createPair.title') }}</div>
-      <!-- TODO: ask designers is this a tooltip like for Pool Interface start screen -->
+      <!-- TODO: Add appropriate tooltip -->
       <s-button type="action" size="small" icon="info" />
     </s-row>
     <s-form
@@ -34,12 +34,12 @@
             <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="firstModalVisible = true">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="firstModalVisible = true">
               <token-logo :token="firstToken.symbol" size="small" />
               {{ firstToken.symbol }}
             </s-button>
           </div>
-          <s-button v-else type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="firstModalVisible = true">
+          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" @click="firstModalVisible = true">
             {{ t('swap.chooseToken') }}
           </s-button>
         </div>
@@ -70,12 +70,12 @@
             <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleSecondMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="secondModalVisible = true">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="secondModalVisible = true">
               <token-logo :token="secondToken.symbol" size="small" />
               {{ secondToken.symbol }}
             </s-button>
           </div>
-          <s-button v-else type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="secondModalVisible = true">
+          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" @click="secondModalVisible = true">
             {{t('swap.chooseToken')}}
           </s-button>
         </div>
@@ -341,14 +341,7 @@ $swap-input-class: ".el-input";
   }
 }
 .create-pair-container {
-  margin: $inner-spacing-big auto;
-  padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
-  min-height: $inner-window-height;
-  width: $inner-window-width;
-  background-color: var(--s-color-utility-surface);
-  border-radius: var(--s-border-radius-medium);
-  box-shadow: var(--s-shadow-surface);
-  color: var(--s-color-base-content-primary);
+  @include container-styles;
 }
 .el-form--create-pair {
   display: flex;
@@ -410,12 +403,6 @@ $swap-input-class: ".el-input";
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
   }
   .el-button {
-    &--switch-tokens {
-      &,
-      & + .input-container {
-        margin-top: $inner-spacing-mini;
-      }
-    }
     &--max,
     &--empty-token,
     &--choose-token {
@@ -424,7 +411,6 @@ $swap-input-class: ".el-input";
     &--max {
       margin-right: $inner-spacing-mini;
       padding-right: $inner-spacing-mini;
-      font-size: $s-font-size-mini;
       height: var(--s-size-mini)
     }
     &--empty-token {

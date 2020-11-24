@@ -4,7 +4,8 @@
       <s-row flex justify="space-between" class="token">
         <div class="token-value">{{ formatNumber(firstTokenValue, 2) }}</div>
         <s-row flex align="center">
-          <token-logo :token="firstToken.symbol" size="medium" />
+          <!-- TODO 4 alexnatalia: fix tokens alignment -->
+          <token-logo :token="firstToken.symbol" />
           <span class="token-symbol">{{ firstToken.symbol }}</span>
         </s-row>
       </s-row>
@@ -12,7 +13,7 @@
       <s-row flex justify="space-between" class="token">
         <div class="token-value">{{ formatNumber(secondTokenValue, 2) }}</div>
         <s-row flex align="center">
-          <token-logo :token="secondToken.symbol" size="medium" />
+          <token-logo :token="secondToken.symbol" />
           <span class="token-symbol">{{ secondToken.symbol }}</span>
         </s-row>
       </s-row>
@@ -83,6 +84,7 @@ export default class ConfirmCreatePair extends Mixins(TranslationMixin) {
   .token {
     &-logo {
       display: inline-block;
+      margin-right: $inner-spacing-medium;
     }
   }
 }

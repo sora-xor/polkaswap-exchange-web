@@ -1,7 +1,7 @@
 <template>
   <div class="remove-liquidity-container">
     <s-row class="header" flex justify="space-between" align="middle">
-      <s-button type="action" size="small" icon="arrow-left" />
+      <s-button type="action" size="small" icon="arrow-left" @click="handleBack" />
       <div class="title">{{ t('removeLiquidity.title') }}</div>
       <s-tooltip
         theme="light"
@@ -23,7 +23,7 @@
           {{ removeAmount }}<span class="percent">%</span>
         </div>
         <div>
-          <s-slider v-model="removeAmount" @change="() => {}"/>
+          <s-slider v-model="removeAmount" @change="() => {}" />
         </div>
       </info-card>
       <div class="input-container">
@@ -43,10 +43,10 @@
             />
           </s-form-item>
           <div class="token">
-            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" @click="handleFirstMaxValue">
+            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button type="tertiary" size="small" class="el-button--choose-token">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded">
               <div class="liquidity-logo">
                 <pair-token-logo :firstToken="firstToken.symbol" :secondToken="secondToken.symbol" size="mini" />
               </div>
@@ -75,10 +75,10 @@
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
-            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" @click="handleFirstMaxValue">
+            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button type="tertiary" size="small" borderRadius="small" class="el-button--choose-token">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded">
               <token-logo :token="firstToken.symbol" size="small" />
               {{ firstToken.symbol }}
             </s-button>
@@ -110,14 +110,14 @@
             <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleSecondMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button type="tertiary" size="small" borderRadius="small" class="el-button--choose-token">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded">
               <token-logo :token="secondToken.symbol" size="small" />
               {{ secondToken.symbol }}
             </s-button>
           </div>
         </div>
       </div>
-      <s-button type="primary" size="medium" borderRadius="medium" :disabled="isEmptyBalance" @click="showConfirmDialog = true">
+      <s-button type="primary" borderRadius="medium" :disabled="isEmptyBalance" @click="showConfirmDialog = true">
         <template v-if="isEmptyBalance">
           {{ t('swap.enterAmount') }}
         </template>
@@ -145,7 +145,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import TokenLogo from '@/components/TokenLogo.vue'
 
 import router, { lazyComponent } from '@/router'
-import { Components } from '@/consts'
+import { Components, PageNames } from '@/consts'
 import { formatNumber } from '@/utils'
 import { Token } from '@/types'
 const namespace = 'removeLiquidity'
@@ -219,6 +219,10 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
     }
 
     return ''
+  }
+
+  handleBack (): void {
+    router.push({ name: PageNames.Pool })
   }
 
   handleFirstMaxValue (): void {
@@ -302,8 +306,8 @@ $swap-input-class: ".el-input";
   .header {
     margin-bottom: $inner-spacing-medium;
     .title {
-      font-size: 24px;
-      line-height: 130%;
+      font-size: $s-font-size-big;
+      line-height: $s-line-height-mini;
       letter-spacing: -0.02em;
       font-feature-settings: 'tnum' on, 'lnum' on, 'salt' on, 'case' on;
     }
@@ -322,14 +326,7 @@ $swap-input-class: ".el-input";
   padding: $inner-spacing-medium;
 }
 .remove-liquidity-container {
-  margin: $inner-spacing-big auto;
-  padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
-  min-height: $inner-window-height;
-  width: $inner-window-width;
-  background-color: var(--s-color-utility-surface);
-  border-radius: $border-radius-medium;
-  box-shadow: var(--s-shadow-surface);
-  color: var(--s-color-base-content-primary);
+  @include container-styles;
 }
 .el-form--remove-liquidity {
   display: flex;
@@ -339,7 +336,7 @@ $swap-input-class: ".el-input";
     width: 100%;
 
     &__amount {
-      font-size: 36px;
+      font-size: $s-font-size-big-heading;
       line-height: 120%;
       letter-spacing: -0.04em;
     }
@@ -352,7 +349,7 @@ $swap-input-class: ".el-input";
     padding: $inner-spacing-small $inner-spacing-medium $inner-spacing-mini;
     width: 100%;
     background-color: var(--s-color-base-background);
-    border-radius: $border-radius-mini;
+    border-radius: var(--s-border-radius-mini);
     .input-line {
       display: flex;
       justify-content: space-between;
@@ -418,12 +415,6 @@ $swap-input-class: ".el-input";
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
   }
   .el-button {
-    &--switch-tokens {
-      &,
-      & + .input-container {
-        margin-top: $inner-spacing-mini;
-      }
-    }
     &--max,
     &--empty-token,
     &--choose-token {
@@ -432,7 +423,7 @@ $swap-input-class: ".el-input";
     &--max {
       margin-right: $inner-spacing-mini;
       padding-right: $inner-spacing-mini;
-      height: 24px;
+      height: var(--s-size-mini);
     }
     &--empty-token {
       position: absolute;
@@ -468,7 +459,7 @@ $swap-input-class: ".el-input";
 
 .price-container {
   margin: $inner-spacing-medium $inner-spacing-medium 0;
-  line-height: 1.8;
+  line-height: $s-line-height-medium;
   color: var(--s-color-base-content-secondary)
 }
 </style>

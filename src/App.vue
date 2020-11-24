@@ -106,10 +106,6 @@ html {
   font-size: $s-font-size-small;
   line-height: $s-line-height-small;
 }
-*, *:before, *:after {
-  box-sizing: border-box;
-  margin: 0;
-}
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

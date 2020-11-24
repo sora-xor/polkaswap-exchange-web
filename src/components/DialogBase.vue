@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO 4 alexnatalia: Fix window close -->
   <s-dialog
     :visible.sync="visible"
     :title="title"
@@ -8,8 +9,8 @@
     top="80px"
     width="496px"
   >
-    <slot></slot>
-    <slot slot="footer" name="footer"></slot>
+    <slot />
+    <slot slot="footer" name="footer" />
   </s-dialog>
 </template>
 
@@ -54,7 +55,7 @@ $el-dialog-button-size: var(--s-size-medium);
     width: $el-dialog-button-size;
     background-color: var(--s-color-base-background);
     border-color: var(--s-color-base-background);
-    border-radius: $inner-spacing-small;
+    border-radius: var(--s-border-radius-small);
     #{$el-dialog-class}__close {
       color: var(--s-color-base-content-primary);
       font-weight: bold;

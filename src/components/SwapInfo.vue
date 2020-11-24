@@ -4,7 +4,7 @@
       <div v-if="showPrice" class="swap-info">
         <span>{{ t('exchange.price') }}</span>
         <span class="swap-info-value">{{ price }}</span>
-        <s-button class="el-button--switch-price" type="action" size="small" icon="swap" @click="handleSwitchPrice"></s-button>
+        <s-button class="el-button--switch-price" type="action" size="small" icon="swap" @click="handleSwitchPrice" />
       </div>
       <div v-if="showSlippageTolerance" class="swap-info swap-info--slippage-tolerance">
         <span>{{ t('swap.slippageTolerance') }}</span>
@@ -14,21 +14,21 @@
     <template v-else>
       <div class="swap-info">
         <s-tooltip class="swap-info-icon" borderRadius="mini" :content="t('swap.minReceivedTooltip')" theme="light" placement="right-start" :show-arrow="false">
-          <s-icon name="info" size="16"/>
+          <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.minReceived') }}</span>
         <span class="swap-info-value">{{ minReceived }}</span>
       </div>
       <div class="swap-info">
         <s-tooltip class="swap-info-icon" borderRadius="mini" :content="t('swap.priceImpactTooltip')" theme="light" placement="right-start" :show-arrow="false">
-          <s-icon name="info" size="16"/>
+          <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.priceImpact') }}</span>
         <span :class="'swap-info-value ' + priceImpactClass">{{ priceImpact }}%</span>
       </div>
       <div class="swap-info">
         <s-tooltip class="swap-info-icon" borderRadius="mini" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee })" theme="light" placement="right-start" :show-arrow="false">
-          <s-icon name="info" size="16"/>
+          <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.liquidityProviderFee') }}</span>
         <span class="swap-info-value">{{ liquidityProviderFeeValue }}</span>
