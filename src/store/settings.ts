@@ -18,8 +18,8 @@ const types = flow(
 
 function initialState () {
   return {
-    slippageTolerance: storage.getItem('slippageTolerance') || 0.5,
-    transactionDeadline: storage.getItem('transactionDeadline') || 20,
+    slippageTolerance: Number(storage.getItem('slippageTolerance')) || 0.5,
+    transactionDeadline: Number(storage.getItem('transactionDeadline')) || 20,
     nodeAddressIp: storage.getItem('nodeAddress.ip') || '192.168.0.0.1',
     nodeAddressPort: storage.getItem('nodeAddress.port') || 2
   }
@@ -29,10 +29,10 @@ const state = initialState()
 
 const getters = {
   slippageTolerance (state) {
-    return Number(state.slippageTolerance)
+    return state.slippageTolerance
   },
   transactionDeadline (state) {
-    return Number(state.transactionDeadline)
+    return state.transactionDeadline
   },
   nodeAddress (state) {
     return {

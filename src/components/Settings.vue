@@ -128,9 +128,9 @@ export default class Settings extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .slippage-tolerance-custom_input.s-input {
-  min-height: 32px;
+  min-height: var(--s-size-small);
   .el-input > input {
-    height: 32px;
+    height: var(--s-size-small);
     text-align: center;
     padding-top: 0; // TODO: if there is no placeholder, set padding-top to zero
     font-weight: 700;
@@ -159,8 +159,8 @@ export default class Settings extends Mixins(TranslationMixin) {
     display: flex;
     &-container {
       flex: 1;
-      height: 32px;
-      line-height: 32px;
+      height: var(--s-size-small);
+      line-height: var(--s-size-small);
       background-color: var(--s-color-base-background);
       border-radius: $border-radius-mini;
       font-weight: 700;
