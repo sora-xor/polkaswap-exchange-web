@@ -13,16 +13,21 @@ const tokens = [
 ]
 @Component
 export default class TokenLogo extends Mixins(TranslationMixin) {
-  @Prop({ type: String, default: false, required: true }) readonly token!: string
+  @Prop({ type: String, default: false }) readonly token!: string | boolean | undefined
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
 
+  get tokenName (): string {
+    return this.token ? this.token.toString() : ''
+  }
+
   get tokenClasses (): string {
-    const classes = ['token-logo']
-    if (this.token && tokens.includes(this.token)) {
-      classes.push('token-logo--' + this.token.toLowerCase())
+    const tokenLogoClass = 'token-logo'
+    const classes = [tokenLogoClass]
+    if (this.token && tokens.includes(this.tokenName)) {
+      classes.push(`${tokenLogoClass}--${this.tokenName.toLowerCase()}`)
     }
 
-    classes.push('token-logo--' + this.size.toLowerCase())
+    classes.push(`${tokenLogoClass}--${this.size.toLowerCase()}`)
     return classes.join(' ')
   }
 }

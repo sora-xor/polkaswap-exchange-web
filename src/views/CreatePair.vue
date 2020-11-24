@@ -405,16 +405,6 @@ $swap-input-class: ".el-input";
         font-size: $s-font-size-small;
       }
     }
-    .logo {
-      margin-right: $inner-spacing-mini;
-      order: 1;
-      height: 23px;
-      width: 23px;
-      background-color: var(--s-color-utility-surface);
-      border: 1px solid var(--s-color-utility-surface);
-      border-radius: $border-radius-small;
-      box-shadow: var(--s-shadow-tooltip);
-    }
   }
   .s-input {
     min-height: 0;

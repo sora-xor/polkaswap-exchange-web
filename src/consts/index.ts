@@ -16,7 +16,9 @@ export enum Components {
   SelectToken = 'SelectToken',
   ConfirmSwap = 'ConfirmSwap',
   TransactionSubmit = 'TransactionSubmit',
-  TokenLogo = 'TokenLogo'
+  TokenLogo = 'TokenLogo',
+  PairTokenLogo = 'PairTokenLogo',
+  InfoCard = 'InfoCard'
 }
 
 export const MainMenu = [

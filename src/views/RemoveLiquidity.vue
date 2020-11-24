@@ -18,17 +18,14 @@
       class="el-form--remove-liquidity"
       :show-message="false"
     >
-      <div class="slider-container card">
-        <div class="card__title">
-          {{ t('removeLiquidity.amount') }}
-        </div>
+      <info-card class="slider-container" :title="t('removeLiquidity.amount')">
         <div class="slider-container__amount">
           {{ removeAmount }}<span class="percent">%</span>
         </div>
         <div>
           <s-slider v-model="removeAmount" @change="() => {}"/>
         </div>
-      </div>
+      </info-card>
       <div class="input-container">
         <div class="input-line">
           <div class="input-title">{{ t('removeLiquidity.input') }}</div>
@@ -51,8 +48,7 @@
             </s-button>
             <s-button type="tertiary" size="small" class="el-button--choose-token">
               <div class="liquidity-logo">
-                <token-logo :token="firstToken.symbol || ''" size="mini" />
-                <token-logo :token="secondToken.symbol || ''" size="mini" />
+                <pair-token-logo :firstToken="firstToken.symbol" :secondToken="secondToken.symbol" size="mini" />
               </div>
               {{ firstToken.symbol }}-{{ secondToken.symbol }}
             </s-button>
@@ -82,8 +78,8 @@
             <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button type="tertiary" size="small" class="el-button--choose-token">
-              <token-logo :token="firstToken.symbol || ''" size="small" />
+            <s-button type="tertiary" size="small" borderRadius="small" class="el-button--choose-token">
+              <token-logo :token="firstToken.symbol" size="small" />
               {{ firstToken.symbol }}
             </s-button>
           </div>
@@ -111,17 +107,17 @@
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
-            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" @click="handleSecondMaxValue">
+            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleSecondMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button type="tertiary" size="small" class="el-button--choose-token">
-              <token-logo :token="secondToken.symbol || ''" size="small" />
+            <s-button type="tertiary" size="small" borderRadius="small" class="el-button--choose-token">
+              <token-logo :token="secondToken.symbol" size="small" />
               {{ secondToken.symbol }}
             </s-button>
           </div>
         </div>
       </div>
-      <s-button type="primary" size="medium" :disabled="isEmptyBalance" @click="showConfirmDialog = true">
+      <s-button type="primary" size="medium" borderRadius="medium" :disabled="isEmptyBalance" @click="showConfirmDialog = true">
         <template v-if="isEmptyBalance">
           {{ t('swap.enterAmount') }}
         </template>
@@ -148,13 +144,18 @@ import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import TokenLogo from '@/components/TokenLogo.vue'
 
-import router from '@/router'
+import router, { lazyComponent } from '@/router'
+import { Components } from '@/consts'
 import { formatNumber } from '@/utils'
 import { Token } from '@/types'
 const namespace = 'removeLiquidity'
 
 @Component({
-  components: { TokenLogo }
+  components: {
+    TokenLogo: lazyComponent(Components.TokenLogo),
+    InfoCard: lazyComponent(Components.InfoCard),
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo)
+  }
 })
 export default class RemoveLiquidity extends Mixins(TranslationMixin) {
   @Getter('liquidity', { namespace }) liquidity!: any
@@ -320,28 +321,6 @@ $swap-input-class: ".el-input";
 .icon-divider {
   padding: $inner-spacing-medium;
 }
-.card {
-  border: 1px solid var(--s-color-base-background-hover);
-  box-sizing: border-box;
-  border-radius: 12px;
-  margin: $inner-spacing-mini 0;
-  padding: $inner-spacing-medium;
-  &__title {
-    font-weight: 600;
-    line-height: 1.8;
-    color: var(--s-color-base-content-primary);
-  }
-  &__data {
-    color: var(--s-color-base-content-tertiary);
-    line-height: 1.8;
-    display: flex;
-    justify-content: space-between;
-  }
-  .el-divider {
-    margin-top: $inner-spacing-mini;
-    margin-bottom: $inner-spacing-mini;
-  }
-}
 .remove-liquidity-container {
   margin: $inner-spacing-big auto;
   padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
@@ -392,26 +371,7 @@ $swap-input-class: ".el-input";
 
       .liquidity-logo {
         order: 1;
-        position: relative;
         margin-right: $inner-spacing-mini;
-        display: block;
-        height: 22px;
-        width: 22px;
-        .token-logo {
-          position: absolute;
-
-          &:first-child {
-            top: 0;
-            left: 0;
-            z-index: 1;
-            margin: 0;
-          }
-          &:last-child {
-            bottom: 0;
-            right: 0;
-            margin: 0
-          }
-        }
       }
 
       .token-logo {
@@ -440,16 +400,6 @@ $swap-input-class: ".el-input";
         font-size: $s-font-size-small;
       }
     }
-    .logo {
-      margin-right: $inner-spacing-mini;
-      order: 1;
-      height: 23px;
-      width: 23px;
-      background-color: var(--s-color-utility-surface);
-      border: 1px solid var(--s-color-utility-surface);
-      border-radius: $border-radius-small;
-      box-shadow: var(--s-shadow-tooltip);
-    }
   }
   .s-input {
     min-height: 0;
@@ -457,7 +407,6 @@ $swap-input-class: ".el-input";
   .s-action {
     background-color: var(--s-color-base-background);
     border-color: var(--s-color-base-background);
-    border-radius: $border-radius-small;
     &:not(:disabled) {
       &:hover, &:focus {
         background-color: var(--s-color-base-background-hover);
@@ -467,7 +416,6 @@ $swap-input-class: ".el-input";
   }
   .s-tertiary {
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
-    border-radius: $border-radius-mini;
   }
   .el-button {
     &--switch-tokens {
@@ -497,7 +445,6 @@ $swap-input-class: ".el-input";
       padding-left: $inner-spacing-mini / 2;
       background-color: var(--s-color-base-background);
       border-color: var(--s-color-base-background);
-      border-radius: $border-radius-medium;
       color: var(--s-color-base-content-primary);
       &:hover, &:active, &:focus {
         background-color: var(--s-color-base-background-hover);
@@ -513,7 +460,6 @@ $swap-input-class: ".el-input";
   .s-primary {
     margin-top: $inner-spacing-medium;
     width: 100%;
-    border-radius: $border-radius-small;
     &:disabled {
       color: var(--s-color-base-on-disabled);
     }
