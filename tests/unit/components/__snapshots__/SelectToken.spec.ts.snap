@@ -4,7 +4,6 @@ exports[`SelectToken.vue should renders correctly 1`] = `
 <dialog-base-stub
   customclass="token-select"
   title="Select a token"
-  visible="true"
 >
   <s-input-stub
     accept=""
