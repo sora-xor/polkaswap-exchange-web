@@ -93,7 +93,7 @@
       </s-button>
     </s-form>
 
-    <div v-if="areTokensSelected" class="card">
+    <info-card v-if="areTokensSelected">
       <div class="card__title">{{ t('createPair.pricePool') }}</div>
       <div class="card__data">
         <div>{{ t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol }) }}</div>
@@ -107,11 +107,14 @@
         <div>{{ t('createPair.shareOfPool') }}</div>
         <div>{{ shareOfPool }}</div>
       </div>
-    </div>
+    </info-card>
 
     <info-card v-if="areTokensSelected" :title="t('createPair.yourPosition') ">
       <div class="card__data">
-        <div>{{ t('createPair.firstSecondPoolTokens', { first: secondToken.symbol, second: firstToken.symbol })  }}</div>
+        <s-row flex>
+          <pair-token-logo class="pair-token-logo" :firstToken="secondToken.symbol" :secondToken="firstToken.symbol" size="mini" />
+          {{ t('createPair.firstSecondPoolTokens', { first: secondToken.symbol, second: firstToken.symbol })  }}
+        </s-row>
         <div>{{ poolTokens }}</div>
       </div>
       <s-divider />
@@ -144,7 +147,8 @@ const namespace = 'addLiquidity'
   components: {
     SelectToken: lazyComponent(Components.SelectToken),
     InfoCard: lazyComponent(Components.InfoCard),
-    TokenLogo: lazyComponent(Components.TokenLogo)
+    TokenLogo: lazyComponent(Components.TokenLogo),
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
 export default class AddLiquidity extends Mixins(TranslationMixin) {
@@ -446,10 +450,13 @@ $swap-input-class: ".el-input";
   .s-primary {
     margin-top: $inner-spacing-medium;
     width: 100%;
-    border-radius: $border-radius-small;
     &:disabled {
       color: var(--s-color-base-on-disabled);
     }
   }
+}
+
+.pair-token-logo {
+  margin-right: $inner-spacing-mini
 }
 </style>

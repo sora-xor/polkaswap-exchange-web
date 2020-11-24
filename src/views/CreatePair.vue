@@ -93,7 +93,7 @@
       </s-button>
     </s-form>
 
-    <div v-if="areTokensSelected" class="card">
+    <info-card v-if="areTokensSelected">
       <div class="card__title">{{ t('createPair.pricePool') }}</div>
       <div class="card__data">
         <div>{{ t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol }) }}</div>
@@ -107,12 +107,15 @@
         <div>{{ t('createPair.shareOfPool') }}</div>
         <div>{{ shareOfPool }}</div>
       </div>
-    </div>
+    </info-card>
 
-    <div v-if="areTokensSelected" class="card">
+    <info-card v-if="areTokensSelected">
       <div class="card__title">{{ t('createPair.yourPosition') }}</div>
       <div class="card__data">
-        <div>{{ t('createPair.firstSecondPoolTokens', { first: secondToken.symbol, second: firstToken.symbol })  }}</div>
+        <s-row flex>
+          <pair-token-logo class="pair-token-logo" :firstToken="secondToken.symbol" :secondToken="firstToken.symbol" size="mini" />
+          {{ t('createPair.firstSecondPoolTokens', { first: secondToken.symbol, second: firstToken.symbol })  }}
+        </s-row>
         <div>{{ poolTokens }}</div>
       </div>
       <s-divider />
@@ -124,7 +127,7 @@
         <div>{{ secondToken.symbol }}</div>
         <div>{{ secondTokenPosition }}</div>
       </div>
-    </div>
+    </info-card>
 
     <select-token :visible="firstModalVisible" @close="firstModalVisible = false" @select="setFirstToken" />
     <select-token :visible="secondModalVisible" @close="secondModalVisible = false" @select="setSecondToken" />
@@ -139,18 +142,24 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import SelectToken from '@/components/SelectToken.vue'
-import ConfirmCreatePair from '@/components/ConfirmCreatePair.vue'
-import CreatePairSubmit from '@/components/CreatePairSubmit.vue'
-import TokenLogo from '@/components/TokenLogo.vue'
 
-import router from '@/router'
+import router, { lazyComponent } from '@/router'
 import { formatNumber, isWalletConnected } from '@/utils'
+import { Components } from '@/consts'
+
 const namespace = 'createPair'
 
 @Component({
-  components: { SelectToken, ConfirmCreatePair, CreatePairSubmit, TokenLogo }
+  components: {
+    SelectToken: lazyComponent(Components.SelectToken),
+    InfoCard: lazyComponent(Components.InfoCard),
+    ConfirmCreatePair: lazyComponent(Components.TokenLogo),
+    CreatePairSubmit: lazyComponent(Components.TokenLogo),
+    TokenLogo: lazyComponent(Components.TokenLogo),
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo)
+  }
 })
+
 export default class CreatePair extends Mixins(TranslationMixin) {
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
@@ -322,22 +331,6 @@ $swap-input-class: ".el-input";
 
 <style lang="scss" scoped>
 .card {
-  border: 1px solid var(--s-color-base-background-hover);
-  box-sizing: border-box;
-  border-radius: 12px;
-  margin: $inner-spacing-mini 0;
-  padding: $inner-spacing-medium;
-  &__title {
-    font-weight: 600;
-    line-height: 1.8;
-    color: var(--s-color-base-content-primary);
-  }
-  &__data {
-    color: var(--s-color-base-content-tertiary);
-    line-height: 1.8;
-    display: flex;
-    justify-content: space-between;
-  }
   .el-divider {
     margin-top: $inner-spacing-mini;
     margin-bottom: $inner-spacing-mini;
