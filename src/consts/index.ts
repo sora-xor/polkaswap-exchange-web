@@ -13,7 +13,6 @@ export enum Components {
   SwapInfo = 'SwapInfo',
   SelectToken = 'SelectToken',
   TokenLogo = 'TokenLogo',
-  DialogBase = 'DialogBase',
   ConfirmSwap = 'ConfirmSwap',
   TransactionSubmit = 'TransactionSubmit',
   ConfirmCreatePair = 'ConfirmCreatePair',

@@ -1,7 +1,6 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 
-import DialogBase from '@/components/DialogBase.vue'
 import ConfirmSwap from '@/components/ConfirmSwap.vue'
 import { tokens } from '@/mocks/tokens'
 import { SoramitsuElementsImport, TranslationMock } from '../../utils'
@@ -36,14 +35,13 @@ describe('ConfirmSwap.vue', () => {
   })
 
   it('should renders correctly', () => {
-    const wrapper = shallowMount(DialogBase, {
+    const wrapper = shallowMount(ConfirmSwap, {
+      localVue,
+      store,
       propsData: {
         visible: true,
-        customClass: '',
-        title: 'Confirm Swap'
-      },
-      slots: {
-        // Add ConfirmSwap slot
+        title: 'Confirm Swap',
+        customClass: 'dialog--confirm-swap'
       }
     })
     expect(wrapper.element).toMatchSnapshot()

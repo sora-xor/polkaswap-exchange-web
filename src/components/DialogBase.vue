@@ -18,7 +18,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 
 @Component
 export default class DialogBase extends Vue {
-  @Prop({ default: false, type: Boolean }) readonly visible!: boolean
+  @Prop({ default: false, type: Boolean, required: true }) readonly visible!: boolean
   @Prop({ default: '', type: String }) readonly customClass!: string
   @Prop({ default: '', type: String }) readonly title!: string
 }
@@ -46,10 +46,6 @@ $el-dialog-button-size: var(--s-size-medium);
       font-size: $s-font-size-big;
       font-weight: normal;
     }
-  }
-  .transaction-number {
-    color: var(--s-color-base-content-primary);
-    font-weight: bold;
   }
   #{$el-dialog-class}__headerbtn {
     position: static;

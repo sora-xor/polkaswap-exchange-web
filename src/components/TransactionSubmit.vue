@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="visible" :title="t('exchange.transactionSubmitted')">
+  <dialog-base :visible="visible" :title="t('exchange.transactionSubmitted')">
     <s-icon name="arrow-top-right-rounded" />
     <s-divider />
     <div class="transaction">
@@ -20,12 +20,11 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
+import DialogBase from './DialogBase.vue'
 
 @Component({
   components: {
-    DialogBase: lazyComponent(Components.DialogBase)
+    DialogBase
   }
 })
 export default class TransactionSubmit extends Mixins(TranslationMixin) {
@@ -35,7 +34,7 @@ export default class TransactionSubmit extends Mixins(TranslationMixin) {
   @Getter toValue!: number
   @Action setSwapConfirm
 
-  @Prop({ default: false, type: Boolean }) readonly visible!: boolean
+  @Prop({ default: false, type: Boolean, required: true }) readonly visible!: boolean
 
   get transactionInfo (): string {
     return this.t('swap.transactionMessage', { tokenFromValue: this.getSwapValue(this.tokenFrom, this.fromValue), tokenToValue: this.getSwapValue(this.tokenTo, this.toValue) })

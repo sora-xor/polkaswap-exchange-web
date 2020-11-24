@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="visible" customClass="token-select" :title="t('selectToken.title')">
+  <dialog-base :visible="visible" customClass="token-select" :title="t('selectToken.title')">
     <s-input
       v-model="query"
       :placeholder="t('selectToken.searchPlaceholder')"
@@ -35,13 +35,12 @@ import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import DialogBase from '@/components/DialogBase.vue'
 import { Token } from '@/types'
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
 
 @Component({
   components: {
-    DialogBase: lazyComponent(Components.DialogBase)
+    DialogBase
   }
 })
 export default class SelectToken extends Mixins(TranslationMixin) {

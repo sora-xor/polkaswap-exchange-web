@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="visible" :title="t('swap.confirmSwap')">
+  <dialog-base :visible="visible" :title="t('swap.confirmSwap')" customClass="dialog--confirm-swap">
     <div class="tokens">
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedFromValue }}</span>
@@ -31,13 +31,14 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import DialogBase from '@/components/DialogBase.vue'
 import { formatNumber } from '@/utils'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 
 @Component({
   components: {
-    DialogBase: lazyComponent(Components.DialogBase),
+    DialogBase,
     SwapInfo: lazyComponent(Components.SwapInfo)
   }
 })
@@ -48,7 +49,7 @@ export default class ConfirmSwap extends Mixins(TranslationMixin) {
   @Getter toValue!: number
   @Action setSwapConfirm
 
-  @Prop({ default: false, type: Boolean }) readonly visible!: boolean
+  @Prop({ default: false, type: Boolean, required: true }) readonly visible!: boolean
 
   get formattedFromValue (): string {
     return formatNumber(this.fromValue, 4)
@@ -73,6 +74,15 @@ export default class ConfirmSwap extends Mixins(TranslationMixin) {
   }
 }
 </script>
+
+<style lang="scss">
+.dialog--confirm-swap {
+  .transaction-number {
+    color: var(--s-color-base-content-primary);
+    font-weight: bold;
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .tokens {
