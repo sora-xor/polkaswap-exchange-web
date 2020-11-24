@@ -93,8 +93,7 @@
       </s-button>
     </s-form>
 
-    <info-card v-if="areTokensSelected">
-      <div class="card__title">{{ t('createPair.pricePool') }}</div>
+    <info-card v-if="areTokensSelected" :title="t('createPair.pricePool')">
       <div class="card__data">
         <div>{{ t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol }) }}</div>
         <div>{{ firstPerSecondPrice }} {{ firstToken.symbol }}</div>
