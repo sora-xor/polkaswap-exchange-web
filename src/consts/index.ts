@@ -6,7 +6,9 @@ export enum PageNames {
   Stats = 'Stats',
   Support = 'Support',
   Wallet = 'Wallet',
-  CreatePair = 'CreatePair'
+  CreatePair = 'CreatePair',
+  AddLiquidity = 'AddLiquidity',
+  RemoveLiquidity = 'RemoveLiquidity'
 }
 
 export enum Components {
@@ -14,6 +16,9 @@ export enum Components {
   SelectToken = 'SelectToken',
   ConfirmSwap = 'ConfirmSwap',
   TransactionSubmit = 'TransactionSubmit',
+  TokenLogo = 'TokenLogo',
+  PairTokenLogo = 'PairTokenLogo',
+  InfoCard = 'InfoCard',
   Settings = 'Settings'
 }
 
@@ -44,6 +49,7 @@ export const AboutTopics = [
 ]
 
 export enum LogoSize {
+  MINI = 'mini',
   SMALL = 'small',
   MEDIUM = 'medium',
 }

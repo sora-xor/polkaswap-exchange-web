@@ -2,7 +2,7 @@
 
 exports[`CreatePair.vue should renders correctly 1`] = `
 <div
-  class="create-pair-container"
+  class="add-liquidity-container"
 >
   <s-row-stub
     align="middle"
@@ -41,7 +41,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
   </s-row-stub>
    
   <s-form-stub
-    class="el-form--create-pair"
+    class="el-form--add-liquidity"
     labelposition="right"
     validateonrulechange="true"
     value="[object Object]"
@@ -72,6 +72,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
             accept=""
             autocomplete="off"
             borderradius="small"
+            disabled="true"
             form=""
             label=""
             name=""
@@ -85,28 +86,21 @@ exports[`CreatePair.vue should renders correctly 1`] = `
           />
         </s-form-item-stub>
          
-        <div
-          class="token"
+        <s-button-stub
+          borderradius="mini"
+          class="el-button--empty-token"
+          icon="chevron-bottom-rounded"
+          nativetype="button"
+          size="small"
+          tabindex="0"
+          tooltip=""
+          tooltipplacement="top"
+          type="tertiary"
         >
-          <!---->
-           
-          <s-button-stub
-            borderradius="small"
-            class="el-button--choose-token"
-            icon="chevron-bottom-rounded"
-            nativetype="button"
-            size="small"
-            tabindex="0"
-            tooltip=""
-            tooltipplacement="top"
-            type="tertiary"
-          >
-            <!---->
-            
-            XOR
           
-          </s-button-stub>
-        </div>
+          
+        
+        </s-button-stub>
       </div>
     </div>
      
@@ -144,6 +138,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
             accept=""
             autocomplete="off"
             borderradius="small"
+            disabled="true"
             form=""
             label=""
             name=""
@@ -157,33 +152,27 @@ exports[`CreatePair.vue should renders correctly 1`] = `
           />
         </s-form-item-stub>
          
-        <div
-          class="token"
+        <s-button-stub
+          borderradius="small"
+          class="el-button--empty-token"
+          icon="chevron-bottom-rounded"
+          nativetype="button"
+          size="small"
+          tabindex="0"
+          tooltip=""
+          tooltipplacement="top"
+          type="tertiary"
         >
-          <!---->
-           
-          <s-button-stub
-            borderradius="small"
-            class="el-button--choose-token"
-            icon="chevron-bottom-rounded"
-            nativetype="button"
-            size="small"
-            tabindex="0"
-            tooltip=""
-            tooltipplacement="top"
-            type="tertiary"
-          >
-            <!---->
-            
-            KSM
           
-          </s-button-stub>
-        </div>
+          
+        
+        </s-button-stub>
       </div>
     </div>
      
     <s-button-stub
       borderradius="small"
+      disabled="true"
       icon=""
       nativetype="button"
       size="medium"
@@ -197,10 +186,6 @@ exports[`CreatePair.vue should renders correctly 1`] = `
       
     </s-button-stub>
   </s-form-stub>
-   
-  <!---->
-   
-  <!---->
    
   <!---->
    

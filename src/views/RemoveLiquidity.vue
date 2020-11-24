@@ -1,19 +1,67 @@
 <template>
-  <div class="create-pair-container">
+  <div class="remove-liquidity-container">
     <s-row class="header" flex justify="space-between" align="middle">
       <s-button type="action" size="small" icon="arrow-left" />
-      <div class="title">{{ t('createPair.title') }}</div>
-      <s-button type="action" size="small" icon="info" />
+      <div class="title">{{ t('removeLiquidity.title') }}</div>
+      <s-tooltip
+        theme="light"
+        :content="t('removeLiquidity.description')"
+        borderRadius="small"
+        placement="bottom-end"
+        popperClass="remove-liquidity__description"
+        :visible-arrow="false"
+      >
+        <s-button type="action" size="small" icon="info" />
+      </s-tooltip>
     </s-row>
     <s-form
-      v-model="formModel"
-      class="el-form--create-pair"
+      class="el-form--remove-liquidity"
       :show-message="false"
     >
+      <info-card class="slider-container" :title="t('removeLiquidity.amount')">
+        <div class="slider-container__amount">
+          {{ removeAmount }}<span class="percent">%</span>
+        </div>
+        <div>
+          <s-slider v-model="removeAmount" @change="() => {}"/>
+        </div>
+      </info-card>
       <div class="input-container">
         <div class="input-line">
-          <div class="input-title">{{ t('createPair.deposit') }}</div>
-          <div v-if="connected && firstToken" class="token-balance">
+          <div class="input-title">{{ t('removeLiquidity.input') }}</div>
+          <div v-if="isWalletConnected && firstToken" class="token-balance">
+            <span class="token-balance-title">{{ t('createPair.balance') }}</span>
+            <span class="token-balance-value">{{ getTokenBalance(liquidity) }}</span>
+          </div>
+        </div>
+        <div class="input-line">
+          <s-form-item>
+            <s-input
+              :value="removeLiquidityAmount"
+              :placeholder="inputPlaceholder"
+              :disabled="true"
+            />
+          </s-form-item>
+          <div class="token">
+            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" @click="handleFirstMaxValue">
+              {{ t('exchange.max') }}
+            </s-button>
+            <s-button type="tertiary" size="small" class="el-button--choose-token">
+              <div class="liquidity-logo">
+                <pair-token-logo :firstToken="firstToken.symbol" :secondToken="secondToken.symbol" size="mini" />
+              </div>
+              {{ firstToken.symbol }}-{{ secondToken.symbol }}
+            </s-button>
+          </div>
+        </div>
+      </div>
+
+      <s-icon class="icon-divider" name="arrow-bottom" size="medium" />
+
+      <div class="input-container">
+        <div class="input-line">
+          <div class="input-title">{{ t('removeLiquidity.output') }}</div>
+          <div v-if="isWalletConnected && firstToken" class="token-balance">
             <span class="token-balance-title">{{ t('createPair.balance') }}</span>
             <span class="token-balance-value">{{ getTokenBalance(firstToken) }}</span>
           </div>
@@ -21,117 +69,71 @@
         <div class="input-line">
           <s-form-item>
             <s-input
-              v-model="formModel.first"
-              v-float="formModel.first"
+              :value="firstTokenValue"
               :placeholder="inputPlaceholder"
-              :disabled="!areTokensSelected"
-              @change="handleChangeFirstField"
+              :disabled="true"
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
-            <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" @click="handleFirstMaxValue">
+            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="firstModalVisible = true">
+            <s-button type="tertiary" size="small" borderRadius="small" class="el-button--choose-token">
               <token-logo :token="firstToken.symbol" size="small" />
               {{ firstToken.symbol }}
             </s-button>
           </div>
-          <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="firstModalVisible = true">
-            {{ t('swap.chooseToken') }}
-          </s-button>
         </div>
       </div>
-      <s-icon class="plus" name="plus" size="medium" />
+
+      <s-icon class="icon-divider" name="plus" size="medium" />
+
       <div class="input-container">
         <div class="input-line">
           <div class="input-title">
-            <span>{{ t('createPair.deposit') }}</span>
+            <span>{{ t('removeLiquidity.output') }}</span>
           </div>
-          <div v-if="connected && secondToken" class="token-balance">
+          <div v-if="isWalletConnected && secondToken" class="token-balance">
             <span class="token-balance-title">{{ t('exchange.balance') }}</span>
-            <span class="token-balance-value">{{ getTokenBalance(secondToken.balance) }}</span>
+            <span class="token-balance-value">{{ getTokenBalance(secondToken) }}</span>
           </div>
         </div>
         <div class="input-line">
           <s-form-item>
             <s-input
-              v-model="formModel.second"
-              v-float="formModel.second"
+              :value="secondTokenValue"
               :placeholder="inputPlaceholder"
-              :disabled="!areTokensSelected"
-              @change="handleChangeSecondField"
+              :disabled="true"
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
-            <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" @click="handleSecondMaxValue">
+            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleSecondMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="secondModalVisible = true">
+            <s-button type="tertiary" size="small" borderRadius="small" class="el-button--choose-token">
               <token-logo :token="secondToken.symbol" size="small" />
               {{ secondToken.symbol }}
             </s-button>
           </div>
-          <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="secondModalVisible = true">
-            {{t('swap.chooseToken')}}
-          </s-button>
         </div>
       </div>
-        <s-button type="primary" size="medium" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="showConfirmDialog = true">
-        <template v-if="!areTokensSelected">
-          {{ t('swap.chooseTokens') }}
-        </template>
-        <template v-else-if="isEmptyBalance">
+      <s-button type="primary" size="medium" borderRadius="medium" :disabled="isEmptyBalance" @click="showConfirmDialog = true">
+        <template v-if="isEmptyBalance">
           {{ t('swap.enterAmount') }}
         </template>
-        <template v-else-if="isInsufficientBalance">
-          {{ t('swap.insufficientBalance', { tokenSymbol: firstToken.symbol }) }}
-        </template>
         <template v-else>
-          {{ t('createPair.supply') }}
+          {{ t('removeLiquidity.remove') }}
         </template>
       </s-button>
     </s-form>
 
-    <info-card v-if="areTokensSelected" :title="t('createPair.pricePool')">
-      <div class="card__data">
-        <div>{{ t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol }) }}</div>
-        <div>{{ firstPerSecondPrice }} {{ firstToken.symbol }}</div>
+    <s-row flex justify="space-between" class="price-container">
+      <div>{{ t('removeLiquidity.price')  }}</div>
+      <div>
+        <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price, 2) }} {{ secondToken.symbol }}</div>
+        <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price, 2) }} {{ firstToken.symbol }}</div>
       </div>
-      <div class="card__data">
-        <div>{{ t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })  }}</div>
-        <div>{{ secondPerFirstPrice }} {{ secondToken.symbol }}</div>
-      </div>
-      <div class="card__data">
-        <div>{{ t('createPair.shareOfPool') }}</div>
-        <div>{{ shareOfPool }}</div>
-      </div>
-    </info-card>
-
-    <info-card v-if="areTokensSelected" :title="t('createPair.yourPosition')">
-      <div class="card__data">
-        <s-row flex>
-          <pair-token-logo class="pair-token-logo" :firstToken="secondToken.symbol" :secondToken="firstToken.symbol" size="mini" />
-          {{ t('createPair.firstSecondPoolTokens', { first: secondToken.symbol, second: firstToken.symbol })  }}
-        </s-row>
-        <div>{{ poolTokens }}</div>
-      </div>
-      <s-divider />
-      <div class="card__data">
-        <div>{{ firstToken.symbol }}</div>
-        <div>{{ firstTokenPosition }}</div>
-      </div>
-      <div class="card__data">
-        <div>{{ secondToken.symbol }}</div>
-        <div>{{ secondTokenPosition }}</div>
-      </div>
-    </info-card>
-
-    <select-token :visible="firstModalVisible" @close="firstModalVisible = false" @select="setFirstToken" />
-    <select-token :visible="secondModalVisible" @close="secondModalVisible = false" @select="setSecondToken" />
-
-    <confirm-create-pair :visible="showConfirmDialog" @close="() => { showConfirmDialog = false; isCreatePairConfirmed = true }" />
-    <create-pair-submit :visible="isCreatePairConfirmed" @close="isCreatePairConfirmed = false" />
+    </s-row>
   </div>
 </template>
 
@@ -140,50 +142,59 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import TokenLogo from '@/components/TokenLogo.vue'
 
 import router, { lazyComponent } from '@/router'
-import { formatNumber, isWalletConnected } from '@/utils'
 import { Components } from '@/consts'
-
-const namespace = 'createPair'
+import { formatNumber } from '@/utils'
+import { Token } from '@/types'
+const namespace = 'removeLiquidity'
 
 @Component({
   components: {
-    SelectToken: lazyComponent(Components.SelectToken),
-    InfoCard: lazyComponent(Components.InfoCard),
-    ConfirmCreatePair: lazyComponent(Components.TokenLogo),
-    CreatePairSubmit: lazyComponent(Components.TokenLogo),
     TokenLogo: lazyComponent(Components.TokenLogo),
+    InfoCard: lazyComponent(Components.InfoCard),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
+export default class RemoveLiquidity extends Mixins(TranslationMixin) {
+  @Getter('liquidity', { namespace }) liquidity!: any
+  @Getter tokens!: Array<Token>
 
-export default class CreatePair extends Mixins(TranslationMixin) {
-  @Getter('firstToken', { namespace }) firstToken!: any
-  @Getter('secondToken', { namespace }) secondToken!: any
-  @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
-  @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
+  @Action('getLiquidity', { namespace }) getLiquidity
+  @Action getTokens
 
-  @Action('setFirstToken', { namespace }) setFirstToken
-  @Action('setSecondToken', { namespace }) setSecondToken
-  @Action('setFirstTokenValue', { namespace }) setFirstTokenValue
-  @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
+  created () {
+    this.getTokens()
+    this.getLiquidity(this.liquidityId)
+  }
 
-  firstModalVisible = false
-  secondModalVisible = false
+  isWalletConnected = true
   inputPlaceholder: string = formatNumber(0, 2);
   showConfirmDialog = false
   isCreatePairConfirmed = false
-
-  formModel = {
-    first: formatNumber(0, 1),
-    second: formatNumber(0, 1)
-  }
+  removeAmount = 0
 
   formatNumber = formatNumber
 
-  get connected (): boolean {
-    return isWalletConnected()
+  get liquidityId (): string {
+    return this.$route.params.id
+  }
+
+  get firstToken (): Token {
+    return this.liquidity ? this.tokens.find(t => t.symbol === this.liquidity.firstToken) || {} as Token : {} as Token
+  }
+
+  get secondToken (): Token {
+    return this.liquidity ? this.tokens.find(t => t.symbol === this.liquidity.secondToken) || {} as Token : {} as Token
+  }
+
+  get firstTokenValue (): string {
+    return this.liquidity ? formatNumber(this.liquidity.firstTokenAmount * this.removeAmount / 100, 2) : ''
+  }
+
+  get secondTokenValue (): string {
+    return this.liquidity ? formatNumber(this.liquidity.secondTokenAmount * this.removeAmount / 100, 2) : ''
   }
 
   get firstPerSecondPrice (): string {
@@ -194,52 +205,28 @@ export default class CreatePair extends Mixins(TranslationMixin) {
     return formatNumber(this.secondToken.price / this.firstToken.price, 2)
   }
 
-  get firstTokenPosition (): string {
-    return formatNumber(0, 2)
-  }
-
-  get secondTokenPosition (): string {
-    return formatNumber(0, 2)
-  }
-
-  get poolTokens (): string {
-    return formatNumber(0, 2)
-  }
-
-  get shareOfPool (): string {
-    return '<0.01%'
-  }
-
   get areTokensSelected (): boolean {
-    return this.firstToken && this.secondToken
+    return !!this.firstToken && !!this.secondToken
   }
 
   get isEmptyBalance (): boolean {
     return +this.firstTokenValue === 0 || +this.secondTokenValue === 0
   }
 
-  get isInsufficientBalance (): boolean {
-    if (this.areTokensSelected) {
-      return +this.formModel.first > this.firstToken.balance
+  get removeLiquidityAmount (): string {
+    if (this.liquidity) {
+      return formatNumber(this.liquidity.balance * this.removeAmount / 100, 2)
     }
 
-    return true
-  }
-
-  handleChangeFirstField (): void {
-    this.setFirstTokenValue(this.formModel.first)
-  }
-
-  handleChangeSecondField (): void {
-    this.setSecondTokenValue(this.formModel.second)
+    return ''
   }
 
   handleFirstMaxValue (): void {
-    this.formModel.first = this.firstToken.balance
+    // this.formModel.first = this.firstToken.balance
   }
 
   handleSecondMaxValue (): void {
-    this.formModel.second = this.secondToken.balance
+    // this.formModel.second = this.secondToken.balance
   }
 
   getTokenBalance (token: any): string {
@@ -254,10 +241,7 @@ export default class CreatePair extends Mixins(TranslationMixin) {
 <style lang="scss">
 $swap-input-class: ".el-input";
 
-.plus {
-  padding: $inner-spacing-medium;
-}
-.el-form--create-pair {
+.el-form--remove-liquidity {
   .s-input {
     .el-input {
       #{$swap-input-class}__inner {
@@ -314,7 +298,7 @@ $swap-input-class: ".el-input";
     }
   }
 }
-.create-pair-container {
+.remove-liquidity-container {
   .header {
     margin-bottom: $inner-spacing-medium;
     .title {
@@ -325,16 +309,19 @@ $swap-input-class: ".el-input";
     }
   }
 }
+
+.remove-liquidity__description {
+  width: 320px;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.35);
+  border: none !important;
+}
 </style>
 
 <style lang="scss" scoped>
-.card {
-  .el-divider {
-    margin-top: $inner-spacing-mini;
-    margin-bottom: $inner-spacing-mini;
-  }
+.icon-divider {
+  padding: $inner-spacing-medium;
 }
-.create-pair-container {
+.remove-liquidity-container {
   margin: $inner-spacing-big auto;
   padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
   min-height: $inner-window-height;
@@ -344,10 +331,22 @@ $swap-input-class: ".el-input";
   box-shadow: var(--s-shadow-surface);
   color: var(--s-color-base-content-primary);
 }
-.el-form--create-pair {
+.el-form--remove-liquidity {
   display: flex;
   flex-direction: column;
   align-items: center;
+  .slider-container {
+    width: 100%;
+
+    &__amount {
+      font-size: 36px;
+      line-height: 120%;
+      letter-spacing: -0.04em;
+    }
+    .percent {
+      color: var(--s-color-base-content-secondary)
+    }
+  }
   .input-container {
     position: relative;
     padding: $inner-spacing-small $inner-spacing-medium $inner-spacing-mini;
@@ -369,6 +368,11 @@ $swap-input-class: ".el-input";
     .token {
       display: flex;
       align-items: center;
+
+      .liquidity-logo {
+        order: 1;
+        margin-right: $inner-spacing-mini;
+      }
 
       .token-logo {
         order: 1;
@@ -403,7 +407,6 @@ $swap-input-class: ".el-input";
   .s-action {
     background-color: var(--s-color-base-background);
     border-color: var(--s-color-base-background);
-    border-radius: $border-radius-small;
     &:not(:disabled) {
       &:hover, &:focus {
         background-color: var(--s-color-base-background-hover);
@@ -413,7 +416,6 @@ $swap-input-class: ".el-input";
   }
   .s-tertiary {
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
-    border-radius: $border-radius-mini;
   }
   .el-button {
     &--switch-tokens {
@@ -443,7 +445,6 @@ $swap-input-class: ".el-input";
       padding-left: $inner-spacing-mini / 2;
       background-color: var(--s-color-base-background);
       border-color: var(--s-color-base-background);
-      border-radius: $border-radius-medium;
       color: var(--s-color-base-content-primary);
       &:hover, &:active, &:focus {
         background-color: var(--s-color-base-background-hover);
@@ -459,10 +460,15 @@ $swap-input-class: ".el-input";
   .s-primary {
     margin-top: $inner-spacing-medium;
     width: 100%;
-    border-radius: $border-radius-small;
     &:disabled {
       color: var(--s-color-base-on-disabled);
     }
   }
+}
+
+.price-container {
+  margin: $inner-spacing-medium $inner-spacing-medium 0;
+  line-height: 1.8;
+  color: var(--s-color-base-content-secondary)
 }
 </style>

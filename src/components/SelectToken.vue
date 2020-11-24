@@ -2,14 +2,9 @@
   <s-dialog
     :visible.sync="dialogVisible"
     width="496px"
+    :title="t('selectToken.title')"
     class="token-select"
   >
-    <template #title>
-      <div class="token-select__title">
-      {{ t('selectToken.title') }}
-      </div>
-    </template>
-
     <s-input
       v-model="query"
       :placeholder="t('selectToken.searchPlaceholder')"
@@ -21,8 +16,7 @@
       <div v-for="token in filteredTokens" @click="selectToken($event, token)" :key="token.symbol" class="token-item">
         <s-col>
           <s-row flex justify="start" align="middle">
-            <img v-if="token.logo" :src="token.logo" :alt="token.name" class="token-item__logo">
-            <div v-else class="token-item__empty-logo"></div>
+            <token-logo :token="token.symbol" />
             <div>
               <div class="token-item__name">{{ token.name }} ({{ token.symbol }})</div>
             </div>
@@ -45,11 +39,16 @@ import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { Token } from '@/types'
+import { LogoSize, Components } from '@/consts'
+import { lazyComponent } from '@/router'
 
-@Component
+@Component({
+  components: {
+    TokenLogo: lazyComponent(Components.TokenLogo)
+  }
+})
 export default class SelectToken extends Mixins(TranslationMixin) {
   @Prop({ type: Boolean, default: false, required: true }) readonly visible!: boolean
-  @Prop() readonly defaultToken
 
   query = ''
   selectedToken = null
@@ -77,9 +76,6 @@ export default class SelectToken extends Mixins(TranslationMixin) {
   }
 
   created () {
-    if (this.defaultToken) {
-      this.selectedToken = this.defaultToken
-    }
     this.getTokens()
   }
 
@@ -106,20 +102,13 @@ export default class SelectToken extends Mixins(TranslationMixin) {
 </style>
 
 <style lang="scss" scoped>
-$container-spacing: 24px;
 
-.token-select__title {
-  margin-left: 4px;
-  font-size: $s-font-size-big;
-  letter-spacing: -0.02em;
-}
 .token-search {
-  margin-left: $container-spacing;
-  width: calc(100% - 2 * #{$container-spacing});
+  margin-left: $inner-spacing-big;
+  width: calc(100% - 2 * #{$inner-spacing-big});
 }
 .token-item {
-  padding-left: $container-spacing;
-  padding-right: $container-spacing;
+  padding: $inner-spacing-medium $inner-spacing-big;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -127,43 +116,13 @@ $container-spacing: 24px;
   &:hover {
     background-color: var(--s-color-base-background-hover);
   }
-  &__logo {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.35);
-    margin-right: $inner-spacing-medium;
-    margin-top: $inner-spacing-medium;
-    margin-bottom: $inner-spacing-medium;
-    position: relative;
-  }
-  &__empty-logo {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: var(--s-color-base-background-hover);
-    box-shadow: var(--s-shadow-tooltip);
-    margin-right: $inner-spacing-medium;
-    margin-top: $inner-spacing-medium;
-    margin-bottom: $inner-spacing-medium;
-    position: relative;
-    &::after {
-      content: " ";
-      width: 14px;
-      height: 14px;
-      background: var(--s-color-base-content-secondary);
-      border-radius: 2px;
-      transform: rotate(45deg);
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      margin-top: -7px;
-      margin-left: -7px;
-    }
-  }
   &__name, &__amount {
     font-weight: 600;
     font-size: $s-font-size-small;
+  }
+
+  .token-logo {
+    margin-right: $inner-spacing-medium;
   }
 }
 .token-list {

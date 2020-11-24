@@ -1,13 +1,13 @@
 <template>
-  <div class="create-pair-container">
+  <div class="add-liquidity-container">
     <s-row class="header" flex justify="space-between" align="middle">
       <s-button type="action" size="small" icon="arrow-left" />
-      <div class="title">{{ t('createPair.title') }}</div>
+      <div class="title">{{ t('addLiquidity.title') }}</div>
       <s-button type="action" size="small" icon="info" />
     </s-row>
     <s-form
       v-model="formModel"
-      class="el-form--create-pair"
+      class="el-form--add-liquidity"
       :show-message="false"
     >
       <div class="input-container">
@@ -29,15 +29,15 @@
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
-            <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" @click="handleFirstMaxValue">
+            <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="firstModalVisible = true">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="firstModalVisible = true">
               <token-logo :token="firstToken.symbol" size="small" />
               {{ firstToken.symbol }}
             </s-button>
           </div>
-          <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="firstModalVisible = true">
+          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" @click="firstModalVisible = true">
             {{ t('swap.chooseToken') }}
           </s-button>
         </div>
@@ -108,7 +108,7 @@
       </div>
     </info-card>
 
-    <info-card v-if="areTokensSelected" :title="t('createPair.yourPosition')">
+    <info-card v-if="areTokensSelected" :title="t('createPair.yourPosition') ">
       <div class="card__data">
         <s-row flex>
           <pair-token-logo class="pair-token-logo" :firstToken="secondToken.symbol" :secondToken="firstToken.symbol" size="mini" />
@@ -129,36 +129,28 @@
 
     <select-token :visible="firstModalVisible" @close="firstModalVisible = false" @select="setFirstToken" />
     <select-token :visible="secondModalVisible" @close="secondModalVisible = false" @select="setSecondToken" />
-
-    <confirm-create-pair :visible="showConfirmDialog" @close="() => { showConfirmDialog = false; isCreatePairConfirmed = true }" />
-    <create-pair-submit :visible="isCreatePairConfirmed" @close="isCreatePairConfirmed = false" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-
 import router, { lazyComponent } from '@/router'
 import { formatNumber, isWalletConnected } from '@/utils'
 import { Components } from '@/consts'
 
-const namespace = 'createPair'
+const namespace = 'addLiquidity'
 
 @Component({
   components: {
     SelectToken: lazyComponent(Components.SelectToken),
     InfoCard: lazyComponent(Components.InfoCard),
-    ConfirmCreatePair: lazyComponent(Components.TokenLogo),
-    CreatePairSubmit: lazyComponent(Components.TokenLogo),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
-
-export default class CreatePair extends Mixins(TranslationMixin) {
+export default class AddLiquidity extends Mixins(TranslationMixin) {
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
@@ -168,6 +160,7 @@ export default class CreatePair extends Mixins(TranslationMixin) {
   @Action('setSecondToken', { namespace }) setSecondToken
   @Action('setFirstTokenValue', { namespace }) setFirstTokenValue
   @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
+  @Action('addLiquidity', { namespace }) addLiquidity
 
   firstModalVisible = false
   secondModalVisible = false
@@ -257,7 +250,7 @@ $swap-input-class: ".el-input";
 .plus {
   padding: $inner-spacing-medium;
 }
-.el-form--create-pair {
+.el-form--add-liquidity {
   .s-input {
     .el-input {
       #{$swap-input-class}__inner {
@@ -314,7 +307,7 @@ $swap-input-class: ".el-input";
     }
   }
 }
-.create-pair-container {
+.add-liquidity-container {
   .header {
     margin-bottom: $inner-spacing-medium;
     .title {
@@ -325,16 +318,16 @@ $swap-input-class: ".el-input";
     }
   }
 }
-</style>
-
-<style lang="scss" scoped>
 .card {
   .el-divider {
     margin-top: $inner-spacing-mini;
     margin-bottom: $inner-spacing-mini;
   }
 }
-.create-pair-container {
+</style>
+
+<style lang="scss" scoped>
+.add-liquidity-container {
   margin: $inner-spacing-big auto;
   padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
   min-height: $inner-window-height;
@@ -344,7 +337,7 @@ $swap-input-class: ".el-input";
   box-shadow: var(--s-shadow-surface);
   color: var(--s-color-base-content-primary);
 }
-.el-form--create-pair {
+.el-form--add-liquidity {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -403,7 +396,6 @@ $swap-input-class: ".el-input";
   .s-action {
     background-color: var(--s-color-base-background);
     border-color: var(--s-color-base-background);
-    border-radius: $border-radius-small;
     &:not(:disabled) {
       &:hover, &:focus {
         background-color: var(--s-color-base-background-hover);
@@ -413,7 +405,6 @@ $swap-input-class: ".el-input";
   }
   .s-tertiary {
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
-    border-radius: $border-radius-mini;
   }
   .el-button {
     &--switch-tokens {
@@ -443,7 +434,6 @@ $swap-input-class: ".el-input";
       padding-left: $inner-spacing-mini / 2;
       background-color: var(--s-color-base-background);
       border-color: var(--s-color-base-background);
-      border-radius: $border-radius-medium;
       color: var(--s-color-base-content-primary);
       &:hover, &:active, &:focus {
         background-color: var(--s-color-base-background-hover);
@@ -459,10 +449,13 @@ $swap-input-class: ".el-input";
   .s-primary {
     margin-top: $inner-spacing-medium;
     width: 100%;
-    border-radius: $border-radius-small;
     &:disabled {
       color: var(--s-color-base-on-disabled);
     }
   }
+}
+
+.pair-token-logo {
+  margin-right: $inner-spacing-mini
 }
 </style>
