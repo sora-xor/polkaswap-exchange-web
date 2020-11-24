@@ -1,14 +1,13 @@
 <template>
-  <div class="create-pair-container">
+  <div class="add-liquidity-container">
     <s-row class="header" flex justify="space-between" align="middle">
-      <s-button type="action" size="small" icon="arrow-left" @click="handleBack" />
-      <div class="title">{{ t('createPair.title') }}</div>
-      <!-- TODO: ask designers is this a tooltip like for Pool Interface start screen -->
+      <s-button type="action" size="small" icon="arrow-left" />
+      <div class="title">{{ t('addLiquidity.title') }}</div>
       <s-button type="action" size="small" icon="info" />
     </s-row>
     <s-form
       v-model="formModel"
-      class="el-form--create-pair"
+      class="el-form--add-liquidity"
       :show-message="false"
     >
       <div class="input-container">
@@ -30,16 +29,15 @@
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
-            <!-- TODO 4 alexnatalia, stefashkaa: Add mini size here -->
             <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="firstModalVisible = true">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="firstModalVisible = true">
               <token-logo :token="firstToken.symbol" size="small" />
               {{ firstToken.symbol }}
             </s-button>
           </div>
-          <s-button v-else type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="firstModalVisible = true">
+          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" @click="firstModalVisible = true">
             {{ t('swap.chooseToken') }}
           </s-button>
         </div>
@@ -66,21 +64,20 @@
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
-            <!-- TODO 4 alexnatalia, stefashkaa: Add mini size here -->
-            <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleSecondMaxValue">
+            <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" @click="handleSecondMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="secondModalVisible = true">
+            <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="secondModalVisible = true">
               <token-logo :token="secondToken.symbol" size="small" />
               {{ secondToken.symbol }}
             </s-button>
           </div>
-          <s-button v-else type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="secondModalVisible = true">
+          <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="secondModalVisible = true">
             {{t('swap.chooseToken')}}
           </s-button>
         </div>
       </div>
-        <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="showConfirmDialog = true">
+        <s-button type="primary" size="medium" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="showConfirmDialog = true">
         <template v-if="!areTokensSelected">
           {{ t('swap.chooseTokens') }}
         </template>
@@ -111,7 +108,7 @@
       </div>
     </info-card>
 
-    <info-card v-if="areTokensSelected" :title="t('createPair.yourPosition')">
+    <info-card v-if="areTokensSelected" :title="t('createPair.yourPosition') ">
       <div class="card__data">
         <s-row flex>
           <pair-token-logo class="pair-token-logo" :firstToken="secondToken.symbol" :secondToken="firstToken.symbol" size="mini" />
@@ -132,35 +129,28 @@
 
     <select-token :visible="firstModalVisible" @close="firstModalVisible = false" @select="setFirstToken" />
     <select-token :visible="secondModalVisible" @close="secondModalVisible = false" @select="setSecondToken" />
-
-    <confirm-create-pair :visible="showConfirmDialog" @close="() => { showConfirmDialog = false; isCreatePairConfirmed = true }" />
-    <create-pair-submit :visible="isCreatePairConfirmed" @close="isCreatePairConfirmed = false" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import router, { lazyComponent } from '@/router'
 import { formatNumber, isWalletConnected } from '@/utils'
-import { Components, PageNames } from '@/consts'
+import { Components } from '@/consts'
 
-const namespace = 'createPair'
+const namespace = 'addLiquidity'
 
 @Component({
   components: {
     SelectToken: lazyComponent(Components.SelectToken),
     InfoCard: lazyComponent(Components.InfoCard),
-    ConfirmCreatePair: lazyComponent(Components.ConfirmCreatePair),
-    CreatePairSubmit: lazyComponent(Components.CreatePairSubmit),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
-
-export default class CreatePair extends Mixins(TranslationMixin) {
+export default class AddLiquidity extends Mixins(TranslationMixin) {
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
@@ -170,6 +160,7 @@ export default class CreatePair extends Mixins(TranslationMixin) {
   @Action('setSecondToken', { namespace }) setSecondToken
   @Action('setFirstTokenValue', { namespace }) setFirstTokenValue
   @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
+  @Action('addLiquidity', { namespace }) addLiquidity
 
   firstModalVisible = false
   secondModalVisible = false
@@ -228,10 +219,6 @@ export default class CreatePair extends Mixins(TranslationMixin) {
     return true
   }
 
-  handleBack (): void {
-    router.push({ name: PageNames.Pool })
-  }
-
   handleChangeFirstField (): void {
     this.setFirstTokenValue(this.formModel.first)
   }
@@ -263,7 +250,7 @@ $swap-input-class: ".el-input";
 .plus {
   padding: $inner-spacing-medium;
 }
-.el-form--create-pair {
+.el-form--add-liquidity {
   .s-input {
     .el-input {
       #{$swap-input-class}__inner {
@@ -320,37 +307,37 @@ $swap-input-class: ".el-input";
     }
   }
 }
-.create-pair-container {
+.add-liquidity-container {
   .header {
     margin-bottom: $inner-spacing-medium;
     .title {
-      font-size: $s-font-size-big;
-      line-height: $s-line-height-mini;
+      font-size: 24px;
+      line-height: 130%;
       letter-spacing: -0.02em;
       font-feature-settings: 'tnum' on, 'lnum' on, 'salt' on, 'case' on;
     }
   }
 }
-</style>
-
-<style lang="scss" scoped>
 .card {
   .el-divider {
     margin-top: $inner-spacing-mini;
     margin-bottom: $inner-spacing-mini;
   }
 }
-.create-pair-container {
+</style>
+
+<style lang="scss" scoped>
+.add-liquidity-container {
   margin: $inner-spacing-big auto;
   padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
   min-height: $inner-window-height;
   width: $inner-window-width;
   background-color: var(--s-color-utility-surface);
-  border-radius: var(--s-border-radius-medium);
+  border-radius: $border-radius-medium;
   box-shadow: var(--s-shadow-surface);
   color: var(--s-color-base-content-primary);
 }
-.el-form--create-pair {
+.el-form--add-liquidity {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -359,7 +346,7 @@ $swap-input-class: ".el-input";
     padding: $inner-spacing-small $inner-spacing-medium $inner-spacing-mini;
     width: 100%;
     background-color: var(--s-color-base-background);
-    border-radius: var(--s-border-radius-mini);
+    border-radius: $border-radius-mini;
     .input-line {
       display: flex;
       justify-content: space-between;
@@ -406,6 +393,16 @@ $swap-input-class: ".el-input";
   .s-input {
     min-height: 0;
   }
+  .s-action {
+    background-color: var(--s-color-base-background);
+    border-color: var(--s-color-base-background);
+    &:not(:disabled) {
+      &:hover, &:focus {
+        background-color: var(--s-color-base-background-hover);
+        border-color: var(--s-color-base-background-hover);
+      }
+    }
+  }
   .s-tertiary {
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
   }
@@ -424,8 +421,7 @@ $swap-input-class: ".el-input";
     &--max {
       margin-right: $inner-spacing-mini;
       padding-right: $inner-spacing-mini;
-      font-size: $s-font-size-mini;
-      height: var(--s-size-mini)
+      height: 24px;
     }
     &--empty-token {
       position: absolute;
@@ -457,5 +453,9 @@ $swap-input-class: ".el-input";
       color: var(--s-color-base-on-disabled);
     }
   }
+}
+
+.pair-token-logo {
+  margin-right: $inner-spacing-mini
 }
 </style>

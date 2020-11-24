@@ -6,7 +6,9 @@ export enum PageNames {
   Stats = 'Stats',
   Support = 'Support',
   Wallet = 'Wallet',
-  CreatePair = 'CreatePair'
+  CreatePair = 'CreatePair',
+  AddLiquidity = 'AddLiquidity',
+  RemoveLiquidity = 'RemoveLiquidity'
 }
 
 export enum Components {
@@ -16,7 +18,10 @@ export enum Components {
   ConfirmSwap = 'ConfirmSwap',
   TransactionSubmit = 'TransactionSubmit',
   ConfirmCreatePair = 'ConfirmCreatePair',
-  CreatePairSubmit = 'CreatePairSubmit'
+  CreatePairSubmit = 'CreatePairSubmit',
+  PairTokenLogo = 'PairTokenLogo',
+  InfoCard = 'InfoCard',
+  Settings = 'Settings'
 }
 
 export const MainMenu = [
@@ -46,6 +51,7 @@ export const AboutTopics = [
 ]
 
 export enum LogoSize {
+  MINI = 'mini',
   SMALL = 'small',
   MEDIUM = 'medium',
 }
