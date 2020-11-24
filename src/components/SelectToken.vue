@@ -110,7 +110,7 @@ $container-spacing: 24px;
 
 .token-select__title {
   margin-left: 4px;
-  font-size: 24px;
+  font-size: $s-font-size-big;
   letter-spacing: -0.02em;
 }
 .token-search {

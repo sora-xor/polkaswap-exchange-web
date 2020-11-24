@@ -13,7 +13,8 @@ export enum Components {
   SwapInfo = 'SwapInfo',
   SelectToken = 'SelectToken',
   ConfirmSwap = 'ConfirmSwap',
-  TransactionSubmit = 'TransactionSubmit'
+  TransactionSubmit = 'TransactionSubmit',
+  Settings = 'Settings'
 }
 
 export const MainMenu = [
