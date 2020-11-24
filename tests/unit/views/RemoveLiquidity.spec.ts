@@ -5,10 +5,13 @@ import RemoveLiquidity from '@/views/RemoveLiquidity.vue'
 import { tokens } from '@/mocks/tokens'
 import { liquidity } from '@/mocks/liquidity'
 import { SoramitsuElementsImport, TranslationMock } from '../../utils'
+import VueRouter from 'vue-router'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
 SoramitsuElementsImport(localVue)
+localVue.use(VueRouter)
+const router = new VueRouter()
 
 describe('RemoveLiquidity.vue', () => {
   let actions
@@ -47,13 +50,7 @@ describe('RemoveLiquidity.vue', () => {
     const wrapper = shallowMount(RemoveLiquidity, {
       localVue,
       store,
-      mocks: {
-        $route: {
-          params: {
-            id: 1
-          }
-        }
-      }
+      router
     })
     expect(wrapper.element).toMatchSnapshot()
   })

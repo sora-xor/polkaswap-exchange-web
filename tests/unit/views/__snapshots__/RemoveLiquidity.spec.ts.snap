@@ -59,46 +59,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
     labelposition="right"
     validateonrulechange="true"
   >
-    <div
-      class="slider-container card"
-    >
-      <div
-        class="card__title"
-      >
-        
-        
-      
-      </div>
-       
-      <div
-        class="slider-container__amount"
-      >
-        
-        0
-        <span
-          class="percent"
-        >
-          %
-        </span>
-      </div>
-       
-      <div>
-        <s-slider-stub
-          debounce="300"
-          height=""
-          inputsize="small"
-          isvertical="true"
-          label=""
-          max="100"
-          min="0"
-          showinputcontrols="true"
-          showtooltip="true"
-          step="1"
-          tooltipclass=""
-          value="0"
-        />
-      </div>
-    </div>
+    <!---->
      
     <div
       class="input-container"
@@ -187,15 +148,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             <div
               class="liquidity-logo"
             >
-              <token-logo-stub
-                size="mini"
-                token="XOR"
-              />
-               
-              <token-logo-stub
-                size="mini"
-                token="KSM"
-              />
+              <!---->
             </div>
             
             XOR-KSM
@@ -295,10 +248,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             tooltipplacement="top"
             type="tertiary"
           >
-            <token-logo-stub
-              size="small"
-              token="XOR"
-            />
+            <!---->
             
             XOR
           
@@ -373,7 +323,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
           class="token"
         >
           <s-button-stub
-            borderradius="small"
+            borderradius="mini"
             class="el-button--max"
             icon=""
             nativetype="button"
@@ -399,10 +349,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             tooltipplacement="top"
             type="tertiary"
           >
-            <token-logo-stub
-              size="small"
-              token="KSM"
-            />
+            <!---->
             
             KSM
           
@@ -412,7 +359,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
     </div>
      
     <s-button-stub
-      borderradius="small"
+      borderradius="medium"
       disabled="true"
       icon=""
       nativetype="button"

@@ -101,10 +101,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
             tooltipplacement="top"
             type="tertiary"
           >
-            <token-logo-stub
-              size="small"
-              token="XOR"
-            />
+            <!---->
             
             XOR
           
@@ -176,10 +173,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
             tooltipplacement="top"
             type="tertiary"
           >
-            <token-logo-stub
-              size="small"
-              token="KSM"
-            />
+            <!---->
             
             KSM
           
@@ -204,110 +198,16 @@ exports[`CreatePair.vue should renders correctly 1`] = `
     </s-button-stub>
   </s-form-stub>
    
-  <div
-    class="card"
-  >
-    <div
-      class="card__title"
-    >
-      
-    </div>
-     
-    <div
-      class="card__data"
-    >
-      <div>
-        
-      </div>
-       
-      <div>
-        10018.18 XOR
-      </div>
-    </div>
-     
-    <div
-      class="card__data"
-    >
-      <div>
-        
-      </div>
-       
-      <div>
-        0.00 KSM
-      </div>
-    </div>
-     
-    <div
-      class="card__data"
-    >
-      <div>
-        
-      </div>
-       
-      <div>
-        &lt;0.01%
-      </div>
-    </div>
-  </div>
+  <!---->
    
-  <div
-    class="card"
-  >
-    <div
-      class="card__title"
-    >
-      
-    </div>
-     
-    <div
-      class="card__data"
-    >
-      <div>
-        
-      </div>
-       
-      <div>
-        0.00
-      </div>
-    </div>
-     
-    <s-divider-stub
-      contentposition="center"
-      direction="horizontal"
-      type="secondary"
-    />
-     
-    <div
-      class="card__data"
-    >
-      <div>
-        XOR
-      </div>
-       
-      <div>
-        0.00
-      </div>
-    </div>
-     
-    <div
-      class="card__data"
-    >
-      <div>
-        KSM
-      </div>
-       
-      <div>
-        0.00
-      </div>
-    </div>
-  </div>
+  <!---->
    
-  <select-token-stub />
+  <!---->
    
-  <select-token-stub />
+  <!---->
    
-  <confirm-create-pair-stub />
+  <!---->
    
-  <create-pair-submit-stub />
+  <!---->
 </div>
 `;

@@ -87,7 +87,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
         </s-form-item-stub>
          
         <s-button-stub
-          borderradius="small"
+          borderradius="mini"
           class="el-button--empty-token"
           icon="chevron-bottom-rounded"
           nativetype="button"
@@ -191,8 +191,8 @@ exports[`CreatePair.vue should renders correctly 1`] = `
    
   <!---->
    
-  <select-token-stub />
+  <!---->
    
-  <select-token-stub />
+  <!---->
 </div>
 `;
