@@ -121,11 +121,11 @@
       </div>
       <s-divider />
       <div class="card__data">
-        <div>{{ firstToken.symbol }}</div>
+        <div v-if="firstToken">{{ firstToken.symbol }}</div>
         <div>{{ firstTokenPosition }}</div>
       </div>
       <div class="card__data">
-        <div>{{ secondToken.symbol }}</div>
+        <div v-if="secondToken">{{ secondToken.symbol }}</div>
         <div>{{ secondTokenPosition }}</div>
       </div>
     </info-card>

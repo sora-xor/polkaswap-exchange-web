@@ -3,7 +3,7 @@
     <div class="tokens">
       <s-row flex justify="space-between" class="token">
         <div class="token-value">{{ formatNumber(firstTokenValue, 2) }}</div>
-        <s-row flex align="center">
+        <s-row v-if="firstToken" flex align="center">
           <!-- TODO 4 alexnatalia: fix tokens alignment -->
           <token-logo :token="firstToken.symbol" />
           <span class="token-symbol">{{ firstToken.symbol }}</span>
@@ -12,7 +12,7 @@
       <div class="token-divider">+</div>
       <s-row flex justify="space-between" class="token">
         <div class="token-value">{{ formatNumber(secondTokenValue, 2) }}</div>
-        <s-row flex align="center">
+        <s-row v-if="secondToken" flex align="center">
           <token-logo :token="secondToken.symbol" />
           <span class="token-symbol">{{ secondToken.symbol }}</span>
         </s-row>
@@ -25,12 +25,12 @@
     <s-divider />
     <div class="pair-info">
       <s-row flex justify="space-between" class="pair-info__line">
-        <div>{{ t('confirmSupply.poolTokensBurned', {first: firstToken.symbol, second: secondToken.symbol}) }}</div>
+        <div v-if="firstToken && secondToken">{{ t('confirmSupply.poolTokensBurned', {first: firstToken.symbol, second: secondToken.symbol}) }}</div>
         <div>{{ poolTokensBurned }}</div>
       </s-row>
       <s-row flex justify="space-between" class="pair-info__line">
         <div>{{ t('confirmSupply.price') }}</div>
-        <div class="price">
+        <div v-if="firstToken && secondToken" class="price">
           <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price) }} {{ secondToken.symbol }}</div>
           <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price) }} {{ firstToken.symbol }}</div>
         </div>
