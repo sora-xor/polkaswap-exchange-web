@@ -18,7 +18,8 @@ export enum Components {
   TransactionSubmit = 'TransactionSubmit',
   TokenLogo = 'TokenLogo',
   PairTokenLogo = 'PairTokenLogo',
-  InfoCard = 'InfoCard'
+  InfoCard = 'InfoCard',
+  Settings = 'Settings'
 }
 
 export const MainMenu = [

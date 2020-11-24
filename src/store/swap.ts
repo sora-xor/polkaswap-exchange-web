@@ -25,7 +25,6 @@ function initialState () {
     fromValue: 0,
     toValue: 0,
     isTokenFromPrice: true,
-    slippageTolerance: 0.5,
     liquidityProviderFee: 0.3,
     isSwapConfirmed: false
   }
@@ -48,9 +47,6 @@ const getters = {
   },
   isTokenFromPrice (state) {
     return state.isTokenFromPrice
-  },
-  slippageTolerance (state) {
-    return state.slippageTolerance
   },
   liquidityProviderFee (state) {
     return state.liquidityProviderFee

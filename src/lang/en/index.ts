@@ -106,5 +106,18 @@ export default {
     outputMessage: 'Output is estimated. If the price changes more than 0.5% your transaction will revert.',
     confirmTitle: 'You will receive',
     confirm: 'Confirm'
+  },
+  settings: {
+    title: 'Settings',
+    slippageTolerance: 'SLIPPAGE TOLERANCE',
+    slippageToleranceHint: 'Your transaction will revert if the price changes unfavorably by more than this percentage.',
+    custom: 'CUSTOM',
+    transactionDeadline: 'TRANSACTION DEADLINE',
+    transactionDeadlineHint: 'TODO',
+    nodeAddress: 'NODE ADDRESS',
+    nodeAddressHint: 'TODO',
+    ip: 'IP',
+    port: 'PORT',
+    min: 'MIN'
   }
 }
