@@ -8,6 +8,13 @@ $s-color-button-tertiary-background-hover: $s-color-theme-secondary-hover;
 $s-color-button-tertiary-background-pressed: $s-color-theme-secondary-pressed;
 $s-color-button-tertiary-background-focused: $s-color-theme-secondary-focused;
 
+// Border Radius
+$local-border-radius-base: 8px;
+$local-border-radius-mini: $local-border-radius-base !default;
+$local-border-radius-small: $local-border-radius-base * 1.5 !default;
+$local-border-radius-medium: $local-border-radius-base * 2 !default;
+$local-border-radius-big: $local-border-radius-base * 3 !default;
+
 :root {
   --s-color-theme-accent: #{$s-color-theme-accent};
   --s-color-button-tertiary-color: #{$s-color-button-tertiary-color};
@@ -16,4 +23,9 @@ $s-color-button-tertiary-background-focused: $s-color-theme-secondary-focused;
   --s-color-button-tertiary-background-hover: #{$s-color-button-tertiary-background-hover};
   --s-color-button-tertiary-background-pressed: #{$s-color-button-tertiary-background-pressed};
   --s-color-button-tertiary-background-focused: #{$s-color-button-tertiary-background-focused};
+  // Border Radius
+  --s-border-radius-mini: #{$local-border-radius-mini};
+  --s-border-radius-small: #{$local-border-radius-small};
+  --s-border-radius-medium: #{$local-border-radius-medium};
+  --s-border-radius-big: #{$local-border-radius-big};
 }

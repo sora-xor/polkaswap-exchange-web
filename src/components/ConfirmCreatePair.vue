@@ -1,23 +1,22 @@
 <template>
-  <s-dialog
+  <dialog-base
+    :visible.sync="isVisible"
     :title="t('confirmSupply.title')"
-    :visible.sync="visible"
-    class="el-dialog__supply-confirm"
-    width="496px"
   >
     <div class="tokens">
       <s-row flex justify="space-between" class="token">
         <div class="token-value">{{ formatNumber(firstTokenValue, 2) }}</div>
-        <s-row flex align="center">
-          <token-logo :token="firstToken.symbol" size="medium" />
+        <s-row v-if="firstToken" flex align="center">
+          <!-- TODO 4 alexnatalia: fix tokens alignment -->
+          <token-logo :token="firstToken.symbol" />
           <span class="token-symbol">{{ firstToken.symbol }}</span>
         </s-row>
       </s-row>
       <div class="token-divider">+</div>
       <s-row flex justify="space-between" class="token">
         <div class="token-value">{{ formatNumber(secondTokenValue, 2) }}</div>
-        <s-row flex align="center">
-          <token-logo :token="secondToken.symbol" size="medium" />
+        <s-row v-if="secondToken" flex align="center">
+          <token-logo :token="secondToken.symbol" />
           <span class="token-symbol">{{ secondToken.symbol }}</span>
         </s-row>
       </s-row>
@@ -29,41 +28,47 @@
     <s-divider />
     <div class="pair-info">
       <s-row flex justify="space-between" class="pair-info__line">
-        <div>{{ t('confirmSupply.poolTokensBurned', {first: firstToken.symbol, second: secondToken.symbol}) }}</div>
+        <div v-if="firstToken && secondToken">{{ t('confirmSupply.poolTokensBurned', {first: firstToken.symbol, second: secondToken.symbol}) }}</div>
         <div>{{ poolTokensBurned }}</div>
       </s-row>
       <s-row flex justify="space-between" class="pair-info__line">
         <div>{{ t('confirmSupply.price') }}</div>
-        <div class="price">
+        <div v-if="firstToken && secondToken" class="price">
           <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price) }} {{ secondToken.symbol }}</div>
           <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price) }} {{ firstToken.symbol }}</div>
         </div>
       </s-row>
     </div>
     <template #footer>
-      <s-button type="primary" size="medium" @click="handleConfirmCreatePair">{{ t('confirmSupply.confirm') }}</s-button>
+      <s-button type="primary" @click="handleConfirmCreatePair">{{ t('confirmSupply.confirm') }}</s-button>
     </template>
-  </s-dialog>
+  </dialog-base>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
+
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import TokenLogo from '@/components/TokenLogo.vue'
+import DialogMixin from '@/components/mixins/DialogMixin'
+import DialogBase from '@/components/DialogBase.vue'
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
 import { formatNumber } from '@/utils'
 const namespace = 'createPair'
 
 @Component({
-  components: { TokenLogo }
+  components: {
+    DialogBase,
+    TokenLogo: lazyComponent(Components.TokenLogo)
+  }
 })
-export default class ConfirmCreatePair extends Mixins(TranslationMixin) {
+export default class ConfirmCreatePair extends Mixins(TranslationMixin, DialogMixin) {
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
 
-  @Prop({ default: false, type: Boolean }) readonly visible!: boolean
   formatNumber = formatNumber
 
   get poolTokensBurned (): string {
@@ -71,89 +76,32 @@ export default class ConfirmCreatePair extends Mixins(TranslationMixin) {
   }
 
   handleConfirmCreatePair (): void {
+    this.$emit('confirm', true)
     this.$emit('close')
+    this.isVisible = false
   }
 }
 </script>
 
-<style lang="scss">
-$el-dialog-class: '.el-dialog';
-$el-dialog-button-size: 40px;
-
-#{$el-dialog-class} {
-  &__wrapper #{$el-dialog-class} {
-    border-radius: $border-radius-medium;
-    &__header,
-    &__footer {
-      padding: $inner-spacing-big;
-    }
-    &__body {
-      padding: $inner-spacing-mini $inner-spacing-big;
-    }
-  }
-  #{$el-dialog-class}__header {
-    display: inline-flex;
-    align-items: center;
-    width: 100%;
-    #{$el-dialog-class}__title {
-      font-size: $s-font-size-big;
-      font-weight: normal;
-    }
-  }
-  .transaction-number {
-    color: var(--s-color-base-content-primary);
-    font-weight: bold;
-  }
-  #{$el-dialog-class}__headerbtn {
-    position: static;
-    margin-left: auto;
-    height: $el-dialog-button-size;
-    width: $el-dialog-button-size;
-    background-color: var(--s-color-base-background);
-    border-color: var(--s-color-base-background);
-    border-radius: $inner-spacing-small;
-    #{$el-dialog-class}__close {
-      color: var(--s-color-base-content-primary);
-      font-weight: bold;
-      font-size: $el-dialog-button-size / 2;
-    }
-    color: var(--s-color-base-content-primary);
-    &:hover, &:active, &:focus {
-      background-color: var(--s-color-base-background-hover);
-      border-color: var(--s-color-base-background-hover);
-      #{$el-dialog-class}__close {
-        color: var(--s-color-base-content-primary);
-      }
-    }
-  }
-  #{$el-dialog-class}__footer {
-    .el-button {
-      padding: $inner-spacing-mini;
-      border-radius: $border-radius-small;
-      width: 100%;
-    }
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 .tokens {
   font-size: 30px;
-  line-height: 1.3;
+  line-height: $s-line-height-mini;
   .token {
     &-logo {
       display: inline-block;
+      margin-right: $inner-spacing-medium;
     }
   }
 }
 .output-description {
   font-size: $s-font-size-mini;
-  line-height: 1.8;
+  line-height: $s-line-height-medium;
   margin-top: $inner-spacing-mini;
   margin-bottom: $inner-spacing-mini;
 }
 .pair-info {
-  line-height: 1.8;
+  line-height: $s-line-height-medium;
   &__line {
     margin-top: $inner-spacing-medium;
     margin-bottom: $inner-spacing-medium;

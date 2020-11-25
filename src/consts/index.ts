@@ -14,9 +14,11 @@ export enum PageNames {
 export enum Components {
   SwapInfo = 'SwapInfo',
   SelectToken = 'SelectToken',
+  TokenLogo = 'TokenLogo',
   ConfirmSwap = 'ConfirmSwap',
   TransactionSubmit = 'TransactionSubmit',
-  TokenLogo = 'TokenLogo',
+  ConfirmCreatePair = 'ConfirmCreatePair',
+  CreatePairSubmit = 'CreatePairSubmit',
   PairTokenLogo = 'PairTokenLogo',
   InfoCard = 'InfoCard',
   Settings = 'Settings'

@@ -20,16 +20,15 @@
       </s-menu-item>
       <div class="controls">
         <div class="buttons">
-          <s-button class="wallet" type="action" size="medium" icon="wallet" rounded @click="goTo(PageNames.Wallet)" />
-          <s-button type="action" size="medium" icon="settings" rounded @click="openSettingsDialog" />
-          <s-button type="action" size="medium" icon="search" rounded />
+          <s-button class="wallet" type="action" icon="wallet" rounded @click="goTo(PageNames.Wallet)" />
+          <s-button type="action" icon="settings" rounded @click="openSettingsDialog" />
+          <s-button type="action" icon="search" rounded />
         </div>
       </div>
     </s-menu>
-    <!-- TODO: convert to the About page link and add active state for the menu item -->
-    <i class="polkaswap-logo" />
+    <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.About)" />
     <div class="app-content"><router-view /></div>
-    <settings :visible.sync="isSettingsVisible" />
+    <settings :visible.sync="showSettings" />
   </div>
 </template>
 
@@ -49,7 +48,7 @@ export default class App extends Mixins(TranslationMixin) {
   readonly MainMenu = MainMenu
   readonly PageNames = PageNames
 
-  isSettingsVisible = false
+  showSettings = false
 
   getCurrentPath (): string {
     if ([PageNames.Swap, PageNames.Pool, PageNames.Wallet].includes(router.currentRoute.name as PageNames)) {
@@ -72,7 +71,7 @@ export default class App extends Mixins(TranslationMixin) {
   }
 
   openSettingsDialog (): void {
-    this.isSettingsVisible = true
+    this.showSettings = true
   }
 }
 </script>
@@ -106,10 +105,6 @@ html {
   overflow-y: hidden;
   font-size: $s-font-size-small;
   line-height: $s-line-height-small;
-}
-*, *:before, *:after {
-  box-sizing: border-box;
-  margin: 0;
 }
 #app {
   -webkit-font-smoothing: antialiased;

@@ -36,24 +36,25 @@ describe('SelectToken.vue', () => {
       localVue,
       store,
       propsData: {
-        visible: true
+        visible: true,
+        title: 'Select a token'
       }
     })
     expect(wrapper.element).toMatchSnapshot()
   })
 
+  // TODO: fix the test
   it('should close correctly', async () => {
     const wrapper = shallowMount(SelectToken, {
       localVue,
       store,
       propsData: {
-        visible: true
+        visible: true,
+        title: 'Select a token'
       }
     })
-
     const token = wrapper.find('.token-item')
     token.trigger('click')
-
     expect(wrapper.emitted('select')).toBeTruthy()
     expect(wrapper.emitted('close')).toBeTruthy()
   })

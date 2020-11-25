@@ -60,7 +60,7 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
     @include token-logo-size(23px);
   }
   &.token-logo--medium {
-    @include token-logo-size(40px);
+    @include token-logo-size;
   }
 }
 </style>

@@ -1,16 +1,61 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Pool.vue should renders correctly 1`] = `
-<s-form-stub
-  labelposition="right"
-  showmessage="true"
-  validateonrulechange="true"
+<div
+  class="el-form--pool"
 >
-  <s-form-item-stub
-    prop=""
-    showmessage="true"
+  <div
+    class="pool-header"
   >
-    Pool content
-  </s-form-item-stub>
-</s-form-stub>
+    <h3
+      class="pool-header-title"
+    >
+      
+    </h3>
+     
+    <s-tooltip-stub
+      animation="el-fade-in-linear"
+      borderradius="mini"
+      class="pool-header-icon"
+      closedelay="0"
+      content=""
+      offset="0"
+      opendelay="0"
+      placement="bottom-end"
+      tabindex="0"
+      theme="light"
+    >
+      <s-icon-stub
+        name="info"
+        size="16"
+      />
+    </s-tooltip-stub>
+  </div>
+   
+  <p
+    class="pool-info-container"
+  >
+    
+    
+  
+  </p>
+   
+  <s-button-stub
+    borderradius="small"
+    class="el-button--add-liquidity"
+    icon=""
+    nativetype="button"
+    size="medium"
+    tabindex="0"
+    tooltip=""
+    tooltipplacement="top"
+    type="primary"
+  >
+    
+    
+  
+  </s-button-stub>
+   
+  <!---->
+</div>
 `;

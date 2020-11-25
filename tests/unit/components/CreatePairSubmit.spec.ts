@@ -40,7 +40,14 @@ describe('CreatePairSubmit.vue', () => {
   })
 
   it('should renders correctly', () => {
-    const wrapper = shallowMount(CreatePairSubmit, { localVue, store })
+    const wrapper = shallowMount(CreatePairSubmit, {
+      localVue,
+      store,
+      propsData: {
+        visible: true,
+        title: 'Transaction submitted'
+      }
+    })
     expect(wrapper.element).toMatchSnapshot()
   })
 })

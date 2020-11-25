@@ -1,10 +1,7 @@
 <template>
-  <s-dialog
-    :visible.sync="visible"
-    :title="t('swap.confirmSwap')"
-    borderRadius="medium"
-    class="el-dialog--remove-liquidity-confirm"
-    width="496px"
+  <dialog-base
+    :visible.sync="isVisible"
+    :title="t('removeLiquidity.confirmTitle')"
   >
     <div class="tokens">
       <div class="tokens-info-container">
@@ -15,16 +12,15 @@
       <div class="tokens-info-container">
         <div v-if="tokenFrom" class="token">
           <token-logo class="token-logo" :token="tokenFrom.symbol" />
-          {{ tokenFrom ? tokenFrom.symbol : '' }}
+          {{ tokenFrom.symbol }}
         </div>
         <div v-if="tokenTo" class="token">
           <token-logo class="token-logo" :token="tokenTo.symbol" />
-          <span :class="getTokenClasses(tokenTo)" />
-          {{ tokenTo ? tokenTo.symbol : '' }}
+          {{ tokenTo.symbol }}
         </div>
       </div>
     </div>
-    <p class="transaction-message" v-html="t('removeLiquidity.outputMessage')"/>
+    <p class="transaction-message" v-html="t('removeLiquidity.outputMessage')" />
     <s-divider />
     <s-row flex justify="space-between">
         <div>{{ t('removeLiquidity.price')  }}</div>
@@ -34,25 +30,29 @@
         </div>
     </s-row>
     <template #footer>
-      <s-button type="primary" @click="handleConfirmSwap">{{ t('removeLiquidity.confirm') }}</s-button>
+      <s-button type="primary" @click="handleConfirmRemoveLiquidity">{{ t('removeLiquidity.confirm') }}</s-button>
     </template>
-  </s-dialog>
+  </dialog-base>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
+
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import DialogMixin from '@/components/mixins/DialogMixin'
+import DialogBase from '@/components/DialogBase.vue'
 import { formatNumber } from '@/utils'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 
 @Component({
   components: {
+    DialogBase,
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class ConfirmSwap extends Mixins(TranslationMixin) {
+export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean
 
   get formattedFromValue (): string {
@@ -63,121 +63,48 @@ export default class ConfirmSwap extends Mixins(TranslationMixin) {
     return formatNumber(13, 4)
   }
 
-  handleConfirmSwap (): void {
-    // TODO: Make Swap here
+  handleConfirmRemoveLiquidity (): void {
+    // TODO: Remove Liquidity here
     this.$emit('close')
   }
 }
 </script>
 
-<style lang="scss">
-$el-dialog-class: '.el-dialog';
-$el-dialog-button-size: 40px;
-
-#{$el-dialog-class} {
-  &__wrapper #{$el-dialog-class} {
-    border-radius: $border-radius-medium;
-    &__header,
-    &__footer {
-      padding: $inner-spacing-big;
-    }
-    &__body {
-      padding: $inner-spacing-mini $inner-spacing-big;
-    }
-  }
-  #{$el-dialog-class}__header {
-    display: inline-flex;
-    align-items: center;
-    width: 100%;
-    #{$el-dialog-class}__title {
-      font-size: $s-font-size-big;
-      font-weight: normal;
-    }
-  }
-  .transaction-number {
-    color: var(--s-color-base-content-primary);
-    font-weight: bold;
-  }
-  #{$el-dialog-class}__headerbtn {
-    position: static;
-    margin-left: auto;
-    height: $el-dialog-button-size;
-    width: $el-dialog-button-size;
-    background-color: var(--s-color-base-background);
-    border-color: var(--s-color-base-background);
-    border-radius: $inner-spacing-small;
-    #{$el-dialog-class}__close {
-      color: var(--s-color-base-content-primary);
-      font-weight: bold;
-      font-size: $el-dialog-button-size / 2;
-    }
-    color: var(--s-color-base-content-primary);
-    &:hover, &:active, &:focus {
-      background-color: var(--s-color-base-background-hover);
-      border-color: var(--s-color-base-background-hover);
-      #{$el-dialog-class}__close {
-        color: var(--s-color-base-content-primary);
-      }
-    }
-  }
-  #{$el-dialog-class}__footer {
-    .el-button {
-      padding: $inner-spacing-mini;
-      border-radius: $border-radius-small;
-      width: 100%;
-    }
+<style lang="scss" scoped>
+.tokens {
+  display: flex;
+  justify-content: space-between;
+  font-size: 30px;
+  &-info-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 }
-</style>
+.token {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
 
-<style lang="scss" scoped>
-.el-dialog--remove-liquidity-confirm {
-  .el-dialog {
-    &__header {
-      padding: $inner-spacing-big;
-    }
-    &__body {
-      padding: $inner-spacing-mini $inner-spacing-big;
-    }
-    &__footer {
-      padding: $inner-spacing-big;
-    }
-  }
-  .tokens {
-    display: flex;
-    justify-content: space-between;
-    font-size: 30px;
-    &-info-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-  }
-  .token {
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-
-    &-logo {
-      display: block;
-      margin-right: $inner-spacing-medium;
-      flex-shrink: 0;
-    }
-  }
-  .s-icon-arrow-bottom-rounded {
-    margin-top: $inner-spacing-mini;
-    margin-bottom: $inner-spacing-mini;
+  &-logo {
     display: block;
-    font-size: $s-font-size-medium;
+    margin-right: $inner-spacing-medium;
+    flex-shrink: 0;
   }
-  .transaction-message {
-    margin-top: $inner-spacing-big;
-    color: var(--s-color-base-content-tertiary);
-    line-height: 1.4;
-  }
-  .el-divider {
-    margin-top: $inner-spacing-mini;
-    margin-bottom: $inner-spacing-big;
-  }
+}
+.s-icon-arrow-bottom-rounded {
+  margin-top: $inner-spacing-mini;
+  margin-bottom: $inner-spacing-mini;
+  display: block;
+  font-size: $s-font-size-medium;
+}
+.transaction-message {
+  margin-top: $inner-spacing-big;
+  color: var(--s-color-base-content-tertiary);
+  line-height: $s-line-height-small;
+}
+.el-divider {
+  margin-top: $inner-spacing-mini;
+  margin-bottom: $inner-spacing-big;
 }
 </style>

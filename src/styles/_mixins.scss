@@ -1,29 +1,38 @@
 // This file includes mixins for usage in different components
 
-@mixin token-logo-styles($size: 40px) {
-  height: $size;
-  width: $size;
-  background-color: var(--s-color-base-border-secondary);
-  background-image: url("~@/assets/img/token-logo-default.svg");
-  background-size: 60%;
-  background-repeat: no-repeat;
-  background-position: 50%;
-  border: 1px solid var(--s-color-base-border-secondary);
-  border-radius: 50%;
-  box-shadow: var(--s-shadow-tooltip);
-  &--ksm,
-  &--xor {
-    background-size: 100%;
-  }
-  &--ksm {
-    background-image: url("~@/assets/img/ksm.svg");
-  }
-  &--xor {
-    background-image: url("~@/assets/img/xor.svg");
+@mixin token-styles() {
+  .token {
+    display: flex;
+    align-items: center;
+    &-logo {
+      order: 1;
+      margin-right: $inner-spacing-mini;
+    }
+    &-balance {
+      margin-left: auto;
+      &-title {
+        color: var(--s-color-base-content-tertiary);
+        font-size: $s-font-size-mini;
+      }
+    }
+    &-balance-value {
+      margin-left: $inner-spacing-mini / 2;
+    }
   }
 }
 
 @mixin token-logo-size($size: 40px) {
   height: $size;
   width: $size;
+}
+
+@mixin container-styles() {
+  margin: $inner-spacing-big auto;
+  padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
+  min-height: $inner-window-height;
+  width: $inner-window-width;
+  background-color: var(--s-color-utility-surface);
+  border-radius: var(--s-border-radius-medium);
+  box-shadow: var(--s-shadow-surface);
+  color: var(--s-color-base-content-primary);
 }

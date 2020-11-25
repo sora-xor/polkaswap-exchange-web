@@ -60,6 +60,18 @@ export default {
     swapOutputMessage: 'Output is estimated. You will receive at least {transactionValue} or the transaction will revert.',
     transactionMessage: '{tokenFromValue} for {tokenToValue}'
   },
+  pool: {
+    yourLiquidity: 'Your liquidity',
+    yourLiquidityTooltip: 'When you add liquidity, you are awarded with token pair specific Pool Tokens that represent your pool share.',
+    connectToWallet: 'Connect to a wallet to view your liquidity.',
+    liquidityNotFound: 'No liquidity found.',
+    addLiquidity: 'Add Liquidity',
+    removeLiquidity: 'Remove liquidity',
+    createPair: 'Create a pair',
+    pooledToken: '{tokenSymbol} Pooled:',
+    pairTokens: '{pair} Pool Tokens:',
+    poolShare: 'Your pool share'
+  },
   selectToken: {
     title: 'Select a token',
     searchPlaceholder: 'Search Token Name, Symbol, or Address',

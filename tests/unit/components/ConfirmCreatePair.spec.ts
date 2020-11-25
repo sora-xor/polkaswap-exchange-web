@@ -34,7 +34,14 @@ describe('ConfirmCreatePair.vue', () => {
   })
 
   it('should renders correctly', () => {
-    const wrapper = shallowMount(ConfirmCreatePair, { localVue, store, propsData: { visible: true } })
+    const wrapper = shallowMount(ConfirmCreatePair, {
+      localVue,
+      store,
+      propsData: {
+        visible: true,
+        title: 'Create a pair'
+      }
+    })
     expect(wrapper.element).toMatchSnapshot()
   })
 })

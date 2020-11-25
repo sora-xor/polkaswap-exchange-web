@@ -9,7 +9,7 @@ exports[`SwapInfo.vue should renders correctly 1`] = `
   >
     <s-tooltip-stub
       animation="el-fade-in-linear"
-      borderradius="small"
+      borderradius="mini"
       class="swap-info-icon"
       closedelay="0"
       content=""
@@ -41,7 +41,7 @@ exports[`SwapInfo.vue should renders correctly 1`] = `
   >
     <s-tooltip-stub
       animation="el-fade-in-linear"
-      borderradius="small"
+      borderradius="mini"
       class="swap-info-icon"
       closedelay="0"
       content=""
@@ -73,7 +73,7 @@ exports[`SwapInfo.vue should renders correctly 1`] = `
   >
     <s-tooltip-stub
       animation="el-fade-in-linear"
-      borderradius="small"
+      borderradius="mini"
       class="swap-info-icon"
       closedelay="0"
       content=""

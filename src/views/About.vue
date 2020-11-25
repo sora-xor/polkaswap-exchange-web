@@ -1,7 +1,7 @@
 <template>
   <div class="layout s-flex">
     <!-- TODO: Move the text below above the banner for mobile devices, add background layer with opacity for the banner -->
-    <div class="banner s-flex"></div>
+    <div class="banner s-flex" />
     <div class="content">
       <div class="terms s-flex">
         <span>{{ t('about.polkaswapText') }}</span>
@@ -12,13 +12,13 @@
       </div>
       <s-divider />
       <div class="links s-flex">
-        <s-button type="primary" size="medium" @click="handleClickExchange">
+        <s-button type="primary" @click="handleClickExchange">
           {{ t('about.openExchange') }}
         </s-button>
-        <s-button type="link" size="medium" icon="external-link" @click="handleGoToMedium">
+        <s-button type="link" icon="external-link" @click="handleGoToMedium">
           {{ t('about.mediumLink') }}
         </s-button>
-        <s-button type="link" size="medium" icon="external-link" @click="handleGoToGithub">
+        <s-button type="link" icon="external-link" @click="handleGoToGithub">
           {{ t('about.githubLink') }}
         </s-button>
       </div>
@@ -26,7 +26,7 @@
       <div class="articles s-flex">
         <s-row>
           <s-col :lg="3" :md="4" :sm="6" :xs="12" v-for="topic in AboutTopics" :key="topic.title">
-            <s-card class="article-card" clickable>
+            <s-card class="article-card" borderRadius="big" clickable>
               <template #header>
                 <div class="article-header">
                   {{ t(`about.${topic.title}.title`) }}
@@ -104,8 +104,7 @@ export default class About extends Mixins(TranslationMixin) {
       .article-card {
         background-color: var(--s-color-base-background);
         border-color: transparent;
-        border-radius: $border-radius-big;
-        margin: 4px;
+        margin: $inner-spacing-mini / 2;
         height: 140px;
         .article-header {
           font-size: 1.285rem;

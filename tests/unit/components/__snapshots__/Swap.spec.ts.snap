@@ -33,6 +33,7 @@ exports[`Swap.vue should renders correctly 1`] = `
           accept=""
           autocomplete="off"
           borderradius="small"
+          class="s-input--swap"
           form=""
           label=""
           name=""
@@ -52,7 +53,7 @@ exports[`Swap.vue should renders correctly 1`] = `
         <!---->
          
         <s-button-stub
-          borderradius="small"
+          borderradius="medium"
           class="el-button--choose-token"
           icon="chevron-bottom-rounded"
           nativetype="button"
@@ -62,9 +63,7 @@ exports[`Swap.vue should renders correctly 1`] = `
           tooltipplacement="top"
           type="tertiary"
         >
-          <span
-            class="token-logo token-logo--xor"
-          />
+          <!---->
           
           XOR
         
@@ -119,6 +118,7 @@ exports[`Swap.vue should renders correctly 1`] = `
           accept=""
           autocomplete="off"
           borderradius="small"
+          class="s-input--swap"
           form=""
           label=""
           name=""
@@ -136,7 +136,7 @@ exports[`Swap.vue should renders correctly 1`] = `
         class="token"
       >
         <s-button-stub
-          borderradius="small"
+          borderradius="medium"
           class="el-button--choose-token"
           icon="chevron-bottom-rounded"
           nativetype="button"
@@ -146,9 +146,7 @@ exports[`Swap.vue should renders correctly 1`] = `
           tooltipplacement="top"
           type="tertiary"
         >
-          <span
-            class="token-logo token-logo--ksm"
-          />
+          <!---->
           
           KSM
         

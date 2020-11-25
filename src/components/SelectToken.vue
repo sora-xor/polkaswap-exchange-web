@@ -1,9 +1,8 @@
 <template>
-  <s-dialog
-    :visible.sync="dialogVisible"
-    width="496px"
+  <dialog-base
+    :visible.sync="isVisible"
     :title="t('selectToken.title')"
-    class="token-select"
+    customClass="token-select"
   >
     <s-input
       v-model="query"
@@ -11,6 +10,7 @@
       class="token-search"
       prefix="el-icon-search"
       size="medium"
+      borderRadius="mini"
     />
     <div v-if="filteredTokens && filteredTokens.length > 0" class="token-list">
       <div v-for="token in filteredTokens" @click="selectToken($event, token)" :key="token.symbol" class="token-item">
@@ -30,7 +30,7 @@
     <div v-else class="token-list token-list__empty">
       {{ t('selectToken.emptyListMessage') }}
     </div>
-  </s-dialog>
+  </dialog-base>
 </template>
 
 <script lang="ts">
@@ -38,29 +38,24 @@ import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import DialogMixin from '@/components/mixins/DialogMixin'
+import DialogBase from '@/components/DialogBase.vue'
 import { Token } from '@/types'
 import { LogoSize, Components } from '@/consts'
 import { lazyComponent } from '@/router'
 
 @Component({
   components: {
+    DialogBase,
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class SelectToken extends Mixins(TranslationMixin) {
-  @Prop({ type: Boolean, default: false, required: true }) readonly visible!: boolean
-
+export default class SelectToken extends Mixins(TranslationMixin, DialogMixin) {
   query = ''
   selectedToken = null
-  dialogVisible = false
 
-  @Watch('visible')
-  visibleChange (value: boolean) {
-    this.dialogVisible = value
-  }
-
-  @Action getTokens
   @Getter tokens!: Array<Token>
+  @Action getTokens
 
   get filteredTokens () {
     if (this.query) {
@@ -84,25 +79,26 @@ export default class SelectToken extends Mixins(TranslationMixin) {
     this.query = ''
     this.$emit('select', token)
     this.$emit('close')
+    this.isVisible = false
   }
 }
 </script>
 
 <style lang="scss">
 .token-select {
-  .el-dialog__body {
-    padding: 0 !important;
-  }
-}
-.token-search {
-  .el-input__inner {
-    border-radius: 8px;
+  .el-dialog {
+    overflow: hidden;
+    &__title {
+      letter-spacing: -0.02em;
+    }
+    &__body {
+      padding: 0 !important;
+    }
   }
 }
 </style>
 
 <style lang="scss" scoped>
-
 .token-search {
   margin-left: $inner-spacing-big;
   width: calc(100% - 2 * #{$inner-spacing-big});

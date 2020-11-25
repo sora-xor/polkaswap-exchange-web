@@ -17,10 +17,6 @@ describe('ConfirmSwap.vue', () => {
   beforeEach(() => {
     TranslationMock(ConfirmSwap)
 
-    actions = {
-      setSwapConfirm: jest.fn()
-    }
-
     getters = {
       tokenFrom: () => tokens[0],
       tokenTo: () => tokens[1],
@@ -29,13 +25,20 @@ describe('ConfirmSwap.vue', () => {
     }
 
     store = new Vuex.Store({
-      actions,
       getters
     })
   })
 
   it('should renders correctly', () => {
-    const wrapper = shallowMount(ConfirmSwap, { localVue, store })
+    const wrapper = shallowMount(ConfirmSwap, {
+      localVue,
+      store,
+      propsData: {
+        visible: true,
+        title: 'Confirm Swap',
+        customClass: 'dialog--confirm-swap'
+      }
+    })
     expect(wrapper.element).toMatchSnapshot()
   })
 })
