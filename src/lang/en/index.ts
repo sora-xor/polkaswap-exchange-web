@@ -9,7 +9,9 @@ export default {
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
     [PageNames.Wallet]: 'Wallet',
-    [PageNames.CreatePair]: 'Create Pair'
+    [PageNames.CreatePair]: 'Create Pair',
+    [PageNames.AddLiquidity]: 'Add Liquidity',
+    [PageNames.RemoveLiquidity]: 'Remove Liquidity'
   },
   mainMenu: {
     [PageNames.About]: 'About',

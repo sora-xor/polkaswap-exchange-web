@@ -76,7 +76,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to: any): void => {
-  if (to && to.name) {
+  if (to && to.name && i18n.te(`pageTitle.${to.name}`)) {
     document.title = `${i18n.t(`pageTitle.${to.name}`)} - ${AppName}`
   } else {
     document.title = AppName
