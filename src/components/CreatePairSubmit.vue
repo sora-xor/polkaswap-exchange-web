@@ -1,5 +1,8 @@
 <template>
-  <dialog-base :visible="visible" :title="t('exchange.transactionSubmitted')">
+  <dialog-base
+    :visible.sync="isVisible"
+    :title="t('exchange.transactionSubmitted')"
+  >
     <s-icon name="arrow-top-right-rounded" />
     <s-divider />
     <div class="transaction">
@@ -19,7 +22,9 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
+
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
 
 const namespace = 'createPair'
@@ -29,15 +34,12 @@ const namespace = 'createPair'
     DialogBase
   }
 })
-export default class CreatePairSubmit extends Mixins(TranslationMixin) {
+export default class CreatePairSubmit extends Mixins(TranslationMixin, DialogMixin) {
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
-
   @Action('createPair', { namespace }) createPair
-
-  @Prop({ default: false, type: Boolean, required: true }) readonly visible!: boolean
 
   get transactionInfo (): string {
     return this.t('swap.transactionMessage', { tokenFromValue: this.getSwapValue(this.firstToken, this.firstTokenValue), tokenToValue: this.getSwapValue(this.secondToken, this.secondTokenValue) })
@@ -53,7 +55,9 @@ export default class CreatePairSubmit extends Mixins(TranslationMixin) {
 
   handleClose (): void {
     this.createPair()
+    this.$emit('submit', this.transactionInfo)
     this.$emit('close')
+    this.isVisible = false
   }
 }
 </script>

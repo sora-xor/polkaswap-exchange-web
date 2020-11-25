@@ -1,14 +1,9 @@
 <template>
-  <s-dialog
+  <dialog-base
     :visible.sync="isVisible"
-    width="496px"
-    class="settings"
+    :title="t('settings.title')"
+    customClass="settings"
   >
-    <template #title>
-      <div class="settings-title">
-      {{ t('settings.title') }}
-      </div>
-    </template>
     <div class="settings-content">
       <s-divider />
       <div class="slippage-tolerance s-flex">
@@ -70,7 +65,7 @@
         </div>
       </div>
     </div>
-  </s-dialog>
+  </dialog-base>
 </template>
 
 <script lang="ts">
@@ -78,9 +73,15 @@ import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import DialogMixin from '@/components/mixins/DialogMixin'
+import DialogBase from '@/components/DialogBase.vue'
 
-@Component
-export default class Settings extends Mixins(TranslationMixin) {
+@Component({
+  components: {
+    DialogBase
+  }
+})
+export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
   readonly SlippageToleranceValues = [
     0.1,
     0.5,
@@ -93,10 +94,6 @@ export default class Settings extends Mixins(TranslationMixin) {
   @Action setSlippageTolerance!: any
   @Action setTransactionDeadline!: any
 
-  @Prop({ type: Boolean, default: false, required: true }) readonly visible!: boolean
-
-  isVisible = false
-
   get model (): string {
     return `${this.slippageTolerance}`
   }
@@ -104,16 +101,6 @@ export default class Settings extends Mixins(TranslationMixin) {
   set model (value: string) {
     // TODO: ask about zero value
     this.setSlippageTolerance({ value })
-  }
-
-  @Watch('visible')
-  private handleVisibleChange (value: boolean): void {
-    this.isVisible = value
-  }
-
-  @Watch('isVisible')
-  private handleIsVisibleChange (value: boolean): void {
-    this.$emit('update:visible', value)
   }
 
   selectSlippageTolerance ({ name }): void {
@@ -136,15 +123,19 @@ export default class Settings extends Mixins(TranslationMixin) {
     font-weight: 700;
   }
 }
+.settings {
+  .el-dialog .el-dialog__body {
+    padding-bottom: $inner-spacing-big;
+  }
+}
 </style>
 
 <style lang="scss" scoped>
 .settings {
-  &-title {
-    font-size: $s-font-size-big;
-  }
   &-content {
-    margin-top: calc(#{$inner-spacing-big} * -2);
+    & > .el-divider:first-child {
+      margin-top: 0;
+    }
   }
   .header {
     font-size: 10px;
@@ -162,7 +153,7 @@ export default class Settings extends Mixins(TranslationMixin) {
       height: var(--s-size-small);
       line-height: var(--s-size-small);
       background-color: var(--s-color-base-background);
-      border-radius: $border-radius-mini;
+      border-radius: var(--s-border-radius-mini);
       font-weight: 700;
       font-size: $s-font-size-mini;
       text-align: center;
@@ -185,5 +176,9 @@ export default class Settings extends Mixins(TranslationMixin) {
   &-custom {
     flex: 1;
   }
+}
+.el-divider {
+  margin-bottom: $inner-spacing-mini;
+  margin-bottom: $inner-spacing-mini;
 }
 </style>

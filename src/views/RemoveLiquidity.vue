@@ -117,7 +117,7 @@
           </div>
         </div>
       </div>
-      <s-button type="primary" borderRadius="medium" :disabled="isEmptyBalance" @click="showConfirmDialog = true">
+      <s-button type="primary" borderRadius="small" :disabled="isEmptyBalance" @click="showConfirmDialog = true">
         <template v-if="isEmptyBalance">
           {{ t('swap.enterAmount') }}
         </template>
@@ -135,6 +135,7 @@
       </div>
     </s-row>
   </div>
+  <!-- TODO 4 Asmadek: Could you play with confirmtion popups like in Swap component, please? -->
 </template>
 
 <script lang="ts">
@@ -363,15 +364,7 @@ $swap-input-class: ".el-input";
       width: 50%;
     }
     .token {
-      display: flex;
-      align-items: center;
-
       .liquidity-logo {
-        order: 1;
-        margin-right: $inner-spacing-mini;
-      }
-
-      .token-logo {
         order: 1;
         margin-right: $inner-spacing-mini;
       }
@@ -387,29 +380,10 @@ $swap-input-class: ".el-input";
         font-weight: 400;
       }
     }
-    .token-balance-value {
-      margin-left: $inner-spacing-mini / 2;
-    }
-    .token-balance {
-      margin-left: auto;
-      &-title {
-        color: var(--s-color-base-content-tertiary);
-        font-size: $s-font-size-small;
-      }
-    }
+    @include token-styles;
   }
   .s-input {
     min-height: 0;
-  }
-  .s-action {
-    background-color: var(--s-color-base-background);
-    border-color: var(--s-color-base-background);
-    &:not(:disabled) {
-      &:hover, &:focus {
-        background-color: var(--s-color-base-background-hover);
-        border-color: var(--s-color-base-background-hover);
-      }
-    }
   }
   .s-tertiary {
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;

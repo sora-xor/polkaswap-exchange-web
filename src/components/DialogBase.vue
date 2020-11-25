@@ -1,7 +1,6 @@
 <template>
-  <!-- TODO 4 alexnatalia: Fix window close -->
   <s-dialog
-    :visible.sync="visible"
+    :visible.sync="isVisible"
     :title="title"
     class="dialog-wrapper"
     :customClass="customClass"
@@ -15,11 +14,12 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator'
+
+import DialogMixin from '@/components/mixins/DialogMixin'
 
 @Component
-export default class DialogBase extends Vue {
-  @Prop({ default: false, type: Boolean, required: true }) readonly visible!: boolean
+export default class DialogBase extends Mixins(DialogMixin) {
   @Prop({ default: '', type: String }) readonly customClass!: string
   @Prop({ default: '', type: String }) readonly title!: string
 }
@@ -31,12 +31,14 @@ $el-dialog-button-size: var(--s-size-medium);
 
 .dialog-wrapper {
   #{$el-dialog-class} #{$el-dialog-class} {
-    &__header,
-    &__footer {
-      padding: $inner-spacing-big;
+    &__header {
+      padding: $inner-spacing-big $inner-spacing-big $inner-spacing-mini;
     }
     &__body {
       padding: $inner-spacing-mini $inner-spacing-big;
+    }
+    &__footer {
+      padding: $inner-spacing-mini $inner-spacing-big $inner-spacing-big;
     }
   }
   #{$el-dialog-class}__header {

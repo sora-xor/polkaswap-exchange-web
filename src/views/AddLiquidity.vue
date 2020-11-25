@@ -33,12 +33,12 @@
             <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="firstModalVisible = true">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="openSelectFirstTokenDialog">
               <token-logo :token="firstToken.symbol" size="small" />
               {{ firstToken.symbol }}
             </s-button>
           </div>
-          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" @click="firstModalVisible = true">
+          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" @click="openSelectFirstTokenDialog">
             {{ t('swap.chooseToken') }}
           </s-button>
         </div>
@@ -68,12 +68,12 @@
             <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleSecondMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="secondModalVisible = true">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="openSelectSecondTokenDialog">
               <token-logo :token="secondToken.symbol" size="small" />
               {{ secondToken.symbol }}
             </s-button>
           </div>
-          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" @click="secondModalVisible = true">
+          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" @click="openSelectSecondTokenDialog">
             {{t('swap.chooseToken')}}
           </s-button>
         </div>
@@ -128,8 +128,9 @@
       </div>
     </info-card>
 
-    <select-token :visible="firstModalVisible" @close="firstModalVisible = false" @select="setFirstToken" />
-    <select-token :visible="secondModalVisible" @close="secondModalVisible = false" @select="setSecondToken" />
+    <select-token :visible.sync="showSelectFirstTokenDialog" @select="setFirstToken" />
+    <select-token :visible.sync="showSelectSecondTokenDialog" @select="setSecondToken" />
+    <!-- TODO 4 Asmadek: Could you play with confirmtion popups like in Swap component, please? -->
   </div>
 </template>
 
@@ -163,9 +164,9 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
   @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
   @Action('addLiquidity', { namespace }) addLiquidity
 
-  firstModalVisible = false
-  secondModalVisible = false
-  inputPlaceholder: string = formatNumber(0, 2);
+  showSelectFirstTokenDialog = false
+  showSelectSecondTokenDialog = false
+  inputPlaceholder: string = formatNumber(0, 2)
   showConfirmDialog = false
   isCreatePairConfirmed = false
 
@@ -222,6 +223,14 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
 
   handleBack (): void {
     router.push({ name: PageNames.Pool })
+  }
+
+  openSelectFirstTokenDialog (): void {
+    this.showSelectFirstTokenDialog = true
+  }
+
+  openSelectSecondTokenDialog (): void {
+    this.showSelectSecondTokenDialog = true
   }
 
   handleChangeFirstField (): void {
@@ -357,15 +366,6 @@ $swap-input-class: ".el-input";
       margin-bottom: 0;
       width: 50%;
     }
-    .token {
-      display: flex;
-      align-items: center;
-
-      .token-logo {
-        order: 1;
-        margin-right: $inner-spacing-mini;
-      }
-    }
     .input-title,
     .token-balance {
       display: inline-flex;
@@ -377,29 +377,10 @@ $swap-input-class: ".el-input";
         font-weight: 400;
       }
     }
-    .token-balance-value {
-      margin-left: $inner-spacing-mini / 2;
-    }
-    .token-balance {
-      margin-left: auto;
-      &-title {
-        color: var(--s-color-base-content-tertiary);
-        font-size: $s-font-size-small;
-      }
-    }
+    @include token-styles;
   }
   .s-input {
     min-height: 0;
-  }
-  .s-action {
-    background-color: var(--s-color-base-background);
-    border-color: var(--s-color-base-background);
-    &:not(:disabled) {
-      &:hover, &:focus {
-        background-color: var(--s-color-base-background-hover);
-        border-color: var(--s-color-base-background-hover);
-      }
-    }
   }
   .s-tertiary {
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;

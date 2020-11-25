@@ -28,7 +28,7 @@
     </s-menu>
     <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.About)" />
     <div class="app-content"><router-view /></div>
-    <settings :visible.sync="isSettingsVisible" />
+    <settings :visible.sync="showSettings" />
   </div>
 </template>
 
@@ -48,7 +48,7 @@ export default class App extends Mixins(TranslationMixin) {
   readonly MainMenu = MainMenu
   readonly PageNames = PageNames
 
-  isSettingsVisible = false
+  showSettings = false
 
   getCurrentPath (): string {
     if ([PageNames.Swap, PageNames.Pool, PageNames.Wallet].includes(router.currentRoute.name as PageNames)) {
@@ -71,7 +71,7 @@ export default class App extends Mixins(TranslationMixin) {
   }
 
   openSettingsDialog (): void {
-    this.isSettingsVisible = true
+    this.showSettings = true
   }
 }
 </script>

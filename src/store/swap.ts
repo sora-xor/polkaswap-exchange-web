@@ -25,8 +25,7 @@ function initialState () {
     fromValue: 0,
     toValue: 0,
     isTokenFromPrice: true,
-    liquidityProviderFee: 0.3,
-    isSwapConfirmed: false
+    liquidityProviderFee: 0.3
   }
 }
 
@@ -50,9 +49,6 @@ const getters = {
   },
   liquidityProviderFee (state) {
     return state.liquidityProviderFee
-  },
-  isSwapConfirmed (state) {
-    return state.isSwapConfirmed
   }
 }
 
@@ -71,9 +67,6 @@ const mutations = {
   },
   [types.GET_TOKEN_FROM_PRICE] (state, isTokenFromPrice: boolean) {
     state.isTokenFromPrice = isTokenFromPrice
-  },
-  [types.GET_SWAP_CONFIRM] (state, isSwapConfirmed: boolean) {
-    state.isSwapConfirmed = isSwapConfirmed
   }
 }
 
@@ -92,9 +85,6 @@ const actions = {
   },
   setTokenFromPrice ({ commit }, isTokenFromPrice: boolean) {
     commit(types.GET_TOKEN_FROM_PRICE, isTokenFromPrice)
-  },
-  setSwapConfirm ({ commit }, isSwapConfirmed: boolean) {
-    commit(types.GET_SWAP_CONFIRM, isSwapConfirmed)
   }
 }
 

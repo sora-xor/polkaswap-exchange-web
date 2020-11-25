@@ -1,5 +1,9 @@
 <template>
-  <dialog-base :visible="visible" :title="t('swap.confirmSwap')" customClass="dialog--confirm-swap">
+  <dialog-base
+    :visible.sync="isVisible"
+    :title="t('swap.confirmSwap')"
+    customClass="dialog--confirm-swap"
+  >
     <div class="tokens">
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedFromValue }}</span>
@@ -8,12 +12,12 @@
       </div>
       <div class="tokens-info-container">
         <div v-if="tokenFrom" class="token">
-          <span :class="getTokenClasses(tokenFrom)" />
-          {{ tokenFrom ? tokenFrom.symbol : '' }}
+          <token-logo :token="tokenFrom.symbol" />
+          {{ tokenFrom.symbol }}
         </div>
         <div v-if="tokenTo" class="token">
-          <span :class="getTokenClasses(tokenTo)" />
-          {{ tokenTo ? tokenTo.symbol : '' }}
+          <token-logo :token="tokenTo.symbol" />
+          {{ tokenTo.symbol }}
         </div>
       </div>
     </div>
@@ -30,7 +34,9 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
+
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { formatNumber } from '@/utils'
 import { lazyComponent } from '@/router'
@@ -39,17 +45,15 @@ import { Components } from '@/consts'
 @Component({
   components: {
     DialogBase,
-    SwapInfo: lazyComponent(Components.SwapInfo)
+    SwapInfo: lazyComponent(Components.SwapInfo),
+    TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class ConfirmSwap extends Mixins(TranslationMixin) {
+export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
   @Getter fromValue!: number
   @Getter toValue!: number
-  @Action setSwapConfirm
-
-  @Prop({ default: false, type: Boolean, required: true }) readonly visible!: boolean
 
   get formattedFromValue (): string {
     return formatNumber(this.fromValue, 4)
@@ -59,18 +63,10 @@ export default class ConfirmSwap extends Mixins(TranslationMixin) {
     return formatNumber(this.toValue, 4)
   }
 
-  getTokenClasses (token): string {
-    let classes = 'token-logo'
-    if (token && token.symbol) {
-      classes += ' token-logo--' + token.symbol.toLowerCase()
-    }
-    return classes
-  }
-
   handleConfirmSwap (): void {
-    // TODO: Make Swap here
-    this.setSwapConfirm(true)
+    this.$emit('confirm', true)
     this.$emit('close')
+    this.isVisible = false
   }
 }
 </script>
@@ -89,6 +85,7 @@ export default class ConfirmSwap extends Mixins(TranslationMixin) {
   display: flex;
   justify-content: space-between;
   font-size: 30px;
+  line-height: $s-line-height-mini;
   &-info-container {
     display: flex;
     flex-direction: column;
@@ -103,22 +100,23 @@ export default class ConfirmSwap extends Mixins(TranslationMixin) {
     display: block;
     margin-right: $inner-spacing-medium;
     flex-shrink: 0;
-    @include token-logo-styles;
   }
 }
-.s-icon-arrow-bottom-rounded {
+.s-icon-arrow-bottom-rounded,
+.transaction-message,
+.el-divider {
   margin-top: $inner-spacing-mini;
+}
+.s-icon-arrow-bottom-rounded,
+.el-divider {
   margin-bottom: $inner-spacing-mini;
+}
+.s-icon-arrow-bottom-rounded {
   display: block;
   font-size: $s-font-size-medium;
 }
 .transaction-message {
-  margin-top: $inner-spacing-big;
   color: var(--s-color-base-content-tertiary);
   line-height: $s-line-height-medium;
-}
-.el-divider {
-  margin-top: $inner-spacing-mini;
-  margin-bottom: $inner-spacing-big;
 }
 </style>

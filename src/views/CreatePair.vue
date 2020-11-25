@@ -34,12 +34,12 @@
             <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="firstModalVisible = true">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="openSelectFirstTokenDialog">
               <token-logo :token="firstToken.symbol" size="small" />
               {{ firstToken.symbol }}
             </s-button>
           </div>
-          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" @click="firstModalVisible = true">
+          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" @click="openSelectFirstTokenDialog">
             {{ t('swap.chooseToken') }}
           </s-button>
         </div>
@@ -70,17 +70,17 @@
             <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleSecondMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="secondModalVisible = true">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="openSelectSecondTokenDialog">
               <token-logo :token="secondToken.symbol" size="small" />
               {{ secondToken.symbol }}
             </s-button>
           </div>
-          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" @click="secondModalVisible = true">
+          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" @click="openSelectSecondTokenDialog">
             {{t('swap.chooseToken')}}
           </s-button>
         </div>
       </div>
-        <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="showConfirmDialog = true">
+        <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="handleConfirmCreatePair">
         <template v-if="!areTokensSelected">
           {{ t('swap.chooseTokens') }}
         </template>
@@ -130,11 +130,10 @@
       </div>
     </info-card>
 
-    <select-token :visible="firstModalVisible" @close="firstModalVisible = false" @select="setFirstToken" />
-    <select-token :visible="secondModalVisible" @close="secondModalVisible = false" @select="setSecondToken" />
-
-    <confirm-create-pair :visible="showConfirmDialog" @close="() => { showConfirmDialog = false; isCreatePairConfirmed = true }" />
-    <create-pair-submit :visible="isCreatePairConfirmed" @close="isCreatePairConfirmed = false" />
+    <select-token :visible.sync="showSelectFirstTokenDialog" @select="setFirstToken" />
+    <select-token :visible.sync="showSelectSecondTokenDialog" @select="setSecondToken" />
+    <confirm-create-pair :visible.sync="showConfirmCreatePairDialog" @confirm="confirmCreatePair" />
+    <create-pair-submit :visible.sync="isCreatePairConfirmed" @submit="submitCreatePair" />
   </div>
 </template>
 
@@ -153,10 +152,10 @@ const namespace = 'createPair'
   components: {
     SelectToken: lazyComponent(Components.SelectToken),
     InfoCard: lazyComponent(Components.InfoCard),
-    ConfirmCreatePair: lazyComponent(Components.ConfirmCreatePair),
-    CreatePairSubmit: lazyComponent(Components.CreatePairSubmit),
     TokenLogo: lazyComponent(Components.TokenLogo),
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo)
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    ConfirmCreatePair: lazyComponent(Components.ConfirmCreatePair),
+    CreatePairSubmit: lazyComponent(Components.CreatePairSubmit)
   }
 })
 
@@ -171,10 +170,10 @@ export default class CreatePair extends Mixins(TranslationMixin) {
   @Action('setFirstTokenValue', { namespace }) setFirstTokenValue
   @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
 
-  firstModalVisible = false
-  secondModalVisible = false
+  showSelectFirstTokenDialog = false
+  showSelectSecondTokenDialog = false
   inputPlaceholder: string = formatNumber(0, 2);
-  showConfirmDialog = false
+  showConfirmCreatePairDialog = false
   isCreatePairConfirmed = false
 
   formModel = {
@@ -232,6 +231,14 @@ export default class CreatePair extends Mixins(TranslationMixin) {
     router.push({ name: PageNames.Pool })
   }
 
+  openSelectFirstTokenDialog (): void {
+    this.showSelectFirstTokenDialog = true
+  }
+
+  openSelectSecondTokenDialog (): void {
+    this.showSelectSecondTokenDialog = true
+  }
+
   handleChangeFirstField (): void {
     this.setFirstTokenValue(this.formModel.first)
   }
@@ -253,6 +260,22 @@ export default class CreatePair extends Mixins(TranslationMixin) {
       return formatNumber(token.balance, 2)
     }
     return ''
+  }
+
+  handleConfirmCreatePair (): void {
+    this.showConfirmCreatePairDialog = true
+  }
+
+  confirmCreatePair (isCreatePairConfirmed: boolean): void {
+    this.isCreatePairConfirmed = isCreatePairConfirmed
+  }
+
+  submitCreatePair (message: string): void {
+    this.$notify({
+      message: message,
+      title: this.t('pool.createPair'),
+      type: 'success'
+    })
   }
 }
 </script>
@@ -365,15 +388,6 @@ $swap-input-class: ".el-input";
       margin-bottom: 0;
       width: 50%;
     }
-    .token {
-      display: flex;
-      align-items: center;
-
-      .token-logo {
-        order: 1;
-        margin-right: $inner-spacing-mini;
-      }
-    }
     .input-title,
     .token-balance {
       display: inline-flex;
@@ -385,16 +399,7 @@ $swap-input-class: ".el-input";
         font-weight: 400;
       }
     }
-    .token-balance-value {
-      margin-left: $inner-spacing-mini / 2;
-    }
-    .token-balance {
-      margin-left: auto;
-      &-title {
-        color: var(--s-color-base-content-tertiary);
-        font-size: $s-font-size-small;
-      }
-    }
+    @include token-styles;
   }
   .s-input {
     min-height: 0;

@@ -1,5 +1,9 @@
 <template>
-  <dialog-base :visible="dialogVisible" customClass="token-select" :title="t('selectToken.title')">
+  <dialog-base
+    :visible.sync="isVisible"
+    :title="t('selectToken.title')"
+    customClass="token-select"
+  >
     <s-input
       v-model="query"
       :placeholder="t('selectToken.searchPlaceholder')"
@@ -34,6 +38,7 @@ import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Token } from '@/types'
 import { LogoSize, Components } from '@/consts'
@@ -45,20 +50,12 @@ import { lazyComponent } from '@/router'
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class SelectToken extends Mixins(TranslationMixin) {
-  @Prop({ type: Boolean, default: false, required: true }) readonly visible!: boolean
-
+export default class SelectToken extends Mixins(TranslationMixin, DialogMixin) {
   query = ''
   selectedToken = null
-  dialogVisible = false
 
-  @Watch('visible')
-  visibleChange (value: boolean) {
-    this.dialogVisible = value
-  }
-
-  @Action getTokens
   @Getter tokens!: Array<Token>
+  @Action getTokens
 
   get filteredTokens () {
     if (this.query) {
@@ -82,6 +79,7 @@ export default class SelectToken extends Mixins(TranslationMixin) {
     this.query = ''
     this.$emit('select', token)
     this.$emit('close')
+    this.isVisible = false
   }
 }
 </script>

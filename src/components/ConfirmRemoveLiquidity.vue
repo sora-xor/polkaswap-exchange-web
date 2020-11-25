@@ -1,6 +1,6 @@
 <template>
   <dialog-base
-    :visible="visible"
+    :visible.sync="isVisible"
     :title="t('removeLiquidity.confirmTitle')"
   >
     <div class="tokens">
@@ -12,12 +12,11 @@
       <div class="tokens-info-container">
         <div v-if="tokenFrom" class="token">
           <token-logo class="token-logo" :token="tokenFrom.symbol" />
-          {{ tokenFrom ? tokenFrom.symbol : '' }}
+          {{ tokenFrom.symbol }}
         </div>
         <div v-if="tokenTo" class="token">
           <token-logo class="token-logo" :token="tokenTo.symbol" />
-          <span :class="getTokenClasses(tokenTo)" />
-          {{ tokenTo ? tokenTo.symbol : '' }}
+          {{ tokenTo.symbol }}
         </div>
       </div>
     </div>
@@ -39,7 +38,9 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
+
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { formatNumber } from '@/utils'
 import { lazyComponent } from '@/router'
@@ -51,7 +52,7 @@ import { Components } from '@/consts'
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class ConfirmSwap extends Mixins(TranslationMixin) {
+export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean
 
   get formattedFromValue (): string {

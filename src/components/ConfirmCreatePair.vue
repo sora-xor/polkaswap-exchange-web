@@ -1,5 +1,8 @@
 <template>
-  <dialog-base :visible="visible" :title="t('confirmSupply.title')">
+  <dialog-base
+    :visible.sync="isVisible"
+    :title="t('confirmSupply.title')"
+  >
     <div class="tokens">
       <s-row flex justify="space-between" class="token">
         <div class="token-value">{{ formatNumber(firstTokenValue, 2) }}</div>
@@ -45,7 +48,9 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
+
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -58,13 +63,12 @@ const namespace = 'createPair'
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class ConfirmCreatePair extends Mixins(TranslationMixin) {
+export default class ConfirmCreatePair extends Mixins(TranslationMixin, DialogMixin) {
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
 
-  @Prop({ default: false, type: Boolean, required: true }) readonly visible!: boolean
   formatNumber = formatNumber
 
   get poolTokensBurned (): string {
@@ -72,7 +76,9 @@ export default class ConfirmCreatePair extends Mixins(TranslationMixin) {
   }
 
   handleConfirmCreatePair (): void {
+    this.$emit('confirm', true)
     this.$emit('close')
+    this.isVisible = false
   }
 }
 </script>

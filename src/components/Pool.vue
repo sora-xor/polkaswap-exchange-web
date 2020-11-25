@@ -80,11 +80,11 @@ const namespace = 'createPair'
 })
 export default class Pool extends Mixins(TranslationMixin) {
   @Getter liquidity!: any
-  @Action getLiquidity
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
+  @Action getLiquidity
 
   get connected (): boolean {
     return isWalletConnected()

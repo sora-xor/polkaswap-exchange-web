@@ -1,5 +1,8 @@
 <template>
-  <dialog-base :visible="visible" :title="t('exchange.transactionSubmitted')">
+  <dialog-base
+    :visible.sync="isVisible"
+    :title="t('exchange.transactionSubmitted')"
+  >
     <s-icon name="arrow-top-right-rounded" />
     <s-divider />
     <div class="transaction">
@@ -11,7 +14,7 @@
     </div>
     <s-divider />
     <template #footer>
-      <s-button type="primary" @click="handleClose">{{ t('exchange.ok') }}</s-button>
+      <s-button type="primary" @click="handleSubmitTransaction">{{ t('exchange.ok') }}</s-button>
     </template>
   </dialog-base>
 </template>
@@ -19,7 +22,9 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
+
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from './DialogBase.vue'
 
 @Component({
@@ -27,14 +32,11 @@ import DialogBase from './DialogBase.vue'
     DialogBase
   }
 })
-export default class TransactionSubmit extends Mixins(TranslationMixin) {
+export default class TransactionSubmit extends Mixins(TranslationMixin, DialogMixin) {
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
   @Getter fromValue!: number
   @Getter toValue!: number
-  @Action setSwapConfirm
-
-  @Prop({ default: false, type: Boolean, required: true }) readonly visible!: boolean
 
   get transactionInfo (): string {
     return this.t('swap.transactionMessage', { tokenFromValue: this.getSwapValue(this.tokenFrom, this.fromValue), tokenToValue: this.getSwapValue(this.tokenTo, this.toValue) })
@@ -48,9 +50,11 @@ export default class TransactionSubmit extends Mixins(TranslationMixin) {
     // TODO: Go to Transaction Info
   }
 
-  handleClose (): void {
-    this.setSwapConfirm(false)
+  handleSubmitTransaction (): void {
+    // TODO: Make Transaction Submit here
+    this.$emit('submit', this.transactionInfo)
     this.$emit('close')
+    this.isVisible = false
   }
 }
 </script>
@@ -87,5 +91,9 @@ $transactionIconSize: 68px;
   .s-icon-external-link {
     cursor: pointer;
   }
+}
+.el-divider {
+  margin-top: $inner-spacing-small;
+  margin-bottom: $inner-spacing-small;
 }
 </style>

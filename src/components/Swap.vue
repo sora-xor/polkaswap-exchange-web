@@ -29,12 +29,12 @@
           <s-button v-if="connected && areTokensSelected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleMaxFromValue">
             {{ t('exchange.max') }}
           </s-button>
-          <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="handleChooseToken(true)">
-            <span :class="getTokenClasses(tokenFrom)" />
+          <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="openSelectTokenDialog(true)">
+            <token-logo :token="tokenFrom.symbol" size="small" />
             {{ tokenFrom.symbol }}
           </s-button>
         </div>
-        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" @click="handleChooseToken(true)">
+        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" @click="openSelectTokenDialog(true)">
           {{ t('swap.chooseToken') }}
         </s-button>
       </div>
@@ -64,12 +64,12 @@
           />
         </s-form-item>
         <div v-if="tokenTo" class="token">
-          <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="handleChooseToken">
-            <span :class="getTokenClasses(tokenTo)" />
+          <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="openSelectTokenDialog">
+            <token-logo :token="tokenTo.symbol" size="small" />
             {{ tokenTo.symbol }}
           </s-button>
         </div>
-        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" @click="handleChooseToken">
+        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" @click="openSelectTokenDialog">
           {{ t('swap.chooseToken') }}
         </s-button>
       </div>
@@ -93,9 +93,9 @@
       </template>
     </s-button>
     <swap-info v-if="areTokensSelected" />
-    <select-token :visible="showSelectTokenDialog" @select="handleSelectToken" @close="closeSelectToken" />
-    <confirm-swap :visible="showConfirmSwapDialog && !isSwapConfirmed" @close="closeConfirmSwapDialog" />
-    <transaction-submit :visible="isSwapConfirmed" @close="closeTransactionSubmitDialog" />
+    <select-token :visible.sync="showSelectTokenDialog" @select="selectToken" />
+    <confirm-swap :visible.sync="showConfirmSwapDialog" @confirm="confirmSwap" />
+    <transaction-submit :visible.sync="isSwapConfirmed" @submit="submitSwap" />
   </s-form>
 </template>
 
@@ -110,6 +110,7 @@ import { Components, PageNames } from '@/consts'
 @Component({
   components: {
     SwapInfo: lazyComponent(Components.SwapInfo),
+    TokenLogo: lazyComponent(Components.TokenLogo),
     SelectToken: lazyComponent(Components.SelectToken),
     ConfirmSwap: lazyComponent(Components.ConfirmSwap),
     TransactionSubmit: lazyComponent(Components.TransactionSubmit)
@@ -120,20 +121,19 @@ export default class Swap extends Mixins(TranslationMixin) {
   @Getter tokenTo!: any
   @Getter fromValue!: number
   @Getter toValue!: number
-  @Getter isSwapConfirmed!: boolean
   @Action setTokenFrom
   @Action setTokenTo
   @Action setFromValue
   @Action setToValue
   @Action setTokenFromPrice
 
-  inputPlaceholder: string = formatNumber(0, 2);
-  isFieldFromFocused = false;
-  isFieldToFocused = false;
-  isTokenFromSelected = false;
-  showSelectTokenDialog = false;
-  showConfirmSwapDialog = false;
-  showTransactionSubmitDialog = false;
+  inputPlaceholder: string = formatNumber(0, 2)
+  isFieldFromFocused = false
+  isFieldToFocused = false
+  isTokenFromSelected = false
+  showSelectTokenDialog = false
+  showConfirmSwapDialog = false
+  isSwapConfirmed = false
 
   formModel = {
     from: formatNumber(0, 1),
@@ -164,14 +164,6 @@ export default class Swap extends Mixins(TranslationMixin) {
       return formatNumber(token.balance, 2)
     }
     return ''
-  }
-
-  getTokenClasses (token): string {
-    let classes = 'token-logo'
-    if (token && token.symbol) {
-      classes += ' token-logo--' + token.symbol.toLowerCase()
-    }
-    return classes
   }
 
   handleChangeFieldFrom (): void {
@@ -230,18 +222,14 @@ export default class Swap extends Mixins(TranslationMixin) {
     router.push({ name: PageNames.Wallet })
   }
 
-  handleConfirmSwap (): void {
-    this.showConfirmSwapDialog = true
-  }
-
-  handleChooseToken (isTokenFrom: boolean): void {
+  openSelectTokenDialog (isTokenFrom: boolean): void {
     if (isTokenFrom) {
       this.isTokenFromSelected = true
     }
     this.showSelectTokenDialog = true
   }
 
-  handleSelectToken (token: any): void {
+  selectToken (token: any): void {
     if (token) {
       if (this.isTokenFromSelected) {
         this.setTokenFrom(token)
@@ -252,19 +240,20 @@ export default class Swap extends Mixins(TranslationMixin) {
     }
   }
 
-  closeSelectToken () {
-    this.showSelectTokenDialog = false
+  handleConfirmSwap (): void {
+    this.showConfirmSwapDialog = true
   }
 
-  closeConfirmSwapDialog () {
-    this.showConfirmSwapDialog = false
-    if (this.isSwapConfirmed) {
-      this.showTransactionSubmitDialog = true
-    }
+  confirmSwap (isSwapConfirmed: boolean): void {
+    this.isSwapConfirmed = isSwapConfirmed
   }
 
-  closeTransactionSubmitDialog () {
-    this.showTransactionSubmitDialog = false
+  submitSwap (message: string): void {
+    this.$notify({
+      message: message,
+      title: this.t('exchange.Swap'),
+      type: 'success'
+    })
   }
 }
 </script>
@@ -362,10 +351,6 @@ $swap-input-class: ".el-input";
       margin-bottom: 0;
       width: 50%;
     }
-    .token {
-      display: flex;
-      align-items: center;
-    }
     .input-title,
     .token-balance {
       display: inline-flex;
@@ -377,22 +362,10 @@ $swap-input-class: ".el-input";
         font-weight: 400;
       }
     }
-    .input-title-estimated,
-    .token-balance-value {
+    .input-title-estimated {
       margin-left: $inner-spacing-mini / 2;
     }
-    .token-balance {
-      margin-left: auto;
-      &-title {
-        color: var(--s-color-base-content-tertiary);
-        font-size: $s-font-size-small;
-      }
-    }
-    .token-logo {
-      margin-right: $inner-spacing-mini;
-      order: 1;
-      @include token-logo-styles(23px);
-    }
+    @include token-styles;
   }
   .s-input {
     min-height: 0;
