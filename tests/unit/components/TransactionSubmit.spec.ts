@@ -29,7 +29,14 @@ describe('TransactionSubmit.vue', () => {
   })
 
   it('should renders correctly', () => {
-    const wrapper = shallowMount(TransactionSubmit, { localVue, store })
+    const wrapper = shallowMount(TransactionSubmit, {
+      localVue,
+      store,
+      propsData: {
+        visible: true,
+        title: 'Transaction submitted'
+      }
+    })
     expect(wrapper.element).toMatchSnapshot()
   })
 })

@@ -1,20 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ConfirmCreatePair.vue should renders correctly 1`] = `
-<s-dialog-stub
-  borderradius="small"
-  class="el-dialog__supply-confirm"
-  closeonclickmodal="true"
-  closeonesc="true"
+<dialog-base-stub
   customclass=""
-  lockscroll="true"
-  modal="true"
-  modalappendtobody="true"
-  showclose="true"
-  title=""
-  top="auto"
-  visible="true"
-  width="496px"
+  title="Create a pair"
 >
   <div
     class="tokens"
@@ -38,10 +27,7 @@ exports[`ConfirmCreatePair.vue should renders correctly 1`] = `
         gutter="0"
         justify="start"
       >
-        <token-logo-stub
-          size="medium"
-          token="XOR"
-        />
+        <!---->
          
         <span
           class="token-symbol"
@@ -76,10 +62,7 @@ exports[`ConfirmCreatePair.vue should renders correctly 1`] = `
         gutter="0"
         justify="start"
       >
-        <token-logo-stub
-          size="medium"
-          token="KSM"
-        />
+        <!---->
          
         <span
           class="token-symbol"
@@ -147,5 +130,5 @@ exports[`ConfirmCreatePair.vue should renders correctly 1`] = `
       </div>
     </s-row-stub>
   </div>
-</s-dialog-stub>
+</dialog-base-stub>
 `;

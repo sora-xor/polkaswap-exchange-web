@@ -111,7 +111,7 @@ exports[`About.vue should renders correctly 1`] = `
           xs="12"
         >
           <s-card-stub
-            borderradius="small"
+            borderradius="big"
             class="article-card"
             clickable="true"
             shadow="hover"
@@ -133,7 +133,7 @@ exports[`About.vue should renders correctly 1`] = `
           xs="12"
         >
           <s-card-stub
-            borderradius="small"
+            borderradius="big"
             class="article-card"
             clickable="true"
             shadow="hover"
@@ -155,7 +155,7 @@ exports[`About.vue should renders correctly 1`] = `
           xs="12"
         >
           <s-card-stub
-            borderradius="small"
+            borderradius="big"
             class="article-card"
             clickable="true"
             shadow="hover"
@@ -177,7 +177,7 @@ exports[`About.vue should renders correctly 1`] = `
           xs="12"
         >
           <s-card-stub
-            borderradius="small"
+            borderradius="big"
             class="article-card"
             clickable="true"
             shadow="hover"

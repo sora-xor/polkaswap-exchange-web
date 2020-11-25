@@ -31,8 +31,7 @@ describe('Swap.vue', () => {
       tokenFrom: () => tokens[0],
       tokenTo: () => tokens[1],
       fromValue: () => 100,
-      toValue: () => 45.4545,
-      isSwapConfirmed: () => false
+      toValue: () => 45.4545
     }
 
     store = new Vuex.Store({

@@ -17,6 +17,7 @@
           <s-input
             v-model="formModel.from"
             v-float="formModel.from"
+            class="s-input--swap"
             :placeholder="inputPlaceholder"
             :disabled="!areTokensSelected"
             @change="handleChangeFieldFrom"
@@ -25,20 +26,20 @@
         </s-form-item>
         <div v-if="tokenFrom" class="token">
           <!-- TODO: Fix secondary сolors in UI Library and project -->
-          <s-button v-if="connected && areTokensSelected" class="el-button--max" type="tertiary" size="small" @click="handleMaxFromValue">
+          <s-button v-if="connected && areTokensSelected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleMaxFromValue">
             {{ t('exchange.max') }}
           </s-button>
-          <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken(true)">
-            <span :class="getTokenClasses(tokenFrom)" />
+          <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="openSelectTokenDialog(true)">
+            <token-logo :token="tokenFrom.symbol" size="small" />
             {{ tokenFrom.symbol }}
           </s-button>
         </div>
-        <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="handleChooseToken(true)">
+        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" @click="openSelectTokenDialog(true)">
           {{ t('swap.chooseToken') }}
         </s-button>
       </div>
     </div>
-    <s-button class="el-button--switch-tokens" type="action" size="medium" icon="change-positions" @click="handleSwitchTokens" />
+    <s-button class="el-button--switch-tokens" type="action" icon="change-positions" @click="handleSwitchTokens" />
     <div class="input-container">
       <div class="input-line">
         <div class="input-title">
@@ -55,6 +56,7 @@
           <s-input
             v-model="formModel.to"
             v-float="formModel.to"
+            class="s-input--swap"
             :placeholder="inputPlaceholder"
             :disabled="!areTokensSelected"
             @change="handleChangeFieldTo"
@@ -62,21 +64,21 @@
           />
         </s-form-item>
         <div v-if="tokenTo" class="token">
-          <s-button type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--choose-token" @click="handleChooseToken">
-            <span :class="getTokenClasses(tokenTo)" />
+          <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="openSelectTokenDialog">
+            <token-logo :token="tokenTo.symbol" size="small" />
             {{ tokenTo.symbol }}
           </s-button>
         </div>
-        <s-button v-else type="tertiary" size="small" icon="chevron-bottom-rounded" class="el-button--empty-token" @click="handleChooseToken">
+        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" borderRadius="mini" icon="chevron-bottom-rounded" @click="openSelectTokenDialog">
           {{ t('swap.chooseToken') }}
         </s-button>
       </div>
     </div>
     <swap-info v-if="areTokensSelected" :showPrice="true" :showSlippageTolerance="true" />
-    <s-button v-if="!connected" type="primary" size="medium" @click="handleConnectWallet">
+    <s-button v-if="!connected" type="primary" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
-    <s-button v-else type="primary" size="medium" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="handleConfirmSwap">
+    <s-button v-else type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="handleConfirmSwap">
       <template v-if="!areTokensSelected">
         {{ t('swap.chooseTokens') }}
       </template>
@@ -91,9 +93,9 @@
       </template>
     </s-button>
     <swap-info v-if="areTokensSelected" />
-    <select-token :visible="showSelectTokenDialog" @select="handleSelectToken" @close="closeSelectToken"/>
-    <confirm-swap :visible="showConfirmSwapDialog && !isSwapConfirmed" @close="closeConfirmSwapDialog" />
-    <transaction-submit :visible="isSwapConfirmed" @close="closeTransactionSubmitDialog" />
+    <select-token :visible.sync="showSelectTokenDialog" @select="selectToken" />
+    <confirm-swap :visible.sync="showConfirmSwapDialog" @confirm="confirmSwap" />
+    <transaction-submit :visible.sync="isSwapConfirmed" @submit="submitSwap" />
   </s-form>
 </template>
 
@@ -108,6 +110,7 @@ import { Components, PageNames } from '@/consts'
 @Component({
   components: {
     SwapInfo: lazyComponent(Components.SwapInfo),
+    TokenLogo: lazyComponent(Components.TokenLogo),
     SelectToken: lazyComponent(Components.SelectToken),
     ConfirmSwap: lazyComponent(Components.ConfirmSwap),
     TransactionSubmit: lazyComponent(Components.TransactionSubmit)
@@ -118,20 +121,19 @@ export default class Swap extends Mixins(TranslationMixin) {
   @Getter tokenTo!: any
   @Getter fromValue!: number
   @Getter toValue!: number
-  @Getter isSwapConfirmed!: boolean
   @Action setTokenFrom
   @Action setTokenTo
   @Action setFromValue
   @Action setToValue
   @Action setTokenFromPrice
 
-  inputPlaceholder: string = formatNumber(0, 2);
-  isFieldFromFocused = false;
-  isFieldToFocused = false;
-  isTokenFromSelected = false;
-  showSelectTokenDialog = false;
-  showConfirmSwapDialog = false;
-  showTransactionSubmitDialog = false;
+  inputPlaceholder: string = formatNumber(0, 2)
+  isFieldFromFocused = false
+  isFieldToFocused = false
+  isTokenFromSelected = false
+  showSelectTokenDialog = false
+  showConfirmSwapDialog = false
+  isSwapConfirmed = false
 
   formModel = {
     from: formatNumber(0, 1),
@@ -162,14 +164,6 @@ export default class Swap extends Mixins(TranslationMixin) {
       return formatNumber(token.balance, 2)
     }
     return ''
-  }
-
-  getTokenClasses (token): string {
-    let classes = 'token-logo'
-    if (token && token.symbol) {
-      classes += ' token-logo--' + token.symbol.toLowerCase()
-    }
-    return classes
   }
 
   handleChangeFieldFrom (): void {
@@ -228,18 +222,14 @@ export default class Swap extends Mixins(TranslationMixin) {
     router.push({ name: PageNames.Wallet })
   }
 
-  handleConfirmSwap (): void {
-    this.showConfirmSwapDialog = true
-  }
-
-  handleChooseToken (isTokenFrom: boolean): void {
+  openSelectTokenDialog (isTokenFrom: boolean): void {
     if (isTokenFrom) {
       this.isTokenFromSelected = true
     }
     this.showSelectTokenDialog = true
   }
 
-  handleSelectToken (token: any): void {
+  selectToken (token: any): void {
     if (token) {
       if (this.isTokenFromSelected) {
         this.setTokenFrom(token)
@@ -250,19 +240,20 @@ export default class Swap extends Mixins(TranslationMixin) {
     }
   }
 
-  closeSelectToken () {
-    this.showSelectTokenDialog = false
+  handleConfirmSwap (): void {
+    this.showConfirmSwapDialog = true
   }
 
-  closeConfirmSwapDialog () {
-    this.showConfirmSwapDialog = false
-    if (this.isSwapConfirmed) {
-      this.showTransactionSubmitDialog = true
-    }
+  confirmSwap (isSwapConfirmed: boolean): void {
+    this.isSwapConfirmed = isSwapConfirmed
   }
 
-  closeTransactionSubmitDialog () {
-    this.showTransactionSubmitDialog = false
+  submitSwap (message: string): void {
+    this.$notify({
+      message: message,
+      title: this.t('exchange.Swap'),
+      type: 'success'
+    })
   }
 }
 </script>
@@ -271,7 +262,7 @@ export default class Swap extends Mixins(TranslationMixin) {
 $swap-input-class: ".el-input";
 
 .el-form--swap {
-  .s-input {
+  .s-input--swap {
     .el-input {
       #{$swap-input-class}__inner {
         padding-top: 0;
@@ -331,10 +322,9 @@ $swap-input-class: ".el-input";
   padding: $inner-spacing-mini;
   max-width: 320px;
   border: none !important;
-  border-radius: $border-radius-mini;
   box-shadow: var(--s-shadow-tooltip);
   font-size: $s-font-size-small;
-  line-height: 1.785;
+  line-height: $s-line-height-medium;
 }
 </style>
 
@@ -348,7 +338,7 @@ $swap-input-class: ".el-input";
     padding: $inner-spacing-small $inner-spacing-medium $inner-spacing-mini;
     width: 100%;
     background-color: var(--s-color-base-background);
-    border-radius: $border-radius-mini;
+    border-radius: var(--s-border-radius-mini);
     .input-line {
       display: flex;
       justify-content: space-between;
@@ -361,10 +351,6 @@ $swap-input-class: ".el-input";
       margin-bottom: 0;
       width: 50%;
     }
-    .token {
-      display: flex;
-      align-items: center;
-    }
     .input-title,
     .token-balance {
       display: inline-flex;
@@ -376,32 +362,16 @@ $swap-input-class: ".el-input";
         font-weight: 400;
       }
     }
-    .input-title-estimated,
-    .token-balance-value {
+    .input-title-estimated {
       margin-left: $inner-spacing-mini / 2;
     }
-    .token-balance {
-      margin-left: auto;
-      &-title {
-        color: var(--s-color-base-content-tertiary);
-        font-size: $s-font-size-small;
-      }
-    }
-    .token-logo {
-      margin-right: $inner-spacing-mini;
-      order: 1;
-      @include token-logo-styles(23px);
-    }
+    @include token-styles;
   }
   .s-input {
     min-height: 0;
   }
-  .s-action {
-    border-radius: $border-radius-small;
-  }
   .s-tertiary {
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
-    border-radius: $border-radius-mini;
   }
   .el-button {
     &--switch-tokens {
@@ -418,7 +388,7 @@ $swap-input-class: ".el-input";
     &--max {
       margin-right: $inner-spacing-mini;
       padding-right: $inner-spacing-mini;
-      height: 24px;
+      height: var(--s-size-mini);
     }
     &--empty-token {
       position: absolute;
@@ -431,7 +401,6 @@ $swap-input-class: ".el-input";
       padding-left: $inner-spacing-mini / 2;
       background-color: var(--s-color-base-background);
       border-color: var(--s-color-base-background);
-      border-radius: $border-radius-medium;
       color: var(--s-color-base-content-primary);
       &:hover, &:active, &:focus {
         background-color: var(--s-color-base-background-hover);
@@ -443,7 +412,6 @@ $swap-input-class: ".el-input";
   .s-primary {
     margin-top: $inner-spacing-medium;
     width: 100%;
-    border-radius: $border-radius-small;
     &:disabled {
       color: var(--s-color-base-on-disabled);
     }

@@ -1,42 +1,44 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 
-import ConfirmSwap from '@/components/ConfirmSwap.vue'
-import { tokens } from '@/mocks/tokens'
+import Settings from '@/components/Settings.vue'
 import { SoramitsuElementsImport, TranslationMock } from '../../utils'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
 SoramitsuElementsImport(localVue)
 
-describe('ConfirmSwap.vue', () => {
+describe('Settings.vue', () => {
   let actions
   let getters
   let store
 
   beforeEach(() => {
-    TranslationMock(ConfirmSwap)
+    TranslationMock(Settings)
+
+    actions = {
+      setSlippageTolerance: jest.fn(),
+      setTransactionDeadline: jest.fn()
+    }
 
     getters = {
-      tokenFrom: () => tokens[0],
-      tokenTo: () => tokens[1],
-      fromValue: () => 150.123654,
-      toValue: () => 0
+      slippageTolerance: () => 0.5,
+      transactionDeadline: () => 20,
+      nodeAddress: () => ({ ip: '123.123.1.2', port: 2323 })
     }
 
     store = new Vuex.Store({
+      actions,
       getters
     })
   })
 
   it('should renders correctly', () => {
-    const wrapper = shallowMount(ConfirmSwap, {
+    const wrapper = shallowMount(Settings, {
       localVue,
       store,
       propsData: {
-        visible: true,
-        title: 'Confirm Swap',
-        customClass: 'dialog--confirm-swap'
+        visible: true
       }
     })
     expect(wrapper.element).toMatchSnapshot()

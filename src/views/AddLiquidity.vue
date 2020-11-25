@@ -1,14 +1,14 @@
 <template>
-  <div class="create-pair-container">
+  <div class="add-liquidity-container">
     <s-row class="header" flex justify="space-between" align="middle">
       <s-button type="action" size="small" icon="arrow-left" @click="handleBack" />
-      <div class="title">{{ t('createPair.title') }}</div>
+      <div class="title">{{ t('addLiquidity.title') }}</div>
       <!-- TODO: Add appropriate tooltip -->
       <s-button type="action" size="small" icon="info" />
     </s-row>
     <s-form
       v-model="formModel"
-      class="el-form--create-pair"
+      class="el-form--add-liquidity"
       :show-message="false"
     >
       <div class="input-container">
@@ -30,7 +30,6 @@
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
-            <!-- TODO 4 alexnatalia, stefashkaa: Add mini size here -->
             <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
@@ -66,7 +65,6 @@
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
-            <!-- TODO 4 alexnatalia, stefashkaa: Add mini size here -->
             <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleSecondMaxValue">
               {{ t('exchange.max') }}
             </s-button>
@@ -80,7 +78,7 @@
           </s-button>
         </div>
       </div>
-        <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="handleConfirmCreatePair">
+        <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="showConfirmDialog = true">
         <template v-if="!areTokensSelected">
           {{ t('swap.chooseTokens') }}
         </template>
@@ -111,7 +109,7 @@
       </div>
     </info-card>
 
-    <info-card v-if="areTokensSelected" :title="t('createPair.yourPosition')">
+    <info-card v-if="areTokensSelected" :title="t('createPair.yourPosition') ">
       <div class="card__data">
         <s-row flex>
           <pair-token-logo class="pair-token-logo" :firstToken="secondToken.symbol" :secondToken="firstToken.symbol" size="mini" />
@@ -121,45 +119,40 @@
       </div>
       <s-divider />
       <div class="card__data">
-        <div v-if="firstToken">{{ firstToken.symbol }}</div>
+        <div>{{ firstToken.symbol }}</div>
         <div>{{ firstTokenPosition }}</div>
       </div>
       <div class="card__data">
-        <div v-if="secondToken">{{ secondToken.symbol }}</div>
+        <div>{{ secondToken.symbol }}</div>
         <div>{{ secondTokenPosition }}</div>
       </div>
     </info-card>
 
     <select-token :visible.sync="showSelectFirstTokenDialog" @select="setFirstToken" />
     <select-token :visible.sync="showSelectSecondTokenDialog" @select="setSecondToken" />
-    <confirm-create-pair :visible.sync="showConfirmCreatePairDialog" @confirm="confirmCreatePair" />
-    <create-pair-submit :visible.sync="isCreatePairConfirmed" @submit="submitCreatePair" />
+    <!-- TODO 4 Asmadek: Could you play with confirmtion popups like in Swap component, please? -->
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import router, { lazyComponent } from '@/router'
 import { formatNumber, isWalletConnected } from '@/utils'
 import { Components, PageNames } from '@/consts'
 
-const namespace = 'createPair'
+const namespace = 'addLiquidity'
 
 @Component({
   components: {
     SelectToken: lazyComponent(Components.SelectToken),
     InfoCard: lazyComponent(Components.InfoCard),
     TokenLogo: lazyComponent(Components.TokenLogo),
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    ConfirmCreatePair: lazyComponent(Components.ConfirmCreatePair),
-    CreatePairSubmit: lazyComponent(Components.CreatePairSubmit)
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
-
-export default class CreatePair extends Mixins(TranslationMixin) {
+export default class AddLiquidity extends Mixins(TranslationMixin) {
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
@@ -169,11 +162,12 @@ export default class CreatePair extends Mixins(TranslationMixin) {
   @Action('setSecondToken', { namespace }) setSecondToken
   @Action('setFirstTokenValue', { namespace }) setFirstTokenValue
   @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
+  @Action('addLiquidity', { namespace }) addLiquidity
 
   showSelectFirstTokenDialog = false
   showSelectSecondTokenDialog = false
-  inputPlaceholder: string = formatNumber(0, 2);
-  showConfirmCreatePairDialog = false
+  inputPlaceholder: string = formatNumber(0, 2)
+  showConfirmDialog = false
   isCreatePairConfirmed = false
 
   formModel = {
@@ -261,22 +255,6 @@ export default class CreatePair extends Mixins(TranslationMixin) {
     }
     return ''
   }
-
-  handleConfirmCreatePair (): void {
-    this.showConfirmCreatePairDialog = true
-  }
-
-  confirmCreatePair (isCreatePairConfirmed: boolean): void {
-    this.isCreatePairConfirmed = isCreatePairConfirmed
-  }
-
-  submitCreatePair (message: string): void {
-    this.$notify({
-      message: message,
-      title: this.t('pool.createPair'),
-      type: 'success'
-    })
-  }
 }
 </script>
 
@@ -286,7 +264,7 @@ $swap-input-class: ".el-input";
 .plus {
   padding: $inner-spacing-medium;
 }
-.el-form--create-pair {
+.el-form--add-liquidity {
   .s-input {
     .el-input {
       #{$swap-input-class}__inner {
@@ -343,7 +321,7 @@ $swap-input-class: ".el-input";
     }
   }
 }
-.create-pair-container {
+.add-liquidity-container {
   .header {
     margin-bottom: $inner-spacing-medium;
     .title {
@@ -354,19 +332,19 @@ $swap-input-class: ".el-input";
     }
   }
 }
-</style>
-
-<style lang="scss" scoped>
 .card {
   .el-divider {
     margin-top: $inner-spacing-mini;
     margin-bottom: $inner-spacing-mini;
   }
 }
-.create-pair-container {
+</style>
+
+<style lang="scss" scoped>
+.add-liquidity-container {
   @include container-styles;
 }
-.el-form--create-pair {
+.el-form--add-liquidity {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -416,7 +394,7 @@ $swap-input-class: ".el-input";
     &--max {
       margin-right: $inner-spacing-mini;
       padding-right: $inner-spacing-mini;
-      height: var(--s-size-mini)
+      height: var(--s-size-mini);
     }
     &--empty-token {
       position: absolute;
@@ -448,5 +426,9 @@ $swap-input-class: ".el-input";
       color: var(--s-color-base-on-disabled);
     }
   }
+}
+
+.pair-token-logo {
+  margin-right: $inner-spacing-mini
 }
 </style>

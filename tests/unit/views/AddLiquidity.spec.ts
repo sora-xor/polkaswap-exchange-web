@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 
-import Pool from '@/components/Pool.vue'
+import AddLiquidity from '@/views/AddLiquidity.vue'
 import { tokens } from '@/mocks/tokens'
 import { SoramitsuElementsImport, TranslationMock } from '../../utils'
 
@@ -9,34 +9,42 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 SoramitsuElementsImport(localVue)
 
-describe('Pool.vue', () => {
+describe('CreatePair.vue', () => {
   let actions
   let getters
   let store
 
   beforeEach(() => {
-    TranslationMock(Pool)
+    TranslationMock(AddLiquidity)
 
     actions = {
-      getLiquidity: jest.fn()
+      setFirstToken: jest.fn(),
+      setSecondToken: jest.fn(),
+      setFirstTokenValue: jest.fn(),
+      setSecondTokenValue: jest.fn(),
+      addLiquidity: jest.fn()
     }
 
     getters = {
-      liquidity: () => false,
       firstToken: () => tokens[0],
       secondToken: () => tokens[1],
-      firstTokenValue: () => 100,
-      secondTokenValue: () => 45.4545
+      firstTokenValue: () => 12,
+      secondTokenValue: () => 12
     }
 
     store = new Vuex.Store({
-      actions,
-      getters
+      modules: {
+        createPair: {
+          namespaced: true,
+          actions,
+          getters
+        }
+      }
     })
   })
 
   it('should renders correctly', () => {
-    const wrapper = shallowMount(Pool, { localVue, store })
+    const wrapper = shallowMount(AddLiquidity, { localVue, store })
     expect(wrapper.element).toMatchSnapshot()
   })
 })

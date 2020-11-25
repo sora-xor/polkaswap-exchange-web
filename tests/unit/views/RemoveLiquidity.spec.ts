@@ -1,46 +1,56 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 
-import ConfirmCreatePair from '@/components/ConfirmCreatePair.vue'
+import RemoveLiquidity from '@/views/RemoveLiquidity.vue'
 import { tokens } from '@/mocks/tokens'
+import { liquidity } from '@/mocks/liquidity'
 import { SoramitsuElementsImport, TranslationMock } from '../../utils'
+import VueRouter from 'vue-router'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
 SoramitsuElementsImport(localVue)
+localVue.use(VueRouter)
+const router = new VueRouter()
 
-describe('ConfirmCreatePair.vue', () => {
+describe('RemoveLiquidity.vue', () => {
+  let actions
   let getters
   let store
 
   beforeEach(() => {
-    TranslationMock(ConfirmCreatePair)
+    TranslationMock(RemoveLiquidity)
+
+    actions = {
+      getLiquidity: jest.fn()
+    }
 
     getters = {
-      firstToken: () => tokens[0],
-      secondToken: () => tokens[1],
-      firstTokenValue: () => 12,
-      secondTokenValue: () => 12
+      liquidity: () => liquidity[0]
     }
 
     store = new Vuex.Store({
       modules: {
-        createPair: {
+        removeLiquidity: {
           namespaced: true,
+          actions,
           getters
         }
+      },
+      actions: {
+        getTokens: jest.fn()
+      },
+      getters: {
+        tokens: () => tokens
       }
     })
   })
 
   it('should renders correctly', () => {
-    const wrapper = shallowMount(ConfirmCreatePair, {
+    const wrapper = shallowMount(RemoveLiquidity, {
       localVue,
       store,
-      propsData: {
-        visible: true,
-        title: 'Create a pair'
-      }
+      router
     })
     expect(wrapper.element).toMatchSnapshot()
   })

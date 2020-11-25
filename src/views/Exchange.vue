@@ -63,10 +63,8 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
             box-shadow: none;
             background-color: var(--s-color-base-background-hover);
           }
-          &,
-          &.is-active,
-          &.is-focus {
-            border-radius: $border-radius-small;
+          &:hover {
+            border-radius: var(--s-border-radius-small);
           }
         }
         #{$tabs-class}__item {
@@ -81,7 +79,6 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
         height: $tabs-container-height;
         padding: $tabs-container-padding;
         background-color: var(--s-color-base-background);
-        border-radius: $border-radius-small;
       }
     }
   }
@@ -102,14 +99,7 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
 
 <style lang="scss" scoped>
 .exchange-container {
-  margin: $inner-spacing-big auto;
-  padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
-  min-height: $inner-window-height;
-  width: $inner-window-width;
-  background-color: var(--s-color-utility-surface);
-  border-radius: $border-radius-medium;
-  box-shadow: var(--s-shadow-surface);
-  color: var(--s-color-base-content-primary);
+  @include container-styles;
   .s-tabs {
     width: 100%;
   }

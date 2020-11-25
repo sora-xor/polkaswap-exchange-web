@@ -1,8 +1,7 @@
 <template>
   <dialog-base
     :visible.sync="isVisible"
-    :title="t('swap.confirmSwap')"
-    customClass="dialog--confirm-swap"
+    :title="t('removeLiquidity.confirmTitle')"
   >
     <div class="tokens">
       <div class="tokens-info-container">
@@ -12,21 +11,26 @@
       </div>
       <div class="tokens-info-container">
         <div v-if="tokenFrom" class="token">
-          <token-logo :token="tokenFrom.symbol" />
+          <token-logo class="token-logo" :token="tokenFrom.symbol" />
           {{ tokenFrom.symbol }}
         </div>
         <div v-if="tokenTo" class="token">
-          <token-logo :token="tokenTo.symbol" />
+          <token-logo class="token-logo" :token="tokenTo.symbol" />
           {{ tokenTo.symbol }}
         </div>
       </div>
     </div>
-    <p class="transaction-message" v-html="t('swap.swapOutputMessage', { transactionValue : `<span class='transaction-number'>${toValue}</span>` })" />
+    <p class="transaction-message" v-html="t('removeLiquidity.outputMessage')" />
     <s-divider />
-    <swap-info :showPrice="true" />
-    <swap-info />
+    <s-row flex justify="space-between">
+        <div>{{ t('removeLiquidity.price')  }}</div>
+        <div>
+          <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price, 2) }} {{ secondToken.symbol }}</div>
+          <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price, 2) }} {{ firstToken.symbol }}</div>
+        </div>
+    </s-row>
     <template #footer>
-      <s-button type="primary" @click="handleConfirmSwap">{{ t('swap.confirmSwap') }}</s-button>
+      <s-button type="primary" @click="handleConfirmRemoveLiquidity">{{ t('removeLiquidity.confirm') }}</s-button>
     </template>
   </dialog-base>
 </template>
@@ -45,47 +49,32 @@ import { Components } from '@/consts'
 @Component({
   components: {
     DialogBase,
-    SwapInfo: lazyComponent(Components.SwapInfo),
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
 export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
-  @Getter tokenFrom!: any
-  @Getter tokenTo!: any
-  @Getter fromValue!: number
-  @Getter toValue!: number
+  @Prop({ default: false, type: Boolean }) readonly visible!: boolean
 
   get formattedFromValue (): string {
-    return formatNumber(this.fromValue, 4)
+    return formatNumber(12, 4)
   }
 
   get formattedToValue (): string {
-    return formatNumber(this.toValue, 4)
+    return formatNumber(13, 4)
   }
 
-  handleConfirmSwap (): void {
-    this.$emit('confirm', true)
+  handleConfirmRemoveLiquidity (): void {
+    // TODO: Remove Liquidity here
     this.$emit('close')
-    this.isVisible = false
   }
 }
 </script>
-
-<style lang="scss">
-.dialog--confirm-swap {
-  .transaction-number {
-    color: var(--s-color-base-content-primary);
-    font-weight: bold;
-  }
-}
-</style>
 
 <style lang="scss" scoped>
 .tokens {
   display: flex;
   justify-content: space-between;
   font-size: 30px;
-  line-height: $s-line-height-mini;
   &-info-container {
     display: flex;
     flex-direction: column;
@@ -96,27 +85,26 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   display: flex;
   align-items: center;
   white-space: nowrap;
+
   &-logo {
     display: block;
     margin-right: $inner-spacing-medium;
     flex-shrink: 0;
   }
 }
-.s-icon-arrow-bottom-rounded,
-.transaction-message,
-.el-divider {
-  margin-top: $inner-spacing-mini;
-}
-.s-icon-arrow-bottom-rounded,
-.el-divider {
-  margin-bottom: $inner-spacing-mini;
-}
 .s-icon-arrow-bottom-rounded {
+  margin-top: $inner-spacing-mini;
+  margin-bottom: $inner-spacing-mini;
   display: block;
   font-size: $s-font-size-medium;
 }
 .transaction-message {
+  margin-top: $inner-spacing-big;
   color: var(--s-color-base-content-tertiary);
-  line-height: $s-line-height-medium;
+  line-height: $s-line-height-small;
+}
+.el-divider {
+  margin-top: $inner-spacing-mini;
+  margin-bottom: $inner-spacing-big;
 }
 </style>

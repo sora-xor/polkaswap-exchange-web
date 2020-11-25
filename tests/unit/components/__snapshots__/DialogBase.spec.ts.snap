@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DialogBase.vue should renders correctly 1`] = `
+<s-dialog
+  borderradius="medium"
+  class="dialog-wrapper"
+  customclass="custom-dialog-class"
+  title="Dialog title"
+  top="80px"
+  width="496px"
+>
+   
+  <template />
+</s-dialog>
+`;

@@ -1,25 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SelectToken.vue should renders correctly 1`] = `
-<s-dialog-stub
-  borderradius="small"
-  class="token-select"
-  closeonclickmodal="true"
-  closeonesc="true"
-  customclass=""
-  lockscroll="true"
-  modal="true"
-  modalappendtobody="true"
-  showclose="true"
-  title=""
-  top="auto"
-  width="496px"
+<dialog-base-stub
+  customclass="token-select"
+  title="Select a token"
 >
-   
   <s-input-stub
     accept=""
     autocomplete="off"
-    borderradius="small"
+    borderradius="mini"
     class="token-search"
     form=""
     label=""
@@ -51,9 +40,7 @@ exports[`SelectToken.vue should renders correctly 1`] = `
           gutter="0"
           justify="start"
         >
-          <div
-            class="token-item__empty-logo"
-          />
+          <!---->
            
           <div>
             <div
@@ -88,9 +75,7 @@ exports[`SelectToken.vue should renders correctly 1`] = `
           gutter="0"
           justify="start"
         >
-          <div
-            class="token-item__empty-logo"
-          />
+          <!---->
            
           <div>
             <div
@@ -125,9 +110,7 @@ exports[`SelectToken.vue should renders correctly 1`] = `
           gutter="0"
           justify="start"
         >
-          <div
-            class="token-item__empty-logo"
-          />
+          <!---->
            
           <div>
             <div
@@ -162,9 +145,7 @@ exports[`SelectToken.vue should renders correctly 1`] = `
           gutter="0"
           justify="start"
         >
-          <div
-            class="token-item__empty-logo"
-          />
+          <!---->
            
           <div>
             <div
@@ -199,9 +180,7 @@ exports[`SelectToken.vue should renders correctly 1`] = `
           gutter="0"
           justify="start"
         >
-          <div
-            class="token-item__empty-logo"
-          />
+          <!---->
            
           <div>
             <div
@@ -236,9 +215,7 @@ exports[`SelectToken.vue should renders correctly 1`] = `
           gutter="0"
           justify="start"
         >
-          <div
-            class="token-item__empty-logo"
-          />
+          <!---->
            
           <div>
             <div
@@ -273,9 +250,7 @@ exports[`SelectToken.vue should renders correctly 1`] = `
           gutter="0"
           justify="start"
         >
-          <div
-            class="token-item__empty-logo"
-          />
+          <!---->
            
           <div>
             <div
@@ -310,9 +285,7 @@ exports[`SelectToken.vue should renders correctly 1`] = `
           gutter="0"
           justify="start"
         >
-          <div
-            class="token-item__empty-logo"
-          />
+          <!---->
            
           <div>
             <div
@@ -347,9 +320,7 @@ exports[`SelectToken.vue should renders correctly 1`] = `
           gutter="0"
           justify="start"
         >
-          <div
-            class="token-item__empty-logo"
-          />
+          <!---->
            
           <div>
             <div
@@ -384,9 +355,7 @@ exports[`SelectToken.vue should renders correctly 1`] = `
           gutter="0"
           justify="start"
         >
-          <div
-            class="token-item__empty-logo"
-          />
+          <!---->
            
           <div>
             <div
@@ -407,5 +376,5 @@ exports[`SelectToken.vue should renders correctly 1`] = `
       </div>
     </div>
   </div>
-</s-dialog-stub>
+</dialog-base-stub>
 `;

@@ -20,29 +20,35 @@
       </s-menu-item>
       <div class="controls">
         <div class="buttons">
-          <s-button class="wallet" type="action" size="medium" icon="wallet" rounded @click="goTo(PageNames.Wallet)" />
-          <s-button type="action" size="medium" icon="settings" rounded />
-          <s-button type="action" size="medium" icon="search" rounded />
+          <s-button class="wallet" type="action" icon="wallet" rounded @click="goTo(PageNames.Wallet)" />
+          <s-button type="action" icon="settings" rounded @click="openSettingsDialog" />
+          <s-button type="action" icon="search" rounded />
         </div>
       </div>
     </s-menu>
-    <!-- TODO: convert to the About page link and add active state for the menu item -->
-    <i class="polkaswap-logo" />
+    <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.About)" />
     <div class="app-content"><router-view /></div>
+    <settings :visible.sync="showSettings" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 
-import { PageNames, MainMenu } from '@/consts'
+import { PageNames, MainMenu, Components } from '@/consts'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import router from '@/router'
+import router, { lazyComponent } from '@/router'
 
-@Component
+@Component({
+  components: {
+    Settings: lazyComponent(Components.Settings)
+  }
+})
 export default class App extends Mixins(TranslationMixin) {
   readonly MainMenu = MainMenu
   readonly PageNames = PageNames
+
+  showSettings = false
 
   getCurrentPath (): string {
     if ([PageNames.Swap, PageNames.Pool, PageNames.Wallet].includes(router.currentRoute.name as PageNames)) {
@@ -62,6 +68,10 @@ export default class App extends Mixins(TranslationMixin) {
     if (name === PageNames.Exchange && router.currentRoute.name !== PageNames.Swap) {
       router.push({ name: PageNames.Swap })
     }
+  }
+
+  openSettingsDialog (): void {
+    this.showSettings = true
   }
 }
 </script>
@@ -95,10 +105,6 @@ html {
   overflow-y: hidden;
   font-size: $s-font-size-small;
   line-height: $s-line-height-small;
-}
-*, *:before, *:after {
-  box-sizing: border-box;
-  margin: 0;
 }
 #app {
   -webkit-font-smoothing: antialiased;

@@ -70,6 +70,18 @@ export default {
     swapOutputMessage: 'Output is estimated. You will receive at least {transactionValue} or the transaction will revert.',
     transactionMessage: '{tokenFromValue} for {tokenToValue}'
   },
+  pool: {
+    yourLiquidity: 'Your liquidity',
+    yourLiquidityTooltip: 'When you add liquidity, you are awarded with token pair specific Pool Tokens that represent your pool share.',
+    connectToWallet: 'Connect to a wallet to view your liquidity.',
+    liquidityNotFound: 'No liquidity found.',
+    addLiquidity: 'Add Liquidity',
+    removeLiquidity: 'Remove liquidity',
+    createPair: 'Create a pair',
+    pooledToken: '{tokenSymbol} Pooled:',
+    pairTokens: '{pair} Pool Tokens:',
+    poolShare: 'Your pool share'
+  },
   selectToken: {
     title: 'Select a token',
     searchPlaceholder: 'Search Token Name, Symbol, or Address',
@@ -99,5 +111,35 @@ export default {
     poolTokensBurned: '{first}-{second} Pool Tokens Burned:',
     price: 'Price:',
     confirm: 'Confirm'
+  },
+  addLiquidity: {
+    title: 'Add liquidity'
+  },
+  removeLiquidity: {
+    title: 'Remove liquidity',
+    balance: 'Balance',
+    amount: 'Amount',
+    input: 'Input',
+    output: 'Output',
+    price: 'Price:',
+    remove: 'Remove',
+    enterAmount: 'Enter an amount',
+    description: 'Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.',
+    outputMessage: 'Output is estimated. If the price changes more than 0.5% your transaction will revert.',
+    confirmTitle: 'You will receive',
+    confirm: 'Confirm'
+  },
+  settings: {
+    title: 'Settings',
+    slippageTolerance: 'SLIPPAGE TOLERANCE',
+    slippageToleranceHint: 'Your transaction will revert if the price changes unfavorably by more than this percentage.',
+    custom: 'CUSTOM',
+    transactionDeadline: 'TRANSACTION DEADLINE',
+    transactionDeadlineHint: 'TODO',
+    nodeAddress: 'NODE ADDRESS',
+    nodeAddressHint: 'TODO',
+    ip: 'IP',
+    port: 'PORT',
+    min: 'MIN'
   }
 }

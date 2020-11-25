@@ -1,19 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TransactionSubmit.vue should renders correctly 1`] = `
-<s-dialog-stub
-  borderradius="small"
-  class="el-dialog--transaction-submit"
-  closeonclickmodal="true"
-  closeonesc="true"
+<dialog-base-stub
   customclass=""
-  lockscroll="true"
-  modal="true"
-  modalappendtobody="true"
-  showclose="true"
-  title=""
-  top="auto"
-  width="496px"
+  title="Transaction submitted"
 >
   <s-icon-stub
     name="arrow-top-right-rounded"
@@ -50,5 +40,5 @@ exports[`TransactionSubmit.vue should renders correctly 1`] = `
     direction="horizontal"
     type="secondary"
   />
-</s-dialog-stub>
+</dialog-base-stub>
 `;
