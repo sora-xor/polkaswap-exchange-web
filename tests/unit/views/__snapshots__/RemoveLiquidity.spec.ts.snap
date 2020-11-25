@@ -359,7 +359,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
     </div>
      
     <s-button-stub
-      borderradius="medium"
+      borderradius="small"
       disabled="true"
       icon=""
       nativetype="button"

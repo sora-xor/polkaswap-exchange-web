@@ -17,10 +17,6 @@ describe('ConfirmSwap.vue', () => {
   beforeEach(() => {
     TranslationMock(ConfirmSwap)
 
-    actions = {
-      setSwapConfirm: jest.fn()
-    }
-
     getters = {
       tokenFrom: () => tokens[0],
       tokenTo: () => tokens[1],
@@ -29,7 +25,6 @@ describe('ConfirmSwap.vue', () => {
     }
 
     store = new Vuex.Store({
-      actions,
       getters
     })
   })

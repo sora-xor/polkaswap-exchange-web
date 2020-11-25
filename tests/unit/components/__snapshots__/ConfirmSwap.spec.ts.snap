@@ -4,7 +4,6 @@ exports[`ConfirmSwap.vue should renders correctly 1`] = `
 <dialog-base-stub
   customclass="dialog--confirm-swap"
   title="Confirm Swap"
-  visible="true"
 >
   <div
     class="tokens"
@@ -35,9 +34,7 @@ exports[`ConfirmSwap.vue should renders correctly 1`] = `
       <div
         class="token"
       >
-        <span
-          class="token-logo token-logo--xor"
-        />
+        <!---->
         
         XOR
       
@@ -46,9 +43,7 @@ exports[`ConfirmSwap.vue should renders correctly 1`] = `
       <div
         class="token"
       >
-        <span
-          class="token-logo token-logo--ksm"
-        />
+        <!---->
         
         KSM
       

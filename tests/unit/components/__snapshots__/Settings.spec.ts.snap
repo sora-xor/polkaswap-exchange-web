@@ -1,21 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Settings.vue should renders correctly 1`] = `
-<s-dialog-stub
-  borderradius="small"
-  class="settings"
-  closeonclickmodal="true"
-  closeonesc="true"
-  customclass=""
-  lockscroll="true"
-  modal="true"
-  modalappendtobody="true"
-  showclose="true"
+<dialog-base-stub
+  customclass="settings"
   title=""
-  top="auto"
-  width="496px"
 >
-   
   <div
     class="settings-content"
   >
@@ -229,5 +218,5 @@ exports[`Settings.vue should renders correctly 1`] = `
       </div>
     </div>
   </div>
-</s-dialog-stub>
+</dialog-base-stub>
 `;

@@ -7,7 +7,6 @@ exports[`DialogBase.vue should renders correctly 1`] = `
   customclass="custom-dialog-class"
   title="Dialog title"
   top="80px"
-  visible="true"
   width="496px"
 >
    

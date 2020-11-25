@@ -4,7 +4,6 @@ exports[`ConfirmCreatePair.vue should renders correctly 1`] = `
 <dialog-base-stub
   customclass=""
   title="Create a pair"
-  visible="true"
 >
   <div
     class="tokens"

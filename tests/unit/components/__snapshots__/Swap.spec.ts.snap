@@ -63,9 +63,7 @@ exports[`Swap.vue should renders correctly 1`] = `
           tooltipplacement="top"
           type="tertiary"
         >
-          <span
-            class="token-logo token-logo--xor"
-          />
+          <!---->
           
           XOR
         
@@ -148,9 +146,7 @@ exports[`Swap.vue should renders correctly 1`] = `
           tooltipplacement="top"
           type="tertiary"
         >
-          <span
-            class="token-logo token-logo--ksm"
-          />
+          <!---->
           
           KSM
         

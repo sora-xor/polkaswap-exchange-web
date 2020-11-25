@@ -4,7 +4,6 @@ exports[`CreatePairSubmit.vue should renders correctly 1`] = `
 <dialog-base-stub
   customclass=""
   title="Transaction submitted"
-  visible="true"
 >
   <s-icon-stub
     name="arrow-top-right-rounded"
