@@ -1,3 +1,5 @@
+export const AppName = 'Polkaswap'
+
 export enum PageNames {
   About = 'About',
   Exchange = 'Exchange',
