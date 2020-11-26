@@ -63,7 +63,7 @@ import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import { formatNumber } from '@/utils'
-const namespace = 'createPair'
+const namespace = 'addLiquidity'
 
 @Component({
   components: {

@@ -20,16 +20,16 @@
     >
       <info-card class="slider-container" :title="t('removeLiquidity.amount')">
         <div class="slider-container__amount">
-          {{ removeAmount }}<span class="percent">%</span>
+          {{ removePart }}<span class="percent">%</span>
         </div>
         <div>
-          <s-slider v-model="removeAmount" @change="() => {}" />
+          <s-slider :value="removePart" @change="setRemovePart" />
         </div>
       </info-card>
       <div class="input-container">
         <div class="input-line">
           <div class="input-title">{{ t('removeLiquidity.input') }}</div>
-          <div v-if="isWalletConnected && firstToken" class="token-balance">
+          <div v-if="isWalletConnected && liquidity" class="token-balance">
             <span class="token-balance-title">{{ t('createPair.balance') }}</span>
             <span class="token-balance-value">{{ getTokenBalance(liquidity) }}</span>
           </div>
@@ -43,10 +43,10 @@
             />
           </s-form-item>
           <div class="token">
-            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleFirstMaxValue">
+            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleLiquidityMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" >
               <div class="liquidity-logo">
                 <pair-token-logo :firstToken="firstToken.symbol" :secondToken="secondToken.symbol" size="mini" />
               </div>
@@ -61,24 +61,17 @@
       <div class="input-container">
         <div class="input-line">
           <div class="input-title">{{ t('removeLiquidity.output') }}</div>
-          <div v-if="isWalletConnected && firstToken" class="token-balance">
-            <span class="token-balance-title">{{ t('createPair.balance') }}</span>
-            <span class="token-balance-value">{{ getTokenBalance(firstToken) }}</span>
-          </div>
         </div>
         <div class="input-line">
           <s-form-item>
             <s-input
-              :value="firstTokenValue"
+              :value="firstTokenRemoveAmount"
               :placeholder="inputPlaceholder"
               :disabled="true"
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
-            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleFirstMaxValue">
-              {{ t('exchange.max') }}
-            </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" >
               <token-logo :token="firstToken.symbol" size="small" />
               {{ firstToken.symbol }}
             </s-button>
@@ -93,32 +86,25 @@
           <div class="input-title">
             <span>{{ t('removeLiquidity.output') }}</span>
           </div>
-          <div v-if="isWalletConnected && secondToken" class="token-balance">
-            <span class="token-balance-title">{{ t('exchange.balance') }}</span>
-            <span class="token-balance-value">{{ getTokenBalance(secondToken) }}</span>
-          </div>
         </div>
         <div class="input-line">
           <s-form-item>
             <s-input
-              :value="secondTokenValue"
+              :value="secondTokenRemoveAmount"
               :placeholder="inputPlaceholder"
               :disabled="true"
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
-            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleSecondMaxValue">
-              {{ t('exchange.max') }}
-            </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" >
               <token-logo :token="secondToken.symbol" size="small" />
               {{ secondToken.symbol }}
             </s-button>
           </div>
         </div>
       </div>
-      <s-button type="primary" borderRadius="small" :disabled="isEmptyBalance" @click="showConfirmDialog = true">
-        <template v-if="isEmptyBalance">
+      <s-button type="primary" borderRadius="small" :disabled="isEmptyAmount" @click="showConfirmDialog = true">
+        <template v-if="isEmptyAmount">
           {{ t('swap.enterAmount') }}
         </template>
         <template v-else>
@@ -134,8 +120,10 @@
         <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price, 2) }} {{ firstToken.symbol }}</div>
       </div>
     </s-row>
+
+    <confirm-remove-liquidity :visible.sync="showConfirmDialog" @confirm="handleConfirmRemoveLiquidity" />
+    <result-dialog :visible.sync="isRemoveLiquidityConfirmed" :type="t('removeLiquidity.remove')" :message="resultMessage" />
   </div>
-  <!-- TODO 4 Asmadek: Could you play with confirmtion popups like in Swap component, please? -->
 </template>
 
 <script lang="ts">
@@ -155,14 +143,24 @@ const namespace = 'removeLiquidity'
   components: {
     TokenLogo: lazyComponent(Components.TokenLogo),
     InfoCard: lazyComponent(Components.InfoCard),
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo)
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity),
+    ResultDialog: lazyComponent(Components.ResultDialog)
   }
 })
 export default class RemoveLiquidity extends Mixins(TranslationMixin) {
   @Getter('liquidity', { namespace }) liquidity!: any
+  @Getter('removePart', { namespace }) removePart!: any
+  @Getter('removeAmount', { namespace }) removeAmount!: any
+  @Getter('firstToken', { namespace }) firstToken!: any
+  @Getter('secondToken', { namespace }) secondToken!: any
+  @Getter('firstTokenRemoveAmount', { namespace }) firstTokenRemoveAmount!: any
+  @Getter('secondTokenRemoveAmount', { namespace }) secondTokenRemoveAmount!: any
+
   @Getter tokens!: Array<Token>
 
   @Action('getLiquidity', { namespace }) getLiquidity
+  @Action('setRemovePart', { namespace }) setRemovePart
   @Action getTokens
 
   created () {
@@ -173,29 +171,12 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
   isWalletConnected = true
   inputPlaceholder: string = formatNumber(0, 2);
   showConfirmDialog = false
-  isCreatePairConfirmed = false
-  removeAmount = 0
+  isRemoveLiquidityConfirmed = false
 
   formatNumber = formatNumber
 
   get liquidityId (): string {
     return this.$route.params.id
-  }
-
-  get firstToken (): Token {
-    return this.liquidity ? this.tokens.find(t => t.symbol === this.liquidity.firstToken) || {} as Token : {} as Token
-  }
-
-  get secondToken (): Token {
-    return this.liquidity ? this.tokens.find(t => t.symbol === this.liquidity.secondToken) || {} as Token : {} as Token
-  }
-
-  get firstTokenValue (): string {
-    return this.liquidity ? formatNumber(this.liquidity.firstTokenAmount * this.removeAmount / 100, 2) : ''
-  }
-
-  get secondTokenValue (): string {
-    return this.liquidity ? formatNumber(this.liquidity.secondTokenAmount * this.removeAmount / 100, 2) : ''
   }
 
   get firstPerSecondPrice (): string {
@@ -210,35 +191,40 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
     return !!this.firstToken && !!this.secondToken
   }
 
-  get isEmptyBalance (): boolean {
-    return +this.firstTokenValue === 0 || +this.secondTokenValue === 0
+  get removeLiquidityAmount (): string {
+    return formatNumber(this.removeAmount, 2)
   }
 
-  get removeLiquidityAmount (): string {
-    if (this.liquidity) {
-      return formatNumber(this.liquidity.balance * this.removeAmount / 100, 2)
-    }
+  get isEmptyAmount (): boolean {
+    return this.removePart === 0
+  }
 
-    return ''
+  get resultMessage (): string {
+    return this.t('createPair.transactionMessage', {
+      firstToken: this.getTokenValue(this.firstToken, this.firstTokenRemoveAmount),
+      secondToken: this.getTokenValue(this.secondToken, this.secondTokenRemoveAmount)
+    })
+  }
+
+  getTokenValue (token: any, tokenValue: number): string {
+    return token ? `${tokenValue} ${token.symbol}` : ''
+  }
+
+  getTokenBalance (token: any): string {
+    return token ? formatNumber(token.balance, 2) : ''
   }
 
   handleBack (): void {
     router.push({ name: PageNames.Pool })
   }
 
-  handleFirstMaxValue (): void {
-    // this.formModel.first = this.firstToken.balance
+  handleLiquidityMaxValue (): void {
+    this.setRemovePart(100)
   }
 
-  handleSecondMaxValue (): void {
-    // this.formModel.second = this.secondToken.balance
-  }
-
-  getTokenBalance (token: any): string {
-    if (token) {
-      return formatNumber(token.balance, 2)
-    }
-    return ''
+  handleConfirmRemoveLiquidity (): void {
+    this.showConfirmDialog = false
+    this.isRemoveLiquidityConfirmed = true
   }
 }
 </script>

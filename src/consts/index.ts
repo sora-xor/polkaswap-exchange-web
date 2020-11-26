@@ -18,7 +18,9 @@ export enum Components {
   ConfirmSwap = 'ConfirmSwap',
   TransactionSubmit = 'TransactionSubmit',
   ConfirmCreatePair = 'ConfirmCreatePair',
-  CreatePairSubmit = 'CreatePairSubmit',
+  ConfirmAddLiquidity = 'ConfirmAddLiquidity',
+  ConfirmRemoveLiquidity = 'ConfirmRemoveLiquidity',
+  ResultDialog = 'ResultDialog',
   PairTokenLogo = 'PairTokenLogo',
   InfoCard = 'InfoCard',
   Settings = 'Settings'

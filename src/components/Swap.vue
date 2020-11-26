@@ -94,8 +94,9 @@
     </s-button>
     <swap-info v-if="areTokensSelected" />
     <select-token :visible.sync="showSelectTokenDialog" @select="selectToken" />
+
     <confirm-swap :visible.sync="showConfirmSwapDialog" @confirm="confirmSwap" />
-    <transaction-submit :visible.sync="isSwapConfirmed" @submit="submitSwap" />
+    <result-dialog :visible.sync="isSwapConfirmed" :type="t('exchange.Swap')" :message="resultMessage" />
   </s-form>
 </template>
 
@@ -113,7 +114,8 @@ import { Components, PageNames } from '@/consts'
     TokenLogo: lazyComponent(Components.TokenLogo),
     SelectToken: lazyComponent(Components.SelectToken),
     ConfirmSwap: lazyComponent(Components.ConfirmSwap),
-    TransactionSubmit: lazyComponent(Components.TransactionSubmit)
+    TransactionSubmit: lazyComponent(Components.TransactionSubmit),
+    ResultDialog: lazyComponent(Components.ResultDialog)
   }
 })
 export default class Swap extends Mixins(TranslationMixin) {
@@ -157,6 +159,17 @@ export default class Swap extends Mixins(TranslationMixin) {
       return +this.formModel.from > this.tokenFrom.balance
     }
     return true
+  }
+
+  get resultMessage (): string {
+    return this.t('swap.transactionMessage', {
+      tokenFromValue: this.getSwapValue(this.tokenFrom, this.fromValue),
+      tokenToValue: this.getSwapValue(this.tokenTo, this.toValue)
+    })
+  }
+
+  getSwapValue (token: any, tokenValue: number): string {
+    return token ? `${tokenValue} ${token.symbol}` : ''
   }
 
   getTokenBalance (token: any): string {

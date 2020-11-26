@@ -113,7 +113,7 @@
       <div class="card__data">
         <s-row flex>
           <pair-token-logo class="pair-token-logo" :firstToken="secondToken.symbol" :secondToken="firstToken.symbol" size="mini" />
-          {{ t('createPair.firstSecondPoolTokens', { first: secondToken.symbol, second: firstToken.symbol })  }}
+          {{ t('createPair.firstSecondPoolTokens', { first: secondToken.symbol, second: firstToken.symbol })  }}:
         </s-row>
         <div>{{ poolTokens }}</div>
       </div>
@@ -131,6 +131,9 @@
     <select-token :visible.sync="showSelectFirstTokenDialog" @select="setFirstToken" />
     <select-token :visible.sync="showSelectSecondTokenDialog" @select="setSecondToken" />
     <!-- TODO 4 Asmadek: Could you play with confirmtion popups like in Swap component, please? -->
+
+    <confirm-add-liquidity :visible.sync="showConfirmDialog" @confirm="handleConfirmAddLiquidity" />
+    <result-dialog :visible.sync="isCreatePairConfirmed" :type="t('createPair.add')" :message="resultMessage" />
   </div>
 </template>
 
@@ -149,7 +152,9 @@ const namespace = 'addLiquidity'
     SelectToken: lazyComponent(Components.SelectToken),
     InfoCard: lazyComponent(Components.InfoCard),
     TokenLogo: lazyComponent(Components.TokenLogo),
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo)
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    ConfirmAddLiquidity: lazyComponent(Components.ConfirmAddLiquidity),
+    ResultDialog: lazyComponent(Components.ResultDialog)
   }
 })
 export default class AddLiquidity extends Mixins(TranslationMixin) {
@@ -221,6 +226,17 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
     return true
   }
 
+  get resultMessage (): string {
+    return this.t('createPair.transactionMessage', {
+      firstToken: this.getTokenValue(this.firstToken, this.firstTokenValue),
+      secondToken: this.getTokenValue(this.secondToken, this.secondTokenValue)
+    })
+  }
+
+  getTokenValue (token: any, tokenValue: number): string {
+    return token ? `${tokenValue} ${token.symbol}` : ''
+  }
+
   handleBack (): void {
     router.push({ name: PageNames.Pool })
   }
@@ -254,6 +270,11 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
       return formatNumber(token.balance, 2)
     }
     return ''
+  }
+
+  handleConfirmAddLiquidity (): void {
+    this.showConfirmDialog = false
+    this.isCreatePairConfirmed = true
   }
 }
 </script>

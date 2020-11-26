@@ -1,20 +1,20 @@
 <template>
   <dialog-base
     :visible.sync="isVisible"
-    :title="t('exchange.transactionSubmitted')"
+    :title="t('resultDialog.title')"
   >
     <s-icon name="arrow-top-right-rounded" />
     <s-divider />
     <div class="transaction">
-      <div class="transaction-type">{{ t('createPair.remove') }}</div>
-      <div class="transaction-info">{{ transactionInfo }}</div>
+      <div v-if="type" class="transaction-type">{{ type }}</div>
+      <div v-if="message" class="transaction-info">{{ message }}</div>
       <!-- TODO: Add correct icons and add functionality -->
       <s-icon name="external-link" @click="handleTransactionInfo" />
       <!-- <s-icon name="arrow-bottom-rounded" /> -->
     </div>
     <s-divider />
     <template #footer>
-      <s-button type="primary" @click="handleClose">{{ t('createPair.ok') }}</s-button>
+      <s-button type="primary" @click="handleSubmitTransaction">{{ t('resultDialog.ok') }}</s-button>
     </template>
   </dialog-base>
 </template>
@@ -25,39 +25,24 @@ import { Getter, Action } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
-import DialogBase from '@/components/DialogBase.vue'
-
-const namespace = 'createPair'
+import DialogBase from './DialogBase.vue'
 
 @Component({
   components: {
     DialogBase
   }
 })
-export default class CreatePairSubmit extends Mixins(TranslationMixin, DialogMixin) {
-  @Getter('firstToken', { namespace }) firstToken!: any
-  @Getter('secondToken', { namespace }) secondToken!: any
-  @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
-  @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
-  @Action('createPair', { namespace }) createPair
+export default class ResultDialog extends Mixins(TranslationMixin, DialogMixin) {
+  @Prop({ default: '', type: String }) readonly type!: string
+  @Prop({ default: '', type: String }) readonly message!: string
 
-  get transactionInfo (): string {
-    return this.t('swap.transactionMessage', { tokenFromValue: this.getSwapValue(this.firstToken, this.firstTokenValue), tokenToValue: this.getSwapValue(this.secondToken, this.secondTokenValue) })
-  }
-
-  getSwapValue (token: any, tokenValue: number): string {
-    return token ? `${tokenValue} ${token.symbol}` : ''
+  handleSubmitTransaction (): void {
+    this.$emit('close')
+    this.isVisible = false
   }
 
   handleTransactionInfo (): void {
     // TODO: Go to Transaction Info
-  }
-
-  handleClose (): void {
-    this.createPair()
-    this.$emit('submit', this.transactionInfo)
-    this.$emit('close')
-    this.isVisible = false
   }
 }
 </script>
@@ -94,5 +79,9 @@ $transactionIconSize: 68px;
   .s-icon-external-link {
     cursor: pointer;
   }
+}
+.el-divider {
+  margin-top: $inner-spacing-small;
+  margin-bottom: $inner-spacing-small;
 }
 </style>
