@@ -10,24 +10,33 @@
         <span class="token-value">{{ formattedToValue }}</span>
       </div>
       <div class="tokens-info-container">
-        <div v-if="tokenFrom" class="token">
-          <token-logo class="token-logo" :token="tokenFrom.symbol" />
-          {{ tokenFrom.symbol }}
+        <div v-if="firstToken" class="token">
+          <token-logo class="token-logo" :token="firstToken.symbol" />
+          {{ firstToken.symbol }}
         </div>
-        <div v-if="tokenTo" class="token">
-          <token-logo class="token-logo" :token="tokenTo.symbol" />
-          {{ tokenTo.symbol }}
+        <div v-if="secondToken" class="token">
+          <token-logo class="token-logo" :token="secondToken.symbol" />
+          {{ secondToken.symbol }}
         </div>
       </div>
     </div>
     <p class="transaction-message" v-html="t('removeLiquidity.outputMessage')" />
     <s-divider />
-    <s-row flex justify="space-between">
-        <div>{{ t('removeLiquidity.price')  }}</div>
-        <div>
-          <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price, 2) }} {{ secondToken.symbol }}</div>
-          <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price, 2) }} {{ firstToken.symbol }}</div>
-        </div>
+    <s-row flex justify="space-between" class="price-container">
+      <div v-if="firstToken && secondToken">
+        <s-row flex>
+          <pair-token-logo class="pair-logo" :firstToken="firstToken.symbol" :secondToken="secondToken.symbol" size="mini" />
+          {{ t('confirmSupply.poolTokensBurned', {first: firstToken.symbol, second: secondToken.symbol}) }}
+        </s-row>
+      </div>
+      <div>{{ formatNumber(removeAmount, 2) }}</div>
+    </s-row>
+    <s-row flex justify="space-between" class="price-container">
+      <div>{{ t('removeLiquidity.price')  }}</div>
+      <div>
+        <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price, 2) }} {{ secondToken.symbol }}</div>
+        <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price, 2) }} {{ firstToken.symbol }}</div>
+      </div>
     </s-row>
     <template #footer>
       <s-button type="primary" @click="handleConfirmRemoveLiquidity">{{ t('removeLiquidity.confirm') }}</s-button>
@@ -45,26 +54,35 @@ import DialogBase from '@/components/DialogBase.vue'
 import { formatNumber } from '@/utils'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
+const namespace = 'removeLiquidity'
 
 @Component({
   components: {
     DialogBase,
-    TokenLogo: lazyComponent(Components.TokenLogo)
+    TokenLogo: lazyComponent(Components.TokenLogo),
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
 export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean
+  @Getter('firstToken', { namespace }) firstToken!: any
+  @Getter('secondToken', { namespace }) secondToken!: any
+  @Getter('removeAmount', { namespace }) removeAmount!: any
+  @Getter('firstTokenRemoveAmount', { namespace }) firstTokenRemoveAmount!: any
+  @Getter('secondTokenRemoveAmount', { namespace }) secondTokenRemoveAmount!: any
+  formatNumber = formatNumber
 
   get formattedFromValue (): string {
-    return formatNumber(12, 4)
+    return formatNumber(this.firstTokenRemoveAmount, 4)
   }
 
   get formattedToValue (): string {
-    return formatNumber(13, 4)
+    return formatNumber(this.secondTokenRemoveAmount, 4)
   }
 
   handleConfirmRemoveLiquidity (): void {
     // TODO: Remove Liquidity here
+    this.$emit('confirm')
     this.$emit('close')
   }
 }
@@ -106,5 +124,13 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
 .el-divider {
   margin-top: $inner-spacing-mini;
   margin-bottom: $inner-spacing-big;
+}
+.price-container {
+  line-height: $s-line-height-medium;
+  color: var(--s-color-base-content-secondary);
+  margin-bottom: $inner-spacing-mini;
+}
+.pair-logo {
+  margin-right: $inner-spacing-mini;
 }
 </style>

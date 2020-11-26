@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 
-import { AppName, PageNames } from '@/consts'
-import i18n from '../lang'
+import { PageNames } from '@/consts'
 
 Vue.use(VueRouter)
 
@@ -73,14 +72,6 @@ const routes: Array<RouteConfig> = [
 const router = new VueRouter({
   mode: 'history',
   routes
-})
-
-router.beforeEach((to: any): void => {
-  if (to && to.name && i18n.te(`pageTitle.${to.name}`)) {
-    document.title = `${i18n.t(`pageTitle.${to.name}`)} - ${AppName}`
-  } else {
-    document.title = AppName
-  }
 })
 
 export default router

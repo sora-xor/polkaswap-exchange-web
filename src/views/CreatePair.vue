@@ -115,7 +115,7 @@
       <div class="card__data">
         <s-row flex>
           <pair-token-logo class="pair-token-logo" :firstToken="secondToken.symbol" :secondToken="firstToken.symbol" size="mini" />
-          {{ t('createPair.firstSecondPoolTokens', { first: secondToken.symbol, second: firstToken.symbol })  }}
+          {{ t('createPair.firstSecondPoolTokens', { first: secondToken.symbol, second: firstToken.symbol })  }}:
         </s-row>
         <div>{{ poolTokens }}</div>
       </div>
@@ -132,8 +132,9 @@
 
     <select-token :visible.sync="showSelectFirstTokenDialog" @select="setFirstToken" />
     <select-token :visible.sync="showSelectSecondTokenDialog" @select="setSecondToken" />
+
     <confirm-create-pair :visible.sync="showConfirmCreatePairDialog" @confirm="confirmCreatePair" />
-    <create-pair-submit :visible.sync="isCreatePairConfirmed" @submit="submitCreatePair" />
+    <result-dialog :visible.sync="isCreatePairConfirmed" :type="t('createPair.add')" :message="resultMessage" />
   </div>
 </template>
 
@@ -155,7 +156,7 @@ const namespace = 'createPair'
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     ConfirmCreatePair: lazyComponent(Components.ConfirmCreatePair),
-    CreatePairSubmit: lazyComponent(Components.CreatePairSubmit)
+    ResultDialog: lazyComponent(Components.ResultDialog)
   }
 })
 
@@ -225,6 +226,17 @@ export default class CreatePair extends Mixins(TranslationMixin) {
     }
 
     return true
+  }
+
+  get resultMessage (): string {
+    return this.t('createPair.transactionMessage', {
+      firstToken: this.getTokenValue(this.firstToken, this.firstTokenValue),
+      secondToken: this.getTokenValue(this.secondToken, this.secondTokenValue)
+    })
+  }
+
+  getTokenValue (token: any, tokenValue: number): string {
+    return token ? `${tokenValue} ${token.symbol}` : ''
   }
 
   handleBack (): void {

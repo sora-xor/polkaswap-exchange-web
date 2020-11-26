@@ -194,5 +194,9 @@ exports[`CreatePair.vue should renders correctly 1`] = `
   <!---->
    
   <!---->
+   
+  <!---->
+   
+  <!---->
 </div>
 `;

@@ -94,9 +94,9 @@ export default {
     deposit: 'Deposit',
     balance: 'Balance',
     pricePool: 'Prices and pool share',
-    shareOfPool: 'Share of pool',
+    shareOfPool: 'Share of Pool',
     firstPerSecond: '{first} per {second}',
-    firstSecondPoolTokens: '{first}-{second} Pool tokens:',
+    firstSecondPoolTokens: '{first}-{second} Pool tokens',
     connect: 'Connect wallet',
     enterAmount: 'Enter an amount',
     supply: 'Supply',
@@ -104,7 +104,9 @@ export default {
     yourPosition: 'Your position',
     youWillReceive: 'You will receive',
     remove: 'remove',
+    add: 'ADD',
     ok: 'OK',
+    transactionMessage: '{firstToken} and {secondToken}',
     description: 'When you add liquidity, you are awarded with token pair specific PSWAP tokens that represent your pool share.'
   },
   confirmSupply: {
@@ -143,5 +145,9 @@ export default {
     ip: 'IP',
     port: 'PORT',
     min: 'MIN'
+  },
+  resultDialog: {
+    title: 'Transaction submitted',
+    ok: 'OK'
   }
 }

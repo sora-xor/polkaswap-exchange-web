@@ -1,5 +1,5 @@
 <template>
-  <div class="pair-logo">
+  <div :class="computedClasses">
     <token-logo :token="firstToken" :size="size" />
     <token-logo :token="secondToken" :size="size" />
   </div>
@@ -20,6 +20,17 @@ export default class PairTokenLogo extends Mixins(TranslationMixin) {
   @Prop({ type: String, default: false }) readonly firstToken!: string | boolean | undefined
   @Prop({ type: String, default: false }) readonly secondToken!: string | boolean | undefined
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
+
+  get computedClasses (): string {
+    const componentClass = 'pair-logo'
+    const classes = [componentClass]
+
+    if (this.size) {
+      classes.push(`${componentClass}--${this.size.toLowerCase()}`)
+    }
+
+    return classes.join(' ')
+  }
 }
 </script>
 
@@ -44,5 +55,15 @@ export default class PairTokenLogo extends Mixins(TranslationMixin) {
       margin: 0
     }
   }
+}
+
+.pair-logo--mini {
+  height: 22px;
+  width: 22px;
+}
+
+.pair-logo--small {
+  height: 34px;
+  width: 34px;
 }
 </style>

@@ -1,20 +1,20 @@
 <template>
   <dialog-base
     :visible.sync="isVisible"
-    :title="t('exchange.transactionSubmitted')"
+    :title="t('resultDialog.title')"
   >
     <s-icon name="arrow-top-right-rounded" />
     <s-divider />
     <div class="transaction">
-      <div class="transaction-type">{{ t('exchange.Swap') }}</div>
-      <div class="transaction-info">{{ transactionInfo }}</div>
+      <div v-if="type" class="transaction-type">{{ type }}</div>
+      <div v-if="message" class="transaction-info">{{ message }}</div>
       <!-- TODO: Add correct icons and add functionality -->
       <s-icon name="external-link" @click="handleTransactionInfo" />
       <!-- <s-icon name="arrow-bottom-rounded" /> -->
     </div>
     <s-divider />
     <template #footer>
-      <s-button type="primary" @click="handleSubmitTransaction">{{ t('exchange.ok') }}</s-button>
+      <s-button type="primary" @click="handleSubmitTransaction">{{ t('resultDialog.ok') }}</s-button>
     </template>
   </dialog-base>
 </template>
@@ -32,29 +32,17 @@ import DialogBase from './DialogBase.vue'
     DialogBase
   }
 })
-export default class TransactionSubmit extends Mixins(TranslationMixin, DialogMixin) {
-  @Getter tokenFrom!: any
-  @Getter tokenTo!: any
-  @Getter fromValue!: number
-  @Getter toValue!: number
+export default class ResultDialog extends Mixins(TranslationMixin, DialogMixin) {
+  @Prop({ default: '', type: String }) readonly type!: string
+  @Prop({ default: '', type: String }) readonly message!: string
 
-  get transactionInfo (): string {
-    return this.t('swap.transactionMessage', { tokenFromValue: this.getSwapValue(this.tokenFrom, this.fromValue), tokenToValue: this.getSwapValue(this.tokenTo, this.toValue) })
-  }
-
-  getSwapValue (token: any, tokenValue: number): string {
-    return token ? `${tokenValue} ${token.symbol}` : ''
+  handleSubmitTransaction (): void {
+    this.$emit('close')
+    this.isVisible = false
   }
 
   handleTransactionInfo (): void {
     // TODO: Go to Transaction Info
-  }
-
-  handleSubmitTransaction (): void {
-    // TODO: Make Transaction Submit here
-    this.$emit('submit', this.transactionInfo)
-    this.$emit('close')
-    this.isVisible = false
   }
 }
 </script>

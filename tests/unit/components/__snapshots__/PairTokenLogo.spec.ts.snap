@@ -2,7 +2,7 @@
 
 exports[`TokenLogo.vue should renders correctly 1`] = `
 <div
-  class="pair-logo"
+  class="pair-logo pair-logo--mini"
 >
   <!---->
    

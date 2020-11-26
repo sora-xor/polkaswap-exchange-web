@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 
-import TransactionSubmit from '@/components/TransactionSubmit.vue'
+import ResultDialog from '@/components/ResultDialog.vue'
 import { tokens } from '@/mocks/tokens'
 import { SoramitsuElementsImport, TranslationMock } from '../../utils'
 
@@ -9,12 +9,12 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 SoramitsuElementsImport(localVue)
 
-describe('TransactionSubmit.vue', () => {
+describe('ResultDialog.vue', () => {
   let getters
   let store
 
   beforeEach(() => {
-    TranslationMock(TransactionSubmit)
+    TranslationMock(ResultDialog)
 
     getters = {
       tokenFrom: () => tokens[0],
@@ -29,7 +29,7 @@ describe('TransactionSubmit.vue', () => {
   })
 
   it('should renders correctly', () => {
-    const wrapper = shallowMount(TransactionSubmit, {
+    const wrapper = shallowMount(ResultDialog, {
       localVue,
       store,
       propsData: {

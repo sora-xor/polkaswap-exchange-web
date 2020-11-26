@@ -111,7 +111,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             suffix=""
             tabindex=""
             type="text"
-            value="0.00"
+            value="100.00"
           />
         </s-form-item-stub>
          
@@ -137,7 +137,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
           <s-button-stub
             borderradius="medium"
             class="el-button--choose-token"
-            icon="chevron-bottom-rounded"
+            icon=""
             nativetype="button"
             size="small"
             tabindex="0"
@@ -175,22 +175,6 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
         >
           
         </div>
-         
-        <div
-          class="token-balance"
-        >
-          <span
-            class="token-balance-title"
-          >
-            
-          </span>
-           
-          <span
-            class="token-balance-value"
-          >
-            10000.00
-          </span>
-        </div>
       </div>
        
       <div
@@ -214,7 +198,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             suffix=""
             tabindex=""
             type="text"
-            value="0.00"
+            value="100"
           />
         </s-form-item-stub>
          
@@ -222,25 +206,9 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
           class="token"
         >
           <s-button-stub
-            borderradius="mini"
-            class="el-button--max"
-            icon=""
-            nativetype="button"
-            size="small"
-            tabindex="0"
-            tooltip=""
-            tooltipplacement="top"
-            type="tertiary"
-          >
-            
-            
-          
-          </s-button-stub>
-           
-          <s-button-stub
             borderradius="medium"
             class="el-button--choose-token"
-            icon="chevron-bottom-rounded"
+            icon=""
             nativetype="button"
             size="small"
             tabindex="0"
@@ -276,22 +244,6 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             
           </span>
         </div>
-         
-        <div
-          class="token-balance"
-        >
-          <span
-            class="token-balance-title"
-          >
-            
-          </span>
-           
-          <span
-            class="token-balance-value"
-          >
-            1000.00
-          </span>
-        </div>
       </div>
        
       <div
@@ -315,7 +267,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             suffix=""
             tabindex=""
             type="text"
-            value="0.00"
+            value="100"
           />
         </s-form-item-stub>
          
@@ -323,25 +275,9 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
           class="token"
         >
           <s-button-stub
-            borderradius="mini"
-            class="el-button--max"
-            icon=""
-            nativetype="button"
-            size="small"
-            tabindex="0"
-            tooltip=""
-            tooltipplacement="top"
-            type="tertiary"
-          >
-            
-            
-          
-          </s-button-stub>
-           
-          <s-button-stub
             borderradius="medium"
             class="el-button--choose-token"
-            icon="chevron-bottom-rounded"
+            icon=""
             nativetype="button"
             size="small"
             tabindex="0"
@@ -360,7 +296,6 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
      
     <s-button-stub
       borderradius="small"
-      disabled="true"
       icon=""
       nativetype="button"
       size="medium"
@@ -396,5 +331,9 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
       </div>
     </div>
   </s-row-stub>
+   
+  <!---->
+   
+  <!---->
 </div>
 `;
