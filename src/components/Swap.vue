@@ -114,7 +114,6 @@ import { Components, PageNames } from '@/consts'
     TokenLogo: lazyComponent(Components.TokenLogo),
     SelectToken: lazyComponent(Components.SelectToken),
     ConfirmSwap: lazyComponent(Components.ConfirmSwap),
-    TransactionSubmit: lazyComponent(Components.TransactionSubmit),
     ResultDialog: lazyComponent(Components.ResultDialog)
   }
 })

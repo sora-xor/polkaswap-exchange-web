@@ -141,9 +141,7 @@ exports[`ConfirmCreatePair.vue should renders correctly 1`] = `
       </div>
        
       <div>
-        
         1%
-      
       </div>
     </s-row-stub>
   </div>

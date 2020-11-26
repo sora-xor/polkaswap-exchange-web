@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TransactionSubmit.vue should renders correctly 1`] = `
+exports[`ResultDialog.vue should renders correctly 1`] = `
 <dialog-base-stub
   customclass=""
   title="Transaction submitted"
@@ -18,17 +18,9 @@ exports[`TransactionSubmit.vue should renders correctly 1`] = `
   <div
     class="transaction"
   >
-    <div
-      class="transaction-type"
-    >
-      
-    </div>
+    <!---->
      
-    <div
-      class="transaction-info"
-    >
-      
-    </div>
+    <!---->
      
     <s-icon-stub
       name="external-link"
