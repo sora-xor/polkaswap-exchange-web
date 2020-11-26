@@ -94,7 +94,7 @@ export default {
     deposit: 'Deposit',
     balance: 'Balance',
     pricePool: 'Prices and pool share',
-    shareOfPool: 'Share of pool',
+    shareOfPool: 'Share of Pool',
     firstPerSecond: '{first} per {second}',
     firstSecondPoolTokens: '{first}-{second} Pool tokens',
     connect: 'Connect wallet',

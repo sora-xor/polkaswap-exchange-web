@@ -12,7 +12,7 @@
     </s-row>
     <div class="tokens">
       <s-row flex justify="space-between" class="token">
-        <s-row v-if="firstToken" flex >
+        <s-row v-if="firstToken" flex>
           <!-- TODO 4 alexnatalia: fix tokens alignment -->
           <token-logo :token="firstToken.symbol" size="small" />
           <span class="token-symbol">{{ firstToken.symbol }} {{ t('createPair.deposit')}}:</span>
@@ -20,7 +20,7 @@
         <div class="token-value">{{ formatNumber(firstTokenValue, 2) }}</div>
       </s-row>
       <s-row flex justify="space-between" class="token">
-        <s-row v-if="secondToken" flex >
+        <s-row v-if="secondToken" flex>
           <token-logo :token="secondToken.symbol" size="small" />
           <span class="token-symbol">{{ secondToken.symbol }} {{ t('createPair.deposit')}}:</span>
         </s-row>
@@ -42,9 +42,7 @@
       </s-row>
       <s-row flex justify="space-between" class="pair-info__line">
         <div>{{ t('createPair.shareOfPool') }}</div>
-        <div>
-          {{ shareOfPool }}%
-        </div>
+        <div>{{ shareOfPool }}</div>
       </s-row>
     </div>
     <template #footer>
@@ -85,7 +83,7 @@ export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, Dialog
   }
 
   get shareOfPool (): string {
-    return '1'
+    return '1%'
   }
 
   handleConfirmCreatePair (): void {

@@ -130,7 +130,6 @@
 
     <select-token :visible.sync="showSelectFirstTokenDialog" @select="setFirstToken" />
     <select-token :visible.sync="showSelectSecondTokenDialog" @select="setSecondToken" />
-    <!-- TODO 4 Asmadek: Could you play with confirmtion popups like in Swap component, please? -->
 
     <confirm-add-liquidity :visible.sync="showConfirmDialog" @confirm="handleConfirmAddLiquidity" />
     <result-dialog :visible.sync="isCreatePairConfirmed" :type="t('createPair.add')" :message="resultMessage" />

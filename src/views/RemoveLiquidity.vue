@@ -46,7 +46,7 @@
             <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleLiquidityMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" >
+            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium">
               <div class="liquidity-logo">
                 <pair-token-logo :firstToken="firstToken.symbol" :secondToken="secondToken.symbol" size="mini" />
               </div>
@@ -71,7 +71,7 @@
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
-            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" >
+            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium">
               <token-logo :token="firstToken.symbol" size="small" />
               {{ firstToken.symbol }}
             </s-button>
@@ -96,7 +96,7 @@
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
-            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" >
+            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium">
               <token-logo :token="secondToken.symbol" size="small" />
               {{ secondToken.symbol }}
             </s-button>
