@@ -13,18 +13,15 @@ const tokens = [
 ]
 @Component
 export default class TokenLogo extends Mixins(TranslationMixin) {
-  @Prop({ type: String, default: false }) readonly token!: string | boolean | undefined
+  @Prop({ type: Object, default: null }) readonly token!: Token
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
-
-  get tokenName (): string {
-    return this.token ? this.token.toString() : ''
-  }
 
   get tokenClasses (): string {
     const tokenLogoClass = 'token-logo'
     const classes = [tokenLogoClass]
-    if (this.token && tokens.includes(this.tokenName)) {
-      classes.push(`${tokenLogoClass}--${this.tokenName.toLowerCase()}`)
+
+    if (this.token && tokens.includes(this.token.symbol)) {
+      classes.push(`${tokenLogoClass}--${this.token.symbol.toLowerCase()}`)
     }
 
     classes.push(`${tokenLogoClass}--${this.size.toLowerCase()}`)
@@ -53,14 +50,9 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
   &--xor {
     background-image: url("~@/assets/img/xor.svg");
   }
-  &.token-logo--mini {
-    @include token-logo-size(15px);
-  }
-  &.token-logo--small {
-    @include token-logo-size(23px);
-  }
-  &.token-logo--medium {
-    @include token-logo-size;
-  }
 }
+
+@include element-size('token-logo--mini', 16px);
+@include element-size('token-logo--small', 24px);
+@include element-size('token-logo--medium');
 </style>

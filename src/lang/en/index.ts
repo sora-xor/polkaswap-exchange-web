@@ -74,7 +74,6 @@ export default {
   },
   pool: {
     yourLiquidity: 'Your liquidity',
-    yourLiquidityTooltip: 'When you add liquidity, you are awarded with token pair specific Pool Tokens that represent your pool share.',
     connectToWallet: 'Connect to a wallet to view your liquidity.',
     liquidityNotFound: 'No liquidity found.',
     addLiquidity: 'Add Liquidity',
@@ -117,7 +116,8 @@ export default {
     confirm: 'Confirm'
   },
   addLiquidity: {
-    title: 'Add liquidity'
+    title: 'Add liquidity',
+    description: 'When you add liquidity, you are awarded with token pair specific Pool Tokens that represent your pool share.'
   },
   removeLiquidity: {
     title: 'Remove liquidity',

@@ -113,6 +113,14 @@ html {
   color: var(--s-color-base-content-primary);
   height: 100vh;
 }
+.el-tooltip__popper.is-light {
+  padding: $inner-spacing-mini;
+  max-width: 320px;
+  border: none !important;
+  box-shadow: var(--s-shadow-tooltip);
+  font-size: $s-font-size-small;
+  line-height: $s-line-height-medium;
+}
 </style>
 
 <style lang="scss" scoped>

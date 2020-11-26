@@ -12,11 +12,11 @@
       </div>
       <div class="tokens-info-container">
         <div v-if="tokenFrom" class="token">
-          <token-logo :token="tokenFrom.symbol" />
+          <token-logo :token="tokenFrom" />
           {{ tokenFrom.symbol }}
         </div>
         <div v-if="tokenTo" class="token">
-          <token-logo :token="tokenTo.symbol" />
+          <token-logo :token="tokenTo" />
           {{ tokenTo.symbol }}
         </div>
       </div>

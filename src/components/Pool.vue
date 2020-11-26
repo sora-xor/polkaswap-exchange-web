@@ -1,8 +1,9 @@
 <template>
   <div class="el-form--pool">
-    <div class="pool-header">
-      <h3 class="pool-header-title">{{ t('pool.yourLiquidity') }}</h3>
-      <s-tooltip class="pool-header-icon" borderRadius="mini" :content="t('pool.yourLiquidityTooltip')" theme="light" placement="bottom-end" :show-arrow="false">
+    <div class="header">
+      <h3 class="header-title">{{ t('pool.yourLiquidity') }}</h3>
+      <!-- TODO: Add appropriate tooltip -->
+      <s-tooltip class="header-tooltip" borderRadius="mini" :content="'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'" theme="light" placement="bottom-end" :show-arrow="false">
         <s-icon name="info" size="16" />
       </s-tooltip>
     </div>
@@ -13,30 +14,24 @@
       {{ t('pool.liquidityNotFound') }}
     </p>
     <s-collapse v-else-if="firstToken && secondToken" class="pool-info-container" :borders="true" @change="handleChoosePair">
-      <!-- TODO: make for with pairs here -->
+      <!-- TODO 4 alexnatalia: make for with pairs here -->
       <s-collapse-item name="1">
         <template #title>
-          <div class="pool-pair-icons">
-            <token-logo :token="firstToken.symbol" size="small" />
-            <token-logo :token="secondToken.symbol" size="small" />
-          </div>
+          <pair-token-logo class="pair-token-logo" :firstToken="firstToken" :secondToken="secondToken" size="small" />
           <h3>{{ getPairTitle(firstToken, secondToken) }}</h3>
         </template>
         <div class="pool-info">
-          <token-logo :token="firstToken.symbol" size="small" />
+          <token-logo :token="firstToken" size="small" />
           <div>{{ t('pool.pooledToken', { tokenSymbol: firstToken.symbol }) }}</div>
           <div v-if="firstTokenValue" class="pool-info-value">{{ firstTokenValue }}</div>
         </div>
         <div class="pool-info">
-          <token-logo :token="secondToken.symbol" size="small" />
+          <token-logo :token="secondToken" size="small" />
           <div>{{ t('pool.pooledToken', { tokenSymbol: secondToken.symbol }) }}</div>
           <div v-if="secondTokenValue" class="pool-info-value">{{ secondTokenValue }}</div>
         </div>
         <div class="pool-info">
-          <div class="pool-pair-icons">
-            <token-logo :token="firstToken.symbol" size="mini" />
-            <token-logo :token="secondToken.symbol" size="mini" />
-          </div>
+          <pair-token-logo class="pair-token-logo" :firstToken="firstToken" :secondToken="secondToken" size="mini" />
           <div>{{ t('pool.pairTokens', { pair: getPairTitle(firstToken, secondToken) }) }}</div>
           <div class="pool-info-value">{{ pairValue }}</div>
         </div>
@@ -75,7 +70,8 @@ const namespace = 'createPair'
 
 @Component({
   components: {
-    TokenLogo: lazyComponent(Components.TokenLogo)
+    TokenLogo: lazyComponent(Components.TokenLogo),
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
 export default class Pool extends Mixins(TranslationMixin) {
@@ -98,6 +94,7 @@ export default class Pool extends Mixins(TranslationMixin) {
   handleAddLiquidity (): void {
     // TODO: Add Liquidity functionality goes here
     this.getLiquidity()
+    // router.push({ name: PageNames.AddLiquidity })
   }
 
   handleCreatePair (): void {
@@ -144,15 +141,6 @@ $pool-collapse-icon-width: 10px;
     .el-collapse-item__header {
       height: 50px;
       line-height: 50px;
-      .pool-pair-icons {
-        margin-right: $inner-spacing-medium;
-        height: 36px;
-        width: 36px;
-        .token-logo {
-          height: 24px;
-          width: 24px;
-        }
-      }
     }
     .el-icon-arrow-right {
       position: relative;
@@ -190,7 +178,10 @@ $pool-collapse-icon-width: 10px;
 </style>
 
 <style lang="scss" scoped>
-$tooltip-button-height: var(--s-size-small);
+@include header-styles($inner-spacing-mini);
+.header {
+  margin-top: $inner-spacing-mini;
+}
 
 .el-form--pool {
   display: flex;
@@ -210,34 +201,6 @@ $tooltip-button-height: var(--s-size-small);
 }
 
 .pool {
-  &-header {
-    position: relative;
-    width: 100%;
-    margin-top: $inner-spacing-mini;
-    margin-bottom: $inner-spacing-mini;
-    &-title {
-      width: 100%;
-      padding-right: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
-      padding-left: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
-      text-align: center;
-      line-height: $tooltip-button-height;
-    }
-    &-icon {
-      position: absolute;
-      top: 0;
-      right: 0;
-      height: $tooltip-button-height;
-      width: $tooltip-button-height;
-      background-color: var(--s-color-base-background);
-      border-radius: var(--s-border-radius-small);
-      text-align: center;
-      cursor: pointer;
-      &:before {
-        font-size: $s-font-size-medium;
-        line-height: $tooltip-button-height;
-      }
-    }
-  }
   &-info {
     display: flex;
     align-items: center;
@@ -264,26 +227,6 @@ $tooltip-button-height: var(--s-size-small);
       font-size: $s-font-size-mini;
       line-height: $s-line-height-medium;
       text-align: center;
-      .pool-pair-icons {
-        position: relative;
-        margin-right: $inner-spacing-mini;
-        height: 22px;
-        width: 22px;
-        .token-logo {
-          position: absolute;
-          height: 15px;
-          width: 15px;
-          &:first-child {
-            top: 0;
-            left: 0;
-            z-index: 1;
-          }
-          &:last-child {
-            bottom: 0;
-            right: 0;
-          }
-        }
-      }
       & + .el-button {
         margin-top: $inner-spacing-medium;
       }

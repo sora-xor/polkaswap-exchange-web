@@ -6,22 +6,22 @@
     <div class="pool-tokens-amount">
       {{ poolTokens }}
     </div>
-    <s-row flex align="middle" class="pool-tokens">
-      <pair-token-logo class="pair-logo" :firstToken="firstToken.symbol" :secondToken="secondToken.symbol" size="small" />
-      {{ t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol })  }}
+    <s-row v-if="firstToken && secondToken" flex align="middle" class="pool-tokens">
+      <pair-token-logo :firstToken="firstToken" :secondToken="secondToken" size="small" />
+      {{ t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol }) }}
     </s-row>
     <div class="tokens">
       <s-row flex justify="space-between" class="token">
         <s-row v-if="firstToken" flex>
           <!-- TODO 4 alexnatalia: fix tokens alignment -->
-          <token-logo :token="firstToken.symbol" size="small" />
+          <token-logo :token="firstToken" size="small" />
           <span class="token-symbol">{{ firstToken.symbol }} {{ t('createPair.deposit')}}:</span>
         </s-row>
         <div class="token-value">{{ formatNumber(firstTokenValue, 2) }}</div>
       </s-row>
       <s-row flex justify="space-between" class="token">
         <s-row v-if="secondToken" flex>
-          <token-logo :token="secondToken.symbol" size="small" />
+          <token-logo :token="secondToken" size="small" />
           <span class="token-symbol">{{ secondToken.symbol }} {{ t('createPair.deposit')}}:</span>
         </s-row>
         <div class="token-value">{{ formatNumber(secondTokenValue, 2) }}</div>
@@ -133,9 +133,5 @@ export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, Dialog
   font-size: 18px;
   line-height: 150%;
   letter-spacing: -0.02em;
-}
-
-.pair-logo {
-  margin-right: $inner-spacing-mini;
 }
 </style>

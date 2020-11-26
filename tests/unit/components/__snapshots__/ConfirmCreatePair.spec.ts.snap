@@ -27,6 +27,20 @@ exports[`ConfirmCreatePair.vue should renders correctly 1`] = `
   </s-row-stub>
    
   <div
+    class="output-description"
+  >
+    
+    
+  
+  </div>
+   
+  <s-divider-stub
+    contentposition="center"
+    direction="horizontal"
+    type="secondary"
+  />
+   
+  <div
     class="tokens"
   >
     <s-row-stub
@@ -87,20 +101,6 @@ exports[`ConfirmCreatePair.vue should renders correctly 1`] = `
       </div>
     </s-row-stub>
   </div>
-   
-  <div
-    class="output-description"
-  >
-    
-    
-  
-  </div>
-   
-  <s-divider-stub
-    contentposition="center"
-    direction="horizontal"
-    type="secondary"
-  />
    
   <div
     class="pair-info"
