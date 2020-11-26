@@ -22,11 +22,20 @@ describe('RemoveLiquidity.vue', () => {
     TranslationMock(RemoveLiquidity)
 
     actions = {
-      getLiquidity: jest.fn()
+      getLiquidity: jest.fn(),
+      setRemovePart: jest.fn()
     }
 
     getters = {
-      liquidity: () => liquidity[0]
+      liquidity: () => liquidity[0],
+      firstToken: () => tokens[0],
+      secondToken: () => tokens[1],
+      removePart: () => 100,
+      removeAmount: () => 100,
+      firstTokenAmount: () => 100,
+      firstTokenRemoveAmount: () => 100,
+      secondTokenAmount: () => 100,
+      secondTokenRemoveAmount: () => 100
     }
 
     store = new Vuex.Store({

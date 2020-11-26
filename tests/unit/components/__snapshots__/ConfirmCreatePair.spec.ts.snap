@@ -6,6 +6,27 @@ exports[`ConfirmCreatePair.vue should renders correctly 1`] = `
   title="Create a pair"
 >
   <div
+    class="pool-tokens-amount"
+  >
+    
+    1000.00
+  
+  </div>
+   
+  <s-row-stub
+    align="middle"
+    class="pool-tokens"
+    flex="true"
+    gutter="0"
+    justify="start"
+  >
+    <!---->
+    
+    
+  
+  </s-row-stub>
+   
+  <div
     class="tokens"
   >
     <s-row-stub
@@ -15,14 +36,8 @@ exports[`ConfirmCreatePair.vue should renders correctly 1`] = `
       gutter="0"
       justify="space-between"
     >
-      <div
-        class="token-value"
-      >
-        12.00
-      </div>
-       
       <s-row-stub
-        align="center"
+        align="top"
         flex="true"
         gutter="0"
         justify="start"
@@ -32,16 +47,16 @@ exports[`ConfirmCreatePair.vue should renders correctly 1`] = `
         <span
           class="token-symbol"
         >
-          XOR
+          XOR :
         </span>
       </s-row-stub>
+       
+      <div
+        class="token-value"
+      >
+        12.00
+      </div>
     </s-row-stub>
-     
-    <div
-      class="token-divider"
-    >
-      +
-    </div>
      
     <s-row-stub
       align="top"
@@ -50,14 +65,8 @@ exports[`ConfirmCreatePair.vue should renders correctly 1`] = `
       gutter="0"
       justify="space-between"
     >
-      <div
-        class="token-value"
-      >
-        12.00
-      </div>
-       
       <s-row-stub
-        align="center"
+        align="top"
         flex="true"
         gutter="0"
         justify="start"
@@ -67,9 +76,15 @@ exports[`ConfirmCreatePair.vue should renders correctly 1`] = `
         <span
           class="token-symbol"
         >
-          KSM
+          KSM :
         </span>
       </s-row-stub>
+       
+      <div
+        class="token-value"
+      >
+        12.00
+      </div>
     </s-row-stub>
   </div>
    
@@ -101,8 +116,16 @@ exports[`ConfirmCreatePair.vue should renders correctly 1`] = `
         
       </div>
        
-      <div>
-        1000.00
+      <div
+        class="price"
+      >
+        <div>
+          1 XOR = 10018.1818 KSM
+        </div>
+         
+        <div>
+          1 KSM = 0.0001 XOR
+        </div>
       </div>
     </s-row-stub>
      
@@ -117,16 +140,10 @@ exports[`ConfirmCreatePair.vue should renders correctly 1`] = `
         
       </div>
        
-      <div
-        class="price"
-      >
-        <div>
-          1 XOR = 10018.1818 KSM
-        </div>
-         
-        <div>
-          1 KSM = 0.0001 XOR
-        </div>
+      <div>
+        
+        1%
+      
       </div>
     </s-row-stub>
   </div>
