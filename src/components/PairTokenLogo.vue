@@ -18,8 +18,8 @@ import { lazyComponent } from '@/router'
   }
 })
 export default class PairTokenLogo extends Mixins(TranslationMixin) {
-  @Prop({ type: Object, default: null }) readonly firstToken!: Token
-  @Prop({ type: Object, default: null }) readonly secondToken!: Token
+  @Prop({ type: Object, default: () => ({}) }) readonly firstToken!: Token
+  @Prop({ type: Object, default: () => ({}) }) readonly secondToken!: Token
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
 
   get computedClasses (): string {

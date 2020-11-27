@@ -113,7 +113,7 @@ html {
   color: var(--s-color-base-content-primary);
   height: 100vh;
 }
-.el-tooltip__popper.is-light {
+.el-tooltip__popper.info-tooltip {
   padding: $inner-spacing-mini;
   max-width: 320px;
   border: none !important;

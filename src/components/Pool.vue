@@ -3,7 +3,7 @@
     <div class="header">
       <h3 class="header-title">{{ t('pool.yourLiquidity') }}</h3>
       <!-- TODO: Add appropriate tooltip -->
-      <s-tooltip class="header-tooltip" borderRadius="mini" :content="'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'" theme="light" placement="bottom-end" :show-arrow="false">
+      <s-tooltip class="header-tooltip" popperClass="info-tooltip" borderRadius="mini" :content="'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'" theme="light" placement="bottom-end" :show-arrow="false">
         <s-icon name="info" size="16" />
       </s-tooltip>
     </div>

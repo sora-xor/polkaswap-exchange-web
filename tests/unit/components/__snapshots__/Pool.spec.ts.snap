@@ -22,6 +22,7 @@ exports[`Pool.vue should renders correctly 1`] = `
       offset="0"
       opendelay="0"
       placement="bottom-end"
+      popperclass="info-tooltip"
       tabindex="0"
       theme="light"
     >
