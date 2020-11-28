@@ -1,6 +1,13 @@
 // This file includes mixins for usage in different components
 
-@mixin token-styles() {
+// TODO 4 alexnatalia: Right now this is just a mixin because there are no appropriate focus behaviour for some elements (tabs for example) and we need more time to investigate the problem
+@mixin focus {
+  &:focus {
+    outline: 1px solid var(--s-color-theme-accent-focused) !important;
+  }
+}
+
+@mixin token-styles {
   .token {
     display: flex;
     align-items: center;
@@ -12,7 +19,7 @@
       margin-left: auto;
       &-title {
         color: var(--s-color-base-content-tertiary);
-        font-size: $s-font-size-mini;
+        font-size: var(--s-font-size-mini);
       }
     }
     &-balance-value {
@@ -26,7 +33,7 @@
   width: $size;
 }
 
-@mixin container-styles() {
+@mixin container-styles {
   margin: $inner-spacing-big auto;
   padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
   min-height: $inner-window-height;
@@ -35,4 +42,66 @@
   border-radius: var(--s-border-radius-medium);
   box-shadow: var(--s-shadow-surface);
   color: var(--s-color-base-content-primary);
+}
+
+@mixin s-input-styles {
+  $swap-input-class: ".el-input";
+
+  .s-input--token-value {
+    #{$swap-input-class} {
+      #{$swap-input-class}__inner {
+        padding-top: 0;
+      }
+    }
+    #{$swap-input-class}__inner {
+      height: var(--s-size-small);
+      padding-right: 0;
+      padding-left: 0;
+      border-radius: 0;
+      color: var(--s-color-base-content-primary);
+      font-size: $s-font-size-input;
+      line-height: $s-line-height-small;
+      &, &:hover, &:focus {
+        background-color: var(--s-color-base-background);
+        border-color: var(--s-color-base-background);
+      }
+      &:disabled {
+        color: var(--s-color-base-content-tertiary);
+      }
+      &:not(:disabled) {
+        &:hover, &:focus {
+          color: var(--s-color-base-content-primary);
+        }
+      }
+    }
+    .s-placeholder {
+      display: none;
+    }
+  }
+}
+
+@mixin token-buttons-styles {
+  .el-button {
+    &--choose-token,
+    &--empty-token {
+      font-feature-settings: $s-font-feature-settings-title;
+      > span {
+        display: inline-flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        > i[class^=s-icon-] {
+          margin-left: $inner-spacing-mini / 2;
+          margin-right: 0;
+          font-size: $s-font-size-input;
+        }
+      }
+    }
+    &--choose-token {
+      > span {
+        > i[class^=s-icon-] {
+          margin-left: $inner-spacing-mini;
+        }
+      }
+    }
+  }
 }

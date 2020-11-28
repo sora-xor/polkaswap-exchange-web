@@ -67,14 +67,14 @@ $transactionIconSize: 68px;
     padding: $inner-spacing-mini / 2 $inner-spacing-mini;
     margin-right: $inner-spacing-mini / 2;
     text-transform: uppercase;
-    font-size: 10px;
-    font-weight: bold;
+    font-size: $s-font-size-settings;
+    font-weight: $s-font-weight-big;
     background-color: var(--s-color-base-background);
     border-radius: var(--s-border-radius-mini);
   }
   &-info {
     margin-right: $inner-spacing-mini;
-    font-weight: bold;
+    font-weight: $s-font-weight-medium;
   }
   .s-icon-external-link {
     cursor: pointer;

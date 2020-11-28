@@ -22,11 +22,9 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
       type="action"
     />
      
-    <div
-      class="title"
-    >
+    <h3>
       
-    </div>
+    </h3>
      
     <s-tooltip-stub
       animation="el-fade-in-linear"
@@ -101,6 +99,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             accept=""
             autocomplete="off"
             borderradius="small"
+            class="s-input--token-value"
             disabled="true"
             form=""
             label=""
@@ -188,6 +187,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             accept=""
             autocomplete="off"
             borderradius="small"
+            class="s-input--token-value"
             disabled="true"
             form=""
             label=""
@@ -257,6 +257,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             accept=""
             autocomplete="off"
             borderradius="small"
+            class="s-input--token-value"
             disabled="true"
             form=""
             label=""

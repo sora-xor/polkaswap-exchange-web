@@ -120,7 +120,7 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
     height: var(--s-size-small);
     text-align: center;
     padding-top: 0; // TODO: if there is no placeholder, set padding-top to zero
-    font-weight: 700;
+    font-weight: $s-font-weight-big;
   }
 }
 .settings {
@@ -138,8 +138,8 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
     }
   }
   .header {
-    font-size: 10px;
-    font-weight: 700;
+    font-size: $s-font-size-settings;
+    font-weight: $s-font-weight-big;
     color: var(--s-color-base-content-tertiary);
     padding-bottom: $inner-spacing-mini;
     &-hint {
@@ -154,8 +154,8 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
       line-height: var(--s-size-small);
       background-color: var(--s-color-base-background);
       border-radius: var(--s-border-radius-mini);
-      font-weight: 700;
-      font-size: $s-font-size-mini;
+      font-size: var(--s-font-size-mini);
+      font-weight: $s-font-weight-big;
       text-align: center;
       &_label {
         color: var(--s-color-base-content-tertiary);

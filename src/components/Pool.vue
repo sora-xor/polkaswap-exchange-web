@@ -205,6 +205,19 @@ $tooltip-button-height: var(--s-size-small);
     &--create-pair {
       margin-left: 0;
       color: var(--s-color-theme-accent);
+      &:hover,
+      &:active,
+      &:disabled {
+        border-color: var(--s-color-base-content-quaternary);
+      }
+      &:active {
+        background-color: var(--s-color-base-disabled);
+      }
+      &:disabled,
+      &:disabled:hover {
+        background-color: transparent;
+        color: var(--s-color-base-on-disabled);
+      }
     }
   }
 }
@@ -233,7 +246,7 @@ $tooltip-button-height: var(--s-size-small);
       text-align: center;
       cursor: pointer;
       &:before {
-        font-size: $s-font-size-medium;
+        font-size: var(--s-icon-font-size-mini);
         line-height: $tooltip-button-height;
       }
     }
@@ -241,8 +254,8 @@ $tooltip-button-height: var(--s-size-small);
   &-info {
     display: flex;
     align-items: center;
-    font-size: $s-font-size-small;
-    line-height: $s-line-height-medium;
+    font-size: var(--s-font-size-small);
+    line-height: $s-line-height-big;
     margin-bottom: $inner-spacing-mini;
     &,
     &--buttons {
@@ -261,8 +274,8 @@ $tooltip-button-height: var(--s-size-small);
       border-radius: var(--s-border-radius-small);
       border: 1px solid var(--s-color-base-border-secondary);
       color: var(--s-color-base-content-tertiary);
-      font-size: $s-font-size-mini;
-      line-height: $s-line-height-medium;
+      font-size: var(--s-font-size-mini);
+      line-height: $s-line-height-big;
       text-align: center;
       .pool-pair-icons {
         position: relative;

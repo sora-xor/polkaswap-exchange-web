@@ -17,6 +17,7 @@ $s-letter-spacing-small: -0.02em;
 $s-letter-spacing-medium: -0.01em;
 $s-letter-spacing-big: normal;
 
-$s-font-feature-settings-salt: "tnum" on, "lnum" on, "salt" on, "case" on;
-$s-font-feature-settings-ss01: "tnum" on, "lnum" on, "ss01" on;
-$s-font-feature-settings-both: "ss01" on, "salt" on;
+$s-font-feature-settings-title: "tnum" on, "lnum" on, "salt" on, "case" on;
+$s-font-feature-settings-card-title: "tnum" on, "lnum" on, "ss01" on;
+$s-font-feature-settings-card-body: "ss01" on, "salt" on;
+$s-font-feature-settings-confirm-title: "tnum" on, "lnum" on, "case" on, "salt" on, "ss01" on;

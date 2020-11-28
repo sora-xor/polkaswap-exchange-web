@@ -89,18 +89,23 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin) {
   .el-dialog {
     overflow: hidden;
     &__title {
-      letter-spacing: -0.02em;
+      letter-spacing: $s-letter-spacing-small;
     }
     &__body {
-      padding: 0 !important;
+      padding: $inner-spacing-mini 0 $inner-spacing-big !important;
     }
   }
 }
 </style>
 
 <style lang="scss" scoped>
+// TODO 4 alexnatalia: Check 71px theory
+$token-item-height: calc(var(--s-size-medium) + #{$inner-spacing-medium} * 2);
+
 .token-search {
+  // TODO: Fix input styles (paddings and icon position)
   margin-left: $inner-spacing-big;
+  margin-bottom: $inner-spacing-medium;
   width: calc(100% - 2 * #{$inner-spacing-big});
 }
 .token-item {
@@ -113,8 +118,8 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin) {
     background-color: var(--s-color-base-background-hover);
   }
   &__name, &__amount {
-    font-weight: 600;
-    font-size: $s-font-size-small;
+    font-weight: $s-font-weight-medium;
+    font-size: var(--s-font-size-small);
   }
 
   .token-logo {
@@ -122,7 +127,7 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin) {
   }
 }
 .token-list {
-  height: 50vh;
+  height: calc(#{$token-item-height} * 7);
   overflow: auto;
   &__empty {
     //TODO: Implement empty list design

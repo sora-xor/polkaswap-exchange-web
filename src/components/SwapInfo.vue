@@ -4,6 +4,7 @@
       <div v-if="showPrice" class="swap-info">
         <span>{{ t('exchange.price') }}</span>
         <span class="swap-info-value">{{ price }}</span>
+        <!-- TODO 4 alexnatalia: Fix styles for this element due to Design review recomendations -->
         <s-button class="el-button--switch-price" type="action" size="small" icon="swap" @click="handleSwitchPrice" />
       </div>
       <div v-if="showSlippageTolerance" class="swap-info swap-info--slippage-tolerance">
@@ -12,22 +13,22 @@
       </div>
     </template>
     <template v-else>
-      <div class="swap-info">
-        <s-tooltip class="swap-info-icon" borderRadius="mini" :content="t('swap.minReceivedTooltip')" theme="light" placement="right-start" :show-arrow="false">
+      <div class="swap-info swap-info--min-received">
+        <s-tooltip class="swap-info-icon" popperClass="swap-info-popper" borderRadius="mini" :content="t('swap.minReceivedTooltip')" theme="light" placement="right-start" animation="none" :show-arrow="false">
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.minReceived') }}</span>
         <span class="swap-info-value">{{ minReceived }}</span>
       </div>
       <div class="swap-info">
-        <s-tooltip class="swap-info-icon" borderRadius="mini" :content="t('swap.priceImpactTooltip')" theme="light" placement="right-start" :show-arrow="false">
+        <s-tooltip class="swap-info-icon" popperClass="swap-info-popper" borderRadius="mini" :content="t('swap.priceImpactTooltip')" theme="light" placement="right-start" animation="none" :show-arrow="false">
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.priceImpact') }}</span>
         <span :class="'swap-info-value ' + priceImpactClass">{{ priceImpact }}%</span>
       </div>
       <div class="swap-info">
-        <s-tooltip class="swap-info-icon" borderRadius="mini" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee })" theme="light" placement="right-start" :show-arrow="false">
+        <s-tooltip class="swap-info-icon" popperClass="swap-info-popper" borderRadius="mini" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee })" theme="light" placement="right-start" animation="none" :show-arrow="false">
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.liquidityProviderFee') }}</span>
@@ -95,6 +96,13 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
+// TODO 4 alexnatalia: Fix left position
+.swap-info-popper {
+  margin-left: -#{$inner-spacing-mini} !important;
+}
+</style>
+
+<style lang="scss" scoped>
 .swap-info {
   display: flex;
   align-items: center;
@@ -106,7 +114,8 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   &-container {
     width: 100%;
   }
-  &--slippage-tolerance {
+  &--slippage-tolerance,
+  &--min-received {
     margin-top: $inner-spacing-small;
   }
   &-value {
@@ -121,12 +130,12 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
     }
   }
   .el-tooltip {
-    margin-right: $inner-spacing-small;
+    margin-right: $inner-spacing-mini;
   }
   &-icon {
     position: relative;
-    height: $inner-spacing-big;
-    width: $inner-spacing-big;
+    height: var(--s-size-mini);
+    width: var(--s-size-mini);
     background-color: var(--s-color-base-background);
     border-radius: var(--s-border-radius-small);
     &:hover {
@@ -136,13 +145,14 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
     &:before {
       position: absolute;
       display: block;
-      height: 14px;
-      width: 14px;
+      height: var(--s-icon-font-size-mini);
+      width: var(--s-icon-font-size-mini);
       left: 0;
       right: 0;
       top: 0;
       bottom: 0;
       margin: auto;
+      font-size: var(--s-icon-font-size-mini);
     }
   }
   .el-button--switch-price {

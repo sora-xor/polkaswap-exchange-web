@@ -17,7 +17,7 @@
           <s-input
             v-model="formModel.from"
             v-float="formModel.from"
-            class="s-input--swap"
+            class="s-input--token-value"
             :placeholder="inputPlaceholder"
             :disabled="!areTokensSelected"
             @change="handleChangeFieldFrom"
@@ -56,7 +56,7 @@
           <s-input
             v-model="formModel.to"
             v-float="formModel.to"
-            class="s-input--swap"
+            class="s-input--token-value"
             :placeholder="inputPlaceholder"
             :disabled="!areTokensSelected"
             @change="handleChangeFieldTo"
@@ -78,11 +78,11 @@
     <s-button v-if="!connected" type="primary" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
+    <!-- <template v-if="!areTokensSelected">
+      {{ t('swap.chooseTokens') }}
+    </template> -->
     <s-button v-else type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="handleConfirmSwap">
-      <template v-if="!areTokensSelected">
-        {{ t('swap.chooseTokens') }}
-      </template>
-      <template v-else-if="isEmptyBalance">
+      <template v-if="isEmptyBalance">
         {{ t('swap.enterAmount') }}
       </template>
       <template v-else-if="isInsufficientBalance">
@@ -179,6 +179,7 @@ export default class Swap extends Mixins(TranslationMixin) {
   }
 
   handleChangeFieldFrom (): void {
+    // TODO 4 alexnatalia - What is a point to change to give access to change tis field. We can't calculate the second value - just copy it
     if (this.areTokensSelected && !this.isFieldToFocused) {
       this.isFieldFromFocused = true
       if (+this.formModel.from === 0) {
@@ -271,72 +272,17 @@ export default class Swap extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss">
-$swap-input-class: ".el-input";
-
 .el-form--swap {
-  .s-input--swap {
-    .el-input {
-      #{$swap-input-class}__inner {
-        padding-top: 0;
-      }
-    }
-    #{$swap-input-class}__inner {
-      height: var(--s-size-small);
-      padding-right: 0;
-      padding-left: 0;
-      border-radius: 0;
-      border-bottom-width: 2px;
-      color: var(--s-color-base-content-primary);
-      font-size: 20px;
-      line-height: 1.26;
-      &, &:hover, &:focus {
-        background-color: var(--s-color-base-background);
-        border-color: var(--s-color-base-background);
-      }
-      &:disabled {
-        color: var(--s-color-base-content-tertiary);
-      }
-      &:not(:disabled) {
-        &:hover, &:focus {
-          border-bottom-color: var(--s-color-base-content-primary);
-          color: var(--s-color-base-content-primary);
-        }
-      }
-    }
-    .s-placeholder {
-      display: none;
-    }
-  }
-  .el-button {
-    &--choose-token,
-    &--empty-token {
-      > span {
-        display: inline-flex;
-        flex-direction: row-reverse;
-        align-items: center;
-        > i[class^=s-icon-] {
-          margin-left: $inner-spacing-mini / 2;
-          margin-right: 0;
-          font-size: 20px;
-        }
-      }
-    }
-    &--choose-token {
-      > span {
-        > i[class^=s-icon-] {
-          margin-left: $inner-spacing-mini;
-        }
-      }
-    }
-  }
+  @include s-input-styles;
+  @include token-buttons-styles;
 }
 .el-tooltip__popper.is-light {
   padding: $inner-spacing-mini;
   max-width: 320px;
   border: none !important;
   box-shadow: var(--s-shadow-tooltip);
-  font-size: $s-font-size-small;
-  line-height: $s-line-height-medium;
+  font-size: var(--s-font-size-small);
+  line-height: $s-line-height-big;
 }
 </style>
 
@@ -369,13 +315,12 @@ $swap-input-class: ".el-input";
       align-items: baseline;
     }
     .input-title {
-      font-weight: 600;
+      font-weight: $s-font-weight-medium;
       &-estimated {
-        font-weight: 400;
+        margin-left: $inner-spacing-mini / 2;
+        font-size: var(--s-font-size-mini);
+        font-weight: $s-font-weight-mini;
       }
-    }
-    .input-title-estimated {
-      margin-left: $inner-spacing-mini / 2;
     }
     @include token-styles;
   }
@@ -395,7 +340,8 @@ $swap-input-class: ".el-input";
     &--max,
     &--empty-token,
     &--choose-token {
-      font-weight: 700;
+      font-weight: $s-font-weight-big;
+      font-feature-settings: $s-font-feature-settings-title;
     }
     &--max {
       margin-right: $inner-spacing-mini;
@@ -424,12 +370,6 @@ $swap-input-class: ".el-input";
   .s-primary {
     margin-top: $inner-spacing-medium;
     width: 100%;
-    &:disabled {
-      color: var(--s-color-base-on-disabled);
-    }
-    & + .swap-info {
-      margin-top: $inner-spacing-small;
-    }
   }
 }
 </style>

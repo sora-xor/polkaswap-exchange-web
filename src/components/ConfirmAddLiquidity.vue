@@ -96,7 +96,7 @@ export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, Dialog
 
 <style lang="scss" scoped>
 .tokens {
-  line-height: $s-line-height-medium;
+  line-height: $s-line-height-big;
   .token {
     &-logo {
       display: inline-block;
@@ -105,13 +105,13 @@ export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, Dialog
   }
 }
 .output-description {
-  font-size: $s-font-size-mini;
-  line-height: $s-line-height-medium;
   margin-top: $inner-spacing-mini;
   margin-bottom: $inner-spacing-mini;
+  font-size: var(--s-font-size-mini);
+  line-height: $s-line-height-big;
 }
 .pair-info {
-  line-height: $s-line-height-medium;
+  line-height: $s-line-height-big;
   &__line {
     margin-top: $inner-spacing-medium;
     margin-bottom: $inner-spacing-medium;
@@ -123,16 +123,16 @@ export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, Dialog
 }
 
 .pool-tokens-amount {
-  font-size: $s-font-size-big-heading;
-  line-height: 120%;
-  letter-spacing: -0.04em;
+  font-size: var(--s-heading1-font-size);
+  line-height: $s-line-height-mini;
+  letter-spacing: $s-letter-spacing-mini;
 }
 
 .pool-tokens {
   margin: $inner-spacing-mini 0;
-  font-size: 18px;
-  line-height: 150%;
-  letter-spacing: -0.02em;
+  font-size: var(--s-heading4-font-size);
+  line-height: $s-line-height-medium;
+  letter-spacing: $s-letter-spacing-small;
 }
 
 .pair-logo {

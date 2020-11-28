@@ -2,7 +2,7 @@
   <div class="add-liquidity-container">
     <s-row class="header" flex justify="space-between" align="middle">
       <s-button type="action" size="small" icon="arrow-left" @click="handleBack" />
-      <div class="title">{{ t('addLiquidity.title') }}</div>
+      <h3>{{ t('addLiquidity.title') }}</h3>
       <!-- TODO: Add appropriate tooltip -->
       <s-button type="action" size="small" icon="info" />
     </s-row>
@@ -24,6 +24,7 @@
             <s-input
               v-model="formModel.first"
               v-float="formModel.first"
+              class="s-input--token-value"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
               @change="handleChangeFirstField"
@@ -59,6 +60,7 @@
             <s-input
               v-model="formModel.second"
               v-float="formModel.second"
+              class="s-input--token-value"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
               @change="handleChangeSecondField"
@@ -285,70 +287,16 @@ $swap-input-class: ".el-input";
   padding: $inner-spacing-medium;
 }
 .el-form--add-liquidity {
-  .s-input {
-    .el-input {
-      #{$swap-input-class}__inner {
-        padding-top: 0;
-      }
-    }
-    #{$swap-input-class}__inner {
-      height: var(--s-size-small);
-      padding-right: 0;
-      padding-left: 0;
-      border-radius: 0;
-      border-bottom-width: 2px;
-      color: var(--s-color-base-content-primary);
-      font-size: 20px;
-      line-height: 1.26;
-      &, &:hover, &:focus {
-        background-color: var(--s-color-base-background);
-        border-color: var(--s-color-base-background);
-      }
-      &:disabled {
-        color: var(--s-color-base-content-tertiary);
-      }
-      &:not(:disabled) {
-        &:hover, &:focus {
-          border-bottom-color: var(--s-color-base-content-primary);
-          color: var(--s-color-base-content-primary);
-        }
-      }
-    }
-    .s-placeholder {
-      display: none;
-    }
-  }
-  .el-button {
-    &--choose-token,
-    &--empty-token {
-      > span {
-        display: inline-flex;
-        flex-direction: row-reverse;
-        align-items: center;
-        > i[class^=s-icon-] {
-          margin-left: $inner-spacing-mini / 2;
-          margin-right: 0;
-          font-size: 20px;
-        }
-      }
-    }
-    &--choose-token {
-      > span {
-        > i[class^=s-icon-] {
-          margin-left: $inner-spacing-mini;
-        }
-      }
-    }
-  }
+  @include s-input-styles;
+  @include token-buttons-styles;
 }
 .add-liquidity-container {
   .header {
     margin-bottom: $inner-spacing-medium;
     .title {
-      font-size: $s-font-size-big;
-      line-height: $s-line-height-mini;
-      letter-spacing: -0.02em;
-      font-feature-settings: 'tnum' on, 'lnum' on, 'salt' on, 'case' on;
+      line-height: $s-line-height-small;
+      letter-spacing: $s-letter-spacing-small;
+      font-feature-settings: $s-font-feature-settings-title;
     }
   }
 }
@@ -392,9 +340,11 @@ $swap-input-class: ".el-input";
       align-items: baseline;
     }
     .input-title {
-      font-weight: 600;
+      font-weight: $s-font-weight-medium;
       &-estimated {
-        font-weight: 400;
+        margin-left: $inner-spacing-mini / 2;
+        font-size: var(--s-font-size-mini);
+        font-weight: $s-font-weight-mini;
       }
     }
     @include token-styles;
@@ -409,7 +359,8 @@ $swap-input-class: ".el-input";
     &--max,
     &--empty-token,
     &--choose-token {
-      font-weight: 700;
+      font-weight: $s-font-weight-big;
+      font-feature-settings: $s-font-feature-settings-title;
     }
     &--max {
       margin-right: $inner-spacing-mini;

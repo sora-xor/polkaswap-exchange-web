@@ -142,7 +142,7 @@ $menu-height: 65px;
     padding-left: $inner-spacing-mini;
     font-size: var(--s-heading4-font-size);
     letter-spacing: $s-letter-spacing-small;
-    font-feature-settings: $s-font-feature-settings-salt;
+    font-feature-settings: $s-font-feature-settings-title;
     &,
     &.is-active {
       border-bottom: none;

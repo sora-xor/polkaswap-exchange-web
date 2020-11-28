@@ -18,22 +18,22 @@ export default class InfoCard extends Mixins(TranslationMixin) {
 <style lang="scss">
 .card {
   &__title {
-    font-weight: 600;
-    line-height: $s-line-height-medium;
+    font-weight: $s-font-weight-medium;
+    line-height: $s-line-height-big;
     color: var(--s-color-base-content-primary);
   }
   &__data {
-    color: var(--s-color-base-content-tertiary);
-    line-height: $s-line-height-medium;
     display: flex;
     justify-content: space-between;
+    line-height: $s-line-height-big;
+    color: var(--s-color-base-content-tertiary);
   }
 }
 </style>
 
 <style lang="scss" scoped>
 .card {
-  border: 1px solid var(--s-color-base-background-hover);
+  border: 1px solid var(--s-color-base-border-secondary);
   border-radius: var(--s-border-radius-small);
   margin: $inner-spacing-mini 0;
   padding: $inner-spacing-medium;

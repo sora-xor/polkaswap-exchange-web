@@ -22,11 +22,11 @@ exports[`CreatePair.vue should renders correctly 1`] = `
       type="action"
     />
      
-    <div
+    <h3
       class="title"
     >
       
-    </div>
+    </h3>
      
     <s-button-stub
       borderradius="small"
@@ -72,6 +72,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
             accept=""
             autocomplete="off"
             borderradius="small"
+            class="s-input--token-value"
             form=""
             label=""
             name=""
@@ -144,6 +145,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
             accept=""
             autocomplete="off"
             borderradius="small"
+            class="s-input--token-value"
             form=""
             label=""
             name=""

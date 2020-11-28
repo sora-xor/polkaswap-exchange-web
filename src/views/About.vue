@@ -99,7 +99,7 @@ export default class About extends Mixins(TranslationMixin) {
         font-weight: $s-font-weight-medium;
         color: var(--s-color-brand-day);
         letter-spacing: $s-letter-spacing-mini;
-        font-feature-settings: $s-font-feature-settings-salt;
+        font-feature-settings: $s-font-feature-settings-title;
       }
       .web3-logo {
         flex-direction: column;
@@ -140,13 +140,13 @@ export default class About extends Mixins(TranslationMixin) {
       border-color: transparent;
       color: var(--s-color-base-content-tertiary);
       letter-spacing: $s-letter-spacing-medium;
-      font-feature-settings: $s-font-feature-settings-both;
+      font-feature-settings: $s-font-feature-settings-card-body;
       .title {
         display: flex;
         justify-content: space-between;
         line-height: $s-line-height-small;
         font-weight: $s-font-weight-medium;
-        font-feature-settings: $s-font-feature-settings-ss01;
+        font-feature-settings: $s-font-feature-settings-card-title;
         i {
           color: var(--s-color-theme-accent);
         }

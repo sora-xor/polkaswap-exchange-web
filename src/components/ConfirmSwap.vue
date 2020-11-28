@@ -75,7 +75,8 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
 .dialog--confirm-swap {
   .transaction-number {
     color: var(--s-color-base-content-primary);
-    font-weight: bold;
+    font-weight: $s-font-weight-medium;
+    font-feature-settings: $s-font-feature-settings-confirm-title;
   }
 }
 </style>
@@ -84,8 +85,8 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
 .tokens {
   display: flex;
   justify-content: space-between;
-  font-size: 30px;
-  line-height: $s-line-height-mini;
+  font-size: var(--s-heading2-font-size);
+  line-height: $s-line-height-small;
   &-info-container {
     display: flex;
     flex-direction: column;
@@ -113,10 +114,10 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
 }
 .s-icon-arrow-bottom-rounded {
   display: block;
-  font-size: $s-font-size-medium;
+  font-size: var(--s-icon-font-size-mini);
 }
 .transaction-message {
   color: var(--s-color-base-content-tertiary);
-  line-height: $s-line-height-medium;
+  line-height: $s-line-height-big;
 }
 </style>

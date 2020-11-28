@@ -46,8 +46,8 @@ $el-dialog-button-size: var(--s-size-medium);
     align-items: center;
     width: 100%;
     #{$el-dialog-class}__title {
-      font-size: $s-font-size-big;
-      font-weight: normal;
+      font-size: var(--s-heading3-font-size);
+      font-weight: $s-font-weight-mini;
     }
   }
   #{$el-dialog-class}__headerbtn {
@@ -60,7 +60,7 @@ $el-dialog-button-size: var(--s-size-medium);
     border-radius: var(--s-border-radius-small);
     #{$el-dialog-class}__close {
       color: var(--s-color-base-content-primary);
-      font-weight: bold;
+      font-weight: $s-font-weight-big;
       font-size: calc(#{$el-dialog-button-size} / 2);
     }
     color: var(--s-color-base-content-primary);

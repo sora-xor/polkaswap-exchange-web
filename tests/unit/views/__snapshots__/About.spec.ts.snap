@@ -5,7 +5,7 @@ exports[`About.vue should renders correctly 1`] = `
   class="layout s-flex"
 >
   <div
-    class="banner s-flex"
+    class="banner"
   />
    
   <div
@@ -14,9 +14,11 @@ exports[`About.vue should renders correctly 1`] = `
     <div
       class="terms s-flex"
     >
-      <span>
+      <h1
+        class="title"
+      >
         
-      </span>
+      </h1>
        
       <div
         class="web3-logo s-flex"
@@ -113,8 +115,7 @@ exports[`About.vue should renders correctly 1`] = `
           <s-card-stub
             borderradius="big"
             class="article-card"
-            clickable="true"
-            shadow="hover"
+            shadow="never"
           >
              
             <span>
@@ -135,8 +136,7 @@ exports[`About.vue should renders correctly 1`] = `
           <s-card-stub
             borderradius="big"
             class="article-card"
-            clickable="true"
-            shadow="hover"
+            shadow="never"
           >
              
             <span>
@@ -157,8 +157,7 @@ exports[`About.vue should renders correctly 1`] = `
           <s-card-stub
             borderradius="big"
             class="article-card"
-            clickable="true"
-            shadow="hover"
+            shadow="never"
           >
              
             <span>
@@ -179,8 +178,7 @@ exports[`About.vue should renders correctly 1`] = `
           <s-card-stub
             borderradius="big"
             class="article-card"
-            clickable="true"
-            shadow="hover"
+            shadow="never"
           >
              
             <span>
