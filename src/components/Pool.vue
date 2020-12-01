@@ -16,27 +16,25 @@
     <s-collapse class="pool-info-container" :borders="true">
       <s-collapse-item v-for="liquidity of liquidities" :key="liquidity.id" :name="liquidity.id">
         <template #title>
-          <div class="pool-pair-icons">
-            <token-logo :token="liquidity" size="small" />
-            <token-logo :token="liquidity" size="small" />
-          </div>
+          <!-- TODO: Fix token icons -->
+          <pair-token-logo :firstToken="liquidity.firstToken" :secondToken="liquidity.secondToken" size="small" />
           <h3>{{ getPairTitle(liquidity.firstToken, liquidity.secondToken) }}</h3>
         </template>
         <div class="pool-info">
+          <!-- TODO: Fix token icon -->
           <token-logo :token="liquidity" size="small" />
           <div>{{ t('pool.pooledToken', { tokenSymbol: liquidity.firstToken }) }}</div>
           <div v-if="liquidity.firstTokenAmount" class="pool-info-value">{{ liquidity.firstTokenAmount }}</div>
         </div>
         <div class="pool-info">
+          <!-- TODO: Fix token icon -->
           <token-logo :token="liquidity" size="small" />
           <div>{{ t('pool.pooledToken', { tokenSymbol: liquidity.secondToken }) }}</div>
           <div v-if="liquidity.secondTokenAmount" class="pool-info-value">{{ liquidity.secondTokenAmount }}</div>
         </div>
         <div class="pool-info">
-          <div class="pool-pair-icons">
-            <token-logo :token="liquidity" size="mini" />
-            <token-logo :token="liquidity" size="mini" />
-          </div>
+          <!-- TODO: Fix token icons -->
+          <pair-token-logo :firstToken="liquidity.firstToken" :secondToken="liquidity.secondToken" size="small" />
           <div>{{ t('pool.pairTokens', { pair: getPairTitle(liquidity.firstToken, liquidity.secondToken) }) }}</div>
           <div class="pool-info-value">{{ pairValue }}</div>
         </div>
