@@ -163,9 +163,9 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
   @Action('setRemovePart', { namespace }) setRemovePart
   @Action getTokens
 
-  created () {
-    this.getTokens()
-    this.getLiquidity(this.liquidityId)
+  async created () {
+    await this.getTokens()
+    await this.getLiquidity(this.liquidityId)
   }
 
   isWalletConnected = true

@@ -13,7 +13,7 @@ const tokens = [
 ]
 @Component
 export default class TokenLogo extends Mixins(TranslationMixin) {
-  @Prop({ type: String, default: false }) readonly token!: string | boolean | undefined
+  @Prop({ default: false }) readonly token!: string | boolean | undefined
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
 
   get tokenName (): string {

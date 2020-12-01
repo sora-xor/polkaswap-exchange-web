@@ -1,6 +1,7 @@
 // TODO 4 alexnatalia: Check Liquidity in Swap/Pool interfaces
-export const liquidity = [
+export const liquidities = [
   {
+    id: 1,
     firstToken: 'XOR',
     secondToken: 'KSM',
     balance: 1000,
@@ -9,5 +10,16 @@ export const liquidity = [
     secondTokenPrice: 10,
     firstTokenAmount: 10,
     secondTokenAmount: 50
+  },
+  {
+    id: 2,
+    firstToken: 'XOR',
+    secondToken: 'VAL',
+    balance: 100,
+    price: 6,
+    firstTokenPrice: 5,
+    secondTokenPrice: 1,
+    firstTokenAmount: 1,
+    secondTokenAmount: 5
   }
 ]

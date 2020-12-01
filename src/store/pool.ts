@@ -9,50 +9,49 @@ const types = flow(
   map(x => [x, x]),
   fromPairs
 )([
-  'GET_LIQUIDITY'
+  'GET_LIQUIDITIES'
 ])
 
 function initialState () {
   return {
-    liquidity: null
+    liquidities: []
   }
 }
 
 const state = initialState()
 
 const getters = {
-  liquidity (state) {
-    return state.liquidity
+  liquidities (state) {
+    return state.liquidities
   }
 }
 
 const mutations = {
-  [types.GET_LIQUIDITY_REQUEST] (state) {
-    state.liquidity = null
+  [types.GET_LIQUIDITIES_REQUEST] (state) {
   },
 
-  [types.GET_LIQUIDITY_SUCCESS] (state, liquidity) {
-    state.liquidity = liquidity
+  [types.GET_LIQUIDITIES_SUCCESS] (state, liquidities) {
+    state.liquidities = liquidities
   },
 
-  [types.GET_LIQUIDITY_FAILURE] (state) {
-    state.liquidity = null
+  [types.GET_LIQUIDITIES_FAILURE] (state) {
   }
 }
 
 const actions = {
-  async getLiquidity ({ commit }, id) {
-    commit(types.GET_LIQUIDITY_REQUEST)
+  async getLiquidities ({ commit }) {
+    commit(types.GET_LIQUIDITIES_REQUEST)
     try {
-      const liquidity = await liquidityApi.getLiquidityById(id)
-      commit(types.GET_LIQUIDITY_SUCCESS, liquidity)
+      const liquidities = await liquidityApi.getLiquidities()
+      commit(types.GET_LIQUIDITIES_SUCCESS, liquidities)
     } catch (error) {
-      commit(types.GET_LIQUIDITY_FAILURE, error)
+      commit(types.GET_LIQUIDITIES_FAILURE, error)
     }
   }
 }
 
 export default {
+  namespaced: true,
   state,
   getters,
   mutations,

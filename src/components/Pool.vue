@@ -9,35 +9,34 @@
     <p v-if="!connected" class="pool-info-container">
       {{ t('pool.connectToWallet') }}
     </p>
-    <p v-else-if="!liquidity" class="pool-info-container">
+    <p v-else-if="!liquidities.length" class="pool-info-container">
       {{ t('pool.liquidityNotFound') }}
     </p>
-    <s-collapse v-else-if="firstToken && secondToken" class="pool-info-container" :borders="true" @change="handleChoosePair">
-      <!-- TODO: make for with pairs here -->
-      <s-collapse-item name="1">
+    <s-collapse class="pool-info-container" :borders="true">
+      <s-collapse-item v-for="liquidity of liquidities" :key="liquidity.id" :name="liquidity.id">
         <template #title>
           <div class="pool-pair-icons">
-            <token-logo :token="firstToken.symbol" size="small" />
-            <token-logo :token="secondToken.symbol" size="small" />
+            <token-logo :token="liquidity.firstToken" size="small" />
+            <token-logo :token="liquidity.secondToken" size="small" />
           </div>
-          <h3>{{ getPairTitle(firstToken, secondToken) }}</h3>
+          <h3>{{ getPairTitle(liquidity.firstToken, liquidity.secondToken) }}</h3>
         </template>
         <div class="pool-info">
-          <token-logo :token="firstToken.symbol" size="small" />
-          <div>{{ t('pool.pooledToken', { tokenSymbol: firstToken.symbol }) }}</div>
-          <div v-if="firstTokenValue" class="pool-info-value">{{ firstTokenValue }}</div>
+          <token-logo :token="liquidity.firstToken" size="small" />
+          <div>{{ t('pool.pooledToken', { tokenSymbol: liquidity.firstToken }) }}</div>
+          <div v-if="liquidity.firstTokenAmount" class="pool-info-value">{{ liquidity.firstTokenAmount }}</div>
         </div>
         <div class="pool-info">
-          <token-logo :token="secondToken.symbol" size="small" />
-          <div>{{ t('pool.pooledToken', { tokenSymbol: secondToken.symbol }) }}</div>
-          <div v-if="secondTokenValue" class="pool-info-value">{{ secondTokenValue }}</div>
+          <token-logo :token="liquidity.secondToken" size="small" />
+          <div>{{ t('pool.pooledToken', { tokenSymbol: liquidity.secondToken }) }}</div>
+          <div v-if="liquidity.secondTokenAmount" class="pool-info-value">{{ liquidity.secondTokenAmount }}</div>
         </div>
         <div class="pool-info">
           <div class="pool-pair-icons">
-            <token-logo :token="firstToken.symbol" size="mini" />
-            <token-logo :token="secondToken.symbol" size="mini" />
+            <token-logo :token="liquidity.firstToken" size="mini" />
+            <token-logo :token="liquidity.secondToken" size="mini" />
           </div>
-          <div>{{ t('pool.pairTokens', { pair: getPairTitle(firstToken, secondToken) }) }}</div>
+          <div>{{ t('pool.pairTokens', { pair: getPairTitle(liquidity.firstToken, liquidity.secondToken) }) }}</div>
           <div class="pool-info-value">{{ pairValue }}</div>
         </div>
         <div class="pool-info pool-info--share">
@@ -45,10 +44,10 @@
           <div class="pool-info-value">1.5%</div>
         </div>
         <div class="pool-info--buttons">
-          <s-button type="primary" size="small" @click="handleAddPairLiquidity">
+          <s-button type="primary" size="small" @click="handleAddPairLiquidity(liquidity.id)">
             {{ t('pool.addLiquidity') }}
           </s-button>
-          <s-button type="primary" size="small" @click="handleRemovePairLiquidity">
+          <s-button type="primary" size="small" @click="handleRemoveLiquidity(liquidity.id)">
             {{ t('pool.removeLiquidity') }}
           </s-button>
         </div>
@@ -71,7 +70,7 @@ import { isWalletConnected, formatNumber } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
-const namespace = 'createPair'
+const namespace = 'pool'
 
 @Component({
   components: {
@@ -79,12 +78,12 @@ const namespace = 'createPair'
   }
 })
 export default class Pool extends Mixins(TranslationMixin) {
-  @Getter liquidity!: any
-  @Getter('firstToken', { namespace }) firstToken!: any
-  @Getter('secondToken', { namespace }) secondToken!: any
-  @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
-  @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
-  @Action getLiquidity
+  @Getter('liquidities', { namespace }) liquidities!: any
+  @Action('getLiquidities', { namespace }) getLiquidities
+
+  created () {
+    this.getLiquidities()
+  }
 
   get connected (): boolean {
     return isWalletConnected()
@@ -96,29 +95,24 @@ export default class Pool extends Mixins(TranslationMixin) {
   }
 
   handleAddLiquidity (): void {
-    // TODO: Add Liquidity functionality goes here
-    this.getLiquidity()
+    router.push({ name: PageNames.AddLiquidity })
   }
 
   handleCreatePair (): void {
     router.push({ name: PageNames.CreatePair })
   }
 
-  handleChoosePair (): void {
-    console.log('handleChoosePair')
+  handleAddPairLiquidity (id): void {
+    router.push({ name: PageNames.AddLiquidityId, params: { id } })
   }
 
-  handleAddPairLiquidity (): void {
-    console.log('handleAddPairLiquidity')
-  }
-
-  handleRemovePairLiquidity (): void {
-    console.log('handleRemovePairLiquidity')
+  handleRemoveLiquidity (id): void {
+    router.push({ name: PageNames.RemoveLiquidity, params: { id } })
   }
 
   getPairTitle (firstToken, secondToken): string {
     if (firstToken && secondToken) {
-      return `${firstToken.symbol} - ${secondToken.symbol}`
+      return `${firstToken} - ${secondToken}`
     }
     return ''
   }
