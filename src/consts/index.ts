@@ -27,11 +27,12 @@ export enum Components {
   Settings = 'Settings'
 }
 
+// TODO: Some items are hidden because we don't have Stats and Support pages right now
 export const MainMenu = [
   PageNames.About,
-  PageNames.Exchange,
-  PageNames.Stats,
-  PageNames.Support
+  PageNames.Exchange
+  // PageNames.Stats,
+  // PageNames.Support
 ]
 
 export const ExchangeTabs = [
