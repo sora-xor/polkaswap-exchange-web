@@ -1,9 +1,10 @@
-import { liquidity } from '@/mocks/liquidity'
+import { liquidities } from '@/mocks/liquidity'
 
-const getLiquidityById = (id) => {
-  return Promise.resolve(liquidity[0])
-}
+const getLiquidityById = id => Promise.resolve(liquidities.find(l => Number(l.id) === Number(id)))
+
+const getLiquidities = () => Promise.resolve(liquidities)
 
 export default {
-  getLiquidityById
+  getLiquidityById,
+  getLiquidities
 }

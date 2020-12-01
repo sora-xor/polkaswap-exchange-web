@@ -52,7 +52,7 @@
           </div>
           <div v-if="connected && secondToken" class="token-balance">
             <span class="token-balance-title">{{ t('exchange.balance') }}</span>
-            <span class="token-balance-value">{{ getTokenBalance(secondToken.balance) }}</span>
+            <span class="token-balance-value">{{ getTokenBalance(secondToken) }}</span>
           </div>
         </div>
         <div class="input-line">
@@ -163,17 +163,31 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
 
+  @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
   @Action('setFirstToken', { namespace }) setFirstToken
   @Action('setSecondToken', { namespace }) setSecondToken
   @Action('setFirstTokenValue', { namespace }) setFirstTokenValue
   @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
   @Action('addLiquidity', { namespace }) addLiquidity
+  @Action getTokens
 
   showSelectFirstTokenDialog = false
   showSelectSecondTokenDialog = false
   inputPlaceholder: string = formatNumber(0, 2)
   showConfirmDialog = false
   isCreatePairConfirmed = false
+
+  async created () {
+    await this.getTokens()
+
+    if (this.liquidityId) {
+      await this.setDataFromLiquidity(this.liquidityId)
+    }
+  }
+
+  get liquidityId (): string {
+    return this.$route.params.id
+  }
 
   formModel = {
     first: formatNumber(0, 1),

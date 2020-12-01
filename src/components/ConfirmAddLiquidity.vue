@@ -2,6 +2,7 @@
   <dialog-base
     :visible.sync="isVisible"
     :title="t('confirmSupply.title')"
+    v-if="firstToken && secondToken"
   >
     <div class="pool-tokens-amount">
       {{ poolTokens }}
