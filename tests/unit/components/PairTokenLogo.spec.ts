@@ -16,8 +16,8 @@ describe('TokenLogo.vue', () => {
     const wrapper = shallowMount(PairTokenLogo, {
       localVue,
       propsData: {
-        firstToken: tokens[0].symbol,
-        secondToken: tokens[1].symbol,
+        firstToken: tokens[0],
+        secondToken: tokens[1],
         size: 'mini'
       }
     })

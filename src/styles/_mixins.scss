@@ -21,9 +21,11 @@
   }
 }
 
-@mixin token-logo-size($size: 40px) {
-  height: $size;
-  width: $size;
+@mixin element-size($className: "", $width: 40px, $height: $width) {
+  .#{$className} {
+    height: $height;
+    width: $width;
+  }
 }
 
 @mixin container-styles() {
@@ -35,4 +37,43 @@
   border-radius: var(--s-border-radius-medium);
   box-shadow: var(--s-shadow-surface);
   color: var(--s-color-base-content-primary);
+}
+
+@mixin header-styles($marginBottom: $inner-spacing-medium) {
+  $tooltip-area-height: var(--s-size-small);
+
+  .header {
+    position: relative;
+    width: 100%;
+    margin-bottom: $marginBottom;
+
+    .el-button {
+      position: absolute;
+    }
+    &-title {
+      width: 100%;
+      padding-right: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
+      padding-left: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
+      text-align: center;
+      font-feature-settings: 'tnum' on, 'lnum' on, 'salt' on, 'case' on;
+      letter-spacing: -0.02em;
+      line-height: $tooltip-area-height;
+    }
+    &-tooltip {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: $tooltip-area-height;
+      width: $tooltip-area-height;
+      background-color: var(--s-color-base-background);
+      border-radius: var(--s-border-radius-small);
+      text-align: center;
+      cursor: pointer;
+      &:before {
+        font-size: $s-font-size-medium;
+        line-height: $tooltip-area-height;
+      }
+    }
+  }
+
 }

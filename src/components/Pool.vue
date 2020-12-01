@@ -1,8 +1,9 @@
 <template>
   <div class="el-form--pool">
-    <div class="pool-header">
-      <h3 class="pool-header-title">{{ t('pool.yourLiquidity') }}</h3>
-      <s-tooltip class="pool-header-icon" borderRadius="mini" :content="t('pool.yourLiquidityTooltip')" theme="light" placement="bottom-end" :show-arrow="false">
+    <div class="header">
+      <h3 class="header-title">{{ t('pool.yourLiquidity') }}</h3>
+      <!-- TODO: Add appropriate tooltip -->
+      <s-tooltip class="header-tooltip" popperClass="info-tooltip" borderRadius="mini" :content="'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'" theme="light" placement="bottom-end" :show-arrow="false">
         <s-icon name="info" size="16" />
       </s-tooltip>
     </div>
@@ -15,27 +16,25 @@
     <s-collapse class="pool-info-container" :borders="true">
       <s-collapse-item v-for="liquidity of liquidities" :key="liquidity.id" :name="liquidity.id">
         <template #title>
-          <div class="pool-pair-icons">
-            <token-logo :token="liquidity.firstToken" size="small" />
-            <token-logo :token="liquidity.secondToken" size="small" />
-          </div>
+          <!-- TODO: Fix token icons -->
+          <pair-token-logo :firstToken="liquidity.firstToken" :secondToken="liquidity.secondToken" size="small" />
           <h3>{{ getPairTitle(liquidity.firstToken, liquidity.secondToken) }}</h3>
         </template>
         <div class="pool-info">
-          <token-logo :token="liquidity.firstToken" size="small" />
+          <!-- TODO: Fix token icon -->
+          <token-logo :token="liquidity" size="small" />
           <div>{{ t('pool.pooledToken', { tokenSymbol: liquidity.firstToken }) }}</div>
           <div v-if="liquidity.firstTokenAmount" class="pool-info-value">{{ liquidity.firstTokenAmount }}</div>
         </div>
         <div class="pool-info">
-          <token-logo :token="liquidity.secondToken" size="small" />
+          <!-- TODO: Fix token icon -->
+          <token-logo :token="liquidity" size="small" />
           <div>{{ t('pool.pooledToken', { tokenSymbol: liquidity.secondToken }) }}</div>
           <div v-if="liquidity.secondTokenAmount" class="pool-info-value">{{ liquidity.secondTokenAmount }}</div>
         </div>
         <div class="pool-info">
-          <div class="pool-pair-icons">
-            <token-logo :token="liquidity.firstToken" size="mini" />
-            <token-logo :token="liquidity.secondToken" size="mini" />
-          </div>
+          <!-- TODO: Fix token icons -->
+          <pair-token-logo :firstToken="liquidity.firstToken" :secondToken="liquidity.secondToken" size="small" />
           <div>{{ t('pool.pairTokens', { pair: getPairTitle(liquidity.firstToken, liquidity.secondToken) }) }}</div>
           <div class="pool-info-value">{{ pairValue }}</div>
         </div>
@@ -74,7 +73,8 @@ const namespace = 'pool'
 
 @Component({
   components: {
-    TokenLogo: lazyComponent(Components.TokenLogo)
+    TokenLogo: lazyComponent(Components.TokenLogo),
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
 export default class Pool extends Mixins(TranslationMixin) {
@@ -138,15 +138,6 @@ $pool-collapse-icon-width: 10px;
     .el-collapse-item__header {
       height: 50px;
       line-height: 50px;
-      .pool-pair-icons {
-        margin-right: $inner-spacing-medium;
-        height: 36px;
-        width: 36px;
-        .token-logo {
-          height: 24px;
-          width: 24px;
-        }
-      }
     }
     .el-icon-arrow-right {
       position: relative;
@@ -184,7 +175,10 @@ $pool-collapse-icon-width: 10px;
 </style>
 
 <style lang="scss" scoped>
-$tooltip-button-height: var(--s-size-small);
+@include header-styles($inner-spacing-mini);
+.header {
+  margin-top: $inner-spacing-mini;
+}
 
 .el-form--pool {
   display: flex;
@@ -204,34 +198,6 @@ $tooltip-button-height: var(--s-size-small);
 }
 
 .pool {
-  &-header {
-    position: relative;
-    width: 100%;
-    margin-top: $inner-spacing-mini;
-    margin-bottom: $inner-spacing-mini;
-    &-title {
-      width: 100%;
-      padding-right: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
-      padding-left: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
-      text-align: center;
-      line-height: $tooltip-button-height;
-    }
-    &-icon {
-      position: absolute;
-      top: 0;
-      right: 0;
-      height: $tooltip-button-height;
-      width: $tooltip-button-height;
-      background-color: var(--s-color-base-background);
-      border-radius: var(--s-border-radius-small);
-      text-align: center;
-      cursor: pointer;
-      &:before {
-        font-size: $s-font-size-medium;
-        line-height: $tooltip-button-height;
-      }
-    }
-  }
   &-info {
     display: flex;
     align-items: center;
@@ -258,26 +224,6 @@ $tooltip-button-height: var(--s-size-small);
       font-size: $s-font-size-mini;
       line-height: $s-line-height-medium;
       text-align: center;
-      .pool-pair-icons {
-        position: relative;
-        margin-right: $inner-spacing-mini;
-        height: 22px;
-        width: 22px;
-        .token-logo {
-          position: absolute;
-          height: 15px;
-          width: 15px;
-          &:first-child {
-            top: 0;
-            left: 0;
-            z-index: 1;
-          }
-          &:last-child {
-            bottom: 0;
-            right: 0;
-          }
-        }
-      }
       & + .el-button {
         margin-top: $inner-spacing-medium;
       }

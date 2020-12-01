@@ -1,19 +1,12 @@
 <template>
-  <div class="remove-liquidity-container">
-    <s-row class="header" flex justify="space-between" align="middle">
+  <div class="container">
+    <div class="header">
       <s-button type="action" size="small" icon="arrow-left" @click="handleBack" />
-      <div class="title">{{ t('removeLiquidity.title') }}</div>
-      <s-tooltip
-        theme="light"
-        :content="t('removeLiquidity.description')"
-        borderRadius="small"
-        placement="bottom-end"
-        popperClass="remove-liquidity__description"
-        :visible-arrow="false"
-      >
-        <s-button type="action" size="small" icon="info" />
+      <h3 class="header-title">{{ t('removeLiquidity.title') }}</h3>
+      <s-tooltip class="header-tooltip" popperClass="info-tooltip" borderRadius="mini" :content="t('removeLiquidity.description')" theme="light" placement="bottom-end" :show-arrow="false">
+        <s-icon name="info" size="16" />
       </s-tooltip>
-    </s-row>
+    </div>
     <s-form
       class="el-form--remove-liquidity"
       :show-message="false"
@@ -48,7 +41,7 @@
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium">
               <div class="liquidity-logo">
-                <pair-token-logo :firstToken="firstToken.symbol" :secondToken="secondToken.symbol" size="mini" />
+                <pair-token-logo :firstToken="firstToken" :secondToken="secondToken" size="mini" />
               </div>
               {{ firstToken.symbol }}-{{ secondToken.symbol }}
             </s-button>
@@ -72,7 +65,7 @@
           </s-form-item>
           <div v-if="firstToken" class="token">
             <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium">
-              <token-logo :token="firstToken.symbol" size="small" />
+              <token-logo :token="firstToken" size="small" />
               {{ firstToken.symbol }}
             </s-button>
           </div>
@@ -97,7 +90,7 @@
           </s-form-item>
           <div v-if="secondToken" class="token">
             <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium">
-              <token-logo :token="secondToken.symbol" size="small" />
+              <token-logo :token="secondToken" size="small" />
               {{ secondToken.symbol }}
             </s-button>
           </div>
@@ -114,7 +107,7 @@
     </s-form>
 
     <s-row flex justify="space-between" class="price-container">
-      <div>{{ t('removeLiquidity.price')  }}</div>
+      <div>{{ t('removeLiquidity.price') }}</div>
       <div>
         <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price, 2) }} {{ secondToken.symbol }}</div>
         <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price, 2) }} {{ firstToken.symbol }}</div>
@@ -289,31 +282,17 @@ $swap-input-class: ".el-input";
     }
   }
 }
-.remove-liquidity-container {
-  .header {
-    margin-bottom: $inner-spacing-medium;
-    .title {
-      font-size: $s-font-size-big;
-      line-height: $s-line-height-mini;
-      letter-spacing: -0.02em;
-      font-feature-settings: 'tnum' on, 'lnum' on, 'salt' on, 'case' on;
-    }
-  }
-}
-
-.remove-liquidity__description {
-  width: 320px;
-  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.35);
-  border: none !important;
-}
 </style>
 
 <style lang="scss" scoped>
+.container {
+  @include container-styles;
+}
+
+@include header-styles;
+
 .icon-divider {
   padding: $inner-spacing-medium;
-}
-.remove-liquidity-container {
-  @include container-styles;
 }
 .el-form--remove-liquidity {
   display: flex;

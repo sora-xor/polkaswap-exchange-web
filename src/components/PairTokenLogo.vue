@@ -8,6 +8,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import { Token } from '@/types'
 import { LogoSize, Components } from '@/consts'
 import { lazyComponent } from '@/router'
 
@@ -17,8 +18,8 @@ import { lazyComponent } from '@/router'
   }
 })
 export default class PairTokenLogo extends Mixins(TranslationMixin) {
-  @Prop({ type: String, default: false }) readonly firstToken!: string | boolean | undefined
-  @Prop({ type: String, default: false }) readonly secondToken!: string | boolean | undefined
+  @Prop({ type: Object, default: () => null }) readonly firstToken!: Token
+  @Prop({ type: Object, default: () => null }) readonly secondToken!: Token
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
 
   get computedClasses (): string {
@@ -38,8 +39,8 @@ export default class PairTokenLogo extends Mixins(TranslationMixin) {
 .pair-logo {
   position: relative;
   display: block;
-  height: 22px;
-  width: 22px;
+  margin-right: $inner-spacing-mini;
+
   .token-logo {
     position: absolute;
 
@@ -47,23 +48,14 @@ export default class PairTokenLogo extends Mixins(TranslationMixin) {
       top: 0;
       left: 0;
       z-index: 1;
-      margin: 0;
     }
     &:last-child {
       bottom: 0;
       right: 0;
-      margin: 0
     }
   }
 }
 
-.pair-logo--mini {
-  height: 22px;
-  width: 22px;
-}
-
-.pair-logo--small {
-  height: 34px;
-  width: 34px;
-}
+@include element-size('pair-logo--mini', 24px);
+@include element-size('pair-logo--small', 36px);
 </style>

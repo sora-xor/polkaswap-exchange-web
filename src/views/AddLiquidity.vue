@@ -1,11 +1,12 @@
 <template>
-  <div class="add-liquidity-container">
-    <s-row class="header" flex justify="space-between" align="middle">
+  <div class="container">
+    <div class="header">
       <s-button type="action" size="small" icon="arrow-left" @click="handleBack" />
-      <div class="title">{{ t('addLiquidity.title') }}</div>
-      <!-- TODO: Add appropriate tooltip -->
-      <s-button type="action" size="small" icon="info" />
-    </s-row>
+      <h3 class="header-title">{{ t('addLiquidity.title') }}</h3>
+      <s-tooltip class="header-tooltip" popperClass="info-tooltip" borderRadius="mini" :content="t('addLiquidity.description')" theme="light" placement="bottom-end" :show-arrow="false">
+        <s-icon name="info" size="16" />
+      </s-tooltip>
+    </div>
     <s-form
       v-model="formModel"
       class="el-form--add-liquidity"
@@ -34,7 +35,7 @@
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="openSelectFirstTokenDialog">
-              <token-logo :token="firstToken.symbol" size="small" />
+              <token-logo :token="firstToken" size="small" />
               {{ firstToken.symbol }}
             </s-button>
           </div>
@@ -69,7 +70,7 @@
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="openSelectSecondTokenDialog">
-              <token-logo :token="secondToken.symbol" size="small" />
+              <token-logo :token="secondToken" size="small" />
               {{ secondToken.symbol }}
             </s-button>
           </div>
@@ -100,7 +101,7 @@
         <div>{{ firstPerSecondPrice }} {{ firstToken.symbol }}</div>
       </div>
       <div class="card__data">
-        <div>{{ t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })  }}</div>
+        <div>{{ t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol }) }}</div>
         <div>{{ secondPerFirstPrice }} {{ secondToken.symbol }}</div>
       </div>
       <div class="card__data">
@@ -112,8 +113,8 @@
     <info-card v-if="areTokensSelected" :title="t('createPair.yourPosition') ">
       <div class="card__data">
         <s-row flex>
-          <pair-token-logo class="pair-token-logo" :firstToken="secondToken.symbol" :secondToken="firstToken.symbol" size="mini" />
-          {{ t('createPair.firstSecondPoolTokens', { first: secondToken.symbol, second: firstToken.symbol })  }}:
+          <pair-token-logo class="pair-token-logo" :firstToken="firstToken" :secondToken="secondToken" size="mini" />
+          {{ t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol }) }}:
         </s-row>
         <div>{{ poolTokens }}</div>
       </div>
@@ -355,17 +356,6 @@ $swap-input-class: ".el-input";
     }
   }
 }
-.add-liquidity-container {
-  .header {
-    margin-bottom: $inner-spacing-medium;
-    .title {
-      font-size: $s-font-size-big;
-      line-height: $s-line-height-mini;
-      letter-spacing: -0.02em;
-      font-feature-settings: 'tnum' on, 'lnum' on, 'salt' on, 'case' on;
-    }
-  }
-}
 .card {
   .el-divider {
     margin-top: $inner-spacing-mini;
@@ -375,9 +365,12 @@ $swap-input-class: ".el-input";
 </style>
 
 <style lang="scss" scoped>
-.add-liquidity-container {
+.container {
   @include container-styles;
 }
+
+@include header-styles;
+
 .el-form--add-liquidity {
   display: flex;
   flex-direction: column;

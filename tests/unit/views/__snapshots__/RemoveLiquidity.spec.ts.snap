@@ -2,14 +2,10 @@
 
 exports[`RemoveLiquidity.vue should renders correctly 1`] = `
 <div
-  class="remove-liquidity-container"
+  class="container"
 >
-  <s-row-stub
-    align="middle"
+  <div
     class="header"
-    flex="true"
-    gutter="0"
-    justify="space-between"
   >
     <s-button-stub
       borderradius="small"
@@ -22,37 +18,31 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
       type="action"
     />
      
-    <div
-      class="title"
+    <h3
+      class="header-title"
     >
       
-    </div>
+    </h3>
      
     <s-tooltip-stub
       animation="el-fade-in-linear"
-      borderradius="small"
+      borderradius="mini"
+      class="header-tooltip"
       closedelay="0"
       content=""
       offset="0"
       opendelay="0"
       placement="bottom-end"
-      popperclass="remove-liquidity__description"
-      showarrow="true"
+      popperclass="info-tooltip"
       tabindex="0"
       theme="light"
     >
-      <s-button-stub
-        borderradius="small"
-        icon="info"
-        nativetype="button"
-        size="small"
-        tabindex="0"
-        tooltip=""
-        tooltipplacement="top"
-        type="action"
+      <s-icon-stub
+        name="info"
+        size="16"
       />
     </s-tooltip-stub>
-  </s-row-stub>
+  </div>
    
   <s-form-stub
     class="el-form--remove-liquidity"
