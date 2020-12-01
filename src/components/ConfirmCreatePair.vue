@@ -2,6 +2,7 @@
   <dialog-base
     :visible.sync="isVisible"
     :title="t('confirmSupply.title')"
+    v-if="firstToken && secondToken"
   >
     <div class="pool-tokens-amount">
       {{ poolTokens }}
@@ -70,7 +71,7 @@ const namespace = 'createPair'
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
-export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, DialogMixin) {
+export default class ConfirmCreatePair extends Mixins(TranslationMixin, DialogMixin) {
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
