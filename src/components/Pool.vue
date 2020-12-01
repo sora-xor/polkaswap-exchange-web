@@ -44,7 +44,7 @@
           <div class="pool-info-value">1.5%</div>
         </div>
         <div class="pool-info--buttons">
-          <s-button type="primary" size="small" @click="handleAddPairLiquidity">
+          <s-button type="primary" size="small" @click="handleAddPairLiquidity(liquidity.id)">
             {{ t('pool.addLiquidity') }}
           </s-button>
           <s-button type="primary" size="small" @click="handleRemoveLiquidity(liquidity.id)">
@@ -102,8 +102,8 @@ export default class Pool extends Mixins(TranslationMixin) {
     router.push({ name: PageNames.CreatePair })
   }
 
-  handleAddPairLiquidity (): void {
-    console.log('handleAddPairLiquidity')
+  handleAddPairLiquidity (id): void {
+    router.push({ name: PageNames.AddLiquidityId, params: { id } })
   }
 
   handleRemoveLiquidity (id): void {

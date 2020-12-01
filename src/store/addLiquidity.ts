@@ -3,6 +3,7 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
+import liquidityAPI from '@/api/liquidity'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -73,15 +74,19 @@ const actions = {
   setFirstToken ({ commit }, token: any) {
     commit(types.GET_FIRST_TOKEN, token)
   },
+
   setSecondToken ({ commit }, token: any) {
     commit(types.GET_SECOND_TOKEN, token)
   },
-  setFirstTokenValue ({ commit }, fromValue: string | number) {
-    commit(types.GET_FIRST_TOKEN_VALUE, fromValue)
+
+  setFirstTokenValue ({ commit }, value: string | number) {
+    commit(types.GET_FIRST_TOKEN_VALUE, value)
   },
-  setSecondTokenValue ({ commit }, toValue: string | number) {
-    commit(types.GET_SECOND_TOKEN_VALUE, toValue)
+
+  setSecondTokenValue ({ commit }, value: string | number) {
+    commit(types.GET_SECOND_TOKEN_VALUE, value)
   },
+
   addLiquidity ({ commit }) {
     commit(types.ADD_LIQUIDITY_REQUEST)
 
@@ -89,6 +94,15 @@ const actions = {
       commit(types.ADD_LIQUIDITY_SUCCESS)
     } catch (error) {
       commit(types.ADD_LIQUIDITY_FAILURE)
+    }
+  },
+
+  async setDataFromLiquidity ({ commit, dispatch, rootGetters }, id) {
+    const liquidity = await liquidityAPI.getLiquidityById(id)
+
+    if (liquidity) {
+      dispatch('setFirstToken', rootGetters.tokens.find(t => t.symbol === liquidity.firstToken))
+      dispatch('setSecondToken', rootGetters.tokens.find(t => t.symbol === liquidity.secondToken))
     }
   }
 }
