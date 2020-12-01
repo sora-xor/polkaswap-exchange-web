@@ -40,6 +40,11 @@ exports[`Pool.vue should renders correctly 1`] = `
   
   </p>
    
+  <s-collapse-stub
+    borders="true"
+    class="pool-info-container"
+  />
+   
   <s-button-stub
     borderradius="small"
     class="el-button--add-liquidity"
