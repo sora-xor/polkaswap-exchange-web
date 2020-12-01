@@ -6,16 +6,16 @@
     <div class="tokens">
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedFromValue }}</span>
-        <s-icon name="arrow-bottom-rounded" />
+        <s-icon name="plus-rounded" />
         <span class="token-value">{{ formattedToValue }}</span>
       </div>
       <div class="tokens-info-container">
         <div v-if="firstToken" class="token">
-          <token-logo class="token-logo" :token="firstToken.symbol" />
+          <token-logo class="token-logo" :token="firstToken" />
           {{ firstToken.symbol }}
         </div>
         <div v-if="secondToken" class="token">
-          <token-logo class="token-logo" :token="secondToken.symbol" />
+          <token-logo class="token-logo" :token="secondToken" />
           {{ secondToken.symbol }}
         </div>
       </div>
@@ -25,14 +25,14 @@
     <s-row flex justify="space-between" class="price-container">
       <div v-if="firstToken && secondToken">
         <s-row flex>
-          <pair-token-logo class="pair-logo" :firstToken="firstToken.symbol" :secondToken="secondToken.symbol" size="mini" />
-          {{ t('confirmSupply.poolTokensBurned', {first: firstToken.symbol, second: secondToken.symbol}) }}
+          <pair-token-logo :firstToken="firstToken" :secondToken="secondToken" size="mini" />
+          {{ t('confirmSupply.poolTokensBurned', { first: firstToken.symbol, second: secondToken.symbol }) }}
         </s-row>
       </div>
       <div>{{ formatNumber(removeAmount, 2) }}</div>
     </s-row>
     <s-row flex justify="space-between" class="price-container">
-      <div>{{ t('removeLiquidity.price')  }}</div>
+      <div>{{ t('removeLiquidity.price') }}</div>
       <div>
         <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price, 2) }} {{ secondToken.symbol }}</div>
         <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price, 2) }} {{ firstToken.symbol }}</div>
@@ -110,7 +110,7 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
     flex-shrink: 0;
   }
 }
-.s-icon-arrow-bottom-rounded {
+.s-icon-plus-rounded {
   margin-top: $inner-spacing-mini;
   margin-bottom: $inner-spacing-mini;
   display: block;
@@ -129,8 +129,5 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   line-height: $s-line-height-big;
   color: var(--s-color-base-content-secondary);
   margin-bottom: $inner-spacing-mini;
-}
-.pair-logo {
-  margin-right: $inner-spacing-mini;
 }
 </style>

@@ -16,7 +16,7 @@
       <div v-for="token in filteredTokens" @click="selectToken($event, token)" :key="token.symbol" class="token-item">
         <s-col>
           <s-row flex justify="start" align="middle">
-            <token-logo :token="token.symbol" />
+            <token-logo :token="token" />
             <div>
               <div class="token-item__name">{{ token.name }} ({{ token.symbol }})</div>
             </div>

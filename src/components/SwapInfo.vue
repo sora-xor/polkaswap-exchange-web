@@ -14,21 +14,21 @@
     </template>
     <template v-else>
       <div class="swap-info swap-info--min-received">
-        <s-tooltip class="swap-info-icon" popperClass="swap-info-popper" borderRadius="mini" :content="t('swap.minReceivedTooltip')" theme="light" placement="right-start" animation="none" :show-arrow="false">
+        <s-tooltip class="swap-info-icon" popperClass="info-tooltip swap-info-popper" borderRadius="mini" :content="t('swap.minReceivedTooltip')" theme="light" placement="right-start" animation="none" :show-arrow="false">
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.minReceived') }}</span>
         <span class="swap-info-value">{{ minReceived }}</span>
       </div>
       <div class="swap-info">
-        <s-tooltip class="swap-info-icon" popperClass="swap-info-popper" borderRadius="mini" :content="t('swap.priceImpactTooltip')" theme="light" placement="right-start" animation="none" :show-arrow="false">
+        <s-tooltip class="swap-info-icon" popperClass="info-tooltip swap-info-popper" borderRadius="mini" :content="t('swap.priceImpactTooltip')" theme="light" placement="right-start" animation="none" :show-arrow="false">
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.priceImpact') }}</span>
         <span :class="'swap-info-value ' + priceImpactClass">{{ priceImpact }}%</span>
       </div>
       <div class="swap-info">
-        <s-tooltip class="swap-info-icon" popperClass="swap-info-popper" borderRadius="mini" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee })" theme="light" placement="right-start" animation="none" :show-arrow="false">
+        <s-tooltip class="swap-info-icon" popperClass="info-tooltip swap-info-popper" borderRadius="mini" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee })" theme="light" placement="right-start" animation="none" :show-arrow="false">
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.liquidityProviderFee') }}</span>

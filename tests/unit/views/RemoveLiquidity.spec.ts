@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 import RemoveLiquidity from '@/views/RemoveLiquidity.vue'
 import { tokens } from '@/mocks/tokens'
-import { liquidity } from '@/mocks/liquidity'
+import { liquidities } from '@/mocks/liquidity'
 import { SoramitsuElementsImport, TranslationMock } from '../../utils'
 import VueRouter from 'vue-router'
 
@@ -27,7 +27,7 @@ describe('RemoveLiquidity.vue', () => {
     }
 
     getters = {
-      liquidity: () => liquidity[0],
+      liquidity: () => liquidities[0],
       firstToken: () => tokens[0],
       secondToken: () => tokens[1],
       removePart: () => 100,

@@ -13,70 +13,14 @@ export const tokens = [{
   balance: 1000,
   price: 0.0055,
   priceChange: 12
-
 },
 {
-  name: 'Kusama',
-  symbol: 'KSM1',
-  address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
-  balance: 100,
-  price: 0.0055,
-  priceChange: 12
-
-},
-{
-  name: 'Kusama',
-  symbol: 'KSM2',
-  address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
-  balance: 10,
-  price: 0.0055,
-  priceChange: 12
-
-},
-{
-  name: 'Kusama',
-  symbol: 'KSM3',
-  address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
-  balance: 1,
-  price: 0.0055,
-  priceChange: 12
-
-},
-{
-  name: 'Kusama',
-  symbol: 'KSM4',
-  address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
-  balance: 0,
-  price: 0.0055,
-  priceChange: 12
-
-},
-{
-  name: 'Kusama',
-  symbol: 'KSM5',
-  address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
-  balance: 0,
-  price: 0.0055,
-  priceChange: 12
-
-},
-{
-  name: 'Kusama',
-  symbol: 'KSM6',
-  address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
-  balance: 0,
-  price: 0.0055,
-  priceChange: 12
-
-},
-{
-  name: 'Kusama',
-  symbol: 'KSM7',
-  address: '34916349d43f65bccca11ff53a8e0382a1a594a7',
-  balance: 0,
-  price: 0.0055,
-  priceChange: 12
-
+  name: 'Sora Validator Token',
+  symbol: 'VAL',
+  address: '0xe88f8313e61a97cec1871ee37fbbe2a8bf3ed1e4',
+  balance: 1000,
+  price: 1.2255,
+  priceChange: -2
 },
 {
   name: 'Ether',

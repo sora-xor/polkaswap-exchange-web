@@ -16,7 +16,7 @@ describe('TokenLogo.vue', () => {
     const wrapper = shallowMount(TokenLogo, {
       localVue,
       propsData: {
-        token: tokens[0].symbol
+        token: tokens[0]
       }
     })
     expect(wrapper.element).toMatchSnapshot()

@@ -30,7 +30,7 @@
             {{ t('exchange.max') }}
           </s-button>
           <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="openSelectTokenDialog(true)">
-            <token-logo :token="tokenFrom.symbol" size="small" />
+            <token-logo :token="tokenFrom" size="small" />
             {{ tokenFrom.symbol }}
           </s-button>
         </div>
@@ -65,7 +65,7 @@
         </s-form-item>
         <div v-if="tokenTo" class="token">
           <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium" icon="chevron-bottom-rounded" @click="openSelectTokenDialog">
-            <token-logo :token="tokenTo.symbol" size="small" />
+            <token-logo :token="tokenTo" size="small" />
             {{ tokenTo.symbol }}
           </s-button>
         </div>
@@ -275,14 +275,6 @@ export default class Swap extends Mixins(TranslationMixin) {
 .el-form--swap {
   @include s-input-styles;
   @include token-buttons-styles;
-}
-.el-tooltip__popper.is-light {
-  padding: $inner-spacing-mini;
-  max-width: 320px;
-  border: none !important;
-  box-shadow: var(--s-shadow-tooltip);
-  font-size: var(--s-font-size-small);
-  line-height: $s-line-height-big;
 }
 </style>
 

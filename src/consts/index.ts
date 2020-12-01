@@ -10,6 +10,7 @@ export enum PageNames {
   Wallet = 'Wallet',
   CreatePair = 'CreatePair',
   AddLiquidity = 'AddLiquidity',
+  AddLiquidityId = 'AddLiquidityId',
   RemoveLiquidity = 'RemoveLiquidity'
 }
 
