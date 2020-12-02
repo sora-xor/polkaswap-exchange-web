@@ -19,13 +19,13 @@ exports[`CreatePair.vue should renders correctly 1`] = `
     />
      
     <h3
-      class="title"
+      class="header-title"
     >
       
     </h3>
      
     <s-tooltip-stub
-      animation="el-fade-in-linear"
+      animation="none"
       borderradius="mini"
       class="header-tooltip"
       closedelay="0"

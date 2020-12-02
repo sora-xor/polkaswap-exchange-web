@@ -16,7 +16,7 @@ exports[`SwapInfo.vue should renders correctly 1`] = `
       offset="0"
       opendelay="0"
       placement="right-start"
-      popperclass="info-tooltip"
+      popperclass="info-tooltip info-tooltip--swap"
       tabindex="0"
       theme="light"
     >
@@ -49,7 +49,7 @@ exports[`SwapInfo.vue should renders correctly 1`] = `
       offset="0"
       opendelay="0"
       placement="right-start"
-      popperclass="info-tooltip"
+      popperclass="info-tooltip info-tooltip--swap"
       tabindex="0"
       theme="light"
     >
@@ -82,7 +82,7 @@ exports[`SwapInfo.vue should renders correctly 1`] = `
       offset="0"
       opendelay="0"
       placement="right-start"
-      popperclass="info-tooltip"
+      popperclass="info-tooltip info-tooltip--swap"
       tabindex="0"
       theme="light"
     >

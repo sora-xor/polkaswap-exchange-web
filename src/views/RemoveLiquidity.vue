@@ -3,7 +3,7 @@
     <div class="header">
       <s-button type="action" size="small" icon="arrow-left" @click="handleBack" />
       <h3 class="header-title">{{ t('removeLiquidity.title') }}</h3>
-      <s-tooltip class="header-tooltip" popperClass="info-tooltip" borderRadius="mini" :content="t('removeLiquidity.description')" theme="light" placement="bottom-end" :show-arrow="false">
+      <s-tooltip class="header-tooltip" popperClass="info-tooltip" borderRadius="mini" :content="t('removeLiquidity.description')" theme="light" placement="bottom-end" animation="none" :show-arrow="false">
         <s-icon name="info" size="16" />
       </s-tooltip>
     </div>

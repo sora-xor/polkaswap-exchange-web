@@ -10,7 +10,7 @@
         <div class="slippage-tolerance-default">
           <div class="header">
             {{ t('settings.slippageTolerance') }}
-            <s-tooltip popperClass="info-tooltip" :content="t('settings.slippageToleranceHint')">
+            <s-tooltip popperClass="info-tooltip" borderRadius="mini" :content="t('settings.slippageToleranceHint')" theme="light" placement="right-start" animation="none" :show-arrow="false">
               <s-icon class="header-hint" name="info" />
             </s-tooltip>
           </div>
@@ -38,7 +38,7 @@
       <div class="transaction-deadline">
         <div class="header">
           {{ t('settings.transactionDeadline') }}
-          <s-tooltip popperClass="info-tooltip" :content="t('settings.transactionDeadlineHint')">
+          <s-tooltip popperClass="info-tooltip" borderRadius="mini" :content="t('settings.transactionDeadlineHint')" theme="light" placement="right-start" animation="none" :show-arrow="false">
             <s-icon class="header-hint" name="info" />
           </s-tooltip>
         </div>
@@ -51,7 +51,7 @@
       <div class="node-address">
         <div class="header">
           {{ t('settings.nodeAddress') }}
-          <s-tooltip popperClass="info-tooltip" :content="t('settings.nodeAddressHint')">
+          <s-tooltip popperClass="info-tooltip" borderRadius="mini" :content="t('settings.nodeAddressHint')" theme="light" placement="right-start" animation="none" :show-arrow="false">
             <s-icon class="header-hint" name="info" />
           </s-tooltip>
         </div>
