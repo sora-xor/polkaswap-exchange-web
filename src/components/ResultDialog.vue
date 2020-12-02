@@ -9,7 +9,7 @@
       <div v-if="type" class="transaction-type">{{ type }}</div>
       <div v-if="message" class="transaction-info">{{ message }}</div>
       <!-- TODO: Add correct icons and add functionality -->
-      <s-icon name="external-link" @click="handleTransactionInfo" />
+      <!-- <s-icon name="external-link" @click="handleTransactionInfo" /> -->
       <!-- <s-icon name="arrow-bottom-rounded" /> -->
     </div>
     <s-divider />

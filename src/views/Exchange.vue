@@ -63,6 +63,8 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
         #{$tabs-class}__item {
           height: $tabs-item-height;
           line-height: $tabs-item-height;
+          font-weight: $s-font-weight-big;
+          font-feature-settings: $s-font-feature-settings-title;
           &:hover {
             background-color: var(--s-color-base-background-hover);
           }

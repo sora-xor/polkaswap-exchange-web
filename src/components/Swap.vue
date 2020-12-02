@@ -19,13 +19,11 @@
             v-float="formModel.from"
             class="s-input--token-value"
             :placeholder="inputPlaceholder"
-            :disabled="!areTokensSelected"
             @change="handleChangeFieldFrom"
             @blur="handleBlurFieldFrom"
           />
         </s-form-item>
         <div v-if="tokenFrom" class="token">
-          <!-- TODO: Fix secondary сolors in UI Library and project -->
           <s-button v-if="connected && areTokensSelected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleMaxFromValue">
             {{ t('exchange.max') }}
           </s-button>
@@ -58,7 +56,6 @@
             v-float="formModel.to"
             class="s-input--token-value"
             :placeholder="inputPlaceholder"
-            :disabled="!areTokensSelected"
             @change="handleChangeFieldTo"
             @blur="handleBlurFieldTo"
           />
@@ -78,9 +75,6 @@
     <s-button v-if="!connected" type="primary" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
-    <!-- <template v-if="!areTokensSelected">
-      {{ t('swap.chooseTokens') }}
-    </template> -->
     <s-button v-else type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="handleConfirmSwap">
       <template v-if="isEmptyBalance">
         {{ t('swap.enterAmount') }}
@@ -179,11 +173,10 @@ export default class Swap extends Mixins(TranslationMixin) {
   }
 
   handleChangeFieldFrom (): void {
-    // TODO 4 alexnatalia - What is a point to change to give access to change tis field. We can't calculate the second value - just copy it
-    if (this.areTokensSelected && !this.isFieldToFocused) {
+    if (!this.isFieldToFocused) {
       this.isFieldFromFocused = true
-      if (+this.formModel.from === 0) {
-        this.formModel.to = formatNumber(0, 4)
+      if (!this.areTokensSelected || +this.formModel.from === 0) {
+        this.formModel.to = formatNumber(0, 1)
       } else {
         this.formModel.to = formatNumber(+this.formModel.from * this.tokenFrom.price / this.tokenTo.price, 4)
       }
@@ -193,10 +186,10 @@ export default class Swap extends Mixins(TranslationMixin) {
   }
 
   handleChangeFieldTo (): void {
-    if (this.areTokensSelected && !this.isFieldFromFocused) {
+    if (!this.isFieldFromFocused) {
       this.isFieldToFocused = true
-      if (+this.formModel.to === 0) {
-        this.formModel.from = formatNumber(0, 4)
+      if (!this.areTokensSelected || +this.formModel.to === 0) {
+        this.formModel.from = formatNumber(0, 1)
       } else {
         this.formModel.from = formatNumber(+this.formModel.to * this.tokenTo.price / this.tokenFrom.price, 4)
       }
@@ -318,16 +311,21 @@ export default class Swap extends Mixins(TranslationMixin) {
   }
   .s-input {
     min-height: 0;
+    font-feature-settings: $s-font-feature-settings-input;
   }
   .s-tertiary {
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
   }
   .el-button {
+    font-feature-settings: $s-font-feature-settings-confirm-title;
     &--switch-tokens {
       &,
       & + .input-container {
         margin-top: $inner-spacing-mini;
       }
+    }
+    &.s-primary:not(:disabled) {
+      font-weight: $s-font-weight-medium;
     }
     &--max,
     &--empty-token,
@@ -336,7 +334,7 @@ export default class Swap extends Mixins(TranslationMixin) {
       font-feature-settings: $s-font-feature-settings-title;
     }
     &--max {
-      margin-right: $inner-spacing-mini;
+      margin-right: $inner-spacing-mini / 2;
       padding-right: $inner-spacing-mini;
       height: var(--s-size-mini);
     }
@@ -352,6 +350,7 @@ export default class Swap extends Mixins(TranslationMixin) {
       background-color: var(--s-color-base-background);
       border-color: var(--s-color-base-background);
       color: var(--s-color-base-content-primary);
+      font-size: var(--s-font-size-small);
       &:hover, &:active, &:focus {
         background-color: var(--s-color-base-background-hover);
         border-color: var(--s-color-base-background-hover);

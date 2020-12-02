@@ -329,11 +329,7 @@ $swap-input-class: ".el-input";
       background-color: var(--s-color-base-background);
       border-color: var(--s-color-base-background);
       color: var(--s-color-base-content-primary);
-      &:hover, &:active, &:focus {
-        background-color: var(--s-color-base-background-hover);
-        border-color: var(--s-color-base-background-hover);
-        color: var(--s-color-base-content-primary);
-      }
+      cursor: default;
     }
     &.el-button--switch-price {
       margin-right: 0;

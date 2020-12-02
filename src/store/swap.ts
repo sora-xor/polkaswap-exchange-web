@@ -18,9 +18,17 @@ const types = flow(
   fromPairs
 )([])
 
+// TODO 4 alexnatalia: Get XOR token in another way
 function initialState () {
   return {
-    tokenFrom: null,
+    tokenFrom: {
+      name: 'Sora',
+      symbol: 'XOR',
+      address: '1f9840a85d5af5bf1d1762f925bdaddc4201f984',
+      balance: 10000,
+      price: 55.10,
+      priceChange: 12
+    },
     tokenTo: null,
     fromValue: 0,
     toValue: 0,

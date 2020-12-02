@@ -95,10 +95,16 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
-// TODO 4 alexnatalia: Fix left position
+<style lang="scss">
 .info-tooltip--swap {
-  margin-left: -#{$inner-spacing-mini} !important;
+  margin-left: #{$inner-spacing-mini / 2} !important;
+}
+.el-button--switch-price.s-small {
+  i {
+    font-size: var(--s-icon-font-size-big);
+    margin-left: -6px;
+    margin-top: -6px;
+  }
 }
 </style>
 
