@@ -94,7 +94,9 @@ export default class About extends Mixins(TranslationMixin) {
     .terms {
       .title {
         margin-top: 0;
+        margin-right: $inner-spacing-mini;
         margin-bottom: 0;
+        max-width: 75%;
         font-size: var(--s-heading5-font-size);
         font-weight: $s-font-weight-medium;
         color: var(--s-color-brand-day);
@@ -103,7 +105,7 @@ export default class About extends Mixins(TranslationMixin) {
       }
       .web3-logo {
         flex-direction: column;
-        margin-left: $inner-spacing-mini * 4;
+        margin-left: auto;
         > span {
           color: var(--s-color-base-content-secondary);
           font-size: var(--s-font-size-mini);
