@@ -119,7 +119,7 @@ html {
   max-width: 320px;
   border: none !important;
   box-shadow: var(--s-shadow-tooltip);
-  font-size: $s-font-size-small;
+  font-size: var(--s-font-size-small);
   line-height: $s-line-height-medium;
 }
 </style>

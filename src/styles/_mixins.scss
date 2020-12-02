@@ -138,7 +138,7 @@
       text-align: center;
       cursor: pointer;
       &:before {
-        font-size: $s-font-size-medium;
+        font-size: var(--s-icon-font-size-mini);
         line-height: $tooltip-area-height;
       }
     }
