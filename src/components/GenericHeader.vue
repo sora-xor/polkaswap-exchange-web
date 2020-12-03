@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <s-button v-if="hasButtonBack" type="action" size="small" icon="arrow-left" @click="handleBack" />
+    <s-button v-if="hasButtonBack" type="action" size="small" icon="chevron-left-rounded" @click="handleBack" />
     <h3 class="header-title">{{ title }}</h3>
     <s-tooltip
       class="header-tooltip"
