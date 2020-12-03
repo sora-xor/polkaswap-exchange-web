@@ -1,4 +1,3 @@
-// TODO 4 alexnatalia: Check Liquidity in Swap/Pool interfaces
 export const liquidities = [
   {
     id: 1,

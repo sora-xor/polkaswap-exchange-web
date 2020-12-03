@@ -16,15 +16,16 @@ export enum PageNames {
 
 export enum Components {
   SwapInfo = 'SwapInfo',
+  InfoCard = 'InfoCard',
   SelectToken = 'SelectToken',
+  ResultDialog = 'ResultDialog',
+  GenericHeader = 'GenericHeader',
   TokenLogo = 'TokenLogo',
+  PairTokenLogo = 'PairTokenLogo',
   ConfirmSwap = 'ConfirmSwap',
   ConfirmCreatePair = 'ConfirmCreatePair',
   ConfirmAddLiquidity = 'ConfirmAddLiquidity',
   ConfirmRemoveLiquidity = 'ConfirmRemoveLiquidity',
-  ResultDialog = 'ResultDialog',
-  PairTokenLogo = 'PairTokenLogo',
-  InfoCard = 'InfoCard',
   Settings = 'Settings'
 }
 

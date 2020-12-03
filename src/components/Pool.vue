@@ -1,19 +1,14 @@
 <template>
   <div class="el-form--pool">
-    <div class="header">
-      <h3 class="header-title">{{ t('pool.yourLiquidity') }}</h3>
-      <!-- TODO: Add appropriate tooltip -->
-      <s-tooltip class="header-tooltip" popperClass="info-tooltip" borderRadius="mini" :content="'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'" theme="light" placement="bottom-end" animation="none" :show-arrow="false">
-        <s-icon name="info" size="16" />
-      </s-tooltip>
-    </div>
+    <!-- TODO: Add appropriate tooltip -->
+    <generic-header class="header--pool" :hasButtonBack="false" :title="t('pool.yourLiquidity')" :tooltip="t('pool.loremIpsum')" />
     <p v-if="!connected" class="pool-info-container">
       {{ t('pool.connectToWallet') }}
     </p>
-    <p v-else-if="liquidities && !liquidities.length" class="pool-info-container">
+    <p v-else-if="!liquidities || !liquidities.length" class="pool-info-container">
       {{ t('pool.liquidityNotFound') }}
     </p>
-    <s-collapse class="pool-info-container" :borders="true">
+    <s-collapse v-else class="pool-info-container" :borders="true">
       <s-collapse-item v-for="liquidity of liquidities" :key="liquidity.id" :name="liquidity.id">
         <template #title>
           <pair-token-logo :firstTokenSymbol="liquidity.firstToken" :secondTokenSymbol="liquidity.secondToken" size="small" />
@@ -69,6 +64,7 @@ const namespace = 'pool'
 
 @Component({
   components: {
+    GenericHeader: lazyComponent(Components.GenericHeader),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
@@ -171,9 +167,9 @@ $pool-collapse-icon-width: 10px;
 </style>
 
 <style lang="scss" scoped>
-@include header-styles($inner-spacing-mini);
-.header {
+.header.header--pool {
   margin-top: $inner-spacing-mini;
+  margin-bottom: $inner-spacing-mini;
 }
 
 .el-form--pool {
@@ -232,6 +228,7 @@ $pool-collapse-icon-width: 10px;
       color: var(--s-color-base-content-tertiary);
       font-size: var(--s-font-size-mini);
       line-height: $s-line-height-big;
+      font-feature-settings: $s-font-feature-settings-confirm-title;
       text-align: center;
       & + .el-button {
         margin-top: $inner-spacing-medium;

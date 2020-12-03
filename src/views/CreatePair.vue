@@ -1,13 +1,7 @@
 <template>
   <div class="container">
-    <div class="header">
-      <s-button type="action" size="small" icon="arrow-left" @click="handleBack" />
-      <h3 class="header-title">{{ t('createPair.title') }}</h3>
-      <!-- TODO: Add appropriate tooltip -->
-      <s-tooltip class="header-tooltip" popperClass="info-tooltip" borderRadius="mini" :content="'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'" theme="light" placement="bottom-end" animation="none" :show-arrow="false">
-        <s-icon name="info" size="16" />
-      </s-tooltip>
-    </div>
+    <!-- TODO: Add appropriate tooltip -->
+    <generic-header :title="t('createPair.title')" :tooltip="t('pool.loremIpsum')" />
     <s-form
       v-model="formModel"
       class="el-form--create-pair"
@@ -155,6 +149,7 @@ const namespace = 'createPair'
 
 @Component({
   components: {
+    GenericHeader: lazyComponent(Components.GenericHeader),
     SelectToken: lazyComponent(Components.SelectToken),
     InfoCard: lazyComponent(Components.InfoCard),
     TokenLogo: lazyComponent(Components.TokenLogo),
@@ -243,10 +238,6 @@ export default class CreatePair extends Mixins(TranslationMixin) {
     return token ? `${tokenValue} ${token.symbol}` : ''
   }
 
-  handleBack (): void {
-    router.push({ name: PageNames.Pool })
-  }
-
   openSelectFirstTokenDialog (): void {
     this.showSelectFirstTokenDialog = true
   }
@@ -312,8 +303,6 @@ $swap-input-class: ".el-input";
 .container {
   @include container-styles;
 }
-
-@include header-styles;
 
 .card {
   .el-divider {

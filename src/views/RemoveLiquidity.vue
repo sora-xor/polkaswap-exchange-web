@@ -1,12 +1,6 @@
 <template>
   <div class="container">
-    <div class="header">
-      <s-button type="action" size="small" icon="arrow-left" @click="handleBack" />
-      <h3 class="header-title">{{ t('removeLiquidity.title') }}</h3>
-      <s-tooltip class="header-tooltip" popperClass="info-tooltip" borderRadius="mini" :content="t('removeLiquidity.description')" theme="light" placement="bottom-end" animation="none" :show-arrow="false">
-        <s-icon name="info" size="16" />
-      </s-tooltip>
-    </div>
+    <generic-header :title="t('removeLiquidity.title')" :tooltip="t('removeLiquidity.description')" />
     <s-form
       class="el-form--remove-liquidity"
       :show-message="false"
@@ -137,8 +131,9 @@ const namespace = 'removeLiquidity'
 
 @Component({
   components: {
-    TokenLogo: lazyComponent(Components.TokenLogo),
+    GenericHeader: lazyComponent(Components.GenericHeader),
     InfoCard: lazyComponent(Components.InfoCard),
+    TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity),
     ResultDialog: lazyComponent(Components.ResultDialog)
@@ -210,10 +205,6 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
     return token ? formatNumber(token.balance, 2) : ''
   }
 
-  handleBack (): void {
-    router.push({ name: PageNames.Pool })
-  }
-
   handleLiquidityMaxValue (): void {
     this.setRemovePart(100)
   }
@@ -238,8 +229,6 @@ $swap-input-class: ".el-input";
 .container {
   @include container-styles;
 }
-
-@include header-styles;
 
 .icon-divider {
   padding: $inner-spacing-medium;

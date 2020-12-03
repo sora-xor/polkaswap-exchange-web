@@ -4,45 +4,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
 <div
   class="container"
 >
-  <div
-    class="header"
-  >
-    <s-button-stub
-      borderradius="small"
-      icon="arrow-left"
-      nativetype="button"
-      size="small"
-      tabindex="0"
-      tooltip=""
-      tooltipplacement="top"
-      type="action"
-    />
-     
-    <h3
-      class="header-title"
-    >
-      
-    </h3>
-     
-    <s-tooltip-stub
-      animation="none"
-      borderradius="mini"
-      class="header-tooltip"
-      closedelay="0"
-      content=""
-      offset="0"
-      opendelay="0"
-      placement="bottom-end"
-      popperclass="info-tooltip"
-      tabindex="0"
-      theme="light"
-    >
-      <s-icon-stub
-        name="info"
-        size="16"
-      />
-    </s-tooltip-stub>
-  </div>
+  <!---->
    
   <s-form-stub
     class="el-form--remove-liquidity"

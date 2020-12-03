@@ -82,7 +82,8 @@ export default {
     createPair: 'Create a pair',
     pooledToken: '{tokenSymbol} Pooled:',
     pairTokens: '{pair} Pool Tokens:',
-    poolShare: 'Your pool share'
+    poolShare: 'Your pool share',
+    loremIpsum: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
   },
   selectToken: {
     title: 'Select a token',
