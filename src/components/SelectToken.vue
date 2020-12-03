@@ -28,6 +28,7 @@
       </div>
     </div>
     <div v-else class="token-list token-list__empty">
+      <span class="empty-results-icon" />
       {{ t('selectToken.emptyListMessage') }}
     </div>
   </dialog-base>
@@ -130,10 +131,20 @@ $token-item-height: calc(var(--s-size-medium) + #{$inner-spacing-medium} * 2);
   height: calc(#{$token-item-height} * 7);
   overflow: auto;
   &__empty {
-    //TODO: Implement empty list design
     display: flex;
-    justify-content: center;
     align-items: center;
+    flex-direction: column;
+    padding-top: $inner-spacing-big;
+    color: var(--s-color-base-content-tertiary);
+    font-feature-settings: $s-font-feature-settings-common;
+    line-height: $s-line-height-big;
+  }
+  .empty-results-icon {
+    margin-bottom: $inner-spacing-medium;
+    display: block;
+    height: 70px;
+    width: 70px;
+    background: url("~@/assets/img/no-results.svg") center no-repeat;
   }
 }
 </style>

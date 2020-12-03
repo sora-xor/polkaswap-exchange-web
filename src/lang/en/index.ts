@@ -88,7 +88,7 @@ export default {
   selectToken: {
     title: 'Select a token',
     searchPlaceholder: 'Search Token Name, Symbol, or Address',
-    emptyListMessage: 'Nothing found'
+    emptyListMessage: 'No results'
   },
   createPair: {
     title: 'Create a pair',
