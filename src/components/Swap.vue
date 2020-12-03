@@ -317,7 +317,7 @@ export default class Swap extends Mixins(TranslationMixin) {
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
   }
   .el-button {
-    font-feature-settings: $s-font-feature-settings-confirm-title;
+    font-feature-settings: $s-font-feature-settings-common;
     &--switch-tokens {
       &,
       & + .input-container {

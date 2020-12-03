@@ -8,8 +8,8 @@
     <p v-else-if="!liquidities || !liquidities.length" class="pool-info-container">
       {{ t('pool.liquidityNotFound') }}
     </p>
-    <s-collapse v-else class="pool-info-container" :borders="true">
-      <s-collapse-item v-for="liquidity of liquidities" :key="liquidity.id" :name="liquidity.id">
+    <s-collapse v-else class="pool-list" :borders="true">
+      <s-collapse-item v-for="liquidity of liquidities" :key="liquidity.id" :name="liquidity.id" class="pool-info-container">
         <template #title>
           <pair-token-logo :firstTokenSymbol="liquidity.firstToken" :secondTokenSymbol="liquidity.secondToken" size="small" />
           <h3>{{ getPairTitle(liquidity.firstToken, liquidity.secondToken) }}</h3>
@@ -25,7 +25,7 @@
           <div v-if="liquidity.secondTokenAmount" class="pool-info-value">{{ liquidity.secondTokenAmount }}</div>
         </div>
         <div class="pool-info">
-          <pair-token-logo :firstTokenSymbol="liquidity.firstToken" :secondTokenSymbol="liquidity.secondToken" size="small" />
+          <pair-token-logo :firstTokenSymbol="liquidity.firstToken" :secondTokenSymbol="liquidity.secondToken" size="mini" />
           <div>{{ t('pool.pairTokens', { pair: getPairTitle(liquidity.firstToken, liquidity.secondToken) }) }}</div>
           <div class="pool-info-value">{{ pairValue }}</div>
         </div>
@@ -104,7 +104,7 @@ export default class Pool extends Mixins(TranslationMixin) {
 
   getPairTitle (firstToken, secondToken): string {
     if (firstToken && secondToken) {
-      return `${firstToken} - ${secondToken}`
+      return `${firstToken}-${secondToken}`
     }
     return ''
   }
@@ -112,24 +112,28 @@ export default class Pool extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss">
+$pair-icon-height: 36px;
 $pool-collapse-icon-height: 2px;
 $pool-collapse-icon-width: 10px;
 
-.pool-info-container {
+.pool-list {
   .el-collapse-item {
     &__header,
     &__wrap {
       border-bottom: none;
     }
     &__content {
-      margin-top: $inner-spacing-mini;
+      margin-top: $inner-spacing-medium;
       padding-top: $basic-spacing * 2;
       padding-bottom: 0;
       border-top: 1px solid var(--s-color-base-border-primary);
     }
     .el-collapse-item__header {
-      height: 50px;
-      line-height: 50px;
+      height: $pair-icon-height;
+      line-height: $pair-icon-height;
+      .pair-logo {
+        margin-right: $inner-spacing-medium;
+      }
     }
     .el-icon-arrow-right {
       position: relative;
@@ -167,6 +171,8 @@ $pool-collapse-icon-width: 10px;
 </style>
 
 <style lang="scss" scoped>
+$pair-icon-height: 36px;
+
 .header.header--pool {
   margin-top: $inner-spacing-mini;
   margin-bottom: $inner-spacing-mini;
@@ -181,6 +187,8 @@ $pool-collapse-icon-width: 10px;
     &--create-pair {
       margin-top: $inner-spacing-mini;
       width: 100%;
+      font-weight: $s-font-weight-medium;
+      font-feature-settings: $s-font-feature-settings-common;
     }
     &--create-pair {
       margin-left: 0;
@@ -203,6 +211,22 @@ $pool-collapse-icon-width: 10px;
 }
 
 .pool {
+  &-list {
+    width: 100%;
+    border-top: none;
+    border-bottom: none;
+    .pool-info-container {
+      margin-bottom: $inner-spacing-mini;
+      padding: calc(#{$inner-spacing-big} - (#{$pair-icon-height} - var(--s-size-small)) / 2) $inner-spacing-medium;
+      &:last-child {
+        margin-bottom: $inner-spacing-medium;
+      }
+    }
+    h3 {
+      letter-spacing: $s-letter-spacing-small;
+      font-feature-settings: $s-font-feature-settings-title;
+    }
+  }
   &-info {
     display: flex;
     align-items: center;
@@ -222,13 +246,13 @@ $pool-collapse-icon-width: 10px;
     }
     &-container {
       width: 100%;
-      padding: $inner-spacing-medium;
+      padding: $inner-spacing-big;
       border-radius: var(--s-border-radius-small);
       border: 1px solid var(--s-color-base-border-secondary);
       color: var(--s-color-base-content-tertiary);
       font-size: var(--s-font-size-mini);
-      line-height: $s-line-height-big;
-      font-feature-settings: $s-font-feature-settings-confirm-title;
+      line-height: $s-line-height-small;
+      font-feature-settings: $s-font-feature-settings-common;
       text-align: center;
       & + .el-button {
         margin-top: $inner-spacing-medium;
@@ -240,10 +264,14 @@ $pool-collapse-icon-width: 10px;
     &--buttons {
       display: flex;
       margin-top: $inner-spacing-medium;
-      margin-bottom: $inner-spacing-mini;
       .el-button {
         padding-left: $inner-spacing-small;
         padding-right: $inner-spacing-small;
+        font-weight: $s-font-weight-big;
+        font-feature-settings: $s-font-feature-settings-title;
+        + .el-button {
+          margin-left: $inner-spacing-mini;
+        }
       }
     }
   }

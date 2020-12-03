@@ -126,6 +126,7 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   }
   &-value {
     margin-left: auto;
+    font-feature-settings: $s-font-feature-settings-common;
   }
   .price-impact {
     &-positive {

@@ -93,6 +93,7 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   display: flex;
   justify-content: space-between;
   font-size: var(--s-heading2-font-size);
+  line-height: $s-line-height-small;
   &-info-container {
     display: flex;
     flex-direction: column;
