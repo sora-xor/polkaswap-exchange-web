@@ -89,9 +89,6 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin) {
 .token-select {
   .el-dialog {
     overflow: hidden;
-    &__title {
-      letter-spacing: $s-letter-spacing-small;
-    }
     &__body {
       padding: $inner-spacing-mini 0 $inner-spacing-big !important;
     }
@@ -119,8 +116,8 @@ $token-item-height: calc(var(--s-size-medium) + #{$inner-spacing-medium} * 2);
     background-color: var(--s-color-base-background-hover);
   }
   &__name, &__amount {
-    font-weight: $s-font-weight-medium;
     font-size: var(--s-font-size-small);
+    @include font-weight(600);
   }
 
   .token-logo {

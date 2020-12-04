@@ -122,6 +122,63 @@ html {
   font-size: var(--s-font-size-small);
   line-height: $s-line-height-medium;
 }
+.el-form--actions {
+  $swap-input-class: ".el-input";
+  .s-input--token-value {
+    #{$swap-input-class} {
+      #{$swap-input-class}__inner {
+        padding-top: 0;
+      }
+    }
+    #{$swap-input-class}__inner {
+      height: var(--s-size-small);
+      padding-right: 0;
+      padding-left: 0;
+      border-radius: 0;
+      color: var(--s-color-base-content-primary);
+      font-size: $s-font-size-input;
+      line-height: $s-line-height-small;
+      &, &:hover, &:focus {
+        background-color: var(--s-color-base-background);
+        border-color: var(--s-color-base-background);
+      }
+      &:disabled {
+        color: var(--s-color-base-content-tertiary);
+      }
+      &:not(:disabled) {
+        &:hover, &:focus {
+          color: var(--s-color-base-content-primary);
+        }
+      }
+    }
+    .s-placeholder {
+      display: none;
+    }
+  }
+  .el-button {
+    &--choose-token,
+    &--empty-token {
+      font-feature-settings: $s-font-feature-settings-title;
+      > span {
+        display: inline-flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        > i[class^=s-icon-] {
+          margin-left: $inner-spacing-mini / 2;
+          margin-right: 0;
+          font-size: $s-font-size-input;
+        }
+      }
+    }
+    &--choose-token {
+      > span {
+        > i[class^=s-icon-] {
+          margin-left: $inner-spacing-mini;
+        }
+      }
+    }
+  }
+}
 </style>
 
 <style lang="scss" scoped>

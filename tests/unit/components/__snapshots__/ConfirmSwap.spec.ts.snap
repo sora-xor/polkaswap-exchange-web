@@ -18,7 +18,9 @@ exports[`ConfirmSwap.vue should renders correctly 1`] = `
       </span>
        
       <s-icon-stub
+        class="icon-divider"
         name="arrow-bottom-rounded"
+        size="medium"
       />
        
       <span

@@ -18,9 +18,9 @@ export default class InfoCard extends Mixins(TranslationMixin) {
 <style lang="scss">
 .card {
   &__title {
-    font-weight: $s-font-weight-medium;
     line-height: $s-line-height-big;
     color: var(--s-color-base-content-primary);
+    @include font-weight(600);
   }
   &__data {
     display: flex;

@@ -2,7 +2,7 @@
   <div class="container">
     <generic-header :title="t('removeLiquidity.title')" :tooltip="t('removeLiquidity.description')" />
     <s-form
-      class="el-form--remove-liquidity"
+      class="el-form--actions"
       :show-message="false"
     >
       <info-card class="slider-container" :title="t('removeLiquidity.amount')">
@@ -68,7 +68,7 @@
         </div>
       </div>
 
-      <s-icon class="icon-divider" name="plus" size="medium" />
+      <s-icon class="icon-divider" name="plus-rounded" size="medium" />
 
       <div class="input-container">
         <div class="input-line">
@@ -216,27 +216,12 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
 }
 </script>
 
-<style lang="scss">
-$swap-input-class: ".el-input";
-
-.el-form--remove-liquidity {
-  @include s-input-styles;
-  @include token-buttons-styles;
-}
-</style>
-
 <style lang="scss" scoped>
 .container {
   @include container-styles;
 }
 
-.icon-divider {
-  padding: $inner-spacing-medium;
-}
-.el-form--remove-liquidity {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.el-form--actions {
   .slider-container {
     width: 100%;
 
@@ -250,88 +235,15 @@ $swap-input-class: ".el-input";
     }
   }
   .input-container {
-    position: relative;
-    padding: $inner-spacing-small $inner-spacing-medium $inner-spacing-mini;
-    width: 100%;
-    background-color: var(--s-color-base-background);
-    border-radius: var(--s-border-radius-mini);
-    .input-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      + .input-line {
-        margin-top: $inner-spacing-small;
-      }
-    }
-    .el-form-item {
-      margin-bottom: 0;
-      width: 50%;
-    }
     .token {
       .liquidity-logo {
         order: 1;
-        margin-right: $inner-spacing-mini;
       }
     }
-    .input-title,
-    .token-balance {
-      display: inline-flex;
-      align-items: baseline;
-    }
-    .input-title {
-      font-weight: $s-font-weight-medium;
-      &-estimated {
-        margin-left: $inner-spacing-mini / 2;
-        font-size: var(--s-font-size-mini);
-        font-weight: $s-font-weight-mini;
-      }
-    }
-    @include token-styles;
   }
-  .s-input {
-    min-height: 0;
-  }
-  .s-tertiary {
-    padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
-  }
-  .el-button {
-    &--max,
-    &--empty-token,
-    &--choose-token {
-      font-weight: $s-font-weight-big;
-      font-feature-settings: $s-font-feature-settings-title;
-    }
-    &--max {
-      margin-right: $inner-spacing-mini;
-      padding-right: $inner-spacing-mini;
-      height: var(--s-size-mini);
-    }
-    &--empty-token {
-      position: absolute;
-      right: $inner-spacing-mini;
-      bottom: $inner-spacing-mini;
-    }
-    &--choose-token {
-      margin-left: 0;
-      margin-right: -$inner-spacing-mini;
-      padding-left: $inner-spacing-mini / 2;
-      background-color: var(--s-color-base-background);
-      border-color: var(--s-color-base-background);
-      color: var(--s-color-base-content-primary);
-      cursor: default;
-    }
-    &.el-button--switch-price {
-      margin-right: 0;
-      margin-left: $inner-spacing-mini;
-    }
-  }
-  .s-primary {
-    margin-top: $inner-spacing-medium;
-    width: 100%;
-    &:disabled {
-      color: var(--s-color-base-on-disabled);
-    }
-  }
+  @include input-form-styles;
+  @include buttons(true);
+  @include full-width-button;
 }
 
 .price-container {
@@ -339,4 +251,6 @@ $swap-input-class: ".el-input";
   line-height: $s-line-height-big;
   color: var(--s-color-base-content-secondary)
 }
+
+@include vertical-divider;
 </style>

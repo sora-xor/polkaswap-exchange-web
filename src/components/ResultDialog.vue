@@ -68,20 +68,20 @@ $transactionIconSize: 68px;
     margin-right: $inner-spacing-mini / 2;
     text-transform: uppercase;
     font-size: $s-font-size-settings;
-    font-weight: $s-font-weight-big;
+    font-feature-settings: $s-font-feature-settings-type;
+    letter-spacing: $s-letter-spacing-type;
     background-color: var(--s-color-base-background);
     border-radius: var(--s-border-radius-mini);
+    @include font-weight(700);
   }
   &-info {
     margin-right: $inner-spacing-mini;
-    font-weight: $s-font-weight-medium;
+    font-feature-settings: $s-font-feature-settings-common;
+    @include font-weight(600);
   }
   .s-icon-external-link {
     cursor: pointer;
   }
 }
-.el-divider {
-  margin-top: $inner-spacing-small;
-  margin-bottom: $inner-spacing-small;
-}
+@include vertical-divider('el-divider');
 </style>

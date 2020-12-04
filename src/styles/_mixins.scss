@@ -7,6 +7,26 @@
   }
 }
 
+@mixin font-weight($fontWeight: 400, $important: false) {
+  @if $fontWeight == 400 and $important == false {
+    font-family: "Sora", sans-serif;
+  } @else if $fontWeight == 400 and $important == true {
+    font-family: "Sora", sans-serif !important;
+  } @else if $fontWeight == 500 and $important == false {
+    font-family: "SoraSB", sans-serif;
+  } @else if $fontWeight == 500 and $important == true {
+    font-family: "SoraSB", sans-serif !important;
+  } @else if $fontWeight == 600 and $important == false {
+    font-family: "SoraB", sans-serif;
+  } @else if $fontWeight == 600 and $important == true {
+    font-family: "SoraB", sans-serif !important;
+  } @else if $fontWeight == 700 and $important == false {
+    font-family: "SoraEB", sans-serif;
+  } @else if $fontWeight == 700 and $important == true {
+    font-family: "SoraEB", sans-serif !important;
+  }
+}
+
 @mixin token-styles {
   .token {
     display: flex;
@@ -48,64 +68,99 @@
   color: var(--s-color-base-content-primary);
 }
 
-@mixin s-input-styles {
-  $swap-input-class: ".el-input";
-
-  .s-input--token-value {
-    #{$swap-input-class} {
-      #{$swap-input-class}__inner {
-        padding-top: 0;
+@mixin input-form-styles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .input-container {
+    position: relative;
+    padding: $inner-spacing-small $inner-spacing-medium $inner-spacing-mini;
+    width: 100%;
+    background-color: var(--s-color-base-background);
+    border-radius: var(--s-border-radius-mini);
+    .input-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      + .input-line {
+        margin-top: $inner-spacing-small;
       }
     }
-    #{$swap-input-class}__inner {
-      height: var(--s-size-small);
-      padding-right: 0;
-      padding-left: 0;
-      border-radius: 0;
+    .el-form-item {
+      margin-bottom: 0;
+      width: 50%;
+    }
+    .input-title,
+    .token-balance {
+      display: inline-flex;
+      align-items: baseline;
+    }
+    .input-title {
+      font-family: "SoraB", sans-serif !important;
+    }
+    @include token-styles;
+  }
+  .s-input {
+    min-height: 0;
+    font-feature-settings: $s-font-feature-settings-input;
+  }
+}
+
+@mixin buttons($isChooseTokenDisabled: false) {
+  .s-tertiary {
+    padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
+  }
+  .el-button {
+    &--max,
+    &--empty-token,
+    &--choose-token {
+      font-feature-settings: $s-font-feature-settings-title;
+      @include font-weight(700);
+    }
+    &--max {
+      margin-right: $inner-spacing-mini / 2;
+      padding-right: $inner-spacing-mini;
+      height: var(--s-size-mini);
+    }
+    &--empty-token {
+      position: absolute;
+      right: $inner-spacing-mini;
+      bottom: $inner-spacing-mini;
+    }
+    &--choose-token {
+      margin-left: 0;
+      margin-right: -$inner-spacing-mini;
+      padding-left: $inner-spacing-mini / 2;
+      background-color: var(--s-color-base-background);
+      border-color: var(--s-color-base-background);
       color: var(--s-color-base-content-primary);
-      font-size: $s-font-size-input;
-      line-height: $s-line-height-small;
-      &, &:hover, &:focus {
-        background-color: var(--s-color-base-background);
-        border-color: var(--s-color-base-background);
-      }
-      &:disabled {
-        color: var(--s-color-base-content-tertiary);
-      }
-      &:not(:disabled) {
-        &:hover, &:focus {
+      font-size: var(--s-font-size-small);
+      @if $isChooseTokenDisabled == true {
+        cursor: default;
+      } @else {
+        &:hover, &:active, &:focus {
+          background-color: var(--s-color-base-background-hover);
+          border-color: var(--s-color-base-background-hover);
           color: var(--s-color-base-content-primary);
         }
       }
     }
-    .s-placeholder {
-      display: none;
+  }
+}
+
+@mixin full-width-button($buttonClass: 's-primary', $marginTop: $inner-spacing-medium) {
+  .#{$buttonClass} {
+    margin-top: $marginTop;
+    width: 100%;
+    &:not(:disabled) {
+      @include font-weight(600, true);
     }
   }
 }
 
-@mixin token-buttons-styles {
-  .el-button {
-    &--choose-token,
-    &--empty-token {
-      font-feature-settings: $s-font-feature-settings-title;
-      > span {
-        display: inline-flex;
-        flex-direction: row-reverse;
-        align-items: center;
-        > i[class^=s-icon-] {
-          margin-left: $inner-spacing-mini / 2;
-          margin-right: 0;
-          font-size: $s-font-size-input;
-        }
-      }
-    }
-    &--choose-token {
-      > span {
-        > i[class^=s-icon-] {
-          margin-left: $inner-spacing-mini;
-        }
-      }
-    }
+@mixin vertical-divider($dividerClass: 'icon-divider') {
+  .#{$dividerClass} {
+    margin-top: $inner-spacing-mini;
+    margin-bottom: $inner-spacing-mini;
   }
 }

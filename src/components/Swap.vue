@@ -1,7 +1,7 @@
 <template>
   <s-form
     v-model="formModel"
-    class="el-form--swap"
+    class="el-form--actions"
     :show-message="false"
   >
     <div class="input-container">
@@ -264,103 +264,17 @@ export default class Swap extends Mixins(TranslationMixin) {
 }
 </script>
 
-<style lang="scss">
-.el-form--swap {
-  @include s-input-styles;
-  @include token-buttons-styles;
-}
-</style>
-
 <style lang="scss" scoped>
-.el-form--swap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .input-container {
-    position: relative;
-    padding: $inner-spacing-small $inner-spacing-medium $inner-spacing-mini;
-    width: 100%;
-    background-color: var(--s-color-base-background);
-    border-radius: var(--s-border-radius-mini);
-    .input-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      + .input-line {
-        margin-top: $inner-spacing-small;
-      }
-    }
-    .el-form-item {
-      margin-bottom: 0;
-      width: 50%;
-    }
-    .input-title,
-    .token-balance {
-      display: inline-flex;
-      align-items: baseline;
-    }
-    .input-title {
-      font-weight: $s-font-weight-medium;
-      &-estimated {
-        margin-left: $inner-spacing-mini / 2;
-        font-size: var(--s-font-size-mini);
-        font-weight: $s-font-weight-mini;
-      }
-    }
-    @include token-styles;
-  }
-  .s-input {
-    min-height: 0;
-    font-feature-settings: $s-font-feature-settings-input;
-  }
-  .s-tertiary {
-    padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
-  }
-  .el-button {
-    font-feature-settings: $s-font-feature-settings-common;
-    &--switch-tokens {
-      &,
-      & + .input-container {
-        margin-top: $inner-spacing-mini;
-      }
-    }
-    &.s-primary:not(:disabled) {
-      font-weight: $s-font-weight-medium;
-    }
-    &--max,
-    &--empty-token,
-    &--choose-token {
-      font-weight: $s-font-weight-big;
-      font-feature-settings: $s-font-feature-settings-title;
-    }
-    &--max {
-      margin-right: $inner-spacing-mini / 2;
-      padding-right: $inner-spacing-mini;
-      height: var(--s-size-mini);
-    }
-    &--empty-token {
-      position: absolute;
-      right: $inner-spacing-mini;
-      bottom: $inner-spacing-mini;
-    }
-    &--choose-token {
-      margin-left: 0;
-      margin-right: -$inner-spacing-mini;
-      padding-left: $inner-spacing-mini / 2;
-      background-color: var(--s-color-base-background);
-      border-color: var(--s-color-base-background);
-      color: var(--s-color-base-content-primary);
-      font-size: var(--s-font-size-small);
-      &:hover, &:active, &:focus {
-        background-color: var(--s-color-base-background-hover);
-        border-color: var(--s-color-base-background-hover);
-        color: var(--s-color-base-content-primary);
-      }
-    }
-  }
-  .s-primary {
-    margin-top: $inner-spacing-medium;
-    width: 100%;
+.el-form--actions {
+  @include input-form-styles;
+  @include buttons;
+  @include full-width-button;
+  @include vertical-divider('el-button--switch-tokens');
+
+  .input-title-estimated {
+    margin-left: $inner-spacing-mini / 2;
+    font-size: var(--s-font-size-mini);
+    @include font-weight;
   }
 }
 </style>

@@ -7,7 +7,7 @@ exports[`CreatePair.vue should renders correctly 1`] = `
   <!---->
    
   <s-form-stub
-    class="el-form--create-pair"
+    class="el-form--actions"
     labelposition="right"
     validateonrulechange="true"
     value="[object Object]"
@@ -78,8 +78,8 @@ exports[`CreatePair.vue should renders correctly 1`] = `
     </div>
      
     <s-icon-stub
-      class="plus"
-      name="plus"
+      class="icon-divider"
+      name="plus-rounded"
       size="medium"
     />
      

@@ -2,7 +2,7 @@
 
 exports[`Swap.vue should renders correctly 1`] = `
 <s-form-stub
-  class="el-form--swap"
+  class="el-form--actions"
   labelposition="right"
   validateonrulechange="true"
   value="[object Object]"

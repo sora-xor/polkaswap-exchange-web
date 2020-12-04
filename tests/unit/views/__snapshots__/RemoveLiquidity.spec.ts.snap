@@ -7,7 +7,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
   <!---->
    
   <s-form-stub
-    class="el-form--remove-liquidity"
+    class="el-form--actions"
     labelposition="right"
     validateonrulechange="true"
   >
@@ -181,7 +181,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
      
     <s-icon-stub
       class="icon-divider"
-      name="plus"
+      name="plus-rounded"
       size="medium"
     />
      

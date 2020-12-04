@@ -3,7 +3,7 @@
     <generic-header :title="t('addLiquidity.title')" :tooltip="t('addLiquidity.description')" />
     <s-form
       v-model="formModel"
-      class="el-form--add-liquidity"
+      class="el-form--actions"
       :show-message="false"
     >
       <div class="input-container">
@@ -39,7 +39,7 @@
           </s-button>
         </div>
       </div>
-      <s-icon class="plus" name="plus" size="medium" />
+      <s-icon class="icon-divider" name="plus-rounded" size="medium" />
       <div class="input-container">
         <div class="input-line">
           <div class="input-title">
@@ -286,117 +286,17 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
 }
 </script>
 
-<style lang="scss">
-$swap-input-class: ".el-input";
-
-.plus {
-  padding: $inner-spacing-medium;
-}
-.el-form--add-liquidity {
-  @include s-input-styles;
-  @include token-buttons-styles;
-}
-.card {
-  .el-divider {
-    margin-top: $inner-spacing-mini;
-    margin-bottom: $inner-spacing-mini;
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 .container {
   @include container-styles;
 }
 
-.el-form--add-liquidity {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .input-container {
-    position: relative;
-    padding: $inner-spacing-small $inner-spacing-medium $inner-spacing-mini;
-    width: 100%;
-    background-color: var(--s-color-base-background);
-    border-radius: var(--s-border-radius-mini);
-    .input-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      + .input-line {
-        margin-top: $inner-spacing-small;
-      }
-    }
-    .el-form-item {
-      margin-bottom: 0;
-      width: 50%;
-    }
-    .input-title,
-    .token-balance {
-      display: inline-flex;
-      align-items: baseline;
-    }
-    .input-title {
-      font-weight: $s-font-weight-medium;
-      &-estimated {
-        margin-left: $inner-spacing-mini / 2;
-        font-size: var(--s-font-size-mini);
-        font-weight: $s-font-weight-mini;
-      }
-    }
-    @include token-styles;
-  }
-  .s-input {
-    min-height: 0;
-  }
-  .s-tertiary {
-    padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
-  }
-  .el-button {
-    &--max,
-    &--empty-token,
-    &--choose-token {
-      font-weight: $s-font-weight-big;
-      font-feature-settings: $s-font-feature-settings-title;
-    }
-    &--max {
-      margin-right: $inner-spacing-mini;
-      padding-right: $inner-spacing-mini;
-      height: var(--s-size-mini);
-    }
-    &--empty-token {
-      position: absolute;
-      right: $inner-spacing-mini;
-      bottom: $inner-spacing-mini;
-    }
-    &--choose-token {
-      margin-left: 0;
-      margin-right: -$inner-spacing-mini;
-      padding-left: $inner-spacing-mini / 2;
-      background-color: var(--s-color-base-background);
-      border-color: var(--s-color-base-background);
-      color: var(--s-color-base-content-primary);
-      &:hover, &:active, &:focus {
-        background-color: var(--s-color-base-background-hover);
-        border-color: var(--s-color-base-background-hover);
-        color: var(--s-color-base-content-primary);
-      }
-    }
-    &.el-button--switch-price {
-      margin-right: 0;
-      margin-left: $inner-spacing-mini;
-    }
-  }
-  .s-primary {
-    margin-top: $inner-spacing-medium;
-    width: 100%;
-    &:disabled {
-      color: var(--s-color-base-on-disabled);
-    }
-  }
+.el-form--actions {
+  @include input-form-styles;
+  @include buttons;
+  @include full-width-button;
 }
 
-.pair-token-logo {
-  margin-right: $inner-spacing-mini
-}
+@include vertical-divider;
+@include vertical-divider('el-divider');
 </style>

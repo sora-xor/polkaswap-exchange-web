@@ -77,7 +77,7 @@ export default {
     yourLiquidity: 'Your liquidity',
     connectToWallet: 'Connect to a wallet to view your liquidity.',
     liquidityNotFound: 'No liquidity found.',
-    addLiquidity: 'Add Liquidity',
+    addLiquidity: 'Add liquidity',
     removeLiquidity: 'Remove liquidity',
     createPair: 'Create a pair',
     pooledToken: '{tokenSymbol} Pooled:',

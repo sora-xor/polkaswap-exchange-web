@@ -7,7 +7,7 @@
     <div class="tokens">
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedFromValue }}</span>
-        <s-icon name="arrow-bottom-rounded" />
+        <s-icon class="icon-divider" name="arrow-bottom-rounded" size="medium" />
         <span class="token-value">{{ formattedToValue }}</span>
       </div>
       <div class="tokens-info-container">
@@ -75,8 +75,8 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
 .dialog--confirm-swap {
   .transaction-number {
     color: var(--s-color-base-content-primary);
-    font-weight: $s-font-weight-medium;
     font-feature-settings: $s-font-feature-settings-common;
+    @include font-weight(600);
   }
 }
 </style>
@@ -103,21 +103,11 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
     flex-shrink: 0;
   }
 }
-.s-icon-arrow-bottom-rounded,
-.transaction-message,
-.el-divider {
-  margin-top: $inner-spacing-mini;
-}
-.s-icon-arrow-bottom-rounded,
-.el-divider {
-  margin-bottom: $inner-spacing-mini;
-}
-.s-icon-arrow-bottom-rounded {
-  display: block;
-  font-size: var(--s-icon-font-size-mini);
-}
 .transaction-message {
+  margin-top: $inner-spacing-mini;
   color: var(--s-color-base-content-tertiary);
   line-height: $s-line-height-big;
 }
+@include vertical-divider;
+@include vertical-divider('el-divider');
 </style>

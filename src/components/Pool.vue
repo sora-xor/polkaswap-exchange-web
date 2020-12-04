@@ -183,13 +183,6 @@ $pair-icon-height: 36px;
   flex-direction: column;
   align-items: center;
   .el-button {
-    &--add-liquidity,
-    &--create-pair {
-      margin-top: $inner-spacing-mini;
-      width: 100%;
-      font-weight: $s-font-weight-medium;
-      font-feature-settings: $s-font-feature-settings-common;
-    }
     &--create-pair {
       margin-left: 0;
       color: var(--s-color-theme-accent);
@@ -208,6 +201,8 @@ $pair-icon-height: 36px;
       }
     }
   }
+  @include full-width-button;
+  @include full-width-button('el-button--create-pair', $inner-spacing-mini);
 }
 
 .pool {
@@ -219,7 +214,7 @@ $pair-icon-height: 36px;
       margin-bottom: $inner-spacing-mini;
       padding: calc(#{$inner-spacing-big} - (#{$pair-icon-height} - var(--s-size-small)) / 2) $inner-spacing-medium;
       &:last-child {
-        margin-bottom: $inner-spacing-medium;
+        margin-bottom: 0;
       }
     }
     h3 {
@@ -267,8 +262,9 @@ $pair-icon-height: 36px;
       .el-button {
         padding-left: $inner-spacing-small;
         padding-right: $inner-spacing-small;
-        font-weight: $s-font-weight-big;
         font-feature-settings: $s-font-feature-settings-title;
+        width: auto;
+        @include font-weight(700);
         + .el-button {
           margin-left: $inner-spacing-mini;
         }
