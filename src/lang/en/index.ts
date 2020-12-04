@@ -26,7 +26,6 @@ export default {
     openExchange: 'Open exchange',
     mediumLink: 'Medium',
     githubLink: 'Github',
-    fundedBy: 'Funded by',
     [Topics.SwapTokens]: {
       title: 'Swap any token on Ethereum',
       text: 'Use Polkaswap exchange or integrate into your project using the SDK'

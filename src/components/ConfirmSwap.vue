@@ -24,7 +24,7 @@
     <p class="transaction-message" v-html="t('swap.swapOutputMessage', { transactionValue : `<span class='transaction-number'>${toValue}</span>` })" />
     <s-divider />
     <swap-info :showPrice="true" />
-    <swap-info />
+    <swap-info :showTooltips="false" />
     <template #footer>
       <s-button type="primary" @click="handleConfirmSwap">{{ t('swap.confirmSwap') }}</s-button>
     </template>

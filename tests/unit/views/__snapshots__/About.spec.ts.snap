@@ -20,24 +20,10 @@ exports[`About.vue should renders correctly 1`] = `
         
       </h1>
        
-      <div
-        class="web3-logo s-flex"
-      >
-        <span>
-          
-        </span>
-         
-        <i
-          class="logo"
-        />
-      </div>
+      <i
+        class="web3-logo"
+      />
     </div>
-     
-    <s-divider-stub
-      contentposition="center"
-      direction="horizontal"
-      type="secondary"
-    />
      
     <div
       class="links s-flex"
@@ -87,12 +73,6 @@ exports[`About.vue should renders correctly 1`] = `
       
       </s-button-stub>
     </div>
-     
-    <s-divider-stub
-      contentposition="center"
-      direction="horizontal"
-      type="secondary"
-    />
      
     <div
       class="articles s-flex"

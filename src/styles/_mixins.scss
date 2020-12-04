@@ -115,7 +115,7 @@
     &--empty-token,
     &--choose-token {
       font-feature-settings: $s-font-feature-settings-title;
-      @include font-weight(700);
+      @include font-weight(700, true);
     }
     &--max {
       margin-right: $inner-spacing-mini / 2;

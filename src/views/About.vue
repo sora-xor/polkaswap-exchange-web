@@ -5,12 +5,8 @@
     <div class="content">
       <div class="terms s-flex">
         <h1 class="title">{{ t('about.polkaswapText') }}</h1>
-        <div class="web3-logo s-flex">
-          <span>{{ t('about.fundedBy') }}</span>
-          <i class="logo" />
-        </div>
+        <i class="web3-logo" />
       </div>
-      <s-divider />
       <div class="links s-flex">
         <s-button type="primary" @click="handleClickExchange">
           {{ t('about.openExchange') }}
@@ -23,7 +19,6 @@
           {{ t('about.githubLink') }}
         </s-button>
       </div>
-      <s-divider />
       <div class="articles s-flex">
         <s-row>
           <s-col :lg="3" :md="4" :sm="6" :xs="12" v-for="topic in AboutTopics" :key="topic.title">
@@ -104,18 +99,11 @@ export default class About extends Mixins(TranslationMixin) {
         @include font-weight(600);
       }
       .web3-logo {
-        flex-direction: column;
         margin-left: auto;
-        > span {
-          color: var(--s-color-base-content-secondary);
-          font-size: var(--s-font-size-mini);
-        }
-        .logo {
-          margin-top: $inner-spacing-small;
-          background-image: url('~@/assets/img/web3-logo.svg');
-          width: 140px;
-          height: 48px;
-        }
+        margin-top: $inner-spacing-small;
+        background-image: url('~@/assets/img/web3-logo.svg');
+        width: 140px;
+        height: 48px;
       }
     }
     .links {
