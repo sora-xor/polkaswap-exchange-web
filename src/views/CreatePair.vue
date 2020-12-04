@@ -128,6 +128,12 @@
       </div>
     </info-card>
 
+    <info-card class="card--first-liquidity" :title="t('createPair.firstLiquidityProvider')">
+      <div class="card__data">
+        <p v-html="t('createPair.firstLiquidityProviderInfo')" />
+      </div>
+    </info-card>
+
     <select-token :visible.sync="showSelectFirstTokenDialog" @select="setFirstToken" />
     <select-token :visible.sync="showSelectSecondTokenDialog" @select="setSecondToken" />
 
@@ -290,6 +296,14 @@ export default class CreatePair extends Mixins(TranslationMixin) {
 <style lang="scss" scoped>
 .container {
   @include container-styles;
+  .card--first-liquidity {
+    margin-top: $inner-spacing-medium;
+    font-feature-settings: $s-font-feature-settings-common;
+    .card__data {
+      margin-top: $inner-spacing-mini / 2;
+      font-size: var(--s-font-size-mini);
+    }
+  }
 }
 
 .el-form--actions {

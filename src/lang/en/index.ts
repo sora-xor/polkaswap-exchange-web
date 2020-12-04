@@ -107,7 +107,9 @@ export default {
     add: 'ADD',
     ok: 'OK',
     transactionMessage: '{firstToken} and {secondToken}',
-    description: 'When you add liquidity, you are awarded with token pair specific PSWAP tokens that represent your pool share.'
+    description: 'When you add liquidity, you are awarded with token pair specific PSWAP tokens that represent your pool share.',
+    firstLiquidityProvider: 'You are the first liquidity provider',
+    firstLiquidityProviderInfo: 'The ratio of tokens you add will set the price of this pool.<br/>Once you are happy with the rate click supply to review.'
   },
   confirmSupply: {
     title: 'You will receive',

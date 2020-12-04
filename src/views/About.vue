@@ -87,6 +87,7 @@ export default class About extends Mixins(TranslationMixin) {
   .content {
     padding: $inner-spacing-big $inner-spacing-mini * 4;
     .terms {
+      margin-bottom: $inner-spacing-big;
       .title {
         margin-top: 0;
         margin-right: $inner-spacing-mini;
@@ -122,6 +123,9 @@ export default class About extends Mixins(TranslationMixin) {
     }
     .s-primary + .s-link {
       margin-left: $inner-spacing-mini * 4;
+    }
+    .articles {
+      margin-top: $inner-spacing-big;
     }
     .article-card {
       margin: $inner-spacing-mini / 2;
