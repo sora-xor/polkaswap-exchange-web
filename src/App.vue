@@ -6,8 +6,8 @@
         mode="horizontal"
         background-color="transparent"
         box-shadow="none"
-        text-color="#2D2926"
-        active-text-color="#ED145B"
+        text-color="var(--s-color-base-content-primary)"
+        active-text-color="var(--s-color-theme-accent)"
         active-hover-color="transparent"
         :default-active="getCurrentPath()"
         @select="goTo"
@@ -210,6 +210,7 @@ $menu-height: 65px;
     font-feature-settings: $s-font-feature-settings-title;
     &,
     &.is-active {
+      // TODO 4 alexnatalia: remove this local fix after UI Lib fix
       border-bottom: none;
       &:hover {
         color: var(--s-color-theme-accent-hover) !important;
