@@ -70,6 +70,8 @@ export default class About extends Mixins(TranslationMixin) {
 </style>
 
 <style lang="scss" scoped>
+$logo-width: 140px;
+
 .layout {
   flex-direction: column;
   height: 100%;
@@ -85,14 +87,18 @@ export default class About extends Mixins(TranslationMixin) {
     flex-shrink: 0;
   }
   .content {
-    padding: $inner-spacing-big $inner-spacing-mini * 4;
+    padding: $inner-spacing-big $inner-spacing-mini;
+    .terms, .links {
+      padding-right: $inner-spacing-medium;
+      padding-left: $inner-spacing-medium;
+    }
     .terms {
       margin-bottom: $inner-spacing-big;
       .title {
         margin-top: 0;
         margin-right: $inner-spacing-mini;
         margin-bottom: 0;
-        max-width: 75%;
+        width: calc(100% - #{$logo-width} - #{$inner-spacing-medium});
         color: var(--s-color-brand-day);
         font-size: var(--s-heading5-font-size);
         font-feature-settings: $s-font-feature-settings-title;
@@ -103,7 +109,7 @@ export default class About extends Mixins(TranslationMixin) {
         margin-left: auto;
         margin-top: $inner-spacing-small;
         background-image: url('~@/assets/img/web3-logo.svg');
-        width: 140px;
+        width: $logo-width;
         height: 48px;
       }
     }
@@ -111,18 +117,17 @@ export default class About extends Mixins(TranslationMixin) {
       display: flex;
       align-items: center;
     }
+    .s-primary {
+      & + .s-link {
+        margin-left: $inner-spacing-medium;
+      }
+    }
     .s-link {
       color: var(--s-color-theme-accent);
       padding: 0;
       &:hover, &:active, &:focus {
         color: var(--s-color-base-content-primary);
       }
-      & + .s-link {
-        margin-left: $inner-spacing-medium;
-      }
-    }
-    .s-primary + .s-link {
-      margin-left: $inner-spacing-mini * 4;
     }
     .articles {
       margin-top: $inner-spacing-big;
@@ -160,9 +165,22 @@ export default class About extends Mixins(TranslationMixin) {
     .banner {
       height: 256px;
     }
-    .content .terms .title {
-      font-size: var(--s-heading3-font-size);
-      @include font-weight;
+    .content {
+      padding-right: $inner-spacing-mini * 4;
+      padding-left: $inner-spacing-mini * 4;
+      .terms, .links {
+        padding-right: 0;
+        padding-left: 0;
+      }
+      .terms .title {
+        font-size: var(--s-heading3-font-size);
+        @include font-weight;
+        max-width: 75%;
+        width: 100%;
+      }
+      .s-primary + .s-link {
+        margin-left: $inner-spacing-mini * 4;
+      }
     }
   }
 }

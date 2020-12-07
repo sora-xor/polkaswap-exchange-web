@@ -44,7 +44,7 @@
         </div>
         <div class="value">
           <div class="value-container">{{ transactionDeadline }} {{ t('settings.min') }}</div>
-          <s-slider class="value-slider" :value="transactionDeadline" @change="handleSetTransactionDeadline" />
+          <s-slider class="value-slider" :value="transactionDeadline" :showTooltip="false" @change="handleSetTransactionDeadline" />
         </div>
       </div>
       <s-divider />

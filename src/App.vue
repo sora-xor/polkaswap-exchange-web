@@ -211,6 +211,9 @@ $menu-height: 65px;
     &,
     &.is-active {
       border-bottom: none;
+      &:hover {
+        color: var(--s-color-theme-accent-hover) !important;
+      }
     }
     &:hover {
       color: var(--s-color-base-content-secondary) !important;
