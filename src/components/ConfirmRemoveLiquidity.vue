@@ -25,7 +25,7 @@
     <s-row flex justify="space-between" class="price-container">
       <div v-if="firstToken && secondToken">
         <s-row flex>
-          <pair-token-logo :firstToken="firstToken" :secondToken="secondToken" size="mini" />
+          <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="mini" />
           {{ t('confirmSupply.poolTokensBurned', { first: firstToken.symbol, second: secondToken.symbol }) }}
         </s-row>
       </div>

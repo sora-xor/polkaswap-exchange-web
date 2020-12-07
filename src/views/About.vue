@@ -22,7 +22,7 @@
       <div class="articles s-flex">
         <s-row>
           <s-col :lg="3" :md="4" :sm="6" :xs="12" v-for="topic in AboutTopics" :key="topic.title">
-            <s-card class="article-card" borderRadius="big" shadow='never'>
+            <s-card class="article-card" border-radius="big" shadow='never'>
               <template #header>
                 <h4 class="title">
                   {{ t(`about.${topic.title}.title`) }}

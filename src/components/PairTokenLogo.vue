@@ -1,7 +1,7 @@
 <template>
   <div :class="computedClasses">
-    <token-logo :token="firstToken" :tokenSymbol="firstTokenSymbol" :size="size" />
-    <token-logo :token="secondToken" :tokenSymbol="secondTokenSymbol" :size="size" />
+    <token-logo :token="firstToken" :token-symbol="firstTokenSymbol" :size="size" />
+    <token-logo :token="secondToken" :token-symbol="secondTokenSymbol" :size="size" />
   </div>
 </template>
 

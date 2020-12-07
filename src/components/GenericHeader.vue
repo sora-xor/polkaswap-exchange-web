@@ -4,9 +4,9 @@
     <h3 class="header-title">{{ title }}</h3>
     <s-tooltip
       class="header-tooltip"
-      popperClass="info-tooltip info-tooltip--header"
+      popper-class="info-tooltip info-tooltip--header"
       :content="tooltip"
-      borderRadius="mini"
+      border-radius="mini"
       theme="light"
       placement="bottom-end"
       animation="none"

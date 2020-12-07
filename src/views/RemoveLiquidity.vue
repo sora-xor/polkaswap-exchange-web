@@ -31,12 +31,12 @@
             />
           </s-form-item>
           <div class="token">
-            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleLiquidityMaxValue">
+            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleLiquidityMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <div class="liquidity-logo">
-                <pair-token-logo :firstToken="firstToken" :secondToken="secondToken" size="mini" />
+                <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="mini" />
               </div>
               {{ firstToken.symbol }}-{{ secondToken.symbol }}
             </s-button>
@@ -60,7 +60,7 @@
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
-            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <token-logo :token="firstToken" size="small" />
               {{ firstToken.symbol }}
             </s-button>
@@ -86,14 +86,14 @@
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
-            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <token-logo :token="secondToken" size="small" />
               {{ secondToken.symbol }}
             </s-button>
           </div>
         </div>
       </div>
-      <s-button type="primary" borderRadius="small" :disabled="isEmptyAmount" @click="showConfirmDialog = true">
+      <s-button type="primary" border-radius="small" :disabled="isEmptyAmount" @click="showConfirmDialog = true">
         <template v-if="isEmptyAmount">
           {{ t('swap.enterAmount') }}
         </template>
