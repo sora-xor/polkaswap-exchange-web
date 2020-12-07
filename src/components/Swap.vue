@@ -1,7 +1,7 @@
 <template>
   <s-form
     v-model="formModel"
-    class="el-form--swap"
+    class="el-form--actions"
     :show-message="false"
   >
     <div class="input-container">
@@ -17,15 +17,13 @@
           <s-input
             v-model="formModel.from"
             v-float="formModel.from"
-            class="s-input--swap"
+            class="s-input--token-value"
             :placeholder="inputPlaceholder"
-            :disabled="!areTokensSelected"
             @change="handleChangeFieldFrom"
             @blur="handleBlurFieldFrom"
           />
         </s-form-item>
         <div v-if="tokenFrom" class="token">
-          <!-- TODO: Fix secondary сolors in UI Library and project -->
           <s-button v-if="connected && areTokensSelected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleMaxFromValue">
             {{ t('exchange.max') }}
           </s-button>
@@ -56,9 +54,8 @@
           <s-input
             v-model="formModel.to"
             v-float="formModel.to"
-            class="s-input--swap"
+            class="s-input--token-value"
             :placeholder="inputPlaceholder"
-            :disabled="!areTokensSelected"
             @change="handleChangeFieldTo"
             @blur="handleBlurFieldTo"
           />
@@ -79,10 +76,7 @@
       {{ t('swap.connectWallet') }}
     </s-button>
     <s-button v-else type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="handleConfirmSwap">
-      <template v-if="!areTokensSelected">
-        {{ t('swap.chooseTokens') }}
-      </template>
-      <template v-else-if="isEmptyBalance">
+      <template v-if="isEmptyBalance">
         {{ t('swap.enterAmount') }}
       </template>
       <template v-else-if="isInsufficientBalance">
@@ -179,10 +173,10 @@ export default class Swap extends Mixins(TranslationMixin) {
   }
 
   handleChangeFieldFrom (): void {
-    if (this.areTokensSelected && !this.isFieldToFocused) {
+    if (!this.isFieldToFocused) {
       this.isFieldFromFocused = true
-      if (+this.formModel.from === 0) {
-        this.formModel.to = formatNumber(0, 4)
+      if (!this.areTokensSelected || +this.formModel.from === 0) {
+        this.formModel.to = formatNumber(0, 1)
       } else {
         this.formModel.to = formatNumber(+this.formModel.from * this.tokenFrom.price / this.tokenTo.price, 4)
       }
@@ -192,10 +186,10 @@ export default class Swap extends Mixins(TranslationMixin) {
   }
 
   handleChangeFieldTo (): void {
-    if (this.areTokensSelected && !this.isFieldFromFocused) {
+    if (!this.isFieldFromFocused) {
       this.isFieldToFocused = true
-      if (+this.formModel.to === 0) {
-        this.formModel.from = formatNumber(0, 4)
+      if (!this.areTokensSelected || +this.formModel.to === 0) {
+        this.formModel.from = formatNumber(0, 1)
       } else {
         this.formModel.from = formatNumber(+this.formModel.to * this.tokenTo.price / this.tokenFrom.price, 4)
       }
@@ -270,158 +264,17 @@ export default class Swap extends Mixins(TranslationMixin) {
 }
 </script>
 
-<style lang="scss">
-$swap-input-class: ".el-input";
-
-.el-form--swap {
-  .s-input--swap {
-    .el-input {
-      #{$swap-input-class}__inner {
-        padding-top: 0;
-      }
-    }
-    #{$swap-input-class}__inner {
-      height: var(--s-size-small);
-      padding-right: 0;
-      padding-left: 0;
-      border-radius: 0;
-      border-bottom-width: 2px;
-      color: var(--s-color-base-content-primary);
-      font-size: 20px;
-      line-height: 1.26;
-      &, &:hover, &:focus {
-        background-color: var(--s-color-base-background);
-        border-color: var(--s-color-base-background);
-      }
-      &:disabled {
-        color: var(--s-color-base-content-tertiary);
-      }
-      &:not(:disabled) {
-        &:hover, &:focus {
-          border-bottom-color: var(--s-color-base-content-primary);
-          color: var(--s-color-base-content-primary);
-        }
-      }
-    }
-    .s-placeholder {
-      display: none;
-    }
-  }
-  .el-button {
-    &--choose-token,
-    &--empty-token {
-      > span {
-        display: inline-flex;
-        flex-direction: row-reverse;
-        align-items: center;
-        > i[class^=s-icon-] {
-          margin-left: $inner-spacing-mini / 2;
-          margin-right: 0;
-          font-size: 20px;
-        }
-      }
-    }
-    &--choose-token {
-      > span {
-        > i[class^=s-icon-] {
-          margin-left: $inner-spacing-mini;
-        }
-      }
-    }
-  }
-}
-</style>
-
 <style lang="scss" scoped>
-.el-form--swap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .input-container {
-    position: relative;
-    padding: $inner-spacing-small $inner-spacing-medium $inner-spacing-mini;
-    width: 100%;
-    background-color: var(--s-color-base-background);
-    border-radius: var(--s-border-radius-mini);
-    .input-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      + .input-line {
-        margin-top: $inner-spacing-small;
-      }
-    }
-    .el-form-item {
-      margin-bottom: 0;
-      width: 50%;
-    }
-    .input-title,
-    .token-balance {
-      display: inline-flex;
-      align-items: baseline;
-    }
-    .input-title {
-      font-weight: 600;
-      &-estimated {
-        font-weight: 400;
-      }
-    }
-    .input-title-estimated {
-      margin-left: $inner-spacing-mini / 2;
-    }
-    @include token-styles;
-  }
-  .s-input {
-    min-height: 0;
-  }
-  .s-tertiary {
-    padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
-  }
-  .el-button {
-    &--switch-tokens {
-      &,
-      & + .input-container {
-        margin-top: $inner-spacing-mini;
-      }
-    }
-    &--max,
-    &--empty-token,
-    &--choose-token {
-      font-weight: 700;
-    }
-    &--max {
-      margin-right: $inner-spacing-mini;
-      padding-right: $inner-spacing-mini;
-      height: var(--s-size-mini);
-    }
-    &--empty-token {
-      position: absolute;
-      right: $inner-spacing-mini;
-      bottom: $inner-spacing-mini;
-    }
-    &--choose-token {
-      margin-left: 0;
-      margin-right: -$inner-spacing-mini;
-      padding-left: $inner-spacing-mini / 2;
-      background-color: var(--s-color-base-background);
-      border-color: var(--s-color-base-background);
-      color: var(--s-color-base-content-primary);
-      &:hover, &:active, &:focus {
-        background-color: var(--s-color-base-background-hover);
-        border-color: var(--s-color-base-background-hover);
-        color: var(--s-color-base-content-primary);
-      }
-    }
-  }
-  .s-primary {
-    margin-top: $inner-spacing-medium;
-    width: 100%;
-    &:disabled {
-      color: var(--s-color-base-on-disabled);
-    }
-    & + .swap-info {
-      margin-top: $inner-spacing-small;
-    }
+.el-form--actions {
+  @include input-form-styles;
+  @include buttons;
+  @include full-width-button;
+  @include vertical-divider('el-button--switch-tokens');
+
+  .input-title-estimated {
+    margin-left: $inner-spacing-mini / 2;
+    font-size: var(--s-font-size-mini);
+    @include font-weight;
   }
 }
 </style>

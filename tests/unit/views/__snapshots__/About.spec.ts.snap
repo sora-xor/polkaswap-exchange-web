@@ -5,7 +5,7 @@ exports[`About.vue should renders correctly 1`] = `
   class="layout s-flex"
 >
   <div
-    class="banner s-flex"
+    class="banner"
   />
    
   <div
@@ -14,28 +14,16 @@ exports[`About.vue should renders correctly 1`] = `
     <div
       class="terms s-flex"
     >
-      <span>
-        
-      </span>
-       
-      <div
-        class="web3-logo s-flex"
+      <h1
+        class="title"
       >
-        <span>
-          
-        </span>
-         
-        <i
-          class="logo"
-        />
-      </div>
+        
+      </h1>
+       
+      <i
+        class="web3-logo"
+      />
     </div>
-     
-    <s-divider-stub
-      contentposition="center"
-      direction="horizontal"
-      type="secondary"
-    />
      
     <div
       class="links s-flex"
@@ -86,12 +74,6 @@ exports[`About.vue should renders correctly 1`] = `
       </s-button-stub>
     </div>
      
-    <s-divider-stub
-      contentposition="center"
-      direction="horizontal"
-      type="secondary"
-    />
-     
     <div
       class="articles s-flex"
     >
@@ -113,8 +95,7 @@ exports[`About.vue should renders correctly 1`] = `
           <s-card-stub
             borderradius="big"
             class="article-card"
-            clickable="true"
-            shadow="hover"
+            shadow="never"
           >
              
             <span>
@@ -135,8 +116,7 @@ exports[`About.vue should renders correctly 1`] = `
           <s-card-stub
             borderradius="big"
             class="article-card"
-            clickable="true"
-            shadow="hover"
+            shadow="never"
           >
              
             <span>
@@ -157,8 +137,7 @@ exports[`About.vue should renders correctly 1`] = `
           <s-card-stub
             borderradius="big"
             class="article-card"
-            clickable="true"
-            shadow="hover"
+            shadow="never"
           >
              
             <span>
@@ -179,8 +158,7 @@ exports[`About.vue should renders correctly 1`] = `
           <s-card-stub
             borderradius="big"
             class="article-card"
-            clickable="true"
-            shadow="hover"
+            shadow="never"
           >
              
             <span>

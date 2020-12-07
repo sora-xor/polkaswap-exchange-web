@@ -46,8 +46,11 @@ $el-dialog-button-size: var(--s-size-medium);
     align-items: center;
     width: 100%;
     #{$el-dialog-class}__title {
-      font-size: $s-font-size-big;
+      font-size: var(--s-heading3-font-size);
       font-weight: normal;
+      font-feature-settings: $s-font-feature-settings-title;
+      line-height: $s-line-height-small;
+      letter-spacing: $s-letter-spacing-small;
     }
   }
   #{$el-dialog-class}__headerbtn {
@@ -60,8 +63,8 @@ $el-dialog-button-size: var(--s-size-medium);
     border-radius: var(--s-border-radius-small);
     #{$el-dialog-class}__close {
       color: var(--s-color-base-content-primary);
-      font-weight: bold;
       font-size: calc(#{$el-dialog-button-size} / 2);
+      font-weight: $s-font-weight-big;
     }
     color: var(--s-color-base-content-primary);
     &:hover, &:active, &:focus {

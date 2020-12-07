@@ -1,14 +1,8 @@
 <template>
   <div class="container">
-    <div class="header">
-      <s-button type="action" size="small" icon="arrow-left" @click="handleBack" />
-      <h3 class="header-title">{{ t('removeLiquidity.title') }}</h3>
-      <s-tooltip class="header-tooltip" popperClass="info-tooltip" borderRadius="mini" :content="t('removeLiquidity.description')" theme="light" placement="bottom-end" :show-arrow="false">
-        <s-icon name="info" size="16" />
-      </s-tooltip>
-    </div>
+    <generic-header :title="t('removeLiquidity.title')" :tooltip="t('removeLiquidity.description')" />
     <s-form
-      class="el-form--remove-liquidity"
+      class="el-form--actions"
       :show-message="false"
     >
       <info-card class="slider-container" :title="t('removeLiquidity.amount')">
@@ -31,6 +25,7 @@
           <s-form-item>
             <s-input
               :value="removeLiquidityAmount"
+              class="s-input--token-value"
               :placeholder="inputPlaceholder"
               :disabled="true"
             />
@@ -59,6 +54,7 @@
           <s-form-item>
             <s-input
               :value="firstTokenRemoveAmount"
+              class="s-input--token-value"
               :placeholder="inputPlaceholder"
               :disabled="true"
             />
@@ -72,7 +68,7 @@
         </div>
       </div>
 
-      <s-icon class="icon-divider" name="plus" size="medium" />
+      <s-icon class="icon-divider" name="plus-rounded" size="medium" />
 
       <div class="input-container">
         <div class="input-line">
@@ -84,6 +80,7 @@
           <s-form-item>
             <s-input
               :value="secondTokenRemoveAmount"
+              class="s-input--token-value"
               :placeholder="inputPlaceholder"
               :disabled="true"
             />
@@ -134,8 +131,9 @@ const namespace = 'removeLiquidity'
 
 @Component({
   components: {
-    TokenLogo: lazyComponent(Components.TokenLogo),
+    GenericHeader: lazyComponent(Components.GenericHeader),
     InfoCard: lazyComponent(Components.InfoCard),
+    TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity),
     ResultDialog: lazyComponent(Components.ResultDialog)
@@ -207,10 +205,6 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
     return token ? formatNumber(token.balance, 2) : ''
   }
 
-  handleBack (): void {
-    router.push({ name: PageNames.Pool })
-  }
-
   handleLiquidityMaxValue (): void {
     this.setRemovePart(100)
   }
@@ -222,183 +216,41 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
 }
 </script>
 
-<style lang="scss">
-$swap-input-class: ".el-input";
-
-.el-form--remove-liquidity {
-  .s-input {
-    .el-input {
-      #{$swap-input-class}__inner {
-        padding-top: 0;
-      }
-    }
-    #{$swap-input-class}__inner {
-      height: var(--s-size-small);
-      padding-right: 0;
-      padding-left: 0;
-      border-radius: 0;
-      border-bottom-width: 2px;
-      color: var(--s-color-base-content-primary);
-      font-size: 20px;
-      line-height: 1.26;
-      &, &:hover, &:focus {
-        background-color: var(--s-color-base-background);
-        border-color: var(--s-color-base-background);
-      }
-      &:disabled {
-        color: var(--s-color-base-content-tertiary);
-      }
-      &:not(:disabled) {
-        &:hover, &:focus {
-          border-bottom-color: var(--s-color-base-content-primary);
-          color: var(--s-color-base-content-primary);
-        }
-      }
-    }
-    .s-placeholder {
-      display: none;
-    }
-  }
-  .el-button {
-    &--choose-token,
-    &--empty-token {
-      > span {
-        display: inline-flex;
-        flex-direction: row-reverse;
-        align-items: center;
-        > i[class^=s-icon-] {
-          margin-left: $inner-spacing-mini / 2;
-          margin-right: 0;
-          font-size: 20px;
-        }
-      }
-    }
-    &--choose-token {
-      > span {
-        > i[class^=s-icon-] {
-          margin-left: $inner-spacing-mini;
-        }
-      }
-    }
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 .container {
   @include container-styles;
 }
 
-@include header-styles;
-
-.icon-divider {
-  padding: $inner-spacing-medium;
-}
-.el-form--remove-liquidity {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.el-form--actions {
   .slider-container {
     width: 100%;
 
     &__amount {
-      font-size: $s-font-size-big-heading;
-      line-height: 120%;
-      letter-spacing: -0.04em;
+      font-size: var(--s-heading1-font-size);
+      line-height: $s-line-height-mini;
+      letter-spacing: $s-letter-spacing-mini;
     }
     .percent {
       color: var(--s-color-base-content-secondary)
     }
   }
   .input-container {
-    position: relative;
-    padding: $inner-spacing-small $inner-spacing-medium $inner-spacing-mini;
-    width: 100%;
-    background-color: var(--s-color-base-background);
-    border-radius: var(--s-border-radius-mini);
-    .input-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      + .input-line {
-        margin-top: $inner-spacing-small;
-      }
-    }
-    .el-form-item {
-      margin-bottom: 0;
-      width: 50%;
-    }
     .token {
       .liquidity-logo {
         order: 1;
-        margin-right: $inner-spacing-mini;
       }
     }
-    .input-title,
-    .token-balance {
-      display: inline-flex;
-      align-items: baseline;
-    }
-    .input-title {
-      font-weight: 600;
-      &-estimated {
-        font-weight: 400;
-      }
-    }
-    @include token-styles;
   }
-  .s-input {
-    min-height: 0;
-  }
-  .s-tertiary {
-    padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
-  }
-  .el-button {
-    &--max,
-    &--empty-token,
-    &--choose-token {
-      font-weight: 700;
-    }
-    &--max {
-      margin-right: $inner-spacing-mini;
-      padding-right: $inner-spacing-mini;
-      height: var(--s-size-mini);
-    }
-    &--empty-token {
-      position: absolute;
-      right: $inner-spacing-mini;
-      bottom: $inner-spacing-mini;
-    }
-    &--choose-token {
-      margin-left: 0;
-      margin-right: -$inner-spacing-mini;
-      padding-left: $inner-spacing-mini / 2;
-      background-color: var(--s-color-base-background);
-      border-color: var(--s-color-base-background);
-      color: var(--s-color-base-content-primary);
-      &:hover, &:active, &:focus {
-        background-color: var(--s-color-base-background-hover);
-        border-color: var(--s-color-base-background-hover);
-        color: var(--s-color-base-content-primary);
-      }
-    }
-    &.el-button--switch-price {
-      margin-right: 0;
-      margin-left: $inner-spacing-mini;
-    }
-  }
-  .s-primary {
-    margin-top: $inner-spacing-medium;
-    width: 100%;
-    &:disabled {
-      color: var(--s-color-base-on-disabled);
-    }
-  }
+  @include input-form-styles;
+  @include buttons(true);
+  @include full-width-button;
 }
 
 .price-container {
   margin: $inner-spacing-medium $inner-spacing-medium 0;
-  line-height: $s-line-height-medium;
+  line-height: $s-line-height-big;
   color: var(--s-color-base-content-secondary)
 }
+
+@include vertical-divider;
 </style>

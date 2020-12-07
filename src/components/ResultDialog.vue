@@ -9,7 +9,7 @@
       <div v-if="type" class="transaction-type">{{ type }}</div>
       <div v-if="message" class="transaction-info">{{ message }}</div>
       <!-- TODO: Add correct icons and add functionality -->
-      <s-icon name="external-link" @click="handleTransactionInfo" />
+      <!-- <s-icon name="external-link" @click="handleTransactionInfo" /> -->
       <!-- <s-icon name="arrow-bottom-rounded" /> -->
     </div>
     <s-divider />
@@ -67,21 +67,21 @@ $transactionIconSize: 68px;
     padding: $inner-spacing-mini / 2 $inner-spacing-mini;
     margin-right: $inner-spacing-mini / 2;
     text-transform: uppercase;
-    font-size: 10px;
-    font-weight: bold;
+    font-size: $s-font-size-settings;
+    font-feature-settings: $s-font-feature-settings-type;
+    letter-spacing: $s-letter-spacing-type;
     background-color: var(--s-color-base-background);
     border-radius: var(--s-border-radius-mini);
+    @include font-weight(700);
   }
   &-info {
     margin-right: $inner-spacing-mini;
-    font-weight: bold;
+    font-feature-settings: $s-font-feature-settings-common;
+    @include font-weight(600);
   }
   .s-icon-external-link {
     cursor: pointer;
   }
 }
-.el-divider {
-  margin-top: $inner-spacing-small;
-  margin-bottom: $inner-spacing-small;
-}
+@include vertical-divider('el-divider');
 </style>

@@ -16,23 +16,25 @@ export enum PageNames {
 
 export enum Components {
   SwapInfo = 'SwapInfo',
+  InfoCard = 'InfoCard',
   SelectToken = 'SelectToken',
+  ResultDialog = 'ResultDialog',
+  GenericHeader = 'GenericHeader',
   TokenLogo = 'TokenLogo',
+  PairTokenLogo = 'PairTokenLogo',
   ConfirmSwap = 'ConfirmSwap',
   ConfirmCreatePair = 'ConfirmCreatePair',
   ConfirmAddLiquidity = 'ConfirmAddLiquidity',
   ConfirmRemoveLiquidity = 'ConfirmRemoveLiquidity',
-  ResultDialog = 'ResultDialog',
-  PairTokenLogo = 'PairTokenLogo',
-  InfoCard = 'InfoCard',
   Settings = 'Settings'
 }
 
+// TODO: Some items are hidden because we don't have Stats and Support pages right now
 export const MainMenu = [
   PageNames.About,
-  PageNames.Exchange,
-  PageNames.Stats,
-  PageNames.Support
+  PageNames.Exchange
+  // PageNames.Stats,
+  // PageNames.Support
 ]
 
 export const ExchangeTabs = [

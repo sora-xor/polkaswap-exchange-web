@@ -1,15 +1,9 @@
 <template>
   <div class="container">
-    <div class="header">
-      <s-button type="action" size="small" icon="arrow-left" @click="handleBack" />
-      <h3 class="header-title">{{ t('addLiquidity.title') }}</h3>
-      <s-tooltip class="header-tooltip" popperClass="info-tooltip" borderRadius="mini" :content="t('addLiquidity.description')" theme="light" placement="bottom-end" :show-arrow="false">
-        <s-icon name="info" size="16" />
-      </s-tooltip>
-    </div>
+    <generic-header :title="t('addLiquidity.title')" :tooltip="t('addLiquidity.description')" />
     <s-form
       v-model="formModel"
-      class="el-form--add-liquidity"
+      class="el-form--actions"
       :show-message="false"
     >
       <div class="input-container">
@@ -25,6 +19,7 @@
             <s-input
               v-model="formModel.first"
               v-float="formModel.first"
+              class="s-input--token-value"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
               @change="handleChangeFirstField"
@@ -44,7 +39,7 @@
           </s-button>
         </div>
       </div>
-      <s-icon class="plus" name="plus" size="medium" />
+      <s-icon class="icon-divider" name="plus-rounded" size="medium" />
       <div class="input-container">
         <div class="input-line">
           <div class="input-title">
@@ -60,6 +55,7 @@
             <s-input
               v-model="formModel.second"
               v-float="formModel.second"
+              class="s-input--token-value"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
               @change="handleChangeSecondField"
@@ -149,6 +145,7 @@ const namespace = 'addLiquidity'
 
 @Component({
   components: {
+    GenericHeader: lazyComponent(Components.GenericHeader),
     SelectToken: lazyComponent(Components.SelectToken),
     InfoCard: lazyComponent(Components.InfoCard),
     TokenLogo: lazyComponent(Components.TokenLogo),
@@ -251,10 +248,6 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
     return token ? `${tokenValue} ${token.symbol}` : ''
   }
 
-  handleBack (): void {
-    router.push({ name: PageNames.Pool })
-  }
-
   openSelectFirstTokenDialog (): void {
     this.showSelectFirstTokenDialog = true
   }
@@ -293,169 +286,17 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
 }
 </script>
 
-<style lang="scss">
-$swap-input-class: ".el-input";
-
-.plus {
-  padding: $inner-spacing-medium;
-}
-.el-form--add-liquidity {
-  .s-input {
-    .el-input {
-      #{$swap-input-class}__inner {
-        padding-top: 0;
-      }
-    }
-    #{$swap-input-class}__inner {
-      height: var(--s-size-small);
-      padding-right: 0;
-      padding-left: 0;
-      border-radius: 0;
-      border-bottom-width: 2px;
-      color: var(--s-color-base-content-primary);
-      font-size: 20px;
-      line-height: 1.26;
-      &, &:hover, &:focus {
-        background-color: var(--s-color-base-background);
-        border-color: var(--s-color-base-background);
-      }
-      &:disabled {
-        color: var(--s-color-base-content-tertiary);
-      }
-      &:not(:disabled) {
-        &:hover, &:focus {
-          border-bottom-color: var(--s-color-base-content-primary);
-          color: var(--s-color-base-content-primary);
-        }
-      }
-    }
-    .s-placeholder {
-      display: none;
-    }
-  }
-  .el-button {
-    &--choose-token,
-    &--empty-token {
-      > span {
-        display: inline-flex;
-        flex-direction: row-reverse;
-        align-items: center;
-        > i[class^=s-icon-] {
-          margin-left: $inner-spacing-mini / 2;
-          margin-right: 0;
-          font-size: 20px;
-        }
-      }
-    }
-    &--choose-token {
-      > span {
-        > i[class^=s-icon-] {
-          margin-left: $inner-spacing-mini;
-        }
-      }
-    }
-  }
-}
-.card {
-  .el-divider {
-    margin-top: $inner-spacing-mini;
-    margin-bottom: $inner-spacing-mini;
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 .container {
   @include container-styles;
 }
 
-@include header-styles;
-
-.el-form--add-liquidity {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .input-container {
-    position: relative;
-    padding: $inner-spacing-small $inner-spacing-medium $inner-spacing-mini;
-    width: 100%;
-    background-color: var(--s-color-base-background);
-    border-radius: var(--s-border-radius-mini);
-    .input-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      + .input-line {
-        margin-top: $inner-spacing-small;
-      }
-    }
-    .el-form-item {
-      margin-bottom: 0;
-      width: 50%;
-    }
-    .input-title,
-    .token-balance {
-      display: inline-flex;
-      align-items: baseline;
-    }
-    .input-title {
-      font-weight: 600;
-      &-estimated {
-        font-weight: 400;
-      }
-    }
-    @include token-styles;
-  }
-  .s-input {
-    min-height: 0;
-  }
-  .s-tertiary {
-    padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
-  }
-  .el-button {
-    &--max,
-    &--empty-token,
-    &--choose-token {
-      font-weight: 700;
-    }
-    &--max {
-      margin-right: $inner-spacing-mini;
-      padding-right: $inner-spacing-mini;
-      height: var(--s-size-mini);
-    }
-    &--empty-token {
-      position: absolute;
-      right: $inner-spacing-mini;
-      bottom: $inner-spacing-mini;
-    }
-    &--choose-token {
-      margin-left: 0;
-      margin-right: -$inner-spacing-mini;
-      padding-left: $inner-spacing-mini / 2;
-      background-color: var(--s-color-base-background);
-      border-color: var(--s-color-base-background);
-      color: var(--s-color-base-content-primary);
-      &:hover, &:active, &:focus {
-        background-color: var(--s-color-base-background-hover);
-        border-color: var(--s-color-base-background-hover);
-        color: var(--s-color-base-content-primary);
-      }
-    }
-    &.el-button--switch-price {
-      margin-right: 0;
-      margin-left: $inner-spacing-mini;
-    }
-  }
-  .s-primary {
-    margin-top: $inner-spacing-medium;
-    width: 100%;
-    &:disabled {
-      color: var(--s-color-base-on-disabled);
-    }
-  }
+.el-form--actions {
+  @include input-form-styles;
+  @include buttons;
+  @include full-width-button;
 }
 
-.pair-token-logo {
-  margin-right: $inner-spacing-mini
-}
+@include vertical-divider;
+@include vertical-divider('el-divider');
 </style>

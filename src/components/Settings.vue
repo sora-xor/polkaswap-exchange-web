@@ -10,7 +10,7 @@
         <div class="slippage-tolerance-default">
           <div class="header">
             {{ t('settings.slippageTolerance') }}
-            <s-tooltip popperClass="info-tooltip" :content="t('settings.slippageToleranceHint')">
+            <s-tooltip popperClass="info-tooltip" borderRadius="mini" :content="t('settings.slippageToleranceHint')" theme="light" placement="right-start" animation="none" :show-arrow="false">
               <s-icon class="header-hint" name="info" />
             </s-tooltip>
           </div>
@@ -38,20 +38,20 @@
       <div class="transaction-deadline">
         <div class="header">
           {{ t('settings.transactionDeadline') }}
-          <s-tooltip popperClass="info-tooltip" :content="t('settings.transactionDeadlineHint')">
+          <s-tooltip popperClass="info-tooltip" borderRadius="mini" :content="t('settings.transactionDeadlineHint')" theme="light" placement="right-start" animation="none" :show-arrow="false">
             <s-icon class="header-hint" name="info" />
           </s-tooltip>
         </div>
         <div class="value">
           <div class="value-container">{{ transactionDeadline }} {{ t('settings.min') }}</div>
-          <s-slider class="value-slider" :value="transactionDeadline" @change="handleSetTransactionDeadline" />
+          <s-slider class="value-slider" :value="transactionDeadline" :showTooltip="false" @change="handleSetTransactionDeadline" />
         </div>
       </div>
       <s-divider />
       <div class="node-address">
         <div class="header">
           {{ t('settings.nodeAddress') }}
-          <s-tooltip popperClass="info-tooltip" :content="t('settings.nodeAddressHint')">
+          <s-tooltip popperClass="info-tooltip" borderRadius="mini" :content="t('settings.nodeAddressHint')" theme="light" placement="right-start" animation="none" :show-arrow="false">
             <s-icon class="header-hint" name="info" />
           </s-tooltip>
         </div>
@@ -120,7 +120,7 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
     height: var(--s-size-small);
     text-align: center;
     padding-top: 0; // TODO: if there is no placeholder, set padding-top to zero
-    font-weight: 700;
+    @include font-weight(700);
   }
 }
 .settings {
@@ -138,10 +138,10 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
     }
   }
   .header {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--s-color-base-content-tertiary);
     padding-bottom: $inner-spacing-mini;
+    color: var(--s-color-base-content-tertiary);
+    font-size: $s-font-size-settings;
+    @include font-weight(700);
     &-hint {
       margin-left: $inner-spacing-mini;
     }
@@ -154,9 +154,9 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
       line-height: var(--s-size-small);
       background-color: var(--s-color-base-background);
       border-radius: var(--s-border-radius-mini);
-      font-weight: 700;
-      font-size: $s-font-size-mini;
+      font-size: var(--s-font-size-mini);
       text-align: center;
+      @include font-weight(700);
       &_label {
         color: var(--s-color-base-content-tertiary);
       }
@@ -177,8 +177,5 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
     flex: 1;
   }
 }
-.el-divider {
-  margin-bottom: $inner-spacing-mini;
-  margin-bottom: $inner-spacing-mini;
-}
+@include vertical-divider('el-divider');
 </style>

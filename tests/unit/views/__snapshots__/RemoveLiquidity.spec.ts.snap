@@ -4,48 +4,10 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
 <div
   class="container"
 >
-  <div
-    class="header"
-  >
-    <s-button-stub
-      borderradius="small"
-      icon="arrow-left"
-      nativetype="button"
-      size="small"
-      tabindex="0"
-      tooltip=""
-      tooltipplacement="top"
-      type="action"
-    />
-     
-    <h3
-      class="header-title"
-    >
-      
-    </h3>
-     
-    <s-tooltip-stub
-      animation="el-fade-in-linear"
-      borderradius="mini"
-      class="header-tooltip"
-      closedelay="0"
-      content=""
-      offset="0"
-      opendelay="0"
-      placement="bottom-end"
-      popperclass="info-tooltip"
-      tabindex="0"
-      theme="light"
-    >
-      <s-icon-stub
-        name="info"
-        size="16"
-      />
-    </s-tooltip-stub>
-  </div>
+  <!---->
    
   <s-form-stub
-    class="el-form--remove-liquidity"
+    class="el-form--actions"
     labelposition="right"
     validateonrulechange="true"
   >
@@ -91,6 +53,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             accept=""
             autocomplete="off"
             borderradius="small"
+            class="s-input--token-value"
             disabled="true"
             form=""
             label=""
@@ -178,6 +141,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             accept=""
             autocomplete="off"
             borderradius="small"
+            class="s-input--token-value"
             disabled="true"
             form=""
             label=""
@@ -217,7 +181,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
      
     <s-icon-stub
       class="icon-divider"
-      name="plus"
+      name="plus-rounded"
       size="medium"
     />
      
@@ -247,6 +211,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             accept=""
             autocomplete="off"
             borderradius="small"
+            class="s-input--token-value"
             disabled="true"
             form=""
             label=""

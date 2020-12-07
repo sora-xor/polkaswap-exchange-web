@@ -4,34 +4,7 @@ exports[`Pool.vue should renders correctly 1`] = `
 <div
   class="el-form--pool"
 >
-  <div
-    class="header"
-  >
-    <h3
-      class="header-title"
-    >
-      
-    </h3>
-     
-    <s-tooltip-stub
-      animation="el-fade-in-linear"
-      borderradius="mini"
-      class="header-tooltip"
-      closedelay="0"
-      content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-      offset="0"
-      opendelay="0"
-      placement="bottom-end"
-      popperclass="info-tooltip"
-      tabindex="0"
-      theme="light"
-    >
-      <s-icon-stub
-        name="info"
-        size="16"
-      />
-    </s-tooltip-stub>
-  </div>
+  <!---->
    
   <p
     class="pool-info-container"
@@ -40,11 +13,6 @@ exports[`Pool.vue should renders correctly 1`] = `
     
   
   </p>
-   
-  <s-collapse-stub
-    borders="true"
-    class="pool-info-container"
-  />
    
   <s-button-stub
     borderradius="small"

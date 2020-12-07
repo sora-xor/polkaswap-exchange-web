@@ -6,7 +6,7 @@
     <div class="tokens">
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedFromValue }}</span>
-        <s-icon name="plus-rounded" />
+        <s-icon class="icon-divider" name="plus-rounded" size="medium" />
         <span class="token-value">{{ formattedToValue }}</span>
       </div>
       <div class="tokens-info-container">
@@ -92,7 +92,8 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
 .tokens {
   display: flex;
   justify-content: space-between;
-  font-size: 30px;
+  font-size: var(--s-heading2-font-size);
+  line-height: $s-line-height-small;
   &-info-container {
     display: flex;
     flex-direction: column;
@@ -110,24 +111,17 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
     flex-shrink: 0;
   }
 }
-.s-icon-plus-rounded {
-  margin-top: $inner-spacing-mini;
-  margin-bottom: $inner-spacing-mini;
-  display: block;
-  font-size: $s-font-size-medium;
-}
 .transaction-message {
   margin-top: $inner-spacing-big;
   color: var(--s-color-base-content-tertiary);
-  line-height: $s-line-height-small;
-}
-.el-divider {
-  margin-top: $inner-spacing-mini;
-  margin-bottom: $inner-spacing-big;
+  line-height: $s-line-height-base;
 }
 .price-container {
-  line-height: $s-line-height-medium;
+  line-height: $s-line-height-big;
   color: var(--s-color-base-content-secondary);
+  margin-top: $inner-spacing-big;
   margin-bottom: $inner-spacing-mini;
 }
+@include vertical-divider;
+@include vertical-divider('el-divider');
 </style>

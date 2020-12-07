@@ -27,17 +27,16 @@ exports[`Settings.vue should renders correctly 1`] = `
           
           
           <s-tooltip-stub
-            animation="el-fade-in-linear"
-            borderradius="small"
+            animation="none"
+            borderradius="mini"
             closedelay="0"
             content=""
             offset="0"
             opendelay="0"
-            placement="top"
+            placement="right-start"
             popperclass="info-tooltip"
-            showarrow="true"
             tabindex="0"
-            theme="dark"
+            theme="light"
           >
             <s-icon-stub
               class="header-hint"
@@ -111,17 +110,16 @@ exports[`Settings.vue should renders correctly 1`] = `
         
         
         <s-tooltip-stub
-          animation="el-fade-in-linear"
-          borderradius="small"
+          animation="none"
+          borderradius="mini"
           closedelay="0"
           content=""
           offset="0"
           opendelay="0"
-          placement="top"
+          placement="right-start"
           popperclass="info-tooltip"
-          showarrow="true"
           tabindex="0"
-          theme="dark"
+          theme="light"
         >
           <s-icon-stub
             class="header-hint"
@@ -149,7 +147,6 @@ exports[`Settings.vue should renders correctly 1`] = `
           max="100"
           min="0"
           showinputcontrols="true"
-          showtooltip="true"
           step="1"
           tooltipclass=""
           value="20"
@@ -173,17 +170,16 @@ exports[`Settings.vue should renders correctly 1`] = `
         
         
         <s-tooltip-stub
-          animation="el-fade-in-linear"
-          borderradius="small"
+          animation="none"
+          borderradius="mini"
           closedelay="0"
           content=""
           offset="0"
           opendelay="0"
-          placement="top"
+          placement="right-start"
           popperclass="info-tooltip"
-          showarrow="true"
           tabindex="0"
-          theme="dark"
+          theme="light"
         >
           <s-icon-stub
             class="header-hint"

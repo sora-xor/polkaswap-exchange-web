@@ -1,40 +1,31 @@
 <template>
   <div class="el-form--pool">
-    <div class="header">
-      <h3 class="header-title">{{ t('pool.yourLiquidity') }}</h3>
-      <!-- TODO: Add appropriate tooltip -->
-      <s-tooltip class="header-tooltip" popperClass="info-tooltip" borderRadius="mini" :content="'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'" theme="light" placement="bottom-end" :show-arrow="false">
-        <s-icon name="info" size="16" />
-      </s-tooltip>
-    </div>
+    <!-- TODO: Add appropriate tooltip -->
+    <generic-header class="header--pool" :hasButtonBack="false" :title="t('pool.yourLiquidity')" :tooltip="t('pool.loremIpsum')" />
     <p v-if="!connected" class="pool-info-container">
       {{ t('pool.connectToWallet') }}
     </p>
-    <p v-else-if="!liquidities.length" class="pool-info-container">
+    <p v-else-if="!liquidities || !liquidities.length" class="pool-info-container">
       {{ t('pool.liquidityNotFound') }}
     </p>
-    <s-collapse class="pool-info-container" :borders="true">
-      <s-collapse-item v-for="liquidity of liquidities" :key="liquidity.id" :name="liquidity.id">
+    <s-collapse v-else class="pool-list" :borders="true">
+      <s-collapse-item v-for="liquidity of liquidities" :key="liquidity.id" :name="liquidity.id" class="pool-info-container">
         <template #title>
-          <!-- TODO: Fix token icons -->
-          <pair-token-logo :firstToken="liquidity.firstToken" :secondToken="liquidity.secondToken" size="small" />
+          <pair-token-logo :firstTokenSymbol="liquidity.firstToken" :secondTokenSymbol="liquidity.secondToken" size="small" />
           <h3>{{ getPairTitle(liquidity.firstToken, liquidity.secondToken) }}</h3>
         </template>
         <div class="pool-info">
-          <!-- TODO: Fix token icon -->
-          <token-logo :token="liquidity" size="small" />
+          <token-logo :tokenSymbol="liquidity.firstToken" size="small" />
           <div>{{ t('pool.pooledToken', { tokenSymbol: liquidity.firstToken }) }}</div>
           <div v-if="liquidity.firstTokenAmount" class="pool-info-value">{{ liquidity.firstTokenAmount }}</div>
         </div>
         <div class="pool-info">
-          <!-- TODO: Fix token icon -->
-          <token-logo :token="liquidity" size="small" />
+          <token-logo :tokenSymbol="liquidity.secondToken" size="small" />
           <div>{{ t('pool.pooledToken', { tokenSymbol: liquidity.secondToken }) }}</div>
           <div v-if="liquidity.secondTokenAmount" class="pool-info-value">{{ liquidity.secondTokenAmount }}</div>
         </div>
         <div class="pool-info">
-          <!-- TODO: Fix token icons -->
-          <pair-token-logo :firstToken="liquidity.firstToken" :secondToken="liquidity.secondToken" size="small" />
+          <pair-token-logo :firstTokenSymbol="liquidity.firstToken" :secondTokenSymbol="liquidity.secondToken" size="mini" />
           <div>{{ t('pool.pairTokens', { pair: getPairTitle(liquidity.firstToken, liquidity.secondToken) }) }}</div>
           <div class="pool-info-value">{{ pairValue }}</div>
         </div>
@@ -73,6 +64,7 @@ const namespace = 'pool'
 
 @Component({
   components: {
+    GenericHeader: lazyComponent(Components.GenericHeader),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
@@ -112,7 +104,7 @@ export default class Pool extends Mixins(TranslationMixin) {
 
   getPairTitle (firstToken, secondToken): string {
     if (firstToken && secondToken) {
-      return `${firstToken} - ${secondToken}`
+      return `${firstToken}-${secondToken}`
     }
     return ''
   }
@@ -120,24 +112,28 @@ export default class Pool extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss">
+$pair-icon-height: 36px;
 $pool-collapse-icon-height: 2px;
 $pool-collapse-icon-width: 10px;
 
-.pool-info-container {
+.pool-list {
   .el-collapse-item {
     &__header,
     &__wrap {
       border-bottom: none;
     }
     &__content {
-      margin-top: $inner-spacing-mini;
+      margin-top: $inner-spacing-medium;
       padding-top: $basic-spacing * 2;
       padding-bottom: 0;
       border-top: 1px solid var(--s-color-base-border-primary);
     }
     .el-collapse-item__header {
-      height: 50px;
-      line-height: 50px;
+      height: $pair-icon-height;
+      line-height: $pair-icon-height;
+      .pair-logo {
+        margin-right: $inner-spacing-medium;
+      }
     }
     .el-icon-arrow-right {
       position: relative;
@@ -175,9 +171,11 @@ $pool-collapse-icon-width: 10px;
 </style>
 
 <style lang="scss" scoped>
-@include header-styles($inner-spacing-mini);
-.header {
+$pair-icon-height: 36px;
+
+.header.header--pool {
   margin-top: $inner-spacing-mini;
+  margin-bottom: $inner-spacing-mini;
 }
 
 .el-form--pool {
@@ -185,24 +183,50 @@ $pool-collapse-icon-width: 10px;
   flex-direction: column;
   align-items: center;
   .el-button {
-    &--add-liquidity,
-    &--create-pair {
-      margin-top: $inner-spacing-mini;
-      width: 100%;
-    }
     &--create-pair {
       margin-left: 0;
       color: var(--s-color-theme-accent);
+      &:hover,
+      &:active,
+      &:disabled {
+        border-color: var(--s-color-base-content-quaternary);
+      }
+      &:active {
+        background-color: var(--s-color-base-disabled);
+      }
+      &:disabled,
+      &:disabled:hover {
+        background-color: transparent;
+        color: var(--s-color-base-on-disabled);
+      }
     }
   }
+  @include full-width-button;
+  @include full-width-button('el-button--create-pair', $inner-spacing-mini);
 }
 
 .pool {
+  &-list {
+    width: 100%;
+    border-top: none;
+    border-bottom: none;
+    .pool-info-container {
+      margin-bottom: $inner-spacing-mini;
+      padding: calc(#{$inner-spacing-big} - (#{$pair-icon-height} - var(--s-size-small)) / 2) $inner-spacing-medium;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+    h3 {
+      letter-spacing: $s-letter-spacing-small;
+      font-feature-settings: $s-font-feature-settings-title;
+    }
+  }
   &-info {
     display: flex;
     align-items: center;
-    font-size: $s-font-size-small;
-    line-height: $s-line-height-medium;
+    font-size: var(--s-font-size-small);
+    line-height: $s-line-height-big;
     margin-bottom: $inner-spacing-mini;
     &,
     &--buttons {
@@ -217,12 +241,13 @@ $pool-collapse-icon-width: 10px;
     }
     &-container {
       width: 100%;
-      padding: $inner-spacing-medium;
+      padding: $inner-spacing-big;
       border-radius: var(--s-border-radius-small);
       border: 1px solid var(--s-color-base-border-secondary);
       color: var(--s-color-base-content-tertiary);
-      font-size: $s-font-size-mini;
-      line-height: $s-line-height-medium;
+      font-size: var(--s-font-size-mini);
+      line-height: $s-line-height-small;
+      font-feature-settings: $s-font-feature-settings-common;
       text-align: center;
       & + .el-button {
         margin-top: $inner-spacing-medium;
@@ -234,10 +259,15 @@ $pool-collapse-icon-width: 10px;
     &--buttons {
       display: flex;
       margin-top: $inner-spacing-medium;
-      margin-bottom: $inner-spacing-mini;
       .el-button {
         padding-left: $inner-spacing-small;
         padding-right: $inner-spacing-small;
+        font-feature-settings: $s-font-feature-settings-title;
+        width: auto;
+        @include font-weight(700);
+        + .el-button {
+          margin-left: $inner-spacing-mini;
+        }
       }
     }
   }

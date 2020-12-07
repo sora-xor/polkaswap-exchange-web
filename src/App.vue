@@ -1,32 +1,33 @@
 <template>
   <div id="app">
-    <s-menu
-      class="menu"
-      mode="horizontal"
-      background-color="#FFF"
-      box-shadow="0px 1px 1px rgba(0, 0, 0, 0.05), 0px 1px 4px rgba(0, 0, 0, 0.05), 0px 1px 25px rgba(0, 0, 0, 0.1)"
-      text-color="#0D0248"
-      active-text-color="#ED145B"
-      active-hover-color="#FFF"
-      :default-active="getCurrentPath()"
-      @select="goTo"
-    >
-      <s-menu-item
-        v-for="item in MainMenu"
-        :key="item"
-        :index="item"
+    <header class="header">
+      <s-menu
+        class="menu"
+        mode="horizontal"
+        background-color="transparent"
+        box-shadow="none"
+        text-color="var(--s-color-base-content-primary)"
+        active-text-color="var(--s-color-theme-accent)"
+        active-hover-color="transparent"
+        :default-active="getCurrentPath()"
+        @select="goTo"
       >
-        {{ t(`mainMenu.${item}`) }}
-      </s-menu-item>
-      <div class="controls">
-        <div class="buttons">
-          <s-button class="wallet" type="action" icon="wallet" rounded @click="goTo(PageNames.Wallet)" />
-          <s-button type="action" icon="settings" rounded @click="openSettingsDialog" />
-          <s-button type="action" icon="search" rounded />
-        </div>
+        <s-menu-item
+          v-for="item in MainMenu"
+          :key="item"
+          :index="item"
+        >
+          {{ t(`mainMenu.${item}`) }}
+        </s-menu-item>
+      </s-menu>
+      <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.About)" />
+      <div class="buttons">
+        <s-button class="wallet" type="action" icon="wallet" rounded @click="goTo(PageNames.Wallet)" />
+        <s-button type="action" icon="settings" rounded @click="openSettingsDialog" />
+        <!-- TODO: The button is hidden because we don't have a Search page right now -->
+        <!-- <s-button type="action" icon="search" rounded /> -->
       </div>
-    </s-menu>
-    <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.About)" />
+    </header>
     <div class="app-content"><router-view /></div>
     <settings :visible.sync="showSettings" />
   </div>
@@ -103,8 +104,8 @@ export default class App extends Mixins(TranslationMixin) {
 }
 html {
   overflow-y: hidden;
-  font-size: $s-font-size-small;
-  line-height: $s-line-height-small;
+  font-size: var(--s-font-size-small);
+  line-height: $s-line-height-base;
 }
 #app {
   -webkit-font-smoothing: antialiased;
@@ -118,59 +119,157 @@ html {
   max-width: 320px;
   border: none !important;
   box-shadow: var(--s-shadow-tooltip);
-  font-size: $s-font-size-small;
+  font-size: var(--s-font-size-small);
   line-height: $s-line-height-medium;
 }
-</style>
-
-<style lang="scss" scoped>
-$logo-width: 151px;
-$menu-height: 65px;
-
-.polkaswap-logo {
-  display: none;
-  position: absolute;
-  background-image: url('~@/assets/img/polkaswap-logo.svg');
-  width: $logo-width;
-  height: 40px;
-  top: 6px;
-  left: calc(50% - #{$logo-width / 2});
-}
-.menu {
-  padding: 2px 12px;
-  flex: 1;
-  .el-menu-item {
-    font-size: 1.285rem;
+.el-form--actions {
+  $swap-input-class: ".el-input";
+  .s-input--token-value {
+    #{$swap-input-class} {
+      #{$swap-input-class}__inner {
+        padding-top: 0;
+      }
+    }
+    #{$swap-input-class}__inner {
+      height: var(--s-size-small);
+      padding-right: 0;
+      padding-left: 0;
+      border-radius: 0;
+      color: var(--s-color-base-content-primary);
+      font-size: $s-font-size-input;
+      line-height: $s-line-height-small;
+      &, &:hover, &:focus {
+        background-color: var(--s-color-base-background);
+        border-color: var(--s-color-base-background);
+      }
+      &:disabled {
+        color: var(--s-color-base-content-tertiary);
+      }
+      &:not(:disabled) {
+        &:hover, &:focus {
+          color: var(--s-color-base-content-primary);
+        }
+      }
+    }
+    .s-placeholder {
+      display: none;
+    }
   }
-  .controls {
-    position: relative;
-    .buttons {
-      position: absolute;
-      right: $basic-spacing;
-      top: 12px;
-      .wallet {
-        color: var(--s-color-utility-surface);
-        background-color: var(--s-color-theme-accent);
-        &:hover {
-          background-color: var(--s-color-theme-accent-hover);
+  .el-button {
+    &--choose-token,
+    &--empty-token {
+      font-feature-settings: $s-font-feature-settings-title;
+      > span {
+        display: inline-flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        > i[class^=s-icon-] {
+          margin-left: $inner-spacing-mini / 2;
+          margin-right: 0;
+          font-size: $s-font-size-input;
         }
-        &:active {
-          background-color: var(--s-color-theme-accent-pressed);
-        }
-        &:focus {
-          background-color: var(--s-color-theme-accent-focused);
+      }
+    }
+    &--choose-token {
+      > span {
+        > i[class^=s-icon-] {
+          margin-left: $inner-spacing-mini;
         }
       }
     }
   }
 }
+</style>
+
+<style lang="scss" scoped>
+$logo-width: 150px;
+$logo-horizontal-maring: $inner-spacing-big;
+$menu-height: 65px;
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 2px $inner-spacing-small;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05), 0px 1px 4px rgba(0, 0, 0, 0.05), 0px 1px 25px rgba(0, 0, 0, 0.1);
+}
+
+.menu {
+  padding: 0;
+  &.s-menu {
+    border-bottom: none;
+    .el-menu-item {
+      margin-right: 0;
+    }
+  }
+  .el-menu-item {
+    padding-top: 1px;
+    padding-right: $inner-spacing-mini;
+    padding-left: $inner-spacing-mini;
+    font-size: var(--s-heading4-font-size);
+    letter-spacing: $s-letter-spacing-small;
+    font-feature-settings: $s-font-feature-settings-title;
+    &,
+    &.is-active {
+      // TODO 4 alexnatalia: remove this local fix after UI Lib fix
+      border-bottom: none;
+      &:hover {
+        color: var(--s-color-theme-accent-hover) !important;
+      }
+    }
+    &:hover {
+      color: var(--s-color-base-content-secondary) !important;
+    }
+    &:focus {
+      background-color: transparent !important;
+    }
+  }
+}
+
+.polkaswap-logo {
+  margin-right: $logo-horizontal-maring;
+  margin-left: $logo-horizontal-maring;
+  display: none;
+  width: $logo-width;
+  height: var(--s-size-medium);
+  padding: 0;
+  background-image: url('~@/assets/img/polkaswap-logo.svg');
+}
+
+.buttons {
+  margin-left: auto;
+  .wallet {
+    color: var(--s-color-utility-surface);
+    background-color: var(--s-color-theme-accent);
+    border-color: var(--s-color-theme-accent);
+    &:hover {
+      background-color: var(--s-color-theme-accent-hover);
+      border-color: var(--s-color-theme-accent-hover);
+    }
+    &:active {
+      background-color: var(--s-color-theme-accent-pressed);
+      border-color: var(--s-color-theme-accent-pressed);
+    }
+    &:focus {
+      background-color: var(--s-color-theme-accent-focused);
+      border-color: var(--s-color-theme-accent-focused);
+    }
+  }
+  .el-button + .el-button {
+    margin-left: $inner-spacing-mini;
+  }
+}
+
 .app-content {
   overflow-y: auto;
   height: calc(100vh - #{$menu-height});
 }
-@include desktop {
+
+@include tablet {
+  .menu {
+    width: calc(50% - #{$logo-width + $logo-horizontal-maring * 2} / 2);
+  }
   .polkaswap-logo {
-    display: initial; // TODO: add collapse state for s-menu component
+    display: block; // TODO: add collapse state for s-menu component
   }
 }
 </style>

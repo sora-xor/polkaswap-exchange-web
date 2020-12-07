@@ -28,6 +28,7 @@
       </div>
     </div>
     <div v-else class="token-list token-list__empty">
+      <span class="empty-results-icon" />
       {{ t('selectToken.emptyListMessage') }}
     </div>
   </dialog-base>
@@ -88,19 +89,21 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin) {
 .token-select {
   .el-dialog {
     overflow: hidden;
-    &__title {
-      letter-spacing: -0.02em;
-    }
     &__body {
-      padding: 0 !important;
+      padding: $inner-spacing-mini 0 $inner-spacing-big !important;
     }
   }
 }
 </style>
 
 <style lang="scss" scoped>
+// TODO 4 alexnatalia: Check 71px theory
+$token-item-height: calc(var(--s-size-medium) + #{$inner-spacing-medium} * 2);
+
 .token-search {
+  // TODO: Fix input styles (paddings and icon position)
   margin-left: $inner-spacing-big;
+  margin-bottom: $inner-spacing-medium;
   width: calc(100% - 2 * #{$inner-spacing-big});
 }
 .token-item {
@@ -113,8 +116,8 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin) {
     background-color: var(--s-color-base-background-hover);
   }
   &__name, &__amount {
-    font-weight: 600;
-    font-size: $s-font-size-small;
+    font-size: var(--s-font-size-small);
+    @include font-weight(600);
   }
 
   .token-logo {
@@ -122,13 +125,23 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin) {
   }
 }
 .token-list {
-  height: 50vh;
+  height: calc(#{$token-item-height} * 7);
   overflow: auto;
   &__empty {
-    //TODO: Implement empty list design
     display: flex;
-    justify-content: center;
     align-items: center;
+    flex-direction: column;
+    padding-top: $inner-spacing-big;
+    color: var(--s-color-base-content-tertiary);
+    font-feature-settings: $s-font-feature-settings-common;
+    line-height: $s-line-height-big;
+  }
+  .empty-results-icon {
+    margin-bottom: $inner-spacing-medium;
+    display: block;
+    height: 70px;
+    width: 70px;
+    background: url("~@/assets/img/no-results.svg") center no-repeat;
   }
 }
 </style>

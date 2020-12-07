@@ -2,7 +2,7 @@
 
 exports[`Swap.vue should renders correctly 1`] = `
 <s-form-stub
-  class="el-form--swap"
+  class="el-form--actions"
   labelposition="right"
   validateonrulechange="true"
   value="[object Object]"
@@ -33,7 +33,7 @@ exports[`Swap.vue should renders correctly 1`] = `
           accept=""
           autocomplete="off"
           borderradius="small"
-          class="s-input--swap"
+          class="s-input--token-value"
           form=""
           label=""
           name=""
@@ -118,7 +118,7 @@ exports[`Swap.vue should renders correctly 1`] = `
           accept=""
           autocomplete="off"
           borderradius="small"
-          class="s-input--swap"
+          class="s-input--token-value"
           form=""
           label=""
           name=""

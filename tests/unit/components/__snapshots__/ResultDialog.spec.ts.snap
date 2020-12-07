@@ -21,10 +21,6 @@ exports[`ResultDialog.vue should renders correctly 1`] = `
     <!---->
      
     <!---->
-     
-    <s-icon-stub
-      name="external-link"
-    />
   </div>
    
   <s-divider-stub

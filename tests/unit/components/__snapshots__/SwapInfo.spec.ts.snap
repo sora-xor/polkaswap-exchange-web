@@ -5,10 +5,10 @@ exports[`SwapInfo.vue should renders correctly 1`] = `
   class="swap-info-container"
 >
   <div
-    class="swap-info"
+    class="swap-info swap-info--min-received"
   >
     <s-tooltip-stub
-      animation="el-fade-in-linear"
+      animation="none"
       borderradius="mini"
       class="swap-info-icon"
       closedelay="0"
@@ -16,7 +16,7 @@ exports[`SwapInfo.vue should renders correctly 1`] = `
       offset="0"
       opendelay="0"
       placement="right-start"
-      popperclass="info-tooltip"
+      popperclass="info-tooltip info-tooltip--swap"
       tabindex="0"
       theme="light"
     >
@@ -41,7 +41,7 @@ exports[`SwapInfo.vue should renders correctly 1`] = `
     class="swap-info"
   >
     <s-tooltip-stub
-      animation="el-fade-in-linear"
+      animation="none"
       borderradius="mini"
       class="swap-info-icon"
       closedelay="0"
@@ -49,7 +49,7 @@ exports[`SwapInfo.vue should renders correctly 1`] = `
       offset="0"
       opendelay="0"
       placement="right-start"
-      popperclass="info-tooltip"
+      popperclass="info-tooltip info-tooltip--swap"
       tabindex="0"
       theme="light"
     >
@@ -74,7 +74,7 @@ exports[`SwapInfo.vue should renders correctly 1`] = `
     class="swap-info"
   >
     <s-tooltip-stub
-      animation="el-fade-in-linear"
+      animation="none"
       borderradius="mini"
       class="swap-info-icon"
       closedelay="0"
@@ -82,7 +82,7 @@ exports[`SwapInfo.vue should renders correctly 1`] = `
       offset="0"
       opendelay="0"
       placement="right-start"
-      popperclass="info-tooltip"
+      popperclass="info-tooltip info-tooltip--swap"
       tabindex="0"
       theme="light"
     >

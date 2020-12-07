@@ -54,22 +54,17 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
           &.is-active {
             margin: 0;
             box-shadow: var(--s-shadow-tab);
-            &:hover {
-              box-shadow: none;
-            }
-          }
-          &:focus,
-          &.is-focus {
-            box-shadow: none;
-            background-color: var(--s-color-base-background-hover);
           }
           &:hover {
+            box-shadow: none;
             border-radius: var(--s-border-radius-small);
           }
         }
         #{$tabs-class}__item {
           height: $tabs-item-height;
           line-height: $tabs-item-height;
+          font-feature-settings: $s-font-feature-settings-title;
+          @include font-weight(700, true);
           &:hover {
             background-color: var(--s-color-base-background-hover);
           }

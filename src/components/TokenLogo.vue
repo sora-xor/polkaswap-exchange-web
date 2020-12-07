@@ -13,14 +13,18 @@ const tokens = [
 ]
 @Component
 export default class TokenLogo extends Mixins(TranslationMixin) {
+  // TODO 4 alexnatalia: Think one more time about tokenSymbol
   @Prop({ type: Object, default: () => null }) readonly token!: Token
+  @Prop({ type: String, default: '' }) readonly tokenSymbol!: string
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
 
   get tokenClasses (): string {
     const tokenLogoClass = 'token-logo'
     const classes = [tokenLogoClass]
 
-    if (this.token && tokens.includes(this.token.symbol)) {
+    if (this.tokenSymbol) {
+      classes.push(`${tokenLogoClass}--${this.tokenSymbol.toLowerCase()}`)
+    } else if (this.token && tokens.includes(this.token.symbol)) {
       classes.push(`${tokenLogoClass}--${this.token.symbol.toLowerCase()}`)
     }
 

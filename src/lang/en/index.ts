@@ -26,7 +26,6 @@ export default {
     openExchange: 'Open exchange',
     mediumLink: 'Medium',
     githubLink: 'Github',
-    fundedBy: 'Funded by',
     [Topics.SwapTokens]: {
       title: 'Swap any token on Ethereum',
       text: 'Use Polkaswap exchange or integrate into your project using the SDK'
@@ -77,24 +76,25 @@ export default {
     yourLiquidity: 'Your liquidity',
     connectToWallet: 'Connect to a wallet to view your liquidity.',
     liquidityNotFound: 'No liquidity found.',
-    addLiquidity: 'Add Liquidity',
+    addLiquidity: 'Add liquidity',
     removeLiquidity: 'Remove liquidity',
     createPair: 'Create a pair',
     pooledToken: '{tokenSymbol} Pooled:',
     pairTokens: '{pair} Pool Tokens:',
-    poolShare: 'Your pool share'
+    poolShare: 'Your pool share',
+    loremIpsum: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
   },
   selectToken: {
     title: 'Select a token',
     searchPlaceholder: 'Search Token Name, Symbol, or Address',
-    emptyListMessage: 'Nothing found'
+    emptyListMessage: 'No results'
   },
   createPair: {
     title: 'Create a pair',
     deposit: 'Deposit',
     balance: 'Balance',
     pricePool: 'Prices and pool share',
-    shareOfPool: 'Share of Pool',
+    shareOfPool: 'Share of pool',
     firstPerSecond: '{first} per {second}',
     firstSecondPoolTokens: '{first}-{second} Pool tokens',
     connect: 'Connect wallet',
@@ -107,7 +107,9 @@ export default {
     add: 'ADD',
     ok: 'OK',
     transactionMessage: '{firstToken} and {secondToken}',
-    description: 'When you add liquidity, you are awarded with token pair specific PSWAP tokens that represent your pool share.'
+    description: 'When you add liquidity, you are awarded with token pair specific PSWAP tokens that represent your pool share.',
+    firstLiquidityProvider: 'You are the first liquidity provider',
+    firstLiquidityProviderInfo: 'The ratio of tokens you add will set the price of this pool.<br/>Once you are happy with the rate click supply to review.'
   },
   confirmSupply: {
     title: 'You will receive',
