@@ -7,10 +7,21 @@
     >
       <info-card class="slider-container" :title="t('removeLiquidity.amount')">
         <div class="slider-container__amount">
-          {{ removePart }}<span class="percent">%</span>
+          <s-input
+            v-model="removePartInput"
+            maxlength="3"
+            max="100"
+            min="0"
+            step="1"
+            :class="`s-input--token-value s-input--remove-part ${removePart === 100 ? 'three-char' : removePart > 9 ? 'two-char' : 'one-char'}`"
+            v-float
+            @input="handleRemovePartChange"
+            @blur="resetFocusedField"
+          />
+          <span class="percent">%</span>
         </div>
         <div>
-          <s-slider :value="removePart" @change="setRemovePart" />
+          <s-slider :value="removePartInput" @change="handleRemovePartChange" />
         </div>
       </info-card>
       <div class="input-container">
@@ -99,9 +110,12 @@
           </div>
         </div>
       </div>
-      <s-button type="primary" borderRadius="small" :disabled="isEmptyAmount" @click="showConfirmDialog = true">
+      <s-button type="primary" borderRadius="small" :disabled="isEmptyAmount || isInsufficientBalance" @click="showConfirmDialog = true">
         <template v-if="isEmptyAmount">
           {{ t('swap.enterAmount') }}
+        </template>
+        <template v-else-if="isInsufficientBalance">
+          {{ t('swap.insufficientBalance', { tokenSymbol: firstToken.symbol }) }}
         </template>
         <template v-else>
           {{ t('removeLiquidity.remove') }}
@@ -150,9 +164,12 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('removePart', { namespace }) removePart!: any
+  @Getter('liquidityBalance', { namespace }) liquidityBalance!: any
   @Getter('liquidityAmount', { namespace }) liquidityAmount!: any
   @Getter('firstTokenAmount', { namespace }) firstTokenAmount!: any
+  @Getter('firstTokenBalance', { namespace }) firstTokenBalance!: any
   @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
+  @Getter('secondTokenBalance', { namespace }) secondTokenBalance!: any
 
   @Getter tokens!: Array<Token>
 
@@ -164,6 +181,8 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
   @Action('resetFocusedField', { namespace }) resetFocusedField
 
   @Action getTokens
+
+  removePartInput = 0
 
   async created () {
     await this.getTokens()
@@ -197,11 +216,26 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
     return !this.removePart || !this.liquidityAmount || !this.firstTokenAmount || !this.secondTokenAmount
   }
 
+  get isInsufficientBalance (): boolean {
+    return (
+      this.liquidityAmount > this.liquidityBalance ||
+      this.firstTokenAmount > this.firstTokenBalance ||
+      this.secondTokenAmount > this.secondTokenBalance
+    )
+  }
+
   get resultMessage (): string {
     return this.t('createPair.transactionMessage', {
       firstToken: this.getTokenValue(this.firstToken, this.firstTokenAmount),
       secondToken: this.getTokenValue(this.secondToken, this.secondTokenAmount)
     })
+  }
+
+  handleRemovePartChange (value): void {
+    const newValue = parseInt(value) || 0
+    this.removePartInput = newValue > 100 ? 100 : newValue < 0 ? 0 : newValue
+
+    this.setRemovePart(this.removePartInput)
   }
 
   getTokenValue (token: any, tokenValue: number): string {
@@ -257,11 +291,30 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
   @include full-width-button;
 }
 
-.price-container {
-  margin: $inner-spacing-medium $inner-spacing-medium 0;
-  line-height: $s-line-height-big;
-  color: var(--s-color-base-content-secondary)
-}
-
 @include vertical-divider;
+</style>
+
+<style lang="scss">
+.s-input--remove-part {
+  display: inline-block;
+
+  &.one-char {
+    width: 1ch;
+  }
+  &.two-char {
+    width: 2ch;
+  }
+  &.three-char {
+    width: 3ch;
+  }
+
+  .el-input__inner {
+    font-size: var(--s-heading1-font-size) !important;
+    line-height: $s-line-height-mini !important;
+    letter-spacing: $s-letter-spacing-mini !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: none !important;
+  }
+}
 </style>
