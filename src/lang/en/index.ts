@@ -68,7 +68,7 @@ export default {
     liquidityProviderFeeTooltip: 'A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive.',
     enterAmount: 'Enter an amount',
     insufficientBalance: 'Insufficient {tokenSymbol} balance',
-    confirmSwap: 'Confirm Swap',
+    confirmSwap: 'Confirm swap',
     swapOutputMessage: 'Output is estimated. You will receive at least {transactionValue} or the transaction will revert.',
     transactionMessage: '{tokenFromValue} for {tokenToValue}'
   },
