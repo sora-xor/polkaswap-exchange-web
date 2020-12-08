@@ -27,12 +27,12 @@
           <s-button v-if="connected && areTokensSelected" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxFromValue">
             {{ t('exchange.max') }}
           </s-button>
-          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" @click="openSelectTokenDialog(true)">
+          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(true)">
             <token-logo :token="tokenFrom" size="small" />
             {{ tokenFrom.symbol }}
           </s-button>
         </div>
-        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" @click="openSelectTokenDialog(true)">
+        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(true)">
           {{ t('swap.chooseToken') }}
         </s-button>
       </div>
@@ -61,12 +61,12 @@
           />
         </s-form-item>
         <div v-if="tokenTo" class="token">
-          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" @click="openSelectTokenDialog">
+          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog">
             <token-logo :token="tokenTo" size="small" />
             {{ tokenTo.symbol }}
           </s-button>
         </div>
-        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" @click="openSelectTokenDialog">
+        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog">
           {{ t('swap.chooseToken') }}
         </s-button>
       </div>
@@ -264,6 +264,14 @@ export default class Swap extends Mixins(TranslationMixin) {
 }
 </script>
 
+<style lang="scss">
+.el-form--actions {
+  .el-button--switch-tokens {
+    @include switch-button-inherit-styles('medium');
+  }
+}
+</style>
+
 <style lang="scss" scoped>
 .el-form--actions {
   @include input-form-styles;
@@ -275,6 +283,10 @@ export default class Swap extends Mixins(TranslationMixin) {
     margin-left: $inner-spacing-mini / 2;
     font-size: var(--s-font-size-mini);
     @include font-weight;
+  }
+
+  .el-button--switch-tokens {
+    @include switch-button(var(--s-size-medium));
   }
 }
 </style>

@@ -158,19 +158,23 @@ html {
   .el-button {
     &--choose-token,
     &--empty-token {
-      font-feature-settings: $s-font-feature-settings-title;
       > span {
         display: inline-flex;
-        flex-direction: row-reverse;
         align-items: center;
         > i[class^=s-icon-] {
-          margin-left: $inner-spacing-mini / 2;
-          margin-right: 0;
           font-size: $s-font-size-input;
         }
       }
     }
+    &.el-button--empty-token {
+      > span {
+        > i[class^=s-icon-] {
+          margin-left: $inner-spacing-mini / 2;
+        }
+      }
+    }
     &--choose-token {
+      font-feature-settings: $s-font-feature-settings-title;
       > span {
         > i[class^=s-icon-] {
           margin-left: $inner-spacing-mini;
