@@ -54,7 +54,6 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             autocomplete="off"
             borderradius="small"
             class="s-input--token-value"
-            disabled="true"
             form=""
             label=""
             name=""
@@ -64,7 +63,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             suffix=""
             tabindex=""
             type="text"
-            value="100.00"
+            value="100"
           />
         </s-form-item-stub>
          
@@ -142,7 +141,6 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             autocomplete="off"
             borderradius="small"
             class="s-input--token-value"
-            disabled="true"
             form=""
             label=""
             name=""
@@ -212,7 +210,6 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             autocomplete="off"
             borderradius="small"
             class="s-input--token-value"
-            disabled="true"
             form=""
             label=""
             name=""
