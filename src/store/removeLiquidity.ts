@@ -118,6 +118,9 @@ const actions = {
         }
       } else {
         commit(types.SET_REMOVE_PART, 0)
+        commit(types.SET_LIQUIDITY_AMOUNT, 0)
+        commit(types.SET_FIRST_TOKEN_AMOUNT, 0)
+        commit(types.SET_SECOND_TOKEN_AMOUNT, 0)
       }
     }
   },
