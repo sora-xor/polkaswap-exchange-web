@@ -18,6 +18,7 @@ exports[`Pool.vue should renders correctly 1`] = `
     borderradius="small"
     class="el-button--add-liquidity"
     icon=""
+    iconposition="left"
     nativetype="button"
     size="medium"
     tabindex="0"

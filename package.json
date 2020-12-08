@@ -12,7 +12,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@soramitsu/soramitsu-js-ui": "^0.6.1",
+    "@soramitsu/soramitsu-js-ui": "^0.6.4",
     "@soramitsu/soraneo-wallet-web": "^0.2.2",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
