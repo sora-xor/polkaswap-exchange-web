@@ -24,10 +24,12 @@
         <div class="input-line">
           <s-form-item>
             <s-input
-              :value="removeLiquidityAmount"
+              :value="liquidityAmount"
               class="s-input--token-value"
+              v-float
               :placeholder="inputPlaceholder"
-              :disabled="true"
+              @input="setLiquidityAmount"
+              @blur="resetFocusedField"
             />
           </s-form-item>
           <div class="token">
@@ -53,10 +55,12 @@
         <div class="input-line">
           <s-form-item>
             <s-input
-              :value="firstTokenRemoveAmount"
+              :value="firstTokenAmount"
               class="s-input--token-value"
+              v-float
               :placeholder="inputPlaceholder"
-              :disabled="true"
+              @input="setFirstTokenAmount"
+              @blur="resetFocusedField"
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
@@ -79,10 +83,12 @@
         <div class="input-line">
           <s-form-item>
             <s-input
-              :value="secondTokenRemoveAmount"
+              :value="secondTokenAmount"
               class="s-input--token-value"
+              v-float
               :placeholder="inputPlaceholder"
-              :disabled="true"
+              @input="setSecondTokenAmount"
+              @blur="resetFocusedField"
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
@@ -141,17 +147,22 @@ const namespace = 'removeLiquidity'
 })
 export default class RemoveLiquidity extends Mixins(TranslationMixin) {
   @Getter('liquidity', { namespace }) liquidity!: any
-  @Getter('removePart', { namespace }) removePart!: any
-  @Getter('removeAmount', { namespace }) removeAmount!: any
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
-  @Getter('firstTokenRemoveAmount', { namespace }) firstTokenRemoveAmount!: any
-  @Getter('secondTokenRemoveAmount', { namespace }) secondTokenRemoveAmount!: any
+  @Getter('removePart', { namespace }) removePart!: any
+  @Getter('liquidityAmount', { namespace }) liquidityAmount!: any
+  @Getter('firstTokenAmount', { namespace }) firstTokenAmount!: any
+  @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
 
   @Getter tokens!: Array<Token>
 
   @Action('getLiquidity', { namespace }) getLiquidity
   @Action('setRemovePart', { namespace }) setRemovePart
+  @Action('setLiquidityAmount', { namespace }) setLiquidityAmount
+  @Action('setFirstTokenAmount', { namespace }) setFirstTokenAmount
+  @Action('setSecondTokenAmount', { namespace }) setSecondTokenAmount
+  @Action('resetFocusedField', { namespace }) resetFocusedField
+
   @Action getTokens
 
   async created () {
@@ -182,18 +193,14 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
     return !!this.firstToken && !!this.secondToken
   }
 
-  get removeLiquidityAmount (): string {
-    return formatNumber(this.removeAmount, 2)
-  }
-
   get isEmptyAmount (): boolean {
-    return this.removePart === 0
+    return !this.removePart || !this.liquidityAmount || !this.firstTokenAmount || !this.secondTokenAmount
   }
 
   get resultMessage (): string {
     return this.t('createPair.transactionMessage', {
-      firstToken: this.getTokenValue(this.firstToken, this.firstTokenRemoveAmount),
-      secondToken: this.getTokenValue(this.secondToken, this.secondTokenRemoveAmount)
+      firstToken: this.getTokenValue(this.firstToken, this.firstTokenAmount),
+      secondToken: this.getTokenValue(this.secondToken, this.secondTokenAmount)
     })
   }
 
@@ -219,6 +226,10 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
 <style lang="scss" scoped>
 .container {
   @include container-styles;
+}
+
+.icon-divider {
+  padding: $inner-spacing-medium;
 }
 
 .el-form--actions {
