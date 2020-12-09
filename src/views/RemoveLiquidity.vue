@@ -284,7 +284,7 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
   margin: $inner-spacing-medium $inner-spacing-medium 0;
   color: var(--s-color-base-content-secondary);
   line-height: $s-line-height-big;
-  font-feature-settings: 'tnum' on, 'lnum' on, 'case' on, 'salt' on, 'ss01' on;
+  font-feature-settings: $s-font-feature-settings-common;
 }
 
 .el-form--actions {
