@@ -113,6 +113,17 @@
           </div>
         </div>
       </div>
+
+      <div class="price-container">
+        <s-row flex justify="space-between" class="price">
+          <div>{{ t('removeLiquidity.price') }}</div>
+          <div>
+            <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price, 2) }} {{ secondToken.symbol }}</div>
+            <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price, 2) }} {{ firstToken.symbol }}</div>
+          </div>
+        </s-row>
+      </div>
+
       <s-button type="primary" borderRadius="small" :disabled="isEmptyAmount || isInsufficientBalance" @click="showConfirmDialog = true">
         <template v-if="isEmptyAmount">
           {{ t('swap.enterAmount') }}
@@ -125,14 +136,6 @@
         </template>
       </s-button>
     </s-form>
-
-    <s-row flex justify="space-between" class="price-container">
-      <div>{{ t('removeLiquidity.price') }}</div>
-      <div>
-        <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price, 2) }} {{ secondToken.symbol }}</div>
-        <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price, 2) }} {{ firstToken.symbol }}</div>
-      </div>
-    </s-row>
 
     <confirm-remove-liquidity :visible.sync="showConfirmDialog" @confirm="handleConfirmRemoveLiquidity" />
     <result-dialog :visible.sync="isRemoveLiquidityConfirmed" :type="t('removeLiquidity.remove')" :message="resultMessage" />
@@ -275,6 +278,9 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
 }
 
 .price-container {
+  width: 100%;
+}
+.price {
   margin: $inner-spacing-medium $inner-spacing-medium 0;
   color: var(--s-color-base-content-secondary);
   line-height: $s-line-height-big;
