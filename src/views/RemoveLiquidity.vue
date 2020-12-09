@@ -336,6 +336,7 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
     border: 0 !important;
     border-radius: 0 !important;
     background: none !important;
+    height: auto !important;
   }
 }
 </style>
