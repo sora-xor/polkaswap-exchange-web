@@ -73,7 +73,7 @@
   align-items: center;
   .input-container {
     position: relative;
-    padding: $inner-spacing-small $inner-spacing-medium $inner-spacing-mini;
+    padding: $inner-spacing-small $inner-spacing-mini $inner-spacing-mini $inner-spacing-medium;
     width: 100%;
     background-color: var(--s-color-base-background);
     border-radius: var(--s-border-radius-mini);
@@ -93,6 +93,9 @@
     .token-balance {
       display: inline-flex;
       align-items: baseline;
+    }
+    .token-balance {
+      padding-right: $inner-spacing-mini;
     }
     .input-title {
       font-family: "SoraB", sans-serif !important;
@@ -115,10 +118,6 @@
     &--choose-token {
       font-feature-settings: $s-font-feature-settings-title;
       @include font-weight(700, true);
-    }
-    &--empty-token,
-    &--choose-token {
-      margin-right: -$inner-spacing-mini;
     }
     &--max {
       margin-right: $inner-spacing-mini / 2;

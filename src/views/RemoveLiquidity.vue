@@ -234,13 +234,6 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
       color: var(--s-color-base-content-secondary)
     }
   }
-  .input-container {
-    .token {
-      .liquidity-logo {
-        order: 1;
-      }
-    }
-  }
   @include input-form-styles;
   @include buttons(true);
   @include full-width-button;
