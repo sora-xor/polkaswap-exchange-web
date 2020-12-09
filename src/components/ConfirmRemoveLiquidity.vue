@@ -29,7 +29,7 @@
           {{ t('confirmSupply.poolTokensBurned', { first: firstToken.symbol, second: secondToken.symbol }) }}
         </s-row>
       </div>
-      <div>{{ formatNumber(removeAmount, 2) }}</div>
+      <div>{{ formattedLiquidityValue }}</div>
     </s-row>
     <s-row flex justify="space-between" class="price-container">
       <div>{{ t('removeLiquidity.price') }}</div>
@@ -67,17 +67,21 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
-  @Getter('removeAmount', { namespace }) removeAmount!: any
-  @Getter('firstTokenRemoveAmount', { namespace }) firstTokenRemoveAmount!: any
-  @Getter('secondTokenRemoveAmount', { namespace }) secondTokenRemoveAmount!: any
+  @Getter('liquidityAmount', { namespace }) liquidityAmount!: any
+  @Getter('firstTokenAmount', { namespace }) firstTokenAmount!: any
+  @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
   formatNumber = formatNumber
 
   get formattedFromValue (): string {
-    return formatNumber(this.firstTokenRemoveAmount, 4)
+    return formatNumber(this.firstTokenAmount, 4)
   }
 
   get formattedToValue (): string {
-    return formatNumber(this.secondTokenRemoveAmount, 4)
+    return formatNumber(this.secondTokenAmount, 4)
+  }
+
+  get formattedLiquidityValue (): string {
+    return formatNumber(this.liquidityAmount, 4)
   }
 
   handleConfirmRemoveLiquidity (): void {

@@ -54,7 +54,6 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             autocomplete="off"
             borderradius="small"
             class="s-input--token-value"
-            disabled="true"
             form=""
             label=""
             name=""
@@ -64,7 +63,7 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             suffix=""
             tabindex=""
             type="text"
-            value="100.00"
+            value="100"
           />
         </s-form-item-stub>
          
@@ -144,7 +143,6 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             autocomplete="off"
             borderradius="small"
             class="s-input--token-value"
-            disabled="true"
             form=""
             label=""
             name=""
@@ -215,7 +213,6 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
             autocomplete="off"
             borderradius="small"
             class="s-input--token-value"
-            disabled="true"
             form=""
             label=""
             name=""
@@ -253,6 +250,32 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
       </div>
     </div>
      
+    <div
+      class="price-container"
+    >
+      <s-row-stub
+        align="top"
+        class="price"
+        flex="true"
+        gutter="0"
+        justify="space-between"
+      >
+        <div>
+          
+        </div>
+         
+        <div>
+          <div>
+            1 XOR = 10018.18 KSM
+          </div>
+           
+          <div>
+            1 KSM = 0.00 XOR
+          </div>
+        </div>
+      </s-row-stub>
+    </div>
+     
     <s-button-stub
       borderradius="small"
       icon=""
@@ -269,28 +292,6 @@ exports[`RemoveLiquidity.vue should renders correctly 1`] = `
       
     </s-button-stub>
   </s-form-stub>
-   
-  <s-row-stub
-    align="top"
-    class="price-container"
-    flex="true"
-    gutter="0"
-    justify="space-between"
-  >
-    <div>
-      
-    </div>
-     
-    <div>
-      <div>
-        1 XOR = 10018.18 KSM
-      </div>
-       
-      <div>
-        1 KSM = 0.00 XOR
-      </div>
-    </div>
-  </s-row-stub>
    
   <!---->
    

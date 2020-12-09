@@ -4,11 +4,16 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import liquidityApi from '@/api/liquidity'
+import BigNumber from 'bignumber.js'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
-    'SET_REMOVE_PART'
+    'SET_REMOVE_PART',
+    'SET_LIQUIDITY_AMOUNT',
+    'SET_FIRST_TOKEN_AMOUNT',
+    'SET_SECOND_TOKEN_AMOUNT',
+    'SET_FOCUSED_FIELD'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -19,7 +24,11 @@ const types = flow(
 function initialState () {
   return {
     liquidity: null,
-    removePart: 0
+    removePart: 0,
+    liquidityAmount: 0,
+    firstTokenAmount: 0,
+    secondTokenAmount: 0,
+    focusedField: null
   }
 }
 
@@ -28,6 +37,15 @@ const state = initialState()
 const getters = {
   liquidity (state) {
     return state.liquidity
+  },
+  liquidityBalance (state) {
+    return state.liquidity ? state.liquidity.balance : 0
+  },
+  firstTokenBalance (state) {
+    return state.liquidity ? state.liquidity.firstTokenAmount : 0
+  },
+  secondTokenBalance (state) {
+    return state.liquidity ? state.liquidity.secondTokenAmount : 0
   },
   firstToken (state, getters, rootState) {
     return state.liquidity && rootState.tokens.tokens ? rootState.tokens.tokens.find(t => t.symbol === state.liquidity.firstToken) : {}
@@ -38,20 +56,14 @@ const getters = {
   removePart (state) {
     return state.removePart
   },
-  removeAmount (state) {
-    return state.liquidity ? state.removePart * state.liquidity.balance / 100 : 0
+  liquidityAmount (state) {
+    return state.liquidityAmount
   },
   firstTokenAmount (state) {
-    return state.liquidity ? state.liquidity.firstTokenAmount : 0
-  },
-  firstTokenRemoveAmount (state, getters) {
-    return state.removePart * getters.firstTokenAmount / 100
+    return state.firstTokenAmount
   },
   secondTokenAmount (state) {
-    return state.liquidity ? state.liquidity.secondTokenAmount : 0
-  },
-  secondTokenRemoveAmount (state, getters) {
-    return state.removePart * getters.secondTokenAmount / 100
+    return state.secondTokenAmount
   }
 }
 
@@ -65,6 +77,18 @@ const mutations = {
   },
   [types.SET_REMOVE_PART] (state, removePart) {
     state.removePart = removePart
+  },
+  [types.SET_LIQUIDITY_AMOUNT] (state, liquidityAmount) {
+    state.liquidityAmount = liquidityAmount
+  },
+  [types.SET_FIRST_TOKEN_AMOUNT] (state, firstTokenAmount) {
+    state.firstTokenAmount = firstTokenAmount
+  },
+  [types.SET_SECOND_TOKEN_AMOUNT] (state, secondTokenAmount) {
+    state.secondTokenAmount = secondTokenAmount
+  },
+  [types.SET_FOCUSED_FIELD] (state, field) {
+    state.focusedField = field
   }
 }
 
@@ -79,8 +103,87 @@ const actions = {
       commit(types.GET_LIQUIDITY_FAILURE)
     }
   },
-  setRemovePart ({ commit }, removePart) {
-    commit(types.SET_REMOVE_PART, Number(removePart))
+
+  setRemovePart ({ commit, getters }, removePart) {
+    if (!getters.focusedField || getters.focusedField === 'removePart') {
+      commit(types.SET_FOCUSED_FIELD, 'removePart')
+      const part = Math.round(removePart)
+
+      if (removePart) {
+        if (removePart && removePart !== getters.removePart && !Number.isNaN(removePart)) {
+          commit(types.SET_REMOVE_PART, part)
+          commit(types.SET_LIQUIDITY_AMOUNT, (getters.liquidityBalance * part) / 100)
+          commit(types.SET_FIRST_TOKEN_AMOUNT, (getters.firstTokenBalance * part) / 100)
+          commit(types.SET_SECOND_TOKEN_AMOUNT, (getters.secondTokenBalance * part) / 100)
+        }
+      } else {
+        commit(types.SET_REMOVE_PART, 0)
+        commit(types.SET_LIQUIDITY_AMOUNT, 0)
+        commit(types.SET_FIRST_TOKEN_AMOUNT, 0)
+        commit(types.SET_SECOND_TOKEN_AMOUNT, 0)
+      }
+    }
+  },
+
+  setLiquidityAmount ({ commit, getters }, liquidityAmount) {
+    if (!getters.focusedField || getters.focusedField === 'liquidityAmount') {
+      commit(types.SET_FOCUSED_FIELD, 'liquidityAmount')
+
+      if (liquidityAmount) {
+        if (liquidityAmount !== getters.liquidityAmount && !Number.isNaN(liquidityAmount)) {
+          const part = new BigNumber(liquidityAmount).dividedBy(getters.liquidityBalance)
+
+          commit(types.SET_REMOVE_PART, Math.round(part.multipliedBy(100).toNumber()))
+          commit(types.SET_LIQUIDITY_AMOUNT, liquidityAmount)
+          commit(types.SET_FIRST_TOKEN_AMOUNT, part.multipliedBy(getters.firstTokenBalance).toNumber())
+          commit(types.SET_SECOND_TOKEN_AMOUNT, part.multipliedBy(getters.secondTokenBalance).toNumber())
+        }
+      } else {
+        commit(types.SET_LIQUIDITY_AMOUNT)
+      }
+    }
+  },
+
+  setFirstTokenAmount ({ commit, getters }, firstTokenAmount) {
+    if (!getters.focusedField || getters.focusedField === 'firstTokenAmount') {
+      commit(types.SET_FOCUSED_FIELD, 'firstTokenAmount')
+
+      if (firstTokenAmount) {
+        if (firstTokenAmount !== getters.firstTokenAmount && !Number.isNaN(firstTokenAmount)) {
+          const part = new BigNumber(firstTokenAmount).dividedBy(getters.firstTokenBalance)
+
+          commit(types.SET_REMOVE_PART, Math.round(part.multipliedBy(100).toNumber()))
+          commit(types.SET_LIQUIDITY_AMOUNT, part.multipliedBy(getters.liquidityBalance).toNumber())
+          commit(types.SET_FIRST_TOKEN_AMOUNT, firstTokenAmount)
+          commit(types.SET_SECOND_TOKEN_AMOUNT, part.multipliedBy(getters.secondTokenBalance).toNumber())
+        }
+      } else {
+        commit(types.SET_FIRST_TOKEN_AMOUNT)
+      }
+    }
+  },
+
+  setSecondTokenAmount ({ commit, getters, dispatch }, secondTokenAmount) {
+    if (!getters.focusedField || getters.focusedField === 'secondTokenAmount') {
+      commit(types.SET_FOCUSED_FIELD, 'secondTokenAmount')
+
+      if (secondTokenAmount) {
+        if (Number(secondTokenAmount) !== getters.secondTokenAmount && !Number.isNaN(secondTokenAmount)) {
+          const part = new BigNumber(secondTokenAmount).dividedBy(getters.secondTokenBalance)
+
+          commit(types.SET_REMOVE_PART, Math.round(part.multipliedBy(100).toNumber()))
+          commit(types.SET_LIQUIDITY_AMOUNT, part.multipliedBy(getters.liquidityBalance).toNumber())
+          commit(types.SET_FIRST_TOKEN_AMOUNT, part.multipliedBy(getters.firstTokenBalance).toNumber())
+          commit(types.SET_SECOND_TOKEN_AMOUNT, secondTokenAmount)
+        }
+      } else {
+        commit(types.SET_SECOND_TOKEN_AMOUNT)
+      }
+    }
+  },
+
+  resetFocusedField ({ commit }) {
+    commit(types.SET_FOCUSED_FIELD, null)
   }
 }
 
