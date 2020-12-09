@@ -10,10 +10,13 @@
           <s-input
             v-model="removePartInput"
             maxlength="3"
-            max="100"
-            min="0"
-            step="1"
-            :class="`s-input--token-value s-input--remove-part ${removePart === 100 ? 'three-char' : removePart > 9 ? 'two-char' : 'one-char'}`"
+            :class="`s-input--token-value s-input--remove-part ${
+              removePartInput.toString().length === 3
+              ? 'three-char'
+              : removePartInput.toString().length === 2
+              ? 'two-char'
+              : 'one-char'
+            }`"
             v-float
             @input="handleRemovePartChange"
             @blur="resetFocusedField"
@@ -21,7 +24,7 @@
           <span class="percent">%</span>
         </div>
         <div>
-          <s-slider :value="removePartInput" @change="handleRemovePartChange" />
+          <s-slider :value="removePartInput" :showTooltip="false" @change="handleRemovePartChange" />
         </div>
       </info-card>
       <div class="input-container">
@@ -44,7 +47,7 @@
             />
           </s-form-item>
           <div class="token">
-            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleLiquidityMaxValue">
+            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleRemovePartChange(100)">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium">
@@ -137,7 +140,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -231,6 +234,11 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
     })
   }
 
+  @Watch('removePart')
+  removePartChange (newValue): void {
+    this.handleRemovePartChange(newValue)
+  }
+
   handleRemovePartChange (value): void {
     const newValue = parseInt(value) || 0
     this.removePartInput = newValue > 100 ? 100 : newValue < 0 ? 0 : newValue
@@ -264,6 +272,13 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
 
 .icon-divider {
   padding: $inner-spacing-medium;
+}
+
+.price-container {
+  margin: $inner-spacing-medium $inner-spacing-medium 0;
+  color: var(--s-color-base-content-secondary);
+  line-height: $s-line-height-big;
+  font-feature-settings: 'tnum' on, 'lnum' on, 'case' on, 'salt' on, 'ss01' on;
 }
 
 .el-form--actions {
