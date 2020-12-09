@@ -7,10 +7,24 @@
     >
       <info-card class="slider-container" :title="t('removeLiquidity.amount')">
         <div class="slider-container__amount">
-          {{ removePart }}<span class="percent">%</span>
+          <s-input
+            v-model="removePartInput"
+            maxlength="3"
+            :class="`s-input--token-value s-input--remove-part ${
+              removePartInput.toString().length === 3
+              ? 'three-char'
+              : removePartInput.toString().length === 2
+              ? 'two-char'
+              : 'one-char'
+            }`"
+            v-float
+            @input="handleRemovePartChange"
+            @blur="resetFocusedField"
+          />
+          <span class="percent">%</span>
         </div>
         <div>
-          <s-slider :value="removePart" @change="setRemovePart" />
+          <s-slider :value="removePartInput" :showTooltip="false" @change="handleRemovePartChange" />
         </div>
       </info-card>
       <div class="input-container">
@@ -24,14 +38,16 @@
         <div class="input-line">
           <s-form-item>
             <s-input
-              :value="removeLiquidityAmount"
+              :value="liquidityAmount"
               class="s-input--token-value"
+              v-float
               :placeholder="inputPlaceholder"
-              :disabled="true"
+              @input="setLiquidityAmount"
+              @blur="resetFocusedField"
             />
           </s-form-item>
           <div class="token">
-            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleLiquidityMaxValue">
+            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleRemovePartChange(100)">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium">
@@ -53,10 +69,12 @@
         <div class="input-line">
           <s-form-item>
             <s-input
-              :value="firstTokenRemoveAmount"
+              :value="firstTokenAmount"
               class="s-input--token-value"
+              v-float
               :placeholder="inputPlaceholder"
-              :disabled="true"
+              @input="setFirstTokenAmount"
+              @blur="resetFocusedField"
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
@@ -79,10 +97,12 @@
         <div class="input-line">
           <s-form-item>
             <s-input
-              :value="secondTokenRemoveAmount"
+              :value="secondTokenAmount"
               class="s-input--token-value"
+              v-float
               :placeholder="inputPlaceholder"
-              :disabled="true"
+              @input="setSecondTokenAmount"
+              @blur="resetFocusedField"
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
@@ -93,9 +113,23 @@
           </div>
         </div>
       </div>
-      <s-button type="primary" borderRadius="small" :disabled="isEmptyAmount" @click="showConfirmDialog = true">
+
+      <div class="price-container">
+        <s-row flex justify="space-between" class="price">
+          <div>{{ t('removeLiquidity.price') }}</div>
+          <div>
+            <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price, 2) }} {{ secondToken.symbol }}</div>
+            <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price, 2) }} {{ firstToken.symbol }}</div>
+          </div>
+        </s-row>
+      </div>
+
+      <s-button type="primary" borderRadius="small" :disabled="isEmptyAmount || isInsufficientBalance" @click="showConfirmDialog = true">
         <template v-if="isEmptyAmount">
           {{ t('swap.enterAmount') }}
+        </template>
+        <template v-else-if="isInsufficientBalance">
+          {{ t('swap.insufficientBalance', { tokenSymbol: firstToken.symbol }) }}
         </template>
         <template v-else>
           {{ t('removeLiquidity.remove') }}
@@ -103,21 +137,13 @@
       </s-button>
     </s-form>
 
-    <s-row flex justify="space-between" class="price-container">
-      <div>{{ t('removeLiquidity.price') }}</div>
-      <div>
-        <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price, 2) }} {{ secondToken.symbol }}</div>
-        <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price, 2) }} {{ firstToken.symbol }}</div>
-      </div>
-    </s-row>
-
     <confirm-remove-liquidity :visible.sync="showConfirmDialog" @confirm="handleConfirmRemoveLiquidity" />
     <result-dialog :visible.sync="isRemoveLiquidityConfirmed" :type="t('removeLiquidity.remove')" :message="resultMessage" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -141,18 +167,28 @@ const namespace = 'removeLiquidity'
 })
 export default class RemoveLiquidity extends Mixins(TranslationMixin) {
   @Getter('liquidity', { namespace }) liquidity!: any
-  @Getter('removePart', { namespace }) removePart!: any
-  @Getter('removeAmount', { namespace }) removeAmount!: any
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
-  @Getter('firstTokenRemoveAmount', { namespace }) firstTokenRemoveAmount!: any
-  @Getter('secondTokenRemoveAmount', { namespace }) secondTokenRemoveAmount!: any
+  @Getter('removePart', { namespace }) removePart!: any
+  @Getter('liquidityBalance', { namespace }) liquidityBalance!: any
+  @Getter('liquidityAmount', { namespace }) liquidityAmount!: any
+  @Getter('firstTokenAmount', { namespace }) firstTokenAmount!: any
+  @Getter('firstTokenBalance', { namespace }) firstTokenBalance!: any
+  @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
+  @Getter('secondTokenBalance', { namespace }) secondTokenBalance!: any
 
   @Getter tokens!: Array<Token>
 
   @Action('getLiquidity', { namespace }) getLiquidity
   @Action('setRemovePart', { namespace }) setRemovePart
+  @Action('setLiquidityAmount', { namespace }) setLiquidityAmount
+  @Action('setFirstTokenAmount', { namespace }) setFirstTokenAmount
+  @Action('setSecondTokenAmount', { namespace }) setSecondTokenAmount
+  @Action('resetFocusedField', { namespace }) resetFocusedField
+
   @Action getTokens
+
+  removePartInput = 0
 
   async created () {
     await this.getTokens()
@@ -182,19 +218,35 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
     return !!this.firstToken && !!this.secondToken
   }
 
-  get removeLiquidityAmount (): string {
-    return formatNumber(this.removeAmount, 2)
+  get isEmptyAmount (): boolean {
+    return !this.removePart || !this.liquidityAmount || !this.firstTokenAmount || !this.secondTokenAmount
   }
 
-  get isEmptyAmount (): boolean {
-    return this.removePart === 0
+  get isInsufficientBalance (): boolean {
+    return (
+      this.liquidityAmount > this.liquidityBalance ||
+      this.firstTokenAmount > this.firstTokenBalance ||
+      this.secondTokenAmount > this.secondTokenBalance
+    )
   }
 
   get resultMessage (): string {
     return this.t('createPair.transactionMessage', {
-      firstToken: this.getTokenValue(this.firstToken, this.firstTokenRemoveAmount),
-      secondToken: this.getTokenValue(this.secondToken, this.secondTokenRemoveAmount)
+      firstToken: this.getTokenValue(this.firstToken, this.firstTokenAmount),
+      secondToken: this.getTokenValue(this.secondToken, this.secondTokenAmount)
     })
+  }
+
+  @Watch('removePart')
+  removePartChange (newValue): void {
+    this.handleRemovePartChange(newValue)
+  }
+
+  handleRemovePartChange (value): void {
+    const newValue = parseInt(value) || 0
+    this.removePartInput = newValue > 100 ? 100 : newValue < 0 ? 0 : newValue
+
+    this.setRemovePart(this.removePartInput)
   }
 
   getTokenValue (token: any, tokenValue: number): string {
@@ -219,6 +271,20 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
 <style lang="scss" scoped>
 .container {
   @include container-styles;
+}
+
+.icon-divider {
+  padding: $inner-spacing-medium;
+}
+
+.price-container {
+  width: 100%;
+}
+.price {
+  margin: $inner-spacing-medium $inner-spacing-medium 0;
+  color: var(--s-color-base-content-secondary);
+  line-height: $s-line-height-big;
+  font-feature-settings: 'tnum' on, 'lnum' on, 'case' on, 'salt' on, 'ss01' on;
 }
 
 .el-form--actions {
@@ -246,11 +312,30 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
   @include full-width-button;
 }
 
-.price-container {
-  margin: $inner-spacing-medium $inner-spacing-medium 0;
-  line-height: $s-line-height-big;
-  color: var(--s-color-base-content-secondary)
-}
-
 @include vertical-divider;
+</style>
+
+<style lang="scss">
+.s-input--remove-part {
+  display: inline-block;
+
+  &.one-char {
+    width: 1ch;
+  }
+  &.two-char {
+    width: 2ch;
+  }
+  &.three-char {
+    width: 3ch;
+  }
+
+  .el-input__inner {
+    font-size: var(--s-heading1-font-size) !important;
+    line-height: $s-line-height-mini !important;
+    letter-spacing: $s-letter-spacing-mini !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: none !important;
+  }
+}
 </style>

@@ -31,11 +31,12 @@ describe('RemoveLiquidity.vue', () => {
       firstToken: () => tokens[0],
       secondToken: () => tokens[1],
       removePart: () => 100,
-      removeAmount: () => 100,
+      liquidityAmount: () => 100,
       firstTokenAmount: () => 100,
-      firstTokenRemoveAmount: () => 100,
       secondTokenAmount: () => 100,
-      secondTokenRemoveAmount: () => 100
+      liquidityBalance: () => 100,
+      firstTokenBalance: () => 100,
+      secondTokenBalance: () => 100
     }
 
     store = new Vuex.Store({
