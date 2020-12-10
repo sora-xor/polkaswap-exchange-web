@@ -1,7 +1,7 @@
 <template>
   <div class="el-form--pool">
     <!-- TODO: Add appropriate tooltip -->
-    <generic-header class="header--pool" :hasButtonBack="false" :title="t('pool.yourLiquidity')" :tooltip="t('pool.loremIpsum')" />
+    <generic-header class="header--pool" :has-button-back="false" :title="t('pool.yourLiquidity')" :tooltip="t('pool.loremIpsum')" />
     <p v-if="!connected" class="pool-info-container">
       {{ t('pool.connectToWallet') }}
     </p>
@@ -11,21 +11,21 @@
     <s-collapse v-else class="pool-list" :borders="true">
       <s-collapse-item v-for="liquidity of liquidities" :key="liquidity.id" :name="liquidity.id" class="pool-info-container">
         <template #title>
-          <pair-token-logo :firstTokenSymbol="liquidity.firstToken" :secondTokenSymbol="liquidity.secondToken" size="small" />
+          <pair-token-logo :first-token-symbol="liquidity.firstToken" :second-token-symbol="liquidity.secondToken" size="small" />
           <h3>{{ getPairTitle(liquidity.firstToken, liquidity.secondToken) }}</h3>
         </template>
         <div class="pool-info">
-          <token-logo :tokenSymbol="liquidity.firstToken" size="small" />
+          <token-logo :token-symbol="liquidity.firstToken" size="small" />
           <div>{{ t('pool.pooledToken', { tokenSymbol: liquidity.firstToken }) }}</div>
           <div v-if="liquidity.firstTokenAmount" class="pool-info-value">{{ liquidity.firstTokenAmount }}</div>
         </div>
         <div class="pool-info">
-          <token-logo :tokenSymbol="liquidity.secondToken" size="small" />
+          <token-logo :token-symbol="liquidity.secondToken" size="small" />
           <div>{{ t('pool.pooledToken', { tokenSymbol: liquidity.secondToken }) }}</div>
           <div v-if="liquidity.secondTokenAmount" class="pool-info-value">{{ liquidity.secondTokenAmount }}</div>
         </div>
         <div class="pool-info">
-          <pair-token-logo :firstTokenSymbol="liquidity.firstToken" :secondTokenSymbol="liquidity.secondToken" size="mini" />
+          <pair-token-logo :first-token-symbol="liquidity.firstToken" :second-token-symbol="liquidity.secondToken" size="mini" />
           <div>{{ t('pool.pairTokens', { pair: getPairTitle(liquidity.firstToken, liquidity.secondToken) }) }}</div>
           <div class="pool-info-value">{{ pairValue }}</div>
         </div>

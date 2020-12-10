@@ -8,7 +8,7 @@
       {{ poolTokens }}
     </div>
     <s-row v-if="firstToken && secondToken" flex align="middle" class="pool-tokens">
-      <pair-token-logo :firstToken="firstToken" :secondToken="secondToken" size="small" />
+      <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="small" />
       {{ t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol }) }}
     </s-row>
     <div class="tokens">

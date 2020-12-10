@@ -2,9 +2,9 @@
 
 exports[`DialogBase.vue should renders correctly 1`] = `
 <s-dialog
-  borderradius="medium"
+  border-radius="medium"
   class="dialog-wrapper"
-  customclass="custom-dialog-class"
+  custom-class="custom-dialog-class"
   title="Dialog title"
   top="80px"
   width="496px"

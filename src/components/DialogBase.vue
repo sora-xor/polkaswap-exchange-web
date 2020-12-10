@@ -3,8 +3,8 @@
     :visible.sync="isVisible"
     :title="title"
     class="dialog-wrapper"
-    :customClass="customClass"
-    borderRadius="medium"
+    :custom-class="customClass"
+    border-radius="medium"
     top="80px"
     width="496px"
   >

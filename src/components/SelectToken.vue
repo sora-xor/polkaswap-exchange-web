@@ -2,7 +2,7 @@
   <dialog-base
     :visible.sync="isVisible"
     :title="t('selectToken.title')"
-    customClass="token-select"
+    custom-class="token-select"
   >
     <s-input
       v-model="query"
@@ -10,7 +10,7 @@
       class="token-search"
       prefix="el-icon-search"
       size="medium"
-      borderRadius="mini"
+      border-radius="mini"
     />
     <div v-if="filteredTokens && filteredTokens.length > 0" class="token-list">
       <div v-for="token in filteredTokens" @click="selectToken($event, token)" :key="token.symbol" class="token-item">

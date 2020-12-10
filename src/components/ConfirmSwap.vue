@@ -2,7 +2,7 @@
   <dialog-base
     :visible.sync="isVisible"
     :title="t('swap.confirmSwap')"
-    customClass="dialog--confirm-swap"
+    custom-class="dialog--confirm-swap"
   >
     <div class="tokens">
       <div class="tokens-info-container">
@@ -23,8 +23,8 @@
     </div>
     <p class="transaction-message" v-html="t('swap.swapOutputMessage', { transactionValue : `<span class='transaction-number'>${toValue}</span>` })" />
     <s-divider />
-    <swap-info :showPrice="true" />
-    <swap-info :showTooltips="false" />
+    <swap-info :show-price="true" />
+    <swap-info :show-tooltips="false" />
     <template #footer>
       <s-button type="primary" @click="handleConfirmSwap">{{ t('swap.confirmSwap') }}</s-button>
     </template>

@@ -32,7 +32,6 @@
     display: flex;
     align-items: center;
     &-logo {
-      order: 1;
       margin-right: $inner-spacing-mini;
     }
     &-balance {
@@ -74,7 +73,7 @@
   align-items: center;
   .input-container {
     position: relative;
-    padding: $inner-spacing-small $inner-spacing-medium $inner-spacing-mini;
+    padding: $inner-spacing-small $inner-spacing-mini $inner-spacing-mini $inner-spacing-medium;
     width: 100%;
     background-color: var(--s-color-base-background);
     border-radius: var(--s-border-radius-mini);
@@ -94,6 +93,9 @@
     .token-balance {
       display: inline-flex;
       align-items: baseline;
+    }
+    .token-balance {
+      padding-right: $inner-spacing-mini;
     }
     .input-title {
       font-family: "SoraB", sans-serif !important;
@@ -122,14 +124,8 @@
       padding-right: $inner-spacing-mini;
       height: var(--s-size-mini);
     }
-    &--empty-token {
-      position: absolute;
-      right: $inner-spacing-mini;
-      bottom: $inner-spacing-mini;
-    }
     &--choose-token {
       margin-left: 0;
-      margin-right: -$inner-spacing-mini;
       padding-left: $inner-spacing-mini / 2;
       background-color: var(--s-color-base-background);
       border-color: var(--s-color-base-background);
@@ -145,6 +141,19 @@
         }
       }
     }
+  }
+}
+
+@mixin switch-button ($lineHeight: var(--s-size-small)) {
+  padding: 0;
+  font-size: var(--s-icon-font-size-big);
+  line-height: $lineHeight;
+}
+
+@mixin switch-button-inherit-styles ($size: 'small') {
+  &.s-action.s-#{$size} i {
+    font-size: inherit;
+    line-height: inherit;
   }
 }
 

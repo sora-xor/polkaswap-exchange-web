@@ -8,8 +8,9 @@
     <div class="transaction">
       <div v-if="type" class="transaction-type">{{ type }}</div>
       <div v-if="message" class="transaction-info">{{ message }}</div>
-      <!-- TODO: Add correct icons and add functionality -->
+      <!-- This link was hidden due to PSS-205 task. We'll return it back later.  -->
       <!-- <s-icon name="external-link" @click="handleTransactionInfo" /> -->
+      <!-- TODO: Add correct icons and add functionality -->
       <!-- <s-icon name="arrow-bottom-rounded" /> -->
     </div>
     <s-divider />

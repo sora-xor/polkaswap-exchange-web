@@ -47,12 +47,12 @@
             />
           </s-form-item>
           <div class="token">
-            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" borderRadius="mini" @click="handleRemovePartChange(100)">
+            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleRemovePartChange(100)">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <div class="liquidity-logo">
-                <pair-token-logo :firstToken="firstToken" :secondToken="secondToken" size="mini" />
+                <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="mini" />
               </div>
               {{ firstToken.symbol }}-{{ secondToken.symbol }}
             </s-button>
@@ -78,7 +78,7 @@
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
-            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <token-logo :token="firstToken" size="small" />
               {{ firstToken.symbol }}
             </s-button>
@@ -106,7 +106,7 @@
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
-            <s-button class="el-button--choose-token" type="tertiary" size="small" borderRadius="medium">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <token-logo :token="secondToken" size="small" />
               {{ secondToken.symbol }}
             </s-button>
@@ -124,7 +124,7 @@
         </s-row>
       </div>
 
-      <s-button type="primary" borderRadius="small" :disabled="isEmptyAmount || isInsufficientBalance" @click="showConfirmDialog = true">
+      <s-button type="primary" border-radius="small" :disabled="isEmptyAmount || isInsufficientBalance" @click="showConfirmDialog = true">
         <template v-if="isEmptyAmount">
           {{ t('swap.enterAmount') }}
         </template>
@@ -284,7 +284,7 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
   margin: $inner-spacing-medium $inner-spacing-medium 0;
   color: var(--s-color-base-content-secondary);
   line-height: $s-line-height-big;
-  font-feature-settings: 'tnum' on, 'lnum' on, 'case' on, 'salt' on, 'ss01' on;
+  font-feature-settings: $s-font-feature-settings-common;
 }
 
 .el-form--actions {
@@ -298,13 +298,6 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
     }
     .percent {
       color: var(--s-color-base-content-secondary)
-    }
-  }
-  .input-container {
-    .token {
-      .liquidity-logo {
-        order: 1;
-      }
     }
   }
   @include input-form-styles;
