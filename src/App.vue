@@ -156,6 +156,7 @@ html {
     }
   }
   .el-button {
+    // TODO: Check all icons settings after fix in UI Lib
     &--choose-token,
     &--empty-token {
       > span {
