@@ -45,17 +45,17 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.Wallet)
   },
   {
+    path: '/exchange/pool/create-pair',
+    name: PageNames.CreatePair,
+    component: lazyView(PageNames.CreatePair)
+  },
+  {
     path: '/stats',
     name: PageNames.Stats
   },
   {
     path: '/support',
     name: PageNames.Support
-  },
-  {
-    path: '/create-pair',
-    name: PageNames.CreatePair,
-    component: lazyView(PageNames.CreatePair)
   },
   {
     path: '/liquidity/add/:id',

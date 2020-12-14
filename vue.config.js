@@ -1,4 +1,7 @@
 module.exports = {
+  configureWebpack: {
+    devtool: 'source-map' // Mapping for vscode tasks
+  },
   css: {
     loaderOptions: {
       sass: {

@@ -48,11 +48,20 @@ import router, { lazyComponent } from '@/router'
 export default class App extends Mixins(TranslationMixin) {
   readonly MainMenu = MainMenu
   readonly PageNames = PageNames
+  readonly exchangePages = [
+    PageNames.Swap,
+    PageNames.Pool,
+    PageNames.AddLiquidity,
+    PageNames.AddLiquidityId,
+    PageNames.RemoveLiquidity,
+    PageNames.CreatePair,
+    PageNames.Wallet
+  ]
 
   showSettings = false
 
   getCurrentPath (): string {
-    if ([PageNames.Swap, PageNames.Pool, PageNames.Wallet].includes(router.currentRoute.name as PageNames)) {
+    if (this.exchangePages.includes(router.currentRoute.name as PageNames)) {
       return PageNames.Exchange
     }
     return router.currentRoute.name as string
