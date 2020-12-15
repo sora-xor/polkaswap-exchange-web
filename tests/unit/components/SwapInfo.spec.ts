@@ -2,8 +2,8 @@ import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 
 import SwapInfo from '@/components/SwapInfo.vue'
-import { slippageTolerance, liquidityProviderFee } from '@/mocks/swap'
-import { tokens } from '@/mocks/tokens'
+import { slippageTolerance, liquidityProviderFee } from '../../mocks/swap'
+import { tokens } from '../../mocks/tokens'
 import { SoramitsuElementsImport, TranslationMock } from '../../utils'
 
 const localVue = createLocalVue()

@@ -2,7 +2,7 @@ import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 
 import AddLiquidity from '@/views/AddLiquidity.vue'
-import { tokens } from '@/mocks/tokens'
+import { tokens } from '../../mocks/tokens'
 import { SoramitsuElementsImport, TranslationMock } from '../../utils'
 
 const localVue = createLocalVue()

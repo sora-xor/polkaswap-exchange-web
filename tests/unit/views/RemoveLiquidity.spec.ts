@@ -1,11 +1,11 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
+import VueRouter from 'vue-router'
 
 import RemoveLiquidity from '@/views/RemoveLiquidity.vue'
-import { tokens } from '@/mocks/tokens'
-import { liquidities } from '@/mocks/liquidity'
+import { tokens } from '../../mocks/tokens'
+import { liquidities } from '../../mocks/liquidity'
 import { SoramitsuElementsImport, TranslationMock } from '../../utils'
-import VueRouter from 'vue-router'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)

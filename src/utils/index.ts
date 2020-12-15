@@ -1,4 +1,4 @@
-import { storage } from '@soramitsu/soraneo-wallet-web'
+import storage from './storage'
 
 export const formatNumber = (value: string | number, decimalLendth: number): string => {
   const valueNumber = +value
@@ -14,7 +14,3 @@ export const getTokenIconClasses = (symbol: string) => {
 }
 
 export const isWalletConnected = () => !!(storage.get('address') && storage.get('name') && storage.get('password'))
-
-export {
-  storage
-}

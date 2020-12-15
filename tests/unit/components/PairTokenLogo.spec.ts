@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 
-import { tokens } from '@/mocks/tokens'
 import PairTokenLogo from '@/components/PairTokenLogo.vue'
+import { tokens } from '../../mocks/tokens'
 import { SoramitsuElementsImport, TranslationMock } from '../../utils'
 
 const localVue = createLocalVue()
