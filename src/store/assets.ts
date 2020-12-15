@@ -29,7 +29,7 @@ const getters = {
 
 const mutations = {
   [types.GET_ASSETS_LIST_REQUEST] (state) {
-    state.assets = null
+    state.assets = []
   },
 
   [types.GET_ASSETS_LIST_SUCCESS] (state, assets: Array<Asset>) {
@@ -37,16 +37,15 @@ const mutations = {
   },
 
   [types.GET_ASSETS_LIST_FAILURE] (state) {
-    state.assets = null
+    state.assets = []
   }
 }
 
 const actions = {
-  async getAssets ({ commit, state: { address } }) {
+  async getAssets ({ commit }) {
     commit(types.GET_ASSETS_LIST_REQUEST)
     try {
       const assets = await dexApi.getAssets()
-      console.log('assets: ', assets)
       commit(types.GET_ASSETS_LIST_SUCCESS, assets)
     } catch (error) {
       commit(types.GET_ASSETS_LIST_FAILURE)

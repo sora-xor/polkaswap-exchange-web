@@ -12,7 +12,7 @@ module.exports = {
     ecmaVersion: 2020
   },
   rules: {
-    'no-console': [process.env.NODE_ENV === 'production' ? 'error' : 'warn', { allow: ['warn', 'error'] }],
+    'no-console': [process.env.NODE_ENV === 'production' ? 'error' : 'warn', { allow: ['warn', 'error', 'info'] }],
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     'vue/html-closing-bracket-newline': ['error', {
       singleline: 'never',

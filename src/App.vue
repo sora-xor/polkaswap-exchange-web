@@ -22,7 +22,7 @@
       </s-menu>
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.About)" />
       <div class="buttons">
-        <s-button class="wallet" type="action" icon="wallet" rounded @click="goTo(PageNames.Wallet)" />
+        <s-button class="wallet" type="action" icon="wallet" rounded :disabled="loading" @click="goTo(PageNames.Wallet)" />
         <s-button type="action" icon="settings" rounded @click="openSettingsDialog" />
         <!-- TODO: The button is hidden because we don't have a Search page right now -->
         <!-- <s-button type="action" icon="search" rounded /> -->
@@ -38,6 +38,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 
 import { PageNames, MainMenu, Components } from '@/consts'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import LoadingMixin from '@/components/mixins/LoadingMixin'
 import router, { lazyComponent } from '@/router'
 import { dexApi } from '@soramitsu/soraneo-wallet-web'
 
@@ -46,7 +47,7 @@ import { dexApi } from '@soramitsu/soraneo-wallet-web'
     Settings: lazyComponent(Components.Settings)
   }
 })
-export default class App extends Mixins(TranslationMixin) {
+export default class App extends Mixins(TranslationMixin, LoadingMixin) {
   readonly MainMenu = MainMenu
   readonly PageNames = PageNames
   readonly exchangePages = [
@@ -63,7 +64,8 @@ export default class App extends Mixins(TranslationMixin) {
 
   async created () {
     if (!dexApi.api) {
-      await dexApi.initialize()
+      await this.withLoading(() => dexApi.initialize())
+      console.info('Connected to blockchain', dexApi.endpoint)
     }
   }
 
@@ -89,6 +91,10 @@ export default class App extends Mixins(TranslationMixin) {
 
   openSettingsDialog (): void {
     this.showSettings = true
+  }
+
+  destroyed (): void {
+    dexApi.disconnect()
   }
 }
 </script>
