@@ -17,13 +17,8 @@
         <s-col>
           <s-row flex justify="start" align="middle">
             <token-logo :token="token" />
-            <div>
-              <div v-if="checkAsset(token.symbol)" class="token-item__name">
-                {{ t(`assetNames.${token.symbol}`) }} ({{ token.symbol }})
-              </div>
-              <div v-else class="token-item__name">
-                {{ token.symbol }}
-              </div>
+            <div class="token-item__name">
+              {{ getTokenName(token.symbol) }}
             </div>
           </s-row>
         </s-col>
@@ -69,8 +64,7 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin) {
     if (this.query) {
       const query = this.query.toLowerCase().trim()
       return this.assets.filter(t =>
-        // add recieve token name from i18t
-        // t.name.toLowerCase().includes(query) ||
+        this.t(`assetNames.${t.symbol}`).toLowerCase().includes(query) ||
         t.symbol.toLowerCase().includes(query) ||
         t.address.toLowerCase().includes(query)
       )
@@ -91,8 +85,11 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin) {
     this.isVisible = false
   }
 
-  checkAsset (symbol) {
-    return !!KnownSymbols[symbol]
+  getTokenName (tokenSymbol: string): string {
+    if (this.te(`assetNames.${tokenSymbol}`)) {
+      return `${this.t(`assetNames.${tokenSymbol}`)} (${tokenSymbol})`
+    }
+    return tokenSymbol
   }
 }
 </script>

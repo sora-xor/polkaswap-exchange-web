@@ -4,13 +4,12 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { KnownSymbols } from '@sora-substrate/util'
+
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { Token } from '@/types'
 import { LogoSize } from '@/consts'
 
-const tokens = [
-  'XOR', 'KSM'
-]
 @Component
 export default class TokenLogo extends Mixins(TranslationMixin) {
   // TODO 4 alexnatalia: Think one more time about tokenSymbol
@@ -24,7 +23,7 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
 
     if (this.tokenSymbol) {
       classes.push(`${tokenLogoClass}--${this.tokenSymbol.toLowerCase()}`)
-    } else if (this.token && tokens.includes(this.token.symbol)) {
+    } else if (this.token && !!KnownSymbols[this.token.symbol]) {
       classes.push(`${tokenLogoClass}--${this.token.symbol.toLowerCase()}`)
     }
 
