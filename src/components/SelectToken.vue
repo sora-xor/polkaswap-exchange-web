@@ -13,7 +13,7 @@
       border-radius="mini"
     />
     <div v-if="filteredTokens && filteredTokens.length > 0" class="token-list">
-      <div v-for="token in filteredTokens" @click="selectToken($event, token)" :key="token.symbol" class="token-item">
+      <div v-for="token in filteredTokens" @click="selectToken(token)" :key="token.symbol" class="token-item">
         <s-col>
           <s-row flex justify="start" align="middle">
             <token-logo :token="token" />
@@ -42,6 +42,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
+import { KnownAssets, KnownSymbols } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -49,7 +50,8 @@ import DialogBase from '@/components/DialogBase.vue'
 import { Token } from '@/types'
 import { LogoSize, Components } from '@/consts'
 import { lazyComponent } from '@/router'
-import { KnownAssets, KnownSymbols } from '@sora-substrate/util'
+import LoadingMixin from './mixins/LoadingMixin'
+
 const namespace = 'assets'
 
 @Component({
@@ -58,14 +60,14 @@ const namespace = 'assets'
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class SelectToken extends Mixins(TranslationMixin, DialogMixin) {
+export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, LoadingMixin) {
   query = ''
-  selectedToken = null
+  selectedToken: Token | null = null
 
   @Getter('assets', { namespace }) assets!: Array<Token>
   @Action('getAssets', { namespace }) getAssets
 
-  get filteredTokens () {
+  get filteredTokens (): Array<Token> {
     if (this.query) {
       const query = this.query.toLowerCase().trim()
       return this.assets.filter(t =>
@@ -79,11 +81,11 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin) {
     return this.assets
   }
 
-  created () {
-    this.getAssets()
+  created (): void {
+    this.withApi(this.getAssets)
   }
 
-  selectToken (event, token) {
+  selectToken (token: Token): void {
     this.selectedToken = token
     this.query = ''
     this.$emit('select', token)
@@ -91,7 +93,7 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin) {
     this.isVisible = false
   }
 
-  checkAsset (symbol) {
+  checkAsset (symbol: string): boolean {
     return !!KnownSymbols[symbol]
   }
 }
