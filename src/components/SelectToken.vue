@@ -18,7 +18,12 @@
           <s-row flex justify="start" align="middle">
             <token-logo :token="token" />
             <div>
-              <div class="token-item__name">{{ token.name }} ({{ token.symbol }})</div>
+              <div v-if="checkAsset(token.symbol)" class="token-item__name">
+                {{ t(`assetNames.${token.symbol}`) }} ({{ token.symbol }})
+              </div>
+              <div v-else class="token-item__name">
+                {{ token.symbol }}
+              </div>
             </div>
           </s-row>
         </s-col>
@@ -44,6 +49,8 @@ import DialogBase from '@/components/DialogBase.vue'
 import { Token } from '@/types'
 import { LogoSize, Components } from '@/consts'
 import { lazyComponent } from '@/router'
+import { KnownAssets, KnownSymbols } from '@sora-substrate/util'
+const namespace = 'assets'
 
 @Component({
   components: {
@@ -55,24 +62,25 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin) {
   query = ''
   selectedToken = null
 
-  @Getter tokens!: Array<Token>
-  @Action getTokens
+  @Getter('assets', { namespace }) assets!: Array<Token>
+  @Action('getAssets', { namespace }) getAssets
 
   get filteredTokens () {
     if (this.query) {
       const query = this.query.toLowerCase().trim()
-      return this.tokens.filter(t =>
-        t.name.toLowerCase().includes(query) ||
+      return this.assets.filter(t =>
+        // add recieve token name from i18t
+        // t.name.toLowerCase().includes(query) ||
         t.symbol.toLowerCase().includes(query) ||
         t.address.toLowerCase().includes(query)
       )
     }
 
-    return this.tokens
+    return this.assets
   }
 
   created () {
-    this.getTokens()
+    this.getAssets()
   }
 
   selectToken (event, token) {
@@ -81,6 +89,10 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin) {
     this.$emit('select', token)
     this.$emit('close')
     this.isVisible = false
+  }
+
+  checkAsset (symbol) {
+    return !!KnownSymbols[symbol]
   }
 }
 </script>

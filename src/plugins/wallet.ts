@@ -5,4 +5,5 @@ import * as env from '../../public/env.json'
 import store from '@/store'
 
 dexApi.endpoint = env.BLOCKCHAIN_URL
+
 Vue.use(Wallet, { store })

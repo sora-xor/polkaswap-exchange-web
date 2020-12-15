@@ -39,6 +39,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { PageNames, MainMenu, Components } from '@/consts'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import router, { lazyComponent } from '@/router'
+import { dexApi } from '@soramitsu/soraneo-wallet-web'
 
 @Component({
   components: {
@@ -59,6 +60,12 @@ export default class App extends Mixins(TranslationMixin) {
   ]
 
   showSettings = false
+
+  async created () {
+    if (!dexApi.api) {
+      await dexApi.initialize()
+    }
+  }
 
   getCurrentPath (): string {
     if (this.exchangePages.includes(router.currentRoute.name as PageNames)) {
