@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@soramitsu/soramitsu-js-ui": "^0.6.4",
-    "@soramitsu/soraneo-wallet-web": "^0.2.2",
+    "@soramitsu/soraneo-wallet-web": "^0.2.4",
     "axios": "^0.19.2",
     "bignumber.js": "^9.0.1",
     "core-js": "^3.6.4",
@@ -26,7 +26,7 @@
     "vuex-class": "^0.3.2"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.14",
+    "@types/jest": "^26.0.19",
     "@types/lodash": "^4.14.150",
     "@types/node": "^14.0.26",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
@@ -48,9 +48,11 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.2.2",
+    "jest": "^26.6.3",
     "lint-staged": "^9.5.0",
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.2",
+    "ts-jest": "^26.4.4",
     "typescript": "~3.9.3",
     "vue-i18n": "^8.21.0",
     "vue-template-compiler": "^2.6.11"

@@ -4,7 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 
-import * as storage from '@/utils/storage'
+import storage from '@/utils/storage'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -18,10 +18,10 @@ const types = flow(
 
 function initialState () {
   return {
-    slippageTolerance: Number(storage.getItem('slippageTolerance')) || 0.5,
-    transactionDeadline: Number(storage.getItem('transactionDeadline')) || 20,
-    nodeAddressIp: storage.getItem('nodeAddress.ip') || '192.168.0.0.1',
-    nodeAddressPort: storage.getItem('nodeAddress.port') || 2
+    slippageTolerance: Number(storage.get('slippageTolerance')) || 0.5,
+    transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
+    nodeAddressIp: storage.get('nodeAddress.ip') || '192.168.0.0.1',
+    nodeAddressPort: storage.get('nodeAddress.port') || 2
   }
 }
 
@@ -46,15 +46,15 @@ const mutations = {
   [types.SET_SLIPPAGE_TOLERANCE] (state, value) {
     if (!value) {
       state.slippageTolerance = 0.5
-      storage.setItem('slippageTolerance', 0.5)
+      storage.set('slippageTolerance', 0.5)
     } else {
       state.slippageTolerance = value
-      storage.setItem('slippageTolerance', value)
+      storage.set('slippageTolerance', value)
     }
   },
   [types.SET_TRANSACTION_DEADLINE] (state, value) {
     state.transactionDeadline = value
-    storage.setItem('transactionDeadline', value)
+    storage.set('transactionDeadline', value)
   }
 }
 

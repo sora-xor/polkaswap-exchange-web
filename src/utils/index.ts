@@ -1,4 +1,4 @@
-import * as storage from './storage'
+import storage from './storage'
 
 export const formatNumber = (value: string | number, decimalLendth: number): string => {
   const valueNumber = +value
@@ -13,4 +13,4 @@ export const getTokenIconClasses = (symbol: string) => {
   return cssClass
 }
 
-export const isWalletConnected = () => !!(storage.getItem('address') && storage.getItem('name') && storage.getItem('password'))
+export const isWalletConnected = () => !!(storage.get('address') && storage.get('name') && storage.get('password'))
