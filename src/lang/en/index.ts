@@ -1,6 +1,15 @@
 import { PageNames, Topics } from '@/consts'
+import { KnownSymbols } from '@sora-substrate/util'
 
 export default {
+  assetNames: {
+    [KnownSymbols.XOR]: 'Sora',
+    [KnownSymbols.DOT]: 'Polkadot',
+    [KnownSymbols.KSM]: 'Kusama',
+    [KnownSymbols.USD]: 'USD',
+    [KnownSymbols.VAL]: 'Sora Validator Token',
+    [KnownSymbols.PSWAP]: 'Polkaswap'
+  },
   pageTitle: {
     [PageNames.About]: 'About',
     [PageNames.Exchange]: 'Exchange',
