@@ -71,7 +71,7 @@
         </s-button>
       </div>
     </div>
-    <swap-info v-if="areTokensSelected" :show-price="true" :show-slippage-tolerance="true" />
+    <swap-info v-if="connected && areTokensSelected" :show-price="true" :show-slippage-tolerance="true" />
     <s-button v-if="!connected" type="primary" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
@@ -86,7 +86,7 @@
         {{ t('exchange.Swap') }}
       </template>
     </s-button>
-    <swap-info v-if="areTokensSelected" />
+    <swap-info v-if="connected && areTokensSelected" />
     <select-token :visible.sync="showSelectTokenDialog" @select="selectToken" />
 
     <confirm-swap :visible.sync="showConfirmSwapDialog" @confirm="confirmSwap" />
@@ -175,7 +175,7 @@ export default class Swap extends Mixins(TranslationMixin) {
   handleChangeFieldFrom (): void {
     if (!this.isFieldToFocused) {
       this.isFieldFromFocused = true
-      if (!this.areTokensSelected || +this.formModel.from === 0) {
+      if (!this.connected || !this.areTokensSelected || +this.formModel.from === 0) {
         this.formModel.to = formatNumber(0, 1)
       } else {
         this.formModel.to = formatNumber(+this.formModel.from * this.tokenFrom.price / this.tokenTo.price, 4)
@@ -188,7 +188,7 @@ export default class Swap extends Mixins(TranslationMixin) {
   handleChangeFieldTo (): void {
     if (!this.isFieldFromFocused) {
       this.isFieldToFocused = true
-      if (!this.areTokensSelected || +this.formModel.to === 0) {
+      if (!this.connected || !this.areTokensSelected || +this.formModel.to === 0) {
         this.formModel.from = formatNumber(0, 1)
       } else {
         this.formModel.from = formatNumber(+this.formModel.to * this.tokenTo.price / this.tokenFrom.price, 4)
@@ -237,6 +237,8 @@ export default class Swap extends Mixins(TranslationMixin) {
 
   selectToken (token: any): void {
     if (token) {
+      console.log('selected token: ', token)
+      // TODO 4 alexnatalia: Add Account token if connected
       if (this.isTokenFromSelected) {
         this.setTokenFrom(token)
         this.isTokenFromSelected = false
