@@ -3,6 +3,8 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
+import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { KnownAssets, KnownSymbols, Asset } from '@sora-substrate/util'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -16,19 +18,15 @@ const types = flow(
   ]),
   map(x => [x, x]),
   fromPairs
-)([])
+)([
+  'GET_ACCOUNT_TOKEN_FROM',
+  'GET_ACCOUNT_TOKEN_TO'
+])
 
-// TODO 4 alexnatalia: Get XOR token in another way
+// TODO 4 alexnatalia: Set XOR token for connected variant (with balance)
 function initialState () {
   return {
-    tokenFrom: {
-      name: 'Sora',
-      symbol: 'XOR',
-      address: '1f9840a85d5af5bf1d1762f925bdaddc4201f984',
-      balance: 10000,
-      price: 55.10,
-      priceChange: 12
-    },
+    tokenFrom: KnownAssets.find(({ symbol }) => KnownSymbols.XOR),
     tokenTo: null,
     fromValue: 0,
     toValue: 0,
@@ -61,11 +59,30 @@ const getters = {
 }
 
 const mutations = {
+
   [types.GET_TOKEN_FROM] (state, tokenFrom: any) {
     state.tokenFrom = tokenFrom
   },
+  [types.GET_ACCOUNT_TOKEN_FROM_REQUEST] (state) {
+    state.tokenFrom = null
+  },
+  [types.GET_ACCOUNT_TOKEN_FROM_SUCCESS] (state, token: Asset) {
+    state.tokenFrom = token
+  },
+  [types.GET_ACCOUNT_TOKEN_FROM_FAILURE] (state) {
+    state.tokenFrom = null
+  },
   [types.GET_TOKEN_TO] (state, tokenTo: any) {
     state.tokenTo = tokenTo
+  },
+  [types.GET_ACCOUNT_TOKEN_TO_REQUEST] (state) {
+    state.tokenTo = null
+  },
+  [types.GET_ACCOUNT_TOKEN_TO_SUCCESS] (state, token: Asset) {
+    state.tokenTo = token
+  },
+  [types.GET_ACCOUNT_TOKEN_TO_FAILURE] (state) {
+    state.tokenTo = null
   },
   [types.GET_FROM_VALUE] (state, fromValue: string | number) {
     state.fromValue = fromValue
@@ -82,8 +99,28 @@ const actions = {
   setTokenFrom ({ commit }, token: any) {
     commit(types.GET_TOKEN_FROM, token)
   },
+  async setAccountTokenFrom ({ commit }, token: Asset) {
+    commit(types.GET_ACCOUNT_TOKEN_FROM_REQUEST)
+    try {
+      const tokenFrom = await dexApi.getAccountAsset(token.address)
+      console.log('tokenFrom: ', tokenFrom)
+      commit(types.GET_ACCOUNT_TOKEN_FROM_SUCCESS, tokenFrom)
+    } catch (error) {
+      commit(types.GET_ACCOUNT_TOKEN_FROM_FAILURE)
+    }
+  },
   setTokenTo ({ commit }, token: any) {
     commit(types.GET_TOKEN_TO, token)
+  },
+  async setAccountTokenTo ({ commit }, token: Asset) {
+    commit(types.GET_ACCOUNT_TOKEN_TO_REQUEST)
+    try {
+      const tokenTo = await dexApi.getAccountAsset(token.address)
+      console.log('tokenFrom: ', tokenTo)
+      commit(types.GET_ACCOUNT_TOKEN_TO_SUCCESS, tokenTo)
+    } catch (error) {
+      commit(types.GET_ACCOUNT_TOKEN_TO_FAILURE)
+    }
   },
   setFromValue ({ commit }, fromValue: string | number) {
     commit(types.GET_FROM_VALUE, fromValue)

@@ -58,10 +58,11 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly showSlippageTolerance!: boolean
 
   get price (): string {
+    // TODO 4 alexnatalia: Check price calculation
     if (this.isTokenFromPrice) {
-      return formatNumber(this.tokenFrom.price / this.tokenTo.price, 4) + ` ${this.tokenFrom.symbol + ' / ' + this.tokenTo.symbol}`
+      return formatNumber(this.tokenFrom.usdBalance !== 0 ? this.tokenFrom.usdBalance : 1 / this.tokenTo.usdBalance, 4) + ` ${this.tokenFrom.symbol + ' / ' + this.tokenTo.symbol}`
     }
-    return formatNumber(this.tokenTo.price / this.tokenFrom.price, 4) + ` ${this.tokenTo.symbol + ' / ' + this.tokenFrom.symbol}`
+    return formatNumber(this.tokenTo.usdBalance !== 0 ? this.tokenTo.usdBalance : 1 / this.tokenFrom.usdBalance, 4) + ` ${this.tokenTo.symbol + ' / ' + this.tokenFrom.symbol}`
   }
 
   get minReceived (): string {

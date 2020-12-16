@@ -41,11 +41,11 @@ import { KnownAssets, KnownSymbols } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
+import LoadingMixin from '@/components/mixins/LoadingMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Token } from '@/types'
 import { LogoSize, Components } from '@/consts'
 import { lazyComponent } from '@/router'
-import LoadingMixin from './mixins/LoadingMixin'
 
 const namespace = 'assets'
 

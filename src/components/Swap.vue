@@ -42,7 +42,7 @@
       <div class="input-line">
         <div class="input-title">
           <span>{{ t('exchange.to') }}</span>
-          <span v-if="tokenTo" class="input-title-estimated">({{ t('swap.estimated') }})</span>
+          <span v-if="connected && tokenTo" class="input-title-estimated">({{ t('swap.estimated') }})</span>
         </div>
         <div v-if="connected && tokenTo" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
@@ -98,9 +98,11 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import LoadingMixin from '@/components/mixins/LoadingMixin'
 import { formatNumber, isWalletConnected } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
+import { KnownAssets, KnownSymbols } from '@sora-substrate/util'
 
 @Component({
   components: {
@@ -111,7 +113,7 @@ import { Components, PageNames } from '@/consts'
     ResultDialog: lazyComponent(Components.ResultDialog)
   }
 })
-export default class Swap extends Mixins(TranslationMixin) {
+export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
   @Getter fromValue!: number
@@ -121,6 +123,8 @@ export default class Swap extends Mixins(TranslationMixin) {
   @Action setFromValue
   @Action setToValue
   @Action setTokenFromPrice
+  @Action setAccountTokenFrom
+  @Action setAccountTokenTo
 
   inputPlaceholder: string = formatNumber(0, 2)
   isFieldFromFocused = false
@@ -178,7 +182,8 @@ export default class Swap extends Mixins(TranslationMixin) {
       if (!this.connected || !this.areTokensSelected || +this.formModel.from === 0) {
         this.formModel.to = formatNumber(0, 1)
       } else {
-        this.formModel.to = formatNumber(+this.formModel.from * this.tokenFrom.price / this.tokenTo.price, 4)
+        // TODO 4 alexnatalia: Check price calculation
+        this.formModel.to = formatNumber(+this.formModel.from * this.tokenFrom.usdBalance / this.tokenTo.usdBalance, 4)
       }
       this.setToValue(this.formModel.to)
     }
@@ -191,7 +196,8 @@ export default class Swap extends Mixins(TranslationMixin) {
       if (!this.connected || !this.areTokensSelected || +this.formModel.to === 0) {
         this.formModel.from = formatNumber(0, 1)
       } else {
-        this.formModel.from = formatNumber(+this.formModel.to * this.tokenTo.price / this.tokenFrom.price, 4)
+        // TODO 4 alexnatalia: Check price calculation
+        this.formModel.from = formatNumber(+this.formModel.to * this.tokenTo.usdBalance / this.tokenFrom.usdBalance, 4)
       }
       this.setFromValue(this.formModel.from)
     }
@@ -207,6 +213,7 @@ export default class Swap extends Mixins(TranslationMixin) {
   }
 
   handleSwitchTokens (): void {
+    // TODO 4 alexnatalia: Check this part after addition of reverted swap method
     const currentTokenFrom = this.tokenFrom
     const currentFieldFromValue = this.formModel.from
     this.isFieldFromFocused = true
@@ -237,13 +244,19 @@ export default class Swap extends Mixins(TranslationMixin) {
 
   selectToken (token: any): void {
     if (token) {
-      console.log('selected token: ', token)
-      // TODO 4 alexnatalia: Add Account token if connected
       if (this.isTokenFromSelected) {
-        this.setTokenFrom(token)
+        if (this.connected) {
+          this.setAccountTokenFrom(token)
+        } else {
+          this.setTokenFrom(token)
+        }
         this.isTokenFromSelected = false
       } else {
-        this.setTokenTo(token)
+        if (this.connected) {
+          this.setAccountTokenTo(token)
+        } else {
+          this.setTokenTo(token)
+        }
       }
     }
   }

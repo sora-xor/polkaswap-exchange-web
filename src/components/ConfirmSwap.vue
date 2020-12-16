@@ -41,6 +41,7 @@ import DialogBase from '@/components/DialogBase.vue'
 import { formatNumber } from '@/utils'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
+import { dexApi } from '@soramitsu/soraneo-wallet-web'
 
 @Component({
   components: {
@@ -54,6 +55,7 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   @Getter tokenTo!: any
   @Getter fromValue!: number
   @Getter toValue!: number
+  @Getter slippageTolerance!: number
 
   get formattedFromValue (): string {
     return formatNumber(this.fromValue, 4)
@@ -64,6 +66,7 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   }
 
   handleConfirmSwap (): void {
+    dexApi.swap(this.tokenFrom.address, this.tokenTo.address, this.fromValue.toString(), this.tokenTo.toString(), this.slippageTolerance)
     this.$emit('confirm', true)
     this.$emit('close')
     this.isVisible = false
