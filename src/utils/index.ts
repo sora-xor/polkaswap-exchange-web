@@ -2,7 +2,7 @@ import { dexApi } from '@soramitsu/soraneo-wallet-web'
 
 import storage from './storage'
 
-export const formatNumber = (value: string | number, decimalLendth: number): string => {
+export const formatNumber = (value: string | number, decimalLendth?: number): string => {
   const valueNumber = +value
   return valueNumber.toFixed(decimalLendth || 4)
 }

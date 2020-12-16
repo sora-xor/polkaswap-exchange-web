@@ -73,15 +73,15 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   formatNumber = formatNumber
 
   get formattedFromValue (): string {
-    return formatNumber(this.firstTokenAmount, 4)
+    return formatNumber(this.firstTokenAmount)
   }
 
   get formattedToValue (): string {
-    return formatNumber(this.secondTokenAmount, 4)
+    return formatNumber(this.secondTokenAmount)
   }
 
   get formattedLiquidityValue (): string {
-    return formatNumber(this.liquidityAmount, 4)
+    return formatNumber(this.liquidityAmount)
   }
 
   handleConfirmRemoveLiquidity (): void {

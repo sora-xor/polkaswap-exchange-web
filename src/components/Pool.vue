@@ -83,7 +83,7 @@ export default class Pool extends Mixins(TranslationMixin) {
 
   get pairValue (): string {
     // TODO: Play with Pair value
-    return formatNumber(10.00000171, 4)
+    return formatNumber(10.00000171)
   }
 
   handleAddLiquidity (): void {

@@ -27,7 +27,7 @@
         <span :class="'swap-info-value ' + priceImpactClass">{{ priceImpact }}%</span>
       </div>
       <div class="swap-info">
-        <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee })" theme="light" placement="right-start" animation="none" :show-arrow="false">
+        <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: liquidityProviderFeeTooltipValue})" theme="light" placement="right-start" animation="none" :show-arrow="false">
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.liquidityProviderFee') }}</span>
@@ -60,14 +60,14 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   get price (): string {
     // TODO 4 alexnatalia: Check price calculation
     if (this.isTokenFromPrice) {
-      return formatNumber(this.tokenFrom.usdBalance !== 0 ? this.tokenFrom.usdBalance : 1 / this.tokenTo.usdBalance, 4) + ` ${this.tokenFrom.symbol + ' / ' + this.tokenTo.symbol}`
+      return formatNumber(this.tokenFrom.usdBalance !== 0 ? this.tokenFrom.usdBalance : 1 / this.tokenTo.usdBalance) + ` ${this.tokenFrom.symbol + ' / ' + this.tokenTo.symbol}`
     }
-    return formatNumber(this.tokenTo.usdBalance !== 0 ? this.tokenTo.usdBalance : 1 / this.tokenFrom.usdBalance, 4) + ` ${this.tokenTo.symbol + ' / ' + this.tokenFrom.symbol}`
+    return formatNumber(this.tokenTo.usdBalance !== 0 ? this.tokenTo.usdBalance : 1 / this.tokenFrom.usdBalance) + ` ${this.tokenTo.symbol + ' / ' + this.tokenFrom.symbol}`
   }
 
   get minReceived (): string {
     // TODO: Generate value from tokenFromValue
-    return this.tokenFrom ? `${formatNumber(this.toValue, 4)} ${this.tokenTo.symbol}` : ''
+    return this.tokenFrom ? `${formatNumber(this.toValue)} ${this.tokenTo.symbol}` : ''
   }
 
   get priceImpact (): string {
@@ -85,9 +85,12 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
     return ''
   }
 
+  get liquidityProviderFeeTooltipValue (): string {
+    return `${formatNumber(this.liquidityProviderFee, 0)}`
+  }
+
   get liquidityProviderFeeValue (): string {
-    // TODO: Generate liquidity provider fee
-    return this.tokenFrom ? `${formatNumber(0.0006245, 4)} ${this.tokenTo.symbol}` : ''
+    return `${formatNumber(this.liquidityProviderFee)} ${this.tokenTo ? this.tokenTo.symbol : ''}`
   }
 
   handleSwitchPrice (): void {

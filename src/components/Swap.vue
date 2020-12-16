@@ -42,7 +42,7 @@
       <div class="input-line">
         <div class="input-title">
           <span>{{ t('exchange.to') }}</span>
-          <span v-if="connected && tokenTo" class="input-title-estimated">({{ t('swap.estimated') }})</span>
+          <span v-if="connected && areTokensSelected" class="input-title-estimated">({{ t('swap.estimated') }})</span>
         </div>
         <div v-if="connected && tokenTo" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
@@ -103,6 +103,7 @@ import { formatNumber, isWalletConnected } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 import { KnownAssets, KnownSymbols } from '@sora-substrate/util'
+import { dexApi } from '@soramitsu/soraneo-wallet-web'
 
 @Component({
   components: {
@@ -125,6 +126,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   @Action setTokenFromPrice
   @Action setAccountTokenFrom
   @Action setAccountTokenTo
+  @Action setLiquidityProviderFee
 
   inputPlaceholder: string = formatNumber(0, 2)
   isFieldFromFocused = false
@@ -144,7 +146,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   get areTokensSelected (): boolean {
-    return this.tokenFrom && this.tokenTo
+    return !!(this.tokenFrom && this.tokenTo)
   }
 
   get isEmptyBalance (): boolean {
@@ -176,28 +178,40 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     return ''
   }
 
-  handleChangeFieldFrom (): void {
+  async handleChangeFieldFrom (): Promise<any> {
     if (!this.isFieldToFocused) {
       this.isFieldFromFocused = true
       if (!this.connected || !this.areTokensSelected || +this.formModel.from === 0) {
         this.formModel.to = formatNumber(0, 1)
       } else {
-        // TODO 4 alexnatalia: Check price calculation
-        this.formModel.to = formatNumber(+this.formModel.from * this.tokenFrom.usdBalance / this.tokenTo.usdBalance, 4)
+        try {
+          const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.from)
+          console.log(swapResult)
+          this.formModel.to = formatNumber(swapResult.amount)
+          this.setLiquidityProviderFee(swapResult.fee)
+        } catch (e) {
+          // TODO: Play with error
+        }
       }
       this.setToValue(this.formModel.to)
     }
     this.setFromValue(this.formModel.from)
   }
 
-  handleChangeFieldTo (): void {
+  async handleChangeFieldTo (): Promise<any> {
     if (!this.isFieldFromFocused) {
       this.isFieldToFocused = true
       if (!this.connected || !this.areTokensSelected || +this.formModel.to === 0) {
         this.formModel.from = formatNumber(0, 1)
       } else {
-        // TODO 4 alexnatalia: Check price calculation
-        this.formModel.from = formatNumber(+this.formModel.to * this.tokenTo.usdBalance / this.tokenFrom.usdBalance, 4)
+        try {
+          // TODO: Set reversed to true
+          const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.from)
+          this.formModel.to = formatNumber(swapResult.amount)
+          this.setLiquidityProviderFee(swapResult.fee)
+        } catch (e) {
+          // TODO: Play with error
+        }
       }
       this.setFromValue(this.formModel.from)
     }

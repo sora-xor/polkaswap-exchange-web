@@ -58,11 +58,11 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   @Getter slippageTolerance!: number
 
   get formattedFromValue (): string {
-    return formatNumber(this.fromValue, 4)
+    return formatNumber(this.fromValue)
   }
 
   get formattedToValue (): string {
-    return formatNumber(this.toValue, 4)
+    return formatNumber(this.toValue)
   }
 
   handleConfirmSwap (): void {

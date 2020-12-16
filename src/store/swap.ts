@@ -14,6 +14,7 @@ const types = flow(
     'GET_FROM_VALUE',
     'GET_TO_VALUE',
     'GET_TOKEN_FROM_PRICE',
+    'GET_LIQUIDITY_PROVIDER_FEE',
     'GET_SWAP_CONFIRM'
   ]),
   map(x => [x, x]),
@@ -31,7 +32,7 @@ function initialState () {
     fromValue: 0,
     toValue: 0,
     isTokenFromPrice: true,
-    liquidityProviderFee: 0.3
+    liquidityProviderFee: 0
   }
 }
 
@@ -92,6 +93,9 @@ const mutations = {
   },
   [types.GET_TOKEN_FROM_PRICE] (state, isTokenFromPrice: boolean) {
     state.isTokenFromPrice = isTokenFromPrice
+  },
+  [types.GET_LIQUIDITY_PROVIDER_FEE] (state, liquidityProviderFee: string) {
+    state.liquidityProviderFee = liquidityProviderFee
   }
 }
 
@@ -130,6 +134,9 @@ const actions = {
   },
   setTokenFromPrice ({ commit }, isTokenFromPrice: boolean) {
     commit(types.GET_TOKEN_FROM_PRICE, isTokenFromPrice)
+  },
+  setLiquidityProviderFee ({ commit }, liquidityProviderFee: string) {
+    commit(types.GET_LIQUIDITY_PROVIDER_FEE, liquidityProviderFee)
   }
 }
 
