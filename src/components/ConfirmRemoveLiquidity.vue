@@ -33,7 +33,7 @@
     </s-row>
     <s-row flex justify="space-between" class="price-container">
       <div>{{ t('removeLiquidity.price') }}</div>
-      <div>
+      <div class="price">
         <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price, 2) }} {{ secondToken.symbol }}</div>
         <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price, 2) }} {{ firstToken.symbol }}</div>
       </div>
@@ -108,7 +108,7 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   display: flex;
   align-items: center;
   white-space: nowrap;
-
+  justify-content: flex-end;
   &-logo {
     display: block;
     margin-right: $inner-spacing-medium;
@@ -125,6 +125,9 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   color: var(--s-color-base-content-secondary);
   margin-top: $inner-spacing-big;
   margin-bottom: $inner-spacing-mini;
+}
+.price {
+  text-align: right;
 }
 @include vertical-divider;
 @include vertical-divider('el-divider');

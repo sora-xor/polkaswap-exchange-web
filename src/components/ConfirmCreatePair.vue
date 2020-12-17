@@ -117,6 +117,9 @@ export default class ConfirmCreatePair extends Mixins(TranslationMixin, DialogMi
     margin-bottom: $inner-spacing-medium;
   }
 }
+.price {
+  text-align: right;
+}
 .supply-info {
   display: flex;
   justify-content: space-between;
