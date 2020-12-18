@@ -9,35 +9,35 @@
       {{ t('pool.liquidityNotFound') }}
     </p>
     <s-collapse v-else class="pool-list" :borders="true">
-      <s-collapse-item v-for="liquidity of liquidities" :key="liquidity.id" :name="liquidity.id" class="pool-info-container">
+      <s-collapse-item v-for="liquidity of liquidities" :key="liquidity.address" :name="liquidity.address" class="pool-info-container">
         <template #title>
-          <pair-token-logo :first-token-symbol="liquidity.firstToken" :second-token-symbol="liquidity.secondToken" size="small" />
-          <h3>{{ getPairTitle(liquidity.firstToken, liquidity.secondToken) }}</h3>
+          <pair-token-logo :first-token-symbol="getAssetSymbol(liquidity.firstAddress)" :second-token-symbol="getAssetSymbol(liquidity.secondAddress)" size="small" />
+          <h3>{{ getPairTitle(getAssetSymbol(liquidity.firstAddress), getAssetSymbol(liquidity.secondAddress)) }}</h3>
         </template>
         <div class="pool-info">
-          <token-logo :token-symbol="liquidity.firstToken" size="small" />
-          <div>{{ t('pool.pooledToken', { tokenSymbol: liquidity.firstToken }) }}</div>
+          <token-logo :token-symbol="getAssetSymbol(liquidity.firstAddress)" size="small" />
+          <div>{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidity.firstAddress) }) }}</div>
           <div v-if="liquidity.firstTokenAmount" class="pool-info-value">{{ liquidity.firstTokenAmount }}</div>
         </div>
         <div class="pool-info">
-          <token-logo :token-symbol="liquidity.secondToken" size="small" />
-          <div>{{ t('pool.pooledToken', { tokenSymbol: liquidity.secondToken }) }}</div>
+          <token-logo :token-symbol="getAssetSymbol(liquidity.secondAddress)" size="small" />
+          <div>{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidity.secondAddress) }) }}</div>
           <div v-if="liquidity.secondTokenAmount" class="pool-info-value">{{ liquidity.secondTokenAmount }}</div>
         </div>
         <div class="pool-info">
-          <pair-token-logo :first-token-symbol="liquidity.firstToken" :second-token-symbol="liquidity.secondToken" size="mini" />
-          <div>{{ t('pool.pairTokens', { pair: getPairTitle(liquidity.firstToken, liquidity.secondToken) }) }}</div>
-          <div class="pool-info-value">{{ pairValue }}</div>
+          <pair-token-logo :first-token-symbol="getAssetSymbol(liquidity.firstAddress)" :second-token-symbol="getAssetSymbol(liquidity.secondAddress)" size="mini" />
+          <div>{{ t('pool.pairTokens', { pair: getPairTitle(getAssetSymbol(liquidity.firstAddress), getAssetSymbol(liquidity.secondAddress)) }) }}</div>
+          <div class="pool-info-value">{{ liquidity.balance }}</div>
         </div>
         <div class="pool-info pool-info--share">
           <div>{{ t('pool.poolShare')}}</div>
           <div class="pool-info-value">1.5%</div>
         </div>
         <div class="pool-info--buttons">
-          <s-button type="primary" size="small" @click="handleAddPairLiquidity(liquidity.id)">
+          <s-button type="primary" size="small" @click="handleAddPairLiquidity(liquidity.firstAddress, liquidity.secondAddress)">
             {{ t('pool.addLiquidity') }}
           </s-button>
-          <s-button type="primary" size="small" @click="handleRemoveLiquidity(liquidity.id)">
+          <s-button type="primary" size="small" @click="handleRemoveLiquidity(liquidity.firstAddress, liquidity.secondAddress)">
             {{ t('pool.removeLiquidity') }}
           </s-button>
         </div>
@@ -71,6 +71,7 @@ const namespace = 'pool'
 })
 export default class Pool extends Mixins(TranslationMixin) {
   @Getter('liquidities', { namespace }) liquidities!: any
+  @Getter('assets', { namespace: 'assets' }) assets
   @Action('getLiquidities', { namespace }) getLiquidities
 
   created () {
@@ -81,11 +82,6 @@ export default class Pool extends Mixins(TranslationMixin) {
     return isWalletConnected()
   }
 
-  get pairValue (): string {
-    // TODO: Play with Pair value
-    return formatNumber(10.00000171, 4)
-  }
-
   handleAddLiquidity (): void {
     router.push({ name: PageNames.AddLiquidity })
   }
@@ -94,12 +90,12 @@ export default class Pool extends Mixins(TranslationMixin) {
     router.push({ name: PageNames.CreatePair })
   }
 
-  handleAddPairLiquidity (id): void {
-    router.push({ name: PageNames.AddLiquidityId, params: { id } })
+  handleAddPairLiquidity (firstAddress, secondAddress): void {
+    router.push({ name: PageNames.AddLiquidityId, params: { firstAddress, secondAddress } })
   }
 
-  handleRemoveLiquidity (id): void {
-    router.push({ name: PageNames.RemoveLiquidity, params: { id } })
+  handleRemoveLiquidity (firstAddress, secondAddress): void {
+    router.push({ name: PageNames.RemoveLiquidity, params: { firstAddress, secondAddress } })
   }
 
   getPairTitle (firstToken, secondToken): string {
@@ -107,6 +103,12 @@ export default class Pool extends Mixins(TranslationMixin) {
       return `${firstToken}-${secondToken}`
     }
     return ''
+  }
+
+  getAssetSymbol (address) {
+    const asset = this.assets.find(a => a.address === address)
+
+    return asset.symbol || 'Unknown asset'
   }
 }
 </script>

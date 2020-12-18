@@ -166,7 +166,6 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
   @Action('setFirstTokenValue', { namespace }) setFirstTokenValue
   @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
   @Action('addLiquidity', { namespace }) addLiquidity
-  @Action getTokens
 
   showSelectFirstTokenDialog = false
   showSelectSecondTokenDialog = false
@@ -175,20 +174,25 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
   isCreatePairConfirmed = false
 
   async created () {
-    await this.getTokens()
-
-    if (this.liquidityId) {
-      await this.setDataFromLiquidity(this.liquidityId)
+    if (this.firstAddress && this.secondAddress) {
+      await this.setDataFromLiquidity({
+        firstAddress: this.firstAddress,
+        secondAddress: this.secondAddress
+      })
     }
   }
 
-  get liquidityId (): string {
-    return this.$route.params.id
+  get firstAddress (): string {
+    return this.$route.params.firstAddress
+  }
+
+  get secondAddress (): string {
+    return this.$route.params.secondAddress
   }
 
   formModel = {
-    first: formatNumber(0, 1),
-    second: formatNumber(0, 1)
+    first: '',
+    second: ''
   }
 
   formatNumber = formatNumber
@@ -198,11 +202,11 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
   }
 
   get firstPerSecondPrice (): string {
-    return formatNumber(this.firstToken.price / this.secondToken.price, 2)
+    return formatNumber(this.firstTokenValue / this.secondTokenValue, 2)
   }
 
   get secondPerFirstPrice (): string {
-    return formatNumber(this.secondToken.price / this.firstToken.price, 2)
+    return formatNumber(this.secondTokenValue / this.firstTokenValue || 0, 2)
   }
 
   get firstTokenPosition (): string {
@@ -274,14 +278,20 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
 
   getTokenBalance (token: any): string {
     if (token) {
-      return formatNumber(token.balance, 2)
+      return formatNumber(parseFloat(token.balance), 2)
     }
     return ''
   }
 
-  handleConfirmAddLiquidity (): void {
+  async handleConfirmAddLiquidity () {
+    try {
+      await this.addLiquidity()
+      this.isCreatePairConfirmed = true
+    } catch (error) {
+      console.error(error)
+    }
+
     this.showConfirmDialog = false
-    this.isCreatePairConfirmed = true
   }
 }
 </script>

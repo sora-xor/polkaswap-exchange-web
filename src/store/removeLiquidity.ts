@@ -5,6 +5,7 @@ import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import liquidityApi from '@/api/liquidity'
 import BigNumber from 'bignumber.js'
+import { dexApi } from '@soramitsu/soraneo-wallet-web'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -47,11 +48,11 @@ const getters = {
   secondTokenBalance (state) {
     return state.liquidity ? state.liquidity.secondTokenAmount : 0
   },
-  firstToken (state, getters, rootState) {
-    return state.liquidity && rootState.tokens.tokens ? rootState.tokens.tokens.find(t => t.symbol === state.liquidity.firstToken) : {}
+  firstToken (state, getters, rootGetters) {
+    return state.liquidity && rootGetters.assets.assets ? rootGetters.assets.assets.find(t => t.address === state.liquidity.firstAddress) || {} : {}
   },
-  secondToken (state, getters, rootState) {
-    return state.liquidity && rootState.tokens.tokens ? rootState.tokens.tokens.find(t => t.symbol === state.liquidity.secondToken) : {}
+  secondToken (state, getters, rootGetters) {
+    return state.liquidity && rootGetters.assets.assets ? rootGetters.assets.assets.find(t => t.address === state.liquidity.secondAddress) || {} : {}
   },
   removePart (state) {
     return state.removePart
@@ -93,11 +94,11 @@ const mutations = {
 }
 
 const actions = {
-  async getLiquidity ({ commit }, id) {
+  async getLiquidity ({ commit }, { firstAddress, secondAddress }) {
     commit(types.GET_LIQUIDITY_REQUEST)
 
     try {
-      const liquidity = await liquidityApi.getLiquidityById(id)
+      const liquidity = await dexApi.getAccountLiquidity(firstAddress, secondAddress)
       commit(types.GET_LIQUIDITY_SUCCESS, liquidity)
     } catch (error) {
       commit(types.GET_LIQUIDITY_FAILURE)
@@ -133,7 +134,7 @@ const actions = {
         if (liquidityAmount !== getters.liquidityAmount && !Number.isNaN(liquidityAmount)) {
           const part = new BigNumber(liquidityAmount).dividedBy(getters.liquidityBalance)
 
-          commit(types.SET_REMOVE_PART, Math.round(part.multipliedBy(100).toNumber()))
+          commit(types.SET_REMOVE_PART, part.multipliedBy(100).toNumber())
           commit(types.SET_LIQUIDITY_AMOUNT, liquidityAmount)
           commit(types.SET_FIRST_TOKEN_AMOUNT, part.multipliedBy(getters.firstTokenBalance).toNumber())
           commit(types.SET_SECOND_TOKEN_AMOUNT, part.multipliedBy(getters.secondTokenBalance).toNumber())
@@ -184,6 +185,14 @@ const actions = {
 
   resetFocusedField ({ commit }) {
     commit(types.SET_FOCUSED_FIELD, null)
+  },
+
+  async removeLiquidity ({ commit, getters }) {
+    const result = await dexApi.removeLiquidity(
+      getters.firstToken.address,
+      getters.secondToken.address,
+      getters.liquidityAmount
+    )
   }
 }
 

@@ -58,7 +58,7 @@ const routes: Array<RouteConfig> = [
     name: PageNames.Support
   },
   {
-    path: '/liquidity/add/:id',
+    path: '/liquidity/add/:firstAddress/:secondAddress',
     name: PageNames.AddLiquidityId,
     component: lazyView(PageNames.AddLiquidity)
   },
@@ -68,7 +68,7 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.AddLiquidity)
   },
   {
-    path: '/liquidity/remove/:id',
+    path: '/liquidity/remove/:firstAddress/:secondAddress',
     name: PageNames.RemoveLiquidity,
     component: lazyView(PageNames.RemoveLiquidity)
   }

@@ -131,8 +131,8 @@ export default class Swap extends Mixins(TranslationMixin) {
   isSwapConfirmed = false
 
   formModel = {
-    from: formatNumber(0, 1),
-    to: formatNumber(0, 1)
+    from: '',
+    to: ''
   }
 
   get connected (): boolean {

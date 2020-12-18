@@ -177,22 +177,23 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
   @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
   @Getter('secondTokenBalance', { namespace }) secondTokenBalance!: any
 
-  @Getter tokens!: Array<Token>
-
   @Action('getLiquidity', { namespace }) getLiquidity
   @Action('setRemovePart', { namespace }) setRemovePart
   @Action('setLiquidityAmount', { namespace }) setLiquidityAmount
   @Action('setFirstTokenAmount', { namespace }) setFirstTokenAmount
   @Action('setSecondTokenAmount', { namespace }) setSecondTokenAmount
   @Action('resetFocusedField', { namespace }) resetFocusedField
-
-  @Action getTokens
+  @Action('removeLiquidity', { namespace }) removeLiquidity
+  @Action('getAssets', { namespace: 'assets' }) getAssets
 
   removePartInput = 0
 
   async created () {
-    await this.getTokens()
-    await this.getLiquidity(this.liquidityId)
+    await this.getAssets()
+    await this.getLiquidity({
+      firstAddress: this.firstTokenAddress,
+      secondAddress: this.secondTokenAddress
+    })
   }
 
   isWalletConnected = true
@@ -202,8 +203,12 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
 
   formatNumber = formatNumber
 
-  get liquidityId (): string {
-    return this.$route.params.id
+  get firstTokenAddress (): string {
+    return this.$route.params.firstAddress
+  }
+
+  get secondTokenAddress (): string {
+    return this.$route.params.secondAddress
   }
 
   get firstPerSecondPrice (): string {
@@ -243,7 +248,7 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
   }
 
   handleRemovePartChange (value): void {
-    const newValue = parseInt(value) || 0
+    const newValue = parseFloat(value) || 0
     this.removePartInput = newValue > 100 ? 100 : newValue < 0 ? 0 : newValue
 
     this.setRemovePart(this.removePartInput)
@@ -262,8 +267,14 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
   }
 
   handleConfirmRemoveLiquidity (): void {
+    try {
+      this.removeLiquidity()
+      this.isRemoveLiquidityConfirmed = true
+    } catch (error) {
+      console.error(error)
+    }
+
     this.showConfirmDialog = false
-    this.isRemoveLiquidityConfirmed = true
   }
 }
 </script>

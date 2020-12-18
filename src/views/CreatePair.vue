@@ -183,8 +183,8 @@ export default class CreatePair extends Mixins(TranslationMixin) {
   isCreatePairConfirmed = false
 
   formModel = {
-    first: formatNumber(0, 1),
-    second: formatNumber(0, 1)
+    first: '',
+    second: ''
   }
 
   formatNumber = formatNumber

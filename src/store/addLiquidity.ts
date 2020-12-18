@@ -4,6 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import liquidityAPI from '@/api/liquidity'
+import { dexApi } from '@soramitsu/soraneo-wallet-web'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -71,12 +72,14 @@ const mutations = {
 }
 
 const actions = {
-  setFirstToken ({ commit }, token: any) {
-    commit(types.GET_FIRST_TOKEN, token)
+  async setFirstToken ({ commit }, token: any) {
+    const asset = await dexApi.getAccountAsset(token.address)
+    commit(types.GET_FIRST_TOKEN, asset)
   },
 
-  setSecondToken ({ commit }, token: any) {
-    commit(types.GET_SECOND_TOKEN, token)
+  async setSecondToken ({ commit }, token: any) {
+    const asset = await dexApi.getAccountAsset(token.address)
+    commit(types.GET_SECOND_TOKEN, asset)
   },
 
   setFirstTokenValue ({ commit }, value: string | number) {
@@ -87,23 +90,27 @@ const actions = {
     commit(types.GET_SECOND_TOKEN_VALUE, value)
   },
 
-  addLiquidity ({ commit }) {
+  async addLiquidity ({ commit, getters }) {
     commit(types.ADD_LIQUIDITY_REQUEST)
+    const reserve = await dexApi.getLiquidityReserves(getters.firstToken.address, getters.secondToken.address)
+
+    const result = await dexApi.addLiquidity(
+      getters.firstToken.address,
+      getters.secondToken.address,
+      getters.firstTokenValue,
+      getters.secondTokenValue
+    )
 
     try {
-      commit(types.ADD_LIQUIDITY_SUCCESS)
+      commit(types.ADD_LIQUIDITY_SUCCESS, result)
     } catch (error) {
       commit(types.ADD_LIQUIDITY_FAILURE)
     }
   },
 
-  async setDataFromLiquidity ({ commit, dispatch, rootGetters }, id) {
-    const liquidity = await liquidityAPI.getLiquidityById(id)
-
-    if (liquidity) {
-      dispatch('setFirstToken', rootGetters.tokens.find(t => t.symbol === liquidity.firstToken))
-      dispatch('setSecondToken', rootGetters.tokens.find(t => t.symbol === liquidity.secondToken))
-    }
+  async setDataFromLiquidity ({ commit, dispatch, rootGetters }, { firstAddress, secondAddress }) {
+    dispatch('setFirstToken', rootGetters['assets/assets'].find(a => a.address === firstAddress))
+    dispatch('setSecondToken', rootGetters['assets/assets'].find(a => a.address === secondAddress))
   }
 }
 

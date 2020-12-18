@@ -42,7 +42,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { KnownAssets, KnownSymbols } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, Asset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -64,10 +64,10 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   query = ''
   selectedToken: Token | null = null
 
-  @Getter('assets', { namespace }) assets!: Array<Token>
+  @Getter('assets', { namespace }) assets!: Array<Asset>
   @Action('getAssets', { namespace }) getAssets
 
-  get filteredTokens (): Array<Token> {
+  get filteredTokens (): Array<Asset> {
     if (this.query) {
       const query = this.query.toLowerCase().trim()
       return this.assets.filter(t =>
