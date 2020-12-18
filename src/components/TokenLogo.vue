@@ -10,6 +10,8 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { Token } from '@/types'
 import { LogoSize } from '@/consts'
 
+// TODO 4 alexnatalia: Update Token Icons
+
 @Component
 export default class TokenLogo extends Mixins(TranslationMixin) {
   // TODO 4 alexnatalia: Think one more time about tokenSymbol

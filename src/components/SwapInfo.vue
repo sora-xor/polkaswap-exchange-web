@@ -27,10 +27,12 @@
         <span :class="'swap-info-value ' + priceImpactClass">{{ priceImpact }}%</span>
       </div>
       <div class="swap-info">
+        <!-- TODO 4 alexnatalia: get fee from Swap result -->
         <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: liquidityProviderFeeTooltipValue})" theme="light" placement="right-start" animation="none" :show-arrow="false">
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.liquidityProviderFee') }}</span>
+        <!-- TODO 4 alexnatalia: get fee from Swap result and multiply to Minimum Received -->
         <span class="swap-info-value">{{ liquidityProviderFeeValue }}</span>
       </div>
     </template>

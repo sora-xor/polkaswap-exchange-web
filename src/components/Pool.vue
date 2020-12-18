@@ -8,6 +8,7 @@
     <p v-else-if="!liquidities || !liquidities.length" class="pool-info-container">
       {{ t('pool.liquidityNotFound') }}
     </p>
+    <!-- TODO 4 alexnatalia: Whole pool area should be clickable -->
     <s-collapse v-else class="pool-list" :borders="true">
       <s-collapse-item v-for="liquidity of liquidities" :key="liquidity.id" :name="liquidity.id" class="pool-info-container">
         <template #title>

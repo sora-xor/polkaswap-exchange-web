@@ -86,7 +86,7 @@
         {{ t('exchange.Swap') }}
       </template>
     </s-button>
-    <swap-info v-if="connected && areTokensSelected" />
+    <swap-info v-if="connected && areTokensSelected && +formModel.from !== 0" />
     <select-token :visible.sync="showSelectTokenDialog" @select="selectToken" />
 
     <confirm-swap :visible.sync="showConfirmSwapDialog" @confirm="confirmSwap" />
