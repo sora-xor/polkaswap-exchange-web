@@ -52,7 +52,6 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
           padding-right: $inner-spacing-medium;
           padding-left: $inner-spacing-medium;
           &.is-active {
-            margin: 0;
             box-shadow: var(--s-shadow-tab);
           }
           &:hover {
@@ -72,7 +71,6 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
       }
       &__nav-wrap {
         height: $tabs-container-height;
-        padding: $tabs-container-padding;
         background-color: var(--s-color-base-background);
       }
     }
