@@ -236,12 +236,8 @@ $menu-height: 65px;
     letter-spacing: $s-letter-spacing-small;
     font-feature-settings: $s-font-feature-settings-title;
     &,
-    &.is-active {
-      // TODO 4 alexnatalia: remove this local fix after UI Lib fix
-      border-bottom: none;
-      &:hover {
-        color: var(--s-color-theme-accent-hover) !important;
-      }
+    &.is-active:hover {
+      color: var(--s-color-theme-accent-hover) !important;
     }
     &:hover {
       color: var(--s-color-base-content-secondary) !important;
