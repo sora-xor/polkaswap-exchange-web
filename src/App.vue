@@ -235,7 +235,6 @@ $menu-height: 65px;
     font-size: var(--s-heading4-font-size);
     letter-spacing: $s-letter-spacing-small;
     font-feature-settings: $s-font-feature-settings-title;
-    &,
     &.is-active:hover {
       color: var(--s-color-theme-accent-hover) !important;
     }
