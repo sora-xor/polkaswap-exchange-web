@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <!-- TODO: Add appropriate tooltip -->
-    <generic-header :title="t('createPair.title')" :tooltip="t('pool.loremIpsum')" />
+    <generic-header :title="t('createPair.title')" :tooltip="t('createPair.loremIpsum')" />
     <s-form
       v-model="formModel"
       class="el-form--actions"
