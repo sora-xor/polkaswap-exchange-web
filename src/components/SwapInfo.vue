@@ -19,15 +19,15 @@
         <span>{{ t('swap.minReceived') }}</span>
         <span class="swap-info-value">{{ minReceived }}</span>
       </div>
-      <div class="swap-info">
+      <!-- TODO: Hid for first iteration of development -->
+      <!-- <div class="swap-info">
         <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.priceImpactTooltip')" theme="light" placement="right-start" animation="none" :show-arrow="false">
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.priceImpact') }}</span>
         <span :class="'swap-info-value ' + priceImpactClass">{{ priceImpact }}%</span>
-      </div>
+      </div> -->
       <div class="swap-info">
-        <!-- TODO 4 alexnatalia: get fee from Swap result -->
         <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: liquidityProviderFeeTooltipValue})" theme="light" placement="right-start" animation="none" :show-arrow="false">
           <s-icon name="info" size="16" />
         </s-tooltip>
@@ -49,10 +49,10 @@ import { formatNumber } from '@/utils'
 export default class SwapInfo extends Mixins(TranslationMixin) {
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
-  @Getter toValue!: number
   @Getter isTokenFromPrice!: boolean
   @Getter slippageTolerance!: number
-  @Getter liquidityProviderFee!: number
+  @Getter minMaxReceived!: string
+  @Getter liquidityProviderFee!: string
   @Action setTokenFromPrice
 
   @Prop({ default: false, type: Boolean }) readonly showPrice!: boolean
@@ -60,16 +60,22 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly showSlippageTolerance!: boolean
 
   get price (): string {
-    // TODO 4 alexnatalia: Check price calculation
-    if (this.isTokenFromPrice) {
-      return formatNumber(this.tokenFrom.usdBalance !== 0 ? this.tokenFrom.usdBalance : 1 / this.tokenTo.usdBalance) + ` ${this.tokenFrom.symbol + ' / ' + this.tokenTo.symbol}`
+    // TODO: Remove these info messages later
+    if (+this.tokenFrom.usdBalance === 0) {
+      console.info('usdBalance of ' + this.tokenFrom.symbol + ' is 0.')
     }
-    return formatNumber(this.tokenTo.usdBalance !== 0 ? this.tokenTo.usdBalance : 1 / this.tokenFrom.usdBalance) + ` ${this.tokenTo.symbol + ' / ' + this.tokenFrom.symbol}`
+    if (+this.tokenTo.usdBalance === 0) {
+      console.info('usdBalance of ' + this.tokenTo.symbol + ' is 0.')
+    }
+    // TODO: Check price for not zero usdBalance values
+    if (this.isTokenFromPrice) {
+      return formatNumber((+this.tokenFrom.usdBalance === 0 || +this.tokenTo.usdBalance === 0) ? 0 : this.tokenFrom.usdBalance / this.tokenTo.usdBalance) + ` ${this.tokenFrom.symbol + ' / ' + this.tokenTo.symbol}`
+    }
+    return formatNumber((+this.tokenFrom.usdBalance === 0 || +this.tokenTo.usdBalance === 0) ? 0 : this.tokenTo.usdBalance / this.tokenFrom.usdBalance) + ` ${this.tokenTo.symbol + ' / ' + this.tokenFrom.symbol}`
   }
 
   get minReceived (): string {
-    // TODO: Generate value from tokenFromValue
-    return this.tokenFrom ? `${formatNumber(this.toValue)} ${this.tokenTo.symbol}` : ''
+    return `${this.minMaxReceived} ${this.tokenTo.symbol}`
   }
 
   get priceImpact (): string {
@@ -88,11 +94,11 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   }
 
   get liquidityProviderFeeTooltipValue (): string {
-    return `${formatNumber(this.liquidityProviderFee, 0)}`
+    return `${formatNumber(this.liquidityProviderFee, 2)}`
   }
 
   get liquidityProviderFeeValue (): string {
-    return `${formatNumber(this.liquidityProviderFee)} ${this.tokenTo ? this.tokenTo.symbol : ''}`
+    return `${formatNumber(+this.liquidityProviderFee * +this.minMaxReceived)} ${this.tokenTo ? this.tokenTo.symbol : ''}`
   }
 
   handleSwitchPrice (): void {

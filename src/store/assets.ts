@@ -2,7 +2,8 @@ import map from 'lodash/fp/map'
 import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
-import { KnownAssets, Asset } from '@sora-substrate/util'
+import { Asset } from '@sora-substrate/util'
+import { dexApi } from '@soramitsu/soraneo-wallet-web'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -44,7 +45,7 @@ const actions = {
   async getAssets ({ commit }) {
     commit(types.GET_ASSETS_LIST_REQUEST)
     try {
-      const assets = KnownAssets
+      const assets = await dexApi.getAssets()
       commit(types.GET_ASSETS_LIST_SUCCESS, assets)
     } catch (error) {
       commit(types.GET_ASSETS_LIST_FAILURE)

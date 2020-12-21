@@ -9,6 +9,7 @@
       <div class="slippage-tolerance s-flex">
         <div class="slippage-tolerance-default">
           <div class="header">
+            <!-- TODO 4 alexnatalia: Add min and max here -->
             {{ t('settings.slippageTolerance') }}
             <s-tooltip popper-class="info-tooltip" border-radius="mini" :content="t('settings.slippageToleranceHint')" theme="light" placement="right-start" animation="none" :show-arrow="false">
               <s-icon class="header-hint" name="info" />

@@ -21,7 +21,8 @@ export default class Wallet extends Mixins(TranslationMixin) {
   }
 
   handleSwap (token: any): void {
-    this.setTokenFrom(token)
+    // TODO: Ask about this place
+    // this.setTokenFrom(token)
     router.push({ name: PageNames.Swap })
   }
 }
