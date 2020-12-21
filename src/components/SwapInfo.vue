@@ -28,11 +28,10 @@
         <span :class="'swap-info-value ' + priceImpactClass">{{ priceImpact }}%</span>
       </div> -->
       <div class="swap-info">
-        <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: liquidityProviderFeeTooltipValue})" theme="light" placement="right-start" animation="none" :show-arrow="false">
+        <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: formatNumber(0.3, 1)})" theme="light" placement="right-start" animation="none" :show-arrow="false">
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.liquidityProviderFee') }}</span>
-        <!-- TODO 4 alexnatalia: get fee from Swap result and multiply to Minimum Received -->
         <span class="swap-info-value">{{ liquidityProviderFeeValue }}</span>
       </div>
     </template>
@@ -44,6 +43,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { formatNumber } from '@/utils'
+import { KnownSymbols } from '@sora-substrate/util'
 
 @Component
 export default class SwapInfo extends Mixins(TranslationMixin) {
@@ -58,6 +58,8 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly showPrice!: boolean
   @Prop({ default: true, type: Boolean }) readonly showTooltips!: boolean
   @Prop({ default: false, type: Boolean }) readonly showSlippageTolerance!: boolean
+
+  formatNumber = formatNumber
 
   get price (): string {
     // TODO: Remove these info messages later
@@ -93,12 +95,8 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
     return ''
   }
 
-  get liquidityProviderFeeTooltipValue (): string {
-    return `${formatNumber(this.liquidityProviderFee, 2)}`
-  }
-
   get liquidityProviderFeeValue (): string {
-    return `${formatNumber(+this.liquidityProviderFee * +this.minMaxReceived)} ${this.tokenTo ? this.tokenTo.symbol : ''}`
+    return `${formatNumber(this.liquidityProviderFee)} ${KnownSymbols.XOR}`
   }
 
   handleSwitchPrice (): void {

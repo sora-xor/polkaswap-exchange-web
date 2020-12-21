@@ -11,6 +11,7 @@ import { Action } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import router from '@/router'
 import { PageNames } from '@/consts'
+import { isWalletConnected } from '@/utils'
 
 @Component
 export default class Wallet extends Mixins(TranslationMixin) {
@@ -20,9 +21,8 @@ export default class Wallet extends Mixins(TranslationMixin) {
     router.push({ name: PageNames.Swap })
   }
 
-  handleSwap (token: any): void {
-    // TODO: Ask about this place
-    // this.setTokenFrom(token)
+  async handleSwap (token: any): Promise<void> {
+    await this.setTokenFrom({ isWalletConnected: isWalletConnected(), tokenSymbol: token.symbol })
     router.push({ name: PageNames.Swap })
   }
 }

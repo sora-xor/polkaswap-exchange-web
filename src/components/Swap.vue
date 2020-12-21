@@ -238,10 +238,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       } else {
         try {
           // TODO 4 alexnatalia: Fix after Integer number lib fix
-          const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, formatNumber(this.formModel.to, 2), true)
+          const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, formatNumber(this.formModel.to, 2))
           this.formModel.from = swapResult.amount
           this.setLiquidityProviderFee(swapResult.fee)
-          const minMaxReceived = await dexApi.getMinMaxReceived(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance, true)
+          const minMaxReceived = await dexApi.getMinMaxReceived(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
           this.setMinMaxReceived(minMaxReceived)
         } catch (error) {
           this.formModel.from = formatNumber(0, 1)
@@ -323,6 +323,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       title: this.t('exchange.Swap'),
       type: 'success'
     })
+    // dexApi.accountAssets
     // TODO: Update assets
     // try {
     //   await dexApi.updateAccountAssets()
