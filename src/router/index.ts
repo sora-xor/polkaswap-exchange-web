@@ -11,12 +11,7 @@ export const lazyView = (name: string) => () => import(`@/views/${name}.vue`)
 const routes: Array<RouteConfig> = [
   {
     path: '/',
-    redirect: '/about'
-  },
-  {
-    path: '/about',
-    name: PageNames.About,
-    component: lazyView(PageNames.About)
+    redirect: '/exchange'
   },
   {
     path: '/exchange',
@@ -38,6 +33,11 @@ const routes: Array<RouteConfig> = [
         component: lazyComponent(PageNames.Pool)
       }
     ]
+  },
+  {
+    path: '/about',
+    name: PageNames.About,
+    component: lazyView(PageNames.About)
   },
   {
     path: '/exchange/wallet',

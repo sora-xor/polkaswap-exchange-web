@@ -11,10 +11,10 @@ export default {
     [KnownSymbols.PSWAP]: 'Polkaswap'
   },
   pageTitle: {
-    [PageNames.About]: 'About',
     [PageNames.Exchange]: 'Exchange',
     [PageNames.Swap]: 'Swap',
     [PageNames.Pool]: 'Pool',
+    [PageNames.About]: 'About',
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
     [PageNames.Wallet]: 'Wallet',
@@ -24,19 +24,19 @@ export default {
     [PageNames.RemoveLiquidity]: 'Remove Liquidity'
   },
   mainMenu: {
-    [PageNames.About]: 'About',
     [PageNames.Exchange]: 'Exchange',
+    [PageNames.About]: 'About',
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
     [PageNames.CreatePair]: 'Create Pair'
   },
   about: {
-    polkaswapText: 'Polkaswap — automated token exchange. Swap any token on SoraNet, add liquidity, create exchanges, earn through passive market making, build decentralized price feeds.',
+    polkaswapText: 'Polkaswap - decentralised token exchange for Polkadot ecosystem. Swap any token on SoraNet, add liquidity, create exchanges, earn through passive market making, build decentralized price feeds.',
     openExchange: 'Open exchange',
     mediumLink: 'Medium',
     githubLink: 'Github',
     [Topics.SwapTokens]: {
-      title: 'Swap any token on Ethereum',
+      title: 'Swap tokens on Sora network and other bridged networks',
       text: 'Use Polkaswap exchange or integrate into your project using the SDK'
     },
     [Topics.PassiveEarning]: {
@@ -45,7 +45,7 @@ export default {
     },
     [Topics.AddLiquidity]: {
       title: 'Add liquidity for any project',
-      text: 'Add liquidity or create an exchange for any ERC20 token'
+      text: 'Add liquidity or create new pairs'
     },
     [Topics.PriceFeeds]: {
       title: 'Build decentralized price feeds',

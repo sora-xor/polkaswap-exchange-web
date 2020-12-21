@@ -20,7 +20,7 @@
           {{ t(`mainMenu.${item}`) }}
         </s-menu-item>
       </s-menu>
-      <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.About)" />
+      <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Exchange)" />
       <div class="buttons">
         <s-button class="wallet" type="action" icon="wallet" rounded :disabled="loading" @click="goTo(PageNames.Wallet)" />
         <s-button type="action" icon="settings" rounded @click="openSettingsDialog" />
