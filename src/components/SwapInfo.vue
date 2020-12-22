@@ -71,7 +71,7 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   }
 
   get minReceived (): string {
-    return `${this.minMaxReceived} ${this.tokenTo.symbol}`
+    return `${this.minMaxReceived} ${this.tokenTo ? this.tokenTo.symbol : ''}`
   }
 
   get priceImpact (): string {

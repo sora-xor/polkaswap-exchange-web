@@ -216,14 +216,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
         this.formModel.to = formatNumber(0, 1)
       } else {
         try {
-          // TODO 4 alexnatalia: Fix after Integer number lib fix
-          const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, formatNumber(this.formModel.from, 2))
+          const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.from)
           this.formModel.to = swapResult.amount
           this.setLiquidityProviderFee(swapResult.fee)
           const minMaxReceived = await dexApi.getMinMaxReceived(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
           this.setMinMaxReceived(minMaxReceived)
           this.getPrice()
         } catch (error) {
+          // TODO: Think about variant with huge nunmber.
           this.formModel.to = formatNumber(0, 1)
           throw error
         }
@@ -240,14 +240,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
         this.formModel.from = formatNumber(0, 1)
       } else {
         try {
-          // TODO 4 alexnatalia: Fix after Integer number lib fix
-          const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, formatNumber(this.formModel.to, 2))
+          const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.to)
           this.formModel.from = swapResult.amount
           this.setLiquidityProviderFee(swapResult.fee)
           const minMaxReceived = await dexApi.getMinMaxReceived(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
           this.setMinMaxReceived(minMaxReceived)
           this.getPrice()
         } catch (error) {
+          // TODO: Think about variant with huge nunmber.
           this.formModel.from = formatNumber(0, 1)
           throw error
         }
@@ -259,9 +259,9 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
 
   async getPrice (): Promise<void> {
     try {
-      const price = await dexApi.divideAssets(this.tokenFrom.address, this.tokenTo.address, formatNumber(this.formModel.from, 2), formatNumber(this.formModel.to, 2))
+      const price = await dexApi.divideAssets(this.tokenFrom.address, this.tokenTo.address, this.formModel.from, this.formModel.to)
       this.setPrice(price)
-      const priceReversed = await dexApi.divideAssets(this.tokenFrom.address, this.tokenTo.address, formatNumber(this.formModel.from, 2), formatNumber(this.formModel.to, 2), true)
+      const priceReversed = await dexApi.divideAssets(this.tokenFrom.address, this.tokenTo.address, this.formModel.from, this.formModel.to, true)
       this.setPriceReversed(priceReversed)
     } catch (error) {
       throw new Error(error)
@@ -345,13 +345,12 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       title: this.t('exchange.Swap'),
       type: 'success'
     })
-    // dexApi.accountAssets
-    // TODO: Update assets
-    // try {
-    //   await dexApi.updateAccountAssets()
-    // } catch (error) {
-    //   throw error
-    // }
+    try {
+      await dexApi.updateAccountAssets()
+      console.log(dexApi.accountAssets)
+    } catch (error) {
+      throw new Error(error)
+    }
   }
 }
 </script>
