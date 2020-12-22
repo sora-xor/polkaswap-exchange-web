@@ -150,6 +150,11 @@ export default {
     title: 'Settings',
     slippageTolerance: 'SLIPPAGE TOLERANCE',
     slippageToleranceHint: 'Your transaction will revert if the price changes unfavorably by more than this percentage.',
+    slippageToleranceValidation: {
+      warning: 'Your transaction may fail',
+      frontrun: 'Your transaction may be frontrun',
+      error: 'Enter a valid slippage percentage'
+    },
     custom: 'CUSTOM',
     transactionDeadline: 'TRANSACTION DEADLINE',
     transactionDeadlineHint: 'Transaction will be cancelled if it is pending for more than this long.',

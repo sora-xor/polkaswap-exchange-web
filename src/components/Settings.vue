@@ -6,10 +6,9 @@
   >
     <div class="settings-content">
       <s-divider />
-      <div class="slippage-tolerance s-flex">
+      <div :class="slippageToleranceClasses">
         <div class="slippage-tolerance-default">
           <div class="header">
-            <!-- TODO 4 alexnatalia: Add min and max here -->
             {{ t('settings.slippageTolerance') }}
             <s-tooltip popper-class="info-tooltip" border-radius="mini" :content="t('settings.slippageToleranceHint')" theme="light" placement="right-start" animation="none" :show-arrow="false">
               <s-icon class="header-hint" name="info" />
@@ -34,6 +33,7 @@
             size="small"
           />
         </div>
+        <div v-if="slippageToleranceValidation" class="slippage-tolerance_validation">{{ t(`settings.slippageToleranceValidation.${slippageToleranceValidation}`) }}</div>
       </div>
       <s-divider />
       <!-- TODO: We'll play with this field at the next iteration of development -->
@@ -90,6 +90,11 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
     1
   ]
 
+  readonly slippageToleranceExtremeValues = {
+    min: 0.01,
+    max: 10
+  }
+
   @Getter slippageTolerance!: number
   @Getter transactionDeadline!: number
   @Getter nodeAddress!: { ip: string; port: number }
@@ -103,6 +108,30 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
   set model (value: string) {
     // TODO: ask about zero value
     this.setSlippageTolerance({ value })
+  }
+
+  get slippageToleranceClasses (): string {
+    const defaultClass = 'slippage-tolerance'
+    const classes = [defaultClass, 's-flex']
+
+    if (this.slippageToleranceValidation) {
+      classes.push(`${defaultClass}--${this.slippageToleranceValidation === 'frontrun' ? 'warning' : this.slippageToleranceValidation}`)
+    }
+
+    return classes.join(' ')
+  }
+
+  get slippageToleranceValidation (): string {
+    if (+this.model >= this.slippageToleranceExtremeValues.min && +this.model < 0.1) {
+      return 'warning'
+    }
+    if (+this.model >= 5 && +this.model <= this.slippageToleranceExtremeValues.max) {
+      return 'frontrun'
+    }
+    if (+this.model < this.slippageToleranceExtremeValues.min || +this.model > this.slippageToleranceExtremeValues.max) {
+      return 'error'
+    }
+    return ''
   }
 
   selectSlippageTolerance ({ name }): void {
@@ -128,6 +157,19 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
 .settings {
   .el-dialog .el-dialog__body {
     padding-bottom: $inner-spacing-big;
+  }
+  .el-tabs__header {
+    margin-bottom: 0;
+  }
+  .slippage-tolerance--error .el-input__inner {
+    &,
+    &:focus {
+      border-color: var(--s-color-status-error);
+    }
+  }
+  // TODO: remove after UI Lib fix
+  .s-placeholder {
+    display: none;
   }
 }
 </style>
@@ -172,11 +214,33 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
   }
 }
 .slippage-tolerance {
+  flex-wrap: wrap;
   &-default {
     flex: 2;
   }
   &-custom {
     flex: 1;
+  }
+  &_validation {
+    margin-top: $inner-spacing-mini;
+    width: 100%;
+    font-size: var(--s-font-size-mini);
+    line-height: $s-line-height-big;
+  }
+  &--warning {
+    color: var(--s-color-status-warning)
+  }
+  &--error {
+    color: var(--s-color-status-error)
+  }
+  + .s-divider-secondary {
+    margin-top: $inner-spacing-big;
+  }
+  &--warning,
+  &--error {
+    + .s-divider-secondary {
+      margin-top: $inner-spacing-medium;
+    }
   }
 }
 @include vertical-divider('el-divider');
