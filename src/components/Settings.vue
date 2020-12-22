@@ -36,7 +36,8 @@
         </div>
       </div>
       <s-divider />
-      <div class="transaction-deadline">
+      <!-- TODO: We'll play with this field at the next iteration of development -->
+      <!-- <div class="transaction-deadline">
         <div class="header">
           {{ t('settings.transactionDeadline') }}
           <s-tooltip popper-class="info-tooltip" border-radius="mini" :content="t('settings.transactionDeadlineHint')" theme="light" placement="right-start" animation="none" :show-arrow="false">
@@ -48,7 +49,7 @@
           <s-slider class="value-slider" :value="transactionDeadline" :showTooltip="false" @change="handleSetTransactionDeadline" />
         </div>
       </div>
-      <s-divider />
+      <s-divider /> -->
       <div class="node-address">
         <div class="header">
           {{ t('settings.nodeAddress') }}
