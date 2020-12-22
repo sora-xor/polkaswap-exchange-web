@@ -99,10 +99,10 @@ const mutations = {
   [types.GET_TOKEN_FROM_PRICE] (state, isTokenFromPrice: boolean) {
     state.isTokenFromPrice = isTokenFromPrice
   },
-  [types.GET_PRICE] (state, price: string) {
+  [types.GET_PRICE] (state, price: string | number) {
     state.price = price
   },
-  [types.GET_PRICE_REVERSED] (state, priceReversed: string) {
+  [types.GET_PRICE_REVERSED] (state, priceReversed: string | number) {
     state.priceReversed = priceReversed
   },
   [types.GET_MIN_MAX_RECEIVED] (state, minMaxReceived: string) {
@@ -161,11 +161,11 @@ const actions = {
   setTokenFromPrice ({ commit }, isTokenFromPrice: boolean) {
     commit(types.GET_TOKEN_FROM_PRICE, isTokenFromPrice)
   },
-  setPrice ({ commit }, price: string) {
+  setPrice ({ commit }, price: string | number) {
     commit(types.GET_PRICE, price)
   },
-  setPriceReversed ({ commit }, priceReverced: string) {
-    commit(types.GET_PRICE_REVERSED, priceReverced)
+  setPriceReversed ({ commit }, priceReversed: string | number) {
+    commit(types.GET_PRICE_REVERSED, priceReversed)
   },
   setMinMaxReceived ({ commit }, minMaxReceived: string) {
     commit(types.GET_MIN_MAX_RECEIVED, minMaxReceived)

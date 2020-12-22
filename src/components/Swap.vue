@@ -79,8 +79,11 @@
       {{ t('swap.connectWallet') }}
     </s-button>
     <s-button v-else type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="handleConfirmSwap">
-      <template v-if="isEmptyBalance">
+      <template v-if="isEmptyBalance && !isInsufficientAmount">
         {{ t('swap.enterAmount') }}
+      </template>
+      <template v-else-if="isInsufficientAmount">
+        {{ t('swap.insufficientAmount', { tokenSymbol: insufficientAmountTokenSymbol }) }}
       </template>
       <template v-else-if="isInsufficientBalance">
         {{ t('swap.insufficientBalance', { tokenSymbol: tokenFrom.symbol }) }}
@@ -141,6 +144,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   showConfirmSwapDialog = false
   isSwapConfirmed = false
   defaultTokenSymbol = KnownSymbols.XOR
+  isInsufficientAmount = false
+  insufficientAmountTokenSymbol = ''
 
   formModel = {
     from: formatNumber(0, 1),
@@ -222,10 +227,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
           const minMaxReceived = await dexApi.getMinMaxReceived(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
           this.setMinMaxReceived(minMaxReceived)
           this.getPrice()
+          if (this.isInsufficientAmount) {
+            this.isInsufficientAmount = false
+          }
         } catch (error) {
-          // TODO: Think about variant with huge nunmber.
           this.formModel.to = formatNumber(0, 1)
-          throw error
+          if (!this.checkInsufficientAmount(this.tokenFrom.symbol, error.message)) {
+            throw error
+          }
         }
       }
       this.setToValue(this.formModel.to)
@@ -246,10 +255,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
           const minMaxReceived = await dexApi.getMinMaxReceived(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
           this.setMinMaxReceived(minMaxReceived)
           this.getPrice()
+          if (this.isInsufficientAmount) {
+            this.isInsufficientAmount = false
+          }
         } catch (error) {
-          // TODO: Think about variant with huge nunmber.
           this.formModel.from = formatNumber(0, 1)
-          throw error
+          if (!this.checkInsufficientAmount(this.tokenTo.symbol, error.message)) {
+            throw error
+          }
         }
       }
       this.setFromValue(this.formModel.from)
@@ -266,6 +279,16 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     } catch (error) {
       throw new Error(error)
     }
+  }
+
+  checkInsufficientAmount (tokenSymbol: string, errorMessage): boolean {
+    if (errorMessage.indexOf('invalid string input for fixed point number') !== -1) {
+      this.isInsufficientAmount = true
+      this.insufficientAmountTokenSymbol = tokenSymbol
+      this.setPrice(0)
+      this.setPriceReversed(0)
+    }
+    return this.isInsufficientAmount
   }
 
   initPrice (): void {
