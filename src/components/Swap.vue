@@ -347,7 +347,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     })
     try {
       await dexApi.updateAccountAssets()
-      console.log(dexApi.accountAssets)
     } catch (error) {
       throw new Error(error)
     }
