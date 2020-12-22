@@ -120,7 +120,7 @@ const actions = {
       try {
         const token = KnownAssets.get(payload.tokenSymbol)
         if (token) {
-          const tokenFrom = await dexApi.getAccountAsset(token.address)
+          const tokenFrom = await dexApi.accountAssets.find(asset => asset.address === token.address)
           commit(types.GET_TOKEN_FROM_SUCCESS, tokenFrom)
         } else {
           throw new Error(`There is no ${payload.tokenSymbol} asset`)
@@ -139,7 +139,7 @@ const actions = {
       try {
         const token = KnownAssets.get(payload.tokenSymbol)
         if (token) {
-          const tokenTo = await dexApi.getAccountAsset(token.address)
+          const tokenTo = await dexApi.accountAssets.find(asset => asset.address === token.address)
           commit(types.GET_TOKEN_TO_SUCCESS, tokenTo)
         } else {
           throw new Error(`There is no ${payload.tokenSymbol} asset`)

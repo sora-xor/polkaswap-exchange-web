@@ -173,9 +173,9 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     })
   }
 
-  created () {
+  created (): void {
     if (this.connected) {
-      if (this.tokenFrom === null) {
+      if (this.tokenFrom === null || this.tokenFrom === undefined) {
         // Set default token
         this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: this.defaultTokenSymbol })
       } else if (this.tokenFrom.balance === undefined) {
