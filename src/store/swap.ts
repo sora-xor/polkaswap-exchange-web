@@ -12,6 +12,8 @@ const types = flow(
     'GET_FROM_VALUE',
     'GET_TO_VALUE',
     'GET_TOKEN_FROM_PRICE',
+    'GET_PRICE',
+    'GET_PRICE_REVERSED',
     'GET_MIN_MAX_RECEIVED',
     'GET_LIQUIDITY_PROVIDER_FEE',
     'GET_SWAP_CONFIRM'
@@ -30,6 +32,8 @@ function initialState () {
     fromValue: 0,
     toValue: 0,
     isTokenFromPrice: true,
+    price: '',
+    priceReversed: '',
     minMaxReceived: '',
     liquidityProviderFee: ''
   }
@@ -52,6 +56,12 @@ const getters = {
   },
   isTokenFromPrice (state) {
     return state.isTokenFromPrice
+  },
+  price (state) {
+    return state.price
+  },
+  priceReversed (state) {
+    return state.priceReversed
   },
   minMaxReceived (state) {
     return state.minMaxReceived
@@ -88,6 +98,12 @@ const mutations = {
   },
   [types.GET_TOKEN_FROM_PRICE] (state, isTokenFromPrice: boolean) {
     state.isTokenFromPrice = isTokenFromPrice
+  },
+  [types.GET_PRICE] (state, price: string) {
+    state.price = price
+  },
+  [types.GET_PRICE_REVERSED] (state, priceReversed: string) {
+    state.priceReversed = priceReversed
   },
   [types.GET_MIN_MAX_RECEIVED] (state, minMaxReceived: string) {
     state.minMaxReceived = minMaxReceived
@@ -144,6 +160,12 @@ const actions = {
   },
   setTokenFromPrice ({ commit }, isTokenFromPrice: boolean) {
     commit(types.GET_TOKEN_FROM_PRICE, isTokenFromPrice)
+  },
+  setPrice ({ commit }, price: string) {
+    commit(types.GET_PRICE, price)
+  },
+  setPriceReversed ({ commit }, priceReverced: string) {
+    commit(types.GET_PRICE_REVERSED, priceReverced)
   },
   setMinMaxReceived ({ commit }, minMaxReceived: string) {
     commit(types.GET_MIN_MAX_RECEIVED, minMaxReceived)

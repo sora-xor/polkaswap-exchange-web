@@ -3,7 +3,7 @@
     <template v-if="showPrice || showSlippageTolerance">
       <div v-if="showPrice" class="swap-info">
         <span>{{ t('exchange.price') }}</span>
-        <span class="swap-info-value">{{ price }}</span>
+        <span class="swap-info-value">{{ priceValue }}</span>
         <s-button class="el-button--switch-price" type="action" size="small" icon="swap" @click="handleSwitchPrice" />
       </div>
       <div v-if="showSlippageTolerance" class="swap-info swap-info--slippage-tolerance">
@@ -52,6 +52,8 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   @Getter isTokenFromPrice!: boolean
   @Getter slippageTolerance!: number
   @Getter minMaxReceived!: string
+  @Getter price!: string
+  @Getter priceReversed!: string
   @Getter liquidityProviderFee!: string
   @Action setTokenFromPrice
 
@@ -61,19 +63,11 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
 
   formatNumber = formatNumber
 
-  get price (): string {
-    // TODO: Remove these info messages later
-    if (+this.tokenFrom.usdBalance === 0) {
-      console.info('usdBalance of ' + this.tokenFrom.symbol + ' is 0.')
-    }
-    if (+this.tokenTo.usdBalance === 0) {
-      console.info('usdBalance of ' + this.tokenTo.symbol + ' is 0.')
-    }
-    // TODO: Check price for not zero usdBalance values
+  get priceValue (): string {
     if (this.isTokenFromPrice) {
-      return formatNumber((+this.tokenFrom.usdBalance === 0 || +this.tokenTo.usdBalance === 0) ? 0 : this.tokenFrom.usdBalance / this.tokenTo.usdBalance) + ` ${this.tokenFrom.symbol + ' / ' + this.tokenTo.symbol}`
+      return `${formatNumber(this.price)} ${this.tokenFrom.symbol} / ${this.tokenTo.symbol}`
     }
-    return formatNumber((+this.tokenFrom.usdBalance === 0 || +this.tokenTo.usdBalance === 0) ? 0 : this.tokenTo.usdBalance / this.tokenFrom.usdBalance) + ` ${this.tokenTo.symbol + ' / ' + this.tokenFrom.symbol}`
+    return `${formatNumber(this.priceReversed)} ${this.tokenTo.symbol} / ${this.tokenFrom.symbol}`
   }
 
   get minReceived (): string {

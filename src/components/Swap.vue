@@ -128,6 +128,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   @Action setFromValue
   @Action setToValue
   @Action setTokenFromPrice
+  @Action setPrice
+  @Action setPriceReversed
   @Action setMinMaxReceived
   @Action setLiquidityProviderFee
 
@@ -220,6 +222,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
           this.setLiquidityProviderFee(swapResult.fee)
           const minMaxReceived = await dexApi.getMinMaxReceived(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
           this.setMinMaxReceived(minMaxReceived)
+          this.getPrice()
         } catch (error) {
           this.formModel.to = formatNumber(0, 1)
           throw error
@@ -243,6 +246,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
           this.setLiquidityProviderFee(swapResult.fee)
           const minMaxReceived = await dexApi.getMinMaxReceived(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
           this.setMinMaxReceived(minMaxReceived)
+          this.getPrice()
         } catch (error) {
           this.formModel.from = formatNumber(0, 1)
           throw error
@@ -251,6 +255,23 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       this.setFromValue(this.formModel.from)
     }
     this.setToValue(this.formModel.to)
+  }
+
+  async getPrice (): Promise<void> {
+    try {
+      const price = await dexApi.divideAssets(this.tokenFrom.address, this.tokenTo.address, formatNumber(this.formModel.from, 2), formatNumber(this.formModel.to, 2))
+      this.setPrice(price)
+      const priceReversed = await dexApi.divideAssets(this.tokenFrom.address, this.tokenTo.address, formatNumber(this.formModel.from, 2), formatNumber(this.formModel.to, 2), true)
+      this.setPriceReversed(priceReversed)
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+
+  initPrice (): void {
+    this.setTokenFromPrice(true)
+    this.setPrice(formatNumber(0))
+    this.setPriceReversed(formatNumber(0))
   }
 
   handleBlurFieldFrom (): void {
@@ -269,7 +290,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     this.formModel.to = formatNumber(0, 1)
     this.isFieldFromFocused = false
     this.isFieldToFocused = false
-    this.setTokenFromPrice(true)
+    this.initPrice()
   }
 
   handleMaxValue (isTokenFrom: boolean): void {
@@ -303,6 +324,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
         this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
         this.formModel.to = formatNumber(0, 1)
       }
+      this.initPrice()
     }
   }
 
