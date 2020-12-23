@@ -76,7 +76,7 @@
         </s-button>
       </div>
     </div>
-    <swap-info v-if="connected && areTokensSelected" :show-price="true" :show-slippage-tolerance="true" />
+    <swap-info v-if="areTokensSelected && !isEmptyBalance" :show-price="true" :show-slippage-tolerance="true" />
     <s-button v-if="!connected" type="primary" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
@@ -94,7 +94,7 @@
         {{ t('exchange.Swap') }}
       </template>
     </s-button>
-    <swap-info v-if="connected && areTokensSelected && +formModel.from !== 0" />
+    <swap-info v-if="areTokensSelected && !isEmptyBalance" />
     <select-token :visible.sync="showSelectTokenDialog" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
     <confirm-swap :visible.sync="showConfirmSwapDialog" @confirm="confirmSwap" />
     <result-dialog :visible.sync="isSwapConfirmed" :type="t('exchange.Swap')" :message="resultMessage" @close="swapNotify(resultMessage)" />
@@ -221,7 +221,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   async handleChangeFieldFrom (): Promise<any> {
     if (!this.isFieldToFocused) {
       this.isFieldFromFocused = true
-      if (!this.connected || !this.areTokensSelected || +this.formModel.from === 0) {
+      if (!this.areTokensSelected || +this.formModel.from === 0) {
         this.formModel.to = formatNumber(0, 1)
       } else {
         try {
@@ -249,7 +249,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   async handleChangeFieldTo (): Promise<any> {
     if (!this.isFieldFromFocused) {
       this.isFieldToFocused = true
-      if (!this.connected || !this.areTokensSelected || +this.formModel.to === 0) {
+      if (!this.areTokensSelected || +this.formModel.to === 0) {
         this.formModel.from = formatNumber(0, 1)
       } else {
         try {

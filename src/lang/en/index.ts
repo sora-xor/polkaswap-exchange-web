@@ -31,12 +31,12 @@ export default {
     [PageNames.CreatePair]: 'Create Pair'
   },
   about: {
-    polkaswapText: 'Polkaswap - decentralised token exchange for Polkadot ecosystem. Swap any token on SoraNet, add liquidity, create exchanges, earn through passive market making, build decentralized price feeds.',
+    polkaswapText: 'Polkaswap - decentralised token exchange for Polkadot ecosystem. Swap any token on SORA, add liquidity, create exchanges, earn through passive market making, build decentralized price feeds.',
     openExchange: 'Open exchange',
     mediumLink: 'Medium',
     githubLink: 'Github',
     [Topics.SwapTokens]: {
-      title: 'Swap tokens on Sora network and other bridged networks',
+      title: 'Swap tokens on SORA network and other bridged networks',
       text: 'Use Polkaswap exchange or integrate into your project using the SDK'
     },
     [Topics.PassiveEarning]: {

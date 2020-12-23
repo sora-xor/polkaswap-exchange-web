@@ -134,7 +134,6 @@ $logo-width: 140px;
     }
     .article-card {
       margin: $inner-spacing-mini / 2;
-      height: 140px;
       background-color: var(--s-color-base-background);
       border-color: transparent;
       color: var(--s-color-base-content-secondary);
@@ -157,6 +156,16 @@ $logo-width: 140px;
   .layout {
     .banner {
       background-image: url("~@/assets/img/about-banner@2x.png");
+    }
+  }
+}
+@include large-mobile {
+  .layout {
+    .articles .s-col-sm-6 {
+      width: 50%;
+    }
+    .content .article-card {
+      height: 186px;
     }
   }
 }
@@ -185,9 +194,37 @@ $logo-width: 140px;
   }
 }
 @include desktop {
-  .layout .content .terms .title {
-    font-size: var(--s-heading1-font-size);
-    line-height: $s-line-height-mini;
+  .layout {
+    .articles .s-col-sm-6 {
+      width: 25%;
+    }
+    .content {
+      .terms .title {
+        font-size: var(--s-heading1-font-size);
+        line-height: $s-line-height-mini;
+      }
+      .article-card {
+        height: 209px;
+      }
+    }
+  }
+}
+@include large-desktop {
+  .layout {
+    .content {
+      .article-card {
+        height: 186px;
+      }
+    }
+  }
+}
+@include huge-desktop {
+  .layout {
+    .content {
+      .article-card {
+        height: 140px;
+      }
+    }
   }
 }
 </style>
