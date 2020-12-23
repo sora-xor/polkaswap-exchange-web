@@ -6,7 +6,7 @@
         <span class="swap-info-value">{{ priceValue }}</span>
         <s-button class="el-button--switch-price" type="action" size="small" icon="swap" @click="handleSwitchPrice" />
       </div>
-      <div v-if="showSlippageTolerance" class="swap-info swap-info--slippage-tolerance">
+      <div v-if="showSlippageTolerance && connected" class="swap-info swap-info--slippage-tolerance">
         <span>{{ t('swap.slippageTolerance') }}</span>
         <span class="swap-info-value">{{ slippageTolerance }}%</span>
       </div>
@@ -42,7 +42,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import { formatNumber } from '@/utils'
+import { formatNumber, isWalletConnected } from '@/utils'
 import { KnownSymbols } from '@sora-substrate/util'
 
 @Component
@@ -62,6 +62,10 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly showSlippageTolerance!: boolean
 
   formatNumber = formatNumber
+
+  get connected (): boolean {
+    return isWalletConnected()
+  }
 
   get priceValue (): string {
     if (this.isTokenFromPrice) {
