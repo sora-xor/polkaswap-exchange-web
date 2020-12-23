@@ -95,8 +95,7 @@
       </template>
     </s-button>
     <swap-info v-if="connected && areTokensSelected && +formModel.from !== 0" />
-    <select-token :visible.sync="showSelectTokenDialog" @select="selectToken" />
-
+    <select-token :visible.sync="showSelectTokenDialog" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
     <confirm-swap :visible.sync="showConfirmSwapDialog" @confirm="confirmSwap" />
     <result-dialog :visible.sync="isSwapConfirmed" :type="t('exchange.Swap')" :message="resultMessage" @close="swapNotify(resultMessage)" />
   </s-form>

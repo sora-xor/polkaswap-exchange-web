@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -58,20 +58,26 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   query = ''
   selectedToken: Token | null = null
 
+  @Prop({ default: () => null, type: Object }) readonly asset!: Token
+
   @Getter('assets', { namespace }) assets!: Array<Token>
   @Action('getAssets', { namespace }) getAssets
+
+  get assetsList (): Array<Token> {
+    return this.asset ? this.assets.filter(asset => asset.symbol !== this.asset.symbol) : this.assets
+  }
 
   get filteredTokens (): Array<Token> {
     if (this.query) {
       const query = this.query.toLowerCase().trim()
-      return this.assets.filter(t =>
+      return this.assetsList.filter(t =>
         this.t(`assetNames.${t.symbol}`).toLowerCase().includes(query) ||
         t.symbol.toLowerCase().includes(query) ||
         t.address.toLowerCase().includes(query)
       )
     }
 
-    return this.assets
+    return this.assetsList
   }
 
   created (): void {

@@ -15,6 +15,14 @@ export const getTokenIconClasses = (symbol: string) => {
   return cssClass
 }
 
-export const isWalletConnected = () => !!(storage.get('address') && storage.get('name') && storage.get('password'))
+export const isWalletConnected = () => {
+  const isExternal = Boolean(storage.get('isExternal'))
+  const address = storage.get('address')
+  return !!(
+    isExternal
+      ? address
+      : address && storage.get('name') && storage.get('password')
+  )
+}
 
 export const isApiConnected = () => dexApi?.api?.isConnected
