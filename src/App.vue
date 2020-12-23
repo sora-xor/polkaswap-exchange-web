@@ -28,7 +28,10 @@
         <!-- <s-button type="action" icon="search" rounded /> -->
       </div>
     </header>
-    <div class="app-content"><router-view /></div>
+    <div class="app-content">
+      <!-- TODO 4 alexnatalia: We should have this loader only for appropriate pages. Play with it a bit more -->
+      <router-view v-loading="loading" />
+    </div>
     <settings :visible.sync="showSettings" />
   </div>
 </template>
