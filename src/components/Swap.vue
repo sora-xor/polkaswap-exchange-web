@@ -18,8 +18,9 @@
             v-model="formModel.from"
             v-float="formModel.from"
             class="s-input--token-value"
-            :placeholder="inputPlaceholder"
+            :placeholder="isFieldFromFocused ? '' : inputPlaceholder"
             @change="handleChangeFieldFrom"
+            @focus="handleFocusFieldFrom"
             @blur="handleBlurFieldFrom"
           />
         </s-form-item>
@@ -55,8 +56,9 @@
             v-model="formModel.to"
             v-float="formModel.to"
             class="s-input--token-value"
-            :placeholder="inputPlaceholder"
+            :placeholder="isFieldToFocused ? '' : inputPlaceholder"
             @change="handleChangeFieldTo"
+            @focus="handleFocusFieldTo"
             @blur="handleBlurFieldTo"
           />
         </s-form-item>
@@ -302,10 +304,30 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
 
   handleBlurFieldFrom (): void {
     this.isFieldFromFocused = false
+    if (this.formModel.from === '' || +this.formModel.from === 0) {
+      this.formModel.from = formatNumber(0, 1)
+    }
+  }
+
+  handleFocusFieldFrom (): void {
+    this.isFieldFromFocused = true
+    if (+this.formModel.from === 0) {
+      this.formModel.from = ''
+    }
   }
 
   handleBlurFieldTo (): void {
     this.isFieldToFocused = false
+    if (this.formModel.to === '' || +this.formModel.to === 0) {
+      this.formModel.to = formatNumber(0, 1)
+    }
+  }
+
+  handleFocusFieldTo (): void {
+    this.isFieldToFocused = true
+    if (+this.formModel.to === 0) {
+      this.formModel.to = ''
+    }
   }
 
   handleSwitchTokens (): void {
