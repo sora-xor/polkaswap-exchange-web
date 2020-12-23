@@ -137,7 +137,7 @@ $logo-width: 140px;
       height: 140px;
       background-color: var(--s-color-base-background);
       border-color: transparent;
-      color: var(--s-color-base-content-tertiary);
+      color: var(--s-color-base-content-secondary);
       letter-spacing: $s-letter-spacing-medium;
       font-feature-settings: $s-font-feature-settings-card-body;
       .title {
