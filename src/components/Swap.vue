@@ -178,11 +178,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     })
   }
 
-  created (): void {
+  async created () {
     if (this.connected) {
       if (this.tokenFrom === null || this.tokenFrom === undefined) {
         // Set default token
-        this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: this.defaultTokenSymbol })
+        // TODO 4 alexnatalia: This is just a temporary way to fix the default token setting
+        await new Promise(resolve => setTimeout((resolve) => {
+          this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: this.defaultTokenSymbol })
+        }, 1500))
       } else if (this.tokenFrom.balance === undefined) {
         // Reset tokenFrom after connection to the wallet
         this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: this.tokenFrom.symbol })
