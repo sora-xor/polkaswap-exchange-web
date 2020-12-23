@@ -20,7 +20,7 @@
           {{ t(`mainMenu.${item}`) }}
         </s-menu-item>
       </s-menu>
-      <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.About)" />
+      <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Exchange)" />
       <div class="buttons">
         <s-button class="wallet" type="action" icon="wallet" rounded :disabled="loading" @click="goTo(PageNames.Wallet)" />
         <s-button type="action" icon="settings" rounded @click="openSettingsDialog" />
@@ -28,7 +28,10 @@
         <!-- <s-button type="action" icon="search" rounded /> -->
       </div>
     </header>
-    <div class="app-content"><router-view /></div>
+    <div class="app-content">
+      <!-- TODO 4 alexnatalia: We should have this loader only for appropriate pages. Play with it a bit more -->
+      <router-view v-loading="loading" />
+    </div>
     <settings :visible.sync="showSettings" />
   </div>
 </template>
@@ -235,7 +238,6 @@ $menu-height: 65px;
     font-size: var(--s-heading4-font-size);
     letter-spacing: $s-letter-spacing-small;
     font-feature-settings: $s-font-feature-settings-title;
-    &,
     &.is-active:hover {
       color: var(--s-color-theme-accent-hover) !important;
     }

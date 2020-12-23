@@ -3,7 +3,7 @@
     <template v-if="showPrice || showSlippageTolerance">
       <div v-if="showPrice" class="swap-info">
         <span>{{ t('exchange.price') }}</span>
-        <span class="swap-info-value">{{ price }}</span>
+        <span class="swap-info-value">{{ priceValue }}</span>
         <s-button class="el-button--switch-price" type="action" size="small" icon="swap" @click="handleSwitchPrice" />
       </div>
       <div v-if="showSlippageTolerance" class="swap-info swap-info--slippage-tolerance">
@@ -19,15 +19,16 @@
         <span>{{ t('swap.minReceived') }}</span>
         <span class="swap-info-value">{{ minReceived }}</span>
       </div>
-      <div class="swap-info">
+      <!-- TODO: Hid for first iteration of development -->
+      <!-- <div class="swap-info">
         <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.priceImpactTooltip')" theme="light" placement="right-start" animation="none" :show-arrow="false">
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.priceImpact') }}</span>
         <span :class="'swap-info-value ' + priceImpactClass">{{ priceImpact }}%</span>
-      </div>
+      </div> -->
       <div class="swap-info">
-        <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee })" theme="light" placement="right-start" animation="none" :show-arrow="false">
+        <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: formatNumber(0.3, 1)})" theme="light" placement="right-start" animation="none" :show-arrow="false">
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.liquidityProviderFee') }}</span>
@@ -42,31 +43,35 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { formatNumber } from '@/utils'
+import { KnownSymbols } from '@sora-substrate/util'
 
 @Component
 export default class SwapInfo extends Mixins(TranslationMixin) {
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
-  @Getter toValue!: number
   @Getter isTokenFromPrice!: boolean
   @Getter slippageTolerance!: number
-  @Getter liquidityProviderFee!: number
+  @Getter minMaxReceived!: string
+  @Getter price!: string
+  @Getter priceReversed!: string
+  @Getter liquidityProviderFee!: string
   @Action setTokenFromPrice
 
   @Prop({ default: false, type: Boolean }) readonly showPrice!: boolean
   @Prop({ default: true, type: Boolean }) readonly showTooltips!: boolean
   @Prop({ default: false, type: Boolean }) readonly showSlippageTolerance!: boolean
 
-  get price (): string {
+  formatNumber = formatNumber
+
+  get priceValue (): string {
     if (this.isTokenFromPrice) {
-      return formatNumber(this.tokenFrom.price / this.tokenTo.price, 4) + ` ${this.tokenFrom.symbol + ' / ' + this.tokenTo.symbol}`
+      return `${formatNumber(this.price)} ${this.tokenFrom.symbol} / ${this.tokenTo.symbol}`
     }
-    return formatNumber(this.tokenTo.price / this.tokenFrom.price, 4) + ` ${this.tokenTo.symbol + ' / ' + this.tokenFrom.symbol}`
+    return `${formatNumber(this.priceReversed)} ${this.tokenTo.symbol} / ${this.tokenFrom.symbol}`
   }
 
   get minReceived (): string {
-    // TODO: Generate value from tokenFromValue
-    return this.tokenFrom ? `${formatNumber(this.toValue, 4)} ${this.tokenTo.symbol}` : ''
+    return `${formatNumber(this.minMaxReceived)} ${this.tokenTo ? this.tokenTo.symbol : ''}`
   }
 
   get priceImpact (): string {
@@ -85,8 +90,7 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   }
 
   get liquidityProviderFeeValue (): string {
-    // TODO: Generate liquidity provider fee
-    return this.tokenFrom ? `${formatNumber(0.0006245, 4)} ${this.tokenTo.symbol}` : ''
+    return `${formatNumber(this.liquidityProviderFee)} ${KnownSymbols.XOR}`
   }
 
   handleSwitchPrice (): void {
