@@ -160,7 +160,6 @@ export default {
     transactionDeadline: 'TRANSACTION DEADLINE',
     transactionDeadlineHint: 'Transaction will be cancelled if it is pending for more than this long.',
     nodeAddress: 'NODE ADDRESS',
-    nodeAddressHint: 'TODO',
     ip: 'IP',
     port: 'PORT',
     min: 'MIN'

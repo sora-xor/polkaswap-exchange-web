@@ -51,12 +51,7 @@
       </div>
       <s-divider /> -->
       <div class="node-address">
-        <div class="header">
-          {{ t('settings.nodeAddress') }}
-          <s-tooltip popper-class="info-tooltip" border-radius="mini" :content="t('settings.nodeAddressHint')" theme="light" placement="right-start" animation="none" :show-arrow="false">
-            <s-icon class="header-hint" name="info" />
-          </s-tooltip>
-        </div>
+        <div class="header">{{ t('settings.nodeAddress') }}</div>
         <div class="value">
           <div class="value-container">
             <span class="value-container_label">{{ t('settings.ip') }}: </span>{{ nodeAddress.ip }}
