@@ -6,7 +6,6 @@
       class="header-tooltip"
       popper-class="info-tooltip info-tooltip--header"
       :content="tooltip"
-      border-radius="mini"
       theme="light"
       placement="bottom-end"
       animation="none"
@@ -43,6 +42,7 @@ export default class GenericHeader extends Mixins(TranslationMixin) {
 
 <style lang="scss" scoped>
 $tooltip-area-height: var(--s-size-small);
+$tooltip-size: var(--s-size-mini);
 $title-padding: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
 
 .header {
@@ -66,15 +66,19 @@ $title-padding: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
     position: absolute;
     top: 0;
     right: 0;
-    height: $tooltip-area-height;
-    width: $tooltip-area-height;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    height: $tooltip-size;
+    width: $tooltip-size;
+    padding-left: 1px;
     background-color: var(--s-color-base-background);
-    border-radius: var(--s-border-radius-small);
+    border-radius: 50%;
     text-align: center;
     cursor: pointer;
     &:before {
       font-size: var(--s-icon-font-size-mini);
-      line-height: $tooltip-area-height;
+      line-height: $tooltip-size;
     }
   }
 }
