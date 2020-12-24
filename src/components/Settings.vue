@@ -1,7 +1,7 @@
 <template>
   <dialog-base
     :visible.sync="isVisible"
-    :title="t('settings.title')"
+    :title="t('dexSettings.title')"
     custom-class="settings"
   >
     <div class="settings-content">
@@ -9,8 +9,8 @@
       <div :class="slippageToleranceClasses">
         <div class="slippage-tolerance-default">
           <div class="header">
-            {{ t('settings.slippageTolerance') }}
-            <s-tooltip popper-class="info-tooltip" border-radius="mini" :content="t('settings.slippageToleranceHint')" theme="light" placement="right-start" animation="none" :show-arrow="false">
+            {{ t('dexSettings.slippageTolerance') }}
+            <s-tooltip popper-class="info-tooltip" border-radius="mini" :content="t('dexSettings.slippageToleranceHint')" theme="light" placement="right-start" animation="none" :show-arrow="false">
               <s-icon class="header-hint" name="info" />
             </s-tooltip>
           </div>
@@ -24,7 +24,7 @@
           </s-tabs>
         </div>
         <div class="slippage-tolerance-custom">
-          <div class="header">{{ t('settings.custom') }}</div>
+          <div class="header">{{ t('dexSettings.custom') }}</div>
           <!-- TODO: Add size="small" for s-input -->
           <s-input
             v-model="model"
@@ -33,31 +33,31 @@
             size="small"
           />
         </div>
-        <div v-if="slippageToleranceValidation" class="slippage-tolerance_validation">{{ t(`settings.slippageToleranceValidation.${slippageToleranceValidation}`) }}</div>
+        <div v-if="slippageToleranceValidation" class="slippage-tolerance_validation">{{ t(`dexSettings.slippageToleranceValidation.${slippageToleranceValidation}`) }}</div>
       </div>
       <s-divider />
       <!-- TODO: We'll play with this field at the next iteration of development -->
       <!-- <div class="transaction-deadline">
         <div class="header">
-          {{ t('settings.transactionDeadline') }}
-          <s-tooltip popper-class="info-tooltip" border-radius="mini" :content="t('settings.transactionDeadlineHint')" theme="light" placement="right-start" animation="none" :show-arrow="false">
+          {{ t('dexSettings.transactionDeadline') }}
+          <s-tooltip popper-class="info-tooltip" border-radius="mini" :content="t('dexSettings.transactionDeadlineHint')" theme="light" placement="right-start" animation="none" :show-arrow="false">
             <s-icon class="header-hint" name="info" />
           </s-tooltip>
         </div>
         <div class="value">
-          <div class="value-container">{{ transactionDeadline }} {{ t('settings.min') }}</div>
+          <div class="value-container">{{ transactionDeadline }} {{ t('dexSettings.min') }}</div>
           <s-slider class="value-slider" :value="transactionDeadline" :showTooltip="false" @change="handleSetTransactionDeadline" />
         </div>
       </div>
       <s-divider /> -->
       <div class="node-address">
-        <div class="header">{{ t('settings.nodeAddress') }}</div>
+        <div class="header">{{ t('dexSettings.nodeAddress') }}</div>
         <div class="value">
           <div class="value-container">
-            <span class="value-container_label">{{ t('settings.ip') }}: </span>{{ nodeAddress.ip }}
+            <span class="value-container_label">{{ t('dexSettings.ip') }}: </span>{{ nodeAddress.ip }}
           </div>
           <div class="value-container">
-            <span class="value-container_label">{{ t('settings.port') }}: </span>#{{ nodeAddress.port }}
+            <span class="value-container_label">{{ t('dexSettings.port') }}: </span>#{{ nodeAddress.port }}
           </div>
         </div>
       </div>
