@@ -11,10 +11,10 @@ export default {
     [KnownSymbols.PSWAP]: 'Polkaswap'
   },
   pageTitle: {
-    [PageNames.About]: 'About',
     [PageNames.Exchange]: 'Exchange',
     [PageNames.Swap]: 'Swap',
     [PageNames.Pool]: 'Pool',
+    [PageNames.About]: 'About',
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
     [PageNames.Wallet]: 'Wallet',
@@ -24,19 +24,19 @@ export default {
     [PageNames.RemoveLiquidity]: 'Remove Liquidity'
   },
   mainMenu: {
-    [PageNames.About]: 'About',
     [PageNames.Exchange]: 'Exchange',
+    [PageNames.About]: 'About',
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
     [PageNames.CreatePair]: 'Create Pair'
   },
   about: {
-    polkaswapText: 'Polkaswap — automated token exchange. Swap any token on SoraNet, add liquidity, create exchanges, earn through passive market making, build decentralized price feeds.',
+    polkaswapText: 'Polkaswap - decentralised token exchange for Polkadot ecosystem. Swap any token on SORA, add liquidity, create exchanges, earn through passive market making, build decentralized price feeds.',
     openExchange: 'Open exchange',
     mediumLink: 'Medium',
     githubLink: 'Github',
     [Topics.SwapTokens]: {
-      title: 'Swap any token on Ethereum',
+      title: 'Swap tokens on SORA network and other bridged networks',
       text: 'Use Polkaswap exchange or integrate into your project using the SDK'
     },
     [Topics.PassiveEarning]: {
@@ -45,7 +45,7 @@ export default {
     },
     [Topics.AddLiquidity]: {
       title: 'Add liquidity for any project',
-      text: 'Add liquidity or create an exchange for any ERC20 token'
+      text: 'Add liquidity or create new pairs'
     },
     [Topics.PriceFeeds]: {
       title: 'Build decentralized price feeds',
@@ -77,6 +77,7 @@ export default {
     liquidityProviderFeeTooltip: 'A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive.',
     enterAmount: 'Enter an amount',
     insufficientBalance: 'Insufficient {tokenSymbol} balance',
+    insufficientAmount: 'Insufficient {tokenSymbol} amount',
     confirmSwap: 'Confirm swap',
     swapOutputMessage: 'Output is estimated. You will receive at least {transactionValue} or the transaction will revert.',
     transactionMessage: '{tokenFromValue} for {tokenToValue}'
@@ -91,7 +92,7 @@ export default {
     pooledToken: '{tokenSymbol} Pooled:',
     pairTokens: '{pair} Pool Tokens:',
     poolShare: 'Your pool share',
-    loremIpsum: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+    description: 'When you add liquidity, you are given pool tokens representing your position. These tokens automaticaly earn fees proportional to your share of the pool, and can be redeemed at any time.'
   },
   selectToken: {
     title: 'Select a token',
@@ -117,6 +118,7 @@ export default {
     ok: 'OK',
     transactionMessage: '{firstToken} and {secondToken}',
     description: 'When you add liquidity, you are awarded with token pair specific PSWAP tokens that represent your pool share.',
+    loremIpsum: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     firstLiquidityProvider: 'You are the first liquidity provider',
     firstLiquidityProviderInfo: 'The ratio of tokens you add will set the price of this pool.<br/>Once you are happy with the rate click supply to review.'
   },
@@ -129,7 +131,7 @@ export default {
   },
   addLiquidity: {
     title: 'Add liquidity',
-    description: 'When you add liquidity, you are awarded with token pair specific Pool Tokens that represent your pool share.'
+    description: 'When you add liquidity, you are given pool tokens representing your position. These tokens automaticaly earn fees proportional to your share of the pool, and can be redeemed at any time.'
   },
   removeLiquidity: {
     title: 'Remove liquidity',
@@ -145,15 +147,19 @@ export default {
     confirmTitle: 'You will receive',
     confirm: 'Confirm'
   },
-  settings: {
+  dexSettings: {
     title: 'Settings',
     slippageTolerance: 'SLIPPAGE TOLERANCE',
     slippageToleranceHint: 'Your transaction will revert if the price changes unfavorably by more than this percentage.',
+    slippageToleranceValidation: {
+      warning: 'Your transaction may fail',
+      frontrun: 'Your transaction may be frontrun',
+      error: 'Enter a valid slippage percentage'
+    },
     custom: 'CUSTOM',
     transactionDeadline: 'TRANSACTION DEADLINE',
-    transactionDeadlineHint: 'TODO',
+    transactionDeadlineHint: 'Transaction will be cancelled if it is pending for more than this long.',
     nodeAddress: 'NODE ADDRESS',
-    nodeAddressHint: 'TODO',
     ip: 'IP',
     port: 'PORT',
     min: 'MIN'

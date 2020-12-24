@@ -9,4 +9,8 @@ export default class TranslationMixin extends Vue {
   tc (key: string, choice?: number, values?: any): string {
     return this.$root.$tc(key, choice, values)
   }
+
+  te (key: string): boolean {
+    return this.$root.$te(key)
+  }
 }

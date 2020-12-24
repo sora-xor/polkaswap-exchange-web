@@ -41,6 +41,7 @@ import DialogBase from '@/components/DialogBase.vue'
 import { formatNumber } from '@/utils'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
+import { dexApi } from '@soramitsu/soraneo-wallet-web'
 
 @Component({
   components: {
@@ -56,11 +57,11 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   @Getter toValue!: number
 
   get formattedFromValue (): string {
-    return formatNumber(this.fromValue, 4)
+    return formatNumber(this.fromValue)
   }
 
   get formattedToValue (): string {
-    return formatNumber(this.toValue, 4)
+    return formatNumber(this.toValue)
   }
 
   handleConfirmSwap (): void {

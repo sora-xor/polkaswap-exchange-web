@@ -3,37 +3,39 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
+import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { KnownAssets, Asset, AccountAsset } from '@sora-substrate/util'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
-    'GET_TOKEN_FROM',
-    'GET_TOKEN_TO',
     'GET_FROM_VALUE',
     'GET_TO_VALUE',
     'GET_TOKEN_FROM_PRICE',
+    'GET_PRICE',
+    'GET_PRICE_REVERSED',
+    'GET_MIN_MAX_RECEIVED',
+    'GET_LIQUIDITY_PROVIDER_FEE',
     'GET_SWAP_CONFIRM'
   ]),
   map(x => [x, x]),
   fromPairs
-)([])
+)([
+  'GET_TOKEN_FROM',
+  'GET_TOKEN_TO'
+])
 
-// TODO 4 alexnatalia: Get XOR token in another way
 function initialState () {
   return {
-    tokenFrom: {
-      name: 'Sora',
-      symbol: 'XOR',
-      address: '1f9840a85d5af5bf1d1762f925bdaddc4201f984',
-      balance: 10000,
-      price: 55.10,
-      priceChange: 12
-    },
+    tokenFrom: null,
     tokenTo: null,
     fromValue: 0,
     toValue: 0,
     isTokenFromPrice: true,
-    liquidityProviderFee: 0.3
+    price: '',
+    priceReversed: '',
+    minMaxReceived: '',
+    liquidityProviderFee: ''
   }
 }
 
@@ -55,17 +57,38 @@ const getters = {
   isTokenFromPrice (state) {
     return state.isTokenFromPrice
   },
+  price (state) {
+    return state.price
+  },
+  priceReversed (state) {
+    return state.priceReversed
+  },
+  minMaxReceived (state) {
+    return state.minMaxReceived
+  },
   liquidityProviderFee (state) {
     return state.liquidityProviderFee
   }
 }
 
 const mutations = {
-  [types.GET_TOKEN_FROM] (state, tokenFrom: any) {
-    state.tokenFrom = tokenFrom
+  [types.GET_TOKEN_FROM_REQUEST] (state) {
+    state.tokenFrom = null
   },
-  [types.GET_TOKEN_TO] (state, tokenTo: any) {
-    state.tokenTo = tokenTo
+  [types.GET_TOKEN_FROM_SUCCESS] (state, token: Asset | AccountAsset | null) {
+    state.tokenFrom = token
+  },
+  [types.GET_TOKEN_FROM_FAILURE] (state) {
+    state.tokenFrom = null
+  },
+  [types.GET_TOKEN_TO_REQUEST] (state) {
+    state.tokenTo = null
+  },
+  [types.GET_TOKEN_TO_SUCCESS] (state, token: Asset | AccountAsset | null) {
+    state.tokenTo = token
+  },
+  [types.GET_TOKEN_TO_FAILURE] (state) {
+    state.tokenTo = null
   },
   [types.GET_FROM_VALUE] (state, fromValue: string | number) {
     state.fromValue = fromValue
@@ -75,15 +98,65 @@ const mutations = {
   },
   [types.GET_TOKEN_FROM_PRICE] (state, isTokenFromPrice: boolean) {
     state.isTokenFromPrice = isTokenFromPrice
+  },
+  [types.GET_PRICE] (state, price: string | number) {
+    state.price = price
+  },
+  [types.GET_PRICE_REVERSED] (state, priceReversed: string | number) {
+    state.priceReversed = priceReversed
+  },
+  [types.GET_MIN_MAX_RECEIVED] (state, minMaxReceived: string) {
+    state.minMaxReceived = minMaxReceived
+  },
+  [types.GET_LIQUIDITY_PROVIDER_FEE] (state, liquidityProviderFee: string) {
+    state.liquidityProviderFee = liquidityProviderFee
   }
 }
 
 const actions = {
-  setTokenFrom ({ commit }, token: any) {
-    commit(types.GET_TOKEN_FROM, token)
+  async setTokenFrom ({ commit }, payload) {
+    if (payload.isWalletConnected) {
+      commit(types.GET_TOKEN_FROM_REQUEST)
+      try {
+        const token = KnownAssets.get(payload.tokenSymbol)
+        if (token) {
+          let tokenFrom = await dexApi.accountAssets.find(asset => asset.address === token.address)
+          if (!tokenFrom) {
+            tokenFrom = { ...token, balance: '0', usdBalance: '0' }
+          }
+          commit(types.GET_TOKEN_FROM_SUCCESS, tokenFrom)
+        } else {
+          throw new Error(`There is no ${payload.tokenSymbol} asset`)
+        }
+      } catch (error) {
+        commit(types.GET_TOKEN_FROM_FAILURE)
+        throw error
+      }
+    } else {
+      commit(types.GET_TOKEN_FROM_SUCCESS, KnownAssets.get(payload.tokenSymbol))
+    }
   },
-  setTokenTo ({ commit }, token: any) {
-    commit(types.GET_TOKEN_TO, token)
+  async setTokenTo ({ commit }, payload) {
+    if (payload.isWalletConnected) {
+      commit(types.GET_TOKEN_TO_REQUEST)
+      try {
+        const token = KnownAssets.get(payload.tokenSymbol)
+        if (token) {
+          let tokenTo = await dexApi.accountAssets.find(asset => asset.address === token.address)
+          if (!tokenTo) {
+            tokenTo = { ...token, balance: '0', usdBalance: '0' }
+          }
+          commit(types.GET_TOKEN_TO_SUCCESS, tokenTo)
+        } else {
+          throw new Error(`There is no ${payload.tokenSymbol} asset`)
+        }
+      } catch (error) {
+        commit(types.GET_TOKEN_TO_FAILURE)
+        throw error
+      }
+    } else {
+      commit(types.GET_TOKEN_TO_SUCCESS, KnownAssets.get(payload.tokenSymbol))
+    }
   },
   setFromValue ({ commit }, fromValue: string | number) {
     commit(types.GET_FROM_VALUE, fromValue)
@@ -93,6 +166,18 @@ const actions = {
   },
   setTokenFromPrice ({ commit }, isTokenFromPrice: boolean) {
     commit(types.GET_TOKEN_FROM_PRICE, isTokenFromPrice)
+  },
+  setPrice ({ commit }, price: string | number) {
+    commit(types.GET_PRICE, price)
+  },
+  setPriceReversed ({ commit }, priceReversed: string | number) {
+    commit(types.GET_PRICE_REVERSED, priceReversed)
+  },
+  setMinMaxReceived ({ commit }, minMaxReceived: string) {
+    commit(types.GET_MIN_MAX_RECEIVED, minMaxReceived)
+  },
+  setLiquidityProviderFee ({ commit }, liquidityProviderFee: string) {
+    commit(types.GET_LIQUIDITY_PROVIDER_FEE, liquidityProviderFee)
   }
 }
 

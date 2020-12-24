@@ -18,7 +18,6 @@
     <div class="tokens">
       <s-row flex justify="space-between" class="token">
         <s-row v-if="firstToken" flex>
-          <!-- TODO 4 alexnatalia: fix tokens alignment -->
           <token-logo :token="firstToken" size="small" />
           <span class="token-symbol">{{ firstToken.symbol }} {{ t('createPair.deposit')}}:</span>
         </s-row>
