@@ -67,6 +67,14 @@
   color: var(--s-color-base-content-primary);
 }
 
+@mixin input-ellipsis {
+  .el-input .el-input__inner {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
+
 @mixin input-form-styles {
   display: flex;
   flex-direction: column;
@@ -87,7 +95,8 @@
     }
     .el-form-item {
       margin-bottom: 0;
-      width: 50%;
+      margin-right: $inner-spacing-mini;
+      width: 100%;
     }
     .input-title,
     .token-balance {
@@ -118,6 +127,10 @@
     &--choose-token {
       font-feature-settings: $s-font-feature-settings-title;
       @include font-weight(700, true);
+    }
+    &--max,
+    &--empty-token {
+      margin-left: $inner-spacing-mini / 2;
     }
     &--max {
       margin-right: $inner-spacing-mini / 2;
