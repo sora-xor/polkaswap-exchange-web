@@ -263,9 +263,12 @@ $menu-height: 65px;
 .buttons {
   margin-left: auto;
   .wallet {
-    color: var(--s-color-utility-surface);
     background-color: var(--s-color-theme-accent);
     border-color: var(--s-color-theme-accent);
+    &,
+    &:hover {
+      color: var(--s-color-utility-surface);
+    }
     &:hover {
       background-color: var(--s-color-theme-accent-hover);
       border-color: var(--s-color-theme-accent-hover);
