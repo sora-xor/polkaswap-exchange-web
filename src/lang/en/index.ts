@@ -147,7 +147,7 @@ export default {
     confirmTitle: 'You will receive',
     confirm: 'Confirm'
   },
-  settings: {
+  dexSettings: {
     title: 'Settings',
     slippageTolerance: 'SLIPPAGE TOLERANCE',
     slippageToleranceHint: 'Your transaction will revert if the price changes unfavorably by more than this percentage.',
