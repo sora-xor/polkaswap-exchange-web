@@ -54,9 +54,11 @@ export default class About extends Mixins(TranslationMixin) {
   }
 
   handleGoToMedium (): void {
+    location.href = 'https://medium.com/polkaswap'
   }
 
   handleGoToGithub (): void {
+    location.href = 'https://github.com/sora-xor'
   }
 }
 </script>
