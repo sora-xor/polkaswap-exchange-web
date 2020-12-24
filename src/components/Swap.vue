@@ -19,7 +19,7 @@
             v-float="formModel.from"
             class="s-input--token-value"
             :placeholder="isFieldFromFocused ? '' : inputPlaceholder"
-            @change="handleChangeFieldFrom"
+            @input="handleChangeFieldFrom"
             @focus="handleFocusFieldFrom"
             @blur="handleBlurFieldFrom"
           />
@@ -57,7 +57,7 @@
             v-float="formModel.to"
             class="s-input--token-value"
             :placeholder="isFieldToFocused ? '' : inputPlaceholder"
-            @change="handleChangeFieldTo"
+            @input="handleChangeFieldTo"
             @focus="handleFocusFieldTo"
             @blur="handleBlurFieldTo"
           />
@@ -302,7 +302,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   handleBlurFieldFrom (): void {
-    this.isFieldFromFocused = false
     if (this.formModel.from === '' || +this.formModel.from === 0) {
       this.formModel.from = formatNumber(0, 1)
     }
@@ -310,19 +309,20 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
 
   handleFocusFieldFrom (): void {
     this.isFieldFromFocused = true
+    this.isFieldToFocused = false
     if (+this.formModel.from === 0) {
       this.formModel.from = ''
     }
   }
 
   handleBlurFieldTo (): void {
-    this.isFieldToFocused = false
     if (this.formModel.to === '' || +this.formModel.to === 0) {
       this.formModel.to = formatNumber(0, 1)
     }
   }
 
   handleFocusFieldTo (): void {
+    this.isFieldFromFocused = false
     this.isFieldToFocused = true
     if (+this.formModel.to === 0) {
       this.formModel.to = ''
@@ -335,17 +335,19 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: currentTokenFrom.symbol })
     this.formModel.from = formatNumber(0, 1)
     this.formModel.to = formatNumber(0, 1)
+    this.initPrice()
     this.isFieldFromFocused = false
     this.isFieldToFocused = false
-    this.initPrice()
   }
 
   handleMaxValue (isTokenFrom: boolean): void {
-    this.isFieldFromFocused = false
-    this.isFieldToFocused = false
     if (isTokenFrom) {
+      this.isFieldFromFocused = true
+      this.isFieldToFocused = false
       this.formModel.from = this.tokenFrom.balance
     } else {
+      this.isFieldFromFocused = false
+      this.isFieldToFocused = true
       this.formModel.to = this.tokenTo.balance
     }
   }
@@ -405,6 +407,9 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
 .el-form--actions {
   .el-button--switch-tokens {
     @include switch-button-inherit-styles('medium');
+  }
+  .s-input--token-value {
+    @include input-ellipsis;
   }
 }
 </style>

@@ -69,9 +69,9 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
 
   get priceValue (): string {
     if (this.isTokenFromPrice) {
-      return `${formatNumber(this.price)} ${this.tokenFrom.symbol} / ${this.tokenTo.symbol}`
+      return `${formatNumber(this.price)} ${this.tokenFrom ? this.tokenFrom.symbol : ''} / ${this.tokenTo ? this.tokenTo.symbol : ''}`
     }
-    return `${formatNumber(this.priceReversed)} ${this.tokenTo.symbol} / ${this.tokenFrom.symbol}`
+    return `${formatNumber(this.priceReversed)} ${this.tokenTo ? this.tokenTo.symbol : ''} / ${this.tokenFrom ? this.tokenFrom.symbol : ''}`
   }
 
   get minReceived (): string {
@@ -132,8 +132,12 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   &--min-received {
     margin-top: $inner-spacing-small;
   }
+  > span:first-of-type {
+    margin-right: $inner-spacing-small;
+  }
   &-value {
     margin-left: auto;
+    text-align: right;
     font-feature-settings: $s-font-feature-settings-common;
   }
   .price-impact {
