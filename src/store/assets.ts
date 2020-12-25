@@ -46,6 +46,7 @@ const actions = {
     commit(types.GET_ASSETS_LIST_REQUEST)
     try {
       const assets = await dexApi.getAssets()
+
       commit(types.GET_ASSETS_LIST_SUCCESS, assets)
     } catch (error) {
       commit(types.GET_ASSETS_LIST_FAILURE)

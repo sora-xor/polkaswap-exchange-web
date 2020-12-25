@@ -43,10 +43,15 @@ const actions = {
   async getLiquidities ({ commit }) {
     commit(types.GET_LIQUIDITIES_REQUEST)
     try {
-      const liquidities = await dexApi.getKnownAccountLiquidity()
-      commit(types.GET_LIQUIDITIES_SUCCESS, liquidities)
+      console.log(1)
+      await dexApi.getKnownAccountLiquidity()
+      console.log(2)
+      await dexApi.updateAccountLiquidity()
+      console.log(3, dexApi.accountLiquidity)
+      commit(types.GET_LIQUIDITIES_SUCCESS, dexApi.accountLiquidity)
     } catch (error) {
       commit(types.GET_LIQUIDITIES_FAILURE, error)
+      console.log(error)
     }
   }
 }

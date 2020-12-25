@@ -17,12 +17,13 @@
         <div class="input-line">
           <s-form-item>
             <s-input
-              v-model="formModel.first"
-              v-float="formModel.first"
+              :value="firstTokenValue"
+              v-float
               class="s-input--token-value"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
-              @change="handleChangeFirstField"
+              @change="setFirstTokenValue"
+              @blur="resetFocusedField"
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
@@ -53,12 +54,13 @@
         <div class="input-line">
           <s-form-item>
             <s-input
-              v-model="formModel.second"
-              v-float="formModel.second"
+              :value="secondTokenValue"
+              v-float
               class="s-input--token-value"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
-              @change="handleChangeSecondField"
+              @change="setSecondTokenValue"
+              @blur="resetFocusedField"
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
@@ -75,9 +77,12 @@
           </s-button>
         </div>
       </div>
-        <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="showConfirmDialog = true">
+        <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="showConfirmDialog = true">
         <template v-if="!areTokensSelected">
           {{ t('swap.chooseTokens') }}
+        </template>
+        <template v-else-if="!isAvailable">
+          {{ t('createPair.insufficientAssets') }}
         </template>
         <template v-else-if="isEmptyBalance">
           {{ t('swap.enterAmount') }}
@@ -112,7 +117,7 @@
           <pair-token-logo class="pair-token-logo" :first-token="firstToken" :second-token="secondToken" size="mini" />
           {{ t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol }) }}:
         </s-row>
-        <div>{{ poolTokens }}</div>
+        <div>{{ minted }}</div>
       </div>
       <s-divider />
       <div class="card__data">
@@ -159,6 +164,8 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
+  @Getter('isAvailable', { namespace }) isAvailable!: boolean
+  @Getter('minted', { namespace }) minted!: string
 
   @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
   @Action('setFirstToken', { namespace }) setFirstToken
@@ -166,6 +173,7 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
   @Action('setFirstTokenValue', { namespace }) setFirstTokenValue
   @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
   @Action('addLiquidity', { namespace }) addLiquidity
+  @Action('resetFocusedField', { namespace }) resetFocusedField
 
   showSelectFirstTokenDialog = false
   showSelectSecondTokenDialog = false
@@ -269,11 +277,11 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
   }
 
   handleFirstMaxValue (): void {
-    this.formModel.first = this.firstToken.balance
+    this.setFirstTokenValue(this.firstToken.balance)
   }
 
   handleSecondMaxValue (): void {
-    this.formModel.second = this.secondToken.balance
+    this.setSecondTokenValue(this.secondToken.balance)
   }
 
   getTokenBalance (token: any): string {
@@ -287,6 +295,8 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
     try {
       await this.addLiquidity()
       this.isCreatePairConfirmed = true
+      this.formModel.first = ''
+      this.formModel.second = ''
     } catch (error) {
       console.error(error)
     }

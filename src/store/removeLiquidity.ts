@@ -188,11 +188,15 @@ const actions = {
   },
 
   async removeLiquidity ({ commit, getters }) {
-    const result = await dexApi.removeLiquidity(
-      getters.firstToken.address,
-      getters.secondToken.address,
-      getters.liquidityAmount
-    )
+    const firstAddress = getters.firstToken.address
+    const secondAddress = getters.secondToken.address
+    const amount = getters.liquidityAmount
+    const [reserveA, reserveB] = await dexApi.getLiquidityReserves(firstAddress, secondAddress)
+    console.log('reserves', reserveA, reserveB) // show reserves
+    const [aOut, bOut, pts] = await dexApi.estimateTokensRetrieved(firstAddress, secondAddress, amount, reserveA, reserveB)
+    console.log('Retrieved', aOut, bOut, 'total supply', pts) // Show retrieved assets and total supply
+    await dexApi.removeLiquidity(
+      firstAddress, secondAddress, amount, reserveA, reserveB, pts)
   }
 }
 
