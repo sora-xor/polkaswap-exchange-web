@@ -7,6 +7,12 @@ export const formatNumber = (value: string | number, decimalLendth?: number): st
   return valueNumber.toFixed(decimalLendth || 4)
 }
 
+// We could use this method to check if the user enters a text value in a numeric field (we could do this by copy and paste)
+export const isNumberValue = (value: any): boolean => {
+  const numberValue = +value
+  return typeof numberValue === 'number' && !isNaN(numberValue)
+}
+
 export const getTokenIconClasses = (symbol: string) => {
   const cssClass = 'token-logo'
   if (symbol) {

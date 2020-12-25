@@ -25,7 +25,7 @@
           />
         </s-form-item>
         <div v-if="tokenFrom" class="token">
-          <s-button v-if="connected && areTokensSelected" class="el-button--max" type="tertiary" size="small" border-radius="mini" :disabled="this.formModel.from === this.tokenFrom.balance" @click="handleMaxValue(true)">
+          <s-button v-if="connected && areTokensSelected" class="el-button--max" type="tertiary" size="small" border-radius="mini" :disabled="this.formModel.from === this.tokenFrom.balance" @click="handleMaxValue">
             {{ t('exchange.max') }}
           </s-button>
           <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(true)">
@@ -63,9 +63,6 @@
           />
         </s-form-item>
         <div v-if="tokenTo" class="token">
-          <s-button v-if="connected && areTokensSelected" class="el-button--max" type="tertiary" size="small" border-radius="mini" :disabled="this.formModel.to === this.tokenTo.balance" @click="handleMaxValue">
-            {{ t('exchange.max') }}
-          </s-button>
           <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog">
             <token-logo :token="tokenTo" size="small" />
             {{ tokenTo.symbol }}
@@ -340,16 +337,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     this.isFieldToFocused = false
   }
 
-  handleMaxValue (isTokenFrom: boolean): void {
-    if (isTokenFrom) {
-      this.isFieldFromFocused = true
-      this.isFieldToFocused = false
-      this.formModel.from = this.tokenFrom.balance
-    } else {
-      this.isFieldFromFocused = false
-      this.isFieldToFocused = true
-      this.formModel.to = this.tokenTo.balance
-    }
+  handleMaxValue (): void {
+    this.isFieldFromFocused = true
+    this.isFieldToFocused = false
+    this.formModel.from = this.tokenFrom.balance
   }
 
   handleConnectWallet (): void {
