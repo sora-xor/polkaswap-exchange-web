@@ -70,6 +70,7 @@ export default {
     estimated: 'estimated',
     slippageTolerance: 'Slippage Tolerance',
     minReceived: 'Minimum Received',
+    maxSold: 'Maximum Sold',
     minReceivedTooltip: 'Your transaction will revert if there is a large, unfavorable price movement before it is confirmed.',
     priceImpact: 'Price Impact',
     priceImpactTooltip: 'The difference between the market price and estimated price due to trade size.',

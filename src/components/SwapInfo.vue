@@ -16,7 +16,7 @@
         <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.minReceivedTooltip')" theme="light" placement="right-start" animation="none" :show-arrow="false">
           <s-icon name="info" size="16" />
         </s-tooltip>
-        <span>{{ t('swap.minReceived') }}</span>
+        <span>{{ t(`swap.${isExchangeB ? 'maxSold' : 'minReceived'}`) }}</span>
         <span class="swap-info-value">{{ minReceived }}</span>
       </div>
       <!-- TODO: Hid for first iteration of development -->
@@ -52,6 +52,7 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   @Getter isTokenFromPrice!: boolean
   @Getter slippageTolerance!: number
   @Getter minMaxReceived!: string
+  @Getter isExchangeB!: boolean
   @Getter price!: string
   @Getter priceReversed!: string
   @Getter liquidityProviderFee!: string
