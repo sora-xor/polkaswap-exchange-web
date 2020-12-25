@@ -113,8 +113,7 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
 </style>
 
 <style lang="scss" scoped>
-// TODO 4 alexnatalia: Check 71px theory
-$token-item-height: calc(var(--s-size-medium) + #{$inner-spacing-medium} * 2);
+$token-item-height: 71px;
 
 .token-search {
   // TODO: Fix input styles (paddings and icon position)
@@ -123,7 +122,8 @@ $token-item-height: calc(var(--s-size-medium) + #{$inner-spacing-medium} * 2);
   width: calc(100% - 2 * #{$inner-spacing-big});
 }
 .token-item {
-  padding: $inner-spacing-medium $inner-spacing-big;
+  height: $token-item-height;
+  padding: 0 $inner-spacing-big;
   display: flex;
   justify-content: space-between;
   align-items: center;

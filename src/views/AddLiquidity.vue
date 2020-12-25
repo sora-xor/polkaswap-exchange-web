@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <generic-header :title="t('addLiquidity.title')" :tooltip="t('addLiquidity.description')" />
+    <generic-header :title="t('addLiquidity.title')" :tooltip="t('pool.description')" />
     <s-form
       v-model="formModel"
       class="el-form--actions"

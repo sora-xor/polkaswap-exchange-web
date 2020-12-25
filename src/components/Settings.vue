@@ -183,6 +183,7 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
     @include font-weight(700);
     &-hint {
       margin-left: $inner-spacing-mini;
+      cursor: pointer;
     }
   }
   .value {

@@ -117,6 +117,9 @@ export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, Dialog
     margin-bottom: $inner-spacing-medium;
   }
 }
+.price {
+  text-align: right;
+}
 .supply-info {
   display: flex;
   justify-content: space-between;
