@@ -31,8 +31,8 @@ export enum Components {
 
 // TODO: Some items are hidden because we don't have Stats and Support pages right now
 export const MainMenu = [
-  PageNames.About,
-  PageNames.Exchange
+  PageNames.Exchange,
+  PageNames.About
   // PageNames.Stats,
   // PageNames.Support
 ]

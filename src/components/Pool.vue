@@ -1,13 +1,14 @@
 <template>
   <div class="el-form--pool">
     <!-- TODO: Add appropriate tooltip -->
-    <generic-header class="header--pool" :has-button-back="false" :title="t('pool.yourLiquidity')" :tooltip="t('pool.loremIpsum')" />
+    <generic-header class="header--pool" :has-button-back="false" :title="t('pool.yourLiquidity')" :tooltip="t('pool.description')" />
     <p v-if="!connected" class="pool-info-container">
       {{ t('pool.connectToWallet') }}
     </p>
     <p v-else-if="!liquidities || !liquidities.length" class="pool-info-container">
       {{ t('pool.liquidityNotFound') }}
     </p>
+    <!-- TODO 4 alexnatalia: Whole pool area should be clickable -->
     <s-collapse v-else class="pool-list" :borders="true">
       <s-collapse-item v-for="liquidity of liquidities" :key="liquidity.address" :name="liquidity.address" class="pool-info-container">
         <template #title>
