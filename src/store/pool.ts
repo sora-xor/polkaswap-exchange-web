@@ -2,7 +2,6 @@ import map from 'lodash/fp/map'
 import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
-import liquidityApi from '@/api/liquidity'
 import { dexApi } from '@soramitsu/soraneo-wallet-web'
 
 const types = flow(

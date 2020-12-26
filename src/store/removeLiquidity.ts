@@ -3,7 +3,6 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import liquidityApi from '@/api/liquidity'
 import BigNumber from 'bignumber.js'
 import { dexApi } from '@soramitsu/soraneo-wallet-web'
 
@@ -100,7 +99,7 @@ const actions = {
     try {
       await dexApi.getKnownAccountLiquidity()
       await dexApi.updateAccountLiquidity()
-      const liquidity = dexApi.accountLiquidity.find(l => l.firstAddress === firstAddress && l.secondAddress === secondAddress)
+      const liquidity = dexApi.accountLiquidity.find(liquidity => liquidity.firstAddress === firstAddress && liquidity.secondAddress === secondAddress)
 
       commit(types.GET_LIQUIDITY_SUCCESS, liquidity)
     } catch (error) {
@@ -196,9 +195,7 @@ const actions = {
     const amount = getters.liquidityAmount
 
     const [reserveA, reserveB] = await dexApi.getLiquidityReserves(firstAddress, secondAddress)
-    console.log('Reserves', reserveA, reserveB) // show reserves
     const [aOut, bOut, pts] = await dexApi.estimateTokensRetrieved(firstAddress, secondAddress, amount, reserveA, reserveB)
-    console.log('Retrieved', aOut, bOut, 'total supply', pts) // Show retrieved assets and total supply
 
     await dexApi.removeLiquidity(
       firstAddress, secondAddress, amount, reserveA, reserveB, pts)
