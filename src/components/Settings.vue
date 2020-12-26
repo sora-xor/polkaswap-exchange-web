@@ -36,7 +36,7 @@
         <div v-if="slippageToleranceValidation" class="slippage-tolerance_validation">{{ t(`dexSettings.slippageToleranceValidation.${slippageToleranceValidation}`) }}</div>
       </div>
       <s-divider />
-      <!-- TODO: We'll play with this field at the next iteration of development -->
+      <!-- TODO: We'll play with areas below at the next iteration of development -->
       <!-- <div class="transaction-deadline">
         <div class="header">
           {{ t('dexSettings.transactionDeadline') }}
@@ -50,7 +50,7 @@
         </div>
       </div>
       <s-divider /> -->
-      <div class="node-address">
+      <!-- <div class="node-address">
         <div class="header">{{ t('dexSettings.nodeAddress') }}</div>
         <div class="value">
           <div class="value-container">
@@ -60,7 +60,7 @@
             <span class="value-container_label">{{ t('dexSettings.port') }}: </span>#{{ nodeAddress.port }}
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </dialog-base>
 </template>
