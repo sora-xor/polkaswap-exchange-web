@@ -416,14 +416,12 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   async confirmSwap (isSwapConfirmed: boolean): Promise<any> {
-    // TODO 4 alexnatalia: Check this place
     if (isSwapConfirmed) {
       this.isSwapConfirmed = isSwapConfirmed
     }
   }
 
   async swapNotify (message: string): Promise<void> {
-    // TODO 4 alexnatalia: Check this place
     this.$notify({
       message: message,
       title: this.t('exchange.Swap'),

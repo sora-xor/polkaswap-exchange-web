@@ -66,7 +66,6 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   }
 
   async handleConfirmSwap (): Promise<void> {
-    // TODO 4 alexnatalia: Check this place
     try {
       await dexApi.swap(this.tokenFrom.address, this.tokenTo.address, this.fromValue.toString(), this.toValue.toString(), this.slippageTolerance)
       this.$emit('confirm', true)
