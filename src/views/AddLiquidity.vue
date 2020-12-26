@@ -2,7 +2,6 @@
   <div class="container">
     <generic-header :title="t('addLiquidity.title')" :tooltip="t('addLiquidity.description')" />
     <s-form
-      v-model="formModel"
       class="el-form--actions"
       :show-message="false"
     >
@@ -88,7 +87,7 @@
           {{ t('swap.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
-          {{ t('swap.insufficientBalance', { tokenSymbol: firstToken.symbol }) }}
+          {{ t('createPair.insufficientBalance') }}
         </template>
         <template v-else>
           {{ t('createPair.supply') }}
@@ -130,8 +129,8 @@
       </div>
     </info-card>
 
-    <select-token :visible.sync="showSelectFirstTokenDialog" @select="setFirstToken" />
-    <select-token :visible.sync="showSelectSecondTokenDialog" @select="setSecondToken" />
+    <select-token :visible.sync="showSelectFirstTokenDialog" accountAssetsOnly :asset="secondToken" @select="setFirstToken" />
+    <select-token :visible.sync="showSelectSecondTokenDialog" accountAssetsOnly :asset="firstToken" @select="setSecondToken" />
 
     <confirm-add-liquidity :visible.sync="showConfirmDialog" @confirm="handleConfirmAddLiquidity" />
     <result-dialog :visible.sync="isCreatePairConfirmed" :type="t('createPair.add')" :message="resultMessage" />
@@ -174,6 +173,7 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
   @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField
+  @Action('resetData', { namespace }) resetData
 
   showSelectFirstTokenDialog = false
   showSelectSecondTokenDialog = false
@@ -182,6 +182,8 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
   isCreatePairConfirmed = false
 
   async created () {
+    this.resetData()
+
     if (this.firstAddress && this.secondAddress) {
       await this.setDataFromLiquidity({
         firstAddress: this.firstAddress,
@@ -196,11 +198,6 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
 
   get secondAddress (): string {
     return this.$route.params.secondAddress
-  }
-
-  formModel = {
-    first: '',
-    second: ''
   }
 
   formatNumber = formatNumber
@@ -243,7 +240,7 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
 
   get isInsufficientBalance (): boolean {
     if (this.areTokensSelected) {
-      return +this.formModel.first > this.firstToken.balance
+      return +this.firstTokenValue > this.firstToken.balance || +this.secondTokenValue > this.secondToken.balance
     }
 
     return true
@@ -268,14 +265,6 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
     this.showSelectSecondTokenDialog = true
   }
 
-  handleChangeFirstField (): void {
-    this.setFirstTokenValue(this.formModel.first)
-  }
-
-  handleChangeSecondField (): void {
-    this.setSecondTokenValue(this.formModel.second)
-  }
-
   handleFirstMaxValue (): void {
     this.setFirstTokenValue(this.firstToken.balance)
   }
@@ -295,8 +284,6 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
     try {
       await this.addLiquidity()
       this.isCreatePairConfirmed = true
-      this.formModel.first = ''
-      this.formModel.second = ''
     } catch (error) {
       console.error(error)
     }

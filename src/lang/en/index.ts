@@ -116,6 +116,7 @@ export default {
     remove: 'remove',
     add: 'ADD',
     ok: 'OK',
+    insufficientBalance: 'Insufficient balance',
     insufficientAssets: 'Insufficient assets',
     transactionMessage: '{firstToken} and {secondToken}',
     description: 'When you add liquidity, you are awarded with token pair specific PSWAP tokens that represent your pool share.',

@@ -18,12 +18,12 @@
         <div class="pool-info">
           <token-logo :token-symbol="getAssetSymbol(liquidity.firstAddress)" size="small" />
           <div>{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidity.firstAddress) }) }}</div>
-          <div v-if="liquidity.firstTokenAmount" class="pool-info-value">{{ liquidity.firstTokenAmount }}</div>
+          <div v-if="liquidity.firstBalance" class="pool-info-value">{{ liquidity.firstBalance }}</div>
         </div>
         <div class="pool-info">
           <token-logo :token-symbol="getAssetSymbol(liquidity.secondAddress)" size="small" />
           <div>{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidity.secondAddress) }) }}</div>
-          <div v-if="liquidity.secondTokenAmount" class="pool-info-value">{{ liquidity.secondTokenAmount }}</div>
+          <div v-if="liquidity.secondBalance" class="pool-info-value">{{ liquidity.secondBalance }}</div>
         </div>
         <div class="pool-info">
           <pair-token-logo :first-token-symbol="getAssetSymbol(liquidity.firstAddress)" :second-token-symbol="getAssetSymbol(liquidity.secondAddress)" size="mini" />

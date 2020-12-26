@@ -51,6 +51,15 @@ const actions = {
     } catch (error) {
       commit(types.GET_ASSETS_LIST_FAILURE)
     }
+  },
+
+  getAccountAssets ({ commit }) {
+    commit(types.GET_ASSETS_LIST_REQUEST)
+    try {
+      commit(types.GET_ASSETS_LIST_SUCCESS, dexApi.accountAssets.filter(asset => asset.symbol !== 'XYKPOOL'))
+    } catch (error) {
+      commit(types.GET_ASSETS_LIST_FAILURE)
+    }
   }
 }
 

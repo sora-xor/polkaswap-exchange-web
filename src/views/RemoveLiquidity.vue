@@ -129,7 +129,7 @@
           {{ t('swap.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
-          {{ t('swap.insufficientBalance', { tokenSymbol: firstToken.symbol }) }}
+          {{ t('createPair.insufficientBalance') }}
         </template>
         <template v-else>
           {{ t('removeLiquidity.remove') }}

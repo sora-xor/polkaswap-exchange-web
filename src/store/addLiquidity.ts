@@ -5,6 +5,7 @@ import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import liquidityAPI from '@/api/liquidity'
 import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { KnownAssets } from '@sora-substrate/util'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -76,19 +77,13 @@ const mutations = {
   },
   [types.SET_FIRST_TOKEN_VALUE] (state, firstTokenValue: string | number) {
     state.firstTokenValue = firstTokenValue
-    console.log('first', firstTokenValue)
   },
   [types.SET_SECOND_TOKEN_VALUE] (state, secondTokenValue: string | number) {
     state.secondTokenValue = secondTokenValue
-    console.log('second', secondTokenValue)
   },
   [types.ADD_LIQUIDITY_REQUEST] (state) {
   },
   [types.ADD_LIQUIDITY_SUCCESS] (state) {
-    state.firstToken = null
-    state.secondToken = null
-    state.firstTokenValue = 0
-    state.secondTokenValue = 0
   },
   [types.ADD_LIQUIDITY_FAILURE] (state, error) {
   },
@@ -112,15 +107,22 @@ const mutations = {
 }
 
 const actions = {
-  async setFirstToken ({ commit, dispatch }, token: any) {
-    const asset = await dexApi.getAccountAsset(token.address)
-    commit(types.SET_FIRST_TOKEN, asset)
+  async setFirstToken ({ commit, dispatch }, asset: any) {
+    let firstAsset = await dexApi.accountAssets.find(a => a.address === asset.address)
+    if (!firstAsset) {
+      firstAsset = { ...asset, balance: '0', usdBalance: '0' }
+    }
+
+    commit(types.SET_FIRST_TOKEN, firstAsset)
     dispatch('checkReserve')
   },
 
-  async setSecondToken ({ commit, dispatch }, token: any) {
-    const asset = await dexApi.getAccountAsset(token.address)
-    commit(types.SET_SECOND_TOKEN, asset)
+  async setSecondToken ({ commit, dispatch }, asset: any) {
+    let secondAddress = await dexApi.accountAssets.find(a => a.address === asset.address)
+    if (!secondAddress) {
+      secondAddress = { ...asset, balance: '0', usdBalance: '0' }
+    }
+    commit(types.SET_SECOND_TOKEN, secondAddress)
     dispatch('checkReserve')
   },
 
@@ -129,7 +131,6 @@ const actions = {
       commit(types.GET_RESERVE_REQUEST)
       try {
         const reserve = await dexApi.getLiquidityReserves(getters.firstToken.address, getters.secondToken.address)
-        console.log(reserve)
         commit(types.GET_RESERVE_SUCCESS, reserve)
 
         dispatch('estimateMinted')
@@ -152,22 +153,21 @@ const actions = {
           getters.reserveA,
           getters.reserveB
         )
-        console.log(minted)
         commit(types.ESTIMATE_MINTED_SUCCESS, minted)
       } catch (error) {
-        console.log(error)
         commit(types.ESTIMATE_MINTED_FAILURE, error)
       }
     }
   },
 
   setFirstTokenValue ({ commit, dispatch, getters }, value: string | number) {
-    console.log(value)
     if ((!getters.focusedField || getters.focusedField === 'firstTokenValue') && value !== getters.firstTokenValue) {
       commit(types.SET_FOCUSED_FIELD, 'firstTokenValue')
 
       commit(types.SET_FIRST_TOKEN_VALUE, value)
-      commit(types.SET_SECOND_TOKEN_VALUE, Number(value) * (Number(getters.reserveB) / Number(getters.reserveA)))
+      if (value) {
+        commit(types.SET_SECOND_TOKEN_VALUE, Number(value) * (Number(getters.reserveB) / Number(getters.reserveA)))
+      }
       dispatch('estimateMinted')
     }
   },
@@ -177,7 +177,9 @@ const actions = {
       commit(types.SET_FOCUSED_FIELD, 'secondTokenValue')
 
       commit(types.SET_SECOND_TOKEN_VALUE, value)
-      commit(types.SET_FIRST_TOKEN_VALUE, Number(value) * (Number(getters.reserveA) / Number(getters.reserveB)))
+      if (value) {
+        commit(types.SET_FIRST_TOKEN_VALUE, Number(value) * (Number(getters.reserveA) / Number(getters.reserveB)))
+      }
       dispatch('estimateMinted')
     }
   },
@@ -199,12 +201,19 @@ const actions = {
   },
 
   async setDataFromLiquidity ({ commit, dispatch, rootGetters }, { firstAddress, secondAddress }) {
-    dispatch('setFirstToken', rootGetters['assets/assets'].find(a => a.address === firstAddress))
-    dispatch('setSecondToken', rootGetters['assets/assets'].find(a => a.address === secondAddress))
+    dispatch('setFirstToken', dexApi.accountAssets.find(a => a.address === firstAddress))
+    dispatch('setSecondToken', dexApi.accountAssets.find(a => a.address === secondAddress))
   },
 
   resetFocusedField ({ commit }) {
     commit(types.SET_FOCUSED_FIELD, null)
+  },
+
+  resetData ({ commit }) {
+    commit(types.SET_FIRST_TOKEN, null)
+    commit(types.SET_SECOND_TOKEN, null)
+    commit(types.SET_FIRST_TOKEN_VALUE, '')
+    commit(types.SET_SECOND_TOKEN_VALUE, '')
   }
 }
 

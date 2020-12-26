@@ -60,9 +60,11 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   selectedToken: Token | null = null
 
   @Prop({ default: () => null, type: Object }) readonly asset!: Token
+  @Prop({ default: () => false, type: Boolean }) readonly accountAssetsOnly!: boolean
 
   @Getter('assets', { namespace }) assets!: Array<Token>
   @Action('getAssets', { namespace }) getAssets
+  @Action('getAccountAssets', { namespace }) getAccountAssets
 
   get assetsList (): Array<Token> {
     return this.asset ? this.assets.filter(asset => asset.symbol !== this.asset.symbol) : this.assets
@@ -82,7 +84,11 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   }
 
   created (): void {
-    this.withApi(this.getAssets)
+    if (this.accountAssetsOnly) {
+      this.getAccountAssets()
+    } else {
+      this.withApi(this.getAssets)
+    }
   }
 
   selectToken (token: Token): void {

@@ -43,10 +43,10 @@ const getters = {
     return state.liquidity ? state.liquidity.balance : 0
   },
   firstTokenBalance (state) {
-    return state.liquidity ? state.liquidity.firstTokenAmount : 0
+    return state.liquidity ? state.liquidity.firstBalance : 0
   },
   secondTokenBalance (state) {
-    return state.liquidity ? state.liquidity.secondTokenAmount : 0
+    return state.liquidity ? state.liquidity.secondBalance : 0
   },
   firstToken (state, getters, rootGetters) {
     return state.liquidity && rootGetters.assets.assets ? rootGetters.assets.assets.find(t => t.address === state.liquidity.firstAddress) || {} : {}
@@ -98,7 +98,10 @@ const actions = {
     commit(types.GET_LIQUIDITY_REQUEST)
 
     try {
-      const liquidity = await dexApi.getAccountLiquidity(firstAddress, secondAddress)
+      await dexApi.getKnownAccountLiquidity()
+      await dexApi.updateAccountLiquidity()
+      const liquidity = dexApi.accountLiquidity.find(l => l.firstAddress === firstAddress && l.secondAddress === secondAddress)
+
       commit(types.GET_LIQUIDITY_SUCCESS, liquidity)
     } catch (error) {
       commit(types.GET_LIQUIDITY_FAILURE)
@@ -191,10 +194,12 @@ const actions = {
     const firstAddress = getters.firstToken.address
     const secondAddress = getters.secondToken.address
     const amount = getters.liquidityAmount
+
     const [reserveA, reserveB] = await dexApi.getLiquidityReserves(firstAddress, secondAddress)
-    console.log('reserves', reserveA, reserveB) // show reserves
+    console.log('Reserves', reserveA, reserveB) // show reserves
     const [aOut, bOut, pts] = await dexApi.estimateTokensRetrieved(firstAddress, secondAddress, amount, reserveA, reserveB)
     console.log('Retrieved', aOut, bOut, 'total supply', pts) // Show retrieved assets and total supply
+
     await dexApi.removeLiquidity(
       firstAddress, secondAddress, amount, reserveA, reserveB, pts)
   }

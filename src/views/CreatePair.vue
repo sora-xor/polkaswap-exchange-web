@@ -3,7 +3,6 @@
     <!-- TODO: Add appropriate tooltip -->
     <generic-header :title="t('createPair.title')" :tooltip="t('createPair.loremIpsum')" />
     <s-form
-      v-model="formModel"
       class="el-form--actions"
       :show-message="false"
     >
@@ -18,12 +17,12 @@
         <div class="input-line">
           <s-form-item>
             <s-input
-              v-model="formModel.first"
-              v-float="formModel.first"
+              :value="firstTokenValue"
+              v-float
               class="s-input--token-value"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
-              @change="handleChangeFirstField"
+              @change="setFirstTokenValue"
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
@@ -49,18 +48,18 @@
           </div>
           <div v-if="connected && secondToken" class="token-balance">
             <span class="token-balance-title">{{ t('exchange.balance') }}</span>
-            <span class="token-balance-value">{{ getTokenBalance(secondToken.balance) }}</span>
+            <span class="token-balance-value">{{ getTokenBalance(secondToken) }}</span>
           </div>
         </div>
         <div class="input-line">
           <s-form-item>
             <s-input
-              v-model="formModel.second"
-              v-float="formModel.second"
+              :value="secondTokenValue"
+              v-float
               class="s-input--token-value"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
-              @change="handleChangeSecondField"
+              @change="setSecondTokenValue"
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
@@ -78,15 +77,18 @@
           </s-button>
         </div>
       </div>
-        <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="handleConfirmCreatePair">
+        <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="handleConfirmCreatePair">
         <template v-if="!areTokensSelected">
           {{ t('swap.chooseTokens') }}
+        </template>
+        <template v-else-if="!isAvailable">
+          {{ t('createPair.insufficientAssets') }}
         </template>
         <template v-else-if="isEmptyBalance">
           {{ t('swap.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
-          {{ t('swap.insufficientBalance', { tokenSymbol: firstToken.symbol }) }}
+          {{ t('createPair.insufficientBalance') }}
         </template>
         <template v-else>
           {{ t('createPair.supply') }}
@@ -94,41 +96,7 @@
       </s-button>
     </s-form>
 
-    <info-card v-if="areTokensSelected" :title="t('createPair.pricePool')">
-      <div class="card__data">
-        <div>{{ t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol }) }}</div>
-        <div>{{ firstPerSecondPrice }} {{ firstToken.symbol }}</div>
-      </div>
-      <div class="card__data">
-        <div>{{ t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol }) }}</div>
-        <div>{{ secondPerFirstPrice }} {{ secondToken.symbol }}</div>
-      </div>
-      <div class="card__data">
-        <div>{{ t('createPair.shareOfPool') }}</div>
-        <div>{{ shareOfPool }}</div>
-      </div>
-    </info-card>
-
-    <info-card v-if="areTokensSelected" :title="t('createPair.yourPosition')">
-      <div class="card__data">
-        <s-row flex>
-          <pair-token-logo class="pair-token-logo" :first-token="firstToken" :second-token="secondToken" size="mini" />
-          {{ t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol }) }}:
-        </s-row>
-        <div>{{ poolTokens }}</div>
-      </div>
-      <s-divider />
-      <div class="card__data">
-        <div v-if="firstToken">{{ firstToken.symbol }}</div>
-        <div>{{ firstTokenPosition }}</div>
-      </div>
-      <div class="card__data">
-        <div v-if="secondToken">{{ secondToken.symbol }}</div>
-        <div>{{ secondTokenPosition }}</div>
-      </div>
-    </info-card>
-
-    <info-card class="card--first-liquidity" :title="t('createPair.firstLiquidityProvider')">
+    <info-card v-if="areTokensSelected && isAvailable" class="card--first-liquidity" :title="t('createPair.firstLiquidityProvider')">
       <div class="card__data">
         <p v-html="t('createPair.firstLiquidityProviderInfo')" />
       </div>
@@ -170,22 +138,21 @@ export default class CreatePair extends Mixins(TranslationMixin) {
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
+  @Getter('isAvailable', { namespace }) isAvailable!: boolean
+  @Getter('minted', { namespace }) minted!: string
 
   @Action('setFirstToken', { namespace }) setFirstToken
   @Action('setSecondToken', { namespace }) setSecondToken
   @Action('setFirstTokenValue', { namespace }) setFirstTokenValue
   @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
+  @Action('createPair', { namespace }) createPair
+  @Action('resetData', { namespace }) resetData
 
   showSelectFirstTokenDialog = false
   showSelectSecondTokenDialog = false
   inputPlaceholder: string = formatNumber(0, 2);
   showConfirmCreatePairDialog = false
   isCreatePairConfirmed = false
-
-  formModel = {
-    first: '',
-    second: ''
-  }
 
   formatNumber = formatNumber
 
@@ -227,7 +194,7 @@ export default class CreatePair extends Mixins(TranslationMixin) {
 
   get isInsufficientBalance (): boolean {
     if (this.areTokensSelected) {
-      return +this.formModel.first > this.firstToken.balance
+      return +this.firstTokenValue > this.firstToken.balance || +this.secondTokenValue > this.secondToken.balance
     }
 
     return true
@@ -252,20 +219,12 @@ export default class CreatePair extends Mixins(TranslationMixin) {
     this.showSelectSecondTokenDialog = true
   }
 
-  handleChangeFirstField (): void {
-    this.setFirstTokenValue(this.formModel.first)
-  }
-
-  handleChangeSecondField (): void {
-    this.setSecondTokenValue(this.formModel.second)
-  }
-
   handleFirstMaxValue (): void {
-    this.formModel.first = this.firstToken.balance
+    this.setFirstTokenValue(this.firstToken.balance)
   }
 
   handleSecondMaxValue (): void {
-    this.formModel.second = this.secondToken.balance
+    this.setSecondTokenValue(this.secondToken.balance)
   }
 
   getTokenBalance (token: any): string {
@@ -275,11 +234,17 @@ export default class CreatePair extends Mixins(TranslationMixin) {
     return ''
   }
 
-  handleConfirmCreatePair (): void {
+  handleConfirmCreatePair () {
     this.showConfirmCreatePairDialog = true
   }
 
-  confirmCreatePair (isCreatePairConfirmed: boolean): void {
+  async confirmCreatePair (isCreatePairConfirmed: boolean) {
+    try {
+      await this.createPair()
+    } catch (error) {
+      console.error(error)
+    }
+
     this.isCreatePairConfirmed = isCreatePairConfirmed
   }
 
