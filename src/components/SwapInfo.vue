@@ -34,6 +34,13 @@
         <span>{{ t('swap.liquidityProviderFee') }}</span>
         <span class="swap-info-value">{{ liquidityProviderFeeValue }}</span>
       </div>
+      <div class="swap-info">
+        <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.networkFeeTooltip', { networkFee: networkFeeValue})" theme="light" placement="right-start" animation="none" :show-arrow="false">
+          <s-icon name="info" size="16" />
+        </s-tooltip>
+        <span>{{ t('swap.networkFee') }}</span>
+        <span class="swap-info-value">{{ networkFeeValue }}</span>
+      </div>
     </template>
   </div>
 </template>
@@ -56,6 +63,7 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   @Getter price!: string
   @Getter priceReversed!: string
   @Getter liquidityProviderFee!: string
+  @Getter networkFee!: string
   @Action setTokenFromPrice
 
   @Prop({ default: false, type: Boolean }) readonly showPrice!: boolean
@@ -96,6 +104,11 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
 
   get liquidityProviderFeeValue (): string {
     return `${formatNumber(this.liquidityProviderFee)} ${KnownSymbols.XOR}`
+  }
+
+  get networkFeeValue (): string {
+    // TODO 4 alexnatalia: Check how many numbers after dot we should have
+    return `${formatNumber(this.networkFee)} ${KnownSymbols.XOR}`
   }
 
   handleSwitchPrice (): void {

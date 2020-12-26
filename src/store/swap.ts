@@ -17,6 +17,7 @@ const types = flow(
     'GET_MIN_MAX_RECEIVED',
     'GET_EXCHANGE_B',
     'GET_LIQUIDITY_PROVIDER_FEE',
+    'GET_NETWORK_FEE',
     'GET_SWAP_CONFIRM'
   ]),
   map(x => [x, x]),
@@ -37,7 +38,8 @@ function initialState () {
     priceReversed: '',
     minMaxReceived: '',
     isExchangeB: false,
-    liquidityProviderFee: ''
+    liquidityProviderFee: '',
+    networkFee: ''
   }
 }
 
@@ -73,6 +75,9 @@ const getters = {
   },
   liquidityProviderFee (state) {
     return state.liquidityProviderFee
+  },
+  networkFee (state) {
+    return state.networkFee
   }
 }
 
@@ -118,6 +123,9 @@ const mutations = {
   },
   [types.GET_LIQUIDITY_PROVIDER_FEE] (state, liquidityProviderFee: string) {
     state.liquidityProviderFee = liquidityProviderFee
+  },
+  [types.GET_NETWORK_FEE] (state, networkFee: string) {
+    state.networkFee = networkFee
   }
 }
 
@@ -187,6 +195,9 @@ const actions = {
   },
   setLiquidityProviderFee ({ commit }, liquidityProviderFee: string) {
     commit(types.GET_LIQUIDITY_PROVIDER_FEE, liquidityProviderFee)
+  },
+  setNetworkFee ({ commit }, networkFee: string) {
+    commit(types.GET_NETWORK_FEE, networkFee)
   }
 }
 

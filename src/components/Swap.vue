@@ -140,6 +140,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   @Action setPriceReversed
   @Action setMinMaxReceived
   @Action setLiquidityProviderFee
+  @Action setNetworkFee
 
   inputPlaceholder: string = formatNumber(0, 2)
   isFieldFromFocused = false
@@ -215,10 +216,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
 
   mounted (): void {
     // TODO 4 alexnatalia: Play with it a bit more
-    const fieldFromInputEl = this.$refs.fieldFrom.$refs['el-input'].$refs.input
-    fieldFromInputEl.onpaste = this.handlePasteFieldFrom
-    const fieldToInputEl = this.$refs.fieldTo.$refs['el-input'].$refs.input
-    fieldToInputEl.onpaste = this.handlePasteFieldTo
+    // const fieldFromInputEl = this.$refs.fieldFrom.$refs['el-input'].$refs.input
+    // fieldFromInputEl.onpaste = this.handlePasteFieldFrom
+    // const fieldToInputEl = this.$refs.fieldTo.$refs['el-input'].$refs.input
+    // fieldToInputEl.onpaste = this.handlePasteFieldTo
   }
 
   getSwapValue (token: any, tokenValue: number): string {
@@ -257,6 +258,9 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
           if (this.isInsufficientAmount) {
             this.isInsufficientAmount = false
           }
+          // TODO 4 alexnatalia: Are amount params for the next method reletaed with input values?
+          // const networkFee = await dexApi.getSwapNetworkFee(this.tokenFrom.address, this.tokenTo.address, this.formModel.from, this.formModel.to, this.slippageTolerance)
+          // this.setNetworkFee(networkFee)
         } catch (error) {
           this.formModel.to = formatNumber(0, 1)
           if (!this.checkInsufficientAmount(this.tokenFrom.symbol, error.message)) {
@@ -298,6 +302,9 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
           if (this.isInsufficientAmount) {
             this.isInsufficientAmount = false
           }
+          // TODO 4 alexnatalia: Are amount params for the next method reletaed with input values?
+          // const networkFee = await dexApi.getSwapNetworkFee(this.tokenFrom.address, this.tokenTo.address, this.formModel.from, this.formModel.to, this.slippageTolerance)
+          // this.setNetworkFee(networkFee)
         } catch (error) {
           this.formModel.from = formatNumber(0, 1)
           if (!this.checkInsufficientAmount(this.tokenTo.symbol, error.message)) {

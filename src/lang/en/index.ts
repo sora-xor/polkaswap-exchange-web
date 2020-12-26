@@ -76,6 +76,8 @@ export default {
     priceImpactTooltip: 'The difference between the market price and estimated price due to trade size.',
     liquidityProviderFee: 'Liquidity Provider Fee',
     liquidityProviderFeeTooltip: 'A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive.',
+    networkFee: 'Network Fee',
+    networkFeeTooltip: 'Fixed  amount of {networkFee} goes to network validators.',
     enterAmount: 'Enter an amount',
     insufficientBalance: 'Insufficient {tokenSymbol} balance',
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
