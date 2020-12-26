@@ -6,7 +6,10 @@
   >
     <div class="input-container">
       <div class="input-line">
-        <div class="input-title">{{ t('exchange.from') }}</div>
+        <div class="input-title">
+          <span>{{ t('exchange.from') }}</span>
+          <span v-if="areTokensSelected && !isEmptyBalance && isExchangeB" class="input-title-estimated">({{ t('swap.estimated') }})</span>
+        </div>
         <div v-if="connected && tokenFrom && tokenFrom.balance" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
           <span class="token-balance-value">{{ getTokenBalance(tokenFrom) }}</span>
@@ -14,12 +17,25 @@
       </div>
       <div class="input-line">
         <s-form-item>
+          <!-- TODO 4 alexnatalia: remove this part. This is just an example -->
+          <!-- <input
+            v-model="formModel.from"
+            v-float="formModel.from"
+            class="s-input--token-value"
+            :placeholder="isFieldFromFocused ? '' : inputPlaceholder"
+            @paste="handlePasteFieldFrom"
+            @input="handleChangeFieldFrom"
+            @focus="handleFocusFieldFrom"
+            @blur="handleBlurFieldFrom"
+          /> -->
           <s-input
+            ref="fieldFrom"
             v-model="formModel.from"
             v-float="formModel.from"
             class="s-input--token-value"
             :placeholder="isFieldFromFocused ? '' : inputPlaceholder"
             @input="handleChangeFieldFrom"
+            @paste="handlePasteFieldFrom"
             @focus="handleFocusFieldFrom"
             @blur="handleBlurFieldFrom"
           />
@@ -43,7 +59,7 @@
       <div class="input-line">
         <div class="input-title">
           <span>{{ t('exchange.to') }}</span>
-          <span v-if="connected && areTokensSelected" class="input-title-estimated">({{ t('swap.estimated') }})</span>
+          <span v-if="areTokensSelected && !isEmptyBalance && !isExchangeB" class="input-title-estimated">({{ t('swap.estimated') }})</span>
         </div>
         <div v-if="connected && tokenTo && tokenTo.balance" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
@@ -53,6 +69,7 @@
       <div class="input-line">
         <s-form-item>
           <s-input
+            ref="fieldTo"
             v-model="formModel.to"
             v-float="formModel.to"
             class="s-input--token-value"
@@ -103,7 +120,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import { formatNumber, isWalletConnected } from '@/utils'
+import { formatNumber, isNumberValue, isWalletConnected } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 import { dexApi } from '@soramitsu/soraneo-wallet-web'
@@ -123,6 +140,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   @Getter tokenTo!: any
   @Getter fromValue!: number
   @Getter toValue!: number
+  @Getter isExchangeB!: boolean
   @Getter slippageTolerance!: number
   @Action setTokenFrom
   @Action setTokenTo
@@ -137,6 +155,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   inputPlaceholder: string = formatNumber(0, 2)
   isFieldFromFocused = false
   isFieldToFocused = false
+  isInvalidPasteFrom = false
+  isInvalidPasteTo = false
   isTokenFromSelected = false
   showSelectTokenDialog = false
   showConfirmSwapDialog = false
@@ -204,6 +224,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     }
   }
 
+  mounted (): void {
+    // TODO 4 alexnatalia: Play with it a bit more
+    let fieldFromInputEl = this.$refs.fieldFrom.$refs['el-input'].$refs.input
+    fieldFromInputEl = this.handlePasteFieldFrom
+    let fieldToInputEl = this.$refs.fieldTo.$refs['el-input'].$refs.input
+    fieldToInputEl = this.handlePasteFieldTo
+  }
+
   getSwapValue (token: any, tokenValue: number): string {
     return token ? `${tokenValue} ${token.symbol}` : ''
   }
@@ -215,7 +243,17 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     return ''
   }
 
+  handlePasteFieldFrom (event): void {
+    console.log('data on paste: ', event.clipboardData.getData('text'))
+    this.isInvalidPasteFrom = !isNumberValue(event.clipboardData.getData('text'))
+  }
+
   async handleChangeFieldFrom (): Promise<any> {
+    // TODO 4 alexnatalia: Check this part it works only once
+    if (this.isInvalidPasteFrom || !isNumberValue(this.formModel.from)) {
+      this.formModel.from = formatNumber(0, 1)
+      this.isInvalidPasteFrom = false
+    }
     if (!this.isFieldToFocused) {
       this.isFieldFromFocused = true
       if (!this.areTokensSelected || +this.formModel.from === 0) {
@@ -226,7 +264,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
           this.formModel.to = swapResult.amount
           this.setLiquidityProviderFee(swapResult.fee)
           const minMaxReceived = await dexApi.getMinMaxReceived(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
-          this.setMinMaxReceived(minMaxReceived)
+          this.setMinMaxReceived({ minMaxReceived: minMaxReceived })
           this.getPrice()
           if (this.isInsufficientAmount) {
             this.isInsufficientAmount = false
@@ -243,18 +281,33 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     this.setFromValue(this.formModel.from)
   }
 
+  handlePasteFieldTo (event): void {
+    console.log('data on paste: ', event.clipboardData.getData('text'))
+    this.isInvalidPasteTo = !isNumberValue(event.clipboardData.getData('text'))
+  }
+
   async handleChangeFieldTo (): Promise<any> {
+    // TODO 4 alexnatalia: Check this part it works only once
+    if (this.isInvalidPasteTo || !isNumberValue(this.formModel.to)) {
+      this.formModel.to = formatNumber(0, 1)
+      this.isInvalidPasteTo = false
+    }
     if (!this.isFieldFromFocused) {
       this.isFieldToFocused = true
       if (!this.areTokensSelected || +this.formModel.to === 0) {
         this.formModel.from = formatNumber(0, 1)
       } else {
         try {
+          // Always use getSwapResult and minMaxReceived with reversed flag for Token B
+          // TODO 4 alexnatalia: Check this place after lib update
           const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.to)
+          // const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.to, true)
           this.formModel.from = swapResult.amount
           this.setLiquidityProviderFee(swapResult.fee)
+          // TODO 4 alexnatalia: Check this place after lib update
           const minMaxReceived = await dexApi.getMinMaxReceived(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
-          this.setMinMaxReceived(minMaxReceived)
+          // const minMaxReceived = await dexApi.getMinMaxReceived(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance, true)
+          this.setMinMaxReceived({ minMaxReceived: minMaxReceived, isExchangeB: true })
           this.getPrice()
           if (this.isInsufficientAmount) {
             this.isInsufficientAmount = false
@@ -361,6 +414,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
         this.isTokenFromSelected = false
         this.formModel.from = formatNumber(0, 1)
       } else {
+        // TODO 4 alexnatalia: Calc Token A value
         this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
         this.formModel.to = formatNumber(0, 1)
       }
@@ -373,13 +427,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   async confirmSwap (isSwapConfirmed: boolean): Promise<any> {
-    this.isSwapConfirmed = isSwapConfirmed
+    // TODO 4 alexnatalia: Check this place
     if (isSwapConfirmed) {
-      await dexApi.swap(this.tokenFrom.address, this.tokenTo.address, this.fromValue.toString(), this.toValue.toString(), this.slippageTolerance)
+      this.isSwapConfirmed = isSwapConfirmed
     }
   }
 
   async swapNotify (message: string): Promise<void> {
+    // TODO 4 alexnatalia: Check this place
     this.$notify({
       message: message,
       title: this.t('exchange.Swap'),
