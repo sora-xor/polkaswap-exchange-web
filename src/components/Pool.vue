@@ -1,6 +1,5 @@
 <template>
   <div class="el-form--pool">
-    <!-- TODO: Add appropriate tooltip -->
     <generic-header class="header--pool" :has-button-back="false" :title="t('pool.yourLiquidity')" :tooltip="t('pool.description')" />
     <p v-if="!connected" class="pool-info-container">
       {{ t('pool.connectToWallet') }}

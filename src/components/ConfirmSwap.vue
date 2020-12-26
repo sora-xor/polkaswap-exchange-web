@@ -97,6 +97,7 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
 .token {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   white-space: nowrap;
   &-logo {
     display: block;

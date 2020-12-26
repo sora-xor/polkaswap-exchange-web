@@ -119,8 +119,6 @@ export default {
     insufficientBalance: 'Insufficient balance',
     insufficientAssets: 'Insufficient assets',
     transactionMessage: '{firstToken} and {secondToken}',
-    description: 'When you add liquidity, you are awarded with token pair specific PSWAP tokens that represent your pool share.',
-    loremIpsum: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     firstLiquidityProvider: 'You are the first liquidity provider',
     firstLiquidityProviderInfo: 'The ratio of tokens you add will set the price of this pool.<br/>Once you are happy with the rate click supply to review.'
   },
@@ -132,8 +130,7 @@ export default {
     confirm: 'Confirm'
   },
   addLiquidity: {
-    title: 'Add liquidity',
-    description: 'When you add liquidity, you are given pool tokens representing your position. These tokens automaticaly earn fees proportional to your share of the pool, and can be redeemed at any time.'
+    title: 'Add liquidity'
   },
   removeLiquidity: {
     title: 'Remove liquidity',

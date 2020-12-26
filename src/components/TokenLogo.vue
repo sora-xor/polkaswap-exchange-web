@@ -36,24 +36,25 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
+$tokens-list: "dot", "ksm", "pswap", "smc", "usd", "val", "valerc", "xor", "xorerc";
+$token-background-color: var(--s-color-base-on-accent);
+
 .token-logo {
-  background-color: var(--s-color-base-border-secondary);
+  background-color: $token-background-color;
   background-image: url("~@/assets/img/token-logo-default.svg");
   background-size: 60%;
   background-repeat: no-repeat;
   background-position: 50%;
-  border: 1px solid var(--s-color-base-border-secondary);
+  border: 1px solid $token-background-color;
   border-radius: 50%;
   box-shadow: var(--s-shadow-tooltip);
-  &--ksm,
-  &--xor {
-    background-size: 100%;
-  }
-  &--ksm {
-    background-image: url("~@/assets/img/ksm.svg");
-  }
-  &--xor {
-    background-image: url("~@/assets/img/xor.svg");
+  @each $token in $tokens-list {
+    &--#{$token} {
+      background-size: 100%;
+    }
+    &--#{$token} {
+      background-image: url("~@/assets/img/#{$token}.svg");
+    }
   }
 }
 
