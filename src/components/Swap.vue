@@ -288,13 +288,11 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
         try {
           // Always use getSwapResult and minMaxReceived with reversed flag for Token B
           // TODO 4 alexnatalia: Check this place after lib update
-          const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.to)
-          // const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.to, true)
+          const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.to, true)
           this.formModel.from = swapResult.amount
           this.setLiquidityProviderFee(swapResult.fee)
           // TODO 4 alexnatalia: Check this place after lib update
-          const minMaxReceived = await dexApi.getMinMaxReceived(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
-          // const minMaxReceived = await dexApi.getMinMaxReceived(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance, true)
+          const minMaxReceived = await dexApi.getMinMaxReceived(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance, true)
           this.setMinMaxReceived({ minMaxReceived: minMaxReceived, isExchangeB: true })
           this.getPrice()
           if (this.isInsufficientAmount) {
