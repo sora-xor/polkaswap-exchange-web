@@ -17,17 +17,6 @@
       </div>
       <div class="input-line">
         <s-form-item>
-          <!-- TODO 4 alexnatalia: remove this part. This is just an example -->
-          <!-- <input
-            v-model="formModel.from"
-            v-float="formModel.from"
-            class="s-input--token-value"
-            :placeholder="isFieldFromFocused ? '' : inputPlaceholder"
-            @paste="handlePasteFieldFrom"
-            @input="handleChangeFieldFrom"
-            @focus="handleFocusFieldFrom"
-            @blur="handleBlurFieldFrom"
-          /> -->
           <s-input
             ref="fieldFrom"
             v-model="formModel.from"
@@ -41,7 +30,7 @@
           />
         </s-form-item>
         <div v-if="tokenFrom" class="token">
-          <s-button v-if="connected && areTokensSelected" class="el-button--max" type="tertiary" size="small" border-radius="mini" :disabled="this.formModel.from === this.tokenFrom.balance" @click="handleMaxValue">
+          <s-button v-if="connected && areTokensSelected" class="el-button--max" type="tertiary" size="small" border-radius="mini" :disabled="this.formModel.from === this.tokenFrom.balance || +this.tokenFrom.balance === 0" @click="handleMaxValue">
             {{ t('exchange.max') }}
           </s-button>
           <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(true)">
@@ -102,7 +91,7 @@
         {{ t('swap.insufficientAmount', { tokenSymbol: insufficientAmountTokenSymbol }) }}
       </template>
       <template v-else-if="isInsufficientBalance">
-        {{ t('swap.insufficientBalance', { tokenSymbol: tokenFrom.symbol }) }}
+        {{ t('swap.insufficientBalance', { tokenSymbol: tokenFrom ? tokenFrom.symbol : '' }) }}
       </template>
       <template v-else>
         {{ t('exchange.Swap') }}
@@ -226,10 +215,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
 
   mounted (): void {
     // TODO 4 alexnatalia: Play with it a bit more
-    let fieldFromInputEl = this.$refs.fieldFrom.$refs['el-input'].$refs.input
-    fieldFromInputEl = this.handlePasteFieldFrom
-    let fieldToInputEl = this.$refs.fieldTo.$refs['el-input'].$refs.input
-    fieldToInputEl = this.handlePasteFieldTo
+    const fieldFromInputEl = this.$refs.fieldFrom.$refs['el-input'].$refs.input
+    fieldFromInputEl.onpaste = this.handlePasteFieldFrom
+    const fieldToInputEl = this.$refs.fieldTo.$refs['el-input'].$refs.input
+    fieldToInputEl.onpaste = this.handlePasteFieldTo
   }
 
   getSwapValue (token: any, tokenValue: number): string {
@@ -244,7 +233,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   handlePasteFieldFrom (event): void {
-    console.log('data on paste: ', event.clipboardData.getData('text'))
     this.isInvalidPasteFrom = !isNumberValue(event.clipboardData.getData('text'))
   }
 
@@ -407,18 +395,19 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     this.showSelectTokenDialog = true
   }
 
-  selectToken (token: any): void {
+  async selectToken (token: any): Promise<void> {
     if (token) {
       if (this.isTokenFromSelected) {
-        this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
         this.isTokenFromSelected = false
-        this.formModel.from = formatNumber(0, 1)
+        await this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
       } else {
-        // TODO 4 alexnatalia: Calc Token A value
-        this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
-        this.formModel.to = formatNumber(0, 1)
+        await this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
       }
-      this.initPrice()
+      if (this.isFieldFromFocused) {
+        await this.handleChangeFieldFrom()
+      } else {
+        await this.handleChangeFieldTo()
+      }
     }
   }
 
