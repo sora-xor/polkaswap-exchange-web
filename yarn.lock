@@ -1987,6 +1987,21 @@
     vuex "^3.1.3"
     vuex-class "^0.3.2"
 
+"@soramitsu/soramitsu-js-ui@^0.6.8":
+  version "0.6.8"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-0.6.8.tgz#1ed9aefcfb0ac8ecb4531ebe0e6f1d7e10c5ebea"
+  integrity sha512-keb7LL3xYVbjJq4GUXlHKKyzopEqUg6tb1viHH8No+cTkztubEcFcp3GeEWjfApJkznkssbArMJ8Ryac9E3Fog==
+  dependencies:
+    core-js "^3.6.4"
+    element-ui "^2.13.2"
+    lodash "^4.17.15"
+    v-jsoneditor "^1.4.1"
+    vue "^2.6.11"
+    vue-class-component "^7.2.3"
+    vue-property-decorator "^8.4.1"
+    vuex "^3.1.3"
+    vuex-class "^0.3.2"
+
 "@soramitsu/soraneo-wallet-web@^0.3.0":
   version "0.3.0"
   resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-0.3.0.tgz#7483cac05d0480018c8619daafd61ddd3b297cac"
