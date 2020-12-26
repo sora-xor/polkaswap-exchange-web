@@ -1,5 +1,6 @@
 @import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";
 
+$s-color-base-content-primary: #26262D;
 $s-color-theme-accent: #ed145b;
 $s-color-brand-day: #0d0248;
 $s-color-button-tertiary-color: $s-color-theme-accent;
@@ -17,6 +18,7 @@ $s-border-radius-medium: $s-border-radius-base * 2;
 $s-border-radius-big: $s-border-radius-base * 3;
 
 :root {
+  --s-color-base-content-primary: #{$s-color-base-content-primary};
   --s-color-theme-accent: #{$s-color-theme-accent};
   --s-color-brand-day: #{$s-color-brand-day};
   --s-color-button-tertiary-color: #{$s-color-button-tertiary-color};

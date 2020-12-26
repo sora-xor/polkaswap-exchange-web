@@ -115,9 +115,9 @@
       </div>
 
       <div class="price-container">
-        <s-row flex justify="space-between" class="price">
+        <s-row flex justify="space-between">
           <div>{{ t('removeLiquidity.price') }}</div>
-          <div>
+          <div class="price">
             <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price, 2) }} {{ secondToken.symbol }}</div>
             <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price, 2) }} {{ firstToken.symbol }}</div>
           </div>
@@ -279,12 +279,15 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
 
 .price-container {
   width: 100%;
+  .s-row {
+    margin: $inner-spacing-medium $inner-spacing-medium 0;
+    color: var(--s-color-base-content-secondary);
+    line-height: $s-line-height-big;
+    font-feature-settings: $s-font-feature-settings-common;
+  }
 }
 .price {
-  margin: $inner-spacing-medium $inner-spacing-medium 0;
-  color: var(--s-color-base-content-secondary);
-  line-height: $s-line-height-big;
-  font-feature-settings: $s-font-feature-settings-common;
+  text-align: right;
 }
 
 .el-form--actions {
