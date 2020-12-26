@@ -275,7 +275,7 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
 
   getTokenBalance (token: any): string {
     if (token) {
-      return formatNumber(parseFloat(token.balance), 2)
+      return formatNumber(token.balance, 2)
     }
     return ''
   }
