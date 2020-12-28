@@ -190,8 +190,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     })
   }
 
-  async created () {
-    await new Promise(resolve => setTimeout((resolve) => {
+  async initTokens (): Promise<void> {
+    await setTimeout(() => {
       const tokenSymbol = this.tokenFrom !== null && this.tokenFrom !== undefined ? this.tokenFrom.symbol : KnownSymbols.XOR
       this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: tokenSymbol })
       this.isTokenFromBalanceAvailable = true
@@ -199,7 +199,11 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
         this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: this.tokenTo.symbol })
         this.isTokenToBalanceAvailable = true
       }
-    }, 1500))
+    }, 1500)
+  }
+
+  created () {
+    this.withApi(this.initTokens)
   }
 
   getSwapValue (token: any, tokenValue: number): string {
