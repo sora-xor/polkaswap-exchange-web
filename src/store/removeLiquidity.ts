@@ -300,7 +300,7 @@ const actions = {
     const amount = getters.liquidityAmount
     const reserveA = getters.reserveA
     const reserveB = getters.reserveB
-    const pts = getters.poolTokensTotalSupply
+    const pts = getters.totalSupply
 
     await dexApi.removeLiquidity(
       firstAddress, secondAddress, amount, reserveA, reserveB, pts)
