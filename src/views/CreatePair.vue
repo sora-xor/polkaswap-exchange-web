@@ -29,14 +29,11 @@
             <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectFirstTokenDialog">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <token-logo :token="firstToken" size="small" />
               {{ firstToken.symbol }}
             </s-button>
           </div>
-          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectFirstTokenDialog">
-            {{ t('swap.chooseToken') }}
-          </s-button>
         </div>
       </div>
       <s-icon class="icon-divider" name="plus-rounded" size="medium" />
@@ -101,8 +98,15 @@
       </div>
     </info-card>
 
-    <select-token :visible.sync="showSelectFirstTokenDialog" @select="setFirstToken" />
-    <select-token :visible.sync="showSelectSecondTokenDialog" @select="setSecondToken" />
+    <info-card v-if="areTokensSelected && isAvailable">
+      <div class="card__data">
+        <div>{{ t('createPair.networkFee') }}</div>
+        <div>{{ fee }} XOR</div>
+      </div>
+    </info-card>
+
+    <select-token :visible.sync="showSelectFirstTokenDialog" accountAssetsOnly notNullBalanceOnly @select="setFirstToken" />
+    <select-token :visible.sync="showSelectSecondTokenDialog" accountAssetsOnly notNullBalanceOnly @select="setSecondToken" />
 
     <confirm-create-pair :visible.sync="showConfirmCreatePairDialog" @confirm="confirmCreatePair" />
     <result-dialog :visible.sync="isCreatePairConfirmed" :type="t('createPair.add')" :message="resultMessage" />
@@ -117,6 +121,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import router, { lazyComponent } from '@/router'
 import { formatNumber, isWalletConnected } from '@/utils'
 import { Components, PageNames } from '@/consts'
+import { KnownAssets, KnownSymbols } from '@sora-substrate/util'
 
 const namespace = 'createPair'
 
@@ -139,6 +144,7 @@ export default class CreatePair extends Mixins(TranslationMixin) {
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
   @Getter('isAvailable', { namespace }) isAvailable!: boolean
   @Getter('minted', { namespace }) minted!: string
+  @Getter('fee', { namespace }) fee!: string
 
   @Action('setFirstToken', { namespace }) setFirstToken
   @Action('setSecondToken', { namespace }) setSecondToken
@@ -146,6 +152,7 @@ export default class CreatePair extends Mixins(TranslationMixin) {
   @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
   @Action('createPair', { namespace }) createPair
   @Action('resetData', { namespace }) resetData
+  @Action('getAssets', { namespace: 'assets' }) getAssets
 
   showSelectFirstTokenDialog = false
   showSelectSecondTokenDialog = false
@@ -154,6 +161,11 @@ export default class CreatePair extends Mixins(TranslationMixin) {
   isCreatePairConfirmed = false
 
   formatNumber = formatNumber
+
+  async created () {
+    await this.getAssets()
+    await this.setFirstToken(KnownAssets.get(KnownSymbols.XOR))
+  }
 
   get connected (): boolean {
     return isWalletConnected()

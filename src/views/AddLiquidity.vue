@@ -29,14 +29,11 @@
             <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectFirstTokenDialog">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <token-logo :token="firstToken" size="small" />
               {{ firstToken.symbol }}
             </s-button>
           </div>
-          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectFirstTokenDialog">
-            {{ t('swap.chooseToken') }}
-          </s-button>
         </div>
       </div>
       <s-icon class="icon-divider" name="plus-rounded" size="medium" />
@@ -108,6 +105,10 @@
         <div>{{ t('createPair.shareOfPool') }}</div>
         <div>{{ shareOfPool }}</div>
       </div>
+      <div class="card__data">
+        <div>{{ t('createPair.networkFee') }}</div>
+        <div>{{ fee }} XOR</div>
+      </div>
     </info-card>
 
     <info-card v-if="areTokensSelected" :title="t('createPair.yourPosition') ">
@@ -129,8 +130,8 @@
       </div>
     </info-card>
 
-    <select-token :visible.sync="showSelectFirstTokenDialog" accountAssetsOnly :asset="secondToken" @select="setFirstToken" />
-    <select-token :visible.sync="showSelectSecondTokenDialog" accountAssetsOnly :asset="firstToken" @select="setSecondToken" />
+    <select-token :visible.sync="showSelectFirstTokenDialog" accountAssetsOnly notNullBalanceOnly :asset="secondToken" @select="setFirstToken" />
+    <select-token :visible.sync="showSelectSecondTokenDialog" accountAssetsOnly notNullBalanceOnly :asset="firstToken" @select="setSecondToken" />
 
     <confirm-add-liquidity :visible.sync="showConfirmDialog" @confirm="handleConfirmAddLiquidity" />
     <result-dialog :visible.sync="isCreatePairConfirmed" :type="t('createPair.add')" :message="resultMessage" />
@@ -144,6 +145,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import router, { lazyComponent } from '@/router'
 import { formatNumber, isWalletConnected } from '@/utils'
 import { Components, PageNames } from '@/consts'
+import { KnownAssets, KnownSymbols } from '@sora-substrate/util'
 
 const namespace = 'addLiquidity'
 
@@ -165,6 +167,7 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
   @Getter('isAvailable', { namespace }) isAvailable!: boolean
   @Getter('minted', { namespace }) minted!: string
+  @Getter('fee', { namespace }) fee!: string
 
   @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
   @Action('setFirstToken', { namespace }) setFirstToken
@@ -174,6 +177,7 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField
   @Action('resetData', { namespace }) resetData
+  @Action('getAssets', { namespace: 'assets' }) getAssets
 
   showSelectFirstTokenDialog = false
   showSelectSecondTokenDialog = false
@@ -183,6 +187,8 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
 
   async created () {
     this.resetData()
+    await this.getAssets()
+    await this.setFirstToken(KnownAssets.get(KnownSymbols.XOR))
 
     if (this.firstAddress && this.secondAddress) {
       await this.setDataFromLiquidity({
@@ -207,7 +213,7 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
   }
 
   get firstPerSecondPrice (): string {
-    return formatNumber(this.firstTokenValue / this.secondTokenValue, 2)
+    return formatNumber(this.firstTokenValue / this.secondTokenValue || 0, 2)
   }
 
   get secondPerFirstPrice (): string {

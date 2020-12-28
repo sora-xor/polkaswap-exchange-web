@@ -5,6 +5,7 @@ import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { dexApi } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets } from '@sora-substrate/util'
+import BigNumber from 'bignumber.js'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -20,7 +21,8 @@ const types = flow(
 )([
   'ADD_LIQUIDITY',
   'GET_RESERVE',
-  'ESTIMATE_MINTED'
+  'ESTIMATE_MINTED',
+  'GET_FEE'
 ])
 
 function initialState () {
@@ -31,6 +33,7 @@ function initialState () {
     secondTokenValue: 0,
     reserve: null,
     minted: '',
+    fee: '',
     focusedField: null
   }
 }
@@ -54,16 +57,19 @@ const getters = {
     return state.reserve
   },
   reserveA (state) {
-    return state.reserve ? state.reserve[0] : 0
+    return state.reserve ? Number(state.reserve[0]) : 0
   },
   reserveB (state) {
-    return state.reserve ? state.reserve[1] : 0
+    return state.reserve ? Number(state.reserve[1]) : 0
   },
   isAvailable (state) {
     return state.reserve && state.reserve[0] !== '0' && state.reserve[1] !== '0'
   },
   minted (state) {
     return state.minted || '0'
+  },
+  fee (state) {
+    return state.fee || '0'
   }
 }
 
@@ -100,6 +106,13 @@ const mutations = {
   },
   [types.ESTIMATE_MINTED_FAILURE] (state, error) {
   },
+  [types.GET_FEE_REQUEST] (state) {
+  },
+  [types.GET_FEE_SUCCESS] (state, fee) {
+    state.fee = fee
+  },
+  [types.GET_FEE_FAILURE] (state, error) {
+  },
   [types.SET_FOCUSED_FIELD] (state, field) {
     state.focusedField = field
   }
@@ -133,6 +146,7 @@ const actions = {
         commit(types.GET_RESERVE_SUCCESS, reserve)
 
         dispatch('estimateMinted')
+        dispatch('getNetworkFee')
       } catch (error) {
         commit(types.GET_RESERVE_FAILURE, error)
       }
@@ -164,10 +178,11 @@ const actions = {
       commit(types.SET_FOCUSED_FIELD, 'firstTokenValue')
 
       commit(types.SET_FIRST_TOKEN_VALUE, value)
-      if (value) {
-        commit(types.SET_SECOND_TOKEN_VALUE, Number(value) * (Number(getters.reserveB) / Number(getters.reserveA)))
+      if (value && getters.reserveA && getters.reserveB) {
+        commit(types.SET_SECOND_TOKEN_VALUE, new BigNumber(value).multipliedBy(new BigNumber(getters.reserveB).dividedBy(getters.reserveA)).toString())
       }
       dispatch('estimateMinted')
+      dispatch('getNetworkFee')
     }
   },
 
@@ -176,10 +191,29 @@ const actions = {
       commit(types.SET_FOCUSED_FIELD, 'secondTokenValue')
 
       commit(types.SET_SECOND_TOKEN_VALUE, value)
-      if (value) {
-        commit(types.SET_FIRST_TOKEN_VALUE, Number(value) * (Number(getters.reserveA) / Number(getters.reserveB)))
+      if (value && getters.reserveA && getters.reserveB) {
+        commit(types.SET_FIRST_TOKEN_VALUE, new BigNumber(value).multipliedBy(new BigNumber(getters.reserveA).dividedBy(getters.reserveB)).toString())
       }
       dispatch('estimateMinted')
+      dispatch('getNetworkFee')
+    }
+  },
+
+  async getNetworkFee ({ commit, getters }) {
+    if (getters.firstToken && getters.firstToken.address && getters.firstToken && getters.secondToken.address && getters.firstTokenValue && getters.secondTokenValue) {
+      commit(types.GET_FEE_REQUEST)
+      try {
+        const fee = await dexApi.getAddLiquidityNetworkFee(
+          getters.firstToken.address,
+          getters.secondToken.address,
+          getters.firstTokenValue,
+          getters.secondTokenValue
+        )
+
+        commit(types.GET_FEE_SUCCESS, fee)
+      } catch (error) {
+        commit(types.GET_FEE_FAILURE, error)
+      }
     }
   },
 

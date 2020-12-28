@@ -116,6 +116,7 @@ export default {
     remove: 'remove',
     add: 'ADD',
     ok: 'OK',
+    networkFee: 'Network fee',
     insufficientBalance: 'Insufficient balance',
     insufficientAssets: 'Insufficient assets',
     transactionMessage: '{firstToken} and {secondToken}',
