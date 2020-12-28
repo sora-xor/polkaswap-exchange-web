@@ -31,12 +31,13 @@
             v-float
             class="slippage-tolerance-custom_input"
             size="small"
+            @input="handleOnInput"
           />
         </div>
         <div v-if="slippageToleranceValidation" class="slippage-tolerance_validation">{{ t(`dexSettings.slippageToleranceValidation.${slippageToleranceValidation}`) }}</div>
       </div>
       <s-divider />
-      <!-- TODO: We'll play with this field at the next iteration of development -->
+      <!-- TODO: We'll play with areas below at the next iteration of development -->
       <!-- <div class="transaction-deadline">
         <div class="header">
           {{ t('dexSettings.transactionDeadline') }}
@@ -50,7 +51,7 @@
         </div>
       </div>
       <s-divider /> -->
-      <div class="node-address">
+      <!-- <div class="node-address">
         <div class="header">{{ t('dexSettings.nodeAddress') }}</div>
         <div class="value">
           <div class="value-container">
@@ -60,7 +61,7 @@
             <span class="value-container_label">{{ t('dexSettings.port') }}: </span>#{{ nodeAddress.port }}
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </dialog-base>
 </template>
@@ -72,6 +73,7 @@ import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
+import { isNumberValue } from '@/utils'
 
 @Component({
   components: {
@@ -79,6 +81,7 @@ import DialogBase from '@/components/DialogBase.vue'
   }
 })
 export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
+  readonly defaultSlippageTolerance = 0.5
   readonly SlippageToleranceValues = [
     0.1,
     0.5,
@@ -117,13 +120,13 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
   }
 
   get slippageToleranceValidation (): string {
-    if (+this.model >= this.slippageToleranceExtremeValues.min && +this.model < 0.1) {
+    if (this.slippageTolerance >= this.slippageToleranceExtremeValues.min && this.slippageTolerance < 0.1) {
       return 'warning'
     }
-    if (+this.model >= 5 && +this.model <= this.slippageToleranceExtremeValues.max) {
+    if (this.slippageTolerance >= 5 && this.slippageTolerance <= this.slippageToleranceExtremeValues.max) {
       return 'frontrun'
     }
-    if (+this.model < this.slippageToleranceExtremeValues.min || +this.model > this.slippageToleranceExtremeValues.max) {
+    if (this.slippageTolerance < this.slippageToleranceExtremeValues.min || this.slippageTolerance > this.slippageToleranceExtremeValues.max) {
       return 'error'
     }
     return ''
@@ -131,6 +134,33 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
 
   selectSlippageTolerance ({ name }): void {
     this.setSlippageTolerance({ value: name })
+  }
+
+  setSlippageToleranceOnTimeout (value: string | number): void {
+    setTimeout(() => {
+      this.model = typeof value === 'string' ? value : value.toString()
+    }, 50)
+  }
+
+  async handleOnInput (): Promise<void> {
+    if (!isNumberValue(this.model)) {
+      await this.setSlippageToleranceOnTimeout(this.defaultSlippageTolerance)
+      this.setSlippageTolerance({ value: this.defaultSlippageTolerance })
+      return
+    }
+    if (+this.model > this.slippageToleranceExtremeValues.max) {
+      await this.setSlippageToleranceOnTimeout(this.slippageToleranceExtremeValues.max)
+      this.setSlippageTolerance({ value: this.slippageToleranceExtremeValues.max })
+      return
+    }
+    if (+this.model < this.slippageToleranceExtremeValues.min) {
+      await this.setSlippageToleranceOnTimeout(this.slippageToleranceExtremeValues.min)
+      this.setSlippageTolerance({ value: this.slippageToleranceExtremeValues.min })
+      return
+    }
+    // TODO 4 alexnatalia: Ask the team about appropriate behaviour or pattern of the slippageTolerance
+    await this.setSlippageToleranceOnTimeout(+this.model)
+    this.setSlippageTolerance({ value: +this.model })
   }
 
   handleSetTransactionDeadline (value: number): void {
@@ -150,7 +180,7 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
   }
 }
 .settings {
-  .el-dialog .el-dialog__body {
+  &.el-dialog__wrapper .el-dialog .el-dialog__body {
     padding-bottom: $inner-spacing-big;
   }
   .el-tabs__header {
@@ -174,6 +204,7 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
   &-content {
     & > .el-divider:first-child {
       margin-top: 0;
+      margin-bottom: $inner-spacing-big;
     }
   }
   .header {

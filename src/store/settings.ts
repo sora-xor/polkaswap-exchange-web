@@ -6,6 +6,7 @@ import concat from 'lodash/fp/concat'
 
 import storage from '@/utils/storage'
 
+const defaultSlippageTolerance = 0.5
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
@@ -18,7 +19,7 @@ const types = flow(
 
 function initialState () {
   return {
-    slippageTolerance: Number(storage.get('slippageTolerance')) || 0.5,
+    slippageTolerance: storage.get('slippageTolerance') || defaultSlippageTolerance,
     transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
     nodeAddressIp: storage.get('nodeAddress.ip') || '192.168.0.0.1',
     nodeAddressPort: storage.get('nodeAddress.port') || 2
@@ -45,8 +46,8 @@ const getters = {
 const mutations = {
   [types.SET_SLIPPAGE_TOLERANCE] (state, value) {
     if (!value) {
-      state.slippageTolerance = 0.5
-      storage.set('slippageTolerance', 0.5)
+      state.slippageTolerance = defaultSlippageTolerance
+      storage.set('slippageTolerance', defaultSlippageTolerance)
     } else {
       state.slippageTolerance = value
       storage.set('slippageTolerance', value)
@@ -60,7 +61,7 @@ const mutations = {
 
 const actions = {
   setSlippageTolerance ({ commit }, { value }) {
-    commit(types.SET_SLIPPAGE_TOLERANCE, Number(value))
+    commit(types.SET_SLIPPAGE_TOLERANCE, value)
   },
   setTransactionDeadline ({ commit }, { value }) {
     commit(types.SET_TRANSACTION_DEADLINE, Number(value))
