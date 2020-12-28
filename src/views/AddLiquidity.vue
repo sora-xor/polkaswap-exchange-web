@@ -103,7 +103,7 @@
       </div>
       <div class="card__data">
         <div>{{ t('createPair.shareOfPool') }}</div>
-        <div>{{ shareOfPool }}</div>
+        <div>{{ shareOfPool }}%</div>
       </div>
       <div class="card__data">
         <div>{{ t('createPair.networkFee') }}</div>
@@ -168,6 +168,7 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
   @Getter('isAvailable', { namespace }) isAvailable!: boolean
   @Getter('minted', { namespace }) minted!: string
   @Getter('fee', { namespace }) fee!: string
+  @Getter('shareOfPool', { namespace }) shareOfPool!: string
 
   @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
   @Action('setFirstToken', { namespace }) setFirstToken
@@ -230,10 +231,6 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
 
   get poolTokens (): string {
     return formatNumber(0, 2)
-  }
-
-  get shareOfPool (): string {
-    return '<0.01%'
   }
 
   get areTokensSelected (): boolean {

@@ -19,7 +19,9 @@ const types = flow(
   fromPairs
 )([
   'GET_LIQUIDITY',
-  'GET_FEE'
+  'GET_FEE',
+  'GET_LIQUIDITY_RESERVE',
+  'GET_TOTAL_SUPPLY'
 ])
 
 function initialState () {
@@ -30,7 +32,10 @@ function initialState () {
     firstTokenAmount: 0,
     secondTokenAmount: 0,
     focusedField: null,
-    fee: 0
+    fee: 0,
+    reserveA: 0,
+    reserveB: 0,
+    totalSupply: 0
   }
 }
 
@@ -69,6 +74,15 @@ const getters = {
   },
   fee (state) {
     return state.fee
+  },
+  reserveA (state) {
+    return state.reserveA
+  },
+  reserveB (state) {
+    return state.reserveB
+  },
+  totalSupply (state) {
+    return state.totalSupply
   }
 }
 
@@ -99,6 +113,21 @@ const mutations = {
   },
   [types.GET_FEE_FAILURE] (state, error) {
   },
+  [types.GET_TOTAL_SUPPLY_REQUEST] (state) {
+  },
+  [types.GET_TOTAL_SUPPLY_SUCCESS] (state, totalSupply) {
+    state.totalSupply = totalSupply
+  },
+  [types.GET_TOTAL_SUPPLY_FAILURE] (state, error) {
+  },
+  [types.GET_LIQUIDITY_RESERVE_REQUEST] (state) {
+  },
+  [types.GET_LIQUIDITY_RESERVE_SUCCESS] (state, { reserveA, reserveB }) {
+    state.reserveA = reserveA
+    state.reserveB = reserveB
+  },
+  [types.GET_LIQUIDITY_RESERVE_FAILURE] (state, error) {
+  },
   [types.SET_FOCUSED_FIELD] (state, field) {
     state.focusedField = field
   }
@@ -114,7 +143,7 @@ const actions = {
       const liquidity = dexApi.accountLiquidity.find(liquidity => liquidity.firstAddress === firstAddress && liquidity.secondAddress === secondAddress)
 
       commit(types.GET_LIQUIDITY_SUCCESS, liquidity)
-      dispatch('getNetworkFee')
+      dispatch('getRemoveLiquidityData')
     } catch (error) {
       commit(types.GET_LIQUIDITY_FAILURE)
     }
@@ -139,7 +168,7 @@ const actions = {
         commit(types.SET_SECOND_TOKEN_AMOUNT, 0)
       }
 
-      dispatch('getNetworkFee')
+      dispatch('getRemoveLiquidityData')
     }
   },
 
@@ -160,7 +189,7 @@ const actions = {
         commit(types.SET_LIQUIDITY_AMOUNT)
       }
 
-      dispatch('getNetworkFee')
+      dispatch('getRemoveLiquidityData')
     }
   },
 
@@ -171,10 +200,9 @@ const actions = {
         const firstAddress = getters.firstToken.address
         const secondAddress = getters.secondToken.address
         const amount = getters.liquidityAmount
-
-        // TODO: Make action and getters for getLiquidityReserves and estimateTokensRetrieved
-        const [reserveA, reserveB] = await dexApi.getLiquidityReserves(firstAddress, secondAddress)
-        const [aOut, bOut, pts] = await dexApi.estimateTokensRetrieved(firstAddress, secondAddress, amount, reserveA, reserveB)
+        const reserveA = getters.reserveA
+        const reserveB = getters.reserveB
+        const pts = getters.poolTokensTotalSupply
 
         const fee = await dexApi.getRemoveLiquidityNetworkFee(firstAddress, secondAddress, amount, reserveA, reserveB, pts)
 
@@ -202,7 +230,7 @@ const actions = {
         commit(types.SET_FIRST_TOKEN_AMOUNT)
       }
 
-      dispatch('getNetworkFee')
+      dispatch('getRemoveLiquidityData')
     }
   },
 
@@ -223,7 +251,7 @@ const actions = {
         commit(types.SET_SECOND_TOKEN_AMOUNT)
       }
 
-      dispatch('getNetworkFee')
+      dispatch('getRemoveLiquidityData')
     }
   },
 
@@ -231,13 +259,48 @@ const actions = {
     commit(types.SET_FOCUSED_FIELD, null)
   },
 
+  async getRemoveLiquidityData ({ dispatch }) {
+    await dispatch('getLiquidityReserves')
+    await dispatch('getTotalSupply')
+    await dispatch('getNetworkFee')
+  },
+
+  async getLiquidityReserves ({ commit, getters }) {
+    const firstAddress = getters.firstToken.address
+    const secondAddress = getters.secondToken.address
+
+    try {
+      commit(types.GET_LIQUIDITY_RESERVE_REQUEST)
+      const [reserveA, reserveB] = await dexApi.getLiquidityReserves(firstAddress, secondAddress)
+      commit(types.GET_LIQUIDITY_RESERVE_SUCCESS, { reserveA, reserveB })
+    } catch (error) {
+      commit(types.GET_LIQUIDITY_RESERVE_FAILURE, error)
+    }
+  },
+
+  async getTotalSupply ({ commit, getters }) {
+    const firstAddress = getters.firstToken.address
+    const secondAddress = getters.secondToken.address
+    const amount = getters.liquidityAmount
+    const reserveA = getters.reserveA
+    const reserveB = getters.reserveB
+
+    try {
+      commit(types.GET_TOTAL_SUPPLY_REQUEST)
+      const [aOut, bOut, pts] = await dexApi.estimateTokensRetrieved(firstAddress, secondAddress, amount, reserveA, reserveB)
+      commit(types.GET_TOTAL_SUPPLY_SUCCESS, pts)
+    } catch (error) {
+      commit(types.GET_TOTAL_SUPPLY_FAILURE, error)
+    }
+  },
+
   async removeLiquidity ({ commit, getters }) {
     const firstAddress = getters.firstToken.address
     const secondAddress = getters.secondToken.address
     const amount = getters.liquidityAmount
-
-    const [reserveA, reserveB] = await dexApi.getLiquidityReserves(firstAddress, secondAddress)
-    const [aOut, bOut, pts] = await dexApi.estimateTokensRetrieved(firstAddress, secondAddress, amount, reserveA, reserveB)
+    const reserveA = getters.reserveA
+    const reserveB = getters.reserveB
+    const pts = getters.poolTokensTotalSupply
 
     await dexApi.removeLiquidity(
       firstAddress, secondAddress, amount, reserveA, reserveB, pts)

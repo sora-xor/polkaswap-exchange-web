@@ -70,6 +70,9 @@ const getters = {
   },
   fee (state) {
     return state.fee || '0'
+  },
+  shareOfPool (state) {
+    return '0'
   }
 }
 
@@ -233,7 +236,7 @@ const actions = {
     }
   },
 
-  async setDataFromLiquidity ({ commit, dispatch, rootGetters }, { firstAddress, secondAddress }) {
+  async setDataFromLiquidity ({ dispatch }, { firstAddress, secondAddress }) {
     dispatch('setFirstToken', dexApi.accountAssets.find(a => a.address === firstAddress))
     dispatch('setSecondToken', dexApi.accountAssets.find(a => a.address === secondAddress))
   },
