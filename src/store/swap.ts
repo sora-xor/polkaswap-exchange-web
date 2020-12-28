@@ -138,7 +138,7 @@ const actions = {
         if (token) {
           let tokenFrom = await dexApi.accountAssets.find(asset => asset.address === token.address)
           if (!tokenFrom) {
-            tokenFrom = { ...token, balance: '0', usdBalance: '0' }
+            tokenFrom = { ...token, balance: '0' }
           }
           commit(types.GET_TOKEN_FROM_SUCCESS, tokenFrom)
         } else {
@@ -160,7 +160,7 @@ const actions = {
         if (token) {
           let tokenTo = await dexApi.accountAssets.find(asset => asset.address === token.address)
           if (!tokenTo) {
-            tokenTo = { ...token, balance: '0', usdBalance: '0' }
+            tokenTo = { ...token, balance: '0' }
           }
           commit(types.GET_TOKEN_TO_SUCCESS, tokenTo)
         } else {

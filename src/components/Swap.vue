@@ -10,7 +10,7 @@
           <span>{{ t('exchange.from') }}</span>
           <span v-if="areTokensSelected && !isEmptyBalance && isExchangeB" class="input-title-estimated">({{ t('swap.estimated') }})</span>
         </div>
-        <div v-if="connected && tokenFrom && tokenFrom.balance" class="token-balance">
+        <div v-if="showTokenFromBalance" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
           <span class="token-balance-value">{{ getTokenBalance(tokenFrom) }}</span>
         </div>
@@ -48,7 +48,7 @@
           <span>{{ t('exchange.to') }}</span>
           <span v-if="areTokensSelected && !isEmptyBalance && !isExchangeB" class="input-title-estimated">({{ t('swap.estimated') }})</span>
         </div>
-        <div v-if="connected && tokenTo && tokenTo.balance" class="token-balance">
+        <div v-if="showTokenToBalance" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
           <span class="token-balance-value">{{ getTokenBalance(tokenTo) }}</span>
         </div>
@@ -140,13 +140,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   @Action setNetworkFee
 
   inputPlaceholder: string = formatNumber(0, 2)
+  isTokenFromBalanceAvailable = false
+  isTokenToBalanceAvailable = false
   isFieldFromFocused = false
   isFieldToFocused = false
   isTokenFromSelected = false
   showSelectTokenDialog = false
   showConfirmSwapDialog = false
   isSwapConfirmed = false
-  defaultTokenSymbol = KnownSymbols.XOR
   isInsufficientAmount = false
   insufficientAmountTokenSymbol = ''
 
@@ -174,6 +175,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     return true
   }
 
+  get showTokenFromBalance (): boolean {
+    return this.connected && this.tokenFrom && this.tokenFrom.balance && this.isTokenFromBalanceAvailable
+  }
+
+  get showTokenToBalance (): boolean {
+    return this.connected && this.tokenTo && this.tokenTo.balance && this.isTokenToBalanceAvailable
+  }
+
   get resultMessage (): string {
     return this.t('swap.transactionMessage', {
       tokenFromValue: this.getSwapValue(this.tokenFrom, this.fromValue),
@@ -182,31 +191,15 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   async created () {
-    if (this.connected) {
-      if (this.tokenFrom === null || this.tokenFrom === undefined) {
-        // Set default token
-        // TODO 4 alexnatalia: This is just a temporary way to fix the default token setting
-        await new Promise(resolve => setTimeout((resolve) => {
-          this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: this.defaultTokenSymbol })
-        }, 1500))
-      } else if (this.tokenFrom.balance === undefined) {
-        // Reset tokenFrom after connection to the wallet
-        this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: this.tokenFrom.symbol })
-      }
-      // Reset tokenTo after connection to the wallet
-      if (this.tokenTo !== null && this.tokenTo.balance === undefined) {
+    await new Promise(resolve => setTimeout((resolve) => {
+      const tokenSymbol = this.tokenFrom !== null && this.tokenFrom !== undefined ? this.tokenFrom.symbol : KnownSymbols.XOR
+      this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: tokenSymbol })
+      this.isTokenFromBalanceAvailable = true
+      if (this.tokenTo !== null && this.tokenTo !== undefined) {
         this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: this.tokenTo.symbol })
+        this.isTokenToBalanceAvailable = true
       }
-    } else {
-      // Set default tokenFrom or remove account info of token if user logout the wallet
-      if (this.tokenFrom === null || this.tokenFrom.balance !== undefined) {
-        this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: this.defaultTokenSymbol })
-      }
-      // Remove account info of tokenTo if user logout the wallet
-      if (this.tokenTo !== null && this.tokenTo.balance !== undefined) {
-        this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: this.tokenTo.symbol })
-      }
-    }
+    }, 1500))
   }
 
   getSwapValue (token: any, tokenValue: number): string {
@@ -236,15 +229,16 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
           const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.from)
           this.formModel.to = swapResult.amount
           this.setLiquidityProviderFee(swapResult.fee)
-          const minMaxReceived = await dexApi.getMinMaxReceived(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
+          const minMaxReceived = await dexApi.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
           this.setMinMaxReceived({ minMaxReceived: minMaxReceived })
           this.getPrice()
           if (this.isInsufficientAmount) {
             this.isInsufficientAmount = false
           }
-          // TODO 4 alexnatalia: Are amount params for the next method reletaed with input values?
-          // const networkFee = await dexApi.getSwapNetworkFee(this.tokenFrom.address, this.tokenTo.address, this.formModel.from, this.formModel.to, this.slippageTolerance)
-          // this.setNetworkFee(networkFee)
+          if (this.connected) {
+            const networkFee = await dexApi.getSwapNetworkFee(this.tokenFrom.address, this.tokenTo.address, this.formModel.from, this.formModel.to, this.slippageTolerance)
+            this.setNetworkFee(networkFee)
+          }
         } catch (error) {
           this.formModel.to = formatNumber(0, 1)
           if (!this.checkInsufficientAmount(this.tokenFrom.symbol, error.message)) {
@@ -271,21 +265,20 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       } else {
         try {
           // Always use getSwapResult and minMaxReceived with reversed flag for Token B
-          // TODO 4 alexnatalia: Check this place after lib update
           const isExchangeBSwap = true
           const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.to, isExchangeBSwap)
           this.formModel.from = swapResult.amount
           this.setLiquidityProviderFee(swapResult.fee)
-          // TODO 4 alexnatalia: Check this place after lib update
-          const minMaxReceived = await dexApi.getMinMaxReceived(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance, isExchangeBSwap)
+          const minMaxReceived = await dexApi.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance, isExchangeBSwap)
           this.setMinMaxReceived({ minMaxReceived: minMaxReceived, isExchangeB: isExchangeBSwap })
           this.getPrice()
           if (this.isInsufficientAmount) {
             this.isInsufficientAmount = false
           }
-          // TODO 4 alexnatalia: Are amount params for the next method reletaed with input values?
-          // const networkFee = await dexApi.getSwapNetworkFee(this.tokenFrom.address, this.tokenTo.address, this.formModel.from, this.formModel.to, this.slippageTolerance)
-          // this.setNetworkFee(networkFee)
+          if (this.connected) {
+            const networkFee = await dexApi.getSwapNetworkFee(this.tokenFrom.address, this.tokenTo.address, this.formModel.from, this.formModel.to, this.slippageTolerance, isExchangeBSwap)
+            this.setNetworkFee(networkFee)
+          }
         } catch (error) {
           this.formModel.from = formatNumber(0, 1)
           if (!this.checkInsufficientAmount(this.tokenTo.symbol, error.message)) {
@@ -388,6 +381,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
         await this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
       } else {
         await this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
+        this.isTokenToBalanceAvailable = true
       }
       if (this.isFieldFromFocused) {
         await this.handleInputFieldFrom()
