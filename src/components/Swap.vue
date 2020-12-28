@@ -18,13 +18,11 @@
       <div class="input-line">
         <s-form-item>
           <s-input
-            ref="fieldFrom"
             v-model="formModel.from"
             v-float="formModel.from"
             class="s-input--token-value"
             :placeholder="isFieldFromFocused ? '' : inputPlaceholder"
-            @input="handleChangeFieldFrom"
-            @paste="handlePasteFieldFrom"
+            @input="handleInputFieldFrom"
             @focus="handleFocusFieldFrom"
             @blur="handleBlurFieldFrom"
           />
@@ -58,12 +56,11 @@
       <div class="input-line">
         <s-form-item>
           <s-input
-            ref="fieldTo"
             v-model="formModel.to"
             v-float="formModel.to"
             class="s-input--token-value"
             :placeholder="isFieldToFocused ? '' : inputPlaceholder"
-            @input="handleChangeFieldTo"
+            @input="handleInputFieldTo"
             @focus="handleFocusFieldTo"
             @blur="handleBlurFieldTo"
           />
@@ -145,8 +142,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   inputPlaceholder: string = formatNumber(0, 2)
   isFieldFromFocused = false
   isFieldToFocused = false
-  isInvalidPasteFrom = false
-  isInvalidPasteTo = false
   isTokenFromSelected = false
   showSelectTokenDialog = false
   showConfirmSwapDialog = false
@@ -214,14 +209,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     }
   }
 
-  mounted (): void {
-    // TODO 4 alexnatalia: Play with it a bit more
-    // const fieldFromInputEl = this.$refs.fieldFrom.$refs['el-input'].$refs.input
-    // fieldFromInputEl.onpaste = this.handlePasteFieldFrom
-    // const fieldToInputEl = this.$refs.fieldTo.$refs['el-input'].$refs.input
-    // fieldToInputEl.onpaste = this.handlePasteFieldTo
-  }
-
   getSwapValue (token: any, tokenValue: number): string {
     return token ? `${tokenValue} ${token.symbol}` : ''
   }
@@ -233,15 +220,12 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     return ''
   }
 
-  handlePasteFieldFrom (event): void {
-    this.isInvalidPasteFrom = !isNumberValue(event.clipboardData.getData('text'))
-  }
-
-  async handleChangeFieldFrom (): Promise<any> {
-    // TODO 4 alexnatalia: Check this part it works only once
-    if (this.isInvalidPasteFrom || !isNumberValue(this.formModel.from)) {
-      this.formModel.from = formatNumber(0, 1)
-      this.isInvalidPasteFrom = false
+  async handleInputFieldFrom (): Promise<any> {
+    if (!isNumberValue(this.formModel.from)) {
+      await setTimeout(() => {
+        this.formModel.from = formatNumber(0, 1)
+      }, 50)
+      return
     }
     if (!this.isFieldToFocused) {
       this.isFieldFromFocused = true
@@ -273,16 +257,12 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     this.setFromValue(this.formModel.from)
   }
 
-  handlePasteFieldTo (event): void {
-    console.log('data on paste: ', event.clipboardData.getData('text'))
-    this.isInvalidPasteTo = !isNumberValue(event.clipboardData.getData('text'))
-  }
-
-  async handleChangeFieldTo (): Promise<any> {
-    // TODO 4 alexnatalia: Check this part it works only once
-    if (this.isInvalidPasteTo || !isNumberValue(this.formModel.to)) {
-      this.formModel.to = formatNumber(0, 1)
-      this.isInvalidPasteTo = false
+  async handleInputFieldTo (): Promise<any> {
+    if (!isNumberValue(this.formModel.to)) {
+      await setTimeout(() => {
+        this.formModel.to = formatNumber(0, 1)
+      }, 50)
+      return
     }
     if (!this.isFieldFromFocused) {
       this.isFieldToFocused = true
@@ -292,12 +272,13 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
         try {
           // Always use getSwapResult and minMaxReceived with reversed flag for Token B
           // TODO 4 alexnatalia: Check this place after lib update
-          const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.to, true)
+          const isExchangeBSwap = true
+          const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.to, isExchangeBSwap)
           this.formModel.from = swapResult.amount
           this.setLiquidityProviderFee(swapResult.fee)
           // TODO 4 alexnatalia: Check this place after lib update
-          const minMaxReceived = await dexApi.getMinMaxReceived(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance, true)
-          this.setMinMaxReceived({ minMaxReceived: minMaxReceived, isExchangeB: true })
+          const minMaxReceived = await dexApi.getMinMaxReceived(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance, isExchangeBSwap)
+          this.setMinMaxReceived({ minMaxReceived: minMaxReceived, isExchangeB: isExchangeBSwap })
           this.getPrice()
           if (this.isInsufficientAmount) {
             this.isInsufficientAmount = false
@@ -409,9 +390,9 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
         await this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
       }
       if (this.isFieldFromFocused) {
-        await this.handleChangeFieldFrom()
+        await this.handleInputFieldFrom()
       } else {
-        await this.handleChangeFieldTo()
+        await this.handleInputFieldTo()
       }
     }
   }

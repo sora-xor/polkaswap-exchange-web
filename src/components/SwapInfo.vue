@@ -34,7 +34,8 @@
         <span>{{ t('swap.liquidityProviderFee') }}</span>
         <span class="swap-info-value">{{ liquidityProviderFeeValue }}</span>
       </div>
-      <div class="swap-info">
+      <!-- TODO 4 alexnatalia: Show if logged in and have info about Network Fee -->
+      <div v-if="connected" class="swap-info">
         <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.networkFeeTooltip', { networkFee: networkFeeValue})" theme="light" placement="right-start" animation="none" :show-arrow="false">
           <s-icon name="info" size="16" />
         </s-tooltip>
