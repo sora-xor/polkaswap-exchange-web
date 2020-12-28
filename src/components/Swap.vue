@@ -191,6 +191,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   async initTokens (): Promise<void> {
+    // TODO: Remove Set timeout and find the best way to solve the problem
     await setTimeout(() => {
       const tokenSymbol = this.tokenFrom !== null && this.tokenFrom !== undefined ? this.tokenFrom.symbol : KnownSymbols.XOR
       this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: tokenSymbol })
