@@ -53,8 +53,10 @@ import { dexApi } from '@soramitsu/soraneo-wallet-web'
 export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
-  @Getter fromValue!: number
-  @Getter toValue!: number
+  @Getter fromValue!: number | string
+  @Getter toValue!: number | string
+  @Getter slippageTolerance!: number
+  @Getter isExchangeB!: boolean
 
   get formattedFromValue (): string {
     return formatNumber(this.fromValue)
@@ -64,8 +66,14 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
     return formatNumber(this.toValue)
   }
 
-  handleConfirmSwap (): void {
-    this.$emit('confirm', true)
+  async handleConfirmSwap (): Promise<void> {
+    try {
+      await dexApi.swap(this.tokenFrom.address, this.tokenTo.address, this.fromValue.toString(), this.toValue.toString(), this.slippageTolerance, this.isExchangeB)
+      this.$emit('confirm', true)
+    } catch (error) {
+      this.$emit('confirm')
+      throw new Error(error)
+    }
     this.$emit('close')
     this.isVisible = false
   }
