@@ -56,6 +56,7 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   @Getter fromValue!: number | string
   @Getter toValue!: number | string
   @Getter slippageTolerance!: number
+  @Getter isExchangeB!: boolean
 
   get formattedFromValue (): string {
     return formatNumber(this.fromValue)
@@ -67,7 +68,7 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
 
   async handleConfirmSwap (): Promise<void> {
     try {
-      await dexApi.swap(this.tokenFrom.address, this.tokenTo.address, this.fromValue.toString(), this.toValue.toString(), this.slippageTolerance)
+      await dexApi.swap(this.tokenFrom.address, this.tokenTo.address, this.fromValue.toString(), this.toValue.toString(), this.slippageTolerance, this.isExchangeB)
       this.$emit('confirm', true)
     } catch (error) {
       this.$emit('confirm')
