@@ -10,12 +10,14 @@ const types = flow(
   map(x => [x, x]),
   fromPairs
 )([
-  'GET_ASSETS_LIST'
+  'GET_ASSETS_LIST',
+  'GET_ACCOUNT_ASSETS_LIST'
 ])
 
 function initialState () {
   return {
-    assets: []
+    assets: [],
+    accountAssets: []
   }
 }
 
@@ -24,6 +26,9 @@ const state = initialState()
 const getters = {
   assets (state) {
     return state.assets
+  },
+  accountAssets (state) {
+    return state.accountAssets
   }
 }
 
@@ -37,6 +42,18 @@ const mutations = {
   },
 
   [types.GET_ASSETS_LIST_FAILURE] (state) {
+    state.assets = []
+  },
+
+  [types.GET_ACCOUNT_ASSETS_LIST_REQUEST] (state) {
+    state.assets = []
+  },
+
+  [types.GET_ACCOUNT_ASSETS_LIST_SUCCESS] (state, accountAssets: Array<Asset>) {
+    state.accountAssets = accountAssets
+  },
+
+  [types.GET_ACCOUNT_ASSETS_LIST_FAILURE] (state) {
     state.assets = []
   }
 }
@@ -54,11 +71,11 @@ const actions = {
   },
 
   getAccountAssets ({ commit }) {
-    commit(types.GET_ASSETS_LIST_REQUEST)
+    commit(types.GET_ACCOUNT_ASSETS_LIST_REQUEST)
     try {
-      commit(types.GET_ASSETS_LIST_SUCCESS, dexApi.accountAssets.filter(asset => asset.symbol !== 'XYKPOOL'))
+      commit(types.GET_ACCOUNT_ASSETS_LIST_SUCCESS, dexApi.accountAssets.filter(asset => asset.symbol !== 'XYKPOOL'))
     } catch (error) {
-      commit(types.GET_ASSETS_LIST_FAILURE)
+      commit(types.GET_ACCOUNT_ASSETS_LIST_FAILURE)
     }
   }
 }

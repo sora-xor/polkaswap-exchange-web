@@ -31,7 +31,7 @@
         </div>
         <div class="pool-info pool-info--share">
           <div>{{ t('pool.poolShare')}}</div>
-          <div class="pool-info-value">1.5%</div>
+          <div class="pool-info-value">{{ getPoolShare(liquidity) }}%</div>
         </div>
         <div class="pool-info--buttons">
           <s-button type="primary" size="small" @click="handleAddPairLiquidity(liquidity.firstAddress, liquidity.secondAddress)">
@@ -109,6 +109,10 @@ export default class Pool extends Mixins(TranslationMixin) {
     const asset = this.assets.find(a => a.address === address)
 
     return asset.symbol || 'Unknown asset'
+  }
+
+  getPoolShare (liquidity) {
+    return liquidity.balance / liquidity.balance
   }
 }
 </script>

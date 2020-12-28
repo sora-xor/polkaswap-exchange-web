@@ -105,8 +105,8 @@
       </div>
     </info-card>
 
-    <select-token :visible.sync="showSelectFirstTokenDialog" accountAssetsOnly notNullBalanceOnly @select="setFirstToken" />
-    <select-token :visible.sync="showSelectSecondTokenDialog" accountAssetsOnly notNullBalanceOnly @select="setSecondToken" />
+    <select-token :visible.sync="showSelectFirstTokenDialog" accountAssetsOnly notNullBalanceOnly :asset="secondToken" @select="setFirstToken" />
+    <select-token :visible.sync="showSelectSecondTokenDialog" accountAssetsOnly notNullBalanceOnly :asset="secondToken" @select="setSecondToken" />
 
     <confirm-create-pair :visible.sync="showConfirmCreatePairDialog" @confirm="confirmCreatePair" />
     <result-dialog :visible.sync="isCreatePairConfirmed" :type="t('createPair.add')" :message="resultMessage" />
@@ -185,14 +185,6 @@ export default class CreatePair extends Mixins(TranslationMixin) {
 
   get secondTokenPosition (): string {
     return formatNumber(0, 2)
-  }
-
-  get poolTokens (): string {
-    return formatNumber(0, 2)
-  }
-
-  get shareOfPool (): string {
-    return '<0.01%'
   }
 
   get areTokensSelected (): boolean {

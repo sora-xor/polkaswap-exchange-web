@@ -34,6 +34,7 @@ function initialState () {
     reserve: null,
     minted: '',
     fee: '',
+    totalSupply: 0,
     focusedField: null
   }
 }
@@ -71,8 +72,11 @@ const getters = {
   fee (state) {
     return state.fee || '0'
   },
-  shareOfPool (state) {
-    return '0'
+  totalSupply (state) {
+    return state.totalSupply || '0'
+  },
+  shareOfPool (state, getters) {
+    return new BigNumber(getters.minted).dividedBy(Number(getters.totalSupply)).toNumber()
   }
 }
 
@@ -104,8 +108,9 @@ const mutations = {
   },
   [types.ESTIMATE_MINTED_REQUEST] (state) {
   },
-  [types.ESTIMATE_MINTED_SUCCESS] (state, minted) {
+  [types.ESTIMATE_MINTED_SUCCESS] (state, { minted, pts }) {
     state.minted = minted
+    state.totalSupply = pts
   },
   [types.ESTIMATE_MINTED_FAILURE] (state, error) {
   },
@@ -161,7 +166,7 @@ const actions = {
       commit(types.ESTIMATE_MINTED_REQUEST)
 
       try {
-        const minted = await dexApi.estimatePoolTokensMinted(
+        const [minted, pts] = await dexApi.estimatePoolTokensMinted(
           getters.firstToken.address,
           getters.secondToken.address,
           getters.firstTokenValue,
@@ -169,7 +174,7 @@ const actions = {
           getters.reserveA,
           getters.reserveB
         )
-        commit(types.ESTIMATE_MINTED_SUCCESS, minted)
+        commit(types.ESTIMATE_MINTED_SUCCESS, { minted, pts })
       } catch (error) {
         commit(types.ESTIMATE_MINTED_FAILURE, error)
       }
@@ -236,7 +241,7 @@ const actions = {
     }
   },
 
-  async setDataFromLiquidity ({ dispatch }, { firstAddress, secondAddress }) {
+  async setDataFromLiquidity ({ dispatch }, { firstAddress, secondAddress, balance }) {
     dispatch('setFirstToken', dexApi.accountAssets.find(a => a.address === firstAddress))
     dispatch('setSecondToken', dexApi.accountAssets.find(a => a.address === secondAddress))
   },

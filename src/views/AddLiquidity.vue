@@ -103,7 +103,7 @@
       </div>
       <div class="card__data">
         <div>{{ t('createPair.shareOfPool') }}</div>
-        <div>{{ shareOfPool }}%</div>
+        <div>{{ formatNumber(shareOfPool || 0, 2) }}%</div>
       </div>
       <div class="card__data">
         <div>{{ t('createPair.networkFee') }}</div>
@@ -226,10 +226,6 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
   }
 
   get secondTokenPosition (): string {
-    return formatNumber(0, 2)
-  }
-
-  get poolTokens (): string {
     return formatNumber(0, 2)
   }
 
