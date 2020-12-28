@@ -116,7 +116,7 @@ const actions = {
   async setFirstToken ({ commit, dispatch }, asset: any) {
     let firstAsset = await dexApi.accountAssets.find(a => a.address === asset.address)
     if (!firstAsset) {
-      firstAsset = { ...asset, balance: '0', usdBalance: '0' }
+      firstAsset = { ...asset, balance: '0' }
     }
 
     commit(types.SET_FIRST_TOKEN, firstAsset)
@@ -126,7 +126,7 @@ const actions = {
   async setSecondToken ({ commit, dispatch }, asset: any) {
     let secondAddress = await dexApi.accountAssets.find(a => a.address === asset.address)
     if (!secondAddress) {
-      secondAddress = { ...asset, balance: '0', usdBalance: '0' }
+      secondAddress = { ...asset, balance: '0' }
     }
 
     commit(types.SET_SECOND_TOKEN, secondAddress)

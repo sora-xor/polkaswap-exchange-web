@@ -228,7 +228,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
           const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.from)
           this.formModel.to = swapResult.amount
           this.setLiquidityProviderFee(swapResult.fee)
-          const minMaxReceived = await dexApi.getMinMaxReceived(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
+          const minMaxReceived = await dexApi.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
           this.setMinMaxReceived(minMaxReceived)
           this.getPrice()
           if (this.isInsufficientAmount) {
@@ -256,7 +256,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
           const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.to)
           this.formModel.from = swapResult.amount
           this.setLiquidityProviderFee(swapResult.fee)
-          const minMaxReceived = await dexApi.getMinMaxReceived(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
+          const minMaxReceived = await dexApi.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
           this.setMinMaxReceived(minMaxReceived)
           this.getPrice()
           if (this.isInsufficientAmount) {
