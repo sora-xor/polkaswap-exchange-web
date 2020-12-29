@@ -78,7 +78,7 @@
           {{ t('swap.chooseTokens') }}
         </template>
         <template v-else-if="!isAvailable">
-          {{ t('createPair.insufficientAssets') }}
+          {{ t('createPair.unsuitableAssets') }}
         </template>
         <template v-else-if="isEmptyBalance">
           {{ t('swap.enterAmount') }}

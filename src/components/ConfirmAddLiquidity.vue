@@ -28,7 +28,7 @@
       </s-row>
     </div>
     <div class="output-description">
-      {{ t('confirmSupply.outputDescription') }}
+      {{ t('confirmSupply.outputDescription', { slippageTolerance }) }}
     </div>
 
     <s-divider />
@@ -42,7 +42,7 @@
       </s-row>
       <s-row flex justify="space-between" class="pair-info__line">
         <div>{{ t('createPair.shareOfPool') }}</div>
-        <div>{{ shareOfPool }}</div>
+        <div>{{ formatNumber(shareOfPool, 2) }}%</div>
       </s-row>
     </div>
     <template #footer>
@@ -76,12 +76,10 @@ export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, Dialog
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
+  @Getter('shareOfPool', { namespace }) shareOfPool!: string
+  @Getter slippageTolerance!: number
 
   formatNumber = formatNumber
-
-  get shareOfPool (): string {
-    return '1%'
-  }
 
   handleConfirmCreatePair (): void {
     this.$emit('confirm', true)

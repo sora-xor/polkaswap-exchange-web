@@ -47,9 +47,11 @@
     <s-button class="el-button--add-liquidity" type="primary" @click="handleAddLiquidity">
       {{ t('pool.addLiquidity') }}
     </s-button>
-    <s-button v-if="connected" class="el-button--create-pair" type="secondary" @click="handleCreatePair">
-      {{ t('pool.createPair') }}
-    </s-button>
+    <s-tooltip content="Comming soon">
+      <s-button v-if="connected" class="el-button--create-pair" type="secondary" >
+        {{ t('pool.createPair') }}
+      </s-button>
+    </s-tooltip>
   </div>
 </template>
 

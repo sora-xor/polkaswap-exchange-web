@@ -121,14 +121,14 @@ export default {
     ok: 'OK',
     networkFee: 'Network fee',
     insufficientBalance: 'Insufficient balance',
-    insufficientAssets: 'Insufficient assets',
+    unsuitableAssets: 'Unsuitable assets',
     transactionMessage: '{firstToken} and {secondToken}',
     firstLiquidityProvider: 'You are the first liquidity provider',
     firstLiquidityProviderInfo: 'The ratio of tokens you add will set the price of this pool.<br/>Once you are happy with the rate click supply to review.'
   },
   confirmSupply: {
     title: 'You will receive',
-    outputDescription: 'Output is estimated. If the price changes more than 0.5% your transaction will revert.',
+    outputDescription: 'Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.',
     poolTokensBurned: '{first}-{second} Pool Tokens Burned:',
     price: 'Price:',
     confirm: 'Confirm'

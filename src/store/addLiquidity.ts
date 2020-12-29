@@ -76,7 +76,7 @@ const getters = {
     return state.totalSupply || '0'
   },
   shareOfPool (state, getters) {
-    return new BigNumber(getters.minted).dividedBy(Number(getters.totalSupply)).toNumber()
+    return new BigNumber(getters.minted).dividedBy(Number(getters.totalSupply)).multipliedBy(100).toNumber()
   }
 }
 
