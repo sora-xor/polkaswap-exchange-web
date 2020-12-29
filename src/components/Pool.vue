@@ -115,7 +115,7 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin) {
   getAssetSymbol (address) {
     const asset = this.assets.find(a => a.address === address)
 
-    return asset.symbol || 'Unknown asset'
+    return asset ? asset.symbol : 'Unknown asset'
   }
 
   getPoolShare (liquidity) {
