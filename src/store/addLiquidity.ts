@@ -134,6 +134,8 @@ const actions = {
     }
 
     commit(types.SET_FIRST_TOKEN, firstAsset)
+    commit(types.SET_FIRST_TOKEN_VALUE, '')
+    commit(types.SET_SECOND_TOKEN_VALUE, '')
     dispatch('checkReserve')
   },
 
@@ -143,6 +145,8 @@ const actions = {
       secondAddress = { ...asset, balance: '0' }
     }
     commit(types.SET_SECOND_TOKEN, secondAddress)
+    commit(types.SET_FIRST_TOKEN_VALUE, '')
+    commit(types.SET_SECOND_TOKEN_VALUE, '')
     dispatch('checkReserve')
   },
 

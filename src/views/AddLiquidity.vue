@@ -26,7 +26,7 @@
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
-            <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleFirstMaxValue">
+            <s-button v-if="connected" :disabled="!areTokensSelected" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
@@ -60,7 +60,7 @@
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
-            <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleSecondMaxValue">
+            <s-button v-if="connected" :disabled="!areTokensSelected" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleSecondMaxValue">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
@@ -92,7 +92,7 @@
       </s-button>
     </s-form>
 
-    <info-card v-if="areTokensSelected" :title="t('createPair.pricePool')">
+    <info-card v-if="areTokensSelected && isAvailable" :title="t('createPair.pricePool')">
       <div class="card__data">
         <div>{{ t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol }) }}</div>
         <div>{{ firstPerSecondPrice }} {{ firstToken.symbol }}</div>
@@ -111,7 +111,7 @@
       </div>
     </info-card>
 
-    <info-card v-if="areTokensSelected" :title="t('createPair.yourPosition') ">
+    <info-card v-if="areTokensSelected && isAvailable" :title="t('createPair.yourPosition') ">
       <div class="card__data">
         <s-row flex>
           <pair-token-logo class="pair-token-logo" :first-token="firstToken" :second-token="secondToken" size="mini" />
