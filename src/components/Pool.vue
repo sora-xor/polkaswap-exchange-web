@@ -1,5 +1,5 @@
 <template>
-  <div class="el-form--pool">
+  <div class="el-form--pool" v-loading="loading">
     <generic-header class="header--pool" :has-button-back="false" :title="t('pool.yourLiquidity')" :tooltip="t('pool.description')" />
     <p v-if="!connected" class="pool-info-container">
       {{ t('pool.connectToWallet') }}
@@ -29,10 +29,11 @@
           <div>{{ t('pool.pairTokens', { pair: getPairTitle(getAssetSymbol(liquidity.firstAddress), getAssetSymbol(liquidity.secondAddress)) }) }}</div>
           <div class="pool-info-value">{{ liquidity.balance }}</div>
         </div>
-        <div class="pool-info pool-info--share">
+        <!-- TODO: uncomment when it will work -->
+        <!-- <div class="pool-info pool-info--share">
           <div>{{ t('pool.poolShare')}}</div>
           <div class="pool-info-value">{{ getPoolShare(liquidity) }}%</div>
-        </div>
+        </div> -->
         <div class="pool-info--buttons">
           <s-button type="primary" size="small" @click="handleAddPairLiquidity(liquidity.firstAddress, liquidity.secondAddress)">
             {{ t('pool.addLiquidity') }}
@@ -56,6 +57,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import LoadingMixin from '@/components/mixins/LoadingMixin'
 import { isWalletConnected, formatNumber } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
@@ -69,13 +71,18 @@ const namespace = 'pool'
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
-export default class Pool extends Mixins(TranslationMixin) {
+export default class Pool extends Mixins(TranslationMixin, LoadingMixin) {
   @Getter('liquidities', { namespace }) liquidities!: any
   @Getter('assets', { namespace: 'assets' }) assets
-  @Action('getLiquidities', { namespace }) getLiquidities
 
-  created () {
-    this.getLiquidities()
+  @Action('getLiquidities', { namespace }) getLiquidities
+  @Action('getAssets', { namespace: 'assets' }) getAssets
+
+  async mounted () {
+    await this.withApi(async () => {
+      await this.getAssets()
+      await this.getLiquidities()
+    })
   }
 
   get connected (): boolean {

@@ -106,7 +106,7 @@
     </info-card>
 
     <select-token :visible.sync="showSelectFirstTokenDialog" accountAssetsOnly notNullBalanceOnly :asset="secondToken" @select="setFirstToken" />
-    <select-token :visible.sync="showSelectSecondTokenDialog" accountAssetsOnly notNullBalanceOnly :asset="secondToken" @select="setSecondToken" />
+    <select-token :visible.sync="showSelectSecondTokenDialog" accountAssetsOnly notNullBalanceOnly :asset="firstToken" @select="setSecondToken" />
 
     <confirm-create-pair :visible.sync="showConfirmCreatePairDialog" @confirm="confirmCreatePair" />
     <result-dialog :visible.sync="isCreatePairConfirmed" :type="t('createPair.add')" :message="resultMessage" />
@@ -118,6 +118,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import LoadingMixin from '@/components/mixins/LoadingMixin'
 import router, { lazyComponent } from '@/router'
 import { formatNumber, isWalletConnected } from '@/utils'
 import { Components, PageNames } from '@/consts'
@@ -137,7 +138,7 @@ const namespace = 'createPair'
   }
 })
 
-export default class CreatePair extends Mixins(TranslationMixin) {
+export default class CreatePair extends Mixins(TranslationMixin, LoadingMixin) {
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
@@ -152,7 +153,7 @@ export default class CreatePair extends Mixins(TranslationMixin) {
   @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
   @Action('createPair', { namespace }) createPair
   @Action('resetData', { namespace }) resetData
-  @Action('getAssets', { namespace: 'assets' }) getAssets
+  @Action('getAccountAssets', { namespace: 'assets' }) getAccountAssets
 
   showSelectFirstTokenDialog = false
   showSelectSecondTokenDialog = false
@@ -162,9 +163,11 @@ export default class CreatePair extends Mixins(TranslationMixin) {
 
   formatNumber = formatNumber
 
-  async created () {
-    await this.getAssets()
-    await this.setFirstToken(KnownAssets.get(KnownSymbols.XOR))
+  async mounted () {
+    await this.withApi(async () => {
+      await this.getAccountAssets()
+      await this.setFirstToken(KnownAssets.get(KnownSymbols.XOR))
+    })
   }
 
   get connected (): boolean {

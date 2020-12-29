@@ -90,7 +90,7 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
 
   created (): void {
     if (this.accountAssetsOnly) {
-      this.getAccountAssets()
+      this.withApi(this.getAccountAssets)
     } else {
       this.withApi(this.getAssets)
     }

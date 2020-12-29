@@ -27,8 +27,8 @@ function initialState () {
   return {
     firstToken: null,
     secondToken: null,
-    firstTokenValue: 0,
-    secondTokenValue: 0,
+    firstTokenValue: '',
+    secondTokenValue: '',
     reserve: null,
     minted: '',
     fee: ''

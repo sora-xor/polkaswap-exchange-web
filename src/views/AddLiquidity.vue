@@ -142,6 +142,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import LoadingMixin from '@/components/mixins/LoadingMixin'
 import router, { lazyComponent } from '@/router'
 import { formatNumber, isWalletConnected } from '@/utils'
 import { Components, PageNames } from '@/consts'
@@ -160,7 +161,7 @@ const namespace = 'addLiquidity'
     ResultDialog: lazyComponent(Components.ResultDialog)
   }
 })
-export default class AddLiquidity extends Mixins(TranslationMixin) {
+export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin) {
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
@@ -178,7 +179,7 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField
   @Action('resetData', { namespace }) resetData
-  @Action('getAssets', { namespace: 'assets' }) getAssets
+  @Action('getAccountAssets', { namespace: 'assets' }) getAccountAssets
 
   showSelectFirstTokenDialog = false
   showSelectSecondTokenDialog = false
@@ -186,17 +187,20 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
   showConfirmDialog = false
   isCreatePairConfirmed = false
 
-  async created () {
+  async mounted () {
     this.resetData()
-    await this.getAssets()
-    await this.setFirstToken(KnownAssets.get(KnownSymbols.XOR))
 
-    if (this.firstAddress && this.secondAddress) {
-      await this.setDataFromLiquidity({
-        firstAddress: this.firstAddress,
-        secondAddress: this.secondAddress
-      })
-    }
+    await this.withApi(async () => {
+      await this.getAccountAssets()
+      await this.setFirstToken(KnownAssets.get(KnownSymbols.XOR))
+
+      if (this.firstAddress && this.secondAddress) {
+        await this.setDataFromLiquidity({
+          firstAddress: this.firstAddress,
+          secondAddress: this.secondAddress
+        })
+      }
+    })
   }
 
   get firstAddress (): string {
