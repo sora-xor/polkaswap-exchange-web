@@ -95,6 +95,7 @@ export default {
     pooledToken: '{tokenSymbol} Pooled:',
     pairTokens: '{pair} Pool Tokens:',
     poolShare: 'Your pool share',
+    comingSoon: 'Coming soon',
     description: 'When you add liquidity, you are given pool tokens representing your position. These tokens automaticaly earn fees proportional to your share of the pool, and can be redeemed at any time.'
   },
   selectToken: {
