@@ -37,6 +37,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
+import { KnownAssets, KnownSymbols, Asset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -59,12 +60,19 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   selectedToken: Token | null = null
 
   @Prop({ default: () => null, type: Object }) readonly asset!: Token
+  @Prop({ default: () => false, type: Boolean }) readonly accountAssetsOnly!: boolean
+  @Prop({ default: () => false, type: Boolean }) readonly notNullBalanceOnly!: boolean
 
   @Getter('assets', { namespace }) assets!: Array<Token>
+  @Getter('accountAssets', { namespace }) accountAssets!: Array<Token>
   @Action('getAssets', { namespace }) getAssets
+  @Action('getAccountAssets', { namespace }) getAccountAssets
 
   get assetsList (): Array<Token> {
-    return this.asset ? this.assets.filter(asset => asset.symbol !== this.asset.symbol) : this.assets
+    let assets = this.accountAssetsOnly ? this.accountAssets : this.assets
+    assets = this.asset ? assets.filter(asset => asset.symbol !== this.asset.symbol) : assets
+
+    return this.notNullBalanceOnly ? assets.filter(a => a.balance > 0) : assets
   }
 
   get filteredTokens (): Array<Token> {
@@ -81,7 +89,11 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   }
 
   created (): void {
-    this.withApi(this.getAssets)
+    if (this.accountAssetsOnly) {
+      this.withApi(this.getAccountAssets)
+    } else {
+      this.withApi(this.getAssets)
+    }
   }
 
   selectToken (token: Token): void {

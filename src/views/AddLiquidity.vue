@@ -2,7 +2,6 @@
   <div class="container">
     <generic-header :title="t('addLiquidity.title')" :tooltip="t('pool.description')" />
     <s-form
-      v-model="formModel"
       class="el-form--actions"
       :show-message="false"
     >
@@ -17,26 +16,24 @@
         <div class="input-line">
           <s-form-item>
             <s-input
-              v-model="formModel.first"
-              v-float="formModel.first"
+              :value="firstTokenValue"
+              v-float
               class="s-input--token-value"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
-              @change="handleChangeFirstField"
+              @change="setFirstTokenValue"
+              @blur="resetFocusedField"
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
             <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectFirstTokenDialog">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <token-logo :token="firstToken" size="small" />
               {{ firstToken.symbol }}
             </s-button>
           </div>
-          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectFirstTokenDialog">
-            {{ t('swap.chooseToken') }}
-          </s-button>
         </div>
       </div>
       <s-icon class="icon-divider" name="plus-rounded" size="medium" />
@@ -53,12 +50,13 @@
         <div class="input-line">
           <s-form-item>
             <s-input
-              v-model="formModel.second"
-              v-float="formModel.second"
+              :value="secondTokenValue"
+              v-float
               class="s-input--token-value"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
-              @change="handleChangeSecondField"
+              @change="setSecondTokenValue"
+              @blur="resetFocusedField"
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
@@ -75,15 +73,18 @@
           </s-button>
         </div>
       </div>
-        <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance" @click="showConfirmDialog = true">
+        <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="showConfirmDialog = true">
         <template v-if="!areTokensSelected">
           {{ t('swap.chooseTokens') }}
+        </template>
+        <template v-else-if="!isAvailable">
+          {{ t('createPair.insufficientAssets') }}
         </template>
         <template v-else-if="isEmptyBalance">
           {{ t('swap.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
-          {{ t('swap.insufficientBalance', { tokenSymbol: firstToken.symbol }) }}
+          {{ t('createPair.insufficientBalance') }}
         </template>
         <template v-else>
           {{ t('createPair.supply') }}
@@ -102,7 +103,11 @@
       </div>
       <div class="card__data">
         <div>{{ t('createPair.shareOfPool') }}</div>
-        <div>{{ shareOfPool }}</div>
+        <div>{{ formatNumber(shareOfPool || 0, 2) }}%</div>
+      </div>
+      <div class="card__data">
+        <div>{{ t('createPair.networkFee') }}</div>
+        <div>{{ fee }} XOR</div>
       </div>
     </info-card>
 
@@ -112,7 +117,7 @@
           <pair-token-logo class="pair-token-logo" :first-token="firstToken" :second-token="secondToken" size="mini" />
           {{ t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol }) }}:
         </s-row>
-        <div>{{ poolTokens }}</div>
+        <div>{{ minted }}</div>
       </div>
       <s-divider />
       <div class="card__data">
@@ -125,8 +130,8 @@
       </div>
     </info-card>
 
-    <select-token :visible.sync="showSelectFirstTokenDialog" @select="setFirstToken" />
-    <select-token :visible.sync="showSelectSecondTokenDialog" @select="setSecondToken" />
+    <select-token :visible.sync="showSelectFirstTokenDialog" accountAssetsOnly notNullBalanceOnly :asset="secondToken" @select="setFirstToken" />
+    <select-token :visible.sync="showSelectSecondTokenDialog" accountAssetsOnly notNullBalanceOnly :asset="firstToken" @select="setSecondToken" />
 
     <confirm-add-liquidity :visible.sync="showConfirmDialog" @confirm="handleConfirmAddLiquidity" />
     <result-dialog :visible.sync="isCreatePairConfirmed" :type="t('createPair.add')" :message="resultMessage" />
@@ -137,9 +142,11 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import LoadingMixin from '@/components/mixins/LoadingMixin'
 import router, { lazyComponent } from '@/router'
 import { formatNumber, isWalletConnected } from '@/utils'
 import { Components, PageNames } from '@/consts'
+import { KnownAssets, KnownSymbols } from '@sora-substrate/util'
 
 const namespace = 'addLiquidity'
 
@@ -154,11 +161,15 @@ const namespace = 'addLiquidity'
     ResultDialog: lazyComponent(Components.ResultDialog)
   }
 })
-export default class AddLiquidity extends Mixins(TranslationMixin) {
+export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin) {
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
+  @Getter('isAvailable', { namespace }) isAvailable!: boolean
+  @Getter('minted', { namespace }) minted!: string
+  @Getter('fee', { namespace }) fee!: string
+  @Getter('shareOfPool', { namespace }) shareOfPool!: string
 
   @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
   @Action('setFirstToken', { namespace }) setFirstToken
@@ -166,7 +177,9 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
   @Action('setFirstTokenValue', { namespace }) setFirstTokenValue
   @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
   @Action('addLiquidity', { namespace }) addLiquidity
-  @Action getTokens
+  @Action('resetFocusedField', { namespace }) resetFocusedField
+  @Action('resetData', { namespace }) resetData
+  @Action('getAccountAssets', { namespace: 'assets' }) getAccountAssets
 
   showSelectFirstTokenDialog = false
   showSelectSecondTokenDialog = false
@@ -174,21 +187,28 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
   showConfirmDialog = false
   isCreatePairConfirmed = false
 
-  async created () {
-    await this.getTokens()
+  async mounted () {
+    this.resetData()
 
-    if (this.liquidityId) {
-      await this.setDataFromLiquidity(this.liquidityId)
-    }
+    await this.withApi(async () => {
+      await this.getAccountAssets()
+      await this.setFirstToken(KnownAssets.get(KnownSymbols.XOR))
+
+      if (this.firstAddress && this.secondAddress) {
+        await this.setDataFromLiquidity({
+          firstAddress: this.firstAddress,
+          secondAddress: this.secondAddress
+        })
+      }
+    })
   }
 
-  get liquidityId (): string {
-    return this.$route.params.id
+  get firstAddress (): string {
+    return this.$route.params.firstAddress
   }
 
-  formModel = {
-    first: formatNumber(0, 1),
-    second: formatNumber(0, 1)
+  get secondAddress (): string {
+    return this.$route.params.secondAddress
   }
 
   formatNumber = formatNumber
@@ -198,11 +218,11 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
   }
 
   get firstPerSecondPrice (): string {
-    return formatNumber(this.firstToken.price / this.secondToken.price, 2)
+    return formatNumber(this.firstTokenValue / this.secondTokenValue || 0, 2)
   }
 
   get secondPerFirstPrice (): string {
-    return formatNumber(this.secondToken.price / this.firstToken.price, 2)
+    return formatNumber(this.secondTokenValue / this.firstTokenValue || 0, 2)
   }
 
   get firstTokenPosition (): string {
@@ -211,14 +231,6 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
 
   get secondTokenPosition (): string {
     return formatNumber(0, 2)
-  }
-
-  get poolTokens (): string {
-    return formatNumber(0, 2)
-  }
-
-  get shareOfPool (): string {
-    return '<0.01%'
   }
 
   get areTokensSelected (): boolean {
@@ -231,7 +243,7 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
 
   get isInsufficientBalance (): boolean {
     if (this.areTokensSelected) {
-      return +this.formModel.first > this.firstToken.balance
+      return +this.firstTokenValue > this.firstToken.balance || +this.secondTokenValue > this.secondToken.balance
     }
 
     return true
@@ -256,20 +268,12 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
     this.showSelectSecondTokenDialog = true
   }
 
-  handleChangeFirstField (): void {
-    this.setFirstTokenValue(this.formModel.first)
-  }
-
-  handleChangeSecondField (): void {
-    this.setSecondTokenValue(this.formModel.second)
-  }
-
   handleFirstMaxValue (): void {
-    this.formModel.first = this.firstToken.balance
+    this.setFirstTokenValue(this.firstToken.balance)
   }
 
   handleSecondMaxValue (): void {
-    this.formModel.second = this.secondToken.balance
+    this.setSecondTokenValue(this.secondToken.balance)
   }
 
   getTokenBalance (token: any): string {
@@ -279,9 +283,15 @@ export default class AddLiquidity extends Mixins(TranslationMixin) {
     return ''
   }
 
-  handleConfirmAddLiquidity (): void {
+  async handleConfirmAddLiquidity () {
+    try {
+      await this.addLiquidity()
+      this.isCreatePairConfirmed = true
+    } catch (error) {
+      console.error(error)
+    }
+
     this.showConfirmDialog = false
-    this.isCreatePairConfirmed = true
   }
 }
 </script>

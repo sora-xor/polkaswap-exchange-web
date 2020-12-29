@@ -119,6 +119,9 @@ export default {
     remove: 'remove',
     add: 'ADD',
     ok: 'OK',
+    networkFee: 'Network fee',
+    insufficientBalance: 'Insufficient balance',
+    insufficientAssets: 'Insufficient assets',
     transactionMessage: '{firstToken} and {secondToken}',
     firstLiquidityProvider: 'You are the first liquidity provider',
     firstLiquidityProviderInfo: 'The ratio of tokens you add will set the price of this pool.<br/>Once you are happy with the rate click supply to review.'
