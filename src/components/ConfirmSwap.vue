@@ -26,6 +26,7 @@
     <swap-info :show-price="true" />
     <swap-info :show-tooltips="false" />
     <template #footer>
+      <!-- TODO: Check if Confirm still available -->
       <s-button type="primary" @click="handleConfirmSwap">{{ t('swap.confirmSwap') }}</s-button>
     </template>
   </dialog-base>
