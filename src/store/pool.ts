@@ -2,7 +2,7 @@ import map from 'lodash/fp/map'
 import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
-import liquidityApi from '@/api/liquidity'
+import { dexApi } from '@soramitsu/soraneo-wallet-web'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -42,8 +42,10 @@ const actions = {
   async getLiquidities ({ commit }) {
     commit(types.GET_LIQUIDITIES_REQUEST)
     try {
-      const liquidities = await liquidityApi.getLiquidities()
-      commit(types.GET_LIQUIDITIES_SUCCESS, liquidities)
+      await dexApi.getKnownAccountLiquidity()
+      await dexApi.updateAccountLiquidity()
+
+      commit(types.GET_LIQUIDITIES_SUCCESS, dexApi.accountLiquidity)
     } catch (error) {
       commit(types.GET_LIQUIDITIES_FAILURE, error)
     }
