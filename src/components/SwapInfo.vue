@@ -147,11 +147,13 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   }
   > span:first-of-type {
     margin-right: $inner-spacing-small;
+    word-break: keep-all;
   }
   &-value {
     margin-left: auto;
     text-align: right;
     font-feature-settings: $s-font-feature-settings-common;
+    word-break: break-all;
   }
   .price-impact {
     &-positive {
@@ -163,6 +165,7 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   }
   .el-tooltip {
     margin-right: $inner-spacing-mini;
+    flex-shrink: 0;
   }
   &-icon {
     position: relative;

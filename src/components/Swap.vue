@@ -477,8 +477,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   .el-button--switch-tokens {
     @include switch-button-inherit-styles('medium');
   }
-  .s-input--token-value {
-    @include input-ellipsis;
+  .s-input--token-value .el-input .el-input__inner {
+    @include text-ellipsis;
   }
 }
 </style>
