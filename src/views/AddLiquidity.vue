@@ -146,7 +146,7 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 import router, { lazyComponent } from '@/router'
 import { formatNumber, isWalletConnected } from '@/utils'
 import { Components, PageNames } from '@/consts'
-import { KnownAssets, KnownSymbols } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, FPNumber } from '@sora-substrate/util'
 
 const namespace = 'addLiquidity'
 
@@ -218,7 +218,7 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
   }
 
   get firstPerSecondPrice (): string {
-    return formatNumber(this.firstTokenValue / this.secondTokenValue || 0, 2)
+    return formatNumber(new FPNumber(this.firstTokenValue, this.firstToken.decimals).div(new FPNumber(this.secondTokenValue, this.secondToken.decimals)).toString() || 0, 2)
   }
 
   get secondPerFirstPrice (): string {
@@ -243,7 +243,18 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
 
   get isInsufficientBalance (): boolean {
     if (this.areTokensSelected) {
-      return +this.firstTokenValue > this.firstToken.balance || +this.secondTokenValue > this.secondToken.balance
+      let firstValue = new FPNumber(this.firstTokenValue, this.firstToken.decimals)
+      const firstBalance = new FPNumber(this.firstToken.balance, this.firstToken.decimals)
+      let secondValue = new FPNumber(this.secondTokenValue, this.secondToken.decimals)
+      const secondBalance = new FPNumber(this.secondToken.balance, this.secondToken.decimals)
+
+      if (this.firstToken.symbol === KnownSymbols.XOR) {
+        firstValue = firstValue.add(new FPNumber(this.fee, this.firstToken.decimals))
+      } else {
+        secondValue = secondValue.add(new FPNumber(this.fee, this.secondToken.decimals))
+      }
+
+      return FPNumber.gt(firstValue, firstBalance) || FPNumber.gt(secondValue, secondBalance)
     }
 
     return true
