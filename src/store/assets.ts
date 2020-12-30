@@ -2,7 +2,7 @@ import map from 'lodash/fp/map'
 import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
-import { Asset } from '@sora-substrate/util'
+import { Asset, KnownSymbols } from '@sora-substrate/util'
 import { dexApi } from '@soramitsu/soraneo-wallet-web'
 
 const types = flow(
@@ -29,6 +29,12 @@ const getters = {
   },
   accountAssets (state) {
     return state.accountAssets
+  },
+  xorAsset (state) {
+    return state.accountAssets.find(a => a.symbol === KnownSymbols.XOR) || {}
+  },
+  xorBalance (state, getters) {
+    return getters.xorAsset.balance || 0
   }
 }
 

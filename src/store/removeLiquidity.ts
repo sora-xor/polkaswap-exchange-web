@@ -210,6 +210,8 @@ const actions = {
       } catch (error) {
         commit(types.GET_FEE_FAILURE, error)
       }
+    } else {
+      commit(types.GET_FEE_SUCCESS, 0)
     }
   },
 

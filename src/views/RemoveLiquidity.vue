@@ -158,6 +158,8 @@ import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 import { formatNumber } from '@/utils'
 import { Token } from '@/types'
+import { KnownSymbols, FPNumber } from '@sora-substrate/util'
+
 const namespace = 'removeLiquidity'
 
 @Component({
@@ -182,6 +184,8 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMix
   @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
   @Getter('secondTokenBalance', { namespace }) secondTokenBalance!: any
   @Getter('fee', { namespace }) fee!: any
+  @Getter('xorBalance', { namespace: 'assets' }) xorBalance!: any
+  @Getter('xorAsset', { namespace: 'assets' }) xorAsset!: any
 
   @Action('getLiquidity', { namespace }) getLiquidity
   @Action('setRemovePart', { namespace }) setRemovePart
@@ -243,6 +247,17 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMix
       this.firstTokenAmount > this.firstTokenBalance ||
       this.secondTokenAmount > this.secondTokenBalance
     )
+  }
+
+  get isInsufficientXorBalance (): boolean {
+    if (this.areTokensSelected) {
+      const xorValue = new FPNumber(this.fee, this.xorAsset.decimals)
+      const xorBalance = new FPNumber(this.xorBalance, this.xorAsset.decimals)
+
+      return FPNumber.gt(xorValue, xorBalance)
+    }
+
+    return true
   }
 
   get resultMessage (): string {
