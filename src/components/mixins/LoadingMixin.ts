@@ -1,4 +1,5 @@
 import { Vue, Component } from 'vue-property-decorator'
+import { isWalletLoaded } from '@soramitsu/soraneo-wallet-web'
 
 import { isApiConnected } from '@/utils'
 
@@ -24,7 +25,7 @@ export default class LoadingMixin extends Vue {
    * @param func
    */
   async withApi (func: Function): Promise<any> {
-    if (!isApiConnected()) {
+    if (!isWalletLoaded) {
       await new Promise(resolve => setTimeout(resolve, 50))
       return await this.withApi(func)
     } else {

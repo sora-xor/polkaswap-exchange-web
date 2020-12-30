@@ -43,7 +43,7 @@ import { PageNames, MainMenu, Components } from '@/consts'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import router, { lazyComponent } from '@/router'
-import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { dexApi, initWallet } from '@soramitsu/soraneo-wallet-web'
 
 @Component({
   components: {
@@ -66,10 +66,7 @@ export default class App extends Mixins(TranslationMixin, LoadingMixin) {
   showSettings = false
 
   async created () {
-    if (!dexApi.api) {
-      await this.withLoading(() => dexApi.initialize())
-      console.info('Connected to blockchain', dexApi.endpoint)
-    }
+    await this.withLoading(initWallet)
   }
 
   getCurrentPath (): string {
