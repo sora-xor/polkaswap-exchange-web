@@ -177,10 +177,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       if (+this.tokenFrom.balance === 0) {
         return true
       }
-      const fpBalance = new FPNumber(+this.tokenFrom.balance, this.tokenFrom.decimals)
-      const fpAmount = new FPNumber(+this.formModel.from, 10)
+      const fpBalance = new FPNumber(this.tokenFrom.balance, this.tokenFrom.decimals)
+      const fpAmount = new FPNumber(this.formModel.from, this.tokenFrom.decimals)
       if (this.tokenFrom.symbol === KnownSymbols.XOR) {
-        const fpFee = new FPNumber(+this.networkFee, 10)
+        const fpFee = new FPNumber(this.networkFee, this.tokenFrom.decimals)
         return FPNumber.eq(fpFee, fpBalance.sub(fpAmount))
       } else {
         return FPNumber.eq(fpBalance, fpAmount)
@@ -191,14 +191,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
 
   get isInsufficientBalance (): boolean {
     if (this.connected && this.areTokensSelected) {
-      let fpBalance = new FPNumber(+this.tokenFrom.balance, this.tokenFrom.decimals)
-      const fpAmount = new FPNumber(+this.formModel.from, 10)
+      let fpBalance = new FPNumber(this.tokenFrom.balance, this.tokenFrom.decimals)
+      const fpAmount = new FPNumber(this.formModel.from, this.tokenFrom.decimals)
       if (FPNumber.lt(fpBalance, fpAmount)) {
         this.insufficientBalanceTokenSymbol = this.tokenFrom.symbol
         return true
       }
       const assetXOR = KnownAssets.get(KnownSymbols.XOR)
-      const fpFee = new FPNumber(+this.networkFee, 10)
+      const fpFee = new FPNumber(this.networkFee, this.tokenFrom.decimals)
       this.insufficientBalanceTokenSymbol = KnownSymbols.XOR
       if (this.tokenFrom.symbol === KnownSymbols.XOR) {
         return !(FPNumber.lt(fpFee, fpBalance.sub(fpAmount)) || FPNumber.eq(fpFee, fpBalance.sub(fpAmount)))
@@ -414,7 +414,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     if (this.tokenFrom.symbol === KnownSymbols.XOR) {
       await this.getNetworkFee()
       const fpBalance = new FPNumber(this.tokenFrom.balance, this.tokenFrom.decimals)
-      const fpFee = new FPNumber(this.networkFee, 10)
+      const fpFee = new FPNumber(this.networkFee, this.tokenFrom.decimals)
       this.formModel.from = fpBalance.sub(fpFee).toString()
       return
     }
