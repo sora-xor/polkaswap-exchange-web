@@ -156,8 +156,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   isSwapConfirmed = false
 
   formModel = {
-    from: formatNumber(0, 1),
-    to: formatNumber(0, 1)
+    from: '',
+    to: ''
   }
 
   get connected (): boolean {
@@ -281,7 +281,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
           this.formModel.to = swapResult.amount
           this.setLiquidityProviderFee(swapResult.fee)
           const minMaxReceived = await dexApi.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
-          this.setMinMaxReceived({ minMaxReceived: minMaxReceived })
+          this.setMinMaxReceived({ minMaxReceived })
           this.getPrice()
           this.resetInsufficientAmountFlag()
           if (this.connected) {
@@ -321,7 +321,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
           this.formModel.from = swapResult.amount
           this.setLiquidityProviderFee(swapResult.fee)
           const minMaxReceived = await dexApi.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance, isExchangeBSwap)
-          this.setMinMaxReceived({ minMaxReceived: minMaxReceived, isExchangeB: isExchangeBSwap })
+          this.setMinMaxReceived({ minMaxReceived, isExchangeB: isExchangeBSwap })
           this.getPrice()
           this.resetInsufficientAmountFlag()
           if (this.connected) {

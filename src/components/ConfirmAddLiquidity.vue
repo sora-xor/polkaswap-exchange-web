@@ -5,7 +5,7 @@
     v-if="firstToken && secondToken"
   >
     <div class="pool-tokens-amount">
-      {{ poolTokens }}
+      {{ minted }}
     </div>
     <s-row v-if="firstToken && secondToken" flex align="middle" class="pool-tokens">
       <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="small" />
@@ -28,7 +28,7 @@
       </s-row>
     </div>
     <div class="output-description">
-      {{ t('confirmSupply.outputDescription') }}
+      {{ t('confirmSupply.outputDescription', { slippageTolerance }) }}
     </div>
 
     <s-divider />
@@ -36,13 +36,13 @@
       <s-row flex justify="space-between" class="pair-info__line">
         <div>{{ t('confirmSupply.price') }}</div>
         <div v-if="firstToken && secondToken" class="price">
-          <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price) }} {{ secondToken.symbol }}</div>
-          <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price) }} {{ firstToken.symbol }}</div>
+          <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstTokenValue / secondTokenValue || 0) }} {{ secondToken.symbol }}</div>
+          <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondTokenValue / firstTokenValue || 0) }} {{ firstToken.symbol }}</div>
         </div>
       </s-row>
       <s-row flex justify="space-between" class="pair-info__line">
         <div>{{ t('createPair.shareOfPool') }}</div>
-        <div>{{ shareOfPool }}</div>
+        <div>{{ formatNumber(shareOfPool, 2) }}%</div>
       </s-row>
     </div>
     <template #footer>
@@ -71,20 +71,15 @@ const namespace = 'addLiquidity'
   }
 })
 export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, DialogMixin) {
+  @Getter('minted', { namespace }) minted!: any
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
+  @Getter('shareOfPool', { namespace }) shareOfPool!: string
+  @Getter slippageTolerance!: number
 
   formatNumber = formatNumber
-
-  get poolTokens (): string {
-    return formatNumber(1000, 2)
-  }
-
-  get shareOfPool (): string {
-    return '1%'
-  }
 
   handleConfirmCreatePair (): void {
     this.$emit('confirm', true)

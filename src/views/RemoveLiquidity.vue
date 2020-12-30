@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-loading="loading">
     <generic-header :title="t('removeLiquidity.title')" :tooltip="t('removeLiquidity.description')" />
     <s-form
       class="el-form--actions"
@@ -118,9 +118,13 @@
         <s-row flex justify="space-between">
           <div>{{ t('removeLiquidity.price') }}</div>
           <div class="price">
-            <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price, 2) }} {{ secondToken.symbol }}</div>
-            <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price, 2) }} {{ firstToken.symbol }}</div>
+            <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price || 0, 2) }} {{ secondToken.symbol }}</div>
+            <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price || 0, 2) }} {{ firstToken.symbol }}</div>
           </div>
+        </s-row>
+        <s-row flex justify="space-between">
+          <div>{{ t('createPair.networkFee') }}</div>
+          <div>{{ fee }} XOR</div>
         </s-row>
       </div>
 
@@ -129,7 +133,7 @@
           {{ t('swap.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
-          {{ t('swap.insufficientBalance', { tokenSymbol: firstToken.symbol }) }}
+          {{ t('createPair.insufficientBalance') }}
         </template>
         <template v-else>
           {{ t('removeLiquidity.remove') }}
@@ -148,6 +152,7 @@ import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import TokenLogo from '@/components/TokenLogo.vue'
+import LoadingMixin from '@/components/mixins/LoadingMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
@@ -165,7 +170,7 @@ const namespace = 'removeLiquidity'
     ResultDialog: lazyComponent(Components.ResultDialog)
   }
 })
-export default class RemoveLiquidity extends Mixins(TranslationMixin) {
+export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMixin) {
   @Getter('liquidity', { namespace }) liquidity!: any
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
@@ -176,8 +181,7 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
   @Getter('firstTokenBalance', { namespace }) firstTokenBalance!: any
   @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
   @Getter('secondTokenBalance', { namespace }) secondTokenBalance!: any
-
-  @Getter tokens!: Array<Token>
+  @Getter('fee', { namespace }) fee!: any
 
   @Action('getLiquidity', { namespace }) getLiquidity
   @Action('setRemovePart', { namespace }) setRemovePart
@@ -185,14 +189,21 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
   @Action('setFirstTokenAmount', { namespace }) setFirstTokenAmount
   @Action('setSecondTokenAmount', { namespace }) setSecondTokenAmount
   @Action('resetFocusedField', { namespace }) resetFocusedField
-
-  @Action getTokens
+  @Action('removeLiquidity', { namespace }) removeLiquidity
+  @Action('getAssets', { namespace: 'assets' }) getAssets
+  @Action('resetData', { namespace }) resetData
 
   removePartInput = 0
 
   async created () {
-    await this.getTokens()
-    await this.getLiquidity(this.liquidityId)
+    await this.withLoading(async () => {
+      this.resetData()
+      await this.getAssets()
+      await this.getLiquidity({
+        firstAddress: this.firstTokenAddress,
+        secondAddress: this.secondTokenAddress
+      })
+    })
   }
 
   isWalletConnected = true
@@ -202,8 +213,12 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
 
   formatNumber = formatNumber
 
-  get liquidityId (): string {
-    return this.$route.params.id
+  get firstTokenAddress (): string {
+    return this.$route.params.firstAddress
+  }
+
+  get secondTokenAddress (): string {
+    return this.$route.params.secondAddress
   }
 
   get firstPerSecondPrice (): string {
@@ -243,7 +258,7 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
   }
 
   handleRemovePartChange (value): void {
-    const newValue = parseInt(value) || 0
+    const newValue = parseFloat(value) || 0
     this.removePartInput = newValue > 100 ? 100 : newValue < 0 ? 0 : newValue
 
     this.setRemovePart(this.removePartInput)
@@ -262,8 +277,14 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin) {
   }
 
   handleConfirmRemoveLiquidity (): void {
+    try {
+      this.removeLiquidity()
+      this.isRemoveLiquidityConfirmed = true
+    } catch (error) {
+      console.error(error)
+    }
+
     this.showConfirmDialog = false
-    this.isRemoveLiquidityConfirmed = true
   }
 }
 </script>
