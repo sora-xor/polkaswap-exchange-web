@@ -37,7 +37,7 @@ export default {
     githubLink: 'Github',
     [Topics.SwapTokens]: {
       title: 'Swap tokens on SORA network and other bridged networks',
-      text: 'Use Polkaswap exchange or integrate into your project using the SDK'
+      text: 'Use Polkaswap exchange or integrate it into your project using the SDK'
     },
     [Topics.PassiveEarning]: {
       title: 'Earn through passive market making',
@@ -49,7 +49,7 @@ export default {
     },
     [Topics.PriceFeeds]: {
       title: 'Build decentralized price feeds',
-      text: 'Use Polkaswap exchange or integrate into your project using the SDK'
+      text: 'Use Polkaswap exchange or integrate it into your project using the SDK'
     }
   },
   exchange: {
@@ -78,7 +78,7 @@ export default {
     liquidityProviderFeeTooltip: 'A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive.',
     networkFee: 'Network Fee',
     networkFeeTooltip: 'Fixed  amount of {networkFee} goes to network validators.',
-    enterAmount: 'Enter an amount',
+    enterAmount: 'Enter amount',
     insufficientBalance: 'Insufficient {tokenSymbol} balance',
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
     confirmSwap: 'Confirm swap',
@@ -112,7 +112,7 @@ export default {
     firstPerSecond: '{first} per {second}',
     firstSecondPoolTokens: '{first}-{second} Pool tokens',
     connect: 'Connect wallet',
-    enterAmount: 'Enter an amount',
+    enterAmount: 'Enter amount',//in these cases if you save space removing articles in other places, you might want to remove them here too (I did that)
     supply: 'Supply',
     confirmSupply: 'Confirm supply',
     yourPosition: 'Your position',
@@ -122,10 +122,10 @@ export default {
     ok: 'OK',
     networkFee: 'Network fee',
     insufficientBalance: 'Insufficient balance',
-    unsuitableAssets: 'Unsuitable assets',
+    unsuitableAssets: 'Unsuitable assets', //what is unsuitable asset? Is it a term?
     transactionMessage: '{firstToken} and {secondToken}',
     firstLiquidityProvider: 'You are the first liquidity provider',
-    firstLiquidityProviderInfo: 'The ratio of tokens you add will set the price of this pool.<br/>Once you are happy with the rate click supply to review.'
+    firstLiquidityProviderInfo: 'The ratio of tokens you add will set the price of this pool.<br/>Once you are happy with the rate, click supply to review.'
   },
   confirmSupply: {
     title: 'You will receive',
