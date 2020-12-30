@@ -45,6 +45,7 @@
       margin-left: $inner-spacing-mini / 2;
       font-feature-settings: $s-font-feature-settings-common;
       letter-spacing: $s-letter-spacing-big;
+      word-break: break-all;
     }
   }
 }
@@ -67,12 +68,10 @@
   color: var(--s-color-base-content-primary);
 }
 
-@mixin input-ellipsis {
-  .el-input .el-input__inner {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
+@mixin text-ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 @mixin input-form-styles {
@@ -88,8 +87,9 @@
     .input-line {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: baseline;
       + .input-line {
+        align-items: center;
         margin-top: $inner-spacing-small;
       }
     }
@@ -100,14 +100,24 @@
     }
     .input-title,
     .token-balance {
-      display: inline-flex;
-      align-items: baseline;
+      display: flex;
+    }
+    .input-title,
+    .token-balance-title {
+      margin-top: $inner-spacing-mini / 2;
+      margin-bottom: $inner-spacing-mini / 2;
     }
     .token-balance {
+      flex-wrap: wrap;
       padding-right: $inner-spacing-mini;
+      align-items: center;
+      justify-content: flex-end;
+      text-align: right;
     }
     .input-title {
+      align-items: baseline;
       font-family: "SoraB", sans-serif !important;
+      margin-right: $inner-spacing-mini;
     }
     @include token-styles;
   }
