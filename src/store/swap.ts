@@ -4,7 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { dexApi } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, Asset, AccountAsset } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, Asset, AccountAsset } from '@sora-substrate/util'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -23,12 +23,14 @@ const types = flow(
   map(x => [x, x]),
   fromPairs
 )([
+  'GET_TOKEN_XOR',
   'GET_TOKEN_FROM',
   'GET_TOKEN_TO'
 ])
 
 function initialState () {
   return {
+    tokenXOR: null,
     tokenFrom: null,
     tokenTo: null,
     fromValue: 0,
@@ -46,6 +48,9 @@ function initialState () {
 const state = initialState()
 
 const getters = {
+  tokenXOR (state) {
+    return state.tokenXOR
+  },
   tokenFrom (state) {
     return state.tokenFrom
   },
@@ -82,6 +87,15 @@ const getters = {
 }
 
 const mutations = {
+  [types.GET_TOKEN_XOR_REQUEST] (state) {
+    state.tokenXOR = null
+  },
+  [types.GET_TOKEN_XOR_SUCCESS] (state, token: Asset | AccountAsset | null) {
+    state.tokenXOR = token
+  },
+  [types.GET_TOKEN_XOR_FAILURE] (state) {
+    state.tokenXOR = null
+  },
   [types.GET_TOKEN_FROM_REQUEST] (state) {
     state.tokenFrom = null
   },
@@ -130,6 +144,23 @@ const mutations = {
 }
 
 const actions = {
+  async getTokenXOR ({ commit }) {
+    const token = KnownAssets.get(KnownSymbols.XOR)
+    commit(types.GET_TOKEN_XOR_REQUEST)
+    try {
+      if (token) {
+        const tokenFrom = await dexApi.accountAssets.find(asset => asset.address === token.address)
+        if (tokenFrom) {
+          commit(types.GET_TOKEN_XOR_SUCCESS, { ...tokenFrom })
+        }
+      } else {
+        throw new Error(`There is no ${KnownSymbols.XOR} asset`)
+      }
+    } catch (error) {
+      commit(types.GET_TOKEN_XOR_FAILURE)
+      throw error
+    }
+  },
   async setTokenFrom ({ commit }, payload) {
     if (payload.isWalletConnected) {
       commit(types.GET_TOKEN_FROM_REQUEST)

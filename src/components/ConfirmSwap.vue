@@ -6,15 +6,16 @@
   >
     <div class="tokens">
       <div class="tokens-info-container">
-        <span class="token-value">{{ formattedFromValue }}</span>
-        <s-icon class="icon-divider" name="arrow-bottom-rounded" size="medium" />
-        <span class="token-value">{{ formattedToValue }}</span>
-      </div>
-      <div class="tokens-info-container">
+        <!-- TODO 4 alexnatalia: Check layout behaviour after formatNumber remove -->
+        <span class="token-value">{{ fromValue }}</span>
         <div v-if="tokenFrom" class="token">
           <token-logo :token="tokenFrom" />
           {{ tokenFrom.symbol }}
         </div>
+      </div>
+      <s-icon class="icon-divider" name="arrow-bottom-rounded" size="medium" />
+      <div class="tokens-info-container">
+        <span class="token-value">{{ toValue }}</span>
         <div v-if="tokenTo" class="token">
           <token-logo :token="tokenTo" />
           {{ tokenTo.symbol }}
@@ -26,6 +27,7 @@
     <swap-info :show-price="true" />
     <swap-info :show-tooltips="false" />
     <template #footer>
+      <!-- TODO: Check if Confirm still available -->
       <s-button type="primary" @click="handleConfirmSwap">{{ t('swap.confirmSwap') }}</s-button>
     </template>
   </dialog-base>
@@ -38,7 +40,6 @@ import { Getter, Action } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
-import { formatNumber } from '@/utils'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import { dexApi } from '@soramitsu/soraneo-wallet-web'
@@ -57,14 +58,6 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   @Getter toValue!: number | string
   @Getter slippageTolerance!: number
   @Getter isExchangeB!: boolean
-
-  get formattedFromValue (): string {
-    return formatNumber(this.fromValue)
-  }
-
-  get formattedToValue (): string {
-    return formatNumber(this.toValue)
-  }
 
   async handleConfirmSwap (): Promise<void> {
     try {
@@ -93,13 +86,13 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
 <style lang="scss" scoped>
 .tokens {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   font-size: var(--s-heading2-font-size);
   line-height: $s-line-height-small;
   &-info-container {
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
+    align-items: center;
   }
 }
 .token {
@@ -107,6 +100,9 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   align-items: center;
   justify-content: flex-end;
   white-space: nowrap;
+  &-value {
+    margin-right: $inner-spacing-medium;
+  }
   &-logo {
     display: block;
     margin-right: $inner-spacing-medium;
