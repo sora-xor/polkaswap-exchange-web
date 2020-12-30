@@ -199,7 +199,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
         this.insufficientBalanceTokenSymbol = this.tokenFrom.symbol
         return true
       }
-      const assetXOR = KnownAssets.get(KnownSymbols.XOR)
       const fpFee = new FPNumber(this.networkFee, this.tokenFrom.decimals)
       this.insufficientBalanceTokenSymbol = KnownSymbols.XOR
       if (this.tokenFrom.symbol === KnownSymbols.XOR) {
