@@ -89,6 +89,7 @@
       justify-content: space-between;
       align-items: baseline;
       + .input-line {
+        align-items: center;
         margin-top: $inner-spacing-small;
       }
     }
