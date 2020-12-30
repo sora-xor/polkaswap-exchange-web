@@ -150,6 +150,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   insufficientAmountTokenSymbol = ''
   isFieldFromFocused = false
   isFieldToFocused = false
+  isFieldFromActive = false
+  isFieldToActive = false
   isTokenFromSelected = false
   showSelectTokenDialog = false
   showConfirmSwapDialog = false
@@ -249,11 +251,11 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   resetFieldFrom (): void {
-    this.formModel.from = formatNumber(0, 1)
+    this.formModel.from = ''
   }
 
   resetFieldTo (): void {
-    this.formModel.to = formatNumber(0, 1)
+    this.formModel.to = ''
   }
 
   async getNetworkFee (): Promise<void> {
@@ -268,8 +270,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       }, 50)
       return
     }
-    if (!this.isFieldToFocused) {
-      this.isFieldFromFocused = true
+    if (!this.isFieldToActive) {
+      this.isFieldFromActive = true
       if (!this.areTokensSelected || +this.formModel.from === 0) {
         this.resetFieldTo()
       } else {
@@ -306,8 +308,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       }, 50)
       return
     }
-    if (!this.isFieldFromFocused) {
-      this.isFieldToFocused = true
+    if (!this.isFieldFromActive) {
+      this.isFieldToActive = true
       if (!this.areTokensSelected || +this.formModel.to === 0) {
         this.resetFieldFrom()
       } else {
@@ -369,11 +371,13 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     if (this.formModel.from === '' || +this.formModel.from === 0) {
       this.resetFieldFrom()
     }
+    this.isFieldFromFocused = false
   }
 
   handleFocusFieldFrom (): void {
+    this.isFieldFromActive = true
+    this.isFieldToActive = false
     this.isFieldFromFocused = true
-    this.isFieldToFocused = false
     if (+this.formModel.from === 0) {
       this.formModel.from = ''
     }
@@ -383,10 +387,12 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     if (this.formModel.to === '' || +this.formModel.to === 0) {
       this.resetFieldTo()
     }
+    this.isFieldToFocused = false
   }
 
   handleFocusFieldTo (): void {
-    this.isFieldFromFocused = false
+    this.isFieldFromActive = false
+    this.isFieldToActive = true
     this.isFieldToFocused = true
     if (+this.formModel.to === 0) {
       this.formModel.to = ''
@@ -401,13 +407,13 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     this.resetFieldTo()
     this.setTokenFromPrice(true)
     this.resetPrice()
-    this.isFieldFromFocused = false
-    this.isFieldToFocused = false
+    this.isFieldFromActive = false
+    this.isFieldToActive = false
   }
 
   async handleMaxValue (): Promise<void> {
-    this.isFieldFromFocused = true
-    this.isFieldToFocused = false
+    this.isFieldFromActive = true
+    this.isFieldToActive = false
     if (this.tokenFrom.symbol === KnownSymbols.XOR) {
       await this.getNetworkFee()
       const fpBalance = new FPNumber(this.tokenFrom.balance, this.tokenFrom.decimals)
@@ -438,7 +444,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
         await this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
         this.isTokenToBalanceAvailable = true
       }
-      if (this.isFieldFromFocused) {
+      if (this.isFieldFromActive) {
         await this.handleInputFieldFrom()
       } else {
         await this.handleInputFieldTo()
