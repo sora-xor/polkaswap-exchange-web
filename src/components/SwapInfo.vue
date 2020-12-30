@@ -1,5 +1,6 @@
 <template>
   <div class="swap-info-container">
+    <!-- TODO 4 alexnatalia: Check layout behaviour after formatNumber remove -->
     <template v-if="showPrice || showSlippageTolerance">
       <div v-if="showPrice" class="swap-info">
         <span>{{ t('exchange.price') }}</span>
@@ -28,7 +29,7 @@
         <span :class="'swap-info-value ' + priceImpactClass">{{ priceImpact }}%</span>
       </div> -->
       <div class="swap-info">
-        <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: formatNumber(0.3, 1)})" theme="light" placement="right-start" animation="none" :show-arrow="false">
+        <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: 0.3})" theme="light" placement="right-start" animation="none" :show-arrow="false">
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.liquidityProviderFee') }}</span>
@@ -50,7 +51,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import { formatNumber, isWalletConnected } from '@/utils'
+import { isWalletConnected } from '@/utils'
 import { KnownSymbols } from '@sora-substrate/util'
 
 @Component
@@ -71,26 +72,24 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   @Prop({ default: true, type: Boolean }) readonly showTooltips!: boolean
   @Prop({ default: false, type: Boolean }) readonly showSlippageTolerance!: boolean
 
-  formatNumber = formatNumber
-
   get connected (): boolean {
     return isWalletConnected()
   }
 
   get priceValue (): string {
     if (this.isTokenFromPrice) {
-      return `${formatNumber(this.price)} ${this.tokenFrom ? this.tokenFrom.symbol : ''} / ${this.tokenTo ? this.tokenTo.symbol : ''}`
+      return `${this.price} ${this.tokenFrom ? this.tokenFrom.symbol : ''} / ${this.tokenTo ? this.tokenTo.symbol : ''}`
     }
-    return `${formatNumber(this.priceReversed)} ${this.tokenTo ? this.tokenTo.symbol : ''} / ${this.tokenFrom ? this.tokenFrom.symbol : ''}`
+    return `${this.priceReversed} ${this.tokenTo ? this.tokenTo.symbol : ''} / ${this.tokenFrom ? this.tokenFrom.symbol : ''}`
   }
 
   get minReceived (): string {
-    return `${formatNumber(this.minMaxReceived)} ${this.tokenTo ? this.tokenTo.symbol : ''}`
+    return `${this.minMaxReceived} ${this.tokenTo ? this.tokenTo.symbol : ''}`
   }
 
   get priceImpact (): string {
     // TODO: Generate price impact value, is could be positive or negative, use appropriate class to show it in layout
-    return formatNumber(0.0222, 2)
+    return '0.0222'
   }
 
   get priceImpactClass (): string {
@@ -104,12 +103,11 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   }
 
   get liquidityProviderFeeValue (): string {
-    return `${formatNumber(this.liquidityProviderFee)} ${KnownSymbols.XOR}`
+    return `${this.liquidityProviderFee} ${KnownSymbols.XOR}`
   }
 
   get networkFeeValue (): string {
-    // TODO 4 alexnatalia: Check how many numbers after dot we should have
-    return `${formatNumber(this.networkFee)} ${KnownSymbols.XOR}`
+    return `${this.networkFee} ${KnownSymbols.XOR}`
   }
 
   handleSwitchPrice (): void {

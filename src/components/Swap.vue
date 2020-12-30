@@ -241,10 +241,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   getTokenBalance (token: any): string {
-    if (token) {
-      return formatNumber(token.balance, 2)
-    }
-    return ''
+    return token ? token.balance : ''
   }
 
   resetInsufficientAmountFlag (): void {
@@ -354,8 +351,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   resetPrice (): void {
-    this.setPrice(formatNumber(0))
-    this.setPriceReversed(formatNumber(0))
+    this.setPrice(formatNumber(0, 2))
+    this.setPriceReversed(formatNumber(0, 2))
   }
 
   isInsufficientAmountError (tokenSymbol: string, errorMessage): boolean {

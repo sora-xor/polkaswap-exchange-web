@@ -6,9 +6,10 @@
   >
     <div class="tokens">
       <div class="tokens-info-container">
-        <span class="token-value">{{ formattedFromValue }}</span>
+        <!-- TODO 4 alexnatalia: Check layout behaviour after formatNumber remove -->
+        <span class="token-value">{{ fromValue }}</span>
         <s-icon class="icon-divider" name="arrow-bottom-rounded" size="medium" />
-        <span class="token-value">{{ formattedToValue }}</span>
+        <span class="token-value">{{ toValue }}</span>
       </div>
       <div class="tokens-info-container">
         <div v-if="tokenFrom" class="token">
@@ -39,7 +40,6 @@ import { Getter, Action } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
-import { formatNumber } from '@/utils'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import { dexApi } from '@soramitsu/soraneo-wallet-web'
@@ -58,14 +58,6 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   @Getter toValue!: number | string
   @Getter slippageTolerance!: number
   @Getter isExchangeB!: boolean
-
-  get formattedFromValue (): string {
-    return formatNumber(this.fromValue)
-  }
-
-  get formattedToValue (): string {
-    return formatNumber(this.toValue)
-  }
 
   async handleConfirmSwap (): Promise<void> {
     try {
