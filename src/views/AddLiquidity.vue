@@ -31,7 +31,7 @@
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <token-logo :token="firstToken" size="small" />
-              {{ firstToken.symbol }}
+              {{ getAssetSymbol(firstToken.symbol) }}
             </s-button>
           </div>
         </div>
@@ -65,7 +65,7 @@
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
               <token-logo :token="secondToken" size="small" />
-              {{ secondToken.symbol }}
+              {{ getAssetSymbol(secondToken.symbol) }}
             </s-button>
           </div>
           <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
@@ -94,12 +94,26 @@
 
     <info-card v-if="areTokensSelected && isAvailable" :title="t('createPair.pricePool')">
       <div class="card__data">
-        <div>{{ t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol }) }}</div>
-        <div>{{ firstPerSecondPrice }} {{ firstToken.symbol }}</div>
+        <div>
+          {{
+            t('createPair.firstPerSecond', {
+              first: getAssetSymbol(firstToken.symbol),
+              second: getAssetSymbol(secondToken.symbol)
+            })
+          }}
+        </div>
+        <div>{{ firstPerSecondPrice }} {{ getAssetSymbol(firstToken.symbol) }}</div>
       </div>
       <div class="card__data">
-        <div>{{ t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol }) }}</div>
-        <div>{{ secondPerFirstPrice }} {{ secondToken.symbol }}</div>
+        <div>
+          {{
+            t('createPair.firstPerSecond', {
+              first: getAssetSymbol(firstToken.symbol),
+              second: getAssetSymbol(secondToken.symbol)
+            })
+          }}
+        </div>
+        <div>{{ secondPerFirstPrice }} {{ getAssetSymbol(secondToken.symbol) }}</div>
       </div>
       <div class="card__data">
         <div>{{ t('createPair.shareOfPool') }}</div>
@@ -115,17 +129,22 @@
       <div class="card__data">
         <s-row flex>
           <pair-token-logo class="pair-token-logo" :first-token="firstToken" :second-token="secondToken" size="mini" />
-          {{ t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol }) }}:
+          {{
+            t('createPair.firstSecondPoolTokens', {
+              first: getAssetSymbol(firstToken.symbol),
+              second: getAssetSymbol(secondToken.symbol)
+            })
+          }}:
         </s-row>
         <div>{{ minted }}</div>
       </div>
       <s-divider />
       <div class="card__data">
-        <div>{{ firstToken.symbol }}</div>
+        <div>{{ getAssetSymbol(firstToken.symbol) }}</div>
         <div>{{ firstTokenPosition }}</div>
       </div>
       <div class="card__data">
-        <div>{{ secondToken.symbol }}</div>
+        <div>{{ getAssetSymbol(secondToken.symbol) }}</div>
         <div>{{ secondTokenPosition }}</div>
       </div>
     </info-card>
@@ -144,7 +163,7 @@ import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import router, { lazyComponent } from '@/router'
-import { formatNumber, isWalletConnected } from '@/utils'
+import { formatNumber, getAssetSymbol, isWalletConnected } from '@/utils'
 import { Components, PageNames } from '@/consts'
 import { KnownAssets, KnownSymbols, FPNumber } from '@sora-substrate/util'
 
@@ -186,6 +205,8 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
   inputPlaceholder: string = formatNumber(0, 2)
   showConfirmDialog = false
   isCreatePairConfirmed = false
+
+  getAssetSymbol = getAssetSymbol
 
   async mounted () {
     this.resetData()
@@ -297,12 +318,12 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
   async handleConfirmAddLiquidity () {
     try {
       await this.addLiquidity()
+      this.showConfirmDialog = false
       this.isCreatePairConfirmed = true
     } catch (error) {
       console.error(error)
+      this.$alert(this.t(error.message), { title: this.t('errorText') })
     }
-
-    this.showConfirmDialog = false
   }
 }
 </script>

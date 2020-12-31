@@ -6,7 +6,7 @@ export default {
     [KnownSymbols.XOR]: 'Sora',
     [KnownSymbols.DOT]: 'Polkadot',
     [KnownSymbols.KSM]: 'Kusama',
-    [KnownSymbols.USD]: 'USD',
+    [KnownSymbols.USD]: 'Tether',
     [KnownSymbols.VAL]: 'Sora Validator Token',
     [KnownSymbols.PSWAP]: 'Polkaswap'
   },

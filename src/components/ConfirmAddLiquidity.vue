@@ -9,20 +9,20 @@
     </div>
     <s-row v-if="firstToken && secondToken" flex align="middle" class="pool-tokens">
       <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="small" />
-      {{ t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol }) }}
+      {{ t('createPair.firstSecondPoolTokens', { first: getAssetSymbol(firstToken.symbol), second: getAssetSymbol(secondToken.symbol) }) }}
     </s-row>
     <div class="tokens">
       <s-row flex justify="space-between" class="token">
         <s-row v-if="firstToken" flex>
           <token-logo :token="firstToken" size="small" />
-          <span class="token-symbol">{{ firstToken.symbol }} {{ t('createPair.deposit')}}:</span>
+          <span class="token-symbol">{{ getAssetSymbol(firstToken.symbol) }} {{ t('createPair.deposit')}}:</span>
         </s-row>
         <div class="token-value">{{ formatNumber(firstTokenValue, 2) }}</div>
       </s-row>
       <s-row flex justify="space-between" class="token">
         <s-row v-if="secondToken" flex>
           <token-logo :token="secondToken" size="small" />
-          <span class="token-symbol">{{ secondToken.symbol }} {{ t('createPair.deposit')}}:</span>
+          <span class="token-symbol">{{ getAssetSymbol(secondToken.symbol) }} {{ t('createPair.deposit')}}:</span>
         </s-row>
         <div class="token-value">{{ formatNumber(secondTokenValue, 2) }}</div>
       </s-row>
@@ -36,8 +36,8 @@
       <s-row flex justify="space-between" class="pair-info__line">
         <div>{{ t('confirmSupply.price') }}</div>
         <div v-if="firstToken && secondToken" class="price">
-          <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstTokenValue / secondTokenValue || 0) }} {{ secondToken.symbol }}</div>
-          <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondTokenValue / firstTokenValue || 0) }} {{ firstToken.symbol }}</div>
+          <div>1 {{ getAssetSymbol(firstToken.symbol) }} = {{ formatNumber(firstTokenValue / secondTokenValue || 0) }} {{ getAssetSymbol(secondToken.symbol) }}</div>
+          <div>1 {{ getAssetSymbol(secondToken.symbol) }} = {{ formatNumber(secondTokenValue / firstTokenValue || 0) }} {{ getAssetSymbol(firstToken.symbol) }}</div>
         </div>
       </s-row>
       <s-row flex justify="space-between" class="pair-info__line">
@@ -60,7 +60,7 @@ import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
-import { formatNumber } from '@/utils'
+import { formatNumber, getAssetSymbol } from '@/utils'
 const namespace = 'addLiquidity'
 
 @Component({
@@ -81,10 +81,10 @@ export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, Dialog
 
   formatNumber = formatNumber
 
+  getAssetSymbol = getAssetSymbol
+
   handleConfirmCreatePair (): void {
     this.$emit('confirm', true)
-    this.$emit('close')
-    this.isVisible = false
   }
 }
 </script>

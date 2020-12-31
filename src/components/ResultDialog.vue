@@ -74,6 +74,7 @@ $transactionIconSize: 68px;
     background-color: var(--s-color-base-background);
     border-radius: var(--s-border-radius-mini);
     @include font-weight(700);
+    white-space: nowrap;
   }
   &-info {
     margin-right: $inner-spacing-mini;

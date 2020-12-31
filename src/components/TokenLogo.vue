@@ -9,6 +9,7 @@ import { KnownSymbols } from '@sora-substrate/util'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { Token } from '@/types'
 import { LogoSize } from '@/consts'
+import { getAssetSymbol } from '@/utils'
 
 // TODO 4 alexnatalia: Update Token Icons
 
@@ -24,9 +25,9 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
     const classes = [tokenLogoClass]
 
     if (this.tokenSymbol) {
-      classes.push(`${tokenLogoClass}--${this.tokenSymbol.toLowerCase()}`)
+      classes.push(`${tokenLogoClass}--${(getAssetSymbol(this.tokenSymbol)).toLowerCase()}`)
     } else if (this.token && !!KnownSymbols[this.token.symbol]) {
-      classes.push(`${tokenLogoClass}--${this.token.symbol.toLowerCase()}`)
+      classes.push(`${tokenLogoClass}--${(getAssetSymbol(this.token.symbol)).toLowerCase()}`)
     }
 
     classes.push(`${tokenLogoClass}--${this.size.toLowerCase()}`)
@@ -36,7 +37,7 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
-$tokens-list: "dot", "ksm", "pswap", "pal", "smc", "usd", "val", "valerc", "xor", "xorerc";
+$tokens-list: "dot", "ksm", "pswap", "pal", "smc", "usdt", "val", "valerc", "xor", "xorerc";
 $token-background-color: var(--s-color-base-on-accent);
 
 .token-logo {

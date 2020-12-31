@@ -54,7 +54,7 @@
               <div class="liquidity-logo">
                 <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="mini" />
               </div>
-              {{ firstToken.symbol }}-{{ secondToken.symbol }}
+              {{ getAssetSymbol(firstToken.symbol) }}-{{ getAssetSymbol(secondToken.symbol) }}
             </s-button>
           </div>
         </div>
@@ -80,7 +80,7 @@
           <div v-if="firstToken" class="token">
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <token-logo :token="firstToken" size="small" />
-              {{ firstToken.symbol }}
+              {{ getAssetSymbol(firstToken.symbol) }}
             </s-button>
           </div>
         </div>
@@ -118,8 +118,8 @@
         <s-row flex justify="space-between">
           <div>{{ t('removeLiquidity.price') }}</div>
           <div class="price">
-            <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price || 0, 2) }} {{ secondToken.symbol }}</div>
-            <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price || 0, 2) }} {{ firstToken.symbol }}</div>
+            <div>1 {{ getAssetSymbol(firstToken.symbol) }} = {{ formatNumber(firstToken.price / secondToken.price || 0, 2) }} {{ getAssetSymbol(secondToken.symbol) }}</div>
+            <div>1 {{ getAssetSymbol(secondToken.symbol) }} = {{ formatNumber(secondToken.price / firstToken.price || 0, 2) }} {{ getAssetSymbol(firstToken.symbol) }}</div>
           </div>
         </s-row>
         <s-row flex justify="space-between">
@@ -156,9 +156,9 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
-import { formatNumber } from '@/utils'
+import { formatNumber, getAssetSymbol } from '@/utils'
 import { Token } from '@/types'
-import { KnownSymbols, FPNumber } from '@sora-substrate/util'
+import { FPNumber } from '@sora-substrate/util'
 
 const namespace = 'removeLiquidity'
 
@@ -198,6 +198,8 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMix
   @Action('resetData', { namespace }) resetData
 
   removePartInput = 0
+
+  getAssetSymbol = getAssetSymbol
 
   async created () {
     await this.withLoading(async () => {
@@ -291,15 +293,15 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMix
     this.setRemovePart(100)
   }
 
-  handleConfirmRemoveLiquidity (): void {
+  async handleConfirmRemoveLiquidity (): Promise<void> {
     try {
-      this.removeLiquidity()
+      await this.removeLiquidity()
+      this.showConfirmDialog = false
       this.isRemoveLiquidityConfirmed = true
     } catch (error) {
       console.error(error)
+      this.$alert(this.t(error.message), { title: this.t('errorText') })
     }
-
-    this.showConfirmDialog = false
   }
 }
 </script>

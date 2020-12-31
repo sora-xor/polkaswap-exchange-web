@@ -12,11 +12,11 @@
       <div class="tokens-info-container">
         <div v-if="firstToken" class="token">
           <token-logo class="token-logo" :token="firstToken" />
-          {{ firstToken.symbol }}
+          {{ getAssetSymbol(firstToken.symbol) }}
         </div>
         <div v-if="secondToken" class="token">
           <token-logo class="token-logo" :token="secondToken" />
-          {{ secondToken.symbol }}
+          {{ getAssetSymbol(secondToken.symbol) }}
         </div>
       </div>
     </div>
@@ -26,7 +26,7 @@
       <div v-if="firstToken && secondToken">
         <s-row flex>
           <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="mini" />
-          {{ t('confirmSupply.poolTokensBurned', { first: firstToken.symbol, second: secondToken.symbol }) }}
+          {{ t('confirmSupply.poolTokensBurned', { first: getAssetSymbol(firstToken.symbol), second: getAssetSymbol(secondToken.symbol) }) }}
         </s-row>
       </div>
       <div>{{ formattedLiquidityValue }}</div>
@@ -34,8 +34,8 @@
     <s-row flex justify="space-between" class="price-container">
       <div>{{ t('removeLiquidity.price') }}</div>
       <div class="price">
-        <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price, 2) }} {{ secondToken.symbol }}</div>
-        <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price, 2) }} {{ firstToken.symbol }}</div>
+        <div>1 {{ getAssetSymbol(firstToken.symbol) }} = {{ formatNumber(firstToken.price / secondToken.price, 2) }} {{ getAssetSymbol(secondToken.symbol) }}</div>
+        <div>1 {{ getAssetSymbol(secondToken.symbol) }} = {{ formatNumber(secondToken.price / firstToken.price, 2) }} {{ getAssetSymbol(firstToken.symbol) }}</div>
       </div>
     </s-row>
     <template #footer>
@@ -51,7 +51,7 @@ import { Getter, Action } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
-import { formatNumber } from '@/utils'
+import { formatNumber, getAssetSymbol } from '@/utils'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 const namespace = 'removeLiquidity'
@@ -84,10 +84,11 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
     return formatNumber(this.liquidityAmount)
   }
 
+  getAssetSymbol = getAssetSymbol
+
   handleConfirmRemoveLiquidity (): void {
     // TODO: Remove Liquidity here
     this.$emit('confirm')
-    this.$emit('close')
   }
 }
 </script>

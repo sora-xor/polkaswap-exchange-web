@@ -1,12 +1,22 @@
 $s-color-base-content-primary: #26262D;
-$s-color-theme-accent: #ed145b;
 $s-color-brand-day: #0d0248;
+
+$s-color-theme-accent: #ED145B;
+$s-color-theme-accent-hover: #D51252;
+$s-color-theme-accent-pressed: #C00F4A;
+$s-color-theme-accent-focused: #AA0E42;
+// Secondary theme colors
+$s-color-theme-secondary: #F4E0E8;
+$s-color-theme-secondary-hover: #F3CCDA;
+$s-color-theme-secondary-pressed: #F1C0D2;
+$s-color-theme-secondary-focused: #EDABC3;
+
 $s-color-button-tertiary-color: $s-color-theme-accent;
 $s-color-button-tertiary-color-active: $s-color-theme-accent;
-$s-color-button-tertiary-background: var(--s-color-theme-secondary);
-$s-color-button-tertiary-background-hover: var(--s-color-theme-secondary-hover);
-$s-color-button-tertiary-background-pressed: var(--s-color-theme-secondary-pressed);
-$s-color-button-tertiary-background-focused: var(--s-color-theme-secondary-focused);
+$s-color-button-tertiary-background: $s-color-theme-secondary;
+$s-color-button-tertiary-background-hover: $s-color-theme-secondary-hover;
+$s-color-button-tertiary-background-pressed: $s-color-theme-secondary-pressed;
+$s-color-button-tertiary-background-focused: $s-color-theme-secondary-focused;
 
 // Border Radius
 $s-border-radius-base: 8px;
@@ -17,8 +27,15 @@ $s-border-radius-big: $s-border-radius-base * 3;
 
 :root {
   --s-color-base-content-primary: #{$s-color-base-content-primary};
-  --s-color-theme-accent: #{$s-color-theme-accent};
   --s-color-brand-day: #{$s-color-brand-day};
+  --s-color-theme-accent: #{$s-color-theme-accent};
+  --s-color-theme-accent-hover: #{$s-color-theme-accent-hover};
+  --s-color-theme-accent-pressed: #{$s-color-theme-accent-pressed};
+  --s-color-theme-accent-focused: #{$s-color-theme-accent-focused};
+  --s-color-theme-secondary: #{$s-color-theme-secondary};
+  --s-color-theme-secondary-hover: #{$s-color-theme-secondary-hover};
+  --s-color-theme-secondary-pressed: #{$s-color-theme-secondary-pressed};
+  --s-color-theme-secondary-focused: #{$s-color-theme-secondary-focused};
   --s-color-button-tertiary-color: #{$s-color-button-tertiary-color};
   --s-color-button-tertiary-color-active: #{$s-color-button-tertiary-color-active};
   --s-color-button-tertiary-background: #{$s-color-button-tertiary-background};

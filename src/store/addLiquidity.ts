@@ -233,17 +233,17 @@ const actions = {
 
   async addLiquidity ({ commit, getters }) {
     commit(types.ADD_LIQUIDITY_REQUEST)
-    const result = await dexApi.addLiquidity(
-      getters.firstToken.address,
-      getters.secondToken.address,
-      getters.firstTokenValue,
-      getters.secondTokenValue
-    )
-
     try {
+      const result = await dexApi.addLiquidity(
+        getters.firstToken.address,
+        getters.secondToken.address,
+        getters.firstTokenValue,
+        getters.secondTokenValue
+      )
       commit(types.ADD_LIQUIDITY_SUCCESS, result)
     } catch (error) {
       commit(types.ADD_LIQUIDITY_FAILURE)
+      throw error
     }
   },
 

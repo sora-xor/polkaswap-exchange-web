@@ -10,7 +10,7 @@
         <span class="token-value">{{ fromValue }}</span>
         <div v-if="tokenFrom" class="token">
           <token-logo :token="tokenFrom" />
-          {{ tokenFrom.symbol }}
+          {{ getAssetSymbol(tokenFrom.symbol) }}
         </div>
       </div>
       <s-icon class="icon-divider" name="arrow-bottom-rounded" size="medium" />
@@ -18,7 +18,7 @@
         <span class="token-value">{{ toValue }}</span>
         <div v-if="tokenTo" class="token">
           <token-logo :token="tokenTo" />
-          {{ tokenTo.symbol }}
+          {{ getAssetSymbol(tokenTo.symbol) }}
         </div>
       </div>
     </div>
@@ -43,6 +43,7 @@ import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { getAssetSymbol } from '@/utils'
 
 @Component({
   components: {
@@ -59,13 +60,16 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   @Getter slippageTolerance!: number
   @Getter isExchangeB!: boolean
 
+  getAssetSymbol = getAssetSymbol
+
   async handleConfirmSwap (): Promise<void> {
     try {
       await dexApi.swap(this.tokenFrom.address, this.tokenTo.address, this.fromValue.toString(), this.toValue.toString(), this.slippageTolerance, this.isExchangeB)
       this.$emit('confirm', true)
     } catch (error) {
       this.$emit('confirm')
-      throw new Error(error)
+      this.$alert(this.t(error.message), { title: this.t('errorText') })
+      throw new Error(error.message)
     }
     this.$emit('close')
     this.isVisible = false
