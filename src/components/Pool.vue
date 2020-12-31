@@ -61,7 +61,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import { isWalletConnected, formatNumber } from '@/utils'
+import { isWalletConnected, formatNumber, getAssetSymbol } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -118,7 +118,7 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin) {
   getAssetSymbol (address) {
     const asset = this.assets.find(a => a.address === address)
 
-    return asset ? asset.symbol : 'Unknown asset'
+    return getAssetSymbol(asset ? asset.symbol : 'Unknown asset')
   }
 
   getPoolShare (liquidity) {

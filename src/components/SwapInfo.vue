@@ -51,7 +51,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import { isWalletConnected } from '@/utils'
+import { getAssetSymbol, isWalletConnected } from '@/utils'
 import { KnownSymbols } from '@sora-substrate/util'
 
 @Component
@@ -77,14 +77,17 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   }
 
   get priceValue (): string {
+    const fromSymbol = getAssetSymbol(this.tokenFrom.symbol)
+    const toSymbol = getAssetSymbol(this.tokenTo.symbol)
     if (this.isTokenFromPrice) {
-      return `${this.price} ${this.tokenFrom ? this.tokenFrom.symbol : ''} / ${this.tokenTo ? this.tokenTo.symbol : ''}`
+      return `${this.price} ${this.tokenFrom ? fromSymbol : ''} / ${this.tokenTo ? toSymbol : ''}`
     }
-    return `${this.priceReversed} ${this.tokenTo ? this.tokenTo.symbol : ''} / ${this.tokenFrom ? this.tokenFrom.symbol : ''}`
+    return `${this.priceReversed} ${this.tokenTo ? toSymbol : ''} / ${this.tokenFrom ? fromSymbol : ''}`
   }
 
   get minReceived (): string {
-    return `${this.minMaxReceived} ${this.tokenTo ? this.tokenTo.symbol : ''}`
+    const toSymbol = getAssetSymbol(this.tokenTo.symbol)
+    return `${this.minMaxReceived} ${this.tokenTo ? toSymbol : ''}`
   }
 
   get priceImpact (): string {

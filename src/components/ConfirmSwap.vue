@@ -10,7 +10,7 @@
         <span class="token-value">{{ fromValue }}</span>
         <div v-if="tokenFrom" class="token">
           <token-logo :token="tokenFrom" />
-          {{ tokenFrom.symbol }}
+          {{ getAssetSymbol(tokenFrom.symbol) }}
         </div>
       </div>
       <s-icon class="icon-divider" name="arrow-bottom-rounded" size="medium" />
@@ -18,7 +18,7 @@
         <span class="token-value">{{ toValue }}</span>
         <div v-if="tokenTo" class="token">
           <token-logo :token="tokenTo" />
-          {{ tokenTo.symbol }}
+          {{ getAssetSymbol(tokenTo.symbol) }}
         </div>
       </div>
     </div>
@@ -43,6 +43,7 @@ import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { getAssetSymbol } from '@/utils'
 
 @Component({
   components: {
@@ -58,6 +59,8 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   @Getter toValue!: number | string
   @Getter slippageTolerance!: number
   @Getter isExchangeB!: boolean
+
+  getAssetSymbol = getAssetSymbol
 
   async handleConfirmSwap (): Promise<void> {
     try {

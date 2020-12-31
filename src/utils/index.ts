@@ -1,4 +1,5 @@
 import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { KnownSymbols } from '@sora-substrate/util'
 
 import storage from './storage'
 
@@ -32,3 +33,5 @@ export const isWalletConnected = () => {
 }
 
 export const isApiConnected = () => dexApi?.api?.isConnected
+
+export const getAssetSymbol = (symbol: string) => symbol === KnownSymbols.USD ? 'USDT' : symbol

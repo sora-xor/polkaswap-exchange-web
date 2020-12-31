@@ -33,7 +33,7 @@
           </s-button>
           <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(true)">
             <token-logo :token="tokenFrom" size="small" />
-            {{ tokenFrom.symbol }}
+            {{ getAssetSymbol(tokenFrom.symbol) }}
           </s-button>
         </div>
         <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(true)">
@@ -68,7 +68,7 @@
         <div v-if="tokenTo" class="token">
           <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog">
             <token-logo :token="tokenTo" size="small" />
-            {{ tokenTo.symbol }}
+            {{ getAssetSymbol(tokenTo.symbol) }}
           </s-button>
         </div>
         <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog">
@@ -85,10 +85,10 @@
         {{ t('swap.enterAmount') }}
       </template>
       <template v-else-if="isInsufficientAmount">
-        {{ t('swap.insufficientAmount', { tokenSymbol: insufficientAmountTokenSymbol }) }}
+        {{ t('swap.insufficientAmount', { tokenSymbol: getAssetSymbol(insufficientAmountTokenSymbol) }) }}
       </template>
       <template v-else-if="isInsufficientBalance">
-        {{ t('swap.insufficientBalance', { tokenSymbol: insufficientBalanceTokenSymbol }) }}
+        {{ t('swap.insufficientBalance', { tokenSymbol: getAssetSymbol(insufficientBalanceTokenSymbol) }) }}
       </template>
       <template v-else>
         {{ t('exchange.Swap') }}
@@ -106,7 +106,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import { formatNumber, isNumberValue, isWalletConnected } from '@/utils'
+import { formatNumber, getAssetSymbol, isNumberValue, isWalletConnected } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 import { dexApi } from '@soramitsu/soraneo-wallet-web'
@@ -161,6 +161,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     from: '',
     to: ''
   }
+
+  getAssetSymbol = getAssetSymbol
 
   get connected (): boolean {
     return isWalletConnected()
