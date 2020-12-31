@@ -297,12 +297,12 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
   async handleConfirmAddLiquidity () {
     try {
       await this.addLiquidity()
+      this.showConfirmDialog = false
       this.isCreatePairConfirmed = true
     } catch (error) {
       console.error(error)
+      this.$alert(this.t(error.message), { title: this.t('errorText') })
     }
-
-    this.showConfirmDialog = false
   }
 }
 </script>

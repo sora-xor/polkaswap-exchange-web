@@ -83,8 +83,6 @@ export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, Dialog
 
   handleConfirmCreatePair (): void {
     this.$emit('confirm', true)
-    this.$emit('close')
-    this.isVisible = false
   }
 }
 </script>

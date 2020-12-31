@@ -87,7 +87,6 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   handleConfirmRemoveLiquidity (): void {
     // TODO: Remove Liquidity here
     this.$emit('confirm')
-    this.$emit('close')
   }
 }
 </script>

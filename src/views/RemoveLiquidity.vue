@@ -291,15 +291,15 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMix
     this.setRemovePart(100)
   }
 
-  handleConfirmRemoveLiquidity (): void {
+  async handleConfirmRemoveLiquidity (): Promise<void> {
     try {
-      this.removeLiquidity()
+      await this.removeLiquidity()
+      this.showConfirmDialog = false
       this.isRemoveLiquidityConfirmed = true
     } catch (error) {
       console.error(error)
+      this.$alert(this.t(error.message), { title: this.t('errorText') })
     }
-
-    this.showConfirmDialog = false
   }
 }
 </script>

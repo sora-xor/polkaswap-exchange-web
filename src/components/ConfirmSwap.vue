@@ -65,7 +65,8 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
       this.$emit('confirm', true)
     } catch (error) {
       this.$emit('confirm')
-      throw new Error(error)
+      this.$alert(this.t(error.message), { title: this.t('errorText') })
+      throw new Error(error.message)
     }
     this.$emit('close')
     this.isVisible = false
