@@ -6,7 +6,6 @@
   >
     <div class="tokens">
       <div class="tokens-info-container">
-        <!-- TODO 4 alexnatalia: Check layout behaviour after formatNumber remove -->
         <span class="token-value">{{ fromValue }}</span>
         <div v-if="tokenFrom" class="token">
           <token-logo :token="tokenFrom" />
@@ -27,7 +26,6 @@
     <swap-info :show-price="true" />
     <swap-info :show-tooltips="false" />
     <template #footer>
-      <!-- TODO: Check if Confirm still available -->
       <s-button type="primary" @click="handleConfirmSwap">{{ t('swap.confirmSwap') }}</s-button>
     </template>
   </dialog-base>
@@ -60,18 +58,24 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   @Getter slippageTolerance!: number
   @Getter isExchangeB!: boolean
 
+  @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean
+
   getAssetSymbol = getAssetSymbol
 
   async handleConfirmSwap (): Promise<void> {
-    try {
-      await dexApi.swap(this.tokenFrom.address, this.tokenTo.address, this.fromValue.toString(), this.toValue.toString(), this.slippageTolerance, this.isExchangeB)
-      this.$emit('confirm', true)
-    } catch (error) {
+    await this.$emit('checkConfirm')
+    if (this.isInsufficientBalance) {
+      this.$alert(this.t('swap.insufficientBalance', { tokenSymbol: getAssetSymbol(this.tokenFrom ? this.tokenFrom.symbol : '') }), { title: this.t('errorText') })
       this.$emit('confirm')
-      this.$alert(this.t(error.message), { title: this.t('errorText') })
-      throw new Error(error.message)
+    } else {
+      try {
+        await dexApi.swap(this.tokenFrom.address, this.tokenTo.address, this.fromValue.toString(), this.toValue.toString(), this.slippageTolerance, this.isExchangeB)
+        this.$emit('confirm', true)
+      } catch (error) {
+        this.$emit('confirm')
+        this.$alert(this.t(error.message), { title: this.t('errorText') })
+      }
     }
-    this.$emit('close')
     this.isVisible = false
   }
 }
@@ -83,6 +87,7 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
     color: var(--s-color-base-content-primary);
     font-feature-settings: $s-font-feature-settings-common;
     @include font-weight(600);
+    word-break: break-all;
   }
 }
 </style>

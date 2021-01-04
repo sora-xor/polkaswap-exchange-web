@@ -77,17 +77,17 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   }
 
   get priceValue (): string {
-    const fromSymbol = getAssetSymbol(this.tokenFrom.symbol)
-    const toSymbol = getAssetSymbol(this.tokenTo.symbol)
+    const fromSymbol = this.tokenFrom ? getAssetSymbol(this.tokenFrom.symbol) : ''
+    const toSymbol = this.tokenTo ? getAssetSymbol(this.tokenTo.symbol) : ''
     if (this.isTokenFromPrice) {
-      return `${this.price} ${this.tokenFrom ? fromSymbol : ''} / ${this.tokenTo ? toSymbol : ''}`
+      return `${this.price} ${fromSymbol} / ${toSymbol}`
     }
-    return `${this.priceReversed} ${this.tokenTo ? toSymbol : ''} / ${this.tokenFrom ? fromSymbol : ''}`
+    return `${this.priceReversed} ${toSymbol} / ${fromSymbol}`
   }
 
   get minReceived (): string {
-    const toSymbol = getAssetSymbol(this.tokenTo.symbol)
-    return `${this.minMaxReceived} ${this.tokenTo ? toSymbol : ''}`
+    const toSymbol = this.tokenTo ? getAssetSymbol(this.tokenTo.symbol) : ''
+    return `${this.minMaxReceived} ${toSymbol}`
   }
 
   get priceImpact (): string {
