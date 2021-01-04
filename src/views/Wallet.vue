@@ -18,7 +18,7 @@ export default class Wallet extends Mixins(TranslationMixin) {
   @Action setTokenFrom
 
   handleClose (): void {
-    router.push({ name: PageNames.Swap })
+    router.back()
   }
 
   async handleSwap (token: any): Promise<void> {
