@@ -87,6 +87,7 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
     color: var(--s-color-base-content-primary);
     font-feature-settings: $s-font-feature-settings-common;
     @include font-weight(600);
+    word-break: break-all;
   }
 }
 </style>
