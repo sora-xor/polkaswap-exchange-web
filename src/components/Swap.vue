@@ -96,7 +96,7 @@
     </s-button>
     <swap-info v-if="areTokensSelected && !isEmptyAmount" />
     <select-token :visible.sync="showSelectTokenDialog" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
-    <confirm-swap :visible.sync="showConfirmSwapDialog" @confirm="confirmSwap" />
+    <confirm-swap :visible.sync="showConfirmSwapDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmSwap" @checkConfirm="updateAccountAssets" />
     <result-dialog :visible.sync="isSwapConfirmed" :type="t('exchange.Swap')" :message="transactionResultMessage" @close="swapNotify(transactionResultMessage)" />
   </s-form>
 </template>
@@ -452,9 +452,20 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     this.showConfirmSwapDialog = true
   }
 
+  async updateAccountAssets (): Promise<void> {
+    try {
+      await dexApi.updateAccountAssets()
+    } catch (error) {
+      this.$alert(this.t(error.message), { title: this.t('errorText') })
+      throw new Error(error)
+    }
+  }
+
   async confirmSwap (isSwapConfirmed: boolean): Promise<any> {
     if (isSwapConfirmed) {
       this.isSwapConfirmed = isSwapConfirmed
+    } else {
+      await this.updateAccountAssets()
     }
   }
 
@@ -464,11 +475,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       title: this.t('exchange.Swap'),
       type: 'success'
     })
-    try {
-      await dexApi.updateAccountAssets()
-    } catch (error) {
-      throw new Error(error)
-    }
+    await this.updateAccountAssets()
   }
 }
 </script>
