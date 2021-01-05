@@ -32,6 +32,4 @@ export const isWalletConnected = () => {
   )
 }
 
-export const isApiConnected = () => dexApi?.api?.isConnected
-
 export const getAssetSymbol = (symbol: string) => symbol === KnownSymbols.USD ? 'USDT' : symbol

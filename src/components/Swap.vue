@@ -106,6 +106,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 import { formatNumber, getAssetSymbol, isNumberValue, isWalletConnected } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
@@ -121,7 +122,7 @@ import { KnownSymbols, KnownAssets, FPNumber } from '@sora-substrate/util'
     ResultDialog: lazyComponent(Components.ResultDialog)
   }
 })
-export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
+export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFormatterMixin) {
   @Getter tokenXOR!: any
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
@@ -266,6 +267,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   async handleInputFieldFrom (): Promise<any> {
+    this.formModel.from = this.formatNumberField(this.formModel.from)
     if (!isNumberValue(this.formModel.from)) {
       await setTimeout(() => {
         this.resetFieldFrom()
@@ -304,6 +306,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   async handleInputFieldTo (): Promise<any> {
+    this.formModel.to = this.formatNumberField(this.formModel.to)
     if (!isNumberValue(this.formModel.to)) {
       await setTimeout(() => {
         this.resetFieldTo()
