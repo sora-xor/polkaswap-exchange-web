@@ -8,7 +8,7 @@
       <info-card class="slider-container" :title="t('removeLiquidity.amount')">
         <div class="slider-container__amount">
           <s-input
-            v-model="removePartInput"
+            :value="removePartInput"
             maxlength="3"
             :class="`s-input--token-value s-input--remove-part ${
               removePartInput.toString().length === 3

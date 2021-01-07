@@ -239,11 +239,15 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
   }
 
   get firstPerSecondPrice (): string {
-    return formatNumber(new FPNumber(this.firstTokenValue, this.firstToken.decimals).div(new FPNumber(this.secondTokenValue, this.secondToken.decimals)).toString() || 0, 2)
+    return this.firstTokenValue && this.secondTokenValue
+      ? formatNumber(new FPNumber(this.firstTokenValue).div(new FPNumber(this.secondTokenValue)).toNumber() || 0, 2)
+      : formatNumber(0, 2)
   }
 
   get secondPerFirstPrice (): string {
-    return formatNumber(this.secondTokenValue / this.firstTokenValue || 0, 2)
+    return this.firstTokenValue && this.secondTokenValue
+      ? formatNumber(new FPNumber(this.secondTokenValue).div(new FPNumber(this.firstTokenValue)).toNumber() || 0, 2)
+      : formatNumber(0, 2)
   }
 
   get firstTokenPosition (): string {

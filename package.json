@@ -15,7 +15,6 @@
     "@soramitsu/soramitsu-js-ui": "^0.6.9",
     "@soramitsu/soraneo-wallet-web": "^0.3.6",
     "axios": "^0.19.2",
-    "bignumber.js": "^9.0.1",
     "core-js": "^3.6.4",
     "lodash": "^4.17.15",
     "vue": "^2.6.11",

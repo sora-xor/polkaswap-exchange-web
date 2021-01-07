@@ -36,8 +36,8 @@
       <s-row flex justify="space-between" class="pair-info__line">
         <div>{{ t('confirmSupply.price') }}</div>
         <div v-if="firstToken && secondToken" class="price">
-          <div>1 {{ getAssetSymbol(firstToken.symbol) }} = {{ formatNumber(firstTokenValue / secondTokenValue || 0) }} {{ getAssetSymbol(secondToken.symbol) }}</div>
-          <div>1 {{ getAssetSymbol(secondToken.symbol) }} = {{ formatNumber(secondTokenValue / firstTokenValue || 0) }} {{ getAssetSymbol(firstToken.symbol) }}</div>
+          <div>1 {{ getAssetSymbol(firstToken.symbol) }} = {{ firstPerSecondPrice }} {{ getAssetSymbol(secondToken.symbol) }}</div>
+          <div>1 {{ getAssetSymbol(secondToken.symbol) }} = {{ secondPerFirstPrice }} {{ getAssetSymbol(firstToken.symbol) }}</div>
         </div>
       </s-row>
       <s-row flex justify="space-between" class="pair-info__line">
@@ -61,6 +61,8 @@ import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import { formatNumber, getAssetSymbol } from '@/utils'
+import { FPNumber } from '@sora-substrate/util'
+
 const namespace = 'addLiquidity'
 
 @Component({
@@ -82,6 +84,18 @@ export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, Dialog
   formatNumber = formatNumber
 
   getAssetSymbol = getAssetSymbol
+
+  get firstPerSecondPrice (): string {
+    return this.firstTokenValue && this.secondTokenValue
+      ? formatNumber(new FPNumber(this.firstTokenValue).div(new FPNumber(this.secondTokenValue)).toNumber() || 0, 2)
+      : formatNumber(0, 2)
+  }
+
+  get secondPerFirstPrice (): string {
+    return this.firstTokenValue && this.secondTokenValue
+      ? formatNumber(new FPNumber(this.secondTokenValue).div(new FPNumber(this.firstTokenValue)).toNumber() || 0, 2)
+      : formatNumber(0, 2)
+  }
 
   handleConfirmCreatePair (): void {
     this.$emit('confirm', true)
