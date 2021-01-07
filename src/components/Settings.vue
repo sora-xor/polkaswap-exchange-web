@@ -31,7 +31,8 @@
             v-float
             class="slippage-tolerance-custom_input"
             size="small"
-            @input="handleOnInput"
+            @input="handleSlippageToleranceOnInput"
+            @blur="handleSlippageToleranceOnBlur"
           />
         </div>
         <div v-if="slippageToleranceValidation" class="slippage-tolerance_validation">{{ t(`dexSettings.slippageToleranceValidation.${slippageToleranceValidation}`) }}</div>
@@ -72,6 +73,7 @@ import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
+import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { isNumberValue } from '@/utils'
 
@@ -80,7 +82,7 @@ import { isNumberValue } from '@/utils'
     DialogBase
   }
 })
-export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
+export default class Settings extends Mixins(TranslationMixin, DialogMixin, InputFormatterMixin) {
   readonly defaultSlippageTolerance = 0.5
   readonly SlippageToleranceValues = [
     0.1,
@@ -98,6 +100,9 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
   @Getter nodeAddress!: { ip: string; port: number }
   @Action setSlippageTolerance!: any
   @Action setTransactionDeadline!: any
+
+  isAwaitingSlippageToleranceInput = false
+  slippageToleranceTimeout: any = null
 
   get model (): string {
     return `${this.slippageTolerance}`
@@ -136,30 +141,30 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
     this.setSlippageTolerance({ value: name })
   }
 
-  setSlippageToleranceOnTimeout (value: string | number): void {
-    setTimeout(() => {
-      this.model = typeof value === 'string' ? value : value.toString()
+  setSlippageToleranceOnTimeout (): void {
+    this.slippageToleranceTimeout = setTimeout(() => {
+      this.model = this.formatNumberField(this.model)
+      if (!isNumberValue(this.model)) {
+        this.model = this.defaultSlippageTolerance.toString()
+      } else if (+this.model > this.slippageToleranceExtremeValues.max) {
+        this.model = this.slippageToleranceExtremeValues.max.toString()
+      } else if (+this.model < this.slippageToleranceExtremeValues.min) {
+        this.model = this.slippageToleranceExtremeValues.min.toString()
+      }
+      this.setSlippageTolerance({ value: this.model })
+      this.isAwaitingSlippageToleranceInput = false
+      clearTimeout(this.slippageToleranceTimeout)
     }, 50)
   }
 
-  async handleOnInput (): Promise<void> {
-    if (!isNumberValue(this.model)) {
-      await this.setSlippageToleranceOnTimeout(this.defaultSlippageTolerance)
-      this.setSlippageTolerance({ value: this.defaultSlippageTolerance })
-      return
+  async handleSlippageToleranceOnInput (): Promise<void> {
+    if (!this.isAwaitingSlippageToleranceInput) {
+      await this.setSlippageToleranceOnTimeout()
     }
-    if (+this.model > this.slippageToleranceExtremeValues.max) {
-      await this.setSlippageToleranceOnTimeout(this.slippageToleranceExtremeValues.max)
-      this.setSlippageTolerance({ value: this.slippageToleranceExtremeValues.max })
-      return
-    }
-    if (+this.model < this.slippageToleranceExtremeValues.min) {
-      await this.setSlippageToleranceOnTimeout(this.slippageToleranceExtremeValues.min)
-      this.setSlippageTolerance({ value: this.slippageToleranceExtremeValues.min })
-      return
-    }
-    // TODO 4 alexnatalia: Ask the team about appropriate behaviour or pattern of the slippageTolerance
-    await this.setSlippageToleranceOnTimeout(+this.model)
+    this.isAwaitingSlippageToleranceInput = true
+  }
+
+  async handleSlippageToleranceOnBlur (): Promise<void> {
     this.setSlippageTolerance({ value: +this.model })
   }
 

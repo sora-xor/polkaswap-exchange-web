@@ -19,7 +19,7 @@
         <s-form-item>
           <s-input
             v-model="formModel.from"
-            v-float="formModel.from"
+            v-float
             class="s-input--token-value"
             :placeholder="isFieldFromFocused ? '' : inputPlaceholder"
             @input="handleInputFieldFrom"
@@ -57,7 +57,7 @@
         <s-form-item>
           <s-input
             v-model="formModel.to"
-            v-float="formModel.to"
+            v-float
             class="s-input--token-value"
             :placeholder="isFieldToFocused ? '' : inputPlaceholder"
             @input="handleInputFieldTo"
@@ -383,6 +383,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   handleBlurFieldFrom (): void {
     if (this.formModel.from === '' || +this.formModel.from === 0) {
       this.resetFieldFrom()
+    } else {
+      this.formModel.from = this.trimNeedlesSymbols(this.formModel.from)
     }
     this.isFieldFromFocused = false
   }
@@ -399,6 +401,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   handleBlurFieldTo (): void {
     if (this.formModel.to === '' || +this.formModel.to === 0) {
       this.resetFieldTo()
+    } else {
+      this.formModel.to = this.trimNeedlesSymbols(this.formModel.to)
     }
     this.isFieldToFocused = false
   }
