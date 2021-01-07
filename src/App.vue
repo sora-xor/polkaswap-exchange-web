@@ -209,7 +209,8 @@ html {
 </style>
 
 <style lang="scss" scoped>
-$logo-width: 150px;
+$logo-width: 40px;
+$logo-width-big: 150px;
 $logo-horizontal-maring: $inner-spacing-big;
 $menu-height: 65px;
 
@@ -222,6 +223,7 @@ $menu-height: 65px;
 
 .menu {
   padding: 0;
+  width: calc(50% - #{$logo-width + $logo-horizontal-maring * 2} / 2);
   &.s-menu {
     border-bottom: none;
     .el-menu-item {
@@ -250,11 +252,11 @@ $menu-height: 65px;
 .polkaswap-logo {
   margin-right: $logo-horizontal-maring;
   margin-left: $logo-horizontal-maring;
-  display: none;
-  width: $logo-width;
+  background-image: url('~@/assets/img/pswap.svg');
+  background-size: cover;
+  width: var(--s-size-medium);
   height: var(--s-size-medium);
   padding: 0;
-  background-image: url('~@/assets/img/polkaswap-logo.svg');
 }
 
 .buttons {
@@ -291,10 +293,20 @@ $menu-height: 65px;
 
 @include tablet {
   .menu {
-    width: calc(50% - #{$logo-width + $logo-horizontal-maring * 2} / 2);
+    width: calc(50% - #{$logo-width-big + $logo-horizontal-maring * 2} / 2);
   }
   .polkaswap-logo {
-    display: block; // TODO: add collapse state for s-menu component
+    width: $logo-width-big;
+    background-image: url('~@/assets/img/polkaswap-logo.svg');
+  }
+}
+
+@media (max-width: 460px) {
+  .menu {
+    width: auto;
+  }
+  .polkaswap-logo {
+    display: none;
   }
 }
 </style>
