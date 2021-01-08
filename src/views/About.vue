@@ -11,7 +11,6 @@
         <s-button type="primary" @click="handleClickExchange">
           {{ t('about.openExchange') }}
         </s-button>
-        <!-- TODO: Add links to Medium and Github -->
         <s-button type="link" icon="external-link" @click="handleGoToMedium">
           {{ t('about.mediumLink') }}
         </s-button>
@@ -22,11 +21,11 @@
       <div class="articles s-flex">
         <s-row>
           <s-col :lg="3" :md="4" :sm="6" :xs="12" v-for="topic in AboutTopics" :key="topic.title">
-            <s-card class="article-card" border-radius="big" shadow='never'>
+            <s-card class="article-card" border-radius="big" shadow="never">
               <template #header>
                 <h4 class="title">
-                  {{ t(`about.${topic.title}.title`) }}
                   <s-icon :size="24" :name="topic.icon" />
+                  {{ t(`about.${topic.title}.title`) }}
                 </h4>
               </template>
               <span>{{ t(`about.${topic.title}.text`) }}</span>
@@ -143,12 +142,14 @@ $logo-width: 140px;
       font-feature-settings: $s-font-feature-settings-card-body;
       .title {
         display: flex;
+        flex-direction: column;
         justify-content: space-between;
         line-height: $s-line-height-small;
         font-feature-settings: $s-font-feature-settings-card-title;
         @include font-weight(600, true);
         i {
           color: var(--s-color-theme-accent);
+          margin-bottom: $inner-spacing-small;
         }
       }
     }

@@ -12,7 +12,7 @@
         </div>
         <div v-if="this.connected && this.tokenFrom && this.tokenFrom.balance && this.isTokenFromBalanceAvailable" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
-          <span class="token-balance-value">{{ getTokenBalance(tokenFrom) }}</span>
+          <span class="token-balance-value">{{ tokenFromBalance }}</span>
         </div>
       </div>
       <div class="input-line">
@@ -28,7 +28,7 @@
           />
         </s-form-item>
         <div v-if="tokenFrom" class="token">
-          <s-button v-if="connected && areTokensSelected" class="el-button--max" type="tertiary" size="small" border-radius="mini" :disabled="this.isMaxDisabled" @click="handleMaxValue">
+          <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" border-radius="mini" :disabled="this.isMaxDisabled" @click="handleMaxValue">
             {{ t('exchange.max') }}
           </s-button>
           <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(true)">
@@ -50,7 +50,7 @@
         </div>
         <div v-if="this.connected && this.tokenTo && this.tokenTo.balance && this.isTokenToBalanceAvailable" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
-          <span class="token-balance-value">{{ getTokenBalance(tokenTo) }}</span>
+          <span class="token-balance-value">{{ tokenToBalance }}</span>
         </div>
       </div>
       <div class="input-line">
@@ -177,8 +177,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   get isMaxDisabled (): boolean {
-    if (this.connected && this.areTokensSelected) {
-      if (+this.tokenFrom.balance === 0) {
+    if (this.connected) {
+      if (!this.areTokensSelected || +this.tokenFrom.balance === 0) {
         return true
       }
       const fpBalance = new FPNumber(this.tokenFrom.balance, this.tokenFrom.decimals)
@@ -222,6 +222,16 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     })
   }
 
+  get tokenFromBalance (): string {
+    this.recountSwapValues()
+    return this.tokenFrom ? this.tokenFrom.balance : ''
+  }
+
+  get tokenToBalance (): string {
+    this.recountSwapValues()
+    return this.tokenTo ? this.tokenTo.balance : ''
+  }
+
   formatTokenValue (token: any, tokenValue: number | string): string {
     return token ? `${tokenValue} ${token.symbol}` : ''
   }
@@ -236,10 +246,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
         this.isTokenToBalanceAvailable = true
       }
     })
-  }
-
-  getTokenBalance (token: any): string {
-    return token ? token.balance : ''
   }
 
   resetInsufficientAmountFlag (): void {
@@ -335,6 +341,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       this.setFromValue(this.formModel.from)
     }
     this.setToValue(this.formModel.to)
+  }
+
+  async recountSwapValues (): Promise<void> {
+    if (this.isFieldFromActive) {
+      await this.handleInputFieldFrom()
+    } else {
+      await this.handleInputFieldTo()
+    }
   }
 
   async getPrice (): Promise<void> {
@@ -440,11 +454,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
         await this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
         this.isTokenToBalanceAvailable = true
       }
-      if (this.isFieldFromActive) {
-        await this.handleInputFieldFrom()
-      } else {
-        await this.handleInputFieldTo()
-      }
+      await this.recountSwapValues()
     }
   }
 
