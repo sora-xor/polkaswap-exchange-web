@@ -139,18 +139,16 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin, Inpu
   }
 
   async handleSlippageToleranceOnInput (): Promise<void> {
-    await new Promise<void>((resolve) => setTimeout(() => {
-      this.model = this.formatNumberField(this.model)
-      if (!isNumberValue(this.model)) {
-        this.model = this.defaultSlippageTolerance.toString()
-      } else if (+this.model > this.slippageToleranceExtremeValues.max) {
-        this.model = this.slippageToleranceExtremeValues.max.toString()
-      } else if (+this.model < this.slippageToleranceExtremeValues.min) {
-        this.model = this.slippageToleranceExtremeValues.min.toString()
-      }
-      this.setSlippageTolerance({ value: this.model })
-      resolve()
-    }, 50))
+    await this.promiseTimeout()
+    this.model = this.formatNumberField(this.model)
+    if (!isNumberValue(this.model)) {
+      this.model = this.defaultSlippageTolerance.toString()
+    } else if (+this.model > this.slippageToleranceExtremeValues.max) {
+      this.model = this.slippageToleranceExtremeValues.max.toString()
+    } else if (+this.model < this.slippageToleranceExtremeValues.min) {
+      this.model = this.slippageToleranceExtremeValues.min.toString()
+    }
+    this.setSlippageTolerance({ value: this.model })
   }
 
   async handleSlippageToleranceOnBlur (): Promise<void> {

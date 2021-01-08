@@ -20,4 +20,8 @@ export default class InputFormatterMixin extends Vue {
     }
     return fieldValue
   }
+
+  promiseTimeout (): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, 50))
+  }
 }
