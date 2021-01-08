@@ -269,9 +269,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   async handleInputFieldFrom (): Promise<any> {
     this.formModel.from = this.formatNumberField(this.formModel.from)
     if (!isNumberValue(this.formModel.from)) {
-      await setTimeout(() => {
+      await new Promise<void>((resolve) => setTimeout(() => {
         this.resetFieldFrom()
-      }, 50)
+        resolve()
+      }, 50))
       return
     }
     if (!this.isFieldToActive) {
@@ -308,9 +309,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   async handleInputFieldTo (): Promise<any> {
     this.formModel.to = this.formatNumberField(this.formModel.to)
     if (!isNumberValue(this.formModel.to)) {
-      await setTimeout(() => {
+      await new Promise<void>((resolve) => setTimeout(() => {
         this.resetFieldTo()
-      }, 50)
+        resolve()
+      }, 50))
       return
     }
     if (!this.isFieldFromActive) {

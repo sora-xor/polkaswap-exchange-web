@@ -101,9 +101,6 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin, Inpu
   @Action setSlippageTolerance!: any
   @Action setTransactionDeadline!: any
 
-  isAwaitingSlippageToleranceInput = false
-  slippageToleranceTimeout: any = null
-
   get model (): string {
     return `${this.slippageTolerance}`
   }
@@ -141,8 +138,8 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin, Inpu
     this.setSlippageTolerance({ value: name })
   }
 
-  setSlippageToleranceOnTimeout (): void {
-    this.slippageToleranceTimeout = setTimeout(() => {
+  async handleSlippageToleranceOnInput (): Promise<void> {
+    await new Promise<void>((resolve) => setTimeout(() => {
       this.model = this.formatNumberField(this.model)
       if (!isNumberValue(this.model)) {
         this.model = this.defaultSlippageTolerance.toString()
@@ -152,16 +149,8 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin, Inpu
         this.model = this.slippageToleranceExtremeValues.min.toString()
       }
       this.setSlippageTolerance({ value: this.model })
-      this.isAwaitingSlippageToleranceInput = false
-      clearTimeout(this.slippageToleranceTimeout)
-    }, 50)
-  }
-
-  async handleSlippageToleranceOnInput (): Promise<void> {
-    if (!this.isAwaitingSlippageToleranceInput) {
-      await this.setSlippageToleranceOnTimeout()
-    }
-    this.isAwaitingSlippageToleranceInput = true
+      resolve()
+    }, 50))
   }
 
   async handleSlippageToleranceOnBlur (): Promise<void> {
