@@ -171,9 +171,9 @@ const actions = {
 
       if (removePart) {
         commit(types.SET_REMOVE_PART, part.toString())
-        commit(types.SET_LIQUIDITY_AMOUNT, part.div(new FPNumber(100)).mul(new FPNumber(getters.liquidityBalance)).toString(getters.liquidityDecimals))
-        commit(types.SET_FIRST_TOKEN_AMOUNT, part.div(new FPNumber(100)).mul(new FPNumber(getters.firstTokenBalance)).toString(getters.firstTokenDecimals))
-        commit(types.SET_SECOND_TOKEN_AMOUNT, part.div(new FPNumber(100)).mul(new FPNumber(getters.secondTokenBalance)).toString(getters.secondTokenDecimals))
+        commit(types.SET_LIQUIDITY_AMOUNT, part.div(new FPNumber(100)).mul(new FPNumber(getters.liquidityBalance)).toFixed(getters.liquidityDecimals))
+        commit(types.SET_FIRST_TOKEN_AMOUNT, part.div(new FPNumber(100)).mul(new FPNumber(getters.firstTokenBalance)).toFixed(getters.firstTokenDecimals))
+        commit(types.SET_SECOND_TOKEN_AMOUNT, part.div(new FPNumber(100)).mul(new FPNumber(getters.secondTokenBalance)).toFixed(getters.secondTokenDecimals))
       } else {
         commit(types.SET_REMOVE_PART, 0)
         commit(types.SET_LIQUIDITY_AMOUNT, 0)
@@ -195,8 +195,8 @@ const actions = {
 
           commit(types.SET_REMOVE_PART, Math.round(part.mul(new FPNumber(100)).toNumber()))
           commit(types.SET_LIQUIDITY_AMOUNT, liquidityAmount)
-          commit(types.SET_FIRST_TOKEN_AMOUNT, part.mul(new FPNumber(getters.firstTokenBalance)).toString(getters.firstTokenDecimals))
-          commit(types.SET_SECOND_TOKEN_AMOUNT, part.mul(new FPNumber(getters.secondTokenBalance)).toString(getters.secondTokenDecimals))
+          commit(types.SET_FIRST_TOKEN_AMOUNT, part.mul(new FPNumber(getters.firstTokenBalance)).toFixed(getters.firstTokenDecimals))
+          commit(types.SET_SECOND_TOKEN_AMOUNT, part.mul(new FPNumber(getters.secondTokenBalance)).toFixed(getters.secondTokenDecimals))
         }
       } else {
         commit(types.SET_LIQUIDITY_AMOUNT)
@@ -215,9 +215,9 @@ const actions = {
           const part = new FPNumber(firstTokenAmount).div(new FPNumber(getters.firstTokenBalance))
 
           commit(types.SET_REMOVE_PART, Math.round(part.mul(new FPNumber(100)).toNumber()))
-          commit(types.SET_LIQUIDITY_AMOUNT, part.mul(new FPNumber(getters.liquidityBalance)).toString(getters.liquidityDecimals))
+          commit(types.SET_LIQUIDITY_AMOUNT, part.mul(new FPNumber(getters.liquidityBalance)).toFixed(getters.liquidityDecimals))
           commit(types.SET_FIRST_TOKEN_AMOUNT, firstTokenAmount)
-          commit(types.SET_SECOND_TOKEN_AMOUNT, part.mul(new FPNumber(getters.secondTokenBalance)).toString(getters.secondTokenDecimals))
+          commit(types.SET_SECOND_TOKEN_AMOUNT, part.mul(new FPNumber(getters.secondTokenBalance)).toFixed(getters.secondTokenDecimals))
         }
       } else {
         commit(types.SET_FIRST_TOKEN_AMOUNT)
@@ -236,8 +236,8 @@ const actions = {
           const part = new FPNumber(secondTokenAmount).div(new FPNumber(getters.secondTokenBalance))
 
           commit(types.SET_REMOVE_PART, Math.round(part.mul(new FPNumber(100)).toNumber()))
-          commit(types.SET_LIQUIDITY_AMOUNT, part.mul(new FPNumber(getters.liquidityBalance)).toString(getters.liquidityDecimals))
-          commit(types.SET_FIRST_TOKEN_AMOUNT, part.mul(new FPNumber(getters.firstTokenBalance)).toString(getters.firstTokenDecimals))
+          commit(types.SET_LIQUIDITY_AMOUNT, part.mul(new FPNumber(getters.liquidityBalance)).toFixed(getters.liquidityDecimals))
+          commit(types.SET_FIRST_TOKEN_AMOUNT, part.mul(new FPNumber(getters.firstTokenBalance)).toFixed(getters.firstTokenDecimals))
           commit(types.SET_SECOND_TOKEN_AMOUNT, secondTokenAmount)
         }
       } else {

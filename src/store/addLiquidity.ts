@@ -74,8 +74,8 @@ const getters = {
   reserveB (state) {
     return state.reserve ? Number(state.reserve[1]) : 0
   },
-  isAvailable (state) {
-    return state.reserve && state.reserve[0] !== '0' && state.reserve[1] !== '0'
+  isAvailable (state, getters) {
+    return state.reserve && getters.reserveA !== 0 && getters.reserveB !== 0
   },
   minted (state) {
     return state.minted || '0'
@@ -87,7 +87,9 @@ const getters = {
     return state.totalSupply || '0'
   },
   shareOfPool (state, getters) {
-    return new FPNumber(getters.minted).div(new FPNumber(getters.totalSupply)).mul(new FPNumber(100)).toNumber()
+    return getters.firstTokenValue && getters.secondTokenValue
+      ? new FPNumber(getters.minted).div(new FPNumber(getters.totalSupply)).mul(new FPNumber(100)).toNumber(2) || 0
+      : 0
   }
 }
 
@@ -207,7 +209,7 @@ const actions = {
           new FPNumber(value)
             .mul(new FPNumber(getters.reserveB))
             .div(new FPNumber(getters.reserveA))
-            .toString(getters.firstTokenDecimals))
+            .toFixed(getters.firstTokenDecimals))
       }
       dispatch('estimateMinted')
       dispatch('getNetworkFee')
@@ -225,7 +227,7 @@ const actions = {
           new FPNumber(value)
             .mul(new FPNumber(getters.reserveA))
             .div(new FPNumber(getters.reserveB))
-            .toString(getters.secondTokenDecimals))
+            .toFixed(getters.secondTokenDecimals))
       }
       dispatch('estimateMinted')
       dispatch('getNetworkFee')

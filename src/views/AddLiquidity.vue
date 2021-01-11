@@ -117,7 +117,7 @@
       </div>
       <div class="card__data">
         <div>{{ t('createPair.shareOfPool') }}</div>
-        <div>{{ formatNumber(shareOfPool || 0, 2) }}%</div>
+        <div>{{ shareOfPool }}%</div>
       </div>
       <div class="card__data">
         <div>{{ t('createPair.networkFee') }}</div>
@@ -240,22 +240,22 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
 
   get firstPerSecondPrice (): string {
     return this.firstTokenValue && this.secondTokenValue
-      ? formatNumber(new FPNumber(this.firstTokenValue).div(new FPNumber(this.secondTokenValue)).toNumber() || 0, 2)
-      : formatNumber(0, 2)
+      ? new FPNumber(this.firstTokenValue).div(new FPNumber(this.secondTokenValue)).toFixed(2) || '0.00'
+      : '0.00'
   }
 
   get secondPerFirstPrice (): string {
     return this.firstTokenValue && this.secondTokenValue
-      ? formatNumber(new FPNumber(this.secondTokenValue).div(new FPNumber(this.firstTokenValue)).toNumber() || 0, 2)
-      : formatNumber(0, 2)
+      ? new FPNumber(this.secondTokenValue).div(new FPNumber(this.firstTokenValue)).toFixed(2) || '0.00'
+      : '0.00'
   }
 
   get firstTokenPosition (): string {
-    return formatNumber(0, 2)
+    return '0.00'
   }
 
   get secondTokenPosition (): string {
-    return formatNumber(0, 2)
+    return '0.00'
   }
 
   get areTokensSelected (): boolean {
