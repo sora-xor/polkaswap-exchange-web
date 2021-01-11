@@ -209,7 +209,7 @@ const actions = {
           new FPNumber(value)
             .mul(new FPNumber(getters.reserveB))
             .div(new FPNumber(getters.reserveA))
-            .toFixed(getters.firstTokenDecimals))
+            .toString(getters.firstTokenDecimals))
       }
       dispatch('estimateMinted')
       dispatch('getNetworkFee')
@@ -227,7 +227,7 @@ const actions = {
           new FPNumber(value)
             .mul(new FPNumber(getters.reserveA))
             .div(new FPNumber(getters.reserveB))
-            .toFixed(getters.secondTokenDecimals))
+            .toString(getters.secondTokenDecimals))
       }
       dispatch('estimateMinted')
       dispatch('getNetworkFee')
