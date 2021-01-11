@@ -1,8 +1,6 @@
 import { Vue, Component } from 'vue-property-decorator'
 import { isWalletLoaded } from '@soramitsu/soraneo-wallet-web'
 
-import { isApiConnected } from '@/utils'
-
 @Component
 export default class LoadingMixin extends Vue {
   loading = false

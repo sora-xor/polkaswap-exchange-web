@@ -19,7 +19,7 @@
         <s-form-item>
           <s-input
             v-model="formModel.from"
-            v-float="formModel.from"
+            v-float
             class="s-input--token-value"
             :placeholder="isFieldFromFocused ? '' : inputPlaceholder"
             @input="handleInputFieldFrom"
@@ -57,7 +57,7 @@
         <s-form-item>
           <s-input
             v-model="formModel.to"
-            v-float="formModel.to"
+            v-float
             class="s-input--token-value"
             :placeholder="isFieldToFocused ? '' : inputPlaceholder"
             @input="handleInputFieldTo"
@@ -106,6 +106,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 import { formatNumber, getAssetSymbol, isNumberValue, isWalletConnected } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
@@ -121,7 +122,7 @@ import { KnownSymbols, KnownAssets, FPNumber } from '@sora-substrate/util'
     ResultDialog: lazyComponent(Components.ResultDialog)
   }
 })
-export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
+export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFormatterMixin) {
   @Getter tokenXOR!: any
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
@@ -266,10 +267,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   async handleInputFieldFrom (): Promise<any> {
+    this.formModel.from = this.formatNumberField(this.formModel.from)
     if (!isNumberValue(this.formModel.from)) {
-      await setTimeout(() => {
-        this.resetFieldFrom()
-      }, 50)
+      await this.promiseTimeout()
+      this.resetFieldFrom()
       return
     }
     if (!this.isFieldToActive) {
@@ -304,10 +305,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   async handleInputFieldTo (): Promise<any> {
+    this.formModel.to = this.formatNumberField(this.formModel.to)
     if (!isNumberValue(this.formModel.to)) {
-      await setTimeout(() => {
-        this.resetFieldTo()
-      }, 50)
+      await this.promiseTimeout()
+      this.resetFieldTo()
       return
     }
     if (!this.isFieldFromActive) {
@@ -380,6 +381,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   handleBlurFieldFrom (): void {
     if (this.formModel.from === '' || +this.formModel.from === 0) {
       this.resetFieldFrom()
+    } else {
+      this.formModel.from = this.trimNeedlesSymbols(this.formModel.from)
     }
     this.isFieldFromFocused = false
   }
@@ -396,6 +399,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   handleBlurFieldTo (): void {
     if (this.formModel.to === '' || +this.formModel.to === 0) {
       this.resetFieldTo()
+    } else {
+      this.formModel.to = this.trimNeedlesSymbols(this.formModel.to)
     }
     this.isFieldToFocused = false
   }
