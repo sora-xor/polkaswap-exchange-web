@@ -87,14 +87,14 @@ export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, Dialog
 
   get firstPerSecondPrice (): string {
     return this.firstTokenValue && this.secondTokenValue
-      ? formatNumber(new FPNumber(this.firstTokenValue).div(new FPNumber(this.secondTokenValue)).toNumber() || 0, 2)
-      : formatNumber(0, 2)
+      ? new FPNumber(this.firstTokenValue).div(new FPNumber(this.secondTokenValue)).toFixed(2)
+      : '0.00'
   }
 
   get secondPerFirstPrice (): string {
     return this.firstTokenValue && this.secondTokenValue
-      ? formatNumber(new FPNumber(this.secondTokenValue).div(new FPNumber(this.firstTokenValue)).toNumber() || 0, 2)
-      : formatNumber(0, 2)
+      ? new FPNumber(this.secondTokenValue).div(new FPNumber(this.firstTokenValue)).toFixed(2)
+      : '0.00'
   }
 
   handleConfirmCreatePair (): void {
