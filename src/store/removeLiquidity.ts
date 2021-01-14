@@ -3,8 +3,8 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import BigNumber from 'bignumber.js'
 import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { FPNumber } from '@sora-substrate/util'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -48,6 +48,9 @@ const getters = {
   liquidityBalance (state) {
     return state.liquidity ? state.liquidity.balance : 0
   },
+  liquidityDecimals (state) {
+    return state.liquidity ? state.liquidity.decimals : 0
+  },
   firstTokenBalance (state) {
     return state.liquidity ? state.liquidity.firstBalance : 0
   },
@@ -59,6 +62,18 @@ const getters = {
   },
   secondToken (state, getters, rootGetters) {
     return state.liquidity && rootGetters.assets.assets ? rootGetters.assets.assets.find(t => t.address === state.liquidity.secondAddress) || {} : {}
+  },
+  firstTokenDecimals (state, getters) {
+    return getters.firstToken.decimals || 0
+  },
+  secondTokenDecimals (state, getters) {
+    return getters.secondToken.decimals || 0
+  },
+  firstTokenAddress (state, getters) {
+    return getters.firstToken.address || ''
+  },
+  secondTokenAddress (state, getters) {
+    return getters.secondToken.address || ''
   },
   removePart (state) {
     return state.removePart
@@ -152,15 +167,13 @@ const actions = {
   setRemovePart ({ commit, getters, dispatch }, removePart) {
     if (!getters.focusedField || getters.focusedField === 'removePart') {
       commit(types.SET_FOCUSED_FIELD, 'removePart')
-      const part = Math.round(removePart)
+      const part = new FPNumber(Math.round(removePart))
 
       if (removePart) {
-        if (removePart && removePart !== getters.removePart && !Number.isNaN(removePart)) {
-          commit(types.SET_REMOVE_PART, part)
-          commit(types.SET_LIQUIDITY_AMOUNT, (getters.liquidityBalance * part) / 100)
-          commit(types.SET_FIRST_TOKEN_AMOUNT, (getters.firstTokenBalance * part) / 100)
-          commit(types.SET_SECOND_TOKEN_AMOUNT, (getters.secondTokenBalance * part) / 100)
-        }
+        commit(types.SET_REMOVE_PART, part.toString())
+        commit(types.SET_LIQUIDITY_AMOUNT, part.div(new FPNumber(100)).mul(new FPNumber(getters.liquidityBalance)).toString(getters.liquidityDecimals))
+        commit(types.SET_FIRST_TOKEN_AMOUNT, part.div(new FPNumber(100)).mul(new FPNumber(getters.firstTokenBalance)).toString(getters.firstTokenDecimals))
+        commit(types.SET_SECOND_TOKEN_AMOUNT, part.div(new FPNumber(100)).mul(new FPNumber(getters.secondTokenBalance)).toString(getters.secondTokenDecimals))
       } else {
         commit(types.SET_REMOVE_PART, 0)
         commit(types.SET_LIQUIDITY_AMOUNT, 0)
@@ -178,12 +191,12 @@ const actions = {
 
       if (liquidityAmount) {
         if (liquidityAmount !== getters.liquidityAmount && !Number.isNaN(liquidityAmount)) {
-          const part = new BigNumber(liquidityAmount).dividedBy(getters.liquidityBalance)
+          const part = new FPNumber(liquidityAmount).div(new FPNumber(getters.liquidityBalance))
 
-          commit(types.SET_REMOVE_PART, part.multipliedBy(100).toNumber())
+          commit(types.SET_REMOVE_PART, Math.round(part.mul(new FPNumber(100)).toNumber()))
           commit(types.SET_LIQUIDITY_AMOUNT, liquidityAmount)
-          commit(types.SET_FIRST_TOKEN_AMOUNT, part.multipliedBy(getters.firstTokenBalance).toNumber())
-          commit(types.SET_SECOND_TOKEN_AMOUNT, part.multipliedBy(getters.secondTokenBalance).toNumber())
+          commit(types.SET_FIRST_TOKEN_AMOUNT, part.mul(new FPNumber(getters.firstTokenBalance)).toString(getters.firstTokenDecimals))
+          commit(types.SET_SECOND_TOKEN_AMOUNT, part.mul(new FPNumber(getters.secondTokenBalance)).toString(getters.secondTokenDecimals))
         }
       } else {
         commit(types.SET_LIQUIDITY_AMOUNT)
@@ -193,40 +206,18 @@ const actions = {
     }
   },
 
-  async getNetworkFee ({ commit, getters }) {
-    if (getters.firstToken && getters.firstToken.address && getters.secondToken && getters.secondToken.address && getters.liquidityAmount) {
-      commit(types.GET_FEE_REQUEST)
-      try {
-        const firstAddress = getters.firstToken.address
-        const secondAddress = getters.secondToken.address
-        const amount = getters.liquidityAmount
-        const reserveA = getters.reserveA
-        const reserveB = getters.reserveB
-        const pts = getters.poolTokensTotalSupply
-
-        const fee = await dexApi.getRemoveLiquidityNetworkFee(firstAddress, secondAddress, amount, reserveA, reserveB, pts)
-
-        commit(types.GET_FEE_SUCCESS, fee)
-      } catch (error) {
-        commit(types.GET_FEE_FAILURE, error)
-      }
-    } else {
-      commit(types.GET_FEE_SUCCESS, 0)
-    }
-  },
-
   setFirstTokenAmount ({ commit, getters, dispatch }, firstTokenAmount) {
     if (!getters.focusedField || getters.focusedField === 'firstTokenAmount') {
       commit(types.SET_FOCUSED_FIELD, 'firstTokenAmount')
 
       if (firstTokenAmount) {
         if (firstTokenAmount !== getters.firstTokenAmount && !Number.isNaN(firstTokenAmount)) {
-          const part = new BigNumber(firstTokenAmount).dividedBy(getters.firstTokenBalance)
+          const part = new FPNumber(firstTokenAmount).div(new FPNumber(getters.firstTokenBalance))
 
-          commit(types.SET_REMOVE_PART, Math.round(part.multipliedBy(100).toNumber()))
-          commit(types.SET_LIQUIDITY_AMOUNT, part.multipliedBy(getters.liquidityBalance).toNumber())
+          commit(types.SET_REMOVE_PART, Math.round(part.mul(new FPNumber(100)).toNumber()))
+          commit(types.SET_LIQUIDITY_AMOUNT, part.mul(new FPNumber(getters.liquidityBalance)).toString(getters.liquidityDecimals))
           commit(types.SET_FIRST_TOKEN_AMOUNT, firstTokenAmount)
-          commit(types.SET_SECOND_TOKEN_AMOUNT, part.multipliedBy(getters.secondTokenBalance).toNumber())
+          commit(types.SET_SECOND_TOKEN_AMOUNT, part.mul(new FPNumber(getters.secondTokenBalance)).toString(getters.secondTokenDecimals))
         }
       } else {
         commit(types.SET_FIRST_TOKEN_AMOUNT)
@@ -242,11 +233,11 @@ const actions = {
 
       if (secondTokenAmount) {
         if (Number(secondTokenAmount) !== getters.secondTokenAmount && !Number.isNaN(secondTokenAmount)) {
-          const part = new BigNumber(secondTokenAmount).dividedBy(getters.secondTokenBalance)
+          const part = new FPNumber(secondTokenAmount).div(new FPNumber(getters.secondTokenBalance))
 
-          commit(types.SET_REMOVE_PART, Math.round(part.multipliedBy(100).toNumber()))
-          commit(types.SET_LIQUIDITY_AMOUNT, part.multipliedBy(getters.liquidityBalance).toNumber())
-          commit(types.SET_FIRST_TOKEN_AMOUNT, part.multipliedBy(getters.firstTokenBalance).toNumber())
+          commit(types.SET_REMOVE_PART, Math.round(part.mul(new FPNumber(100)).toNumber()))
+          commit(types.SET_LIQUIDITY_AMOUNT, part.mul(new FPNumber(getters.liquidityBalance)).toString(getters.liquidityDecimals))
+          commit(types.SET_FIRST_TOKEN_AMOUNT, part.mul(new FPNumber(getters.firstTokenBalance)).toString(getters.firstTokenDecimals))
           commit(types.SET_SECOND_TOKEN_AMOUNT, secondTokenAmount)
         }
       } else {
@@ -267,13 +258,33 @@ const actions = {
     await dispatch('getNetworkFee')
   },
 
-  async getLiquidityReserves ({ commit, getters }) {
-    const firstAddress = getters.firstToken.address
-    const secondAddress = getters.secondToken.address
+  async getNetworkFee ({ commit, getters }) {
+    if (getters.firstTokenAddress && getters.secondTokenAddress && getters.liquidityAmount) {
+      commit(types.GET_FEE_REQUEST)
 
+      try {
+        const fee = await dexApi.getRemoveLiquidityNetworkFee(
+          getters.firstTokenAddress,
+          getters.secondTokenAddress,
+          getters.liquidityAmount,
+          getters.reserveA,
+          getters.reserveB,
+          getters.totalSupply
+        )
+
+        commit(types.GET_FEE_SUCCESS, fee)
+      } catch (error) {
+        commit(types.GET_FEE_FAILURE, error)
+      }
+    } else {
+      commit(types.GET_FEE_SUCCESS, 0)
+    }
+  },
+
+  async getLiquidityReserves ({ commit, getters }) {
     try {
       commit(types.GET_LIQUIDITY_RESERVE_REQUEST)
-      const [reserveA, reserveB] = await dexApi.getLiquidityReserves(firstAddress, secondAddress)
+      const [reserveA, reserveB] = await dexApi.getLiquidityReserves(getters.firstTokenAddress, getters.secondTokenAddress)
       commit(types.GET_LIQUIDITY_RESERVE_SUCCESS, { reserveA, reserveB })
     } catch (error) {
       commit(types.GET_LIQUIDITY_RESERVE_FAILURE, error)
@@ -281,15 +292,16 @@ const actions = {
   },
 
   async getTotalSupply ({ commit, getters }) {
-    const firstAddress = getters.firstToken.address
-    const secondAddress = getters.secondToken.address
-    const amount = getters.liquidityAmount
-    const reserveA = getters.reserveA
-    const reserveB = getters.reserveB
-
     try {
       commit(types.GET_TOTAL_SUPPLY_REQUEST)
-      const [aOut, bOut, pts] = await dexApi.estimateTokensRetrieved(firstAddress, secondAddress, amount, reserveA, reserveB)
+      const [aOut, bOut, pts] = await dexApi.estimateTokensRetrieved(
+        getters.firstTokenAddress,
+        getters.secondTokenAddress,
+        getters.liquidityAmount,
+        getters.reserveA,
+        getters.reserveB
+      )
+
       commit(types.GET_TOTAL_SUPPLY_SUCCESS, pts)
     } catch (error) {
       commit(types.GET_TOTAL_SUPPLY_FAILURE, error)
@@ -297,15 +309,14 @@ const actions = {
   },
 
   async removeLiquidity ({ commit, getters }) {
-    const firstAddress = getters.firstToken.address
-    const secondAddress = getters.secondToken.address
-    const amount = getters.liquidityAmount
-    const reserveA = getters.reserveA
-    const reserveB = getters.reserveB
-    const pts = getters.totalSupply
-
     await dexApi.removeLiquidity(
-      firstAddress, secondAddress, amount, reserveA, reserveB, pts)
+      getters.firstTokenAddress,
+      getters.secondTokenAddress,
+      getters.liquidityAmount,
+      getters.reserveA,
+      getters.reserveB,
+      getters.totalSupply
+    )
   },
 
   resetData ({ commit }) {
