@@ -4,8 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { dexApi } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets } from '@sora-substrate/util'
-import BigNumber from 'bignumber.js'
+import { FPNumber } from '@sora-substrate/util'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -48,6 +47,18 @@ const getters = {
   secondToken (state) {
     return state.secondToken
   },
+  firstTokenDecimals (state) {
+    return state.firstToken ? state.firstToken.decimals : 0
+  },
+  secondTokenDecimals (state) {
+    return state.secondToken ? state.secondToken.decimals : 0
+  },
+  firstTokenAddress (state) {
+    return state.firstToken ? state.firstToken.address : 0
+  },
+  secondTokenAddress (state) {
+    return state.secondToken ? state.secondToken.address : 0
+  },
   firstTokenValue (state) {
     return state.firstTokenValue
   },
@@ -63,8 +74,8 @@ const getters = {
   reserveB (state) {
     return state.reserve ? Number(state.reserve[1]) : 0
   },
-  isAvailable (state) {
-    return state.reserve && state.reserve[0] !== '0' && state.reserve[1] !== '0'
+  isAvailable (state, getters) {
+    return state.reserve && getters.reserveA !== 0 && getters.reserveB !== 0
   },
   minted (state) {
     return state.minted || '0'
@@ -76,7 +87,9 @@ const getters = {
     return state.totalSupply || '0'
   },
   shareOfPool (state, getters) {
-    return new BigNumber(getters.minted).dividedBy(Number(getters.totalSupply)).multipliedBy(100).toNumber()
+    return getters.firstTokenValue && getters.secondTokenValue
+      ? new FPNumber(getters.minted).div(new FPNumber(getters.totalSupply)).mul(new FPNumber(100)).toNumber(2) || 0
+      : 0
   }
 }
 
@@ -154,7 +167,7 @@ const actions = {
     if (getters.firstToken && getters.secondToken) {
       commit(types.GET_RESERVE_REQUEST)
       try {
-        const reserve = await dexApi.getLiquidityReserves(getters.firstToken.address, getters.secondToken.address)
+        const reserve = await dexApi.getLiquidityReserves(getters.firstTokenAddress, getters.secondTokenAddress)
         commit(types.GET_RESERVE_SUCCESS, reserve)
 
         dispatch('estimateMinted')
@@ -166,13 +179,13 @@ const actions = {
   },
 
   async estimateMinted ({ commit, getters }) {
-    if (getters.firstToken && getters.firstToken.address && getters.firstToken && getters.secondToken.address && getters.firstTokenValue && getters.secondTokenValue) {
+    if (getters.firstTokenAddress && getters.secondTokenAddress && getters.firstTokenValue && getters.secondTokenValue) {
       commit(types.ESTIMATE_MINTED_REQUEST)
 
       try {
         const [minted, pts] = await dexApi.estimatePoolTokensMinted(
-          getters.firstToken.address,
-          getters.secondToken.address,
+          getters.firstTokenAddress,
+          getters.secondTokenAddress,
           getters.firstTokenValue,
           getters.secondTokenValue,
           getters.reserveA,
@@ -191,7 +204,12 @@ const actions = {
 
       commit(types.SET_FIRST_TOKEN_VALUE, value)
       if (value && getters.reserveA && getters.reserveB) {
-        commit(types.SET_SECOND_TOKEN_VALUE, new BigNumber(value).multipliedBy(new BigNumber(getters.reserveB).dividedBy(getters.reserveA)).toString())
+        commit(
+          types.SET_SECOND_TOKEN_VALUE,
+          new FPNumber(value)
+            .mul(new FPNumber(getters.reserveB))
+            .div(new FPNumber(getters.reserveA))
+            .toString(getters.firstTokenDecimals))
       }
       dispatch('estimateMinted')
       dispatch('getNetworkFee')
@@ -204,7 +222,12 @@ const actions = {
 
       commit(types.SET_SECOND_TOKEN_VALUE, value)
       if (value && getters.reserveA && getters.reserveB) {
-        commit(types.SET_FIRST_TOKEN_VALUE, new BigNumber(value).multipliedBy(new BigNumber(getters.reserveA).dividedBy(getters.reserveB)).toString())
+        commit(
+          types.SET_FIRST_TOKEN_VALUE,
+          new FPNumber(value)
+            .mul(new FPNumber(getters.reserveA))
+            .div(new FPNumber(getters.reserveB))
+            .toString(getters.secondTokenDecimals))
       }
       dispatch('estimateMinted')
       dispatch('getNetworkFee')
@@ -212,12 +235,12 @@ const actions = {
   },
 
   async getNetworkFee ({ commit, getters }) {
-    if (getters.firstToken && getters.firstToken.address && getters.firstToken && getters.secondToken.address && getters.firstTokenValue && getters.secondTokenValue) {
+    if (getters.firstTokenAddress && getters.secondTokenAddress && getters.firstTokenValue && getters.secondTokenValue) {
       commit(types.GET_FEE_REQUEST)
       try {
         const fee = await dexApi.getAddLiquidityNetworkFee(
-          getters.firstToken.address,
-          getters.secondToken.address,
+          getters.firstTokenAddress,
+          getters.secondTokenAddress,
           getters.firstTokenValue,
           getters.secondTokenValue
         )
@@ -235,8 +258,8 @@ const actions = {
     commit(types.ADD_LIQUIDITY_REQUEST)
     try {
       const result = await dexApi.addLiquidity(
-        getters.firstToken.address,
-        getters.secondToken.address,
+        getters.firstTokenAddress,
+        getters.secondTokenAddress,
         getters.firstTokenValue,
         getters.secondTokenValue
       )
