@@ -8,7 +8,7 @@
       <div class="input-line">
         <div class="input-title">
           <span>{{ t('exchange.from') }}</span>
-          <span v-if="areTokensSelected && !isEmptyAmount && isExchangeB" class="input-title-estimated">({{ t('swap.estimated') }})</span>
+          <span v-if="areTokensSelected && !isEmptyToAmount && !isFieldFromActive" class="input-title-estimated">({{ t('swap.estimated') }})</span>
         </div>
         <div v-if="this.connected && this.tokenFrom && this.tokenFrom.balance && this.isTokenFromBalanceAvailable" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
@@ -46,7 +46,7 @@
       <div class="input-line">
         <div class="input-title">
           <span>{{ t('exchange.to') }}</span>
-          <span v-if="areTokensSelected && !isEmptyAmount && !isExchangeB" class="input-title-estimated">({{ t('swap.estimated') }})</span>
+          <span v-if="areTokensSelected && !isEmptyFromAmount && !isFieldToActive" class="input-title-estimated">({{ t('swap.estimated') }})</span>
         </div>
         <div v-if="this.connected && this.tokenTo && this.tokenTo.balance && this.isTokenToBalanceAvailable" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
@@ -76,12 +76,12 @@
         </s-button>
       </div>
     </div>
-    <swap-info v-if="areTokensSelected && !isEmptyAmount" :show-price="true" :show-slippage-tolerance="true" />
+    <swap-info v-if="areTokensSelected && !areZeroAmounts" :show-price="true" :show-slippage-tolerance="true" />
     <s-button v-if="!connected" type="primary" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
-    <s-button v-else type="primary" :disabled="!areTokensSelected || isEmptyAmount || isInsufficientAmount || isInsufficientBalance" @click="handleConfirmSwap">
-      <template v-if="isEmptyAmount">
+    <s-button v-else type="primary" :disabled="!areTokensSelected || areZeroAmounts || isInsufficientAmount || isInsufficientBalance" @click="handleConfirmSwap">
+      <template v-if="areZeroAmounts">
         {{ t('swap.enterAmount') }}
       </template>
       <template v-else-if="isInsufficientAmount">
@@ -94,7 +94,7 @@
         {{ t('exchange.Swap') }}
       </template>
     </s-button>
-    <swap-info v-if="areTokensSelected && !isEmptyAmount" />
+    <swap-info v-if="areTokensSelected && !areZeroAmounts" />
     <select-token :visible.sync="showSelectTokenDialog" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
     <confirm-swap :visible.sync="showConfirmSwapDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmSwap" @checkConfirm="updateAccountAssets" />
     <result-dialog :visible.sync="isSwapConfirmed" :type="t('exchange.Swap')" :message="transactionResultMessage" @close="swapNotify(transactionResultMessage)" />
@@ -173,8 +173,24 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     return !!(this.tokenFrom && this.tokenTo)
   }
 
-  get isEmptyAmount (): boolean {
-    return +this.formModel.from === 0 || +this.formModel.to === 0
+  get isEmptyFromAmount (): boolean {
+    return this.formModel.from === ''
+  }
+
+  get isZeroFromAmount (): boolean {
+    return +this.formModel.from === 0
+  }
+
+  get isEmptyToAmount (): boolean {
+    return this.formModel.to === ''
+  }
+
+  get isZeroToAmount (): boolean {
+    return +this.formModel.to === 0
+  }
+
+  get areZeroAmounts (): boolean {
+    return this.isZeroFromAmount || this.isZeroToAmount
   }
 
   get isMaxDisabled (): boolean {
@@ -223,11 +239,17 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     })
   }
 
+  /**
+   * Update token From balance and amount (after swap it should be recalculated)
+   */
   get tokenFromBalance (): string {
     this.recountSwapValues()
     return this.tokenFrom ? this.tokenFrom.balance : ''
   }
 
+  /**
+   * Update token To balance and amount (after swap it should be recalculated)
+   */
   get tokenToBalance (): string {
     this.recountSwapValues()
     return this.tokenTo ? this.tokenTo.balance : ''
@@ -275,7 +297,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     }
     if (!this.isFieldToActive) {
       this.isFieldFromActive = true
-      if (!this.areTokensSelected || +this.formModel.from === 0) {
+      if (!this.areTokensSelected || this.isZeroFromAmount) {
         this.resetFieldTo()
       } else {
         try {
@@ -313,7 +335,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     }
     if (!this.isFieldFromActive) {
       this.isFieldToActive = true
-      if (!this.areTokensSelected || +this.formModel.to === 0) {
+      if (!this.areTokensSelected || this.isZeroToAmount) {
         this.resetFieldFrom()
       } else {
         try {
@@ -379,7 +401,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   }
 
   handleBlurFieldFrom (): void {
-    if (this.formModel.from === '' || +this.formModel.from === 0) {
+    if (this.isEmptyFromAmount || this.isZeroFromAmount) {
       this.resetFieldFrom()
     } else {
       this.formModel.from = this.trimNeedlesSymbols(this.formModel.from)
@@ -391,13 +413,13 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     this.isFieldFromActive = true
     this.isFieldToActive = false
     this.isFieldFromFocused = true
-    if (+this.formModel.from === 0) {
+    if (this.isZeroFromAmount) {
       this.formModel.from = ''
     }
   }
 
   handleBlurFieldTo (): void {
-    if (this.formModel.to === '' || +this.formModel.to === 0) {
+    if (this.isEmptyToAmount || this.isZeroToAmount) {
       this.resetFieldTo()
     } else {
       this.formModel.to = this.trimNeedlesSymbols(this.formModel.to)
@@ -409,7 +431,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     this.isFieldFromActive = false
     this.isFieldToActive = true
     this.isFieldToFocused = true
-    if (+this.formModel.to === 0) {
+    if (this.isZeroToAmount) {
       this.formModel.to = ''
     }
   }
