@@ -1,7 +1,9 @@
 import { PageNames, Topics } from '@/consts'
-import { KnownSymbols } from '@sora-substrate/util'
+import { KnownSymbols, Operation } from '@sora-substrate/util'
 
 export default {
+  transactionSubmittedText: 'Transaction was submitted',
+  unknownErrorText: 'ERROR Something went wrong...',
   assetNames: {
     [KnownSymbols.XOR]: 'Sora',
     [KnownSymbols.DOT]: 'Polkadot',
@@ -29,6 +31,10 @@ export default {
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
     [PageNames.CreatePair]: 'Create Pair'
+  },
+  operations: {
+    [Operation.Transfer]: 'SEND {amount} {symbol} to {address}',
+    [Operation.Swap]: 'SWAP {amount} {symbol} for {amount2} {symbol2}'
   },
   about: {
     polkaswapText: 'Polkaswap - decentralised token exchange for Polkadot ecosystem. Swap any token on SORA, add liquidity, create exchanges, earn through passive market making, build decentralized price feeds.',

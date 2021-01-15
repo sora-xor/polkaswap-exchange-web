@@ -37,20 +37,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
+import { Action, Getter } from 'vuex-class'
+import { dexApi, initWallet } from '@soramitsu/soraneo-wallet-web'
 
 import { PageNames, MainMenu, Components } from '@/consts'
-import TranslationMixin from '@/components/mixins/TranslationMixin'
+import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import router, { lazyComponent } from '@/router'
-import { dexApi, initWallet } from '@soramitsu/soraneo-wallet-web'
 
 @Component({
   components: {
     Settings: lazyComponent(Components.Settings)
   }
 })
-export default class App extends Mixins(TranslationMixin, LoadingMixin) {
+export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   readonly MainMenu = MainMenu
   readonly PageNames = PageNames
   readonly exchangePages = [
@@ -65,8 +66,17 @@ export default class App extends Mixins(TranslationMixin, LoadingMixin) {
 
   showSettings = false
 
-  async created () {
+  @Getter firstReadyTransaction!: any
+  @Action trackActiveTransactions
+
+  async created (): Promise<void> {
     await this.withLoading(initWallet)
+    this.trackActiveTransactions()
+  }
+
+  @Watch('firstReadyTransaction', { deep: true })
+  private handleNotifyAboutTransaction (value): void {
+    this.handleChangeTransaction(value)
   }
 
   getCurrentPath (): string {
@@ -143,6 +153,46 @@ html {
   box-shadow: var(--s-shadow-tooltip);
   font-size: var(--s-font-size-small);
   line-height: $s-line-height-medium;
+}
+.el-notification.sora {
+  background: var(--s-color-brand-day);
+  box-shadow: var(--s-shadow-tooltip);
+  border-radius: 4px;
+  border: none;
+  align-items: center;
+  .el-notification {
+    &__content {
+      color: var(--s-color-utility-surface);
+      text-align: left;
+    }
+    &__closeBtn {
+      color: var(--s-color-utility-surface);
+      &:hover {
+        color: var(--s-color-utility-surface);
+      }
+    }
+  }
+  .loader {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: var(--s-color-utility-surface);
+    // If duration will be change we should create css variable for it
+    animation: runloader 4.5s linear infinite;
+    @keyframes runloader {
+      0% {
+        width: 0;
+      }
+      100% {
+        width: 100%;
+      }
+    }
+  }
+  &:hover .loader {
+    width: 0;
+    animation: none;
+  }
 }
 .el-form--actions {
   $swap-input-class: ".el-input";
