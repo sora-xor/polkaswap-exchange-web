@@ -160,6 +160,8 @@ html {
   border-radius: 4px;
   border: none;
   align-items: center;
+  position: absolute;
+  width: 405px;
   .el-notification {
     &__content {
       color: var(--s-color-utility-surface);
@@ -339,6 +341,7 @@ $menu-height: 65px;
 .app-content {
   overflow-y: auto;
   height: calc(100vh - #{$menu-height});
+  position: relative;
 }
 
 @include tablet {

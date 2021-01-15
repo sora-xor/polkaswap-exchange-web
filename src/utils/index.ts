@@ -8,8 +8,7 @@ export const formatNumber = (value: string | number, decimalLendth?: number): st
 }
 
 export const formatAddress = (address: string, length = address.length / 2) => {
-  const center = address.length / 2
-  return `${address.slice(0, center - (length / 2))}...${address.slice(center + (length / 2))}`
+  return `${address.slice(0, length / 2)}...${address.slice(-length / 2)}`
 }
 
 // We could use this method to check if the user enters a text value in a numeric field (we could do this by copy and paste)

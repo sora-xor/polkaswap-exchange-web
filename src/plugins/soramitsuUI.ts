@@ -15,8 +15,11 @@ Vue.prototype.$notify = ({ message, type }) => {
     type,
     customClass: 'sora s-flex'
   })
+  const elements = Array.from(document.getElementsByClassName('el-notification'))
+  const current = elements[elements.length - 1]
+  const appContent = document.getElementsByClassName('app-content').item(0) as Element
+  appContent.appendChild(current)
   const el = document.createElement('div')
   el.className = 'loader'
-  const elements = Array.from(document.getElementsByClassName('el-notification'))
-  elements[elements.length - 1].appendChild(el)
+  current.appendChild(el)
 }

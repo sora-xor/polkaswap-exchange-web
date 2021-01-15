@@ -1,5 +1,5 @@
 import { PageNames, Topics } from '@/consts'
-import { KnownSymbols, Operation } from '@sora-substrate/util'
+import { KnownSymbols, Operation, TransactionStatus } from '@sora-substrate/util'
 
 export default {
   transactionSubmittedText: 'Transaction was submitted',
@@ -33,8 +33,18 @@ export default {
     [PageNames.CreatePair]: 'Create Pair'
   },
   operations: {
-    [Operation.Transfer]: 'SEND {amount} {symbol} to {address}',
-    [Operation.Swap]: 'SWAP {amount} {symbol} for {amount2} {symbol2}'
+    [TransactionStatus.Finalized]: {
+      [Operation.Transfer]: 'Sent {amount} {symbol} to {address}',
+      [Operation.Swap]: 'Swapped {amount} {symbol} for {amount2} {symbol2}',
+      [Operation.AddLiquidity]: 'Supplied {amount} {symbol} and {amount2} {symbol2}',
+      [Operation.RemoveLiquidity]: 'Removed {amount} {symbol} and {amount2} {symbol2}'
+    },
+    [TransactionStatus.Error]: {
+      [Operation.Transfer]: 'Failed to send {amount} {symbol} to {address}',
+      [Operation.Swap]: 'Failed to swap {amount} {symbol} for {amount2} {symbol2}',
+      [Operation.AddLiquidity]: 'Failed to supply {amount} {symbol} and {amount2} {symbol2}',
+      [Operation.RemoveLiquidity]: 'Failed to remove {amount} {symbol} and {amount2} {symbol2}'
+    }
   },
   about: {
     polkaswapText: 'Polkaswap - decentralised token exchange for Polkadot ecosystem. Swap any token on SORA, add liquidity, create exchanges, earn through passive market making, build decentralized price feeds.',

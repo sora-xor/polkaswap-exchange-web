@@ -23,7 +23,7 @@ export default class TransactionMixin extends Mixins(TranslationMixin) {
     let params = {} as any
     switch (value.type) {
       case Operation.Transfer:
-        params = { ...value, address: formatAddress(value.to as string, 20) }
+        params = { ...value, address: formatAddress(value.to as string, 12) }
         break
       case Operation.Swap:
         params = { ...value }
@@ -32,7 +32,7 @@ export default class TransactionMixin extends Mixins(TranslationMixin) {
       default:
         break
     }
-    return this.t(`operations.${value.type}`, params)
+    return this.t(`operations.${value.status}.${value.type}`, params)
   }
 
   private async getLastTransaction (): Promise<void> {
