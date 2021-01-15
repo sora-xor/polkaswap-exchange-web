@@ -11,11 +11,8 @@ import { Token } from '@/types'
 import { LogoSize } from '@/consts'
 import { getAssetSymbol } from '@/utils'
 
-// TODO 4 alexnatalia: Update Token Icons
-
 @Component
 export default class TokenLogo extends Mixins(TranslationMixin) {
-  // TODO 4 alexnatalia: Think one more time about tokenSymbol
   @Prop({ type: Object, default: () => null }) readonly token!: Token
   @Prop({ type: String, default: '' }) readonly tokenSymbol!: string
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
