@@ -38,12 +38,13 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
+import { dexApi, initWallet } from '@soramitsu/soraneo-wallet-web'
 
 import { PageNames, MainMenu, Components } from '@/consts'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import router, { lazyComponent } from '@/router'
-import { dexApi, initWallet } from '@soramitsu/soraneo-wallet-web'
+import axios from '@/api'
 
 @Component({
   components: {
@@ -66,6 +67,11 @@ export default class App extends Mixins(TranslationMixin, LoadingMixin) {
   showSettings = false
 
   async created () {
+    const { data } = await axios.get('/env.json')
+    dexApi.endpoint = data.DEFAULT_NETWORKS?.length ? data.DEFAULT_NETWORKS[0].address : ''
+    if (!dexApi.endpoint) {
+      throw new Error('Network is not set')
+    }
     await this.withLoading(initWallet)
   }
 
