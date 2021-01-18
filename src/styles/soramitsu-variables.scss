@@ -1,0 +1,32 @@
+$s-color-base-content-primary: #26262D;
+$s-color-brand-day: #0d0248;
+
+$s-color-theme-accent: #ED145B;
+$s-color-theme-accent-hover: #D51252;
+$s-color-theme-accent-pressed: #C00F4A;
+$s-color-theme-accent-focused: #AA0E42;
+// Secondary theme colors
+$s-color-theme-secondary: #F4E0E8;
+$s-color-theme-secondary-hover: #F3CCDA;
+$s-color-theme-secondary-pressed: #F1C0D2;
+$s-color-theme-secondary-focused: #EDABC3;
+
+$s-color-button-tertiary-color: $s-color-theme-accent;
+$s-color-button-tertiary-color-active: $s-color-theme-accent;
+$s-color-button-tertiary-background: $s-color-theme-secondary;
+$s-color-button-tertiary-background-hover: $s-color-theme-secondary-hover;
+$s-color-button-tertiary-background-pressed: $s-color-theme-secondary-pressed;
+$s-color-button-tertiary-background-focused: $s-color-theme-secondary-focused;
+
+// Border Radius
+$s-border-radius-base: 8px;
+$s-border-radius-mini: $s-border-radius-base;
+$s-border-radius-small: $s-border-radius-base * 1.5;
+$s-border-radius-medium: $s-border-radius-base * 2;
+$s-border-radius-big: $s-border-radius-base * 3;
+
+:root {
+  --s-color-brand-day: #{$s-color-brand-day};
+}
+
+@import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";

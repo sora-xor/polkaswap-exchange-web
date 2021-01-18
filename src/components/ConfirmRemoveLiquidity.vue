@@ -1,0 +1,149 @@
+<template>
+  <dialog-base
+    :visible.sync="isVisible"
+    :title="t('removeLiquidity.confirmTitle')"
+  >
+    <div class="tokens">
+      <div class="tokens-info-container">
+        <span class="token-value">{{ formattedFromValue }}</span>
+        <s-icon class="icon-divider" name="plus-rounded" size="medium" />
+        <span class="token-value">{{ formattedToValue }}</span>
+      </div>
+      <div class="tokens-info-container">
+        <div v-if="firstToken" class="token">
+          <token-logo class="token-logo" :token="firstToken" />
+          {{ getAssetSymbol(firstToken.symbol) }}
+        </div>
+        <div v-if="secondToken" class="token">
+          <token-logo class="token-logo" :token="secondToken" />
+          {{ getAssetSymbol(secondToken.symbol) }}
+        </div>
+      </div>
+    </div>
+    <p class="transaction-message" v-html="t('removeLiquidity.outputMessage')" />
+    <s-divider />
+    <s-row flex justify="space-between" class="price-container">
+      <div v-if="firstToken && secondToken">
+        <s-row flex>
+          <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="mini" />
+          {{ t('confirmSupply.poolTokensBurned', { first: getAssetSymbol(firstToken.symbol), second: getAssetSymbol(secondToken.symbol) }) }}
+        </s-row>
+      </div>
+      <div>{{ formattedLiquidityValue }}</div>
+    </s-row>
+    <s-row flex justify="space-between" class="price-container">
+      <div>{{ t('removeLiquidity.price') }}</div>
+      <div class="price">
+        <div>1 {{ getAssetSymbol(firstToken.symbol) }} = {{ firstPerSecondPrice }} {{ getAssetSymbol(secondToken.symbol) }}</div>
+        <div>1 {{ getAssetSymbol(secondToken.symbol) }} = {{ secondPerFirstPrice }} {{ getAssetSymbol(firstToken.symbol) }}</div>
+      </div>
+    </s-row>
+    <template #footer>
+      <s-button type="primary" @click="handleConfirmRemoveLiquidity">{{ t('removeLiquidity.confirm') }}</s-button>
+    </template>
+  </dialog-base>
+</template>
+
+<script lang="ts">
+import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Getter, Action } from 'vuex-class'
+
+import TranslationMixin from '@/components/mixins/TranslationMixin'
+import DialogMixin from '@/components/mixins/DialogMixin'
+import DialogBase from '@/components/DialogBase.vue'
+import { formatNumber, getAssetSymbol } from '@/utils'
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
+import { FPNumber } from '@sora-substrate/util'
+
+const namespace = 'removeLiquidity'
+
+@Component({
+  components: {
+    DialogBase,
+    TokenLogo: lazyComponent(Components.TokenLogo),
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo)
+  }
+})
+export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
+  @Prop({ default: false, type: Boolean }) readonly visible!: boolean
+  @Getter('firstToken', { namespace }) firstToken!: any
+  @Getter('secondToken', { namespace }) secondToken!: any
+  @Getter('liquidityAmount', { namespace }) liquidityAmount!: any
+  @Getter('firstTokenAmount', { namespace }) firstTokenAmount!: any
+  @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
+  formatNumber = formatNumber
+
+  get formattedFromValue (): string {
+    return formatNumber(this.firstTokenAmount)
+  }
+
+  get formattedToValue (): string {
+    return formatNumber(this.secondTokenAmount)
+  }
+
+  get formattedLiquidityValue (): string {
+    return formatNumber(this.liquidityAmount)
+  }
+
+  get firstPerSecondPrice (): string {
+    return this.firstTokenAmount && this.secondTokenAmount
+      ? new FPNumber(this.firstTokenAmount).div(new FPNumber(this.secondTokenAmount)).toFixed(2)
+      : '0.00'
+  }
+
+  get secondPerFirstPrice (): string {
+    return this.firstTokenAmount && this.secondTokenAmount
+      ? new FPNumber(this.secondTokenAmount).div(new FPNumber(this.firstTokenAmount)).toFixed(2)
+      : '0.00'
+  }
+
+  getAssetSymbol = getAssetSymbol
+
+  handleConfirmRemoveLiquidity (): void {
+    // TODO: Remove Liquidity here
+    this.$emit('confirm')
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.tokens {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--s-heading2-font-size);
+  line-height: $s-line-height-small;
+  &-info-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}
+.token {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  justify-content: flex-end;
+  &-logo {
+    display: block;
+    margin-right: $inner-spacing-medium;
+    flex-shrink: 0;
+  }
+}
+.transaction-message {
+  margin-top: $inner-spacing-big;
+  color: var(--s-color-base-content-tertiary);
+  line-height: $s-line-height-base;
+}
+.price-container {
+  line-height: $s-line-height-big;
+  color: var(--s-color-base-content-secondary);
+  margin-top: $inner-spacing-big;
+  margin-bottom: $inner-spacing-mini;
+}
+.price {
+  text-align: right;
+}
+@include vertical-divider;
+@include vertical-divider('el-divider');
+</style>

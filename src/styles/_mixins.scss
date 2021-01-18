@@ -1,0 +1,198 @@
+// This file includes mixins for usage in different components
+
+// TODO 4 alexnatalia: Right now this is just a mixin because there are no appropriate focus behaviour for some elements (tabs for example) and we need more time to investigate the problem
+@mixin focus {
+  &:focus {
+    outline: 1px solid var(--s-color-theme-accent-focused) !important;
+  }
+}
+
+@mixin font-weight($fontWeight: 400, $important: false) {
+  @if $fontWeight == 400 and $important == false {
+    font-family: "Sora", sans-serif;
+  } @else if $fontWeight == 400 and $important == true {
+    font-family: "Sora", sans-serif !important;
+  } @else if $fontWeight == 500 and $important == false {
+    font-family: "SoraSB", sans-serif;
+  } @else if $fontWeight == 500 and $important == true {
+    font-family: "SoraSB", sans-serif !important;
+  } @else if $fontWeight == 600 and $important == false {
+    font-family: "SoraB", sans-serif;
+  } @else if $fontWeight == 600 and $important == true {
+    font-family: "SoraB", sans-serif !important;
+  } @else if $fontWeight == 700 and $important == false {
+    font-family: "SoraEB", sans-serif;
+  } @else if $fontWeight == 700 and $important == true {
+    font-family: "SoraEB", sans-serif !important;
+  }
+}
+
+@mixin token-styles {
+  .token {
+    display: flex;
+    align-items: center;
+    &-logo {
+      margin-right: $inner-spacing-mini;
+    }
+    &-balance {
+      margin-left: auto;
+      &-title {
+        color: var(--s-color-base-content-tertiary);
+        font-size: var(--s-font-size-mini);
+      }
+    }
+    &-balance-value {
+      margin-left: $inner-spacing-mini / 2;
+      font-feature-settings: $s-font-feature-settings-common;
+      letter-spacing: $s-letter-spacing-big;
+      word-break: break-all;
+    }
+  }
+}
+
+@mixin element-size($className: "", $width: 40px, $height: $width) {
+  .#{$className} {
+    height: $height;
+    width: $width;
+  }
+}
+
+@mixin container-styles {
+  margin: $inner-spacing-big auto;
+  padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
+  min-height: $inner-window-height;
+  width: $inner-window-width;
+  background-color: var(--s-color-utility-surface);
+  border-radius: var(--s-border-radius-medium);
+  box-shadow: var(--s-shadow-surface);
+  color: var(--s-color-base-content-primary);
+}
+
+@mixin text-ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+@mixin input-form-styles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .input-container {
+    position: relative;
+    padding: $inner-spacing-small $inner-spacing-mini $inner-spacing-mini $inner-spacing-medium;
+    width: 100%;
+    background-color: var(--s-color-base-background);
+    border-radius: var(--s-border-radius-mini);
+    .input-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      + .input-line {
+        align-items: center;
+        margin-top: $inner-spacing-small;
+      }
+    }
+    .el-form-item {
+      margin-bottom: 0;
+      margin-right: $inner-spacing-mini;
+      width: 100%;
+    }
+    .input-title,
+    .token-balance {
+      display: flex;
+    }
+    .input-title,
+    .token-balance-title {
+      margin-top: $inner-spacing-mini / 2;
+      margin-bottom: $inner-spacing-mini / 2;
+    }
+    .token-balance {
+      flex-wrap: wrap;
+      padding-right: $inner-spacing-mini;
+      align-items: center;
+      justify-content: flex-end;
+      text-align: right;
+    }
+    .input-title {
+      align-items: baseline;
+      font-family: "SoraB", sans-serif !important;
+      margin-right: $inner-spacing-mini;
+    }
+    @include token-styles;
+  }
+  .s-input {
+    min-height: 0;
+    font-feature-settings: $s-font-feature-settings-input;
+  }
+}
+
+@mixin buttons($isChooseTokenDisabled: false) {
+  .s-tertiary {
+    padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
+  }
+  .el-button {
+    &--max,
+    &--empty-token,
+    &--choose-token {
+      font-feature-settings: $s-font-feature-settings-title;
+      @include font-weight(700, true);
+    }
+    &--max,
+    &--empty-token {
+      margin-left: $inner-spacing-mini / 2;
+    }
+    &--max {
+      margin-right: $inner-spacing-mini / 2;
+      padding-right: $inner-spacing-mini;
+      height: var(--s-size-mini);
+    }
+    &--choose-token {
+      margin-left: 0;
+      padding-left: $inner-spacing-mini / 2;
+      background-color: var(--s-color-base-background);
+      border-color: var(--s-color-base-background);
+      color: var(--s-color-base-content-primary);
+      font-size: var(--s-font-size-small);
+      @if $isChooseTokenDisabled == true {
+        cursor: default;
+      } @else {
+        &:hover, &:active, &:focus {
+          background-color: var(--s-color-base-background-hover);
+          border-color: var(--s-color-base-background-hover);
+          color: var(--s-color-base-content-primary);
+        }
+      }
+    }
+  }
+}
+
+@mixin switch-button ($lineHeight: var(--s-size-small)) {
+  padding: 0;
+  font-size: var(--s-icon-font-size-big);
+  line-height: $lineHeight;
+}
+
+@mixin switch-button-inherit-styles ($size: 'small') {
+  &.s-action.s-#{$size} i {
+    font-size: inherit;
+    line-height: inherit;
+  }
+}
+
+@mixin full-width-button($buttonClass: 's-primary', $marginTop: $inner-spacing-medium) {
+  .#{$buttonClass} {
+    margin-top: $marginTop;
+    width: 100%;
+    &:not(:disabled) {
+      @include font-weight(600, true);
+    }
+  }
+}
+
+@mixin vertical-divider($dividerClass: 'icon-divider') {
+  .#{$dividerClass} {
+    margin-top: $inner-spacing-mini;
+    margin-bottom: $inner-spacing-mini;
+  }
+}

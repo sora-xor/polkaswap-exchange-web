@@ -1,0 +1,149 @@
+<template>
+  <dialog-base
+    :visible.sync="isVisible"
+    :title="t('confirmSupply.title')"
+    v-if="firstToken && secondToken"
+  >
+    <div class="pool-tokens-amount">
+      {{ minted }}
+    </div>
+    <s-row v-if="firstToken && secondToken" flex align="middle" class="pool-tokens">
+      <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="small" />
+      {{ t('createPair.firstSecondPoolTokens', { first: getAssetSymbol(firstToken.symbol), second: getAssetSymbol(secondToken.symbol) }) }}
+    </s-row>
+    <div class="tokens">
+      <s-row flex justify="space-between" class="token">
+        <s-row v-if="firstToken" flex>
+          <token-logo :token="firstToken" size="small" />
+          <span class="token-symbol">{{ getAssetSymbol(firstToken.symbol) }} {{ t('createPair.deposit')}}:</span>
+        </s-row>
+        <div class="token-value">{{ formatNumber(firstTokenValue, 2) }}</div>
+      </s-row>
+      <s-row flex justify="space-between" class="token">
+        <s-row v-if="secondToken" flex>
+          <token-logo :token="secondToken" size="small" />
+          <span class="token-symbol">{{ getAssetSymbol(secondToken.symbol) }} {{ t('createPair.deposit')}}:</span>
+        </s-row>
+        <div class="token-value">{{ formatNumber(secondTokenValue, 2) }}</div>
+      </s-row>
+    </div>
+    <div class="output-description">
+      {{ t('confirmSupply.outputDescription', { slippageTolerance }) }}
+    </div>
+
+    <s-divider />
+    <div class="pair-info">
+      <s-row flex justify="space-between" class="pair-info__line">
+        <div>{{ t('confirmSupply.price') }}</div>
+        <div v-if="firstToken && secondToken" class="price">
+          <div>1 {{ getAssetSymbol(firstToken.symbol) }} = {{ firstPerSecondPrice }} {{ getAssetSymbol(secondToken.symbol) }}</div>
+          <div>1 {{ getAssetSymbol(secondToken.symbol) }} = {{ secondPerFirstPrice }} {{ getAssetSymbol(firstToken.symbol) }}</div>
+        </div>
+      </s-row>
+      <s-row flex justify="space-between" class="pair-info__line">
+        <div>{{ t('createPair.shareOfPool') }}</div>
+        <div>{{ formatNumber(shareOfPool, 2) }}%</div>
+      </s-row>
+    </div>
+    <template #footer>
+      <s-button type="primary" @click="handleConfirmCreatePair">{{ t('confirmSupply.confirm') }}</s-button>
+    </template>
+  </dialog-base>
+</template>
+
+<script lang="ts">
+import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Getter, Action } from 'vuex-class'
+
+import TranslationMixin from '@/components/mixins/TranslationMixin'
+import DialogMixin from '@/components/mixins/DialogMixin'
+import DialogBase from '@/components/DialogBase.vue'
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
+import { formatNumber, getAssetSymbol } from '@/utils'
+import { FPNumber } from '@sora-substrate/util'
+
+const namespace = 'addLiquidity'
+
+@Component({
+  components: {
+    DialogBase,
+    TokenLogo: lazyComponent(Components.TokenLogo),
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo)
+  }
+})
+export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, DialogMixin) {
+  @Getter('minted', { namespace }) minted!: any
+  @Getter('firstToken', { namespace }) firstToken!: any
+  @Getter('secondToken', { namespace }) secondToken!: any
+  @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
+  @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
+  @Getter('shareOfPool', { namespace }) shareOfPool!: string
+  @Getter slippageTolerance!: number
+
+  formatNumber = formatNumber
+
+  getAssetSymbol = getAssetSymbol
+
+  get firstPerSecondPrice (): string {
+    return this.firstTokenValue && this.secondTokenValue
+      ? new FPNumber(this.firstTokenValue).div(new FPNumber(this.secondTokenValue)).toFixed(2)
+      : '0.00'
+  }
+
+  get secondPerFirstPrice (): string {
+    return this.firstTokenValue && this.secondTokenValue
+      ? new FPNumber(this.secondTokenValue).div(new FPNumber(this.firstTokenValue)).toFixed(2)
+      : '0.00'
+  }
+
+  handleConfirmCreatePair (): void {
+    this.$emit('confirm', true)
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.tokens {
+  line-height: $s-line-height-big;
+  .token {
+    &-logo {
+      display: inline-block;
+      margin-right: $inner-spacing-mini;
+    }
+  }
+}
+.output-description {
+  margin-top: $inner-spacing-mini;
+  margin-bottom: $inner-spacing-mini;
+  font-size: var(--s-font-size-mini);
+  line-height: $s-line-height-big;
+}
+.pair-info {
+  line-height: $s-line-height-big;
+  &__line {
+    margin-top: $inner-spacing-medium;
+    margin-bottom: $inner-spacing-medium;
+  }
+}
+.price {
+  text-align: right;
+}
+.supply-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pool-tokens-amount {
+  font-size: var(--s-heading1-font-size);
+  line-height: $s-line-height-mini;
+  letter-spacing: $s-letter-spacing-mini;
+}
+
+.pool-tokens {
+  margin: $inner-spacing-mini 0;
+  font-size: var(--s-heading4-font-size);
+  line-height: $s-line-height-medium;
+  letter-spacing: $s-letter-spacing-small;
+}
+</style>
