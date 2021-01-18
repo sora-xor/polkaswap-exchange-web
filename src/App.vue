@@ -157,12 +157,24 @@ html {
 .el-notification.sora {
   background: var(--s-color-brand-day);
   box-shadow: var(--s-shadow-tooltip);
-  border-radius: 4px;
+  border-radius: calc(var(--s-border-radius-mini) / 2);
   border: none;
   align-items: center;
   position: absolute;
   width: 405px;
   .el-notification {
+    &__icon {
+      position: relative;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--s-color-utility-surface);
+      &:before {
+        position: absolute;
+        top: -2px;
+        left: -2px;
+      }
+    }
     &__content {
       color: var(--s-color-utility-surface);
       text-align: left;
