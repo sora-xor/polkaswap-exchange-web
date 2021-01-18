@@ -21,8 +21,12 @@
         </s-menu-item>
       </s-menu>
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Exchange)" />
-      <div class="buttons">
-        <s-button class="wallet" type="action" icon="wallet" rounded :disabled="loading" @click="goTo(PageNames.Wallet)" />
+      <div class="buttons s-flex">
+        <div v-if="accountInfo" class="wallet-section s-flex">
+          <div class="account">{{ accountInfo }}</div>
+          <s-button class="wallet" type="action" icon="wallet" rounded :disabled="loading" @click="goTo(PageNames.Wallet)" />
+        </div>
+        <s-button v-else class="wallet" type="action" icon="wallet" rounded :disabled="loading" @click="goTo(PageNames.Wallet)" />
         <s-button type="action" icon="settings" rounded @click="openSettingsDialog" />
         <!-- TODO: The button is hidden because we don't have a Search page right now -->
         <!-- <s-button type="action" icon="search" rounded /> -->
@@ -46,6 +50,7 @@ import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import router, { lazyComponent } from '@/router'
 import axios from '@/api'
+import { formatAddress } from '@/utils'
 
 @Component({
   components: {
@@ -68,6 +73,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   showSettings = false
 
   @Getter firstReadyTransaction!: any
+  @Getter account!: any
   @Action trackActiveTransactions
 
   async created () {
@@ -83,6 +89,13 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction (value): void {
     this.handleChangeTransaction(value)
+  }
+
+  get accountInfo (): string {
+    if (!this.account || !(this.account.name || this.account.address)) {
+      return ''
+    }
+    return this.account.name || formatAddress(this.account.address, 8)
   }
 
   getCurrentPath (): string {
@@ -331,6 +344,18 @@ $menu-height: 65px;
 
 .buttons {
   margin-left: auto;
+  .wallet-section {
+    border: 1px solid var(--s-color-base-border-secondary);
+    border-radius: var(--s-size-small);
+    background: var(--s-color-base-background);
+    align-items: center;
+    margin-right: $inner-spacing-mini;
+    .account {
+      padding: 0 $inner-spacing-mini;
+      font-size: var(--s-font-size-mini);
+      font-feature-settings: $s-font-feature-settings-common;
+    }
+  }
   .wallet {
     background-color: var(--s-color-theme-accent);
     border-color: var(--s-color-theme-accent);
