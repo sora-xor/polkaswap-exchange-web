@@ -45,6 +45,7 @@ import { PageNames, MainMenu, Components } from '@/consts'
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import router, { lazyComponent } from '@/router'
+import axios from '@/api'
 
 @Component({
   components: {
@@ -69,7 +70,12 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   @Getter firstReadyTransaction!: any
   @Action trackActiveTransactions
 
-  async created (): Promise<void> {
+  async created () {
+    const { data } = await axios.get('/env.json')
+    dexApi.endpoint = data.DEFAULT_NETWORKS?.length ? data.DEFAULT_NETWORKS[0].address : ''
+    if (!dexApi.endpoint) {
+      throw new Error('Network is not set')
+    }
     await this.withLoading(initWallet)
     this.trackActiveTransactions()
   }

@@ -1,11 +1,23 @@
 # polkaswap-exchange-web
 
 ## Project deploy info
-There is `public/env.json` file which contains `BASE_API_URL` and `BLOCKCHAIN_URL` variables.
+There is `public/env.json` file which contains `BASE_API_URL` and `DEFAULT_NETWORKS` variables.
 
-`BASE_API_URL` is used for the address of the current stand.
+`BASE_API_URL` will be used for the address of the current stand.
 
-`BLOCKCHAIN_URL` is used for the address of the blockchain to which the frontend project will be connected.
+`DEFAULT_NETWORKS` variable has the following format:
+
+```
+"DEFAULT_NETWORKS": [
+    {
+        "name": "SORA-staging Testnet",
+        "address": "wss://ws.stage.sora2.soramitsu.co.jp"
+    }
+]
+```
+
+`"name"` is used as the network name.
+`"address"` is used for the address of the blockchain to which the frontend project will be connected.
 
 ## Project setup
 ```
