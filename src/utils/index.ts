@@ -1,4 +1,3 @@
-import { dexApi } from '@soramitsu/soraneo-wallet-web'
 import { KnownSymbols } from '@sora-substrate/util'
 
 import storage from './storage'
@@ -6,6 +5,10 @@ import storage from './storage'
 export const formatNumber = (value: string | number, decimalLendth?: number): string => {
   const valueNumber = +value
   return valueNumber.toFixed(decimalLendth || 4)
+}
+
+export const formatAddress = (address: string, length = address.length / 2) => {
+  return `${address.slice(0, length / 2)}...${address.slice(-length / 2)}`
 }
 
 // We could use this method to check if the user enters a text value in a numeric field (we could do this by copy and paste)

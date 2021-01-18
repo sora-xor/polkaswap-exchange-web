@@ -26,27 +26,7 @@ $s-border-radius-medium: $s-border-radius-base * 2;
 $s-border-radius-big: $s-border-radius-base * 3;
 
 :root {
-  --s-color-base-content-primary: #{$s-color-base-content-primary};
   --s-color-brand-day: #{$s-color-brand-day};
-  --s-color-theme-accent: #{$s-color-theme-accent};
-  --s-color-theme-accent-hover: #{$s-color-theme-accent-hover};
-  --s-color-theme-accent-pressed: #{$s-color-theme-accent-pressed};
-  --s-color-theme-accent-focused: #{$s-color-theme-accent-focused};
-  --s-color-theme-secondary: #{$s-color-theme-secondary};
-  --s-color-theme-secondary-hover: #{$s-color-theme-secondary-hover};
-  --s-color-theme-secondary-pressed: #{$s-color-theme-secondary-pressed};
-  --s-color-theme-secondary-focused: #{$s-color-theme-secondary-focused};
-  --s-color-button-tertiary-color: #{$s-color-button-tertiary-color};
-  --s-color-button-tertiary-color-active: #{$s-color-button-tertiary-color-active};
-  --s-color-button-tertiary-background: #{$s-color-button-tertiary-background};
-  --s-color-button-tertiary-background-hover: #{$s-color-button-tertiary-background-hover};
-  --s-color-button-tertiary-background-pressed: #{$s-color-button-tertiary-background-pressed};
-  --s-color-button-tertiary-background-focused: #{$s-color-button-tertiary-background-focused};
-  // Border Radius
-  --s-border-radius-mini: #{$s-border-radius-mini};
-  --s-border-radius-small: #{$s-border-radius-small};
-  --s-border-radius-medium: #{$s-border-radius-medium};
-  --s-border-radius-big: #{$s-border-radius-big};
 }
 
 @import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";

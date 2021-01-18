@@ -97,21 +97,22 @@
     <swap-info v-if="areTokensSelected && !areZeroAmounts" />
     <select-token :visible.sync="showSelectTokenDialog" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
     <confirm-swap :visible.sync="showConfirmSwapDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmSwap" @checkConfirm="updateAccountAssets" />
-    <result-dialog :visible.sync="isSwapConfirmed" :type="t('exchange.Swap')" :message="transactionResultMessage" @close="swapNotify(transactionResultMessage)" />
+    <result-dialog :visible.sync="isSwapConfirmed" :type="t('exchange.Swap')" :message="transactionResultMessage" @close="handleCloseResultDialog" />
   </s-form>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
+import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { KnownSymbols, KnownAssets, FPNumber } from '@sora-substrate/util'
+
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 import { formatNumber, getAssetSymbol, isNumberValue, isWalletConnected } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
-import { dexApi } from '@soramitsu/soraneo-wallet-web'
-import { KnownSymbols, KnownAssets, FPNumber } from '@sora-substrate/util'
 
 @Component({
   components: {
@@ -506,12 +507,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     }
   }
 
-  async swapNotify (message: string): Promise<void> {
-    this.$notify({
-      message: message,
-      title: this.t('exchange.Swap'),
-      type: 'success'
-    })
+  async handleCloseResultDialog (): Promise<void> {
     await this.updateAccountAssets()
   }
 }

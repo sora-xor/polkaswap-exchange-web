@@ -34,13 +34,13 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
+import { dexApi } from '@soramitsu/soraneo-wallet-web'
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
+import TransactionMixin from '@/components/mixins/TransactionMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
-import { dexApi } from '@soramitsu/soraneo-wallet-web'
 import { getAssetSymbol } from '@/utils'
 
 @Component({
@@ -50,7 +50,7 @@ import { getAssetSymbol } from '@/utils'
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
+export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
   @Getter fromValue!: number | string
@@ -69,11 +69,19 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
       this.$emit('confirm')
     } else {
       try {
-        await dexApi.swap(this.tokenFrom.address, this.tokenTo.address, this.fromValue.toString(), this.toValue.toString(), this.slippageTolerance, this.isExchangeB)
+        await this.withNotifications(
+          async () => await dexApi.swap(
+            this.tokenFrom.address,
+            this.tokenTo.address,
+            this.fromValue.toString(),
+            this.toValue.toString(),
+            this.slippageTolerance,
+            this.isExchangeB
+          )
+        )
         this.$emit('confirm', true)
       } catch (error) {
         this.$emit('confirm')
-        this.$alert(this.t(error.message), { title: this.t('errorText') })
       }
     }
     this.isVisible = false
