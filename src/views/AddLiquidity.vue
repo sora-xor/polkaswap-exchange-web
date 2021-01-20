@@ -84,6 +84,8 @@
           {{ t('swap.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
+          <!-- TODO: Add insufficientBalanceTokenSymbol here -->
+          <!-- {{ t('createPair.insufficientBalance', { tokenSymbol: getAssetSymbol(insufficientBalanceTokenSymbol)}) }} -->
           {{ t('createPair.insufficientBalance') }}
         </template>
         <template v-else>
@@ -203,6 +205,7 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
   showSelectFirstTokenDialog = false
   showSelectSecondTokenDialog = false
   inputPlaceholder: string = formatNumber(0, 1)
+  insufficientBalanceTokenSymbol = ''
   showConfirmDialog = false
   isCreatePairConfirmed = false
 
@@ -273,6 +276,7 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
       let secondValue = new FPNumber(this.secondTokenValue, this.secondToken.decimals)
       const secondBalance = new FPNumber(this.secondToken.balance, this.secondToken.decimals)
 
+      // TODO: Set appropriate insufficientBalanceTokenSymbol
       if (this.firstToken.symbol === KnownSymbols.XOR) {
         firstValue = firstValue.add(new FPNumber(this.fee, this.firstToken.decimals))
       } else {
@@ -328,6 +332,14 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
   }
 }
 </script>
+
+<style lang="scss">
+.el-form--actions {
+  .s-input--token-value .el-input .el-input__inner {
+    @include text-ellipsis;
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .container {

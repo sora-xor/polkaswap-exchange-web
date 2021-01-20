@@ -137,6 +137,8 @@ export default {
     add: 'ADD',
     ok: 'OK',
     networkFee: 'Network fee',
+    // TODO: Use insufficientBalance with tokenSymbol
+    // insufficientBalance: 'Insufficient {tokenSymbol} balance',
     insufficientBalance: 'Insufficient balance',
     unsuitableAssets: 'Unsuitable assets',
     transactionMessage: '{firstToken} and {secondToken}',
