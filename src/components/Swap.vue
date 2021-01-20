@@ -8,7 +8,7 @@
       <div class="input-line">
         <div class="input-title">
           <span>{{ t('exchange.from') }}</span>
-          <span v-if="areTokensSelected && !isEmptyToAmount && !isFieldFromActive" class="input-title-estimated">({{ t('swap.estimated') }})</span>
+          <span :class="`input-title-estimated ${(areTokensSelected && !isEmptyToAmount && !isFieldFromActive) ? 'input-title-estimated--show' : ''}`">({{ t('swap.estimated') }})</span>
         </div>
         <div v-if="this.connected && this.tokenFrom && this.tokenFrom.balance && this.isTokenFromBalanceAvailable" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
@@ -46,7 +46,7 @@
       <div class="input-line">
         <div class="input-title">
           <span>{{ t('exchange.to') }}</span>
-          <span v-if="areTokensSelected && !isEmptyFromAmount && !isFieldToActive" class="input-title-estimated">({{ t('swap.estimated') }})</span>
+          <span :class="`input-title-estimated ${(areTokensSelected && !isEmptyFromAmount && !isFieldToActive) ? 'input-title-estimated--show' : ''}`" class="input-title-estimated">({{ t('swap.estimated') }})</span>
         </div>
         <div v-if="this.connected && this.tokenTo && this.tokenTo.balance && this.isTokenToBalanceAvailable" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
@@ -543,6 +543,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     margin-left: $inner-spacing-mini / 2;
     font-size: var(--s-font-size-mini);
     @include font-weight;
+    opacity: 0;
+    &--show {
+      opacity: 1;
+    }
   }
 
   .el-button--switch-tokens {

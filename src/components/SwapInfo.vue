@@ -168,8 +168,8 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   }
   &-value.el-button {
     margin-right: 0;
-    padding-left: 0;
-    padding-right: 0;
+    height: var(--s-font-size-small);
+    padding: 0;
     color: inherit;
   }
   .el-button--switch-price {

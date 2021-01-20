@@ -121,14 +121,18 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin, Inpu
     return classes.join(' ')
   }
 
+  get isErrorValue (): boolean {
+    return this.slippageTolerance < this.slippageToleranceExtremeValues.min || this.slippageTolerance > this.slippageToleranceExtremeValues.max
+  }
+
   get slippageToleranceValidation (): string {
-    if (this.slippageTolerance >= this.slippageToleranceExtremeValues.min && this.slippageTolerance < 0.1) {
+    if (this.slippageTolerance >= this.slippageToleranceExtremeValues.min && this.slippageTolerance <= 0.1) {
       return 'warning'
     }
     if (this.slippageTolerance >= 5 && this.slippageTolerance <= this.slippageToleranceExtremeValues.max) {
       return 'frontrun'
     }
-    if (this.slippageTolerance < this.slippageToleranceExtremeValues.min || this.slippageTolerance > this.slippageToleranceExtremeValues.max) {
+    if (this.isErrorValue) {
       return 'error'
     }
     return ''
@@ -143,16 +147,12 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin, Inpu
     this.model = this.formatNumberField(this.model)
     if (!isNumberValue(this.model)) {
       this.model = this.defaultSlippageTolerance.toString()
-    } else if (+this.model > this.slippageToleranceExtremeValues.max) {
-      this.model = this.slippageToleranceExtremeValues.max.toString()
-    } else if (+this.model < this.slippageToleranceExtremeValues.min) {
-      this.model = this.slippageToleranceExtremeValues.min.toString()
     }
     this.setSlippageTolerance({ value: this.model })
   }
 
   async handleSlippageToleranceOnBlur (): Promise<void> {
-    this.setSlippageTolerance({ value: +this.model })
+    this.setSlippageTolerance({ value: this.isErrorValue ? 0 : +this.model })
   }
 
   handleSetTransactionDeadline (value: number): void {
@@ -162,13 +162,18 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin, Inpu
 </script>
 
 <style lang="scss">
+.slippage-tolerance-custom_input.s-input .el-input > input,
+.settings .slippage-tolerance .s-tabs .el-tabs__item {
+  font-size: var(--s-font-size-mini);
+  font-feature-settings: $s-font-feature-settings-common;
+  @include font-weight(600, true);
+}
 .slippage-tolerance-custom_input.s-input {
   min-height: var(--s-size-small);
   .el-input > input {
     height: var(--s-size-small);
     text-align: center;
     padding-top: 0; // TODO: if there is no placeholder, set padding-top to zero
-    @include font-weight(700);
   }
 }
 .settings {
@@ -177,6 +182,12 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin, Inpu
   }
   .el-tabs__header {
     margin-bottom: 0;
+  }
+  .el-tabs__item {
+    &.is-focus,
+    &.is-active {
+      box-shadow: var(--s-shadow-tab) !important;
+    }
   }
   .slippage-tolerance--error .el-input__inner {
     &,
@@ -203,6 +214,8 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin, Inpu
     padding-bottom: $inner-spacing-mini;
     color: var(--s-color-base-content-tertiary);
     font-size: $s-font-size-settings;
+    line-height: $s-line-height-base;
+    letter-spacing: $s-letter-spacing-type;
     @include font-weight(700);
     &-hint {
       margin-left: $inner-spacing-mini;
