@@ -26,7 +26,10 @@ export default class InfoCard extends Mixins(TranslationMixin) {
     display: flex;
     justify-content: space-between;
     line-height: $s-line-height-big;
-    color: var(--s-color-base-content-tertiary);
+    color: var(--s-color-base-content-secondary);
+    &_assets {
+      color: var(--s-color-base-content-primary);
+    }
   }
 }
 </style>

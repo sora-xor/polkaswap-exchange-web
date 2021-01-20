@@ -94,7 +94,7 @@ export default {
     liquidityProviderFeeTooltip: 'A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive.',
     networkFee: 'Network Fee',
     networkFeeTooltip: 'Fixed  amount of {networkFee} goes to network validators.',
-    enterAmount: 'Enter an amount',
+    enterAmount: 'Enter amount',
     insufficientBalance: 'Insufficient {tokenSymbol} balance',
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
     confirmSwap: 'Confirm swap',
@@ -128,7 +128,7 @@ export default {
     firstPerSecond: '{first} per {second}',
     firstSecondPoolTokens: '{first}-{second} Pool tokens',
     connect: 'Connect wallet',
-    enterAmount: 'Enter an amount',
+    enterAmount: 'Enter amount',
     supply: 'Supply',
     confirmSupply: 'Confirm supply',
     yourPosition: 'Your position',
@@ -147,8 +147,8 @@ export default {
     title: 'You will receive',
     outputDescription: 'Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.',
     poolTokensBurned: '{first}-{second} Pool Tokens Burned:',
-    price: 'Price:',
-    confirm: 'Confirm'
+    price: 'Price',
+    confirm: 'Confirm supply'
   },
   addLiquidity: {
     title: 'Add liquidity'
@@ -159,9 +159,9 @@ export default {
     amount: 'Amount',
     input: 'Input',
     output: 'Output',
-    price: 'Price:',
+    price: 'Price',
     remove: 'Remove',
-    enterAmount: 'Enter an amount',
+    enterAmount: 'Enter amount',
     description: 'Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.',
     outputMessage: 'Output is estimated. If the price changes more than 0.5% your transaction will revert.',
     confirmTitle: 'You will receive',

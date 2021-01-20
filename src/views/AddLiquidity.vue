@@ -126,7 +126,7 @@
     </info-card>
 
     <info-card v-if="areTokensSelected && isAvailable" :title="t('createPair.yourPosition') ">
-      <div class="card__data">
+      <div class="card__data card__data_assets">
         <s-row flex>
           <pair-token-logo class="pair-token-logo" :first-token="firstToken" :second-token="secondToken" size="mini" />
           {{
@@ -202,7 +202,7 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
 
   showSelectFirstTokenDialog = false
   showSelectSecondTokenDialog = false
-  inputPlaceholder: string = formatNumber(0, 2)
+  inputPlaceholder: string = formatNumber(0, 1)
   showConfirmDialog = false
   isCreatePairConfirmed = false
 
@@ -240,22 +240,22 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
 
   get firstPerSecondPrice (): string {
     return this.firstTokenValue && this.secondTokenValue
-      ? new FPNumber(this.firstTokenValue).div(new FPNumber(this.secondTokenValue)).toFixed(2) || '0.00'
-      : '0.00'
+      ? new FPNumber(this.firstTokenValue).div(new FPNumber(this.secondTokenValue)).toFixed(2) || '0'
+      : '0'
   }
 
   get secondPerFirstPrice (): string {
     return this.firstTokenValue && this.secondTokenValue
-      ? new FPNumber(this.secondTokenValue).div(new FPNumber(this.firstTokenValue)).toFixed(2) || '0.00'
-      : '0.00'
+      ? new FPNumber(this.secondTokenValue).div(new FPNumber(this.firstTokenValue)).toFixed(2) || '0'
+      : '0'
   }
 
   get firstTokenPosition (): string {
-    return '0.00'
+    return '0'
   }
 
   get secondTokenPosition (): string {
-    return '0.00'
+    return '0'
   }
 
   get areTokensSelected (): boolean {
@@ -313,10 +313,7 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
   }
 
   getTokenBalance (token: any): string {
-    if (token) {
-      return formatNumber(token.balance, 2)
-    }
-    return ''
+    return token ? token.balance : ''
   }
 
   async handleConfirmAddLiquidity () {

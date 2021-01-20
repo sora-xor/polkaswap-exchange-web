@@ -28,7 +28,7 @@
           />
         </s-form-item>
         <div v-if="tokenFrom" class="token">
-          <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" border-radius="mini" :disabled="this.isMaxDisabled" @click="handleMaxValue">
+          <s-button v-if="connected && isMaxAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue">
             {{ t('exchange.max') }}
           </s-button>
           <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(true)">
@@ -81,7 +81,7 @@
       {{ t('swap.connectWallet') }}
     </s-button>
     <s-button v-else type="primary" :disabled="!areTokensSelected || areZeroAmounts || isInsufficientAmount || isInsufficientBalance" @click="handleConfirmSwap">
-      <template v-if="areZeroAmounts">
+      <template v-if="!areTokensSelected || (isZeroFromAmount && isZeroToAmount)">
         {{ t('swap.enterAmount') }}
       </template>
       <template v-else-if="isInsufficientAmount">
@@ -144,7 +144,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   @Action setLiquidityProviderFee
   @Action setNetworkFee
 
-  inputPlaceholder: string = formatNumber(0, 2)
+  inputPlaceholder: string = formatNumber(0, 1)
   isTokenFromBalanceAvailable = false
   isTokenToBalanceAvailable = false
   isInsufficientAmount = false
@@ -194,25 +194,33 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     return this.isZeroFromAmount || this.isZeroToAmount
   }
 
-  get isMaxDisabled (): boolean {
+  get isMaxAvailable (): boolean {
     if (this.connected) {
       if (!this.areTokensSelected || +this.tokenFrom.balance === 0) {
-        return true
+        return false
       }
       const fpBalance = new FPNumber(this.tokenFrom.balance, this.tokenFrom.decimals)
       const fpAmount = new FPNumber(this.formModel.from, this.tokenFrom.decimals)
       if (this.tokenFrom.symbol === KnownSymbols.XOR) {
         const fpFee = new FPNumber(this.networkFee, this.tokenFrom.decimals)
-        return FPNumber.eq(fpFee, fpBalance.sub(fpAmount))
+        return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount))
       } else {
-        return FPNumber.eq(fpBalance, fpAmount)
+        return !FPNumber.eq(fpBalance, fpAmount)
       }
     }
-    return false
+    return true
   }
 
   get isInsufficientBalance (): boolean {
     if (this.connected && this.areTokensSelected) {
+      if (this.isZeroFromAmount) {
+        this.insufficientBalanceTokenSymbol = this.tokenFrom.symbol
+        return true
+      }
+      if (this.isZeroToAmount) {
+        this.insufficientBalanceTokenSymbol = this.tokenTo.symbol
+        return true
+      }
       let fpBalance = new FPNumber(this.tokenFrom.balance, this.tokenFrom.decimals)
       const fpAmount = new FPNumber(this.formModel.from, this.tokenFrom.decimals)
       if (FPNumber.lt(fpBalance, fpAmount)) {
@@ -387,8 +395,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   }
 
   resetPrice (): void {
-    this.setPrice(formatNumber(0, 2))
-    this.setPriceReversed(formatNumber(0, 2))
+    this.setPrice(0)
+    this.setPriceReversed(0)
   }
 
   isInsufficientAmountError (tokenSymbol: string, errorMessage): boolean {

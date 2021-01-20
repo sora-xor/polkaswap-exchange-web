@@ -1,6 +1,5 @@
 <template>
   <div class="swap-info-container">
-    <!-- TODO 4 alexnatalia: Check layout behaviour after formatNumber remove -->
     <template v-if="showPrice || showSlippageTolerance">
       <div v-if="showPrice" class="swap-info">
         <span>{{ t('exchange.price') }}</span>
@@ -9,8 +8,11 @@
       </div>
       <div v-if="showSlippageTolerance && connected" class="swap-info swap-info--slippage-tolerance">
         <span>{{ t('swap.slippageTolerance') }}</span>
-        <span class="swap-info-value">{{ slippageTolerance }}%</span>
+        <s-button class="swap-info-value" type="link" @click="openSettingsDialog">
+          {{ slippageTolerance }}%
+        </s-button>
       </div>
+      <settings v-if="showSlippageTolerance" :visible.sync="showSettings" />
     </template>
     <template v-else>
       <div class="swap-info swap-info--min-received">
@@ -41,7 +43,8 @@
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.networkFee') }}</span>
-        <span class="swap-info-value">{{ networkFeeValue }}</span>
+        <!-- TODO: Play with asset-title values -->
+        <span class="swap-info-value">{{ networkFee }}<span class="asset-title">{{ ' ' + xorSymbol }}</span></span>
       </div>
     </template>
   </div>
@@ -52,9 +55,15 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { getAssetSymbol, isWalletConnected } from '@/utils'
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
 import { KnownSymbols } from '@sora-substrate/util'
 
-@Component
+@Component({
+  components: {
+    Settings: lazyComponent(Components.Settings)
+  }
+})
 export default class SwapInfo extends Mixins(TranslationMixin) {
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
@@ -71,6 +80,8 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly showPrice!: boolean
   @Prop({ default: true, type: Boolean }) readonly showTooltips!: boolean
   @Prop({ default: false, type: Boolean }) readonly showSlippageTolerance!: boolean
+
+  showSettings = false
 
   get connected (): boolean {
     return isWalletConnected()
@@ -113,8 +124,16 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
     return `${this.networkFee} ${KnownSymbols.XOR}`
   }
 
+  get xorSymbol (): string {
+    return KnownSymbols.XOR
+  }
+
   handleSwitchPrice (): void {
     this.setTokenFromPrice(!this.isTokenFromPrice)
+  }
+
+  openSettingsDialog (): void {
+    this.showSettings = true
   }
 }
 </script>
@@ -133,30 +152,11 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
 </style>
 
 <style lang="scss" scoped>
+@include info-line;
 .swap-info {
-  display: flex;
-  align-items: center;
-  margin-top: $inner-spacing-mini;
-  width: 100%;
-  padding-right: $inner-spacing-mini;
-  padding-left: $inner-spacing-mini;
-  color: var(--s-color-base-content-secondary);
-  &-container {
-    width: 100%;
-  }
   &--slippage-tolerance,
   &--min-received {
     margin-top: $inner-spacing-small;
-  }
-  > span:first-of-type {
-    margin-right: $inner-spacing-small;
-    word-break: keep-all;
-  }
-  &-value {
-    margin-left: auto;
-    text-align: right;
-    font-feature-settings: $s-font-feature-settings-common;
-    word-break: break-all;
   }
   .price-impact {
     &-positive {
@@ -166,32 +166,11 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
       color: var(--s-color-status-error);
     }
   }
-  .el-tooltip {
-    margin-right: $inner-spacing-mini;
-    flex-shrink: 0;
-  }
-  &-icon {
-    position: relative;
-    height: var(--s-size-mini);
-    width: var(--s-size-mini);
-    background-color: var(--s-color-base-background);
-    border-radius: var(--s-border-radius-small);
-    &:hover {
-      background-color: var(--s-color-base-background-hover);
-      cursor: pointer;
-    }
-    &:before {
-      position: absolute;
-      display: block;
-      height: var(--s-icon-font-size-mini);
-      width: var(--s-icon-font-size-mini);
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      margin: auto;
-      font-size: var(--s-icon-font-size-mini);
-    }
+  &-value.el-button {
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+    color: inherit;
   }
   .el-button--switch-price {
     margin-right: 0;

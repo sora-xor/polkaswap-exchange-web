@@ -186,6 +186,9 @@ const actions = {
   async setTokenTo ({ commit }, payload) {
     if (payload.isWalletConnected) {
       commit(types.GET_TOKEN_TO_REQUEST)
+      if (!payload.tokenSymbol) {
+        return
+      }
       try {
         const token = KnownAssets.get(payload.tokenSymbol)
         if (token) {
