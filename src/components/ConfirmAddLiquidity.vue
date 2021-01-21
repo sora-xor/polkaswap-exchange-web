@@ -19,14 +19,14 @@
       <s-row flex justify="space-between" class="token">
         <s-row v-if="firstToken" flex>
           <token-logo :token="firstToken" size="small" />
-          <span class="token-symbol">{{ getAssetSymbol(firstToken.symbol) }} {{ t('createPair.deposit')}}:</span>
+          <span class="token-symbol">{{ getAssetSymbol(firstToken.symbol) }} {{ t('createPair.deposit')}}</span>
         </s-row>
         <div class="token-value">{{ firstTokenValue }}</div>
       </s-row>
       <s-row flex justify="space-between" class="token">
         <s-row v-if="secondToken" flex>
           <token-logo :token="secondToken" size="small" />
-          <span class="token-symbol">{{ getAssetSymbol(secondToken.symbol) }} {{ t('createPair.deposit')}}:</span>
+          <span class="token-symbol">{{ getAssetSymbol(secondToken.symbol) }} {{ t('createPair.deposit')}}</span>
         </s-row>
         <div class="token-value">{{ secondTokenValue }}</div>
       </s-row>
@@ -45,7 +45,7 @@
       </s-row>
     </div>
     <template #footer>
-      <s-button type="primary" @click="handleConfirmCreatePair">{{ t('confirmSupply.confirm') }}</s-button>
+      <s-button type="primary" @click="handleConfirmAddLiquidity">{{ t('exchange.confirm') }}</s-button>
     </template>
   </dialog-base>
 </template>
@@ -96,7 +96,7 @@ export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, Dialog
       : '0'
   }
 
-  handleConfirmCreatePair (): void {
+  handleConfirmAddLiquidity (): void {
     this.$emit('confirm', true)
   }
 }

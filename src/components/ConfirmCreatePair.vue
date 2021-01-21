@@ -12,21 +12,21 @@
       {{ t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol }) }}
     </s-row>
     <div class="output-description">
-      {{ t('confirmSupply.outputDescription') }}
+      {{ t('confirmSupply.outputDescription', { slippageTolerance }) }}
     </div>
     <s-divider />
     <div class="tokens">
       <s-row flex justify="space-between" class="token">
         <s-row v-if="firstToken" flex>
           <token-logo :token="firstToken" size="small" />
-          <span class="token-symbol">{{ firstToken.symbol }} {{ t('createPair.deposit')}}:</span>
+          <span class="token-symbol">{{ firstToken.symbol }} {{ t('createPair.deposit')}}</span>
         </s-row>
         <div class="token-value">{{ firstTokenValue }}</div>
       </s-row>
       <s-row flex justify="space-between" class="token">
         <s-row v-if="secondToken" flex>
           <token-logo :token="secondToken" size="small" />
-          <span class="token-symbol">{{ secondToken.symbol }} {{ t('createPair.deposit')}}:</span>
+          <span class="token-symbol">{{ secondToken.symbol }} {{ t('createPair.deposit')}}</span>
         </s-row>
         <div class="token-value">{{ secondTokenValue }}</div>
       </s-row>
@@ -45,7 +45,7 @@
       </s-row>
     </div>
     <template #footer>
-      <s-button type="primary" @click="handleConfirmCreatePair">{{ t('confirmSupply.confirm') }}</s-button>
+      <s-button type="primary" @click="handleConfirmCreatePair">{{ t('exchange.confirm') }}</s-button>
     </template>
   </dialog-base>
 </template>
@@ -74,6 +74,7 @@ export default class ConfirmCreatePair extends Mixins(TranslationMixin, DialogMi
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
+  @Getter slippageTolerance!: number
 
   formatNumber = formatNumber
 

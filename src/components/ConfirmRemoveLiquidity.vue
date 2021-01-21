@@ -39,7 +39,7 @@
       </div>
     </s-row>
     <template #footer>
-      <s-button type="primary" @click="handleConfirmRemoveLiquidity">{{ t('removeLiquidity.confirm') }}</s-button>
+      <s-button type="primary" @click="handleConfirmRemoveLiquidity">{{ t('exchange.confirm') }}</s-button>
     </template>
   </dialog-base>
 </template>

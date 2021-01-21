@@ -26,7 +26,7 @@
     <swap-info :show-price="true" />
     <swap-info :show-tooltips="false" />
     <template #footer>
-      <s-button type="primary" @click="handleConfirmSwap">{{ t('swap.confirmSwap') }}</s-button>
+      <s-button type="primary" @click="handleConfirmSwap">{{ t('exchange.confirm') }}</s-button>
     </template>
   </dialog-base>
 </template>
