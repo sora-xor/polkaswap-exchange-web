@@ -93,13 +93,12 @@ export default {
     liquidityProviderFee: 'Liquidity Provider Fee',
     liquidityProviderFeeTooltip: 'A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive.',
     networkFee: 'Network Fee',
-    networkFeeTooltip: 'Fixed  amount of {networkFee} goes to network validators.',
+    networkFeeTooltip: 'Network fee is used to ensure SORA system\'s growth and stable performance.',
     enterAmount: 'Enter amount',
     insufficientBalance: 'Insufficient {tokenSymbol} balance',
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
     confirmSwap: 'Confirm swap',
-    swapOutputMessage: 'Output is estimated. You will receive at least {transactionValue} or the transaction will revert.',
-    transactionMessage: '{tokenFromValue} for {tokenToValue}'
+    swapOutputMessage: 'Output is estimated. You will receive at least {transactionValue} or the transaction will revert.'
   },
   pool: {
     yourLiquidity: 'Your liquidity',

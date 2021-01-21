@@ -97,7 +97,6 @@
     <swap-info v-if="areTokensSelected && !areZeroAmounts" />
     <select-token :visible.sync="showSelectTokenDialog" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
     <confirm-swap :visible.sync="showConfirmSwapDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmSwap" @checkConfirm="updateAccountAssets" />
-    <result-dialog :visible.sync="isSwapConfirmed" :type="t('exchange.Swap')" :message="transactionResultMessage" @close="handleCloseResultDialog" />
   </s-form>
 </template>
 
@@ -119,8 +118,7 @@ import { Components, PageNames } from '@/consts'
     SwapInfo: lazyComponent(Components.SwapInfo),
     TokenLogo: lazyComponent(Components.TokenLogo),
     SelectToken: lazyComponent(Components.SelectToken),
-    ConfirmSwap: lazyComponent(Components.ConfirmSwap),
-    ResultDialog: lazyComponent(Components.ResultDialog)
+    ConfirmSwap: lazyComponent(Components.ConfirmSwap)
   }
 })
 export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFormatterMixin) {
@@ -157,7 +155,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   isTokenFromSelected = false
   showSelectTokenDialog = false
   showConfirmSwapDialog = false
-  isSwapConfirmed = false
 
   formModel = {
     from: '',
@@ -239,13 +236,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
       return !(FPNumber.lt(fpFee, fpBalance) || FPNumber.eq(fpFee, fpBalance))
     }
     return false
-  }
-
-  get transactionResultMessage (): string {
-    return this.t('swap.transactionMessage', {
-      tokenFromValue: this.formatTokenValue(this.tokenFrom, this.fromValue),
-      tokenToValue: this.formatTokenValue(this.tokenTo, this.toValue)
-    })
   }
 
   /**
@@ -509,13 +499,13 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
 
   async confirmSwap (isSwapConfirmed: boolean): Promise<any> {
     if (isSwapConfirmed) {
-      this.isSwapConfirmed = isSwapConfirmed
-    } else {
-      await this.updateAccountAssets()
+      this.resetFieldFrom()
+      this.resetFieldTo()
+      this.setTokenFromPrice(true)
+      this.resetPrice()
+      this.isFieldFromActive = false
+      this.isFieldToActive = false
     }
-  }
-
-  async handleCloseResultDialog (): Promise<void> {
     await this.updateAccountAssets()
   }
 }

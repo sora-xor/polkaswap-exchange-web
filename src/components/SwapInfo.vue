@@ -20,7 +20,7 @@
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t(`swap.${isExchangeB ? 'maxSold' : 'minReceived'}`) }}</span>
-        <span class="swap-info-value">{{ minReceived }}</span>
+        <span class="swap-info-value">{{ minMaxReceived }}<span class="asset-title">{{ getAssetSymbolText(false) }}</span></span>
       </div>
       <!-- TODO: Hid for first iteration of development -->
       <!-- <div class="swap-info">
@@ -35,16 +35,15 @@
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.liquidityProviderFee') }}</span>
-        <span class="swap-info-value">{{ liquidityProviderFeeValue }}</span>
+        <span class="swap-info-value">{{ liquidityProviderFee }}<span class="asset-title">{{ getAssetSymbolText() }}</span></span>
       </div>
       <!-- TODO 4 alexnatalia: Show if logged in and have info about Network Fee -->
       <div v-if="connected" class="swap-info">
-        <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.networkFeeTooltip', { networkFee: networkFeeValue})" theme="light" placement="right-start" animation="none" :show-arrow="false">
+        <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.networkFeeTooltip')" theme="light" placement="right-start" animation="none" :show-arrow="false">
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.networkFee') }}</span>
-        <!-- TODO: Play with asset-title values -->
-        <span class="swap-info-value">{{ networkFee }}<span class="asset-title">{{ ' ' + xorSymbol }}</span></span>
+        <span class="swap-info-value">{{ networkFee }}<span class="asset-title">{{ getAssetSymbolText() }}</span></span>
       </div>
     </template>
   </div>
@@ -96,11 +95,6 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
     return `${this.priceReversed} ${toSymbol} / ${fromSymbol}`
   }
 
-  get minReceived (): string {
-    const toSymbol = this.tokenTo ? getAssetSymbol(this.tokenTo.symbol) : ''
-    return `${this.minMaxReceived} ${toSymbol}`
-  }
-
   get priceImpact (): string {
     // TODO: Generate price impact value, is could be positive or negative, use appropriate class to show it in layout
     return '0.0222'
@@ -116,16 +110,11 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
     return ''
   }
 
-  get liquidityProviderFeeValue (): string {
-    return `${this.liquidityProviderFee} ${KnownSymbols.XOR}`
-  }
-
-  get networkFeeValue (): string {
-    return `${this.networkFee} ${KnownSymbols.XOR}`
-  }
-
-  get xorSymbol (): string {
-    return KnownSymbols.XOR
+  getAssetSymbolText (isXorSymbol = true): string {
+    if (isXorSymbol) {
+      return ' ' + KnownSymbols.XOR
+    }
+    return this.tokenTo ? ' ' + getAssetSymbol(this.tokenTo.symbol) : ''
   }
 
   handleSwitchPrice (): void {
