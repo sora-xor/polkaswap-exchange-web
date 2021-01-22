@@ -14,6 +14,8 @@ export enum PageNames {
   RemoveLiquidity = 'RemoveLiquidity'
 }
 
+// TODO: Add InfoLine component to the list of components
+// InfoLine = 'InfoLine',
 export enum Components {
   SwapInfo = 'SwapInfo',
   InfoCard = 'InfoCard',

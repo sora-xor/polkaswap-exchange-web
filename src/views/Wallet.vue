@@ -16,6 +16,7 @@ import { isWalletConnected } from '@/utils'
 @Component
 export default class Wallet extends Mixins(TranslationMixin) {
   @Action setTokenFrom
+  @Action setTokenTo
 
   handleClose (): void {
     router.back()
@@ -23,6 +24,7 @@ export default class Wallet extends Mixins(TranslationMixin) {
 
   async handleSwap (token: any): Promise<void> {
     await this.setTokenFrom({ isWalletConnected: isWalletConnected(), tokenSymbol: token.symbol })
+    await this.setTokenTo({ isWalletConnected: isWalletConnected() })
     router.push({ name: PageNames.Swap })
   }
 }

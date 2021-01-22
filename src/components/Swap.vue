@@ -8,7 +8,7 @@
       <div class="input-line">
         <div class="input-title">
           <span>{{ t('exchange.from') }}</span>
-          <span v-if="areTokensSelected && !isEmptyToAmount && !isFieldFromActive" class="input-title-estimated">({{ t('swap.estimated') }})</span>
+          <span :class="`input-title-estimated ${(areTokensSelected && !isEmptyToAmount && !isFieldFromActive) ? 'input-title-estimated--show' : ''}`">({{ t('swap.estimated') }})</span>
         </div>
         <div v-if="this.connected && this.tokenFrom && this.tokenFrom.balance && this.isTokenFromBalanceAvailable" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
@@ -28,7 +28,7 @@
           />
         </s-form-item>
         <div v-if="tokenFrom" class="token">
-          <s-button v-if="connected" class="el-button--max" type="tertiary" size="small" border-radius="mini" :disabled="this.isMaxDisabled" @click="handleMaxValue">
+          <s-button v-if="connected && isMaxAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue">
             {{ t('exchange.max') }}
           </s-button>
           <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(true)">
@@ -46,7 +46,7 @@
       <div class="input-line">
         <div class="input-title">
           <span>{{ t('exchange.to') }}</span>
-          <span v-if="areTokensSelected && !isEmptyFromAmount && !isFieldToActive" class="input-title-estimated">({{ t('swap.estimated') }})</span>
+          <span :class="`input-title-estimated ${(areTokensSelected && !isEmptyFromAmount && !isFieldToActive) ? 'input-title-estimated--show' : ''}`" class="input-title-estimated">({{ t('swap.estimated') }})</span>
         </div>
         <div v-if="this.connected && this.tokenTo && this.tokenTo.balance && this.isTokenToBalanceAvailable" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
@@ -81,7 +81,7 @@
       {{ t('swap.connectWallet') }}
     </s-button>
     <s-button v-else type="primary" :disabled="!areTokensSelected || areZeroAmounts || isInsufficientAmount || isInsufficientBalance" @click="handleConfirmSwap">
-      <template v-if="areZeroAmounts">
+      <template v-if="!areTokensSelected || (isZeroFromAmount && isZeroToAmount)">
         {{ t('swap.enterAmount') }}
       </template>
       <template v-else-if="isInsufficientAmount">
@@ -97,7 +97,6 @@
     <swap-info v-if="areTokensSelected && !areZeroAmounts" />
     <select-token :visible.sync="showSelectTokenDialog" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
     <confirm-swap :visible.sync="showConfirmSwapDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmSwap" @checkConfirm="updateAccountAssets" />
-    <result-dialog :visible.sync="isSwapConfirmed" :type="t('exchange.Swap')" :message="transactionResultMessage" @close="handleCloseResultDialog" />
   </s-form>
 </template>
 
@@ -119,8 +118,7 @@ import { Components, PageNames } from '@/consts'
     SwapInfo: lazyComponent(Components.SwapInfo),
     TokenLogo: lazyComponent(Components.TokenLogo),
     SelectToken: lazyComponent(Components.SelectToken),
-    ConfirmSwap: lazyComponent(Components.ConfirmSwap),
-    ResultDialog: lazyComponent(Components.ResultDialog)
+    ConfirmSwap: lazyComponent(Components.ConfirmSwap)
   }
 })
 export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFormatterMixin) {
@@ -144,7 +142,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   @Action setLiquidityProviderFee
   @Action setNetworkFee
 
-  inputPlaceholder: string = formatNumber(0, 2)
+  inputPlaceholder: string = formatNumber(0, 1)
   isTokenFromBalanceAvailable = false
   isTokenToBalanceAvailable = false
   isInsufficientAmount = false
@@ -157,7 +155,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   isTokenFromSelected = false
   showSelectTokenDialog = false
   showConfirmSwapDialog = false
-  isSwapConfirmed = false
 
   formModel = {
     from: '',
@@ -194,25 +191,33 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     return this.isZeroFromAmount || this.isZeroToAmount
   }
 
-  get isMaxDisabled (): boolean {
+  get isMaxAvailable (): boolean {
     if (this.connected) {
       if (!this.areTokensSelected || +this.tokenFrom.balance === 0) {
-        return true
+        return false
       }
       const fpBalance = new FPNumber(this.tokenFrom.balance, this.tokenFrom.decimals)
       const fpAmount = new FPNumber(this.formModel.from, this.tokenFrom.decimals)
       if (this.tokenFrom.symbol === KnownSymbols.XOR) {
         const fpFee = new FPNumber(this.networkFee, this.tokenFrom.decimals)
-        return FPNumber.eq(fpFee, fpBalance.sub(fpAmount))
+        return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount))
       } else {
-        return FPNumber.eq(fpBalance, fpAmount)
+        return !FPNumber.eq(fpBalance, fpAmount)
       }
     }
-    return false
+    return true
   }
 
   get isInsufficientBalance (): boolean {
     if (this.connected && this.areTokensSelected) {
+      if (this.isZeroFromAmount) {
+        this.insufficientBalanceTokenSymbol = this.tokenFrom.symbol
+        return true
+      }
+      if (this.isZeroToAmount) {
+        this.insufficientBalanceTokenSymbol = this.tokenTo.symbol
+        return true
+      }
       let fpBalance = new FPNumber(this.tokenFrom.balance, this.tokenFrom.decimals)
       const fpAmount = new FPNumber(this.formModel.from, this.tokenFrom.decimals)
       if (FPNumber.lt(fpBalance, fpAmount)) {
@@ -231,13 +236,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
       return !(FPNumber.lt(fpFee, fpBalance) || FPNumber.eq(fpFee, fpBalance))
     }
     return false
-  }
-
-  get transactionResultMessage (): string {
-    return this.t('swap.transactionMessage', {
-      tokenFromValue: this.formatTokenValue(this.tokenFrom, this.fromValue),
-      tokenToValue: this.formatTokenValue(this.tokenTo, this.toValue)
-    })
   }
 
   /**
@@ -387,8 +385,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   }
 
   resetPrice (): void {
-    this.setPrice(formatNumber(0, 2))
-    this.setPriceReversed(formatNumber(0, 2))
+    this.setPrice(0)
+    this.setPriceReversed(0)
   }
 
   isInsufficientAmountError (tokenSymbol: string, errorMessage): boolean {
@@ -501,13 +499,13 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
 
   async confirmSwap (isSwapConfirmed: boolean): Promise<any> {
     if (isSwapConfirmed) {
-      this.isSwapConfirmed = isSwapConfirmed
-    } else {
-      await this.updateAccountAssets()
+      this.resetFieldFrom()
+      this.resetFieldTo()
+      this.setTokenFromPrice(true)
+      this.resetPrice()
+      this.isFieldFromActive = false
+      this.isFieldToActive = false
     }
-  }
-
-  async handleCloseResultDialog (): Promise<void> {
     await this.updateAccountAssets()
   }
 }
@@ -535,6 +533,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     margin-left: $inner-spacing-mini / 2;
     font-size: var(--s-font-size-mini);
     @include font-weight;
+    opacity: 0;
+    &--show {
+      opacity: 1;
+    }
   }
 
   .el-button--switch-tokens {

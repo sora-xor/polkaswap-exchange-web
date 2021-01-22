@@ -39,7 +39,7 @@
       </div>
     </s-row>
     <template #footer>
-      <s-button type="primary" @click="handleConfirmRemoveLiquidity">{{ t('removeLiquidity.confirm') }}</s-button>
+      <s-button type="primary" @click="handleConfirmRemoveLiquidity">{{ t('exchange.confirm') }}</s-button>
     </template>
   </dialog-base>
 </template>
@@ -65,7 +65,7 @@ const namespace = 'removeLiquidity'
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
-export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
+export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, DialogMixin) {
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
@@ -75,27 +75,27 @@ export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
   formatNumber = formatNumber
 
   get formattedFromValue (): string {
-    return formatNumber(this.firstTokenAmount)
+    return this.firstTokenAmount
   }
 
   get formattedToValue (): string {
-    return formatNumber(this.secondTokenAmount)
+    return this.secondTokenAmount
   }
 
   get formattedLiquidityValue (): string {
-    return formatNumber(this.liquidityAmount)
+    return this.liquidityAmount
   }
 
   get firstPerSecondPrice (): string {
     return this.firstTokenAmount && this.secondTokenAmount
       ? new FPNumber(this.firstTokenAmount).div(new FPNumber(this.secondTokenAmount)).toFixed(2)
-      : '0.00'
+      : '0'
   }
 
   get secondPerFirstPrice (): string {
     return this.firstTokenAmount && this.secondTokenAmount
       ? new FPNumber(this.secondTokenAmount).div(new FPNumber(this.firstTokenAmount)).toFixed(2)
-      : '0.00'
+      : '0'
   }
 
   getAssetSymbol = getAssetSymbol

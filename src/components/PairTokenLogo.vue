@@ -43,6 +43,7 @@ export default class PairTokenLogo extends Mixins(TranslationMixin) {
   position: relative;
   display: block;
   margin-right: $inner-spacing-mini;
+  flex-shrink: 0;
 
   .token-logo {
     position: absolute;
