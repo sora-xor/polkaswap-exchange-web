@@ -33,8 +33,7 @@
       </div>
     </header>
     <div class="app-content">
-      <!-- TODO 4 alexnatalia: We should have this loader only for appropriate pages. Play with it a bit more -->
-      <router-view v-loading="loading" />
+      <router-view :parent-loading="loading" />
     </div>
     <settings :visible.sync="showSettings" />
   </div>
@@ -287,6 +286,12 @@ html {
         }
       }
     }
+  }
+}
+.container {
+  @include container-styles;
+  .el-loading-mask {
+    border-radius: var(--s-border-radius-medium);
   }
 }
 </style>
