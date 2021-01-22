@@ -77,6 +77,7 @@ export default {
     max: 'MAX',
     price: 'Price',
     transactionSubmitted: 'Transaction submitted',
+    confirm: 'Confirm',
     ok: 'OK'
   },
   swap: {
@@ -93,13 +94,12 @@ export default {
     liquidityProviderFee: 'Liquidity Provider Fee',
     liquidityProviderFeeTooltip: 'A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive.',
     networkFee: 'Network Fee',
-    networkFeeTooltip: 'Fixed  amount of {networkFee} goes to network validators.',
-    enterAmount: 'Enter an amount',
+    networkFeeTooltip: 'Network fee is used to ensure SORA system\'s growth and stable performance.',
+    enterAmount: 'Enter amount',
     insufficientBalance: 'Insufficient {tokenSymbol} balance',
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
     confirmSwap: 'Confirm swap',
-    swapOutputMessage: 'Output is estimated. You will receive at least {transactionValue} or the transaction will revert.',
-    transactionMessage: '{tokenFromValue} for {tokenToValue}'
+    swapOutputMessage: 'Output is estimated. You will receive at least {transactionValue} or the transaction will revert.'
   },
   pool: {
     yourLiquidity: 'Your liquidity',
@@ -108,8 +108,8 @@ export default {
     addLiquidity: 'Add liquidity',
     removeLiquidity: 'Remove liquidity',
     createPair: 'Create a pair',
-    pooledToken: '{tokenSymbol} Pooled:',
-    pairTokens: '{pair} Pool Tokens:',
+    pooledToken: '{tokenSymbol} Pooled',
+    pairTokens: '{pair} Pool Tokens',
     poolShare: 'Your pool share',
     comingSoon: 'Coming soon',
     description: 'When you add liquidity, you are given pool tokens representing your position. These tokens automaticaly earn fees proportional to your share of the pool, and can be redeemed at any time.'
@@ -128,15 +128,16 @@ export default {
     firstPerSecond: '{first} per {second}',
     firstSecondPoolTokens: '{first}-{second} Pool tokens',
     connect: 'Connect wallet',
-    enterAmount: 'Enter an amount',
+    enterAmount: 'Enter amount',
     supply: 'Supply',
-    confirmSupply: 'Confirm supply',
     yourPosition: 'Your position',
     youWillReceive: 'You will receive',
     remove: 'remove',
     add: 'ADD',
     ok: 'OK',
     networkFee: 'Network fee',
+    // TODO: Use insufficientBalance with tokenSymbol
+    // insufficientBalance: 'Insufficient {tokenSymbol} balance',
     insufficientBalance: 'Insufficient balance',
     unsuitableAssets: 'Unsuitable assets',
     transactionMessage: '{firstToken} and {secondToken}',
@@ -146,9 +147,8 @@ export default {
   confirmSupply: {
     title: 'You will receive',
     outputDescription: 'Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.',
-    poolTokensBurned: '{first}-{second} Pool Tokens Burned:',
-    price: 'Price:',
-    confirm: 'Confirm'
+    poolTokensBurned: '{first}-{second} Pool Tokens Burned',
+    price: 'Price'
   },
   addLiquidity: {
     title: 'Add liquidity'
@@ -159,13 +159,12 @@ export default {
     amount: 'Amount',
     input: 'Input',
     output: 'Output',
-    price: 'Price:',
+    price: 'Price',
     remove: 'Remove',
-    enterAmount: 'Enter an amount',
+    enterAmount: 'Enter amount',
     description: 'Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.',
     outputMessage: 'Output is estimated. If the price changes more than 0.5% your transaction will revert.',
-    confirmTitle: 'You will receive',
-    confirm: 'Confirm'
+    confirmTitle: 'You will receive'
   },
   dexSettings: {
     title: 'Settings',
@@ -176,7 +175,7 @@ export default {
       frontrun: 'Your transaction may be frontrun',
       error: 'Enter a valid slippage percentage'
     },
-    custom: 'CUSTOM',
+    custom: 'CUSTOM %',
     transactionDeadline: 'TRANSACTION DEADLINE',
     transactionDeadlineHint: 'Transaction will be cancelled if it is pending for more than this long.',
     nodeAddress: 'NODE ADDRESS',

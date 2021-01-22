@@ -159,7 +159,7 @@ export default class CreatePair extends Mixins(TranslationMixin, LoadingMixin) {
 
   showSelectFirstTokenDialog = false
   showSelectSecondTokenDialog = false
-  inputPlaceholder: string = formatNumber(0, 2);
+  inputPlaceholder: string = formatNumber(0, 1);
   showConfirmCreatePairDialog = false
   isCreatePairConfirmed = false
 
@@ -174,22 +174,6 @@ export default class CreatePair extends Mixins(TranslationMixin, LoadingMixin) {
 
   get connected (): boolean {
     return isWalletConnected()
-  }
-
-  get firstPerSecondPrice (): string {
-    return formatNumber(this.firstToken.price / this.secondToken.price, 2)
-  }
-
-  get secondPerFirstPrice (): string {
-    return formatNumber(this.secondToken.price / this.firstToken.price, 2)
-  }
-
-  get firstTokenPosition (): string {
-    return formatNumber(0, 2)
-  }
-
-  get secondTokenPosition (): string {
-    return formatNumber(0, 2)
   }
 
   get areTokensSelected (): boolean {
@@ -247,10 +231,7 @@ export default class CreatePair extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   getTokenBalance (token: any): string {
-    if (token) {
-      return formatNumber(token.balance, 2)
-    }
-    return ''
+    return token ? token.balance : ''
   }
 
   handleConfirmCreatePair () {

@@ -12,31 +12,31 @@
       {{ t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol }) }}
     </s-row>
     <div class="output-description">
-      {{ t('confirmSupply.outputDescription') }}
+      {{ t('confirmSupply.outputDescription', { slippageTolerance }) }}
     </div>
     <s-divider />
     <div class="tokens">
       <s-row flex justify="space-between" class="token">
         <s-row v-if="firstToken" flex>
           <token-logo :token="firstToken" size="small" />
-          <span class="token-symbol">{{ firstToken.symbol }} {{ t('createPair.deposit')}}:</span>
+          <span class="token-symbol">{{ firstToken.symbol }} {{ t('createPair.deposit')}}</span>
         </s-row>
-        <div class="token-value">{{ formatNumber(firstTokenValue, 2) }}</div>
+        <div class="token-value">{{ firstTokenValue }}</div>
       </s-row>
       <s-row flex justify="space-between" class="token">
         <s-row v-if="secondToken" flex>
           <token-logo :token="secondToken" size="small" />
-          <span class="token-symbol">{{ secondToken.symbol }} {{ t('createPair.deposit')}}:</span>
+          <span class="token-symbol">{{ secondToken.symbol }} {{ t('createPair.deposit')}}</span>
         </s-row>
-        <div class="token-value">{{ formatNumber(secondTokenValue, 2) }}</div>
+        <div class="token-value">{{ secondTokenValue }}</div>
       </s-row>
     </div>
     <div class="pair-info">
       <s-row flex justify="space-between" class="pair-info__line">
         <div>{{ t('confirmSupply.price') }}</div>
         <div v-if="firstToken && secondToken" class="price">
-          <div>1 {{ firstToken.symbol }} = {{ formatNumber(firstToken.price / secondToken.price) }} {{ secondToken.symbol }}</div>
-          <div>1 {{ secondToken.symbol }} = {{ formatNumber(secondToken.price / firstToken.price) }} {{ firstToken.symbol }}</div>
+          <div>1 {{ firstToken.symbol }} = {{ firstToken.price / secondToken.price }} {{ secondToken.symbol }}</div>
+          <div>1 {{ secondToken.symbol }} = {{ secondToken.price / firstToken.price }} {{ firstToken.symbol }}</div>
         </div>
       </s-row>
       <s-row flex justify="space-between" class="pair-info__line">
@@ -45,7 +45,7 @@
       </s-row>
     </div>
     <template #footer>
-      <s-button type="primary" @click="handleConfirmCreatePair">{{ t('confirmSupply.confirm') }}</s-button>
+      <s-button type="primary" @click="handleConfirmCreatePair">{{ t('exchange.confirm') }}</s-button>
     </template>
   </dialog-base>
 </template>
@@ -74,11 +74,12 @@ export default class ConfirmCreatePair extends Mixins(TranslationMixin, DialogMi
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
+  @Getter slippageTolerance!: number
 
   formatNumber = formatNumber
 
   get poolTokens (): string {
-    return formatNumber(1000, 2)
+    return '1000'
   }
 
   get shareOfPool (): string {

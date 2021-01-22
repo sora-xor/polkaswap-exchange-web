@@ -65,6 +65,10 @@
       <div class="input-container">
         <div class="input-line">
           <div class="input-title">{{ t('removeLiquidity.output') }}</div>
+          <div v-if="isWalletConnected && firstToken" class="token-balance">
+            <span class="token-balance-title">{{ t('createPair.balance') }}</span>
+            <span class="token-balance-value">{{ firstTokenBalance }}</span>
+          </div>
         </div>
         <div class="input-line">
           <s-form-item>
@@ -90,8 +94,10 @@
 
       <div class="input-container">
         <div class="input-line">
-          <div class="input-title">
-            <span>{{ t('removeLiquidity.output') }}</span>
+          <div class="input-title">{{ t('removeLiquidity.output') }}</div>
+          <div v-if="isWalletConnected && secondToken" class="token-balance">
+            <span class="token-balance-title">{{ t('createPair.balance') }}</span>
+            <span class="token-balance-value">{{ secondTokenBalance }}</span>
           </div>
         </div>
         <div class="input-line">
@@ -118,11 +124,12 @@
         <s-row flex justify="space-between">
           <div>{{ t('removeLiquidity.price') }}</div>
           <div class="price">
-            <div>1 {{ getAssetSymbol(firstToken.symbol) }} = {{ formatNumber(firstToken.price / secondToken.price || 0, 2) }} {{ getAssetSymbol(secondToken.symbol) }}</div>
-            <div>1 {{ getAssetSymbol(secondToken.symbol) }} = {{ formatNumber(secondToken.price / firstToken.price || 0, 2) }} {{ getAssetSymbol(firstToken.symbol) }}</div>
+            <div>1 {{ getAssetSymbol(firstToken.symbol) }} = {{ firstToken.price / secondToken.price || 0 }} {{ getAssetSymbol(secondToken.symbol) }}</div>
+            <div>1 {{ getAssetSymbol(secondToken.symbol) }} = {{ secondToken.price / firstToken.price || 0 }} {{ getAssetSymbol(firstToken.symbol) }}</div>
           </div>
         </s-row>
         <s-row flex justify="space-between">
+          <!-- TODO: Add tooltip here -->
           <div>{{ t('createPair.networkFee') }}</div>
           <div>{{ fee }} XOR</div>
         </s-row>
@@ -215,7 +222,7 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMix
   }
 
   isWalletConnected = true
-  inputPlaceholder: string = formatNumber(0, 2);
+  inputPlaceholder: string = formatNumber(0, 1);
   showConfirmDialog = false
   isRemoveLiquidityConfirmed = false
 
@@ -227,14 +234,6 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMix
 
   get secondTokenAddress (): string {
     return this.$route.params.secondAddress
-  }
-
-  get firstPerSecondPrice (): string {
-    return formatNumber(this.firstToken.price / this.secondToken.price, 2)
-  }
-
-  get secondPerFirstPrice (): string {
-    return formatNumber(this.secondToken.price / this.firstToken.price, 2)
   }
 
   get areTokensSelected (): boolean {
@@ -288,7 +287,7 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMix
   }
 
   getTokenBalance (token: any): string {
-    return token ? formatNumber(token.balance, 2) : ''
+    return token ? token.balance : ''
   }
 
   handleLiquidityMaxValue (): void {

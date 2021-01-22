@@ -84,6 +84,8 @@
           {{ t('swap.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
+          <!-- TODO: Add insufficientBalanceTokenSymbol here -->
+          <!-- {{ t('createPair.insufficientBalance', { tokenSymbol: getAssetSymbol(insufficientBalanceTokenSymbol)}) }} -->
           {{ t('createPair.insufficientBalance') }}
         </template>
         <template v-else>
@@ -126,7 +128,7 @@
     </info-card>
 
     <info-card v-if="areTokensSelected && isAvailable" :title="t('createPair.yourPosition') ">
-      <div class="card__data">
+      <div class="card__data card__data_assets">
         <s-row flex>
           <pair-token-logo class="pair-token-logo" :first-token="firstToken" :second-token="secondToken" size="mini" />
           {{
@@ -204,7 +206,8 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
 
   showSelectFirstTokenDialog = false
   showSelectSecondTokenDialog = false
-  inputPlaceholder: string = formatNumber(0, 2)
+  inputPlaceholder: string = formatNumber(0, 1)
+  insufficientBalanceTokenSymbol = ''
   showConfirmDialog = false
   isCreatePairConfirmed = false
 
@@ -242,22 +245,22 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
 
   get firstPerSecondPrice (): string {
     return this.firstTokenValue && this.secondTokenValue
-      ? new FPNumber(this.firstTokenValue).div(new FPNumber(this.secondTokenValue)).toFixed(2) || '0.00'
-      : '0.00'
+      ? new FPNumber(this.firstTokenValue).div(new FPNumber(this.secondTokenValue)).toFixed(2) || '0'
+      : '0'
   }
 
   get secondPerFirstPrice (): string {
     return this.firstTokenValue && this.secondTokenValue
-      ? new FPNumber(this.secondTokenValue).div(new FPNumber(this.firstTokenValue)).toFixed(2) || '0.00'
-      : '0.00'
+      ? new FPNumber(this.secondTokenValue).div(new FPNumber(this.firstTokenValue)).toFixed(2) || '0'
+      : '0'
   }
 
   get firstTokenPosition (): string {
-    return '0.00'
+    return '0'
   }
 
   get secondTokenPosition (): string {
-    return '0.00'
+    return '0'
   }
 
   get areTokensSelected (): boolean {
@@ -275,6 +278,7 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
       let secondValue = new FPNumber(this.secondTokenValue, this.secondToken.decimals)
       const secondBalance = new FPNumber(this.secondToken.balance, this.secondToken.decimals)
 
+      // TODO: Set appropriate insufficientBalanceTokenSymbol
       if (this.firstToken.symbol === KnownSymbols.XOR) {
         firstValue = firstValue.add(new FPNumber(this.fee, this.firstToken.decimals))
       } else {
@@ -315,10 +319,7 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
   }
 
   getTokenBalance (token: any): string {
-    if (token) {
-      return formatNumber(token.balance, 2)
-    }
-    return ''
+    return token ? token.balance : ''
   }
 
   async handleConfirmAddLiquidity () {
@@ -333,6 +334,14 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
   }
 }
 </script>
+
+<style lang="scss">
+.el-form--actions {
+  .s-input--token-value .el-input .el-input__inner {
+    @include text-ellipsis;
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .el-form--actions {
