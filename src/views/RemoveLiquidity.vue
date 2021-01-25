@@ -131,7 +131,7 @@
         <s-row flex justify="space-between">
           <!-- TODO: Add tooltip here -->
           <div>{{ t('createPair.networkFee') }}</div>
-          <div>{{ fee }} XOR</div>
+          <div>{{ fee }} {{ KnownSymbols.XOR }}</div>
         </s-row>
       </div>
 
@@ -155,7 +155,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { FPNumber } from '@sora-substrate/util'
+import { FPNumber, KnownSymbols } from '@sora-substrate/util'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -176,6 +176,8 @@ const namespace = 'removeLiquidity'
   }
 })
 export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMixin) {
+  readonly KnownSymbols = KnownSymbols
+
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
   @Getter('liquidity', { namespace }) liquidity!: any
