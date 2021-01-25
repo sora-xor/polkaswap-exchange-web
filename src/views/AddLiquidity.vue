@@ -123,11 +123,14 @@
       </div>
       <div class="card__data">
         <div>{{ t('createPair.networkFee') }}</div>
-        <div>{{ fee }} XOR</div>
+        <div>{{ fee }} {{ KnownSymbols.XOR }}</div>
       </div>
     </info-card>
 
-    <info-card v-if="areTokensSelected && isAvailable" :title="t('createPair.yourPosition') ">
+    <info-card
+      v-if="areTokensSelected && isAvailable"
+      :title="t(`createPair.yourPosition${!emptyAssets ? 'Estimated' : ''}`)"
+    >
       <div class="card__data card__data_assets">
         <s-row flex>
           <pair-token-logo class="pair-token-logo" :first-token="firstToken" :second-token="secondToken" size="mini" />
@@ -138,7 +141,7 @@
             })
           }}:
         </s-row>
-        <div>{{ minted }}</div>
+        <div>{{ poolTokenPosition }}</div>
       </div>
       <s-divider />
       <div class="card__data">
@@ -162,6 +165,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { KnownAssets, KnownSymbols, FPNumber } from '@sora-substrate/util'
+import { dexApi } from '@soramitsu/soraneo-wallet-web'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -182,6 +186,8 @@ const namespace = 'addLiquidity'
   }
 })
 export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin) {
+  readonly KnownSymbols = KnownSymbols
+
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
   @Getter('firstToken', { namespace }) firstToken!: any
@@ -240,23 +246,54 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin)
   }
 
   get firstPerSecondPrice (): string {
-    return this.firstTokenValue && this.secondTokenValue
-      ? new FPNumber(this.firstTokenValue).div(new FPNumber(this.secondTokenValue)).toFixed(2) || '0'
+    const second = new FPNumber(this.secondTokenValue)
+    return this.firstTokenValue && this.secondTokenValue && !(second.isNaN() || second.isZero())
+      ? new FPNumber(this.firstTokenValue).div(second).toFixed(2) || '0'
       : '0'
   }
 
   get secondPerFirstPrice (): string {
-    return this.firstTokenValue && this.secondTokenValue
-      ? new FPNumber(this.secondTokenValue).div(new FPNumber(this.firstTokenValue)).toFixed(2) || '0'
+    const first = new FPNumber(this.firstTokenValue)
+    return this.firstTokenValue && this.secondTokenValue && !(first.isNaN() || first.isZero())
+      ? new FPNumber(this.secondTokenValue).div(first).toFixed(2) || '0'
       : '0'
   }
 
+  get liquidityInfo () {
+    return dexApi.accountLiquidity.find(l => l.firstAddress === this.firstToken.address && l.secondAddress === this.secondToken.address)
+  }
+
+  get emptyAssets (): boolean {
+    if (!(this.firstTokenValue || this.secondTokenValue)) {
+      return true
+    }
+    const first = new FPNumber(this.firstTokenValue)
+    const second = new FPNumber(this.secondTokenValue)
+    return (first.isNaN() || first.isZero()) || (second.isNaN() || second.isZero())
+  }
+
+  get poolTokenPosition (): string {
+    const prevPosition = new FPNumber(this.liquidityInfo ? this.liquidityInfo.balance : 0)
+    if (!this.emptyAssets) {
+      return prevPosition.add(new FPNumber(this.minted)).toString()
+    }
+    return prevPosition.toString()
+  }
+
   get firstTokenPosition (): string {
-    return '0'
+    const prevPosition = new FPNumber(this.liquidityInfo ? this.liquidityInfo.firstBalance : 0)
+    if (!this.emptyAssets) {
+      return prevPosition.add(new FPNumber(this.firstTokenValue)).toString()
+    }
+    return prevPosition.toString()
   }
 
   get secondTokenPosition (): string {
-    return '0'
+    const prevPosition = new FPNumber(this.liquidityInfo ? this.liquidityInfo.secondBalance : 0)
+    if (!this.emptyAssets) {
+      return prevPosition.add(new FPNumber(this.secondTokenValue)).toString()
+    }
+    return prevPosition.toString()
   }
 
   get areTokensSelected (): boolean {

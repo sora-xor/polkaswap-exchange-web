@@ -128,6 +128,7 @@ export default {
     enterAmount: 'Enter amount',
     supply: 'Supply',
     yourPosition: 'Your position',
+    yourPositionEstimated: 'Your position (estimated)',
     youWillReceive: 'You will receive',
     remove: 'remove',
     add: 'ADD',
