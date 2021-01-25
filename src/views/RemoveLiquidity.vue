@@ -149,7 +149,6 @@
     </s-form>
 
     <confirm-remove-liquidity :visible.sync="showConfirmDialog" @confirm="handleConfirmRemoveLiquidity" />
-    <result-dialog :visible.sync="isRemoveLiquidityConfirmed" :type="t('removeLiquidity.remove')" :message="resultMessage" />
   </div>
 </template>
 
@@ -158,11 +157,11 @@ import { Component, Mixins, Watch, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { FPNumber } from '@sora-substrate/util'
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
+import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
+import router, { lazyComponent } from '@/router'
+import { Components, PageNames } from '@/consts'
 import { formatNumber } from '@/utils'
 
 const namespace = 'removeLiquidity'
@@ -173,11 +172,10 @@ const namespace = 'removeLiquidity'
     InfoCard: lazyComponent(Components.InfoCard),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity),
-    ResultDialog: lazyComponent(Components.ResultDialog)
+    ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity)
   }
 })
-export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMixin) {
+export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMixin) {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
   @Getter('liquidity', { namespace }) liquidity!: any
@@ -220,7 +218,6 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMix
   isWalletConnected = true
   inputPlaceholder: string = formatNumber(0, 1);
   showConfirmDialog = false
-  isRemoveLiquidityConfirmed = false
 
   formatNumber = formatNumber
 
@@ -292,9 +289,9 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMix
 
   async handleConfirmRemoveLiquidity (): Promise<void> {
     try {
-      await this.removeLiquidity()
+      await this.withNotifications(this.removeLiquidity)
       this.showConfirmDialog = false
-      this.isRemoveLiquidityConfirmed = true
+      router.push({ name: PageNames.Pool })
     } catch (error) {
       console.error(error)
       this.$alert(this.t(error.message), { title: this.t('errorText') })

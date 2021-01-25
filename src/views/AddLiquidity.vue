@@ -155,7 +155,6 @@
     <select-token :visible.sync="showSelectSecondTokenDialog" accountAssetsOnly notNullBalanceOnly :asset="firstToken" @select="setSecondToken" />
 
     <confirm-add-liquidity :visible.sync="showConfirmDialog" @confirm="handleConfirmAddLiquidity" />
-    <result-dialog :visible.sync="isCreatePairConfirmed" :type="t('createPair.add')" :message="resultMessage" />
   </div>
 </template>
 
@@ -164,11 +163,11 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { KnownAssets, KnownSymbols, FPNumber } from '@sora-substrate/util'
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
+import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import { lazyComponent } from '@/router'
+import router, { lazyComponent } from '@/router'
 import { formatNumber, isWalletConnected } from '@/utils'
-import { Components } from '@/consts'
+import { Components, PageNames } from '@/consts'
 
 const namespace = 'addLiquidity'
 
@@ -179,11 +178,10 @@ const namespace = 'addLiquidity'
     InfoCard: lazyComponent(Components.InfoCard),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    ConfirmAddLiquidity: lazyComponent(Components.ConfirmAddLiquidity),
-    ResultDialog: lazyComponent(Components.ResultDialog)
+    ConfirmAddLiquidity: lazyComponent(Components.ConfirmAddLiquidity)
   }
 })
-export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin) {
+export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin) {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
   @Getter('firstToken', { namespace }) firstToken!: any
@@ -210,7 +208,6 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
   inputPlaceholder: string = formatNumber(0, 1)
   insufficientBalanceTokenSymbol = ''
   showConfirmDialog = false
-  isCreatePairConfirmed = false
 
   async mounted () {
     this.resetData()
@@ -323,9 +320,9 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
 
   async handleConfirmAddLiquidity () {
     try {
-      await this.addLiquidity()
+      await this.withNotifications(this.addLiquidity)
       this.showConfirmDialog = false
-      this.isCreatePairConfirmed = true
+      router.push({ name: PageNames.Pool })
     } catch (error) {
       console.error(error)
       this.$alert(this.t(error.message), { title: this.t('errorText') })
