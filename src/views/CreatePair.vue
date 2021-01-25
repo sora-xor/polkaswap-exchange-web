@@ -101,7 +101,7 @@
     <info-card v-if="areTokensSelected && isAvailable">
       <div class="card__data">
         <div>{{ t('createPair.networkFee') }}</div>
-        <div>{{ fee }} XOR</div>
+        <div>{{ fee }} {{ KnownSymbols.XOR }}</div>
       </div>
     </info-card>
 
@@ -116,13 +116,13 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
+import { KnownAssets, KnownSymbols, FPNumber } from '@sora-substrate/util'
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
+import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import router, { lazyComponent } from '@/router'
 import { formatNumber, isWalletConnected } from '@/utils'
 import { Components, PageNames } from '@/consts'
-import { KnownAssets, KnownSymbols, FPNumber } from '@sora-substrate/util'
 
 const namespace = 'createPair'
 
@@ -138,7 +138,9 @@ const namespace = 'createPair'
   }
 })
 
-export default class CreatePair extends Mixins(TranslationMixin, LoadingMixin) {
+export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin) {
+  readonly KnownSymbols = KnownSymbols
+
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
   @Getter('firstToken', { namespace }) firstToken!: any
@@ -159,7 +161,7 @@ export default class CreatePair extends Mixins(TranslationMixin, LoadingMixin) {
 
   showSelectFirstTokenDialog = false
   showSelectSecondTokenDialog = false
-  inputPlaceholder: string = formatNumber(0, 1);
+  inputPlaceholder: string = formatNumber(0, 1)
   showConfirmCreatePairDialog = false
   isCreatePairConfirmed = false
 
@@ -240,20 +242,13 @@ export default class CreatePair extends Mixins(TranslationMixin, LoadingMixin) {
 
   async confirmCreatePair (isCreatePairConfirmed: boolean) {
     try {
-      await this.createPair()
+      await this.withNotifications(this.createPair)
+      router.push({ name: PageNames.Pool })
     } catch (error) {
       console.error(error)
     }
 
     this.isCreatePairConfirmed = isCreatePairConfirmed
-  }
-
-  submitCreatePair (message: string): void {
-    this.$notify({
-      message: message,
-      title: this.t('pool.createPair'),
-      type: 'success'
-    })
   }
 }
 </script>
