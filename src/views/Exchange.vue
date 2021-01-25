@@ -1,5 +1,5 @@
 <template>
-  <div class="exchange-container">
+  <div class="container" v-loading="parentLoading">
     <s-tabs class="s-tabs--exchange" type="rounded" :value="router.currentRoute.name" @click="handleTabClick">
       <s-tab
         v-for="tab in ExchangeTabs"
@@ -13,16 +13,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import router, { lazyComponent } from '@/router'
-import { ExchangeTabs, PageNames } from '@/consts'
+import router from '@/router'
+import { ExchangeTabs } from '@/consts'
 
 @Component
 export default class Exchange extends Mixins(TranslationMixin) {
   readonly ExchangeTabs = ExchangeTabs
   readonly router = router
+
+  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
   handleTabClick ({ name }): void {
     if (router.currentRoute.name === name) {
@@ -39,7 +41,7 @@ $tabs-container-height: $basic-spacing * 4;
 $tabs-container-padding: 2px;
 $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
 
-.exchange-container {
+.container {
   .s-tabs.s-tabs--exchange {
     &#{$tabs-class} {
       #{$tabs-class}__header {
@@ -85,8 +87,7 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
 </style>
 
 <style lang="scss" scoped>
-.exchange-container {
-  @include container-styles;
+.container {
   .s-tabs {
     width: 100%;
   }

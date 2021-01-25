@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-loading="parentLoading">
     <generic-header :title="t('createPair.title')" :tooltip="t('pool.description')" />
     <s-form
       class="el-form--actions"
@@ -114,7 +114,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -139,6 +139,8 @@ const namespace = 'createPair'
 })
 
 export default class CreatePair extends Mixins(TranslationMixin, LoadingMixin) {
+  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
+
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
@@ -258,7 +260,6 @@ export default class CreatePair extends Mixins(TranslationMixin, LoadingMixin) {
 
 <style lang="scss" scoped>
 .container {
-  @include container-styles;
   .card--first-liquidity {
     margin-top: $inner-spacing-medium;
     font-feature-settings: $s-font-feature-settings-common;

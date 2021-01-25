@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-loading="loading">
+  <div class="container" v-loading="loading || parentLoading">
     <generic-header :title="t('removeLiquidity.title')" :tooltip="t('removeLiquidity.description')" />
     <s-form
       class="el-form--actions"
@@ -154,7 +154,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Watch, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -180,6 +180,8 @@ const namespace = 'removeLiquidity'
   }
 })
 export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMixin) {
+  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
+
   @Getter('liquidity', { namespace }) liquidity!: any
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
@@ -306,10 +308,6 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMix
 </script>
 
 <style lang="scss" scoped>
-.container {
-  @include container-styles;
-}
-
 .icon-divider {
   padding: $inner-spacing-medium;
 }
