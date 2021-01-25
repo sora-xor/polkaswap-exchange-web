@@ -94,7 +94,7 @@
       </s-button>
     </s-form>
 
-    <info-card v-if="areTokensSelected && isAvailable" :title="t('createPair.pricePool')">
+    <info-card v-if="areTokensSelected && isAvailable && !emptyAssets" :title="t('createPair.pricePool')">
       <div class="card__data">
         <div>
           {{
@@ -128,7 +128,7 @@
     </info-card>
 
     <info-card
-      v-if="areTokensSelected && isAvailable"
+      v-if="areTokensSelected && isAvailable && (!emptyAssets || (liquidityInfo || {}).balance)"
       :title="t(`createPair.yourPosition${!emptyAssets ? 'Estimated' : ''}`)"
     >
       <div class="card__data card__data_assets">
