@@ -54,7 +54,7 @@
               <div class="liquidity-logo">
                 <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="mini" />
               </div>
-              {{ getAssetSymbol(firstToken.symbol) }}-{{ getAssetSymbol(secondToken.symbol) }}
+              {{ firstToken.symbol }}-{{ secondToken.symbol }}
             </s-button>
           </div>
         </div>
@@ -84,7 +84,7 @@
           <div v-if="firstToken" class="token">
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <token-logo :token="firstToken" size="small" />
-              {{ getAssetSymbol(firstToken.symbol) }}
+              {{ firstToken.symbol }}
             </s-button>
           </div>
         </div>
@@ -124,8 +124,8 @@
         <s-row flex justify="space-between">
           <div>{{ t('removeLiquidity.price') }}</div>
           <div class="price">
-            <div>1 {{ getAssetSymbol(firstToken.symbol) }} = {{ firstToken.price / secondToken.price || 0 }} {{ getAssetSymbol(secondToken.symbol) }}</div>
-            <div>1 {{ getAssetSymbol(secondToken.symbol) }} = {{ secondToken.price / firstToken.price || 0 }} {{ getAssetSymbol(firstToken.symbol) }}</div>
+            <div>1 {{ firstToken.symbol }} = {{ firstToken.price / secondToken.price || 0 }} {{ secondToken.symbol }}</div>
+            <div>1 {{ secondToken.symbol }} = {{ secondToken.price / firstToken.price || 0 }} {{ firstToken.symbol }}</div>
           </div>
         </s-row>
         <s-row flex justify="space-between">
@@ -156,16 +156,14 @@
 <script lang="ts">
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
+import { FPNumber } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import TokenLogo from '@/components/TokenLogo.vue'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 
-import router, { lazyComponent } from '@/router'
-import { Components, PageNames } from '@/consts'
-import { formatNumber, getAssetSymbol } from '@/utils'
-import { Token } from '@/types'
-import { FPNumber } from '@sora-substrate/util'
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
+import { formatNumber } from '@/utils'
 
 const namespace = 'removeLiquidity'
 
@@ -207,8 +205,6 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMix
   @Action('resetData', { namespace }) resetData
 
   removePartInput = 0
-
-  getAssetSymbol = getAssetSymbol
 
   async created () {
     await this.withLoading(async () => {

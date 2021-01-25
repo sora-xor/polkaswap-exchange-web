@@ -44,9 +44,8 @@ import DialogMixin from '@/components/mixins/DialogMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Token } from '@/types'
-import { LogoSize, Components } from '@/consts'
+import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
-import { getAssetSymbol } from '@/utils'
 
 const namespace = 'assets'
 
@@ -106,9 +105,8 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   }
 
   getTokenName (tokenSymbol: string): string {
-    const symbol = getAssetSymbol(tokenSymbol)
     if (this.te(`assetNames.${tokenSymbol}`)) {
-      return `${this.t(`assetNames.${tokenSymbol}`)} (${symbol})`
+      return `${this.t(`assetNames.${tokenSymbol}`)} (${tokenSymbol})`
     }
     return tokenSymbol
   }

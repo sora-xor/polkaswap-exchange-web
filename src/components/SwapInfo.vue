@@ -52,11 +52,12 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
+import { KnownSymbols } from '@sora-substrate/util'
+
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import { getAssetSymbol, isWalletConnected } from '@/utils'
+import { isWalletConnected } from '@/utils'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
-import { KnownSymbols } from '@sora-substrate/util'
 
 @Component({
   components: {
@@ -87,8 +88,8 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   }
 
   get priceValue (): string {
-    const fromSymbol = this.tokenFrom ? getAssetSymbol(this.tokenFrom.symbol) : ''
-    const toSymbol = this.tokenTo ? getAssetSymbol(this.tokenTo.symbol) : ''
+    const fromSymbol = this.tokenFrom ? this.tokenFrom.symbol : ''
+    const toSymbol = this.tokenTo ? this.tokenTo.symbol : ''
     if (this.isTokenFromPrice) {
       return `${this.price} ${fromSymbol} / ${toSymbol}`
     }
@@ -114,7 +115,7 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
     if (isXorSymbol) {
       return ' ' + KnownSymbols.XOR
     }
-    return this.tokenTo ? ' ' + getAssetSymbol(this.tokenTo.symbol) : ''
+    return this.tokenTo ? ' ' + this.tokenTo.symbol : ''
   }
 
   handleSwitchPrice (): void {
