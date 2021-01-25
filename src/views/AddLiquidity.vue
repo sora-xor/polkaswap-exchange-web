@@ -31,7 +31,7 @@
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <token-logo :token="firstToken" size="small" />
-              {{ getAssetSymbol(firstToken.symbol) }}
+              {{ firstToken.symbol }}
             </s-button>
           </div>
         </div>
@@ -65,7 +65,7 @@
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
               <token-logo :token="secondToken" size="small" />
-              {{ getAssetSymbol(secondToken.symbol) }}
+              {{ secondToken.symbol }}
             </s-button>
           </div>
           <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
@@ -85,7 +85,7 @@
         </template>
         <template v-else-if="isInsufficientBalance">
           <!-- TODO: Add insufficientBalanceTokenSymbol here -->
-          <!-- {{ t('createPair.insufficientBalance', { tokenSymbol: getAssetSymbol(insufficientBalanceTokenSymbol)}) }} -->
+          <!-- {{ t('createPair.insufficientBalance', { tokenSymbol: insufficientBalanceTokenSymbol }) }} -->
           {{ t('createPair.insufficientBalance') }}
         </template>
         <template v-else>
@@ -99,23 +99,23 @@
         <div>
           {{
             t('createPair.firstPerSecond', {
-              first: getAssetSymbol(firstToken.symbol),
-              second: getAssetSymbol(secondToken.symbol)
+              first: firstToken.symbol,
+              second: secondToken.symbol
             })
           }}
         </div>
-        <div>{{ firstPerSecondPrice }} {{ getAssetSymbol(firstToken.symbol) }}</div>
+        <div>{{ firstPerSecondPrice }} {{ firstToken.symbol }}</div>
       </div>
       <div class="card__data">
         <div>
           {{
             t('createPair.firstPerSecond', {
-              first: getAssetSymbol(firstToken.symbol),
-              second: getAssetSymbol(secondToken.symbol)
+              first: firstToken.symbol,
+              second: secondToken.symbol
             })
           }}
         </div>
-        <div>{{ secondPerFirstPrice }} {{ getAssetSymbol(secondToken.symbol) }}</div>
+        <div>{{ secondPerFirstPrice }} {{ secondToken.symbol }}</div>
       </div>
       <div class="card__data">
         <div>{{ t('createPair.shareOfPool') }}</div>
@@ -133,8 +133,8 @@
           <pair-token-logo class="pair-token-logo" :first-token="firstToken" :second-token="secondToken" size="mini" />
           {{
             t('createPair.firstSecondPoolTokens', {
-              first: getAssetSymbol(firstToken.symbol),
-              second: getAssetSymbol(secondToken.symbol)
+              first: firstToken.symbol,
+              second: secondToken.symbol
             })
           }}:
         </s-row>
@@ -142,11 +142,11 @@
       </div>
       <s-divider />
       <div class="card__data">
-        <div>{{ getAssetSymbol(firstToken.symbol) }}</div>
+        <div>{{ firstToken.symbol }}</div>
         <div>{{ firstTokenPosition }}</div>
       </div>
       <div class="card__data">
-        <div>{{ getAssetSymbol(secondToken.symbol) }}</div>
+        <div>{{ secondToken.symbol }}</div>
         <div>{{ secondTokenPosition }}</div>
       </div>
     </info-card>
@@ -162,12 +162,13 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
+import { KnownAssets, KnownSymbols, FPNumber } from '@sora-substrate/util'
+
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import router, { lazyComponent } from '@/router'
-import { formatNumber, getAssetSymbol, isWalletConnected } from '@/utils'
-import { Components, PageNames } from '@/consts'
-import { KnownAssets, KnownSymbols, FPNumber } from '@sora-substrate/util'
+import { lazyComponent } from '@/router'
+import { formatNumber, isWalletConnected } from '@/utils'
+import { Components } from '@/consts'
 
 const namespace = 'addLiquidity'
 
@@ -210,8 +211,6 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
   insufficientBalanceTokenSymbol = ''
   showConfirmDialog = false
   isCreatePairConfirmed = false
-
-  getAssetSymbol = getAssetSymbol
 
   async mounted () {
     this.resetData()

@@ -42,7 +42,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { dexApi, initWallet } from '@soramitsu/soraneo-wallet-web'
+import { connection, initWallet } from '@soramitsu/soraneo-wallet-web'
 
 import { PageNames, MainMenu, Components } from '@/consts'
 import TransactionMixin from '@/components/mixins/TransactionMixin'
@@ -77,8 +77,8 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
 
   async created () {
     const { data } = await axios.get('/env.json')
-    dexApi.endpoint = data.DEFAULT_NETWORKS?.length ? data.DEFAULT_NETWORKS[0].address : ''
-    if (!dexApi.endpoint) {
+    connection.endpoint = data.DEFAULT_NETWORKS?.length ? data.DEFAULT_NETWORKS[0].address : ''
+    if (!connection.endpoint) {
       throw new Error('Network is not set')
     }
     await this.withLoading(initWallet)
@@ -122,7 +122,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   }
 
   destroyed (): void {
-    dexApi.disconnect()
+    connection.close()
   }
 }
 </script>

@@ -9,7 +9,7 @@
         <span class="token-value">{{ fromValue }}</span>
         <div v-if="tokenFrom" class="token">
           <token-logo :token="tokenFrom" />
-          {{ getAssetSymbol(tokenFrom.symbol) }}
+          {{ tokenFrom.symbol }}
         </div>
       </div>
       <s-icon class="icon-divider" name="arrow-bottom-rounded" size="medium" />
@@ -17,7 +17,7 @@
         <span class="token-value">{{ toValue }}</span>
         <div v-if="tokenTo" class="token">
           <token-logo :token="tokenTo" />
-          {{ getAssetSymbol(tokenTo.symbol) }}
+          {{ tokenTo.symbol }}
         </div>
       </div>
     </div>
@@ -41,7 +41,6 @@ import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
-import { getAssetSymbol } from '@/utils'
 
 @Component({
   components: {
@@ -60,12 +59,10 @@ export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
 
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean
 
-  getAssetSymbol = getAssetSymbol
-
   async handleConfirmSwap (): Promise<void> {
     await this.$emit('checkConfirm')
     if (this.isInsufficientBalance) {
-      this.$alert(this.t('swap.insufficientBalance', { tokenSymbol: getAssetSymbol(this.tokenFrom ? this.tokenFrom.symbol : '') }), { title: this.t('errorText') })
+      this.$alert(this.t('swap.insufficientBalance', { tokenSymbol: this.tokenFrom ? this.tokenFrom.symbol : '' }), { title: this.t('errorText') })
       this.$emit('confirm')
     } else {
       try {

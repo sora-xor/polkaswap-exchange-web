@@ -9,7 +9,7 @@
     </div>
     <s-row v-if="firstToken && secondToken" flex align="middle" class="pool-tokens">
       <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="small" />
-      {{ t('createPair.firstSecondPoolTokens', { first: getAssetSymbol(firstToken.symbol), second: getAssetSymbol(secondToken.symbol) }) }}
+      {{ t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol }) }}
     </s-row>
     <div class="output-description">
       {{ t('confirmSupply.outputDescription', { slippageTolerance }) }}
@@ -19,14 +19,14 @@
       <s-row flex justify="space-between" class="token">
         <s-row v-if="firstToken" flex>
           <token-logo :token="firstToken" size="small" />
-          <span class="token-symbol">{{ getAssetSymbol(firstToken.symbol) }} {{ t('createPair.deposit')}}</span>
+          <span class="token-symbol">{{ firstToken.symbol }} {{ t('createPair.deposit')}}</span>
         </s-row>
         <div class="token-value">{{ firstTokenValue }}</div>
       </s-row>
       <s-row flex justify="space-between" class="token">
         <s-row v-if="secondToken" flex>
           <token-logo :token="secondToken" size="small" />
-          <span class="token-symbol">{{ getAssetSymbol(secondToken.symbol) }} {{ t('createPair.deposit')}}</span>
+          <span class="token-symbol">{{ secondToken.symbol }} {{ t('createPair.deposit')}}</span>
         </s-row>
         <div class="token-value">{{ secondTokenValue }}</div>
       </s-row>
@@ -35,8 +35,8 @@
       <s-row flex justify="space-between" class="pair-info__line">
         <div>{{ t('confirmSupply.price') }}</div>
         <div v-if="firstToken && secondToken" class="price">
-          <div>1 {{ getAssetSymbol(firstToken.symbol) }} = {{ firstPerSecondPrice }} {{ getAssetSymbol(secondToken.symbol) }}</div>
-          <div>1 {{ getAssetSymbol(secondToken.symbol) }} = {{ secondPerFirstPrice }} {{ getAssetSymbol(firstToken.symbol) }}</div>
+          <div>1 {{ firstToken.symbol }} = {{ firstPerSecondPrice }} {{ secondToken.symbol }}</div>
+          <div>1 {{ secondToken.symbol }} = {{ secondPerFirstPrice }} {{ firstToken.symbol }}</div>
         </div>
       </s-row>
       <s-row flex justify="space-between" class="pair-info__line">
@@ -59,7 +59,7 @@ import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
-import { formatNumber, getAssetSymbol } from '@/utils'
+import { formatNumber } from '@/utils'
 import { FPNumber } from '@sora-substrate/util'
 
 const namespace = 'addLiquidity'
@@ -81,8 +81,6 @@ export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, Dialog
   @Getter slippageTolerance!: number
 
   formatNumber = formatNumber
-
-  getAssetSymbol = getAssetSymbol
 
   get firstPerSecondPrice (): string {
     return this.firstTokenValue && this.secondTokenValue
