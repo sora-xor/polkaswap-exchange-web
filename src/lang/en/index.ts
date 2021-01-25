@@ -4,6 +4,7 @@ import { KnownSymbols, Operation, TransactionStatus } from '@sora-substrate/util
 export default {
   transactionSubmittedText: 'Transaction was submitted',
   unknownErrorText: 'ERROR Something went wrong...',
+  connectWalletText: 'Connect wallet',
   assetNames: {
     [KnownSymbols.XOR]: 'Sora',
     [KnownSymbols.VAL]: 'Sora Validator Token',
@@ -80,7 +81,7 @@ export default {
   swap: {
     chooseToken: 'Choose token',
     chooseTokens: 'Choose tokens',
-    connectWallet: 'Connect wallet',
+    connectWallet: '@:connectWalletText',
     estimated: 'estimated',
     slippageTolerance: 'Slippage Tolerance',
     minReceived: 'Minimum Received',
@@ -99,6 +100,7 @@ export default {
     swapOutputMessage: 'Output is estimated. You will receive at least {transactionValue} or the transaction will revert.'
   },
   pool: {
+    connectWallet: '@:connectWalletText',
     yourLiquidity: 'Your liquidity',
     connectToWallet: 'Connect to a wallet to view your liquidity.',
     liquidityNotFound: 'No liquidity found.',
