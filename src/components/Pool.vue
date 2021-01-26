@@ -86,14 +86,12 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin) {
   @Getter('assets', { namespace: 'assets' }) assets
 
   @Action('getAccountLiquidity', { namespace }) getAccountLiquidity
-  @Action('updateAccountLiquidity', { namespace }) updateAccountLiquidity
   @Action('getAssets', { namespace: 'assets' }) getAssets
 
   async mounted () {
     await this.withApi(async () => {
       await this.getAssets()
       await this.getAccountLiquidity()
-      await this.updateAccountLiquidity()
     })
   }
 

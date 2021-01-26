@@ -263,13 +263,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     return true
   }
 
-  get resultMessage (): string {
-    return this.t('exchange.transactionMessage', {
-      firstToken: this.getTokenValue(this.firstToken, this.firstTokenAmount),
-      secondToken: this.getTokenValue(this.secondToken, this.secondTokenAmount)
-    })
-  }
-
   @Watch('removePart')
   removePartChange (newValue): void {
     this.handleRemovePartChange(newValue)
