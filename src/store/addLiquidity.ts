@@ -88,7 +88,7 @@ const getters = {
   },
   shareOfPool (state, getters) {
     return getters.firstTokenValue && getters.secondTokenValue
-      ? new FPNumber(getters.minted).div(new FPNumber(getters.totalSupply)).mul(new FPNumber(100)).toNumber(2) || 0
+      ? new FPNumber(getters.minted).div(new FPNumber(getters.totalSupply)).mul(new FPNumber(100)).toString() || 0
       : 0
   }
 }
@@ -238,13 +238,13 @@ const actions = {
     if (getters.firstTokenAddress && getters.secondTokenAddress && getters.firstTokenValue && getters.secondTokenValue) {
       commit(types.GET_FEE_REQUEST)
       try {
+        // Check do we need slippageTolerance as param here
         const fee = await dexApi.getAddLiquidityNetworkFee(
           getters.firstTokenAddress,
           getters.secondTokenAddress,
           getters.firstTokenValue,
           getters.secondTokenValue
         )
-
         commit(types.GET_FEE_SUCCESS, fee)
       } catch (error) {
         commit(types.GET_FEE_FAILURE, error)

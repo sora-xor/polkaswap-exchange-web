@@ -238,7 +238,7 @@ html {
       height: var(--s-size-small);
       padding-right: 0;
       padding-left: 0;
-      border-radius: 0;
+      border-radius: 0 !important;
       color: var(--s-color-base-content-primary);
       font-size: $s-font-size-input;
       line-height: $s-line-height-small;

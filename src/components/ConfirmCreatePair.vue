@@ -59,7 +59,6 @@ import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
-import { formatNumber } from '@/utils'
 const namespace = 'createPair'
 
 @Component({
@@ -75,8 +74,6 @@ export default class ConfirmCreatePair extends Mixins(TranslationMixin, DialogMi
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
   @Getter slippageTolerance!: number
-
-  formatNumber = formatNumber
 
   get poolTokens (): string {
     return '1000'
