@@ -42,7 +42,7 @@
               class="s-input--token-value"
               :value="liquidityAmount"
               :placeholder="inputPlaceholder"
-              @input="handleLiquidityAmountChange"
+              @input="setLiquidityAmount"
               @blur="handleInputBlur('input')"
             />
           </s-form-item>
@@ -65,10 +65,7 @@
       <div class="input-container">
         <div class="input-line">
           <div class="input-title">{{ t('removeLiquidity.output') }}</div>
-          <div v-if="isWalletConnected && firstToken" class="token-balance">
-            <span class="token-balance-title">{{ t('createPair.balance') }}</span>
-            <span class="token-balance-value">{{ firstTokenBalance }}</span>
-          </div>
+          <div v-if="isWalletConnected && liquidity" class="token-balance">-</div>
         </div>
         <div class="input-line">
           <s-form-item>
@@ -77,7 +74,7 @@
               class="s-input--token-value"
               :value="firstTokenAmount"
               :placeholder="inputPlaceholder"
-              @input="handleFirstTokenAmountChange"
+              @input="setFirstTokenAmount"
               @blur="handleInputBlur('firstTokenAmount')"
             />
           </s-form-item>
@@ -95,10 +92,7 @@
       <div class="input-container">
         <div class="input-line">
           <div class="input-title">{{ t('removeLiquidity.output') }}</div>
-          <div v-if="isWalletConnected && secondToken" class="token-balance">
-            <span class="token-balance-title">{{ t('createPair.balance') }}</span>
-            <span class="token-balance-value">{{ secondTokenBalance }}</span>
-          </div>
+          <div v-if="isWalletConnected && liquidity" class="token-balance">-</div>
         </div>
         <div class="input-line">
           <s-form-item>
@@ -107,7 +101,7 @@
               class="s-input--token-value"
               :value="secondTokenAmount"
               :placeholder="inputPlaceholder"
-              @input="handleSecondTokenAmountChange"
+              @input="setSecondTokenAmount"
               @blur="handleInputBlur('secondTokenAmount')"
             />
           </s-form-item>
@@ -241,7 +235,11 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   }
 
   get isEmptyAmount (): boolean {
-    return !this.removePart || !this.liquidityAmount || !this.firstTokenAmount || !this.secondTokenAmount
+    if (!this.removePart || !this.liquidityAmount || !this.firstTokenAmount || !this.secondTokenAmount) {
+      return true
+    }
+    this.updatePrices()
+    return false
   }
 
   get isInsufficientBalance (): boolean {
@@ -359,40 +357,40 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   }
 
   handleInputBlur (field: string): void {
-    switch (field) {
-      case 'removePart': {
-        if (+this.removePartInput === 0) {
-          this.resetInputField('removePart')
-        } else {
-          this.setRemovePart(+this.trimNeedlesSymbols(this.removePartInput.toString()))
-        }
-        break
-      }
-      case 'liquidityAmount': {
-        if (+this.liquidityAmount === 0) {
-          this.resetInputField('liquidityAmount')
-        } else {
-          this.setLiquidityAmount(this.trimNeedlesSymbols(this.liquidityAmount))
-        }
-        break
-      }
-      case 'firstTokenAmount': {
-        if (+this.firstTokenAmount === 0) {
-          this.resetInputField('firstTokenAmount')
-        } else {
-          this.setFirstTokenAmount(this.trimNeedlesSymbols(this.firstTokenAmount))
-        }
-        break
-      }
-      case 'secondTokenAmount': {
-        if (+this.secondTokenAmount === 0) {
-          this.resetInputField('secondTokenAmount')
-        } else {
-          this.setSecondTokenAmount(this.trimNeedlesSymbols(this.secondTokenAmount))
-        }
-        break
-      }
-    }
+    // switch (field) {
+    //   case 'removePart': {
+    //     if (+this.removePartInput === 0) {
+    //       this.resetInputField('removePart')
+    //     } else {
+    //       this.setRemovePart(+this.trimNeedlesSymbols(this.removePartInput.toString()))
+    //     }
+    //     break
+    //   }
+    //   case 'liquidityAmount': {
+    //     if (+this.liquidityAmount === 0) {
+    //       this.resetInputField('liquidityAmount')
+    //     } else {
+    //       this.setLiquidityAmount(this.trimNeedlesSymbols(this.liquidityAmount))
+    //     }
+    //     break
+    //   }
+    //   case 'firstTokenAmount': {
+    //     if (+this.firstTokenAmount === 0) {
+    //       this.resetInputField('firstTokenAmount')
+    //     } else {
+    //       this.setFirstTokenAmount(this.trimNeedlesSymbols(this.firstTokenAmount))
+    //     }
+    //     break
+    //   }
+    //   case 'secondTokenAmount': {
+    //     if (+this.secondTokenAmount === 0) {
+    //       this.resetInputField('secondTokenAmount')
+    //     } else {
+    //       this.setSecondTokenAmount(this.trimNeedlesSymbols(this.secondTokenAmount))
+    //     }
+    //     break
+    //   }
+    // }
     this.resetFocusedField()
   }
 

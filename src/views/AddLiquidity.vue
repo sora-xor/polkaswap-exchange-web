@@ -15,14 +15,14 @@
         </div>
         <div class="input-line">
           <s-form-item>
+            <!-- v-model="addLiquidityModel.firstTokenValue" -->
             <s-input
-              v-model="addLiquidityModel.firstTokenValue"
               v-float
               class="s-input--token-value"
               :value="firstTokenValue"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
-              @change="handleFirstTokenChange"
+              @change="setFirstTokenValue"
               @blur="handleInputBlur(true)"
             />
           </s-form-item>
@@ -50,14 +50,14 @@
         </div>
         <div class="input-line">
           <s-form-item>
+            <!-- v-model="addLiquidityModel.secondTokenValue" -->
             <s-input
-              v-model="addLiquidityModel.secondTokenValue"
               v-float
               class="s-input--token-value"
               :value="secondTokenValue"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
-              @change="handleSecondTokeChange"
+              @change="setSecondTokenValue"
               @blur="handleInputBlur(false)"
             />
           </s-form-item>
@@ -297,7 +297,11 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
   }
 
   get isEmptyBalance (): boolean {
-    return +this.firstTokenValue === 0 || +this.secondTokenValue === 0
+    if (+this.firstTokenValue === 0 || +this.secondTokenValue === 0) {
+      return true
+    }
+    this.updatePrices()
+    return false
   }
 
   get isInsufficientBalance (): boolean {
@@ -390,19 +394,19 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
   }
 
   handleInputBlur (isFirstToken: boolean): void {
-    if (isFirstToken) {
-      if (+this.addLiquidityModel.firstTokenValue === 0) {
-        this.resetInputField()
-      } else {
-        this.addLiquidityModel.firstTokenValue = this.trimNeedlesSymbols(this.addLiquidityModel.firstTokenValue)
-      }
-    } else {
-      if (+this.addLiquidityModel.secondTokenValue === 0) {
-        this.resetInputField(false)
-      } else {
-        this.addLiquidityModel.secondTokenValue = this.trimNeedlesSymbols(this.addLiquidityModel.secondTokenValue)
-      }
-    }
+    // if (isFirstToken) {
+    //   if (+this.addLiquidityModel.firstTokenValue === 0) {
+    //     this.resetInputField()
+    //   } else {
+    //     this.addLiquidityModel.firstTokenValue = this.trimNeedlesSymbols(this.addLiquidityModel.firstTokenValue)
+    //   }
+    // } else {
+    //   if (+this.addLiquidityModel.secondTokenValue === 0) {
+    //     this.resetInputField(false)
+    //   } else {
+    //     this.addLiquidityModel.secondTokenValue = this.trimNeedlesSymbols(this.addLiquidityModel.secondTokenValue)
+    //   }
+    // }
     this.resetFocusedField()
   }
 
