@@ -70,11 +70,11 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
   @Getter slippageTolerance!: number
   @Getter minMaxReceived!: string
   @Getter isExchangeB!: boolean
-  @Getter price!: string
-  @Getter priceReversed!: string
   @Getter liquidityProviderFee!: string
   @Getter networkFee!: string
   @Action setTokenFromPrice
+  @Getter('price', { namespace: 'prices' }) price!: string | number
+  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
 
   @Prop({ default: false, type: Boolean }) readonly showPrice!: boolean
   @Prop({ default: true, type: Boolean }) readonly showTooltips!: boolean

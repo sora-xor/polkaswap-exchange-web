@@ -37,7 +37,7 @@
           </s-button>
         </div>
         <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(true)">
-          {{ t('swap.chooseToken') }}
+          {{ t('exchange.chooseToken') }}
         </s-button>
       </div>
     </div>
@@ -72,7 +72,7 @@
           </s-button>
         </div>
         <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog">
-          {{ t('swap.chooseToken') }}
+          {{ t('exchange.chooseToken') }}
         </s-button>
       </div>
     </div>
@@ -82,13 +82,13 @@
     </s-button>
     <s-button v-else type="primary" :disabled="!areTokensSelected || areZeroAmounts || isInsufficientAmount || isInsufficientBalance" @click="handleConfirmSwap">
       <template v-if="!areTokensSelected || (isZeroFromAmount && isZeroToAmount)">
-        {{ t('swap.enterAmount') }}
+        {{ t('exchange.enterAmount') }}
       </template>
       <template v-else-if="isInsufficientAmount">
         {{ t('swap.insufficientAmount', { tokenSymbol: getAssetSymbol(insufficientAmountTokenSymbol) }) }}
       </template>
       <template v-else-if="isInsufficientBalance">
-        {{ t('swap.insufficientBalance', { tokenSymbol: getAssetSymbol(insufficientBalanceTokenSymbol) }) }}
+        {{ t('exchange.insufficientBalance', { tokenSymbol: getAssetSymbol(insufficientBalanceTokenSymbol) }) }}
       </template>
       <template v-else>
         {{ t('exchange.Swap') }}
@@ -104,7 +104,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { dexApi } from '@soramitsu/soraneo-wallet-web'
-import { KnownSymbols, KnownAssets, FPNumber } from '@sora-substrate/util'
+import { KnownSymbols, FPNumber } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -136,11 +136,11 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   @Action setFromValue
   @Action setToValue
   @Action setTokenFromPrice
-  @Action setPrice
-  @Action setPriceReversed
   @Action setMinMaxReceived
   @Action setLiquidityProviderFee
   @Action setNetworkFee
+  @Action('getPrices', { namespace: 'prices' }) getPrices
+  @Action('resetPrices', { namespace: 'prices' }) resetPrices
 
   inputPlaceholder: string = formatNumber(0, 1)
   isTokenFromBalanceAvailable = false
@@ -305,7 +305,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
           this.setLiquidityProviderFee(swapResult.fee)
           const minMaxReceived = await dexApi.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
           this.setMinMaxReceived({ minMaxReceived })
-          this.getPrice()
+          this.updatePrices()
           this.resetInsufficientAmountFlag()
           if (this.connected) {
             await this.getNetworkFee()
@@ -345,7 +345,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
           this.setLiquidityProviderFee(swapResult.fee)
           const minMaxReceived = await dexApi.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance, isExchangeBSwap)
           this.setMinMaxReceived({ minMaxReceived, isExchangeB: isExchangeBSwap })
-          this.getPrice()
+          this.updatePrices()
           this.resetInsufficientAmountFlag()
           if (this.connected) {
             await this.getNetworkFee()
@@ -373,20 +373,15 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     }
   }
 
-  async getPrice (): Promise<void> {
-    try {
-      const price = await dexApi.divideAssets(this.tokenFrom.address, this.tokenTo.address, this.formModel.from, this.formModel.to)
-      this.setPrice(price)
-      const priceReversed = await dexApi.divideAssets(this.tokenFrom.address, this.tokenTo.address, this.formModel.from, this.formModel.to, true)
-      this.setPriceReversed(priceReversed)
-    } catch (error) {
-      throw new Error(error)
+  updatePrices (): void {
+    if (this.tokenFrom && this.tokenTo) {
+      this.getPrices({
+        assetAAddress: this.tokenFrom.address,
+        assetBAddress: this.tokenTo.address,
+        amountA: this.formModel.from,
+        amountB: this.formModel.to
+      })
     }
-  }
-
-  resetPrice (): void {
-    this.setPrice(0)
-    this.setPriceReversed(0)
   }
 
   isInsufficientAmountError (tokenSymbol: string, errorMessage): boolean {
@@ -394,7 +389,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     if (errorMessage.indexOf('invalid string input for fixed point number') !== -1) {
       this.isInsufficientAmount = true
       this.insufficientAmountTokenSymbol = tokenSymbol
-      this.resetPrice()
+      this.resetPrices()
     }
     return this.isInsufficientAmount
   }
@@ -442,7 +437,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     this.resetFieldFrom()
     this.resetFieldTo()
     this.setTokenFromPrice(true)
-    this.resetPrice()
+    this.resetPrices()
     this.isFieldFromActive = false
     this.isFieldToActive = false
   }
@@ -502,7 +497,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
       this.resetFieldFrom()
       this.resetFieldTo()
       this.setTokenFromPrice(true)
-      this.resetPrice()
+      this.resetPrices()
       this.isFieldFromActive = false
       this.isFieldToActive = false
     }

@@ -34,8 +34,8 @@
     <s-row flex justify="space-between" class="price-container">
       <div>{{ t('removeLiquidity.price') }}</div>
       <div class="price">
-        <div>1 {{ getAssetSymbol(firstToken.symbol) }} = {{ firstPerSecondPrice }} {{ getAssetSymbol(secondToken.symbol) }}</div>
-        <div>1 {{ getAssetSymbol(secondToken.symbol) }} = {{ secondPerFirstPrice }} {{ getAssetSymbol(firstToken.symbol) }}</div>
+        <div>1 {{ getAssetSymbol(firstToken.symbol) }} = {{ price }} {{ getAssetSymbol(secondToken.symbol) }}</div>
+        <div>1 {{ getAssetSymbol(secondToken.symbol) }} = {{ priceReversed }} {{ getAssetSymbol(firstToken.symbol) }}</div>
       </div>
     </s-row>
     <template #footer>
@@ -46,12 +46,12 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
+import { Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
-import { formatNumber, getAssetSymbol } from '@/utils'
+import { getAssetSymbol } from '@/utils'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import { FPNumber } from '@sora-substrate/util'
@@ -72,7 +72,8 @@ export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, Dia
   @Getter('liquidityAmount', { namespace }) liquidityAmount!: any
   @Getter('firstTokenAmount', { namespace }) firstTokenAmount!: any
   @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
-  formatNumber = formatNumber
+  @Getter('price', { namespace: 'prices' }) price!: string | number
+  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
 
   get formattedFromValue (): string {
     return this.firstTokenAmount
@@ -84,18 +85,6 @@ export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, Dia
 
   get formattedLiquidityValue (): string {
     return this.liquidityAmount
-  }
-
-  get firstPerSecondPrice (): string {
-    return this.firstTokenAmount && this.secondTokenAmount
-      ? new FPNumber(this.firstTokenAmount).div(new FPNumber(this.secondTokenAmount)).toFixed(2)
-      : '0'
-  }
-
-  get secondPerFirstPrice (): string {
-    return this.firstTokenAmount && this.secondTokenAmount
-      ? new FPNumber(this.secondTokenAmount).div(new FPNumber(this.firstTokenAmount)).toFixed(2)
-      : '0'
   }
 
   getAssetSymbol = getAssetSymbol

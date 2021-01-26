@@ -49,7 +49,7 @@
     </s-button>
     <s-tooltip :content="t('pool.comingSoon')">
       <!-- TODO: Remove coming soon and fix onClick-->
-      <s-button v-if="connected" class="el-button--create-pair" type="secondary" >
+      <s-button v-if="connected" class="el-button--create-pair" type="secondary">
         {{ t('pool.createPair') }}
       </s-button>
     </s-tooltip>
@@ -61,7 +61,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import { isWalletConnected, formatNumber, getAssetSymbol } from '@/utils'
+import { isWalletConnected, getAssetSymbol } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 

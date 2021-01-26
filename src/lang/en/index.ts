@@ -75,14 +75,17 @@ export default {
     to: 'To',
     balance: 'Balance',
     max: 'MAX',
+    chooseToken: 'Choose token',
+    chooseTokens: 'Choose tokens',
+    enterAmount: 'Enter amount',
+    insufficientBalance: 'Insufficient {tokenSymbol} balance',
     price: 'Price',
     transactionSubmitted: 'Transaction submitted',
+    transactionMessage: '{firstToken} and {secondToken}',
     confirm: 'Confirm',
     ok: 'OK'
   },
   swap: {
-    chooseToken: 'Choose token',
-    chooseTokens: 'Choose tokens',
     connectWallet: 'Connect wallet',
     estimated: 'estimated',
     slippageTolerance: 'Slippage Tolerance',
@@ -95,8 +98,6 @@ export default {
     liquidityProviderFeeTooltip: 'A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive.',
     networkFee: 'Network Fee',
     networkFeeTooltip: 'Network fee is used to ensure SORA system\'s growth and stable performance.',
-    enterAmount: 'Enter amount',
-    insufficientBalance: 'Insufficient {tokenSymbol} balance',
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
     confirmSwap: 'Confirm swap',
     swapOutputMessage: 'Output is estimated. You will receive at least {transactionValue} or the transaction will revert.'
@@ -128,7 +129,6 @@ export default {
     firstPerSecond: '{first} per {second}',
     firstSecondPoolTokens: '{first}-{second} Pool tokens',
     connect: 'Connect wallet',
-    enterAmount: 'Enter amount',
     supply: 'Supply',
     yourPosition: 'Your position',
     youWillReceive: 'You will receive',
@@ -136,11 +136,7 @@ export default {
     add: 'ADD',
     ok: 'OK',
     networkFee: 'Network fee',
-    // TODO: Use insufficientBalance with tokenSymbol
-    // insufficientBalance: 'Insufficient {tokenSymbol} balance',
-    insufficientBalance: 'Insufficient balance',
     unsuitableAssets: 'Unsuitable assets',
-    transactionMessage: '{firstToken} and {secondToken}',
     firstLiquidityProvider: 'You are the first liquidity provider',
     firstLiquidityProviderInfo: 'The ratio of tokens you add will set the price of this pool.<br/>Once you are happy with the rate click supply to review.'
   },
@@ -161,7 +157,6 @@ export default {
     output: 'Output',
     price: 'Price',
     remove: 'Remove',
-    enterAmount: 'Enter amount',
     description: 'Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.',
     outputMessage: 'Output is estimated. If the price changes more than 0.5% your transaction will revert.',
     confirmTitle: 'You will receive'
