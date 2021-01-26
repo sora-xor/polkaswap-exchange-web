@@ -27,7 +27,7 @@
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
-            <s-button v-if="connected && addLiquidityModel.firstTokenValue !== firstToken.balance" :disabled="!areTokensSelected" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleFirstMaxValue">
+            <s-button v-if="connected && areTokensSelected && firstTokenValue !== firstToken.balance" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
@@ -62,7 +62,7 @@
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
-            <s-button v-if="connected && addLiquidityModel.secondTokenValue !== secondToken.balance" :disabled="!areTokensSelected" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleSecondMaxValue">
+            <s-button v-if="connected && secondTokenValue !== secondToken.balance" :disabled="!areTokensSelected" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleSecondMaxValue">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
@@ -229,6 +229,7 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
   async mounted () {
     this.resetData()
     this.resetPrices()
+    this.insufficientBalanceTokenSymbol = ''
 
     await this.withApi(async () => {
       await this.getAccountAssets()
@@ -308,14 +309,14 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
     if (this.connected && this.areTokensSelected) {
       // TODO: Ask could we have empty/zero first/second amount?
       const firstBalance = new FPNumber(this.firstToken.balance, this.firstToken.decimals)
-      const firstValue = new FPNumber(this.addLiquidityModel.firstTokenValue, this.firstToken.decimals)
+      const firstValue = new FPNumber(this.firstTokenValue, this.firstToken.decimals)
       if (FPNumber.lt(firstBalance, firstValue)) {
         this.insufficientBalanceTokenSymbol = this.firstToken.symbol
         return true
       }
 
       const secondBalance = new FPNumber(this.secondToken.balance, this.secondToken.decimals)
-      const secondValue = new FPNumber(this.addLiquidityModel.secondTokenValue, this.secondToken.decimals)
+      const secondValue = new FPNumber(this.secondTokenValue, this.secondToken.decimals)
       if (FPNumber.lt(secondBalance, secondValue)) {
         this.insufficientBalanceTokenSymbol = this.secondToken.symbol
         return true
@@ -346,12 +347,12 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
 
   handleFirstMaxValue (): void {
     // TODO: Is it correct just copy asset balance here? If we have XOR we should subtract fee
-    this.addLiquidityModel.firstTokenValue = this.firstToken.balance
+    this.setFirstTokenValue(this.firstToken.balance)
   }
 
   handleSecondMaxValue (): void {
     // TODO: Is it correct just copy asset balance here?
-    this.addLiquidityModel.secondTokenValue = this.secondToken.balance
+    this.setSecondTokenValue(this.secondToken.balance)
   }
 
   updatePrices (): void {
@@ -387,10 +388,10 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
 
   resetInputField (isFirstTokenField = true): void {
     if (isFirstTokenField) {
-      this.addLiquidityModel.firstTokenValue = ''
+      this.setFirstTokenValue(0)
       return
     }
-    this.addLiquidityModel.secondTokenValue = ''
+    this.setSecondTokenValue(0)
   }
 
   handleInputBlur (isFirstToken: boolean): void {
