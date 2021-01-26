@@ -325,20 +325,14 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
     return false
   }
 
-  get resultMessage (): string {
-    return this.t('exchange.transactionMessage', {
-      firstToken: this.getTokenValue(this.firstToken, this.firstTokenValue),
-      secondToken: this.getTokenValue(this.secondToken, this.secondTokenValue)
-    })
-  }
-
   getTokenValue (token: any, tokenValue: number): string {
     return token ? `${tokenValue} ${token.symbol}` : ''
   }
 
-  openSelectFirstTokenDialog (): void {
-    this.showSelectFirstTokenDialog = true
-  }
+  // We don't need it for now
+  // openSelectFirstTokenDialog (): void {
+  //   this.showSelectFirstTokenDialog = true
+  // }
 
   openSelectSecondTokenDialog (): void {
     this.showSelectSecondTokenDialog = true
