@@ -34,5 +34,3 @@ export const isWalletConnected = () => {
       : address && storage.get('name') && storage.get('password')
   )
 }
-
-export const getAssetSymbol = (symbol: string) => symbol === KnownSymbols.USD ? 'USDT' : symbol

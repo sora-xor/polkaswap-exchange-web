@@ -1,58 +1,65 @@
 <template>
-  <div class="el-form--pool" v-loading="loading">
+  <div class="el-form--pool">
     <generic-header class="header--pool" :has-button-back="false" :title="t('pool.yourLiquidity')" :tooltip="t('pool.description')" />
-    <p v-if="!connected" class="pool-info-container">
-      {{ t('pool.connectToWallet') }}
-    </p>
-    <p v-else-if="!liquidities || !liquidities.length" class="pool-info-container">
-      {{ t('pool.liquidityNotFound') }}
-    </p>
-    <!-- TODO 4 alexnatalia: Whole pool area should be clickable -->
-    <s-collapse v-else class="pool-list" :borders="true">
-      <s-collapse-item v-for="liquidity of liquidities" :key="liquidity.address" :name="liquidity.address" class="pool-info-container">
-        <template #title>
-          <pair-token-logo :first-token-symbol="getAssetSymbol(liquidity.firstAddress)" :second-token-symbol="getAssetSymbol(liquidity.secondAddress)" size="small" />
-          <h3>{{ getPairTitle(getAssetSymbol(liquidity.firstAddress), getAssetSymbol(liquidity.secondAddress)) }}</h3>
-        </template>
-        <div class="pool-info">
-          <token-logo :token-symbol="getAssetSymbol(liquidity.firstAddress)" size="small" />
-          <div>{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidity.firstAddress) }) }}</div>
-          <div v-if="liquidity.firstBalance" class="pool-info-value">{{ liquidity.firstBalance }}</div>
-        </div>
-        <div class="pool-info">
-          <token-logo :token-symbol="getAssetSymbol(liquidity.secondAddress)" size="small" />
-          <div>{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidity.secondAddress) }) }}</div>
-          <div v-if="liquidity.secondBalance" class="pool-info-value">{{ liquidity.secondBalance }}</div>
-        </div>
-        <div class="pool-info">
-          <pair-token-logo :first-token-symbol="getAssetSymbol(liquidity.firstAddress)" :second-token-symbol="getAssetSymbol(liquidity.secondAddress)" size="mini" />
-          <div>{{ t('pool.pairTokens', { pair: getPairTitle(getAssetSymbol(liquidity.firstAddress), getAssetSymbol(liquidity.secondAddress)) }) }}</div>
-          <div class="pool-info-value">{{ liquidity.balance }}</div>
-        </div>
-        <!-- TODO: uncomment when it will work -->
-        <!-- <div class="pool-info pool-info--share">
-          <div>{{ t('pool.poolShare')}}</div>
-          <div class="pool-info-value">{{ getPoolShare(liquidity) }}%</div>
-        </div> -->
-        <div class="pool-info--buttons">
-          <s-button type="primary" size="small" @click="handleAddPairLiquidity(liquidity.firstAddress, liquidity.secondAddress)">
-            {{ t('pool.addLiquidity') }}
-          </s-button>
-          <s-button type="primary" size="small" @click="handleRemoveLiquidity(liquidity.firstAddress, liquidity.secondAddress)">
-            {{ t('pool.removeLiquidity') }}
-          </s-button>
-        </div>
-      </s-collapse-item>
-    </s-collapse>
-    <s-button class="el-button--add-liquidity" type="primary" @click="handleAddLiquidity">
-      {{ t('pool.addLiquidity') }}
-    </s-button>
-    <s-tooltip :content="t('pool.comingSoon')">
-      <!-- TODO: Remove coming soon and fix onClick-->
-      <s-button v-if="connected" class="el-button--create-pair" type="secondary" >
-        {{ t('pool.createPair') }}
+    <div class="pool-wrapper" v-loading="loading">
+      <p v-if="!connected" class="pool-info-container">
+        {{ t('pool.connectToWallet') }}
+      </p>
+      <p v-else-if="!accountLiquidity || !accountLiquidity.length" class="pool-info-container">
+        {{ t('pool.liquidityNotFound') }}
+      </p>
+      <!-- TODO 4 alexnatalia: Whole pool area should be clickable -->
+      <s-collapse v-else class="pool-list" :borders="true">
+        <s-collapse-item v-for="liquidityItem of accountLiquidity" :key="liquidityItem.address" :name="liquidityItem.address" class="pool-info-container">
+          <template #title>
+            <pair-token-logo :first-token-symbol="getAssetSymbol(liquidityItem.firstAddress)" :second-token-symbol="getAssetSymbol(liquidityItem.secondAddress)" size="small" />
+            <h3>{{ getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress)) }}</h3>
+          </template>
+          <div class="pool-info">
+            <token-logo :token-symbol="getAssetSymbol(liquidityItem.firstAddress)" size="small" />
+            <div>{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.firstAddress) }) }}</div>
+            <div v-if="liquidityItem.firstBalance" class="pool-info-value">{{ liquidityItem.firstBalance }}</div>
+          </div>
+          <div class="pool-info">
+            <token-logo :token-symbol="getAssetSymbol(liquidityItem.secondAddress)" size="small" />
+            <div>{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.secondAddress) }) }}</div>
+            <div v-if="liquidityItem.secondBalance" class="pool-info-value">{{ liquidityItem.secondBalance }}</div>
+          </div>
+          <div class="pool-info">
+            <pair-token-logo :first-token-symbol="getAssetSymbol(liquidityItem.firstAddress)" :second-token-symbol="getAssetSymbol(liquidityItem.secondAddress)" size="mini" />
+            <div>{{ t('pool.pairTokens', { pair: getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress)) }) }}</div>
+            <div class="pool-info-value">{{ liquidityItem.balance }}</div>
+          </div>
+          <!-- TODO: uncomment when it will work -->
+          <!-- <div class="pool-info pool-info--share">
+            <div>{{ t('pool.poolShare')}}</div>
+            <div class="pool-info-value">{{ getPoolShare(liquidityItem) }}%</div>
+          </div> -->
+          <div class="pool-info--buttons">
+            <s-button type="primary" size="small" @click="handleAddPairLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
+              {{ t('pool.addLiquidity') }}
+            </s-button>
+            <s-button type="primary" size="small" @click="handleRemoveLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
+              {{ t('pool.removeLiquidity') }}
+            </s-button>
+          </div>
+        </s-collapse-item>
+      </s-collapse>
+    </div>
+    <template v-if="connected">
+      <s-button class="el-button--add-liquidity" type="primary" @click="handleAddLiquidity">
+        {{ t('pool.addLiquidity') }}
       </s-button>
-    </s-tooltip>
+      <s-tooltip :content="t('pool.comingSoon')">
+        <!-- TODO: Remove coming soon and fix onClick-->
+        <s-button class="el-button--create-pair" type="secondary" >
+          {{ t('pool.createPair') }}
+        </s-button>
+      </s-tooltip>
+    </template>
+    <s-button v-else type="primary" @click="handleConnectWallet">
+      {{ t('pool.connectWallet') }}
+    </s-button>
   </div>
 </template>
 
@@ -61,7 +68,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import { isWalletConnected, formatNumber, getAssetSymbol } from '@/utils'
+import { isWalletConnected } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -75,16 +82,16 @@ const namespace = 'pool'
   }
 })
 export default class Pool extends Mixins(TranslationMixin, LoadingMixin) {
-  @Getter('liquidities', { namespace }) liquidities!: any
+  @Getter('accountLiquidity', { namespace }) accountLiquidity!: any
   @Getter('assets', { namespace: 'assets' }) assets
 
-  @Action('getLiquidities', { namespace }) getLiquidities
+  @Action('getAccountLiquidity', { namespace }) getAccountLiquidity
   @Action('getAssets', { namespace: 'assets' }) getAssets
 
   async mounted () {
     await this.withApi(async () => {
       await this.getAssets()
-      await this.getLiquidities()
+      await this.getAccountLiquidity()
     })
   }
 
@@ -108,6 +115,10 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin) {
     router.push({ name: PageNames.RemoveLiquidity, params: { firstAddress, secondAddress } })
   }
 
+  handleConnectWallet (): void {
+    router.push({ name: PageNames.Wallet })
+  }
+
   getPairTitle (firstToken, secondToken): string {
     if (firstToken && secondToken) {
       return `${firstToken}-${secondToken}`
@@ -117,8 +128,7 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin) {
 
   getAssetSymbol (address) {
     const asset = this.assets.find(a => a.address === address)
-
-    return getAssetSymbol(asset ? asset.symbol : 'Unknown asset')
+    return asset ? asset.symbol : 'Unknown asset'
   }
 
   getPoolShare (liquidity) {
@@ -222,6 +232,9 @@ $pair-icon-height: 36px;
 }
 
 .pool {
+  &-wrapper {
+    width: 100%;
+  }
   &-list {
     width: 100%;
     border-top: none;

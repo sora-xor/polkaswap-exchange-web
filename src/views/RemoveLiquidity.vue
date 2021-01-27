@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-loading="loading">
+  <div class="container" v-loading="loading || parentLoading">
     <generic-header :title="t('removeLiquidity.title')" :tooltip="t('removeLiquidity.description')" />
     <s-form
       class="el-form--actions"
@@ -8,8 +8,7 @@
       <info-card class="slider-container" :title="t('removeLiquidity.amount')">
         <div class="slider-container__amount">
           <s-input
-            :value="removePartInput"
-            maxlength="3"
+            v-float
             :class="`s-input--token-value s-input--remove-part ${
               removePartInput.toString().length === 3
               ? 'three-char'
@@ -17,9 +16,10 @@
               ? 'two-char'
               : 'one-char'
             }`"
-            v-float
+            maxlength="3"
+            :value="removePartInput"
             @input="handleRemovePartChange"
-            @blur="resetFocusedField"
+            @blur="handleInputBlur('removePart')"
           />
           <span class="percent">%</span>
         </div>
@@ -38,23 +38,23 @@
         <div class="input-line">
           <s-form-item>
             <s-input
-              :value="liquidityAmount"
-              class="s-input--token-value"
               v-float
+              class="s-input--token-value"
+              :value="liquidityAmount"
               :placeholder="inputPlaceholder"
               @input="setLiquidityAmount"
-              @blur="resetFocusedField"
+              @blur="handleInputBlur('input')"
             />
           </s-form-item>
           <div class="token">
-            <s-button v-if="isWalletConnected" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleRemovePartChange(100)">
+            <s-button v-if="isWalletConnected && liquidityAmount !== liquidityBalance" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleLiquidityMaxValue">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <div class="liquidity-logo">
                 <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="mini" />
               </div>
-              {{ getAssetSymbol(firstToken.symbol) }}-{{ getAssetSymbol(secondToken.symbol) }}
+              {{ firstToken.symbol }}-{{ secondToken.symbol }}
             </s-button>
           </div>
         </div>
@@ -65,22 +65,23 @@
       <div class="input-container">
         <div class="input-line">
           <div class="input-title">{{ t('removeLiquidity.output') }}</div>
+          <div v-if="isWalletConnected && liquidity" class="token-balance">-</div>
         </div>
         <div class="input-line">
           <s-form-item>
             <s-input
-              :value="firstTokenAmount"
-              class="s-input--token-value"
               v-float
+              class="s-input--token-value"
+              :value="firstTokenAmount"
               :placeholder="inputPlaceholder"
               @input="setFirstTokenAmount"
-              @blur="resetFocusedField"
+              @blur="handleInputBlur('firstTokenAmount')"
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <token-logo :token="firstToken" size="small" />
-              {{ getAssetSymbol(firstToken.symbol) }}
+              {{ firstToken.symbol }}
             </s-button>
           </div>
         </div>
@@ -90,19 +91,18 @@
 
       <div class="input-container">
         <div class="input-line">
-          <div class="input-title">
-            <span>{{ t('removeLiquidity.output') }}</span>
-          </div>
+          <div class="input-title">{{ t('removeLiquidity.output') }}</div>
+          <div v-if="isWalletConnected && liquidity" class="token-balance">-</div>
         </div>
         <div class="input-line">
           <s-form-item>
             <s-input
-              :value="secondTokenAmount"
-              class="s-input--token-value"
               v-float
+              class="s-input--token-value"
+              :value="secondTokenAmount"
               :placeholder="inputPlaceholder"
               @input="setSecondTokenAmount"
-              @blur="resetFocusedField"
+              @blur="handleInputBlur('secondTokenAmount')"
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
@@ -114,26 +114,27 @@
         </div>
       </div>
 
-      <div class="price-container">
-        <s-row flex justify="space-between">
+      <div v-if="price || priceReversed || fee" class="price-container">
+        <s-row v-if="price || priceReversed" flex justify="space-between">
           <div>{{ t('removeLiquidity.price') }}</div>
           <div class="price">
-            <div>1 {{ getAssetSymbol(firstToken.symbol) }} = {{ formatNumber(firstToken.price / secondToken.price || 0, 2) }} {{ getAssetSymbol(secondToken.symbol) }}</div>
-            <div>1 {{ getAssetSymbol(secondToken.symbol) }} = {{ formatNumber(secondToken.price / firstToken.price || 0, 2) }} {{ getAssetSymbol(firstToken.symbol) }}</div>
+            <div>1 {{ firstToken.symbol }} = {{ price }} {{ secondToken.symbol }}</div>
+            <div>1 {{ secondToken.symbol }} = {{ priceReversed }} {{ firstToken.symbol }}</div>
           </div>
         </s-row>
-        <s-row flex justify="space-between">
+        <s-row v-if="fee" flex justify="space-between">
+          <!-- TODO: Add tooltip here -->
           <div>{{ t('createPair.networkFee') }}</div>
-          <div>{{ fee }} XOR</div>
+          <div>{{ fee }} {{ KnownSymbols.XOR }}</div>
         </s-row>
       </div>
 
       <s-button type="primary" border-radius="small" :disabled="isEmptyAmount || isInsufficientBalance" @click="showConfirmDialog = true">
         <template v-if="isEmptyAmount">
-          {{ t('swap.enterAmount') }}
+          {{ t('exchange.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
-          {{ t('createPair.insufficientBalance') }}
+          {{ t('exchange.insufficientBalance', { tokenSymbol: insufficientBalanceTokenSymbol }) }}
         </template>
         <template v-else>
           {{ t('removeLiquidity.remove') }}
@@ -142,23 +143,21 @@
     </s-form>
 
     <confirm-remove-liquidity :visible.sync="showConfirmDialog" @confirm="handleConfirmRemoveLiquidity" />
-    <result-dialog :visible.sync="isRemoveLiquidityConfirmed" :type="t('removeLiquidity.remove')" :message="resultMessage" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Watch, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
+import { FPNumber, KnownSymbols } from '@sora-substrate/util'
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
-import TokenLogo from '@/components/TokenLogo.vue'
+import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
-import { formatNumber, getAssetSymbol } from '@/utils'
-import { Token } from '@/types'
-import { FPNumber } from '@sora-substrate/util'
+import { formatNumber, isNumberValue } from '@/utils'
 
 const namespace = 'removeLiquidity'
 
@@ -168,11 +167,14 @@ const namespace = 'removeLiquidity'
     InfoCard: lazyComponent(Components.InfoCard),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity),
-    ResultDialog: lazyComponent(Components.ResultDialog)
+    ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity)
   }
 })
-export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMixin) {
+export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMixin, InputFormatterMixin) {
+  readonly KnownSymbols = KnownSymbols
+
+  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
+
   @Getter('liquidity', { namespace }) liquidity!: any
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
@@ -186,6 +188,8 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMix
   @Getter('fee', { namespace }) fee!: any
   @Getter('xorBalance', { namespace: 'assets' }) xorBalance!: any
   @Getter('xorAsset', { namespace: 'assets' }) xorAsset!: any
+  @Getter('price', { namespace: 'prices' }) price!: string | number
+  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
 
   @Action('getLiquidity', { namespace }) getLiquidity
   @Action('setRemovePart', { namespace }) setRemovePart
@@ -196,14 +200,15 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMix
   @Action('removeLiquidity', { namespace }) removeLiquidity
   @Action('getAssets', { namespace: 'assets' }) getAssets
   @Action('resetData', { namespace }) resetData
+  @Action('getPrices', { namespace: 'prices' }) getPrices
+  @Action('resetPrices', { namespace: 'prices' }) resetPrices
 
   removePartInput = 0
 
-  getAssetSymbol = getAssetSymbol
-
-  async created () {
-    await this.withLoading(async () => {
-      this.resetData()
+  async mounted () {
+    this.resetData()
+    this.resetPrices()
+    await this.withApi(async () => {
       await this.getAssets()
       await this.getLiquidity({
         firstAddress: this.firstTokenAddress,
@@ -213,11 +218,9 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMix
   }
 
   isWalletConnected = true
-  inputPlaceholder: string = formatNumber(0, 2);
+  inputPlaceholder: string = formatNumber(0, 1);
+  insufficientBalanceTokenSymbol = ''
   showConfirmDialog = false
-  isRemoveLiquidityConfirmed = false
-
-  formatNumber = formatNumber
 
   get firstTokenAddress (): string {
     return this.$route.params.firstAddress
@@ -227,23 +230,21 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMix
     return this.$route.params.secondAddress
   }
 
-  get firstPerSecondPrice (): string {
-    return formatNumber(this.firstToken.price / this.secondToken.price, 2)
-  }
-
-  get secondPerFirstPrice (): string {
-    return formatNumber(this.secondToken.price / this.firstToken.price, 2)
-  }
-
   get areTokensSelected (): boolean {
     return !!this.firstToken && !!this.secondToken
   }
 
   get isEmptyAmount (): boolean {
-    return !this.removePart || !this.liquidityAmount || !this.firstTokenAmount || !this.secondTokenAmount
+    if (!this.removePart || !this.liquidityAmount || !this.firstTokenAmount || !this.secondTokenAmount) {
+      return true
+    }
+    this.updatePrices()
+    return false
   }
 
   get isInsufficientBalance (): boolean {
+    // TODO: Play with other variants
+    this.insufficientBalanceTokenSymbol = KnownSymbols.XOR
     return (
       this.liquidityAmount > this.liquidityBalance ||
       this.firstTokenAmount > this.firstTokenBalance ||
@@ -260,13 +261,6 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMix
     }
 
     return true
-  }
-
-  get resultMessage (): string {
-    return this.t('createPair.transactionMessage', {
-      firstToken: this.getTokenValue(this.firstToken, this.firstTokenAmount),
-      secondToken: this.getTokenValue(this.secondToken, this.secondTokenAmount)
-    })
   }
 
   @Watch('removePart')
@@ -286,18 +280,118 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMix
   }
 
   getTokenBalance (token: any): string {
-    return token ? formatNumber(token.balance, 2) : ''
+    return token ? token.balance : ''
   }
 
   handleLiquidityMaxValue (): void {
     this.setRemovePart(100)
+    this.handleRemovePartChange(100)
+  }
+
+  updatePrices (): void {
+    this.getPrices({
+      assetAAddress: this.firstTokenAddress ? this.firstTokenAddress : this.firstToken.address,
+      assetBAddress: this.secondTokenAddress ? this.secondTokenAddress : this.secondToken.address,
+      amountA: this.firstTokenAmount,
+      amountB: this.secondTokenAmount
+    })
+  }
+
+  async handleLiquidityAmountChange (): Promise<any> {
+    // const liquidityAmount = this.formatNumberField(this.liquidityAmount)
+    // if (!isNumberValue(liquidityAmount)) {
+    //   await this.promiseTimeout()
+    //   this.resetInputField('input')
+    //   return
+    // }
+    this.setLiquidityAmount(this.liquidityAmount)
+  }
+
+  async handleFirstTokenAmountChange (): Promise<any> {
+    // const firstTokenAmount = this.formatNumberField(this.firstTokenAmount)
+    // if (!isNumberValue(firstTokenAmount)) {
+    //   await this.promiseTimeout()
+    //   this.resetInputField('firstTokenAmount')
+    //   return
+    // }
+    this.setFirstTokenAmount(this.firstTokenAmount)
+    this.updatePrices()
+  }
+
+  async handleSecondTokenAmountChange (): Promise<any> {
+    // const secondTokenAmount = this.formatNumberField(this.secondTokenAmount)
+    // if (!isNumberValue(secondTokenAmount)) {
+    //   await this.promiseTimeout()
+    //   this.resetInputField('secondTokenAmount')
+    //   return
+    // }
+    this.setSecondTokenAmount(this.secondTokenAmount)
+    this.updatePrices()
+  }
+
+  resetInputField (field: string): void {
+    switch (field) {
+      case 'removePart': {
+        this.setRemovePart(0)
+        break
+      }
+      case 'liquidityAmount': {
+        this.setLiquidityAmount(0)
+        break
+      }
+      case 'firstTokenAmount': {
+        this.setFirstTokenAmount(0)
+        break
+      }
+      case 'secondTokenAmount': {
+        this.setSecondTokenAmount(0)
+      }
+    }
+  }
+
+  handleInputBlur (field: string): void {
+    // switch (field) {
+    //   case 'removePart': {
+    //     if (+this.removePartInput === 0) {
+    //       this.resetInputField('removePart')
+    //     } else {
+    //       this.setRemovePart(+this.trimNeedlesSymbols(this.removePartInput.toString()))
+    //     }
+    //     break
+    //   }
+    //   case 'liquidityAmount': {
+    //     if (+this.liquidityAmount === 0) {
+    //       this.resetInputField('liquidityAmount')
+    //     } else {
+    //       this.setLiquidityAmount(this.trimNeedlesSymbols(this.liquidityAmount))
+    //     }
+    //     break
+    //   }
+    //   case 'firstTokenAmount': {
+    //     if (+this.firstTokenAmount === 0) {
+    //       this.resetInputField('firstTokenAmount')
+    //     } else {
+    //       this.setFirstTokenAmount(this.trimNeedlesSymbols(this.firstTokenAmount))
+    //     }
+    //     break
+    //   }
+    //   case 'secondTokenAmount': {
+    //     if (+this.secondTokenAmount === 0) {
+    //       this.resetInputField('secondTokenAmount')
+    //     } else {
+    //       this.setSecondTokenAmount(this.trimNeedlesSymbols(this.secondTokenAmount))
+    //     }
+    //     break
+    //   }
+    // }
+    this.resetFocusedField()
   }
 
   async handleConfirmRemoveLiquidity (): Promise<void> {
     try {
-      await this.removeLiquidity()
+      await this.withNotifications(this.removeLiquidity)
       this.showConfirmDialog = false
-      this.isRemoveLiquidityConfirmed = true
+      router.push({ name: PageNames.Pool })
     } catch (error) {
       console.error(error)
       this.$alert(this.t(error.message), { title: this.t('errorText') })
@@ -307,10 +401,6 @@ export default class RemoveLiquidity extends Mixins(TranslationMixin, LoadingMix
 </script>
 
 <style lang="scss" scoped>
-.container {
-  @include container-styles;
-}
-
 .icon-divider {
   padding: $inner-spacing-medium;
 }

@@ -259,14 +259,14 @@ const actions = {
   },
 
   async getNetworkFee ({ commit, getters }) {
-    if (getters.firstTokenAddress && getters.secondTokenAddress && getters.liquidityAmount) {
+    if (getters.firstTokenAddress && getters.secondTokenAddress) {
       commit(types.GET_FEE_REQUEST)
 
       try {
         const fee = await dexApi.getRemoveLiquidityNetworkFee(
           getters.firstTokenAddress,
           getters.secondTokenAddress,
-          getters.liquidityAmount,
+          getters.liquidityAmount || 0,
           getters.reserveA,
           getters.reserveB,
           getters.totalSupply

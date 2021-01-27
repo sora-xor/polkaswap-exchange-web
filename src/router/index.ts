@@ -50,27 +50,27 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.CreatePair)
   },
   {
+    path: '/exchange/pool/add/:firstAddress/:secondAddress',
+    name: PageNames.AddLiquidityId,
+    component: lazyView(PageNames.AddLiquidity)
+  },
+  {
+    path: '/exchange/pool/add',
+    name: PageNames.AddLiquidity,
+    component: lazyView(PageNames.AddLiquidity)
+  },
+  {
+    path: '/exchange/pool/remove/:firstAddress/:secondAddress',
+    name: PageNames.RemoveLiquidity,
+    component: lazyView(PageNames.RemoveLiquidity)
+  },
+  {
     path: '/stats',
     name: PageNames.Stats
   },
   {
     path: '/support',
     name: PageNames.Support
-  },
-  {
-    path: '/liquidity/add/:firstAddress/:secondAddress',
-    name: PageNames.AddLiquidityId,
-    component: lazyView(PageNames.AddLiquidity)
-  },
-  {
-    path: '/liquidity/add',
-    name: PageNames.AddLiquidity,
-    component: lazyView(PageNames.AddLiquidity)
-  },
-  {
-    path: '/liquidity/remove/:firstAddress/:secondAddress',
-    name: PageNames.RemoveLiquidity,
-    component: lazyView(PageNames.RemoveLiquidity)
   }
 ]
 
