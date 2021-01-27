@@ -56,10 +56,10 @@
         <div class="header">{{ t('dexSettings.nodeAddress') }}</div>
         <div class="value">
           <div class="value-container">
-            <span class="value-container_label">{{ t('dexSettings.ip') }}: </span>{{ nodeAddress.ip }}
+            <span class="value-container_label">{{ t('dexSettings.ip') }} </span>{{ nodeAddress.ip }}
           </div>
           <div class="value-container">
-            <span class="value-container_label">{{ t('dexSettings.port') }}: </span>#{{ nodeAddress.port }}
+            <span class="value-container_label">{{ t('dexSettings.port') }} </span>#{{ nodeAddress.port }}
           </div>
         </div>
       </div> -->

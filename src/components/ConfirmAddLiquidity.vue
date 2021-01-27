@@ -35,8 +35,8 @@
       <s-row flex justify="space-between" class="pair-info__line">
         <div>{{ t('confirmSupply.price') }}</div>
         <div v-if="firstToken && secondToken" class="price">
-          <div>1 {{ firstToken.symbol }} = {{ firstPerSecondPrice }} {{ secondToken.symbol }}</div>
-          <div>1 {{ secondToken.symbol }} = {{ secondPerFirstPrice }} {{ firstToken.symbol }}</div>
+          <div>1 {{ firstToken.symbol }} = {{ price }} {{ secondToken.symbol }}</div>
+          <div>1 {{ secondToken.symbol }} = {{ priceReversed }} {{ firstToken.symbol }}</div>
         </div>
       </s-row>
       <s-row flex justify="space-between" class="pair-info__line">
@@ -51,16 +51,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
+import { Component, Mixins } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
-import { formatNumber } from '@/utils'
-import { FPNumber } from '@sora-substrate/util'
 
 const namespace = 'addLiquidity'
 
@@ -78,21 +76,9 @@ export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, Dialog
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
+  @Getter('price', { namespace: 'prices' }) price!: string | number
+  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
   @Getter slippageTolerance!: number
-
-  formatNumber = formatNumber
-
-  get firstPerSecondPrice (): string {
-    return this.firstTokenValue && this.secondTokenValue
-      ? new FPNumber(this.firstTokenValue).div(new FPNumber(this.secondTokenValue)).toFixed(2)
-      : '0'
-  }
-
-  get secondPerFirstPrice (): string {
-    return this.firstTokenValue && this.secondTokenValue
-      ? new FPNumber(this.secondTokenValue).div(new FPNumber(this.firstTokenValue)).toFixed(2)
-      : '0'
-  }
 
   handleConfirmAddLiquidity (): void {
     this.$emit('confirm', true)
@@ -109,6 +95,14 @@ export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, Dialog
       margin-right: $inner-spacing-mini;
     }
   }
+  > .s-row:first-child {
+    margin-bottom: $inner-spacing-mini;
+  }
+}
+.tokens,
+.pair-info {
+  padding-left: $inner-spacing-mini;
+  padding-right: $inner-spacing-mini;
 }
 .output-description {
   margin-top: $inner-spacing-mini;
@@ -119,13 +113,16 @@ export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, Dialog
 .pair-info {
   line-height: $s-line-height-big;
   color: var(--s-color-base-content-secondary);
+  margin-top: $inner-spacing-big;
   &__line {
-    margin-top: $inner-spacing-medium;
-    margin-bottom: $inner-spacing-medium;
+    margin-top: $inner-spacing-mini;
   }
 }
 .price {
   text-align: right;
+  div:last-child {
+    margin-top: $inner-spacing-mini;
+  }
 }
 .supply-info {
   display: flex;

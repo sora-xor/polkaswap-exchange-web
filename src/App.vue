@@ -74,6 +74,8 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   @Getter firstReadyTransaction!: any
   @Getter account!: any
   @Action trackActiveTransactions
+  @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity
+  @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity
 
   async created () {
     const { data } = await axios.get('/env.json')
@@ -82,7 +84,9 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
       throw new Error('Network is not set')
     }
     await this.withLoading(initWallet)
+    await this.getAccountLiquidity()
     this.trackActiveTransactions()
+    this.updateAccountLiquidity()
   }
 
   @Watch('firstReadyTransaction', { deep: true })
@@ -238,7 +242,7 @@ html {
       height: var(--s-size-small);
       padding-right: 0;
       padding-left: 0;
-      border-radius: 0;
+      border-radius: 0 !important;
       color: var(--s-color-base-content-primary);
       font-size: $s-font-size-input;
       line-height: $s-line-height-small;

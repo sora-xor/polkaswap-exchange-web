@@ -64,9 +64,10 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   @Prop({ default: () => false, type: Boolean }) readonly notNullBalanceOnly!: boolean
 
   @Getter('assets', { namespace }) assets!: Array<Token>
-  @Getter('accountAssets', { namespace }) accountAssets!: Array<Token>
   @Action('getAssets', { namespace }) getAssets
-  @Action('getAccountAssets', { namespace }) getAccountAssets
+
+  @Getter('accountAssets') accountAssets!: Array<Token>
+  @Action('getAccountAssets') getAccountAssets
 
   get assetsList (): Array<Token> {
     let assets = this.accountAssetsOnly ? this.accountAssets : this.assets
