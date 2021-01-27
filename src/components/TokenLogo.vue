@@ -9,7 +9,6 @@ import { KnownSymbols } from '@sora-substrate/util'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { Token } from '@/types'
 import { LogoSize } from '@/consts'
-import { getAssetSymbol } from '@/utils'
 
 @Component
 export default class TokenLogo extends Mixins(TranslationMixin) {
@@ -22,9 +21,9 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
     const classes = [tokenLogoClass]
 
     if (this.tokenSymbol) {
-      classes.push(`${tokenLogoClass}--${(getAssetSymbol(this.tokenSymbol)).toLowerCase()}`)
+      classes.push(`${tokenLogoClass}--${(this.tokenSymbol).toLowerCase()}`)
     } else if (this.token && !!KnownSymbols[this.token.symbol]) {
-      classes.push(`${tokenLogoClass}--${(getAssetSymbol(this.token.symbol)).toLowerCase()}`)
+      classes.push(`${tokenLogoClass}--${(this.token.symbol).toLowerCase()}`)
     }
 
     classes.push(`${tokenLogoClass}--${this.size.toLowerCase()}`)

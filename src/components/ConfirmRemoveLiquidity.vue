@@ -12,11 +12,11 @@
       <div class="tokens-info-container">
         <div v-if="firstToken" class="token">
           <token-logo class="token-logo" :token="firstToken" />
-          {{ getAssetSymbol(firstToken.symbol) }}
+          {{ firstToken.symbol }}
         </div>
         <div v-if="secondToken" class="token">
           <token-logo class="token-logo" :token="secondToken" />
-          {{ getAssetSymbol(secondToken.symbol) }}
+          {{ secondToken.symbol }}
         </div>
       </div>
     </div>
@@ -26,7 +26,7 @@
       <div v-if="firstToken && secondToken">
         <s-row flex>
           <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="mini" />
-          {{ t('confirmSupply.poolTokensBurned', { first: getAssetSymbol(firstToken.symbol), second: getAssetSymbol(secondToken.symbol) }) }}
+          {{ t('confirmSupply.poolTokensBurned', { first: firstToken.symbol, second: secondToken.symbol }) }}
         </s-row>
       </div>
       <div>{{ formattedLiquidityValue }}</div>
@@ -34,24 +34,23 @@
     <s-row flex justify="space-between" class="price-container">
       <div>{{ t('removeLiquidity.price') }}</div>
       <div class="price">
-        <div>1 {{ getAssetSymbol(firstToken.symbol) }} = {{ firstPerSecondPrice }} {{ getAssetSymbol(secondToken.symbol) }}</div>
-        <div>1 {{ getAssetSymbol(secondToken.symbol) }} = {{ secondPerFirstPrice }} {{ getAssetSymbol(firstToken.symbol) }}</div>
+        <div>1 {{ firstToken.symbol }} = {{ price }} {{ secondToken.symbol }}</div>
+        <div>1 {{ secondToken.symbol }} = {{ priceReversed }} {{ firstToken.symbol }}</div>
       </div>
     </s-row>
     <template #footer>
-      <s-button type="primary" @click="handleConfirmRemoveLiquidity">{{ t('removeLiquidity.confirm') }}</s-button>
+      <s-button type="primary" @click="handleConfirmRemoveLiquidity">{{ t('exchange.confirm') }}</s-button>
     </template>
   </dialog-base>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
+import { Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
-import { formatNumber, getAssetSymbol } from '@/utils'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import { FPNumber } from '@sora-substrate/util'
@@ -65,40 +64,27 @@ const namespace = 'removeLiquidity'
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
-export default class ConfirmSwap extends Mixins(TranslationMixin, DialogMixin) {
+export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, DialogMixin) {
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('liquidityAmount', { namespace }) liquidityAmount!: any
   @Getter('firstTokenAmount', { namespace }) firstTokenAmount!: any
   @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
-  formatNumber = formatNumber
+  @Getter('price', { namespace: 'prices' }) price!: string | number
+  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
 
   get formattedFromValue (): string {
-    return formatNumber(this.firstTokenAmount)
+    return this.firstTokenAmount
   }
 
   get formattedToValue (): string {
-    return formatNumber(this.secondTokenAmount)
+    return this.secondTokenAmount
   }
 
   get formattedLiquidityValue (): string {
-    return formatNumber(this.liquidityAmount)
+    return this.liquidityAmount
   }
-
-  get firstPerSecondPrice (): string {
-    return this.firstTokenAmount && this.secondTokenAmount
-      ? new FPNumber(this.firstTokenAmount).div(new FPNumber(this.secondTokenAmount)).toFixed(2)
-      : '0.00'
-  }
-
-  get secondPerFirstPrice (): string {
-    return this.firstTokenAmount && this.secondTokenAmount
-      ? new FPNumber(this.secondTokenAmount).div(new FPNumber(this.firstTokenAmount)).toFixed(2)
-      : '0.00'
-  }
-
-  getAssetSymbol = getAssetSymbol
 
   handleConfirmRemoveLiquidity (): void {
     // TODO: Remove Liquidity here

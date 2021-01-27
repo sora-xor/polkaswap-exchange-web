@@ -1,6 +1,6 @@
 <template>
-  <div class="exchange-container">
-    <s-tabs type="rounded" :value="router.currentRoute.name" @click="handleTabClick">
+  <div class="container" v-loading="parentLoading">
+    <s-tabs class="s-tabs--exchange" type="rounded" :value="router.currentRoute.name" @click="handleTabClick">
       <s-tab
         v-for="tab in ExchangeTabs"
         :key="tab"
@@ -13,16 +13,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import router, { lazyComponent } from '@/router'
-import { ExchangeTabs, PageNames } from '@/consts'
+import router from '@/router'
+import { ExchangeTabs } from '@/consts'
 
 @Component
 export default class Exchange extends Mixins(TranslationMixin) {
   readonly ExchangeTabs = ExchangeTabs
   readonly router = router
+
+  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
   handleTabClick ({ name }): void {
     if (router.currentRoute.name === name) {
@@ -39,10 +41,11 @@ $tabs-container-height: $basic-spacing * 4;
 $tabs-container-padding: 2px;
 $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
 
-.exchange-container {
-  .s-tabs {
+.container {
+  .s-tabs.s-tabs--exchange {
     &#{$tabs-class} {
       #{$tabs-class}__header {
+        margin-bottom: $inner-spacing-mini;
         width: 100%;
       }
     }
@@ -61,38 +64,30 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
         }
         #{$tabs-class}__item {
           height: $tabs-item-height;
+          width: 50%;
           line-height: $tabs-item-height;
           font-feature-settings: $s-font-feature-settings-title;
           @include font-weight(700, true);
+          text-align: center;
           &:hover {
             background-color: var(--s-color-base-background-hover);
           }
         }
       }
-      &__nav-wrap {
-        height: $tabs-container-height;
-        background-color: var(--s-color-base-background);
+      &__nav {
+        width: 100%;
+        &-wrap {
+          height: $tabs-container-height;
+          background-color: var(--s-color-base-background);
+        }
       }
-    }
-  }
-  #{$tabs-class} {
-    &__header {
-      margin-bottom: $inner-spacing-mini;
-    }
-    &__nav {
-      width: 100%;
-    }
-    &__item {
-      width: 50%;
-      text-align: center;
     }
   }
 }
 </style>
 
 <style lang="scss" scoped>
-.exchange-container {
-  @include container-styles;
+.container {
   .s-tabs {
     width: 100%;
   }

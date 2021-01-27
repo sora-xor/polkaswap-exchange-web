@@ -4,11 +4,9 @@ import { KnownSymbols, Operation, TransactionStatus } from '@sora-substrate/util
 export default {
   transactionSubmittedText: 'Transaction was submitted',
   unknownErrorText: 'ERROR Something went wrong...',
+  connectWalletText: 'Connect wallet',
   assetNames: {
     [KnownSymbols.XOR]: 'Sora',
-    [KnownSymbols.DOT]: 'Polkadot',
-    [KnownSymbols.KSM]: 'Kusama',
-    [KnownSymbols.USD]: 'Tether',
     [KnownSymbols.VAL]: 'Sora Validator Token',
     [KnownSymbols.PSWAP]: 'Polkaswap'
   },
@@ -75,14 +73,18 @@ export default {
     to: 'To',
     balance: 'Balance',
     max: 'MAX',
+    chooseToken: 'Choose token',
+    chooseTokens: 'Choose tokens',
+    enterAmount: 'Enter amount',
+    insufficientBalance: 'Insufficient {tokenSymbol} balance',
     price: 'Price',
     transactionSubmitted: 'Transaction submitted',
+    transactionMessage: '{firstToken} and {secondToken}',
+    confirm: 'Confirm',
     ok: 'OK'
   },
   swap: {
-    chooseToken: 'Choose token',
-    chooseTokens: 'Choose tokens',
-    connectWallet: 'Connect wallet',
+    connectWallet: '@:connectWalletText',
     estimated: 'estimated',
     slippageTolerance: 'Slippage Tolerance',
     minReceived: 'Minimum Received',
@@ -93,23 +95,21 @@ export default {
     liquidityProviderFee: 'Liquidity Provider Fee',
     liquidityProviderFeeTooltip: 'A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive.',
     networkFee: 'Network Fee',
-    networkFeeTooltip: 'Fixed  amount of {networkFee} goes to network validators.',
-    enterAmount: 'Enter an amount',
-    insufficientBalance: 'Insufficient {tokenSymbol} balance',
+    networkFeeTooltip: 'Network fee is used to ensure SORA system\'s growth and stable performance.',
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
     confirmSwap: 'Confirm swap',
-    swapOutputMessage: 'Output is estimated. You will receive at least {transactionValue} or the transaction will revert.',
-    transactionMessage: '{tokenFromValue} for {tokenToValue}'
+    swapOutputMessage: 'Output is estimated. You will receive at least {transactionValue} or the transaction will revert.'
   },
   pool: {
+    connectWallet: '@:connectWalletText',
     yourLiquidity: 'Your liquidity',
     connectToWallet: 'Connect to a wallet to view your liquidity.',
     liquidityNotFound: 'No liquidity found.',
     addLiquidity: 'Add liquidity',
     removeLiquidity: 'Remove liquidity',
     createPair: 'Create a pair',
-    pooledToken: '{tokenSymbol} Pooled:',
-    pairTokens: '{pair} Pool Tokens:',
+    pooledToken: '{tokenSymbol} Pooled',
+    pairTokens: '{pair} Pool Tokens',
     poolShare: 'Your pool share',
     comingSoon: 'Coming soon',
     description: 'When you add liquidity, you are given pool tokens representing your position. These tokens automaticaly earn fees proportional to your share of the pool, and can be redeemed at any time.'
@@ -128,27 +128,23 @@ export default {
     firstPerSecond: '{first} per {second}',
     firstSecondPoolTokens: '{first}-{second} Pool tokens',
     connect: 'Connect wallet',
-    enterAmount: 'Enter an amount',
     supply: 'Supply',
-    confirmSupply: 'Confirm supply',
     yourPosition: 'Your position',
+    yourPositionEstimated: 'Your position (estimated)',
     youWillReceive: 'You will receive',
     remove: 'remove',
     add: 'ADD',
     ok: 'OK',
     networkFee: 'Network fee',
-    insufficientBalance: 'Insufficient balance',
     unsuitableAssets: 'Unsuitable assets',
-    transactionMessage: '{firstToken} and {secondToken}',
     firstLiquidityProvider: 'You are the first liquidity provider',
     firstLiquidityProviderInfo: 'The ratio of tokens you add will set the price of this pool.<br/>Once you are happy with the rate click supply to review.'
   },
   confirmSupply: {
     title: 'You will receive',
     outputDescription: 'Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.',
-    poolTokensBurned: '{first}-{second} Pool Tokens Burned:',
-    price: 'Price:',
-    confirm: 'Confirm'
+    poolTokensBurned: '{first}-{second} Pool Tokens Burned',
+    price: 'Price'
   },
   addLiquidity: {
     title: 'Add liquidity'
@@ -159,13 +155,11 @@ export default {
     amount: 'Amount',
     input: 'Input',
     output: 'Output',
-    price: 'Price:',
+    price: 'Price',
     remove: 'Remove',
-    enterAmount: 'Enter an amount',
     description: 'Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.',
     outputMessage: 'Output is estimated. If the price changes more than 0.5% your transaction will revert.',
-    confirmTitle: 'You will receive',
-    confirm: 'Confirm'
+    confirmTitle: 'You will receive'
   },
   dexSettings: {
     title: 'Settings',
@@ -176,7 +170,7 @@ export default {
       frontrun: 'Your transaction may be frontrun',
       error: 'Enter a valid slippage percentage'
     },
-    custom: 'CUSTOM',
+    custom: 'CUSTOM %',
     transactionDeadline: 'TRANSACTION DEADLINE',
     transactionDeadlineHint: 'Transaction will be cancelled if it is pending for more than this long.',
     nodeAddress: 'NODE ADDRESS',

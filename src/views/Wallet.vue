@@ -1,11 +1,14 @@
 <template>
-  <div class="wallet-container s-flex">
-    <sora-neo-wallet @close="handleClose" @swap="handleSwap" />
-  </div>
+  <sora-neo-wallet
+    class="container"
+    v-loading="parentLoading"
+    @close="handleClose"
+    @swap="handleSwap"
+  />
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -15,7 +18,10 @@ import { isWalletConnected } from '@/utils'
 
 @Component
 export default class Wallet extends Mixins(TranslationMixin) {
+  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
+
   @Action setTokenFrom
+  @Action setTokenTo
 
   handleClose (): void {
     router.back()
@@ -23,14 +29,8 @@ export default class Wallet extends Mixins(TranslationMixin) {
 
   async handleSwap (token: any): Promise<void> {
     await this.setTokenFrom({ isWalletConnected: isWalletConnected(), tokenSymbol: token.symbol })
+    await this.setTokenTo({ isWalletConnected: isWalletConnected() })
     router.push({ name: PageNames.Swap })
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.wallet-container {
-  justify-content: center;
-  margin-top: $inner-spacing-big;
-}
-</style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-loading="parentLoading">
     <generic-header :title="t('addLiquidity.title')" :tooltip="t('pool.description')" />
     <s-form
       class="el-form--actions"
@@ -15,23 +15,24 @@
         </div>
         <div class="input-line">
           <s-form-item>
+            <!-- v-model="addLiquidityModel.firstTokenValue" -->
             <s-input
-              :value="firstTokenValue"
               v-float
               class="s-input--token-value"
+              :value="firstTokenValue"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
               @change="setFirstTokenValue"
-              @blur="resetFocusedField"
+              @blur="handleInputBlur(true)"
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
-            <s-button v-if="connected" :disabled="!areTokensSelected" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleFirstMaxValue">
+            <s-button v-if="connected && areTokensSelected && firstTokenValue !== firstToken.balance" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <token-logo :token="firstToken" size="small" />
-              {{ getAssetSymbol(firstToken.symbol) }}
+              {{ firstToken.symbol }}
             </s-button>
           </div>
         </div>
@@ -49,42 +50,43 @@
         </div>
         <div class="input-line">
           <s-form-item>
+            <!-- v-model="addLiquidityModel.secondTokenValue" -->
             <s-input
-              :value="secondTokenValue"
               v-float
               class="s-input--token-value"
+              :value="secondTokenValue"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
               @change="setSecondTokenValue"
-              @blur="resetFocusedField"
+              @blur="handleInputBlur(false)"
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
-            <s-button v-if="connected" :disabled="!areTokensSelected" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleSecondMaxValue">
+            <s-button v-if="connected && secondTokenValue !== secondToken.balance" :disabled="!areTokensSelected" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleSecondMaxValue">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
               <token-logo :token="secondToken" size="small" />
-              {{ getAssetSymbol(secondToken.symbol) }}
+              {{ secondToken.symbol }}
             </s-button>
           </div>
           <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
-            {{t('swap.chooseToken')}}
+            {{ t('exchange.chooseToken') }}
           </s-button>
         </div>
       </div>
         <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="showConfirmDialog = true">
         <template v-if="!areTokensSelected">
-          {{ t('swap.chooseTokens') }}
+          {{ t('exchange.chooseTokens') }}
         </template>
         <template v-else-if="!isAvailable">
           {{ t('createPair.unsuitableAssets') }}
         </template>
         <template v-else-if="isEmptyBalance">
-          {{ t('swap.enterAmount') }}
+          {{ t('exchange.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
-          {{ t('createPair.insufficientBalance') }}
+          {{ t('exchange.insufficientBalance', { tokenSymbol: insufficientBalanceTokenSymbol }) }}
         </template>
         <template v-else>
           {{ t('createPair.supply') }}
@@ -92,28 +94,28 @@
       </s-button>
     </s-form>
 
-    <info-card v-if="areTokensSelected && isAvailable" :title="t('createPair.pricePool')">
+    <info-card v-if="areTokensSelected && isAvailable && !emptyAssets" :title="t('createPair.pricePool')">
       <div class="card__data">
         <div>
           {{
             t('createPair.firstPerSecond', {
-              first: getAssetSymbol(firstToken.symbol),
-              second: getAssetSymbol(secondToken.symbol)
+              first: firstToken.symbol,
+              second: secondToken.symbol
             })
           }}
         </div>
-        <div>{{ firstPerSecondPrice }} {{ getAssetSymbol(firstToken.symbol) }}</div>
+        <div>{{ price }} {{ firstToken.symbol }}</div>
       </div>
       <div class="card__data">
         <div>
           {{
             t('createPair.firstPerSecond', {
-              first: getAssetSymbol(firstToken.symbol),
-              second: getAssetSymbol(secondToken.symbol)
+              first: secondToken.symbol,
+              second: firstToken.symbol
             })
           }}
         </div>
-        <div>{{ secondPerFirstPrice }} {{ getAssetSymbol(secondToken.symbol) }}</div>
+        <div>{{ priceReversed }} {{ secondToken.symbol }}</div>
       </div>
       <div class="card__data">
         <div>{{ t('createPair.shareOfPool') }}</div>
@@ -121,51 +123,55 @@
       </div>
       <div class="card__data">
         <div>{{ t('createPair.networkFee') }}</div>
-        <div>{{ fee }} XOR</div>
+        <div>{{ fee }} {{ KnownSymbols.XOR }}</div>
       </div>
     </info-card>
 
-    <info-card v-if="areTokensSelected && isAvailable" :title="t('createPair.yourPosition') ">
-      <div class="card__data">
+    <info-card
+      v-if="areTokensSelected && isAvailable && (!emptyAssets || (liquidityInfo || {}).balance)"
+      :title="t(`createPair.yourPosition${!emptyAssets ? 'Estimated' : ''}`)"
+    >
+      <div class="card__data card__data_assets">
         <s-row flex>
           <pair-token-logo class="pair-token-logo" :first-token="firstToken" :second-token="secondToken" size="mini" />
           {{
             t('createPair.firstSecondPoolTokens', {
-              first: getAssetSymbol(firstToken.symbol),
-              second: getAssetSymbol(secondToken.symbol)
+              first: firstToken.symbol,
+              second: secondToken.symbol
             })
-          }}:
+          }}
         </s-row>
-        <div>{{ minted }}</div>
+        <div>{{ poolTokenPosition }}</div>
       </div>
       <s-divider />
       <div class="card__data">
-        <div>{{ getAssetSymbol(firstToken.symbol) }}</div>
+        <div>{{ firstToken.symbol }}</div>
         <div>{{ firstTokenPosition }}</div>
       </div>
       <div class="card__data">
-        <div>{{ getAssetSymbol(secondToken.symbol) }}</div>
+        <div>{{ secondToken.symbol }}</div>
         <div>{{ secondTokenPosition }}</div>
       </div>
     </info-card>
 
-    <select-token :visible.sync="showSelectFirstTokenDialog" accountAssetsOnly notNullBalanceOnly :asset="secondToken" @select="setFirstToken" />
-    <select-token :visible.sync="showSelectSecondTokenDialog" accountAssetsOnly notNullBalanceOnly :asset="firstToken" @select="setSecondToken" />
+    <select-token :visible.sync="showSelectFirstTokenDialog" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstToken" />
+    <select-token :visible.sync="showSelectSecondTokenDialog" account-assets-only not-null-balance-only :asset="firstToken" @select="setSecondToken" />
 
     <confirm-add-liquidity :visible.sync="showConfirmDialog" @confirm="handleConfirmAddLiquidity" />
-    <result-dialog :visible.sync="isCreatePairConfirmed" :type="t('createPair.add')" :message="resultMessage" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import TranslationMixin from '@/components/mixins/TranslationMixin'
-import LoadingMixin from '@/components/mixins/LoadingMixin'
-import router, { lazyComponent } from '@/router'
-import { formatNumber, getAssetSymbol, isWalletConnected } from '@/utils'
-import { Components, PageNames } from '@/consts'
 import { KnownAssets, KnownSymbols, FPNumber } from '@sora-substrate/util'
+
+import TransactionMixin from '@/components/mixins/TransactionMixin'
+import LoadingMixin from '@/components/mixins/LoadingMixin'
+import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
+import router, { lazyComponent } from '@/router'
+import { formatNumber, isNumberValue, isWalletConnected } from '@/utils'
+import { Components, PageNames } from '@/consts'
 
 const namespace = 'addLiquidity'
 
@@ -176,11 +182,14 @@ const namespace = 'addLiquidity'
     InfoCard: lazyComponent(Components.InfoCard),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    ConfirmAddLiquidity: lazyComponent(Components.ConfirmAddLiquidity),
-    ResultDialog: lazyComponent(Components.ResultDialog)
+    ConfirmAddLiquidity: lazyComponent(Components.ConfirmAddLiquidity)
   }
 })
-export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin) {
+export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin, InputFormatterMixin) {
+  readonly KnownSymbols = KnownSymbols
+
+  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
+
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
@@ -189,6 +198,9 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
   @Getter('minted', { namespace }) minted!: string
   @Getter('fee', { namespace }) fee!: string
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
+  @Getter('price', { namespace: 'prices' }) price!: string | number
+  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
+  @Getter('accountLiquidity', { namespace: 'pool' }) accountLiquidity!: Array<any>
 
   @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
   @Action('setFirstToken', { namespace }) setFirstToken
@@ -198,21 +210,27 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField
   @Action('resetData', { namespace }) resetData
-  @Action('getAccountAssets', { namespace: 'assets' }) getAccountAssets
+  @Action('getPrices', { namespace: 'prices' }) getPrices
+  @Action('resetPrices', { namespace: 'prices' }) resetPrices
 
   showSelectFirstTokenDialog = false
   showSelectSecondTokenDialog = false
-  inputPlaceholder: string = formatNumber(0, 2)
+  inputPlaceholder: string = formatNumber(0, 1)
+  insufficientBalanceTokenSymbol = ''
   showConfirmDialog = false
   isCreatePairConfirmed = false
 
-  getAssetSymbol = getAssetSymbol
+  addLiquidityModel = {
+    firstTokenValue: '',
+    secondTokenValue: ''
+  }
 
   async mounted () {
     this.resetData()
+    this.resetPrices()
+    this.insufficientBalanceTokenSymbol = ''
 
     await this.withApi(async () => {
-      await this.getAccountAssets()
       await this.setFirstToken(KnownAssets.get(KnownSymbols.XOR))
 
       if (this.firstAddress && this.secondAddress) {
@@ -232,30 +250,45 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
     return this.$route.params.secondAddress
   }
 
-  formatNumber = formatNumber
-
   get connected (): boolean {
     return isWalletConnected()
   }
 
-  get firstPerSecondPrice (): string {
-    return this.firstTokenValue && this.secondTokenValue
-      ? new FPNumber(this.firstTokenValue).div(new FPNumber(this.secondTokenValue)).toFixed(2) || '0.00'
-      : '0.00'
+  get liquidityInfo () {
+    return this.accountLiquidity.find(l => l.firstAddress === this.firstToken.address && l.secondAddress === this.secondToken.address)
   }
 
-  get secondPerFirstPrice (): string {
-    return this.firstTokenValue && this.secondTokenValue
-      ? new FPNumber(this.secondTokenValue).div(new FPNumber(this.firstTokenValue)).toFixed(2) || '0.00'
-      : '0.00'
+  get emptyAssets (): boolean {
+    if (!(this.firstTokenValue || this.secondTokenValue)) {
+      return true
+    }
+    const first = new FPNumber(this.firstTokenValue)
+    const second = new FPNumber(this.secondTokenValue)
+    return (first.isNaN() || first.isZero()) || (second.isNaN() || second.isZero())
+  }
+
+  get poolTokenPosition (): string {
+    const prevPosition = new FPNumber(this.liquidityInfo ? this.liquidityInfo.balance : 0)
+    if (!this.emptyAssets) {
+      return prevPosition.add(new FPNumber(this.minted)).toString()
+    }
+    return prevPosition.toString()
   }
 
   get firstTokenPosition (): string {
-    return '0.00'
+    const prevPosition = new FPNumber(this.liquidityInfo ? this.liquidityInfo.firstBalance : 0)
+    if (!this.emptyAssets) {
+      return prevPosition.add(new FPNumber(this.firstTokenValue)).toString()
+    }
+    return prevPosition.toString()
   }
 
   get secondTokenPosition (): string {
-    return '0.00'
+    const prevPosition = new FPNumber(this.liquidityInfo ? this.liquidityInfo.secondBalance : 0)
+    if (!this.emptyAssets) {
+      return prevPosition.add(new FPNumber(this.secondTokenValue)).toString()
+    }
+    return prevPosition.toString()
   }
 
   get areTokensSelected (): boolean {
@@ -263,67 +296,125 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
   }
 
   get isEmptyBalance (): boolean {
-    return +this.firstTokenValue === 0 || +this.secondTokenValue === 0
+    if (+this.firstTokenValue === 0 || +this.secondTokenValue === 0) {
+      return true
+    }
+    this.updatePrices()
+    return false
   }
 
   get isInsufficientBalance (): boolean {
-    if (this.areTokensSelected) {
-      let firstValue = new FPNumber(this.firstTokenValue, this.firstToken.decimals)
+    if (this.connected && this.areTokensSelected) {
       const firstBalance = new FPNumber(this.firstToken.balance, this.firstToken.decimals)
-      let secondValue = new FPNumber(this.secondTokenValue, this.secondToken.decimals)
-      const secondBalance = new FPNumber(this.secondToken.balance, this.secondToken.decimals)
-
-      if (this.firstToken.symbol === KnownSymbols.XOR) {
-        firstValue = firstValue.add(new FPNumber(this.fee, this.firstToken.decimals))
-      } else {
-        secondValue = secondValue.add(new FPNumber(this.fee, this.secondToken.decimals))
+      const firstValue = new FPNumber(this.firstTokenValue, this.firstToken.decimals)
+      // Now first asset is XOR so we should change it later
+      const fee = new FPNumber(this.fee, this.firstToken.decimals)
+      if (FPNumber.lt(firstBalance, firstValue.add(fee))) {
+        this.insufficientBalanceTokenSymbol = this.firstToken.symbol
+        return true
       }
 
-      return FPNumber.gt(firstValue, firstBalance) || FPNumber.gt(secondValue, secondBalance)
+      const secondBalance = new FPNumber(this.secondToken.balance, this.secondToken.decimals)
+      const secondValue = new FPNumber(this.secondTokenValue, this.secondToken.decimals)
+      if (FPNumber.lt(secondBalance, secondValue)) {
+        this.insufficientBalanceTokenSymbol = this.secondToken.symbol
+        return true
+      }
+      // TODO: Add checking for XOR - fee
     }
-
-    return true
-  }
-
-  get resultMessage (): string {
-    return this.t('createPair.transactionMessage', {
-      firstToken: this.getTokenValue(this.firstToken, this.firstTokenValue),
-      secondToken: this.getTokenValue(this.secondToken, this.secondTokenValue)
-    })
+    return false
   }
 
   getTokenValue (token: any, tokenValue: number): string {
     return token ? `${tokenValue} ${token.symbol}` : ''
   }
 
-  openSelectFirstTokenDialog (): void {
-    this.showSelectFirstTokenDialog = true
-  }
+  // We don't need it for now
+  // openSelectFirstTokenDialog (): void {
+  //   this.showSelectFirstTokenDialog = true
+  // }
 
   openSelectSecondTokenDialog (): void {
     this.showSelectSecondTokenDialog = true
   }
 
   handleFirstMaxValue (): void {
-    this.setFirstTokenValue(this.firstToken.balance)
+    // Now it's only XOR so we should calculate max value as (all XOR balance - network fee)
+    const xorBalance = new FPNumber(this.firstToken.balance)
+    const fee = new FPNumber(this.fee)
+    this.setFirstTokenValue(xorBalance.sub(fee).toString())
   }
 
   handleSecondMaxValue (): void {
+    // TODO: Is it correct just copy asset balance here?
     this.setSecondTokenValue(this.secondToken.balance)
   }
 
-  getTokenBalance (token: any): string {
-    if (token) {
-      return formatNumber(token.balance, 2)
+  updatePrices (): void {
+    this.getPrices({
+      assetAAddress: this.firstAddress ? this.firstAddress : this.firstToken.address,
+      assetBAddress: this.secondAddress ? this.secondAddress : this.secondToken.address,
+      amountA: this.firstTokenValue,
+      amountB: this.secondTokenValue
+    })
+  }
+
+  async handleFirstTokenChange (): Promise<any> {
+    this.addLiquidityModel.firstTokenValue = this.formatNumberField(this.addLiquidityModel.firstTokenValue)
+    if (!isNumberValue(this.addLiquidityModel.firstTokenValue)) {
+      await this.promiseTimeout()
+      this.resetInputField()
+      return
     }
-    return ''
+    this.setFirstTokenValue(this.addLiquidityModel.firstTokenValue)
+    this.updatePrices()
+  }
+
+  async handleSecondTokeChange (): Promise<any> {
+    this.addLiquidityModel.secondTokenValue = this.formatNumberField(this.addLiquidityModel.secondTokenValue)
+    if (!isNumberValue(this.addLiquidityModel.secondTokenValue)) {
+      await this.promiseTimeout()
+      this.resetInputField(false)
+      return
+    }
+    this.setSecondTokenValue(this.addLiquidityModel.secondTokenValue)
+    this.updatePrices()
+  }
+
+  resetInputField (isFirstTokenField = true): void {
+    if (isFirstTokenField) {
+      this.setFirstTokenValue(0)
+      return
+    }
+    this.setSecondTokenValue(0)
+  }
+
+  handleInputBlur (isFirstToken: boolean): void {
+    // if (isFirstToken) {
+    //   if (+this.addLiquidityModel.firstTokenValue === 0) {
+    //     this.resetInputField()
+    //   } else {
+    //     this.addLiquidityModel.firstTokenValue = this.trimNeedlesSymbols(this.addLiquidityModel.firstTokenValue)
+    //   }
+    // } else {
+    //   if (+this.addLiquidityModel.secondTokenValue === 0) {
+    //     this.resetInputField(false)
+    //   } else {
+    //     this.addLiquidityModel.secondTokenValue = this.trimNeedlesSymbols(this.addLiquidityModel.secondTokenValue)
+    //   }
+    // }
+    this.resetFocusedField()
+  }
+
+  getTokenBalance (token: any): string {
+    return token ? token.balance : ''
   }
 
   async handleConfirmAddLiquidity () {
     try {
-      await this.addLiquidity()
+      await this.withNotifications(this.addLiquidity)
       this.showConfirmDialog = false
-      this.isCreatePairConfirmed = true
+      router.push({ name: PageNames.Pool })
     } catch (error) {
       console.error(error)
       this.$alert(this.t(error.message), { title: this.t('errorText') })
@@ -332,17 +423,20 @@ export default class AddLiquidity extends Mixins(TranslationMixin, LoadingMixin)
 }
 </script>
 
-<style lang="scss" scoped>
-.container {
-  @include container-styles;
+<style lang="scss">
+.el-form--actions {
+  .s-input--token-value .el-input .el-input__inner {
+    @include text-ellipsis;
+  }
 }
+</style>
 
+<style lang="scss" scoped>
 .el-form--actions {
   @include input-form-styles;
   @include buttons;
   @include full-width-button;
 }
-
 @include vertical-divider;
 @include vertical-divider('el-divider');
 </style>

@@ -20,17 +20,9 @@ export default class TransactionMixin extends Mixins(TranslationMixin) {
     if (!value || !Object.values(Operation).includes(value.type as any)) {
       return ''
     }
-    let params = {} as any
-    switch (value.type) {
-      case Operation.Transfer:
-        params = { ...value, address: formatAddress(value.to as string, 12) }
-        break
-      case Operation.Swap:
-        params = { ...value }
-        break
-      // TODO: add operations
-      default:
-        break
+    const params = { ...value } as any
+    if (value.type === Operation.Transfer) {
+      params.address = formatAddress(value.to as string, 12)
     }
     return this.t(`operations.${value.status}.${value.type}`, params)
   }
