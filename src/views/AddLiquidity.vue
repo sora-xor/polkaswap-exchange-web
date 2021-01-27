@@ -154,8 +154,8 @@
       </div>
     </info-card>
 
-    <select-token :visible.sync="showSelectFirstTokenDialog" accountAssetsOnly notNullBalanceOnly :asset="secondToken" @select="setFirstToken" />
-    <select-token :visible.sync="showSelectSecondTokenDialog" accountAssetsOnly notNullBalanceOnly :asset="firstToken" @select="setSecondToken" />
+    <select-token :visible.sync="showSelectFirstTokenDialog" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstToken" />
+    <select-token :visible.sync="showSelectSecondTokenDialog" account-assets-only not-null-balance-only :asset="firstToken" @select="setSecondToken" />
 
     <confirm-add-liquidity :visible.sync="showConfirmDialog" @confirm="handleConfirmAddLiquidity" />
   </div>
@@ -165,7 +165,6 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { KnownAssets, KnownSymbols, FPNumber } from '@sora-substrate/util'
-import { dexApi } from '@soramitsu/soraneo-wallet-web'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -201,6 +200,7 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('price', { namespace: 'prices' }) price!: string | number
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
+  @Getter('accountLiquidity', { namespace: 'pool' }) accountLiquidity!: Array<any>
 
   @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
   @Action('setFirstToken', { namespace }) setFirstToken
@@ -210,7 +210,6 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField
   @Action('resetData', { namespace }) resetData
-  @Action('getAccountAssets', { namespace: 'assets' }) getAccountAssets
   @Action('getPrices', { namespace: 'prices' }) getPrices
   @Action('resetPrices', { namespace: 'prices' }) resetPrices
 
@@ -232,7 +231,6 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
     this.insufficientBalanceTokenSymbol = ''
 
     await this.withApi(async () => {
-      await this.getAccountAssets()
       await this.setFirstToken(KnownAssets.get(KnownSymbols.XOR))
 
       if (this.firstAddress && this.secondAddress) {
@@ -257,7 +255,7 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
   }
 
   get liquidityInfo () {
-    return dexApi.accountLiquidity.find(l => l.firstAddress === this.firstToken.address && l.secondAddress === this.secondToken.address)
+    return this.accountLiquidity.find(l => l.firstAddress === this.firstToken.address && l.secondAddress === this.secondToken.address)
   }
 
   get emptyAssets (): boolean {
@@ -307,10 +305,11 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
 
   get isInsufficientBalance (): boolean {
     if (this.connected && this.areTokensSelected) {
-      // TODO: Ask could we have empty/zero first/second amount?
       const firstBalance = new FPNumber(this.firstToken.balance, this.firstToken.decimals)
       const firstValue = new FPNumber(this.firstTokenValue, this.firstToken.decimals)
-      if (FPNumber.lt(firstBalance, firstValue)) {
+      // Now first asset is XOR so we should change it later
+      const fee = new FPNumber(this.fee, this.firstToken.decimals)
+      if (FPNumber.lt(firstBalance, firstValue.add(fee))) {
         this.insufficientBalanceTokenSymbol = this.firstToken.symbol
         return true
       }
@@ -340,8 +339,10 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
   }
 
   handleFirstMaxValue (): void {
-    // TODO: Is it correct just copy asset balance here? If we have XOR we should subtract fee
-    this.setFirstTokenValue(this.firstToken.balance)
+    // Now it's only XOR so we should calculate max value as (all XOR balance - network fee)
+    const xorBalance = new FPNumber(this.firstToken.balance)
+    const fee = new FPNumber(this.fee)
+    this.setFirstTokenValue(xorBalance.sub(fee).toString())
   }
 
   handleSecondMaxValue (): void {

@@ -235,15 +235,14 @@ const actions = {
   },
 
   async getNetworkFee ({ commit, getters }) {
-    if (getters.firstTokenAddress && getters.secondTokenAddress && getters.firstTokenValue && getters.secondTokenValue) {
+    if (getters.firstTokenAddress && getters.secondTokenAddress) {
       commit(types.GET_FEE_REQUEST)
       try {
-        // Check do we need slippageTolerance as param here
         const fee = await dexApi.getAddLiquidityNetworkFee(
           getters.firstTokenAddress,
           getters.secondTokenAddress,
-          getters.firstTokenValue,
-          getters.secondTokenValue
+          getters.firstTokenValue || 0,
+          getters.secondTokenValue || 0
         )
         commit(types.GET_FEE_SUCCESS, fee)
       } catch (error) {

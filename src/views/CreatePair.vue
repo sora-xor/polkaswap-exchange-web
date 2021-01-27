@@ -110,8 +110,8 @@
       </div>
     </info-card>
 
-    <select-token :visible.sync="showSelectFirstTokenDialog" accountAssetsOnly notNullBalanceOnly :asset="secondToken" @select="setFirstToken" />
-    <select-token :visible.sync="showSelectSecondTokenDialog" accountAssetsOnly notNullBalanceOnly :asset="firstToken" @select="setSecondToken" />
+    <select-token :visible.sync="showSelectFirstTokenDialog" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstToken" />
+    <select-token :visible.sync="showSelectSecondTokenDialog" account-assets-only not-null-balance-only :asset="firstToken" @select="setSecondToken" />
 
     <confirm-create-pair :visible.sync="showConfirmCreatePairDialog" @confirm="confirmCreatePair" />
     <result-dialog :visible.sync="isCreatePairConfirmed" :type="t('createPair.add')" :message="resultMessage" />
@@ -165,7 +165,6 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
   @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
   @Action('createPair', { namespace }) createPair
   @Action('resetData', { namespace }) resetData
-  @Action('getAccountAssets', { namespace: 'assets' }) getAccountAssets
   @Action('getPrices', { namespace: 'prices' }) getPrices
   @Action('resetPrices', { namespace: 'prices' }) resetPrices
 
@@ -183,7 +182,6 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
   async mounted () {
     await this.withApi(async () => {
       this.resetPrices()
-      await this.getAccountAssets()
       await this.setFirstToken(KnownAssets.get(KnownSymbols.XOR))
     })
   }

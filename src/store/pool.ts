@@ -37,6 +37,7 @@ const mutations = {
   },
 
   [types.GET_ACCOUNT_LIQUIDITY_SUCCESS] (state, liquidity) {
+    state.accountLiquidity = []
     state.accountLiquidity = liquidity
   },
 
@@ -48,6 +49,7 @@ const mutations = {
   },
 
   [types.UPDATE_ACCOUNT_LIQUIDITY_SUCCESS] (state, liquidity) {
+    state.accountLiquidity = []
     state.accountLiquidity = liquidity
   },
 
