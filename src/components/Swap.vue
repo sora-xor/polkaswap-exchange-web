@@ -31,12 +31,12 @@
           <s-button v-if="connected && isMaxAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue">
             {{ t('exchange.max') }}
           </s-button>
-          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(true)">
+          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenFromDialog">
             <token-logo :token="tokenFrom" size="small" />
             {{ tokenFrom.symbol }}
           </s-button>
         </div>
-        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(true)">
+        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenFromDialog">
           {{ t('exchange.chooseToken') }}
         </s-button>
       </div>
@@ -66,12 +66,12 @@
           />
         </s-form-item>
         <div v-if="tokenTo" class="token">
-          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog">
+          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenToDialog">
             <token-logo :token="tokenTo" size="small" />
             {{ tokenTo.symbol }}
           </s-button>
         </div>
-        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog">
+        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenToDialog">
           {{ t('exchange.chooseToken') }}
         </s-button>
       </div>
@@ -95,7 +95,8 @@
       </template>
     </s-button>
     <swap-info v-if="areTokensSelected && !areZeroAmounts" />
-    <select-token :visible.sync="showSelectTokenDialog" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
+    <select-token :visible.sync="showSelectTokenFromDialog" :asset="tokenFrom" :assetExcluded="tokenTo" :account-assets-only="connected" @select="selectTokenFrom" />
+    <select-token :visible.sync="showSelectTokenToDialog" :asset="tokenTo" :assetExcluded="tokenFrom" @select="selectTokenTo" />
     <confirm-swap :visible.sync="showConfirmSwapDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmSwap" @checkConfirm="updateAccountAssets" />
   </s-form>
 </template>
@@ -152,8 +153,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   isFieldToFocused = false
   isFieldFromActive = false
   isFieldToActive = false
-  isTokenFromSelected = false
-  showSelectTokenDialog = false
+  showSelectTokenFromDialog = false
+  showSelectTokenToDialog = false
   showConfirmSwapDialog = false
 
   formModel = {
@@ -266,6 +267,11 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
         this.isTokenToBalanceAvailable = true
       }
     })
+  }
+
+  async beforeDestroy (): Promise<void> {
+    await this.setTokenFrom({ isWalletConnected: isWalletConnected() })
+    await this.setTokenTo({ isWalletConnected: isWalletConnected() })
   }
 
   resetInsufficientAmountFlag (): void {
@@ -457,22 +463,29 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     router.push({ name: PageNames.Wallet })
   }
 
-  openSelectTokenDialog (isTokenFrom: boolean): void {
-    if (isTokenFrom) {
-      this.isTokenFromSelected = true
-    }
-    this.showSelectTokenDialog = true
+  openSelectTokenFromDialog (): void {
+    this.showSelectTokenFromDialog = true
   }
 
-  async selectToken (token: any): Promise<void> {
+  openSelectTokenToDialog (): void {
+    this.showSelectTokenToDialog = true
+  }
+
+  async selectTokenFrom (token: any): Promise<void> {
     if (token) {
-      if (this.isTokenFromSelected) {
-        this.isTokenFromSelected = false
-        await this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
-      } else {
-        await this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
-        this.isTokenToBalanceAvailable = true
-      }
+      await this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
+      this.isFieldFromActive = true
+      this.isFieldToActive = false
+      await this.recountSwapValues()
+    }
+  }
+
+  async selectTokenTo (token: any): Promise<void> {
+    if (token) {
+      await this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
+      this.isTokenToBalanceAvailable = true
+      this.isFieldFromActive = false
+      this.isFieldToActive = true
       await this.recountSwapValues()
     }
   }

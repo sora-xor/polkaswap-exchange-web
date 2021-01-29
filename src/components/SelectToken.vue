@@ -29,6 +29,7 @@
     </div>
     <div v-else class="token-list token-list__empty">
       <span class="empty-results-icon" />
+      <!-- TODO: Add another (more detailed) message for case with empty added tokens list in wallet -->
       {{ t('selectToken.emptyListMessage') }}
     </div>
   </dialog-base>
@@ -37,7 +38,6 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { KnownAssets, KnownSymbols, Asset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -60,6 +60,7 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   selectedToken: Token | null = null
 
   @Prop({ default: () => null, type: Object }) readonly asset!: Token
+  @Prop({ default: () => null, type: Object }) readonly assetExcluded!: Token
   @Prop({ default: () => false, type: Boolean }) readonly accountAssetsOnly!: boolean
   @Prop({ default: () => false, type: Boolean }) readonly notNullBalanceOnly!: boolean
 
@@ -71,8 +72,12 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
 
   get assetsList (): Array<Token> {
     let assets = this.accountAssetsOnly ? this.accountAssets : this.assets
-    assets = this.asset ? assets.filter(asset => asset.symbol !== this.asset.symbol) : assets
-
+    if (this.asset) {
+      assets = assets.filter(asset => asset.symbol !== this.asset.symbol)
+    }
+    if (this.assetExcluded) {
+      assets = assets.filter(asset => asset.symbol !== this.assetExcluded.symbol)
+    }
     return this.notNullBalanceOnly ? assets.filter(a => a.balance > 0) : assets
   }
 
