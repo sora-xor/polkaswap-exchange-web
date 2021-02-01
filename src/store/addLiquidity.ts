@@ -4,7 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { dexApi } from '@soramitsu/soraneo-wallet-web'
-import { FPNumber } from '@sora-substrate/util'
+import { KnownAssets, FPNumber } from '@sora-substrate/util'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -161,6 +161,7 @@ const actions = {
     commit(types.SET_FIRST_TOKEN_VALUE, '')
     commit(types.SET_SECOND_TOKEN_VALUE, '')
     dispatch('checkReserve')
+    dispatch('getNetworkFee')
   },
 
   async checkReserve ({ commit, getters, dispatch }) {
@@ -269,9 +270,13 @@ const actions = {
     }
   },
 
-  async setDataFromLiquidity ({ dispatch }, { firstAddress, secondAddress, balance }) {
-    dispatch('setFirstToken', dexApi.accountAssets.find(a => a.address === firstAddress))
-    dispatch('setSecondToken', dexApi.accountAssets.find(a => a.address === secondAddress))
+  async setDataFromLiquidity ({ dispatch }, { firstAddress, secondAddress }) {
+    dispatch('setFirstToken', await dexApi.accountAssets.find(a => a.address === firstAddress))
+    let secondAsset: any = await dexApi.accountAssets.find(a => a.address === secondAddress)
+    if (!secondAsset) {
+      secondAsset = KnownAssets.get(secondAddress)
+    }
+    dispatch('setSecondToken', secondAsset)
   },
 
   resetFocusedField ({ commit }) {
