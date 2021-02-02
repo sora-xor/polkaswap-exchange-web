@@ -103,7 +103,7 @@ export default {
   pool: {
     connectWallet: '@:connectWalletText',
     yourLiquidity: 'Your liquidity',
-    connectToWallet: 'Connect to a wallet to view your liquidity.',
+    connectToWallet: 'Connect to a wallet to add and view your liquidity.',
     liquidityNotFound: 'No liquidity found.',
     addLiquidity: 'Add liquidity',
     removeLiquidity: 'Remove liquidity',
