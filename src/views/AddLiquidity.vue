@@ -164,13 +164,13 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { AccountAsset, KnownAssets, KnownSymbols, FPNumber } from '@sora-substrate/util'
+import { Asset, AccountAsset, KnownAssets, KnownSymbols, FPNumber } from '@sora-substrate/util'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 import router, { lazyComponent } from '@/router'
-import { formatNumber, isNumberValue, isWalletConnected, isMaxButtonAvailable, getMaxValue } from '@/utils'
+import { formatNumber, isNumberValue, isWalletConnected, isXorAccountAsset, isMaxButtonAvailable, getMaxValue } from '@/utils'
 import { Components, PageNames } from '@/consts'
 
 const namespace = 'addLiquidity'
@@ -314,24 +314,33 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
 
   get isInsufficientBalance (): boolean {
     if (this.connected && this.areTokensSelected) {
-      const firstBalance = new FPNumber(this.firstToken.balance, this.firstToken.decimals)
-      const firstValue = new FPNumber(this.firstTokenValue, this.firstToken.decimals)
-      // Now first asset is XOR so we should change it later
-      const fee = new FPNumber(this.fee, this.firstToken.decimals)
-      if (FPNumber.lt(firstBalance, firstValue.add(fee))) {
-        this.insufficientBalanceTokenSymbol = this.firstToken.symbol
-        return true
+      if (isXorAccountAsset(this.firstToken) || isXorAccountAsset(this.secondToken)) {
+        if (this.hasInsufficientBalance(this.firstToken, this.firstTokenValue, this.fee)) {
+          this.insufficientBalanceTokenSymbol = this.firstToken.symbol
+          return true
+        }
+        if (this.hasInsufficientBalance(this.secondToken, this.secondTokenValue, this.fee)) {
+          this.insufficientBalanceTokenSymbol = this.secondToken.symbol
+          return true
+        }
       }
-
-      const secondBalance = new FPNumber(this.secondToken.balance, this.secondToken.decimals)
-      const secondValue = new FPNumber(this.secondTokenValue, this.secondToken.decimals)
-      if (FPNumber.lt(secondBalance, secondValue)) {
-        this.insufficientBalanceTokenSymbol = this.secondToken.symbol
-        return true
-      }
-      // TODO: Add checking for XOR - fee
+      // TODO: Add check for the pair without XOR
     }
     return false
+  }
+
+  hasInsufficientBalance (asset: AccountAsset, amount: number, fee: string): boolean {
+    if (+asset.balance === 0) {
+      return true
+    }
+    const decimals = asset.decimals
+    const fpBalance = new FPNumber(asset.balance, decimals)
+    const fpAmount = new FPNumber(amount, decimals)
+    if (isXorAccountAsset(asset)) {
+      const fpFee = new FPNumber(fee, decimals)
+      return FPNumber.lt(fpBalance, fpAmount.add(fpFee))
+    }
+    return FPNumber.lt(fpBalance, fpAmount)
   }
 
   getTokenValue (token: any, tokenValue: number): string {
