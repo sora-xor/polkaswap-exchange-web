@@ -20,7 +20,7 @@
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t(`swap.${isExchangeB ? 'maxSold' : 'minReceived'}`) }}</span>
-        <span class="swap-info-value">{{ minMaxReceived }}<span class="asset-title">{{ getAssetSymbolText(false) }}</span></span>
+        <span class="swap-info-value">{{ minMaxReceived }}<span class="asset-title">{{ getAssetSymbolText(isExchangeB) }}</span></span>
       </div>
       <!-- TODO: Hid for first iteration of development -->
       <!-- <div class="swap-info">
