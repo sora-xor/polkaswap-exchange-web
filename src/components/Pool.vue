@@ -50,12 +50,9 @@
       <s-button class="el-button--add-liquidity" type="primary" @click="handleAddLiquidity">
         {{ t('pool.addLiquidity') }}
       </s-button>
-      <s-tooltip :content="t('pool.comingSoon')">
-        <!-- TODO: Remove coming soon and fix onClick-->
-        <s-button class="el-button--create-pair" type="secondary" >
-          {{ t('pool.createPair') }}
-        </s-button>
-      </s-tooltip>
+      <s-button class="el-button--create-pair" type="secondary" @click="handleCreatePair">
+        {{ t('pool.createPair') }}
+      </s-button>
     </template>
     <s-button v-else type="primary" @click="handleConnectWallet">
       {{ t('pool.connectWallet') }}

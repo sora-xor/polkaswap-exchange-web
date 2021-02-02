@@ -21,7 +21,8 @@ const types = flow(
   'ADD_LIQUIDITY',
   'GET_RESERVE',
   'ESTIMATE_MINTED',
-  'GET_FEE'
+  'GET_FEE',
+  'CHECK_LIQUIDITY'
 ])
 
 function initialState () {
@@ -34,7 +35,8 @@ function initialState () {
     minted: '',
     fee: '',
     totalSupply: 0,
-    focusedField: null
+    focusedField: null,
+    isAvailable: false
   }
 }
 
@@ -74,7 +76,10 @@ const getters = {
   reserveB (state) {
     return state.reserve ? Number(state.reserve[1]) : 0
   },
-  isAvailable (state, getters) {
+  isAvailable (state) {
+    return state.isAvailable && state.reserve
+  },
+  isNotFirstLiquidityProvider (state, getters) {
     return state.reserve && getters.reserveA !== 0 && getters.reserveB !== 0
   },
   minted (state) {
@@ -87,8 +92,9 @@ const getters = {
     return state.totalSupply || '0'
   },
   shareOfPool (state, getters) {
+    const minted = new FPNumber(getters.minted)
     return getters.firstTokenValue && getters.secondTokenValue
-      ? new FPNumber(getters.minted).div(new FPNumber(getters.totalSupply)).mul(new FPNumber(100)).toString() || 0
+      ? minted.div(new FPNumber(getters.totalSupply).add(minted)).mul(new FPNumber(100)).toString() || 0
       : 0
   }
 }
@@ -136,7 +142,12 @@ const mutations = {
   },
   [types.SET_FOCUSED_FIELD] (state, field) {
     state.focusedField = field
-  }
+  },
+  [types.CHECK_LIQUIDITY_REQUEST] (state) {},
+  [types.CHECK_LIQUIDITY_SUCCESS] (state, isAvailable) {
+    state.isAvailable = isAvailable
+  },
+  [types.CHECK_LIQUIDITY_FAILURE] (state) {}
 }
 
 const actions = {
@@ -149,7 +160,7 @@ const actions = {
     commit(types.SET_FIRST_TOKEN, firstAsset)
     commit(types.SET_FIRST_TOKEN_VALUE, '')
     commit(types.SET_SECOND_TOKEN_VALUE, '')
-    dispatch('checkReserve')
+    dispatch('checkLiquidity')
   },
 
   async setSecondToken ({ commit, dispatch }, asset: any) {
@@ -160,7 +171,7 @@ const actions = {
     commit(types.SET_SECOND_TOKEN, secondAddress)
     commit(types.SET_FIRST_TOKEN_VALUE, '')
     commit(types.SET_SECOND_TOKEN_VALUE, '')
-    dispatch('checkReserve')
+    dispatch('checkLiquidity')
   },
 
   async checkReserve ({ commit, getters, dispatch }) {
@@ -174,6 +185,20 @@ const actions = {
         dispatch('getNetworkFee')
       } catch (error) {
         commit(types.GET_RESERVE_FAILURE, error)
+      }
+    }
+  },
+
+  async checkLiquidity ({ commit, getters, dispatch }) {
+    if (getters.firstToken && getters.secondToken) {
+      commit(types.CHECK_LIQUIDITY_REQUEST)
+      try {
+        const isAvailable = await dexApi.checkLiquidity(getters.firstTokenAddress, getters.secondTokenAddress)
+        commit(types.CHECK_LIQUIDITY_SUCCESS, isAvailable)
+
+        dispatch('checkReserve')
+      } catch (error) {
+        commit(types.CHECK_LIQUIDITY_FAILURE, error)
       }
     }
   },
@@ -203,7 +228,7 @@ const actions = {
       commit(types.SET_FOCUSED_FIELD, 'firstTokenValue')
 
       commit(types.SET_FIRST_TOKEN_VALUE, value)
-      if (value && getters.reserveA && getters.reserveB) {
+      if (value && getters.isNotFirstLiquidityProvider) {
         commit(
           types.SET_SECOND_TOKEN_VALUE,
           new FPNumber(value)
@@ -221,7 +246,7 @@ const actions = {
       commit(types.SET_FOCUSED_FIELD, 'secondTokenValue')
 
       commit(types.SET_SECOND_TOKEN_VALUE, value)
-      if (value && getters.reserveA && getters.reserveB) {
+      if (value && getters.isNotFirstLiquidityProvider) {
         commit(
           types.SET_FIRST_TOKEN_VALUE,
           new FPNumber(value)

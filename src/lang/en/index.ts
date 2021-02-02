@@ -147,7 +147,8 @@ export default {
     price: 'Price'
   },
   addLiquidity: {
-    title: 'Add liquidity'
+    title: 'Add liquidity',
+    pairIsNotCreated: 'Token pair isn\'t created'
   },
   removeLiquidity: {
     title: 'Remove liquidity',
