@@ -23,8 +23,11 @@ export const isMaxButtonAvailable = (areAssetsSelected: boolean, asset: AccountA
   const fpBalance = new FPNumber(asset.balance, decimals)
   const fpAmount = new FPNumber(amount, decimals)
   if (isXorAccountAsset(asset)) {
+    if (+fee === 0) {
+      return false
+    }
     const fpFee = new FPNumber(fee, decimals)
-    return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount))
+    return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee)
   }
   return !FPNumber.eq(fpBalance, fpAmount)
 }

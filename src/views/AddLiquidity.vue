@@ -164,7 +164,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { AccountAsset, KnownAssets, KnownSymbols, FPNumber } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, FPNumber } from '@sora-substrate/util'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
