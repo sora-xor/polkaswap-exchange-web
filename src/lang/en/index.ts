@@ -35,13 +35,15 @@ export default {
       [Operation.Transfer]: 'Sent {amount} {symbol} to {address}',
       [Operation.Swap]: 'Swapped {amount} {symbol} for {amount2} {symbol2}',
       [Operation.AddLiquidity]: 'Supplied {amount} {symbol} and {amount2} {symbol2}',
-      [Operation.RemoveLiquidity]: 'Removed {amount} {symbol} and {amount2} {symbol2}'
+      [Operation.RemoveLiquidity]: 'Removed {amount} {symbol} and {amount2} {symbol2}',
+      [Operation.CreatePair]: 'Supplied {amount} {symbol} and {amount2} {symbol2}'
     },
     [TransactionStatus.Error]: {
       [Operation.Transfer]: 'Failed to send {amount} {symbol} to {address}',
       [Operation.Swap]: 'Failed to swap {amount} {symbol} for {amount2} {symbol2}',
       [Operation.AddLiquidity]: 'Failed to supply {amount} {symbol} and {amount2} {symbol2}',
-      [Operation.RemoveLiquidity]: 'Failed to remove {amount} {symbol} and {amount2} {symbol2}'
+      [Operation.RemoveLiquidity]: 'Failed to remove {amount} {symbol} and {amount2} {symbol2}',
+      [Operation.CreatePair]: 'Failed to supply {amount} {symbol} and {amount2} {symbol2}'
     }
   },
   about: {
@@ -136,7 +138,7 @@ export default {
     add: 'ADD',
     ok: 'OK',
     networkFee: 'Network fee',
-    unsuitableAssets: 'Unsuitable assets',
+    alreadyCreated: 'Token pair is already created',
     firstLiquidityProvider: 'You are the first liquidity provider',
     firstLiquidityProviderInfo: 'The ratio of tokens you add will set the price of this pool.<br/>Once you are happy with the rate click supply to review.'
   },
@@ -147,7 +149,8 @@ export default {
     price: 'Price'
   },
   addLiquidity: {
-    title: 'Add liquidity'
+    title: 'Add liquidity',
+    pairIsNotCreated: 'Token pair isn\'t created'
   },
   removeLiquidity: {
     title: 'Remove liquidity',
@@ -158,7 +161,7 @@ export default {
     price: 'Price',
     remove: 'Remove',
     description: 'Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.',
-    outputMessage: 'Output is estimated. If the price changes more than 0.5% your transaction will revert.',
+    outputMessage: 'Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.',
     confirmTitle: 'You will receive'
   },
   dexSettings: {
