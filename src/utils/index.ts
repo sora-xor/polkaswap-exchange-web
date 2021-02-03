@@ -42,6 +42,20 @@ export const getMaxValue = (asset: AccountAsset, fee: string): string => {
   return asset.balance
 }
 
+export const hasInsufficientBalance = (asset: AccountAsset, amount: number, fee: string): boolean => {
+  if (+asset.balance === 0) {
+    return true
+  }
+  const decimals = asset.decimals
+  const fpBalance = new FPNumber(asset.balance, decimals)
+  const fpAmount = new FPNumber(amount, decimals)
+  if (isXorAccountAsset(asset)) {
+    const fpFee = new FPNumber(fee, decimals)
+    return FPNumber.lt(fpBalance, fpAmount.add(fpFee))
+  }
+  return FPNumber.lt(fpBalance, fpAmount)
+}
+
 // We could use this method to check if the user enters a text value in a numeric field (we could do this by copy and paste)
 export const isNumberValue = (value: any): boolean => {
   const numberValue = +value

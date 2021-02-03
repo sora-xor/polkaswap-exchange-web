@@ -28,7 +28,7 @@
           </s-form-item>
           <div v-if="firstToken" class="token">
             <!-- TODO 4 alexnatalia, stefashkaa: Add mini size here -->
-            <s-button v-if="isFirstMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleFirstMaxValue">
+            <s-button v-if="isAvailable && isFirstMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
@@ -64,7 +64,7 @@
           </s-form-item>
           <div v-if="secondToken" class="token">
             <!-- TODO 4 alexnatalia, stefashkaa: Add mini size here -->
-            <s-button v-if="isSecondMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleSecondMaxValue">
+            <s-button v-if="isAvailable && isSecondMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleSecondMaxValue">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
@@ -179,7 +179,7 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
-import { formatNumber, isNumberValue, isWalletConnected, isXorAccountAsset, isMaxButtonAvailable, getMaxValue } from '@/utils'
+import { formatNumber, isNumberValue, isWalletConnected, isMaxButtonAvailable, getMaxValue, isXorAccountAsset, hasInsufficientBalance } from '@/utils'
 
 const namespace = 'createPair'
 
@@ -261,20 +261,17 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
 
   get isInsufficientBalance (): boolean {
     if (this.connected && this.areTokensSelected) {
-      const firstBalance = new FPNumber(this.firstToken.balance, this.firstToken.decimals)
-      const firstValue = new FPNumber(this.firstTokenValue, this.firstToken.decimals)
-      // Now first asset is XOR so we should change it later
-      const fee = new FPNumber(this.fee, this.firstToken.decimals)
-      if (FPNumber.lt(firstBalance, firstValue.add(fee))) {
-        this.insufficientBalanceTokenSymbol = this.firstToken.symbol
-        return true
+      if (isXorAccountAsset(this.firstToken) || isXorAccountAsset(this.secondToken)) {
+        if (hasInsufficientBalance(this.firstToken, this.firstTokenValue, this.fee)) {
+          this.insufficientBalanceTokenSymbol = this.firstToken.symbol
+          return true
+        }
+        if (hasInsufficientBalance(this.secondToken, this.secondTokenValue, this.fee)) {
+          this.insufficientBalanceTokenSymbol = this.secondToken.symbol
+          return true
+        }
       }
-      const secondBalance = new FPNumber(this.secondToken.balance, this.secondToken.decimals)
-      const secondValue = new FPNumber(this.secondTokenValue, this.secondToken.decimals)
-      if (FPNumber.lt(secondBalance, secondValue)) {
-        this.insufficientBalanceTokenSymbol = this.secondToken.symbol
-        return true
-      }
+      // TODO: Add check for pair without XOR
     }
     return false
   }
