@@ -47,7 +47,7 @@
             />
           </s-form-item>
           <div class="token">
-            <s-button v-if="isWalletConnected && liquidityAmount !== liquidityBalance" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleLiquidityMaxValue">
+            <s-button v-if="isMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleLiquidityMaxValue">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
@@ -232,6 +232,13 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
 
   get areTokensSelected (): boolean {
     return !!this.firstToken && !!this.secondToken
+  }
+
+  get isMaxButtonAvailable (): boolean {
+    if (!this.isWalletConnected || +this.liquidityBalance === 0) {
+      return false
+    }
+    return this.liquidityBalance !== this.liquidityAmount
   }
 
   get isEmptyAmount (): boolean {
