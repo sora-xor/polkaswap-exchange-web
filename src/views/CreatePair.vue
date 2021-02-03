@@ -28,7 +28,7 @@
           </s-form-item>
           <div v-if="firstToken" class="token">
             <!-- TODO 4 alexnatalia, stefashkaa: Add mini size here -->
-            <s-button v-if="connected && createPairModel.firstTokenValue !== firstToken.balance" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleFirstMaxValue">
+            <s-button v-if="isFirstMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
@@ -64,7 +64,7 @@
           </s-form-item>
           <div v-if="secondToken" class="token">
             <!-- TODO 4 alexnatalia, stefashkaa: Add mini size here -->
-            <s-button v-if="connected && createPairModel.secondTokenValue !== secondToken.balance" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleSecondMaxValue">
+            <s-button v-if="isSecondMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleSecondMaxValue">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
@@ -128,7 +128,7 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
-import { formatNumber, isNumberValue, isWalletConnected } from '@/utils'
+import { formatNumber, isNumberValue, isWalletConnected, isXorAccountAsset, isMaxButtonAvailable, getMaxValue } from '@/utils'
 
 const namespace = 'createPair'
 
@@ -161,6 +161,7 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
 
   @Action('setFirstToken', { namespace }) setFirstToken
   @Action('setSecondToken', { namespace }) setSecondToken
+  @Action('getNetworkFee', { namespace }) getNetworkFee
   @Action('setFirstTokenValue', { namespace }) setFirstTokenValue
   @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
   @Action('createPair', { namespace }) createPair
@@ -174,6 +175,7 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
   showConfirmCreatePairDialog = false
   isCreatePairConfirmed = false
 
+  // TODO: Remove createPairModel
   createPairModel = {
     firstTokenValue: '',
     secondTokenValue: ''
@@ -198,6 +200,14 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
     return +this.firstTokenValue === 0 || +this.secondTokenValue === 0
   }
 
+  get isFirstMaxButtonAvailable (): boolean {
+    return isMaxButtonAvailable(this.areTokensSelected, this.firstToken, this.firstTokenValue, this.fee)
+  }
+
+  get isSecondMaxButtonAvailable (): boolean {
+    return isMaxButtonAvailable(this.areTokensSelected, this.secondToken, this.secondTokenValue, this.fee)
+  }
+
   get isInsufficientBalance (): boolean {
     if (this.areTokensSelected) {
       let firstValue = new FPNumber(this.firstTokenValue, this.firstToken.decimals)
@@ -205,7 +215,7 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
       let secondValue = new FPNumber(this.secondTokenValue, this.secondToken.decimals)
       const secondBalance = new FPNumber(this.secondToken.balance, this.secondToken.decimals)
 
-      if (this.firstToken.symbol === KnownSymbols.XOR) {
+      if (isXorAccountAsset(this.firstToken)) {
         firstValue = firstValue.add(new FPNumber(this.fee, this.firstToken.decimals))
       } else {
         secondValue = secondValue.add(new FPNumber(this.fee, this.secondToken.decimals))
@@ -236,12 +246,14 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
     this.showSelectSecondTokenDialog = true
   }
 
-  handleFirstMaxValue (): void {
-    this.createPairModel.firstTokenValue = this.firstToken.balance
+  async handleFirstMaxValue (): Promise<void> {
+    await this.getNetworkFee()
+    this.createPairModel.firstTokenValue = getMaxValue(this.firstToken, this.fee)
   }
 
-  handleSecondMaxValue (): void {
-    this.createPairModel.secondTokenValue = this.secondToken.balance
+  async handleSecondMaxValue (): Promise<void> {
+    await this.getNetworkFee()
+    this.createPairModel.secondTokenValue = getMaxValue(this.secondToken, this.fee)
   }
 
   updatePrices (): void {

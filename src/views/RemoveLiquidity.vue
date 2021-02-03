@@ -157,7 +157,7 @@ import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
-import { formatNumber, isNumberValue } from '@/utils'
+import { formatNumber } from '@/utils'
 
 const namespace = 'removeLiquidity'
 

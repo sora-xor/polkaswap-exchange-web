@@ -28,7 +28,7 @@
           />
         </s-form-item>
         <div v-if="tokenFrom" class="token">
-          <s-button v-if="connected && isMaxAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue">
+          <s-button v-if="isMaxSwapAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue">
             {{ t('exchange.max') }}
           </s-button>
           <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(true)">
@@ -109,7 +109,7 @@ import { KnownSymbols, FPNumber } from '@sora-substrate/util'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
-import { formatNumber, isNumberValue, isWalletConnected } from '@/utils'
+import { formatNumber, isNumberValue, isWalletConnected, isXorAccountAsset, isMaxButtonAvailable, getMaxValue } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -189,21 +189,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     return this.isZeroFromAmount || this.isZeroToAmount
   }
 
-  get isMaxAvailable (): boolean {
-    if (this.connected) {
-      if (!this.areTokensSelected || +this.tokenFrom.balance === 0) {
-        return false
-      }
-      const fpBalance = new FPNumber(this.tokenFrom.balance, this.tokenFrom.decimals)
-      const fpAmount = new FPNumber(this.formModel.from, this.tokenFrom.decimals)
-      if (this.tokenFrom.symbol === KnownSymbols.XOR) {
-        const fpFee = new FPNumber(this.networkFee, this.tokenFrom.decimals)
-        return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount))
-      } else {
-        return !FPNumber.eq(fpBalance, fpAmount)
-      }
-    }
-    return true
+  get isMaxSwapAvailable (): boolean {
+    return isMaxButtonAvailable(this.areTokensSelected, this.tokenFrom, this.formModel.from, this.networkFee)
   }
 
   get isInsufficientBalance (): boolean {
@@ -224,7 +211,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
       }
       const fpFee = new FPNumber(this.networkFee, this.tokenFrom.decimals)
       this.insufficientBalanceTokenSymbol = KnownSymbols.XOR
-      if (this.tokenFrom.symbol === KnownSymbols.XOR) {
+      if (isXorAccountAsset(this.tokenFrom)) {
         return !(FPNumber.lt(fpFee, fpBalance.sub(fpAmount)) || FPNumber.eq(fpFee, fpBalance.sub(fpAmount)))
       }
       if (!this.tokenXOR) {
@@ -443,14 +430,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   async handleMaxValue (): Promise<void> {
     this.isFieldFromActive = true
     this.isFieldToActive = false
-    if (this.tokenFrom.symbol === KnownSymbols.XOR) {
-      await this.getNetworkFee()
-      const fpBalance = new FPNumber(this.tokenFrom.balance, this.tokenFrom.decimals)
-      const fpFee = new FPNumber(this.networkFee, this.tokenFrom.decimals)
-      this.formModel.from = fpBalance.sub(fpFee).toString()
-      return
-    }
-    this.formModel.from = this.tokenFrom.balance
+    await this.getNetworkFee()
+    this.formModel.from = getMaxValue(this.tokenFrom, this.networkFee)
   }
 
   handleConnectWallet (): void {
@@ -473,6 +454,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
         await this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
         this.isTokenToBalanceAvailable = true
       }
+      await this.getNetworkFee()
       await this.recountSwapValues()
     }
   }
