@@ -80,7 +80,7 @@
           {{ t('exchange.chooseTokens') }}
         </template>
         <template v-else-if="!isAvailable">
-          {{ t('createPair.unsuitableAssets') }}
+          {{ t('addLiquidity.pairIsNotCreated') }}
         </template>
         <template v-else-if="isEmptyBalance">
           {{ t('exchange.enterAmount') }}
@@ -93,6 +93,15 @@
         </template>
       </s-button>
     </s-form>
+
+    <info-card
+      v-if="areTokensSelected && isAvailable && !isNotFirstLiquidityProvider && emptyAssets"
+      :title="t('createPair.firstLiquidityProvider')"
+    >
+      <div class="card__data">
+        <p v-html="t('createPair.firstLiquidityProviderInfo')" />
+      </div>
+    </info-card>
 
     <info-card v-if="areTokensSelected && isAvailable && !emptyAssets" :title="t('createPair.pricePool')">
       <div class="card__data">
@@ -155,7 +164,7 @@
     </info-card>
 
     <select-token :visible.sync="showSelectFirstTokenDialog" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstToken" />
-    <select-token :visible.sync="showSelectSecondTokenDialog" account-assets-only not-null-balance-only :asset="firstToken" @select="setSecondToken" />
+    <select-token :visible.sync="showSelectSecondTokenDialog" :asset="firstToken" @select="setSecondToken" />
 
     <confirm-add-liquidity :visible.sync="showConfirmDialog" @confirm="handleConfirmAddLiquidity" />
   </div>
@@ -195,6 +204,7 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
   @Getter('isAvailable', { namespace }) isAvailable!: boolean
+  @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
   @Getter('minted', { namespace }) minted!: string
   @Getter('fee', { namespace }) fee!: string
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
@@ -324,7 +334,6 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
           return true
         }
       }
-      // TODO: Add check for the pair without XOR
     }
     return false
   }
