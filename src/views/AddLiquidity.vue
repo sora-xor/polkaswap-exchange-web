@@ -170,7 +170,7 @@ import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 import router, { lazyComponent } from '@/router'
-import { formatNumber, isNumberValue, isWalletConnected, isXorAccountAsset, isMaxButtonAvailable, getMaxValue } from '@/utils'
+import { formatNumber, isNumberValue, isWalletConnected, isMaxButtonAvailable, getMaxValue, isXorAccountAsset } from '@/utils'
 import { Components, PageNames } from '@/consts'
 
 const namespace = 'addLiquidity'
