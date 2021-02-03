@@ -166,14 +166,14 @@ const actions = {
   },
 
   async getNetworkFee ({ commit, getters }) {
-    if (getters.firstToken && getters.firstToken.address && getters.firstToken && getters.secondToken.address && getters.firstTokenValue && getters.secondTokenValue) {
+    if (getters.firstToken && getters.firstToken.address && getters.secondToken && getters.secondToken.address) {
       commit(types.GET_FEE_REQUEST)
       try {
         const fee = await dexApi.getCreatePairNetworkFee(
           getters.firstToken.address,
           getters.secondToken.address,
-          getters.firstTokenValue,
-          getters.secondTokenValue
+          getters.firstTokenValue || 0,
+          getters.secondTokenValue || 0
         )
         commit(types.GET_FEE_SUCCESS, fee)
       } catch (error) {
