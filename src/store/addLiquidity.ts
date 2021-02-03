@@ -152,7 +152,7 @@ const mutations = {
 
 const actions = {
   async setFirstToken ({ commit, dispatch }, asset: any) {
-    let firstAsset = await dexApi.accountAssets.find(a => a.address === asset.address)
+    let firstAsset = dexApi.accountAssets.find(a => a.address === asset.address)
     if (!firstAsset) {
       firstAsset = { ...asset, balance: '0' }
     }
@@ -164,7 +164,7 @@ const actions = {
   },
 
   async setSecondToken ({ commit, dispatch }, asset: any) {
-    let secondAddress = await dexApi.accountAssets.find(a => a.address === asset.address)
+    let secondAddress = dexApi.accountAssets.find(a => a.address === asset.address)
     if (!secondAddress) {
       secondAddress = { ...asset, balance: '0' }
     }

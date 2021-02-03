@@ -103,7 +103,7 @@ const mutations = {
 
 const actions = {
   async setFirstToken ({ commit, dispatch }, asset: any) {
-    let firstAsset = await dexApi.accountAssets.find(a => a.address === asset.address)
+    let firstAsset = dexApi.accountAssets.find(a => a.address === asset.address)
     if (!firstAsset) {
       firstAsset = { ...asset, balance: '0' }
     }
@@ -112,11 +112,11 @@ const actions = {
   },
 
   async setSecondToken ({ commit, dispatch }, asset: any) {
-    let secondAddress = await dexApi.accountAssets.find(a => a.address === asset.address)
-    if (!secondAddress) {
-      secondAddress = { ...asset, balance: '0' }
+    let secondAsset = dexApi.accountAssets.find(a => a.address === asset.address)
+    if (!secondAsset) {
+      secondAsset = { ...asset, balance: '0' }
     }
-    commit(types.SET_SECOND_TOKEN, secondAddress)
+    commit(types.SET_SECOND_TOKEN, secondAsset)
     dispatch('checkLiquidity')
   },
 
@@ -124,7 +124,7 @@ const actions = {
     if (getters.firstToken && getters.secondToken) {
       commit(types.CHECK_LIQUIDITY_REQUEST)
       try {
-        const exists = await dexApi.checkLiquidity(getters.firstTokenAddress, getters.secondTokenAddress)
+        const exists = await dexApi.checkLiquidity(getters.firstToken.address, getters.secondToken.address)
         commit(types.CHECK_LIQUIDITY_SUCCESS, !exists)
         dispatch('estimateMinted')
         dispatch('getNetworkFee')
@@ -138,7 +138,7 @@ const actions = {
     if (getters.firstToken && getters.firstToken.address && getters.firstToken && getters.secondToken.address && getters.firstTokenValue && getters.secondTokenValue) {
       commit(types.ESTIMATE_MINTED_REQUEST)
       try {
-        const minted = await dexApi.estimatePoolTokensMinted(
+        const [minted] = await dexApi.estimatePoolTokensMinted(
           getters.firstToken.address,
           getters.secondToken.address,
           getters.firstTokenValue,

@@ -352,16 +352,18 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
     return token ? token.balance : ''
   }
 
-  handleConfirmCreatePair () {
+  handleConfirmCreatePair (): void {
     this.showConfirmCreatePairDialog = true
   }
 
-  async confirmCreatePair () {
+  async confirmCreatePair (): Promise<void> {
     try {
       await this.withNotifications(this.createPair)
+      this.showConfirmCreatePairDialog = false
       router.push({ name: PageNames.Pool })
     } catch (error) {
       console.error(error)
+      this.$alert(this.t(error.message), { title: this.t('errorText') })
     }
   }
 }
