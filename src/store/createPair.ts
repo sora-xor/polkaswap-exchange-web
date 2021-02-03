@@ -18,9 +18,9 @@ const types = flow(
   fromPairs
 )([
   'CREATE_PAIR',
-  'GET_RESERVE',
   'ESTIMATE_MINTED',
-  'GET_FEE'
+  'GET_FEE',
+  'CHECK_LIQUIDITY'
 ])
 
 function initialState () {
@@ -29,9 +29,9 @@ function initialState () {
     secondToken: null,
     firstTokenValue: '',
     secondTokenValue: '',
-    reserve: null,
     minted: '',
-    fee: ''
+    fee: '',
+    isAvailable: false
   }
 }
 
@@ -50,17 +50,8 @@ const getters = {
   secondTokenValue (state) {
     return state.secondTokenValue
   },
-  reserve (state) {
-    return state.reserve
-  },
-  reserveA (state) {
-    return state.reserve ? Number(state.reserve[0]) : 0
-  },
-  reserveB (state) {
-    return state.reserve ? Number(state.reserve[1]) : 0
-  },
   isAvailable (state) {
-    return state.reserve && state.reserve[0] === '0' && state.reserve[1] === '0'
+    return state.isAvailable
   },
   minted (state) {
     return state.minted || 0
@@ -89,13 +80,6 @@ const mutations = {
   },
   [types.CREATE_PAIR_FAILURE] (state, error) {
   },
-  [types.GET_RESERVE_REQUEST] (state) {
-  },
-  [types.GET_RESERVE_SUCCESS] (state, reserve) {
-    state.reserve = reserve
-  },
-  [types.GET_RESERVE_FAILURE] (state, error) {
-  },
   [types.ESTIMATE_MINTED_REQUEST] (state) {
   },
   [types.ESTIMATE_MINTED_SUCCESS] (state, minted) {
@@ -109,7 +93,12 @@ const mutations = {
     state.fee = fee
   },
   [types.GET_FEE_FAILURE] (state, error) {
-  }
+  },
+  [types.CHECK_LIQUIDITY_REQUEST] (state) {},
+  [types.CHECK_LIQUIDITY_SUCCESS] (state, isAvailable) {
+    state.isAvailable = isAvailable
+  },
+  [types.CHECK_LIQUIDITY_FAILURE] (state) {}
 }
 
 const actions = {
@@ -118,9 +107,8 @@ const actions = {
     if (!firstAsset) {
       firstAsset = { ...asset, balance: '0' }
     }
-
     commit(types.SET_FIRST_TOKEN, firstAsset)
-    dispatch('checkReserve')
+    dispatch('checkLiquidity')
   },
 
   async setSecondToken ({ commit, dispatch }, asset: any) {
@@ -128,22 +116,20 @@ const actions = {
     if (!secondAddress) {
       secondAddress = { ...asset, balance: '0' }
     }
-
     commit(types.SET_SECOND_TOKEN, secondAddress)
-    dispatch('checkReserve')
+    dispatch('checkLiquidity')
   },
 
-  async checkReserve ({ commit, getters, dispatch }) {
+  async checkLiquidity ({ commit, getters, dispatch }) {
     if (getters.firstToken && getters.secondToken) {
-      commit(types.GET_RESERVE_REQUEST)
+      commit(types.CHECK_LIQUIDITY_REQUEST)
       try {
-        const reserve = await dexApi.getLiquidityReserves(getters.firstToken.address, getters.secondToken.address)
-        commit(types.GET_RESERVE_SUCCESS, reserve)
-
+        const exists = await dexApi.checkLiquidity(getters.firstTokenAddress, getters.secondTokenAddress)
+        commit(types.CHECK_LIQUIDITY_SUCCESS, !exists)
         dispatch('estimateMinted')
         dispatch('getNetworkFee')
       } catch (error) {
-        commit(types.GET_RESERVE_FAILURE, error)
+        commit(types.CHECK_LIQUIDITY_FAILURE, error)
       }
     }
   },
@@ -151,15 +137,14 @@ const actions = {
   async estimateMinted ({ commit, getters }) {
     if (getters.firstToken && getters.firstToken.address && getters.firstToken && getters.secondToken.address && getters.firstTokenValue && getters.secondTokenValue) {
       commit(types.ESTIMATE_MINTED_REQUEST)
-
       try {
         const minted = await dexApi.estimatePoolTokensMinted(
           getters.firstToken.address,
           getters.secondToken.address,
           getters.firstTokenValue,
           getters.secondTokenValue,
-          getters.reserveA,
-          getters.reserveB
+          0,
+          0
         )
         commit(types.ESTIMATE_MINTED_SUCCESS, minted)
       } catch (error) {
@@ -184,13 +169,12 @@ const actions = {
     if (getters.firstToken && getters.firstToken.address && getters.firstToken && getters.secondToken.address && getters.firstTokenValue && getters.secondTokenValue) {
       commit(types.GET_FEE_REQUEST)
       try {
-        const fee = await dexApi.getAddLiquidityNetworkFee(
+        const fee = await dexApi.getCreatePairNetworkFee(
           getters.firstToken.address,
           getters.secondToken.address,
           getters.firstTokenValue,
           getters.secondTokenValue
         )
-
         commit(types.GET_FEE_SUCCESS, fee)
       } catch (error) {
         commit(types.GET_FEE_FAILURE, error)
@@ -200,17 +184,17 @@ const actions = {
     }
   },
 
-  async createPair ({ commit, getters }) {
+  async createPair ({ commit, getters, rootGetters }) {
     commit(types.CREATE_PAIR_REQUEST)
-    const result = await dexApi.addLiquidity(
-      getters.firstToken.address,
-      getters.secondToken.address,
-      getters.firstTokenValue,
-      getters.secondTokenValue
-    )
-
     try {
-      commit(types.CREATE_PAIR_SUCCESS, result)
+      await dexApi.createPair(
+        getters.firstToken.address,
+        getters.secondToken.address,
+        getters.firstTokenValue,
+        getters.secondTokenValue,
+        rootGetters.slippageTolerance
+      )
+      commit(types.CREATE_PAIR_SUCCESS)
     } catch (error) {
       commit(types.CREATE_PAIR_FAILURE)
     }

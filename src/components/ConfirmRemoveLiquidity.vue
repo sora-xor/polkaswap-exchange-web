@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <p class="transaction-message" v-html="t('removeLiquidity.outputMessage')" />
+    <p class="transaction-message" v-html="t('removeLiquidity.outputMessage', { slippageTolerance })" />
     <s-divider />
     <s-row flex justify="space-between" class="price-container">
       <div v-if="firstToken && secondToken">
@@ -73,6 +73,7 @@ export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, Dia
   @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
   @Getter('price', { namespace: 'prices' }) price!: string | number
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
+  @Getter slippageTolerance!: number
 
   get formattedFromValue (): string {
     return this.firstTokenAmount

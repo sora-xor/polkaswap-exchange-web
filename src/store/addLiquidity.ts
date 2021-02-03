@@ -278,14 +278,15 @@ const actions = {
     }
   },
 
-  async addLiquidity ({ commit, getters }) {
+  async addLiquidity ({ commit, getters, rootGetters }) {
     commit(types.ADD_LIQUIDITY_REQUEST)
     try {
       const result = await dexApi.addLiquidity(
         getters.firstTokenAddress,
         getters.secondTokenAddress,
         getters.firstTokenValue,
-        getters.secondTokenValue
+        getters.secondTokenValue,
+        rootGetters.slippageTolerance
       )
       commit(types.ADD_LIQUIDITY_SUCCESS, result)
     } catch (error) {

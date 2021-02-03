@@ -77,9 +77,12 @@
           </s-button>
         </div>
       </div>
-        <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="handleConfirmCreatePair">
+      <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="handleConfirmCreatePair">
         <template v-if="!areTokensSelected">
           {{ t('exchange.chooseTokens') }}
+        </template>
+        <template v-else-if="!isAvailable">
+          {{ t('createPair.alreadyCreated') }}
         </template>
         <template v-else-if="isEmptyBalance">
           {{ t('exchange.enterAmount') }}
@@ -93,17 +96,69 @@
       </s-button>
     </s-form>
 
-    <info-card v-if="areTokensSelected && isAvailable" class="card--first-liquidity" :title="t('createPair.firstLiquidityProvider')">
+    <info-card v-if="areTokensSelected && isAvailable && isEmptyBalance" class="card--first-liquidity" :title="t('createPair.firstLiquidityProvider')">
       <div class="card__data">
         <p v-html="t('createPair.firstLiquidityProviderInfo')" />
       </div>
     </info-card>
 
-    <!-- TODO: Add all missed blocks here (we can create special components for Prices and Position and use it in all needed components) -->
-    <info-card v-if="areTokensSelected && isAvailable">
+    <info-card v-if="areTokensSelected && isAvailable && !isEmptyBalance" :title="t('createPair.pricePool')">
+      <div class="card__data">
+        <div>
+          {{
+            t('createPair.firstPerSecond', {
+              first: firstToken.symbol,
+              second: secondToken.symbol
+            })
+          }}
+        </div>
+        <div>{{ price }} {{ firstToken.symbol }}</div>
+      </div>
+      <div class="card__data">
+        <div>
+          {{
+            t('createPair.firstPerSecond', {
+              first: secondToken.symbol,
+              second: firstToken.symbol
+            })
+          }}
+        </div>
+        <div>{{ priceReversed }} {{ secondToken.symbol }}</div>
+      </div>
+      <div class="card__data">
+        <div>{{ t('createPair.shareOfPool') }}</div>
+        <div>100%</div>
+      </div>
       <div class="card__data">
         <div>{{ t('createPair.networkFee') }}</div>
         <div>{{ fee }} {{ KnownSymbols.XOR }}</div>
+      </div>
+    </info-card>
+
+    <info-card
+      v-if="areTokensSelected && isAvailable && !isEmptyBalance"
+      :title="t('createPair.yourPositionEstimated')"
+    >
+      <div class="card__data card__data_assets">
+        <s-row flex>
+          <pair-token-logo class="pair-token-logo" :first-token="firstToken" :second-token="secondToken" size="mini" />
+          {{
+            t('createPair.firstSecondPoolTokens', {
+              first: firstToken.symbol,
+              second: secondToken.symbol
+            })
+          }}
+        </s-row>
+        <div>{{ minted }}</div>
+      </div>
+      <s-divider />
+      <div class="card__data">
+        <div>{{ firstToken.symbol }}</div>
+        <div>{{ firstTokenValue }}</div>
+      </div>
+      <div class="card__data">
+        <div>{{ secondToken.symbol }}</div>
+        <div>{{ secondTokenValue }}</div>
       </div>
     </info-card>
 
@@ -111,7 +166,6 @@
     <select-token :visible.sync="showSelectSecondTokenDialog" :asset="firstToken" @select="setSecondToken" />
 
     <confirm-create-pair :visible.sync="showConfirmCreatePairDialog" @confirm="confirmCreatePair" />
-    <result-dialog :visible.sync="isCreatePairConfirmed" :type="t('createPair.add')" :message="resultMessage" />
   </div>
 </template>
 
@@ -169,7 +223,6 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
   showSelectSecondTokenDialog = false
   inputPlaceholder: string = formatNumber(0, 1)
   showConfirmCreatePairDialog = false
-  isCreatePairConfirmed = false
   insufficientBalanceTokenSymbol = ''
 
   createPairModel = {
@@ -214,13 +267,6 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
       }
     }
     return false
-  }
-
-  get resultMessage (): string {
-    return this.t('exchange.transactionMessage', {
-      firstToken: this.getTokenValue(this.firstToken, this.firstTokenValue),
-      secondToken: this.getTokenValue(this.secondToken, this.secondTokenValue)
-    })
   }
 
   getTokenValue (token: any, tokenValue: number): string {
@@ -310,15 +356,13 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
     this.showConfirmCreatePairDialog = true
   }
 
-  async confirmCreatePair (isCreatePairConfirmed: boolean) {
+  async confirmCreatePair () {
     try {
       await this.withNotifications(this.createPair)
       router.push({ name: PageNames.Pool })
     } catch (error) {
       console.error(error)
     }
-
-    this.isCreatePairConfirmed = isCreatePairConfirmed
   }
 }
 </script>

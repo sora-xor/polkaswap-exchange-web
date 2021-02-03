@@ -136,7 +136,7 @@ export default {
     add: 'ADD',
     ok: 'OK',
     networkFee: 'Network fee',
-    unsuitableAssets: 'Unsuitable assets',
+    alreadyCreated: 'Token pair is already created',
     firstLiquidityProvider: 'You are the first liquidity provider',
     firstLiquidityProviderInfo: 'The ratio of tokens you add will set the price of this pool.<br/>Once you are happy with the rate click supply to review.'
   },
@@ -159,7 +159,7 @@ export default {
     price: 'Price',
     remove: 'Remove',
     description: 'Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.',
-    outputMessage: 'Output is estimated. If the price changes more than 0.5% your transaction will revert.',
+    outputMessage: 'Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.',
     confirmTitle: 'You will receive'
   },
   dexSettings: {
