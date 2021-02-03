@@ -454,6 +454,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
         await this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
         this.isTokenToBalanceAvailable = true
       }
+      await this.getNetworkFee()
       await this.recountSwapValues()
     }
   }

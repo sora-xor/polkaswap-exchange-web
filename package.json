@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@soramitsu/soramitsu-js-ui": "^0.7.1",
-    "@soramitsu/soraneo-wallet-web": "^0.4.4",
+    "@soramitsu/soraneo-wallet-web": "^0.4.5",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "lodash": "^4.17.15",

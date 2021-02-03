@@ -277,6 +277,7 @@ const actions = {
       secondAsset = KnownAssets.get(secondAddress)
     }
     dispatch('setSecondToken', secondAsset)
+    dispatch('getNetworkFee')
   },
 
   resetFocusedField ({ commit }) {
