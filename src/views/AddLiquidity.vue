@@ -27,7 +27,7 @@
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
-            <s-button v-if="connected && areTokensSelected && firstTokenValue !== firstToken.balance" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleFirstMaxValue">
+            <s-button v-if="isFirstMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
@@ -62,7 +62,7 @@
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
-            <s-button v-if="connected && secondTokenValue !== secondToken.balance" :disabled="!areTokensSelected" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleSecondMaxValue">
+            <s-button v-if="isSecondMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleSecondMaxValue">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
@@ -179,7 +179,7 @@ import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 import router, { lazyComponent } from '@/router'
-import { formatNumber, isNumberValue, isWalletConnected } from '@/utils'
+import { formatNumber, isNumberValue, isWalletConnected, isMaxButtonAvailable, getMaxValue } from '@/utils'
 import { Components, PageNames } from '@/consts'
 
 const namespace = 'addLiquidity'
@@ -217,6 +217,7 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
   @Action('setSecondToken', { namespace }) setSecondToken
   @Action('setFirstTokenValue', { namespace }) setFirstTokenValue
   @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
+  @Action('getNetworkFee', { namespace }) getNetworkFee
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField
   @Action('resetData', { namespace }) resetData
@@ -262,6 +263,14 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
 
   get connected (): boolean {
     return isWalletConnected()
+  }
+
+  get isFirstMaxButtonAvailable (): boolean {
+    return isMaxButtonAvailable(this.areTokensSelected, this.firstToken, this.firstTokenValue, this.fee)
+  }
+
+  get isSecondMaxButtonAvailable (): boolean {
+    return isMaxButtonAvailable(this.areTokensSelected, this.secondToken, this.secondTokenValue, this.fee)
   }
 
   get liquidityInfo () {
@@ -346,16 +355,14 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
     this.showSelectSecondTokenDialog = true
   }
 
-  handleFirstMaxValue (): void {
-    // Now it's only XOR so we should calculate max value as (all XOR balance - network fee)
-    const xorBalance = new FPNumber(this.firstToken.balance)
-    const fee = new FPNumber(this.fee)
-    this.setFirstTokenValue(xorBalance.sub(fee).toString())
+  async handleFirstMaxValue (): Promise<void> {
+    await this.getNetworkFee()
+    this.setFirstTokenValue(getMaxValue(this.firstToken, this.fee))
   }
 
-  handleSecondMaxValue (): void {
-    // TODO: Is it correct just copy asset balance here?
-    this.setSecondTokenValue(this.secondToken.balance)
+  async handleSecondMaxValue (): Promise<void> {
+    await this.getNetworkFee()
+    this.setSecondTokenValue(getMaxValue(this.secondToken, this.fee))
   }
 
   updatePrices (): void {

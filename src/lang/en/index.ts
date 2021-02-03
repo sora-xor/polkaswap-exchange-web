@@ -100,12 +100,12 @@ export default {
     networkFeeTooltip: 'Network fee is used to ensure SORA system\'s growth and stable performance.',
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
     confirmSwap: 'Confirm swap',
-    swapOutputMessage: 'Output is estimated. You will receive at least {transactionValue} or the transaction will revert.'
+    swapOutputMessage: 'Output is estimated. You will receive <span class="min-received-label">at least</span> {transactionValue} or the transaction will revert.'
   },
   pool: {
     connectWallet: '@:connectWalletText',
     yourLiquidity: 'Your liquidity',
-    connectToWallet: 'Connect to a wallet to view your liquidity.',
+    connectToWallet: 'Connect to a wallet to add and view your liquidity.',
     liquidityNotFound: 'No liquidity found.',
     addLiquidity: 'Add liquidity',
     removeLiquidity: 'Remove liquidity',
