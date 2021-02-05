@@ -27,7 +27,7 @@
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
-            <s-button v-if="connected && areTokensSelected && firstTokenValue !== firstToken.balance" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleFirstMaxValue">
+            <s-button v-if="isFirstMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleFirstMaxValue">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
@@ -62,7 +62,7 @@
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
-            <s-button v-if="connected && secondTokenValue !== secondToken.balance" :disabled="!areTokensSelected" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleSecondMaxValue">
+            <s-button v-if="isSecondMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleSecondMaxValue">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
@@ -80,7 +80,7 @@
           {{ t('exchange.chooseTokens') }}
         </template>
         <template v-else-if="!isAvailable">
-          {{ t('createPair.unsuitableAssets') }}
+          {{ t('addLiquidity.pairIsNotCreated') }}
         </template>
         <template v-else-if="isEmptyBalance">
           {{ t('exchange.enterAmount') }}
@@ -93,6 +93,15 @@
         </template>
       </s-button>
     </s-form>
+
+    <info-card
+      v-if="areTokensSelected && isAvailable && !isNotFirstLiquidityProvider && emptyAssets"
+      :title="t('createPair.firstLiquidityProvider')"
+    >
+      <div class="card__data">
+        <p v-html="t('createPair.firstLiquidityProviderInfo')" />
+      </div>
+    </info-card>
 
     <info-card v-if="areTokensSelected && isAvailable && !emptyAssets" :title="t('createPair.pricePool')">
       <div class="card__data">
@@ -155,7 +164,7 @@
     </info-card>
 
     <select-token :visible.sync="showSelectFirstTokenDialog" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstToken" />
-    <select-token :visible.sync="showSelectSecondTokenDialog" account-assets-only not-null-balance-only :asset="firstToken" @select="setSecondToken" />
+    <select-token :visible.sync="showSelectSecondTokenDialog" :asset="firstToken" @select="setSecondToken" />
 
     <confirm-add-liquidity :visible.sync="showConfirmDialog" @confirm="handleConfirmAddLiquidity" />
   </div>
@@ -164,13 +173,13 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { KnownAssets, KnownSymbols, FPNumber } from '@sora-substrate/util'
+import { AccountAsset, KnownAssets, KnownSymbols, FPNumber } from '@sora-substrate/util'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 import router, { lazyComponent } from '@/router'
-import { formatNumber, isNumberValue, isWalletConnected } from '@/utils'
+import { formatNumber, isNumberValue, isWalletConnected, isMaxButtonAvailable, getMaxValue, isXorAccountAsset, hasInsufficientBalance } from '@/utils'
 import { Components, PageNames } from '@/consts'
 
 const namespace = 'addLiquidity'
@@ -195,6 +204,7 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
   @Getter('isAvailable', { namespace }) isAvailable!: boolean
+  @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
   @Getter('minted', { namespace }) minted!: string
   @Getter('fee', { namespace }) fee!: string
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
@@ -207,6 +217,7 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
   @Action('setSecondToken', { namespace }) setSecondToken
   @Action('setFirstTokenValue', { namespace }) setFirstTokenValue
   @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
+  @Action('getNetworkFee', { namespace }) getNetworkFee
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField
   @Action('resetData', { namespace }) resetData
@@ -252,6 +263,14 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
 
   get connected (): boolean {
     return isWalletConnected()
+  }
+
+  get isFirstMaxButtonAvailable (): boolean {
+    return isMaxButtonAvailable(this.areTokensSelected, this.firstToken, this.firstTokenValue, this.fee)
+  }
+
+  get isSecondMaxButtonAvailable (): boolean {
+    return isMaxButtonAvailable(this.areTokensSelected, this.secondToken, this.secondTokenValue, this.fee)
   }
 
   get liquidityInfo () {
@@ -305,22 +324,17 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
 
   get isInsufficientBalance (): boolean {
     if (this.connected && this.areTokensSelected) {
-      const firstBalance = new FPNumber(this.firstToken.balance, this.firstToken.decimals)
-      const firstValue = new FPNumber(this.firstTokenValue, this.firstToken.decimals)
-      // Now first asset is XOR so we should change it later
-      const fee = new FPNumber(this.fee, this.firstToken.decimals)
-      if (FPNumber.lt(firstBalance, firstValue.add(fee))) {
-        this.insufficientBalanceTokenSymbol = this.firstToken.symbol
-        return true
+      if (isXorAccountAsset(this.firstToken) || isXorAccountAsset(this.secondToken)) {
+        if (hasInsufficientBalance(this.firstToken, this.firstTokenValue, this.fee)) {
+          this.insufficientBalanceTokenSymbol = this.firstToken.symbol
+          return true
+        }
+        if (hasInsufficientBalance(this.secondToken, this.secondTokenValue, this.fee)) {
+          this.insufficientBalanceTokenSymbol = this.secondToken.symbol
+          return true
+        }
       }
-
-      const secondBalance = new FPNumber(this.secondToken.balance, this.secondToken.decimals)
-      const secondValue = new FPNumber(this.secondTokenValue, this.secondToken.decimals)
-      if (FPNumber.lt(secondBalance, secondValue)) {
-        this.insufficientBalanceTokenSymbol = this.secondToken.symbol
-        return true
-      }
-      // TODO: Add checking for XOR - fee
+      // TODO: Add check for pair without XOR
     }
     return false
   }
@@ -338,16 +352,14 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
     this.showSelectSecondTokenDialog = true
   }
 
-  handleFirstMaxValue (): void {
-    // Now it's only XOR so we should calculate max value as (all XOR balance - network fee)
-    const xorBalance = new FPNumber(this.firstToken.balance)
-    const fee = new FPNumber(this.fee)
-    this.setFirstTokenValue(xorBalance.sub(fee).toString())
+  async handleFirstMaxValue (): Promise<void> {
+    await this.getNetworkFee()
+    this.setFirstTokenValue(getMaxValue(this.firstToken, this.fee))
   }
 
-  handleSecondMaxValue (): void {
-    // TODO: Is it correct just copy asset balance here?
-    this.setSecondTokenValue(this.secondToken.balance)
+  async handleSecondMaxValue (): Promise<void> {
+    await this.getNetworkFee()
+    this.setSecondTokenValue(getMaxValue(this.secondToken, this.fee))
   }
 
   updatePrices (): void {

@@ -5,7 +5,7 @@
     v-if="firstToken && secondToken"
   >
     <div class="pool-tokens-amount">
-      {{ poolTokens }}
+      {{ minted }}
     </div>
     <s-row v-if="firstToken && secondToken" flex align="middle" class="pool-tokens">
       <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="small" />
@@ -35,8 +35,8 @@
       <s-row flex justify="space-between" class="pair-info__line">
         <div>{{ t('confirmSupply.price') }}</div>
         <div v-if="firstToken && secondToken" class="price">
-          <div>1 {{ firstToken.symbol }} = {{ firstToken.price / secondToken.price }} {{ secondToken.symbol }}</div>
-          <div>1 {{ secondToken.symbol }} = {{ secondToken.price / firstToken.price }} {{ firstToken.symbol }}</div>
+          <div>1 {{ firstToken.symbol }} = {{ price }} {{ secondToken.symbol }}</div>
+          <div>1 {{ secondToken.symbol }} = {{ priceReversed }} {{ firstToken.symbol }}</div>
         </div>
       </s-row>
       <s-row flex justify="space-between" class="pair-info__line">
@@ -69,24 +69,21 @@ const namespace = 'createPair'
   }
 })
 export default class ConfirmCreatePair extends Mixins(TranslationMixin, DialogMixin) {
+  readonly shareOfPool = '100%' // Because when we create pair - all pool tokens are yours
+
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
+  @Getter('minted', { namespace }) minted!: string
+
+  @Getter('price', { namespace: 'prices' }) price!: string | number
+  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
+
   @Getter slippageTolerance!: number
-
-  get poolTokens (): string {
-    return '1000'
-  }
-
-  get shareOfPool (): string {
-    return '1%'
-  }
 
   handleConfirmCreatePair (): void {
     this.$emit('confirm', true)
-    this.$emit('close')
-    this.isVisible = false
   }
 }
 </script>

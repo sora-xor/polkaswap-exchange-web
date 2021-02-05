@@ -21,7 +21,7 @@
         </div>
       </div>
     </div>
-    <p class="transaction-message" v-html="t('swap.swapOutputMessage', { transactionValue : `<span class='transaction-number'>${toValue}</span>` })" />
+    <p :class="isExchangeB ? 'transaction-message' : 'transaction-message transaction-message--min-received'" v-html="t('swap.swapOutputMessage', { transactionValue : `<span class='transaction-number'>${ minMaxReceived }</span>` })" />
     <s-divider />
     <swap-info :show-price="true" />
     <swap-info :show-tooltips="false" />
@@ -53,6 +53,7 @@ export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
   @Getter fromValue!: number | string
+  @Getter minMaxReceived!: string
   @Getter toValue!: number | string
   @Getter slippageTolerance!: number
   @Getter isExchangeB!: boolean
@@ -88,6 +89,16 @@ export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
 
 <style lang="scss">
 .dialog--confirm-swap {
+  .transaction-message {
+    .min-received-label {
+      display: none;
+    }
+    &--min-received {
+      .min-received-label {
+        display: inline;
+      }
+    }
+  }
   .transaction-number {
     color: var(--s-color-base-content-primary);
     font-feature-settings: $s-font-feature-settings-common;

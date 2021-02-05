@@ -308,14 +308,15 @@ const actions = {
     }
   },
 
-  async removeLiquidity ({ commit, getters }) {
+  async removeLiquidity ({ commit, getters, rootGetters }) {
     await dexApi.removeLiquidity(
       getters.firstTokenAddress,
       getters.secondTokenAddress,
       getters.liquidityAmount,
       getters.reserveA,
       getters.reserveB,
-      getters.totalSupply
+      getters.totalSupply,
+      rootGetters.slippageTolerance
     )
   },
 
