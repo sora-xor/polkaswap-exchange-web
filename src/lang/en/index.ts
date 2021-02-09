@@ -99,6 +99,7 @@ export default {
     networkFee: 'Network Fee',
     networkFeeTooltip: 'Network fee is used to ensure SORA system\'s growth and stable performance.',
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
+    insufficientLiquidity: 'Insufficient liquidity for this trade',
     confirmSwap: 'Confirm swap',
     swapOutputMessage: 'Output is estimated. You will receive <span class="min-received-label">at least</span> {transactionValue} or the transaction will revert.'
   },

@@ -84,6 +84,9 @@
       <template v-if="!areTokensSelected || (isZeroFromAmount && isZeroToAmount)">
         {{ t('exchange.enterAmount') }}
       </template>
+      <template v-else-if="isInsufficientLiquidity">
+        {{ t('swap.insufficientLiquidity') }}
+      </template>
       <template v-else-if="isInsufficientAmount">
         {{ t('swap.insufficientAmount', { tokenSymbol: insufficientAmountTokenSymbol }) }}
       </template>
@@ -130,6 +133,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   @Getter isExchangeB!: boolean
   @Getter slippageTolerance!: number
   @Getter networkFee!: string
+  @Getter liquidityProviderFee!: string
   @Action getTokenXOR
   @Action setTokenFrom
   @Action setTokenTo
@@ -193,16 +197,15 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     return isMaxButtonAvailable(this.areTokensSelected, this.tokenFrom, this.formModel.from, this.networkFee)
   }
 
+  get isInsufficientLiquidity (): boolean {
+    if (!(this.connected && this.areTokensSelected && !(this.isZeroFromAmount && this.isZeroToAmount))) {
+      return false
+    }
+    return (this.isZeroFromAmount || this.isZeroToAmount) && +this.liquidityProviderFee === 0
+  }
+
   get isInsufficientBalance (): boolean {
     if (this.connected && this.areTokensSelected) {
-      if (this.isZeroFromAmount) {
-        this.insufficientBalanceTokenSymbol = this.tokenFrom.symbol
-        return true
-      }
-      if (this.isZeroToAmount) {
-        this.insufficientBalanceTokenSymbol = this.tokenTo.symbol
-        return true
-      }
       let fpBalance = new FPNumber(this.tokenFrom.balance, this.tokenFrom.decimals)
       const fpAmount = new FPNumber(this.formModel.from, this.tokenFrom.decimals)
       if (FPNumber.lt(fpBalance, fpAmount)) {
