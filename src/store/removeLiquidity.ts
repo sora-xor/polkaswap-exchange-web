@@ -3,7 +3,7 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { api } from '@soramitsu/soraneo-wallet-web'
 import { FPNumber } from '@sora-substrate/util'
 
 const types = flow(
@@ -153,9 +153,9 @@ const actions = {
     commit(types.GET_LIQUIDITY_REQUEST)
 
     try {
-      await dexApi.getKnownAccountLiquidity()
-      await dexApi.updateAccountLiquidity()
-      const liquidity = dexApi.accountLiquidity.find(liquidity => liquidity.firstAddress === firstAddress && liquidity.secondAddress === secondAddress)
+      await api.getKnownAccountLiquidity()
+      await api.updateAccountLiquidity()
+      const liquidity = api.accountLiquidity.find(liquidity => liquidity.firstAddress === firstAddress && liquidity.secondAddress === secondAddress)
 
       commit(types.GET_LIQUIDITY_SUCCESS, liquidity)
       dispatch('getRemoveLiquidityData')
@@ -263,7 +263,7 @@ const actions = {
       commit(types.GET_FEE_REQUEST)
 
       try {
-        const fee = await dexApi.getRemoveLiquidityNetworkFee(
+        const fee = await api.getRemoveLiquidityNetworkFee(
           getters.firstTokenAddress,
           getters.secondTokenAddress,
           getters.liquidityAmount || 0,
@@ -284,7 +284,7 @@ const actions = {
   async getLiquidityReserves ({ commit, getters }) {
     try {
       commit(types.GET_LIQUIDITY_RESERVE_REQUEST)
-      const [reserveA, reserveB] = await dexApi.getLiquidityReserves(getters.firstTokenAddress, getters.secondTokenAddress)
+      const [reserveA, reserveB] = await api.getLiquidityReserves(getters.firstTokenAddress, getters.secondTokenAddress)
       commit(types.GET_LIQUIDITY_RESERVE_SUCCESS, { reserveA, reserveB })
     } catch (error) {
       commit(types.GET_LIQUIDITY_RESERVE_FAILURE, error)
@@ -294,7 +294,7 @@ const actions = {
   async getTotalSupply ({ commit, getters }) {
     try {
       commit(types.GET_TOTAL_SUPPLY_REQUEST)
-      const [aOut, bOut, pts] = await dexApi.estimateTokensRetrieved(
+      const [aOut, bOut, pts] = await api.estimateTokensRetrieved(
         getters.firstTokenAddress,
         getters.secondTokenAddress,
         getters.liquidityAmount,
@@ -309,7 +309,7 @@ const actions = {
   },
 
   async removeLiquidity ({ commit, getters, rootGetters }) {
-    await dexApi.removeLiquidity(
+    await api.removeLiquidity(
       getters.firstTokenAddress,
       getters.secondTokenAddress,
       getters.liquidityAmount,

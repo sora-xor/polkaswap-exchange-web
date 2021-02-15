@@ -73,6 +73,8 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
 
   @Getter firstReadyTransaction!: any
   @Getter account!: any
+  @Getter currentRoute!: any
+  @Action navigate
   @Action trackActiveTransactions
   @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity
   @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity
@@ -109,6 +111,9 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   }
 
   goTo (name: PageNames): void {
+    // if (name === PageNames.Wallet && this.currentRoute !== WALLET_CONSTS.RouteNames.Wallet) {
+    //   this.navigate({ name: WALLET_CONSTS.RouteNames.Wallet })
+    // }
     if (router.currentRoute.name === name) {
       return
     }
