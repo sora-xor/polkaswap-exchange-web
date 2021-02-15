@@ -120,7 +120,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
     this.changePage(name)
   }
 
-  changePage (name: PageNames): void {
+  private changePage (name: PageNames): void {
     if (router.currentRoute.name === name) {
       return
     }
