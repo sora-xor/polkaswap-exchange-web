@@ -106,7 +106,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownSymbols, FPNumber } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -271,7 +271,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   }
 
   async getNetworkFee (): Promise<void> {
-    const networkFee = await dexApi.getSwapNetworkFee(this.tokenFrom.address, this.tokenTo.address, this.formModel.from, this.formModel.to, this.slippageTolerance, this.isExchangeB)
+    const networkFee = await api.getSwapNetworkFee(this.tokenFrom.address, this.tokenTo.address, this.formModel.from, this.formModel.to, this.slippageTolerance, this.isExchangeB)
     this.setNetworkFee(networkFee)
   }
 
@@ -288,10 +288,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
         this.resetFieldTo()
       } else {
         try {
-          const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.from)
+          const swapResult = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.from)
           this.formModel.to = swapResult.amount
           this.setLiquidityProviderFee(swapResult.fee)
-          const minMaxReceived = await dexApi.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
+          const minMaxReceived = await api.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
           this.setMinMaxReceived({ minMaxReceived })
           this.updatePrices()
           this.resetInsufficientAmountFlag()
@@ -328,10 +328,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
         try {
           // Always use getSwapResult and minMaxReceived with reversed flag for Token B
           const isExchangeBSwap = true
-          const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.to, isExchangeBSwap)
+          const swapResult = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.to, isExchangeBSwap)
           this.formModel.from = swapResult.amount
           this.setLiquidityProviderFee(swapResult.fee)
-          const minMaxReceived = await dexApi.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance, isExchangeBSwap)
+          const minMaxReceived = await api.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance, isExchangeBSwap)
           this.setMinMaxReceived({ minMaxReceived, isExchangeB: isExchangeBSwap })
           this.updatePrices()
           this.resetInsufficientAmountFlag()
@@ -468,7 +468,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
 
   async updateAccountAssets (): Promise<void> {
     try {
-      await dexApi.updateAccountAssets()
+      await api.updateAccountAssets()
     } catch (error) {
       this.$alert(this.t(error.message), { title: this.t('errorText') })
       throw new Error(error)

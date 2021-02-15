@@ -2,7 +2,7 @@ import map from 'lodash/fp/map'
 import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
-import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { api } from '@soramitsu/soraneo-wallet-web'
 
 import { isWalletConnected } from '@/utils'
 
@@ -65,8 +65,8 @@ const actions = {
     }
     commit(types.GET_ACCOUNT_LIQUIDITY_REQUEST)
     try {
-      await dexApi.getKnownAccountLiquidity()
-      commit(types.GET_ACCOUNT_LIQUIDITY_SUCCESS, dexApi.accountLiquidity)
+      await api.getKnownAccountLiquidity()
+      commit(types.GET_ACCOUNT_LIQUIDITY_SUCCESS, api.accountLiquidity)
     } catch (error) {
       commit(types.GET_ACCOUNT_LIQUIDITY_FAILURE)
     }
@@ -84,8 +84,8 @@ const actions = {
       try {
         // It's not a real update because we cannot add pool token by address.
         // So, we need to find all pairs every time (5 sec)
-        await dexApi.getKnownAccountLiquidity()
-        commit(types.UPDATE_ACCOUNT_LIQUIDITY_SUCCESS, dexApi.accountLiquidity)
+        await api.getKnownAccountLiquidity()
+        commit(types.UPDATE_ACCOUNT_LIQUIDITY_SUCCESS, api.accountLiquidity)
       } catch (error) {
         commit(types.UPDATE_ACCOUNT_LIQUIDITY_FAILURE)
       }

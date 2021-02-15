@@ -42,7 +42,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { connection, initWallet } from '@soramitsu/soraneo-wallet-web'
+import { connection, initWallet, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
 
 import { PageNames, MainMenu, Components } from '@/consts'
 import TransactionMixin from '@/components/mixins/TransactionMixin'
@@ -50,6 +50,8 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 import router, { lazyComponent } from '@/router'
 import axios from '@/api'
 import { formatAddress } from '@/utils'
+
+const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
 
 @Component({
   components: {
@@ -73,6 +75,8 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
 
   @Getter firstReadyTransaction!: any
   @Getter account!: any
+  @Getter currentRoute!: WALLET_CONSTS.RouteNames
+  @Action navigate
   @Action trackActiveTransactions
   @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity
   @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity
@@ -109,6 +113,14 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   }
 
   goTo (name: PageNames): void {
+    if (name === PageNames.Wallet && this.currentRoute !== WALLET_DEFAULT_ROUTE) {
+      this.navigate({ name: WALLET_DEFAULT_ROUTE })
+    }
+
+    this.changePage(name)
+  }
+
+  private changePage (name: PageNames): void {
     if (router.currentRoute.name === name) {
       return
     }

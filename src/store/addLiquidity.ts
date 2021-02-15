@@ -3,7 +3,7 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets, FPNumber } from '@sora-substrate/util'
 
 const types = flow(
@@ -152,7 +152,7 @@ const mutations = {
 
 const actions = {
   async setFirstToken ({ commit, dispatch }, asset: any) {
-    let firstAsset = dexApi.accountAssets.find(a => a.address === asset.address)
+    let firstAsset = api.accountAssets.find(a => a.address === asset.address)
     if (!firstAsset) {
       firstAsset = { ...asset, balance: '0' }
     }
@@ -164,7 +164,7 @@ const actions = {
   },
 
   async setSecondToken ({ commit, dispatch }, asset: any) {
-    let secondAddress = dexApi.accountAssets.find(a => a.address === asset.address)
+    let secondAddress = api.accountAssets.find(a => a.address === asset.address)
     if (!secondAddress) {
       secondAddress = { ...asset, balance: '0' }
     }
@@ -178,7 +178,7 @@ const actions = {
     if (getters.firstToken && getters.secondToken) {
       commit(types.GET_RESERVE_REQUEST)
       try {
-        const reserve = await dexApi.getLiquidityReserves(getters.firstTokenAddress, getters.secondTokenAddress)
+        const reserve = await api.getLiquidityReserves(getters.firstTokenAddress, getters.secondTokenAddress)
         commit(types.GET_RESERVE_SUCCESS, reserve)
 
         dispatch('estimateMinted')
@@ -193,7 +193,7 @@ const actions = {
     if (getters.firstToken && getters.secondToken) {
       commit(types.CHECK_LIQUIDITY_REQUEST)
       try {
-        const isAvailable = await dexApi.checkLiquidity(getters.firstTokenAddress, getters.secondTokenAddress)
+        const isAvailable = await api.checkLiquidity(getters.firstTokenAddress, getters.secondTokenAddress)
         commit(types.CHECK_LIQUIDITY_SUCCESS, isAvailable)
 
         dispatch('checkReserve')
@@ -208,7 +208,7 @@ const actions = {
       commit(types.ESTIMATE_MINTED_REQUEST)
 
       try {
-        const [minted, pts] = await dexApi.estimatePoolTokensMinted(
+        const [minted, pts] = await api.estimatePoolTokensMinted(
           getters.firstTokenAddress,
           getters.secondTokenAddress,
           getters.firstTokenValue,
@@ -263,7 +263,7 @@ const actions = {
     if (getters.firstTokenAddress && getters.secondTokenAddress) {
       commit(types.GET_FEE_REQUEST)
       try {
-        const fee = await dexApi.getAddLiquidityNetworkFee(
+        const fee = await api.getAddLiquidityNetworkFee(
           getters.firstTokenAddress,
           getters.secondTokenAddress,
           getters.firstTokenValue || 0,
@@ -281,7 +281,7 @@ const actions = {
   async addLiquidity ({ commit, getters, rootGetters }) {
     commit(types.ADD_LIQUIDITY_REQUEST)
     try {
-      const result = await dexApi.addLiquidity(
+      const result = await api.addLiquidity(
         getters.firstTokenAddress,
         getters.secondTokenAddress,
         getters.firstTokenValue,
@@ -296,8 +296,8 @@ const actions = {
   },
 
   async setDataFromLiquidity ({ dispatch }, { firstAddress, secondAddress }) {
-    dispatch('setFirstToken', await dexApi.accountAssets.find(a => a.address === firstAddress))
-    let secondAsset: any = await dexApi.accountAssets.find(a => a.address === secondAddress)
+    dispatch('setFirstToken', await api.accountAssets.find(a => a.address === firstAddress))
+    let secondAsset: any = await api.accountAssets.find(a => a.address === secondAddress)
     if (!secondAsset) {
       secondAsset = KnownAssets.get(secondAddress)
     }
