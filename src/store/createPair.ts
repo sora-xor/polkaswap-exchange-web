@@ -124,7 +124,8 @@ const actions = {
     if (getters.firstToken && getters.secondToken) {
       commit(types.CHECK_LIQUIDITY_REQUEST)
       try {
-        const exists = await dexApi.checkLiquidity(getters.firstToken.address, getters.secondToken.address)
+        // const exists = await dexApi.checkLiquidity(getters.firstToken.address, getters.secondToken.address)
+        const exists = false
         commit(types.CHECK_LIQUIDITY_SUCCESS, !exists)
         dispatch('estimateMinted')
         dispatch('getNetworkFee')
@@ -138,6 +139,7 @@ const actions = {
     if (getters.firstToken && getters.firstToken.address && getters.firstToken && getters.secondToken.address && getters.firstTokenValue && getters.secondTokenValue) {
       commit(types.ESTIMATE_MINTED_REQUEST)
       try {
+        console.log('estimateMinted firstToken', getters.firstToken)
         const [minted] = await dexApi.estimatePoolTokensMinted(
           getters.firstToken.address,
           getters.secondToken.address,
@@ -146,6 +148,7 @@ const actions = {
           0,
           0
         )
+        console.log(minted)
         commit(types.ESTIMATE_MINTED_SUCCESS, minted)
       } catch (error) {
         commit(types.ESTIMATE_MINTED_FAILURE, error)

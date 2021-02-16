@@ -16,13 +16,12 @@
         <div class="input-line">
           <s-form-item>
             <s-input
-              v-model="createPairModel.firstTokenValue"
               v-float
               class="s-input--token-value"
               :value="firstTokenValue"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
-              @change="handleFirstTokenChange"
+              @input="handleFirstTokenChange"
               @blur="handleInputBlur(true)"
             />
           </s-form-item>
@@ -52,13 +51,12 @@
         <div class="input-line">
           <s-form-item>
             <s-input
-              v-model="createPairModel.secondTokenValue"
               v-float
               class="s-input--token-value"
               :value="secondTokenValue"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
-              @change="handleSecondTokeChange"
+              @input="handleSecondTokeChange"
               @blur="handleInputBlur(false)"
             />
           </s-form-item>
@@ -226,12 +224,6 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
   showConfirmCreatePairDialog = false
   insufficientBalanceTokenSymbol = ''
 
-  // TODO: Remove createPairModel
-  createPairModel = {
-    firstTokenValue: '',
-    secondTokenValue: ''
-  }
-
   async mounted () {
     await this.withApi(async () => {
       this.resetPrices()
@@ -291,12 +283,14 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
 
   async handleFirstMaxValue (): Promise<void> {
     await this.getNetworkFee()
-    this.createPairModel.firstTokenValue = getMaxValue(this.firstToken, this.fee)
+    const maxValue = getMaxValue(this.firstToken, this.fee)
+    this.setFirstTokenValue(maxValue)
   }
 
   async handleSecondMaxValue (): Promise<void> {
     await this.getNetworkFee()
-    this.createPairModel.secondTokenValue = getMaxValue(this.secondToken, this.fee)
+    const maxValue = getMaxValue(this.secondToken, this.fee)
+    this.setSecondTokenValue(maxValue)
   }
 
   updatePrices (): void {
@@ -308,48 +302,50 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
     })
   }
 
-  async handleFirstTokenChange (): Promise<any> {
-    this.createPairModel.firstTokenValue = this.formatNumberField(this.createPairModel.firstTokenValue)
-    if (!isNumberValue(this.createPairModel.firstTokenValue)) {
+  async handleFirstTokenChange (value: string): Promise<any> {
+    const formattedValue = this.formatNumberField(value)
+    if (!isNumberValue(formattedValue)) {
       await this.promiseTimeout()
       this.resetInputField()
       return
     }
-    this.setFirstTokenValue(this.createPairModel.firstTokenValue)
+    this.setFirstTokenValue(formattedValue)
     this.updatePrices()
   }
 
-  async handleSecondTokeChange (): Promise<any> {
-    this.createPairModel.secondTokenValue = this.formatNumberField(this.createPairModel.secondTokenValue)
-    if (!isNumberValue(this.createPairModel.secondTokenValue)) {
+  async handleSecondTokeChange (value: string): Promise<any> {
+    const formattedValue = this.formatNumberField(value)
+    if (!isNumberValue(formattedValue)) {
       await this.promiseTimeout()
       this.resetInputField(false)
       return
     }
-    this.setSecondTokenValue(this.createPairModel.secondTokenValue)
+    this.setSecondTokenValue(formattedValue)
     this.updatePrices()
   }
 
   resetInputField (isFirstTokenField = true): void {
     if (isFirstTokenField) {
-      this.createPairModel.firstTokenValue = ''
+      this.setFirstTokenValue('')
       return
     }
-    this.createPairModel.secondTokenValue = ''
+    this.setSecondTokenValue('')
   }
 
   handleInputBlur (isFirstToken: boolean): void {
     if (isFirstToken) {
-      if (+this.createPairModel.firstTokenValue === 0) {
+      if (+this.firstTokenValue === 0) {
         this.resetInputField()
       } else {
-        this.createPairModel.firstTokenValue = this.trimNeedlesSymbols(this.createPairModel.firstTokenValue)
+        const formatted = this.trimNeedlesSymbols(String(this.firstTokenValue))
+        this.setFirstTokenValue(formatted)
       }
     } else {
-      if (+this.createPairModel.secondTokenValue === 0) {
+      if (+this.secondTokenValue === 0) {
         this.resetInputField(false)
       } else {
-        this.createPairModel.secondTokenValue = this.trimNeedlesSymbols(this.createPairModel.secondTokenValue)
+        const formatted = this.trimNeedlesSymbols(String(this.secondTokenValue))
+        this.setSecondTokenValue(formatted)
       }
     }
   }
