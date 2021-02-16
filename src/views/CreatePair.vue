@@ -299,18 +299,12 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
     const token = isFirstToken ? this.firstToken : this.secondToken
     const action = isFirstToken ? this.setFirstTokenValue : this.setSecondTokenValue
 
-    let formattedValue = this.formatNumberField(value)
+    const formattedValue = this.formatNumberField(value, token)
 
     if (!isNumberValue(formattedValue)) {
       await this.$nextTick
       this.resetInputField()
       return
-    }
-
-    const tokenValueMaxLength = this.inputMaxLength(formattedValue, token)
-
-    if (tokenValueMaxLength && formattedValue.length > tokenValueMaxLength) {
-      formattedValue = formattedValue.slice(0, tokenValueMaxLength)
     }
 
     action(formattedValue)
