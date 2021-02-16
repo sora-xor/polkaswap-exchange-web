@@ -136,7 +136,7 @@ const actions = {
   },
 
   async estimateMinted ({ commit, getters }) {
-    if (getters.firstToken && getters.firstToken.address && getters.firstToken && getters.secondToken.address && getters.firstTokenValue && getters.secondTokenValue) {
+    if (getters.firstToken?.address && getters.secondToken?.address && getters.firstTokenValue && getters.secondTokenValue) {
       commit(types.ESTIMATE_MINTED_REQUEST)
       try {
         console.log('estimateMinted firstToken', getters.firstToken)
@@ -169,7 +169,7 @@ const actions = {
   },
 
   async getNetworkFee ({ commit, getters }) {
-    if (getters.firstToken && getters.firstToken.address && getters.secondToken && getters.secondToken.address) {
+    if (getters.firstToken?.address && getters.secondToken?.address) {
       commit(types.GET_FEE_REQUEST)
       try {
         const fee = await dexApi.getCreatePairNetworkFee(
