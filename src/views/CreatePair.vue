@@ -21,6 +21,7 @@
               :value="firstTokenValue"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
+              :maxlength="inputMaxLength(firstTokenValue, firstToken)"
               @input="handleTokenChange(true, $event)"
               @blur="handleInputBlur(true)"
             />
@@ -56,6 +57,7 @@
               :value="secondTokenValue"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
+              :maxlength="inputMaxLength(secondTokenValue, secondToken)"
               @input="handleTokenChange(false, $event)"
               @blur="handleInputBlur(false)"
             />
@@ -294,13 +296,23 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
   }
 
   async handleTokenChange (isFirstToken: boolean, value: string): Promise<any> {
+    const token = isFirstToken ? this.firstToken : this.secondToken
     const action = isFirstToken ? this.setFirstTokenValue : this.setSecondTokenValue
-    const formattedValue = this.formatNumberField(value)
+
+    let formattedValue = this.formatNumberField(value)
+
     if (!isNumberValue(formattedValue)) {
-      await this.promiseTimeout()
+      await this.$nextTick
       this.resetInputField()
       return
     }
+
+    const tokenValueMaxLength = this.inputMaxLength(formattedValue, token)
+
+    if (tokenValueMaxLength && formattedValue.length > tokenValueMaxLength) {
+      formattedValue = formattedValue.slice(0, tokenValueMaxLength)
+    }
+
     action(formattedValue)
     this.updatePrices()
   }
@@ -311,13 +323,14 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
   }
 
   handleInputBlur (isFirstToken: boolean): void {
-    const tokenValue = isFirstToken ? +this.firstTokenValue : +this.secondTokenValue
+    const tokenValue = isFirstToken ? this.firstTokenValue : this.secondTokenValue
     const action = isFirstToken ? this.setFirstTokenValue : this.setSecondTokenValue
 
-    if (tokenValue === 0) {
+    if (+tokenValue === 0) {
       this.resetInputField(isFirstToken)
     } else {
-      action(tokenValue)
+      const formattedTokenValue = this.trimNeedlesSymbols(String(tokenValue))
+      action(formattedTokenValue)
     }
   }
 

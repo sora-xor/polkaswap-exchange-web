@@ -4,7 +4,7 @@ import { Vue, Component } from 'vue-property-decorator'
 export default class InputFormatterMixin extends Vue {
   formatNumberField = (fieldValue: string): string => {
     if (fieldValue.indexOf('.') === 0) {
-      fieldValue = '0' + fieldValue
+      return '0' + fieldValue
     }
     return fieldValue
   }
@@ -19,6 +19,12 @@ export default class InputFormatterMixin extends Vue {
       fieldValue = fieldValue.substring(0, fieldValue.length - 1)
     }
     return fieldValue
+  }
+
+  inputMaxLength = (fieldValue: string, token: any) => {
+    if (!token?.decimals || fieldValue.indexOf('.') === -1) return undefined
+    const integer = fieldValue.split('.')[0]
+    return integer.length + token.decimals + 1
   }
 
   promiseTimeout (): Promise<void> {
