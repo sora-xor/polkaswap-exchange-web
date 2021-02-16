@@ -22,7 +22,7 @@ export default class InputFormatterMixin extends Vue {
   }
 
   inputMaxLength = (fieldValue: string, token: any) => {
-    if (!token?.decimals || fieldValue.indexOf('.') === -1) return undefined
+    if (token?.decimals === undefined || fieldValue.indexOf('.') === -1) return undefined
     const integer = fieldValue.split('.')[0]
     return integer.length + token.decimals + 1
   }
