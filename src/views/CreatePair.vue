@@ -256,22 +256,30 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
   }
 
   get isInsufficientBalance (): boolean {
-    if (!this.connected || !this.areTokensSelected) return false
-
-    if (isXorAccountAsset(this.firstToken) || isXorAccountAsset(this.secondToken)) {
-      if (hasInsufficientBalance(this.firstToken, this.firstTokenValue, this.fee)) {
-        this.insufficientBalanceTokenSymbol = this.firstToken.symbol
-        return true
+    if (this.connected && this.areTokensSelected) {
+      if (isXorAccountAsset(this.firstToken) || isXorAccountAsset(this.secondToken)) {
+        if (hasInsufficientBalance(this.firstToken, this.firstTokenValue, this.fee)) {
+          this.insufficientBalanceTokenSymbol = this.firstToken.symbol
+          return true
+        }
+        if (hasInsufficientBalance(this.secondToken, this.secondTokenValue, this.fee)) {
+          this.insufficientBalanceTokenSymbol = this.secondToken.symbol
+          return true
+        }
       }
-      if (hasInsufficientBalance(this.secondToken, this.secondTokenValue, this.fee)) {
-        this.insufficientBalanceTokenSymbol = this.secondToken.symbol
-        return true
-      }
+      // TODO: Add check for pair without XOR
     }
-
-    // TODO: Add check for pair without XOR
     return false
   }
+
+  getTokenValue (token: any, tokenValue: number): string {
+    return token ? `${tokenValue} ${token.symbol}` : ''
+  }
+
+  // We don't need it for now
+  // openSelectFirstTokenDialog (): void {
+  //   this.showSelectFirstTokenDialog = true
+  // }
 
   openSelectSecondTokenDialog (): void {
     this.showSelectSecondTokenDialog = true

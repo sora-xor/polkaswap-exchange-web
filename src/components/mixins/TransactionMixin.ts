@@ -1,6 +1,6 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { History, TransactionStatus, Operation } from '@sora-substrate/util'
-import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { api } from '@soramitsu/soraneo-wallet-web'
 import findLast from 'lodash/fp/findLast'
 import { Action } from 'vuex-class'
 
@@ -31,7 +31,7 @@ export default class TransactionMixin extends Mixins(TranslationMixin) {
     // Now we are checking every transaction with 1 second interval
     const tx = findLast(
       item => Math.abs(Number(item.startTime) - this.time) < 1000,
-      dexApi.accountHistory
+      api.accountHistory
     )
     if (!tx) {
       await new Promise(resolve => setTimeout(resolve, 50))
