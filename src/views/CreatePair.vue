@@ -21,7 +21,7 @@
               :value="firstTokenValue"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
-              :maxlength="inputMaxLength(firstTokenValue, firstToken)"
+              :maxlength="tokenValueMaxLength(firstTokenValue, firstToken)"
               @change="handleTokenChange(true, $event)"
               @blur="handleInputBlur(true)"
             />
@@ -57,7 +57,7 @@
               :value="secondTokenValue"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
-              :maxlength="inputMaxLength(secondTokenValue, secondToken)"
+              :maxlength="tokenValueMaxLength(secondTokenValue, secondToken)"
               @change="handleTokenChange(false, $event)"
               @blur="handleInputBlur(false)"
             />
@@ -172,14 +172,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
-import { KnownAssets, KnownSymbols, FPNumber } from '@sora-substrate/util'
+import { Component, Mixins } from 'vue-property-decorator'
+import { Action } from 'vuex-class'
 
-import LoadingMixin from '@/components/mixins/LoadingMixin'
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
-import router, { lazyComponent } from '@/router'
-import { Components, PageNames } from '@/consts'
+
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
 
 const namespace = 'createPair'
 
@@ -197,34 +196,8 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
   }
 })
 
-export default class CreatePair extends Mixins(TokenPairMixin, LoadingMixin) {
-  readonly KnownSymbols = KnownSymbols
-
-  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
-
-  @Getter('minted', { namespace }) minted!: string
-  @Getter('price', { namespace: 'prices' }) price!: string | number
-  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
-
+export default class CreatePair extends Mixins(TokenPairMixin) {
   @Action('createPair', { namespace }) createPair
-  @Action('getPrices', { namespace: 'prices' }) getPrices
-  @Action('resetPrices', { namespace: 'prices' }) resetPrices
-
-  async mounted () {
-    await this.withApi(async () => {
-      this.resetPrices()
-      await this.setFirstToken(KnownAssets.get(KnownSymbols.XOR))
-    })
-  }
-
-  updatePrices (): void {
-    this.getPrices({
-      assetAAddress: this.firstToken.address,
-      assetBAddress: this.secondToken.address,
-      amountA: this.firstTokenValue,
-      amountB: this.secondTokenValue
-    })
-  }
 
   confirmCreatePair (): Promise<void> {
     return this.handleConfirm(this.createPair)

@@ -7,7 +7,7 @@ export default class InputFormatterMixin extends Vue {
       fieldValue = '0' + fieldValue
     }
 
-    const lengthLimit = this.inputMaxLength(fieldValue, token)
+    const lengthLimit = this.tokenValueMaxLength(fieldValue, token)
 
     if (lengthLimit && fieldValue.length > lengthLimit) {
       fieldValue = fieldValue.slice(0, lengthLimit)
@@ -28,7 +28,7 @@ export default class InputFormatterMixin extends Vue {
     return fieldValue
   }
 
-  inputMaxLength = (fieldValue: string, token?: any) => {
+  tokenValueMaxLength = (fieldValue: string, token?: any) => {
     const fpIndex = fieldValue.indexOf('.')
     if (token?.decimals === undefined || fpIndex === -1) return undefined
     // fpIndex + 1 - the length of integer part with point

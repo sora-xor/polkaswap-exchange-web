@@ -21,7 +21,7 @@
               :value="firstTokenValue"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
-              :maxlength="inputMaxLength(firstTokenValue, firstToken)"
+              :maxlength="tokenValueMaxLength(firstTokenValue, firstToken)"
               @change="handleTokenChange(true, $event)"
               @blur="handleInputBlur(true)"
             />
@@ -56,7 +56,7 @@
               :value="secondTokenValue"
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
-              :maxlength="inputMaxLength(secondTokenValue, secondToken)"
+              :maxlength="tokenValueMaxLength(secondTokenValue, secondToken)"
               @change="handleTokenChange(false, $event)"
               @blur="handleInputBlur(false)"
             />
@@ -171,14 +171,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { KnownAssets, KnownSymbols, FPNumber } from '@sora-substrate/util'
+import { FPNumber } from '@sora-substrate/util'
 
-import LoadingMixin from '@/components/mixins/LoadingMixin'
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
-import router, { lazyComponent } from '@/router'
-import { Components, PageNames } from '@/consts'
+
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
 
 const namespace = 'addLiquidity'
 
@@ -194,37 +194,14 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
     ConfirmAddLiquidity: lazyComponent(Components.ConfirmAddLiquidity)
   }
 })
-export default class AddLiquidity extends Mixins(TokenPairMixin, LoadingMixin) {
-  readonly KnownSymbols = KnownSymbols
-
-  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
-
+export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
-  @Getter('minted', { namespace }) minted!: string
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
-  @Getter('price', { namespace: 'prices' }) price!: string | number
-  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
   @Getter('accountLiquidity', { namespace: 'pool' }) accountLiquidity!: Array<any>
 
   @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField
-  @Action('getPrices', { namespace: 'prices' }) getPrices
-  @Action('resetPrices', { namespace: 'prices' }) resetPrices
-
-  async mounted () {
-    await this.withApi(async () => {
-      this.resetPrices()
-      await this.setFirstToken(KnownAssets.get(KnownSymbols.XOR))
-
-      if (this.firstAddress && this.secondAddress) {
-        await this.setDataFromLiquidity({
-          firstAddress: this.firstAddress,
-          secondAddress: this.secondAddress
-        })
-      }
-    })
-  }
 
   get firstAddress (): string {
     return this.$route.params.firstAddress
@@ -248,40 +225,45 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, LoadingMixin) {
   }
 
   get poolTokenPosition (): string {
-    const prevPosition = new FPNumber(this.liquidityInfo ? this.liquidityInfo.balance : 0)
-    if (!this.emptyAssets) {
-      return prevPosition.add(new FPNumber(this.minted)).toString()
-    }
-    return prevPosition.toString()
+    return this.getTokenPosition(this.liquidityInfo?.balance, this.minted)
   }
 
   get firstTokenPosition (): string {
-    const prevPosition = new FPNumber(this.liquidityInfo ? this.liquidityInfo.firstBalance : 0)
-    if (!this.emptyAssets) {
-      return prevPosition.add(new FPNumber(this.firstTokenValue)).toString()
-    }
-    return prevPosition.toString()
+    return this.getTokenPosition(this.liquidityInfo?.firstBalance, this.firstTokenValue)
   }
 
   get secondTokenPosition (): string {
-    const prevPosition = new FPNumber(this.liquidityInfo ? this.liquidityInfo.secondBalance : 0)
+    return this.getTokenPosition(this.liquidityInfo?.secondBalance, this.secondTokenValue)
+  }
+
+  async afterApiConnect (): Promise<void> {
+    if (this.firstAddress && this.secondAddress) {
+      await this.setDataFromLiquidity({
+        firstAddress: this.firstAddress,
+        secondAddress: this.secondAddress
+      })
+    }
+  }
+
+  afterInputBlur (): void {
+    this.resetFocusedField()
+  }
+
+  getTokenPosition (liquidityInfoBalance: number | undefined, tokenValue: string | number): string {
+    const prevPosition = new FPNumber(liquidityInfoBalance ?? 0)
     if (!this.emptyAssets) {
-      return prevPosition.add(new FPNumber(this.secondTokenValue)).toString()
+      return prevPosition.add(new FPNumber(tokenValue)).toString()
     }
     return prevPosition.toString()
   }
 
   updatePrices (): void {
     this.getPrices({
-      assetAAddress: this.firstAddress ? this.firstAddress : this.firstToken.address,
-      assetBAddress: this.secondAddress ? this.secondAddress : this.secondToken.address,
+      assetAAddress: this.firstAddress ?? this.firstToken.address,
+      assetBAddress: this.secondAddress ?? this.secondToken.address,
       amountA: this.firstTokenValue,
       amountB: this.secondTokenValue
     })
-  }
-
-  afterInputBlur (): void {
-    this.resetFocusedField()
   }
 
   handleConfirmAddLiquidity (): Promise<void> {

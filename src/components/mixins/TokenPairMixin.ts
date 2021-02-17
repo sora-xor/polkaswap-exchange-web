@@ -1,8 +1,10 @@
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
+import { KnownAssets, KnownSymbols } from '@sora-substrate/util'
 
 import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 import TransactionMixin from '@/components/mixins/TransactionMixin'
+import LoadingMixin from '@/components/mixins/LoadingMixin'
 
 import router from '@/router'
 import { PageNames } from '@/consts'
@@ -10,15 +12,21 @@ import { formatNumber, getMaxValue, isNumberValue, isMaxButtonAvailable, isWalle
 
 const CreateTokenPairMixin = (namespace: string) => {
   @Component
-  class TokenPairMixin extends Mixins(TransactionMixin, InputFormatterMixin) {
-    @Getter('isAvailable', { namespace }) isAvailable!: boolean
+  class TokenPairMixin extends Mixins(TransactionMixin, InputFormatterMixin, LoadingMixin) {
+    readonly KnownSymbols = KnownSymbols
+
+    @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
     @Getter('firstToken', { namespace }) firstToken!: any
     @Getter('secondToken', { namespace }) secondToken!: any
     @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
     @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
 
+    @Getter('isAvailable', { namespace }) isAvailable!: boolean
+    @Getter('minted', { namespace }) minted!: string
     @Getter('fee', { namespace }) fee!: string
+    @Getter('price', { namespace: 'prices' }) price!: string | number
+    @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
 
     @Action('setFirstToken', { namespace }) setFirstToken
     @Action('setSecondToken', { namespace }) setSecondToken
@@ -26,12 +34,22 @@ const CreateTokenPairMixin = (namespace: string) => {
     @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
 
     @Action('getNetworkFee', { namespace }) getNetworkFee
+    @Action('getPrices', { namespace: 'prices' }) getPrices
+    @Action('resetPrices', { namespace: 'prices' }) resetPrices
 
     showConfirmDialog = false
     showSelectFirstTokenDialog = false
     showSelectSecondTokenDialog = false
     inputPlaceholder: string = formatNumber(0, 1)
     insufficientBalanceTokenSymbol = ''
+
+    async mounted () {
+      await this.withApi(async () => {
+        this.resetPrices()
+        await this.setFirstToken(KnownAssets.get(KnownSymbols.XOR))
+        this.afterApiConnect()
+      })
+    }
 
     get connected (): boolean {
       return isWalletConnected()
@@ -94,6 +112,15 @@ const CreateTokenPairMixin = (namespace: string) => {
       this.updatePrices()
     }
 
+    updatePrices (): void {
+      this.getPrices({
+        assetAAddress: this.firstToken.address,
+        assetBAddress: this.secondToken.address,
+        amountA: this.firstTokenValue,
+        amountB: this.secondTokenValue
+      })
+    }
+
     handleInputBlur (isFirstToken: boolean): void {
       const tokenValue = isFirstToken ? this.firstTokenValue : this.secondTokenValue
       const action = isFirstToken ? this.setFirstTokenValue : this.setSecondTokenValue
@@ -136,8 +163,8 @@ const CreateTokenPairMixin = (namespace: string) => {
       action('')
     }
 
-    updatePrices (): void {}
     afterInputBlur (): void {}
+    afterApiConnect (): void {}
   }
 
   return TokenPairMixin
