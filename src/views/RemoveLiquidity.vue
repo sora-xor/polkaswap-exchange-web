@@ -42,6 +42,7 @@
               class="s-input--token-value"
               :value="liquidityAmount"
               :placeholder="inputPlaceholder"
+              :maxlength="tokenValueMaxLength(liquidityAmount, liquidity)"
               @input="setLiquidityAmount"
               @blur="handleInputBlur('input')"
             />
@@ -74,6 +75,7 @@
               class="s-input--token-value"
               :value="firstTokenAmount"
               :placeholder="inputPlaceholder"
+              :maxlength="tokenValueMaxLength(firstTokenAmount, firstToken)"
               @input="setFirstTokenAmount"
               @blur="handleInputBlur('firstTokenAmount')"
             />
@@ -101,6 +103,7 @@
               class="s-input--token-value"
               :value="secondTokenAmount"
               :placeholder="inputPlaceholder"
+              :maxlength="tokenValueMaxLength(secondTokenAmount, secondToken)"
               @input="setSecondTokenAmount"
               @blur="handleInputBlur('secondTokenAmount')"
             />

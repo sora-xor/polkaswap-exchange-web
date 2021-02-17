@@ -28,11 +28,14 @@ export default class InputFormatterMixin extends Vue {
     return fieldValue
   }
 
-  tokenValueMaxLength = (fieldValue: string, token?: any) => {
-    const fpIndex = fieldValue.indexOf('.')
-    if (token?.decimals === undefined || fpIndex === -1) return undefined
-    // fpIndex + 1 - the length of integer part with point
-    return fpIndex + 1 + token.decimals
+  tokenValueMaxLength = (fieldValue: number | string, token?: any) => {
+    const stringValue = String(fieldValue)
+
+    if (stringValue.length === 0 || token?.decimals === undefined) return undefined
+
+    const fpIndex = stringValue.indexOf('.')
+
+    return fpIndex !== -1 ? fpIndex + 1 + token.decimals : undefined
   }
 
   promiseTimeout (): Promise<void> {
