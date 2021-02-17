@@ -28,7 +28,7 @@
           />
         </s-form-item>
         <div v-if="tokenFrom" class="token">
-          <s-button v-if="connected && isMaxAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue">
+          <s-button v-if="isMaxSwapAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue">
             {{ t('exchange.max') }}
           </s-button>
           <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(true)">
@@ -84,6 +84,9 @@
       <template v-if="!areTokensSelected || (isZeroFromAmount && isZeroToAmount)">
         {{ t('exchange.enterAmount') }}
       </template>
+      <template v-else-if="isInsufficientLiquidity">
+        {{ t('swap.insufficientLiquidity') }}
+      </template>
       <template v-else-if="isInsufficientAmount">
         {{ t('swap.insufficientAmount', { tokenSymbol: insufficientAmountTokenSymbol }) }}
       </template>
@@ -103,13 +106,13 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownSymbols, FPNumber } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
-import { formatNumber, isNumberValue, isWalletConnected } from '@/utils'
+import { formatNumber, isNumberValue, isWalletConnected, isXorAccountAsset, isMaxButtonAvailable, getMaxValue } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -130,6 +133,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   @Getter isExchangeB!: boolean
   @Getter slippageTolerance!: number
   @Getter networkFee!: string
+  @Getter liquidityProviderFee!: string
   @Action getTokenXOR
   @Action setTokenFrom
   @Action setTokenTo
@@ -189,33 +193,19 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     return this.isZeroFromAmount || this.isZeroToAmount
   }
 
-  get isMaxAvailable (): boolean {
-    if (this.connected) {
-      if (!this.areTokensSelected || +this.tokenFrom.balance === 0) {
-        return false
-      }
-      const fpBalance = new FPNumber(this.tokenFrom.balance, this.tokenFrom.decimals)
-      const fpAmount = new FPNumber(this.formModel.from, this.tokenFrom.decimals)
-      if (this.tokenFrom.symbol === KnownSymbols.XOR) {
-        const fpFee = new FPNumber(this.networkFee, this.tokenFrom.decimals)
-        return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount))
-      } else {
-        return !FPNumber.eq(fpBalance, fpAmount)
-      }
+  get isMaxSwapAvailable (): boolean {
+    return isMaxButtonAvailable(this.areTokensSelected, this.tokenFrom, this.formModel.from, this.networkFee)
+  }
+
+  get isInsufficientLiquidity (): boolean {
+    if (!(this.connected && this.areTokensSelected && !(this.isZeroFromAmount && this.isZeroToAmount))) {
+      return false
     }
-    return true
+    return (this.isZeroFromAmount || this.isZeroToAmount) && +this.liquidityProviderFee === 0
   }
 
   get isInsufficientBalance (): boolean {
     if (this.connected && this.areTokensSelected) {
-      if (this.isZeroFromAmount) {
-        this.insufficientBalanceTokenSymbol = this.tokenFrom.symbol
-        return true
-      }
-      if (this.isZeroToAmount) {
-        this.insufficientBalanceTokenSymbol = this.tokenTo.symbol
-        return true
-      }
       let fpBalance = new FPNumber(this.tokenFrom.balance, this.tokenFrom.decimals)
       const fpAmount = new FPNumber(this.formModel.from, this.tokenFrom.decimals)
       if (FPNumber.lt(fpBalance, fpAmount)) {
@@ -224,7 +214,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
       }
       const fpFee = new FPNumber(this.networkFee, this.tokenFrom.decimals)
       this.insufficientBalanceTokenSymbol = KnownSymbols.XOR
-      if (this.tokenFrom.symbol === KnownSymbols.XOR) {
+      if (isXorAccountAsset(this.tokenFrom)) {
         return !(FPNumber.lt(fpFee, fpBalance.sub(fpAmount)) || FPNumber.eq(fpFee, fpBalance.sub(fpAmount)))
       }
       if (!this.tokenXOR) {
@@ -281,7 +271,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   }
 
   async getNetworkFee (): Promise<void> {
-    const networkFee = await dexApi.getSwapNetworkFee(this.tokenFrom.address, this.tokenTo.address, this.formModel.from, this.formModel.to, this.slippageTolerance, this.isExchangeB)
+    const networkFee = await api.getSwapNetworkFee(this.tokenFrom.address, this.tokenTo.address, this.formModel.from, this.formModel.to, this.slippageTolerance, this.isExchangeB)
     this.setNetworkFee(networkFee)
   }
 
@@ -298,10 +288,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
         this.resetFieldTo()
       } else {
         try {
-          const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.from)
+          const swapResult = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.from)
           this.formModel.to = swapResult.amount
           this.setLiquidityProviderFee(swapResult.fee)
-          const minMaxReceived = await dexApi.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
+          const minMaxReceived = await api.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
           this.setMinMaxReceived({ minMaxReceived })
           this.updatePrices()
           this.resetInsufficientAmountFlag()
@@ -338,10 +328,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
         try {
           // Always use getSwapResult and minMaxReceived with reversed flag for Token B
           const isExchangeBSwap = true
-          const swapResult = await dexApi.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.to, isExchangeBSwap)
+          const swapResult = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.to, isExchangeBSwap)
           this.formModel.from = swapResult.amount
           this.setLiquidityProviderFee(swapResult.fee)
-          const minMaxReceived = await dexApi.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance, isExchangeBSwap)
+          const minMaxReceived = await api.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance, isExchangeBSwap)
           this.setMinMaxReceived({ minMaxReceived, isExchangeB: isExchangeBSwap })
           this.updatePrices()
           this.resetInsufficientAmountFlag()
@@ -443,14 +433,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   async handleMaxValue (): Promise<void> {
     this.isFieldFromActive = true
     this.isFieldToActive = false
-    if (this.tokenFrom.symbol === KnownSymbols.XOR) {
-      await this.getNetworkFee()
-      const fpBalance = new FPNumber(this.tokenFrom.balance, this.tokenFrom.decimals)
-      const fpFee = new FPNumber(this.networkFee, this.tokenFrom.decimals)
-      this.formModel.from = fpBalance.sub(fpFee).toString()
-      return
-    }
-    this.formModel.from = this.tokenFrom.balance
+    await this.getNetworkFee()
+    this.formModel.from = getMaxValue(this.tokenFrom, this.networkFee)
   }
 
   handleConnectWallet (): void {
@@ -473,6 +457,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
         await this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
         this.isTokenToBalanceAvailable = true
       }
+      await this.getNetworkFee()
       await this.recountSwapValues()
     }
   }
@@ -483,7 +468,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
 
   async updateAccountAssets (): Promise<void> {
     try {
-      await dexApi.updateAccountAssets()
+      await api.updateAccountAssets()
     } catch (error) {
       this.$alert(this.t(error.message), { title: this.t('errorText') })
       throw new Error(error)

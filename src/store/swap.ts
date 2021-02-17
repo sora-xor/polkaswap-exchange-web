@@ -3,7 +3,7 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets, KnownSymbols, Asset, AccountAsset } from '@sora-substrate/util'
 
 const types = flow(
@@ -133,7 +133,7 @@ const actions = {
     commit(types.GET_TOKEN_XOR_REQUEST)
     try {
       if (token) {
-        const tokenFrom = await dexApi.accountAssets.find(asset => asset.address === token.address)
+        const tokenFrom = await api.accountAssets.find(asset => asset.address === token.address)
         if (tokenFrom) {
           commit(types.GET_TOKEN_XOR_SUCCESS, { ...tokenFrom })
         }
@@ -151,7 +151,7 @@ const actions = {
       try {
         const token = KnownAssets.get(payload.tokenSymbol)
         if (token) {
-          let tokenFrom = await dexApi.accountAssets.find(asset => asset.address === token.address)
+          let tokenFrom = await api.accountAssets.find(asset => asset.address === token.address)
           if (!tokenFrom) {
             tokenFrom = { ...token, balance: '0' }
           }
@@ -176,7 +176,7 @@ const actions = {
       try {
         const token = KnownAssets.get(payload.tokenSymbol)
         if (token) {
-          let tokenTo = await dexApi.accountAssets.find(asset => asset.address === token.address)
+          let tokenTo = await api.accountAssets.find(asset => asset.address === token.address)
           if (!tokenTo) {
             tokenTo = { ...token, balance: '0' }
           }

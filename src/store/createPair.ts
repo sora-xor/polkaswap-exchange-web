@@ -3,7 +3,7 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { api } from '@soramitsu/soraneo-wallet-web'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -18,9 +18,9 @@ const types = flow(
   fromPairs
 )([
   'CREATE_PAIR',
-  'GET_RESERVE',
   'ESTIMATE_MINTED',
-  'GET_FEE'
+  'GET_FEE',
+  'CHECK_LIQUIDITY'
 ])
 
 function initialState () {
@@ -29,9 +29,9 @@ function initialState () {
     secondToken: null,
     firstTokenValue: '',
     secondTokenValue: '',
-    reserve: null,
     minted: '',
-    fee: ''
+    fee: '',
+    isAvailable: false
   }
 }
 
@@ -50,17 +50,8 @@ const getters = {
   secondTokenValue (state) {
     return state.secondTokenValue
   },
-  reserve (state) {
-    return state.reserve
-  },
-  reserveA (state) {
-    return state.reserve ? Number(state.reserve[0]) : 0
-  },
-  reserveB (state) {
-    return state.reserve ? Number(state.reserve[1]) : 0
-  },
   isAvailable (state) {
-    return state.reserve && state.reserve[0] === '0' && state.reserve[1] === '0'
+    return state.isAvailable
   },
   minted (state) {
     return state.minted || 0
@@ -89,13 +80,6 @@ const mutations = {
   },
   [types.CREATE_PAIR_FAILURE] (state, error) {
   },
-  [types.GET_RESERVE_REQUEST] (state) {
-  },
-  [types.GET_RESERVE_SUCCESS] (state, reserve) {
-    state.reserve = reserve
-  },
-  [types.GET_RESERVE_FAILURE] (state, error) {
-  },
   [types.ESTIMATE_MINTED_REQUEST] (state) {
   },
   [types.ESTIMATE_MINTED_SUCCESS] (state, minted) {
@@ -109,41 +93,43 @@ const mutations = {
     state.fee = fee
   },
   [types.GET_FEE_FAILURE] (state, error) {
-  }
+  },
+  [types.CHECK_LIQUIDITY_REQUEST] (state) {},
+  [types.CHECK_LIQUIDITY_SUCCESS] (state, isAvailable) {
+    state.isAvailable = isAvailable
+  },
+  [types.CHECK_LIQUIDITY_FAILURE] (state) {}
 }
 
 const actions = {
   async setFirstToken ({ commit, dispatch }, asset: any) {
-    let firstAsset = await dexApi.accountAssets.find(a => a.address === asset.address)
+    let firstAsset = api.accountAssets.find(a => a.address === asset.address)
     if (!firstAsset) {
       firstAsset = { ...asset, balance: '0' }
     }
-
     commit(types.SET_FIRST_TOKEN, firstAsset)
-    dispatch('checkReserve')
+    dispatch('checkLiquidity')
   },
 
   async setSecondToken ({ commit, dispatch }, asset: any) {
-    let secondAddress = await dexApi.accountAssets.find(a => a.address === asset.address)
-    if (!secondAddress) {
-      secondAddress = { ...asset, balance: '0' }
+    let secondAsset = api.accountAssets.find(a => a.address === asset.address)
+    if (!secondAsset) {
+      secondAsset = { ...asset, balance: '0' }
     }
-
-    commit(types.SET_SECOND_TOKEN, secondAddress)
-    dispatch('checkReserve')
+    commit(types.SET_SECOND_TOKEN, secondAsset)
+    dispatch('checkLiquidity')
   },
 
-  async checkReserve ({ commit, getters, dispatch }) {
+  async checkLiquidity ({ commit, getters, dispatch }) {
     if (getters.firstToken && getters.secondToken) {
-      commit(types.GET_RESERVE_REQUEST)
+      commit(types.CHECK_LIQUIDITY_REQUEST)
       try {
-        const reserve = await dexApi.getLiquidityReserves(getters.firstToken.address, getters.secondToken.address)
-        commit(types.GET_RESERVE_SUCCESS, reserve)
-
+        const exists = await api.checkLiquidity(getters.firstToken.address, getters.secondToken.address)
+        commit(types.CHECK_LIQUIDITY_SUCCESS, !exists)
         dispatch('estimateMinted')
         dispatch('getNetworkFee')
       } catch (error) {
-        commit(types.GET_RESERVE_FAILURE, error)
+        commit(types.CHECK_LIQUIDITY_FAILURE, error)
       }
     }
   },
@@ -151,15 +137,14 @@ const actions = {
   async estimateMinted ({ commit, getters }) {
     if (getters.firstToken && getters.firstToken.address && getters.firstToken && getters.secondToken.address && getters.firstTokenValue && getters.secondTokenValue) {
       commit(types.ESTIMATE_MINTED_REQUEST)
-
       try {
-        const minted = await dexApi.estimatePoolTokensMinted(
+        const [minted] = await api.estimatePoolTokensMinted(
           getters.firstToken.address,
           getters.secondToken.address,
           getters.firstTokenValue,
           getters.secondTokenValue,
-          getters.reserveA,
-          getters.reserveB
+          0,
+          0
         )
         commit(types.ESTIMATE_MINTED_SUCCESS, minted)
       } catch (error) {
@@ -181,16 +166,15 @@ const actions = {
   },
 
   async getNetworkFee ({ commit, getters }) {
-    if (getters.firstToken && getters.firstToken.address && getters.firstToken && getters.secondToken.address && getters.firstTokenValue && getters.secondTokenValue) {
+    if (getters.firstToken && getters.firstToken.address && getters.secondToken && getters.secondToken.address) {
       commit(types.GET_FEE_REQUEST)
       try {
-        const fee = await dexApi.getAddLiquidityNetworkFee(
+        const fee = await api.getCreatePairNetworkFee(
           getters.firstToken.address,
           getters.secondToken.address,
-          getters.firstTokenValue,
-          getters.secondTokenValue
+          getters.firstTokenValue || 0,
+          getters.secondTokenValue || 0
         )
-
         commit(types.GET_FEE_SUCCESS, fee)
       } catch (error) {
         commit(types.GET_FEE_FAILURE, error)
@@ -200,17 +184,17 @@ const actions = {
     }
   },
 
-  async createPair ({ commit, getters }) {
+  async createPair ({ commit, getters, rootGetters }) {
     commit(types.CREATE_PAIR_REQUEST)
-    const result = await dexApi.addLiquidity(
-      getters.firstToken.address,
-      getters.secondToken.address,
-      getters.firstTokenValue,
-      getters.secondTokenValue
-    )
-
     try {
-      commit(types.CREATE_PAIR_SUCCESS, result)
+      await api.createPair(
+        getters.firstToken.address,
+        getters.secondToken.address,
+        getters.firstTokenValue,
+        getters.secondTokenValue,
+        rootGetters.slippageTolerance
+      )
+      commit(types.CREATE_PAIR_SUCCESS)
     } catch (error) {
       commit(types.CREATE_PAIR_FAILURE)
     }
