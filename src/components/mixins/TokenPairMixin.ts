@@ -2,7 +2,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { KnownAssets, KnownSymbols } from '@sora-substrate/util'
 
-import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
+import TokenInputMixin from '@/components/mixins/TokenInputMixin'
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 
@@ -12,7 +12,7 @@ import { formatNumber, getMaxValue, isNumberValue, isMaxButtonAvailable, isWalle
 
 const CreateTokenPairMixin = (namespace: string) => {
   @Component
-  class TokenPairMixin extends Mixins(TransactionMixin, InputFormatterMixin, LoadingMixin) {
+  class TokenPairMixin extends Mixins(TokenInputMixin, TransactionMixin, LoadingMixin) {
     readonly KnownSymbols = KnownSymbols
 
     @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
@@ -88,27 +88,13 @@ const CreateTokenPairMixin = (namespace: string) => {
       return false
     }
 
-    async handleMaxValue (isFirstToken: boolean): Promise<void> {
-      const token = isFirstToken ? this.firstToken : this.secondToken
-      const action = isFirstToken ? this.setFirstTokenValue : this.setSecondTokenValue
-
+    async handleMaxValue (token: any, setValue: (v: any) => void): Promise<void> {
       await this.getNetworkFee()
-      action(getMaxValue(token, this.fee))
+      setValue(getMaxValue(token, this.fee))
     }
 
-    async handleTokenChange (isFirstToken: boolean, value: string): Promise<any> {
-      const token = isFirstToken ? this.firstToken : this.secondToken
-      const action = isFirstToken ? this.setFirstTokenValue : this.setSecondTokenValue
-
-      const formattedValue = this.formatNumberField(value, token)
-
-      if (!isNumberValue(formattedValue)) {
-        await this.$nextTick
-        this.resetInputField()
-        return
-      }
-
-      action(formattedValue)
+    async handleTokenChange (value: string, token: any, setValue: (v: any) => void): Promise<any> {
+      await this.handleTokenInputChange(value, token, setValue)
       this.updatePrices()
     }
 
@@ -121,17 +107,8 @@ const CreateTokenPairMixin = (namespace: string) => {
       })
     }
 
-    handleInputBlur (isFirstToken: boolean): void {
-      const tokenValue = isFirstToken ? this.firstTokenValue : this.secondTokenValue
-      const action = isFirstToken ? this.setFirstTokenValue : this.setSecondTokenValue
-
-      if (+tokenValue === 0) {
-        this.resetInputField(isFirstToken)
-      } else {
-        const formattedTokenValue = this.trimNeedlesSymbols(String(tokenValue))
-        action(formattedTokenValue)
-      }
-
+    handleInputBlur (value: string | number, setValue: (v: any) => void): void {
+      this.handleTokenInputBlur(value, setValue)
       this.afterInputBlur()
     }
 
@@ -156,11 +133,6 @@ const CreateTokenPairMixin = (namespace: string) => {
         console.error(error)
         this.$alert(this.t(error.message), { title: this.t('errorText') })
       }
-    }
-
-    private resetInputField (isFirstTokenField = true): void {
-      const action = isFirstTokenField ? this.setFirstTokenValue : this.setSecondTokenValue
-      action('')
     }
 
     afterInputBlur (): void {}

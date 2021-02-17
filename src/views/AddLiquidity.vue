@@ -22,12 +22,12 @@
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
               :maxlength="tokenValueMaxLength(firstTokenValue, firstToken)"
-              @change="handleTokenChange(true, $event)"
-              @blur="handleInputBlur(true)"
+              @change="handleTokenChange($event, firstToken, setFirstTokenValue)"
+              @blur="handleInputBlur(firstTokenValue, setFirstTokenValue)"
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
-            <s-button v-if="isFirstMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue(true)">
+            <s-button v-if="isFirstMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue(firstToken, setFirstTokenValue)">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
@@ -57,12 +57,12 @@
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
               :maxlength="tokenValueMaxLength(secondTokenValue, secondToken)"
-              @change="handleTokenChange(false, $event)"
-              @blur="handleInputBlur(false)"
+              @change="handleTokenChange($event, secondToken, setSecondTokenValue)"
+              @blur="handleInputBlur(secondTokenValue, setSecondTokenValue)"
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
-            <s-button v-if="isSecondMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue(false)">
+            <s-button v-if="isSecondMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue(secondToken, setSecondTokenValue)">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
@@ -194,6 +194,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
     ConfirmAddLiquidity: lazyComponent(Components.ConfirmAddLiquidity)
   }
 })
+
 export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
   @Getter('shareOfPool', { namespace }) shareOfPool!: string

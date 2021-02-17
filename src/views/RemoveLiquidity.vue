@@ -285,10 +285,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     this.setRemovePart(this.removePartInput)
   }
 
-  getTokenValue (token: any, tokenValue: number): string {
-    return token ? `${tokenValue} ${token.symbol}` : ''
-  }
-
   getTokenBalance (token: any): string {
     return token ? token.balance : ''
   }
@@ -300,8 +296,8 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
 
   updatePrices (): void {
     this.getPrices({
-      assetAAddress: this.firstTokenAddress ? this.firstTokenAddress : this.firstToken.address,
-      assetBAddress: this.secondTokenAddress ? this.secondTokenAddress : this.secondToken.address,
+      assetAAddress: this.firstTokenAddress ?? this.firstToken.address,
+      assetBAddress: this.secondTokenAddress ?? this.secondToken.address,
       amountA: this.firstTokenAmount,
       amountB: this.secondTokenAmount
     })
