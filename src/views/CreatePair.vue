@@ -22,7 +22,7 @@
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
               :maxlength="inputMaxLength(firstTokenValue, firstToken)"
-              @input="handleTokenChange(true, $event)"
+              @change="handleTokenChange(true, $event)"
               @blur="handleInputBlur(true)"
             />
           </s-form-item>
@@ -58,7 +58,7 @@
               :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
               :maxlength="inputMaxLength(secondTokenValue, secondToken)"
-              @input="handleTokenChange(false, $event)"
+              @change="handleTokenChange(false, $event)"
               @blur="handleInputBlur(false)"
             />
           </s-form-item>
@@ -218,7 +218,6 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
   @Action('setFirstTokenValue', { namespace }) setFirstTokenValue
   @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
   @Action('createPair', { namespace }) createPair
-  @Action('resetData', { namespace }) resetData
   @Action('getPrices', { namespace: 'prices' }) getPrices
   @Action('resetPrices', { namespace: 'prices' }) resetPrices
 
@@ -272,15 +271,6 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
     return false
   }
 
-  getTokenValue (token: any, tokenValue: number): string {
-    return token ? `${tokenValue} ${token.symbol}` : ''
-  }
-
-  // We don't need it for now
-  // openSelectFirstTokenDialog (): void {
-  //   this.showSelectFirstTokenDialog = true
-  // }
-
   openSelectSecondTokenDialog (): void {
     this.showSelectSecondTokenDialog = true
   }
@@ -290,8 +280,7 @@ export default class CreatePair extends Mixins(TransactionMixin, LoadingMixin, I
     const action = isFirstToken ? this.setFirstTokenValue : this.setSecondTokenValue
 
     await this.getNetworkFee()
-    const maxValue = getMaxValue(token, this.fee)
-    action(maxValue)
+    action(getMaxValue(token, this.fee))
   }
 
   updatePrices (): void {

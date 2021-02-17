@@ -124,7 +124,8 @@ const actions = {
     if (getters.firstToken && getters.secondToken) {
       commit(types.CHECK_LIQUIDITY_REQUEST)
       try {
-        const exists = await api.checkLiquidity(getters.firstToken.address, getters.secondToken.address)
+        // const exists = await api.checkLiquidity(getters.firstToken.address, getters.secondToken.address)
+        const exists = false
         commit(types.CHECK_LIQUIDITY_SUCCESS, !exists)
         dispatch('estimateMinted')
         dispatch('getNetworkFee')

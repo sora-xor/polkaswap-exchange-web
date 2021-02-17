@@ -29,8 +29,8 @@ function initialState () {
   return {
     firstToken: null,
     secondToken: null,
-    firstTokenValue: 0,
-    secondTokenValue: 0,
+    firstTokenValue: '',
+    secondTokenValue: '',
     reserve: null,
     minted: '',
     fee: '',
@@ -224,6 +224,7 @@ const actions = {
   },
 
   setFirstTokenValue ({ commit, dispatch, getters }, value: string | number) {
+    console.log('setFirstTokenValue', value, typeof value)
     if ((!getters.focusedField || getters.focusedField === 'firstTokenValue') && value !== getters.firstTokenValue) {
       commit(types.SET_FOCUSED_FIELD, 'firstTokenValue')
 
@@ -296,6 +297,7 @@ const actions = {
   },
 
   async setDataFromLiquidity ({ dispatch }, { firstAddress, secondAddress }) {
+    console.log('setDataFromLiquidity', firstAddress, secondAddress)
     dispatch('setFirstToken', await api.accountAssets.find(a => a.address === firstAddress))
     let secondAsset: any = await api.accountAssets.find(a => a.address === secondAddress)
     if (!secondAsset) {
