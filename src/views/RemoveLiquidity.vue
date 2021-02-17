@@ -43,8 +43,8 @@
               :value="liquidityAmount"
               :placeholder="inputPlaceholder"
               :maxlength="tokenValueMaxLength(liquidityAmount, liquidity)"
-              @input="setLiquidityAmount"
-              @blur="handleInputBlur('input')"
+              @input="handleLiquidityAmountChange"
+              @blur="handleInputBlur(liquidityAmount, setLiquidityAmount)"
             />
           </s-form-item>
           <div class="token">
@@ -76,8 +76,8 @@
               :value="firstTokenAmount"
               :placeholder="inputPlaceholder"
               :maxlength="tokenValueMaxLength(firstTokenAmount, firstToken)"
-              @input="setFirstTokenAmount"
-              @blur="handleInputBlur('firstTokenAmount')"
+              @input="handleFirstTokenAmountChange"
+              @blur="handleInputBlur(firstTokenAmount, setFirstTokenAmount)"
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
@@ -104,8 +104,8 @@
               :value="secondTokenAmount"
               :placeholder="inputPlaceholder"
               :maxlength="tokenValueMaxLength(secondTokenAmount, secondToken)"
-              @input="setSecondTokenAmount"
-              @blur="handleInputBlur('secondTokenAmount')"
+              @input="handleSecondTokenAmountChange"
+              @blur="handleInputBlur(secondTokenAmount, setSecondTokenAmount)"
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
@@ -156,7 +156,7 @@ import { FPNumber, KnownSymbols } from '@sora-substrate/util'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
+import TokenInputMixin from '@/components/mixins/TokenInputMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
@@ -173,7 +173,7 @@ const namespace = 'removeLiquidity'
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity)
   }
 })
-export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMixin, InputFormatterMixin) {
+export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMixin, TokenInputMixin) {
   readonly KnownSymbols = KnownSymbols
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
@@ -303,93 +303,22 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     })
   }
 
-  async handleLiquidityAmountChange (): Promise<any> {
-    // const liquidityAmount = this.formatNumberField(this.liquidityAmount)
-    // if (!isNumberValue(liquidityAmount)) {
-    //   await this.promiseTimeout()
-    //   this.resetInputField('input')
-    //   return
-    // }
-    this.setLiquidityAmount(this.liquidityAmount)
+  async handleLiquidityAmountChange (value): Promise<any> {
+    await this.handleTokenInputChange(value, this.liquidity, this.setLiquidityAmount)
   }
 
-  async handleFirstTokenAmountChange (): Promise<any> {
-    // const firstTokenAmount = this.formatNumberField(this.firstTokenAmount)
-    // if (!isNumberValue(firstTokenAmount)) {
-    //   await this.promiseTimeout()
-    //   this.resetInputField('firstTokenAmount')
-    //   return
-    // }
-    this.setFirstTokenAmount(this.firstTokenAmount)
+  async handleFirstTokenAmountChange (value): Promise<any> {
+    await this.handleTokenInputChange(value, this.firstToken, this.setFirstTokenAmount)
     this.updatePrices()
   }
 
-  async handleSecondTokenAmountChange (): Promise<any> {
-    // const secondTokenAmount = this.formatNumberField(this.secondTokenAmount)
-    // if (!isNumberValue(secondTokenAmount)) {
-    //   await this.promiseTimeout()
-    //   this.resetInputField('secondTokenAmount')
-    //   return
-    // }
-    this.setSecondTokenAmount(this.secondTokenAmount)
+  async handleSecondTokenAmountChange (value): Promise<any> {
+    await this.handleTokenInputChange(value, this.secondToken, this.setSecondTokenAmount)
     this.updatePrices()
   }
 
-  resetInputField (field: string): void {
-    switch (field) {
-      case 'removePart': {
-        this.setRemovePart(0)
-        break
-      }
-      case 'liquidityAmount': {
-        this.setLiquidityAmount(0)
-        break
-      }
-      case 'firstTokenAmount': {
-        this.setFirstTokenAmount(0)
-        break
-      }
-      case 'secondTokenAmount': {
-        this.setSecondTokenAmount(0)
-      }
-    }
-  }
-
-  handleInputBlur (field: string): void {
-    // switch (field) {
-    //   case 'removePart': {
-    //     if (+this.removePartInput === 0) {
-    //       this.resetInputField('removePart')
-    //     } else {
-    //       this.setRemovePart(+this.trimNeedlesSymbols(this.removePartInput.toString()))
-    //     }
-    //     break
-    //   }
-    //   case 'liquidityAmount': {
-    //     if (+this.liquidityAmount === 0) {
-    //       this.resetInputField('liquidityAmount')
-    //     } else {
-    //       this.setLiquidityAmount(this.trimNeedlesSymbols(this.liquidityAmount))
-    //     }
-    //     break
-    //   }
-    //   case 'firstTokenAmount': {
-    //     if (+this.firstTokenAmount === 0) {
-    //       this.resetInputField('firstTokenAmount')
-    //     } else {
-    //       this.setFirstTokenAmount(this.trimNeedlesSymbols(this.firstTokenAmount))
-    //     }
-    //     break
-    //   }
-    //   case 'secondTokenAmount': {
-    //     if (+this.secondTokenAmount === 0) {
-    //       this.resetInputField('secondTokenAmount')
-    //     } else {
-    //       this.setSecondTokenAmount(this.trimNeedlesSymbols(this.secondTokenAmount))
-    //     }
-    //     break
-    //   }
-    // }
+  handleInputBlur (value: string | number, setValue: (v: any) => void): void {
+    this.handleTokenInputBlur(value, setValue)
     this.resetFocusedField()
   }
 

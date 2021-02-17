@@ -8,7 +8,7 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 
 import router from '@/router'
 import { PageNames } from '@/consts'
-import { formatNumber, getMaxValue, isNumberValue, isMaxButtonAvailable, isWalletConnected, isXorAccountAsset, hasInsufficientBalance } from '@/utils'
+import { formatNumber, getMaxValue, isMaxButtonAvailable, isWalletConnected, isXorAccountAsset, hasInsufficientBalance } from '@/utils'
 
 const CreateTokenPairMixin = (namespace: string) => {
   @Component

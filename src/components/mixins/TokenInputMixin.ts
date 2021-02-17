@@ -6,7 +6,7 @@ import { isNumberValue } from '@/utils'
 @Component
 export default class TokenInputMixin extends Mixins(InputFormatterMixin) {
   async handleTokenInputChange (value: string, token: any, setValue: (v: any) => void): Promise<any> {
-    const formattedValue = this.formatNumberField(value, token)
+    const formattedValue = this.formatNumberField(String(value), token)
 
     if (!isNumberValue(formattedValue)) {
       await this.$nextTick
