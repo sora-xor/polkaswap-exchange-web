@@ -2,18 +2,22 @@ import { Vue, Component } from 'vue-property-decorator'
 
 @Component
 export default class InputFormatterMixin extends Vue {
-  formatNumberField = (fieldValue: string, token?: any): string => {
-    if (fieldValue.indexOf('.') === 0) {
-      fieldValue = '0' + fieldValue
+  formatNumberField = (fieldValue: any, token?: any): string => {
+    if (!(typeof fieldValue === 'string' || typeof fieldValue === 'number')) return fieldValue
+
+    let formatted = String(fieldValue)
+
+    if (formatted.indexOf('.') === 0) {
+      formatted = '0' + formatted
     }
 
-    const lengthLimit = this.tokenValueMaxLength(fieldValue, token)
+    const lengthLimit = this.tokenValueMaxLength(formatted, token)
 
-    if (lengthLimit && fieldValue.length > lengthLimit) {
-      fieldValue = fieldValue.slice(0, lengthLimit)
+    if (lengthLimit && formatted.length > lengthLimit) {
+      formatted = formatted.slice(0, lengthLimit)
     }
 
-    return fieldValue
+    return formatted
   }
 
   trimNeedlesSymbols = (fieldValue: string): string => {

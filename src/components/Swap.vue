@@ -18,11 +18,12 @@
       <div class="input-line">
         <s-form-item>
           <s-input
-            v-model="formModel.from"
             v-float
             class="s-input--token-value"
+            :value="formModel.from"
             :placeholder="isFieldFromFocused ? '' : inputPlaceholder"
-            @input="handleInputFieldFrom"
+            :maxlength="tokenValueMaxLength(fromValue, tokenFrom)"
+            @change="handleInputFieldFrom"
             @focus="handleFocusFieldFrom"
             @blur="handleBlurFieldFrom"
           />
@@ -56,11 +57,12 @@
       <div class="input-line">
         <s-form-item>
           <s-input
-            v-model="formModel.to"
             v-float
             class="s-input--token-value"
+            :value="formModel.to"
             :placeholder="isFieldToFocused ? '' : inputPlaceholder"
-            @input="handleInputFieldTo"
+            :maxlength="tokenValueMaxLength(toValue, tokenTo)"
+            @change="handleInputFieldTo"
             @focus="handleFocusFieldTo"
             @blur="handleBlurFieldTo"
           />
@@ -230,20 +232,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
    * Update token From balance and amount (after swap it should be recalculated)
    */
   get tokenFromBalance (): string {
-    this.recountSwapValues()
-    return this.tokenFrom ? this.tokenFrom.balance : ''
+    return this.tokenFrom?.balance ?? ''
   }
 
   /**
    * Update token To balance and amount (after swap it should be recalculated)
    */
   get tokenToBalance (): string {
-    this.recountSwapValues()
-    return this.tokenTo ? this.tokenTo.balance : ''
-  }
-
-  formatTokenValue (token: any, tokenValue: number | string): string {
-    return token ? `${tokenValue} ${token.symbol}` : ''
+    return this.tokenTo?.balance ?? ''
   }
 
   created () {
@@ -275,10 +271,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     this.setNetworkFee(networkFee)
   }
 
-  async handleInputFieldFrom (): Promise<any> {
-    this.formModel.from = this.formatNumberField(this.formModel.from)
+  async handleInputFieldFrom (value): Promise<any> {
+    this.formModel.from = this.formatNumberField(value, this.tokenFrom)
     if (!isNumberValue(this.formModel.from)) {
-      await this.promiseTimeout()
+      await this.$nextTick()
       this.resetFieldFrom()
       return
     }
@@ -313,10 +309,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     this.setFromValue(this.formModel.from)
   }
 
-  async handleInputFieldTo (): Promise<any> {
-    this.formModel.to = this.formatNumberField(this.formModel.to)
+  async handleInputFieldTo (value): Promise<any> {
+    this.formModel.to = this.formatNumberField(value, this.tokenTo)
     if (!isNumberValue(this.formModel.to)) {
-      await this.promiseTimeout()
+      await this.$nextTick()
       this.resetFieldTo()
       return
     }
@@ -355,9 +351,9 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
 
   async recountSwapValues (): Promise<void> {
     if (this.isFieldFromActive) {
-      await this.handleInputFieldFrom()
+      await this.handleInputFieldFrom(this.fromValue)
     } else {
-      await this.handleInputFieldTo()
+      await this.handleInputFieldTo(this.toValue)
     }
   }
 
@@ -391,13 +387,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     this.isFieldFromFocused = false
   }
 
-  handleFocusFieldFrom (): void {
+  async handleFocusFieldFrom (): Promise<void> {
     this.isFieldFromActive = true
     this.isFieldToActive = false
     this.isFieldFromFocused = true
     if (this.isZeroFromAmount) {
       this.formModel.from = ''
     }
+    await this.recountSwapValues()
   }
 
   handleBlurFieldTo (): void {
@@ -409,13 +406,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
     this.isFieldToFocused = false
   }
 
-  handleFocusFieldTo (): void {
+  async handleFocusFieldTo (): Promise<void> {
     this.isFieldFromActive = false
     this.isFieldToActive = true
     this.isFieldToFocused = true
     if (this.isZeroToAmount) {
       this.formModel.to = ''
     }
+    await this.recountSwapValues()
   }
 
   handleSwitchTokens (): void {
