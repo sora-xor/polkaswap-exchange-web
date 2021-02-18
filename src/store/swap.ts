@@ -26,7 +26,20 @@ const types = flow(
   'GET_TOKEN_TO'
 ])
 
-function initialState () {
+interface SwapState {
+  tokenXOR: null;
+  tokenFrom: Asset | AccountAsset | null;
+  tokenTo: Asset | AccountAsset | null;
+  fromValue: string;
+  toValue: string;
+  isTokenFromPrice: boolean;
+  minMaxReceived: string;
+  isExchangeB: boolean;
+  liquidityProviderFee: string;
+  networkFee: string;
+}
+
+function initialState (): SwapState {
   return {
     tokenXOR: null,
     tokenFrom: null,

@@ -4,6 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
+import { Asset, AccountAsset } from '@sora-substrate/util'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -23,7 +24,17 @@ const types = flow(
   'CHECK_LIQUIDITY'
 ])
 
-function initialState () {
+interface CreatePairState {
+  firstToken: Asset | AccountAsset | null;
+  secondToken: Asset | AccountAsset | null;
+  firstTokenValue: string;
+  secondTokenValue: string;
+  minted: string;
+  fee: string;
+  isAvailable: boolean;
+}
+
+function initialState (): CreatePairState {
   return {
     firstToken: null,
     secondToken: null,
@@ -62,10 +73,10 @@ const getters = {
 }
 
 const mutations = {
-  [types.SET_FIRST_TOKEN] (state, firstToken: any) {
+  [types.SET_FIRST_TOKEN] (state, firstToken: Asset | AccountAsset | null) {
     state.firstToken = firstToken
   },
-  [types.SET_SECOND_TOKEN] (state, secondToken: any) {
+  [types.SET_SECOND_TOKEN] (state, secondToken: Asset | AccountAsset | null) {
     state.secondToken = secondToken
   },
   [types.SET_FIRST_TOKEN_VALUE] (state, firstTokenValue: string | number) {
@@ -95,7 +106,7 @@ const mutations = {
   [types.GET_FEE_FAILURE] (state, error) {
   },
   [types.CHECK_LIQUIDITY_REQUEST] (state) {},
-  [types.CHECK_LIQUIDITY_SUCCESS] (state, isAvailable) {
+  [types.CHECK_LIQUIDITY_SUCCESS] (state, isAvailable: boolean) {
     state.isAvailable = isAvailable
   },
   [types.CHECK_LIQUIDITY_FAILURE] (state) {}

@@ -24,7 +24,20 @@ const types = flow(
   'GET_TOTAL_SUPPLY'
 ])
 
-function initialState () {
+interface RemoveLiquidityState {
+  liquidity: null | object;
+  removePart: number;
+  liquidityAmount: number;
+  firstTokenAmount: number | string;
+  secondTokenAmount: number | string;
+  focusedField: null | string;
+  fee: number;
+  reserveA: number;
+  reserveB: number;
+  totalSupply: number;
+}
+
+function initialState (): RemoveLiquidityState {
   return {
     liquidity: null,
     removePart: 0,

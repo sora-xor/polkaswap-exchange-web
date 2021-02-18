@@ -4,7 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, FPNumber } from '@sora-substrate/util'
+import { Asset, AccountAsset, KnownAssets, FPNumber } from '@sora-substrate/util'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -25,7 +25,20 @@ const types = flow(
   'CHECK_LIQUIDITY'
 ])
 
-function initialState () {
+interface AddLiquidityState {
+  firstToken: Asset | AccountAsset | null;
+  secondToken: Asset | AccountAsset | null;
+  firstTokenValue: string;
+  secondTokenValue: string;
+  reserve: null | Array<string>;
+  minted: string;
+  fee: string;
+  totalSupply: number;
+  focusedField: null | string;
+  isAvailable: boolean;
+}
+
+function initialState (): AddLiquidityState {
   return {
     firstToken: null,
     secondToken: null,
@@ -100,10 +113,10 @@ const getters = {
 }
 
 const mutations = {
-  [types.SET_FIRST_TOKEN] (state, firstToken: any) {
+  [types.SET_FIRST_TOKEN] (state, firstToken: Asset | AccountAsset | null) {
     state.firstToken = firstToken
   },
-  [types.SET_SECOND_TOKEN] (state, secondToken: any) {
+  [types.SET_SECOND_TOKEN] (state, secondToken: Asset | AccountAsset | null) {
     state.secondToken = secondToken
   },
   [types.SET_FIRST_TOKEN_VALUE] (state, firstTokenValue: string | number) {
