@@ -3,7 +3,7 @@ import { Vue, Component } from 'vue-property-decorator'
 @Component
 export default class InputFormatterMixin extends Vue {
   formatNumberField = (fieldValue: any, token?: any): string => {
-    if (!(typeof fieldValue === 'string' || typeof fieldValue === 'number')) return fieldValue
+    if (!['string', 'number'].includes(typeof fieldValue)) return fieldValue
 
     let formatted = String(fieldValue)
 
@@ -40,9 +40,5 @@ export default class InputFormatterMixin extends Vue {
     const fpIndex = stringValue.indexOf('.')
 
     return fpIndex !== -1 ? fpIndex + 1 + token.decimals : undefined
-  }
-
-  promiseTimeout (): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, 50))
   }
 }

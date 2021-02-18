@@ -9,7 +9,7 @@ export default class TokenInputMixin extends Mixins(InputFormatterMixin) {
     const formattedValue = this.formatNumberField(value, token)
 
     if (!isNumberValue(formattedValue)) {
-      await this.$nextTick
+      await this.$nextTick()
       this.resetInputField(setValue, typeof value)
       return
     }
