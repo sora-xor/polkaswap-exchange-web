@@ -124,8 +124,7 @@ const actions = {
     if (getters.firstToken && getters.secondToken) {
       commit(types.CHECK_LIQUIDITY_REQUEST)
       try {
-        // const exists = await api.checkLiquidity(getters.firstToken.address, getters.secondToken.address)
-        const exists = false
+        const exists = await api.checkLiquidity(getters.firstToken.address, getters.secondToken.address)
         commit(types.CHECK_LIQUIDITY_SUCCESS, !exists)
         dispatch('estimateMinted')
         dispatch('getNetworkFee')
@@ -136,7 +135,7 @@ const actions = {
   },
 
   async estimateMinted ({ commit, getters }) {
-    if (getters.firstToken && getters.firstToken.address && getters.firstToken && getters.secondToken.address && getters.firstTokenValue && getters.secondTokenValue) {
+    if (getters.firstToken?.address && getters.secondToken?.address && getters.firstTokenValue && getters.secondTokenValue) {
       commit(types.ESTIMATE_MINTED_REQUEST)
       try {
         const [minted] = await api.estimatePoolTokensMinted(
@@ -167,7 +166,7 @@ const actions = {
   },
 
   async getNetworkFee ({ commit, getters }) {
-    if (getters.firstToken && getters.firstToken.address && getters.secondToken && getters.secondToken.address) {
+    if (getters.firstToken?.address && getters.secondToken?.address) {
       commit(types.GET_FEE_REQUEST)
       try {
         const fee = await api.getCreatePairNetworkFee(
