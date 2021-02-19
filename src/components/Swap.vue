@@ -104,7 +104,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownSymbols, FPNumber } from '@sora-substrate/util'
@@ -145,6 +145,11 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   @Action setNetworkFee
   @Action('getPrices', { namespace: 'prices' }) getPrices
   @Action('resetPrices', { namespace: 'prices' }) resetPrices
+
+  @Watch('slippageTolerance')
+  private handleSlippageToleranceChange (): void {
+    this.recountSwapValues()
+  }
 
   inputPlaceholder: string = formatNumber(0, 1)
   isTokenFromBalanceAvailable = false
