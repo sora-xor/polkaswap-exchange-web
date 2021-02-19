@@ -26,13 +26,26 @@ const types = flow(
   'GET_TOKEN_TO'
 ])
 
-function initialState () {
+interface SwapState {
+  tokenXOR: Asset | AccountAsset | null;
+  tokenFrom: Asset | AccountAsset | null;
+  tokenTo: Asset | AccountAsset | null;
+  fromValue: string;
+  toValue: string;
+  isTokenFromPrice: boolean;
+  minMaxReceived: string;
+  isExchangeB: boolean;
+  liquidityProviderFee: string;
+  networkFee: string;
+}
+
+function initialState (): SwapState {
   return {
     tokenXOR: null,
     tokenFrom: null,
     tokenTo: null,
-    fromValue: 0,
-    toValue: 0,
+    fromValue: '',
+    toValue: '',
     isTokenFromPrice: true,
     minMaxReceived: '',
     isExchangeB: false,
@@ -44,85 +57,85 @@ function initialState () {
 const state = initialState()
 
 const getters = {
-  tokenXOR (state) {
+  tokenXOR (state: SwapState) {
     return state.tokenXOR
   },
-  tokenFrom (state) {
+  tokenFrom (state: SwapState) {
     return state.tokenFrom
   },
-  tokenTo (state) {
+  tokenTo (state: SwapState) {
     return state.tokenTo
   },
-  fromValue (state) {
+  fromValue (state: SwapState) {
     return state.fromValue
   },
-  toValue (state) {
+  toValue (state: SwapState) {
     return state.toValue
   },
-  isTokenFromPrice (state) {
+  isTokenFromPrice (state: SwapState) {
     return state.isTokenFromPrice
   },
-  minMaxReceived (state) {
+  minMaxReceived (state: SwapState) {
     return state.minMaxReceived
   },
-  isExchangeB (state) {
+  isExchangeB (state: SwapState) {
     return state.isExchangeB
   },
-  liquidityProviderFee (state) {
+  liquidityProviderFee (state: SwapState) {
     return state.liquidityProviderFee
   },
-  networkFee (state) {
+  networkFee (state: SwapState) {
     return state.networkFee
   }
 }
 
 const mutations = {
-  [types.GET_TOKEN_XOR_REQUEST] (state) {
+  [types.GET_TOKEN_XOR_REQUEST] (state: SwapState) {
     state.tokenXOR = null
   },
-  [types.GET_TOKEN_XOR_SUCCESS] (state, token: Asset | AccountAsset | null) {
+  [types.GET_TOKEN_XOR_SUCCESS] (state: SwapState, token: Asset | AccountAsset | null) {
     state.tokenXOR = token
   },
-  [types.GET_TOKEN_XOR_FAILURE] (state) {
+  [types.GET_TOKEN_XOR_FAILURE] (state: SwapState) {
     state.tokenXOR = null
   },
-  [types.GET_TOKEN_FROM_REQUEST] (state) {
+  [types.GET_TOKEN_FROM_REQUEST] (state: SwapState) {
     state.tokenFrom = null
   },
-  [types.GET_TOKEN_FROM_SUCCESS] (state, token: Asset | AccountAsset | null) {
+  [types.GET_TOKEN_FROM_SUCCESS] (state: SwapState, token: Asset | AccountAsset | null) {
     state.tokenFrom = token
   },
-  [types.GET_TOKEN_FROM_FAILURE] (state) {
+  [types.GET_TOKEN_FROM_FAILURE] (state: SwapState) {
     state.tokenFrom = null
   },
-  [types.GET_TOKEN_TO_REQUEST] (state) {
+  [types.GET_TOKEN_TO_REQUEST] (state: SwapState) {
     state.tokenTo = null
   },
-  [types.GET_TOKEN_TO_SUCCESS] (state, token: Asset | AccountAsset | null) {
+  [types.GET_TOKEN_TO_SUCCESS] (state: SwapState, token: Asset | AccountAsset | null) {
     state.tokenTo = token
   },
-  [types.GET_TOKEN_TO_FAILURE] (state) {
+  [types.GET_TOKEN_TO_FAILURE] (state: SwapState) {
     state.tokenTo = null
   },
-  [types.GET_FROM_VALUE] (state, fromValue: string | number) {
+  [types.GET_FROM_VALUE] (state: SwapState, fromValue: string) {
     state.fromValue = fromValue
   },
-  [types.GET_TO_VALUE] (state, toValue: string | number) {
+  [types.GET_TO_VALUE] (state: SwapState, toValue: string) {
     state.toValue = toValue
   },
-  [types.GET_TOKEN_FROM_PRICE] (state, isTokenFromPrice: boolean) {
+  [types.GET_TOKEN_FROM_PRICE] (state: SwapState, isTokenFromPrice: boolean) {
     state.isTokenFromPrice = isTokenFromPrice
   },
-  [types.GET_MIN_MAX_RECEIVED] (state, minMaxReceived: string) {
+  [types.GET_MIN_MAX_RECEIVED] (state: SwapState, minMaxReceived: string) {
     state.minMaxReceived = minMaxReceived
   },
-  [types.GET_EXCHANGE_B] (state, isExchangeB: boolean) {
+  [types.GET_EXCHANGE_B] (state: SwapState, isExchangeB: boolean) {
     state.isExchangeB = isExchangeB
   },
-  [types.GET_LIQUIDITY_PROVIDER_FEE] (state, liquidityProviderFee: string) {
+  [types.GET_LIQUIDITY_PROVIDER_FEE] (state: SwapState, liquidityProviderFee: string) {
     state.liquidityProviderFee = liquidityProviderFee
   },
-  [types.GET_NETWORK_FEE] (state, networkFee: string) {
+  [types.GET_NETWORK_FEE] (state: SwapState, networkFee: string) {
     state.networkFee = networkFee
   }
 }

@@ -4,7 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, FPNumber } from '@sora-substrate/util'
+import { Asset, AccountAsset, KnownAssets, FPNumber } from '@sora-substrate/util'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -25,12 +25,25 @@ const types = flow(
   'CHECK_LIQUIDITY'
 ])
 
-function initialState () {
+interface AddLiquidityState {
+  firstToken: Asset | AccountAsset | null;
+  secondToken: Asset | AccountAsset | null;
+  firstTokenValue: string;
+  secondTokenValue: string;
+  reserve: null | Array<string>;
+  minted: string;
+  fee: string;
+  totalSupply: number;
+  focusedField: null | string;
+  isAvailable: boolean;
+}
+
+function initialState (): AddLiquidityState {
   return {
     firstToken: null,
     secondToken: null,
-    firstTokenValue: 0,
-    secondTokenValue: 0,
+    firstTokenValue: '',
+    secondTokenValue: '',
     reserve: null,
     minted: '',
     fee: '',
@@ -43,55 +56,55 @@ function initialState () {
 const state = initialState()
 
 const getters = {
-  firstToken (state) {
+  firstToken (state: AddLiquidityState) {
     return state.firstToken
   },
-  secondToken (state) {
+  secondToken (state: AddLiquidityState) {
     return state.secondToken
   },
-  firstTokenDecimals (state) {
-    return state.firstToken ? state.firstToken.decimals : 0
+  firstTokenDecimals (state: AddLiquidityState) {
+    return state.firstToken?.decimals ?? 0
   },
-  secondTokenDecimals (state) {
-    return state.secondToken ? state.secondToken.decimals : 0
+  secondTokenDecimals (state: AddLiquidityState) {
+    return state.secondToken?.decimals ?? 0
   },
-  firstTokenAddress (state) {
-    return state.firstToken ? state.firstToken.address : 0
+  firstTokenAddress (state: AddLiquidityState) {
+    return state.firstToken?.address ?? 0
   },
-  secondTokenAddress (state) {
-    return state.secondToken ? state.secondToken.address : 0
+  secondTokenAddress (state: AddLiquidityState) {
+    return state.secondToken?.address ?? 0
   },
-  firstTokenValue (state) {
+  firstTokenValue (state: AddLiquidityState) {
     return state.firstTokenValue
   },
-  secondTokenValue (state) {
+  secondTokenValue (state: AddLiquidityState) {
     return state.secondTokenValue
   },
-  reserve (state) {
+  reserve (state: AddLiquidityState) {
     return state.reserve
   },
-  reserveA (state) {
+  reserveA (state: AddLiquidityState) {
     return state.reserve ? Number(state.reserve[0]) : 0
   },
-  reserveB (state) {
+  reserveB (state: AddLiquidityState) {
     return state.reserve ? Number(state.reserve[1]) : 0
   },
-  isAvailable (state) {
+  isAvailable (state: AddLiquidityState) {
     return state.isAvailable && state.reserve
   },
-  isNotFirstLiquidityProvider (state, getters) {
+  isNotFirstLiquidityProvider (state: AddLiquidityState, getters) {
     return state.reserve && getters.reserveA !== 0 && getters.reserveB !== 0
   },
-  minted (state) {
+  minted (state: AddLiquidityState) {
     return state.minted || '0'
   },
-  fee (state) {
+  fee (state: AddLiquidityState) {
     return state.fee || '0'
   },
-  totalSupply (state) {
+  totalSupply (state: AddLiquidityState) {
     return state.totalSupply || '0'
   },
-  shareOfPool (state, getters) {
+  shareOfPool (state: AddLiquidityState, getters) {
     const minted = new FPNumber(getters.minted)
     return getters.firstTokenValue && getters.secondTokenValue
       ? minted.div(new FPNumber(getters.totalSupply).add(minted)).mul(new FPNumber(100)).toString() || 0
@@ -100,16 +113,16 @@ const getters = {
 }
 
 const mutations = {
-  [types.SET_FIRST_TOKEN] (state, firstToken: any) {
+  [types.SET_FIRST_TOKEN] (state: AddLiquidityState, firstToken: Asset | AccountAsset | null) {
     state.firstToken = firstToken
   },
-  [types.SET_SECOND_TOKEN] (state, secondToken: any) {
+  [types.SET_SECOND_TOKEN] (state: AddLiquidityState, secondToken: Asset | AccountAsset | null) {
     state.secondToken = secondToken
   },
-  [types.SET_FIRST_TOKEN_VALUE] (state, firstTokenValue: string | number) {
+  [types.SET_FIRST_TOKEN_VALUE] (state: AddLiquidityState, firstTokenValue: string) {
     state.firstTokenValue = firstTokenValue
   },
-  [types.SET_SECOND_TOKEN_VALUE] (state, secondTokenValue: string | number) {
+  [types.SET_SECOND_TOKEN_VALUE] (state: AddLiquidityState, secondTokenValue: string) {
     state.secondTokenValue = secondTokenValue
   },
   [types.ADD_LIQUIDITY_REQUEST] (state) {
@@ -120,14 +133,14 @@ const mutations = {
   },
   [types.GET_RESERVE_REQUEST] (state) {
   },
-  [types.GET_RESERVE_SUCCESS] (state, reserve) {
+  [types.GET_RESERVE_SUCCESS] (state: AddLiquidityState, reserve: null | Array<string>) {
     state.reserve = reserve
   },
   [types.GET_RESERVE_FAILURE] (state, error) {
   },
   [types.ESTIMATE_MINTED_REQUEST] (state) {
   },
-  [types.ESTIMATE_MINTED_SUCCESS] (state, { minted, pts }) {
+  [types.ESTIMATE_MINTED_SUCCESS] (state: AddLiquidityState, { minted, pts }: { minted: string; pts: number }) {
     state.minted = minted
     state.totalSupply = pts
   },
@@ -135,16 +148,16 @@ const mutations = {
   },
   [types.GET_FEE_REQUEST] (state) {
   },
-  [types.GET_FEE_SUCCESS] (state, fee) {
+  [types.GET_FEE_SUCCESS] (state: AddLiquidityState, fee: string) {
     state.fee = fee
   },
   [types.GET_FEE_FAILURE] (state, error) {
   },
-  [types.SET_FOCUSED_FIELD] (state, field) {
+  [types.SET_FOCUSED_FIELD] (state: AddLiquidityState, field: string) {
     state.focusedField = field
   },
   [types.CHECK_LIQUIDITY_REQUEST] (state) {},
-  [types.CHECK_LIQUIDITY_SUCCESS] (state, isAvailable) {
+  [types.CHECK_LIQUIDITY_SUCCESS] (state: AddLiquidityState, isAvailable: boolean) {
     state.isAvailable = isAvailable
   },
   [types.CHECK_LIQUIDITY_FAILURE] (state) {}
