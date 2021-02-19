@@ -145,11 +145,11 @@ const actions = {
       throw error
     }
   },
-  async setTokenFrom ({ commit }, payload) {
+  async setTokenFrom ({ commit, rootGetters }, payload) {
+    const token = KnownAssets.get(payload.tokenSymbol) || rootGetters['assets/assets'].find(item => item.symbol === payload.tokenSymbol)
     if (payload.isWalletConnected) {
       commit(types.GET_TOKEN_FROM_REQUEST)
       try {
-        const token = KnownAssets.get(payload.tokenSymbol)
         if (token) {
           let tokenFrom = await api.accountAssets.find(asset => asset.address === token.address)
           if (!tokenFrom) {
@@ -164,17 +164,17 @@ const actions = {
         throw error
       }
     } else {
-      commit(types.GET_TOKEN_FROM_SUCCESS, KnownAssets.get(payload.tokenSymbol))
+      commit(types.GET_TOKEN_FROM_SUCCESS, token)
     }
   },
-  async setTokenTo ({ commit }, payload) {
+  async setTokenTo ({ commit, rootGetters }, payload) {
+    const token = KnownAssets.get(payload.tokenSymbol) || rootGetters['assets/assets'].find(item => item.symbol === payload.tokenSymbol)
     if (payload.isWalletConnected) {
       commit(types.GET_TOKEN_TO_REQUEST)
       if (!payload.tokenSymbol) {
         return
       }
       try {
-        const token = KnownAssets.get(payload.tokenSymbol)
         if (token) {
           let tokenTo = await api.accountAssets.find(asset => asset.address === token.address)
           if (!tokenTo) {
@@ -189,7 +189,7 @@ const actions = {
         throw error
       }
     } else {
-      commit(types.GET_TOKEN_TO_SUCCESS, KnownAssets.get(payload.tokenSymbol))
+      commit(types.GET_TOKEN_TO_SUCCESS, token)
     }
   },
   setFromValue ({ commit }, fromValue: string | number) {
