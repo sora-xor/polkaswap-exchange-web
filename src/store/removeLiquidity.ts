@@ -25,7 +25,7 @@ const types = flow(
 ])
 
 interface RemoveLiquidityState {
-  liquidity: null | object;
+  liquidity: null | any;
   removePart: number;
   liquidityAmount: number;
   firstTokenAmount: number | string;
@@ -55,61 +55,61 @@ function initialState (): RemoveLiquidityState {
 const state = initialState()
 
 const getters = {
-  liquidity (state) {
+  liquidity (state: RemoveLiquidityState) {
     return state.liquidity
   },
-  liquidityBalance (state) {
-    return state.liquidity ? state.liquidity.balance : 0
+  liquidityBalance (state: RemoveLiquidityState) {
+    return state.liquidity?.balance ?? 0
   },
-  liquidityDecimals (state) {
-    return state.liquidity ? state.liquidity.decimals : 0
+  liquidityDecimals (state: RemoveLiquidityState) {
+    return state.liquidity?.decimals ?? 0
   },
-  firstTokenBalance (state) {
-    return state.liquidity ? state.liquidity.firstBalance : 0
+  firstTokenBalance (state: RemoveLiquidityState) {
+    return state.liquidity?.firstBalance ?? 0
   },
-  secondTokenBalance (state) {
-    return state.liquidity ? state.liquidity.secondBalance : 0
+  secondTokenBalance (state: RemoveLiquidityState) {
+    return state.liquidity?.secondBalance ?? 0
   },
-  firstToken (state, getters, rootGetters) {
+  firstToken (state: RemoveLiquidityState, getters, rootGetters) {
     return state.liquidity && rootGetters.assets.assets ? rootGetters.assets.assets.find(t => t.address === state.liquidity.firstAddress) || {} : {}
   },
-  secondToken (state, getters, rootGetters) {
+  secondToken (state: RemoveLiquidityState, getters, rootGetters) {
     return state.liquidity && rootGetters.assets.assets ? rootGetters.assets.assets.find(t => t.address === state.liquidity.secondAddress) || {} : {}
   },
-  firstTokenDecimals (state, getters) {
+  firstTokenDecimals (state: RemoveLiquidityState, getters) {
     return getters.firstToken.decimals || 0
   },
-  secondTokenDecimals (state, getters) {
+  secondTokenDecimals (state: RemoveLiquidityState, getters) {
     return getters.secondToken.decimals || 0
   },
-  firstTokenAddress (state, getters) {
+  firstTokenAddress (state: RemoveLiquidityState, getters) {
     return getters.firstToken.address || ''
   },
-  secondTokenAddress (state, getters) {
+  secondTokenAddress (state: RemoveLiquidityState, getters) {
     return getters.secondToken.address || ''
   },
-  removePart (state) {
+  removePart (state: RemoveLiquidityState) {
     return state.removePart
   },
-  liquidityAmount (state) {
+  liquidityAmount (state: RemoveLiquidityState) {
     return state.liquidityAmount
   },
-  firstTokenAmount (state) {
+  firstTokenAmount (state: RemoveLiquidityState) {
     return state.firstTokenAmount
   },
-  secondTokenAmount (state) {
+  secondTokenAmount (state: RemoveLiquidityState) {
     return state.secondTokenAmount
   },
-  fee (state) {
+  fee (state: RemoveLiquidityState) {
     return state.fee
   },
-  reserveA (state) {
+  reserveA (state: RemoveLiquidityState) {
     return state.reserveA
   },
-  reserveB (state) {
+  reserveB (state: RemoveLiquidityState) {
     return state.reserveB
   },
-  totalSupply (state) {
+  totalSupply (state: RemoveLiquidityState) {
     return state.totalSupply
   }
 }
