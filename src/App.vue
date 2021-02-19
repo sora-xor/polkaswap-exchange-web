@@ -80,6 +80,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   @Action trackActiveTransactions
   @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity
   @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity
+  @Action('getAssets', { namespace: 'assets' }) getAssets
 
   async created () {
     const { data } = await axios.get('/env.json')
@@ -87,8 +88,11 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
     if (!connection.endpoint) {
       throw new Error('Network is not set')
     }
-    await this.withLoading(initWallet)
-    await this.getAccountLiquidity()
+    await this.withLoading(async () => {
+      await initWallet()
+      await this.getAssets()
+      await this.getAccountLiquidity()
+    })
     this.trackActiveTransactions()
     this.updateAccountLiquidity()
   }
