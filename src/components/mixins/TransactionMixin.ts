@@ -37,7 +37,8 @@ export default class TransactionMixin extends Mixins(TranslationMixin) {
       await new Promise(resolve => setTimeout(resolve, 50))
       return await this.getLastTransaction()
     }
-    this.addActiveTransaction({ tx })
+    this.transaction = tx
+    this.addActiveTransaction({ tx: this.transaction })
   }
 
   /** Should be used with @Watch like a singletone in a root of the project */
