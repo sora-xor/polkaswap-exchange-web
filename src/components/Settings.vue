@@ -14,7 +14,7 @@
               <s-icon class="header-hint" name="info" />
             </s-tooltip>
           </div>
-          <s-tabs type="rounded" v-model="model" @click="selectSlippageTolerance">
+          <s-tabs type="rounded" :value="slippageTolerance" @click="selectSlippageTolerance">
             <s-tab
               v-for="tab in SlippageToleranceValues"
               :key="tab"
@@ -27,11 +27,11 @@
           <div class="header">{{ t('dexSettings.custom') }}</div>
           <!-- TODO: Add size="small" for s-input -->
           <s-input
-            v-model="model"
             v-float
             class="slippage-tolerance-custom_input"
             size="small"
-            @input="handleSlippageToleranceOnInput"
+            :value="slippageTolerance"
+            @change="handleSlippageToleranceOnInput"
             @blur="handleSlippageToleranceOnBlur"
           />
         </div>
@@ -101,15 +101,6 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin, Inpu
   @Action setSlippageTolerance!: any
   @Action setTransactionDeadline!: any
 
-  get model (): string {
-    return `${this.slippageTolerance}`
-  }
-
-  set model (value: string) {
-    // TODO: ask about zero value
-    this.setSlippageTolerance({ value })
-  }
-
   get slippageToleranceClasses (): string {
     const defaultClass = 'slippage-tolerance'
     const classes = [defaultClass, 's-flex']
@@ -142,17 +133,17 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin, Inpu
     this.setSlippageTolerance({ value: name })
   }
 
-  async handleSlippageToleranceOnInput (): Promise<void> {
-    await this.promiseTimeout()
-    this.model = this.formatNumberField(this.model)
-    if (!isNumberValue(this.model)) {
-      this.model = this.defaultSlippageTolerance.toString()
+  handleSlippageToleranceOnInput (value): void {
+    let prepared = this.formatNumberField(value)
+    if (!isNumberValue(prepared)) {
+      prepared = this.defaultSlippageTolerance.toString()
     }
-    this.setSlippageTolerance({ value: this.model })
+    this.setSlippageTolerance({ value: prepared })
   }
 
-  async handleSlippageToleranceOnBlur (): Promise<void> {
-    this.setSlippageTolerance({ value: this.isErrorValue ? 0 : +this.model })
+  handleSlippageToleranceOnBlur (): void {
+    const value = String(this.isErrorValue ? 0 : +this.slippageTolerance)
+    this.setSlippageTolerance({ value })
   }
 
   handleSetTransactionDeadline (value: number): void {

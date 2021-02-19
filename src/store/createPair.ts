@@ -4,6 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
+import { Asset, AccountAsset } from '@sora-substrate/util'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -23,7 +24,17 @@ const types = flow(
   'CHECK_LIQUIDITY'
 ])
 
-function initialState () {
+interface CreatePairState {
+  firstToken: Asset | AccountAsset | null;
+  secondToken: Asset | AccountAsset | null;
+  firstTokenValue: string;
+  secondTokenValue: string;
+  minted: string;
+  fee: string;
+  isAvailable: boolean;
+}
+
+function initialState (): CreatePairState {
   return {
     firstToken: null,
     secondToken: null,
@@ -38,40 +49,40 @@ function initialState () {
 const state = initialState()
 
 const getters = {
-  firstToken (state) {
+  firstToken (state: CreatePairState) {
     return state.firstToken
   },
-  secondToken (state) {
+  secondToken (state: CreatePairState) {
     return state.secondToken
   },
-  firstTokenValue (state) {
+  firstTokenValue (state: CreatePairState) {
     return state.firstTokenValue
   },
-  secondTokenValue (state) {
+  secondTokenValue (state: CreatePairState) {
     return state.secondTokenValue
   },
-  isAvailable (state) {
+  isAvailable (state: CreatePairState) {
     return state.isAvailable
   },
-  minted (state) {
+  minted (state: CreatePairState) {
     return state.minted || 0
   },
-  fee (state) {
+  fee (state: CreatePairState) {
     return state.fee || '0'
   }
 }
 
 const mutations = {
-  [types.SET_FIRST_TOKEN] (state, firstToken: any) {
+  [types.SET_FIRST_TOKEN] (state: CreatePairState, firstToken: Asset | AccountAsset | null) {
     state.firstToken = firstToken
   },
-  [types.SET_SECOND_TOKEN] (state, secondToken: any) {
+  [types.SET_SECOND_TOKEN] (state: CreatePairState, secondToken: Asset | AccountAsset | null) {
     state.secondToken = secondToken
   },
-  [types.SET_FIRST_TOKEN_VALUE] (state, firstTokenValue: string | number) {
+  [types.SET_FIRST_TOKEN_VALUE] (state: CreatePairState, firstTokenValue: string) {
     state.firstTokenValue = firstTokenValue
   },
-  [types.SET_SECOND_TOKEN_VALUE] (state, secondTokenValue: string | number) {
+  [types.SET_SECOND_TOKEN_VALUE] (state: CreatePairState, secondTokenValue: string) {
     state.secondTokenValue = secondTokenValue
   },
   [types.CREATE_PAIR_REQUEST] (state) {
@@ -82,20 +93,20 @@ const mutations = {
   },
   [types.ESTIMATE_MINTED_REQUEST] (state) {
   },
-  [types.ESTIMATE_MINTED_SUCCESS] (state, minted) {
+  [types.ESTIMATE_MINTED_SUCCESS] (state: CreatePairState, minted: string) {
     state.minted = minted
   },
   [types.ESTIMATE_MINTED_FAILURE] (state, error) {
   },
   [types.GET_FEE_REQUEST] (state) {
   },
-  [types.GET_FEE_SUCCESS] (state, fee) {
+  [types.GET_FEE_SUCCESS] (state: CreatePairState, fee: string) {
     state.fee = fee
   },
   [types.GET_FEE_FAILURE] (state, error) {
   },
   [types.CHECK_LIQUIDITY_REQUEST] (state) {},
-  [types.CHECK_LIQUIDITY_SUCCESS] (state, isAvailable) {
+  [types.CHECK_LIQUIDITY_SUCCESS] (state: CreatePairState, isAvailable: boolean) {
     state.isAvailable = isAvailable
   },
   [types.CHECK_LIQUIDITY_FAILURE] (state) {}
@@ -135,7 +146,7 @@ const actions = {
   },
 
   async estimateMinted ({ commit, getters }) {
-    if (getters.firstToken && getters.firstToken.address && getters.firstToken && getters.secondToken.address && getters.firstTokenValue && getters.secondTokenValue) {
+    if (getters.firstToken?.address && getters.secondToken?.address && getters.firstTokenValue && getters.secondTokenValue) {
       commit(types.ESTIMATE_MINTED_REQUEST)
       try {
         const [minted] = await api.estimatePoolTokensMinted(
@@ -166,7 +177,7 @@ const actions = {
   },
 
   async getNetworkFee ({ commit, getters }) {
-    if (getters.firstToken && getters.firstToken.address && getters.secondToken && getters.secondToken.address) {
+    if (getters.firstToken?.address && getters.secondToken?.address) {
       commit(types.GET_FEE_REQUEST)
       try {
         const fee = await api.getCreatePairNetworkFee(
