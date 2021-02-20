@@ -4,14 +4,15 @@ import { KnownAssets, KnownSymbols } from '@sora-substrate/util'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
 
 import router from '@/router'
 import { PageNames } from '@/consts'
-import { formatNumber, getMaxValue, isMaxButtonAvailable, isWalletConnected, isXorAccountAsset, hasInsufficientBalance } from '@/utils'
+import { getMaxValue, isMaxButtonAvailable, isWalletConnected, isXorAccountAsset, hasInsufficientBalance } from '@/utils'
 
 const CreateTokenPairMixin = (namespace: string) => {
   @Component
-  class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin) {
+  class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin) {
     readonly KnownSymbols = KnownSymbols
 
     @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
@@ -36,7 +37,6 @@ const CreateTokenPairMixin = (namespace: string) => {
     @Action('getPrices', { namespace: 'prices' }) getPrices
     @Action('resetPrices', { namespace: 'prices' }) resetPrices
 
-    showConfirmDialog = false
     showSelectFirstTokenDialog = false
     showSelectSecondTokenDialog = false
     insufficientBalanceTokenSymbol = ''
@@ -113,19 +113,11 @@ const CreateTokenPairMixin = (namespace: string) => {
       this.showSelectSecondTokenDialog = true
     }
 
-    openConfirmDialog (): void {
-      this.showConfirmDialog = true
-    }
-
     async handleConfirm (func: () => Promise<void>): Promise<void> {
-      try {
+      await this.handleConfirmDialog(async () => {
         await this.withNotifications(func)
-        this.showConfirmDialog = false
         router.push({ name: PageNames.Pool })
-      } catch (error) {
-        console.error(error)
-        this.$alert(this.t(error.message), { title: this.t('errorText') })
-      }
+      })
     }
 
     afterApiConnect (): void {}

@@ -313,7 +313,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   }
 
   async handleInputFieldTo (value): Promise<any> {
-    console.log('handleInputFieldTo', value)
     this.formModel.to = value
 
     if (!this.isFieldFromActive) {

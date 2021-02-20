@@ -126,7 +126,7 @@
         </s-row>
       </div>
 
-      <s-button type="primary" border-radius="small" :disabled="isEmptyAmount || isInsufficientBalance" @click="showConfirmDialog = true">
+      <s-button type="primary" border-radius="small" :disabled="isEmptyAmount || isInsufficientBalance" @click="openConfirmDialog">
         <template v-if="isEmptyAmount">
           {{ t('exchange.enterAmount') }}
         </template>
@@ -150,6 +150,8 @@ import { FPNumber, KnownSymbols } from '@sora-substrate/util'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
+
 import TokenInput from '@/components/TokenInput.vue'
 
 import router, { lazyComponent } from '@/router'
@@ -167,7 +169,7 @@ const namespace = 'removeLiquidity'
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity)
   }
 })
-export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMixin) {
+export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin) {
   readonly KnownSymbols = KnownSymbols
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
@@ -216,7 +218,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
 
   isWalletConnected = true
   insufficientBalanceTokenSymbol = ''
-  showConfirmDialog = false
 
   get firstTokenAddress (): string {
     return this.$route.params.firstAddress
@@ -226,6 +227,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     return this.$route.params.secondAddress
   }
 
+  // TODO: could be reused from TokenPairMixin
   get areTokensSelected (): boolean {
     return !!this.firstToken && !!this.secondToken
   }
@@ -278,8 +280,9 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     this.setRemovePart(this.removePartInput)
   }
 
+  // TODO: could be reused from TokenPairMixin
   getTokenBalance (token: any): string {
-    return token ? token.balance : ''
+    return token?.balance ?? ''
   }
 
   handleLiquidityMaxValue (): void {
@@ -302,15 +305,12 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     this.updatePrices()
   }
 
+  // TODO: could be reused from TokenPairMixin
   async handleConfirmRemoveLiquidity (): Promise<void> {
-    try {
+    await this.handleConfirmDialog(async () => {
       await this.withNotifications(this.removeLiquidity)
-      this.showConfirmDialog = false
       router.push({ name: PageNames.Pool })
-    } catch (error) {
-      console.error(error)
-      this.$alert(this.t(error.message), { title: this.t('errorText') })
-    }
+    })
   }
 }
 </script>
