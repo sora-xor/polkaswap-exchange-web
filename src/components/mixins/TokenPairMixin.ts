@@ -39,7 +39,6 @@ const CreateTokenPairMixin = (namespace: string) => {
     showConfirmDialog = false
     showSelectFirstTokenDialog = false
     showSelectSecondTokenDialog = false
-    inputPlaceholder: string = formatNumber(0, 1)
     insufficientBalanceTokenSymbol = ''
 
     async mounted () {
@@ -92,8 +91,8 @@ const CreateTokenPairMixin = (namespace: string) => {
       setValue(getMaxValue(token, this.fee))
     }
 
-    handleTokenChange (value: string, setValue: (v: any) => void): void {
-      setValue(value)
+    async handleTokenChange (value: string, setValue: (v: any) => Promise<void>): Promise<void> {
+      await setValue(value)
       this.updatePrices()
     }
 

@@ -19,7 +19,6 @@
               class="s-input--token-value"
               :token="firstToken"
               :value="firstTokenValue"
-              :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
               @input="handleTokenChange($event, setFirstTokenValue)"
               @blur="resetFocusedField"
@@ -49,11 +48,10 @@
         </div>
         <div class="input-line">
           <s-form-item>
-            <s-input
+            <token-input
               class="s-input--token-value"
               :token="secondToken"
               :value="secondTokenValue"
-              :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
               @change="handleTokenChange($event, setSecondTokenValue)"
               @blur="resetFocusedField"

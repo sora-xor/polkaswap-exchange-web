@@ -17,13 +17,12 @@
       </div>
       <div class="input-line">
         <s-form-item>
-          <s-input
-            v-float
+          <token-input
             class="s-input--token-value"
-            :value="formModel.from"
             :placeholder="isFieldFromFocused ? '' : inputPlaceholder"
-            :maxlength="tokenValueMaxLength(fromValue, tokenFrom)"
-            @change="handleInputFieldFrom"
+            :token="tokenFrom"
+            :value="formModel.from"
+            @input="handleInputFieldFrom"
             @focus="handleFocusFieldFrom"
             @blur="handleBlurFieldFrom"
           />
@@ -56,13 +55,12 @@
       </div>
       <div class="input-line">
         <s-form-item>
-          <s-input
-            v-float
+          <token-input
             class="s-input--token-value"
-            :value="formModel.to"
             :placeholder="isFieldToFocused ? '' : inputPlaceholder"
-            :maxlength="tokenValueMaxLength(toValue, tokenTo)"
-            @change="handleInputFieldTo"
+            :value="formModel.to"
+            :token="tokenTo"
+            @input="handleInputFieldTo"
             @focus="handleFocusFieldTo"
             @blur="handleBlurFieldTo"
           />
@@ -114,12 +112,16 @@ import { KnownSymbols, FPNumber } from '@sora-substrate/util'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
-import { formatNumber, isNumberValue, isWalletConnected, isXorAccountAsset, isMaxButtonAvailable, getMaxValue } from '@/utils'
+
+import TokenInput from '@/components/TokenInput.vue'
+
+import { formatNumber, isWalletConnected, isXorAccountAsset, isMaxButtonAvailable, getMaxValue } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
 @Component({
   components: {
+    TokenInput,
     SwapInfo: lazyComponent(Components.SwapInfo),
     TokenLogo: lazyComponent(Components.TokenLogo),
     SelectToken: lazyComponent(Components.SelectToken),
@@ -277,12 +279,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   }
 
   async handleInputFieldFrom (value): Promise<any> {
-    this.formModel.from = this.formatNumberField(value, this.tokenFrom)
-    if (!isNumberValue(this.formModel.from)) {
-      await this.$nextTick()
-      this.resetFieldFrom()
-      return
-    }
+    this.formModel.from = value
+
     if (!this.isFieldToActive) {
       this.isFieldFromActive = true
       if (!this.areTokensSelected || this.isZeroFromAmount) {
@@ -315,12 +313,9 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   }
 
   async handleInputFieldTo (value): Promise<any> {
-    this.formModel.to = this.formatNumberField(value, this.tokenTo)
-    if (!isNumberValue(this.formModel.to)) {
-      await this.$nextTick()
-      this.resetFieldTo()
-      return
-    }
+    console.log('handleInputFieldTo', value)
+    this.formModel.to = value
+
     if (!this.isFieldFromActive) {
       this.isFieldToActive = true
       if (!this.areTokensSelected || this.isZeroToAmount) {

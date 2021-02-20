@@ -39,7 +39,6 @@
           <s-form-item>
             <token-input
               class="s-input--token-value"
-              :placeholder="inputPlaceholder"
               :token="liquidity"
               :value="liquidityAmount"
               @input="setLiquidityAmount"
@@ -71,7 +70,6 @@
           <s-form-item>
             <token-input
               class="s-input--token-value"
-              :placeholder="inputPlaceholder"
               :token="firstToken"
               :value="firstTokenAmount"
               @input="handleTokenChange($event, setFirstTokenAmount)"
@@ -96,9 +94,8 @@
         </div>
         <div class="input-line">
           <s-form-item>
-            <s-input
+            <token-input
               class="s-input--token-value"
-              :placeholder="inputPlaceholder"
               :token="secondToken"
               :value="secondTokenAmount"
               @input="handleTokenChange($event, setSecondTokenAmount)"
@@ -157,7 +154,6 @@ import TokenInput from '@/components/TokenInput.vue'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
-import { formatNumber } from '@/utils'
 
 const namespace = 'removeLiquidity'
 
@@ -219,7 +215,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   }
 
   isWalletConnected = true
-  inputPlaceholder: string = formatNumber(0, 1);
   insufficientBalanceTokenSymbol = ''
   showConfirmDialog = false
 

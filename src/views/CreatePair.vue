@@ -19,7 +19,6 @@
               class="s-input--token-value"
               :token="firstToken"
               :value="firstTokenValue"
-              :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
               @input="handleTokenChange($event, setFirstTokenValue)"
             />
@@ -53,7 +52,6 @@
               class="s-input--token-value"
               :token="secondToken"
               :value="secondTokenValue"
-              :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
               @input="handleTokenChange($event, setSecondTokenValue)"
             />

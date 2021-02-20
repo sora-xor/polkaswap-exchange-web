@@ -3,6 +3,7 @@
     v-float
     :value="value"
     :maxlength="maxlength"
+    :placeholder="placeholder"
     v-bind="$attrs"
     v-on="{
       ...$listeners,
@@ -18,13 +19,15 @@ import { Asset, AccountAsset } from '@sora-substrate/util'
 
 import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 
-import { isNumberValue } from '@/utils'
+import { formatNumber, isNumberValue } from '@/utils'
 
 const DEFAULT_VALUE = ''
+const DEFAULT_PLACEHOLDER = formatNumber(0, 1)
 
 @Component
 export default class TokenInput extends Mixins(InputFormatterMixin) {
   @Prop({ type: String, default: DEFAULT_VALUE }) readonly value!: string
+  @Prop({ type: String, default: DEFAULT_PLACEHOLDER }) readonly placeholder!: string
   @Prop({ type: Object, default: () => null }) readonly token!: Asset | AccountAsset | null
 
   get maxlength (): any {
