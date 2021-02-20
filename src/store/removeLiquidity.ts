@@ -27,9 +27,9 @@ const types = flow(
 interface RemoveLiquidityState {
   liquidity: null | any;
   removePart: number;
-  liquidityAmount: number;
-  firstTokenAmount: number | string;
-  secondTokenAmount: number | string;
+  liquidityAmount: string;
+  firstTokenAmount: string;
+  secondTokenAmount: string;
   focusedField: null | string;
   fee: number;
   reserveA: number;
@@ -41,9 +41,9 @@ function initialState (): RemoveLiquidityState {
   return {
     liquidity: null,
     removePart: 0,
-    liquidityAmount: 0,
-    firstTokenAmount: 0,
-    secondTokenAmount: 0,
+    liquidityAmount: '',
+    firstTokenAmount: '',
+    secondTokenAmount: '',
     focusedField: null,
     fee: 0,
     reserveA: 0,
@@ -122,16 +122,16 @@ const mutations = {
   },
   [types.GET_LIQUIDITY_FAILURE] (state, error) {
   },
-  [types.SET_REMOVE_PART] (state, removePart) {
+  [types.SET_REMOVE_PART] (state, removePart = 0) {
     state.removePart = removePart
   },
-  [types.SET_LIQUIDITY_AMOUNT] (state, liquidityAmount) {
+  [types.SET_LIQUIDITY_AMOUNT] (state, liquidityAmount = '') {
     state.liquidityAmount = liquidityAmount
   },
-  [types.SET_FIRST_TOKEN_AMOUNT] (state, firstTokenAmount) {
+  [types.SET_FIRST_TOKEN_AMOUNT] (state, firstTokenAmount = '') {
     state.firstTokenAmount = firstTokenAmount
   },
-  [types.SET_SECOND_TOKEN_AMOUNT] (state, secondTokenAmount) {
+  [types.SET_SECOND_TOKEN_AMOUNT] (state, secondTokenAmount = '') {
     state.secondTokenAmount = secondTokenAmount
   },
   [types.GET_FEE_REQUEST] (state) {
@@ -188,10 +188,10 @@ const actions = {
         commit(types.SET_FIRST_TOKEN_AMOUNT, part.div(new FPNumber(100)).mul(new FPNumber(getters.firstTokenBalance)).toString(getters.firstTokenDecimals))
         commit(types.SET_SECOND_TOKEN_AMOUNT, part.div(new FPNumber(100)).mul(new FPNumber(getters.secondTokenBalance)).toString(getters.secondTokenDecimals))
       } else {
-        commit(types.SET_REMOVE_PART, 0)
-        commit(types.SET_LIQUIDITY_AMOUNT, 0)
-        commit(types.SET_FIRST_TOKEN_AMOUNT, 0)
-        commit(types.SET_SECOND_TOKEN_AMOUNT, 0)
+        commit(types.SET_REMOVE_PART)
+        commit(types.SET_LIQUIDITY_AMOUNT)
+        commit(types.SET_FIRST_TOKEN_AMOUNT)
+        commit(types.SET_SECOND_TOKEN_AMOUNT)
       }
 
       dispatch('getRemoveLiquidityData')

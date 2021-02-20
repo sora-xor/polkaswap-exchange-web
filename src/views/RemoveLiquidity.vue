@@ -19,7 +19,7 @@
             maxlength="3"
             :value="removePartInput"
             @input="handleRemovePartChange"
-            @blur="handleInputBlur('removePart')"
+            @blur="resetFocusedField"
           />
           <span class="percent">%</span>
         </div>
@@ -37,14 +37,13 @@
         </div>
         <div class="input-line">
           <s-form-item>
-            <s-input
-              v-float
+            <token-input
               class="s-input--token-value"
-              :value="liquidityAmount"
               :placeholder="inputPlaceholder"
-              :maxlength="tokenValueMaxLength(liquidityAmount, liquidity)"
-              @input="handleLiquidityAmountChange"
-              @blur="handleInputBlur(liquidityAmount, setLiquidityAmount)"
+              :token="liquidity"
+              :value="liquidityAmount"
+              @input="setLiquidityAmount"
+              @blur="resetFocusedField"
             />
           </s-form-item>
           <div class="token">
@@ -70,14 +69,13 @@
         </div>
         <div class="input-line">
           <s-form-item>
-            <s-input
-              v-float
+            <token-input
               class="s-input--token-value"
-              :value="firstTokenAmount"
               :placeholder="inputPlaceholder"
-              :maxlength="tokenValueMaxLength(firstTokenAmount, firstToken)"
-              @input="handleFirstTokenAmountChange"
-              @blur="handleInputBlur(firstTokenAmount, setFirstTokenAmount)"
+              :token="firstToken"
+              :value="firstTokenAmount"
+              @input="handleTokenChange($event, setFirstTokenAmount)"
+              @blur="resetFocusedField"
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
@@ -99,13 +97,12 @@
         <div class="input-line">
           <s-form-item>
             <s-input
-              v-float
               class="s-input--token-value"
-              :value="secondTokenAmount"
               :placeholder="inputPlaceholder"
-              :maxlength="tokenValueMaxLength(secondTokenAmount, secondToken)"
-              @input="handleSecondTokenAmountChange"
-              @blur="handleInputBlur(secondTokenAmount, setSecondTokenAmount)"
+              :token="secondToken"
+              :value="secondTokenAmount"
+              @input="handleTokenChange($event, setSecondTokenAmount)"
+              @blur="resetFocusedField"
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
@@ -156,7 +153,7 @@ import { FPNumber, KnownSymbols } from '@sora-substrate/util'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import TokenInputMixin from '@/components/mixins/TokenInputMixin'
+import TokenInput from '@/components/TokenInput.vue'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
@@ -166,6 +163,7 @@ const namespace = 'removeLiquidity'
 
 @Component({
   components: {
+    TokenInput,
     GenericHeader: lazyComponent(Components.GenericHeader),
     InfoCard: lazyComponent(Components.InfoCard),
     TokenLogo: lazyComponent(Components.TokenLogo),
@@ -173,7 +171,7 @@ const namespace = 'removeLiquidity'
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity)
   }
 })
-export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMixin, TokenInputMixin) {
+export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMixin) {
   readonly KnownSymbols = KnownSymbols
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
@@ -303,23 +301,10 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     })
   }
 
-  async handleLiquidityAmountChange (value): Promise<any> {
-    await this.handleTokenInputChange(value, this.liquidity, this.setLiquidityAmount)
-  }
-
-  async handleFirstTokenAmountChange (value): Promise<any> {
-    await this.handleTokenInputChange(value, this.firstToken, this.setFirstTokenAmount)
+  // TODO: could be reused from TokenPairMixin
+  async handleTokenChange (value: string, setValue: (v: any) => Promise<any>): Promise<any> {
+    await setValue(value)
     this.updatePrices()
-  }
-
-  async handleSecondTokenAmountChange (value): Promise<any> {
-    await this.handleTokenInputChange(value, this.secondToken, this.setSecondTokenAmount)
-    this.updatePrices()
-  }
-
-  handleInputBlur (value: string | number, setValue: (v: any) => void): void {
-    this.handleTokenInputBlur(value, setValue)
-    this.resetFocusedField()
   }
 
   async handleConfirmRemoveLiquidity (): Promise<void> {

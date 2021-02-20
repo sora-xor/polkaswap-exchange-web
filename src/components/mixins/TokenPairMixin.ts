@@ -2,7 +2,6 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { KnownAssets, KnownSymbols } from '@sora-substrate/util'
 
-import TokenInputMixin from '@/components/mixins/TokenInputMixin'
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 
@@ -12,7 +11,7 @@ import { formatNumber, getMaxValue, isMaxButtonAvailable, isWalletConnected, isX
 
 const CreateTokenPairMixin = (namespace: string) => {
   @Component
-  class TokenPairMixin extends Mixins(TokenInputMixin, TransactionMixin, LoadingMixin) {
+  class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin) {
     readonly KnownSymbols = KnownSymbols
 
     @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
@@ -93,8 +92,8 @@ const CreateTokenPairMixin = (namespace: string) => {
       setValue(getMaxValue(token, this.fee))
     }
 
-    async handleTokenChange (value: string, token: any, setValue: (v: any) => void): Promise<any> {
-      await this.handleTokenInputChange(value, token, setValue)
+    handleTokenChange (value: string, setValue: (v: any) => void): void {
+      setValue(value)
       this.updatePrices()
     }
 
@@ -105,11 +104,6 @@ const CreateTokenPairMixin = (namespace: string) => {
         amountA: this.firstTokenValue,
         amountB: this.secondTokenValue
       })
-    }
-
-    handleInputBlur (value: string | number, setValue: (v: any) => void): void {
-      this.handleTokenInputBlur(value, setValue)
-      this.afterInputBlur()
     }
 
     getTokenBalance (token: any): string {
@@ -135,7 +129,6 @@ const CreateTokenPairMixin = (namespace: string) => {
       }
     }
 
-    afterInputBlur (): void {}
     afterApiConnect (): void {}
   }
 
