@@ -240,11 +240,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   }
 
   get isEmptyAmount (): boolean {
-    if (!this.removePart || !this.liquidityAmount || !this.firstTokenAmount || !this.secondTokenAmount) {
-      return true
-    }
-    this.updatePrices()
-    return false
+    return !this.removePart || !this.liquidityAmount || !this.firstTokenAmount || !this.secondTokenAmount
   }
 
   get isInsufficientBalance (): boolean {
@@ -280,7 +276,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     this.setRemovePart(this.removePartInput)
   }
 
-  // TODO: could be reused from TokenPairMixin
   getTokenBalance (token: any): string {
     return token?.balance ?? ''
   }
@@ -299,13 +294,11 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     })
   }
 
-  // TODO: could be reused from TokenPairMixin
   async handleTokenChange (value: string, setValue: (v: any) => Promise<any>): Promise<any> {
     await setValue(value)
     this.updatePrices()
   }
 
-  // TODO: could be reused from TokenPairMixin
   async handleConfirmRemoveLiquidity (): Promise<void> {
     await this.handleConfirmDialog(async () => {
       await this.withNotifications(this.removeLiquidity)
