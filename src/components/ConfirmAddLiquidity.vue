@@ -70,6 +70,7 @@ const namespace = 'addLiquidity'
   }
 })
 export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, DialogMixin) {
+  // TODO: refactoring ConfirmCreatePair & ConfirmAddLiquidity
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
 
   @Getter('firstToken', { namespace }) firstToken!: any

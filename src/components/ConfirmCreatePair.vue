@@ -70,6 +70,7 @@ const namespace = 'createPair'
   }
 })
 export default class ConfirmCreatePair extends Mixins(TranslationMixin, DialogMixin) {
+  // TODO: refactoring ConfirmCreatePair & ConfirmAddLiquidity
   readonly shareOfPool = '100%' // Because when we create pair - all pool tokens are yours
 
   @Getter('firstToken', { namespace }) firstToken!: any
