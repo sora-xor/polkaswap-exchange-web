@@ -111,7 +111,6 @@ import { KnownSymbols, FPNumber } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 
 import TokenInput from '@/components/TokenInput.vue'
 
@@ -128,7 +127,7 @@ import { Components, PageNames } from '@/consts'
     ConfirmSwap: lazyComponent(Components.ConfirmSwap)
   }
 })
-export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFormatterMixin) {
+export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   @Getter tokenXOR!: any
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
@@ -378,12 +377,11 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
   }
 
   handleBlurFieldFrom (): void {
-    if (this.isEmptyFromAmount || this.isZeroFromAmount) {
-      this.resetFieldFrom()
-    } else {
-      this.formModel.from = this.trimNeedlesSymbols(this.formModel.from)
-    }
     this.isFieldFromFocused = false
+  }
+
+  handleBlurFieldTo (): void {
+    this.isFieldToFocused = false
   }
 
   async handleFocusFieldFrom (): Promise<void> {
@@ -394,15 +392,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, InputFo
       this.formModel.from = ''
     }
     await this.recountSwapValues()
-  }
-
-  handleBlurFieldTo (): void {
-    if (this.isEmptyToAmount || this.isZeroToAmount) {
-      this.resetFieldTo()
-    } else {
-      this.formModel.to = this.trimNeedlesSymbols(this.formModel.to)
-    }
-    this.isFieldToFocused = false
   }
 
   async handleFocusFieldTo (): Promise<void> {
