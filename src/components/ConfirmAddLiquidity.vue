@@ -70,14 +70,18 @@ const namespace = 'addLiquidity'
   }
 })
 export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, DialogMixin) {
-  @Getter('minted', { namespace }) minted!: any
+  // TODO: refactoring ConfirmCreatePair & ConfirmAddLiquidity
+  @Getter('shareOfPool', { namespace }) shareOfPool!: string
+
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
-  @Getter('shareOfPool', { namespace }) shareOfPool!: string
+  @Getter('minted', { namespace }) minted!: any
+
   @Getter('price', { namespace: 'prices' }) price!: string | number
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
+
   @Getter slippageTolerance!: number
 
   handleConfirmAddLiquidity (): void {

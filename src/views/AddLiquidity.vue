@@ -15,15 +15,13 @@
         </div>
         <div class="input-line">
           <s-form-item>
-            <s-input
-              v-float
+            <token-input
               class="s-input--token-value"
+              :token="firstToken"
               :value="firstTokenValue"
-              :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
-              :maxlength="tokenValueMaxLength(firstTokenValue, firstToken)"
-              @change="handleTokenChange($event, firstToken, setFirstTokenValue)"
-              @blur="handleInputBlur(firstTokenValue, setFirstTokenValue)"
+              @input="handleTokenChange($event, setFirstTokenValue)"
+              @blur="resetFocusedField"
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
@@ -50,15 +48,13 @@
         </div>
         <div class="input-line">
           <s-form-item>
-            <s-input
-              v-float
+            <token-input
               class="s-input--token-value"
+              :token="secondToken"
               :value="secondTokenValue"
-              :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
-              :maxlength="tokenValueMaxLength(secondTokenValue, secondToken)"
-              @change="handleTokenChange($event, secondToken, setSecondTokenValue)"
-              @blur="handleInputBlur(secondTokenValue, setSecondTokenValue)"
+              @change="handleTokenChange($event, setSecondTokenValue)"
+              @blur="resetFocusedField"
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
@@ -176,6 +172,7 @@ import { Action, Getter } from 'vuex-class'
 import { FPNumber } from '@sora-substrate/util'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
+import TokenInput from '@/components/TokenInput.vue'
 
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -186,6 +183,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
 
 @Component({
   components: {
+    TokenInput,
     GenericHeader: lazyComponent(Components.GenericHeader),
     SelectToken: lazyComponent(Components.SelectToken),
     InfoCard: lazyComponent(Components.InfoCard),
@@ -244,10 +242,6 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
         secondAddress: this.secondAddress
       })
     }
-  }
-
-  afterInputBlur (): void {
-    this.resetFocusedField()
   }
 
   getTokenPosition (liquidityInfoBalance: number | undefined, tokenValue: string | number): string {

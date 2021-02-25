@@ -51,14 +51,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
+import { Component, Mixins } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
+
 const namespace = 'createPair'
 
 @Component({
@@ -69,6 +70,7 @@ const namespace = 'createPair'
   }
 })
 export default class ConfirmCreatePair extends Mixins(TranslationMixin, DialogMixin) {
+  // TODO: refactoring ConfirmCreatePair & ConfirmAddLiquidity
   readonly shareOfPool = '100%' // Because when we create pair - all pool tokens are yours
 
   @Getter('firstToken', { namespace }) firstToken!: any
