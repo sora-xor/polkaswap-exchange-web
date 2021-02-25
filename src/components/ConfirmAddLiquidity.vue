@@ -45,7 +45,13 @@
       </s-row>
     </div>
     <template #footer>
-      <s-button type="primary" @click="handleConfirmAddLiquidity">{{ t('exchange.confirm') }}</s-button>
+      <s-button
+        type="primary"
+        :loading="parentLoading"
+        @click="handleConfirmAddLiquidity"
+      >
+        {{ t('exchange.confirm') }}
+      </s-button>
     </template>
   </dialog-base>
 </template>
@@ -56,6 +62,7 @@ import { Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
+import LoadingMixin from '@/components/mixins/LoadingMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -69,7 +76,7 @@ const namespace = 'addLiquidity'
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
-export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, DialogMixin) {
+export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, DialogMixin, LoadingMixin) {
   @Getter('minted', { namespace }) minted!: any
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any

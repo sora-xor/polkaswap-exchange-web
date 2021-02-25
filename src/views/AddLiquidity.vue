@@ -166,7 +166,7 @@
     <select-token :visible.sync="showSelectFirstTokenDialog" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstToken" />
     <select-token :visible.sync="showSelectSecondTokenDialog" :asset="firstToken" @select="setSecondToken" />
 
-    <confirm-add-liquidity :visible.sync="showConfirmDialog" @confirm="handleConfirmAddLiquidity" />
+    <confirm-add-liquidity :visible.sync="showConfirmDialog" :parent-loading="loading" @confirm="handleConfirmAddLiquidity" />
   </div>
 </template>
 

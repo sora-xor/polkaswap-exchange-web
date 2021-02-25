@@ -45,20 +45,28 @@
       </s-row>
     </div>
     <template #footer>
-      <s-button type="primary" @click="handleConfirmCreatePair">{{ t('exchange.confirm') }}</s-button>
+      <s-button
+        type="primary"
+        :loading="parentLoading"
+        @click="handleConfirmCreatePair"
+      >
+        {{ t('exchange.confirm') }}
+      </s-button>
     </template>
   </dialog-base>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
+import { Component, Mixins } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
+import LoadingMixin from '@/components/mixins/LoadingMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
+
 const namespace = 'createPair'
 
 @Component({
@@ -68,7 +76,7 @@ const namespace = 'createPair'
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
-export default class ConfirmCreatePair extends Mixins(TranslationMixin, DialogMixin) {
+export default class ConfirmCreatePair extends Mixins(TranslationMixin, DialogMixin, LoadingMixin) {
   readonly shareOfPool = '100%' // Because when we create pair - all pool tokens are yours
 
   @Getter('firstToken', { namespace }) firstToken!: any
