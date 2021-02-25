@@ -14,7 +14,7 @@
               <s-icon class="header-hint" name="info" />
             </s-tooltip>
           </div>
-          <s-tabs type="rounded" :value="slippageTolerance" @click="selectSlippageTolerance">
+          <s-tabs type="rounded" :value="String(slippageTolerance)" @click="selectSlippageTolerance">
             <s-tab
               v-for="tab in SlippageToleranceValues"
               :key="tab"
@@ -31,7 +31,7 @@
             class="slippage-tolerance-custom_input"
             size="small"
             :value="slippageTolerance"
-            @change="handleSlippageToleranceOnInput"
+            @input="handleSlippageToleranceOnInput"
             @blur="handleSlippageToleranceOnBlur"
           />
         </div>
