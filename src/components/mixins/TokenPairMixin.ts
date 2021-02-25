@@ -2,17 +2,17 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { KnownAssets, KnownSymbols } from '@sora-substrate/util'
 
-import TokenInputMixin from '@/components/mixins/TokenInputMixin'
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
 
 import router from '@/router'
 import { PageNames } from '@/consts'
-import { formatNumber, getMaxValue, isMaxButtonAvailable, isWalletConnected, isXorAccountAsset, hasInsufficientBalance } from '@/utils'
+import { getMaxValue, isMaxButtonAvailable, isWalletConnected, isXorAccountAsset, hasInsufficientBalance } from '@/utils'
 
 const CreateTokenPairMixin = (namespace: string) => {
   @Component
-  class TokenPairMixin extends Mixins(TokenInputMixin, TransactionMixin, LoadingMixin) {
+  class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin) {
     readonly KnownSymbols = KnownSymbols
 
     @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
@@ -37,10 +37,8 @@ const CreateTokenPairMixin = (namespace: string) => {
     @Action('getPrices', { namespace: 'prices' }) getPrices
     @Action('resetPrices', { namespace: 'prices' }) resetPrices
 
-    showConfirmDialog = false
     showSelectFirstTokenDialog = false
     showSelectSecondTokenDialog = false
-    inputPlaceholder: string = formatNumber(0, 1)
     insufficientBalanceTokenSymbol = ''
 
     async mounted () {
@@ -93,8 +91,8 @@ const CreateTokenPairMixin = (namespace: string) => {
       setValue(getMaxValue(token, this.fee))
     }
 
-    async handleTokenChange (value: string, token: any, setValue: (v: any) => void): Promise<any> {
-      await this.handleTokenInputChange(value, token, setValue)
+    async handleTokenChange (value: string, setValue: (v: any) => Promise<void>): Promise<void> {
+      await setValue(value)
       this.updatePrices()
     }
 
@@ -107,11 +105,6 @@ const CreateTokenPairMixin = (namespace: string) => {
       })
     }
 
-    handleInputBlur (value: string | number, setValue: (v: any) => void): void {
-      this.handleTokenInputBlur(value, setValue)
-      this.afterInputBlur()
-    }
-
     getTokenBalance (token: any): string {
       return token?.balance ?? ''
     }
@@ -120,22 +113,13 @@ const CreateTokenPairMixin = (namespace: string) => {
       this.showSelectSecondTokenDialog = true
     }
 
-    openConfirmDialog (): void {
-      this.showConfirmDialog = true
-    }
-
     async handleConfirm (func: () => Promise<void>): Promise<void> {
-      try {
+      await this.handleConfirmDialog(async () => {
         await this.withNotifications(func)
-        this.showConfirmDialog = false
         router.push({ name: PageNames.Pool })
-      } catch (error) {
-        console.error(error)
-        this.$alert(this.t(error.message), { title: this.t('errorText') })
-      }
+      })
     }
 
-    afterInputBlur (): void {}
     afterApiConnect (): void {}
   }
 
