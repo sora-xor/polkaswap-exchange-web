@@ -49,9 +49,10 @@ import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import router, { lazyComponent } from '@/router'
 import axios from '@/api'
-import { formatAddress } from '@/utils'
+import { formatAddress, isWalletConnected } from '@/utils'
 
 const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
+const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
 
 @Component({
   components: {
@@ -117,8 +118,12 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   }
 
   goTo (name: PageNames): void {
-    if (name === PageNames.Wallet && this.currentRoute !== WALLET_DEFAULT_ROUTE) {
-      this.navigate({ name: WALLET_DEFAULT_ROUTE })
+    if (name === PageNames.Wallet) {
+      if (!isWalletConnected()) {
+        this.navigate({ name: WALLET_CONNECTION_ROUTE })
+      } else if (this.currentRoute !== WALLET_DEFAULT_ROUTE) {
+        this.navigate({ name: WALLET_DEFAULT_ROUTE })
+      }
     }
 
     this.changePage(name)
