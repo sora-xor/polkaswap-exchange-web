@@ -25,9 +25,13 @@ export default class InputFormatterMixin extends Vue {
     if (fieldValue.indexOf('0') === 0 && fieldValue.indexOf('.') !== 1) {
       fieldValue = fieldValue.replace(/^0+/, '')
     }
+    // add leading zero before floating point
+    if (fieldValue.indexOf('.') === 0) {
+      fieldValue = '0' + fieldValue
+    }
     // Trim dot in the end
     if (fieldValue.indexOf('.') === fieldValue.length - 1) {
-      fieldValue = fieldValue.substring(0, fieldValue.length - 1)
+      fieldValue = fieldValue.slice(0, -1)
     }
     return fieldValue
   }

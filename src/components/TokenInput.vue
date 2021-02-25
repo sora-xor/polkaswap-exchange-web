@@ -34,17 +34,11 @@ export default class TokenInput extends Mixins(InputFormatterMixin) {
     return this.tokenValueMaxLength(this.value, this.token)
   }
 
-  async handleInput (value: string): Promise<void> {
+  handleInput (value: string): void {
     const formatted = this.formatNumberField(value, this.token)
-    // this is a hack: to force watcher in SInput, we should emit a stringy value at first
-    this.onInput(formatted)
+    const newValue = isNumberValue(formatted) ? formatted : DEFAULT_VALUE
 
-    await this.$nextTick()
-
-    // then, if formatted is not a number like value, emit default value
-    if (!isNumberValue(formatted)) {
-      this.onInput(DEFAULT_VALUE)
-    }
+    this.onInput(newValue)
   }
 
   onBlur (event: Event): void {
