@@ -239,10 +239,10 @@ html {
     animation: runloader 4.5s linear infinite;
     @keyframes runloader {
       0% {
-        width: 0;
+        width: 100%;
       }
       100% {
-        width: 100%;
+        width: 0;
       }
     }
   }

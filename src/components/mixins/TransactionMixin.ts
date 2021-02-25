@@ -6,9 +6,10 @@ import { Action } from 'vuex-class'
 
 import { formatAddress } from '@/utils'
 import TranslationMixin from './TranslationMixin'
+import LoadingMixin from './LoadingMixin'
 
 @Component
-export default class TransactionMixin extends Mixins(TranslationMixin) {
+export default class TransactionMixin extends Mixins(TranslationMixin, LoadingMixin) {
   private time = 0
 
   transaction: History | null = null // It's used just for sync errors
@@ -65,22 +66,24 @@ export default class TransactionMixin extends Mixins(TranslationMixin) {
   }
 
   async withNotifications (func: () => Promise<void>): Promise<void> {
-    try {
-      this.time = Date.now()
-      await func()
-      await this.getLastTransaction()
-      this.$notify({ message: this.t('transactionSubmittedText'), title: '' })
-    } catch (error) {
-      const message = this.getMessage(this.transaction as History)
-      this.time = 0
-      this.removeActiveTransaction({ tx: this.transaction })
-      this.transaction = null
-      this.$notify({
-        message: message || this.t('unknownErrorText'),
-        type: 'error',
-        title: ''
-      })
-      throw new Error(error.message)
-    }
+    await this.withLoading(async () => {
+      try {
+        this.time = Date.now()
+        await func()
+        await this.getLastTransaction()
+        this.$notify({ message: this.t('transactionSubmittedText'), title: '' })
+      } catch (error) {
+        const message = this.getMessage(this.transaction as History)
+        this.time = 0
+        this.removeActiveTransaction({ tx: this.transaction })
+        this.transaction = null
+        this.$notify({
+          message: message || this.t('unknownErrorText'),
+          type: 'error',
+          title: ''
+        })
+        throw new Error(error.message)
+      }
+    })
   }
 }
