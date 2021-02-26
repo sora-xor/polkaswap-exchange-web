@@ -56,12 +56,6 @@ export const hasInsufficientBalance = (asset: AccountAsset, amount: number, fee:
   return FPNumber.lt(fpBalance, fpAmount)
 }
 
-// We could use this method to check if the user enters a text value in a numeric field (we could do this by copy and paste)
-export const isNumberValue = (value: any): boolean => {
-  const numberValue = +value
-  return typeof numberValue === 'number' && !isNaN(numberValue)
-}
-
 export const isWalletConnected = (): boolean => {
   const isExternal = Boolean(storage.get('isExternal'))
   const address = storage.get('address')

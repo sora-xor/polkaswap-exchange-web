@@ -26,12 +26,11 @@
         <div class="slippage-tolerance-custom">
           <div class="header">{{ t('dexSettings.custom') }}</div>
           <!-- TODO: Add size="small" for s-input -->
-          <s-input
-            v-float
+          <s-float-input
             class="slippage-tolerance-custom_input"
             size="small"
-            :value="slippageTolerance"
-            @input="handleSlippageToleranceOnInput"
+            :value="String(slippageTolerance)"
+            @input="setSlippageTolerance"
             @blur="handleSlippageToleranceOnBlur"
           />
         </div>
@@ -73,16 +72,14 @@ import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
-import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
-import { isNumberValue } from '@/utils'
 
 @Component({
   components: {
     DialogBase
   }
 })
-export default class Settings extends Mixins(TranslationMixin, DialogMixin, InputFormatterMixin) {
+export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
   readonly defaultSlippageTolerance = 0.5
   readonly SlippageToleranceValues = [
     0.1,
@@ -130,24 +127,16 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin, Inpu
   }
 
   selectSlippageTolerance ({ name }): void {
-    this.setSlippageTolerance({ value: name })
-  }
-
-  handleSlippageToleranceOnInput (value): void {
-    let prepared = this.formatNumberField(value)
-    if (!isNumberValue(prepared)) {
-      prepared = this.defaultSlippageTolerance.toString()
-    }
-    this.setSlippageTolerance({ value: prepared })
+    this.setSlippageTolerance(name)
   }
 
   handleSlippageToleranceOnBlur (): void {
-    const value = String(this.isErrorValue ? 0 : +this.slippageTolerance)
-    this.setSlippageTolerance({ value })
+    const value = this.isErrorValue ? 0 : +this.slippageTolerance
+    this.setSlippageTolerance(value)
   }
 
   handleSetTransactionDeadline (value: number): void {
-    this.setTransactionDeadline({ value })
+    this.setTransactionDeadline(value)
   }
 }
 </script>
