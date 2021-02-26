@@ -7,17 +7,10 @@
     >
       <info-card class="slider-container" :title="t('removeLiquidity.amount')">
         <div class="slider-container__amount">
-          <s-input
-            v-float
-            :class="`s-input--token-value s-input--remove-part ${
-              removePartInput.toString().length === 3
-              ? 'three-char'
-              : removePartInput.toString().length === 2
-              ? 'two-char'
-              : 'one-char'
-            }`"
-            maxlength="3"
-            :value="removePartInput"
+          <s-float-input
+            :class="['s-input--token-value', 's-input--remove-part', removePartCharClass]"
+            :decimals="0"
+            :value="String(removePartInput)"
             @input="handleRemovePartChange"
             @blur="resetFocusedField"
           />
@@ -259,6 +252,15 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     }
 
     return true
+  }
+
+  get removePartCharClass (): string {
+    const charClassName = ({
+      3: 'three',
+      2: 'two'
+    })[this.removePartInput.toString().length] ?? 'one'
+
+    return `${charClassName}-char`
   }
 
   @Watch('removePart')
