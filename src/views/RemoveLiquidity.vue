@@ -37,9 +37,9 @@
         </div>
         <div class="input-line">
           <s-form-item>
-            <token-input
+            <s-float-input
               class="s-input--token-value"
-              :token="liquidity"
+              :decimals="liquidity && liquidity.decimals"
               :value="liquidityAmount"
               @input="setLiquidityAmount"
               @blur="resetFocusedField"
@@ -68,9 +68,9 @@
         </div>
         <div class="input-line">
           <s-form-item>
-            <token-input
+            <s-float-input
               class="s-input--token-value"
-              :token="firstToken"
+              :decimals="firstToken && firstToken.decimals"
               :value="firstTokenAmount"
               @input="handleTokenChange($event, setFirstTokenAmount)"
               @blur="resetFocusedField"
@@ -94,9 +94,9 @@
         </div>
         <div class="input-line">
           <s-form-item>
-            <token-input
+            <s-float-input
               class="s-input--token-value"
-              :token="secondToken"
+              :decimals="secondToken && secondToken.decimals"
               :value="secondTokenAmount"
               @input="handleTokenChange($event, setSecondTokenAmount)"
               @blur="resetFocusedField"
@@ -152,8 +152,6 @@ import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
 
-import TokenInput from '@/components/TokenInput.vue'
-
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -161,7 +159,6 @@ const namespace = 'removeLiquidity'
 
 @Component({
   components: {
-    TokenInput,
     GenericHeader: lazyComponent(Components.GenericHeader),
     InfoCard: lazyComponent(Components.InfoCard),
     TokenLogo: lazyComponent(Components.TokenLogo),
