@@ -14,7 +14,7 @@
               <s-icon class="header-hint" name="info" />
             </s-tooltip>
           </div>
-          <s-tabs type="rounded" v-model="model" @click="selectSlippageTolerance">
+          <s-tabs type="rounded" :value="String(slippageTolerance)" @click="selectSlippageTolerance">
             <s-tab
               v-for="tab in SlippageToleranceValues"
               :key="tab"
@@ -26,12 +26,11 @@
         <div class="slippage-tolerance-custom">
           <div class="header">{{ t('dexSettings.custom') }}</div>
           <!-- TODO: Add size="small" for s-input -->
-          <s-input
-            v-model="model"
-            v-float
+          <s-float-input
             class="slippage-tolerance-custom_input"
             size="small"
-            @input="handleSlippageToleranceOnInput"
+            :value="String(slippageTolerance)"
+            @input="setSlippageTolerance"
             @blur="handleSlippageToleranceOnBlur"
           />
         </div>
@@ -68,21 +67,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
-import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
-import { isNumberValue } from '@/utils'
 
 @Component({
   components: {
     DialogBase
   }
 })
-export default class Settings extends Mixins(TranslationMixin, DialogMixin, InputFormatterMixin) {
+export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
   readonly defaultSlippageTolerance = 0.5
   readonly SlippageToleranceValues = [
     0.1,
@@ -100,15 +97,6 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin, Inpu
   @Getter nodeAddress!: { ip: string; port: number }
   @Action setSlippageTolerance!: any
   @Action setTransactionDeadline!: any
-
-  get model (): string {
-    return `${this.slippageTolerance}`
-  }
-
-  set model (value: string) {
-    // TODO: ask about zero value
-    this.setSlippageTolerance({ value })
-  }
 
   get slippageToleranceClasses (): string {
     const defaultClass = 'slippage-tolerance'
@@ -139,24 +127,16 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin, Inpu
   }
 
   selectSlippageTolerance ({ name }): void {
-    this.setSlippageTolerance({ value: name })
+    this.setSlippageTolerance(name)
   }
 
-  async handleSlippageToleranceOnInput (): Promise<void> {
-    await this.promiseTimeout()
-    this.model = this.formatNumberField(this.model)
-    if (!isNumberValue(this.model)) {
-      this.model = this.defaultSlippageTolerance.toString()
-    }
-    this.setSlippageTolerance({ value: this.model })
-  }
-
-  async handleSlippageToleranceOnBlur (): Promise<void> {
-    this.setSlippageTolerance({ value: this.isErrorValue ? 0 : +this.model })
+  handleSlippageToleranceOnBlur (): void {
+    const value = this.isErrorValue ? 0 : +this.slippageTolerance
+    this.setSlippageTolerance(value)
   }
 
   handleSetTransactionDeadline (value: number): void {
-    this.setTransactionDeadline({ value })
+    this.setTransactionDeadline(value)
   }
 }
 </script>

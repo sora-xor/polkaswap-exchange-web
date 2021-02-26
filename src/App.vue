@@ -42,14 +42,17 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { connection, initWallet } from '@soramitsu/soraneo-wallet-web'
+import { connection, initWallet, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
 
 import { PageNames, MainMenu, Components } from '@/consts'
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import router, { lazyComponent } from '@/router'
 import axios from '@/api'
-import { formatAddress } from '@/utils'
+import { formatAddress, isWalletConnected } from '@/utils'
+
+const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
+const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
 
 @Component({
   components: {
@@ -73,9 +76,12 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
 
   @Getter firstReadyTransaction!: any
   @Getter account!: any
+  @Getter currentRoute!: WALLET_CONSTS.RouteNames
+  @Action navigate
   @Action trackActiveTransactions
   @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity
   @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity
+  @Action('getAssets', { namespace: 'assets' }) getAssets
 
   async created () {
     const { data } = await axios.get('/env.json')
@@ -83,8 +89,11 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
     if (!connection.endpoint) {
       throw new Error('Network is not set')
     }
-    await this.withLoading(initWallet)
-    await this.getAccountLiquidity()
+    await this.withLoading(async () => {
+      await initWallet()
+      await this.getAssets()
+      await this.getAccountLiquidity()
+    })
     this.trackActiveTransactions()
     this.updateAccountLiquidity()
   }
@@ -109,6 +118,18 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   }
 
   goTo (name: PageNames): void {
+    if (name === PageNames.Wallet) {
+      if (!isWalletConnected()) {
+        this.navigate({ name: WALLET_CONNECTION_ROUTE })
+      } else if (this.currentRoute !== WALLET_DEFAULT_ROUTE) {
+        this.navigate({ name: WALLET_DEFAULT_ROUTE })
+      }
+    }
+
+    this.changePage(name)
+  }
+
+  private changePage (name: PageNames): void {
     if (router.currentRoute.name === name) {
       return
     }
@@ -218,10 +239,10 @@ html {
     animation: runloader 4.5s linear infinite;
     @keyframes runloader {
       0% {
-        width: 0;
+        width: 100%;
       }
       100% {
-        width: 100%;
+        width: 0;
       }
     }
   }

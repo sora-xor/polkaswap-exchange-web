@@ -15,19 +15,17 @@
         </div>
         <div class="input-line">
           <s-form-item>
-            <!-- v-model="addLiquidityModel.firstTokenValue" -->
-            <s-input
-              v-float
+            <s-float-input
               class="s-input--token-value"
+              :decimals="firstToken && firstToken.decimals"
               :value="firstTokenValue"
-              :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
-              @change="setFirstTokenValue"
-              @blur="handleInputBlur(true)"
+              @input="handleTokenChange($event, setFirstTokenValue)"
+              @blur="resetFocusedField"
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
-            <s-button v-if="isFirstMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleFirstMaxValue">
+            <s-button v-if="isFirstMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue(firstToken, setFirstTokenValue)">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
@@ -50,19 +48,17 @@
         </div>
         <div class="input-line">
           <s-form-item>
-            <!-- v-model="addLiquidityModel.secondTokenValue" -->
-            <s-input
-              v-float
+            <s-float-input
               class="s-input--token-value"
+              :decimals="secondToken && secondToken.decimals"
               :value="secondTokenValue"
-              :placeholder="inputPlaceholder"
               :disabled="!areTokensSelected"
-              @change="setSecondTokenValue"
-              @blur="handleInputBlur(false)"
+              @change="handleTokenChange($event, setSecondTokenValue)"
+              @blur="resetFocusedField"
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
-            <s-button v-if="isSecondMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleSecondMaxValue">
+            <s-button v-if="isSecondMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue(secondToken, setSecondTokenValue)">
               {{ t('exchange.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
@@ -75,7 +71,7 @@
           </s-button>
         </div>
       </div>
-        <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="showConfirmDialog = true">
+        <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="openConfirmDialog">
         <template v-if="!areTokensSelected">
           {{ t('exchange.chooseTokens') }}
         </template>
@@ -166,23 +162,23 @@
     <select-token :visible.sync="showSelectFirstTokenDialog" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstToken" />
     <select-token :visible.sync="showSelectSecondTokenDialog" :asset="firstToken" @select="setSecondToken" />
 
-    <confirm-add-liquidity :visible.sync="showConfirmDialog" @confirm="handleConfirmAddLiquidity" />
+    <confirm-add-liquidity :visible.sync="showConfirmDialog" :parent-loading="loading" @confirm="handleConfirmAddLiquidity" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { AccountAsset, KnownAssets, KnownSymbols, FPNumber } from '@sora-substrate/util'
+import { FPNumber } from '@sora-substrate/util'
 
-import TransactionMixin from '@/components/mixins/TransactionMixin'
-import LoadingMixin from '@/components/mixins/LoadingMixin'
-import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
-import router, { lazyComponent } from '@/router'
-import { formatNumber, isNumberValue, isWalletConnected, isMaxButtonAvailable, getMaxValue, isXorAccountAsset, hasInsufficientBalance } from '@/utils'
-import { Components, PageNames } from '@/consts'
+import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
+
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
 
 const namespace = 'addLiquidity'
+
+const TokenPairMixin = CreateTokenPairMixin(namespace)
 
 @Component({
   components: {
@@ -194,64 +190,15 @@ const namespace = 'addLiquidity'
     ConfirmAddLiquidity: lazyComponent(Components.ConfirmAddLiquidity)
   }
 })
-export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin, InputFormatterMixin) {
-  readonly KnownSymbols = KnownSymbols
 
-  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
-
-  @Getter('firstToken', { namespace }) firstToken!: any
-  @Getter('secondToken', { namespace }) secondToken!: any
-  @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
-  @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
-  @Getter('isAvailable', { namespace }) isAvailable!: boolean
+export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
-  @Getter('minted', { namespace }) minted!: string
-  @Getter('fee', { namespace }) fee!: string
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
-  @Getter('price', { namespace: 'prices' }) price!: string | number
-  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
   @Getter('accountLiquidity', { namespace: 'pool' }) accountLiquidity!: Array<any>
 
   @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
-  @Action('setFirstToken', { namespace }) setFirstToken
-  @Action('setSecondToken', { namespace }) setSecondToken
-  @Action('setFirstTokenValue', { namespace }) setFirstTokenValue
-  @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
-  @Action('getNetworkFee', { namespace }) getNetworkFee
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField
-  @Action('resetData', { namespace }) resetData
-  @Action('getPrices', { namespace: 'prices' }) getPrices
-  @Action('resetPrices', { namespace: 'prices' }) resetPrices
-
-  showSelectFirstTokenDialog = false
-  showSelectSecondTokenDialog = false
-  inputPlaceholder: string = formatNumber(0, 1)
-  insufficientBalanceTokenSymbol = ''
-  showConfirmDialog = false
-  isCreatePairConfirmed = false
-
-  addLiquidityModel = {
-    firstTokenValue: '',
-    secondTokenValue: ''
-  }
-
-  async mounted () {
-    this.resetData()
-    this.resetPrices()
-    this.insufficientBalanceTokenSymbol = ''
-
-    await this.withApi(async () => {
-      await this.setFirstToken(KnownAssets.get(KnownSymbols.XOR))
-
-      if (this.firstAddress && this.secondAddress) {
-        await this.setDataFromLiquidity({
-          firstAddress: this.firstAddress,
-          secondAddress: this.secondAddress
-        })
-      }
-    })
-  }
 
   get firstAddress (): string {
     return this.$route.params.firstAddress
@@ -259,18 +206,6 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
 
   get secondAddress (): string {
     return this.$route.params.secondAddress
-  }
-
-  get connected (): boolean {
-    return isWalletConnected()
-  }
-
-  get isFirstMaxButtonAvailable (): boolean {
-    return isMaxButtonAvailable(this.areTokensSelected, this.firstToken, this.firstTokenValue, this.fee)
-  }
-
-  get isSecondMaxButtonAvailable (): boolean {
-    return isMaxButtonAvailable(this.areTokensSelected, this.secondToken, this.secondTokenValue, this.fee)
   }
 
   get liquidityInfo () {
@@ -287,150 +222,45 @@ export default class AddLiquidity extends Mixins(TransactionMixin, LoadingMixin,
   }
 
   get poolTokenPosition (): string {
-    const prevPosition = new FPNumber(this.liquidityInfo ? this.liquidityInfo.balance : 0)
-    if (!this.emptyAssets) {
-      return prevPosition.add(new FPNumber(this.minted)).toString()
-    }
-    return prevPosition.toString()
+    return this.getTokenPosition(this.liquidityInfo?.balance, this.minted)
   }
 
   get firstTokenPosition (): string {
-    const prevPosition = new FPNumber(this.liquidityInfo ? this.liquidityInfo.firstBalance : 0)
-    if (!this.emptyAssets) {
-      return prevPosition.add(new FPNumber(this.firstTokenValue)).toString()
-    }
-    return prevPosition.toString()
+    return this.getTokenPosition(this.liquidityInfo?.firstBalance, this.firstTokenValue)
   }
 
   get secondTokenPosition (): string {
-    const prevPosition = new FPNumber(this.liquidityInfo ? this.liquidityInfo.secondBalance : 0)
+    return this.getTokenPosition(this.liquidityInfo?.secondBalance, this.secondTokenValue)
+  }
+
+  async afterApiConnect (): Promise<void> {
+    if (this.firstAddress && this.secondAddress) {
+      await this.setDataFromLiquidity({
+        firstAddress: this.firstAddress,
+        secondAddress: this.secondAddress
+      })
+    }
+  }
+
+  getTokenPosition (liquidityInfoBalance: number | undefined, tokenValue: string | number): string {
+    const prevPosition = new FPNumber(liquidityInfoBalance ?? 0)
     if (!this.emptyAssets) {
-      return prevPosition.add(new FPNumber(this.secondTokenValue)).toString()
+      return prevPosition.add(new FPNumber(tokenValue)).toString()
     }
     return prevPosition.toString()
-  }
-
-  get areTokensSelected (): boolean {
-    return this.firstToken && this.secondToken
-  }
-
-  get isEmptyBalance (): boolean {
-    if (+this.firstTokenValue === 0 || +this.secondTokenValue === 0) {
-      return true
-    }
-    this.updatePrices()
-    return false
-  }
-
-  get isInsufficientBalance (): boolean {
-    if (this.connected && this.areTokensSelected) {
-      if (isXorAccountAsset(this.firstToken) || isXorAccountAsset(this.secondToken)) {
-        if (hasInsufficientBalance(this.firstToken, this.firstTokenValue, this.fee)) {
-          this.insufficientBalanceTokenSymbol = this.firstToken.symbol
-          return true
-        }
-        if (hasInsufficientBalance(this.secondToken, this.secondTokenValue, this.fee)) {
-          this.insufficientBalanceTokenSymbol = this.secondToken.symbol
-          return true
-        }
-      }
-      // TODO: Add check for pair without XOR
-    }
-    return false
-  }
-
-  getTokenValue (token: any, tokenValue: number): string {
-    return token ? `${tokenValue} ${token.symbol}` : ''
-  }
-
-  // We don't need it for now
-  // openSelectFirstTokenDialog (): void {
-  //   this.showSelectFirstTokenDialog = true
-  // }
-
-  openSelectSecondTokenDialog (): void {
-    this.showSelectSecondTokenDialog = true
-  }
-
-  async handleFirstMaxValue (): Promise<void> {
-    await this.getNetworkFee()
-    this.setFirstTokenValue(getMaxValue(this.firstToken, this.fee))
-  }
-
-  async handleSecondMaxValue (): Promise<void> {
-    await this.getNetworkFee()
-    this.setSecondTokenValue(getMaxValue(this.secondToken, this.fee))
   }
 
   updatePrices (): void {
     this.getPrices({
-      assetAAddress: this.firstAddress ? this.firstAddress : this.firstToken.address,
-      assetBAddress: this.secondAddress ? this.secondAddress : this.secondToken.address,
+      assetAAddress: this.firstAddress ?? this.firstToken.address,
+      assetBAddress: this.secondAddress ?? this.secondToken.address,
       amountA: this.firstTokenValue,
       amountB: this.secondTokenValue
     })
   }
 
-  async handleFirstTokenChange (): Promise<any> {
-    this.addLiquidityModel.firstTokenValue = this.formatNumberField(this.addLiquidityModel.firstTokenValue)
-    if (!isNumberValue(this.addLiquidityModel.firstTokenValue)) {
-      await this.promiseTimeout()
-      this.resetInputField()
-      return
-    }
-    this.setFirstTokenValue(this.addLiquidityModel.firstTokenValue)
-    this.updatePrices()
-  }
-
-  async handleSecondTokeChange (): Promise<any> {
-    this.addLiquidityModel.secondTokenValue = this.formatNumberField(this.addLiquidityModel.secondTokenValue)
-    if (!isNumberValue(this.addLiquidityModel.secondTokenValue)) {
-      await this.promiseTimeout()
-      this.resetInputField(false)
-      return
-    }
-    this.setSecondTokenValue(this.addLiquidityModel.secondTokenValue)
-    this.updatePrices()
-  }
-
-  resetInputField (isFirstTokenField = true): void {
-    if (isFirstTokenField) {
-      this.setFirstTokenValue(0)
-      return
-    }
-    this.setSecondTokenValue(0)
-  }
-
-  handleInputBlur (isFirstToken: boolean): void {
-    // if (isFirstToken) {
-    //   if (+this.addLiquidityModel.firstTokenValue === 0) {
-    //     this.resetInputField()
-    //   } else {
-    //     this.addLiquidityModel.firstTokenValue = this.trimNeedlesSymbols(this.addLiquidityModel.firstTokenValue)
-    //   }
-    // } else {
-    //   if (+this.addLiquidityModel.secondTokenValue === 0) {
-    //     this.resetInputField(false)
-    //   } else {
-    //     this.addLiquidityModel.secondTokenValue = this.trimNeedlesSymbols(this.addLiquidityModel.secondTokenValue)
-    //   }
-    // }
-    this.resetFocusedField()
-  }
-
-  getTokenBalance (token: any): string {
-    return token ? token.balance : ''
-  }
-
-  async handleConfirmAddLiquidity () {
-    try {
-      await this.withNotifications(this.addLiquidity)
-      this.showConfirmDialog = false
-      router.push({ name: PageNames.Pool })
-    } catch (error) {
-      console.error(error)
-      this.$alert(this.t(error.message), { title: this.t('errorText') })
-    }
+  handleConfirmAddLiquidity (): Promise<void> {
+    return this.handleConfirm(this.addLiquidity)
   }
 }
 </script>

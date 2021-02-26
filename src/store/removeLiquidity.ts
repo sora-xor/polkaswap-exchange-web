@@ -3,7 +3,7 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { api } from '@soramitsu/soraneo-wallet-web'
 import { FPNumber } from '@sora-substrate/util'
 
 const types = flow(
@@ -24,13 +24,26 @@ const types = flow(
   'GET_TOTAL_SUPPLY'
 ])
 
-function initialState () {
+interface RemoveLiquidityState {
+  liquidity: null | any;
+  removePart: number;
+  liquidityAmount: string;
+  firstTokenAmount: string;
+  secondTokenAmount: string;
+  focusedField: null | string;
+  fee: number;
+  reserveA: number;
+  reserveB: number;
+  totalSupply: number;
+}
+
+function initialState (): RemoveLiquidityState {
   return {
     liquidity: null,
     removePart: 0,
-    liquidityAmount: 0,
-    firstTokenAmount: 0,
-    secondTokenAmount: 0,
+    liquidityAmount: '',
+    firstTokenAmount: '',
+    secondTokenAmount: '',
     focusedField: null,
     fee: 0,
     reserveA: 0,
@@ -42,61 +55,61 @@ function initialState () {
 const state = initialState()
 
 const getters = {
-  liquidity (state) {
+  liquidity (state: RemoveLiquidityState) {
     return state.liquidity
   },
-  liquidityBalance (state) {
-    return state.liquidity ? state.liquidity.balance : 0
+  liquidityBalance (state: RemoveLiquidityState) {
+    return state.liquidity?.balance ?? 0
   },
-  liquidityDecimals (state) {
-    return state.liquidity ? state.liquidity.decimals : 0
+  liquidityDecimals (state: RemoveLiquidityState) {
+    return state.liquidity?.decimals ?? 0
   },
-  firstTokenBalance (state) {
-    return state.liquidity ? state.liquidity.firstBalance : 0
+  firstTokenBalance (state: RemoveLiquidityState) {
+    return state.liquidity?.firstBalance ?? 0
   },
-  secondTokenBalance (state) {
-    return state.liquidity ? state.liquidity.secondBalance : 0
+  secondTokenBalance (state: RemoveLiquidityState) {
+    return state.liquidity?.secondBalance ?? 0
   },
-  firstToken (state, getters, rootGetters) {
+  firstToken (state: RemoveLiquidityState, getters, rootGetters) {
     return state.liquidity && rootGetters.assets.assets ? rootGetters.assets.assets.find(t => t.address === state.liquidity.firstAddress) || {} : {}
   },
-  secondToken (state, getters, rootGetters) {
+  secondToken (state: RemoveLiquidityState, getters, rootGetters) {
     return state.liquidity && rootGetters.assets.assets ? rootGetters.assets.assets.find(t => t.address === state.liquidity.secondAddress) || {} : {}
   },
-  firstTokenDecimals (state, getters) {
+  firstTokenDecimals (state: RemoveLiquidityState, getters) {
     return getters.firstToken.decimals || 0
   },
-  secondTokenDecimals (state, getters) {
+  secondTokenDecimals (state: RemoveLiquidityState, getters) {
     return getters.secondToken.decimals || 0
   },
-  firstTokenAddress (state, getters) {
+  firstTokenAddress (state: RemoveLiquidityState, getters) {
     return getters.firstToken.address || ''
   },
-  secondTokenAddress (state, getters) {
+  secondTokenAddress (state: RemoveLiquidityState, getters) {
     return getters.secondToken.address || ''
   },
-  removePart (state) {
+  removePart (state: RemoveLiquidityState) {
     return state.removePart
   },
-  liquidityAmount (state) {
+  liquidityAmount (state: RemoveLiquidityState) {
     return state.liquidityAmount
   },
-  firstTokenAmount (state) {
+  firstTokenAmount (state: RemoveLiquidityState) {
     return state.firstTokenAmount
   },
-  secondTokenAmount (state) {
+  secondTokenAmount (state: RemoveLiquidityState) {
     return state.secondTokenAmount
   },
-  fee (state) {
+  fee (state: RemoveLiquidityState) {
     return state.fee
   },
-  reserveA (state) {
+  reserveA (state: RemoveLiquidityState) {
     return state.reserveA
   },
-  reserveB (state) {
+  reserveB (state: RemoveLiquidityState) {
     return state.reserveB
   },
-  totalSupply (state) {
+  totalSupply (state: RemoveLiquidityState) {
     return state.totalSupply
   }
 }
@@ -109,16 +122,16 @@ const mutations = {
   },
   [types.GET_LIQUIDITY_FAILURE] (state, error) {
   },
-  [types.SET_REMOVE_PART] (state, removePart) {
+  [types.SET_REMOVE_PART] (state, removePart = 0) {
     state.removePart = removePart
   },
-  [types.SET_LIQUIDITY_AMOUNT] (state, liquidityAmount) {
+  [types.SET_LIQUIDITY_AMOUNT] (state, liquidityAmount = '') {
     state.liquidityAmount = liquidityAmount
   },
-  [types.SET_FIRST_TOKEN_AMOUNT] (state, firstTokenAmount) {
+  [types.SET_FIRST_TOKEN_AMOUNT] (state, firstTokenAmount = '') {
     state.firstTokenAmount = firstTokenAmount
   },
-  [types.SET_SECOND_TOKEN_AMOUNT] (state, secondTokenAmount) {
+  [types.SET_SECOND_TOKEN_AMOUNT] (state, secondTokenAmount = '') {
     state.secondTokenAmount = secondTokenAmount
   },
   [types.GET_FEE_REQUEST] (state) {
@@ -153,9 +166,9 @@ const actions = {
     commit(types.GET_LIQUIDITY_REQUEST)
 
     try {
-      await dexApi.getKnownAccountLiquidity()
-      await dexApi.updateAccountLiquidity()
-      const liquidity = dexApi.accountLiquidity.find(liquidity => liquidity.firstAddress === firstAddress && liquidity.secondAddress === secondAddress)
+      await api.getKnownAccountLiquidity()
+      await api.updateAccountLiquidity()
+      const liquidity = api.accountLiquidity.find(liquidity => liquidity.firstAddress === firstAddress && liquidity.secondAddress === secondAddress)
 
       commit(types.GET_LIQUIDITY_SUCCESS, liquidity)
       dispatch('getRemoveLiquidityData')
@@ -175,10 +188,10 @@ const actions = {
         commit(types.SET_FIRST_TOKEN_AMOUNT, part.div(new FPNumber(100)).mul(new FPNumber(getters.firstTokenBalance)).toString(getters.firstTokenDecimals))
         commit(types.SET_SECOND_TOKEN_AMOUNT, part.div(new FPNumber(100)).mul(new FPNumber(getters.secondTokenBalance)).toString(getters.secondTokenDecimals))
       } else {
-        commit(types.SET_REMOVE_PART, 0)
-        commit(types.SET_LIQUIDITY_AMOUNT, 0)
-        commit(types.SET_FIRST_TOKEN_AMOUNT, 0)
-        commit(types.SET_SECOND_TOKEN_AMOUNT, 0)
+        commit(types.SET_REMOVE_PART)
+        commit(types.SET_LIQUIDITY_AMOUNT)
+        commit(types.SET_FIRST_TOKEN_AMOUNT)
+        commit(types.SET_SECOND_TOKEN_AMOUNT)
       }
 
       dispatch('getRemoveLiquidityData')
@@ -263,7 +276,7 @@ const actions = {
       commit(types.GET_FEE_REQUEST)
 
       try {
-        const fee = await dexApi.getRemoveLiquidityNetworkFee(
+        const fee = await api.getRemoveLiquidityNetworkFee(
           getters.firstTokenAddress,
           getters.secondTokenAddress,
           getters.liquidityAmount || 0,
@@ -284,7 +297,7 @@ const actions = {
   async getLiquidityReserves ({ commit, getters }) {
     try {
       commit(types.GET_LIQUIDITY_RESERVE_REQUEST)
-      const [reserveA, reserveB] = await dexApi.getLiquidityReserves(getters.firstTokenAddress, getters.secondTokenAddress)
+      const [reserveA, reserveB] = await api.getLiquidityReserves(getters.firstTokenAddress, getters.secondTokenAddress)
       commit(types.GET_LIQUIDITY_RESERVE_SUCCESS, { reserveA, reserveB })
     } catch (error) {
       commit(types.GET_LIQUIDITY_RESERVE_FAILURE, error)
@@ -294,7 +307,7 @@ const actions = {
   async getTotalSupply ({ commit, getters }) {
     try {
       commit(types.GET_TOTAL_SUPPLY_REQUEST)
-      const [aOut, bOut, pts] = await dexApi.estimateTokensRetrieved(
+      const [aOut, bOut, pts] = await api.estimateTokensRetrieved(
         getters.firstTokenAddress,
         getters.secondTokenAddress,
         getters.liquidityAmount,
@@ -309,7 +322,7 @@ const actions = {
   },
 
   async removeLiquidity ({ commit, getters, rootGetters }) {
-    await dexApi.removeLiquidity(
+    await api.removeLiquidity(
       getters.firstTokenAddress,
       getters.secondTokenAddress,
       getters.liquidityAmount,

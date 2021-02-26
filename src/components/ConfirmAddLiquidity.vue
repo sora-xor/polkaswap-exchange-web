@@ -45,7 +45,13 @@
       </s-row>
     </div>
     <template #footer>
-      <s-button type="primary" @click="handleConfirmAddLiquidity">{{ t('exchange.confirm') }}</s-button>
+      <s-button
+        type="primary"
+        :loading="parentLoading"
+        @click="handleConfirmAddLiquidity"
+      >
+        {{ t('exchange.confirm') }}
+      </s-button>
     </template>
   </dialog-base>
 </template>
@@ -56,6 +62,7 @@ import { Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
+import LoadingMixin from '@/components/mixins/LoadingMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -69,15 +76,19 @@ const namespace = 'addLiquidity'
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
-export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, DialogMixin) {
-  @Getter('minted', { namespace }) minted!: any
+export default class ConfirmAddLiquidity extends Mixins(TranslationMixin, DialogMixin, LoadingMixin) {
+  // TODO: refactoring ConfirmCreatePair & ConfirmAddLiquidity
+  @Getter('shareOfPool', { namespace }) shareOfPool!: string
+
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
   @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
-  @Getter('shareOfPool', { namespace }) shareOfPool!: string
+  @Getter('minted', { namespace }) minted!: any
+
   @Getter('price', { namespace: 'prices' }) price!: string | number
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
+
   @Getter slippageTolerance!: number
 
   handleConfirmAddLiquidity (): void {

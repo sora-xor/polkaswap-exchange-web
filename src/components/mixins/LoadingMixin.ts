@@ -1,8 +1,10 @@
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import { isWalletLoaded } from '@soramitsu/soraneo-wallet-web'
 
 @Component
 export default class LoadingMixin extends Vue {
+  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
+
   loading = false
 
   async withLoading (func: Function): Promise<any> {

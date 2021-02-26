@@ -2,7 +2,7 @@ import map from 'lodash/fp/map'
 import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
-import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { api } from '@soramitsu/soraneo-wallet-web'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -58,9 +58,9 @@ const actions = {
       commit(types.GET_PRICE_REQUEST)
       commit(types.GET_PRICE_REVERSED_REQUEST)
       try {
-        const price = await dexApi.divideAssets(payload.assetAAddress, payload.assetBAddress, payload.amountA, payload.amountB, false)
+        const price = await api.divideAssets(payload.assetAAddress, payload.assetBAddress, payload.amountA, payload.amountB, false)
         commit(types.GET_PRICE_SUCCESS, price)
-        const priceReversed = await dexApi.divideAssets(payload.assetAAddress, payload.assetBAddress, payload.amountA, payload.amountB, true)
+        const priceReversed = await api.divideAssets(payload.assetAAddress, payload.assetBAddress, payload.amountA, payload.amountB, true)
         commit(types.GET_PRICE_REVERSED_SUCCESS, priceReversed)
       } catch (error) {
         commit(types.GET_PRICE_FAILURE, error)

@@ -26,15 +26,21 @@
     <swap-info :show-price="true" />
     <swap-info :show-tooltips="false" />
     <template #footer>
-      <s-button type="primary" @click="handleConfirmSwap">{{ t('exchange.confirm') }}</s-button>
+      <s-button
+        type="primary"
+        :disabled="loading"
+        @click="handleConfirmSwap"
+      >
+        {{ t('exchange.confirm') }}
+      </s-button>
     </template>
   </dialog-base>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
-import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { Getter } from 'vuex-class'
+import { api } from '@soramitsu/soraneo-wallet-web'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -68,7 +74,7 @@ export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
     } else {
       try {
         await this.withNotifications(
-          async () => await dexApi.swap(
+          async () => await api.swap(
             this.tokenFrom.address,
             this.tokenTo.address,
             this.fromValue.toString(),

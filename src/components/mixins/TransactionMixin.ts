@@ -1,14 +1,15 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { History, TransactionStatus, Operation } from '@sora-substrate/util'
-import { dexApi } from '@soramitsu/soraneo-wallet-web'
+import { api } from '@soramitsu/soraneo-wallet-web'
 import findLast from 'lodash/fp/findLast'
 import { Action } from 'vuex-class'
 
 import { formatAddress } from '@/utils'
 import TranslationMixin from './TranslationMixin'
+import LoadingMixin from './LoadingMixin'
 
 @Component
-export default class TransactionMixin extends Mixins(TranslationMixin) {
+export default class TransactionMixin extends Mixins(TranslationMixin, LoadingMixin) {
   private time = 0
 
   transaction: History | null = null // It's used just for sync errors
@@ -31,13 +32,14 @@ export default class TransactionMixin extends Mixins(TranslationMixin) {
     // Now we are checking every transaction with 1 second interval
     const tx = findLast(
       item => Math.abs(Number(item.startTime) - this.time) < 1000,
-      dexApi.accountHistory
+      api.accountHistory
     )
     if (!tx) {
       await new Promise(resolve => setTimeout(resolve, 50))
       return await this.getLastTransaction()
     }
-    this.addActiveTransaction({ tx })
+    this.transaction = tx
+    this.addActiveTransaction({ tx: this.transaction })
   }
 
   /** Should be used with @Watch like a singletone in a root of the project */
@@ -64,22 +66,24 @@ export default class TransactionMixin extends Mixins(TranslationMixin) {
   }
 
   async withNotifications (func: () => Promise<void>): Promise<void> {
-    try {
-      this.time = Date.now()
-      await func()
-      await this.getLastTransaction()
-      this.$notify({ message: this.t('transactionSubmittedText'), title: '' })
-    } catch (error) {
-      const message = this.getMessage(this.transaction as History)
-      this.time = 0
-      this.removeActiveTransaction({ tx: this.transaction })
-      this.transaction = null
-      this.$notify({
-        message: message || this.t('unknownErrorText'),
-        type: 'error',
-        title: ''
-      })
-      throw new Error(error.message)
-    }
+    await this.withLoading(async () => {
+      try {
+        this.time = Date.now()
+        await func()
+        await this.getLastTransaction()
+        this.$notify({ message: this.t('transactionSubmittedText'), title: '' })
+      } catch (error) {
+        const message = this.getMessage(this.transaction as History)
+        this.time = 0
+        this.removeActiveTransaction({ tx: this.transaction })
+        this.transaction = null
+        this.$notify({
+          message: message || this.t('unknownErrorText'),
+          type: 'error',
+          title: ''
+        })
+        throw new Error(error.message)
+      }
+    })
   }
 }
