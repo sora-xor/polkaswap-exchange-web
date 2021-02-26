@@ -28,6 +28,8 @@ const CreateTokenPairMixin = (namespace: string) => {
     @Getter('price', { namespace: 'prices' }) price!: string | number
     @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
 
+    @Getter slippageTolerance!: number
+
     @Action('setFirstToken', { namespace }) setFirstToken
     @Action('setSecondToken', { namespace }) setSecondToken
     @Action('setFirstTokenValue', { namespace }) setFirstTokenValue
