@@ -7,17 +7,10 @@
     >
       <info-card class="slider-container" :title="t('removeLiquidity.amount')">
         <div class="slider-container__amount">
-          <s-input
-            v-float
-            :class="`s-input--token-value s-input--remove-part ${
-              removePartInput.toString().length === 3
-              ? 'three-char'
-              : removePartInput.toString().length === 2
-              ? 'two-char'
-              : 'one-char'
-            }`"
-            maxlength="3"
-            :value="removePartInput"
+          <s-float-input
+            :class="['s-input--token-value', 's-input--remove-part', removePartCharClass]"
+            :decimals="0"
+            :value="String(removePartInput)"
             @input="handleRemovePartChange"
             @blur="resetFocusedField"
           />
@@ -37,9 +30,9 @@
         </div>
         <div class="input-line">
           <s-form-item>
-            <token-input
+            <s-float-input
               class="s-input--token-value"
-              :token="liquidity"
+              :decimals="liquidity && liquidity.decimals"
               :value="liquidityAmount"
               @input="setLiquidityAmount"
               @blur="resetFocusedField"
@@ -68,9 +61,9 @@
         </div>
         <div class="input-line">
           <s-form-item>
-            <token-input
+            <s-float-input
               class="s-input--token-value"
-              :token="firstToken"
+              :decimals="firstToken && firstToken.decimals"
               :value="firstTokenAmount"
               @input="handleTokenChange($event, setFirstTokenAmount)"
               @blur="resetFocusedField"
@@ -94,9 +87,9 @@
         </div>
         <div class="input-line">
           <s-form-item>
-            <token-input
+            <s-float-input
               class="s-input--token-value"
-              :token="secondToken"
+              :decimals="secondToken && secondToken.decimals"
               :value="secondTokenAmount"
               @input="handleTokenChange($event, setSecondTokenAmount)"
               @blur="resetFocusedField"
@@ -152,8 +145,6 @@ import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
 
-import TokenInput from '@/components/TokenInput.vue'
-
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -161,7 +152,6 @@ const namespace = 'removeLiquidity'
 
 @Component({
   components: {
-    TokenInput,
     GenericHeader: lazyComponent(Components.GenericHeader),
     InfoCard: lazyComponent(Components.InfoCard),
     TokenLogo: lazyComponent(Components.TokenLogo),
@@ -262,6 +252,15 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     }
 
     return true
+  }
+
+  get removePartCharClass (): string {
+    const charClassName = ({
+      3: 'three',
+      2: 'two'
+    })[this.removePartInput.toString().length] ?? 'one'
+
+    return `${charClassName}-char`
   }
 
   @Watch('removePart')
