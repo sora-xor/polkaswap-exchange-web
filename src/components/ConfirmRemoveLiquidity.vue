@@ -39,7 +39,13 @@
       </div>
     </s-row>
     <template #footer>
-      <s-button type="primary" @click="handleConfirmRemoveLiquidity">{{ t('exchange.confirm') }}</s-button>
+      <s-button
+        type="primary"
+        :loading="parentLoading"
+        @click="handleConfirmRemoveLiquidity"
+      >
+        {{ t('exchange.confirm') }}
+      </s-button>
     </template>
   </dialog-base>
 </template>
@@ -50,10 +56,10 @@ import { Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
+import LoadingMixin from '@/components/mixins/LoadingMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
-import { FPNumber } from '@sora-substrate/util'
 
 const namespace = 'removeLiquidity'
 
@@ -64,15 +70,18 @@ const namespace = 'removeLiquidity'
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
-export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, DialogMixin) {
+export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, DialogMixin, LoadingMixin) {
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean
+
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('liquidityAmount', { namespace }) liquidityAmount!: any
   @Getter('firstTokenAmount', { namespace }) firstTokenAmount!: any
   @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
+
   @Getter('price', { namespace: 'prices' }) price!: string | number
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
+
   @Getter slippageTolerance!: number
 
   get formattedFromValue (): string {

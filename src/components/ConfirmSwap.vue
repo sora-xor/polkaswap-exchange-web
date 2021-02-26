@@ -26,14 +26,20 @@
     <swap-info :show-price="true" />
     <swap-info :show-tooltips="false" />
     <template #footer>
-      <s-button type="primary" @click="handleConfirmSwap">{{ t('exchange.confirm') }}</s-button>
+      <s-button
+        type="primary"
+        :disabled="loading"
+        @click="handleConfirmSwap"
+      >
+        {{ t('exchange.confirm') }}
+      </s-button>
     </template>
   </dialog-base>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
+import { Getter } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
