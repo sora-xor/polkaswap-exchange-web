@@ -23,7 +23,7 @@
           </s-row>
         </s-col>
         <div>
-          <span class="token-item__amount">{{ token.amount || '-' }}</span>
+          <span class="token-item__amount">{{ token.balance || '-' }}</span>
         </div>
       </div>
     </div>
@@ -37,7 +37,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { KnownAssets, KnownSymbols, Asset } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, Asset, AccountAsset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -63,20 +63,36 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   @Prop({ default: () => false, type: Boolean }) readonly accountAssetsOnly!: boolean
   @Prop({ default: () => false, type: Boolean }) readonly notNullBalanceOnly!: boolean
 
-  @Getter('assets', { namespace }) assets!: Array<Token>
+  @Getter('assets', { namespace }) assets!: Array<Asset>
   @Action('getAssets', { namespace }) getAssets
 
-  @Getter('accountAssets') accountAssets!: Array<Token>
+  @Getter('accountAssets') accountAssets!: Array<AccountAsset>
   @Action('getAccountAssets') getAccountAssets
 
-  get assetsList (): Array<Token> {
-    let assets = this.accountAssetsOnly ? this.accountAssets : this.assets
-    assets = this.asset ? assets.filter(asset => asset.symbol !== this.asset.symbol) : assets
+  get assetsList (): Array<AccountAsset> {
+    const { asset, assets, accountAssets, notNullBalanceOnly, accountAssetsOnly } = this
 
-    return this.notNullBalanceOnly ? assets.filter(a => a.balance > 0) : assets
+    return assets.reduce((result: Array<AccountAsset>, item) => {
+      if (asset && item.address === asset.address) return result
+
+      const accountAsset = accountAssets.find(a => a.address === item.address)
+
+      if (accountAssetsOnly && !accountAsset) return result
+
+      const accountBalance = Number(accountAsset?.balance) || 0
+
+      if (notNullBalanceOnly && (!Number.isFinite(accountBalance) || accountBalance <= 0)) return result
+
+      const prepared = {
+        ...item,
+        balance: String(accountBalance)
+      } as AccountAsset
+
+      return [...result, prepared]
+    }, [])
   }
 
-  get filteredTokens (): Array<Token> {
+  get filteredTokens (): Array<AccountAsset> {
     if (this.query) {
       const query = this.query.toLowerCase().trim()
       return this.assetsList.filter(t =>
@@ -145,6 +161,7 @@ $token-item-height: 71px;
     background-color: var(--s-color-base-background-hover);
   }
   &__name, &__amount {
+    white-space: nowrap;
     font-size: var(--s-font-size-small);
     @include font-weight(600);
   }
