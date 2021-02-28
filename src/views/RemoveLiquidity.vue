@@ -203,7 +203,8 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   @Action('resetPrices', { namespace: 'prices' }) resetPrices
 
   removePartInput = 0
-  sliderButton: any
+  sliderInput: any
+  sliderDragButton: any
 
   async mounted () {
     this.resetData()
@@ -215,15 +216,16 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
         secondAddress: this.secondTokenAddress
       })
     })
-    this.sliderButton = this.$el.querySelector('.slider-container .el-slider__button')
-    if (this.sliderButton) {
-      this.sliderButton.addEventListener('click', this.focusSlider)
+    this.sliderDragButton = this.$el.querySelector('.slider-container .el-slider__button')
+    this.sliderInput = this.$el.querySelector('.s-input--remove-part .el-input__inner')
+    if (this.sliderDragButton) {
+      this.sliderDragButton.addEventListener('mousedown', this.focusSliderInput)
     }
   }
 
   destroyed () {
-    if (this.sliderButton) {
-      this.$el.removeEventListener('click', this.focusSlider)
+    if (this.sliderDragButton) {
+      this.$el.removeEventListener('mousedown', this.focusSliderInput)
     }
   }
 
@@ -292,12 +294,10 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     this.setRemovePart(this.removePartInput)
   }
 
-  focusSlider (): void {
-    // TODO: Blur current focused field
-    console.log('slider focusedField', this.focusedField)
-    if (this.focusedField && this.$refs[this.focusedField]) {
-      const focusedField = this.$refs.removePart
-      console.log(focusedField)
+  focusSliderInput (): void {
+    this.setFocusedField('removePart')
+    if (this.sliderInput) {
+      this.sliderInput.focus()
     }
   }
 
