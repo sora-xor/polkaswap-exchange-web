@@ -47,7 +47,7 @@
         </div>
         <div class="value">
           <div class="value-container">{{ transactionDeadline }} {{ t('dexSettings.min') }}</div>
-          <s-slider class="value-slider" :value="transactionDeadline" :showTooltip="false" @change="handleSetTransactionDeadline" />
+          <s-slider class="value-slider" :value="transactionDeadline" :showTooltip="false" @input="handleSetTransactionDeadline" />
         </div>
       </div>
       <s-divider /> -->
