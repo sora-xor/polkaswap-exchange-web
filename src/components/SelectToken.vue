@@ -142,21 +142,23 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
 }
 </script>
 
-<style lang="scss" scoped>
-$token-item-height: 71px;
-
-@include search-item;
-
+<style lang="scss">
 .token-select {
-  &::v-deep {
-    .el-dialog {
-      overflow: hidden;
-      &__body {
-        padding: $inner-spacing-mini 0 $inner-spacing-big;
-      }
+  @include search-item-unscoped;
+
+  .el-dialog {
+    overflow: hidden;
+    &__body {
+      padding: $inner-spacing-mini 0 $inner-spacing-big !important;
     }
   }
 }
+</style>
+
+<style lang="scss" scoped>
+@include search-item;
+
+$token-item-height: 71px;
 
 .token-search {
   // TODO: Fix input styles (paddings and icon position)
