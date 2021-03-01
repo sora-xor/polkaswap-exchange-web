@@ -57,9 +57,9 @@ const namespace = 'assets'
 })
 export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, LoadingMixin) {
   query = ''
-  selectedToken: Token | null = null
+  selectedToken: AccountAsset | null = null
 
-  @Prop({ default: () => null, type: Object }) readonly asset!: Token
+  @Prop({ default: () => null, type: Object }) readonly asset!: Asset
   @Prop({ default: () => false, type: Boolean }) readonly accountAssetsOnly!: boolean
   @Prop({ default: () => false, type: Boolean }) readonly notNullBalanceOnly!: boolean
 
@@ -79,7 +79,7 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   get assetsList (): Array<AccountAsset> {
     const { asset, assets, accountAssetsHashTable, notNullBalanceOnly, accountAssetsOnly } = this
 
-    return assets.reduce((result: Array<AccountAsset>, item) => {
+    return assets.reduce((result: Array<AccountAsset>, item: Asset) => {
       if (!item || (asset && item.address === asset.address)) return result
 
       const accountAsset = accountAssetsHashTable[item.address]
@@ -121,7 +121,7 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
     }
   }
 
-  selectToken (token: Token): void {
+  selectToken (token: AccountAsset): void {
     this.selectedToken = token
     this.query = ''
     this.$emit('select', token)
