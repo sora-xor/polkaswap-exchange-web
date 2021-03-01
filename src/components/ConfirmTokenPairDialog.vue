@@ -79,7 +79,7 @@ export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, Dia
   @Prop({ type: Object }) readonly secondToken!: any
   @Prop({ type: String }) readonly firstTokenValue!: string
   @Prop({ type: String }) readonly secondTokenValue!: string
-  @Prop({ type: String }) readonly minted!: string
+  @Prop({ type: [String, Number] }) readonly minted!: string | number
   @Prop({ type: [String, Number] }) readonly price!: string | number
   @Prop({ type: [String, Number] }) readonly priceReversed!: string | number
   @Prop({ type: [String, Number] }) readonly slippageTolerance!: string | number
