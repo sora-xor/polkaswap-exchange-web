@@ -2,11 +2,6 @@ import { Asset, AccountAsset, KnownSymbols, FPNumber } from '@sora-substrate/uti
 
 import storage from './storage'
 
-export const formatNumber = (value: string | number, decimalLendth?: number): string => {
-  const valueNumber = +value
-  return valueNumber.toFixed(decimalLendth || 4)
-}
-
 export const formatAddress = (address: string, length = address.length / 2): string => {
   return `${address.slice(0, length / 2)}...${address.slice(-length / 2)}`
 }

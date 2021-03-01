@@ -10,6 +10,7 @@ import router from '@/router'
 import { PageNames } from '@/consts'
 import { getMaxValue, isMaxButtonAvailable, isWalletConnected, isXorAccountAsset, hasInsufficientBalance } from '@/utils'
 
+// TODO: Ask is it correct name?
 const CreateTokenPairMixin = (namespace: string) => {
   @Component
   class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin) {
@@ -32,6 +33,7 @@ const CreateTokenPairMixin = (namespace: string) => {
     @Action('setSecondToken', { namespace }) setSecondToken
     @Action('setFirstTokenValue', { namespace }) setFirstTokenValue
     @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
+    @Action('resetData', { namespace }) resetData
 
     @Action('getNetworkFee', { namespace }) getNetworkFee
     @Action('getPrices', { namespace: 'prices' }) getPrices
@@ -44,6 +46,7 @@ const CreateTokenPairMixin = (namespace: string) => {
     async mounted () {
       await this.withApi(async () => {
         this.resetPrices()
+        this.resetData()
         await this.setFirstToken(KnownAssets.get(KnownSymbols.XOR))
         this.afterApiConnect()
       })
