@@ -267,7 +267,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   async getNetworkFee (): Promise<void> {
-    const networkFee = await api.getSwapNetworkFee(this.tokenFrom.address, this.tokenTo.address, this.formModel.from, this.formModel.to, this.slippageTolerance, this.isExchangeB)
+    const networkFee = await api.getSwapNetworkFee(this.tokenFrom?.address, this.tokenTo?.address, this.formModel.from, this.formModel.to, this.slippageTolerance, this.isExchangeB)
     this.setNetworkFee(networkFee)
   }
 
@@ -459,6 +459,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     if (isSwapConfirmed) {
       this.resetFieldFrom()
       this.resetFieldTo()
+      this.setToValue('')
+      this.setFromValue('')
       this.setTokenFromPrice(true)
       this.resetPrices()
       this.isFieldFromActive = false
