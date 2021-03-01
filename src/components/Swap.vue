@@ -459,6 +459,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     if (isSwapConfirmed) {
       this.resetFieldFrom()
       this.resetFieldTo()
+      this.setToValue('')
+      this.setFromValue('')
       this.setTokenFromPrice(true)
       this.resetPrices()
       this.isFieldFromActive = false
