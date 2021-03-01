@@ -64,12 +64,12 @@
           />
         </s-form-item>
         <div v-if="tokenTo" class="token">
-          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog">
+          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(false)">
             <token-logo :token="tokenTo" size="small" />
             {{ tokenTo.symbol }}
           </s-button>
         </div>
-        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog">
+        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(false)">
           {{ t('exchange.chooseToken') }}
         </s-button>
       </div>

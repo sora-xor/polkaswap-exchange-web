@@ -56,7 +56,6 @@ const namespace = 'assets'
 })
 export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, LoadingMixin) {
   query = ''
-  selectedToken: AccountAsset | null = null
 
   @Prop({ default: () => null, type: Object }) readonly asset!: Asset
   @Prop({ default: () => false, type: Boolean }) readonly accountAssetsOnly!: boolean
@@ -121,7 +120,6 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   }
 
   selectToken (token: AccountAsset): void {
-    this.selectedToken = token
     this.query = ''
     this.$emit('select', token)
     this.$emit('close')
