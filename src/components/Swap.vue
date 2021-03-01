@@ -8,7 +8,9 @@
       <div class="input-line">
         <div class="input-title">
           <span>{{ t('exchange.from') }}</span>
-          <span :class="`input-title-estimated ${(areTokensSelected && !isEmptyToAmount && !isFieldFromActive) ? 'input-title-estimated--show' : ''}`">({{ t('swap.estimated') }})</span>
+          <span :class="`input-title-estimated ${(areTokensSelected && !isEmptyToAmount && !isFieldFromActive) ? 'input-title-estimated--show' : ''}`">
+            ({{ t('swap.estimated') }})
+          </span>
         </div>
         <div v-if="this.connected && this.tokenFrom && this.tokenFrom.balance && this.isTokenFromBalanceAvailable" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
@@ -23,7 +25,6 @@
             :value="formModel.from"
             @input="handleInputFieldFrom"
             @focus="handleFocusFieldFrom"
-            @blur="handleBlurFieldFrom"
           />
         </s-form-item>
         <div v-if="tokenFrom" class="token">
@@ -45,7 +46,9 @@
       <div class="input-line">
         <div class="input-title">
           <span>{{ t('exchange.to') }}</span>
-          <span :class="`input-title-estimated ${(areTokensSelected && !isEmptyFromAmount && !isFieldToActive) ? 'input-title-estimated--show' : ''}`" class="input-title-estimated">({{ t('swap.estimated') }})</span>
+          <span :class="`input-title-estimated ${(areTokensSelected && !isEmptyFromAmount && !isFieldToActive) ? 'input-title-estimated--show' : ''}`">
+            ({{ t('swap.estimated') }})
+          </span>
         </div>
         <div v-if="this.connected && this.tokenTo && this.tokenTo.balance && this.isTokenToBalanceAvailable" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
@@ -60,7 +63,6 @@
             :decimals="tokenTo && tokenTo.decimals"
             @input="handleInputFieldTo"
             @focus="handleFocusFieldTo"
-            @blur="handleBlurFieldTo"
           />
         </s-form-item>
         <div v-if="tokenTo" class="token">
@@ -154,8 +156,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   isInsufficientAmount = false
   insufficientBalanceTokenSymbol = ''
   insufficientAmountTokenSymbol = ''
-  isFieldFromFocused = false
-  isFieldToFocused = false
   isFieldFromActive = false
   isFieldToActive = false
   isTokenFromSelected = false
@@ -244,7 +244,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
 
   created () {
     this.withApi(() => {
-      const tokenSymbol = this.tokenFrom !== null && this.tokenFrom !== undefined ? this.tokenFrom.symbol : KnownSymbols.XOR
+      const tokenSymbol = this.tokenFrom?.symbol ?? KnownSymbols.XOR
       this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: tokenSymbol })
       this.isTokenFromBalanceAvailable = true
       if (this.tokenTo !== null && this.tokenTo !== undefined) {
@@ -370,18 +370,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     return this.isInsufficientAmount
   }
 
-  handleBlurFieldFrom (): void {
-    this.isFieldFromFocused = false
-  }
-
-  handleBlurFieldTo (): void {
-    this.isFieldToFocused = false
-  }
-
   async handleFocusFieldFrom (): Promise<void> {
     this.isFieldFromActive = true
     this.isFieldToActive = false
-    this.isFieldFromFocused = true
+
     if (this.isZeroFromAmount) {
       this.formModel.from = ''
     }
@@ -391,7 +383,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   async handleFocusFieldTo (): Promise<void> {
     this.isFieldFromActive = false
     this.isFieldToActive = true
-    this.isFieldToFocused = true
+
     if (this.isZeroToAmount) {
       this.formModel.to = ''
     }
