@@ -270,7 +270,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   async getNetworkFee (): Promise<void> {
-    const networkFee = await api.getSwapNetworkFee(this.tokenFrom.address, this.tokenTo.address, this.formModel.from, this.formModel.to, this.slippageTolerance, this.isExchangeB)
+    const networkFee = await api.getSwapNetworkFee(this.tokenFrom?.address, this.tokenTo?.address, this.formModel.from, this.formModel.to, this.slippageTolerance, this.isExchangeB)
     this.setNetworkFee(networkFee)
   }
 

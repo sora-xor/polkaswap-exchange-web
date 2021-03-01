@@ -69,19 +69,26 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   @Getter('accountAssets') accountAssets!: Array<AccountAsset>
   @Action('getAccountAssets') getAccountAssets
 
+  get accountAssetsHashTable () {
+    return this.accountAssets.reduce((result, item) => ({
+      ...result,
+      [item.address]: item
+    }), {})
+  }
+
   get assetsList (): Array<AccountAsset> {
-    const { asset, assets, accountAssets, notNullBalanceOnly, accountAssetsOnly } = this
+    const { asset, assets, accountAssetsHashTable, notNullBalanceOnly, accountAssetsOnly } = this
 
     return assets.reduce((result: Array<AccountAsset>, item) => {
-      if (asset && item.address === asset.address) return result
+      if (!item || (asset && item.address === asset.address)) return result
 
-      const accountAsset = accountAssets.find(a => a.address === item.address)
+      const accountAsset = accountAssetsHashTable[item.address]
 
       if (accountAssetsOnly && !accountAsset) return result
 
       const accountBalance = Number(accountAsset?.balance) || 0
 
-      if (notNullBalanceOnly && (!Number.isFinite(accountBalance) || accountBalance <= 0)) return result
+      if (notNullBalanceOnly && accountBalance <= 0) return result
 
       const prepared = {
         ...item,
@@ -95,10 +102,11 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   get filteredTokens (): Array<AccountAsset> {
     if (this.query) {
       const query = this.query.toLowerCase().trim()
+
       return this.assetsList.filter(t =>
         this.t(`assetNames.${t.symbol}`).toLowerCase().includes(query) ||
-        t.symbol.toLowerCase().includes(query) ||
-        t.address.toLowerCase().includes(query)
+        t.symbol?.toLowerCase?.()?.includes?.(query) ||
+        t.address?.toLowerCase?.()?.includes?.(query)
       )
     }
 
