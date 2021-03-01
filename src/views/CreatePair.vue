@@ -15,11 +15,11 @@
         </div>
         <div class="input-line">
           <s-form-item>
-            <token-input
+            <s-float-input
               class="s-input--token-value"
-              :token="firstToken"
-              :value="firstTokenValue"
+              :decimals="firstToken && firstToken.decimals"
               :disabled="!areTokensSelected"
+              :value="firstTokenValue"
               @input="handleTokenChange($event, setFirstTokenValue)"
             />
           </s-form-item>
@@ -48,11 +48,11 @@
         </div>
         <div class="input-line">
           <s-form-item>
-            <token-input
+            <s-float-input
               class="s-input--token-value"
-              :token="secondToken"
-              :value="secondTokenValue"
+              :decimals="secondToken && secondToken.decimals"
               :disabled="!areTokensSelected"
+              :value="secondTokenValue"
               @input="handleTokenChange($event, setSecondTokenValue)"
             />
           </s-form-item>
@@ -182,7 +182,6 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
-import TokenInput from '@/components/TokenInput.vue'
 
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -193,7 +192,6 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
 
 @Component({
   components: {
-    TokenInput,
     GenericHeader: lazyComponent(Components.GenericHeader),
     SelectToken: lazyComponent(Components.SelectToken),
     InfoCard: lazyComponent(Components.InfoCard),

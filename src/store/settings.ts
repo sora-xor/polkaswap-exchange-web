@@ -60,10 +60,10 @@ const mutations = {
 }
 
 const actions = {
-  setSlippageTolerance ({ commit }, { value }) {
+  setSlippageTolerance ({ commit }, value) {
     commit(types.SET_SLIPPAGE_TOLERANCE, value)
   },
-  setTransactionDeadline ({ commit }, { value }) {
+  setTransactionDeadline ({ commit }, value) {
     commit(types.SET_TRANSACTION_DEADLINE, Number(value))
   }
 }

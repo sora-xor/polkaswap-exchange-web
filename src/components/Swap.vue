@@ -17,10 +17,9 @@
       </div>
       <div class="input-line">
         <s-form-item>
-          <token-input
+          <s-float-input
             class="s-input--token-value"
-            :placeholder="isFieldFromFocused ? '' : inputPlaceholder"
-            :token="tokenFrom"
+            :decimals="tokenFrom && tokenFrom.decimals"
             :value="formModel.from"
             @input="handleInputFieldFrom"
             @focus="handleFocusFieldFrom"
@@ -55,11 +54,10 @@
       </div>
       <div class="input-line">
         <s-form-item>
-          <token-input
+          <s-float-input
             class="s-input--token-value"
-            :placeholder="isFieldToFocused ? '' : inputPlaceholder"
             :value="formModel.to"
-            :token="tokenTo"
+            :decimals="tokenTo && tokenTo.decimals"
             @input="handleInputFieldTo"
             @focus="handleFocusFieldTo"
             @blur="handleBlurFieldTo"
@@ -112,15 +110,12 @@ import { KnownSymbols, FPNumber } from '@sora-substrate/util'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 
-import TokenInput from '@/components/TokenInput.vue'
-
-import { formatNumber, isWalletConnected, isXorAccountAsset, isMaxButtonAvailable, getMaxValue } from '@/utils'
+import { isWalletConnected, isXorAccountAsset, isMaxButtonAvailable, getMaxValue } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
 @Component({
   components: {
-    TokenInput,
     SwapInfo: lazyComponent(Components.SwapInfo),
     TokenLogo: lazyComponent(Components.TokenLogo),
     SelectToken: lazyComponent(Components.SelectToken),
@@ -154,7 +149,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     this.recountSwapValues()
   }
 
-  inputPlaceholder: string = formatNumber(0, 1)
   isTokenFromBalanceAvailable = false
   isTokenToBalanceAvailable = false
   isInsufficientAmount = false

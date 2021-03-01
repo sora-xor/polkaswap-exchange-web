@@ -15,9 +15,9 @@
         </div>
         <div class="input-line">
           <s-form-item>
-            <token-input
+            <s-float-input
               class="s-input--token-value"
-              :token="firstToken"
+              :decimals="firstToken && firstToken.decimals"
               :value="firstTokenValue"
               :disabled="!areTokensSelected"
               @input="handleTokenChange($event, setFirstTokenValue)"
@@ -48,12 +48,12 @@
         </div>
         <div class="input-line">
           <s-form-item>
-            <token-input
+            <s-float-input
               class="s-input--token-value"
-              :token="secondToken"
+              :decimals="secondToken && secondToken.decimals"
               :value="secondTokenValue"
               :disabled="!areTokensSelected"
-              @change="handleTokenChange($event, setSecondTokenValue)"
+              @input="handleTokenChange($event, setSecondTokenValue)"
               @blur="resetFocusedField"
             />
           </s-form-item>
@@ -185,7 +185,6 @@ import { Action, Getter } from 'vuex-class'
 import { FPNumber } from '@sora-substrate/util'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
-import TokenInput from '@/components/TokenInput.vue'
 
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -196,7 +195,6 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
 
 @Component({
   components: {
-    TokenInput,
     GenericHeader: lazyComponent(Components.GenericHeader),
     SelectToken: lazyComponent(Components.SelectToken),
     InfoCard: lazyComponent(Components.InfoCard),
