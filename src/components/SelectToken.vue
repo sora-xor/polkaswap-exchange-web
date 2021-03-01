@@ -37,13 +37,12 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { KnownAssets, KnownSymbols, Asset, AccountAsset } from '@sora-substrate/util'
+import { Asset, AccountAsset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import DialogBase from '@/components/DialogBase.vue'
-import { Token } from '@/types'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
 
