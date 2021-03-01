@@ -225,7 +225,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
 
   destroyed () {
     if (this.sliderDragButton) {
-      this.$el.removeEventListener('mousedown', this.focusSliderInput)
+      this.$el.removeEventListener('mousedown', this.sliderDragButton)
     }
   }
 
