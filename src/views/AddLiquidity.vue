@@ -162,7 +162,20 @@
     <select-token :visible.sync="showSelectFirstTokenDialog" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstToken" />
     <select-token :visible.sync="showSelectSecondTokenDialog" :asset="firstToken" @select="setSecondToken" />
 
-    <confirm-add-liquidity :visible.sync="showConfirmDialog" :parent-loading="loading" @confirm="handleConfirmAddLiquidity" />
+    <confirm-token-pair-dialog
+      :visible.sync="showConfirmDialog"
+      :parent-loading="loading"
+      :share-of-pool="shareOfPool"
+      :first-token="firstToken"
+      :second-token="secondToken"
+      :first-token-value="firstTokenValue"
+      :second-token-value="secondTokenValue"
+      :minted="minted"
+      :price="price"
+      :price-reversed="priceReversed"
+      :slippage-tolerance="slippageTolerance"
+      @confirm="handleConfirmAddLiquidity"
+    />
   </div>
 </template>
 
@@ -187,7 +200,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
     InfoCard: lazyComponent(Components.InfoCard),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    ConfirmAddLiquidity: lazyComponent(Components.ConfirmAddLiquidity)
+    ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog)
   }
 })
 

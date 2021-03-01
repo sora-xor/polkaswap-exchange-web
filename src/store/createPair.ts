@@ -208,6 +208,7 @@ const actions = {
       commit(types.CREATE_PAIR_SUCCESS)
     } catch (error) {
       commit(types.CREATE_PAIR_FAILURE)
+      throw error
     }
   },
 
