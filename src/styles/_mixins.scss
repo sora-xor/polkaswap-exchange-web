@@ -253,36 +253,27 @@
   }
 }
 
-@mixin search-item-unscoped ($class: 'el-form-item--search') {
-  $button-clear-font-size: var(--s-icon-font-size-mini);
-  .#{$class} {
-    .s-button--clear {
-      width: calc(#{$inner-spacing-small * 2} + var(--s-icon-font-size-mini));
-      // TODO: Ask hover/active colors
-      .s-icon-circle-x {
-        margin-right: 0;
-        font-size: $button-clear-font-size;
-      }
-    }
-  }
-}
-
 @mixin search-item ($class: 'el-form-item--search', $clearRightPosition: $inner-spacing-big) {
   $button-clear-font-size: var(--s-icon-font-size-mini);
   .#{$class} {
     margin-bottom: 0;
     position: relative;
+
     .s-button--clear {
-      right: $clearRightPosition;
       position: absolute;
       top: 0;
+      right: $clearRightPosition;
+      width: calc(#{$inner-spacing-small * 2} + var(--s-icon-font-size-mini));
       padding: 0;
       background-color: transparent;
       border-radius: 0;
       border: none;
 
-      & >>> i {
-        font-size: $button-clear-font-size;
+      &:not(.s-action).s-i-position-left::v-deep > span {
+        & > i {
+          margin-right: 0;
+          font-size: $button-clear-font-size;
+        }
       }
     }
   }

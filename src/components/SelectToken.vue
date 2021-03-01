@@ -129,8 +129,6 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
       padding: $inner-spacing-mini 0 $inner-spacing-big !important;
     }
   }
-
-  @include search-item-unscoped;
 }
 </style>
 
