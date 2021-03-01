@@ -55,6 +55,9 @@ function initialState (): RemoveLiquidityState {
 const state = initialState()
 
 const getters = {
+  focusedField (state: RemoveLiquidityState) {
+    return state.focusedField
+  },
   liquidity (state: RemoveLiquidityState) {
     return state.liquidity
   },
@@ -214,19 +217,15 @@ const actions = {
       } else {
         commit(types.SET_LIQUIDITY_AMOUNT)
       }
-
       dispatch('getRemoveLiquidityData')
     }
   },
-
   setFirstTokenAmount ({ commit, getters, dispatch }, firstTokenAmount) {
     if (!getters.focusedField || getters.focusedField === 'firstTokenAmount') {
       commit(types.SET_FOCUSED_FIELD, 'firstTokenAmount')
-
       if (firstTokenAmount) {
         if (firstTokenAmount !== getters.firstTokenAmount && !Number.isNaN(firstTokenAmount)) {
           const part = new FPNumber(firstTokenAmount).div(new FPNumber(getters.firstTokenBalance))
-
           commit(types.SET_REMOVE_PART, Math.round(part.mul(new FPNumber(100)).toNumber()))
           commit(types.SET_LIQUIDITY_AMOUNT, part.mul(new FPNumber(getters.liquidityBalance)).toString(getters.liquidityDecimals))
           commit(types.SET_FIRST_TOKEN_AMOUNT, firstTokenAmount)
@@ -235,15 +234,12 @@ const actions = {
       } else {
         commit(types.SET_FIRST_TOKEN_AMOUNT)
       }
-
       dispatch('getRemoveLiquidityData')
     }
   },
-
   setSecondTokenAmount ({ commit, getters, dispatch }, secondTokenAmount) {
     if (!getters.focusedField || getters.focusedField === 'secondTokenAmount') {
       commit(types.SET_FOCUSED_FIELD, 'secondTokenAmount')
-
       if (secondTokenAmount) {
         if (Number(secondTokenAmount) !== getters.secondTokenAmount && !Number.isNaN(secondTokenAmount)) {
           const part = new FPNumber(secondTokenAmount).div(new FPNumber(getters.secondTokenBalance))
@@ -261,8 +257,12 @@ const actions = {
     }
   },
 
-  resetFocusedField ({ commit }) {
-    commit(types.SET_FOCUSED_FIELD, null)
+  setFocusedField ({ commit }, focusedField) {
+    commit(types.SET_FOCUSED_FIELD, focusedField)
+  },
+
+  async resetFocusedField ({ commit, dispatch }): Promise<void> {
+    await dispatch('setFocusedField', null)
   },
 
   async getRemoveLiquidityData ({ dispatch }) {
@@ -284,7 +284,6 @@ const actions = {
           getters.reserveB,
           getters.totalSupply
         )
-
         commit(types.GET_FEE_SUCCESS, fee)
       } catch (error) {
         commit(types.GET_FEE_FAILURE, error)

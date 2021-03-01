@@ -10,6 +10,7 @@ import router from '@/router'
 import { PageNames } from '@/consts'
 import { getMaxValue, isMaxButtonAvailable, isWalletConnected, isXorAccountAsset, hasInsufficientBalance } from '@/utils'
 
+// TODO: Ask is it correct name?
 const CreateTokenPairMixin = (namespace: string) => {
   @Component
   class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin) {
