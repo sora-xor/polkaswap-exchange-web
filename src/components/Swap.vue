@@ -19,7 +19,6 @@
         <s-form-item>
           <s-float-input
             class="s-input--token-value"
-            :placeholder="isFieldFromFocused ? '' : inputPlaceholder"
             :decimals="tokenFrom && tokenFrom.decimals"
             :value="formModel.from"
             @input="handleInputFieldFrom"
@@ -57,7 +56,6 @@
         <s-form-item>
           <s-float-input
             class="s-input--token-value"
-            :placeholder="isFieldToFocused ? '' : inputPlaceholder"
             :value="formModel.to"
             :decimals="tokenTo && tokenTo.decimals"
             @input="handleInputFieldTo"
@@ -112,7 +110,7 @@ import { KnownSymbols, FPNumber } from '@sora-substrate/util'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 
-import { formatNumber, isWalletConnected, isXorAccountAsset, isMaxButtonAvailable, getMaxValue } from '@/utils'
+import { isWalletConnected, isXorAccountAsset, isMaxButtonAvailable, getMaxValue } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -151,7 +149,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     this.recountSwapValues()
   }
 
-  inputPlaceholder: string = formatNumber(0, 1)
   isTokenFromBalanceAvailable = false
   isTokenToBalanceAvailable = false
   isInsufficientAmount = false

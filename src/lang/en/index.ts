@@ -155,6 +155,7 @@ export default {
   },
   removeLiquidity: {
     title: 'Remove liquidity',
+    liquidity: 'liquidity',
     balance: 'Balance',
     amount: 'Amount',
     input: 'Input',

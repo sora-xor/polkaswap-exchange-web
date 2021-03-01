@@ -53,7 +53,7 @@
               :decimals="secondToken && secondToken.decimals"
               :value="secondTokenValue"
               :disabled="!areTokensSelected"
-              @change="handleTokenChange($event, setSecondTokenValue)"
+              @input="handleTokenChange($event, setSecondTokenValue)"
               @blur="resetFocusedField"
             />
           </s-form-item>
