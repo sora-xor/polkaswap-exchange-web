@@ -66,12 +66,12 @@
           />
         </s-form-item>
         <div v-if="tokenTo" class="token">
-          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog">
+          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(false)">
             <token-logo :token="tokenTo" size="small" />
             {{ tokenTo.symbol }}
           </s-button>
         </div>
-        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog">
+        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(false)">
           {{ t('exchange.chooseToken') }}
         </s-button>
       </div>
@@ -267,7 +267,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   async getNetworkFee (): Promise<void> {
-    const networkFee = await api.getSwapNetworkFee(this.tokenFrom.address, this.tokenTo.address, this.formModel.from, this.formModel.to, this.slippageTolerance, this.isExchangeB)
+    const networkFee = await api.getSwapNetworkFee(this.tokenFrom?.address, this.tokenTo?.address, this.formModel.from, this.formModel.to, this.slippageTolerance, this.isExchangeB)
     this.setNetworkFee(networkFee)
   }
 
@@ -451,6 +451,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     if (isSwapConfirmed) {
       this.resetFieldFrom()
       this.resetFieldTo()
+      this.setToValue('')
+      this.setFromValue('')
       this.setTokenFromPrice(true)
       this.resetPrices()
       this.isFieldFromActive = false
