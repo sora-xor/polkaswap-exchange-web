@@ -1,6 +1,5 @@
 <template>
   <s-form
-    v-model="formModel"
     class="el-form--actions"
     :show-message="false"
   >
@@ -22,7 +21,7 @@
           <s-float-input
             class="s-input--token-value"
             :decimals="tokenFrom && tokenFrom.decimals"
-            :value="formModel.from"
+            :value="fromValue"
             @input="handleInputFieldFrom"
             @focus="handleFocusFieldFrom"
           />
@@ -59,7 +58,7 @@
         <s-form-item>
           <s-float-input
             class="s-input--token-value"
-            :value="formModel.to"
+            :value="toValue"
             :decimals="tokenTo && tokenTo.decimals"
             @input="handleInputFieldTo"
             @focus="handleFocusFieldTo"
@@ -128,8 +127,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   @Getter tokenXOR!: any
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
-  @Getter fromValue!: number
-  @Getter toValue!: number
+  @Getter fromValue!: string
+  @Getter toValue!: string
   @Getter isExchangeB!: boolean
   @Getter slippageTolerance!: number
   @Getter networkFee!: string
@@ -162,11 +161,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   showSelectTokenDialog = false
   showConfirmSwapDialog = false
 
-  formModel = {
-    from: '',
-    to: ''
-  }
-
   get connected (): boolean {
     return isWalletConnected()
   }
@@ -176,19 +170,19 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   get isEmptyFromAmount (): boolean {
-    return this.formModel.from === ''
+    return this.fromValue === ''
   }
 
   get isZeroFromAmount (): boolean {
-    return +this.formModel.from === 0
+    return +this.fromValue === 0
   }
 
   get isEmptyToAmount (): boolean {
-    return this.formModel.to === ''
+    return this.toValue === ''
   }
 
   get isZeroToAmount (): boolean {
-    return +this.formModel.to === 0
+    return +this.toValue === 0
   }
 
   get areZeroAmounts (): boolean {
@@ -196,7 +190,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   get isMaxSwapAvailable (): boolean {
-    return isMaxButtonAvailable(this.areTokensSelected, this.tokenFrom, this.formModel.from, this.networkFee)
+    return isMaxButtonAvailable(this.areTokensSelected, this.tokenFrom, this.fromValue, this.networkFee)
   }
 
   get isInsufficientLiquidity (): boolean {
@@ -209,7 +203,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   get isInsufficientBalance (): boolean {
     if (this.connected && this.areTokensSelected) {
       let fpBalance = new FPNumber(this.tokenFrom.balance, this.tokenFrom.decimals)
-      const fpAmount = new FPNumber(this.formModel.from, this.tokenFrom.decimals)
+      const fpAmount = new FPNumber(this.fromValue, this.tokenFrom.decimals)
       if (FPNumber.lt(fpBalance, fpAmount)) {
         this.insufficientBalanceTokenSymbol = this.tokenFrom.symbol
         return true
@@ -259,20 +253,20 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   resetFieldFrom (): void {
-    this.formModel.from = ''
+    this.setFromValue('')
   }
 
   resetFieldTo (): void {
-    this.formModel.to = ''
+    this.setToValue('')
   }
 
   async getNetworkFee (): Promise<void> {
-    const networkFee = await api.getSwapNetworkFee(this.tokenFrom?.address, this.tokenTo?.address, this.formModel.from, this.formModel.to, this.slippageTolerance, this.isExchangeB)
+    const networkFee = await api.getSwapNetworkFee(this.tokenFrom?.address, this.tokenTo?.address, this.fromValue, this.toValue, this.slippageTolerance, this.isExchangeB)
     this.setNetworkFee(networkFee)
   }
 
   async handleInputFieldFrom (value): Promise<any> {
-    this.formModel.from = value
+    this.setFromValue(value)
 
     if (!this.isFieldToActive) {
       this.isFieldFromActive = true
@@ -280,8 +274,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
         this.resetFieldTo()
       } else {
         try {
-          const swapResult = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.from)
-          this.formModel.to = swapResult.amount
+          const swapResult = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.fromValue)
+          this.setToValue(swapResult.amount)
           this.setLiquidityProviderFee(swapResult.fee)
           const minMaxReceived = await api.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
           this.setMinMaxReceived({ minMaxReceived })
@@ -300,13 +294,11 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
           }
         }
       }
-      this.setToValue(this.formModel.to)
     }
-    this.setFromValue(this.formModel.from)
   }
 
   async handleInputFieldTo (value): Promise<any> {
-    this.formModel.to = value
+    this.setToValue(value)
 
     if (!this.isFieldFromActive) {
       this.isFieldToActive = true
@@ -316,8 +308,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
         try {
           // Always use getSwapResult and minMaxReceived with reversed flag for Token B
           const isExchangeBSwap = true
-          const swapResult = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.formModel.to, isExchangeBSwap)
-          this.formModel.from = swapResult.amount
+          const swapResult = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.toValue, isExchangeBSwap)
+          this.setFromValue(swapResult.amount)
           this.setLiquidityProviderFee(swapResult.fee)
           const minMaxReceived = await api.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance, isExchangeBSwap)
           this.setMinMaxReceived({ minMaxReceived, isExchangeB: isExchangeBSwap })
@@ -336,9 +328,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
           }
         }
       }
-      this.setFromValue(this.formModel.from)
     }
-    this.setToValue(this.formModel.to)
   }
 
   async recountSwapValues (): Promise<void> {
@@ -354,8 +344,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       this.getPrices({
         assetAAddress: this.tokenFrom.address,
         assetBAddress: this.tokenTo.address,
-        amountA: this.formModel.from,
-        amountB: this.formModel.to
+        amountA: this.fromValue,
+        amountB: this.toValue
       })
     }
   }
@@ -375,7 +365,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     this.isFieldToActive = false
 
     if (this.isZeroFromAmount) {
-      this.formModel.from = ''
+      this.resetFieldFrom()
     }
     await this.recountSwapValues()
   }
@@ -385,7 +375,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     this.isFieldToActive = true
 
     if (this.isZeroToAmount) {
-      this.formModel.to = ''
+      this.resetFieldTo()
     }
     await this.recountSwapValues()
   }
@@ -405,8 +395,12 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   async handleMaxValue (): Promise<void> {
     this.isFieldFromActive = true
     this.isFieldToActive = false
+
     await this.getNetworkFee()
-    this.formModel.from = getMaxValue(this.tokenFrom, this.networkFee)
+
+    const max = getMaxValue(this.tokenFrom, this.networkFee)
+
+    this.handleInputFieldFrom(max)
   }
 
   handleConnectWallet (): void {
@@ -451,8 +445,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     if (isSwapConfirmed) {
       this.resetFieldFrom()
       this.resetFieldTo()
-      this.setToValue('')
-      this.setFromValue('')
       this.setTokenFromPrice(true)
       this.resetPrices()
       this.isFieldFromActive = false
