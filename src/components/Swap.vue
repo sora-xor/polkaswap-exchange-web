@@ -7,7 +7,7 @@
       <div class="input-line">
         <div class="input-title">
           <span>{{ t('exchange.from') }}</span>
-          <span :class="`input-title-estimated ${(areTokensSelected && !isEmptyToAmount && !isFieldFromActive) ? 'input-title-estimated--show' : ''}`">
+          <span :class="`input-title-estimated ${(areTokensSelected && !isZeroToAmount && !isFieldFromActive) ? 'input-title-estimated--show' : ''}`">
             ({{ t('swap.estimated') }})
           </span>
         </div>
@@ -45,7 +45,7 @@
       <div class="input-line">
         <div class="input-title">
           <span>{{ t('exchange.to') }}</span>
-          <span :class="`input-title-estimated ${(areTokensSelected && !isEmptyFromAmount && !isFieldToActive) ? 'input-title-estimated--show' : ''}`">
+          <span :class="`input-title-estimated ${(areTokensSelected && !isZeroFromAmount && !isFieldToActive) ? 'input-title-estimated--show' : ''}`">
             ({{ t('swap.estimated') }})
           </span>
         </div>
@@ -169,16 +169,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     return !!(this.tokenFrom && this.tokenTo)
   }
 
-  get isEmptyFromAmount (): boolean {
-    return this.fromValue === ''
-  }
-
   get isZeroFromAmount (): boolean {
     return +this.fromValue === 0
-  }
-
-  get isEmptyToAmount (): boolean {
-    return this.toValue === ''
   }
 
   get isZeroToAmount (): boolean {
@@ -381,15 +373,11 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   handleSwitchTokens (): void {
-    const currentTokenFrom = this.tokenFrom
-    this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: this.tokenTo.symbol })
-    this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: currentTokenFrom.symbol })
-    this.resetFieldFrom()
-    this.resetFieldTo()
-    this.setTokenFromPrice(true)
-    this.resetPrices()
-    this.isFieldFromActive = false
-    this.isFieldToActive = false
+    const [fromSymbol, toSymbol] = [this.tokenFrom.symbol, this.tokenTo.symbol]
+
+    this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: toSymbol })
+    this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: fromSymbol })
+    this.resetTokenFields()
   }
 
   async handleMaxValue (): Promise<void> {
@@ -443,14 +431,19 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
 
   async confirmSwap (isSwapConfirmed: boolean): Promise<any> {
     if (isSwapConfirmed) {
-      this.resetFieldFrom()
-      this.resetFieldTo()
-      this.setTokenFromPrice(true)
-      this.resetPrices()
-      this.isFieldFromActive = false
-      this.isFieldToActive = false
+      this.resetTokenFields()
     }
     await this.updateAccountAssets()
+  }
+
+  private resetTokenFields (): void {
+    this.resetFieldFrom()
+    this.resetFieldTo()
+    this.setTokenFromPrice(true)
+    this.resetPrices()
+
+    this.isFieldFromActive = false
+    this.isFieldToActive = false
   }
 }
 </script>
