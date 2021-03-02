@@ -258,6 +258,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   async handleInputFieldFrom (value): Promise<any> {
+    if (value === this.fromValue) return
+
     this.setFromValue(value)
 
     if (!this.isFieldToActive) {
@@ -267,11 +269,12 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       } else {
         try {
           const swapResult = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.fromValue)
+          console.log(swapResult.amount)
           this.setToValue(swapResult.amount)
           this.setLiquidityProviderFee(swapResult.fee)
           const minMaxReceived = await api.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
           this.setMinMaxReceived({ minMaxReceived })
-          this.updatePrices()
+          await this.updatePrices()
           this.resetInsufficientAmountFlag()
           if (this.connected) {
             await this.getNetworkFee()
@@ -290,6 +293,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   async handleInputFieldTo (value): Promise<any> {
+    if (value === this.toValue) return
+
     this.setToValue(value)
 
     if (!this.isFieldFromActive) {
@@ -301,11 +306,12 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
           // Always use getSwapResult and minMaxReceived with reversed flag for Token B
           const isExchangeBSwap = true
           const swapResult = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.toValue, isExchangeBSwap)
+          console.log(swapResult.amount)
           this.setFromValue(swapResult.amount)
           this.setLiquidityProviderFee(swapResult.fee)
           const minMaxReceived = await api.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance, isExchangeBSwap)
           this.setMinMaxReceived({ minMaxReceived, isExchangeB: isExchangeBSwap })
-          this.updatePrices()
+          await this.updatePrices()
           this.resetInsufficientAmountFlag()
           if (this.connected) {
             await this.getNetworkFee()
@@ -331,9 +337,9 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     }
   }
 
-  updatePrices (): void {
+  async updatePrices (): Promise<void> {
     if (this.tokenFrom && this.tokenTo) {
-      this.getPrices({
+      await this.getPrices({
         assetAAddress: this.tokenFrom.address,
         assetBAddress: this.tokenTo.address,
         amountA: this.fromValue,
@@ -372,12 +378,19 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     await this.recountSwapValues()
   }
 
-  handleSwitchTokens (): void {
+  async handleSwitchTokens (): Promise<void> {
     const [fromSymbol, toSymbol] = [this.tokenFrom.symbol, this.tokenTo.symbol]
 
-    this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: toSymbol })
-    this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: fromSymbol })
-    this.resetTokenFields()
+    await this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: toSymbol })
+    await this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: fromSymbol })
+
+    if (this.isFieldFromActive) {
+      this.isFieldFromActive = false
+      await this.handleInputFieldTo(this.fromValue)
+    } else {
+      this.isFieldToActive = false
+      await this.handleInputFieldFrom(this.toValue)
+    }
   }
 
   async handleMaxValue (): Promise<void> {
