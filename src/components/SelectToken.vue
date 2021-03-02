@@ -4,14 +4,17 @@
     :title="t('selectToken.title')"
     custom-class="token-select"
   >
-    <s-input
-      v-model="query"
-      :placeholder="t('selectToken.searchPlaceholder')"
-      class="token-search"
-      prefix="el-icon-search"
-      size="medium"
-      border-radius="mini"
-    />
+    <s-form-item class="el-form-item--search">
+      <s-input
+        v-model="query"
+        :placeholder="t('selectToken.searchPlaceholder')"
+        class="token-search"
+        prefix="el-icon-search"
+        size="medium"
+        border-radius="mini"
+      />
+      <s-button class="s-button--clear" icon="circle-x" @click="handleClearSearch" />
+    </s-form-item>
     <div v-if="filteredTokens && filteredTokens.length > 0" class="token-list">
       <div v-for="token in filteredTokens" @click="selectToken(token)" :key="token.symbol" class="token-item">
         <s-col>
@@ -132,11 +135,17 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
     }
     return tokenSymbol
   }
+
+  handleClearSearch (): void {
+    this.query = ''
+  }
 }
 </script>
 
 <style lang="scss">
 .token-select {
+  @include search-item-unscoped;
+
   .el-dialog {
     overflow: hidden;
     &__body {
@@ -147,6 +156,8 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
 </style>
 
 <style lang="scss" scoped>
+@include search-item;
+
 $token-item-height: 71px;
 
 .token-search {
