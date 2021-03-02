@@ -147,7 +147,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
 
   @Watch('slippageTolerance')
   private handleSlippageToleranceChange (): void {
-    this.recountSwapValues()
+    this.calcMinMaxRecieved()
   }
 
   isTokenFromBalanceAvailable = false
@@ -258,7 +258,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   async handleInputFieldFrom (value): Promise<any> {
-    if (value === this.fromValue) return
+    // if (value === this.fromValue) return
 
     this.setFromValue(value)
 
@@ -272,8 +272,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
           console.log(swapResult.amount)
           this.setToValue(swapResult.amount)
           this.setLiquidityProviderFee(swapResult.fee)
-          const minMaxReceived = await api.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance)
-          this.setMinMaxReceived({ minMaxReceived })
+          await this.calcMinMaxRecieved()
           await this.updatePrices()
           this.resetInsufficientAmountFlag()
           if (this.connected) {
@@ -293,7 +292,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   async handleInputFieldTo (value): Promise<any> {
-    if (value === this.toValue) return
+    // if (value === this.toValue) return
 
     this.setToValue(value)
 
@@ -309,8 +308,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
           console.log(swapResult.amount)
           this.setFromValue(swapResult.amount)
           this.setLiquidityProviderFee(swapResult.fee)
-          const minMaxReceived = await api.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, swapResult.amount, this.slippageTolerance, isExchangeBSwap)
-          this.setMinMaxReceived({ minMaxReceived, isExchangeB: isExchangeBSwap })
+          await this.calcMinMaxRecieved(isExchangeBSwap)
           await this.updatePrices()
           this.resetInsufficientAmountFlag()
           if (this.connected) {
@@ -327,6 +325,13 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
         }
       }
     }
+  }
+
+  async calcMinMaxRecieved (isExchangeB = false): Promise<void> {
+    const amount = isExchangeB ? this.fromValue : this.toValue
+    const minMaxReceived = await api.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, amount, this.slippageTolerance, isExchangeB)
+
+    this.setMinMaxReceived({ minMaxReceived, isExchangeB })
   }
 
   async recountSwapValues (): Promise<void> {
@@ -365,6 +370,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     if (this.isZeroFromAmount) {
       this.resetFieldFrom()
     }
+
     await this.recountSwapValues()
   }
 
@@ -375,6 +381,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     if (this.isZeroToAmount) {
       this.resetFieldTo()
     }
+
     await this.recountSwapValues()
   }
 
