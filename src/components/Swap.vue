@@ -40,7 +40,7 @@
         </s-button>
       </div>
     </div>
-    <s-button class="el-button--switch-tokens" type="action" icon="change-positions" :disabled="!areTokensSelected" @click="handleSwitchTokens" />
+    <s-button class="el-button--switch-tokens" type="action" icon="change-positions" :disabled="!areTokensSelected || switchDisabled" @click="handleSwitchTokens" />
     <div class="input-container">
       <div class="input-line">
         <div class="input-title">
@@ -159,6 +159,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   isTokenFromSelected = false
   showSelectTokenDialog = false
   showConfirmSwapDialog = false
+  switchDisabled = false
 
   get connected (): boolean {
     return isWalletConnected()
@@ -257,66 +258,64 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   async handleInputFieldFrom (value): Promise<any> {
+    console.log('handleInputFieldFrom', value)
     if (value !== this.fromValue) {
       this.setFromValue(value)
     }
 
     if (this.isExchangeB) return
 
-    this.setExchangeB(false)
-
     if (!this.areTokensSelected || this.isZeroFromAmount) {
       this.resetFieldTo()
-    } else {
-      try {
-        await this.calcSwapValue()
-      } catch (error) {
-        this.resetFieldTo()
-        if (!this.isInsufficientAmountError(this.tokenFrom.symbol, error.message)) {
-          throw error
-        }
-      }
     }
+
+    await this.recountSwapValues()
   }
 
   async handleInputFieldTo (value): Promise<any> {
+    console.log('handleInputFieldTo', value, this.toValue)
     if (value !== this.toValue) {
       this.setToValue(value)
     }
 
-    if (!this.isExchangeB) return
+    console.log('handleInputFieldTo', this.toValue)
 
-    this.setExchangeB(true)
+    if (!this.isExchangeB) return
 
     if (!this.areTokensSelected || this.isZeroToAmount) {
       this.resetFieldFrom()
-    } else {
-      try {
-        await this.calcSwapValue()
-      } catch (error) {
-        this.resetFieldFrom()
-        if (!this.isInsufficientAmountError(this.tokenTo.symbol, error.message)) {
-          throw error
-        }
-      }
     }
+
+    await this.recountSwapValues()
   }
 
-  private async calcSwapValue (): Promise<void> {
+  private async recountSwapValues (): Promise<void> {
     const value = this.isExchangeB ? this.toValue : this.fromValue
     const setOppositeValue = this.isExchangeB ? this.setFromValue : this.setToValue
+    const resetOppositeValue = this.isExchangeB ? this.resetFieldFrom : this.resetFieldTo
+    const token = this.isExchangeB ? this.tokenTo : this.tokenFrom
 
-    const { amount, fee } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, this.isExchangeB)
-    setOppositeValue(amount)
+    if (!this.areTokensSelected || +value === 0) return
 
-    this.setLiquidityProviderFee(fee)
-    await this.calcMinMaxRecieved()
-    await this.updatePrices()
-    this.resetInsufficientAmountFlag()
-    if (this.connected) {
-      await this.getNetworkFee()
-      if (this.tokenFrom.symbol !== KnownSymbols.XOR) {
-        await this.getTokenXOR()
+    try {
+      const { amount, fee } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, this.isExchangeB)
+      console.log('recountSwapValues', value, amount)
+      setOppositeValue(amount)
+
+      this.setLiquidityProviderFee(fee)
+      await this.calcMinMaxRecieved()
+      await this.updatePrices()
+      this.resetInsufficientAmountFlag()
+      if (this.connected) {
+        await this.getNetworkFee()
+        if (this.tokenFrom.symbol !== KnownSymbols.XOR) {
+          await this.getTokenXOR()
+        }
+      }
+    } catch (error) {
+      resetOppositeValue()
+      if (!this.isInsufficientAmountError(token.symbol, error.message)) {
+        throw error
       }
     }
   }
@@ -326,14 +325,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     const minMaxReceived = await api.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, amount, this.slippageTolerance, this.isExchangeB)
 
     this.setMinMaxReceived(minMaxReceived)
-  }
-
-  async recountSwapValues (): Promise<void> {
-    if (this.isExchangeB) {
-      await this.handleInputFieldTo(this.toValue)
-    } else {
-      await this.handleInputFieldFrom(this.fromValue)
-    }
   }
 
   private async updatePrices (): Promise<void> {
@@ -380,6 +371,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   async handleSwitchTokens (): Promise<void> {
     const [fromSymbol, toSymbol] = [this.tokenFrom.symbol, this.tokenTo.symbol]
 
+    this.switchDisabled = true
+
     await this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: toSymbol })
     await this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: fromSymbol })
 
@@ -390,6 +383,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       this.setExchangeB(true)
       await this.handleInputFieldTo(this.fromValue)
     }
+
+    this.switchDisabled = false
   }
 
   async handleMaxValue (): Promise<void> {
