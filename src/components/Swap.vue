@@ -140,6 +140,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   @Action setToValue
   @Action setTokenFromPrice
   @Action setMinMaxReceived
+  @Action setExchangeB
   @Action setLiquidityProviderFee
   @Action setNetworkFee
   @Action('getPrices', { namespace: 'prices' }) getPrices
@@ -265,30 +266,19 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       this.setFromValue(value)
     }
 
-    if (!this.activeField.to) {
-      this.setActiveFields({ from: true })
-      if (!this.areTokensSelected || this.isZeroFromAmount) {
+    if (this.activeField.to) return
+
+    this.setActiveFields({ from: true })
+
+    if (!this.areTokensSelected || this.isZeroFromAmount) {
+      this.resetFieldTo()
+    } else {
+      try {
+        await this.calcSwapValue()
+      } catch (error) {
         this.resetFieldTo()
-      } else {
-        try {
-          const swapResult = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.fromValue)
-          console.log(swapResult.amount)
-          this.setToValue(swapResult.amount)
-          this.setLiquidityProviderFee(swapResult.fee)
-          await this.calcMinMaxRecieved()
-          await this.updatePrices()
-          this.resetInsufficientAmountFlag()
-          if (this.connected) {
-            await this.getNetworkFee()
-            if (this.tokenFrom.symbol !== KnownSymbols.XOR) {
-              await this.getTokenXOR()
-            }
-          }
-        } catch (error) {
-          this.resetFieldTo()
-          if (!this.isInsufficientAmountError(this.tokenFrom.symbol, error.message)) {
-            throw error
-          }
+        if (!this.isInsufficientAmountError(this.tokenFrom.symbol, error.message)) {
+          throw error
         }
       }
     }
@@ -299,43 +289,50 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       this.setToValue(value)
     }
 
-    if (!this.activeField.from) {
-      this.setActiveFields({ to: true })
-      if (!this.areTokensSelected || this.isZeroToAmount) {
+    if (this.activeField.from) return
+
+    this.setActiveFields({ to: true })
+
+    if (!this.areTokensSelected || this.isZeroToAmount) {
+      this.resetFieldFrom()
+    } else {
+      try {
+        await this.calcSwapValue()
+      } catch (error) {
         this.resetFieldFrom()
-      } else {
-        try {
-          // Always use getSwapResult and minMaxReceived with reversed flag for Token B
-          const isExchangeBSwap = true
-          const swapResult = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, this.toValue, isExchangeBSwap)
-          console.log(swapResult.amount)
-          this.setFromValue(swapResult.amount)
-          this.setLiquidityProviderFee(swapResult.fee)
-          await this.calcMinMaxRecieved()
-          await this.updatePrices()
-          this.resetInsufficientAmountFlag()
-          if (this.connected) {
-            await this.getNetworkFee()
-            if (this.tokenFrom.symbol !== KnownSymbols.XOR) {
-              await this.getTokenXOR()
-            }
-          }
-        } catch (error) {
-          this.resetFieldFrom()
-          if (!this.isInsufficientAmountError(this.tokenTo.symbol, error.message)) {
-            throw error
-          }
+        if (!this.isInsufficientAmountError(this.tokenTo.symbol, error.message)) {
+          throw error
         }
       }
     }
   }
 
-  async calcMinMaxRecieved (): Promise<void> {
+  private async calcSwapValue (): Promise<void> {
+    const isExchangeB = this.activeField.to
+    const value = isExchangeB ? this.toValue : this.fromValue
+    const setOppositeValue = isExchangeB ? this.setFromValue : this.setToValue
+
+    const { amount, fee } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, isExchangeB)
+    setOppositeValue(amount)
+
+    this.setLiquidityProviderFee(fee)
+    await this.calcMinMaxRecieved()
+    await this.updatePrices()
+    this.resetInsufficientAmountFlag()
+    if (this.connected) {
+      await this.getNetworkFee()
+      if (this.tokenFrom.symbol !== KnownSymbols.XOR) {
+        await this.getTokenXOR()
+      }
+    }
+  }
+
+  private async calcMinMaxRecieved (): Promise<void> {
     const isExchangeB = this.activeField.to
     const amount = isExchangeB ? this.fromValue : this.toValue
     const minMaxReceived = await api.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, amount, this.slippageTolerance, isExchangeB)
 
-    this.setMinMaxReceived({ minMaxReceived, isExchangeB })
+    this.setMinMaxReceived(minMaxReceived)
   }
 
   async recountSwapValues (): Promise<void> {
@@ -346,8 +343,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     }
   }
 
-  async updatePrices (): Promise<void> {
-    if (this.tokenFrom && this.tokenTo) {
+  private async updatePrices (): Promise<void> {
+    if (this.areTokensSelected) {
       await this.getPrices({
         assetAAddress: this.tokenFrom.address,
         assetBAddress: this.tokenTo.address,
@@ -368,6 +365,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   async handleFocusFieldFrom (): Promise<void> {
+    this.setExchangeB(false)
     this.setActiveFields({ from: true })
 
     if (this.isZeroFromAmount) {
@@ -378,6 +376,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   async handleFocusFieldTo (): Promise<void> {
+    this.setExchangeB(true)
     this.setActiveFields({ to: true })
 
     if (this.isZeroToAmount) {
