@@ -236,6 +236,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       if (this.tokenTo !== null && this.tokenTo !== undefined) {
         this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: this.tokenTo.symbol })
         this.isTokenToBalanceAvailable = true
+        this.getNetworkFee()
       }
     })
   }
@@ -253,8 +254,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   async getNetworkFee (): Promise<void> {
-    const networkFee = await api.getSwapNetworkFee(this.tokenFrom?.address, this.tokenTo?.address, this.fromValue, this.toValue, this.slippageTolerance, this.isExchangeB)
-    this.setNetworkFee(networkFee)
+    if (this.connected) {
+      const networkFee = await api.getSwapNetworkFee(this.tokenFrom?.address, this.tokenTo?.address, this.fromValue, this.toValue, this.slippageTolerance, this.isExchangeB)
+      this.setNetworkFee(networkFee)
+    }
   }
 
   async handleInputFieldFrom (value): Promise<any> {
@@ -289,19 +292,21 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
 
     try {
       this.isRecountingProcess = true
+      this.resetInsufficientAmountFlag()
 
       const { amount, fee } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, this.isExchangeB)
-      setOppositeValue(amount)
 
+      setOppositeValue(amount)
       this.setLiquidityProviderFee(fee)
-      await this.calcMinMaxRecieved()
-      await this.updatePrices()
-      this.resetInsufficientAmountFlag()
-      if (this.connected) {
-        await this.getNetworkFee()
-        if (this.tokenFrom.symbol !== KnownSymbols.XOR) {
-          await this.getTokenXOR()
-        }
+
+      await Promise.all([
+        this.calcMinMaxRecieved(),
+        this.updatePrices(),
+        this.getNetworkFee()
+      ])
+
+      if (this.connected && (this.tokenFrom.symbol !== KnownSymbols.XOR)) {
+        await this.getTokenXOR()
       }
     } catch (error) {
       resetOppositeValue()
@@ -406,7 +411,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
         await this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
         this.isTokenToBalanceAvailable = true
       }
-      await this.getNetworkFee()
       await this.recountSwapValues()
     }
   }
