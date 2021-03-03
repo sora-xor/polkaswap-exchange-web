@@ -4,7 +4,7 @@
     :title="t('selectToken.title')"
     custom-class="token-select"
   >
-    <div class="el-form-item--search">
+    <div class="token-select__search">
       <s-input
         v-model="query"
         :placeholder="t('selectToken.searchPlaceholder')"
@@ -144,7 +144,7 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
 
 <style lang="scss">
 .token-select {
-  @include search-item-unscoped;
+  @include search-item-unscoped('token-select__search');
 
   .el-dialog {
     overflow: hidden;
@@ -156,7 +156,7 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
 </style>
 
 <style lang="scss" scoped>
-@include search-item;
+@include search-item('token-select__search');
 
 $token-item-height: 71px;
 
