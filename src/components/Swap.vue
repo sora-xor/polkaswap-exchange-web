@@ -40,7 +40,7 @@
         </s-button>
       </div>
     </div>
-    <s-button class="el-button--switch-tokens" type="action" icon="change-positions" :disabled="!areTokensSelected || switchDisabled" @click="handleSwitchTokens" />
+    <s-button class="el-button--switch-tokens" type="action" icon="change-positions" :disabled="!areTokensSelected || isRecountingProcess" @click="handleSwitchTokens" />
     <div class="input-container">
       <div class="input-line">
         <div class="input-title">
@@ -159,7 +159,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   isTokenFromSelected = false
   showSelectTokenDialog = false
   showConfirmSwapDialog = false
-  switchDisabled = false
+  isRecountingProcess = false
 
   get connected (): boolean {
     return isWalletConnected()
@@ -170,11 +170,11 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   get isZeroFromAmount (): boolean {
-    return +this.fromValue === 0
+    return this.isZeroValue(this.fromValue)
   }
 
   get isZeroToAmount (): boolean {
-    return +this.toValue === 0
+    return this.isZeroValue(this.toValue)
   }
 
   get areZeroAmounts (): boolean {
@@ -258,35 +258,25 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   async handleInputFieldFrom (value): Promise<any> {
-    console.log('handleInputFieldFrom', value)
-    if (value !== this.fromValue) {
-      this.setFromValue(value)
-    }
-
-    if (this.isExchangeB) return
-
-    if (!this.areTokensSelected || this.isZeroFromAmount) {
+    if (!this.areTokensSelected || this.isZeroValue(value)) {
       this.resetFieldTo()
     }
 
-    await this.recountSwapValues()
+    if (value !== this.fromValue) {
+      this.setFromValue(value)
+      await this.recountSwapValues()
+    }
   }
 
   async handleInputFieldTo (value): Promise<any> {
-    console.log('handleInputFieldTo', value, this.toValue)
-    if (value !== this.toValue) {
-      this.setToValue(value)
-    }
-
-    console.log('handleInputFieldTo', this.toValue)
-
-    if (!this.isExchangeB) return
-
-    if (!this.areTokensSelected || this.isZeroToAmount) {
+    if (!this.areTokensSelected || this.isZeroValue(value)) {
       this.resetFieldFrom()
     }
 
-    await this.recountSwapValues()
+    if (value !== this.toValue) {
+      this.setToValue(value)
+      await this.recountSwapValues()
+    }
   }
 
   private async recountSwapValues (): Promise<void> {
@@ -295,11 +285,12 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     const resetOppositeValue = this.isExchangeB ? this.resetFieldFrom : this.resetFieldTo
     const token = this.isExchangeB ? this.tokenTo : this.tokenFrom
 
-    if (!this.areTokensSelected || +value === 0) return
+    if (!this.areTokensSelected || this.isZeroValue(value)) return
 
     try {
+      this.isRecountingProcess = true
+
       const { amount, fee } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, this.isExchangeB)
-      console.log('recountSwapValues', value, amount)
       setOppositeValue(amount)
 
       this.setLiquidityProviderFee(fee)
@@ -317,6 +308,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       if (!this.isInsufficientAmountError(token.symbol, error.message)) {
         throw error
       }
+    } finally {
+      this.isRecountingProcess = false
     }
   }
 
@@ -371,8 +364,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   async handleSwitchTokens (): Promise<void> {
     const [fromSymbol, toSymbol] = [this.tokenFrom.symbol, this.tokenTo.symbol]
 
-    this.switchDisabled = true
-
     await this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: toSymbol })
     await this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: fromSymbol })
 
@@ -383,8 +374,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       this.setExchangeB(true)
       await this.handleInputFieldTo(this.fromValue)
     }
-
-    this.switchDisabled = false
   }
 
   async handleMaxValue (): Promise<void> {
@@ -444,6 +433,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       this.setExchangeB(false)
     }
     await this.updateAccountAssets()
+  }
+
+  private isZeroValue (value: string): boolean {
+    return +value === 0
   }
 }
 </script>
