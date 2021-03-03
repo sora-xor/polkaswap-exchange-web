@@ -7,7 +7,7 @@
       <div class="input-line">
         <div class="input-title">
           <span>{{ t('exchange.from') }}</span>
-          <span :class="`input-title-estimated ${(areTokensSelected && !isZeroToAmount && !activeField.from) ? 'input-title-estimated--show' : ''}`">
+          <span :class="`input-title-estimated ${(areTokensSelected && !isZeroToAmount && isExchangeB) ? 'input-title-estimated--show' : ''}`">
             ({{ t('swap.estimated') }})
           </span>
         </div>
@@ -45,7 +45,7 @@
       <div class="input-line">
         <div class="input-title">
           <span>{{ t('exchange.to') }}</span>
-          <span :class="`input-title-estimated ${(areTokensSelected && !isZeroFromAmount && !activeField.to) ? 'input-title-estimated--show' : ''}`">
+          <span :class="`input-title-estimated ${(areTokensSelected && !isZeroFromAmount && !isExchangeB) ? 'input-title-estimated--show' : ''}`">
             ({{ t('swap.estimated') }})
           </span>
         </div>
@@ -156,11 +156,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   isInsufficientAmount = false
   insufficientBalanceTokenSymbol = ''
   insufficientAmountTokenSymbol = ''
-  activeField = {
-    from: false,
-    to: false
-  }
-
   isTokenFromSelected = false
   showSelectTokenDialog = false
   showConfirmSwapDialog = false
@@ -266,9 +261,9 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       this.setFromValue(value)
     }
 
-    if (this.activeField.to) return
+    if (this.isExchangeB) return
 
-    this.setActiveFields({ from: true })
+    this.setExchangeB(false)
 
     if (!this.areTokensSelected || this.isZeroFromAmount) {
       this.resetFieldTo()
@@ -289,9 +284,9 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       this.setToValue(value)
     }
 
-    if (this.activeField.from) return
+    if (!this.isExchangeB) return
 
-    this.setActiveFields({ to: true })
+    this.setExchangeB(true)
 
     if (!this.areTokensSelected || this.isZeroToAmount) {
       this.resetFieldFrom()
@@ -308,11 +303,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   private async calcSwapValue (): Promise<void> {
-    const isExchangeB = this.activeField.to
-    const value = isExchangeB ? this.toValue : this.fromValue
-    const setOppositeValue = isExchangeB ? this.setFromValue : this.setToValue
+    const value = this.isExchangeB ? this.toValue : this.fromValue
+    const setOppositeValue = this.isExchangeB ? this.setFromValue : this.setToValue
 
-    const { amount, fee } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, isExchangeB)
+    const { amount, fee } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, this.isExchangeB)
     setOppositeValue(amount)
 
     this.setLiquidityProviderFee(fee)
@@ -328,18 +322,17 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   }
 
   private async calcMinMaxRecieved (): Promise<void> {
-    const isExchangeB = this.activeField.to
-    const amount = isExchangeB ? this.fromValue : this.toValue
-    const minMaxReceived = await api.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, amount, this.slippageTolerance, isExchangeB)
+    const amount = this.isExchangeB ? this.fromValue : this.toValue
+    const minMaxReceived = await api.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, amount, this.slippageTolerance, this.isExchangeB)
 
     this.setMinMaxReceived(minMaxReceived)
   }
 
   async recountSwapValues (): Promise<void> {
-    if (this.activeField.from) {
-      await this.handleInputFieldFrom(this.fromValue)
-    } else {
+    if (this.isExchangeB) {
       await this.handleInputFieldTo(this.toValue)
+    } else {
+      await this.handleInputFieldFrom(this.fromValue)
     }
   }
 
@@ -366,7 +359,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
 
   async handleFocusFieldFrom (): Promise<void> {
     this.setExchangeB(false)
-    this.setActiveFields({ from: true })
 
     if (this.isZeroFromAmount) {
       this.resetFieldFrom()
@@ -377,7 +369,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
 
   async handleFocusFieldTo (): Promise<void> {
     this.setExchangeB(true)
-    this.setActiveFields({ to: true })
 
     if (this.isZeroToAmount) {
       this.resetFieldTo()
@@ -392,17 +383,17 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     await this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: toSymbol })
     await this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: fromSymbol })
 
-    if (this.activeField.from) {
-      this.setActiveFields({ to: true })
-      await this.handleInputFieldTo(this.fromValue)
-    } else {
-      this.setActiveFields({ from: true })
+    if (this.isExchangeB) {
+      this.setExchangeB(false)
       await this.handleInputFieldFrom(this.toValue)
+    } else {
+      this.setExchangeB(true)
+      await this.handleInputFieldTo(this.fromValue)
     }
   }
 
   async handleMaxValue (): Promise<void> {
-    this.setActiveFields({ from: true })
+    this.setExchangeB(false)
 
     await this.getNetworkFee()
 
@@ -455,13 +446,9 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       this.resetFieldTo()
       this.setTokenFromPrice(true)
       this.resetPrices()
-      this.setActiveFields()
+      this.setExchangeB(false)
     }
     await this.updateAccountAssets()
-  }
-
-  private setActiveFields ({ from = false, to = false } = {}): void {
-    this.activeField = { ...this.activeField, from, to }
   }
 }
 </script>
