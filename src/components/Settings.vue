@@ -131,7 +131,7 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
   }
 
   handleSlippageToleranceOnBlur (): void {
-    const value = this.isErrorValue ? 0 : +this.slippageTolerance
+    const value = this.isErrorValue ? +this.defaultSlippageTolerance : +this.slippageTolerance
     this.setSlippageTolerance(value)
   }
 
@@ -154,6 +154,9 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
     height: var(--s-size-small);
     text-align: center;
     padding-top: 0; // TODO: if there is no placeholder, set padding-top to zero
+  }
+  &.s-focused > .el-input > input {
+    box-shadow: var(--s-shadow-tab)
   }
 }
 .settings {
