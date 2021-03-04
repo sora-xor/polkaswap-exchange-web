@@ -29,8 +29,7 @@
           <s-float-input
             class="slippage-tolerance-custom_input"
             size="small"
-            :value="String(slippageTolerance)"
-            @input="setSlippageTolerance"
+            v-model="customSlippageTolerance"
             @blur="handleSlippageToleranceOnBlur"
           />
         </div>
@@ -97,6 +96,15 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
   @Getter nodeAddress!: { ip: string; port: number }
   @Action setSlippageTolerance!: any
   @Action setTransactionDeadline!: any
+
+  get customSlippageTolerance (): string {
+    return `${this.slippageTolerance}%`
+  }
+
+  set customSlippageTolerance (value: string) {
+    const prepared = value.replace('%', '')
+    this.setSlippageTolerance(prepared)
+  }
 
   get slippageToleranceClasses (): string {
     const defaultClass = 'slippage-tolerance'
