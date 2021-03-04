@@ -214,9 +214,11 @@ const actions = {
   setTokenFromPrice ({ commit }, isTokenFromPrice: boolean) {
     commit(types.GET_TOKEN_FROM_PRICE, isTokenFromPrice)
   },
-  setMinMaxReceived ({ commit }, payload) {
-    commit(types.GET_MIN_MAX_RECEIVED, payload.minMaxReceived)
-    commit(types.GET_EXCHANGE_B, !!payload.isExchangeB)
+  setMinMaxReceived ({ commit }, minMaxReceived) {
+    commit(types.GET_MIN_MAX_RECEIVED, minMaxReceived)
+  },
+  setExchangeB ({ commit }, flag: boolean) {
+    commit(types.GET_EXCHANGE_B, flag)
   },
   setLiquidityProviderFee ({ commit }, liquidityProviderFee: string) {
     commit(types.GET_LIQUIDITY_PROVIDER_FEE, liquidityProviderFee)
