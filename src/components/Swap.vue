@@ -23,7 +23,7 @@
             :decimals="tokenFrom && tokenFrom.decimals"
             :value="fromValue"
             @input="handleInputFieldFrom"
-            @focus="handleFocusFieldFrom"
+            @focus="handleFocusField(false)"
           />
         </s-form-item>
         <div v-if="tokenFrom" class="token">
@@ -61,7 +61,7 @@
             :value="toValue"
             :decimals="tokenTo && tokenTo.decimals"
             @input="handleInputFieldTo"
-            @focus="handleFocusFieldTo"
+            @focus="handleFocusField(true)"
           />
         </s-form-item>
         <div v-if="tokenTo" class="token">
@@ -299,11 +299,9 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
       setOppositeValue(amount)
       this.setLiquidityProviderFee(fee)
 
-      await Promise.all([
-        this.calcMinMaxRecieved(),
-        this.updatePrices(),
-        this.getNetworkFee()
-      ])
+      await this.calcMinMaxRecieved()
+      await this.updatePrices()
+      await this.getNetworkFee()
 
       if (this.connected && (this.tokenFrom.symbol !== KnownSymbols.XOR)) {
         await this.getTokenXOR()
@@ -346,20 +344,13 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
     return this.isInsufficientAmount
   }
 
-  async handleFocusFieldFrom (): Promise<void> {
-    this.setExchangeB(false)
+  async handleFocusField (isExchangeB = false): Promise<void> {
+    const isZeroValue = isExchangeB ? this.isZeroToAmount : this.isZeroFromAmount
 
-    if (this.isZeroFromAmount) {
+    this.setExchangeB(isExchangeB)
+
+    if (isZeroValue) {
       this.resetFieldFrom()
-    }
-
-    await this.recountSwapValues()
-  }
-
-  async handleFocusFieldTo (): Promise<void> {
-    this.setExchangeB(true)
-
-    if (this.isZeroToAmount) {
       this.resetFieldTo()
     }
 
