@@ -25,7 +25,7 @@
             </div>
           </s-row>
         </s-col>
-        <div>
+        <div v-if="connected">
           <span class="token-item__amount">{{ token.balance || '-' }}</span>
         </div>
       </div>
@@ -60,6 +60,7 @@ const namespace = 'assets'
 export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, LoadingMixin) {
   query = ''
 
+  @Prop({ default: () => false, type: Boolean }) readonly connected!: boolean
   @Prop({ default: () => null, type: Object }) readonly asset!: Asset
   @Prop({ default: () => false, type: Boolean }) readonly accountAssetsOnly!: boolean
   @Prop({ default: () => false, type: Boolean }) readonly notNullBalanceOnly!: boolean
