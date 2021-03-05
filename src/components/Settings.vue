@@ -29,8 +29,7 @@
           <s-float-input
             class="slippage-tolerance-custom_input"
             size="small"
-            :value="String(slippageTolerance)"
-            @input="setSlippageTolerance"
+            v-model="customSlippageTolerance"
             @blur="handleSlippageToleranceOnBlur"
           />
         </div>
@@ -98,6 +97,15 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
   @Action setSlippageTolerance!: any
   @Action setTransactionDeadline!: any
 
+  get customSlippageTolerance (): string {
+    return `${this.slippageTolerance}%`
+  }
+
+  set customSlippageTolerance (value: string) {
+    const prepared = value.replace('%', '')
+    this.setSlippageTolerance(prepared)
+  }
+
   get slippageToleranceClasses (): string {
     const defaultClass = 'slippage-tolerance'
     const classes = [defaultClass, 's-flex']
@@ -131,7 +139,7 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
   }
 
   handleSlippageToleranceOnBlur (): void {
-    const value = this.isErrorValue ? 0 : +this.slippageTolerance
+    const value = this.isErrorValue ? +this.defaultSlippageTolerance : +this.slippageTolerance
     this.setSlippageTolerance(value)
   }
 
@@ -154,6 +162,9 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
     height: var(--s-size-small);
     text-align: center;
     padding-top: 0; // TODO: if there is no placeholder, set padding-top to zero
+  }
+  &.s-focused > .el-input > input {
+    box-shadow: var(--s-shadow-tab)
   }
 }
 .settings {
