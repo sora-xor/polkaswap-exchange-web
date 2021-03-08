@@ -197,8 +197,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
     InfoCard: lazyComponent(Components.InfoCard),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
-    ResultDialog: lazyComponent(Components.ResultDialog)
+    ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog)
   }
 })
 

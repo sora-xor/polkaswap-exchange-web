@@ -7,8 +7,9 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { AccountAsset, Asset } from '@sora-substrate/util'
+
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import { Token } from '@/types'
 import { LogoSize, Components } from '@/consts'
 import { lazyComponent } from '@/router'
 
@@ -19,8 +20,8 @@ import { lazyComponent } from '@/router'
 })
 export default class PairTokenLogo extends Mixins(TranslationMixin) {
   // TODO 4 alexnatalia: Think one more time about tokenSymbol
-  @Prop({ type: Object, default: () => null }) readonly firstToken!: Token
-  @Prop({ type: Object, default: () => null }) readonly secondToken!: Token
+  @Prop({ type: Object, default: () => null }) readonly firstToken!: AccountAsset | Asset
+  @Prop({ type: Object, default: () => null }) readonly secondToken!: AccountAsset | Asset
   @Prop({ type: String, default: '' }) readonly firstTokenSymbol!: string
   @Prop({ type: String, default: '' }) readonly secondTokenSymbol!: string
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize

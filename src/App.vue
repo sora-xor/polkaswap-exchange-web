@@ -28,7 +28,7 @@
         </div>
         <s-button v-else class="wallet" type="action" icon="wallet" rounded :disabled="loading" @click="goTo(PageNames.Wallet)" />
         <s-button type="action" icon="settings" rounded @click="openSettingsDialog" />
-        <!-- TODO: The button is hidden because we don't have a Search page right now -->
+        <!-- TODO: [Release 2] The button is hidden because we don't have a Search page right now -->
         <!-- <s-button type="action" icon="search" rounded /> -->
       </div>
     </header>
