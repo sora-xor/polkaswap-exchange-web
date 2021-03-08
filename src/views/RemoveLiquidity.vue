@@ -301,6 +301,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     const newValue = parseFloat(value) || 0
     this.removePartInput = newValue > 100 ? 100 : newValue < 0 ? 0 : newValue
     this.setRemovePart(this.removePartInput)
+    this.updatePrices()
   }
 
   focusSliderInput (): void {
@@ -324,6 +325,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   handleLiquidityMaxValue (): void {
     this.setRemovePart(100)
     this.handleRemovePartChange(100)
+    this.updatePrices()
   }
 
   updatePrices (): void {

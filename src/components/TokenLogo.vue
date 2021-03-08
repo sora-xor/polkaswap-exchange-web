@@ -11,19 +11,18 @@ import { LogoSize } from '@/consts'
 
 @Component
 export default class TokenLogo extends Mixins(TranslationMixin) {
-  @Prop({ type: Object, default: () => null }) readonly token!: AccountAsset | Asset
+  @Prop({ type: Object, default: () => null }) readonly token!: AccountAsset | Asset | any
   @Prop({ type: String, default: '' }) readonly tokenSymbol!: string
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
 
   get tokenClasses (): string {
     const tokenLogoClass = 'token-logo'
     const classes = [tokenLogoClass]
-    const { symbol } = this.token
 
     if (this.tokenSymbol) {
       classes.push(`${tokenLogoClass}--${(this.tokenSymbol).toLowerCase()}`)
-    } else if (this.token && !!KnownSymbols[`${symbol}`]) {
-      classes.push(`${tokenLogoClass}--${(`${symbol}`).toLowerCase()}`)
+    } else if (this.token && !!KnownSymbols[this.token.symbol]) {
+      classes.push(`${tokenLogoClass}--${(this.token.symbol).toLowerCase()}`)
     }
 
     classes.push(`${tokenLogoClass}--${this.size.toLowerCase()}`)

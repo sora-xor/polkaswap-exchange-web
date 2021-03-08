@@ -21,14 +21,14 @@
           <token-logo :token="firstToken" size="small" />
           <span class="token-symbol">{{ firstToken.symbol }} {{ t('createPair.deposit')}}</span>
         </s-row>
-        <div class="token-value">{{ firstTokenValue }}</div>
+        <div class="token-value">{{ formattedFirstTokenValue }}</div>
       </s-row>
       <s-row flex justify="space-between" class="token">
         <s-row v-if="secondToken" flex>
           <token-logo :token="secondToken" size="small" />
           <span class="token-symbol">{{ secondToken.symbol }} {{ t('createPair.deposit')}}</span>
         </s-row>
-        <div class="token-value">{{ secondTokenValue }}</div>
+        <div class="token-value">{{ formattedSecondTokenValue }}</div>
       </s-row>
     </div>
     <div class="pair-info">
@@ -62,6 +62,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -73,7 +74,7 @@ import { Components } from '@/consts'
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
-export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, DialogMixin, LoadingMixin) {
+export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, DialogMixin, LoadingMixin, NumberFormatterMixin) {
   @Prop({ type: String, default: '100' }) readonly shareOfPool!: string
   @Prop({ type: Object }) readonly firstToken!: any
   @Prop({ type: Object }) readonly secondToken!: any
@@ -83,6 +84,14 @@ export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, Dia
   @Prop({ type: String }) readonly price!: string
   @Prop({ type: String }) readonly priceReversed!: string
   @Prop({ type: [String, Number] }) readonly slippageTolerance!: string | number
+
+  get formattedFirstTokenValue (): string {
+    return this.formatStringValue(this.firstTokenValue, this.firstToken?.decimals)
+  }
+
+  get formattedSecondTokenValue (): string {
+    return this.formatStringValue(this.secondTokenValue, this.secondToken?.decimals)
+  }
 
   handleConfirm (): void {
     this.$emit('confirm', true)

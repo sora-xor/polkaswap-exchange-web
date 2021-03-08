@@ -102,6 +102,7 @@ const CreateTokenPairMixin = (namespace: string) => {
     async handleMaxValue (token: any, setValue: (v: any) => void): Promise<void> {
       await this.getNetworkFee()
       setValue(getMaxValue(token, this.fee))
+      this.updatePrices()
     }
 
     async handleTokenChange (value: string, setValue: (v: any) => Promise<void>): Promise<void> {
