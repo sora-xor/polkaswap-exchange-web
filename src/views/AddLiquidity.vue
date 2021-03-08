@@ -255,7 +255,7 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
     }
   }
 
-  getTokenPosition (liquidityInfoBalance: number | undefined, tokenValue: string | CodecString | number, isPoolToken = false): string {
+  getTokenPosition (liquidityInfoBalance: string | undefined, tokenValue: string | CodecString | number, isPoolToken = false): string {
     const prevPosition = FPNumber.fromCodecValue(liquidityInfoBalance ?? 0)
     if (!this.emptyAssets) {
       return prevPosition.add(isPoolToken ? FPNumber.fromCodecValue(tokenValue) : new FPNumber(tokenValue)).format()
