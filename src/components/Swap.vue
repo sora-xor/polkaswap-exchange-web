@@ -106,10 +106,11 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownSymbols, FPNumber } from '@sora-substrate/util'
+import { KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
 import { isWalletConnected, isXorAccountAsset, isMaxButtonAvailable, getMaxValue } from '@/utils'
 import router, { lazyComponent } from '@/router'
@@ -123,7 +124,7 @@ import { Components, PageNames } from '@/consts'
     ConfirmSwap: lazyComponent(Components.ConfirmSwap)
   }
 })
-export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
+export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
   @Getter tokenXOR!: any
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
@@ -131,8 +132,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
   @Getter toValue!: string
   @Getter isExchangeB!: boolean
   @Getter slippageTolerance!: number
-  @Getter networkFee!: string
-  @Getter liquidityProviderFee!: string
+  @Getter networkFee!: CodecString
+  @Getter liquidityProviderFee!: CodecString
   @Action getTokenXOR
   @Action setTokenFrom
   @Action setTokenTo
@@ -218,14 +219,20 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
    * Update token From balance and amount (after swap it should be recalculated)
    */
   get tokenFromBalance (): string {
-    return this.tokenFrom?.balance ?? ''
+    if (!this.tokenFrom?.balance) {
+      return ''
+    }
+    return this.formatCodecNumber(this.tokenFrom.balance)
   }
 
   /**
    * Update token To balance and amount (after swap it should be recalculated)
    */
   get tokenToBalance (): string {
-    return this.tokenTo?.balance ?? ''
+    if (!this.tokenTo?.balance) {
+      return ''
+    }
+    return this.formatCodecNumber(this.tokenTo.balance)
   }
 
   created () {
@@ -255,7 +262,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
 
   async getNetworkFee (): Promise<void> {
     if (this.connected) {
-      const networkFee = await api.getSwapNetworkFee(this.tokenFrom?.address, this.tokenTo?.address, this.fromValue, this.toValue, this.slippageTolerance, this.isExchangeB)
+      const networkFee = await api.getSwapNetworkFee(
+        this.tokenFrom?.address,
+        this.tokenTo?.address,
+        this.fromValue,
+        this.toValue,
+        this.slippageTolerance,
+        this.isExchangeB
+      )
       this.setNetworkFee(networkFee)
     }
   }
@@ -296,7 +310,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin) {
 
       const { amount, fee } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, this.isExchangeB)
 
-      setOppositeValue(amount)
+      setOppositeValue(this.getStringFromCodec(amount, token.decimals))
       this.setLiquidityProviderFee(fee)
 
       await this.calcMinMaxRecieved()

@@ -4,18 +4,18 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, KnownSymbols, Asset, AccountAsset } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, Asset, AccountAsset, CodecString } from '@sora-substrate/util'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
-    'GET_FROM_VALUE',
-    'GET_TO_VALUE',
-    'GET_TOKEN_FROM_PRICE',
-    'GET_MIN_MAX_RECEIVED',
-    'GET_EXCHANGE_B',
-    'GET_LIQUIDITY_PROVIDER_FEE',
-    'GET_NETWORK_FEE',
+    'SET_FROM_VALUE',
+    'SET_TO_VALUE',
+    'SET_TOKEN_FROM_PRICE',
+    'SET_MIN_MAX_RECEIVED',
+    'SET_EXCHANGE_B',
+    'SET_LIQUIDITY_PROVIDER_FEE',
+    'SET_NETWORK_FEE',
     'GET_SWAP_CONFIRM'
   ]),
   map(x => [x, x]),
@@ -33,10 +33,10 @@ interface SwapState {
   fromValue: string;
   toValue: string;
   isTokenFromPrice: boolean;
-  minMaxReceived: string;
+  minMaxReceived: CodecString;
   isExchangeB: boolean;
-  liquidityProviderFee: string;
-  networkFee: string;
+  liquidityProviderFee: CodecString;
+  networkFee: CodecString;
 }
 
 function initialState (): SwapState {
@@ -117,25 +117,25 @@ const mutations = {
   [types.GET_TOKEN_TO_FAILURE] (state: SwapState) {
     state.tokenTo = null
   },
-  [types.GET_FROM_VALUE] (state: SwapState, fromValue: string) {
+  [types.SET_FROM_VALUE] (state: SwapState, fromValue: string) {
     state.fromValue = fromValue
   },
-  [types.GET_TO_VALUE] (state: SwapState, toValue: string) {
+  [types.SET_TO_VALUE] (state: SwapState, toValue: string) {
     state.toValue = toValue
   },
-  [types.GET_TOKEN_FROM_PRICE] (state: SwapState, isTokenFromPrice: boolean) {
+  [types.SET_TOKEN_FROM_PRICE] (state: SwapState, isTokenFromPrice: boolean) {
     state.isTokenFromPrice = isTokenFromPrice
   },
-  [types.GET_MIN_MAX_RECEIVED] (state: SwapState, minMaxReceived: string) {
+  [types.SET_MIN_MAX_RECEIVED] (state: SwapState, minMaxReceived: CodecString) {
     state.minMaxReceived = minMaxReceived
   },
-  [types.GET_EXCHANGE_B] (state: SwapState, isExchangeB: boolean) {
+  [types.SET_EXCHANGE_B] (state: SwapState, isExchangeB: boolean) {
     state.isExchangeB = isExchangeB
   },
-  [types.GET_LIQUIDITY_PROVIDER_FEE] (state: SwapState, liquidityProviderFee: string) {
+  [types.SET_LIQUIDITY_PROVIDER_FEE] (state: SwapState, liquidityProviderFee: CodecString) {
     state.liquidityProviderFee = liquidityProviderFee
   },
-  [types.GET_NETWORK_FEE] (state: SwapState, networkFee: string) {
+  [types.SET_NETWORK_FEE] (state: SwapState, networkFee: CodecString) {
     state.networkFee = networkFee
   }
 }
@@ -206,25 +206,25 @@ const actions = {
     }
   },
   setFromValue ({ commit }, fromValue: string | number) {
-    commit(types.GET_FROM_VALUE, fromValue)
+    commit(types.SET_FROM_VALUE, fromValue)
   },
   setToValue ({ commit }, toValue: string | number) {
-    commit(types.GET_TO_VALUE, toValue)
+    commit(types.SET_TO_VALUE, toValue)
   },
   setTokenFromPrice ({ commit }, isTokenFromPrice: boolean) {
-    commit(types.GET_TOKEN_FROM_PRICE, isTokenFromPrice)
+    commit(types.SET_TOKEN_FROM_PRICE, isTokenFromPrice)
   },
   setMinMaxReceived ({ commit }, minMaxReceived) {
-    commit(types.GET_MIN_MAX_RECEIVED, minMaxReceived)
+    commit(types.SET_MIN_MAX_RECEIVED, minMaxReceived)
   },
   setExchangeB ({ commit }, flag: boolean) {
-    commit(types.GET_EXCHANGE_B, flag)
+    commit(types.SET_EXCHANGE_B, flag)
   },
   setLiquidityProviderFee ({ commit }, liquidityProviderFee: string) {
-    commit(types.GET_LIQUIDITY_PROVIDER_FEE, liquidityProviderFee)
+    commit(types.SET_LIQUIDITY_PROVIDER_FEE, liquidityProviderFee)
   },
   setNetworkFee ({ commit }, networkFee: string) {
-    commit(types.GET_NETWORK_FEE, networkFee)
+    commit(types.SET_NETWORK_FEE, networkFee)
   }
 }
 
