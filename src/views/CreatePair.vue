@@ -128,7 +128,7 @@
           </div>
           <div class="card__data">
             <div>{{ t('createPair.networkFee') }}</div>
-            <div>{{ fee }} {{ KnownSymbols.XOR }}</div>
+            <div>{{ formattedFee }} {{ KnownSymbols.XOR }}</div>
           </div>
         </info-card>
 
@@ -143,7 +143,7 @@
                 })
               }}
             </s-row>
-            <div>{{ minted }}</div>
+            <div>{{ formattedMinted }}</div>
           </div>
           <s-divider />
           <div class="card__data">
@@ -168,7 +168,7 @@
       :second-token="secondToken"
       :first-token-value="firstTokenValue"
       :second-token-value="secondTokenValue"
-      :minted="minted"
+      :minted="formattedMinted"
       :price="price"
       :price-reversed="priceReversed"
       :slippage-tolerance="slippageTolerance"

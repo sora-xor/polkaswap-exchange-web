@@ -74,14 +74,14 @@ import { Components } from '@/consts'
   }
 })
 export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, DialogMixin, LoadingMixin) {
-  @Prop({ type: [String, Number], default: '100' }) readonly shareOfPool!: string | number
+  @Prop({ type: String, default: '100' }) readonly shareOfPool!: string
   @Prop({ type: Object }) readonly firstToken!: any
   @Prop({ type: Object }) readonly secondToken!: any
   @Prop({ type: String }) readonly firstTokenValue!: string
   @Prop({ type: String }) readonly secondTokenValue!: string
-  @Prop({ type: [String, Number] }) readonly minted!: string | number
-  @Prop({ type: [String, Number] }) readonly price!: string | number
-  @Prop({ type: [String, Number] }) readonly priceReversed!: string | number
+  @Prop({ type: String }) readonly minted!: string
+  @Prop({ type: String }) readonly price!: string
+  @Prop({ type: String }) readonly priceReversed!: string
   @Prop({ type: [String, Number] }) readonly slippageTolerance!: string | number
 
   handleConfirm (): void {
