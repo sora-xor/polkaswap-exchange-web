@@ -4,6 +4,8 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import { api } from '@soramitsu/soraneo-wallet-web'
 
+import { ZeroStringValue } from '@/consts'
+
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   map(x => [x, x]),
@@ -20,8 +22,8 @@ interface PriceState {
 
 function initialState (): PriceState {
   return {
-    price: '0',
-    priceReversed: '0'
+    price: ZeroStringValue,
+    priceReversed: ZeroStringValue
   }
 }
 
@@ -38,22 +40,22 @@ const getters = {
 
 const mutations = {
   [types.GET_PRICE_REQUEST] (state: PriceState) {
-    state.price = '0'
+    state.price = ZeroStringValue
   },
   [types.GET_PRICE_SUCCESS] (state: PriceState, price: string) {
     state.price = price
   },
   [types.GET_PRICE_FAILURE] (state: PriceState, error) {
-    state.price = '0'
+    state.price = ZeroStringValue
   },
   [types.GET_PRICE_REVERSED_REQUEST] (state: PriceState) {
-    state.priceReversed = '0'
+    state.priceReversed = ZeroStringValue
   },
   [types.GET_PRICE_REVERSED_SUCCESS] (state: PriceState, priceReversed: string) {
     state.priceReversed = priceReversed
   },
   [types.GET_PRICE_REVERSED_FAILURE] (state: PriceState, error) {
-    state.priceReversed = '0'
+    state.priceReversed = ZeroStringValue
   }
 }
 
@@ -72,13 +74,13 @@ const actions = {
         commit(types.GET_PRICE_REVERSED_FAILURE, error)
       }
     } else {
-      commit(types.GET_PRICE_SUCCESS, '0')
-      commit(types.GET_PRICE_REVERSED_SUCCESS, '0')
+      commit(types.GET_PRICE_SUCCESS, ZeroStringValue)
+      commit(types.GET_PRICE_REVERSED_SUCCESS, ZeroStringValue)
     }
   },
   resetPrices ({ commit }) {
-    commit(types.GET_PRICE_SUCCESS, '0')
-    commit(types.GET_PRICE_REVERSED_SUCCESS, '0')
+    commit(types.GET_PRICE_SUCCESS, ZeroStringValue)
+    commit(types.GET_PRICE_REVERSED_SUCCESS, ZeroStringValue)
   }
 }
 

@@ -6,6 +6,8 @@ import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { Asset, AccountAsset, CodecString } from '@sora-substrate/util'
 
+import { ZeroStringValue } from '@/consts'
+
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
@@ -65,10 +67,10 @@ const getters = {
     return state.isAvailable
   },
   minted (state: CreatePairState) {
-    return state.minted || '0'
+    return state.minted || ZeroStringValue
   },
   fee (state: CreatePairState) {
-    return state.fee || '0'
+    return state.fee || ZeroStringValue
   }
 }
 
@@ -116,7 +118,7 @@ const actions = {
   async setFirstToken ({ commit, dispatch }, asset: any) {
     let firstAsset = api.accountAssets.find(a => a.address === asset.address)
     if (!firstAsset) {
-      firstAsset = { ...asset, balance: '0' }
+      firstAsset = { ...asset, balance: ZeroStringValue }
     }
     commit(types.SET_FIRST_TOKEN, firstAsset)
     dispatch('checkLiquidity')
@@ -125,7 +127,7 @@ const actions = {
   async setSecondToken ({ commit, dispatch }, asset: any) {
     let secondAsset = api.accountAssets.find(a => a.address === asset.address)
     if (!secondAsset) {
-      secondAsset = { ...asset, balance: '0' }
+      secondAsset = { ...asset, balance: ZeroStringValue }
     }
     commit(types.SET_SECOND_TOKEN, secondAsset)
     dispatch('checkLiquidity')
@@ -154,8 +156,8 @@ const actions = {
           getters.secondToken.address,
           getters.firstTokenValue,
           getters.secondTokenValue,
-          '0',
-          '0'
+          ZeroStringValue,
+          ZeroStringValue
         )
         commit(types.ESTIMATE_MINTED_SUCCESS, minted)
       } catch (error) {
@@ -191,7 +193,7 @@ const actions = {
         commit(types.GET_FEE_FAILURE, error)
       }
     } else {
-      commit(types.GET_FEE_SUCCESS, '0')
+      commit(types.GET_FEE_SUCCESS, ZeroStringValue)
     }
   },
 

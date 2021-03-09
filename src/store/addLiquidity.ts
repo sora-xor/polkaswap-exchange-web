@@ -6,6 +6,8 @@ import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { Asset, AccountAsset, KnownAssets, FPNumber, CodecString } from '@sora-substrate/util'
 
+import { ZeroStringValue } from '@/consts'
+
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
@@ -84,10 +86,10 @@ const getters = {
     return state.reserve
   },
   reserveA (state: AddLiquidityState) {
-    return state.reserve ? state.reserve[0] : '0'
+    return state.reserve ? state.reserve[0] : ZeroStringValue
   },
   reserveB (state: AddLiquidityState) {
-    return state.reserve ? state.reserve[1] : '0'
+    return state.reserve ? state.reserve[1] : ZeroStringValue
   },
   isAvailable (state: AddLiquidityState) {
     return state.isAvailable && state.reserve
@@ -96,19 +98,19 @@ const getters = {
     return state.reserve && (+getters.reserveA !== 0) && (+getters.reserveB !== 0)
   },
   minted (state: AddLiquidityState) {
-    return state.minted || '0'
+    return state.minted || ZeroStringValue
   },
   fee (state: AddLiquidityState) {
-    return state.fee || '0'
+    return state.fee || ZeroStringValue
   },
   totalSupply (state: AddLiquidityState) {
-    return state.totalSupply || '0'
+    return state.totalSupply || ZeroStringValue
   },
   shareOfPool (state: AddLiquidityState, getters) {
     const minted = FPNumber.fromCodecValue(getters.minted)
     return getters.firstTokenValue && getters.secondTokenValue
-      ? minted.div(FPNumber.fromCodecValue(getters.totalSupply).add(minted)).mul(new FPNumber(100)).format() || '0'
-      : '0'
+      ? minted.div(FPNumber.fromCodecValue(getters.totalSupply).add(minted)).mul(new FPNumber(100)).format() || ZeroStringValue
+      : ZeroStringValue
   }
 }
 
@@ -167,7 +169,7 @@ const actions = {
   async setFirstToken ({ commit, dispatch }, asset: any) {
     let firstAsset = api.accountAssets.find(a => a.address === asset.address)
     if (!firstAsset) {
-      firstAsset = { ...asset, balance: '0' }
+      firstAsset = { ...asset, balance: ZeroStringValue }
     }
 
     commit(types.SET_FIRST_TOKEN, firstAsset)
@@ -179,7 +181,7 @@ const actions = {
   async setSecondToken ({ commit, dispatch }, asset: any) {
     let secondAddress = api.accountAssets.find(a => a.address === asset.address)
     if (!secondAddress) {
-      secondAddress = { ...asset, balance: '0' }
+      secondAddress = { ...asset, balance: ZeroStringValue }
     }
     commit(types.SET_SECOND_TOKEN, secondAddress)
     commit(types.SET_FIRST_TOKEN_VALUE, '')
@@ -289,7 +291,7 @@ const actions = {
         commit(types.GET_FEE_FAILURE, error)
       }
     } else {
-      commit(types.GET_FEE_SUCCESS, '0')
+      commit(types.GET_FEE_SUCCESS, ZeroStringValue)
     }
   },
 

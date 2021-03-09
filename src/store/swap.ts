@@ -6,6 +6,8 @@ import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets, KnownSymbols, Asset, AccountAsset, CodecString } from '@sora-substrate/util'
 
+import { ZeroStringValue } from '@/consts'
+
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
@@ -170,7 +172,7 @@ const actions = {
         if (token) {
           let tokenFrom = await api.accountAssets.find(asset => asset.address === token.address)
           if (!tokenFrom) {
-            tokenFrom = { ...token, balance: '0' }
+            tokenFrom = { ...token, balance: ZeroStringValue }
           }
           commit(types.GET_TOKEN_FROM_SUCCESS, tokenFrom)
         } else {
@@ -199,7 +201,7 @@ const actions = {
         if (token) {
           let tokenTo = await api.accountAssets.find(asset => asset.address === token.address)
           if (!tokenTo) {
-            tokenTo = { ...token, balance: '0' }
+            tokenTo = { ...token, balance: ZeroStringValue }
           }
           commit(types.GET_TOKEN_TO_SUCCESS, tokenTo)
         } else {

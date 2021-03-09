@@ -6,6 +6,8 @@ import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { FPNumber, CodecString } from '@sora-substrate/util'
 
+import { ZeroStringValue } from '@/consts'
+
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
@@ -46,9 +48,9 @@ function initialState (): RemoveLiquidityState {
     secondTokenAmount: '',
     focusedField: null,
     fee: '',
-    reserveA: '0',
-    reserveB: '0',
-    totalSupply: '0'
+    reserveA: ZeroStringValue,
+    reserveB: ZeroStringValue,
+    totalSupply: ZeroStringValue
   }
 }
 
@@ -62,16 +64,16 @@ const getters = {
     return state.liquidity
   },
   liquidityBalance (state: RemoveLiquidityState) {
-    return state.liquidity?.balance ?? '0'
+    return state.liquidity?.balance ?? ZeroStringValue
   },
   liquidityDecimals (state: RemoveLiquidityState) {
     return state.liquidity?.decimals ?? 0
   },
   firstTokenBalance (state: RemoveLiquidityState) {
-    return state.liquidity?.firstBalance ?? '0'
+    return state.liquidity?.firstBalance ?? ZeroStringValue
   },
   secondTokenBalance (state: RemoveLiquidityState) {
-    return state.liquidity?.secondBalance ?? '0'
+    return state.liquidity?.secondBalance ?? ZeroStringValue
   },
   firstToken (state: RemoveLiquidityState, getters, rootGetters) {
     return state.liquidity && rootGetters.assets.assets ? rootGetters.assets.assets.find(t => t.address === state.liquidity.firstAddress) || {} : {}
