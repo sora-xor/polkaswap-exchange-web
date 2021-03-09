@@ -90,7 +90,11 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
       throw new Error('Network is not set')
     }
     await this.withLoading(async () => {
-      await initWallet()
+      const permissions = {
+        sendAssets: true, // enable 'send' button in assets list
+        swapAssets: true // enable 'swap' button in assets list
+      }
+      await initWallet({ permissions })
       await this.getAssets()
       await this.getAccountLiquidity()
     })
