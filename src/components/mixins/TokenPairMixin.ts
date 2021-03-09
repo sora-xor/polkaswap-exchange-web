@@ -1,19 +1,19 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { KnownAssets, KnownSymbols } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, CodecString } from '@sora-substrate/util'
 
-import TransactionMixin from '@/components/mixins/TransactionMixin'
-import LoadingMixin from '@/components/mixins/LoadingMixin'
-import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
+import TransactionMixin from './TransactionMixin'
+import LoadingMixin from './LoadingMixin'
+import ConfirmDialogMixin from './ConfirmDialogMixin'
+import NumberFormatterMixin from './NumberFormatterMixin'
 
 import router from '@/router'
 import { PageNames } from '@/consts'
 import { getMaxValue, isMaxButtonAvailable, isWalletConnected, isXorAccountAsset, hasInsufficientBalance } from '@/utils'
 
-// TODO: Ask is it correct name?
 const CreateTokenPairMixin = (namespace: string) => {
   @Component
-  class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin) {
+  class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin, NumberFormatterMixin) {
     readonly KnownSymbols = KnownSymbols
 
     @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
@@ -24,10 +24,10 @@ const CreateTokenPairMixin = (namespace: string) => {
     @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
 
     @Getter('isAvailable', { namespace }) isAvailable!: boolean
-    @Getter('minted', { namespace }) minted!: string
-    @Getter('fee', { namespace }) fee!: string
-    @Getter('price', { namespace: 'prices' }) price!: string | number
-    @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
+    @Getter('minted', { namespace }) minted!: CodecString
+    @Getter('fee', { namespace }) fee!: CodecString
+    @Getter('price', { namespace: 'prices' }) price!: string
+    @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
 
     @Getter slippageTolerance!: number
 
@@ -52,6 +52,14 @@ const CreateTokenPairMixin = (namespace: string) => {
         await this.setFirstToken(KnownAssets.get(KnownSymbols.XOR))
         this.afterApiConnect()
       })
+    }
+
+    get formattedMinted (): string {
+      return this.formatCodecNumber(this.minted)
+    }
+
+    get formattedFee (): string {
+      return this.formatCodecNumber(this.fee)
     }
 
     get connected (): boolean {
@@ -86,7 +94,7 @@ const CreateTokenPairMixin = (namespace: string) => {
             return true
           }
         }
-        // TODO: Add check for pair without XOR
+        // TODO: [Release 2] Add check for pair without XOR
       }
       return false
     }
@@ -94,6 +102,7 @@ const CreateTokenPairMixin = (namespace: string) => {
     async handleMaxValue (token: any, setValue: (v: any) => void): Promise<void> {
       await this.getNetworkFee()
       setValue(getMaxValue(token, this.fee))
+      this.updatePrices()
     }
 
     async handleTokenChange (value: string, setValue: (v: any) => Promise<void>): Promise<void> {
@@ -111,7 +120,10 @@ const CreateTokenPairMixin = (namespace: string) => {
     }
 
     getTokenBalance (token: any): string {
-      return token?.balance ?? ''
+      if (!token?.balance) {
+        return ''
+      }
+      return this.formatCodecNumber(token.balance, token.decimals)
     }
 
     openSelectSecondTokenDialog (): void {

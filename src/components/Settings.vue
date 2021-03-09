@@ -25,7 +25,6 @@
         </div>
         <div class="slippage-tolerance-custom">
           <div class="header">{{ t('dexSettings.custom') }}</div>
-          <!-- TODO: Add size="small" for s-input -->
           <s-float-input
             class="slippage-tolerance-custom_input"
             size="small"
@@ -36,7 +35,7 @@
         <div v-if="slippageToleranceValidation" class="slippage-tolerance_validation">{{ t(`dexSettings.slippageToleranceValidation.${slippageToleranceValidation}`) }}</div>
       </div>
       <s-divider />
-      <!-- TODO: We'll play with areas below at the next iteration of development -->
+      <!-- TODO [Release 2]: We'll play with areas below at the next iteration of development -->
       <!-- <div class="transaction-deadline">
         <div class="header">
           {{ t('dexSettings.transactionDeadline') }}

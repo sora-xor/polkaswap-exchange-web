@@ -26,7 +26,7 @@
           </s-row>
         </s-col>
         <div v-if="connected">
-          <span class="token-item__amount">{{ token.balance || '-' }}</span>
+          <span class="token-item__amount">{{ formatBalance(token) }}</span>
         </div>
       </div>
     </div>
@@ -45,6 +45,7 @@ import { Asset, AccountAsset } from '@sora-substrate/util'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
@@ -57,7 +58,7 @@ const namespace = 'assets'
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, LoadingMixin) {
+export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, LoadingMixin, NumberFormatterMixin) {
   query = ''
 
   @Prop({ default: () => false, type: Boolean }) readonly connected!: boolean
@@ -135,6 +136,13 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
       return `${this.t(`assetNames.${tokenSymbol}`)} (${tokenSymbol})`
     }
     return tokenSymbol
+  }
+
+  formatBalance (token: AccountAsset): string {
+    if (!token.balance) {
+      return '-'
+    }
+    return this.formatCodecNumber(token.balance, token.decimals)
   }
 
   handleClearSearch (): void {

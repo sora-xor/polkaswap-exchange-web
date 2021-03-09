@@ -123,7 +123,7 @@
         <s-row v-if="fee" flex justify="space-between">
           <!-- TODO: Add tooltip here -->
           <div>{{ t('createPair.networkFee') }}</div>
-          <div>{{ fee }} {{ KnownSymbols.XOR }}</div>
+          <div>{{ formattedFee }} {{ KnownSymbols.XOR }}</div>
         </s-row>
       </div>
 
@@ -147,11 +147,12 @@
 <script lang="ts">
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { FPNumber, KnownSymbols } from '@sora-substrate/util'
+import { FPNumber, KnownSymbols, AccountLiquidity, CodecString } from '@sora-substrate/util'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
+import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
@@ -167,27 +168,27 @@ const namespace = 'removeLiquidity'
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity)
   }
 })
-export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin) {
+export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin, NumberFormatterMixin) {
   readonly KnownSymbols = KnownSymbols
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
   @Getter('focusedField', { namespace }) focusedField!: null | string
-  @Getter('liquidity', { namespace }) liquidity!: any
+  @Getter('liquidity', { namespace }) liquidity!: AccountLiquidity
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('removePart', { namespace }) removePart!: any
-  @Getter('liquidityBalance', { namespace }) liquidityBalance!: any
+  @Getter('liquidityBalance', { namespace }) liquidityBalance!: CodecString
   @Getter('liquidityAmount', { namespace }) liquidityAmount!: any
   @Getter('firstTokenAmount', { namespace }) firstTokenAmount!: any
-  @Getter('firstTokenBalance', { namespace }) firstTokenBalance!: any
+  @Getter('firstTokenBalance', { namespace }) firstTokenBalance!: CodecString
   @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
-  @Getter('secondTokenBalance', { namespace }) secondTokenBalance!: any
-  @Getter('fee', { namespace }) fee!: any
+  @Getter('secondTokenBalance', { namespace }) secondTokenBalance!: CodecString
+  @Getter('fee', { namespace }) fee!: CodecString
   @Getter('xorBalance', { namespace: 'assets' }) xorBalance!: any
   @Getter('xorAsset', { namespace: 'assets' }) xorAsset!: any
-  @Getter('price', { namespace: 'prices' }) price!: string | number
-  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
+  @Getter('price', { namespace: 'prices' }) price!: string
+  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
 
   @Action('getLiquidity', { namespace }) getLiquidity
   @Action('setRemovePart', { namespace }) setRemovePart
@@ -248,7 +249,9 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     if (!this.isWalletConnected || +this.liquidityBalance === 0) {
       return false
     }
-    return this.liquidityBalance !== this.liquidityAmount
+    const balance = this.getFPNumberFromCodec(this.liquidityBalance)
+    const amount = this.getFPNumber(this.liquidityAmount)
+    return !FPNumber.eq(balance, amount)
   }
 
   get isEmptyAmount (): boolean {
@@ -256,17 +259,23 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   }
 
   get isInsufficientBalance (): boolean {
+    const balance = this.getFPNumberFromCodec(this.liquidityBalance)
+    const firstTokenBalance = this.getFPNumberFromCodec(this.firstTokenBalance)
+    const secondTokenBalance = this.getFPNumberFromCodec(this.secondTokenBalance)
+    const amount = this.getFPNumber(this.liquidityAmount)
+    const firstTokenAmount = this.getFPNumber(this.firstTokenAmount)
+    const secondTokenAmount = this.getFPNumber(this.secondTokenAmount)
     return (
-      +this.liquidityAmount > +this.liquidityBalance ||
-      +this.firstTokenAmount > +this.firstTokenBalance ||
-      +this.secondTokenAmount > +this.secondTokenBalance
+      FPNumber.gt(amount, balance) ||
+      FPNumber.gt(firstTokenAmount, firstTokenBalance) ||
+      FPNumber.gt(secondTokenAmount, secondTokenBalance)
     )
   }
 
   get isInsufficientXorBalance (): boolean {
     if (this.areTokensSelected) {
-      const xorValue = new FPNumber(this.fee, this.xorAsset.decimals)
-      const xorBalance = new FPNumber(this.xorBalance, this.xorAsset.decimals)
+      const xorValue = this.getFPNumberFromCodec(this.fee, this.xorAsset.decimals)
+      const xorBalance = this.getFPNumberFromCodec(this.xorBalance, this.xorAsset.decimals)
 
       return FPNumber.gt(xorValue, xorBalance)
     }
@@ -292,6 +301,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     const newValue = parseFloat(value) || 0
     this.removePartInput = newValue > 100 ? 100 : newValue < 0 ? 0 : newValue
     this.setRemovePart(this.removePartInput)
+    this.updatePrices()
   }
 
   focusSliderInput (): void {
@@ -302,12 +312,20 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   }
 
   getTokenBalance (token: any): string {
-    return token?.balance ?? ''
+    if (!token?.balance) {
+      return ''
+    }
+    return this.formatCodecNumber(token.balance, token.decimals)
+  }
+
+  get formattedFee (): string {
+    return this.formatCodecNumber(this.fee)
   }
 
   handleLiquidityMaxValue (): void {
     this.setRemovePart(100)
     this.handleRemovePartChange(100)
+    this.updatePrices()
   }
 
   updatePrices (): void {

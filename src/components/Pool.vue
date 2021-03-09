@@ -18,19 +18,19 @@
           <div class="pool-info">
             <token-logo :token-symbol="getAssetSymbol(liquidityItem.firstAddress)" size="small" />
             <div>{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.firstAddress) }) }}</div>
-            <div v-if="liquidityItem.firstBalance" class="pool-info-value">{{ liquidityItem.firstBalance }}</div>
+            <div class="pool-info-value">{{ getFirstBalance(liquidityItem) }}</div>
           </div>
           <div class="pool-info">
             <token-logo :token-symbol="getAssetSymbol(liquidityItem.secondAddress)" size="small" />
             <div>{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.secondAddress) }) }}</div>
-            <div v-if="liquidityItem.secondBalance" class="pool-info-value">{{ liquidityItem.secondBalance }}</div>
+            <div class="pool-info-value">{{ getSecondBalance(liquidityItem) }}</div>
           </div>
           <div class="pool-info">
             <pair-token-logo :first-token-symbol="getAssetSymbol(liquidityItem.firstAddress)" :second-token-symbol="getAssetSymbol(liquidityItem.secondAddress)" size="mini" />
             <div>{{ t('pool.pairTokens', { pair: getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress)) }) }}</div>
-            <div class="pool-info-value">{{ liquidityItem.balance }}</div>
+            <div class="pool-info-value">{{ getBalance(liquidityItem) }}</div>
           </div>
-          <!-- TODO: uncomment when it will work -->
+          <!-- TODO: we decided to hide it because of many requests like getLiquidityReserves -->
           <!-- <div class="pool-info pool-info--share">
             <div>{{ t('pool.poolShare')}}</div>
             <div class="pool-info-value">{{ getPoolShare(liquidityItem) }}%</div>
@@ -63,8 +63,11 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
+import { AccountLiquidity } from '@sora-substrate/util'
+
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import { isWalletConnected } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
@@ -78,7 +81,7 @@ const namespace = 'pool'
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
-export default class Pool extends Mixins(TranslationMixin, LoadingMixin) {
+export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
   @Getter('accountLiquidity', { namespace }) accountLiquidity!: any
   @Getter('assets', { namespace: 'assets' }) assets
 
@@ -128,8 +131,16 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin) {
     return asset ? asset.symbol : 'Unknown asset'
   }
 
-  getPoolShare (liquidity) {
-    return liquidity.balance / liquidity.balance
+  getFirstBalance (liquidityItem: AccountLiquidity): string {
+    return this.formatCodecNumber(liquidityItem.firstBalance, liquidityItem.decimals)
+  }
+
+  getSecondBalance (liquidityItem: AccountLiquidity): string {
+    return this.formatCodecNumber(liquidityItem.secondBalance, liquidityItem.decimals)
+  }
+
+  getBalance (liquidityItem: AccountLiquidity): string {
+    return this.formatCodecNumber(liquidityItem.balance, liquidityItem.decimals)
   }
 }
 </script>

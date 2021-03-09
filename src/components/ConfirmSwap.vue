@@ -6,7 +6,7 @@
   >
     <div class="tokens">
       <div class="tokens-info-container">
-        <span class="token-value">{{ fromValue }}</span>
+        <span class="token-value">{{ formattedFromValue }}</span>
         <div v-if="tokenFrom" class="token">
           <token-logo :token="tokenFrom" />
           {{ tokenFrom.symbol }}
@@ -14,14 +14,14 @@
       </div>
       <s-icon class="icon-divider" name="arrow-bottom-rounded" size="medium" />
       <div class="tokens-info-container">
-        <span class="token-value">{{ toValue }}</span>
+        <span class="token-value">{{ formattedToValue }}</span>
         <div v-if="tokenTo" class="token">
           <token-logo :token="tokenTo" />
           {{ tokenTo.symbol }}
         </div>
       </div>
     </div>
-    <p :class="isExchangeB ? 'transaction-message' : 'transaction-message transaction-message--min-received'" v-html="t('swap.swapOutputMessage', { transactionValue : `<span class='transaction-number'>${ minMaxReceived }</span>` })" />
+    <p :class="isExchangeB ? 'transaction-message' : 'transaction-message transaction-message--min-received'" v-html="t('swap.swapOutputMessage', { transactionValue : `<span class='transaction-number'>${ formattedMinMaxReceived }</span>` })" />
     <s-divider />
     <swap-info :show-price="true" />
     <swap-info :show-tooltips="false" />
@@ -41,9 +41,11 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
+import { CodecString } from '@sora-substrate/util'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
+import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -55,16 +57,29 @@ import { Components } from '@/consts'
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
+export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin, NumberFormatterMixin) {
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
-  @Getter fromValue!: number | string
-  @Getter minMaxReceived!: string
-  @Getter toValue!: number | string
+  @Getter fromValue!: string
+  @Getter minMaxReceived!: CodecString
+  @Getter toValue!: string
   @Getter slippageTolerance!: number
   @Getter isExchangeB!: boolean
 
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean
+
+  get formattedFromValue (): string {
+    return this.getFPNumber(this.fromValue, this.tokenFrom?.decimals).format()
+  }
+
+  get formattedToValue (): string {
+    return this.getFPNumber(this.toValue, this.tokenTo?.decimals).format()
+  }
+
+  get formattedMinMaxReceived (): string {
+    const decimals = (this.isExchangeB ? this.tokenFrom : this.tokenTo)?.decimals
+    return this.formatCodecNumber(this.minMaxReceived, decimals)
+  }
 
   async handleConfirmSwap (): Promise<void> {
     await this.$emit('checkConfirm')
