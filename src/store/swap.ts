@@ -162,6 +162,10 @@ const actions = {
     const token = KnownAssets.get(payload.tokenSymbol) || rootGetters['assets/assets'].find(item => item.symbol === payload.tokenSymbol)
     if (payload.isWalletConnected) {
       commit(types.GET_TOKEN_FROM_REQUEST)
+      if (payload.updatedAsset) {
+        commit(types.GET_TOKEN_FROM_SUCCESS, payload.updatedAsset)
+        return
+      }
       try {
         if (token) {
           let tokenFrom = await api.accountAssets.find(asset => asset.address === token.address)
@@ -184,6 +188,10 @@ const actions = {
     const token = KnownAssets.get(payload.tokenSymbol) || rootGetters['assets/assets'].find(item => item.symbol === payload.tokenSymbol)
     if (payload.isWalletConnected) {
       commit(types.GET_TOKEN_TO_REQUEST)
+      if (payload.updatedAsset) {
+        commit(types.GET_TOKEN_TO_SUCCESS, payload.updatedAsset)
+        return
+      }
       if (!payload.tokenSymbol) {
         return
       }

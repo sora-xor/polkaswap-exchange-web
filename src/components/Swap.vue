@@ -106,7 +106,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
+import { KnownSymbols, FPNumber, CodecString, AccountAsset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -134,6 +134,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Getter slippageTolerance!: number
   @Getter networkFee!: CodecString
   @Getter liquidityProviderFee!: CodecString
+
   @Action getTokenXOR
   @Action setTokenFrom
   @Action setTokenTo
@@ -144,8 +145,12 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action setExchangeB
   @Action setLiquidityProviderFee
   @Action setNetworkFee
+
   @Action('getPrices', { namespace: 'prices' }) getPrices
   @Action('resetPrices', { namespace: 'prices' }) resetPrices
+
+  // Wallet store
+  @Getter accountAssets!: Array<AccountAsset>
 
   @Watch('slippageTolerance')
   private handleSlippageToleranceChange (): void {
@@ -222,6 +227,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     if (!this.tokenFrom?.balance) {
       return ''
     }
+    const updatedAsset = this.accountAssets.find(asset => asset.address === this.tokenFrom.address)
+    if (updatedAsset && updatedAsset.balance !== this.tokenFrom.balance) {
+      this.setTokenFrom({ isWalletConnected: this.connected, updatedAsset })
+    }
     return this.formatCodecNumber(this.tokenFrom.balance)
   }
 
@@ -231,6 +240,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   get tokenToBalance (): string {
     if (!this.tokenTo?.balance) {
       return ''
+    }
+    const updatedAsset = this.accountAssets.find(asset => asset.address === this.tokenTo.address)
+    if (updatedAsset && updatedAsset.balance !== this.tokenTo.balance) {
+      this.setTokenTo({ isWalletConnected: this.connected, updatedAsset })
     }
     return this.formatCodecNumber(this.tokenTo.balance)
   }
