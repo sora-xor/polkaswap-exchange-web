@@ -345,7 +345,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   private async calcMinMaxRecieved (): Promise<void> {
     const amount = this.isExchangeB ? this.fromValue : this.toValue
-    const minMaxReceived = await api.getMinMaxValue(this.tokenFrom.address, this.tokenTo.address, amount, this.slippageTolerance, this.isExchangeB)
+    const minMaxReceived = await api.getMinMaxValue(this.tokenFrom?.address, this.tokenTo?.address, amount, this.slippageTolerance, this.isExchangeB)
 
     this.setMinMaxReceived(minMaxReceived)
   }

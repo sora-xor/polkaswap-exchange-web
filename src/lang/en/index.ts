@@ -175,7 +175,7 @@ export default {
       frontrun: 'Your transaction may be frontrun',
       error: 'Enter a valid slippage percentage'
     },
-    custom: 'CUSTOM %',
+    custom: 'CUSTOM',
     transactionDeadline: 'TRANSACTION DEADLINE',
     transactionDeadlineHint: 'Transaction will be cancelled if it is pending for more than this long.',
     nodeAddress: 'NODE ADDRESS',

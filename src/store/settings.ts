@@ -45,13 +45,8 @@ const getters = {
 
 const mutations = {
   [types.SET_SLIPPAGE_TOLERANCE] (state, value) {
-    if (!value) {
-      state.slippageTolerance = defaultSlippageTolerance
-      storage.set('slippageTolerance', defaultSlippageTolerance)
-    } else {
-      state.slippageTolerance = value
-      storage.set('slippageTolerance', value)
-    }
+    state.slippageTolerance = value
+    storage.set('slippageTolerance', value)
   },
   [types.SET_TRANSACTION_DEADLINE] (state, value) {
     state.transactionDeadline = value

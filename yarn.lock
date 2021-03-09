@@ -1987,10 +1987,10 @@
     vuex "^3.1.3"
     vuex-class "^0.3.2"
 
-"@soramitsu/soramitsu-js-ui@^0.7.12":
-  version "0.7.12"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-0.7.12.tgz#cba7094a70c36300b6dec1769604dc011c4bd461"
-  integrity sha512-lxctaedAtXIqbHMWUJJsjvC+J5TVZ5bgyOODtzq5e+JEPz6S/mgF3GBkAZJ6Tut9+FPbujErlN9h+/OaCJCqjg==
+"@soramitsu/soramitsu-js-ui@^0.7.13":
+  version "0.7.13"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-0.7.13.tgz#63fcaeaf48f8441d026812bc16bd400e1a50b3eb"
+  integrity sha512-E6dRUkKSQDudojUpm/T4YlUGJXisTUZH9gLsTNJ93NDRRMAKRdohlKB7KE3LOsM/qT2quoKR1jCsLax5PdpNGA==
   dependencies:
     core-js "^3.6.4"
     element-ui "^2.13.2"
