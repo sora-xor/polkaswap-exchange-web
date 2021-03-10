@@ -156,6 +156,7 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
+import { getAssetAddressBySymbol } from '@/utils'
 
 const namespace = 'removeLiquidity'
 
@@ -185,6 +186,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
   @Getter('secondTokenBalance', { namespace }) secondTokenBalance!: CodecString
   @Getter('fee', { namespace }) fee!: CodecString
+  @Getter('assets', { namespace: 'assets' }) assets
   @Getter('xorBalance', { namespace: 'assets' }) xorBalance!: any
   @Getter('xorAsset', { namespace: 'assets' }) xorAsset!: any
   @Getter('price', { namespace: 'prices' }) price!: string
@@ -213,9 +215,13 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     await this.withApi(async () => {
       await this.getAssets()
       await this.getLiquidity({
-        firstAddress: this.firstTokenAddress,
-        secondAddress: this.secondTokenAddress
+        firstAddress: getAssetAddressBySymbol(this.assets, this.$route.params.firstSymbol?.toUpperCase()),
+        secondAddress: getAssetAddressBySymbol(this.assets, this.$route.params.secondSymbol?.toUpperCase())
       })
+      // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
+      if (!this.liquidity) {
+        router.push({ name: PageNames.Pool })
+      }
     })
     this.sliderDragButton = this.$el.querySelector('.slider-container .el-slider__button')
     this.sliderInput = this.$el.querySelector('.s-input--remove-part .el-input__inner')
@@ -233,11 +239,11 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   isWalletConnected = true
 
   get firstTokenAddress (): string {
-    return this.$route.params.firstAddress
+    return getAssetAddressBySymbol(this.assets, this.$route.params.firstSymbol?.toUpperCase())
   }
 
   get secondTokenAddress (): string {
-    return this.$route.params.secondAddress
+    return getAssetAddressBySymbol(this.assets, this.$route.params.secondSymbol?.toUpperCase())
   }
 
   // TODO: could be reused from TokenPairMixin

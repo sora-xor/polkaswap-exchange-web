@@ -47,22 +47,26 @@ const routes: Array<RouteConfig> = [
   {
     path: '/exchange/pool/create-pair',
     name: PageNames.CreatePair,
-    component: lazyView(PageNames.CreatePair)
+    component: lazyView(PageNames.CreatePair),
+    meta: { requiresAuth: true }
   },
   {
-    path: '/exchange/pool/add/:firstAddress/:secondAddress',
+    path: '/exchange/pool/add/:firstSymbol-:secondSymbol',
     name: PageNames.AddLiquidityId,
-    component: lazyView(PageNames.AddLiquidity)
+    component: lazyView(PageNames.AddLiquidity),
+    meta: { requiresAuth: true }
   },
   {
     path: '/exchange/pool/add',
     name: PageNames.AddLiquidity,
-    component: lazyView(PageNames.AddLiquidity)
+    component: lazyView(PageNames.AddLiquidity),
+    meta: { requiresAuth: true }
   },
   {
-    path: '/exchange/pool/remove/:firstAddress/:secondAddress',
+    path: '/exchange/pool/remove/:firstSymbol-:secondSymbol',
     name: PageNames.RemoveLiquidity,
-    component: lazyView(PageNames.RemoveLiquidity)
+    component: lazyView(PageNames.RemoveLiquidity),
+    meta: { requiresAuth: true }
   },
   {
     path: '/stats',
@@ -71,12 +75,33 @@ const routes: Array<RouteConfig> = [
   {
     path: '/support',
     name: PageNames.Support
+  },
+  {
+    path: '*',
+    redirect: '/exchange'
+    // TODO: Turn on redirect to PageNotFound
+    // name: PageNames.PageNotFound,
+    // component: lazyComponent(PageNames.PageNotFound)
   }
 ]
 
 const router = new VueRouter({
   mode: 'history',
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!(localStorage.getItem('sora.name') && localStorage.getItem('sora.address'))) {
+      next({
+        name: PageNames.Wallet
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 
 export default router

@@ -36,10 +36,16 @@
             <div class="pool-info-value">{{ getPoolShare(liquidityItem) }}%</div>
           </div> -->
           <div class="pool-info--buttons">
-            <s-button type="primary" size="small" @click="handleAddPairLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
+            <s-button type="primary" size="small" @click="handleAddPairLiquidity(
+              getAssetSymbol(liquidityItem.firstAddress).toLowerCase(),
+              getAssetSymbol(liquidityItem.secondAddress).toLowerCase())"
+            >
               {{ t('pool.addLiquidity') }}
             </s-button>
-            <s-button type="primary" size="small" @click="handleRemoveLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
+            <s-button type="primary" size="small" @click="handleRemoveLiquidity(
+              getAssetSymbol(liquidityItem.firstAddress).toLowerCase(),
+              getAssetSymbol(liquidityItem.secondAddress).toLowerCase())"
+            >
               {{ t('pool.removeLiquidity') }}
             </s-button>
           </div>
@@ -99,6 +105,11 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
     return isWalletConnected()
   }
 
+  getAssetSymbol (address): string {
+    const asset = this.assets.find(a => a.address === address)
+    return asset ? asset.symbol : 'Unknown asset'
+  }
+
   handleAddLiquidity (): void {
     router.push({ name: PageNames.AddLiquidity })
   }
@@ -107,12 +118,12 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
     router.push({ name: PageNames.CreatePair })
   }
 
-  handleAddPairLiquidity (firstAddress, secondAddress): void {
-    router.push({ name: PageNames.AddLiquidityId, params: { firstAddress, secondAddress } })
+  handleAddPairLiquidity (firstSymbol, secondSymbol): void {
+    router.push({ name: PageNames.AddLiquidityId, params: { firstSymbol, secondSymbol } })
   }
 
-  handleRemoveLiquidity (firstAddress, secondAddress): void {
-    router.push({ name: PageNames.RemoveLiquidity, params: { firstAddress, secondAddress } })
+  handleRemoveLiquidity (firstSymbol, secondSymbol): void {
+    router.push({ name: PageNames.RemoveLiquidity, params: { firstSymbol, secondSymbol } })
   }
 
   handleConnectWallet (): void {
@@ -124,11 +135,6 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
       return `${firstToken}-${secondToken}`
     }
     return ''
-  }
-
-  getAssetSymbol (address) {
-    const asset = this.assets.find(a => a.address === address)
-    return asset ? asset.symbol : 'Unknown asset'
   }
 
   getFirstBalance (liquidityItem: AccountLiquidity): string {

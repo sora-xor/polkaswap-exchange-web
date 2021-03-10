@@ -186,8 +186,9 @@ import { FPNumber, AccountLiquidity, CodecString } from '@sora-substrate/util'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
 
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
+import router, { lazyComponent } from '@/router'
+import { Components, PageNames } from '@/consts'
+import { getAssetAddressBySymbol } from '@/utils'
 
 const namespace = 'addLiquidity'
 
@@ -208,21 +209,23 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('accountLiquidity', { namespace: 'pool' }) accountLiquidity!: Array<AccountLiquidity>
+  @Getter('assets', { namespace: 'assets' }) assets
 
   @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField
+  @Action('getAssets', { namespace: 'assets' }) getAssets
 
   get firstAddress (): string {
-    return this.$route.params.firstAddress
+    return getAssetAddressBySymbol(this.assets, this.$route.params.firstSymbol?.toUpperCase())
   }
 
   get secondAddress (): string {
-    return this.$route.params.secondAddress
+    return getAssetAddressBySymbol(this.assets, this.$route.params.secondSymbol?.toUpperCase())
   }
 
   get liquidityInfo () {
-    return this.accountLiquidity.find(l => l.firstAddress === this.firstToken.address && l.secondAddress === this.secondToken.address)
+    return this.accountLiquidity.find(l => l.firstAddress === this.firstToken?.address && l.secondAddress === this.secondToken?.address)
   }
 
   get emptyAssets (): boolean {
@@ -247,11 +250,16 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   }
 
   async afterApiConnect (): Promise<void> {
+    await this.getAssets()
     if (this.firstAddress && this.secondAddress) {
       await this.setDataFromLiquidity({
         firstAddress: this.firstAddress,
         secondAddress: this.secondAddress
       })
+    }
+    // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
+    if (this.$route.params.firstSymbol && this.$route.params.secondSymbol && !this.liquidityInfo) {
+      router.push({ name: PageNames.Pool })
     }
   }
 

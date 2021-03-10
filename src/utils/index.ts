@@ -10,6 +10,11 @@ export const isXorAccountAsset = (asset: Asset | AccountAsset): boolean => {
   return asset ? asset.symbol === KnownSymbols.XOR : false
 }
 
+export const getAssetAddressBySymbol = (assets: Array<Asset | AccountAsset>, symbol: string): string => {
+  const asset = assets.find(a => a?.symbol === symbol)
+  return asset ? asset?.address : ''
+}
+
 export const isMaxButtonAvailable = (areAssetsSelected: boolean, asset: AccountAsset, amount: string | number, fee: CodecString): boolean => {
   if (!isWalletConnected() || !areAssetsSelected || +asset.balance === 0) {
     return false
