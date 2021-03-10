@@ -21,7 +21,8 @@ export default {
     [PageNames.CreatePair]: 'Create Pair',
     [PageNames.AddLiquidity]: 'Add Liquidity',
     [PageNames.AddLiquidityId]: 'Add Liquidity',
-    [PageNames.RemoveLiquidity]: 'Remove Liquidity'
+    [PageNames.RemoveLiquidity]: 'Remove Liquidity',
+    [PageNames.PageNotFound]: 'Page Not Found'
   },
   mainMenu: {
     [PageNames.Exchange]: 'Exchange',
@@ -45,6 +46,10 @@ export default {
       [Operation.RemoveLiquidity]: 'Failed to remove {amount} {symbol} and {amount2} {symbol2}',
       [Operation.CreatePair]: 'Failed to supply {amount} {symbol} and {amount2} {symbol2}'
     }
+  },
+  pageNotFound: {
+    title: 'Page not found',
+    body: '404'
   },
   about: {
     polkaswapText: 'Polkaswap - decentralised token exchange for Polkadot ecosystem. Swap any token on SORA, add liquidity, create exchanges, earn through passive market making, build decentralized price feeds.',
