@@ -4,7 +4,9 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { FPNumber } from '@sora-substrate/util'
+import { FPNumber, CodecString } from '@sora-substrate/util'
+
+import { ZeroStringValue } from '@/consts'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -31,10 +33,10 @@ interface RemoveLiquidityState {
   firstTokenAmount: string;
   secondTokenAmount: string;
   focusedField: null | string;
-  fee: number;
-  reserveA: number;
-  reserveB: number;
-  totalSupply: number;
+  fee: CodecString;
+  reserveA: CodecString;
+  reserveB: CodecString;
+  totalSupply: CodecString;
 }
 
 function initialState (): RemoveLiquidityState {
@@ -45,30 +47,33 @@ function initialState (): RemoveLiquidityState {
     firstTokenAmount: '',
     secondTokenAmount: '',
     focusedField: null,
-    fee: 0,
-    reserveA: 0,
-    reserveB: 0,
-    totalSupply: 0
+    fee: '',
+    reserveA: ZeroStringValue,
+    reserveB: ZeroStringValue,
+    totalSupply: ZeroStringValue
   }
 }
 
 const state = initialState()
 
 const getters = {
+  focusedField (state: RemoveLiquidityState) {
+    return state.focusedField
+  },
   liquidity (state: RemoveLiquidityState) {
     return state.liquidity
   },
   liquidityBalance (state: RemoveLiquidityState) {
-    return state.liquidity?.balance ?? 0
+    return state.liquidity?.balance ?? ZeroStringValue
   },
   liquidityDecimals (state: RemoveLiquidityState) {
     return state.liquidity?.decimals ?? 0
   },
   firstTokenBalance (state: RemoveLiquidityState) {
-    return state.liquidity?.firstBalance ?? 0
+    return state.liquidity?.firstBalance ?? ZeroStringValue
   },
   secondTokenBalance (state: RemoveLiquidityState) {
-    return state.liquidity?.secondBalance ?? 0
+    return state.liquidity?.secondBalance ?? ZeroStringValue
   },
   firstToken (state: RemoveLiquidityState, getters, rootGetters) {
     return state.liquidity && rootGetters.assets.assets ? rootGetters.assets.assets.find(t => t.address === state.liquidity.firstAddress) || {} : {}
@@ -167,7 +172,6 @@ const actions = {
 
     try {
       await api.getKnownAccountLiquidity()
-      await api.updateAccountLiquidity()
       const liquidity = api.accountLiquidity.find(liquidity => liquidity.firstAddress === firstAddress && liquidity.secondAddress === secondAddress)
 
       commit(types.GET_LIQUIDITY_SUCCESS, liquidity)
@@ -184,9 +188,9 @@ const actions = {
 
       if (removePart) {
         commit(types.SET_REMOVE_PART, part.toString())
-        commit(types.SET_LIQUIDITY_AMOUNT, part.div(new FPNumber(100)).mul(new FPNumber(getters.liquidityBalance)).toString(getters.liquidityDecimals))
-        commit(types.SET_FIRST_TOKEN_AMOUNT, part.div(new FPNumber(100)).mul(new FPNumber(getters.firstTokenBalance)).toString(getters.firstTokenDecimals))
-        commit(types.SET_SECOND_TOKEN_AMOUNT, part.div(new FPNumber(100)).mul(new FPNumber(getters.secondTokenBalance)).toString(getters.secondTokenDecimals))
+        commit(types.SET_LIQUIDITY_AMOUNT, part.div(new FPNumber(100)).mul(FPNumber.fromCodecValue(getters.liquidityBalance)).toString())
+        commit(types.SET_FIRST_TOKEN_AMOUNT, part.div(new FPNumber(100)).mul(FPNumber.fromCodecValue(getters.firstTokenBalance)).toString())
+        commit(types.SET_SECOND_TOKEN_AMOUNT, part.div(new FPNumber(100)).mul(FPNumber.fromCodecValue(getters.secondTokenBalance)).toString())
       } else {
         commit(types.SET_REMOVE_PART)
         commit(types.SET_LIQUIDITY_AMOUNT)
@@ -204,53 +208,46 @@ const actions = {
 
       if (liquidityAmount) {
         if (liquidityAmount !== getters.liquidityAmount && !Number.isNaN(liquidityAmount)) {
-          const part = new FPNumber(liquidityAmount).div(new FPNumber(getters.liquidityBalance))
+          const part = new FPNumber(liquidityAmount).div(FPNumber.fromCodecValue(getters.liquidityBalance))
 
           commit(types.SET_REMOVE_PART, Math.round(part.mul(new FPNumber(100)).toNumber()))
           commit(types.SET_LIQUIDITY_AMOUNT, liquidityAmount)
-          commit(types.SET_FIRST_TOKEN_AMOUNT, part.mul(new FPNumber(getters.firstTokenBalance)).toString(getters.firstTokenDecimals))
-          commit(types.SET_SECOND_TOKEN_AMOUNT, part.mul(new FPNumber(getters.secondTokenBalance)).toString(getters.secondTokenDecimals))
+          commit(types.SET_FIRST_TOKEN_AMOUNT, part.mul(FPNumber.fromCodecValue(getters.firstTokenBalance)).toString())
+          commit(types.SET_SECOND_TOKEN_AMOUNT, part.mul(FPNumber.fromCodecValue(getters.secondTokenBalance)).toString())
         }
       } else {
         commit(types.SET_LIQUIDITY_AMOUNT)
       }
-
       dispatch('getRemoveLiquidityData')
     }
   },
-
   setFirstTokenAmount ({ commit, getters, dispatch }, firstTokenAmount) {
     if (!getters.focusedField || getters.focusedField === 'firstTokenAmount') {
       commit(types.SET_FOCUSED_FIELD, 'firstTokenAmount')
-
       if (firstTokenAmount) {
         if (firstTokenAmount !== getters.firstTokenAmount && !Number.isNaN(firstTokenAmount)) {
-          const part = new FPNumber(firstTokenAmount).div(new FPNumber(getters.firstTokenBalance))
-
+          const part = new FPNumber(firstTokenAmount).div(FPNumber.fromCodecValue(getters.firstTokenBalance))
           commit(types.SET_REMOVE_PART, Math.round(part.mul(new FPNumber(100)).toNumber()))
-          commit(types.SET_LIQUIDITY_AMOUNT, part.mul(new FPNumber(getters.liquidityBalance)).toString(getters.liquidityDecimals))
+          commit(types.SET_LIQUIDITY_AMOUNT, part.mul(FPNumber.fromCodecValue(getters.liquidityBalance)).toString())
           commit(types.SET_FIRST_TOKEN_AMOUNT, firstTokenAmount)
-          commit(types.SET_SECOND_TOKEN_AMOUNT, part.mul(new FPNumber(getters.secondTokenBalance)).toString(getters.secondTokenDecimals))
+          commit(types.SET_SECOND_TOKEN_AMOUNT, part.mul(FPNumber.fromCodecValue(getters.secondTokenBalance)).toString())
         }
       } else {
         commit(types.SET_FIRST_TOKEN_AMOUNT)
       }
-
       dispatch('getRemoveLiquidityData')
     }
   },
-
   setSecondTokenAmount ({ commit, getters, dispatch }, secondTokenAmount) {
     if (!getters.focusedField || getters.focusedField === 'secondTokenAmount') {
       commit(types.SET_FOCUSED_FIELD, 'secondTokenAmount')
-
       if (secondTokenAmount) {
         if (Number(secondTokenAmount) !== getters.secondTokenAmount && !Number.isNaN(secondTokenAmount)) {
-          const part = new FPNumber(secondTokenAmount).div(new FPNumber(getters.secondTokenBalance))
+          const part = new FPNumber(secondTokenAmount).div(FPNumber.fromCodecValue(getters.secondTokenBalance))
 
           commit(types.SET_REMOVE_PART, Math.round(part.mul(new FPNumber(100)).toNumber()))
-          commit(types.SET_LIQUIDITY_AMOUNT, part.mul(new FPNumber(getters.liquidityBalance)).toString(getters.liquidityDecimals))
-          commit(types.SET_FIRST_TOKEN_AMOUNT, part.mul(new FPNumber(getters.firstTokenBalance)).toString(getters.firstTokenDecimals))
+          commit(types.SET_LIQUIDITY_AMOUNT, part.mul(FPNumber.fromCodecValue(getters.liquidityBalance)).toString())
+          commit(types.SET_FIRST_TOKEN_AMOUNT, part.mul(FPNumber.fromCodecValue(getters.firstTokenBalance)).toString())
           commit(types.SET_SECOND_TOKEN_AMOUNT, secondTokenAmount)
         }
       } else {
@@ -261,8 +258,12 @@ const actions = {
     }
   },
 
-  resetFocusedField ({ commit }) {
-    commit(types.SET_FOCUSED_FIELD, null)
+  setFocusedField ({ commit }, focusedField) {
+    commit(types.SET_FOCUSED_FIELD, focusedField)
+  },
+
+  async resetFocusedField ({ commit, dispatch }): Promise<void> {
+    await dispatch('setFocusedField', null)
   },
 
   async getRemoveLiquidityData ({ dispatch }) {
@@ -284,7 +285,6 @@ const actions = {
           getters.reserveB,
           getters.totalSupply
         )
-
         commit(types.GET_FEE_SUCCESS, fee)
       } catch (error) {
         commit(types.GET_FEE_FAILURE, error)

@@ -57,6 +57,7 @@ import { Getter } from 'vuex-class'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -70,14 +71,14 @@ const namespace = 'removeLiquidity'
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
-export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, DialogMixin, LoadingMixin) {
+export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, DialogMixin, LoadingMixin, NumberFormatterMixin) {
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean
 
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
-  @Getter('liquidityAmount', { namespace }) liquidityAmount!: any
-  @Getter('firstTokenAmount', { namespace }) firstTokenAmount!: any
-  @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
+  @Getter('liquidityAmount', { namespace }) liquidityAmount!: string
+  @Getter('firstTokenAmount', { namespace }) firstTokenAmount!: string
+  @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: string
 
   @Getter('price', { namespace: 'prices' }) price!: string | number
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
@@ -85,19 +86,18 @@ export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, Dia
   @Getter slippageTolerance!: number
 
   get formattedFromValue (): string {
-    return this.firstTokenAmount
+    return this.formatStringValue(this.firstTokenAmount)
   }
 
   get formattedToValue (): string {
-    return this.secondTokenAmount
+    return this.formatStringValue(this.secondTokenAmount)
   }
 
   get formattedLiquidityValue (): string {
-    return this.liquidityAmount
+    return this.formatStringValue(this.liquidityAmount)
   }
 
   handleConfirmRemoveLiquidity (): void {
-    // TODO: Remove Liquidity here
     this.$emit('confirm')
   }
 }

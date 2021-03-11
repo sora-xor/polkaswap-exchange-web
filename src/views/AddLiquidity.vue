@@ -53,7 +53,7 @@
               :decimals="secondToken && secondToken.decimals"
               :value="secondTokenValue"
               :disabled="!areTokensSelected"
-              @change="handleTokenChange($event, setSecondTokenValue)"
+              @input="handleTokenChange($event, setSecondTokenValue)"
               @blur="resetFocusedField"
             />
           </s-form-item>
@@ -128,7 +128,7 @@
       </div>
       <div class="card__data">
         <div>{{ t('createPair.networkFee') }}</div>
-        <div>{{ fee }} {{ KnownSymbols.XOR }}</div>
+        <div>{{ formattedFee }} {{ KnownSymbols.XOR }}</div>
       </div>
     </info-card>
 
@@ -159,17 +159,30 @@
       </div>
     </info-card>
 
-    <select-token :visible.sync="showSelectFirstTokenDialog" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstToken" />
-    <select-token :visible.sync="showSelectSecondTokenDialog" :asset="firstToken" @select="setSecondToken" />
+    <select-token :visible.sync="showSelectFirstTokenDialog" :connected="connected" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstToken" />
+    <select-token :visible.sync="showSelectSecondTokenDialog" :connected="connected" :asset="firstToken" @select="setSecondToken" />
 
-    <confirm-add-liquidity :visible.sync="showConfirmDialog" :parent-loading="loading" @confirm="handleConfirmAddLiquidity" />
+    <confirm-token-pair-dialog
+      :visible.sync="showConfirmDialog"
+      :parent-loading="loading"
+      :share-of-pool="shareOfPool"
+      :first-token="firstToken"
+      :second-token="secondToken"
+      :first-token-value="firstTokenValue"
+      :second-token-value="secondTokenValue"
+      :minted="formattedMinted"
+      :price="price"
+      :price-reversed="priceReversed"
+      :slippage-tolerance="slippageTolerance"
+      @confirm="handleConfirmAddLiquidity"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { FPNumber } from '@sora-substrate/util'
+import { FPNumber, AccountLiquidity, CodecString } from '@sora-substrate/util'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
 
@@ -187,14 +200,14 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
     InfoCard: lazyComponent(Components.InfoCard),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    ConfirmAddLiquidity: lazyComponent(Components.ConfirmAddLiquidity)
+    ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog)
   }
 })
 
 export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
-  @Getter('accountLiquidity', { namespace: 'pool' }) accountLiquidity!: Array<any>
+  @Getter('accountLiquidity', { namespace: 'pool' }) accountLiquidity!: Array<AccountLiquidity>
 
   @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
   @Action('addLiquidity', { namespace }) addLiquidity
@@ -222,7 +235,7 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   }
 
   get poolTokenPosition (): string {
-    return this.getTokenPosition(this.liquidityInfo?.balance, this.minted)
+    return this.getTokenPosition(this.liquidityInfo?.balance, this.minted, true)
   }
 
   get firstTokenPosition (): string {
@@ -242,12 +255,12 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
     }
   }
 
-  getTokenPosition (liquidityInfoBalance: number | undefined, tokenValue: string | number): string {
-    const prevPosition = new FPNumber(liquidityInfoBalance ?? 0)
+  getTokenPosition (liquidityInfoBalance: string | undefined, tokenValue: string | CodecString | number, isPoolToken = false): string {
+    const prevPosition = FPNumber.fromCodecValue(liquidityInfoBalance ?? 0)
     if (!this.emptyAssets) {
-      return prevPosition.add(new FPNumber(tokenValue)).toString()
+      return prevPosition.add(isPoolToken ? FPNumber.fromCodecValue(tokenValue) : new FPNumber(tokenValue)).format()
     }
-    return prevPosition.toString()
+    return prevPosition.format()
   }
 
   updatePrices (): void {

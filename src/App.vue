@@ -28,7 +28,7 @@
         </div>
         <s-button v-else class="wallet" type="action" icon="wallet" rounded :disabled="loading" @click="goTo(PageNames.Wallet)" />
         <s-button type="action" icon="settings" rounded @click="openSettingsDialog" />
-        <!-- TODO: The button is hidden because we don't have a Search page right now -->
+        <!-- TODO: [Release 2] The button is hidden because we don't have a Search page right now -->
         <!-- <s-button type="action" icon="search" rounded /> -->
       </div>
     </header>
@@ -90,7 +90,11 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
       throw new Error('Network is not set')
     }
     await this.withLoading(async () => {
-      await initWallet()
+      const permissions = {
+        sendAssets: true, // enable 'send' button in assets list
+        swapAssets: true // enable 'swap' button in assets list
+      }
+      await initWallet({ permissions })
       await this.getAssets()
       await this.getAccountLiquidity()
     })

@@ -128,7 +128,7 @@
           </div>
           <div class="card__data">
             <div>{{ t('createPair.networkFee') }}</div>
-            <div>{{ fee }} {{ KnownSymbols.XOR }}</div>
+            <div>{{ formattedFee }} {{ KnownSymbols.XOR }}</div>
           </div>
         </info-card>
 
@@ -143,7 +143,7 @@
                 })
               }}
             </s-row>
-            <div>{{ minted }}</div>
+            <div>{{ formattedMinted }}</div>
           </div>
           <s-divider />
           <div class="card__data">
@@ -158,10 +158,22 @@
       </template>
     </template>
 
-    <select-token :visible.sync="showSelectFirstTokenDialog" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstToken" />
-    <select-token :visible.sync="showSelectSecondTokenDialog" :asset="firstToken" @select="setSecondToken" />
+    <select-token :visible.sync="showSelectFirstTokenDialog" :connected="connected" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstToken" />
+    <select-token :visible.sync="showSelectSecondTokenDialog" :connected="connected" :asset="firstToken" @select="setSecondToken" />
 
-    <confirm-create-pair :visible.sync="showConfirmDialog" :parent-loading="loading" @confirm="confirmCreatePair" />
+    <confirm-token-pair-dialog
+      :visible.sync="showConfirmDialog"
+      :parent-loading="loading"
+      :first-token="firstToken"
+      :second-token="secondToken"
+      :first-token-value="firstTokenValue"
+      :second-token-value="secondTokenValue"
+      :minted="formattedMinted"
+      :price="price"
+      :price-reversed="priceReversed"
+      :slippage-tolerance="slippageTolerance"
+      @confirm="confirmCreatePair"
+    />
   </div>
 </template>
 
@@ -185,8 +197,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
     InfoCard: lazyComponent(Components.InfoCard),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    ConfirmCreatePair: lazyComponent(Components.ConfirmCreatePair),
-    ResultDialog: lazyComponent(Components.ResultDialog)
+    ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog)
   }
 })
 

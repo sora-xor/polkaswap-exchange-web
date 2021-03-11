@@ -25,19 +25,17 @@
         </div>
         <div class="slippage-tolerance-custom">
           <div class="header">{{ t('dexSettings.custom') }}</div>
-          <!-- TODO: Add size="small" for s-input -->
           <s-float-input
             class="slippage-tolerance-custom_input"
             size="small"
-            :value="String(slippageTolerance)"
-            @input="setSlippageTolerance"
+            v-model="customSlippageTolerance"
             @blur="handleSlippageToleranceOnBlur"
           />
         </div>
         <div v-if="slippageToleranceValidation" class="slippage-tolerance_validation">{{ t(`dexSettings.slippageToleranceValidation.${slippageToleranceValidation}`) }}</div>
       </div>
       <s-divider />
-      <!-- TODO: We'll play with areas below at the next iteration of development -->
+      <!-- TODO [Release 2]: We'll play with areas below at the next iteration of development -->
       <!-- <div class="transaction-deadline">
         <div class="header">
           {{ t('dexSettings.transactionDeadline') }}
@@ -47,7 +45,7 @@
         </div>
         <div class="value">
           <div class="value-container">{{ transactionDeadline }} {{ t('dexSettings.min') }}</div>
-          <s-slider class="value-slider" :value="transactionDeadline" :showTooltip="false" @change="handleSetTransactionDeadline" />
+          <s-slider class="value-slider" :value="transactionDeadline" :showTooltip="false" @input="handleSetTransactionDeadline" />
         </div>
       </div>
       <s-divider /> -->
@@ -98,6 +96,15 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
   @Action setSlippageTolerance!: any
   @Action setTransactionDeadline!: any
 
+  get customSlippageTolerance (): string {
+    return `${this.slippageTolerance}%`
+  }
+
+  set customSlippageTolerance (value: string) {
+    const prepared = value.replace('%', '')
+    this.setSlippageTolerance(prepared)
+  }
+
   get slippageToleranceClasses (): string {
     const defaultClass = 'slippage-tolerance'
     const classes = [defaultClass, 's-flex']
@@ -131,7 +138,7 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
   }
 
   handleSlippageToleranceOnBlur (): void {
-    const value = this.isErrorValue ? 0 : +this.slippageTolerance
+    const value = this.isErrorValue ? +this.defaultSlippageTolerance : +this.slippageTolerance
     this.setSlippageTolerance(value)
   }
 
@@ -154,6 +161,9 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
     height: var(--s-size-small);
     text-align: center;
     padding-top: 0; // TODO: if there is no placeholder, set padding-top to zero
+  }
+  &.s-focused > .el-input > input {
+    box-shadow: var(--s-shadow-tab)
   }
 }
 .settings {
