@@ -89,13 +89,13 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
 
       if (accountAssetsOnly && !accountAsset) return result
 
-      const accountBalance = Number(accountAsset?.balance) || 0
+      const balance = accountAsset?.balance
 
-      if (notNullBalanceOnly && accountBalance <= 0) return result
+      if (notNullBalanceOnly && (!balance || +balance <= 0)) return result
 
       const prepared = {
         ...item,
-        balance: String(accountBalance)
+        balance
       } as AccountAsset
 
       return [...result, prepared]
