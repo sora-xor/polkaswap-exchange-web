@@ -139,7 +139,8 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   }
 
   formatBalance (token: AccountAsset): string {
-    if (!token.balance) {
+    // show "-" with 0 balance too
+    if (!token.balance || +token.balance === 0) {
       return '-'
     }
     return this.formatCodecNumber(token.balance, token.decimals)
