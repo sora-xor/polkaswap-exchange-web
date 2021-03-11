@@ -51,7 +51,7 @@ const routes: Array<RouteConfig> = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/exchange/pool/add/:firstSymbol-:secondSymbol',
+    path: '/exchange/pool/add/:firstAddress/:secondAddress',
     name: PageNames.AddLiquidityId,
     component: lazyView(PageNames.AddLiquidity),
     meta: { requiresAuth: true }
@@ -63,7 +63,7 @@ const routes: Array<RouteConfig> = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/exchange/pool/remove/:firstSymbol-:secondSymbol',
+    path: '/exchange/pool/remove/:firstAddress/:secondAddress',
     name: PageNames.RemoveLiquidity,
     component: lazyView(PageNames.RemoveLiquidity),
     meta: { requiresAuth: true }

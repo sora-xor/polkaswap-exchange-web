@@ -66,9 +66,9 @@
               type="tertiary"
               size="small"
               border-radius="medium"
-              :icon="!hasSecondAddress ? 'chevron-bottom-rounded' : undefined"
+              :icon="!secondAddress ? 'chevron-bottom-rounded' : undefined"
               icon-position="right"
-              @click="!hasSecondAddress ? openSelectSecondTokenDialog() : undefined"
+              @click="!secondAddress ? openSelectSecondTokenDialog() : undefined"
             >
               <token-logo :token="secondToken" size="small" />
               {{ secondToken.symbol }}
@@ -196,7 +196,6 @@ import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
-import { getAssetAddressBySymbol } from '@/utils'
 
 const namespace = 'addLiquidity'
 
@@ -217,30 +216,24 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('accountLiquidity', { namespace: 'pool' }) accountLiquidity!: Array<AccountLiquidity>
-  @Getter('assets', { namespace: 'assets' }) assets
 
   @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField
-  @Action('getAssets', { namespace: 'assets' }) getAssets
 
   get firstAddress (): string {
-    return getAssetAddressBySymbol(this.assets, this.$route.params.firstSymbol?.toUpperCase())
+    return this.$route.params.firstAddress
   }
 
   get secondAddress (): string {
-    return getAssetAddressBySymbol(this.assets, this.$route.params.secondSymbol?.toUpperCase())
-  }
-
-  get hasSecondAddress (): string {
-    return this.$route.params.secondSymbol
+    return this.$route.params.secondAddress
   }
 
   get computedClasses (): string {
     const componentClass = 'input-container'
     const classes = [componentClass, componentClass + '--second']
 
-    if (this.$route.params.secondSymbol) {
+    if (this.secondAddress) {
       classes.push(`${componentClass}--disabled-select`)
     }
 
@@ -273,7 +266,6 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   }
 
   async afterApiConnect (): Promise<void> {
-    await this.getAssets()
     if (this.firstAddress && this.secondAddress) {
       await this.setDataFromLiquidity({
         firstAddress: this.firstAddress,
@@ -281,7 +273,7 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
       })
     }
     // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
-    if (this.$route.params.firstSymbol && this.$route.params.secondSymbol && !this.liquidityInfo) {
+    if (this.firstAddress && this.secondAddress && !this.liquidityInfo) {
       router.push({ name: PageNames.Pool })
     }
   }

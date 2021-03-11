@@ -36,16 +36,10 @@
             <div class="pool-info-value">{{ getPoolShare(liquidityItem) }}%</div>
           </div> -->
           <div class="pool-info--buttons">
-            <s-button type="primary" size="small" @click="handleAddPairLiquidity(
-              getAssetSymbol(liquidityItem.firstAddress).toLowerCase(),
-              getAssetSymbol(liquidityItem.secondAddress).toLowerCase())"
-            >
+            <s-button type="primary" size="small" @click="handleAddPairLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
               {{ t('pool.addLiquidity') }}
             </s-button>
-            <s-button type="primary" size="small" @click="handleRemoveLiquidity(
-              getAssetSymbol(liquidityItem.firstAddress).toLowerCase(),
-              getAssetSymbol(liquidityItem.secondAddress).toLowerCase())"
-            >
+            <s-button type="primary" size="small" @click="handleRemoveLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
               {{ t('pool.removeLiquidity') }}
             </s-button>
           </div>
@@ -118,12 +112,12 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
     router.push({ name: PageNames.CreatePair })
   }
 
-  handleAddPairLiquidity (firstSymbol, secondSymbol): void {
-    router.push({ name: PageNames.AddLiquidityId, params: { firstSymbol, secondSymbol } })
+  handleAddPairLiquidity (firstAddress, secondAddress): void {
+    router.push({ name: PageNames.AddLiquidityId, params: { firstAddress, secondAddress } })
   }
 
-  handleRemoveLiquidity (firstSymbol, secondSymbol): void {
-    router.push({ name: PageNames.RemoveLiquidity, params: { firstSymbol, secondSymbol } })
+  handleRemoveLiquidity (firstAddress, secondAddress): void {
+    router.push({ name: PageNames.RemoveLiquidity, params: { firstAddress, secondAddress } })
   }
 
   handleConnectWallet (): void {

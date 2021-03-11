@@ -156,7 +156,6 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
-import { getAssetAddressBySymbol } from '@/utils'
 
 const namespace = 'removeLiquidity'
 
@@ -186,7 +185,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
   @Getter('secondTokenBalance', { namespace }) secondTokenBalance!: CodecString
   @Getter('fee', { namespace }) fee!: CodecString
-  @Getter('assets', { namespace: 'assets' }) assets
   @Getter('xorBalance', { namespace: 'assets' }) xorBalance!: any
   @Getter('xorAsset', { namespace: 'assets' }) xorAsset!: any
   @Getter('price', { namespace: 'prices' }) price!: string
@@ -215,8 +213,8 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     await this.withApi(async () => {
       await this.getAssets()
       await this.getLiquidity({
-        firstAddress: getAssetAddressBySymbol(this.assets, this.$route.params.firstSymbol?.toUpperCase()),
-        secondAddress: getAssetAddressBySymbol(this.assets, this.$route.params.secondSymbol?.toUpperCase())
+        firstAddress: this.firstTokenAddress,
+        secondAddress: this.secondTokenAddress
       })
       // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
       if (!this.liquidity) {
@@ -239,11 +237,11 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   isWalletConnected = true
 
   get firstTokenAddress (): string {
-    return getAssetAddressBySymbol(this.assets, this.$route.params.firstSymbol?.toUpperCase())
+    return this.$route.params.firstAddress
   }
 
   get secondTokenAddress (): string {
-    return getAssetAddressBySymbol(this.assets, this.$route.params.secondSymbol?.toUpperCase())
+    return this.$route.params.secondAddress
   }
 
   // TODO: could be reused from TokenPairMixin
