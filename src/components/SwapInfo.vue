@@ -20,9 +20,8 @@
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t(`swap.${isExchangeB ? 'maxSold' : 'minReceived'}`) }}</span>
-        <span class="swap-info-value">{{ minMaxReceived }}<span class="asset-title">{{ getAssetSymbolText }}</span></span>
+        <span class="swap-info-value">{{ formattedMinMaxReceived }}<span class="asset-title">{{ getAssetSymbolText }}</span></span>
       </div>
-      <!-- TODO: Hid for first iteration of development -->
       <!-- <div class="swap-info">
         <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.priceImpactTooltip')" theme="light" placement="right-start" animation="none" :show-arrow="false">
           <s-icon name="info" size="16" />
@@ -35,7 +34,7 @@
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.liquidityProviderFee') }}</span>
-        <span class="swap-info-value">{{ liquidityProviderFee }}<span class="asset-title">{{ xorSymbol }}</span></span>
+        <span class="swap-info-value">{{ formattedLiquidityProviderFee }}<span class="asset-title">{{ xorSymbol }}</span></span>
       </div>
       <!-- TODO 4 alexnatalia: Show if logged in and have info about Network Fee -->
       <div v-if="connected" class="swap-info">
@@ -43,7 +42,7 @@
           <s-icon name="info" size="16" />
         </s-tooltip>
         <span>{{ t('swap.networkFee') }}</span>
-        <span class="swap-info-value">{{ networkFee }}<span class="asset-title">{{ xorSymbol }}</span></span>
+        <span class="swap-info-value">{{ formattedNetworkFee }}<span class="asset-title">{{ xorSymbol }}</span></span>
       </div>
     </template>
   </div>
@@ -52,9 +51,10 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { KnownSymbols } from '@sora-substrate/util'
+import { KnownSymbols, CodecString } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import { isWalletConnected } from '@/utils'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -64,18 +64,18 @@ import { Components } from '@/consts'
     Settings: lazyComponent(Components.Settings)
   }
 })
-export default class SwapInfo extends Mixins(TranslationMixin) {
+export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMixin) {
   @Getter tokenFrom!: any
   @Getter tokenTo!: any
   @Getter isTokenFromPrice!: boolean
   @Getter slippageTolerance!: number
-  @Getter minMaxReceived!: string
+  @Getter minMaxReceived!: CodecString
   @Getter isExchangeB!: boolean
-  @Getter liquidityProviderFee!: string
-  @Getter networkFee!: string
+  @Getter liquidityProviderFee!: CodecString
+  @Getter networkFee!: CodecString
   @Action setTokenFromPrice
-  @Getter('price', { namespace: 'prices' }) price!: string | number
-  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
+  @Getter('price', { namespace: 'prices' }) price!: string
+  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
 
   @Prop({ default: false, type: Boolean }) readonly showPrice!: boolean
   @Prop({ default: true, type: Boolean }) readonly showTooltips!: boolean
@@ -96,20 +96,32 @@ export default class SwapInfo extends Mixins(TranslationMixin) {
     return `${this.priceReversed} ${toSymbol} / ${fromSymbol}`
   }
 
-  get priceImpact (): string {
-    // TODO: Generate price impact value, is could be positive or negative, use appropriate class to show it in layout
-    return '0.0222'
+  get formattedNetworkFee (): string {
+    return this.formatCodecNumber(this.networkFee)
   }
 
-  get priceImpactClass (): string {
-    if (+this.priceImpact > 0) {
-      return 'price-impact-positive'
-    }
-    if (+this.priceImpact < 0) {
-      return 'price-impact-negative'
-    }
-    return ''
+  get formattedLiquidityProviderFee (): string {
+    return this.formatCodecNumber(this.liquidityProviderFee)
   }
+
+  get formattedMinMaxReceived (): string {
+    const decimals = (this.isExchangeB ? this.tokenFrom : this.tokenTo)?.decimals
+    return this.formatCodecNumber(this.minMaxReceived, decimals)
+  }
+
+  // TODO: [Release 2]
+  // get priceImpact (): string {
+  //   return '0'
+  // }
+  // get priceImpactClass (): string {
+  //   if (+this.priceImpact > 0) {
+  //     return 'price-impact-positive'
+  //   }
+  //   if (+this.priceImpact < 0) {
+  //     return 'price-impact-negative'
+  //   }
+  //   return ''
+  // }
 
   get xorSymbol (): string {
     return ' ' + KnownSymbols.XOR

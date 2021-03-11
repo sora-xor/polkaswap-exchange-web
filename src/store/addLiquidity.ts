@@ -4,7 +4,9 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { Asset, AccountAsset, KnownAssets, FPNumber } from '@sora-substrate/util'
+import { Asset, AccountAsset, KnownAssets, FPNumber, CodecString } from '@sora-substrate/util'
+
+import { ZeroStringValue } from '@/consts'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -30,10 +32,10 @@ interface AddLiquidityState {
   secondToken: Asset | AccountAsset | null;
   firstTokenValue: string;
   secondTokenValue: string;
-  reserve: null | Array<string>;
-  minted: string;
-  fee: string;
-  totalSupply: number;
+  reserve: null | Array<CodecString>;
+  minted: CodecString;
+  fee: CodecString;
+  totalSupply: CodecString;
   focusedField: null | string;
   isAvailable: boolean;
 }
@@ -47,7 +49,7 @@ function initialState (): AddLiquidityState {
     reserve: null,
     minted: '',
     fee: '',
-    totalSupply: 0,
+    totalSupply: '',
     focusedField: null,
     isAvailable: false
   }
@@ -69,10 +71,10 @@ const getters = {
     return state.secondToken?.decimals ?? 0
   },
   firstTokenAddress (state: AddLiquidityState) {
-    return state.firstToken?.address ?? 0
+    return state.firstToken?.address ?? ''
   },
   secondTokenAddress (state: AddLiquidityState) {
-    return state.secondToken?.address ?? 0
+    return state.secondToken?.address ?? ''
   },
   firstTokenValue (state: AddLiquidityState) {
     return state.firstTokenValue
@@ -84,31 +86,31 @@ const getters = {
     return state.reserve
   },
   reserveA (state: AddLiquidityState) {
-    return state.reserve ? Number(state.reserve[0]) : 0
+    return state.reserve ? state.reserve[0] : ZeroStringValue
   },
   reserveB (state: AddLiquidityState) {
-    return state.reserve ? Number(state.reserve[1]) : 0
+    return state.reserve ? state.reserve[1] : ZeroStringValue
   },
   isAvailable (state: AddLiquidityState) {
     return state.isAvailable && state.reserve
   },
   isNotFirstLiquidityProvider (state: AddLiquidityState, getters) {
-    return state.reserve && getters.reserveA !== 0 && getters.reserveB !== 0
+    return state.reserve && (+getters.reserveA !== 0) && (+getters.reserveB !== 0)
   },
   minted (state: AddLiquidityState) {
-    return state.minted || '0'
+    return state.minted || ZeroStringValue
   },
   fee (state: AddLiquidityState) {
-    return state.fee || '0'
+    return state.fee || ZeroStringValue
   },
   totalSupply (state: AddLiquidityState) {
-    return state.totalSupply || '0'
+    return state.totalSupply || ZeroStringValue
   },
   shareOfPool (state: AddLiquidityState, getters) {
-    const minted = new FPNumber(getters.minted)
+    const minted = FPNumber.fromCodecValue(getters.minted)
     return getters.firstTokenValue && getters.secondTokenValue
-      ? minted.div(new FPNumber(getters.totalSupply).add(minted)).mul(new FPNumber(100)).toString() || 0
-      : 0
+      ? minted.div(FPNumber.fromCodecValue(getters.totalSupply).add(minted)).mul(new FPNumber(100)).format() || ZeroStringValue
+      : ZeroStringValue
   }
 }
 
@@ -133,14 +135,14 @@ const mutations = {
   },
   [types.GET_RESERVE_REQUEST] (state) {
   },
-  [types.GET_RESERVE_SUCCESS] (state: AddLiquidityState, reserve: null | Array<string>) {
+  [types.GET_RESERVE_SUCCESS] (state: AddLiquidityState, reserve: null | Array<CodecString>) {
     state.reserve = reserve
   },
   [types.GET_RESERVE_FAILURE] (state, error) {
   },
   [types.ESTIMATE_MINTED_REQUEST] (state) {
   },
-  [types.ESTIMATE_MINTED_SUCCESS] (state: AddLiquidityState, { minted, pts }: { minted: string; pts: number }) {
+  [types.ESTIMATE_MINTED_SUCCESS] (state: AddLiquidityState, { minted, pts }: { minted: CodecString; pts: CodecString }) {
     state.minted = minted
     state.totalSupply = pts
   },
@@ -148,7 +150,7 @@ const mutations = {
   },
   [types.GET_FEE_REQUEST] (state) {
   },
-  [types.GET_FEE_SUCCESS] (state: AddLiquidityState, fee: string) {
+  [types.GET_FEE_SUCCESS] (state: AddLiquidityState, fee: CodecString) {
     state.fee = fee
   },
   [types.GET_FEE_FAILURE] (state, error) {
@@ -167,7 +169,7 @@ const actions = {
   async setFirstToken ({ commit, dispatch }, asset: any) {
     let firstAsset = api.accountAssets.find(a => a.address === asset.address)
     if (!firstAsset) {
-      firstAsset = { ...asset, balance: '0' }
+      firstAsset = { ...asset, balance: ZeroStringValue }
     }
 
     commit(types.SET_FIRST_TOKEN, firstAsset)
@@ -179,7 +181,7 @@ const actions = {
   async setSecondToken ({ commit, dispatch }, asset: any) {
     let secondAddress = api.accountAssets.find(a => a.address === asset.address)
     if (!secondAddress) {
-      secondAddress = { ...asset, balance: '0' }
+      secondAddress = { ...asset, balance: ZeroStringValue }
     }
     commit(types.SET_SECOND_TOKEN, secondAddress)
     commit(types.SET_FIRST_TOKEN_VALUE, '')
@@ -245,9 +247,10 @@ const actions = {
         commit(
           types.SET_SECOND_TOKEN_VALUE,
           new FPNumber(value)
-            .mul(new FPNumber(getters.reserveB))
-            .div(new FPNumber(getters.reserveA))
-            .toString(getters.firstTokenDecimals))
+            .mul(FPNumber.fromCodecValue(getters.reserveB))
+            .div(FPNumber.fromCodecValue(getters.reserveA))
+            .toString()
+        )
       }
       dispatch('estimateMinted')
       dispatch('getNetworkFee')
@@ -263,9 +266,10 @@ const actions = {
         commit(
           types.SET_FIRST_TOKEN_VALUE,
           new FPNumber(value)
-            .mul(new FPNumber(getters.reserveA))
-            .div(new FPNumber(getters.reserveB))
-            .toString(getters.secondTokenDecimals))
+            .mul(FPNumber.fromCodecValue(getters.reserveA))
+            .div(FPNumber.fromCodecValue(getters.reserveB))
+            .toString()
+        )
       }
       dispatch('estimateMinted')
       dispatch('getNetworkFee')
@@ -287,7 +291,7 @@ const actions = {
         commit(types.GET_FEE_FAILURE, error)
       }
     } else {
-      commit(types.GET_FEE_SUCCESS, 0)
+      commit(types.GET_FEE_SUCCESS, ZeroStringValue)
     }
   },
 

@@ -10,7 +10,7 @@
       <div v-if="message" class="transaction-info">{{ message }}</div>
       <!-- This link was hidden due to PSS-205 task. We'll return it back later.  -->
       <!-- <s-icon name="external-link" @click="handleTransactionInfo" /> -->
-      <!-- TODO: Add correct icons and add functionality -->
+      <!-- Add correct icons and add functionality -->
       <!-- <s-icon name="arrow-bottom-rounded" /> -->
     </div>
     <s-divider />
@@ -22,12 +22,11 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from './DialogBase.vue'
-
+// TODO: This component is not used
 @Component({
   components: {
     DialogBase
@@ -43,7 +42,7 @@ export default class ResultDialog extends Mixins(TranslationMixin, DialogMixin) 
   }
 
   handleTransactionInfo (): void {
-    // TODO: Go to Transaction Info
+    // Go to Transaction Info
   }
 }
 </script>

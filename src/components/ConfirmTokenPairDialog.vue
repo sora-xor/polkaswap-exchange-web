@@ -21,14 +21,14 @@
           <token-logo :token="firstToken" size="small" />
           <span class="token-symbol">{{ firstToken.symbol }} {{ t('createPair.deposit')}}</span>
         </s-row>
-        <div class="token-value">{{ firstTokenValue }}</div>
+        <div class="token-value">{{ formattedFirstTokenValue }}</div>
       </s-row>
       <s-row flex justify="space-between" class="token">
         <s-row v-if="secondToken" flex>
           <token-logo :token="secondToken" size="small" />
           <span class="token-symbol">{{ secondToken.symbol }} {{ t('createPair.deposit')}}</span>
         </s-row>
-        <div class="token-value">{{ secondTokenValue }}</div>
+        <div class="token-value">{{ formattedSecondTokenValue }}</div>
       </s-row>
     </div>
     <div class="pair-info">
@@ -41,14 +41,14 @@
       </s-row>
       <s-row flex justify="space-between" class="pair-info__line">
         <div>{{ t('createPair.shareOfPool') }}</div>
-        <div>{{ shareOfPool }}</div>
+        <div>{{ shareOfPool }}%</div>
       </s-row>
     </div>
     <template #footer>
       <s-button
         type="primary"
         :loading="parentLoading"
-        @click="handleConfirmCreatePair"
+        @click="handleConfirm"
       >
         {{ t('exchange.confirm') }}
       </s-button>
@@ -57,17 +57,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+import { Component, Mixins, Prop } from 'vue-property-decorator'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
-
-const namespace = 'createPair'
 
 @Component({
   components: {
@@ -76,22 +74,26 @@ const namespace = 'createPair'
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
-export default class ConfirmCreatePair extends Mixins(TranslationMixin, DialogMixin, LoadingMixin) {
-  // TODO: refactoring ConfirmCreatePair & ConfirmAddLiquidity
-  readonly shareOfPool = '100%' // Because when we create pair - all pool tokens are yours
+export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, DialogMixin, LoadingMixin, NumberFormatterMixin) {
+  @Prop({ type: String, default: '100' }) readonly shareOfPool!: string
+  @Prop({ type: Object }) readonly firstToken!: any
+  @Prop({ type: Object }) readonly secondToken!: any
+  @Prop({ type: String }) readonly firstTokenValue!: string
+  @Prop({ type: String }) readonly secondTokenValue!: string
+  @Prop({ type: String }) readonly minted!: string
+  @Prop({ type: String }) readonly price!: string
+  @Prop({ type: String }) readonly priceReversed!: string
+  @Prop({ type: [String, Number] }) readonly slippageTolerance!: string | number
 
-  @Getter('firstToken', { namespace }) firstToken!: any
-  @Getter('secondToken', { namespace }) secondToken!: any
-  @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
-  @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
-  @Getter('minted', { namespace }) minted!: string
+  get formattedFirstTokenValue (): string {
+    return this.formatStringValue(this.firstTokenValue, this.firstToken?.decimals)
+  }
 
-  @Getter('price', { namespace: 'prices' }) price!: string | number
-  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
+  get formattedSecondTokenValue (): string {
+    return this.formatStringValue(this.secondTokenValue, this.secondToken?.decimals)
+  }
 
-  @Getter slippageTolerance!: number
-
-  handleConfirmCreatePair (): void {
+  handleConfirm (): void {
     this.$emit('confirm', true)
   }
 }
@@ -106,23 +108,40 @@ export default class ConfirmCreatePair extends Mixins(TranslationMixin, DialogMi
       margin-right: $inner-spacing-mini;
     }
   }
+  > .s-row:first-child {
+    margin-bottom: $inner-spacing-mini;
+  }
 }
+
+.tokens,
+.pair-info {
+  padding-left: $inner-spacing-mini;
+  padding-right: $inner-spacing-mini;
+}
+
 .output-description {
   margin-top: $inner-spacing-mini;
   margin-bottom: $inner-spacing-mini;
   font-size: var(--s-font-size-mini);
   line-height: $s-line-height-big;
 }
+
 .pair-info {
   line-height: $s-line-height-big;
+  color: var(--s-color-base-content-secondary);
+  margin-top: $inner-spacing-big;
   &__line {
-    margin-top: $inner-spacing-medium;
-    margin-bottom: $inner-spacing-medium;
+    margin-top: $inner-spacing-mini;
   }
 }
+
 .price {
   text-align: right;
+  div:last-child {
+    margin-top: $inner-spacing-mini;
+  }
 }
+
 .supply-info {
   display: flex;
   justify-content: space-between;

@@ -4,14 +4,17 @@
     :title="t('selectToken.title')"
     custom-class="token-select"
   >
-    <s-input
-      v-model="query"
-      :placeholder="t('selectToken.searchPlaceholder')"
-      class="token-search"
-      prefix="el-icon-search"
-      size="medium"
-      border-radius="mini"
-    />
+    <div class="token-select__search">
+      <s-input
+        v-model="query"
+        :placeholder="t('selectToken.searchPlaceholder')"
+        class="token-search"
+        prefix="el-icon-search"
+        size="medium"
+        border-radius="mini"
+      />
+      <s-button class="s-button--clear" icon="circle-x" @click="handleClearSearch" />
+    </div>
     <div v-if="filteredTokens && filteredTokens.length > 0" class="token-list">
       <div v-for="token in filteredTokens" @click="selectToken(token)" :key="token.symbol" class="token-item">
         <s-col>
@@ -22,8 +25,8 @@
             </div>
           </s-row>
         </s-col>
-        <div>
-          <span class="token-item__amount">{{ token.amount || '-' }}</span>
+        <div v-if="connected">
+          <span class="token-item__amount">{{ formatBalance(token) }}</span>
         </div>
       </div>
     </div>
@@ -37,13 +40,13 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { KnownAssets, KnownSymbols, Asset } from '@sora-substrate/util'
+import { Asset, AccountAsset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
-import { Token } from '@/types'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
 
@@ -55,34 +58,58 @@ const namespace = 'assets'
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, LoadingMixin) {
+export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, LoadingMixin, NumberFormatterMixin) {
   query = ''
-  selectedToken: Token | null = null
 
-  @Prop({ default: () => null, type: Object }) readonly asset!: Token
+  @Prop({ default: () => false, type: Boolean }) readonly connected!: boolean
+  @Prop({ default: () => null, type: Object }) readonly asset!: Asset
   @Prop({ default: () => false, type: Boolean }) readonly accountAssetsOnly!: boolean
   @Prop({ default: () => false, type: Boolean }) readonly notNullBalanceOnly!: boolean
 
-  @Getter('assets', { namespace }) assets!: Array<Token>
+  @Getter('assets', { namespace }) assets!: Array<Asset>
   @Action('getAssets', { namespace }) getAssets
 
-  @Getter('accountAssets') accountAssets!: Array<Token>
+  @Getter('accountAssets') accountAssets!: Array<AccountAsset>
   @Action('getAccountAssets') getAccountAssets
 
-  get assetsList (): Array<Token> {
-    let assets = this.accountAssetsOnly ? this.accountAssets : this.assets
-    assets = this.asset ? assets.filter(asset => asset.symbol !== this.asset.symbol) : assets
-
-    return this.notNullBalanceOnly ? assets.filter(a => a.balance > 0) : assets
+  get accountAssetsHashTable () {
+    return this.accountAssets.reduce((result, item) => ({
+      ...result,
+      [item.address]: item
+    }), {})
   }
 
-  get filteredTokens (): Array<Token> {
+  get assetsList (): Array<AccountAsset> {
+    const { asset, assets, accountAssetsHashTable, notNullBalanceOnly, accountAssetsOnly } = this
+
+    return assets.reduce((result: Array<AccountAsset>, item: Asset) => {
+      if (!item || (asset && item.address === asset.address)) return result
+
+      const accountAsset = accountAssetsHashTable[item.address]
+
+      if (accountAssetsOnly && !accountAsset) return result
+
+      const balance = accountAsset?.balance
+
+      if (notNullBalanceOnly && (!balance || +balance <= 0)) return result
+
+      const prepared = {
+        ...item,
+        balance
+      } as AccountAsset
+
+      return [...result, prepared]
+    }, [])
+  }
+
+  get filteredTokens (): Array<AccountAsset> {
     if (this.query) {
       const query = this.query.toLowerCase().trim()
+
       return this.assetsList.filter(t =>
         this.t(`assetNames.${t.symbol}`).toLowerCase().includes(query) ||
-        t.symbol.toLowerCase().includes(query) ||
-        t.address.toLowerCase().includes(query)
+        t.symbol?.toLowerCase?.()?.includes?.(query) ||
+        t.address?.toLowerCase?.()?.includes?.(query)
       )
     }
 
@@ -97,8 +124,7 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
     }
   }
 
-  selectToken (token: Token): void {
-    this.selectedToken = token
+  selectToken (token: AccountAsset): void {
     this.query = ''
     this.$emit('select', token)
     this.$emit('close')
@@ -111,11 +137,25 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
     }
     return tokenSymbol
   }
+
+  formatBalance (token: AccountAsset): string {
+    // show "-" with 0 balance too
+    if (!token.balance || +token.balance === 0) {
+      return '-'
+    }
+    return this.formatCodecNumber(token.balance, token.decimals)
+  }
+
+  handleClearSearch (): void {
+    this.query = ''
+  }
 }
 </script>
 
 <style lang="scss">
 .token-select {
+  @include search-item-unscoped('token-select__search');
+
   .el-dialog {
     overflow: hidden;
     &__body {
@@ -126,6 +166,8 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
 </style>
 
 <style lang="scss" scoped>
+@include search-item('token-select__search');
+
 $token-item-height: 71px;
 
 .token-search {
@@ -145,6 +187,7 @@ $token-item-height: 71px;
     background-color: var(--s-color-base-background-hover);
   }
   &__name, &__amount {
+    white-space: nowrap;
     font-size: var(--s-font-size-small);
     @include font-weight(600);
   }

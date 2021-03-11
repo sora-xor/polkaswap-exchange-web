@@ -1,5 +1,7 @@
 export const AppName = 'Polkaswap'
 
+export const ZeroStringValue = '0'
+
 export enum PageNames {
   About = 'About',
   Exchange = 'Exchange',
@@ -25,13 +27,12 @@ export enum Components {
   TokenLogo = 'TokenLogo',
   PairTokenLogo = 'PairTokenLogo',
   ConfirmSwap = 'ConfirmSwap',
-  ConfirmCreatePair = 'ConfirmCreatePair',
-  ConfirmAddLiquidity = 'ConfirmAddLiquidity',
   ConfirmRemoveLiquidity = 'ConfirmRemoveLiquidity',
+  ConfirmTokenPairDialog = 'ConfirmTokenPairDialog',
   Settings = 'Settings'
 }
 
-// TODO: Some items are hidden because we don't have Stats and Support pages right now
+// TODO: [Release 2] Some items are hidden because we don't have Stats and Support pages right now
 export const MainMenu = [
   PageNames.Exchange,
   PageNames.About

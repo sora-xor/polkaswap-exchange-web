@@ -4,15 +4,14 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { KnownSymbols } from '@sora-substrate/util'
+import { KnownSymbols, Asset, AccountAsset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import { Token } from '@/types'
 import { LogoSize } from '@/consts'
 
 @Component
 export default class TokenLogo extends Mixins(TranslationMixin) {
-  @Prop({ type: Object, default: () => null }) readonly token!: Token
+  @Prop({ type: Object, default: () => null }) readonly token!: AccountAsset | Asset | any
   @Prop({ type: String, default: '' }) readonly tokenSymbol!: string
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
 
