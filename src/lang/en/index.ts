@@ -4,7 +4,8 @@ import { KnownSymbols, Operation, TransactionStatus } from '@sora-substrate/util
 export default {
   transactionSubmittedText: 'Transaction was submitted',
   unknownErrorText: 'ERROR Something went wrong...',
-  connectWalletText: 'Connect wallet',
+  connectWalletText: 'Connect account',
+  connectWalletTextTooltip: 'Connect to SORA Network with polkadot{.js}',
   assetNames: {
     [KnownSymbols.XOR]: 'Sora',
     [KnownSymbols.VAL]: 'Sora Validator Token',

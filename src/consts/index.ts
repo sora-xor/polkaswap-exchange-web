@@ -29,7 +29,8 @@ export enum Components {
   ConfirmSwap = 'ConfirmSwap',
   ConfirmRemoveLiquidity = 'ConfirmRemoveLiquidity',
   ConfirmTokenPairDialog = 'ConfirmTokenPairDialog',
-  Settings = 'Settings'
+  Settings = 'Settings',
+  BrandedTooltip = 'BrandedTooltip'
 }
 
 // TODO: [Release 2] Some items are hidden because we don't have Stats and Support pages right now
