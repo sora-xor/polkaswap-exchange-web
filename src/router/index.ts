@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 
 import { PageNames } from '@/consts'
+import { isWalletConnected } from '@/utils'
 
 Vue.use(VueRouter)
 
@@ -92,7 +93,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!(localStorage.getItem('sora.name') && localStorage.getItem('sora.address'))) {
+    if (!isWalletConnected()) {
       next({
         name: PageNames.Wallet
       })
