@@ -36,7 +36,7 @@
         </div>
       </div>
       <s-icon class="icon-divider" name="plus-rounded" size="medium" />
-      <div class="input-container">
+      <div :class="computedClasses">
         <div class="input-line">
           <div class="input-title">
             <span>{{ t('createPair.deposit') }}</span>
@@ -61,7 +61,15 @@
             <s-button v-if="isSecondMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue(secondToken, setSecondTokenValue)">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
+            <s-button
+              class="el-button--choose-token"
+              type="tertiary"
+              size="small"
+              border-radius="medium"
+              :icon="!hasSecondAddress ? 'chevron-bottom-rounded' : undefined"
+              icon-position="right"
+              @click="!hasSecondAddress ? openSelectSecondTokenDialog() : undefined"
+            >
               <token-logo :token="secondToken" size="small" />
               {{ secondToken.symbol }}
             </s-button>
@@ -224,6 +232,21 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
     return getAssetAddressBySymbol(this.assets, this.$route.params.secondSymbol?.toUpperCase())
   }
 
+  get hasSecondAddress (): string {
+    return this.$route.params.secondSymbol
+  }
+
+  get computedClasses (): string {
+    const componentClass = 'input-container'
+    const classes = [componentClass, componentClass + '--second']
+
+    if (this.$route.params.secondSymbol) {
+      classes.push(`${componentClass}--disabled-select`)
+    }
+
+    return classes.join(' ')
+  }
+
   get liquidityInfo () {
     return this.accountLiquidity.find(l => l.firstAddress === this.firstToken?.address && l.secondAddress === this.secondToken?.address)
   }
@@ -297,8 +320,13 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
 <style lang="scss" scoped>
 .el-form--actions {
   @include input-form-styles;
-  @include buttons;
   @include full-width-button;
+}
+.input-container {
+  @include buttons(true);
+  &--second:not(.input-container--disabled-select) {
+    @include buttons();
+  }
 }
 @include vertical-divider;
 @include vertical-divider('el-divider');
