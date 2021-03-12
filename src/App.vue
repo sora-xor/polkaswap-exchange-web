@@ -1,25 +1,6 @@
 <template>
   <div id="app">
     <header class="header">
-      <!-- <s-menu
-        class="menu"
-        mode="horizontal"
-        background-color="transparent"
-        box-shadow="none"
-        text-color="var(--s-color-base-content-primary)"
-        active-text-color="var(--s-color-theme-accent)"
-        active-hover-color="transparent"
-        :default-active="getCurrentPath()"
-        @select="goTo"
-      >
-        <s-menu-item
-          v-for="item in MainMenu"
-          :key="item"
-          :index="item"
-        >
-          {{ t(`mainMenu.${item}`) }}
-        </s-menu-item>
-      </s-menu> -->
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Exchange)" />
 
       <div class="app-controls s-flex">
@@ -39,8 +20,69 @@
         </branded-tooltip>
       </div>
     </header>
-    <div class="app-content">
-      <router-view :parent-loading="loading" />
+    <div class="app-main">
+      <aside class="app-sidebar">
+        <s-menu
+          class="menu"
+          mode="vertical"
+          background-color="transparent"
+          box-shadow="none"
+          text-color="var(--s-color-base-content-primary)"
+          active-text-color="var(--s-color-theme-accent)"
+          active-hover-color="transparent"
+          :default-active="getCurrentPath()"
+          @select="goTo"
+        >
+          <s-menu-item
+            v-for="item in MainMenu"
+            :key="item.title"
+            :index="item.title"
+            class="menu-item"
+          >
+            <div class="menu-item__icon-container">
+              <s-icon :name="item.icon" size="24" class="menu-item-icon" />
+            </div>
+            <span>{{ t(`mainMenu.${item.title}`) }}</span>
+          </s-menu-item>
+        </s-menu>
+
+        <s-menu
+          class="menu"
+          mode="vertical"
+          background-color="transparent"
+          box-shadow="none"
+          text-color="var(--s-color-base-content-primary)"
+          active-text-color="var(--s-color-theme-accent)"
+          active-hover-color="transparent"
+          :default-active="getCurrentPath()"
+          @select="goTo"
+        >
+          <s-menu-item-group v-for="(group, index) in FooterMenuGroups" :key="index">
+            <s-menu-item
+              v-for="item in MainMenu"
+              :key="item.title"
+              :index="item.title"
+              class="menu-item"
+            >
+              <div class="menu-item__icon-container">
+                <s-icon :name="item.icon" size="24" class="menu-item-icon" />
+              </div>
+              <span>{{ t(`mainMenu.${item.title}`) }}</span>
+            </s-menu-item>
+          </s-menu-item-group>
+        </s-menu>
+      </aside>
+      <div class="app-body">
+        <div class="app-content">
+          <router-view :parent-loading="loading" />
+        </div>
+        <footer class="app-footer">
+          <div class="sora-logo">
+            <span class="sora-logo__title">Powered by</span>
+            <div class="sora-logo__image"></div>
+          </div>
+        </footer>
+      </div>
     </div>
   </div>
 </template>
@@ -50,7 +92,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { connection, initWallet, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
 
-import { PageNames, MainMenu, Components } from '@/consts'
+import { PageNames, MainMenu, FooterMenuGroups, Components } from '@/consts'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -69,6 +111,7 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
 })
 export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   readonly MainMenu = MainMenu
+  readonly FooterMenuGroups = FooterMenuGroups
   readonly PageNames = PageNames
   readonly exchangePages = [
     PageNames.Swap,
@@ -199,6 +242,13 @@ html {
   color: var(--s-color-base-content-primary);
   height: 100vh;
 }
+
+.menu.el-menu {
+  .el-menu-item-group__title {
+    display: none;
+  }
+}
+
 .el-tooltip__popper.info-tooltip {
   padding: $inner-spacing-mini;
   max-width: 320px;
@@ -337,6 +387,46 @@ $logo-width-big: 150px;
 $logo-horizontal-margin: $inner-spacing-mini / 2;
 $header-height: 64px;
 
+.app {
+  &-main {
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+    height: calc(100vh - #{$header-height});
+    position: relative;
+  }
+
+  &-sidebar {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    width: 160px;
+    border-right: 1px solid #ECEFF0;
+    padding-top: $inner-spacing-small;
+    padding-bottom: $inner-spacing-medium;
+    overflow-y: auto;
+  }
+
+  &-body {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex: 1;
+    flex-flow: column nowrap;
+  }
+
+  &-content {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  &-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 40px;
+  }
+}
+
 .header {
   display: flex;
   align-items: center;
@@ -347,29 +437,47 @@ $header-height: 64px;
 
 .menu {
   padding: 0;
-  width: calc(50% - #{$logo-width + $logo-horizontal-margin * 2} / 2);
+  border-right: none;
+
   &.s-menu {
     border-bottom: none;
+
     .el-menu-item {
       margin-right: 0;
+      margin-bottom: 0;
+      border: none;
+      border-radius: 0;
     }
   }
   .el-menu-item {
-    padding-top: 1px;
-    padding-right: $inner-spacing-mini;
-    padding-left: $inner-spacing-mini;
-    font-size: var(--s-heading4-font-size);
-    letter-spacing: $s-letter-spacing-small;
+    padding: 16px 20px;
+    height: 57px;
+    font-size: var(--s-heading6-font-size);
     font-feature-settings: $s-font-feature-settings-title;
+    font-weight: 600;
+
+    &.menu-item--small {
+      height: 41px;
+    }
+
     &.is-active:hover {
       color: var(--s-color-theme-accent-hover) !important;
     }
     &:hover {
-      color: var(--s-color-base-content-secondary) !important;
+      background-color: var(--s-color-base-background-hover) !important;
+
+      & i {
+        color: inherit !important;
+      }
     }
     &:focus {
       background-color: transparent !important;
     }
+  }
+
+  &-item__icon-container {
+    width: 24px;
+    margin-right: 12px;
   }
 }
 
@@ -443,16 +551,27 @@ $header-height: 64px;
   }
 }
 
-.app-content {
-  overflow-y: auto;
-  height: calc(100vh - #{$header-height});
-  position: relative;
+.sora-logo {
+  display: flex;
+  align-items: center;
+  align-self: flex-end;
+
+  &__title {
+    color: var(--s-color-base-content-tertiary);
+    font-size: 15px;
+    line-height: 16px;
+    margin-right: 8px;
+  }
+
+  &__image {
+    width: 171px;
+    height: 40px;
+    background-image: url('~@/assets/img/sora-logo.svg');
+    background-size: cover;
+  }
 }
 
 @include tablet {
-  .menu {
-    width: calc(50% - #{$logo-width-big + $logo-horizontal-margin * 2} / 2);
-  }
   .polkaswap-logo {
     width: $logo-width-big;
     background-image: url('~@/assets/img/polkaswap-logo.svg');
@@ -460,9 +579,6 @@ $header-height: 64px;
 }
 
 @media (max-width: 460px) {
-  .menu {
-    width: auto;
-  }
   .polkaswap-logo {
     display: none;
   }

@@ -13,7 +13,10 @@ export enum PageNames {
   CreatePair = 'CreatePair',
   AddLiquidity = 'AddLiquidity',
   AddLiquidityId = 'AddLiquidityId',
-  RemoveLiquidity = 'RemoveLiquidity'
+  RemoveLiquidity = 'RemoveLiquidity',
+  Bridge = 'Bridge',
+  Farming = 'Farming',
+  Rewards = 'Rewards'
 }
 
 // TODO: Add InfoLine component to the list of components
@@ -35,11 +38,63 @@ export enum Components {
 
 // TODO: [Release 2] Some items are hidden because we don't have Stats and Support pages right now
 export const MainMenu = [
-  PageNames.Exchange,
-  PageNames.About
-  // PageNames.Stats,
-  // PageNames.Support
+  {
+    icon: 'change-positions',
+    title: PageNames.Swap
+  },
+  {
+    icon: 'water',
+    title: PageNames.Pool
+  },
+  {
+    icon: '',
+    title: PageNames.Bridge
+  },
+  {
+    icon: '',
+    title: PageNames.Farming
+  },
+  {
+    icon: '',
+    title: PageNames.Wallet
+  },
+  {
+    icon: '',
+    title: PageNames.Rewards
+  },
+  {
+    icon: '',
+    title: PageNames.About
+  }
 ]
+
+const SocialNetworkLinks = [
+  {
+    icon: '',
+    title: 'Twitter',
+    href: ''
+  },
+  {
+    icon: '',
+    title: 'Telegram',
+    href: ''
+  }
+]
+
+const SupportLinks = [
+  {
+    icon: '',
+    title: 'Faucet',
+    href: ''
+  },
+  {
+    icon: '',
+    title: 'Help',
+    href: ''
+  }
+]
+
+export const FooterMenuGroups = [SocialNetworkLinks, SupportLinks]
 
 export const ExchangeTabs = [
   PageNames.Swap,

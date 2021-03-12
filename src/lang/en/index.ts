@@ -25,6 +25,12 @@ export default {
     [PageNames.RemoveLiquidity]: 'Remove Liquidity'
   },
   mainMenu: {
+    [PageNames.Swap]: 'Swap',
+    [PageNames.Pool]: 'Pool',
+    [PageNames.Bridge]: 'Bridge',
+    [PageNames.Farming]: 'Farming',
+    [PageNames.Wallet]: 'Account',
+    [PageNames.Rewards]: 'Rewards',
     [PageNames.Exchange]: 'Exchange',
     [PageNames.About]: 'About',
     [PageNames.Stats]: 'Stats',
