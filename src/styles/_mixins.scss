@@ -157,6 +157,9 @@
       @if $isChooseTokenDisabled == true {
         cursor: default;
       } @else {
+        &:hover, &:active {
+          cursor: pointer;
+        }
         &:hover, &:active, &:focus {
           background-color: var(--s-color-base-background-hover);
           border-color: var(--s-color-base-background-hover);

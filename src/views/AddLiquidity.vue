@@ -36,7 +36,7 @@
         </div>
       </div>
       <s-icon class="icon-divider" name="plus-rounded" size="medium" />
-      <div class="input-container">
+      <div :class="computedClasses">
         <div class="input-line">
           <div class="input-title">
             <span>{{ t('createPair.deposit') }}</span>
@@ -61,7 +61,15 @@
             <s-button v-if="isSecondMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue(secondToken, setSecondTokenValue)">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
+            <s-button
+              class="el-button--choose-token"
+              type="tertiary"
+              size="small"
+              border-radius="medium"
+              :icon="!secondAddress ? 'chevron-bottom-rounded' : undefined"
+              icon-position="right"
+              @click="!secondAddress ? openSelectSecondTokenDialog() : undefined"
+            >
               <token-logo :token="secondToken" size="small" />
               {{ secondToken.symbol }}
             </s-button>
@@ -186,8 +194,8 @@ import { FPNumber, AccountLiquidity, CodecString } from '@sora-substrate/util'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
 
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
+import router, { lazyComponent } from '@/router'
+import { Components, PageNames } from '@/consts'
 
 const namespace = 'addLiquidity'
 
@@ -221,8 +229,19 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
     return this.$route.params.secondAddress
   }
 
+  get computedClasses (): string {
+    const componentClass = 'input-container'
+    const classes = [componentClass, componentClass + '--second']
+
+    if (this.secondAddress) {
+      classes.push(`${componentClass}--disabled-select`)
+    }
+
+    return classes.join(' ')
+  }
+
   get liquidityInfo () {
-    return this.accountLiquidity.find(l => l.firstAddress === this.firstToken.address && l.secondAddress === this.secondToken.address)
+    return this.accountLiquidity.find(l => l.firstAddress === this.firstToken?.address && l.secondAddress === this.secondToken?.address)
   }
 
   get emptyAssets (): boolean {
@@ -252,6 +271,10 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
         firstAddress: this.firstAddress,
         secondAddress: this.secondAddress
       })
+    }
+    // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
+    if (this.firstAddress && this.secondAddress && !this.liquidityInfo) {
+      router.push({ name: PageNames.Pool })
     }
   }
 
@@ -289,8 +312,13 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
 <style lang="scss" scoped>
 .el-form--actions {
   @include input-form-styles;
-  @include buttons;
   @include full-width-button;
+}
+.input-container {
+  @include buttons(true);
+  &--second:not(.input-container--disabled-select) {
+    @include buttons();
+  }
 }
 @include vertical-divider;
 @include vertical-divider('el-divider');
