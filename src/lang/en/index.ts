@@ -37,6 +37,12 @@ export default {
     [PageNames.Support]: 'Support',
     [PageNames.CreatePair]: 'Create Pair'
   },
+  footerMenu: {
+    twitter: 'Twitter',
+    telegram: 'Telegram',
+    faucet: 'Faucet',
+    help: 'Help'
+  },
   operations: {
     [TransactionStatus.Finalized]: {
       [Operation.Transfer]: 'Sent {amount} {symbol} to {address}',

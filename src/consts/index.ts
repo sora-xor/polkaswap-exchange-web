@@ -36,14 +36,22 @@ export enum Components {
   BrandedTooltip = 'BrandedTooltip'
 }
 
-// TODO: [Release 2] Some items are hidden because we don't have Stats and Support pages right now
-export const MainMenu = [
+interface SidebarMenuItem {
+  icon: string;
+  title: string;
+}
+
+interface SidebarMenuItemLink extends SidebarMenuItem {
+  href?: string;
+}
+
+const MainMenu: Array<SidebarMenuItem> = [
   {
     icon: 'change-positions',
     title: PageNames.Swap
   },
   {
-    icon: 'water',
+    icon: '',
     title: PageNames.Pool
   },
   {
@@ -53,7 +61,10 @@ export const MainMenu = [
   {
     icon: '',
     title: PageNames.Farming
-  },
+  }
+]
+
+const AccountMenu: Array<SidebarMenuItem> = [
   {
     icon: '',
     title: PageNames.Wallet
@@ -61,40 +72,40 @@ export const MainMenu = [
   {
     icon: '',
     title: PageNames.Rewards
-  },
+  }
+]
+
+const OtherPagesMenu: Array<SidebarMenuItem> = [
   {
     icon: '',
     title: PageNames.About
   }
 ]
 
-const SocialNetworkLinks = [
+export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
   {
     icon: '',
-    title: 'Twitter',
-    href: ''
+    title: 'twitter',
+    href: 'https://twitter.com/sora_xor'
   },
   {
     icon: '',
-    title: 'Telegram',
-    href: ''
+    title: 'telegram',
+    href: 'https://t.me/sora_xor'
   }
 ]
 
-const SupportLinks = [
-  {
-    icon: '',
-    title: 'Faucet',
-    href: ''
-  },
-  {
-    icon: '',
-    title: 'Help',
-    href: ''
-  }
-]
+export const FaucetLink: SidebarMenuItemLink = {
+  icon: '',
+  title: 'faucet',
+  href: ''
+}
 
-export const FooterMenuGroups = [SocialNetworkLinks, SupportLinks]
+export const SidebarMenuGroups = [
+  MainMenu,
+  AccountMenu,
+  OtherPagesMenu
+]
 
 export const ExchangeTabs = [
   PageNames.Swap,

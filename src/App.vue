@@ -33,33 +33,9 @@
           :default-active="getCurrentPath()"
           @select="goTo"
         >
-          <s-menu-item
-            v-for="item in MainMenu"
-            :key="item.title"
-            :index="item.title"
-            class="menu-item"
-          >
-            <div class="menu-item__icon-container">
-              <s-icon :name="item.icon" size="24" class="menu-item-icon" />
-            </div>
-            <span>{{ t(`mainMenu.${item.title}`) }}</span>
-          </s-menu-item>
-        </s-menu>
-
-        <s-menu
-          class="menu"
-          mode="vertical"
-          background-color="transparent"
-          box-shadow="none"
-          text-color="var(--s-color-base-content-primary)"
-          active-text-color="var(--s-color-theme-accent)"
-          active-hover-color="transparent"
-          :default-active="getCurrentPath()"
-          @select="goTo"
-        >
-          <s-menu-item-group v-for="(group, index) in FooterMenuGroups" :key="index">
+          <s-menu-item-group v-for="(group, index) in SidebarMenuGroups" :key="index">
             <s-menu-item
-              v-for="item in MainMenu"
+              v-for="item in group"
               :key="item.title"
               :index="item.title"
               class="menu-item"
@@ -69,6 +45,43 @@
               </div>
               <span>{{ t(`mainMenu.${item.title}`) }}</span>
             </s-menu-item>
+          </s-menu-item-group>
+        </s-menu>
+
+        <s-menu
+          class="menu"
+          mode="vertical"
+          background-color="transparent"
+          box-shadow="none"
+          text-color="var(--s-color-base-content-tertiary)"
+          active-text-color="var(--s-color-base-content-tertiary)"
+          active-hover-color="transparent"
+        >
+          <s-menu-item-group>
+            <li v-for="item in SocialNetworkLinks" :key="item.title">
+              <a class="s-flex menu-item__link el-menu-item menu-item--small" :href="item.href" target="_blank" rel="nofollow noopener">
+                <div class="menu-item__icon-container">
+                  <s-icon :name="item.icon" size="24" class="menu-item-icon" />
+                </div>
+                <span>{{ t(`footerMenu.${item.title}`) }}</span>
+              </a>
+            </li>
+          </s-menu-item-group>
+          <s-menu-item-group>
+            <li>
+              <a class="s-flex menu-item__link el-menu-item menu-item--small" :href="FaucetLink.href" target="_blank" rel="nofollow noopener">
+                <div class="menu-item__icon-container">
+                  <s-icon :name="FaucetLink.icon" size="24" class="menu-item-icon" />
+                </div>
+                <span>{{ t(`footerMenu.${FaucetLink.title}`) }}</span>
+              </a>
+            </li>
+            <li class="s-flex el-menu-item menu-item--small">
+              <div class="menu-item__icon-container">
+                <s-icon name="" size="24" class="menu-item-icon" />
+              </div>
+              <span>{{ t(`footerMenu.help`) }}</span>
+            </li>
           </s-menu-item-group>
         </s-menu>
       </aside>
@@ -92,7 +105,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { connection, initWallet, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
 
-import { PageNames, MainMenu, FooterMenuGroups, Components } from '@/consts'
+import { PageNames, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components } from '@/consts'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -110,8 +123,9 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
   }
 })
 export default class App extends Mixins(TransactionMixin, LoadingMixin) {
-  readonly MainMenu = MainMenu
-  readonly FooterMenuGroups = FooterMenuGroups
+  readonly SidebarMenuGroups = SidebarMenuGroups
+  readonly SocialNetworkLinks = SocialNetworkLinks
+  readonly FaucetLink = FaucetLink
   readonly PageNames = PageNames
   readonly exchangePages = [
     PageNames.Swap,
@@ -246,6 +260,10 @@ html {
 .menu.el-menu {
   .el-menu-item-group__title {
     display: none;
+  }
+
+  &:not(.el-menu--horizontal) > :not(:last-child) {
+    margin-bottom: 12px;
   }
 }
 
@@ -409,7 +427,7 @@ $header-height: 64px;
 
   &-body {
     position: relative;
-    overflow: hidden;
+    overflow-y: auto;
     display: flex;
     flex: 1;
     flex-flow: column nowrap;
@@ -417,7 +435,6 @@ $header-height: 64px;
 
   &-content {
     flex: 1;
-    overflow-y: auto;
   }
 
   &-footer {
@@ -439,6 +456,10 @@ $header-height: 64px;
   padding: 0;
   border-right: none;
 
+  & + .menu {
+    margin-top: 12px;
+  }
+
   &.s-menu {
     border-bottom: none;
 
@@ -458,6 +479,9 @@ $header-height: 64px;
 
     &.menu-item--small {
       height: 41px;
+      line-height: 41px;
+      padding: 8px 20px;
+      color: var(--s-color-base-content-tertiary)
     }
 
     &.is-active:hover {
@@ -472,6 +496,13 @@ $header-height: 64px;
     }
     &:focus {
       background-color: transparent !important;
+    }
+  }
+
+  &-item__link {
+    &, &:hover, &:focus, &:visited {
+      text-decoration: none;
+      color: inherit;
     }
   }
 
