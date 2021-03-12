@@ -35,7 +35,7 @@ import TranslationMixin from './mixins/TranslationMixin'
 import DialogMixin from './mixins/DialogMixin'
 import DialogBase from './DialogBase.vue'
 
-import pcg from '../../package.json'
+import { AppVersion } from '@/consts'
 
 @Component({
   components: {
@@ -43,7 +43,7 @@ import pcg from '../../package.json'
   }
 })
 export default class HelpDialog extends Mixins(TranslationMixin, DialogMixin) {
-  readonly appVersion = pcg.version
+  readonly appVersion = AppVersion
 
   readonly links = [
     {

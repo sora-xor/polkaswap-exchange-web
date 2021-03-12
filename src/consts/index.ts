@@ -1,3 +1,7 @@
+import pcg from '../../package.json'
+
+export const AppVersion = pcg.version
+
 export const AppName = 'Polkaswap'
 
 export const ZeroStringValue = '0'
