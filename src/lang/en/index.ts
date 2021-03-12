@@ -2,6 +2,7 @@ import { PageNames, Topics } from '@/consts'
 import { KnownSymbols, Operation, TransactionStatus } from '@sora-substrate/util'
 
 export default {
+  appName: 'Polkaswap',
   transactionSubmittedText: 'Transaction was submitted',
   unknownErrorText: 'ERROR Something went wrong...',
   connectWalletText: 'Connect account',
@@ -37,11 +38,22 @@ export default {
     [PageNames.Support]: 'Support',
     [PageNames.CreatePair]: 'Create Pair'
   },
-  footerMenu: {
+  social: {
     twitter: 'Twitter',
-    telegram: 'Telegram',
+    telegram: 'Telegram'
+  },
+  footerMenu: {
     faucet: 'Faucet',
     help: 'Help'
+  },
+  helpDialog: {
+    title: 'Help',
+    termsOfService: 'Terms of Service',
+    privacyPolicy: 'Privacy Policy',
+    termsOfServiceLink: 'https://sora.org',
+    privacyPolicyLink: 'https://soramitsu.co.jp',
+    appVersion: '@:appName version',
+    contactUs: 'Contact us'
   },
   operations: {
     [TransactionStatus.Finalized]: {

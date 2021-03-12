@@ -38,6 +38,7 @@
               v-for="item in group"
               :key="item.title"
               :index="item.title"
+              :disabled="item.disabled"
               class="menu-item"
             >
               <div class="menu-item__icon-container">
@@ -63,7 +64,7 @@
                 <div class="menu-item__icon-container">
                   <s-icon :name="item.icon" size="24" class="menu-item-icon" />
                 </div>
-                <span>{{ t(`footerMenu.${item.title}`) }}</span>
+                <span>{{ t(`social.${item.title}`) }}</span>
               </a>
             </li>
           </s-menu-item-group>
@@ -76,7 +77,7 @@
                 <span>{{ t(`footerMenu.${FaucetLink.title}`) }}</span>
               </a>
             </li>
-            <li class="s-flex el-menu-item menu-item--small">
+            <li class="s-flex el-menu-item menu-item--small" @click="openHelpDialog">
               <div class="menu-item__icon-container">
                 <s-icon name="" size="24" class="menu-item-icon" />
               </div>
@@ -97,6 +98,8 @@
         </footer>
       </div>
     </div>
+
+    <help-dialog :visible.sync="showHelpDialog"></help-dialog>
   </div>
 </template>
 
@@ -119,7 +122,8 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
 
 @Component({
   components: {
-    BrandedTooltip: lazyComponent(Components.BrandedTooltip)
+    BrandedTooltip: lazyComponent(Components.BrandedTooltip),
+    HelpDialog: lazyComponent(Components.HelpDialog)
   }
 })
 export default class App extends Mixins(TransactionMixin, LoadingMixin) {
@@ -136,6 +140,8 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
     PageNames.CreatePair,
     PageNames.Wallet
   ]
+
+  showHelpDialog = false
 
   @Getter firstReadyTransaction!: any
   @Getter account!: any
@@ -211,6 +217,10 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
     if (name === PageNames.Exchange && router.currentRoute.name !== PageNames.Swap) {
       router.push({ name: PageNames.Swap })
     }
+  }
+
+  openHelpDialog (): void {
+    this.showHelpDialog = true
   }
 
   destroyed (): void {

@@ -33,12 +33,14 @@ export enum Components {
   ConfirmRemoveLiquidity = 'ConfirmRemoveLiquidity',
   ConfirmTokenPairDialog = 'ConfirmTokenPairDialog',
   Settings = 'Settings',
-  BrandedTooltip = 'BrandedTooltip'
+  BrandedTooltip = 'BrandedTooltip',
+  HelpDialog = 'HelpDialog'
 }
 
 interface SidebarMenuItem {
   icon: string;
   title: string;
+  disabled?: boolean;
 }
 
 interface SidebarMenuItemLink extends SidebarMenuItem {
@@ -60,7 +62,8 @@ const MainMenu: Array<SidebarMenuItem> = [
   },
   {
     icon: '',
-    title: PageNames.Farming
+    title: PageNames.Farming,
+    disabled: true
   }
 ]
 
