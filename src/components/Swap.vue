@@ -200,13 +200,13 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   get isInsufficientBalance (): boolean {
     if (this.connected && this.areTokensSelected) {
-      let fpBalance = new FPNumber(this.tokenFrom.balance, this.tokenFrom.decimals)
-      const fpAmount = new FPNumber(this.fromValue, this.tokenFrom.decimals)
+      let fpBalance = this.getFPNumberFromCodec(this.tokenFrom.balance, this.tokenFrom.decimals)
+      const fpAmount = this.getFPNumber(this.fromValue, this.tokenFrom.decimals)
       if (FPNumber.lt(fpBalance, fpAmount)) {
         this.insufficientBalanceTokenSymbol = this.tokenFrom.symbol
         return true
       }
-      const fpFee = new FPNumber(this.networkFee, this.tokenFrom.decimals)
+      const fpFee = this.getFPNumberFromCodec(this.networkFee, this.tokenFrom.decimals)
       this.insufficientBalanceTokenSymbol = KnownSymbols.XOR
       if (isXorAccountAsset(this.tokenFrom)) {
         return !(FPNumber.lt(fpFee, fpBalance.sub(fpAmount)) || FPNumber.eq(fpFee, fpBalance.sub(fpAmount)))
@@ -214,7 +214,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       if (!this.tokenXOR) {
         return true
       }
-      fpBalance = new FPNumber(this.tokenXOR.balance, this.tokenXOR.decimals)
+      fpBalance = this.getFPNumberFromCodec(this.tokenXOR.balance, this.tokenXOR.decimals)
       return !(FPNumber.lt(fpFee, fpBalance) || FPNumber.eq(fpFee, fpBalance))
     }
     return false

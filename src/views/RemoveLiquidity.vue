@@ -217,6 +217,11 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
         secondAddress: this.secondTokenAddress
       })
     })
+    // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
+    if (!this.liquidity) {
+      router.push({ name: PageNames.Pool })
+      return
+    }
     this.sliderDragButton = this.$el.querySelector('.slider-container .el-slider__button')
     this.sliderInput = this.$el.querySelector('.s-input--remove-part .el-input__inner')
     if (this.sliderDragButton) {

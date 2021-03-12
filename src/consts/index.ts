@@ -13,7 +13,8 @@ export enum PageNames {
   CreatePair = 'CreatePair',
   AddLiquidity = 'AddLiquidity',
   AddLiquidityId = 'AddLiquidityId',
-  RemoveLiquidity = 'RemoveLiquidity'
+  RemoveLiquidity = 'RemoveLiquidity',
+  PageNotFound = 'PageNotFound'
 }
 
 // TODO: Add InfoLine component to the list of components

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 
 import { PageNames } from '@/consts'
+import { isWalletConnected } from '@/utils'
 
 Vue.use(VueRouter)
 
@@ -47,22 +48,26 @@ const routes: Array<RouteConfig> = [
   {
     path: '/exchange/pool/create-pair',
     name: PageNames.CreatePair,
-    component: lazyView(PageNames.CreatePair)
+    component: lazyView(PageNames.CreatePair),
+    meta: { requiresAuth: true }
   },
   {
     path: '/exchange/pool/add/:firstAddress/:secondAddress',
     name: PageNames.AddLiquidityId,
-    component: lazyView(PageNames.AddLiquidity)
+    component: lazyView(PageNames.AddLiquidity),
+    meta: { requiresAuth: true }
   },
   {
     path: '/exchange/pool/add',
     name: PageNames.AddLiquidity,
-    component: lazyView(PageNames.AddLiquidity)
+    component: lazyView(PageNames.AddLiquidity),
+    meta: { requiresAuth: true }
   },
   {
     path: '/exchange/pool/remove/:firstAddress/:secondAddress',
     name: PageNames.RemoveLiquidity,
-    component: lazyView(PageNames.RemoveLiquidity)
+    component: lazyView(PageNames.RemoveLiquidity),
+    meta: { requiresAuth: true }
   },
   {
     path: '/stats',
@@ -71,12 +76,33 @@ const routes: Array<RouteConfig> = [
   {
     path: '/support',
     name: PageNames.Support
+  },
+  {
+    path: '*',
+    redirect: '/exchange'
+    // TODO: Turn on redirect to PageNotFound
+    // name: PageNames.PageNotFound,
+    // component: lazyComponent(PageNames.PageNotFound)
   }
 ]
 
 const router = new VueRouter({
   mode: 'history',
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!isWalletConnected()) {
+      next({
+        name: PageNames.Wallet
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 
 export default router
