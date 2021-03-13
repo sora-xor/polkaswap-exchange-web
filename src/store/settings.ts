@@ -11,7 +11,8 @@ const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
     'SET_SLIPPAGE_TOLERANCE',
-    'SET_TRANSACTION_DEADLINE'
+    'SET_TRANSACTION_DEADLINE',
+    'SET_FAUCET_URL'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -22,7 +23,8 @@ function initialState () {
     slippageTolerance: storage.get('slippageTolerance') || defaultSlippageTolerance,
     transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
     nodeAddressIp: storage.get('nodeAddress.ip') || '192.168.0.0.1',
-    nodeAddressPort: storage.get('nodeAddress.port') || 2
+    nodeAddressPort: storage.get('nodeAddress.port') || 2,
+    faucetUrl: ''
   }
 }
 
@@ -40,6 +42,9 @@ const getters = {
       ip: state.nodeAddressIp,
       port: state.nodeAddressPort
     }
+  },
+  faucetUrl (state) {
+    return state.faucetUrl
   }
 }
 
@@ -51,6 +56,9 @@ const mutations = {
   [types.SET_TRANSACTION_DEADLINE] (state, value) {
     state.transactionDeadline = value
     storage.set('transactionDeadline', value)
+  },
+  [types.SET_FAUCET_URL] (state, url) {
+    state.faucetUrl = url
   }
 }
 
@@ -60,6 +68,9 @@ const actions = {
   },
   setTransactionDeadline ({ commit }, value) {
     commit(types.SET_TRANSACTION_DEADLINE, Number(value))
+  },
+  setFaucetUrl ({ commit }, url) {
+    commit(types.SET_FAUCET_URL, url)
   }
 }
 

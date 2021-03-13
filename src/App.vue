@@ -69,11 +69,11 @@
             </li>
           </s-menu-item-group>
           <s-menu-item-group>
-            <li>
+            <li v-if="faucetUrl">
               <sidebar-item-content
                 :icon="FaucetLink.icon"
                 :title="t(`footerMenu.${FaucetLink.title}`)"
-                :href="FaucetLink.href"
+                :href="faucetUrl"
                 tag="a"
                 target="_blank"
                 rel="nofollow noopener"
@@ -149,6 +149,8 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   @Getter firstReadyTransaction!: any
   @Getter account!: any
   @Getter currentRoute!: WALLET_CONSTS.RouteNames
+  @Getter faucetUrl!: string
+  @Action setFaucetUrl
   @Action navigate
   @Action trackActiveTransactions
   @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity
@@ -160,6 +162,9 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
     connection.endpoint = data.DEFAULT_NETWORKS?.length ? data.DEFAULT_NETWORKS[0].address : ''
     if (!connection.endpoint) {
       throw new Error('Network is not set')
+    }
+    if (data.FAUCET_URL) {
+      this.setFaucetUrl(data.FAUCET_URL)
     }
     await this.withLoading(async () => {
       const permissions = {

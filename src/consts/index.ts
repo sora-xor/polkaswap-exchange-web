@@ -106,8 +106,7 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
 
 export const FaucetLink: SidebarMenuItemLink = {
   icon: '',
-  title: 'faucet',
-  href: ''
+  title: 'faucet'
 }
 
 export const SidebarMenuGroups = [
