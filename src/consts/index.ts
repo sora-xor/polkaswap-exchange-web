@@ -20,7 +20,8 @@ export enum PageNames {
   RemoveLiquidity = 'RemoveLiquidity',
   Bridge = 'Bridge',
   Farming = 'Farming',
-  Rewards = 'Rewards'
+  Rewards = 'Rewards',
+  PageNotFound = 'PageNotFound'
 }
 
 // TODO: Add InfoLine component to the list of components

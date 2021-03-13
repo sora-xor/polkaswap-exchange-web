@@ -99,6 +99,11 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
     return isWalletConnected()
   }
 
+  getAssetSymbol (address): string {
+    const asset = this.assets.find(a => a.address === address)
+    return asset ? asset.symbol : this.t('pool.unknownAsset')
+  }
+
   handleAddLiquidity (): void {
     router.push({ name: PageNames.AddLiquidity })
   }
@@ -124,11 +129,6 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
       return `${firstToken}-${secondToken}`
     }
     return ''
-  }
-
-  getAssetSymbol (address) {
-    const asset = this.assets.find(a => a.address === address)
-    return asset ? asset.symbol : 'Unknown asset'
   }
 
   getFirstBalance (liquidityItem: AccountLiquidity): string {
