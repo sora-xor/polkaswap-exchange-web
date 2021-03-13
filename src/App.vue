@@ -421,6 +421,7 @@ $logo-width: 40px;
 $logo-width-big: 150px;
 $logo-horizontal-margin: $inner-spacing-mini / 2;
 $header-height: 64px;
+$account-icon-size: 32px;
 
 .app {
   &-main {
@@ -488,7 +489,7 @@ $header-height: 64px;
     }
   }
   .el-menu-item {
-    padding: 16px 20px;
+    padding: $inner-spacing-medium $inner-spacing-medium * 1.25;
     height: 57px;
     font-size: var(--s-heading6-font-size);
     font-feature-settings: $s-font-feature-settings-title;
@@ -496,8 +497,8 @@ $header-height: 64px;
 
     &.menu-item--small {
       height: 41px;
-      line-height: 41px;
-      padding: 8px 20px;
+      line-height: 1;
+      padding: $inner-spacing-mini $inner-spacing-medium * 1.25;
       color: var(--s-color-base-content-tertiary)
     }
 
@@ -566,12 +567,13 @@ $header-height: 64px;
     color: var(--s-color-base-content-primary);
     margin: 0 $inner-spacing-mini;
   }
+
   &-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: $account-icon-size;
+    height: $account-icon-size;
     overflow: hidden;
     border-radius: 50%;
   }
