@@ -41,10 +41,7 @@
               :disabled="item.disabled"
               class="menu-item"
             >
-              <div class="menu-item__icon-container">
-                <s-icon :name="item.icon" size="24" class="menu-item-icon" />
-              </div>
-              <span>{{ t(`mainMenu.${item.title}`) }}</span>
+              <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
             </s-menu-item>
           </s-menu-item-group>
         </s-menu>
@@ -60,29 +57,36 @@
         >
           <s-menu-item-group>
             <li v-for="item in SocialNetworkLinks" :key="item.title">
-              <a class="s-flex menu-item__link el-menu-item menu-item--small" :href="item.href" target="_blank" rel="nofollow noopener">
-                <div class="menu-item__icon-container">
-                  <s-icon :name="item.icon" size="24" class="menu-item-icon" />
-                </div>
-                <span>{{ t(`social.${item.title}`) }}</span>
-              </a>
+              <sidebar-item-content
+                :icon="item.icon"
+                :title="t(`social.${item.title}`)"
+                :href="item.href"
+                tag="a"
+                target="_blank"
+                rel="nofollow noopener"
+                class="el-menu-item menu-item--small"
+              />
             </li>
           </s-menu-item-group>
           <s-menu-item-group>
             <li>
-              <a class="s-flex menu-item__link el-menu-item menu-item--small" :href="FaucetLink.href" target="_blank" rel="nofollow noopener">
-                <div class="menu-item__icon-container">
-                  <s-icon :name="FaucetLink.icon" size="24" class="menu-item-icon" />
-                </div>
-                <span>{{ t(`footerMenu.${FaucetLink.title}`) }}</span>
-              </a>
+              <sidebar-item-content
+                :icon="FaucetLink.icon"
+                :title="t(`footerMenu.${FaucetLink.title}`)"
+                :href="FaucetLink.href"
+                tag="a"
+                target="_blank"
+                rel="nofollow noopener"
+                class="el-menu-item menu-item--small"
+              />
             </li>
-            <li class="s-flex el-menu-item menu-item--small" @click="openHelpDialog">
-              <div class="menu-item__icon-container">
-                <s-icon name="" size="24" class="menu-item-icon" />
-              </div>
-              <span>{{ t(`footerMenu.help`) }}</span>
-            </li>
+            <sidebar-item-content
+              :title="t(`footerMenu.help`)"
+              icon=""
+              tag="li"
+              class="el-menu-item menu-item--small"
+              @click.native="openHelpDialog"
+            />
           </s-menu-item-group>
         </s-menu>
       </aside>
@@ -123,7 +127,8 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
 @Component({
   components: {
     BrandedTooltip: lazyComponent(Components.BrandedTooltip),
-    HelpDialog: lazyComponent(Components.HelpDialog)
+    HelpDialog: lazyComponent(Components.HelpDialog),
+    SidebarItemContent: lazyComponent(Components.SidebarItemContent)
   }
 })
 export default class App extends Mixins(TransactionMixin, LoadingMixin) {
@@ -272,6 +277,10 @@ html {
 
   &:not(.el-menu--horizontal) > :not(:last-child) {
     margin-bottom: 12px;
+  }
+
+  .el-menu-item:not(.is-disabled):hover i {
+    color: inherit;
   }
 }
 
@@ -497,26 +506,10 @@ $header-height: 64px;
     }
     &:hover {
       background-color: var(--s-color-base-background-hover) !important;
-
-      & i {
-        color: inherit !important;
-      }
     }
     &:focus {
       background-color: transparent !important;
     }
-  }
-
-  &-item__link {
-    &, &:hover, &:focus, &:visited {
-      text-decoration: none;
-      color: inherit;
-    }
-  }
-
-  &-item__icon-container {
-    width: 24px;
-    margin-right: 12px;
   }
 }
 

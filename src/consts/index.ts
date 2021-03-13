@@ -1,6 +1,6 @@
-import pcg from '../../package.json'
+import pkg from '../../package.json'
 
-export const AppVersion = pcg.version
+export const AppVersion = pkg.version
 
 export const AppName = 'Polkaswap'
 
@@ -39,7 +39,8 @@ export enum Components {
   ConfirmTokenPairDialog = 'ConfirmTokenPairDialog',
   Settings = 'Settings',
   BrandedTooltip = 'BrandedTooltip',
-  HelpDialog = 'HelpDialog'
+  HelpDialog = 'HelpDialog',
+  SidebarItemContent = 'SidebarItemContent'
 }
 
 interface SidebarMenuItem {

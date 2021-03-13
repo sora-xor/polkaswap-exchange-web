@@ -11,7 +11,7 @@
           target="_blank"
         >
           <span>{{ link.title }}</span>
-          <s-icon name="external-link" />
+          <s-icon name="external-link" size="16" />
         </a>
         <s-divider v-if="index !== links.length - 1" class="help-links-item_divider" />
       </div>
@@ -80,7 +80,8 @@ export default class HelpDialog extends Mixins(TranslationMixin, DialogMixin) {
       text-decoration: unset;
       color: unset;
       font-size: var(--s-heading4-font-size);
-      line-height: 27px;
+      line-height: $s-line-height-medium;
+      letter-spacing: $s-letter-spacing-small;
 
       &_divider {
         margin: unset;
