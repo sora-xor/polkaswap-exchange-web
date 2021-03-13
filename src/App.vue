@@ -131,14 +131,12 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   readonly SocialNetworkLinks = SocialNetworkLinks
   readonly FaucetLink = FaucetLink
   readonly PageNames = PageNames
-  readonly exchangePages = [
-    PageNames.Swap,
-    PageNames.Pool,
+
+  readonly PoolChildPages = [
     PageNames.AddLiquidity,
     PageNames.AddLiquidityId,
     PageNames.RemoveLiquidity,
-    PageNames.CreatePair,
-    PageNames.Wallet
+    PageNames.CreatePair
   ]
 
   showHelpDialog = false
@@ -188,8 +186,8 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   }
 
   getCurrentPath (): string {
-    if (this.exchangePages.includes(router.currentRoute.name as PageNames)) {
-      return PageNames.Exchange
+    if (this.PoolChildPages.includes(router.currentRoute.name as PageNames)) {
+      return PageNames.Pool
     }
     return router.currentRoute.name as string
   }
