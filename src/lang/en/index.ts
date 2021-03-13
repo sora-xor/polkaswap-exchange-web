@@ -7,6 +7,7 @@ export default {
   unknownErrorText: 'ERROR Something went wrong...',
   connectWalletText: 'Connect account',
   connectWalletTextTooltip: 'Connect to SORA Network with polkadot{.js}',
+  comingSoon: 'Coming Soon',
   assetNames: {
     [KnownSymbols.XOR]: 'Sora',
     [KnownSymbols.VAL]: 'Sora Validator Token',
@@ -144,7 +145,7 @@ export default {
     pooledToken: '{tokenSymbol} Pooled',
     pairTokens: '{pair} Pool Tokens',
     poolShare: 'Your pool share',
-    comingSoon: 'Coming soon',
+    comingSoon: '@:comingSoon',
     unknownAsset: 'Unknown asset',
     description: 'When you add liquidity, you are given pool tokens representing your position. These tokens automaticaly earn fees proportional to your share of the pool, and can be redeemed at any time.'
   },
