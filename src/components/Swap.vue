@@ -116,6 +116,8 @@ import { isWalletConnected, isXorAccountAsset, isMaxButtonAvailable, getMaxValue
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
+const namespace = 'swap'
+
 @Component({
   components: {
     SwapInfo: lazyComponent(Components.SwapInfo),
@@ -125,32 +127,31 @@ import { Components, PageNames } from '@/consts'
   }
 })
 export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
-  @Getter tokenXOR!: any
-  @Getter tokenFrom!: any
-  @Getter tokenTo!: any
-  @Getter fromValue!: string
-  @Getter toValue!: string
-  @Getter isExchangeB!: boolean
+  @Getter('tokenXOR', { namespace }) tokenXOR!: AccountAsset
+  @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset
+  @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset
+  @Getter('fromValue', { namespace }) fromValue!: string
+  @Getter('toValue', { namespace }) toValue!: string
+  @Getter('isExchangeB', { namespace }) isExchangeB!: boolean
+  @Getter('networkFee', { namespace }) networkFee!: CodecString
+  @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString
+
+  @Action('getTokenXOR', { namespace }) getTokenXOR!: () => Promise<void>
+  @Action('setTokenFrom', { namespace }) setTokenFrom!: (options: any) => Promise<void>
+  @Action('setTokenTo', { namespace }) setTokenTo!: (options: any) => Promise<void>
+  @Action('setFromValue', { namespace }) setFromValue!: (value: string) => Promise<void>
+  @Action('setToValue', { namespace }) setToValue!: (value: string) => Promise<void>
+  @Action('setTokenFromPrice', { namespace }) setTokenFromPrice!: (isTokenFromPrice: boolean) => Promise<void>
+  @Action('setMinMaxReceived', { namespace }) setMinMaxReceived!: (value: CodecString) => Promise<void>
+  @Action('setExchangeB', { namespace }) setExchangeB!: (isExchangeB: boolean) => Promise<void>
+  @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>
+  @Action('setNetworkFee', { namespace }) setNetworkFee!: (value: CodecString) => Promise<void>
+
+  @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>
+  @Action('resetPrices', { namespace: 'prices' }) resetPrices!: () => Promise<void>
+
   @Getter slippageTolerance!: number
-  @Getter networkFee!: CodecString
-  @Getter liquidityProviderFee!: CodecString
-
-  @Action getTokenXOR
-  @Action setTokenFrom
-  @Action setTokenTo
-  @Action setFromValue
-  @Action setToValue
-  @Action setTokenFromPrice
-  @Action setMinMaxReceived
-  @Action setExchangeB
-  @Action setLiquidityProviderFee
-  @Action setNetworkFee
-
-  @Action('getPrices', { namespace: 'prices' }) getPrices
-  @Action('resetPrices', { namespace: 'prices' }) resetPrices
-
-  // Wallet store
-  @Getter accountAssets!: Array<AccountAsset>
+  @Getter accountAssets!: Array<AccountAsset> // Wallet store
 
   @Watch('slippageTolerance')
   private handleSlippageToleranceChange (): void {
@@ -203,7 +204,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       let fpBalance = this.getFPNumberFromCodec(this.tokenFrom.balance, this.tokenFrom.decimals)
       const fpAmount = this.getFPNumber(this.fromValue, this.tokenFrom.decimals)
       if (FPNumber.lt(fpBalance, fpAmount)) {
-        this.insufficientBalanceTokenSymbol = this.tokenFrom.symbol
+        this.insufficientBalanceTokenSymbol = this.tokenFrom.symbol as string
         return true
       }
       const fpFee = this.getFPNumberFromCodec(this.networkFee, this.tokenFrom.decimals)
@@ -335,7 +336,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       }
     } catch (error) {
       resetOppositeValue()
-      if (!this.isInsufficientAmountError(token.symbol, error.message)) {
+      if (!this.isInsufficientAmountError(token.symbol as string, error.message)) {
         throw error
       }
     } finally {

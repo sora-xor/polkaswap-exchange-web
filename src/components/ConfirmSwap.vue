@@ -41,7 +41,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { CodecString } from '@sora-substrate/util'
+import { CodecString, AccountAsset } from '@sora-substrate/util'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -49,6 +49,8 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
+
+const namespace = 'swap'
 
 @Component({
   components: {
@@ -58,13 +60,14 @@ import { Components } from '@/consts'
   }
 })
 export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin, NumberFormatterMixin) {
-  @Getter tokenFrom!: any
-  @Getter tokenTo!: any
-  @Getter fromValue!: string
-  @Getter minMaxReceived!: CodecString
-  @Getter toValue!: string
+  @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset
+  @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset
+  @Getter('fromValue', { namespace }) fromValue!: string
+  @Getter('toValue', { namespace }) toValue!: string
+  @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString
+  @Getter('isExchangeB', { namespace }) isExchangeB!: boolean
+
   @Getter slippageTolerance!: number
-  @Getter isExchangeB!: boolean
 
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean
 
@@ -92,8 +95,8 @@ export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin, N
           async () => await api.swap(
             this.tokenFrom.address,
             this.tokenTo.address,
-            this.fromValue.toString(),
-            this.toValue.toString(),
+            this.fromValue,
+            this.toValue,
             this.slippageTolerance,
             this.isExchangeB
           )
