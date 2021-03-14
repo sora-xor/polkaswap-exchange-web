@@ -44,7 +44,7 @@ export default class SidebarItemContent extends Mixins(TranslationMixin) {
 }
 
 .icon-container {
-  width: 24px;
-  margin-right: 12px;
+  width: var(--s-size-mini);
+  margin-right: $inner-spacing-small;
 }
 </style>

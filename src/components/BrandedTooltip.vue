@@ -19,8 +19,11 @@ export default {}
 </script>
 
 <style lang="scss">
+$tooltip-padding-top: $inner-spacing-mini * 0.5;
+$tooltip-padding-bottom: $inner-spacing-mini * 0.75;
+
 .el-tooltip__popper.is-light.wallet-tooltip {
-  padding: 4px 8px 6px;
+  padding: $tooltip-padding-top $inner-spacing-mini $tooltip-padding-bottom;
   background-color: var(--s-color-brand-day);
   color: var(--s-color-utility-body);
 

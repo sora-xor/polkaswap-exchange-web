@@ -22,7 +22,7 @@
       </div>
       <div class="help-block">
         {{ t('helpDialog.contactUs') }}<br>
-        polkaswap@soramitsu.co.jp
+        {{ appEmail }}
       </div>
     </div>
   </dialog-base>
@@ -35,7 +35,7 @@ import TranslationMixin from './mixins/TranslationMixin'
 import DialogMixin from './mixins/DialogMixin'
 import DialogBase from './DialogBase.vue'
 
-import { AppVersion } from '@/consts'
+import { AppVersion, AppEmail } from '@/consts'
 
 @Component({
   components: {
@@ -44,6 +44,7 @@ import { AppVersion } from '@/consts'
 })
 export default class HelpDialog extends Mixins(TranslationMixin, DialogMixin) {
   readonly appVersion = AppVersion
+  readonly appEmail = AppEmail
 
   readonly links = [
     {

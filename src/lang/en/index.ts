@@ -8,6 +8,7 @@ export default {
   connectWalletText: 'Connect account',
   connectWalletTextTooltip: 'Connect to SORA Network with polkadot{.js}',
   comingSoon: 'Coming Soon',
+  poweredBy: 'Powered by',
   assetNames: {
     [KnownSymbols.XOR]: 'Sora',
     [KnownSymbols.VAL]: 'Sora Validator Token',

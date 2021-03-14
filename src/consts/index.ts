@@ -4,6 +4,8 @@ export const AppVersion = pkg.version
 
 export const AppName = 'Polkaswap'
 
+export const AppEmail = 'polkaswap@soramitsu.co.jp'
+
 export const ZeroStringValue = '0'
 
 export enum PageNames {

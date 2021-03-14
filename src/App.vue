@@ -96,7 +96,7 @@
         </div>
         <footer class="app-footer">
           <div class="sora-logo">
-            <span class="sora-logo__title">Powered by</span>
+            <span class="sora-logo__title">{{ t('poweredBy') }}</span>
             <div class="sora-logo__image"></div>
           </div>
         </footer>
@@ -281,7 +281,7 @@ html {
   }
 
   &:not(.el-menu--horizontal) > :not(:last-child) {
-    margin-bottom: 12px;
+    margin-bottom: $inner-spacing-small;
   }
 
   .el-menu-item:not(.is-disabled):hover i {
@@ -426,7 +426,9 @@ $logo-width: 40px;
 $logo-width-big: 150px;
 $logo-horizontal-margin: $inner-spacing-mini / 2;
 $header-height: 64px;
-$account-icon-size: 32px;
+$sidebar-witdh: 160px;
+$sora-logo-height: 40px;
+$sora-logo-width: 171px;
 
 .app {
   &-main {
@@ -441,8 +443,8 @@ $account-icon-size: 32px;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
-    width: 160px;
-    border-right: 1px solid #ECEFF0;
+    width: $sidebar-witdh;
+    border-right: 1px solid var(--s-color-base-border-secondary);
     padding-top: $inner-spacing-small;
     padding-bottom: $inner-spacing-medium;
     overflow-y: auto;
@@ -463,7 +465,7 @@ $account-icon-size: 32px;
   &-footer {
     display: flex;
     justify-content: flex-end;
-    padding: 40px;
+    padding: $inner-spacing-mini * 5;
   }
 }
 
@@ -480,7 +482,7 @@ $account-icon-size: 32px;
   border-right: none;
 
   & + .menu {
-    margin-top: 12px;
+    margin-top: $inner-spacing-small;
   }
 
   &.s-menu {
@@ -495,14 +497,13 @@ $account-icon-size: 32px;
   }
   .el-menu-item {
     padding: $inner-spacing-medium $inner-spacing-medium * 1.25;
-    height: 57px;
+    height: initial;
     font-size: var(--s-heading6-font-size);
     font-feature-settings: $s-font-feature-settings-title;
     font-weight: 600;
+    line-height: $s-line-height-big;
 
     &.menu-item--small {
-      height: 41px;
-      line-height: 1;
       padding: $inner-spacing-mini $inner-spacing-medium * 1.25;
       color: var(--s-color-base-content-tertiary)
     }
@@ -577,8 +578,8 @@ $account-icon-size: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: $account-icon-size;
-    height: $account-icon-size;
+    width: var(--s-size-small);
+    height: var(--s-size-small);
     overflow: hidden;
     border-radius: 50%;
   }
@@ -599,12 +600,12 @@ $account-icon-size: 32px;
     color: var(--s-color-base-content-tertiary);
     font-size: 15px;
     line-height: 16px;
-    margin-right: 8px;
+    margin-right: $inner-spacing-mini;
   }
 
   &__image {
-    width: 171px;
-    height: 40px;
+    width: $sora-logo-width;
+    height: $sora-logo-height;
     background-image: url('~@/assets/img/sora-logo.svg');
     background-size: cover;
   }
