@@ -3,6 +3,7 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
+import { connection } from '@soramitsu/soraneo-wallet-web'
 
 import storage from '@/utils/storage'
 
@@ -12,7 +13,8 @@ const types = flow(
   concat([
     'SET_SLIPPAGE_TOLERANCE',
     'SET_TRANSACTION_DEADLINE',
-    'SET_FAUCET_URL'
+    'SET_FAUCET_URL',
+    'SET_SORA_NETWORK'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -20,6 +22,7 @@ const types = flow(
 
 function initialState () {
   return {
+    soraNetwork: '',
     slippageTolerance: storage.get('slippageTolerance') || defaultSlippageTolerance,
     transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
     nodeAddressIp: storage.get('nodeAddress.ip') || '192.168.0.0.1',
@@ -31,6 +34,9 @@ function initialState () {
 const state = initialState()
 
 const getters = {
+  soraNetwork (state) {
+    return state.soraNetwork
+  },
   slippageTolerance (state) {
     return state.slippageTolerance
   },
@@ -49,6 +55,9 @@ const getters = {
 }
 
 const mutations = {
+  [types.SET_SORA_NETWORK] (state, value) {
+    state.soraNetwork = value
+  },
   [types.SET_SLIPPAGE_TOLERANCE] (state, value) {
     state.slippageTolerance = value
     storage.set('slippageTolerance', value)
@@ -63,6 +72,16 @@ const mutations = {
 }
 
 const actions = {
+  setSoraNetwork ({ commit }, data) {
+    connection.endpoint = data.DEFAULT_NETWORKS?.length ? data.DEFAULT_NETWORKS[0].address : ''
+    if (!connection.endpoint) {
+      throw new Error('DEFAULT_NETWORK is not set')
+    }
+    if (!data.NETWORK_TYPE) {
+      throw new Error('NETWORK_TYPE is not set')
+    }
+    commit(types.SET_SORA_NETWORK, data.NETWORK_TYPE)
+  },
   setSlippageTolerance ({ commit }, value) {
     commit(types.SET_SLIPPAGE_TOLERANCE, value)
   },

@@ -193,10 +193,10 @@
   }
 }
 
-@mixin vertical-divider($dividerClass: 'icon-divider') {
+@mixin vertical-divider($dividerClass: 'icon-divider', $verticalMargin: $inner-spacing-mini) {
   .#{$dividerClass} {
-    margin-top: $inner-spacing-mini;
-    margin-bottom: $inner-spacing-mini;
+    margin-top: $verticalMargin;
+    margin-bottom: $verticalMargin;
   }
 }
 
@@ -285,4 +285,116 @@
       }
     }
   }
+}
+
+@mixin ethereum-logo-styles {
+  .asset-logo {
+    filter: grayscale(1);
+    opacity: .5;
+  }
+}
+
+@mixin bridge-container {
+  max-width: $bridge-width;
+  width: 100%;
+  .el-loading-mask {
+    border-radius: var(--s-border-radius-medium);
+  }
+}
+
+@mixin bridge-content {
+  margin-top: $basic-spacing * 2;
+  margin-bottom: $basic-spacing * 2;
+  border: none;
+  &,
+  &.is-hover-shadow:hover {
+    box-shadow: var(--s-shadow-surface);
+  }
+}
+
+@mixin input-font-styles {
+  height: var(--s-size-small);
+  font-size: var(--s-heading3-font-size);
+  line-height: $s-line-height-small;
+  letter-spacing: $s-letter-spacing-small;
+}
+
+@mixin svg-icon ($url: '', $width: var(--s-icon-font-size-mini), $height: $width) {
+  display: block;
+  width: $width;
+  height: $height;
+  @if $url != '' {
+    background-image: url($url);
+  }
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+@mixin status-icon ($withLoading: false) {
+  &-icon {
+    align-self: center;
+    @include svg-icon;
+    &--waiting,
+    &--pending {
+      @if $withLoading == true {
+        @include loading;
+      }
+      background-image: url("~@/assets/img/status-pending.svg");
+      height: var(--s-font-size-mini);
+      width: var(--s-font-size-mini);
+    }
+    &--error {
+      background-image: url("~@/assets/img/status-error.svg");
+    }
+    &--success {
+      background-image: url("~@/assets/img/status-success.svg");
+    }
+  }
+}
+
+@mixin loading {
+  animation: rotation 2s infinite linear;
+  @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
+}
+
+// TODO 4 alexnatalia: Check these styles later
+@mixin button-styles {
+  @include font-weight(600, true);
+  font-size: $s-font-size-button;
+  line-height: $s-line-height-small;
+  letter-spacing: $s-letter-spacing-small;
+  font-feature-settings: $s-font-feature-settings-button;
+}
+
+@mixin next-button {
+  width: 100%;
+  @include font-weight(700, true);
+  font-size: var(--s-heading5-font-size);
+  line-height: $s-line-height-medium;
+  letter-spacing: $s-letter-spacing-big;
+  font-feature-settings: $s-font-feature-settings-title;
+}
+
+@mixin bottom-button {
+  padding: 0;
+  width: $bridge-width;
+  @include button-styles;
+  &:active {
+    border: 1px solid var(--s-color-theme-accent);
+    color: var(--s-color-theme-accent);
+  }
+}
+
+@mixin empty-search {
+  color: var(--s-color-base-content-tertiary);
+  font-feature-settings: $s-font-feature-settings-common;
+  line-height: $s-line-height-big;
 }

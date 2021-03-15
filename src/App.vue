@@ -144,24 +144,35 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
     PageNames.CreatePair
   ]
 
+  readonly BridgeChildPages = [
+    PageNames.BridgeTransaction,
+    PageNames.BridgeTransactionsHistory
+  ]
+
   showHelpDialog = false
 
   @Getter firstReadyTransaction!: any
   @Getter account!: any
   @Getter currentRoute!: WALLET_CONSTS.RouteNames
   @Getter faucetUrl!: string
-  @Action setFaucetUrl
-  @Action navigate
+
+  @Action navigate // Wallet
   @Action trackActiveTransactions
+  @Action setSoraNetwork
+  @Action setFaucetUrl
   @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity
   @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity
   @Action('getAssets', { namespace: 'assets' }) getAssets
+  @Action('setEthereumSmartContracts', { namespace: 'web3' }) setEthereumSmartContracts
+  @Action('setDefaultEthNetwork', { namespace: 'web3' }) setDefaultEthNetwork
 
   async created () {
     const { data } = await axios.get('/env.json')
-    connection.endpoint = data.DEFAULT_NETWORKS?.length ? data.DEFAULT_NETWORKS[0].address : ''
-    if (!connection.endpoint) {
-      throw new Error('Network is not set')
+    await this.setSoraNetwork(data)
+    await this.setDefaultEthNetwork(data.ETH_NETWORK)
+    await this.setEthereumSmartContracts(data.BRIDGE)
+    if (data.FAUCET_URL) {
+      this.setFaucetUrl(data.FAUCET_URL)
     }
     if (data.FAUCET_URL) {
       this.setFaucetUrl(data.FAUCET_URL)
@@ -198,6 +209,9 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   getCurrentPath (): string {
     if (this.PoolChildPages.includes(router.currentRoute.name as PageNames)) {
       return PageNames.Pool
+    }
+    if (this.BridgeChildPages.includes(router.currentRoute.name as PageNames)) {
+      return PageNames.Bridge
     }
     return router.currentRoute.name as string
   }

@@ -1,14 +1,22 @@
-import { PageNames, Topics } from '@/consts'
 import { KnownSymbols, Operation, TransactionStatus } from '@sora-substrate/util'
+
+import { PageNames, Topics, NetworkTypes } from '@/consts'
+import { EthNetwork } from '@/utils/web3-util'
 
 export default {
   appName: 'Polkaswap',
+  soraText: 'SORA',
+  ethereumText: 'Ethereum',
+  changeNetworkText: 'Change network in Metamask',
   transactionSubmittedText: 'Transaction was submitted',
   unknownErrorText: 'ERROR Something went wrong...',
   connectWalletText: 'Connect account',
   connectWalletTextTooltip: 'Connect to SORA Network with polkadot{.js}',
-  comingSoon: 'Coming Soon',
+  bridgeText: 'Bridge',
+  comingSoonText: 'Coming Soon',
   poweredBy: 'Powered by',
+  confirmText: 'Confirm',
+  confirmTransactionText: 'Confirm transaction in {direction}',
   assetNames: {
     [KnownSymbols.XOR]: 'Sora',
     [KnownSymbols.VAL]: 'Sora Validator Token',
@@ -18,6 +26,7 @@ export default {
     [PageNames.Exchange]: 'Exchange',
     [PageNames.Swap]: 'Swap',
     [PageNames.Pool]: 'Pool',
+    [PageNames.Bridge]: '@:bridgeText',
     [PageNames.About]: 'About',
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
@@ -31,7 +40,7 @@ export default {
   mainMenu: {
     [PageNames.Swap]: 'Swap',
     [PageNames.Pool]: 'Pool',
-    [PageNames.Bridge]: 'Bridge',
+    [PageNames.Bridge]: '@:bridgeText',
     [PageNames.Farming]: 'Farming',
     [PageNames.Wallet]: 'Account',
     [PageNames.Rewards]: 'Rewards',
@@ -77,6 +86,22 @@ export default {
   pageNotFound: {
     title: 'Page not found',
     body: '404'
+  },
+  metamask: 'Metamask',
+  sora: {
+    [NetworkTypes.Devnet]: 'SORA Devnet',
+    [NetworkTypes.Testnet]: 'SORA Testnet',
+    [NetworkTypes.Mainnet]: 'SORA Mainnet'
+  },
+  ethereum: {
+    [EthNetwork.Mainnet]: 'Ethereum Mainnet',
+    [EthNetwork.Ropsten]: 'Ethereum Ropsten',
+    [EthNetwork.Rinkeby]: 'Ethereum Rinkeby',
+    [EthNetwork.Kovan]: 'Ethereum Kovan',
+    [EthNetwork.Goerli]: 'Ethereum Goerli'
+  },
+  providers: {
+    metamask: '@:metamask'
   },
   about: {
     polkaswapText: 'Polkaswap - decentralised token exchange for Polkadot ecosystem. Swap any token on SORA, add liquidity, create exchanges, earn through passive market making, build decentralized price feeds.',
@@ -149,6 +174,112 @@ export default {
     comingSoon: '@:comingSoon',
     unknownAsset: 'Unknown asset',
     description: 'When you add liquidity, you are given pool tokens representing your position. These tokens automaticaly earn fees proportional to your share of the pool, and can be redeemed at any time.'
+  },
+  bridge: {
+    title: 'SORA Bridge with Ethereum',
+    info: 'Convert your tokens from SORA to Ethereum and vice versa.',
+    from: 'From',
+    to: 'To',
+    balance: 'Balance',
+    chooseToken: 'Choose token',
+    max: 'MAX',
+    connectWallet: 'Connect wallet',
+    connected: 'Connected',
+    changeWallet: 'Change wallet',
+    changeNetwork: '@:changeNetworkText',
+    next: 'Next',
+    enterAnAmount: 'Enter an amount',
+    connectWallets: 'Connect wallets to view respective transaction history.',
+    soraNetworkFee: 'Sora Network Fee',
+    ethereumNetworkFee: 'Ethereum Network Fee',
+    tooltipValue: '@:comingSoonText',
+    total: 'Total',
+    viewHistory: 'View transactions history',
+    transactionSubmitted: 'Transaction submitted',
+    transactionMessage: '{assetA} for {assetB}',
+    notRegisteredAsset: 'Asset {assetSymbol} is not registered',
+    walletProviderConnectionError: '{provider} is not found. Please install it!'
+  },
+  selectRegisteredAsset: {
+    title: 'Select a token',
+    search: {
+      title: 'Tokens',
+      placeholder: 'Search Token Name, Symbol, or Address',
+      networkLabelSora: 'SORA network tokens',
+      networkLabelEthereum: 'Ethereum network mirror tokens',
+      mirrorPrefix: 'Mirror ',
+      emptyListMessage: 'No results'
+    },
+    customAsset: {
+      title: 'Custom',
+      customInfo: 'Important! Custom tokens must be registered in SORA.',
+      registerToken: 'Register token',
+      addressPlaceholder: 'Asset ID',
+      symbolPlaceholder: 'Token symbol',
+      empty: 'No tokens found',
+      alreadyAttached: 'Token was already attached'
+    }
+  },
+  confirmBridgeTransactionDialog: {
+    confirmTransaction: 'Confirm transaction',
+    insufficientBalance: 'Insufficient {assetSymbol} balance',
+    changeNetwork: '@:changeNetworkText',
+    metamask: '@:metamask',
+    sora: '@:soraText',
+    confirm: '@:confirmTransactionText',
+    buttonConfirm: '@:confirmText'
+  },
+  bridgeTransaction: {
+    viewHistory: 'View transaction in transactions history',
+    details: '{from} for {to}',
+    steps: {
+      step: '{step} of 2',
+      step1: '1st',
+      step2: '2nd'
+    },
+    status: {
+      pending: '{step} transactions pending...',
+      failed: '{step} transactions failed. Retry.',
+      confirm: 'Confirm 2nd of 2 transactions...',
+      complete: 'Complete',
+      convertionComplete: 'Convertion complete'
+    },
+    statuses: {
+      waiting: 'Waiting',
+      ready: 'Ready',
+      pending: 'Pending',
+      frozen: 'Frozen',
+      failed: 'Transaction failed',
+      done: 'Complete',
+      waitingForConfirmation: 'Waiting for confirmation...'
+    },
+    viewInEtherscan: 'View in Etherscan',
+    networkTitle: '{network} transaction',
+    transactionHash: 'Transaction hash',
+    networkInfo: {
+      status: 'Status',
+      date: 'Date',
+      amount: 'Amount',
+      transactionFee: 'Transaction Fee',
+      total: 'Total'
+    },
+    successCopy: 'Transaction hash is copied to the clipboard',
+    ethereum: '@:ethereumText',
+    sora: '@:soraText',
+    pending: '<span class="network-title">{network}</span> transaction pending...',
+    retry: 'Retry',
+    metamask: '@:metamask',
+    confirm: '@:confirmTransactionText',
+    newTransaction: 'Create new transaction',
+    changeNetwork: '@:changeNetworkText'
+  },
+  // TODO: Add moment.js (it has translation and formatting)
+  months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  bridgeHistory: {
+    title: 'History',
+    clearHistory: 'Clear history',
+    emptyHistory: 'Transactions\' history is empty.',
+    filterPlaceholder: 'Filter by address, asset'
   },
   selectToken: {
     title: 'Select a token',

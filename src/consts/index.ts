@@ -1,10 +1,10 @@
 import pkg from '../../package.json'
 
-export const AppVersion = pkg.version
-
-export const AppName = 'Polkaswap'
-
-export const AppEmail = 'polkaswap@soramitsu.co.jp'
+export const app = {
+  version: pkg.version,
+  name: 'Polkaswap',
+  email: 'polkaswap@soramitsu.co.jp'
+}
 
 export const ZeroStringValue = '0'
 
@@ -20,17 +20,18 @@ export enum PageNames {
   AddLiquidity = 'AddLiquidity',
   AddLiquidityId = 'AddLiquidityId',
   RemoveLiquidity = 'RemoveLiquidity',
-  Bridge = 'Bridge',
   Farming = 'Farming',
   Rewards = 'Rewards',
-  PageNotFound = 'PageNotFound'
+  PageNotFound = 'PageNotFound',
+  Bridge = 'Bridge',
+  BridgeTransaction = 'BridgeTransaction',
+  BridgeTransactionsHistory = 'BridgeTransactionsHistory'
 }
 
-// TODO: Add InfoLine component to the list of components
-// InfoLine = 'InfoLine',
 export enum Components {
   SwapInfo = 'SwapInfo',
   InfoCard = 'InfoCard',
+  InfoLine = 'InfoLine', // TODO: Check its usage
   SelectToken = 'SelectToken',
   ResultDialog = 'ResultDialog',
   GenericHeader = 'GenericHeader',
@@ -42,7 +43,12 @@ export enum Components {
   Settings = 'Settings',
   BrandedTooltip = 'BrandedTooltip',
   HelpDialog = 'HelpDialog',
-  SidebarItemContent = 'SidebarItemContent'
+  SidebarItemContent = 'SidebarItemContent',
+  BridgeHeader = 'BridgeHeader',
+  SelectRegisteredAsset = 'SelectRegisteredAsset',
+  ConfirmBridgeTransactionDialog = 'ConfirmBridgeTransactionDialog',
+  BridgeTransaction = 'BridgeTransaction',
+  BridgeTransactionsHistory = 'BridgeTransactionsHistory'
 }
 
 interface SidebarMenuItem {
@@ -139,5 +145,47 @@ export const AboutTopics = [
 export enum LogoSize {
   MINI = 'mini',
   SMALL = 'small',
-  MEDIUM = 'medium',
+  MEDIUM = 'medium'
 }
+
+export enum InfoTooltipPosition {
+  LEFT = 'left',
+  RIGHT = 'right'
+}
+
+export enum NetworkTypes {
+  Devnet = 'Devnet',
+  Testnet = 'Testnet',
+  Mainnet = 'Mainnet'
+}
+
+export const EthSymbol = 'ETH'
+
+const gasLimit = {
+  approve: 66000 * 2,
+  sendERC20ToSidechain: 81000 * 2,
+  mintTokensByPeers: 191285 * 2,
+  receievByEthereumAssetAddress: 0, // TODO: estimate it later
+  receiveBySidechainAssetId: 252659 * 2
+}
+/**
+ * It's in gwei.
+ * Zero index means ETH -> SORA
+ * First index means SORA -> ETH
+ */
+export const EthereumGasLimits = [
+  // ETH -> SORA
+  {
+    XOR: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+    VAL: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+    PSWAP: gasLimit.approve + gasLimit.sendERC20ToSidechain
+  },
+  // SORA -> ETH
+  {
+    XOR: gasLimit.mintTokensByPeers,
+    VAL: gasLimit.mintTokensByPeers,
+    PSWAP: gasLimit.receiveBySidechainAssetId // TODO: check it later
+  }
+]
+
+export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
