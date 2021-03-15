@@ -92,8 +92,11 @@ const getters = {
 
 const mutations = {
   [types.RESET] (state) {
+    // we shouldn't reset networks, setted from env
+    const networkSettingsKeys = ['soraNetwork', 'defaultEthNetwork']
     const s = initialState()
-    Object.keys(s).forEach(key => {
+
+    Object.keys(s).filter(key => !networkSettingsKeys.includes(key)).forEach(key => {
       state[key] = s[key]
     })
   },

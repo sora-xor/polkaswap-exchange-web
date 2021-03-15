@@ -392,19 +392,24 @@ export default class Bridge extends Mixins(
     this.setEthNetwork()
     this.getEthBalance()
     web3Util.watchEthereum({
-      onAccountChange: (addressList: string[]) => {
+      onAccountChange: name => (addressList: string[]) => {
+        console.log('onAccountChange', name, addressList)
         if (addressList.length) {
           this.switchEthAccount({ address: addressList[0] })
+          this.updateRegisteredAssetsExternalBalance()
         } else {
           this.disconnectEthWallet()
         }
       },
       onNetworkChange: (networkId: string) => {
+        console.log('onNetworkChange')
         this.setEthNetwork(networkId)
         this.getEthNetworkFee()
         this.getRegisteredAssets()
+        this.updateExternalBalances()
       },
       onDisconnect: (code: number, reason: string) => {
+        console.log('onDisconnect')
         this.disconnectEthWallet()
       }
     })
@@ -413,9 +418,12 @@ export default class Bridge extends Mixins(
   }
 
   destroyed (): void {
-    if (this.blockHeadersSubscriber) {
-      this.blockHeadersSubscriber.unsubscribe()
-    }
+    this.unsubscribeEthBlockHeaders()
+  }
+
+  updateExternalBalances (): void {
+    this.getEthBalance()
+    this.updateRegisteredAssetsExternalBalance()
   }
 
   connectInternalWallet (): void {
@@ -424,17 +432,32 @@ export default class Bridge extends Mixins(
 
   async subscribeToEthBlockHeaders (): Promise<void> {
     try {
+      await this.unsubscribeEthBlockHeaders()
+
       const web3 = await web3Util.getInstance()
 
       this.blockHeadersSubscriber = web3.eth.subscribe('newBlockHeaders', (error) => {
         if (!error) {
-          this.getEthBalance()
-          this.updateRegisteredAssetsExternalBalance()
+          this.updateExternalBalances()
         }
       })
     } catch (error) {
       console.error(error)
     }
+  }
+
+  unsubscribeEthBlockHeaders (): Promise<void> {
+    if (!this.blockHeadersSubscriber) return
+
+    return new Promise((resolve, reject) => {
+      this.blockHeadersSubscriber.unsubscribe((error) => {
+        if (error) {
+          reject(error)
+        } else {
+          resolve()
+        }
+      })
+    })
   }
 
   async connectExternalWallet (): Promise<void> {
