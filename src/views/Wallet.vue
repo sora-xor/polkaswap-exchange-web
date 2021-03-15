@@ -16,12 +16,14 @@ import router from '@/router'
 import { PageNames } from '@/consts'
 import { isWalletConnected } from '@/utils'
 
+const namespace = 'swap'
+
 @Component
 export default class Wallet extends Mixins(TranslationMixin) {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
-  @Action setTokenFrom
-  @Action setTokenTo
+  @Action('setTokenFrom', { namespace }) setTokenFrom!: (options: any) => Promise<void>
+  @Action('setTokenTo', { namespace }) setTokenTo!: (options: any) => Promise<void>
 
   handleClose (): void {
     router.back()
