@@ -377,9 +377,9 @@ export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingM
   }
 
   async created (): Promise<void> {
-    this.historyHash = this.$route.params.hash
-    this.initializeTransactionStateMachine()
     if (this.isTransactionConfirmed) {
+      this.historyHash = this.$route.params.hash
+      this.initializeTransactionStateMachine()
       this.isInitRequestCompleted = true
       this.currentTransactionStep = this.transactionStep
       if (this.transactionStep === 1) {

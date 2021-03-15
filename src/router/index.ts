@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router'
 
 import { PageNames } from '@/consts'
 import { isWalletConnected } from '@/utils'
+import web3Util from '@/utils/web3-util'
 
 Vue.use(VueRouter)
 
@@ -53,12 +54,14 @@ const routes: Array<RouteConfig> = [
   {
     path: '/bridge/transaction',
     name: PageNames.BridgeTransaction,
-    component: lazyView(PageNames.BridgeTransaction)
+    component: lazyView(PageNames.BridgeTransaction),
+    meta: { requiresAuth: true }
   },
   {
     path: '/bridge/history',
     name: PageNames.BridgeTransactionsHistory,
-    component: lazyView(PageNames.BridgeTransactionsHistory)
+    component: lazyView(PageNames.BridgeTransactionsHistory),
+    meta: { requiresAuth: true }
   },
   {
     path: '/exchange/pool/create-pair',
@@ -113,6 +116,11 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
+    if ((to.name === PageNames.BridgeTransactionsHistory || to.name === PageNames.BridgeTransaction) && isWalletConnected() && (web3Util.getEthUserAddress() === '' || web3Util.getEthUserAddress() === 'undefined')) {
+      next({
+        name: PageNames.Bridge
+      })
+    }
     if (!isWalletConnected()) {
       next({
         name: PageNames.Wallet
