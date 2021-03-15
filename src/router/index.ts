@@ -41,9 +41,24 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.About)
   },
   {
-    path: '/exchange/wallet',
+    path: '/wallet',
     name: PageNames.Wallet,
     component: lazyView(PageNames.Wallet)
+  },
+  {
+    path: '/bridge',
+    name: PageNames.Bridge,
+    component: lazyView(PageNames.Bridge)
+  },
+  {
+    path: '/bridge/transaction',
+    name: PageNames.BridgeTransaction,
+    component: lazyView(PageNames.BridgeTransaction)
+  },
+  {
+    path: '/bridge/history',
+    name: PageNames.BridgeTransactionsHistory,
+    component: lazyView(PageNames.BridgeTransactionsHistory)
   },
   {
     path: '/exchange/pool/create-pair',

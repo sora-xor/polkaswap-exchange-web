@@ -35,7 +35,7 @@ import TranslationMixin from './mixins/TranslationMixin'
 import DialogMixin from './mixins/DialogMixin'
 import DialogBase from './DialogBase.vue'
 
-import { AppVersion, AppEmail } from '@/consts'
+import { app } from '@/consts'
 
 @Component({
   components: {
@@ -43,8 +43,8 @@ import { AppVersion, AppEmail } from '@/consts'
   }
 })
 export default class HelpDialog extends Mixins(TranslationMixin, DialogMixin) {
-  readonly appVersion = AppVersion
-  readonly appEmail = AppEmail
+  readonly appVersion = app.version
+  readonly appEmail = app.email
 
   readonly links = [
     {
