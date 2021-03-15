@@ -109,7 +109,7 @@
                 })
               }}
             </div>
-            <div>{{ price }} {{ firstToken.symbol }}</div>
+            <div>{{ price }}</div>
           </div>
           <div class="card__data">
             <div>
@@ -120,7 +120,7 @@
                 })
               }}
             </div>
-            <div>{{ priceReversed }} {{ secondToken.symbol }}</div>
+            <div>{{ priceReversed }}</div>
           </div>
           <div class="card__data">
             <div>{{ t('createPair.shareOfPool') }}</div>

@@ -35,8 +35,8 @@
       <s-row flex justify="space-between" class="pair-info__line">
         <div>{{ t('confirmSupply.price') }}</div>
         <div v-if="firstToken && secondToken" class="price">
-          <div>1 {{ firstToken.symbol }} = {{ price }} {{ secondToken.symbol }}</div>
-          <div>1 {{ secondToken.symbol }} = {{ priceReversed }} {{ firstToken.symbol }}</div>
+          <div>1 {{ firstToken.symbol }} = {{ priceReversed }} {{ secondToken.symbol }}</div>
+          <div>1 {{ secondToken.symbol }} = {{ price }} {{ firstToken.symbol }}</div>
         </div>
       </s-row>
       <s-row flex justify="space-between" class="pair-info__line">
