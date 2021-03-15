@@ -15,7 +15,7 @@
   "dependencies": {
     "@metamask/detect-provider": "^1.2.0",
     "@soramitsu/soramitsu-js-ui": "^0.7.13",
-    "@soramitsu/soraneo-wallet-web": "^0.5.9",
+    "@soramitsu/soraneo-wallet-web": "^0.5.10",
     "@walletconnect/web3-provider": "^1.3.3",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
