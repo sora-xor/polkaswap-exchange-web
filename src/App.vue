@@ -284,8 +284,18 @@ html {
     margin-bottom: $inner-spacing-small;
   }
 
-  .el-menu-item:not(.is-disabled):hover i {
-    color: inherit;
+  .el-menu-item {
+    &.is-disabled {
+      opacity: 1;
+      color: var(--s-color-base-content-tertiary) !important;
+
+      i {
+        color: var(--s-color-base-content-tertiary);
+      }
+    }
+    &:not(.is-disabled):hover i {
+      color: inherit;
+    }
   }
 }
 
@@ -505,9 +515,9 @@ $sora-logo-width: 171px;
 
     &.menu-item--small {
       padding: $inner-spacing-mini $inner-spacing-medium * 1.25;
-      color: var(--s-color-base-content-tertiary)
+      color: var(--s-color-base-content-tertiary);
     }
-    &:hover:not(.is-active) {
+    &:hover:not(.is-active):not(.is-disabled) {
       background-color: var(--s-color-base-background-hover) !important;
     }
     &:focus {
