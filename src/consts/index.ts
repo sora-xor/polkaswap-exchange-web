@@ -1,4 +1,10 @@
+import pkg from '../../package.json'
+
+export const AppVersion = pkg.version
+
 export const AppName = 'Polkaswap'
+
+export const AppEmail = 'polkaswap@soramitsu.co.jp'
 
 export const ZeroStringValue = '0'
 
@@ -14,6 +20,9 @@ export enum PageNames {
   AddLiquidity = 'AddLiquidity',
   AddLiquidityId = 'AddLiquidityId',
   RemoveLiquidity = 'RemoveLiquidity',
+  Bridge = 'Bridge',
+  Farming = 'Farming',
+  Rewards = 'Rewards',
   PageNotFound = 'PageNotFound'
 }
 
@@ -30,15 +39,82 @@ export enum Components {
   ConfirmSwap = 'ConfirmSwap',
   ConfirmRemoveLiquidity = 'ConfirmRemoveLiquidity',
   ConfirmTokenPairDialog = 'ConfirmTokenPairDialog',
-  Settings = 'Settings'
+  Settings = 'Settings',
+  BrandedTooltip = 'BrandedTooltip',
+  HelpDialog = 'HelpDialog',
+  SidebarItemContent = 'SidebarItemContent'
 }
 
-// TODO: [Release 2] Some items are hidden because we don't have Stats and Support pages right now
-export const MainMenu = [
-  PageNames.Exchange,
-  PageNames.About
-  // PageNames.Stats,
-  // PageNames.Support
+interface SidebarMenuItem {
+  icon: string;
+  title: string;
+  disabled?: boolean;
+}
+
+interface SidebarMenuItemLink extends SidebarMenuItem {
+  href?: string;
+}
+
+const MainMenu: Array<SidebarMenuItem> = [
+  {
+    icon: 'change-positions',
+    title: PageNames.Swap
+  },
+  {
+    icon: '',
+    title: PageNames.Pool
+  },
+  {
+    icon: '',
+    title: PageNames.Bridge
+  },
+  {
+    icon: '',
+    title: PageNames.Farming,
+    disabled: true
+  }
+]
+
+const AccountMenu: Array<SidebarMenuItem> = [
+  {
+    icon: '',
+    title: PageNames.Wallet
+  },
+  {
+    icon: '',
+    title: PageNames.Rewards
+  }
+]
+
+const OtherPagesMenu: Array<SidebarMenuItem> = [
+  {
+    icon: '',
+    title: PageNames.About
+  }
+]
+
+export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
+  {
+    icon: '',
+    title: 'twitter',
+    href: 'https://twitter.com/sora_xor'
+  },
+  {
+    icon: '',
+    title: 'telegram',
+    href: 'https://t.me/sora_xor'
+  }
+]
+
+export const FaucetLink: SidebarMenuItemLink = {
+  icon: '',
+  title: 'faucet'
+}
+
+export const SidebarMenuGroups = [
+  MainMenu,
+  AccountMenu,
+  OtherPagesMenu
 ]
 
 export const ExchangeTabs = [

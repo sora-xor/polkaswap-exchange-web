@@ -70,6 +70,11 @@ const routes: Array<RouteConfig> = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/rewards',
+    name: PageNames.Rewards,
+    component: lazyView(PageNames.Rewards)
+  },
+  {
     path: '/stats',
     name: PageNames.Stats
   },

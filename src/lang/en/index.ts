@@ -2,9 +2,13 @@ import { PageNames, Topics } from '@/consts'
 import { KnownSymbols, Operation, TransactionStatus } from '@sora-substrate/util'
 
 export default {
+  appName: 'Polkaswap',
   transactionSubmittedText: 'Transaction was submitted',
   unknownErrorText: 'ERROR Something went wrong...',
-  connectWalletText: 'Connect wallet',
+  connectWalletText: 'Connect account',
+  connectWalletTextTooltip: 'Connect to SORA Network with polkadot{.js}',
+  comingSoon: 'Coming Soon',
+  poweredBy: 'Powered by',
   assetNames: {
     [KnownSymbols.XOR]: 'Sora',
     [KnownSymbols.VAL]: 'Sora Validator Token',
@@ -25,11 +29,34 @@ export default {
     [PageNames.PageNotFound]: 'Page Not Found'
   },
   mainMenu: {
+    [PageNames.Swap]: 'Swap',
+    [PageNames.Pool]: 'Pool',
+    [PageNames.Bridge]: 'Bridge',
+    [PageNames.Farming]: 'Farming',
+    [PageNames.Wallet]: 'Account',
+    [PageNames.Rewards]: 'Rewards',
     [PageNames.Exchange]: 'Exchange',
     [PageNames.About]: 'About',
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
     [PageNames.CreatePair]: 'Create Pair'
+  },
+  social: {
+    twitter: 'Twitter',
+    telegram: 'Telegram'
+  },
+  footerMenu: {
+    faucet: 'Faucet',
+    help: 'Help'
+  },
+  helpDialog: {
+    title: 'Help',
+    termsOfService: 'Terms of Service',
+    privacyPolicy: 'Privacy Policy',
+    termsOfServiceLink: 'https://sora.org',
+    privacyPolicyLink: 'https://soramitsu.co.jp',
+    appVersion: '@:appName version',
+    contactUs: 'Contact us'
   },
   operations: {
     [TransactionStatus.Finalized]: {
@@ -119,7 +146,7 @@ export default {
     pooledToken: '{tokenSymbol} Pooled',
     pairTokens: '{pair} Pool Tokens',
     poolShare: 'Your pool share',
-    comingSoon: 'Coming soon',
+    comingSoon: '@:comingSoon',
     unknownAsset: 'Unknown asset',
     description: 'When you add liquidity, you are given pool tokens representing your position. These tokens automaticaly earn fees proportional to your share of the pool, and can be redeemed at any time.'
   },
