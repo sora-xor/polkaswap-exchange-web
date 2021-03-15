@@ -174,6 +174,9 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
     if (data.FAUCET_URL) {
       this.setFaucetUrl(data.FAUCET_URL)
     }
+    if (data.FAUCET_URL) {
+      this.setFaucetUrl(data.FAUCET_URL)
+    }
     await this.withLoading(async () => {
       const permissions = {
         sendAssets: true, // enable 'send' button in assets list
@@ -295,8 +298,18 @@ html {
     margin-bottom: $inner-spacing-small;
   }
 
-  .el-menu-item:not(.is-disabled):hover i {
-    color: inherit;
+  .el-menu-item {
+    &.is-disabled {
+      opacity: 1;
+      color: var(--s-color-base-content-tertiary) !important;
+
+      i {
+        color: var(--s-color-base-content-tertiary);
+      }
+    }
+    &:not(.is-disabled):hover i {
+      color: inherit;
+    }
   }
 }
 
@@ -516,13 +529,9 @@ $sora-logo-width: 171px;
 
     &.menu-item--small {
       padding: $inner-spacing-mini $inner-spacing-medium * 1.25;
-      color: var(--s-color-base-content-tertiary)
+      color: var(--s-color-base-content-tertiary);
     }
-
-    &.is-active:hover {
-      color: var(--s-color-theme-accent-hover) !important;
-    }
-    &:hover {
+    &:hover:not(.is-active):not(.is-disabled) {
       background-color: var(--s-color-base-background-hover) !important;
     }
     &:focus {
