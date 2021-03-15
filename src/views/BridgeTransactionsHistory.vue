@@ -1,11 +1,7 @@
 <template>
   <div class="history-container">
-    <bridge-header />
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="never">
-      <div class="header">
-        <s-button type="action" size="medium" icon="chevron-left-rounded" @click="handleBack" />
-        <h3 class="header-title">{{ t('bridgeHistory.title') }}</h3>
-        <!-- We can't use Dropdown element here because it doesn't have action button type -->
+      <generic-page-header class="header--bridge" has-button-back :back-page-name="PageNames.Bridge" :title="t('bridgeHistory.title')">
         <s-tooltip
             class="header-tooltip"
             popper-class="info-tooltip info-tooltip--header"
@@ -24,7 +20,7 @@
             @click="handleSettingsClick"
           />
         </s-tooltip>
-      </div>
+      </generic-page-header>
       <s-form
         class="history-form"
         :show-message="false"
@@ -84,7 +80,7 @@ const namespace = 'bridge'
 
 @Component({
   components: {
-    BridgeHeader: lazyComponent(Components.BridgeHeader),
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     InfoLine: lazyComponent(Components.InfoLine)
   }
 })
@@ -116,6 +112,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
+  PageNames = PageNames
   formatAssetSymbol = formatAssetSymbol
   formatDateItem = formatDateItem
   query = ''
@@ -184,10 +181,6 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
       return type !== Operation.EthBridgeIncoming
     }
     return true
-  }
-
-  handleBack (): void {
-    router.push({ name: PageNames.Bridge })
   }
 
   async showHistory (idOrHash: string): Promise<void> {
@@ -302,41 +295,6 @@ $history-item-top-border-height: 1px;
   &-empty {
     text-align: center;
     @include empty-search;
-  }
-}
-// TODO: We could use something like Generic Header component after moving to DEX
-.header {
-  position: relative;
-  height: var(--s-size-medium);
-  width: 100%;
-  margin-bottom: $inner-spacing-medium;
-  .el-button {
-    position: absolute;
-  }
-  &-title {
-    width: 100%;
-    padding-right: $title-padding;
-    padding-left: $title-padding;
-    text-align: center;
-    line-height: $tooltip-area-height;
-    font-feature-settings: $s-font-feature-settings-title;
-    letter-spacing: $s-letter-spacing-small;
-  }
-  &-tooltip {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    margin-top: auto;
-    margin-bottom: auto;
-    padding-left: 1px;
-    background-color: var(--s-color-base-background);
-    text-align: center;
-    cursor: pointer;
-    &:before {
-      font-size: var(--s-icon-font-size-mini);
-      line-height: $tooltip-size;
-    }
   }
 }
 @include search-item('history--search', 0);

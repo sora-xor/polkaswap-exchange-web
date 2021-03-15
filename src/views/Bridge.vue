@@ -1,12 +1,12 @@
 <template>
   <div v-loading="parentLoading" class="bridge s-flex">
-    <bridge-header />
     <s-form
       v-model="amounts"
       class="bridge-form"
       :show-message="false"
     >
       <s-card class="bridge-content" border-radius="medium" shadow="never">
+        <generic-page-header class="header--bridge" :title="t('bridge.title')" :tooltip="t('bridge.info')" :tooltip-placement="'bottom'" :has-button-history="areNetworksConnected" />
         <s-card :class="isSoraToEthereum ? 'bridge-item' : 'bridge-item bridge-item--ethereum'" border-radius="mini" shadow="never">
           <div class="bridge-item-header">
             <div class="bridge-item-title">
@@ -46,19 +46,20 @@
               {{ t('bridge.chooseToken') }}
             </s-button>
           </div>
-          <div v-if="isNetworkAConnected" class="bridge-item-footer">
+          <div v-if="isNetworkAConnected && !isSoraToEthereum" class="bridge-item-footer">
+            <s-divider />
             <s-button class="s-button--change-wallet" type="link" size="mini" @click="isSoraToEthereum ? connectInternalWallet() : changeExternalWallet()">
               <span class="bridge-item-id">{{ formatAddress(isSoraToEthereum ? getWalletAddress() : ethAddress, 8) }}</span>
               <span class="change-wallet">{{ t('bridge.changeWallet') }}</span>
             </s-button>
             <span>{{ t('bridge.connected') }}</span>
           </div>
-          <s-button v-else class="s-button--connect" type="primary" @click="isSoraToEthereum ? connectInternalWallet() : connectExternalWallet()">
+          <s-button v-else-if="!isNetworkAConnected" class="s-button--connect" type="primary" @click="isSoraToEthereum ? connectInternalWallet() : connectExternalWallet()">
             {{ t('bridge.connectWallet') }}
           </s-button>
         </s-card>
         <!-- TODO: Change icon -->
-        <s-button class="s-button--switch" type="action" icon="change-positions" :disabled="!areNetworksConnected" @click="handleSwitchItems" />
+        <s-button class="s-button--switch" type="action" icon="change-positions" @click="handleSwitchItems" />
         <s-card :class="!isSoraToEthereum ? 'bridge-item' : 'bridge-item bridge-item--ethereum'" border-radius="mini" shadow="never">
           <div class="bridge-item-header">
             <div class="bridge-item-title">
@@ -88,14 +89,15 @@
               </s-button>
             </div>
           </div>
-          <div v-if="isNetworkBConnected" class="bridge-item-footer">
+          <div v-if="isNetworkBConnected && isSoraToEthereum" class="bridge-item-footer">
+            <s-divider />
             <s-button class="s-button--change-wallet" type="link" size="mini" @click="!isSoraToEthereum ? connectInternalWallet() : changeExternalWallet()">
               <span class="bridge-item-id">{{ formatAddress(isSoraToEthereum ? ethAddress : getWalletAddress(), 8) }}</span>
               <span class="change-wallet">{{ t('bridge.changeWallet') }}</span>
             </s-button>
             <span>{{ t('bridge.connected') }}</span>
           </div>
-          <s-button v-else class="s-button--connect" type="primary" @click="!isSoraToEthereum ? connectInternalWallet() : connectExternalWallet()">
+          <s-button v-else-if="!isNetworkBConnected" class="s-button--connect" type="primary" @click="!isSoraToEthereum ? connectInternalWallet() : connectExternalWallet()">
             {{ t('bridge.connectWallet') }}
           </s-button>
         </s-card>
@@ -156,20 +158,7 @@
       <select-registered-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
       <confirm-bridge-transaction-dialog :visible.sync="showConfirmTransactionDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmTransaction" />
     </s-form>
-    <!-- TODO 4 alexnatalia: Change icon and styles -->
-    <div v-if="areNetworksConnected" class="bridge-footer">
-      <s-button
-        class="s-button--view-transactions-history"
-        size="big"
-        type="link"
-        icon="external-link"
-        icon-position="left"
-        @click="handleViewTransactionsHistory"
-      >
-        {{ t('bridge.viewHistory') }}
-      </s-button>
-    </div>
-    <div v-else class="bridge-footer bridge-footer--not-connected">{{ t('bridge.connectWallets') }}</div>
+    <div v-if="!areNetworksConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div>
   </div>
 </template>
 
@@ -193,7 +182,7 @@ const namespace = 'bridge'
 
 @Component({
   components: {
-    BridgeHeader: lazyComponent(Components.BridgeHeader),
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     TokenLogo: lazyComponent(Components.TokenLogo),
     InfoLine: lazyComponent(Components.InfoLine),
     SelectRegisteredAsset: lazyComponent(Components.SelectRegisteredAsset),
@@ -701,9 +690,10 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     margin-bottom: $inner-spacing-mini;
   }
   .bridge-item {
+    background-color: var(--s-color-base-background);
     &,
     &:hover {
-      border: 1px solid var(--s-color-base-border-primary);
+      border: none;
     }
     &-header,
     &-footer {
@@ -775,9 +765,16 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     &-footer {
       display: flex;
       justify-content: space-between;
+      flex-wrap: wrap;
       padding-bottom: $inner-spacing-mini;
       background-color: var(--s-color-base-background);
       color: var(--s-color-base-content-secondary);
+      .el-divider {
+        margin-top: 0;
+        margin-bottom: $inner-spacing-mini;
+        width: 100%;
+        background-color: var(--s-color-base-border-primary);
+      }
     }
     & + .bridge-info {
       margin-top: $basic-spacing * 2;
@@ -799,20 +796,14 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     display: block;
     padding: $inner-spacing-mini;
     color: var(--s-color-base-content-tertiary);
-    &:not(:hover) {
-      background-color: transparent;
-      border-color: transparent;
-    }
   }
   &-footer {
     display: flex;
     align-items: center;
-    &--not-connected {
-      font-size: var(--s-font-size-mini);
-      line-height: $s-line-height-big;
-      color: var(--s-color-base-content-secondary);
-      font-feature-settings: $s-font-feature-settings-common;
-    }
+    font-size: var(--s-font-size-mini);
+    line-height: $s-line-height-big;
+    color: var(--s-color-base-content-secondary);
+    font-feature-settings: $s-font-feature-settings-common;
   }
   .s-tertiary {
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
@@ -891,9 +882,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     &--next {
       margin-top: $inner-spacing-mini;
       @include next-button;
-    }
-    &--view-transactions-history {
-      @include bottom-button;
     }
   }
 }

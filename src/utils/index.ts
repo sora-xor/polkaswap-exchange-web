@@ -12,7 +12,8 @@ export const copyToClipboard = async (text: string): Promise<void> => {
 }
 
 export const formatAddress = (address: string, length = address.length / 2): string => {
-  return `${address.slice(0, length / 2)}...${address.slice(-length / 2)}`
+  const formatedAddress = `${address.slice(0, length / 2)}...${address.slice(-length / 2)}`
+  return formatedAddress.indexOf('0x') === 0 ? formatedAddress.substr(0, 2) + formatedAddress.substr(2).toUpperCase() : formatedAddress
 }
 
 export const isXorAccountAsset = (asset: Asset | AccountAsset | RegisteredAccountAsset): boolean => {

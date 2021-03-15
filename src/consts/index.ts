@@ -29,12 +29,12 @@ export enum PageNames {
 }
 
 export enum Components {
+  GenericPageHeader = 'GenericPageHeader',
   SwapInfo = 'SwapInfo',
-  InfoCard = 'InfoCard',
   InfoLine = 'InfoLine', // TODO: Check its usage
+  InfoCard = 'InfoCard',
   SelectToken = 'SelectToken',
   ResultDialog = 'ResultDialog',
-  GenericHeader = 'GenericHeader',
   TokenLogo = 'TokenLogo',
   PairTokenLogo = 'PairTokenLogo',
   ConfirmSwap = 'ConfirmSwap',
@@ -44,7 +44,6 @@ export enum Components {
   BrandedTooltip = 'BrandedTooltip',
   HelpDialog = 'HelpDialog',
   SidebarItemContent = 'SidebarItemContent',
-  BridgeHeader = 'BridgeHeader',
   SelectRegisteredAsset = 'SelectRegisteredAsset',
   ConfirmBridgeTransactionDialog = 'ConfirmBridgeTransactionDialog',
   BridgeTransaction = 'BridgeTransaction',
