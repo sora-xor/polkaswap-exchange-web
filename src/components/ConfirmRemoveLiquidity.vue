@@ -34,8 +34,8 @@
     <s-row flex justify="space-between" class="price-container">
       <div>{{ t('removeLiquidity.price') }}</div>
       <div class="price">
-        <div>1 {{ firstToken.symbol }} = {{ price }} {{ secondToken.symbol }}</div>
-        <div>1 {{ secondToken.symbol }} = {{ priceReversed }} {{ firstToken.symbol }}</div>
+        <div>1 {{ firstToken.symbol }} = {{ priceReversed }} {{ secondToken.symbol }}</div>
+        <div>1 {{ secondToken.symbol }} = {{ price }} {{ firstToken.symbol }}</div>
       </div>
     </s-row>
     <template #footer>
