@@ -116,8 +116,8 @@
         <s-row v-if="price || priceReversed" flex justify="space-between">
           <div>{{ t('removeLiquidity.price') }}</div>
           <div class="price">
-            <div>1 {{ firstToken.symbol }} = {{ price }} {{ secondToken.symbol }}</div>
-            <div>1 {{ secondToken.symbol }} = {{ priceReversed }} {{ firstToken.symbol }}</div>
+            <div>1 {{ firstToken.symbol }} = {{ priceReversed }} {{ secondToken.symbol }}</div>
+            <div>1 {{ secondToken.symbol }} = {{ price }} {{ firstToken.symbol }}</div>
           </div>
         </s-row>
         <s-row v-if="fee" flex justify="space-between">
@@ -222,6 +222,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
       router.push({ name: PageNames.Pool })
       return
     }
+    this.updatePrices()
     this.sliderDragButton = this.$el.querySelector('.slider-container .el-slider__button')
     this.sliderInput = this.$el.querySelector('.s-input--remove-part .el-input__inner')
     if (this.sliderDragButton) {
@@ -306,7 +307,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     const newValue = parseFloat(value) || 0
     this.removePartInput = newValue > 100 ? 100 : newValue < 0 ? 0 : newValue
     this.setRemovePart(this.removePartInput)
-    this.updatePrices()
   }
 
   focusSliderInput (): void {
@@ -330,21 +330,21 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   handleLiquidityMaxValue (): void {
     this.setRemovePart(100)
     this.handleRemovePartChange(100)
-    this.updatePrices()
   }
 
-  updatePrices (): void {
+  private updatePrices (): void {
+    const firstTokenBalance = this.getFPNumberFromCodec(this.firstTokenBalance)
+    const secondTokenBalance = this.getFPNumberFromCodec(this.secondTokenBalance)
     this.getPrices({
       assetAAddress: this.firstTokenAddress ?? this.firstToken.address,
       assetBAddress: this.secondTokenAddress ?? this.secondToken.address,
-      amountA: this.firstTokenAmount,
-      amountB: this.secondTokenAmount
+      amountA: firstTokenBalance.toString(),
+      amountB: secondTokenBalance.toString()
     })
   }
 
   async handleTokenChange (value: string, setValue: (v: any) => Promise<any>): Promise<any> {
     await setValue(value)
-    this.updatePrices()
   }
 
   async handleConfirmRemoveLiquidity (): Promise<void> {
