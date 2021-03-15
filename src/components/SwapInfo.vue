@@ -51,7 +51,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { KnownSymbols, CodecString } from '@sora-substrate/util'
+import { KnownSymbols, CodecString, AccountAsset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
@@ -59,23 +59,27 @@ import { isWalletConnected } from '@/utils'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 
+const namespace = 'swap'
+
 @Component({
   components: {
     Settings: lazyComponent(Components.Settings)
   }
 })
 export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMixin) {
-  @Getter tokenFrom!: any
-  @Getter tokenTo!: any
-  @Getter isTokenFromPrice!: boolean
-  @Getter slippageTolerance!: number
-  @Getter minMaxReceived!: CodecString
-  @Getter isExchangeB!: boolean
-  @Getter liquidityProviderFee!: CodecString
-  @Getter networkFee!: CodecString
-  @Action setTokenFromPrice
+  @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset
+  @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset
+  @Getter('isTokenFromPrice', { namespace }) isTokenFromPrice!: boolean
+  @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString
+  @Getter('isExchangeB', { namespace }) isExchangeB!: boolean
+  @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString
+  @Getter('networkFee', { namespace }) networkFee!: CodecString
+  @Action('setTokenFromPrice', { namespace }) setTokenFromPrice!: (isTokenFromPrice: boolean) => Promise<void>
+
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
+
+  @Getter slippageTolerance!: number
 
   @Prop({ default: false, type: Boolean }) readonly showPrice!: boolean
   @Prop({ default: true, type: Boolean }) readonly showTooltips!: boolean
