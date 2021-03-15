@@ -507,11 +507,7 @@ $sora-logo-width: 171px;
       padding: $inner-spacing-mini $inner-spacing-medium * 1.25;
       color: var(--s-color-base-content-tertiary)
     }
-
-    &.is-active:hover {
-      color: var(--s-color-theme-accent-hover) !important;
-    }
-    &:hover {
+    &:hover:not(.is-active) {
       background-color: var(--s-color-base-background-hover) !important;
     }
     &:focus {
