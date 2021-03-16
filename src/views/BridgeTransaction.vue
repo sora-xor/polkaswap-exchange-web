@@ -131,7 +131,6 @@
     <s-button
       v-if="isInitRequestCompleted && isTransferCompleted"
       class="s-button--create-transaction"
-      size="big"
       type="link"
       @click="handleCreateTransaction"
     >

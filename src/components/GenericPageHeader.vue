@@ -38,7 +38,6 @@ export default class GenericPageHeader extends Mixins(TranslationMixin) {
   get headerClasses (): string {
     const baseClass = 'page-header'
     const classes = [baseClass]
-    console.log('classes', classes)
 
     if (this.hasButtonBack) {
       classes.push(`${baseClass}--center`)
@@ -72,7 +71,7 @@ $title-padding: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
 #{$page-header-class} {
   position: relative;
   display: flex;
-  margin-bottom: $basic-spacing * 2;
+  margin-bottom: $inner-spacing-medium;
   width: 100%;
   &--center {
     .el-button {
@@ -102,7 +101,7 @@ $title-padding: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
   &-tooltip {
     margin-top: auto;
     margin-bottom: auto;
-    margin-left: $inner-spacing-mini / 2;
+    margin-left: $inner-spacing-mini;
     height: $tooltip-size;
     width: $tooltip-size;
     padding-left: 1px;
