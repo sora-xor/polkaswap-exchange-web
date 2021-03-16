@@ -392,8 +392,7 @@ export default class Bridge extends Mixins(
     this.setEthNetwork()
     this.getEthBalance()
     web3Util.watchEthereum({
-      onAccountChange: name => (addressList: string[]) => {
-        console.log('onAccountChange', name, addressList)
+      onAccountChange: (addressList: string[]) => {
         if (addressList.length) {
           this.switchEthAccount({ address: addressList[0] })
           this.updateRegisteredAssetsExternalBalance()
@@ -402,14 +401,12 @@ export default class Bridge extends Mixins(
         }
       },
       onNetworkChange: (networkId: string) => {
-        console.log('onNetworkChange')
         this.setEthNetwork(networkId)
         this.getEthNetworkFee()
         this.getRegisteredAssets()
         this.updateExternalBalances()
       },
       onDisconnect: (code: number, reason: string) => {
-        console.log('onDisconnect')
         this.disconnectEthWallet()
       }
     })
@@ -447,9 +444,9 @@ export default class Bridge extends Mixins(
   }
 
   unsubscribeEthBlockHeaders (): Promise<void> {
-    if (!this.blockHeadersSubscriber) return
-
     return new Promise((resolve, reject) => {
+      if (!this.blockHeadersSubscriber) return resolve()
+
       this.blockHeadersSubscriber.unsubscribe((error) => {
         if (error) {
           reject(error)
@@ -558,7 +555,19 @@ export default class Bridge extends Mixins(
     // TODO: Check balance (ETH)
   }
 
-  handleConfirmTransaction (): void {
+  // TODO: remove this check, when MetaMask issue will be resolved
+  // https://github.com/MetaMask/metamask-extension/issues/10368
+  async checkAccountIsConnected (): Promise<boolean> {
+    const account = await web3Util.getAccount()
+
+    return !!account
+  }
+
+  async handleConfirmTransaction (): Promise<void> {
+    const accountIsConnected = await this.checkAccountIsConnected()
+
+    if (!accountIsConnected) return
+
     this.showConfirmTransactionDialog = true
   }
 
@@ -582,10 +591,14 @@ export default class Bridge extends Mixins(
     }
   }
 
-  confirmTransaction (isTransactionConfirmed: boolean) {
-    if (isTransactionConfirmed) {
-      router.push({ name: PageNames.BridgeTransaction })
-    }
+  async confirmTransaction (isTransactionConfirmed: boolean): Promise<void> {
+    if (!isTransactionConfirmed) return
+
+    const accountIsConnected = await this.checkAccountIsConnected()
+
+    if (!accountIsConnected) return
+
+    router.push({ name: PageNames.BridgeTransaction })
   }
 }
 </script>
