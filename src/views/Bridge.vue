@@ -6,7 +6,17 @@
       :show-message="false"
     >
       <s-card class="bridge-content" border-radius="medium" shadow="never">
-        <generic-page-header class="header--bridge" :title="t('bridge.title')" :tooltip="t('bridge.info')" :tooltip-placement="'bottom'" :has-button-history="areNetworksConnected" />
+        <generic-page-header class="header--bridge" :title="t('bridge.title')" :tooltip="t('bridge.info')" tooltip-placement="bottom">
+          <!-- TODO: Add appropriate icon -->
+          <s-button
+            v-if="areNetworksConnected"
+            class="el-button--history"
+            type="action"
+            icon="time"
+            size="medium"
+            @click="handleViewTransactionsHistory"
+          />
+        </generic-page-header>
         <s-card :class="isSoraToEthereum ? 'bridge-item' : 'bridge-item bridge-item--ethereum'" border-radius="mini" shadow="never">
           <div class="bridge-item-header">
             <div class="bridge-item-title">
@@ -866,6 +876,9 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     border-radius: var(--s-border-radius-small);
     margin-top: $inner-spacing-medium;
     padding: $inner-spacing-mini / 2 $inner-spacing-mini;
+  }
+  .el-button--history {
+    margin-left: auto;
   }
 }
 </style>

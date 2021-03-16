@@ -33,7 +33,7 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
 
 <style lang="scss" scoped>
 // TODO: Check assets list + logo titles
-$tokens-list: "bridge-item-xor", "bridge-item-eth", "dot", "ksm", "pswap", "pal", "smc", "usdt", "val", "valerc", "xor", "xorerc", "eth";
+$tokens-list: "bridge-item-xor", "bridge-item-eth", "dot", "ksm", "pswap", "pal", "val", "xor", "eth";
 $token-background-color: var(--s-color-base-on-accent);
 
 .token-logo {

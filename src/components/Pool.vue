@@ -1,6 +1,6 @@
 <template>
   <div class="el-form--pool">
-    <generic-page-header class="header--pool" :title="t('pool.yourLiquidity')" :tooltip="t('pool.description')" :tooltip-placement="'bottom'" />
+    <generic-page-header class="header--pool" :title="t('pool.yourLiquidity')" :tooltip="t('pool.description')" tooltip-placement="bottom" />
     <div class="pool-wrapper" v-loading="loading">
       <p v-if="!connected" class="pool-info-container">
         {{ t('pool.connectToWallet') }}

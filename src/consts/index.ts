@@ -127,6 +127,11 @@ export const ExchangeTabs = [
   PageNames.Pool
 ]
 
+export const BridgeChildPages = [
+  PageNames.BridgeTransaction,
+  PageNames.BridgeTransactionsHistory
+]
+
 export enum Topics {
   SwapTokens = 'SwapTokens',
   PassiveEarning = 'PassiveEarning',

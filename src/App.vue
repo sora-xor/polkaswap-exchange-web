@@ -112,7 +112,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { connection, initWallet, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
 
-import { PageNames, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components } from '@/consts'
+import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components } from '@/consts'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -142,11 +142,6 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
     PageNames.AddLiquidityId,
     PageNames.RemoveLiquidity,
     PageNames.CreatePair
-  ]
-
-  readonly BridgeChildPages = [
-    PageNames.BridgeTransaction,
-    PageNames.BridgeTransactionsHistory
   ]
 
   showHelpDialog = false
@@ -210,7 +205,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
     if (this.PoolChildPages.includes(router.currentRoute.name as PageNames)) {
       return PageNames.Pool
     }
-    if (this.BridgeChildPages.includes(router.currentRoute.name as PageNames)) {
+    if (BridgeChildPages.includes(router.currentRoute.name as PageNames)) {
       return PageNames.Bridge
     }
     return router.currentRoute.name as string

@@ -11,14 +11,13 @@
     >
       <s-icon name="info" size="16" />
     </branded-tooltip>
-    <!-- TODO: Add appropriate icon -->
-    <s-button v-if="hasButtonHistory" class="el-button--history" type="action" size="medium" icon="time" @click="handleViewTransactionsHistory" />
     <slot />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
+
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
@@ -31,7 +30,6 @@ import { Components, PageNames } from '@/consts'
 export default class GenericPageHeader extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly hasButtonBack!: boolean
   @Prop({ default: PageNames.Pool, type: String }) readonly backPageName!: string
-  @Prop({ default: false, type: Boolean }) readonly hasButtonHistory!: boolean
   @Prop({ default: '', type: String }) readonly title!: string
   @Prop({ default: '', type: String }) readonly tooltip!: string
   @Prop({ default: 'bottom-end', type: String }) readonly tooltipPlacement!: string
@@ -49,10 +47,6 @@ export default class GenericPageHeader extends Mixins(TranslationMixin) {
 
   handleBack (): void {
     router.push({ name: this.backPageName })
-  }
-
-  handleViewTransactionsHistory (): void {
-    router.push({ name: PageNames.BridgeTransactionsHistory })
   }
 }
 </script>
@@ -115,9 +109,6 @@ $title-padding: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
       font-size: var(--s-icon-font-size-mini);
       line-height: $tooltip-size;
     }
-  }
-  .el-button--history {
-    margin-left: auto;
   }
 }
 </style>
