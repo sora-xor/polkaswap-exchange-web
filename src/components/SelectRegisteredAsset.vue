@@ -139,11 +139,11 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
 
   @Prop({ default: () => null, type: Object }) readonly asset!: AccountAsset
 
+  @Getter accountAssets!: Array<AccountAsset> // Wallet store
+
   @Getter('isSoraToEthereum', { namespace: 'bridge' }) isSoraToEthereum!: boolean
-  @Getter('accountAssets', { namespace }) accountAssets!: Array<AccountAsset>
   @Getter('registeredAssets', { namespace }) registeredAssets!: Array<RegisteredAccountAsset>
 
-  @Action('getAccountAssets', { namespace }) getAccountAssets
   @Action('getRegisteredAssets', { namespace }) getRegisteredAssets
   @Action('getCustomAsset', { namespace }) getAsset
 
@@ -176,7 +176,6 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
 
   async created (): Promise<void> {
     this.withApi(async () => {
-      await this.getAccountAssets()
       await this.getRegisteredAssets()
     })
   }

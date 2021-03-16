@@ -171,12 +171,11 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
     await this.setSoraNetwork(data)
     await this.setDefaultEthNetwork(data.ETH_NETWORK)
     await this.setEthereumSmartContracts(data.BRIDGE)
+
     if (data.FAUCET_URL) {
       this.setFaucetUrl(data.FAUCET_URL)
     }
-    if (data.FAUCET_URL) {
-      this.setFaucetUrl(data.FAUCET_URL)
-    }
+
     await this.withLoading(async () => {
       const permissions = {
         sendAssets: true, // enable 'send' button in assets list

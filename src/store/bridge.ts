@@ -28,7 +28,7 @@ const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
     'SET_SORA_TO_ETHEREUM',
-    'SET_ASSET',
+    'SET_ASSET_ADDRESS',
     'SET_AMOUNT',
     'SET_SORA_TOTAL',
     'SET_ETHEREUM_TOTAL',
@@ -102,7 +102,7 @@ async function waitForExtrinsicFinalization (time: number): Promise<History> {
 function initialState () {
   return {
     isSoraToEthereum: true,
-    asset: null,
+    assetAddress: '',
     amount: 0,
     soraNetworkFee: 0,
     ethereumNetworkFee: 0,
@@ -127,8 +127,8 @@ const getters = {
   isSoraToEthereum (state) {
     return state.isSoraToEthereum
   },
-  asset (state) {
-    return state.asset
+  asset (state, getters, rootState, rootGetters) {
+    return rootGetters['assets/getAssetDataByAddress'](state.assetAddress)
   },
   amount (state) {
     return state.amount
@@ -181,8 +181,8 @@ const mutations = {
   [types.SET_SORA_TO_ETHEREUM] (state, isSoraToEthereum: boolean) {
     state.isSoraToEthereum = isSoraToEthereum
   },
-  [types.SET_ASSET] (state, asset: AccountAsset | RegisteredAsset | null) {
-    state.asset = asset
+  [types.SET_ASSET_ADDRESS] (state, address: string) {
+    state.assetAddress = address
   },
   [types.SET_AMOUNT] (state, amount: string | number) {
     state.amount = amount
@@ -257,8 +257,8 @@ const actions = {
   setSoraToEthereum ({ commit }, isSoraToEthereum: boolean) {
     commit(types.SET_SORA_TO_ETHEREUM, isSoraToEthereum)
   },
-  async setAsset ({ commit }, asset: AccountAsset | RegisteredAsset) {
-    commit(types.SET_ASSET, asset)
+  setAssetAddress ({ commit }, address?: string) {
+    commit(types.SET_ASSET_ADDRESS, address)
   },
   setAmount ({ commit }, amount: string | number) {
     commit(types.SET_AMOUNT, amount)
@@ -299,9 +299,9 @@ const actions = {
   setTransactionStep ({ commit }, transactionStep: number) {
     commit(types.SET_TRANSACTION_STEP, transactionStep)
   },
-  resetBridgeForm ({ commit, dispatch }) {
+  resetBridgeForm ({ dispatch }) {
     dispatch('setSoraToEthereum', true)
-    dispatch('setAsset')
+    dispatch('setAssetAddress', '')
     dispatch('setTransactionConfirm', false)
     dispatch('setCurrentTransactionState', STATES.INITIAL)
     dispatch('setSoraTransactionDate', '')

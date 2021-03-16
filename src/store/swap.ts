@@ -11,6 +11,10 @@ import { ZeroStringValue } from '@/consts'
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
+    'SET_TOKEN_FROM_ADDRESS',
+    'RESET_TOKEN_FROM_ADDRESS',
+    'SET_TOKEN_TO_ADDRESS',
+    'RESET_TOKEN_TO_ADDRESS',
     'SET_FROM_VALUE',
     'SET_TO_VALUE',
     'SET_TOKEN_FROM_PRICE',
@@ -23,15 +27,13 @@ const types = flow(
   map(x => [x, x]),
   fromPairs
 )([
-  'GET_TOKEN_XOR',
-  'GET_TOKEN_FROM',
-  'GET_TOKEN_TO'
+  'GET_TOKEN_XOR'
 ])
 
 interface SwapState {
   tokenXOR: Asset | AccountAsset | null;
-  tokenFrom: Asset | AccountAsset | null;
-  tokenTo: Asset | AccountAsset | null;
+  tokenFromAddress: string | null;
+  tokenToAddress: string | null;
   fromValue: string;
   toValue: string;
   isTokenFromPrice: boolean;
@@ -44,8 +46,8 @@ interface SwapState {
 function initialState (): SwapState {
   return {
     tokenXOR: null,
-    tokenFrom: null,
-    tokenTo: null,
+    tokenFromAddress: null,
+    tokenToAddress: null,
     fromValue: '',
     toValue: '',
     isTokenFromPrice: true,
@@ -62,11 +64,11 @@ const getters = {
   tokenXOR (state: SwapState) {
     return state.tokenXOR
   },
-  tokenFrom (state: SwapState) {
-    return state.tokenFrom
+  tokenFrom (state: SwapState, getters, rootState, rootGetters) {
+    return rootGetters['assets/getAssetDataByAddress'](state.tokenFromAddress)
   },
-  tokenTo (state: SwapState) {
-    return state.tokenTo
+  tokenTo (state: SwapState, getters, rootState, rootGetters) {
+    return rootGetters['assets/getAssetDataByAddress'](state.tokenToAddress)
   },
   fromValue (state: SwapState) {
     return state.fromValue
@@ -101,23 +103,17 @@ const mutations = {
   [types.GET_TOKEN_XOR_FAILURE] (state: SwapState) {
     state.tokenXOR = null
   },
-  [types.GET_TOKEN_FROM_REQUEST] (state: SwapState) {
-    state.tokenFrom = null
+  [types.SET_TOKEN_FROM_ADDRESS] (state: SwapState, address: string) {
+    state.tokenFromAddress = address
   },
-  [types.GET_TOKEN_FROM_SUCCESS] (state: SwapState, token: Asset | AccountAsset | null) {
-    state.tokenFrom = token
+  [types.RESET_TOKEN_FROM_ADDRESS] (state: SwapState) {
+    state.tokenFromAddress = null
   },
-  [types.GET_TOKEN_FROM_FAILURE] (state: SwapState) {
-    state.tokenFrom = null
+  [types.SET_TOKEN_TO_ADDRESS] (state: SwapState, address: string) {
+    state.tokenToAddress = address
   },
-  [types.GET_TOKEN_TO_REQUEST] (state: SwapState) {
-    state.tokenTo = null
-  },
-  [types.GET_TOKEN_TO_SUCCESS] (state: SwapState, token: Asset | AccountAsset | null) {
-    state.tokenTo = token
-  },
-  [types.GET_TOKEN_TO_FAILURE] (state: SwapState) {
-    state.tokenTo = null
+  [types.RESET_TOKEN_TO_ADDRESS] (state: SwapState) {
+    state.tokenToAddress = null
   },
   [types.SET_FROM_VALUE] (state: SwapState, fromValue: string) {
     state.fromValue = fromValue
@@ -160,61 +156,47 @@ const actions = {
       throw error
     }
   },
-  async setTokenFrom ({ commit, rootGetters }, payload) {
-    const token = KnownAssets.get(payload.tokenSymbol) || rootGetters['assets/assets'].find(item => item.symbol === payload.tokenSymbol)
-    if (payload.isWalletConnected) {
-      commit(types.GET_TOKEN_FROM_REQUEST)
-      if (payload.updatedAsset) {
-        commit(types.GET_TOKEN_FROM_SUCCESS, payload.updatedAsset)
+
+  async setTokenFromAddress ({ commit, rootGetters }, address?: string) {
+    try {
+      if (!address) {
+        commit(types.RESET_TOKEN_FROM_ADDRESS)
         return
       }
-      try {
-        if (token) {
-          let tokenFrom = await api.accountAssets.find(asset => asset.address === token.address)
-          if (!tokenFrom) {
-            tokenFrom = { ...token, balance: ZeroStringValue }
-          }
-          commit(types.GET_TOKEN_FROM_SUCCESS, tokenFrom)
-        } else {
-          throw new Error(`There is no ${payload.tokenSymbol} asset`)
-        }
-      } catch (error) {
-        commit(types.GET_TOKEN_FROM_FAILURE)
-        throw error
+
+      const token = KnownAssets.get(address) || rootGetters['assets/assetsDataTable'][address]
+
+      if (token) {
+        commit(types.SET_TOKEN_FROM_ADDRESS, address)
+      } else {
+        throw new Error(`There is no ${address} asset`)
       }
-    } else {
-      commit(types.GET_TOKEN_FROM_SUCCESS, token)
+    } catch (error) {
+      commit(types.RESET_TOKEN_FROM_ADDRESS)
+      throw error
     }
   },
-  async setTokenTo ({ commit, rootGetters }, payload) {
-    const token = KnownAssets.get(payload.tokenSymbol) || rootGetters['assets/assets'].find(item => item.symbol === payload.tokenSymbol)
-    if (payload.isWalletConnected) {
-      commit(types.GET_TOKEN_TO_REQUEST)
-      if (payload.updatedAsset) {
-        commit(types.GET_TOKEN_TO_SUCCESS, payload.updatedAsset)
+
+  async setTokenToAddress ({ commit, rootGetters }, address?: string) {
+    try {
+      if (!address) {
+        commit(types.RESET_TOKEN_TO_ADDRESS)
         return
       }
-      if (!payload.tokenSymbol) {
-        return
+
+      const token = KnownAssets.get(address) || rootGetters['assets/assetsDataTable'][address]
+
+      if (token) {
+        commit(types.SET_TOKEN_TO_ADDRESS, address)
+      } else {
+        throw new Error(`There is no ${address} asset`)
       }
-      try {
-        if (token) {
-          let tokenTo = await api.accountAssets.find(asset => asset.address === token.address)
-          if (!tokenTo) {
-            tokenTo = { ...token, balance: ZeroStringValue }
-          }
-          commit(types.GET_TOKEN_TO_SUCCESS, tokenTo)
-        } else {
-          throw new Error(`There is no ${payload.tokenSymbol} asset`)
-        }
-      } catch (error) {
-        commit(types.GET_TOKEN_TO_FAILURE)
-        throw error
-      }
-    } else {
-      commit(types.GET_TOKEN_TO_SUCCESS, token)
+    } catch (error) {
+      commit(types.RESET_TOKEN_TO_ADDRESS)
+      throw error
     }
   },
+
   setFromValue ({ commit }, fromValue: string | number) {
     commit(types.SET_FROM_VALUE, fromValue)
   },

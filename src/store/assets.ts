@@ -26,7 +26,6 @@ const types = flow(
 function initialState () {
   return {
     assets: [],
-    accountAssets: [],
     registeredAssets: []
   }
 }
@@ -34,6 +33,7 @@ function initialState () {
 const state = initialState()
 
 const getters = {
+  // list of all assets
   assets (state) {
     return state.assets
   },
@@ -43,11 +43,36 @@ const getters = {
   xorBalance (state, getters) {
     return getters.xorAsset.balance || 0
   },
-  accountAssets (state) {
-    return state.accountAssets
-  },
   registeredAssets (state) {
     return state.registeredAssets
+  },
+  assetsDataTable (state, getters, rootState, rootGetters) {
+    const { accountAssets } = rootGetters
+    const { assets, registeredAssets } = state
+    const findByAddress = (address, assets) => assets.find(item => item.address === address)
+
+    return assets.reduce((result, asset) => {
+      const registeredAsset = findByAddress(asset.address, registeredAssets)
+      const accountAsset = findByAddress(asset.address, accountAssets)
+
+      const item = {
+        ...asset,
+        ...registeredAsset,
+        ...accountAsset
+      }
+
+      return {
+        ...result,
+        [asset.address]: item
+      }
+    }, {})
+  },
+  getAssetDataByAddress (state, getters) {
+    return (address?: string) => {
+      if (!address) return undefined
+
+      return getters.assetsDataTable[address]
+    }
   }
 }
 
@@ -65,16 +90,6 @@ const mutations = {
   [types.GET_ASSET_REQUEST] (state) {},
   [types.GET_ASSET_SUCCESS] (state) {},
   [types.GET_ASSET_FAILURE] (state) {},
-
-  [types.GET_ACCOUNT_ASSETS_REQUEST] (state) {
-    state.accountAssets = []
-  },
-  [types.GET_ACCOUNT_ASSETS_SUCCESS] (state, accountAssets: Array<AccountAsset>) {
-    state.accountAssets = accountAssets
-  },
-  [types.GET_ACCOUNT_ASSETS_FAILURE] (state) {
-    state.accountAssets = []
-  },
 
   [types.GET_REGISTERED_ASSETS_REQUEST] (state) {
     state.registeredAssets = []
@@ -107,14 +122,6 @@ const actions = {
       return asset
     } catch (error) {
       commit(types.GET_ASSET_FAILURE)
-    }
-  },
-  getAccountAssets ({ commit }) {
-    commit(types.GET_ACCOUNT_ASSETS_REQUEST)
-    try {
-      commit(types.GET_ACCOUNT_ASSETS_SUCCESS, api.accountAssets)
-    } catch (error) {
-      commit(types.GET_ACCOUNT_ASSETS_FAILURE)
     }
   },
   async getRegisteredAssets ({ commit, dispatch }) {
@@ -155,18 +162,6 @@ const actions = {
     } catch (error) {
       console.error(error)
     }
-  },
-  syncAssetsBalance ({ state }) {
-    const { registeredAssets, accountAssets } = state
-
-    if (!Array.isArray(registeredAssets) || registeredAssets.length === 0) return
-
-    // modify registeredAssets by link to save reactivity to getters['assets/asset']
-    registeredAssets.forEach(registeredAsset => {
-      const accountAsset = accountAssets.find(item => item.symbol === registeredAsset.symbol)
-
-      registeredAsset.balance = accountAsset?.balance ?? registeredAsset.balance
-    })
   }
 }
 

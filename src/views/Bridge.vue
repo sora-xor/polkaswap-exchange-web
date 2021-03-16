@@ -215,7 +215,7 @@ export default class Bridge extends Mixins(
   @Action('setEthNetwork', { namespace: 'web3' }) setEthNetwork!: (network?: string) => Promise<void>
   @Action('disconnectEthWallet', { namespace: 'web3' }) disconnectEthWallet!: () => Promise<void>
   @Action('setSoraToEthereum', { namespace }) setSoraToEthereum
-  @Action('setAsset', { namespace }) setAsset
+  @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
   @Action('resetBridgeForm', { namespace }) resetBridgeForm
   @Action('getNetworkFee', { namespace }) getNetworkFee
@@ -227,7 +227,6 @@ export default class Bridge extends Mixins(
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
   @Getter('isValidEthNetwork', { namespace: 'web3' }) isValidEthNetwork!: boolean
   @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
-  @Getter('accountAssets', { namespace: 'assets' }) accountAssets!: Array<AccountAsset>
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter('asset', { namespace }) asset!: any
   @Getter('xorAsset', { namespace: 'assets' }) xorAsset!: any
@@ -549,8 +548,7 @@ export default class Bridge extends Mixins(
 
   async selectAsset (selectedAsset: any): Promise<void> {
     if (selectedAsset) {
-      const registeredAsset = this.registeredAssets.find(asset => selectedAsset.symbol === asset.symbol)
-      await this.setAsset(registeredAsset ?? selectedAsset)
+      await this.setAssetAddress(selectedAsset?.address ?? '')
       // TODO: Check SORA balance changing
       if (this.isRegisteredAsset) {
         this.getNetworkFee()
