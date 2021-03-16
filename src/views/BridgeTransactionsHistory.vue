@@ -316,10 +316,8 @@ $history-item-top-border-height: 1px;
   &:hover {
     background-color: var(--s-color-base-background-hover);
     cursor: pointer;
-    &:not(:first-child) {
-      &:before {
-        width: 100%;
-      }
+    &:before, & + .history-item::before {
+      width: 100%;
     }
   }
   &-info {
@@ -336,7 +334,7 @@ $history-item-top-border-height: 1px;
     color: var(--s-color-base-content-secondary);
     line-height: $s-line-height-mini;
   }
-  @include status-icon;
+  @include status-icon(true);
   &-icon {
     flex-shrink: 0;
     align-self: flex-start;

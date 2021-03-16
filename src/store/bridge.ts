@@ -406,9 +406,11 @@ const actions = {
       const tx = await waitForExtrinsicFinalization(+currentDate)
       currentHistoryItem.startTime = tx.startTime
       currentHistoryItem.endTime = tx.endTime
-      currentHistoryItem.status = tx.status
+      currentHistoryItem.status = BridgeTxStatus.Pending
       currentHistoryItem.hash = tx.hash
+      currentHistoryItem.transactionStep = 2
       currentHistoryItem.transactionState = STATES.SORA_COMMITED
+      await dispatch('setTransactionStep', 2)
       await dispatch('setHistoryItem', currentHistoryItem)
       await dispatch('saveHistory', currentHistoryItem)
       await dispatch('setSoraTransactionHash', tx.hash)
@@ -442,8 +444,9 @@ const actions = {
       await dispatch('initHistoryItem', { date: currentDate })
       currentHistoryItem = getters.historyItem
     }
-    currentHistoryItem.transactionStep = 2
-    await dispatch('setTransactionStep', 2)
+    // TODO: Check this part
+    // currentHistoryItem.transactionStep = 2
+    // await dispatch('setTransactionStep', 2)
     try {
       const request = await waitForApprovedRequest(getters.soraTransactionHash) // If it causes an error, then -> catch -> SORA_REJECTED
       if (!rootGetters['web3/isValidEthNetwork']) {
@@ -564,8 +567,10 @@ const actions = {
       currentHistoryItem.startTime = tx.startTime ? tx.startTime : currentHistoryItem.startTime
       currentHistoryItem.endTime = tx.endTime
       currentHistoryItem.ethereumHash = tx.transactionHash
-      currentHistoryItem.status = tx.status
+      currentHistoryItem.status = BridgeTxStatus.Pending
+      currentHistoryItem.transactionStep = 2
       currentHistoryItem.transactionState = STATES.ETHEREUM_COMMITED
+      await dispatch('setTransactionStep', 2)
       await dispatch('saveHistory', currentHistoryItem)
       await dispatch('setHistoryItem', currentHistoryItem)
       await dispatch('setEthereumTransactionHash', tx.transactionHash)
@@ -601,8 +606,9 @@ const actions = {
       await dispatch('initHistoryItem', { date: currentDate })
       currentHistoryItem = getters.historyItem
     }
-    currentHistoryItem.transactionStep = 2
-    await dispatch('setTransactionStep', 2)
+    // TODO: Check this part
+    // currentHistoryItem.transactionStep = 2
+    // await dispatch('setTransactionStep', 2)
     try {
       await api.bridge.requestFromEth(getters.ethereumTransactionHash)
       const tx = await waitForRequest(getters.ethereumTransactionHash)
