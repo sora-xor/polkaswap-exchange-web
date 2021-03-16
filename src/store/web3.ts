@@ -72,7 +72,7 @@ const getters = {
     return state.contractAddress.OTHER
   },
   isEthAccountConnected (state) {
-    return state.ethAddress === '' || state.ethAddress === 'undefined'
+    return !(state.ethAddress === '' || state.ethAddress === 'undefined')
   },
   ethAddress (state) {
     return state.ethAddress
