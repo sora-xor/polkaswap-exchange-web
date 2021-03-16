@@ -207,7 +207,7 @@ $pool-collapse-icon-width: 10px;
 <style lang="scss" scoped>
 $pair-icon-height: 36px;
 
-.header.header--pool {
+.header--pool {
   margin-top: $inner-spacing-mini;
   margin-bottom: $inner-spacing-mini;
 }

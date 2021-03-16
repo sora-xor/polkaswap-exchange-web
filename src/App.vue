@@ -4,7 +4,7 @@
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Exchange)" />
 
       <div class="app-controls s-flex">
-        <branded-tooltip :disabled="accountConnected" placement="bottom">
+        <branded-tooltip :disabled="accountConnected" popper-class="info-tooltip wallet-tooltip" placement="bottom">
           <div slot="content" class="app-controls__wallet-tooltip">
             {{ t('connectWalletTextTooltip') }}
           </div>
@@ -313,14 +313,6 @@ html {
   }
 }
 
-.el-tooltip__popper.info-tooltip {
-  padding: $inner-spacing-mini;
-  max-width: 320px;
-  border: none !important;
-  box-shadow: var(--s-shadow-tooltip);
-  font-size: var(--s-font-size-small);
-  line-height: $s-line-height-medium;
-}
 .el-notification.sora {
   background: var(--s-color-brand-day);
   box-shadow: var(--s-shadow-tooltip);

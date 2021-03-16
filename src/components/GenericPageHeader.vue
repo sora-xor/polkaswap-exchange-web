@@ -2,18 +2,15 @@
   <div :class="headerClasses">
     <s-button v-if="hasButtonBack" type="action" size="medium" icon="chevron-left-rounded" @click="handleBack" />
     <h3 class="page-header-title">{{ title }}</h3>
-    <s-tooltip
+    <branded-tooltip
       v-if="!!tooltip"
       class="page-header-tooltip"
       popper-class="info-tooltip info-tooltip--page-header"
       :content="tooltip"
-      theme="light"
       :placement="tooltipPlacement"
-      animation="none"
-      :show-arrow="false"
     >
       <s-icon name="info" size="16" />
-    </s-tooltip>
+    </branded-tooltip>
     <!-- TODO: Add appropriate icon -->
     <s-button v-if="hasButtonHistory" class="el-button--history" type="action" size="medium" icon="time" @click="handleViewTransactionsHistory" />
     <slot />
@@ -23,10 +20,14 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import router from '@/router'
-import { PageNames } from '@/consts'
+import router, { lazyComponent } from '@/router'
+import { Components, PageNames } from '@/consts'
 
-@Component
+@Component({
+  components: {
+    BrandedTooltip: lazyComponent(Components.BrandedTooltip)
+  }
+})
 export default class GenericPageHeader extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly hasButtonBack!: boolean
   @Prop({ default: PageNames.Pool, type: String }) readonly backPageName!: string
@@ -98,7 +99,7 @@ $title-padding: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
       right: 0;
     }
   }
-  &-tooltip {
+  &-tooltip .s-icon-info {
     margin-top: auto;
     margin-bottom: auto;
     margin-left: $inner-spacing-mini;
@@ -106,6 +107,7 @@ $title-padding: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
     width: $tooltip-size;
     padding-left: 1px;
     border-radius: 50%;
+    line-height: $tooltip-area-height;
     color: var(--s-color-base-content-tertiary);
     text-align: center;
     cursor: pointer;

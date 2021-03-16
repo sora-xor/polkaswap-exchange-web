@@ -1,15 +1,11 @@
 <template>
   <div class="history-container">
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="never">
-      <generic-page-header class="header--bridge" has-button-back :back-page-name="PageNames.Bridge" :title="t('bridgeHistory.title')">
+      <generic-page-header has-button-back :back-page-name="PageNames.Bridge" :title="t('bridgeHistory.title')">
         <s-tooltip
-            class="header-tooltip"
-            popper-class="info-tooltip info-tooltip--header"
+            popper-class="info-tooltip"
             :content="t('bridgeHistory.clearHistory')"
-            border-radius="mini"
             placement="bottom-end"
-            animation="none"
-            :show-arrow="false"
           >
           <s-button
             class="base-title_settings"
@@ -256,9 +252,6 @@ $history-search-class: 'history--search';
   }
 }
 
-.info-tooltip--header {
-  margin-top: #{$inner-spacing-mini / 2} !important;
-}
 @include search-item-unscoped($history-search-class);
 .#{$history-search-class} {
   .el-input__inner {
