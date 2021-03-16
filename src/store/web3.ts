@@ -32,6 +32,7 @@ const types = flow(
 function initialState () {
   return {
     soraNetwork: '',
+    isEthAccountConnected: false,
     ethAddress: web3Util.getEthUserAddress(),
     ethBalance: 0,
     ethNetwork: web3Util.getEthNetworkFromStorage(),
@@ -69,6 +70,9 @@ const getters = {
   },
   addressOTHER (state) {
     return state.contractAddress.OTHER
+  },
+  isEthAccountConnected (state) {
+    return !(state.ethAddress === '' || state.ethAddress === 'undefined')
   },
   ethAddress (state) {
     return state.ethAddress
