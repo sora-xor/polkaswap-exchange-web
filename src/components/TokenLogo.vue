@@ -58,4 +58,5 @@ $token-background-color: var(--s-color-base-on-accent);
 @include element-size('token-logo--mini', 16px);
 @include element-size('token-logo--small', 24px);
 @include element-size('token-logo--medium');
+@include element-size('token-logo--large', 80px);
 </style>

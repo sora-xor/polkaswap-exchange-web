@@ -12,6 +12,7 @@ export default {
   unknownErrorText: 'ERROR Something went wrong...',
   connectWalletText: 'Connect account',
   connectWalletTextTooltip: 'Connect to SORA Network with polkadot{.js}',
+  walletProviderConnectionError: '{provider} is not found. Please install it!',
   bridgeText: 'Bridge',
   comingSoonText: 'Coming Soon',
   poweredBy: 'Powered by',
@@ -197,8 +198,7 @@ export default {
     viewHistory: 'View transactions history',
     transactionSubmitted: 'Transaction submitted',
     transactionMessage: '{assetA} for {assetB}',
-    notRegisteredAsset: 'Asset {assetSymbol} is not registered',
-    walletProviderConnectionError: '{provider} is not found. Please install it!'
+    notRegisteredAsset: 'Asset {assetSymbol} is not registered'
   },
   selectRegisteredAsset: {
     title: 'Select a token',
@@ -354,10 +354,13 @@ export default {
   rewards: {
     title: 'Claim Rewards',
     hint: {
-      connectAccountsText: 'To claim your PSWAP and VAL rewards you need to connect both your SORA and Ethereum accounts.'
+      connectAccounts: 'To claim your PSWAP and VAL rewards you need to connect both your SORA and Ethereum accounts.',
+      howToClaimRewards: 'To claim your PSWAP and VAL rewards you need to sign 2 transactions in your SORA and Ethereum accounts respectively. Rewards will be deposited to your SORA account.'
     },
     action: {
-      connectWallet: '@:connectWalletText'
+      connectWallet: '@:connectWalletText',
+      connectEthereumWallet: 'Connect Ethereum account',
+      signAndClaim: 'Sign and claim'
     }
   }
 }

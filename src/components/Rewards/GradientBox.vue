@@ -24,6 +24,8 @@ export default class GradientBox extends Vue {
   padding: $basic-spacing * 2;
   border-radius: var(--s-border-radius-medium);
   background: linear-gradient(101.79deg, #E81860 8.64%, #F89B29 93.47%);
+  display: flex;
+  flex-flow: column nowrap;
 
   &--pswap {
     background: linear-gradient(110.38deg, #E81860 13.54%, #6453C1 86.15%);

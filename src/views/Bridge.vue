@@ -241,7 +241,7 @@ export default class Bridge extends Mixins(
   getWalletAddress = getWalletAddress
   isWalletConnected = isWalletConnected
 
-  isMetamaskConnecting = false
+  isExternalWalletConnecting = false
   inputPlaceholder = ZeroStringValue
   isFieldAmountFocused = false
   insufficientBalanceAssetSymbol = ''
@@ -436,33 +436,33 @@ export default class Bridge extends Mixins(
 
   async connectExternalWallet (): Promise<void> {
     // For now it's only Metamask
-    if (this.isMetamaskConnecting) {
+    if (this.isExternalWalletConnecting) {
       return
     }
-    this.isMetamaskConnecting = true
+    this.isExternalWalletConnecting = true
     try {
       await this.connectEthWallet({ provider: Provider.Metamask })
     } catch (error) {
       const provider = this.t(error.message)
-      this.$alert(this.t('bridge.walletProviderConnectionError', { provider }))
+      this.$alert(this.t('walletProviderConnectionError', { provider }))
     } finally {
-      this.isMetamaskConnecting = false
+      this.isExternalWalletConnecting = false
     }
   }
 
   // TODO: Check why we can't choose another account
   async changeExternalWallet (): Promise<void> {
     // For now it's only Metamask
-    if (this.isMetamaskConnecting) {
+    if (this.isExternalWalletConnecting) {
       return
     }
-    this.isMetamaskConnecting = true
+    this.isExternalWalletConnecting = true
     try {
       await this.switchEthAccount({ provider: Provider.Metamask })
     } catch (error) {
       console.error(error)
     } finally {
-      this.isMetamaskConnecting = false
+      this.isExternalWalletConnecting = false
     }
   }
 
