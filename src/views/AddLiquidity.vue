@@ -1,6 +1,6 @@
 <template>
   <div class="container" v-loading="parentLoading">
-    <generic-header :title="t('addLiquidity.title')" :tooltip="t('pool.description')" />
+    <generic-page-header has-button-back :title="t('addLiquidity.title')" :tooltip="t('pool.description')" />
     <s-form
       class="el-form--actions"
       :show-message="false"
@@ -203,7 +203,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
 
 @Component({
   components: {
-    GenericHeader: lazyComponent(Components.GenericHeader),
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SelectToken: lazyComponent(Components.SelectToken),
     InfoCard: lazyComponent(Components.InfoCard),
     TokenLogo: lazyComponent(Components.TokenLogo),

@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 
-import { PageNames } from '@/consts'
+import { PageNames, BridgeChildPages } from '@/consts'
 import { isWalletConnected } from '@/utils'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -53,12 +54,14 @@ const routes: Array<RouteConfig> = [
   {
     path: '/bridge/transaction',
     name: PageNames.BridgeTransaction,
-    component: lazyView(PageNames.BridgeTransaction)
+    component: lazyView(PageNames.BridgeTransaction),
+    meta: { requiresAuth: true }
   },
   {
     path: '/bridge/history',
     name: PageNames.BridgeTransactionsHistory,
-    component: lazyView(PageNames.BridgeTransactionsHistory)
+    component: lazyView(PageNames.BridgeTransactionsHistory),
+    meta: { requiresAuth: true }
   },
   {
     path: '/exchange/pool/create-pair',
@@ -113,6 +116,11 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (BridgeChildPages.includes(to.name as PageNames) && isWalletConnected() && !store.getters['web3/isEthAccountConnected']) {
+      next({
+        name: PageNames.Bridge
+      })
+    }
     if (!isWalletConnected()) {
       next({
         name: PageNames.Wallet

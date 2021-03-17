@@ -45,11 +45,10 @@ export default class InfoLine extends Vue {
 .info-line {
   display: flex;
   align-items: center;
-  margin-top: $inner-spacing-mini / 2;
   width: 100%;
   padding: $inner-spacing-mini / 4 $inner-spacing-mini / 2;
   color: var(--s-color-base-content-secondary);
-  font-size: var(--s-font-size-small);
+  font-size: var(--s-font-size-mini);
   font-feature-settings: $s-font-feature-settings-common;
   line-height: $s-line-height-big;
   &:first-child {

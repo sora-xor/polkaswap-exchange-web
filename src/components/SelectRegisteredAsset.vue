@@ -93,7 +93,7 @@
           <div v-if="customAddress && !customSymbol" class="custom-asset-info">
             {{ t(`selectRegisteredAsset.customAsset.${alreadyAttached ? 'alreadyAttached' : 'empty'}`) }}
           </div>
-          <s-button class="s-button--next" type="primary" size="big" :disabled="!(customAddress && customSymbol)" @click="handleCustomAssetNext">{{ t('bridge.next') }}</s-button>
+          <s-button class="s-button--next" type="primary" :disabled="!(customAddress && customSymbol)" @click="handleCustomAssetNext">{{ t('bridge.next') }}</s-button>
         </div>
       </s-tab>
     </s-tabs>
@@ -397,7 +397,7 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
   &__balance {
     white-space: nowrap;
   }
-  .asset-logo {
+  .token-logo {
     margin-right: $inner-spacing-medium;
   }
 }

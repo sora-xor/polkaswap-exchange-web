@@ -1,12 +1,22 @@
 <template>
   <div v-loading="parentLoading" class="bridge s-flex">
-    <bridge-header />
     <s-form
       v-model="amounts"
       class="bridge-form"
       :show-message="false"
     >
       <s-card class="bridge-content" border-radius="medium" shadow="never">
+        <generic-page-header class="header--bridge" :title="t('bridge.title')" :tooltip="t('bridge.info')" tooltip-placement="bottom">
+          <!-- TODO: Add appropriate icon -->
+          <s-button
+            v-if="areNetworksConnected"
+            class="el-button--history"
+            type="action"
+            icon="time"
+            size="medium"
+            @click="handleViewTransactionsHistory"
+          />
+        </generic-page-header>
         <s-card :class="isSoraToEthereum ? 'bridge-item' : 'bridge-item bridge-item--ethereum'" border-radius="mini" shadow="never">
           <div class="bridge-item-header">
             <div class="bridge-item-title">
@@ -46,19 +56,19 @@
               {{ t('bridge.chooseToken') }}
             </s-button>
           </div>
-          <div v-if="isNetworkAConnected" class="bridge-item-footer">
+          <div v-if="isNetworkAConnected && !isSoraToEthereum" class="bridge-item-footer">
+            <s-divider />
             <s-button class="s-button--change-wallet" type="link" size="mini" @click="isSoraToEthereum ? connectInternalWallet() : changeExternalWallet()">
               <span class="bridge-item-id">{{ formatAddress(isSoraToEthereum ? getWalletAddress() : ethAddress, 8) }}</span>
               <span class="change-wallet">{{ t('bridge.changeWallet') }}</span>
             </s-button>
             <span>{{ t('bridge.connected') }}</span>
           </div>
-          <s-button v-else class="s-button--connect" type="primary" @click="isSoraToEthereum ? connectInternalWallet() : connectExternalWallet()">
+          <s-button v-else-if="!isNetworkAConnected" class="s-button--connect" type="primary" @click="isSoraToEthereum ? connectInternalWallet() : connectExternalWallet()">
             {{ t('bridge.connectWallet') }}
           </s-button>
         </s-card>
-        <!-- TODO: Change icon -->
-        <s-button class="s-button--switch" type="action" icon="change-positions" :disabled="!areNetworksConnected" @click="handleSwitchItems" />
+        <s-button class="s-button--switch" type="action" icon="change-positions" @click="handleSwitchItems" />
         <s-card :class="!isSoraToEthereum ? 'bridge-item' : 'bridge-item bridge-item--ethereum'" border-radius="mini" shadow="never">
           <div class="bridge-item-header">
             <div class="bridge-item-title">
@@ -88,42 +98,21 @@
               </s-button>
             </div>
           </div>
-          <div v-if="isNetworkBConnected" class="bridge-item-footer">
+          <div v-if="isNetworkBConnected && isSoraToEthereum" class="bridge-item-footer">
+            <s-divider />
             <s-button class="s-button--change-wallet" type="link" size="mini" @click="!isSoraToEthereum ? connectInternalWallet() : changeExternalWallet()">
               <span class="bridge-item-id">{{ formatAddress(isSoraToEthereum ? ethAddress : getWalletAddress(), 8) }}</span>
               <span class="change-wallet">{{ t('bridge.changeWallet') }}</span>
             </s-button>
             <span>{{ t('bridge.connected') }}</span>
           </div>
-          <s-button v-else class="s-button--connect" type="primary" @click="!isSoraToEthereum ? connectInternalWallet() : connectExternalWallet()">
+          <s-button v-else-if="!isNetworkBConnected" class="s-button--connect" type="primary" @click="!isSoraToEthereum ? connectInternalWallet() : connectExternalWallet()">
             {{ t('bridge.connectWallet') }}
           </s-button>
         </s-card>
-        <template v-if="areNetworksConnected && !isZeroAmount && isRegisteredAsset">
-          <info-line
-            :label="t('bridge.soraNetworkFee')"
-            :tooltip-content="t('bridge.tooltipValue')"
-            :value="soraNetworkFee ? '~' + formattedSoraNetworkFee : '-'"
-            :asset-symbol="KnownSymbols.XOR"
-          />
-          <info-line
-            :label="t('bridge.ethereumNetworkFee')"
-            :tooltip-content="t('bridge.tooltipValue')"
-            :value="ethereumNetworkFee ? '~' + ethereumNetworkFee : '-'"
-            :asset-symbol="EthSymbol"
-          />
-          <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
-          <!-- <info-line
-            :label="t('bridge.total')"
-            :tooltip-content="t('bridge.tooltipValue')"
-            :value="`~${soraTotal}`"
-            :asset-symbol="KnownSymbols.XOR"
-          /> -->
-        </template>
         <s-button
           class="s-button--next"
           type="primary"
-          size="big"
           :disabled="!areNetworksConnected || !isValidEthNetwork || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEtherForFee || isInsufficientBalance || !isRegisteredAsset"
           @click="handleConfirmTransaction"
         >
@@ -152,24 +141,32 @@
             {{ t('bridge.next') }}
           </template>
         </s-button>
+        <div v-if="areNetworksConnected && !isZeroAmount && isRegisteredAsset" class="info-line-container">
+          <info-line
+            :label="t('bridge.soraNetworkFee')"
+            :tooltip-content="t('bridge.tooltipValue')"
+            :value="soraNetworkFee ? '~' + formattedSoraNetworkFee : '-'"
+            :asset-symbol="KnownSymbols.XOR"
+          />
+          <info-line
+            :label="t('bridge.ethereumNetworkFee')"
+            :tooltip-content="t('bridge.tooltipValue')"
+            :value="ethereumNetworkFee ? '~' + ethereumNetworkFee : '-'"
+            :asset-symbol="EthSymbol"
+          />
+          <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
+          <!-- <info-line
+            :label="t('bridge.total')"
+            :tooltip-content="t('bridge.tooltipValue')"
+            :value="`~${soraTotal}`"
+            :asset-symbol="KnownSymbols.XOR"
+          /> -->
+        </div>
       </s-card>
       <select-registered-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
       <confirm-bridge-transaction-dialog :visible.sync="showConfirmTransactionDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmTransaction" />
     </s-form>
-    <!-- TODO 4 alexnatalia: Change icon and styles -->
-    <div v-if="areNetworksConnected" class="bridge-footer">
-      <s-button
-        class="s-button--view-transactions-history"
-        size="big"
-        type="link"
-        icon="external-link"
-        icon-position="left"
-        @click="handleViewTransactionsHistory"
-      >
-        {{ t('bridge.viewHistory') }}
-      </s-button>
-    </div>
-    <div v-else class="bridge-footer bridge-footer--not-connected">{{ t('bridge.connectWallets') }}</div>
+    <div v-if="!areNetworksConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div>
   </div>
 </template>
 
@@ -193,7 +190,7 @@ const namespace = 'bridge'
 
 @Component({
   components: {
-    BridgeHeader: lazyComponent(Components.BridgeHeader),
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     TokenLogo: lazyComponent(Components.TokenLogo),
     InfoLine: lazyComponent(Components.InfoLine),
     SelectRegisteredAsset: lazyComponent(Components.SelectRegisteredAsset),
@@ -565,7 +562,6 @@ export default class Bridge extends Mixins(
 
 <style lang="scss">
 $bridge-input-class: ".el-input";
-$bridge-input-prefix-width: $inner-spacing-medium;
 $bridge-input-color: var(--s-color-base-content-tertiary);
 
 .bridge {
@@ -573,11 +569,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
   }
   .bridge-item {
-    &:first-of-type {
-      .s-input-amount--filled:before {
-        content: '-';
-      }
-    }
     &--ethereum {
       .s-input {
         .el-input > input {
@@ -590,34 +581,19 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       padding: 0;
     }
   }
-  // TODO: Change this value after icon font adding
-  .s-button--switch i {
-    font-size: 23px;
+  .s-button--switch {
+    @include switch-button-inherit-styles('medium');
   }
   &-form {
     @include bridge-container;
     .s-input.s-input-amount {
       position: relative;
-      &:before {
-        position: absolute;
-        left: 0;
-        top: 0;
-        display: none;
-        width: $bridge-input-prefix-width;
-        content: '+';
-        color: inherit;
-        @include input-font-styles;
-      }
       &--filled {
-        padding-left: $bridge-input-prefix-width;
         &:not(.s-disabled) {
           color: var(--s-color-base-content-primary);
         }
         &.s-disabled {
           color: $bridge-input-color;
-        }
-        &:before {
-          display: block;
         }
       }
       #{$bridge-input-class} {
@@ -692,18 +668,21 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
   &-content {
     @include bridge-content;
   }
-  .bridge-item,
+  @include token-styles;
+  @include vertical-divider('s-button--switch', $inner-spacing-medium);
   .s-button--switch {
-    margin-bottom: $inner-spacing-mini;
+    @include switch-button(var(--s-size-medium));
   }
   .bridge-item {
+    margin-bottom: $inner-spacing-mini;
+    background-color: var(--s-color-base-background);
     &,
     &:hover {
-      border: 1px solid var(--s-color-base-border-primary);
+      border: none;
     }
     &-header,
     &-footer {
-      padding-top: $inner-spacing-mini;
+      padding-top: $inner-spacing-mini / 2;
       padding-right: $inner-spacing-medium;
       padding-left: $inner-spacing-medium;
       font-size: var(--s-font-size-mini);
@@ -713,7 +692,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: $basic-spacing;
+      margin-bottom: $inner-spacing-mini;
     }
     &-title,
     .s-button--change-wallet {
@@ -771,9 +750,16 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     &-footer {
       display: flex;
       justify-content: space-between;
+      flex-wrap: wrap;
       padding-bottom: $inner-spacing-mini;
       background-color: var(--s-color-base-background);
       color: var(--s-color-base-content-secondary);
+      .el-divider {
+        margin-top: 0;
+        margin-bottom: $inner-spacing-mini;
+        width: 100%;
+        background-color: var(--s-color-base-border-primary);
+      }
     }
     & + .bridge-info {
       margin-top: $basic-spacing * 2;
@@ -793,26 +779,19 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     margin-left: auto;
     margin-right: auto;
     display: block;
-    padding: $inner-spacing-mini;
-    color: var(--s-color-base-content-tertiary);
-    &:not(:hover) {
-      background-color: transparent;
-      border-color: transparent;
-    }
   }
   &-footer {
     display: flex;
     align-items: center;
-    &--not-connected {
-      font-size: var(--s-font-size-mini);
-      line-height: $s-line-height-big;
-      color: var(--s-color-base-content-secondary);
-      font-feature-settings: $s-font-feature-settings-common;
-    }
+    font-size: var(--s-font-size-mini);
+    line-height: $s-line-height-big;
+    color: var(--s-color-base-content-secondary);
+    font-feature-settings: $s-font-feature-settings-common;
   }
   .s-tertiary {
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
   }
+  @include buttons;
   .s-button {
     &--max,
     &--empty-token {
@@ -864,7 +843,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     &--connect {
       margin: $inner-spacing-mini $inner-spacing-small $inner-spacing-small;
       width: calc(100% - #{$inner-spacing-small * 2});
-      @include button-styles;
     }
     &--change-wallet {
       padding: 0;
@@ -886,11 +864,17 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     }
     &--next {
       margin-top: $inner-spacing-mini;
-      @include next-button;
+      width: 100%;
     }
-    &--view-transactions-history {
-      @include bottom-button;
-    }
+  }
+  .info-line-container {
+    border: 1px solid var(--s-color-base-border-secondary);
+    border-radius: var(--s-border-radius-small);
+    margin-top: $inner-spacing-medium;
+    padding: $inner-spacing-mini / 2 $inner-spacing-mini;
+  }
+  .el-button--history {
+    margin-left: auto;
   }
 }
 </style>

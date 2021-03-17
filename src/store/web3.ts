@@ -70,6 +70,9 @@ const getters = {
   addressOTHER (state) {
     return state.contractAddress.OTHER
   },
+  isEthAccountConnected (state) {
+    return !(state.ethAddress === '' || state.ethAddress === 'undefined')
+  },
   ethAddress (state) {
     return state.ethAddress
   },

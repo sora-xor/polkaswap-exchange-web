@@ -176,8 +176,8 @@ export default {
     description: 'When you add liquidity, you are given pool tokens representing your position. These tokens automaticaly earn fees proportional to your share of the pool, and can be redeemed at any time.'
   },
   bridge: {
-    title: 'SORA Bridge with Ethereum',
-    info: 'Convert your tokens from SORA to Ethereum and vice versa.',
+    title: 'Hashi Bridge',
+    info: 'Convert your tokens from SORA Network to Ethereum Network and viceversa.',
     from: 'From',
     to: 'To',
     balance: 'Balance',

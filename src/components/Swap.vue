@@ -454,7 +454,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @include input-form-styles;
   @include buttons;
   @include full-width-button;
-  @include vertical-divider('el-button--switch-tokens');
+  @include vertical-divider('el-button--switch-tokens', $inner-spacing-medium);
 
   .input-title-estimated {
     margin-left: $inner-spacing-mini / 2;
