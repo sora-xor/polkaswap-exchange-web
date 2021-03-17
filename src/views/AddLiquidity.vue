@@ -217,8 +217,6 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('accountLiquidity', { namespace: 'pool' }) accountLiquidity!: Array<AccountLiquidity>
 
-  @Getter('assetsDataTable', { namespace: 'assets' }) assetsDataTable
-
   @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField

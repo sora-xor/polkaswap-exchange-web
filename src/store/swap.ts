@@ -133,7 +133,7 @@ const actions = {
         return
       }
 
-      const token = KnownAssets.get(address) || rootGetters['assets/assetsDataTable'][address]
+      const token = KnownAssets.get(address) || rootGetters['assets/getAssetDataByAddress'](address)
 
       if (token) {
         commit(types.SET_TOKEN_FROM_ADDRESS, address)
@@ -153,7 +153,7 @@ const actions = {
         return
       }
 
-      const token = KnownAssets.get(address) || rootGetters['assets/assetsDataTable'][address]
+      const token = KnownAssets.get(address) || rootGetters['assets/getAssetDataByAddress'](address)
 
       if (token) {
         commit(types.SET_TOKEN_TO_ADDRESS, address)

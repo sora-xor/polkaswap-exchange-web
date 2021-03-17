@@ -346,6 +346,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   async handleFocusField (isExchangeB = false): Promise<void> {
     const isZeroValue = isExchangeB ? this.isZeroToAmount : this.isZeroFromAmount
+    const prevFocus = this.isExchangeB
 
     this.setExchangeB(isExchangeB)
 
@@ -354,7 +355,9 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       this.resetFieldTo()
     }
 
-    await this.recountSwapValues()
+    if (prevFocus !== this.isExchangeB) {
+      await this.recountSwapValues()
+    }
   }
 
   async handleSwitchTokens (): Promise<void> {
