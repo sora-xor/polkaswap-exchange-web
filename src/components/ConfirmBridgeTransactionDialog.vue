@@ -4,17 +4,17 @@
     :title="t('confirmBridgeTransactionDialog.confirmTransaction')"
   >
     <div :class="assetsClasses">
-      <div class="assets-info-container">
-        <span class="asset-value">{{ amount }}</span>
-        <div v-if="asset" class="asset">
+      <div class="tokens-info-container">
+        <span class="token-value">{{ amount }}</span>
+        <div v-if="asset" class="token">
           <token-logo :tokenSymbol="asset.symbol" />
           {{ formatAssetSymbol(asset.symbol) }}
         </div>
       </div>
       <s-icon class="icon-divider" name="arrow-bottom-rounded" size="medium" />
-      <div class="assets-info-container">
-        <span class="asset-value">{{ amount }}</span>
-        <div v-if="asset" class="asset asset-ethereum">
+      <div class="tokens-info-container">
+        <span class="token-value">{{ amount }}</span>
+        <div v-if="asset" class="token token-ethereum">
           <token-logo :tokenSymbol="asset.symbol" />
           {{ formatAssetSymbol(asset.symbol, true) }}
         </div>
@@ -90,7 +90,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
   formatAssetSymbol = formatAssetSymbol
 
   get assetsClasses (): string {
-    const assetsClass = 'assets'
+    const assetsClass = 'tokens'
     const classes = [assetsClass]
 
     if (!this.isSoraToEthereum) {
@@ -121,7 +121,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
 </script>
 
 <style lang="scss" scoped>
-.assets {
+.tokens {
   display: flex;
   flex-direction: column;
   font-size: var(--s-heading2-font-size);
@@ -137,7 +137,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
 }
 @include vertical-divider;
 @include vertical-divider('s-divider--dialog', $inner-spacing-medium);
-.asset {
+.token {
   display: flex;
   align-items: center;
   justify-content: flex-end;

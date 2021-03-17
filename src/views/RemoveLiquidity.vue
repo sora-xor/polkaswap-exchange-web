@@ -1,6 +1,6 @@
 <template>
   <div class="container" v-loading="loading || parentLoading">
-    <generic-header :title="t('removeLiquidity.title')" :tooltip="t('removeLiquidity.description')" />
+    <generic-page-header has-button-back :title="t('removeLiquidity.title')" :tooltip="t('removeLiquidity.description')" />
     <s-form
       class="el-form--actions"
       :show-message="false"
@@ -161,7 +161,7 @@ const namespace = 'removeLiquidity'
 
 @Component({
   components: {
-    GenericHeader: lazyComponent(Components.GenericHeader),
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     InfoCard: lazyComponent(Components.InfoCard),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),

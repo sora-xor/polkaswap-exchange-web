@@ -1,8 +1,9 @@
 <template>
   <s-tooltip
     v-bind="{
+      popperClass: 'info-tooltip',
+      theme: 'light',
       animation: 'none',
-      popperClass: 'wallet-tooltip',
       ...$attrs
     }"
   >
@@ -22,16 +23,18 @@ export default {}
 $tooltip-padding-top: $inner-spacing-mini * 0.5;
 $tooltip-padding-bottom: $inner-spacing-mini * 0.75;
 
-.el-tooltip__popper.is-light.wallet-tooltip {
+.el-tooltip__popper.is-light.info-tooltip {
+  max-width: 236px;
   padding: $tooltip-padding-top $inner-spacing-mini $tooltip-padding-bottom;
+  line-height: $s-line-height-base;
   background-color: var(--s-color-brand-day);
   color: var(--s-color-utility-body);
 
-  & .popper__arrow {
+  .popper__arrow {
     border-bottom-color: var(--s-color-brand-day);
 
     &:after {
-      border-bottom-color: var(--s-color-brand-day);
+      border-bottom-color: inherit;
     }
   }
 }

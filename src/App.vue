@@ -4,7 +4,7 @@
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Exchange)" />
 
       <div class="app-controls s-flex">
-        <branded-tooltip :disabled="accountConnected" placement="bottom">
+        <branded-tooltip :disabled="accountConnected" popper-class="info-tooltip wallet-tooltip" placement="bottom">
           <div slot="content" class="app-controls__wallet-tooltip">
             {{ t('connectWalletTextTooltip') }}
           </div>
@@ -112,7 +112,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { connection, initWallet, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
 
-import { PageNames, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components } from '@/consts'
+import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components } from '@/consts'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -142,11 +142,6 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
     PageNames.AddLiquidityId,
     PageNames.RemoveLiquidity,
     PageNames.CreatePair
-  ]
-
-  readonly BridgeChildPages = [
-    PageNames.BridgeTransaction,
-    PageNames.BridgeTransactionsHistory
   ]
 
   showHelpDialog = false
@@ -210,7 +205,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
     if (this.PoolChildPages.includes(router.currentRoute.name as PageNames)) {
       return PageNames.Pool
     }
-    if (this.BridgeChildPages.includes(router.currentRoute.name as PageNames)) {
+    if (BridgeChildPages.includes(router.currentRoute.name as PageNames)) {
       return PageNames.Bridge
     }
     return router.currentRoute.name as string
@@ -313,14 +308,6 @@ html {
   }
 }
 
-.el-tooltip__popper.info-tooltip {
-  padding: $inner-spacing-mini;
-  max-width: 320px;
-  border: none !important;
-  box-shadow: var(--s-shadow-tooltip);
-  font-size: var(--s-font-size-small);
-  line-height: $s-line-height-medium;
-}
 .el-notification.sora {
   background: var(--s-color-brand-day);
   box-shadow: var(--s-shadow-tooltip);
