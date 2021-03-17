@@ -13,7 +13,7 @@
         </div>
         <div v-if="this.connected && this.tokenFrom && this.tokenFrom.balance" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
-          <span class="token-balance-value">{{ tokenFromBalance }}</span>
+          <span class="token-balance-value">{{ formatBalance(tokenFrom) }}</span>
         </div>
       </div>
       <div class="input-line">
@@ -51,7 +51,7 @@
         </div>
         <div v-if="this.connected && this.tokenTo && this.tokenTo.balance" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
-          <span class="token-balance-value">{{ tokenToBalance }}</span>
+          <span class="token-balance-value">{{ formatBalance(tokenTo) }}</span>
         </div>
       </div>
       <div class="input-line">
@@ -136,9 +136,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Getter('networkFee', { namespace }) networkFee!: CodecString
   @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString
 
-  @Action('getTokenXOR', { namespace }) getTokenXOR!: () => Promise<void>
-  @Action('setTokenFromAddress', { namespace }) setTokenFrom!: (address?: string) => Promise<void>
-  @Action('setTokenToAddress', { namespace }) setTokenTo!: (address?: string) => Promise<void>
+  @Action('setTokenFromAddress', { namespace }) setTokenFromAddress!: (address?: string) => Promise<void>
+  @Action('setTokenToAddress', { namespace }) setTokenToAddress!: (address?: string) => Promise<void>
   @Action('setFromValue', { namespace }) setFromValue!: (value: string) => Promise<void>
   @Action('setToValue', { namespace }) setToValue!: (value: string) => Promise<void>
   @Action('setTokenFromPrice', { namespace }) setTokenFromPrice!: (isTokenFromPrice: boolean) => Promise<void>
@@ -219,37 +218,24 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     return false
   }
 
-  /**
-   * Update token From balance and amount (after swap it should be recalculated)
-   */
-  get tokenFromBalance (): string {
-    if (!this.tokenFrom?.balance) {
-      return ''
-    }
-    return this.formatCodecNumber(this.tokenFrom.balance)
-  }
-
-  /**
-   * Update token To balance and amount (after swap it should be recalculated)
-   */
-  get tokenToBalance (): string {
-    if (!this.tokenTo?.balance) {
-      return ''
-    }
-    return this.formatCodecNumber(this.tokenTo.balance)
-  }
-
   created () {
     this.withApi(() => {
       if (!this.tokenFrom) {
         const xorAddress = KnownAssets.get(KnownSymbols.XOR)?.address
-        this.setTokenFrom(xorAddress)
-        this.setTokenTo()
+        this.setTokenFromAddress(xorAddress)
+        this.setTokenToAddress()
       }
       if (this.tokenFrom && this.tokenTo) {
         this.getNetworkFee()
       }
     })
+  }
+
+  formatBalance (token): string {
+    if (!token?.balance) {
+      return ''
+    }
+    return this.formatCodecNumber(token.balance)
   }
 
   resetInsufficientAmountFlag (): void {
@@ -320,10 +306,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       await this.calcMinMaxRecieved()
       await this.updatePrices()
       await this.getNetworkFee()
-
-      if (this.connected && (this.tokenFrom.symbol !== KnownSymbols.XOR)) {
-        await this.getTokenXOR()
-      }
     } catch (error) {
       resetOppositeValue()
       if (!this.isInsufficientAmountError(token.symbol as string, error.message)) {
@@ -378,8 +360,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   async handleSwitchTokens (): Promise<void> {
     const [fromAddress, toAddress] = [this.tokenFrom.address, this.tokenTo.address]
 
-    await this.setTokenFrom(toAddress)
-    await this.setTokenTo(fromAddress)
+    await this.setTokenFromAddress(toAddress)
+    await this.setTokenToAddress(fromAddress)
 
     if (this.isExchangeB) {
       this.setExchangeB(false)
@@ -415,9 +397,9 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     if (token) {
       if (this.isTokenFromSelected) {
         this.isTokenFromSelected = false
-        await this.setTokenFrom(token.address)
+        await this.setTokenFromAddress(token.address)
       } else {
-        await this.setTokenTo(token.address)
+        await this.setTokenToAddress(token.address)
       }
       await this.recountSwapValues()
     }

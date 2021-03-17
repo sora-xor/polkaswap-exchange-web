@@ -95,7 +95,6 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: string
   @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: string
 
-  @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets
   @Action('getHistory', { namespace }) getHistory
   @Action('getNetworkFee', { namespace }) getNetworkFee
   @Action('getEthNetworkFee', { namespace }) getEthNetworkFee
@@ -135,7 +134,6 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 
   async created (): Promise<void> {
     this.withApi(async () => {
-      await this.getRegisteredAssets()
       await this.getHistory()
       await this.getNetworkFee()
       await this.getEthNetworkFee()

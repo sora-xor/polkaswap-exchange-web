@@ -167,16 +167,16 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   @Action('setDefaultEthNetwork', { namespace: 'web3' }) setDefaultEthNetwork
 
   async created () {
-    const { data } = await axios.get('/env.json')
-    await this.setSoraNetwork(data)
-    await this.setDefaultEthNetwork(data.ETH_NETWORK)
-    await this.setEthereumSmartContracts(data.BRIDGE)
-
-    if (data.FAUCET_URL) {
-      this.setFaucetUrl(data.FAUCET_URL)
-    }
-
     await this.withLoading(async () => {
+      const { data } = await axios.get('/env.json')
+      await this.setSoraNetwork(data)
+      await this.setDefaultEthNetwork(data.ETH_NETWORK)
+      await this.setEthereumSmartContracts(data.BRIDGE)
+
+      if (data.FAUCET_URL) {
+        this.setFaucetUrl(data.FAUCET_URL)
+      }
+
       const permissions = {
         sendAssets: true, // enable 'send' button in assets list
         swapAssets: true // enable 'swap' button in assets list
@@ -185,6 +185,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
       await this.getAssets()
       await this.getAccountLiquidity()
     })
+
     this.trackActiveTransactions()
     this.updateAccountLiquidity()
   }

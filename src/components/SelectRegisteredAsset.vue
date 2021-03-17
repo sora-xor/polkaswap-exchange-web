@@ -144,7 +144,6 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
   @Getter('isSoraToEthereum', { namespace: 'bridge' }) isSoraToEthereum!: boolean
   @Getter('registeredAssets', { namespace }) registeredAssets!: Array<RegisteredAccountAsset>
 
-  @Action('getRegisteredAssets', { namespace }) getRegisteredAssets
   @Action('getCustomAsset', { namespace }) getAsset
 
   get containerClasses (): string {
@@ -174,12 +173,6 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
     return this.filteredAssets && this.filteredAssets.length > 0
   }
 
-  async created (): Promise<void> {
-    this.withApi(async () => {
-      await this.getRegisteredAssets()
-    })
-  }
-
   formatBalance (asset?: AccountAsset | RegisteredAccountAsset): string {
     if (!asset || !asset.balance) {
       return '-'
@@ -195,7 +188,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
   }
 
   getAssets (assets: Array<AccountAsset | RegisteredAccountAsset>): Array<AccountAsset | RegisteredAccountAsset> {
-    return this.asset ? assets?.filter(asset => asset.symbol !== this.asset.symbol) : assets
+    return this.asset ? assets?.filter(asset => asset.address !== this.asset.address) : assets
   }
 
   getFilteredAssets (assets: Array<AccountAsset | RegisteredAccountAsset>): Array<AccountAsset | RegisteredAccountAsset> {

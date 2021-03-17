@@ -11,7 +11,7 @@ import { decodeAddress } from '@polkadot/util-crypto'
 import { STATES } from '@/utils/fsm'
 import storage from '@/utils/storage'
 import web3Util, { KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
-import { delay } from '@/utils'
+import { delay, findAssetInCollection } from '@/utils'
 import { EthereumGasLimits, MaxUint256 } from '@/consts'
 
 export interface BridgeHistory extends History {
@@ -336,12 +336,12 @@ const actions = {
     commit(types.GET_HISTORY_SUCCESS, [])
   },
   async getNetworkFee ({ commit, getters, rootGetters }) {
-    if (!getters.asset || !getters.asset.symbol) {
+    if (!getters.asset || !getters.asset.address) {
       return
     }
     commit(types.GET_SORA_NETWORK_FEE_REQUEST)
     try {
-      const asset = rootGetters['assets/registeredAssets'].find(item => item.symbol === getters.asset.symbol)
+      const asset = findAssetInCollection(getters.asset, rootGetters['assets/registeredAssets'])
       const fee = await (
         getters.isSoraToEthereum
           ? api.bridge.getTransferToEthFee(asset, '', getters.amount)
@@ -354,7 +354,7 @@ const actions = {
     }
   },
   async getEthNetworkFee ({ commit, getters }) {
-    if (!getters.asset || !getters.asset.symbol) {
+    if (!getters.asset || !getters.asset.address) {
       return
     }
     commit(types.GET_ETHEREUM_NETWORK_FEE_REQUEST)
@@ -390,7 +390,7 @@ const actions = {
     if (!getters.asset || !getters.asset.symbol || !getters.amount || !getters.isSoraToEthereum) {
       return
     }
-    const asset = rootGetters['assets/registeredAssets'].find(item => item.symbol === getters.asset.symbol)
+    const asset = findAssetInCollection(getters.asset, rootGetters['assets/registeredAssets'])
     // TODO: asset should be registered just for now
     if (!asset) {
       return
@@ -429,7 +429,7 @@ const actions = {
     if (!getters.asset || !getters.asset.symbol || !getters.amount || !getters.isSoraToEthereum || !getters.soraTransactionHash) {
       return
     }
-    const asset = rootGetters['assets/registeredAssets'].find(item => item.symbol === getters.asset.symbol)
+    const asset = findAssetInCollection(getters.asset, rootGetters['assets/registeredAssets'])
     // TODO: asset should be registered just for now
     if (!asset) {
       return
@@ -518,7 +518,7 @@ const actions = {
     if (!getters.asset || !getters.asset.symbol || !getters.amount || getters.isSoraToEthereum) {
       return
     }
-    const asset = rootGetters['assets/registeredAssets'].find(item => item.symbol === getters.asset.symbol)
+    const asset = findAssetInCollection(getters.asset, rootGetters['assets/registeredAssets'])
     // TODO: asset should be registered for now (ERC-20 tokens flow)
     if (!asset) {
       return
@@ -588,7 +588,7 @@ const actions = {
     if (!getters.asset || !getters.asset.symbol || !getters.amount || getters.isSoraToEthereum || !getters.ethereumTransactionHash) {
       return
     }
-    const asset = rootGetters['assets/registeredAssets'].find(item => item.symbol === getters.asset.symbol)
+    const asset = findAssetInCollection(getters.asset, rootGetters['assets/registeredAssets'])
     // TODO: asset should be registered just for now
     if (!asset) {
       return

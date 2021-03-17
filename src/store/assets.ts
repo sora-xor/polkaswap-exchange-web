@@ -5,7 +5,7 @@ import flow from 'lodash/fp/flow'
 import { Asset, AccountAsset, RegisteredAsset } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 
-import { isXorAccountAsset } from '@/utils'
+import { isXorAccountAsset, findAssetInCollection } from '@/utils'
 
 export interface RegisteredAccountAsset extends RegisteredAsset {
   balance: string;
@@ -49,11 +49,10 @@ const getters = {
   assetsDataTable (state, getters, rootState, rootGetters) {
     const { accountAssets } = rootGetters
     const { assets, registeredAssets } = state
-    const findByAddress = (address, assets) => assets.find(item => item.address === address)
 
     return assets.reduce((result, asset) => {
-      const registeredAsset = findByAddress(asset.address, registeredAssets)
-      const accountAsset = findByAddress(asset.address, accountAssets)
+      const registeredAsset = findAssetInCollection(asset, registeredAssets) || {}
+      const accountAsset = findAssetInCollection(asset, accountAssets) || {}
 
       const item = {
         ...asset,
@@ -136,7 +135,7 @@ const actions = {
           }
           const externalBalance = await dispatch('web3/getBalanceByEthAddress', { address: item.externalAddress }, { root: true })
           accountAsset.externalBalance = externalBalance
-          const asset = api.accountAssets.find(item => item.symbol === accountAsset.symbol)
+          const asset = findAssetInCollection(accountAsset, api.accountAssets)
           accountAsset.balance = asset ? asset.balance : ''
         } catch (error) {
           accountAsset.externalBalance = '-'
@@ -153,12 +152,24 @@ const actions = {
     try {
       if (!Array.isArray(state.registeredAssets) || state.registeredAssets.length === 0) return
 
-      // modify registeredAssets by link to save reactivity to getters['assets/asset']
-      state.registeredAssets.forEach(async item => {
-        if (!item.externalAddress) return
+      const registeredAssets = await Promise.all(
+        (await api.bridge.getRegisteredAssets()).map(async item => {
+          try {
+            if (!item.externalAddress) return item
 
-        item.externalBalance = await dispatch('web3/getBalanceByEthAddress', { address: item.externalAddress }, { root: true })
-      })
+            const externalBalance = await dispatch('web3/getBalanceByEthAddress', { address: item.externalAddress }, { root: true })
+
+            return {
+              ...item,
+              externalBalance
+            }
+          } catch (error) {
+            console.error(error)
+            return item
+          }
+        })
+      )
+      commit(types.GET_REGISTERED_ASSETS_SUCCESS, registeredAssets)
     } catch (error) {
       console.error(error)
     }

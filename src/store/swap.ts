@@ -6,8 +6,6 @@ import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets, KnownSymbols, Asset, AccountAsset, CodecString } from '@sora-substrate/util'
 
-import { ZeroStringValue } from '@/consts'
-
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
@@ -26,12 +24,9 @@ const types = flow(
   ]),
   map(x => [x, x]),
   fromPairs
-)([
-  'GET_TOKEN_XOR'
-])
+)([])
 
 interface SwapState {
-  tokenXOR: Asset | AccountAsset | null;
   tokenFromAddress: string | null;
   tokenToAddress: string | null;
   fromValue: string;
@@ -45,9 +40,8 @@ interface SwapState {
 
 function initialState (): SwapState {
   return {
-    tokenXOR: null,
-    tokenFromAddress: null,
-    tokenToAddress: null,
+    tokenFromAddress: '',
+    tokenToAddress: '',
     fromValue: '',
     toValue: '',
     isTokenFromPrice: true,
@@ -61,8 +55,10 @@ function initialState (): SwapState {
 const state = initialState()
 
 const getters = {
-  tokenXOR (state: SwapState) {
-    return state.tokenXOR
+  tokenXOR (state: SwapState, getters, rootState, rootGetters) {
+    const token = KnownAssets.get(KnownSymbols.XOR)
+
+    return rootGetters['assets/getAssetDataByAddress'](token?.address)
   },
   tokenFrom (state: SwapState, getters, rootState, rootGetters) {
     return rootGetters['assets/getAssetDataByAddress'](state.tokenFromAddress)
@@ -94,26 +90,17 @@ const getters = {
 }
 
 const mutations = {
-  [types.GET_TOKEN_XOR_REQUEST] (state: SwapState) {
-    state.tokenXOR = null
-  },
-  [types.GET_TOKEN_XOR_SUCCESS] (state: SwapState, token: Asset | AccountAsset | null) {
-    state.tokenXOR = token
-  },
-  [types.GET_TOKEN_XOR_FAILURE] (state: SwapState) {
-    state.tokenXOR = null
-  },
   [types.SET_TOKEN_FROM_ADDRESS] (state: SwapState, address: string) {
     state.tokenFromAddress = address
   },
   [types.RESET_TOKEN_FROM_ADDRESS] (state: SwapState) {
-    state.tokenFromAddress = null
+    state.tokenFromAddress = ''
   },
   [types.SET_TOKEN_TO_ADDRESS] (state: SwapState, address: string) {
     state.tokenToAddress = address
   },
   [types.RESET_TOKEN_TO_ADDRESS] (state: SwapState) {
-    state.tokenToAddress = null
+    state.tokenToAddress = ''
   },
   [types.SET_FROM_VALUE] (state: SwapState, fromValue: string) {
     state.fromValue = fromValue
@@ -139,24 +126,6 @@ const mutations = {
 }
 
 const actions = {
-  async getTokenXOR ({ commit }) {
-    const token = KnownAssets.get(KnownSymbols.XOR)
-    commit(types.GET_TOKEN_XOR_REQUEST)
-    try {
-      if (token) {
-        const tokenFrom = await api.accountAssets.find(asset => asset.address === token.address)
-        if (tokenFrom) {
-          commit(types.GET_TOKEN_XOR_SUCCESS, { ...tokenFrom })
-        }
-      } else {
-        throw new Error(`There is no ${KnownSymbols.XOR} asset`)
-      }
-    } catch (error) {
-      commit(types.GET_TOKEN_XOR_FAILURE)
-      throw error
-    }
-  },
-
   async setTokenFromAddress ({ commit, rootGetters }, address?: string) {
     try {
       if (!address) {
