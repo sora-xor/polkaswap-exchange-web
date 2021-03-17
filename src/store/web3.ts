@@ -32,7 +32,6 @@ const types = flow(
 function initialState () {
   return {
     soraNetwork: '',
-    isEthAccountConnected: false,
     ethAddress: web3Util.getEthUserAddress(),
     ethBalance: 0,
     ethNetwork: web3Util.getEthNetworkFromStorage(),
