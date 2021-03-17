@@ -47,7 +47,8 @@ export enum Components {
   SelectRegisteredAsset = 'SelectRegisteredAsset',
   ConfirmBridgeTransactionDialog = 'ConfirmBridgeTransactionDialog',
   BridgeTransaction = 'BridgeTransaction',
-  BridgeTransactionsHistory = 'BridgeTransactionsHistory'
+  BridgeTransactionsHistory = 'BridgeTransactionsHistory',
+  GradientBox = 'GradientBox'
 }
 
 interface SidebarMenuItem {

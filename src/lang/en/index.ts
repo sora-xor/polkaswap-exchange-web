@@ -350,5 +350,14 @@ export default {
   resultDialog: {
     title: 'Transaction submitted',
     ok: 'OK'
+  },
+  rewards: {
+    title: 'Claim Rewards',
+    hint: {
+      connectAccountsText: 'To claim your PSWAP and VAL rewards you need to connect both your SORA and Ethereum accounts.'
+    },
+    action: {
+      connectWallet: '@:connectWalletText'
+    }
   }
 }
