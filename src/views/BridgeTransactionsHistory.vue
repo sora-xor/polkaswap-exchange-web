@@ -13,7 +13,7 @@
             icon="trash"
             size="medium"
             :disabled="!hasHistory"
-            @click="handleSettingsClick"
+            @click="handleClearHistory"
           />
         </s-tooltip>
       </generic-page-header>
@@ -118,6 +118,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     if (!this.history?.length) return []
     const historyCopy = this.history.slice().reverse()
     return this.getFilteredHistory(
+      // historyCopy.filter(item => ([Operation.EthBridgeOutgoing, Operation.EthBridgeIncoming].includes(item.type)))
       historyCopy.filter(item => ([Operation.EthBridgeOutgoing, Operation.EthBridgeIncoming].includes(item.type) && item.transactionStep))
     )
   }
@@ -214,7 +215,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     this.currentPage = current
   }
 
-  async handleSettingsClick (): Promise<void> {
+  async handleClearHistory (): Promise<void> {
     await this.clearHistory()
   }
 

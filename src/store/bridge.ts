@@ -88,6 +88,7 @@ async function waitForRequest (hash: string): Promise<BridgeRequest> {
 }
 
 async function waitForExtrinsicFinalization (time: number): Promise<History> {
+  // Why the last one?
   const tx = findLast(
     item => Math.abs(Number(item.startTime) - time) < 1000,
     api.accountHistory
@@ -96,6 +97,7 @@ async function waitForExtrinsicFinalization (time: number): Promise<History> {
     await delay(250)
     return await waitForExtrinsicFinalization(time)
   }
+
   return tx
 }
 
@@ -377,6 +379,7 @@ const actions = {
       id: (+playground.date).toString(),
       startTime: +playground.date,
       endTime: +playground.date,
+      isSigned: false,
       status: '',
       transactionStep: playground.step || 1,
       hash: '',
@@ -396,33 +399,48 @@ const actions = {
       return
     }
     commit(types.SEND_TRANSACTION_REQUEST)
-    const currentDate = new Date()
-    await dispatch('setSoraTransactionDate', +currentDate)
-    await dispatch('initHistoryItem', { date: currentDate })
+    let currentDate
+    if (getters.historyItem) {
+      currentDate = getters.historyItem.startTime
+    } else {
+      currentDate = new Date()
+      await dispatch('initHistoryItem', { date: currentDate })
+    }
     const currentHistoryItem = getters.historyItem
+    await dispatch('setSoraTransactionDate', +currentDate)
     try {
       const ethAccount = rootGetters['web3/ethAddress']
       await api.bridge.transferToEth(asset, ethAccount, getters.amount)
+      currentHistoryItem.status = BridgeTxStatus.Pending
+      currentHistoryItem.isSigned = true
+      await dispatch('setHistoryItem', currentHistoryItem)
+      await dispatch('saveHistory', currentHistoryItem)
+      console.log('currentHistoryItem', currentHistoryItem)
       const tx = await waitForExtrinsicFinalization(+currentDate)
-      currentHistoryItem.startTime = tx.startTime
+      console.log('after finalization')
+      // currentHistoryItem.startTime = tx.startTime
+      console.log('currentHistoryItem.startTime', currentHistoryItem.startTime)
+      console.log('tx.startTime', tx.startTime)
       currentHistoryItem.endTime = tx.endTime
       currentHistoryItem.status = BridgeTxStatus.Pending
       currentHistoryItem.hash = tx.hash
-      currentHistoryItem.transactionStep = 2
       currentHistoryItem.transactionState = STATES.SORA_COMMITED
-      await dispatch('setTransactionStep', 2)
+      // currentHistoryItem.transactionStep = 2
+      // await dispatch('setTransactionStep', 2)
       await dispatch('setHistoryItem', currentHistoryItem)
       await dispatch('saveHistory', currentHistoryItem)
       await dispatch('setSoraTransactionHash', tx.hash)
+      console.log('success currentHistoryItem', currentHistoryItem)
       commit(types.SEND_TRANSACTION_SUCCESS)
     } catch (error) {
       currentHistoryItem.status = BridgeTxStatus.Failed
       currentHistoryItem.transactionState = STATES.SORA_REJECTED
-      if (error.message !== 'Cancelled') {
-        // TODO: How to avoid saving of cancelled history to storage at all?
-        await dispatch('saveHistory', currentHistoryItem)
-      }
+      // if (error.message !== 'Cancelled') {
+      // TODO: How to avoid saving of cancelled history to storage at all?
+      await dispatch('saveHistory', currentHistoryItem)
+      // }
       await dispatch('setHistoryItem', currentHistoryItem)
+      console.log('failure currentHistoryItem', currentHistoryItem)
       commit(types.SEND_TRANSACTION_FAILURE)
       throw new Error(error)
     }
@@ -439,20 +457,23 @@ const actions = {
     commit(types.RECEIVE_TRANSACTION_REQUEST)
     const currentDate = new Date()
     await dispatch('setEthereumTransactionDate', currentDate)
-    let currentHistoryItem = getters.historyItem
-    if (!currentHistoryItem) {
-      await dispatch('initHistoryItem', { date: currentDate })
-      currentHistoryItem = getters.historyItem
-    }
-    // TODO: Check this part
-    // currentHistoryItem.transactionStep = 2
-    // await dispatch('setTransactionStep', 2)
+    const currentHistoryItem = getters.historyItem
+    // if (!currentHistoryItem) {
+    //   await dispatch('initHistoryItem', { date: currentDate })
+    //   currentHistoryItem = getters.historyItem
+    // }
+    // if (!(getters.historyItem.transactionStep === 2 && getters.historyItem.status === BridgeTxStatus.Pending)) {
+    currentHistoryItem.transactionStep = 2
+    currentHistoryItem.isSigned = false
+    await dispatch('setTransactionStep', 2)
+    await dispatch('setHistoryItem', currentHistoryItem)
+    await dispatch('saveHistory', currentHistoryItem)
+    // }
     try {
       const request = await waitForApprovedRequest(getters.soraTransactionHash) // If it causes an error, then -> catch -> SORA_REJECTED
       if (!rootGetters['web3/isValidEthNetwork']) {
         throw new Error('Change eth network in Metamask')
       }
-      // TODO: Should be New func
       const symbol = getters.asset.symbol
       const ethAccount = rootGetters['web3/ethAddress']
       const isValOrXor = [KnownBridgeAsset.XOR, KnownBridgeAsset.VAL].includes(symbol)
@@ -498,7 +519,10 @@ const actions = {
       const { transactionHash } = await contractMethod.send({ gas, from: ethAccount })
       // api.bridge.markAsDone(hash) We've decided not to use offchain workers to show the history.
       // So we don't need DONE status of request
+      // TODO: How to check if the transaction signed?
       const tx = await web3.eth.getTransactionReceipt(transactionHash)
+      console.log('get Receipt')
+      currentHistoryItem.isSigned = true
       currentHistoryItem.endTime = +(new Date())
       currentHistoryItem.status = BridgeTxStatus.Done
       currentHistoryItem.ethereumHash = tx.transactionHash
@@ -628,6 +652,17 @@ const actions = {
       await dispatch('setHistoryItem', currentHistoryItem)
       commit(types.RECEIVE_TRANSACTION_FAILURE)
       throw new Error(error)
+    }
+  },
+  async sendTransaction ({ commit, getters, dispatch }): Promise<void> {
+    try {
+      if (getters.isSoraToEthereum) {
+        await dispatch('sendTransferSoraToEth')
+      } else {
+        await dispatch('sendTransferEthToSora')
+      }
+    } catch (error) {
+      throw new Error(error.message)
     }
   },
   async receiveTransaction ({ commit, getters, dispatch }): Promise<void> {
