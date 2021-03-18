@@ -4,15 +4,16 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { Asset, AccountAsset, KnownAssets, FPNumber, CodecString } from '@sora-substrate/util'
+import { KnownAssets, FPNumber, CodecString } from '@sora-substrate/util'
 
 import { ZeroStringValue } from '@/consts'
+import { findAssetInCollection } from '@/utils'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
-    'SET_FIRST_TOKEN',
-    'SET_SECOND_TOKEN',
+    'SET_FIRST_TOKEN_ADDRESS',
+    'SET_SECOND_TOKEN_ADDRESS',
     'SET_FIRST_TOKEN_VALUE',
     'SET_SECOND_TOKEN_VALUE',
     'SET_FOCUSED_FIELD'
@@ -28,8 +29,8 @@ const types = flow(
 ])
 
 interface AddLiquidityState {
-  firstToken: Asset | AccountAsset | null;
-  secondToken: Asset | AccountAsset | null;
+  firstTokenAddress: string;
+  secondTokenAddress: string;
   firstTokenValue: string;
   secondTokenValue: string;
   reserve: null | Array<CodecString>;
@@ -42,8 +43,8 @@ interface AddLiquidityState {
 
 function initialState (): AddLiquidityState {
   return {
-    firstToken: null,
-    secondToken: null,
+    firstTokenAddress: '',
+    secondTokenAddress: '',
     firstTokenValue: '',
     secondTokenValue: '',
     reserve: null,
@@ -58,23 +59,11 @@ function initialState (): AddLiquidityState {
 const state = initialState()
 
 const getters = {
-  firstToken (state: AddLiquidityState) {
-    return state.firstToken
+  firstToken (state: AddLiquidityState, getters, rootState, rootGetters) {
+    return rootGetters['assets/getAssetDataByAddress'](state.firstTokenAddress)
   },
-  secondToken (state: AddLiquidityState) {
-    return state.secondToken
-  },
-  firstTokenDecimals (state: AddLiquidityState) {
-    return state.firstToken?.decimals ?? 0
-  },
-  secondTokenDecimals (state: AddLiquidityState) {
-    return state.secondToken?.decimals ?? 0
-  },
-  firstTokenAddress (state: AddLiquidityState) {
-    return state.firstToken?.address ?? ''
-  },
-  secondTokenAddress (state: AddLiquidityState) {
-    return state.secondToken?.address ?? ''
+  secondToken (state: AddLiquidityState, getters, rootState, rootGetters) {
+    return rootGetters['assets/getAssetDataByAddress'](state.secondTokenAddress)
   },
   firstTokenValue (state: AddLiquidityState) {
     return state.firstTokenValue
@@ -115,11 +104,11 @@ const getters = {
 }
 
 const mutations = {
-  [types.SET_FIRST_TOKEN] (state: AddLiquidityState, firstToken: Asset | AccountAsset | null) {
-    state.firstToken = firstToken
+  [types.SET_FIRST_TOKEN_ADDRESS] (state: AddLiquidityState, address: string) {
+    state.firstTokenAddress = address
   },
-  [types.SET_SECOND_TOKEN] (state: AddLiquidityState, secondToken: Asset | AccountAsset | null) {
-    state.secondToken = secondToken
+  [types.SET_SECOND_TOKEN_ADDRESS] (state: AddLiquidityState, address: string) {
+    state.secondTokenAddress = address
   },
   [types.SET_FIRST_TOKEN_VALUE] (state: AddLiquidityState, firstTokenValue: string) {
     state.firstTokenValue = firstTokenValue
@@ -166,24 +155,15 @@ const mutations = {
 }
 
 const actions = {
-  async setFirstToken ({ commit, dispatch }, asset: any) {
-    let firstAsset = api.accountAssets.find(a => a.address === asset.address)
-    if (!firstAsset) {
-      firstAsset = { ...asset, balance: ZeroStringValue }
-    }
-
-    commit(types.SET_FIRST_TOKEN, firstAsset)
+  setFirstTokenAddress ({ commit, dispatch }, address: string) {
+    commit(types.SET_FIRST_TOKEN_ADDRESS, address)
     commit(types.SET_FIRST_TOKEN_VALUE, '')
     commit(types.SET_SECOND_TOKEN_VALUE, '')
     dispatch('checkLiquidity')
   },
 
-  async setSecondToken ({ commit, dispatch }, asset: any) {
-    let secondAddress = api.accountAssets.find(a => a.address === asset.address)
-    if (!secondAddress) {
-      secondAddress = { ...asset, balance: ZeroStringValue }
-    }
-    commit(types.SET_SECOND_TOKEN, secondAddress)
+  setSecondTokenAddress ({ commit, dispatch }, address: string) {
+    commit(types.SET_SECOND_TOKEN_ADDRESS, address)
     commit(types.SET_FIRST_TOKEN_VALUE, '')
     commit(types.SET_SECOND_TOKEN_VALUE, '')
     dispatch('checkLiquidity')
@@ -193,7 +173,7 @@ const actions = {
     if (getters.firstToken && getters.secondToken) {
       commit(types.GET_RESERVE_REQUEST)
       try {
-        const reserve = await api.getLiquidityReserves(getters.firstTokenAddress, getters.secondTokenAddress)
+        const reserve = await api.getLiquidityReserves(getters.firstToken?.address, getters.secondToken?.address)
         commit(types.GET_RESERVE_SUCCESS, reserve)
 
         dispatch('estimateMinted')
@@ -208,7 +188,7 @@ const actions = {
     if (getters.firstToken && getters.secondToken) {
       commit(types.CHECK_LIQUIDITY_REQUEST)
       try {
-        const isAvailable = await api.checkLiquidity(getters.firstTokenAddress, getters.secondTokenAddress)
+        const isAvailable = await api.checkLiquidity(getters.firstToken?.address, getters.secondToken?.address)
         commit(types.CHECK_LIQUIDITY_SUCCESS, isAvailable)
 
         dispatch('checkReserve')
@@ -219,13 +199,13 @@ const actions = {
   },
 
   async estimateMinted ({ commit, getters }) {
-    if (getters.firstTokenAddress && getters.secondTokenAddress && getters.firstTokenValue && getters.secondTokenValue) {
+    if (getters.firstToken?.address && getters.secondToken?.address && getters.firstTokenValue && getters.secondTokenValue) {
       commit(types.ESTIMATE_MINTED_REQUEST)
 
       try {
         const [minted, pts] = await api.estimatePoolTokensMinted(
-          getters.firstTokenAddress,
-          getters.secondTokenAddress,
+          getters.firstToken.address,
+          getters.secondToken.address,
           getters.firstTokenValue,
           getters.secondTokenValue,
           getters.reserveA,
@@ -277,12 +257,12 @@ const actions = {
   },
 
   async getNetworkFee ({ commit, getters }) {
-    if (getters.firstTokenAddress && getters.secondTokenAddress) {
+    if (getters.firstToken?.address && getters.secondToken?.address) {
       commit(types.GET_FEE_REQUEST)
       try {
         const fee = await api.getAddLiquidityNetworkFee(
-          getters.firstTokenAddress,
-          getters.secondTokenAddress,
+          getters.firstToken.address,
+          getters.secondToken.address,
           getters.firstTokenValue || 0,
           getters.secondTokenValue || 0
         )
@@ -299,8 +279,8 @@ const actions = {
     commit(types.ADD_LIQUIDITY_REQUEST)
     try {
       const result = await api.addLiquidity(
-        getters.firstTokenAddress,
-        getters.secondTokenAddress,
+        getters.firstToken?.address,
+        getters.secondToken?.address,
         getters.firstTokenValue,
         getters.secondTokenValue,
         rootGetters.slippageTolerance
@@ -313,12 +293,13 @@ const actions = {
   },
 
   async setDataFromLiquidity ({ dispatch }, { firstAddress, secondAddress }) {
-    dispatch('setFirstToken', await api.accountAssets.find(a => a.address === firstAddress))
-    let secondAsset: any = await api.accountAssets.find(a => a.address === secondAddress)
-    if (!secondAsset) {
-      secondAsset = KnownAssets.get(secondAddress)
+    const findAssetAddress = address => {
+      const asset = KnownAssets.get(address) ?? api.accountAssets.find(a => a.address === address)
+      return asset?.address ?? ''
     }
-    dispatch('setSecondToken', secondAsset)
+
+    dispatch('setFirstTokenAddress', findAssetAddress(firstAddress))
+    dispatch('setSecondTokenAddress', findAssetAddress(secondAddress))
     dispatch('getNetworkFee')
   },
 
@@ -327,8 +308,8 @@ const actions = {
   },
 
   resetData ({ commit }) {
-    commit(types.SET_FIRST_TOKEN, null)
-    commit(types.SET_SECOND_TOKEN, null)
+    commit(types.SET_FIRST_TOKEN_ADDRESS, '')
+    commit(types.SET_SECOND_TOKEN_ADDRESS, '')
     commit(types.SET_FIRST_TOKEN_VALUE, '')
     commit(types.SET_SECOND_TOKEN_VALUE, '')
   }

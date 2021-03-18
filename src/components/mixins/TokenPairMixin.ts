@@ -16,8 +16,6 @@ const CreateTokenPairMixin = (namespace: string) => {
   class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin, NumberFormatterMixin) {
     readonly KnownSymbols = KnownSymbols
 
-    @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
-
     @Getter('firstToken', { namespace }) firstToken!: any
     @Getter('secondToken', { namespace }) secondToken!: any
     @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
@@ -31,8 +29,8 @@ const CreateTokenPairMixin = (namespace: string) => {
 
     @Getter slippageTolerance!: number
 
-    @Action('setFirstToken', { namespace }) setFirstToken
-    @Action('setSecondToken', { namespace }) setSecondToken
+    @Action('setFirstTokenAddress', { namespace }) setFirstTokenAddress
+    @Action('setSecondTokenAddress', { namespace }) setSecondTokenAddress
     @Action('setFirstTokenValue', { namespace }) setFirstTokenValue
     @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
     @Action('resetData', { namespace }) resetData
@@ -46,12 +44,14 @@ const CreateTokenPairMixin = (namespace: string) => {
     insufficientBalanceTokenSymbol = ''
 
     async mounted () {
-      await this.withApi(async () => {
-        this.resetPrices()
-        this.resetData()
-        await this.setFirstToken(KnownAssets.get(KnownSymbols.XOR))
-        this.afterApiConnect()
-      })
+      await this.withParentLoading(async () =>
+        await this.withApi(async () => {
+          this.resetPrices()
+          this.resetData()
+          this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
+          await this.afterApiConnect()
+        })
+      )
     }
 
     get formattedMinted (): string {
@@ -137,7 +137,7 @@ const CreateTokenPairMixin = (namespace: string) => {
       })
     }
 
-    afterApiConnect (): void {}
+    async afterApiConnect (): Promise<void> {}
   }
 
   return TokenPairMixin
