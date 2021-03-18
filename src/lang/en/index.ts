@@ -20,6 +20,7 @@ export default {
   poweredBy: 'Powered by',
   confirmText: 'Confirm',
   confirmTransactionText: 'Confirm transaction in {direction}',
+  retryText: 'Retry',
   assetNames: {
     [KnownSymbols.XOR]: 'Sora',
     [KnownSymbols.VAL]: 'Sora Validator Token',
@@ -241,7 +242,7 @@ export default {
     },
     status: {
       pending: '{step} transactions pending...',
-      failed: '{step} transactions failed. Retry.',
+      failed: '{step} transactions failed. @:retryText.',
       confirm: 'Confirm 2nd of 2 transactions...',
       complete: 'Complete',
       convertionComplete: 'Convertion complete'
@@ -269,7 +270,7 @@ export default {
     ethereum: '@:ethereumText',
     sora: '@:soraText',
     pending: '<span class="network-title">{network}</span> transaction pending...',
-    retry: 'Retry',
+    retry: '@:retryText',
     metamask: '@:metamask',
     confirm: '@:confirmTransactionText',
     newTransaction: 'Create new transaction',
@@ -357,14 +358,26 @@ export default {
     title: 'Claim Rewards',
     changeWallet: '@:changeWalletText',
     connected: '@:connectedText',
+    claiming: {
+      pending: 'Claiming...',
+      success: 'Claimed successfully'
+    },
+    transactions: {
+      confimation: 'Confirm {order} of {total} transactions...',
+      success: 'Your will receive your rewards shortly',
+      failed: '{order} of {total} transactions failed. @:retryText.'
+    },
     hint: {
       connectAccounts: 'To claim your PSWAP and VAL rewards you need to connect both your SORA and Ethereum accounts.',
+      connectAnotherAccount: 'Connect another {network} account to check for available PSWAP and VAL rewards.',
       howToClaimRewards: 'To claim your PSWAP and VAL rewards you need to sign 2 transactions in your SORA and Ethereum accounts respectively. Rewards will be deposited to your SORA account.'
     },
     action: {
       connectWallet: '@:connectWalletText',
       connectEthereumWallet: 'Connect Ethereum account',
-      signAndClaim: 'Sign and claim'
+      signAndClaim: 'Sign and claim',
+      pending: '{network} transaction pending...',
+      retry: '@:retryText'
     }
   }
 }

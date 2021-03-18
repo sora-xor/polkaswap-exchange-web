@@ -1,5 +1,5 @@
 <template>
-  <s-button class="toggle-text-button" v-bind="$attrs">
+  <s-button class="toggle-text-button" v-bind="$attrs" v-on="$listeners">
     <span class="primary-text">{{ primaryText }}</span>
     <span class="secondary-text">{{ secondaryText }}</span>
   </s-button>

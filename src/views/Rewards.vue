@@ -3,21 +3,29 @@
   <div class="container rewards" v-loading="false">
     <generic-page-header :title="t('rewards.title')" />
     <gradient-box :symbol="gradientSymbol">
-      <tokens-row :symbols="rewardTokenSymbols" />
-      <div class="rewards-amount">
-        <rewards-amount-header :items="rewardsAmountHeader" />
-        <rewards-amount-table class="rewards-table" :items="rewardsAmountTable" />
-        <div class="rewards-footer" v-if="isEthAccountConnected">
-          <s-divider />
-          <div class="rewards-account">
-            <toggle-text-button
-              type="link"
-              size="mini"
-              :primary-text="formatAddress(ethAddress, 8)"
-              :secondary-text="t('rewards.changeWallet')"
-            />
-            <span>{{ t('rewards.connected') }}</span>
+      <div class="rewards-box">
+        <tokens-row :symbols="rewardTokenSymbols" />
+        <div class="rewards-claiming-text">
+          {{ t('rewards.claiming') }}
+        </div>
+        <div class="rewards-amount">
+          <rewards-amount-header :items="rewardsAmountHeader" />
+          <rewards-amount-table class="rewards-table" :items="rewardsAmountTable" />
+          <div class="rewards-footer" v-if="isEthAccountConnected">
+            <s-divider />
+            <div class="rewards-account">
+              <toggle-text-button
+                type="link"
+                size="mini"
+                :primary-text="formatAddress(ethAddress, 8)"
+                :secondary-text="t('rewards.changeWallet')"
+              />
+              <span>{{ t('rewards.connected') }}</span>
+            </div>
           </div>
+        </div>
+        <div class="rewards-claiming-text--transaction">
+          {{ transactionStatusMessage }}
         </div>
       </div>
     </gradient-box>
@@ -50,6 +58,15 @@ import WalletConnectMixin from '../components/mixins/WalletConnectMixin'
 })
 export default class Rewards extends Mixins(WalletConnectMixin) {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
+
+  transactionStep = 2
+  transactionSteps = 2
+
+  get transactionStatusMessage (): string {
+    const order = this.tOrdinal(this.transactionStep)
+
+    return this.t('rewards.transactions.confimation', { order, total: this.transactionSteps })
+  }
 
   // TODO: check reward tokens
   get gradientSymbol (): string {
@@ -125,6 +142,27 @@ export default class Rewards extends Mixins(WalletConnectMixin) {
 
 <style lang="scss" scoped>
 .rewards {
+  &-box {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    color: var(--s-color-base-on-accent);
+
+    & > *:not(:last-child) {
+      margin-bottom: $inner-spacing-mini;
+    }
+  }
+
+  &-claiming-text {
+    font-size: var(--s-heading5-font-size);
+    line-height: $s-line-height-big;
+
+    &--transaction {
+      font-size: var(--s-font-size-mini);
+      line-height: $s-line-height-big;
+    }
+  }
+
   &-hint {
     margin: $inner-spacing-medium 0;
     font-size: var(--s-font-size-mini);
@@ -133,7 +171,7 @@ export default class Rewards extends Mixins(WalletConnectMixin) {
   }
 
   &-amount {
-    margin-top: $inner-spacing-mini;
+    width: 100%;
 
     & > *:not(:last-child) {
       margin-bottom: $inner-spacing-small;
@@ -150,7 +188,6 @@ export default class Rewards extends Mixins(WalletConnectMixin) {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
-    color: var(--s-color-base-on-accent);
     font-size: var(--s-font-size-mini);
     line-height: $s-line-height-big;
     padding: $inner-spacing-mini / 2;

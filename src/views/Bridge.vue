@@ -58,10 +58,14 @@
           </div>
           <div v-if="isNetworkAConnected && !isSoraToEthereum" class="bridge-item-footer">
             <s-divider />
-            <s-button class="s-button--change-wallet" type="link" size="mini" @click="isSoraToEthereum ? connectInternalWallet() : changeExternalWallet()">
-              <span class="bridge-item-id">{{ formatAddress(isSoraToEthereum ? getWalletAddress() : ethAddress, 8) }}</span>
-              <span class="change-wallet">{{ t('bridge.changeWallet') }}</span>
-            </s-button>
+            <toggle-text-button
+              class="bridge-item-change-wallet"
+              type="link"
+              size="mini"
+              :primary-text="formatAddress(isSoraToEthereum ? getWalletAddress() : ethAddress, 8)"
+              :secondary-text="t('bridge.changeWallet')"
+              @click="isSoraToEthereum ? connectInternalWallet() : changeExternalWallet()"
+            />
             <span>{{ t('bridge.connected') }}</span>
           </div>
           <s-button v-else-if="!isNetworkAConnected" class="s-button--connect" type="primary" @click="isSoraToEthereum ? connectInternalWallet() : connectExternalWallet()">
@@ -100,10 +104,14 @@
           </div>
           <div v-if="isNetworkBConnected && isSoraToEthereum" class="bridge-item-footer">
             <s-divider />
-            <s-button class="s-button--change-wallet" type="link" size="mini" @click="!isSoraToEthereum ? connectInternalWallet() : changeExternalWallet()">
-              <span class="bridge-item-id">{{ formatAddress(isSoraToEthereum ? ethAddress : getWalletAddress(), 8) }}</span>
-              <span class="change-wallet">{{ t('bridge.changeWallet') }}</span>
-            </s-button>
+            <toggle-text-button
+              class="bridge-item-change-wallet"
+              type="link"
+              size="mini"
+              :primary-text="formatAddress(isSoraToEthereum ? ethAddress : getWalletAddress(), 8)"
+              :secondary-text="t('bridge.changeWallet')"
+              @click="!isSoraToEthereum ? connectInternalWallet() : changeExternalWallet()"
+            />
             <span>{{ t('bridge.connected') }}</span>
           </div>
           <s-button v-else-if="!isNetworkBConnected" class="s-button--connect" type="primary" @click="!isSoraToEthereum ? connectInternalWallet() : connectExternalWallet()">
@@ -194,7 +202,8 @@ const namespace = 'bridge'
     TokenLogo: lazyComponent(Components.TokenLogo),
     InfoLine: lazyComponent(Components.InfoLine),
     SelectRegisteredAsset: lazyComponent(Components.SelectRegisteredAsset),
-    ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog)
+    ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
+    ToggleTextButton: lazyComponent(Components.ToggleTextButton)
   }
 })
 export default class Bridge extends Mixins(
@@ -731,7 +740,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       margin-bottom: $inner-spacing-mini;
     }
     &-title,
-    .s-button--change-wallet {
+    &-change-wallet {
       margin-right: $inner-spacing-medium;
     }
     &-title {
@@ -879,24 +888,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     &--connect {
       margin: $inner-spacing-mini $inner-spacing-small $inner-spacing-small;
       width: calc(100% - #{$inner-spacing-small * 2});
-    }
-    &--change-wallet {
-      padding: 0;
-      color: inherit;
-      font-size: inherit;
-      line-height: inherit;
-      .change-wallet {
-        display: none;
-      }
-      &:hover {
-        .bridge-item-id {
-          display: none;
-        }
-        .change-wallet {
-          display: inline-block;
-          text-decoration: underline;
-        }
-      }
     }
     &--next {
       margin-top: $inner-spacing-mini;
