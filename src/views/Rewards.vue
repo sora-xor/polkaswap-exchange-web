@@ -4,6 +4,22 @@
     <generic-page-header :title="t('rewards.title')" />
     <gradient-box :symbol="gradientSymbol">
       <tokens-row :symbols="rewardTokenSymbols" />
+      <div class="rewards-amount">
+        <rewards-amount-header :items="rewardsAmountHeader" />
+        <rewards-amount-table class="rewards-table" :items="rewardsAmountTable" />
+        <div class="rewards-footer" v-if="isEthAccountConnected">
+          <s-divider />
+          <div class="rewards-account">
+            <toggle-text-button
+              type="link"
+              size="mini"
+              :primary-text="formatAddress(ethAddress, 8)"
+              :secondary-text="t('rewards.changeWallet')"
+            />
+            <span>{{ t('rewards.connected') }}</span>
+          </div>
+        </div>
+      </div>
     </gradient-box>
     <div class="rewards-hint">
       {{ hintText }}
@@ -25,8 +41,11 @@ import WalletConnectMixin from '../components/mixins/WalletConnectMixin'
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    ToggleTextButton: lazyComponent(Components.ToggleTextButton),
     GradientBox: lazyComponent(Components.GradientBox),
-    TokensRow: lazyComponent(Components.TokensRow)
+    TokensRow: lazyComponent(Components.TokensRow),
+    RewardsAmountHeader: lazyComponent(Components.RewardsAmountHeader),
+    RewardsAmountTable: lazyComponent(Components.RewardsAmountTable)
   }
 })
 export default class Rewards extends Mixins(WalletConnectMixin) {
@@ -34,11 +53,44 @@ export default class Rewards extends Mixins(WalletConnectMixin) {
 
   // TODO: check reward tokens
   get gradientSymbol (): string {
-    return 'PSWAP'
+    return ''
   }
 
   get rewardTokenSymbols (): Array<string> {
     return ['PSWAP', 'VAL']
+  }
+
+  get rewardsAmountHeader (): Array<object> {
+    return [
+      {
+        amount: '2,132,437.1',
+        symbol: 'PSWAP'
+      },
+      {
+        amount: '234.7428',
+        symbol: 'VAL'
+      }
+    ]
+  }
+
+  get rewardsAmountTable (): Array<object> {
+    return [
+      {
+        title: 'SORA.farm harvest',
+        amount: '12,137.1304',
+        symbol: 'PSWAP'
+      },
+      {
+        title: 'NFT Airdrop',
+        amount: '442.4502',
+        symbol: 'PSWAP'
+      },
+      {
+        title: 'XOR ERC-20',
+        amount: '234.1322',
+        symbol: 'VAL'
+      }
+    ]
   }
 
   get hintText (): string {
@@ -78,6 +130,30 @@ export default class Rewards extends Mixins(WalletConnectMixin) {
     font-size: var(--s-font-size-mini);
     line-height: $s-line-height-big;
     color: var(--s-color-base-content-secondary)
+  }
+
+  &-amount {
+    margin-top: $inner-spacing-mini;
+
+    & > *:not(:last-child) {
+      margin-bottom: $inner-spacing-small;
+    }
+
+    & .el-divider {
+      background: var(--s-color-base-on-accent);
+      opacity: 0.5;
+      margin: $inner-spacing-small 0;
+    }
+  }
+
+  &-account {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    color: var(--s-color-base-on-accent);
+    font-size: var(--s-font-size-mini);
+    line-height: $s-line-height-big;
+    padding: $inner-spacing-mini / 2;
   }
 
   @include full-width-button('rewards-action-button', 0);

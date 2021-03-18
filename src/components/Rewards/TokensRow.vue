@@ -44,10 +44,8 @@ export default class TokensRow extends Vue {
 
   &__item {
     display: block;
-    position: relative;
 
     & + & {
-      top: 0;
       margin-left: -$basic-spacing * 2;
     }
   }

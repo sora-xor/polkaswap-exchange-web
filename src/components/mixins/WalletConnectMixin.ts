@@ -1,8 +1,8 @@
 import { Component, Mixins } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
+import { Action, Getter, State } from 'vuex-class'
 
 import router from '@/router'
-import { isWalletConnected } from '@/utils'
+import { isWalletConnected, getWalletAddress, formatAddress } from '@/utils'
 import { PageNames } from '@/consts'
 import { Provider } from '@/utils/web3-util'
 
@@ -10,10 +10,15 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 
 @Component
 export default class WalletConnectMixin extends Mixins(TranslationMixin) {
+  @State(state => state.web3.ethAddress) ethAddress!: string
+
   @Getter('isEthAccountConnected', { namespace: 'web3' }) isEthAccountConnected!: boolean
 
   @Action('connectEthWallet', { namespace: 'web3' }) connectEthWallet!: (options) => Promise<void>
   @Action('switchEthAccount', { namespace: 'web3' }) switchEthAccount!: (address) => Promise<void>
+
+  getWalletAddress = getWalletAddress
+  formatAddress = formatAddress
 
   isExternalWalletConnecting = false
 
