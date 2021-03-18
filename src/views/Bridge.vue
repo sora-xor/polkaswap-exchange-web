@@ -392,6 +392,7 @@ export default class Bridge extends Mixins(
       onAccountChange: (addressList: string[]) => {
         if (addressList.length) {
           this.switchEthAccount({ address: addressList[0] })
+          this.updateRegisteredAssetsExternalBalance()
         } else {
           this.disconnectEthWallet()
         }
@@ -400,6 +401,7 @@ export default class Bridge extends Mixins(
         this.setEthNetwork(networkId)
         this.getEthNetworkFee()
         this.getRegisteredAssets()
+        this.updateExternalBalances()
       },
       onDisconnect: (code: number, reason: string) => {
         this.disconnectEthWallet()
@@ -410,9 +412,12 @@ export default class Bridge extends Mixins(
   }
 
   destroyed (): void {
-    if (this.blockHeadersSubscriber) {
-      this.blockHeadersSubscriber.unsubscribe()
-    }
+    this.unsubscribeEthBlockHeaders()
+  }
+
+  updateExternalBalances (): void {
+    this.getEthBalance()
+    this.updateRegisteredAssetsExternalBalance()
   }
 
   connectInternalWallet (): void {
@@ -421,17 +426,32 @@ export default class Bridge extends Mixins(
 
   async subscribeToEthBlockHeaders (): Promise<void> {
     try {
+      await this.unsubscribeEthBlockHeaders()
+
       const web3 = await web3Util.getInstance()
 
       this.blockHeadersSubscriber = web3.eth.subscribe('newBlockHeaders', (error) => {
         if (!error) {
-          this.getEthBalance()
-          this.updateRegisteredAssetsExternalBalance()
+          this.updateExternalBalances()
         }
       })
     } catch (error) {
       console.error(error)
     }
+  }
+
+  unsubscribeEthBlockHeaders (): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (!this.blockHeadersSubscriber) return resolve()
+
+      this.blockHeadersSubscriber.unsubscribe((error) => {
+        if (error) {
+          reject(error)
+        } else {
+          resolve()
+        }
+      })
+    })
   }
 
   async connectExternalWallet (): Promise<void> {
@@ -532,7 +552,19 @@ export default class Bridge extends Mixins(
     // TODO: Check balance (ETH)
   }
 
-  handleConfirmTransaction (): void {
+  // TODO: remove this check, when MetaMask issue will be resolved
+  // https://github.com/MetaMask/metamask-extension/issues/10368
+  async checkAccountIsConnected (): Promise<boolean> {
+    const account = await web3Util.getAccount()
+
+    return !!account
+  }
+
+  async handleConfirmTransaction (): Promise<void> {
+    const accountIsConnected = await this.checkAccountIsConnected()
+
+    if (!accountIsConnected) return
+
     this.showConfirmTransactionDialog = true
   }
 
@@ -556,10 +588,14 @@ export default class Bridge extends Mixins(
     }
   }
 
-  confirmTransaction (isTransactionConfirmed: boolean) {
-    if (isTransactionConfirmed) {
-      router.push({ name: PageNames.BridgeTransaction })
-    }
+  async confirmTransaction (isTransactionConfirmed: boolean): Promise<void> {
+    if (!isTransactionConfirmed) return
+
+    const accountIsConnected = await this.checkAccountIsConnected()
+
+    if (!accountIsConnected) return
+
+    router.push({ name: PageNames.BridgeTransaction })
   }
 }
 </script>
