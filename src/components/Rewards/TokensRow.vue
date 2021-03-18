@@ -1,13 +1,15 @@
 <template>
   <div class="tokens-row">
-    <token-logo
-      v-for="(symbol, index) in symbols"
-      :key="symbol"
-      :token-symbol="symbol"
-      :size="size"
-      :style="{ zIndex: symbols.length - index }"
-      class="tokens-row__item"
-    />
+    <div class="tokens-row-container">
+      <token-logo
+        v-for="(symbol, index) in symbols"
+        :key="symbol"
+        :token-symbol="symbol"
+        :size="size"
+        :style="{ zIndex: symbols.length - index }"
+        class="tokens-row__item"
+      />
+    </div>
   </div>
 </template>
 
@@ -31,9 +33,14 @@ export default class TokensRow extends Vue {
 <style lang="scss" scoped>
 .tokens-row {
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
+
+  &-container {
+    display: flex;
+    flex-flow: row nowrap;
+  }
 
   &__item {
     display: block;
@@ -41,7 +48,7 @@ export default class TokensRow extends Vue {
 
     & + & {
       top: 0;
-      left: -20px;
+      margin-left: -$basic-spacing * 2;
     }
   }
 }

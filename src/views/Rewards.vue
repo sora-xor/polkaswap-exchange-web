@@ -38,7 +38,7 @@ export default class Rewards extends Mixins(WalletConnectMixin) {
   }
 
   get rewardTokenSymbols (): Array<string> {
-    return ['PSWAP', 'VAL', 'XOR']
+    return ['PSWAP', 'VAL']
   }
 
   get hintText (): string {
