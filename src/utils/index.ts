@@ -1,6 +1,5 @@
-import { Asset, AccountAsset, KnownSymbols, FPNumber, CodecString, KnownAssets } from '@sora-substrate/util'
+import { Asset, AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, KnownAssets } from '@sora-substrate/util'
 
-import { RegisteredAccountAsset } from '@/store/assets'
 import storage from './storage'
 
 export const copyToClipboard = async (text: string): Promise<void> => {

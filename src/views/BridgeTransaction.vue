@@ -144,7 +144,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { AccountAsset, KnownSymbols, CodecString } from '@sora-substrate/util'
+import { AccountAsset, RegisteredAccountAsset, KnownSymbols, CodecString } from '@sora-substrate/util'
 import { interpret } from 'xstate'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -153,7 +153,6 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EthSymbol } from '@/consts'
-import { RegisteredAccountAsset } from '@/store/assets'
 import { formatAddress, formatAssetSymbol, copyToClipboard, formatDateItem } from '@/utils'
 import { createFSM, EVENTS, SORA_ETHEREUM_STATES, ETHEREUM_SORA_STATES, STATES } from '@/utils/fsm'
 

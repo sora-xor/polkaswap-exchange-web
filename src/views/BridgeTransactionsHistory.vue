@@ -63,13 +63,12 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { BridgeTxStatus, Operation } from '@sora-substrate/util'
+import { RegisteredAccountAsset, BridgeTxStatus, Operation, isBridgeOperation } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
-import { RegisteredAccountAsset } from '@/store/assets'
 import { formatAssetSymbol, formatDateItem } from '@/utils'
 
 const namespace = 'bridge'
@@ -118,8 +117,8 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     if (!this.history?.length) return []
     const historyCopy = this.history.slice().reverse()
     return this.getFilteredHistory(
-      // historyCopy.filter(item => ([Operation.EthBridgeOutgoing, Operation.EthBridgeIncoming].includes(item.type)))
-      historyCopy.filter(item => ([Operation.EthBridgeOutgoing, Operation.EthBridgeIncoming].includes(item.type) && item.transactionStep))
+      // TODO: Check do we need transactionStep here?
+      historyCopy.filter(item => (isBridgeOperation(item.type) && item.transactionStep))
     )
   }
 

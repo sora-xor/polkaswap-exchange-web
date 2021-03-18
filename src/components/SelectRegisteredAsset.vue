@@ -103,7 +103,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { Asset, AccountAsset } from '@sora-substrate/util'
+import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -112,7 +112,6 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
-import { RegisteredAccountAsset } from '@/store/assets'
 
 const namespace = 'assets'
 
