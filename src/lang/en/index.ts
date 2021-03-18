@@ -374,7 +374,7 @@ export default {
     },
     action: {
       connectWallet: '@:connectWalletText',
-      connectEthereumWallet: 'Connect Ethereum account',
+      connectExternalWallet: 'Connect Ethereum account',
       signAndClaim: 'Sign and claim',
       pending: '{network} transaction pending...',
       retry: '@:retryText'

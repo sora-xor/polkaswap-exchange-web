@@ -6,12 +6,12 @@
       <div class="rewards-box">
         <tokens-row :symbols="rewardTokenSymbols" />
         <div class="rewards-claiming-text">
-          {{ t('rewards.claiming') }}
+          {{ t('rewards.claiming.pending') }}
         </div>
         <div class="rewards-amount">
           <rewards-amount-header :items="rewardsAmountHeader" />
           <rewards-amount-table class="rewards-table" :items="rewardsAmountTable" />
-          <div class="rewards-footer" v-if="isEthAccountConnected">
+          <div class="rewards-footer" v-if="isExternalAccountConnected">
             <s-divider />
             <div class="rewards-account">
               <toggle-text-button
@@ -68,7 +68,6 @@ export default class Rewards extends Mixins(WalletConnectMixin) {
     return this.t('rewards.transactions.confimation', { order, total: this.transactionSteps })
   }
 
-  // TODO: check reward tokens
   get gradientSymbol (): string {
     return ''
   }
@@ -111,29 +110,25 @@ export default class Rewards extends Mixins(WalletConnectMixin) {
   }
 
   get hintText (): string {
-    if (!this.isSoraAccountConnected || !this.isEthAccountConnected) {
-      return this.t('rewards.hint.connectAccounts')
-    }
-
-    return this.t('rewards.hint.howToClaimRewards')
+    return this.t([
+      'rewards.hint.connectAccounts' && (!this.isSoraAccountConnected || !this.isExternalAccountConnected),
+      'rewards.hint.howToClaimRewards'
+    ].find(Boolean))
   }
 
   get actionButtonText (): string {
-    if (!this.isSoraAccountConnected) {
-      return this.t('rewards.action.connectWallet')
-    }
-    if (!this.isEthAccountConnected) {
-      return this.t('rewards.action.connectEthereumWallet')
-    }
-
-    return this.t('rewards.action.signAndClaim')
+    return this.t([
+      'rewards.action.connectWallet' && !this.isSoraAccountConnected,
+      'rewards.action.connectExternalWallet' && !this.isExternalAccountConnected,
+      'rewards.action.signAndClaim'
+    ].find(Boolean))
   }
 
   async handleAction (): Promise<void> {
     if (!this.isSoraAccountConnected) {
       return this.connectInternalWallet()
     }
-    if (!this.isEthAccountConnected) {
+    if (!this.isExternalAccountConnected) {
       return await this.connectExternalWallet()
     }
   }

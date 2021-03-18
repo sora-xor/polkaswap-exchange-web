@@ -12,10 +12,10 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @State(state => state.web3.ethAddress) ethAddress!: string
 
-  @Getter('isEthAccountConnected', { namespace: 'web3' }) isEthAccountConnected!: boolean
+  @Getter('isExternalAccountConnected', { namespace: 'web3' }) isExternalAccountConnected!: boolean
 
-  @Action('connectEthWallet', { namespace: 'web3' }) connectEthWallet!: (options) => Promise<void>
-  @Action('switchEthAccount', { namespace: 'web3' }) switchEthAccount!: (address) => Promise<void>
+  @Action('connectExternalAccount', { namespace: 'web3' }) connectExternalAccount!: (options) => Promise<void>
+  @Action('switchExternalAccount', { namespace: 'web3' }) switchExternalAccount!: (address) => Promise<void>
 
   getWalletAddress = getWalletAddress
   formatAddress = formatAddress
@@ -37,7 +37,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     }
     this.isExternalWalletConnecting = true
     try {
-      await this.connectEthWallet({ provider: Provider.Metamask })
+      await this.connectExternalAccount({ provider: Provider.Metamask })
     } catch (error) {
       const provider = this.t(error.message)
       this.$alert(this.t('walletProviderConnectionError', { provider }))
@@ -54,7 +54,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     }
     this.isExternalWalletConnecting = true
     try {
-      await this.switchEthAccount({ provider: Provider.Metamask })
+      await this.switchExternalAccount({ provider: Provider.Metamask })
     } catch (error) {
       console.error(error)
     } finally {

@@ -216,10 +216,10 @@ export default class Bridge extends Mixins(
   @State(state => state.web3.ethAddress) ethAddress!: string
 
   @Action('getEthBalance', { namespace: 'web3' }) getEthBalance!: () => Promise<void>
-  @Action('connectEthWallet', { namespace: 'web3' }) connectEthWallet!: (options) => Promise<void>
-  @Action('switchEthAccount', { namespace: 'web3' }) switchEthAccount!: (address) => Promise<void>
+  @Action('connectExternalAccount', { namespace: 'web3' }) connectExternalAccount!: (options) => Promise<void>
+  @Action('switchExternalAccount', { namespace: 'web3' }) switchExternalAccount!: (address) => Promise<void>
   @Action('setEthNetwork', { namespace: 'web3' }) setEthNetwork!: (network?: string) => Promise<void>
-  @Action('disconnectEthWallet', { namespace: 'web3' }) disconnectEthWallet!: () => Promise<void>
+  @Action('disconnectExternalAccount', { namespace: 'web3' }) disconnectExternalAccount!: () => Promise<void>
   @Action('setSoraToEthereum', { namespace }) setSoraToEthereum
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
@@ -397,10 +397,10 @@ export default class Bridge extends Mixins(
     web3Util.watchEthereum({
       onAccountChange: (addressList: string[]) => {
         if (addressList.length) {
-          this.switchEthAccount({ address: addressList[0] })
+          this.switchExternalAccount({ address: addressList[0] })
           this.updateRegisteredAssetsExternalBalance()
         } else {
-          this.disconnectEthWallet()
+          this.disconnectExternalAccount()
         }
       },
       onNetworkChange: (networkId: string) => {
@@ -410,7 +410,7 @@ export default class Bridge extends Mixins(
         this.updateExternalBalances()
       },
       onDisconnect: (code: number, reason: string) => {
-        this.disconnectEthWallet()
+        this.disconnectExternalAccount()
       }
     })
     this.resetBridgeForm()
@@ -467,7 +467,7 @@ export default class Bridge extends Mixins(
     }
     this.isExternalWalletConnecting = true
     try {
-      await this.connectEthWallet({ provider: Provider.Metamask })
+      await this.connectExternalAccount({ provider: Provider.Metamask })
     } catch (error) {
       const provider = this.t(error.message)
       this.$alert(this.t('walletProviderConnectionError', { provider }))
@@ -484,7 +484,7 @@ export default class Bridge extends Mixins(
     }
     this.isExternalWalletConnecting = true
     try {
-      await this.switchEthAccount({ provider: Provider.Metamask })
+      await this.switchExternalAccount({ provider: Provider.Metamask })
     } catch (error) {
       console.error(error)
     } finally {
