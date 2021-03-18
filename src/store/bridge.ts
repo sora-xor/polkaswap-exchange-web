@@ -88,7 +88,6 @@ async function waitForRequest (hash: string): Promise<BridgeRequest> {
 }
 
 async function waitForExtrinsicFinalization (time: number): Promise<History> {
-  // Why the last one?
   const tx = findLast(
     item => Math.abs(Number(item.startTime) - time) < 1000,
     api.accountHistory
@@ -407,6 +406,7 @@ const actions = {
       await dispatch('initHistoryItem', { date: currentDate })
     }
     const currentHistoryItem = getters.historyItem
+    await dispatch('saveHistory', currentHistoryItem)
     await dispatch('setSoraTransactionDate', +currentDate)
     try {
       const ethAccount = rootGetters['web3/ethAddress']
@@ -418,9 +418,7 @@ const actions = {
       console.log('currentHistoryItem', currentHistoryItem)
       const tx = await waitForExtrinsicFinalization(+currentDate)
       console.log('after finalization')
-      // currentHistoryItem.startTime = tx.startTime
-      console.log('currentHistoryItem.startTime', currentHistoryItem.startTime)
-      console.log('tx.startTime', tx.startTime)
+      currentHistoryItem.startTime = tx.startTime
       currentHistoryItem.endTime = tx.endTime
       currentHistoryItem.status = BridgeTxStatus.Pending
       currentHistoryItem.hash = tx.hash
