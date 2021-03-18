@@ -147,9 +147,22 @@ async function onConnectWallet (url = 'https://cloudflare-eth.com'): Promise<str
     rpc: { 1: url }
   })
   await provider.enable()
-  const web3Instance = new Web3(provider)
-  const accounts = await web3Instance.eth.getAccounts()
-  return accounts.length ? accounts[0] : ''
+
+  const account = await getAccount()
+
+  return account
+}
+
+async function getAccount (): Promise<string> {
+  try {
+    const web3Instance = await getInstance()
+    const accounts = await web3Instance.eth.getAccounts()
+
+    return accounts.length ? accounts[0] : ''
+  } catch (error) {
+    console.error(error)
+    return ''
+  }
 }
 
 async function getInstance (): Promise<Web3> {
@@ -168,12 +181,15 @@ async function watchEthereum (cb: {
   onDisconnect: Function;
 }) {
   const ethereum = (window as any).ethereum
+
   if (ethereum) {
     ethereum.on('accountsChanged', cb.onAccountChange)
     ethereum.on('chainChanged', cb.onNetworkChange)
   }
+
+  await getInstance()
+
   if (provider) {
-    provider.on('accountsChanged', cb.onAccountChange)
     provider.on('disconnect', cb.onDisconnect)
   }
 }
@@ -256,6 +272,7 @@ async function executeContractMethod ({
 
 export default {
   onConnect,
+  getAccount,
   storeEthUserAddress,
   getEthUserAddress,
   storeEthNetwork,

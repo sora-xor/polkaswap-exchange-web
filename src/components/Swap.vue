@@ -11,9 +11,9 @@
             ({{ t('swap.estimated') }})
           </span>
         </div>
-        <div v-if="this.connected && this.tokenFrom && this.tokenFrom.balance && this.isTokenFromBalanceAvailable" class="token-balance">
+        <div v-if="this.connected && this.tokenFrom && this.tokenFrom.balance" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
-          <span class="token-balance-value">{{ tokenFromBalance }}</span>
+          <span class="token-balance-value">{{ formatBalance(tokenFrom) }}</span>
         </div>
       </div>
       <div class="input-line">
@@ -49,9 +49,9 @@
             ({{ t('swap.estimated') }})
           </span>
         </div>
-        <div v-if="this.connected && this.tokenTo && this.tokenTo.balance && this.isTokenToBalanceAvailable" class="token-balance">
+        <div v-if="this.connected && this.tokenTo && this.tokenTo.balance" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
-          <span class="token-balance-value">{{ tokenToBalance }}</span>
+          <span class="token-balance-value">{{ formatBalance(tokenTo) }}</span>
         </div>
       </div>
       <div class="input-line">
@@ -106,7 +106,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownSymbols, FPNumber, CodecString, AccountAsset } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, FPNumber, CodecString, AccountAsset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -136,9 +136,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Getter('networkFee', { namespace }) networkFee!: CodecString
   @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString
 
-  @Action('getTokenXOR', { namespace }) getTokenXOR!: () => Promise<void>
-  @Action('setTokenFrom', { namespace }) setTokenFrom!: (options: any) => Promise<void>
-  @Action('setTokenTo', { namespace }) setTokenTo!: (options: any) => Promise<void>
+  @Action('setTokenFromAddress', { namespace }) setTokenFromAddress!: (address?: string) => Promise<void>
+  @Action('setTokenToAddress', { namespace }) setTokenToAddress!: (address?: string) => Promise<void>
   @Action('setFromValue', { namespace }) setFromValue!: (value: string) => Promise<void>
   @Action('setToValue', { namespace }) setToValue!: (value: string) => Promise<void>
   @Action('setTokenFromPrice', { namespace }) setTokenFromPrice!: (isTokenFromPrice: boolean) => Promise<void>
@@ -158,8 +157,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     this.calcMinMaxRecieved()
   }
 
-  isTokenFromBalanceAvailable = false
-  isTokenToBalanceAvailable = false
   isInsufficientAmount = false
   insufficientBalanceTokenSymbol = ''
   insufficientAmountTokenSymbol = ''
@@ -221,45 +218,24 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     return false
   }
 
-  /**
-   * Update token From balance and amount (after swap it should be recalculated)
-   */
-  get tokenFromBalance (): string {
-    if (!this.tokenFrom?.balance) {
-      return ''
-    }
-    const updatedAsset = this.accountAssets.find(asset => asset.address === this.tokenFrom.address)
-    if (updatedAsset && updatedAsset.balance !== this.tokenFrom.balance) {
-      this.setTokenFrom({ isWalletConnected: this.connected, updatedAsset })
-    }
-    return this.formatCodecNumber(this.tokenFrom.balance)
-  }
-
-  /**
-   * Update token To balance and amount (after swap it should be recalculated)
-   */
-  get tokenToBalance (): string {
-    if (!this.tokenTo?.balance) {
-      return ''
-    }
-    const updatedAsset = this.accountAssets.find(asset => asset.address === this.tokenTo.address)
-    if (updatedAsset && updatedAsset.balance !== this.tokenTo.balance) {
-      this.setTokenTo({ isWalletConnected: this.connected, updatedAsset })
-    }
-    return this.formatCodecNumber(this.tokenTo.balance)
-  }
-
   created () {
     this.withApi(() => {
-      const tokenSymbol = this.tokenFrom?.symbol ?? KnownSymbols.XOR
-      this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: tokenSymbol })
-      this.isTokenFromBalanceAvailable = true
-      if (this.tokenTo !== null && this.tokenTo !== undefined) {
-        this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: this.tokenTo.symbol })
-        this.isTokenToBalanceAvailable = true
+      if (!this.tokenFrom) {
+        const xorAddress = KnownAssets.get(KnownSymbols.XOR)?.address
+        this.setTokenFromAddress(xorAddress)
+        this.setTokenToAddress()
+      }
+      if (this.tokenFrom && this.tokenTo) {
         this.getNetworkFee()
       }
     })
+  }
+
+  formatBalance (token): string {
+    if (!token?.balance) {
+      return ''
+    }
+    return this.formatCodecNumber(token.balance)
   }
 
   resetInsufficientAmountFlag (): void {
@@ -330,10 +306,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       await this.calcMinMaxRecieved()
       await this.updatePrices()
       await this.getNetworkFee()
-
-      if (this.connected && (this.tokenFrom.symbol !== KnownSymbols.XOR)) {
-        await this.getTokenXOR()
-      }
     } catch (error) {
       resetOppositeValue()
       if (!this.isInsufficientAmountError(token.symbol as string, error.message)) {
@@ -374,6 +346,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   async handleFocusField (isExchangeB = false): Promise<void> {
     const isZeroValue = isExchangeB ? this.isZeroToAmount : this.isZeroFromAmount
+    const prevFocus = this.isExchangeB
 
     this.setExchangeB(isExchangeB)
 
@@ -382,14 +355,16 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       this.resetFieldTo()
     }
 
-    await this.recountSwapValues()
+    if (prevFocus !== this.isExchangeB) {
+      await this.recountSwapValues()
+    }
   }
 
   async handleSwitchTokens (): Promise<void> {
-    const [fromSymbol, toSymbol] = [this.tokenFrom.symbol, this.tokenTo.symbol]
+    const [fromAddress, toAddress] = [this.tokenFrom.address, this.tokenTo.address]
 
-    await this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: toSymbol })
-    await this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: fromSymbol })
+    await this.setTokenFromAddress(toAddress)
+    await this.setTokenToAddress(fromAddress)
 
     if (this.isExchangeB) {
       this.setExchangeB(false)
@@ -425,10 +400,9 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     if (token) {
       if (this.isTokenFromSelected) {
         this.isTokenFromSelected = false
-        await this.setTokenFrom({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
+        await this.setTokenFromAddress(token.address)
       } else {
-        await this.setTokenTo({ isWalletConnected: this.connected, tokenSymbol: token.symbol })
-        this.isTokenToBalanceAvailable = true
+        await this.setTokenToAddress(token.address)
       }
       await this.recountSwapValues()
     }
