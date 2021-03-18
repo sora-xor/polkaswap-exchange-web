@@ -39,7 +39,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+import { Action, Getter } from 'vuex-class'
 import { Asset, AccountAsset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -68,6 +68,12 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
 
   @Getter('assets', { namespace }) assets!: Array<Asset>
   @Getter accountAssets!: Array<AccountAsset> // Wallet store
+
+  @Action('getAssets', { namespace }) getAssets
+
+  created (): void {
+    this.withApi(this.getAssets)
+  }
 
   get accountAssetsHashTable () {
     return this.accountAssets.reduce((result, item) => ({
