@@ -33,7 +33,8 @@ const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
     'RESET',
-    'SET_TRANSACTION_STEP'
+    'SET_TRANSACTION_STEP',
+    'SET_REWARDS_CLAIMING'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -73,6 +74,9 @@ const mutations = {
 
   [types.SET_TRANSACTION_STEP] (state, transactionStep: number) {
     state.transactionStep = transactionStep
+  },
+  [types.SET_REWARDS_CLAIMING] (state, flag: boolean) {
+    state.rewardsClaiming = flag
   },
 
   [types.GET_REWARDS_REQUEST] (state) {
@@ -114,6 +118,17 @@ const actions = {
       commit(types.GET_REWARDS_SUCCESS, rewards)
     } catch (error) {
       commit(types.GET_REWARDS_FAILURE)
+    }
+  },
+
+  claimRewards ({ commit }) {
+    commit(types.SET_REWARDS_CLAIMING, true)
+    try {
+
+    } catch (error) {
+
+    } finally {
+      commit(types.SET_REWARDS_CLAIMING, false)
     }
   }
 }

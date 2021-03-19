@@ -110,12 +110,13 @@ export default class Rewards extends Mixins(WalletConnectMixin, LoadingMixin) {
       ]
     }
 
-    return Object.entries(this.rewards.reduce((result, { symbol, amount }) => {
+    const rewardsHash = this.rewards.reduce((result, { symbol, amount }: Reward) => {
       result[symbol] = (result[symbol] || 0) + amount
 
       return result
-    }, {}))
-      .map(([symbol, amount]) => ({ symbol, amount }))
+    }, {})
+
+    return Object.entries(rewardsHash).map(([symbol, amount]) => ({ symbol, amount }) as Reward)
   }
 
   get rewardTokenSymbols (): Array<string> {
