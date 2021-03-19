@@ -16,7 +16,7 @@
       <s-button class="s-button--clear" icon="circle-x" @click="handleClearSearch" />
     </div>
     <div v-if="filteredTokens && filteredTokens.length > 0" class="token-list">
-      <div v-for="token in filteredTokens" @click="selectToken(token)" :key="token.symbol" class="token-item">
+      <div v-for="token in filteredTokens" @click="selectToken(token)" :key="token.address" class="token-item">
         <s-col>
           <s-row flex justify="start" align="middle">
             <token-logo :token="token" />
@@ -67,10 +67,13 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   @Prop({ default: () => false, type: Boolean }) readonly notNullBalanceOnly!: boolean
 
   @Getter('assets', { namespace }) assets!: Array<Asset>
+  @Getter accountAssets!: Array<AccountAsset> // Wallet store
+
   @Action('getAssets', { namespace }) getAssets
 
-  @Getter('accountAssets') accountAssets!: Array<AccountAsset>
-  @Action('getAccountAssets') getAccountAssets
+  created (): void {
+    this.withApi(this.getAssets)
+  }
 
   get accountAssetsHashTable () {
     return this.accountAssets.reduce((result, item) => ({
@@ -114,14 +117,6 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
     }
 
     return this.assetsList
-  }
-
-  created (): void {
-    if (this.accountAssetsOnly) {
-      this.withApi(this.getAccountAssets)
-    } else {
-      this.withApi(this.getAssets)
-    }
   }
 
   selectToken (token: AccountAsset): void {

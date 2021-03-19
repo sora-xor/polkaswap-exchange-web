@@ -86,14 +86,13 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: string
   @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: string
 
-  @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets
   @Action('getHistory', { namespace }) getHistory
   @Action('getNetworkFee', { namespace }) getNetworkFee
   @Action('getEthNetworkFee', { namespace }) getEthNetworkFee
   @Action('clearHistory', { namespace }) clearHistory
   @Action('setSoraToEthereum', { namespace }) setSoraToEthereum
   @Action('setTransactionConfirm', { namespace }) setTransactionConfirm
-  @Action('setAsset', { namespace }) setAsset
+  @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
   @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash
   @Action('setEthereumTransactionHash', { namespace }) setEthereumTransactionHash
@@ -128,7 +127,6 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 
   async created (): Promise<void> {
     this.withApi(async () => {
-      await this.getRegisteredAssets()
       await this.getHistory()
       await this.getNetworkFee()
       await this.getEthNetworkFee()
@@ -184,7 +182,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     if (currentTransaction) {
       await this.setTransactionConfirm(true)
       await this.setSoraToEthereum(this.isOutgoingType(currentTransaction.type))
-      await this.setAsset(this.getAssetBySymbol(currentTransaction?.symbol))
+      await this.setAssetAddress(this.getAssetBySymbol(currentTransaction?.symbol)?.address)
       await this.setAmount(currentTransaction.amount)
       await this.setSoraTransactionHash(currentTransaction.hash)
       await this.setSoraTransactionDate(currentTransaction[this.isOutgoingType(currentTransaction.type) ? 'startTime' : 'endTime'])

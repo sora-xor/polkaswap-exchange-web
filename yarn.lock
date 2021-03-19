@@ -26,9 +26,9 @@
     semver "^5.5.0"
 
 "@babel/compat-data@^7.13.0", "@babel/compat-data@^7.13.8":
-  version "7.13.8"
-  resolved "https://registry.yarnpkg.com/@babel/compat-data/-/compat-data-7.13.8.tgz#5b783b9808f15cef71547f1b691f34f8ff6003a6"
-  integrity sha512-EaI33z19T4qN3xLXsGf48M2cDqa6ei9tPZlfLdb2HC+e/cFtREiRd8hdSqDbwdLB0/+gLwqJmCYASH0z2bUdog==
+  version "7.13.11"
+  resolved "https://registry.yarnpkg.com/@babel/compat-data/-/compat-data-7.13.11.tgz#9c8fe523c206979c9a81b1e12fe50c1254f1aa35"
+  integrity sha512-BwKEkO+2a67DcFeS3RLl0Z3Gs2OvdXewuWjc1Hfokhb5eQWP9YRYH1/+VrVZvql2CfjOiNGqSAFOYt4lsqTHzg==
 
 "@babel/core@^7.1.0", "@babel/core@^7.11.0":
   version "7.11.6"
@@ -527,10 +527,10 @@
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.12.10.tgz#824600d59e96aea26a5a2af5a9d812af05c3ae81"
   integrity sha512-PJdRPwyoOqFAWfLytxrWwGrAxghCgh/yTNCYciOz8QgjflA7aZhECPZAa2VUedKg2+QMWkI0L9lynh2SNmNEgA==
 
-"@babel/parser@^7.12.13", "@babel/parser@^7.13.0":
-  version "7.13.10"
-  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.13.10.tgz#8f8f9bf7b3afa3eabd061f7a5bcdf4fec3c48409"
-  integrity sha512-0s7Mlrw9uTWkYua7xWr99Wpk2bnGa0ANleKfksYAES8LpWH4gW1OUr42vqKNf0us5UQNfru2wPqMqRITzq/SIQ==
+"@babel/parser@^7.12.13", "@babel/parser@^7.13.0", "@babel/parser@^7.13.10":
+  version "7.13.11"
+  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.13.11.tgz#f93ebfc99d21c1772afbbaa153f47e7ce2f50b88"
+  integrity sha512-PhuoqeHoO9fc4ffMEVk4qb/w/s2iOSWohvbHxLtxui0eBg3Lg5gN1U8wp1V1u61hOWkPQJJyJzGH6Y+grwkq8Q==
 
 "@babel/parser@^7.13.10":
   version "7.13.11"
@@ -2503,20 +2503,20 @@
     "@open-web3/orml-api-derive" "^0.8.2-9"
     "@polkadot/api" "^4.1.1"
     "@polkadot/rpc-core" "^4.1.1"
-    "@sora-substrate/api-derive" "^0.6.3"
-    "@sora-substrate/types" "^0.6.3"
+    "@sora-substrate/api-derive" "^0.6.4"
+    "@sora-substrate/types" "^0.6.4"
 
-"@sora-substrate/type-definitions@^0.6.3":
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-0.6.3.tgz#4851cfdd4c34c1c2bd6662b4a9ac752841d1f040"
-  integrity sha512-OD5VFT2nDUk+7hdUL7OC9nFv1aSOCeWv3iXJr8t8mtKMz8amjQ3GLZArDKBI3top6yJ76A0dm/K4IRCZJwNXNw==
+"@sora-substrate/type-definitions@^0.6.4":
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-0.6.4.tgz#b8846c741db7a9bedf0684fa8a016ac0f1cd4370"
+  integrity sha512-l0tKSrkWSomnUO+X6ezQoTRWx73zgyVmeEiDFvpXz/zhY8UDgvlKNvr06hM4almdn9STT/Xq65/pivRYedLElQ==
   dependencies:
     "@open-web3/orml-type-definitions" "^0.8.2-9"
 
-"@sora-substrate/types@^0.6.3":
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-0.6.3.tgz#9a7e89b7263f84001ecda55b15c5f0bd7707074b"
-  integrity sha512-b5lKDVvlyBo1AjwgoqEkPyiq+31+aNsVmxgmywnktuFP5qWjvtx5jpNLdm+4Y6cEd11EX5d5n8WGzqTPFBrF6Q==
+"@sora-substrate/types@^0.6.4":
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-0.6.4.tgz#36ab4e56bffa7b9676267995b1aea3359f2385f5"
+  integrity sha512-4LuqgWx8ucYK7HeAL8BoDCFDeLCNfiHxo6123I6sHUwj/eegHh8oba4MrXLeQkxi8cYTn9FvAcOqIsR6aoGkVw==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@open-web3/api-mobx" "^0.8.2-9"
@@ -2524,15 +2524,15 @@
     "@polkadot/api" "^4.1.1"
     "@polkadot/typegen" "^4.1.1"
     "@polkadot/types" "^4.1.1"
-    "@sora-substrate/type-definitions" "^0.6.3"
+    "@sora-substrate/type-definitions" "^0.6.4"
 
-"@sora-substrate/util@^0.6.3":
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-0.6.3.tgz#3d871e9f23b287fb9a0c22bd7c3ffb379365cded"
-  integrity sha512-u/h2g0NxU3oL+tp4JHakamqtHjcmz6HwYAQHNqywMKnuXu8jf8LNKC2JF2e/Qf5yexVLcqfzfhzzN4N9G/hDoQ==
+"@sora-substrate/util@^0.6.4":
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-0.6.4.tgz#af419a103e2278e9de8a5d50a58c5e2a1ecd88e5"
+  integrity sha512-Sf+kZVeqxzWdfnrJzAGQvTaLqP2l3Lv9L9T2tBQGhP6FXVW3NBnO0eCiNMWh6HnQFrnm5QsvOGpulKi+7ajFtg==
   dependencies:
     "@polkadot/ui-keyring" "^0.61.1"
-    "@sora-substrate/api" "^0.6.3"
+    "@sora-substrate/api" "^0.6.4"
     bignumber.js "^9.0.1"
     crypto-js "^4.0.0"
     lodash "^4.17.15"
@@ -2567,13 +2567,13 @@
     vuex "^3.1.3"
     vuex-class "^0.3.2"
 
-"@soramitsu/soraneo-wallet-web@^0.6.1":
-  version "0.6.1"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-0.6.1.tgz#87f695af97c5076b8b81c551223481c0fb04db8f"
-  integrity sha512-LD3I7Ej+Wae+8+oIJW6uuuXQfdIgpd8fRGWWqEigZsXO+/VqBhCIZra16cfDXk7k3S4Kr/NNQF7dSp8p7bDwLg==
+"@soramitsu/soraneo-wallet-web@^0.6.2":
+  version "0.6.2"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-0.6.2.tgz#64f0fac28a23d927561875f253e17ea263758c08"
+  integrity sha512-9oEs3xt2xev4cnMu+vkpOrRIZYbIEggDEbK922MdNEZ6Y3lFayKPT5ele+zUhOGuNkEWhjJSD+sOEJ0un7vLXQ==
   dependencies:
     "@polkadot/extension-dapp" "^0.35.0-beta.35"
-    "@sora-substrate/util" "^0.6.3"
+    "@sora-substrate/util" "^0.6.4"
     "@soramitsu/soramitsu-js-ui" "^0.7.1"
     axios "^0.19.2"
     core-js "^3.6.4"
@@ -4969,9 +4969,9 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001131:
   integrity sha512-ziNcheTGTHlu9g34EVoHQdIu5g4foc8EsxMGC7Xkokmvw0dqNtX8BS8RgCgFBaAiSp2IdjvBxNdh0ssib28eVQ==
 
 caniuse-lite@^1.0.30001181:
-  version "1.0.30001200"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001200.tgz#25435af6ba907c2a9c86d21ce84950d4824e6620"
-  integrity sha512-ic/jXfa6tgiPBAISWk16jRI2q8YfjxHnSG7ddSL1ptrIP8Uy11SayFrjXRAk3NumHpDb21fdTkbTxb/hOrFrnQ==
+  version "1.0.30001202"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001202.tgz#4cb3bd5e8a808e8cd89e4e66c549989bc8137201"
+  integrity sha512-ZcijQNqrcF8JNLjzvEiXqX4JUYxoZa7Pvcsd9UD8Kz4TvhTonOSNRsK+qtvpVL4l6+T1Rh4LFtLfnNWg6BGWCQ==
 
 capture-exit@^2.0.0:
   version "2.0.0"
@@ -6489,9 +6489,9 @@ electron-to-chromium@^1.3.570:
   integrity sha512-Y6OCoVQgFQBP5py6A/06+yWxUZHDlNr/gNDGatjH8AZqXl8X0tE4LfjLJsXGz/JmWJz8a6K7bR1k+QzZ+k//fg==
 
 electron-to-chromium@^1.3.649:
-  version "1.3.687"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.687.tgz#c336184b7ab70427ffe2ee79eaeaedbc1ad8c374"
-  integrity sha512-IpzksdQNl3wdgkzf7dnA7/v10w0Utf1dF2L+B4+gKrloBrxCut+au+kky3PYvle3RMdSxZP+UiCZtLbcYRxSNQ==
+  version "1.3.691"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.691.tgz#a671eaf135a3ccec0915eb8d844a0952aba79f3b"
+  integrity sha512-ZqiO69KImmOGCyoH0icQPU3SndJiW93juEvf63gQngyhODO6SpQIPMTOHldtCs5DS5GMKvAkquk230E2zt2vpw==
 
 elegant-spinner@^1.0.1:
   version "1.0.1"

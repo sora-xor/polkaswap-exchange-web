@@ -104,3 +104,9 @@ export const isNumberValue = (value: any): boolean => {
   const numberValue = +value
   return typeof numberValue === 'number' && !isNaN(numberValue)
 }
+
+export const findAssetInCollection = (asset, collection) => {
+  if (!Array.isArray(collection) || !asset?.address) return undefined
+
+  return collection.find(item => item.address === asset.address)
+}

@@ -22,16 +22,16 @@ const namespace = 'swap'
 export default class Wallet extends Mixins(TranslationMixin) {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
-  @Action('setTokenFrom', { namespace }) setTokenFrom!: (options: any) => Promise<void>
-  @Action('setTokenTo', { namespace }) setTokenTo!: (options: any) => Promise<void>
+  @Action('setTokenFromAddress', { namespace }) setTokenFrom!: (address?: string) => Promise<void>
+  @Action('setTokenToAddress', { namespace }) setTokenTo!: (address?: string) => Promise<void>
 
   handleClose (): void {
     router.back()
   }
 
   async handleSwap (token: any): Promise<void> {
-    await this.setTokenFrom({ isWalletConnected: isWalletConnected(), tokenSymbol: token.symbol })
-    await this.setTokenTo({ isWalletConnected: isWalletConnected() })
+    await this.setTokenFrom(token.address)
+    await this.setTokenTo()
     router.push({ name: PageNames.Swap })
   }
 }

@@ -1,5 +1,6 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { isWalletLoaded } from '@soramitsu/soraneo-wallet-web'
+import { delay } from '@/utils'
 
 @Component
 export default class LoadingMixin extends Vue {
@@ -26,10 +27,19 @@ export default class LoadingMixin extends Vue {
    */
   async withApi (func: Function): Promise<any> {
     if (!isWalletLoaded) {
-      await new Promise(resolve => setTimeout(resolve, 50))
+      await delay()
       return await this.withApi(func)
     } else {
       return await this.withLoading(func)
+    }
+  }
+
+  async withParentLoading (func: Function): Promise<any> {
+    if (this.parentLoading) {
+      await delay()
+      return await this.withParentLoading(func)
+    } else {
+      return await func()
     }
   }
 }

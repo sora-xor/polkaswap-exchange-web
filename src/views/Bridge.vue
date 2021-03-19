@@ -183,7 +183,7 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EthSymbol, ZeroStringValue } from '@/consts'
 import web3Util, { Provider } from '@/utils/web3-util'
-import { getWalletAddress, isWalletConnected, isNumberValue, formatAddress, isXorAccountAsset, formatAssetSymbol } from '@/utils'
+import { getWalletAddress, isWalletConnected, isNumberValue, formatAddress, isXorAccountAsset, formatAssetSymbol, findAssetInCollection } from '@/utils'
 
 const namespace = 'bridge'
 
@@ -211,7 +211,7 @@ export default class Bridge extends Mixins(
   @Action('setEthNetwork', { namespace: 'web3' }) setEthNetwork!: (network?: string) => Promise<void>
   @Action('disconnectEthWallet', { namespace: 'web3' }) disconnectEthWallet!: () => Promise<void>
   @Action('setSoraToEthereum', { namespace }) setSoraToEthereum
-  @Action('setAsset', { namespace }) setAsset
+  @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
   @Action('resetBridgeForm', { namespace }) resetBridgeForm
   @Action('getNetworkFee', { namespace }) getNetworkFee
@@ -223,7 +223,6 @@ export default class Bridge extends Mixins(
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
   @Getter('isValidEthNetwork', { namespace: 'web3' }) isValidEthNetwork!: boolean
   @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
-  @Getter('accountAssets', { namespace: 'assets' }) accountAssets!: Array<AccountAsset>
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter('asset', { namespace }) asset!: any
   @Getter('xorAsset', { namespace: 'assets' }) xorAsset!: any
@@ -351,10 +350,7 @@ export default class Bridge extends Mixins(
   }
 
   get isRegisteredAsset (): boolean {
-    if (this.asset) {
-      return this.registeredAssets?.length ? !!this.registeredAssets.find(item => item.symbol === this.asset?.symbol) : false
-    }
-    return false
+    return !!findAssetInCollection(this.asset, this.registeredAssets)
   }
 
   get formattedSoraNetworkFee (): string {
@@ -379,6 +375,7 @@ export default class Bridge extends Mixins(
 
   created (): void {
     this.withApi(async () => {
+      await this.getRegisteredAssets()
       await this.getNetworkFee()
       await this.getEthNetworkFee()
     })
@@ -391,6 +388,7 @@ export default class Bridge extends Mixins(
       onAccountChange: (addressList: string[]) => {
         if (addressList.length) {
           this.switchEthAccount({ address: addressList[0] })
+          this.updateRegisteredAssetsExternalBalance()
         } else {
           this.disconnectEthWallet()
         }
@@ -399,6 +397,7 @@ export default class Bridge extends Mixins(
         this.setEthNetwork(networkId)
         this.getEthNetworkFee()
         this.getRegisteredAssets()
+        this.updateExternalBalances()
       },
       onDisconnect: (code: number, reason: string) => {
         this.disconnectEthWallet()
@@ -409,9 +408,12 @@ export default class Bridge extends Mixins(
   }
 
   destroyed (): void {
-    if (this.blockHeadersSubscriber) {
-      this.blockHeadersSubscriber.unsubscribe()
-    }
+    this.unsubscribeEthBlockHeaders()
+  }
+
+  updateExternalBalances (): void {
+    this.getEthBalance()
+    this.updateRegisteredAssetsExternalBalance()
   }
 
   connectInternalWallet (): void {
@@ -420,17 +422,32 @@ export default class Bridge extends Mixins(
 
   async subscribeToEthBlockHeaders (): Promise<void> {
     try {
+      await this.unsubscribeEthBlockHeaders()
+
       const web3 = await web3Util.getInstance()
 
       this.blockHeadersSubscriber = web3.eth.subscribe('newBlockHeaders', (error) => {
         if (!error) {
-          this.getEthBalance()
-          this.updateRegisteredAssetsExternalBalance()
+          this.updateExternalBalances()
         }
       })
     } catch (error) {
       console.error(error)
     }
+  }
+
+  unsubscribeEthBlockHeaders (): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (!this.blockHeadersSubscriber) return resolve()
+
+      this.blockHeadersSubscriber.unsubscribe((error) => {
+        if (error) {
+          reject(error)
+        } else {
+          resolve()
+        }
+      })
+    })
   }
 
   async connectExternalWallet (): Promise<void> {
@@ -531,7 +548,19 @@ export default class Bridge extends Mixins(
     // TODO: Check balance (ETH)
   }
 
-  handleConfirmTransaction (): void {
+  // TODO: remove this check, when MetaMask issue will be resolved
+  // https://github.com/MetaMask/metamask-extension/issues/10368
+  async checkAccountIsConnected (): Promise<boolean> {
+    const account = await web3Util.getAccount()
+
+    return !!account
+  }
+
+  async handleConfirmTransaction (): Promise<void> {
+    const accountIsConnected = await this.checkAccountIsConnected()
+
+    if (!accountIsConnected) return
+
     this.showConfirmTransactionDialog = true
   }
 
@@ -545,8 +574,7 @@ export default class Bridge extends Mixins(
 
   async selectAsset (selectedAsset: any): Promise<void> {
     if (selectedAsset) {
-      const registeredAsset = this.registeredAssets.find(asset => selectedAsset.symbol === asset.symbol)
-      await this.setAsset(registeredAsset ?? selectedAsset)
+      await this.setAssetAddress(selectedAsset?.address ?? '')
       // TODO: Check SORA balance changing
       if (this.isRegisteredAsset) {
         this.getNetworkFee()
@@ -555,10 +583,14 @@ export default class Bridge extends Mixins(
     }
   }
 
-  confirmTransaction (isTransactionConfirmed: boolean) {
-    if (isTransactionConfirmed) {
-      router.push({ name: PageNames.BridgeTransaction })
-    }
+  async confirmTransaction (isTransactionConfirmed: boolean): Promise<void> {
+    if (!isTransactionConfirmed) return
+
+    const accountIsConnected = await this.checkAccountIsConnected()
+
+    if (!accountIsConnected) return
+
+    router.push({ name: PageNames.BridgeTransaction })
   }
 }
 </script>

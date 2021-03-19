@@ -5,7 +5,7 @@ import flow from 'lodash/fp/flow'
 import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 
-import { isXorAccountAsset } from '@/utils'
+import { isXorAccountAsset, findAssetInCollection } from '@/utils'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -21,7 +21,6 @@ const types = flow(
 function initialState () {
   return {
     assets: [],
-    accountAssets: [],
     registeredAssets: []
   }
 }
@@ -29,6 +28,7 @@ function initialState () {
 const state = initialState()
 
 const getters = {
+  // list of all assets
   assets (state) {
     return state.assets
   },
@@ -38,11 +38,35 @@ const getters = {
   xorBalance (state, getters) {
     return getters.xorAsset.balance || 0
   },
-  accountAssets (state) {
-    return state.accountAssets
-  },
   registeredAssets (state) {
     return state.registeredAssets
+  },
+  assetsDataTable (state, getters, rootState, rootGetters) {
+    const { accountAssets } = rootGetters
+    const { assets, registeredAssets } = state
+
+    return assets.reduce((result, asset) => {
+      const registeredAsset = findAssetInCollection(asset, registeredAssets) || {}
+      const accountAsset = findAssetInCollection(asset, accountAssets) || {}
+
+      const item = {
+        ...asset,
+        ...registeredAsset,
+        ...accountAsset
+      }
+
+      return {
+        ...result,
+        [asset.address]: item
+      }
+    }, {})
+  },
+  getAssetDataByAddress (state, getters) {
+    return (address?: string) => {
+      if (!address) return undefined
+
+      return getters.assetsDataTable[address]
+    }
   }
 }
 
@@ -60,16 +84,6 @@ const mutations = {
   [types.GET_ASSET_REQUEST] (state) {},
   [types.GET_ASSET_SUCCESS] (state) {},
   [types.GET_ASSET_FAILURE] (state) {},
-
-  [types.GET_ACCOUNT_ASSETS_REQUEST] (state) {
-    state.accountAssets = []
-  },
-  [types.GET_ACCOUNT_ASSETS_SUCCESS] (state, accountAssets: Array<AccountAsset>) {
-    state.accountAssets = accountAssets
-  },
-  [types.GET_ACCOUNT_ASSETS_FAILURE] (state) {
-    state.accountAssets = []
-  },
 
   [types.GET_REGISTERED_ASSETS_REQUEST] (state) {
     state.registeredAssets = []
@@ -104,14 +118,6 @@ const actions = {
       commit(types.GET_ASSET_FAILURE)
     }
   },
-  getAccountAssets ({ commit }) {
-    commit(types.GET_ACCOUNT_ASSETS_REQUEST)
-    try {
-      commit(types.GET_ACCOUNT_ASSETS_SUCCESS, api.accountAssets)
-    } catch (error) {
-      commit(types.GET_ACCOUNT_ASSETS_FAILURE)
-    }
-  },
   async getRegisteredAssets ({ commit, dispatch }) {
     commit(types.GET_REGISTERED_ASSETS_REQUEST)
     try {
@@ -124,7 +130,7 @@ const actions = {
           }
           const externalBalance = await dispatch('web3/getBalanceByEthAddress', { address: item.externalAddress }, { root: true })
           accountAsset.externalBalance = externalBalance
-          const asset = api.accountAssets.find(item => item.symbol === accountAsset.symbol)
+          const asset = findAssetInCollection(accountAsset, api.accountAssets)
           accountAsset.balance = asset ? asset.balance : ''
         } catch (error) {
           accountAsset.externalBalance = '-'
@@ -142,27 +148,27 @@ const actions = {
     try {
       if (!Array.isArray(state.registeredAssets) || state.registeredAssets.length === 0) return
 
-      // modify registeredAssets by link to save reactivity to getters['assets/asset']
-      state.registeredAssets.forEach(async item => {
-        if (!item.externalAddress) return
+      const registeredAssets = await Promise.all(
+        (await api.bridge.getRegisteredAssets()).map(async item => {
+          try {
+            if (!item.externalAddress) return item
 
-        item.externalBalance = await dispatch('web3/getBalanceByEthAddress', { address: item.externalAddress }, { root: true })
-      })
+            const externalBalance = await dispatch('web3/getBalanceByEthAddress', { address: item.externalAddress }, { root: true })
+
+            return {
+              ...item,
+              externalBalance
+            }
+          } catch (error) {
+            console.error(error)
+            return item
+          }
+        })
+      )
+      commit(types.GET_REGISTERED_ASSETS_SUCCESS, registeredAssets)
     } catch (error) {
       console.error(error)
     }
-  },
-  syncAssetsBalance ({ state }) {
-    const { registeredAssets, accountAssets } = state
-
-    if (!Array.isArray(registeredAssets) || registeredAssets.length === 0) return
-
-    // modify registeredAssets by link to save reactivity to getters['assets/asset']
-    registeredAssets.forEach(registeredAsset => {
-      const accountAsset = accountAssets.find(item => item.symbol === registeredAsset.symbol)
-
-      registeredAsset.balance = accountAsset?.balance ?? registeredAsset.balance
-    })
   }
 }
 
