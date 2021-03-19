@@ -369,7 +369,7 @@ export default {
     },
     hint: {
       connectAccounts: 'To claim your PSWAP and VAL rewards you need to connect both your SORA and Ethereum accounts.',
-      connectAnotherAccount: 'Connect another {network} account to check for available PSWAP and VAL rewards.',
+      connectAnotherAccount: 'Connect another Ethereum account to check for available PSWAP and VAL rewards.',
       howToClaimRewards: 'To claim your PSWAP and VAL rewards you need to sign 2 transactions in your SORA and Ethereum accounts respectively. Rewards will be deposited to your SORA account.'
     },
     action: {
@@ -377,7 +377,8 @@ export default {
       connectExternalWallet: 'Connect Ethereum account',
       signAndClaim: 'Sign and claim',
       pending: '{network} transaction pending...',
-      retry: '@:retryText'
+      retry: '@:retryText',
+      checkRewards: 'Check'
     }
   }
 }

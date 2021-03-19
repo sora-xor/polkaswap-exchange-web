@@ -2,7 +2,7 @@
   <div class="amount-header">
     <template v-for="(item, index) in items">
       <div :key="item.symbol" class="amount-block">
-        <div class="amount-block__amount">{{ item.amount }}</div>
+        <div class="amount-block__amount">{{ item.amount || '-' }}</div>
         <div class="amount-block__symbol">{{ item.symbol }}</div>
       </div>
       <div v-if="items.length - 1 !== index" class="amount-header-divider" :key="index">

@@ -1,17 +1,16 @@
 <template>
-  <!-- TODO: add parentLoading -->
-  <div class="container rewards" v-loading="false">
+  <div class="container rewards" v-loading="parentLoading">
     <generic-page-header :title="t('rewards.title')" />
     <gradient-box :symbol="gradientSymbol">
       <div class="rewards-box">
         <tokens-row :symbols="rewardTokenSymbols" />
-        <div class="rewards-claiming-text">
+        <div v-if="rewardsClaiming" class="rewards-claiming-text">
           {{ t('rewards.claiming.pending') }}
         </div>
-        <div class="rewards-amount">
-          <rewards-amount-header :items="rewardsAmountHeader" />
-          <rewards-amount-table class="rewards-table" :items="rewardsAmountTable" />
-          <div class="rewards-footer" v-if="isExternalAccountConnected">
+        <div v-if="connectedState" class="rewards-amount">
+          <rewards-amount-header v-if="rewardsChecked" :items="rewardsHeader" />
+          <rewards-amount-table v-if="rewardsAvailable" class="rewards-table" :items="rewards" />
+          <div class="rewards-footer">
             <s-divider />
             <div class="rewards-account">
               <toggle-text-button
@@ -19,12 +18,13 @@
                 size="mini"
                 :primary-text="formatAddress(ethAddress, 8)"
                 :secondary-text="t('rewards.changeWallet')"
+                @click="changeExternalAccountProcess"
               />
               <span>{{ t('rewards.connected') }}</span>
             </div>
           </div>
         </div>
-        <div class="rewards-claiming-text--transaction">
+        <div v-if="rewardsClaiming" class="rewards-claiming-text--transaction">
           {{ transactionStatusMessage }}
         </div>
       </div>
@@ -32,7 +32,7 @@
     <div class="rewards-hint">
       {{ hintText }}
     </div>
-    <s-button class="rewards-action-button" type="primary" @click="handleAction">
+    <s-button class="rewards-action-button" type="primary" @click="handleAction" :loading="rewardsFetching">
       {{ actionButtonText }}
     </s-button>
   </div>
@@ -40,11 +40,15 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Action, Getter, State } from 'vuex-class'
 
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 
 import WalletConnectMixin from '../components/mixins/WalletConnectMixin'
+import LoadingMixin from '../components/mixins/LoadingMixin'
+
+import { Reward } from '../store/rewards'
 
 @Component({
   components: {
@@ -56,72 +60,95 @@ import WalletConnectMixin from '../components/mixins/WalletConnectMixin'
     RewardsAmountTable: lazyComponent(Components.RewardsAmountTable)
   }
 })
-export default class Rewards extends Mixins(WalletConnectMixin) {
+export default class Rewards extends Mixins(WalletConnectMixin, LoadingMixin) {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
-  transactionStep = 2
-  transactionSteps = 2
+  @State(state => state.rewards.rewards) rewards!: Array<Reward>
+  @State(state => state.rewards.rewardsFetching) rewardsFetching
+  @State(state => state.rewards.rewardsClaiming) rewardsClaiming
+  @State(state => state.rewards.transactionStep) transactionStep
+  @State(state => state.rewards.transactionStepsCount) transactionStepsCount
+
+  @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean
+  @Getter('rewardsChecked', { namespace: 'rewards' }) rewardsChecked!: boolean
+
+  @Action('reset', { namespace: 'rewards' }) reset!: () => void
+  @Action('getRewards', { namespace: 'rewards' }) getRewards!: () => Promise<void>
+
+  async created (): Promise<void> {
+    await this.withApi(async () => {
+      this.reset()
+      await this.checkAccountRewards()
+    })
+  }
+
+  get connectedState (): boolean {
+    return this.isSoraAccountConnected && this.isExternalAccountConnected
+  }
 
   get transactionStatusMessage (): string {
     const order = this.tOrdinal(this.transactionStep)
 
-    return this.t('rewards.transactions.confimation', { order, total: this.transactionSteps })
+    return this.t('rewards.transactions.confimation', { order, total: this.transactionStepsCount })
   }
 
   get gradientSymbol (): string {
     return ''
   }
 
+  get rewardsHeader (): Array<Reward> {
+    if (!this.rewardsAvailable) {
+      return [
+        {
+          amount: 0,
+          symbol: 'PSWAP'
+        },
+        {
+          amount: 0,
+          symbol: 'VAL'
+        }
+      ]
+    }
+
+    return Object.entries(this.rewards.reduce((result, { symbol, amount }) => {
+      result[symbol] = (result[symbol] || 0) + amount
+
+      return result
+    }, {}))
+      .map(([symbol, amount]) => ({ symbol, amount }))
+  }
+
   get rewardTokenSymbols (): Array<string> {
-    return ['PSWAP', 'VAL']
-  }
-
-  get rewardsAmountHeader (): Array<object> {
-    return [
-      {
-        amount: '2,132,437.1',
-        symbol: 'PSWAP'
-      },
-      {
-        amount: '234.7428',
-        symbol: 'VAL'
-      }
-    ]
-  }
-
-  get rewardsAmountTable (): Array<object> {
-    return [
-      {
-        title: 'SORA.farm harvest',
-        amount: '12,137.1304',
-        symbol: 'PSWAP'
-      },
-      {
-        title: 'NFT Airdrop',
-        amount: '442.4502',
-        symbol: 'PSWAP'
-      },
-      {
-        title: 'XOR ERC-20',
-        amount: '234.1322',
-        symbol: 'VAL'
-      }
-    ]
+    return this.rewardsHeader.map(item => item.symbol)
   }
 
   get hintText (): string {
-    return this.t([
-      'rewards.hint.connectAccounts' && (!this.isSoraAccountConnected || !this.isExternalAccountConnected),
+    const translationKey = [
+      (!this.connectedState || this.rewardsFetching) &&
+      'rewards.hint.connectAccounts',
+      !this.rewardsAvailable &&
+      'rewards.hint.connectAnotherAccount',
       'rewards.hint.howToClaimRewards'
-    ].find(Boolean))
+    ].find(Boolean)
+
+    return translationKey ? this.t(translationKey) : ''
   }
 
   get actionButtonText (): string {
-    return this.t([
-      'rewards.action.connectWallet' && !this.isSoraAccountConnected,
-      'rewards.action.connectExternalWallet' && !this.isExternalAccountConnected,
+    if (this.rewardsFetching) return ''
+
+    const translationKey = [
+      !this.isSoraAccountConnected &&
+      'rewards.action.connectWallet',
+      !this.isExternalAccountConnected &&
+      'rewards.action.connectExternalWallet',
+      !this.rewardsAvailable &&
+      'rewards.action.checkRewards',
+      this.rewardsAvailable &&
       'rewards.action.signAndClaim'
-    ].find(Boolean))
+    ].find(Boolean)
+
+    return translationKey ? this.t(translationKey) : ''
   }
 
   async handleAction (): Promise<void> {
@@ -129,8 +156,30 @@ export default class Rewards extends Mixins(WalletConnectMixin) {
       return this.connectInternalWallet()
     }
     if (!this.isExternalAccountConnected) {
-      return await this.connectExternalWallet()
+      return await this.connectExternalAccountProcess()
     }
+    if (!this.rewardsAvailable) {
+      return await this.checkAccountRewards()
+    }
+  }
+
+  async checkAccountRewards (): Promise<void> {
+    if (this.connectedState) {
+      await this.getRewards()
+    }
+  }
+
+  async connectExternalAccountProcess (): Promise<void> {
+    await this.connectExternalWallet()
+
+    if (this.isExternalAccountConnected) {
+      await this.checkAccountRewards()
+    }
+  }
+
+  async changeExternalAccountProcess (): Promise<void> {
+    this.reset()
+    await this.changeExternalWallet()
   }
 }
 </script>
