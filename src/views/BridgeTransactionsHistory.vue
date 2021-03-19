@@ -63,7 +63,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { RegisteredAccountAsset, BridgeTxStatus, Operation, isBridgeOperation } from '@sora-substrate/util'
+import { RegisteredAccountAsset, BridgeTxStatus, Operation, isBridgeOperation, BridgeHistory } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -82,7 +82,7 @@ const namespace = 'bridge'
 export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, LoadingMixin) {
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
-  @Getter('history', { namespace }) history!: Array<any>
+  @Getter('history', { namespace }) history!: Array<BridgeHistory> | null
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: string
   @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: string
 
@@ -114,11 +114,8 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 
   get filteredHistory (): Array<any> {
     if (!this.history?.length) return []
-    const historyCopy = this.history.slice().reverse()
-    return this.getFilteredHistory(
-      // TODO: Check do we need transactionStep here?
-      historyCopy.filter(item => (isBridgeOperation(item.type) && item.transactionStep))
-    )
+    const historyCopy = this.history.sort((a: BridgeHistory, b: BridgeHistory) => a.startTime && b.startTime ? b.startTime - a.startTime : 0)
+    return this.getFilteredHistory(historyCopy.filter(item => (isBridgeOperation(item.type) && item.transactionStep)))
   }
 
   get hasHistory (): boolean {
