@@ -147,6 +147,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   }
 
   getAssetBySymbol (symbol: string): RegisteredAccountAsset | null {
+    // TODO: Add address value to the history item, right now we can't work with addresses, chenge filter by address after that
     return symbol ? this.registeredAssets.filter(asset => asset.symbol === symbol)?.[0] : null
   }
 
@@ -182,6 +183,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     if (tx) {
       await this.setTransactionConfirm(true)
       await this.setSoraToEthereum(this.isOutgoingType(tx.type))
+      // TODO: Add address value to the history item, right now we can't work with addresses, chenge filter by address after that
       await this.setAssetAddress(this.getAssetBySymbol(tx.symbol || '')?.address)
       await this.setAmount(tx.amount)
       await this.setSoraTransactionHash(tx.hash)

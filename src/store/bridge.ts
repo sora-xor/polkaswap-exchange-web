@@ -92,7 +92,6 @@ async function waitForExtrinsicFinalization (id: string | undefined): Promise<Br
     return tx
   } catch (error) {
     console.error(error)
-    throw new Error(error)
   }
 }
 
@@ -326,10 +325,10 @@ const actions = {
     commit(types.GET_HISTORY_SUCCESS, [])
   },
   findRegisteredAsset ({ commit, getters, rootGetters }) {
-    return rootGetters['assets/registeredAssets'].find(item => item.symbol === getters.asset.symbol)
+    return rootGetters['assets/registeredAssets'].find(item => item.address === getters.asset.address)
   },
   async getNetworkFee ({ commit, getters, dispatch }) {
-    if (!getters.asset || !getters.asset.symbol) {
+    if (!getters.asset || !getters.asset.address) {
       return
     }
     commit(types.GET_SORA_NETWORK_FEE_REQUEST)
@@ -388,7 +387,7 @@ const actions = {
     await dispatch('setEthereumTransactionDate', params.tx.endTime)
   },
   async sendTransferSoraToEth ({ commit, getters, rootGetters, dispatch }) {
-    if (!getters.asset || !getters.asset.symbol || !getters.amount || !getters.isSoraToEthereum) {
+    if (!getters.asset || !getters.asset.address || !getters.amount || !getters.isSoraToEthereum) {
       return
     }
     const asset = await dispatch('findRegisteredAsset')
@@ -432,11 +431,10 @@ const actions = {
       await dispatch('updateHistoryParams', { tx: currentHistoryItem, isEndTimeOnly: true })
       commit(types.SEND_TRANSACTION_FAILURE)
       console.error(error)
-      throw new Error(error)
     }
   },
   async receiveTransferEthFromSora ({ commit, getters, rootGetters, dispatch }) {
-    if (!getters.asset || !getters.asset.symbol || !getters.amount || !getters.isSoraToEthereum || !getters.soraTransactionHash) {
+    if (!getters.asset || !getters.asset.address || !getters.amount || !getters.isSoraToEthereum || !getters.soraTransactionHash) {
       return
     }
     const asset = await dispatch('findRegisteredAsset')
@@ -533,11 +531,10 @@ const actions = {
       await dispatch('updateHistoryParams', { tx: currentHistoryItem, isEndTimeOnly: true })
       commit(types.RECEIVE_TRANSACTION_FAILURE)
       console.error(error)
-      throw new Error(error)
     }
   },
   async sendTransferEthToSora ({ commit, getters, rootGetters, dispatch }) {
-    if (!getters.asset || !getters.asset.symbol || !getters.amount || getters.isSoraToEthereum) {
+    if (!getters.asset || !getters.asset.address || !getters.amount || getters.isSoraToEthereum) {
       return
     }
     const asset = await dispatch('findRegisteredAsset')
@@ -613,11 +610,10 @@ const actions = {
       await dispatch('updateHistoryParams', { tx: currentHistoryItem, isEndTimeOnly: true })
       commit(types.SEND_TRANSACTION_FAILURE)
       console.error(error)
-      throw new Error(error)
     }
   },
   async receiveTransferSoraFromEth ({ commit, getters, rootGetters, dispatch }) {
-    if (!getters.asset || !getters.asset.symbol || !getters.amount || getters.isSoraToEthereum || !getters.ethereumTransactionHash) {
+    if (!getters.asset || !getters.asset.address || !getters.amount || getters.isSoraToEthereum || !getters.ethereumTransactionHash) {
       return
     }
     const asset = await dispatch('findRegisteredAsset')
@@ -662,7 +658,6 @@ const actions = {
       await dispatch('updateHistoryParams', { tx: currentHistoryItem, isEndTimeOnly: true })
       commit(types.RECEIVE_TRANSACTION_FAILURE)
       console.error(error)
-      throw new Error(error)
     }
   },
   async sendTransaction ({ commit, getters, dispatch }): Promise<void> {

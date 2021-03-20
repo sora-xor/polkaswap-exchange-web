@@ -134,7 +134,7 @@ const actions = {
           accountAsset.balance = asset ? asset.balance : ''
         } catch (error) {
           accountAsset.externalBalance = '-'
-          throw new Error(error)
+          console.error(error)
         }
         return accountAsset
       }))

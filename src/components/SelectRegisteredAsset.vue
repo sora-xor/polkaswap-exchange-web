@@ -25,7 +25,7 @@
           <template v-if="hasFilteredAssets && isSoraToEthereum /* TODO: remove isSoraToEthereum here */">
             <h3 class="network-label">{{ isSoraToEthereum ? t('selectRegisteredAsset.search.networkLabelSora') : t('selectRegisteredAsset.search.networkLabelEthereum') }}</h3>
             <div :class="assetListClasses(filteredAssets)">
-              <div v-for="asset in filteredAssets" @click="selectAsset(asset)" :key="asset.symbol" class="asset-item">
+              <div v-for="asset in filteredAssets" @click="selectAsset(asset)" :key="asset.address" class="asset-item">
                 <s-col>
                   <s-row flex justify="start" align="middle">
                     <token-logo :tokenSymbol="asset.symbol" />
