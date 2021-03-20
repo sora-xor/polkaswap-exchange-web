@@ -632,7 +632,7 @@ const actions = {
     }
     currentHistoryItem.endTime = currentHistoryItem.startTime
     currentHistoryItem.transactionStep = 2
-    if (getters.currentTransactionState !== STATES.SORA_SUBMITTED) {
+    if ([STATES.SORA_SUBMITTED, STATES.SORA_PENDING].includes(getters.currentTransactionState)) {
       currentHistoryItem.signed = false
       currentHistoryItem.status = BridgeTxStatus.Pending
       currentHistoryItem.transactionState = STATES.SORA_PENDING
@@ -648,7 +648,6 @@ const actions = {
         await dispatch('setHistoryItem', currentHistoryItem)
       }
       const tx = await waitForRequest(getters.ethereumTransactionHash)
-      console.log('tx after requestFromEth', tx)
       currentHistoryItem.endTime = +(new Date())
       currentHistoryItem.status = BridgeTxStatus.Done
       currentHistoryItem.hash = tx.hash
