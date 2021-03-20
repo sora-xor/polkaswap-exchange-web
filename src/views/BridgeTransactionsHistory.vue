@@ -42,7 +42,7 @@
                   }) }}</div>
                 <div class="history-item-date">{{ formatDate(item) }}</div>
               </div>
-              <div :class="historyStatusIconClasses(item.status)" />
+              <div :class="historyStatusIconClasses(item.type, item.transactionState)" />
             </div>
           </template>
           <p v-else class="history-empty">{{ t('bridgeHistory.emptyHistory') }}</p>
@@ -71,6 +71,7 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 import { formatAssetSymbol, formatDateItem } from '@/utils'
+import { STATES } from '@/utils/fsm'
 
 const namespace = 'bridge'
 
@@ -155,14 +156,14 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     return `${date.getDate()} ${this.t(`months[${date.getMonth()}]`)} ${date.getFullYear()}, ${formatDateItem(date.getHours())}:${formatDateItem(date.getMinutes())}:${formatDateItem(date.getSeconds())}`
   }
 
-  historyStatusIconClasses (status: string): string {
+  historyStatusIconClasses (type: Operation, state: STATES): string {
     const iconClass = 'history-item-icon'
     const classes = [iconClass]
-    if (status === BridgeTxStatus.Failed) {
+    if ([STATES.SORA_REJECTED, STATES.ETHEREUM_REJECTED].includes(state)) {
       classes.push(`${iconClass}--error`)
       return classes.join(' ')
     }
-    if (status !== BridgeTxStatus.Done) {
+    if (!(this.isOutgoingType(type) ? state === STATES.ETHEREUM_COMMITED : state === STATES.SORA_COMMITED)) {
       classes.push(`${iconClass}--pending`)
       return classes.join(' ')
     }
