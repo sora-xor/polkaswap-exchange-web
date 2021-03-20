@@ -64,6 +64,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { RegisteredAccountAsset, BridgeTxStatus, Operation, isBridgeOperation, BridgeHistory } from '@sora-substrate/util'
+import { api } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -157,12 +158,13 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   historyStatusIconClasses (status: string): string {
     const iconClass = 'history-item-icon'
     const classes = [iconClass]
-    if (status === BridgeTxStatus.Ready || status === BridgeTxStatus.Pending) {
-      classes.push(`${iconClass}--pending`)
-      return classes.join(' ')
-    }
     if (status === BridgeTxStatus.Failed) {
       classes.push(`${iconClass}--error`)
+      return classes.join(' ')
+    }
+    if (status !== BridgeTxStatus.Done) {
+      classes.push(`${iconClass}--pending`)
+      return classes.join(' ')
     }
     return classes.join(' ')
   }
@@ -174,29 +176,29 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     return true
   }
 
-  async showHistory (idOrHash: string): Promise<void> {
-    const currentTransaction = this.filteredHistory.filter(item => (item.id === idOrHash) || (this.isOutgoingType(item.type) ? item.hash === idOrHash : item.ethereumHash === idOrHash))[0]
-    if (currentTransaction) {
+  async showHistory (id: string): Promise<void> {
+    const tx = api.bridge.getHistory(id)
+    if (tx) {
       await this.setTransactionConfirm(true)
-      await this.setSoraToEthereum(this.isOutgoingType(currentTransaction.type))
-      await this.setAssetAddress(this.getAssetBySymbol(currentTransaction?.symbol)?.address)
-      await this.setAmount(currentTransaction.amount)
-      await this.setSoraTransactionHash(currentTransaction.hash)
-      await this.setSoraTransactionDate(currentTransaction[this.isOutgoingType(currentTransaction.type) ? 'startTime' : 'endTime'])
-      await this.setEthereumTransactionHash(currentTransaction.ethereumHash)
-      await this.setEthereumTransactionDate(currentTransaction[!this.isOutgoingType(currentTransaction.type) ? 'startTime' : 'endTime'])
-      if (currentTransaction.status === BridgeTxStatus.Failed) {
+      await this.setSoraToEthereum(this.isOutgoingType(tx.type))
+      await this.setAssetAddress(this.getAssetBySymbol(tx.symbol || '')?.address)
+      await this.setAmount(tx.amount)
+      await this.setSoraTransactionHash(tx.hash)
+      await this.setSoraTransactionDate(tx[this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
+      await this.setEthereumTransactionHash(tx.ethereumHash)
+      await this.setEthereumTransactionDate(tx[!this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
+      if (tx.status === BridgeTxStatus.Failed) {
         await this.getNetworkFee()
         await this.getEthNetworkFee()
-        await this.setSoraNetworkFee(this.isOutgoingType(currentTransaction.type) ? currentTransaction.soraNetworkFee : this.soraNetworkFee)
-        await this.setEthereumNetworkFee(!this.isOutgoingType(currentTransaction.type) ? currentTransaction.ethereumNetworkFee : this.ethereumNetworkFee)
+        await this.setSoraNetworkFee(this.isOutgoingType(tx.type) ? tx.soraNetworkFee : this.soraNetworkFee)
+        await this.setEthereumNetworkFee(!this.isOutgoingType(tx.type) ? tx.ethereumNetworkFee : this.ethereumNetworkFee)
       } else {
-        await this.setSoraNetworkFee(currentTransaction.soraNetworkFee)
-        await this.setEthereumNetworkFee(currentTransaction.ethereumNetworkFee)
+        await this.setSoraNetworkFee(tx.soraNetworkFee)
+        await this.setEthereumNetworkFee(tx.ethereumNetworkFee)
       }
-      await this.setTransactionStep(currentTransaction.transactionStep)
-      await this.setCurrentTransactionState(currentTransaction.transactionState)
-      await this.setHistoryItem(currentTransaction)
+      await this.setTransactionStep(tx.transactionStep)
+      await this.setCurrentTransactionState(tx.transactionState)
+      await this.setHistoryItem(tx)
     }
     router.push({ name: PageNames.BridgeTransaction })
   }

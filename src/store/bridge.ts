@@ -3,14 +3,13 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import findLast from 'lodash/fp/findLast'
-import { RegisteredAsset, AccountAsset, FPNumber, BridgeApprovedRequest, BridgeCurrencyType, BridgeTxStatus, BridgeRequest, Operation, isBridgeOperation, History, BridgeHistory, TransactionStatus } from '@sora-substrate/util'
+import { FPNumber, BridgeApprovedRequest, BridgeCurrencyType, BridgeTxStatus, BridgeRequest, Operation, BridgeHistory, TransactionStatus } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { decodeAddress } from '@polkadot/util-crypto'
 
 import { STATES } from '@/utils/fsm'
 import web3Util, { KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
-import { delay, findAssetInCollection } from '@/utils'
+import { delay } from '@/utils'
 import { EthereumGasLimits, MaxUint256 } from '@/consts'
 
 const SORA_REQUESTS_TIMEOUT = 5 * 1000
@@ -48,6 +47,7 @@ async function waitForApprovedRequest (hash: string): Promise<BridgeApprovedRequ
   const approvedRequest = await api.bridge.getApprovedRequest(hash)
   if (approvedRequest) {
     // If Completed -> Done
+    console.log('approved Requiest!')
     return approvedRequest
   }
   const request = await api.bridge.getRequest(hash)
@@ -78,18 +78,22 @@ async function waitForRequest (hash: string): Promise<BridgeRequest> {
   return await waitForRequest(hash)
 }
 
-async function waitForExtrinsicFinalization (time: number): Promise<BridgeHistory> {
-  const tx = findLast(
-    item => Math.abs(Number(item.startTime) - time) < 1000,
-    api.bridge.accountHistory
-  )
-
-  if (!tx || tx.status !== TransactionStatus.Finalized) {
-    await delay(250)
-    return await waitForExtrinsicFinalization(time)
+async function waitForExtrinsicFinalization (id: string | undefined): Promise<BridgeHistory> {
+  if (!id) {
+    console.error("Can't find history id")
+    throw new Error('History id error')
   }
-
-  return tx
+  try {
+    const tx = api.bridge.getHistory(id)
+    if (!tx || tx.status !== TransactionStatus.Finalized) {
+      await delay(250)
+      return await waitForExtrinsicFinalization(id)
+    }
+    return tx
+  } catch (error) {
+    console.error(error)
+    throw new Error(error)
+  }
 }
 
 function initialState () {
@@ -311,14 +315,14 @@ const actions = {
       throw error
     }
   },
-  saveHistory ({ commit }, history: BridgeHistory | null) {
+  setHistoryItem ({ commit }, historyItem: BridgeHistory | null) {
+    commit(types.SET_HISTORY_ITEM, historyItem)
+  },
+  async saveHistory ({ commit }, history: BridgeHistory | null) {
     if (!history || !history.id) {
       return
     }
-    api.saveHistory(history)
-  },
-  setHistoryItem ({ commit }, historyItem: BridgeHistory | null) {
-    commit(types.SET_HISTORY_ITEM, historyItem)
+    await api.saveHistory(history)
   },
   async clearHistory ({ commit }) {
     api.bridge.clearHistory()
@@ -366,7 +370,6 @@ const actions = {
       type: getters.isSoraToEthereum ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
       amount: getters.amount.toString(),
       symbol: getters.asset.symbol,
-      // id: (+playground.date).toString(),
       startTime: +playground.date,
       endTime: +playground.date,
       signed: false,
@@ -374,10 +377,18 @@ const actions = {
       transactionStep: playground.step,
       hash: '',
       ethereumHash: '',
-      // transactionState: STATES.INITIAL,
+      transactionState: STATES.INITIAL,
       soraNetworkFee: getters.soraNetworkFee.toString(),
       ethereumNetworkFee: getters.ethereumNetworkFee.toString()
     }))
+  },
+  async updateHistoryParams ({ commit, dispatch }, params) {
+    await dispatch('saveHistory', params.tx)
+    await dispatch('setHistoryItem', params.tx)
+    if (!params.isEndTimeOnly) {
+      await dispatch('setSoraTransactionDate', params.tx.startTime)
+    }
+    await dispatch('setEthereumTransactionDate', params.tx.endTime)
   },
   async sendTransferSoraToEth ({ commit, getters, rootGetters, dispatch }) {
     if (!getters.asset || !getters.asset.symbol || !getters.amount || !getters.isSoraToEthereum) {
@@ -394,42 +405,36 @@ const actions = {
     if (getters.historyItem) {
       currentHistoryItem = getters.historyItem
       currentHistoryItem.startTime = +currentDate
+      currentHistoryItem.endTime = currentHistoryItem.startTime
     } else {
       await dispatch('generateHistoryItem', { date: currentDate })
       currentHistoryItem = getters.historyItem
     }
-    currentHistoryItem.status = BridgeTxStatus.Pending
-    await dispatch('saveHistory', currentHistoryItem)
-    await dispatch('setSoraTransactionDate', +currentDate)
-    console.log('history before signing', currentHistoryItem)
+    if (currentHistoryItem.status !== 'error') {
+      currentHistoryItem.status = BridgeTxStatus.Pending
+      currentHistoryItem.transactionState = STATES.SORA_PENDING
+    }
+    await dispatch('updateHistoryParams', { tx: currentHistoryItem })
     try {
       if (!currentHistoryItem.signed) {
         const ethAccount = rootGetters['web3/ethAddress']
-        await api.bridge.transferToEth(asset, ethAccount, getters.amount)
-        console.log('history after signing', currentHistoryItem)
+        await api.bridge.transferToEth(asset, ethAccount, getters.amount, currentHistoryItem.id)
+        currentHistoryItem.transactionState = STATES.SORA_SUBMITTED
+        await dispatch('updateHistoryParams', { tx: currentHistoryItem })
       }
-      const tx = await waitForExtrinsicFinalization(+currentDate)
-      console.log('tx transferSoraToEth', tx)
-      // TODO: Check do we need id update?
-      // currentHistoryItem.id = tx.id
-      currentHistoryItem.startTime = tx.startTime
-      currentHistoryItem.endTime = tx.endTime
-      currentHistoryItem.hash = tx.hash
-      currentHistoryItem.transactionState = STATES.SORA_COMMITED
-      await dispatch('setHistoryItem', currentHistoryItem)
-      await dispatch('saveHistory', currentHistoryItem)
+      const tx = await waitForExtrinsicFinalization(currentHistoryItem.id)
+      tx.status = BridgeTxStatus.Pending
+      tx.transactionState = STATES.SORA_COMMITED
+      await dispatch('updateHistoryParams', { tx: tx })
       await dispatch('setSoraTransactionHash', tx.hash)
-      console.log('SUCCESS currentHistoryItem', currentHistoryItem)
       commit(types.SEND_TRANSACTION_SUCCESS)
     } catch (error) {
       currentHistoryItem.endTime = +(new Date())
       currentHistoryItem.status = BridgeTxStatus.Failed
       currentHistoryItem.transactionState = STATES.SORA_REJECTED
-      await dispatch('setHistoryItem', currentHistoryItem)
-      await dispatch('saveHistory', currentHistoryItem)
-      await dispatch('setEthereumTransactionDate', currentHistoryItem.endTime)
-      console.log('REJECTED currentHistoryItem', currentHistoryItem)
+      await dispatch('updateHistoryParams', { tx: currentHistoryItem, isEndTimeOnly: true })
       commit(types.SEND_TRANSACTION_FAILURE)
+      console.error(error)
       throw new Error(error)
     }
   },
@@ -443,24 +448,21 @@ const actions = {
       return
     }
     commit(types.RECEIVE_TRANSACTION_REQUEST)
-    console.log('-----------------------------------------------')
-    const currentDate = new Date()
     const currentHistoryItem = getters.historyItem
-    // if (!(getters.historyItem.transactionStep === 2 && getters.historyItem.status === BridgeTxStatus.Pending)) {
-    currentHistoryItem.startTime = +currentDate
+    if (currentHistoryItem.transactionStep === 2 && currentHistoryItem.status === BridgeTxStatus.Failed) {
+      currentHistoryItem.startTime = +(new Date())
+    }
+    currentHistoryItem.endTime = currentHistoryItem.startTime
     currentHistoryItem.transactionStep = 2
-    currentHistoryItem.signed = false
-    currentHistoryItem.status = BridgeTxStatus.Pending
-    await dispatch('setHistoryItem', currentHistoryItem)
-    await dispatch('saveHistory', currentHistoryItem)
+    if (getters.currentTransactionState !== STATES.ETHEREUM_SUBMITTED) {
+      currentHistoryItem.signed = false
+      currentHistoryItem.status = BridgeTxStatus.Pending
+      currentHistoryItem.transactionState = STATES.ETHEREUM_PENDING
+    }
+    await dispatch('updateHistoryParams', { tx: currentHistoryItem })
     await dispatch('setTransactionStep', 2)
-    await dispatch('setSoraTransactionDate', +currentDate)
-    await dispatch('setEthereumTransactionDate', +currentDate)
     try {
       const request = await waitForApprovedRequest(getters.soraTransactionHash) // If it causes an error, then -> catch -> SORA_REJECTED
-      currentHistoryItem.signed = true
-      await dispatch('setHistoryItem', currentHistoryItem)
-      await dispatch('saveHistory', currentHistoryItem)
       if (!rootGetters['web3/isValidEthNetwork']) {
         throw new Error('Change eth network in Metamask')
       }
@@ -506,22 +508,24 @@ const actions = {
       )
       const contractMethod = contractInstance.methods[method](...methodArgs)
       const gas = await contractMethod.estimateGas()
+      // TODO: Get exactly moment of signing somehow
       const { transactionHash } = await contractMethod.send({ gas, from: ethAccount })
+      if (!currentHistoryItem.signed) {
+        currentHistoryItem.signed = true
+        currentHistoryItem.status = BridgeTxStatus.Pending
+        currentHistoryItem.transactionState = STATES.ETHEREUM_SUBMITTED
+        await dispatch('saveHistory', currentHistoryItem)
+        await dispatch('setHistoryItem', currentHistoryItem)
+      }
       // api.bridge.markAsDone(hash) We've decided not to use offchain workers to show the history.
       // So we don't need DONE status of request
-      // TODO: How to check if the transaction signed?
-      // currentHistoryItem.status = BridgeTxStatus.Pending
-      // currentHistoryItem.signed = true
-      // await dispatch('setHistoryItem', currentHistoryItem)
-      // await dispatch('saveHistory', currentHistoryItem)
       const tx = await web3.eth.getTransactionReceipt(transactionHash)
-      console.log('tx', tx)
       currentHistoryItem.endTime = +(new Date())
       currentHistoryItem.ethereumHash = tx.transactionHash
       currentHistoryItem.status = BridgeTxStatus.Done
       currentHistoryItem.transactionState = STATES.ETHEREUM_COMMITED
-      await dispatch('setHistoryItem', currentHistoryItem)
       await dispatch('saveHistory', currentHistoryItem)
+      await dispatch('setHistoryItem', currentHistoryItem)
       await dispatch('setEthereumTransactionHash', tx.transactionHash)
       await dispatch('setEthereumTransactionDate', currentHistoryItem.endTime)
       commit(types.RECEIVE_TRANSACTION_SUCCESS)
@@ -529,8 +533,8 @@ const actions = {
       currentHistoryItem.endTime = +(new Date())
       currentHistoryItem.status = BridgeTxStatus.Failed
       currentHistoryItem.transactionState = STATES.ETHEREUM_REJECTED
-      await dispatch('setHistoryItem', currentHistoryItem)
       await dispatch('saveHistory', currentHistoryItem)
+      await dispatch('setHistoryItem', currentHistoryItem)
       await dispatch('setEthereumTransactionDate', currentHistoryItem.endTime)
       commit(types.RECEIVE_TRANSACTION_FAILURE)
       console.error(error)
@@ -602,6 +606,7 @@ const actions = {
       // If user didn't cancel the transaction
       if (error.code !== 4001) {
         await dispatch('saveHistory', currentHistoryItem)
+        await dispatch('setHistoryItem', currentHistoryItem)
       }
       await dispatch('setHistoryItem', currentHistoryItem)
       commit(types.SEND_TRANSACTION_FAILURE)
