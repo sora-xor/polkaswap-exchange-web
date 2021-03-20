@@ -379,7 +379,6 @@ export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingM
       this.initializeTransactionStateMachine()
       this.isInitRequestCompleted = true
       this.currentTransactionStep = this.transactionStep
-      // Run transaction only for new transaction
       if (!this.historyItem) {
         this.handleSendTransactionFrom()
       }
