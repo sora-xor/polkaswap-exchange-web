@@ -116,7 +116,7 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
       const query = this.query.toLowerCase().trim()
 
       return this.assetsList.filter(t =>
-        this.t(`assetNames.${t.symbol}`).toLowerCase().includes(query) ||
+        (KnownAssets.get(t.address) && this.t(`assetNames.${t.symbol}`).toLowerCase().includes(query)) ||
         t.symbol?.toLowerCase?.()?.includes?.(query) ||
         t.address?.toLowerCase?.()?.includes?.(query)
       )
@@ -231,6 +231,7 @@ $token-item-height: 71px;
   &__symbol {
     white-space: nowrap;
     font-size: var(--s-font-size-small);
+    margin-bottom: $inner-spacing-mini;
     @include font-weight(600);
   }
   &__amount {
