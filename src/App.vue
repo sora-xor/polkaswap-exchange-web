@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header class="header">
-      <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Exchange)" />
+      <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
 
       <div class="app-controls s-flex">
         <branded-tooltip :disabled="accountConnected" popper-class="info-tooltip wallet-tooltip" placement="bottom">
@@ -82,7 +82,7 @@
             </li>
             <sidebar-item-content
               :title="t(`footerMenu.help`)"
-              icon=""
+              icon="icon-info"
               tag="li"
               class="el-menu-item menu-item--small"
               @click.native="openHelpDialog"
@@ -227,13 +227,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
     if (router.currentRoute.name === name) {
       return
     }
-    if (name !== PageNames.Exchange) {
-      router.push({ name })
-      return
-    }
-    if (name === PageNames.Exchange && router.currentRoute.name !== PageNames.Swap) {
-      router.push({ name: PageNames.Swap })
-    }
+    router.push({ name })
   }
 
   openHelpDialog (): void {

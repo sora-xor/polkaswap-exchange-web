@@ -23,7 +23,6 @@ export default {
     [KnownSymbols.PSWAP]: 'Polkaswap'
   },
   pageTitle: {
-    [PageNames.Exchange]: 'Exchange',
     [PageNames.Swap]: 'Swap',
     [PageNames.Pool]: 'Pool',
     [PageNames.Bridge]: '@:bridgeText',
@@ -44,7 +43,6 @@ export default {
     [PageNames.Farming]: 'Farming',
     [PageNames.Wallet]: 'Account',
     [PageNames.Rewards]: 'Rewards',
-    [PageNames.Exchange]: 'Exchange',
     [PageNames.About]: 'About',
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
@@ -162,7 +160,6 @@ export default {
   },
   pool: {
     connectWallet: '@:connectWalletText',
-    yourLiquidity: 'Your liquidity',
     connectToWallet: 'Connect to a wallet to add and view your liquidity.',
     liquidityNotFound: 'No liquidity found.',
     addLiquidity: 'Add liquidity',
@@ -331,7 +328,7 @@ export default {
     confirmTitle: 'You will receive'
   },
   dexSettings: {
-    title: 'Settings',
+    title: 'Transaction settings',
     slippageTolerance: 'SLIPPAGE TOLERANCE',
     slippageToleranceHint: 'Your transaction will revert if the price changes unfavorably by more than this percentage.',
     slippageToleranceValidation: {

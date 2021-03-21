@@ -10,7 +10,6 @@ export const ZeroStringValue = '0'
 
 export enum PageNames {
   About = 'About',
-  Exchange = 'Exchange',
   Swap = 'Swap',
   Pool = 'Pool',
   Stats = 'Stats',
@@ -66,7 +65,7 @@ const MainMenu: Array<SidebarMenuItem> = [
     title: PageNames.Swap
   },
   {
-    icon: '',
+    icon: 'drop',
     title: PageNames.Pool
   },
   {
@@ -82,11 +81,11 @@ const MainMenu: Array<SidebarMenuItem> = [
 
 const AccountMenu: Array<SidebarMenuItem> = [
   {
-    icon: '',
+    icon: 'wallet',
     title: PageNames.Wallet
   },
   {
-    icon: '',
+    icon: 'circle-star',
     title: PageNames.Rewards
   }
 ]
@@ -120,11 +119,6 @@ export const SidebarMenuGroups = [
   MainMenu,
   AccountMenu,
   OtherPagesMenu
-]
-
-export const ExchangeTabs = [
-  PageNames.Swap,
-  PageNames.Pool
 ]
 
 export const BridgeChildPages = [

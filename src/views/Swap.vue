@@ -1,8 +1,14 @@
 <template>
-  <s-form
-    class="el-form--actions"
-    :show-message="false"
-  >
+  <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
+    <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
+      <s-button
+        class="el-button--settings"
+        type="action"
+        icon="settings"
+        size="medium"
+        @click="openSettingsDialog"
+      />
+    </generic-page-header>
     <div class="input-container">
       <div class="input-line">
         <div class="input-title">
@@ -99,11 +105,12 @@
     <swap-info v-if="areTokensSelected && !areZeroAmounts" />
     <select-token :visible.sync="showSelectTokenDialog" :connected="connected" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
     <confirm-swap :visible.sync="showConfirmSwapDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmSwap" @checkConfirm="updateAccountAssets" />
+    <settings :visible.sync="showSettings" />
   </s-form>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Watch, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets, KnownSymbols, FPNumber, CodecString, AccountAsset } from '@sora-substrate/util'
@@ -120,6 +127,8 @@ const namespace = 'swap'
 
 @Component({
   components: {
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    Settings: lazyComponent(Components.Settings),
     SwapInfo: lazyComponent(Components.SwapInfo),
     TokenLogo: lazyComponent(Components.TokenLogo),
     SelectToken: lazyComponent(Components.SelectToken),
@@ -157,10 +166,13 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     this.calcMinMaxRecieved()
   }
 
+  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
+
   isInsufficientAmount = false
   insufficientBalanceTokenSymbol = ''
   insufficientAmountTokenSymbol = ''
   isTokenFromSelected = false
+  showSettings = false
   showSelectTokenDialog = false
   showConfirmSwapDialog = false
   isRecountingProcess = false
@@ -434,6 +446,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   private isZeroValue (value: string): boolean {
     return +value === 0
+  }
+
+  openSettingsDialog (): void {
+    this.showSettings = true
   }
 }
 </script>

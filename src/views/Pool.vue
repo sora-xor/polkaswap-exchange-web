@@ -1,6 +1,14 @@
 <template>
-  <div class="el-form--pool">
-    <generic-page-header class="header--pool" :title="t('pool.yourLiquidity')" :tooltip="t('pool.description')" tooltip-placement="bottom" />
+  <div v-loading="parentLoading" class="container el-form--pool">
+    <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')" tooltip-placement="bottom">
+      <s-button
+        class="el-button--settings"
+        type="action"
+        icon="settings"
+        size="medium"
+        @click="openSettingsDialog"
+      />
+    </generic-page-header>
     <div class="pool-wrapper" v-loading="loading">
       <p v-if="!connected" class="pool-info-container">
         {{ t('pool.connectToWallet') }}
@@ -57,11 +65,12 @@
     <s-button v-else type="primary" @click="handleConnectWallet">
       {{ t('pool.connectWallet') }}
     </s-button>
+    <settings :visible.sync="showSettings" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { AccountLiquidity } from '@sora-substrate/util'
 
@@ -77,6 +86,7 @@ const namespace = 'pool'
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    Settings: lazyComponent(Components.Settings),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
@@ -87,6 +97,10 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   @Action('getAccountLiquidity', { namespace }) getAccountLiquidity
   @Action('getAssets', { namespace: 'assets' }) getAssets
+
+  showSettings = false
+
+  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
   async mounted () {
     await this.withApi(async () => {
@@ -141,6 +155,10 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   getBalance (liquidityItem: AccountLiquidity): string {
     return this.formatCodecNumber(liquidityItem.balance, liquidityItem.decimals)
+  }
+
+  openSettingsDialog (): void {
+    this.showSettings = true
   }
 }
 </script>
@@ -207,15 +225,15 @@ $pool-collapse-icon-width: 10px;
 <style lang="scss" scoped>
 $pair-icon-height: 36px;
 
-.header--pool {
-  margin-top: $inner-spacing-mini;
-  margin-bottom: $inner-spacing-mini;
-}
-
 .el-form--pool {
   display: flex;
   flex-direction: column;
   align-items: center;
+  .page-header--pool {
+    .el-button--settings {
+      margin-left: auto;
+    }
+  }
   .el-button {
     &--create-pair {
       margin-left: 0;
