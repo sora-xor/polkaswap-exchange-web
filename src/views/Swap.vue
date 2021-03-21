@@ -11,7 +11,7 @@
     </generic-page-header>
     <div class="input-container">
       <div class="input-line">
-        <div class="input-title">
+        <div class="input-title p4">
           <span>{{ t('exchange.from') }}</span>
           <span :class="`input-title-estimated ${(areTokensSelected && !isZeroToAmount && isExchangeB) ? 'input-title-estimated--show' : ''}`">
             ({{ t('swap.estimated') }})
@@ -49,7 +49,7 @@
     <s-button class="el-button--switch-tokens" type="action" icon="arrows-swap-90-24" :disabled="!areTokensSelected || isRecountingProcess" @click="handleSwitchTokens" />
     <div class="input-container">
       <div class="input-line">
-        <div class="input-title">
+        <div class="input-title p4">
           <span>{{ t('exchange.to') }}</span>
           <span :class="`input-title-estimated ${(areTokensSelected && !isZeroFromAmount && !isExchangeB) ? 'input-title-estimated--show' : ''}`">
             ({{ t('swap.estimated') }})

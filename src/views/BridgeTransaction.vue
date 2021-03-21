@@ -4,7 +4,7 @@
       v-if="isInitRequestCompleted"
       class="s-button--view-transactions-history"
       type="link"
-      icon="arrow-left"
+      icon="arrows-arrow-left-24"
       icon-position="left"
       @click="handleViewTransactionsHistory"
     >
@@ -28,14 +28,14 @@
             </template>
             <div v-if="transactionFromHash" :class="hashContainerClasses(!isSoraToEthereum)">
               <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionFromHash)" readonly />
-              <s-button class="s-button--hash-copy" size="medium" type="link" icon="copy" @click="handleCopyTransactionHash(transactionFromHash)" />
+              <s-button class="s-button--hash-copy" size="medium" type="link" icon="copy-16" @click="handleCopyTransactionHash(transactionFromHash)" />
               <!-- TODO: Add work with Polkascan -->
               <s-dropdown
                 v-if="!isSoraToEthereum"
                 class="s-dropdown--hash-menu"
                 borderRadius="mini"
                 type="ellipsis"
-                icon="more-vertical"
+                icon="basic-more-vertical-24"
                 placement="bottom-end"
                 @select="handleOpenEtherscan"
               >
@@ -82,13 +82,13 @@
             </template>
             <div v-if="isTransactionStep2 && transactionToHash" :class="hashContainerClasses(isSoraToEthereum)">
               <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionToHash)" readonly />
-              <s-button class="s-button--hash-copy" size="medium" type="link" icon="copy" @click="handleCopyTransactionHash(transactionToHash)" />
+              <s-button class="s-button--hash-copy" size="medium" type="link" icon="copy-16" @click="handleCopyTransactionHash(transactionToHash)" />
               <s-dropdown
                 v-if="isSoraToEthereum"
                 class="s-dropdown--hash-menu"
                 borderRadius="mini"
                 type="ellipsis"
-                icon="more-vertical"
+                icon="basic-more-vertical-24"
                 placement="bottom-end"
                 @select="handleOpenEtherscan"
               >
@@ -132,6 +132,7 @@
       v-if="isInitRequestCompleted && isTransferCompleted"
       class="s-button--create-transaction"
       type="link"
+      icon="basic-circle-plus-24"
       @click="handleCreateTransaction"
     >
       {{ t('bridgeTransaction.newTransaction') }}
@@ -558,31 +559,6 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
 .transaction {
   &-container {
     @include bridge-container;
-    .s-button--create-transaction {
-      span {
-        position: relative;
-        padding-left: $inner-spacing-mini * 4;
-        &:before {
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: 0;
-          margin-top: auto;
-          margin-bottom: auto;
-          display: block;
-          height: var(--s-size-mini);
-          width: var(--s-size-mini);
-          content: '';
-          background: url("~@/assets/img/icon-circle-plus.svg") center 100% no-repeat;
-        }
-      }
-      &:hover,
-      &:active {
-        span:before {
-          background-image: url("~@/assets/img/icon-circle-plus--hover.svg");
-        }
-      }
-    }
   }
   &-content {
     .el-card__body {
