@@ -1,13 +1,13 @@
 <template>
   <div class="container" v-loading="parentLoading">
-    <generic-header :title="t('addLiquidity.title')" :tooltip="t('pool.description')" />
+    <generic-page-header has-button-back :title="t('addLiquidity.title')" :tooltip="t('pool.description')" />
     <s-form
       class="el-form--actions"
       :show-message="false"
     >
       <div class="input-container">
         <div class="input-line">
-          <div class="input-title">{{ t('createPair.deposit') }}</div>
+          <div class="input-title p4">{{ t('createPair.deposit') }}</div>
           <div v-if="connected && firstToken" class="token-balance">
             <span class="token-balance-title">{{ t('createPair.balance') }}</span>
             <span class="token-balance-value">{{ getTokenBalance(firstToken) }}</span>
@@ -35,10 +35,10 @@
           </div>
         </div>
       </div>
-      <s-icon class="icon-divider" name="plus-rounded" size="medium" />
+      <s-icon class="icon-divider" name="plus-16" />
       <div :class="computedClasses">
         <div class="input-line">
-          <div class="input-title">
+          <div class="input-title p4">
             <span>{{ t('createPair.deposit') }}</span>
           </div>
           <div v-if="connected && secondToken" class="token-balance">
@@ -66,7 +66,7 @@
               type="tertiary"
               size="small"
               border-radius="medium"
-              :icon="!secondAddress ? 'chevron-bottom-rounded' : undefined"
+              :icon="!secondAddress ? 'chevron-down-rounded-16' : undefined"
               icon-position="right"
               @click="!secondAddress ? openSelectSecondTokenDialog() : undefined"
             >
@@ -74,7 +74,7 @@
               {{ secondToken.symbol }}
             </s-button>
           </div>
-          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
+          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectSecondTokenDialog">
             {{ t('exchange.chooseToken') }}
           </s-button>
         </div>
@@ -167,8 +167,8 @@
       </div>
     </info-card>
 
-    <select-token :visible.sync="showSelectFirstTokenDialog" :connected="connected" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstToken" />
-    <select-token :visible.sync="showSelectSecondTokenDialog" :connected="connected" :asset="firstToken" @select="setSecondToken" />
+    <select-token :visible.sync="showSelectFirstTokenDialog" :connected="connected" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstTokenAddress($event.address)" />
+    <select-token :visible.sync="showSelectSecondTokenDialog" :connected="connected" :asset="firstToken" @select="setSecondTokenAddress($event.address)" />
 
     <confirm-token-pair-dialog
       :visible.sync="showConfirmDialog"
@@ -203,7 +203,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
 
 @Component({
   components: {
-    GenericHeader: lazyComponent(Components.GenericHeader),
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SelectToken: lazyComponent(Components.SelectToken),
     InfoCard: lazyComponent(Components.InfoCard),
     TokenLogo: lazyComponent(Components.TokenLogo),

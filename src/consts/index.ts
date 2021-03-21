@@ -1,10 +1,17 @@
-export const AppName = 'Polkaswap'
+import pkg from '../../package.json'
+
+export const app = {
+  version: pkg.version,
+  name: 'Polkaswap',
+  email: 'polkaswap@soramitsu.co.jp'
+}
 
 export const ZeroStringValue = '0'
 
+export const MetamaskCancellationCode = 4001
+
 export enum PageNames {
   About = 'About',
-  Exchange = 'Exchange',
   Swap = 'Swap',
   Pool = 'Pool',
   Stats = 'Stats',
@@ -14,36 +21,111 @@ export enum PageNames {
   AddLiquidity = 'AddLiquidity',
   AddLiquidityId = 'AddLiquidityId',
   RemoveLiquidity = 'RemoveLiquidity',
-  PageNotFound = 'PageNotFound'
+  Farming = 'Farming',
+  Rewards = 'Rewards',
+  PageNotFound = 'PageNotFound',
+  Bridge = 'Bridge',
+  BridgeTransaction = 'BridgeTransaction',
+  BridgeTransactionsHistory = 'BridgeTransactionsHistory'
 }
 
-// TODO: Add InfoLine component to the list of components
-// InfoLine = 'InfoLine',
 export enum Components {
+  GenericPageHeader = 'GenericPageHeader',
   SwapInfo = 'SwapInfo',
+  InfoLine = 'InfoLine', // TODO: Check its usage
   InfoCard = 'InfoCard',
   SelectToken = 'SelectToken',
   ResultDialog = 'ResultDialog',
-  GenericHeader = 'GenericHeader',
   TokenLogo = 'TokenLogo',
   PairTokenLogo = 'PairTokenLogo',
   ConfirmSwap = 'ConfirmSwap',
   ConfirmRemoveLiquidity = 'ConfirmRemoveLiquidity',
   ConfirmTokenPairDialog = 'ConfirmTokenPairDialog',
-  Settings = 'Settings'
+  Settings = 'Settings',
+  BrandedTooltip = 'BrandedTooltip',
+  HelpDialog = 'HelpDialog',
+  SidebarItemContent = 'SidebarItemContent',
+  SelectRegisteredAsset = 'SelectRegisteredAsset',
+  ConfirmBridgeTransactionDialog = 'ConfirmBridgeTransactionDialog',
+  BridgeTransaction = 'BridgeTransaction',
+  BridgeTransactionsHistory = 'BridgeTransactionsHistory'
 }
 
-// TODO: [Release 2] Some items are hidden because we don't have Stats and Support pages right now
-export const MainMenu = [
-  PageNames.Exchange,
-  PageNames.About
-  // PageNames.Stats,
-  // PageNames.Support
+interface SidebarMenuItem {
+  icon: string;
+  title: string;
+  disabled?: boolean;
+}
+
+interface SidebarMenuItemLink extends SidebarMenuItem {
+  href?: string;
+}
+
+const MainMenu: Array<SidebarMenuItem> = [
+  {
+    icon: 'arrows-swap-90-24',
+    title: PageNames.Swap
+  },
+  {
+    icon: 'basic-drop-24',
+    title: PageNames.Pool
+  },
+  {
+    icon: 'grid-block-distribute-vertically-24',
+    title: PageNames.Bridge
+  },
+  {
+    icon: '',
+    title: PageNames.Farming,
+    disabled: true
+  }
 ]
 
-export const ExchangeTabs = [
-  PageNames.Swap,
-  PageNames.Pool
+const AccountMenu: Array<SidebarMenuItem> = [
+  {
+    icon: 'finance-wallet-24',
+    title: PageNames.Wallet
+  },
+  {
+    icon: 'basic-circle-star-24',
+    title: PageNames.Rewards
+  }
+]
+
+const OtherPagesMenu: Array<SidebarMenuItem> = [
+  {
+    icon: 'file-file-text-24',
+    title: PageNames.About
+  }
+]
+
+export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
+  {
+    icon: 'symbols-twitter-24',
+    title: 'twitter',
+    href: 'https://twitter.com/sora_xor'
+  },
+  {
+    icon: 'symbols-telegram-24',
+    title: 'telegram',
+    href: 'https://t.me/sora_xor'
+  }
+]
+
+export const FaucetLink: SidebarMenuItemLink = {
+  icon: 'software-terminal-24',
+  title: 'faucet'
+}
+
+export const SidebarMenuGroups = [
+  MainMenu,
+  AccountMenu,
+  OtherPagesMenu
+]
+
+export const BridgeChildPages = [
+  PageNames.BridgeTransaction,
+  PageNames.BridgeTransactionsHistory
 ]
 
 export enum Topics {
@@ -54,14 +136,56 @@ export enum Topics {
 }
 
 export const AboutTopics = [
-  { title: Topics.SwapTokens, icon: 'swap' },
-  { title: Topics.PassiveEarning, icon: 'earn' },
-  { title: Topics.AddLiquidity, icon: 'liquidity' },
-  { title: Topics.PriceFeeds, icon: 'build' }
+  { title: Topics.SwapTokens, icon: 'arrows-swap-24' },
+  { title: Topics.PassiveEarning, icon: 'basic-bar-chart-24' },
+  { title: Topics.AddLiquidity, icon: 'basic-drop-24' },
+  { title: Topics.PriceFeeds, icon: 'software-terminal-24' }
 ]
 
 export enum LogoSize {
   MINI = 'mini',
   SMALL = 'small',
-  MEDIUM = 'medium',
+  MEDIUM = 'medium'
 }
+
+export enum InfoTooltipPosition {
+  LEFT = 'left',
+  RIGHT = 'right'
+}
+
+export enum NetworkTypes {
+  Devnet = 'Devnet',
+  Testnet = 'Testnet',
+  Mainnet = 'Mainnet'
+}
+
+export const EthSymbol = 'ETH'
+
+const gasLimit = {
+  approve: 66000 * 2,
+  sendERC20ToSidechain: 81000 * 2,
+  mintTokensByPeers: 191285 * 2,
+  receievByEthereumAssetAddress: 0, // TODO: estimate it later
+  receiveBySidechainAssetId: 252659 * 2
+}
+/**
+ * It's in gwei.
+ * Zero index means ETH -> SORA
+ * First index means SORA -> ETH
+ */
+export const EthereumGasLimits = [
+  // ETH -> SORA
+  {
+    XOR: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+    VAL: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+    PSWAP: gasLimit.approve + gasLimit.sendERC20ToSidechain
+  },
+  // SORA -> ETH
+  {
+    XOR: gasLimit.mintTokensByPeers,
+    VAL: gasLimit.mintTokensByPeers,
+    PSWAP: gasLimit.receiveBySidechainAssetId // TODO: check it later
+  }
+]
+
+export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'

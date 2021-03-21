@@ -4,15 +4,15 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { KnownSymbols, Asset, AccountAsset } from '@sora-substrate/util'
+import { Asset, AccountAsset, KnownAssets } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { LogoSize } from '@/consts'
 
 @Component
 export default class TokenLogo extends Mixins(TranslationMixin) {
-  @Prop({ type: Object, default: () => null }) readonly token!: AccountAsset | Asset | any
-  @Prop({ type: String, default: '' }) readonly tokenSymbol!: string
+  @Prop({ type: String, default: '' }) readonly tokenSymbol!: string // ONLY for Bridge.vue
+  @Prop({ type: Object, default: () => null }) readonly token!: AccountAsset | Asset
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
 
   get tokenClasses (): string {
@@ -21,8 +21,11 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
 
     if (this.tokenSymbol) {
       classes.push(`${tokenLogoClass}--${(this.tokenSymbol).toLowerCase()}`)
-    } else if (this.token && !!KnownSymbols[this.token.symbol]) {
-      classes.push(`${tokenLogoClass}--${(this.token.symbol).toLowerCase()}`)
+    } else if (this.token) {
+      const knownAsset = KnownAssets.get(this.token.address)
+      if (knownAsset) {
+        classes.push(`${tokenLogoClass}--${(this.token.symbol as string).toLowerCase()}`)
+      }
     }
 
     classes.push(`${tokenLogoClass}--${this.size.toLowerCase()}`)
@@ -32,7 +35,8 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
-$tokens-list: "dot", "ksm", "pswap", "pal", "smc", "usdt", "val", "valerc", "xor", "xorerc";
+// TODO: Check assets list + logo titles
+$tokens-list: "bridge-item-xor", "bridge-item-eth", "pswap", "val", "xor", "eth";
 $token-background-color: var(--s-color-base-on-accent);
 
 .token-logo {
