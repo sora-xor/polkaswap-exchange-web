@@ -48,7 +48,7 @@
                 {{ t('bridge.max') }}
               </s-button>
               <s-button class="s-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectAssetDialog">
-                <token-logo :tokenSymbol="asset.symbol" size="small" />
+                <token-logo :token="asset" size="small" />
                 {{ formatAssetSymbol(asset.symbol, !isSoraToEthereum) }}
               </s-button>
             </div>
@@ -93,7 +93,7 @@
             </s-form-item>
             <div v-if="areNetworksConnected && isAssetSelected" class="asset">
               <s-button class="s-button--choose-token" type="tertiary" size="small" border-radius="medium" disabled>
-                <token-logo :tokenSymbol="asset.symbol" size="small" />
+                <token-logo :token="asset" size="small" />
                 {{ formatAssetSymbol(asset.symbol, isSoraToEthereum) }}
               </s-button>
             </div>

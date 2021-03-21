@@ -1,7 +1,7 @@
 <template>
   <div :class="computedClasses">
-    <token-logo :token="firstToken" :token-symbol="firstTokenSymbol" :size="size" />
-    <token-logo :token="secondToken" :token-symbol="secondTokenSymbol" :size="size" />
+    <token-logo :token="firstToken" :size="size" />
+    <token-logo :token="secondToken" :size="size" />
   </div>
 </template>
 
@@ -19,11 +19,8 @@ import { lazyComponent } from '@/router'
   }
 })
 export default class PairTokenLogo extends Mixins(TranslationMixin) {
-  // TODO 4 alexnatalia: Think one more time about tokenSymbol
   @Prop({ type: Object, default: () => null }) readonly firstToken!: AccountAsset | Asset
   @Prop({ type: Object, default: () => null }) readonly secondToken!: AccountAsset | Asset
-  @Prop({ type: String, default: '' }) readonly firstTokenSymbol!: string
-  @Prop({ type: String, default: '' }) readonly secondTokenSymbol!: string
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
 
   get computedClasses (): string {

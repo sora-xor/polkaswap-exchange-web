@@ -20,21 +20,21 @@
       <s-collapse v-else class="pool-list" :borders="true">
         <s-collapse-item v-for="liquidityItem of accountLiquidity" :key="liquidityItem.address" :name="liquidityItem.address" class="pool-info-container">
           <template #title>
-            <pair-token-logo :first-token-symbol="getAssetSymbol(liquidityItem.firstAddress)" :second-token-symbol="getAssetSymbol(liquidityItem.secondAddress)" size="small" />
+            <pair-token-logo :first-token="getAsset(liquidityItem.firstAddress)" :second-token="getAsset(liquidityItem.secondAddress)" size="small" />
             <h3>{{ getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress)) }}</h3>
           </template>
           <div class="pool-info">
-            <token-logo :token-symbol="getAssetSymbol(liquidityItem.firstAddress)" size="small" />
+            <token-logo :token="getAsset(liquidityItem.firstAddress)" size="small" />
             <div>{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.firstAddress) }) }}</div>
             <div class="pool-info-value">{{ getFirstBalance(liquidityItem) }}</div>
           </div>
           <div class="pool-info">
-            <token-logo :token-symbol="getAssetSymbol(liquidityItem.secondAddress)" size="small" />
+            <token-logo :token="getAsset(liquidityItem.secondAddress)" size="small" />
             <div>{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.secondAddress) }) }}</div>
             <div class="pool-info-value">{{ getSecondBalance(liquidityItem) }}</div>
           </div>
           <div class="pool-info">
-            <pair-token-logo :first-token-symbol="getAssetSymbol(liquidityItem.firstAddress)" :second-token-symbol="getAssetSymbol(liquidityItem.secondAddress)" size="mini" />
+            <pair-token-logo :first-token="getAsset(liquidityItem.firstAddress)" :second-token="getAsset(liquidityItem.secondAddress)" size="mini" />
             <div>{{ t('pool.pairTokens', { pair: getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress)) }) }}</div>
             <div class="pool-info-value">{{ getBalance(liquidityItem) }}</div>
           </div>
@@ -111,6 +111,10 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   get connected (): boolean {
     return isWalletConnected()
+  }
+
+  getAsset (address): any {
+    return this.assets.find(a => a.address === address)
   }
 
   getAssetSymbol (address): string {
