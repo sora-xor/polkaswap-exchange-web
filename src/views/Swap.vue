@@ -429,7 +429,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       await api.updateAccountAssets()
     } catch (error) {
       this.$alert(this.t(error.message), { title: this.t('errorText') })
-      throw new Error(error)
+      console.error(error)
     }
   }
 

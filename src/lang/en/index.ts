@@ -71,14 +71,16 @@ export default {
       [Operation.Swap]: 'Swapped {amount} {symbol} for {amount2} {symbol2}',
       [Operation.AddLiquidity]: 'Supplied {amount} {symbol} and {amount2} {symbol2}',
       [Operation.RemoveLiquidity]: 'Removed {amount} {symbol} and {amount2} {symbol2}',
-      [Operation.CreatePair]: 'Supplied {amount} {symbol} and {amount2} {symbol2}'
+      [Operation.CreatePair]: 'Supplied {amount} {symbol} and {amount2} {symbol2}',
+      [Operation.RegisterAsset]: 'Registered {symbol} asset'
     },
     [TransactionStatus.Error]: {
       [Operation.Transfer]: 'Failed to send {amount} {symbol} to {address}',
       [Operation.Swap]: 'Failed to swap {amount} {symbol} for {amount2} {symbol2}',
       [Operation.AddLiquidity]: 'Failed to supply {amount} {symbol} and {amount2} {symbol2}',
       [Operation.RemoveLiquidity]: 'Failed to remove {amount} {symbol} and {amount2} {symbol2}',
-      [Operation.CreatePair]: 'Failed to supply {amount} {symbol} and {amount2} {symbol2}'
+      [Operation.CreatePair]: 'Failed to supply {amount} {symbol} and {amount2} {symbol2}',
+      [Operation.RegisterAsset]: 'Failed to register {symbol} asset'
     }
   },
   pageNotFound: {
