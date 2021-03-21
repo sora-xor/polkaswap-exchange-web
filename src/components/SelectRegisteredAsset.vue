@@ -28,8 +28,8 @@
               <div v-for="asset in filteredAssets" @click="selectAsset(asset)" :key="asset.address" class="asset-item">
                 <s-col>
                   <s-row flex justify="start" align="middle">
-                    <token-logo :tokenSymbol="asset.symbol" />
-                    <div class="asset-item__name">{{ getAssetName(asset.symbol) }}</div>
+                    <token-logo :token="asset" />
+                    <div class="asset-item__name">{{ getAssetName(asset) }}</div>
                   </s-row>
                 </s-col>
                 <div>
@@ -44,8 +44,8 @@
               <div v-for="asset in filteredAssets" @click="selectAsset(asset)" :key="asset.symbol" class="asset-item">
                 <s-col>
                   <s-row flex justify="start" align="middle">
-                    <token-logo :tokenSymbol="asset.symbol" />
-                    <div class="asset-item__name">{{ getAssetName(asset.symbol, true) }}</div>
+                    <token-logo :token="asset" />
+                    <div class="asset-item__name">{{ getAssetName(asset, true) }}</div>
                   </s-row>
                 </s-col>
                 <div>
@@ -103,7 +103,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util'
+import { Asset, AccountAsset, RegisteredAccountAsset, KnownAssets } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -187,14 +187,15 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
   }
 
   getAssets (assets: Array<AccountAsset | RegisteredAccountAsset>): Array<AccountAsset | RegisteredAccountAsset> {
-    return this.asset ? assets?.filter(asset => asset.address !== this.asset.address) : assets
+    const assetsList = this.asset ? assets?.filter(asset => asset.address !== this.asset.address) : assets
+    return this.isSoraToEthereum ? assetsList.filter(asset => !Number.isNaN(+asset.balance)) : assetsList
   }
 
   getFilteredAssets (assets: Array<AccountAsset | RegisteredAccountAsset>): Array<AccountAsset | RegisteredAccountAsset> {
     if (this.query) {
       const query = this.query.toLowerCase().trim()
       return assets.filter(asset =>
-        this.t(`assetNames.${asset.symbol}`).toLowerCase().includes(query) ||
+        (KnownAssets.get(asset.address) && this.t(`assetNames.${asset.symbol}`).toLowerCase().includes(query)) ||
         `${asset.symbol}`.toLowerCase().includes(query) ||
         `${asset[this.addressSymbol]}`.toLowerCase().includes(query)
       )
@@ -210,8 +211,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
     if (isEthereumAssetsList) {
       classes.push(`${componentClass}--ethereum`)
     }
-
-    if (filteredAssetsList && filteredAssetsList.length > 3) {
+    if (filteredAssetsList && filteredAssetsList.length > 6) {
       classes.push(`${componentClass}--scrollbar`)
     }
 
@@ -227,25 +227,17 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
     this.isVisible = false
   }
 
-  getAssetName (assetSymbol: string, isMirrorAsset = false): string {
-    if (this.te(`assetNames.${assetSymbol}`)) {
-      let assetName = ''
-
-      if (isMirrorAsset) {
-        assetName = this.t('selectRegisteredAsset.search.mirrorPrefix') + ' '
-      }
-
-      assetName += this.t(`assetNames.${assetSymbol}`) + ' ('
-
-      if (isMirrorAsset) {
-        assetName += this.isSoraToEthereum ? 'e' : 's'
-      }
-
-      assetName += assetSymbol + ')'
-
-      return assetName
+  getAssetName (asset: AccountAsset | RegisteredAccountAsset, isMirrorAsset = false): string {
+    let assetName = ''
+    if (isMirrorAsset) {
+      assetName = this.t('selectRegisteredAsset.search.mirrorPrefix') + ' '
     }
-    return assetSymbol
+    assetName += (KnownAssets.get(asset.address) ? this.t(`assetNames.${asset.symbol}`) : asset.symbol) + ' ('
+    if (isMirrorAsset) {
+      assetName += this.isSoraToEthereum ? 'e' : 's'
+    }
+    assetName += asset.symbol + ')'
+    return assetName
   }
 
   handleTabClick ({ name }): void {
@@ -417,7 +409,7 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
 }
 .asset-list {
   &--scrollbar {
-    height: #{$select-asset-item-height * 3};
+    height: #{$select-asset-item-height * 6};
     overflow: auto;
   }
   &--ethereum {

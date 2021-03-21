@@ -286,7 +286,9 @@ export default {
   selectToken: {
     title: 'Select a token',
     searchPlaceholder: 'Search Token Name, Symbol, or Address',
-    emptyListMessage: 'No results'
+    emptyListMessage: 'No results',
+    copy: 'Copy Asset ID',
+    successCopy: '{symbol} Asset ID is copied to the clipboard'
   },
   createPair: {
     title: 'Create a pair',
