@@ -10,7 +10,7 @@
               :content="t('dexSettings.slippageToleranceHint')"
               placement="right-start"
             >
-              <s-icon class="header-hint" name="info" size="12" />
+              <s-icon class="header-hint" name="info-16" size="12px" />
             </branded-tooltip>
           </div>
           <s-tabs type="rounded" :value="String(slippageTolerance)" @click="selectSlippageTolerance">
@@ -38,7 +38,7 @@
         <div class="header">
           {{ t('dexSettings.transactionDeadline') }}
           <s-tooltip popper-class="info-tooltip" border-radius="mini" :content="t('dexSettings.transactionDeadlineHint')" theme="light" placement="right-start" animation="none" :show-arrow="false">
-            <s-icon class="header-hint" name="info" />
+            <s-icon class="header-hint" name="info-16" />
           </s-tooltip>
         </div>
         <div class="value">
@@ -153,7 +153,7 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
 .settings .slippage-tolerance .s-tabs .el-tabs__item {
   font-size: var(--s-font-size-mini);
   font-feature-settings: $s-font-feature-settings-common;
-  @include font-weight(600, true);
+  font-weight: 600 !important;
 }
 .slippage-tolerance-custom_input.s-input {
   min-height: var(--s-size-small);
@@ -201,7 +201,7 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
     font-size: $s-font-size-settings;
     line-height: $s-line-height-base;
     letter-spacing: $s-letter-spacing-type;
-    @include font-weight(700);
+    font-weight: 700;
     &-hint {
       margin-left: $inner-spacing-mini / 2;
       cursor: pointer;
@@ -217,7 +217,7 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
       border-radius: var(--s-border-radius-mini);
       font-size: var(--s-font-size-mini);
       text-align: center;
-      @include font-weight(700);
+      font-weight: 700;
       &_label {
         color: var(--s-color-base-content-tertiary);
       }

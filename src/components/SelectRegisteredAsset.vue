@@ -13,9 +13,11 @@
         size="medium"
         border-radius="mini"
         @focus="handleSearchFocus"
-      />
-      <!-- TODO: Change the icon -->
-      <s-button class="s-button--clear" icon="circle-x" @click="handleClearSearch" />
+      >
+        <template #suffix>
+          <s-button class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
+        </template>
+      </s-input>
     </s-form-item>
     <!-- TODO: Move each tab to separate component -->
     <s-tabs v-model="tabValue" class="s-tabs--exchange" type="rounded" @click="handleTabClick">
@@ -197,7 +199,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
       return assets.filter(asset =>
         (KnownAssets.get(asset.address) && this.t(`assetNames.${asset.symbol}`).toLowerCase().includes(query)) ||
         `${asset.symbol}`.toLowerCase().includes(query) ||
-        `${asset[this.addressSymbol]}`.toLowerCase().includes(query)
+        `${asset[this.addressSymbol]}`.toLowerCase() === query
       )
     }
 
@@ -301,7 +303,6 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
       padding: $inner-spacing-mini 0 $inner-spacing-big !important;
     }
   }
-  @include search-item-unscoped;
   .s-tabs.s-tabs--exchange {
     &#{$tabs-class} {
       #{$tabs-class}__header {
@@ -328,7 +329,7 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
           width: 50%;
           line-height: $tabs-item-height;
           font-feature-settings: $s-font-feature-settings-title;
-          @include font-weight(700, true);
+          font-weight: 700 !important;
           text-align: center;
           &:hover {
             background-color: var(--s-color-base-background-hover);
@@ -368,7 +369,6 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
   width: calc(100% - 2 * #{$select-asset-horizontal-spacing});
 }
 .asset-search {
-  // TODO: Fix input styles (paddings and icon position)
   margin-bottom: $inner-spacing-medium;
 }
 .asset-item {
@@ -383,7 +383,7 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
   }
   &__name, &__balance {
     font-size: var(--s-font-size-small);
-    @include font-weight(600);
+    font-weight: 600;
   }
   &__balance {
     white-space: nowrap;
@@ -397,7 +397,7 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
   font-size: $s-heading3-caps-font-size;
   line-height: $s-line-height-base;
   letter-spacing: $s-letter-spacing-type;
-  @include font-weight(700, true);
+  font-weight: 700 !important;
   font-feature-settings: $s-font-feature-settings-type;
   text-transform: uppercase;
   .asset-list + & {

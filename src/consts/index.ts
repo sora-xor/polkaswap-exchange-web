@@ -63,15 +63,15 @@ interface SidebarMenuItemLink extends SidebarMenuItem {
 
 const MainMenu: Array<SidebarMenuItem> = [
   {
-    icon: 'change-positions',
+    icon: 'arrows-swap-90-24',
     title: PageNames.Swap
   },
   {
-    icon: 'drop',
+    icon: 'basic-drop-24',
     title: PageNames.Pool
   },
   {
-    icon: '',
+    icon: 'grid-block-distribute-vertically-24',
     title: PageNames.Bridge
   },
   {
@@ -83,37 +83,37 @@ const MainMenu: Array<SidebarMenuItem> = [
 
 const AccountMenu: Array<SidebarMenuItem> = [
   {
-    icon: 'wallet',
+    icon: 'finance-wallet-24',
     title: PageNames.Wallet
   },
   {
-    icon: 'circle-star',
+    icon: 'basic-circle-star-24',
     title: PageNames.Rewards
   }
 ]
 
 const OtherPagesMenu: Array<SidebarMenuItem> = [
   {
-    icon: '',
+    icon: 'file-file-text-24',
     title: PageNames.About
   }
 ]
 
 export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
   {
-    icon: '',
+    icon: 'symbols-twitter-24',
     title: 'twitter',
     href: 'https://twitter.com/sora_xor'
   },
   {
-    icon: '',
+    icon: 'symbols-telegram-24',
     title: 'telegram',
     href: 'https://t.me/sora_xor'
   }
 ]
 
 export const FaucetLink: SidebarMenuItemLink = {
-  icon: '',
+  icon: 'software-terminal-24',
   title: 'faucet'
 }
 
@@ -136,10 +136,10 @@ export enum Topics {
 }
 
 export const AboutTopics = [
-  { title: Topics.SwapTokens, icon: 'swap' },
-  { title: Topics.PassiveEarning, icon: 'earn' },
-  { title: Topics.AddLiquidity, icon: 'liquidity' },
-  { title: Topics.PriceFeeds, icon: 'build' }
+  { title: Topics.SwapTokens, icon: 'arrows-swap-24' },
+  { title: Topics.PassiveEarning, icon: 'basic-bar-chart-24' },
+  { title: Topics.AddLiquidity, icon: 'basic-drop-24' },
+  { title: Topics.PriceFeeds, icon: 'software-terminal-24' }
 ]
 
 export enum LogoSize {

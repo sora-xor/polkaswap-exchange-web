@@ -4,14 +4,14 @@
       <s-button
         class="el-button--settings"
         type="action"
-        icon="settings"
+        icon="basic-settings-24"
         size="medium"
         @click="openSettingsDialog"
       />
     </generic-page-header>
     <div class="input-container">
       <div class="input-line">
-        <div class="input-title">
+        <div class="input-title p4">
           <span>{{ t('exchange.from') }}</span>
           <span :class="`input-title-estimated ${(areTokensSelected && !isZeroToAmount && isExchangeB) ? 'input-title-estimated--show' : ''}`">
             ({{ t('swap.estimated') }})
@@ -36,20 +36,20 @@
           <s-button v-if="isMaxSwapAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue">
             {{ t('exchange.max') }}
           </s-button>
-          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(true)">
+          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectTokenDialog(true)">
             <token-logo :token="tokenFrom" size="small" />
             {{ tokenFrom.symbol }}
           </s-button>
         </div>
-        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(true)">
+        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectTokenDialog(true)">
           {{ t('exchange.chooseToken') }}
         </s-button>
       </div>
     </div>
-    <s-button class="el-button--switch-tokens" type="action" icon="change-positions" :disabled="!areTokensSelected || isRecountingProcess" @click="handleSwitchTokens" />
+    <s-button class="el-button--switch-tokens" type="action" icon="arrows-swap-90-24" :disabled="!areTokensSelected || isRecountingProcess" @click="handleSwitchTokens" />
     <div class="input-container">
       <div class="input-line">
-        <div class="input-title">
+        <div class="input-title p4">
           <span>{{ t('exchange.to') }}</span>
           <span :class="`input-title-estimated ${(areTokensSelected && !isZeroFromAmount && !isExchangeB) ? 'input-title-estimated--show' : ''}`">
             ({{ t('swap.estimated') }})
@@ -71,12 +71,12 @@
           />
         </s-form-item>
         <div v-if="tokenTo" class="token">
-          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(false)">
+          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectTokenDialog(false)">
             <token-logo :token="tokenTo" size="small" />
             {{ tokenTo.symbol }}
           </s-button>
         </div>
-        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(false)">
+        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectTokenDialog(false)">
           {{ t('exchange.chooseToken') }}
         </s-button>
       </div>
@@ -475,7 +475,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   .input-title-estimated {
     margin-left: $inner-spacing-mini / 2;
     font-size: var(--s-font-size-mini);
-    @include font-weight;
+    font-weight: 400;
     opacity: 0;
     &--show {
       opacity: 1;

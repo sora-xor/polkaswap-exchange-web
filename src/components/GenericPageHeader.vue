@@ -1,6 +1,6 @@
 <template>
   <div :class="headerClasses">
-    <s-button v-if="hasButtonBack" type="action" size="medium" icon="chevron-left-rounded" @click="handleBack" />
+    <s-button v-if="hasButtonBack" type="action" size="medium" icon="arrows-chevron-left-rounded-24" @click="handleBack" />
     <h3 class="page-header-title">{{ title }}</h3>
     <branded-tooltip
       v-if="!!tooltip"
@@ -9,7 +9,7 @@
       :content="tooltip"
       :placement="tooltipPlacement"
     >
-      <s-icon name="info" size="16" />
+      <s-icon name="info-16" />
     </branded-tooltip>
     <slot />
   </div>
@@ -96,7 +96,7 @@ $title-padding: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
       }
     }
   }
-  &-tooltip .s-icon-info {
+  &-tooltip .s-icon-info-16 {
     margin-top: auto;
     margin-bottom: auto;
     margin-left: $inner-spacing-mini;

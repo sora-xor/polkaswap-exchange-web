@@ -10,7 +10,7 @@
           <s-button
             class="base-title_settings"
             type="action"
-            icon="trash"
+            icon="basic-trash-24"
             size="medium"
             :disabled="!hasHistory"
             @click="handleClearHistory"
@@ -28,9 +28,11 @@
             prefix="el-icon-search"
             size="medium"
             border-radius="mini"
-          />
-          <!-- TODO: Change the icon -->
-          <s-button class="s-button--clear" icon="circle-x" @click="handleResetSearch" />
+          >
+            <template #suffix>
+              <s-button class="s-button--clear" icon="clear-X-16" @click="handleResetSearch" />
+            </template>
+          </s-input>
         </s-form-item>
         <div class="history-items">
           <template v-if="hasHistory">
@@ -246,7 +248,6 @@ $history-search-class: 'history--search';
   }
 }
 
-@include search-item-unscoped($history-search-class);
 .#{$history-search-class} {
   .el-input__inner {
     padding-right: var(--s-size-medium);
@@ -284,7 +285,7 @@ $history-item-top-border-height: 1px;
     @include empty-search;
   }
 }
-@include search-item('history--search', 0);
+@include search-item('history--search');
 .history-item {
   display: flex;
   margin-right: -#{$history-item-horizontal-space};

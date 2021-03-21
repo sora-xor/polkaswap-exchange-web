@@ -4,7 +4,7 @@
       <s-button
         class="el-button--settings"
         type="action"
-        icon="settings"
+        icon="basic-settings-24"
         size="medium"
         @click="openSettingsDialog"
       />
@@ -323,7 +323,7 @@ $pair-icon-height: 36px;
         padding-right: $inner-spacing-small;
         font-feature-settings: $s-font-feature-settings-title;
         width: auto;
-        @include font-weight(700);
+        font-weight: 700;
         + .el-button {
           margin-left: $inner-spacing-mini;
         }

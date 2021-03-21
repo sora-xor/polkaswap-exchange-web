@@ -24,7 +24,7 @@
       </info-card>
       <div class="input-container">
         <div class="input-line">
-          <div class="input-title">{{ t('removeLiquidity.input') }}</div>
+          <div class="input-title p4">{{ t('removeLiquidity.input') }}</div>
           <div v-if="isWalletConnected && liquidity" class="token-balance">
             <span class="token-balance-title">{{ t('createPair.balance') }}</span>
             <span class="token-balance-value">{{ getTokenBalance(liquidity) }}</span>
@@ -56,11 +56,11 @@
         </div>
       </div>
 
-      <s-icon class="icon-divider" name="arrow-bottom" size="medium" />
+      <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
 
       <div class="input-container">
         <div class="input-line">
-          <div class="input-title">{{ t('removeLiquidity.output') }}</div>
+          <div class="input-title p4">{{ t('removeLiquidity.output') }}</div>
           <div v-if="isWalletConnected && liquidity" class="token-balance">-</div>
         </div>
         <div class="input-line">
@@ -84,11 +84,11 @@
         </div>
       </div>
 
-      <s-icon class="icon-divider" name="plus-rounded" size="medium" />
+      <s-icon class="icon-divider" name="plus-16" />
 
       <div class="input-container">
         <div class="input-line">
-          <div class="input-title">{{ t('removeLiquidity.output') }}</div>
+          <div class="input-title p4">{{ t('removeLiquidity.output') }}</div>
           <div v-if="isWalletConnected && liquidity" class="token-balance">-</div>
         </div>
         <div class="input-line">
