@@ -144,7 +144,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { AccountAsset, KnownSymbols, CodecString } from '@sora-substrate/util'
+import { AccountAsset, RegisteredAccountAsset, KnownSymbols, CodecString } from '@sora-substrate/util'
 import { interpret } from 'xstate'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -153,7 +153,6 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EthSymbol } from '@/consts'
-import { RegisteredAccountAsset } from '@/store/assets'
 import { formatAddress, formatAssetSymbol, copyToClipboard, formatDateItem } from '@/utils'
 import { createFSM, EVENTS, SORA_ETHEREUM_STATES, ETHEREUM_SORA_STATES, STATES } from '@/utils/fsm'
 
@@ -191,6 +190,7 @@ export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingM
   @Action('setHistoryItem', { namespace }) setHistoryItem
   @Action('sendTransferSoraToEth', { namespace }) sendTransferSoraToEth
   @Action('sendTransferEthToSora', { namespace }) sendTransferEthToSora
+  @Action('sendTransaction', { namespace }) sendTransaction
   @Action('receiveTransaction', { namespace }) receiveTransaction
   @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash
 
@@ -207,7 +207,6 @@ export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingM
   callRetryTransition = () => {}
   sendService: any = null
   isInitRequestCompleted = false
-  historyHash: string | undefined
   transactionSteps = {
     from: 'step-from',
     to: 'step-to'
@@ -377,11 +376,10 @@ export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingM
 
   async created (): Promise<void> {
     if (this.isTransactionConfirmed) {
-      this.historyHash = this.$route.params.hash
       this.initializeTransactionStateMachine()
       this.isInitRequestCompleted = true
       this.currentTransactionStep = this.transactionStep
-      if (this.transactionStep === 1) {
+      if (!this.historyItem) {
         this.handleSendTransactionFrom()
       }
     } else {
@@ -446,14 +444,6 @@ export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingM
     this.currentTransactionStep = 2
     this.setTransactionStep(2)
     this.activeTransactionStep = this.transactionSteps.to
-  }
-
-  async sendTransaction (): Promise<void> {
-    if (this.isSoraToEthereum) {
-      await this.sendTransferSoraToEth()
-    } else {
-      await this.sendTransferEthToSora()
-    }
   }
 
   transactionIconStatusClasses (isSecondTransaction: boolean): string {

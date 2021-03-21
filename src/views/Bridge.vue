@@ -173,7 +173,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
-import { AccountAsset, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
+import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
 
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -183,7 +183,6 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EthSymbol, ZeroStringValue } from '@/consts'
 import web3Util, { Provider } from '@/utils/web3-util'
-import { RegisteredAccountAsset } from '@/store/assets'
 import { getWalletAddress, isWalletConnected, isNumberValue, formatAddress, isXorAccountAsset, formatAssetSymbol, findAssetInCollection } from '@/utils'
 
 const namespace = 'bridge'

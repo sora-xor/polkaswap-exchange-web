@@ -2,15 +2,10 @@ import map from 'lodash/fp/map'
 import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
-import { Asset, AccountAsset, RegisteredAsset } from '@sora-substrate/util'
+import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 
 import { isXorAccountAsset, findAssetInCollection } from '@/utils'
-
-export interface RegisteredAccountAsset extends RegisteredAsset {
-  balance: string;
-  externalBalance: string;
-}
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -139,12 +134,13 @@ const actions = {
           accountAsset.balance = asset ? asset.balance : ''
         } catch (error) {
           accountAsset.externalBalance = '-'
-          throw new Error(error)
+          console.error(error)
         }
         return accountAsset
       }))
       commit(types.GET_REGISTERED_ASSETS_SUCCESS, registeredAssets)
     } catch (error) {
+      console.error(error)
       commit(types.GET_REGISTERED_ASSETS_FAILURE)
     }
   },
