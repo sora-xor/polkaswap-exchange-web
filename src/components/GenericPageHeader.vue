@@ -9,7 +9,6 @@
       :content="tooltip"
       :placement="tooltipPlacement"
     >
-      <div slot="content">{{ tooltip }}</div>
       <s-icon name="info" size="16" />
     </branded-tooltip>
     <slot />

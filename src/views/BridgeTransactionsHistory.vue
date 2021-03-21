@@ -136,18 +136,14 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     if (this.query) {
       const query = this.query.toLowerCase().trim()
       return history.filter(item =>
-        `${this.getAssetByAddress(item.assetAddress)?.address}`.toLowerCase().includes(query) ||
-        `${this.getAssetByAddress(item.assetAddress)?.externalAddress}`.toLowerCase().includes(query) ||
+        `${item.assetAddress}`.toLowerCase().includes(query) ||
+        `${this.registeredAssets.find(asset => asset.address === item.assetAddress)?.externalAddress}`.toLowerCase().includes(query) ||
         `${formatAssetSymbol(item.symbol)}`.toLowerCase().includes(query) ||
         `${formatAssetSymbol(item.symbol, true)}`.toLowerCase().includes(query)
       )
     }
 
     return history
-  }
-
-  getAssetByAddress (address: string): RegisteredAccountAsset | null {
-    return address ? this.registeredAssets.filter(asset => asset.address === address)?.[0] : null
   }
 
   formatDate (response: any): string {
@@ -182,7 +178,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     if (tx) {
       await this.setTransactionConfirm(true)
       await this.setSoraToEthereum(this.isOutgoingType(tx.type))
-      await this.setAssetAddress(this.getAssetByAddress(tx.assetAddress || '')?.address)
+      await this.setAssetAddress(tx.assetAddress)
       await this.setAmount(tx.amount)
       await this.setSoraTransactionHash(tx.hash)
       await this.setSoraTransactionDate(tx[this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
