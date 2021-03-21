@@ -690,7 +690,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
       }
       &--view-transactions-history,
       &--create-transaction {
-        @include font-weight(700, true);
+        font-weight: 700;
       }
       &--view-transactions-history {
         line-height: $s-line-height-medium;
@@ -702,7 +702,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     @include bridge-content;
     .el-button {
       margin-top: $basic-spacing;
-      @include font-weight(600, true);
+      font-weight: 600;
     }
   }
   &-hash-container {
@@ -741,7 +741,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
   &-details {
     margin-bottom: $inner-spacing-mini;
     font-feature-settings: $s-font-feature-settings-title;
-    @include font-weight(700, true);
+    font-weight: 700;
     line-height: $s-line-height-medium;
   }
 }
@@ -756,7 +756,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
       padding-right: $inner-spacing-mini;
       padding-left: $inner-spacing-mini;
       font-feature-settings: $s-font-feature-settings-type;
-      @include font-weight(700, true);
+      font-weight: 700;
       letter-spacing: $s-letter-spacing-type;
       text-transform: uppercase;
     }

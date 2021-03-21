@@ -20,7 +20,7 @@ export default class InfoCard extends Mixins(TranslationMixin) {
   &__title {
     line-height: $s-line-height-big;
     color: var(--s-color-base-content-primary);
-    @include font-weight(600);
+    font-weight: 600;
   }
   &__data {
     display: flex;

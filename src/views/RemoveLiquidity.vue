@@ -56,7 +56,7 @@
         </div>
       </div>
 
-      <s-icon class="icon-divider" name="arrow-bottom" size="medium" />
+      <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
 
       <div class="input-container">
         <div class="input-line">
@@ -84,7 +84,7 @@
         </div>
       </div>
 
-      <s-icon class="icon-divider" name="plus-rounded" size="medium" />
+      <s-icon class="icon-divider" name="plus-16" />
 
       <div class="input-container">
         <div class="input-line">

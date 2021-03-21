@@ -7,26 +7,6 @@
   }
 }
 
-@mixin font-weight($fontWeight: 400, $important: false) {
-  @if $fontWeight == 400 and $important == false {
-    font-family: "Sora", sans-serif;
-  } @else if $fontWeight == 400 and $important == true {
-    font-family: "Sora", sans-serif !important;
-  } @else if $fontWeight == 500 and $important == false {
-    font-family: "SoraSB", sans-serif;
-  } @else if $fontWeight == 500 and $important == true {
-    font-family: "SoraSB", sans-serif !important;
-  } @else if $fontWeight == 600 and $important == false {
-    font-family: "SoraB", sans-serif;
-  } @else if $fontWeight == 600 and $important == true {
-    font-family: "SoraB", sans-serif !important;
-  } @else if $fontWeight == 700 and $important == false {
-    font-family: "SoraEB", sans-serif;
-  } @else if $fontWeight == 700 and $important == true {
-    font-family: "SoraEB", sans-serif !important;
-  }
-}
-
 @mixin token-styles {
   .token {
     display: flex;
@@ -136,7 +116,7 @@
     &--empty-token,
     &--choose-token {
       font-feature-settings: $s-font-feature-settings-title;
-      @include font-weight(700, true);
+      font-weight: 700 !important;
     }
     &--max,
     &--empty-token {
@@ -188,7 +168,7 @@
     margin-top: $marginTop;
     width: 100%;
     &:not(:disabled) {
-      @include font-weight(600, true);
+      font-weight: 600 !important;
     }
   }
 }
@@ -257,33 +237,17 @@
   }
 }
 
-@mixin search-item ($class: 'el-form-item--search', $clearRightPosition: $inner-spacing-big) {
-  $button-clear-font-size: var(--s-icon-font-size-mini);
+@mixin search-item ($class: 'el-form-item--search') {
   .#{$class} {
     margin-bottom: 0;
     position: relative;
     .s-button--clear {
-      right: $clearRightPosition;
-      position: absolute;
-      top: 0;
+      width: 32px;
+      margin-right: -8px;
       padding: 0;
       background-color: transparent;
       border-radius: 0;
       border: none;
-    }
-  }
-}
-
-@mixin search-item-unscoped ($class: 'el-form-item--search') {
-  $button-clear-font-size: var(--s-icon-font-size-mini);
-  .#{$class} {
-    .s-button--clear {
-      width: calc(#{$inner-spacing-small * 2} + var(--s-icon-font-size-mini));
-      // TODO: Ask hover/active colors
-      .s-icon-circle-x {
-        margin-right: 0;
-        font-size: $button-clear-font-size;
-      }
     }
   }
 }
@@ -368,7 +332,7 @@
 
 // TODO 4 alexnatalia: Check these styles later
 @mixin button-styles {
-  @include font-weight(600, true);
+  font-weight: 600 !important;
   font-size: $s-font-size-button;
   line-height: $s-line-height-small;
   letter-spacing: $s-letter-spacing-small;

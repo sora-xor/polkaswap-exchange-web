@@ -12,8 +12,11 @@
         prefix="el-icon-search"
         size="medium"
         border-radius="mini"
-      />
-      <s-button class="s-button--clear" icon="circle-x" @click="handleClearSearch" />
+      >
+        <template #suffix>
+          <s-button class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
+        </template>
+      </s-input>
     </div>
     <div v-if="filteredTokens && filteredTokens.length > 0" class="token-list">
       <div v-for="token in filteredTokens" @click="selectToken(token)" :key="token.address" class="token-item">
@@ -118,7 +121,7 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
       return this.assetsList.filter(t =>
         (KnownAssets.get(t.address) && this.t(`assetNames.${t.symbol}`).toLowerCase().includes(query)) ||
         t.symbol?.toLowerCase?.()?.includes?.(query) ||
-        t.address?.toLowerCase?.()?.includes?.(query)
+        t.address?.toLowerCase?.() === query
       )
     }
 
@@ -178,8 +181,6 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
 
 <style lang="scss">
 .token-select {
-  @include search-item-unscoped('token-select__search');
-
   .el-dialog {
     overflow: hidden;
     &__body {
@@ -232,10 +233,10 @@ $token-item-height: 71px;
     white-space: nowrap;
     font-size: var(--s-font-size-small);
     margin-bottom: $inner-spacing-mini;
-    @include font-weight(600);
+    font-weight: 600;
   }
   &__amount {
-    @include font-weight(600);
+    font-weight: 600;
   }
 
   .token-logo {

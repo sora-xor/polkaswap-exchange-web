@@ -11,7 +11,7 @@
           {{ formatAssetSymbol(asset.symbol) }}
         </div>
       </div>
-      <s-icon class="icon-divider" name="arrow-bottom-rounded" size="medium" />
+      <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
       <div class="tokens-info-container">
         <span class="token-value">{{ amount }}</span>
         <div v-if="asset" class="token token-ethereum">

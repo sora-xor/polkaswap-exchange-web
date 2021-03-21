@@ -12,7 +12,7 @@
           {{ tokenFrom.symbol }}
         </div>
       </div>
-      <s-icon class="icon-divider" name="arrow-bottom-rounded" size="medium" />
+      <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedToValue }}</span>
         <div v-if="tokenTo" class="token">
@@ -126,7 +126,7 @@ export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin, N
   .transaction-number {
     color: var(--s-color-base-content-primary);
     font-feature-settings: $s-font-feature-settings-common;
-    @include font-weight(600);
+    font-weight: 600;
     word-break: break-all;
   }
 }

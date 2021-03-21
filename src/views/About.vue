@@ -104,7 +104,7 @@ $logo-width: 140px;
         font-size: var(--s-heading5-font-size);
         font-feature-settings: $s-font-feature-settings-title;
         letter-spacing: $s-letter-spacing-mini;
-        @include font-weight(600);
+        font-weight: 600;
       }
       .web3-logo {
         margin-left: auto;
@@ -146,7 +146,7 @@ $logo-width: 140px;
         justify-content: space-between;
         line-height: $s-line-height-small;
         font-feature-settings: $s-font-feature-settings-card-title;
-        @include font-weight(600, true);
+        font-weight: 600;
         i {
           color: var(--s-color-theme-accent);
           margin-bottom: $inner-spacing-small;
@@ -186,7 +186,7 @@ $logo-width: 140px;
       }
       .terms .title {
         font-size: var(--s-heading3-font-size);
-        @include font-weight;
+        font-weight: 400;
         max-width: 75%;
         width: 100%;
       }

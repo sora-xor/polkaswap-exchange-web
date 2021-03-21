@@ -35,7 +35,7 @@
           </div>
         </div>
       </div>
-      <s-icon class="icon-divider" name="plus-rounded" size="medium" />
+      <s-icon class="icon-divider" name="plus-16" />
       <div :class="computedClasses">
         <div class="input-line">
           <div class="input-title">
@@ -66,7 +66,7 @@
               type="tertiary"
               size="small"
               border-radius="medium"
-              :icon="!secondAddress ? 'chevron-bottom-rounded' : undefined"
+              :icon="!secondAddress ? 'chevron-down-rounded-16' : undefined"
               icon-position="right"
               @click="!secondAddress ? openSelectSecondTokenDialog() : undefined"
             >
@@ -74,7 +74,7 @@
               {{ secondToken.symbol }}
             </s-button>
           </div>
-          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
+          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectSecondTokenDialog">
             {{ t('exchange.chooseToken') }}
           </s-button>
         </div>

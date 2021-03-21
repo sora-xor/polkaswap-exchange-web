@@ -35,7 +35,7 @@
           </div>
         </div>
       </div>
-      <s-icon class="icon-divider" name="plus-rounded" size="medium" />
+      <s-icon class="icon-divider" name="plus-16" />
       <div class="input-container">
         <div class="input-line">
           <div class="input-title">
@@ -61,12 +61,12 @@
             <s-button v-if="isAvailable && isSecondMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue(secondToken, setSecondTokenValue)">
               {{ t('exchange.max') }}
             </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
+            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectSecondTokenDialog">
               <token-logo :token="secondToken" size="small" />
               {{ secondToken.symbol }}
             </s-button>
           </div>
-          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
+          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectSecondTokenDialog">
             {{ t('exchange.chooseToken') }}
           </s-button>
         </div>
