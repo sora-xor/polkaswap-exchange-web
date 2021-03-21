@@ -8,6 +8,8 @@ export const app = {
 
 export const ZeroStringValue = '0'
 
+export const MetamaskCancellationCode = 4001
+
 export enum PageNames {
   About = 'About',
   Exchange = 'Exchange',

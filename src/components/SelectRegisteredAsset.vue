@@ -25,7 +25,7 @@
           <template v-if="hasFilteredAssets && isSoraToEthereum /* TODO: remove isSoraToEthereum here */">
             <h3 class="network-label">{{ isSoraToEthereum ? t('selectRegisteredAsset.search.networkLabelSora') : t('selectRegisteredAsset.search.networkLabelEthereum') }}</h3>
             <div :class="assetListClasses(filteredAssets)">
-              <div v-for="asset in filteredAssets" @click="selectAsset(asset)" :key="asset.symbol" class="asset-item">
+              <div v-for="asset in filteredAssets" @click="selectAsset(asset)" :key="asset.address" class="asset-item">
                 <s-col>
                   <s-row flex justify="start" align="middle">
                     <token-logo :tokenSymbol="asset.symbol" />
@@ -103,7 +103,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { Asset, AccountAsset } from '@sora-substrate/util'
+import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -112,7 +112,6 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
-import { RegisteredAccountAsset } from '@/store/assets'
 
 const namespace = 'assets'
 
