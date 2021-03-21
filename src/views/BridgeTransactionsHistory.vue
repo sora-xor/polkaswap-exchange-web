@@ -136,8 +136,8 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     if (this.query) {
       const query = this.query.toLowerCase().trim()
       return history.filter(item =>
-        `${this.getAssetByAddress(item.address)?.address}`.toLowerCase().includes(query) ||
-        `${this.getAssetByAddress(item.address)?.externalAddress}`.toLowerCase().includes(query) ||
+        `${this.getAssetByAddress(item.assetAddress)?.address}`.toLowerCase().includes(query) ||
+        `${this.getAssetByAddress(item.assetAddress)?.externalAddress}`.toLowerCase().includes(query) ||
         `${formatAssetSymbol(item.symbol)}`.toLowerCase().includes(query) ||
         `${formatAssetSymbol(item.symbol, true)}`.toLowerCase().includes(query)
       )
@@ -182,7 +182,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     if (tx) {
       await this.setTransactionConfirm(true)
       await this.setSoraToEthereum(this.isOutgoingType(tx.type))
-      await this.setAssetAddress(this.getAssetByAddress(tx.address || '')?.address)
+      await this.setAssetAddress(this.getAssetByAddress(tx.assetAddress || '')?.address)
       await this.setAmount(tx.amount)
       await this.setSoraTransactionHash(tx.hash)
       await this.setSoraTransactionDate(tx[this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
