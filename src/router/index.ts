@@ -13,28 +13,17 @@ export const lazyView = (name: string) => () => import(`@/views/${name}.vue`)
 const routes: Array<RouteConfig> = [
   {
     path: '/',
-    redirect: '/exchange'
+    redirect: '/swap'
   },
   {
-    path: '/exchange',
-    redirect: '/exchange/swap'
+    path: '/swap',
+    name: PageNames.Swap,
+    component: lazyView(PageNames.Swap)
   },
   {
-    path: '/exchange',
-    name: PageNames.Exchange,
-    component: lazyView(PageNames.Exchange),
-    children: [
-      {
-        path: 'swap',
-        name: PageNames.Swap,
-        component: lazyComponent(PageNames.Swap)
-      },
-      {
-        path: 'pool',
-        name: PageNames.Pool,
-        component: lazyComponent(PageNames.Pool)
-      }
-    ]
+    path: '/pool',
+    name: PageNames.Pool,
+    component: lazyView(PageNames.Pool)
   },
   {
     path: '/about',
@@ -64,25 +53,25 @@ const routes: Array<RouteConfig> = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/exchange/pool/create-pair',
+    path: '/pool/create-pair',
     name: PageNames.CreatePair,
     component: lazyView(PageNames.CreatePair),
     meta: { requiresAuth: true }
   },
   {
-    path: '/exchange/pool/add/:firstAddress/:secondAddress',
+    path: '/pool/add/:firstAddress/:secondAddress',
     name: PageNames.AddLiquidityId,
     component: lazyView(PageNames.AddLiquidity),
     meta: { requiresAuth: true }
   },
   {
-    path: '/exchange/pool/add',
+    path: '/pool/add',
     name: PageNames.AddLiquidity,
     component: lazyView(PageNames.AddLiquidity),
     meta: { requiresAuth: true }
   },
   {
-    path: '/exchange/pool/remove/:firstAddress/:secondAddress',
+    path: '/pool/remove/:firstAddress/:secondAddress',
     name: PageNames.RemoveLiquidity,
     component: lazyView(PageNames.RemoveLiquidity),
     meta: { requiresAuth: true }
@@ -102,7 +91,7 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '*',
-    redirect: '/exchange'
+    redirect: '/swap'
     // TODO: Turn on redirect to PageNotFound
     // name: PageNames.PageNotFound,
     // component: lazyComponent(PageNames.PageNotFound)

@@ -362,6 +362,7 @@ const actions = {
       type: getters.isSoraToEthereum ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
       amount: getters.amount.toString(),
       symbol: getters.asset.symbol,
+      assetAddress: getters.asset.address,
       startTime: playground.date,
       endTime: playground.date,
       signed: false,
