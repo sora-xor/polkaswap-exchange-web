@@ -32,9 +32,9 @@
               <span>{{ getBridgeItemTitle() }}</span>
               <token-logo class="bridge-item-title-icon" :tokenSymbol="isSoraToEthereum ? 'bridge-item-xor' : 'bridge-item-eth'" size="mini" />
             </div>
-            <div v-if="isNetworkAConnected && isAssetSelected" class="asset-balance">
-              <span class="asset-balance-title">{{ t('bridge.balance') }}</span>
-              <span class="asset-balance-value">{{ formatBalance(isSoraToEthereum) }}</span>
+            <div v-if="isNetworkAConnected && isAssetSelected" class="token-balance">
+              <span class="token-balance-title">{{ t('bridge.balance') }}</span>
+              <span class="token-balance-value">{{ formatBalance(isSoraToEthereum) }}</span>
             </div>
           </div>
           <div class="bridge-item-content">
@@ -84,9 +84,9 @@
               <span>{{ getBridgeItemTitle(true) }}</span>
               <token-logo class="bridge-item-title-icon" :tokenSymbol="isSoraToEthereum ? 'bridge-item-eth' : 'bridge-item-xor'" size="mini" />
             </div>
-            <div v-if="areNetworksConnected && isAssetSelected" class="asset-balance">
-              <span class="asset-balance-title">{{ t('bridge.balance') }}</span>
-              <span class="asset-balance-value">{{ formatBalance(!isSoraToEthereum) }}</span>
+            <div v-if="areNetworksConnected && isAssetSelected" class="token-balance">
+              <span class="token-balance-title">{{ t('bridge.balance') }}</span>
+              <span class="token-balance-value">{{ formatBalance(!isSoraToEthereum) }}</span>
             </div>
           </div>
           <div class="bridge-item-content">
@@ -694,20 +694,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     &:hover {
       border: none;
     }
-    &-header,
-    &-footer {
-      padding-top: $inner-spacing-mini / 2;
-      padding-right: $inner-spacing-medium;
-      padding-left: $inner-spacing-medium;
-      font-size: var(--s-font-size-mini);
-      line-height: $s-line-height-big;
-    }
-    &-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: $inner-spacing-mini;
-    }
+    @include generic-input-lines('bridge-item');
     &-title,
     .el-button--change-wallet {
       margin-right: $inner-spacing-medium;
@@ -729,13 +716,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
         border: none;
         box-shadow: none;
       }
-    }
-    &-content {
-      margin-bottom: $inner-spacing-mini;
-      display: flex;
-      justify-content: space-between;
-      padding-right: $inner-spacing-small;
-      padding-left: $inner-spacing-medium;
     }
     &--ethereum {
       .el-button {
@@ -777,16 +757,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     }
     & + .bridge-info {
       margin-top: $basic-spacing * 2;
-    }
-  }
-  .asset-balance {
-    text-align: right;
-    &-title {
-      margin-right: $inner-spacing-mini / 2;
-      color: var(--s-color-base-content-secondary);
-    }
-    &-value {
-      word-break: break-all;
     }
   }
   .s-button--switch {

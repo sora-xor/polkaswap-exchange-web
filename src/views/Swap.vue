@@ -10,7 +10,7 @@
       />
     </generic-page-header>
     <div class="input-container">
-      <div class="input-line">
+      <div class="input-line-header">
         <div class="input-title p4">
           <span>{{ t('transfers.from') }}</span>
           <span :class="`input-title-estimated ${(areTokensSelected && !isZeroToAmount && isExchangeB) ? 'input-title-estimated--show' : ''}`">
@@ -22,7 +22,7 @@
           <span class="token-balance-value">{{ formatBalance(tokenFrom) }}</span>
         </div>
       </div>
-      <div class="input-line">
+      <div class="input-line-content">
         <s-form-item>
           <s-float-input
             class="s-input--token-value"
@@ -48,7 +48,7 @@
     </div>
     <s-button class="el-button--switch-tokens" type="action" icon="arrows-swap-90-24" :disabled="!areTokensSelected || isRecountingProcess" @click="handleSwitchTokens" />
     <div class="input-container">
-      <div class="input-line">
+      <div class="input-line-header">
         <div class="input-title p4">
           <span>{{ t('transfers.to') }}</span>
           <span :class="`input-title-estimated ${(areTokensSelected && !isZeroFromAmount && !isExchangeB) ? 'input-title-estimated--show' : ''}`">
@@ -60,7 +60,7 @@
           <span class="token-balance-value">{{ formatBalance(tokenTo) }}</span>
         </div>
       </div>
-      <div class="input-line">
+      <div class="input-line-content">
         <s-form-item>
           <s-float-input
             class="s-input--token-value"

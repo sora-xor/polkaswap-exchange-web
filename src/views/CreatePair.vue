@@ -6,14 +6,14 @@
       :show-message="false"
     >
       <div class="input-container">
-        <div class="input-line">
+        <div class="input-line-header">
           <div class="input-title p4">{{ t('createPair.deposit') }}</div>
           <div v-if="connected && firstToken" class="token-balance">
             <span class="token-balance-title">{{ t('createPair.balance') }}</span>
             <span class="token-balance-value">{{ getTokenBalance(firstToken) }}</span>
           </div>
         </div>
-        <div class="input-line">
+        <div class="input-line-content">
           <s-form-item>
             <s-float-input
               class="s-input--token-value"
@@ -37,7 +37,7 @@
       </div>
       <s-icon class="icon-divider" name="plus-16" />
       <div class="input-container">
-        <div class="input-line">
+        <div class="input-line-header">
           <div class="input-title p4">
             <span>{{ t('createPair.deposit') }}</span>
           </div>
@@ -46,7 +46,7 @@
             <span class="token-balance-value">{{ getTokenBalance(secondToken) }}</span>
           </div>
         </div>
-        <div class="input-line">
+        <div class="input-line-content">
           <s-form-item>
             <s-float-input
               class="s-input--token-value"

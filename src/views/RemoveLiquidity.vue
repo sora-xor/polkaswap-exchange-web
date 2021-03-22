@@ -23,14 +23,14 @@
         </div>
       </info-card>
       <div class="input-container">
-        <div class="input-line">
+        <div class="input-line-header">
           <div class="input-title p4">{{ t('removeLiquidity.input') }}</div>
           <div v-if="isWalletConnected && liquidity" class="token-balance">
             <span class="token-balance-title">{{ t('createPair.balance') }}</span>
             <span class="token-balance-value">{{ getTokenBalance(liquidity) }}</span>
           </div>
         </div>
-        <div class="input-line">
+        <div class="input-line-content">
           <s-form-item>
             <s-float-input
               ref="liquidityAmount"
@@ -59,11 +59,11 @@
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
 
       <div class="input-container">
-        <div class="input-line">
+        <div class="input-line-header">
           <div class="input-title p4">{{ t('removeLiquidity.output') }}</div>
           <div v-if="isWalletConnected && liquidity" class="token-balance">-</div>
         </div>
-        <div class="input-line">
+        <div class="input-line-content">
           <s-form-item>
             <s-float-input
               ref="firstTokenAmount"
@@ -87,11 +87,11 @@
       <s-icon class="icon-divider" name="plus-16" />
 
       <div class="input-container">
-        <div class="input-line">
+        <div class="input-line-header">
           <div class="input-title p4">{{ t('removeLiquidity.output') }}</div>
           <div v-if="isWalletConnected && liquidity" class="token-balance">-</div>
         </div>
-        <div class="input-line">
+        <div class="input-line-content">
           <s-form-item>
             <s-float-input
               ref="secondTokenAmount"
