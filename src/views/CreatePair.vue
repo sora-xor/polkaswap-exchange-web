@@ -92,69 +92,38 @@
 
     <template v-if="areTokensSelected && isAvailable">
       <template v-if="isEmptyBalance">
-        <info-card class="card--first-liquidity" :title="t('createPair.firstLiquidityProvider')">
-          <div class="card__data">
-            <p v-html="t('createPair.firstLiquidityProviderInfo')" />
-          </div>
-        </info-card>
+        <div class="info-line-container">
+          <p class="p2">{{ t('createPair.firstLiquidityProvider') }}</p>
+          <info-line>
+            <template #info-line-prefix>
+              <p class="info-line--first-liquidity" v-html="t('createPair.firstLiquidityProviderInfo')" />
+            </template>
+          </info-line>
+        </div>
       </template>
       <template v-else>
-        <info-card :title="t('createPair.pricePool')">
-          <div class="card__data">
-            <div>
-              {{
-                t('createPair.firstPerSecond', {
-                  first: firstToken.symbol,
-                  second: secondToken.symbol
-                })
-              }}
-            </div>
-            <div>{{ price }}</div>
-          </div>
-          <div class="card__data">
-            <div>
-              {{
-                t('createPair.firstPerSecond', {
-                  first: secondToken.symbol,
-                  second: firstToken.symbol
-                })
-              }}
-            </div>
-            <div>{{ priceReversed }}</div>
-          </div>
-          <div class="card__data">
-            <div>{{ t('createPair.shareOfPool') }}</div>
-            <div>100%</div>
-          </div>
-          <div class="card__data">
-            <div>{{ t('createPair.networkFee') }}</div>
-            <div>{{ formattedFee }} {{ KnownSymbols.XOR }}</div>
-          </div>
-        </info-card>
+        <div class="info-line-container">
+          <p class="p2">{{ t('createPair.pricePool') }}</p>
+          <info-line :label="t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="price" />
+          <info-line :label="t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="priceReversed" />
+          <info-line :label="t('createPair.shareOfPool')" value="100%" />
+          <info-line :label="t('createPair.networkFee')" :value="`${formattedFee} ${KnownSymbols.XOR}`" />
+        </div>
 
-        <info-card :title="t('createPair.yourPositionEstimated')">
-          <div class="card__data card__data_assets">
-            <s-row flex>
+        <div class="info-line-container">
+          <p class="p2">{{ t('createPair.yourPositionEstimated') }}</p>
+          <info-line
+            :label="t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol })"
+            :value="formattedMinted"
+          >
+            <template #info-line-prefix>
               <pair-token-logo class="pair-token-logo" :first-token="firstToken" :second-token="secondToken" size="mini" />
-              {{
-                t('createPair.firstSecondPoolTokens', {
-                  first: firstToken.symbol,
-                  second: secondToken.symbol
-                })
-              }}
-            </s-row>
-            <div>{{ formattedMinted }}</div>
-          </div>
+            </template>
+          </info-line>
           <s-divider />
-          <div class="card__data">
-            <div>{{ firstToken.symbol }}</div>
-            <div>{{ firstTokenValue }}</div>
-          </div>
-          <div class="card__data">
-            <div>{{ secondToken.symbol }}</div>
-            <div>{{ secondTokenValue }}</div>
-          </div>
-        </info-card>
+          <info-line :label="firstToken.symbol" :value="firstTokenValue" />
+          <info-line :label="secondToken.symbol" :value="secondTokenValue" />
+        </div>
       </template>
     </template>
 
@@ -194,7 +163,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SelectToken: lazyComponent(Components.SelectToken),
-    InfoCard: lazyComponent(Components.InfoCard),
+    InfoLine: lazyComponent(Components.InfoLine),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog)
@@ -211,15 +180,9 @@ export default class CreatePair extends Mixins(TokenPairMixin) {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  .card--first-liquidity {
-    margin-top: $inner-spacing-medium;
-    font-feature-settings: $s-font-feature-settings-common;
-    .card__data {
-      margin-top: $inner-spacing-mini / 2;
-      font-size: var(--s-font-size-mini);
-    }
-  }
+.info-line--first-liquidity {
+  color: var(--s-color-base-content-secondary);
+  font-size: var(--s-font-size-mini);
 }
 
 .el-form--actions {

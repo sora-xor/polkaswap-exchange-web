@@ -1,5 +1,6 @@
 <template>
   <div class="info-line">
+    <slot name="info-line-prefix" />
     <span class="info-line-label">{{ label }}</span>
     <branded-tooltip
       v-if="tooltipContent"
@@ -53,6 +54,10 @@ export default class InfoLine extends Vue {
   border-radius: var(--s-border-radius-small);
   margin-top: $inner-spacing-medium;
   padding: $inner-spacing-mini / 2 $inner-spacing-mini;
+  width: 100%;
+  .p2 {
+    padding: $inner-spacing-mini / 4 $inner-spacing-mini / 2;
+  }
 }
 </style>
 
@@ -124,6 +129,9 @@ export default class InfoLine extends Vue {
   .el-button {
     margin-left: $inner-spacing-mini;
     margin-right: 0;
+  }
+  p {
+    font-size: inherit;
   }
 }
 </style>

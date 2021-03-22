@@ -112,19 +112,24 @@
         </div>
       </div>
 
-      <div v-if="price || priceReversed || fee" class="price-container">
-        <s-row v-if="price || priceReversed" flex justify="space-between">
-          <div>{{ t('removeLiquidity.price') }}</div>
-          <div class="price">
-            <div>1 {{ firstToken.symbol }} = {{ priceReversed }} {{ secondToken.symbol }}</div>
-            <div>1 {{ secondToken.symbol }} = {{ price }} {{ firstToken.symbol }}</div>
-          </div>
-        </s-row>
-        <s-row v-if="fee" flex justify="space-between">
-          <!-- TODO: Add tooltip here -->
-          <div>{{ t('createPair.networkFee') }}</div>
-          <div>{{ formattedFee }} {{ KnownSymbols.XOR }}</div>
-        </s-row>
+      <div v-if="price || priceReversed || fee" class="info-line-container">
+        <info-line
+          v-if="price || priceReversed"
+          :label="t('removeLiquidity.price')"
+          :value="`1 ${firstToken.symbol} = ${priceReversed}`"
+          :asset-symbol="secondToken.symbol"
+        />
+        <info-line
+          v-if="price || priceReversed"
+          :value="`1 ${secondToken.symbol} = ${price}`"
+          :asset-symbol="firstToken.symbol"
+        />
+        <info-line
+          v-if="fee"
+          :label="t('createPair.networkFee')"
+          :value="formattedFee"
+          :asset-symbol="KnownSymbols.XOR"
+        />
       </div>
 
       <s-button type="primary" border-radius="small" :disabled="isEmptyAmount || isInsufficientBalance" @click="openConfirmDialog">
@@ -163,6 +168,7 @@ const namespace = 'removeLiquidity'
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     InfoCard: lazyComponent(Components.InfoCard),
+    InfoLine: lazyComponent(Components.InfoLine),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity)
@@ -359,19 +365,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
 <style lang="scss" scoped>
 .icon-divider {
   padding: $inner-spacing-medium;
-}
-
-.price-container {
-  width: 100%;
-  .s-row {
-    margin: $inner-spacing-medium $inner-spacing-medium 0;
-    color: var(--s-color-base-content-secondary);
-    line-height: $s-line-height-big;
-    font-feature-settings: $s-font-feature-settings-common;
-  }
-}
-.price {
-  text-align: right;
 }
 
 .el-form--actions {
