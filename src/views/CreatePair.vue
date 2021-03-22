@@ -91,16 +91,14 @@
     </s-form>
 
     <template v-if="areTokensSelected && isAvailable">
-      <template v-if="isEmptyBalance">
-        <div class="info-line-container">
-          <p class="p2">{{ t('createPair.firstLiquidityProvider') }}</p>
-          <info-line>
-            <template #info-line-prefix>
-              <p class="info-line--first-liquidity" v-html="t('createPair.firstLiquidityProviderInfo')" />
-            </template>
-          </info-line>
-        </div>
-      </template>
+      <div v-if="isEmptyBalance" class="info-line-container">
+        <p class="p2">{{ t('createPair.firstLiquidityProvider') }}</p>
+        <info-line>
+          <template #info-line-prefix>
+            <p class="info-line--first-liquidity" v-html="t('createPair.firstLiquidityProviderInfo')" />
+          </template>
+        </info-line>
+      </div>
       <template v-else>
         <div class="info-line-container">
           <p class="p2">{{ t('createPair.pricePool') }}</p>

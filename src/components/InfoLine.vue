@@ -130,6 +130,9 @@ export default class InfoLine extends Vue {
     margin-left: $inner-spacing-mini;
     margin-right: 0;
   }
+  .token-logo {
+    margin-right: $inner-spacing-mini;
+  }
   p {
     font-size: inherit;
   }

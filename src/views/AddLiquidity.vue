@@ -98,74 +98,37 @@
       </s-button>
     </s-form>
 
-    <info-card
-      v-if="areTokensSelected && isAvailable && !isNotFirstLiquidityProvider && emptyAssets"
-      :title="t('createPair.firstLiquidityProvider')"
-    >
-      <div class="card__data">
-        <p v-html="t('createPair.firstLiquidityProviderInfo')" />
-      </div>
-    </info-card>
+    <div v-if="areTokensSelected && isAvailable && !isNotFirstLiquidityProvider && emptyAssets" class="info-line-container">
+      <p class="p2">{{ t('createPair.firstLiquidityProvider') }}</p>
+      <info-line>
+        <template #info-line-prefix>
+          <p class="info-line--first-liquidity" v-html="t('createPair.firstLiquidityProviderInfo')" />
+        </template>
+      </info-line>
+    </div>
 
-    <info-card v-if="areTokensSelected && isAvailable && !emptyAssets" :title="t('createPair.pricePool')">
-      <div class="card__data">
-        <div>
-          {{
-            t('createPair.firstPerSecond', {
-              first: firstToken.symbol,
-              second: secondToken.symbol
-            })
-          }}
-        </div>
-        <div>{{ price }}</div>
-      </div>
-      <div class="card__data">
-        <div>
-          {{
-            t('createPair.firstPerSecond', {
-              first: secondToken.symbol,
-              second: firstToken.symbol
-            })
-          }}
-        </div>
-        <div>{{ priceReversed }}</div>
-      </div>
-      <div class="card__data">
-        <div>{{ t('createPair.shareOfPool') }}</div>
-        <div>{{ shareOfPool }}%</div>
-      </div>
-      <div class="card__data">
-        <div>{{ t('createPair.networkFee') }}</div>
-        <div>{{ formattedFee }} {{ KnownSymbols.XOR }}</div>
-      </div>
-    </info-card>
+    <div v-if="areTokensSelected && isAvailable && !emptyAssets" class="info-line-container">
+      <p class="p2">{{ t('createPair.pricePool') }}</p>
+      <info-line :label="t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="price" />
+      <info-line :label="t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="priceReversed" />
+      <info-line :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
+      <info-line :label="t('createPair.networkFee')" :value="`${formattedFee} ${KnownSymbols.XOR}`" />
+    </div>
 
-    <info-card
-      v-if="areTokensSelected && isAvailable && (!emptyAssets || (liquidityInfo || {}).balance)"
-      :title="t(`createPair.yourPosition${!emptyAssets ? 'Estimated' : ''}`)"
-    >
-      <div class="card__data card__data_assets">
-        <s-row flex>
+    <div v-if="areTokensSelected && isAvailable && (!emptyAssets || (liquidityInfo || {}).balance)" class="info-line-container">
+      <p class="p2">{{ t(`createPair.yourPosition${!emptyAssets ? 'Estimated' : ''}`) }}</p>
+      <info-line
+        :label="t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol })"
+        :value="poolTokenPosition"
+      >
+        <template #info-line-prefix>
           <pair-token-logo class="pair-token-logo" :first-token="firstToken" :second-token="secondToken" size="mini" />
-          {{
-            t('createPair.firstSecondPoolTokens', {
-              first: firstToken.symbol,
-              second: secondToken.symbol
-            })
-          }}
-        </s-row>
-        <div>{{ poolTokenPosition }}</div>
-      </div>
+        </template>
+      </info-line>
       <s-divider />
-      <div class="card__data">
-        <div>{{ firstToken.symbol }}</div>
-        <div>{{ firstTokenPosition }}</div>
-      </div>
-      <div class="card__data">
-        <div>{{ secondToken.symbol }}</div>
-        <div>{{ secondTokenPosition }}</div>
-      </div>
-    </info-card>
+      <info-line :label="firstToken.symbol" :value="firstTokenPosition" />
+      <info-line :label="secondToken.symbol" :value="secondTokenPosition" />
+    </div>
 
     <select-token :visible.sync="showSelectFirstTokenDialog" :connected="connected" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstTokenAddress($event.address)" />
     <select-token :visible.sync="showSelectSecondTokenDialog" :connected="connected" :asset="firstToken" @select="setSecondTokenAddress($event.address)" />
@@ -205,7 +168,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SelectToken: lazyComponent(Components.SelectToken),
-    InfoCard: lazyComponent(Components.InfoCard),
+    InfoLine: lazyComponent(Components.InfoLine),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog)
