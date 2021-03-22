@@ -46,13 +46,14 @@ const getters = {
     const { assets, registeredAssets } = state
 
     return assets.reduce((result, asset) => {
-      const registeredAsset = findAssetInCollection(asset, registeredAssets) || {}
-      const accountAsset = findAssetInCollection(asset, accountAssets) || {}
+      const { externalAddress, externalBalance } = findAssetInCollection(asset, registeredAssets) || {}
+      const { balance } = findAssetInCollection(asset, accountAssets) || {}
 
       const item = {
         ...asset,
-        ...registeredAsset,
-        ...accountAsset
+        balance,
+        externalAddress,
+        externalBalance
       }
 
       return {
@@ -130,8 +131,6 @@ const actions = {
           }
           const externalBalance = await dispatch('web3/getBalanceByEthAddress', { address: item.externalAddress }, { root: true })
           accountAsset.externalBalance = externalBalance
-          const asset = findAssetInCollection(accountAsset, api.accountAssets)
-          accountAsset.balance = asset ? asset.balance : ''
         } catch (error) {
           accountAsset.externalBalance = '-'
           console.error(error)
