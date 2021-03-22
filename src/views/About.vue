@@ -11,10 +11,10 @@
         <s-button type="primary" @click="handleClickExchange">
           {{ t('about.openExchange') }}
         </s-button>
-        <s-button type="link" icon="external-link" @click="handleGoToMedium">
+        <s-button type="link" icon="external-link-16" @click="handleGoToMedium">
           {{ t('about.mediumLink') }}
         </s-button>
-        <s-button type="link" icon="external-link" @click="handleGoToGithub">
+        <s-button type="link" icon="external-link-16" @click="handleGoToGithub">
           {{ t('about.githubLink') }}
         </s-button>
       </div>
