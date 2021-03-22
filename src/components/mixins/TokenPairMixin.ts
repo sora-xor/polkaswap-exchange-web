@@ -38,6 +38,7 @@ const CreateTokenPairMixin = (namespace: string) => {
     @Action('getNetworkFee', { namespace }) getNetworkFee
     @Action('getPrices', { namespace: 'prices' }) getPrices
     @Action('resetPrices', { namespace: 'prices' }) resetPrices
+    @Action('getAssets', { namespace: 'assets' }) getAssets
 
     showSelectFirstTokenDialog = false
     showSelectSecondTokenDialog = false
@@ -48,6 +49,7 @@ const CreateTokenPairMixin = (namespace: string) => {
         await this.withApi(async () => {
           this.resetPrices()
           this.resetData()
+          await this.getAssets()
           this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
           await this.afterApiConnect()
         })
