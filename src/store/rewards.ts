@@ -4,12 +4,11 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { FPNumber, CodecString, KnownSymbols, KnownAssets } from '@sora-substrate/util'
+import { FPNumber, KnownSymbols, KnownAssets, RewardInfo } from '@sora-substrate/util'
 
-export interface Reward {
-  symbol: string; // address
-  amount: number;
-  title?: string;
+export interface RewardAmountSymbol {
+  amount?: string;
+  symbol: KnownSymbols;
 }
 
 const types = flow(
@@ -38,27 +37,40 @@ function initialState () {
 const state = initialState()
 
 const getters = {
-  rewardsChecked (state) {
+  rewardsChecked (state): boolean {
     return !state.rewardsFetching && Array.isArray(state.rewards)
   },
-  rewardsAvailable (state) {
-    return Array.isArray(state.rewards) && state.rewards.length !== 0
+  claimableRewards (state): Array<RewardInfo> {
+    if (!Array.isArray(state.rewards)) {
+      return []
+    }
+
+    return state.rewards.reduce((claimableList: Array<RewardInfo>, item: RewardInfo) => {
+      if (FPNumber.fromCodecValue(item.amount, item.asset.decimals).isZero()) return claimableList
+
+      claimableList.push(item)
+
+      return claimableList
+    }, [])
   },
-  rewardsByAssetsList (state, getters) {
-    if (!getters.rewardsAvailable) {
+  rewardsAvailable (state, getters): boolean {
+    return getters.claimableRewards.length !== 0
+  },
+  rewardsByAssetsList (state, getters): Array<RewardAmountSymbol> {
+    if (!getters.claimableRewards.length) {
       return [
         {
           symbol: KnownSymbols.PSWAP,
-          amount: '-'
-        },
+          amount: undefined
+        } as RewardAmountSymbol,
         {
           symbol: KnownSymbols.VAL,
-          amount: '-'
-        }
+          amount: undefined
+        } as RewardAmountSymbol
       ]
     }
 
-    const rewardsHash = state.rewards.reduce((result, { asset, amount }) => {
+    const rewardsHash = getters.claimableRewards.reduce((result, { asset, amount }: RewardInfo) => {
       const { address, decimals } = asset
       const current = result[address] || new FPNumber(0, decimals)
       const addValue = FPNumber.fromCodecValue(amount, decimals)
@@ -68,13 +80,15 @@ const getters = {
       return result
     }, {})
 
-    return Object.entries(rewardsHash).reduce((total, [address, amount]) => {
-      if (amount.isZero()) return total
+    return Object.entries(rewardsHash).reduce((total: Array<RewardAmountSymbol>, [address, amount]) => {
+      if ((amount as FPNumber).isZero()) return total
 
-      total.push({
+      const item = {
         symbol: KnownAssets.get(address).symbol,
-        amount: amount.format()
-      })
+        amount: (amount as FPNumber).format()
+      } as RewardAmountSymbol
+
+      total.push(item)
 
       return total
     }, [])
@@ -120,28 +134,10 @@ const actions = {
     commit(types.SET_TRANSACTION_STEP, transactionStep)
   },
 
-  async getRewards ({ commit }) {
+  async getRewards ({ commit }, address) {
     commit(types.GET_REWARDS_REQUEST)
     try {
-      const [xorERC20, farm, nft] = await api.api.rpc.rewards.claimables('0x21Bc9f4a3d9Dc86f142F802668dB7D908cF0A636')
-
-      const valAsset = KnownAssets.get(KnownSymbols.VAL)
-      const pswapAsset = KnownAssets.get(KnownSymbols.PSWAP)
-
-      const rewards = [
-        {
-          asset: pswapAsset,
-          amount: new FPNumber(farm, pswapAsset.decimals).toCodecString()
-        },
-        {
-          asset: KnownAssets.get(KnownSymbols.PSWAP),
-          amount: new FPNumber(nft, pswapAsset.decimals).toCodecString()
-        },
-        {
-          asset: KnownAssets.get(KnownSymbols.VAL),
-          amount: new FPNumber(xorERC20, valAsset.decimals).toCodecString()
-        }
-      ]
+      const rewards = await api.checkExternalAccountRewards(address)
 
       commit(types.GET_REWARDS_SUCCESS, rewards)
     } catch (error) {

@@ -9,7 +9,7 @@
         </div>
         <div v-if="connectedState" class="rewards-amount">
           <rewards-amount-header v-if="rewardsChecked" :items="rewardsByAssetsList" />
-          <rewards-amount-table v-if="rewardsAvailable" class="rewards-table" :items="rewards" />
+          <rewards-amount-table v-if="formattedClaimableRewards.length" class="rewards-table" :items="formattedClaimableRewards" />
           <div class="rewards-footer">
             <s-divider />
             <div class="rewards-account">
@@ -41,14 +41,22 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
+import { KnownSymbols, RewardInfo, RewardingEvents } from '@sora-substrate/util'
 
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 
 import WalletConnectMixin from '../components/mixins/WalletConnectMixin'
+import NumberFormatterMixin from '../components/mixins/NumberFormatterMixin'
 import LoadingMixin from '../components/mixins/LoadingMixin'
 
-import { FPNumber, KnownAssets } from '@sora-substrate/util'
+import { RewardAmountSymbol } from '../store/rewards'
+
+const RewardsTableTitles = {
+  [RewardingEvents.XorErc20]: 'XOR ERC-20',
+  [RewardingEvents.SoraFarmHarvest]: 'SORA.farm harvest',
+  [RewardingEvents.NtfAirdrop]: 'NFT Airdrop'
+}
 
 @Component({
   components: {
@@ -60,21 +68,22 @@ import { FPNumber, KnownAssets } from '@sora-substrate/util'
     RewardsAmountTable: lazyComponent(Components.RewardsAmountTable)
   }
 })
-export default class Rewards extends Mixins(WalletConnectMixin, LoadingMixin) {
+export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterMixin, LoadingMixin) {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
-  @State(state => state.rewards.rewards) rewards!: Array<object>
-  @State(state => state.rewards.rewardsFetching) rewardsFetching
-  @State(state => state.rewards.rewardsClaiming) rewardsClaiming
-  @State(state => state.rewards.transactionStep) transactionStep
-  @State(state => state.rewards.transactionStepsCount) transactionStepsCount
+  @State(state => state.rewards.rewards) rewards
+  @State(state => state.rewards.rewardsFetching) rewardsFetching!: boolean
+  @State(state => state.rewards.rewardsClaiming) rewardsClaiming!: boolean
+  @State(state => state.rewards.transactionStep) transactionStep!: number
+  @State(state => state.rewards.transactionStepsCount) transactionStepsCount!: number
 
   @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean
   @Getter('rewardsChecked', { namespace: 'rewards' }) rewardsChecked!: boolean
-  @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList: Array<object>
+  @Getter('claimableRewards', { namespace: 'rewards' }) claimableRewards!: Array<RewardInfo>
+  @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardAmountSymbol>
 
   @Action('reset', { namespace: 'rewards' }) reset!: () => void
-  @Action('getRewards', { namespace: 'rewards' }) getRewards!: () => Promise<void>
+  @Action('getRewards', { namespace: 'rewards' }) getRewards!: (address: string) => Promise<void>
 
   async created (): Promise<void> {
     await this.withApi(async () => {
@@ -93,7 +102,15 @@ export default class Rewards extends Mixins(WalletConnectMixin, LoadingMixin) {
     return this.t('rewards.transactions.confimation', { order, total: this.transactionStepsCount })
   }
 
-  get rewardTokenSymbols (): Array<string> {
+  get formattedClaimableRewards () {
+    return this.claimableRewards.map((item: RewardInfo) => ({
+      title: RewardsTableTitles[item.type] ?? '',
+      amount: this.formatCodecNumber(item.amount),
+      symbol: item.asset.symbol
+    }))
+  }
+
+  get rewardTokenSymbols (): Array<KnownSymbols> {
     return this.rewardsByAssetsList.map(item => item.symbol)
   }
 
@@ -144,7 +161,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, LoadingMixin) {
 
   async checkAccountRewards (): Promise<void> {
     if (this.connectedState) {
-      await this.getRewards()
+      await this.getRewards(this.ethAddress)
     }
   }
 
