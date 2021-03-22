@@ -1,9 +1,13 @@
 <template>
   <div class="info-line">
     <span class="info-line-label">{{ label }}</span>
-    <s-tooltip v-if="tooltipContent" :class="tooltipClasses" popper-class="info-tooltip info-tooltip--info-line" border-radius="mini" :content="tooltipContent" theme="light" placement="right-start" animation="none" :show-arrow="false">
+    <branded-tooltip
+      v-if="tooltipContent"
+      :content="tooltipContent"
+      placement="right-start"
+    >
       <s-icon name="info-16" />
-    </s-tooltip>
+    </branded-tooltip>
     <span class="info-line-value">{{ value }}<span v-if="assetSymbol" class="asset-symbol">{{ ' ' + assetSymbol }}</span></span>
     <slot />
   </div>
@@ -12,9 +16,14 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 
-import { InfoTooltipPosition } from '@/consts'
+import { Components, InfoTooltipPosition } from '@/consts'
+import { lazyComponent } from '@/router'
 
-@Component
+@Component({
+  components: {
+    BrandedTooltip: lazyComponent(Components.BrandedTooltip)
+  }
+})
 export default class InfoLine extends Vue {
   @Prop({ default: '', type: String }) readonly label!: string
   @Prop({ default: '', type: String }) readonly tooltipContent?: string
@@ -38,6 +47,12 @@ export default class InfoLine extends Vue {
 <style lang="scss">
 .info-tooltip--info-line {
   margin-left: #{$inner-spacing-mini / 2} !important;
+}
+.info-line-container {
+  border: 1px solid var(--s-color-base-border-secondary);
+  border-radius: var(--s-border-radius-small);
+  margin-top: $inner-spacing-medium;
+  padding: $inner-spacing-mini / 2 $inner-spacing-mini;
 }
 </style>
 
@@ -73,6 +88,12 @@ export default class InfoLine extends Vue {
   .el-tooltip {
     margin-right: $inner-spacing-mini;
     flex-shrink: 0;
+    i {
+      margin-top: auto;
+      margin-bottom: auto;
+      display: block;
+      color: var(--s-color-base-content-tertiary);
+    }
   }
   &-icon {
     position: relative;
@@ -99,6 +120,10 @@ export default class InfoLine extends Vue {
     &--left {
       order: -1;
     }
+  }
+  .el-button {
+    margin-left: $inner-spacing-mini;
+    margin-right: 0;
   }
 }
 </style>

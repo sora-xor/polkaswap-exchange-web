@@ -6,15 +6,24 @@
       :show-message="false"
     >
       <s-card class="bridge-content" border-radius="medium" shadow="never">
-        <generic-page-header class="header--bridge" :title="t('bridge.title')" :tooltip="t('bridge.info')" tooltip-placement="bottom">
+        <generic-page-header class="header--bridge" :title="t('bridge.title')" :tooltip="t('bridge.info')">
           <s-button
+            v-if="areNetworksConnected"
+            class="el-button--history"
+            type="action"
+            icon="time-time-history-24"
+            size="medium"
+            @click="handleViewTransactionsHistory"
+          />
+          <!-- TODO: Add ability to change network -->
+          <!-- <s-button
             v-if="areNetworksConnected"
             class="el-button--history"
             type="action"
             icon="connection-broadcasting-24"
             size="medium"
-            @click="handleViewTransactionsHistory"
-          />
+            @click="handleChangeNetwork"
+          /> -->
         </generic-page-header>
         <s-card :class="isSoraToEthereum ? 'bridge-item' : 'bridge-item bridge-item--ethereum'" border-radius="mini" shadow="never">
           <div class="bridge-item-header">
@@ -827,12 +836,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       margin-top: $inner-spacing-mini;
       width: 100%;
     }
-  }
-  .info-line-container {
-    border: 1px solid var(--s-color-base-border-secondary);
-    border-radius: var(--s-border-radius-small);
-    margin-top: $inner-spacing-medium;
-    padding: $inner-spacing-mini / 2 $inner-spacing-mini;
   }
   .el-button--history {
     margin-left: auto;

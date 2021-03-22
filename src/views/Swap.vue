@@ -81,7 +81,7 @@
         </s-button>
       </div>
     </div>
-    <swap-info v-if="areTokensSelected && !areZeroAmounts" :show-price="true" :show-slippage-tolerance="true" />
+    <swap-info v-if="areTokensSelected && !areZeroAmounts" class="info-line-container" :show-price="true" :show-slippage-tolerance="true" />
     <s-button v-if="!connected" type="primary" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
@@ -102,7 +102,7 @@
         {{ t('exchange.Swap') }}
       </template>
     </s-button>
-    <swap-info v-if="areTokensSelected && !areZeroAmounts" />
+    <swap-info v-if="areTokensSelected && !areZeroAmounts" class="info-line-container" />
     <select-token :visible.sync="showSelectTokenDialog" :connected="connected" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
     <confirm-swap :visible.sync="showConfirmSwapDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmSwap" @checkConfirm="updateAccountAssets" />
     <settings :visible.sync="showSettings" />

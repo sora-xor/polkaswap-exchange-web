@@ -7,7 +7,7 @@
       class="page-header-tooltip"
       popper-class="info-tooltip info-tooltip--page-header"
       :content="tooltip"
-      :placement="tooltipPlacement"
+      placement="right-start"
     >
       <s-icon name="info-16" />
     </branded-tooltip>
