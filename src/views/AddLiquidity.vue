@@ -26,7 +26,7 @@
           </s-form-item>
           <div v-if="firstToken" class="token">
             <s-button v-if="isFirstMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue(firstToken, setFirstTokenValue)">
-              {{ t('exchange.max') }}
+              {{ t('buttons.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <token-logo :token="firstToken" size="small" />
@@ -59,7 +59,7 @@
           </s-form-item>
           <div v-if="secondToken" class="token">
             <s-button v-if="isSecondMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue(secondToken, setSecondTokenValue)">
-              {{ t('exchange.max') }}
+              {{ t('buttons.max') }}
             </s-button>
             <s-button
               class="el-button--choose-token"
@@ -75,19 +75,19 @@
             </s-button>
           </div>
           <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectSecondTokenDialog">
-            {{ t('exchange.chooseToken') }}
+            {{ t('buttons.chooseToken') }}
           </s-button>
         </div>
       </div>
         <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="openConfirmDialog">
         <template v-if="!areTokensSelected">
-          {{ t('exchange.chooseTokens') }}
+          {{ t('buttons.chooseTokens') }}
         </template>
         <template v-else-if="!isAvailable">
           {{ t('addLiquidity.pairIsNotCreated') }}
         </template>
         <template v-else-if="isEmptyBalance">
-          {{ t('exchange.enterAmount') }}
+          {{ t('buttons.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
           {{ t('exchange.insufficientBalance', { tokenSymbol: insufficientBalanceTokenSymbol }) }}

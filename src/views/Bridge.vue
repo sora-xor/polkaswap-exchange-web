@@ -19,7 +19,7 @@
         <s-card :class="isSoraToEthereum ? 'bridge-item' : 'bridge-item bridge-item--ethereum'" border-radius="mini" shadow="never">
           <div class="bridge-item-header">
             <div class="bridge-item-title">
-              <span class="bridge-item-title-label">{{ t('bridge.from') }}</span>
+              <span class="bridge-item-title-label">{{ t('transfers.from') }}</span>
               <span>{{ getBridgeItemTitle() }}</span>
               <token-logo class="bridge-item-title-icon" :tokenSymbol="isSoraToEthereum ? 'bridge-item-xor' : 'bridge-item-eth'" size="mini" />
             </div>
@@ -43,27 +43,27 @@
             </s-form-item>
             <div v-if="isNetworkAConnected && isAssetSelected" class="asset">
               <!-- TODO: Do we have a Max button for Ethereum network? If so, check all Ethereum Max functionality -->
-              <s-button v-if="isMaxAvailable" class="s-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue">
-                {{ t('bridge.max') }}
+              <s-button v-if="isMaxAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue">
+                {{ t('buttons.max') }}
               </s-button>
-              <s-button class="s-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectAssetDialog">
+              <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectAssetDialog">
                 <token-logo :token="asset" size="small" />
                 {{ formatAssetSymbol(asset.symbol, !isSoraToEthereum) }}
               </s-button>
             </div>
-            <s-button v-else class="s-button--empty-token" type="tertiary" size="small" border-radius="medium" icon="chevron-down-rounded-16" icon-position="right" :disabled="!areNetworksConnected" @click="openSelectAssetDialog">
-              {{ t('bridge.chooseToken') }}
+            <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" :disabled="!areNetworksConnected" @click="openSelectAssetDialog">
+              {{ t('buttons.chooseToken') }}
             </s-button>
           </div>
           <div v-if="isNetworkAConnected && !isSoraToEthereum" class="bridge-item-footer">
             <s-divider />
-            <s-button class="s-button--change-wallet" type="link" size="mini" @click="isSoraToEthereum ? connectInternalWallet() : changeExternalWallet()">
+            <s-button class="el-button--change-wallet" type="link" size="mini" @click="isSoraToEthereum ? connectInternalWallet() : changeExternalWallet()">
               <span class="bridge-item-id">{{ formatAddress(isSoraToEthereum ? getWalletAddress() : ethAddress, 8) }}</span>
               <span class="change-wallet">{{ t('bridge.changeWallet') }}</span>
             </s-button>
             <span>{{ t('bridge.connected') }}</span>
           </div>
-          <s-button v-else-if="!isNetworkAConnected" class="s-button--connect" type="primary" @click="isSoraToEthereum ? connectInternalWallet() : connectExternalWallet()">
+          <s-button v-else-if="!isNetworkAConnected" class="el-button--connect" type="primary" @click="isSoraToEthereum ? connectInternalWallet() : connectExternalWallet()">
             {{ t('bridge.connectWallet') }}
           </s-button>
         </s-card>
@@ -71,7 +71,7 @@
         <s-card :class="!isSoraToEthereum ? 'bridge-item' : 'bridge-item bridge-item--ethereum'" border-radius="mini" shadow="never">
           <div class="bridge-item-header">
             <div class="bridge-item-title">
-              <span class="bridge-item-title-label">{{ t('bridge.to') }}</span>
+              <span class="bridge-item-title-label">{{ t('transfers.to') }}</span>
               <span>{{ getBridgeItemTitle(true) }}</span>
               <token-logo class="bridge-item-title-icon" :tokenSymbol="isSoraToEthereum ? 'bridge-item-eth' : 'bridge-item-xor'" size="mini" />
             </div>
@@ -91,7 +91,7 @@
               />
             </s-form-item>
             <div v-if="areNetworksConnected && isAssetSelected" class="asset">
-              <s-button class="s-button--choose-token" type="tertiary" size="small" border-radius="medium" disabled>
+              <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" disabled>
                 <token-logo :token="asset" size="small" />
                 {{ formatAssetSymbol(asset.symbol, isSoraToEthereum) }}
               </s-button>
@@ -99,30 +99,30 @@
           </div>
           <div v-if="isNetworkBConnected && isSoraToEthereum" class="bridge-item-footer">
             <s-divider />
-            <s-button class="s-button--change-wallet" type="link" size="mini" @click="!isSoraToEthereum ? connectInternalWallet() : changeExternalWallet()">
+            <s-button class="el-button--change-wallet" type="link" size="mini" @click="!isSoraToEthereum ? connectInternalWallet() : changeExternalWallet()">
               <span class="bridge-item-id">{{ formatAddress(isSoraToEthereum ? ethAddress : getWalletAddress(), 8) }}</span>
               <span class="change-wallet">{{ t('bridge.changeWallet') }}</span>
             </s-button>
             <span>{{ t('bridge.connected') }}</span>
           </div>
-          <s-button v-else-if="!isNetworkBConnected" class="s-button--connect" type="primary" @click="!isSoraToEthereum ? connectInternalWallet() : connectExternalWallet()">
+          <s-button v-else-if="!isNetworkBConnected" class="el-button--connect" type="primary" @click="!isSoraToEthereum ? connectInternalWallet() : connectExternalWallet()">
             {{ t('bridge.connectWallet') }}
           </s-button>
         </s-card>
         <s-button
-          class="s-button--next"
+          class="el-button--next"
           type="primary"
           :disabled="!areNetworksConnected || !isValidEthNetwork || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEtherForFee || isInsufficientBalance || !isRegisteredAsset"
           @click="handleConfirmTransaction"
         >
           <template v-if="!areNetworksConnected">
-            {{ t('bridge.connectWallet') }}
+            {{ t('bridge.next') }}
           </template>
           <template v-else-if="!isValidEthNetwork">
             {{ t('bridge.changeNetwork') }}
           </template>
           <template v-else-if="isZeroAmount">
-            {{ t('bridge.enterAnAmount') }}
+            {{ t('buttons.enterAmount') }}
           </template>
           <template v-else-if="!isRegisteredAsset">
             {{ t('bridge.notRegisteredAsset', { assetSymbol : asset ? asset.symbol : '' }) }}
@@ -662,35 +662,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
         display: none;
       }
     }
-    .s-button {
-      // TODO: Check all icons settings after fix in UI Lib
-      &--max,
-      &--choose-token,
-      &--empty-token {
-        font-feature-settings: $s-font-feature-settings-title;
-        > span {
-          display: inline-flex;
-          align-items: center;
-          > i[class^=s-icon-] {
-            font-size: var(--s-icon-font-size-medium);
-          }
-        }
-      }
-      &--empty-token {
-        > span {
-          > i[class^=s-icon-] {
-            margin-left: $inner-spacing-mini / 2 !important;
-          }
-        }
-      }
-      &--choose-token {
-        > span {
-          > i[class^=s-icon-] {
-            margin-left: $inner-spacing-mini !important;
-          }
-        }
-      }
-    }
   }
 }
 </style>
@@ -729,7 +700,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       margin-bottom: $inner-spacing-mini;
     }
     &-title,
-    .s-button--change-wallet {
+    .el-button--change-wallet {
       margin-right: $inner-spacing-medium;
     }
     &-title {
@@ -761,7 +732,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       .el-button {
         @include ethereum-logo-styles;
       }
-      .s-button--choose-token {
+      .el-button--choose-token {
         cursor: initial;
       }
     }
@@ -826,54 +797,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
   }
   @include buttons;
-  .s-button {
-    &--max,
-    &--empty-token {
-      margin-left: $inner-spacing-mini / 2;
-    }
-    &--max {
-      margin-right: $inner-spacing-mini / 2;
-      padding-right: $inner-spacing-mini;
-      height: var(--s-size-mini);
-    }
-    &--empty-token {
-      font-weight: 600;
-      background-color: var(--s-color-base-background);
-      border-color: var(--s-color-base-background);
-      &:not(.is-disabled) {
-        &, &:hover, &:active, &:focus {
-          color: var(--s-color-base-content-primary);
-        }
-        &:hover, &:active, &:focus {
-          background-color: var(--s-color-base-background-hover);
-          border-color: var(--s-color-base-background-hover);
-        }
-      }
-    }
-    &--max,
-    &--choose-token {
-      font-weight: 700;
-    }
-    &--choose-token {
-      margin-left: 0;
-      padding-left: $inner-spacing-mini / 2;
-      background-color: transparent;
-      border-color: transparent;
-      color: var(--s-color-base-content-primary);
-      font-size: var(--s-font-size-small);
-      // TODO: check this styles
-      &:hover, &:active, &:focus {
-        background-color: var(--s-color-base-background-hover);
-        border-color: var(--s-color-base-background-hover);
-        color: var(--s-color-base-content-primary);
-      }
-      &.is-disabled {
-        &:hover {
-          background-color: transparent;
-          border-color: transparent;
-        }
-      }
-    }
+  .el-button {
     &--connect {
       margin: $inner-spacing-mini $inner-spacing-small $inner-spacing-small;
       width: calc(100% - #{$inner-spacing-small * 2});
@@ -883,6 +807,9 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       color: inherit;
       font-size: inherit;
       line-height: inherit;
+      span {
+        font-weight: 400 !important;
+      }
       .change-wallet {
         display: none;
       }

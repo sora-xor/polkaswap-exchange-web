@@ -12,7 +12,7 @@
     <div class="input-container">
       <div class="input-line">
         <div class="input-title p4">
-          <span>{{ t('exchange.from') }}</span>
+          <span>{{ t('transfers.from') }}</span>
           <span :class="`input-title-estimated ${(areTokensSelected && !isZeroToAmount && isExchangeB) ? 'input-title-estimated--show' : ''}`">
             ({{ t('swap.estimated') }})
           </span>
@@ -34,7 +34,7 @@
         </s-form-item>
         <div v-if="tokenFrom" class="token">
           <s-button v-if="isMaxSwapAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue">
-            {{ t('exchange.max') }}
+            {{ t('buttons.max') }}
           </s-button>
           <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectTokenDialog(true)">
             <token-logo :token="tokenFrom" size="small" />
@@ -42,7 +42,7 @@
           </s-button>
         </div>
         <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectTokenDialog(true)">
-          {{ t('exchange.chooseToken') }}
+          {{ t('buttons.chooseToken') }}
         </s-button>
       </div>
     </div>
@@ -50,7 +50,7 @@
     <div class="input-container">
       <div class="input-line">
         <div class="input-title p4">
-          <span>{{ t('exchange.to') }}</span>
+          <span>{{ t('transfers.to') }}</span>
           <span :class="`input-title-estimated ${(areTokensSelected && !isZeroFromAmount && !isExchangeB) ? 'input-title-estimated--show' : ''}`">
             ({{ t('swap.estimated') }})
           </span>
@@ -77,7 +77,7 @@
           </s-button>
         </div>
         <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectTokenDialog(false)">
-          {{ t('exchange.chooseToken') }}
+          {{ t('buttons.chooseToken') }}
         </s-button>
       </div>
     </div>
@@ -87,7 +87,7 @@
     </s-button>
     <s-button v-else type="primary" :disabled="!areTokensSelected || areZeroAmounts || isInsufficientAmount || isInsufficientBalance" @click="handleConfirmSwap">
       <template v-if="!areTokensSelected || (isZeroFromAmount && isZeroToAmount)">
-        {{ t('exchange.enterAmount') }}
+        {{ t('buttons.enterAmount') }}
       </template>
       <template v-else-if="isInsufficientLiquidity">
         {{ t('swap.insufficientLiquidity') }}

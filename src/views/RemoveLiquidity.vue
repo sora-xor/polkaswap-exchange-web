@@ -44,7 +44,7 @@
           </s-form-item>
           <div class="token">
             <s-button v-if="isMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleLiquidityMaxValue">
-              {{ t('exchange.max') }}
+              {{ t('buttons.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <div class="liquidity-logo">
@@ -129,7 +129,7 @@
 
       <s-button type="primary" border-radius="small" :disabled="isEmptyAmount || isInsufficientBalance" @click="openConfirmDialog">
         <template v-if="isEmptyAmount">
-          {{ t('exchange.enterAmount') }}
+          {{ t('buttons.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
           {{ t('exchange.insufficientBalance', { tokenSymbol: t('removeLiquidity.liquidity') }) }}
