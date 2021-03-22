@@ -6,7 +6,7 @@
     <div class="tokens">
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedFromValue }}</span>
-        <s-icon class="icon-divider" name="plus-rounded" size="medium" />
+        <s-icon class="icon-divider" name="plus-16" />
         <span class="token-value">{{ formattedToValue }}</span>
       </div>
       <div class="tokens-info-container">

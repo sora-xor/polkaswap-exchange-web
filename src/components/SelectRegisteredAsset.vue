@@ -13,9 +13,11 @@
         size="medium"
         border-radius="mini"
         @focus="handleSearchFocus"
-      />
-      <!-- TODO: Change the icon -->
-      <s-button class="s-button--clear" icon="circle-x" @click="handleClearSearch" />
+      >
+        <template #suffix>
+          <s-button class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
+        </template>
+      </s-input>
     </s-form-item>
     <!-- TODO: Move each tab to separate component -->
     <s-tabs v-model="tabValue" class="s-tabs--exchange" type="rounded" @click="handleTabClick">
@@ -25,11 +27,11 @@
           <template v-if="hasFilteredAssets && isSoraToEthereum /* TODO: remove isSoraToEthereum here */">
             <h3 class="network-label">{{ isSoraToEthereum ? t('selectRegisteredAsset.search.networkLabelSora') : t('selectRegisteredAsset.search.networkLabelEthereum') }}</h3>
             <div :class="assetListClasses(filteredAssets)">
-              <div v-for="asset in filteredAssets" @click="selectAsset(asset)" :key="asset.symbol" class="asset-item">
+              <div v-for="asset in filteredAssets" @click="selectAsset(asset)" :key="asset.address" class="asset-item">
                 <s-col>
                   <s-row flex justify="start" align="middle">
-                    <token-logo :tokenSymbol="asset.symbol" />
-                    <div class="asset-item__name">{{ getAssetName(asset.symbol) }}</div>
+                    <token-logo :token="asset" />
+                    <div class="asset-item__name">{{ getAssetName(asset) }}</div>
                   </s-row>
                 </s-col>
                 <div>
@@ -44,8 +46,8 @@
               <div v-for="asset in filteredAssets" @click="selectAsset(asset)" :key="asset.symbol" class="asset-item">
                 <s-col>
                   <s-row flex justify="start" align="middle">
-                    <token-logo :tokenSymbol="asset.symbol" />
-                    <div class="asset-item__name">{{ getAssetName(asset.symbol, true) }}</div>
+                    <token-logo :token="asset" />
+                    <div class="asset-item__name">{{ getAssetName(asset, true) }}</div>
                   </s-row>
                 </s-col>
                 <div>
@@ -103,7 +105,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { Asset, AccountAsset } from '@sora-substrate/util'
+import { Asset, AccountAsset, RegisteredAccountAsset, KnownAssets } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -112,7 +114,6 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
-import { RegisteredAccountAsset } from '@/store/assets'
 
 const namespace = 'assets'
 
@@ -188,16 +189,17 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
   }
 
   getAssets (assets: Array<AccountAsset | RegisteredAccountAsset>): Array<AccountAsset | RegisteredAccountAsset> {
-    return this.asset ? assets?.filter(asset => asset.address !== this.asset.address) : assets
+    const assetsList = this.asset ? assets?.filter(asset => asset.address !== this.asset.address) : assets
+    return this.isSoraToEthereum ? assetsList.filter(asset => !Number.isNaN(+asset.balance)) : assetsList
   }
 
   getFilteredAssets (assets: Array<AccountAsset | RegisteredAccountAsset>): Array<AccountAsset | RegisteredAccountAsset> {
     if (this.query) {
       const query = this.query.toLowerCase().trim()
       return assets.filter(asset =>
-        this.t(`assetNames.${asset.symbol}`).toLowerCase().includes(query) ||
+        (KnownAssets.get(asset.address) && this.t(`assetNames.${asset.symbol}`).toLowerCase().includes(query)) ||
         `${asset.symbol}`.toLowerCase().includes(query) ||
-        `${asset[this.addressSymbol]}`.toLowerCase().includes(query)
+        `${asset[this.addressSymbol]}`.toLowerCase() === query
       )
     }
 
@@ -211,8 +213,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
     if (isEthereumAssetsList) {
       classes.push(`${componentClass}--ethereum`)
     }
-
-    if (filteredAssetsList && filteredAssetsList.length > 3) {
+    if (filteredAssetsList && filteredAssetsList.length > 6) {
       classes.push(`${componentClass}--scrollbar`)
     }
 
@@ -228,25 +229,17 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
     this.isVisible = false
   }
 
-  getAssetName (assetSymbol: string, isMirrorAsset = false): string {
-    if (this.te(`assetNames.${assetSymbol}`)) {
-      let assetName = ''
-
-      if (isMirrorAsset) {
-        assetName = this.t('selectRegisteredAsset.search.mirrorPrefix') + ' '
-      }
-
-      assetName += this.t(`assetNames.${assetSymbol}`) + ' ('
-
-      if (isMirrorAsset) {
-        assetName += this.isSoraToEthereum ? 'e' : 's'
-      }
-
-      assetName += assetSymbol + ')'
-
-      return assetName
+  getAssetName (asset: AccountAsset | RegisteredAccountAsset, isMirrorAsset = false): string {
+    let assetName = ''
+    if (isMirrorAsset) {
+      assetName = this.t('selectRegisteredAsset.search.mirrorPrefix') + ' '
     }
-    return assetSymbol
+    assetName += (KnownAssets.get(asset.address) ? this.t(`assetNames.${asset.symbol}`) : asset.symbol) + ' ('
+    if (isMirrorAsset) {
+      assetName += this.isSoraToEthereum ? 'e' : 's'
+    }
+    assetName += asset.symbol + ')'
+    return assetName
   }
 
   handleTabClick ({ name }): void {
@@ -310,7 +303,6 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
       padding: $inner-spacing-mini 0 $inner-spacing-big !important;
     }
   }
-  @include search-item-unscoped;
   .s-tabs.s-tabs--exchange {
     &#{$tabs-class} {
       #{$tabs-class}__header {
@@ -337,7 +329,7 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
           width: 50%;
           line-height: $tabs-item-height;
           font-feature-settings: $s-font-feature-settings-title;
-          @include font-weight(700, true);
+          font-weight: 700 !important;
           text-align: center;
           &:hover {
             background-color: var(--s-color-base-background-hover);
@@ -377,7 +369,6 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
   width: calc(100% - 2 * #{$select-asset-horizontal-spacing});
 }
 .asset-search {
-  // TODO: Fix input styles (paddings and icon position)
   margin-bottom: $inner-spacing-medium;
 }
 .asset-item {
@@ -392,7 +383,7 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
   }
   &__name, &__balance {
     font-size: var(--s-font-size-small);
-    @include font-weight(600);
+    font-weight: 600;
   }
   &__balance {
     white-space: nowrap;
@@ -406,7 +397,7 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
   font-size: $s-heading3-caps-font-size;
   line-height: $s-line-height-base;
   letter-spacing: $s-letter-spacing-type;
-  @include font-weight(700, true);
+  font-weight: 700 !important;
   font-feature-settings: $s-font-feature-settings-type;
   text-transform: uppercase;
   .asset-list + & {
@@ -418,7 +409,7 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
 }
 .asset-list {
   &--scrollbar {
-    height: #{$select-asset-item-height * 3};
+    height: #{$select-asset-item-height * 6};
     overflow: auto;
   }
   &--ethereum {

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header class="header">
-      <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Exchange)" />
+      <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
 
       <div class="app-controls s-flex">
         <branded-tooltip :disabled="accountConnected" popper-class="info-tooltip wallet-tooltip" placement="bottom">
@@ -12,7 +12,7 @@
             <div class="account">
               <div class="account-name">{{ accountInfo }}</div>
               <div class="account-icon">
-                <s-icon v-if="!accountConnected" name="wallet" size="20" />
+                <s-icon v-if="!accountConnected" name="finance-wallet-24" />
                 <div v-else class="account-avatar"/>
               </div>
             </div>
@@ -82,7 +82,7 @@
             </li>
             <sidebar-item-content
               :title="t(`footerMenu.help`)"
-              icon=""
+              icon="notifications-info-24"
               tag="li"
               class="el-menu-item menu-item--small"
               @click.native="openHelpDialog"
@@ -227,13 +227,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
     if (router.currentRoute.name === name) {
       return
     }
-    if (name !== PageNames.Exchange) {
-      router.push({ name })
-      return
-    }
-    if (name === PageNames.Exchange && router.currentRoute.name !== PageNames.Swap) {
-      router.push({ name: PageNames.Swap })
-    }
+    router.push({ name })
   }
 
   openHelpDialog (): void {
@@ -247,30 +241,6 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
 </script>
 
 <style lang="scss">
-@font-face {
-  font-family: "SoraB";
-  src: url("~@/assets/fonts/Sora-Bold.otf");
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: "SoraEB";
-  src: url("~@/assets/fonts/Sora-ExtraBold.otf");
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: "SoraSB";
-  src: url("~@/assets/fonts/Sora-SemiBold.otf");
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Sora";
-  src: url("~@/assets/fonts/Sora-Regular.otf");
-  font-weight: normal;
-  font-style: normal;
-}
 html {
   overflow-y: hidden;
   font-size: var(--s-font-size-small);

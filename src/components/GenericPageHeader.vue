@@ -1,6 +1,6 @@
 <template>
   <div :class="headerClasses">
-    <s-button v-if="hasButtonBack" type="action" size="medium" icon="chevron-left-rounded" @click="handleBack" />
+    <s-button v-if="hasButtonBack" type="action" size="medium" icon="arrows-chevron-left-rounded-24" @click="handleBack" />
     <h3 class="page-header-title">{{ title }}</h3>
     <branded-tooltip
       v-if="!!tooltip"
@@ -9,7 +9,7 @@
       :content="tooltip"
       :placement="tooltipPlacement"
     >
-      <s-icon name="info" size="16" />
+      <s-icon name="info-16" />
     </branded-tooltip>
     <slot />
   </div>
@@ -28,11 +28,11 @@ import { Components, PageNames } from '@/consts'
   }
 })
 export default class GenericPageHeader extends Mixins(TranslationMixin) {
-  @Prop({ default: false, type: Boolean }) readonly hasButtonBack!: boolean
-  @Prop({ default: PageNames.Pool, type: String }) readonly backPageName!: string
+  @Prop({ default: false, type: Boolean }) readonly hasButtonBack?: boolean
+  @Prop({ default: PageNames.Pool, type: String }) readonly backPageName?: string
   @Prop({ default: '', type: String }) readonly title!: string
-  @Prop({ default: '', type: String }) readonly tooltip!: string
-  @Prop({ default: 'bottom-end', type: String }) readonly tooltipPlacement!: string
+  @Prop({ default: '', type: String }) readonly tooltip?: string
+  @Prop({ default: 'bottom-end', type: String }) readonly tooltipPlacement?: string
 
   get headerClasses (): string {
     const baseClass = 'page-header'
@@ -91,9 +91,12 @@ $title-padding: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
     letter-spacing: $s-letter-spacing-small;
     & + .el-button {
       right: 0;
+      &--settings {
+        margin-left: auto;
+      }
     }
   }
-  &-tooltip .s-icon-info {
+  &-tooltip .s-icon-info-16 {
     margin-top: auto;
     margin-bottom: auto;
     margin-left: $inner-spacing-mini;

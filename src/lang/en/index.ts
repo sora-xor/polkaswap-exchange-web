@@ -27,7 +27,6 @@ export default {
     [KnownSymbols.PSWAP]: 'Polkaswap'
   },
   pageTitle: {
-    [PageNames.Exchange]: 'Exchange',
     [PageNames.Swap]: 'Swap',
     [PageNames.Pool]: 'Pool',
     [PageNames.Bridge]: '@:bridgeText',
@@ -48,7 +47,6 @@ export default {
     [PageNames.Farming]: 'Farming',
     [PageNames.Wallet]: 'Account',
     [PageNames.Rewards]: 'Rewards',
-    [PageNames.Exchange]: 'Exchange',
     [PageNames.About]: 'About',
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
@@ -77,14 +75,16 @@ export default {
       [Operation.Swap]: 'Swapped {amount} {symbol} for {amount2} {symbol2}',
       [Operation.AddLiquidity]: 'Supplied {amount} {symbol} and {amount2} {symbol2}',
       [Operation.RemoveLiquidity]: 'Removed {amount} {symbol} and {amount2} {symbol2}',
-      [Operation.CreatePair]: 'Supplied {amount} {symbol} and {amount2} {symbol2}'
+      [Operation.CreatePair]: 'Supplied {amount} {symbol} and {amount2} {symbol2}',
+      [Operation.RegisterAsset]: 'Registered {symbol} asset'
     },
     [TransactionStatus.Error]: {
       [Operation.Transfer]: 'Failed to send {amount} {symbol} to {address}',
       [Operation.Swap]: 'Failed to swap {amount} {symbol} for {amount2} {symbol2}',
       [Operation.AddLiquidity]: 'Failed to supply {amount} {symbol} and {amount2} {symbol2}',
       [Operation.RemoveLiquidity]: 'Failed to remove {amount} {symbol} and {amount2} {symbol2}',
-      [Operation.CreatePair]: 'Failed to supply {amount} {symbol} and {amount2} {symbol2}'
+      [Operation.CreatePair]: 'Failed to supply {amount} {symbol} and {amount2} {symbol2}',
+      [Operation.RegisterAsset]: 'Failed to register {symbol} asset'
     }
   },
   pageNotFound: {
@@ -166,7 +166,6 @@ export default {
   },
   pool: {
     connectWallet: '@:connectWalletText',
-    yourLiquidity: 'Your liquidity',
     connectToWallet: 'Connect to a wallet to add and view your liquidity.',
     liquidityNotFound: 'No liquidity found.',
     addLiquidity: 'Add liquidity',
@@ -287,7 +286,9 @@ export default {
   selectToken: {
     title: 'Select a token',
     searchPlaceholder: 'Search Token Name, Symbol, or Address',
-    emptyListMessage: 'No results'
+    emptyListMessage: 'No results',
+    copy: 'Copy Asset ID',
+    successCopy: '{symbol} Asset ID is copied to the clipboard'
   },
   createPair: {
     title: 'Create a pair',
@@ -334,7 +335,7 @@ export default {
     confirmTitle: 'You will receive'
   },
   dexSettings: {
-    title: 'Settings',
+    title: 'Transaction settings',
     slippageTolerance: 'SLIPPAGE TOLERANCE',
     slippageToleranceHint: 'Your transaction will revert if the price changes unfavorably by more than this percentage.',
     slippageToleranceValidation: {

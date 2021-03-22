@@ -4,7 +4,7 @@
       <div v-if="showPrice" class="swap-info">
         <span>{{ t('exchange.price') }}</span>
         <span class="swap-info-value">{{ priceValue }}</span>
-        <s-button class="el-button--switch-price" type="action" size="small" icon="swap" @click="handleSwitchPrice" />
+        <s-button class="el-button--switch-price" type="action" size="small" icon="arrows-swap-24" @click="handleSwitchPrice" />
       </div>
       <div v-if="showSlippageTolerance && connected" class="swap-info swap-info--slippage-tolerance">
         <span>{{ t('swap.slippageTolerance') }}</span>
@@ -17,21 +17,21 @@
     <template v-else>
       <div class="swap-info swap-info--min-received">
         <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.minReceivedTooltip')" theme="light" placement="right-start" animation="none" :show-arrow="false">
-          <s-icon name="info" size="16" />
+          <s-icon name="info-16" />
         </s-tooltip>
         <span>{{ t(`swap.${isExchangeB ? 'maxSold' : 'minReceived'}`) }}</span>
         <span class="swap-info-value">{{ formattedMinMaxReceived }}<span class="asset-title">{{ getAssetSymbolText }}</span></span>
       </div>
       <!-- <div class="swap-info">
         <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.priceImpactTooltip')" theme="light" placement="right-start" animation="none" :show-arrow="false">
-          <s-icon name="info" size="16" />
+          <s-icon name="info-16" />
         </s-tooltip>
         <span>{{ t('swap.priceImpact') }}</span>
         <span :class="'swap-info-value ' + priceImpactClass">{{ priceImpact }}%</span>
       </div> -->
       <div class="swap-info">
         <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: 0.3})" theme="light" placement="right-start" animation="none" :show-arrow="false">
-          <s-icon name="info" size="16" />
+          <s-icon name="info-16" />
         </s-tooltip>
         <span>{{ t('swap.liquidityProviderFee') }}</span>
         <span class="swap-info-value">{{ formattedLiquidityProviderFee }}<span class="asset-title">{{ xorSymbol }}</span></span>
@@ -39,7 +39,7 @@
       <!-- TODO 4 alexnatalia: Show if logged in and have info about Network Fee -->
       <div v-if="connected" class="swap-info">
         <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.networkFeeTooltip')" theme="light" placement="right-start" animation="none" :show-arrow="false">
-          <s-icon name="info" size="16" />
+          <s-icon name="info-16" />
         </s-tooltip>
         <span>{{ t('swap.networkFee') }}</span>
         <span class="swap-info-value">{{ formattedNetworkFee }}<span class="asset-title">{{ xorSymbol }}</span></span>
@@ -157,6 +157,7 @@ export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMi
   &.s-action.s-small i {
     margin-top: 0;
     margin-left: 0;
+    font-size: 16px !important;
   }
 }
 </style>

@@ -245,6 +245,7 @@ const actions = {
     commit(types.GET_BALANCE_REQUEST)
     try {
       const web3 = await web3Util.getInstance()
+      // TODO: Flter by address instead of symbol
       const asset = rootGetters['assets/registeredAssets'].find(item => item.symbol === symbol)
       if (!asset) {
         commit(types.GET_BALANCE_SUCCESS)

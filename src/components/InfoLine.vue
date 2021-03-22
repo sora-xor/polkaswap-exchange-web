@@ -2,7 +2,7 @@
   <div class="info-line">
     <span class="info-line-label">{{ label }}</span>
     <s-tooltip v-if="tooltipContent" :class="tooltipClasses" popper-class="info-tooltip info-tooltip--info-line" border-radius="mini" :content="tooltipContent" theme="light" placement="right-start" animation="none" :show-arrow="false">
-      <s-icon name="info" size="16" />
+      <s-icon name="info-16" />
     </s-tooltip>
     <span class="info-line-value">{{ value }}<span v-if="assetSymbol" class="asset-symbol">{{ ' ' + assetSymbol }}</span></span>
     <slot />

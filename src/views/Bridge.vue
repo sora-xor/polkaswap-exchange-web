@@ -7,12 +7,11 @@
     >
       <s-card class="bridge-content" border-radius="medium" shadow="never">
         <generic-page-header class="header--bridge" :title="t('bridge.title')" :tooltip="t('bridge.info')" tooltip-placement="bottom">
-          <!-- TODO: Add appropriate icon -->
           <s-button
             v-if="areNetworksConnected"
             class="el-button--history"
             type="action"
-            icon="time"
+            icon="connection-broadcasting-24"
             size="medium"
             @click="handleViewTransactionsHistory"
           />
@@ -47,12 +46,12 @@
               <s-button v-if="isMaxAvailable" class="s-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue">
                 {{ t('bridge.max') }}
               </s-button>
-              <s-button class="s-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectAssetDialog">
-                <token-logo :tokenSymbol="asset.symbol" size="small" />
+              <s-button class="s-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectAssetDialog">
+                <token-logo :token="asset" size="small" />
                 {{ formatAssetSymbol(asset.symbol, !isSoraToEthereum) }}
               </s-button>
             </div>
-            <s-button v-else class="s-button--empty-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" :disabled="!areNetworksConnected" @click="openSelectAssetDialog">
+            <s-button v-else class="s-button--empty-token" type="tertiary" size="small" border-radius="medium" icon="chevron-down-rounded-16" icon-position="right" :disabled="!areNetworksConnected" @click="openSelectAssetDialog">
               {{ t('bridge.chooseToken') }}
             </s-button>
           </div>
@@ -72,7 +71,7 @@
             {{ t('bridge.connectWallet') }}
           </s-button>
         </s-card>
-        <s-button class="s-button--switch" type="action" icon="change-positions" @click="handleSwitchItems" />
+        <s-button class="s-button--switch" type="action" icon="arrows-swap-90-24" @click="handleSwitchItems" />
         <s-card :class="!isSoraToEthereum ? 'bridge-item' : 'bridge-item bridge-item--ethereum'" border-radius="mini" shadow="never">
           <div class="bridge-item-header">
             <div class="bridge-item-title">
@@ -97,7 +96,7 @@
             </s-form-item>
             <div v-if="areNetworksConnected && isAssetSelected" class="asset">
               <s-button class="s-button--choose-token" type="tertiary" size="small" border-radius="medium" disabled>
-                <token-logo :tokenSymbol="asset.symbol" size="small" />
+                <token-logo :token="asset" size="small" />
                 {{ formatAssetSymbol(asset.symbol, isSoraToEthereum) }}
               </s-button>
             </div>
@@ -181,7 +180,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
-import { AccountAsset, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
+import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
 
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -191,7 +190,6 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EthSymbol, ZeroStringValue } from '@/consts'
 import web3Util, { Provider } from '@/utils/web3-util'
-import { RegisteredAccountAsset } from '@/store/assets'
 import { getWalletAddress, isWalletConnected, isNumberValue, formatAddress, isXorAccountAsset, formatAssetSymbol, findAssetInCollection } from '@/utils'
 
 const namespace = 'bridge'
@@ -848,7 +846,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       height: var(--s-size-mini);
     }
     &--empty-token {
-      @include font-weight(600, true);
+      font-weight: 600;
       background-color: var(--s-color-base-background);
       border-color: var(--s-color-base-background);
       &:not(.is-disabled) {
@@ -863,7 +861,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     }
     &--max,
     &--choose-token {
-      @include font-weight(700, true);
+      font-weight: 700;
     }
     &--choose-token {
       margin-left: 0;

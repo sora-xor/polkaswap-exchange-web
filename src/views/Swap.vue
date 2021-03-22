@@ -1,11 +1,17 @@
 <template>
-  <s-form
-    class="el-form--actions"
-    :show-message="false"
-  >
+  <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
+    <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
+      <s-button
+        class="el-button--settings"
+        type="action"
+        icon="basic-settings-24"
+        size="medium"
+        @click="openSettingsDialog"
+      />
+    </generic-page-header>
     <div class="input-container">
       <div class="input-line">
-        <div class="input-title">
+        <div class="input-title p4">
           <span>{{ t('exchange.from') }}</span>
           <span :class="`input-title-estimated ${(areTokensSelected && !isZeroToAmount && isExchangeB) ? 'input-title-estimated--show' : ''}`">
             ({{ t('swap.estimated') }})
@@ -30,20 +36,20 @@
           <s-button v-if="isMaxSwapAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue">
             {{ t('exchange.max') }}
           </s-button>
-          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(true)">
+          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectTokenDialog(true)">
             <token-logo :token="tokenFrom" size="small" />
             {{ tokenFrom.symbol }}
           </s-button>
         </div>
-        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(true)">
+        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectTokenDialog(true)">
           {{ t('exchange.chooseToken') }}
         </s-button>
       </div>
     </div>
-    <s-button class="el-button--switch-tokens" type="action" icon="change-positions" :disabled="!areTokensSelected || isRecountingProcess" @click="handleSwitchTokens" />
+    <s-button class="el-button--switch-tokens" type="action" icon="arrows-swap-90-24" :disabled="!areTokensSelected || isRecountingProcess" @click="handleSwitchTokens" />
     <div class="input-container">
       <div class="input-line">
-        <div class="input-title">
+        <div class="input-title p4">
           <span>{{ t('exchange.to') }}</span>
           <span :class="`input-title-estimated ${(areTokensSelected && !isZeroFromAmount && !isExchangeB) ? 'input-title-estimated--show' : ''}`">
             ({{ t('swap.estimated') }})
@@ -65,12 +71,12 @@
           />
         </s-form-item>
         <div v-if="tokenTo" class="token">
-          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(false)">
+          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectTokenDialog(false)">
             <token-logo :token="tokenTo" size="small" />
             {{ tokenTo.symbol }}
           </s-button>
         </div>
-        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectTokenDialog(false)">
+        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectTokenDialog(false)">
           {{ t('exchange.chooseToken') }}
         </s-button>
       </div>
@@ -99,11 +105,12 @@
     <swap-info v-if="areTokensSelected && !areZeroAmounts" />
     <select-token :visible.sync="showSelectTokenDialog" :connected="connected" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
     <confirm-swap :visible.sync="showConfirmSwapDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmSwap" @checkConfirm="updateAccountAssets" />
+    <settings :visible.sync="showSettings" />
   </s-form>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Watch, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets, KnownSymbols, FPNumber, CodecString, AccountAsset } from '@sora-substrate/util'
@@ -120,6 +127,8 @@ const namespace = 'swap'
 
 @Component({
   components: {
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    Settings: lazyComponent(Components.Settings),
     SwapInfo: lazyComponent(Components.SwapInfo),
     TokenLogo: lazyComponent(Components.TokenLogo),
     SelectToken: lazyComponent(Components.SelectToken),
@@ -157,10 +166,13 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     this.calcMinMaxRecieved()
   }
 
+  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
+
   isInsufficientAmount = false
   insufficientBalanceTokenSymbol = ''
   insufficientAmountTokenSymbol = ''
   isTokenFromSelected = false
+  showSettings = false
   showSelectTokenDialog = false
   showConfirmSwapDialog = false
   isRecountingProcess = false
@@ -417,7 +429,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       await api.updateAccountAssets()
     } catch (error) {
       this.$alert(this.t(error.message), { title: this.t('errorText') })
-      throw new Error(error)
+      console.error(error)
     }
   }
 
@@ -434,6 +446,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   private isZeroValue (value: string): boolean {
     return +value === 0
+  }
+
+  openSettingsDialog (): void {
+    this.showSettings = true
   }
 }
 </script>
@@ -459,7 +475,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   .input-title-estimated {
     margin-left: $inner-spacing-mini / 2;
     font-size: var(--s-font-size-mini);
-    @include font-weight;
+    font-weight: 400;
     opacity: 0;
     &--show {
       opacity: 1;

@@ -4,7 +4,7 @@
       v-if="isInitRequestCompleted"
       class="s-button--view-transactions-history"
       type="link"
-      icon="arrow-left"
+      icon="arrows-arrow-left-24"
       icon-position="left"
       @click="handleViewTransactionsHistory"
     >
@@ -28,14 +28,14 @@
             </template>
             <div v-if="transactionFromHash" :class="hashContainerClasses(!isSoraToEthereum)">
               <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionFromHash)" readonly />
-              <s-button class="s-button--hash-copy" size="medium" type="link" icon="copy" @click="handleCopyTransactionHash(transactionFromHash)" />
+              <s-button class="s-button--hash-copy" size="medium" type="link" icon="copy-16" @click="handleCopyTransactionHash(transactionFromHash)" />
               <!-- TODO: Add work with Polkascan -->
               <s-dropdown
                 v-if="!isSoraToEthereum"
                 class="s-dropdown--hash-menu"
                 borderRadius="mini"
                 type="ellipsis"
-                icon="more-vertical"
+                icon="basic-more-vertical-24"
                 placement="bottom-end"
                 @select="handleOpenEtherscan"
               >
@@ -82,13 +82,13 @@
             </template>
             <div v-if="isTransactionStep2 && transactionToHash" :class="hashContainerClasses(isSoraToEthereum)">
               <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionToHash)" readonly />
-              <s-button class="s-button--hash-copy" size="medium" type="link" icon="copy" @click="handleCopyTransactionHash(transactionToHash)" />
+              <s-button class="s-button--hash-copy" size="medium" type="link" icon="copy-16" @click="handleCopyTransactionHash(transactionToHash)" />
               <s-dropdown
                 v-if="isSoraToEthereum"
                 class="s-dropdown--hash-menu"
                 borderRadius="mini"
                 type="ellipsis"
-                icon="more-vertical"
+                icon="basic-more-vertical-24"
                 placement="bottom-end"
                 @select="handleOpenEtherscan"
               >
@@ -132,6 +132,7 @@
       v-if="isInitRequestCompleted && isTransferCompleted"
       class="s-button--create-transaction"
       type="link"
+      icon="basic-circle-plus-24"
       @click="handleCreateTransaction"
     >
       {{ t('bridgeTransaction.newTransaction') }}
@@ -144,7 +145,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { AccountAsset, KnownSymbols, CodecString } from '@sora-substrate/util'
+import { AccountAsset, RegisteredAccountAsset, KnownSymbols, CodecString } from '@sora-substrate/util'
 import { interpret } from 'xstate'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -153,7 +154,6 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EthSymbol } from '@/consts'
-import { RegisteredAccountAsset } from '@/store/assets'
 import { formatAddress, formatAssetSymbol, copyToClipboard, formatDateItem } from '@/utils'
 import { createFSM, EVENTS, SORA_ETHEREUM_STATES, ETHEREUM_SORA_STATES, STATES } from '@/utils/fsm'
 
@@ -191,6 +191,7 @@ export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingM
   @Action('setHistoryItem', { namespace }) setHistoryItem
   @Action('sendTransferSoraToEth', { namespace }) sendTransferSoraToEth
   @Action('sendTransferEthToSora', { namespace }) sendTransferEthToSora
+  @Action('sendTransaction', { namespace }) sendTransaction
   @Action('receiveTransaction', { namespace }) receiveTransaction
   @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash
 
@@ -207,7 +208,6 @@ export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingM
   callRetryTransition = () => {}
   sendService: any = null
   isInitRequestCompleted = false
-  historyHash: string | undefined
   transactionSteps = {
     from: 'step-from',
     to: 'step-to'
@@ -377,11 +377,10 @@ export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingM
 
   async created (): Promise<void> {
     if (this.isTransactionConfirmed) {
-      this.historyHash = this.$route.params.hash
       this.initializeTransactionStateMachine()
       this.isInitRequestCompleted = true
       this.currentTransactionStep = this.transactionStep
-      if (this.transactionStep === 1) {
+      if (!this.historyItem) {
         this.handleSendTransactionFrom()
       }
     } else {
@@ -446,14 +445,6 @@ export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingM
     this.currentTransactionStep = 2
     this.setTransactionStep(2)
     this.activeTransactionStep = this.transactionSteps.to
-  }
-
-  async sendTransaction (): Promise<void> {
-    if (this.isSoraToEthereum) {
-      await this.sendTransferSoraToEth()
-    } else {
-      await this.sendTransferEthToSora()
-    }
   }
 
   transactionIconStatusClasses (isSecondTransaction: boolean): string {
@@ -568,31 +559,6 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
 .transaction {
   &-container {
     @include bridge-container;
-    .s-button--create-transaction {
-      span {
-        position: relative;
-        padding-left: $inner-spacing-mini * 4;
-        &:before {
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: 0;
-          margin-top: auto;
-          margin-bottom: auto;
-          display: block;
-          height: var(--s-size-mini);
-          width: var(--s-size-mini);
-          content: '';
-          background: url("~@/assets/img/icon-circle-plus.svg") center 100% no-repeat;
-        }
-      }
-      &:hover,
-      &:active {
-        span:before {
-          background-image: url("~@/assets/img/icon-circle-plus--hover.svg");
-        }
-      }
-    }
   }
   &-content {
     .el-card__body {
@@ -700,7 +666,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
       }
       &--view-transactions-history,
       &--create-transaction {
-        @include font-weight(700, true);
+        font-weight: 700;
       }
       &--view-transactions-history {
         line-height: $s-line-height-medium;
@@ -712,7 +678,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     @include bridge-content;
     .el-button {
       margin-top: $basic-spacing;
-      @include font-weight(600, true);
+      font-weight: 600;
     }
   }
   &-hash-container {
@@ -751,7 +717,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
   &-details {
     margin-bottom: $inner-spacing-mini;
     font-feature-settings: $s-font-feature-settings-title;
-    @include font-weight(700, true);
+    font-weight: 700;
     line-height: $s-line-height-medium;
   }
 }
@@ -766,7 +732,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
       padding-right: $inner-spacing-mini;
       padding-left: $inner-spacing-mini;
       font-feature-settings: $s-font-feature-settings-type;
-      @include font-weight(700, true);
+      font-weight: 700;
       letter-spacing: $s-letter-spacing-type;
       text-transform: uppercase;
     }

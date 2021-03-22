@@ -10,10 +10,10 @@
           <s-button
             class="base-title_settings"
             type="action"
-            icon="trash"
+            icon="basic-trash-24"
             size="medium"
             :disabled="!hasHistory"
-            @click="handleSettingsClick"
+            @click="handleClearHistory"
           />
         </s-tooltip>
       </generic-page-header>
@@ -28,9 +28,11 @@
             prefix="el-icon-search"
             size="medium"
             border-radius="mini"
-          />
-          <!-- TODO: Change the icon -->
-          <s-button class="s-button--clear" icon="circle-x" @click="handleResetSearch" />
+          >
+            <template #suffix>
+              <s-button class="s-button--clear" icon="clear-X-16" @click="handleResetSearch" />
+            </template>
+          </s-input>
         </s-form-item>
         <div class="history-items">
           <template v-if="hasHistory">
@@ -42,7 +44,7 @@
                   }) }}</div>
                 <div class="history-item-date">{{ formatDate(item) }}</div>
               </div>
-              <div :class="historyStatusIconClasses(item.status)" />
+              <div :class="historyStatusIconClasses(item.type, item.transactionState)" />
             </div>
           </template>
           <p v-else class="history-empty">{{ t('bridgeHistory.emptyHistory') }}</p>
@@ -63,14 +65,15 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { BridgeTxStatus, Operation } from '@sora-substrate/util'
+import { RegisteredAccountAsset, BridgeTxStatus, Operation, isBridgeOperation, BridgeHistory } from '@sora-substrate/util'
+import { api } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
-import { RegisteredAccountAsset } from '@/store/assets'
 import { formatAssetSymbol, formatDateItem } from '@/utils'
+import { STATES } from '@/utils/fsm'
 
 const namespace = 'bridge'
 
@@ -83,7 +86,7 @@ const namespace = 'bridge'
 export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, LoadingMixin) {
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
-  @Getter('history', { namespace }) history!: Array<any>
+  @Getter('history', { namespace }) history!: Array<BridgeHistory> | null
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: string
   @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: string
 
@@ -115,10 +118,8 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 
   get filteredHistory (): Array<any> {
     if (!this.history?.length) return []
-    const historyCopy = this.history.slice().reverse()
-    return this.getFilteredHistory(
-      historyCopy.filter(item => ([Operation.EthBridgeOutgoing, Operation.EthBridgeIncoming].includes(item.type) && item.transactionStep))
-    )
+    const historyCopy = this.history.sort((a: BridgeHistory, b: BridgeHistory) => a.startTime && b.startTime ? b.startTime - a.startTime : 0)
+    return this.getFilteredHistory(historyCopy.filter(item => (isBridgeOperation(item.type) && item.transactionStep)))
   }
 
   get hasHistory (): boolean {
@@ -137,8 +138,8 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     if (this.query) {
       const query = this.query.toLowerCase().trim()
       return history.filter(item =>
-        `${this.getAssetBySymbol(item.symbol)?.address}`.toLowerCase().includes(query) ||
-        `${this.getAssetBySymbol(item.symbol)?.externalAddress}`.toLowerCase().includes(query) ||
+        `${item.assetAddress}`.toLowerCase().includes(query) ||
+        `${this.registeredAssets.find(asset => asset.address === item.assetAddress)?.externalAddress}`.toLowerCase().includes(query) ||
         `${formatAssetSymbol(item.symbol)}`.toLowerCase().includes(query) ||
         `${formatAssetSymbol(item.symbol, true)}`.toLowerCase().includes(query)
       )
@@ -147,25 +148,22 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     return history
   }
 
-  getAssetBySymbol (symbol: string): RegisteredAccountAsset | null {
-    return symbol ? this.registeredAssets.filter(asset => asset.symbol === symbol)?.[0] : null
-  }
-
   formatDate (response: any): string {
     // We use current date if request is failed
     const date = response && response.endTime ? new Date(response.endTime) : new Date()
     return `${date.getDate()} ${this.t(`months[${date.getMonth()}]`)} ${date.getFullYear()}, ${formatDateItem(date.getHours())}:${formatDateItem(date.getMinutes())}:${formatDateItem(date.getSeconds())}`
   }
 
-  historyStatusIconClasses (status: string): string {
+  historyStatusIconClasses (type: Operation, state: STATES): string {
     const iconClass = 'history-item-icon'
     const classes = [iconClass]
-    if (status === BridgeTxStatus.Ready || status === BridgeTxStatus.Pending) {
-      classes.push(`${iconClass}--pending`)
+    if ([STATES.SORA_REJECTED, STATES.ETHEREUM_REJECTED].includes(state)) {
+      classes.push(`${iconClass}--error`)
       return classes.join(' ')
     }
-    if (status === BridgeTxStatus.Failed) {
-      classes.push(`${iconClass}--error`)
+    if (!(this.isOutgoingType(type) ? state === STATES.ETHEREUM_COMMITED : state === STATES.SORA_COMMITED)) {
+      classes.push(`${iconClass}--pending`)
+      return classes.join(' ')
     }
     return classes.join(' ')
   }
@@ -177,29 +175,29 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     return true
   }
 
-  async showHistory (idOrHash: string): Promise<void> {
-    const currentTransaction = this.filteredHistory.filter(item => (item.id === idOrHash) || (this.isOutgoingType(item.type) ? item.hash === idOrHash : item.ethereumHash === idOrHash))[0]
-    if (currentTransaction) {
+  async showHistory (id: string): Promise<void> {
+    const tx = api.bridge.getHistory(id)
+    if (tx) {
       await this.setTransactionConfirm(true)
-      await this.setSoraToEthereum(this.isOutgoingType(currentTransaction.type))
-      await this.setAssetAddress(this.getAssetBySymbol(currentTransaction?.symbol)?.address)
-      await this.setAmount(currentTransaction.amount)
-      await this.setSoraTransactionHash(currentTransaction.hash)
-      await this.setSoraTransactionDate(currentTransaction[this.isOutgoingType(currentTransaction.type) ? 'startTime' : 'endTime'])
-      await this.setEthereumTransactionHash(currentTransaction.ethereumHash)
-      await this.setEthereumTransactionDate(currentTransaction[!this.isOutgoingType(currentTransaction.type) ? 'startTime' : 'endTime'])
-      if (currentTransaction.status === BridgeTxStatus.Failed) {
+      await this.setSoraToEthereum(this.isOutgoingType(tx.type))
+      await this.setAssetAddress(tx.assetAddress)
+      await this.setAmount(tx.amount)
+      await this.setSoraTransactionHash(tx.hash)
+      await this.setSoraTransactionDate(tx[this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
+      await this.setEthereumTransactionHash(tx.ethereumHash)
+      await this.setEthereumTransactionDate(tx[!this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
+      if (tx.status === BridgeTxStatus.Failed) {
         await this.getNetworkFee()
         await this.getEthNetworkFee()
-        await this.setSoraNetworkFee(this.isOutgoingType(currentTransaction.type) ? currentTransaction.soraNetworkFee : this.soraNetworkFee)
-        await this.setEthereumNetworkFee(!this.isOutgoingType(currentTransaction.type) ? currentTransaction.ethereumNetworkFee : this.ethereumNetworkFee)
+        await this.setSoraNetworkFee(this.isOutgoingType(tx.type) ? tx.soraNetworkFee : this.soraNetworkFee)
+        await this.setEthereumNetworkFee(!this.isOutgoingType(tx.type) ? tx.ethereumNetworkFee : this.ethereumNetworkFee)
       } else {
-        await this.setSoraNetworkFee(currentTransaction.soraNetworkFee)
-        await this.setEthereumNetworkFee(currentTransaction.ethereumNetworkFee)
+        await this.setSoraNetworkFee(tx.soraNetworkFee)
+        await this.setEthereumNetworkFee(tx.ethereumNetworkFee)
       }
-      await this.setTransactionStep(currentTransaction.transactionStep)
-      await this.setCurrentTransactionState(currentTransaction.transactionState)
-      await this.setHistoryItem(currentTransaction)
+      await this.setTransactionStep(tx.transactionStep)
+      await this.setCurrentTransactionState(tx.transactionState)
+      await this.setHistoryItem(tx)
     }
     router.push({ name: PageNames.BridgeTransaction })
   }
@@ -212,7 +210,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     this.currentPage = current
   }
 
-  async handleSettingsClick (): Promise<void> {
+  async handleClearHistory (): Promise<void> {
     await this.clearHistory()
   }
 
@@ -250,7 +248,6 @@ $history-search-class: 'history--search';
   }
 }
 
-@include search-item-unscoped($history-search-class);
 .#{$history-search-class} {
   .el-input__inner {
     padding-right: var(--s-size-medium);
@@ -288,7 +285,7 @@ $history-item-top-border-height: 1px;
     @include empty-search;
   }
 }
-@include search-item('history--search', 0);
+@include search-item('history--search');
 .history-item {
   display: flex;
   margin-right: -#{$history-item-horizontal-space};
@@ -314,10 +311,8 @@ $history-item-top-border-height: 1px;
   &:hover {
     background-color: var(--s-color-base-background-hover);
     cursor: pointer;
-    &:not(:first-child) {
-      &:before {
-        width: 100%;
-      }
+    &:before, & + .history-item::before {
+      width: 100%;
     }
   }
   &-info {
@@ -334,7 +329,7 @@ $history-item-top-border-height: 1px;
     color: var(--s-color-base-content-secondary);
     line-height: $s-line-height-mini;
   }
-  @include status-icon;
+  @include status-icon(true);
   &-icon {
     flex-shrink: 0;
     align-self: flex-start;

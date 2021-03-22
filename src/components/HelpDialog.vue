@@ -11,7 +11,7 @@
           target="_blank"
         >
           <span>{{ link.title }}</span>
-          <s-icon name="external-link" size="16" />
+          <s-icon name="external-link-16" />
         </a>
         <s-divider v-if="index !== links.length - 1" class="help-links-item_divider" />
       </div>
