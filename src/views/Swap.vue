@@ -10,9 +10,9 @@
       />
     </generic-page-header>
     <div class="input-container">
-      <div class="input-line">
+      <div class="input-line-header">
         <div class="input-title p4">
-          <span>{{ t('exchange.from') }}</span>
+          <span>{{ t('transfers.from') }}</span>
           <span :class="`input-title-estimated ${(areTokensSelected && !isZeroToAmount && isExchangeB) ? 'input-title-estimated--show' : ''}`">
             ({{ t('swap.estimated') }})
           </span>
@@ -22,7 +22,7 @@
           <span class="token-balance-value">{{ formatBalance(tokenFrom) }}</span>
         </div>
       </div>
-      <div class="input-line">
+      <div class="input-line-content">
         <s-form-item>
           <s-float-input
             class="s-input--token-value"
@@ -34,7 +34,7 @@
         </s-form-item>
         <div v-if="tokenFrom" class="token">
           <s-button v-if="isMaxSwapAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue">
-            {{ t('exchange.max') }}
+            {{ t('buttons.max') }}
           </s-button>
           <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectTokenDialog(true)">
             <token-logo :token="tokenFrom" size="small" />
@@ -42,15 +42,15 @@
           </s-button>
         </div>
         <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectTokenDialog(true)">
-          {{ t('exchange.chooseToken') }}
+          {{ t('buttons.chooseToken') }}
         </s-button>
       </div>
     </div>
     <s-button class="el-button--switch-tokens" type="action" icon="arrows-swap-90-24" :disabled="!areTokensSelected || isRecountingProcess" @click="handleSwitchTokens" />
     <div class="input-container">
-      <div class="input-line">
+      <div class="input-line-header">
         <div class="input-title p4">
-          <span>{{ t('exchange.to') }}</span>
+          <span>{{ t('transfers.to') }}</span>
           <span :class="`input-title-estimated ${(areTokensSelected && !isZeroFromAmount && !isExchangeB) ? 'input-title-estimated--show' : ''}`">
             ({{ t('swap.estimated') }})
           </span>
@@ -60,7 +60,7 @@
           <span class="token-balance-value">{{ formatBalance(tokenTo) }}</span>
         </div>
       </div>
-      <div class="input-line">
+      <div class="input-line-content">
         <s-form-item>
           <s-float-input
             class="s-input--token-value"
@@ -77,17 +77,17 @@
           </s-button>
         </div>
         <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectTokenDialog(false)">
-          {{ t('exchange.chooseToken') }}
+          {{ t('buttons.chooseToken') }}
         </s-button>
       </div>
     </div>
-    <swap-info v-if="areTokensSelected && !areZeroAmounts" :show-price="true" :show-slippage-tolerance="true" />
+    <swap-info v-if="areTokensSelected && !areZeroAmounts" class="info-line-container" :show-price="true" :show-slippage-tolerance="true" />
     <s-button v-if="!connected" type="primary" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
     <s-button v-else type="primary" :disabled="!areTokensSelected || areZeroAmounts || isInsufficientAmount || isInsufficientBalance" @click="handleConfirmSwap">
       <template v-if="!areTokensSelected || (isZeroFromAmount && isZeroToAmount)">
-        {{ t('exchange.enterAmount') }}
+        {{ t('buttons.enterAmount') }}
       </template>
       <template v-else-if="isInsufficientLiquidity">
         {{ t('swap.insufficientLiquidity') }}
@@ -102,7 +102,7 @@
         {{ t('exchange.Swap') }}
       </template>
     </s-button>
-    <swap-info v-if="areTokensSelected && !areZeroAmounts" />
+    <swap-info v-if="areTokensSelected && !areZeroAmounts" class="info-line-container" />
     <select-token :visible.sync="showSelectTokenDialog" :connected="connected" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
     <confirm-swap :visible.sync="showConfirmSwapDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmSwap" @checkConfirm="updateAccountAssets" />
     <settings :visible.sync="showSettings" />

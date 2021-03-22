@@ -65,6 +65,16 @@ export default {
     appVersion: '@:appName version',
     contactUs: 'Contact us'
   },
+  buttons: {
+    max: 'MAX',
+    chooseToken: 'Choose token',
+    chooseTokens: 'Choose tokens',
+    enterAmount: 'Enter amount'
+  },
+  transfers: {
+    from: 'From',
+    to: 'To'
+  },
   operations: {
     [TransactionStatus.Finalized]: {
       [Operation.Transfer]: 'Sent {amount} {symbol} to {address}',
@@ -128,13 +138,7 @@ export default {
   exchange: {
     [PageNames.Swap]: 'Swap',
     [PageNames.Pool]: 'Pool',
-    from: 'From',
-    to: 'To',
     balance: 'Balance',
-    max: 'MAX',
-    chooseToken: 'Choose token',
-    chooseTokens: 'Choose tokens',
-    enterAmount: 'Enter amount',
     insufficientBalance: 'Insufficient {tokenSymbol} balance',
     price: 'Price',
     transactionSubmitted: 'Transaction submitted',
@@ -177,17 +181,12 @@ export default {
   bridge: {
     title: 'Hashi Bridge',
     info: 'Convert your tokens from SORA Network to Ethereum Network and viceversa.',
-    from: 'From',
-    to: 'To',
     balance: 'Balance',
-    chooseToken: 'Choose token',
-    max: 'MAX',
-    connectWallet: 'Connect wallet',
+    connectWallet: '@:connectWalletText',
     connected: 'Connected',
     changeWallet: 'Change wallet',
     changeNetwork: '@:changeNetworkText',
     next: 'Next',
-    enterAnAmount: 'Enter an amount',
     connectWallets: 'Connect wallets to view respective transaction history.',
     soraNetworkFee: 'Sora Network Fee',
     ethereumNetworkFee: 'Ethereum Network Fee',

@@ -1,6 +1,6 @@
 <template>
   <div v-loading="parentLoading" class="container el-form--pool">
-    <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')" tooltip-placement="bottom">
+    <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')">
       <s-button
         class="el-button--settings"
         type="action"

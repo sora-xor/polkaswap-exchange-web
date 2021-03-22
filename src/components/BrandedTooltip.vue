@@ -37,6 +37,7 @@ $tooltip-padding-bottom: $inner-spacing-mini * 0.75;
   }
   &[x-placement^="top"] .popper__arrow {
     border-top-color: var(--s-color-brand-day);
+    border-bottom-color: transparent;
     &::after {
       border-top-color: inherit;
     }
@@ -49,12 +50,14 @@ $tooltip-padding-bottom: $inner-spacing-mini * 0.75;
   }
   &[x-placement^="right"] .popper__arrow {
     border-right-color: var(--s-color-brand-day);
+    border-bottom-color: transparent;
     &::after {
       border-right-color: inherit;
     }
   }
   &[x-placement^="left"] .popper__arrow {
     border-left-color: var(--s-color-brand-day);
+    border-bottom-color: transparent;
     &::after {
       border-left-color: inherit;
     }
