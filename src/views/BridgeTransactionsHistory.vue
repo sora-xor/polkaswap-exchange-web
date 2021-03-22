@@ -11,7 +11,6 @@
             class="base-title_settings"
             type="action"
             icon="basic-trash-24"
-            size="medium"
             :disabled="!hasHistory"
             @click="handleClearHistory"
           />

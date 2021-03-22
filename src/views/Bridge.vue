@@ -12,7 +12,6 @@
             class="el-button--history"
             type="action"
             icon="time-time-history-24"
-            size="medium"
             @click="handleViewTransactionsHistory"
           />
           <!-- TODO: Add ability to change network -->
@@ -21,7 +20,6 @@
             class="el-button--history"
             type="action"
             icon="connection-broadcasting-24"
-            size="medium"
             @click="handleChangeNetwork"
           /> -->
         </generic-page-header>
