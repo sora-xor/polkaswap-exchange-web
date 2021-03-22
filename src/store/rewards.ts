@@ -4,27 +4,10 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-
-const mockRewards = [
-  {
-    title: 'SORA.farm harvest',
-    amount: 12137.1304,
-    symbol: 'PSWAP'
-  },
-  {
-    title: 'NFT Airdrop',
-    amount: 442.450,
-    symbol: 'PSWAP'
-  },
-  {
-    title: 'XOR ERC-20',
-    amount: 234.1322,
-    symbol: 'VAL'
-  }
-]
+import { FPNumber, CodecString, KnownSymbols, KnownAssets } from '@sora-substrate/util'
 
 export interface Reward {
-  symbol: string;
+  symbol: string; // address
   amount: number;
   title?: string;
 }
@@ -60,6 +43,41 @@ const getters = {
   },
   rewardsAvailable (state) {
     return Array.isArray(state.rewards) && state.rewards.length !== 0
+  },
+  rewardsByAssetsList (state, getters) {
+    if (!getters.rewardsAvailable) {
+      return [
+        {
+          symbol: KnownSymbols.PSWAP,
+          amount: '-'
+        },
+        {
+          symbol: KnownSymbols.VAL,
+          amount: '-'
+        }
+      ]
+    }
+
+    const rewardsHash = state.rewards.reduce((result, { asset, amount }) => {
+      const { address, decimals } = asset
+      const current = result[address] || new FPNumber(0, decimals)
+      const addValue = FPNumber.fromCodecValue(amount, decimals)
+
+      result[address] = current.add(addValue)
+
+      return result
+    }, {})
+
+    return Object.entries(rewardsHash).reduce((total, [address, amount]) => {
+      if (amount.isZero()) return total
+
+      total.push({
+        symbol: KnownAssets.get(address).symbol,
+        amount: amount.format()
+      })
+
+      return total
+    }, [])
   }
 }
 
@@ -105,18 +123,29 @@ const actions = {
   async getRewards ({ commit }) {
     commit(types.GET_REWARDS_REQUEST)
     try {
-      const rewards = await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          if (Math.random() < 0.5) {
-            resolve(mockRewards)
-          } else {
-            reject(new Error())
-          }
-        }, 3000)
-      })
+      const [xorERC20, farm, nft] = await api.api.rpc.rewards.claimables('0x21Bc9f4a3d9Dc86f142F802668dB7D908cF0A636')
+
+      const valAsset = KnownAssets.get(KnownSymbols.VAL)
+      const pswapAsset = KnownAssets.get(KnownSymbols.PSWAP)
+
+      const rewards = [
+        {
+          asset: pswapAsset,
+          amount: new FPNumber(farm, pswapAsset.decimals).toCodecString()
+        },
+        {
+          asset: KnownAssets.get(KnownSymbols.PSWAP),
+          amount: new FPNumber(nft, pswapAsset.decimals).toCodecString()
+        },
+        {
+          asset: KnownAssets.get(KnownSymbols.VAL),
+          amount: new FPNumber(xorERC20, valAsset.decimals).toCodecString()
+        }
+      ]
 
       commit(types.GET_REWARDS_SUCCESS, rewards)
     } catch (error) {
+      console.log(error)
       commit(types.GET_REWARDS_FAILURE)
     }
   },

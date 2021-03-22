@@ -8,7 +8,7 @@
           {{ t('rewards.claiming.pending') }}
         </div>
         <div v-if="connectedState" class="rewards-amount">
-          <rewards-amount-header v-if="rewardsChecked" :items="rewardsHeader" />
+          <rewards-amount-header v-if="rewardsChecked" :items="rewardsByAssetsList" />
           <rewards-amount-table v-if="rewardsAvailable" class="rewards-table" :items="rewards" />
           <div class="rewards-footer">
             <s-divider />
@@ -48,7 +48,7 @@ import { Components } from '@/consts'
 import WalletConnectMixin from '../components/mixins/WalletConnectMixin'
 import LoadingMixin from '../components/mixins/LoadingMixin'
 
-import { Reward } from '../store/rewards'
+import { FPNumber, KnownAssets } from '@sora-substrate/util'
 
 @Component({
   components: {
@@ -63,7 +63,7 @@ import { Reward } from '../store/rewards'
 export default class Rewards extends Mixins(WalletConnectMixin, LoadingMixin) {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
-  @State(state => state.rewards.rewards) rewards!: Array<Reward>
+  @State(state => state.rewards.rewards) rewards!: Array<object>
   @State(state => state.rewards.rewardsFetching) rewardsFetching
   @State(state => state.rewards.rewardsClaiming) rewardsClaiming
   @State(state => state.rewards.transactionStep) transactionStep
@@ -71,6 +71,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, LoadingMixin) {
 
   @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean
   @Getter('rewardsChecked', { namespace: 'rewards' }) rewardsChecked!: boolean
+  @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList: Array<object>
 
   @Action('reset', { namespace: 'rewards' }) reset!: () => void
   @Action('getRewards', { namespace: 'rewards' }) getRewards!: () => Promise<void>
@@ -92,35 +93,12 @@ export default class Rewards extends Mixins(WalletConnectMixin, LoadingMixin) {
     return this.t('rewards.transactions.confimation', { order, total: this.transactionStepsCount })
   }
 
-  get gradientSymbol (): string {
-    return ''
-  }
-
-  get rewardsHeader (): Array<Reward> {
-    if (!this.rewardsAvailable) {
-      return [
-        {
-          amount: 0,
-          symbol: 'PSWAP'
-        },
-        {
-          amount: 0,
-          symbol: 'VAL'
-        }
-      ]
-    }
-
-    const rewardsHash = this.rewards.reduce((result, { symbol, amount }: Reward) => {
-      result[symbol] = (result[symbol] || 0) + amount
-
-      return result
-    }, {})
-
-    return Object.entries(rewardsHash).map(([symbol, amount]) => ({ symbol, amount }) as Reward)
-  }
-
   get rewardTokenSymbols (): Array<string> {
-    return this.rewardsHeader.map(item => item.symbol)
+    return this.rewardsByAssetsList.map(item => item.symbol)
+  }
+
+  get gradientSymbol (): string {
+    return this.rewardTokenSymbols.length === 1 ? this.rewardTokenSymbols[0] : ''
   }
 
   get hintText (): string {
