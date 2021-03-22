@@ -7,7 +7,7 @@
       class="page-header-tooltip"
       popper-class="info-tooltip info-tooltip--page-header"
       :content="tooltip"
-      placement="right-start"
+      :placement="tooltipPlacement"
     >
       <s-icon name="info-16" />
     </branded-tooltip>
@@ -32,7 +32,7 @@ export default class GenericPageHeader extends Mixins(TranslationMixin) {
   @Prop({ default: PageNames.Pool, type: String }) readonly backPageName?: string
   @Prop({ default: '', type: String }) readonly title!: string
   @Prop({ default: '', type: String }) readonly tooltip?: string
-  @Prop({ default: 'bottom-end', type: String }) readonly tooltipPlacement?: string
+  @Prop({ default: 'right-start', type: String }) readonly tooltipPlacement?: string
 
   get headerClasses (): string {
     const baseClass = 'page-header'
