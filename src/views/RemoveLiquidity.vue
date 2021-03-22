@@ -23,14 +23,14 @@
         </div>
       </info-card>
       <div class="input-container">
-        <div class="input-line">
+        <div class="input-line-header">
           <div class="input-title p4">{{ t('removeLiquidity.input') }}</div>
           <div v-if="isWalletConnected && liquidity" class="token-balance">
             <span class="token-balance-title">{{ t('createPair.balance') }}</span>
             <span class="token-balance-value">{{ getTokenBalance(liquidity) }}</span>
           </div>
         </div>
-        <div class="input-line">
+        <div class="input-line-content">
           <s-form-item>
             <s-float-input
               ref="liquidityAmount"
@@ -44,7 +44,7 @@
           </s-form-item>
           <div class="token">
             <s-button v-if="isMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleLiquidityMaxValue">
-              {{ t('exchange.max') }}
+              {{ t('buttons.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <div class="liquidity-logo">
@@ -59,11 +59,11 @@
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
 
       <div class="input-container">
-        <div class="input-line">
+        <div class="input-line-header">
           <div class="input-title p4">{{ t('removeLiquidity.output') }}</div>
           <div v-if="isWalletConnected && liquidity" class="token-balance">-</div>
         </div>
-        <div class="input-line">
+        <div class="input-line-content">
           <s-form-item>
             <s-float-input
               ref="firstTokenAmount"
@@ -87,11 +87,11 @@
       <s-icon class="icon-divider" name="plus-16" />
 
       <div class="input-container">
-        <div class="input-line">
+        <div class="input-line-header">
           <div class="input-title p4">{{ t('removeLiquidity.output') }}</div>
           <div v-if="isWalletConnected && liquidity" class="token-balance">-</div>
         </div>
-        <div class="input-line">
+        <div class="input-line-content">
           <s-form-item>
             <s-float-input
               ref="secondTokenAmount"
@@ -112,24 +112,29 @@
         </div>
       </div>
 
-      <div v-if="price || priceReversed || fee" class="price-container">
-        <s-row v-if="price || priceReversed" flex justify="space-between">
-          <div>{{ t('removeLiquidity.price') }}</div>
-          <div class="price">
-            <div>1 {{ firstToken.symbol }} = {{ priceReversed }} {{ secondToken.symbol }}</div>
-            <div>1 {{ secondToken.symbol }} = {{ price }} {{ firstToken.symbol }}</div>
-          </div>
-        </s-row>
-        <s-row v-if="fee" flex justify="space-between">
-          <!-- TODO: Add tooltip here -->
-          <div>{{ t('createPair.networkFee') }}</div>
-          <div>{{ formattedFee }} {{ KnownSymbols.XOR }}</div>
-        </s-row>
+      <div v-if="price || priceReversed || fee" class="info-line-container">
+        <info-line
+          v-if="price || priceReversed"
+          :label="t('removeLiquidity.price')"
+          :value="`1 ${firstToken.symbol} = ${priceReversed}`"
+          :asset-symbol="secondToken.symbol"
+        />
+        <info-line
+          v-if="price || priceReversed"
+          :value="`1 ${secondToken.symbol} = ${price}`"
+          :asset-symbol="firstToken.symbol"
+        />
+        <info-line
+          v-if="fee"
+          :label="t('createPair.networkFee')"
+          :value="formattedFee"
+          :asset-symbol="KnownSymbols.XOR"
+        />
       </div>
 
       <s-button type="primary" border-radius="small" :disabled="isEmptyAmount || isInsufficientBalance" @click="openConfirmDialog">
         <template v-if="isEmptyAmount">
-          {{ t('exchange.enterAmount') }}
+          {{ t('buttons.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
           {{ t('exchange.insufficientBalance', { tokenSymbol: t('removeLiquidity.liquidity') }) }}
@@ -163,6 +168,7 @@ const namespace = 'removeLiquidity'
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     InfoCard: lazyComponent(Components.InfoCard),
+    InfoLine: lazyComponent(Components.InfoLine),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity)
@@ -359,19 +365,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
 <style lang="scss" scoped>
 .icon-divider {
   padding: $inner-spacing-medium;
-}
-
-.price-container {
-  width: 100%;
-  .s-row {
-    margin: $inner-spacing-medium $inner-spacing-medium 0;
-    color: var(--s-color-base-content-secondary);
-    line-height: $s-line-height-big;
-    font-feature-settings: $s-font-feature-settings-common;
-  }
-}
-.price {
-  text-align: right;
 }
 
 .el-form--actions {

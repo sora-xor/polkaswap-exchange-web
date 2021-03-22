@@ -54,47 +54,60 @@
   overflow: hidden;
 }
 
+@mixin generic-input-lines($inputLineClass: "input-line") {
+  .#{$inputLineClass} {
+    &-header, &-footer {
+      padding-top: $inner-spacing-mini / 2;
+      padding-right: $inner-spacing-medium;
+      padding-left: $inner-spacing-medium;
+      font-size: var(--s-font-size-mini);
+      line-height: $s-line-height-big;
+    }
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: $inner-spacing-mini;
+    }
+    &-content {
+      margin-bottom: $inner-spacing-mini;
+      display: flex;
+      justify-content: space-between;
+      padding-right: $inner-spacing-small;
+      padding-left: $inner-spacing-medium;
+    }
+    .token-balance {
+      text-align: right;
+      &-title {
+        margin-right: $inner-spacing-mini / 2;
+        color: var(--s-color-base-content-secondary);
+      }
+      &-value {
+        word-break: break-all;
+      }
+    }
+  }
+}
+
 @mixin input-form-styles {
   display: flex;
   flex-direction: column;
   align-items: center;
   .input-container {
     position: relative;
-    padding: $inner-spacing-small $inner-spacing-mini $inner-spacing-mini $inner-spacing-medium;
     width: 100%;
     background-color: var(--s-color-base-background);
     border-radius: var(--s-border-radius-mini);
-    .input-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      + .input-line {
-        align-items: center;
-        margin-top: $inner-spacing-small;
-      }
-    }
+    @include generic-input-lines;
     .el-form-item {
       margin-bottom: 0;
       margin-right: $inner-spacing-mini;
       width: 100%;
     }
-    .input-title,
-    .token-balance {
+    .input-title {
       display: flex;
-    }
-    .input-title,
-    .token-balance-title {
       margin-top: $inner-spacing-mini / 2;
       margin-bottom: $inner-spacing-mini / 2;
-    }
-    .token-balance {
-      flex-wrap: wrap;
-      padding-right: $inner-spacing-mini;
-      align-items: center;
-      justify-content: flex-end;
-      text-align: right;
-    }
-    .input-title {
       align-items: baseline;
       font-family: "Sora", sans-serif !important;
       margin-right: $inner-spacing-mini;
