@@ -1,11 +1,15 @@
 <template>
-  <!-- TODO: Check if we could use this component to have appropriate layout behaviour -->
   <div class="info-line">
-    <s-tooltip v-if="tooltipContent" class="info-line-icon" popper-class="info-tooltip info-tooltip--info-line" border-radius="mini" :content="tooltipContent" theme="light" placement="right-start" animation="none" :show-arrow="false">
-      <s-icon name="info" size="16" />
-    </s-tooltip>
-    <span>{{ label }}</span>
-    <span class="info-line-value">{{ value }}<span v-if="assetTitle" class="asset-title">{{ ' ' + assetTitle }}</span></span>
+    <slot name="info-line-prefix" />
+    <span class="info-line-label">{{ label }}</span>
+    <branded-tooltip
+      v-if="tooltipContent"
+      :content="tooltipContent"
+      placement="right-start"
+    >
+      <s-icon name="info-16" />
+    </branded-tooltip>
+    <span class="info-line-value">{{ value }}<span v-if="assetSymbol" class="asset-symbol">{{ ' ' + assetSymbol }}</span></span>
     <slot />
   </div>
 </template>
@@ -13,12 +17,31 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 
-@Component
+import { Components, InfoTooltipPosition } from '@/consts'
+import { lazyComponent } from '@/router'
+
+@Component({
+  components: {
+    BrandedTooltip: lazyComponent(Components.BrandedTooltip)
+  }
+})
 export default class InfoLine extends Vue {
-  @Prop({ default: '', type: String }) readonly tooltipContent!: string
   @Prop({ default: '', type: String }) readonly label!: string
-  @Prop({ default: '', type: String }) readonly value!: string
-  @Prop({ default: '', type: String }) readonly assetTitle!: string
+  @Prop({ default: '', type: String }) readonly tooltipContent?: string
+  @Prop({ default: InfoTooltipPosition.RIGHT, type: String }) readonly tooltipPosition?: string
+  @Prop({ default: '' }) readonly value!: string | number
+  @Prop({ default: '', type: String }) readonly assetSymbol?: string
+
+  get tooltipClasses (): string {
+    const iconClass = 'info-line-icon'
+    const classes = [iconClass]
+
+    if (this.tooltipPosition) {
+      classes.push(`${iconClass}--${this.tooltipPosition.toLowerCase()}`)
+    }
+
+    return classes.join(' ')
+  }
 }
 </script>
 
@@ -26,11 +49,14 @@ export default class InfoLine extends Vue {
 .info-tooltip--info-line {
   margin-left: #{$inner-spacing-mini / 2} !important;
 }
-.el-button--switch-price {
-  @include switch-button-inherit-styles;
-  &.s-action.s-small i {
-    margin-top: 0;
-    margin-left: 0;
+.info-line-container {
+  border: 1px solid var(--s-color-base-border-secondary);
+  border-radius: var(--s-border-radius-small);
+  margin-top: $inner-spacing-medium;
+  padding: $inner-spacing-mini / 2 $inner-spacing-mini;
+  width: 100%;
+  .p2 {
+    padding: $inner-spacing-mini / 4 $inner-spacing-mini / 2;
   }
 }
 </style>
@@ -39,38 +65,47 @@ export default class InfoLine extends Vue {
 .info-line {
   display: flex;
   align-items: center;
-  margin-top: $inner-spacing-mini;
   width: 100%;
-  padding-right: $inner-spacing-mini;
-  padding-left: $inner-spacing-mini;
+  padding: $inner-spacing-mini / 4 $inner-spacing-mini / 2;
   color: var(--s-color-base-content-secondary);
+  font-size: var(--s-font-size-mini);
+  font-feature-settings: $s-font-feature-settings-common;
+  line-height: $s-line-height-big;
+  &:first-child {
+    margin-top: 0;
+  }
   &-container {
     width: 100%;
   }
-  > span:first-of-type {
-    margin-right: $inner-spacing-small;
+  &-label {
+    margin-right: $inner-spacing-mini;
     word-break: keep-all;
   }
   &-value {
     margin-left: auto;
     text-align: right;
-    font-feature-settings: $s-font-feature-settings-common;
     word-break: break-all;
   }
-  .asset-title {
+  .asset-symbol {
     word-break: keep-all;
     white-space: nowrap;
   }
   .el-tooltip {
     margin-right: $inner-spacing-mini;
     flex-shrink: 0;
+    i {
+      margin-top: auto;
+      margin-bottom: auto;
+      display: block;
+      color: var(--s-color-base-content-tertiary);
+    }
   }
   &-icon {
     position: relative;
     height: var(--s-size-mini);
     width: var(--s-size-mini);
-    background-color: var(--s-color-base-background);
     border-radius: var(--s-border-radius-small);
+    color: inherit;
     &:hover {
       background-color: var(--s-color-base-background-hover);
       cursor: pointer;
@@ -87,11 +122,19 @@ export default class InfoLine extends Vue {
       margin: auto;
       font-size: var(--s-icon-font-size-mini);
     }
+    &--left {
+      order: -1;
+    }
   }
-  .el-button--switch-price {
-    margin-right: 0;
+  .el-button {
     margin-left: $inner-spacing-mini;
-    @include switch-button;
+    margin-right: 0;
+  }
+  .token-logo {
+    margin-right: $inner-spacing-mini;
+  }
+  p {
+    font-size: inherit;
   }
 }
 </style>

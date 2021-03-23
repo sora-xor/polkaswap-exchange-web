@@ -6,7 +6,7 @@
     <div class="tokens">
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedFromValue }}</span>
-        <s-icon class="icon-divider" name="plus-rounded" size="medium" />
+        <s-icon class="icon-divider" name="plus-16" />
         <span class="token-value">{{ formattedToValue }}</span>
       </div>
       <div class="tokens-info-container">
@@ -22,22 +22,23 @@
     </div>
     <p class="transaction-message" v-html="t('removeLiquidity.outputMessage', { slippageTolerance })" />
     <s-divider />
-    <s-row flex justify="space-between" class="price-container">
-      <div v-if="firstToken && secondToken">
-        <s-row flex>
-          <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="mini" />
-          {{ t('confirmSupply.poolTokensBurned', { first: firstToken.symbol, second: secondToken.symbol }) }}
-        </s-row>
-      </div>
-      <div>{{ formattedLiquidityValue }}</div>
-    </s-row>
-    <s-row flex justify="space-between" class="price-container">
-      <div>{{ t('removeLiquidity.price') }}</div>
-      <div class="price">
-        <div>1 {{ firstToken.symbol }} = {{ price }} {{ secondToken.symbol }}</div>
-        <div>1 {{ secondToken.symbol }} = {{ priceReversed }} {{ firstToken.symbol }}</div>
-      </div>
-    </s-row>
+    <info-line
+      :label="t('confirmSupply.poolTokensBurned', { first: firstToken.symbol, second: secondToken.symbol })"
+      :value="formattedLiquidityValue"
+    >
+      <template #info-line-prefix>
+        <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="mini" />
+      </template>
+    </info-line>
+    <info-line
+      :label="t('removeLiquidity.price')"
+      :value="`1 ${firstToken.symbol} = ${priceReversed}`"
+      :asset-symbol="secondToken.symbol "
+    />
+    <info-line
+      :value="`1 ${secondToken.symbol} = ${price}`"
+      :asset-symbol="firstToken.symbol"
+    />
     <template #footer>
       <s-button
         type="primary"
@@ -68,6 +69,7 @@ const namespace = 'removeLiquidity'
   components: {
     DialogBase,
     TokenLogo: lazyComponent(Components.TokenLogo),
+    InfoLine: lazyComponent(Components.InfoLine),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
@@ -130,15 +132,6 @@ export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, Dia
   margin-top: $inner-spacing-big;
   color: var(--s-color-base-content-tertiary);
   line-height: $s-line-height-base;
-}
-.price-container {
-  line-height: $s-line-height-big;
-  color: var(--s-color-base-content-secondary);
-  margin-top: $inner-spacing-big;
-  margin-bottom: $inner-spacing-mini;
-}
-.price {
-  text-align: right;
 }
 @include vertical-divider;
 @include vertical-divider('el-divider');

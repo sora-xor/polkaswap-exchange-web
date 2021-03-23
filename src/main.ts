@@ -4,7 +4,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import i18n from './lang'
-import { AppName } from './consts'
+import { app } from './consts'
 
 import './plugins'
 import './styles'
@@ -14,9 +14,9 @@ Vue.config.devtools = process.env.NODE_ENV === 'development'
 
 router.beforeEach((to, from, next): void => {
   if (to && to.name && i18n.te(`pageTitle.${to.name}`)) {
-    document.title = `${i18n.t(`pageTitle.${to.name}`)} - ${AppName}`
+    document.title = `${i18n.t(`pageTitle.${to.name}`)} - ${app.name}`
   } else {
-    document.title = AppName
+    document.title = app.name
   }
   next()
 })

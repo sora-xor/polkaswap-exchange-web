@@ -1,19 +1,19 @@
 <template>
   <div class="container" v-loading="parentLoading">
-    <generic-header :title="t('addLiquidity.title')" :tooltip="t('pool.description')" />
+    <generic-page-header has-button-back :title="t('addLiquidity.title')" :tooltip="t('pool.description')" />
     <s-form
       class="el-form--actions"
       :show-message="false"
     >
       <div class="input-container">
-        <div class="input-line">
-          <div class="input-title">{{ t('createPair.deposit') }}</div>
+        <div class="input-line-header">
+          <div class="input-title p4">{{ t('createPair.deposit') }}</div>
           <div v-if="connected && firstToken" class="token-balance">
             <span class="token-balance-title">{{ t('createPair.balance') }}</span>
             <span class="token-balance-value">{{ getTokenBalance(firstToken) }}</span>
           </div>
         </div>
-        <div class="input-line">
+        <div class="input-line-content">
           <s-form-item>
             <s-float-input
               class="s-input--token-value"
@@ -26,7 +26,7 @@
           </s-form-item>
           <div v-if="firstToken" class="token">
             <s-button v-if="isFirstMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue(firstToken, setFirstTokenValue)">
-              {{ t('exchange.max') }}
+              {{ t('buttons.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <token-logo :token="firstToken" size="small" />
@@ -35,10 +35,10 @@
           </div>
         </div>
       </div>
-      <s-icon class="icon-divider" name="plus-rounded" size="medium" />
+      <s-icon class="icon-divider" name="plus-16" />
       <div :class="computedClasses">
-        <div class="input-line">
-          <div class="input-title">
+        <div class="input-line-header">
+          <div class="input-title p4">
             <span>{{ t('createPair.deposit') }}</span>
           </div>
           <div v-if="connected && secondToken" class="token-balance">
@@ -46,7 +46,7 @@
             <span class="token-balance-value">{{ getTokenBalance(secondToken) }}</span>
           </div>
         </div>
-        <div class="input-line">
+        <div class="input-line-content">
           <s-form-item>
             <s-float-input
               class="s-input--token-value"
@@ -59,14 +59,14 @@
           </s-form-item>
           <div v-if="secondToken" class="token">
             <s-button v-if="isSecondMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue(secondToken, setSecondTokenValue)">
-              {{ t('exchange.max') }}
+              {{ t('buttons.max') }}
             </s-button>
             <s-button
               class="el-button--choose-token"
               type="tertiary"
               size="small"
               border-radius="medium"
-              :icon="!secondAddress ? 'chevron-bottom-rounded' : undefined"
+              :icon="!secondAddress ? 'chevron-down-rounded-16' : undefined"
               icon-position="right"
               @click="!secondAddress ? openSelectSecondTokenDialog() : undefined"
             >
@@ -74,20 +74,20 @@
               {{ secondToken.symbol }}
             </s-button>
           </div>
-          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-bottom-rounded" icon-position="right" @click="openSelectSecondTokenDialog">
-            {{ t('exchange.chooseToken') }}
+          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectSecondTokenDialog">
+            {{ t('buttons.chooseToken') }}
           </s-button>
         </div>
       </div>
         <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="openConfirmDialog">
         <template v-if="!areTokensSelected">
-          {{ t('exchange.chooseTokens') }}
+          {{ t('buttons.chooseTokens') }}
         </template>
         <template v-else-if="!isAvailable">
           {{ t('addLiquidity.pairIsNotCreated') }}
         </template>
         <template v-else-if="isEmptyBalance">
-          {{ t('exchange.enterAmount') }}
+          {{ t('buttons.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
           {{ t('exchange.insufficientBalance', { tokenSymbol: insufficientBalanceTokenSymbol }) }}
@@ -98,77 +98,40 @@
       </s-button>
     </s-form>
 
-    <info-card
-      v-if="areTokensSelected && isAvailable && !isNotFirstLiquidityProvider && emptyAssets"
-      :title="t('createPair.firstLiquidityProvider')"
-    >
-      <div class="card__data">
-        <p v-html="t('createPair.firstLiquidityProviderInfo')" />
-      </div>
-    </info-card>
+    <div v-if="areTokensSelected && isAvailable && !isNotFirstLiquidityProvider && emptyAssets" class="info-line-container">
+      <p class="p2">{{ t('createPair.firstLiquidityProvider') }}</p>
+      <info-line>
+        <template #info-line-prefix>
+          <p class="info-line--first-liquidity" v-html="t('createPair.firstLiquidityProviderInfo')" />
+        </template>
+      </info-line>
+    </div>
 
-    <info-card v-if="areTokensSelected && isAvailable && !emptyAssets" :title="t('createPair.pricePool')">
-      <div class="card__data">
-        <div>
-          {{
-            t('createPair.firstPerSecond', {
-              first: firstToken.symbol,
-              second: secondToken.symbol
-            })
-          }}
-        </div>
-        <div>{{ price }} {{ firstToken.symbol }}</div>
-      </div>
-      <div class="card__data">
-        <div>
-          {{
-            t('createPair.firstPerSecond', {
-              first: secondToken.symbol,
-              second: firstToken.symbol
-            })
-          }}
-        </div>
-        <div>{{ priceReversed }} {{ secondToken.symbol }}</div>
-      </div>
-      <div class="card__data">
-        <div>{{ t('createPair.shareOfPool') }}</div>
-        <div>{{ shareOfPool }}%</div>
-      </div>
-      <div class="card__data">
-        <div>{{ t('createPair.networkFee') }}</div>
-        <div>{{ formattedFee }} {{ KnownSymbols.XOR }}</div>
-      </div>
-    </info-card>
+    <div v-if="areTokensSelected && isAvailable && !emptyAssets" class="info-line-container">
+      <p class="p2">{{ t('createPair.pricePool') }}</p>
+      <info-line :label="t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="price" />
+      <info-line :label="t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="priceReversed" />
+      <info-line :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
+      <info-line :label="t('createPair.networkFee')" :value="`${formattedFee} ${KnownSymbols.XOR}`" />
+    </div>
 
-    <info-card
-      v-if="areTokensSelected && isAvailable && (!emptyAssets || (liquidityInfo || {}).balance)"
-      :title="t(`createPair.yourPosition${!emptyAssets ? 'Estimated' : ''}`)"
-    >
-      <div class="card__data card__data_assets">
-        <s-row flex>
+    <div v-if="areTokensSelected && isAvailable && (!emptyAssets || (liquidityInfo || {}).balance)" class="info-line-container">
+      <p class="p2">{{ t(`createPair.yourPosition${!emptyAssets ? 'Estimated' : ''}`) }}</p>
+      <info-line
+        :label="t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol })"
+        :value="poolTokenPosition"
+      >
+        <template #info-line-prefix>
           <pair-token-logo class="pair-token-logo" :first-token="firstToken" :second-token="secondToken" size="mini" />
-          {{
-            t('createPair.firstSecondPoolTokens', {
-              first: firstToken.symbol,
-              second: secondToken.symbol
-            })
-          }}
-        </s-row>
-        <div>{{ poolTokenPosition }}</div>
-      </div>
+        </template>
+      </info-line>
       <s-divider />
-      <div class="card__data">
-        <div>{{ firstToken.symbol }}</div>
-        <div>{{ firstTokenPosition }}</div>
-      </div>
-      <div class="card__data">
-        <div>{{ secondToken.symbol }}</div>
-        <div>{{ secondTokenPosition }}</div>
-      </div>
-    </info-card>
+      <info-line :label="firstToken.symbol" :value="firstTokenPosition" />
+      <info-line :label="secondToken.symbol" :value="secondTokenPosition" />
+    </div>
 
-    <select-token :visible.sync="showSelectFirstTokenDialog" :connected="connected" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstToken" />
-    <select-token :visible.sync="showSelectSecondTokenDialog" :connected="connected" :asset="firstToken" @select="setSecondToken" />
+    <select-token :visible.sync="showSelectFirstTokenDialog" :connected="connected" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstTokenAddress($event.address)" />
+    <select-token :visible.sync="showSelectSecondTokenDialog" :connected="connected" :asset="firstToken" @select="setSecondTokenAddress($event.address)" />
 
     <confirm-token-pair-dialog
       :visible.sync="showConfirmDialog"
@@ -203,9 +166,9 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
 
 @Component({
   components: {
-    GenericHeader: lazyComponent(Components.GenericHeader),
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SelectToken: lazyComponent(Components.SelectToken),
-    InfoCard: lazyComponent(Components.InfoCard),
+    InfoLine: lazyComponent(Components.InfoLine),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog)
@@ -222,11 +185,11 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @Action('resetFocusedField', { namespace }) resetFocusedField
 
   get firstAddress (): string {
-    return this.$route.params.firstAddress
+    return router.currentRoute.params.firstAddress
   }
 
   get secondAddress (): string {
-    return this.$route.params.secondAddress
+    return router.currentRoute.params.secondAddress
   }
 
   get computedClasses (): string {

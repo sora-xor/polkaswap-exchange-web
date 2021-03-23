@@ -1,6 +1,6 @@
 <template>
   <div class="container" v-loading="loading || parentLoading">
-    <generic-header :title="t('removeLiquidity.title')" :tooltip="t('removeLiquidity.description')" />
+    <generic-page-header has-button-back :title="t('removeLiquidity.title')" :tooltip="t('removeLiquidity.description')" />
     <s-form
       class="el-form--actions"
       :show-message="false"
@@ -23,14 +23,14 @@
         </div>
       </info-card>
       <div class="input-container">
-        <div class="input-line">
-          <div class="input-title">{{ t('removeLiquidity.input') }}</div>
+        <div class="input-line-header">
+          <div class="input-title p4">{{ t('removeLiquidity.input') }}</div>
           <div v-if="isWalletConnected && liquidity" class="token-balance">
             <span class="token-balance-title">{{ t('createPair.balance') }}</span>
             <span class="token-balance-value">{{ getTokenBalance(liquidity) }}</span>
           </div>
         </div>
-        <div class="input-line">
+        <div class="input-line-content">
           <s-form-item>
             <s-float-input
               ref="liquidityAmount"
@@ -44,7 +44,7 @@
           </s-form-item>
           <div class="token">
             <s-button v-if="isMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleLiquidityMaxValue">
-              {{ t('exchange.max') }}
+              {{ t('buttons.max') }}
             </s-button>
             <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
               <div class="liquidity-logo">
@@ -56,14 +56,14 @@
         </div>
       </div>
 
-      <s-icon class="icon-divider" name="arrow-bottom" size="medium" />
+      <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
 
       <div class="input-container">
-        <div class="input-line">
-          <div class="input-title">{{ t('removeLiquidity.output') }}</div>
+        <div class="input-line-header">
+          <div class="input-title p4">{{ t('removeLiquidity.output') }}</div>
           <div v-if="isWalletConnected && liquidity" class="token-balance">-</div>
         </div>
-        <div class="input-line">
+        <div class="input-line-content">
           <s-form-item>
             <s-float-input
               ref="firstTokenAmount"
@@ -84,14 +84,14 @@
         </div>
       </div>
 
-      <s-icon class="icon-divider" name="plus-rounded" size="medium" />
+      <s-icon class="icon-divider" name="plus-16" />
 
       <div class="input-container">
-        <div class="input-line">
-          <div class="input-title">{{ t('removeLiquidity.output') }}</div>
+        <div class="input-line-header">
+          <div class="input-title p4">{{ t('removeLiquidity.output') }}</div>
           <div v-if="isWalletConnected && liquidity" class="token-balance">-</div>
         </div>
-        <div class="input-line">
+        <div class="input-line-content">
           <s-form-item>
             <s-float-input
               ref="secondTokenAmount"
@@ -112,24 +112,29 @@
         </div>
       </div>
 
-      <div v-if="price || priceReversed || fee" class="price-container">
-        <s-row v-if="price || priceReversed" flex justify="space-between">
-          <div>{{ t('removeLiquidity.price') }}</div>
-          <div class="price">
-            <div>1 {{ firstToken.symbol }} = {{ price }} {{ secondToken.symbol }}</div>
-            <div>1 {{ secondToken.symbol }} = {{ priceReversed }} {{ firstToken.symbol }}</div>
-          </div>
-        </s-row>
-        <s-row v-if="fee" flex justify="space-between">
-          <!-- TODO: Add tooltip here -->
-          <div>{{ t('createPair.networkFee') }}</div>
-          <div>{{ formattedFee }} {{ KnownSymbols.XOR }}</div>
-        </s-row>
+      <div v-if="price || priceReversed || fee" class="info-line-container">
+        <info-line
+          v-if="price || priceReversed"
+          :label="t('removeLiquidity.price')"
+          :value="`1 ${firstToken.symbol} = ${priceReversed}`"
+          :asset-symbol="secondToken.symbol"
+        />
+        <info-line
+          v-if="price || priceReversed"
+          :value="`1 ${secondToken.symbol} = ${price}`"
+          :asset-symbol="firstToken.symbol"
+        />
+        <info-line
+          v-if="fee"
+          :label="t('createPair.networkFee')"
+          :value="formattedFee"
+          :asset-symbol="KnownSymbols.XOR"
+        />
       </div>
 
       <s-button type="primary" border-radius="small" :disabled="isEmptyAmount || isInsufficientBalance" @click="openConfirmDialog">
         <template v-if="isEmptyAmount">
-          {{ t('exchange.enterAmount') }}
+          {{ t('buttons.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
           {{ t('exchange.insufficientBalance', { tokenSymbol: t('removeLiquidity.liquidity') }) }}
@@ -152,7 +157,6 @@ import { FPNumber, KnownSymbols, AccountLiquidity, CodecString } from '@sora-sub
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
@@ -161,14 +165,15 @@ const namespace = 'removeLiquidity'
 
 @Component({
   components: {
-    GenericHeader: lazyComponent(Components.GenericHeader),
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     InfoCard: lazyComponent(Components.InfoCard),
+    InfoLine: lazyComponent(Components.InfoLine),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity)
   }
 })
-export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin, NumberFormatterMixin) {
+export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin) {
   readonly KnownSymbols = KnownSymbols
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
@@ -222,6 +227,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
       router.push({ name: PageNames.Pool })
       return
     }
+    this.updatePrices()
     this.sliderDragButton = this.$el.querySelector('.slider-container .el-slider__button')
     this.sliderInput = this.$el.querySelector('.s-input--remove-part .el-input__inner')
     if (this.sliderDragButton) {
@@ -306,7 +312,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     const newValue = parseFloat(value) || 0
     this.removePartInput = newValue > 100 ? 100 : newValue < 0 ? 0 : newValue
     this.setRemovePart(this.removePartInput)
-    this.updatePrices()
   }
 
   focusSliderInput (): void {
@@ -330,21 +335,21 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   handleLiquidityMaxValue (): void {
     this.setRemovePart(100)
     this.handleRemovePartChange(100)
-    this.updatePrices()
   }
 
-  updatePrices (): void {
+  private updatePrices (): void {
+    const firstTokenBalance = this.getFPNumberFromCodec(this.firstTokenBalance)
+    const secondTokenBalance = this.getFPNumberFromCodec(this.secondTokenBalance)
     this.getPrices({
       assetAAddress: this.firstTokenAddress ?? this.firstToken.address,
       assetBAddress: this.secondTokenAddress ?? this.secondToken.address,
-      amountA: this.firstTokenAmount,
-      amountB: this.secondTokenAmount
+      amountA: firstTokenBalance.toString(),
+      amountB: secondTokenBalance.toString()
     })
   }
 
   async handleTokenChange (value: string, setValue: (v: any) => Promise<any>): Promise<any> {
     await setValue(value)
-    this.updatePrices()
   }
 
   async handleConfirmRemoveLiquidity (): Promise<void> {
@@ -359,19 +364,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
 <style lang="scss" scoped>
 .icon-divider {
   padding: $inner-spacing-medium;
-}
-
-.price-container {
-  width: 100%;
-  .s-row {
-    margin: $inner-spacing-medium $inner-spacing-medium 0;
-    color: var(--s-color-base-content-secondary);
-    line-height: $s-line-height-big;
-    font-feature-settings: $s-font-feature-settings-common;
-  }
-}
-.price {
-  text-align: right;
 }
 
 .el-form--actions {

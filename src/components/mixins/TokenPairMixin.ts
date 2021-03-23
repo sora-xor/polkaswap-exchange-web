@@ -5,7 +5,6 @@ import { KnownAssets, KnownSymbols, CodecString } from '@sora-substrate/util'
 import TransactionMixin from './TransactionMixin'
 import LoadingMixin from './LoadingMixin'
 import ConfirmDialogMixin from './ConfirmDialogMixin'
-import NumberFormatterMixin from './NumberFormatterMixin'
 
 import router from '@/router'
 import { PageNames } from '@/consts'
@@ -13,10 +12,8 @@ import { getMaxValue, isMaxButtonAvailable, isWalletConnected, isXorAccountAsset
 
 const CreateTokenPairMixin = (namespace: string) => {
   @Component
-  class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin, NumberFormatterMixin) {
+  class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin) {
     readonly KnownSymbols = KnownSymbols
-
-    @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
     @Getter('firstToken', { namespace }) firstToken!: any
     @Getter('secondToken', { namespace }) secondToken!: any
@@ -31,8 +28,8 @@ const CreateTokenPairMixin = (namespace: string) => {
 
     @Getter slippageTolerance!: number
 
-    @Action('setFirstToken', { namespace }) setFirstToken
-    @Action('setSecondToken', { namespace }) setSecondToken
+    @Action('setFirstTokenAddress', { namespace }) setFirstTokenAddress
+    @Action('setSecondTokenAddress', { namespace }) setSecondTokenAddress
     @Action('setFirstTokenValue', { namespace }) setFirstTokenValue
     @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
     @Action('resetData', { namespace }) resetData
@@ -40,18 +37,22 @@ const CreateTokenPairMixin = (namespace: string) => {
     @Action('getNetworkFee', { namespace }) getNetworkFee
     @Action('getPrices', { namespace: 'prices' }) getPrices
     @Action('resetPrices', { namespace: 'prices' }) resetPrices
+    @Action('getAssets', { namespace: 'assets' }) getAssets
 
     showSelectFirstTokenDialog = false
     showSelectSecondTokenDialog = false
     insufficientBalanceTokenSymbol = ''
 
     async mounted () {
-      await this.withApi(async () => {
-        this.resetPrices()
-        this.resetData()
-        await this.setFirstToken(KnownAssets.get(KnownSymbols.XOR))
-        this.afterApiConnect()
-      })
+      await this.withParentLoading(async () =>
+        await this.withApi(async () => {
+          this.resetPrices()
+          this.resetData()
+          await this.getAssets()
+          this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
+          await this.afterApiConnect()
+        })
+      )
     }
 
     get formattedMinted (): string {
@@ -137,7 +138,7 @@ const CreateTokenPairMixin = (namespace: string) => {
       })
     }
 
-    afterApiConnect (): void {}
+    async afterApiConnect (): Promise<void> {}
   }
 
   return TokenPairMixin

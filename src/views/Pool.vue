@@ -1,6 +1,13 @@
 <template>
-  <div class="el-form--pool">
-    <generic-header class="header--pool" :has-button-back="false" :title="t('pool.yourLiquidity')" :tooltip="t('pool.description')" />
+  <div v-loading="parentLoading" class="container el-form--pool">
+    <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')">
+      <s-button
+        class="el-button--settings"
+        type="action"
+        icon="basic-settings-24"
+        @click="openSettingsDialog"
+      />
+    </generic-page-header>
     <div class="pool-wrapper" v-loading="loading">
       <p v-if="!connected" class="pool-info-container">
         {{ t('pool.connectToWallet') }}
@@ -12,21 +19,21 @@
       <s-collapse v-else class="pool-list" :borders="true">
         <s-collapse-item v-for="liquidityItem of accountLiquidity" :key="liquidityItem.address" :name="liquidityItem.address" class="pool-info-container">
           <template #title>
-            <pair-token-logo :first-token-symbol="getAssetSymbol(liquidityItem.firstAddress)" :second-token-symbol="getAssetSymbol(liquidityItem.secondAddress)" size="small" />
+            <pair-token-logo :first-token="getAsset(liquidityItem.firstAddress)" :second-token="getAsset(liquidityItem.secondAddress)" size="small" />
             <h3>{{ getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress)) }}</h3>
           </template>
           <div class="pool-info">
-            <token-logo :token-symbol="getAssetSymbol(liquidityItem.firstAddress)" size="small" />
+            <token-logo :token="getAsset(liquidityItem.firstAddress)" size="small" />
             <div>{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.firstAddress) }) }}</div>
             <div class="pool-info-value">{{ getFirstBalance(liquidityItem) }}</div>
           </div>
           <div class="pool-info">
-            <token-logo :token-symbol="getAssetSymbol(liquidityItem.secondAddress)" size="small" />
+            <token-logo :token="getAsset(liquidityItem.secondAddress)" size="small" />
             <div>{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.secondAddress) }) }}</div>
             <div class="pool-info-value">{{ getSecondBalance(liquidityItem) }}</div>
           </div>
           <div class="pool-info">
-            <pair-token-logo :first-token-symbol="getAssetSymbol(liquidityItem.firstAddress)" :second-token-symbol="getAssetSymbol(liquidityItem.secondAddress)" size="mini" />
+            <pair-token-logo :first-token="getAsset(liquidityItem.firstAddress)" :second-token="getAsset(liquidityItem.secondAddress)" size="mini" />
             <div>{{ t('pool.pairTokens', { pair: getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress)) }) }}</div>
             <div class="pool-info-value">{{ getBalance(liquidityItem) }}</div>
           </div>
@@ -57,11 +64,12 @@
     <s-button v-else type="primary" @click="handleConnectWallet">
       {{ t('pool.connectWallet') }}
     </s-button>
+    <settings :visible.sync="showSettings" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { AccountLiquidity } from '@sora-substrate/util'
 
@@ -76,7 +84,8 @@ const namespace = 'pool'
 
 @Component({
   components: {
-    GenericHeader: lazyComponent(Components.GenericHeader),
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    Settings: lazyComponent(Components.Settings),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
@@ -88,6 +97,10 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('getAccountLiquidity', { namespace }) getAccountLiquidity
   @Action('getAssets', { namespace: 'assets' }) getAssets
 
+  showSettings = false
+
+  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
+
   async mounted () {
     await this.withApi(async () => {
       await this.getAssets()
@@ -97,6 +110,10 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   get connected (): boolean {
     return isWalletConnected()
+  }
+
+  getAsset (address): any {
+    return this.assets.find(a => a.address === address)
   }
 
   getAssetSymbol (address): string {
@@ -141,6 +158,10 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   getBalance (liquidityItem: AccountLiquidity): string {
     return this.formatCodecNumber(liquidityItem.balance, liquidityItem.decimals)
+  }
+
+  openSettingsDialog (): void {
+    this.showSettings = true
   }
 }
 </script>
@@ -207,15 +228,15 @@ $pool-collapse-icon-width: 10px;
 <style lang="scss" scoped>
 $pair-icon-height: 36px;
 
-.header.header--pool {
-  margin-top: $inner-spacing-mini;
-  margin-bottom: $inner-spacing-mini;
-}
-
 .el-form--pool {
   display: flex;
   flex-direction: column;
   align-items: center;
+  .page-header--pool {
+    .el-button--settings {
+      margin-left: auto;
+    }
+  }
   .el-button {
     &--create-pair {
       margin-left: 0;
@@ -301,7 +322,7 @@ $pair-icon-height: 36px;
         padding-right: $inner-spacing-small;
         font-feature-settings: $s-font-feature-settings-title;
         width: auto;
-        @include font-weight(700);
+        font-weight: 700;
         + .el-button {
           margin-left: $inner-spacing-mini;
         }
