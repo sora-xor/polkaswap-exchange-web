@@ -1,7 +1,6 @@
 <template>
   <div v-loading="parentLoading" class="bridge s-flex">
     <s-form
-      v-model="amounts"
       class="bridge-form"
       :show-message="false"
     >
@@ -39,9 +38,9 @@
           </div>
           <div class="bridge-item-content">
             <s-form-item>
-              <s-input
-                v-model="amounts.a"
-                v-float
+              <s-float-input
+                :value="amount"
+                :decimals="asset && asset.decimals"
                 :class="inputClasses"
                 :placeholder="isFieldAmountFocused ? '' : inputPlaceholder"
                 :disabled="!areNetworksConnected || !isAssetSelected"
@@ -91,9 +90,8 @@
           </div>
           <div class="bridge-item-content">
             <s-form-item>
-              <s-input
-                v-float
-                v-model="amounts.b"
+              <s-float-input
+                :value="amount"
                 :class="inputClasses"
                 :placeholder="inputPlaceholder"
                 disabled
@@ -253,10 +251,6 @@ export default class Bridge extends Mixins(
   insufficientBalanceAssetSymbol = ''
   showSelectTokenDialog = false
   showConfirmTransactionDialog = false
-  amounts = {
-    a: '',
-    b: ''
-  }
 
   blockHeadersSubscriber
 
@@ -277,7 +271,7 @@ export default class Bridge extends Mixins(
   }
 
   get isZeroAmount (): boolean {
-    return +this.amounts.a === 0
+    return +this.amount === 0
   }
 
   get isMaxAvailable (): boolean {
@@ -288,7 +282,7 @@ export default class Bridge extends Mixins(
       return false
     }
     const decimals = this.asset.decimals
-    const fpBalance = new FPNumber(this.asset[this.balanceSymbol], decimals)
+    const fpBalance = this.getFPNumberFromCodec(this.asset[this.balanceSymbol], decimals)
     const fpAmount = new FPNumber(this.amount, decimals)
     // TODO: Check if we have appropriate network fee currency (XOR/ETH) for both networks
     if (isXorAccountAsset(this.asset) && this.isSoraToEthereum) {
@@ -298,6 +292,7 @@ export default class Bridge extends Mixins(
       const fpFee = new FPNumber(this.soraNetworkFee, decimals)
       return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee)
     }
+    console.log(fpBalance, fpAmount)
     return !FPNumber.eq(fpBalance, fpAmount)
   }
 
@@ -321,7 +316,7 @@ export default class Bridge extends Mixins(
 
   get isInsufficientBalance (): boolean {
     if (this.isNetworkAConnected && this.isRegisteredAsset) {
-      const fpAmount = new FPNumber(this.amounts.a, this.asset.decimals)
+      const fpAmount = new FPNumber(this.amount, this.asset.decimals)
 
       let fpBalance = new FPNumber(this.asset[this.balanceSymbol], this.asset.decimals)
 
@@ -382,6 +377,7 @@ export default class Bridge extends Mixins(
   }
 
   created (): void {
+    this.setAmount('') // reset fields
     this.withApi(async () => {
       await this.getRegisteredAssets()
       await this.getNetworkFee()
@@ -497,19 +493,8 @@ export default class Bridge extends Mixins(
     return this.t(this.formatNetwork(isBTitle))
   }
 
-  resetFieldA (): void {
-    this.amounts.a = ''
-  }
-
-  async handleInputAmount (): Promise<any> {
-    this.amounts.a = this.formatNumberField(this.amounts.a)
-    if (!isNumberValue(this.amounts.a)) {
-      await this.promiseTimeout()
-      this.resetFieldA()
-      return
-    }
-    this.amounts.b = this.amounts.a
-    this.setAmount(this.amounts.a)
+  async handleInputAmount (value): Promise<any> {
+    this.setAmount(value)
     // TODO: only one time
     if (this.isRegisteredAsset) {
       this.getNetworkFee()
@@ -519,19 +504,11 @@ export default class Bridge extends Mixins(
   }
 
   handleBlur (): void {
-    if (this.amounts.a === '' || this.isZeroAmount) {
-      this.resetFieldA()
-    } else {
-      this.amounts.a = this.trimNeedlesSymbols(this.amounts.a)
-    }
     this.isFieldAmountFocused = false
   }
 
   handleFocus (): void {
     this.isFieldAmountFocused = true
-    if (this.isZeroAmount) {
-      this.amounts.a = ''
-    }
   }
 
   handleSwitchItems (): void {
@@ -544,14 +521,14 @@ export default class Bridge extends Mixins(
 
   handleMaxValue (): void {
     if (this.asset && this.isRegisteredAsset) {
+      const decimals = this.asset.decimals
+      const fpBalance = FPNumber.fromCodecValue(this.asset[this.balanceSymbol], decimals)
       if (isXorAccountAsset(this.asset) && this.isSoraToEthereum) {
-        const decimals = this.asset.decimals
-        const fpBalance = new FPNumber(this.asset[this.balanceSymbol], decimals)
-        const fpFee = new FPNumber(this.soraNetworkFee, decimals)
-        this.amounts.a = fpBalance.sub(fpFee).toString()
+        const fpFee = FPNumber.fromCodecValue(this.soraNetworkFee, decimals)
+        this.setAmount(fpBalance.sub(fpFee).toString())
         return
       }
-      this.amounts.a = this.asset[this.balanceSymbol].toString()
+      this.setAmount(fpBalance.toString())
     }
     // TODO: Check balance (ETH)
   }
