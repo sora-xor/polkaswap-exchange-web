@@ -15,12 +15,6 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 @Component
 export default class AmountTable extends Vue {
   @Prop({ default: [], type: Array }) items!: Array<object>
-
-  // get formattedItems () {
-  //   return this.items.map(item => {
-
-  //   })
-  // }
 }
 </script>
 
