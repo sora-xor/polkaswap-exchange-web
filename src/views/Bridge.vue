@@ -292,7 +292,6 @@ export default class Bridge extends Mixins(
       const fpFee = new FPNumber(this.soraNetworkFee, decimals)
       return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee)
     }
-    console.log(fpBalance, fpAmount)
     return !FPNumber.eq(fpBalance, fpAmount)
   }
 
