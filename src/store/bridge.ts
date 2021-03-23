@@ -400,7 +400,7 @@ const actions = {
     let currentHistoryItem: BridgeHistory
     if (getters.historyItem) {
       currentHistoryItem = getters.historyItem
-      currentHistoryItem.startTime = +currentDate
+      currentHistoryItem.startTime = currentDate
       currentHistoryItem.endTime = currentHistoryItem.startTime
     } else {
       await dispatch('generateHistoryItem', { date: currentDate })
@@ -453,7 +453,7 @@ const actions = {
     }
     currentHistoryItem.endTime = currentHistoryItem.startTime
     currentHistoryItem.transactionStep = 2
-    if (getters.currentTransactionState !== STATES.ETHEREUM_SUBMITTED) {
+    if (getters.historyItem.transactionState !== STATES.ETHEREUM_PENDING) {
       currentHistoryItem.signed = false
       currentHistoryItem.status = BridgeTxStatus.Pending
       currentHistoryItem.transactionState = STATES.ETHEREUM_PENDING
@@ -461,6 +461,7 @@ const actions = {
     await dispatch('updateHistoryParams', { tx: currentHistoryItem })
     await dispatch('setTransactionStep', 2)
     try {
+      // if (!currentHistoryItem.signed) {
       const request = await waitForApprovedRequest(getters.soraTransactionHash) // If it causes an error, then -> catch -> SORA_REJECTED
       if (!rootGetters['web3/isValidEthNetwork']) {
         throw new Error('Change eth network in Metamask')
@@ -512,13 +513,13 @@ const actions = {
       )
       const contractMethod = contractInstance.methods[method](...methodArgs)
       const gas = await contractMethod.estimateGas()
-      // if (!currentHistoryItem.signed) {
-      //   currentHistoryItem.signed = true
-      //   currentHistoryItem.status = BridgeTxStatus.Pending
-      //   currentHistoryItem.transactionState = STATES.ETHEREUM_SUBMITTED
-      //   await dispatch('saveHistory', currentHistoryItem)
-      //   await dispatch('setHistoryItem', currentHistoryItem)
-      // }
+      if (!currentHistoryItem.signed) {
+        currentHistoryItem.signed = true
+        currentHistoryItem.status = BridgeTxStatus.Pending
+        currentHistoryItem.transactionState = STATES.ETHEREUM_PENDING
+        await dispatch('saveHistory', currentHistoryItem)
+        await dispatch('setHistoryItem', currentHistoryItem)
+      }
       const { transactionHash } = await contractMethod.send({ gas, from: ethAccount })
       // api.bridge.markAsDone(hash) We've decided not to use offchain workers to show the history.
       // So we don't need DONE status of request
@@ -557,7 +558,7 @@ const actions = {
     let currentHistoryItem: BridgeHistory
     if (getters.historyItem) {
       currentHistoryItem = getters.historyItem
-      currentHistoryItem.startTime = +currentDate
+      currentHistoryItem.startTime = currentDate
       currentHistoryItem.endTime = currentHistoryItem.startTime
     } else {
       await dispatch('generateHistoryItem', { date: currentDate })

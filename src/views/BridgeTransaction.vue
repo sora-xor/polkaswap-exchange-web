@@ -422,6 +422,7 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
 
   async beforeDestroy (): Promise<void> {
     this.setInitialTransactionState(STATES.INITIAL)
+    this.setCurrentTransactionState(STATES.INITIAL)
     this.setTransactionStep(1)
     this.setHistoryItem(null)
     if (this.sendService) {
