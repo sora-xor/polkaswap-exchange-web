@@ -5,7 +5,6 @@
         class="el-button--settings"
         type="action"
         icon="basic-settings-24"
-        size="medium"
         @click="openSettingsDialog"
       />
     </generic-page-header>

@@ -185,11 +185,11 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @Action('resetFocusedField', { namespace }) resetFocusedField
 
   get firstAddress (): string {
-    return this.$route.params.firstAddress
+    return router.currentRoute.params.firstAddress
   }
 
   get secondAddress (): string {
-    return this.$route.params.secondAddress
+    return router.currentRoute.params.secondAddress
   }
 
   get computedClasses (): string {

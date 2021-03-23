@@ -109,17 +109,14 @@ router.beforeEach((to, from, next) => {
       next({
         name: PageNames.Bridge
       })
+      return
     }
     if (!isWalletConnected()) {
-      next({
-        name: PageNames.Wallet
-      })
-    } else {
-      next()
+      next({ name: PageNames.Wallet })
+      return
     }
-  } else {
-    next()
   }
+  next()
 })
 
 export default router
