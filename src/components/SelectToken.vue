@@ -78,12 +78,6 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   @Getter('assets', { namespace }) assets!: Array<Asset>
   @Getter accountAssets!: Array<AccountAsset> // Wallet store
 
-  @Action('getAssets', { namespace }) getAssets
-
-  created (): void {
-    this.withApi(this.getAssets)
-  }
-
   get accountAssetsHashTable () {
     return this.accountAssets.reduce((result, item) => ({
       ...result,
