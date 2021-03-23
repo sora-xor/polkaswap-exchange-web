@@ -1,38 +1,40 @@
 <template>
   <div class="container rewards" v-loading="parentLoading">
     <generic-page-header :title="t('rewards.title')" />
-    <gradient-box :symbol="gradientSymbol">
+    <gradient-box class="rewards-block" :symbol="gradientSymbol">
       <div class="rewards-box">
         <tokens-row :symbols="rewardTokenSymbols" />
-        <div v-if="rewardsClaiming" class="rewards-claiming-text">
-          {{ t('rewards.claiming.pending') }}
+        <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text">
+          {{ claimingStatusMessage }}
         </div>
         <div v-if="connectedState" class="rewards-amount">
           <rewards-amount-header v-if="rewardsChecked" :items="rewardsByAssetsList" />
-          <rewards-amount-table v-if="formattedClaimableRewards.length" class="rewards-table" :items="formattedClaimableRewards" />
-          <div class="rewards-footer">
-            <s-divider />
-            <div class="rewards-account">
-              <toggle-text-button
-                type="link"
-                size="mini"
-                :primary-text="formatAddress(ethAddress, 8)"
-                :secondary-text="t('rewards.changeWallet')"
-                @click="changeExternalAccountProcess"
-              />
-              <span>{{ t('rewards.connected') }}</span>
+          <template v-if="!claimingInProgressOrFinished">
+            <rewards-amount-table v-if="formattedClaimableRewards.length" class="rewards-table" :items="formattedClaimableRewards" />
+            <div class="rewards-footer">
+              <s-divider />
+              <div class="rewards-account">
+                <toggle-text-button
+                  type="link"
+                  size="mini"
+                  :primary-text="formatAddress(ethAddress, 8)"
+                  :secondary-text="t('rewards.changeWallet')"
+                  @click="changeExternalAccountProcess"
+                />
+                <span>{{ t('rewards.connected') }}</span>
+              </div>
             </div>
-          </div>
+          </template>
         </div>
-        <div v-if="rewardsClaiming" class="rewards-claiming-text--transaction">
+        <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text--transaction">
           {{ transactionStatusMessage }}
         </div>
       </div>
     </gradient-box>
-    <div class="rewards-hint">
+    <div v-if="!claimingInProgressOrFinished" class="rewards-block rewards-hint">
       {{ hintText }}
     </div>
-    <s-button class="rewards-action-button" type="primary" @click="handleAction" :loading="rewardsFetching">
+    <s-button v-if="!rewardsRecieved" class="rewards-action-button" type="primary" @click="handleAction" :loading="rewardsFetching" :disabled="rewardsClaiming">
       {{ actionButtonText }}
     </s-button>
   </div>
@@ -74,6 +76,8 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
   @State(state => state.rewards.rewards) rewards
   @State(state => state.rewards.rewardsFetching) rewardsFetching!: boolean
   @State(state => state.rewards.rewardsClaiming) rewardsClaiming!: boolean
+  @State(state => state.rewards.rewardsRecieved) rewardsRecieved!: boolean
+  @State(state => state.rewards.transactionError) transactionError!: boolean
   @State(state => state.rewards.transactionStep) transactionStep!: number
   @State(state => state.rewards.transactionStepsCount) transactionStepsCount!: number
 
@@ -84,6 +88,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
 
   @Action('reset', { namespace: 'rewards' }) reset!: () => void
   @Action('getRewards', { namespace: 'rewards' }) getRewards!: (address: string) => Promise<void>
+  @Action('claimRewards', { namespace: 'rewards' }) claimRewards!: () => Promise<void>
 
   async created (): Promise<void> {
     await this.withApi(async () => {
@@ -96,10 +101,23 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
     return this.isSoraAccountConnected && this.isExternalAccountConnected
   }
 
-  get transactionStatusMessage (): string {
-    const order = this.tOrdinal(this.transactionStep)
+  get claimingInProgressOrFinished (): boolean {
+    return this.rewardsClaiming || this.transactionError || this.rewardsRecieved
+  }
 
-    return this.t('rewards.transactions.confimation', { order, total: this.transactionStepsCount })
+  get claimingStatusMessage (): string {
+    return this.rewardsRecieved ? this.t('rewards.claiming.success') : this.t('rewards.claiming.pending')
+  }
+
+  get transactionStatusMessage (): string {
+    if (this.rewardsRecieved) {
+      return this.t('rewards.transactions.success')
+    }
+
+    const order = this.tOrdinal(this.transactionStep)
+    const translationKey = this.transactionError ? 'rewards.transactions.failed' : 'rewards.transactions.confimation'
+
+    return this.t(translationKey, { order, total: this.transactionStepsCount })
   }
 
   get formattedClaimableRewards () {
@@ -119,32 +137,40 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
   }
 
   get hintText (): string {
-    const translationKey = [
+    return this.findTranslationInCollection([
       (!this.connectedState || this.rewardsFetching) &&
       'rewards.hint.connectAccounts',
       !this.rewardsAvailable &&
       'rewards.hint.connectAnotherAccount',
       'rewards.hint.howToClaimRewards'
-    ].find(Boolean)
-
-    return translationKey ? this.t(translationKey) : ''
+    ])
   }
 
   get actionButtonText (): string {
     if (this.rewardsFetching) return ''
 
-    const translationKey = [
+    return this.findTranslationInCollection([
       !this.isSoraAccountConnected &&
       'rewards.action.connectWallet',
       !this.isExternalAccountConnected &&
       'rewards.action.connectExternalWallet',
+      this.transactionError &&
+      'rewards.action.retry',
       !this.rewardsAvailable &&
       'rewards.action.checkRewards',
-      this.rewardsAvailable &&
-      'rewards.action.signAndClaim'
-    ].find(Boolean)
+      this.rewardsAvailable && !this.rewardsClaiming &&
+      'rewards.action.signAndClaim',
+      this.transactionStep === 1 &&
+      'rewards.action.pendingExternal',
+      this.transactionStep === 2 &&
+      'rewards.action.pendingInternal'
+    ])
+  }
 
-    return translationKey ? this.t(translationKey) : ''
+  findTranslationInCollection (collection) {
+    const key = collection.find(Boolean)
+
+    return key ? this.t(key) : ''
   }
 
   async handleAction (): Promise<void> {
@@ -157,20 +183,20 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
     if (!this.rewardsAvailable) {
       return await this.checkAccountRewards()
     }
+    if (this.rewardsAvailable) {
+      return await this.claimRewards()
+    }
   }
 
   async checkAccountRewards (): Promise<void> {
     if (this.connectedState) {
-      await this.getRewards(this.ethAddress)
+      await this.getRewards('0x21Bc9f4a3d9Dc86f142F802668dB7D908cF0A636')
     }
   }
 
   async connectExternalAccountProcess (): Promise<void> {
     await this.connectExternalWallet()
-
-    if (this.isExternalAccountConnected) {
-      await this.checkAccountRewards()
-    }
+    await this.checkAccountRewards()
   }
 
   async changeExternalAccountProcess (): Promise<void> {
@@ -182,6 +208,10 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
 
 <style lang="scss" scoped>
 .rewards {
+  &-block:not(:last-child) {
+    margin-bottom: $inner-spacing-medium;
+  }
+
   &-box {
     display: flex;
     flex-flow: column nowrap;
@@ -204,7 +234,6 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
   }
 
   &-hint {
-    margin: $inner-spacing-medium 0;
     font-size: var(--s-font-size-mini);
     line-height: $s-line-height-big;
     color: var(--s-color-base-content-secondary)

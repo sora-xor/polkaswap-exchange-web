@@ -4,7 +4,7 @@ const OrdinalRules = {
   en: (v) => {
     const n = +v
 
-    if (!Number.isFinite(n) || n === 0) return ''
+    if (!Number.isFinite(n) || n === 0) return v
 
     const remainder = n % 10
 

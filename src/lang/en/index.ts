@@ -365,7 +365,7 @@ export default {
     transactions: {
       confimation: 'Confirm {order} of {total} transactions...',
       success: 'Your will receive your rewards shortly',
-      failed: '{order} of {total} transactions failed. @:retryText.'
+      failed: '{order} of {total} transactions failed. @:retryText'
     },
     hint: {
       connectAccounts: 'To claim your PSWAP and VAL rewards you need to connect both your SORA and Ethereum accounts.',
@@ -376,7 +376,8 @@ export default {
       connectWallet: '@:connectWalletText',
       connectExternalWallet: 'Connect Ethereum account',
       signAndClaim: 'Sign and claim',
-      pending: '{network} transaction pending...',
+      pendingInternal: '@:soraText transaction pending...',
+      pendingExternal: '@:ethereumText transaction pending...',
       retry: '@:retryText',
       checkRewards: 'Check'
     }

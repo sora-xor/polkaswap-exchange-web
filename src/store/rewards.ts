@@ -11,12 +11,24 @@ export interface RewardAmountSymbol {
   symbol: KnownSymbols;
 }
 
+const demoRequest = (chance = 0.5): Promise<void> => new Promise((resolve, reject) => {
+  setTimeout(() => {
+    if (Math.random() < chance) {
+      resolve()
+    } else {
+      reject(new Error(''))
+    }
+  }, 5000)
+})
+
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
     'RESET',
     'SET_TRANSACTION_STEP',
-    'SET_REWARDS_CLAIMING'
+    'SET_TRANSACTION_ERROR',
+    'SET_REWARDS_CLAIMING',
+    'SET_REWARDS_RECIEVED'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -29,7 +41,9 @@ function initialState () {
     rewards: null,
     rewardsFetching: false,
     rewardsClaiming: false,
-    transactionStep: 0,
+    rewardsRecieved: false,
+    transactionError: false,
+    transactionStep: 1,
     transactionStepsCount: 2
   }
 }
@@ -110,6 +124,12 @@ const mutations = {
   [types.SET_REWARDS_CLAIMING] (state, flag: boolean) {
     state.rewardsClaiming = flag
   },
+  [types.SET_TRANSACTION_ERROR] (state, flag: boolean) {
+    state.transactionError = flag
+  },
+  [types.SET_REWARDS_RECIEVED] (state, flag: boolean) {
+    state.rewardsRecieved = flag
+  },
 
   [types.GET_REWARDS_REQUEST] (state) {
     state.rewards = null
@@ -146,12 +166,21 @@ const actions = {
     }
   },
 
-  claimRewards ({ commit }) {
+  async claimRewards ({ commit, state }) {
     commit(types.SET_REWARDS_CLAIMING, true)
+    commit(types.SET_TRANSACTION_ERROR, false)
     try {
-
+      if (state.transactionStep === 1) {
+        await demoRequest()
+        commit(types.SET_TRANSACTION_STEP, 2)
+      }
+      if (state.transactionStep === 2) {
+        await demoRequest()
+        commit(types.SET_TRANSACTION_STEP, 1)
+        commit(types.SET_REWARDS_RECIEVED, true)
+      }
     } catch (error) {
-
+      commit(types.SET_TRANSACTION_ERROR, true)
     } finally {
       commit(types.SET_REWARDS_CLAIMING, false)
     }

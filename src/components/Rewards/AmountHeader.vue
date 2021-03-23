@@ -50,6 +50,7 @@ $divider-height: 40px;
   }
 
   &-block {
+    flex: 1;
     color: var(--s-color-base-on-accent);
     text-align: center;
 

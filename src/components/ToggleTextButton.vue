@@ -22,6 +22,10 @@ export default class ToggleTextButton extends Vue {
   font-size: inherit;
   line-height: inherit;
 
+  span {
+    font-weight: 400 !important;
+  }
+
   .secondary-text {
     display: none;
   }
