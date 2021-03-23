@@ -95,7 +95,7 @@ function initialState () {
   return {
     isSoraToEthereum: true,
     assetAddress: '',
-    amount: 0,
+    amount: '',
     soraNetworkFee: 0,
     ethereumNetworkFee: 0,
     soraTotal: 0,
@@ -176,7 +176,7 @@ const mutations = {
   [types.SET_ASSET_ADDRESS] (state, address: string) {
     state.assetAddress = address
   },
-  [types.SET_AMOUNT] (state, amount: string | number) {
+  [types.SET_AMOUNT] (state, amount: string) {
     state.amount = amount
   },
   [types.GET_SORA_NETWORK_FEE_REQUEST] (state) {
@@ -252,7 +252,7 @@ const actions = {
   setAssetAddress ({ commit }, address?: string) {
     commit(types.SET_ASSET_ADDRESS, address)
   },
-  setAmount ({ commit }, amount: string | number) {
+  setAmount ({ commit }, amount: string) {
     commit(types.SET_AMOUNT, amount)
   },
   setSoraNetworkFee ({ commit }, soraNetworkFee: string) {

@@ -156,6 +156,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: () => Promise<void>
+  @Action('getAssets', { namespace: 'assets' }) getAssets
 
   @Getter slippageTolerance!: number
   @Getter accountAssets!: Array<AccountAsset> // Wallet store
@@ -230,7 +231,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   created () {
-    this.withApi(() => {
+    this.withApi(async () => {
+      await this.getAssets()
       if (!this.tokenFrom) {
         const xorAddress = KnownAssets.get(KnownSymbols.XOR)?.address
         this.setTokenFromAddress(xorAddress)
