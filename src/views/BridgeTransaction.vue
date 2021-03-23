@@ -28,7 +28,7 @@
             </template>
             <div v-if="transactionFromHash" :class="hashContainerClasses(!isSoraToEthereum)">
               <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionFromHash)" readonly />
-              <s-button class="s-button--hash-copy" size="medium" type="link" icon="copy-16" @click="handleCopyTransactionHash(transactionFromHash)" />
+              <s-button class="s-button--hash-copy" type="link" icon="copy-16" @click="handleCopyTransactionHash(transactionFromHash)" />
               <!-- TODO: Add work with Polkascan -->
               <s-dropdown
                 v-if="!isSoraToEthereum"
@@ -82,7 +82,7 @@
             </template>
             <div v-if="isTransactionStep2 && transactionToHash" :class="hashContainerClasses(isSoraToEthereum)">
               <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionToHash)" readonly />
-              <s-button class="s-button--hash-copy" size="medium" type="link" icon="copy-16" @click="handleCopyTransactionHash(transactionToHash)" />
+              <s-button class="s-button--hash-copy" type="link" icon="copy-16" @click="handleCopyTransactionHash(transactionToHash)" />
               <s-dropdown
                 v-if="isSoraToEthereum"
                 class="s-dropdown--hash-menu"

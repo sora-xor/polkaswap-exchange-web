@@ -5,7 +5,6 @@ import { KnownAssets, KnownSymbols, CodecString } from '@sora-substrate/util'
 import TransactionMixin from './TransactionMixin'
 import LoadingMixin from './LoadingMixin'
 import ConfirmDialogMixin from './ConfirmDialogMixin'
-import NumberFormatterMixin from './NumberFormatterMixin'
 
 import router from '@/router'
 import { PageNames } from '@/consts'
@@ -13,7 +12,7 @@ import { getMaxValue, isMaxButtonAvailable, isWalletConnected, isXorAccountAsset
 
 const CreateTokenPairMixin = (namespace: string) => {
   @Component
-  class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin, NumberFormatterMixin) {
+  class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin) {
     readonly KnownSymbols = KnownSymbols
 
     @Getter('firstToken', { namespace }) firstToken!: any
