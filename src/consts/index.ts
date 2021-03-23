@@ -78,12 +78,13 @@ const MainMenu: Array<SidebarMenuItem> = [
   {
     icon: 'grid-block-distribute-vertically-24',
     title: PageNames.Bridge
-  },
-  {
-    icon: '',
-    title: PageNames.Farming,
-    disabled: true
   }
+  // PSS-570: Hide Farming until icon will be ready
+  // {
+  //   icon: '',
+  //   title: PageNames.Farming,
+  //   disabled: true
+  // }
 ]
 
 const AccountMenu: Array<SidebarMenuItem> = [
