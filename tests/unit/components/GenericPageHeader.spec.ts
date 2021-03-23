@@ -1,6 +1,6 @@
 // import { shallowMount, createLocalVue } from '@vue/test-utils'
 
-// import GenericHeader from '@/components/GenericHeader.vue'
+// import GenericPageHeader from '@/components/GenericPageHeader.vue'
 // import { SoramitsuElementsImport, TranslationMock } from '../../utils'
 
 // const localVue = createLocalVue()
@@ -8,11 +8,11 @@
 
 // describe('TokenLogo.vue', () => {
 //   beforeEach(() => {
-//     TranslationMock(GenericHeader)
+//     TranslationMock(GenericPageHeader)
 //   })
 
 //   it('should renders correctly', () => {
-//     const wrapper = shallowMount(GenericHeader, {
+//     const wrapper = shallowMount(GenericPageHeader, {
 //       localVue,
 //       propsData: {
 //         hasButtonBack: false,
@@ -24,7 +24,7 @@
 //   })
 // })
 
-describe('GenericHeader test', () => {
+describe('GenericPageHeader test', () => {
   test('Temporary test', () => {
     expect(true).toEqual(true)
   })

@@ -15,35 +15,29 @@
       {{ t('confirmSupply.outputDescription', { slippageTolerance }) }}
     </div>
     <s-divider />
-    <div class="tokens">
-      <s-row flex justify="space-between" class="token">
-        <s-row v-if="firstToken" flex>
-          <token-logo :token="firstToken" size="small" />
-          <span class="token-symbol">{{ firstToken.symbol }} {{ t('createPair.deposit')}}</span>
-        </s-row>
-        <div class="token-value">{{ formattedFirstTokenValue }}</div>
-      </s-row>
-      <s-row flex justify="space-between" class="token">
-        <s-row v-if="secondToken" flex>
-          <token-logo :token="secondToken" size="small" />
-          <span class="token-symbol">{{ secondToken.symbol }} {{ t('createPair.deposit')}}</span>
-        </s-row>
-        <div class="token-value">{{ formattedSecondTokenValue }}</div>
-      </s-row>
-    </div>
-    <div class="pair-info">
-      <s-row flex justify="space-between" class="pair-info__line">
-        <div>{{ t('confirmSupply.price') }}</div>
-        <div v-if="firstToken && secondToken" class="price">
-          <div>1 {{ firstToken.symbol }} = {{ price }} {{ secondToken.symbol }}</div>
-          <div>1 {{ secondToken.symbol }} = {{ priceReversed }} {{ firstToken.symbol }}</div>
-        </div>
-      </s-row>
-      <s-row flex justify="space-between" class="pair-info__line">
-        <div>{{ t('createPair.shareOfPool') }}</div>
-        <div>{{ shareOfPool }}%</div>
-      </s-row>
-    </div>
+    <info-line
+      :label="`${firstToken.symbol} ${t('createPair.deposit')}`"
+      :value="formattedFirstTokenValue"
+    >
+      <template #info-line-prefix>
+        <token-logo :token="firstToken" size="small" />
+      </template>
+    </info-line>
+    <info-line
+      :label="`${secondToken.symbol} ${t('createPair.deposit')}`"
+      :value="formattedSecondTokenValue"
+    >
+      <template #info-line-prefix>
+        <token-logo :token="secondToken" size="small" />
+      </template>
+    </info-line>
+    <info-line
+      :label="t('confirmSupply.price')"
+      :value="`1 ${firstToken.symbol} = ${priceReversed}`"
+      :asset-symbol="secondToken.symbol"
+    />
+    <info-line :value="`1 ${secondToken.symbol} = ${price}`" :asset-symbol="firstToken.symbol" />
+    <info-line :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
     <template #footer>
       <s-button
         type="primary"
@@ -71,6 +65,7 @@ import { Components } from '@/consts'
   components: {
     DialogBase,
     TokenLogo: lazyComponent(Components.TokenLogo),
+    InfoLine: lazyComponent(Components.InfoLine),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })

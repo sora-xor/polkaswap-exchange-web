@@ -1,49 +1,43 @@
 <template>
   <div class="swap-info-container">
     <template v-if="showPrice || showSlippageTolerance">
-      <div v-if="showPrice" class="swap-info">
-        <span>{{ t('exchange.price') }}</span>
-        <span class="swap-info-value">{{ priceValue }}</span>
-        <s-button class="el-button--switch-price" type="action" size="small" icon="swap" @click="handleSwitchPrice" />
-      </div>
-      <div v-if="showSlippageTolerance && connected" class="swap-info swap-info--slippage-tolerance">
-        <span>{{ t('swap.slippageTolerance') }}</span>
+      <info-line v-if="showPrice" :label="t('exchange.price')" :value="priceValue">
+        <s-button class="el-button--switch-price" type="action" size="small" icon="arrows-swap-24" @click="handleSwitchPrice" />
+      </info-line>
+      <info-line v-if="showSlippageTolerance && connected" :label="t('swap.slippageTolerance')">
         <s-button class="swap-info-value" type="link" @click="openSettingsDialog">
           {{ slippageTolerance }}%
         </s-button>
-      </div>
+      </info-line>
       <settings v-if="showSlippageTolerance" :visible.sync="showSettings" />
     </template>
     <template v-else>
-      <div class="swap-info swap-info--min-received">
-        <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.minReceivedTooltip')" theme="light" placement="right-start" animation="none" :show-arrow="false">
-          <s-icon name="info" size="16" />
-        </s-tooltip>
-        <span>{{ t(`swap.${isExchangeB ? 'maxSold' : 'minReceived'}`) }}</span>
-        <span class="swap-info-value">{{ formattedMinMaxReceived }}<span class="asset-title">{{ getAssetSymbolText }}</span></span>
-      </div>
-      <!-- <div class="swap-info">
-        <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.priceImpactTooltip')" theme="light" placement="right-start" animation="none" :show-arrow="false">
-          <s-icon name="info" size="16" />
-        </s-tooltip>
-        <span>{{ t('swap.priceImpact') }}</span>
-        <span :class="'swap-info-value ' + priceImpactClass">{{ priceImpact }}%</span>
-      </div> -->
-      <div class="swap-info">
-        <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: 0.3})" theme="light" placement="right-start" animation="none" :show-arrow="false">
-          <s-icon name="info" size="16" />
-        </s-tooltip>
-        <span>{{ t('swap.liquidityProviderFee') }}</span>
-        <span class="swap-info-value">{{ formattedLiquidityProviderFee }}<span class="asset-title">{{ xorSymbol }}</span></span>
-      </div>
+      <info-line
+        :label="t(`swap.${isExchangeB ? 'maxSold' : 'minReceived'}`)"
+        :tooltip-content="t('swap.minReceivedTooltip')"
+        :value="formattedMinMaxReceived"
+        :asset-symbol="getAssetSymbolText"
+      />
+      <!-- <info-line
+        :label="t('swap.priceImpact')"
+        :tooltip-content="t('swap.priceImpactTooltip')"
+        :value="`${priceImpact}%`"
+      /> -->
+      <info-line
+        v-if="showTooltips"
+        :label="t('swap.liquidityProviderFee')"
+        :tooltip-content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: 0.3})"
+        :value="formattedLiquidityProviderFee"
+        :asset-symbol="xorSymbol"
+      />
       <!-- TODO 4 alexnatalia: Show if logged in and have info about Network Fee -->
-      <div v-if="connected" class="swap-info">
-        <s-tooltip v-if="showTooltips" class="swap-info-icon" popper-class="info-tooltip info-tooltip--swap" border-radius="mini" :content="t('swap.networkFeeTooltip')" theme="light" placement="right-start" animation="none" :show-arrow="false">
-          <s-icon name="info" size="16" />
-        </s-tooltip>
-        <span>{{ t('swap.networkFee') }}</span>
-        <span class="swap-info-value">{{ formattedNetworkFee }}<span class="asset-title">{{ xorSymbol }}</span></span>
-      </div>
+      <info-line
+        v-if="connected"
+        :label="t('swap.networkFee')"
+        :tooltip-content="t('swap.networkFeeTooltip')"
+        :value="formattedNetworkFee"
+        :asset-symbol="xorSymbol"
+      />
     </template>
   </div>
 </template>
@@ -51,7 +45,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { KnownSymbols, CodecString } from '@sora-substrate/util'
+import { KnownSymbols, CodecString, AccountAsset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
@@ -59,23 +53,28 @@ import { isWalletConnected } from '@/utils'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 
+const namespace = 'swap'
+
 @Component({
   components: {
+    InfoLine: lazyComponent(Components.InfoLine),
     Settings: lazyComponent(Components.Settings)
   }
 })
 export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMixin) {
-  @Getter tokenFrom!: any
-  @Getter tokenTo!: any
-  @Getter isTokenFromPrice!: boolean
-  @Getter slippageTolerance!: number
-  @Getter minMaxReceived!: CodecString
-  @Getter isExchangeB!: boolean
-  @Getter liquidityProviderFee!: CodecString
-  @Getter networkFee!: CodecString
-  @Action setTokenFromPrice
+  @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset
+  @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset
+  @Getter('isTokenFromPrice', { namespace }) isTokenFromPrice!: boolean
+  @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString
+  @Getter('isExchangeB', { namespace }) isExchangeB!: boolean
+  @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString
+  @Getter('networkFee', { namespace }) networkFee!: CodecString
+  @Action('setTokenFromPrice', { namespace }) setTokenFromPrice!: (isTokenFromPrice: boolean) => Promise<void>
+
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
+
+  @Getter slippageTolerance!: number
 
   @Prop({ default: false, type: Boolean }) readonly showPrice!: boolean
   @Prop({ default: true, type: Boolean }) readonly showTooltips!: boolean
@@ -145,14 +144,12 @@ export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMi
 </script>
 
 <style lang="scss">
-.info-tooltip--swap {
-  margin-left: #{$inner-spacing-mini / 2} !important;
-}
 .el-button--switch-price {
   @include switch-button-inherit-styles;
   &.s-action.s-small i {
     margin-top: 0;
     margin-left: 0;
+    font-size: 16px !important;
   }
 }
 </style>
@@ -160,10 +157,7 @@ export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMi
 <style lang="scss" scoped>
 @include info-line;
 .swap-info {
-  &--slippage-tolerance,
-  &--min-received {
-    margin-top: $inner-spacing-small;
-  }
+  // TODO: [Release 2] Check these styles on
   .price-impact {
     &-positive {
       color: var(--s-color-status-success);
@@ -177,11 +171,6 @@ export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMi
     height: var(--s-font-size-small);
     padding: 0;
     color: inherit;
-  }
-  .el-button--switch-price {
-    margin-right: 0;
-    margin-left: $inner-spacing-mini;
-    @include switch-button;
   }
 }
 </style>

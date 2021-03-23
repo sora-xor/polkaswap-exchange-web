@@ -1,6 +1,7 @@
 import Vue from 'vue'
-import SoramitsuElements, { Message, MessageBox, Notification } from '@soramitsu/soramitsu-js-ui'
+import SoramitsuElements, { Message, MessageBox, Notification, setTheme } from '@soramitsu/soramitsu-js-ui'
 import '@soramitsu/soramitsu-js-ui/lib/styles'
+
 import store from '@/store'
 
 Vue.use(SoramitsuElements, { store })
@@ -17,7 +18,7 @@ Vue.prototype.$notify = ({ message, type }) => {
   })
   const elements = Array.from(document.getElementsByClassName('el-notification'))
   const current = elements[elements.length - 1]
-  const appContent = document.getElementsByClassName('app-content').item(0) as Element
+  const appContent = document.getElementsByClassName('app-main').item(0) as Element
   appContent.appendChild(current)
   const el = document.createElement('div')
   el.className = 'loader'

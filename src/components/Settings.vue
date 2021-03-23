@@ -1,18 +1,17 @@
 <template>
-  <dialog-base
-    :visible.sync="isVisible"
-    :title="t('dexSettings.title')"
-    custom-class="settings"
-  >
+  <dialog-base :visible.sync="isVisible" :title="t('dexSettings.title')" custom-class="settings">
     <div class="settings-content">
-      <s-divider />
       <div :class="slippageToleranceClasses">
         <div class="slippage-tolerance-default">
           <div class="header">
             {{ t('dexSettings.slippageTolerance') }}
-            <s-tooltip popper-class="info-tooltip" border-radius="mini" :content="t('dexSettings.slippageToleranceHint')" theme="light" placement="right-start" animation="none" :show-arrow="false">
-              <s-icon class="header-hint" name="info" />
-            </s-tooltip>
+            <branded-tooltip
+              popper-class="info-tooltip"
+              :content="t('dexSettings.slippageToleranceHint')"
+              placement="right-start"
+            >
+              <s-icon class="header-hint" name="info-16" size="12px" />
+            </branded-tooltip>
           </div>
           <s-tabs type="rounded" :value="String(slippageTolerance)" @click="selectSlippageTolerance">
             <s-tab
@@ -34,21 +33,19 @@
         </div>
         <div v-if="slippageToleranceValidation" class="slippage-tolerance_validation">{{ t(`dexSettings.slippageToleranceValidation.${slippageToleranceValidation}`) }}</div>
       </div>
-      <s-divider />
       <!-- TODO [Release 2]: We'll play with areas below at the next iteration of development -->
       <!-- <div class="transaction-deadline">
         <div class="header">
           {{ t('dexSettings.transactionDeadline') }}
           <s-tooltip popper-class="info-tooltip" border-radius="mini" :content="t('dexSettings.transactionDeadlineHint')" theme="light" placement="right-start" animation="none" :show-arrow="false">
-            <s-icon class="header-hint" name="info" />
+            <s-icon class="header-hint" name="info-16" />
           </s-tooltip>
         </div>
         <div class="value">
           <div class="value-container">{{ transactionDeadline }} {{ t('dexSettings.min') }}</div>
           <s-slider class="value-slider" :value="transactionDeadline" :showTooltip="false" @input="handleSetTransactionDeadline" />
         </div>
-      </div>
-      <s-divider /> -->
+      </div> -->
       <!-- <div class="node-address">
         <div class="header">{{ t('dexSettings.nodeAddress') }}</div>
         <div class="value">
@@ -69,12 +66,15 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
 
 @Component({
   components: {
-    DialogBase
+    DialogBase,
+    BrandedTooltip: lazyComponent(Components.BrandedTooltip)
   }
 })
 export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
@@ -153,7 +153,7 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
 .settings .slippage-tolerance .s-tabs .el-tabs__item {
   font-size: var(--s-font-size-mini);
   font-feature-settings: $s-font-feature-settings-common;
-  @include font-weight(600, true);
+  font-weight: 600 !important;
 }
 .slippage-tolerance-custom_input.s-input {
   min-height: var(--s-size-small);
@@ -194,21 +194,16 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
 
 <style lang="scss" scoped>
 .settings {
-  &-content {
-    & > .el-divider:first-child {
-      margin-top: 0;
-      margin-bottom: $inner-spacing-big;
-    }
-  }
   .header {
     padding-bottom: $inner-spacing-mini;
+    padding-left: $inner-spacing-mini / 2;
     color: var(--s-color-base-content-tertiary);
     font-size: $s-font-size-settings;
     line-height: $s-line-height-base;
     letter-spacing: $s-letter-spacing-type;
-    @include font-weight(700);
+    font-weight: 700;
     &-hint {
-      margin-left: $inner-spacing-mini;
+      margin-left: $inner-spacing-mini / 2;
       cursor: pointer;
     }
   }
@@ -222,7 +217,7 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
       border-radius: var(--s-border-radius-mini);
       font-size: var(--s-font-size-mini);
       text-align: center;
-      @include font-weight(700);
+      font-weight: 700;
       &_label {
         color: var(--s-color-base-content-tertiary);
       }
@@ -255,15 +250,5 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
   &--error {
     color: var(--s-color-status-error)
   }
-  + .s-divider-secondary {
-    margin-top: $inner-spacing-big;
-  }
-  &--warning,
-  &--error {
-    + .s-divider-secondary {
-      margin-top: $inner-spacing-medium;
-    }
-  }
 }
-@include vertical-divider('el-divider');
 </style>

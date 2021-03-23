@@ -11,8 +11,8 @@ import { ZeroStringValue } from '@/consts'
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
-    'SET_FIRST_TOKEN',
-    'SET_SECOND_TOKEN',
+    'SET_FIRST_TOKEN_ADDRESS',
+    'SET_SECOND_TOKEN_ADDRESS',
     'SET_FIRST_TOKEN_VALUE',
     'SET_SECOND_TOKEN_VALUE',
     'SET_FOCUSED_FIELD'
@@ -27,8 +27,8 @@ const types = flow(
 ])
 
 interface CreatePairState {
-  firstToken: Asset | AccountAsset | null;
-  secondToken: Asset | AccountAsset | null;
+  firstTokenAddress: string;
+  secondTokenAddress: string;
   firstTokenValue: string;
   secondTokenValue: string;
   minted: CodecString;
@@ -38,8 +38,8 @@ interface CreatePairState {
 
 function initialState (): CreatePairState {
   return {
-    firstToken: null,
-    secondToken: null,
+    firstTokenAddress: '',
+    secondTokenAddress: '',
     firstTokenValue: '',
     secondTokenValue: '',
     minted: '',
@@ -51,11 +51,11 @@ function initialState (): CreatePairState {
 const state = initialState()
 
 const getters = {
-  firstToken (state: CreatePairState) {
-    return state.firstToken
+  firstToken (state: CreatePairState, getters, rootState, rootGetters) {
+    return rootGetters['assets/getAssetDataByAddress'](state.firstTokenAddress)
   },
-  secondToken (state: CreatePairState) {
-    return state.secondToken
+  secondToken (state: CreatePairState, getters, rootState, rootGetters) {
+    return rootGetters['assets/getAssetDataByAddress'](state.secondTokenAddress)
   },
   firstTokenValue (state: CreatePairState) {
     return state.firstTokenValue
@@ -75,11 +75,11 @@ const getters = {
 }
 
 const mutations = {
-  [types.SET_FIRST_TOKEN] (state: CreatePairState, firstToken: Asset | AccountAsset | null) {
-    state.firstToken = firstToken
+  [types.SET_FIRST_TOKEN_ADDRESS] (state: CreatePairState, address: string) {
+    state.firstTokenAddress = address
   },
-  [types.SET_SECOND_TOKEN] (state: CreatePairState, secondToken: Asset | AccountAsset | null) {
-    state.secondToken = secondToken
+  [types.SET_SECOND_TOKEN_ADDRESS] (state: CreatePairState, address: string) {
+    state.secondTokenAddress = address
   },
   [types.SET_FIRST_TOKEN_VALUE] (state: CreatePairState, firstTokenValue: string) {
     state.firstTokenValue = firstTokenValue
@@ -115,22 +115,14 @@ const mutations = {
 }
 
 const actions = {
-  async setFirstToken ({ commit, dispatch }, asset: any) {
-    let firstAsset = api.accountAssets.find(a => a.address === asset.address)
-    if (!firstAsset) {
-      firstAsset = { ...asset, balance: ZeroStringValue }
-    }
-    commit(types.SET_FIRST_TOKEN, firstAsset)
-    dispatch('checkLiquidity')
+  async setFirstTokenAddress ({ commit, dispatch }, address: string) {
+    commit(types.SET_FIRST_TOKEN_ADDRESS, address)
+    await dispatch('checkLiquidity')
   },
 
-  async setSecondToken ({ commit, dispatch }, asset: any) {
-    let secondAsset = api.accountAssets.find(a => a.address === asset.address)
-    if (!secondAsset) {
-      secondAsset = { ...asset, balance: ZeroStringValue }
-    }
-    commit(types.SET_SECOND_TOKEN, secondAsset)
-    dispatch('checkLiquidity')
+  async setSecondTokenAddress ({ commit, dispatch }, address: string) {
+    commit(types.SET_SECOND_TOKEN_ADDRESS, address)
+    await dispatch('checkLiquidity')
   },
 
   async checkLiquidity ({ commit, getters, dispatch }) {
@@ -215,8 +207,8 @@ const actions = {
   },
 
   resetData ({ commit }) {
-    commit(types.SET_FIRST_TOKEN, null)
-    commit(types.SET_SECOND_TOKEN, null)
+    commit(types.SET_FIRST_TOKEN_ADDRESS, '')
+    commit(types.SET_SECOND_TOKEN_ADDRESS, '')
     commit(types.SET_FIRST_TOKEN_VALUE, '')
     commit(types.SET_SECOND_TOKEN_VALUE, '')
   }

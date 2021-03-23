@@ -11,7 +11,7 @@
       <!-- This link was hidden due to PSS-205 task. We'll return it back later.  -->
       <!-- <s-icon name="external-link" @click="handleTransactionInfo" /> -->
       <!-- Add correct icons and add functionality -->
-      <!-- <s-icon name="arrow-bottom-rounded" /> -->
+      <!-- <s-icon name="arrows-arrow-bottom-24" /> -->
     </div>
     <s-divider />
     <template #footer>
@@ -72,13 +72,13 @@ $transactionIconSize: 68px;
     letter-spacing: $s-letter-spacing-type;
     background-color: var(--s-color-base-background);
     border-radius: var(--s-border-radius-mini);
-    @include font-weight(700);
+    font-weight: 700;
     white-space: nowrap;
   }
   &-info {
     margin-right: $inner-spacing-mini;
     font-feature-settings: $s-font-feature-settings-common;
-    @include font-weight(600);
+    font-weight: 600;
   }
   .s-icon-external-link {
     cursor: pointer;
