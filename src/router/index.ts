@@ -106,20 +106,15 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (BridgeChildPages.includes(to.name as PageNames) && isWalletConnected() && !store.getters['web3/isEthAccountConnected']) {
-      next({
-        name: PageNames.Bridge
-      })
+      next({ name: PageNames.Bridge })
+      return
     }
     if (!isWalletConnected()) {
-      next({
-        name: PageNames.Wallet
-      })
-    } else {
-      next()
+      next({ name: PageNames.Wallet })
+      return
     }
-  } else {
-    next()
   }
+  next()
 })
 
 export default router

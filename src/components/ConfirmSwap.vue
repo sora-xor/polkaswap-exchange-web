@@ -45,7 +45,6 @@ import { CodecString, AccountAsset } from '@sora-substrate/util'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -59,7 +58,7 @@ const namespace = 'swap'
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin, NumberFormatterMixin) {
+export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
   @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset
   @Getter('fromValue', { namespace }) fromValue!: string
