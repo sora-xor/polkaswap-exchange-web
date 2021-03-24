@@ -26,6 +26,10 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     return isWalletConnected()
   }
 
+  get areNetworksConnected (): boolean {
+    return this.isSoraAccountConnected && this.isExternalAccountConnected
+  }
+
   connectInternalWallet (): void {
     router.push({ name: PageNames.Wallet })
   }

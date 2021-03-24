@@ -7,7 +7,7 @@
         <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text">
           {{ claimingStatusMessage }}
         </div>
-        <div v-if="connectedState" class="rewards-amount">
+        <div v-if="areNetworksConnected" class="rewards-amount">
           <rewards-amount-header v-if="rewardsChecked" :items="rewardsByAssetsList" />
           <template v-if="!claimingInProgressOrFinished">
             <rewards-amount-table v-if="formattedClaimableRewards.length" class="rewards-table" :items="formattedClaimableRewards" />
@@ -97,10 +97,6 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
     })
   }
 
-  get connectedState (): boolean {
-    return this.isSoraAccountConnected && this.isExternalAccountConnected
-  }
-
   get claimingInProgressOrFinished (): boolean {
     return this.rewardsClaiming || this.transactionError || this.rewardsRecieved
   }
@@ -138,7 +134,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
 
   get hintText (): string {
     return this.findTranslationInCollection([
-      (!this.connectedState || this.rewardsFetching) &&
+      (!this.areNetworksConnected || this.rewardsFetching) &&
       'rewards.hint.connectAccounts',
       !this.rewardsAvailable &&
       'rewards.hint.connectAnotherAccount',
@@ -189,7 +185,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
   }
 
   async checkAccountRewards (): Promise<void> {
-    if (this.connectedState) {
+    if (this.areNetworksConnected) {
       await this.getRewards('0x21Bc9f4a3d9Dc86f142F802668dB7D908cF0A636')
     }
   }
