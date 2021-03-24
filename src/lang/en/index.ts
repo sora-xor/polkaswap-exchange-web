@@ -240,7 +240,7 @@ export default {
       failed: '{step} transactions failed. Retry.',
       confirm: 'Confirm 2nd of 2 transactions...',
       complete: 'Complete',
-      convertionComplete: 'Convertion complete'
+      convertionComplete: 'Conversion complete'
     },
     statuses: {
       waiting: 'Waiting',
