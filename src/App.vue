@@ -13,7 +13,7 @@
               <div class="account-name">{{ accountInfo }}</div>
               <div class="account-icon">
                 <s-icon v-if="!accountConnected" name="finance-wallet-24" />
-                <div v-else class="account-avatar"/>
+                <WalletAvatar :address="account.address"/>
               </div>
             </div>
           </s-button>
@@ -110,7 +110,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { connection, initWallet, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
+import { connection, initWallet, WALLET_CONSTS, WalletAvatar } from '@soramitsu/soraneo-wallet-web'
 
 import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components } from '@/consts'
 
@@ -126,6 +126,7 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
 
 @Component({
   components: {
+    WalletAvatar,
     BrandedTooltip: lazyComponent(Components.BrandedTooltip),
     HelpDialog: lazyComponent(Components.HelpDialog),
     SidebarItemContent: lazyComponent(Components.SidebarItemContent)
