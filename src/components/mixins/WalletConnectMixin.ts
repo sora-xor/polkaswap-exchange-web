@@ -4,7 +4,7 @@ import { Action, Getter, State } from 'vuex-class'
 import router from '@/router'
 import { isWalletConnected, getWalletAddress, formatAddress } from '@/utils'
 import { PageNames } from '@/consts'
-import { Provider } from '@/utils/web3-util'
+import web3Util, { Provider } from '@/utils/web3-util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 
@@ -66,5 +66,15 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     } finally {
       this.isExternalWalletConnecting = false
     }
+  }
+
+  // TODO: remove this check, when MetaMask issue will be resolved
+  // https://github.com/MetaMask/metamask-extension/issues/10368
+  async checkExternalAccountIsConnected (): Promise<boolean> {
+    const account = await web3Util.getAccount()
+
+    console.log(account, this.ethAddress)
+
+    return !!account && account.toLowerCase() === this.ethAddress.toLowerCase()
   }
 }

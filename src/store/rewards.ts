@@ -29,7 +29,8 @@ const types = flow(
     'SET_TRANSACTION_STEP',
     'SET_TRANSACTION_ERROR',
     'SET_REWARDS_CLAIMING',
-    'SET_REWARDS_RECIEVED'
+    'SET_REWARDS_RECIEVED',
+    'SET_SIGNATURE'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -45,7 +46,8 @@ function initialState () {
     rewardsRecieved: false,
     transactionError: false,
     transactionStep: 1,
-    transactionStepsCount: 2
+    transactionStepsCount: 2,
+    signature: ''
   }
 }
 
@@ -131,6 +133,9 @@ const mutations = {
   [types.SET_REWARDS_RECIEVED] (state, flag: boolean) {
     state.rewardsRecieved = flag
   },
+  [types.SET_SIGNATURE] (state, signature: string) {
+    state.signature = signature
+  },
 
   [types.GET_REWARDS_REQUEST] (state) {
     state.rewards = null
@@ -170,19 +175,24 @@ const actions = {
   async claimRewards ({ commit, state, rootGetters }) {
     try {
       const web3 = await web3Util.getInstance()
-      const account = await web3Util.getAccount()
+      const address = rootGetters['web3/ethAddress']
 
       commit(types.SET_REWARDS_CLAIMING, true)
       commit(types.SET_TRANSACTION_ERROR, false)
 
       if (state.transactionStep === 1) {
-        const kessakHex = web3.utils.sha3(account)
-        const sign = await web3.eth.personal.sign(kessakHex, account)
+        const message = web3.utils.sha3(address)
+        const signature = await web3.eth.personal.sign(message, address)
 
-        console.log('sign', sign)
+        commit(types.SET_SIGNATURE, signature)
         commit(types.SET_TRANSACTION_STEP, 2)
       }
-      if (state.transactionStep === 2) {
+      if (state.transactionStep === 2 && state.signature) {
+        console.log(api.api.rpc)
+        // const result = await api.api.rpc.rewards.claim(state.signature)
+
+        console.log(result)
+
         await demoRequest()
         commit(types.SET_TRANSACTION_STEP, 1)
         commit(types.SET_REWARDS_RECIEVED, true)

@@ -478,16 +478,8 @@ export default class Bridge extends Mixins(
     // TODO: Check balance (ETH)
   }
 
-  // TODO: remove this check, when MetaMask issue will be resolved
-  // https://github.com/MetaMask/metamask-extension/issues/10368
-  async checkAccountIsConnected (): Promise<boolean> {
-    const account = await web3Util.getAccount()
-
-    return !!account
-  }
-
   async handleConfirmTransaction (): Promise<void> {
-    const accountIsConnected = await this.checkAccountIsConnected()
+    const accountIsConnected = await this.checkExternalAccountIsConnected()
 
     if (!accountIsConnected) return
 
@@ -516,7 +508,7 @@ export default class Bridge extends Mixins(
   async confirmTransaction (isTransactionConfirmed: boolean): Promise<void> {
     if (!isTransactionConfirmed) return
 
-    const accountIsConnected = await this.checkAccountIsConnected()
+    const accountIsConnected = await this.checkExternalAccountIsConnected()
 
     if (!accountIsConnected) return
 

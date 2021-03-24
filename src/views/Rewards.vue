@@ -201,7 +201,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
       return await this.checkAccountRewards()
     }
     if (this.rewardsAvailable) {
-      return await this.claimRewards()
+      return await this.claimRewardsProcess()
     }
   }
 
@@ -225,6 +225,14 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
     this.reset()
     await this.changeExternalWallet(options)
     await this.checkAccountRewards()
+  }
+
+  async claimRewardsProcess (): Promise<void> {
+    const isConnected = await this.checkExternalAccountIsConnected()
+
+    if (isConnected) {
+      await this.claimRewards()
+    }
   }
 }
 </script>
