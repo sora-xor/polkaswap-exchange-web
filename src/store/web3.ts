@@ -182,7 +182,7 @@ const actions = {
     }
   },
 
-  async switchExternalAccount ({ commit, dispatch }, { address }) {
+  async switchExternalAccount ({ commit, dispatch }, { address = '' } = {}) {
     commit(types.SWITCH_ETH_WALLET_REQUEST)
     try {
       web3Util.removeEthUserAddress()

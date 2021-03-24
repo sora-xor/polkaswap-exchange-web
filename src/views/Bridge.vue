@@ -211,8 +211,6 @@ export default class Bridge extends Mixins(
   WalletConnectMixin
 ) {
   @Action('getEthBalance', { namespace: 'web3' }) getEthBalance!: () => Promise<void>
-  @Action('setEthNetwork', { namespace: 'web3' }) setEthNetwork!: (network?: string) => Promise<void>
-  @Action('disconnectExternalAccount', { namespace: 'web3' }) disconnectExternalAccount!: () => Promise<void>
   @Action('setSoraToEthereum', { namespace }) setSoraToEthereum
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount

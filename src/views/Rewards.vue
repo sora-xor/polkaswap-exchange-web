@@ -19,7 +19,7 @@
                   size="mini"
                   :primary-text="formatAddress(ethAddress, 8)"
                   :secondary-text="t('rewards.changeWallet')"
-                  @click="changeExternalAccountProcess"
+                  @click="handleWalletChange"
                 />
                 <span>{{ t('rewards.connected') }}</span>
               </div>
@@ -47,6 +47,7 @@ import { KnownSymbols, RewardInfo, RewardingEvents } from '@sora-substrate/util'
 
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
+import web3Util from '@/utils/web3-util'
 
 import WalletConnectMixin from '../components/mixins/WalletConnectMixin'
 import NumberFormatterMixin from '../components/mixins/NumberFormatterMixin'
@@ -90,10 +91,30 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
   @Action('getRewards', { namespace: 'rewards' }) getRewards!: (address: string) => Promise<void>
   @Action('claimRewards', { namespace: 'rewards' }) claimRewards!: () => Promise<void>
 
-  async created (): Promise<void> {
+  created (): void {
     this.reset()
+  }
+
+  async mounted (): Promise<void> {
     await this.withApi(async () => {
+      await this.setEthNetwork()
       await this.checkAccountRewards()
+
+      web3Util.watchEthereum({
+        onAccountChange: (addressList: string[]) => {
+          if (addressList.length) {
+            this.changeExternalAccountProcess({ address: addressList[0] })
+          } else {
+            this.disconnectExternalAccount()
+          }
+        },
+        onNetworkChange: (networkId: string) => {
+          this.setEthNetwork(networkId)
+        },
+        onDisconnect: (code: number, reason: string) => {
+          this.disconnectExternalAccount()
+        }
+      })
     })
   }
 
@@ -184,10 +205,14 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
     }
   }
 
+  async handleWalletChange (): Promise<void> {
+    await this.changeExternalAccountProcess()
+  }
+
   async checkAccountRewards (): Promise<void> {
     if (this.areNetworksConnected) {
-      await this.getRewards(this.ethAddress)
-      // await this.getRewards('0x21Bc9f4a3d9Dc86f142F802668dB7D908cF0A636')
+      // await this.getRewards(this.ethAddress)
+      await this.getRewards('0x21Bc9f4a3d9Dc86f142F802668dB7D908cF0A636')
     }
   }
 
@@ -196,9 +221,10 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
     await this.checkAccountRewards()
   }
 
-  async changeExternalAccountProcess (): Promise<void> {
+  async changeExternalAccountProcess (options?: any): Promise<void> {
     this.reset()
-    await this.changeExternalWallet()
+    await this.changeExternalWallet(options)
+    await this.checkAccountRewards()
   }
 }
 </script>

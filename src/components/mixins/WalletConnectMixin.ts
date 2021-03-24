@@ -14,8 +14,10 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
 
   @Getter('isExternalAccountConnected', { namespace: 'web3' }) isExternalAccountConnected!: boolean
 
+  @Action('setEthNetwork', { namespace: 'web3' }) setEthNetwork!: (network?: string) => Promise<void>
   @Action('connectExternalAccount', { namespace: 'web3' }) connectExternalAccount!: (options) => Promise<void>
-  @Action('switchExternalAccount', { namespace: 'web3' }) switchExternalAccount!: (address) => Promise<void>
+  @Action('switchExternalAccount', { namespace: 'web3' }) switchExternalAccount!: (options) => Promise<void>
+  @Action('disconnectExternalAccount', { namespace: 'web3' }) disconnectExternalAccount!: () => Promise<void>
 
   getWalletAddress = getWalletAddress
   formatAddress = formatAddress
@@ -51,14 +53,14 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   }
 
   // TODO: Check why we can't choose another account
-  async changeExternalWallet (): Promise<void> {
+  async changeExternalWallet (options?: any): Promise<void> {
     // For now it's only Metamask
     if (this.isExternalWalletConnecting) {
       return
     }
     this.isExternalWalletConnecting = true
     try {
-      await this.switchExternalAccount({ provider: Provider.Metamask })
+      await this.switchExternalAccount(options)
     } catch (error) {
       console.error(error)
     } finally {

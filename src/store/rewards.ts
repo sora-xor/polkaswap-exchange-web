@@ -5,6 +5,7 @@ import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { FPNumber, KnownSymbols, KnownAssets, RewardInfo } from '@sora-substrate/util'
+import web3Util from '@/utils/web3-util'
 
 export interface RewardAmountSymbol {
   amount?: string;
@@ -166,12 +167,19 @@ const actions = {
     }
   },
 
-  async claimRewards ({ commit, state }) {
-    commit(types.SET_REWARDS_CLAIMING, true)
-    commit(types.SET_TRANSACTION_ERROR, false)
+  async claimRewards ({ commit, state, rootGetters }) {
     try {
+      const web3 = await web3Util.getInstance()
+      const account = await web3Util.getAccount()
+
+      commit(types.SET_REWARDS_CLAIMING, true)
+      commit(types.SET_TRANSACTION_ERROR, false)
+
       if (state.transactionStep === 1) {
-        await demoRequest()
+        const kessakHex = web3.utils.sha3(account)
+        const sign = await web3.eth.personal.sign(kessakHex, account)
+
+        console.log('sign', sign)
         commit(types.SET_TRANSACTION_STEP, 2)
       }
       if (state.transactionStep === 2) {
@@ -180,6 +188,7 @@ const actions = {
         commit(types.SET_REWARDS_RECIEVED, true)
       }
     } catch (error) {
+      console.error(error)
       commit(types.SET_TRANSACTION_ERROR, true)
     } finally {
       commit(types.SET_REWARDS_CLAIMING, false)
