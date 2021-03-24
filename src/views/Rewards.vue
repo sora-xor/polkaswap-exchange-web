@@ -34,7 +34,7 @@
     <div v-if="!claimingInProgressOrFinished" class="rewards-block rewards-hint">
       {{ hintText }}
     </div>
-    <s-button v-if="!rewardsRecieved" class="rewards-action-button" type="primary" @click="handleAction" :loading="rewardsFetching" :disabled="rewardsClaiming">
+    <s-button v-if="!rewardsRecieved" class="rewards-block rewards-action-button" type="primary" @click="handleAction" :loading="rewardsFetching" :disabled="rewardsClaiming">
       {{ actionButtonText }}
     </s-button>
   </div>
@@ -91,8 +91,8 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
   @Action('claimRewards', { namespace: 'rewards' }) claimRewards!: () => Promise<void>
 
   async created (): Promise<void> {
+    this.reset()
     await this.withApi(async () => {
-      this.reset()
       await this.checkAccountRewards()
     })
   }
@@ -166,7 +166,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
   findTranslationInCollection (collection) {
     const key = collection.find(Boolean)
 
-    return key ? this.t(key) : ''
+    return typeof key === 'string' && this.te(key) ? this.t(key) : ''
   }
 
   async handleAction (): Promise<void> {
@@ -186,7 +186,8 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
 
   async checkAccountRewards (): Promise<void> {
     if (this.areNetworksConnected) {
-      await this.getRewards('0x21Bc9f4a3d9Dc86f142F802668dB7D908cF0A636')
+      await this.getRewards(this.ethAddress)
+      // await this.getRewards('0x21Bc9f4a3d9Dc86f142F802668dB7D908cF0A636')
     }
   }
 
@@ -204,8 +205,10 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
 
 <style lang="scss" scoped>
 .rewards {
-  &-block:not(:last-child) {
-    margin-bottom: $inner-spacing-medium;
+  &-block {
+    & + & {
+      margin-top: $inner-spacing-medium;
+    }
   }
 
   &-box {
@@ -258,6 +261,6 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
     padding: $inner-spacing-mini / 2;
   }
 
-  @include full-width-button('rewards-action-button', 0);
+  @include full-width-button('rewards-action-button');
 }
 </style>

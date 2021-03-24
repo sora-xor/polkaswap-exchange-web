@@ -6,7 +6,7 @@
         <div class="amount-block__symbol">{{ item.symbol }}</div>
       </div>
       <div v-if="items.length - 1 !== index" class="amount-header-divider" :key="index">
-        <div class="amount-header-divider__slash" />
+        <s-divider direction="vertical" class="amount-header-divider__slash" />
       </div>
     </template>
   </div>
@@ -42,6 +42,7 @@ $divider-height: 40px;
       &__slash {
         width: 1px;
         height: $divider-height;
+        margin: 0;
         background: var(--s-color-base-on-accent);
         opacity: 0.5;
         transform: rotate(15deg)
