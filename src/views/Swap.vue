@@ -25,7 +25,7 @@
         <s-form-item>
           <s-float-input
             class="s-input--token-value"
-            :decimals="tokenFrom && tokenFrom.decimals"
+            :decimals="(tokenFrom || {}).decimals"
             :value="fromValue"
             @input="handleInputFieldFrom"
             @focus="handleFocusField(false)"
@@ -64,7 +64,7 @@
           <s-float-input
             class="s-input--token-value"
             :value="toValue"
-            :decimals="tokenTo && tokenTo.decimals"
+            :decimals="(tokenTo && {}).decimals"
             @input="handleInputFieldTo"
             @focus="handleFocusField(true)"
           />
