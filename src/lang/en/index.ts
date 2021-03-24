@@ -176,11 +176,11 @@ export default {
     poolShare: 'Your pool share',
     comingSoon: '@:comingSoon',
     unknownAsset: 'Unknown asset',
-    description: 'When you add liquidity, you are given pool tokens representing your position. These tokens automaticaly earn fees proportional to your share of the pool, and can be redeemed at any time.'
+    description: 'When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.'
   },
   bridge: {
     title: 'Hashi Bridge',
-    info: 'Convert your tokens from SORA Network to Ethereum Network and viceversa.',
+    info: 'Convert your tokens from SORA Network to Ethereum Network and vice versa.',
     balance: 'Balance',
     connectWallet: '@:connectWalletText',
     connected: 'Connected',
