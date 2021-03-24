@@ -38,7 +38,7 @@
             <s-form-item>
               <s-float-input
                 :value="amount"
-                :decimals="asset && asset.decimals"
+                :decimals="(asset || {}).decimals"
                 :class="inputClasses"
                 :placeholder="isFieldAmountFocused ? '' : inputPlaceholder"
                 :disabled="!areNetworksConnected || !isAssetSelected"

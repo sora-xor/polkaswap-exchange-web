@@ -35,7 +35,7 @@
             <s-float-input
               ref="liquidityAmount"
               class="s-input--token-value"
-              :decimals="liquidity && liquidity.decimals"
+              :decimals="(liquidity || {}).decimals"
               :value="liquidityAmount"
               @input="setLiquidityAmount"
               @focus="setFocusedField('liquidityAmount')"
@@ -68,7 +68,7 @@
             <s-float-input
               ref="firstTokenAmount"
               class="s-input--token-value"
-              :decimals="firstToken && firstToken.decimals"
+              :decimals="(firstToken || {}).decimals"
               :value="firstTokenAmount"
               @input="handleTokenChange($event, setFirstTokenAmount)"
               @focus="setFocusedField('firstTokenAmount')"
@@ -96,7 +96,7 @@
             <s-float-input
               ref="secondTokenAmount"
               class="s-input--token-value"
-              :decimals="secondToken && secondToken.decimals"
+              :decimals="(secondToken || {}).decimals"
               :value="secondTokenAmount"
               @input="handleTokenChange($event, setSecondTokenAmount)"
               @focus="setFocusedField('secondTokenAmount')"

@@ -17,7 +17,7 @@
           <s-form-item>
             <s-float-input
               class="s-input--token-value"
-              :decimals="firstToken && firstToken.decimals"
+              :decimals="(firstToken || {}).decimals"
               :value="firstTokenValue"
               :disabled="!areTokensSelected"
               @input="handleTokenChange($event, setFirstTokenValue)"
@@ -50,7 +50,7 @@
           <s-form-item>
             <s-float-input
               class="s-input--token-value"
-              :decimals="secondToken && secondToken.decimals"
+              :decimals="(secondToken || {}).decimals"
               :value="secondTokenValue"
               :disabled="!areTokensSelected"
               @input="handleTokenChange($event, setSecondTokenValue)"
