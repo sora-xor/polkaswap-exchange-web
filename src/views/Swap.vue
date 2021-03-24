@@ -64,7 +64,7 @@
           <s-float-input
             class="s-input--token-value"
             :value="toValue"
-            :decimals="(tokenTo && {}).decimals"
+            :decimals="(tokenTo || {}).decimals"
             @input="handleInputFieldTo"
             @focus="handleFocusField(true)"
           />
