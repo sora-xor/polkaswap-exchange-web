@@ -18,8 +18,8 @@ export default {
   confirmText: 'Confirm',
   confirmTransactionText: 'Confirm transaction in {direction}',
   assetNames: {
-    [KnownSymbols.XOR]: 'Sora',
-    [KnownSymbols.VAL]: 'Sora Validator Token',
+    [KnownSymbols.XOR]: 'SORA',
+    [KnownSymbols.VAL]: 'SORA Validator Token',
     [KnownSymbols.PSWAP]: 'Polkaswap'
   },
   pageTitle: {
@@ -188,7 +188,7 @@ export default {
     changeNetwork: '@:changeNetworkText',
     next: 'Next',
     connectWallets: 'Connect wallets to view respective transaction history.',
-    soraNetworkFee: 'Sora Network Fee',
+    soraNetworkFee: 'SORA Network Fee',
     ethereumNetworkFee: 'Ethereum Network Fee',
     tooltipValue: '@:comingSoonText',
     total: 'Total',
