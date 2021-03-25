@@ -104,12 +104,12 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
   {
     icon: 'symbols-twitter-24',
     title: 'twitter',
-    href: 'https://twitter.com/sora_xor'
+    href: 'https://twitter.com/polkaswap'
   },
   {
     icon: 'symbols-telegram-24',
     title: 'telegram',
-    href: 'https://t.me/sora_xor'
+    href: 'https://t.me/polkaswap'
   }
 ]
 
