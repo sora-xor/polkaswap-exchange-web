@@ -74,6 +74,8 @@ const RewardsTableTitles = {
 export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterMixin, LoadingMixin) {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
+  @State(state => state.rewards.fee) fee
+
   @State(state => state.rewards.rewards) rewards
   @State(state => state.rewards.rewardsFetching) rewardsFetching!: boolean
   @State(state => state.rewards.rewardsClaiming) rewardsClaiming!: boolean
@@ -90,6 +92,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
   @Action('reset', { namespace: 'rewards' }) reset!: () => void
   @Action('getRewards', { namespace: 'rewards' }) getRewards!: (address: string) => Promise<void>
   @Action('claimRewards', { namespace: 'rewards' }) claimRewards!: (options: any) => Promise<void>
+  @Action('getNetworkFee', { namespace: 'rewards' }) getNetworkFee: () => Promise<void>
 
   created (): void {
     this.reset()
@@ -98,6 +101,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
   async mounted (): Promise<void> {
     await this.withApi(async () => {
       await this.setEthNetwork()
+      await this.getNetworkFee()
       await this.checkAccountRewards()
 
       web3Util.watchEthereum({
@@ -238,7 +242,12 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
 
     if (isConnected && internalAddress) {
       // this.withNotifications?
-      await this.claimRewards({ internalAddress, externalAddress })
+      try {
+        await this.claimRewards({ internalAddress, externalAddress })
+      } catch (error) {
+        const message = this.te(error.message) ? this.t(error.message) : error.message
+        this.$notify({ message, type: 'error', title: '' })
+      }
     }
   }
 }

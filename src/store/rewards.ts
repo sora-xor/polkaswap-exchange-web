@@ -12,16 +12,6 @@ export interface RewardAmountSymbol {
   symbol: KnownSymbols;
 }
 
-const demoRequest = (chance = 0.5): Promise<void> => new Promise((resolve, reject) => {
-  setTimeout(() => {
-    if (Math.random() < chance) {
-      resolve()
-    } else {
-      reject(new Error(''))
-    }
-  }, 5000)
-})
-
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
@@ -35,11 +25,13 @@ const types = flow(
   map(x => [x, x]),
   fromPairs
 )([
-  'GET_REWARDS'
+  'GET_REWARDS',
+  'GET_FEE'
 ])
 
 function initialState () {
   return {
+    fee: '',
     rewards: null,
     rewardsFetching: false,
     rewardsClaiming: false,
@@ -148,7 +140,13 @@ const mutations = {
   [types.GET_REWARDS_FAILURE] (state) {
     state.rewards = []
     state.rewardsFetching = false
-  }
+  },
+
+  [types.GET_FEE_REQUEST] (state) {},
+  [types.GET_FEE_SUCCESS] (state, fee: string) {
+    state.fee = fee
+  },
+  [types.GET_FEE_FAILURE] (state) {}
 }
 
 const actions = {
@@ -158,6 +156,17 @@ const actions = {
 
   setTransactionStep ({ commit }, transactionStep: number) {
     commit(types.SET_TRANSACTION_STEP, transactionStep)
+  },
+
+  async getNetworkFee ({ commit }) {
+    commit(types.GET_FEE_REQUEST)
+    try {
+      const fee = await api.getClaimRewardsNetworkFee('')
+      commit(types.GET_FEE_SUCCESS, fee)
+    } catch (error) {
+      console.error(error)
+      commit(types.GET_FEE_FAILURE, error)
+    }
   },
 
   async getRewards ({ commit }, address) {
@@ -192,19 +201,18 @@ const actions = {
         const message = web3.utils.sha3(internalAddressHex)
         const signature = await web3.eth.personal.sign(message, externalAddress)
 
-        console.log(signature)
-
         commit(types.SET_SIGNATURE, signature)
         commit(types.SET_TRANSACTION_STEP, 2)
       }
       if (state.transactionStep === 2 && state.signature) {
-        await demoRequest()
+        await api.claimRewards(state.signature)
+
         commit(types.SET_TRANSACTION_STEP, 1)
         commit(types.SET_REWARDS_RECIEVED, true)
       }
     } catch (error) {
-      console.error(error)
       commit(types.SET_TRANSACTION_ERROR, true)
+      throw error
     } finally {
       commit(types.SET_REWARDS_CLAIMING, false)
     }
