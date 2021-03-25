@@ -22,8 +22,8 @@ export default {
   confirmTransactionText: 'Confirm transaction in {direction}',
   retryText: 'Retry',
   assetNames: {
-    [KnownSymbols.XOR]: 'Sora',
-    [KnownSymbols.VAL]: 'Sora Validator Token',
+    [KnownSymbols.XOR]: 'SORA',
+    [KnownSymbols.VAL]: 'SORA Validator Token',
     [KnownSymbols.PSWAP]: 'Polkaswap'
   },
   pageTitle: {
@@ -180,11 +180,11 @@ export default {
     poolShare: 'Your pool share',
     comingSoon: '@:comingSoon',
     unknownAsset: 'Unknown asset',
-    description: 'When you add liquidity, you are given pool tokens representing your position. These tokens automaticaly earn fees proportional to your share of the pool, and can be redeemed at any time.'
+    description: 'When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.'
   },
   bridge: {
     title: 'Hashi Bridge',
-    info: 'Convert your tokens from SORA Network to Ethereum Network and viceversa.',
+    info: 'Convert your tokens from SORA Network to Ethereum Network and vice versa.',
     balance: 'Balance',
     connectWallet: '@:connectWalletText',
     connected: '@:connectedText',
@@ -192,7 +192,7 @@ export default {
     changeNetwork: '@:changeNetworkText',
     next: 'Next',
     connectWallets: 'Connect wallets to view respective transaction history.',
-    soraNetworkFee: 'Sora Network Fee',
+    soraNetworkFee: 'SORA Network Fee',
     ethereumNetworkFee: 'Ethereum Network Fee',
     tooltipValue: '@:comingSoonText',
     total: 'Total',
@@ -243,7 +243,7 @@ export default {
       failed: '{step} transactions failed. @:retryText.',
       confirm: 'Confirm 2nd of 2 transactions...',
       complete: 'Complete',
-      convertionComplete: 'Convertion complete'
+      convertionComplete: 'Conversion complete'
     },
     statuses: {
       waiting: 'Waiting',
