@@ -39,6 +39,7 @@
               <s-float-input
                 :value="amount"
                 :decimals="(asset || {}).decimals"
+                :max="getMax((asset || {}).address)"
                 :class="inputClasses"
                 :placeholder="isFieldAmountFocused ? '' : inputPlaceholder"
                 :disabled="!areNetworksConnected || !isAssetSelected"
@@ -90,6 +91,8 @@
             <s-form-item>
               <s-float-input
                 :value="amount"
+                :decimals="(asset || {}).decimals"
+                :max="getMax((asset || {}).address)"
                 :class="inputClasses"
                 :placeholder="inputPlaceholder"
                 disabled
@@ -177,7 +180,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
-import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
+import { RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
 
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -187,7 +190,7 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EthSymbol, ZeroStringValue } from '@/consts'
 import web3Util, { Provider } from '@/utils/web3-util'
-import { getWalletAddress, isWalletConnected, isNumberValue, formatAddress, isXorAccountAsset, formatAssetSymbol, findAssetInCollection } from '@/utils'
+import { getWalletAddress, isWalletConnected, formatAddress, isXorAccountAsset, formatAssetSymbol, findAssetInCollection } from '@/utils'
 
 const namespace = 'bridge'
 
