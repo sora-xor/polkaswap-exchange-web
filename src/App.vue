@@ -13,7 +13,7 @@
               <div class="account-name">{{ accountInfo }}</div>
               <div class="account-icon">
                 <s-icon v-if="!accountConnected" name="finance-wallet-24" />
-                <WalletAvatar :address="account.address"/>
+                <WalletAvatar v-else :address="account.address"/>
               </div>
             </div>
           </s-button>
