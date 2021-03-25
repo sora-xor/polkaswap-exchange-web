@@ -211,7 +211,12 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
 
   async checkAccountRewards (): Promise<void> {
     if (this.areNetworksConnected) {
-      await this.getRewards(this.ethAddress)
+      try {
+        await this.getRewards(this.ethAddress)
+      } catch (error) {
+        const message = this.te(error.message) ? this.t(error.message) : error.message
+        this.$notify({ message, type: '', title: '' })
+      }
     }
   }
 
@@ -232,6 +237,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
     const externalAddress = this.ethAddress
 
     if (isConnected && internalAddress) {
+      // this.withNotifications?
       await this.claimRewards({ internalAddress, externalAddress })
     }
   }

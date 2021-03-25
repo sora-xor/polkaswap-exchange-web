@@ -380,6 +380,9 @@ export default {
       pendingExternal: '@:ethereumText transaction pending...',
       retry: '@:retryText',
       checkRewards: 'Check'
+    },
+    notification: {
+      empty: 'No available claims for this account'
     }
   }
 }

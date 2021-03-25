@@ -165,10 +165,16 @@ const actions = {
     try {
       const rewards = await api.checkExternalAccountRewards(address)
 
+      const isEmpty = rewards.every(item => +item.amount === 0)
+
+      if (isEmpty) {
+        throw new Error('rewards.notification.empty')
+      }
+
       commit(types.GET_REWARDS_SUCCESS, rewards)
     } catch (error) {
-      console.log(error)
       commit(types.GET_REWARDS_FAILURE)
+      throw error
     }
   },
 
@@ -185,6 +191,8 @@ const actions = {
         const internalAddressHex = await web3Util.accountAddressToHex(internalAddress)
         const message = web3.utils.sha3(internalAddressHex)
         const signature = await web3.eth.personal.sign(message, externalAddress)
+
+        console.log(signature)
 
         commit(types.SET_SIGNATURE, signature)
         commit(types.SET_TRANSACTION_STEP, 2)
