@@ -6,15 +6,19 @@
     >
       <s-card class="bridge-content" border-radius="medium" shadow="never">
         <generic-page-header class="header--bridge" :title="t('bridge.title')" :tooltip="t('bridge.info')">
-          <s-button
+          <branded-tooltip
             v-if="areNetworksConnected"
-            class="el-button--history"
-            type="action"
-            icon="time-time-history-24"
-            :tooltip="t('bridgeHistory.showHistory')"
-            tooltip-placement="bottom-end"
-            @click="handleViewTransactionsHistory"
-          />
+            class="page-header-tooltip el-button--history"
+            popper-class="info-tooltip info-tooltip--page-header"
+            :content="t('bridgeHistory.title')"
+            placement="left-start"
+          >
+            <s-button
+              type="action"
+              icon="time-time-history-24"
+              @click="handleViewTransactionsHistory"
+            />
+          </branded-tooltip>
           <!-- TODO: Add ability to change network -->
           <!-- <s-button
             v-if="areNetworksConnected"
@@ -198,6 +202,7 @@ const namespace = 'bridge'
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    BrandedTooltip: lazyComponent(Components.BrandedTooltip),
     TokenLogo: lazyComponent(Components.TokenLogo),
     InfoLine: lazyComponent(Components.InfoLine),
     SelectRegisteredAsset: lazyComponent(Components.SelectRegisteredAsset),

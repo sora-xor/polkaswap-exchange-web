@@ -60,7 +60,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { RegisteredAccountAsset, BridgeTxStatus, Operation, isBridgeOperation, BridgeHistory } from '@sora-substrate/util'
+import { RegisteredAccountAsset, Operation, isBridgeOperation, BridgeHistory } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -173,19 +173,20 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   async showHistory (id: string): Promise<void> {
     const tx = api.bridge.getHistory(id)
     if (tx) {
+      const isOutgoingTx = this.isOutgoingType(tx.type)
       await this.setTransactionConfirm(true)
-      await this.setSoraToEthereum(this.isOutgoingType(tx.type))
+      await this.setSoraToEthereum(isOutgoingTx)
       await this.setAssetAddress(tx.assetAddress)
       await this.setAmount(tx.amount)
       await this.setSoraTransactionHash(tx.hash)
-      await this.setSoraTransactionDate(tx[this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
+      await this.setSoraTransactionDate(tx[isOutgoingTx ? 'startTime' : 'endTime'])
       await this.setEthereumTransactionHash(tx.ethereumHash)
-      await this.setEthereumTransactionDate(tx[!this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
-      if (tx.status === BridgeTxStatus.Failed) {
+      await this.setEthereumTransactionDate(tx[!isOutgoingTx ? 'startTime' : 'endTime'])
+      if (tx.transactionState === (isOutgoingTx ? STATES.SORA_REJECTED : STATES.ETHEREUM_REJECTED)) {
         await this.getNetworkFee()
         await this.getEthNetworkFee()
-        await this.setSoraNetworkFee(this.isOutgoingType(tx.type) ? tx.soraNetworkFee : this.soraNetworkFee)
-        await this.setEthereumNetworkFee(!this.isOutgoingType(tx.type) ? tx.ethereumNetworkFee : this.ethereumNetworkFee)
+        await this.setSoraNetworkFee(isOutgoingTx ? tx.soraNetworkFee : this.soraNetworkFee)
+        await this.setEthereumNetworkFee(!isOutgoingTx ? tx.ethereumNetworkFee : this.ethereumNetworkFee)
       } else {
         await this.setSoraNetworkFee(tx.soraNetworkFee)
         await this.setEthereumNetworkFee(tx.ethereumNetworkFee)
