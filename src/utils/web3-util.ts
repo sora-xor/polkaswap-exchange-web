@@ -2,6 +2,7 @@ import Web3 from 'web3'
 import { AbiItem } from 'web3-utils'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import detectEthereumProvider from '@metamask/detect-provider'
+import { decodeAddress } from '@polkadot/util-crypto'
 
 import axios from '@/api'
 import storage from './storage'
@@ -248,6 +249,12 @@ function getInfoFromContract (contract: JsonContract): InfoContract {
   }
 }
 
+async function accountAddressToHex (address: string): Promise<string> {
+  const web3 = await getInstance()
+
+  return web3.utils.bytesToHex(Array.from(decodeAddress(address).values()))
+}
+
 async function executeContractMethod ({
   contractInfo,
   contractAddress,
@@ -288,5 +295,6 @@ export default {
   watchEthereum,
   readSmartContract,
   getInfoFromContract,
-  executeContractMethod
+  executeContractMethod,
+  accountAddressToHex
 }

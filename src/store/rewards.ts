@@ -172,27 +172,24 @@ const actions = {
     }
   },
 
-  async claimRewards ({ commit, state, rootGetters }) {
+  async claimRewards ({ commit, state }, { internalAddress = '', externalAddress = '' } = {}) {
+    if (!internalAddress || !externalAddress) return
+
     try {
       const web3 = await web3Util.getInstance()
-      const address = rootGetters['web3/ethAddress']
 
       commit(types.SET_REWARDS_CLAIMING, true)
       commit(types.SET_TRANSACTION_ERROR, false)
 
       if (state.transactionStep === 1) {
-        const message = web3.utils.sha3(address)
-        const signature = await web3.eth.personal.sign(message, address)
+        const internalAddressHex = await web3Util.accountAddressToHex(internalAddress)
+        const message = web3.utils.sha3(internalAddressHex)
+        const signature = await web3.eth.personal.sign(message, externalAddress)
 
         commit(types.SET_SIGNATURE, signature)
         commit(types.SET_TRANSACTION_STEP, 2)
       }
       if (state.transactionStep === 2 && state.signature) {
-        console.log(api.api.rpc)
-        // const result = await api.api.rpc.rewards.claim(state.signature)
-
-        console.log(result)
-
         await demoRequest()
         commit(types.SET_TRANSACTION_STEP, 1)
         commit(types.SET_REWARDS_RECIEVED, true)

@@ -89,7 +89,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
 
   @Action('reset', { namespace: 'rewards' }) reset!: () => void
   @Action('getRewards', { namespace: 'rewards' }) getRewards!: (address: string) => Promise<void>
-  @Action('claimRewards', { namespace: 'rewards' }) claimRewards!: () => Promise<void>
+  @Action('claimRewards', { namespace: 'rewards' }) claimRewards!: (options: any) => Promise<void>
 
   created (): void {
     this.reset()
@@ -211,8 +211,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
 
   async checkAccountRewards (): Promise<void> {
     if (this.areNetworksConnected) {
-      // await this.getRewards(this.ethAddress)
-      await this.getRewards('0x21Bc9f4a3d9Dc86f142F802668dB7D908cF0A636')
+      await this.getRewards(this.ethAddress)
     }
   }
 
@@ -229,9 +228,11 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
 
   async claimRewardsProcess (): Promise<void> {
     const isConnected = await this.checkExternalAccountIsConnected()
+    const internalAddress = this.getWalletAddress()
+    const externalAddress = this.ethAddress
 
-    if (isConnected) {
-      await this.claimRewards()
+    if (isConnected && internalAddress) {
+      await this.claimRewards({ internalAddress, externalAddress })
     }
   }
 }

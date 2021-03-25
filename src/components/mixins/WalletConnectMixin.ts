@@ -73,8 +73,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   async checkExternalAccountIsConnected (): Promise<boolean> {
     const account = await web3Util.getAccount()
 
-    console.log(account, this.ethAddress)
-
     return !!account && account.toLowerCase() === this.ethAddress.toLowerCase()
   }
 }
