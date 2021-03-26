@@ -10,8 +10,9 @@
           <s-float-input
             ref="removePart"
             :class="['s-input--token-value', 's-input--remove-part', removePartCharClass]"
-            :decimals="0"
             :value="String(removePartInput)"
+            :decimals="0"
+            :max="100"
             @input="handleRemovePartChange"
             @focus="setFocusedField('removePart')"
             @blur="resetFocusedField"
@@ -27,7 +28,7 @@
           <div class="input-title p4">{{ t('removeLiquidity.input') }}</div>
           <div v-if="isWalletConnected && liquidity" class="token-balance">
             <span class="token-balance-title">{{ t('createPair.balance') }}</span>
-            <span class="token-balance-value">{{ getTokenBalance(liquidity) }}</span>
+            <span class="token-balance-value">{{ getFormattedTokenBalance(liquidity) }}</span>
           </div>
         </div>
         <div class="input-line-content">
@@ -35,8 +36,9 @@
             <s-float-input
               ref="liquidityAmount"
               class="s-input--token-value"
-              :decimals="(liquidity || {}).decimals"
               :value="liquidityAmount"
+              :decimals="(liquidity || {}).decimals"
+              :max="getTokenMaxAmount(liquidityBalance)"
               @input="setLiquidityAmount"
               @focus="setFocusedField('liquidityAmount')"
               @blur="resetFocusedField"
@@ -68,8 +70,9 @@
             <s-float-input
               ref="firstTokenAmount"
               class="s-input--token-value"
-              :decimals="(firstToken || {}).decimals"
               :value="firstTokenAmount"
+              :decimals="(firstToken || {}).decimals"
+              :max="getTokenMaxAmount(firstTokenBalance)"
               @input="handleTokenChange($event, setFirstTokenAmount)"
               @focus="setFocusedField('firstTokenAmount')"
               @blur="resetFocusedField"
@@ -96,8 +99,9 @@
             <s-float-input
               ref="secondTokenAmount"
               class="s-input--token-value"
-              :decimals="(secondToken || {}).decimals"
               :value="secondTokenAmount"
+              :decimals="(secondToken || {}).decimals"
+              :max="getTokenMaxAmount(secondTokenBalance)"
               @input="handleTokenChange($event, setSecondTokenAmount)"
               @focus="setFocusedField('secondTokenAmount')"
               @blur="resetFocusedField"
@@ -321,11 +325,18 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     }
   }
 
-  getTokenBalance (token: any): string {
+  getFormattedTokenBalance (token: any): string {
     if (!token?.balance) {
       return ''
     }
     return this.formatCodecNumber(token.balance, token.decimals)
+  }
+
+  getTokenMaxAmount (tokenBalance: CodecString, decimals?: number): string | undefined {
+    if (!tokenBalance) {
+      return undefined
+    }
+    return this.getStringFromCodec(tokenBalance, decimals)
   }
 
   get formattedFee (): string {

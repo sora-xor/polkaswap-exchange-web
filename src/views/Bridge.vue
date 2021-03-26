@@ -39,6 +39,7 @@
               <s-float-input
                 :value="amount"
                 :decimals="(asset || {}).decimals"
+                :max="getMax((asset || {}).address)"
                 :class="inputClasses"
                 :placeholder="isFieldAmountFocused ? '' : inputPlaceholder"
                 :disabled="!areNetworksConnected || !isAssetSelected"
@@ -90,6 +91,8 @@
             <s-form-item>
               <s-float-input
                 :value="amount"
+                :decimals="(asset || {}).decimals"
+                :max="getMax((asset || {}).address)"
                 :class="inputClasses"
                 :placeholder="inputPlaceholder"
                 disabled

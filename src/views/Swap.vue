@@ -25,8 +25,9 @@
         <s-form-item>
           <s-float-input
             class="s-input--token-value"
-            :decimals="(tokenFrom || {}).decimals"
             :value="fromValue"
+            :decimals="(tokenFrom || {}).decimals"
+            :max="getMax((tokenFrom || {}).address)"
             @input="handleInputFieldFrom"
             @focus="handleFocusField(false)"
           />
@@ -65,6 +66,7 @@
             class="s-input--token-value"
             :value="toValue"
             :decimals="(tokenTo || {}).decimals"
+            :max="getMax((tokenTo || {}).address)"
             @input="handleInputFieldTo"
             @focus="handleFocusField(true)"
           />

@@ -28,6 +28,8 @@
             class="slippage-tolerance-custom_input"
             size="small"
             v-model="customSlippageTolerance"
+            :decimals="2"
+            :max="10"
             @blur="handleSlippageToleranceOnBlur"
           />
         </div>
