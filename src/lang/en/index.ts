@@ -358,6 +358,7 @@ export default {
     title: 'Claim Rewards',
     changeWallet: '@:changeWalletText',
     connected: '@:connectedText',
+    networkFee: '@:soraText network fee',
     claiming: {
       pending: 'Claiming...',
       success: 'Claimed successfully'
@@ -368,18 +369,19 @@ export default {
       failed: '{order} of {total} transactions failed. @:retryText'
     },
     hint: {
-      connectAccounts: 'To claim your PSWAP and VAL rewards you need to connect both your SORA and Ethereum accounts.',
-      connectAnotherAccount: 'Connect another Ethereum account to check for available PSWAP and VAL rewards.',
-      howToClaimRewards: 'To claim your PSWAP and VAL rewards you need to sign 2 transactions in your SORA and Ethereum accounts respectively. Rewards will be deposited to your SORA account.'
+      connectAccounts: 'To claim your PSWAP and VAL rewards you need to connect both your @:soraText and @:ethereumText accounts.',
+      connectAnotherAccount: 'Connect another @:ethereumText account to check for available PSWAP and VAL rewards.',
+      howToClaimRewards: 'To claim your PSWAP and VAL rewards you need to sign 2 transactions in your @:soraText and @:ethereumText accounts respectively. Rewards will be deposited to your @:soraText account.'
     },
     action: {
       connectWallet: '@:connectWalletText',
-      connectExternalWallet: 'Connect Ethereum account',
+      connectExternalWallet: 'Connect @:ethereumText account',
       signAndClaim: 'Sign and claim',
       pendingInternal: '@:soraText transaction pending...',
       pendingExternal: '@:ethereumText transaction pending...',
       retry: '@:retryText',
-      checkRewards: 'Check'
+      checkRewards: 'Check',
+      insufficientBalance: 'Insufficient XOR balance'
     },
     notification: {
       empty: 'No available claims for this account'

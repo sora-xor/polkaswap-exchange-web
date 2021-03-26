@@ -13,6 +13,7 @@
             <rewards-amount-table v-if="formattedClaimableRewards.length" class="rewards-table" :items="formattedClaimableRewards" />
             <div class="rewards-footer">
               <s-divider />
+              <rewards-amount-table v-if="feesTable.length" class="rewards-table" :items="feesTable" />
               <div class="rewards-account">
                 <toggle-text-button
                   type="link"
@@ -34,8 +35,12 @@
     <div v-if="!claimingInProgressOrFinished" class="rewards-block rewards-hint">
       {{ hintText }}
     </div>
-    <s-button v-if="!rewardsRecieved" class="rewards-block rewards-action-button" type="primary" @click="handleAction" :loading="rewardsFetching" :disabled="rewardsClaiming">
+    <s-button v-if="!rewardsRecieved" class="rewards-block rewards-action-button" type="primary" @click="handleAction" :loading="rewardsFetching" :disabled="actionButtonDisabled">
       {{ actionButtonText }}
+    </s-button>
+    <!-- TODO: REMOVE -->
+    <s-button class="rewards-block rewards-action-button" @click="resetFaucet">
+      Reset Rewards
     </s-button>
   </div>
 </template>
@@ -43,13 +48,16 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
-import { KnownSymbols, RewardInfo, RewardingEvents } from '@sora-substrate/util'
+import { AccountAsset, KnownSymbols, RewardInfo, RewardingEvents } from '@sora-substrate/util'
+import { api } from '@soramitsu/soraneo-wallet-web'
 
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import web3Util from '@/utils/web3-util'
+import { hasInsufficientBalance } from '@/utils'
 
 import WalletConnectMixin from '../components/mixins/WalletConnectMixin'
+import TransactionMixin from '../components/mixins/TransactionMixin'
 import NumberFormatterMixin from '../components/mixins/NumberFormatterMixin'
 import LoadingMixin from '../components/mixins/LoadingMixin'
 
@@ -71,7 +79,7 @@ const RewardsTableTitles = {
     RewardsAmountTable: lazyComponent(Components.RewardsAmountTable)
   }
 })
-export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterMixin, LoadingMixin) {
+export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin, NumberFormatterMixin, LoadingMixin) {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
   @State(state => state.rewards.fee) fee
@@ -84,6 +92,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
   @State(state => state.rewards.transactionStep) transactionStep!: number
   @State(state => state.rewards.transactionStepsCount) transactionStepsCount!: number
 
+  @Getter('tokenXOR', { namespace: 'rewards' }) tokenXOR!: AccountAsset
   @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean
   @Getter('rewardsChecked', { namespace: 'rewards' }) rewardsChecked!: boolean
   @Getter('claimableRewards', { namespace: 'rewards' }) claimableRewards!: Array<RewardInfo>
@@ -92,7 +101,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
   @Action('reset', { namespace: 'rewards' }) reset!: () => void
   @Action('getRewards', { namespace: 'rewards' }) getRewards!: (address: string) => Promise<void>
   @Action('claimRewards', { namespace: 'rewards' }) claimRewards!: (options: any) => Promise<void>
-  @Action('getNetworkFee', { namespace: 'rewards' }) getNetworkFee: () => Promise<void>
+  @Action('getNetworkFee', { namespace: 'rewards' }) getNetworkFee!: () => Promise<void>
 
   created (): void {
     this.reset()
@@ -101,7 +110,6 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
   async mounted (): Promise<void> {
     await this.withApi(async () => {
       await this.setEthNetwork()
-      await this.getNetworkFee()
       await this.checkAccountRewards()
 
       web3Util.watchEthereum({
@@ -120,6 +128,20 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
         }
       })
     })
+  }
+
+  get isInsufficientBalance (): boolean {
+    return hasInsufficientBalance(this.tokenXOR, 0, this.fee)
+  }
+
+  get feesTable () {
+    return [
+      !!this.fee && {
+        title: this.t('rewards.networkFee'),
+        amount: this.formatCodecNumber(this.fee),
+        symbol: KnownSymbols.XOR
+      }
+    ].filter(Boolean)
   }
 
   get claimingInProgressOrFinished (): boolean {
@@ -179,6 +201,8 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
       'rewards.action.retry',
       !this.rewardsAvailable &&
       'rewards.action.checkRewards',
+      this.rewardsAvailable && this.isInsufficientBalance &&
+      'rewards.action.insufficientBalance',
       this.rewardsAvailable && !this.rewardsClaiming &&
       'rewards.action.signAndClaim',
       this.transactionStep === 1 &&
@@ -186,6 +210,10 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
       this.transactionStep === 2 &&
       'rewards.action.pendingInternal'
     ])
+  }
+
+  get actionButtonDisabled (): boolean {
+    return this.rewardsClaiming || (this.rewardsAvailable && this.isInsufficientBalance)
   }
 
   findTranslationInCollection (collection) {
@@ -216,10 +244,11 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
   async checkAccountRewards (): Promise<void> {
     if (this.areNetworksConnected) {
       try {
+        await this.getNetworkFee()
         await this.getRewards(this.ethAddress)
       } catch (error) {
         const message = this.te(error.message) ? this.t(error.message) : error.message
-        this.$notify({ message, type: '', title: '' })
+        this.$notify({ message, title: '' })
       }
     }
   }
@@ -241,13 +270,19 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
     const externalAddress = this.ethAddress
 
     if (isConnected && internalAddress) {
-      // this.withNotifications?
-      try {
+      await this.withNotifications(async () => {
         await this.claimRewards({ internalAddress, externalAddress })
-      } catch (error) {
-        const message = this.te(error.message) ? this.t(error.message) : error.message
-        this.$notify({ message, type: 'error', title: '' })
-      }
+      })
+    }
+  }
+
+  async resetFaucet () {
+    try {
+      console.log(api.api.tx.faucet)
+      const signer = api.accountPair
+      await api.api.tx.faucet.resetRewards().signAndSend(signer.address)
+    } catch (error) {
+      console.error(error)
     }
   }
 }
@@ -308,7 +343,13 @@ export default class Rewards extends Mixins(WalletConnectMixin, NumberFormatterM
     justify-content: space-between;
     font-size: var(--s-font-size-mini);
     line-height: $s-line-height-big;
-    padding: $inner-spacing-mini / 2;
+    // padding: $inner-spacing-mini / 2; // to align with fee
+  }
+
+  &-action-button {
+    & + & {
+      margin-left: 0;
+    }
   }
 
   @include full-width-button('rewards-action-button');

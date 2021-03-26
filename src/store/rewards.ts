@@ -46,6 +46,11 @@ function initialState () {
 const state = initialState()
 
 const getters = {
+  tokenXOR (state, getters, rootState, rootGetters) {
+    const token = KnownAssets.get(KnownSymbols.XOR)
+
+    return rootGetters['assets/getAssetDataByAddress'](token?.address)
+  },
   rewardsChecked (state): boolean {
     return !state.rewardsFetching && Array.isArray(state.rewards)
   },
@@ -161,7 +166,7 @@ const actions = {
   async getNetworkFee ({ commit }) {
     commit(types.GET_FEE_REQUEST)
     try {
-      const fee = await api.getClaimRewardsNetworkFee('')
+      const fee = await api.getClaimRewardsNetworkFee()
       commit(types.GET_FEE_SUCCESS, fee)
     } catch (error) {
       console.error(error)
