@@ -4,7 +4,7 @@ import { api } from '@soramitsu/soraneo-wallet-web'
 import findLast from 'lodash/fp/findLast'
 import { Action } from 'vuex-class'
 
-import { formatAddress } from '@/utils'
+import { formatAddress, delay } from '@/utils'
 import TranslationMixin from './TranslationMixin'
 import LoadingMixin from './LoadingMixin'
 import NumberFormatterMixin from './NumberFormatterMixin'
@@ -32,17 +32,24 @@ export default class TransactionMixin extends Mixins(TranslationMixin, LoadingMi
     if ([Operation.AddLiquidity, Operation.CreatePair, Operation.Swap].includes(value.type)) {
       params.amount2 = params.amount2 ? this.formatStringValue(params.amount2) : ''
     }
+    if (value.type === Operation.ClaimRewards) {
+      params.rewards = params.rewards.map(item => ({
+        ...item,
+        amount: this.formatStringValue(item.amount),
+        symbol: item.asset.symbol
+      }))
+    }
     return this.t(`operations.${value.status}.${value.type}`, params)
   }
 
   private async getLastTransaction (): Promise<void> {
     // Now we are checking every transaction with 1 second interval
     const tx = findLast(
-      item => Math.abs(Number(item.startTime) - this.time) < 1000,
+      item => Number(item.startTime) > this.time,
       api.accountHistory
     )
     if (!tx) {
-      await new Promise(resolve => setTimeout(resolve, 50))
+      await delay()
       return await this.getLastTransaction()
     }
     this.transaction = tx

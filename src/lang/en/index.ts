@@ -86,7 +86,8 @@ export default {
       [Operation.AddLiquidity]: 'Supplied {amount} {symbol} and {amount2} {symbol2}',
       [Operation.RemoveLiquidity]: 'Removed {amount} {symbol} and {amount2} {symbol2}',
       [Operation.CreatePair]: 'Supplied {amount} {symbol} and {amount2} {symbol2}',
-      [Operation.RegisterAsset]: 'Registered {symbol} asset'
+      [Operation.RegisterAsset]: 'Registered {symbol} asset',
+      [Operation.ClaimRewards]: 'Reward claimed successfully'
     },
     [TransactionStatus.Error]: {
       [Operation.Transfer]: 'Failed to send {amount} {symbol} to {address}',

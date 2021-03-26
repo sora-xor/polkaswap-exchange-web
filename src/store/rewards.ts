@@ -31,7 +31,7 @@ const types = flow(
 
 interface RewardsState {
   fee: CodecString;
-  rewards: Array<RewardInfo> | null;
+  rewards: Array<RewardInfo>;
   rewardsFetching: boolean;
   rewardsClaiming: boolean;
   rewardsRecieved: boolean;
@@ -44,7 +44,7 @@ interface RewardsState {
 function initialState (): RewardsState {
   return {
     fee: '',
-    rewards: null,
+    rewards: [],
     rewardsFetching: false,
     rewardsClaiming: false,
     rewardsRecieved: false,
@@ -67,10 +67,6 @@ const getters = {
     return !state.rewardsFetching && Array.isArray(state.rewards)
   },
   claimableRewards (state: RewardsState): Array<RewardInfo> {
-    if (!Array.isArray(state.rewards)) {
-      return []
-    }
-
     return state.rewards.reduce((claimableList: Array<RewardInfo>, item: RewardInfo) => {
       if (FPNumber.fromCodecValue(item.amount, item.asset.decimals).isZero()) return claimableList
 
@@ -83,7 +79,7 @@ const getters = {
     return getters.claimableRewards.length !== 0
   },
   rewardsByAssetsList (state, getters): Array<RewardAmountSymbol> {
-    if (!getters.claimableRewards.length) {
+    if (!getters.rewardsAvailable) {
       return [
         {
           symbol: KnownSymbols.PSWAP,
@@ -147,7 +143,7 @@ const mutations = {
   },
 
   [types.GET_REWARDS_REQUEST] (state: RewardsState) {
-    state.rewards = null
+    state.rewards = []
     state.rewardsFetching = true
   },
   [types.GET_REWARDS_SUCCESS] (state: RewardsState, rewards) {
@@ -219,7 +215,11 @@ const actions = {
       if (state.transactionStep === 1) {
         const internalAddressHex = await web3Util.accountAddressToHex(internalAddress)
         const message = web3.utils.sha3(internalAddressHex)
-        const signature = await web3.eth.personal.sign(message, externalAddress)
+        if (!message) {
+          throw new Error('')
+        }
+
+        const signature = await web3.eth.personal.sign(message, externalAddress, '')
 
         commit(types.SET_SIGNATURE, signature)
         commit(types.SET_TRANSACTION_STEP, 2)
@@ -227,7 +227,9 @@ const actions = {
       if (state.transactionStep === 2 && state.signature) {
         await api.claimRewards(
           state.signature,
-          externalAddress
+          externalAddress,
+          state.fee,
+          state.rewards
         )
 
         commit(types.SET_TRANSACTION_STEP, 1)

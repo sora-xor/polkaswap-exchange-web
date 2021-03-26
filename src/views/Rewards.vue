@@ -59,7 +59,6 @@ import { hasInsufficientBalance } from '@/utils'
 import WalletConnectMixin from '../components/mixins/WalletConnectMixin'
 import TransactionMixin from '../components/mixins/TransactionMixin'
 import NumberFormatterMixin from '../components/mixins/NumberFormatterMixin'
-import LoadingMixin from '../components/mixins/LoadingMixin'
 
 import { RewardAmountSymbol } from '../store/rewards'
 
@@ -79,7 +78,7 @@ const RewardsTableTitles = {
     RewardsAmountTable: lazyComponent(Components.RewardsAmountTable)
   }
 })
-export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin, NumberFormatterMixin, LoadingMixin) {
+export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin, NumberFormatterMixin) {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
   @State(state => state.rewards.fee) fee
@@ -270,9 +269,9 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     const externalAddress = this.ethAddress
 
     if (isConnected && internalAddress) {
-      await this.withNotifications(async () => {
-        await this.claimRewards({ internalAddress, externalAddress })
-      })
+      await this.withNotifications(
+        async () => await this.claimRewards({ internalAddress, externalAddress })
+      )
     }
   }
 
