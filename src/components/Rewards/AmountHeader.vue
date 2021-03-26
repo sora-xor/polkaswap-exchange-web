@@ -1,9 +1,9 @@
 <template>
   <div class="amount-header">
-    <template v-for="(item, index) in items">
-      <div :key="item.symbol" class="amount-block">
-        <div class="amount-block__amount">{{ item.amount || '-' }}</div>
-        <div class="amount-block__symbol">{{ item.symbol }}</div>
+    <template v-for="({ amount, symbol }, index) in items">
+      <div :key="symbol" class="amount-block">
+        <div class="amount-block__amount">{{ amount || '-' }}</div>
+        <div class="amount-block__symbol">{{ symbol }}</div>
       </div>
       <div v-if="items.length - 1 !== index" class="amount-header-divider" :key="index">
         <s-divider direction="vertical" class="amount-header-divider__slash" />
@@ -15,9 +15,11 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 
+import { RewardsAmountHeaderItem } from '@/types/rewards'
+
 @Component
 export default class AmountHeader extends Vue {
-  @Prop({ default: [], type: Array }) items!: Array<object>
+  @Prop({ default: [], type: Array }) items!: Array<RewardsAmountHeaderItem>
 }
 </script>
 

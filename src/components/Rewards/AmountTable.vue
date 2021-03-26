@@ -1,9 +1,9 @@
 <template>
   <div class="amount-table">
-    <div v-for="(item, index) in items" :key="index" class="amount-table-item">
-      <span>{{ item.title }}</span>
+    <div v-for="({ title, amount, symbol }, index) in items" :key="index" class="amount-table-item">
+      <span>{{ title }}</span>
       <div>
-        <span>{{ item.amount }}</span>&nbsp;<span>{{ item.symbol }}</span>
+        <span>{{ amount }}</span>&nbsp;<span>{{ symbol }}</span>
       </div>
     </div>
   </div>
@@ -12,9 +12,11 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 
+import { RewardsAmountTableItem } from '@/types/rewards'
+
 @Component
 export default class AmountTable extends Vue {
-  @Prop({ default: [], type: Array }) items!: Array<object>
+  @Prop({ default: [], type: Array }) items!: Array<RewardsAmountTableItem>
 }
 </script>
 

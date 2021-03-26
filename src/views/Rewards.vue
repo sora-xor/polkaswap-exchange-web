@@ -44,18 +44,17 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
-import { AccountAsset, KnownSymbols, RewardInfo, RewardingEvents } from '@sora-substrate/util'
+import { AccountAsset, KnownSymbols, RewardInfo, RewardingEvents, CodecString } from '@sora-substrate/util'
 
+import web3Util from '@/utils/web3-util'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
-import web3Util from '@/utils/web3-util'
 import { hasInsufficientBalance } from '@/utils'
+import { RewardsAmountTableItem } from '@/types/rewards'
 
-import WalletConnectMixin from '../components/mixins/WalletConnectMixin'
-import TransactionMixin from '../components/mixins/TransactionMixin'
-import NumberFormatterMixin from '../components/mixins/NumberFormatterMixin'
-
-import { RewardAmountSymbol } from '../store/rewards'
+import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
+import TransactionMixin from '@/components/mixins/TransactionMixin'
+import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
 const RewardsTableTitles = {
   [RewardingEvents.XorErc20]: 'XOR ERC-20',
@@ -76,9 +75,7 @@ const RewardsTableTitles = {
 export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin, NumberFormatterMixin) {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
-  @State(state => state.rewards.fee) fee
-
-  @State(state => state.rewards.rewards) rewards
+  @State(state => state.rewards.fee) fee!: CodecString
   @State(state => state.rewards.rewardsFetching) rewardsFetching!: boolean
   @State(state => state.rewards.rewardsClaiming) rewardsClaiming!: boolean
   @State(state => state.rewards.rewardsRecieved) rewardsRecieved!: boolean
@@ -90,7 +87,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean
   @Getter('rewardsChecked', { namespace: 'rewards' }) rewardsChecked!: boolean
   @Getter('claimableRewards', { namespace: 'rewards' }) claimableRewards!: Array<RewardInfo>
-  @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardAmountSymbol>
+  @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardsAmountTableItem>
 
   @Action('reset', { namespace: 'rewards' }) reset!: () => void
   @Action('getRewards', { namespace: 'rewards' }) getRewards!: (address: string) => Promise<void>
@@ -117,7 +114,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
         onNetworkChange: (networkId: string) => {
           this.setEthNetwork(networkId)
         },
-        onDisconnect: (code: number, reason: string) => {
+        onDisconnect: () => {
           this.disconnectExternalAccountProcess()
         }
       })
@@ -130,7 +127,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     return hasInsufficientBalance(this.tokenXOR, 0, this.fee)
   }
 
-  get feesTable () {
+  get feesTable (): Array<RewardsAmountTableItem> {
     return [
       !!this.fee && {
         title: this.t('rewards.networkFee'),
@@ -159,7 +156,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     return this.t(translationKey, { order, total: this.transactionStepsCount })
   }
 
-  get formattedClaimableRewards () {
+  get formattedClaimableRewards (): Array<RewardsAmountTableItem> {
     return this.claimableRewards.map((item: RewardInfo) => ({
       title: RewardsTableTitles[item.type] ?? '',
       amount: this.formatCodecNumber(item.amount),
@@ -214,12 +211,6 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 
   get actionButtonLoading (): boolean {
     return this.isExternalWalletConnecting || this.rewardsFetching
-  }
-
-  findTranslationInCollection (collection) {
-    const key = collection.find(Boolean)
-
-    return typeof key === 'string' && this.te(key) ? this.t(key) : ''
   }
 
   async handleAction (): Promise<void> {
@@ -279,6 +270,12 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
         async () => await this.claimRewards({ internalAddress, externalAddress })
       )
     }
+  }
+
+  private findTranslationInCollection (collection): string {
+    const key = collection.find(Boolean)
+
+    return typeof key === 'string' && this.te(key) ? this.t(key) : ''
   }
 }
 </script>

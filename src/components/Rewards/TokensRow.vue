@@ -15,6 +15,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
+import { KnownSymbols } from '@sora-substrate/util'
 
 import { lazyComponent } from '@/router'
 import { Components, LogoSize } from '@/consts'
@@ -25,7 +26,7 @@ import { Components, LogoSize } from '@/consts'
   }
 })
 export default class TokensRow extends Vue {
-  @Prop({ default: [], type: Array }) symbols!: Array<string>
+  @Prop({ default: [], type: Array }) symbols!: Array<KnownSymbols>
   @Prop({ default: LogoSize.LARGE, type: String }) readonly size!: LogoSize
 }
 </script>

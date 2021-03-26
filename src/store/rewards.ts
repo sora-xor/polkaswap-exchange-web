@@ -6,11 +6,7 @@ import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { FPNumber, KnownSymbols, KnownAssets, RewardInfo, CodecString, AccountAsset } from '@sora-substrate/util'
 import web3Util from '@/utils/web3-util'
-
-export interface RewardAmountSymbol {
-  amount?: string;
-  symbol: KnownSymbols;
-}
+import { RewardsAmountHeaderItem } from '@/types/rewards'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -78,17 +74,17 @@ const getters = {
   rewardsAvailable (state, getters): boolean {
     return getters.claimableRewards.length !== 0
   },
-  rewardsByAssetsList (state, getters): Array<RewardAmountSymbol> {
+  rewardsByAssetsList (state, getters): Array<RewardsAmountHeaderItem> {
     if (!getters.rewardsAvailable) {
       return [
         {
           symbol: KnownSymbols.PSWAP,
-          amount: undefined
-        } as RewardAmountSymbol,
+          amount: ''
+        } as RewardsAmountHeaderItem,
         {
           symbol: KnownSymbols.VAL,
-          amount: undefined
-        } as RewardAmountSymbol
+          amount: ''
+        } as RewardsAmountHeaderItem
       ]
     }
 
@@ -102,13 +98,13 @@ const getters = {
       return result
     }, {})
 
-    return Object.entries(rewardsHash).reduce((total: Array<RewardAmountSymbol>, [address, amount]) => {
+    return Object.entries(rewardsHash).reduce((total: Array<RewardsAmountHeaderItem>, [address, amount]) => {
       if ((amount as FPNumber).isZero()) return total
 
       const item = {
         symbol: KnownAssets.get(address).symbol,
         amount: (amount as FPNumber).format()
-      } as RewardAmountSymbol
+      } as RewardsAmountHeaderItem
 
       total.push(item)
 
