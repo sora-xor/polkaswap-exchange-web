@@ -4,7 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { FPNumber, KnownSymbols, KnownAssets, RewardInfo } from '@sora-substrate/util'
+import { FPNumber, KnownSymbols, KnownAssets, RewardInfo, CodecString, AccountAsset } from '@sora-substrate/util'
 import web3Util from '@/utils/web3-util'
 
 export interface RewardAmountSymbol {
@@ -29,7 +29,19 @@ const types = flow(
   'GET_FEE'
 ])
 
-function initialState () {
+interface RewardsState {
+  fee: CodecString;
+  rewards: Array<RewardInfo> | null;
+  rewardsFetching: boolean;
+  rewardsClaiming: boolean;
+  rewardsRecieved: boolean;
+  transactionError: boolean;
+  transactionStep: number;
+  transactionStepsCount: number;
+  signature: string;
+}
+
+function initialState (): RewardsState {
   return {
     fee: '',
     rewards: null,
@@ -46,15 +58,15 @@ function initialState () {
 const state = initialState()
 
 const getters = {
-  tokenXOR (state, getters, rootState, rootGetters) {
+  tokenXOR (state, getters, rootState, rootGetters): AccountAsset {
     const token = KnownAssets.get(KnownSymbols.XOR)
 
     return rootGetters['assets/getAssetDataByAddress'](token?.address)
   },
-  rewardsChecked (state): boolean {
+  rewardsChecked (state: RewardsState): boolean {
     return !state.rewardsFetching && Array.isArray(state.rewards)
   },
-  claimableRewards (state): Array<RewardInfo> {
+  claimableRewards (state: RewardsState): Array<RewardInfo> {
     if (!Array.isArray(state.rewards)) {
       return []
     }
@@ -110,7 +122,7 @@ const getters = {
 }
 
 const mutations = {
-  [types.RESET] (state) {
+  [types.RESET] (state: RewardsState) {
     const s = initialState()
 
     Object.keys(s).forEach(key => {
@@ -118,40 +130,40 @@ const mutations = {
     })
   },
 
-  [types.SET_TRANSACTION_STEP] (state, transactionStep: number) {
+  [types.SET_TRANSACTION_STEP] (state: RewardsState, transactionStep: number) {
     state.transactionStep = transactionStep
   },
-  [types.SET_REWARDS_CLAIMING] (state, flag: boolean) {
+  [types.SET_REWARDS_CLAIMING] (state: RewardsState, flag: boolean) {
     state.rewardsClaiming = flag
   },
-  [types.SET_TRANSACTION_ERROR] (state, flag: boolean) {
+  [types.SET_TRANSACTION_ERROR] (state: RewardsState, flag: boolean) {
     state.transactionError = flag
   },
-  [types.SET_REWARDS_RECIEVED] (state, flag: boolean) {
+  [types.SET_REWARDS_RECIEVED] (state: RewardsState, flag: boolean) {
     state.rewardsRecieved = flag
   },
-  [types.SET_SIGNATURE] (state, signature: string) {
+  [types.SET_SIGNATURE] (state: RewardsState, signature: string) {
     state.signature = signature
   },
 
-  [types.GET_REWARDS_REQUEST] (state) {
+  [types.GET_REWARDS_REQUEST] (state: RewardsState) {
     state.rewards = null
     state.rewardsFetching = true
   },
-  [types.GET_REWARDS_SUCCESS] (state, rewards) {
+  [types.GET_REWARDS_SUCCESS] (state: RewardsState, rewards) {
     state.rewards = rewards
     state.rewardsFetching = false
   },
-  [types.GET_REWARDS_FAILURE] (state) {
+  [types.GET_REWARDS_FAILURE] (state: RewardsState) {
     state.rewards = []
     state.rewardsFetching = false
   },
 
-  [types.GET_FEE_REQUEST] (state) {},
-  [types.GET_FEE_SUCCESS] (state, fee: string) {
+  [types.GET_FEE_REQUEST] (state: RewardsState) {},
+  [types.GET_FEE_SUCCESS] (state: RewardsState, fee: CodecString) {
     state.fee = fee
   },
-  [types.GET_FEE_FAILURE] (state) {}
+  [types.GET_FEE_FAILURE] (state: RewardsState) {}
 }
 
 const actions = {
@@ -192,7 +204,10 @@ const actions = {
     }
   },
 
-  async claimRewards ({ commit, state }, { internalAddress = '', externalAddress = '' } = {}) {
+  async claimRewards (
+    { commit, state }: { commit: any; state: RewardsState },
+    { internalAddress = '', externalAddress = '' } = {}
+  ) {
     if (!internalAddress || !externalAddress) return
 
     try {
@@ -210,7 +225,10 @@ const actions = {
         commit(types.SET_TRANSACTION_STEP, 2)
       }
       if (state.transactionStep === 2 && state.signature) {
-        await api.claimRewards(state.signature)
+        await api.claimRewards(
+          state.signature,
+          externalAddress
+        )
 
         commit(types.SET_TRANSACTION_STEP, 1)
         commit(types.SET_REWARDS_RECIEVED, true)
