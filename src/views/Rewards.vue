@@ -35,12 +35,8 @@
     <div v-if="!claimingInProgressOrFinished" class="rewards-block rewards-hint">
       {{ hintText }}
     </div>
-    <s-button v-if="!rewardsRecieved" class="rewards-block rewards-action-button" type="primary" @click="handleAction" :loading="rewardsFetching" :disabled="actionButtonDisabled">
+    <s-button v-if="!rewardsRecieved" class="rewards-block rewards-action-button" type="primary" @click="handleAction" :loading="actionButtonLoading" :disabled="actionButtonDisabled">
       {{ actionButtonText }}
-    </s-button>
-    <!-- TODO: REMOVE -->
-    <s-button class="rewards-block rewards-action-button" @click="resetFaucet">
-      Reset Rewards
     </s-button>
   </div>
 </template>
@@ -49,7 +45,6 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
 import { AccountAsset, KnownSymbols, RewardInfo, RewardingEvents } from '@sora-substrate/util'
-import { api } from '@soramitsu/soraneo-wallet-web'
 
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -116,20 +111,22 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
           if (addressList.length) {
             this.changeExternalAccountProcess({ address: addressList[0] })
           } else {
-            this.disconnectExternalAccount()
+            this.disconnectExternalAccountProcess()
           }
         },
         onNetworkChange: (networkId: string) => {
           this.setEthNetwork(networkId)
         },
         onDisconnect: (code: number, reason: string) => {
-          this.disconnectExternalAccount()
+          this.disconnectExternalAccountProcess()
         }
       })
     })
   }
 
   get isInsufficientBalance (): boolean {
+    if (!this.tokenXOR) return true
+
     return hasInsufficientBalance(this.tokenXOR, 0, this.fee)
   }
 
@@ -215,6 +212,10 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     return this.rewardsClaiming || (this.rewardsAvailable && this.isInsufficientBalance)
   }
 
+  get actionButtonLoading (): boolean {
+    return this.isExternalWalletConnecting || this.rewardsFetching
+  }
+
   findTranslationInCollection (collection) {
     const key = collection.find(Boolean)
 
@@ -257,6 +258,11 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     await this.checkAccountRewards()
   }
 
+  disconnectExternalAccountProcess (): void {
+    this.reset()
+    this.disconnectExternalAccount()
+  }
+
   async changeExternalAccountProcess (options?: any): Promise<void> {
     this.reset()
     await this.changeExternalWallet(options)
@@ -272,16 +278,6 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
       await this.withNotifications(
         async () => await this.claimRewards({ internalAddress, externalAddress })
       )
-    }
-  }
-
-  async resetFaucet () {
-    try {
-      console.log(api.api.tx.faucet)
-      const signer = api.accountPair
-      await api.api.tx.faucet.resetRewards().signAndSend(signer.address)
-    } catch (error) {
-      console.error(error)
     }
   }
 }
