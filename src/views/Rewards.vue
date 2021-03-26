@@ -128,13 +128,11 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   get feesTable (): Array<RewardsAmountTableItem> {
-    return [
-      !!this.fee && {
-        title: this.t('rewards.networkFee'),
-        amount: this.formatCodecNumber(this.fee),
-        symbol: KnownSymbols.XOR
-      }
-    ].filter(Boolean)
+    return [{
+      title: this.t('rewards.networkFee'),
+      amount: this.formatCodecNumber(this.fee),
+      symbol: KnownSymbols.XOR
+    }]
   }
 
   get claimingInProgressOrFinished (): boolean {
@@ -161,7 +159,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
       title: RewardsTableTitles[item.type] ?? '',
       amount: this.formatCodecNumber(item.amount),
       symbol: item.asset.symbol
-    }))
+    }) as RewardsAmountTableItem)
   }
 
   get rewardTokenSymbols (): Array<KnownSymbols> {
@@ -272,7 +270,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     }
   }
 
-  private findTranslationInCollection (collection): string {
+  private findTranslationInCollection (collection: Array<string | boolean>): string {
     const key = collection.find(Boolean)
 
     return typeof key === 'string' && this.te(key) ? this.t(key) : ''

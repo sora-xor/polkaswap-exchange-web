@@ -106,9 +106,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (BridgeChildPages.includes(to.name as PageNames) && isWalletConnected() && !store.getters['web3/isExternalAccountConnected']) {
-      next({
-        name: PageNames.Bridge
-      })
+      next({ name: PageNames.Bridge })
       return
     }
     if (!isWalletConnected()) {

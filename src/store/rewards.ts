@@ -210,10 +210,7 @@ const actions = {
 
       if (state.transactionStep === 1) {
         const internalAddressHex = await web3Util.accountAddressToHex(internalAddress)
-        const message = web3.utils.sha3(internalAddressHex)
-        if (!message) {
-          throw new Error('')
-        }
+        const message = web3.utils.sha3(internalAddressHex) as string
 
         const signature = await web3.eth.personal.sign(message, externalAddress, '')
 
