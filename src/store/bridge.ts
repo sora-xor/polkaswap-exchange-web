@@ -74,6 +74,17 @@ async function waitForRequest (hash: string): Promise<BridgeRequest> {
   return await waitForRequest(hash)
 }
 
+async function waitForEthereumHash (id: string | undefined) {
+  if (!id) {
+    throw new Error('History id error')
+  }
+  const tx = api.bridge.getHistory(id)
+  if (!tx || tx.ethereumHash === '') {
+    await delay(250)
+    return await waitForEthereumHash(id)
+  }
+}
+
 async function waitForExtrinsicFinalization (id?: string): Promise<BridgeHistory> {
   if (!id) {
     throw new Error('History id error')
@@ -465,7 +476,6 @@ const actions = {
     try {
       const request = await waitForApprovedRequest(getters.soraTransactionHash) // If it causes an error, then -> catch -> SORA_REJECTED
       const web3 = await web3Util.getInstance()
-      // TODO: Work on multiple sign
       if (!currentHistoryItem.signed) {
         if (!rootGetters['web3/isValidEthNetwork']) {
           throw new Error('Change eth network in Metamask')
@@ -518,6 +528,8 @@ const actions = {
         currentHistoryItem.ethereumHash = transactionHash
         await dispatch('setHistory', { history: currentHistoryItem })
         await dispatch('setEthereumTransactionHash', currentHistoryItem.ethereumHash)
+      } else if (!getters.ethereumTransactionHash) {
+        await waitForEthereumHash(currentHistoryItem.id)
       }
       // api.bridge.markAsDone(hash) We've decided not to use offchain workers to show the history.
       // So we don't need DONE status of request
@@ -559,7 +571,6 @@ const actions = {
     try {
       const web3 = await web3Util.getInstance()
       let tx
-      // TODO: Work on multiple sign
       if (!currentHistoryItem.signed) {
         if (!rootGetters['web3/isValidEthNetwork']) {
           throw new Error('Change eth network in Metamask')
@@ -595,8 +606,10 @@ const actions = {
         await dispatch('setHistory', { history: currentHistoryItem })
         tx = await contractMethod.send({ from: ethAccount })
         await dispatch('setEthereumTransactionHash', tx.transactionHash)
+      } else if (!getters.ethereumTransactionHash) {
+        await waitForEthereumHash(currentHistoryItem.id)
       }
-      const res = await web3.eth.getTransactionReceipt(getters.ethereumTransactionHash)
+      tx = await web3.eth.getTransactionReceipt(getters.ethereumTransactionHash)
       currentHistoryItem.startTime = tx.startTime
       currentHistoryItem.endTime = tx.endTime
       currentHistoryItem.hash = getters.ethereumTransactionHash
