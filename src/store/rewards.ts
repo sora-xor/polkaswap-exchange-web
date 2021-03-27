@@ -59,9 +59,6 @@ const getters = {
 
     return rootGetters['assets/getAssetDataByAddress'](token?.address)
   },
-  rewardsChecked (state: RewardsState): boolean {
-    return !state.rewardsFetching && Array.isArray(state.rewards)
-  },
   claimableRewards (state: RewardsState): Array<RewardInfo> {
     return state.rewards.reduce((claimableList: Array<RewardInfo>, item: RewardInfo) => {
       if (FPNumber.fromCodecValue(item.amount, item.asset.decimals).isZero()) return claimableList
@@ -70,6 +67,9 @@ const getters = {
 
       return claimableList
     }, [])
+  },
+  rewardsFetched (state): boolean {
+    return state.rewards.length !== 0
   },
   rewardsAvailable (state, getters): boolean {
     return getters.claimableRewards.length !== 0
@@ -178,22 +178,18 @@ const actions = {
     }
   },
 
-  async getRewards ({ commit }, address) {
+  async getRewards ({ commit, state }, address) {
     commit(types.GET_REWARDS_REQUEST)
     try {
       const rewards = await api.checkExternalAccountRewards(address)
 
-      const isEmpty = rewards.every(item => +item.amount === 0)
-
-      if (isEmpty) {
-        throw new Error('rewards.notification.empty')
-      }
-
       commit(types.GET_REWARDS_SUCCESS, rewards)
     } catch (error) {
+      console.error(error)
       commit(types.GET_REWARDS_FAILURE)
-      throw error
     }
+
+    return state.rewards
   },
 
   async claimRewards (

@@ -7,13 +7,13 @@
         <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text">
           {{ claimingStatusMessage }}
         </div>
-        <div v-if="areNetworksConnected" class="rewards-amount">
-          <rewards-amount-header v-if="rewardsChecked" :items="rewardsByAssetsList" />
+        <div v-if="areNetworksConnected && rewardsFetched" class="rewards-amount">
+          <rewards-amount-header :items="rewardsByAssetsList" />
           <template v-if="!claimingInProgressOrFinished">
             <rewards-amount-table v-if="formattedClaimableRewards.length" class="rewards-table" :items="formattedClaimableRewards" />
             <div class="rewards-footer">
               <s-divider />
-              <rewards-amount-table v-if="feesTable.length" class="rewards-table" :items="feesTable" />
+              <rewards-amount-table v-if="fee" class="rewards-table" :items="feesTable" />
               <div class="rewards-account">
                 <toggle-text-button
                   type="link"
@@ -84,13 +84,13 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @State(state => state.rewards.transactionStepsCount) transactionStepsCount!: number
 
   @Getter('tokenXOR', { namespace: 'rewards' }) tokenXOR!: AccountAsset
+  @Getter('rewardsFetched', { namespace: 'rewards' }) rewardsFetched!: boolean
   @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean
-  @Getter('rewardsChecked', { namespace: 'rewards' }) rewardsChecked!: boolean
   @Getter('claimableRewards', { namespace: 'rewards' }) claimableRewards!: Array<RewardInfo>
   @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardsAmountTableItem>
 
   @Action('reset', { namespace: 'rewards' }) reset!: () => void
-  @Action('getRewards', { namespace: 'rewards' }) getRewards!: (address: string) => Promise<void>
+  @Action('getRewards', { namespace: 'rewards' }) getRewards!: (address: string) => Promise<Array<RewardInfo>>
   @Action('claimRewards', { namespace: 'rewards' }) claimRewards!: (options: any) => Promise<void>
   @Action('getNetworkFee', { namespace: 'rewards' }) getNetworkFee!: () => Promise<void>
 
@@ -230,35 +230,42 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     await this.changeExternalAccountProcess()
   }
 
-  async checkAccountRewards (): Promise<void> {
+  private async checkAccountRewards (): Promise<void> {
     if (this.areNetworksConnected) {
-      try {
-        await this.getNetworkFee()
-        await this.getRewards(this.ethAddress)
-      } catch (error) {
-        const message = this.te(error.message) ? this.t(error.message) : error.message
-        this.$notify({ message, title: '' })
-      }
+      await this.getNetworkFee()
+      await this.getRewardsProcess()
     }
   }
 
-  async connectExternalAccountProcess (): Promise<void> {
+  private async getRewardsProcess (): Promise<void> {
+    const rewards = await this.getRewards(this.ethAddress)
+    const areEmptyRewards = rewards.every(item => +item.amount === 0)
+
+    if (areEmptyRewards) {
+      this.$notify({
+        message: this.t('rewards.notification.empty'),
+        title: ''
+      })
+    }
+  }
+
+  private async connectExternalAccountProcess (): Promise<void> {
     await this.connectExternalWallet()
     await this.checkAccountRewards()
   }
 
-  disconnectExternalAccountProcess (): void {
+  private disconnectExternalAccountProcess (): void {
     this.reset()
     this.disconnectExternalAccount()
   }
 
-  async changeExternalAccountProcess (options?: any): Promise<void> {
+  private async changeExternalAccountProcess (options?: any): Promise<void> {
     this.reset()
     await this.changeExternalWallet(options)
     await this.checkAccountRewards()
   }
 
-  async claimRewardsProcess (): Promise<void> {
+  private async claimRewardsProcess (): Promise<void> {
     const isConnected = await this.checkExternalAccountIsConnected()
     const internalAddress = this.getWalletAddress()
     const externalAddress = this.ethAddress
