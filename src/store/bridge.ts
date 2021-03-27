@@ -3,12 +3,12 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import { FPNumber, BridgeApprovedRequest, BridgeCurrencyType, BridgeTxStatus, BridgeRequest, Operation, BridgeHistory, TransactionStatus } from '@sora-substrate/util'
+import { FPNumber, BridgeApprovedRequest, BridgeCurrencyType, BridgeTxStatus, BridgeRequest, Operation, BridgeHistory, TransactionStatus, KnownAssets } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { decodeAddress } from '@polkadot/util-crypto'
 
 import { STATES } from '@/utils/fsm'
-import web3Util, { KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
+import web3Util, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
 import { delay } from '@/utils'
 import { EthereumGasLimits, MaxUint256, MetamaskCancellationCode } from '@/consts'
 
@@ -349,7 +349,8 @@ const actions = {
     try {
       const web3 = await web3Util.getInstance()
       const gasPrice = +(await web3.eth.getGasPrice())
-      const gasLimit = EthereumGasLimits[+getters.isSoraToEthereum][getters.asset.symbol]
+      const knownAsset = KnownAssets.get(getters.asset.address)
+      const gasLimit = EthereumGasLimits[+getters.isSoraToEthereum][knownAsset ? getters.asset.symbol : KnownBridgeAsset.Other]
       const fee = gasPrice * gasLimit
       commit(types.GET_ETHEREUM_NETWORK_FEE_SUCCESS, web3.utils.fromWei(`${fee}`, 'ether'))
     } catch (error) {
