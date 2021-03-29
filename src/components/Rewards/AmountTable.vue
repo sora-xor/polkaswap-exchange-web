@@ -16,7 +16,7 @@ import { RewardsAmountTableItem } from '@/types/rewards'
 
 @Component
 export default class AmountTable extends Vue {
-  @Prop({ default: [], type: Array }) items!: Array<RewardsAmountTableItem>
+  @Prop({ default: () => [], type: Array }) items!: Array<RewardsAmountTableItem>
 }
 </script>
 

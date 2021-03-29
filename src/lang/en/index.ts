@@ -87,7 +87,7 @@ export default {
       [Operation.RemoveLiquidity]: 'Removed {amount} {symbol} and {amount2} {symbol2}',
       [Operation.CreatePair]: 'Supplied {amount} {symbol} and {amount2} {symbol2}',
       [Operation.RegisterAsset]: 'Registered {symbol} asset',
-      [Operation.ClaimRewards]: 'Reward claimed successfully'
+      [Operation.ClaimRewards]: 'Reward claimed successfully {rewards}'
     },
     [TransactionStatus.Error]: {
       [Operation.Transfer]: 'Failed to send {amount} {symbol} to {address}',
@@ -360,6 +360,7 @@ export default {
     changeWallet: '@:changeWalletText',
     connected: '@:connectedText',
     networkFee: '@:soraText network fee',
+    andText: 'and',
     claiming: {
       pending: 'Claiming...',
       success: 'Claimed successfully'

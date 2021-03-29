@@ -26,7 +26,7 @@ import { Components, LogoSize } from '@/consts'
   }
 })
 export default class TokensRow extends Vue {
-  @Prop({ default: [], type: Array }) symbols!: Array<KnownSymbols>
+  @Prop({ default: () => [], type: Array }) symbols!: Array<KnownSymbols>
   @Prop({ default: LogoSize.LARGE, type: String }) readonly size!: LogoSize
 }
 </script>

@@ -1,5 +1,5 @@
 import { Component, Mixins } from 'vue-property-decorator'
-import { History, TransactionStatus, Operation } from '@sora-substrate/util'
+import { History, TransactionStatus, Operation, RewardInfo } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import findLast from 'lodash/fp/findLast'
 import { Action } from 'vuex-class'
@@ -33,11 +33,16 @@ export default class TransactionMixin extends Mixins(TranslationMixin, LoadingMi
       params.amount2 = params.amount2 ? this.formatStringValue(params.amount2) : ''
     }
     if (value.type === Operation.ClaimRewards) {
-      params.rewards = params.rewards.map(item => ({
-        ...item,
-        amount: this.formatStringValue(item.amount),
-        symbol: item.asset.symbol
-      }))
+      params.rewards = params.rewards.reduce((result, item: RewardInfo) => {
+        if (+item.amount === 0) return result
+
+        const amount = this.getStringFromCodec(item.amount, item.asset.decimals)
+        const itemString = `${amount} ${item.asset.symbol}`
+
+        result.push(itemString)
+
+        return result
+      }, []).join(` ${this.t('rewards.andText')} `)
     }
     return this.t(`operations.${value.status}.${value.type}`, params)
   }

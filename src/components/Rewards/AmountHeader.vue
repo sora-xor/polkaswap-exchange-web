@@ -19,7 +19,7 @@ import { RewardsAmountHeaderItem } from '@/types/rewards'
 
 @Component
 export default class AmountHeader extends Vue {
-  @Prop({ default: [], type: Array }) items!: Array<RewardsAmountHeaderItem>
+  @Prop({ default: () => [], type: Array }) items!: Array<RewardsAmountHeaderItem>
 }
 </script>
 
