@@ -479,7 +479,7 @@ const actions = {
       const method = isValOrXor
         ? 'mintTokensByPeers'
         : request.currencyType === BridgeCurrencyType.TokenAddress
-          ? 'receievByEthereumAssetAddress'
+          ? 'receiveByEthereumAssetAddress'
           : 'receiveBySidechainAssetId'
       const methodArgs = [
         (isValOrXor || request.currencyType === BridgeCurrencyType.TokenAddress)
@@ -582,9 +582,13 @@ const actions = {
       const accountId = web3.utils.bytesToHex(Array.from(decodeAddress(soraAccountAddress).values()))
       contractInstance = new web3.eth.Contract(contract[OtherContractType.Bridge].abi)
       contractInstance.options.address = contractAddress.MASTER
+      const tokenInstance = new web3.eth.Contract(ABI.balance as any)
+      tokenInstance.options.address = asset.externalAddress
+      const decimalsMethod = tokenInstance.methods.decimals()
+      const decimals = await decimalsMethod.call()
       const methodArgs = [
         accountId, // bytes32 to
-        new FPNumber(getters.amount, asset.decimals).toCodecString(), // uint256 amount
+        new FPNumber(getters.amount, +decimals).toCodecString(), // uint256 amount
         asset.externalAddress // address tokenAddress
       ]
       const contractMethod = contractInstance.methods.sendERC20ToSidechain(...methodArgs)

@@ -167,7 +167,7 @@ const gasLimit = {
   approve: 66000 * 2,
   sendERC20ToSidechain: 81000 * 2,
   mintTokensByPeers: 191285 * 2,
-  receievByEthereumAssetAddress: 79000 * 2, // TODO: estimate it later
+  receiveByEthereumAssetAddress: 95000 * 2, // TODO: estimate it later
   receiveBySidechainAssetId: 252659 * 2
 }
 /**
@@ -188,7 +188,7 @@ export const EthereumGasLimits = [
     XOR: gasLimit.mintTokensByPeers,
     VAL: gasLimit.mintTokensByPeers,
     PSWAP: gasLimit.receiveBySidechainAssetId,
-    [KnownBridgeAsset.Other]: gasLimit.receievByEthereumAssetAddress
+    [KnownBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress
   }
 ]
 
