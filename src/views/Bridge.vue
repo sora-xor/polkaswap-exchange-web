@@ -236,6 +236,8 @@ export default class Bridge extends Mixins(
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
+  private unwatchEthereum!: any
+
   EthSymbol = EthSymbol
   KnownSymbols = KnownSymbols
   formatAssetSymbol = formatAssetSymbol
@@ -372,7 +374,7 @@ export default class Bridge extends Mixins(
   async mounted (): Promise<void> {
     this.setEthNetwork()
     this.getEthBalance()
-    web3Util.watchEthereum({
+    this.unwatchEthereum = await web3Util.watchEthereum({
       onAccountChange: (addressList: string[]) => {
         if (addressList.length) {
           this.switchExternalAccount({ address: addressList[0] })
@@ -395,7 +397,10 @@ export default class Bridge extends Mixins(
     this.subscribeToEthBlockHeaders()
   }
 
-  destroyed (): void {
+  beforeDestroy (): void {
+    if (typeof this.unwatchEthereum === 'function') {
+      this.unwatchEthereum()
+    }
     this.unsubscribeEthBlockHeaders()
   }
 

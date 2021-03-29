@@ -193,18 +193,21 @@ async function watchEthereum (cb: {
   onAccountChange: Function;
   onNetworkChange: Function;
   onDisconnect: Function;
-}) {
+}): Promise<Function> {
+  await getInstance()
+
   const ethereum = (window as any).ethereum
 
   if (ethereum) {
     ethereum.on('accountsChanged', cb.onAccountChange)
     ethereum.on('chainChanged', cb.onNetworkChange)
+    ethereum.on('disconnect', cb.onDisconnect)
   }
 
-  await getInstance()
-
-  if (provider) {
-    provider.on('disconnect', cb.onDisconnect)
+  return function disconnect () {
+    if (ethereum) {
+      ethereum.removeAllListeners()
+    }
   }
 }
 

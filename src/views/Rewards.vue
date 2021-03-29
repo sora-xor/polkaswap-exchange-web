@@ -94,6 +94,8 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @Action('claimRewards', { namespace: 'rewards' }) claimRewards!: (options: any) => Promise<void>
   @Action('getNetworkFee', { namespace: 'rewards' }) getNetworkFee!: () => Promise<void>
 
+  private unwatchEthereum!: any
+
   created (): void {
     this.reset()
   }
@@ -103,7 +105,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
       await this.setEthNetwork()
       await this.checkAccountRewards()
 
-      web3Util.watchEthereum({
+      this.unwatchEthereum = await web3Util.watchEthereum({
         onAccountChange: (addressList: string[]) => {
           if (addressList.length) {
             this.changeExternalAccountProcess({ address: addressList[0] })
@@ -119,6 +121,12 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
         }
       })
     })
+  }
+
+  beforeDestroy (): void {
+    if (typeof this.unwatchEthereum === 'function') {
+      this.unwatchEthereum()
+    }
   }
 
   get isInsufficientBalance (): boolean {
