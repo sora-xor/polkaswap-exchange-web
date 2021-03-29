@@ -1,14 +1,10 @@
 <template>
-  <div>
-    <sora-neo-wallet
-      class="container container--wallet"
-      v-loading="parentLoading"
-      @close="handleClose"
-      @swap="handleSwap"
-      @learn-more="openAboutNetworkDialog"
-    />
-    <about-network-dialog :visible.sync="showAboutNetworkDialog" />
-  </div>
+  <sora-neo-wallet
+    class="container container--wallet"
+    v-loading="parentLoading"
+    @close="handleClose"
+    @swap="handleSwap"
+  />
 </template>
 
 <script lang="ts">
