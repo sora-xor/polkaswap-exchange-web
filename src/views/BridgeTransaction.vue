@@ -634,6 +634,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
           }
         }
         &__arrow.el-icon-arrow-right {
+          margin-right: $inner-spacing-small;
           &, &:hover {
             background-color: transparent;
           }
