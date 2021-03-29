@@ -241,36 +241,6 @@ const actions = {
     })
   },
 
-  async getBalance ({ commit, getters, rootGetters }, { symbol }) {
-    commit(types.GET_BALANCE_REQUEST)
-    try {
-      const web3 = await web3Util.getInstance()
-      // TODO: Flter by address instead of symbol
-      const asset = rootGetters['assets/registeredAssets'].find(item => item.symbol === symbol)
-      if (!asset) {
-        commit(types.GET_BALANCE_SUCCESS)
-        return '-'
-      }
-      const tokenInstance = new web3.eth.Contract(ABI.balance as any)
-      const address = asset.externalAddress
-      if (!address) {
-        commit(types.GET_BALANCE_SUCCESS)
-        return '-'
-      }
-      tokenInstance.options.address = address
-      const account = getters.ethAddress
-      const methodArgs = [account]
-      const contractMethod = tokenInstance.methods.balanceOf(...methodArgs)
-      const balance = await contractMethod.call()
-      commit(types.GET_BALANCE_SUCCESS)
-      return FPNumber.fromCodecValue(balance).toString()
-    } catch (error) {
-      console.error(error)
-      commit(types.GET_BALANCE_FAILURE)
-      return '-'
-    }
-  },
-
   async getEthBalance ({ commit, getters }) {
     try {
       const address = getters.ethAddress
@@ -304,10 +274,13 @@ const actions = {
       tokenInstance.options.address = address
       const account = getters.ethAddress
       const methodArgs = [account]
-      const contractMethod = tokenInstance.methods.balanceOf(...methodArgs)
-      const balance = await contractMethod.call()
+      const balanceOfMethod = tokenInstance.methods.balanceOf(...methodArgs)
+      const decimalsMethod = tokenInstance.methods.decimals()
+      const balance = await balanceOfMethod.call()
+      const decimals = await decimalsMethod.call()
       commit(types.GET_BALANCE_SUCCESS)
-      return `${balance}`
+      const precision18 = new FPNumber(0)
+      return precision18.add(FPNumber.fromCodecValue(`${balance}`, +decimals)).toCodecString()
     } catch (error) {
       console.error(error)
       commit(types.GET_BALANCE_FAILURE)

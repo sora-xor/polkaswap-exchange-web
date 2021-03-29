@@ -9,6 +9,7 @@ import storage from './storage'
 
 export const ABI = {
   balance: [
+    // balanceOf
     {
       constant: true,
       inputs: [{
@@ -24,6 +25,14 @@ export const ABI = {
       }],
       payable: false,
       stateMutability: 'view',
+      type: 'function'
+    },
+    // decimals
+    {
+      constant: true,
+      inputs: [],
+      name: 'decimals',
+      outputs: [{ name: '', type: 'uint8' }],
       type: 'function'
     }
   ],

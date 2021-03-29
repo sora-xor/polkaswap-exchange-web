@@ -82,7 +82,7 @@ export const formatAssetSymbol = (assetSymbol: string | undefined | null, isEthe
   }
 
   if (isEthereumSymbol) {
-    return 's' + assetSymbol
+    return 'e' + assetSymbol
   }
 
   for (const symbol in KnownSymbols) {
@@ -91,7 +91,7 @@ export const formatAssetSymbol = (assetSymbol: string | undefined | null, isEthe
     }
   }
 
-  return 'e' + assetSymbol
+  return 's' + assetSymbol
 }
 
 export const formatDateItem = (date: number): number | string => {

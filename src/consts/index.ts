@@ -1,4 +1,5 @@
 import pkg from '../../package.json'
+import { KnownBridgeAsset } from '@/utils/web3-util'
 
 export const app = {
   version: pkg.version,
@@ -172,7 +173,7 @@ const gasLimit = {
   approve: 66000 * 2,
   sendERC20ToSidechain: 81000 * 2,
   mintTokensByPeers: 191285 * 2,
-  receievByEthereumAssetAddress: 0, // TODO: estimate it later
+  receievByEthereumAssetAddress: 79000 * 2, // TODO: estimate it later
   receiveBySidechainAssetId: 252659 * 2
 }
 /**
@@ -185,13 +186,15 @@ export const EthereumGasLimits = [
   {
     XOR: gasLimit.approve + gasLimit.sendERC20ToSidechain,
     VAL: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    PSWAP: gasLimit.approve + gasLimit.sendERC20ToSidechain
+    PSWAP: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+    [KnownBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain
   },
   // SORA -> ETH
   {
     XOR: gasLimit.mintTokensByPeers,
     VAL: gasLimit.mintTokensByPeers,
-    PSWAP: gasLimit.receiveBySidechainAssetId // TODO: check it later
+    PSWAP: gasLimit.receiveBySidechainAssetId,
+    [KnownBridgeAsset.Other]: gasLimit.receievByEthereumAssetAddress
   }
 ]
 
