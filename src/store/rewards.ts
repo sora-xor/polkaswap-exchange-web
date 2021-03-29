@@ -193,7 +193,7 @@ const actions = {
   },
 
   async claimRewards (
-    { commit, state }: { commit: any; state: RewardsState },
+    { commit, state, rootGetters }: { commit: any; state: RewardsState; rootGetters: any },
     { internalAddress = '', externalAddress = '' } = {}
   ) {
     if (!internalAddress || !externalAddress) return
@@ -221,14 +221,17 @@ const actions = {
           state.rewards
         )
 
-        commit(types.SET_TRANSACTION_STEP, 1)
-        commit(types.SET_REWARDS_RECIEVED, true)
+        // update ui to success state if user not changed external account
+        if (rootGetters['web3/ethAddress'] === externalAddress) {
+          commit(types.SET_TRANSACTION_STEP, 1)
+          commit(types.SET_REWARDS_RECIEVED, true)
+          commit(types.SET_REWARDS_CLAIMING, false)
+        }
       }
     } catch (error) {
       commit(types.SET_TRANSACTION_ERROR, true)
-      throw error
-    } finally {
       commit(types.SET_REWARDS_CLAIMING, false)
+      throw error
     }
   }
 }

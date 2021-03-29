@@ -95,7 +95,8 @@ export default {
       [Operation.AddLiquidity]: 'Failed to supply {amount} {symbol} and {amount2} {symbol2}',
       [Operation.RemoveLiquidity]: 'Failed to remove {amount} {symbol} and {amount2} {symbol2}',
       [Operation.CreatePair]: 'Failed to supply {amount} {symbol} and {amount2} {symbol2}',
-      [Operation.RegisterAsset]: 'Failed to register {symbol} asset'
+      [Operation.RegisterAsset]: 'Failed to register {symbol} asset',
+      [Operation.ClaimRewards]: 'Failed to claim rewards'
     }
   },
   pageNotFound: {
