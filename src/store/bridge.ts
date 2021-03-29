@@ -476,61 +476,61 @@ const actions = {
     try {
       const request = await waitForApprovedRequest(getters.soraTransactionHash) // If it causes an error, then -> catch -> SORA_REJECTED
       const web3 = await web3Util.getInstance()
-      if (!currentHistoryItem.signed) {
-        if (!rootGetters['web3/isValidEthNetwork']) {
-          throw new Error('Change eth network in Metamask')
-        }
-        const symbol = getters.asset.symbol
-        const ethAccount = rootGetters['web3/ethAddress']
-        const isValOrXor = [KnownBridgeAsset.XOR, KnownBridgeAsset.VAL].includes(symbol)
-        let contract: any = null
-        if (isValOrXor) {
-          contract = rootGetters[`web3/contract${symbol}`]
-        } else {
-          contract = rootGetters[`web3/contract${KnownBridgeAsset.Other}`][OtherContractType.Bridge]
-        }
-        const contractInstance = new web3.eth.Contract(contract.abi)
-        const contractAddress = rootGetters[`web3/address${isValOrXor ? symbol : KnownBridgeAsset.Other}`]
-        contractInstance.options.address = contractAddress.MASTER
-        const method = isValOrXor
-          ? 'mintTokensByPeers'
-          : request.currencyType === BridgeCurrencyType.TokenAddress
-            ? 'receievByEthereumAssetAddress'
-            : 'receiveBySidechainAssetId'
-        const methodArgs = [
-          (isValOrXor || request.currencyType === BridgeCurrencyType.TokenAddress)
-            ? asset.externalAddress // address tokenAddress OR
-            : asset.address, // bytes32 assetId
-          new FPNumber(getters.amount, asset.decimals).toCodecString(), // uint256 amount
-          ethAccount // address beneficiary
-        ]
-        methodArgs.push(...(isValOrXor
-          ? [
-            getters.soraTransactionHash, // bytes32 txHash
-            request.v, // uint8[] memory v
-            request.r, // bytes32[] memory r
-            request.s, // bytes32[] memory s
-            request.from // address from
-          ] : [
-            request.from, // address from
-            getters.soraTransactionHash, // bytes32 txHash
-            request.v, // uint8[] memory v
-            request.r, // bytes32[] memory r
-            request.s // bytes32[] memory s
-          ])
-        )
-        const contractMethod = contractInstance.methods[method](...methodArgs)
-        const gas = await contractMethod.estimateGas()
-        currentHistoryItem.signed = true
-        currentHistoryItem.transactionState = STATES.ETHEREUM_PENDING
-        await dispatch('setHistory', { history: currentHistoryItem })
-        const { transactionHash } = await contractMethod.send({ gas, from: ethAccount })
-        currentHistoryItem.ethereumHash = transactionHash
-        await dispatch('setHistory', { history: currentHistoryItem })
-        await dispatch('setEthereumTransactionHash', currentHistoryItem.ethereumHash)
-      } else if (!getters.ethereumTransactionHash) {
-        await waitForEthereumHash(currentHistoryItem.id)
+      // if (!currentHistoryItem.signed) {
+      if (!rootGetters['web3/isValidEthNetwork']) {
+        throw new Error('Change eth network in Metamask')
       }
+      const symbol = getters.asset.symbol
+      const ethAccount = rootGetters['web3/ethAddress']
+      const isValOrXor = [KnownBridgeAsset.XOR, KnownBridgeAsset.VAL].includes(symbol)
+      let contract: any = null
+      if (isValOrXor) {
+        contract = rootGetters[`web3/contract${symbol}`]
+      } else {
+        contract = rootGetters[`web3/contract${KnownBridgeAsset.Other}`][OtherContractType.Bridge]
+      }
+      const contractInstance = new web3.eth.Contract(contract.abi)
+      const contractAddress = rootGetters[`web3/address${isValOrXor ? symbol : KnownBridgeAsset.Other}`]
+      contractInstance.options.address = contractAddress.MASTER
+      const method = isValOrXor
+        ? 'mintTokensByPeers'
+        : request.currencyType === BridgeCurrencyType.TokenAddress
+          ? 'receievByEthereumAssetAddress'
+          : 'receiveBySidechainAssetId'
+      const methodArgs = [
+        (isValOrXor || request.currencyType === BridgeCurrencyType.TokenAddress)
+          ? asset.externalAddress // address tokenAddress OR
+          : asset.address, // bytes32 assetId
+        new FPNumber(getters.amount, asset.decimals).toCodecString(), // uint256 amount
+        ethAccount // address beneficiary
+      ]
+      methodArgs.push(...(isValOrXor
+        ? [
+          getters.soraTransactionHash, // bytes32 txHash
+          request.v, // uint8[] memory v
+          request.r, // bytes32[] memory r
+          request.s, // bytes32[] memory s
+          request.from // address from
+        ] : [
+          request.from, // address from
+          getters.soraTransactionHash, // bytes32 txHash
+          request.v, // uint8[] memory v
+          request.r, // bytes32[] memory r
+          request.s // bytes32[] memory s
+        ])
+      )
+      const contractMethod = contractInstance.methods[method](...methodArgs)
+      const gas = await contractMethod.estimateGas()
+      currentHistoryItem.signed = true
+      currentHistoryItem.transactionState = STATES.ETHEREUM_PENDING
+      await dispatch('setHistory', { history: currentHistoryItem })
+      const { transactionHash } = await contractMethod.send({ gas, from: ethAccount })
+      currentHistoryItem.ethereumHash = transactionHash
+      await dispatch('setHistory', { history: currentHistoryItem })
+      await dispatch('setEthereumTransactionHash', currentHistoryItem.ethereumHash)
+      // } else if (!getters.ethereumTransactionHash) {
+      //   await waitForEthereumHash(currentHistoryItem.id)
+      // }
       // api.bridge.markAsDone(hash) We've decided not to use offchain workers to show the history.
       // So we don't need DONE status of request
       const tx = await web3.eth.getTransactionReceipt(getters.ethereumTransactionHash)
@@ -571,44 +571,44 @@ const actions = {
     try {
       const web3 = await web3Util.getInstance()
       let tx
-      if (!currentHistoryItem.signed) {
-        if (!rootGetters['web3/isValidEthNetwork']) {
-          throw new Error('Change eth network in Metamask')
-        }
-        let contractInstance: any = null
-        const contract = rootGetters[`web3/contract${KnownBridgeAsset.Other}`]
-        const ethAccount = rootGetters['web3/ethAddress']
-        const contractAddress = rootGetters[`web3/address${KnownBridgeAsset.Other}`]
-        const allowance = await dispatch('web3/getAllowanceByEthAddress', { address: asset.externalAddress }, { root: true })
-        if (FPNumber.lte(new FPNumber(allowance), new FPNumber(getters.amount))) {
-          contractInstance = new web3.eth.Contract(contract[OtherContractType.ERC20].abi)
-          contractInstance.options.address = asset.externalAddress
-          const methodArgs = [
-            contractAddress.MASTER, // address spender
-            MaxUint256 // uint256 amount
-          ]
-          const contractMethod = contractInstance.methods.approve(...methodArgs)
-          const tx = await contractMethod.send({ from: ethAccount })
-          await web3.eth.getTransactionReceipt(tx.transactionHash)
-        }
-        const soraAccountAddress = rootGetters.account.address
-        const accountId = web3.utils.bytesToHex(Array.from(decodeAddress(soraAccountAddress).values()))
-        contractInstance = new web3.eth.Contract(contract[OtherContractType.Bridge].abi)
-        contractInstance.options.address = contractAddress.MASTER
-        const methodArgs = [
-          accountId, // bytes32 to
-          new FPNumber(getters.amount, asset.decimals).toCodecString(), // uint256 amount
-          asset.externalAddress // address tokenAddress
-        ]
-        const contractMethod = contractInstance.methods.sendERC20ToSidechain(...methodArgs)
-        currentHistoryItem.signed = true
-        currentHistoryItem.transactionState = STATES.ETHEREUM_PENDING
-        await dispatch('setHistory', { history: currentHistoryItem })
-        tx = await contractMethod.send({ from: ethAccount })
-        await dispatch('setEthereumTransactionHash', tx.transactionHash)
-      } else if (!getters.ethereumTransactionHash) {
-        await waitForEthereumHash(currentHistoryItem.id)
+      // if (!currentHistoryItem.signed) {
+      if (!rootGetters['web3/isValidEthNetwork']) {
+        throw new Error('Change eth network in Metamask')
       }
+      let contractInstance: any = null
+      const contract = rootGetters[`web3/contract${KnownBridgeAsset.Other}`]
+      const ethAccount = rootGetters['web3/ethAddress']
+      const contractAddress = rootGetters[`web3/address${KnownBridgeAsset.Other}`]
+      const allowance = await dispatch('web3/getAllowanceByEthAddress', { address: asset.externalAddress }, { root: true })
+      if (FPNumber.lte(new FPNumber(allowance), new FPNumber(getters.amount))) {
+        contractInstance = new web3.eth.Contract(contract[OtherContractType.ERC20].abi)
+        contractInstance.options.address = asset.externalAddress
+        const methodArgs = [
+          contractAddress.MASTER, // address spender
+          MaxUint256 // uint256 amount
+        ]
+        const contractMethod = contractInstance.methods.approve(...methodArgs)
+        const tx = await contractMethod.send({ from: ethAccount })
+        await web3.eth.getTransactionReceipt(tx.transactionHash)
+      }
+      const soraAccountAddress = rootGetters.account.address
+      const accountId = web3.utils.bytesToHex(Array.from(decodeAddress(soraAccountAddress).values()))
+      contractInstance = new web3.eth.Contract(contract[OtherContractType.Bridge].abi)
+      contractInstance.options.address = contractAddress.MASTER
+      const methodArgs = [
+        accountId, // bytes32 to
+        new FPNumber(getters.amount, asset.decimals).toCodecString(), // uint256 amount
+        asset.externalAddress // address tokenAddress
+      ]
+      const contractMethod = contractInstance.methods.sendERC20ToSidechain(...methodArgs)
+      currentHistoryItem.signed = true
+      currentHistoryItem.transactionState = STATES.ETHEREUM_PENDING
+      await dispatch('setHistory', { history: currentHistoryItem })
+      tx = await contractMethod.send({ from: ethAccount })
+      await dispatch('setEthereumTransactionHash', tx.transactionHash)
+      // } else if (!getters.ethereumTransactionHash) {
+      //   await waitForEthereumHash(currentHistoryItem.id)
+      // }
       tx = await web3.eth.getTransactionReceipt(getters.ethereumTransactionHash)
       currentHistoryItem.startTime = tx.startTime
       currentHistoryItem.endTime = tx.endTime
@@ -661,19 +661,28 @@ const actions = {
     }
   },
   async sendTransaction ({ commit, getters, dispatch }): Promise<void> {
-    try {
-      await dispatch(getters.isSoraToEthereum ? 'sendTransferSoraToEth' : 'sendTransferEthToSora')
-    } catch (error) {
-      console.error(error)
-      throw new Error(error.message)
+    if (!(getters.historyItem?.signed && getters.historyItem?.transactionState === STATES.ETHEREUM_PENDING)) {
+      try {
+        console.log(getters.historyItem?.transactionState)
+        await dispatch(getters.isSoraToEthereum ? 'sendTransferSoraToEth' : 'sendTransferEthToSora')
+      } catch (error) {
+        console.error(error)
+        throw new Error(error.message)
+      }
+    } else {
+      commit(types.RECEIVE_TRANSACTION_REQUEST)
     }
   },
   async receiveTransaction ({ commit, getters, dispatch }): Promise<void> {
-    try {
-      await dispatch(getters.isSoraToEthereum ? 'receiveTransferEthFromSora' : 'receiveTransferSoraFromEth')
-    } catch (error) {
-      console.error(error)
-      throw new Error(error.message)
+    if (!(getters.historyItem?.signed && getters.historyItem?.transactionState === STATES.ETHEREUM_PENDING)) {
+      try {
+        await dispatch(getters.isSoraToEthereum ? 'receiveTransferEthFromSora' : 'receiveTransferSoraFromEth')
+      } catch (error) {
+        console.error(error)
+        throw new Error(error.message)
+      }
+    } else {
+      commit(types.RECEIVE_TRANSACTION_REQUEST)
     }
   }
 }
