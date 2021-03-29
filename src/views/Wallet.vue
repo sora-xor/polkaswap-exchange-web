@@ -1,6 +1,6 @@
 <template>
   <sora-neo-wallet
-    class="container"
+    class="container container--wallet"
     v-loading="parentLoading"
     @close="handleClose"
     @swap="handleSwap"
@@ -36,3 +36,18 @@ export default class Wallet extends Mixins(TranslationMixin) {
   }
 }
 </script>
+
+<style lang="scss">
+.container--wallet {
+  .el-card {
+    &__header {
+      padding-top: 0;
+      padding-right: 0;
+      padding-left: 0;
+    }
+    &__body {
+      padding: $inner-spacing-medium 0 0;
+    }
+  }
+}
+</style>
