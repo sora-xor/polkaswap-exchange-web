@@ -28,6 +28,7 @@
             class="slippage-tolerance-custom_input"
             size="small"
             :decimals="2"
+            :max="slippageToleranceExtremeValues.max"
             v-model="customSlippageTolerance"
             @blur="handleSlippageToleranceOnBlur"
           />
@@ -142,17 +143,6 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin, Numb
 
   prepareInputValue (value): string {
     let v = value.replace('%', '')
-
-    if (
-      FPNumber.gt(
-        this.getFPNumber(v),
-        this.getFPNumber(
-          this.slippageToleranceExtremeValues.max
-        )
-      )
-    ) {
-      v = this.slippageToleranceExtremeValues.max
-    }
 
     if (v.length) {
       if (v[0] === '0' && v[1] === '0') {
