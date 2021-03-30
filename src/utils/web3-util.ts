@@ -175,6 +175,16 @@ async function getAccount (): Promise<string> {
   }
 }
 
+// TODO: remove this check, when MetaMask issue will be resolved
+// https://github.com/MetaMask/metamask-extension/issues/10368
+async function checkAccountIsConnected (address: string): Promise<boolean> {
+  if (!address) return false
+
+  const currentAccount = await getAccount()
+
+  return !!currentAccount && currentAccount.toLowerCase() === address.toLowerCase()
+}
+
 async function getInstance (): Promise<Web3> {
   if (!provider) {
     provider = await detectEthereumProvider() as any
@@ -292,6 +302,7 @@ async function executeContractMethod ({
 export default {
   onConnect,
   getAccount,
+  checkAccountIsConnected,
   storeEthUserAddress,
   getEthUserAddress,
   storeEthNetwork,
