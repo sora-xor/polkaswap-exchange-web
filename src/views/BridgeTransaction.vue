@@ -27,7 +27,7 @@
               </div>
             </template>
             <div v-if="transactionFromHash" :class="hashContainerClasses(!isSoraToEthereum)">
-              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionFromHash)" readonly />
+              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionFromHash, 32)" readonly />
               <s-button class="s-button--hash-copy" type="link" icon="copy-16" @click="handleCopyTransactionHash(transactionFromHash)" />
               <!-- TODO: Add work with Polkascan -->
               <s-dropdown
@@ -82,7 +82,7 @@
               </div>
             </template>
             <div v-if="isTransactionStep2 && transactionToHash" :class="hashContainerClasses(isSoraToEthereum)">
-              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionToHash)" readonly />
+              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionToHash, 32)" readonly />
               <s-button class="s-button--hash-copy" type="link" icon="copy-16" @click="handleCopyTransactionHash(transactionToHash)" />
               <s-dropdown
                 v-if="isSoraToEthereum"
@@ -156,7 +156,7 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EthSymbol } from '@/consts'
-import { formatAddress, formatAssetSymbol, copyToClipboard, formatDateItem } from '@/utils'
+import { formatAssetSymbol, copyToClipboard, formatDateItem } from '@/utils'
 import { createFSM, EVENTS, SORA_ETHEREUM_STATES, ETHEREUM_SORA_STATES, STATES } from '@/utils/fsm'
 
 const namespace = 'bridge'
@@ -500,10 +500,6 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
         title: ''
       })
     }
-  }
-
-  formatAddress (address: string): string {
-    return formatAddress(address, 32)
   }
 
   failedClass (isSecondTransaction: boolean): string {
