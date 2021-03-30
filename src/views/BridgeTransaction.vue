@@ -63,12 +63,15 @@
             <s-button
               v-if="isTransactionStep1"
               type="primary"
-              :disabled="!(isSoraToEthereum || isValidEthNetwork) || currentState === STATES.INITIAL || isTransactionFromPending"
+              :disabled="!(isSoraToEthereum || isValidEthNetwork) || currentState === STATES.INITIAL || isInsufficientBalance || isInsufficientXorForFee || isInsufficientEthereumForFee || isTransactionFromPending"
               @click="handleSendTransactionFrom"
             >
               <template v-if="!isSoraToEthereum && !isExternalAccountConnected">{{ t('bridgeTransaction.connectWallet') }}</template>
               <template v-else-if="!(isSoraToEthereum || isValidEthNetwork)">{{ t('bridgeTransaction.changeNetwork') }}</template>
               <span v-else-if="isTransactionFromPending" v-html="t('bridgeTransaction.pending', { network: t(`bridgeTransaction.${isSoraToEthereum ? 'sora' : 'ethereum'}`) })" />
+              <template v-else-if="isInsufficientBalance">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : insufficientBalanceAssetSymbol }) }}</template>
+              <template v-else-if="isInsufficientXorForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : KnownSymbols.XOR }) }}</template>
+              <template v-else-if="isInsufficientEthereumForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : EthSymbol }) }}</template>
               <template v-else-if="isTransactionFromFailed">{{ t('bridgeTransaction.retry') }}</template>
               <template v-else>{{ t('bridgeTransaction.confirm', { direction: t(`bridgeTransaction.${isSoraToEthereum ? 'sora' : 'metamask'}`) }) }}</template>
             </s-button>
@@ -117,12 +120,14 @@
             <s-button
               v-if="isTransactionStep2 && !isTransferCompleted"
               type="primary"
-              :disabled="(isSoraToEthereum && !isValidEthNetwork) || isTransactionToPending"
+              :disabled="(isSoraToEthereum && !isValidEthNetwork) || isInsufficientXorForFee || isInsufficientEthereumForFee || isTransactionToPending"
               @click="handleSendTransactionTo"
             >
               <template v-if="isSoraToEthereum && !isExternalAccountConnected">{{ t('bridgeTransaction.connectWallet') }}</template>
               <template v-else-if="isSoraToEthereum && !isValidEthNetwork">{{ t('bridgeTransaction.changeNetwork') }}</template>
               <span v-else-if="isTransactionToPending" v-html="t('bridgeTransaction.pending', { network: t(`bridgeTransaction.${!isSoraToEthereum ? 'sora' : 'ethereum'}`) })" />
+              <template v-else-if="isInsufficientXorForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : KnownSymbols.XOR }) }}</template>
+              <template v-else-if="isInsufficientEthereumForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : EthSymbol }) }}</template>
               <template v-else-if="isTransactionToFailed">{{ t('bridgeTransaction.retry') }}</template>
               <template v-else>{{ t('bridgeTransaction.confirm', { direction: t(`bridgeTransaction.${!isSoraToEthereum ? 'sora' : 'metamask'}`) }) }}</template>
             </s-button>
@@ -139,7 +144,6 @@
     >
       {{ t('bridgeTransaction.newTransaction') }}
     </s-button>
-    <!-- TODO: Check isInsufficientBalance -->
     <confirm-bridge-transaction-dialog :visible.sync="showConfirmTransactionDialog" @confirm="confirmTransaction" />
   </div>
 </template>
@@ -147,7 +151,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { AccountAsset, RegisteredAccountAsset, KnownSymbols, CodecString } from '@sora-substrate/util'
+import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
 import { interpret } from 'xstate'
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
@@ -156,7 +160,7 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EthSymbol } from '@/consts'
-import { formatAssetSymbol, copyToClipboard, formatDateItem } from '@/utils'
+import { formatAssetSymbol, copyToClipboard, formatDateItem, hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEthForFee } from '@/utils'
 import { createFSM, EVENTS, SORA_ETHEREUM_STATES, ETHEREUM_SORA_STATES, STATES } from '@/utils/fsm'
 
 const namespace = 'bridge'
@@ -172,9 +176,11 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
 
   @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
   @Getter('asset', { namespace }) asset!: AccountAsset | RegisteredAccountAsset | null
-  @Getter('amount', { namespace }) amount!: string | number
+  @Getter('xorAsset', { namespace: 'assets' }) xorAsset!: any
+  @Getter('amount', { namespace }) amount!: string
+  @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: string | number
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
-  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: string | number
+  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: CodecString
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
   @Getter('soraTransactionHash', { namespace }) soraTransactionHash!: string
   @Getter('ethereumTransactionHash', { namespace }) ethereumTransactionHash!: string
@@ -186,6 +192,8 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   // TODO: Remove the next line
   @Getter('historyItem', { namespace }) historyItem!: any
 
+  @Action('getNetworkFee', { namespace }) getNetworkFee
+  @Action('getEthNetworkFee', { namespace }) getEthNetworkFee
   @Action('setCurrentTransactionState', { namespace }) setCurrentTransactionState
   @Action('setInitialTransactionState', { namespace }) setInitialTransactionState
   @Action('setTransactionStep', { namespace }) setTransactionStep
@@ -215,6 +223,7 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
     to: 'step-to'
   }
 
+  insufficientBalanceAssetSymbol: string | undefined = ''
   activeTransactionStep: any = [this.transactionSteps.from, this.transactionSteps.to]
   currentTransactionStep = 1
   showConfirmTransactionDialog = false
@@ -361,6 +370,22 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
     return this.formatCodecNumber(this.soraNetworkFee)
   }
 
+  get isInsufficientBalance (): boolean {
+    if (this.asset && hasInsufficientBalance(this.asset, this.amount, this.soraNetworkFee)) {
+      this.insufficientBalanceAssetSymbol = this.asset.symbol
+      return true
+    }
+    return false
+  }
+
+  get isInsufficientXorForFee (): boolean {
+    return hasInsufficientXorForFee(this.xorAsset, this.soraNetworkFee)
+  }
+
+  get isInsufficientEthereumForFee (): boolean {
+    return hasInsufficientEthForFee(this.ethBalance.toString(), this.ethereumNetworkFee)
+  }
+
   handleOpenEtherscan (): void {
     const hash = this.isSoraToEthereum ? this.transactionToHash : this.transactionFromHash
     const url = this.getEtherscanLink(hash, true)
@@ -369,7 +394,6 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   }
 
   handleViewTransactionsHistory (): void {
-    // TODO: Go to appropriate transaction instead of history page
     router.push({ name: PageNames.BridgeTransactionsHistory })
   }
 
@@ -379,6 +403,8 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
 
   async created (): Promise<void> {
     if (this.isTransactionConfirmed) {
+      await this.getNetworkFee()
+      await this.getEthNetworkFee()
       this.initializeTransactionStateMachine()
       this.isInitRequestCompleted = true
       this.currentTransactionStep = this.transactionStep
@@ -608,6 +634,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
           }
         }
         &__arrow.el-icon-arrow-right {
+          margin-right: $inner-spacing-small;
           &, &:hover {
             background-color: transparent;
           }
