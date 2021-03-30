@@ -95,8 +95,8 @@ const getters = {
 
 const mutations = {
   [types.RESET] (state) {
-    // we shouldn't reset networks, setted from env
-    const networkSettingsKeys = ['soraNetwork', 'defaultEthNetwork']
+    // we shouldn't reset networks, setted from env & contracts
+    const networkSettingsKeys = ['soraNetwork', 'defaultEthNetwork', 'contractAddress', 'smartContracts']
     const s = initialState()
 
     Object.keys(s).filter(key => !networkSettingsKeys.includes(key)).forEach(key => {

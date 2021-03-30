@@ -487,11 +487,9 @@ export default class Bridge extends Mixins(
   }
 
   async handleConfirmTransaction (): Promise<void> {
-    const accountIsConnected = await this.checkExternalAccountIsConnected()
-
-    if (!accountIsConnected) return
-
-    this.showConfirmTransactionDialog = true
+    await this.checkConnectionToExternalAccount(() => {
+      this.showConfirmTransactionDialog = true
+    })
   }
 
   handleViewTransactionsHistory (): void {
@@ -516,11 +514,9 @@ export default class Bridge extends Mixins(
   async confirmTransaction (isTransactionConfirmed: boolean): Promise<void> {
     if (!isTransactionConfirmed) return
 
-    const accountIsConnected = await this.checkExternalAccountIsConnected()
-
-    if (!accountIsConnected) return
-
-    router.push({ name: PageNames.BridgeTransaction })
+    await this.checkConnectionToExternalAccount(() => {
+      router.push({ name: PageNames.BridgeTransaction })
+    })
   }
 }
 </script>

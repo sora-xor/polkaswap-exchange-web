@@ -276,9 +276,9 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   private async claimRewardsProcess (): Promise<void> {
-    const isConnected = await this.checkExternalAccountIsConnected()
     const internalAddress = this.getWalletAddress()
     const externalAddress = this.ethAddress
+    const isConnected = await web3Util.checkAccountIsConnected(externalAddress)
 
     if (isConnected && internalAddress) {
       await this.withNotifications(
