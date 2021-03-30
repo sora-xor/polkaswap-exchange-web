@@ -189,7 +189,7 @@ import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EthSymbol, ZeroStringValue } from '@/consts'
-import web3Util, { Provider } from '@/utils/web3-util'
+import web3Util from '@/utils/web3-util'
 import { isXorAccountAsset, hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEthForFee, getMaxValue, formatAssetSymbol, findAssetInCollection } from '@/utils'
 
 const namespace = 'bridge'
@@ -333,7 +333,7 @@ export default class Bridge extends Mixins(
     return this.formatCodecNumber(balance, decimals)
   }
 
-  formatAssetValue (assetSymbol: string, amount: number | string): string {
+  formatAssetValue (assetSymbol: string, amount: string): string {
     return `${amount} ${assetSymbol}`
   }
 

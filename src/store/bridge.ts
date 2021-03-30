@@ -363,7 +363,7 @@ const actions = {
   async generateHistoryItem ({ commit, getters, dispatch }, playground) {
     await dispatch('setHistoryItem', api.bridge.generateHistoryItem({
       type: getters.isSoraToEthereum ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
-      amount: getters.amount.toString(),
+      amount: getters.amount,
       symbol: getters.asset.symbol,
       assetAddress: getters.asset.address,
       startTime: playground.date,

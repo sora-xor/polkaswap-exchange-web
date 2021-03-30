@@ -44,13 +44,13 @@ export const getMaxValue = (asset: AccountAsset, fee: CodecString, isExternalBal
   return fpBalance.toString()
 }
 
-export const hasInsufficientBalance = (asset: AccountAsset | RegisteredAccountAsset, amount: number | string, fee: CodecString, isExternalBalance?: boolean): boolean => {
+export const hasInsufficientBalance = (asset: AccountAsset | RegisteredAccountAsset, amount: string | number, fee: CodecString, isExternalBalance?: boolean): boolean => {
   if (+asset.balance === 0) {
     return true
   }
   const decimals = asset.decimals
   const fpBalance = FPNumber.fromCodecValue(asset[isExternalBalance ? 'externalBalance' : 'balance'], decimals)
-  const fpAmount = new FPNumber(typeof amount === 'number' ? amount.toString() : amount, decimals)
+  const fpAmount = new FPNumber(amount, decimals)
   if (isXorAccountAsset(asset)) {
     const fpFee = FPNumber.fromCodecValue(fee, decimals)
     return FPNumber.lt(fpBalance, fpAmount.add(fpFee))
