@@ -515,14 +515,6 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
     return `${date.getDate()} ${this.t(`months[${date.getMonth()}]`)} ${date.getFullYear()}, ${formatDateItem(date.getHours())}:${formatDateItem(date.getMinutes())}:${formatDateItem(date.getSeconds())}`
   }
 
-  async checkConnectionToExternalAccount (func): Promise<void> {
-    if (!this.isExternalAccountConnected) {
-      await this.connectExternalWallet()
-    } else {
-      func()
-    }
-  }
-
   async handleSendTransactionFrom (): Promise<void> {
     await this.checkConnectionToExternalAccount(() => {
       if (this.isTransactionFromFailed) {

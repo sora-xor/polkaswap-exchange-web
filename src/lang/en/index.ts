@@ -242,7 +242,7 @@ export default {
     },
     status: {
       pending: '{step} transactions pending...',
-      failed: '{step} transactions failed. @:retryText.',
+      failed: '{step} transactions failed. @:(retryText).',
       confirm: 'Confirm 2nd of 2 transactions...',
       complete: 'Complete',
       convertionComplete: 'Conversion complete'
