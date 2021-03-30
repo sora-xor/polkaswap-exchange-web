@@ -27,7 +27,7 @@
               </div>
             </template>
             <div v-if="transactionFromHash" :class="hashContainerClasses(!isSoraToEthereum)">
-              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionFromHash)" readonly />
+              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionFromHash, 32)" readonly />
               <s-button class="s-button--hash-copy" type="link" icon="copy-16" @click="handleCopyTransactionHash(transactionFromHash)" />
               <!-- TODO: Add work with Polkascan -->
               <s-dropdown
@@ -66,7 +66,8 @@
               :disabled="!(isSoraToEthereum || isValidEthNetwork) || currentState === STATES.INITIAL || isInsufficientBalance || isInsufficientXorForFee || isInsufficientEthereumForFee || isTransactionFromPending"
               @click="handleSendTransactionFrom"
             >
-              <template v-if="!(isSoraToEthereum || isValidEthNetwork)">{{ t('bridgeTransaction.changeNetwork') }}</template>
+              <template v-if="!isSoraToEthereum && !isExternalAccountConnected">{{ t('bridgeTransaction.connectWallet') }}</template>
+              <template v-else-if="!(isSoraToEthereum || isValidEthNetwork)">{{ t('bridgeTransaction.changeNetwork') }}</template>
               <span v-else-if="isTransactionFromPending" v-html="t('bridgeTransaction.pending', { network: t(`bridgeTransaction.${isSoraToEthereum ? 'sora' : 'ethereum'}`) })" />
               <template v-else-if="isInsufficientBalance">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : insufficientBalanceAssetSymbol }) }}</template>
               <template v-else-if="isInsufficientXorForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : KnownSymbols.XOR }) }}</template>
@@ -84,7 +85,7 @@
               </div>
             </template>
             <div v-if="isTransactionStep2 && transactionToHash" :class="hashContainerClasses(isSoraToEthereum)">
-              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionToHash)" readonly />
+              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionToHash, 32)" readonly />
               <s-button class="s-button--hash-copy" type="link" icon="copy-16" @click="handleCopyTransactionHash(transactionToHash)" />
               <s-dropdown
                 v-if="isSoraToEthereum"
@@ -122,7 +123,8 @@
               :disabled="(isSoraToEthereum && !isValidEthNetwork) || isInsufficientXorForFee || isInsufficientEthereumForFee || isTransactionToPending"
               @click="handleSendTransactionTo"
             >
-              <template v-if="isSoraToEthereum && !isValidEthNetwork">{{ t('bridgeTransaction.changeNetwork') }}</template>
+              <template v-if="isSoraToEthereum && !isExternalAccountConnected">{{ t('bridgeTransaction.connectWallet') }}</template>
+              <template v-else-if="isSoraToEthereum && !isValidEthNetwork">{{ t('bridgeTransaction.changeNetwork') }}</template>
               <span v-else-if="isTransactionToPending" v-html="t('bridgeTransaction.pending', { network: t(`bridgeTransaction.${!isSoraToEthereum ? 'sora' : 'ethereum'}`) })" />
               <template v-else-if="isInsufficientXorForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : KnownSymbols.XOR }) }}</template>
               <template v-else-if="isInsufficientEthereumForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : EthSymbol }) }}</template>
@@ -152,13 +154,13 @@ import { Getter, Action } from 'vuex-class'
 import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
 import { interpret } from 'xstate'
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
+import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EthSymbol } from '@/consts'
-import { formatAddress, formatAssetSymbol, copyToClipboard, formatDateItem, hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEthForFee } from '@/utils'
+import { formatAssetSymbol, copyToClipboard, formatDateItem, hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEthForFee } from '@/utils'
 import { createFSM, EVENTS, SORA_ETHEREUM_STATES, ETHEREUM_SORA_STATES, STATES } from '@/utils/fsm'
 
 const namespace = 'bridge'
@@ -169,7 +171,7 @@ const namespace = 'bridge'
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog)
   }
 })
-export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingMixin, NetworkFormatterMixin, NumberFormatterMixin) {
+export default class BridgeTransaction extends Mixins(WalletConnectMixin, LoadingMixin, NetworkFormatterMixin, NumberFormatterMixin) {
   @Getter('isValidEthNetwork', { namespace: 'web3' }) isValidEthNetwork!: boolean
 
   @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
@@ -526,10 +528,6 @@ export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingM
     }
   }
 
-  formatAddress (address: string): string {
-    return formatAddress(address, 32)
-  }
-
   failedClass (isSecondTransaction: boolean): string {
     if (!isSecondTransaction) {
       return this.currentState === (this.isSoraToEthereum ? STATES.SORA_REJECTED : STATES.ETHEREUM_REJECTED) ? 'info-line--error' : ''
@@ -544,19 +542,23 @@ export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingM
   }
 
   async handleSendTransactionFrom (): Promise<void> {
-    if (this.isTransactionFromFailed) {
-      this.callRetryTransition()
-    } else {
-      this.callFirstTransition()
-    }
+    await this.checkConnectionToExternalAccount(() => {
+      if (this.isTransactionFromFailed) {
+        this.callRetryTransition()
+      } else {
+        this.callFirstTransition()
+      }
+    })
   }
 
   async handleSendTransactionTo (): Promise<void> {
-    if (this.isTransactionToFailed) {
-      this.callRetryTransition()
-    } else {
-      this.callSecondTransition()
-    }
+    await this.checkConnectionToExternalAccount(() => {
+      if (this.isTransactionToFailed) {
+        this.callRetryTransition()
+      } else {
+        this.callSecondTransition()
+      }
+    })
   }
 
   async confirmTransaction (isTransactionConfirmed: boolean) {
