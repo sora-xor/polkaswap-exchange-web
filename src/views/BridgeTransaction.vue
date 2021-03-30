@@ -66,7 +66,8 @@
               :disabled="!(isSoraToEthereum || isValidEthNetwork) || currentState === STATES.INITIAL || isTransactionFromPending"
               @click="handleSendTransactionFrom"
             >
-              <template v-if="!(isSoraToEthereum || isValidEthNetwork)">{{ t('bridgeTransaction.changeNetwork') }}</template>
+              <template v-if="!isSoraToEthereum && !isExternalAccountConnected">{{ t('bridgeTransaction.connectWallet') }}</template>
+              <template v-else-if="!(isSoraToEthereum || isValidEthNetwork)">{{ t('bridgeTransaction.changeNetwork') }}</template>
               <span v-else-if="isTransactionFromPending" v-html="t('bridgeTransaction.pending', { network: t(`bridgeTransaction.${isSoraToEthereum ? 'sora' : 'ethereum'}`) })" />
               <template v-else-if="isTransactionFromFailed">{{ t('bridgeTransaction.retry') }}</template>
               <template v-else>{{ t('bridgeTransaction.confirm', { direction: t(`bridgeTransaction.${isSoraToEthereum ? 'sora' : 'metamask'}`) }) }}</template>
@@ -119,7 +120,8 @@
               :disabled="(isSoraToEthereum && !isValidEthNetwork) || isTransactionToPending"
               @click="handleSendTransactionTo"
             >
-              <template v-if="isSoraToEthereum && !isValidEthNetwork">{{ t('bridgeTransaction.changeNetwork') }}</template>
+              <template v-if="isSoraToEthereum && !isExternalAccountConnected">{{ t('bridgeTransaction.connectWallet') }}</template>
+              <template v-else-if="isSoraToEthereum && !isValidEthNetwork">{{ t('bridgeTransaction.changeNetwork') }}</template>
               <span v-else-if="isTransactionToPending" v-html="t('bridgeTransaction.pending', { network: t(`bridgeTransaction.${!isSoraToEthereum ? 'sora' : 'ethereum'}`) })" />
               <template v-else-if="isTransactionToFailed">{{ t('bridgeTransaction.retry') }}</template>
               <template v-else>{{ t('bridgeTransaction.confirm', { direction: t(`bridgeTransaction.${!isSoraToEthereum ? 'sora' : 'metamask'}`) }) }}</template>
@@ -148,7 +150,7 @@ import { Getter, Action } from 'vuex-class'
 import { AccountAsset, RegisteredAccountAsset, KnownSymbols, CodecString } from '@sora-substrate/util'
 import { interpret } from 'xstate'
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
+import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
@@ -165,7 +167,7 @@ const namespace = 'bridge'
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog)
   }
 })
-export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingMixin, NetworkFormatterMixin, NumberFormatterMixin) {
+export default class BridgeTransaction extends Mixins(WalletConnectMixin, LoadingMixin, NetworkFormatterMixin, NumberFormatterMixin) {
   @Getter('isValidEthNetwork', { namespace: 'web3' }) isValidEthNetwork!: boolean
 
   @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
@@ -517,20 +519,32 @@ export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingM
     return `${date.getDate()} ${this.t(`months[${date.getMonth()}]`)} ${date.getFullYear()}, ${formatDateItem(date.getHours())}:${formatDateItem(date.getMinutes())}:${formatDateItem(date.getSeconds())}`
   }
 
-  async handleSendTransactionFrom (): Promise<void> {
-    if (this.isTransactionFromFailed) {
-      this.callRetryTransition()
+  async checkConnectionToExternalAccount (func): Promise<void> {
+    if (!this.isExternalAccountConnected) {
+      await this.connectExternalWallet()
     } else {
-      this.callFirstTransition()
+      func()
     }
   }
 
+  async handleSendTransactionFrom (): Promise<void> {
+    await this.checkConnectionToExternalAccount(() => {
+      if (this.isTransactionFromFailed) {
+        this.callRetryTransition()
+      } else {
+        this.callFirstTransition()
+      }
+    })
+  }
+
   async handleSendTransactionTo (): Promise<void> {
-    if (this.isTransactionToFailed) {
-      this.callRetryTransition()
-    } else {
-      this.callSecondTransition()
-    }
+    await this.checkConnectionToExternalAccount(() => {
+      if (this.isTransactionToFailed) {
+        this.callRetryTransition()
+      } else {
+        this.callSecondTransition()
+      }
+    })
   }
 
   async confirmTransaction (isTransactionConfirmed: boolean) {
