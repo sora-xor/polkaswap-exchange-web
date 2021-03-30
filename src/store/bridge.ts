@@ -464,6 +464,11 @@ const actions = {
       }
       const symbol = getters.asset.symbol
       const ethAccount = rootGetters['web3/ethAddress']
+      const connectedExternalAccount = await web3Util.getAccount()
+      if (!connectedExternalAccount || ethAccount.toLowerCase() !== connectedExternalAccount.toLowerCase()) {
+        await dispatch('web3/disconnectExternalAccount', {}, { root: true })
+        throw new Error('Connect account in Metamask')
+      }
       const isValOrXor = [KnownBridgeAsset.XOR, KnownBridgeAsset.VAL].includes(symbol)
       let contract: any = null
       if (isValOrXor) {
@@ -563,6 +568,11 @@ const actions = {
       let contractInstance: any = null
       const contract = rootGetters[`web3/contract${KnownBridgeAsset.Other}`]
       const ethAccount = rootGetters['web3/ethAddress']
+      const connectedExternalAccount = await web3Util.getAccount()
+      if (!connectedExternalAccount || ethAccount.toLowerCase() !== connectedExternalAccount.toLowerCase()) {
+        await dispatch('web3/disconnectExternalAccount', {}, { root: true })
+        throw new Error('Connect account in Metamask')
+      }
       const web3 = await web3Util.getInstance()
       const contractAddress = rootGetters[`web3/address${KnownBridgeAsset.Other}`]
       const allowance = await dispatch('web3/getAllowanceByEthAddress', { address: asset.externalAddress }, { root: true })

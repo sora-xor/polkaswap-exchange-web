@@ -274,7 +274,8 @@ export default {
     metamask: '@:metamask',
     confirm: '@:confirmTransactionText',
     newTransaction: 'Create new transaction',
-    changeNetwork: '@:changeNetworkText'
+    changeNetwork: '@:changeNetworkText',
+    connectWallet: '@:connectWalletText'
   },
   // TODO: Add moment.js (it has translation and formatting)
   months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
