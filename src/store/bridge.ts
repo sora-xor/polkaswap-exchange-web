@@ -84,6 +84,9 @@ async function waitForExtrinsicFinalization (id?: string): Promise<BridgeHistory
     throw new Error('History id error')
   }
   const tx = api.bridge.getHistory(id)
+  if (tx && tx.status === TransactionStatus.Error) {
+    throw new Error(tx.errorMessage)
+  }
   if (!tx || tx.status !== TransactionStatus.Finalized) {
     await delay(250)
     return await waitForExtrinsicFinalization(id)

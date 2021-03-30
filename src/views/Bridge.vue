@@ -284,13 +284,13 @@ export default class Bridge extends Mixins(
     }
     const decimals = this.asset.decimals
     const fpBalance = this.getFPNumberFromCodec(this.asset[this.balanceSymbol], decimals)
-    const fpAmount = new FPNumber(this.amount, decimals)
+    const fpAmount = this.getFPNumber(this.amount, decimals)
     // TODO: Check if we have appropriate network fee currency (XOR/ETH) for both networks
     if (isXorAccountAsset(this.asset) && this.isSoraToEthereum) {
       if (+this.soraNetworkFee === 0) {
         return false
       }
-      const fpFee = new FPNumber(this.soraNetworkFee, decimals)
+      const fpFee = this.getFPNumber(this.soraNetworkFee, decimals)
       return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee)
     }
     return !FPNumber.eq(fpBalance, fpAmount)
@@ -299,8 +299,8 @@ export default class Bridge extends Mixins(
   get isInsufficientXorForFee (): boolean {
     if (!this.xorAsset) return true
 
-    const fpBalance = new FPNumber(this.xorAsset.balance, this.xorAsset.decimals)
-    const fpFee = new FPNumber(this.soraNetworkFee, this.xorAsset.decimals)
+    const fpBalance = this.getFPNumberFromCodec(this.xorAsset.balance, this.xorAsset.decimals)
+    const fpFee = this.getFPNumber(this.soraNetworkFee, this.xorAsset.decimals)
 
     return FPNumber.lt(fpBalance, fpFee)
   }
@@ -308,20 +308,20 @@ export default class Bridge extends Mixins(
   get isInsufficientEtherForFee (): boolean {
     if (!this.isEthereumNetworkConnected) return true
 
-    const fpBalance = new FPNumber(this.ethBalance)
-    const fpFee = new FPNumber(this.ethereumNetworkFee)
+    const fpBalance = this.getFPNumber(this.ethBalance)
+    const fpFee = this.getFPNumber(this.ethereumNetworkFee)
 
     return FPNumber.lt(fpBalance, fpFee)
   }
 
   get isInsufficientBalance (): boolean {
     if (this.isNetworkAConnected && this.isRegisteredAsset) {
-      const fpAmount = new FPNumber(this.amount, this.asset.decimals)
+      const fpAmount = this.getFPNumber(this.amount, this.asset.decimals)
 
-      let fpBalance = new FPNumber(this.asset[this.balanceSymbol], this.asset.decimals)
+      let fpBalance = this.getFPNumberFromCodec(this.asset[this.balanceSymbol], this.asset.decimals)
 
       if (isXorAccountAsset(this.asset) && this.isSoraToEthereum) {
-        const fpFee = new FPNumber(this.soraNetworkFee, this.asset.decimals)
+        const fpFee = this.getFPNumberFromCodec(this.soraNetworkFee, this.asset.decimals)
         fpBalance = fpBalance.sub(fpFee)
       }
 
@@ -524,7 +524,7 @@ export default class Bridge extends Mixins(
       const decimals = this.asset.decimals
       const fpBalance = FPNumber.fromCodecValue(this.asset[this.balanceSymbol], decimals)
       if (isXorAccountAsset(this.asset) && this.isSoraToEthereum) {
-        const fpFee = FPNumber.fromCodecValue(this.soraNetworkFee, decimals)
+        const fpFee = this.getFPNumber(this.soraNetworkFee, decimals)
         this.setAmount(fpBalance.sub(fpFee).toString())
         return
       }

@@ -63,11 +63,14 @@
             <s-button
               v-if="isTransactionStep1"
               type="primary"
-              :disabled="!(isSoraToEthereum || isValidEthNetwork) || currentState === STATES.INITIAL || isTransactionFromPending"
+              :disabled="!(isSoraToEthereum || isValidEthNetwork) || currentState === STATES.INITIAL || isInsufficientBalance || isInsufficientXorForFee || isInsufficientEthereumForFee || isTransactionFromPending"
               @click="handleSendTransactionFrom"
             >
               <template v-if="!(isSoraToEthereum || isValidEthNetwork)">{{ t('bridgeTransaction.changeNetwork') }}</template>
               <span v-else-if="isTransactionFromPending" v-html="t('bridgeTransaction.pending', { network: t(`bridgeTransaction.${isSoraToEthereum ? 'sora' : 'ethereum'}`) })" />
+              <template v-else-if="isInsufficientBalance">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : insufficientBalanceAssetSymbol }) }}</template>
+              <template v-else-if="isInsufficientXorForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : KnownSymbols.XOR }) }}</template>
+              <template v-else-if="isInsufficientEthereumForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : EthSymbol }) }}</template>
               <template v-else-if="isTransactionFromFailed">{{ t('bridgeTransaction.retry') }}</template>
               <template v-else>{{ t('bridgeTransaction.confirm', { direction: t(`bridgeTransaction.${isSoraToEthereum ? 'sora' : 'metamask'}`) }) }}</template>
             </s-button>
@@ -116,11 +119,13 @@
             <s-button
               v-if="isTransactionStep2 && !isTransferCompleted"
               type="primary"
-              :disabled="(isSoraToEthereum && !isValidEthNetwork) || isTransactionToPending"
+              :disabled="(isSoraToEthereum && !isValidEthNetwork) || isInsufficientXorForFee || isInsufficientEthereumForFee || isTransactionToPending"
               @click="handleSendTransactionTo"
             >
               <template v-if="isSoraToEthereum && !isValidEthNetwork">{{ t('bridgeTransaction.changeNetwork') }}</template>
               <span v-else-if="isTransactionToPending" v-html="t('bridgeTransaction.pending', { network: t(`bridgeTransaction.${!isSoraToEthereum ? 'sora' : 'ethereum'}`) })" />
+              <template v-else-if="isInsufficientXorForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : KnownSymbols.XOR }) }}</template>
+              <template v-else-if="isInsufficientEthereumForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : EthSymbol }) }}</template>
               <template v-else-if="isTransactionToFailed">{{ t('bridgeTransaction.retry') }}</template>
               <template v-else>{{ t('bridgeTransaction.confirm', { direction: t(`bridgeTransaction.${!isSoraToEthereum ? 'sora' : 'metamask'}`) }) }}</template>
             </s-button>
@@ -137,7 +142,6 @@
     >
       {{ t('bridgeTransaction.newTransaction') }}
     </s-button>
-    <!-- TODO: Check isInsufficientBalance -->
     <confirm-bridge-transaction-dialog :visible.sync="showConfirmTransactionDialog" @confirm="confirmTransaction" />
   </div>
 </template>
@@ -145,7 +149,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { AccountAsset, RegisteredAccountAsset, KnownSymbols, CodecString } from '@sora-substrate/util'
+import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
 import { interpret } from 'xstate'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -154,7 +158,7 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EthSymbol } from '@/consts'
-import { formatAddress, formatAssetSymbol, copyToClipboard, formatDateItem } from '@/utils'
+import { formatAddress, formatAssetSymbol, copyToClipboard, formatDateItem, isXorAccountAsset } from '@/utils'
 import { createFSM, EVENTS, SORA_ETHEREUM_STATES, ETHEREUM_SORA_STATES, STATES } from '@/utils/fsm'
 
 const namespace = 'bridge'
@@ -170,7 +174,9 @@ export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingM
 
   @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
   @Getter('asset', { namespace }) asset!: AccountAsset | RegisteredAccountAsset | null
+  @Getter('xorAsset', { namespace: 'assets' }) xorAsset!: any
   @Getter('amount', { namespace }) amount!: string | number
+  @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: string | number
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
   @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: string | number
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
@@ -184,6 +190,8 @@ export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingM
   // TODO: Remove the next line
   @Getter('historyItem', { namespace }) historyItem!: any
 
+  @Action('getNetworkFee', { namespace }) getNetworkFee
+  @Action('getEthNetworkFee', { namespace }) getEthNetworkFee
   @Action('setCurrentTransactionState', { namespace }) setCurrentTransactionState
   @Action('setInitialTransactionState', { namespace }) setInitialTransactionState
   @Action('setTransactionStep', { namespace }) setTransactionStep
@@ -213,6 +221,7 @@ export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingM
     to: 'step-to'
   }
 
+  insufficientBalanceAssetSymbol = ''
   activeTransactionStep: any = [this.transactionSteps.from, this.transactionSteps.to]
   currentTransactionStep = 1
   showConfirmTransactionDialog = false
@@ -359,6 +368,41 @@ export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingM
     return this.formatCodecNumber(this.soraNetworkFee)
   }
 
+  get isInsufficientBalance (): boolean {
+    if (this.asset) {
+      const fpAmount = this.getFPNumber(this.amount, this.asset.decimals)
+
+      let fpBalance = this.getFPNumberFromCodec(this.asset[this.isSoraToEthereum ? 'balance' : 'externalBalance'], this.asset.decimals)
+
+      if (isXorAccountAsset(this.asset) && this.isSoraToEthereum) {
+        const fpFee = this.getFPNumberFromCodec(this.soraNetworkFee, this.asset.decimals)
+        fpBalance = fpBalance.sub(fpFee)
+      }
+
+      if (FPNumber.lt(fpBalance, fpAmount)) {
+        this.insufficientBalanceAssetSymbol = this.asset ? formatAssetSymbol(this.asset.symbol, !this.isSoraToEthereum) : ''
+        return true
+      }
+    }
+    return false
+  }
+
+  get isInsufficientXorForFee (): boolean {
+    if (!this.xorAsset) return true
+
+    const fpBalance = this.getFPNumberFromCodec(this.xorAsset.balance, this.xorAsset.decimals)
+    const fpFee = this.getFPNumber(this.soraNetworkFee, this.xorAsset.decimals)
+
+    return FPNumber.lt(fpBalance, fpFee)
+  }
+
+  get isInsufficientEthereumForFee (): boolean {
+    const fpBalance = this.getFPNumber(this.ethBalance)
+    const fpFee = this.getFPNumber(this.ethereumNetworkFee)
+
+    return FPNumber.lt(fpBalance, fpFee)
+  }
+
   handleOpenEtherscan (): void {
     const hash = this.isSoraToEthereum ? this.transactionToHash : this.transactionFromHash
     const url = this.getEtherscanLink(hash, true)
@@ -367,7 +411,6 @@ export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingM
   }
 
   handleViewTransactionsHistory (): void {
-    // TODO: Go to appropriate transaction instead of history page
     router.push({ name: PageNames.BridgeTransactionsHistory })
   }
 
@@ -377,6 +420,8 @@ export default class BridgeTransaction extends Mixins(TranslationMixin, LoadingM
 
   async created (): Promise<void> {
     if (this.isTransactionConfirmed) {
+      await this.getNetworkFee()
+      await this.getEthNetworkFee()
       this.initializeTransactionStateMachine()
       this.isInitRequestCompleted = true
       this.currentTransactionStep = this.transactionStep
