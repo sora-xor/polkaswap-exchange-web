@@ -166,7 +166,11 @@ async function onConnectWallet (url = 'https://cloudflare-eth.com'): Promise<str
 async function getAccount (): Promise<string> {
   try {
     const web3Instance = await getInstance()
-    const accounts = await web3Instance.eth.getAccounts()
+    let accounts = await web3Instance.eth.getAccounts()
+
+    if (!Array.isArray(accounts) || !accounts.length) {
+      accounts = await web3Instance.eth.requestAccounts()
+    }
 
     return accounts.length ? accounts[0] : ''
   } catch (error) {
