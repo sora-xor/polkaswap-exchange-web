@@ -182,6 +182,7 @@ async function checkAccountIsConnected (address: string): Promise<boolean> {
 
   const currentAccount = await getAccount()
 
+  // TODO: check why sometimes currentAccount !== address with the same account
   return !!currentAccount && currentAccount.toLowerCase() === address.toLowerCase()
 }
 
