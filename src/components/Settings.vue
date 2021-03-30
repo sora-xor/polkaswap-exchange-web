@@ -27,9 +27,8 @@
           <s-float-input
             class="slippage-tolerance-custom_input"
             size="small"
-            v-model="customSlippageTolerance"
             :decimals="2"
-            :max="10"
+            v-model="customSlippageTolerance"
             @blur="handleSlippageToleranceOnBlur"
           />
         </div>
@@ -66,10 +65,12 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
+import { FPNumber } from '@sora-substrate/util'
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
+import TranslationMixin from '@/components/mixins/TranslationMixin'
+import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
 
@@ -79,7 +80,7 @@ import DialogBase from '@/components/DialogBase.vue'
     BrandedTooltip: lazyComponent(Components.BrandedTooltip)
   }
 })
-export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
+export default class Settings extends Mixins(TranslationMixin, DialogMixin, NumberFormatterMixin) {
   readonly defaultSlippageTolerance = 0.5
   readonly SlippageToleranceValues = [
     0.1,
@@ -103,7 +104,7 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
   }
 
   set customSlippageTolerance (value: string) {
-    const prepared = value.replace('%', '')
+    const prepared = this.prepareInputValue(value)
     this.setSlippageTolerance(prepared)
   }
 
@@ -139,8 +140,41 @@ export default class Settings extends Mixins(TranslationMixin, DialogMixin) {
     this.setSlippageTolerance(name)
   }
 
+  prepareInputValue (value): string {
+    let v = value.replace('%', '')
+
+    if (
+      FPNumber.gt(
+        this.getFPNumber(v),
+        this.getFPNumber(
+          this.slippageToleranceExtremeValues.max
+        )
+      )
+    ) {
+      v = this.slippageToleranceExtremeValues.max
+    }
+
+    if (v.length) {
+      if (v[0] === '0' && v[1] === '0') {
+        v = v.replace(/^0+(?=\d)/, '')
+      }
+    }
+
+    return v
+  }
+
   handleSlippageToleranceOnBlur (): void {
-    const value = this.isErrorValue ? +this.defaultSlippageTolerance : +this.slippageTolerance
+    let value = this.slippageTolerance
+    if (
+      FPNumber.lt(
+        this.getFPNumber(this.slippageTolerance),
+        this.getFPNumber(
+          this.slippageToleranceExtremeValues.min
+        )
+      )
+    ) {
+      value = this.slippageToleranceExtremeValues.min
+    }
     this.setSlippageTolerance(value)
   }
 
