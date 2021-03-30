@@ -68,11 +68,13 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     }
   }
 
-  // TODO: remove this check, when MetaMask issue will be resolved
-  // https://github.com/MetaMask/metamask-extension/issues/10368
-  async checkExternalAccountIsConnected (): Promise<boolean> {
-    const account = await web3Util.getAccount()
+  async checkConnectionToExternalAccount (func: Function): Promise<void> {
+    const connected = await web3Util.checkAccountIsConnected(this.ethAddress)
 
-    return !!account && account.toLowerCase() === this.ethAddress.toLowerCase()
+    if (!connected) {
+      await this.connectExternalWallet()
+    } else {
+      await func()
+    }
   }
 }

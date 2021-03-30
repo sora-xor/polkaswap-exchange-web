@@ -166,17 +166,24 @@ async function onConnectWallet (url = 'https://cloudflare-eth.com'): Promise<str
 async function getAccount (): Promise<string> {
   try {
     const web3Instance = await getInstance()
-    let accounts = await web3Instance.eth.getAccounts()
-
-    if (!Array.isArray(accounts) || !accounts.length) {
-      accounts = await web3Instance.eth.requestAccounts()
-    }
+    const accounts = await web3Instance.eth.getAccounts()
 
     return accounts.length ? accounts[0] : ''
   } catch (error) {
     console.error(error)
     return ''
   }
+}
+
+// TODO: remove this check, when MetaMask issue will be resolved
+// https://github.com/MetaMask/metamask-extension/issues/10368
+async function checkAccountIsConnected (address: string): Promise<boolean> {
+  if (!address) return false
+
+  const currentAccount = await getAccount()
+
+  // TODO: check why sometimes currentAccount !== address with the same account
+  return !!currentAccount && currentAccount.toLowerCase() === address.toLowerCase()
 }
 
 async function getInstance (): Promise<Web3> {
@@ -296,6 +303,7 @@ async function executeContractMethod ({
 export default {
   onConnect,
   getAccount,
+  checkAccountIsConnected,
   storeEthUserAddress,
   getEthUserAddress,
   storeEthNetwork,
