@@ -70,8 +70,8 @@ const getters = {
   addressOTHER (state) {
     return state.contractAddress.OTHER
   },
-  isEthAccountConnected (state) {
-    return !(state.ethAddress === '' || state.ethAddress === 'undefined')
+  isExternalAccountConnected (state) {
+    return !!state.ethAddress && state.ethAddress !== 'undefined'
   },
   ethAddress (state) {
     return state.ethAddress
@@ -167,7 +167,7 @@ const mutations = {
 }
 
 const actions = {
-  async connectEthWallet ({ commit, getters, dispatch }, { provider }) {
+  async connectExternalAccount ({ commit, getters, dispatch }, { provider }) {
     commit(types.CONNECT_ETH_WALLET_REQUEST)
     try {
       const address = await web3Util.onConnect({ provider })
@@ -182,7 +182,7 @@ const actions = {
     }
   },
 
-  async switchEthAccount ({ commit, dispatch }, { address }) {
+  async switchExternalAccount ({ commit, dispatch }, { address = '' } = {}) {
     commit(types.SWITCH_ETH_WALLET_REQUEST)
     try {
       web3Util.removeEthUserAddress()
@@ -219,7 +219,7 @@ const actions = {
     }
   },
 
-  async disconnectEthWallet ({ commit }) {
+  async disconnectExternalAccount ({ commit }) {
     commit(types.DISCONNECT_ETH_WALLET_REQUEST)
     try {
       web3Util.removeEthUserAddress()

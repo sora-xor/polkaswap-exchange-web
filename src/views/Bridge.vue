@@ -179,9 +179,10 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { Action, Getter, State } from 'vuex-class'
+import { Action, Getter } from 'vuex-class'
 import { RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
 
+import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -189,8 +190,8 @@ import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EthSymbol, ZeroStringValue } from '@/consts'
-import web3Util, { Provider } from '@/utils/web3-util'
-import { getWalletAddress, isWalletConnected, formatAddress, isXorAccountAsset, formatAssetSymbol, findAssetInCollection } from '@/utils'
+import web3Util from '@/utils/web3-util'
+import { isXorAccountAsset, formatAssetSymbol, findAssetInCollection } from '@/utils'
 
 const namespace = 'bridge'
 
@@ -200,7 +201,8 @@ const namespace = 'bridge'
     TokenLogo: lazyComponent(Components.TokenLogo),
     InfoLine: lazyComponent(Components.InfoLine),
     SelectRegisteredAsset: lazyComponent(Components.SelectRegisteredAsset),
-    ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog)
+    ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
+    ToggleTextButton: lazyComponent(Components.ToggleTextButton)
   }
 })
 export default class Bridge extends Mixins(
@@ -208,15 +210,10 @@ export default class Bridge extends Mixins(
   LoadingMixin,
   InputFormatterMixin,
   NetworkFormatterMixin,
-  NumberFormatterMixin
+  NumberFormatterMixin,
+  WalletConnectMixin
 ) {
-  @State(state => state.web3.ethAddress) ethAddress!: string
-
   @Action('getEthBalance', { namespace: 'web3' }) getEthBalance!: () => Promise<void>
-  @Action('connectEthWallet', { namespace: 'web3' }) connectEthWallet!: (options) => Promise<void>
-  @Action('switchEthAccount', { namespace: 'web3' }) switchEthAccount!: (address) => Promise<void>
-  @Action('setEthNetwork', { namespace: 'web3' }) setEthNetwork!: (network?: string) => Promise<void>
-  @Action('disconnectEthWallet', { namespace: 'web3' }) disconnectEthWallet!: () => Promise<void>
   @Action('setSoraToEthereum', { namespace }) setSoraToEthereum
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
@@ -239,14 +236,11 @@ export default class Bridge extends Mixins(
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
+  private unwatchEthereum!: any
+
   EthSymbol = EthSymbol
   KnownSymbols = KnownSymbols
   formatAssetSymbol = formatAssetSymbol
-  formatAddress = formatAddress
-  getWalletAddress = getWalletAddress
-  isWalletConnected = isWalletConnected
-
-  isMetamaskConnecting = false
   inputPlaceholder = ZeroStringValue
   isFieldAmountFocused = false
   insufficientBalanceAssetSymbol = ''
@@ -255,20 +249,12 @@ export default class Bridge extends Mixins(
 
   blockHeadersSubscriber
 
-  get isEthereumNetworkConnected (): boolean {
-    return !!this.ethAddress && this.ethAddress !== 'undefined'
-  }
-
   get isNetworkAConnected () {
-    return this.isSoraToEthereum ? !!this.isWalletConnected() : this.isEthereumNetworkConnected
+    return this.isSoraToEthereum ? this.isSoraAccountConnected : this.isExternalAccountConnected
   }
 
   get isNetworkBConnected () {
-    return this.isSoraToEthereum ? this.isEthereumNetworkConnected : !!this.isWalletConnected()
-  }
-
-  get areNetworksConnected () {
-    return this.isNetworkAConnected && this.isNetworkBConnected
+    return this.isSoraToEthereum ? this.isExternalAccountConnected : this.isSoraAccountConnected
   }
 
   get isZeroAmount (): boolean {
@@ -306,7 +292,7 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientEtherForFee (): boolean {
-    if (!this.isEthereumNetworkConnected) return true
+    if (!this.isExternalAccountConnected) return true
 
     const fpBalance = new FPNumber(this.ethBalance)
     const fpFee = new FPNumber(this.ethereumNetworkFee)
@@ -388,13 +374,13 @@ export default class Bridge extends Mixins(
   async mounted (): Promise<void> {
     this.setEthNetwork()
     this.getEthBalance()
-    web3Util.watchEthereum({
+    this.unwatchEthereum = await web3Util.watchEthereum({
       onAccountChange: (addressList: string[]) => {
         if (addressList.length) {
-          this.switchEthAccount({ address: addressList[0] })
+          this.switchExternalAccount({ address: addressList[0] })
           this.updateRegisteredAssetsExternalBalance()
         } else {
-          this.disconnectEthWallet()
+          this.disconnectExternalAccount()
         }
       },
       onNetworkChange: (networkId: string) => {
@@ -404,24 +390,23 @@ export default class Bridge extends Mixins(
         this.updateExternalBalances()
       },
       onDisconnect: (code: number, reason: string) => {
-        this.disconnectEthWallet()
+        this.disconnectExternalAccount()
       }
     })
     this.resetBridgeForm()
     this.subscribeToEthBlockHeaders()
   }
 
-  destroyed (): void {
+  beforeDestroy (): void {
+    if (typeof this.unwatchEthereum === 'function') {
+      this.unwatchEthereum()
+    }
     this.unsubscribeEthBlockHeaders()
   }
 
   updateExternalBalances (): void {
     this.getEthBalance()
     this.updateRegisteredAssetsExternalBalance()
-  }
-
-  connectInternalWallet (): void {
-    router.push({ name: PageNames.Wallet })
   }
 
   async subscribeToEthBlockHeaders (): Promise<void> {
@@ -452,38 +437,6 @@ export default class Bridge extends Mixins(
         }
       })
     })
-  }
-
-  async connectExternalWallet (): Promise<void> {
-    // For now it's only Metamask
-    if (this.isMetamaskConnecting) {
-      return
-    }
-    this.isMetamaskConnecting = true
-    try {
-      await this.connectEthWallet({ provider: Provider.Metamask })
-    } catch (error) {
-      const provider = this.t(error.message)
-      this.$alert(this.t('bridge.walletProviderConnectionError', { provider }))
-    } finally {
-      this.isMetamaskConnecting = false
-    }
-  }
-
-  // TODO: Check why we can't choose another account
-  async changeExternalWallet (): Promise<void> {
-    // For now it's only Metamask
-    if (this.isMetamaskConnecting) {
-      return
-    }
-    this.isMetamaskConnecting = true
-    try {
-      await this.switchEthAccount({ provider: Provider.Metamask })
-    } catch (error) {
-      console.error(error)
-    } finally {
-      this.isMetamaskConnecting = false
-    }
   }
 
   getBridgeItemTitle (isBTitle = false): string {
@@ -533,16 +486,8 @@ export default class Bridge extends Mixins(
     // TODO: Check balance (ETH)
   }
 
-  // TODO: remove this check, when MetaMask issue will be resolved
-  // https://github.com/MetaMask/metamask-extension/issues/10368
-  async checkAccountIsConnected (): Promise<boolean> {
-    const account = await web3Util.getAccount()
-
-    return !!account
-  }
-
   async handleConfirmTransaction (): Promise<void> {
-    const accountIsConnected = await this.checkAccountIsConnected()
+    const accountIsConnected = await this.checkExternalAccountIsConnected()
 
     if (!accountIsConnected) return
 
@@ -571,7 +516,7 @@ export default class Bridge extends Mixins(
   async confirmTransaction (isTransactionConfirmed: boolean): Promise<void> {
     if (!isTransactionConfirmed) return
 
-    const accountIsConnected = await this.checkAccountIsConnected()
+    const accountIsConnected = await this.checkExternalAccountIsConnected()
 
     if (!accountIsConnected) return
 

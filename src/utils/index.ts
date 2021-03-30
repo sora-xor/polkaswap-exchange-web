@@ -1,5 +1,4 @@
 import { Asset, AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, KnownAssets } from '@sora-substrate/util'
-
 import storage from './storage'
 
 export const copyToClipboard = async (text: string): Promise<void> => {

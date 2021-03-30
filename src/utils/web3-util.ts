@@ -2,6 +2,7 @@ import Web3 from 'web3'
 import { AbiItem } from 'web3-utils'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import detectEthereumProvider from '@metamask/detect-provider'
+import { decodeAddress } from '@polkadot/util-crypto'
 
 import axios from '@/api'
 import storage from './storage'
@@ -165,7 +166,11 @@ async function onConnectWallet (url = 'https://cloudflare-eth.com'): Promise<str
 async function getAccount (): Promise<string> {
   try {
     const web3Instance = await getInstance()
-    const accounts = await web3Instance.eth.getAccounts()
+    let accounts = await web3Instance.eth.getAccounts()
+
+    if (!Array.isArray(accounts) || !accounts.length) {
+      accounts = await web3Instance.eth.requestAccounts()
+    }
 
     return accounts.length ? accounts[0] : ''
   } catch (error) {
@@ -188,18 +193,21 @@ async function watchEthereum (cb: {
   onAccountChange: Function;
   onNetworkChange: Function;
   onDisconnect: Function;
-}) {
+}): Promise<Function> {
+  await getInstance()
+
   const ethereum = (window as any).ethereum
 
   if (ethereum) {
     ethereum.on('accountsChanged', cb.onAccountChange)
     ethereum.on('chainChanged', cb.onNetworkChange)
+    ethereum.on('disconnect', cb.onDisconnect)
   }
 
-  await getInstance()
-
-  if (provider) {
-    provider.on('disconnect', cb.onDisconnect)
+  return function disconnect () {
+    if (ethereum) {
+      ethereum.removeAllListeners()
+    }
   }
 }
 
@@ -253,6 +261,12 @@ function getInfoFromContract (contract: JsonContract): InfoContract {
   }
 }
 
+async function accountAddressToHex (address: string): Promise<string> {
+  const web3 = await getInstance()
+
+  return web3.utils.bytesToHex(Array.from(decodeAddress(address).values()))
+}
+
 async function executeContractMethod ({
   contractInfo,
   contractAddress,
@@ -293,5 +307,6 @@ export default {
   watchEthereum,
   readSmartContract,
   getInfoFromContract,
-  executeContractMethod
+  executeContractMethod,
+  accountAddressToHex
 }

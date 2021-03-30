@@ -11,12 +11,16 @@ export default {
   transactionSubmittedText: 'Transaction was submitted',
   unknownErrorText: 'ERROR Something went wrong...',
   connectWalletText: 'Connect account',
+  changeWalletText: 'Change wallet',
+  connectedText: 'Connected',
   connectWalletTextTooltip: 'Connect to SORA Network with polkadot{.js}',
+  walletProviderConnectionError: '{provider} is not found. Please install it!',
   bridgeText: 'Bridge',
   comingSoonText: 'Coming Soon',
   poweredBy: 'Powered by',
   confirmText: 'Confirm',
   confirmTransactionText: 'Confirm transaction in {direction}',
+  retryText: 'Retry',
   assetNames: {
     [KnownSymbols.XOR]: 'SORA',
     [KnownSymbols.VAL]: 'SORA Validator Token',
@@ -82,7 +86,8 @@ export default {
       [Operation.AddLiquidity]: 'Supplied {amount} {symbol} and {amount2} {symbol2}',
       [Operation.RemoveLiquidity]: 'Removed {amount} {symbol} and {amount2} {symbol2}',
       [Operation.CreatePair]: 'Supplied {amount} {symbol} and {amount2} {symbol2}',
-      [Operation.RegisterAsset]: 'Registered {symbol} asset'
+      [Operation.RegisterAsset]: 'Registered {symbol} asset',
+      [Operation.ClaimRewards]: 'Reward claimed successfully {rewards}'
     },
     [TransactionStatus.Error]: {
       [Operation.Transfer]: 'Failed to send {amount} {symbol} to {address}',
@@ -90,7 +95,8 @@ export default {
       [Operation.AddLiquidity]: 'Failed to supply {amount} {symbol} and {amount2} {symbol2}',
       [Operation.RemoveLiquidity]: 'Failed to remove {amount} {symbol} and {amount2} {symbol2}',
       [Operation.CreatePair]: 'Failed to supply {amount} {symbol} and {amount2} {symbol2}',
-      [Operation.RegisterAsset]: 'Failed to register {symbol} asset'
+      [Operation.RegisterAsset]: 'Failed to register {symbol} asset',
+      [Operation.ClaimRewards]: 'Failed to claim rewards {rewards}'
     }
   },
   pageNotFound: {
@@ -183,8 +189,8 @@ export default {
     info: 'Convert your tokens from SORA Network to Ethereum Network and vice versa.',
     balance: 'Balance',
     connectWallet: '@:connectWalletText',
-    connected: 'Connected',
-    changeWallet: 'Change wallet',
+    connected: '@:connectedText',
+    changeWallet: '@:changeWalletText',
     changeNetwork: '@:changeNetworkText',
     next: 'Next',
     connectWallets: 'Connect wallets to view respective transaction history.',
@@ -195,8 +201,7 @@ export default {
     viewHistory: 'View transactions history',
     transactionSubmitted: 'Transaction submitted',
     transactionMessage: '{assetA} for {assetB}',
-    notRegisteredAsset: 'Asset {assetSymbol} is not registered',
-    walletProviderConnectionError: '{provider} is not found. Please install it!'
+    notRegisteredAsset: 'Asset {assetSymbol} is not registered'
   },
   selectRegisteredAsset: {
     title: 'Select a token',
@@ -237,7 +242,7 @@ export default {
     },
     status: {
       pending: '{step} transactions pending...',
-      failed: '{step} transactions failed. Retry.',
+      failed: '{step} transactions failed. @:retryText.',
       confirm: 'Confirm 2nd of 2 transactions...',
       complete: 'Complete',
       convertionComplete: 'Conversion complete'
@@ -265,7 +270,7 @@ export default {
     ethereum: '@:ethereumText',
     sora: '@:soraText',
     pending: '<span class="network-title">{network}</span> transaction pending...',
-    retry: 'Retry',
+    retry: '@:retryText',
     metamask: '@:metamask',
     confirm: '@:confirmTransactionText',
     newTransaction: 'Create new transaction',
@@ -350,5 +355,39 @@ export default {
   resultDialog: {
     title: 'Transaction submitted',
     ok: 'OK'
+  },
+  rewards: {
+    title: 'Claim Rewards',
+    changeWallet: '@:changeWalletText',
+    connected: '@:connectedText',
+    networkFee: '@:soraText network fee',
+    andText: 'and',
+    claiming: {
+      pending: 'Claiming...',
+      success: 'Claimed successfully'
+    },
+    transactions: {
+      confimation: 'Confirm {order} of {total} transactions...',
+      success: 'Your will receive your rewards shortly',
+      failed: '{order} of {total} transactions failed. @:retryText'
+    },
+    hint: {
+      connectAccounts: 'To claim your PSWAP and VAL rewards you need to connect both your @:soraText and @:ethereumText accounts.',
+      connectAnotherAccount: 'Connect another @:ethereumText account to check for available PSWAP and VAL rewards.',
+      howToClaimRewards: 'To claim your PSWAP and VAL rewards you need to sign 2 transactions in your @:soraText and @:ethereumText accounts respectively. Rewards will be deposited to your @:soraText account.'
+    },
+    action: {
+      connectWallet: '@:connectWalletText',
+      connectExternalWallet: 'Connect @:ethereumText account',
+      signAndClaim: 'Sign and claim',
+      pendingInternal: '@:soraText transaction pending...',
+      pendingExternal: '@:ethereumText transaction pending...',
+      retry: '@:retryText',
+      checkRewards: 'Check',
+      insufficientBalance: 'Insufficient XOR balance'
+    },
+    notification: {
+      empty: 'No available claims for this account'
+    }
   }
 }

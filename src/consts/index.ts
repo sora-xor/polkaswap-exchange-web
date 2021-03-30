@@ -49,7 +49,12 @@ export enum Components {
   SelectRegisteredAsset = 'SelectRegisteredAsset',
   ConfirmBridgeTransactionDialog = 'ConfirmBridgeTransactionDialog',
   BridgeTransaction = 'BridgeTransaction',
-  BridgeTransactionsHistory = 'BridgeTransactionsHistory'
+  BridgeTransactionsHistory = 'BridgeTransactionsHistory',
+  ToggleTextButton = 'ToggleTextButton',
+  GradientBox = 'Rewards/GradientBox',
+  TokensRow = 'Rewards/TokensRow',
+  RewardsAmountHeader = 'Rewards/AmountHeader',
+  RewardsAmountTable = 'Rewards/AmountTable'
 }
 
 interface SidebarMenuItem {
@@ -147,7 +152,8 @@ export const AboutTopics = [
 export enum LogoSize {
   MINI = 'mini',
   SMALL = 'small',
-  MEDIUM = 'medium'
+  MEDIUM = 'medium',
+  LARGE = 'large'
 }
 
 export enum InfoTooltipPosition {

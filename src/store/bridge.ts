@@ -5,7 +5,6 @@ import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { FPNumber, BridgeApprovedRequest, BridgeCurrencyType, BridgeTxStatus, BridgeRequest, Operation, BridgeHistory, TransactionStatus, KnownAssets } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { decodeAddress } from '@polkadot/util-crypto'
 
 import { STATES } from '@/utils/fsm'
 import web3Util, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
@@ -579,7 +578,7 @@ const actions = {
         await web3.eth.getTransactionReceipt(tx.transactionHash)
       }
       const soraAccountAddress = rootGetters.account.address
-      const accountId = web3.utils.bytesToHex(Array.from(decodeAddress(soraAccountAddress).values()))
+      const accountId = await web3Util.accountAddressToHex(soraAccountAddress)
       contractInstance = new web3.eth.Contract(contract[OtherContractType.Bridge].abi)
       contractInstance.options.address = contractAddress.MASTER
       const methodArgs = [
