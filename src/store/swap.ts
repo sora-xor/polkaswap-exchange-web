@@ -15,7 +15,6 @@ const types = flow(
     'RESET_TOKEN_TO_ADDRESS',
     'SET_FROM_VALUE',
     'SET_TO_VALUE',
-    'SET_TOKEN_FROM_PRICE',
     'SET_MIN_MAX_RECEIVED',
     'SET_EXCHANGE_B',
     'SET_LIQUIDITY_PROVIDER_FEE',
@@ -31,7 +30,6 @@ interface SwapState {
   tokenToAddress: string | null;
   fromValue: string;
   toValue: string;
-  isTokenFromPrice: boolean;
   minMaxReceived: CodecString;
   isExchangeB: boolean;
   liquidityProviderFee: CodecString;
@@ -44,7 +42,6 @@ function initialState (): SwapState {
     tokenToAddress: '',
     fromValue: '',
     toValue: '',
-    isTokenFromPrice: true,
     minMaxReceived: '',
     isExchangeB: false,
     liquidityProviderFee: '',
@@ -71,9 +68,6 @@ const getters = {
   },
   toValue (state: SwapState) {
     return state.toValue
-  },
-  isTokenFromPrice (state: SwapState) {
-    return state.isTokenFromPrice
   },
   minMaxReceived (state: SwapState) {
     return state.minMaxReceived
@@ -107,9 +101,6 @@ const mutations = {
   },
   [types.SET_TO_VALUE] (state: SwapState, toValue: string) {
     state.toValue = toValue
-  },
-  [types.SET_TOKEN_FROM_PRICE] (state: SwapState, isTokenFromPrice: boolean) {
-    state.isTokenFromPrice = isTokenFromPrice
   },
   [types.SET_MIN_MAX_RECEIVED] (state: SwapState, minMaxReceived: CodecString) {
     state.minMaxReceived = minMaxReceived
@@ -171,9 +162,6 @@ const actions = {
   },
   setToValue ({ commit }, toValue: string | number) {
     commit(types.SET_TO_VALUE, toValue)
-  },
-  setTokenFromPrice ({ commit }, isTokenFromPrice: boolean) {
-    commit(types.SET_TOKEN_FROM_PRICE, isTokenFromPrice)
   },
   setMinMaxReceived ({ commit }, minMaxReceived) {
     commit(types.SET_MIN_MAX_RECEIVED, minMaxReceived)

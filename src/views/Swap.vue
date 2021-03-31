@@ -82,8 +82,6 @@
         </s-button>
       </div>
     </div>
-    <slippage-tolerance class="slippage-tolerance-settings" />
-    <swap-info v-if="areTokensSelected && !areZeroAmounts" class="info-line-container" />
     <s-button v-if="!connected" type="primary" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
@@ -104,6 +102,8 @@
         {{ t('exchange.Swap') }}
       </template>
     </s-button>
+    <slippage-tolerance class="slippage-tolerance-settings" />
+    <swap-info v-if="areTokensSelected && !areZeroAmounts" class="info-line-container" />
     <select-token :visible.sync="showSelectTokenDialog" :connected="connected" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
     <confirm-swap :visible.sync="showConfirmSwapDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmSwap" @checkConfirm="updateAccountAssets" />
     <settings :visible.sync="showSettings" />
@@ -151,7 +151,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('setTokenToAddress', { namespace }) setTokenToAddress!: (address?: string) => Promise<void>
   @Action('setFromValue', { namespace }) setFromValue!: (value: string) => Promise<void>
   @Action('setToValue', { namespace }) setToValue!: (value: string) => Promise<void>
-  @Action('setTokenFromPrice', { namespace }) setTokenFromPrice!: (isTokenFromPrice: boolean) => Promise<void>
   @Action('setMinMaxReceived', { namespace }) setMinMaxReceived!: (value: CodecString) => Promise<void>
   @Action('setExchangeB', { namespace }) setExchangeB!: (isExchangeB: boolean) => Promise<void>
   @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>
@@ -441,7 +440,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     if (isSwapConfirmed) {
       this.resetFieldFrom()
       this.resetFieldTo()
-      this.setTokenFromPrice(true)
       this.resetPrices()
       this.setExchangeB(false)
     }
