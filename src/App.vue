@@ -409,8 +409,8 @@ $logo-width-big: 150px;
 $logo-horizontal-margin: $inner-spacing-mini / 2;
 $header-height: 64px;
 $sidebar-witdh: 160px;
-$sora-logo-height: 40px;
-$sora-logo-width: 171px;
+$sora-logo-height: 36px;
+$sora-logo-width: 173.7px;
 
 .app {
   &-main {
@@ -578,7 +578,8 @@ $sora-logo-width: 171px;
     color: var(--s-color-base-content-tertiary);
     font-size: 15px;
     line-height: 16px;
-    margin-right: $inner-spacing-mini;
+    margin-right: $basic-spacing;
+    font-feature-settings: var(--s-font-feature-settings-singleline);
   }
 
   &__image {

@@ -2,6 +2,7 @@ import Web3 from 'web3'
 import { AbiItem } from 'web3-utils'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import detectEthereumProvider from '@metamask/detect-provider'
+import { decodeAddress } from '@polkadot/util-crypto'
 
 import axios from '@/api'
 import storage from './storage'
@@ -174,6 +175,17 @@ async function getAccount (): Promise<string> {
   }
 }
 
+// TODO: remove this check, when MetaMask issue will be resolved
+// https://github.com/MetaMask/metamask-extension/issues/10368
+async function checkAccountIsConnected (address: string): Promise<boolean> {
+  if (!address) return false
+
+  const currentAccount = await getAccount()
+
+  // TODO: check why sometimes currentAccount !== address with the same account
+  return !!currentAccount && currentAccount.toLowerCase() === address.toLowerCase()
+}
+
 async function getInstance (): Promise<Web3> {
   if (!provider) {
     provider = await detectEthereumProvider() as any
@@ -188,18 +200,21 @@ async function watchEthereum (cb: {
   onAccountChange: Function;
   onNetworkChange: Function;
   onDisconnect: Function;
-}) {
+}): Promise<Function> {
+  await getInstance()
+
   const ethereum = (window as any).ethereum
 
   if (ethereum) {
     ethereum.on('accountsChanged', cb.onAccountChange)
     ethereum.on('chainChanged', cb.onNetworkChange)
+    ethereum.on('disconnect', cb.onDisconnect)
   }
 
-  await getInstance()
-
-  if (provider) {
-    provider.on('disconnect', cb.onDisconnect)
+  return function disconnect () {
+    if (ethereum) {
+      ethereum.removeAllListeners()
+    }
   }
 }
 
@@ -253,6 +268,12 @@ function getInfoFromContract (contract: JsonContract): InfoContract {
   }
 }
 
+async function accountAddressToHex (address: string): Promise<string> {
+  const web3 = await getInstance()
+
+  return web3.utils.bytesToHex(Array.from(decodeAddress(address).values()))
+}
+
 async function executeContractMethod ({
   contractInfo,
   contractAddress,
@@ -282,6 +303,7 @@ async function executeContractMethod ({
 export default {
   onConnect,
   getAccount,
+  checkAccountIsConnected,
   storeEthUserAddress,
   getEthUserAddress,
   storeEthNetwork,
@@ -293,5 +315,6 @@ export default {
   watchEthereum,
   readSmartContract,
   getInfoFromContract,
-  executeContractMethod
+  executeContractMethod,
+  accountAddressToHex
 }

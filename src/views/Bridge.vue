@@ -49,7 +49,6 @@
               />
             </s-form-item>
             <div v-if="isNetworkAConnected && isAssetSelected" class="asset">
-              <!-- TODO: Do we have a Max button for Ethereum network? If so, check all Ethereum Max functionality -->
               <s-button v-if="isMaxAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue">
                 {{ t('buttons.max') }}
               </s-button>
@@ -120,7 +119,7 @@
         <s-button
           class="el-button--next"
           type="primary"
-          :disabled="!areNetworksConnected || !isValidEthNetwork || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEtherForFee || isInsufficientBalance || !isRegisteredAsset"
+          :disabled="!areNetworksConnected || !isValidEthNetwork || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEthereumForFee || isInsufficientBalance || !isRegisteredAsset"
           @click="handleConfirmTransaction"
         >
           <template v-if="!areNetworksConnected">
@@ -141,7 +140,7 @@
           <template v-else-if="isInsufficientXorForFee">
             {{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : KnownSymbols.XOR }) }}
           </template>
-          <template v-else-if="isInsufficientEtherForFee">
+          <template v-else-if="isInsufficientEthereumForFee">
             {{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : EthSymbol }) }}
           </template>
           <template v-else>
@@ -179,9 +178,10 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { Action, Getter, State } from 'vuex-class'
+import { Action, Getter } from 'vuex-class'
 import { RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
 
+import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -189,8 +189,8 @@ import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EthSymbol, ZeroStringValue } from '@/consts'
-import web3Util, { Provider } from '@/utils/web3-util'
-import { getWalletAddress, isWalletConnected, formatAddress, isXorAccountAsset, formatAssetSymbol, findAssetInCollection } from '@/utils'
+import web3Util from '@/utils/web3-util'
+import { isXorAccountAsset, hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEthForFee, getMaxValue, formatAssetSymbol, findAssetInCollection } from '@/utils'
 
 const namespace = 'bridge'
 
@@ -200,7 +200,8 @@ const namespace = 'bridge'
     TokenLogo: lazyComponent(Components.TokenLogo),
     InfoLine: lazyComponent(Components.InfoLine),
     SelectRegisteredAsset: lazyComponent(Components.SelectRegisteredAsset),
-    ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog)
+    ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
+    ToggleTextButton: lazyComponent(Components.ToggleTextButton)
   }
 })
 export default class Bridge extends Mixins(
@@ -208,15 +209,10 @@ export default class Bridge extends Mixins(
   LoadingMixin,
   InputFormatterMixin,
   NetworkFormatterMixin,
-  NumberFormatterMixin
+  NumberFormatterMixin,
+  WalletConnectMixin
 ) {
-  @State(state => state.web3.ethAddress) ethAddress!: string
-
   @Action('getEthBalance', { namespace: 'web3' }) getEthBalance!: () => Promise<void>
-  @Action('connectEthWallet', { namespace: 'web3' }) connectEthWallet!: (options) => Promise<void>
-  @Action('switchEthAccount', { namespace: 'web3' }) switchEthAccount!: (address) => Promise<void>
-  @Action('setEthNetwork', { namespace: 'web3' }) setEthNetwork!: (network?: string) => Promise<void>
-  @Action('disconnectEthWallet', { namespace: 'web3' }) disconnectEthWallet!: () => Promise<void>
   @Action('setSoraToEthereum', { namespace }) setSoraToEthereum
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
@@ -233,20 +229,17 @@ export default class Bridge extends Mixins(
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter('asset', { namespace }) asset!: any
   @Getter('xorAsset', { namespace: 'assets' }) xorAsset!: any
-  @Getter('amount', { namespace }) amount!: string | number
+  @Getter('amount', { namespace }) amount!: string
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
-  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: string | number
+  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: CodecString
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
+
+  private unwatchEthereum!: any
 
   EthSymbol = EthSymbol
   KnownSymbols = KnownSymbols
   formatAssetSymbol = formatAssetSymbol
-  formatAddress = formatAddress
-  getWalletAddress = getWalletAddress
-  isWalletConnected = isWalletConnected
-
-  isMetamaskConnecting = false
   inputPlaceholder = ZeroStringValue
   isFieldAmountFocused = false
   insufficientBalanceAssetSymbol = ''
@@ -255,20 +248,12 @@ export default class Bridge extends Mixins(
 
   blockHeadersSubscriber
 
-  get isEthereumNetworkConnected (): boolean {
-    return !!this.ethAddress && this.ethAddress !== 'undefined'
-  }
-
   get isNetworkAConnected () {
-    return this.isSoraToEthereum ? !!this.isWalletConnected() : this.isEthereumNetworkConnected
+    return this.isSoraToEthereum ? this.isSoraAccountConnected : this.isExternalAccountConnected
   }
 
   get isNetworkBConnected () {
-    return this.isSoraToEthereum ? this.isEthereumNetworkConnected : !!this.isWalletConnected()
-  }
-
-  get areNetworksConnected () {
-    return this.isNetworkAConnected && this.isNetworkBConnected
+    return this.isSoraToEthereum ? this.isExternalAccountConnected : this.isSoraAccountConnected
   }
 
   get isZeroAmount (): boolean {
@@ -284,51 +269,27 @@ export default class Bridge extends Mixins(
     }
     const decimals = this.asset.decimals
     const fpBalance = this.getFPNumberFromCodec(this.asset[this.balanceSymbol], decimals)
-    const fpAmount = new FPNumber(this.amount, decimals)
+    const fpAmount = this.getFPNumber(this.amount, decimals)
     // TODO: Check if we have appropriate network fee currency (XOR/ETH) for both networks
     if (isXorAccountAsset(this.asset) && this.isSoraToEthereum) {
-      if (+this.soraNetworkFee === 0) {
-        return false
-      }
-      const fpFee = new FPNumber(this.soraNetworkFee, decimals)
+      const fpFee = this.getFPNumberFromCodec(this.soraNetworkFee, decimals)
       return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee)
     }
     return !FPNumber.eq(fpBalance, fpAmount)
   }
 
   get isInsufficientXorForFee (): boolean {
-    if (!this.xorAsset) return true
-
-    const fpBalance = new FPNumber(this.xorAsset.balance, this.xorAsset.decimals)
-    const fpFee = new FPNumber(this.soraNetworkFee, this.xorAsset.decimals)
-
-    return FPNumber.lt(fpBalance, fpFee)
+    return hasInsufficientXorForFee(this.xorAsset, this.soraNetworkFee)
   }
 
-  get isInsufficientEtherForFee (): boolean {
-    if (!this.isEthereumNetworkConnected) return true
-
-    const fpBalance = new FPNumber(this.ethBalance)
-    const fpFee = new FPNumber(this.ethereumNetworkFee)
-
-    return FPNumber.lt(fpBalance, fpFee)
+  get isInsufficientEthereumForFee (): boolean {
+    return hasInsufficientEthForFee(this.ethBalance.toString(), this.ethereumNetworkFee)
   }
 
   get isInsufficientBalance (): boolean {
-    if (this.isNetworkAConnected && this.isRegisteredAsset) {
-      const fpAmount = new FPNumber(this.amount, this.asset.decimals)
-
-      let fpBalance = new FPNumber(this.asset[this.balanceSymbol], this.asset.decimals)
-
-      if (isXorAccountAsset(this.asset) && this.isSoraToEthereum) {
-        const fpFee = new FPNumber(this.soraNetworkFee, this.asset.decimals)
-        fpBalance = fpBalance.sub(fpFee)
-      }
-
-      if (FPNumber.lt(fpBalance, fpAmount)) {
-        this.insufficientBalanceAssetSymbol = this.asset ? formatAssetSymbol(this.asset.symbol, !this.isSoraToEthereum) : ''
-        return true
-      }
+    if (this.isNetworkAConnected && this.isRegisteredAsset && hasInsufficientBalance(this.asset, this.amount, this.soraNetworkFee, !this.isSoraToEthereum)) {
+      this.insufficientBalanceAssetSymbol = formatAssetSymbol(this.asset.symbol, !this.isSoraToEthereum)
+      return true
     }
     return false
   }
@@ -372,7 +333,7 @@ export default class Bridge extends Mixins(
     return this.formatCodecNumber(balance, decimals)
   }
 
-  formatAssetValue (assetSymbol: string, amount: number | string): string {
+  formatAssetValue (assetSymbol: string, amount: string): string {
     return `${amount} ${assetSymbol}`
   }
 
@@ -388,13 +349,13 @@ export default class Bridge extends Mixins(
   async mounted (): Promise<void> {
     this.setEthNetwork()
     this.getEthBalance()
-    web3Util.watchEthereum({
+    this.unwatchEthereum = await web3Util.watchEthereum({
       onAccountChange: (addressList: string[]) => {
         if (addressList.length) {
-          this.switchEthAccount({ address: addressList[0] })
+          this.switchExternalAccount({ address: addressList[0] })
           this.updateRegisteredAssetsExternalBalance()
         } else {
-          this.disconnectEthWallet()
+          this.disconnectExternalAccount()
         }
       },
       onNetworkChange: (networkId: string) => {
@@ -404,24 +365,23 @@ export default class Bridge extends Mixins(
         this.updateExternalBalances()
       },
       onDisconnect: (code: number, reason: string) => {
-        this.disconnectEthWallet()
+        this.disconnectExternalAccount()
       }
     })
     this.resetBridgeForm()
     this.subscribeToEthBlockHeaders()
   }
 
-  destroyed (): void {
+  beforeDestroy (): void {
+    if (typeof this.unwatchEthereum === 'function') {
+      this.unwatchEthereum()
+    }
     this.unsubscribeEthBlockHeaders()
   }
 
   updateExternalBalances (): void {
     this.getEthBalance()
     this.updateRegisteredAssetsExternalBalance()
-  }
-
-  connectInternalWallet (): void {
-    router.push({ name: PageNames.Wallet })
   }
 
   async subscribeToEthBlockHeaders (): Promise<void> {
@@ -452,38 +412,6 @@ export default class Bridge extends Mixins(
         }
       })
     })
-  }
-
-  async connectExternalWallet (): Promise<void> {
-    // For now it's only Metamask
-    if (this.isMetamaskConnecting) {
-      return
-    }
-    this.isMetamaskConnecting = true
-    try {
-      await this.connectEthWallet({ provider: Provider.Metamask })
-    } catch (error) {
-      const provider = this.t(error.message)
-      this.$alert(this.t('bridge.walletProviderConnectionError', { provider }))
-    } finally {
-      this.isMetamaskConnecting = false
-    }
-  }
-
-  // TODO: Check why we can't choose another account
-  async changeExternalWallet (): Promise<void> {
-    // For now it's only Metamask
-    if (this.isMetamaskConnecting) {
-      return
-    }
-    this.isMetamaskConnecting = true
-    try {
-      await this.switchEthAccount({ provider: Provider.Metamask })
-    } catch (error) {
-      console.error(error)
-    } finally {
-      this.isMetamaskConnecting = false
-    }
   }
 
   getBridgeItemTitle (isBTitle = false): string {
@@ -519,34 +447,18 @@ export default class Bridge extends Mixins(
     }
   }
 
-  handleMaxValue (): void {
+  async handleMaxValue (): Promise<void> {
     if (this.asset && this.isRegisteredAsset) {
-      const decimals = this.asset.decimals
-      const fpBalance = FPNumber.fromCodecValue(this.asset[this.balanceSymbol], decimals)
-      if (isXorAccountAsset(this.asset) && this.isSoraToEthereum) {
-        const fpFee = FPNumber.fromCodecValue(this.soraNetworkFee, decimals)
-        this.setAmount(fpBalance.sub(fpFee).toString())
-        return
-      }
-      this.setAmount(fpBalance.toString())
+      await this.getNetworkFee()
+      const max = getMaxValue(this.asset, this.soraNetworkFee, !this.isSoraToEthereum)
+      this.setAmount(max)
     }
-    // TODO: Check balance (ETH)
-  }
-
-  // TODO: remove this check, when MetaMask issue will be resolved
-  // https://github.com/MetaMask/metamask-extension/issues/10368
-  async checkAccountIsConnected (): Promise<boolean> {
-    const account = await web3Util.getAccount()
-
-    return !!account
   }
 
   async handleConfirmTransaction (): Promise<void> {
-    const accountIsConnected = await this.checkAccountIsConnected()
-
-    if (!accountIsConnected) return
-
-    this.showConfirmTransactionDialog = true
+    await this.checkConnectionToExternalAccount(() => {
+      this.showConfirmTransactionDialog = true
+    })
   }
 
   handleViewTransactionsHistory (): void {
@@ -571,11 +483,9 @@ export default class Bridge extends Mixins(
   async confirmTransaction (isTransactionConfirmed: boolean): Promise<void> {
     if (!isTransactionConfirmed) return
 
-    const accountIsConnected = await this.checkAccountIsConnected()
-
-    if (!accountIsConnected) return
-
-    router.push({ name: PageNames.BridgeTransaction })
+    await this.checkConnectionToExternalAccount(() => {
+      router.push({ name: PageNames.BridgeTransaction })
+    })
   }
 }
 </script>
