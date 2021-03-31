@@ -197,7 +197,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
     if (this.query) {
       const query = this.query.toLowerCase().trim()
       return assets.filter(asset =>
-        (KnownAssets.get(asset.address) && this.t(`assetNames.${asset.symbol}`).toLowerCase().includes(query)) ||
+        `${asset.name}`.toLowerCase().includes(query) ||
         `${asset.symbol}`.toLowerCase().includes(query) ||
         `${asset[this.addressSymbol]}`.toLowerCase() === query
       )
@@ -234,7 +234,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
     if (isMirrorAsset) {
       assetName = this.t('selectRegisteredAsset.search.mirrorPrefix') + ' '
     }
-    assetName += (KnownAssets.get(asset.address) ? this.t(`assetNames.${asset.symbol}`) : asset.symbol) + ' ('
+    assetName += (asset.name || asset.symbol) + ' ('
     if (isMirrorAsset) {
       assetName += this.isSoraToEthereum ? 's' : 'e'
     }
