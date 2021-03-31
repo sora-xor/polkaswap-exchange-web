@@ -1,39 +1,21 @@
 <template>
-  <div class="settings">
-    <div :class="slippageToleranceClasses">
-      <div class="slippage-tolerance-default">
-        <div class="header">
-          {{ t('dexSettings.slippageTolerance') }}
-          <branded-tooltip
-            popper-class="info-tooltip"
-            :content="t('dexSettings.slippageToleranceHint')"
-            placement="right-start"
-          >
-            <s-icon class="header-hint" name="info-16" size="12px" />
-          </branded-tooltip>
-        </div>
-        <s-tabs type="rounded" :value="String(slippageTolerance)" @click="selectSlippageTolerance">
-          <s-tab
-            v-for="tab in SlippageToleranceValues"
-            :key="tab"
-            :label="`${tab}%`"
-            :name="`${tab}`"
-          />
-        </s-tabs>
-      </div>
-      <div class="slippage-tolerance-custom">
-        <div class="header">{{ t('dexSettings.custom') }}</div>
-        <s-float-input
-          class="slippage-tolerance-custom_input"
-          size="small"
-          :decimals="2"
-          :max="slippageToleranceExtremeValues.max"
-          v-model="customSlippageTolerance"
-          @blur="handleSlippageToleranceOnBlur"
-        />
-      </div>
-      <div v-if="slippageToleranceValidation" class="slippage-tolerance_validation">{{ t(`dexSettings.slippageToleranceValidation.${slippageToleranceValidation}`) }}</div>
+  <div class="slippage-tolerance" :class="slippageToleranceClasses">
+    <div class="slippage-tolerance-default">
+      <settings-header :title="t('dexSettings.slippageTolerance')" :tooltip="t('dexSettings.slippageToleranceHint')" />
+      <settings-tabs :value="String(slippageTolerance)" :tabs="SlippageToleranceValues" @click="selectSlippageTolerance"/>
     </div>
+    <div class="slippage-tolerance-custom">
+      <settings-header :title="t('dexSettings.custom')" />
+      <s-float-input
+        class="slippage-tolerance-custom_input"
+        size="small"
+        :decimals="2"
+        :max="slippageToleranceExtremeValues.max"
+        v-model="customSlippageTolerance"
+        @blur="handleSlippageToleranceOnBlur"
+      />
+    </div>
+    <div v-if="slippageToleranceValidation" class="slippage-tolerance_validation">{{ t(`dexSettings.slippageToleranceValidation.${slippageToleranceValidation}`) }}</div>
     <!-- TODO [Release 2]: We'll play with areas below at the next iteration of development -->
     <!-- <div class="transaction-deadline">
       <div class="header">
@@ -66,14 +48,16 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { FPNumber } from '@sora-substrate/util'
 
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
+
 @Component({
   components: {
-    BrandedTooltip: lazyComponent(Components.BrandedTooltip)
+    SettingsHeader: lazyComponent(Components.SettingsHeader),
+    SettingsTabs: lazyComponent(Components.SettingsTabs)
   }
 })
 export default class Settings extends Mixins(TranslationMixin, NumberFormatterMixin) {
@@ -82,7 +66,7 @@ export default class Settings extends Mixins(TranslationMixin, NumberFormatterMi
     0.1,
     0.5,
     1
-  ]
+  ].map(name => ({ name: String(name), label: `${name}%` }))
 
   readonly slippageToleranceExtremeValues = {
     min: 0.01,
@@ -170,43 +154,31 @@ export default class Settings extends Mixins(TranslationMixin, NumberFormatterMi
 </script>
 
 <style lang="scss">
-.slippage-tolerance-custom_input.s-input .el-input > input,
-.settings .slippage-tolerance .s-tabs .el-tabs__item {
-  font-size: var(--s-font-size-mini);
-  font-feature-settings: $s-font-feature-settings-common;
-  font-weight: 600 !important;
-}
-.slippage-tolerance-custom_input.s-input {
-  min-height: var(--s-size-small);
-  .el-input > input {
-    height: var(--s-size-small);
-    text-align: center;
-    padding-top: 0; // TODO: if there is no placeholder, set padding-top to zero
-  }
-  &.s-focused > .el-input > input {
-    box-shadow: var(--s-shadow-tab)
-  }
-}
-.settings {
-  &.el-dialog__wrapper .el-dialog .el-dialog__body {
-    padding-bottom: $inner-spacing-big;
-  }
-  .el-tabs__header {
-    margin-bottom: 0;
-  }
-  .el-tabs__item {
-    &.is-focus,
-    &.is-active {
-      box-shadow: var(--s-shadow-tab) !important;
+.slippage-tolerance {
+  &-custom_input.s-input {
+    min-height: var(--s-size-small);
+
+    .el-input > input {
+      font-size: var(--s-font-size-mini);
+      font-feature-settings: $s-font-feature-settings-common;
+      font-weight: 600 !important;
+
+      height: var(--s-size-small);
+      text-align: center;
+      padding-top: 0; // TODO: if there is no placeholder, set padding-top to zero
+    }
+
+    &.s-focused > .el-input > input {
+      box-shadow: var(--s-shadow-tab)
     }
   }
-  .slippage-tolerance--error .el-input__inner {
-    &,
-    &:focus {
+
+  &--error &-custom_input.s-input .el-input > input  {
+    &, &:focus {
       border-color: var(--s-color-status-error);
     }
   }
-  // TODO: remove after UI Lib fix
+
   .s-placeholder {
     display: none;
   }
@@ -214,20 +186,28 @@ export default class Settings extends Mixins(TranslationMixin, NumberFormatterMi
 </style>
 
 <style lang="scss" scoped>
-.settings {
-  .header {
-    padding-bottom: $inner-spacing-mini;
-    padding-left: $inner-spacing-mini / 2;
-    color: var(--s-color-base-content-tertiary);
-    font-size: $s-font-size-settings;
-    line-height: $s-line-height-base;
-    letter-spacing: $s-letter-spacing-type;
-    font-weight: 700;
-    &-hint {
-      margin-left: $inner-spacing-mini / 2;
-      cursor: pointer;
-    }
+.slippage-tolerance {
+  flex-wrap: wrap;
+  &-default {
+    flex: 2;
+    margin-right: $inner-spacing-medium;
   }
+  &-custom {
+    flex: 1;
+  }
+  &_validation {
+    margin-top: $inner-spacing-mini;
+    width: 100%;
+    font-size: var(--s-font-size-mini);
+    line-height: $s-line-height-big;
+  }
+  &--warning {
+    color: var(--s-color-status-warning)
+  }
+  &--error {
+    color: var(--s-color-status-error)
+  }
+
   .value {
     display: flex;
     &-container {
@@ -249,28 +229,6 @@ export default class Settings extends Mixins(TranslationMixin, NumberFormatterMi
     &-slider {
       flex: 2;
     }
-  }
-}
-.slippage-tolerance {
-  flex-wrap: wrap;
-  &-default {
-    flex: 2;
-    margin-right: $inner-spacing-medium;
-  }
-  &-custom {
-    flex: 1;
-  }
-  &_validation {
-    margin-top: $inner-spacing-mini;
-    width: 100%;
-    font-size: var(--s-font-size-mini);
-    line-height: $s-line-height-big;
-  }
-  &--warning {
-    color: var(--s-color-status-warning)
-  }
-  &--error {
-    color: var(--s-color-status-error)
   }
 }
 </style>
