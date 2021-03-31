@@ -18,7 +18,7 @@
                   type="link"
                   size="mini"
                   :primary-text="formatAddress(ethAddress, 8)"
-                  :secondary-text="t('rewards.changeWallet')"
+                  :secondary-text="t('rewards.changeAccount')"
                   @click="handleWalletChange"
                 />
                 <span>{{ t('rewards.connected') }}</span>
