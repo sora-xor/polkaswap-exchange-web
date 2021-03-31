@@ -338,6 +338,7 @@ export default {
   },
   dexSettings: {
     title: 'Transaction settings',
+    marketAlgorithm: 'MARKET ALGORITHM',
     slippageTolerance: 'SLIPPAGE TOLERANCE',
     slippageToleranceHint: 'Your transaction will revert if the price changes unfavorably by more than this percentage.',
     slippageToleranceValidation: {

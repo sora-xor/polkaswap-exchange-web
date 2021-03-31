@@ -1,5 +1,6 @@
 <template>
   <dialog-base :visible.sync="isVisible" :title="t('dexSettings.title')" custom-class="settings">
+    <market-algorithm />
   </dialog-base>
 </template>
 
@@ -16,10 +17,10 @@ import DialogBase from '@/components/DialogBase.vue'
 @Component({
   components: {
     DialogBase,
-    BrandedTooltip: lazyComponent(Components.BrandedTooltip)
+    MarketAlgorithm: lazyComponent(Components.MarketAlgorithm)
   }
 })
-export default class Settings extends Mixins(TranslationMixin, DialogMixin, NumberFormatterMixin) {
+export default class SettingsDialog extends Mixins(TranslationMixin, DialogMixin, NumberFormatterMixin) {
 }
 </script>
 

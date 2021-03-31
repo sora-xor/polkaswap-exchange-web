@@ -11,6 +11,16 @@ export const ZeroStringValue = '0'
 
 export const MetamaskCancellationCode = 4001
 
+export const DefaultSlippageTolerance = 0.5
+
+export enum MarketAlgorithms {
+  SMART = 'SMART',
+  TBC = 'TBC',
+  XYK = 'XYK'
+}
+
+export const DefaultMarketAlgorithm = MarketAlgorithms.SMART
+
 export enum PageNames {
   About = 'About',
   Swap = 'Swap',
@@ -42,10 +52,11 @@ export enum Components {
   ConfirmSwap = 'ConfirmSwap',
   ConfirmRemoveLiquidity = 'ConfirmRemoveLiquidity',
   ConfirmTokenPairDialog = 'ConfirmTokenPairDialog',
-  Settings = 'Settings',
+  SettingsDialog = 'SettingsDialog',
   SettingsHeader = 'Settings/Header',
   SettingsTabs = 'Settings/Tabs',
   SlippageTolerance = 'Settings/SlippageTolerance',
+  MarketAlgorithm = 'Settings/MarketAlgorithm',
   BrandedTooltip = 'BrandedTooltip',
   HelpDialog = 'HelpDialog',
   SidebarItemContent = 'SidebarItemContent',

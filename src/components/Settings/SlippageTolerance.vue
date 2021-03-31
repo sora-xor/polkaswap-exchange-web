@@ -1,8 +1,8 @@
 <template>
-  <div class="slippage-tolerance" :class="slippageToleranceClasses">
+  <div :class="slippageToleranceClasses">
     <div class="slippage-tolerance-default">
       <settings-header :title="t('dexSettings.slippageTolerance')" :tooltip="t('dexSettings.slippageToleranceHint')" />
-      <settings-tabs :value="String(slippageTolerance)" :tabs="SlippageToleranceValues" @click="selectSlippageTolerance"/>
+      <settings-tabs :value="String(slippageTolerance)" :tabs="SlippageToleranceTabs" @click="selectTab"/>
     </div>
     <div class="slippage-tolerance-custom">
       <settings-header :title="t('dexSettings.custom')" />
@@ -61,8 +61,7 @@ import { Components } from '@/consts'
   }
 })
 export default class Settings extends Mixins(TranslationMixin, NumberFormatterMixin) {
-  readonly defaultSlippageTolerance = 0.5
-  readonly SlippageToleranceValues = [
+  readonly SlippageToleranceTabs = [
     0.1,
     0.5,
     1
@@ -116,7 +115,7 @@ export default class Settings extends Mixins(TranslationMixin, NumberFormatterMi
     return ''
   }
 
-  selectSlippageTolerance ({ name }): void {
+  selectTab ({ name }): void {
     this.setSlippageTolerance(name)
   }
 

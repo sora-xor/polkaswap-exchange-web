@@ -64,7 +64,7 @@
     <s-button v-else type="primary" @click="handleConnectWallet">
       {{ t('pool.connectWallet') }}
     </s-button>
-    <settings :visible.sync="showSettings" />
+    <settings-dialog :visible.sync="showSettings" />
   </div>
 </template>
 
@@ -85,7 +85,7 @@ const namespace = 'pool'
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    Settings: lazyComponent(Components.Settings),
+    SettingsDialog: lazyComponent(Components.SettingsDialog),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
