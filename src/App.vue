@@ -110,7 +110,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { connection, initWallet, WALLET_CONSTS, WalletAvatar } from '@soramitsu/soraneo-wallet-web'
+import { connection, initWallet, WALLET_CONSTS, WalletAvatar, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
 
 import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components } from '@/consts'
 
@@ -236,6 +236,9 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   }
 
   destroyed (): void {
+    if (updateAccountAssetsSubscription) {
+      updateAccountAssetsSubscription.unsubscribe()
+    }
     connection.close()
   }
 }

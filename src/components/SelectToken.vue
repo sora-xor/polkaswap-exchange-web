@@ -152,11 +152,7 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   }
 
   getTokenName (token: AccountAsset): string {
-    const knownAsset = KnownAssets.get(token.address)
-    if (knownAsset) {
-      return this.t(`assetNames.${token.symbol}`)
-    }
-    return `${token.symbol}`
+    return `${token.name || token.symbol}`
   }
 
   formatBalance (token: AccountAsset): string {
