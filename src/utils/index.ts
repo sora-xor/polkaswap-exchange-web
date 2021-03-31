@@ -34,9 +34,9 @@ export const isMaxButtonAvailable = (areAssetsSelected: boolean, asset: AccountA
   return !FPNumber.eq(fpBalance, fpAmount)
 }
 
-export const getMaxValue = (asset: AccountAsset, fee: CodecString): string => {
+export const getMaxValue = (asset: AccountAsset, fee: CodecString, isExternalBalance?: boolean): string => {
   const decimals = asset.decimals
-  const fpBalance = FPNumber.fromCodecValue(asset.balance, decimals)
+  const fpBalance = FPNumber.fromCodecValue(asset[isExternalBalance ? 'externalBalance' : 'balance'], decimals)
   if (isXorAccountAsset(asset)) {
     const fpFee = FPNumber.fromCodecValue(fee, decimals)
     return fpBalance.sub(fpFee).toString()
@@ -44,18 +44,31 @@ export const getMaxValue = (asset: AccountAsset, fee: CodecString): string => {
   return fpBalance.toString()
 }
 
-export const hasInsufficientBalance = (asset: AccountAsset, amount: number, fee: CodecString): boolean => {
+export const hasInsufficientBalance = (asset: AccountAsset | RegisteredAccountAsset, amount: string | number, fee: CodecString, isExternalBalance?: boolean): boolean => {
   if (+asset.balance === 0) {
     return true
   }
   const decimals = asset.decimals
-  const fpBalance = FPNumber.fromCodecValue(asset.balance, decimals)
+  const fpBalance = FPNumber.fromCodecValue(asset[isExternalBalance ? 'externalBalance' : 'balance'], decimals)
   const fpAmount = new FPNumber(amount, decimals)
   if (isXorAccountAsset(asset)) {
     const fpFee = FPNumber.fromCodecValue(fee, decimals)
     return FPNumber.lt(fpBalance, fpAmount.add(fpFee))
   }
   return FPNumber.lt(fpBalance, fpAmount)
+}
+
+export const hasInsufficientXorForFee = (asset: AccountAsset | RegisteredAccountAsset | null, fee: CodecString): boolean => {
+  if (!asset) return true
+
+  const decimals = asset.decimals
+  const fpBalance = FPNumber.fromCodecValue(asset.balance, decimals)
+  const fpFee = FPNumber.fromCodecValue(fee, decimals)
+  return FPNumber.lt(fpBalance, fpFee)
+}
+
+export const hasInsufficientEthForFee = (ethBalance: string, fee: CodecString): boolean => {
+  return FPNumber.lt(new FPNumber(ethBalance), new FPNumber(fee))
 }
 
 export const getWalletAddress = (): string => {

@@ -49,7 +49,6 @@
               />
             </s-form-item>
             <div v-if="isNetworkAConnected && isAssetSelected" class="asset">
-              <!-- TODO: Do we have a Max button for Ethereum network? If so, check all Ethereum Max functionality -->
               <s-button v-if="isMaxAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue">
                 {{ t('buttons.max') }}
               </s-button>
@@ -120,7 +119,7 @@
         <s-button
           class="el-button--next"
           type="primary"
-          :disabled="!areNetworksConnected || !isValidEthNetwork || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEtherForFee || isInsufficientBalance || !isRegisteredAsset"
+          :disabled="!areNetworksConnected || !isValidEthNetwork || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEthereumForFee || isInsufficientBalance || !isRegisteredAsset"
           @click="handleConfirmTransaction"
         >
           <template v-if="!areNetworksConnected">
@@ -141,7 +140,7 @@
           <template v-else-if="isInsufficientXorForFee">
             {{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : KnownSymbols.XOR }) }}
           </template>
-          <template v-else-if="isInsufficientEtherForFee">
+          <template v-else-if="isInsufficientEthereumForFee">
             {{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : EthSymbol }) }}
           </template>
           <template v-else>
@@ -191,7 +190,7 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EthSymbol, ZeroStringValue } from '@/consts'
 import web3Util from '@/utils/web3-util'
-import { isXorAccountAsset, formatAssetSymbol, findAssetInCollection } from '@/utils'
+import { isXorAccountAsset, hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEthForFee, getMaxValue, formatAssetSymbol, findAssetInCollection } from '@/utils'
 
 const namespace = 'bridge'
 
@@ -230,9 +229,9 @@ export default class Bridge extends Mixins(
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter('asset', { namespace }) asset!: any
   @Getter('xorAsset', { namespace: 'assets' }) xorAsset!: any
-  @Getter('amount', { namespace }) amount!: string | number
+  @Getter('amount', { namespace }) amount!: string
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
-  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: string | number
+  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: CodecString
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
@@ -270,51 +269,27 @@ export default class Bridge extends Mixins(
     }
     const decimals = this.asset.decimals
     const fpBalance = this.getFPNumberFromCodec(this.asset[this.balanceSymbol], decimals)
-    const fpAmount = new FPNumber(this.amount, decimals)
+    const fpAmount = this.getFPNumber(this.amount, decimals)
     // TODO: Check if we have appropriate network fee currency (XOR/ETH) for both networks
     if (isXorAccountAsset(this.asset) && this.isSoraToEthereum) {
-      if (+this.soraNetworkFee === 0) {
-        return false
-      }
-      const fpFee = new FPNumber(this.soraNetworkFee, decimals)
+      const fpFee = this.getFPNumberFromCodec(this.soraNetworkFee, decimals)
       return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee)
     }
     return !FPNumber.eq(fpBalance, fpAmount)
   }
 
   get isInsufficientXorForFee (): boolean {
-    if (!this.xorAsset) return true
-
-    const fpBalance = new FPNumber(this.xorAsset.balance, this.xorAsset.decimals)
-    const fpFee = new FPNumber(this.soraNetworkFee, this.xorAsset.decimals)
-
-    return FPNumber.lt(fpBalance, fpFee)
+    return hasInsufficientXorForFee(this.xorAsset, this.soraNetworkFee)
   }
 
-  get isInsufficientEtherForFee (): boolean {
-    if (!this.isExternalAccountConnected) return true
-
-    const fpBalance = new FPNumber(this.ethBalance)
-    const fpFee = new FPNumber(this.ethereumNetworkFee)
-
-    return FPNumber.lt(fpBalance, fpFee)
+  get isInsufficientEthereumForFee (): boolean {
+    return hasInsufficientEthForFee(this.ethBalance.toString(), this.ethereumNetworkFee)
   }
 
   get isInsufficientBalance (): boolean {
-    if (this.isNetworkAConnected && this.isRegisteredAsset) {
-      const fpAmount = new FPNumber(this.amount, this.asset.decimals)
-
-      let fpBalance = new FPNumber(this.asset[this.balanceSymbol], this.asset.decimals)
-
-      if (isXorAccountAsset(this.asset) && this.isSoraToEthereum) {
-        const fpFee = new FPNumber(this.soraNetworkFee, this.asset.decimals)
-        fpBalance = fpBalance.sub(fpFee)
-      }
-
-      if (FPNumber.lt(fpBalance, fpAmount)) {
-        this.insufficientBalanceAssetSymbol = this.asset ? formatAssetSymbol(this.asset.symbol, !this.isSoraToEthereum) : ''
-        return true
-      }
+    if (this.isNetworkAConnected && this.isRegisteredAsset && hasInsufficientBalance(this.asset, this.amount, this.soraNetworkFee, !this.isSoraToEthereum)) {
+      this.insufficientBalanceAssetSymbol = formatAssetSymbol(this.asset.symbol, !this.isSoraToEthereum)
+      return true
     }
     return false
   }
@@ -358,7 +333,7 @@ export default class Bridge extends Mixins(
     return this.formatCodecNumber(balance, decimals)
   }
 
-  formatAssetValue (assetSymbol: string, amount: number | string): string {
+  formatAssetValue (assetSymbol: string, amount: string): string {
     return `${amount} ${assetSymbol}`
   }
 
@@ -472,18 +447,12 @@ export default class Bridge extends Mixins(
     }
   }
 
-  handleMaxValue (): void {
+  async handleMaxValue (): Promise<void> {
     if (this.asset && this.isRegisteredAsset) {
-      const decimals = this.asset.decimals
-      const fpBalance = FPNumber.fromCodecValue(this.asset[this.balanceSymbol], decimals)
-      if (isXorAccountAsset(this.asset) && this.isSoraToEthereum) {
-        const fpFee = FPNumber.fromCodecValue(this.soraNetworkFee, decimals)
-        this.setAmount(fpBalance.sub(fpFee).toString())
-        return
-      }
-      this.setAmount(fpBalance.toString())
+      await this.getNetworkFee()
+      const max = getMaxValue(this.asset, this.soraNetworkFee, !this.isSoraToEthereum)
+      this.setAmount(max)
     }
-    // TODO: Check balance (ETH)
   }
 
   async handleConfirmTransaction (): Promise<void> {

@@ -77,7 +77,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
   @Getter('isValidEthNetwork', { namespace: 'web3' }) isValidEthNetwork!: boolean
   @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
   @Getter('asset', { namespace }) asset!: any
-  @Getter('amount', { namespace }) amount!: number | string
+  @Getter('amount', { namespace }) amount!: string
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
   @Action('setTransactionConfirm', { namespace }) setTransactionConfirm
   @Action('setTransactionStep', { namespace }) setTransactionStep

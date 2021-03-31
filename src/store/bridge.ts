@@ -83,6 +83,9 @@ async function waitForExtrinsicFinalization (id?: string): Promise<BridgeHistory
     throw new Error('History id error')
   }
   const tx = api.bridge.getHistory(id)
+  if (tx && tx.status === TransactionStatus.Error) {
+    throw new Error(tx.errorMessage)
+  }
   if (!tx || tx.status !== TransactionStatus.Finalized) {
     await delay(250)
     return await waitForExtrinsicFinalization(id)
@@ -360,7 +363,7 @@ const actions = {
   async generateHistoryItem ({ commit, getters, dispatch }, playground) {
     await dispatch('setHistoryItem', api.bridge.generateHistoryItem({
       type: getters.isSoraToEthereum ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
-      amount: getters.amount.toString(),
+      amount: getters.amount,
       symbol: getters.asset.symbol,
       assetAddress: getters.asset.address,
       startTime: playground.date,
