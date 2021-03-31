@@ -40,7 +40,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { CodecString, AccountAsset } from '@sora-substrate/util'
+import { CodecString, AccountAsset, LiquiditySourceTypes } from '@sora-substrate/util'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -66,6 +66,7 @@ export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
   @Getter('isExchangeB', { namespace }) isExchangeB!: boolean
 
   @Getter slippageTolerance!: number
+  @Getter liquiditySource!: LiquiditySourceTypes
 
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean
 
@@ -96,7 +97,8 @@ export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
             this.fromValue,
             this.toValue,
             this.slippageTolerance,
-            this.isExchangeB
+            this.isExchangeB,
+            this.liquiditySource
           )
         )
         this.$emit('confirm', true)

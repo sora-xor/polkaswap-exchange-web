@@ -2,6 +2,7 @@
   <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
     <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
       <s-button
+        v-if="isXorAssetUsed"
         class="el-button--settings"
         type="action"
         icon="basic-settings-24"
@@ -114,7 +115,7 @@
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, KnownSymbols, FPNumber, CodecString, AccountAsset } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, FPNumber, CodecString, AccountAsset, LiquiditySourceTypes } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -161,11 +162,17 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('getAssets', { namespace: 'assets' }) getAssets
 
   @Getter slippageTolerance!: number
+  @Getter liquiditySource!: LiquiditySourceTypes
   @Getter accountAssets!: Array<AccountAsset> // Wallet store
 
   @Watch('slippageTolerance')
   private handleSlippageToleranceChange (): void {
     this.calcMinMaxRecieved()
+  }
+
+  @Watch('liquiditySource')
+  private handleLiquiditySourceChange (): void {
+    this.recountSwapValues()
   }
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
@@ -201,6 +208,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   get isMaxSwapAvailable (): boolean {
     return isMaxButtonAvailable(this.areTokensSelected, this.tokenFrom, this.fromValue, this.networkFee)
+  }
+
+  get isXorAssetUsed (): boolean {
+    return isXorAccountAsset(this.tokenFrom) || isXorAccountAsset(this.tokenTo)
   }
 
   get isInsufficientLiquidity (): boolean {
@@ -273,7 +284,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
         this.fromValue,
         this.toValue,
         this.slippageTolerance,
-        this.isExchangeB
+        this.isExchangeB,
+        this.liquiditySource
       )
       this.setNetworkFee(networkFee)
     }
@@ -313,7 +325,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       this.isRecountingProcess = true
       this.resetInsufficientAmountFlag()
 
-      const { amount, fee } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, this.isExchangeB)
+      const { amount, fee } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, this.isExchangeB, this.liquiditySource)
 
       setOppositeValue(this.getStringFromCodec(amount, token.decimals))
       this.setLiquidityProviderFee(fee)

@@ -60,7 +60,7 @@ import { Components } from '@/consts'
     SettingsTabs: lazyComponent(Components.SettingsTabs)
   }
 })
-export default class Settings extends Mixins(TranslationMixin, NumberFormatterMixin) {
+export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFormatterMixin) {
   readonly SlippageToleranceTabs = [
     0.1,
     0.5,

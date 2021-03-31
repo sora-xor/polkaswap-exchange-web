@@ -10,10 +10,9 @@
         <div v-if="areNetworksConnected && rewardsFetched" class="rewards-amount">
           <rewards-amount-header :items="rewardsByAssetsList" />
           <template v-if="!claimingInProgressOrFinished">
-            <rewards-amount-table v-if="formattedClaimableRewards.length" class="rewards-table" :items="formattedClaimableRewards" />
+            <rewards-amount-table v-if="formattedClaimableRewards.length" :items="formattedClaimableRewards" />
             <div class="rewards-footer">
               <s-divider />
-              <rewards-amount-table v-if="fee" class="rewards-table" :items="feesTable" />
               <div class="rewards-account">
                 <toggle-text-button
                   type="link"
@@ -38,6 +37,7 @@
     <s-button v-if="!rewardsRecieved" class="rewards-block rewards-action-button" type="primary" @click="handleAction" :loading="actionButtonLoading" :disabled="actionButtonDisabled">
       {{ actionButtonText }}
     </s-button>
+    <info-line v-if="fee" v-bind="feeInfo" class="rewards-block" />
   </div>
 </template>
 
@@ -69,7 +69,8 @@ const RewardsTableTitles = {
     GradientBox: lazyComponent(Components.GradientBox),
     TokensRow: lazyComponent(Components.TokensRow),
     RewardsAmountHeader: lazyComponent(Components.RewardsAmountHeader),
-    RewardsAmountTable: lazyComponent(Components.RewardsAmountTable)
+    RewardsAmountTable: lazyComponent(Components.RewardsAmountTable),
+    InfoLine: lazyComponent(Components.InfoLine)
   }
 })
 export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin, NumberFormatterMixin) {
@@ -135,12 +136,13 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     return hasInsufficientBalance(this.tokenXOR, 0, this.fee)
   }
 
-  get feesTable (): Array<RewardsAmountTableItem> {
-    return [{
-      title: this.t('rewards.networkFee'),
-      amount: this.formatCodecNumber(this.fee),
-      symbol: KnownSymbols.XOR
-    }]
+  get feeInfo (): object {
+    return {
+      label: this.t('rewards.networkFee'),
+      tooltipContent: this.t('rewards.networkFeeTooltip'),
+      value: this.formatCodecNumber(this.fee),
+      assetSymbol: KnownSymbols.XOR
+    }
   }
 
   get claimingInProgressOrFinished (): boolean {

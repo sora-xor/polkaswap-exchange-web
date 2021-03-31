@@ -4,9 +4,10 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { connection } from '@soramitsu/soraneo-wallet-web'
+import { LiquiditySourceTypes } from '@sora-substrate/util'
 
 import storage from '@/utils/storage'
-import { DefaultSlippageTolerance, DefaultMarketAlgorithm } from '@/consts'
+import { DefaultSlippageTolerance, DefaultMarketAlgorithm, MarketAlgorithms } from '@/consts'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -53,6 +54,13 @@ const getters = {
   },
   faucetUrl (state) {
     return state.faucetUrl
+  },
+  liquiditySource (state) {
+    return ({
+      [MarketAlgorithms.TBC]: LiquiditySourceTypes.MulticollateralBondingCurvePool,
+      [MarketAlgorithms.XYK]: LiquiditySourceTypes.XYKPool,
+      [MarketAlgorithms.SMART]: LiquiditySourceTypes.Default
+    })[state.marketAlgorithm]
   }
 }
 
