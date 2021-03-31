@@ -1,44 +1,34 @@
 <template>
   <div class="swap-info-container">
-    <template v-if="showPrice || showSlippageTolerance">
-      <info-line v-if="showPrice" :label="t('exchange.price')" :value="priceValue">
-        <s-button class="el-button--switch-price" type="action" size="small" icon="arrows-swap-24" @click="handleSwitchPrice" />
-      </info-line>
-      <info-line v-if="showSlippageTolerance && connected" :label="t('swap.slippageTolerance')">
-        <s-button class="swap-info-value" type="link" @click="openSettingsDialog">
-          {{ slippageTolerance }}%
-        </s-button>
-      </info-line>
-      <settings v-if="showSlippageTolerance" :visible.sync="showSettings" />
-    </template>
-    <template v-else>
-      <info-line
-        :label="t(`swap.${isExchangeB ? 'maxSold' : 'minReceived'}`)"
-        :tooltip-content="t('swap.minReceivedTooltip')"
-        :value="formattedMinMaxReceived"
-        :asset-symbol="getAssetSymbolText"
-      />
-      <!-- <info-line
-        :label="t('swap.priceImpact')"
-        :tooltip-content="t('swap.priceImpactTooltip')"
-        :value="`${priceImpact}%`"
-      /> -->
-      <info-line
-        v-if="showTooltips"
-        :label="t('swap.liquidityProviderFee')"
-        :tooltip-content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: 0.3})"
-        :value="formattedLiquidityProviderFee"
-        :asset-symbol="xorSymbol"
-      />
-      <!-- TODO 4 alexnatalia: Show if logged in and have info about Network Fee -->
-      <info-line
-        v-if="connected"
-        :label="t('swap.networkFee')"
-        :tooltip-content="t('swap.networkFeeTooltip')"
-        :value="formattedNetworkFee"
-        :asset-symbol="xorSymbol"
-      />
-    </template>
+    <info-line v-if="showPrice" :label="t('exchange.price')" :value="priceValue">
+      <s-button class="el-button--switch-price" type="action" size="small" icon="arrows-swap-24" @click="handleSwitchPrice" />
+    </info-line>
+    <info-line
+      :label="t(`swap.${isExchangeB ? 'maxSold' : 'minReceived'}`)"
+      :tooltip-content="t('swap.minReceivedTooltip')"
+      :value="formattedMinMaxReceived"
+      :asset-symbol="getAssetSymbolText"
+    />
+    <!-- <info-line
+      :label="t('swap.priceImpact')"
+      :tooltip-content="t('swap.priceImpactTooltip')"
+      :value="`${priceImpact}%`"
+    /> -->
+    <info-line
+      v-if="showTooltips"
+      :label="t('swap.liquidityProviderFee')"
+      :tooltip-content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: 0.3})"
+      :value="formattedLiquidityProviderFee"
+      :asset-symbol="xorSymbol"
+    />
+    <!-- TODO 4 alexnatalia: Show if logged in and have info about Network Fee -->
+    <info-line
+      v-if="connected"
+      :label="t('swap.networkFee')"
+      :tooltip-content="t('swap.networkFeeTooltip')"
+      :value="formattedNetworkFee"
+      :asset-symbol="xorSymbol"
+    />
   </div>
 </template>
 
@@ -74,13 +64,8 @@ export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMi
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
 
-  @Getter slippageTolerance!: number
-
-  @Prop({ default: false, type: Boolean }) readonly showPrice!: boolean
+  @Prop({ default: true, type: Boolean }) readonly showPrice!: boolean
   @Prop({ default: true, type: Boolean }) readonly showTooltips!: boolean
-  @Prop({ default: false, type: Boolean }) readonly showSlippageTolerance!: boolean
-
-  showSettings = false
 
   get connected (): boolean {
     return isWalletConnected()
@@ -135,10 +120,6 @@ export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMi
 
   handleSwitchPrice (): void {
     this.setTokenFromPrice(!this.isTokenFromPrice)
-  }
-
-  openSettingsDialog (): void {
-    this.showSettings = true
   }
 }
 </script>

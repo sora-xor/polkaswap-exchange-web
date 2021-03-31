@@ -43,6 +43,7 @@ export enum Components {
   ConfirmRemoveLiquidity = 'ConfirmRemoveLiquidity',
   ConfirmTokenPairDialog = 'ConfirmTokenPairDialog',
   Settings = 'Settings',
+  SlippageTolerance = 'Settings/SlippageTolerance',
   BrandedTooltip = 'BrandedTooltip',
   HelpDialog = 'HelpDialog',
   SidebarItemContent = 'SidebarItemContent',

@@ -82,7 +82,8 @@
         </s-button>
       </div>
     </div>
-    <swap-info v-if="areTokensSelected && !areZeroAmounts" class="info-line-container" :show-price="true" :show-slippage-tolerance="true" />
+    <slippage-tolerance class="slippage-tolerance-settings" />
+    <swap-info v-if="areTokensSelected && !areZeroAmounts" class="info-line-container" />
     <s-button v-if="!connected" type="primary" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
@@ -103,7 +104,6 @@
         {{ t('exchange.Swap') }}
       </template>
     </s-button>
-    <swap-info v-if="areTokensSelected && !areZeroAmounts" class="info-line-container" />
     <select-token :visible.sync="showSelectTokenDialog" :connected="connected" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
     <confirm-swap :visible.sync="showConfirmSwapDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmSwap" @checkConfirm="updateAccountAssets" />
     <settings :visible.sync="showSettings" />
@@ -130,6 +130,7 @@ const namespace = 'swap'
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     Settings: lazyComponent(Components.Settings),
+    SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     SwapInfo: lazyComponent(Components.SwapInfo),
     TokenLogo: lazyComponent(Components.TokenLogo),
     SelectToken: lazyComponent(Components.SelectToken),
@@ -483,6 +484,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     &--show {
       opacity: 1;
     }
+  }
+
+  .slippage-tolerance-settings {
+    margin-top: $inner-spacing-medium;
   }
 
   .el-button--switch-tokens {
