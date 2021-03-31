@@ -1,7 +1,11 @@
 <template>
   <div class="market-algorithm">
-    <!-- tooltip ? -->
-    <settings-header :title="t('dexSettings.marketAlgorithm')" />
+    <settings-header :title="t('dexSettings.marketAlgorithm')">
+      <div slot="tooltip-content">
+        <strong>{{ t('marketAlgorithmText') }}</strong>
+        <span>{{ t('dexSettings.marketAlgorithmTooltip.main') }}</span>
+      </div>
+    </settings-header>
     <settings-tabs :value="marketAlgorithm" :tabs="MarketAlgorithmTabs" @click="selectTab" />
   </div>
 </template>

@@ -23,6 +23,7 @@ export default {
   retryText: 'Retry',
   networkFeeText: 'Network Fee',
   networkFeeTooltipText: 'Network fee is used to ensure @:soraText system\'s growth and stable performance.',
+  marketAlgorithmText: 'Market Algorithm',
   assetNames: {
     [KnownSymbols.XOR]: 'SORA',
     [KnownSymbols.VAL]: 'SORA Validator Token',
@@ -340,7 +341,10 @@ export default {
   },
   dexSettings: {
     title: 'Transaction settings',
-    marketAlgorithm: 'MARKET ALGORITHM',
+    marketAlgorithm: '@.upper:marketAlgorithmText',
+    marketAlgorithmTooltip: {
+      main: ' - option to choose between Primary Market (TBC), Secondary Market (XYK) or a combined smart algorithm for guaranteed best price for any given transaction.'
+    },
     slippageTolerance: 'SLIPPAGE TOLERANCE',
     slippageToleranceHint: 'Your transaction will revert if the price changes unfavorably by more than this percentage.',
     slippageToleranceValidation: {

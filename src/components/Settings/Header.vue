@@ -2,11 +2,12 @@
   <div class="settings-header">
     {{ title }}
     <branded-tooltip
-      v-if="tooltip"
+      v-if="tooltip || $scopedSlots['tooltip-content']"
       :content="tooltip"
       popper-class="info-tooltip"
       placement="right-start"
     >
+      <slot slot="content" name="tooltip-content"/>
       <s-icon class="settings-header-hint" name="info-16" size="12px" />
     </branded-tooltip>
   </div>
