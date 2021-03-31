@@ -2,12 +2,12 @@
   <div class="settings-header">
     {{ title }}
     <branded-tooltip
-      v-if="tooltip || $scopedSlots['tooltip-content']"
+      v-if="hasTooltipContent"
       :content="tooltip"
       popper-class="info-tooltip"
       placement="right-start"
     >
-      <slot slot="content" name="tooltip-content"/>
+      <slot slot="content" :name="tooltipScopedSlot"/>
       <s-icon class="settings-header-hint" name="info-16" size="12px" />
     </branded-tooltip>
   </div>
@@ -27,8 +27,14 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
   }
 })
 export default class SettingsHeader extends Mixins(TranslationMixin) {
+  private tooltipScopedSlot = 'tooltip-content'
+
   @Prop({ type: String, default: '' }) title!: string
   @Prop({ type: String, default: '' }) tooltip!: string
+
+  get hasTooltipContent (): boolean {
+    return !!this.tooltip || !!this.$scopedSlots[this.tooltipScopedSlot]
+  }
 }
 </script>
 
