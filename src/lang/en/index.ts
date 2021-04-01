@@ -69,6 +69,18 @@ export default {
     appVersion: '@:appName version',
     contactUs: 'Contact us'
   },
+  aboutNetworkDialog: {
+    title: 'About',
+    learnMore: 'Learn more',
+    network: {
+      title: 'What is @:soraText?',
+      description: 'Polkaswap is built on top of the @:soraText Network, and the @:soraText token (XOR) is used for gas/fees and liquidity provision on Polkaswap. @:soraText Network allows for reduced fees, faster transactions and simpler consensus finalization and is focused on delivering interoperability across other blockchain ecosystems like @:(ethereumText).'
+    },
+    polkadot: {
+      title: 'What is polkadot{.js}?',
+      description: 'Polkadot{.js} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including @:soraText, Polkadot and Kusama. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized.'
+    }
+  },
   buttons: {
     max: 'MAX',
     chooseToken: 'Choose token',
