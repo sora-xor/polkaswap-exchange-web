@@ -66,7 +66,7 @@ export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
   @Getter('isExchangeB', { namespace }) isExchangeB!: boolean
 
   @Getter slippageTolerance!: number
-  @Getter liquiditySource!: LiquiditySourceTypes
+  @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes
 
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean
 

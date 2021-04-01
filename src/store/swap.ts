@@ -3,8 +3,8 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, KnownSymbols, Asset, AccountAsset, CodecString } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, CodecString } from '@sora-substrate/util'
+import { isXorAccountAsset } from '@/utils'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -63,6 +63,9 @@ const getters = {
   tokenTo (state: SwapState, getters, rootState, rootGetters) {
     return rootGetters['assets/getAssetDataByAddress'](state.tokenToAddress)
   },
+  isXorAssetUsed (state: SwapState, getters) {
+    return isXorAccountAsset(getters.tokenFrom) || isXorAccountAsset(getters.tokenTo)
+  },
   fromValue (state: SwapState) {
     return state.fromValue
   },
@@ -80,6 +83,11 @@ const getters = {
   },
   networkFee (state: SwapState) {
     return state.networkFee
+  },
+  swapLiquiditySource (state, getters, rootState, rootGetters) {
+    if (!getters.isXorAssetUsed) return undefined
+
+    return rootGetters.liquiditySource
   }
 }
 

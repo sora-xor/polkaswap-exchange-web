@@ -162,8 +162,9 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('getAssets', { namespace: 'assets' }) getAssets
 
   @Getter slippageTolerance!: number
-  @Getter liquiditySource!: LiquiditySourceTypes
   @Getter accountAssets!: Array<AccountAsset> // Wallet store
+  @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes
+  @Getter('isXorAssetUsed', { namespace }) isXorAssetUsed!: boolean
 
   @Watch('slippageTolerance')
   private handleSlippageToleranceChange (): void {
@@ -208,10 +209,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   get isMaxSwapAvailable (): boolean {
     return isMaxButtonAvailable(this.areTokensSelected, this.tokenFrom, this.fromValue, this.networkFee)
-  }
-
-  get isXorAssetUsed (): boolean {
-    return isXorAccountAsset(this.tokenFrom) || isXorAccountAsset(this.tokenTo)
   }
 
   get isInsufficientLiquidity (): boolean {
