@@ -7,6 +7,13 @@ export const app = {
   email: 'polkaswap@soramitsu.co.jp'
 }
 
+export const Links = {
+  about: {
+    sora: 'https://sora.org/',
+    polkadot: 'https://medium.com/polkadot-network/polkadot-js-extension-release-update-3b0d2d87edb8'
+  }
+}
+
 export const ZeroStringValue = '0'
 
 export const MetamaskCancellationCode = 4001
@@ -45,6 +52,7 @@ export enum Components {
   Settings = 'Settings',
   BrandedTooltip = 'BrandedTooltip',
   HelpDialog = 'HelpDialog',
+  AboutNetworkDialog = 'AboutNetworkDialog',
   SidebarItemContent = 'SidebarItemContent',
   SelectRegisteredAsset = 'SelectRegisteredAsset',
   ConfirmBridgeTransactionDialog = 'ConfirmBridgeTransactionDialog',
