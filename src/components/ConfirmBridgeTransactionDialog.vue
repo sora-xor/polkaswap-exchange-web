@@ -24,8 +24,14 @@
     <info-line
       :label="t('bridge.soraNetworkFee')"
       :tooltip-content="t('bridge.tooltipValue')"
-      :value="formattedSoraNetworkFee"
+      :value="soraNetworkFee ? '~' + formattedSoraNetworkFee : '-'"
       :asset-symbol="KnownSymbols.XOR"
+    />
+    <info-line
+      :label="t('bridge.ethereumNetworkFee')"
+      :tooltip-content="t('bridge.tooltipValue')"
+      :value="ethereumNetworkFee ? '~' + ethereumNetworkFee : '-'"
+      :asset-symbol="EthSymbol"
     />
     <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
     <!-- <info-line
@@ -61,7 +67,7 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
+import { Components, EthSymbol } from '@/consts'
 import { formatAssetSymbol } from '@/utils'
 
 const namespace = 'bridge'
@@ -79,6 +85,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
   @Getter('asset', { namespace }) asset!: any
   @Getter('amount', { namespace }) amount!: string
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
+  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: CodecString
   @Action('setTransactionConfirm', { namespace }) setTransactionConfirm
   @Action('setTransactionStep', { namespace }) setTransactionStep
 
@@ -86,6 +93,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean
   @Prop({ default: false, type: Boolean }) readonly isEthereumToSoraConfirmation!: boolean
 
+  EthSymbol = EthSymbol
   KnownSymbols = KnownSymbols
   formatAssetSymbol = formatAssetSymbol
 

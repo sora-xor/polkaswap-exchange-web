@@ -20,7 +20,7 @@
         class="history-form"
         :show-message="false"
       >
-        <s-form-item class="history--search">
+        <s-form-item v-if="history.length" class="history--search">
           <s-input
             v-model="query"
             :placeholder="t('bridgeHistory.filterPlaceholder')"
@@ -46,7 +46,7 @@
               <div :class="historyStatusIconClasses(item.type, item.transactionState)" />
             </div>
           </template>
-          <p v-else class="history-empty">{{ t('bridgeHistory.emptyHistory') }}</p>
+          <p v-else class="history-empty p4">{{ t('bridgeHistory.empty') }}</p>
         </div>
         <s-pagination
           v-if="hasHistory"
