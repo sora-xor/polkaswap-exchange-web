@@ -55,7 +55,7 @@
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
-              :value="isSoraToEthereum ? formattedSoraNetworkFee : ethereumNetworkFee"
+              :value="isSoraToEthereum ? formattedSoraNetworkFee : formattedEthNetworkFee"
               :asset-symbol="isSoraToEthereum ? KnownSymbols.XOR : EthSymbol"
             />
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
@@ -112,7 +112,7 @@
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
-              :value="!isSoraToEthereum ? formattedSoraNetworkFee : ethereumNetworkFee"
+              :value="!isSoraToEthereum ? formattedSoraNetworkFee : formattedEthNetworkFee"
               :asset-symbol="!isSoraToEthereum ? KnownSymbols.XOR : EthSymbol"
             />
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
@@ -180,7 +180,7 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   @Getter('amount', { namespace }) amount!: string
   @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: string | number
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
-  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: CodecString
+  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: string
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
   @Getter('soraTransactionHash', { namespace }) soraTransactionHash!: string
   @Getter('ethereumTransactionHash', { namespace }) ethereumTransactionHash!: string
@@ -368,6 +368,10 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
 
   get formattedSoraNetworkFee (): string {
     return this.formatCodecNumber(this.soraNetworkFee)
+  }
+
+  get formattedEthNetworkFee (): string {
+    return this.formatStringValue(this.ethereumNetworkFee)
   }
 
   get isInsufficientBalance (): boolean {

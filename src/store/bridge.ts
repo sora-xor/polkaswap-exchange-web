@@ -315,10 +315,10 @@ const actions = {
   setHistoryItem ({ commit }, historyItem: BridgeHistory | null) {
     commit(types.SET_HISTORY_ITEM, historyItem)
   },
-  async saveHistory ({ commit }, history: BridgeHistory) {
+  saveHistory ({ commit }, history: BridgeHistory) {
     api.saveHistory(history)
   },
-  async clearHistory ({ commit }) {
+  clearHistory ({ commit }) {
     api.bridge.clearHistory()
     commit(types.GET_HISTORY_SUCCESS, [])
   },
