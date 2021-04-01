@@ -10,16 +10,15 @@
         <div v-if="areNetworksConnected && rewardsFetched" class="rewards-amount">
           <rewards-amount-header :items="rewardsByAssetsList" />
           <template v-if="!claimingInProgressOrFinished">
-            <rewards-amount-table v-if="formattedClaimableRewards.length" class="rewards-table" :items="formattedClaimableRewards" />
+            <rewards-amount-table v-if="formattedClaimableRewards.length" :items="formattedClaimableRewards" />
             <div class="rewards-footer">
               <s-divider />
-              <rewards-amount-table v-if="fee" class="rewards-table" :items="feesTable" />
               <div class="rewards-account">
                 <toggle-text-button
                   type="link"
                   size="mini"
                   :primary-text="formatAddress(ethAddress, 8)"
-                  :secondary-text="t('rewards.changeWallet')"
+                  :secondary-text="t('rewards.changeAccount')"
                   @click="handleWalletChange"
                 />
                 <span>{{ t('rewards.connected') }}</span>
@@ -38,6 +37,7 @@
     <s-button v-if="!rewardsRecieved" class="rewards-block rewards-action-button" type="primary" @click="handleAction" :loading="actionButtonLoading" :disabled="actionButtonDisabled">
       {{ actionButtonText }}
     </s-button>
+    <info-line v-if="fee" v-bind="feeInfo" class="rewards-block" />
   </div>
 </template>
 
@@ -69,7 +69,8 @@ const RewardsTableTitles = {
     GradientBox: lazyComponent(Components.GradientBox),
     TokensRow: lazyComponent(Components.TokensRow),
     RewardsAmountHeader: lazyComponent(Components.RewardsAmountHeader),
-    RewardsAmountTable: lazyComponent(Components.RewardsAmountTable)
+    RewardsAmountTable: lazyComponent(Components.RewardsAmountTable),
+    InfoLine: lazyComponent(Components.InfoLine)
   }
 })
 export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin, NumberFormatterMixin) {
@@ -135,12 +136,13 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     return hasInsufficientBalance(this.tokenXOR, 0, this.fee)
   }
 
-  get feesTable (): Array<RewardsAmountTableItem> {
-    return [{
-      title: this.t('rewards.networkFee'),
-      amount: this.formatCodecNumber(this.fee),
-      symbol: KnownSymbols.XOR
-    }]
+  get feeInfo (): object {
+    return {
+      label: this.t('rewards.networkFee'),
+      tooltipContent: this.t('rewards.networkFeeTooltip'),
+      value: this.formatCodecNumber(this.fee),
+      assetSymbol: KnownSymbols.XOR
+    }
   }
 
   get claimingInProgressOrFinished (): boolean {
@@ -179,36 +181,22 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   get hintText (): string {
-    return this.findTranslationInCollection([
-      (!this.areNetworksConnected || this.rewardsFetching) &&
-      'rewards.hint.connectAccounts',
-      !this.rewardsAvailable &&
-      'rewards.hint.connectAnotherAccount',
-      'rewards.hint.howToClaimRewards'
-    ])
+    if (!this.areNetworksConnected || this.rewardsFetching) return this.t('rewards.hint.connectAccounts')
+    if (!this.rewardsAvailable) return this.t('rewards.hint.connectAnotherAccount')
+    return this.t('rewards.hint.howToClaimRewards')
   }
 
   get actionButtonText (): string {
     if (this.rewardsFetching) return ''
-
-    return this.findTranslationInCollection([
-      !this.isSoraAccountConnected &&
-      'rewards.action.connectWallet',
-      !this.isExternalAccountConnected &&
-      'rewards.action.connectExternalWallet',
-      this.transactionError &&
-      'rewards.action.retry',
-      !this.rewardsAvailable &&
-      'rewards.action.checkRewards',
-      this.rewardsAvailable && this.isInsufficientBalance &&
-      'rewards.action.insufficientBalance',
-      this.rewardsAvailable && !this.rewardsClaiming &&
-      'rewards.action.signAndClaim',
-      this.transactionStep === 1 &&
-      'rewards.action.pendingExternal',
-      this.transactionStep === 2 &&
-      'rewards.action.pendingInternal'
-    ])
+    if (!this.isSoraAccountConnected) return this.t('rewards.action.connectWallet')
+    if (!this.isExternalAccountConnected) return this.t('rewards.action.connectExternalWallet')
+    if (this.transactionError) return this.t('rewards.action.retry')
+    if (!this.rewardsAvailable) return this.t('rewards.action.checkRewards')
+    if (this.isInsufficientBalance) return this.t('rewards.action.insufficientBalance', { tokenSymbol: KnownSymbols.XOR })
+    if (!this.rewardsClaiming) return this.t('rewards.action.signAndClaim')
+    if (this.transactionStep === 1) return this.t('rewards.action.pendingExternal')
+    if (this.transactionStep === 2) return this.t('rewards.action.pendingInternal')
+    return ''
   }
 
   get actionButtonDisabled (): boolean {
@@ -227,7 +215,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
       return await this.connectExternalAccountProcess()
     }
     if (!this.rewardsAvailable) {
-      return await this.checkAccountRewards()
+      return await this.checkAccountRewards(true)
     }
     if (this.rewardsAvailable) {
       return await this.claimRewardsProcess()
@@ -238,20 +226,20 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     await this.changeExternalAccountProcess()
   }
 
-  private async checkAccountRewards (): Promise<void> {
+  private async checkAccountRewards (showNotification = false): Promise<void> {
     if (this.areNetworksConnected) {
       await Promise.all([
         this.getNetworkFee(),
-        this.getRewardsProcess()
+        this.getRewardsProcess(showNotification)
       ])
     }
   }
 
-  private async getRewardsProcess (): Promise<void> {
+  private async getRewardsProcess (showNotification = false): Promise<void> {
     const rewards = await this.getRewards(this.ethAddress)
     const areEmptyRewards = rewards.every(item => +item.amount === 0)
 
-    if (areEmptyRewards) {
+    if (areEmptyRewards && showNotification) {
       this.$notify({
         message: this.t('rewards.notification.empty'),
         title: ''
@@ -285,12 +273,6 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
         async () => await this.claimRewards({ internalAddress, externalAddress })
       )
     }
-  }
-
-  private findTranslationInCollection (collection: Array<string | boolean>): string {
-    const key = collection.find(Boolean)
-
-    return typeof key === 'string' && this.te(key) ? this.t(key) : ''
   }
 }
 </script>

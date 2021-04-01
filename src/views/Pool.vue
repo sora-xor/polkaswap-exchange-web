@@ -1,13 +1,6 @@
 <template>
   <div v-loading="parentLoading" class="container el-form--pool">
-    <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')">
-      <s-button
-        class="el-button--settings"
-        type="action"
-        icon="basic-settings-24"
-        @click="openSettingsDialog"
-      />
-    </generic-page-header>
+    <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')" />
     <div class="pool-wrapper" v-loading="loading">
       <p v-if="!connected" class="pool-info-container">
         {{ t('pool.connectToWallet') }}
@@ -64,7 +57,6 @@
     <s-button v-else type="primary" @click="handleConnectWallet">
       {{ t('pool.connectWallet') }}
     </s-button>
-    <settings :visible.sync="showSettings" />
   </div>
 </template>
 
@@ -85,7 +77,6 @@ const namespace = 'pool'
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    Settings: lazyComponent(Components.Settings),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
@@ -96,8 +87,6 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   @Action('getAccountLiquidity', { namespace }) getAccountLiquidity
   @Action('getAssets', { namespace: 'assets' }) getAssets
-
-  showSettings = false
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
@@ -158,10 +147,6 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   getBalance (liquidityItem: AccountLiquidity): string {
     return this.formatCodecNumber(liquidityItem.balance, liquidityItem.decimals)
-  }
-
-  openSettingsDialog (): void {
-    this.showSettings = true
   }
 }
 </script>

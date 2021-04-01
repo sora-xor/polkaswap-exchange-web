@@ -120,7 +120,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
     await this.$emit('checkConfirm')
     // TODO: Check isInsufficientBalance for both Networks
     if (this.isInsufficientBalance) {
-      this.$alert(this.t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol: this.asset ? this.asset.symbol : '' }), { title: this.t('errorText') })
+      this.$alert(this.t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: this.asset ? this.asset.symbol : '' }), { title: this.t('errorText') })
       this.$emit('confirm')
     } else {
       await this.setTransactionConfirm(true)

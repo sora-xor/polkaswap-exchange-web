@@ -67,7 +67,7 @@
             <s-divider />
             <s-button class="el-button--change-wallet" type="link" size="mini" @click="isSoraToEthereum ? connectInternalWallet() : changeExternalWallet()">
               <span class="bridge-item-id">{{ formatAddress(isSoraToEthereum ? getWalletAddress() : ethAddress, 8) }}</span>
-              <span class="change-wallet">{{ t('bridge.changeWallet') }}</span>
+              <span class="change-wallet">{{ t('bridge.changeAccount') }}</span>
             </s-button>
             <span>{{ t('bridge.connected') }}</span>
           </div>
@@ -110,7 +110,7 @@
             <s-divider />
             <s-button class="el-button--change-wallet" type="link" size="mini" @click="!isSoraToEthereum ? connectInternalWallet() : changeExternalWallet()">
               <span class="bridge-item-id">{{ formatAddress(isSoraToEthereum ? ethAddress : getWalletAddress(), 8) }}</span>
-              <span class="change-wallet">{{ t('bridge.changeWallet') }}</span>
+              <span class="change-wallet">{{ t('bridge.changeAccount') }}</span>
             </s-button>
             <span>{{ t('bridge.connected') }}</span>
           </div>
