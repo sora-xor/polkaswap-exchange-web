@@ -229,7 +229,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
       return await this.connectExternalAccountProcess()
     }
     if (!this.rewardsAvailable) {
-      return await this.checkAccountRewards()
+      return await this.checkAccountRewards(true)
     }
     if (this.rewardsAvailable) {
       return await this.claimRewardsProcess()
@@ -240,20 +240,20 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     await this.changeExternalAccountProcess()
   }
 
-  private async checkAccountRewards (): Promise<void> {
+  private async checkAccountRewards (showNotification = false): Promise<void> {
     if (this.areNetworksConnected) {
       await Promise.all([
         this.getNetworkFee(),
-        this.getRewardsProcess()
+        this.getRewardsProcess(showNotification)
       ])
     }
   }
 
-  private async getRewardsProcess (): Promise<void> {
+  private async getRewardsProcess (showNotification = false): Promise<void> {
     const rewards = await this.getRewards(this.ethAddress)
     const areEmptyRewards = rewards.every(item => +item.amount === 0)
 
-    if (areEmptyRewards) {
+    if (areEmptyRewards && showNotification) {
       this.$notify({
         message: this.t('rewards.notification.empty'),
         title: ''
