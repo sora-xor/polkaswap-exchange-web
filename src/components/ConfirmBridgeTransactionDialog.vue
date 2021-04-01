@@ -30,7 +30,7 @@
     <info-line
       :label="t('bridge.ethereumNetworkFee')"
       :tooltip-content="t('bridge.tooltipValue')"
-      :value="ethereumNetworkFee ? '~' + ethereumNetworkFee : '-'"
+      :value="ethereumNetworkFee ? '~' + formattedEthNetworkFee : '-'"
       :asset-symbol="EthSymbol"
     />
     <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
@@ -110,6 +110,10 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
 
   get formattedSoraNetworkFee (): string {
     return this.formatCodecNumber(this.soraNetworkFee)
+  }
+
+  get formattedEthNetworkFee (): string {
+    return this.formatStringValue(this.ethereumNetworkFee)
   }
 
   async handleConfirm (): Promise<void> {
