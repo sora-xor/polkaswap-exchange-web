@@ -181,36 +181,22 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   get hintText (): string {
-    return this.findTranslationInCollection([
-      (!this.areNetworksConnected || this.rewardsFetching) &&
-      'rewards.hint.connectAccounts',
-      !this.rewardsAvailable &&
-      'rewards.hint.connectAnotherAccount',
-      'rewards.hint.howToClaimRewards'
-    ])
+    if (!this.areNetworksConnected || this.rewardsFetching) return this.t('rewards.hint.connectAccounts')
+    if (!this.rewardsAvailable) return this.t('rewards.hint.connectAnotherAccount')
+    return this.t('rewards.hint.howToClaimRewards')
   }
 
   get actionButtonText (): string {
     if (this.rewardsFetching) return ''
-
-    return this.findTranslationInCollection([
-      !this.isSoraAccountConnected &&
-      'rewards.action.connectWallet',
-      !this.isExternalAccountConnected &&
-      'rewards.action.connectExternalWallet',
-      this.transactionError &&
-      'rewards.action.retry',
-      !this.rewardsAvailable &&
-      'rewards.action.checkRewards',
-      this.rewardsAvailable && this.isInsufficientBalance &&
-      'rewards.action.insufficientBalance',
-      this.rewardsAvailable && !this.rewardsClaiming &&
-      'rewards.action.signAndClaim',
-      this.transactionStep === 1 &&
-      'rewards.action.pendingExternal',
-      this.transactionStep === 2 &&
-      'rewards.action.pendingInternal'
-    ])
+    if (!this.isSoraAccountConnected) return this.t('rewards.action.connectWallet')
+    if (!this.isExternalAccountConnected) return this.t('rewards.action.connectExternalWallet')
+    if (this.transactionError) return this.t('rewards.action.retry')
+    if (!this.rewardsAvailable) return this.t('rewards.action.checkRewards')
+    if (this.isInsufficientBalance) return this.t('rewards.action.insufficientBalance', { tokenSymbol: KnownSymbols.XOR })
+    if (!this.rewardsClaiming) return this.t('rewards.action.signAndClaim')
+    if (this.transactionStep === 1) return this.t('rewards.action.pendingExternal')
+    if (this.transactionStep === 2) return this.t('rewards.action.pendingInternal')
+    return ''
   }
 
   get actionButtonDisabled (): boolean {
@@ -287,12 +273,6 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
         async () => await this.claimRewards({ internalAddress, externalAddress })
       )
     }
-  }
-
-  private findTranslationInCollection (collection: Array<string | boolean>): string {
-    const key = collection.find(Boolean)
-
-    return typeof key === 'string' && this.te(key) ? this.t(key) : ''
   }
 }
 </script>

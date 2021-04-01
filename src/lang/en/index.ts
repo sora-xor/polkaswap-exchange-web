@@ -13,7 +13,7 @@ export default {
   connectWalletText: 'Connect account',
   changeAccountText: 'Change account',
   connectedText: 'Connected',
-  connectWalletTextTooltip: 'Connect to SORA Network with polkadot{.js}',
+  connectWalletTextTooltip: 'Connect to @:soraText Network with polkadot{.js}',
   walletProviderConnectionError: '{provider} is not found. Please install it!',
   bridgeText: 'Bridge',
   comingSoonText: 'Coming Soon',
@@ -24,6 +24,7 @@ export default {
   networkFeeText: 'Network Fee',
   networkFeeTooltipText: 'Network fee is used to ensure @:soraText system\'s growth and stable performance.',
   marketAlgorithmText: 'Market Algorithm',
+  insufficientBalanceText: 'Insufficient {tokenSymbol} balance',
   assetNames: {
     [KnownSymbols.XOR]: 'SORA',
     [KnownSymbols.VAL]: 'SORA Validator Token',
@@ -123,12 +124,12 @@ export default {
     metamask: '@:metamask'
   },
   about: {
-    polkaswapText: 'Polkaswap - decentralised token exchange for Polkadot ecosystem. Swap any token on SORA, add liquidity, create exchanges, earn through passive market making, build decentralized price feeds.',
+    polkaswapText: 'Polkaswap - decentralised token exchange for Polkadot ecosystem. Swap any token on @:soraText, add liquidity, create exchanges, earn through passive market making, build decentralized price feeds.',
     openExchange: 'Open exchange',
     mediumLink: 'Medium',
     githubLink: 'Github',
     [Topics.SwapTokens]: {
-      title: 'Swap tokens on SORA network and other bridged networks',
+      title: 'Swap tokens on @:soraText network and other bridged networks',
       text: 'Use Polkaswap exchange or integrate into your project using the SDK'
     },
     [Topics.PassiveEarning]: {
@@ -148,7 +149,7 @@ export default {
     [PageNames.Swap]: 'Swap',
     [PageNames.Pool]: 'Pool',
     balance: 'Balance',
-    insufficientBalance: 'Insufficient {tokenSymbol} balance',
+    insufficientBalance: '@:insufficientBalanceText',
     price: 'Price',
     transactionSubmitted: 'Transaction submitted',
     transactionMessage: '{firstToken} and {secondToken}',
@@ -189,7 +190,7 @@ export default {
   },
   bridge: {
     title: 'Hashi Bridge',
-    info: 'Convert your tokens from SORA Network to Ethereum Network and vice versa.',
+    info: 'Convert your tokens from @:soraText Network to @:ethereumText Network, and vice versa.',
     balance: 'Balance',
     connectWallet: '@:connectWalletText',
     connected: '@:connectedText',
@@ -197,8 +198,8 @@ export default {
     changeNetwork: '@:changeNetworkText',
     next: 'Next',
     connectWallets: 'Connect wallets to view respective transaction history.',
-    soraNetworkFee: 'SORA Network Fee',
-    ethereumNetworkFee: 'Ethereum Network Fee',
+    soraNetworkFee: '@:soraText Network Fee',
+    ethereumNetworkFee: '@:ethereumText Network Fee',
     tooltipValue: '@:comingSoonText',
     total: 'Total',
     viewHistory: 'View transactions history',
@@ -211,14 +212,14 @@ export default {
     search: {
       title: 'Tokens',
       placeholder: 'Search Token Name, Symbol, or Address',
-      networkLabelSora: 'SORA network tokens',
-      networkLabelEthereum: 'Ethereum network mirror tokens',
+      networkLabelSora: '@:soraText network tokens',
+      networkLabelEthereum: '@:ethereumText network mirror tokens',
       mirrorPrefix: 'Mirror ',
       emptyListMessage: 'No results'
     },
     customAsset: {
       title: 'Custom',
-      customInfo: 'Important! Custom tokens must be registered in SORA.',
+      customInfo: 'Important! Custom tokens must be registered in @:(soraText).',
       registerToken: 'Register token',
       addressPlaceholder: 'Asset ID',
       symbolPlaceholder: 'Token symbol',
@@ -228,7 +229,7 @@ export default {
   },
   confirmBridgeTransactionDialog: {
     confirmTransaction: 'Confirm transaction',
-    insufficientBalance: 'Insufficient {assetSymbol} balance',
+    insufficientBalance: '@:insufficientBalanceText',
     changeNetwork: '@:changeNetworkText',
     metamask: '@:metamask',
     sora: '@:soraText',
@@ -393,7 +394,7 @@ export default {
       pendingExternal: '@:ethereumText transaction pending...',
       retry: '@:retryText',
       checkRewards: 'Check',
-      insufficientBalance: 'Insufficient XOR balance'
+      insufficientBalance: '@:insufficientBalanceText'
     },
     notification: {
       empty: 'No available claims for this account'
