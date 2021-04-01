@@ -11,6 +11,8 @@
             class="el-button--history"
             type="action"
             icon="time-time-history-24"
+            :tooltip="t('bridgeHistory.showHistory')"
+            tooltip-placement="bottom-end"
             @click="handleViewTransactionsHistory"
           />
           <!-- TODO: Add ability to change network -->
