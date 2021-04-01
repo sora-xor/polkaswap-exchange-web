@@ -31,7 +31,12 @@
         </s-form-item>
         <div class="history-items">
           <template v-if="hasHistory">
-            <div v-for="item in filteredHistory.slice((currentPage - 1) * 10, currentPage * 10)" :key="item.id" class="history-item" :data-id="item.id || item.hash || item.ethereumHash" @click="showHistory(item.id || item.hash || item.ethereumHash)">
+            <div
+              class="history-item"
+              v-for="item in filteredHistory.slice((currentPage - 1) * 10, currentPage * 10)"
+              :key="`history-${item.id}`"
+              @click="showHistory(item.id)"
+            >
               <div class="history-item-info">
                 <div class="history-item-title">{{ t('bridgeTransaction.details', {
                     from: `${item.amount} ${formatAssetSymbol(item.symbol, !isOutgoingType(item.type))}`,
@@ -217,7 +222,6 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 </script>
 
 <style lang="scss">
-$history-search-class: 'history--search';
 .history {
   &-container {
     @include bridge-container;
@@ -241,19 +245,15 @@ $history-search-class: 'history--search';
       }
     }
   }
-}
-
-.#{$history-search-class} {
-  .el-input__inner {
-    padding-right: var(--s-size-medium);
+  &--search {
+    .el-input__inner {
+      padding-right: var(--s-size-medium);
+    }
   }
 }
 </style>
 
 <style lang="scss" scoped>
-$tooltip-area-height: var(--s-size-medium);
-$tooltip-size: var(--s-size-medium);
-$title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
 $history-item-horizontal-space: $inner-spacing-medium;
 $history-item-height: 48px;
 $history-item-top-border-height: 1px;
