@@ -56,7 +56,7 @@
               </div>
             </div>
           </template>
-          <div v-else class="asset-list asset-list__empty">
+          <div v-else class="asset-list asset-list__empty p4">
             <span class="empty-results-icon" />
             {{ t('selectRegisteredAsset.search.emptyListMessage') }}
           </div>

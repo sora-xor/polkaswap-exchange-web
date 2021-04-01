@@ -180,13 +180,12 @@ export default {
     pooledToken: '{tokenSymbol} Pooled',
     pairTokens: '{pair} Pool Tokens',
     poolShare: 'Your pool share',
-    comingSoon: '@:comingSoon',
     unknownAsset: 'Unknown asset',
     description: 'When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.'
   },
   bridge: {
     title: 'Hashi Bridge',
-    info: 'Convert your tokens from SORA Network to Ethereum Network and vice versa.',
+    info: 'Convert your tokens from the SORA network to the Ethereum network, and vice versa.',
     balance: 'Balance',
     connectWallet: '@:connectWalletText',
     connected: '@:connectedText',
@@ -281,8 +280,9 @@ export default {
   months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   bridgeHistory: {
     title: 'History',
+    showHistory: 'Show history',
     clearHistory: 'Clear history',
-    emptyHistory: 'Transactions\' history is empty.',
+    empty: 'Your transactions will appear here.',
     filterPlaceholder: 'Filter by address, asset'
   },
   selectToken: {

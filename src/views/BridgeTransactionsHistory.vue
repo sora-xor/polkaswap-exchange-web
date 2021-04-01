@@ -2,25 +2,21 @@
   <div class="history-container">
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="never">
       <generic-page-header has-button-back :back-page-name="PageNames.Bridge" :title="t('bridgeHistory.title')">
-        <s-tooltip
-            popper-class="info-tooltip"
-            :content="t('bridgeHistory.clearHistory')"
-            placement="bottom-end"
-          >
-          <s-button
-            class="base-title_settings"
-            type="action"
-            icon="basic-trash-24"
-            :disabled="!hasHistory"
-            @click="handleClearHistory"
-          />
-        </s-tooltip>
+        <s-button
+          class="base-title_settings"
+          type="action"
+          icon="basic-trash-24"
+          :disabled="!hasHistory"
+          :tooltip="t('bridgeHistory.clearHistory')"
+          tooltip-placement="bottom-end"
+          @click="handleClearHistory"
+        />
       </generic-page-header>
       <s-form
         class="history-form"
         :show-message="false"
       >
-        <s-form-item class="history--search">
+        <s-form-item v-if="history.length" class="history--search">
           <s-input
             v-model="query"
             :placeholder="t('bridgeHistory.filterPlaceholder')"
@@ -46,7 +42,7 @@
               <div :class="historyStatusIconClasses(item.type, item.transactionState)" />
             </div>
           </template>
-          <p v-else class="history-empty">{{ t('bridgeHistory.emptyHistory') }}</p>
+          <p v-else class="history-empty p4">{{ t('bridgeHistory.empty') }}</p>
         </div>
         <s-pagination
           v-if="hasHistory"
