@@ -1,3 +1,4 @@
+import { EthSymbol } from '@/consts'
 import { Asset, AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, KnownAssets } from '@sora-substrate/util'
 import storage from './storage'
 
@@ -44,12 +45,13 @@ export const getMaxValue = (asset: AccountAsset, fee: CodecString, isExternalBal
   return fpBalance.toString()
 }
 
-export const hasInsufficientBalance = (asset: AccountAsset | RegisteredAccountAsset, amount: string | number, fee: CodecString, isExternalBalance?: boolean): boolean => {
-  if (+asset.balance === 0) {
+export const hasInsufficientBalance = (asset: AccountAsset | RegisteredAccountAsset, amount: string | number, fee: CodecString, isExternalBalance = false): boolean => {
+  const balanceField = isExternalBalance ? 'externalBalance' : 'balance'
+  if (+asset[balanceField] === 0) {
     return true
   }
   const decimals = asset.decimals
-  const fpBalance = FPNumber.fromCodecValue(asset[isExternalBalance ? 'externalBalance' : 'balance'], decimals)
+  const fpBalance = FPNumber.fromCodecValue(asset[balanceField], decimals)
   const fpAmount = new FPNumber(amount, decimals)
   if (isXorAccountAsset(asset)) {
     const fpFee = FPNumber.fromCodecValue(fee, decimals)
@@ -67,7 +69,7 @@ export const hasInsufficientXorForFee = (asset: AccountAsset | RegisteredAccount
   return FPNumber.lt(fpBalance, fpFee)
 }
 
-export const hasInsufficientEthForFee = (ethBalance: string, fee: CodecString): boolean => {
+export const hasInsufficientEthForFee = (ethBalance: string, fee: string): boolean => {
   return FPNumber.lt(new FPNumber(ethBalance), new FPNumber(fee))
 }
 
@@ -77,7 +79,7 @@ export const getWalletAddress = (): string => {
 
 export const isWalletConnected = (): boolean => {
   const isExternal = Boolean(storage.get('isExternal'))
-  const address = storage.get('address')
+  const address = getWalletAddress()
   return !!(
     isExternal
       ? address

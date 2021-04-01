@@ -181,7 +181,7 @@ const gasLimit = {
   approve: 66000 * 2,
   sendERC20ToSidechain: 81000 * 2,
   mintTokensByPeers: 191285 * 2,
-  receiveByEthereumAssetAddress: 95000 * 2, // TODO: estimate it later
+  receiveByEthereumAssetAddress: 253979 * 2,
   receiveBySidechainAssetId: 252659 * 2
 }
 /**
