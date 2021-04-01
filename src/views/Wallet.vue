@@ -5,6 +5,7 @@
       v-loading="parentLoading"
       @close="handleClose"
       @swap="handleSwap"
+      @learn-more="openAboutNetworkDialog"
     />
     <about-network-dialog :visible.sync="showAboutNetworkDialog" />
   </div>
