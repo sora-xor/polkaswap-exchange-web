@@ -6,19 +6,15 @@
     >
       <s-card class="bridge-content" border-radius="medium" shadow="never">
         <generic-page-header class="header--bridge" :title="t('bridge.title')" :tooltip="t('bridge.info')">
-          <s-tooltip
+          <s-button
             v-if="areNetworksConnected"
-            popper-class="info-tooltip"
-            :content="t('bridgeHistory.showHistory')"
-            placement="bottom-end"
-          >
-            <s-button
-              class="el-button--history"
-              type="action"
-              icon="time-time-history-24"
-              @click="handleViewTransactionsHistory"
-            />
-          </s-tooltip>
+            class="el-button--history"
+            type="action"
+            icon="time-time-history-24"
+            :tooltip="t('bridgeHistory.showHistory')"
+            tooltip-placement="bottom-end"
+            @click="handleViewTransactionsHistory"
+          />
           <!-- TODO: Add ability to change network -->
           <!-- <s-button
             v-if="areNetworksConnected"
