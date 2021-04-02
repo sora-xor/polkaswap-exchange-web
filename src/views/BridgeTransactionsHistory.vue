@@ -38,7 +38,7 @@
               @click="showHistory(item.id)"
             >
               <div class="history-item-info">
-                <div class="history-item-title">{{ t('bridgeTransaction.details', {
+                <div class="history-item-title p4">{{ t('bridgeTransaction.details', {
                     from: `${item.amount} ${formatAssetSymbol(item.symbol, !isOutgoingType(item.type))}`,
                     to: `${item.amount} ${formatAssetSymbol(item.symbol, isOutgoingType(item.type))}`
                   }) }}</div>
@@ -259,7 +259,7 @@ $history-item-height: 48px;
 $history-item-top-border-height: 1px;
 .history {
   &--search.el-form-item {
-    margin-bottom: $basic-spacing * 2;
+    margin-bottom: $inner-spacing-medium;
   }
   &-container {
     flex-direction: column;
@@ -318,11 +318,11 @@ $history-item-top-border-height: 1px;
     width: 100%;
   }
   &-title {
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
   }
   &-date {
     color: var(--s-color-base-content-secondary);
-    line-height: $s-line-height-mini;
+    line-height: var(--s-line-height-mini);
   }
   @include status-icon(true);
   &-icon {
