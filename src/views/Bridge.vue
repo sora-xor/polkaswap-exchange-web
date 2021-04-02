@@ -187,7 +187,6 @@ import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EthSymbol, ZeroStringValue } from '@/consts'
@@ -209,7 +208,6 @@ const namespace = 'bridge'
 export default class Bridge extends Mixins(
   TranslationMixin,
   LoadingMixin,
-  InputFormatterMixin,
   NetworkFormatterMixin,
   NumberFormatterMixin,
   WalletConnectMixin
@@ -230,7 +228,7 @@ export default class Bridge extends Mixins(
   @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter('asset', { namespace }) asset!: any
-  @Getter('xorAsset', { namespace: 'assets' }) xorAsset!: any
+  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('amount', { namespace }) amount!: string
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
   @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: string
@@ -281,7 +279,7 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientXorForFee (): boolean {
-    return hasInsufficientXorForFee(this.xorAsset, this.soraNetworkFee)
+    return hasInsufficientXorForFee(this.tokenXOR, this.soraNetworkFee)
   }
 
   get isInsufficientEthereumForFee (): boolean {

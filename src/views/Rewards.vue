@@ -49,7 +49,7 @@ import { AccountAsset, KnownSymbols, RewardInfo, RewardingEvents, CodecString } 
 import web3Util from '@/utils/web3-util'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
-import { hasInsufficientBalance } from '@/utils'
+import { hasInsufficientXorForFee } from '@/utils'
 import { RewardsAmountTableItem } from '@/types/rewards'
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
@@ -84,7 +84,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @State(state => state.rewards.transactionStep) transactionStep!: number
   @State(state => state.rewards.transactionStepsCount) transactionStepsCount!: number
 
-  @Getter('tokenXOR', { namespace: 'rewards' }) tokenXOR!: AccountAsset
+  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset
   @Getter('rewardsFetched', { namespace: 'rewards' }) rewardsFetched!: boolean
   @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean
   @Getter('claimableRewards', { namespace: 'rewards' }) claimableRewards!: Array<RewardInfo>
@@ -131,9 +131,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   get isInsufficientBalance (): boolean {
-    if (!this.tokenXOR) return true
-
-    return hasInsufficientBalance(this.tokenXOR, 0, this.fee)
+    return hasInsufficientXorForFee(this.tokenXOR, this.fee)
   }
 
   get feeInfo (): object {

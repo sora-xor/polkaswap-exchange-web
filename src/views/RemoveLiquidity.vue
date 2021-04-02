@@ -136,12 +136,15 @@
         />
       </div>
 
-      <s-button type="primary" border-radius="small" :disabled="isEmptyAmount || isInsufficientBalance" @click="openConfirmDialog">
+      <s-button type="primary" border-radius="small" :disabled="isEmptyAmount || isInsufficientBalance || isInsufficientXorForFee" @click="openConfirmDialog">
         <template v-if="isEmptyAmount">
           {{ t('buttons.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
           {{ t('exchange.insufficientBalance', { tokenSymbol: t('removeLiquidity.liquidity') }) }}
+        </template>
+        <template v-else-if="isInsufficientXorForFee">
+          {{ t('exchange.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
         </template>
         <template v-else>
           {{ t('removeLiquidity.remove') }}
@@ -164,6 +167,7 @@ import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
+import { isMaxButtonAvailable, hasInsufficientXorForFee } from '@/utils'
 
 const namespace = 'removeLiquidity'
 
@@ -194,8 +198,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
   @Getter('secondTokenBalance', { namespace }) secondTokenBalance!: CodecString
   @Getter('fee', { namespace }) fee!: CodecString
-  @Getter('xorBalance', { namespace: 'assets' }) xorBalance!: any
-  @Getter('xorAsset', { namespace: 'assets' }) xorAsset!: any
+  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
 
@@ -261,12 +264,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   }
 
   get isMaxButtonAvailable (): boolean {
-    if (!this.isWalletConnected || +this.liquidityBalance === 0) {
-      return false
-    }
-    const balance = this.getFPNumberFromCodec(this.liquidityBalance)
-    const amount = this.getFPNumber(this.liquidityAmount)
-    return !FPNumber.eq(balance, amount)
+    return isMaxButtonAvailable(this.areTokensSelected, this.liquidity, this.liquidityAmount, this.fee, this.tokenXOR)
   }
 
   get isEmptyAmount (): boolean {
@@ -287,15 +285,8 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     )
   }
 
-  get isInsufficientXorBalance (): boolean {
-    if (this.areTokensSelected) {
-      const xorValue = this.getFPNumberFromCodec(this.fee, this.xorAsset.decimals)
-      const xorBalance = this.getFPNumberFromCodec(this.xorBalance, this.xorAsset.decimals)
-
-      return FPNumber.gt(xorValue, xorBalance)
-    }
-
-    return true
+  get isInsufficientXorForFee (): boolean {
+    return hasInsufficientXorForFee(this.tokenXOR, this.fee)
   }
 
   get removePartCharClass (): string {

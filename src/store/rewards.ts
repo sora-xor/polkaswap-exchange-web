@@ -54,11 +54,6 @@ function initialState (): RewardsState {
 const state = initialState()
 
 const getters = {
-  tokenXOR (state, getters, rootState, rootGetters): AccountAsset {
-    const token = KnownAssets.get(KnownSymbols.XOR)
-
-    return rootGetters['assets/getAssetDataByAddress'](token?.address)
-  },
   claimableRewards (state: RewardsState): Array<RewardInfo> {
     return state.rewards.reduce((claimableList: Array<RewardInfo>, item: RewardInfo) => {
       if (FPNumber.fromCodecValue(item.amount, item.asset.decimals).isZero()) return claimableList

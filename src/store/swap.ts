@@ -3,7 +3,7 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import { KnownAssets, KnownSymbols, CodecString } from '@sora-substrate/util'
+import { KnownAssets, CodecString } from '@sora-substrate/util'
 import { isXorAccountAsset } from '@/utils'
 
 const types = flow(
@@ -52,11 +52,6 @@ function initialState (): SwapState {
 const state = initialState()
 
 const getters = {
-  tokenXOR (state: SwapState, getters, rootState, rootGetters) {
-    const token = KnownAssets.get(KnownSymbols.XOR)
-
-    return rootGetters['assets/getAssetDataByAddress'](token?.address)
-  },
   tokenFrom (state: SwapState, getters, rootState, rootGetters) {
     return rootGetters['assets/getAssetDataByAddress'](state.tokenFromAddress)
   },
