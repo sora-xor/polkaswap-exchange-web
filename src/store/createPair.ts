@@ -4,7 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { Asset, AccountAsset, CodecString } from '@sora-substrate/util'
+import { CodecString } from '@sora-substrate/util'
 
 import { ZeroStringValue } from '@/consts'
 

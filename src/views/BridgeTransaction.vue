@@ -176,7 +176,7 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
 
   @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
   @Getter('asset', { namespace }) asset!: AccountAsset | RegisteredAccountAsset | null
-  @Getter('xorAsset', { namespace: 'assets' }) xorAsset!: any
+  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('amount', { namespace }) amount!: string
   @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: string | number
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
@@ -383,7 +383,7 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   }
 
   get isInsufficientXorForFee (): boolean {
-    return hasInsufficientXorForFee(this.xorAsset, this.soraNetworkFee)
+    return hasInsufficientXorForFee(this.tokenXOR, this.soraNetworkFee)
   }
 
   get isInsufficientEthereumForFee (): boolean {

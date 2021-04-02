@@ -15,6 +15,7 @@ const CreateTokenPairMixin = (namespace: string) => {
   class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin) {
     readonly KnownSymbols = KnownSymbols
 
+    @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
     @Getter('firstToken', { namespace }) firstToken!: any
     @Getter('secondToken', { namespace }) secondToken!: any
     @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
@@ -76,11 +77,11 @@ const CreateTokenPairMixin = (namespace: string) => {
     }
 
     get isFirstMaxButtonAvailable (): boolean {
-      return isMaxButtonAvailable(this.areTokensSelected, this.firstToken, this.firstTokenValue, this.fee)
+      return isMaxButtonAvailable(this.areTokensSelected, this.firstToken, this.firstTokenValue, this.fee, this.tokenXOR)
     }
 
     get isSecondMaxButtonAvailable (): boolean {
-      return isMaxButtonAvailable(this.areTokensSelected, this.secondToken, this.secondTokenValue, this.fee)
+      return isMaxButtonAvailable(this.areTokensSelected, this.secondToken, this.secondTokenValue, this.fee, this.tokenXOR)
     }
 
     get isInsufficientBalance (): boolean {

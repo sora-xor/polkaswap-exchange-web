@@ -142,7 +142,7 @@ const namespace = 'swap'
   }
 })
 export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
-  @Getter('tokenXOR', { namespace }) tokenXOR!: AccountAsset
+  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset
   @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset
   @Getter('fromValue', { namespace }) fromValue!: string
@@ -215,7 +215,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   get isMaxSwapAvailable (): boolean {
-    return isMaxButtonAvailable(this.areTokensSelected, this.tokenFrom, this.fromValue, this.networkFee)
+    return isMaxButtonAvailable(this.areTokensSelected, this.tokenFrom, this.fromValue, this.networkFee, this.tokenXOR)
   }
 
   get preparedForSwap (): boolean {
@@ -223,7 +223,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   get isInsufficientLiquidity (): boolean {
-    return this.preparedForSwap && !this.areZeroAmounts && this.hasZeroAmount && +this.liquidityProviderFee === 0
+    return this.preparedForSwap && !this.areZeroAmounts && this.hasZeroAmount && asZeroValue(this.liquidityProviderFee)
   }
 
   get isInsufficientBalance (): boolean {
