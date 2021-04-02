@@ -58,7 +58,7 @@ const getMaxBalance = (
     fpResult = fpResult.sub(fpFee)
   }
 
-  return FPNumber.gt(fpResult, FpZeroValue) ? fpResult : FpZeroValue
+  return FPNumber.lt(fpResult, FpZeroValue) ? FpZeroValue : fpResult
 }
 
 export const getMaxValue = (
@@ -84,9 +84,11 @@ export const hasInsufficientBalance = (
 export const hasInsufficientXorForFee = (xorAsset: AccountAsset | RegisteredAccountAsset | null, fee: CodecString): boolean => {
   if (!xorAsset || !fee) return true
 
-  const fpResult = getMaxBalance(xorAsset, fee)
+  const decimals = xorAsset.decimals
+  const fpBalance = FPNumber.fromCodecValue(xorAsset.balance, decimals)
+  const fpFee = FPNumber.fromCodecValue(fee, decimals)
 
-  return fpResult.isZero()
+  return FPNumber.lt(fpBalance, fpFee)
 }
 
 export const hasInsufficientEthForFee = (ethBalance: string, fee: string): boolean => {
