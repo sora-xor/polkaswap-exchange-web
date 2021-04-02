@@ -18,7 +18,7 @@ export const isXorAccountAsset = (asset: Asset | AccountAsset | RegisteredAccoun
   return asset ? asset.address === KnownAssets.get(KnownSymbols.XOR).address : false
 }
 
-export const isMaxButtonAvailable = (areAssetsSelected: boolean, asset: AccountAsset & RegisteredAccountAsset, amount: string | number, fee: CodecString): boolean => {
+export const isMaxButtonAvailable = (areAssetsSelected: boolean, asset: AccountAsset | RegisteredAccountAsset, amount: string | number, fee: CodecString): boolean => {
   if (!isWalletConnected() || !areAssetsSelected || asZeroValue(asset.balance)) {
     return false
   }

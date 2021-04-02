@@ -86,8 +86,8 @@
     <s-button v-if="!connected" type="primary" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
-    <s-button v-else type="primary" :disabled="!areTokensSelected || areZeroAmounts || isInsufficientAmount || isInsufficientBalance || isInsufficientXorForFee" @click="handleConfirmSwap">
-      <template v-if="!areTokensSelected || (isZeroFromAmount && isZeroToAmount)">
+    <s-button v-else type="primary" :disabled="!areTokensSelected || hasZeroAmount || isInsufficientAmount || isInsufficientBalance || isInsufficientXorForFee" @click="handleConfirmSwap">
+      <template v-if="!areTokensSelected || areZeroAmounts">
         {{ t('buttons.enterAmount') }}
       </template>
       <template v-else-if="isInsufficientLiquidity">
@@ -107,7 +107,7 @@
       </template>
     </s-button>
     <slippage-tolerance class="slippage-tolerance-settings" />
-    <swap-info v-if="areTokensSelected && !areZeroAmounts" class="info-line-container" />
+    <swap-info v-if="areTokensSelected && !hasZeroAmount" class="info-line-container" />
     <select-token :visible.sync="showSelectTokenDialog" :connected="connected" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
     <confirm-swap :visible.sync="showConfirmSwapDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmSwap" @checkConfirm="updateAccountAssets" />
     <settings-dialog :visible.sync="showSettings" />
@@ -206,8 +206,12 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     return asZeroValue(this.toValue)
   }
 
-  get areZeroAmounts (): boolean {
+  get hasZeroAmount (): boolean {
     return this.isZeroFromAmount || this.isZeroToAmount
+  }
+
+  get areZeroAmounts (): boolean {
+    return this.isZeroFromAmount && this.isZeroToAmount
   }
 
   get isMaxSwapAvailable (): boolean {
@@ -219,10 +223,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   get isInsufficientLiquidity (): boolean {
-    if (this.isZeroFromAmount && this.isZeroToAmount) {
-      return false
-    }
-    return this.preparedForSwap && this.areZeroAmounts && +this.liquidityProviderFee === 0
+    return this.preparedForSwap && !this.areZeroAmounts && this.hasZeroAmount && +this.liquidityProviderFee === 0
   }
 
   get isInsufficientBalance (): boolean {
