@@ -122,7 +122,7 @@ const actions = {
     commit(types.GET_REGISTERED_ASSETS_REQUEST)
     try {
       const registeredAssets = await Promise.all((await api.bridge.getRegisteredAssets()).map(async item => {
-        const accountAsset = item as RegisteredAccountAsset
+        const accountAsset = { ...item, balance: '0', externalBalance: '0' } as RegisteredAccountAsset
         try {
           if (!accountAsset.externalAddress) {
             const externalAddress = await dispatch('web3/getEthTokenAddressByAssetId', { address: item.address }, { root: true })
