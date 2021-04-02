@@ -187,7 +187,6 @@ import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import InputFormatterMixin from '@/components/mixins/InputFormatterMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EthSymbol, ZeroStringValue } from '@/consts'
@@ -209,7 +208,6 @@ const namespace = 'bridge'
 export default class Bridge extends Mixins(
   TranslationMixin,
   LoadingMixin,
-  InputFormatterMixin,
   NetworkFormatterMixin,
   NumberFormatterMixin,
   WalletConnectMixin
