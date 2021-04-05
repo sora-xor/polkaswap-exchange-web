@@ -2,10 +2,11 @@ import map from 'lodash/fp/map'
 import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
-import { KnownAssets, KnownSymbols, Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, Asset, RegisteredAccountAsset } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 
-import { isXorAccountAsset, findAssetInCollection } from '@/utils'
+import { findAssetInCollection } from '@/utils'
+import { ZeroStringValue } from '@/consts'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -120,52 +121,32 @@ const actions = {
   },
   async getRegisteredAssets ({ commit, dispatch }) {
     commit(types.GET_REGISTERED_ASSETS_REQUEST)
+    await dispatch('updateRegisteredAssets')
+  },
+  async updateRegisteredAssets ({ commit, dispatch }) {
     try {
-      const registeredAssets = await Promise.all((await api.bridge.getRegisteredAssets()).map(async item => {
-        const accountAsset = { ...item, balance: '0', externalBalance: '0' } as RegisteredAccountAsset
+      const registeredAssets = await api.bridge.getRegisteredAssets()
+      const preparedRegisteredAssets = await Promise.all(registeredAssets.map(async item => {
+        const accountAsset = { ...item, balance: ZeroStringValue, externalBalance: ZeroStringValue } as RegisteredAccountAsset
         try {
           if (!accountAsset.externalAddress) {
             const externalAddress = await dispatch('web3/getEthTokenAddressByAssetId', { address: item.address }, { root: true })
             accountAsset.externalAddress = externalAddress
           }
-          const externalBalance = await dispatch('web3/getBalanceByEthAddress', { address: item.externalAddress }, { root: true })
-          accountAsset.externalBalance = externalBalance
+          if (accountAsset.externalAddress) {
+            const externalBalance = await dispatch('web3/getBalanceByEthAddress', { address: accountAsset.externalAddress }, { root: true })
+            accountAsset.externalBalance = externalBalance
+          }
         } catch (error) {
-          accountAsset.externalBalance = '-'
           console.error(error)
         }
         return accountAsset
       }))
-      commit(types.GET_REGISTERED_ASSETS_SUCCESS, registeredAssets)
+
+      commit(types.GET_REGISTERED_ASSETS_SUCCESS, preparedRegisteredAssets)
     } catch (error) {
       console.error(error)
       commit(types.GET_REGISTERED_ASSETS_FAILURE)
-    }
-  },
-  async updateRegisteredAssetsExternalBalance ({ commit, dispatch, state }) {
-    try {
-      if (!Array.isArray(state.registeredAssets) || state.registeredAssets.length === 0) return
-
-      const registeredAssets = await Promise.all(
-        (await api.bridge.getRegisteredAssets()).map(async item => {
-          try {
-            if (!item.externalAddress) return item
-
-            const externalBalance = await dispatch('web3/getBalanceByEthAddress', { address: item.externalAddress }, { root: true })
-
-            return {
-              ...item,
-              externalBalance
-            }
-          } catch (error) {
-            console.error(error)
-            return item
-          }
-        })
-      )
-      commit(types.GET_REGISTERED_ASSETS_SUCCESS, registeredAssets)
-    } catch (error) {
-      console.error(error)
     }
   }
 }

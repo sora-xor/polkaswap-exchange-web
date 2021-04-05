@@ -23,35 +23,20 @@
     <s-tabs v-model="tabValue" class="s-tabs--exchange" type="rounded" @click="handleTabClick">
       <s-tab :label="t('selectRegisteredAsset.search.title')" name="tokens">
         <div class="asset-lists-container">
-          <!-- TODO: Refactoring due to next 2 blocks of code are almost the same -->
-          <template v-if="hasFilteredAssets && isSoraToEthereum /* TODO: remove isSoraToEthereum here */">
-            <h3 class="network-label">{{ isSoraToEthereum ? t('selectRegisteredAsset.search.networkLabelSora') : t('selectRegisteredAsset.search.networkLabelEthereum') }}</h3>
-            <div :class="assetListClasses(filteredAssets)">
+          <template v-if="hasFilteredAssets">
+            <h3 class="network-label">
+              {{ isSoraToEthereum ? t('selectRegisteredAsset.search.networkLabelSora') : t('selectRegisteredAsset.search.networkLabelEthereum') }}
+            </h3>
+            <div :class="assetListClasses(filteredAssets, !isSoraToEthereum)">
               <div v-for="asset in filteredAssets" @click="selectAsset(asset)" :key="asset.address" class="asset-item">
                 <s-col>
                   <s-row flex justify="start" align="middle">
                     <token-logo :token="asset" />
-                    <div class="asset-item__name">{{ getAssetName(asset) }}</div>
+                    <div class="asset-item__name">{{ getAssetName(asset, !isSoraToEthereum) }}</div>
                   </s-row>
                 </s-col>
                 <div>
                   <span class="asset-item__balance">{{ formatBalance(asset) }}</span>
-                </div>
-              </div>
-            </div>
-          </template>
-          <template v-else-if="hasFilteredAssets && !isSoraToEthereum /* TODO: remove !isSoraToEthereum here */">
-            <h3 class="network-label">{{ !isSoraToEthereum ? t('selectRegisteredAsset.search.networkLabelEthereum') : t('selectRegisteredAsset.search.networkLabelSora') }}</h3>
-            <div :class="assetListClasses(filteredAssets, !isSoraToEthereum)">
-              <div v-for="asset in filteredAssets" @click="selectAsset(asset)" :key="asset.symbol" class="asset-item">
-                <s-col>
-                  <s-row flex justify="start" align="middle">
-                    <token-logo :token="asset" />
-                    <div class="asset-item__name">{{ getAssetName(asset, true) }}</div>
-                  </s-row>
-                </s-col>
-                <div>
-                  <span class="asset-item__balance">{{ formatEthBalance(asset) }}</span>
                 </div>
               </div>
             </div>
@@ -114,6 +99,7 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
+import { asZeroValue, getAssetBalance } from '@/utils'
 
 const namespace = 'assets'
 
@@ -171,21 +157,15 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
   }
 
   get hasFilteredAssets (): boolean {
-    return this.filteredAssets && this.filteredAssets.length > 0
+    return Array.isArray(this.filteredAssets) && this.filteredAssets.length > 0
   }
 
   formatBalance (asset?: AccountAsset | RegisteredAccountAsset): string {
-    if (!asset || !asset.balance) {
+    const balance = getAssetBalance(asset, this.isSoraToEthereum)
+    if (!asset || asZeroValue(balance)) {
       return '-'
     }
-    return this.formatCodecNumber(asset.balance, asset.decimals)
-  }
-
-  formatEthBalance (asset?: RegisteredAccountAsset): string {
-    if (!asset || !asset.externalBalance) {
-      return '-'
-    }
-    return this.formatCodecNumber(asset.externalBalance)
+    return this.formatCodecNumber(balance, asset.decimals)
   }
 
   getAssets (assets: Array<AccountAsset | RegisteredAccountAsset>): Array<AccountAsset | RegisteredAccountAsset> {
