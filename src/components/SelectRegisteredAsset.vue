@@ -162,7 +162,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
 
   formatBalance (asset?: AccountAsset | RegisteredAccountAsset): string {
     const balance = getAssetBalance(asset, this.isSoraToEthereum)
-    if (asZeroValue(balance)) {
+    if (!asset || asZeroValue(balance)) {
       return '-'
     }
     return this.formatCodecNumber(balance, asset.decimals)
