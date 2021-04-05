@@ -116,7 +116,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
+import { Action, Getter, State } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes } from '@sora-substrate/util'
 
@@ -163,11 +163,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: () => Promise<void>
   @Action('getAssets', { namespace: 'assets' }) getAssets
+  @Action('setPairLiquiditySources', { namespace }) setPairLiquiditySources!: (liquiditySources: Array<LiquiditySourceTypes>) => Promise<void>
 
   @Getter slippageTolerance!: number
   @Getter accountAssets!: Array<AccountAsset> // Wallet store
   @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes
   @Getter('isXorAssetUsed', { namespace }) isXorAssetUsed!: boolean
+
+  @State(state => state.swap.pairLiquiditySources) pairLiquiditySources!: Array<LiquiditySourceTypes>
 
   @Watch('slippageTolerance')
   private handleSlippageToleranceChange (): void {
@@ -244,6 +247,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       }
       if (this.tokenFrom && this.tokenTo) {
         this.getNetworkFee()
+        this.getPairLiquiditySources()
       }
     })
   }
@@ -276,6 +280,17 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       )
       this.setNetworkFee(networkFee)
     }
+  }
+
+  async getPairLiquiditySources (): Promise<void> {
+    const isPair = !!this.tokenFrom?.address && !!this.tokenTo?.address
+
+    const sources = isPair ? (await api.getEnabledLiquiditySourcesForPair(
+      this.tokenFrom?.address,
+      this.tokenTo?.address
+    )) : []
+
+    this.setPairLiquiditySources(sources)
   }
 
   async handleInputFieldFrom (value): Promise<any> {
@@ -418,6 +433,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       } else {
         await this.setTokenToAddress(token.address)
       }
+      await this.getPairLiquiditySources()
       await this.recountSwapValues()
     }
   }

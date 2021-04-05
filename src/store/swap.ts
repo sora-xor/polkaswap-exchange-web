@@ -3,7 +3,7 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import { KnownAssets, CodecString } from '@sora-substrate/util'
+import { KnownAssets, CodecString, LiquiditySourceTypes } from '@sora-substrate/util'
 import { isXorAccountAsset } from '@/utils'
 
 const types = flow(
@@ -18,6 +18,7 @@ const types = flow(
     'SET_MIN_MAX_RECEIVED',
     'SET_EXCHANGE_B',
     'SET_LIQUIDITY_PROVIDER_FEE',
+    'SET_PAIR_LIQUIDITY_SOURCES',
     'SET_NETWORK_FEE',
     'GET_SWAP_CONFIRM'
   ]),
@@ -33,6 +34,7 @@ interface SwapState {
   minMaxReceived: CodecString;
   isExchangeB: boolean;
   liquidityProviderFee: CodecString;
+  pairLiquiditySources: Array<LiquiditySourceTypes>;
   networkFee: CodecString;
 }
 
@@ -45,6 +47,7 @@ function initialState (): SwapState {
     minMaxReceived: '',
     isExchangeB: false,
     liquidityProviderFee: '',
+    pairLiquiditySources: [],
     networkFee: ''
   }
 }
@@ -114,6 +117,9 @@ const mutations = {
   [types.SET_LIQUIDITY_PROVIDER_FEE] (state: SwapState, liquidityProviderFee: CodecString) {
     state.liquidityProviderFee = liquidityProviderFee
   },
+  [types.SET_PAIR_LIQUIDITY_SOURCES] (state: SwapState, liquiditySources: Array<LiquiditySourceTypes>) {
+    state.pairLiquiditySources = [...liquiditySources]
+  },
   [types.SET_NETWORK_FEE] (state: SwapState, networkFee: CodecString) {
     state.networkFee = networkFee
   }
@@ -174,6 +180,9 @@ const actions = {
   },
   setLiquidityProviderFee ({ commit }, liquidityProviderFee: string) {
     commit(types.SET_LIQUIDITY_PROVIDER_FEE, liquidityProviderFee)
+  },
+  setPairLiquiditySources ({ commit }, liquiditySources: Array<LiquiditySourceTypes>) {
+    commit(types.SET_PAIR_LIQUIDITY_SOURCES, liquiditySources)
   },
   setNetworkFee ({ commit }, networkFee: string) {
     commit(types.SET_NETWORK_FEE, networkFee)
