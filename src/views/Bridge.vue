@@ -220,7 +220,7 @@ export default class Bridge extends Mixins(
   @Action('getNetworkFee', { namespace }) getNetworkFee
   @Action('getEthNetworkFee', { namespace }) getEthNetworkFee
   @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets
-  @Action('updateRegisteredAssetsExternalBalance', { namespace: 'assets' }) updateRegisteredAssetsExternalBalance
+  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets
 
   @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: string | number
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
@@ -357,7 +357,7 @@ export default class Bridge extends Mixins(
       onAccountChange: (addressList: string[]) => {
         if (addressList.length) {
           this.switchExternalAccount({ address: addressList[0] })
-          this.updateRegisteredAssetsExternalBalance()
+          this.updateRegisteredAssets()
         } else {
           this.disconnectExternalAccount()
         }
@@ -385,7 +385,7 @@ export default class Bridge extends Mixins(
 
   updateExternalBalances (): void {
     this.getEthBalance()
-    this.updateRegisteredAssetsExternalBalance()
+    this.updateRegisteredAssets()
   }
 
   async subscribeToEthBlockHeaders (): Promise<void> {
