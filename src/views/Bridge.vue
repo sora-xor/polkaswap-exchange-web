@@ -121,10 +121,13 @@
         <s-button
           class="el-button--next"
           type="primary"
-          :disabled="!areNetworksConnected || !isValidEthNetwork || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEthereumForFee || isInsufficientBalance || !isRegisteredAsset"
+          :disabled="!isAssetSelected || !areNetworksConnected || !isValidEthNetwork || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEthereumForFee || isInsufficientBalance || !isRegisteredAsset"
           @click="handleConfirmTransaction"
         >
-          <template v-if="!areNetworksConnected">
+          <template v-if="!isAssetSelected">
+            {{ t('buttons.chooseAToken') }}
+          </template>
+          <template v-else-if="!areNetworksConnected">
             {{ t('bridge.next') }}
           </template>
           <template v-else-if="!isValidEthNetwork">
