@@ -47,11 +47,11 @@ const getMaxBalance = (
   fee: CodecString,
   isExternalBalance = false
 ): FPNumber => {
-  const balanceField = isExternalBalance ? 'externalBalance' : 'balance'
+  const balance = getAssetBalance(asset, !isExternalBalance)
 
-  if (!asset || asZeroValue(asset[balanceField])) return FpZeroValue
+  if (asZeroValue(balance)) return FpZeroValue
 
-  let fpResult = FPNumber.fromCodecValue(asset[balanceField], asset.decimals)
+  let fpResult = FPNumber.fromCodecValue(balance, asset.decimals)
 
   if (isXorAccountAsset(asset) && !asZeroValue(fee)) {
     const fpFee = FPNumber.fromCodecValue(fee, asset.decimals)
@@ -137,6 +137,12 @@ export const formatDateItem = (date: number): number | string => {
 
 export const asZeroValue = (value: any): boolean => {
   return !Number.isFinite(+value) || +value === 0
+}
+
+export const getAssetBalance = (asset, internal = true) => {
+  const balanceSymbol = internal ? 'balance' : 'externalBalance'
+
+  return asset?.[balanceSymbol]
 }
 
 export const findAssetInCollection = (asset, collection) => {

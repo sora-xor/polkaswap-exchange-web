@@ -99,7 +99,7 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
-import { asZeroValue } from '@/utils'
+import { asZeroValue, getAssetBalance } from '@/utils'
 
 const namespace = 'assets'
 
@@ -152,10 +152,6 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
     return this.isSoraToEthereum ? 'address' : 'externalAddress'
   }
 
-  get balanceSymbol (): string {
-    return this.isSoraToEthereum ? 'balance' : 'externalBalance'
-  }
-
   get filteredAssets (): Array<AccountAsset | RegisteredAccountAsset> {
     return this.getFilteredAssets(this.assetsList)
   }
@@ -165,10 +161,11 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
   }
 
   formatBalance (asset?: AccountAsset | RegisteredAccountAsset): string {
-    if (!asset || asZeroValue(asset[this.balanceSymbol])) {
+    const balance = getAssetBalance(asset, this.isSoraToEthereum)
+    if (asZeroValue(balance)) {
       return '-'
     }
-    return this.formatCodecNumber(asset[this.balanceSymbol], asset.decimals)
+    return this.formatCodecNumber(balance, asset.decimals)
   }
 
   getAssets (assets: Array<AccountAsset | RegisteredAccountAsset>): Array<AccountAsset | RegisteredAccountAsset> {
