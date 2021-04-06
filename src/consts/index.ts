@@ -1,5 +1,6 @@
 import pkg from '../../package.json'
 import { KnownBridgeAsset } from '@/utils/web3-util'
+import { LiquiditySourceTypes } from '@sora-substrate/util'
 
 export const app = {
   version: pkg.version,
@@ -27,6 +28,12 @@ export enum MarketAlgorithms {
 }
 
 export const DefaultMarketAlgorithm = MarketAlgorithms.SMART
+
+export const LiquiditySourceForMarketAlgorithm = {
+  [MarketAlgorithms.SMART]: LiquiditySourceTypes.Default,
+  [MarketAlgorithms.TBC]: LiquiditySourceTypes.MulticollateralBondingCurvePool,
+  [MarketAlgorithms.XYK]: LiquiditySourceTypes.XYKPool
+}
 
 export enum PageNames {
   About = 'About',

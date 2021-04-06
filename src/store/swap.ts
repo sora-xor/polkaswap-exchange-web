@@ -4,7 +4,6 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { KnownAssets, CodecString, LiquiditySourceTypes } from '@sora-substrate/util'
-import { isXorAccountAsset } from '@/utils'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -61,8 +60,8 @@ const getters = {
   tokenTo (state: SwapState, getters, rootState, rootGetters) {
     return rootGetters['assets/getAssetDataByAddress'](state.tokenToAddress)
   },
-  isXorAssetUsed (state: SwapState, getters) {
-    return isXorAccountAsset(getters.tokenFrom) || isXorAccountAsset(getters.tokenTo)
+  pairLiquiditySourcesAvailable (state) {
+    return state.pairLiquiditySources.length !== 0
   },
   fromValue (state: SwapState) {
     return state.fromValue
@@ -83,7 +82,7 @@ const getters = {
     return state.networkFee
   },
   swapLiquiditySource (state, getters, rootState, rootGetters) {
-    if (!getters.isXorAssetUsed) return undefined
+    if (!getters.pairLiquiditySourcesAvailable) return undefined
 
     return rootGetters.liquiditySource
   }

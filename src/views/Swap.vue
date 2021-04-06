@@ -2,7 +2,7 @@
   <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
     <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
       <s-button
-        v-if="isXorAssetUsed"
+        v-if="pairLiquiditySourcesAvailable"
         class="el-button--settings"
         type="action"
         icon="basic-settings-24"
@@ -168,9 +168,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Getter slippageTolerance!: number
   @Getter accountAssets!: Array<AccountAsset> // Wallet store
   @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes
-  @Getter('isXorAssetUsed', { namespace }) isXorAssetUsed!: boolean
-
-  @State(state => state.swap.pairLiquiditySources) pairLiquiditySources!: Array<LiquiditySourceTypes>
+  @Getter('pairLiquiditySourcesAvailable', { namespace }) pairLiquiditySourcesAvailable!: boolean
 
   @Watch('slippageTolerance')
   private handleSlippageToleranceChange (): void {
@@ -391,6 +389,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
     await this.setTokenFromAddress(toAddress)
     await this.setTokenToAddress(fromAddress)
+
+    this.getPairLiquiditySources()
 
     if (this.isExchangeB) {
       this.setExchangeB(false)
