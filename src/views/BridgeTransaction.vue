@@ -202,7 +202,7 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   // @Action('sendTransferEthToSora', { namespace }) sendTransferEthToSora
   // @Action('sendTransaction', { namespace }) sendTransaction
   // @Action('receiveTransaction', { namespace }) receiveTransaction
-  @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash
+  // @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash
 
   @Action('signTransferSoraToEth1111111', { namespace }) signTransferSoraToEth1111111
   @Action('sendTransferSoraToEth1111111', { namespace }) sendTransferSoraToEth1111111
@@ -211,6 +211,8 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
 
   @Action('generateHistoryItem', { namespace }) generateHistoryItem!: ({ date: Date }) => Promise<BridgeHistory>
   @Action('updateHistoryParams', { namespace }) updateHistoryParams
+  @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash
+  @Action('setEthereumTransactionHash', { namespace }) setEthereumTransactionHash
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
@@ -441,7 +443,9 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
 
   async initializeTransactionStateMachine () {
     // Create state machine and interpret it
-    const historyItem = await this.generateHistoryItem({ date: Date.now() })
+    const historyItem = this.historyItem
+      ? this.historyItem
+      : await this.generateHistoryItem({ date: Date.now() })
     console.log(historyItem)
     const machineStates = this.isSoraToEthereum ? SORA_ETHEREUM_STATES : ETHEREUM_SORA_STATES
     const initialState = this.initialTransactionState === this.currentTransactionState
@@ -487,6 +491,13 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
         // So if it possible we will update history
         // on transition of state machine
         console.log('ONTRANSITION, ', state)
+
+        if (state.context.history.hash && !this.soraTransactionHash.length) {
+          this.setSoraTransactionHash(state.context.history.hash)
+        }
+        if (state.context.history.ethereumHash && !this.ethereumTransactionHash.length) {
+          this.setEthereumTransactionHash(state.context.history.ethereumHash)
+        }
 
         if (
           (machineStates === SORA_ETHEREUM_STATES && state.value === STATES.SORA_COMMITED) ||

@@ -1,4 +1,5 @@
 import { Machine, MachineOptions, assign } from 'xstate'
+import { BridgeTxStatus } from '@sora-substrate/util'
 
 enum EVENTS {
   SEND_SORA = 'SEND_SORA',
@@ -23,7 +24,10 @@ enum ACTIONS {
   SET_TRANSACTION_STATE = 'SET_TRANSACTION_STATE',
   SET_SECOND_TRANSACTION_STEP = 'SET_SECOND_TRANSACTION_STEP',
   SET_SORA_TRANSACTIONS_HASH = 'SET_SORA_TRANSACTIONS_HASH',
-  SET_ETHEREUM_TRANSACTION_HASH = 'SET_ETHEREUM_TRANSACTION_HASH'
+  SET_ETHEREUM_TRANSACTION_HASH = 'SET_ETHEREUM_TRANSACTION_HASH',
+  SET_BRIDGE_STATUS_PENDING = 'SET_BRIDGE_STATUS_PENDING',
+  SET_BRIDGE_STATUS_FAILURE = 'SET_BRIDGE_STATUS_FAILURE',
+  SET_BRIDGE_STATUS_DONE = 'SET_BRIDGE_STATUS_DONE'
 }
 
 enum SERVICES {
@@ -52,7 +56,10 @@ const SORA_ETHEREUM_STATES = {
     }
   },
   [STATES.SORA_SUBMITTED]: {
-    entry: setTransactionState(STATES.SORA_SUBMITTED),
+    entry: [
+      setTransactionState(STATES.SORA_SUBMITTED),
+      ACTIONS.SET_BRIDGE_STATUS_PENDING
+    ],
     invoke: {
       src: SERVICES.SIGN_SORA_TRANSACTION,
       onDone: {
@@ -74,7 +81,10 @@ const SORA_ETHEREUM_STATES = {
     }
   },
   [STATES.SORA_REJECTED]: {
-    entry: setTransactionState(STATES.SORA_REJECTED),
+    entry: [
+      setTransactionState(STATES.SORA_REJECTED),
+      ACTIONS.SET_BRIDGE_STATUS_FAILURE
+    ],
     on: {
       RETRY: STATES.SORA_SUBMITTED
     }
@@ -88,7 +98,8 @@ const SORA_ETHEREUM_STATES = {
   [STATES.ETHEREUM_SUBMITTED]: {
     entry: [
       setTransactionState(STATES.ETHEREUM_SUBMITTED),
-      ACTIONS.SET_SECOND_TRANSACTION_STEP
+      ACTIONS.SET_SECOND_TRANSACTION_STEP,
+      ACTIONS.SET_BRIDGE_STATUS_PENDING
     ],
     invoke: {
       src: SERVICES.SIGN_ETHEREUM_TRANSACTION,
@@ -111,13 +122,20 @@ const SORA_ETHEREUM_STATES = {
     }
   },
   [STATES.ETHEREUM_REJECTED]: {
-    entry: setTransactionState(STATES.ETHEREUM_REJECTED),
+    entry: [
+      setTransactionState(STATES.ETHEREUM_REJECTED),
+      ACTIONS.SET_BRIDGE_STATUS_FAILURE
+    ],
     on: {
       RETRY: STATES.ETHEREUM_SUBMITTED
     }
   },
   [STATES.ETHEREUM_COMMITED]: {
-    entry: setTransactionState(STATES.ETHEREUM_COMMITED)
+    entry: [
+      setTransactionState(STATES.ETHEREUM_COMMITED),
+      ACTIONS.SET_BRIDGE_STATUS_DONE
+    ],
+    type: 'final'
   }
 }
 
@@ -248,6 +266,35 @@ function createFSM (actions: Actions, states, initialState = STATES.INITIAL) {
             ethereumHash: event.data
           })
         }
+      }),
+      [ACTIONS.SET_BRIDGE_STATUS_PENDING]: assign({
+        history: (context, event) => {
+          console.log('set bridge bending')
+          return ({
+            ...context.history,
+            status: BridgeTxStatus.Pending
+          })
+        }
+      }),
+      [ACTIONS.SET_BRIDGE_STATUS_FAILURE]: assign({
+        history: (context, event) => {
+          console.log('set bridge failure')
+          return ({
+            ...context.history,
+            status: BridgeTxStatus.Failed,
+            endTime: Date.now()
+          })
+        }
+      }),
+      [ACTIONS.SET_BRIDGE_STATUS_DONE]: assign({
+        history: (context, event) => {
+          console.log('set bridge done')
+          return ({
+            ...context.history,
+            status: BridgeTxStatus.Done,
+            endTime: Date.now()
+          })
+        }
       })
     },
     services: {
@@ -280,6 +327,8 @@ function createFSM (actions: Actions, states, initialState = STATES.INITIAL) {
           throw new Error('Unexpected behaviour! Please check ETH transaction')
         }
 
+        if (context.history.signed) return Promise.resolve()
+
         return context.signEthereumTransactionPromise({
           hash: context.history.hash
         })
@@ -288,8 +337,6 @@ function createFSM (actions: Actions, states, initialState = STATES.INITIAL) {
         if (!context.sendEthereumTransactionPromise) {
           throw new Error('Unexpected behaviour! Please check ETH transaction')
         }
-
-        console.log(context.history.ethereumHash)
 
         return context.sendEthereumTransactionPromise({
           ethereumHash: context.history.ethereumHash
