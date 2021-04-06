@@ -99,7 +99,7 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
-import { asZeroValue, getAssetBalance } from '@/utils'
+import { formatAssetBalance } from '@/utils'
 
 const namespace = 'assets'
 
@@ -161,16 +161,16 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
   }
 
   formatBalance (asset?: AccountAsset | RegisteredAccountAsset): string {
-    const balance = getAssetBalance(asset, this.isSoraToEthereum)
-    if (!asset || asZeroValue(balance)) {
-      return '-'
-    }
-    return this.formatCodecNumber(balance, asset.decimals)
+    return formatAssetBalance(asset, {
+      internal: this.isSoraToEthereum,
+      showZeroBalance: false,
+      formattedZero: '-'
+    })
   }
 
   getAssets (assets: Array<AccountAsset | RegisteredAccountAsset>): Array<AccountAsset | RegisteredAccountAsset> {
     const assetsList = this.asset ? assets?.filter(asset => asset.address !== this.asset.address) : assets
-    return this.isSoraToEthereum ? assetsList.filter(asset => !Number.isNaN(+asset.balance)) : assetsList
+    return this.isSoraToEthereum ? assetsList.filter(asset => !Number.isNaN(+asset?.balance?.transferable)) : assetsList
   }
 
   getFilteredAssets (assets: Array<AccountAsset | RegisteredAccountAsset>): Array<AccountAsset | RegisteredAccountAsset> {

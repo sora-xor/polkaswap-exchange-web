@@ -277,7 +277,7 @@ export default class Bridge extends Mixins(
     if (!this.areNetworksConnected || !this.isRegisteredAsset) {
       return false
     }
-    const balance = getAssetBalance(this.asset, this.isSoraToEthereum)
+    const balance = getAssetBalance(this.asset, { internal: this.isSoraToEthereum })
     if (asZeroValue(balance)) {
       return false
     }
@@ -339,7 +339,7 @@ export default class Bridge extends Mixins(
     if (!this.isRegisteredAsset) {
       return '-'
     }
-    const balance = getAssetBalance(this.asset, isSora)
+    const balance = getAssetBalance(this.asset, { internal: isSora })
     if (!balance) {
       return '-'
     }
