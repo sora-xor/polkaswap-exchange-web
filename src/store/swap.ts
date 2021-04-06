@@ -3,6 +3,7 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
+import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets, CodecString } from '@sora-substrate/util'
 import { isXorAccountAsset } from '@/utils'
 
@@ -18,6 +19,7 @@ const types = flow(
     'SET_MIN_MAX_RECEIVED',
     'SET_EXCHANGE_B',
     'SET_LIQUIDITY_PROVIDER_FEE',
+    'CHECK_LIQUIDITY',
     'SET_NETWORK_FEE',
     'GET_SWAP_CONFIRM'
   ]),
@@ -34,6 +36,7 @@ interface SwapState {
   isExchangeB: boolean;
   liquidityProviderFee: CodecString;
   networkFee: CodecString;
+  isAvailable: boolean;
 }
 
 function initialState (): SwapState {
@@ -45,7 +48,8 @@ function initialState (): SwapState {
     minMaxReceived: '',
     isExchangeB: false,
     liquidityProviderFee: '',
-    networkFee: ''
+    networkFee: '',
+    isAvailable: false
   }
 }
 
@@ -81,8 +85,10 @@ const getters = {
   },
   swapLiquiditySource (state, getters, rootState, rootGetters) {
     if (!getters.isXorAssetUsed) return undefined
-
     return rootGetters.liquiditySource
+  },
+  isAvailable (state: SwapState) {
+    return state.isAvailable
   }
 }
 
@@ -114,6 +120,11 @@ const mutations = {
   [types.SET_LIQUIDITY_PROVIDER_FEE] (state: SwapState, liquidityProviderFee: CodecString) {
     state.liquidityProviderFee = liquidityProviderFee
   },
+  [types.CHECK_LIQUIDITY_REQUEST] (state: SwapState) {},
+  [types.CHECK_LIQUIDITY_SUCCESS] (state: SwapState, isAvailable: boolean) {
+    state.isAvailable = isAvailable
+  },
+  [types.CHECK_LIQUIDITY_FAILURE] (state: SwapState) {},
   [types.SET_NETWORK_FEE] (state: SwapState, networkFee: CodecString) {
     state.networkFee = networkFee
   }
@@ -174,6 +185,17 @@ const actions = {
   },
   setLiquidityProviderFee ({ commit }, liquidityProviderFee: string) {
     commit(types.SET_LIQUIDITY_PROVIDER_FEE, liquidityProviderFee)
+  },
+  async checkLiquidity ({ commit, getters }) {
+    if (getters.tokenFrom.address && getters.tokenTo.address) {
+      commit(types.CHECK_LIQUIDITY_REQUEST)
+      try {
+        const exists = await api.checkLiquidity(getters.tokenFrom.address, getters.tokenTo.address)
+        commit(types.CHECK_LIQUIDITY_SUCCESS, exists)
+      } catch (error) {
+        commit(types.CHECK_LIQUIDITY_FAILURE, error)
+      }
+    }
   },
   setNetworkFee ({ commit }, networkFee: string) {
     commit(types.SET_NETWORK_FEE, networkFee)

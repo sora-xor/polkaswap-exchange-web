@@ -86,10 +86,13 @@
     <s-button v-if="!connected" type="primary" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
-    <s-button v-else type="primary" :disabled="!areTokensSelected || hasZeroAmount || isInsufficientAmount || isInsufficientBalance || isInsufficientXorForFee" @click="handleConfirmSwap">
+    <s-button v-else type="primary" :disabled="!areTokensSelected || !isAvailable || hasZeroAmount || isInsufficientAmount || isInsufficientBalance || isInsufficientXorForFee" @click="handleConfirmSwap">
       <template v-if="!areTokensSelected || areZeroAmounts">
         {{ t('buttons.enterAmount') }}
       </template>
+      <template v-else-if="!isAvailable">
+          {{ t('swap.pairIsNotCreated') }}
+        </template>
       <template v-else-if="isInsufficientLiquidity">
         {{ t('swap.insufficientLiquidity') }}
       </template>
@@ -150,6 +153,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Getter('isExchangeB', { namespace }) isExchangeB!: boolean
   @Getter('networkFee', { namespace }) networkFee!: CodecString
   @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString
+  @Getter('isAvailable', { namespace }) isAvailable!: boolean
 
   @Action('setTokenFromAddress', { namespace }) setTokenFromAddress!: (address?: string) => Promise<void>
   @Action('setTokenToAddress', { namespace }) setTokenToAddress!: (address?: string) => Promise<void>
@@ -159,6 +163,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('setExchangeB', { namespace }) setExchangeB!: (isExchangeB: boolean) => Promise<void>
   @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>
   @Action('setNetworkFee', { namespace }) setNetworkFee!: (value: CodecString) => Promise<void>
+  @Action('checkLiquidity', { namespace }) checkLiquidity
 
   @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: () => Promise<void>
@@ -419,6 +424,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
         await this.setTokenToAddress(token.address)
       }
       await this.recountSwapValues()
+      await this.checkLiquidity()
     }
   }
 
