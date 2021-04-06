@@ -94,7 +94,7 @@ const actions = {
   setSlippageTolerance ({ commit }, value) {
     commit(types.SET_SLIPPAGE_TOLERANCE, value)
   },
-  setMarketAlgorithm ({ commit }, value) {
+  setMarketAlgorithm ({ commit }, value = DefaultMarketAlgorithm) {
     commit(types.SET_MARKET_ALGORITHM, value)
   },
   setTransactionDeadline ({ commit }, value) {

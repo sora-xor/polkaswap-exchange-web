@@ -180,7 +180,11 @@ const actions = {
   setLiquidityProviderFee ({ commit }, liquidityProviderFee: string) {
     commit(types.SET_LIQUIDITY_PROVIDER_FEE, liquidityProviderFee)
   },
-  setPairLiquiditySources ({ commit }, liquiditySources: Array<LiquiditySourceTypes>) {
+  setPairLiquiditySources ({ commit, dispatch, rootGetters }, liquiditySources: Array<LiquiditySourceTypes>) {
+    // reset market algorithm to default, if related liquiditySource is not available
+    if (liquiditySources.length && !liquiditySources.includes(rootGetters.liquiditySource)) {
+      dispatch('setMarketAlgorithm', undefined, { root: true })
+    }
     commit(types.SET_PAIR_LIQUIDITY_SOURCES, liquiditySources)
   },
   setNetworkFee ({ commit }, networkFee: string) {

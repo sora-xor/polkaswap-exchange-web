@@ -116,7 +116,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator'
-import { Action, Getter, State } from 'vuex-class'
+import { Action, Getter } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes } from '@sora-substrate/util'
 
@@ -245,7 +245,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       }
       if (this.tokenFrom && this.tokenTo) {
         this.getNetworkFee()
-        this.getPairLiquiditySources()
+        this.updatePairLiquiditySources()
       }
     })
   }
@@ -277,7 +277,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     }
   }
 
-  async getPairLiquiditySources (): Promise<void> {
+  async updatePairLiquiditySources (): Promise<void> {
     const isPair = !!this.tokenFrom?.address && !!this.tokenTo?.address
 
     const sources = isPair ? (await api.getEnabledLiquiditySourcesForPair(
@@ -390,7 +390,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     await this.setTokenFromAddress(toAddress)
     await this.setTokenToAddress(fromAddress)
 
-    this.getPairLiquiditySources()
+    this.updatePairLiquiditySources()
 
     if (this.isExchangeB) {
       this.setExchangeB(false)
@@ -430,7 +430,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       } else {
         await this.setTokenToAddress(token.address)
       }
-      await this.getPairLiquiditySources()
+      await this.updatePairLiquiditySources()
       await this.recountSwapValues()
     }
   }
