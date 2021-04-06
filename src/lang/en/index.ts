@@ -97,6 +97,14 @@ export default {
     to: 'To'
   },
   operations: {
+    [Operation.Swap]: 'Swap',
+    [Operation.Transfer]: 'Transfer',
+    [Operation.AddLiquidity]: 'Add Liquidity',
+    [Operation.RemoveLiquidity]: 'Remove Liquidity',
+    [Operation.CreatePair]: 'Create Pair',
+    [Operation.RegisterAsset]: 'Register Asset',
+    [Operation.ClaimRewards]: 'Claim Rewards',
+    andText: 'and',
     [TransactionStatus.Finalized]: {
       [Operation.Transfer]: 'Sent {amount} {symbol} to {address}',
       [Operation.Swap]: 'Swapped {amount} {symbol} for {amount2} {symbol2}',
