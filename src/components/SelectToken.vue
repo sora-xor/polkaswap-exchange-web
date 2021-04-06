@@ -156,7 +156,10 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   }
 
   formatBalance (token: AccountAsset): string {
-    return formatAssetBalance(token, { formattedZero: '-' })
+    return formatAssetBalance(token, {
+      showZeroBalance: false,
+      formattedZero: '-'
+    })
   }
 
   handleClearSearch (): void {

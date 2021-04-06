@@ -154,12 +154,12 @@ export const getAssetBalance = (asset: any, { internal = true, rootBalance = fal
   return asset?.balance
 }
 
-export const formatAssetBalance = (asset: any, { internal = true, rootBalance = false, formattedZero = '' } = {}): string => {
+export const formatAssetBalance = (asset: any, { internal = true, rootBalance = false, formattedZero = '', showZeroBalance = true } = {}): string => {
+  if (!asset) return formattedZero
+
   const balance = getAssetBalance(asset, { internal, rootBalance })
 
-  if (!asset || asZeroValue(balance)) {
-    return formattedZero
-  }
+  if (!balance || (!showZeroBalance && asZeroValue(balance))) return formattedZero
 
   return FPNumber.fromCodecValue(balance, asset.decimals).format()
 }

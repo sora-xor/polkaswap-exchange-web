@@ -167,7 +167,7 @@ import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
-import { isMaxButtonAvailable, hasInsufficientXorForFee } from '@/utils'
+import { isMaxButtonAvailable, hasInsufficientXorForFee, formatAssetBalance } from '@/utils'
 
 const namespace = 'removeLiquidity'
 
@@ -317,10 +317,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   }
 
   getFormattedLiquidityBalance (liquidity: any): string {
-    if (!liquidity?.balance) {
-      return ''
-    }
-    return this.formatCodecNumber(liquidity.balance, liquidity.decimals)
+    return formatAssetBalance(liquidity, { rootBalance: true })
   }
 
   getTokenMaxAmount (tokenBalance: CodecString, decimals?: number): string | undefined {

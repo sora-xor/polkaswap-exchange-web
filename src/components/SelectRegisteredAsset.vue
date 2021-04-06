@@ -163,6 +163,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
   formatBalance (asset?: AccountAsset | RegisteredAccountAsset): string {
     return formatAssetBalance(asset, {
       internal: this.isSoraToEthereum,
+      showZeroBalance: false,
       formattedZero: '-'
     })
   }
