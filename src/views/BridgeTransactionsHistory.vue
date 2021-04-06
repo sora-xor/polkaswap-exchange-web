@@ -33,7 +33,7 @@
           <template v-if="hasHistory">
             <div
               class="history-item"
-              v-for="item in filteredHistory.slice((currentPage - 1) * 10, currentPage * 10)"
+              v-for="item in filteredHistory.slice((currentPage - 1) * pageAmount, currentPage * pageAmount)"
               :key="`history-${item.id}`"
               @click="showHistory(item.id)"
             >
@@ -53,6 +53,7 @@
           v-if="hasHistory"
           :layout="'total, prev, next'"
           :current-page.sync="currentPage"
+          :page-size="pageAmount"
           :total="filteredHistory.length"
           @prev-click="handlePrevClick"
           @next-click="handleNextClick"
@@ -115,6 +116,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   formatDateItem = formatDateItem
   query = ''
   currentPage = 1
+  pageAmount = 10
 
   get filteredHistory (): Array<any> {
     if (!this.history?.length) return []
