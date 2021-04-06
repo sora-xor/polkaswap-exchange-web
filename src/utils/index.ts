@@ -1,4 +1,4 @@
-import { Asset, AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, KnownAssets } from '@sora-substrate/util'
+import { Asset, AccountAsset, RegisteredAccountAsset, AccountLiquidity, KnownSymbols, FPNumber, CodecString, KnownAssets } from '@sora-substrate/util'
 import storage from './storage'
 
 const FpZeroValue = new FPNumber(0)
@@ -15,16 +15,17 @@ export const formatAddress = (address: string, length = address.length / 2): str
   return `${address.slice(0, length / 2)}...${address.slice(-length / 2)}`
 }
 
-export const isXorAccountAsset = (asset: Asset | AccountAsset | RegisteredAccountAsset): boolean => {
+export const isXorAccountAsset = (asset: Asset | AccountAsset | RegisteredAccountAsset | AccountLiquidity): boolean => {
   return asset ? asset.address === KnownAssets.get(KnownSymbols.XOR).address : false
 }
 
 export const isMaxButtonAvailable = (
   areAssetsSelected: boolean,
-  asset: AccountAsset | RegisteredAccountAsset,
+  asset: AccountAsset | RegisteredAccountAsset | AccountLiquidity,
   amount: string | number,
   fee: CodecString,
-  xorAsset: AccountAsset | RegisteredAccountAsset
+  xorAsset: AccountAsset | RegisteredAccountAsset,
+  parseAsLiquidity = false
 ): boolean => {
   if (
     !isWalletConnected() ||
@@ -32,26 +33,27 @@ export const isMaxButtonAvailable = (
     !areAssetsSelected ||
     !fee ||
     !xorAsset ||
-    asZeroValue(asset.balance)) {
+    asZeroValue(getAssetBalance(asset, { parseAsLiquidity }))) {
     return false
   }
 
   const fpAmount = new FPNumber(amount, asset.decimals)
-  const fpMaxBalance = getMaxBalance(asset, fee)
+  const fpMaxBalance = getMaxBalance(asset, fee, false, parseAsLiquidity)
 
   return !FPNumber.eq(fpMaxBalance, fpAmount) && !hasInsufficientXorForFee(xorAsset, fee)
 }
 
 const getMaxBalance = (
-  asset: AccountAsset | RegisteredAccountAsset,
+  asset: AccountAsset | RegisteredAccountAsset | AccountLiquidity,
   fee: CodecString,
-  isExternalBalance = false
+  isExternalBalance = false,
+  parseAsLiquidity = false
 ): FPNumber => {
-  const balanceField = isExternalBalance ? 'externalBalance' : 'balance'
+  const balance = getAssetBalance(asset, { internal: !isExternalBalance, parseAsLiquidity })
 
-  if (!asset || asZeroValue(asset[balanceField])) return FpZeroValue
+  if (asZeroValue(balance)) return FpZeroValue
 
-  let fpResult = FPNumber.fromCodecValue(asset[balanceField], asset.decimals)
+  let fpResult = FPNumber.fromCodecValue(balance, asset.decimals)
 
   if (isXorAccountAsset(asset) && !asZeroValue(fee)) {
     const fpFee = FPNumber.fromCodecValue(fee, asset.decimals)
@@ -85,7 +87,8 @@ export const hasInsufficientXorForFee = (xorAsset: AccountAsset | RegisteredAcco
   if (!xorAsset || !fee) return true
 
   const decimals = xorAsset.decimals
-  const fpBalance = FPNumber.fromCodecValue(xorAsset.balance, decimals)
+  const xorBalance = getAssetBalance(xorAsset)
+  const fpBalance = FPNumber.fromCodecValue(xorBalance, decimals)
   const fpFee = FPNumber.fromCodecValue(fee, decimals)
 
   return FPNumber.lt(fpBalance, fpFee)
@@ -137,6 +140,28 @@ export const formatDateItem = (date: number): number | string => {
 
 export const asZeroValue = (value: any): boolean => {
   return !Number.isFinite(+value) || +value === 0
+}
+
+export const getAssetBalance = (asset: any, { internal = true, parseAsLiquidity = false } = {}) => {
+  if (!internal) {
+    return asset?.externalBalance
+  }
+
+  if (parseAsLiquidity) {
+    return asset?.balance
+  }
+
+  return asset?.balance?.transferable
+}
+
+export const formatAssetBalance = (asset: any, { internal = true, parseAsLiquidity = false, formattedZero = '', showZeroBalance = true } = {}): string => {
+  if (!asset) return formattedZero
+
+  const balance = getAssetBalance(asset, { internal, parseAsLiquidity })
+
+  if (!balance || (!showZeroBalance && asZeroValue(balance))) return formattedZero
+
+  return FPNumber.fromCodecValue(balance, asset.decimals).format()
 }
 
 export const findAssetInCollection = (asset, collection) => {

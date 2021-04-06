@@ -28,7 +28,7 @@
           <div class="input-title p4">{{ t('removeLiquidity.input') }}</div>
           <div v-if="isWalletConnected && liquidity" class="token-balance">
             <span class="token-balance-title">{{ t('createPair.balance') }}</span>
-            <span class="token-balance-value">{{ getFormattedTokenBalance(liquidity) }}</span>
+            <span class="token-balance-value">{{ getFormattedLiquidityBalance(liquidity) }}</span>
           </div>
         </div>
         <div class="input-line-content">
@@ -167,7 +167,7 @@ import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
-import { isMaxButtonAvailable, hasInsufficientXorForFee } from '@/utils'
+import { isMaxButtonAvailable, hasInsufficientXorForFee, formatAssetBalance } from '@/utils'
 
 const namespace = 'removeLiquidity'
 
@@ -264,7 +264,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   }
 
   get isMaxButtonAvailable (): boolean {
-    return isMaxButtonAvailable(this.areTokensSelected, this.liquidity, this.liquidityAmount, this.fee, this.tokenXOR)
+    return isMaxButtonAvailable(this.areTokensSelected, this.liquidity, this.liquidityAmount, this.fee, this.tokenXOR, true)
   }
 
   get isEmptyAmount (): boolean {
@@ -316,11 +316,8 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     }
   }
 
-  getFormattedTokenBalance (token: any): string {
-    if (!token?.balance) {
-      return ''
-    }
-    return this.formatCodecNumber(token.balance, token.decimals)
+  getFormattedLiquidityBalance (liquidity: any): string {
+    return formatAssetBalance(liquidity, { parseAsLiquidity: true })
   }
 
   getTokenMaxAmount (tokenBalance: CodecString, decimals?: number): string | undefined {

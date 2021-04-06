@@ -20,8 +20,7 @@ import DialogBase from '@/components/DialogBase.vue'
     MarketAlgorithm: lazyComponent(Components.MarketAlgorithm)
   }
 })
-export default class SettingsDialog extends Mixins(TranslationMixin, DialogMixin, NumberFormatterMixin) {
-}
+export default class SettingsDialog extends Mixins(TranslationMixin, DialogMixin, NumberFormatterMixin) {}
 </script>
 
 <style lang="scss">

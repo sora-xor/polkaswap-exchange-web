@@ -12,10 +12,12 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 
+import { TabItem } from '@/types/tabs'
+
 @Component
 export default class SettingsTabs extends Vue {
   @Prop({ type: String, default: '' }) value!: string
-  @Prop({ type: Array, default: () => [] }) tabs!: Array<any>
+  @Prop({ type: Array, default: () => [] }) tabs!: Array<TabItem>
 }
 </script>
 

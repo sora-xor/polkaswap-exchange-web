@@ -31,9 +31,14 @@
         </s-form-item>
         <div class="history-items">
           <template v-if="hasHistory">
-            <div v-for="item in filteredHistory.slice((currentPage - 1) * 10, currentPage * 10)" :key="item.id" class="history-item" :data-id="item.id || item.hash || item.ethereumHash" @click="showHistory(item.id || item.hash || item.ethereumHash)">
+            <div
+              class="history-item"
+              v-for="item in filteredHistory.slice((currentPage - 1) * pageAmount, currentPage * pageAmount)"
+              :key="`history-${item.id}`"
+              @click="showHistory(item.id)"
+            >
               <div class="history-item-info">
-                <div class="history-item-title">{{ t('bridgeTransaction.details', {
+                <div class="history-item-title p4">{{ t('bridgeTransaction.details', {
                     from: `${item.amount} ${formatAssetSymbol(item.symbol, !isOutgoingType(item.type))}`,
                     to: `${item.amount} ${formatAssetSymbol(item.symbol, isOutgoingType(item.type))}`
                   }) }}</div>
@@ -48,6 +53,7 @@
           v-if="hasHistory"
           :layout="'total, prev, next'"
           :current-page.sync="currentPage"
+          :page-size="pageAmount"
           :total="filteredHistory.length"
           @prev-click="handlePrevClick"
           @next-click="handleNextClick"
@@ -110,6 +116,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   formatDateItem = formatDateItem
   query = ''
   currentPage = 1
+  pageAmount = 10
 
   get filteredHistory (): Array<any> {
     if (!this.history?.length) return []
@@ -217,7 +224,6 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 </script>
 
 <style lang="scss">
-$history-search-class: 'history--search';
 .history {
   &-container {
     @include bridge-container;
@@ -241,25 +247,21 @@ $history-search-class: 'history--search';
       }
     }
   }
-}
-
-.#{$history-search-class} {
-  .el-input__inner {
-    padding-right: var(--s-size-medium);
+  &--search {
+    .el-input__inner {
+      padding-right: var(--s-size-medium);
+    }
   }
 }
 </style>
 
 <style lang="scss" scoped>
-$tooltip-area-height: var(--s-size-medium);
-$tooltip-size: var(--s-size-medium);
-$title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
 $history-item-horizontal-space: $inner-spacing-medium;
 $history-item-height: 48px;
 $history-item-top-border-height: 1px;
 .history {
   &--search.el-form-item {
-    margin-bottom: $basic-spacing * 2;
+    margin-bottom: $inner-spacing-medium;
   }
   &-container {
     flex-direction: column;
@@ -318,11 +320,11 @@ $history-item-top-border-height: 1px;
     width: 100%;
   }
   &-title {
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
   }
   &-date {
     color: var(--s-color-base-content-secondary);
-    line-height: $s-line-height-mini;
+    line-height: var(--s-line-height-mini);
   }
   @include status-icon(true);
   &-icon {

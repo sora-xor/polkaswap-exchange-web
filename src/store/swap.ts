@@ -4,8 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, CodecString } from '@sora-substrate/util'
-import { isXorAccountAsset } from '@/utils'
+import { KnownAssets, CodecString, LiquiditySourceTypes } from '@sora-substrate/util'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -20,6 +19,7 @@ const types = flow(
     'SET_EXCHANGE_B',
     'SET_LIQUIDITY_PROVIDER_FEE',
     'CHECK_LIQUIDITY',
+    'SET_PAIR_LIQUIDITY_SOURCES',
     'SET_NETWORK_FEE',
     'GET_SWAP_CONFIRM'
   ]),
@@ -35,6 +35,7 @@ interface SwapState {
   minMaxReceived: CodecString;
   isExchangeB: boolean;
   liquidityProviderFee: CodecString;
+  pairLiquiditySources: Array<LiquiditySourceTypes>;
   networkFee: CodecString;
   isAvailable: boolean;
 }
@@ -49,7 +50,8 @@ function initialState (): SwapState {
     isExchangeB: false,
     liquidityProviderFee: '',
     networkFee: '',
-    isAvailable: false
+    isAvailable: false,
+    pairLiquiditySources: []
   }
 }
 
@@ -62,8 +64,8 @@ const getters = {
   tokenTo (state: SwapState, getters, rootState, rootGetters) {
     return rootGetters['assets/getAssetDataByAddress'](state.tokenToAddress)
   },
-  isXorAssetUsed (state: SwapState, getters) {
-    return isXorAccountAsset(getters.tokenFrom) || isXorAccountAsset(getters.tokenTo)
+  pairLiquiditySourcesAvailable (state) {
+    return state.pairLiquiditySources.length !== 0
   },
   fromValue (state: SwapState) {
     return state.fromValue
@@ -84,7 +86,8 @@ const getters = {
     return state.networkFee
   },
   swapLiquiditySource (state, getters, rootState, rootGetters) {
-    if (!getters.isXorAssetUsed) return undefined
+    if (!getters.pairLiquiditySourcesAvailable) return undefined
+
     return rootGetters.liquiditySource
   },
   isAvailable (state: SwapState) {
@@ -125,6 +128,9 @@ const mutations = {
     state.isAvailable = isAvailable
   },
   [types.CHECK_LIQUIDITY_FAILURE] (state: SwapState) {},
+  [types.SET_PAIR_LIQUIDITY_SOURCES] (state: SwapState, liquiditySources: Array<LiquiditySourceTypes>) {
+    state.pairLiquiditySources = [...liquiditySources]
+  },
   [types.SET_NETWORK_FEE] (state: SwapState, networkFee: CodecString) {
     state.networkFee = networkFee
   }
@@ -196,6 +202,13 @@ const actions = {
         commit(types.CHECK_LIQUIDITY_FAILURE, error)
       }
     }
+  },
+  setPairLiquiditySources ({ commit, dispatch, rootGetters }, liquiditySources: Array<LiquiditySourceTypes>) {
+    // reset market algorithm to default, if related liquiditySource is not available
+    if (liquiditySources.length && !liquiditySources.includes(rootGetters.liquiditySource)) {
+      dispatch('setMarketAlgorithm', undefined, { root: true })
+    }
+    commit(types.SET_PAIR_LIQUIDITY_SOURCES, liquiditySources)
   },
   setNetworkFee ({ commit }, networkFee: string) {
     commit(types.SET_NETWORK_FEE, networkFee)

@@ -121,10 +121,13 @@
         <s-button
           class="el-button--next"
           type="primary"
-          :disabled="!areNetworksConnected || !isValidEthNetwork || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEthereumForFee || isInsufficientBalance || !isRegisteredAsset"
+          :disabled="!isAssetSelected || !areNetworksConnected || !isValidEthNetwork || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEthereumForFee || isInsufficientBalance || !isRegisteredAsset"
           @click="handleConfirmTransaction"
         >
-          <template v-if="!areNetworksConnected">
+          <template v-if="!isAssetSelected">
+            {{ t('buttons.chooseAToken') }}
+          </template>
+          <template v-else-if="!areNetworksConnected">
             {{ t('bridge.next') }}
           </template>
           <template v-else-if="!isValidEthNetwork">
@@ -191,7 +194,17 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EthSymbol, ZeroStringValue } from '@/consts'
 import web3Util from '@/utils/web3-util'
-import { isXorAccountAsset, hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEthForFee, getMaxValue, formatAssetSymbol, findAssetInCollection } from '@/utils'
+import {
+  isXorAccountAsset,
+  hasInsufficientBalance,
+  hasInsufficientXorForFee,
+  hasInsufficientEthForFee,
+  getMaxValue,
+  formatAssetSymbol,
+  getAssetBalance,
+  findAssetInCollection,
+  asZeroValue
+} from '@/utils'
 
 const namespace = 'bridge'
 
@@ -220,7 +233,7 @@ export default class Bridge extends Mixins(
   @Action('getNetworkFee', { namespace }) getNetworkFee
   @Action('getEthNetworkFee', { namespace }) getEthNetworkFee
   @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets
-  @Action('updateRegisteredAssetsExternalBalance', { namespace: 'assets' }) updateRegisteredAssetsExternalBalance
+  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets
 
   @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: string | number
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
@@ -264,11 +277,12 @@ export default class Bridge extends Mixins(
     if (!this.areNetworksConnected || !this.isRegisteredAsset) {
       return false
     }
-    if (!this.asset || +this.asset[this.balanceSymbol] === 0) {
+    const balance = getAssetBalance(this.asset, { internal: this.isSoraToEthereum })
+    if (asZeroValue(balance)) {
       return false
     }
     const decimals = this.asset.decimals
-    const fpBalance = this.getFPNumberFromCodec(this.asset[this.balanceSymbol], decimals)
+    const fpBalance = this.getFPNumberFromCodec(balance, decimals)
     const fpAmount = this.getFPNumber(this.amount, decimals)
     // TODO: Check if we have appropriate network fee currency (XOR/ETH) for both networks
     if (isXorAccountAsset(this.asset) && this.isSoraToEthereum) {
@@ -309,10 +323,6 @@ export default class Bridge extends Mixins(
     return !!this.asset
   }
 
-  get balanceSymbol (): string {
-    return this.isSoraToEthereum ? 'balance' : 'externalBalance'
-  }
-
   get isRegisteredAsset (): boolean {
     return !!findAssetInCollection(this.asset, this.registeredAssets)
   }
@@ -329,7 +339,7 @@ export default class Bridge extends Mixins(
     if (!this.isRegisteredAsset) {
       return '-'
     }
-    const balance = this.asset[isSora ? 'balance' : 'externalBalance']
+    const balance = getAssetBalance(this.asset, { internal: isSora })
     if (!balance) {
       return '-'
     }
@@ -357,7 +367,7 @@ export default class Bridge extends Mixins(
       onAccountChange: (addressList: string[]) => {
         if (addressList.length) {
           this.switchExternalAccount({ address: addressList[0] })
-          this.updateRegisteredAssetsExternalBalance()
+          this.updateRegisteredAssets()
         } else {
           this.disconnectExternalAccount()
         }
@@ -385,7 +395,7 @@ export default class Bridge extends Mixins(
 
   updateExternalBalances (): void {
     this.getEthBalance()
-    this.updateRegisteredAssetsExternalBalance()
+    this.updateRegisteredAssets()
   }
 
   async subscribeToEthBlockHeaders (): Promise<void> {

@@ -2,7 +2,7 @@
   <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
     <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
       <s-button
-        v-if="isXorAssetUsed"
+        v-if="pairLiquiditySourcesAvailable"
         class="el-button--settings"
         type="action"
         icon="basic-settings-24"
@@ -127,7 +127,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
-import { isWalletConnected, isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue } from '@/utils'
+import { isWalletConnected, isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -168,11 +168,12 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: () => Promise<void>
   @Action('getAssets', { namespace: 'assets' }) getAssets
+  @Action('setPairLiquiditySources', { namespace }) setPairLiquiditySources!: (liquiditySources: Array<LiquiditySourceTypes>) => Promise<void>
 
   @Getter slippageTolerance!: number
   @Getter accountAssets!: Array<AccountAsset> // Wallet store
   @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes
-  @Getter('isXorAssetUsed', { namespace }) isXorAssetUsed!: boolean
+  @Getter('pairLiquiditySourcesAvailable', { namespace }) pairLiquiditySourcesAvailable!: boolean
 
   @Watch('slippageTolerance')
   private handleSlippageToleranceChange (): void {
@@ -249,15 +250,13 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       }
       if (this.tokenFrom && this.tokenTo) {
         this.getNetworkFee()
+        this.updatePairLiquiditySources()
       }
     })
   }
 
   formatBalance (token): string {
-    if (!token?.balance) {
-      return ''
-    }
-    return this.formatCodecNumber(token.balance)
+    return formatAssetBalance(token)
   }
 
   resetFieldFrom (): void {
@@ -281,6 +280,17 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       )
       this.setNetworkFee(networkFee)
     }
+  }
+
+  async updatePairLiquiditySources (): Promise<void> {
+    const isPair = !!this.tokenFrom?.address && !!this.tokenTo?.address
+
+    const sources = isPair ? (await api.getEnabledLiquiditySourcesForPair(
+      this.tokenFrom?.address,
+      this.tokenTo?.address
+    )) : []
+
+    this.setPairLiquiditySources(sources)
   }
 
   async handleInputFieldFrom (value): Promise<any> {
@@ -385,6 +395,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     await this.setTokenFromAddress(toAddress)
     await this.setTokenToAddress(fromAddress)
 
+    this.updatePairLiquiditySources()
+
     if (this.isExchangeB) {
       this.setExchangeB(false)
       await this.handleInputFieldFrom(this.toValue)
@@ -423,6 +435,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       } else {
         await this.setTokenToAddress(token.address)
       }
+      await this.updatePairLiquiditySources()
       await this.recountSwapValues()
       await this.checkLiquidity()
     }
