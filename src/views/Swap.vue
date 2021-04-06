@@ -253,10 +253,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   formatBalance (token): string {
-    if (!token?.balance) {
+    if (!token?.balance?.transferable) {
       return ''
     }
-    return this.formatCodecNumber(token.balance)
+    return this.formatCodecNumber(token.balance.transferable)
   }
 
   resetFieldFrom (): void {
