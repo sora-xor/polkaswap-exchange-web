@@ -88,6 +88,7 @@ export default {
   buttons: {
     max: 'MAX',
     chooseToken: 'Choose token',
+    chooseAToken: 'Choose a token',
     chooseTokens: 'Choose tokens',
     enterAmount: 'Enter amount'
   },
