@@ -124,7 +124,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
-import { isWalletConnected, isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue } from '@/utils'
+import { isWalletConnected, isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -253,10 +253,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   formatBalance (token): string {
-    if (!token?.balance?.transferable) {
-      return ''
-    }
-    return this.formatCodecNumber(token.balance.transferable)
+    return formatAssetBalance(token)
   }
 
   resetFieldFrom (): void {
