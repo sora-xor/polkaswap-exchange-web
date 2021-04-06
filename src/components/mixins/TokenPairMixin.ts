@@ -8,7 +8,7 @@ import ConfirmDialogMixin from './ConfirmDialogMixin'
 
 import router from '@/router'
 import { PageNames } from '@/consts'
-import { getMaxValue, isMaxButtonAvailable, isWalletConnected, isXorAccountAsset, hasInsufficientBalance } from '@/utils'
+import { getMaxValue, isMaxButtonAvailable, isWalletConnected, isXorAccountAsset, hasInsufficientBalance, formatAssetBalance } from '@/utils'
 
 const CreateTokenPairMixin = (namespace: string) => {
   @Component
@@ -122,10 +122,7 @@ const CreateTokenPairMixin = (namespace: string) => {
     }
 
     getTokenBalance (token: any): string {
-      if (!token?.balance) {
-        return ''
-      }
-      return this.formatCodecNumber(token.balance, token.decimals)
+      return formatAssetBalance(token)
     }
 
     openSelectSecondTokenDialog (): void {
