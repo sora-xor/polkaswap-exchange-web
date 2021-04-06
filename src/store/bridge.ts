@@ -21,6 +21,7 @@ import { STATES } from '@/utils/fsm'
 import web3Util, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
 import { delay, isXorAccountAsset } from '@/utils'
 import { EthereumGasLimits, MaxUint256, MetamaskCancellationCode } from '@/consts'
+import { Transaction } from 'web3-core'
 
 const SORA_REQUESTS_TIMEOUT = 5 * 1000
 
@@ -49,7 +50,9 @@ const types = flow(
   'GET_SORA_NETWORK_FEE',
   'GET_ETHEREUM_NETWORK_FEE',
   'SEND_TRANSACTION',
-  'RECEIVE_TRANSACTION'
+  'SEND_TRANSACTION1',
+  'RECEIVE_TRANSACTION',
+  'RECEIVE_TRANSACTION1'
 ])
 
 async function waitForApprovedRequest (hash: string): Promise<BridgeApprovedRequest> {
@@ -70,6 +73,16 @@ async function waitForApprovedRequest (hash: string): Promise<BridgeApprovedRequ
   }
   return await waitForApprovedRequest(hash)
   // Sora Pending
+}
+
+async function waitForEthereumTransactionStatus (hash: string): Promise<Transaction> {
+  const web3 = await web3Util.getInstance()
+  const result = await web3.eth.getTransaction(hash)
+  if (result.blockNumber === null) {
+    await delay(SORA_REQUESTS_TIMEOUT)
+    return waitForEthereumTransactionStatus(hash)
+  }
+  return result
 }
 
 async function waitForRequest (hash: string): Promise<BridgeRequest> {
@@ -253,9 +266,15 @@ const mutations = {
   [types.SEND_TRANSACTION_REQUEST] (state) {},
   [types.SEND_TRANSACTION_SUCCESS] (state) {},
   [types.SEND_TRANSACTION_FAILURE] (state) {},
+  [types.SEND_TRANSACTION1_REQUEST] (state) {},
+  [types.SEND_TRANSACTION1_SUCCESS] (state) {},
+  [types.SEND_TRANSACTION1_FAILURE] (state) {},
   [types.RECEIVE_TRANSACTION_REQUEST] (state) {},
   [types.RECEIVE_TRANSACTION_SUCCESS] (state) {},
-  [types.RECEIVE_TRANSACTION_FAILURE] (state) {}
+  [types.RECEIVE_TRANSACTION_FAILURE] (state) {},
+  [types.RECEIVE_TRANSACTION1_REQUEST] (state) {},
+  [types.RECEIVE_TRANSACTION1_SUCCESS] (state) {},
+  [types.RECEIVE_TRANSACTION1_FAILURE] (state) {}
 }
 
 const actions = {
@@ -392,6 +411,7 @@ const actions = {
       soraNetworkFee: getters.soraNetworkFee.toString(),
       ethereumNetworkFee: getters.ethereumNetworkFee.toString()
     }))
+    return getters.historyItem
   },
   async updateHistoryParams ({ commit, dispatch }, params) {
     await dispatch('saveHistory', params.tx)
@@ -400,6 +420,140 @@ const actions = {
       await dispatch('setSoraTransactionDate', params.tx.startTime)
     }
     await dispatch('setEthereumTransactionDate', params.tx.endTime)
+  },
+  async signTransferSoraToEth1111111 ({ commit, getters, rootGetters, dispatch }, { txId }) {
+    if (!getters.asset || !getters.asset.address || !getters.amount || !getters.isSoraToEthereum) {
+      return
+    }
+    const asset = await dispatch('findRegisteredAsset')
+    // TODO: asset should be registered just for now
+    if (!asset) {
+      return
+    }
+    commit(types.SEND_TRANSACTION_REQUEST)
+    try {
+      const ethAccount = rootGetters['web3/ethAddress']
+      await api.bridge.transferToEth(asset, ethAccount, getters.amount, txId)
+      commit(types.SEND_TRANSACTION_SUCCESS)
+    } catch (error) {
+      commit(types.SEND_TRANSACTION_FAILURE)
+      throw new Error(error.message)
+    }
+  },
+  async signTransferEthFromSora1111111 ({ commit, getters, rootGetters, dispatch }, { hash }) {
+    if (!getters.asset || !getters.asset.address || !getters.amount || !getters.isSoraToEthereum) {
+      return
+    }
+    const asset = await dispatch('findRegisteredAsset')
+    // TODO: asset should be registered just for now
+    if (!asset) {
+      return
+    }
+    commit(types.RECEIVE_TRANSACTION_REQUEST)
+
+    try {
+      console.log(1231313123, hash)
+      const request = await waitForApprovedRequest(hash) // If it causes an error, then -> catch -> SORA_REJECTED
+      console.log(1231313123, hash)
+      const web3 = await web3Util.getInstance()
+
+      if (!rootGetters['web3/isValidEthNetwork']) {
+        throw new Error('Change eth network in Metamask')
+      }
+      const symbol = getters.asset.symbol
+      const ethAccount = rootGetters['web3/ethAddress']
+      const isValOrXor = [KnownBridgeAsset.XOR, KnownBridgeAsset.VAL].includes(symbol)
+      const contract = isValOrXor
+        ? rootGetters[`web3/contract${symbol}`]
+        : rootGetters[`web3/contract${KnownBridgeAsset.Other}`][OtherContractType.Bridge]
+      const contractInstance = new web3.eth.Contract(contract.abi)
+      const contractAddress = rootGetters[`web3/address${isValOrXor ? symbol : KnownBridgeAsset.Other}`]
+      contractInstance.options.address = contractAddress.MASTER
+      const method = isValOrXor
+        ? 'mintTokensByPeers'
+        : request.currencyType === BridgeCurrencyType.TokenAddress
+          ? 'receievByEthereumAssetAddress'
+          : 'receiveBySidechainAssetId'
+      const methodArgs = [
+        (isValOrXor || request.currencyType === BridgeCurrencyType.TokenAddress)
+          ? asset.externalAddress // address tokenAddress OR
+          : asset.address, // bytes32 assetId
+        new FPNumber(getters.amount, asset.decimals).toCodecString(), // uint256 amount
+        ethAccount // address beneficiary
+      ]
+      methodArgs.push(...(isValOrXor
+        ? [
+          hash, // bytes32 txHash
+          request.v, // uint8[] memory v
+          request.r, // bytes32[] memory r
+          request.s, // bytes32[] memory s
+          request.from // address from
+        ] : [
+          request.from, // address from
+          hash, // bytes32 txHash
+          request.v, // uint8[] memory v
+          request.r, // bytes32[] memory r
+          request.s // bytes32[] memory s
+        ])
+      )
+      const contractMethod = contractInstance.methods[method](...methodArgs)
+      const gas = await contractMethod.estimateGas()
+      return new Promise((resolve, reject) => {
+        contractMethod.send({ gas, from: ethAccount })
+          .on('transactionHash', hash => {
+            console.log('oppa hashik', hash)
+            commit(types.RECEIVE_TRANSACTION_SUCCESS)
+            resolve(hash)
+          })
+      })
+    } catch (error) {
+      commit(types.RECEIVE_TRANSACTION_FAILURE)
+      throw error
+    }
+  },
+  async sendTransferSoraToEth1111111 ({ commit, getters, rootGetters, dispatch }, { txId }) {
+    if (!getters.asset || !getters.asset.address || !getters.amount || !getters.isSoraToEthereum) {
+      return
+    }
+    const asset = await dispatch('findRegisteredAsset')
+    // TODO: asset should be registered just for now
+    if (!asset) {
+      return
+    }
+    commit(types.SEND_TRANSACTION1_REQUEST)
+
+    try {
+      const tx = await waitForExtrinsicFinalization(txId)
+      commit(types.SEND_TRANSACTION1_SUCCESS)
+      return tx.hash
+    } catch (error) {
+      // error handler if tx was cancelled
+      // if (`${error.message}`.toLowerCase().includes('cancelled') && currentHistoryItem.id) {
+      //   api.bridge.removeHistory(currentHistoryItem.id)
+      // } else {
+      //   await dispatch('setTransactionErrorParams', { tx: currentHistoryItem, txState: STATES.SORA_REJECTED })
+      // }
+      commit(types.SEND_TRANSACTION1_FAILURE)
+      throw error
+    }
+  },
+  async sendTransferEthFromSora1111111 ({ commit, getters, rootGetters, dispatch }, { ethereumHash }) {
+    if (!getters.asset || !getters.asset.address || !getters.amount || !getters.isSoraToEthereum) {
+      return
+    }
+    const asset = await dispatch('findRegisteredAsset')
+    // TODO: asset should be registered just for now
+    if (!asset) {
+      return
+    }
+    commit(types.RECEIVE_TRANSACTION1_REQUEST)
+    try {
+      await waitForEthereumTransactionStatus(ethereumHash)
+      commit(types.RECEIVE_TRANSACTION1_SUCCESS)
+    } catch (error) {
+      commit(types.RECEIVE_TRANSACTION1_FAILURE)
+      throw error
+    }
   },
   async sendTransferSoraToEth ({ commit, getters, rootGetters, dispatch }) {
     if (!getters.asset || !getters.asset.address || !getters.amount || !getters.isSoraToEthereum) {
