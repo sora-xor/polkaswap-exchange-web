@@ -317,7 +317,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   }
 
   getFormattedLiquidityBalance (liquidity: any): string {
-    return formatAssetBalance(liquidity, { rootBalance: true })
+    return formatAssetBalance(liquidity, { parseAsLiquidity: true })
   }
 
   getTokenMaxAmount (tokenBalance: CodecString, decimals?: number): string | undefined {

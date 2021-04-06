@@ -25,7 +25,7 @@ export const isMaxButtonAvailable = (
   amount: string | number,
   fee: CodecString,
   xorAsset: AccountAsset | RegisteredAccountAsset,
-  rootBalance = false
+  parseAsLiquidity = false
 ): boolean => {
   if (
     !isWalletConnected() ||
@@ -33,12 +33,12 @@ export const isMaxButtonAvailable = (
     !areAssetsSelected ||
     !fee ||
     !xorAsset ||
-    asZeroValue(getAssetBalance(asset, { rootBalance }))) {
+    asZeroValue(getAssetBalance(asset, { parseAsLiquidity }))) {
     return false
   }
 
   const fpAmount = new FPNumber(amount, asset.decimals)
-  const fpMaxBalance = getMaxBalance(asset, fee, false, rootBalance)
+  const fpMaxBalance = getMaxBalance(asset, fee, false, parseAsLiquidity)
 
   return !FPNumber.eq(fpMaxBalance, fpAmount) && !hasInsufficientXorForFee(xorAsset, fee)
 }
@@ -47,9 +47,9 @@ const getMaxBalance = (
   asset: AccountAsset | RegisteredAccountAsset | AccountLiquidity,
   fee: CodecString,
   isExternalBalance = false,
-  rootBalance = false
+  parseAsLiquidity = false
 ): FPNumber => {
-  const balance = getAssetBalance(asset, { internal: !isExternalBalance, rootBalance })
+  const balance = getAssetBalance(asset, { internal: !isExternalBalance, parseAsLiquidity })
 
   if (asZeroValue(balance)) return FpZeroValue
 
@@ -142,22 +142,22 @@ export const asZeroValue = (value: any): boolean => {
   return !Number.isFinite(+value) || +value === 0
 }
 
-export const getAssetBalance = (asset: any, { internal = true, rootBalance = false } = {}) => {
+export const getAssetBalance = (asset: any, { internal = true, parseAsLiquidity = false } = {}) => {
   if (!internal) {
     return asset?.externalBalance
   }
 
-  if (!rootBalance) {
-    return asset?.balance?.transferable
+  if (parseAsLiquidity) {
+    return asset?.balance
   }
 
-  return asset?.balance
+  return asset?.balance?.transferable
 }
 
-export const formatAssetBalance = (asset: any, { internal = true, rootBalance = false, formattedZero = '', showZeroBalance = true } = {}): string => {
+export const formatAssetBalance = (asset: any, { internal = true, parseAsLiquidity = false, formattedZero = '', showZeroBalance = true } = {}): string => {
   if (!asset) return formattedZero
 
-  const balance = getAssetBalance(asset, { internal, rootBalance })
+  const balance = getAssetBalance(asset, { internal, parseAsLiquidity })
 
   if (!balance || (!showZeroBalance && asZeroValue(balance))) return formattedZero
 
