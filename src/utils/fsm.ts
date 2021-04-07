@@ -40,7 +40,6 @@ enum SERVICES {
 const setTransactionState = (state: STATES) => {
   return assign({
     history: (context: any) => {
-      console.log('update transaction state', state)
       return ({
         ...context.history,
         transactionState: state
@@ -51,13 +50,14 @@ const setTransactionState = (state: STATES) => {
 
 const SORA_ETHEREUM_STATES = {
   [STATES.INITIAL]: {
+    entry: ACTIONS.SET_BRIDGE_STATUS_PENDING,
     on: {
       SEND_SORA: STATES.SORA_SUBMITTED
     }
   },
   [STATES.SORA_SUBMITTED]: {
     entry: [
-      setTransactionState(STATES.SORA_SUBMITTED),
+      setTransactionState(STATES.SORA_PENDING),
       ACTIONS.SET_BRIDGE_STATUS_PENDING
     ],
     invoke: {
@@ -97,7 +97,7 @@ const SORA_ETHEREUM_STATES = {
   },
   [STATES.ETHEREUM_SUBMITTED]: {
     entry: [
-      setTransactionState(STATES.ETHEREUM_SUBMITTED),
+      setTransactionState(STATES.ETHEREUM_PENDING),
       ACTIONS.SET_SECOND_TRANSACTION_STEP,
       ACTIONS.SET_BRIDGE_STATUS_PENDING
     ],
@@ -218,8 +218,6 @@ function createFSM (actions: Actions, states, initialState = STATES.INITIAL) {
     ? [actions.flow.first, actions.flow.second]
     : [actions.flow.second, actions.flow.first]
 
-  console.log(actions.history)
-
   const initialContext: Context = {
     history: actions.history,
     sendSoraTransactionPromise: transactionActions[0].send,
@@ -232,7 +230,6 @@ function createFSM (actions: Actions, states, initialState = STATES.INITIAL) {
     actions: {
       [ACTIONS.SET_SECOND_TRANSACTION_STEP]: assign({
         history: (context, event) => {
-          console.log('second step', 2)
           return ({
             ...context.history,
             transactionStep: 2,
@@ -242,7 +239,6 @@ function createFSM (actions: Actions, states, initialState = STATES.INITIAL) {
       }),
       [ACTIONS.SIGN_TRANSACTION]: assign({
         history: (context, event) => {
-          console.log('sign sora', event)
           return ({
             ...context.history,
             signed: true
@@ -251,7 +247,6 @@ function createFSM (actions: Actions, states, initialState = STATES.INITIAL) {
       }),
       [ACTIONS.SET_SORA_TRANSACTIONS_HASH]: assign({
         history: (context, event) => {
-          console.log('sora hash', event)
           return ({
             ...context.history,
             hash: event.data
@@ -260,7 +255,6 @@ function createFSM (actions: Actions, states, initialState = STATES.INITIAL) {
       }),
       [ACTIONS.SET_ETHEREUM_TRANSACTION_HASH]: assign({
         history: (context, event) => {
-          console.log('ethereum hash', event)
           return ({
             ...context.history,
             ethereumHash: event.data
@@ -269,7 +263,6 @@ function createFSM (actions: Actions, states, initialState = STATES.INITIAL) {
       }),
       [ACTIONS.SET_BRIDGE_STATUS_PENDING]: assign({
         history: (context, event) => {
-          console.log('set bridge bending')
           return ({
             ...context.history,
             status: BridgeTxStatus.Pending
@@ -278,7 +271,6 @@ function createFSM (actions: Actions, states, initialState = STATES.INITIAL) {
       }),
       [ACTIONS.SET_BRIDGE_STATUS_FAILURE]: assign({
         history: (context, event) => {
-          console.log('set bridge failure')
           return ({
             ...context.history,
             status: BridgeTxStatus.Failed,
@@ -288,7 +280,6 @@ function createFSM (actions: Actions, states, initialState = STATES.INITIAL) {
       }),
       [ACTIONS.SET_BRIDGE_STATUS_DONE]: assign({
         history: (context, event) => {
-          console.log('set bridge done')
           return ({
             ...context.history,
             status: BridgeTxStatus.Done,
@@ -303,8 +294,6 @@ function createFSM (actions: Actions, states, initialState = STATES.INITIAL) {
           throw new Error('Unexpected behaviour! Please check SORA transaction')
         }
 
-        console.log('SIGN', context.history.id)
-
         if (context.history.signed) return Promise.resolve()
 
         return context.signSoraTransactionPromise({
@@ -315,8 +304,6 @@ function createFSM (actions: Actions, states, initialState = STATES.INITIAL) {
         if (!context.sendSoraTransactionPromise) {
           throw new Error('Unexpected behaviour! Please check SORA transaction')
         }
-
-        console.log('send', context.history.id)
 
         return context.sendSoraTransactionPromise({
           txId: context.history.id

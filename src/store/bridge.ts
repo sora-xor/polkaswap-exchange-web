@@ -452,9 +452,7 @@ const actions = {
     commit(types.RECEIVE_TRANSACTION_REQUEST)
 
     try {
-      console.log(1231313123, hash)
       const request = await waitForApprovedRequest(hash) // If it causes an error, then -> catch -> SORA_REJECTED
-      console.log(1231313123, hash)
       const web3 = await web3Util.getInstance()
 
       if (!rootGetters['web3/isValidEthNetwork']) {
@@ -501,7 +499,6 @@ const actions = {
       return new Promise((resolve, reject) => {
         contractMethod.send({ gas, from: ethAccount })
           .on('transactionHash', hash => {
-            console.log('oppa hashik', hash)
             commit(types.RECEIVE_TRANSACTION_SUCCESS)
             resolve(hash)
           })

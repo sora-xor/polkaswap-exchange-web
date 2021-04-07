@@ -424,9 +424,7 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
       this.initializeTransactionStateMachine()
       this.isInitRequestCompleted = true
       this.currentTransactionStep = this.transactionStep
-      if (!this.historyItem) {
-        this.handleSendTransactionFrom()
-      }
+      await this.handleSendTransactionFrom()
     } else {
       router.push({ name: PageNames.Bridge })
     }
@@ -446,7 +444,6 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
     const historyItem = this.historyItem
       ? this.historyItem
       : await this.generateHistoryItem({ date: Date.now() })
-    console.log(historyItem)
     const machineStates = this.isSoraToEthereum ? SORA_ETHEREUM_STATES : ETHEREUM_SORA_STATES
     const initialState = this.initialTransactionState === this.currentTransactionState
       ? this.initialTransactionState
@@ -484,13 +481,8 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
     // Subscribe to transition events
     this.sendService
       .onTransition(state => {
-        // Update vuex state on transition
-        this.setCurrentTransactionState(state.value)
+        this.setCurrentTransactionState(state.context.history.transactionState)
         this.updateHistoryParams({ tx: state.context.history })
-
-        // So if it possible we will update history
-        // on transition of state machine
-        console.log('ONTRANSITION, ', state)
 
         if (state.context.history.hash && !this.soraTransactionHash.length) {
           this.setSoraTransactionHash(state.context.history.hash)
@@ -508,7 +500,6 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
         }
       })
       .start()
-    this.callFirstTransition()
   }
 
   setFromTransactionCompleted () {
@@ -588,7 +579,6 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
       if (this.isTransactionFromFailed) {
         this.callRetryTransition()
       } else {
-        console.log('here erer')
         this.callFirstTransition()
       }
     })
@@ -599,7 +589,6 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
       if (this.isTransactionToFailed) {
         this.callRetryTransition()
       } else {
-        console.log('operop opero')
         this.callSecondTransition()
       }
     })
