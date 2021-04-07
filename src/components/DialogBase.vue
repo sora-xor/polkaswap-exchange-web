@@ -2,11 +2,14 @@
   <s-dialog
     :visible.sync="isVisible"
     :title="title"
-    class="dialog-wrapper"
     :custom-class="customClass"
-    border-radius="medium"
-    top="80px"
-    width="496px"
+    v-bind="{
+      top: '80px',
+      width: '496px',
+      borderRadius: 'medium',
+      ...$attrs
+    }"
+    class="dialog-wrapper"
   >
     <slot />
     <slot slot="footer" name="footer" />

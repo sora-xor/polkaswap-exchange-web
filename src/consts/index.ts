@@ -1,4 +1,6 @@
 import pkg from '../../package.json'
+import { KnownBridgeAsset } from '@/utils/web3-util'
+import { LiquiditySourceTypes } from '@sora-substrate/util'
 
 export const app = {
   version: pkg.version,
@@ -6,9 +8,32 @@ export const app = {
   email: 'polkaswap@soramitsu.co.jp'
 }
 
+export const Links = {
+  about: {
+    sora: 'https://sora.org/',
+    polkadot: 'https://medium.com/polkadot-network/polkadot-js-extension-release-update-3b0d2d87edb8'
+  }
+}
+
 export const ZeroStringValue = '0'
 
 export const MetamaskCancellationCode = 4001
+
+export const DefaultSlippageTolerance = 0.5
+
+export enum MarketAlgorithms {
+  SMART = 'SMART',
+  TBC = 'TBC',
+  XYK = 'XYK'
+}
+
+export const DefaultMarketAlgorithm = MarketAlgorithms.SMART
+
+export const LiquiditySourceForMarketAlgorithm = {
+  [MarketAlgorithms.SMART]: LiquiditySourceTypes.Default,
+  [MarketAlgorithms.TBC]: LiquiditySourceTypes.MulticollateralBondingCurvePool,
+  [MarketAlgorithms.XYK]: LiquiditySourceTypes.XYKPool
+}
 
 export enum PageNames {
   About = 'About',
@@ -41,14 +66,24 @@ export enum Components {
   ConfirmSwap = 'ConfirmSwap',
   ConfirmRemoveLiquidity = 'ConfirmRemoveLiquidity',
   ConfirmTokenPairDialog = 'ConfirmTokenPairDialog',
-  Settings = 'Settings',
+  SettingsDialog = 'SettingsDialog',
+  SettingsHeader = 'Settings/Header',
+  SettingsTabs = 'Settings/Tabs',
+  SlippageTolerance = 'Settings/SlippageTolerance',
+  MarketAlgorithm = 'Settings/MarketAlgorithm',
   BrandedTooltip = 'BrandedTooltip',
   HelpDialog = 'HelpDialog',
+  AboutNetworkDialog = 'AboutNetworkDialog',
   SidebarItemContent = 'SidebarItemContent',
   SelectRegisteredAsset = 'SelectRegisteredAsset',
   ConfirmBridgeTransactionDialog = 'ConfirmBridgeTransactionDialog',
   BridgeTransaction = 'BridgeTransaction',
-  BridgeTransactionsHistory = 'BridgeTransactionsHistory'
+  BridgeTransactionsHistory = 'BridgeTransactionsHistory',
+  ToggleTextButton = 'ToggleTextButton',
+  GradientBox = 'Rewards/GradientBox',
+  TokensRow = 'Rewards/TokensRow',
+  RewardsAmountHeader = 'Rewards/AmountHeader',
+  RewardsAmountTable = 'Rewards/AmountTable'
 }
 
 interface SidebarMenuItem {
@@ -104,12 +139,12 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
   {
     icon: 'symbols-twitter-24',
     title: 'twitter',
-    href: 'https://twitter.com/sora_xor'
+    href: 'https://twitter.com/polkaswap'
   },
   {
     icon: 'symbols-telegram-24',
     title: 'telegram',
-    href: 'https://t.me/sora_xor'
+    href: 'https://t.me/polkaswap'
   }
 ]
 
@@ -146,7 +181,8 @@ export const AboutTopics = [
 export enum LogoSize {
   MINI = 'mini',
   SMALL = 'small',
-  MEDIUM = 'medium'
+  MEDIUM = 'medium',
+  LARGE = 'large'
 }
 
 export enum InfoTooltipPosition {
@@ -166,7 +202,7 @@ const gasLimit = {
   approve: 66000 * 2,
   sendERC20ToSidechain: 81000 * 2,
   mintTokensByPeers: 191285 * 2,
-  receievByEthereumAssetAddress: 0, // TODO: estimate it later
+  receiveByEthereumAssetAddress: 253979 * 2,
   receiveBySidechainAssetId: 252659 * 2
 }
 /**
@@ -179,13 +215,15 @@ export const EthereumGasLimits = [
   {
     XOR: gasLimit.approve + gasLimit.sendERC20ToSidechain,
     VAL: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    PSWAP: gasLimit.approve + gasLimit.sendERC20ToSidechain
+    PSWAP: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+    [KnownBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain
   },
   // SORA -> ETH
   {
     XOR: gasLimit.mintTokensByPeers,
     VAL: gasLimit.mintTokensByPeers,
-    PSWAP: gasLimit.receiveBySidechainAssetId // TODO: check it later
+    PSWAP: gasLimit.receiveBySidechainAssetId,
+    [KnownBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress
   }
 ]
 

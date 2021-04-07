@@ -17,9 +17,10 @@
           <s-form-item>
             <s-float-input
               class="s-input--token-value"
-              :decimals="firstToken && firstToken.decimals"
-              :disabled="!areTokensSelected"
               :value="firstTokenValue"
+              :decimals="(firstToken || {}).decimals"
+              :max="getMax((firstToken || {}).address)"
+              :disabled="!areTokensSelected"
               @input="handleTokenChange($event, setFirstTokenValue)"
             />
           </s-form-item>
@@ -50,9 +51,10 @@
           <s-form-item>
             <s-float-input
               class="s-input--token-value"
-              :decimals="secondToken && secondToken.decimals"
-              :disabled="!areTokensSelected"
               :value="secondTokenValue"
+              :decimals="(secondToken || {}).decimals"
+              :max="getMax((secondToken || {}).address)"
+              :disabled="!areTokensSelected"
               @input="handleTokenChange($event, setSecondTokenValue)"
             />
           </s-form-item>

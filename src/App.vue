@@ -13,7 +13,7 @@
               <div class="account-name">{{ accountInfo }}</div>
               <div class="account-icon">
                 <s-icon v-if="!accountConnected" name="finance-wallet-24" />
-                <div v-else class="account-avatar"/>
+                <WalletAvatar v-else :address="account.address"/>
               </div>
             </div>
           </s-button>
@@ -110,7 +110,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { connection, initWallet, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
+import { connection, initWallet, WALLET_CONSTS, WalletAvatar, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
 
 import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components } from '@/consts'
 
@@ -126,6 +126,7 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
 
 @Component({
   components: {
+    WalletAvatar,
     BrandedTooltip: lazyComponent(Components.BrandedTooltip),
     HelpDialog: lazyComponent(Components.HelpDialog),
     SidebarItemContent: lazyComponent(Components.SidebarItemContent)
@@ -235,6 +236,9 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   }
 
   destroyed (): void {
+    if (updateAccountAssetsSubscription) {
+      updateAccountAssetsSubscription.unsubscribe()
+    }
     connection.close()
   }
 }
@@ -408,8 +412,8 @@ $logo-width-big: 150px;
 $logo-horizontal-margin: $inner-spacing-mini / 2;
 $header-height: 64px;
 $sidebar-witdh: 160px;
-$sora-logo-height: 40px;
-$sora-logo-width: 171px;
+$sora-logo-height: 36px;
+$sora-logo-width: 173.7px;
 
 .app {
   &-main {
@@ -523,9 +527,8 @@ $sora-logo-width: 171px;
     background-color: var(--s-color-base-background);
     border-color: var(--s-color-base-background);
 
-    &:hover,
-    &:active,
-    &:focus {
+    &:hover, &.focusing, &.s-pressed {
+      color: inherit;
       background-color: var(--s-color-base-background-hover);
       border-color: var(--s-color-base-background-hover);
     }
@@ -577,7 +580,8 @@ $sora-logo-width: 171px;
     color: var(--s-color-base-content-tertiary);
     font-size: 15px;
     line-height: 16px;
-    margin-right: $inner-spacing-mini;
+    margin-right: $basic-spacing;
+    font-feature-settings: var(--s-font-feature-settings-singleline);
   }
 
   &__image {

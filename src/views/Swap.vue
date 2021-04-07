@@ -2,6 +2,7 @@
   <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
     <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
       <s-button
+        v-if="pairLiquiditySourcesAvailable"
         class="el-button--settings"
         type="action"
         icon="basic-settings-24"
@@ -25,8 +26,9 @@
         <s-form-item>
           <s-float-input
             class="s-input--token-value"
-            :decimals="tokenFrom && tokenFrom.decimals"
             :value="fromValue"
+            :decimals="(tokenFrom || {}).decimals"
+            :max="getMax((tokenFrom || {}).address)"
             @input="handleInputFieldFrom"
             @focus="handleFocusField(false)"
           />
@@ -64,7 +66,8 @@
           <s-float-input
             class="s-input--token-value"
             :value="toValue"
-            :decimals="tokenTo && tokenTo.decimals"
+            :decimals="(tokenTo || {}).decimals"
+            :max="getMax((tokenTo || {}).address)"
             @input="handleInputFieldTo"
             @focus="handleFocusField(true)"
           />
@@ -80,31 +83,40 @@
         </s-button>
       </div>
     </div>
-    <swap-info v-if="areTokensSelected && !areZeroAmounts" class="info-line-container" :show-price="true" :show-slippage-tolerance="true" />
     <s-button v-if="!connected" type="primary" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
-    <s-button v-else type="primary" :disabled="!areTokensSelected || areZeroAmounts || isInsufficientAmount || isInsufficientBalance" @click="handleConfirmSwap">
-      <template v-if="!areTokensSelected || (isZeroFromAmount && isZeroToAmount)">
+    <s-button v-else type="primary" :disabled="!areTokensSelected || !isAvailable || hasZeroAmount || isInsufficientLiquidity || isInsufficientAmount || isInsufficientBalance || isInsufficientXorForFee" @click="handleConfirmSwap">
+      <template v-if="!areTokensSelected">
+        {{ t('buttons.chooseTokens') }}
+      </template>
+      <template v-else-if="!isAvailable">
+        {{ t('swap.pairIsNotCreated') }}
+      </template>
+      <template v-else-if="areZeroAmounts">
         {{ t('buttons.enterAmount') }}
       </template>
-      <template v-else-if="isInsufficientLiquidity">
+      <template v-else-if="isAvailable && isInsufficientLiquidity">
         {{ t('swap.insufficientLiquidity') }}
       </template>
       <template v-else-if="isInsufficientAmount">
         {{ t('swap.insufficientAmount', { tokenSymbol: insufficientAmountTokenSymbol }) }}
       </template>
       <template v-else-if="isInsufficientBalance">
-        {{ t('exchange.insufficientBalance', { tokenSymbol: insufficientBalanceTokenSymbol }) }}
+        {{ t('exchange.insufficientBalance', { tokenSymbol: tokenFrom.symbol }) }}
+      </template>
+      <template v-else-if="isInsufficientXorForFee">
+        {{ t('exchange.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
       </template>
       <template v-else>
         {{ t('exchange.Swap') }}
       </template>
     </s-button>
-    <swap-info v-if="areTokensSelected && !areZeroAmounts" class="info-line-container" />
+    <slippage-tolerance class="slippage-tolerance-settings" />
+    <swap-info v-if="areTokensSelected && !hasZeroAmount" class="info-line-container" />
     <select-token :visible.sync="showSelectTokenDialog" :connected="connected" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
     <confirm-swap :visible.sync="showConfirmSwapDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmSwap" @checkConfirm="updateAccountAssets" />
-    <settings :visible.sync="showSettings" />
+    <settings-dialog :visible.sync="showSettings" />
   </s-form>
 </template>
 
@@ -112,13 +124,13 @@
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, KnownSymbols, FPNumber, CodecString, AccountAsset } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
-import { isWalletConnected, isXorAccountAsset, isMaxButtonAvailable, getMaxValue } from '@/utils'
+import { isWalletConnected, isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -127,7 +139,8 @@ const namespace = 'swap'
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    Settings: lazyComponent(Components.Settings),
+    SettingsDialog: lazyComponent(Components.SettingsDialog),
+    SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     SwapInfo: lazyComponent(Components.SwapInfo),
     TokenLogo: lazyComponent(Components.TokenLogo),
     SelectToken: lazyComponent(Components.SelectToken),
@@ -135,7 +148,7 @@ const namespace = 'swap'
   }
 })
 export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
-  @Getter('tokenXOR', { namespace }) tokenXOR!: AccountAsset
+  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset
   @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset
   @Getter('fromValue', { namespace }) fromValue!: string
@@ -143,33 +156,42 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Getter('isExchangeB', { namespace }) isExchangeB!: boolean
   @Getter('networkFee', { namespace }) networkFee!: CodecString
   @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString
+  @Getter('isAvailable', { namespace }) isAvailable!: boolean
 
   @Action('setTokenFromAddress', { namespace }) setTokenFromAddress!: (address?: string) => Promise<void>
   @Action('setTokenToAddress', { namespace }) setTokenToAddress!: (address?: string) => Promise<void>
   @Action('setFromValue', { namespace }) setFromValue!: (value: string) => Promise<void>
   @Action('setToValue', { namespace }) setToValue!: (value: string) => Promise<void>
-  @Action('setTokenFromPrice', { namespace }) setTokenFromPrice!: (isTokenFromPrice: boolean) => Promise<void>
   @Action('setMinMaxReceived', { namespace }) setMinMaxReceived!: (value: CodecString) => Promise<void>
   @Action('setExchangeB', { namespace }) setExchangeB!: (isExchangeB: boolean) => Promise<void>
   @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>
   @Action('setNetworkFee', { namespace }) setNetworkFee!: (value: CodecString) => Promise<void>
+  @Action('checkLiquidity', { namespace }) checkLiquidity
 
   @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: () => Promise<void>
   @Action('getAssets', { namespace: 'assets' }) getAssets
+  @Action('setPairLiquiditySources', { namespace }) setPairLiquiditySources!: (liquiditySources: Array<LiquiditySourceTypes>) => Promise<void>
 
   @Getter slippageTolerance!: number
   @Getter accountAssets!: Array<AccountAsset> // Wallet store
+  @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes
+  @Getter('pairLiquiditySourcesAvailable', { namespace }) pairLiquiditySourcesAvailable!: boolean
 
   @Watch('slippageTolerance')
   private handleSlippageToleranceChange (): void {
     this.calcMinMaxRecieved()
   }
 
+  @Watch('liquiditySource')
+  private handleLiquiditySourceChange (): void {
+    this.recountSwapValues()
+  }
+
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
+  KnownSymbols = KnownSymbols
   isInsufficientAmount = false
-  insufficientBalanceTokenSymbol = ''
   insufficientAmountTokenSymbol = ''
   isTokenFromSelected = false
   showSettings = false
@@ -186,48 +208,39 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   get isZeroFromAmount (): boolean {
-    return this.isZeroValue(this.fromValue)
+    return asZeroValue(this.fromValue)
   }
 
   get isZeroToAmount (): boolean {
-    return this.isZeroValue(this.toValue)
+    return asZeroValue(this.toValue)
   }
 
-  get areZeroAmounts (): boolean {
+  get hasZeroAmount (): boolean {
     return this.isZeroFromAmount || this.isZeroToAmount
   }
 
+  get areZeroAmounts (): boolean {
+    return this.isZeroFromAmount && this.isZeroToAmount
+  }
+
   get isMaxSwapAvailable (): boolean {
-    return isMaxButtonAvailable(this.areTokensSelected, this.tokenFrom, this.fromValue, this.networkFee)
+    return isMaxButtonAvailable(this.areTokensSelected, this.tokenFrom, this.fromValue, this.networkFee, this.tokenXOR)
+  }
+
+  get preparedForSwap (): boolean {
+    return this.connected && this.areTokensSelected
   }
 
   get isInsufficientLiquidity (): boolean {
-    if (!(this.connected && this.areTokensSelected && !(this.isZeroFromAmount && this.isZeroToAmount))) {
-      return false
-    }
-    return this.areZeroAmounts && +this.liquidityProviderFee === 0
+    return this.isAvailable && this.preparedForSwap && !this.areZeroAmounts && this.hasZeroAmount && asZeroValue(this.liquidityProviderFee)
   }
 
   get isInsufficientBalance (): boolean {
-    if (this.connected && this.areTokensSelected) {
-      let fpBalance = this.getFPNumberFromCodec(this.tokenFrom.balance, this.tokenFrom.decimals)
-      const fpAmount = this.getFPNumber(this.fromValue, this.tokenFrom.decimals)
-      if (FPNumber.lt(fpBalance, fpAmount)) {
-        this.insufficientBalanceTokenSymbol = this.tokenFrom.symbol as string
-        return true
-      }
-      const fpFee = this.getFPNumberFromCodec(this.networkFee, this.tokenFrom.decimals)
-      this.insufficientBalanceTokenSymbol = KnownSymbols.XOR
-      if (isXorAccountAsset(this.tokenFrom)) {
-        return !(FPNumber.lt(fpFee, fpBalance.sub(fpAmount)) || FPNumber.eq(fpFee, fpBalance.sub(fpAmount)))
-      }
-      if (!this.tokenXOR) {
-        return true
-      }
-      fpBalance = this.getFPNumberFromCodec(this.tokenXOR.balance, this.tokenXOR.decimals)
-      return !(FPNumber.lt(fpFee, fpBalance) || FPNumber.eq(fpFee, fpBalance))
-    }
-    return false
+    return this.preparedForSwap && hasInsufficientBalance(this.tokenFrom, this.fromValue, this.networkFee)
+  }
+
+  get isInsufficientXorForFee (): boolean {
+    return this.preparedForSwap && hasInsufficientXorForFee(this.tokenXOR, this.networkFee)
   }
 
   created () {
@@ -240,19 +253,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       }
       if (this.tokenFrom && this.tokenTo) {
         this.getNetworkFee()
+        this.checkLiquidity()
+        this.updatePairLiquiditySources()
       }
     })
   }
 
   formatBalance (token): string {
-    if (!token?.balance) {
-      return ''
-    }
-    return this.formatCodecNumber(token.balance)
-  }
-
-  resetInsufficientAmountFlag (): void {
-    this.isInsufficientAmount = false
+    return formatAssetBalance(token)
   }
 
   resetFieldFrom (): void {
@@ -271,14 +279,26 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
         this.fromValue,
         this.toValue,
         this.slippageTolerance,
-        this.isExchangeB
+        this.isExchangeB,
+        this.liquiditySource
       )
       this.setNetworkFee(networkFee)
     }
   }
 
+  async updatePairLiquiditySources (): Promise<void> {
+    const isPair = !!this.tokenFrom?.address && !!this.tokenTo?.address
+
+    const sources = isPair ? (await api.getEnabledLiquiditySourcesForPair(
+      this.tokenFrom?.address,
+      this.tokenTo?.address
+    )) : []
+
+    this.setPairLiquiditySources(sources)
+  }
+
   async handleInputFieldFrom (value): Promise<any> {
-    if (!this.areTokensSelected || this.isZeroValue(value)) {
+    if (!this.areTokensSelected || asZeroValue(value)) {
       this.resetFieldTo()
     }
 
@@ -289,7 +309,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   async handleInputFieldTo (value): Promise<any> {
-    if (!this.areTokensSelected || this.isZeroValue(value)) {
+    if (!this.areTokensSelected || asZeroValue(value)) {
       this.resetFieldFrom()
     }
 
@@ -305,13 +325,13 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     const resetOppositeValue = this.isExchangeB ? this.resetFieldFrom : this.resetFieldTo
     const token = this.isExchangeB ? this.tokenTo : this.tokenFrom
 
-    if (!this.areTokensSelected || this.isZeroValue(value)) return
+    if (!this.areTokensSelected || asZeroValue(value)) return
 
     try {
       this.isRecountingProcess = true
-      this.resetInsufficientAmountFlag()
+      this.isInsufficientAmount = false
 
-      const { amount, fee } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, this.isExchangeB)
+      const { amount, fee } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, this.isExchangeB, this.liquiditySource)
 
       setOppositeValue(this.getStringFromCodec(amount, token.decimals))
       this.setLiquidityProviderFee(fee)
@@ -379,6 +399,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     await this.setTokenFromAddress(toAddress)
     await this.setTokenToAddress(fromAddress)
 
+    this.updatePairLiquiditySources()
+
     if (this.isExchangeB) {
       this.setExchangeB(false)
       await this.handleInputFieldFrom(this.toValue)
@@ -417,6 +439,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       } else {
         await this.setTokenToAddress(token.address)
       }
+      await this.checkLiquidity()
+      await this.updatePairLiquiditySources()
       await this.recountSwapValues()
     }
   }
@@ -438,15 +462,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     if (isSwapConfirmed) {
       this.resetFieldFrom()
       this.resetFieldTo()
-      this.setTokenFromPrice(true)
       this.resetPrices()
       this.setExchangeB(false)
     }
     await this.updateAccountAssets()
-  }
-
-  private isZeroValue (value: string): boolean {
-    return +value === 0
   }
 
   openSettingsDialog (): void {
@@ -481,6 +500,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     &--show {
       opacity: 1;
     }
+  }
+
+  .slippage-tolerance-settings {
+    margin-top: $inner-spacing-medium;
   }
 
   .el-button--switch-tokens {

@@ -1,5 +1,5 @@
 import { Vue, Component } from 'vue-property-decorator'
-import { FPNumber, CodecString } from '@sora-substrate/util'
+import { FPNumber, CodecString, MaxTotalSupply, KnownAssets } from '@sora-substrate/util'
 
 @Component
 export default class NumberFormatterMixin extends Vue {
@@ -25,5 +25,16 @@ export default class NumberFormatterMixin extends Vue {
 
   isCodecZero (value: CodecString, decimals?: number): boolean {
     return this.getFPNumberFromCodec(value, decimals).isZero()
+  }
+
+  getMax (address: string): string {
+    if (!address) {
+      return MaxTotalSupply
+    }
+    const knownAsset = KnownAssets.get(address)
+    if (!knownAsset) {
+      return MaxTotalSupply
+    }
+    return knownAsset.totalSupply || MaxTotalSupply
   }
 }

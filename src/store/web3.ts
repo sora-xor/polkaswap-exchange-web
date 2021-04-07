@@ -7,6 +7,8 @@ import flow from 'lodash/fp/flow'
 import { FPNumber } from '@sora-substrate/util'
 
 import web3Util, { ABI, Contract, EthNetworkName, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
+import { ZeroStringValue } from '@/consts'
+import { asZeroValue } from '@/utils'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -70,8 +72,8 @@ const getters = {
   addressOTHER (state) {
     return state.contractAddress.OTHER
   },
-  isEthAccountConnected (state) {
-    return !(state.ethAddress === '' || state.ethAddress === 'undefined')
+  isExternalAccountConnected (state) {
+    return !!state.ethAddress && state.ethAddress !== 'undefined'
   },
   ethAddress (state) {
     return state.ethAddress
@@ -95,8 +97,8 @@ const getters = {
 
 const mutations = {
   [types.RESET] (state) {
-    // we shouldn't reset networks, setted from env
-    const networkSettingsKeys = ['soraNetwork', 'defaultEthNetwork']
+    // we shouldn't reset networks, setted from env & contracts
+    const networkSettingsKeys = ['soraNetwork', 'defaultEthNetwork', 'contractAddress', 'smartContracts']
     const s = initialState()
 
     Object.keys(s).filter(key => !networkSettingsKeys.includes(key)).forEach(key => {
@@ -167,7 +169,7 @@ const mutations = {
 }
 
 const actions = {
-  async connectEthWallet ({ commit, getters, dispatch }, { provider }) {
+  async connectExternalAccount ({ commit, getters, dispatch }, { provider }) {
     commit(types.CONNECT_ETH_WALLET_REQUEST)
     try {
       const address = await web3Util.onConnect({ provider })
@@ -182,7 +184,7 @@ const actions = {
     }
   },
 
-  async switchEthAccount ({ commit, dispatch }, { address }) {
+  async switchExternalAccount ({ commit, dispatch }, { address = '' } = {}) {
     commit(types.SWITCH_ETH_WALLET_REQUEST)
     try {
       web3Util.removeEthUserAddress()
@@ -219,7 +221,7 @@ const actions = {
     }
   },
 
-  async disconnectEthWallet ({ commit }) {
+  async disconnectExternalAccount ({ commit }) {
     commit(types.DISCONNECT_ETH_WALLET_REQUEST)
     try {
       web3Util.removeEthUserAddress()
@@ -239,36 +241,6 @@ const actions = {
       address: ETHEREUM,
       contracts: { VAL: INTERNAL, OTHER: { BRIDGE, ERC20 }, XOR: INTERNAL }
     })
-  },
-
-  async getBalance ({ commit, getters, rootGetters }, { symbol }) {
-    commit(types.GET_BALANCE_REQUEST)
-    try {
-      const web3 = await web3Util.getInstance()
-      // TODO: Flter by address instead of symbol
-      const asset = rootGetters['assets/registeredAssets'].find(item => item.symbol === symbol)
-      if (!asset) {
-        commit(types.GET_BALANCE_SUCCESS)
-        return '-'
-      }
-      const tokenInstance = new web3.eth.Contract(ABI.balance as any)
-      const address = asset.externalAddress
-      if (!address) {
-        commit(types.GET_BALANCE_SUCCESS)
-        return '-'
-      }
-      tokenInstance.options.address = address
-      const account = getters.ethAddress
-      const methodArgs = [account]
-      const contractMethod = tokenInstance.methods.balanceOf(...methodArgs)
-      const balance = await contractMethod.call()
-      commit(types.GET_BALANCE_SUCCESS)
-      return FPNumber.fromCodecValue(balance).toString()
-    } catch (error) {
-      console.error(error)
-      commit(types.GET_BALANCE_FAILURE)
-      return '-'
-    }
   },
 
   async getEthBalance ({ commit, getters }) {
@@ -296,34 +268,38 @@ const actions = {
     commit(types.GET_BALANCE_REQUEST)
     try {
       const web3 = await web3Util.getInstance()
-      const tokenInstance = new web3.eth.Contract(ABI.balance as any)
-      if (!address) {
+      const isValidAddress = !asZeroValue(web3.utils.hexToNumberString(address))
+      if (!isValidAddress) {
         commit(types.GET_BALANCE_SUCCESS)
-        return '-'
+        return ZeroStringValue
       }
+      const tokenInstance = new web3.eth.Contract(ABI.balance as any)
       tokenInstance.options.address = address
       const account = getters.ethAddress
       const methodArgs = [account]
-      const contractMethod = tokenInstance.methods.balanceOf(...methodArgs)
-      const balance = await contractMethod.call()
+      const balanceOfMethod = tokenInstance.methods.balanceOf(...methodArgs)
+      const decimalsMethod = tokenInstance.methods.decimals()
+      const balance = await balanceOfMethod.call()
+      const decimals = await decimalsMethod.call()
       commit(types.GET_BALANCE_SUCCESS)
-      return `${balance}`
+      const precision18 = new FPNumber(0)
+      return precision18.add(FPNumber.fromCodecValue(`${balance}`, +decimals)).toCodecString()
     } catch (error) {
       console.error(error)
       commit(types.GET_BALANCE_FAILURE)
-      return '-'
+      return ZeroStringValue
     }
   },
   async getEthTokenAddressByAssetId ({ commit, getters }, { address }) {
     commit(types.GET_ETH_TOKEN_ADDRESS_REQUEST)
     try {
+      if (!address) {
+        commit(types.GET_ETH_TOKEN_ADDRESS_SUCCESS)
+        return ''
+      }
       const web3 = await web3Util.getInstance()
       const contract = getters[`contract${KnownBridgeAsset.Other}`]
       const contractInstance = new web3.eth.Contract(contract[OtherContractType.Bridge].abi)
-      if (!address) {
-        commit(types.GET_ETH_TOKEN_ADDRESS_SUCCESS)
-        return '-'
-      }
       const contractAddress = getters[`address${KnownBridgeAsset.Other}`]
       contractInstance.options.address = contractAddress.MASTER
       const methodArgs = [address]

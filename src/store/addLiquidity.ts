@@ -154,18 +154,18 @@ const mutations = {
 }
 
 const actions = {
-  setFirstTokenAddress ({ commit, dispatch }, address: string) {
+  async setFirstTokenAddress ({ commit, dispatch }, address: string) {
     commit(types.SET_FIRST_TOKEN_ADDRESS, address)
     commit(types.SET_FIRST_TOKEN_VALUE, '')
     commit(types.SET_SECOND_TOKEN_VALUE, '')
-    dispatch('checkLiquidity')
+    await dispatch('checkLiquidity')
   },
 
-  setSecondTokenAddress ({ commit, dispatch }, address: string) {
+  async setSecondTokenAddress ({ commit, dispatch }, address: string) {
     commit(types.SET_SECOND_TOKEN_ADDRESS, address)
     commit(types.SET_FIRST_TOKEN_VALUE, '')
     commit(types.SET_SECOND_TOKEN_VALUE, '')
-    dispatch('checkLiquidity')
+    await dispatch('checkLiquidity')
   },
 
   async checkReserve ({ commit, getters, dispatch }) {
@@ -190,7 +190,7 @@ const actions = {
         const isAvailable = await api.checkLiquidity(getters.firstToken?.address, getters.secondToken?.address)
         commit(types.CHECK_LIQUIDITY_SUCCESS, isAvailable)
 
-        dispatch('checkReserve')
+        await dispatch('checkReserve')
       } catch (error) {
         commit(types.CHECK_LIQUIDITY_FAILURE, error)
       }
@@ -306,9 +306,11 @@ const actions = {
     commit(types.SET_FOCUSED_FIELD, null)
   },
 
-  resetData ({ commit }) {
-    commit(types.SET_FIRST_TOKEN_ADDRESS, '')
-    commit(types.SET_SECOND_TOKEN_ADDRESS, '')
+  resetData ({ commit }, withAssets = false) {
+    if (!withAssets) {
+      commit(types.SET_FIRST_TOKEN_ADDRESS, '')
+      commit(types.SET_SECOND_TOKEN_ADDRESS, '')
+    }
     commit(types.SET_FIRST_TOKEN_VALUE, '')
     commit(types.SET_SECOND_TOKEN_VALUE, '')
   }

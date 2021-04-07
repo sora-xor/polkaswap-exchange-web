@@ -10,8 +10,9 @@
           <s-float-input
             ref="removePart"
             :class="['s-input--token-value', 's-input--remove-part', removePartCharClass]"
-            :decimals="0"
             :value="String(removePartInput)"
+            :decimals="0"
+            :max="100"
             @input="handleRemovePartChange"
             @focus="setFocusedField('removePart')"
             @blur="resetFocusedField"
@@ -27,7 +28,7 @@
           <div class="input-title p4">{{ t('removeLiquidity.input') }}</div>
           <div v-if="isWalletConnected && liquidity" class="token-balance">
             <span class="token-balance-title">{{ t('createPair.balance') }}</span>
-            <span class="token-balance-value">{{ getTokenBalance(liquidity) }}</span>
+            <span class="token-balance-value">{{ getFormattedLiquidityBalance(liquidity) }}</span>
           </div>
         </div>
         <div class="input-line-content">
@@ -35,8 +36,9 @@
             <s-float-input
               ref="liquidityAmount"
               class="s-input--token-value"
-              :decimals="liquidity && liquidity.decimals"
               :value="liquidityAmount"
+              :decimals="(liquidity || {}).decimals"
+              :max="getTokenMaxAmount(liquidityBalance)"
               @input="setLiquidityAmount"
               @focus="setFocusedField('liquidityAmount')"
               @blur="resetFocusedField"
@@ -68,8 +70,9 @@
             <s-float-input
               ref="firstTokenAmount"
               class="s-input--token-value"
-              :decimals="firstToken && firstToken.decimals"
               :value="firstTokenAmount"
+              :decimals="(firstToken || {}).decimals"
+              :max="getTokenMaxAmount(firstTokenBalance)"
               @input="handleTokenChange($event, setFirstTokenAmount)"
               @focus="setFocusedField('firstTokenAmount')"
               @blur="resetFocusedField"
@@ -96,8 +99,9 @@
             <s-float-input
               ref="secondTokenAmount"
               class="s-input--token-value"
-              :decimals="secondToken && secondToken.decimals"
               :value="secondTokenAmount"
+              :decimals="(secondToken || {}).decimals"
+              :max="getTokenMaxAmount(secondTokenBalance)"
               @input="handleTokenChange($event, setSecondTokenAmount)"
               @focus="setFocusedField('secondTokenAmount')"
               @blur="resetFocusedField"
@@ -132,12 +136,15 @@
         />
       </div>
 
-      <s-button type="primary" border-radius="small" :disabled="isEmptyAmount || isInsufficientBalance" @click="openConfirmDialog">
+      <s-button type="primary" border-radius="small" :disabled="isEmptyAmount || isInsufficientBalance || isInsufficientXorForFee" @click="openConfirmDialog">
         <template v-if="isEmptyAmount">
           {{ t('buttons.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
           {{ t('exchange.insufficientBalance', { tokenSymbol: t('removeLiquidity.liquidity') }) }}
+        </template>
+        <template v-else-if="isInsufficientXorForFee">
+          {{ t('exchange.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
         </template>
         <template v-else>
           {{ t('removeLiquidity.remove') }}
@@ -160,6 +167,7 @@ import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
+import { isMaxButtonAvailable, hasInsufficientXorForFee, formatAssetBalance } from '@/utils'
 
 const namespace = 'removeLiquidity'
 
@@ -190,8 +198,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
   @Getter('secondTokenBalance', { namespace }) secondTokenBalance!: CodecString
   @Getter('fee', { namespace }) fee!: CodecString
-  @Getter('xorBalance', { namespace: 'assets' }) xorBalance!: any
-  @Getter('xorAsset', { namespace: 'assets' }) xorAsset!: any
+  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
 
@@ -257,12 +264,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   }
 
   get isMaxButtonAvailable (): boolean {
-    if (!this.isWalletConnected || +this.liquidityBalance === 0) {
-      return false
-    }
-    const balance = this.getFPNumberFromCodec(this.liquidityBalance)
-    const amount = this.getFPNumber(this.liquidityAmount)
-    return !FPNumber.eq(balance, amount)
+    return isMaxButtonAvailable(this.areTokensSelected, this.liquidity, this.liquidityAmount, this.fee, this.tokenXOR, true)
   }
 
   get isEmptyAmount (): boolean {
@@ -283,15 +285,8 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     )
   }
 
-  get isInsufficientXorBalance (): boolean {
-    if (this.areTokensSelected) {
-      const xorValue = this.getFPNumberFromCodec(this.fee, this.xorAsset.decimals)
-      const xorBalance = this.getFPNumberFromCodec(this.xorBalance, this.xorAsset.decimals)
-
-      return FPNumber.gt(xorValue, xorBalance)
-    }
-
-    return true
+  get isInsufficientXorForFee (): boolean {
+    return hasInsufficientXorForFee(this.tokenXOR, this.fee)
   }
 
   get removePartCharClass (): string {
@@ -321,11 +316,15 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     }
   }
 
-  getTokenBalance (token: any): string {
-    if (!token?.balance) {
-      return ''
+  getFormattedLiquidityBalance (liquidity: any): string {
+    return formatAssetBalance(liquidity, { parseAsLiquidity: true })
+  }
+
+  getTokenMaxAmount (tokenBalance: CodecString, decimals?: number): string | undefined {
+    if (!tokenBalance) {
+      return undefined
     }
-    return this.formatCodecNumber(token.balance, token.decimals)
+    return this.getStringFromCodec(tokenBalance, decimals)
   }
 
   get formattedFee (): string {

@@ -11,15 +11,24 @@ export default {
   transactionSubmittedText: 'Transaction was submitted',
   unknownErrorText: 'ERROR Something went wrong...',
   connectWalletText: 'Connect account',
-  connectWalletTextTooltip: 'Connect to SORA Network with polkadot{.js}',
+  changeAccountText: 'Change account',
+  connectedText: 'Connected',
+  connectWalletTextTooltip: 'Connect to @:soraText Network with polkadot{.js}',
+  walletProviderConnectionError: '{provider} is not found. Please install it!',
   bridgeText: 'Bridge',
   comingSoonText: 'Coming Soon',
   poweredBy: 'Powered by',
   confirmText: 'Confirm',
   confirmTransactionText: 'Confirm transaction in {direction}',
+  retryText: 'Retry',
+  networkFeeText: 'Network Fee',
+  networkFeeTooltipText: 'Network fee is used to ensure @:soraText system\'s growth and stable performance.',
+  marketAlgorithmText: 'Market Algorithm',
+  insufficientBalanceText: 'Insufficient {tokenSymbol} balance',
+  pairIsNotCreated: 'Token pair isn\'t created',
   assetNames: {
-    [KnownSymbols.XOR]: 'Sora',
-    [KnownSymbols.VAL]: 'Sora Validator Token',
+    [KnownSymbols.XOR]: 'SORA',
+    [KnownSymbols.VAL]: 'SORA Validator Token',
     [KnownSymbols.PSWAP]: 'Polkaswap'
   },
   pageTitle: {
@@ -65,9 +74,22 @@ export default {
     appVersion: '@:appName version',
     contactUs: 'Contact us'
   },
+  aboutNetworkDialog: {
+    title: 'About',
+    learnMore: 'Learn more',
+    network: {
+      title: 'What is @:soraText?',
+      description: 'Polkaswap is built on top of the @:soraText Network, and the @:soraText token (XOR) is used for gas/fees and liquidity provision on Polkaswap. @:soraText Network allows for reduced fees, faster transactions and simpler consensus finalization and is focused on delivering interoperability across other blockchain ecosystems like @:(ethereumText).'
+    },
+    polkadot: {
+      title: 'What is polkadot{.js}?',
+      description: 'Polkadot{.js} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including @:soraText, Polkadot and Kusama. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized.'
+    }
+  },
   buttons: {
     max: 'MAX',
     chooseToken: 'Choose token',
+    chooseAToken: 'Choose a token',
     chooseTokens: 'Choose tokens',
     enterAmount: 'Enter amount'
   },
@@ -76,13 +98,22 @@ export default {
     to: 'To'
   },
   operations: {
+    [Operation.Swap]: 'Swap',
+    [Operation.Transfer]: 'Transfer',
+    [Operation.AddLiquidity]: 'Add Liquidity',
+    [Operation.RemoveLiquidity]: 'Remove Liquidity',
+    [Operation.CreatePair]: 'Create Pair',
+    [Operation.RegisterAsset]: 'Register Asset',
+    [Operation.ClaimRewards]: 'Claim Rewards',
+    andText: 'and',
     [TransactionStatus.Finalized]: {
       [Operation.Transfer]: 'Sent {amount} {symbol} to {address}',
       [Operation.Swap]: 'Swapped {amount} {symbol} for {amount2} {symbol2}',
       [Operation.AddLiquidity]: 'Supplied {amount} {symbol} and {amount2} {symbol2}',
       [Operation.RemoveLiquidity]: 'Removed {amount} {symbol} and {amount2} {symbol2}',
       [Operation.CreatePair]: 'Supplied {amount} {symbol} and {amount2} {symbol2}',
-      [Operation.RegisterAsset]: 'Registered {symbol} asset'
+      [Operation.RegisterAsset]: 'Registered {symbol} asset',
+      [Operation.ClaimRewards]: 'Reward claimed successfully {rewards}'
     },
     [TransactionStatus.Error]: {
       [Operation.Transfer]: 'Failed to send {amount} {symbol} to {address}',
@@ -90,7 +121,8 @@ export default {
       [Operation.AddLiquidity]: 'Failed to supply {amount} {symbol} and {amount2} {symbol2}',
       [Operation.RemoveLiquidity]: 'Failed to remove {amount} {symbol} and {amount2} {symbol2}',
       [Operation.CreatePair]: 'Failed to supply {amount} {symbol} and {amount2} {symbol2}',
-      [Operation.RegisterAsset]: 'Failed to register {symbol} asset'
+      [Operation.RegisterAsset]: 'Failed to register {symbol} asset',
+      [Operation.ClaimRewards]: 'Failed to claim rewards {rewards}'
     }
   },
   pageNotFound: {
@@ -114,12 +146,12 @@ export default {
     metamask: '@:metamask'
   },
   about: {
-    polkaswapText: 'Polkaswap - decentralised token exchange for Polkadot ecosystem. Swap any token on SORA, add liquidity, create exchanges, earn through passive market making, build decentralized price feeds.',
+    polkaswapText: 'Polkaswap - decentralised token exchange for Polkadot ecosystem. Swap any token on @:soraText, add liquidity, create exchanges, earn through passive market making, build decentralized price feeds.',
     openExchange: 'Open exchange',
     mediumLink: 'Medium',
     githubLink: 'Github',
     [Topics.SwapTokens]: {
-      title: 'Swap tokens on SORA network and other bridged networks',
+      title: 'Swap tokens on @:soraText network and other bridged networks',
       text: 'Use Polkaswap exchange or integrate into your project using the SDK'
     },
     [Topics.PassiveEarning]: {
@@ -139,7 +171,7 @@ export default {
     [PageNames.Swap]: 'Swap',
     [PageNames.Pool]: 'Pool',
     balance: 'Balance',
-    insufficientBalance: 'Insufficient {tokenSymbol} balance',
+    insufficientBalance: '@:insufficientBalanceText',
     price: 'Price',
     transactionSubmitted: 'Transaction submitted',
     transactionMessage: '{firstToken} and {secondToken}',
@@ -157,8 +189,9 @@ export default {
     priceImpactTooltip: 'The difference between the market price and estimated price due to trade size.',
     liquidityProviderFee: 'Liquidity Provider Fee',
     liquidityProviderFeeTooltip: 'A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive.',
-    networkFee: 'Network Fee',
-    networkFeeTooltip: 'Network fee is used to ensure SORA system\'s growth and stable performance.',
+    networkFee: '@:networkFeeText',
+    pairIsNotCreated: '@:pairIsNotCreated',
+    networkFeeTooltip: '@:networkFeeTooltipText',
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
     insufficientLiquidity: 'Insufficient liquidity for this trade',
     confirmSwap: 'Confirm swap',
@@ -174,43 +207,41 @@ export default {
     pooledToken: '{tokenSymbol} Pooled',
     pairTokens: '{pair} Pool Tokens',
     poolShare: 'Your pool share',
-    comingSoon: '@:comingSoon',
     unknownAsset: 'Unknown asset',
-    description: 'When you add liquidity, you are given pool tokens representing your position. These tokens automaticaly earn fees proportional to your share of the pool, and can be redeemed at any time.'
+    description: 'When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.'
   },
   bridge: {
     title: 'Hashi Bridge',
-    info: 'Convert your tokens from SORA Network to Ethereum Network and viceversa.',
+    info: 'Convert your tokens from the @:soraText network to the @:ethereumText network, and vice versa.',
     balance: 'Balance',
     connectWallet: '@:connectWalletText',
-    connected: 'Connected',
-    changeWallet: 'Change wallet',
+    connected: '@:connectedText',
+    changeAccount: '@:changeAccountText',
     changeNetwork: '@:changeNetworkText',
     next: 'Next',
     connectWallets: 'Connect wallets to view respective transaction history.',
-    soraNetworkFee: 'Sora Network Fee',
-    ethereumNetworkFee: 'Ethereum Network Fee',
+    soraNetworkFee: '@:soraText Network Fee',
+    ethereumNetworkFee: '@:ethereumText Network Fee',
     tooltipValue: '@:comingSoonText',
     total: 'Total',
     viewHistory: 'View transactions history',
     transactionSubmitted: 'Transaction submitted',
     transactionMessage: '{assetA} for {assetB}',
-    notRegisteredAsset: 'Asset {assetSymbol} is not registered',
-    walletProviderConnectionError: '{provider} is not found. Please install it!'
+    notRegisteredAsset: 'Asset {assetSymbol} is not registered'
   },
   selectRegisteredAsset: {
     title: 'Select a token',
     search: {
       title: 'Tokens',
       placeholder: 'Search Token Name, Symbol, or Address',
-      networkLabelSora: 'SORA network tokens',
-      networkLabelEthereum: 'Ethereum network mirror tokens',
+      networkLabelSora: '@:soraText network tokens',
+      networkLabelEthereum: '@:ethereumText network mirror tokens',
       mirrorPrefix: 'Mirror ',
       emptyListMessage: 'No results'
     },
     customAsset: {
       title: 'Custom',
-      customInfo: 'Important! Custom tokens must be registered in SORA.',
+      customInfo: 'Important! Custom tokens must be registered in @:(soraText).',
       registerToken: 'Register token',
       addressPlaceholder: 'Asset ID',
       symbolPlaceholder: 'Token symbol',
@@ -220,7 +251,7 @@ export default {
   },
   confirmBridgeTransactionDialog: {
     confirmTransaction: 'Confirm transaction',
-    insufficientBalance: 'Insufficient {assetSymbol} balance',
+    insufficientBalance: '@:insufficientBalanceText',
     changeNetwork: '@:changeNetworkText',
     metamask: '@:metamask',
     sora: '@:soraText',
@@ -237,10 +268,10 @@ export default {
     },
     status: {
       pending: '{step} transactions pending...',
-      failed: '{step} transactions failed. Retry.',
+      failed: '{step} transactions failed. @:(retryText).',
       confirm: 'Confirm 2nd of 2 transactions...',
       complete: 'Complete',
-      convertionComplete: 'Convertion complete'
+      convertionComplete: 'Conversion complete'
     },
     statuses: {
       waiting: 'Waiting',
@@ -265,18 +296,20 @@ export default {
     ethereum: '@:ethereumText',
     sora: '@:soraText',
     pending: '<span class="network-title">{network}</span> transaction pending...',
-    retry: 'Retry',
+    retry: '@:retryText',
     metamask: '@:metamask',
     confirm: '@:confirmTransactionText',
     newTransaction: 'Create new transaction',
-    changeNetwork: '@:changeNetworkText'
+    changeNetwork: '@:changeNetworkText',
+    connectWallet: '@:connectWalletText'
   },
   // TODO: Add moment.js (it has translation and formatting)
   months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   bridgeHistory: {
     title: 'History',
+    showHistory: 'Show history',
     clearHistory: 'Clear history',
-    emptyHistory: 'Transactions\' history is empty.',
+    empty: 'Your transactions will appear here.',
     filterPlaceholder: 'Filter by address, asset'
   },
   selectToken: {
@@ -315,7 +348,7 @@ export default {
   },
   addLiquidity: {
     title: 'Add liquidity',
-    pairIsNotCreated: 'Token pair isn\'t created'
+    pairIsNotCreated: '@:pairIsNotCreated'
   },
   removeLiquidity: {
     title: 'Remove liquidity',
@@ -332,6 +365,10 @@ export default {
   },
   dexSettings: {
     title: 'Transaction settings',
+    marketAlgorithm: '@.upper:marketAlgorithmText',
+    marketAlgorithmTooltip: {
+      main: ' - option to choose between Primary Market (TBC), Secondary Market (XYK) or a combined smart algorithm for guaranteed best price for any given transaction.'
+    },
     slippageTolerance: 'SLIPPAGE TOLERANCE',
     slippageToleranceHint: 'Your transaction will revert if the price changes unfavorably by more than this percentage.',
     slippageToleranceValidation: {
@@ -350,5 +387,40 @@ export default {
   resultDialog: {
     title: 'Transaction submitted',
     ok: 'OK'
+  },
+  rewards: {
+    title: 'Claim Rewards',
+    changeAccount: '@:changeAccountText',
+    connected: '@:connectedText',
+    networkFee: '@:networkFeeText',
+    networkFeeTooltip: '@:networkFeeTooltipText',
+    andText: 'and',
+    claiming: {
+      pending: 'Claiming...',
+      success: 'Claimed successfully'
+    },
+    transactions: {
+      confimation: 'Confirm {order} of {total} transactions...',
+      success: 'Your will receive your rewards shortly',
+      failed: '{order} of {total} transactions failed. @:retryText'
+    },
+    hint: {
+      connectAccounts: 'To claim your PSWAP and VAL rewards you need to connect both your @:soraText and @:ethereumText accounts.',
+      connectAnotherAccount: 'Connect another @:ethereumText account to check for available PSWAP and VAL rewards.',
+      howToClaimRewards: 'To claim your PSWAP and VAL rewards you need to sign 2 transactions in your @:soraText and @:ethereumText accounts respectively. Rewards will be deposited to your @:soraText account.'
+    },
+    action: {
+      connectWallet: '@:connectWalletText',
+      connectExternalWallet: 'Connect @:ethereumText account',
+      signAndClaim: 'Sign and claim',
+      pendingInternal: '@:soraText transaction pending...',
+      pendingExternal: '@:ethereumText transaction pending...',
+      retry: '@:retryText',
+      checkRewards: 'Check',
+      insufficientBalance: '@:insufficientBalanceText'
+    },
+    notification: {
+      empty: 'No available claims for this account'
+    }
   }
 }

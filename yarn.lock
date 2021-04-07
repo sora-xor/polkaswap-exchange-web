@@ -1157,7 +1157,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.13.9", "@babel/runtime@^7.5.5":
+"@babel/runtime@^7.13.10", "@babel/runtime@^7.13.9", "@babel/runtime@^7.5.5":
   version "7.13.10"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.13.10.tgz#47d42a57b6095f4468da440388fdbad8bebf0d7d"
   integrity sha512-4QPkjJq6Ns3V/RgpEahRk+AGfL0eO6RHHtTWoNNr5mO49G6B5+X6d6THgWEAvTrznU5xYpbAlVKRYcsCgh/Akw==
@@ -2208,6 +2208,14 @@
     eventemitter3 "^4.0.7"
     store "^2.0.12"
 
+"@polkadot/ui-shared@0.72.1":
+  version "0.72.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-shared/-/ui-shared-0.72.1.tgz#10cde52429923e2420a7a59dde4e1aeb031fdb4a"
+  integrity sha512-NOUw8kS21LnB0XZakttqQyAEKt5R/MOFgOdRM13bV2xAvKQzLRJDHTt4NTZUuJYLL1C6Fl2jhO+SSkf25xVszQ==
+  dependencies:
+    "@babel/runtime" "^7.13.10"
+    color "^3.1.3"
+
 "@polkadot/util-crypto@6.0.5", "@polkadot/util-crypto@^6.0.5":
   version "6.0.5"
   resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-6.0.5.tgz#347ea2bf051d34087766cb43004062358cd43800"
@@ -2309,6 +2317,17 @@
     bn.js "^5.1.3"
     camelcase "^5.3.1"
     ip-regex "^4.2.0"
+
+"@polkadot/vue-identicon@^0.72.1":
+  version "0.72.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/vue-identicon/-/vue-identicon-0.72.1.tgz#174f1d85264dfc052cd95796efb27f526756967c"
+  integrity sha512-h/e/9EaPsdO3mOltrzS7FVCGs1VZtDWbJVFvVUuNZZO5B3Y+45UQBOTU+b4YTU/fMhPNlqUK7tpowVNNYnDp+Q==
+  dependencies:
+    "@babel/runtime" "^7.13.10"
+    "@polkadot/ui-shared" "0.72.1"
+    "@polkadot/util" "^6.0.5"
+    "@polkadot/util-crypto" "^6.0.5"
+    jdenticon "3.1.0"
 
 "@polkadot/wasm-crypto-asmjs@^4.0.2":
   version "4.0.2"
@@ -2479,39 +2498,39 @@
   resolved "https://registry.yarnpkg.com/@soda/get-current-script/-/get-current-script-1.0.2.tgz#a53515db25d8038374381b73af20bb4f2e508d87"
   integrity sha512-T7VNNlYVM1SgQ+VsMYhnDkcGmWhQdL0bDyGm5TlQ3GBXnJscEClUUOKduWTmm2zCnvNLC1hc3JpuXjs/nFOc5w==
 
-"@sora-substrate/api-derive@^0.6.10":
-  version "0.6.10"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/api-derive/-/api-derive-0.6.10.tgz#f1035d456a2d4f71299bea19cf84b91395afae1f"
-  integrity sha512-KGLi8r0GejpeDbYd3KhN3RZY1KLTDn6pQwYTQuqUijV3Vxh8wZD/mxOCuQvtuecbPEXITnk0tmB7oeXhFcm6HQ==
+"@sora-substrate/api-derive@^0.7.9":
+  version "0.7.9"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/api-derive/-/api-derive-0.7.9.tgz#a2b186d7c6f1bd68166a79351c4c6fb3a7978b29"
+  integrity sha512-3bVE5vj33hOZo4cAHTL2QLTmQ4DzLM6+GKqE7pEWtlXsTcEFTu9Cqgcjx4cmFsORo95sCEssh+lKPDinlA7vRA==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@polkadot/api-derive" "^4.1.1"
-    "@sora-substrate/types" "^0.6.10"
+    "@sora-substrate/types" "^0.7.9"
     rxjs "^6.5.5"
 
-"@sora-substrate/api@^0.6.10":
-  version "0.6.10"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-0.6.10.tgz#cc26e61e42f50cb2f42d19eaf4916d71d0a20033"
-  integrity sha512-u55P5AwnDuSP+UmuuSaYwfCgEsFbL2tHgteJAnC7jLCDplovQrBWtijRUHxqB1B1brE6xZvxwJfI+2zMhtynkw==
+"@sora-substrate/api@^0.7.9":
+  version "0.7.9"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-0.7.9.tgz#1fb88a3a823c4498167329d3b9031baf02d970d0"
+  integrity sha512-BT9o84QwHbBagQDaS2HsaeA8kfg+N/IA5h9Js5DUEzsxXMjsnP51x9UxRcfKoer/3IGdeAiHFjetZxTxgKanXg==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@open-web3/orml-api-derive" "^0.8.2-9"
     "@polkadot/api" "^4.1.1"
     "@polkadot/rpc-core" "^4.1.1"
-    "@sora-substrate/api-derive" "^0.6.10"
-    "@sora-substrate/types" "^0.6.10"
+    "@sora-substrate/api-derive" "^0.7.9"
+    "@sora-substrate/types" "^0.7.9"
 
-"@sora-substrate/type-definitions@^0.6.10":
-  version "0.6.10"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-0.6.10.tgz#ed5730849252de8cc876938d49f7a38b6e6481f2"
-  integrity sha512-SGQVrunKnBSJutnmW1jzQC86Rdaer6q3fLgYO4m9k743Wfjw0pEGKvcCwYxNfU8dxI9R82jdvmpL+Lli0K1izA==
+"@sora-substrate/type-definitions@^0.7.9":
+  version "0.7.9"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-0.7.9.tgz#ba16e501713100bce055c18c858dbd44953d4a4d"
+  integrity sha512-lcyuwC3ziUC7gU1iNyDkI1bAxT2Gxau9taxprMRB41R3AZu0DtMLaTDlAzdmghDWmsrPvdp7t/5uGTHmszUSiQ==
   dependencies:
     "@open-web3/orml-type-definitions" "^0.8.2-9"
 
-"@sora-substrate/types@^0.6.10":
-  version "0.6.10"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-0.6.10.tgz#060bb559c6d9188916eb8ad6fcbe7febba1188ea"
-  integrity sha512-hqdvA1+nKsAt4Q3XrFnBTgil0D7nGpvdbHCBxrSb9b/z59sRR1eEvuFAAD08F0srER83/4EjYEbqZCcCKrvWow==
+"@sora-substrate/types@^0.7.9":
+  version "0.7.9"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-0.7.9.tgz#475b5a7c6a3032b877deca20357a78d8bbe63765"
+  integrity sha512-hlz3YwnO/WS5DLqeJ2wkpOzVnSJLA9X/tEXpAB7phVmzA7wmESlIqjU1h9NHhwJQJw9rQsRqgtA/PxsSPsY0Mg==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@open-web3/api-mobx" "^0.8.2-9"
@@ -2519,23 +2538,23 @@
     "@polkadot/api" "^4.1.1"
     "@polkadot/typegen" "^4.1.1"
     "@polkadot/types" "^4.1.1"
-    "@sora-substrate/type-definitions" "^0.6.10"
+    "@sora-substrate/type-definitions" "^0.7.9"
 
-"@sora-substrate/util@^0.6.10":
-  version "0.6.10"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-0.6.10.tgz#898c457a4b7a31ffa0e5622cefb3bcd1425e0a4e"
-  integrity sha512-3GfFjaSmsTKlg5/pqD2pJXZhsEEoq4YoZOFFrcGTPORT5hQKOUAWFVB+Ys+bsWdFry5lbo7+Z03DaqYZ/quaEA==
+"@sora-substrate/util@^0.7.9":
+  version "0.7.9"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-0.7.9.tgz#2b1f6e7bf550f3ba9488f4e067715697a5bd2f58"
+  integrity sha512-nzTw5oI+vqEGWw1ElD4EUR7pqKx1WuOtahuYJRWAVoPHbinQypxK36xUDaMZ0SNv09AKjfmAJDolzQga//26kg==
   dependencies:
     "@polkadot/ui-keyring" "^0.61.1"
-    "@sora-substrate/api" "^0.6.10"
+    "@sora-substrate/api" "^0.7.9"
     bignumber.js "^9.0.1"
     crypto-js "^4.0.0"
     lodash "^4.17.15"
 
-"@soramitsu/soramitsu-js-ui@^0.8.2":
-  version "0.8.2"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-0.8.2.tgz#a52406f6586ed979ee0a749a12ab6a80678f91f3"
-  integrity sha512-6hn4qQmLie6Iaz4hacLA9qiJE7wA/QX9Ynch49Nn/6Hl4RT1gh0iAsup1RsnKqC7CC5bomNx19madyyP9b8qfg==
+"@soramitsu/soramitsu-js-ui@^0.8.5":
+  version "0.8.5"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-0.8.5.tgz#3446e7cec2eeee9f2fd02ca7b7769b142a0f0449"
+  integrity sha512-PKPBkUVRXGSkUwMc66ech4lgSqRzTdMeCZgk/GgVqrkP5eKyQY9LqzhrEabbOj11LE6kbY5fJ1e6VPlDOsOJbg==
   dependencies:
     core-js "^3.6.4"
     element-ui "^2.13.2"
@@ -2547,14 +2566,15 @@
     vuex "^3.1.3"
     vuex-class "^0.3.2"
 
-"@soramitsu/soraneo-wallet-web@^0.7.7":
-  version "0.7.7"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-0.7.7.tgz#da4a3ef597eb3b853774c72de42612d929fce4c0"
-  integrity sha512-BQAIMuIfAF/KTWKXJK8j2xf5n5iA6QSj/SN9zaMc9NIxCrclkS2vP+1H3Rlod/v6pp2YOr0t0CxBdY2pBlgFZg==
+"@soramitsu/soraneo-wallet-web@^0.9.0":
+  version "0.9.0"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-0.9.0.tgz#e37fa698c34f05014c60b8700c78a16da3e5ace9"
+  integrity sha512-sht7EJ+2UcjmPqi84NUrn98I/gceZ2JRcMJu2f5Gv4i68zZ6kG8JRNbprlBdHUnJsCAPkqs6IjDeEjh+HzQQ6A==
   dependencies:
     "@polkadot/extension-dapp" "^0.35.0-beta.35"
-    "@sora-substrate/util" "^0.6.10"
-    "@soramitsu/soramitsu-js-ui" "^0.8.2"
+    "@polkadot/vue-identicon" "^0.72.1"
+    "@sora-substrate/util" "^0.7.9"
+    "@soramitsu/soramitsu-js-ui" "^0.8.5"
     axios "^0.19.2"
     core-js "^3.6.4"
     lodash "^4.17.15"
@@ -4953,6 +4973,13 @@ caniuse-lite@^1.0.30001181:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001202.tgz#4cb3bd5e8a808e8cd89e4e66c549989bc8137201"
   integrity sha512-ZcijQNqrcF8JNLjzvEiXqX4JUYxoZa7Pvcsd9UD8Kz4TvhTonOSNRsK+qtvpVL4l6+T1Rh4LFtLfnNWg6BGWCQ==
 
+canvas-renderer@~2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/canvas-renderer/-/canvas-renderer-2.2.0.tgz#512151f5494aaac5270802fba22599785114716d"
+  integrity sha512-Itdq9pwXcs4IbbkRCXc7reeGBk6i6tlDtZTjE1yc+KvYkx1Mt3WLf6tidZ/Ixbm7Vmi+jpWKG0dRBor67x9yGw==
+  dependencies:
+    "@types/node" "*"
+
 capture-exit@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/capture-exit/-/capture-exit-2.0.0.tgz#fb953bfaebeb781f62898239dabb426d08a509a4"
@@ -5322,6 +5349,14 @@ color-string@^1.5.2:
     color-name "^1.0.0"
     simple-swizzle "^0.2.2"
 
+color-string@^1.5.4:
+  version "1.5.5"
+  resolved "https://registry.yarnpkg.com/color-string/-/color-string-1.5.5.tgz#65474a8f0e7439625f3d27a6a19d89fc45223014"
+  integrity sha512-jgIoum0OfQfq9Whcfc2z/VhCNcmQjWbey6qBX0vqt7YICflUmBCh9E9CiQD5GSJ+Uehixm3NUwHVhqUAWRivZg==
+  dependencies:
+    color-name "^1.0.0"
+    simple-swizzle "^0.2.2"
+
 color@^3.0.0:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/color/-/color-3.1.2.tgz#68148e7f85d41ad7649c5fa8c8106f098d229e10"
@@ -5329,6 +5364,14 @@ color@^3.0.0:
   dependencies:
     color-convert "^1.9.1"
     color-string "^1.5.2"
+
+color@^3.1.3:
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/color/-/color-3.1.3.tgz#ca67fb4e7b97d611dcde39eceed422067d91596e"
+  integrity sha512-xgXAcTHa2HeFCGLE9Xs/R82hujGtu9Jd9x4NW3T34+OMs7VoPsjwzRczKHvTAHeJwWFwX5j15+MgAppE8ztObQ==
+  dependencies:
+    color-convert "^1.9.1"
+    color-string "^1.5.4"
 
 colorette@^1.2.1:
   version "1.2.1"
@@ -9526,6 +9569,13 @@ javascript-stringify@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/javascript-stringify/-/javascript-stringify-2.0.1.tgz#6ef358035310e35d667c675ed63d3eb7c1aa19e5"
   integrity sha512-yV+gqbd5vaOYjqlbk16EG89xB5udgjqQF3C5FAORDg4f/IS1Yc5ERCv5e/57yBcfJYw05V5JyIXabhwb75Xxow==
+
+jdenticon@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/jdenticon/-/jdenticon-3.1.0.tgz#37ea02a527a038a82fd61ea8fc30332c0e15c4da"
+  integrity sha512-shf4UwvviUnGKMQWa2AttLgmP7tOPrXQ56aJv2ARdY6hs1RyIdxe7QlQQg4lriGwCxe4nv1nmqOZZdJQxOU/IA==
+  dependencies:
+    canvas-renderer "~2.2.0"
 
 jest-changed-files@^24.9.0:
   version "24.9.0"
