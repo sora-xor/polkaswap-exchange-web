@@ -381,7 +381,7 @@ export default class Bridge extends Mixins(
         this.disconnectExternalAccount()
       }
     })
-    this.resetBridgeForm()
+    this.resetBridgeForm(!!router.currentRoute.params?.address)
     this.subscribeToEthBlockHeaders()
   }
 
