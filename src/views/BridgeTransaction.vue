@@ -188,7 +188,6 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   @Getter('currentTransactionState', { namespace }) currentTransactionState!: STATES
   @Getter('initialTransactionState', { namespace }) initialTransactionState!: STATES
   @Getter('transactionStep', { namespace }) transactionStep!: number
-  // TODO: Remove the next line
   @Getter('historyItem', { namespace }) historyItem!: any
 
   @Action('getNetworkFee', { namespace }) getNetworkFee
@@ -198,16 +197,16 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   @Action('setTransactionStep', { namespace }) setTransactionStep
   @Action('setTransactionConfirm', { namespace }) setTransactionConfirm
   @Action('setHistoryItem', { namespace }) setHistoryItem
-  // @Action('sendTransferSoraToEth', { namespace }) sendTransferSoraToEth
-  // @Action('sendTransferEthToSora', { namespace }) sendTransferEthToSora
-  // @Action('sendTransaction', { namespace }) sendTransaction
-  // @Action('receiveTransaction', { namespace }) receiveTransaction
-  // @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash
 
-  @Action('signTransferSoraToEth1111111', { namespace }) signTransferSoraToEth1111111
-  @Action('sendTransferSoraToEth1111111', { namespace }) sendTransferSoraToEth1111111
-  @Action('signTransferEthFromSora1111111', { namespace }) signTransferEthFromSora1111111
-  @Action('sendTransferEthFromSora1111111', { namespace }) sendTransferEthFromSora1111111
+  @Action('signSoraTransactionSoraToEth', { namespace }) signSoraTransactionSoraToEth
+  @Action('signEthTransactionSoraToEth', { namespace }) signEthTransactionSoraToEth
+  @Action('sendSoraTransactionSoraToEth', { namespace }) sendSoraTransactionSoraToEth
+  @Action('sendEthTransactionSoraToEth', { namespace }) sendEthTransactionSoraToEth
+
+  @Action('signSoraTransactionEthToSora', { namespace }) signSoraTransactionEthToSora
+  @Action('signEthTransactionEthToSora', { namespace }) signEthTransactionEthToSora
+  @Action('sendSoraTransactionEthToSora', { namespace }) sendSoraTransactionEthToSora
+  @Action('sendEthTransactionEthToSora', { namespace }) sendEthTransactionEthToSora
 
   @Action('generateHistoryItem', { namespace }) generateHistoryItem!: ({ date: Date }) => Promise<BridgeHistory>
   @Action('updateHistoryParams', { namespace }) updateHistoryParams
@@ -452,14 +451,24 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
       createFSM(
         {
           history: historyItem,
-          flow: {
-            first: {
-              sign: this.signTransferSoraToEth1111111,
-              send: this.sendTransferSoraToEth1111111
+          SORA_ETH: {
+            sora: {
+              sign: this.signSoraTransactionSoraToEth,
+              send: this.sendSoraTransactionSoraToEth
             },
-            second: {
-              sign: this.signTransferEthFromSora1111111,
-              send: this.sendTransferEthFromSora1111111
+            ethereum: {
+              sign: this.signEthTransactionSoraToEth,
+              send: this.sendEthTransactionSoraToEth
+            }
+          },
+          ETH_SORA: {
+            sora: {
+              sign: this.signSoraTransactionEthToSora,
+              send: this.sendSoraTransactionEthToSora
+            },
+            ethereum: {
+              sign: this.signEthTransactionEthToSora,
+              send: this.sendEthTransactionEthToSora
             }
           }
         },
