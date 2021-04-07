@@ -431,12 +431,6 @@ function createFSM (context: Context, states, initialState = STATES.INITIAL) {
   )
 }
 
-// INITIAL -- nothing
-// *_SUBMITTED - signed transaction
-// *_PENDING - sended transaction
-// *_REJECTED - rejected transaction, possible to call retry
-// *_COMMITED = complete transaction
-
 export {
   createFSM,
   EVENTS,
