@@ -3,6 +3,7 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
+import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets, CodecString, LiquiditySourceTypes } from '@sora-substrate/util'
 
 const types = flow(
@@ -23,7 +24,7 @@ const types = flow(
   ]),
   map(x => [x, x]),
   fromPairs
-)([])
+)(['CHECK_LIQUIDITY'])
 
 interface SwapState {
   tokenFromAddress: string | null;
@@ -35,6 +36,7 @@ interface SwapState {
   liquidityProviderFee: CodecString;
   pairLiquiditySources: Array<LiquiditySourceTypes>;
   networkFee: CodecString;
+  isAvailable: boolean;
 }
 
 function initialState (): SwapState {
@@ -46,8 +48,9 @@ function initialState (): SwapState {
     minMaxReceived: '',
     isExchangeB: false,
     liquidityProviderFee: '',
-    pairLiquiditySources: [],
-    networkFee: ''
+    networkFee: '',
+    isAvailable: false,
+    pairLiquiditySources: []
   }
 }
 
@@ -85,6 +88,9 @@ const getters = {
     if (!getters.pairLiquiditySourcesAvailable) return undefined
 
     return rootGetters.liquiditySource
+  },
+  isAvailable (state: SwapState) {
+    return state.isAvailable
   }
 }
 
@@ -115,6 +121,15 @@ const mutations = {
   },
   [types.SET_LIQUIDITY_PROVIDER_FEE] (state: SwapState, liquidityProviderFee: CodecString) {
     state.liquidityProviderFee = liquidityProviderFee
+  },
+  [types.CHECK_LIQUIDITY_REQUEST] (state: SwapState) {
+    state.isAvailable = false
+  },
+  [types.CHECK_LIQUIDITY_SUCCESS] (state: SwapState, isAvailable: boolean) {
+    state.isAvailable = isAvailable
+  },
+  [types.CHECK_LIQUIDITY_FAILURE] (state: SwapState) {
+    state.isAvailable = false
   },
   [types.SET_PAIR_LIQUIDITY_SOURCES] (state: SwapState, liquiditySources: Array<LiquiditySourceTypes>) {
     state.pairLiquiditySources = [...liquiditySources]
@@ -179,6 +194,17 @@ const actions = {
   },
   setLiquidityProviderFee ({ commit }, liquidityProviderFee: string) {
     commit(types.SET_LIQUIDITY_PROVIDER_FEE, liquidityProviderFee)
+  },
+  async checkLiquidity ({ commit, getters }) {
+    if (getters.tokenFrom?.address && getters.tokenTo?.address) {
+      commit(types.CHECK_LIQUIDITY_REQUEST)
+      try {
+        const isLiquidityExists = await api.checkLiquidity(getters.tokenFrom.address, getters.tokenTo.address)
+        commit(types.CHECK_LIQUIDITY_SUCCESS, isLiquidityExists)
+      } catch (error) {
+        commit(types.CHECK_LIQUIDITY_FAILURE, error)
+      }
+    }
   },
   setPairLiquiditySources ({ commit, dispatch, rootGetters }, liquiditySources: Array<LiquiditySourceTypes>) {
     // reset market algorithm to default, if related liquiditySource is not available

@@ -25,6 +25,7 @@ export default {
   networkFeeTooltipText: 'Network fee is used to ensure @:soraText system\'s growth and stable performance.',
   marketAlgorithmText: 'Market Algorithm',
   insufficientBalanceText: 'Insufficient {tokenSymbol} balance',
+  pairIsNotCreated: 'Token pair isn\'t created',
   assetNames: {
     [KnownSymbols.XOR]: 'SORA',
     [KnownSymbols.VAL]: 'SORA Validator Token',
@@ -189,6 +190,7 @@ export default {
     liquidityProviderFee: 'Liquidity Provider Fee',
     liquidityProviderFeeTooltip: 'A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive.',
     networkFee: '@:networkFeeText',
+    pairIsNotCreated: '@:pairIsNotCreated',
     networkFeeTooltip: '@:networkFeeTooltipText',
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
     insufficientLiquidity: 'Insufficient liquidity for this trade',
@@ -346,7 +348,7 @@ export default {
   },
   addLiquidity: {
     title: 'Add liquidity',
-    pairIsNotCreated: 'Token pair isn\'t created'
+    pairIsNotCreated: '@:pairIsNotCreated'
   },
   removeLiquidity: {
     title: 'Remove liquidity',

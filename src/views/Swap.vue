@@ -86,11 +86,17 @@
     <s-button v-if="!connected" type="primary" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
-    <s-button v-else type="primary" :disabled="!areTokensSelected || hasZeroAmount || isInsufficientAmount || isInsufficientBalance || isInsufficientXorForFee" @click="handleConfirmSwap">
-      <template v-if="!areTokensSelected || areZeroAmounts">
+    <s-button v-else type="primary" :disabled="!areTokensSelected || !isAvailable || hasZeroAmount || isInsufficientLiquidity || isInsufficientAmount || isInsufficientBalance || isInsufficientXorForFee" @click="handleConfirmSwap">
+      <template v-if="!areTokensSelected">
+        {{ t('buttons.chooseTokens') }}
+      </template>
+      <template v-else-if="!isAvailable">
+        {{ t('swap.pairIsNotCreated') }}
+      </template>
+      <template v-else-if="areZeroAmounts">
         {{ t('buttons.enterAmount') }}
       </template>
-      <template v-else-if="isInsufficientLiquidity">
+      <template v-else-if="isAvailable && isInsufficientLiquidity">
         {{ t('swap.insufficientLiquidity') }}
       </template>
       <template v-else-if="isInsufficientAmount">
@@ -150,6 +156,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Getter('isExchangeB', { namespace }) isExchangeB!: boolean
   @Getter('networkFee', { namespace }) networkFee!: CodecString
   @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString
+  @Getter('isAvailable', { namespace }) isAvailable!: boolean
 
   @Action('setTokenFromAddress', { namespace }) setTokenFromAddress!: (address?: string) => Promise<void>
   @Action('setTokenToAddress', { namespace }) setTokenToAddress!: (address?: string) => Promise<void>
@@ -159,6 +166,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('setExchangeB', { namespace }) setExchangeB!: (isExchangeB: boolean) => Promise<void>
   @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>
   @Action('setNetworkFee', { namespace }) setNetworkFee!: (value: CodecString) => Promise<void>
+  @Action('checkLiquidity', { namespace }) checkLiquidity
 
   @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: () => Promise<void>
@@ -224,7 +232,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   get isInsufficientLiquidity (): boolean {
-    return this.preparedForSwap && !this.areZeroAmounts && this.hasZeroAmount && asZeroValue(this.liquidityProviderFee)
+    return this.isAvailable && this.preparedForSwap && !this.areZeroAmounts && this.hasZeroAmount && asZeroValue(this.liquidityProviderFee)
   }
 
   get isInsufficientBalance (): boolean {
@@ -245,6 +253,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       }
       if (this.tokenFrom && this.tokenTo) {
         this.getNetworkFee()
+        this.checkLiquidity()
         this.updatePairLiquiditySources()
       }
     })
@@ -430,6 +439,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       } else {
         await this.setTokenToAddress(token.address)
       }
+      await this.checkLiquidity()
       await this.updatePairLiquiditySources()
       await this.recountSwapValues()
     }
