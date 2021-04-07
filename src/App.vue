@@ -527,9 +527,8 @@ $sora-logo-width: 173.7px;
     background-color: var(--s-color-base-background);
     border-color: var(--s-color-base-background);
 
-    &:hover,
-    &:active,
-    &:focus {
+    &:hover, &.focusing, &.s-pressed {
+      color: inherit;
       background-color: var(--s-color-base-background-hover);
       border-color: var(--s-color-base-background-hover);
     }
