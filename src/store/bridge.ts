@@ -560,7 +560,6 @@ const actions = {
       if (!rootGetters['web3/isValidEthNetwork']) {
         throw new Error('Change eth network in Metamask')
       }
-      let contractInstance: any = null
       const contract = rootGetters[`web3/contract${KnownBridgeAsset.Other}`]
       const ethAccount = rootGetters['web3/ethAddress']
       const isExternalAccountConnected = await web3Util.checkAccountIsConnected(ethAccount)
@@ -569,21 +568,25 @@ const actions = {
         throw new Error('Connect account in Metamask')
       }
       const web3 = await web3Util.getInstance()
+      console.log(asset.externalAddress)
       const contractAddress = rootGetters[`web3/address${KnownBridgeAsset.Other}`]
+      console.log(contractAddress.MASTER)
       const allowance = await dispatch('web3/getAllowanceByEthAddress', { address: asset.externalAddress }, { root: true })
+      console.log(getters.amount, allowance)
       if (FPNumber.lte(new FPNumber(allowance), new FPNumber(getters.amount))) {
-        contractInstance = new web3.eth.Contract(contract[OtherContractType.ERC20].abi)
-        contractInstance.options.address = asset.externalAddress
+        const tokenInstance = new web3.eth.Contract(contract[OtherContractType.ERC20].abi)
+        tokenInstance.options.address = asset.externalAddress
         const methodArgs = [
           contractAddress.MASTER, // address spender
           MaxUint256 // uint256 amount
         ]
-        const contractMethod = contractInstance.methods.approve(...methodArgs)
-        await contractMethod.send({ from: ethAccount })
+        const approveMethod = tokenInstance.methods.approve(...methodArgs)
+        const tx = await approveMethod.send({ from: ethAccount })
+        await web3.eth.getTransactionReceipt(tx.transactionHash)
       }
       const soraAccountAddress = rootGetters.account.address
       const accountId = await web3Util.accountAddressToHex(soraAccountAddress)
-      contractInstance = new web3.eth.Contract(contract[OtherContractType.Bridge].abi)
+      const contractInstance = new web3.eth.Contract(contract[OtherContractType.Bridge].abi)
       contractInstance.options.address = contractAddress.MASTER
       const tokenInstance = new web3.eth.Contract(ABI.balance as any)
       tokenInstance.options.address = asset.externalAddress
