@@ -86,14 +86,17 @@
     <s-button v-if="!connected" type="primary" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
-    <s-button v-else type="primary" :disabled="!areTokensSelected || !isAvailable || hasZeroAmount || isInsufficientAmount || isInsufficientBalance || isInsufficientXorForFee" @click="handleConfirmSwap">
-      <template v-if="!areTokensSelected || areZeroAmounts">
-        {{ t('buttons.enterAmount') }}
+    <s-button v-else type="primary" :disabled="!areTokensSelected || !isAvailable || hasZeroAmount || isInsufficientLiquidity || isInsufficientAmount || isInsufficientBalance || isInsufficientXorForFee" @click="handleConfirmSwap">
+      <template v-if="!areTokensSelected">
+        {{ t('buttons.chooseTokens') }}
       </template>
       <template v-else-if="!isAvailable">
-          {{ t('swap.pairIsNotCreated') }}
-        </template>
-      <template v-else-if="isInsufficientLiquidity">
+        {{ t('swap.pairIsNotCreated') }}
+      </template>
+      <template v-else-if="areZeroAmounts">
+        {{ t('buttons.enterAmount') }}
+      </template>
+      <template v-else-if="isAvailable && isInsufficientLiquidity">
         {{ t('swap.insufficientLiquidity') }}
       </template>
       <template v-else-if="isInsufficientAmount">
@@ -229,7 +232,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   get isInsufficientLiquidity (): boolean {
-    return this.preparedForSwap && !this.areZeroAmounts && this.hasZeroAmount && asZeroValue(this.liquidityProviderFee)
+    return this.isAvailable && this.preparedForSwap && !this.areZeroAmounts && this.hasZeroAmount && asZeroValue(this.liquidityProviderFee)
   }
 
   get isInsufficientBalance (): boolean {
