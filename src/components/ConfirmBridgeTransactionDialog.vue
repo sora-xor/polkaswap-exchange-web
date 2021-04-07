@@ -5,7 +5,7 @@
   >
     <div :class="assetsClasses">
       <div class="tokens-info-container">
-        <span class="token-value">{{ amount }}</span>
+        <span class="token-value">{{ formattedAmount }}</span>
         <div v-if="asset" class="token">
           <token-logo :token="asset" />
           {{ formatAssetSymbol(asset.symbol) }}
@@ -13,7 +13,7 @@
       </div>
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
       <div class="tokens-info-container">
-        <span class="token-value">{{ amount }}</span>
+        <span class="token-value">{{ formattedAmount }}</span>
         <div v-if="asset" class="token token-ethereum">
           <token-logo :token="asset" />
           {{ formatAssetSymbol(asset.symbol, true) }}
@@ -96,6 +96,10 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
   EthSymbol = EthSymbol
   KnownSymbols = KnownSymbols
   formatAssetSymbol = formatAssetSymbol
+
+  get formattedAmount (): string {
+    return this.formatStringValue(this.amount, this.asset?.decimals)
+  }
 
   get assetsClasses (): string {
     const assetsClass = 'tokens'

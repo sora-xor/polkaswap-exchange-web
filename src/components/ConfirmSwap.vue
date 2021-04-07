@@ -71,11 +71,11 @@ export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean
 
   get formattedFromValue (): string {
-    return this.getFPNumber(this.fromValue, this.tokenFrom?.decimals).format()
+    return this.formatStringValue(this.fromValue, this.tokenFrom?.decimals)
   }
 
   get formattedToValue (): string {
-    return this.getFPNumber(this.toValue, this.tokenTo?.decimals).format()
+    return this.formatStringValue(this.toValue, this.tokenTo?.decimals)
   }
 
   get formattedMinMaxReceived (): string {
