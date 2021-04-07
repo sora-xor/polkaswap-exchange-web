@@ -4,7 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { Asset, AccountAsset, CodecString } from '@sora-substrate/util'
+import { CodecString } from '@sora-substrate/util'
 
 import { ZeroStringValue } from '@/consts'
 
@@ -206,9 +206,11 @@ const actions = {
     }
   },
 
-  resetData ({ commit }) {
-    commit(types.SET_FIRST_TOKEN_ADDRESS, '')
-    commit(types.SET_SECOND_TOKEN_ADDRESS, '')
+  resetData ({ commit }, withAssets = false) {
+    if (!withAssets) {
+      commit(types.SET_FIRST_TOKEN_ADDRESS, '')
+      commit(types.SET_SECOND_TOKEN_ADDRESS, '')
+    }
     commit(types.SET_FIRST_TOKEN_VALUE, '')
     commit(types.SET_SECOND_TOKEN_VALUE, '')
   }

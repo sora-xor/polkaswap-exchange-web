@@ -3,12 +3,11 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import { FPNumber, BridgeApprovedRequest, BridgeCurrencyType, BridgeTxStatus, BridgeRequest, Operation, BridgeHistory, TransactionStatus } from '@sora-substrate/util'
+import { FPNumber, BridgeApprovedRequest, BridgeCurrencyType, BridgeTxStatus, BridgeRequest, Operation, BridgeHistory, TransactionStatus, KnownAssets } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { decodeAddress } from '@polkadot/util-crypto'
 
 import { STATES } from '@/utils/fsm'
-import web3Util, { KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
+import web3Util, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
 import { delay } from '@/utils'
 import { EthereumGasLimits, MaxUint256, MetamaskCancellationCode } from '@/consts'
 
@@ -84,6 +83,9 @@ async function waitForExtrinsicFinalization (id?: string): Promise<BridgeHistory
     throw new Error('History id error')
   }
   const tx = api.bridge.getHistory(id)
+  if (tx && tx.status === TransactionStatus.Error) {
+    throw new Error(tx.errorMessage)
+  }
   if (!tx || tx.status !== TransactionStatus.Finalized) {
     await delay(250)
     return await waitForExtrinsicFinalization(id)
@@ -291,9 +293,11 @@ const actions = {
   setTransactionStep ({ commit }, transactionStep: number) {
     commit(types.SET_TRANSACTION_STEP, transactionStep)
   },
-  resetBridgeForm ({ dispatch }) {
+  resetBridgeForm ({ dispatch }, withAddress = false) {
+    if (!withAddress) {
+      dispatch('setAssetAddress', '')
+    }
     dispatch('setSoraToEthereum', true)
-    dispatch('setAssetAddress', '')
     dispatch('setTransactionConfirm', false)
     dispatch('setCurrentTransactionState', STATES.INITIAL)
     dispatch('setSoraTransactionDate', '')
@@ -313,10 +317,10 @@ const actions = {
   setHistoryItem ({ commit }, historyItem: BridgeHistory | null) {
     commit(types.SET_HISTORY_ITEM, historyItem)
   },
-  async saveHistory ({ commit }, history: BridgeHistory) {
+  saveHistory ({ commit }, history: BridgeHistory) {
     api.saveHistory(history)
   },
-  async clearHistory ({ commit }) {
+  clearHistory ({ commit }) {
     api.bridge.clearHistory()
     commit(types.GET_HISTORY_SUCCESS, [])
   },
@@ -349,7 +353,8 @@ const actions = {
     try {
       const web3 = await web3Util.getInstance()
       const gasPrice = +(await web3.eth.getGasPrice())
-      const gasLimit = EthereumGasLimits[+getters.isSoraToEthereum][getters.asset.symbol]
+      const knownAsset = KnownAssets.get(getters.asset.address)
+      const gasLimit = EthereumGasLimits[+getters.isSoraToEthereum][knownAsset ? getters.asset.symbol : KnownBridgeAsset.Other]
       const fee = gasPrice * gasLimit
       commit(types.GET_ETHEREUM_NETWORK_FEE_SUCCESS, web3.utils.fromWei(`${fee}`, 'ether'))
     } catch (error) {
@@ -360,7 +365,7 @@ const actions = {
   async generateHistoryItem ({ commit, getters, dispatch }, playground) {
     await dispatch('setHistoryItem', api.bridge.generateHistoryItem({
       type: getters.isSoraToEthereum ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
-      amount: getters.amount.toString(),
+      amount: getters.amount,
       symbol: getters.asset.symbol,
       assetAddress: getters.asset.address,
       startTime: playground.date,
@@ -464,6 +469,11 @@ const actions = {
       }
       const symbol = getters.asset.symbol
       const ethAccount = rootGetters['web3/ethAddress']
+      const isExternalAccountConnected = await web3Util.checkAccountIsConnected(ethAccount)
+      if (!isExternalAccountConnected) {
+        await dispatch('web3/disconnectExternalAccount', {}, { root: true })
+        throw new Error('Connect account in Metamask')
+      }
       const isValOrXor = [KnownBridgeAsset.XOR, KnownBridgeAsset.VAL].includes(symbol)
       let contract: any = null
       if (isValOrXor) {
@@ -478,7 +488,7 @@ const actions = {
       const method = isValOrXor
         ? 'mintTokensByPeers'
         : request.currencyType === BridgeCurrencyType.TokenAddress
-          ? 'receievByEthereumAssetAddress'
+          ? 'receiveByEthereumAssetAddress'
           : 'receiveBySidechainAssetId'
       const methodArgs = [
         (isValOrXor || request.currencyType === BridgeCurrencyType.TokenAddress)
@@ -563,6 +573,11 @@ const actions = {
       let contractInstance: any = null
       const contract = rootGetters[`web3/contract${KnownBridgeAsset.Other}`]
       const ethAccount = rootGetters['web3/ethAddress']
+      const isExternalAccountConnected = await web3Util.checkAccountIsConnected(ethAccount)
+      if (!isExternalAccountConnected) {
+        await dispatch('web3/disconnectExternalAccount', {}, { root: true })
+        throw new Error('Connect account in Metamask')
+      }
       const web3 = await web3Util.getInstance()
       const contractAddress = rootGetters[`web3/address${KnownBridgeAsset.Other}`]
       const allowance = await dispatch('web3/getAllowanceByEthAddress', { address: asset.externalAddress }, { root: true })
@@ -578,12 +593,16 @@ const actions = {
         await web3.eth.getTransactionReceipt(tx.transactionHash)
       }
       const soraAccountAddress = rootGetters.account.address
-      const accountId = web3.utils.bytesToHex(Array.from(decodeAddress(soraAccountAddress).values()))
+      const accountId = await web3Util.accountAddressToHex(soraAccountAddress)
       contractInstance = new web3.eth.Contract(contract[OtherContractType.Bridge].abi)
       contractInstance.options.address = contractAddress.MASTER
+      const tokenInstance = new web3.eth.Contract(ABI.balance as any)
+      tokenInstance.options.address = asset.externalAddress
+      const decimalsMethod = tokenInstance.methods.decimals()
+      const decimals = await decimalsMethod.call()
       const methodArgs = [
         accountId, // bytes32 to
-        new FPNumber(getters.amount, asset.decimals).toCodecString(), // uint256 amount
+        new FPNumber(getters.amount, +decimals).toCodecString(), // uint256 amount
         asset.externalAddress // address tokenAddress
       ]
       const contractMethod = contractInstance.methods.sendERC20ToSidechain(...methodArgs)

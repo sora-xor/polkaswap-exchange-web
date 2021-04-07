@@ -8,13 +8,14 @@ import ConfirmDialogMixin from './ConfirmDialogMixin'
 
 import router from '@/router'
 import { PageNames } from '@/consts'
-import { getMaxValue, isMaxButtonAvailable, isWalletConnected, isXorAccountAsset, hasInsufficientBalance } from '@/utils'
+import { getMaxValue, isMaxButtonAvailable, isWalletConnected, isXorAccountAsset, hasInsufficientBalance, formatAssetBalance } from '@/utils'
 
 const CreateTokenPairMixin = (namespace: string) => {
   @Component
   class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin) {
     readonly KnownSymbols = KnownSymbols
 
+    @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
     @Getter('firstToken', { namespace }) firstToken!: any
     @Getter('secondToken', { namespace }) secondToken!: any
     @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
@@ -46,8 +47,9 @@ const CreateTokenPairMixin = (namespace: string) => {
     async mounted () {
       await this.withParentLoading(async () =>
         await this.withApi(async () => {
+          const params = router.currentRoute.params
           this.resetPrices()
-          this.resetData()
+          this.resetData(params?.assetBAddress && params?.assetBAddress)
           await this.getAssets()
           this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
           await this.afterApiConnect()
@@ -76,11 +78,11 @@ const CreateTokenPairMixin = (namespace: string) => {
     }
 
     get isFirstMaxButtonAvailable (): boolean {
-      return isMaxButtonAvailable(this.areTokensSelected, this.firstToken, this.firstTokenValue, this.fee)
+      return isMaxButtonAvailable(this.areTokensSelected, this.firstToken, this.firstTokenValue, this.fee, this.tokenXOR)
     }
 
     get isSecondMaxButtonAvailable (): boolean {
-      return isMaxButtonAvailable(this.areTokensSelected, this.secondToken, this.secondTokenValue, this.fee)
+      return isMaxButtonAvailable(this.areTokensSelected, this.secondToken, this.secondTokenValue, this.fee, this.tokenXOR)
     }
 
     get isInsufficientBalance (): boolean {
@@ -121,10 +123,7 @@ const CreateTokenPairMixin = (namespace: string) => {
     }
 
     getTokenBalance (token: any): string {
-      if (!token?.balance) {
-        return ''
-      }
-      return this.formatCodecNumber(token.balance, token.decimals)
+      return formatAssetBalance(token)
     }
 
     openSelectSecondTokenDialog (): void {

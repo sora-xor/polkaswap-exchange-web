@@ -57,7 +57,7 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
-import { copyToClipboard, formatAddress } from '@/utils'
+import { copyToClipboard, formatAddress, asZeroValue, getAssetBalance, formatAssetBalance } from '@/utils'
 
 const namespace = 'assets'
 
@@ -97,7 +97,7 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
 
       const balance = accountAsset?.balance
 
-      if (notNullBalanceOnly && (!balance || +balance <= 0)) return result
+      if (notNullBalanceOnly && asZeroValue(getAssetBalance(accountAsset))) return result
 
       const prepared = {
         ...item,
@@ -152,19 +152,14 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   }
 
   getTokenName (token: AccountAsset): string {
-    const knownAsset = KnownAssets.get(token.address)
-    if (knownAsset) {
-      return this.t(`assetNames.${token.symbol}`)
-    }
-    return `${token.symbol}`
+    return `${token.name || token.symbol}`
   }
 
   formatBalance (token: AccountAsset): string {
-    // show "-" with 0 balance too
-    if (!token.balance || +token.balance === 0) {
-      return '-'
-    }
-    return this.formatCodecNumber(token.balance, token.decimals)
+    return formatAssetBalance(token, {
+      showZeroBalance: false,
+      formattedZero: '-'
+    })
   }
 
   handleClearSearch (): void {

@@ -4,7 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, KnownSymbols, Asset, AccountAsset, CodecString } from '@sora-substrate/util'
+import { KnownAssets, CodecString, LiquiditySourceTypes } from '@sora-substrate/util'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -15,27 +15,28 @@ const types = flow(
     'RESET_TOKEN_TO_ADDRESS',
     'SET_FROM_VALUE',
     'SET_TO_VALUE',
-    'SET_TOKEN_FROM_PRICE',
     'SET_MIN_MAX_RECEIVED',
     'SET_EXCHANGE_B',
     'SET_LIQUIDITY_PROVIDER_FEE',
+    'SET_PAIR_LIQUIDITY_SOURCES',
     'SET_NETWORK_FEE',
     'GET_SWAP_CONFIRM'
   ]),
   map(x => [x, x]),
   fromPairs
-)([])
+)(['CHECK_LIQUIDITY'])
 
 interface SwapState {
   tokenFromAddress: string | null;
   tokenToAddress: string | null;
   fromValue: string;
   toValue: string;
-  isTokenFromPrice: boolean;
   minMaxReceived: CodecString;
   isExchangeB: boolean;
   liquidityProviderFee: CodecString;
+  pairLiquiditySources: Array<LiquiditySourceTypes>;
   networkFee: CodecString;
+  isAvailable: boolean;
 }
 
 function initialState (): SwapState {
@@ -44,36 +45,32 @@ function initialState (): SwapState {
     tokenToAddress: '',
     fromValue: '',
     toValue: '',
-    isTokenFromPrice: true,
     minMaxReceived: '',
     isExchangeB: false,
     liquidityProviderFee: '',
-    networkFee: ''
+    networkFee: '',
+    isAvailable: false,
+    pairLiquiditySources: []
   }
 }
 
 const state = initialState()
 
 const getters = {
-  tokenXOR (state: SwapState, getters, rootState, rootGetters) {
-    const token = KnownAssets.get(KnownSymbols.XOR)
-
-    return rootGetters['assets/getAssetDataByAddress'](token?.address)
-  },
   tokenFrom (state: SwapState, getters, rootState, rootGetters) {
     return rootGetters['assets/getAssetDataByAddress'](state.tokenFromAddress)
   },
   tokenTo (state: SwapState, getters, rootState, rootGetters) {
     return rootGetters['assets/getAssetDataByAddress'](state.tokenToAddress)
   },
+  pairLiquiditySourcesAvailable (state) {
+    return state.pairLiquiditySources.length !== 0
+  },
   fromValue (state: SwapState) {
     return state.fromValue
   },
   toValue (state: SwapState) {
     return state.toValue
-  },
-  isTokenFromPrice (state: SwapState) {
-    return state.isTokenFromPrice
   },
   minMaxReceived (state: SwapState) {
     return state.minMaxReceived
@@ -86,6 +83,14 @@ const getters = {
   },
   networkFee (state: SwapState) {
     return state.networkFee
+  },
+  swapLiquiditySource (state, getters, rootState, rootGetters) {
+    if (!getters.pairLiquiditySourcesAvailable) return undefined
+
+    return rootGetters.liquiditySource
+  },
+  isAvailable (state: SwapState) {
+    return state.isAvailable
   }
 }
 
@@ -108,9 +113,6 @@ const mutations = {
   [types.SET_TO_VALUE] (state: SwapState, toValue: string) {
     state.toValue = toValue
   },
-  [types.SET_TOKEN_FROM_PRICE] (state: SwapState, isTokenFromPrice: boolean) {
-    state.isTokenFromPrice = isTokenFromPrice
-  },
   [types.SET_MIN_MAX_RECEIVED] (state: SwapState, minMaxReceived: CodecString) {
     state.minMaxReceived = minMaxReceived
   },
@@ -119,6 +121,18 @@ const mutations = {
   },
   [types.SET_LIQUIDITY_PROVIDER_FEE] (state: SwapState, liquidityProviderFee: CodecString) {
     state.liquidityProviderFee = liquidityProviderFee
+  },
+  [types.CHECK_LIQUIDITY_REQUEST] (state: SwapState) {
+    state.isAvailable = false
+  },
+  [types.CHECK_LIQUIDITY_SUCCESS] (state: SwapState, isAvailable: boolean) {
+    state.isAvailable = isAvailable
+  },
+  [types.CHECK_LIQUIDITY_FAILURE] (state: SwapState) {
+    state.isAvailable = false
+  },
+  [types.SET_PAIR_LIQUIDITY_SOURCES] (state: SwapState, liquiditySources: Array<LiquiditySourceTypes>) {
+    state.pairLiquiditySources = [...liquiditySources]
   },
   [types.SET_NETWORK_FEE] (state: SwapState, networkFee: CodecString) {
     state.networkFee = networkFee
@@ -172,9 +186,6 @@ const actions = {
   setToValue ({ commit }, toValue: string | number) {
     commit(types.SET_TO_VALUE, toValue)
   },
-  setTokenFromPrice ({ commit }, isTokenFromPrice: boolean) {
-    commit(types.SET_TOKEN_FROM_PRICE, isTokenFromPrice)
-  },
   setMinMaxReceived ({ commit }, minMaxReceived) {
     commit(types.SET_MIN_MAX_RECEIVED, minMaxReceived)
   },
@@ -183,6 +194,24 @@ const actions = {
   },
   setLiquidityProviderFee ({ commit }, liquidityProviderFee: string) {
     commit(types.SET_LIQUIDITY_PROVIDER_FEE, liquidityProviderFee)
+  },
+  async checkLiquidity ({ commit, getters }) {
+    if (getters.tokenFrom?.address && getters.tokenTo?.address) {
+      commit(types.CHECK_LIQUIDITY_REQUEST)
+      try {
+        const isLiquidityExists = await api.checkLiquidity(getters.tokenFrom.address, getters.tokenTo.address)
+        commit(types.CHECK_LIQUIDITY_SUCCESS, isLiquidityExists)
+      } catch (error) {
+        commit(types.CHECK_LIQUIDITY_FAILURE, error)
+      }
+    }
+  },
+  setPairLiquiditySources ({ commit, dispatch, rootGetters }, liquiditySources: Array<LiquiditySourceTypes>) {
+    // reset market algorithm to default, if related liquiditySource is not available
+    if (liquiditySources.length && !liquiditySources.includes(rootGetters.liquiditySource)) {
+      dispatch('setMarketAlgorithm', undefined, { root: true })
+    }
+    commit(types.SET_PAIR_LIQUIDITY_SOURCES, liquiditySources)
   },
   setNetworkFee ({ commit }, networkFee: string) {
     commit(types.SET_NETWORK_FEE, networkFee)

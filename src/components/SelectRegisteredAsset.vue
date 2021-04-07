@@ -23,15 +23,16 @@
     <s-tabs v-model="tabValue" class="s-tabs--exchange" type="rounded" @click="handleTabClick">
       <s-tab :label="t('selectRegisteredAsset.search.title')" name="tokens">
         <div class="asset-lists-container">
-          <!-- TODO: Refactoring due to next 2 blocks of code are almost the same -->
-          <template v-if="hasFilteredAssets && isSoraToEthereum /* TODO: remove isSoraToEthereum here */">
-            <h3 class="network-label">{{ isSoraToEthereum ? t('selectRegisteredAsset.search.networkLabelSora') : t('selectRegisteredAsset.search.networkLabelEthereum') }}</h3>
-            <div :class="assetListClasses(filteredAssets)">
+          <template v-if="hasFilteredAssets">
+            <h3 class="network-label">
+              {{ isSoraToEthereum ? t('selectRegisteredAsset.search.networkLabelSora') : t('selectRegisteredAsset.search.networkLabelEthereum') }}
+            </h3>
+            <div :class="assetListClasses(filteredAssets, !isSoraToEthereum)">
               <div v-for="asset in filteredAssets" @click="selectAsset(asset)" :key="asset.address" class="asset-item">
                 <s-col>
                   <s-row flex justify="start" align="middle">
                     <token-logo :token="asset" />
-                    <div class="asset-item__name">{{ getAssetName(asset) }}</div>
+                    <div class="asset-item__name">{{ getAssetName(asset, !isSoraToEthereum) }}</div>
                   </s-row>
                 </s-col>
                 <div>
@@ -40,23 +41,7 @@
               </div>
             </div>
           </template>
-          <template v-else-if="hasFilteredAssets && !isSoraToEthereum /* TODO: remove !isSoraToEthereum here */">
-            <h3 class="network-label">{{ !isSoraToEthereum ? t('selectRegisteredAsset.search.networkLabelEthereum') : t('selectRegisteredAsset.search.networkLabelSora') }}</h3>
-            <div :class="assetListClasses(filteredAssets, !isSoraToEthereum)">
-              <div v-for="asset in filteredAssets" @click="selectAsset(asset)" :key="asset.symbol" class="asset-item">
-                <s-col>
-                  <s-row flex justify="start" align="middle">
-                    <token-logo :token="asset" />
-                    <div class="asset-item__name">{{ getAssetName(asset, true) }}</div>
-                  </s-row>
-                </s-col>
-                <div>
-                  <span class="asset-item__balance">{{ formatEthBalance(asset) }}</span>
-                </div>
-              </div>
-            </div>
-          </template>
-          <div v-else class="asset-list asset-list__empty">
+          <div v-else class="asset-list asset-list__empty p4">
             <span class="empty-results-icon" />
             {{ t('selectRegisteredAsset.search.emptyListMessage') }}
           </div>
@@ -114,6 +99,7 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
+import { formatAssetBalance } from '@/utils'
 
 const namespace = 'assets'
 
@@ -171,33 +157,27 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
   }
 
   get hasFilteredAssets (): boolean {
-    return this.filteredAssets && this.filteredAssets.length > 0
+    return Array.isArray(this.filteredAssets) && this.filteredAssets.length > 0
   }
 
   formatBalance (asset?: AccountAsset | RegisteredAccountAsset): string {
-    if (!asset || !asset.balance) {
-      return '-'
-    }
-    return this.formatCodecNumber(asset.balance, asset.decimals)
-  }
-
-  formatEthBalance (asset?: RegisteredAccountAsset): string {
-    if (!asset || !asset.externalBalance) {
-      return '-'
-    }
-    return this.formatCodecNumber(asset.externalBalance)
+    return formatAssetBalance(asset, {
+      internal: this.isSoraToEthereum,
+      showZeroBalance: false,
+      formattedZero: '-'
+    })
   }
 
   getAssets (assets: Array<AccountAsset | RegisteredAccountAsset>): Array<AccountAsset | RegisteredAccountAsset> {
     const assetsList = this.asset ? assets?.filter(asset => asset.address !== this.asset.address) : assets
-    return this.isSoraToEthereum ? assetsList.filter(asset => !Number.isNaN(+asset.balance)) : assetsList
+    return this.isSoraToEthereum ? assetsList.filter(asset => !Number.isNaN(+asset?.balance?.transferable)) : assetsList
   }
 
   getFilteredAssets (assets: Array<AccountAsset | RegisteredAccountAsset>): Array<AccountAsset | RegisteredAccountAsset> {
     if (this.query) {
       const query = this.query.toLowerCase().trim()
       return assets.filter(asset =>
-        (KnownAssets.get(asset.address) && this.t(`assetNames.${asset.symbol}`).toLowerCase().includes(query)) ||
+        `${asset.name}`.toLowerCase().includes(query) ||
         `${asset.symbol}`.toLowerCase().includes(query) ||
         `${asset[this.addressSymbol]}`.toLowerCase() === query
       )
@@ -234,9 +214,9 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
     if (isMirrorAsset) {
       assetName = this.t('selectRegisteredAsset.search.mirrorPrefix') + ' '
     }
-    assetName += (KnownAssets.get(asset.address) ? this.t(`assetNames.${asset.symbol}`) : asset.symbol) + ' ('
+    assetName += (asset.name || asset.symbol) + ' ('
     if (isMirrorAsset) {
-      assetName += this.isSoraToEthereum ? 'e' : 's'
+      assetName += this.isSoraToEthereum ? 's' : 'e'
     }
     assetName += asset.symbol + ')'
     return assetName
