@@ -13,6 +13,7 @@
         :max="slippageToleranceExtremeValues.max"
         v-model="customSlippageTolerance"
         @blur="handleSlippageToleranceOnBlur"
+        @focus="handleSlippageToleranceOnFocus"
       />
     </div>
     <div v-if="slippageToleranceValidation" class="slippage-tolerance_validation">{{ t(`dexSettings.slippageToleranceValidation.${slippageToleranceValidation}`) }}</div>
@@ -72,6 +73,8 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
     max: 10
   }
 
+  slippageToleranceFocused = false
+
   @Getter slippageTolerance!: number
   @Getter transactionDeadline!: number
   @Getter nodeAddress!: { ip: string; port: number }
@@ -79,7 +82,9 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
   @Action setTransactionDeadline!: any
 
   get customSlippageTolerance (): string {
-    return `${this.slippageTolerance}%`
+    const suffix = this.slippageToleranceFocused ? '' : '%'
+
+    return `${this.slippageTolerance}${suffix}`
   }
 
   set customSlippageTolerance (value: string) {
@@ -144,6 +149,11 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
       value = this.slippageToleranceExtremeValues.min
     }
     this.setSlippageTolerance(value)
+    this.slippageToleranceFocused = false
+  }
+
+  handleSlippageToleranceOnFocus (): void {
+    this.slippageToleranceFocused = true
   }
 
   handleSetTransactionDeadline (value: number): void {

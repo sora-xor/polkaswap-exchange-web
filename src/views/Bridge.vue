@@ -140,13 +140,13 @@
             {{ t('bridge.notRegisteredAsset', { assetSymbol : asset ? asset.symbol : '' }) }}
           </template>
           <template v-else-if="isInsufficientBalance">
-            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : insufficientBalanceAssetSymbol }) }}
+            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : insufficientBalanceAssetSymbol }) }}
           </template>
           <template v-else-if="isInsufficientXorForFee">
-            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : KnownSymbols.XOR }) }}
+            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : KnownSymbols.XOR }) }}
           </template>
           <template v-else-if="isInsufficientEthereumForFee">
-            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : EthSymbol }) }}
+            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : EthSymbol }) }}
           </template>
           <template v-else>
             {{ t('bridge.next') }}
@@ -155,13 +155,12 @@
         <div v-if="areNetworksConnected && !isZeroAmount && isRegisteredAsset" class="info-line-container">
           <info-line
             :label="t('bridge.soraNetworkFee')"
-            :tooltip-content="t('bridge.tooltipValue')"
+            :tooltip-content="t('networkFeeTooltipText')"
             :value="soraNetworkFee ? '~' + formattedSoraNetworkFee : '-'"
             :asset-symbol="KnownSymbols.XOR"
           />
           <info-line
             :label="t('bridge.ethereumNetworkFee')"
-            :tooltip-content="t('bridge.tooltipValue')"
             :value="ethereumNetworkFee ? '~' + formattedEthNetworkFee : '-'"
             :asset-symbol="EthSymbol"
           />
