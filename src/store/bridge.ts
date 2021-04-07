@@ -568,11 +568,8 @@ const actions = {
         throw new Error('Connect account in Metamask')
       }
       const web3 = await web3Util.getInstance()
-      console.log(asset.externalAddress)
       const contractAddress = rootGetters[`web3/address${KnownBridgeAsset.Other}`]
-      console.log(contractAddress.MASTER)
       const allowance = await dispatch('web3/getAllowanceByEthAddress', { address: asset.externalAddress }, { root: true })
-      console.log(getters.amount, allowance)
       if (FPNumber.lte(new FPNumber(allowance), new FPNumber(getters.amount))) {
         const tokenInstance = new web3.eth.Contract(contract[OtherContractType.ERC20].abi)
         tokenInstance.options.address = asset.externalAddress
@@ -581,8 +578,7 @@ const actions = {
           MaxUint256 // uint256 amount
         ]
         const approveMethod = tokenInstance.methods.approve(...methodArgs)
-        const tx = await approveMethod.send({ from: ethAccount })
-        await web3.eth.getTransactionReceipt(tx.transactionHash)
+        await approveMethod.send({ from: ethAccount })
       }
       const soraAccountAddress = rootGetters.account.address
       const accountId = await web3Util.accountAddressToHex(soraAccountAddress)
@@ -598,10 +594,9 @@ const actions = {
         asset.externalAddress // address tokenAddress
       ]
       const contractMethod = contractInstance.methods.sendERC20ToSidechain(...methodArgs)
-      const gas = await contractMethod.estimateGas()
 
       return new Promise((resolve, reject) => {
-        contractMethod.send({ gas, from: ethAccount })
+        contractMethod.send({ from: ethAccount })
           .on('transactionHash', hash => {
             commit(types.SIGN_ETH_TRANSACTION_ETH_SORA_SUCCESS)
             resolve(hash)

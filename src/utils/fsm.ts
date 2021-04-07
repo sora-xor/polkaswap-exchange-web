@@ -181,7 +181,10 @@ const ETHEREUM_SORA_STATES = {
       src: SERVICES.SIGN_ETHEREUM_TRANSACTION,
       onDone: {
         target: STATES.ETHEREUM_PENDING,
-        actions: ACTIONS.SIGN_TRANSACTION
+        actions: [
+          ACTIONS.SIGN_TRANSACTION,
+          ACTIONS.SET_ETHEREUM_TRANSACTION_HASH
+        ]
       },
       onError: STATES.ETHEREUM_REJECTED
     }
@@ -190,10 +193,7 @@ const ETHEREUM_SORA_STATES = {
     entry: setTransactionState(STATES.ETHEREUM_PENDING),
     invoke: {
       src: SERVICES.CHECK_ETHEREUM_TRANSACTION,
-      onDone: {
-        target: STATES.ETHEREUM_COMMITED,
-        actions: ACTIONS.SET_ETHEREUM_TRANSACTION_HASH
-      },
+      onDone: STATES.ETHEREUM_COMMITED,
       onError: STATES.ETHEREUM_REJECTED
     }
   },
