@@ -293,9 +293,11 @@ const actions = {
   setTransactionStep ({ commit }, transactionStep: number) {
     commit(types.SET_TRANSACTION_STEP, transactionStep)
   },
-  resetBridgeForm ({ dispatch }) {
+  resetBridgeForm ({ dispatch }, withAddress = false) {
+    if (!withAddress) {
+      dispatch('setAssetAddress', '')
+    }
     dispatch('setSoraToEthereum', true)
-    dispatch('setAssetAddress', '')
     dispatch('setTransactionConfirm', false)
     dispatch('setCurrentTransactionState', STATES.INITIAL)
     dispatch('setSoraTransactionDate', '')

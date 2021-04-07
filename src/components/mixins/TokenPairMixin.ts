@@ -47,8 +47,9 @@ const CreateTokenPairMixin = (namespace: string) => {
     async mounted () {
       await this.withParentLoading(async () =>
         await this.withApi(async () => {
+          const params = router.currentRoute.params
           this.resetPrices()
-          this.resetData()
+          this.resetData(params?.assetBAddress && params?.assetBAddress)
           await this.getAssets()
           this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
           await this.afterApiConnect()
