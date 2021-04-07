@@ -253,6 +253,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       }
       if (this.tokenFrom && this.tokenTo) {
         this.getNetworkFee()
+        this.checkLiquidity()
         this.updatePairLiquiditySources()
       }
     })
@@ -438,9 +439,9 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       } else {
         await this.setTokenToAddress(token.address)
       }
+      await this.checkLiquidity()
       await this.updatePairLiquiditySources()
       await this.recountSwapValues()
-      await this.checkLiquidity()
     }
   }
 
