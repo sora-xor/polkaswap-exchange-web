@@ -486,7 +486,7 @@ const actions = {
       const method = isValOrXor
         ? 'mintTokensByPeers'
         : request.currencyType === BridgeCurrencyType.TokenAddress
-          ? 'receievByEthereumAssetAddress'
+          ? 'receiveByEthereumAssetAddress'
           : 'receiveBySidechainAssetId'
       const methodArgs = [
         (isValOrXor || request.currencyType === BridgeCurrencyType.TokenAddress)
