@@ -35,7 +35,7 @@
                     <div class="asset-item__name">{{ getAssetName(asset, !isSoraToEthereum) }}</div>
                   </s-row>
                 </s-col>
-                <div>
+                <div class="asset-item__balance-container">
                   <span class="asset-item__balance">{{ formatBalance(asset) }}</span>
                 </div>
               </div>
@@ -365,11 +365,16 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
     font-size: var(--s-font-size-small);
     font-weight: 600;
   }
-  &__balance {
-    white-space: nowrap;
+  &__balance-container {
+    width: 45%;
+    text-align: right;
+  }
+  .s-col {
+    padding-right: $inner-spacing-small;
   }
   .token-logo {
     margin-right: $inner-spacing-medium;
+    flex-shrink: 0;
   }
 }
 .network-label {
