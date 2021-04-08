@@ -51,7 +51,7 @@
             <info-line
               :label="t('bridgeTransaction.networkInfo.amount')"
               :value="`-${amount}`"
-              :asset-symbol="formatAssetSymbol(asset ? asset.symbol : '', !isSoraToEthereum)"
+              :asset-symbol="formatAssetSymbol(assetSymbol, !isSoraToEthereum)"
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
@@ -108,7 +108,7 @@
             <info-line
               :label="t('bridgeTransaction.networkInfo.amount')"
               :value="`${amount}`"
-              :asset-symbol="formatAssetSymbol(asset ? asset.symbol : '', isSoraToEthereum)"
+              :asset-symbol="formatAssetSymbol(assetSymbol, isSoraToEthereum)"
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
@@ -228,6 +228,10 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   currentTransactionStep = 1
   showConfirmTransactionDialog = false
 
+  get assetSymbol (): string {
+    return this.asset?.symbol ?? ''
+  }
+
   get currentState (): STATES {
     return this.currentTransactionState
   }
@@ -293,8 +297,8 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   get transactionDetails (): string {
     // TODO: Check asset for null value
     return this.t('bridgeTransaction.details', {
-      from: `${this.amount} ${formatAssetSymbol(this.asset?.symbol, !this.isSoraToEthereum)}`,
-      to: `${this.amount} ${formatAssetSymbol(this.asset?.symbol, this.isSoraToEthereum)}`
+      from: `${this.amount} ${formatAssetSymbol(this.assetSymbol, !this.isSoraToEthereum)}`,
+      to: `${this.amount} ${formatAssetSymbol(this.assetSymbol, this.isSoraToEthereum)}`
     })
   }
 
@@ -375,11 +379,11 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   }
 
   get isInsufficientBalance (): boolean {
-    if (this.asset && hasInsufficientBalance(this.asset, this.amount, this.soraNetworkFee)) {
-      this.insufficientBalanceAssetSymbol = this.asset.symbol
-      return true
-    }
-    return false
+    if (!this.asset) return false
+
+    const fee = this.isSoraToEthereum ? this.soraNetworkFee : this.ethereumNetworkFee
+
+    return hasInsufficientBalance(this.asset, this.amount, fee, !this.isSoraToEthereum)
   }
 
   get isInsufficientXorForFee (): boolean {
