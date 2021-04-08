@@ -23,13 +23,12 @@
     <s-divider class="s-divider--dialog" />
     <info-line
       :label="t('bridge.soraNetworkFee')"
-      :tooltip-content="t('bridge.tooltipValue')"
+      :tooltip-content="t('networkFeeTooltipText')"
       :value="soraNetworkFee ? '~' + formattedSoraNetworkFee : '-'"
       :asset-symbol="KnownSymbols.XOR"
     />
     <info-line
       :label="t('bridge.ethereumNetworkFee')"
-      :tooltip-content="t('bridge.tooltipValue')"
       :value="ethereumNetworkFee ? '~' + formattedEthNetworkFee : '-'"
       :asset-symbol="EthSymbol"
     />

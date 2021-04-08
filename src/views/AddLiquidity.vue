@@ -111,8 +111,8 @@
 
     <div v-if="areTokensSelected && isAvailable && !emptyAssets" class="info-line-container">
       <p class="p2">{{ t('createPair.pricePool') }}</p>
-      <info-line :label="t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="price" />
-      <info-line :label="t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="priceReversed" />
+      <info-line :label="t('addLiquidity.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="price" />
+      <info-line :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="priceReversed" />
       <info-line :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
       <info-line :label="t('createPair.networkFee')" :value="`${formattedFee} ${KnownSymbols.XOR}`" />
     </div>
