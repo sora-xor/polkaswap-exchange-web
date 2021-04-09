@@ -254,8 +254,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       if (this.tokenFrom && this.tokenTo) {
         this.getNetworkFee()
         this.checkLiquidity()
-        this.updatePairLiquiditySources()
       }
+      this.updatePairLiquiditySources()
     })
   }
 
