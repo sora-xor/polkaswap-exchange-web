@@ -24,7 +24,7 @@ const types = flow(
   ]),
   map(x => [x, x]),
   fromPairs
-)(['CHECK_LIQUIDITY'])
+)(['CHECK_AVAILABILITY'])
 
 interface SwapState {
   tokenFromAddress: string | null;
@@ -122,13 +122,13 @@ const mutations = {
   [types.SET_LIQUIDITY_PROVIDER_FEE] (state: SwapState, liquidityProviderFee: CodecString) {
     state.liquidityProviderFee = liquidityProviderFee
   },
-  [types.CHECK_LIQUIDITY_REQUEST] (state: SwapState) {
+  [types.CHECK_AVAILABILITY_REQUEST] (state: SwapState) {
     state.isAvailable = false
   },
-  [types.CHECK_LIQUIDITY_SUCCESS] (state: SwapState, isAvailable: boolean) {
+  [types.CHECK_AVAILABILITY_SUCCESS] (state: SwapState, isAvailable: boolean) {
     state.isAvailable = isAvailable
   },
-  [types.CHECK_LIQUIDITY_FAILURE] (state: SwapState) {
+  [types.CHECK_AVAILABILITY_FAILURE] (state: SwapState) {
     state.isAvailable = false
   },
   [types.SET_PAIR_LIQUIDITY_SOURCES] (state: SwapState, liquiditySources: Array<LiquiditySourceTypes>) {
@@ -195,14 +195,14 @@ const actions = {
   setLiquidityProviderFee ({ commit }, liquidityProviderFee: string) {
     commit(types.SET_LIQUIDITY_PROVIDER_FEE, liquidityProviderFee)
   },
-  async checkLiquidity ({ commit, getters }) {
+  async checkSwap ({ commit, getters }) {
     if (getters.tokenFrom?.address && getters.tokenTo?.address) {
-      commit(types.CHECK_LIQUIDITY_REQUEST)
+      commit(types.CHECK_AVAILABILITY_REQUEST)
       try {
-        const isLiquidityExists = await api.checkLiquidity(getters.tokenFrom.address, getters.tokenTo.address)
-        commit(types.CHECK_LIQUIDITY_SUCCESS, isLiquidityExists)
+        const isAvailable = await api.checkSwap(getters.tokenFrom.address, getters.tokenTo.address)
+        commit(types.CHECK_AVAILABILITY_SUCCESS, isAvailable)
       } catch (error) {
-        commit(types.CHECK_LIQUIDITY_FAILURE, error)
+        commit(types.CHECK_AVAILABILITY_FAILURE, error)
       }
     }
   },
