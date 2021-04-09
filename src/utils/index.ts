@@ -55,10 +55,11 @@ const getMaxBalance = (
 
   let fpResult = FPNumber.fromCodecValue(balance, asset.decimals)
 
-  if (isXorAccountAsset(asset) && !asZeroValue(fee)) {
+  if (!isExternalBalance && isXorAccountAsset(asset) && !asZeroValue(fee)) {
     const fpFee = FPNumber.fromCodecValue(fee, asset.decimals)
     fpResult = fpResult.sub(fpFee)
   }
+  // TODO: add possible check for ethereum asset & ethereum fee
 
   return FPNumber.lt(fpResult, FpZeroValue) ? FpZeroValue : fpResult
 }

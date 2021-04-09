@@ -11,16 +11,19 @@ $s-line-height-big: 1.8;
 
 $s-font-weight-big: 700;
 
+// TODO: remove it and use these var-s from the ui-library
+// -------------------------------------------------------
 $s-letter-spacing-mini: -0.04em;
 $s-letter-spacing-small: -0.02em;
 $s-letter-spacing-medium: -0.01em;
 $s-letter-spacing-big: 0.01em;
 $s-letter-spacing-type: 0.06em;
 
-$s-font-feature-settings-title: "tnum" on, "lnum" on, "salt" on, "case" on;
-$s-font-feature-settings-card-title: "tnum" on, "lnum" on, "ss01" on;
-$s-font-feature-settings-card-body: "ss01" on, "salt" on;
-$s-font-feature-settings-common: "tnum" on, "lnum" on, "case" on, "salt" on, "ss01" on;
-$s-font-feature-settings-input: "tnum" on, "lnum" on;
-$s-font-feature-settings-type: "case" on;
-$s-font-feature-settings-button: "tnum" on, "lnum" on, "salt" on;
+$s-font-feature-settings-title: normal;
+$s-font-feature-settings-card-title: normal;
+$s-font-feature-settings-card-body: normal;
+$s-font-feature-settings-common: normal;
+$s-font-feature-settings-input: normal;
+$s-font-feature-settings-type: normal;
+$s-font-feature-settings-button: normal;
+// -------------------------------------------------------

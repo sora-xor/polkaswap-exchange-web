@@ -25,8 +25,25 @@ $s-border-radius-small: $s-border-radius-base * 1.5;
 $s-border-radius-medium: $s-border-radius-base * 2;
 $s-border-radius-big: $s-border-radius-base * 3;
 
-:root {
-  --s-color-brand-day: #{$s-color-brand-day};
-}
+$s-font-feature-settings-common: normal;
+$s-font-feature-settings-heading: normal;
+$s-font-feature-settings-caps-heading: normal;
+$s-font-feature-settings-caps: normal;
+$s-font-feature-settings-singleline: normal;
+$s-font-feature-settings-card-title: normal;
+$s-font-feature-settings-input: normal;
+$s-font-feature-settings-button: normal;
 
 @import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";
+
+:root {
+  --s-color-brand-day: #{$s-color-brand-day};
+  --s-font-feature-settings-common: #{$s-font-feature-settings-common};
+  --s-font-feature-settings-heading: #{$s-font-feature-settings-heading};
+  --s-font-feature-settings-caps-heading: #{$s-font-feature-settings-caps-heading};
+  --s-font-feature-settings-caps: #{$s-font-feature-settings-caps};
+  --s-font-feature-settings-singleline: #{$s-font-feature-settings-singleline};
+  --s-font-feature-settings-card-title: #{$s-font-feature-settings-card-title};
+  --s-font-feature-settings-input: #{$s-font-feature-settings-input};
+  --s-font-feature-settings-button: #{$s-font-feature-settings-button};
+}
