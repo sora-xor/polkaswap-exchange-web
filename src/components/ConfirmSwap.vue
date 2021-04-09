@@ -23,7 +23,7 @@
     </div>
     <p :class="isExchangeB ? 'transaction-message' : 'transaction-message transaction-message--min-received'" v-html="t('swap.swapOutputMessage', { transactionValue : `<span class='transaction-number'>${ formattedMinMaxReceived }</span>` })" />
     <s-divider />
-    <swap-info :show-tooltips="false" />
+    <swap-info />
     <template #footer>
       <s-button
         type="primary"
