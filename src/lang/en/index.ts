@@ -25,6 +25,7 @@ export default {
   networkFeeTooltipText: 'Network fee is used to ensure @:soraText system\'s growth and stable performance.',
   marketAlgorithmText: 'Market Algorithm',
   insufficientBalanceText: 'Insufficient {tokenSymbol} balance',
+  firstPerSecond: '{first} per {second}',
   pairIsNotCreated: 'Token pair isn\'t created',
   assetNames: {
     [KnownSymbols.XOR]: 'SORA',
@@ -192,6 +193,7 @@ export default {
     networkFee: '@:networkFeeText',
     pairIsNotCreated: '@:pairIsNotCreated',
     networkFeeTooltip: '@:networkFeeTooltipText',
+    firstPerSecond: '@:firstPerSecond',
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
     insufficientLiquidity: 'Insufficient liquidity for this trade',
     confirmSwap: 'Confirm swap',
@@ -325,7 +327,7 @@ export default {
     balance: 'Balance',
     pricePool: 'Prices and pool share',
     shareOfPool: 'Share of pool',
-    firstPerSecond: '{first} per {second}',
+    firstPerSecond: '@:firstPerSecond',
     firstSecondPoolTokens: '{first}-{second} Pool tokens',
     connect: 'Connect wallet',
     supply: 'Supply',
@@ -348,7 +350,8 @@ export default {
   },
   addLiquidity: {
     title: 'Add liquidity',
-    pairIsNotCreated: '@:pairIsNotCreated'
+    pairIsNotCreated: '@:pairIsNotCreated',
+    firstPerSecond: '@:firstPerSecond'
   },
   removeLiquidity: {
     title: 'Remove liquidity',

@@ -304,6 +304,7 @@ html {
       }
     }
     &__content {
+      margin-top: 0;
       color: var(--s-color-utility-surface);
       text-align: left;
     }
