@@ -166,7 +166,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('setExchangeB', { namespace }) setExchangeB!: (isExchangeB: boolean) => Promise<void>
   @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>
   @Action('setNetworkFee', { namespace }) setNetworkFee!: (value: CodecString) => Promise<void>
-  @Action('checkLiquidity', { namespace }) checkLiquidity
+  @Action('checkSwap', { namespace }) checkSwap!: () => Promise<void>
 
   @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: () => Promise<void>
@@ -248,14 +248,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       await this.getAssets()
       if (!this.tokenFrom) {
         const xorAddress = KnownAssets.get(KnownSymbols.XOR)?.address
-        this.setTokenFromAddress(xorAddress)
-        this.setTokenToAddress()
+        await this.setTokenFromAddress(xorAddress)
+        await this.setTokenToAddress()
       }
       if (this.tokenFrom && this.tokenTo) {
-        this.getNetworkFee()
-        this.checkLiquidity()
-        this.updatePairLiquiditySources()
+        await this.getNetworkFee()
+        await this.checkSwap()
       }
+      await this.updatePairLiquiditySources()
     })
   }
 
@@ -439,7 +439,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       } else {
         await this.setTokenToAddress(token.address)
       }
-      await this.checkLiquidity()
+      await this.checkSwap()
       await this.updatePairLiquiditySources()
       await this.recountSwapValues()
     }
@@ -449,23 +449,13 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     this.showConfirmSwapDialog = true
   }
 
-  async updateAccountAssets (): Promise<void> {
-    try {
-      await api.updateAccountAssets()
-    } catch (error) {
-      this.$alert(this.t(error.message), { title: this.t('errorText') })
-      console.error(error)
-    }
-  }
-
-  async confirmSwap (isSwapConfirmed: boolean): Promise<any> {
+  async confirmSwap (isSwapConfirmed: boolean): Promise<void> {
     if (isSwapConfirmed) {
       this.resetFieldFrom()
       this.resetFieldTo()
       this.resetPrices()
-      this.setExchangeB(false)
+      await this.setExchangeB(false)
     }
-    await this.updateAccountAssets()
   }
 
   openSettingsDialog (): void {

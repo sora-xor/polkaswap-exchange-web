@@ -33,7 +33,7 @@
             </div>
           </s-row>
         </s-col>
-        <div v-if="connected">
+        <div v-if="connected" class="token-item__amount-container">
           <span class="token-item__amount">{{ formatBalance(token) }}</span>
         </div>
       </div>
@@ -204,12 +204,14 @@ $token-item-height: 71px;
     flex-direction: column;
   }
   &__info, &__amount {
-    white-space: nowrap;
     font-size: var(--s-font-size-small);
   }
   &__details {
     color: var(--s-color-base-content-tertiary);
     font-size: var(--s-font-size-mini);
+  }
+  &__address, &__symbol {
+    white-space: nowrap;
   }
   &__address {
     outline: none;
@@ -219,17 +221,23 @@ $token-item-height: 71px;
     }
   }
   &__symbol {
-    white-space: nowrap;
     font-size: var(--s-font-size-small);
     margin-bottom: $inner-spacing-mini;
     font-weight: 600;
   }
   &__amount {
     font-weight: 600;
+    &-container {
+      width: 45%;
+      text-align: right;
+    }
   }
-
+  .s-col {
+    padding-right: $inner-spacing-small;
+  }
   .token-logo {
     margin-right: $inner-spacing-medium;
+    flex-shrink: 0;
   }
 }
 .token-list {

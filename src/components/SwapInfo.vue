@@ -13,7 +13,6 @@
       :value="`${priceImpact}%`"
     /> -->
     <info-line
-      v-if="showTooltips"
       :label="t('swap.liquidityProviderFee')"
       :tooltip-content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: 0.3})"
       :value="formattedLiquidityProviderFee"
@@ -59,8 +58,6 @@ export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMi
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
 
-  @Prop({ default: true, type: Boolean }) readonly showTooltips!: boolean
-
   get connected (): boolean {
     return isWalletConnected()
   }
@@ -71,11 +68,11 @@ export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMi
 
     return [
       {
-        label: `${fromSymbol} / ${toSymbol}`,
+        label: this.t('swap.firstPerSecond', { first: fromSymbol, second: toSymbol }),
         value: this.price
       },
       {
-        label: `${toSymbol} / ${fromSymbol}`,
+        label: this.t('swap.firstPerSecond', { first: toSymbol, second: fromSymbol }),
         value: this.priceReversed
       }
     ]
