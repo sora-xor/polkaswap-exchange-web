@@ -14,7 +14,7 @@
         border-radius="mini"
         @focus="handleSearchFocus"
       >
-        <template #suffix>
+        <template #suffix v-if="query">
           <s-button class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
         </template>
       </s-input>

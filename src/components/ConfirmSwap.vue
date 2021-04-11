@@ -84,7 +84,6 @@ export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
   }
 
   async handleConfirmSwap (): Promise<void> {
-    await this.$emit('checkConfirm')
     if (this.isInsufficientBalance) {
       this.$alert(this.t('exchange.insufficientBalance', { tokenSymbol: this.tokenFrom ? this.tokenFrom.symbol : '' }), { title: this.t('errorText') })
       this.$emit('confirm')

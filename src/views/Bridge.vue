@@ -359,27 +359,29 @@ export default class Bridge extends Mixins(
   async mounted (): Promise<void> {
     this.setEthNetwork()
     this.getEthBalance()
-    this.unwatchEthereum = await web3Util.watchEthereum({
-      onAccountChange: (addressList: string[]) => {
-        if (addressList.length) {
-          this.switchExternalAccount({ address: addressList[0] })
-          this.updateRegisteredAssets()
-        } else {
+    this.resetBridgeForm(!!router.currentRoute.params?.address)
+    this.withApi(async () => {
+      this.unwatchEthereum = await web3Util.watchEthereum({
+        onAccountChange: (addressList: string[]) => {
+          if (addressList.length) {
+            this.switchExternalAccount({ address: addressList[0] })
+            this.updateRegisteredAssets()
+          } else {
+            this.disconnectExternalAccount()
+          }
+        },
+        onNetworkChange: (networkId: string) => {
+          this.setEthNetwork(networkId)
+          this.getEthNetworkFee()
+          this.getRegisteredAssets()
+          this.updateExternalBalances()
+        },
+        onDisconnect: (code: number, reason: string) => {
           this.disconnectExternalAccount()
         }
-      },
-      onNetworkChange: (networkId: string) => {
-        this.setEthNetwork(networkId)
-        this.getEthNetworkFee()
-        this.getRegisteredAssets()
-        this.updateExternalBalances()
-      },
-      onDisconnect: (code: number, reason: string) => {
-        this.disconnectExternalAccount()
-      }
+      })
+      this.subscribeToEthBlockHeaders()
     })
-    this.resetBridgeForm(!!router.currentRoute.params?.address)
-    this.subscribeToEthBlockHeaders()
   }
 
   beforeDestroy (): void {
