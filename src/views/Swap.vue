@@ -115,7 +115,7 @@
     <slippage-tolerance class="slippage-tolerance-settings" />
     <swap-info v-if="areTokensSelected && !hasZeroAmount" class="info-line-container" />
     <select-token :visible.sync="showSelectTokenDialog" :connected="connected" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
-    <confirm-swap :visible.sync="showConfirmSwapDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmSwap" @checkConfirm="updateAccountAssets" />
+    <confirm-swap :visible.sync="showConfirmSwapDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmSwap" />
     <settings-dialog :visible.sync="showSettings" />
   </s-form>
 </template>

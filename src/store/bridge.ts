@@ -3,12 +3,23 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import { FPNumber, BridgeApprovedRequest, BridgeCurrencyType, BridgeTxStatus, BridgeRequest, Operation, BridgeHistory, TransactionStatus, KnownAssets } from '@sora-substrate/util'
+import {
+  FPNumber,
+  BridgeApprovedRequest,
+  BridgeCurrencyType,
+  BridgeTxStatus,
+  BridgeRequest,
+  Operation,
+  BridgeHistory,
+  TransactionStatus,
+  KnownAssets,
+  RequestType
+} from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 
 import { STATES } from '@/utils/fsm'
 import web3Util, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
-import { delay } from '@/utils'
+import { delay, isXorAccountAsset } from '@/utils'
 import { EthereumGasLimits, MaxUint256, MetamaskCancellationCode } from '@/consts'
 
 const SORA_REQUESTS_TIMEOUT = 5 * 1000
@@ -334,10 +345,12 @@ const actions = {
     commit(types.GET_SORA_NETWORK_FEE_REQUEST)
     try {
       const asset = await dispatch('findRegisteredAsset')
+      // TODO: use it
+      // const transferType = isXorAccountAsset(getters.asset) ? RequestType.TransferXOR : RequestType.Transfer
       const fee = await (
         getters.isSoraToEthereum
           ? api.bridge.getTransferToEthFee(asset, '', getters.amount)
-          : api.bridge.getRequestFromEthFee('', 'Transfer' as any)
+          : api.bridge.getRequestFromEthFee('' /* , transferType */)
       )
       commit(types.GET_SORA_NETWORK_FEE_SUCCESS, fee)
     } catch (error) {
@@ -664,7 +677,9 @@ const actions = {
     await dispatch('setTransactionStep', 2)
     try {
       if (!currentHistoryItem.signed) {
-        await api.bridge.requestFromEth(getters.ethereumTransactionHash)
+        // TODO: use it
+        // const transferType = isXorAccountAsset(getters.asset) ? RequestType.TransferXOR : RequestType.Transfer
+        await api.bridge.requestFromEth(getters.ethereumTransactionHash /* , transferType */)
         currentHistoryItem.transactionState = STATES.SORA_SUBMITTED
         await dispatch('saveHistory', currentHistoryItem)
         await dispatch('setHistoryItem', currentHistoryItem)
