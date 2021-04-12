@@ -5,7 +5,7 @@ import { LiquiditySourceTypes } from '@sora-substrate/util'
 export const app = {
   version: pkg.version,
   name: 'Polkaswap',
-  email: 'polkaswap@soramitsu.co.jp'
+  email: 'jihoon@tutanota.de'
 }
 
 export const Links = {
