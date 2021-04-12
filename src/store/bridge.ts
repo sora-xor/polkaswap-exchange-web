@@ -20,7 +20,7 @@ import { api } from '@soramitsu/soraneo-wallet-web'
 import { STATES } from '@/utils/fsm'
 import web3Util, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
 import { delay, isXorAccountAsset } from '@/utils'
-import { EthereumGasLimits, MaxUint256, MetamaskCancellationCode } from '@/consts'
+import { EthereumGasLimits, MaxUint256 } from '@/consts'
 import { Transaction } from 'web3-core'
 
 const SORA_REQUESTS_TIMEOUT = 5 * 1000
@@ -82,7 +82,7 @@ async function waitForApprovedRequest (hash: string): Promise<BridgeApprovedRequ
 async function waitForEthereumTransactionStatus (hash: string): Promise<Transaction> {
   const web3 = await web3Util.getInstance()
   const result = await web3.eth.getTransaction(hash)
-  if (result.blockNumber === null) {
+  if (!result.blockNumber) {
     await delay(SORA_REQUESTS_TIMEOUT)
     return waitForEthereumTransactionStatus(hash)
   }
@@ -366,6 +366,10 @@ const actions = {
   saveHistory ({ commit }, history: BridgeHistory) {
     api.saveHistory(history)
   },
+  removeHistoryById ({ commit }, id: string) {
+    if (!id.length) return
+    api.bridge.removeHistory(id)
+  },
   clearHistory ({ commit }) {
     api.bridge.clearHistory()
     commit(types.GET_HISTORY_SUCCESS, [])
@@ -438,6 +442,7 @@ const actions = {
     await dispatch('setEthereumTransactionDate', params.tx.endTime)
   },
   async signSoraTransactionSoraToEth ({ commit, getters, rootGetters, dispatch }, { txId }) {
+    if (!txId) throw new Error('TX ID cannot be empty!')
     if (!getters.asset || !getters.asset.address || !getters.amount || !getters.isSoraToEthereum) {
       return
     }
@@ -453,10 +458,11 @@ const actions = {
       commit(types.SIGN_SORA_TRANSACTION_SORA_ETH_SUCCESS)
     } catch (error) {
       commit(types.SIGN_SORA_TRANSACTION_SORA_ETH_FAILURE)
-      throw new Error(error.message)
+      throw error
     }
   },
   async signEthTransactionSoraToEth ({ commit, getters, rootGetters, dispatch }, { hash }) {
+    if (!hash) throw new Error('TX ID cannot be empty!')
     if (!getters.asset || !getters.asset.address || !getters.amount || !getters.isSoraToEthereum) {
       return
     }
@@ -526,6 +532,7 @@ const actions = {
     }
   },
   async sendSoraTransactionSoraToEth ({ commit, getters, rootGetters, dispatch }, { txId }) {
+    if (!txId) throw new Error('TX ID cannot be empty!')
     commit(types.SEND_SORA_TRANSACTION_SORA_ETH_REQUEST)
     try {
       const tx = await waitForExtrinsicFinalization(txId)
@@ -537,6 +544,7 @@ const actions = {
     }
   },
   async sendEthTransactionSoraToEth ({ commit, getters, rootGetters, dispatch }, { ethereumHash }) {
+    if (!ethereumHash) throw new Error('Hash cannot be empty!')
     commit(types.SEND_ETH_TRANSACTION_SORA_ETH_REQUEST)
     try {
       await waitForEthereumTransactionStatus(ethereumHash)
@@ -605,17 +613,13 @@ const actions = {
           .on('error', (error) => reject(new Error(error)))
       })
     } catch (error) {
-      // if (error.code === MetamaskCancellationCode && currentHistoryItem.id) {
-      //   api.bridge.removeHistory(currentHistoryItem.id)
-      // } else {
-      //   await dispatch('updateHistoryParams', { tx: currentHistoryItem, isEndTimeOnly: true })
-      // }
       commit(types.SIGN_ETH_TRANSACTION_ETH_SORA_FAILURE)
       console.error(error)
-      throw new Error(error.message)
+      throw error
     }
   },
   async sendEthTransactionEthToSora ({ commit, getters, rootGetters, dispatch }, { ethereumHash }) {
+    if (!ethereumHash) throw new Error('Hash cannot be empty!')
     commit(types.SEND_ETH_TRANSACTION_SORA_ETH_REQUEST)
     try {
       await waitForEthereumTransactionStatus(ethereumHash)
@@ -626,7 +630,8 @@ const actions = {
     }
   },
   async signSoraTransactionEthToSora ({ commit, getters, rootGetters, dispatch }, { ethereumHash }) {
-    if (!getters.asset || !getters.asset.address || !getters.amount || getters.isSoraToEthereum || !getters.ethereumTransactionHash) {
+    if (!ethereumHash) throw new Error('Hash cannot be empty!')
+    if (!getters.asset || !getters.asset.address || !getters.amount || getters.isSoraToEthereum) {
       return
     }
     const asset = await dispatch('findRegisteredAsset')
@@ -644,10 +649,11 @@ const actions = {
     } catch (error) {
       commit(types.SIGN_SORA_TRANSACTION_ETH_SORA_FAILURE)
       console.error(error)
-      throw new Error(error.message)
+      throw error
     }
   },
   async sendSoraTransactionEthToSora ({ commit, getters, rootGetters, dispatch }, { ethereumHash }) {
+    if (!ethereumHash) throw new Error('Hash cannot be empty!')
     commit(types.SEND_SORA_TRANSACTION_ETH_SORA_REQUEST)
     try {
       await waitForRequest(ethereumHash)
@@ -655,7 +661,7 @@ const actions = {
     } catch (error) {
       commit(types.SEND_SORA_TRANSACTION_ETH_SORA_FAILURE)
       console.error(error)
-      throw new Error(error.message)
+      throw error
     }
   }
 }

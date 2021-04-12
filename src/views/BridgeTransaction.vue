@@ -158,7 +158,7 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
-import { Components, PageNames, EthSymbol } from '@/consts'
+import { Components, PageNames, EthSymbol, MetamaskCancellationCode } from '@/consts'
 import { formatAssetSymbol, copyToClipboard, formatDateItem, hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEthForFee } from '@/utils'
 import { createFSM, EVENTS, SORA_ETHEREUM_STATES, ETHEREUM_SORA_STATES, STATES } from '@/utils/fsm'
 
@@ -210,6 +210,7 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
 
   @Action('generateHistoryItem', { namespace }) generateHistoryItem!: ({ date: Date }) => Promise<BridgeHistory>
   @Action('updateHistoryParams', { namespace }) updateHistoryParams
+  @Action('removeHistoryById', { namespace }) removeHistoryById
   @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash
   @Action('setEthereumTransactionHash', { namespace }) setEthereumTransactionHash
 
@@ -489,22 +490,35 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
 
     // Subscribe to transition events
     this.sendService
-      .onTransition(state => {
-        this.setCurrentTransactionState(state.context.history.transactionState)
-        this.updateHistoryParams({ tx: state.context.history })
+      .onTransition(async state => {
+        await this.setCurrentTransactionState(state.context.history.transactionState)
+        await this.updateHistoryParams({ tx: state.context.history })
+
+        if (
+          !state.context.history.hash.length &&
+          !state.context.history.ethereumHash.length &&
+          [STATES.SORA_REJECTED, STATES.ETHEREUM_REJECTED].includes(state.value)
+        ) {
+          if (
+            state.event.data.message.includes('Cancelled') ||
+            state.event.data.code === MetamaskCancellationCode
+          ) {
+            await this.removeHistoryById(state.context.history.id)
+          }
+        }
 
         if (state.context.history.hash && !this.soraTransactionHash.length) {
-          this.setSoraTransactionHash(state.context.history.hash)
+          await this.setSoraTransactionHash(state.context.history.hash)
         }
         if (state.context.history.ethereumHash && !this.ethereumTransactionHash.length) {
-          this.setEthereumTransactionHash(state.context.history.ethereumHash)
+          await this.setEthereumTransactionHash(state.context.history.ethereumHash)
         }
 
         if (
           (machineStates === SORA_ETHEREUM_STATES && state.value === STATES.SORA_COMMITED) ||
           (machineStates === ETHEREUM_SORA_STATES && state.value === STATES.ETHEREUM_COMMITED)
         ) {
-          this.setFromTransactionCompleted()
+          await this.setFromTransactionCompleted()
           this.callSecondTransition()
         }
       })
