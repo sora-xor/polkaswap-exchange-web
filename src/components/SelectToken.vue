@@ -113,9 +113,9 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
       const query = this.query.toLowerCase().trim()
 
       return this.assetsList.filter(t =>
-        (KnownAssets.get(t.address) && this.t(`assetNames.${t.symbol}`).toLowerCase().includes(query)) ||
+        t.address?.toLowerCase?.() === query ||
         t.symbol?.toLowerCase?.()?.includes?.(query) ||
-        t.address?.toLowerCase?.() === query
+        t.name?.toLowerCase?.()?.includes?.(query)
       )
     }
 
