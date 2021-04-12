@@ -68,7 +68,7 @@
               />
             </li>
           </s-menu-item-group>
-          <s-menu-item-group>
+          <!--s-menu-item-group>
             <li v-if="faucetUrl">
               <sidebar-item-content
                 :icon="FaucetLink.icon"
@@ -87,7 +87,7 @@
               class="el-menu-item menu-item--small"
               @click.native="openHelpDialog"
             />
-          </s-menu-item-group>
+          </s-menu-item-group-->
         </s-menu>
       </aside>
       <div class="app-body">

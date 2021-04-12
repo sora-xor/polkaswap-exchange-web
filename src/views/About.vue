@@ -1,13 +1,13 @@
 <template>
   <div class="layout s-flex">
     <!-- TODO: Move the text below above the banner for mobile devices, add background layer with opacity for the banner -->
-    <div class="banner"/>
+    <!--div class="banner"/-->
     <div class="content">
       <div class="terms s-flex">
         <h1 class="title">{{ t('about.polkaswapText') }}</h1>
         <i class="web3-logo" />
       </div>
-      <div class="links s-flex">
+      <!--div class="links s-flex">
         <s-button type="primary" @click="handleClickExchange">
           {{ t('about.openExchange') }}
         </s-button>
@@ -17,7 +17,7 @@
         <s-button type="link" icon="external-link-16" @click="handleGoToGithub">
           {{ t('about.githubLink') }}
         </s-button>
-      </div>
+      </div-->
       <div class="articles s-flex">
         <s-row>
           <s-col :lg="3" :md="4" :sm="6" :xs="12" v-for="topic in AboutTopics" :key="topic.title">

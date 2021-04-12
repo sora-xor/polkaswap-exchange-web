@@ -1,5 +1,35 @@
 // This file includes mixins for usage in different components
 
+/*
+@mixin scrollbars($size, $foreground-color, $background-color: mix($foreground-color, white,  50%)) {
+  // For Google Chrome
+  &::-webkit-scrollbar {
+    width:  $size;
+    height: $size;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $foreground-color;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $background-color;
+  }
+
+  // For Internet Explorer
+  & {
+    scrollbar-face-color: $foreground-color;
+    scrollbar-track-color: $background-color;
+  }
+}
+body {
+  @include scrollbars(10px, pink, red);
+}
+.custom-area {
+  @include scrollbars(.5em, slategray);
+}
+*/
+
 // TODO 4 alexnatalia: Right now this is just a mixin because there are no appropriate focus behaviour for some elements (tabs for example) and we need more time to investigate the problem
 @mixin focus {
   &:focus {
@@ -346,6 +376,7 @@
 // TODO 4 alexnatalia: Check these styles later
 @mixin button-styles {
   font-weight: 600 !important;
+  text-transform:  uppercase;
   font-size: $s-font-size-button;
   line-height: $s-line-height-small;
   letter-spacing: $s-letter-spacing-small;

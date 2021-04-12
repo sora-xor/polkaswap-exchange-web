@@ -23,10 +23,15 @@ export default {
   retryText: 'Retry',
   networkFeeText: 'Network Fee',
   networkFeeTooltipText: 'Network fee is used to ensure @:soraText system\'s growth and stable performance.',
-  marketAlgorithmText: 'Market Algorithm',
+  marketAlgorithmText: 'Market algorithm',
   insufficientBalanceText: 'Insufficient {tokenSymbol} balance',
   firstPerSecond: '{first} per {second}',
   pairIsNotCreated: 'Token pair isn\'t created',
+  assetNames: {
+    [KnownSymbols.XOR]: 'SORA',
+    [KnownSymbols.VAL]: 'SORA Validator Token',
+    [KnownSymbols.PSWAP]: 'Polkaswap'
+  },
   pageTitle: {
     [PageNames.Swap]: 'Swap',
     [PageNames.Pool]: 'Pool',
@@ -55,11 +60,15 @@ export default {
   },
   social: {
     twitter: 'Twitter',
-    telegram: 'Telegram'
+    telegram: 'Telegram',
+    medium: 'Medium',
+    reddit: 'Reddit'
   },
   footerMenu: {
-    faucet: 'Faucet',
-    help: 'Help'
+    github: 'GitHub',
+    sorawiki: 'SORA Wiki',
+    memorandum: 'Polkaswap Memorandum and Terms of Services',
+    privacy: 'Privacy Policy'
   },
   helpDialog: {
     title: 'Help',
@@ -142,25 +151,25 @@ export default {
     metamask: '@:metamask'
   },
   about: {
-    polkaswapText: 'Polkaswap - decentralised token exchange for Polkadot ecosystem. Swap any token on @:soraText, add liquidity, create exchanges, earn through passive market making, build decentralized price feeds.',
+    polkaswapText: 'The DEX for the Interoperable Future. Cross-chain exchange of assets, simple creation and listing of new assets, and the easiest swaps ever. The interoperable future of Polkadot is here and we are at the forefront!',
     openExchange: 'Open exchange',
     mediumLink: 'Medium',
     githubLink: 'Github',
     [Topics.SwapTokens]: {
-      title: 'Swap tokens on @:soraText network and other bridged networks',
-      text: 'Use Polkaswap exchange or integrate into your project using the SDK'
+      title: 'Faster Trading',
+      text: 'Polkaswap is a non-custodial, cross-chain AMM DEX protocol for swapping tokens based on Polkadot and Kusama relay chains, Polkadot and Kusama parachains, and blockchains directly connected via bridges. Polkaswap removes trusted intermediaries and provides the opportunity for faster trading. Polkaswap is a community project and devs collaborate on the open source code using the BSD 4-clause license.'
     },
     [Topics.PassiveEarning]: {
-      title: 'Earn through passive market making',
-      text: 'Provide liquidity to earn 0.3% of all spread fees for adding market depth'
+      title: 'Boundless Liquidity',
+      text: 'Polkaswap combines multiple liquidity sources under a common liquidity aggregation algorithm, operating completely on-chain, in a trustless and decentralized way. When traders call the swap function, the liquidity aggregation algorithm will fill orders using the best offers across all liquidity sources. Liquidity sources can be other DEXs, order books, or other API-driven sources. Because Polkaswap is an open-source project, anyone can add more liquidity sources by making contributions to the Polkaswap codebase.'
     },
     [Topics.AddLiquidity]: {
-      title: 'Add liquidity for any project',
-      text: 'Add liquidity or create new pairs'
+      title: 'Swap Any Token',
+      text: 'Go beyond the limits of current DEXs by adding tokens from the Polkadot ecosystem as well as other blockchains. Create, list and trade your own tokens on the SORA network. Our core infrastructure uses Parity Substrate, which is more scalable than Ethereum, and does not use expensive mining for consensus.'
     },
     [Topics.PriceFeeds]: {
-      title: 'Build decentralized price feeds',
-      text: 'Use Polkaswap exchange or integrate into your project using the SDK'
+      title: 'PSWAP Tokens',
+      text: 'PSWAP was created by community governance by voting on its release. It is a utility and governance token used to reward liquidity providers on Polkaswap. Unlike most other reward tokens, PSWAP is burned with transactions and decreases in supply over time. The 0.3% fee for every swap on the Polkaswap DEX is used to buy back PSWAP tokens, which are then burned. At first, 90% of burned PSWAP tokens are reminted to allocate to liquidity providers, but with time this percentage will decrease to 35% after 4 years. 10% of the burned amount will be reminted daily and given to the SORA Parliament to finance future development of Polkaswap and the ecosystem in a decentralized way.'
     }
   },
   exchange: {
@@ -208,8 +217,8 @@ export default {
     description: 'When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.'
   },
   bridge: {
-    title: 'Hashi Bridge',
-    info: 'Convert your tokens from the @:soraText network to the @:ethereumText network, and vice versa.',
+    title: 'HASHI Bridge',
+    info: 'Convert tokens between the @:soraText and @:ethereumTextnetworks.',
     balance: 'Balance',
     connectWallet: '@:connectWalletText',
     connected: '@:connectedText',

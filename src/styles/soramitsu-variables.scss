@@ -1,15 +1,95 @@
-$s-color-base-content-primary: #26262D;
-$s-color-brand-day: #0d0248;
+$s-color-base-content-primary: #2A171F; // NEU pink dark text
+$s-color-brand-day: #A19A9D; // 0d0248
 
-$s-color-theme-accent: #ED145B;
-$s-color-theme-accent-hover: #D51252;
-$s-color-theme-accent-pressed: #C00F4A;
-$s-color-theme-accent-focused: #AA0E42;
+$s-color-theme-accent: #F8087B; // NEU bright pink fluro
+$s-color-theme-accent-hover: #F754A3; // NEU pale quartz pink
+$s-color-theme-accent-pressed: #bf065f;
+$s-color-theme-accent-focused: #ab0555;
 // Secondary theme colors
-$s-color-theme-secondary: #F4E0E8;
-$s-color-theme-secondary-hover: #F3CCDA;
-$s-color-theme-secondary-pressed: #F1C0D2;
-$s-color-theme-secondary-focused: #EDABC3;
+$s-color-theme-secondary: #D5CDD0; // NEU light gray 1
+$s-color-theme-secondary-hover: #A19A9D; // NEU light gray 2
+$s-color-theme-secondary-pressed: #f2e9ec;
+$s-color-theme-secondary-focused: #ede4e7;
+
+
+$s-color-base-content-secondary: #A19A9D;
+$s-color-base-content-tertiary: #2A171F;
+$s-color-base-content-quaternary: #75787b;
+$s-color-base-background: #FAF4F8; // #F7F3F4;
+$s-color-base-dark-background: #2A171F;
+$s-color-base-border-primary: #F7F3F4;
+$s-color-base-border-secondary: #F7F3F4;
+$s-color-base-background-hover: #F7F3F4;
+$s-color-base-disabled: #FAF4F8;
+$s-color-base-on-disabled: #A19A9D;
+$s-color-base-on-accent: #D5CDD0;
+$s-color-utility-body: #F7F3F4;
+$s-color-utility-surface: #FDF7FB;
+$s-color-utility-overlay: rgba(0, 0, 0, 0.45);
+$s-color-max: #44E5B2; // green fluro emerald
+$s-color-status-success: #34AD87; // green emerald
+$s-color-status-warning: #479aef; // pale blue
+$s-color-status-error: #F754A3; // pale pink
+$s-color-status-success-background: #b0fde4;
+$s-color-status-warning-background: #9fcefd;
+$s-color-status-error-background: #fcbfdc;
+$s-font-weight-100: "'wgh"+"t'" 100;
+$s-font-weight-200: "'wgh"+"t'" 200;
+$s-font-weight-300: "'wgh"+"t'" 300;
+$s-font-weight-400: "'wgh"+"t'" 400;
+$s-font-weight-500: "'wgh"+"t'" 500;
+$s-font-weight-600: "'wgh"+"t'" 600;
+$s-font-weight-700: "'wgh"+"t'" 700;
+$s-font-weight-800: "'wgh"+"t'" 800;
+$s-font-size-mini: 12px;
+$s-font-size-small: 14px;
+$s-icon-font-size-mini: 16px;
+$s-icon-font-size-small: 18px;
+$s-icon-font-size-medium: 20px;
+$s-icon-font-size-big: 24px;
+$s-heading0-font-size: 40px;
+$s-heading1-font-size: 36px;
+$s-heading2-font-size: 30px;
+$s-heading3-font-size: 24px;
+$s-heading4-font-size: 18px;
+$s-heading5-font-size: 16px;
+$s-heading6-font-size: 14px;
+$s-heading7-font-size: 12px;
+$s-heading8-font-size: 10px;
+$s-line-height-base: 1.4;
+$s-line-height-mini: 1.2;
+$s-line-height-small: 1.3;
+$s-line-height-medium: 1.5;
+$s-line-height-big: 1.8;
+$s-letter-spacing-mini: -0.04em;
+$s-letter-spacing-small: -0.02em;
+$s-letter-spacing-medium: -0.01em;
+$s-letter-spacing-big: 0.01em;
+$s-letter-spacing-large: 0.03em;
+$s-letter-spacing-extra-large: 0.06em;
+$s-size-mini: 24px;
+$s-size-small: 32px;
+$s-size-medium: 40px;
+$s-size-big: 56px;
+$s-padding-input: 16px;
+$s-border-radius-mini: 8px;
+$s-border-radius-small: 12px;
+$s-border-radius-medium: 16px;
+$s-border-radius-big: 24px;
+
+$s-shadow-surface: 1px 1px 5px rgba(0, 0, 0, 0.1), inset 1px 1px 1px rgba(0, 0, 0, 0.1); // 0px 1px 4px rgba(13, 2, 72, 0.35);
+
+$s-shadow-tooltip: 0px 1px 4px rgba(13, 2, 72, 0.35);
+
+$s-shadow-tab: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1) !important; // 0px 1px 1px rgba(0, 0, 0, 0.1);
+$s-shadow-dropdown: 0px 4px 8px rgba(19, 19, 19, 0.15);
+$s-shadow-mobile-tap-bar: 0px -4px 8px rgba(19, 19, 19, 0.15);
+$s-shadow-mobile-side-menu: -4px 4px 8px rgba(19, 19, 19, 0.15);
+
+
+
+
+
 
 $s-color-button-tertiary-color: $s-color-theme-accent;
 $s-color-button-tertiary-color-active: $s-color-theme-accent;
@@ -19,7 +99,7 @@ $s-color-button-tertiary-background-pressed: $s-color-theme-secondary-pressed;
 $s-color-button-tertiary-background-focused: $s-color-theme-secondary-focused;
 
 // Border Radius
-$s-border-radius-base: 8px;
+$s-border-radius-base: 16px;
 $s-border-radius-mini: $s-border-radius-base;
 $s-border-radius-small: $s-border-radius-base * 1.5;
 $s-border-radius-medium: $s-border-radius-base * 2;
@@ -46,4 +126,13 @@ $s-font-feature-settings-button: normal;
   --s-font-feature-settings-card-title: #{$s-font-feature-settings-card-title};
   --s-font-feature-settings-input: #{$s-font-feature-settings-input};
   --s-font-feature-settings-button: #{$s-font-feature-settings-button};
+  --s-font-weight-100: #{$s-font-weight-100};
+  --s-font-weight-200: #{$s-font-weight-200};
+  --s-font-weight-300: #{$s-font-weight-300};
+  --s-font-weight-400: #{$s-font-weight-400};
+  --s-font-weight-500: #{$s-font-weight-500};
+  --s-font-weight-600: #{$s-font-weight-600};
+  --s-font-weight-700: #{$s-font-weight-700};
+  --s-font-weight-800: #{$s-font-weight-800};
+  --s-color-max: #{$s-color-max};
 }
