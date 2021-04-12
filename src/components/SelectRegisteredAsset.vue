@@ -298,10 +298,9 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
           padding-left: $inner-spacing-medium;
           &.is-active {
             box-shadow: var(--s-shadow-tab);
-          }
-          &:hover {
-            box-shadow: none;
-            border-radius: var(--s-border-radius-small);
+            &, &:hover {
+              background-color: var(--s-color-base-on-accent);
+            }
           }
         }
         #{$tabs-class}__item {
@@ -311,8 +310,8 @@ $tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
           font-feature-settings: $s-font-feature-settings-title;
           font-weight: 700 !important;
           text-align: center;
-          &:hover {
-            background-color: var(--s-color-base-background-hover);
+          &.is-focus:not(.is-active) {
+            box-shadow: none !important;
           }
         }
       }
