@@ -82,7 +82,6 @@ $logo-width: 140px;
     margin-right: auto;
     width: calc(100% - #{$inner-spacing-mini} * 2);
     height: 120px;
-    background-image: url("~@/assets/img/about-banner.png");
     background-size: contain;
     background-repeat: repeat-x;
     flex-shrink: 0;
@@ -152,13 +151,6 @@ $logo-width: 140px;
           margin-bottom: $inner-spacing-small;
         }
       }
-    }
-  }
-}
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .layout {
-    .banner {
-      background-image: url("~@/assets/img/about-banner@2x.png");
     }
   }
 }
