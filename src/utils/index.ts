@@ -15,8 +15,10 @@ export const formatAddress = (address: string, length = address.length / 2): str
   return `${address.slice(0, length / 2)}...${address.slice(-length / 2)}`
 }
 
+export const isXorAddress = (address: string) => address === KnownAssets.get(KnownSymbols.XOR).address
+
 export const isXorAccountAsset = (asset: Asset | AccountAsset | RegisteredAccountAsset | AccountLiquidity): boolean => {
-  return asset ? asset.address === KnownAssets.get(KnownSymbols.XOR).address : false
+  return asset ? isXorAddress(asset.address) : false
 }
 
 export const isMaxButtonAvailable = (

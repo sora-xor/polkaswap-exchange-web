@@ -130,7 +130,16 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
-import { isWalletConnected, isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance } from '@/utils'
+import {
+  isWalletConnected,
+  isMaxButtonAvailable,
+  getMaxValue,
+  hasInsufficientBalance,
+  hasInsufficientXorForFee,
+  asZeroValue,
+  formatAssetBalance,
+  isXorAddress
+} from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -287,14 +296,28 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   async updatePairLiquiditySources (): Promise<void> {
-    const isPair = !!this.tokenFrom?.address && !!this.tokenTo?.address
+    const areAssetsAddressesExists = !!this.tokenFrom?.address && !!this.tokenTo?.address
 
-    const sources = isPair ? (await api.getEnabledLiquiditySourcesForPair(
-      this.tokenFrom?.address,
-      this.tokenTo?.address
-    )) : []
+    if (!areAssetsAddressesExists) {
+      this.setPairLiquiditySources([])
+    } else {
+      const params = [this.tokenFrom.address, this.tokenTo.address]
 
-    this.setPairLiquiditySources(sources)
+      // xor address should be at first place (as this is a pair)
+      if (isXorAddress(params[1])) {
+        params.reverse()
+      }
+
+      const [firstAssetAddress, secondAssetAddress] = params
+
+      try {
+        const sources = await api.getEnabledLiquiditySourcesForPair(firstAssetAddress, secondAssetAddress)
+        this.setPairLiquiditySources(sources)
+      } catch (error) {
+        console.error(error)
+        this.setPairLiquiditySources([])
+      }
+    }
   }
 
   async handleInputFieldFrom (value): Promise<any> {
