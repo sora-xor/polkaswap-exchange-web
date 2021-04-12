@@ -4,7 +4,7 @@
     <branded-tooltip
       v-if="hasTooltipContent"
       :content="tooltip"
-      popper-class="info-tooltip"
+      popper-class="info-tooltip info-tooltip--settings-header"
       placement="right-start"
     >
       <slot slot="content" :name="tooltipScopedSlot"/>
@@ -38,6 +38,12 @@ export default class SettingsHeader extends Mixins(TranslationMixin) {
 }
 </script>
 
+<style lang="scss">
+.info-tooltip--settings-header {
+  margin-top: -$inner-spacing-mini * 1.25;
+}
+</style>
+
 <style lang="scss" scoped>
 .settings-header {
   padding-bottom: $inner-spacing-mini;
@@ -47,6 +53,10 @@ export default class SettingsHeader extends Mixins(TranslationMixin) {
   line-height: $s-line-height-base;
   letter-spacing: $s-letter-spacing-type;
   font-weight: 700;
+
+  .el-tooltip {
+    vertical-align: middle;
+  }
 
   &-hint {
     margin-left: $inner-spacing-mini / 2;

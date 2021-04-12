@@ -1,7 +1,6 @@
 <template>
   <s-tooltip
     v-bind="{
-      popperClass: 'info-tooltip',
       theme: 'light',
       animation: 'none',
       ...$attrs
