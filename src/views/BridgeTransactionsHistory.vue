@@ -24,7 +24,7 @@
             size="medium"
             border-radius="mini"
           >
-            <template #suffix>
+            <template #suffix v-if="query">
               <s-button class="s-button--clear" icon="clear-X-16" @click="handleResetSearch" />
             </template>
           </s-input>
