@@ -20,7 +20,8 @@ import { api } from '@soramitsu/soraneo-wallet-web'
 import { STATES } from '@/utils/fsm'
 import web3Util, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
 import { delay, isXorAccountAsset } from '@/utils'
-import { EthereumGasLimits, MaxUint256, MetamaskCancellationCode } from '@/consts'
+import { EthereumGasLimits, MaxUint256 } from '@/consts'
+import { Transaction } from 'web3-core'
 
 const SORA_REQUESTS_TIMEOUT = 5 * 1000
 
@@ -48,8 +49,14 @@ const types = flow(
   'GET_HISTORY',
   'GET_SORA_NETWORK_FEE',
   'GET_ETHEREUM_NETWORK_FEE',
-  'SEND_TRANSACTION',
-  'RECEIVE_TRANSACTION'
+  'SIGN_SORA_TRANSACTION_SORA_ETH',
+  'SIGN_ETH_TRANSACTION_SORA_ETH',
+  'SEND_SORA_TRANSACTION_SORA_ETH',
+  'SEND_ETH_TRANSACTION_SORA_ETH',
+  'SIGN_SORA_TRANSACTION_ETH_SORA',
+  'SIGN_ETH_TRANSACTION_ETH_SORA',
+  'SEND_SORA_TRANSACTION_ETH_SORA',
+  'SEND_ETH_TRANSACTION_ETH_SORA'
 ])
 
 async function waitForApprovedRequest (hash: string): Promise<BridgeApprovedRequest> {
@@ -70,6 +77,16 @@ async function waitForApprovedRequest (hash: string): Promise<BridgeApprovedRequ
   }
   return await waitForApprovedRequest(hash)
   // Sora Pending
+}
+
+async function waitForEthereumTransactionStatus (hash: string): Promise<Transaction> {
+  const web3 = await web3Util.getInstance()
+  const result = await web3.eth.getTransaction(hash)
+  if (!result.blockNumber) {
+    await delay(SORA_REQUESTS_TIMEOUT)
+    return waitForEthereumTransactionStatus(hash)
+  }
+  return result
 }
 
 async function waitForRequest (hash: string): Promise<BridgeRequest> {
@@ -250,12 +267,30 @@ const mutations = {
   [types.SET_HISTORY_ITEM] (state, historyItem: BridgeHistory | null) {
     state.historyItem = historyItem
   },
-  [types.SEND_TRANSACTION_REQUEST] (state) {},
-  [types.SEND_TRANSACTION_SUCCESS] (state) {},
-  [types.SEND_TRANSACTION_FAILURE] (state) {},
-  [types.RECEIVE_TRANSACTION_REQUEST] (state) {},
-  [types.RECEIVE_TRANSACTION_SUCCESS] (state) {},
-  [types.RECEIVE_TRANSACTION_FAILURE] (state) {}
+  [types.SIGN_SORA_TRANSACTION_SORA_ETH_REQUEST] (state) {},
+  [types.SIGN_SORA_TRANSACTION_SORA_ETH_SUCCESS] (state) {},
+  [types.SIGN_SORA_TRANSACTION_SORA_ETH_FAILURE] (state) {},
+  [types.SIGN_ETH_TRANSACTION_SORA_ETH_REQUEST] (state) {},
+  [types.SIGN_ETH_TRANSACTION_SORA_ETH_SUCCESS] (state) {},
+  [types.SIGN_ETH_TRANSACTION_SORA_ETH_FAILURE] (state) {},
+  [types.SEND_SORA_TRANSACTION_SORA_ETH_REQUEST] (state) {},
+  [types.SEND_SORA_TRANSACTION_SORA_ETH_SUCCESS] (state) {},
+  [types.SEND_SORA_TRANSACTION_SORA_ETH_FAILURE] (state) {},
+  [types.SEND_ETH_TRANSACTION_SORA_ETH_REQUEST] (state) {},
+  [types.SEND_ETH_TRANSACTION_SORA_ETH_SUCCESS] (state) {},
+  [types.SEND_ETH_TRANSACTION_SORA_ETH_FAILURE] (state) {},
+  [types.SIGN_SORA_TRANSACTION_ETH_SORA_REQUEST] (state) {},
+  [types.SIGN_SORA_TRANSACTION_ETH_SORA_SUCCESS] (state) {},
+  [types.SIGN_SORA_TRANSACTION_ETH_SORA_FAILURE] (state) {},
+  [types.SIGN_ETH_TRANSACTION_ETH_SORA_REQUEST] (state) {},
+  [types.SIGN_ETH_TRANSACTION_ETH_SORA_SUCCESS] (state) {},
+  [types.SIGN_ETH_TRANSACTION_ETH_SORA_FAILURE] (state) {},
+  [types.SEND_SORA_TRANSACTION_ETH_SORA_REQUEST] (state) {},
+  [types.SEND_SORA_TRANSACTION_ETH_SORA_SUCCESS] (state) {},
+  [types.SEND_SORA_TRANSACTION_ETH_SORA_FAILURE] (state) {},
+  [types.SEND_ETH_TRANSACTION_ETH_SORA_REQUEST] (state) {},
+  [types.SEND_ETH_TRANSACTION_ETH_SORA_SUCCESS] (state) {},
+  [types.SEND_ETH_TRANSACTION_ETH_SORA_FAILURE] (state) {}
 }
 
 const actions = {
@@ -331,6 +366,10 @@ const actions = {
   saveHistory ({ commit }, history: BridgeHistory) {
     api.saveHistory(history)
   },
+  removeHistoryById ({ commit }, id: string) {
+    if (!id.length) return
+    api.bridge.removeHistory(id)
+  },
   clearHistory ({ commit }) {
     api.bridge.clearHistory()
     commit(types.GET_HISTORY_SUCCESS, [])
@@ -392,6 +431,7 @@ const actions = {
       soraNetworkFee: getters.soraNetworkFee.toString(),
       ethereumNetworkFee: getters.ethereumNetworkFee.toString()
     }))
+    return getters.historyItem
   },
   async updateHistoryParams ({ commit, dispatch }, params) {
     await dispatch('saveHistory', params.tx)
@@ -401,7 +441,8 @@ const actions = {
     }
     await dispatch('setEthereumTransactionDate', params.tx.endTime)
   },
-  async sendTransferSoraToEth ({ commit, getters, rootGetters, dispatch }) {
+  async signSoraTransactionSoraToEth ({ commit, getters, rootGetters, dispatch }, { txId }) {
+    if (!txId) throw new Error('TX ID cannot be empty!')
     if (!getters.asset || !getters.asset.address || !getters.amount || !getters.isSoraToEthereum) {
       return
     }
@@ -410,50 +451,19 @@ const actions = {
     if (!asset) {
       return
     }
-    commit(types.SEND_TRANSACTION_REQUEST)
-    const currentDate = Date.now()
-    let currentHistoryItem: BridgeHistory
-    if (getters.historyItem) {
-      currentHistoryItem = getters.historyItem
-      currentHistoryItem.startTime = +currentDate
-      currentHistoryItem.endTime = currentHistoryItem.startTime
-    } else {
-      await dispatch('generateHistoryItem', { date: currentDate })
-      currentHistoryItem = getters.historyItem
-    }
-    if (currentHistoryItem.status !== 'error') {
-      currentHistoryItem.status = BridgeTxStatus.Pending
-      currentHistoryItem.transactionState = STATES.SORA_PENDING
-    }
-    await dispatch('updateHistoryParams', { tx: currentHistoryItem })
+    commit(types.SIGN_SORA_TRANSACTION_SORA_ETH_REQUEST)
     try {
-      if (!currentHistoryItem.signed) {
-        const ethAccount = rootGetters['web3/ethAddress']
-        await api.bridge.transferToEth(asset, ethAccount, getters.amount, currentHistoryItem.id)
-        currentHistoryItem.transactionState = STATES.SORA_SUBMITTED
-        await dispatch('updateHistoryParams', { tx: currentHistoryItem })
-      }
-      const tx = await waitForExtrinsicFinalization(currentHistoryItem.id)
-      tx.status = BridgeTxStatus.Pending
-      tx.transactionState = STATES.SORA_COMMITED
-      await dispatch('updateHistoryParams', { tx: tx })
-      await dispatch('setSoraTransactionHash', tx.hash)
-      commit(types.SEND_TRANSACTION_SUCCESS)
+      const ethAccount = rootGetters['web3/ethAddress']
+      await api.bridge.transferToEth(asset, ethAccount, getters.amount, txId)
+      commit(types.SIGN_SORA_TRANSACTION_SORA_ETH_SUCCESS)
     } catch (error) {
-      currentHistoryItem.endTime = Date.now()
-      currentHistoryItem.status = BridgeTxStatus.Failed
-      currentHistoryItem.transactionState = STATES.SORA_REJECTED
-      if (`${error.message}`.toLowerCase().includes('cancelled') && currentHistoryItem.id) {
-        api.bridge.removeHistory(currentHistoryItem.id)
-      } else {
-        await dispatch('updateHistoryParams', { tx: currentHistoryItem, isEndTimeOnly: true })
-      }
-      commit(types.SEND_TRANSACTION_FAILURE)
-      throw new Error(error.message)
+      commit(types.SIGN_SORA_TRANSACTION_SORA_ETH_FAILURE)
+      throw error
     }
   },
-  async receiveTransferEthFromSora ({ commit, getters, rootGetters, dispatch }) {
-    if (!getters.asset || !getters.asset.address || !getters.amount || !getters.isSoraToEthereum || !getters.soraTransactionHash) {
+  async signEthTransactionSoraToEth ({ commit, getters, rootGetters, dispatch }, { hash }) {
+    if (!hash) throw new Error('TX ID cannot be empty!')
+    if (!getters.asset || !getters.asset.address || !getters.amount || !getters.isSoraToEthereum) {
       return
     }
     const asset = await dispatch('findRegisteredAsset')
@@ -461,40 +471,21 @@ const actions = {
     if (!asset) {
       return
     }
-    commit(types.RECEIVE_TRANSACTION_REQUEST)
-    const currentHistoryItem = getters.historyItem
-    if (currentHistoryItem.transactionStep === 2 && currentHistoryItem.transactionState === STATES.ETHEREUM_REJECTED) {
-      currentHistoryItem.startTime = Date.now()
-    }
-    currentHistoryItem.endTime = currentHistoryItem.startTime
-    currentHistoryItem.transactionStep = 2
-    if (getters.currentTransactionState !== STATES.ETHEREUM_SUBMITTED) {
-      currentHistoryItem.signed = false
-      currentHistoryItem.status = BridgeTxStatus.Pending
-      currentHistoryItem.transactionState = STATES.ETHEREUM_PENDING
-    }
-    await dispatch('updateHistoryParams', { tx: currentHistoryItem })
-    await dispatch('setTransactionStep', 2)
+    commit(types.SIGN_ETH_TRANSACTION_SORA_ETH_REQUEST)
+
     try {
-      const request = await waitForApprovedRequest(getters.soraTransactionHash) // If it causes an error, then -> catch -> SORA_REJECTED
+      const request = await waitForApprovedRequest(hash) // If it causes an error, then -> catch -> SORA_REJECTED
+      const web3 = await web3Util.getInstance()
+
       if (!rootGetters['web3/isValidEthNetwork']) {
         throw new Error('Change eth network in Metamask')
       }
       const symbol = getters.asset.symbol
       const ethAccount = rootGetters['web3/ethAddress']
-      const isExternalAccountConnected = await web3Util.checkAccountIsConnected(ethAccount)
-      if (!isExternalAccountConnected) {
-        await dispatch('web3/disconnectExternalAccount', {}, { root: true })
-        throw new Error('Connect account in Metamask')
-      }
       const isValOrXor = [KnownBridgeAsset.XOR, KnownBridgeAsset.VAL].includes(symbol)
-      let contract: any = null
-      if (isValOrXor) {
-        contract = rootGetters[`web3/contract${symbol}`]
-      } else {
-        contract = rootGetters[`web3/contract${KnownBridgeAsset.Other}`][OtherContractType.Bridge]
-      }
-      const web3 = await web3Util.getInstance()
+      const contract = isValOrXor
+        ? rootGetters[`web3/contract${symbol}`]
+        : rootGetters[`web3/contract${KnownBridgeAsset.Other}`][OtherContractType.Bridge]
       const contractInstance = new web3.eth.Contract(contract.abi)
       const contractAddress = rootGetters[`web3/address${isValOrXor ? symbol : KnownBridgeAsset.Other}`]
       contractInstance.options.address = contractAddress.MASTER
@@ -512,14 +503,14 @@ const actions = {
       ]
       methodArgs.push(...(isValOrXor
         ? [
-          getters.soraTransactionHash, // bytes32 txHash
+          hash, // bytes32 txHash
           request.v, // uint8[] memory v
           request.r, // bytes32[] memory r
           request.s, // bytes32[] memory s
           request.from // address from
         ] : [
           request.from, // address from
-          getters.soraTransactionHash, // bytes32 txHash
+          hash, // bytes32 txHash
           request.v, // uint8[] memory v
           request.r, // bytes32[] memory r
           request.s // bytes32[] memory s
@@ -527,38 +518,43 @@ const actions = {
       )
       const contractMethod = contractInstance.methods[method](...methodArgs)
       const gas = await contractMethod.estimateGas()
-      // if (!currentHistoryItem.signed) {
-      //   currentHistoryItem.signed = true
-      //   currentHistoryItem.status = BridgeTxStatus.Pending
-      //   currentHistoryItem.transactionState = STATES.ETHEREUM_SUBMITTED
-      //   await dispatch('saveHistory', currentHistoryItem)
-      //   await dispatch('setHistoryItem', currentHistoryItem)
-      // }
-      const { transactionHash } = await contractMethod.send({ gas, from: ethAccount })
-      // api.bridge.markAsDone(hash) We've decided not to use offchain workers to show the history.
-      // So we don't need DONE status of request
-      const tx = await web3.eth.getTransactionReceipt(transactionHash)
-      currentHistoryItem.endTime = Date.now()
-      currentHistoryItem.ethereumHash = tx.transactionHash
-      currentHistoryItem.status = BridgeTxStatus.Done
-      currentHistoryItem.transactionState = STATES.ETHEREUM_COMMITED
-      await dispatch('saveHistory', currentHistoryItem)
-      await dispatch('setHistoryItem', currentHistoryItem)
-      await dispatch('setEthereumTransactionHash', tx.transactionHash)
-      await dispatch('setEthereumTransactionDate', currentHistoryItem.endTime)
-      commit(types.RECEIVE_TRANSACTION_SUCCESS)
+      return new Promise((resolve, reject) => {
+        contractMethod.send({ gas, from: ethAccount })
+          .on('transactionHash', hash => {
+            commit(types.SIGN_ETH_TRANSACTION_SORA_ETH_SUCCESS)
+            resolve(hash)
+          })
+          .on('error', (error) => reject(new Error(error)))
+      })
     } catch (error) {
-      currentHistoryItem.endTime = Date.now()
-      currentHistoryItem.signed = false
-      currentHistoryItem.status = BridgeTxStatus.Failed
-      currentHistoryItem.transactionState = STATES.ETHEREUM_REJECTED
-      await dispatch('updateHistoryParams', { tx: currentHistoryItem, isEndTimeOnly: true })
-      commit(types.RECEIVE_TRANSACTION_FAILURE)
-      console.error(error)
-      throw new Error(error.message)
+      commit(types.SIGN_ETH_TRANSACTION_SORA_ETH_FAILURE)
+      throw error
     }
   },
-  async sendTransferEthToSora ({ commit, getters, rootGetters, dispatch }) {
+  async sendSoraTransactionSoraToEth ({ commit, getters, rootGetters, dispatch }, { txId }) {
+    if (!txId) throw new Error('TX ID cannot be empty!')
+    commit(types.SEND_SORA_TRANSACTION_SORA_ETH_REQUEST)
+    try {
+      const tx = await waitForExtrinsicFinalization(txId)
+      commit(types.SEND_SORA_TRANSACTION_SORA_ETH_SUCCESS)
+      return tx.hash
+    } catch (error) {
+      commit(types.SEND_SORA_TRANSACTION_SORA_ETH_FAILURE)
+      throw error
+    }
+  },
+  async sendEthTransactionSoraToEth ({ commit, getters, rootGetters, dispatch }, { ethereumHash }) {
+    if (!ethereumHash) throw new Error('Hash cannot be empty!')
+    commit(types.SEND_ETH_TRANSACTION_SORA_ETH_REQUEST)
+    try {
+      await waitForEthereumTransactionStatus(ethereumHash)
+      commit(types.SEND_ETH_TRANSACTION_SORA_ETH_SUCCESS)
+    } catch (error) {
+      commit(types.SEND_ETH_TRANSACTION_SORA_ETH_FAILURE)
+      throw error
+    }
+  },
+  async signEthTransactionEthToSora ({ commit, getters, rootGetters, dispatch }) {
     if (!getters.asset || !getters.asset.address || !getters.amount || getters.isSoraToEthereum) {
       return
     }
@@ -567,23 +563,12 @@ const actions = {
     if (!asset) {
       return
     }
-    commit(types.SEND_TRANSACTION_REQUEST)
-    const currentDate = Date.now()
-    let currentHistoryItem: BridgeHistory
-    if (getters.historyItem) {
-      currentHistoryItem = getters.historyItem
-      currentHistoryItem.startTime = +currentDate
-      currentHistoryItem.endTime = currentHistoryItem.startTime
-    } else {
-      await dispatch('generateHistoryItem', { date: currentDate })
-      currentHistoryItem = getters.historyItem
-    }
-    await dispatch('updateHistoryParams', { tx: currentHistoryItem })
+    commit(types.SIGN_ETH_TRANSACTION_ETH_SORA_REQUEST)
+
     try {
       if (!rootGetters['web3/isValidEthNetwork']) {
         throw new Error('Change eth network in Metamask')
       }
-      let contractInstance: any = null
       const contract = rootGetters[`web3/contract${KnownBridgeAsset.Other}`]
       const ethAccount = rootGetters['web3/ethAddress']
       const isExternalAccountConnected = await web3Util.checkAccountIsConnected(ethAccount)
@@ -595,19 +580,18 @@ const actions = {
       const contractAddress = rootGetters[`web3/address${KnownBridgeAsset.Other}`]
       const allowance = await dispatch('web3/getAllowanceByEthAddress', { address: asset.externalAddress }, { root: true })
       if (FPNumber.lte(new FPNumber(allowance), new FPNumber(getters.amount))) {
-        contractInstance = new web3.eth.Contract(contract[OtherContractType.ERC20].abi)
-        contractInstance.options.address = asset.externalAddress
+        const tokenInstance = new web3.eth.Contract(contract[OtherContractType.ERC20].abi)
+        tokenInstance.options.address = asset.externalAddress
         const methodArgs = [
           contractAddress.MASTER, // address spender
           MaxUint256 // uint256 amount
         ]
-        const contractMethod = contractInstance.methods.approve(...methodArgs)
-        const tx = await contractMethod.send({ from: ethAccount })
-        await web3.eth.getTransactionReceipt(tx.transactionHash)
+        const approveMethod = tokenInstance.methods.approve(...methodArgs)
+        await approveMethod.send({ from: ethAccount })
       }
       const soraAccountAddress = rootGetters.account.address
       const accountId = await web3Util.accountAddressToHex(soraAccountAddress)
-      contractInstance = new web3.eth.Contract(contract[OtherContractType.Bridge].abi)
+      const contractInstance = new web3.eth.Contract(contract[OtherContractType.Bridge].abi)
       contractInstance.options.address = contractAddress.MASTER
       const tokenInstance = new web3.eth.Contract(ABI.balance as any)
       tokenInstance.options.address = asset.externalAddress
@@ -619,40 +603,35 @@ const actions = {
         asset.externalAddress // address tokenAddress
       ]
       const contractMethod = contractInstance.methods.sendERC20ToSidechain(...methodArgs)
-      // if (!currentHistoryItem.signed) {
-      //   currentHistoryItem.signed = true
-      //   currentHistoryItem.status = BridgeTxStatus.Pending
-      //   currentHistoryItem.transactionState = STATES.ETHEREUM_SUBMITTED
-      //   await dispatch('saveHistory', currentHistoryItem)
-      //   await dispatch('setHistoryItem', currentHistoryItem)
-      // }
-      const tx = await contractMethod.send({ from: ethAccount })
-      const res = await web3.eth.getTransactionReceipt(tx.transactionHash)
-      currentHistoryItem.startTime = tx.startTime
-      currentHistoryItem.endTime = tx.endTime
-      currentHistoryItem.ethereumHash = tx.transactionHash
-      currentHistoryItem.status = BridgeTxStatus.Pending
-      currentHistoryItem.transactionState = STATES.ETHEREUM_COMMITED
-      commit(types.SEND_TRANSACTION_SUCCESS)
-      await dispatch('updateHistoryParams', { tx: currentHistoryItem })
-      await dispatch('setEthereumTransactionHash', tx.transactionHash)
-      commit(types.SEND_TRANSACTION_SUCCESS)
+
+      return new Promise((resolve, reject) => {
+        contractMethod.send({ from: ethAccount })
+          .on('transactionHash', hash => {
+            commit(types.SIGN_ETH_TRANSACTION_ETH_SORA_SUCCESS)
+            resolve(hash)
+          })
+          .on('error', (error) => reject(new Error(error)))
+      })
     } catch (error) {
-      currentHistoryItem.endTime = Date.now()
-      currentHistoryItem.status = BridgeTxStatus.Failed
-      currentHistoryItem.transactionState = STATES.ETHEREUM_REJECTED
-      if (error.code === MetamaskCancellationCode && currentHistoryItem.id) {
-        api.bridge.removeHistory(currentHistoryItem.id)
-      } else {
-        await dispatch('updateHistoryParams', { tx: currentHistoryItem, isEndTimeOnly: true })
-      }
-      commit(types.SEND_TRANSACTION_FAILURE)
+      commit(types.SIGN_ETH_TRANSACTION_ETH_SORA_FAILURE)
       console.error(error)
-      throw new Error(error.message)
+      throw error
     }
   },
-  async receiveTransferSoraFromEth ({ commit, getters, rootGetters, dispatch }) {
-    if (!getters.asset || !getters.asset.address || !getters.amount || getters.isSoraToEthereum || !getters.ethereumTransactionHash) {
+  async sendEthTransactionEthToSora ({ commit, getters, rootGetters, dispatch }, { ethereumHash }) {
+    if (!ethereumHash) throw new Error('Hash cannot be empty!')
+    commit(types.SEND_ETH_TRANSACTION_SORA_ETH_REQUEST)
+    try {
+      await waitForEthereumTransactionStatus(ethereumHash)
+      commit(types.SEND_ETH_TRANSACTION_SORA_ETH_SUCCESS)
+    } catch (error) {
+      commit(types.SEND_ETH_TRANSACTION_SORA_ETH_FAILURE)
+      throw error
+    }
+  },
+  async signSoraTransactionEthToSora ({ commit, getters, rootGetters, dispatch }, { ethereumHash }) {
+    if (!ethereumHash) throw new Error('Hash cannot be empty!')
+    if (!getters.asset || !getters.asset.address || !getters.amount || getters.isSoraToEthereum) {
       return
     }
     const asset = await dispatch('findRegisteredAsset')
@@ -660,68 +639,29 @@ const actions = {
     if (!asset) {
       return
     }
-    commit(types.RECEIVE_TRANSACTION_REQUEST)
-    const currentHistoryItem = getters.historyItem
-    if (currentHistoryItem.transactionStep === 2 && currentHistoryItem.transactionState === STATES.SORA_REJECTED) {
-      currentHistoryItem.startTime = Date.now()
-    }
-    currentHistoryItem.endTime = currentHistoryItem.startTime
-    currentHistoryItem.transactionStep = 2
-    if ([STATES.SORA_SUBMITTED, STATES.SORA_PENDING].includes(getters.currentTransactionState)) {
-      currentHistoryItem.signed = false
-      currentHistoryItem.status = BridgeTxStatus.Pending
-      currentHistoryItem.transactionState = STATES.SORA_PENDING
-    }
-    currentHistoryItem.hash = getters.ethereumTransactionHash
-    await dispatch('updateHistoryParams', { tx: currentHistoryItem })
-    await dispatch('setTransactionStep', 2)
+    commit(types.SIGN_SORA_TRANSACTION_ETH_SORA_REQUEST)
+
     try {
-      if (!currentHistoryItem.signed) {
-        // TODO: use it
-        // const transferType = isXorAccountAsset(getters.asset) ? RequestType.TransferXOR : RequestType.Transfer
-        await api.bridge.requestFromEth(getters.ethereumTransactionHash /* , transferType */)
-        currentHistoryItem.transactionState = STATES.SORA_SUBMITTED
-        await dispatch('saveHistory', currentHistoryItem)
-        await dispatch('setHistoryItem', currentHistoryItem)
-      }
-      const tx = await waitForRequest(getters.ethereumTransactionHash)
-      currentHistoryItem.endTime = Date.now()
-      currentHistoryItem.status = BridgeTxStatus.Done
-      currentHistoryItem.hash = tx.hash
-      currentHistoryItem.transactionState = STATES.SORA_COMMITED
-      await dispatch('updateHistoryParams', { tx: currentHistoryItem })
-      await dispatch('setSoraTransactionHash', tx.hash)
-      commit(types.RECEIVE_TRANSACTION_SUCCESS)
+      // TODO: use it
+      // const transferType = isXorAccountAsset(getters.asset) ? RequestType.TransferXOR : RequestType.Transfer
+      await api.bridge.requestFromEth(ethereumHash /* , transferType */)
+      commit(types.SIGN_SORA_TRANSACTION_ETH_SORA_SUCCESS)
     } catch (error) {
-      currentHistoryItem.endTime = Date.now()
-      currentHistoryItem.status = BridgeTxStatus.Failed
-      currentHistoryItem.transactionState = STATES.SORA_REJECTED
-      await dispatch('updateHistoryParams', { tx: currentHistoryItem, isEndTimeOnly: true })
-      commit(types.RECEIVE_TRANSACTION_FAILURE)
+      commit(types.SIGN_SORA_TRANSACTION_ETH_SORA_FAILURE)
       console.error(error)
-      throw new Error(error.message)
+      throw error
     }
   },
-  async sendTransaction ({ commit, getters, dispatch }): Promise<void> {
+  async sendSoraTransactionEthToSora ({ commit, getters, rootGetters, dispatch }, { ethereumHash }) {
+    if (!ethereumHash) throw new Error('Hash cannot be empty!')
+    commit(types.SEND_SORA_TRANSACTION_ETH_SORA_REQUEST)
     try {
-      if (getters.isSoraToEthereum) {
-        await dispatch('sendTransferSoraToEth')
-      } else {
-        await dispatch('sendTransferEthToSora')
-      }
+      await waitForRequest(ethereumHash)
+      commit(types.SEND_SORA_TRANSACTION_ETH_SORA_SUCCESS)
     } catch (error) {
-      throw new Error(error.message)
-    }
-  },
-  async receiveTransaction ({ commit, getters, dispatch }): Promise<void> {
-    try {
-      if (getters.isSoraToEthereum) {
-        await dispatch('receiveTransferEthFromSora')
-      } else {
-        await dispatch('receiveTransferSoraFromEth')
-      }
-    } catch (error) {
-      throw new Error(error.message)
+      commit(types.SEND_SORA_TRANSACTION_ETH_SORA_FAILURE)
+      console.error(error)
+      throw error
     }
   }
 }

@@ -313,10 +313,10 @@ const actions = {
       return ''
     }
   },
-  async getAllowanceByEthAddress ({ commit, getters, rootGetters }, { address }) {
+  async getAllowanceByEthAddress ({ commit, getters }, { address }) {
     commit(types.GET_ALLOWANCE_REQUEST)
     try {
-      const contractAddress = rootGetters[`web3/address${KnownBridgeAsset.Other}`]
+      const contractAddress = getters[`address${KnownBridgeAsset.Other}`]
       const web3 = await web3Util.getInstance()
       const tokenInstance = new web3.eth.Contract(ABI.allowance as any)
       tokenInstance.options.address = address
