@@ -312,6 +312,7 @@ html {
       text-align: left;
     }
     &__closeBtn {
+      top: $inner-spacing-medium;
       color: var(--s-color-utility-surface);
       &:hover {
         color: var(--s-color-utility-surface);

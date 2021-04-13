@@ -48,7 +48,7 @@
             <s-button v-if="isMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleLiquidityMaxValue">
               {{ t('buttons.max') }}
             </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
+            <s-button class="el-button--choose-token el-button--disabled" type="tertiary" size="small" border-radius="medium">
               <div class="liquidity-logo">
                 <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="mini" />
               </div>
@@ -79,7 +79,7 @@
             />
           </s-form-item>
           <div v-if="firstToken" class="token">
-            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
+            <s-button class="el-button--choose-token el-button--disabled" type="tertiary" size="small" border-radius="medium">
               <token-logo :token="firstToken" size="small" />
               {{ firstToken.symbol }}
             </s-button>
@@ -108,7 +108,7 @@
             />
           </s-form-item>
           <div v-if="secondToken" class="token">
-            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
+            <s-button class="el-button--choose-token el-button--disabled" type="tertiary" size="small" border-radius="medium">
               <token-logo :token="secondToken" size="small" />
               {{ secondToken.symbol }}
             </s-button>
@@ -377,7 +377,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     }
   }
   @include input-form-styles;
-  @include buttons(true);
+  @include buttons;
   @include full-width-button;
 }
 

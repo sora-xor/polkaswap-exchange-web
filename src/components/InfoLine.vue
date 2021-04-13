@@ -4,6 +4,7 @@
     <span class="info-line-label">{{ label }}</span>
     <branded-tooltip
       v-if="tooltipContent"
+      popper-class="info-tooltip info-tooltip--info-line"
       :content="tooltipContent"
       placement="right-start"
     >
@@ -47,7 +48,10 @@ export default class InfoLine extends Vue {
 
 <style lang="scss">
 .info-tooltip--info-line {
-  margin-left: #{$inner-spacing-mini / 2} !important;
+  margin-top: -$inner-spacing-mini * 1.25;
+  .popper__arrow {
+    margin-top: $inner-spacing-mini * 0.5;
+  }
 }
 .info-line-container {
   border: 1px solid var(--s-color-base-border-secondary);

@@ -53,7 +53,7 @@ export default class GenericPageHeader extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .info-tooltip--page-header {
-  margin-top: #{$inner-spacing-mini / 2} !important;
+  margin-top: 0 !important;
 }
 </style>
 
