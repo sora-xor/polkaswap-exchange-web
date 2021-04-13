@@ -272,9 +272,9 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
 
 <style lang="scss">
 $tabs-class: ".el-tabs";
-$tabs-container-height: $basic-spacing * 4;
+$tabs-container-height: 40px;
 $tabs-container-padding: 2px;
-$tabs-item-height: $tabs-container-height - $tabs-container-padding * 2;
+$tabs-item-height: 36px;
 
 .asset-select {
   .el-dialog {

@@ -1,7 +1,7 @@
 <template>
   <component :is="tag" :class="classes">
     <div class="icon-container">
-      <s-icon :name="icon" size="24" />
+      <s-icon :name="icon" size="28" />
     </div>
     <span>{{ title }}</span>
   </component>
@@ -32,6 +32,8 @@ export default class SidebarItemContent extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
+$icon-size: 42px;
+
 .sidebar-item-content {
   display: flex;
 
@@ -44,7 +46,17 @@ export default class SidebarItemContent extends Mixins(TranslationMixin) {
 }
 
 .icon-container {
-  width: var(--s-size-mini);
+  display: flex;
   margin-right: $inner-spacing-small;
+  padding-left: 1px; // because of inset shadow
+  width: $icon-size;
+  height: $icon-size;
+  border-radius: 50%;
+  background-color: var(--s-color-utility-surface);
+  box-shadow: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+  transition: all 0.125s ease-in-out;
+  > i {
+    margin: auto;
+  }
 }
 </style>

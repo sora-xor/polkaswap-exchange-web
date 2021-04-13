@@ -8,7 +8,7 @@
       <div class="input-container">
         <div class="input-line-header">
           <div class="input-title p4">{{ t('createPair.deposit') }}</div>
-          <div v-if="connected && firstToken" class="token-balance">
+          <div v-if="isLoggedIn && firstToken" class="token-balance">
             <span class="token-balance-title">{{ t('createPair.balance') }}</span>
             <span class="token-balance-value">{{ getTokenBalance(firstToken) }}</span>
           </div>
@@ -42,7 +42,7 @@
           <div class="input-title p4">
             <span>{{ t('createPair.deposit') }}</span>
           </div>
-          <div v-if="connected && secondToken" class="token-balance">
+          <div v-if="isLoggedIn && secondToken" class="token-balance">
             <span class="token-balance-title">{{ t('exchange.balance') }}</span>
             <span class="token-balance-value">{{ getTokenBalance(secondToken) }}</span>
           </div>
@@ -127,8 +127,8 @@
       </template>
     </template>
 
-    <select-token :visible.sync="showSelectFirstTokenDialog" :connected="connected" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstTokenAddress($event.address)" />
-    <select-token :visible.sync="showSelectSecondTokenDialog" :connected="connected" :asset="firstToken" @select="setSecondTokenAddress($event.address)" />
+    <select-token :visible.sync="showSelectFirstTokenDialog" :connected="isLoggedIn" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstTokenAddress($event.address)" />
+    <select-token :visible.sync="showSelectSecondTokenDialog" :connected="isLoggedIn" :asset="firstToken" @select="setSecondTokenAddress($event.address)" />
 
     <confirm-token-pair-dialog
       :visible.sync="showConfirmDialog"
