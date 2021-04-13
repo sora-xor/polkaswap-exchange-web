@@ -195,7 +195,7 @@ export default {
     networkFeeTooltip: '@:networkFeeTooltipText',
     firstPerSecond: '@:firstPerSecond',
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
-    insufficientLiquidity: 'Insufficient liquidity for this trade',
+    insufficientLiquidity: 'Insufficient liquidity',
     confirmSwap: 'Confirm swap',
     swapOutputMessage: 'Output is estimated. You will receive <span class="min-received-label">at least</span> {transactionValue} or the transaction will revert.'
   },
