@@ -120,7 +120,9 @@
   }
 }
 
-@mixin buttons($isChooseTokenDisabled: false) {
+@mixin buttons() {
+  $buttonDisabledClass: '.el-button--disabled';
+  $buttonChooseTokenClass: '.el-button--choose-token';
   .s-tertiary {
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
   }
@@ -147,9 +149,10 @@
       border-color: var(--s-color-base-background);
       color: var(--s-color-base-content-primary);
       font-size: var(--s-font-size-small);
-      @if $isChooseTokenDisabled == true {
+      &#{$buttonDisabledClass} {
         cursor: default;
-      } @else {
+      }
+      &:not(#{$buttonDisabledClass}) {
         &:hover, &:active {
           cursor: pointer;
         }

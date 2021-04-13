@@ -100,7 +100,7 @@
               />
             </s-form-item>
             <div v-if="areNetworksConnected && isAssetSelected" class="asset">
-              <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" disabled>
+              <s-button class="el-button--choose-token el-button--disabled" type="tertiary" size="small" border-radius="medium">
                 <token-logo :token="asset" size="small" />
                 {{ formatAssetSymbol(assetSymbol, isSoraToEthereum) }}
               </s-button>
@@ -675,6 +675,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
   }
   @include buttons;
+
   .el-button {
     &--connect {
       margin: $inner-spacing-mini $inner-spacing-small $inner-spacing-small;

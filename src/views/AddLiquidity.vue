@@ -29,7 +29,7 @@
             <s-button v-if="isFirstMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue(firstToken, setFirstTokenValue)">
               {{ t('buttons.max') }}
             </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
+            <s-button class="el-button--choose-token el-button--disabled" type="tertiary" size="small" border-radius="medium">
               <token-logo :token="firstToken" size="small" />
               {{ firstToken.symbol }}
             </s-button>
@@ -37,7 +37,7 @@
         </div>
       </div>
       <s-icon class="icon-divider" name="plus-16" />
-      <div :class="computedClasses">
+      <div class="input-container">
         <div class="input-line-header">
           <div class="input-title p4">
             <span>{{ t('createPair.deposit') }}</span>
@@ -64,7 +64,7 @@
               {{ t('buttons.max') }}
             </s-button>
             <s-button
-              class="el-button--choose-token"
+              :class="chooseTokenClasses"
               type="tertiary"
               size="small"
               border-radius="medium"
@@ -194,12 +194,12 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
     return router.currentRoute.params.secondAddress
   }
 
-  get computedClasses (): string {
-    const componentClass = 'input-container'
-    const classes = [componentClass, componentClass + '--second']
+  get chooseTokenClasses (): string {
+    const buttonClass = 'el-button'
+    const classes = [buttonClass, buttonClass + '--choose-token']
 
     if (this.secondAddress) {
-      classes.push(`${componentClass}--disabled-select`)
+      classes.push(`${buttonClass}--disabled`)
     }
 
     return classes.join(' ')
@@ -280,10 +280,7 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @include full-width-button;
 }
 .input-container {
-  @include buttons(true);
-  &--second:not(.input-container--disabled-select) {
-    @include buttons();
-  }
+  @include buttons;
 }
 @include vertical-divider;
 @include vertical-divider('el-divider');

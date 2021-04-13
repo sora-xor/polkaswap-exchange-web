@@ -29,7 +29,7 @@
             <s-button v-if="isAvailable && isFirstMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue(firstToken, setFirstTokenValue)">
               {{ t('buttons.max') }}
             </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
+            <s-button class="el-button--choose-token el-button--disabled" type="tertiary" size="small" border-radius="medium">
               <token-logo :token="firstToken" size="small" />
               {{ firstToken.symbol }}
             </s-button>
