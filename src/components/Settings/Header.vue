@@ -41,6 +41,9 @@ export default class SettingsHeader extends Mixins(TranslationMixin) {
 <style lang="scss">
 .info-tooltip--settings-header {
   margin-top: -$inner-spacing-mini * 1.25;
+  .popper__arrow {
+    margin-top: $inner-spacing-mini * 0.5;
+  }
 }
 </style>
 
