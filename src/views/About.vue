@@ -1,13 +1,13 @@
 <template>
   <div class="layout s-flex">
     <!-- TODO: Move the text below above the banner for mobile devices, add background layer with opacity for the banner -->
-    <div class="banner"/>
+    <!--div class="banner"/-->
     <div class="content">
       <div class="terms s-flex">
         <h1 class="title">{{ t('about.polkaswapText') }}</h1>
         <i class="web3-logo" />
       </div>
-      <div class="links s-flex">
+      <!--div class="links s-flex">
         <s-button type="primary" @click="handleClickExchange">
           {{ t('about.openExchange') }}
         </s-button>
@@ -17,7 +17,7 @@
         <s-button type="link" icon="external-link-16" @click="handleGoToGithub">
           {{ t('about.githubLink') }}
         </s-button>
-      </div>
+      </div-->
       <div class="articles s-flex">
         <s-row>
           <s-col :lg="3" :md="4" :sm="6" :xs="12" v-for="topic in AboutTopics" :key="topic.title">
@@ -82,7 +82,6 @@ $logo-width: 140px;
     margin-right: auto;
     width: calc(100% - #{$inner-spacing-mini} * 2);
     height: 120px;
-    background-image: url("~@/assets/img/about-banner.png");
     background-size: contain;
     background-repeat: repeat-x;
     flex-shrink: 0;
@@ -152,13 +151,6 @@ $logo-width: 140px;
           margin-bottom: $inner-spacing-small;
         }
       }
-    }
-  }
-}
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .layout {
-    .banner {
-      background-image: url("~@/assets/img/about-banner@2x.png");
     }
   }
 }

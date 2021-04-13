@@ -80,13 +80,13 @@
                 class="el-menu-item menu-item--small"
               />
             </li>
-            <sidebar-item-content
+            <!-- <sidebar-item-content
               :title="t(`footerMenu.help`)"
               icon="notifications-info-24"
               tag="li"
               class="el-menu-item menu-item--small"
               @click.native="openHelpDialog"
-            />
+            /> -->
           </s-menu-item-group>
         </s-menu>
       </aside>
@@ -415,6 +415,7 @@ $header-height: 64px;
 $sidebar-witdh: 160px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
+$account-name-margin: -2px 8px 0 12px;
 
 .app {
   &-main {
@@ -451,7 +452,8 @@ $sora-logo-width: 173.7px;
   &-footer {
     display: flex;
     justify-content: flex-end;
-    padding: $inner-spacing-mini * 5;
+    padding-right: $inner-spacing-mini * 5;
+    padding-bottom: $inner-spacing-mini * 5;
   }
 }
 
@@ -460,7 +462,7 @@ $sora-logo-width: 173.7px;
   align-items: center;
   padding: 2px $inner-spacing-medium;
   min-height: $header-height;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05), 0px 1px 4px rgba(0, 0, 0, 0.05), 0px 1px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
 }
 
 .menu {
@@ -511,6 +513,7 @@ $sora-logo-width: 173.7px;
   width: var(--s-size-medium);
   height: var(--s-size-medium);
   padding: 0;
+  border-radius: 0;
 }
 
 .app-controls {
@@ -552,7 +555,7 @@ $sora-logo-width: 173.7px;
     font-size: var(--s-font-size-small);
     font-feature-settings: $s-font-feature-settings-common;
     color: var(--s-color-base-content-primary);
-    margin: 0 $inner-spacing-mini;
+    margin: $account-name-margin;
   }
 
   &-icon {
@@ -578,7 +581,9 @@ $sora-logo-width: 173.7px;
   align-self: flex-end;
 
   &__title {
-    color: var(--s-color-base-content-tertiary);
+    text-transform: uppercase;
+    font-weight: 200;
+    color: var(--s-color-base-content-secondary);
     font-size: 15px;
     line-height: 16px;
     margin-right: $basic-spacing;

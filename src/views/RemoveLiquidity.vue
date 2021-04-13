@@ -387,7 +387,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
 </style>
 
 <style lang="scss">
-.s-input--remove-part {
+.s-input.s-input--remove-part.s-input--token-value {
   display: inline-block;
 
   &.one-char {
