@@ -17,6 +17,7 @@ export default {
   walletProviderConnectionError: '{provider} is not found. Please install it!',
   bridgeText: 'Bridge',
   comingSoonText: 'Coming Soon',
+  disclaimer: 'Disclaimer: This website is maintained by the SORA community. You are solely responsible for compliance with all laws that may apply to your particular use of Polkaswap. You acknowledge that the current version of Polkaswap is an alpha version and as such has not been fully-tested and may not perform as designed. Your use of Polkaswap involves various risks, including, but not limited to losing tokens. Before using Polkaswap, please review the FAQ and documentation for a detailed explanation on how Polkaswap works. Please read the Polkaswap Memorandum and Terms of Service, as well as the Privacy Policy, and don\'t even think of using this site until you have read and complied with both!!',
   poweredBy: 'Powered by',
   confirmText: 'Confirm',
   confirmTransactionText: 'Confirm transaction in {direction}',

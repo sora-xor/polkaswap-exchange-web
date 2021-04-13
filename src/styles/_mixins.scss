@@ -39,7 +39,7 @@
 }
 
 @mixin container-styles {
-  margin: $inner-spacing-big auto;
+  margin: $inner-spacing-big auto 0;
   padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
   min-height: $inner-window-height;
   width: $inner-window-width;
@@ -283,7 +283,6 @@
 
 @mixin bridge-content {
   margin-top: $basic-spacing * 2;
-  margin-bottom: $basic-spacing * 2;
   border: none;
   &,
   &.is-hover-shadow:hover {
