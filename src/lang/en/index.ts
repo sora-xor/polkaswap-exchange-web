@@ -17,7 +17,7 @@ export default {
   walletProviderConnectionError: '{provider} is not found. Please install it!',
   bridgeText: 'Bridge',
   comingSoonText: 'Coming Soon',
-  disclaimer: 'Disclaimer: This website is maintained by the SORA community. You are solely responsible for compliance with all laws that may apply to your particular use of Polkaswap. You acknowledge that the current version of Polkaswap is an alpha version and as such has not been fully-tested and may not perform as designed. Your use of Polkaswap involves various risks, including, but not limited to losing tokens. Before using Polkaswap, please review the FAQ and documentation for a detailed explanation on how Polkaswap works. Please read the Polkaswap Memorandum and Terms of Service, as well as the Privacy Policy, and don\'t even think of using this site until you have read and complied with both!!',
+  disclaimer: 'Disclaimer: This website is maintained by the @:soraText community. You are solely responsible for compliance with all laws that may apply to your particular use of Polkaswap. You acknowledge that the current version of Polkaswap is an alpha version and as such has not been fully-tested and may not perform as designed. Your use of Polkaswap involves various risks, including, but not limited to losing tokens. Before using Polkaswap, please review the FAQ and documentation for a detailed explanation on how Polkaswap works. Please read the Polkaswap Memorandum and Terms of Service, as well as the Privacy Policy, and don\'t even think of using this site until you have read and complied with both!!',
   poweredBy: 'Powered by',
   confirmText: 'Confirm',
   confirmTransactionText: 'Confirm transaction in {direction}',
@@ -63,7 +63,7 @@ export default {
   footerMenu: {
     faucet: 'Faucet',
     github: 'GitHub',
-    sorawiki: 'SORA Wiki',
+    sorawiki: '@:soraText Wiki',
     memorandum: 'Polkaswap Memorandum and Terms of Services',
     privacy: 'Privacy Policy'
   },
@@ -133,9 +133,9 @@ export default {
   },
   metamask: 'Metamask',
   sora: {
-    [NetworkTypes.Devnet]: 'SORA Devnet',
-    [NetworkTypes.Testnet]: 'SORA Testnet',
-    [NetworkTypes.Mainnet]: 'SORA Mainnet'
+    [NetworkTypes.Devnet]: '@:soraText Devnet',
+    [NetworkTypes.Testnet]: '@:soraText Testnet',
+    [NetworkTypes.Mainnet]: '@:soraText Mainnet'
   },
   ethereum: {
     [EthNetwork.Mainnet]: 'Ethereum Mainnet',
@@ -162,11 +162,11 @@ export default {
     },
     [Topics.AddLiquidity]: {
       title: 'Swap Any Token',
-      text: 'Go beyond the limits of current DEXs by adding tokens from the Polkadot ecosystem as well as other blockchains. Create, list and trade your own tokens on the SORA network. Our core infrastructure uses Parity Substrate, which is more scalable than Ethereum, and does not use expensive mining for consensus.'
+      text: 'Go beyond the limits of current DEXs by adding tokens from the Polkadot ecosystem as well as other blockchains. Create, list and trade your own tokens on the @:soraText network. Our core infrastructure uses Parity Substrate, which is more scalable than Ethereum, and does not use expensive mining for consensus.'
     },
     [Topics.PriceFeeds]: {
       title: 'PSWAP Tokens',
-      text: 'PSWAP was created by community governance by voting on its release. It is a utility and governance token used to reward liquidity providers on Polkaswap. Unlike most other reward tokens, PSWAP is burned with transactions and decreases in supply over time. The 0.3% fee for every swap on the Polkaswap DEX is used to buy back PSWAP tokens, which are then burned. At first, 90% of burned PSWAP tokens are reminted to allocate to liquidity providers, but with time this percentage will decrease to 35% after 4 years. 10% of the burned amount will be reminted daily and given to the SORA Parliament to finance future development of Polkaswap and the ecosystem in a decentralized way.'
+      text: 'PSWAP was created by community governance by voting on its release. It is a utility and governance token used to reward liquidity providers on Polkaswap. Unlike most other reward tokens, PSWAP is burned with transactions and decreases in supply over time. The 0.3% fee for every swap on the Polkaswap DEX is used to buy back PSWAP tokens, which are then burned. At first, 90% of burned PSWAP tokens are reminted to allocate to liquidity providers, but with time this percentage will decrease to 35% after 4 years. 10% of the burned amount will be reminted daily and given to the @:soraText Parliament to finance future development of Polkaswap and the ecosystem in a decentralized way.'
     }
   },
   exchange: {
