@@ -1,6 +1,5 @@
-$s-color-base-content-primary: #2A171F; // NEU pink dark text
 $s-color-brand-day: #A19A9D; // 0d0248
-
+// Primary theme colors
 $s-color-theme-accent: #F8087B; // NEU bright pink fluro
 $s-color-theme-accent-hover: #F754A3; // NEU pale quartz pink
 $s-color-theme-accent-pressed: #bf065f;
@@ -10,8 +9,8 @@ $s-color-theme-secondary: #D5CDD0; // NEU light gray 1
 $s-color-theme-secondary-hover: #A19A9D; // NEU light gray 2
 $s-color-theme-secondary-pressed: #f2e9ec;
 $s-color-theme-secondary-focused: #ede4e7;
-
-
+// Base colors
+$s-color-base-content-primary: #2A171F; // NEU pink dark text
 $s-color-base-content-secondary: #A19A9D;
 $s-color-base-content-tertiary: #2A171F;
 $s-color-base-content-quaternary: #75787b;
@@ -26,21 +25,13 @@ $s-color-base-on-accent: #D5CDD0;
 $s-color-utility-body: #F7F3F4;
 $s-color-utility-surface: #FDF7FB;
 $s-color-utility-overlay: rgba(0, 0, 0, 0.45);
-$s-color-max: #44E5B2; // green fluro emerald
 $s-color-status-success: #34AD87; // green emerald
 $s-color-status-warning: #479aef; // pale blue
 $s-color-status-error: #F754A3; // pale pink
 $s-color-status-success-background: #b0fde4;
 $s-color-status-warning-background: #9fcefd;
 $s-color-status-error-background: #fcbfdc;
-$s-font-weight-100: "'wgh"+"t'" 100;
-$s-font-weight-200: "'wgh"+"t'" 200;
-$s-font-weight-300: "'wgh"+"t'" 300;
-$s-font-weight-400: "'wgh"+"t'" 400;
-$s-font-weight-500: "'wgh"+"t'" 500;
-$s-font-weight-600: "'wgh"+"t'" 600;
-$s-font-weight-700: "'wgh"+"t'" 700;
-$s-font-weight-800: "'wgh"+"t'" 800;
+
 $s-font-size-mini: 12px;
 $s-font-size-small: 14px;
 $s-icon-font-size-mini: 16px;
@@ -81,7 +72,7 @@ $s-shadow-surface: 1px 1px 5px rgba(0, 0, 0, 0.1), inset 1px 1px 1px rgba(0, 0, 
 
 $s-shadow-tooltip: 0px 1px 4px rgba(13, 2, 72, 0.35);
 
-$s-shadow-tab: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1) !important; // 0px 1px 1px rgba(0, 0, 0, 0.1);
+$s-shadow-tab: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1); // 0px 1px 1px rgba(0, 0, 0, 0.1);
 $s-shadow-dropdown: 0px 4px 8px rgba(19, 19, 19, 0.15);
 $s-shadow-mobile-tap-bar: 0px -4px 8px rgba(19, 19, 19, 0.15);
 $s-shadow-mobile-side-menu: -4px 4px 8px rgba(19, 19, 19, 0.15);
@@ -117,7 +108,38 @@ $s-font-feature-settings-button: normal;
 @import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";
 
 :root {
+  // Colors
   --s-color-brand-day: #{$s-color-brand-day};
+  --s-color-theme-accent: #{$s-color-theme-accent};
+  --s-color-theme-accent-hover: #{$s-color-theme-accent-hover};
+  --s-color-theme-accent-pressed: #{$s-color-theme-accent-pressed};
+  --s-color-theme-accent-focused: #{$s-color-theme-accent-focused};
+  --s-color-theme-secondary: #{$s-color-theme-secondary};
+  --s-color-theme-secondary-hover: #{$s-color-theme-secondary-hover};
+  --s-color-theme-secondary-pressed: #{$s-color-theme-secondary-pressed};
+  --s-color-theme-secondary-focused: #{$s-color-theme-secondary-focused};
+  --s-color-base-content-primary: #{$s-color-base-content-primary};
+  --s-color-base-content-secondary: #{$s-color-base-content-secondary};
+  --s-color-base-content-tertiary: #{$s-color-base-content-tertiary};
+  --s-color-base-content-quaternary: #{$s-color-base-content-quaternary};
+  --s-color-base-background: #{$s-color-base-background};
+  --s-color-base-dark-background: #{$s-color-base-dark-background};
+  --s-color-base-border-primary: #{$s-color-base-border-primary};
+  --s-color-base-border-secondary: #{$s-color-base-border-secondary};
+  --s-color-base-background-hover: #{$s-color-base-background-hover};
+  --s-color-base-disabled: #{$s-color-base-disabled};
+  --s-color-base-on-disabled: #{$s-color-base-on-disabled};
+  --s-color-base-on-accent: #{$s-color-base-on-accent};
+  --s-color-utility-body: #{$s-color-utility-body};
+  --s-color-utility-surface: #{$s-color-utility-surface};
+  --s-color-utility-overlay: #{$s-color-utility-overlay};
+  --s-color-status-success: #{$s-color-status-success};
+  --s-color-status-warning: #{$s-color-status-warning};
+  --s-color-status-error: #{$s-color-status-error};
+  --s-color-status-success-background: #{$s-color-status-success-background};
+  --s-color-status-warning-background: #{$s-color-status-warning-background};
+  --s-color-status-error-background: #{$s-color-status-error-background};
+  // Font Feature Settings
   --s-font-feature-settings-common: #{$s-font-feature-settings-common};
   --s-font-feature-settings-heading: #{$s-font-feature-settings-heading};
   --s-font-feature-settings-caps-heading: #{$s-font-feature-settings-caps-heading};
@@ -126,13 +148,4 @@ $s-font-feature-settings-button: normal;
   --s-font-feature-settings-card-title: #{$s-font-feature-settings-card-title};
   --s-font-feature-settings-input: #{$s-font-feature-settings-input};
   --s-font-feature-settings-button: #{$s-font-feature-settings-button};
-  --s-font-weight-100: #{$s-font-weight-100};
-  --s-font-weight-200: #{$s-font-weight-200};
-  --s-font-weight-300: #{$s-font-weight-300};
-  --s-font-weight-400: #{$s-font-weight-400};
-  --s-font-weight-500: #{$s-font-weight-500};
-  --s-font-weight-600: #{$s-font-weight-600};
-  --s-font-weight-700: #{$s-font-weight-700};
-  --s-font-weight-800: #{$s-font-weight-800};
-  --s-color-max: #{$s-color-max};
 }

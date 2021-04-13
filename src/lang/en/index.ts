@@ -27,11 +27,6 @@ export default {
   insufficientBalanceText: 'Insufficient {tokenSymbol} balance',
   firstPerSecond: '{first} per {second}',
   pairIsNotCreated: 'Token pair isn\'t created',
-  assetNames: {
-    [KnownSymbols.XOR]: 'SORA',
-    [KnownSymbols.VAL]: 'SORA Validator Token',
-    [KnownSymbols.PSWAP]: 'Polkaswap'
-  },
   pageTitle: {
     [PageNames.Swap]: 'Swap',
     [PageNames.Pool]: 'Pool',
@@ -65,6 +60,7 @@ export default {
     reddit: 'Reddit'
   },
   footerMenu: {
+    faucet: 'Faucet',
     github: 'GitHub',
     sorawiki: 'SORA Wiki',
     memorandum: 'Polkaswap Memorandum and Terms of Services',

@@ -45,9 +45,9 @@ $token-background-color: var(--s-color-base-on-accent);
   background-size: 60%;
   background-repeat: no-repeat;
   background-position: 50%;
-  border: 1px solid $token-background-color;
+  border: none;
+  box-shadow: none;
   border-radius: 50%;
-  box-shadow: var(--s-shadow-tooltip);
   @each $token in $tokens-list {
     &--#{$token} {
       background-size: 100%;

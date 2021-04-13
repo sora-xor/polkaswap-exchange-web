@@ -178,7 +178,7 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
     }
 
     &.s-focused > .el-input > input {
-      box-shadow: var(--s-shadow-tab)
+      box-shadow: var(--s-shadow-tab);
     }
   }
 

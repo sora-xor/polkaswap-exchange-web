@@ -494,6 +494,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   .slippage-tolerance-settings {
     margin-top: $inner-spacing-medium;
+    padding: 0 $inner-spacing-mini;
   }
 
   .el-button--switch-tokens {

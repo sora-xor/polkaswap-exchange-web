@@ -1,4 +1,15 @@
-/* ICON FONT */
+$color-max: #44E5B2; // green fluro emerald
+
+$font-weight-100: "wght" 100;
+$font-weight-200: "wght" 200;
+$font-weight-300: "wght" 300;
+$font-weight-400: "wght" 400;
+$font-weight-500: "wght" 500;
+$font-weight-600: "wght" 600;
+$font-weight-700: "wght" 700;
+$font-weight-800: "wght" 800;
+
+/*________________________________________ICONS________________________________________*/
 @font-face {
   font-family: "soramitsu-icons";
   src: url("~@/assets/fonts/polkaswap_icons.ttf") format("truetype");
@@ -6,114 +17,47 @@
   font-style: normal;
   font-display: block;
 }
-i {color: var(--s-color-theme-secondary) !important; transition: all 0.125s ease-in-out;}
-i:hover {color: var(--s-color-theme-secondary-hover) !important;}
-h3 { text-transform: capitalize; }
-
-/* MAIN LAYOUT */
+i[class^="s-icon-"], i[class*=" s-icon-"] {
+  color: var(--s-color-theme-secondary) !important;
+  transition: all 0.125s ease-in-out;
+  &:hover {
+    color: var(--s-color-theme-secondary-hover) !important;
+  }
+}
+.asset-details-actions {
+  button.el-button span {
+    left: 0;
+    i:hover {
+      color: white !important;
+    }
+  }
+}
+/*________________________________________COMMON LAYOUT________________________________________*/
 body {
   background-color: var(--s-color-utility-body);
 }
-header.header {
-  box-shadow: none !important;
-  min-height: 76px !important;
-  /*
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 0;
-  */
+h3 {
+  text-transform: capitalize;
 }
-button.polkaswap-logo {
-  border-radius: unset !important;
-  width: 173px !important;
-  height: 46px !important;
+// TODO: fix outline issue in js ui library
+.el-tooltip, .el-slider__button-wrapper {
+  outline: none;
 }
-div.app-main {
-  /*
-  height: 100vh !important;
-  z-index: 1;
-  */
-}
-div.app-body {
-  margin-top: -76px;
-  margin-left: -160px;
-  flex-flow: unset !important;
-  align-items: center;
-  justify-content: center;
-}
-aside.app-sidebar {
-  /*
-  position: fixed;
-  top: 76px;
-  height: calc(100vh - 76px);
-  z-index: 2;
-  background-color: var(--s-color-utility-body);
-  */
-  z-index: 1;
-  padding-bottom: 24px !important;
-}
-/*
-.v-modal {z-index: 0 !important;}
-*/
-div.el-dialog__wrapper {
-  display: flex;
-}
-div.el-dialog {
-  flex-direction: column;
-  align-self: center;
-}
-
-footer.app-footer {
-  position: fixed;
-  right: 2em;
-  bottom: 2em;
-  display: block !important;
-  justify-content: unset !important;
-  padding: 0 !important;
-  z-index: -1;
-}
-span.sora-logo__title {
-  text-transform: uppercase;
-  font-weight: 200;
-  color: var(--s-color-base-content-secondary) !important;
-}
-div.account-name {
-  margin: -2px 8px 0 12px !important;
-}
-
-
-/* NAV MENU */
-div.sidebar-item-content i {
-  font-size: 28px !important;
-}
-
-
-
-/* DIV */
-div.slippage-tolerance-settings {
-  padding: 0 8px;
-}
-
-
 
 /* FONT WEIGHTS */
 span.el-dialog__title {
-  font-variation-settings: var(--s-font-weight-400) !important;
+  font-variation-settings: $font-weight-400 !important;
   letter-spacing: var(--s-letter-spacing-mini) !important;
 }
 button.el-button span {
-  font-variation-settings: var(--s-font-weight-600) !important;
+  font-variation-settings: $font-weight-600 !important;
 }
 button.el-button--primary span,
 button.el-button--choose-token span,
 div.asset-search-actions button.el-button span,
 button.el-button--max {
-  font-variation-settings: var(--s-font-weight-800) !important;
+  font-variation-settings: $font-weight-800 !important;
 }
-
-
 
 /* TEXT */
 span.token-balance-title,
@@ -131,20 +75,17 @@ h3.page-header-title, h3.base-title_text {
   padding-left: 12px;
 }
 
-/*div.bridge-content div.header--bridge h3.page-header-title { visibility: hidden; position: relative; }
-div.bridge-content div.header--bridge h3.page-header-title:after { visibility: visible; position: absolute; top: 0; left: 14px; content: "HASHI Bridge"; }
-*/
-
-
-
 /* CARDS */
 div.el-card, div.el-dialog {
   background-color: var(--s-color-utility-surface) !important;
 }
 
-
-
 /* BUTTONS */
+button {
+  > span {
+    left: 1px; // because of inset shadow
+  }
+}
 button.el-button.wallet {
   background-color: var(--s-color-utility-body) !important;
   box-shadow: 1px 1px 3px rgba(255, 255, 255, 0.75), inset 1px 1px 2px rgba(0, 0, 0, 0.1);
@@ -259,40 +200,20 @@ button.el-button.s-primary:disabled {
   border: 1px solid #F7F3F4;
   filter: none;
 }
-button.el-button--max {
-  background-color: var(--s-color-max) !important;
+button.el-button--max, button.asset-max {
+  background-color: $color-max !important;
   color: #fff !important;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1), inset 1px 1px 1px rgba(0, 0, 0, 0.1);
   font-size: var(--s-font-size-small);
   transition: all 0.125s ease-in-out;
 }
-button.el-button--max:hover {
+button.el-button--max:hover, button.asset-max:hover {
   border: 1px solid rgba(0,0,0,0);
   background-color: var(--s-color-status-success) !important;
   box-shadow: 1px 1px 5px #fff, -1px -1px 5px #fff;
 }
 button.el-button--primary.s-primary {
   font-size: var(--s-icon-font-size-medium) !important;
-}
-
-
-div.icon-container {
-  background-color: var(--s-color-utility-surface) !important;
-  box-shadow: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1);
-  transition: all 0.125s ease-in-out;
-  border-radius: 50% !important;
-  height: 42px !important;
-  width: 42px !important;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-}
-div.icon-container > i {
-  margin: auto !important;
-  line-height: 44px !important;
-  text-align: center;
-  width: 44px;
 }
 
 a.menu-item--small div.icon-container {
@@ -357,31 +278,7 @@ div.pool-info--buttons {margin: 0 auto !important; padding-bottom: 16px;justify-
 div.pool-info--buttons button span {font-size: 16px !important;}
 div.pool-info-container {background-color: var(--s-color-utility-body) !important;}
 
-/*
-i.s-icon-arrows-chevron-left-rounded-24 {
-  font-size: 40px !important;
-  line-height: 24px;
-  margin-left: -9px;
-}
-*/
-/*
-form.el-form--actions.el-form--label-right div.input-container div.input-line-content div.token button.el-button--choose-token.s-tertiary span {
-  padding-right: 8px;
-}
-form.el-form--actions.el-form--label-right div.input-container--second div.input-line-content div.token button.el-button--choose-token.s-tertiary span {
-  padding-right: 0;
-}
-div.page-header--swap + div.input-container div.input-line-content div.token button.el-button--choose-token.s-tertiary span {
-  padding-right: 0;
-}
-*/
 
-
-/* ICONS */
-span.token-logo {
-  border: none !important;
-  box-shadow: none !important;
-}
 i.s-icon-chevron-down-rounded-16 {
   background-color: var(--s-color-theme-secondary);
   color: white !important;
@@ -393,7 +290,7 @@ i.s-icon-chevron-down-rounded-16 {
 
 /* FORMS */
 div.s-input-amount input.el-input__inner, div.s-input--token-value input.el-input__inner {
-  font-variation-settings: var(--s-font-weight-700) !important;
+  font-variation-settings: $font-weight-700 !important;
   font-size: var(--s-heading3-font-size) !important;
   color: var(--s-color-base-content-quaternary) !important;
 }
@@ -427,7 +324,6 @@ div.wallet-settings-create-token_supply-block {background: unset !important;}
 div.asset-value {font-weight: 800 !important; font-size: 16px;}
 div.asset-description_symbol {font-weight: 800 !important; font-size: 20px;}
 div.asset-description_info { margin-top: -8px !important;}
-span.el-tooltip.asset-id {float: right;}
 div.asset-search-actions {margin-bottom: 0 !important; margin-top: 16px;}
 div.asset-search-list div.asset:hover, div.asset-search-list div.asset.selected {
     background-color: var(--s-color-theme-secondary-pressed) !important;
@@ -466,7 +362,6 @@ span.info-line-value {font-weight: 600;}
 div.output-description{text-align: center;max-width: 300px;margin: auto;}
 
 div.tokens-info-container, span.asset-item__balance {font-weight: 800 !important;}
-span.token-logo {margin-right: 8px!important;}
 
 div.asset-item__name,
 span.asset-item__balance {font-size: 16px !important; letter-spacing: -0.04em; white-space: nowrap;}
@@ -474,7 +369,6 @@ span.asset-item__balance {font-size: 16px !important; letter-spacing: -0.04em; w
 i.el-notification__icon.el-icon-success, i.el-notification__icon.el-icon-success:hover {
   color: var(--s-color-status-success) !important;
 }
-
 i.asset-logo {
   box-shadow: none !important;
   border: none !important;
@@ -482,18 +376,10 @@ i.asset-logo {
 i.asset-logo--pswap {
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath fill='%23ED145B' d='M11,0C4.9,0,0,4.9,0,11s4.9,11,11,11s11-4.9,11-11S17.1,0,11,0z'/%3E%3Cpath fill='%23FFFFFF' d='M16,6.1c0.7,0.7,0.7,1.7,0,2.4c-0.7,0.7-4.4,2-4.4,2s1.4-3.8,2-4.4S15.3,5.4,16,6.1z M11,1.8 c0.9,0,1.7,0.8,1.7,1.7C12.7,4.5,11,10,11,10S9.3,4.5,9.3,3.5C9.3,2.6,10.1,1.8,11,1.8z M6.1,6.1c0.7-0.7,1.7-0.7,2.4,0 c0.7,0.7,2,4.4,2,4.4s-3.8-1.4-4.4-2C5.4,7.8,5.4,6.7,6.1,6.1z M1.8,11c0-0.9,0.8-1.7,1.7-1.7S10,11,10,11s-5.5,1.7-6.5,1.7 S1.8,11.9,1.8,11z M6.1,15.9c-0.7-0.7-0.7-1.7,0-2.4c0.7-0.7,4.4-2,4.4-2s-1.4,3.8-2,4.4C7.8,16.6,6.8,16.6,6.1,15.9z M11,20.2 c-0.9,0-1.7-0.8-1.7-1.7S11,12,11,12s1.7,5.5,1.7,6.5S11.9,20.2,11,20.2z M16,15.9c-0.7,0.7-1.7,0.7-2.4,0c-0.7-0.7-2-4.4-2-4.4 s3.8,1.4,4.4,2C16.6,14.2,16.6,15.3,16,15.9z M18.5,12.7C17.5,12.7,12,11,12,11s5.5-1.7,6.5-1.7c0.9,0,1.7,0.8,1.7,1.7 C20.2,11.9,19.4,12.7,18.5,12.7z'/%3E%3C/svg%3E") !important;
 }
-
-
-
 div.el-tooltip__popper {
   border-radius: var(--s-border-radius-mini) !important;
   border-color: var(--s-color-brand-day) !important;
   padding: 6px 8px !important;
-}
-
-div.token-item__details span.token-item__address {
-  position: absolute;
-  right: -151px;
 }
 span.token-item__amount {
   white-space: nowrap;
@@ -519,9 +405,6 @@ div.token-item {
 div.token-item:hover {
   background-color: var(--s-color-theme-secondary-pressed) !important;
 }
-
-
-
 .menu.el-menu:not(.el-menu--horizontal) > :not(:last-child) {
     margin-bottom: 0 !important;
 }
@@ -549,65 +432,12 @@ a.menu-item--small div.icon-container {
 li.el-menu-item.is-active i {
   color: var(--s-color-theme-accent) !important;
 }
-div.app-body {
-  padding-left: 320px;
-  left: -160px;
-}
 div.sidebar-item-content span {
   line-height: 44px;
 }
-
-
 div.el-card__header i {
   display: none;
 }
 div.article-card {
   height: 100% !important;
 }
-
-
-/*
-html {
-  --scrollbarBG: #000;
-  --thumbBG: #ff009a;
-}
-html::-webkit-scrollbar,.content-scroll::-webkit-scrollbar {
-  width: 12px;
-}
-html,.content-scroll {
-  scrollbar-width: thin;
-  scrollbar-color: var(--thumbBG) var(--scrollbarBG);
-}
-html::-webkit-scrollbar-track,.content-scroll::-webkit-scrollbar-track {
-  background: var(--scrollbarBG);
-}
-html::-webkit-scrollbar-thumb,.content-scroll::-webkit-scrollbar-thumb {
-  background-color: var(--thumbBG) ;
-  border-radius: 6px;
-  border:1px solid var(--scrollbarBG);
-}
-..........
-html {
-  --scrollbarBG: #CFD8DC;
-  --thumbBG: #90A4AE;
-}
-body::-webkit-scrollbar {
-  width: 11px;
-}
-body {
-  scrollbar-width: thin;
-  scrollbar-color: var(--thumbBG) var(--scrollbarBG);
-}
-body::-webkit-scrollbar-track {
-  background: var(--scrollbarBG);
-}
-body::-webkit-scrollbar-thumb {
-  background-color: var(--thumbBG) ;
-  border-radius: 6px;
-  border: 3px solid var(--scrollbarBG);
-}
-*/
-
-
-
-
