@@ -4,7 +4,7 @@
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
 
       <div class="app-controls s-flex">
-        <branded-tooltip :disabled="accountConnected" popper-class="info-tooltip wallet-tooltip" placement="bottom">
+        <branded-tooltip :disabled="isLoggedIn" popper-class="info-tooltip wallet-tooltip" placement="bottom">
           <div slot="content" class="app-controls__wallet-tooltip">
             {{ t('connectWalletTextTooltip') }}
           </div>
@@ -12,7 +12,7 @@
             <div class="account">
               <div class="account-name">{{ accountInfo }}</div>
               <div class="account-icon">
-                <s-icon v-if="!accountConnected" name="finance-wallet-24" />
+                <s-icon v-if="!isLoggedIn" name="finance-wallet-24" />
                 <WalletAvatar v-else :address="account.address"/>
               </div>
             </div>
@@ -121,7 +121,7 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 
 import router, { lazyComponent } from '@/router'
 import axios from '@/api'
-import { formatAddress, isWalletConnected } from '@/utils'
+import { formatAddress } from '@/utils'
 
 const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
 const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
@@ -150,6 +150,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   showHelpDialog = false
 
   @Getter firstReadyTransaction!: any
+  @Getter isLoggedIn!: boolean
   @Getter account!: any
   @Getter currentRoute!: WALLET_CONSTS.RouteNames
   @Getter faucetUrl!: string
@@ -193,16 +194,12 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
     this.handleChangeTransaction(value)
   }
 
-  get accountConnected (): boolean {
-    return !!this.account.address
-  }
-
   get isAboutPage (): boolean {
     return this.$route.name === PageNames.About
   }
 
   get accountInfo (): string {
-    if (!this.accountConnected) {
+    if (!this.isLoggedIn) {
       return this.t('connectWalletText')
     }
     return this.account.name || formatAddress(this.account.address, 8)
@@ -220,7 +217,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
 
   goTo (name: PageNames): void {
     if (name === PageNames.Wallet) {
-      if (!isWalletConnected()) {
+      if (!this.isLoggedIn) {
         this.navigate({ name: WALLET_CONNECTION_ROUTE })
       } else if (this.currentRoute !== WALLET_DEFAULT_ROUTE) {
         this.navigate({ name: WALLET_DEFAULT_ROUTE })

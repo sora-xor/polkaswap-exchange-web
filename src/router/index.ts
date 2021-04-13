@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 
 import { PageNames, BridgeChildPages } from '@/consts'
-import { isWalletConnected } from '@/utils'
 import store from '@/store'
 
 Vue.use(VueRouter)
@@ -105,11 +104,11 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (BridgeChildPages.includes(to.name as PageNames) && isWalletConnected() && !store.getters['web3/isExternalAccountConnected']) {
+    if (BridgeChildPages.includes(to.name as PageNames) && store.getters.isLoggedIn && !store.getters['web3/isExternalAccountConnected']) {
       next({ name: PageNames.Bridge })
       return
     }
-    if (!isWalletConnected()) {
+    if (!store.getters.isLoggedIn) {
       next({ name: PageNames.Wallet })
       return
     }

@@ -4,8 +4,6 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import { api } from '@soramitsu/soraneo-wallet-web'
 
-import { isWalletConnected } from '@/utils'
-
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   map(x => [x, x]),
@@ -59,8 +57,8 @@ const mutations = {
 }
 
 const actions = {
-  async getAccountLiquidity ({ commit }) {
-    if (!isWalletConnected()) {
+  async getAccountLiquidity ({ commit, rootGetters }) {
+    if (!rootGetters.isLoggedIn) {
       return
     }
     commit(types.GET_ACCOUNT_LIQUIDITY_REQUEST)
@@ -71,13 +69,13 @@ const actions = {
       commit(types.GET_ACCOUNT_LIQUIDITY_FAILURE)
     }
   },
-  async updateAccountLiquidity ({ commit }) {
+  async updateAccountLiquidity ({ commit, rootGetters }) {
     if (updateLiquidityIntervalId) {
       clearInterval(updateLiquidityIntervalId)
     }
     const fiveSeconds = 5 * 1000
     updateLiquidityIntervalId = setInterval(async () => {
-      if (!isWalletConnected()) {
+      if (!rootGetters.isLoggedIn) {
         return
       }
       commit(types.UPDATE_ACCOUNT_LIQUIDITY_REQUEST)
