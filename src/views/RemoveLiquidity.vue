@@ -26,7 +26,7 @@
       <div class="input-container">
         <div class="input-line-header">
           <div class="input-title p4">{{ t('removeLiquidity.input') }}</div>
-          <div v-if="isWalletConnected && liquidity" class="token-balance">
+          <div v-if="liquidity" class="token-balance">
             <span class="token-balance-title">{{ t('createPair.balance') }}</span>
             <span class="token-balance-value">{{ getFormattedLiquidityBalance(liquidity) }}</span>
           </div>
@@ -63,7 +63,7 @@
       <div class="input-container">
         <div class="input-line-header">
           <div class="input-title p4">{{ t('removeLiquidity.output') }}</div>
-          <div v-if="isWalletConnected && liquidity" class="token-balance">-</div>
+          <div v-if="liquidity" class="token-balance">-</div>
         </div>
         <div class="input-line-content">
           <s-form-item>
@@ -92,7 +92,7 @@
       <div class="input-container">
         <div class="input-line-header">
           <div class="input-title p4">{{ t('removeLiquidity.output') }}</div>
-          <div v-if="isWalletConnected && liquidity" class="token-balance">-</div>
+          <div v-if="liquidity" class="token-balance">-</div>
         </div>
         <div class="input-line-content">
           <s-form-item>
@@ -247,8 +247,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
       this.$el.removeEventListener('mousedown', this.sliderDragButton)
     }
   }
-
-  isWalletConnected = true
 
   get firstTokenAddress (): string {
     return this.$route.params.firstAddress

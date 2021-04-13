@@ -1,4 +1,4 @@
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { KnownAssets, KnownSymbols, CodecString } from '@sora-substrate/util'
 
@@ -8,7 +8,7 @@ import ConfirmDialogMixin from './ConfirmDialogMixin'
 
 import router from '@/router'
 import { PageNames } from '@/consts'
-import { getMaxValue, isMaxButtonAvailable, isWalletConnected, isXorAccountAsset, hasInsufficientBalance, formatAssetBalance } from '@/utils'
+import { getMaxValue, isMaxButtonAvailable, isXorAccountAsset, hasInsufficientBalance, formatAssetBalance } from '@/utils'
 
 const CreateTokenPairMixin = (namespace: string) => {
   @Component
@@ -28,6 +28,7 @@ const CreateTokenPairMixin = (namespace: string) => {
     @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
 
     @Getter slippageTolerance!: number
+    @Getter isLoggedIn!: boolean
 
     @Action('setFirstTokenAddress', { namespace }) setFirstTokenAddress
     @Action('setSecondTokenAddress', { namespace }) setSecondTokenAddress
@@ -39,6 +40,13 @@ const CreateTokenPairMixin = (namespace: string) => {
     @Action('getPrices', { namespace: 'prices' }) getPrices
     @Action('resetPrices', { namespace: 'prices' }) resetPrices
     @Action('getAssets', { namespace: 'assets' }) getAssets
+
+    @Watch('isLoggedIn')
+    private handleLoggedInStateChange (isLoggedIn: boolean, wasLoggedIn: boolean): void {
+      if (wasLoggedIn && !isLoggedIn) {
+        this.handleBack()
+      }
+    }
 
     showSelectFirstTokenDialog = false
     showSelectSecondTokenDialog = false
@@ -65,10 +73,6 @@ const CreateTokenPairMixin = (namespace: string) => {
       return this.formatCodecNumber(this.fee)
     }
 
-    get connected (): boolean {
-      return isWalletConnected()
-    }
-
     get areTokensSelected (): boolean {
       return this.firstToken && this.secondToken
     }
@@ -78,15 +82,15 @@ const CreateTokenPairMixin = (namespace: string) => {
     }
 
     get isFirstMaxButtonAvailable (): boolean {
-      return isMaxButtonAvailable(this.areTokensSelected, this.firstToken, this.firstTokenValue, this.fee, this.tokenXOR)
+      return this.isLoggedIn && isMaxButtonAvailable(this.areTokensSelected, this.firstToken, this.firstTokenValue, this.fee, this.tokenXOR)
     }
 
     get isSecondMaxButtonAvailable (): boolean {
-      return isMaxButtonAvailable(this.areTokensSelected, this.secondToken, this.secondTokenValue, this.fee, this.tokenXOR)
+      return this.isLoggedIn && isMaxButtonAvailable(this.areTokensSelected, this.secondToken, this.secondTokenValue, this.fee, this.tokenXOR)
     }
 
     get isInsufficientBalance (): boolean {
-      if (this.connected && this.areTokensSelected) {
+      if (this.isLoggedIn && this.areTokensSelected) {
         if (isXorAccountAsset(this.firstToken) || isXorAccountAsset(this.secondToken)) {
           if (hasInsufficientBalance(this.firstToken, this.firstTokenValue, this.fee)) {
             this.insufficientBalanceTokenSymbol = this.firstToken.symbol
@@ -133,11 +137,15 @@ const CreateTokenPairMixin = (namespace: string) => {
     async handleConfirm (func: () => Promise<void>): Promise<void> {
       await this.handleConfirmDialog(async () => {
         await this.withNotifications(func)
-        router.push({ name: PageNames.Pool })
+        this.handleBack()
       })
     }
 
     async afterApiConnect (): Promise<void> {}
+
+    private handleBack (): void {
+      router.push({ name: PageNames.Pool })
+    }
   }
 
   return TokenPairMixin
