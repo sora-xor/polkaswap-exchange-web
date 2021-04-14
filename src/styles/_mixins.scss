@@ -39,7 +39,7 @@
 }
 
 @mixin container-styles {
-  margin: $inner-spacing-big auto;
+  margin: $inner-spacing-big auto 0;
   padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
   min-height: $inner-window-height;
   width: $inner-window-width;
@@ -121,7 +121,9 @@
   }
 }
 
-@mixin buttons($isChooseTokenDisabled: false) {
+@mixin buttons() {
+  $buttonDisabledClass: '.el-button--disabled';
+  $buttonChooseTokenClass: '.el-button--choose-token';
   .s-tertiary {
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
   }
@@ -148,9 +150,10 @@
       border-color: var(--s-color-base-background);
       color: var(--s-color-base-content-primary);
       font-size: var(--s-font-size-small);
-      @if $isChooseTokenDisabled == true {
+      &#{$buttonDisabledClass} {
         cursor: default;
-      } @else {
+      }
+      &:not(#{$buttonDisabledClass}) {
         &:hover, &:active {
           cursor: pointer;
         }
@@ -283,7 +286,6 @@
 
 @mixin bridge-content {
   margin-top: $basic-spacing * 2;
-  margin-bottom: $basic-spacing * 2;
   border: none;
   &,
   &.is-hover-shadow:hover {

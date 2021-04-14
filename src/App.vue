@@ -4,7 +4,7 @@
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
 
       <div class="app-controls s-flex">
-        <branded-tooltip :disabled="accountConnected" popper-class="info-tooltip wallet-tooltip" placement="bottom">
+        <branded-tooltip :disabled="isLoggedIn" popper-class="info-tooltip wallet-tooltip" placement="bottom">
           <div slot="content" class="app-controls__wallet-tooltip">
             {{ t('connectWalletTextTooltip') }}
           </div>
@@ -12,7 +12,7 @@
             <div class="account">
               <div class="account-name">{{ accountInfo }}</div>
               <div class="account-icon">
-                <s-icon v-if="!accountConnected" name="finance-wallet-24" />
+                <s-icon v-if="!isLoggedIn" name="finance-wallet-24" />
                 <WalletAvatar v-else :address="account.address"/>
               </div>
             </div>
@@ -93,8 +93,10 @@
       <div class="app-body">
         <div class="app-content">
           <router-view :parent-loading="loading" />
+          <p v-if="!isAboutPage" class="app-disclaimer">{{ t('disclaimer') }}</p>
         </div>
         <footer class="app-footer">
+          <p v-if="isAboutPage" class="app-disclaimer">{{ t('disclaimer') }}</p>
           <div class="sora-logo">
             <span class="sora-logo__title">{{ t('poweredBy') }}</span>
             <div class="sora-logo__image"></div>
@@ -119,7 +121,7 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 
 import router, { lazyComponent } from '@/router'
 import axios from '@/api'
-import { formatAddress, isWalletConnected } from '@/utils'
+import { formatAddress } from '@/utils'
 
 const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
 const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
@@ -148,6 +150,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   showHelpDialog = false
 
   @Getter firstReadyTransaction!: any
+  @Getter isLoggedIn!: boolean
   @Getter account!: any
   @Getter currentRoute!: WALLET_CONSTS.RouteNames
   @Getter faucetUrl!: string
@@ -191,12 +194,12 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
     this.handleChangeTransaction(value)
   }
 
-  get accountConnected (): boolean {
-    return !!this.account.address
+  get isAboutPage (): boolean {
+    return this.$route.name === PageNames.About
   }
 
   get accountInfo (): string {
-    if (!this.accountConnected) {
+    if (!this.isLoggedIn) {
       return this.t('connectWalletText')
     }
     return this.account.name || formatAddress(this.account.address, 8)
@@ -214,7 +217,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
 
   goTo (name: PageNames): void {
     if (name === PageNames.Wallet) {
-      if (!isWalletConnected()) {
+      if (!this.isLoggedIn) {
         this.navigate({ name: WALLET_CONNECTION_ROUTE })
       } else if (this.currentRoute !== WALLET_DEFAULT_ROUTE) {
         this.navigate({ name: WALLET_DEFAULT_ROUTE })
@@ -309,6 +312,7 @@ html {
       text-align: left;
     }
     &__closeBtn {
+      top: $inner-spacing-medium;
       color: var(--s-color-utility-surface);
       &:hover {
         color: var(--s-color-utility-surface);
@@ -417,6 +421,11 @@ $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
 $account-name-margin: -2px 8px 0 12px;
 
+// TODO: Move disclaimer's variables to appropriate place after design redevelopment
+$disclaimer-font-size: 11px;
+$disclaimer-font-weight: 200;
+$disclaimer-letter-spacing: -0.03em;
+
 .app {
   &-main {
     display: flex;
@@ -447,12 +456,30 @@ $account-name-margin: -2px 8px 0 12px;
 
   &-content {
     flex: 1;
+    .app-disclaimer {
+      margin-left: auto;
+      margin-bottom: $inner-spacing-big;
+      margin-right: auto;
+      width: calc(#{$inner-window-width} - #{$inner-spacing-medium * 2});
+      text-align: justify;
+    }
+  }
+
+  &-disclaimer {
+    margin-top: $inner-spacing-mini * 2.5;
+    font-size: $disclaimer-font-size;
+    font-weight: $disclaimer-font-weight;
+    line-height: var(--s-line-height-mini);
+    letter-spacing: $disclaimer-letter-spacing;
+    color: var(--s-color-base-content-secondary);
   }
 
   &-footer {
     display: flex;
+    flex-direction: column-reverse;
     justify-content: flex-end;
     padding-right: $inner-spacing-mini * 5;
+    padding-left: $inner-spacing-mini * 5;
     padding-bottom: $inner-spacing-mini * 5;
   }
 }
@@ -588,6 +615,7 @@ $account-name-margin: -2px 8px 0 12px;
     line-height: 16px;
     margin-right: $basic-spacing;
     font-feature-settings: var(--s-font-feature-settings-singleline);
+    white-space: nowrap;
   }
 
   &__image {
@@ -602,6 +630,12 @@ $account-name-margin: -2px 8px 0 12px;
   .polkaswap-logo {
     width: $logo-width-big;
     background-image: url('~@/assets/img/polkaswap-logo.svg');
+  }
+  .app-footer {
+    flex-direction: row;
+    .app-disclaimer {
+      padding-right: $inner-spacing-mini * 5;
+    }
   }
 }
 

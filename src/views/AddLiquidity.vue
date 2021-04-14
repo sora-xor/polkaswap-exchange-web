@@ -8,7 +8,7 @@
       <div class="input-container">
         <div class="input-line-header">
           <div class="input-title p4">{{ t('createPair.deposit') }}</div>
-          <div v-if="connected && firstToken" class="token-balance">
+          <div v-if="isLoggedIn && firstToken" class="token-balance">
             <span class="token-balance-title">{{ t('createPair.balance') }}</span>
             <span class="token-balance-value">{{ getTokenBalance(firstToken) }}</span>
           </div>
@@ -29,7 +29,7 @@
             <s-button v-if="isFirstMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue(firstToken, setFirstTokenValue)">
               {{ t('buttons.max') }}
             </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium">
+            <s-button class="el-button--choose-token el-button--disabled" type="tertiary" size="small" border-radius="medium">
               <token-logo :token="firstToken" size="small" />
               {{ firstToken.symbol }}
             </s-button>
@@ -37,12 +37,12 @@
         </div>
       </div>
       <s-icon class="icon-divider" name="plus-16" />
-      <div :class="computedClasses">
+      <div class="input-container">
         <div class="input-line-header">
           <div class="input-title p4">
             <span>{{ t('createPair.deposit') }}</span>
           </div>
-          <div v-if="connected && secondToken" class="token-balance">
+          <div v-if="isLoggedIn && secondToken" class="token-balance">
             <span class="token-balance-title">{{ t('exchange.balance') }}</span>
             <span class="token-balance-value">{{ getTokenBalance(secondToken) }}</span>
           </div>
@@ -64,7 +64,7 @@
               {{ t('buttons.max') }}
             </s-button>
             <s-button
-              class="el-button--choose-token"
+              :class="chooseTokenClasses"
               type="tertiary"
               size="small"
               border-radius="medium"
@@ -132,8 +132,8 @@
       <info-line :label="secondToken.symbol" :value="secondTokenPosition" />
     </div>
 
-    <select-token :visible.sync="showSelectFirstTokenDialog" :connected="connected" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstTokenAddress($event.address)" />
-    <select-token :visible.sync="showSelectSecondTokenDialog" :connected="connected" :asset="firstToken" @select="setSecondTokenAddress($event.address)" />
+    <select-token :visible.sync="showSelectFirstTokenDialog" :connected="isLoggedIn" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstTokenAddress($event.address)" />
+    <select-token :visible.sync="showSelectSecondTokenDialog" :connected="isLoggedIn" :asset="firstToken" @select="setSecondTokenAddress($event.address)" />
 
     <confirm-token-pair-dialog
       :visible.sync="showConfirmDialog"
@@ -194,12 +194,12 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
     return router.currentRoute.params.secondAddress
   }
 
-  get computedClasses (): string {
-    const componentClass = 'input-container'
-    const classes = [componentClass, componentClass + '--second']
+  get chooseTokenClasses (): string {
+    const buttonClass = 'el-button'
+    const classes = [buttonClass, buttonClass + '--choose-token']
 
     if (this.secondAddress) {
-      classes.push(`${componentClass}--disabled-select`)
+      classes.push(`${buttonClass}--disabled`)
     }
 
     return classes.join(' ')
@@ -280,10 +280,7 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @include full-width-button;
 }
 .input-container {
-  @include buttons(true);
-  &--second:not(.input-container--disabled-select) {
-    @include buttons();
-  }
+  @include buttons;
 }
 @include vertical-divider;
 @include vertical-divider('el-divider');

@@ -28,7 +28,6 @@ export const isMaxButtonAvailable = (
   parseAsLiquidity = false
 ): boolean => {
   if (
-    !isWalletConnected() ||
     !asset ||
     !areAssetsSelected ||
     !fee ||
@@ -101,16 +100,6 @@ export const hasInsufficientEthForFee = (ethBalance: string, fee: string): boole
 
 export const getWalletAddress = (): string => {
   return storage.get('address')
-}
-
-export const isWalletConnected = (): boolean => {
-  const isExternal = Boolean(storage.get('isExternal'))
-  const address = getWalletAddress()
-  return !!(
-    isExternal
-      ? address
-      : address && storage.get('name') && storage.get('password')
-  )
 }
 
 export async function delay (ms = 50): Promise<void> {

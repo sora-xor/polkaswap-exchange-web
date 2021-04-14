@@ -2,7 +2,7 @@
   <div v-loading="parentLoading" class="container el-form--pool">
     <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')" />
     <div class="pool-wrapper" v-loading="loading">
-      <p v-if="!connected" class="pool-info-container">
+      <p v-if="!isLoggedIn" class="pool-info-container">
         {{ t('pool.connectToWallet') }}
       </p>
       <p v-else-if="!accountLiquidity || !accountLiquidity.length" class="pool-info-container">
@@ -46,7 +46,7 @@
         </s-collapse-item>
       </s-collapse>
     </div>
-    <template v-if="connected">
+    <template v-if="isLoggedIn">
       <s-button class="el-button--add-liquidity" type="primary" @click="handleAddLiquidity">
         {{ t('pool.addLiquidity') }}
       </s-button>
@@ -68,7 +68,6 @@ import { AccountLiquidity } from '@sora-substrate/util'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
-import { isWalletConnected } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -82,6 +81,7 @@ const namespace = 'pool'
   }
 })
 export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
+  @Getter isLoggedIn!: boolean
   @Getter('accountLiquidity', { namespace }) accountLiquidity!: any
   @Getter('assets', { namespace: 'assets' }) assets
 
@@ -95,10 +95,6 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
       await this.getAssets()
       await this.getAccountLiquidity()
     })
-  }
-
-  get connected (): boolean {
-    return isWalletConnected()
   }
 
   getAsset (address): any {
