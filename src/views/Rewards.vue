@@ -104,6 +104,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   async mounted (): Promise<void> {
     await this.withApi(async () => {
       await this.setEthNetwork()
+      await this.syncExternalAccountWithAppState()
       await this.checkAccountRewards()
 
       this.unwatchEthereum = await web3Util.watchEthereum({

@@ -357,7 +357,8 @@ export default class Bridge extends Mixins(
   }
 
   async mounted (): Promise<void> {
-    this.setEthNetwork()
+    await this.setEthNetwork()
+    await this.syncExternalAccountWithAppState()
     this.getEthBalance()
     this.resetBridgeForm(!!router.currentRoute.params?.address)
     this.withApi(async () => {
