@@ -204,6 +204,7 @@ const actions = {
         const message = web3.utils.sha3(internalAddressHex) as string
 
         const signature = await web3.eth.personal.sign(message, externalAddress, '')
+        console.info('[CLAIM]: eth account address: ', externalAddress, 'signature: ', signature) // TODO: REMOVE
 
         commit(types.SET_SIGNATURE, signature)
         commit(types.SET_TRANSACTION_STEP, 2)
