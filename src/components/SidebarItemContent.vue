@@ -1,6 +1,6 @@
 <template>
   <component :is="tag" :class="classes">
-    <div class="icon-container">
+    <div v-if="icon" class="icon-container">
       <s-icon :name="icon" size="28" />
     </div>
     <span>{{ title }}</span>
