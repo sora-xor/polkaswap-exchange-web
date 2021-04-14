@@ -74,4 +74,18 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
       await func()
     }
   }
+
+  async syncExternalAccountWithAppState () {
+    const connected = await web3Util.checkAccountIsConnected(this.ethAddress)
+
+    if (connected) return
+
+    await this.disconnectExternalAccount()
+
+    const account = await web3Util.getAccount()
+
+    if (account) {
+      await this.changeExternalWallet({ address: account })
+    }
+  }
 }
