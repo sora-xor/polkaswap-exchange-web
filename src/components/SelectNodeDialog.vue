@@ -1,56 +1,81 @@
 <template>
   <dialog-base
     :visible.sync="isVisible"
-    :title="t('selectNodeDialog.title')"
+    :before-close="beforeClose"
+    v-bind="dialogProps"
+    class="select-node-dialog"
   >
     <div class="select-node s-flex">
-      <div class="select-node-list s-flex">
-        <s-radio
-          v-for="item in nodes"
-          :key="item.address"
-          :label="item.address"
-          v-model="model"
-          class="select-node-list__item s-flex"
-        >
-          <div class="select-node-item s-flex">
-            <div class="select-node-info s-flex">
-              <div class="select-node-info__label h4">
-                {{ item.name }} hosted by {{ item.host }}
+      <template v-if="isNodeListView">
+        <div class="select-node-list s-flex">
+          <s-radio
+            v-for="item in nodes"
+            :key="item.address"
+            :label="item.address"
+            v-model="model"
+            class="select-node-list__item s-flex"
+          >
+            <div class="select-node-item s-flex">
+              <div class="select-node-info s-flex">
+                <div class="select-node-info__label h4">
+                  {{ item.name }} hosted by {{ item.host }}
+                </div>
+                <div class="select-node-info__address p4">
+                  {{ item.address }}
+                </div>
               </div>
-              <div class="select-node-info__address p4">
-                {{ item.address }}
-              </div>
+              <s-button class="details select-node-details" type="link" @click="viewNodeInfo(item)">
+                <s-icon name="arrows-chevron-right-rounded-24" />
+              </s-button>
             </div>
-            <s-button class="details select-node-details" type="link">
-              <s-icon name="arrows-chevron-right-rounded-24" />
-            </s-button>
-          </div>
-        </s-radio>
-      </div>
-      <s-button
-        class="select-node-add"
-        icon="circle-plus-16"
-        icon-position="right"
-      >
-        {{ t('selectNodeDialog.addNode') }}
-      </s-button>
+          </s-radio>
+        </div>
+        <s-button
+          class="select-node-add"
+          icon="circle-plus-16"
+          icon-position="right"
+          @click="addNode"
+        >
+          {{ t('selectNodeDialog.addNode') }}
+        </s-button>
+      </template>
+      <template v-else>
+        <generic-page-header has-button-back :title="t('selectNodeDialog.customNode')" @back="handleBack" />
+        <s-input class="select-node-input" :placeholder="t('nameText')" v-model="selectedItem.name" />
+        <s-input class="select-node-input" :placeholder="t('addressText')" v-model="selectedItem.address" />
+        <s-button type="primary">{{ t('selectNodeDialog.addNode') }}</s-button>
+      </template>
     </div>
   </dialog-base>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
+
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from './DialogBase.vue'
 
+const NodeListView = 'NodeListView'
+const CreateNodeView = 'CreateNodeView'
+
+const DefaultNodeInfo = {
+  name: '',
+  address: ''
+}
+
 @Component({
   components: {
-    DialogBase
+    DialogBase,
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader)
   }
 })
 export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMixin) {
+  currentView = NodeListView
+
   nodes = [
     {
       name: 'Node',
@@ -65,10 +90,62 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMix
   ]
 
   model = 'wss://s1.kusama-rpc.polkadot.io'
+
+  selectedItem = { ...DefaultNodeInfo }
+
+  get isNodeListView (): boolean {
+    return this.currentView === NodeListView
+  }
+
+  get dialogProps (): object {
+    const customClass = this.isNodeListView ? '' : 'select-node-dialog--add-node'
+
+    return {
+      title: this.isNodeListView ? this.t('selectNodeDialog.title') : undefined,
+      showClose: this.isNodeListView,
+      customClass
+    }
+  }
+
+  viewNodeInfo (node): void {
+    this.selectedItem = node
+    this.changeView(CreateNodeView)
+  }
+
+  addNode (): void {
+    this.selectedItem = { ...DefaultNodeInfo }
+    this.changeView(CreateNodeView)
+  }
+
+  beforeClose (closeFn: Function): void {
+    closeFn()
+    this.changeView(NodeListView)
+  }
+
+  handleBack (): void {
+    this.changeView(NodeListView)
+  }
+
+  private changeView (view: string): void {
+    this.currentView = view
+  }
 }
 </script>
 
 <style lang="scss">
+.dialog-wrapper.select-node-dialog {
+  .el-dialog .el-dialog__body {
+    padding: $inner-spacing-big $inner-spacing-big $inner-spacing-mini * 4;
+  }
+
+  &--add-node {
+    .el-dialog .el-dialog__header {
+      padding: 0;
+      display: none;
+    }
+  }
+}
+
 .select-node-list__item.el-radio {
   & > .el-radio__input > .el-radio__inner {
     width: var(--s-size-mini);
@@ -101,7 +178,6 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMix
 <style lang="scss" scoped>
 .select-node {
   flex-direction: column;
-  padding-bottom: $inner-spacing-big;
 
   & > *:not(:last-child) {
     margin-bottom: $inner-spacing-medium

@@ -29,6 +29,8 @@ export default {
   insufficientBalanceText: 'Insufficient {tokenSymbol} balance',
   firstPerSecond: '{first} per {second}',
   pairIsNotCreated: 'Token pair isn\'t created',
+  nameText: 'Name',
+  addressText: 'Address',
   pageTitle: {
     [PageNames.Swap]: 'Swap',
     [PageNames.Pool]: 'Pool',
@@ -91,7 +93,8 @@ export default {
   },
   selectNodeDialog: {
     title: '@:soraText Network node selection',
-    addNode: 'Add custom node'
+    addNode: 'Add custom node',
+    customNode: 'Custom node'
   },
   buttons: {
     max: 'MAX',
