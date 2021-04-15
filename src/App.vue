@@ -4,6 +4,12 @@
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
 
       <div class="app-controls s-flex">
+        <branded-tooltip popper-class="info-tooltip" placement="bottom">
+          <div slot="content">
+            {{ t('selectNodeText') }}
+          </div>
+          <s-button type="action" icon="connection-broadcasting-24" @click="openSelectNodeDialog" />
+        </branded-tooltip>
         <branded-tooltip :disabled="isLoggedIn" popper-class="info-tooltip wallet-tooltip" placement="bottom">
           <div slot="content" class="app-controls__wallet-tooltip">
             {{ t('connectWalletTextTooltip') }}
@@ -105,7 +111,8 @@
       </div>
     </div>
 
-    <help-dialog :visible.sync="showHelpDialog"></help-dialog>
+    <help-dialog :visible.sync="showHelpDialog" />
+    <select-node-dialog :visible.sync="showSelectNodeDialog" />
   </div>
 </template>
 
@@ -131,7 +138,8 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
     WalletAvatar,
     BrandedTooltip: lazyComponent(Components.BrandedTooltip),
     HelpDialog: lazyComponent(Components.HelpDialog),
-    SidebarItemContent: lazyComponent(Components.SidebarItemContent)
+    SidebarItemContent: lazyComponent(Components.SidebarItemContent),
+    SelectNodeDialog: lazyComponent(Components.SelectNodeDialog)
   }
 })
 export default class App extends Mixins(TransactionMixin, LoadingMixin) {
@@ -148,6 +156,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   ]
 
   showHelpDialog = false
+  showSelectNodeDialog = false
 
   @Getter firstReadyTransaction!: any
   @Getter isLoggedIn!: boolean
@@ -236,6 +245,10 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
 
   openHelpDialog (): void {
     this.showHelpDialog = true
+  }
+
+  openSelectNodeDialog (): void {
+    this.showSelectNodeDialog = true
   }
 
   destroyed (): void {
@@ -545,6 +558,10 @@ $disclaimer-letter-spacing: -0.03em;
 
 .app-controls {
   margin-left: auto;
+
+  & > *:not(:last-child) {
+    margin-right: $inner-spacing-mini
+  }
 
   .wallet-section {
     border: 1px solid var(--s-color-base-border-secondary);

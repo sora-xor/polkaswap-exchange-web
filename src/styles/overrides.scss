@@ -168,6 +168,7 @@ button.el-button.send.s-small, button.el-button.swap.s-small {
 div.asset-search-actions button.el-button--plain,
 div.asset-custom-actions button.el-button--plain,
 div.wallet-assets button.el-button--plain,
+div.select-node button.el-button--plain,
 button.el-button--create-pair{
   color: #fff !important;
   border: 1px solid #ddd !important;
@@ -178,6 +179,7 @@ button.el-button--create-pair{
 div.asset-search-actions button.el-button--plain:hover,
 div.asset-custom-actions button.el-button--plain:hover,
 div.wallet-assets button.el-button--plain:hover,
+div.select-node button.el-button--plain:hover,
 button.el-button--create-pair:hover {
   color: #fff !important;
   border: 1px solid #ddd !important;

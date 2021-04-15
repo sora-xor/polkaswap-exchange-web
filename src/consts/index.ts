@@ -71,6 +71,7 @@ export enum Components {
   SettingsTabs = 'Settings/Tabs',
   SlippageTolerance = 'Settings/SlippageTolerance',
   MarketAlgorithm = 'Settings/MarketAlgorithm',
+  SelectNodeDialog = 'SelectNodeDialog',
   BrandedTooltip = 'BrandedTooltip',
   HelpDialog = 'HelpDialog',
   AboutNetworkDialog = 'AboutNetworkDialog',

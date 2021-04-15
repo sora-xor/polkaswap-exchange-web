@@ -14,6 +14,7 @@ export default {
   changeAccountText: 'Change account',
   connectedText: 'Connected',
   connectWalletTextTooltip: 'Connect to @:soraText Network with polkadot{.js}',
+  selectNodeText: 'Select node',
   walletProviderConnectionError: '{provider} is not found. Please install it!',
   bridgeText: 'Bridge',
   comingSoonText: 'Coming Soon',
@@ -87,6 +88,10 @@ export default {
       title: 'What is polkadot{.js}?',
       description: 'Polkadot{.js} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including @:soraText, Polkadot and Kusama. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized.'
     }
+  },
+  selectNodeDialog: {
+    title: '@:soraText Network node selection',
+    addNode: 'Add custom node'
   },
   buttons: {
     max: 'MAX',
