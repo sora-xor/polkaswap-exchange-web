@@ -89,20 +89,22 @@ const mutations = {
 }
 
 const actions = {
-  setNode ({ commit }, node) {
+  async setNode ({ commit, dispatch }, node) {
     const endpoint = node?.address ?? ''
 
     if (!endpoint) {
       throw new Error('node address is not set')
     }
 
+    commit(types.SET_NODE, node)
+
     if (!connection.endpoint) {
       connection.endpoint = endpoint
     } else {
-      connection.restart(endpoint)
+      await connection.restart(endpoint)
+      // to update subscription
+      dispatch('updateAccountAssets', undefined, { root: true })
     }
-
-    commit(types.SET_NODE, node)
   },
   setDefaultNodes ({ commit }, nodes) {
     commit(types.SET_DEFAULT_NODES, nodes)
