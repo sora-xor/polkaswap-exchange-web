@@ -17,7 +17,7 @@
               {{ node.address }}
             </div>
           </div>
-          <s-button class="details select-node-details" type="link" @click="viewNode(node)">
+          <s-button class="details select-node-details" type="link" @click="handleNode(node)">
             <s-icon name="arrows-chevron-right-rounded-24" />
           </s-button>
         </div>
@@ -27,7 +27,7 @@
       class="select-node-button"
       icon="circle-plus-16"
       icon-position="right"
-      @click="addNode"
+      @click="handleNode()"
     >
       {{ t('selectNodeDialog.addNode') }}
     </s-button>
@@ -51,8 +51,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 })
 export default class SelectNode extends Mixins(TranslationMixin) {
   @Prop({ default: () => [], type: Array }) nodes!: Array<any>
-  @Prop({ default: () => {}, type: Function }) viewNode!: (node: any) => void
-  @Prop({ default: () => {}, type: Function }) addNode!: () => void
+  @Prop({ default: () => {}, type: Function }) handleNode!: (node: any) => void
 
   @ModelSync('value', 'input', { type: String })
   readonly currentAddressValue!: boolean

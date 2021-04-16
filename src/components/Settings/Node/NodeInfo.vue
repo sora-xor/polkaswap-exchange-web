@@ -1,9 +1,9 @@
 <template>
   <div class="node-info">
     <generic-page-header has-button-back :title="title" @back="handleBack" />
-    <s-input class="node-info-input" :placeholder="t('nameText')" v-model="nodeModel.name" />
-    <s-input class="node-info-input" :placeholder="t('addressText')" v-model="nodeModel.address" />
-    <s-button type="primary" class="node-info-button">{{ buttonText }}</s-button>
+    <s-input class="node-info-input" :placeholder="t('nameText')" v-model="nodeModel.name" :disabled="isExistingNode" />
+    <s-input class="node-info-input" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="isExistingNode" />
+    <s-button type="primary" class="node-info-button" :disabled="connected" @click="handleButtonClick" >{{ buttonText }}</s-button>
   </div>
 </template>
 
@@ -22,8 +22,9 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 })
 export default class NodeInfo extends Mixins(TranslationMixin) {
   @Prop({ default: () => {}, type: Function }) handleBack!: () => void
+  @Prop({ default: () => {}, type: Function }) handleNode!: (node) => void
   @Prop({ default: () => ({}), type: Object }) node!: any
-  @Prop({ default: false, type: Boolean }) selected!: boolean
+  @Prop({ default: false, type: Boolean }) connected!: boolean
 
   nodeModel = {
     name: '',
@@ -47,6 +48,15 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
 
   get title (): string {
     return this.isExistingNode ? this.node.name : this.t('selectNodeDialog.customNode')
+  }
+
+  handleButtonClick (): void {
+    this.handleNode(this.nodeModel)
+    if (this.isExistingNode) {
+      this.$emit('select', this.nodeModel)
+    } else {
+      this.$emit('create', this.nodeModel)
+    }
   }
 }
 </script>

@@ -8,6 +8,11 @@ export const app = {
   email: 'jihoon@tutanota.de'
 }
 
+export const WalletPermissions = {
+  sendAssets: true, // enable 'send' button in assets list
+  swapAssets: true // enable 'swap' button in assets list
+}
+
 export const Links = {
   about: {
     sora: 'https://sora.org/',

@@ -16,12 +16,13 @@ const types = flow(
     'SET_TRANSACTION_DEADLINE',
     'SET_FAUCET_URL',
     'SET_SORA_NETWORK',
-    'SET_DEFAULT_NODES',
-    'SET_NODE'
+    'SET_DEFAULT_NODES'
   ]),
   map(x => [x, x]),
   fromPairs
-)([])
+)([
+  'SET_NODE'
+])
 
 function initialState () {
   return {
@@ -31,6 +32,7 @@ function initialState () {
     transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
     node: {},
     defaultNodes: [],
+    nodeIsConnecting: false,
     faucetUrl: ''
   }
 }
@@ -43,6 +45,9 @@ const getters = {
   },
   defaultNodes (state) {
     return state.defaultNodes
+  },
+  nodeIsConnecting (state) {
+    return state.nodeIsConnecting
   },
   soraNetwork (state) {
     return state.soraNetwork
@@ -62,8 +67,16 @@ const getters = {
 }
 
 const mutations = {
-  [types.SET_NODE] (state, node = {}) {
+  [types.SET_NODE_REQUEST] (state, node = {}) {
     state.node = { ...node }
+    state.nodeIsConnecting = true
+  },
+  [types.SET_NODE_SUCCESS] (state, node = {}) {
+    state.nodeIsConnecting = false
+  },
+  [types.SET_NODE_FAILURE] (state) {
+    state.node = {}
+    state.nodeIsConnecting = false
   },
   [types.SET_DEFAULT_NODES] (state, nodes) {
     state.defaultNodes = [...nodes]
@@ -90,20 +103,27 @@ const mutations = {
 
 const actions = {
   async setNode ({ commit, dispatch }, node) {
-    const endpoint = node?.address ?? ''
+    try {
+      const endpoint = node?.address ?? ''
 
-    if (!endpoint) {
-      throw new Error('node address is not set')
-    }
+      if (!endpoint) {
+        throw new Error('node address is not set')
+      }
 
-    commit(types.SET_NODE, node)
+      commit(types.SET_NODE_REQUEST, node)
 
-    if (!connection.endpoint) {
-      connection.endpoint = endpoint
-    } else {
-      await connection.restart(endpoint)
-      // to update subscription
-      dispatch('updateAccountAssets', undefined, { root: true })
+      if (!connection.endpoint) {
+        connection.endpoint = endpoint
+      } else {
+        await connection.restart(endpoint)
+        // to update subscription
+        dispatch('updateAccountAssets', undefined, { root: true })
+      }
+
+      commit(types.SET_NODE_SUCCESS)
+    } catch (error) {
+      commit(types.SET_NODE_FAILURE)
+      throw error
     }
   },
   setDefaultNodes ({ commit }, nodes) {

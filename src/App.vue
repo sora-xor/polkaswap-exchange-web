@@ -121,7 +121,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { connection, initWallet, WALLET_CONSTS, WalletAvatar, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
 
-import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components } from '@/consts'
+import { WalletPermissions, PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components } from '@/consts'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -189,11 +189,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
         this.setFaucetUrl(data.FAUCET_URL)
       }
 
-      const permissions = {
-        sendAssets: true, // enable 'send' button in assets list
-        swapAssets: true // enable 'swap' button in assets list
-      }
-      await initWallet({ permissions })
+      await initWallet({ permissions: WalletPermissions })
       await this.getAssets()
       await this.getAccountLiquidity()
     })

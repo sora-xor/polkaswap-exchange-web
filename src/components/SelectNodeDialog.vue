@@ -5,8 +5,22 @@
     v-bind="dialogProps"
     class="select-node-dialog"
   >
-    <select-node v-if="isNodeListView" v-model="connectedNodeAddress" :nodes="nodeList" :view-node="viewNodeInfo" :add-node="addCustomNode" />
-    <node-info v-else :node="selectedNode" :handle-back="handleBack" />
+    <div v-loading="nodeIsConnecting">
+      <select-node
+        v-if="isNodeListView"
+        v-model="connectedNodeAddress"
+        :loading="nodeIsConnecting"
+        :nodes="nodeList"
+        :handle-node="navigateToNodeInfo"
+      />
+      <node-info
+        v-else
+        :node="selectedNode"
+        :connected="isSelectedNodeConnected"
+        :handle-back="handleBack"
+        :handle-node="navigateToNodeInfo"
+      />
+    </div>
   </dialog-base>
 </template>
 
@@ -22,7 +36,7 @@ import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from './DialogBase.vue'
 
 const NodeListView = 'NodeListView'
-const CreateNodeView = 'CreateNodeView'
+const NodeInfoView = 'NodeInfoView'
 
 @Component({
   components: {
@@ -35,6 +49,7 @@ const CreateNodeView = 'CreateNodeView'
 export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMixin) {
   @Getter node!: any
   @Getter defaultNodes!: Array<any>
+  @Getter nodeIsConnecting!: boolean
   @Action setNode!: (node: any) => void
 
   currentView = NodeListView
@@ -52,6 +67,8 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMix
     // }
   ]
 
+  selectedNode = null
+
   get connectedNodeAddress (): string {
     return this.node.address
   }
@@ -59,11 +76,13 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMix
   set connectedNodeAddress (address: string) {
     if (address === this.node.address) return
 
-    const node = this.nodeList.find(item => item.address === address)
+    const node = this.findNodeByAddress(address)
     this.setNode(node)
   }
 
-  selectedNode = null
+  get isSelectedNodeConnected (): boolean {
+    return !!this.selectedNode && this.connectedNodeAddress === this.selectedNode.address
+  }
 
   get isNodeListView (): boolean {
     return this.currentView === NodeListView
@@ -83,14 +102,19 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMix
     }
   }
 
-  viewNodeInfo (node): void {
-    this.selectedNode = node
-    this.changeView(CreateNodeView)
+  handleNode (node) {
+    const existingNode = this.findNodeByAddress(node.address)
+
+    if (existingNode) {
+      this.setNode(node)
+    } else {
+      // create custom node
+    }
   }
 
-  addCustomNode (): void {
-    this.selectedNode = null
-    this.changeView(CreateNodeView)
+  navigateToNodeInfo (node: any): void {
+    this.selectedNode = node ?? null
+    this.changeView(NodeInfoView)
   }
 
   beforeClose (closeFn: Function): void {
@@ -104,6 +128,10 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMix
 
   private changeView (view: string): void {
     this.currentView = view
+  }
+
+  private findNodeByAddress (address: string): any {
+    return this.nodeList.find(item => item.address === address)
   }
 }
 </script>
@@ -119,6 +147,10 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMix
       padding: 0;
       display: none;
     }
+  }
+
+  .el-loading-mask {
+    background: var(--s-color-utility-surface);
   }
 }
 
