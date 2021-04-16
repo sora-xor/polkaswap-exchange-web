@@ -37,7 +37,7 @@
     <s-button v-if="!rewardsRecieved" class="rewards-block rewards-action-button" type="primary" @click="handleAction" :loading="actionButtonLoading" :disabled="actionButtonDisabled">
       {{ actionButtonText }}
     </s-button>
-    <info-line v-if="fee && rewardsAvailable && !claimingInProgressOrFinished" v-bind="feeInfo" class="rewards-block" />
+    <info-line v-if="fee && areNetworksConnected && rewardsAvailable && !claimingInProgressOrFinished" v-bind="feeInfo" class="rewards-block" />
   </div>
 </template>
 
@@ -104,6 +104,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   async mounted (): Promise<void> {
     await this.withApi(async () => {
       await this.setEthNetwork()
+      await this.syncExternalAccountWithAppState()
       await this.checkAccountRewards()
 
       this.unwatchEthereum = await web3Util.watchEthereum({

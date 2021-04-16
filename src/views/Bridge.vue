@@ -100,7 +100,7 @@
               />
             </s-form-item>
             <div v-if="areNetworksConnected && isAssetSelected" class="asset">
-              <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" disabled>
+              <s-button class="el-button--choose-token el-button--disabled" type="tertiary" size="small" border-radius="medium">
                 <token-logo :token="asset" size="small" />
                 {{ formatAssetSymbol(assetSymbol, isSoraToEthereum) }}
               </s-button>
@@ -156,12 +156,12 @@
           <info-line
             :label="t('bridge.soraNetworkFee')"
             :tooltip-content="t('networkFeeTooltipText')"
-            :value="soraNetworkFee ? '~' + formattedSoraNetworkFee : '-'"
+            :value="formatFee(soraNetworkFee, formattedSoraNetworkFee)"
             :asset-symbol="KnownSymbols.XOR"
           />
           <info-line
             :label="t('bridge.ethereumNetworkFee')"
-            :value="ethereumNetworkFee ? '~' + formattedEthNetworkFee : '-'"
+            :value="formatFee(ethereumNetworkFee, formattedEthNetworkFee)"
             :asset-symbol="EthSymbol"
           />
           <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
@@ -335,6 +335,16 @@ export default class Bridge extends Mixins(
     return this.formatStringValue(this.ethereumNetworkFee)
   }
 
+  formatFee (fee: string, formattedFee: string): string {
+    if (!fee) {
+      return '-'
+    }
+    if (fee === '0') {
+      return fee
+    }
+    return `~${formattedFee}`
+  }
+
   formatBalance (isSora = true): string {
     if (!this.isRegisteredAsset) {
       return '-'
@@ -357,7 +367,8 @@ export default class Bridge extends Mixins(
   }
 
   async mounted (): Promise<void> {
-    this.setEthNetwork()
+    await this.setEthNetwork()
+    await this.syncExternalAccountWithAppState()
     this.getEthBalance()
     this.resetBridgeForm(!!router.currentRoute.params?.address)
     this.withApi(async () => {
@@ -675,6 +686,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
   }
   @include buttons;
+
   .el-button {
     &--connect {
       margin: $inner-spacing-mini $inner-spacing-small $inner-spacing-small;

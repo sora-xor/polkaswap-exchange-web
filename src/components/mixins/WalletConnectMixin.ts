@@ -2,7 +2,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
 
 import router from '@/router'
-import { isWalletConnected, getWalletAddress, formatAddress } from '@/utils'
+import { getWalletAddress, formatAddress } from '@/utils'
 import { PageNames } from '@/consts'
 import web3Util, { Provider } from '@/utils/web3-util'
 
@@ -12,6 +12,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @State(state => state.web3.ethAddress) ethAddress!: string
 
+  @Getter('isLoggedIn') isSoraAccountConnected!: boolean
   @Getter('isExternalAccountConnected', { namespace: 'web3' }) isExternalAccountConnected!: boolean
 
   @Action('setEthNetwork', { namespace: 'web3' }) setEthNetwork!: (network?: string) => Promise<void>
@@ -23,10 +24,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   formatAddress = formatAddress
 
   isExternalWalletConnecting = false
-
-  get isSoraAccountConnected (): boolean {
-    return isWalletConnected()
-  }
 
   get areNetworksConnected (): boolean {
     return this.isSoraAccountConnected && this.isExternalAccountConnected
@@ -75,6 +72,20 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
       await this.connectExternalWallet()
     } else {
       await func()
+    }
+  }
+
+  async syncExternalAccountWithAppState () {
+    const connected = await web3Util.checkAccountIsConnected(this.ethAddress)
+
+    if (connected) return
+
+    await this.disconnectExternalAccount()
+
+    const account = await web3Util.getAccount()
+
+    if (account) {
+      await this.changeExternalWallet({ address: account })
     }
   }
 }

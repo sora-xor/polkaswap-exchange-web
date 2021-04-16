@@ -20,7 +20,7 @@
     />
     <!-- TODO 4 alexnatalia: Show if logged in and have info about Network Fee -->
     <info-line
-      v-if="connected"
+      v-if="isLoggedIn"
       :label="t('swap.networkFee')"
       :tooltip-content="t('swap.networkFeeTooltip')"
       :value="formattedNetworkFee"
@@ -30,13 +30,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
+import { Component, Mixins } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 import { KnownSymbols, CodecString, AccountAsset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
-import { isWalletConnected } from '@/utils'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 
@@ -57,10 +56,7 @@ export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMi
 
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
-
-  get connected (): boolean {
-    return isWalletConnected()
-  }
+  @Getter isLoggedIn!: boolean
 
   get priceValues (): Array<object> {
     const fromSymbol = this.tokenFrom?.symbol ?? ''
