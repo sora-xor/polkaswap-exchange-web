@@ -384,12 +384,10 @@ const actions = {
     commit(types.GET_SORA_NETWORK_FEE_REQUEST)
     try {
       const asset = await dispatch('findRegisteredAsset')
-      // TODO: use it
-      // const transferType = isXorAccountAsset(getters.asset) ? RequestType.TransferXOR : RequestType.Transfer
       const fee = await (
         getters.isSoraToEthereum
           ? api.bridge.getTransferToEthFee(asset, '', getters.amount)
-          : api.bridge.getRequestFromEthFee('' /* , transferType */)
+          : '0' // TODO: check it for other types of bridge
       )
       commit(types.GET_SORA_NETWORK_FEE_SUCCESS, fee)
     } catch (error) {
@@ -642,9 +640,9 @@ const actions = {
     commit(types.SIGN_SORA_TRANSACTION_ETH_SORA_REQUEST)
 
     try {
-      // TODO: use it
+      // TODO: check it for other types of bridge
       // const transferType = isXorAccountAsset(getters.asset) ? RequestType.TransferXOR : RequestType.Transfer
-      await api.bridge.requestFromEth(ethereumHash /* , transferType */)
+      // await api.bridge.requestFromEth(ethereumHash, transferType)
       commit(types.SIGN_SORA_TRANSACTION_ETH_SORA_SUCCESS)
     } catch (error) {
       commit(types.SIGN_SORA_TRANSACTION_ETH_SORA_FAILURE)
