@@ -150,7 +150,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
+import { AccountAsset, RegisteredAccountAsset, KnownSymbols, CodecString, BridgeHistory } from '@sora-substrate/util'
 import { interpret } from 'xstate'
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
@@ -158,7 +158,7 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
-import { Components, PageNames, EthSymbol } from '@/consts'
+import { Components, PageNames, EthSymbol, MetamaskCancellationCode } from '@/consts'
 import { formatAssetSymbol, copyToClipboard, formatDateItem, hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEthForFee } from '@/utils'
 import { createFSM, EVENTS, SORA_ETHEREUM_STATES, ETHEREUM_SORA_STATES, STATES } from '@/utils/fsm'
 
@@ -188,7 +188,6 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   @Getter('currentTransactionState', { namespace }) currentTransactionState!: STATES
   @Getter('initialTransactionState', { namespace }) initialTransactionState!: STATES
   @Getter('transactionStep', { namespace }) transactionStep!: number
-  // TODO: Remove the next line
   @Getter('historyItem', { namespace }) historyItem!: any
 
   @Action('getNetworkFee', { namespace }) getNetworkFee
@@ -198,11 +197,22 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   @Action('setTransactionStep', { namespace }) setTransactionStep
   @Action('setTransactionConfirm', { namespace }) setTransactionConfirm
   @Action('setHistoryItem', { namespace }) setHistoryItem
-  @Action('sendTransferSoraToEth', { namespace }) sendTransferSoraToEth
-  @Action('sendTransferEthToSora', { namespace }) sendTransferEthToSora
-  @Action('sendTransaction', { namespace }) sendTransaction
-  @Action('receiveTransaction', { namespace }) receiveTransaction
+
+  @Action('signSoraTransactionSoraToEth', { namespace }) signSoraTransactionSoraToEth
+  @Action('signEthTransactionSoraToEth', { namespace }) signEthTransactionSoraToEth
+  @Action('sendSoraTransactionSoraToEth', { namespace }) sendSoraTransactionSoraToEth
+  @Action('sendEthTransactionSoraToEth', { namespace }) sendEthTransactionSoraToEth
+
+  @Action('signSoraTransactionEthToSora', { namespace }) signSoraTransactionEthToSora
+  @Action('signEthTransactionEthToSora', { namespace }) signEthTransactionEthToSora
+  @Action('sendSoraTransactionEthToSora', { namespace }) sendSoraTransactionEthToSora
+  @Action('sendEthTransactionEthToSora', { namespace }) sendEthTransactionEthToSora
+
+  @Action('generateHistoryItem', { namespace }) generateHistoryItem!: ({ date: Date }) => Promise<BridgeHistory>
+  @Action('updateHistoryParams', { namespace }) updateHistoryParams
+  @Action('removeHistoryById', { namespace }) removeHistoryById
   @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash
+  @Action('setEthereumTransactionHash', { namespace }) setEthereumTransactionHash
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
@@ -414,9 +424,7 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
       this.initializeTransactionStateMachine()
       this.isInitRequestCompleted = true
       this.currentTransactionStep = this.transactionStep
-      if (!this.historyItem) {
-        this.handleSendTransactionFrom()
-      }
+      await this.handleSendTransactionFrom()
     } else {
       router.push({ name: PageNames.Bridge })
     }
@@ -431,8 +439,11 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
     }
   }
 
-  initializeTransactionStateMachine () {
+  async initializeTransactionStateMachine () {
     // Create state machine and interpret it
+    const historyItem = this.historyItem
+      ? this.historyItem
+      : await this.generateHistoryItem({ date: Date.now() })
     const machineStates = this.isSoraToEthereum ? SORA_ETHEREUM_STATES : ETHEREUM_SORA_STATES
     const initialState = this.initialTransactionState === this.currentTransactionState
       ? this.initialTransactionState
@@ -440,8 +451,27 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
     this.sendService = interpret(
       createFSM(
         {
-          sendFirstTransaction: this.sendTransaction,
-          sendSecondTransaction: this.receiveTransaction
+          history: historyItem,
+          SORA_ETH: {
+            sora: {
+              sign: this.signSoraTransactionSoraToEth,
+              send: this.sendSoraTransactionSoraToEth
+            },
+            ethereum: {
+              sign: this.signEthTransactionSoraToEth,
+              send: this.sendEthTransactionSoraToEth
+            }
+          },
+          ETH_SORA: {
+            sora: {
+              sign: this.signSoraTransactionEthToSora,
+              send: this.sendSoraTransactionEthToSora
+            },
+            ethereum: {
+              sign: this.signEthTransactionEthToSora,
+              send: this.sendEthTransactionEthToSora
+            }
+          }
         },
         machineStates,
         initialState
@@ -460,15 +490,35 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
 
     // Subscribe to transition events
     this.sendService
-      .onTransition(state => {
-        // Update vuex state on transition
-        this.setCurrentTransactionState(state.value)
+      .onTransition(async state => {
+        await this.setCurrentTransactionState(state.context.history.transactionState)
+        await this.updateHistoryParams({ tx: state.context.history })
+
+        if (
+          !state.context.history.hash?.length &&
+          !state.context.history.ethereumHash?.length &&
+          [STATES.SORA_REJECTED, STATES.ETHEREUM_REJECTED].includes(state.value)
+        ) {
+          if (
+            state.event.data.message.includes('Cancelled') ||
+            state.event.data.code === MetamaskCancellationCode
+          ) {
+            await this.removeHistoryById(state.context.history.id)
+          }
+        }
+
+        if (state.context.history.hash && !this.soraTransactionHash.length) {
+          await this.setSoraTransactionHash(state.context.history.hash)
+        }
+        if (state.context.history.ethereumHash && !this.ethereumTransactionHash.length) {
+          await this.setEthereumTransactionHash(state.context.history.ethereumHash)
+        }
 
         if (
           (machineStates === SORA_ETHEREUM_STATES && state.value === STATES.SORA_COMMITED) ||
           (machineStates === ETHEREUM_SORA_STATES && state.value === STATES.ETHEREUM_COMMITED)
         ) {
-          this.setFromTransactionCompleted()
+          await this.setFromTransactionCompleted()
           this.callSecondTransition()
         }
       })

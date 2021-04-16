@@ -33,7 +33,10 @@ export default class SettingsTabs extends Vue {
     font-weight: 600 !important;
     text-align: center;
 
-    &.is-focus,
+    &.is-focus:not(.is-active) {
+      box-shadow: none !important;
+    }
+
     &.is-active {
       box-shadow: var(--s-shadow-tab) !important;
     }

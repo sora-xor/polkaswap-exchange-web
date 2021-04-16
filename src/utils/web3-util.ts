@@ -67,6 +67,7 @@ export const ABI = {
 }
 
 let provider: any = null
+let web3Istance: any = null
 
 export enum KnownBridgeAsset {
   VAL = 'VAL',
@@ -147,7 +148,7 @@ async function onConnectMetamask (): Promise<string> {
   if (!provider) {
     throw new Error('providers.metamask')
   }
-  const web3Instance = new Web3(provider)
+  const web3Instance = await getInstance()
   const accounts = await web3Instance.eth.requestAccounts()
   return accounts.length ? accounts[0] : ''
 }
@@ -193,7 +194,10 @@ async function getInstance (): Promise<Web3> {
   if (!provider) {
     throw new Error('No Web3 instance!')
   }
-  return new Web3(provider)
+  if (!web3Istance) {
+    web3Istance = new Web3(provider)
+  }
+  return web3Istance
 }
 
 async function watchEthereum (cb: {
@@ -213,7 +217,9 @@ async function watchEthereum (cb: {
 
   return function disconnect () {
     if (ethereum) {
-      ethereum.removeAllListeners()
+      ethereum.removeListener('accountsChanged', cb.onAccountChange)
+      ethereum.removeListener('chainChanged', cb.onNetworkChange)
+      ethereum.removeListener('disconnect', cb.onDisconnect)
     }
   }
 }

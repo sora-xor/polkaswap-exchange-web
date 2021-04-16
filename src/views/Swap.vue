@@ -17,7 +17,7 @@
             ({{ t('swap.estimated') }})
           </span>
         </div>
-        <div v-if="this.connected && this.tokenFrom && this.tokenFrom.balance" class="token-balance">
+        <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
           <span class="token-balance-value">{{ formatBalance(tokenFrom) }}</span>
         </div>
@@ -56,7 +56,7 @@
             ({{ t('swap.estimated') }})
           </span>
         </div>
-        <div v-if="this.connected && this.tokenTo && this.tokenTo.balance" class="token-balance">
+        <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="token-balance">
           <span class="token-balance-title">{{ t('exchange.balance') }}</span>
           <span class="token-balance-value">{{ formatBalance(tokenTo) }}</span>
         </div>
@@ -83,7 +83,7 @@
         </s-button>
       </div>
     </div>
-    <s-button v-if="!connected" type="primary" @click="handleConnectWallet">
+    <s-button v-if="!isLoggedIn" type="primary" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
     <s-button v-else type="primary" :disabled="!areTokensSelected || !isAvailable || hasZeroAmount || isInsufficientLiquidity || isInsufficientAmount || isInsufficientBalance || isInsufficientXorForFee" @click="handleConfirmSwap">
@@ -114,7 +114,7 @@
     </s-button>
     <slippage-tolerance class="slippage-tolerance-settings" />
     <swap-info v-if="areTokensSelected && !hasZeroAmount" class="info-line-container" />
-    <select-token :visible.sync="showSelectTokenDialog" :connected="connected" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
+    <select-token :visible.sync="showSelectTokenDialog" :connected="isLoggedIn" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
     <confirm-swap :visible.sync="showConfirmSwapDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmSwap" />
     <settings-dialog :visible.sync="showSettings" />
   </s-form>
@@ -130,7 +130,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
-import { isWalletConnected, isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance } from '@/utils'
+import { isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -173,6 +173,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('getAssets', { namespace: 'assets' }) getAssets
   @Action('setPairLiquiditySources', { namespace }) setPairLiquiditySources!: (liquiditySources: Array<LiquiditySourceTypes>) => Promise<void>
 
+  @Getter isLoggedIn!: boolean
   @Getter slippageTolerance!: number
   @Getter accountAssets!: Array<AccountAsset> // Wallet store
   @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes
@@ -188,6 +189,13 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     this.recountSwapValues()
   }
 
+  @Watch('isLoggedIn')
+  private handleLoggedInStateChange (isLoggedIn: boolean, wasLoggedIn: boolean): void {
+    if (!wasLoggedIn && isLoggedIn) {
+      this.recountSwapValues()
+    }
+  }
+
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
   KnownSymbols = KnownSymbols
@@ -198,10 +206,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   showSelectTokenDialog = false
   showConfirmSwapDialog = false
   isRecountingProcess = false
-
-  get connected (): boolean {
-    return isWalletConnected()
-  }
 
   get areTokensSelected (): boolean {
     return !!(this.tokenFrom && this.tokenTo)
@@ -224,11 +228,11 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   get isMaxSwapAvailable (): boolean {
-    return isMaxButtonAvailable(this.areTokensSelected, this.tokenFrom, this.fromValue, this.networkFee, this.tokenXOR)
+    return this.isLoggedIn && isMaxButtonAvailable(this.areTokensSelected, this.tokenFrom, this.fromValue, this.networkFee, this.tokenXOR)
   }
 
   get preparedForSwap (): boolean {
-    return this.connected && this.areTokensSelected
+    return this.isLoggedIn && this.areTokensSelected
   }
 
   get isInsufficientLiquidity (): boolean {
@@ -272,7 +276,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   async getNetworkFee (): Promise<void> {
-    if (this.connected) {
+    if (this.isLoggedIn) {
       const networkFee = await api.getSwapNetworkFee(
         this.tokenFrom?.address,
         this.tokenTo?.address,
@@ -494,6 +498,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   .slippage-tolerance-settings {
     margin-top: $inner-spacing-medium;
+    padding: 0 $inner-spacing-mini;
   }
 
   .el-button--switch-tokens {

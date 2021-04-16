@@ -8,6 +8,6 @@
 
 ## Author
 
-Signed-off-by: name <name@soramitsu.co.jp>
+Signed-off-by: name <name@gmail.com>
 
 [PSS-XXXX]: https://soramitsu.atlassian.net/browse/PSS-XXXX
