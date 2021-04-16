@@ -5,47 +5,8 @@
     v-bind="dialogProps"
     class="select-node-dialog"
   >
-    <div class="select-node s-flex">
-      <template v-if="isNodeListView">
-        <div class="select-node-list s-flex">
-          <s-radio
-            v-for="item in nodes"
-            :key="item.address"
-            :label="item.address"
-            v-model="model"
-            class="select-node-list__item s-flex"
-          >
-            <div class="select-node-item s-flex">
-              <div class="select-node-info s-flex">
-                <div class="select-node-info__label h4">
-                  {{ item.name }} hosted by {{ item.host }}
-                </div>
-                <div class="select-node-info__address p4">
-                  {{ item.address }}
-                </div>
-              </div>
-              <s-button class="details select-node-details" type="link" @click="viewNodeInfo(item)">
-                <s-icon name="arrows-chevron-right-rounded-24" />
-              </s-button>
-            </div>
-          </s-radio>
-        </div>
-        <s-button
-          class="select-node-add"
-          icon="circle-plus-16"
-          icon-position="right"
-          @click="addNode"
-        >
-          {{ t('selectNodeDialog.addNode') }}
-        </s-button>
-      </template>
-      <template v-else>
-        <generic-page-header has-button-back :title="t('selectNodeDialog.customNode')" @back="handleBack" />
-        <s-input class="select-node-input" :placeholder="t('nameText')" v-model="selectedItem.name" />
-        <s-input class="select-node-input" :placeholder="t('addressText')" v-model="selectedItem.address" />
-        <s-button type="primary">{{ t('selectNodeDialog.addNode') }}</s-button>
-      </template>
-    </div>
+    <select-node v-if="isNodeListView" v-model="connectedNodeAddress" :nodes="nodeList" :view-node="viewNodeInfo" :add-node="addCustomNode" />
+    <node-info v-else :node="selectedNode" :handle-back="handleBack" />
   </dialog-base>
 </template>
 
@@ -62,15 +23,12 @@ import DialogBase from './DialogBase.vue'
 const NodeListView = 'NodeListView'
 const CreateNodeView = 'CreateNodeView'
 
-const DefaultNodeInfo = {
-  name: '',
-  address: ''
-}
-
 @Component({
   components: {
     DialogBase,
-    GenericPageHeader: lazyComponent(Components.GenericPageHeader)
+    ExternalLink: lazyComponent(Components.ExternalLink),
+    SelectNode: lazyComponent(Components.SelectNode),
+    NodeInfo: lazyComponent(Components.NodeInfo)
   }
 })
 export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMixin) {
@@ -89,12 +47,29 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMix
     }
   ]
 
-  model = 'wss://s1.kusama-rpc.polkadot.io'
+  customNodes = [
+    {
+      name: 'Node',
+      host: 'Lupa',
+      address: 'wss://s3.kusama-rpc.polkadot.io'
+    },
+    {
+      name: 'Node',
+      host: 'Pupa',
+      address: 'wss://s4.kusama-rpc.polkadot.io'
+    }
+  ]
 
-  selectedItem = { ...DefaultNodeInfo }
+  connectedNodeAddress = 'wss://s1.kusama-rpc.polkadot.io'
+
+  selectedNode = null
 
   get isNodeListView (): boolean {
     return this.currentView === NodeListView
+  }
+
+  get nodeList (): Array<object> {
+    return [...this.nodes, ...this.customNodes]
   }
 
   get dialogProps (): object {
@@ -108,12 +83,12 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMix
   }
 
   viewNodeInfo (node): void {
-    this.selectedItem = node
+    this.selectedNode = node
     this.changeView(CreateNodeView)
   }
 
-  addNode (): void {
-    this.selectedItem = { ...DefaultNodeInfo }
+  addCustomNode (): void {
+    this.selectedNode = null
     this.changeView(CreateNodeView)
   }
 
@@ -171,48 +146,6 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMix
     align-items: center;
     flex: 1;
     padding-left: $inner-spacing-small
-  }
-}
-</style>
-
-<style lang="scss" scoped>
-.select-node {
-  flex-direction: column;
-
-  & > *:not(:last-child) {
-    margin-bottom: $inner-spacing-medium
-  }
-
-  &-list {
-    flex-direction: column;
-
-    &__item {
-      margin-right: 0;
-      align-items: center;
-      min-height: 71px;
-    }
-  }
-
-  &-item {
-    flex: 1;
-    align-items: center;
-  }
-
-  &-info {
-    flex-direction: column;
-    flex: 1;
-
-    &__label {
-      color: var(--s-color-base-content-primary)
-    }
-
-    &__address {
-      color: var(--s-color-base-content-tertiary)
-    }
-  }
-
-  &-details {
-    padding: 0;
   }
 }
 </style>

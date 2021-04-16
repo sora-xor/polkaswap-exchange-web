@@ -1,0 +1,108 @@
+<template>
+  <div class="select-node s-flex">
+    <div class="select-node-list s-flex">
+      <s-radio
+        v-for="node in nodes"
+        :key="node.address"
+        :label="node.address"
+        v-model="currentAddressValue"
+        class="select-node-list__item s-flex"
+      >
+        <div class="select-node-item s-flex">
+          <div class="select-node-info s-flex">
+            <div class="select-node-info__label h4">
+              {{ node.name }} hosted by {{ node.host }}
+            </div>
+            <div class="select-node-info__address p4">
+              {{ node.address }}
+            </div>
+          </div>
+          <s-button class="details select-node-details" type="link" @click="viewNode(node)">
+            <s-icon name="arrows-chevron-right-rounded-24" />
+          </s-button>
+        </div>
+      </s-radio>
+    </div>
+    <s-button
+      class="select-node-button"
+      icon="circle-plus-16"
+      icon-position="right"
+      @click="addNode"
+    >
+      {{ t('selectNodeDialog.addNode') }}
+    </s-button>
+    <!-- TODO: href -->
+    <external-link :title="t('selectNodeDialog.howToSetupOwnNode')" />
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator'
+
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
+
+import TranslationMixin from '@/components/mixins/TranslationMixin'
+
+@Component({
+  components: {
+    ExternalLink: lazyComponent(Components.ExternalLink)
+  }
+})
+export default class SelectNode extends Mixins(TranslationMixin) {
+  @Prop({ default: () => [], type: Array }) nodes!: Array<any>
+  @Prop({ default: () => {}, type: Function }) viewNode!: (node: any) => void
+  @Prop({ default: () => {}, type: Function }) addNode!: () => void
+
+  @ModelSync('value', 'input', { type: String })
+  readonly currentAddressValue!: boolean
+}
+</script>
+
+<style lang="scss" scoped>
+.select-node {
+  flex-direction: column;
+  align-items: center;
+
+  & > *:not(:last-child) {
+    margin-bottom: $inner-spacing-medium;
+    width: 100%;
+  }
+
+  &-list {
+    flex-direction: column;
+
+    &__item {
+      margin-right: 0;
+      align-items: center;
+      min-height: 71px;
+    }
+  }
+
+  &-item {
+    flex: 1;
+    align-items: center;
+  }
+
+  &-info {
+    flex-direction: column;
+    flex: 1;
+
+    &__label {
+      color: var(--s-color-base-content-primary)
+    }
+
+    &__address {
+      color: var(--s-color-base-content-tertiary)
+    }
+  }
+
+  &-details {
+    padding: 0;
+  }
+
+  &-button {
+    width: 100%;
+  }
+}
+</style>
