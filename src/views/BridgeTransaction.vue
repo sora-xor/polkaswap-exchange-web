@@ -495,8 +495,8 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
         await this.updateHistoryParams({ tx: state.context.history })
 
         if (
-          !state.context.history.hash.length &&
-          !state.context.history.ethereumHash.length &&
+          !state.context.history.hash?.length &&
+          !state.context.history.ethereumHash?.length &&
           [STATES.SORA_REJECTED, STATES.ETHEREUM_REJECTED].includes(state.value)
         ) {
           if (

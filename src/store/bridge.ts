@@ -522,7 +522,7 @@ const actions = {
             commit(types.SIGN_ETH_TRANSACTION_SORA_ETH_SUCCESS)
             resolve(hash)
           })
-          .on('error', (error) => reject(new Error(error)))
+          .on('error', (error) => reject(error))
       })
     } catch (error) {
       commit(types.SIGN_ETH_TRANSACTION_SORA_ETH_FAILURE)
@@ -608,7 +608,7 @@ const actions = {
             commit(types.SIGN_ETH_TRANSACTION_ETH_SORA_SUCCESS)
             resolve(hash)
           })
-          .on('error', (error) => reject(new Error(error)))
+          .on('error', (error) => reject(error))
       })
     } catch (error) {
       commit(types.SIGN_ETH_TRANSACTION_ETH_SORA_FAILURE)
