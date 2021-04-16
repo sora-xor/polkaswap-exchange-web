@@ -15,7 +15,9 @@ const types = flow(
     'SET_MARKET_ALGORITHM',
     'SET_TRANSACTION_DEADLINE',
     'SET_FAUCET_URL',
-    'SET_SORA_NETWORK'
+    'SET_SORA_NETWORK',
+    'SET_DEFAULT_NODES',
+    'SET_NODE'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -27,8 +29,8 @@ function initialState () {
     slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
     marketAlgorithm: storage.get('marketAlgorithm') || DefaultMarketAlgorithm,
     transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
-    nodeAddressIp: storage.get('nodeAddress.ip') || '192.168.0.0.1',
-    nodeAddressPort: storage.get('nodeAddress.port') || 2,
+    node: {},
+    defaultNodes: [],
     faucetUrl: ''
   }
 }
@@ -36,6 +38,12 @@ function initialState () {
 const state = initialState()
 
 const getters = {
+  node (state) {
+    return state.node
+  },
+  defaultNodes (state) {
+    return state.defaultNodes
+  },
   soraNetwork (state) {
     return state.soraNetwork
   },
@@ -44,12 +52,6 @@ const getters = {
   },
   transactionDeadline (state) {
     return state.transactionDeadline
-  },
-  nodeAddress (state) {
-    return {
-      ip: state.nodeAddressIp,
-      port: state.nodeAddressPort
-    }
   },
   faucetUrl (state) {
     return state.faucetUrl
@@ -60,6 +62,12 @@ const getters = {
 }
 
 const mutations = {
+  [types.SET_NODE] (state, node = {}) {
+    state.node = { ...node }
+  },
+  [types.SET_DEFAULT_NODES] (state, nodes) {
+    state.defaultNodes = [...nodes]
+  },
   [types.SET_SORA_NETWORK] (state, value) {
     state.soraNetwork = value
   },
@@ -81,11 +89,25 @@ const mutations = {
 }
 
 const actions = {
-  setSoraNetwork ({ commit }, data) {
-    connection.endpoint = data.DEFAULT_NETWORKS?.length ? data.DEFAULT_NETWORKS[0].address : ''
-    if (!connection.endpoint) {
-      throw new Error('DEFAULT_NETWORK is not set')
+  setNode ({ commit }, node) {
+    const endpoint = node?.address ?? ''
+
+    if (!endpoint) {
+      throw new Error('node address is not set')
     }
+
+    if (!connection.endpoint) {
+      connection.endpoint = endpoint
+    } else {
+      connection.restart(endpoint)
+    }
+
+    commit(types.SET_NODE, node)
+  },
+  setDefaultNodes ({ commit }, nodes) {
+    commit(types.SET_DEFAULT_NODES, nodes)
+  },
+  setSoraNetwork ({ commit }, data) {
     if (!data.NETWORK_TYPE) {
       throw new Error('NETWORK_TYPE is not set')
     }

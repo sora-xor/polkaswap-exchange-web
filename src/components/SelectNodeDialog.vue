@@ -12,6 +12,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
+import { Action, Getter } from 'vuex-class'
 
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -32,35 +33,35 @@ const CreateNodeView = 'CreateNodeView'
   }
 })
 export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMixin) {
+  @Getter node!: any
+  @Getter defaultNodes!: Array<any>
+  @Action setNode!: (node: any) => void
+
   currentView = NodeListView
 
-  nodes = [
-    {
-      name: 'Node',
-      host: 'Soramitsu',
-      address: 'wss://s1.kusama-rpc.polkadot.io'
-    },
-    {
-      name: 'Node',
-      host: 'Soramitsu',
-      address: 'wss://s2.kusama-rpc.polkadot.io'
-    }
-  ]
-
   customNodes = [
-    {
-      name: 'Node',
-      host: 'Lupa',
-      address: 'wss://s3.kusama-rpc.polkadot.io'
-    },
-    {
-      name: 'Node',
-      host: 'Pupa',
-      address: 'wss://s4.kusama-rpc.polkadot.io'
-    }
+    // {
+    //   name: 'Node',
+    //   host: 'Lupa',
+    //   address: 'wss://s3.kusama-rpc.polkadot.io'
+    // },
+    // {
+    //   name: 'Node',
+    //   host: 'Pupa',
+    //   address: 'wss://s4.kusama-rpc.polkadot.io'
+    // }
   ]
 
-  connectedNodeAddress = 'wss://s1.kusama-rpc.polkadot.io'
+  get connectedNodeAddress (): string {
+    return this.node.address
+  }
+
+  set connectedNodeAddress (address: string) {
+    if (address === this.node.address) return
+
+    const node = this.nodeList.find(item => item.address === address)
+    this.setNode(node)
+  }
 
   selectedNode = null
 
@@ -68,8 +69,8 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMix
     return this.currentView === NodeListView
   }
 
-  get nodeList (): Array<object> {
-    return [...this.nodes, ...this.customNodes]
+  get nodeList (): Array<any> {
+    return [...this.defaultNodes, ...this.customNodes]
   }
 
   get dialogProps (): object {
