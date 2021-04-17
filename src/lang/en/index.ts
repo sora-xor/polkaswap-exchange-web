@@ -1,7 +1,7 @@
 import { KnownSymbols, Operation, TransactionStatus } from '@sora-substrate/util'
 
 import { PageNames, Topics, NetworkTypes } from '@/consts'
-import { EthNetwork } from '@/utils/web3-util'
+import { EthNetwork, EnergyNetwork } from '@/utils/web3-util'
 
 export default {
   appName: 'Polkaswap',
@@ -144,6 +144,9 @@ export default {
     [EthNetwork.Rinkeby]: 'Ethereum Rinkeby',
     [EthNetwork.Kovan]: 'Ethereum Kovan',
     [EthNetwork.Goerli]: 'Ethereum Goerli'
+  },
+  energyweb: {
+    [EnergyNetwork.Testnet]: 'Energy Web Chain'
   },
   providers: {
     metamask: '@:metamask'
