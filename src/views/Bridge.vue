@@ -24,16 +24,16 @@
             @click="handleChangeNetwork"
           /> -->
         </generic-page-header>
-        <s-card :class="isSoraToEthereum ? 'bridge-item' : 'bridge-item bridge-item--ethereum'" border-radius="mini" shadow="never">
+        <s-card :class="isSoraToEvm ? 'bridge-item' : 'bridge-item bridge-item--evm'" border-radius="mini" shadow="never">
           <div class="bridge-item-header">
             <div class="bridge-item-title">
               <span class="bridge-item-title-label">{{ t('transfers.from') }}</span>
               <span>{{ getBridgeItemTitle() }}</span>
-              <token-logo class="bridge-item-title-icon" :tokenSymbol="isSoraToEthereum ? 'bridge-item-xor' : 'bridge-item-eth'" size="mini" />
+              <token-logo class="bridge-item-title-icon" :tokenSymbol="isSoraToEvm ? 'bridge-item-xor' : 'bridge-item-eth'" size="mini" />
             </div>
             <div v-if="isNetworkAConnected && isAssetSelected" class="token-balance">
               <span class="token-balance-title">{{ t('bridge.balance') }}</span>
-              <span class="token-balance-value">{{ formatBalance(isSoraToEthereum) }}</span>
+              <span class="token-balance-value">{{ formatBalance(isSoraToEvm) }}</span>
             </div>
           </div>
           <div class="bridge-item-content">
@@ -56,36 +56,36 @@
               </s-button>
               <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectAssetDialog">
                 <token-logo :token="asset" size="small" />
-                {{ formatAssetSymbol(assetSymbol, !isSoraToEthereum) }}
+                {{ formatAssetSymbol(assetSymbol, !isSoraToEvm) }}
               </s-button>
             </div>
             <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" :disabled="!areNetworksConnected" @click="openSelectAssetDialog">
               {{ t('buttons.chooseToken') }}
             </s-button>
           </div>
-          <div v-if="isNetworkAConnected && !isSoraToEthereum" class="bridge-item-footer">
+          <div v-if="isNetworkAConnected && !isSoraToEvm" class="bridge-item-footer">
             <s-divider />
-            <s-button class="el-button--change-wallet" type="link" size="mini" @click="isSoraToEthereum ? connectInternalWallet() : changeExternalWallet()">
-              <span class="bridge-item-id">{{ formatAddress(isSoraToEthereum ? getWalletAddress() : ethAddress, 8) }}</span>
+            <s-button class="el-button--change-wallet" type="link" size="mini" @click="isSoraToEvm ? connectInternalWallet() : changeExternalWallet()">
+              <span class="bridge-item-id">{{ formatAddress(isSoraToEvm ? getWalletAddress() : ethAddress, 8) }}</span>
               <span class="change-wallet">{{ t('bridge.changeAccount') }}</span>
             </s-button>
             <span>{{ t('bridge.connected') }}</span>
           </div>
-          <s-button v-else-if="!isNetworkAConnected" class="el-button--connect" type="primary" @click="isSoraToEthereum ? connectInternalWallet() : connectExternalWallet()">
+          <s-button v-else-if="!isNetworkAConnected" class="el-button--connect" type="primary" @click="isSoraToEvm ? connectInternalWallet() : connectExternalWallet()">
             {{ t('bridge.connectWallet') }}
           </s-button>
         </s-card>
         <s-button class="s-button--switch" type="action" icon="arrows-swap-90-24" @click="handleSwitchItems" />
-        <s-card :class="!isSoraToEthereum ? 'bridge-item' : 'bridge-item bridge-item--ethereum'" border-radius="mini" shadow="never">
+        <s-card :class="!isSoraToEvm ? 'bridge-item' : 'bridge-item bridge-item--evm'" border-radius="mini" shadow="never">
           <div class="bridge-item-header">
             <div class="bridge-item-title">
               <span class="bridge-item-title-label">{{ t('transfers.to') }}</span>
               <span>{{ getBridgeItemTitle(true) }}</span>
-              <token-logo class="bridge-item-title-icon" :tokenSymbol="isSoraToEthereum ? 'bridge-item-eth' : 'bridge-item-xor'" size="mini" />
+              <token-logo class="bridge-item-title-icon" :tokenSymbol="isSoraToEvm ? 'bridge-item-eth' : 'bridge-item-xor'" size="mini" />
             </div>
             <div v-if="areNetworksConnected && isAssetSelected" class="token-balance">
               <span class="token-balance-title">{{ t('bridge.balance') }}</span>
-              <span class="token-balance-value">{{ formatBalance(!isSoraToEthereum) }}</span>
+              <span class="token-balance-value">{{ formatBalance(!isSoraToEvm) }}</span>
             </div>
           </div>
           <div class="bridge-item-content">
@@ -102,19 +102,19 @@
             <div v-if="areNetworksConnected && isAssetSelected" class="asset">
               <s-button class="el-button--choose-token el-button--disabled" type="tertiary" size="small" border-radius="medium">
                 <token-logo :token="asset" size="small" />
-                {{ formatAssetSymbol(assetSymbol, isSoraToEthereum) }}
+                {{ formatAssetSymbol(assetSymbol, isSoraToEvm) }}
               </s-button>
             </div>
           </div>
-          <div v-if="isNetworkBConnected && isSoraToEthereum" class="bridge-item-footer">
+          <div v-if="isNetworkBConnected && isSoraToEvm" class="bridge-item-footer">
             <s-divider />
-            <s-button class="el-button--change-wallet" type="link" size="mini" @click="!isSoraToEthereum ? connectInternalWallet() : changeExternalWallet()">
-              <span class="bridge-item-id">{{ formatAddress(isSoraToEthereum ? ethAddress : getWalletAddress(), 8) }}</span>
+            <s-button class="el-button--change-wallet" type="link" size="mini" @click="!isSoraToEvm ? connectInternalWallet() : changeExternalWallet()">
+              <span class="bridge-item-id">{{ formatAddress(isSoraToEvm ? ethAddress : getWalletAddress(), 8) }}</span>
               <span class="change-wallet">{{ t('bridge.changeAccount') }}</span>
             </s-button>
             <span>{{ t('bridge.connected') }}</span>
           </div>
-          <s-button v-else-if="!isNetworkBConnected" class="el-button--connect" type="primary" @click="!isSoraToEthereum ? connectInternalWallet() : connectExternalWallet()">
+          <s-button v-else-if="!isNetworkBConnected" class="el-button--connect" type="primary" @click="!isSoraToEvm ? connectInternalWallet() : connectExternalWallet()">
             {{ t('bridge.connectWallet') }}
           </s-button>
         </s-card>
@@ -140,7 +140,7 @@
             {{ t('buttons.enterAmount') }}
           </template>
           <template v-else-if="isInsufficientBalance">
-            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : formatAssetSymbol(assetSymbol, !isSoraToEthereum) }) }}
+            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : formatAssetSymbol(assetSymbol, !isSoraToEvm) }) }}
           </template>
           <template v-else-if="isInsufficientXorForFee">
             {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : KnownSymbols.XOR }) }}
@@ -226,7 +226,7 @@ export default class Bridge extends Mixins(
   WalletConnectMixin
 ) {
   @Action('getEthBalance', { namespace: 'web3' }) getEthBalance!: () => Promise<void>
-  @Action('setSoraToEthereum', { namespace }) setSoraToEthereum
+  @Action('setSoraToEvm', { namespace }) setSoraToEvm
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
   @Action('resetBridgeForm', { namespace }) resetBridgeForm
@@ -238,7 +238,7 @@ export default class Bridge extends Mixins(
   @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: CodecString
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
   @Getter('isValidEthNetwork', { namespace: 'web3' }) isValidEthNetwork!: boolean
-  @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
+  @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter('asset', { namespace }) asset!: any
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
@@ -261,11 +261,11 @@ export default class Bridge extends Mixins(
   blockHeadersSubscriber
 
   get isNetworkAConnected () {
-    return this.isSoraToEthereum ? this.isSoraAccountConnected : this.isExternalAccountConnected
+    return this.isSoraToEvm ? this.isSoraAccountConnected : this.isExternalAccountConnected
   }
 
   get isNetworkBConnected () {
-    return this.isSoraToEthereum ? this.isExternalAccountConnected : this.isSoraAccountConnected
+    return this.isSoraToEvm ? this.isExternalAccountConnected : this.isSoraAccountConnected
   }
 
   get isZeroAmount (): boolean {
@@ -276,7 +276,7 @@ export default class Bridge extends Mixins(
     if (!this.areNetworksConnected || !this.isRegisteredAsset) {
       return false
     }
-    const balance = getAssetBalance(this.asset, { internal: this.isSoraToEthereum })
+    const balance = getAssetBalance(this.asset, { internal: this.isSoraToEvm })
     if (asZeroValue(balance)) {
       return false
     }
@@ -284,11 +284,11 @@ export default class Bridge extends Mixins(
     const fpBalance = this.getFPNumberFromCodec(balance, decimals)
     const fpAmount = this.getFPNumber(this.amount, decimals)
     // TODO: Check if we have appropriate network fee currency (XOR/ETH) for both networks
-    if (isXorAccountAsset(this.asset) && this.isSoraToEthereum) {
+    if (isXorAccountAsset(this.asset) && this.isSoraToEvm) {
       const fpFee = this.getFPNumberFromCodec(this.soraNetworkFee, decimals)
       return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee)
     }
-    if (isEthereumAddress(this.asset.externalAddress) && !this.isSoraToEthereum) {
+    if (isEthereumAddress(this.asset.externalAddress) && !this.isSoraToEvm) {
       const fpFee = this.getFPNumberFromCodec(this.ethereumNetworkFee)
       return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee)
     }
@@ -304,9 +304,9 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientBalance (): boolean {
-    const fee = this.isSoraToEthereum ? this.soraNetworkFee : this.ethereumNetworkFee
+    const fee = this.isSoraToEvm ? this.soraNetworkFee : this.ethereumNetworkFee
 
-    return this.isNetworkAConnected && this.isRegisteredAsset && hasInsufficientBalance(this.asset, this.amount, fee, !this.isSoraToEthereum)
+    return this.isNetworkAConnected && this.isRegisteredAsset && hasInsufficientBalance(this.asset, this.amount, fee, !this.isSoraToEvm)
   }
 
   get inputClasses (): string {
@@ -443,7 +443,7 @@ export default class Bridge extends Mixins(
   }
 
   getBridgeItemTitle (isBTitle = false): string {
-    if (this.isSoraToEthereum) {
+    if (this.isSoraToEvm) {
       return this.t(this.formatNetwork(!isBTitle))
     }
     return this.t(this.formatNetwork(isBTitle))
@@ -468,7 +468,7 @@ export default class Bridge extends Mixins(
   }
 
   handleSwitchItems (): void {
-    this.setSoraToEthereum(!this.isSoraToEthereum)
+    this.setSoraToEvm(!this.isSoraToEvm)
     if (this.isRegisteredAsset) {
       this.getNetworkFee()
       this.getEthNetworkFee()
@@ -477,8 +477,8 @@ export default class Bridge extends Mixins(
 
   handleMaxValue (): void {
     if (this.asset && this.isRegisteredAsset) {
-      const fee = this.isSoraToEthereum ? this.soraNetworkFee : this.ethereumNetworkFee
-      const max = getMaxValue(this.asset, fee, !this.isSoraToEthereum)
+      const fee = this.isSoraToEvm ? this.soraNetworkFee : this.ethereumNetworkFee
+      const max = getMaxValue(this.asset, fee, !this.isSoraToEvm)
       this.setAmount(max)
     }
   }
@@ -527,7 +527,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
   }
   .bridge-item {
-    &--ethereum {
+    &--evm {
       .s-input {
         .el-input > input {
           // TODO: remove user select
@@ -632,9 +632,9 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
         box-shadow: none;
       }
     }
-    &--ethereum {
+    &--evm {
       .el-button {
-        @include ethereum-logo-styles;
+        @include evm-logo-styles;
       }
       .el-button--choose-token {
         cursor: initial;

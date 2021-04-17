@@ -14,7 +14,7 @@
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedAmount }}</span>
-        <div v-if="asset" class="token token-ethereum">
+        <div v-if="asset" class="token token-evm">
           <token-logo :token="asset" />
           {{ formatAssetSymbol(asset.symbol, true) }}
         </div>
@@ -80,7 +80,7 @@ const namespace = 'bridge'
 })
 export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMixin, DialogMixin, LoadingMixin, NumberFormatterMixin) {
   @Getter('isValidEthNetwork', { namespace: 'web3' }) isValidEthNetwork!: boolean
-  @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
+  @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean
   @Getter('asset', { namespace }) asset!: any
   @Getter('amount', { namespace }) amount!: string
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
@@ -104,7 +104,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
     const assetsClass = 'tokens'
     const classes = [assetsClass]
 
-    if (!this.isSoraToEthereum) {
+    if (!this.isSoraToEvm) {
       classes.push(`${assetsClass}--reverse`)
     }
 
@@ -176,8 +176,8 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
     margin-right: $inner-spacing-medium;
     flex-shrink: 0;
   }
-  &-ethereum {
-    @include ethereum-logo-styles;
+  &-evm {
+    @include evm-logo-styles;
   }
 }
 </style>

@@ -28,7 +28,7 @@ const SORA_REQUESTS_TIMEOUT = 5 * 1000
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
-    'SET_SORA_TO_ETHEREUM',
+    'SET_SORA_TO_EVM',
     'SET_ASSET_ADDRESS',
     'SET_AMOUNT',
     'SET_SORA_TOTAL',
@@ -123,7 +123,7 @@ async function waitForExtrinsicFinalization (id?: string): Promise<BridgeHistory
 
 function initialState () {
   return {
-    isSoraToEthereum: true,
+    isSoraToEvm: true,
     assetAddress: '',
     amount: '',
     soraNetworkFee: 0,
@@ -146,8 +146,8 @@ function initialState () {
 const state = initialState()
 
 const getters = {
-  isSoraToEthereum (state) {
-    return state.isSoraToEthereum
+  isSoraToEvm (state) {
+    return state.isSoraToEvm
   },
   asset (state, getters, rootState, rootGetters) {
     return rootGetters['assets/getAssetDataByAddress'](state.assetAddress)
@@ -200,8 +200,8 @@ const getters = {
 }
 
 const mutations = {
-  [types.SET_SORA_TO_ETHEREUM] (state, isSoraToEthereum: boolean) {
-    state.isSoraToEthereum = isSoraToEthereum
+  [types.SET_SORA_TO_EVM] (state, isSoraToEvm: boolean) {
+    state.isSoraToEvm = isSoraToEvm
   },
   [types.SET_ASSET_ADDRESS] (state, address: string) {
     state.assetAddress = address
@@ -294,8 +294,8 @@ const mutations = {
 }
 
 const actions = {
-  setSoraToEthereum ({ commit }, isSoraToEthereum: boolean) {
-    commit(types.SET_SORA_TO_ETHEREUM, isSoraToEthereum)
+  setSoraToEvm ({ commit }, isSoraToEvm: boolean) {
+    commit(types.SET_SORA_TO_EVM, isSoraToEvm)
   },
   setAssetAddress ({ commit }, address?: string) {
     commit(types.SET_ASSET_ADDRESS, address)
@@ -343,7 +343,7 @@ const actions = {
     if (!withAddress) {
       dispatch('setAssetAddress', '')
     }
-    dispatch('setSoraToEthereum', true)
+    dispatch('setSoraToEvm', true)
     dispatch('setTransactionConfirm', false)
     dispatch('setCurrentTransactionState', STATES.INITIAL)
     dispatch('setSoraTransactionDate', '')
@@ -385,7 +385,7 @@ const actions = {
     try {
       const asset = await dispatch('findRegisteredAsset')
       const fee = await (
-        getters.isSoraToEthereum
+        getters.isSoraToEvm
           ? api.bridge.getTransferToEthFee(asset, '', getters.amount)
           : '0' // TODO: check it for other types of bridge
       )
@@ -404,7 +404,7 @@ const actions = {
       const web3 = await web3Util.getInstance()
       const gasPrice = +(await web3.eth.getGasPrice())
       const knownAsset = KnownAssets.get(getters.asset.address)
-      const gasLimit = EthereumGasLimits[+getters.isSoraToEthereum][knownAsset ? getters.asset.symbol : KnownBridgeAsset.Other]
+      const gasLimit = EthereumGasLimits[+getters.isSoraToEvm][knownAsset ? getters.asset.symbol : KnownBridgeAsset.Other]
       const fee = gasPrice * gasLimit
       const fpFee = new FPNumber(web3.utils.fromWei(`${fee}`, 'ether')).toCodecString()
       commit(types.GET_ETHEREUM_NETWORK_FEE_SUCCESS, fpFee)
@@ -415,7 +415,7 @@ const actions = {
   },
   async generateHistoryItem ({ commit, getters, dispatch }, playground) {
     await dispatch('setHistoryItem', api.bridge.generateHistoryItem({
-      type: getters.isSoraToEthereum ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
+      type: getters.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
       amount: getters.amount,
       symbol: getters.asset.symbol,
       assetAddress: getters.asset.address,
@@ -442,7 +442,7 @@ const actions = {
   },
   async signSoraTransactionSoraToEth ({ commit, getters, rootGetters, dispatch }, { txId }) {
     if (!txId) throw new Error('TX ID cannot be empty!')
-    if (!getters.asset || !getters.asset.address || !getters.amount || !getters.isSoraToEthereum) {
+    if (!getters.asset || !getters.asset.address || !getters.amount || !getters.isSoraToEvm) {
       return
     }
     const asset = await dispatch('findRegisteredAsset')
@@ -462,7 +462,7 @@ const actions = {
   },
   async signEthTransactionSoraToEth ({ commit, getters, rootGetters, dispatch }, { hash }) {
     if (!hash) throw new Error('TX ID cannot be empty!')
-    if (!getters.asset || !getters.asset.address || !getters.amount || !getters.isSoraToEthereum) {
+    if (!getters.asset || !getters.asset.address || !getters.amount || !getters.isSoraToEvm) {
       return
     }
     const asset = await dispatch('findRegisteredAsset')
@@ -554,7 +554,7 @@ const actions = {
     }
   },
   async signEthTransactionEthToSora ({ commit, getters, rootGetters, dispatch }) {
-    if (!getters.asset || !getters.asset.address || !getters.amount || getters.isSoraToEthereum) {
+    if (!getters.asset || !getters.asset.address || !getters.amount || getters.isSoraToEvm) {
       return
     }
     const asset = await dispatch('findRegisteredAsset')
@@ -651,7 +651,7 @@ const actions = {
   },
   async signSoraTransactionEthToSora ({ commit, getters, rootGetters, dispatch }, { ethereumHash }) {
     if (!ethereumHash) throw new Error('Hash cannot be empty!')
-    if (!getters.asset || !getters.asset.address || !getters.amount || getters.isSoraToEthereum) {
+    if (!getters.asset || !getters.asset.address || !getters.amount || getters.isSoraToEvm) {
       return
     }
     const asset = await dispatch('findRegisteredAsset')
