@@ -1,7 +1,7 @@
 import { Operation, TransactionStatus, RewardingEvents } from '@sora-substrate/util'
 
-import { PageNames, NetworkTypes } from '@/consts'
-import { EthNetwork } from '@/utils/web3-util'
+import { PageNames, Topics, NetworkTypes } from '@/consts'
+import { EthNetwork, EnergyNetwork } from '@/utils/web3-util'
 
 export default {
   appName: 'Polkaswap',
@@ -177,6 +177,12 @@ export default {
     [EthNetwork.Rinkeby]: 'Ethereum Rinkeby',
     [EthNetwork.Kovan]: 'Ethereum Kovan',
     [EthNetwork.Goerli]: 'Ethereum Goerli'
+  },
+  energyweb: {
+    [EnergyNetwork.Testnet]: 'Energy Web Chain'
+  },
+  providers: {
+    metamask: '@:metamask'
   },
   about: {
     title: 'The DEX for the Interoperable Future.',

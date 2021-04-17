@@ -119,6 +119,10 @@ interface JsonContract {
   };
 }
 
+export enum EnergyNetwork {
+  Testnet = 'test'
+}
+
 export enum EthNetwork {
   Mainnet = 'main',
   Ropsten = 'ropsten',

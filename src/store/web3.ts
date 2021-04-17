@@ -17,6 +17,7 @@ const types = flow(
     'SET_ETHEREUM_SMART_CONTRACTS',
     'SET_ETHEREUM_BALANCE',
     'SET_DEFAULT_ETH_NETWORK',
+    'SET_SUB_NETWORKS',
     'SET_SORA_NETWORK'
   ]),
   map(x => [x, x]),
@@ -38,6 +39,7 @@ function initialState () {
     ethBalance: ZeroStringValue,
     ethNetwork: web3Util.getEthNetworkFromStorage(),
     defaultEthNetwork: '',
+    subNetworks: [],
     contractAddress: {
       XOR: '',
       VAL: '',
@@ -87,6 +89,10 @@ const getters = {
   defaultEthNetwork (state) {
     return state.defaultEthNetwork
   },
+  subNetworks (state) {
+    // TODO: Use this getter to work with Sub Networks
+    return state.subNetworks
+  },
   soraNetwork (state) {
     return state.soraNetwork
   },
@@ -126,6 +132,10 @@ const mutations = {
 
   [types.SET_DEFAULT_ETH_NETWORK] (state, network) {
     state.defaultEthNetwork = network
+  },
+
+  [types.SET_SUB_NETWORKS] (state, subNetworks) {
+    state.subNetworks = subNetworks
   },
 
   [types.SET_SORA_NETWORK] (state, network) {
@@ -205,6 +215,10 @@ const actions = {
 
   async setDefaultEthNetwork ({ commit }, network) {
     commit(types.SET_DEFAULT_ETH_NETWORK, network)
+  },
+
+  async setSubNetworks ({ commit }, subNetworks) {
+    commit(types.SET_SUB_NETWORKS, subNetworks)
   },
 
   async setEthNetwork ({ commit }, network) {
