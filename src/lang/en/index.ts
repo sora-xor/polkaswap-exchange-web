@@ -144,6 +144,9 @@ export default {
     [EthNetwork.Kovan]: 'Ethereum Kovan',
     [EthNetwork.Goerli]: 'Ethereum Goerli'
   },
+  energyweb: {
+    title: 'Energy Web Chain'
+  },
   providers: {
     metamask: '@:metamask'
   },
@@ -231,7 +234,11 @@ export default {
     viewHistory: 'View transactions history',
     transactionSubmitted: 'Transaction submitted',
     transactionMessage: '{assetA} for {assetB}',
-    notRegisteredAsset: 'Asset {assetSymbol} is not registered'
+    notRegisteredAsset: 'Asset {assetSymbol} is not registered',
+    selectNetwork: 'Select network',
+    networkInfo: 'Bridge @:soraText Nwtwork with:',
+    ethereum: '@:ethereumText',
+    energyweb: '@:energyweb.title'
   },
   selectRegisteredAsset: {
     title: 'Select a token',

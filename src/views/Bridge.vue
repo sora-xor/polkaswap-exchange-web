@@ -1,6 +1,7 @@
 <template>
-  <div v-loading="parentLoading" class="bridge s-flex">
+  <div class="bridge s-flex">
     <s-form
+      v-loading="parentLoading"
       class="bridge-form"
       :show-message="false"
     >
@@ -15,14 +16,15 @@
             tooltip-placement="bottom-end"
             @click="handleViewTransactionsHistory"
           />
-          <!-- TODO: Add ability to change network -->
-          <!-- <s-button
+          <s-button
             v-if="areNetworksConnected"
-            class="el-button--history"
+            class="el-button--networks"
             type="action"
             icon="connection-broadcasting-24"
+            :tooltip="t('bridge.selectNetwork')"
+            tooltip-placement="bottom-end"
             @click="handleChangeNetwork"
-          /> -->
+          />
         </generic-page-header>
         <s-card :class="isSoraToEvm ? 'bridge-item' : 'bridge-item bridge-item--evm'" border-radius="mini" shadow="never">
           <div class="bridge-item-header">
@@ -174,6 +176,7 @@
         </div>
       </s-card>
       <select-registered-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
+      <select-network :visible.sync="showSelectNetworkDialog" @select="selectNetwork" />
       <confirm-bridge-transaction-dialog :visible.sync="showConfirmTransactionDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmTransaction" />
     </s-form>
     <div v-if="!areNetworksConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div>
@@ -191,7 +194,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
-import { Components, PageNames, EthSymbol, ZeroStringValue } from '@/consts'
+import { Components, PageNames, EthSymbol, ZeroStringValue, BridgeNetwork } from '@/consts'
 import web3Util from '@/utils/web3-util'
 import {
   isXorAccountAsset,
@@ -213,6 +216,7 @@ const namespace = 'bridge'
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     TokenLogo: lazyComponent(Components.TokenLogo),
     InfoLine: lazyComponent(Components.InfoLine),
+    SelectNetwork: lazyComponent(Components.SelectNetwork),
     SelectRegisteredAsset: lazyComponent(Components.SelectRegisteredAsset),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
     ToggleTextButton: lazyComponent(Components.ToggleTextButton)
@@ -226,6 +230,7 @@ export default class Bridge extends Mixins(
   WalletConnectMixin
 ) {
   @Action('getEthBalance', { namespace: 'web3' }) getEthBalance!: () => Promise<void>
+  @Action('setCurrentSubNetwork', { namespace: 'web3' }) setCurrentSubNetwork
   @Action('setSoraToEvm', { namespace }) setSoraToEvm
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
@@ -236,6 +241,7 @@ export default class Bridge extends Mixins(
   @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets
 
   @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: CodecString
+  @Getter('currentSubNetwork', { namespace: 'web3' }) currentSubNetwork!: BridgeNetwork
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
   @Getter('isValidEthNetwork', { namespace: 'web3' }) isValidEthNetwork!: boolean
   @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean
@@ -256,6 +262,7 @@ export default class Bridge extends Mixins(
   inputPlaceholder = ZeroStringValue
   isFieldAmountFocused = false
   showSelectTokenDialog = false
+  showSelectNetworkDialog = false
   showConfirmTransactionDialog = false
 
   blockHeadersSubscriber
@@ -493,8 +500,19 @@ export default class Bridge extends Mixins(
     router.push({ name: PageNames.BridgeTransactionsHistory })
   }
 
+  handleChangeNetwork (): void {
+    this.showSelectNetworkDialog = true
+  }
+
   openSelectAssetDialog (): void {
     this.showSelectTokenDialog = true
+  }
+
+  async selectNetwork (network: BridgeNetwork): Promise<void> {
+    if (network) {
+      await this.setCurrentSubNetwork(network)
+      // Update some values if needed
+    }
   }
 
   async selectAsset (selectedAsset: any): Promise<void> {
