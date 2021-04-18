@@ -1,27 +1,8 @@
 <template>
   <div id="app">
-    <header class="header">
-      <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
-
-      <div class="app-controls s-flex">
-        <branded-tooltip :disabled="isLoggedIn" popper-class="info-tooltip wallet-tooltip" placement="bottom">
-          <div slot="content" class="app-controls__wallet-tooltip">
-            {{ t('connectWalletTextTooltip') }}
-          </div>
-          <s-button class="wallet" :disabled="loading" @click="goTo(PageNames.Wallet)">
-            <div class="account">
-              <div class="account-name">{{ accountInfo }}</div>
-              <div class="account-icon">
-                <s-icon v-if="!isLoggedIn" name="finance-wallet-24" />
-                <WalletAvatar v-else :address="account.address"/>
-              </div>
-            </div>
-          </s-button>
-        </branded-tooltip>
-      </div>
-    </header>
     <div class="app-main">
       <aside class="app-sidebar">
+        <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
         <s-menu
           class="menu"
           mode="vertical"
@@ -115,17 +96,35 @@
           <router-view :parent-loading="loading" />
           <p v-if="!isAboutPage" class="app-disclaimer">{{ t('disclaimer') }}</p>
         </div>
-        <footer class="app-footer">
-          <p v-if="isAboutPage" class="app-disclaimer">{{ t('disclaimer') }}</p>
-          <div class="sora-logo">
-            <span class="sora-logo__title">{{ t('poweredBy') }}</span>
-            <div class="sora-logo__image"></div>
-          </div>
-        </footer>
       </div>
+      <aside v-if="!isAboutPageActive()" class="app-sidebar">
+        <div class="app-controls s-flex">
+          <branded-tooltip :disabled="accountConnected" popper-class="info-tooltip wallet-tooltip" placement="bottom">
+            <div slot="content" class="app-controls__wallet-tooltip">
+              {{ t('connectWalletTextTooltip') }}
+            </div>
+            <s-button class="wallet" :disabled="loading" @click="goTo(PageNames.Wallet)">
+              <div class="account">
+                <div class="account-name">{{ accountInfo }}</div>
+                <div class="account-icon">
+                  <s-icon v-if="!accountConnected" name="finance-wallet-24" />
+                  <WalletAvatar v-else :address="account.address"/>
+                </div>
+              </div>
+            </s-button>
+          </branded-tooltip>
+        </div>
+      </aside>
     </div>
 
     <help-dialog :visible.sync="showHelpDialog"></help-dialog>
+
+    <footer class="app-footer">
+      <div class="sora-logo">
+        <span class="sora-logo__title">{{ t('poweredBy') }}</span>
+        <div class="sora-logo__image"></div>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -223,6 +222,10 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
       return this.t('connectWalletText')
     }
     return this.account.name || formatAddress(this.account.address, 8)
+  }
+
+  isAboutPageActive (): boolean {
+    return this.getCurrentPath() === PageNames.About
   }
 
   getCurrentPath (): string {
@@ -439,9 +442,7 @@ html {
 <style lang="scss" scoped>
 $logo-width: 40px;
 $logo-width-big: 150px;
-$logo-horizontal-margin: $inner-spacing-mini / 2;
-$header-height: 64px;
-$sidebar-witdh: 160px;
+$sidebar-witdh: 170px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
 $account-name-margin: -2px 8px 0 12px;
@@ -457,7 +458,7 @@ $disclaimer-letter-spacing: -0.03em;
     display: flex;
     align-items: stretch;
     overflow: hidden;
-    height: calc(100vh - #{$header-height});
+    height: 100vh;
     position: relative;
   }
 
@@ -508,14 +509,6 @@ $disclaimer-letter-spacing: -0.03em;
     padding-left: $inner-spacing-mini * 5;
     padding-bottom: $inner-spacing-mini * 5;
   }
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  padding: 2px $inner-spacing-medium;
-  min-height: $header-height;
-  box-shadow: none;
 }
 
 .menu {
@@ -576,9 +569,7 @@ $disclaimer-letter-spacing: -0.03em;
 }
 
 .polkaswap-logo {
-  margin-right: $logo-horizontal-margin;
-  margin-left: $logo-horizontal-margin;
-  margin-bottom: 1.5px;
+  margin-left: $inner-spacing-medium;
   background-image: url('~@/assets/img/pswap.svg');
   background-size: cover;
   width: var(--s-size-medium);
@@ -588,6 +579,7 @@ $disclaimer-letter-spacing: -0.03em;
 }
 
 .app-controls {
+  padding: 2px $inner-spacing-medium;
   margin-left: auto;
 
   .wallet-section {
@@ -646,27 +638,32 @@ $disclaimer-letter-spacing: -0.03em;
   }
 }
 
-.sora-logo {
-  display: flex;
-  align-items: center;
-  align-self: flex-end;
+.app-footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 
-  &__title {
-    text-transform: uppercase;
-    font-weight: 200;
-    color: var(--s-color-base-content-secondary);
-    font-size: 15px;
-    line-height: 16px;
-    margin-right: $basic-spacing;
-    font-feature-settings: var(--s-font-feature-settings-singleline);
-    white-space: nowrap;
-  }
+  .sora-logo {
+    display: flex;
+    align-items: center;
+    align-self: flex-end;
 
-  &__image {
-    width: $sora-logo-width;
-    height: $sora-logo-height;
-    background-image: url('~@/assets/img/sora-logo.svg');
-    background-size: cover;
+    &__title {
+      text-transform: uppercase;
+      font-weight: 200;
+      color: var(--s-color-base-content-secondary);
+      font-size: 15px;
+      line-height: 16px;
+      margin-right: $basic-spacing;
+      font-feature-settings: var(--s-font-feature-settings-singleline);
+    }
+
+    &__image {
+      width: $sora-logo-width;
+      height: $sora-logo-height;
+      background-image: url('~@/assets/img/sora-logo.svg');
+      background-size: cover;
+    }
   }
 }
 
