@@ -18,14 +18,14 @@
         </div>
         <div class="about-trading-text-2">
           <div class="bubble-block">
-            <img src="@/assets/about/about02-1.png" draggable="false" class="unselectable" style="width: 30%">
+            <img src="@/assets/about/about02-1.png" draggable="false" class="unselectable bubble-icon">
             <span class="text">Polkaswap removes trusted intermediaries and provides the opportunity for faster
               trading</span>
           </div>
         </div>
         <div class="about-trading-text-3">
           <div class="bubble-block">
-            <img src="@/assets/about/about02-2.png" draggable="false" class="unselectable" style="width: 30%">
+            <img src="@/assets/about/about02-2.png" draggable="false" class="unselectable bubble-icon">
             <span class="text">Polkaswap is a community project and devs collaborate on the open source code using the
               <a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_(original_%22BSD_License%22)" title="BSD 4-clause license" class="text">BSD 4-clause license</a></span>
           </div>
@@ -40,7 +40,7 @@
         </div>
         <div class="about-liquidity-text-2">
           <div class="bubble-block">
-            <img src="@/assets/about/about03-1.png" draggable="false" class="unselectable" style="width: 30%">
+            <img src="@/assets/about/about03-1.png" draggable="false" class="unselectable bubble-icon">
             <span class="text">When traders call the swap function, the liquidity aggregation algorithm will fill orders
               using the best offers across all liquidity sources. Liquidity sources can be other DEXs, order books, or
               other API-driven sources.</span>
@@ -48,7 +48,7 @@
         </div>
         <div class="about-liquidity-text-3">
           <div class="bubble-block">
-            <img src="@/assets/about/about03-2.png" draggable="false" class="unselectable" style="width: 30%">
+            <img src="@/assets/about/about03-2.png" draggable="false" class="unselectable bubble-icon">
             <span class="text">Because Polkaswap is an open-source project, anyone can add more liquidity sources by
               making contributions to the Polkaswap codebase.</span>
           </div>
@@ -63,13 +63,13 @@
         </div>
         <div class="about-swap-text-2">
           <div class="bubble-block">
-            <img src="@/assets/about/about04-1.png" draggable="false" class="unselectable" style="width: 30%">
+            <img src="@/assets/about/about04-1.png" draggable="false" class="unselectable bubble-icon">
             <span class="text">Create, list and trade your own tokens on the SORA network.</span>
           </div>
         </div>
         <div class="about-swap-text-3">
           <div class="bubble-block">
-            <img src="@/assets/about/about04-2.png" draggable="false" class="unselectable" style="width: 30%">
+            <img src="@/assets/about/about04-2.png" draggable="false" class="unselectable bubble-icon">
             <span class="text">Our core infrastructure uses Parity Substrate, which is more scalable than Ethereum, and
               does not use expensive mining for consensus.</span>
           </div>
@@ -85,7 +85,7 @@
         </div>
         <div class="about-pswap-text-2">
           <div class="bubble-block">
-            <img src="@/assets/about/about05-1.png" draggable="false" class="unselectable" style="width: 30%">
+            <img src="@/assets/about/about05-1.png" draggable="false" class="unselectable bubble-icon">
             <span class="text">The 0.3% fee for every swap on the Polkaswap DEX is used to buy back PSWAP tokens, which
               are then burned. At first, 90% of burned PSWAP tokens are reminted to allocate to liquidity providers, but
               with time this percentage will decrease to 35% after 4 years.</span>
@@ -94,7 +94,7 @@
         <img src="@/assets/about/about05-shadow-1.png" draggable="false" class="unselectable about-pswap-shadow-1">
       </div>
       <div class="about-video">
-        <img src="@/assets/about/about06.png" draggable="false" class="unselectable" style="width: 70%; cursor: pointer;">
+        <img src="@/assets/about/about06.png" draggable="false" class="unselectable preview">
         <img src="@/assets/about/about06-shadow-1.png" draggable="false" class="unselectable about-video-shadow-1">
       </div>
       <div class="about-links">
@@ -113,8 +113,8 @@
         <img src="@/assets/about/about07-shadow-1.png" draggable="false" class="unselectable about-links-shadow-1">
       </div>
       <div class="about-network">
-        <img src="@/assets/about/about08.png" draggable="false" class="unselectable" style="width: 65%">
-        <span class="text" style="width: 55%; text-align: center;">Polkaswap is built on the SORA Network, focusing on
+        <img src="@/assets/about/about08.png" draggable="false" class="unselectable network-img">
+        <span class="text">Polkaswap is built on the SORA Network, focusing on
           interoperability to connect the rest of the crypto ecosystem to Polkadot.</span>
       </div>
     </div>
@@ -166,6 +166,10 @@ export default class About extends Mixins(TranslationMixin) {
 
   &>:first-child {
     max-width: 120px;
+  }
+
+  .bubble-icon {
+    width: 30%;
   }
 }
 
@@ -356,6 +360,11 @@ export default class About extends Mixins(TranslationMixin) {
     flex-direction: column;
     position: relative;
 
+    .preview {
+      width: 70%;
+      cursor: pointer;
+    }
+
     &-shadow-1 {
       position: absolute;
       top: -100%;
@@ -429,6 +438,15 @@ export default class About extends Mixins(TranslationMixin) {
 
     padding-top: 5rem;
     padding-bottom: 5rem;
+
+    .network-img {
+      width: 65%;
+    }
+
+    .text {
+      width: 55%;
+      text-align: center;
+    }
   }
 }
 
