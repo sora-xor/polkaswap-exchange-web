@@ -34,6 +34,7 @@ import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import LoadingMixin from '@/components/mixins/LoadingMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from './DialogBase.vue'
 
@@ -48,7 +49,7 @@ const NodeInfoView = 'NodeInfoView'
     NodeInfo: lazyComponent(Components.NodeInfo)
   }
 })
-export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMixin) {
+export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMixin, DialogMixin) {
   @Getter node!: any
   @Getter defaultNodes!: Array<any>
   @Getter nodeIsConnecting!: boolean
@@ -95,7 +96,10 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMix
   }
 
   get nodeList (): Array<any> {
-    return [...this.defaultNodes, ...this.customNodes]
+    return [...this.defaultNodes, ...this.customNodes].map(node => ({
+      ...node,
+      title: node.name ? this.t('selectNodeDialog.nodeTitle', { chain: node.chain, name: node.name }) : node.chain
+    }))
   }
 
   get dialogProps (): object {

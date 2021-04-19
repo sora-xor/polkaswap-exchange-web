@@ -7,6 +7,7 @@ import { connection } from '@soramitsu/soraneo-wallet-web'
 
 import storage from '@/utils/storage'
 import { DefaultSlippageTolerance, DefaultMarketAlgorithm, LiquiditySourceForMarketAlgorithm } from '@/consts'
+import { getRpcEndpoint, fetchRpc } from '@/utils/rpc'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -16,7 +17,8 @@ const types = flow(
     'SET_TRANSACTION_DEADLINE',
     'SET_FAUCET_URL',
     'SET_SORA_NETWORK',
-    'SET_DEFAULT_NODES'
+    'SET_DEFAULT_NODES',
+    'SET_NETWORK_CHAIN_GENESIS_HASH'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -33,6 +35,7 @@ function initialState () {
     node: {},
     defaultNodes: [],
     nodeIsConnecting: false,
+    chainGenesisHash: '',
     faucetUrl: ''
   }
 }
@@ -51,6 +54,9 @@ const getters = {
   },
   soraNetwork (state) {
     return state.soraNetwork
+  },
+  chainGenesisHash (state) {
+    return state.chainGenesisHash
   },
   slippageTolerance (state) {
     return state.slippageTolerance
@@ -83,6 +89,9 @@ const mutations = {
   },
   [types.SET_SORA_NETWORK] (state, value) {
     state.soraNetwork = value
+  },
+  [types.SET_NETWORK_CHAIN_GENESIS_HASH] (state, value) {
+    state.chainGenesisHash = value
   },
   [types.SET_SLIPPAGE_TOLERANCE] (state, value) {
     state.slippageTolerance = value
@@ -134,6 +143,18 @@ const actions = {
       throw new Error('NETWORK_TYPE is not set')
     }
     commit(types.SET_SORA_NETWORK, data.NETWORK_TYPE)
+  },
+  async getNetworkChainGenesisHash ({ commit, state }) {
+    const endpoint = state.defaultNodes?.[0]?.address
+
+    if (!endpoint) {
+      throw new Error('node address is not set')
+    }
+
+    const rpc = getRpcEndpoint(endpoint)
+    const genesisHash = await fetchRpc(rpc, 'chain_getBlockHash') ?? ''
+
+    commit(types.SET_NETWORK_CHAIN_GENESIS_HASH, genesisHash)
   },
   setSlippageTolerance ({ commit }, value) {
     commit(types.SET_SLIPPAGE_TOLERANCE, value)

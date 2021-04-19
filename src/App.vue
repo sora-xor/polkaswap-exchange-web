@@ -170,6 +170,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   @Action setDefaultNodes
   @Action setNode
   @Action setFaucetUrl
+  @Action getNetworkChainGenesisHash
   @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity
   @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity
   @Action('getAssets', { namespace: 'assets' }) getAssets
@@ -182,6 +183,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
       await this.setSoraNetwork(data)
       await this.setDefaultNodes(data?.DEFAULT_NETWORKS)
       await this.setNode(data?.DEFAULT_NETWORKS?.[0])
+      await this.getNetworkChainGenesisHash()
       await this.setDefaultEthNetwork(data.ETH_NETWORK)
       await this.setEthereumSmartContracts(data.BRIDGE)
 

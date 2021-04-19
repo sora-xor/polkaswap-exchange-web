@@ -59,7 +59,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   }
 
   get title (): string {
-    return this.isExistingNode ? this.node.name : this.t('selectNodeDialog.customNode')
+    return this.isExistingNode ? this.node.title : this.t('selectNodeDialog.customNode')
   }
 }
 </script>

@@ -14,7 +14,7 @@
         <div class="select-node-item s-flex">
           <div class="select-node-info s-flex">
             <div class="select-node-info__label h4">
-              {{ node.name }} hosted by {{ node.host }}
+              {{ node.title }}
             </div>
             <div class="select-node-info__address p4">
               {{ node.address }}

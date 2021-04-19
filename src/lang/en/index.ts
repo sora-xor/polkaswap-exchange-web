@@ -96,7 +96,8 @@ export default {
     addNode: 'Add custom node',
     customNode: 'Custom node',
     howToSetupOwnNode: 'How to setup your own @:soraText node',
-    select: 'Select'
+    select: 'Select',
+    nodeTitle: '{chain} hosted by {name}'
   },
   buttons: {
     max: 'MAX',
