@@ -583,7 +583,7 @@ $disclaimer-letter-spacing: -0.03em;
   background-image: url('~@/assets/img/pswap.svg');
   background-size: cover;
   width: var(--s-size-medium);
-  height: var(--s-size-medium);
+  min-height: var(--s-size-medium);
   padding: 0;
   border-radius: 0;
 }
