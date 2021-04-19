@@ -24,6 +24,12 @@ import { Components } from '@/consts'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 
+const NodeModel = {
+  chain: '',
+  name: '',
+  address: ''
+}
+
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
@@ -38,16 +44,13 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) connected!: boolean
   @Prop({ default: false, type: Boolean }) removable!: boolean
 
-  nodeModel = {
-    name: '',
-    address: ''
-  }
+  nodeModel = { ...NodeModel }
 
   created (): void {
-    this.nodeModel = {
-      ...this.nodeModel,
-      ...this.node
-    }
+    this.nodeModel = Object.keys(NodeModel).reduce((result, key) => ({
+      ...result,
+      [key]: this.node[key] ?? NodeModel[key]
+    }), {})
   }
 
   get isExistingNode (): boolean {

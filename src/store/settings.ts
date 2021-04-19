@@ -18,6 +18,7 @@ const types = flow(
     'SET_FAUCET_URL',
     'SET_SORA_NETWORK',
     'SET_DEFAULT_NODES',
+    'SET_CUSTOM_NODES',
     'SET_NETWORK_CHAIN_GENESIS_HASH'
   ]),
   map(x => [x, x]),
@@ -34,6 +35,7 @@ function initialState () {
     transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
     node: {},
     defaultNodes: [],
+    customNodes: JSON.parse(storage.get('customNodes')) || [],
     nodeIsConnecting: false,
     chainGenesisHash: '',
     faucetUrl: ''
@@ -48,6 +50,9 @@ const getters = {
   },
   defaultNodes (state) {
     return state.defaultNodes
+  },
+  customNodes (state) {
+    return state.customNodes
   },
   nodeIsConnecting (state) {
     return state.nodeIsConnecting
@@ -86,6 +91,10 @@ const mutations = {
   },
   [types.SET_DEFAULT_NODES] (state, nodes) {
     state.defaultNodes = [...nodes]
+  },
+  [types.SET_CUSTOM_NODES] (state, nodes) {
+    state.customNodes = [...nodes]
+    storage.set('customNodes', JSON.stringify(nodes))
   },
   [types.SET_SORA_NETWORK] (state, value) {
     state.soraNetwork = value
@@ -144,17 +153,29 @@ const actions = {
     }
     commit(types.SET_SORA_NETWORK, data.NETWORK_TYPE)
   },
-  async getNetworkChainGenesisHash ({ commit, state }) {
+  addCustomNode ({ commit, state }, node) {
+    const nodes = [...state.customNodes, node]
+    commit(types.SET_CUSTOM_NODES, nodes)
+  },
+  removeCustomNode ({ commit }, node) {
+    const nodes = state.customNodes.filter(item => item.address !== node.address)
+    commit(types.SET_CUSTOM_NODES, nodes)
+  },
+  async getNetworkChainGenesisHash ({ commit, state, dispatch }) {
     const endpoint = state.defaultNodes?.[0]?.address
+    const genesisHash = await dispatch('getChainGenesisHash', endpoint)
 
-    if (!endpoint) {
+    commit(types.SET_NETWORK_CHAIN_GENESIS_HASH, genesisHash)
+  },
+  async getChainGenesisHash (_, nodeAddress: string): Promise<string> {
+    if (!nodeAddress) {
       throw new Error('node address is not set')
     }
 
-    const rpc = getRpcEndpoint(endpoint)
-    const genesisHash = await fetchRpc(rpc, 'chain_getBlockHash') ?? ''
+    const rpc = getRpcEndpoint(nodeAddress)
+    const genesisHash = await fetchRpc(rpc, 'chain_getBlockHash', [0]) ?? ''
 
-    commit(types.SET_NETWORK_CHAIN_GENESIS_HASH, genesisHash)
+    return genesisHash
   },
   setSlippageTolerance ({ commit }, value) {
     commit(types.SET_SLIPPAGE_TOLERANCE, value)

@@ -52,23 +52,15 @@ const NodeInfoView = 'NodeInfoView'
 export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMixin, DialogMixin) {
   @Getter node!: any
   @Getter defaultNodes!: Array<any>
+  @Getter customNodes!: Array<any>
+  @Getter chainGenesisHash!: string
   @Getter nodeIsConnecting!: boolean
+  @Action getChainGenesisHash!: (nodeAddress: string) => Promise<string>
   @Action setNode!: (node: any) => void
+  @Action addCustomNode!: (node: any) => void
+  @Action removeCustomNode!: (node: any) => void
 
   currentView = NodeListView
-
-  customNodes = [
-    // {
-    //   name: 'Node',
-    //   host: 'Lupa',
-    //   address: 'wss://s3.kusama-rpc.polkadot.io'
-    // },
-    // {
-    //   name: 'Node',
-    //   host: 'Pupa',
-    //   address: 'wss://s4.kusama-rpc.polkadot.io'
-    // }
-  ]
 
   selectedNode: any = {}
 
@@ -84,7 +76,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   }
 
   get isSelectedNodeConnected (): boolean {
-    return this.connectedNodeAddress === this.selectedNode?.address
+    return this.isConnectedNode(this.selectedNode?.address)
   }
 
   get isSelectedNodeRemovable (): boolean {
@@ -98,7 +90,9 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   get nodeList (): Array<any> {
     return [...this.defaultNodes, ...this.customNodes].map(node => ({
       ...node,
-      title: node.name ? this.t('selectNodeDialog.nodeTitle', { chain: node.chain, name: node.name }) : node.chain
+      title: !!node.name && !!node.chain
+        ? this.t('selectNodeDialog.nodeTitle', { chain: node.chain, name: node.name })
+        : (node.chain || node.name)
     }))
   }
 
@@ -112,19 +106,33 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     }
   }
 
-  handleNode (node) {
-    const existingNode = this.findNodeByAddress(node.address)
+  async handleNode (node) {
+    const isExistingNode = !!this.findNodeByAddress(node.address)
 
-    if (existingNode) {
-      this.setNode(node)
+    if (isExistingNode) {
+      await this.setNode(node)
+      this.handleBack()
     } else {
-      // create custom node
+      await this.checkCustomNode(node)
     }
   }
 
-  removeNode (node) {
-    console.log('removeNode', node)
-    // remove node
+  async checkCustomNode (node) {
+    const nodeChainGenesisHash = await this.getChainGenesisHash(node.address)
+
+    if (nodeChainGenesisHash !== this.chainGenesisHash) {
+      return
+    }
+
+    this.addCustomNode(node)
+  }
+
+  async removeNode (node) {
+    if (this.isConnectedNode(this.node?.address)) {
+      await this.setNode(this.defaultNodes[0])
+    }
+    this.removeCustomNode(node)
+    this.handleBack()
   }
 
   navigateToNodeInfo (node: any): void {
@@ -147,6 +155,10 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
 
   private findNodeByAddress (address: string): any {
     return this.nodeList.find(item => item.address === address)
+  }
+
+  private isConnectedNode (address: string): boolean {
+    return this.connectedNodeAddress === address
   }
 }
 </script>
