@@ -2,6 +2,7 @@
   <div id="app">
     <header class="header">
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
+      <lottie-animation path="json/loader.json" />
 
       <div class="app-controls s-flex">
         <branded-tooltip :disabled="isLoggedIn" popper-class="info-tooltip wallet-tooltip" placement="bottom">
@@ -143,12 +144,15 @@ import router, { lazyComponent } from '@/router'
 import axios from '@/api'
 import { formatAddress } from '@/utils'
 
+import LottieAnimation from 'lottie-vuejs/src/LottieAnimation.vue'
+
 const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
 const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
 
 @Component({
   components: {
     WalletAvatar,
+    LottieAnimation,
     BrandedTooltip: lazyComponent(Components.BrandedTooltip),
     HelpDialog: lazyComponent(Components.HelpDialog),
     SidebarItemContent: lazyComponent(Components.SidebarItemContent)
@@ -432,6 +436,19 @@ html {
   @include container-styles;
   .el-loading-mask {
     border-radius: var(--s-border-radius-medium);
+    .el-loading-spinner {
+      // height: 42px;
+      // width: 42px;
+      // .circular {
+      //   background-image: url('~@/assets/img/pswap.svg');
+      //   background-size: cover;
+      //   animation: none;
+      //   .path {
+      //     display: none;
+      //     animation: none;
+      //   }
+      // }
+    }
   }
 }
 </style>

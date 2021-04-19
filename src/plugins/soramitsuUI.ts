@@ -1,13 +1,15 @@
 import Vue from 'vue'
-import SoramitsuElements, { Message, MessageBox, Notification, setTheme } from '@soramitsu/soramitsu-js-ui'
+import SoramitsuElements, { Message, MessageBox, Notification, Loading } from '@soramitsu/soramitsu-js-ui'
 import '@soramitsu/soramitsu-js-ui/lib/styles'
 
 import store from '@/store'
 
 Vue.use(SoramitsuElements, { store })
+// Vue.use(Loading.directive, {  })
 Vue.prototype.$prompt = MessageBox.prompt
 Vue.prototype.$alert = MessageBox.alert
 Vue.prototype.$message = Message
+// Vue.prototype.$loading = Vue.prototype.$loading({ spinner: 'el-icon-loading', fullscreen: false })
 Vue.prototype.$notify = ({ message, type }) => {
   Notification({
     message,

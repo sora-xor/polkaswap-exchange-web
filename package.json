@@ -19,6 +19,7 @@
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "lodash": "^4.17.15",
+    "lottie-vuejs": "^0.4.0",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^8.4.1",
