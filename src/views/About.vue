@@ -17,7 +17,7 @@
           <span class="text">Polkaswap removes trusted intermediaries and provides the opportunity for faster trading</span>
         </div>
         <div class="about-2-text-3">
-          <span class="text">Polkaswap is a community project and devs collaborate on the open source code using the BSD 4-clause license</span>
+          <span class="text">Polkaswap is a community project and devs collaborate on the open source code using the <a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_(original_%22BSD_License%22)" title="BSD 4-clause license">BSD 4-clause license</a></span>
         </div>
       </div>
       <div class="about-3">
@@ -125,10 +125,6 @@ export default class About extends Mixins(TranslationMixin) {
   position: absolute;
   bottom: 0;
   right: 5%;
-}
-
-.a {
-  background-image: url('~@/assets/about/about01.png');
 }
 
 .about {
@@ -295,8 +291,6 @@ export default class About extends Mixins(TranslationMixin) {
         font-size: 36px;
         line-height: 100%;
 
-        // display: flex;
-        // align-items: center;
         letter-spacing: -0.02em;
         font-feature-settings: 'case' on, 'liga' off;
 
@@ -318,6 +312,7 @@ export default class About extends Mixins(TranslationMixin) {
     position: relative;
 
     padding-top: 5rem;
+    padding-bottom: 5rem;
   }
 }
 

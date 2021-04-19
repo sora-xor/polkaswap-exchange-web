@@ -97,9 +97,14 @@
           <p v-if="!isAboutPage" class="app-disclaimer">{{ t('disclaimer') }}</p>
         </div>
       </div>
-      <aside v-if="!isAboutPageActive()" class="app-sidebar">
+    </div>
+
+    <help-dialog :visible.sync="showHelpDialog"></help-dialog>
+
+    <div class="app-wallet" v-if="!isAboutPageActive()">
+      <aside>
         <div class="app-controls s-flex">
-          <branded-tooltip :disabled="accountConnected" popper-class="info-tooltip wallet-tooltip" placement="bottom">
+          <branded-tooltip :disabled="isLoggedIn" popper-class="info-tooltip wallet-tooltip" placement="bottom">
             <div slot="content" class="app-controls__wallet-tooltip">
               {{ t('connectWalletTextTooltip') }}
             </div>
@@ -107,7 +112,7 @@
               <div class="account">
                 <div class="account-name">{{ accountInfo }}</div>
                 <div class="account-icon">
-                  <s-icon v-if="!accountConnected" name="finance-wallet-24" />
+                  <s-icon v-if="!isLoggedIn" name="finance-wallet-24" />
                   <WalletAvatar v-else :address="account.address"/>
                 </div>
               </div>
@@ -117,9 +122,7 @@
       </aside>
     </div>
 
-    <help-dialog :visible.sync="showHelpDialog"></help-dialog>
-
-    <footer class="app-footer">
+    <footer class="app-footer" v-if="!isAboutPageActive()">
       <div class="sora-logo">
         <span class="sora-logo__title">{{ t('poweredBy') }}</span>
         <div class="sora-logo__image"></div>
@@ -442,7 +445,7 @@ html {
 <style lang="scss" scoped>
 $logo-width: 40px;
 $logo-width-big: 150px;
-$sidebar-witdh: 170px;
+$sidebar-width: 170px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
 $account-name-margin: -2px 8px 0 12px;
@@ -466,7 +469,7 @@ $disclaimer-letter-spacing: -0.03em;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
-    width: $sidebar-witdh;
+    width: $sidebar-width;
     border-right: 1px solid var(--s-color-base-border-secondary);
     padding-top: $inner-spacing-small;
     padding-bottom: $inner-spacing-medium;
@@ -508,6 +511,13 @@ $disclaimer-letter-spacing: -0.03em;
     padding-right: $inner-spacing-mini * 5;
     padding-left: $inner-spacing-mini * 5;
     padding-bottom: $inner-spacing-mini * 5;
+  }
+
+  &-wallet {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding-top: $inner-spacing-small;
   }
 }
 
