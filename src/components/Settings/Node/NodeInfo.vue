@@ -2,17 +2,17 @@
   <div class="node-info s-flex">
     <generic-page-header has-button-back :title="title" @back="handleBack">
       <s-button
-        v-if="isExistingNode && removable"
+        v-if="existing && removable"
         type="action"
         icon="basic-trash-24"
         tooltip-placement="bottom-end"
         @click="removeNode(nodeModel)"
       />
     </generic-page-header>
-    <s-input class="node-info-input" :placeholder="t('nameText')" v-model="nodeModel.name" :disabled="isExistingNode" />
-    <s-input class="node-info-input" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="isExistingNode" />
+    <s-input class="node-info-input" :placeholder="t('nameText')" v-model="nodeModel.name" :disabled="existing" />
+    <s-input class="node-info-input" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="existing" />
     <s-button type="primary" class="node-info-button" :disabled="connected" @click="handleNode(nodeModel)" >{{ buttonText }}</s-button>
-    <external-link v-if="!isExistingNode" :title="t('selectNodeDialog.howToSetupOwnNode')" />
+    <external-link v-if="!existing" :title="t('selectNodeDialog.howToSetupOwnNode')" />
   </div>
 </template>
 
@@ -41,6 +41,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   @Prop({ default: () => {}, type: Function }) handleNode!: (node) => void
   @Prop({ default: () => {}, type: Function }) removeNode!: (node) => void
   @Prop({ default: () => ({}), type: Object }) node!: any
+  @Prop({ default: false, type: Boolean }) existing!: boolean
   @Prop({ default: false, type: Boolean }) connected!: boolean
   @Prop({ default: false, type: Boolean }) removable!: boolean
 
@@ -53,16 +54,12 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
     }), {})
   }
 
-  get isExistingNode (): boolean {
-    return !!this.node?.address
-  }
-
   get buttonText (): string {
-    return this.isExistingNode ? this.t('selectNodeDialog.select') : this.t('selectNodeDialog.addNode')
+    return this.existing ? this.t('selectNodeDialog.select') : this.t('selectNodeDialog.addNode')
   }
 
   get title (): string {
-    return this.isExistingNode ? this.node.title : this.t('selectNodeDialog.customNode')
+    return this.existing ? this.node.title : this.t('selectNodeDialog.customNode')
   }
 }
 </script>
