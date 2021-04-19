@@ -170,13 +170,23 @@ const actions = {
   },
   async getChainGenesisHash (_, nodeAddress: string): Promise<string> {
     if (!nodeAddress) {
-      throw new Error('node address is not set')
+      throw new Error('nodeAddress is required')
     }
 
     const rpc = getRpcEndpoint(nodeAddress)
     const genesisHash = await fetchRpc(rpc, 'chain_getBlockHash', [0]) ?? ''
 
     return genesisHash
+  },
+  async getNodeNetworkStatus (_, nodeAddress: string) {
+    if (!nodeAddress) {
+      throw new Error('nodeAddress is required')
+    }
+
+    const rpc = getRpcEndpoint(nodeAddress)
+    const response = await fetchRpc(rpc, 'system_health')
+
+    console.log(response)
   },
   setSlippageTolerance ({ commit }, value) {
     commit(types.SET_SLIPPAGE_TOLERANCE, value)

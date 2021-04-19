@@ -57,6 +57,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   @Getter chainGenesisHash!: string
   @Getter nodeIsConnecting!: boolean
   @Action getChainGenesisHash!: (nodeAddress: string) => Promise<string>
+  @Action getNodeNetworkStatus
   @Action setNode!: (node: any) => void
   @Action addCustomNode!: (node: any) => void
   @Action removeCustomNode!: (node: any) => void
@@ -64,6 +65,10 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   currentView = NodeListView
 
   selectedNode: any = {}
+
+  mounted () {
+    Promise.all(this.nodeList.map(node => this.getNodeNetworkStatus(node.address)))
+  }
 
   get connectedNodeAddress (): string {
     return this.node.address
