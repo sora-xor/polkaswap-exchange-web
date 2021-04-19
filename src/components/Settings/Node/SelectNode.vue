@@ -20,6 +20,7 @@
               {{ node.address }}
             </div>
           </div>
+          <network-badge :online="true" />
           <s-button class="details select-node-details" type="link" @click="handleNode(node)">
             <s-icon name="arrows-chevron-right-rounded-24" />
           </s-button>
@@ -40,9 +41,16 @@
 <script lang="ts">
 import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator'
 
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
+
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 
-@Component
+@Component({
+  components: {
+    NetworkBadge: lazyComponent(Components.NetworkBadge)
+  }
+})
 export default class SelectNode extends Mixins(TranslationMixin) {
   @Prop({ default: () => [], type: Array }) nodes!: Array<any>
   @Prop({ default: () => {}, type: Function }) handleNode!: (node: any) => void

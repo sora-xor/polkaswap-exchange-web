@@ -140,6 +140,7 @@ const actions = {
 
       commit(types.SET_NODE_SUCCESS)
     } catch (error) {
+      console.error('setNode', error)
       commit(types.SET_NODE_FAILURE)
       throw error
     }

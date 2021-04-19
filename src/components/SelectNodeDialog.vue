@@ -117,6 +117,8 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     if (!isExistingNode) {
       const nodeChainGenesisHash = await this.getChainGenesisHash(node.address)
 
+      console.log(nodeChainGenesisHash, this.chainGenesisHash)
+
       if (nodeChainGenesisHash !== this.chainGenesisHash) {
         // show error?
         return
