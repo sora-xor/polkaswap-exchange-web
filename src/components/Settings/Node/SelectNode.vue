@@ -1,5 +1,8 @@
 <template>
   <div class="select-node s-flex">
+    <div class="select-node-description p4">
+      Select a node for Mainnet environment:
+    </div>
     <div class="select-node-list s-flex">
       <s-radio
         v-for="node in nodes"
@@ -31,24 +34,15 @@
     >
       {{ t('selectNodeDialog.addNode') }}
     </s-button>
-    <!-- TODO: href -->
-    <external-link :title="t('selectNodeDialog.howToSetupOwnNode')" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator'
 
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
-
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 
-@Component({
-  components: {
-    ExternalLink: lazyComponent(Components.ExternalLink)
-  }
-})
+@Component
 export default class SelectNode extends Mixins(TranslationMixin) {
   @Prop({ default: () => [], type: Array }) nodes!: Array<any>
   @Prop({ default: () => {}, type: Function }) handleNode!: (node: any) => void

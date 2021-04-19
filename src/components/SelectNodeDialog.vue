@@ -17,8 +17,10 @@
         v-else
         :node="selectedNode"
         :connected="isSelectedNodeConnected"
+        :removable="isSelectedNodeRemovable"
         :handle-back="handleBack"
-        :handle-node="navigateToNodeInfo"
+        :handle-node="handleNode"
+        :remove-node="removeNode"
       />
     </div>
   </dialog-base>
@@ -67,7 +69,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMix
     // }
   ]
 
-  selectedNode = null
+  selectedNode: any = {}
 
   get connectedNodeAddress (): string {
     return this.node.address
@@ -81,7 +83,11 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMix
   }
 
   get isSelectedNodeConnected (): boolean {
-    return !!this.selectedNode && this.connectedNodeAddress === this.selectedNode.address
+    return this.connectedNodeAddress === this.selectedNode?.address
+  }
+
+  get isSelectedNodeRemovable (): boolean {
+    return !this.defaultNodes.find(node => node.address === this.selectedNode?.address)
   }
 
   get isNodeListView (): boolean {
@@ -112,8 +118,13 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMix
     }
   }
 
+  removeNode (node) {
+    console.log('removeNode', node)
+    // remove node
+  }
+
   navigateToNodeInfo (node: any): void {
-    this.selectedNode = node ?? null
+    this.selectedNode = node
     this.changeView(NodeInfoView)
   }
 
@@ -139,13 +150,19 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, DialogMix
 <style lang="scss">
 .dialog-wrapper.select-node-dialog {
   .el-dialog .el-dialog__body {
-    padding: $inner-spacing-big $inner-spacing-big $inner-spacing-mini * 4;
+    padding: $inner-spacing-mini $inner-spacing-big $inner-spacing-mini * 4;
   }
 
   &--add-node {
-    .el-dialog .el-dialog__header {
-      padding: 0;
-      display: none;
+    .el-dialog {
+      .el-dialog__header {
+        padding: 0;
+        display: none;
+      }
+
+      .el-dialog__body {
+        padding: $inner-spacing-big $inner-spacing-big $inner-spacing-mini * 4;
+      }
     }
   }
 
