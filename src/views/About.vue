@@ -30,6 +30,7 @@
               <a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_(original_%22BSD_License%22)" title="BSD 4-clause license">BSD 4-clause license</a></span>
           </div>
         </div>
+        <img src="@/assets/about/about02-shadow-1.png" draggable="false" class="unselectable about-2-shadow-1">
       </div>
       <div class="about-3">
         <img src="@/assets/about/about03.png" draggable="false" class="unselectable">
@@ -52,6 +53,7 @@
               making contributions to the Polkaswap codebase.</span>
           </div>
         </div>
+        <img src="@/assets/about/about03-shadow-1.png" draggable="false" class="unselectable about-3-shadow-1">
       </div>
       <div class="about-4">
         <img src="@/assets/about/about04.png" draggable="false" class="unselectable">
@@ -72,6 +74,7 @@
               does not use expensive mining for consensus.</span>
           </div>
         </div>
+        <img src="@/assets/about/about04-shadow-1.png" draggable="false" class="unselectable about-4-shadow-1">
       </div>
       <div class="about-5">
         <img src="@/assets/about/about05.png" draggable="false" class="unselectable">
@@ -88,13 +91,11 @@
               with time this percentage will decrease to 35% after 4 years.</span>
           </div>
         </div>
-        <!-- <div class="about-5-text-3">
-          <img src="@/assets/about/about05-2.png" draggable="false" class="unselectable">
-          <span class="text"></span>
-        </div> -->
+        <img src="@/assets/about/about05-shadow-1.png" draggable="false" class="unselectable about-5-shadow-1">
       </div>
       <div class="about-6">
         <img src="@/assets/about/about06.png" draggable="false" class="unselectable" style="width: 70%; cursor: pointer;">
+        <img src="@/assets/about/about06-shadow-1.png" draggable="false" class="unselectable about-6-shadow-1">
       </div>
       <div class="about-7">
         <div class="about-7-part" @click="openLink('https://sora.org/validator')">
@@ -109,6 +110,7 @@
           <span class="text">Grow the decentralized world economy by connecting more chains to SORA and Polkaswap using
             the HASHI bridge protocol.</span>
         </div>
+        <img src="@/assets/about/about07-shadow-1.png" draggable="false" class="unselectable about-7-shadow-1">
       </div>
       <div class="about-8">
         <img src="@/assets/about/about08.png" draggable="false" class="unselectable" style="width: 65%">
@@ -221,6 +223,12 @@ export default class About extends Mixins(TranslationMixin) {
 
       position: absolute;
     }
+    &-shadow-1 {
+      position: absolute;
+      top: -110%;
+      z-index: -1;
+      width: 100%;
+    }
   }
   &-3 {
     min-width: 800px;
@@ -252,6 +260,12 @@ export default class About extends Mixins(TranslationMixin) {
       width: 55%;
 
       position: absolute;
+    }
+    &-shadow-1 {
+      position: absolute;
+      top: -110%;
+      z-index: -1;
+      width: 100%;
     }
   }
   &-4 {
@@ -285,6 +299,12 @@ export default class About extends Mixins(TranslationMixin) {
 
       position: absolute;
     }
+    &-shadow-1 {
+      position: absolute;
+      top: -150%;
+      z-index: -1;
+      width: 100%;
+    }
   }
   &-5 {
     min-width: 800px;
@@ -297,26 +317,25 @@ export default class About extends Mixins(TranslationMixin) {
     @include backgroundImageWidth;
 
     &-text-1 {
-      top: 30%;
-      right: 32%;
-      width: 40%;
+      top: 36%;
+      right: 33%;
+      width: 33%;
 
       position: absolute;
     }
     &-text-2 {
       top: 55%;
-      left: 24%;
-      width: 65%;
+      left: 32%;
+      width: 50%;
 
       position: absolute;
     }
-    // &-text-3 {
-    //   top: 66%;
-    //   right: 20.5%;
-    //   width: 20%;
-
-    //   position: absolute;
-    // }
+    &-shadow-1 {
+      position: absolute;
+      top: -70%;
+      z-index: -1;
+      width: 100%;
+    }
   }
   &-6 {
     display: flex;
@@ -324,11 +343,19 @@ export default class About extends Mixins(TranslationMixin) {
     align-items: center;
     flex-direction: column;
     position: relative;
+
+    &-shadow-1 {
+      position: absolute;
+      top: -100%;
+      z-index: -1;
+      width: 120%;
+    }
   }
   &-7 {
     width: 70%;
     max-width: 1600px;
     padding-top: 7rem;
+    position: relative;
 
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -368,6 +395,13 @@ export default class About extends Mixins(TranslationMixin) {
           margin-bottom: 10px;
         }
       }
+    }
+
+    &-shadow-1 {
+      position: absolute;
+      top: 0;
+      z-index: -1;
+      width: 100%;
     }
   }
   &-8 {
