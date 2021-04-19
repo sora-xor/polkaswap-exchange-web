@@ -154,7 +154,7 @@ export default class About extends Mixins(TranslationMixin) {
 }
 .img {
   min-width: 1200px;
-  max-width: 1600px;
+  max-width: 1700px;
   width: 100%;
 }
 
@@ -427,13 +427,14 @@ export default class About extends Mixins(TranslationMixin) {
   font-feature-settings: 'case' on, 'liga' off;
 
   color: #2A171F;
-
-  @media screen and (min-width: 1500px) {
+  @media screen and (min-width: 1100px) {
+    font-size: 14px;
+  }
+  @media screen and (min-width: 1250px) {
     font-size: 16px;
   }
-
-  @media screen and (min-width: 1200px) {
-    font-size: 14px;
+  @media screen and (min-width: 1800px) {
+    font-size: 18px;
   }
 }
 </style>
