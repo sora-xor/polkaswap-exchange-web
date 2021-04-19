@@ -60,12 +60,12 @@
         <img src="@/assets/about/about06.png" draggable="false" class="unselectable" style="width: 70%; cursor: pointer;">
       </div>
       <div class="about-7">
-        <div class="about-7-part">
+        <div class="about-7-part" @click="openLink('https://sora.org/validator')">
           <img src="@/assets/about/about07-1.png" draggable="false" class="unselectable icon">
           <span class="title">Become a SORA Validator<img src="@/assets/about/about07-3.png" class="link"></span>
           <span class="text">Secure the future of the SORA network and decentralized apps like Polkaswap, and earn rewards along the way by becoming a SORA validator.</span>
         </div>
-        <div class="about-7-part">
+        <div class="about-7-part" @click="openLink('https://sora.org')">
           <img src="@/assets/about/about07-2.png" draggable="false" class="unselectable icon">
           <span class="title">Connect a Chain to SORA<img src="@/assets/about/about07-3.png" class="link"></span>
           <span class="text">Grow the decentralized world economy by connecting more chains to SORA and Polkaswap using the HASHI bridge protocol.</span>
@@ -83,23 +83,11 @@
 import { Component, Mixins } from 'vue-property-decorator'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import { AboutTopics, PageNames } from '@/consts'
-import router from '@/router'
 
 @Component
 export default class About extends Mixins(TranslationMixin) {
-  readonly AboutTopics = AboutTopics
-
-  handleClickExchange (): void {
-    router.push({ name: PageNames.Swap })
-  }
-
-  handleGoToMedium (): void {
-    location.href = 'https://medium.com/polkaswap'
-  }
-
-  handleGoToGithub (): void {
-    location.href = 'https://github.com/sora-xor'
+  openLink (url): void {
+    window.open(url, '_blank')
   }
 }
 </script>
@@ -273,6 +261,7 @@ export default class About extends Mixins(TranslationMixin) {
     &-part {
       display: flex;
       flex-direction: column;
+      cursor: pointer;
 
       &:after {
         content: '';
