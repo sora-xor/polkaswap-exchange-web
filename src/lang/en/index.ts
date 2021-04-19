@@ -236,7 +236,7 @@ export default {
     transactionMessage: '{assetA} for {assetB}',
     notRegisteredAsset: 'Asset {assetSymbol} is not registered',
     selectNetwork: 'Select network',
-    networkInfo: 'Bridge @:soraText Nwtwork with:',
+    networkInfo: 'Bridge @:soraText Network with:',
     ethereum: '@:ethereumText',
     energyweb: '@:energyweb.title'
   },

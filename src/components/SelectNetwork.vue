@@ -3,6 +3,7 @@
     :visible.sync="isVisible"
     :title="t('bridge.selectNetwork')"
     class="networks"
+    width="464px"
   >
     <p class="networks-info">{{ t('bridge.networkInfo') }}</p>
     <s-radio
@@ -54,24 +55,53 @@ export default class SelectNetwork extends Mixins(TranslationMixin, DialogMixin)
 </script>
 
 <style lang="scss">
+$radio-size: 28px;
+$radio-checked-size: 18px;
+
 .networks {
+  .el-dialog .el-dialog__body {
+    padding-bottom: $inner-spacing-big;
+  }
   .network,
   .el-radio__label {
     display: flex;
     align-items: center;
   }
   .el-radio__label {
+    padding-left: $inner-spacing-small;
     width: 100%;
+  }
+  .el-radio.s-medium > .el-radio__input .el-radio__inner {
+    height: $radio-size;
+    width: $radio-size;
+    background-color: var(--s-color-base-background);
+    border-color: var(--s-color-theme-secondary-focused);
+    border-width: 1px;
+    box-shadow: var(--s-shadow-tab);
+    border-radius: 50%;
+  }
+  .el-radio__input.is-checked .el-radio__inner::after {
+    height: $radio-checked-size;
+    width: $radio-checked-size;
+    box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.02), 1px 1px 3px rgba(0, 0, 0, 0.1), inset 1px 1px 2px rgba(255, 255, 255, 0.8);
   }
 }
 </style>
 
 <style lang="scss" scoped>
+$network-logo-size: 49px;
+
+.networks-info,
+.network-name {
+  line-height: var(--s-line-height-medium);
+  letter-spacing: var(--s-letter-spacing-small);
+}
+
 .networks {
   &-info {
-    margin-bottom: $inner-spacing-mini;
-    margin-top: $inner-spacing-mini;
+    margin-bottom: $inner-spacing-medium;
     color: var(--s-color-base-content-secondary);
+    font-weight: 300;
   }
   .el-radio-group {
     display: block;
@@ -80,9 +110,17 @@ export default class SelectNetwork extends Mixins(TranslationMixin, DialogMixin)
     margin-right: 0;
     width: 100%;
     height: auto;
-    padding: $inner-spacing-mini $inner-spacing-mini $inner-spacing-mini 0;
+    padding: $inner-spacing-small 0;
+    &-name {
+      font-size: var(--s-heading5-font-size);
+      font-weight: 400;
+    }
     + .network {
-      border-top: 1px solid var(--s-color-base-border-primary);
+      border-top: 1px solid var(--s-color-theme-secondary-focused);
+    }
+    .token-logo {
+      height: $network-logo-size;
+      width: $network-logo-size;
     }
   }
   .token-logo {
