@@ -98,17 +98,19 @@
         <img src="@/assets/about/about06-shadow-1.png" draggable="false" class="unselectable about-video-shadow-1">
       </div>
       <div class="about-links">
-        <div class="about-links-part" @click="openLink('https://sora.org/validator')">
+        <div class="about-links-part">
           <img src="@/assets/about/about07-1.png" draggable="false" class="unselectable icon">
           <span class="title">Become a SORA Validator<img src="@/assets/about/about07-3.png" class="link"></span>
           <p class="text">Secure the future of the SORA network and decentralized apps like Polkaswap, and earn
             rewards along the way by becoming a SORA validator.</p>
+          <a class="link-mask" href="https://sora.org/validator" target="_blank" />
         </div>
-        <div class="about-links-part" @click="openLink('https://sora.org')">
+        <div class="about-links-part">
           <img src="@/assets/about/about07-2.png" draggable="false" class="unselectable icon">
           <span class="title">Connect a Chain to SORA<img src="@/assets/about/about07-3.png" class="link"></span>
           <p class="text">Grow the decentralized world economy by connecting more chains to SORA and Polkaswap using
             the HASHI bridge protocol.</p>
+          <a class="link-mask" href="https://sora.org" target="_blank" />
         </div>
         <img src="@/assets/about/about07-shadow-1.png" draggable="false" class="unselectable about-links-shadow-1">
       </div>
@@ -128,9 +130,6 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 
 @Component
 export default class About extends Mixins(TranslationMixin) {
-  openLink (url): void {
-    window.open(url, '_blank')
-  }
 }
 </script>
 
@@ -391,6 +390,7 @@ export default class About extends Mixins(TranslationMixin) {
       display: flex;
       flex-direction: column;
       cursor: pointer;
+      position: relative;
 
       &:after {
         content: '';
@@ -419,6 +419,13 @@ export default class About extends Mixins(TranslationMixin) {
           margin-left: 5px;
           margin-bottom: 10px;
         }
+      }
+      .link-mask {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
       }
     }
 
