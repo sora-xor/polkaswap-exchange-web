@@ -86,7 +86,7 @@
     <s-button v-if="!isLoggedIn" type="primary" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
-    <s-button v-else type="primary" :disabled="!areTokensSelected || !isAvailable || hasZeroAmount || isInsufficientLiquidity || isInsufficientAmount || isInsufficientBalance" @click="handleConfirmSwap">
+    <s-button v-else type="primary" :disabled="!areTokensSelected || !isAvailable || hasZeroAmount || isInsufficientLiquidity || isInsufficientAmount || isInsufficientBalance || isInsufficientXorForFee" @click="handleConfirmSwap">
       <template v-if="!areTokensSelected">
         {{ t('buttons.chooseTokens') }}
       </template>
@@ -104,6 +104,9 @@
       </template>
       <template v-else-if="isInsufficientBalance">
         {{ t('exchange.insufficientBalance', { tokenSymbol: tokenFrom.symbol }) }}
+      </template>
+      <template v-else-if="isInsufficientXorForFee">
+        {{ t('exchange.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
       </template>
       <template v-else>
         {{ t('exchange.Swap') }}
@@ -127,7 +130,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
-import { isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, asZeroValue, formatAssetBalance } from '@/utils'
+import { isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -238,6 +241,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   get isInsufficientBalance (): boolean {
     return this.preparedForSwap && hasInsufficientBalance(this.tokenFrom, this.fromValue, this.networkFee)
+  }
+
+  get isInsufficientXorForFee (): boolean {
+    return this.preparedForSwap && hasInsufficientXorForFee(this.tokenXOR, this.networkFee)
   }
 
   created () {
