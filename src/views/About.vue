@@ -4,29 +4,25 @@
       <div class="about-main">
         <img src="@/assets/about/about01.png" draggable="false" class="main unselectable" />
         <div class="about-main-text">
-          <p class="text">Cross-chain exchange of assets, simple creation and listing of new assets, and the easiest
-            swaps ever. The interoperable future of Polkadot is here and we are at the forefront!</p>
+          <p class="text">{{ t('about.description') }}</p>
         </div>
         <img src="@/assets/about/web3.png" draggable="false" class="web3 unselectable" />
       </div>
       <div class="about-trading">
         <img src="@/assets/about/about02.png" draggable="false" class="unselectable">
         <div class="about-trading-block-1">
-          <p class="text">Polkaswap is a non-custodial, cross-chain AMM DEX protocol for swapping tokens based on
-            Polkadot and Kusama relay chains, Polkadot and Kusama parachains, and blockchains directly connected via
-            bridges.</p>
+          <p class="text">{{ t('about.trading.first') }}</p>
         </div>
         <div class="about-trading-block-2">
           <div class="bubble-block">
             <img src="@/assets/about/about02-1.png" draggable="false" class="unselectable bubble-icon">
-            <p class="text">Polkaswap removes trusted intermediaries and provides the opportunity for faster
-              trading</p>
+            <p class="text">{{ t('about.trading.second') }}</p>
           </div>
         </div>
         <div class="about-trading-block-3">
           <div class="bubble-block">
             <img src="@/assets/about/about02-2.png" draggable="false" class="unselectable bubble-icon">
-            <p class="text">Polkaswap is a community project and devs collaborate on the open source code using the
+            <p class="text">{{ t('about.trading.third') }}
               <a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_(original_%22BSD_License%22)" title="BSD 4-clause license" class="text">BSD 4-clause license</a></p>
           </div>
         </div>
@@ -35,22 +31,18 @@
       <div class="about-liquidity">
         <img src="@/assets/about/about03.png" draggable="false" class="unselectable">
         <div class="about-liquidity-block-1">
-          <p class="text">Polkaswap combines multiple liquidity sources under a common liquidity aggregation
-            algorithm, operating completely on-chain, in a trustless and decentralized way.</p>
+          <p class="text">{{ t('about.liquidity.first') }}</p>
         </div>
         <div class="about-liquidity-block-2">
           <div class="bubble-block">
             <img src="@/assets/about/about03-1.png" draggable="false" class="unselectable bubble-icon">
-            <p class="text">When traders call the swap function, the liquidity aggregation algorithm will fill orders
-              using the best offers across all liquidity sources. Liquidity sources can be other DEXs, order books, or
-              other API-driven sources.</p>
+            <p class="text">{{ t('about.liquidity.second') }}</p>
           </div>
         </div>
         <div class="about-liquidity-block-3">
           <div class="bubble-block">
             <img src="@/assets/about/about03-2.png" draggable="false" class="unselectable bubble-icon">
-            <p class="text">Because Polkaswap is an open-source project, anyone can add more liquidity sources by
-              making contributions to the Polkaswap codebase.</p>
+            <p class="text">{{ t('about.liquidity.third') }}</p>
           </div>
         </div>
         <img src="@/assets/about/about03-shadow-1.png" draggable="false" class="unselectable about-liquidity-shadow-1">
@@ -58,20 +50,18 @@
       <div class="about-swap">
         <img src="@/assets/about/about04.png" draggable="false" class="unselectable">
         <div class="about-swap-block-1">
-          <p class="text">Go beyond the limits of current DEXs by adding tokens from the Polkadot ecosystem as well
-            as other blockchains.</p>
+          <p class="text">{{ t('about.swap.first') }}</p>
         </div>
         <div class="about-swap-block-2">
           <div class="bubble-block">
             <img src="@/assets/about/about04-1.png" draggable="false" class="unselectable bubble-icon">
-            <p class="text">Create, list and trade your own tokens on the SORA network.</p>
+            <p class="text">{{ t('about.swap.second') }}</p>
           </div>
         </div>
         <div class="about-swap-block-3">
           <div class="bubble-block">
             <img src="@/assets/about/about04-2.png" draggable="false" class="unselectable bubble-icon">
-            <p class="text">Our core infrastructure uses Parity Substrate, which is more scalable than Ethereum, and
-              does not use expensive mining for consensus.</p>
+            <p class="text">{{ t('about.swap.third') }}</p>
           </div>
         </div>
         <img src="@/assets/about/about04-shadow-1.png" draggable="false" class="unselectable about-swap-shadow-1">
@@ -79,16 +69,12 @@
       <div class="about-pswap">
         <img src="@/assets/about/about05.png" draggable="false" class="unselectable">
         <div class="about-pswap-block-1">
-          <p class="text">PSWAP was created by community governance by voting on its release. It is a utility and
-            governance token used to reward liquidity providers on Polkaswap. Unlike most other reward tokens, PSWAP is
-            burned with transactions and decreases in supply over time.</p>
+          <p class="text">{{ t('about.pswap.first') }}</p>
         </div>
         <div class="about-pswap-block-2">
           <div class="bubble-block">
             <img src="@/assets/about/about05-1.png" draggable="false" class="unselectable bubble-icon">
-            <p class="text">The 0.3% fee for every swap on the Polkaswap DEX is used to buy back PSWAP tokens, which
-              are then burned. At first, 90% of burned PSWAP tokens are reminted to allocate to liquidity providers, but
-              with time this percentage will decrease to 35% after 4 years.</p>
+            <p class="text">{{ t('about.pswap.second') }}</p>
           </div>
         </div>
         <img src="@/assets/about/about05-shadow-1.png" draggable="false" class="unselectable about-pswap-shadow-1">
@@ -100,26 +86,56 @@
       <div class="about-links">
         <div class="about-links-part">
           <img src="@/assets/about/about07-1.png" draggable="false" class="unselectable icon">
-          <span class="title">Become a SORA Validator<img src="@/assets/about/about07-3.png" class="link"></span>
-          <p class="text">Secure the future of the SORA network and decentralized apps like Polkaswap, and earn
-            rewards along the way by becoming a SORA validator.</p>
+          <span class="title">{{ t('about.links.first.title') }}<img src="@/assets/about/about07-3.png" class="link"></span>
+          <p class="text">{{ t('about.links.first.desc') }}</p>
           <a class="link-mask" href="https://sora.org/validator" target="_blank" />
         </div>
         <div class="about-links-part">
           <img src="@/assets/about/about07-2.png" draggable="false" class="unselectable icon">
-          <span class="title">Connect a Chain to SORA<img src="@/assets/about/about07-3.png" class="link"></span>
-          <p class="text">Grow the decentralized world economy by connecting more chains to SORA and Polkaswap using
-            the HASHI bridge protocol.</p>
+          <span class="title">{{ t('about.links.second.title') }}<img src="@/assets/about/about07-3.png" class="link"></span>
+          <p class="text">{{ t('about.links.second.desc') }}</p>
           <a class="link-mask" href="https://sora.org" target="_blank" />
         </div>
         <img src="@/assets/about/about07-shadow-1.png" draggable="false" class="unselectable about-links-shadow-1">
       </div>
       <div class="about-network">
         <img src="@/assets/about/about08.png" draggable="false" class="unselectable network-img">
-        <p class="text">Polkaswap is built on the SORA Network, focusing on
-          interoperability to connect the rest of the crypto ecosystem to Polkadot.</p>
+        <p class="text">{{ t('about.network') }}</p>
       </div>
     </div>
+    <footer class="app-footer">
+      <div class="hr" />
+      <div class="info-block">
+        <div class="social-links">
+          <a href="https://twitter.com/polkaswap" title="Twitter" target="_blank">
+            <img src="@/assets/img/social/twitter.svg" class="link" />
+          </a>
+          <a href="https://t.me/polkaswap" title="Telegram" target="_blank">
+            <img src="@/assets/img/social/telegram.svg" class="link" />
+          </a>
+          <a href="https://medium.com/@polkaswap" title="Medium" target="_blank">
+            <img src="@/assets/img/social/medium.svg" class="link" />
+          </a>
+          <a href="https://reddit.com/r/polkaswap" title="Reddit" target="_blank">
+            <img src="@/assets/img/social/reddit.svg" class="link" />
+          </a>
+          <a href="https://github.com/sora-xor" title="Github" target="_blank">
+            <img src="@/assets/img/social/github.svg" class="link" />
+          </a>
+          <a href="https://sora.org" title="Sora" target="_blank">
+            <img src="@/assets/img/social/sora.svg" class="link" />
+          </a>
+        </div>
+        <div class="info-links">
+          <a :href="t('helpDialog.termsOfServiceLink')" :title="t('footerMenu.memorandum')" target="_blank" class="text link">{{ t('footerMenu.memorandum') }}</a>
+          <span class="divider">|</span>
+          <a :href="t('helpDialog.privacyPolicyLink')" :title="t('footerMenu.privacy')" target="_blank" class="text link">{{ t('footerMenu.privacy') }}</a>
+        </div>
+      </div>
+      <div class="app-disclaimer">
+        <p>{{ t('disclaimer') }}</p>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -134,6 +150,10 @@ export default class About extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
+$disclaimer-font-size: 11px;
+$disclaimer-font-weight: 200;
+$disclaimer-letter-spacing: -0.03em;
+
 @mixin backgroundImageWidth {
   &>:first-child {
     width: 80%;
@@ -476,6 +496,58 @@ export default class About extends Mixins(TranslationMixin) {
   }
   @media screen and (min-width: 1800px) {
     font-size: 18px;
+  }
+}
+
+.app-disclaimer {
+  margin-top: $inner-spacing-mini * 2.5;
+  font-size: $disclaimer-font-size;
+  font-weight: $disclaimer-font-weight;
+  line-height: var(--s-line-height-mini);
+  letter-spacing: $disclaimer-letter-spacing;
+  color: var(--s-color-base-content-secondary);
+}
+
+.app-footer {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 4rem;
+
+  .hr {
+    height: 1px;
+    background: linear-gradient(80.38deg, #FFD9E5 14.49%, rgba(242, 153, 133, 0.68) 38.03%, rgba(239, 20, 92, 0.38) 61.35%, rgba(171, 24, 184, 0.25) 79.98%, rgba(24, 174, 184, 0.2) 85.51%);
+  }
+  .info-block {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .social-links {
+      display: flex;
+      align-items: center;
+      .link {
+        padding: 0 5px;
+      }
+    }
+    .info-links {
+      display: flex;
+      align-items: center;
+      .divider {
+        margin: 0 5px;
+      }
+      .link {
+        font-weight: 200;
+        font-size: 12px;
+        line-height: 320%;
+        text-align: right;
+        letter-spacing: -0.02em;
+        font-feature-settings: 'case' on;
+      }
+    }
+  }
+  .disclaimer {
+    margin-top: 40px;
   }
 }
 </style>
