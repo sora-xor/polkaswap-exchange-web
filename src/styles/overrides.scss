@@ -33,7 +33,7 @@ i[class^="s-icon-"], i[class*=" s-icon-"] {
   }
 }
 /*________________________________________COMMON LAYOUT________________________________________*/
-body {
+body, .el-loading-mask {
   background-color: var(--s-color-utility-body);
 }
 h3 {

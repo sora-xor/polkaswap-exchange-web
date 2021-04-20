@@ -156,12 +156,12 @@
           <info-line
             :label="t('bridge.soraNetworkFee')"
             :tooltip-content="t('networkFeeTooltipText')"
-            :value="soraNetworkFee ? '~' + formattedSoraNetworkFee : '-'"
+            :value="formatFee(soraNetworkFee, formattedSoraNetworkFee)"
             :asset-symbol="KnownSymbols.XOR"
           />
           <info-line
             :label="t('bridge.ethereumNetworkFee')"
-            :value="ethereumNetworkFee ? '~' + formattedEthNetworkFee : '-'"
+            :value="formatFee(ethereumNetworkFee, formattedEthNetworkFee)"
             :asset-symbol="EthSymbol"
           />
           <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
@@ -333,6 +333,16 @@ export default class Bridge extends Mixins(
 
   get formattedEthNetworkFee (): string {
     return this.formatStringValue(this.ethereumNetworkFee)
+  }
+
+  formatFee (fee: string, formattedFee: string): string {
+    if (!fee) {
+      return '-'
+    }
+    if (fee === '0') {
+      return fee
+    }
+    return `~${formattedFee}`
   }
 
   formatBalance (isSora = true): string {

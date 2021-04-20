@@ -78,8 +78,8 @@ export default {
     title: 'Help',
     termsOfService: 'Terms of Service',
     privacyPolicy: 'Privacy Policy',
-    termsOfServiceLink: 'https://sora.org',
-    privacyPolicyLink: 'https://soramitsu.co.jp',
+    termsOfServiceLink: 'https://polkaswap.io/terms',
+    privacyPolicyLink: 'https://polkaswap.io/privacy',
     appVersion: '@:appName version',
     contactUs: 'Contact us'
   },

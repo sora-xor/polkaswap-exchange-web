@@ -86,8 +86,28 @@
                 class="el-menu-item menu-item--small"
               />
             </li>
+            <li class="menu-link-container">
+              <sidebar-item-content
+                :title="t('footerMenu.memorandum')"
+                :href="t('helpDialog.termsOfServiceLink')"
+                tag="a"
+                target="_blank"
+                rel="nofollow noopener"
+                class="el-menu-item menu-item--small"
+              />
+            </li>
+            <li class="menu-link-container">
+              <sidebar-item-content
+                :title="t('footerMenu.privacy')"
+                :href="t('helpDialog.privacyPolicyLink')"
+                tag="a"
+                target="_blank"
+                rel="nofollow noopener"
+                class="el-menu-item menu-item--small"
+              />
+            </li>
             <!-- <sidebar-item-content
-              :title="t(`footerMenu.help`)"
+              :title="t('footerMenu.help')"
               icon="notifications-info-24"
               tag="li"
               class="el-menu-item menu-item--small"
@@ -285,6 +305,11 @@ html {
     margin-bottom: $inner-spacing-small;
   }
 
+  .menu-link-container .el-menu-item:hover span {
+    // TODO: Remove important marks after design redevelopment
+    color: var(--s-color-base-on-accent) !important;
+  }
+
   .el-menu-item {
     &.is-disabled {
       opacity: 1;
@@ -435,6 +460,7 @@ $sidebar-witdh: 160px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
 $account-name-margin: -2px 8px 0 12px;
+$menu-horizontal-padding: $inner-spacing-mini * 1.25;
 
 // TODO: Move disclaimer's variables to appropriate place after design redevelopment
 $disclaimer-font-size: 11px;
@@ -525,16 +551,34 @@ $disclaimer-letter-spacing: -0.03em;
       border-radius: 0;
     }
   }
+  .menu-link-container {
+    .el-menu-item {
+      white-space: initial;
+    }
+    + .menu-link-container {
+      position: relative;
+      margin-top: $inner-spacing-mini;
+      &:before {
+        position: absolute;
+        left: $menu-horizontal-padding;
+        top: -$inner-spacing-mini / 2;
+        content: '';
+        display: block;
+        height: 1px;
+        width: calc(100% - #{$menu-horizontal-padding} * 2);
+        background-color: var(--s-color-theme-secondary);
+      }
+    }
+  }
   .el-menu-item {
-    padding: $inner-spacing-medium $inner-spacing-medium * 1.25;
+    padding: $inner-spacing-medium #{$menu-horizontal-padding};
     height: initial;
     font-size: var(--s-heading6-font-size);
     font-feature-settings: $s-font-feature-settings-title;
     font-weight: 600;
     line-height: $s-line-height-big;
-
     &.menu-item--small {
-      padding: $inner-spacing-mini $inner-spacing-medium * 1.25;
+      padding: $inner-spacing-mini #{$menu-horizontal-padding};
       color: var(--s-color-base-content-tertiary);
     }
     &:hover:not(.is-active):not(.is-disabled) {
