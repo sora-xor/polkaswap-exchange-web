@@ -94,7 +94,11 @@
         </s-menu>
       </aside>
       <div class="app-body">
-        <div class="app-content">
+        <div :class="[
+            'app-content',
+            !isAboutPage ? 'padding' : ''
+          ]"
+        >
           <router-view :parent-loading="loading" />
           <p v-if="!isAboutPage" class="app-disclaimer">{{ t('disclaimer') }}</p>
         </div>
@@ -492,6 +496,10 @@ $disclaimer-letter-spacing: -0.03em;
     flex-direction: column;
     justify-content: center;
     flex: 1;
+
+    &.padding {
+      padding-top: $inner-spacing-big;
+    }
 
     .app-disclaimer {
       margin-left: auto;
