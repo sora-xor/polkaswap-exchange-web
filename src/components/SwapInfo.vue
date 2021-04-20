@@ -8,10 +8,9 @@
       :asset-symbol="getAssetSymbolText"
     />
     <info-line
-      v-for="({ amount, currency }, rewardIndex) in rewards"
-      :key="rewardIndex"
-      :value="formatCodecNumber(amount)"
-      :asset-symbol="getAssetSymbol(currency)"
+      v-for="(reward, index) in rewardsValues"
+      :key="index"
+      v-bind="reward"
     />
     <!-- <info-line
       :label="t('swap.priceImpact')"
@@ -83,6 +82,14 @@ export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMi
     ]
   }
 
+  get rewardsValues (): Array<any> {
+    return this.rewards.map((reward, index) => ({
+      value: this.formatCodecNumber(reward.amount),
+      assetSymbol: KnownAssets.get(reward.currency)?.symbol ?? '',
+      label: index === 0 ? this.t('swap.rewardsForSwap') : ''
+    }))
+  }
+
   get formattedNetworkFee (): string {
     return this.formatCodecNumber(this.networkFee)
   }
@@ -116,10 +123,6 @@ export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMi
 
   get getAssetSymbolText (): string {
     return (this.isExchangeB ? this.tokenFrom : this.tokenTo)?.symbol ?? ''
-  }
-
-  getAssetSymbol (address: string): string {
-    return KnownAssets.get(address)?.symbol ?? ''
   }
 }
 </script>
