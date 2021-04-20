@@ -2,30 +2,32 @@
   <div id="app">
     <div class="app-main">
       <aside class="app-sidebar">
-        <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
-        <s-menu
-          class="menu"
-          mode="vertical"
-          background-color="transparent"
-          box-shadow="none"
-          text-color="var(--s-color-base-content-primary)"
-          active-text-color="var(--s-color-theme-accent)"
-          active-hover-color="transparent"
-          :default-active="getCurrentPath()"
-          @select="goTo"
-        >
-          <s-menu-item-group v-for="(group, index) in SidebarMenuGroups" :key="index">
-            <s-menu-item
-              v-for="item in group"
-              :key="item.title"
-              :index="item.title"
-              :disabled="item.disabled"
-              class="menu-item"
-            >
-              <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
-            </s-menu-item>
-          </s-menu-item-group>
-        </s-menu>
+        <div>
+          <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
+          <s-menu
+            class="menu"
+            mode="vertical"
+            background-color="transparent"
+            box-shadow="none"
+            text-color="var(--s-color-base-content-primary)"
+            active-text-color="var(--s-color-theme-accent)"
+            active-hover-color="transparent"
+            :default-active="getCurrentPath()"
+            @select="goTo"
+          >
+            <s-menu-item-group v-for="(group, index) in SidebarMenuGroups" :key="index">
+              <s-menu-item
+                v-for="item in group"
+                :key="item.title"
+                :index="item.title"
+                :disabled="item.disabled"
+                class="menu-item"
+              >
+                <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
+              </s-menu-item>
+            </s-menu-item-group>
+          </s-menu>
+        </div>
 
         <s-menu
           class="menu"
@@ -444,8 +446,9 @@ html {
 
 <style lang="scss" scoped>
 $logo-width: 40px;
-$logo-width-big: 150px;
-$sidebar-width: 170px;
+$logo-width-big: 160px;
+$logo-margin: 0 0 $inner-spacing-mini 20px;
+$sidebar-width: 185px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
 $account-name-margin: -2px 8px 0 12px;
@@ -485,7 +488,11 @@ $disclaimer-letter-spacing: -0.03em;
   }
 
   &-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     flex: 1;
+
     .app-disclaimer {
       margin-left: auto;
       margin-bottom: $inner-spacing-big;
@@ -579,11 +586,11 @@ $disclaimer-letter-spacing: -0.03em;
 }
 
 .polkaswap-logo {
-  margin-left: $inner-spacing-medium;
+  margin: $logo-margin;
   background-image: url('~@/assets/img/pswap.svg');
   background-size: cover;
-  width: var(--s-size-medium);
-  min-height: var(--s-size-medium);
+  width: calc(var(--s-size-medium) + 2px);
+  min-height: calc(var(--s-size-medium) + 2px);
   padding: 0;
   border-radius: 0;
 }
