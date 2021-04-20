@@ -3,6 +3,9 @@
     <div class="content">
       <div class="about-main">
         <img src="@/assets/about/about01.png" draggable="false" class="main unselectable" />
+        <div class="about-main-title">
+          <p class="gradient main">{{ t('about.title') }}</p>
+        </div>
         <div class="about-main-text">
           <p class="text">{{ t('about.description') }}</p>
         </div>
@@ -10,6 +13,9 @@
       </div>
       <div class="about-trading">
         <img src="@/assets/about/about02.png" draggable="false" class="unselectable">
+        <div class="about-trading-title">
+          <p class="gradient trading">{{ t('about.trading.title') }}</p>
+        </div>
         <div class="about-trading-block-1">
           <p class="text">{{ t('about.trading.first') }}</p>
         </div>
@@ -30,6 +36,9 @@
       </div>
       <div class="about-liquidity">
         <img src="@/assets/about/about03.png" draggable="false" class="unselectable">
+        <div class="about-liquidity-title">
+          <p class="gradient liquidity">{{ t('about.liquidity.title') }}</p>
+        </div>
         <div class="about-liquidity-block-1">
           <p class="text">{{ t('about.liquidity.first') }}</p>
         </div>
@@ -49,6 +58,9 @@
       </div>
       <div class="about-swap">
         <img src="@/assets/about/about04.png" draggable="false" class="unselectable">
+        <div class="about-swap-title">
+          <p class="gradient swap">{{ t('about.swap.title') }}</p>
+        </div>
         <div class="about-swap-block-1">
           <p class="text">{{ t('about.swap.first') }}</p>
         </div>
@@ -68,6 +80,9 @@
       </div>
       <div class="about-pswap">
         <img src="@/assets/about/about05.png" draggable="false" class="unselectable">
+        <div class="about-pswap-title">
+          <p class="gradient pswap">{{ t('about.pswap.title') }}</p>
+        </div>
         <div class="about-pswap-block-1">
           <p class="text">{{ t('about.pswap.first') }}</p>
         </div>
@@ -161,6 +176,11 @@ $disclaimer-letter-spacing: -0.03em;
   }
 }
 
+.layout {
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
 .content {
   display: flex;
   flex-direction: column;
@@ -207,6 +227,15 @@ $disclaimer-letter-spacing: -0.03em;
       width: 100%;
     }
 
+    &-title {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -52%);
+      line-height: 62px;
+      text-align: center;
+    }
+
     &-text {
       top: 60%;
       width: 35%;
@@ -225,6 +254,14 @@ $disclaimer-letter-spacing: -0.03em;
     position: relative;
 
     @include backgroundImageWidth;
+
+    &-title {
+      position: absolute;
+      top: 20%;
+      left: 68%;
+      transform: translate(-50%, -50%);
+      width: fit-content;
+    }
 
     &-block-1 {
       top: 26%;
@@ -264,43 +301,40 @@ $disclaimer-letter-spacing: -0.03em;
 
     @include backgroundImageWidth;
 
-    &-block-1 {
-      top: 49.5%;
-      left: 12.5%;
-      width: 35%;
-
+    &-title {
       position: absolute;
+      top: 36%;
+      left: 32%;
+      transform: translate(-50%, -50%);
+      width: 40%;
+    }
+
+    &-block-1 {
+      top: 56.5%;
+      left: 30.5%;
+      width: 37%;
+      position: absolute;
+      transform: translate(-50%, -50%);
     }
     &-block-2 {
-      top: 60%;
-      left: 9%;
+      top: 75%;
+      left: 36%;
       width: 55%;
-
       position: absolute;
+      transform: translate(-50%, -50%);
     }
     &-block-3 {
-      top: 75%;
-      left: 9%;
+      top: 94%;
+      left: 36%;
       width: 55%;
-
       position: absolute;
+      transform: translate(-50%, -50%);
     }
     &-shadow-1 {
       position: absolute;
       top: -110%;
       z-index: -1;
       width: 100%;
-    }
-    @media screen and (max-width: 1024px) {
-      &-block-1 {
-        left: 6.5%;
-      }
-      &-block-2 {
-        left: 2%;
-      }
-      &-block-3 {
-        left: 2%;
-      }
     }
   }
   &-swap {
@@ -313,8 +347,16 @@ $disclaimer-letter-spacing: -0.03em;
 
     @include backgroundImageWidth;
 
+    &-title {
+      position: absolute;
+      top: 12%;
+      left: 72%;
+      transform: translate(-50%, -50%);
+      width: 40%;
+    }
+
     &-block-1 {
-      top: 20%;
+      top: 24%;
       right: 7.5%;
       width: 40%;
 
@@ -351,6 +393,14 @@ $disclaimer-letter-spacing: -0.03em;
 
     @include backgroundImageWidth;
 
+    &-title {
+      position: absolute;
+      top: 29%;
+      left: 54%;
+      transform: translate(-50%, -50%);
+      width: 40%;
+    }
+
     &-block-1 {
       top: 36%;
       right: 33%;
@@ -359,7 +409,7 @@ $disclaimer-letter-spacing: -0.03em;
       position: absolute;
     }
     &-block-2 {
-      top: 58%;
+      top: 62%;
       left: 32%;
       width: 50%;
 
@@ -432,6 +482,8 @@ $disclaimer-letter-spacing: -0.03em;
         letter-spacing: -0.02em;
         font-feature-settings: 'case' on, 'liga' off;
 
+        padding: 10px 0;
+
         color: #D5CDD0;
 
         .link {
@@ -491,16 +543,11 @@ $disclaimer-letter-spacing: -0.03em;
   @media screen and (min-width: 1100px) {
     font-size: 14px;
   }
-  @media screen and (min-width: 1250px) {
-    font-size: 15px;
-  }
-  @media screen and (min-width: 1800px) {
-    font-size: 18px;
-  }
 }
 
 .app-disclaimer {
   margin-top: $inner-spacing-mini * 2.5;
+  margin-bottom: $inner-spacing-mini * 2.5;
   font-size: $disclaimer-font-size;
   font-weight: $disclaimer-font-weight;
   line-height: var(--s-line-height-mini);
@@ -522,6 +569,7 @@ $disclaimer-letter-spacing: -0.03em;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    display: none;
 
     .social-links {
       display: flex;
@@ -549,5 +597,61 @@ $disclaimer-letter-spacing: -0.03em;
   .disclaimer {
     margin-top: 40px;
   }
+}
+
+.gradient {
+  @mixin gradientBackground {
+    background-clip: text;
+    -webkit-background-clip: text;
+  }
+
+  @mixin fontSize {
+    @media screen and (max-width: 1200px) {
+      &.main {
+        font-size: 55px;
+      }
+      &.trading, &.liquidity,
+      &.swap, &.pswap {
+        font-size: 36px;
+      }
+    }
+  }
+
+  font-family: Sora;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-feature-settings: 'case' on, 'liga' off;
+  box-decoration-break: clone;
+  -webkit-text-fill-color: transparent;
+  -webkit-box-decoration-break: clone;
+
+  &.main {
+    font-size: 58px;
+    background: linear-gradient(79.7deg, rgba(242, 153, 133, 0.68) 5.55%, #FF3B7B 55.23%, rgba(24, 165, 184, 0.2) 98.71%, rgba(171, 24, 184, 0.25) 131.11%, rgba(242, 44, 109, 0.38) 157.31%);
+    @include gradientBackground;
+  }
+  &.trading {
+    font-size: 46px;
+    background: linear-gradient(72.2deg, rgba(242, 44, 109, 0.38) 0%, #FF3B7B 32.74%, rgba(24, 165, 184, 0.2) 61.38%, rgba(171, 24, 184, 0.25) 82.74%, rgba(242, 153, 133, 0.68) 100%);
+    @include gradientBackground;
+  }
+  &.liquidity {
+    font-size: 46px;
+    background: linear-gradient(80.38deg, #FFD9E5 14.49%, rgba(242, 153, 133, 0.68) 38.03%, rgba(239, 20, 92, 0.38) 61.35%, rgba(171, 24, 184, 0.25) 79.98%, rgba(24, 174, 184, 0.2) 85.51%);
+    @include gradientBackground;
+  }
+  &.swap {
+    font-size: 46px;
+    background: linear-gradient(72.2deg, rgba(242, 44, 109, 0.38) 0%, #FF3B7B 32.74%, rgba(24, 165, 184, 0.2) 61.38%, rgba(171, 24, 184, 0.25) 82.74%, rgba(242, 153, 133, 0.68) 100%);
+    @include gradientBackground;
+  }
+  &.pswap {
+    font-size: 46px;
+    background: linear-gradient(98.89deg, rgba(237, 20, 91, 0.75) 24.73%, rgba(86, 3, 48, 0.75) 71.56%, rgba(113, 24, 184, 0.75) 90.08%);
+    @include gradientBackground;
+  }
+
+  @include fontSize;
 }
 </style>

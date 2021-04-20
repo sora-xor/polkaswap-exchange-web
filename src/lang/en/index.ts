@@ -148,23 +148,28 @@ export default {
     metamask: '@:metamask'
   },
   about: {
+    title: 'The DEX for the Interoperable Future.',
     description: 'Cross-chain exchange of assets, simple creation and listing of new assets, and the easiest swaps ever. The interoperable future of Polkadot is here and we are at the forefront!',
     trading: {
+      title: 'Faster Trading',
       first: 'Polkaswap is a non-custodial, cross-chain AMM DEX protocol for swapping tokens based on Polkadot and Kusama relay chains, Polkadot and Kusama parachains, and blockchains directly connected via bridges.',
       second: 'Polkaswap removes trusted intermediaries and provides the opportunity for faster trading',
       third: 'Polkaswap is a community project and devs collaborate on the open source code using the '
     },
     liquidity: {
+      title: 'Boundless Liquidity',
       first: 'Polkaswap combines multiple liquidity sources under a common liquidity aggregation algorithm, operating completely on-chain, in a trustless and decentralized way.',
       second: 'When traders call the swap function, the liquidity aggregation algorithm will fill orders using the best offers across all liquidity sources. Liquidity sources can be other DEXs, order books, or other API-driven sources.',
       third: 'Because Polkaswap is an open-source project, anyone can add more liquidity sources by making contributions to the Polkaswap codebase.'
     },
     swap: {
+      title: 'Swap Any Token',
       first: 'Go beyond the limits of current DEXs by adding tokens from the Polkadot ecosystem as well as other blockchains.',
       second: 'Create, list and trade your own tokens on the SORA network.',
       third: 'Our core infrastructure uses Parity Substrate, which is more scalable than Ethereum, and does not use expensive mining for consensus.'
     },
     pswap: {
+      title: 'PSWAP Tokens',
       first: 'PSWAP was created by community governance by voting on its release. It is a utility and governance token used to reward liquidity providers on Polkaswap. Unlike most other reward tokens, PSWAP is burned with transactions and decreases in supply over time.',
       second: 'The 0.3% fee for every swap on the Polkaswap DEX is used to buy back PSWAP tokens, which are then burned. At first, 90% of burned PSWAP tokens are reminted to allocate to liquidity providers, but with time this percentage will decrease to 35% after 4 years.'
     },
