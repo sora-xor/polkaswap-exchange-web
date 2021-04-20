@@ -12,6 +12,8 @@
         :loading="nodeIsConnecting"
         :nodes="nodeList"
         :handle-node="navigateToNodeInfo"
+        :get-node-network-status="getNodeNetworkStatus"
+        :environment="soraNetwork"
       />
       <node-info
         v-else
@@ -56,8 +58,9 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   @Getter customNodes!: Array<any>
   @Getter chainGenesisHash!: string
   @Getter nodeIsConnecting!: boolean
+  @Getter soraNetwork!: string
   @Action getChainGenesisHash!: (nodeAddress: string) => Promise<string>
-  @Action getNodeNetworkStatus
+  @Action getNodeNetworkStatus!: (nodeAddress: string) => Promise<any>
   @Action setNode!: (node: any) => void
   @Action addCustomNode!: (node: any) => void
   @Action removeCustomNode!: (node: any) => void
@@ -65,10 +68,6 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   currentView = NodeListView
 
   selectedNode: any = {}
-
-  mounted () {
-    Promise.all(this.nodeList.map(node => this.getNodeNetworkStatus(node.address)))
-  }
 
   get connectedNodeAddress (): string {
     return this.node.address

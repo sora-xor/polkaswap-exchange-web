@@ -101,6 +101,7 @@ export default {
     customNode: 'Custom node',
     howToSetupOwnNode: 'How to setup your own @:soraText node',
     select: 'Select',
+    selectNodeForEnvironment: 'Select a node for {environment} environment:',
     nodeTitle: '{chain} hosted by {name}'
   },
   buttons: {

@@ -180,13 +180,14 @@ const actions = {
   },
   async getNodeNetworkStatus (_, nodeAddress: string) {
     if (!nodeAddress) {
-      throw new Error('nodeAddress is required')
+      console.error('nodeAddress is required')
+      return null
     }
 
     const rpc = getRpcEndpoint(nodeAddress)
     const response = await fetchRpc(rpc, 'system_health')
 
-    console.log(response)
+    return response
   },
   setSlippageTolerance ({ commit }, value) {
     commit(types.SET_SLIPPAGE_TOLERANCE, value)
