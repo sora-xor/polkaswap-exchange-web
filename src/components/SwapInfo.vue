@@ -1,11 +1,17 @@
 <template>
   <div class="swap-info-container">
-    <info-line v-for="({ label, value }, index) in priceValues" :key="index" :label="label" :value="value" />
+    <info-line v-for="({ id, label, value }) in priceValues" :key="id" :label="label" :value="value" />
     <info-line
       :label="t(`swap.${isExchangeB ? 'maxSold' : 'minReceived'}`)"
       :tooltip-content="t('swap.minReceivedTooltip')"
       :value="formattedMinMaxReceived"
       :asset-symbol="getAssetSymbolText"
+    />
+    <info-line
+      v-for="({ amount, currency }, rewardIndex) in rewards"
+      :key="rewardIndex"
+      :value="formatCodecNumber(amount)"
+      :asset-symbol="getAssetSymbol(currency)"
     />
     <!-- <info-line
       :label="t('swap.priceImpact')"
@@ -32,7 +38,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import { KnownSymbols, CodecString, AccountAsset } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LPRewardsInfo } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
@@ -53,6 +59,7 @@ export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMi
   @Getter('isExchangeB', { namespace }) isExchangeB!: boolean
   @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString
   @Getter('networkFee', { namespace }) networkFee!: CodecString
+  @Getter('rewards', { namespace }) rewards!: Array<LPRewardsInfo>
 
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
@@ -64,10 +71,12 @@ export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMi
 
     return [
       {
+        id: 'from',
         label: this.t('swap.firstPerSecond', { first: fromSymbol, second: toSymbol }),
         value: this.price
       },
       {
+        id: 'to',
         label: this.t('swap.firstPerSecond', { first: toSymbol, second: fromSymbol }),
         value: this.priceReversed
       }
@@ -107,6 +116,10 @@ export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMi
 
   get getAssetSymbolText (): string {
     return (this.isExchangeB ? this.tokenFrom : this.tokenTo)?.symbol ?? ''
+  }
+
+  getAssetSymbol (address: string): string {
+    return KnownAssets.get(address)?.symbol ?? ''
   }
 }
 </script>
