@@ -21,7 +21,8 @@ const types = flow(
     'SET_PAIR_LIQUIDITY_SOURCES',
     'SET_NETWORK_FEE',
     'SET_REWARDS',
-    'GET_SWAP_CONFIRM'
+    'GET_SWAP_CONFIRM',
+    'RESET'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -101,6 +102,13 @@ const getters = {
 }
 
 const mutations = {
+  [types.RESET] (state: SwapState) {
+    const s = initialState()
+
+    Object.keys(s).forEach(key => {
+      state[key] = s[key]
+    })
+  },
   [types.SET_TOKEN_FROM_ADDRESS] (state: SwapState, address: string) {
     state.tokenFromAddress = address
   },
@@ -227,6 +235,9 @@ const actions = {
   },
   setNetworkFee ({ commit }, networkFee: string) {
     commit(types.SET_NETWORK_FEE, networkFee)
+  },
+  reset ({ commit }) {
+    commit(types.RESET)
   }
 }
 

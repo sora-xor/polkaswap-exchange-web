@@ -38,7 +38,6 @@ export const isMaxButtonAvailable = (
   if (
     !asset ||
     !areAssetsSelected ||
-    !fee ||
     !xorAsset ||
     asZeroValue(getAssetBalance(asset, { parseAsLiquidity }))) {
     return false
@@ -97,7 +96,8 @@ export const hasInsufficientBalance = (
 }
 
 export const hasInsufficientXorForFee = (xorAsset: AccountAsset | RegisteredAccountAsset | null, fee: CodecString, isXorOutputSwap = false): boolean => {
-  if (!xorAsset || !fee) return true
+  if (!xorAsset) return true
+  if (asZeroValue(fee)) return false
 
   const decimals = xorAsset.decimals
   const xorBalance = getAssetBalance(xorAsset)
@@ -108,8 +108,11 @@ export const hasInsufficientXorForFee = (xorAsset: AccountAsset | RegisteredAcco
 }
 
 export const hasInsufficientEthForFee = (ethBalance: CodecString, fee: CodecString): boolean => {
+  if (!fee) return false
+
   const fpBalance = FPNumber.fromCodecValue(ethBalance)
   const fpFee = FPNumber.fromCodecValue(fee)
+
   return FPNumber.lt(fpBalance, fpFee)
 }
 
