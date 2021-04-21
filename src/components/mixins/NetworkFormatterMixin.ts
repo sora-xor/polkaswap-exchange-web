@@ -15,7 +15,7 @@ export default class NetworkFormatterMixin extends Vue {
       return `sora.${soraNetwork}`
     }
     const network = isDefaultEthNetwork ? defaultEthNetwork : ethNetwork
-    if (!network) {
+    if (!network || network === 'undefined') {
       return ''
     }
     return `ethereum.${network}`
