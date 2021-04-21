@@ -550,6 +550,9 @@ div.app-controls span.el-tooltip button.el-button.el-tooltip.wallet.el-button--p
   margin-right: 4px;
   /*margin-top: 17px*/
 }
+div.app-controls {
+  z-index: 2;
+}
 footer.app-footer {
   padding-right: 22px!important;
   padding-bottom: 20px!important;
