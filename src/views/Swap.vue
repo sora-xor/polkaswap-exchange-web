@@ -228,7 +228,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   get isXorOutputSwap (): boolean {
-    return this.tokenTo && this.tokenTo?.address === KnownAssets.get(KnownSymbols.XOR)?.address
+    return this.tokenTo?.address === KnownAssets.get(KnownSymbols.XOR)?.address
   }
 
   get isMaxSwapAvailable (): boolean {
