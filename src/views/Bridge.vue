@@ -81,7 +81,7 @@
         <s-button class="s-button--switch" type="action" icon="arrows-swap-90-24" @click="handleSwitchItems" />
         <s-card :class="!isSoraToEvm ? 'bridge-item' : 'bridge-item bridge-item--evm'" border-radius="mini" shadow="never">
           <div class="bridge-item-header">
-            <div class="bridge-item-title">
+            <div class="bridge-item-title bridge-item-title--to" @click="handleChangeNetwork">
               <span class="bridge-item-title-label">{{ t('transfers.to') }}</span>
               <span>{{ getBridgeItemTitle(true) }}</span>
               <token-logo class="bridge-item-title-icon" :tokenSymbol="isSoraToEvm ? 'bridge-item-eth' : 'bridge-item-xor'" size="mini" />
@@ -637,6 +637,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       display: flex;
       flex-wrap: nowrap;
       align-items: center;
+      cursor: pointer;
       &-label {
         margin-right: $inner-spacing-mini / 2;
         & + span {
