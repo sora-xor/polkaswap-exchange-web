@@ -254,7 +254,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   created () {
-    this.reset()
     this.withApi(async () => {
       await this.getAssets()
       if (!this.tokenFrom) {
@@ -268,6 +267,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       }
       await this.updatePairLiquiditySources()
     })
+  }
+
+  destroyed () {
+    this.reset()
   }
 
   formatBalance (token): string {
