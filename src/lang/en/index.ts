@@ -198,7 +198,8 @@ export default {
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
     insufficientLiquidity: 'Insufficient liquidity',
     confirmSwap: 'Confirm swap',
-    swapOutputMessage: 'Output is estimated. You will receive <span class="min-received-label">at least</span> {transactionValue} or the transaction will revert.'
+    swapOutputMessage: 'Output is estimated. You will receive <span class="min-received-label">at least</span> {transactionValue} or the transaction will revert.',
+    rewardsForSwap: 'PSWAP Strategic Awards'
   },
   pool: {
     connectWallet: '@:connectWalletText',

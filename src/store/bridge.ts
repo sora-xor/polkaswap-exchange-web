@@ -13,14 +13,14 @@ import {
   BridgeHistory,
   TransactionStatus,
   KnownAssets,
-  RequestType
+  CodecString
 } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 
 import { STATES } from '@/utils/fsm'
 import web3Util, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
-import { delay, isXorAccountAsset } from '@/utils'
-import { EthereumGasLimits, MaxUint256 } from '@/consts'
+import { delay, isEthereumAddress } from '@/utils'
+import { EthereumGasLimits, MaxUint256, ZeroStringValue } from '@/consts'
 import { Transaction } from 'web3-core'
 
 const SORA_REQUESTS_TIMEOUT = 5 * 1000
@@ -127,7 +127,7 @@ function initialState () {
     assetAddress: '',
     amount: '',
     soraNetworkFee: 0,
-    ethereumNetworkFee: 0,
+    ethereumNetworkFee: ZeroStringValue,
     soraTotal: 0,
     ethereumTotal: 0,
     isTransactionConfirmed: false,
@@ -219,11 +219,11 @@ const mutations = {
   },
   [types.GET_ETHEREUM_NETWORK_FEE_REQUEST] (state) {
   },
-  [types.GET_ETHEREUM_NETWORK_FEE_SUCCESS] (state, fee: string | number) {
+  [types.GET_ETHEREUM_NETWORK_FEE_SUCCESS] (state, fee: CodecString) {
     state.ethereumNetworkFee = fee
   },
   [types.GET_ETHEREUM_NETWORK_FEE_FAILURE] (state) {
-    state.ethereumNetworkFee = ''
+    state.ethereumNetworkFee = ZeroStringValue
   },
   [types.SET_SORA_TOTAL] (state, soraTotal: string | number) {
     state.soraTotal = soraTotal
@@ -306,7 +306,7 @@ const actions = {
   setSoraNetworkFee ({ commit }, soraNetworkFee: string) {
     commit(types.GET_SORA_NETWORK_FEE_SUCCESS, soraNetworkFee)
   },
-  setEthereumNetworkFee ({ commit }, ethereumNetworkFee: string) {
+  setEthereumNetworkFee ({ commit }, ethereumNetworkFee: CodecString) {
     commit(types.GET_ETHEREUM_NETWORK_FEE_SUCCESS, ethereumNetworkFee)
   },
   getSoraTotal ({ commit }, soraTotal: string | number) {
@@ -406,7 +406,8 @@ const actions = {
       const knownAsset = KnownAssets.get(getters.asset.address)
       const gasLimit = EthereumGasLimits[+getters.isSoraToEthereum][knownAsset ? getters.asset.symbol : KnownBridgeAsset.Other]
       const fee = gasPrice * gasLimit
-      commit(types.GET_ETHEREUM_NETWORK_FEE_SUCCESS, web3.utils.fromWei(`${fee}`, 'ether'))
+      const fpFee = new FPNumber(web3.utils.fromWei(`${fee}`, 'ether')).toCodecString()
+      commit(types.GET_ETHEREUM_NETWORK_FEE_SUCCESS, fpFee)
     } catch (error) {
       console.error(error)
       commit(types.GET_ETHEREUM_NETWORK_FEE_FAILURE)
@@ -427,7 +428,7 @@ const actions = {
       ethereumHash: '',
       transactionState: STATES.INITIAL,
       soraNetworkFee: getters.soraNetworkFee.toString(),
-      ethereumNetworkFee: getters.ethereumNetworkFee.toString()
+      ethereumNetworkFee: getters.ethereumNetworkFee
     }))
     return getters.historyItem
   },
@@ -576,34 +577,55 @@ const actions = {
       }
       const web3 = await web3Util.getInstance()
       const contractAddress = rootGetters[`web3/address${KnownBridgeAsset.Other}`]
-      const allowance = await dispatch('web3/getAllowanceByEthAddress', { address: asset.externalAddress }, { root: true })
-      if (FPNumber.lte(new FPNumber(allowance), new FPNumber(getters.amount))) {
-        const tokenInstance = new web3.eth.Contract(contract[OtherContractType.ERC20].abi)
-        tokenInstance.options.address = asset.externalAddress
-        const methodArgs = [
-          contractAddress.MASTER, // address spender
-          MaxUint256 // uint256 amount
-        ]
-        const approveMethod = tokenInstance.methods.approve(...methodArgs)
-        await approveMethod.send({ from: ethAccount })
+      const isETHSend = isEthereumAddress(asset.externalAddress)
+
+      // don't check allowance for ETH
+      if (!isETHSend) {
+        const allowance = await dispatch('web3/getAllowanceByEthAddress', { address: asset.externalAddress }, { root: true })
+        if (FPNumber.lte(new FPNumber(allowance), new FPNumber(getters.amount))) {
+          const tokenInstance = new web3.eth.Contract(contract[OtherContractType.ERC20].abi)
+          tokenInstance.options.address = asset.externalAddress
+          const methodArgs = [
+            contractAddress.MASTER, // address spender
+            MaxUint256 // uint256 amount
+          ]
+          const approveMethod = tokenInstance.methods.approve(...methodArgs)
+          await approveMethod.send({ from: ethAccount })
+        }
       }
+
       const soraAccountAddress = rootGetters.account.address
       const accountId = await web3Util.accountAddressToHex(soraAccountAddress)
       const contractInstance = new web3.eth.Contract(contract[OtherContractType.Bridge].abi)
       contractInstance.options.address = contractAddress.MASTER
-      const tokenInstance = new web3.eth.Contract(ABI.balance as any)
-      tokenInstance.options.address = asset.externalAddress
-      const decimalsMethod = tokenInstance.methods.decimals()
-      const decimals = await decimalsMethod.call()
-      const methodArgs = [
+
+      const decimals = isETHSend
+        ? undefined
+        : await (async () => {
+          const tokenInstance = new web3.eth.Contract(ABI.balance as any)
+          tokenInstance.options.address = asset.externalAddress
+          const decimalsMethod = tokenInstance.methods.decimals()
+          const decimals = await decimalsMethod.call()
+
+          return +decimals
+        })()
+
+      const amount = new FPNumber(getters.amount, decimals).toCodecString()
+
+      const method = isETHSend ? 'sendEthToSidechain' : 'sendERC20ToSidechain'
+      const methodArgs = isETHSend ? [
+        accountId // bytes32 to
+      ] : [
         accountId, // bytes32 to
-        new FPNumber(getters.amount, +decimals).toCodecString(), // uint256 amount
+        amount, // uint256 amount
         asset.externalAddress // address tokenAddress
       ]
-      const contractMethod = contractInstance.methods.sendERC20ToSidechain(...methodArgs)
+      const contractMethod = contractInstance.methods[method](...methodArgs)
+
+      const sendArgs = isETHSend ? { from: ethAccount, value: amount } : { from: ethAccount }
 
       return new Promise((resolve, reject) => {
-        contractMethod.send({ from: ethAccount })
+        contractMethod.send(sendArgs)
           .on('transactionHash', hash => {
             commit(types.SIGN_ETH_TRANSACTION_ETH_SORA_SUCCESS)
             resolve(hash)

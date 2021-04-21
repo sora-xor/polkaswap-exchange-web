@@ -124,7 +124,7 @@
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes, LPRewardsInfo } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -167,11 +167,13 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>
   @Action('setNetworkFee', { namespace }) setNetworkFee!: (value: CodecString) => Promise<void>
   @Action('checkSwap', { namespace }) checkSwap!: () => Promise<void>
+  @Action('reset', { namespace }) reset!: () => void
 
   @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: () => Promise<void>
   @Action('getAssets', { namespace: 'assets' }) getAssets
   @Action('setPairLiquiditySources', { namespace }) setPairLiquiditySources!: (liquiditySources: Array<LiquiditySourceTypes>) => Promise<void>
+  @Action('setRewards', { namespace }) setRewards!: (rewards: Array<LPRewardsInfo>) => Promise<void>
 
   @Getter isLoggedIn!: boolean
   @Getter slippageTolerance!: number
@@ -227,8 +229,12 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     return this.isZeroFromAmount && this.isZeroToAmount
   }
 
+  get isXorOutputSwap (): boolean {
+    return this.tokenTo?.address === KnownAssets.get(KnownSymbols.XOR)?.address
+  }
+
   get isMaxSwapAvailable (): boolean {
-    return this.isLoggedIn && isMaxButtonAvailable(this.areTokensSelected, this.tokenFrom, this.fromValue, this.networkFee, this.tokenXOR)
+    return this.isLoggedIn && isMaxButtonAvailable(this.areTokensSelected, this.tokenFrom, this.fromValue, this.networkFee, this.tokenXOR, false, this.isXorOutputSwap)
   }
 
   get preparedForSwap (): boolean {
@@ -244,7 +250,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   get isInsufficientXorForFee (): boolean {
-    return this.preparedForSwap && hasInsufficientXorForFee(this.tokenXOR, this.networkFee)
+    return this.preparedForSwap && hasInsufficientXorForFee(this.tokenXOR, this.networkFee, this.isXorOutputSwap)
   }
 
   created () {
@@ -255,12 +261,16 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
         await this.setTokenFromAddress(xorAddress)
         await this.setTokenToAddress()
       }
-      if (this.tokenFrom && this.tokenTo) {
+      if (this.areTokensSelected) {
         await this.getNetworkFee()
         await this.checkSwap()
       }
       await this.updatePairLiquiditySources()
     })
+  }
+
+  destroyed () {
+    this.reset()
   }
 
   formatBalance (token): string {
@@ -293,7 +303,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   async updatePairLiquiditySources (): Promise<void> {
     const isPair = !!this.tokenFrom?.address && !!this.tokenTo?.address
 
-    const sources = isPair ? (await api.getEnabledLiquiditySourcesForPair(
+    const sources = isPair ? (await api.getListEnabledSourcesForPath(
       this.tokenFrom?.address,
       this.tokenTo?.address
     )) : []
@@ -335,10 +345,11 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       this.isRecountingProcess = true
       this.isInsufficientAmount = false
 
-      const { amount, fee } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, this.isExchangeB, this.liquiditySource)
+      const { amount, fee, rewards } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, this.isExchangeB, this.liquiditySource)
 
       setOppositeValue(this.getStringFromCodec(amount, token.decimals))
       this.setLiquidityProviderFee(fee)
+      this.setRewards(rewards)
 
       await this.calcMinMaxRecieved()
       await this.updatePrices()
