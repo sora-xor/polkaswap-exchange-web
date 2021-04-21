@@ -124,7 +124,7 @@
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes, LPRewardsInfo } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -172,6 +172,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: () => Promise<void>
   @Action('getAssets', { namespace: 'assets' }) getAssets
   @Action('setPairLiquiditySources', { namespace }) setPairLiquiditySources!: (liquiditySources: Array<LiquiditySourceTypes>) => Promise<void>
+  @Action('setRewards', { namespace }) setRewards!: (rewards: Array<LPRewardsInfo>) => Promise<void>
 
   @Getter isLoggedIn!: boolean
   @Getter slippageTolerance!: number
@@ -293,7 +294,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   async updatePairLiquiditySources (): Promise<void> {
     const isPair = !!this.tokenFrom?.address && !!this.tokenTo?.address
 
-    const sources = isPair ? (await api.getEnabledLiquiditySourcesForPair(
+    const sources = isPair ? (await api.getListEnabledSourcesForPath(
       this.tokenFrom?.address,
       this.tokenTo?.address
     )) : []
@@ -335,10 +336,11 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       this.isRecountingProcess = true
       this.isInsufficientAmount = false
 
-      const { amount, fee } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, this.isExchangeB, this.liquiditySource)
+      const { amount, fee, rewards } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, this.isExchangeB, this.liquiditySource)
 
       setOppositeValue(this.getStringFromCodec(amount, token.decimals))
       this.setLiquidityProviderFee(fee)
+      this.setRewards(rewards)
 
       await this.calcMinMaxRecieved()
       await this.updatePrices()
