@@ -4,7 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, CodecString, LiquiditySourceTypes } from '@sora-substrate/util'
+import { KnownAssets, CodecString, LiquiditySourceTypes, LPRewardsInfo } from '@sora-substrate/util'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -20,7 +20,9 @@ const types = flow(
     'SET_LIQUIDITY_PROVIDER_FEE',
     'SET_PAIR_LIQUIDITY_SOURCES',
     'SET_NETWORK_FEE',
-    'GET_SWAP_CONFIRM'
+    'SET_REWARDS',
+    'GET_SWAP_CONFIRM',
+    'RESET'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -37,6 +39,7 @@ interface SwapState {
   pairLiquiditySources: Array<LiquiditySourceTypes>;
   networkFee: CodecString;
   isAvailable: boolean;
+  rewards: Array<LPRewardsInfo>;
 }
 
 function initialState (): SwapState {
@@ -50,7 +53,8 @@ function initialState (): SwapState {
     liquidityProviderFee: '',
     networkFee: '',
     isAvailable: false,
-    pairLiquiditySources: []
+    pairLiquiditySources: [],
+    rewards: []
   }
 }
 
@@ -89,12 +93,22 @@ const getters = {
 
     return rootGetters.liquiditySource
   },
+  rewards (state) {
+    return state.rewards
+  },
   isAvailable (state: SwapState) {
     return state.isAvailable
   }
 }
 
 const mutations = {
+  [types.RESET] (state: SwapState) {
+    const s = initialState()
+
+    Object.keys(s).forEach(key => {
+      state[key] = s[key]
+    })
+  },
   [types.SET_TOKEN_FROM_ADDRESS] (state: SwapState, address: string) {
     state.tokenFromAddress = address
   },
@@ -133,6 +147,9 @@ const mutations = {
   },
   [types.SET_PAIR_LIQUIDITY_SOURCES] (state: SwapState, liquiditySources: Array<LiquiditySourceTypes>) {
     state.pairLiquiditySources = [...liquiditySources]
+  },
+  [types.SET_REWARDS] (state: SwapState, rewards: Array<LPRewardsInfo>) {
+    state.rewards = [...rewards]
   },
   [types.SET_NETWORK_FEE] (state: SwapState, networkFee: CodecString) {
     state.networkFee = networkFee
@@ -213,8 +230,14 @@ const actions = {
     }
     commit(types.SET_PAIR_LIQUIDITY_SOURCES, liquiditySources)
   },
+  setRewards ({ commit }, rewards: Array<LPRewardsInfo>) {
+    commit(types.SET_REWARDS, rewards)
+  },
   setNetworkFee ({ commit }, networkFee: string) {
     commit(types.SET_NETWORK_FEE, networkFee)
+  },
+  reset ({ commit }) {
+    commit(types.RESET)
   }
 }
 

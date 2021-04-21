@@ -177,9 +177,9 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   @Getter('asset', { namespace }) asset!: AccountAsset | RegisteredAccountAsset | null
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('amount', { namespace }) amount!: string
-  @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: string | number
+  @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: CodecString
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
-  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: string
+  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: CodecString
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
   @Getter('soraTransactionHash', { namespace }) soraTransactionHash!: string
   @Getter('ethereumTransactionHash', { namespace }) ethereumTransactionHash!: string
@@ -349,7 +349,7 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
       return this.t('bridgeTransaction.statuses.waiting') + '...'
     }
     if (this.currentState === (!this.isSoraToEthereum ? STATES.SORA_PENDING : STATES.ETHEREUM_PENDING)) {
-      return this.t('bridgeTransaction.statuses.pending') + '...'
+      return `${this.t('bridgeTransaction.statuses.pending')}... (${this.t('bridgeTransaction.wait30Block')})`
     }
     if (this.currentState === (!this.isSoraToEthereum ? STATES.SORA_REJECTED : STATES.ETHEREUM_REJECTED)) {
       return this.t('bridgeTransaction.statuses.failed')
@@ -383,7 +383,7 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   }
 
   get formattedEthNetworkFee (): string {
-    return this.formatStringValue(this.ethereumNetworkFee)
+    return this.formatCodecNumber(this.ethereumNetworkFee)
   }
 
   get isInsufficientBalance (): boolean {
@@ -399,7 +399,7 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   }
 
   get isInsufficientEthereumForFee (): boolean {
-    return hasInsufficientEthForFee(this.ethBalance.toString(), this.ethereumNetworkFee)
+    return hasInsufficientEthForFee(this.ethBalance, this.ethereumNetworkFee)
   }
 
   handleOpenEtherscan (): void {
