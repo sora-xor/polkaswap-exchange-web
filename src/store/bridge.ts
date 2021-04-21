@@ -13,14 +13,14 @@ import {
   BridgeHistory,
   TransactionStatus,
   KnownAssets,
-  RequestType
+  CodecString
 } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 
 import { STATES } from '@/utils/fsm'
 import web3Util, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
 import { delay, isXorAccountAsset } from '@/utils'
-import { EthereumGasLimits, MaxUint256 } from '@/consts'
+import { EthereumGasLimits, MaxUint256, ZeroStringValue } from '@/consts'
 import { Transaction } from 'web3-core'
 
 const SORA_REQUESTS_TIMEOUT = 5 * 1000
@@ -127,7 +127,7 @@ function initialState () {
     assetAddress: '',
     amount: '',
     soraNetworkFee: 0,
-    ethereumNetworkFee: 0,
+    ethereumNetworkFee: '',
     soraTotal: 0,
     ethereumTotal: 0,
     isTransactionConfirmed: false,
@@ -219,7 +219,7 @@ const mutations = {
   },
   [types.GET_ETHEREUM_NETWORK_FEE_REQUEST] (state) {
   },
-  [types.GET_ETHEREUM_NETWORK_FEE_SUCCESS] (state, fee: string | number) {
+  [types.GET_ETHEREUM_NETWORK_FEE_SUCCESS] (state, fee: CodecString) {
     state.ethereumNetworkFee = fee
   },
   [types.GET_ETHEREUM_NETWORK_FEE_FAILURE] (state) {
@@ -306,7 +306,7 @@ const actions = {
   setSoraNetworkFee ({ commit }, soraNetworkFee: string) {
     commit(types.GET_SORA_NETWORK_FEE_SUCCESS, soraNetworkFee)
   },
-  setEthereumNetworkFee ({ commit }, ethereumNetworkFee: string) {
+  setEthereumNetworkFee ({ commit }, ethereumNetworkFee: CodecString) {
     commit(types.GET_ETHEREUM_NETWORK_FEE_SUCCESS, ethereumNetworkFee)
   },
   getSoraTotal ({ commit }, soraTotal: string | number) {
@@ -406,7 +406,8 @@ const actions = {
       const knownAsset = KnownAssets.get(getters.asset.address)
       const gasLimit = EthereumGasLimits[+getters.isSoraToEthereum][knownAsset ? getters.asset.symbol : KnownBridgeAsset.Other]
       const fee = gasPrice * gasLimit
-      commit(types.GET_ETHEREUM_NETWORK_FEE_SUCCESS, web3.utils.fromWei(`${fee}`, 'ether'))
+      const fpFee = new FPNumber(web3.utils.fromWei(`${fee}`, 'ether')).toCodecString()
+      commit(types.GET_ETHEREUM_NETWORK_FEE_SUCCESS, fpFee)
     } catch (error) {
       console.error(error)
       commit(types.GET_ETHEREUM_NETWORK_FEE_FAILURE)
@@ -427,7 +428,7 @@ const actions = {
       ethereumHash: '',
       transactionState: STATES.INITIAL,
       soraNetworkFee: getters.soraNetworkFee.toString(),
-      ethereumNetworkFee: getters.ethereumNetworkFee.toString()
+      ethereumNetworkFee: getters.ethereumNetworkFee
     }))
     return getters.historyItem
   },
