@@ -234,6 +234,7 @@ button.base-title_action,
 i.el-collapse-item__arrow,
 button.el-button--history,
 button.el-button--switch-tokens,
+button.s-button--switch,
 button.el-button--settings {
   background-color: var(--s-color-utility-surface) !important;
   box-shadow: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1);
@@ -247,6 +248,7 @@ button.base-title_action:hover,
 i.el-collapse-item__arrow:hover,
 button.el-button--history:hover,
 button.el-button--switch-tokens:hover,
+button.s-button--switch:hover,
 button.el-button--settings:hover {
   background-color: var(--s-color-theme-secondary-pressed) !important;
   opacity: 0.75;
@@ -259,6 +261,7 @@ button.base-title_trash:hover > span > i,
 button.base-title_action:hover > span > i,
 button.el-button--history:hover > span > i,
 button.el-button--switch-tokens:hover > span > i,
+button.s-button--switch:hover > span > i,
 button.el-button--settings:hover > span > i
 { color: white !important; }
 i.el-icon, i.s-icon-arrows-chevron-left-rounded-24 {
@@ -298,7 +301,7 @@ form.el-form.container > div.input-container ~ div.input-container,
 div.el-card__body > div.bridge-item ~ div.bridge-item {
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1), inset 1px 1px 2px #FFFFFF;
 }
-div.input-container, div.bridge-item {
+div.input-container, div.bridge-item, div.wallet-send-amount {
   box-shadow: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 div.slippage-tolerance-custom_input input.el-input__inner {
@@ -335,7 +338,7 @@ div.transaction-row_key {text-transform: uppercase;}
 div.transaction-row_value{color: var(--s-color-base-content-quaternary) !important;font-weight: 600;}
 
 /* TABS */
-div.el-tabs__nav-wrap, div.slippage-tolerance-custom input.el-input__inner, div.pool-info-container {
+div.el-tabs__nav-wrap, div.slippage-tolerance-custom input.el-input__inner, div.pool-info-container, div.wallet-send-address input.el-input__inner {
   box-shadow: inset 1px 1px 2px #FFFFFF;
   filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.1));
   font-size: var(--s-icon-font-size-mini) !important;
@@ -441,3 +444,187 @@ div.el-card__header i {
 div.article-card {
   height: 100% !important;
 }
+
+
+
+/*_______________________ CURRENT UI FIXES FOR CONSISTENCY (GENERALLY BASED ON TEST USERS FEEDBACK) _______________________*/
+
+div.wallet-assets-item i.asset-logo {
+  height: 40px !important;
+  width: 40px !important;
+}
+div.wallet-assets-item i.asset-logo:not(.asset-logo--pswap,.asset-logo--val,.asset-logo--xor),
+div.el-card__body div.asset-details-container i.asset-logo:not(.asset-logo--pswap,.asset-logo--val,.asset-logo--xor),
+div.asset-search-list div.asset i.asset-logo {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGZpbGw9IiNBMTlBOUQiIGQ9Ik03LjUsMTcuNEM3LjksMTcuOCw4LjQsMTgsOSwxOHMxLjEtMC4yLDEuNS0wLjZjMC4xLTAuMSwwLjItMC4yLDAuNC0wLjVsMS45LTMuNGMwLjItMC4yLDAuMy0wLjQsMC40LTAuNQ0KCWMwLjEtMC4xLDAuMy0wLjIsMC41LTAuM2wzLjQtMS45YzAuMi0wLjEsMC4zLTAuMiwwLjUtMC40QzE3LjgsMTAuMSwxOCw5LjYsMTgsOXMtMC4yLTEuMS0wLjYtMS41Yy0wLjItMC4yLTAuMy0wLjMtMC41LTAuNA0KCWwtMy40LTEuOUMxMy4zLDUuMiwxMy4xLDUuMSwxMyw1Yy0wLjEtMC4xLTAuMi0wLjItMC40LTAuNWwtMS45LTMuNGMtMC4xLTAuMi0wLjItMC4zLTAuNC0wLjVDMTAuMSwwLjIsOS42LDAsOSwwUzcuOSwwLjIsNy41LDAuNg0KCUM3LjQsMC43LDcuMywwLjgsNy4yLDEuMUw1LjMsNC41QzUuMiw0LjcsNS4xLDQuOCw1LDVDNC44LDUuMSw0LjYsNS4yLDQuNSw1LjNMMS4xLDcuMkMwLjksNy4zLDAuNyw3LjQsMC42LDcuNUMwLjIsNy45LDAsOC40LDAsOQ0KCXMwLjIsMS4xLDAuNiwxLjVjMC4xLDAuMSwwLjMsMC4yLDAuNSwwLjNsMy40LDEuOWMwLjIsMC4xLDAuMywwLjIsMC41LDAuNGMwLjEsMC4xLDAuMiwwLjMsMC4zLDAuNWwxLjksMy40DQoJQzcuMywxNy4xLDcuNCwxNy4zLDcuNSwxNy40eiIvPg0KPC9zdmc+);
+}
+button.el-button.send.s-small, button.el-button.swap.s-small {
+  height: 40px;
+  width: 40px;
+}
+div.history-item-operation {
+  padding: 0 !important;
+}
+button.el-button.wallet-assets-add,
+button.el-button--create-pair {
+  font-size: var(--s-icon-font-size-medium) !important;
+}
+i.s-icon-circle-plus-16, i.s-icon-circle-plus-16:hover {
+  font-size: inherit !important;
+  color: white !important;
+}
+div.el-message-box {
+  border-radius: 24px !important;
+}
+div.transaction-content div.el-collapse, div.history-item {
+  margin-right: inherit !important;
+  margin-left: inherit !important;
+  border-radius: var(--s-border-radius-mini) !important;
+}
+button.s-button--create-transaction {
+  margin-top: 20px;
+}
+button.s-button--create-transaction:hover {
+  color: var(--s-color-base-content-secondary) !important;
+}
+button.s-button--create-transaction:active {
+  border: none !important;
+}
+div.header-icon {
+  margin: 16px auto !important;
+}
+button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-medium.s-border-radius-small.s-primary.s-i-position-left span {
+  font-size:var(--s-icon-font-size-mini) !important;
+}
+div.pool-info--buttons button.el-button {
+  background-color: var(--s-color-theme-secondary);
+  border-color: var(--s-color-theme-secondary);
+}
+div.pool-list div.el-collapse-item__content {
+  margin-top: 16px;
+  padding-top: 16px !important;
+  border-top: 1px solid var(--s-color-theme-secondary);
+}
+div.pool-info--buttons {
+  padding-bottom: 8px !important;
+}
+div.wallet-settings-create-token input.el-input__inner {
+  border-radius: var(--s-border-radius-mini) !important;
+}
+
+span.sora-logo__title,
+h3.base-title_text,
+h3.page-header-title, 
+span.el-dialog__title,
+h3.network-label,
+p.app-disclaimer,
+span.el-pagination__total,
+div.el-tabs__item {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+
+
+/*_______________________ CURRENT UI QUICK LAYOUT UPDATE PROPOSAL/FIX ALIGNMENTS + MIN-WIDTH 528px LOOK OK/USABLE  _______________________*/
+
+button.polkaswap-logo span {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 64px;
+  width: 100vw;
+  box-shadow: 240px 16px 32px -16px #e5dce0;
+  z-index: 1;
+}
+aside.app-sidebar {
+  border-right: 1px solid #e5dce0 !important;
+  border-image: linear-gradient(#FAF4F8, #D5CDD0, #FAF4F8) 30;
+}
+div.app-controls span.el-tooltip button.el-button.el-tooltip.wallet.el-button--plain.el-button--medium.s-medium.s-border-radius-small.s-secondary.s-i-position-left {
+  margin-right: 4px;
+  /*margin-top: 17px*/
+}
+footer.app-footer {
+  padding-right: 22px!important;
+  padding-bottom: 20px!important;
+}
+a.sidebar-item-content--link {
+  padding: 0 0 0 13px !important;
+}
+aside.app-sidebar ul:nth-of-type(2) li:nth-of-type(2) li.menu-link-container a.sidebar-item-content--link {
+  padding: 10px 10px 4px 20px !important;
+  line-height: 1.1;
+}
+aside.app-sidebar ul:nth-of-type(2) li:nth-of-type(2) li.menu-link-container:before {
+  left: 20px;
+  opacity: 0.2;
+  margin-top: 3px;
+  width: 100px;
+}
+
+div#app {
+  min-width: 528px;
+}
+div.app-body {
+  min-width: 448px;
+}
+
+@media screen and (max-width: 900px) {
+  button.polkaswap-logo {
+    margin-right: 4px;
+    margin-left: 4px;
+    margin-bottom: 1.5px!important;
+    width: var(--s-size-medium)!important;
+    height: var(--s-size-medium)!important;
+    padding: 0;
+    border-radius: 0;
+  }
+
+}
+@media screen and (min-width: 900px) {
+  button.polkaswap-logo {
+    height: 44px!important;
+    width: 165px!important;
+    padding: 0!important;
+    margin-top: 10px;/*16px*/
+    margin-bottom: 0!important;
+  }
+  .el-dialog__wrapper {
+    left: 160px;
+  }
+}
+@media screen and (max-width: 600px) {
+  aside.app-sidebar {
+    width: 70px !important;
+    margin-right: 10px !important;
+    overflow-x: hidden;
+  }
+  div.icon-container + span {
+    display: none;
+  }
+  aside.app-sidebar {
+    border-right: none !important;
+  }
+}
+@media screen and (max-width: 460px) {
+  button.polkaswap-logo {
+    display: inherit!important;
+  }
+  div.app-body {
+    margin-left: -10px;
+  }
+}
+
+
+
+
+
+
+
+
