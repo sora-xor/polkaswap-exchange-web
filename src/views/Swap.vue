@@ -167,6 +167,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>
   @Action('setNetworkFee', { namespace }) setNetworkFee!: (value: CodecString) => Promise<void>
   @Action('checkSwap', { namespace }) checkSwap!: () => Promise<void>
+  @Action('reset', { namespace }) reset!: () => void
 
   @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: () => Promise<void>
@@ -260,12 +261,16 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
         await this.setTokenFromAddress(xorAddress)
         await this.setTokenToAddress()
       }
-      if (this.tokenFrom && this.tokenTo) {
+      if (this.areTokensSelected) {
         await this.getNetworkFee()
         await this.checkSwap()
       }
       await this.updatePairLiquiditySources()
     })
+  }
+
+  destroyed () {
+    this.reset()
   }
 
   formatBalance (token): string {

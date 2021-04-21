@@ -116,7 +116,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
   }
 
   get formattedEthNetworkFee (): string {
-    return this.formatStringValue(this.ethereumNetworkFee)
+    return this.formatCodecNumber(this.ethereumNetworkFee)
   }
 
   formatFee (fee: string, formattedFee: string): string {
