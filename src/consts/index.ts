@@ -145,6 +145,21 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
     icon: 'symbols-telegram-24',
     title: 'telegram',
     href: 'https://t.me/polkaswap'
+  },
+  {
+    icon: 'symbols-medium-24',
+    title: 'medium',
+    href: 'https://medium.com/polkaswap'
+  },
+  {
+    icon: 'symbols-reddit-24',
+    title: 'reddit',
+    href: 'https://www.reddit.com/r/Polkaswap'
+  },
+  {
+    icon: 'symbols-github-24',
+    title: 'github',
+    href: 'https://github.com/sora-xor'
   }
 ]
 
