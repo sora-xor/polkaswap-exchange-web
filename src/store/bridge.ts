@@ -20,7 +20,7 @@ import { api } from '@soramitsu/soraneo-wallet-web'
 import { STATES } from '@/utils/fsm'
 import web3Util, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
 import { delay, isEthereumAddress } from '@/utils'
-import { EthereumGasLimits, MaxUint256 } from '@/consts'
+import { EthereumGasLimits, MaxUint256, ZeroStringValue } from '@/consts'
 import { Transaction } from 'web3-core'
 
 const SORA_REQUESTS_TIMEOUT = 5 * 1000
@@ -127,7 +127,7 @@ function initialState () {
     assetAddress: '',
     amount: '',
     soraNetworkFee: 0,
-    ethereumNetworkFee: '',
+    ethereumNetworkFee: ZeroStringValue,
     soraTotal: 0,
     ethereumTotal: 0,
     isTransactionConfirmed: false,
@@ -223,7 +223,7 @@ const mutations = {
     state.ethereumNetworkFee = fee
   },
   [types.GET_ETHEREUM_NETWORK_FEE_FAILURE] (state) {
-    state.ethereumNetworkFee = ''
+    state.ethereumNetworkFee = ZeroStringValue
   },
   [types.SET_SORA_TOTAL] (state, soraTotal: string | number) {
     state.soraTotal = soraTotal
