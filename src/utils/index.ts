@@ -25,7 +25,8 @@ export const isMaxButtonAvailable = (
   amount: string | number,
   fee: CodecString,
   xorAsset: AccountAsset | RegisteredAccountAsset,
-  parseAsLiquidity = false
+  parseAsLiquidity = false,
+  isXorOutputSwap = false
 ): boolean => {
   if (
     !asset ||
@@ -39,7 +40,7 @@ export const isMaxButtonAvailable = (
   const fpAmount = new FPNumber(amount, asset.decimals)
   const fpMaxBalance = getMaxBalance(asset, fee, false, parseAsLiquidity)
 
-  return !FPNumber.eq(fpMaxBalance, fpAmount) && !hasInsufficientXorForFee(xorAsset, fee)
+  return !FPNumber.eq(fpMaxBalance, fpAmount) && !hasInsufficientXorForFee(xorAsset, fee, isXorOutputSwap)
 }
 
 const getMaxBalance = (
@@ -83,7 +84,7 @@ export const hasInsufficientBalance = (
   return FPNumber.lt(fpMaxBalance, fpAmount)
 }
 
-export const hasInsufficientXorForFee = (xorAsset: AccountAsset | RegisteredAccountAsset | null, fee: CodecString): boolean => {
+export const hasInsufficientXorForFee = (xorAsset: AccountAsset | RegisteredAccountAsset | null, fee: CodecString, isXorOutputSwap = false): boolean => {
   if (!xorAsset || !fee) return true
 
   const decimals = xorAsset.decimals
@@ -91,7 +92,7 @@ export const hasInsufficientXorForFee = (xorAsset: AccountAsset | RegisteredAcco
   const fpBalance = FPNumber.fromCodecValue(xorBalance, decimals)
   const fpFee = FPNumber.fromCodecValue(fee, decimals)
 
-  return FPNumber.lt(fpBalance, fpFee)
+  return FPNumber.lt(fpBalance, fpFee) && !isXorOutputSwap
 }
 
 export const hasInsufficientEthForFee = (ethBalance: string, fee: string): boolean => {

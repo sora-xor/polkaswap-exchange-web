@@ -228,8 +228,12 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     return this.isZeroFromAmount && this.isZeroToAmount
   }
 
+  get isXorOutputSwap (): boolean {
+    return this.tokenTo?.address === KnownAssets.get(KnownSymbols.XOR)?.address
+  }
+
   get isMaxSwapAvailable (): boolean {
-    return this.isLoggedIn && isMaxButtonAvailable(this.areTokensSelected, this.tokenFrom, this.fromValue, this.networkFee, this.tokenXOR)
+    return this.isLoggedIn && isMaxButtonAvailable(this.areTokensSelected, this.tokenFrom, this.fromValue, this.networkFee, this.tokenXOR, false, this.isXorOutputSwap)
   }
 
   get preparedForSwap (): boolean {
@@ -245,7 +249,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   get isInsufficientXorForFee (): boolean {
-    return this.preparedForSwap && hasInsufficientXorForFee(this.tokenXOR, this.networkFee)
+    return this.preparedForSwap && hasInsufficientXorForFee(this.tokenXOR, this.networkFee, this.isXorOutputSwap)
   }
 
   created () {
