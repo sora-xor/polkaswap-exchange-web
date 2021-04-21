@@ -19,6 +19,13 @@ export const isXorAccountAsset = (asset: Asset | AccountAsset | RegisteredAccoun
   return asset ? asset.address === KnownAssets.get(KnownSymbols.XOR).address : false
 }
 
+export const isEthereumAddress = (address: string): boolean => {
+  const numberString = address.replace(/^0x/, '')
+  const number = parseInt(numberString, 16)
+
+  return number === 0
+}
+
 export const isMaxButtonAvailable = (
   areAssetsSelected: boolean,
   asset: AccountAsset | RegisteredAccountAsset | AccountLiquidity,
@@ -55,11 +62,16 @@ const getMaxBalance = (
 
   let fpResult = FPNumber.fromCodecValue(balance, asset.decimals)
 
-  if (!isExternalBalance && isXorAccountAsset(asset) && !asZeroValue(fee)) {
+  if (
+    !asZeroValue(fee) &&
+    (
+      (!isExternalBalance && isXorAccountAsset(asset)) ||
+      (isExternalBalance && isEthereumAddress((asset as RegisteredAccountAsset).externalAddress))
+    )
+  ) {
     const fpFee = FPNumber.fromCodecValue(fee, asset.decimals)
     fpResult = fpResult.sub(fpFee)
   }
-  // TODO: add possible check for ethereum asset & ethereum fee
 
   return FPNumber.lt(fpResult, FpZeroValue) ? FpZeroValue : fpResult
 }
@@ -95,8 +107,10 @@ export const hasInsufficientXorForFee = (xorAsset: AccountAsset | RegisteredAcco
   return FPNumber.lt(fpBalance, fpFee) && !isXorOutputSwap
 }
 
-export const hasInsufficientEthForFee = (ethBalance: string, fee: string): boolean => {
-  return FPNumber.lt(new FPNumber(ethBalance), new FPNumber(fee))
+export const hasInsufficientEthForFee = (ethBalance: CodecString, fee: CodecString): boolean => {
+  const fpBalance = FPNumber.fromCodecValue(ethBalance)
+  const fpFee = FPNumber.fromCodecValue(fee)
+  return FPNumber.lt(fpBalance, fpFee)
 }
 
 export const getWalletAddress = (): string => {

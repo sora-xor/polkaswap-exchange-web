@@ -66,7 +66,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { RegisteredAccountAsset, BridgeTxStatus, Operation, isBridgeOperation, BridgeHistory } from '@sora-substrate/util'
+import { RegisteredAccountAsset, BridgeTxStatus, Operation, isBridgeOperation, BridgeHistory, CodecString } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -89,7 +89,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
   @Getter('history', { namespace }) history!: Array<BridgeHistory> | null
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: string
-  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: string
+  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: CodecString
 
   @Action('getHistory', { namespace }) getHistory
   @Action('getNetworkFee', { namespace }) getNetworkFee
