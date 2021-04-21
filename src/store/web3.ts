@@ -8,7 +8,7 @@ import { FPNumber } from '@sora-substrate/util'
 
 import web3Util, { ABI, Contract, EthNetworkName, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
 import { ZeroStringValue } from '@/consts'
-import { asZeroValue } from '@/utils'
+import { isEthereumAddress } from '@/utils'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -36,7 +36,7 @@ function initialState () {
   return {
     soraNetwork: '',
     ethAddress: web3Util.getEthUserAddress(),
-    ethBalance: 0,
+    ethBalance: ZeroStringValue,
     ethNetwork: web3Util.getEthNetworkFromStorage(),
     defaultEthNetwork: '',
     subNetworks: [],
@@ -258,51 +258,51 @@ const actions = {
   },
 
   async getEthBalance ({ commit, getters }) {
+    let value = ZeroStringValue
     try {
       const address = getters.ethAddress
 
-      if (!address) {
-        commit(types.SET_ETHEREUM_BALANCE, 0)
-        return
+      if (address) {
+        const web3 = await web3Util.getInstance()
+        const wei = await web3.eth.getBalance(address)
+        const balance = web3.utils.fromWei(`${wei}`, 'ether')
+        value = new FPNumber(balance).toCodecString()
       }
-
-      const web3 = await web3Util.getInstance()
-      const wei = await web3.eth.getBalance(address)
-      const balance = web3.utils.fromWei(`${wei}`, 'ether')
-
-      commit(types.SET_ETHEREUM_BALANCE, balance)
-      return balance
     } catch (error) {
       console.error(error)
-      commit(types.SET_ETHEREUM_BALANCE, 0)
     }
+
+    commit(types.SET_ETHEREUM_BALANCE, value)
+    return value
   },
 
-  async getBalanceByEthAddress ({ commit, getters }, { address }) {
+  async getBalanceByEthAddress ({ commit, getters, dispatch }, { address }) {
+    let value = ZeroStringValue
     commit(types.GET_BALANCE_REQUEST)
     try {
       const web3 = await web3Util.getInstance()
-      const isValidAddress = !asZeroValue(web3.utils.hexToNumberString(address))
-      if (!isValidAddress) {
-        commit(types.GET_BALANCE_SUCCESS)
-        return ZeroStringValue
+      const isEther = isEthereumAddress(address)
+      if (isEther) {
+        value = await dispatch('getEthBalance')
+      } else {
+        const tokenInstance = new web3.eth.Contract(ABI.balance as any)
+        tokenInstance.options.address = address
+        const account = getters.ethAddress
+        const methodArgs = [account]
+        const balanceOfMethod = tokenInstance.methods.balanceOf(...methodArgs)
+        const decimalsMethod = tokenInstance.methods.decimals()
+        const balance = await balanceOfMethod.call()
+        const decimals = await decimalsMethod.call()
+        const precision18 = new FPNumber(0)
+        value = precision18.add(FPNumber.fromCodecValue(`${balance}`, +decimals)).toCodecString()
       }
-      const tokenInstance = new web3.eth.Contract(ABI.balance as any)
-      tokenInstance.options.address = address
-      const account = getters.ethAddress
-      const methodArgs = [account]
-      const balanceOfMethod = tokenInstance.methods.balanceOf(...methodArgs)
-      const decimalsMethod = tokenInstance.methods.decimals()
-      const balance = await balanceOfMethod.call()
-      const decimals = await decimalsMethod.call()
       commit(types.GET_BALANCE_SUCCESS)
-      const precision18 = new FPNumber(0)
-      return precision18.add(FPNumber.fromCodecValue(`${balance}`, +decimals)).toCodecString()
     } catch (error) {
       console.error(error)
       commit(types.GET_BALANCE_FAILURE)
-      return ZeroStringValue
     }
+
+    return value
   },
   async getEthTokenAddressByAssetId ({ commit, getters }, { address }) {
     commit(types.GET_ETH_TOKEN_ADDRESS_REQUEST)
