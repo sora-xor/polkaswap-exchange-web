@@ -222,7 +222,10 @@ const actions = {
       commit(types.SET_FOCUSED_FIELD, 'firstTokenValue')
 
       commit(types.SET_FIRST_TOKEN_VALUE, value)
-      if (value && getters.isNotFirstLiquidityProvider) {
+
+      if (!value) {
+        commit(types.SET_SECOND_TOKEN_VALUE, '')
+      } else if (getters.isNotFirstLiquidityProvider) {
         commit(
           types.SET_SECOND_TOKEN_VALUE,
           new FPNumber(value)
@@ -231,6 +234,7 @@ const actions = {
             .toString()
         )
       }
+
       dispatch('estimateMinted')
       dispatch('getNetworkFee')
     }
@@ -241,7 +245,10 @@ const actions = {
       commit(types.SET_FOCUSED_FIELD, 'secondTokenValue')
 
       commit(types.SET_SECOND_TOKEN_VALUE, value)
-      if (value && getters.isNotFirstLiquidityProvider) {
+
+      if (!value) {
+        commit(types.SET_FIRST_TOKEN_VALUE, '')
+      } else if (getters.isNotFirstLiquidityProvider) {
         commit(
           types.SET_FIRST_TOKEN_VALUE,
           new FPNumber(value)
@@ -250,6 +257,7 @@ const actions = {
             .toString()
         )
       }
+
       dispatch('estimateMinted')
       dispatch('getNetworkFee')
     }
