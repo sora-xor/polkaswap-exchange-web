@@ -1,7 +1,7 @@
 import { KnownSymbols, Operation, TransactionStatus } from '@sora-substrate/util'
 
 import { PageNames, Topics, NetworkTypes } from '@/consts'
-import { EthNetwork } from '@/utils/web3-util'
+import { EthNetwork, EnergyNetwork } from '@/utils/web3-util'
 
 export default {
   appName: 'Polkaswap',
