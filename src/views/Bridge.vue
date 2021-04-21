@@ -475,9 +475,8 @@ export default class Bridge extends Mixins(
     }
   }
 
-  async handleMaxValue (): Promise<void> {
+  handleMaxValue (): void {
     if (this.asset && this.isRegisteredAsset) {
-      await this.getNetworkFee()
       const fee = this.isSoraToEthereum ? this.soraNetworkFee : this.ethereumNetworkFee
       const max = getMaxValue(this.asset, fee, !this.isSoraToEthereum)
       this.setAmount(max)
