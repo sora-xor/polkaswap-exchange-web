@@ -1,11 +1,12 @@
 <template>
   <div class="bridge s-flex">
-    <s-form
-      v-loading="parentLoading"
-      class="bridge-form"
-      :show-message="false"
-    >
-      <s-card class="bridge-content" border-radius="medium" shadow="never">
+    <s-form class="bridge-form" :show-message="false">
+      <s-card
+        v-loading="parentLoading"
+        class="bridge-content"
+        border-radius="medium"
+        shadow="never"
+      >
         <generic-page-header class="header--bridge" :title="t('bridge.title')" :tooltip="t('bridge.info')">
           <s-button
             v-if="areNetworksConnected"
