@@ -1,3 +1,6 @@
-import { storage } from '@soramitsu/soraneo-wallet-web'
+import { Storage } from '@sora-substrate/util'
+import { storage as soraStorage } from '@soramitsu/soraneo-wallet-web'
 
-export default storage
+export const settingsStorage = new Storage('settings')
+
+export default soraStorage

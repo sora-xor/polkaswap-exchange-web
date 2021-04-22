@@ -31,9 +31,11 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
+import pick from 'lodash/fp/pick'
 
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
+import { NodeModel } from '@/components/Settings/Node/consts'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -139,14 +141,14 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     }
 
     if (!this.isConnectedNode(node)) {
-      await this.setNode(node)
+      await this.setCurrentNode(node)
       this.handleBack()
     }
   }
 
   async removeNode (node: any): Promise<void> {
     if (this.isConnectedNode(node)) {
-      await this.setNode(this.defaultNodes[0])
+      await this.setCurrentNode(this.defaultNodes[0])
     }
     this.removeCustomNode(node)
     this.handleBack()
@@ -164,6 +166,11 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
 
   handleBack (): void {
     this.changeView(NodeListView)
+  }
+
+  private async setCurrentNode (node: any): Promise<void> {
+    const nodeCopy = pick(Object.keys(NodeModel))(node)
+    await this.setNode(nodeCopy)
   }
 
   private changeView (view: string): void {

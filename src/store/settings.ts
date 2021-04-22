@@ -5,7 +5,7 @@ import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { connection } from '@soramitsu/soraneo-wallet-web'
 
-import storage from '@/utils/storage'
+import storage, { settingsStorage } from '@/utils/storage'
 import { DefaultSlippageTolerance, DefaultMarketAlgorithm, LiquiditySourceForMarketAlgorithm } from '@/consts'
 import { getRpcEndpoint, fetchRpc } from '@/utils/rpc'
 
@@ -35,7 +35,7 @@ function initialState () {
     transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
     node: {},
     defaultNodes: [],
-    customNodes: JSON.parse(storage.get('customNodes')) || [],
+    customNodes: JSON.parse(settingsStorage.get('customNodes')) || [],
     nodeIsConnecting: false,
     chainGenesisHash: '',
     faucetUrl: ''
@@ -78,12 +78,13 @@ const getters = {
 }
 
 const mutations = {
-  [types.SET_NODE_REQUEST] (state, node = {}) {
-    state.node = { ...node }
+  [types.SET_NODE_REQUEST] (state) {
     state.nodeIsConnecting = true
   },
   [types.SET_NODE_SUCCESS] (state, node = {}) {
+    state.node = { ...node }
     state.nodeIsConnecting = false
+    settingsStorage.set('node', JSON.stringify(node))
   },
   [types.SET_NODE_FAILURE] (state) {
     state.node = {}
@@ -94,7 +95,7 @@ const mutations = {
   },
   [types.SET_CUSTOM_NODES] (state, nodes) {
     state.customNodes = [...nodes]
-    storage.set('customNodes', JSON.stringify(nodes))
+    settingsStorage.set('customNodes', JSON.stringify(nodes))
   },
   [types.SET_SORA_NETWORK] (state, value) {
     state.soraNetwork = value
@@ -122,13 +123,13 @@ const mutations = {
 const actions = {
   async setNode ({ commit, dispatch }, node) {
     try {
+      commit(types.SET_NODE_REQUEST)
+
       const endpoint = node?.address ?? ''
 
       if (!endpoint) {
         throw new Error('node address is not set')
       }
-
-      commit(types.SET_NODE_REQUEST, node)
 
       if (!connection.endpoint) {
         connection.endpoint = endpoint
@@ -138,7 +139,7 @@ const actions = {
         dispatch('updateAccountAssets', undefined, { root: true })
       }
 
-      commit(types.SET_NODE_SUCCESS)
+      commit(types.SET_NODE_SUCCESS, node)
     } catch (error) {
       console.error('setNode', error)
       commit(types.SET_NODE_FAILURE)

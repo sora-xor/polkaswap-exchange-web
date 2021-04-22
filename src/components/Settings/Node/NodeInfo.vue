@@ -26,14 +26,9 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import { wsRegexp, dnsRegexp, ipv4Regexp } from '@/utils/regexp'
+import { NodeModel } from './consts'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-
-const NodeModel = {
-  chain: '',
-  name: '',
-  address: ''
-}
 
 const checkAddress = (translate: Function) => (rule, value, callback) => {
   const address = value.replace(wsRegexp, '')
