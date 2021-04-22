@@ -45,7 +45,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) connected!: boolean
   @Prop({ default: false, type: Boolean }) removable!: boolean
 
-  nodeModel = { ...NodeModel }
+  nodeModel: any = { ...NodeModel }
 
   created (): void {
     this.nodeModel = Object.keys(NodeModel).reduce((result, key) => ({

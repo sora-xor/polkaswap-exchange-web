@@ -20,7 +20,7 @@
               {{ node.address }}
             </div>
           </div>
-          <network-badge v-if="node.address in networkStatuses" :online="!!networkStatuses[node.address]" />
+          <network-badge v-if="node.networkStatus.visible" :online="node.networkStatus.online" />
           <s-button class="details select-node-details" type="link" @click="handleNode(node)">
             <s-icon name="arrows-chevron-right-rounded-24" />
           </s-button>
@@ -54,30 +54,10 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 export default class SelectNode extends Mixins(TranslationMixin) {
   @Prop({ default: () => [], type: Array }) nodes!: Array<any>
   @Prop({ default: () => {}, type: Function }) handleNode!: (node: any) => void
-  @Prop({ default: () => {}, type: Function }) getNodeNetworkStatus!: (nodeAddress: any) => any
   @Prop({ default: '', type: String }) environment!: string
 
   @ModelSync('value', 'input', { type: String })
   readonly currentAddressValue!: boolean
-
-  networkStatuses = {}
-
-  created () {
-    this.updateNodesNetworkStatus()
-  }
-
-  async updateNodesNetworkStatus () {
-    const entries = await Promise.all(this.nodes.map(node => this.getNodeNetworkStatusModel(node)))
-
-    this.networkStatuses = entries.reduce((result, [key, value]) => ({ ...result, [key]: value }), {})
-  }
-
-  async getNodeNetworkStatusModel (node): Promise<Array<any>> {
-    const address = node.address
-    const status = await this.getNodeNetworkStatus(address)
-
-    return [address, !!status]
-  }
 }
 </script>
 

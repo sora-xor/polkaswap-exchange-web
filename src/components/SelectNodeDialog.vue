@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 
 import { lazyComponent } from '@/router'
@@ -65,9 +65,17 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   @Action addCustomNode!: (node: any) => void
   @Action removeCustomNode!: (node: any) => void
 
+  @Watch('visible')
+  private handleVisibleChangeToUpdateNodeStatuses (newValue: boolean, oldValue: boolean): void {
+    if (!oldValue && newValue) {
+      this.updateNodesNetworkStatus()
+    }
+  }
+
   currentView = NodeListView
 
   selectedNode: any = {}
+  networkStatuses: any = {}
 
   get connectedNodeAddress (): string {
     return this.node.address
@@ -77,7 +85,8 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     if (address === this.node.address) return
 
     const node = this.findNodeInListByAddress(address)
-    this.setNode(node)
+
+    this.handleNode(node)
   }
 
   get isSelectedNodeConnected (): boolean {
@@ -101,7 +110,11 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
       ...node,
       title: !!node.name && !!node.chain
         ? this.t('selectNodeDialog.nodeTitle', { chain: node.chain, name: node.name })
-        : (node.chain || node.name)
+        : (node.chain || node.name),
+      networkStatus: {
+        visible: node.address in this.networkStatuses,
+        online: !!this.networkStatuses[node.address]
+      }
     }))
   }
 
@@ -116,32 +129,33 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   }
 
   async handleNode (node: any): Promise<void> {
+    console.log('handleNode', node)
     const isExistingNode = !!this.findNodeInListByAddress(node.address)
 
+    const nodeChainGenesisHash = await this.getChainGenesisHash(node.address)
+
+    console.log(nodeChainGenesisHash, this.chainGenesisHash)
+
+    if (nodeChainGenesisHash !== this.chainGenesisHash) {
+      // show error?
+      return
+    }
+
     if (!isExistingNode) {
-      const nodeChainGenesisHash = await this.getChainGenesisHash(node.address)
-
-      console.log(nodeChainGenesisHash, this.chainGenesisHash)
-
-      if (nodeChainGenesisHash !== this.chainGenesisHash) {
-        // show error?
-        return
-      }
-
       this.addCustomNode(node)
     }
 
     await this.switchToNode(node)
   }
 
-  async switchToNode (node): Promise<void> {
+  async switchToNode (node: any): Promise<void> {
     if (!this.isConnectedNode(node)) {
       await this.setNode(node)
       this.handleBack()
     }
   }
 
-  async removeNode (node): Promise<void> {
+  async removeNode (node: any): Promise<void> {
     if (this.isConnectedNode(node)) {
       await this.setNode(this.defaultNodes[0])
     }
@@ -173,6 +187,21 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
 
   private isConnectedNode (node: any): boolean {
     return this.connectedNodeAddress === node?.address
+  }
+
+  private async updateNodesNetworkStatus () {
+    const entries = await Promise.all(this.nodeList.map(node => this.getNodeNetworkStatusModel(node)))
+
+    this.networkStatuses = entries.reduce((result, [key, value]) => ({ ...result, [key]: value }), {})
+
+    console.log('updateNodesNetworkStatus', this.networkStatuses)
+  }
+
+  private async getNodeNetworkStatusModel (node): Promise<Array<any>> {
+    const address = node.address
+    const status = await this.getNodeNetworkStatus(address)
+
+    return [address, !!status]
   }
 }
 </script>
