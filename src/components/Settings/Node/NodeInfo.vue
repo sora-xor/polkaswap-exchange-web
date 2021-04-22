@@ -39,15 +39,15 @@ const checkAddress = (translate: Function) => (rule, value, callback) => {
   const address = value.replace(wsRegexp, '')
 
   if (!value) {
-    return callback(new Error(translate('selectNodeDialog.formMessages.emptyAddress')))
+    return callback(new Error(translate('selectNodeDialog.messages.emptyAddress')))
   }
 
   if (!wsRegexp.test(value)) {
-    return callback(new Error(translate('selectNodeDialog.formMessages.incorrectProtocol')))
+    return callback(new Error(translate('selectNodeDialog.messages.incorrectProtocol')))
   }
 
   if (!dnsRegexp.test(address) && !ipv4Regexp.test(address)) {
-    return callback(new Error(translate('selectNodeDialog.formMessages.incorrectAddress')))
+    return callback(new Error(translate('selectNodeDialog.messages.incorrectAddress')))
   }
 
   callback()
@@ -70,7 +70,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
 
   readonly validationRules = {
     name: [
-      { required: true, message: this.t('selectNodeDialog.formMessages.emptyName'), trigger: 'blur' }
+      { required: true, message: this.t('selectNodeDialog.messages.emptyName'), trigger: 'blur' }
     ],
     address: [
       { validator: checkAddress(this.t), trigger: 'blur' }

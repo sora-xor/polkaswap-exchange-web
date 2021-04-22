@@ -104,11 +104,12 @@ export default {
     select: 'Select',
     selectNodeForEnvironment: 'Select a node for {environment} environment:',
     nodeTitle: '{chain} hosted by {name}',
-    formMessages: {
+    messages: {
       emptyName: 'Please input the name of the node',
       emptyAddress: 'Please input the address of the node',
       incorrectProtocol: 'Address should starts from ws:// or wss://',
-      incorrectAddress: 'Incorrect address'
+      incorrectAddress: 'Incorrect address',
+      incorrectEnvironment: 'This node is not connected to {environment} environment'
     }
   },
   buttons: {

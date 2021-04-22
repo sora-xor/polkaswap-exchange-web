@@ -122,15 +122,15 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   }
 
   async handleNode (node: any): Promise<void> {
-    console.log('handleNode', node)
     const isExistingNode = !!this.findNodeInListByAddress(node.address)
 
     const nodeChainGenesisHash = await this.getChainGenesisHash(node.address)
 
-    console.log(nodeChainGenesisHash, this.chainGenesisHash)
-
     if (nodeChainGenesisHash !== this.chainGenesisHash) {
-      this.$alert('This node is not connected to current network', { title: this.t('errorText') })
+      this.$alert(
+        this.t('selectNodeDialog.messages.incorrectEnvironment', { environment: this.soraNetwork }),
+        { title: this.t('errorText') }
+      )
       return
     }
 
