@@ -36,6 +36,7 @@ import pick from 'lodash/fp/pick'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import { NodeModel } from '@/components/Settings/Node/consts'
+import { Node, NodeItem, NodeItemNetworkStatus } from '@/types/nodes'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -54,16 +55,16 @@ const NodeInfoView = 'NodeInfoView'
   }
 })
 export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMixin, DialogMixin) {
-  @Getter node!: any
-  @Getter defaultNodes!: Array<any>
-  @Getter customNodes!: Array<any>
+  @Getter node!: Node
+  @Getter defaultNodes!: Array<Node>
+  @Getter customNodes!: Array<Node>
   @Getter chainGenesisHash!: string
   @Getter nodeIsConnecting!: boolean
   @Getter soraNetwork!: string
   @Action getChainGenesisHash!: (nodeAddress: string) => Promise<string>
   @Action getNodeNetworkStatus!: (nodeAddress: string) => Promise<any>
-  @Action setNode!: (node: any) => void
-  @Action addCustomNode!: (node: any) => void
+  @Action setNode!: (node: Node) => void
+  @Action addCustomNode!: (node: Node) => void
   @Action removeCustomNode!: (node: any) => void
 
   @Watch('visible')
@@ -106,7 +107,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     return this.currentView === NodeListView
   }
 
-  get nodeList (): Array<any> {
+  get nodeList (): Array<NodeItem> {
     return [...this.defaultNodes, ...this.customNodes].map(node => ({
       ...node,
       title: !!node.name && !!node.chain
@@ -115,7 +116,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
       networkStatus: {
         checked: node.address in this.networkStatuses,
         online: !!this.networkStatuses[node.address]
-      }
+      } as NodeItemNetworkStatus
     }))
   }
 
@@ -123,9 +124,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     return this.isNodeListView ? '' : 'select-node-dialog--add-node'
   }
 
-  async handleNode (node: any): Promise<void> {
-    const isExistingNode = !!this.findNodeInListByAddress(node.address)
-
+  async handleNode (node: NodeItem): Promise<void> {
     const nodeChainGenesisHash = await this.getChainGenesisHash(node.address)
 
     if (nodeChainGenesisHash !== this.chainGenesisHash) {
@@ -134,10 +133,6 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
         { title: this.t('errorText') }
       )
       return
-    }
-
-    if (!isExistingNode) {
-      this.addCustomNode(node)
     }
 
     if (!this.isConnectedNode(node)) {
@@ -154,7 +149,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     this.handleBack()
   }
 
-  navigateToNodeInfo (node: any): void {
+  navigateToNodeInfo (node: NodeItem | undefined): void {
     this.selectedNode = node || {}
     this.changeView(NodeInfoView)
   }
@@ -168,8 +163,18 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     this.changeView(NodeListView)
   }
 
-  private async setCurrentNode (node: any): Promise<void> {
-    const nodeCopy = pick(Object.keys(NodeModel))(node)
+  private getNodePermittedData (node: NodeItem): Node {
+    return pick(Object.keys(NodeModel))(node) as Node
+  }
+
+  private async setCurrentNode (node: NodeItem): Promise<void> {
+    const isExistingNode = !!this.findNodeInListByAddress(node.address)
+    const nodeCopy = this.getNodePermittedData(node)
+
+    if (!isExistingNode) {
+      this.addCustomNode(nodeCopy)
+    }
+
     await this.setNode(nodeCopy)
   }
 
@@ -185,13 +190,13 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     return this.connectedNodeAddress === node?.address
   }
 
-  private async updateNodesNetworkStatus () {
+  private async updateNodesNetworkStatus (): Promise<void> {
     this.networkStatuses = {}
 
     await Promise.all(this.nodeList.map(node => this.updateNodeNetworkStatus(node)))
   }
 
-  private async updateNodeNetworkStatus (node): Promise<void> {
+  private async updateNodeNetworkStatus (node: NodeItem): Promise<void> {
     const address = node.address
     const status = Boolean(await this.getNodeNetworkStatus(address))
 
