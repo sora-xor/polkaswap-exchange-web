@@ -64,7 +64,7 @@
                 tag="a"
                 target="_blank"
                 rel="nofollow noopener"
-                class="el-menu-item menu-item--small"
+                :class="`el-menu-item menu-item--small menu-item--${item.title}`"
               />
             </li>
           </s-menu-item-group>
@@ -306,6 +306,30 @@ html {
     }
     &:not(.is-disabled):hover i {
       color: inherit;
+    }
+    // TODO: Remove this part after icons' font fix
+    &.menu-item {
+      &--medium,
+      &--reddit {
+        .icon-container {
+          background-size: 28px;
+          background-repeat: no-repeat;
+          background-position: 50%;
+          border-radius: 50%;
+        }
+      }
+      &--medium .icon-container {
+        background-image: url("~@/assets/img/medium.svg");
+        &:hover {
+          background-image: url("~@/assets/img/medium--hover.svg");
+        }
+      }
+      &--reddit .icon-container {
+        background-image: url("~@/assets/img/reddit.svg");
+        &:hover {
+          background-image: url("~@/assets/img/reddit--hover.svg");
+        }
+      }
     }
   }
 }
