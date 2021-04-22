@@ -3,12 +3,13 @@
     <div class="select-node-description p4">
       {{ t('selectNodeDialog.selectNodeForEnvironment', { environment }) }}
     </div>
-    <div class="select-node-list s-flex">
-      <s-radio
+    <el-radio-group v-model="currentAddressValue" class="select-node-list s-flex">
+      <el-radio
         v-for="node in nodes"
         :key="node.address"
         :label="node.address"
-        v-model="currentAddressValue"
+        :value="node.address"
+        :disabled="!node.networkStatus.online"
         class="select-node-list__item s-flex"
       >
         <div class="select-node-item s-flex">
@@ -20,13 +21,13 @@
               {{ node.address }}
             </div>
           </div>
-          <network-badge v-if="node.networkStatus.visible" :online="node.networkStatus.online" />
+          <network-badge :checked="node.networkStatus.checked" :online="node.networkStatus.online" />
           <s-button class="details select-node-details" type="link" @click="handleNode(node)">
             <s-icon name="arrows-chevron-right-rounded-24" />
           </s-button>
         </div>
-      </s-radio>
-    </div>
+      </el-radio>
+    </el-radio-group>
     <s-button
       class="select-node-button"
       icon="circle-plus-16"

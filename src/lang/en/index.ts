@@ -59,7 +59,8 @@ export default {
   },
   networkStatus: {
     online: 'online',
-    offline: 'offline'
+    offline: 'offline',
+    checking: 'checking'
   },
   social: {
     twitter: 'Twitter',

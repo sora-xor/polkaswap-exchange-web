@@ -2,8 +2,8 @@
   <dialog-base
     :visible.sync="isVisible"
     :before-close="beforeClose"
-    v-bind="dialogProps"
-    class="select-node-dialog"
+    :title="t('selectNodeDialog.title')"
+    :class="['select-node-dialog', dialogCustomClass]"
   >
     <div v-loading="nodeIsConnecting">
       <select-node
@@ -12,14 +12,13 @@
         :loading="nodeIsConnecting"
         :nodes="nodeList"
         :handle-node="navigateToNodeInfo"
-        :get-node-network-status="getNodeNetworkStatus"
         :environment="soraNetwork"
       />
       <node-info
         v-else
         :node="selectedNode"
         :existing="existingNodeIsSelected"
-        :connected="isSelectedNodeConnected"
+        :disabled="isSelectedNodeDisabled"
         :removable="isSelectedNodeRemovable"
         :handle-back="handleBack"
         :handle-node="handleNode"
@@ -89,8 +88,8 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     this.handleNode(node)
   }
 
-  get isSelectedNodeConnected (): boolean {
-    return this.isConnectedNode(this.selectedNode)
+  get isSelectedNodeDisabled (): boolean {
+    return this.isConnectedNode(this.selectedNode) || !this.selectedNode.networkStatus?.online
   }
 
   get isSelectedNodeRemovable (): boolean {
@@ -112,20 +111,14 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
         ? this.t('selectNodeDialog.nodeTitle', { chain: node.chain, name: node.name })
         : (node.chain || node.name),
       networkStatus: {
-        visible: node.address in this.networkStatuses,
+        checked: node.address in this.networkStatuses,
         online: !!this.networkStatuses[node.address]
       }
     }))
   }
 
-  get dialogProps (): any {
-    const customClass = this.isNodeListView ? '' : 'select-node-dialog--add-node'
-
-    return {
-      title: this.isNodeListView ? this.t('selectNodeDialog.title') : undefined,
-      showClose: this.isNodeListView,
-      customClass
-    }
+  get dialogCustomClass (): string {
+    return this.isNodeListView ? '' : 'select-node-dialog--add-node'
   }
 
   async handleNode (node: any): Promise<void> {
@@ -137,7 +130,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     console.log(nodeChainGenesisHash, this.chainGenesisHash)
 
     if (nodeChainGenesisHash !== this.chainGenesisHash) {
-      // show error?
+      this.$alert('This node is not connected to network', { title: this.t('errorText') })
       return
     }
 
@@ -190,18 +183,21 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   }
 
   private async updateNodesNetworkStatus () {
-    const entries = await Promise.all(this.nodeList.map(node => this.getNodeNetworkStatusModel(node)))
+    this.networkStatuses = {}
 
-    this.networkStatuses = entries.reduce((result, [key, value]) => ({ ...result, [key]: value }), {})
+    await Promise.all(this.nodeList.map(node => this.updateNodeNetworkStatus(node)))
 
     console.log('updateNodesNetworkStatus', this.networkStatuses)
   }
 
-  private async getNodeNetworkStatusModel (node): Promise<Array<any>> {
+  private async updateNodeNetworkStatus (node): Promise<void> {
     const address = node.address
-    const status = await this.getNodeNetworkStatus(address)
+    const status = Boolean(await this.getNodeNetworkStatus(address))
 
-    return [address, !!status]
+    this.networkStatuses = {
+      ...this.networkStatuses,
+      [address]: status
+    }
   }
 }
 </script>

@@ -11,7 +11,7 @@
     </generic-page-header>
     <s-input class="node-info-input" :placeholder="t('nameText')" v-model="nodeModel.name" :disabled="existing" />
     <s-input class="node-info-input" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="existing" />
-    <s-button type="primary" class="node-info-button" :disabled="connected" @click="handleNode(nodeModel)" >{{ buttonText }}</s-button>
+    <s-button type="primary" class="node-info-button" :disabled="disabled" @click="handleNode(nodeModel)" >{{ buttonText }}</s-button>
     <external-link v-if="!existing" :title="t('selectNodeDialog.howToSetupOwnNode')" />
   </div>
 </template>
@@ -42,7 +42,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   @Prop({ default: () => {}, type: Function }) removeNode!: (node) => void
   @Prop({ default: () => ({}), type: Object }) node!: any
   @Prop({ default: false, type: Boolean }) existing!: boolean
-  @Prop({ default: false, type: Boolean }) connected!: boolean
+  @Prop({ default: false, type: Boolean }) disabled!: boolean
   @Prop({ default: false, type: Boolean }) removable!: boolean
 
   nodeModel: any = { ...NodeModel }
