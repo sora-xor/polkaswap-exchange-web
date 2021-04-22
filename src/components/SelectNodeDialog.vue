@@ -89,7 +89,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   }
 
   get isSelectedNodeDisabled (): boolean {
-    return this.isConnectedNode(this.selectedNode) || !this.selectedNode.networkStatus?.online
+    return this.isConnectedNode(this.selectedNode) || (this.selectedNode.address && !this.selectedNode.networkStatus?.online)
   }
 
   get isSelectedNodeRemovable (): boolean {
@@ -130,7 +130,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     console.log(nodeChainGenesisHash, this.chainGenesisHash)
 
     if (nodeChainGenesisHash !== this.chainGenesisHash) {
-      this.$alert('This node is not connected to network', { title: this.t('errorText') })
+      this.$alert('This node is not connected to current network', { title: this.t('errorText') })
       return
     }
 
@@ -138,10 +138,6 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
       this.addCustomNode(node)
     }
 
-    await this.switchToNode(node)
-  }
-
-  async switchToNode (node: any): Promise<void> {
     if (!this.isConnectedNode(node)) {
       await this.setNode(node)
       this.handleBack()
@@ -157,7 +153,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   }
 
   navigateToNodeInfo (node: any): void {
-    this.selectedNode = node
+    this.selectedNode = node || {}
     this.changeView(NodeInfoView)
   }
 
@@ -186,18 +182,13 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     this.networkStatuses = {}
 
     await Promise.all(this.nodeList.map(node => this.updateNodeNetworkStatus(node)))
-
-    console.log('updateNodesNetworkStatus', this.networkStatuses)
   }
 
   private async updateNodeNetworkStatus (node): Promise<void> {
     const address = node.address
     const status = Boolean(await this.getNodeNetworkStatus(address))
 
-    this.networkStatuses = {
-      ...this.networkStatuses,
-      [address]: status
-    }
+    this.networkStatuses = { ...this.networkStatuses, [address]: status }
   }
 }
 </script>

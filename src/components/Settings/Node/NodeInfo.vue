@@ -1,5 +1,5 @@
 <template>
-  <div class="node-info s-flex">
+  <s-form :model="nodeModel" :rules="validationRules" ref="nodeForm" class="node-info s-flex">
     <generic-page-header has-button-back :title="title" @back="handleBack">
       <s-button
         v-if="existing && removable"
@@ -9,11 +9,15 @@
         @click="removeNode(nodeModel)"
       />
     </generic-page-header>
-    <s-input class="node-info-input" :placeholder="t('nameText')" v-model="nodeModel.name" :disabled="existing" />
-    <s-input class="node-info-input" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="existing" />
-    <s-button type="primary" class="node-info-button" :disabled="disabled" @click="handleNode(nodeModel)" >{{ buttonText }}</s-button>
+    <s-form-item prop="name">
+      <s-input class="node-info-input" :placeholder="t('nameText')" v-model="nodeModel.name" :disabled="existing" />
+    </s-form-item>
+    <s-form-item prop="address">
+      <s-input class="node-info-input" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="existing" />
+    </s-form-item>
+    <s-button type="primary" class="node-info-button" :disabled="disabled" @click="submitForm" >{{ buttonText }}</s-button>
     <external-link v-if="!existing" :title="t('selectNodeDialog.howToSetupOwnNode')" />
-  </div>
+  </s-form>
 </template>
 
 <script lang="ts">
@@ -21,6 +25,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
+import { wsRegexp, dnsRegexp, ipv4Regexp } from '@/utils/regexp'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 
@@ -28,6 +33,24 @@ const NodeModel = {
   chain: '',
   name: '',
   address: ''
+}
+
+const checkAddress = (translate: Function) => (rule, value, callback) => {
+  const address = value.replace(wsRegexp, '')
+
+  if (!value) {
+    return callback(new Error(translate('selectNodeDialog.formMessages.emptyAddress')))
+  }
+
+  if (!wsRegexp.test(value)) {
+    return callback(new Error(translate('selectNodeDialog.formMessages.incorrectProtocol')))
+  }
+
+  if (!dnsRegexp.test(address) && !ipv4Regexp.test(address)) {
+    return callback(new Error(translate('selectNodeDialog.formMessages.incorrectAddress')))
+  }
+
+  callback()
 }
 
 @Component({
@@ -45,6 +68,15 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) disabled!: boolean
   @Prop({ default: false, type: Boolean }) removable!: boolean
 
+  readonly validationRules = {
+    name: [
+      { required: true, message: this.t('selectNodeDialog.formMessages.emptyName'), trigger: 'blur' }
+    ],
+    address: [
+      { validator: checkAddress(this.t), trigger: 'blur' }
+    ]
+  }
+
   nodeModel: any = { ...NodeModel }
 
   created (): void {
@@ -61,8 +93,42 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   get title (): string {
     return this.existing ? this.node.title : this.t('selectNodeDialog.customNode')
   }
+
+  async submitForm () {
+    try {
+      await (this.$refs.nodeForm as any).validate()
+
+      this.handleNode(this.nodeModel)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 }
 </script>
+
+<style lang="scss">
+.node-info {
+  .el-form-item.is-error > .el-form-item__content {
+    & > [class^="s-input"]:not(.s-disabled) {
+      &, &:hover {
+        & .el-input > input {
+          background-color: inherit;
+        }
+      }
+
+      .s-placeholder {
+        background-color: inherit;
+      }
+    }
+
+    & > .el-form-item__error,
+    & > .s-icon-status-error {
+      color: var(--s-color-status-error) !important;
+    }
+  }
+}
+
+</style>
 
 <style lang="scss" scoped>
 .node-info {
