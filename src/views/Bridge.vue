@@ -202,7 +202,8 @@ import {
   formatAssetSymbol,
   getAssetBalance,
   findAssetInCollection,
-  asZeroValue
+  asZeroValue,
+  isEthereumAddress
 } from '@/utils'
 
 const namespace = 'bridge'
@@ -234,7 +235,7 @@ export default class Bridge extends Mixins(
   @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets
   @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets
 
-  @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: string | number
+  @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: CodecString
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
   @Getter('isValidEthNetwork', { namespace: 'web3' }) isValidEthNetwork!: boolean
   @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
@@ -243,7 +244,7 @@ export default class Bridge extends Mixins(
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('amount', { namespace }) amount!: string
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
-  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: string
+  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: CodecString
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
@@ -287,6 +288,10 @@ export default class Bridge extends Mixins(
       const fpFee = this.getFPNumberFromCodec(this.soraNetworkFee, decimals)
       return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee)
     }
+    if (isEthereumAddress(this.asset.externalAddress) && !this.isSoraToEthereum) {
+      const fpFee = this.getFPNumberFromCodec(this.ethereumNetworkFee)
+      return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee)
+    }
     return !FPNumber.eq(fpBalance, fpAmount)
   }
 
@@ -295,7 +300,7 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientEthereumForFee (): boolean {
-    return hasInsufficientEthForFee(this.ethBalance.toString(), this.ethereumNetworkFee)
+    return hasInsufficientEthForFee(this.ethBalance, this.ethereumNetworkFee)
   }
 
   get isInsufficientBalance (): boolean {
@@ -332,7 +337,7 @@ export default class Bridge extends Mixins(
   }
 
   get formattedEthNetworkFee (): string {
-    return this.formatStringValue(this.ethereumNetworkFee)
+    return this.formatCodecNumber(this.ethereumNetworkFee)
   }
 
   formatFee (fee: string, formattedFee: string): string {
@@ -470,10 +475,10 @@ export default class Bridge extends Mixins(
     }
   }
 
-  async handleMaxValue (): Promise<void> {
+  handleMaxValue (): void {
     if (this.asset && this.isRegisteredAsset) {
-      await this.getNetworkFee()
-      const max = getMaxValue(this.asset, this.soraNetworkFee, !this.isSoraToEthereum)
+      const fee = this.isSoraToEthereum ? this.soraNetworkFee : this.ethereumNetworkFee
+      const max = getMaxValue(this.asset, fee, !this.isSoraToEthereum)
       this.setAmount(max)
     }
   }
