@@ -67,7 +67,8 @@ export default {
     twitter: 'Twitter',
     telegram: 'Telegram',
     medium: 'Medium',
-    reddit: 'Reddit'
+    reddit: 'Reddit',
+    github: 'GitHub'
   },
   footerMenu: {
     faucet: 'Faucet',
