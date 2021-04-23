@@ -349,7 +349,11 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
       return this.t('bridgeTransaction.statuses.waiting') + '...'
     }
     if (this.currentState === (!this.isSoraToEthereum ? STATES.SORA_PENDING : STATES.ETHEREUM_PENDING)) {
-      return `${this.t('bridgeTransaction.statuses.pending')}... (${this.t('bridgeTransaction.wait30Block')})`
+      const message = this.t('bridgeTransaction.statuses.pending') + '...'
+      if (this.isSoraToEthereum) {
+        return message
+      }
+      return `${message} (${this.t('bridgeTransaction.wait30Block')})`
     }
     if (this.currentState === (!this.isSoraToEthereum ? STATES.SORA_REJECTED : STATES.ETHEREUM_REJECTED)) {
       return this.t('bridgeTransaction.statuses.failed')
