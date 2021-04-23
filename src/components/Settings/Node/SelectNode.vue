@@ -17,11 +17,11 @@
             <div class="select-node-info__label h4">
               {{ node.title }}
             </div>
-            <div class="select-node-info__address p4">
+            <div class="select-node-info__address">
               {{ node.address }}
             </div>
           </div>
-          <network-badge :checked="node.networkStatus.checked" :online="node.networkStatus.online" />
+          <network-badge v-bind="node.networkStatus" />
           <s-button class="details select-node-details" type="link" @click="handleNode(node)">
             <s-icon name="arrows-chevron-right-rounded-24" />
           </s-button>
@@ -66,7 +66,19 @@ export default class SelectNode extends Mixins(TranslationMixin) {
 button:not(.s-action).s-i-position-left.select-node-details > span > i[class^=s-icon-] {
   margin-right: 0;
 }
+.select-node-list__item.el-radio {
+  & > .el-radio__input > .el-radio__inner {
+    // temporary, because primary border color is not contrast with background
+    border-color: var(--s-color-base-on-disabled);
+  }
 
+  & > .el-radio__label {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    padding-left: $inner-spacing-small
+  }
+}
 </style>
 
 <style lang="scss" scoped>
@@ -105,11 +117,12 @@ $list-item-padding: 11px 0;
     margin-right: $inner-spacing-small;
 
     &__label {
-      color: var(--s-color-base-content-primary)
+      color: var(--s-color-base-content-primary);
     }
 
     &__address {
-      color: var(--s-color-base-content-tertiary)
+      color: var(--s-color-base-content-tertiary);
+      font-size: var(--s-heading8-font-size);
     }
   }
 

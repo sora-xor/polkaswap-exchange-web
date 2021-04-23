@@ -5,26 +5,23 @@
     :title="t('selectNodeDialog.title')"
     :class="['select-node-dialog', dialogCustomClass]"
   >
-    <div v-loading="nodeIsConnecting">
-      <select-node
-        v-if="isNodeListView"
-        v-model="connectedNodeAddress"
-        :loading="nodeIsConnecting"
-        :nodes="nodeList"
-        :handle-node="navigateToNodeInfo"
-        :environment="soraNetwork"
-      />
-      <node-info
-        v-else
-        :node="selectedNode"
-        :existing="existingNodeIsSelected"
-        :disabled="isSelectedNodeDisabled"
-        :removable="isSelectedNodeRemovable"
-        :handle-back="handleBack"
-        :handle-node="handleNode"
-        :remove-node="removeNode"
-      />
-    </div>
+    <select-node
+      v-if="isNodeListView"
+      v-model="connectedNodeAddress"
+      :nodes="nodeList"
+      :handle-node="navigateToNodeInfo"
+      :environment="soraNetwork"
+    />
+    <node-info
+      v-else
+      :node="selectedNode"
+      :existing="existingNodeIsSelected"
+      :disabled="isSelectedNodeDisabled"
+      :removable="isSelectedNodeRemovable"
+      :handle-back="handleBack"
+      :handle-node="handleNode"
+      :remove-node="removeNode"
+    />
   </dialog-base>
 </template>
 
@@ -59,7 +56,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   @Getter defaultNodes!: Array<Node>
   @Getter customNodes!: Array<Node>
   @Getter chainGenesisHash!: string
-  @Getter nodeIsConnecting!: boolean
+  @Getter nodeAddressConnecting!: string
   @Getter soraNetwork!: string
   @Action getChainGenesisHash!: (nodeAddress: string) => Promise<string>
   @Action getNodeNetworkStatus!: (nodeAddress: string) => Promise<any>
@@ -115,7 +112,8 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
         : (node.name || node.chain),
       networkStatus: {
         checked: node.address in this.networkStatuses,
-        online: !!this.networkStatuses[node.address]
+        online: !!this.networkStatuses[node.address],
+        connecting: node.address === this.nodeAddressConnecting
       } as NodeItemNetworkStatus
     }))
   }
@@ -176,7 +174,6 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     }
 
     await this.setNode(nodeCopy)
-    this.isVisible = false
   }
 
   private changeView (view: string): void {
@@ -223,38 +220,6 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
         padding: $inner-spacing-big $inner-spacing-big $inner-spacing-mini * 4;
       }
     }
-  }
-
-  .el-loading-mask {
-    background: var(--s-color-utility-surface);
-  }
-}
-
-.select-node-list__item.el-radio {
-  // & > .el-radio__input > .el-radio__inner {
-  //   width: var(--s-size-mini);
-  //   height: var(--s-size-mini);
-  //   border-width: 1px;
-  //   border-color: var(--s-color-base-border-primary);
-
-  //   &::after {
-  //     font-family: "soramitsu-icons";
-  //     content: "\ea1c";
-  //     background: none;
-  //     width: 100%;
-  //     height: 100%;
-  //     font-size: 20px;
-  //     line-height: var(--s-size-mini);
-  //     color: var(--s-color-theme-accent);
-  //     text-align: center;
-  //   }
-  // }
-
-  & > .el-radio__label {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    padding-left: $inner-spacing-small
   }
 }
 </style>

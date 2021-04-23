@@ -33,10 +33,10 @@ function initialState () {
     slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
     marketAlgorithm: storage.get('marketAlgorithm') || DefaultMarketAlgorithm,
     transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
-    node: {},
+    node: JSON.parse(settingsStorage.get('node')) || {},
     defaultNodes: [],
     customNodes: JSON.parse(settingsStorage.get('customNodes')) || [],
-    nodeIsConnecting: false,
+    nodeAddressConnecting: '',
     chainGenesisHash: '',
     faucetUrl: ''
   }
@@ -48,14 +48,17 @@ const getters = {
   node (state) {
     return state.node
   },
+  chainAndNetworkText (state) {
+    return [state.node.chain, state.soraNetwork].join(' ').trim()
+  },
   defaultNodes (state) {
     return state.defaultNodes
   },
   customNodes (state) {
     return state.customNodes
   },
-  nodeIsConnecting (state) {
-    return state.nodeIsConnecting
+  nodeAddressConnecting (state) {
+    return state.nodeAddressConnecting
   },
   soraNetwork (state) {
     return state.soraNetwork
@@ -78,17 +81,17 @@ const getters = {
 }
 
 const mutations = {
-  [types.SET_NODE_REQUEST] (state) {
-    state.nodeIsConnecting = true
+  [types.SET_NODE_REQUEST] (state, node) {
+    state.nodeAddressConnecting = node?.address ?? ''
   },
   [types.SET_NODE_SUCCESS] (state, node = {}) {
     state.node = { ...node }
-    state.nodeIsConnecting = false
+    state.nodeAddressConnecting = ''
     settingsStorage.set('node', JSON.stringify(node))
   },
   [types.SET_NODE_FAILURE] (state) {
     state.node = {}
-    state.nodeIsConnecting = false
+    state.nodeAddressConnecting = ''
   },
   [types.SET_DEFAULT_NODES] (state, nodes) {
     state.defaultNodes = [...nodes]
@@ -123,13 +126,13 @@ const mutations = {
 const actions = {
   async setNode ({ commit, dispatch }, node) {
     try {
-      commit(types.SET_NODE_REQUEST)
-
       const endpoint = node?.address ?? ''
 
       if (!endpoint) {
         throw new Error('node address is not set')
       }
+
+      commit(types.SET_NODE_REQUEST, node)
 
       if (!connection.endpoint) {
         connection.endpoint = endpoint

@@ -12,7 +12,7 @@
             <token-logo class="node-control__logo" v-bind="nodeLogo" />
             <div class="node-control__text">
               <div class="node-control-title">{{ node.name }}</div>
-              <div class="node-control-network">live network</div>
+              <div class="node-control-network">{{ chainAndNetworkText }}</div>
             </div>
           </s-button>
         </branded-tooltip>
@@ -192,6 +192,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   @Getter currentRoute!: WALLET_CONSTS.RouteNames
   @Getter faucetUrl!: string
   @Getter node!: any
+  @Getter chainAndNetworkText!: string
 
   @Action navigate // Wallet
   @Action trackActiveTransactions
@@ -209,9 +210,11 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   async created () {
     await this.withLoading(async () => {
       const { data } = await axios.get('/env.json')
+      const node = this.node?.address ? this.node : data?.DEFAULT_NETWORKS?.[0]
+
       await this.setSoraNetwork(data)
       await this.setDefaultNodes(data?.DEFAULT_NETWORKS)
-      await this.setNode(data?.DEFAULT_NETWORKS?.[0])
+      await this.setNode(node)
       await this.getNetworkChainGenesisHash()
       await this.setDefaultEthNetwork(data.ETH_NETWORK)
       await this.setEthereumSmartContracts(data.BRIDGE)
@@ -682,12 +685,13 @@ $disclaimer-letter-spacing: -0.03em;
 }
 
 .node-control {
-  &__logo,
-  &__text {
+  &__logo {
     margin: $inner-spacing-mini / 2;
   }
 
   &__text {
+    margin: $inner-spacing-mini / 2;
+    padding-right: $inner-spacing-mini / 2;
     text-align: left;
     font-size: var(--s-font-size-mini);
   }

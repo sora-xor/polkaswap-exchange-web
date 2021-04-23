@@ -7,6 +7,7 @@ export interface Node {
 export interface NodeItemNetworkStatus {
   checked: boolean;
   online: boolean;
+  connecting: boolean;
 }
 
 export interface NodeItem extends Node {
