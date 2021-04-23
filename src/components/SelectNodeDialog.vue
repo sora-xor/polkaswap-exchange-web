@@ -17,6 +17,7 @@
       :node="selectedNode"
       :existing="existingNodeIsSelected"
       :disabled="isSelectedNodeDisabled"
+      :loading="isSelectedNodeConnecting"
       :removable="isSelectedNodeRemovable"
       :handle-back="handleBack"
       :handle-node="handleNode"
@@ -96,6 +97,10 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     return !this.defaultNodes.find(node => node.address === this.selectedNode?.address)
   }
 
+  get isSelectedNodeConnecting (): boolean {
+    return this.isConnectingNode(this.selectedNode)
+  }
+
   get existingNodeIsSelected (): boolean {
     return !!this.findNodeInListByAddress(this.selectedNode?.address)
   }
@@ -113,7 +118,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
       networkStatus: {
         checked: node.address in this.networkStatuses,
         online: !!this.networkStatuses[node.address],
-        connecting: node.address === this.nodeAddressConnecting
+        connecting: this.isConnectingNode(node)
       } as NodeItemNetworkStatus
     }))
   }
@@ -186,6 +191,10 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
 
   private isConnectedNode (node: any): boolean {
     return this.connectedNodeAddress === node?.address
+  }
+
+  private isConnectingNode (node: any): boolean {
+    return this.nodeAddressConnecting === node?.address
   }
 
   private async updateNodesNetworkStatus (): Promise<void> {

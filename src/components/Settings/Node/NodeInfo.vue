@@ -15,7 +15,7 @@
     <s-form-item prop="address">
       <s-input class="node-info-input" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="existing" />
     </s-form-item>
-    <s-button type="primary" class="node-info-button" :disabled="disabled" @click="submitForm" >{{ buttonText }}</s-button>
+    <s-button type="primary" class="node-info-button" :disabled="disabled" :loading="loading" @click="submitForm" >{{ buttonText }}</s-button>
     <external-link v-if="!existing" :title="t('selectNodeDialog.howToSetupOwnNode')" />
   </s-form>
 </template>
@@ -61,6 +61,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   @Prop({ default: () => ({}), type: Object }) node!: any
   @Prop({ default: false, type: Boolean }) existing!: boolean
   @Prop({ default: false, type: Boolean }) disabled!: boolean
+  @Prop({ default: false, type: Boolean }) loading!: boolean
   @Prop({ default: false, type: Boolean }) removable!: boolean
 
   readonly validationRules = {
