@@ -111,7 +111,7 @@ export default {
       emptyAddress: 'Please input the address of the node',
       incorrectProtocol: 'Address should starts from ws:// or wss://',
       incorrectAddress: 'Incorrect address',
-      nodeConnectError: 'An error occurred while connecting to the node'
+      nodeConnectionError: 'An error occurred while connecting to the node'
     }
   },
   buttons: {

@@ -44,6 +44,7 @@ import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator'
 
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
+import { NodeItem } from '@/types/nodes'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 
@@ -53,8 +54,8 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
   }
 })
 export default class SelectNode extends Mixins(TranslationMixin) {
-  @Prop({ default: () => [], type: Array }) nodes!: Array<any>
-  @Prop({ default: () => {}, type: Function }) handleNode!: (node: any) => void
+  @Prop({ default: () => [], type: Array }) nodes!: Array<NodeItem>
+  @Prop({ default: () => {}, type: Function }) handleNode!: (node: NodeItem) => void
   @Prop({ default: '', type: String }) environment!: string
 
   @ModelSync('value', 'input', { type: String })

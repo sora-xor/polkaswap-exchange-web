@@ -30,9 +30,7 @@ import { NodeModel } from './consts'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 
-const checkAddress = (translate: Function) => (rule, value, callback) => {
-  const address = value.replace(wsRegexp, '')
-
+const checkAddress = (translate: Function): Function => (rule, value, callback): void => {
   if (!value) {
     return callback(new Error(translate('selectNodeDialog.messages.emptyAddress')))
   }
@@ -40,6 +38,8 @@ const checkAddress = (translate: Function) => (rule, value, callback) => {
   if (!wsRegexp.test(value)) {
     return callback(new Error(translate('selectNodeDialog.messages.incorrectProtocol')))
   }
+
+  const address = value.replace(wsRegexp, '')
 
   if (!dnsRegexp.test(address) && !ipv4Regexp.test(address)) {
     return callback(new Error(translate('selectNodeDialog.messages.incorrectAddress')))
@@ -90,7 +90,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
     return this.existing ? this.node.title : this.t('selectNodeDialog.customNode')
   }
 
-  async submitForm () {
+  async submitForm (): Promise<void> {
     try {
       await (this.$refs.nodeForm as any).validate()
 

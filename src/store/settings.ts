@@ -102,7 +102,7 @@ const mutations = {
   },
   [types.RESET_NODE] (state) {
     state.node = {}
-    storage.remove('node')
+    settingsStorage.remove('node')
   },
   [types.SET_SORA_NETWORK] (state, value) {
     state.soraNetwork = value

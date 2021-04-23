@@ -135,13 +135,13 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
       this.handleBack()
     } catch (error) {
       this.$alert(
-        this.t('selectNodeDialog.messages.nodeConnectError'),
+        this.t('selectNodeDialog.messages.nodeConnectionError'),
         { title: this.t('errorText') }
       )
     }
   }
 
-  async removeNode (node: any): Promise<void> {
+  async removeNode (node: NodeItem): Promise<void> {
     if (this.isConnectedNode(node)) {
       await this.setCurrentNode(this.defaultNodes[0])
     }
@@ -156,7 +156,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
 
   beforeClose (closeFn: Function): void {
     closeFn()
-    this.changeView(NodeListView)
+    this.handleBack()
   }
 
   handleBack (): void {
