@@ -59,7 +59,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   @Getter chainGenesisHash!: string
   @Getter nodeAddressConnecting!: string
   @Getter soraNetwork!: string
-  @Action getChainGenesisHash!: (nodeAddress: string) => Promise<string>
+  @Action getNodeChainGenesisHash!: (nodeAddress: string) => Promise<string>
   @Action getNodeNetworkStatus!: (nodeAddress: string) => Promise<any>
   @Action setNode!: (node: Node) => void
   @Action addCustomNode!: (node: Node) => void
@@ -128,19 +128,16 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   }
 
   async handleNode (node: NodeItem): Promise<void> {
-    const nodeChainGenesisHash = await this.getChainGenesisHash(node.address)
+    if (this.isConnectedNode(node)) return
 
-    if (nodeChainGenesisHash !== this.chainGenesisHash) {
-      this.$alert(
-        this.t('selectNodeDialog.messages.incorrectEnvironment', { environment: this.soraNetwork }),
-        { title: this.t('errorText') }
-      )
-      return
-    }
-
-    if (!this.isConnectedNode(node)) {
+    try {
       await this.setCurrentNode(node)
       this.handleBack()
+    } catch (error) {
+      this.$alert(
+        this.t('selectNodeDialog.messages.nodeConnectError'),
+        { title: this.t('errorText') }
+      )
     }
   }
 
@@ -174,11 +171,11 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     const isExistingNode = !!this.findNodeInListByAddress(node.address)
     const nodeCopy = this.getNodePermittedData(node)
 
+    await this.setNode(nodeCopy)
+
     if (!isExistingNode) {
       this.addCustomNode(nodeCopy)
     }
-
-    await this.setNode(nodeCopy)
   }
 
   private changeView (view: string): void {

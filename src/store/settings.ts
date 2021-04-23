@@ -19,6 +19,7 @@ const types = flow(
     'SET_SORA_NETWORK',
     'SET_DEFAULT_NODES',
     'SET_CUSTOM_NODES',
+    'RESET_NODE',
     'SET_NETWORK_CHAIN_GENESIS_HASH'
   ]),
   map(x => [x, x]),
@@ -49,7 +50,7 @@ const getters = {
     return state.node
   },
   chainAndNetworkText (state) {
-    return [state.node.chain, state.soraNetwork].join(' ').trim()
+    return state.node.chain || state.soraNetwork
   },
   defaultNodes (state) {
     return state.defaultNodes
@@ -90,7 +91,6 @@ const mutations = {
     settingsStorage.set('node', JSON.stringify(node))
   },
   [types.SET_NODE_FAILURE] (state) {
-    state.node = {}
     state.nodeAddressConnecting = ''
   },
   [types.SET_DEFAULT_NODES] (state, nodes) {
@@ -99,6 +99,10 @@ const mutations = {
   [types.SET_CUSTOM_NODES] (state, nodes) {
     state.customNodes = [...nodes]
     settingsStorage.set('customNodes', JSON.stringify(nodes))
+  },
+  [types.RESET_NODE] (state) {
+    state.node = {}
+    storage.remove('node')
   },
   [types.SET_SORA_NETWORK] (state, value) {
     state.soraNetwork = value
@@ -124,15 +128,37 @@ const mutations = {
 }
 
 const actions = {
-  async setNode ({ commit, dispatch }, node) {
+  async connectToInitialNode ({ commit, dispatch, state }) {
+    const node = state.node?.address ? state.node : state.defaultNodes[0]
+
+    try {
+      await dispatch('setNode', node)
+    } catch (error) {
+      if (node.address !== state.defaultNodes[0].address) {
+        commit(types.RESET_NODE)
+        await dispatch('connectToInitialNode')
+      }
+    }
+  },
+  async setNode ({ commit, dispatch, state }, node) {
     try {
       const endpoint = node?.address ?? ''
 
       if (!endpoint) {
-        throw new Error('node address is not set')
+        throw new Error('Node address is not set')
+      }
+
+      if (!state.chainGenesisHash) {
+        throw new Error('Network chain genesis hash is not set')
       }
 
       commit(types.SET_NODE_REQUEST, node)
+
+      const nodeChainGenesisHash = await dispatch('getNodeChainGenesisHash', endpoint)
+
+      if (nodeChainGenesisHash !== state.chainGenesisHash) {
+        throw new Error(`Chain genesis hash doesn't match: "${nodeChainGenesisHash}" recieved, should be "${state.chainGenesisHash}"`)
+      }
 
       if (!connection.endpoint) {
         connection.endpoint = endpoint
@@ -144,7 +170,7 @@ const actions = {
 
       commit(types.SET_NODE_SUCCESS, node)
     } catch (error) {
-      console.error('setNode', error)
+      console.error(error)
       commit(types.SET_NODE_FAILURE)
       throw error
     }
@@ -168,11 +194,15 @@ const actions = {
   },
   async getNetworkChainGenesisHash ({ commit, state, dispatch }) {
     const endpoint = state.defaultNodes?.[0]?.address
-    const genesisHash = await dispatch('getChainGenesisHash', endpoint)
+    const genesisHash = await dispatch('getNodeChainGenesisHash', endpoint)
+
+    if (!genesisHash) {
+      throw new Error('Failed to fetch network chain genesis hash')
+    }
 
     commit(types.SET_NETWORK_CHAIN_GENESIS_HASH, genesisHash)
   },
-  async getChainGenesisHash (_, nodeAddress: string): Promise<string> {
+  async getNodeChainGenesisHash (_, nodeAddress: string): Promise<string> {
     if (!nodeAddress) {
       throw new Error('nodeAddress is required')
     }

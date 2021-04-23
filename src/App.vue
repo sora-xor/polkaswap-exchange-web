@@ -198,7 +198,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   @Action trackActiveTransactions
   @Action setSoraNetwork
   @Action setDefaultNodes
-  @Action setNode
+  @Action connectToInitialNode
   @Action setFaucetUrl
   @Action getNetworkChainGenesisHash
   @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity
@@ -210,18 +210,19 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   async created () {
     await this.withLoading(async () => {
       const { data } = await axios.get('/env.json')
-      const node = this.node?.address ? this.node : data?.DEFAULT_NETWORKS?.[0]
 
       await this.setSoraNetwork(data)
       await this.setDefaultNodes(data?.DEFAULT_NETWORKS)
-      await this.setNode(node)
-      await this.getNetworkChainGenesisHash()
       await this.setDefaultEthNetwork(data.ETH_NETWORK)
       await this.setEthereumSmartContracts(data.BRIDGE)
 
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL)
       }
+
+      // connection to node
+      await this.getNetworkChainGenesisHash()
+      await this.connectToInitialNode()
 
       await initWallet({ permissions: WalletPermissions })
       await this.getAssets()
