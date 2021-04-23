@@ -9,10 +9,14 @@ export default class NetworkFormatterMixin extends Vue {
   formatNetwork (isSora: boolean, isDefaultEthNetwork = false): string {
     const defaultEthNetwork = store.getters['web3/defaultEthNetwork']
     const ethNetwork = store.getters['web3/ethNetwork']
+    const currentSubNetwork = store.getters['web3/currentSubNetwork']
     const soraNetwork = store.getters.soraNetwork
 
     if (isSora) {
       return `sora.${soraNetwork}`
+    }
+    if (currentSubNetwork?.id !== 0) {
+      return 'energyweb.title'
     }
     const network = isDefaultEthNetwork ? defaultEthNetwork : ethNetwork
     if (!network || network === 'undefined') {
