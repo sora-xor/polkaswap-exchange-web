@@ -445,8 +445,6 @@ div.article-card {
   height: 100% !important;
 }
 
-
-
 /*_______________________ CURRENT UI FIXES FOR CONSISTENCY (GENERALLY BASED ON TEST USERS FEEDBACK) _______________________*/
 
 div.wallet-assets-item i.asset-logo {
@@ -494,7 +492,7 @@ div.header-icon {
   margin: 16px auto !important;
 }
 button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-medium.s-border-radius-small.s-primary.s-i-position-left span {
-  font-size:var(--s-icon-font-size-mini) !important;
+  font-size: var(--s-icon-font-size-mini) !important;
 }
 div.pool-info--buttons button.el-button {
   background-color: var(--s-color-theme-secondary);
@@ -528,35 +526,17 @@ div.el-tabs__item {
   user-select: none;
 }
 
-
-
 /*_______________________ CURRENT UI QUICK LAYOUT UPDATE PROPOSAL/FIX ALIGNMENTS + MIN-WIDTH 528px LOOK OK/USABLE  _______________________*/
-
-button.polkaswap-logo span {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 64px;
-  width: 100vw;
-  box-shadow: 240px 16px 32px -16px #e5dce0;
-  z-index: 1;
-  cursor: default;
-}
 aside.app-sidebar {
   border-right: 1px solid #e5dce0 !important;
   border-image: linear-gradient(#FAF4F8, #D5CDD0, #FAF4F8) 30;
 }
 div.app-controls span.el-tooltip button.el-button.el-tooltip.wallet.el-button--plain.el-button--medium.s-medium.s-border-radius-small.s-secondary.s-i-position-left {
   margin-right: 4px;
-  /*margin-top: 17px*/
-}
-div.app-controls {
-  z-index: 2;
 }
 footer.app-footer {
-  padding-right: 22px!important;
-  padding-bottom: 20px!important;
+  padding-right: 22px !important;
+  padding-bottom: 20px !important;
 }
 a.sidebar-item-content--link {
   padding: 0 0 0 13px !important;
@@ -583,21 +563,20 @@ div.app-body {
   button.polkaswap-logo {
     margin-right: 4px;
     margin-left: 4px;
-    margin-bottom: 1.5px!important;
-    width: var(--s-size-medium)!important;
-    height: var(--s-size-medium)!important;
+    margin-bottom: 1.5px !important;
+    width: var(--s-size-medium) !important;
+    height: var(--s-size-medium) !important;
     padding: 0;
     border-radius: 0;
   }
-
 }
 @media screen and (min-width: 900px) {
   button.polkaswap-logo {
-    height: 44px!important;
-    width: 165px!important;
-    padding: 0!important;
-    margin-top: 10px;/*16px*/
-    margin-bottom: 0!important;
+    height: 44px !important;
+    width: 165px !important;
+    padding: 0 !important;
+    margin-top: 10px;
+    margin-bottom: 0 !important;
   }
   .el-dialog__wrapper {
     left: 160px;
@@ -608,30 +587,17 @@ div.app-body {
     width: 70px !important;
     margin-right: 10px !important;
     overflow-x: hidden;
+    border-right: none !important;
   }
   div.icon-container + span {
     display: none;
   }
-  aside.app-sidebar {
-    border-right: none !important;
-  }
 }
 @media screen and (max-width: 460px) {
   button.polkaswap-logo {
-    display: inherit!important;
+    display: inherit !important;
   }
   div.app-body {
     margin-left: -10px;
   }
-  button.polkaswap-logo span {
-    width: 528px;
-  }
 }
-
-
-
-
-
-
-
-
