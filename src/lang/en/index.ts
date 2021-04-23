@@ -103,7 +103,7 @@ export default {
     howToSetupOwnNode: 'How to setup your own @:soraText node',
     select: 'Select',
     selectNodeForEnvironment: 'Select a node for {environment} environment:',
-    nodeTitle: '{chain} hosted by {name}',
+    nodeTitle: '{name} hosted by {chain}',
     messages: {
       emptyName: 'Please input the name of the node',
       emptyAddress: 'Please input the address of the node',

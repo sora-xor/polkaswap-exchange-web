@@ -62,7 +62,17 @@ export default class SelectNode extends Mixins(TranslationMixin) {
 }
 </script>
 
+<style lang="scss">
+button:not(.s-action).s-i-position-left.select-node-details > span > i[class^=s-icon-] {
+  margin-right: 0;
+}
+
+</style>
+
 <style lang="scss" scoped>
+$list-item-height: 71px;
+$list-item-padding: 11px 0;
+
 .select-node {
   flex-direction: column;
   align-items: center;
@@ -78,7 +88,9 @@ export default class SelectNode extends Mixins(TranslationMixin) {
     &__item {
       margin-right: 0;
       align-items: center;
-      min-height: 71px;
+      padding: $list-item-padding;
+      min-height: $list-item-height;
+      white-space: normal;
     }
   }
 
@@ -90,6 +102,7 @@ export default class SelectNode extends Mixins(TranslationMixin) {
   &-info {
     flex-direction: column;
     flex: 1;
+    margin-right: $inner-spacing-small;
 
     &__label {
       color: var(--s-color-base-content-primary)

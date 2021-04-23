@@ -112,7 +112,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
       ...node,
       title: !!node.name && !!node.chain
         ? this.t('selectNodeDialog.nodeTitle', { chain: node.chain, name: node.name })
-        : (node.chain || node.name),
+        : (node.name || node.chain),
       networkStatus: {
         checked: node.address in this.networkStatuses,
         online: !!this.networkStatuses[node.address]
@@ -176,6 +176,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     }
 
     await this.setNode(nodeCopy)
+    this.isVisible = false
   }
 
   private changeView (view: string): void {
@@ -230,24 +231,24 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
 }
 
 .select-node-list__item.el-radio {
-  & > .el-radio__input > .el-radio__inner {
-    width: var(--s-size-mini);
-    height: var(--s-size-mini);
-    border-width: 1px;
-    border-color: var(--s-color-base-border-primary);
+  // & > .el-radio__input > .el-radio__inner {
+  //   width: var(--s-size-mini);
+  //   height: var(--s-size-mini);
+  //   border-width: 1px;
+  //   border-color: var(--s-color-base-border-primary);
 
-    &::after {
-      font-family: "soramitsu-icons";
-      content: "\ea1c";
-      background: none;
-      width: 100%;
-      height: 100%;
-      font-size: 20px;
-      line-height: var(--s-size-mini);
-      color: var(--s-color-theme-accent);
-      text-align: center;
-    }
-  }
+  //   &::after {
+  //     font-family: "soramitsu-icons";
+  //     content: "\ea1c";
+  //     background: none;
+  //     width: 100%;
+  //     height: 100%;
+  //     font-size: 20px;
+  //     line-height: var(--s-size-mini);
+  //     color: var(--s-color-theme-accent);
+  //     text-align: center;
+  //   }
+  // }
 
   & > .el-radio__label {
     display: flex;

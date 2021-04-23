@@ -8,13 +8,19 @@
           <div slot="content">
             {{ t('selectNodeText') }}
           </div>
-          <s-button type="action" icon="connection-broadcasting-24" @click="openSelectNodeDialog" />
+          <s-button class="app-control node-control" @click="openSelectNodeDialog">
+            <token-logo class="node-control__logo" v-bind="nodeLogo" />
+            <div class="node-control__text">
+              <div class="node-control-title">{{ node.name }}</div>
+              <div class="node-control-network">live network</div>
+            </div>
+          </s-button>
         </branded-tooltip>
         <branded-tooltip :disabled="isLoggedIn" popper-class="info-tooltip wallet-tooltip" placement="bottom">
           <div slot="content" class="app-controls__wallet-tooltip">
             {{ t('connectWalletTextTooltip') }}
           </div>
-          <s-button class="wallet" :disabled="loading" @click="goTo(PageNames.Wallet)">
+          <s-button class="app-control wallet" :disabled="loading" @click="goTo(PageNames.Wallet)">
             <div class="account">
               <div class="account-name">{{ accountInfo }}</div>
               <div class="account-icon">
@@ -140,8 +146,9 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { connection, initWallet, WALLET_CONSTS, WalletAvatar, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
+import { KnownSymbols } from '@sora-substrate/util'
 
-import { WalletPermissions, PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components } from '@/consts'
+import { WalletPermissions, PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize } from '@/consts'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -159,7 +166,8 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
     BrandedTooltip: lazyComponent(Components.BrandedTooltip),
     HelpDialog: lazyComponent(Components.HelpDialog),
     SidebarItemContent: lazyComponent(Components.SidebarItemContent),
-    SelectNodeDialog: lazyComponent(Components.SelectNodeDialog)
+    SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
+    TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
 export default class App extends Mixins(TransactionMixin, LoadingMixin) {
@@ -183,6 +191,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   @Getter account!: any
   @Getter currentRoute!: WALLET_CONSTS.RouteNames
   @Getter faucetUrl!: string
+  @Getter node!: any
 
   @Action navigate // Wallet
   @Action trackActiveTransactions
@@ -223,6 +232,13 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction (value): void {
     this.handleChangeTransaction(value)
+  }
+
+  get nodeLogo (): any {
+    return {
+      size: LogoSize.SMALL,
+      tokenSymbol: KnownSymbols.XOR
+    }
   }
 
   get isAboutPage (): boolean {
@@ -616,7 +632,7 @@ $disclaimer-letter-spacing: -0.03em;
     align-items: center;
   }
 
-  .wallet {
+  .app-control {
     padding: $inner-spacing-mini / 2;
     background-color: var(--s-color-base-background);
     border-color: var(--s-color-base-background);
@@ -662,6 +678,26 @@ $disclaimer-letter-spacing: -0.03em;
     width: 100%;
     height: 100%;
     background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 16C0 7.16344 7.16344 0 16 0C24.8366 0 32 7.16344 32 16C32 24.8366 24.8366 32 16 32C7.16344 32 0 24.8366 0 16Z' fill='white'/%3E%3Cellipse cx='16.0001' cy='4.79999' rx='2.4' ry='2.4' fill='%2331DF57'/%3E%3Ccircle cx='11.2' cy='7.19999' r='2.4' fill='%239A1892'/%3E%3Cellipse cx='20.7999' cy='7.19999' rx='2.4' ry='2.4' fill='%2331DF57'/%3E%3Cellipse cx='16.0001' cy='10.4' rx='2.4' ry='2.4' fill='%230A2342'/%3E%3Cellipse cx='25.6' cy='10.4' rx='2.4' ry='2.4' fill='%232D4DDC'/%3E%3Ccircle cx='6.4' cy='10.4' r='2.4' fill='%232D4DDC'/%3E%3Ccircle cx='11.2' cy='12.8' r='2.4' fill='%23EB90EB'/%3E%3Cellipse cx='20.7999' cy='12.8' rx='2.4' ry='2.4' fill='%23EB90EB'/%3E%3Ccircle cx='16.0001' cy='21.6' r='2.4' fill='%23EB90EB'/%3E%3Ccircle cx='25.6' cy='21.6' r='2.4' fill='%2331DF57'/%3E%3Cellipse cx='6.4' cy='21.6' rx='2.4' ry='2.4' fill='%2331DF57'/%3E%3Cellipse cx='11.2' cy='24' rx='2.4' ry='2.4' fill='%239A1892'/%3E%3Cellipse cx='20.7999' cy='24' rx='2.4' ry='2.4' fill='%2331DF57'/%3E%3Cellipse cx='16.0001' cy='27.2' rx='2.4' ry='2.4' fill='%232D4DDC'/%3E%3Ccircle cx='16.0001' cy='16' r='2.4' fill='%23433F10'/%3E%3Ccircle cx='25.6' cy='16' r='2.4' fill='%239A1892'/%3E%3Cellipse cx='6.4' cy='16' rx='2.4' ry='2.4' fill='%2331DF57'/%3E%3Cellipse cx='11.2' cy='18.4' rx='2.4' ry='2.4' fill='%230A2342'/%3E%3Cellipse cx='20.7999' cy='18.4' rx='2.4' ry='2.4' fill='%230A2342'/%3E%3Cpath d='M16 31C7.71573 31 1 24.2843 1 16H-1C-1 25.3888 6.61116 33 16 33V31ZM31 16C31 24.2843 24.2843 31 16 31V33C25.3888 33 33 25.3888 33 16H31ZM16 1C24.2843 1 31 7.71573 31 16H33C33 6.61116 25.3888 -1 16 -1V1ZM16 -1C6.61116 -1 -1 6.61116 -1 16H1C1 7.71573 7.71573 1 16 1V-1Z' fill='%23DDE0E1'/%3E%3C/svg%3E")
+  }
+}
+
+.node-control {
+  &__logo,
+  &__text {
+    margin: $inner-spacing-mini / 2;
+  }
+
+  &__text {
+    text-align: left;
+    font-size: var(--s-font-size-mini);
+  }
+
+  &-title {
+    color: var(--s-color-base-content-primary);
+  }
+
+  &-network {
+    color: var(--s-color-base-content-secondary);
   }
 }
 

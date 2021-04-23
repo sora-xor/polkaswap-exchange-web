@@ -86,7 +86,7 @@ button {
     left: 1px; // because of inset shadow
   }
 }
-button.el-button.wallet {
+button.el-button.app-control {
   background-color: var(--s-color-utility-body) !important;
   box-shadow: 1px 1px 3px rgba(255, 255, 255, 0.75), inset 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
