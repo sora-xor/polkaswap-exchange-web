@@ -168,7 +168,7 @@ button.el-button.send.s-small, button.el-button.swap.s-small {
 div.asset-search-actions button.el-button--plain,
 div.asset-custom-actions button.el-button--plain,
 div.wallet-assets button.el-button--plain,
-button.el-button--create-pair{
+button.el-button--create-pair {
   color: #fff !important;
   border: 1px solid #ddd !important;
   transition: all 0.25s ease-in-out;
@@ -225,7 +225,6 @@ li.el-menu-item.is-active div.icon-container {
   box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.02), 1px 1px 3px rgba(0, 0, 0, 0.1), inset 1px 1px 2px rgba(255, 255, 255, 0.8);
 }
 
-
 button.el-dialog__headerbtn,
 div.page-header--center button.s-action.s-i-position-left,
 button.base-title_back,
@@ -262,8 +261,9 @@ button.base-title_action:hover > span > i,
 button.el-button--history:hover > span > i,
 button.el-button--switch-tokens:hover > span > i,
 button.s-button--switch:hover > span > i,
-button.el-button--settings:hover > span > i
-{ color: white !important; }
+button.el-button--settings:hover > span > i {
+  color: white !important;
+}
 i.el-icon, i.s-icon-arrows-chevron-left-rounded-24 {
   color: var(--s-color-theme-secondary) !important;
   font-size: var(--s-icon-font-size-big) !important;
@@ -281,15 +281,12 @@ div.pool-info--buttons {margin: 0 auto !important; padding-bottom: 16px;justify-
 div.pool-info--buttons button span {font-size: 16px !important;}
 div.pool-info-container {background-color: var(--s-color-utility-body) !important;}
 
-
 i.s-icon-chevron-down-rounded-16 {
   background-color: var(--s-color-theme-secondary);
   color: white !important;
   border-radius: var(--s-border-radius-medium);
   padding: 2px;
 }
-
-
 
 /* FORMS */
 div.s-input-amount input.el-input__inner, div.s-input--token-value input.el-input__inner {
@@ -453,7 +450,7 @@ div.wallet-assets-item i.asset-logo {
 }
 div.wallet-assets-item i.asset-logo:not(.asset-logo--pswap,.asset-logo--val,.asset-logo--xor),
 div.el-card__body div.asset-details-container i.asset-logo:not(.asset-logo--pswap,.asset-logo--val,.asset-logo--xor),
-div.asset-search-list div.asset i.asset-logo {
+div.asset-search-list div.asset i.asset-logo:not(.asset-logo--pswap,.asset-logo--val,.asset-logo--xor) {
   background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGZpbGw9IiNBMTlBOUQiIGQ9Ik03LjUsMTcuNEM3LjksMTcuOCw4LjQsMTgsOSwxOHMxLjEtMC4yLDEuNS0wLjZjMC4xLTAuMSwwLjItMC4yLDAuNC0wLjVsMS45LTMuNGMwLjItMC4yLDAuMy0wLjQsMC40LTAuNQ0KCWMwLjEtMC4xLDAuMy0wLjIsMC41LTAuM2wzLjQtMS45YzAuMi0wLjEsMC4zLTAuMiwwLjUtMC40QzE3LjgsMTAuMSwxOCw5LjYsMTgsOXMtMC4yLTEuMS0wLjYtMS41Yy0wLjItMC4yLTAuMy0wLjMtMC41LTAuNA0KCWwtMy40LTEuOUMxMy4zLDUuMiwxMy4xLDUuMSwxMyw1Yy0wLjEtMC4xLTAuMi0wLjItMC40LTAuNWwtMS45LTMuNGMtMC4xLTAuMi0wLjItMC4zLTAuNC0wLjVDMTAuMSwwLjIsOS42LDAsOSwwUzcuOSwwLjIsNy41LDAuNg0KCUM3LjQsMC43LDcuMywwLjgsNy4yLDEuMUw1LjMsNC41QzUuMiw0LjcsNS4xLDQuOCw1LDVDNC44LDUuMSw0LjYsNS4yLDQuNSw1LjNMMS4xLDcuMkMwLjksNy4zLDAuNyw3LjQsMC42LDcuNUMwLjIsNy45LDAsOC40LDAsOQ0KCXMwLjIsMS4xLDAuNiwxLjVjMC4xLDAuMSwwLjMsMC4yLDAuNSwwLjNsMy40LDEuOWMwLjIsMC4xLDAuMywwLjIsMC41LDAuNGMwLjEsMC4xLDAuMiwwLjMsMC4zLDAuNWwxLjksMy40DQoJQzcuMywxNy4xLDcuNCwxNy4zLDcuNSwxNy40eiIvPg0KPC9zdmc+);
 }
 button.el-button.send.s-small, button.el-button.swap.s-small {
