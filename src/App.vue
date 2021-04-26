@@ -550,7 +550,7 @@ $disclaimer-letter-spacing: -0.03em;
   align-items: center;
   padding: 2px $inner-spacing-medium;
   min-height: $header-height;
-  box-shadow: none;
+  box-shadow: 240px 16px 32px -16px #e5dce0;
 }
 
 .menu {
