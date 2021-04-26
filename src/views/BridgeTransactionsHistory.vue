@@ -66,7 +66,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { RegisteredAccountAsset, BridgeTxStatus, Operation, isBridgeOperation, BridgeHistory } from '@sora-substrate/util'
+import { RegisteredAccountAsset, BridgeTxStatus, Operation, isBridgeOperation, BridgeHistory, CodecString } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -89,7 +89,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
   @Getter('history', { namespace }) history!: Array<BridgeHistory> | null
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: string
-  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: string
+  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: CodecString
 
   @Action('getHistory', { namespace }) getHistory
   @Action('getNetworkFee', { namespace }) getNetworkFee
@@ -116,7 +116,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   formatDateItem = formatDateItem
   query = ''
   currentPage = 1
-  pageAmount = 10
+  pageAmount = 8
 
   get filteredHistory (): Array<any> {
     if (!this.history?.length) return []
@@ -258,6 +258,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 <style lang="scss" scoped>
 $history-item-horizontal-space: $inner-spacing-medium;
 $history-item-height: 48px;
+$page-amount: 8;
 $history-item-top-border-height: 1px;
 .history {
   &--search.el-form-item {
@@ -275,7 +276,7 @@ $history-item-top-border-height: 1px;
     @include bridge-content;
   }
   &-items {
-    height: #{$history-item-height * 10};
+    height: #{$history-item-height * $page-amount};
   }
   &-empty {
     text-align: center;

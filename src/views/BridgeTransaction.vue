@@ -28,7 +28,7 @@
             </template>
             <div v-if="transactionFromHash" :class="hashContainerClasses(!isSoraToEthereum)">
               <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionFromHash, 32)" readonly />
-              <s-button class="s-button--hash-copy" type="link" icon="copy-16" @click="handleCopyTransactionHash(transactionFromHash)" />
+              <s-button class="s-button--hash-copy" type="link" icon="basic-copy-24" @click="handleCopyTransactionHash(transactionFromHash)" />
               <!-- TODO: Add work with Polkascan -->
               <s-dropdown
                 v-if="!isSoraToEthereum"
@@ -85,7 +85,7 @@
             </template>
             <div v-if="isTransactionStep2 && transactionToHash" :class="hashContainerClasses(isSoraToEthereum)">
               <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionToHash, 32)" readonly />
-              <s-button class="s-button--hash-copy" type="link" icon="copy-16" @click="handleCopyTransactionHash(transactionToHash)" />
+              <s-button class="s-button--hash-copy" type="link" icon="basic-copy-24" @click="handleCopyTransactionHash(transactionToHash)" />
               <s-dropdown
                 v-if="isSoraToEthereum"
                 class="s-dropdown--hash-menu"
@@ -177,9 +177,9 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   @Getter('asset', { namespace }) asset!: AccountAsset | RegisteredAccountAsset | null
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('amount', { namespace }) amount!: string
-  @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: string | number
+  @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: CodecString
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
-  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: string
+  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: CodecString
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
   @Getter('soraTransactionHash', { namespace }) soraTransactionHash!: string
   @Getter('ethereumTransactionHash', { namespace }) ethereumTransactionHash!: string
@@ -349,7 +349,11 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
       return this.t('bridgeTransaction.statuses.waiting') + '...'
     }
     if (this.currentState === (!this.isSoraToEthereum ? STATES.SORA_PENDING : STATES.ETHEREUM_PENDING)) {
-      return this.t('bridgeTransaction.statuses.pending') + '...'
+      const message = this.t('bridgeTransaction.statuses.pending') + '...'
+      if (this.isSoraToEthereum) {
+        return message
+      }
+      return `${message} (${this.t('bridgeTransaction.wait30Block')})`
     }
     if (this.currentState === (!this.isSoraToEthereum ? STATES.SORA_REJECTED : STATES.ETHEREUM_REJECTED)) {
       return this.t('bridgeTransaction.statuses.failed')
@@ -383,7 +387,7 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   }
 
   get formattedEthNetworkFee (): string {
-    return this.formatStringValue(this.ethereumNetworkFee)
+    return this.formatCodecNumber(this.ethereumNetworkFee)
   }
 
   get isInsufficientBalance (): boolean {
@@ -399,7 +403,7 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   }
 
   get isInsufficientEthereumForFee (): boolean {
-    return hasInsufficientEthForFee(this.ethBalance.toString(), this.ethereumNetworkFee)
+    return hasInsufficientEthForFee(this.ethBalance, this.ethereumNetworkFee)
   }
 
   handleOpenEtherscan (): void {
@@ -702,20 +706,20 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     }
   }
   &-hash-container {
+    .s-button--hash-copy {
+      padding: 0;
+      .s-icon-copy {
+        margin-right: 0 !important;
+      }
+    }
     &--with-dropdown {
       .s-button--hash-copy {
-        right: calc(#{$inner-spacing-medium * 2} + var(--s-size-mini));
+        right: calc(#{$inner-spacing-medium} + var(--s-size-mini));
       }
     }
     i {
       font-weight: 600;
     }
-  }
-}
-.s-button--hash-copy {
-  padding: 0;
-  .s-icon-copy {
-    margin-right: 0 !important;
   }
 }
 .s-button--hash-copy,

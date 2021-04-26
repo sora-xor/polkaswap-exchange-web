@@ -536,6 +536,14 @@ $disclaimer-letter-spacing: -0.03em;
   }
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  padding: 2px $inner-spacing-medium;
+  min-height: $header-height;
+  box-shadow: 240px 16px 32px -16px #e5dce0;
+}
+
 .menu {
   padding: 0;
   border-right: none;

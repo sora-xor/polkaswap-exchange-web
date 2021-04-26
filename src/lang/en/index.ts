@@ -58,7 +58,8 @@ export default {
     twitter: 'Twitter',
     telegram: 'Telegram',
     medium: 'Medium',
-    reddit: 'Reddit'
+    reddit: 'Reddit',
+    github: 'GitHub'
   },
   footerMenu: {
     faucet: 'Faucet',
@@ -214,7 +215,8 @@ export default {
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
     insufficientLiquidity: 'Insufficient liquidity',
     confirmSwap: 'Confirm swap',
-    swapOutputMessage: 'Output is estimated. You will receive <span class="min-received-label">at least</span> {transactionValue} or the transaction will revert.'
+    swapOutputMessage: 'Output is estimated. You will receive <span class="min-received-label">at least</span> {transactionValue} or the transaction will revert.',
+    rewardsForSwap: 'PSWAP Strategic Rewards'
   },
   pool: {
     connectWallet: '@:connectWalletText',
@@ -301,6 +303,7 @@ export default {
       done: 'Complete',
       waitingForConfirmation: 'Waiting for confirmation...'
     },
+    wait30Block: 'Please wait 30 block confirmations',
     viewInEtherscan: 'View in Etherscan',
     networkTitle: '{network} transaction',
     transactionHash: 'Transaction hash',
