@@ -147,9 +147,6 @@
           <a :href="t('helpDialog.privacyPolicyLink')" :title="t('footerMenu.privacy')" target="_blank" class="text link">{{ t('footerMenu.privacy') }}</a>
         </div>
       </div>
-      <div class="app-disclaimer">
-        <p>{{ t('disclaimer') }}</p>
-      </div>
     </footer>
   </div>
 </template>
@@ -165,10 +162,6 @@ export default class About extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
-$disclaimer-font-size: 11px;
-$disclaimer-font-weight: 200;
-$disclaimer-letter-spacing: -0.03em;
-
 @mixin backgroundImageWidth {
   &>:first-child {
     width: 80%;
@@ -543,16 +536,6 @@ $disclaimer-letter-spacing: -0.03em;
   @media screen and (min-width: 1100px) {
     font-size: 14px;
   }
-}
-
-.app-disclaimer {
-  margin-top: $inner-spacing-mini * 2.5;
-  margin-bottom: $inner-spacing-mini * 2.5;
-  font-size: $disclaimer-font-size;
-  font-weight: $disclaimer-font-weight;
-  line-height: var(--s-line-height-mini);
-  letter-spacing: $disclaimer-letter-spacing;
-  color: var(--s-color-base-content-secondary);
 }
 
 .app-footer {

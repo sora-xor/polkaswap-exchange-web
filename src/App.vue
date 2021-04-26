@@ -1,33 +1,50 @@
 <template>
   <div id="app">
+    <header class="header">
+      <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
+
+      <div class="app-controls s-flex">
+        <branded-tooltip :disabled="isLoggedIn" popper-class="info-tooltip wallet-tooltip" placement="bottom">
+          <div slot="content" class="app-controls__wallet-tooltip">
+            {{ t('connectWalletTextTooltip') }}
+          </div>
+          <s-button class="wallet" :disabled="loading" @click="goTo(PageNames.Wallet)">
+            <div class="account">
+              <div class="account-name">{{ accountInfo }}</div>
+              <div class="account-icon">
+                <s-icon v-if="!isLoggedIn" name="finance-wallet-24" />
+                <WalletAvatar v-else :address="account.address"/>
+              </div>
+            </div>
+          </s-button>
+        </branded-tooltip>
+      </div>
+    </header>
     <div class="app-main">
       <aside class="app-sidebar">
-        <div>
-          <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
-          <s-menu
-            class="menu"
-            mode="vertical"
-            background-color="transparent"
-            box-shadow="none"
-            text-color="var(--s-color-base-content-primary)"
-            active-text-color="var(--s-color-theme-accent)"
-            active-hover-color="transparent"
-            :default-active="getCurrentPath()"
-            @select="goTo"
-          >
-            <s-menu-item-group v-for="(group, index) in SidebarMenuGroups" :key="index">
-              <s-menu-item
-                v-for="item in group"
-                :key="item.title"
-                :index="item.title"
-                :disabled="item.disabled"
-                class="menu-item"
-              >
-                <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
-              </s-menu-item>
-            </s-menu-item-group>
-          </s-menu>
-        </div>
+        <s-menu
+          class="menu"
+          mode="vertical"
+          background-color="transparent"
+          box-shadow="none"
+          text-color="var(--s-color-base-content-primary)"
+          active-text-color="var(--s-color-theme-accent)"
+          active-hover-color="transparent"
+          :default-active="getCurrentPath()"
+          @select="goTo"
+        >
+          <s-menu-item-group v-for="(group, index) in SidebarMenuGroups" :key="index">
+            <s-menu-item
+              v-for="item in group"
+              :key="item.title"
+              :index="item.title"
+              :disabled="item.disabled"
+              class="menu-item"
+            >
+              <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
+            </s-menu-item>
+          </s-menu-item-group>
+        </s-menu>
 
         <s-menu
           class="menu"
@@ -94,46 +111,21 @@
         </s-menu>
       </aside>
       <div class="app-body">
-        <div :class="[
-            'app-content',
-            !isAboutPage ? 'padding' : ''
-          ]"
-        >
+        <div class="app-content">
           <router-view :parent-loading="loading" />
           <p v-if="!isAboutPage" class="app-disclaimer">{{ t('disclaimer') }}</p>
         </div>
+        <footer class="app-footer">
+          <p v-if="isAboutPage" class="app-disclaimer">{{ t('disclaimer') }}</p>
+          <div class="sora-logo">
+            <span class="sora-logo__title">{{ t('poweredBy') }}</span>
+            <div class="sora-logo__image"></div>
+          </div>
+        </footer>
       </div>
     </div>
 
     <help-dialog :visible.sync="showHelpDialog"></help-dialog>
-
-    <div class="app-wallet" v-if="!isAboutPageActive()">
-      <aside>
-        <div class="app-controls s-flex">
-          <branded-tooltip :disabled="isLoggedIn" popper-class="info-tooltip wallet-tooltip" placement="bottom">
-            <div slot="content" class="app-controls__wallet-tooltip">
-              {{ t('connectWalletTextTooltip') }}
-            </div>
-            <s-button class="wallet" :disabled="loading" @click="goTo(PageNames.Wallet)">
-              <div class="account">
-                <div class="account-name">{{ accountInfo }}</div>
-                <div class="account-icon">
-                  <s-icon v-if="!isLoggedIn" name="finance-wallet-24" />
-                  <WalletAvatar v-else :address="account.address"/>
-                </div>
-              </div>
-            </s-button>
-          </branded-tooltip>
-        </div>
-      </aside>
-    </div>
-
-    <footer class="app-footer" v-if="!isAboutPageActive()">
-      <div class="sora-logo">
-        <span class="sora-logo__title">{{ t('poweredBy') }}</span>
-        <div class="sora-logo__image"></div>
-      </div>
-    </footer>
   </div>
 </template>
 
@@ -231,10 +223,6 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
       return this.t('connectWalletText')
     }
     return this.account.name || formatAddress(this.account.address, 8)
-  }
-
-  isAboutPageActive (): boolean {
-    return this.getCurrentPath() === PageNames.About
   }
 
   getCurrentPath (): string {
@@ -450,9 +438,10 @@ html {
 
 <style lang="scss" scoped>
 $logo-width: 40px;
-$logo-width-big: 160px;
-$logo-margin: 0 0 $inner-spacing-mini 20px;
-$sidebar-width: 185px;
+$logo-width-big: 150px;
+$logo-horizontal-margin: $inner-spacing-mini / 2;
+$header-height: 64px;
+$sidebar-witdh: 160px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
 $account-name-margin: -2px 8px 0 12px;
@@ -468,7 +457,7 @@ $disclaimer-letter-spacing: -0.03em;
     display: flex;
     align-items: stretch;
     overflow: hidden;
-    height: 100vh;
+    height: calc(100vh - #{$header-height});
     position: relative;
   }
 
@@ -476,7 +465,7 @@ $disclaimer-letter-spacing: -0.03em;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
-    width: $sidebar-width;
+    width: $sidebar-witdh;
     border-right: 1px solid var(--s-color-base-border-secondary);
     padding-top: $inner-spacing-small;
     padding-bottom: $inner-spacing-medium;
@@ -492,15 +481,7 @@ $disclaimer-letter-spacing: -0.03em;
   }
 
   &-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     flex: 1;
-
-    &.padding {
-      padding-top: $inner-spacing-big;
-    }
-
     .app-disclaimer {
       margin-left: auto;
       margin-bottom: $inner-spacing-big;
@@ -526,13 +507,6 @@ $disclaimer-letter-spacing: -0.03em;
     padding-right: $inner-spacing-mini * 5;
     padding-left: $inner-spacing-mini * 5;
     padding-bottom: $inner-spacing-mini * 5;
-  }
-
-  &-wallet {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding-top: $inner-spacing-small;
   }
 }
 
@@ -602,17 +576,18 @@ $disclaimer-letter-spacing: -0.03em;
 }
 
 .polkaswap-logo {
-  margin: $logo-margin;
+  margin-right: $logo-horizontal-margin;
+  margin-left: $logo-horizontal-margin;
+  margin-bottom: 1.5px;
   background-image: url('~@/assets/img/pswap.svg');
   background-size: cover;
-  width: calc(var(--s-size-medium) + 2px);
-  min-height: calc(var(--s-size-medium) + 2px);
+  width: var(--s-size-medium);
+  height: var(--s-size-medium);
   padding: 0;
   border-radius: 0;
 }
 
 .app-controls {
-  padding: 2px $inner-spacing-medium;
   margin-left: auto;
 
   .wallet-section {
@@ -671,32 +646,27 @@ $disclaimer-letter-spacing: -0.03em;
   }
 }
 
-.app-footer {
-  position: absolute;
-  bottom: 0;
-  right: 0;
+.sora-logo {
+  display: flex;
+  align-items: center;
+  align-self: flex-end;
 
-  .sora-logo {
-    display: flex;
-    align-items: center;
-    align-self: flex-end;
+  &__title {
+    text-transform: uppercase;
+    font-weight: 200;
+    color: var(--s-color-base-content-secondary);
+    font-size: 15px;
+    line-height: 16px;
+    margin-right: $basic-spacing;
+    font-feature-settings: var(--s-font-feature-settings-singleline);
+    white-space: nowrap;
+  }
 
-    &__title {
-      text-transform: uppercase;
-      font-weight: 200;
-      color: var(--s-color-base-content-secondary);
-      font-size: 15px;
-      line-height: 16px;
-      margin-right: $basic-spacing;
-      font-feature-settings: var(--s-font-feature-settings-singleline);
-    }
-
-    &__image {
-      width: $sora-logo-width;
-      height: $sora-logo-height;
-      background-image: url('~@/assets/img/sora-logo.svg');
-      background-size: cover;
-    }
+  &__image {
+    width: $sora-logo-width;
+    height: $sora-logo-height;
+    background-image: url('~@/assets/img/sora-logo.svg');
+    background-size: cover;
   }
 }
 
