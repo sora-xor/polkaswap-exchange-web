@@ -32,6 +32,7 @@
             <div class="bridge-item-title">
               <span class="bridge-item-title-label">{{ t('transfers.from') }}</span>
               <span>{{ getBridgeItemTitle() }}</span>
+              <!-- TODO: Change eth symbol to evm's symbol -->
               <token-logo class="bridge-item-title-icon" :tokenSymbol="isSoraToEvm ? 'bridge-item-xor' : 'bridge-item-eth'" size="mini" />
             </div>
             <div v-if="isNetworkAConnected && isAssetSelected" class="token-balance">
@@ -84,6 +85,7 @@
             <div class="bridge-item-title bridge-item-title--to" @click="handleChangeNetwork">
               <span class="bridge-item-title-label">{{ t('transfers.to') }}</span>
               <span>{{ getBridgeItemTitle(true) }}</span>
+              <!-- TODO: Change eth symbol to evm's symbol -->
               <token-logo class="bridge-item-title-icon" :tokenSymbol="isSoraToEvm ? 'bridge-item-eth' : 'bridge-item-xor'" size="mini" />
             </div>
             <div v-if="areNetworksConnected && isAssetSelected" class="token-balance">
@@ -231,7 +233,7 @@ export default class Bridge extends Mixins(
   WalletConnectMixin
 ) {
   @Action('getEthBalance', { namespace: 'web3' }) getEthBalance!: () => Promise<void>
-  @Action('setCurrentSubNetwork', { namespace: 'web3' }) setCurrentSubNetwork
+  @Action('setEvmNetwork', { namespace: 'web3' }) setEvmNetwork
   @Action('setSoraToEvm', { namespace }) setSoraToEvm
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
@@ -242,7 +244,9 @@ export default class Bridge extends Mixins(
   @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets
 
   @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: CodecString
-  @Getter('currentSubNetwork', { namespace: 'web3' }) currentSubNetwork!: BridgeNetwork
+  @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<BridgeNetwork>
+  @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: string
+  @Getter('ethNetwork', { namespace: 'web3' }) ethNetwork!: string
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
   @Getter('isValidEthNetwork', { namespace: 'web3' }) isValidEthNetwork!: boolean
   @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean
@@ -509,9 +513,9 @@ export default class Bridge extends Mixins(
     this.showSelectTokenDialog = true
   }
 
-  async selectNetwork (network: BridgeNetwork): Promise<void> {
+  async selectNetwork (network: string): Promise<void> {
     if (network) {
-      await this.setCurrentSubNetwork(network)
+      await this.setEvmNetwork(network)
       // Update some values if needed
     }
   }
@@ -702,6 +706,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
   &-footer {
     display: flex;
     align-items: center;
+    margin-top: $inner-spacing-medium;
     font-size: var(--s-font-size-mini);
     line-height: $s-line-height-big;
     color: var(--s-color-base-content-secondary);

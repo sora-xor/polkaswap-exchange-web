@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+import { Getter, Action } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -40,14 +40,22 @@ export default class SelectNetwork extends Mixins(TranslationMixin, DialogMixin)
   selectedNetwork = ''
 
   @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<BridgeNetwork>
-  @Getter('currentSubNetwork', { namespace: 'web3' }) currentSubNetwork!: BridgeNetwork | null
+  @Getter('ethNetwork', { namespace: 'web3' }) ethNetwork!: string
+  @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: string
+
+  @Action('setEvmNetwork', { namespace: 'web3' }) setEvmNetwork
 
   created () {
-    this.selectedNetwork = this.currentSubNetwork?.name || (this.subNetworks && this.subNetworks.length) ? this.subNetworks[0]?.name : ''
+    if (this.evmNetwork) {
+      this.selectedNetwork = this.evmNetwork
+    } else {
+      this.selectedNetwork = this.subNetworks?.find(item => item.name === this.ethNetwork) ? this.ethNetwork : this.subNetworks[0]?.name
+      this.setEvmNetwork(this.selectedNetwork)
+    }
   }
 
   async selectNetwork (): Promise<void> {
-    this.$emit('select', this.subNetworks.find(item => item.name === this.selectedNetwork))
+    this.$emit('select', this.selectedNetwork)
     this.$emit('close')
     this.isVisible = false
   }

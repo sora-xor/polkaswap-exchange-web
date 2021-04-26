@@ -6,7 +6,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import { FPNumber } from '@sora-substrate/util'
 
-import web3Util, { ABI, Contract, EthNetworkName, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
+import web3Util, { ABI, Contract, EvmNetwork, EvmNetworkName, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
 import { ZeroStringValue } from '@/consts'
 import { isEthereumAddress } from '@/utils'
 
@@ -41,7 +41,7 @@ function initialState () {
     ethNetwork: web3Util.getEthNetworkFromStorage(),
     defaultEthNetwork: '',
     subNetworks: [],
-    currentSubNetwork: null,
+    evmNetwork: '',
     contractAddress: {
       XOR: '',
       VAL: '',
@@ -94,13 +94,16 @@ const getters = {
   subNetworks (state) {
     return state.subNetworks
   },
-  currentSubNetwork (state) {
-    return state.currentSubNetwork
+  evmNetwork (state) {
+    return state.evmNetwork
   },
   soraNetwork (state) {
     return state.soraNetwork
   },
   isValidEthNetwork (state) {
+    if (state.evmNetwork === EvmNetwork.Energy) {
+      return state.ethNetwork === EvmNetwork.Energy
+    }
     return state.ethNetwork === state.defaultEthNetwork
   }
 }
@@ -143,7 +146,7 @@ const mutations = {
   },
 
   [types.SET_CURRENT_SUB_NETWORK] (state, network) {
-    state.currentSubNetwork = network
+    state.evmNetwork = network
   },
 
   [types.SET_SORA_NETWORK] (state, network) {
@@ -229,7 +232,7 @@ const actions = {
     commit(types.SET_SUB_NETWORKS, subNetworks)
   },
 
-  async setCurrentSubNetwork ({ commit }, network) {
+  async setEvmNetwork ({ commit }, network) {
     commit(types.SET_CURRENT_SUB_NETWORK, network)
   },
 
@@ -237,7 +240,7 @@ const actions = {
     commit(types.SET_ETH_NETWORK_REQUEST)
     try {
       const networkName = network
-        ? EthNetworkName[network]
+        ? EvmNetworkName[network]
         : await web3Util.getEthNetwork()
       web3Util.storeEthNetwork(networkName)
       commit(types.SET_ETH_NETWORK_SUCCESS, networkName)

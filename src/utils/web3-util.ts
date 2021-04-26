@@ -119,24 +119,22 @@ interface JsonContract {
   };
 }
 
-export enum EnergyNetwork {
-  Testnet = 'test'
-}
-
-export enum EthNetwork {
+export enum EvmNetwork {
   Mainnet = 'main',
   Ropsten = 'ropsten',
   Kovan = 'kovan',
   Rinkeby = 'rinkeby',
-  Goerli = 'goerli'
+  Goerli = 'goerli',
+  Energy = 'energyweb'
 }
 
-export const EthNetworkName = {
-  '0x1': EthNetwork.Mainnet,
-  '0x3': EthNetwork.Ropsten,
-  '0x2a': EthNetwork.Kovan,
-  '0x4': EthNetwork.Rinkeby,
-  '0x5': EthNetwork.Goerli
+export const EvmNetworkName = {
+  '0x1': EvmNetwork.Mainnet,
+  '0x3': EvmNetwork.Ropsten,
+  '0x2a': EvmNetwork.Kovan,
+  '0x4': EvmNetwork.Rinkeby,
+  '0x5': EvmNetwork.Goerli,
+  '0x12047': EvmNetwork.Energy
 }
 
 async function onConnect (options: ConnectOptions): Promise<string> {
@@ -241,7 +239,7 @@ function removeEthUserAddress (): void {
 }
 
 function storeEthNetwork (network: string): void {
-  const networkName = EthNetworkName[network]
+  const networkName = EvmNetworkName[network]
   storage.set('ethNetwork', networkName || network)
 }
 

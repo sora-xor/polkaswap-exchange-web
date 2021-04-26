@@ -477,7 +477,7 @@ const actions = {
       const web3 = await web3Util.getInstance()
 
       if (!rootGetters['web3/isValidEthNetwork']) {
-        throw new Error('Change eth network in Metamask')
+        throw new Error('Change evm network in Metamask')
       }
       const symbol = getters.asset.symbol
       const ethAccount = rootGetters['web3/ethAddress']
@@ -566,7 +566,7 @@ const actions = {
 
     try {
       if (!rootGetters['web3/isValidEthNetwork']) {
-        throw new Error('Change eth network in Metamask')
+        throw new Error('Change evm network in Metamask')
       }
       const contract = rootGetters[`web3/contract${KnownBridgeAsset.Other}`]
       const ethAccount = rootGetters['web3/ethAddress']

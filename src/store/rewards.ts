@@ -204,6 +204,7 @@ const actions = {
         const message = web3.utils.sha3(internalAddressHex) as string
 
         const signature = await web3.eth.personal.sign(message, externalAddress, '')
+        // TODO: Ask the team should we remove this line?
         console.info('[CLAIM]: eth account address: ', externalAddress, 'signature: ', signature) // TODO: REMOVE
 
         commit(types.SET_SIGNATURE, signature)
