@@ -24,6 +24,7 @@ export default {
   retryText: 'Retry',
   networkFeeText: 'Network Fee',
   networkFeeTooltipText: 'Network fee is used to ensure @:soraText system\'s growth and stable performance.',
+  marketText: 'Market',
   marketAlgorithmText: 'Market algorithm',
   insufficientBalanceText: 'Insufficient {tokenSymbol} balance',
   firstPerSecond: '{first} per {second}',
