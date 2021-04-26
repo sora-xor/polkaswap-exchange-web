@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: './',
   configureWebpack: config => {
     // prepare icons content to unicode
     config.module.rules.filter(rule => {
