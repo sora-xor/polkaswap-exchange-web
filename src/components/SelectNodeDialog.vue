@@ -168,13 +168,16 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   }
 
   private async setCurrentNode (node: NodeItem): Promise<void> {
-    const isExistingNode = !!this.findNodeInListByAddress(node.address)
+    const existingNode = this.findNodeInListByAddress(node.address)
     const nodeCopy = this.getNodePermittedData(node)
+
+    this.selectedNode = existingNode ?? nodeCopy
 
     await this.setNode(nodeCopy)
 
-    if (!isExistingNode) {
+    if (!existingNode) {
       this.addCustomNode(nodeCopy)
+      await this.updateNodeNetworkStatus(nodeCopy)
     }
   }
 

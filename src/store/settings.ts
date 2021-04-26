@@ -55,8 +55,11 @@ const getters = {
   defaultNodes (state) {
     return state.defaultNodes
   },
-  customNodes (state) {
-    return state.customNodes
+  defaultNodesHashTable (state, getters) {
+    return getters.defaultNodes.reduce((result, node) => ({ ...result, [node.address]: node }), {})
+  },
+  customNodes (state, getters) {
+    return state.customNodes.filter(node => !(node.address in getters.defaultNodesHashTable))
   },
   nodeAddressConnecting (state) {
     return state.nodeAddressConnecting
@@ -184,12 +187,12 @@ const actions = {
     }
     commit(types.SET_SORA_NETWORK, data.NETWORK_TYPE)
   },
-  addCustomNode ({ commit, state }, node) {
-    const nodes = [...state.customNodes, node]
+  addCustomNode ({ commit, getters }, node) {
+    const nodes = [...getters.customNodes, node]
     commit(types.SET_CUSTOM_NODES, nodes)
   },
-  removeCustomNode ({ commit }, node) {
-    const nodes = state.customNodes.filter(item => item.address !== node.address)
+  removeCustomNode ({ commit, getters }, node) {
+    const nodes = getters.customNodes.filter(item => item.address !== node.address)
     commit(types.SET_CUSTOM_NODES, nodes)
   },
   async getNetworkChainGenesisHash ({ commit, state, dispatch }) {
