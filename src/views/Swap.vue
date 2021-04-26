@@ -1,13 +1,18 @@
 <template>
   <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
     <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
-      <s-button
-        v-if="pairLiquiditySourcesAvailable"
-        class="el-button--settings"
-        type="action"
-        icon="basic-settings-24"
-        @click="openSettingsDialog"
-      />
+      <status-action-badge v-if="pairLiquiditySourcesAvailable">
+        <template #label>Market:&nbsp;</template>
+        <template #value>{{ marketAlgorithm }}</template>
+        <template #action>
+          <s-button
+            class="el-button--settings"
+            type="action"
+            icon="basic-settings-24"
+            @click="openSettingsDialog"
+          />
+        </template>
+      </status-action-badge>
     </generic-page-header>
     <div class="input-container">
       <div class="input-line-header">
@@ -144,7 +149,8 @@ const namespace = 'swap'
     SwapInfo: lazyComponent(Components.SwapInfo),
     TokenLogo: lazyComponent(Components.TokenLogo),
     SelectToken: lazyComponent(Components.SelectToken),
-    ConfirmSwap: lazyComponent(Components.ConfirmSwap)
+    ConfirmSwap: lazyComponent(Components.ConfirmSwap),
+    StatusActionBadge: lazyComponent(Components.StatusActionBadge)
   }
 })
 export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
@@ -178,6 +184,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Getter isLoggedIn!: boolean
   @Getter slippageTolerance!: number
   @Getter accountAssets!: Array<AccountAsset> // Wallet store
+  @Getter marketAlgorithm!: string
   @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes
   @Getter('pairLiquiditySourcesAvailable', { namespace }) pairLiquiditySourcesAvailable!: boolean
 
@@ -524,5 +531,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   .el-button--switch-tokens {
     @include switch-button(var(--s-size-medium));
   }
+}
+
+.page-header--swap {
+  justify-content: space-between;
+  align-items: center;
 }
 </style>
