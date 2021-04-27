@@ -598,3 +598,16 @@ div.app-body {
     margin-left: -10px;
   }
 }
+
+/*___about page___*/
+p.about-disclaimer {
+  min-width: 800px;
+  width: 100% !important;
+  max-width: 900px;
+  padding: 0 20px;
+  margin: 0 auto 120px !important;
+}
+footer.about-footer {
+  min-width: 800px;
+  justify-content: center !important;
+}
