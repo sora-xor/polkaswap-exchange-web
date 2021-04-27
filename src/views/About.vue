@@ -1,111 +1,55 @@
 <template>
   <div class="layout">
     <div class="content">
-      <div class="about-main">
-        <img src="@/assets/about/about01.png" draggable="false" class="main unselectable" />
-        <div class="about-main-title">
-          <p class="gradient main">{{ t('about.title') }}</p>
-        </div>
-        <div class="about-main-text">
-          <p class="text">{{ t('about.description') }}</p>
-        </div>
-        <img src="@/assets/about/web3.png" draggable="false" class="web3 unselectable" />
-      </div>
-      <div class="about-trading">
-        <img src="@/assets/about/about02.png" draggable="false" class="unselectable">
-        <div class="about-trading-title">
-          <p class="gradient trading">{{ t('about.trading.title') }}</p>
-        </div>
-        <div class="about-trading-block-1">
-          <p class="text">{{ t('about.trading.first') }}</p>
-        </div>
-        <div class="about-trading-block-2">
-          <div class="bubble-block">
-            <img src="@/assets/about/about02-1.png" draggable="false" class="unselectable bubble-icon">
-            <p class="text">{{ t('about.trading.second') }}</p>
-          </div>
-        </div>
-        <div class="about-trading-block-3">
-          <div class="bubble-block">
-            <img src="@/assets/about/about02-2.png" draggable="false" class="unselectable bubble-icon">
-            <p class="text">{{ t('about.trading.third') }}
-              <a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_(original_%22BSD_License%22)" title="BSD 4-clause license" class="text">BSD 4-clause license</a></p>
-          </div>
-        </div>
-        <img src="@/assets/about/about02-shadow-1.png" draggable="false" class="unselectable about-trading-shadow-1">
-      </div>
-      <div class="about-liquidity">
-        <img src="@/assets/about/about03.png" draggable="false" class="unselectable">
-        <div class="about-liquidity-title">
-          <p class="gradient liquidity">{{ t('about.liquidity.title') }}</p>
-        </div>
-        <div class="about-liquidity-block-1">
-          <p class="text">{{ t('about.liquidity.first') }}</p>
-        </div>
-        <div class="about-liquidity-block-2">
-          <div class="bubble-block">
-            <img src="@/assets/about/about03-1.png" draggable="false" class="unselectable bubble-icon">
-            <p class="text">{{ t('about.liquidity.second') }}</p>
-          </div>
-        </div>
-        <div class="about-liquidity-block-3">
-          <div class="bubble-block">
-            <img src="@/assets/about/about03-2.png" draggable="false" class="unselectable bubble-icon">
-            <p class="text">{{ t('about.liquidity.third') }}</p>
-          </div>
-        </div>
-        <img src="@/assets/about/about03-shadow-1.png" draggable="false" class="unselectable about-liquidity-shadow-1">
-      </div>
-      <div class="about-swap">
-        <img src="@/assets/about/about04.png" draggable="false" class="unselectable">
-        <div class="about-swap-title">
-          <p class="gradient swap">{{ t('about.swap.title') }}</p>
-        </div>
-        <div class="about-swap-block-1">
-          <p class="text">{{ t('about.swap.first') }}</p>
-        </div>
-        <div class="about-swap-block-2">
-          <div class="bubble-block">
-            <img src="@/assets/about/about04-1.png" draggable="false" class="unselectable bubble-icon">
-            <p class="text">{{ t('about.swap.second') }}</p>
-          </div>
-        </div>
-        <div class="about-swap-block-3">
-          <div class="bubble-block">
-            <img src="@/assets/about/about04-2.png" draggable="false" class="unselectable bubble-icon">
-            <p class="text">{{ t('about.swap.third') }}</p>
-          </div>
-        </div>
-        <img src="@/assets/about/about04-shadow-1.png" draggable="false" class="unselectable about-swap-shadow-1">
-      </div>
-      <div class="about-pswap">
-        <img src="@/assets/about/about05.png" draggable="false" class="unselectable">
-        <div class="about-pswap-title">
-          <p class="gradient pswap">{{ t('about.pswap.title') }}</p>
-        </div>
-        <div class="about-pswap-block-1">
-          <p class="text">{{ t('about.pswap.first') }}</p>
-        </div>
-        <div class="about-pswap-block-2">
-          <div class="bubble-block">
-            <img src="@/assets/about/about05-1.png" draggable="false" class="unselectable bubble-icon">
-            <p class="text">{{ t('about.pswap.second') }}</p>
-          </div>
-        </div>
-        <img src="@/assets/about/about05-shadow-1.png" draggable="false" class="unselectable about-pswap-shadow-1">
-      </div>
-      <div class="about-video">
-        <img src="@/assets/about/about06.png" draggable="false" class="unselectable preview">
+
+      <img src="@/assets/about/hero.png" draggable="false" class="unselectable" style="max-width: 1040px;z-index: -1;" />
+      <p class="gradient main" style="line-height:1;margin-top:-60px;margin-bottom:10px;">{{ t('about.title') }}</p>
+      <p class="text">{{ t('about.description') }}</p>
+
+      <img src="@/assets/about/about02x.png" draggable="false" class="unselectable" style="width:75%;height:auto;margin-top:120px;">
+      <p class="gradient trading">{{ t('about.trading.title') }}</p>
+      <p class="text" style="margin-top:15px;">{{ t('about.trading.first') }}</p>
+      <img src="@/assets/about/about02-1.png" draggable="false" class="unselectable bubble-icon">
+      <p class="text">{{ t('about.trading.first') }}</p>
+      <img src="@/assets/about/about02-2.png" draggable="false" class="unselectable bubble-icon">
+      <p class="text">{{ t('about.trading.third') }}
+        <a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_(original_%22BSD_License%22)" title="BSD 4-clause license" class="text">BSD 4-clause license</a></p>
+      <img src="@/assets/about/about03x.png" draggable="false" class="unselectable" style="width:75%;height:auto;margin-top:120px;">
+      <p class="gradient liquidity">{{ t('about.liquidity.title') }}</p>
+      <p class="text" style="margin-top:15px;">{{ t('about.liquidity.first') }}</p>
+      <img src="@/assets/about/about03-1.png" draggable="false" class="unselectable bubble-icon">
+      <p class="text">{{ t('about.liquidity.second') }}</p>
+      <img src="@/assets/about/about03-2.png" draggable="false" class="unselectable bubble-icon">
+      <p class="text">{{ t('about.liquidity.third') }}</p>
+
+      <img src="@/assets/about/about04x.png" draggable="false" class="unselectable" style="width:75%;height:auto;margin-top:120px;">
+      <p class="gradient swap">{{ t('about.swap.title') }}</p>
+      <p class="text" style="margin-top:15px;">{{ t('about.swap.first') }}</p>
+      <img src="@/assets/about/about04-1.png" draggable="false" class="unselectable bubble-icon">
+      <p class="text">{{ t('about.swap.second') }}</p>
+      <img src="@/assets/about/about04-2.png" draggable="false" class="unselectable bubble-icon">
+      <p class="text">{{ t('about.swap.third') }}</p>
+
+      <img src="@/assets/about/about05x.png" draggable="false" class="unselectable" style="width:75%;height:auto;margin-top:120px;">
+      <p class="gradient pswap">{{ t('about.pswap.title') }}</p>
+      <p class="text" >{{ t('about.pswap.first') }}</p>
+      <img src="@/assets/about/about05-1.png" draggable="false" class="unselectable bubble-icon">
+      <p class="text" style="margin-bottom:120px;">{{ t('about.pswap.second') }}</p>
+
+      <div class="about-video" style="margin-bottom:120px;">
+        <a href="https://www.youtube.com/watch?v=fXmcAFT8AzA" target="_blank" style="text-align: center;">
+          <img src="@/assets/about/about06.png" draggable="false" class="unselectable preview">
+        </a>
         <img src="@/assets/about/about06-shadow-1.png" draggable="false" class="unselectable about-video-shadow-1">
       </div>
-      <div class="about-links">
-        <div class="about-links-part">
+      <div class="about-links" style="margin-bottom:120px;">
+        <div class="about-links-part" style="text-align:left;">
           <img src="@/assets/about/about07-1.png" draggable="false" class="unselectable icon">
           <span class="title">{{ t('about.links.first.title') }}<img src="@/assets/about/about07-3.png" class="link"></span>
           <p class="text">{{ t('about.links.first.desc') }}</p>
           <a class="link-mask" href="https://sora.org/validator" target="_blank" />
         </div>
-        <div class="about-links-part">
+        <div class="about-links-part" style="text-align:left;">
           <img src="@/assets/about/about07-2.png" draggable="false" class="unselectable icon">
           <span class="title">{{ t('about.links.second.title') }}<img src="@/assets/about/about07-3.png" class="link"></span>
           <p class="text">{{ t('about.links.second.desc') }}</p>
@@ -119,6 +63,7 @@
       </div>
     </div>
     <footer class="app-footer">
+      <img src="@/assets/about/web3.svg" draggable="false" class="web3 unselectable" />
       <div class="hr" />
       <div class="info-block">
         <div class="social-links">
@@ -147,9 +92,6 @@
           <a :href="t('helpDialog.privacyPolicyLink')" :title="t('footerMenu.privacy')" target="_blank" class="text link">{{ t('footerMenu.privacy') }}</a>
         </div>
       </div>
-      <div class="app-disclaimer">
-        <p>{{ t('disclaimer') }}</p>
-      </div>
     </footer>
   </div>
 </template>
@@ -165,10 +107,6 @@ export default class About extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
-$disclaimer-font-size: 11px;
-$disclaimer-font-weight: 200;
-$disclaimer-letter-spacing: -0.03em;
-
 @mixin backgroundImageWidth {
   &>:first-child {
     width: 80%;
@@ -177,12 +115,15 @@ $disclaimer-letter-spacing: -0.03em;
 }
 
 .layout {
-  max-width: 1040px;
   margin: 0 auto;
 }
 
 .content {
   display: flex;
+  min-width: 800px;
+  max-width: 1040px;
+  margin: 0 auto;
+  text-align: center;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -193,10 +134,8 @@ $disclaimer-letter-spacing: -0.03em;
 }
 
 .web3 {
-  width: 100px;
-  position: absolute;
-  bottom: 0;
-  right: 5%;
+  width: 150px;
+  margin: 0 auto 60px;
 }
 
 .bubble-block {
@@ -214,6 +153,7 @@ $disclaimer-letter-spacing: -0.03em;
 
 .about {
   margin: auto;
+  min-width: 800px;
   &-main {
     display: flex;
     justify-content: center;
@@ -223,23 +163,25 @@ $disclaimer-letter-spacing: -0.03em;
 
     .main {
       min-width: 800px;
-      max-width: 1700px;
+      max-width: 1405px;
       width: 100%;
+      z-index: -1;
     }
 
     &-title {
       position: absolute;
       top: 50%;
-      left: 50%;
+      left: 48%;
       transform: translate(-50%, -52%);
-      line-height: 62px;
+      line-height: 48px;
       text-align: center;
     }
 
     &-text {
-      top: 60%;
-      width: 35%;
-
+      top: 57%;
+      margin-left: -60px;
+      width: 36vw;
+      min-width: 480px;
       position: absolute;
       text-align: center;
     }
@@ -447,7 +389,7 @@ $disclaimer-letter-spacing: -0.03em;
   }
   &-links {
     width: 70%;
-    max-width: 1600px;
+    max-width: 900px;
     padding-top: 7rem;
     position: relative;
 
@@ -533,36 +475,34 @@ $disclaimer-letter-spacing: -0.03em;
   font-family: Sora;
   font-style: normal;
   font-weight: 200;
-  font-size: 12px;
-  line-height: 160%;
+  font-size: 18px;
+  line-height: 1.4;
 
   letter-spacing: -0.02em;
   font-feature-settings: 'case' on, 'liga' off;
 
   color: #2A171F;
-  @media screen and (min-width: 1100px) {
-    font-size: 14px;
+  @media screen and (min-width: 1400px) {
+    font-size: 20px;
+    line-height: 1.4;
   }
 }
 
-.app-disclaimer {
-  margin-top: $inner-spacing-mini * 2.5;
-  margin-bottom: $inner-spacing-mini * 2.5;
-  font-size: $disclaimer-font-size;
-  font-weight: $disclaimer-font-weight;
-  line-height: var(--s-line-height-mini);
-  letter-spacing: $disclaimer-letter-spacing;
-  color: var(--s-color-base-content-secondary);
-}
+.content p { max-width: 640px;}
+.content img.bubble-icon { margin: -60px; }
 
 .app-footer {
   display: flex;
   flex-direction: column;
-  padding: 2rem 4rem;
+  padding: 0 0 0 20px;
 
   .hr {
     height: 1px;
     background: linear-gradient(80.38deg, #FFD9E5 14.49%, rgba(242, 153, 133, 0.68) 38.03%, rgba(239, 20, 92, 0.38) 61.35%, rgba(171, 24, 184, 0.25) 79.98%, rgba(24, 174, 184, 0.2) 85.51%);
+    max-width: 900px;
+    min-width: 760px;
+    width: 100%;
+    margin: 0 auto;
   }
   .info-block {
     margin-top: 20px;
