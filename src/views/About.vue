@@ -37,7 +37,7 @@
       <p class="text" style="margin-bottom:120px;">{{ t('about.pswap.second') }}</p>
 
       <div class="about-video" style="margin-bottom:120px;">
-        <a href="https://www.youtube.com/watch?v=fXmcAFT8AzA" target="_blank" style="text-align: center;">
+        <a href="http://sora.org/pswap-soft-launch-video" target="_blank" style="text-align: center;">
           <img src="@/assets/about/about06.png" draggable="false" class="unselectable preview">
         </a>
         <img src="@/assets/about/about06-shadow-1.png" draggable="false" class="unselectable about-video-shadow-1">
