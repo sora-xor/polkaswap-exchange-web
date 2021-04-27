@@ -126,7 +126,7 @@
         <s-button
           class="el-button--next"
           type="primary"
-          :disabled="!isAssetSelected || !areNetworksConnected || !isValidEthNetwork || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEthereumForFee || isInsufficientBalance || !isRegisteredAsset"
+          :disabled="!isAssetSelected || !areNetworksConnected || !isValidNetworkType || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEthereumForFee || isInsufficientBalance || !isRegisteredAsset"
           @click="handleConfirmTransaction"
         >
           <template v-if="!isAssetSelected">
@@ -138,7 +138,7 @@
           <template v-else-if="!areNetworksConnected">
             {{ t('bridge.next') }}
           </template>
-          <template v-else-if="!isValidEthNetwork">
+          <template v-else-if="!isValidNetworkType">
             {{ t('bridge.changeNetwork') }}
           </template>
           <template v-else-if="isZeroAmount">
@@ -234,6 +234,7 @@ export default class Bridge extends Mixins(
 ) {
   @Action('getEthBalance', { namespace: 'web3' }) getEthBalance!: () => Promise<void>
   @Action('setEvmNetwork', { namespace: 'web3' }) setEvmNetwork
+  @Action('setDefaultNetworkType', { namespace: 'web3' }) setDefaultNetworkType
   @Action('setSoraToEvm', { namespace }) setSoraToEvm
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
@@ -245,10 +246,9 @@ export default class Bridge extends Mixins(
 
   @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: CodecString
   @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<BridgeNetwork>
-  @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: string
-  @Getter('ethNetwork', { namespace: 'web3' }) ethNetwork!: string
+  @Getter('defaultNetworkType', { namespace: 'web3' }) defaultNetworkType!: string
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
-  @Getter('isValidEthNetwork', { namespace: 'web3' }) isValidEthNetwork!: boolean
+  @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
   @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter('asset', { namespace }) asset!: any
@@ -384,7 +384,8 @@ export default class Bridge extends Mixins(
   }
 
   async mounted (): Promise<void> {
-    await this.setEthNetwork()
+    await this.setNetworkType()
+    await this.setDefaultNetworkType(this.subNetworks?.find(item => item.name === web3Util.getNetworkFromStorage())?.defaultType)
     await this.syncExternalAccountWithAppState()
     this.getEthBalance()
     this.resetBridgeForm(!!router.currentRoute.params?.address)
@@ -399,7 +400,7 @@ export default class Bridge extends Mixins(
           }
         },
         onNetworkChange: (networkId: string) => {
-          this.setEthNetwork(networkId)
+          this.setNetworkType(networkId)
           this.getEthNetworkFee()
           this.getRegisteredAssets()
           this.updateExternalBalances()
@@ -516,7 +517,7 @@ export default class Bridge extends Mixins(
   async selectNetwork (network: string): Promise<void> {
     if (network) {
       await this.setEvmNetwork(network)
-      // Update some values if needed
+      await this.setDefaultNetworkType(this.subNetworks?.find(item => item.name === network)?.defaultType)
     }
   }
 

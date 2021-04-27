@@ -476,7 +476,7 @@ const actions = {
       const request = await waitForApprovedRequest(hash) // If it causes an error, then -> catch -> SORA_REJECTED
       const web3 = await web3Util.getInstance()
 
-      if (!rootGetters['web3/isValidEthNetwork']) {
+      if (!rootGetters['web3/isValidNetworkType']) {
         throw new Error('Change evm network in Metamask')
       }
       const symbol = getters.asset.symbol
@@ -565,7 +565,7 @@ const actions = {
     commit(types.SIGN_ETH_TRANSACTION_ETH_SORA_REQUEST)
 
     try {
-      if (!rootGetters['web3/isValidEthNetwork']) {
+      if (!rootGetters['web3/isValidNetworkType']) {
         throw new Error('Change evm network in Metamask')
       }
       const contract = rootGetters[`web3/contract${KnownBridgeAsset.Other}`]

@@ -102,6 +102,7 @@ export interface BridgeNetwork {
   id: 0 | 1;
   symbol: string;
   currency: string;
+  defaultType: string;
   address: number;
   CONTRACTS: any;
 }

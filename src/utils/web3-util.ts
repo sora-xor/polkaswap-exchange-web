@@ -120,21 +120,27 @@ interface JsonContract {
 }
 
 export enum EvmNetwork {
+  Ethereum = 'ethereum',
+  Energy = 'energy'
+}
+
+export enum EvmNetworkType {
   Mainnet = 'main',
   Ropsten = 'ropsten',
   Kovan = 'kovan',
   Rinkeby = 'rinkeby',
   Goerli = 'goerli',
-  Energy = 'energyweb'
+  Private = 'private',
+  EWC = 'EWC'
 }
 
-export const EvmNetworkName = {
-  '0x1': EvmNetwork.Mainnet,
-  '0x3': EvmNetwork.Ropsten,
-  '0x2a': EvmNetwork.Kovan,
-  '0x4': EvmNetwork.Rinkeby,
-  '0x5': EvmNetwork.Goerli,
-  '0x12047': EvmNetwork.Energy
+export const EvmNetworkTypeName = {
+  '0x1': EvmNetworkType.Mainnet,
+  '0x3': EvmNetworkType.Ropsten,
+  '0x2a': EvmNetworkType.Kovan,
+  '0x4': EvmNetworkType.Rinkeby,
+  '0x5': EvmNetworkType.Goerli,
+  '0x12047': EvmNetworkType.Private
 }
 
 async function onConnect (options: ConnectOptions): Promise<string> {
@@ -238,26 +244,33 @@ function removeEthUserAddress (): void {
   storage.remove('ethAddress')
 }
 
-function storeEthNetwork (network: string): void {
-  const networkName = EvmNetworkName[network]
-  storage.set('ethNetwork', networkName || network)
+function storeNetwork (network: string): void {
+  storage.set('evmNetwork', network)
 }
 
-function getEthNetworkFromStorage (): string {
-  return storage.get('ethNetwork') || ''
+function getNetworkFromStorage (): string {
+  return storage.get('evmNetwork') || ''
 }
 
-async function getEthNetwork (): Promise<string> {
-  const network = getEthNetworkFromStorage()
-  if (!network) {
+function storeNetworkType (network: string): void {
+  storage.set('networkType', EvmNetworkTypeName[network] || network)
+}
+
+function getNetworkTypeFromStorage (): string {
+  return storage.get('networkType') || ''
+}
+
+async function getNetworkType (): Promise<string> {
+  const networkType = getNetworkTypeFromStorage()
+  if (!networkType || networkType === 'undefined') {
     const web3 = await getInstance()
     return await web3.eth.net.getNetworkType()
   }
-  return network
+  return networkType
 }
 
 function removeEthNetwork (): void {
-  storage.remove('ethNetwork')
+  storage.remove('networkType')
 }
 
 async function readSmartContract (contract: Contract, name: string): Promise<JsonContract | undefined> {
@@ -314,9 +327,11 @@ export default {
   checkAccountIsConnected,
   storeEthUserAddress,
   getEthUserAddress,
-  storeEthNetwork,
-  getEthNetwork,
-  getEthNetworkFromStorage,
+  storeNetwork,
+  getNetworkFromStorage,
+  storeNetworkType,
+  getNetworkType,
+  getNetworkTypeFromStorage,
   removeEthNetwork,
   getInstance,
   removeEthUserAddress,

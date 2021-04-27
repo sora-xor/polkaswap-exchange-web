@@ -103,7 +103,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 
   async mounted (): Promise<void> {
     await this.withApi(async () => {
-      await this.setEthNetwork()
+      await this.setNetworkType()
       await this.syncExternalAccountWithAppState()
       await this.checkAccountRewards()
 
@@ -116,7 +116,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
           }
         },
         onNetworkChange: (networkId: string) => {
-          this.setEthNetwork(networkId)
+          this.setNetworkType(networkId)
         },
         onDisconnect: () => {
           this.disconnectExternalAccountProcess()

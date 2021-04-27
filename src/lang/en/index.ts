@@ -1,7 +1,7 @@
-import { KnownSymbols, Operation, TransactionStatus } from '@sora-substrate/util'
+import { Operation, TransactionStatus } from '@sora-substrate/util'
 
 import { PageNames, Topics, NetworkTypes } from '@/consts'
-import { EvmNetwork } from '@/utils/web3-util'
+import { EvmNetworkType } from '@/utils/web3-util'
 
 export default {
   appName: 'Polkaswap',
@@ -139,12 +139,13 @@ export default {
     [NetworkTypes.Mainnet]: '@:soraText Mainnet'
   },
   evm: {
-    [EvmNetwork.Mainnet]: 'Ethereum Mainnet',
-    [EvmNetwork.Ropsten]: 'Ethereum Ropsten',
-    [EvmNetwork.Rinkeby]: 'Ethereum Rinkeby',
-    [EvmNetwork.Kovan]: 'Ethereum Kovan',
-    [EvmNetwork.Goerli]: 'Ethereum Goerli',
-    [EvmNetwork.Energy]: 'Energy Web Chain'
+    [EvmNetworkType.Mainnet]: 'Ethereum Mainnet',
+    [EvmNetworkType.Ropsten]: 'Ethereum Ropsten',
+    [EvmNetworkType.Rinkeby]: 'Ethereum Rinkeby',
+    [EvmNetworkType.Kovan]: 'Ethereum Kovan',
+    [EvmNetworkType.Goerli]: 'Ethereum Goerli',
+    [EvmNetworkType.Private]: 'Volta Testnet',
+    [EvmNetworkType.EWC]: 'Energy Web Chain'
   },
   providers: {
     metamask: '@:metamask'
@@ -237,7 +238,7 @@ export default {
     selectNetwork: 'Select network',
     networkInfo: 'Bridge @:soraText Network with:',
     ethereum: '@:ethereumText',
-    energyweb: '@:evm.energyweb'
+    energy: '@:evm.EWC'
   },
   selectRegisteredAsset: {
     title: 'Select a token',

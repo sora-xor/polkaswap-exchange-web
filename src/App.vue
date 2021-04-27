@@ -184,14 +184,14 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   @Action('getAssets', { namespace: 'assets' }) getAssets
   @Action('setEthereumSmartContracts', { namespace: 'web3' }) setEthereumSmartContracts
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks
-  @Action('setDefaultEthNetwork', { namespace: 'web3' }) setDefaultEthNetwork
+  @Action('setDefaultNetworkType', { namespace: 'web3' }) setDefaultNetworkType
 
   async created () {
     await this.withLoading(async () => {
       const { data } = await axios.get('/env.json')
       await this.setSoraNetwork(data)
-      // TODO: Remove ETH_NETWORK from config after BE part changes, right now it could break the Bridge
-      await this.setDefaultEthNetwork(data.ETH_NETWORK)
+      // TODO: Change ETH_NETWORK to SUB_NETWORKS[item].defaultType from config after BE part changes, right now it could break the Bridge
+      await this.setDefaultNetworkType(data.ETH_NETWORK)
       await this.setSubNetworks(data.SUB_NETWORKS)
       await this.setEthereumSmartContracts(data.BRIDGE)
 

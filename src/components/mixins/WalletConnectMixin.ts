@@ -15,7 +15,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @Getter('isLoggedIn') isSoraAccountConnected!: boolean
   @Getter('isExternalAccountConnected', { namespace: 'web3' }) isExternalAccountConnected!: boolean
 
-  @Action('setEthNetwork', { namespace: 'web3' }) setEthNetwork!: (network?: string) => Promise<void>
+  @Action('setNetworkType', { namespace: 'web3' }) setNetworkType!: (network?: string) => Promise<void>
   @Action('connectExternalAccount', { namespace: 'web3' }) connectExternalAccount!: (options) => Promise<void>
   @Action('switchExternalAccount', { namespace: 'web3' }) switchExternalAccount!: (options) => Promise<void>
   @Action('disconnectExternalAccount', { namespace: 'web3' }) disconnectExternalAccount!: () => Promise<void>

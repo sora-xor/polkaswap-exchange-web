@@ -6,7 +6,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import { FPNumber } from '@sora-substrate/util'
 
-import web3Util, { ABI, Contract, EvmNetwork, EvmNetworkName, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
+import web3Util, { ABI, Contract, EvmNetworkTypeName, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
 import { ZeroStringValue } from '@/consts'
 import { isEthereumAddress } from '@/utils'
 
@@ -16,17 +16,17 @@ const types = flow(
     'RESET',
     'SET_ETHEREUM_SMART_CONTRACTS',
     'SET_ETHEREUM_BALANCE',
-    'SET_DEFAULT_ETH_NETWORK',
-    'SET_SUB_NETWORKS',
-    'SET_CURRENT_SUB_NETWORK',
-    'SET_SORA_NETWORK'
+    'SET_DEFAULT_NETWORK_TYPE',
+    'SET_SORA_NETWORK',
+    'SET_ENV_NETWORK'
   ]),
   map(x => [x, x]),
   fromPairs
 )([
   'CONNECT_ETH_WALLET',
   'SWITCH_ETH_WALLET',
-  'SET_ETH_NETWORK',
+  'SET_SUB_NETWORKS',
+  'SET_NETWORK_TYPE',
   'DISCONNECT_ETH_WALLET',
   'GET_BALANCE',
   'GET_ETH_TOKEN_ADDRESS',
@@ -38,10 +38,10 @@ function initialState () {
     soraNetwork: '',
     ethAddress: web3Util.getEthUserAddress(),
     ethBalance: ZeroStringValue,
-    ethNetwork: web3Util.getEthNetworkFromStorage(),
-    defaultEthNetwork: '',
+    networkType: web3Util.getNetworkTypeFromStorage(),
+    defaultNetworkType: '',
     subNetworks: [],
-    evmNetwork: '',
+    evmNetwork: web3Util.getNetworkFromStorage(),
     contractAddress: {
       XOR: '',
       VAL: '',
@@ -85,11 +85,11 @@ const getters = {
   ethBalance (state) {
     return state.ethBalance
   },
-  ethNetwork (state) {
-    return state.ethNetwork
+  networkType (state) {
+    return state.networkType
   },
-  defaultEthNetwork (state) {
-    return state.defaultEthNetwork
+  defaultNetworkType (state) {
+    return state.defaultNetworkType
   },
   subNetworks (state) {
     return state.subNetworks
@@ -100,18 +100,15 @@ const getters = {
   soraNetwork (state) {
     return state.soraNetwork
   },
-  isValidEthNetwork (state) {
-    if (state.evmNetwork === EvmNetwork.Energy) {
-      return state.ethNetwork === EvmNetwork.Energy
-    }
-    return state.ethNetwork === state.defaultEthNetwork
+  isValidNetworkType (state) {
+    return state.networkType === state.defaultNetworkType
   }
 }
 
 const mutations = {
   [types.RESET] (state) {
     // we shouldn't reset networks, setted from env & contracts
-    const networkSettingsKeys = ['soraNetwork', 'defaultEthNetwork', 'contractAddress', 'smartContracts']
+    const networkSettingsKeys = ['soraNetwork', 'defaultNetworkType', 'contractAddress', 'subNetworks', 'smartContracts']
     const s = initialState()
 
     Object.keys(s).filter(key => !networkSettingsKeys.includes(key)).forEach(key => {
@@ -131,23 +128,34 @@ const mutations = {
   },
   [types.SWITCH_ETH_WALLET_FAILURE] () {},
 
-  [types.SET_ETH_NETWORK_REQUEST] () {},
-  [types.SET_ETH_NETWORK_SUCCESS] (state, network) {
-    state.ethNetwork = network
+  [types.SET_NETWORK_TYPE_REQUEST] () {},
+  [types.SET_NETWORK_TYPE_SUCCESS] (state, networkType) {
+    state.networkType = networkType
   },
-  [types.SET_ETH_NETWORK_FAILURE] () {},
+  [types.SET_NETWORK_TYPE_FAILURE] () {},
 
-  [types.SET_DEFAULT_ETH_NETWORK] (state, network) {
-    state.defaultEthNetwork = network
+  [types.SET_DEFAULT_NETWORK_TYPE] (state, networkType) {
+    state.defaultNetworkType = networkType
   },
 
-  [types.SET_SUB_NETWORKS] (state, networks) {
+  [types.SET_SUB_NETWORKS_REQUEST] () {},
+  [types.SET_SUB_NETWORKS_SUCCESS] (state, networks) {
     state.subNetworks = networks
   },
+  [types.SET_SUB_NETWORKS_FAILURE] () {},
 
-  [types.SET_CURRENT_SUB_NETWORK] (state, network) {
+  [types.SET_ENV_NETWORK] (state, network) {
     state.evmNetwork = network
   },
+
+  [types.SET_SORA_NETWORK] (state, network) {
+    state.soraNetwork = network
+  },
+  [types.SET_NETWORK_TYPE_REQUEST] () {},
+  [types.SET_NETWORK_TYPE_SUCCESS] (state, network) {
+    state.networkType = network
+  },
+  [types.SET_NETWORK_TYPE_FAILURE] () {},
 
   [types.SET_SORA_NETWORK] (state, network) {
     state.soraNetwork = network
@@ -224,28 +232,36 @@ const actions = {
     commit(types.SET_SORA_NETWORK, network)
   },
 
-  async setDefaultEthNetwork ({ commit }, network) {
-    commit(types.SET_DEFAULT_ETH_NETWORK, network)
+  async setDefaultNetworkType ({ commit }, networkType) {
+    commit(types.SET_DEFAULT_NETWORK_TYPE, networkType)
   },
 
-  async setSubNetworks ({ commit }, subNetworks) {
-    commit(types.SET_SUB_NETWORKS, subNetworks)
+  async setSubNetworks ({ commit, dispatch }, subNetworks) {
+    commit(types.SET_SUB_NETWORKS_REQUEST)
+    try {
+      await dispatch('setEvmNetwork', web3Util.getNetworkFromStorage() || subNetworks[0]?.name)
+      commit(types.SET_SUB_NETWORKS_SUCCESS, subNetworks)
+    } catch (error) {
+      commit(types.SET_SUB_NETWORKS_FAILURE)
+      console.error(error)
+    }
   },
 
   async setEvmNetwork ({ commit }, network) {
-    commit(types.SET_CURRENT_SUB_NETWORK, network)
+    web3Util.storeNetwork(network)
+    commit(types.SET_ENV_NETWORK, network)
   },
 
-  async setEthNetwork ({ commit }, network) {
-    commit(types.SET_ETH_NETWORK_REQUEST)
+  async setNetworkType ({ commit }, network) {
+    commit(types.SET_NETWORK_TYPE_REQUEST)
     try {
-      const networkName = network
-        ? EvmNetworkName[network]
-        : await web3Util.getEthNetwork()
-      web3Util.storeEthNetwork(networkName)
-      commit(types.SET_ETH_NETWORK_SUCCESS, networkName)
+      const networkType = network
+        ? EvmNetworkTypeName[network]
+        : await web3Util.getNetworkType()
+      web3Util.storeNetworkType(networkType)
+      commit(types.SET_NETWORK_TYPE_SUCCESS, networkType)
     } catch (error) {
-      commit(types.SET_ETH_NETWORK_FAILURE)
+      commit(types.SET_NETWORK_TYPE_FAILURE)
       throw error
     }
   },

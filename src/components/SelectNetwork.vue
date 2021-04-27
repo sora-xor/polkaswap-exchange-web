@@ -40,18 +40,10 @@ export default class SelectNetwork extends Mixins(TranslationMixin, DialogMixin)
   selectedNetwork = ''
 
   @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<BridgeNetwork>
-  @Getter('ethNetwork', { namespace: 'web3' }) ethNetwork!: string
   @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: string
 
-  @Action('setEvmNetwork', { namespace: 'web3' }) setEvmNetwork
-
   created () {
-    if (this.evmNetwork) {
-      this.selectedNetwork = this.evmNetwork
-    } else {
-      this.selectedNetwork = this.subNetworks?.find(item => item.name === this.ethNetwork) ? this.ethNetwork : this.subNetworks[0]?.name
-      this.setEvmNetwork(this.selectedNetwork)
-    }
+    this.selectedNetwork = this.evmNetwork
   }
 
   async selectNetwork (): Promise<void> {
