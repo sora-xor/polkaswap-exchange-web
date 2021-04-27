@@ -113,10 +113,16 @@
       <div class="app-body">
         <div class="app-content">
           <router-view :parent-loading="loading" />
-          <p v-if="!isAboutPage" class="app-disclaimer">{{ t('disclaimer') }}</p>
+          <p v-if="isAboutPage" class="app-disclaimer about-disclaimer">{{ t('disclaimer') }}</p>
+          <p v-else class="app-disclaimer">{{ t('disclaimer') }}</p>
         </div>
-        <footer class="app-footer">
-          <p v-if="isAboutPage" class="app-disclaimer">{{ t('disclaimer') }}</p>
+        <footer v-if="isAboutPage" class="app-footer about-footer">
+          <div class="sora-logo">
+            <span class="sora-logo__title">{{ t('poweredBy') }}</span>
+            <div class="sora-logo__image"></div>
+          </div>
+        </footer>
+        <footer v-else class="app-footer">
           <div class="sora-logo">
             <span class="sora-logo__title">{{ t('poweredBy') }}</span>
             <div class="sora-logo__image"></div>
