@@ -35,6 +35,7 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
   }
 
   get tokenStyles (): any {
+    if (!this.token) return {}
     const asset = this.registeredAssets[this.token.address]
     if (asset) {
       return {
