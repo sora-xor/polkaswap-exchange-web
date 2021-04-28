@@ -1,10 +1,10 @@
 <template>
-  <span :class="tokenClasses" />
+  <span :class="tokenClasses" :style="tokenStyles"/>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { Asset, AccountAsset, KnownAssets } from '@sora-substrate/util'
+import { Asset, AccountAsset, KnownAssets, RegisteredAssets } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { LogoSize } from '@/consts'
@@ -14,6 +14,8 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
   @Prop({ type: String, default: '' }) readonly tokenSymbol!: string // ONLY for Bridge.vue
   @Prop({ type: Object, default: () => null }) readonly token!: AccountAsset | Asset
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
+
+  registeredAsset = RegisteredAssets
 
   get tokenClasses (): string {
     const tokenLogoClass = 'token-logo'
@@ -31,12 +33,24 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
     classes.push(`${tokenLogoClass}--${this.size.toLowerCase()}`)
     return classes.join(' ')
   }
+
+  get tokenStyles (): any {
+    const asset = this.registeredAsset[this.token.address]
+    if (asset) {
+      return {
+        'background-size': '100%',
+        'background-image': `url("${asset}")`
+      }
+    } else {
+      return {}
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 // TODO: Check assets list + logo titles
-$tokens-list: "bridge-item-xor", "bridge-item-eth", "pswap", "val", "xor", "eth", "btc", "bnb", "xrp", "usdt", "ada", "doge", "dot", "uni", "ltc", "bch", "link", "vet", "usdc", "sol", "xlm", "theta", "fil", "trx", "wbtc", "busd", "luna", "xmr", "neo", "klay", "miota", "eos", "cake", "atom", "aave", "btt", "bsv", "cro", "okb", "ftt", "cusdc", "etc", "xtz", "mkr", "ceth", "algo", "ksm", "avax", "dai", "rune", "cdai", "comp", "ht", "egld", "matic", "xem", "hot", "dash", "chz", "dcr", "snx", "zec", "hbar", "enj", "stx", "cel", "zil", "leo", "amp", "waves", "sc", "nexo", "sushi", "dgb", "grt", "ust", "near", "bat", "arrr", "fei", "mana", "yfi", "uma", "btg", "qtum", "hbtc", "rvn", "lusd", "zen", "ont", "wrx", "icx", "one", "hnt", "zrx", "ar", "bnt", "ftm", "flow", "omi", "iost", "nano", "xdc", "win", "rsr", "dent", "pax", "chsb", "kcs", "ankr", "omg", "pundix", "vgx", "xvg", "husd", "crv", "cfx", "npxs", "xsushi", "ren", "1inch", "vtho", "lpt", "bcha", "btmx", "lsk", "xvs", "nxm", "snt", "oxy", "renbtc", "lrc", "steth", "mir", "bal", "ckb", "gt", "celo", "bot", "ocean", "cusdt", "zks", "tribe", "btcst", "srm", "ewt", "qnt", "ray", "band", "axs", "reef", "nkn", "stmx", "ton", "glm", "cuni", "woo", "bcd", "maid", "med", "etn", "ogn", "kncl", "dodo", "ampl", "agi", "ardr", "hbc", "nmr", "skl", "kin", "mdx", "rfox", "alpha", "tel", "sand", "audio", "cvc", "kmd", "tlm", "steem", "ark", "fet", "fun", "waxp", "sxp", "orn", "celr", "tusd", "poly", "meta", "orbs", "rpl", "ant", "xhv", "usdn", "akt", "btm", "noia", "kava", "seth", "klv", "bts", "anc", "iotx";
+$tokens-list: "bridge-item-xor", "bridge-item-eth", "pswap", "val", "xor", "eth";
 $token-background-color: var(--s-color-base-on-accent);
 $default-logo: url("~@/assets/img/token-logo-default.svg");
 
@@ -55,7 +69,6 @@ $default-logo: url("~@/assets/img/token-logo-default.svg");
     }
     &--#{$token} {
       background-image: url("~@/assets/img/#{$token}.svg");
-      background-image: url("~@/assets/tokens/#{$token}.png");
     }
   }
 }
