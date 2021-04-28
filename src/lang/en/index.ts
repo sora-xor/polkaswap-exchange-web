@@ -280,6 +280,7 @@ export default {
   bridgeTransaction: {
     viewHistory: 'View transaction in transactions history',
     details: '{from} for {to}',
+    for: ' for ',
     steps: {
       step: '{step} of 2',
       step1: '1st',

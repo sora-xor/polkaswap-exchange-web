@@ -9,6 +9,30 @@ $font-weight-600: "wght" 600;
 $font-weight-700: "wght" 700;
 $font-weight-800: "wght" 800;
 
+/* Networks Icons */
+$s-icon-sora: "\0041";
+$s-icon-eth: "\0044";
+.s-icon-sora {
+  &.s-icon--network {
+    &, &:hover {
+      color: #E3232C !important;
+    }
+  }
+  &:before {
+    content: $s-icon-sora;
+  }
+}
+.s-icon-eth {
+  &.s-icon--network {
+    &, &:hover {
+      color: #627EEA !important;
+    }
+  }
+  &:before {
+    content: $s-icon-eth;
+  }
+}
+
 /*________________________________________ICONS________________________________________*/
 @font-face {
   font-family: "soramitsu-icons";
