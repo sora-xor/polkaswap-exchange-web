@@ -14,7 +14,13 @@
       <template v-if="isInitRequestCompleted">
         <div class="header">
           <div v-loading="isTransactionFromPending || isTransactionToPending" :class="headerIconClasses" />
-          <h5 class="header-details">{{ transactionDetails }}</h5>
+          <h5 class="header-details">
+            {{ `${amount} ${formatAssetSymbol(assetSymbol)}` }}
+            <i :class="`s-icon--network s-icon-${isSoraToEthereum ? 'sora' : 'eth'}`" />
+            <span class="header-details-separator">{{ t('bridgeTransaction.for') }}</span>
+            {{ `${amount} ${formatAssetSymbol(assetSymbol)}` }}
+            <i :class="`s-icon--network s-icon-${!isSoraToEthereum ? 'sora' : 'eth'}`" />
+          </h5>
           <p class="header-status">{{ headerStatus }}</p>
         </div>
         <s-collapse :value="activeTransactionStep" :borders="true">
@@ -300,14 +306,6 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
     }
 
     return classes.join(' ')
-  }
-
-  get transactionDetails (): string {
-    // TODO: Check asset for null value
-    return this.t('bridgeTransaction.details', {
-      from: `${this.amount} ${formatAssetSymbol(this.assetSymbol)}`,
-      to: `${this.amount} ${formatAssetSymbol(this.assetSymbol)}`
-    })
   }
 
   get headerStatus (): string {
@@ -808,6 +806,15 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     font-feature-settings: $s-font-feature-settings-title;
     font-weight: 700;
     line-height: $s-line-height-medium;
+    .s-icon {
+      &-sora, &-eth {
+        position: relative;
+        top: 1px;
+      }
+    }
+    &-separator {
+      font-weight: normal;
+    }
   }
 }
 .network-info {

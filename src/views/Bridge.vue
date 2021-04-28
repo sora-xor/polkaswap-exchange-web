@@ -29,7 +29,7 @@
             <div class="bridge-item-title">
               <span class="bridge-item-title-label">{{ t('transfers.from') }}</span>
               <span>{{ getBridgeItemTitle() }}</span>
-              <token-logo class="bridge-item-title-icon" :tokenSymbol="isSoraToEthereum ? 'bridge-item-xor' : 'bridge-item-eth'" size="mini" />
+              <i :class="`s-icon-${isSoraToEthereum ? 'sora' : 'eth'}`" />
             </div>
             <div v-if="isNetworkAConnected && isAssetSelected" class="token-balance">
               <span class="token-balance-title">{{ t('bridge.balance') }}</span>
@@ -81,7 +81,7 @@
             <div class="bridge-item-title">
               <span class="bridge-item-title-label">{{ t('transfers.to') }}</span>
               <span>{{ getBridgeItemTitle(true) }}</span>
-              <token-logo class="bridge-item-title-icon" :tokenSymbol="isSoraToEthereum ? 'bridge-item-eth' : 'bridge-item-xor'" size="mini" />
+              <i :class="`s-icon-${!isSoraToEthereum ? 'sora' : 'eth'}`" />
             </div>
             <div v-if="areNetworksConnected && isAssetSelected" class="token-balance">
               <span class="token-balance-title">{{ t('bridge.balance') }}</span>
@@ -625,11 +625,11 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
           white-space: nowrap;
         }
       }
-      &-icon {
-        margin-left: $inner-spacing-mini / 2;
-        display: block;
-        border: none;
-        box-shadow: none;
+      .s-icon {
+        &-sora, &-eth {
+          margin-top: $inner-spacing-mini / 4;
+          margin-left: $inner-spacing-mini / 4;
+        }
       }
     }
     &--ethereum {

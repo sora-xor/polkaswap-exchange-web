@@ -38,10 +38,13 @@
               @click="showHistory(item.id)"
             >
               <div class="history-item-info">
-                <div class="history-item-title p4">{{ t('bridgeTransaction.details', {
-                    from: `${item.amount} ${formatAssetSymbol(item.symbol)}`,
-                    to: `${item.amount} ${formatAssetSymbol(item.symbol)}`
-                  }) }}</div>
+                <div class="history-item-title p4">
+                  {{ `${item.amount} ${formatAssetSymbol(item.symbol)}` }}
+                  <i :class="`s-icon--network s-icon-${isOutgoingType(item.type) ? 'sora' : 'eth'}`" />
+                  <span class="history-item-title-separator">{{ t('bridgeTransaction.for') }}</span>
+                  {{ `${item.amount} ${formatAssetSymbol(item.symbol)}` }}
+                  <i :class="`s-icon--network s-icon-${!isOutgoingType(item.type) ? 'sora' : 'eth'}`" />
+                </div>
                 <div class="history-item-date">{{ formatDate(item) }}</div>
               </div>
               <div :class="historyStatusIconClasses(item.type, item.transactionState)" />
@@ -322,6 +325,15 @@ $history-item-top-border-height: 1px;
   }
   &-title {
     line-height: var(--s-line-height-big);
+    .s-icon {
+      &-sora, &-eth {
+        position: relative;
+        top: 1px;
+      }
+    }
+    &-separator {
+      font-weight: normal;
+    }
   }
   &-date {
     color: var(--s-color-base-content-secondary);
