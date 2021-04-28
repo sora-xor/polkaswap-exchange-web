@@ -39,6 +39,7 @@ interface SwapState {
   pairLiquiditySources: Array<LiquiditySourceTypes>;
   networkFee: CodecString;
   isAvailable: boolean;
+  isAvailableChecking: boolean;
   rewards: Array<LPRewardsInfo>;
 }
 
@@ -53,6 +54,7 @@ function initialState (): SwapState {
     liquidityProviderFee: '',
     networkFee: '',
     isAvailable: false,
+    isAvailableChecking: false,
     pairLiquiditySources: [],
     rewards: []
   }
@@ -98,6 +100,9 @@ const getters = {
   },
   isAvailable (state: SwapState) {
     return state.isAvailable
+  },
+  isAvailableChecking (state: SwapState) {
+    return state.isAvailableChecking
   }
 }
 
@@ -138,12 +143,15 @@ const mutations = {
   },
   [types.CHECK_AVAILABILITY_REQUEST] (state: SwapState) {
     state.isAvailable = false
+    state.isAvailableChecking = true
   },
   [types.CHECK_AVAILABILITY_SUCCESS] (state: SwapState, isAvailable: boolean) {
     state.isAvailable = isAvailable
+    state.isAvailableChecking = false
   },
   [types.CHECK_AVAILABILITY_FAILURE] (state: SwapState) {
     state.isAvailable = false
+    state.isAvailableChecking = false
   },
   [types.SET_PAIR_LIQUIDITY_SOURCES] (state: SwapState, liquiditySources: Array<LiquiditySourceTypes>) {
     state.pairLiquiditySources = [...liquiditySources]
