@@ -10,7 +10,7 @@
       <p class="gradient trading">{{ t('about.trading.title') }}</p>
       <p class="text" style="margin-top:15px;">{{ t('about.trading.first') }}</p>
       <img src="@/assets/about/about02-1.png" draggable="false" class="unselectable bubble-icon">
-      <p class="text">{{ t('about.trading.first') }}</p>
+      <p class="text">{{ t('about.trading.second') }}</p>
       <img src="@/assets/about/about02-2.png" draggable="false" class="unselectable bubble-icon">
       <p class="text">{{ t('about.trading.third') }}
         <a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_(original_%22BSD_License%22)" title="BSD 4-clause license" class="text">BSD 4-clause license</a></p>
