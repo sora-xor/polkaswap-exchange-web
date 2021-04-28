@@ -39,8 +39,8 @@
             >
               <div class="history-item-info">
                 <div class="history-item-title p4">{{ t('bridgeTransaction.details', {
-                    from: `${item.amount} ${formatAssetSymbol(item.symbol, !isOutgoingType(item.type))}`,
-                    to: `${item.amount} ${formatAssetSymbol(item.symbol, isOutgoingType(item.type))}`
+                    from: `${item.amount} ${formatAssetSymbol(item.symbol)}`,
+                    to: `${item.amount} ${formatAssetSymbol(item.symbol)}`
                   }) }}</div>
                 <div class="history-item-date">{{ formatDate(item) }}</div>
               </div>
@@ -143,7 +143,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
         `${item.assetAddress}`.toLowerCase().includes(query) ||
         `${this.registeredAssets.find(asset => asset.address === item.assetAddress)?.externalAddress}`.toLowerCase().includes(query) ||
         `${formatAssetSymbol(item.symbol)}`.toLowerCase().includes(query) ||
-        `${formatAssetSymbol(item.symbol, true)}`.toLowerCase().includes(query)
+        `${formatAssetSymbol(item.symbol)}`.toLowerCase().includes(query)
       )
     }
 

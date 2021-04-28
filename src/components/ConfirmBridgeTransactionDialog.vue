@@ -16,7 +16,7 @@
         <span class="token-value">{{ formattedAmount }}</span>
         <div v-if="asset" class="token token-ethereum">
           <token-logo :token="asset" />
-          {{ formatAssetSymbol(asset.symbol, true) }}
+          {{ formatAssetSymbol(asset.symbol) }}
         </div>
       </div>
     </div>

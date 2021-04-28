@@ -56,7 +56,7 @@
               </s-button>
               <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectAssetDialog">
                 <token-logo :token="asset" size="small" />
-                {{ formatAssetSymbol(assetSymbol, !isSoraToEthereum) }}
+                {{ formatAssetSymbol(assetSymbol) }}
               </s-button>
             </div>
             <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" :disabled="!areNetworksConnected" @click="openSelectAssetDialog">
@@ -102,7 +102,7 @@
             <div v-if="areNetworksConnected && isAssetSelected" class="asset">
               <s-button class="el-button--choose-token el-button--disabled" type="tertiary" size="small" border-radius="medium">
                 <token-logo :token="asset" size="small" />
-                {{ formatAssetSymbol(assetSymbol, isSoraToEthereum) }}
+                {{ formatAssetSymbol(assetSymbol) }}
               </s-button>
             </div>
           </div>
@@ -140,7 +140,7 @@
             {{ t('buttons.enterAmount') }}
           </template>
           <template v-else-if="isInsufficientBalance">
-            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : formatAssetSymbol(assetSymbol, !isSoraToEthereum) }) }}
+            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : formatAssetSymbol(assetSymbol) }) }}
           </template>
           <template v-else-if="isInsufficientXorForFee">
             {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : KnownSymbols.XOR }) }}

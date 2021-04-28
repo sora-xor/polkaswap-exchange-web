@@ -124,7 +124,7 @@ export async function delay (ms = 50): Promise<void> {
   await new Promise(resolve => setTimeout(resolve, ms))
 }
 
-export const formatAssetSymbol = (assetSymbol: string | undefined | null, isEthereumSymbol?: boolean): string => {
+export const formatAssetSymbol = (assetSymbol: string | undefined | null): string => {
   return assetSymbol ?? ''
 }
 

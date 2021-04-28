@@ -51,7 +51,7 @@
             <info-line
               :label="t('bridgeTransaction.networkInfo.amount')"
               :value="`-${amount}`"
-              :asset-symbol="formatAssetSymbol(assetSymbol, !isSoraToEthereum)"
+              :asset-symbol="formatAssetSymbol(assetSymbol)"
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
@@ -107,7 +107,7 @@
             <info-line
               :label="t('bridgeTransaction.networkInfo.amount')"
               :value="`${amount}`"
-              :asset-symbol="formatAssetSymbol(assetSymbol, isSoraToEthereum)"
+              :asset-symbol="formatAssetSymbol(assetSymbol)"
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
@@ -305,8 +305,8 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   get transactionDetails (): string {
     // TODO: Check asset for null value
     return this.t('bridgeTransaction.details', {
-      from: `${this.amount} ${formatAssetSymbol(this.assetSymbol, !this.isSoraToEthereum)}`,
-      to: `${this.amount} ${formatAssetSymbol(this.assetSymbol, this.isSoraToEthereum)}`
+      from: `${this.amount} ${formatAssetSymbol(this.assetSymbol)}`,
+      to: `${this.amount} ${formatAssetSymbol(this.assetSymbol)}`
     })
   }
 
