@@ -56,6 +56,9 @@ const getters = {
   },
   liquiditySource (state) {
     return LiquiditySourceForMarketAlgorithm[state.marketAlgorithm]
+  },
+  marketAlgorithm (state) {
+    return state.marketAlgorithm
   }
 }
 
