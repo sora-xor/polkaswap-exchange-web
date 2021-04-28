@@ -8,6 +8,37 @@ import web3Util, { Provider } from '@/utils/web3-util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 
+const getProviderName = provider => {
+  switch (provider) {
+    case Provider.Metamask:
+      return 'provider.metamask'
+    default:
+      return 'provider.default'
+  }
+}
+
+const handleProviderError = (provider: Provider, error: any): string => {
+  switch (provider) {
+    case Provider.Metamask:
+      return handleMetamaskError(error)
+    default:
+      return 'provider.messages.checkExtension'
+  }
+}
+
+const handleMetamaskError = (error: any): string => {
+  switch (error.code) {
+    // 4001: User rejected the request
+    // -32002: Already processing eth_requestAccounts. Please wait
+    // -32002: Request of type 'wallet_requestPermissions' already pending for origin. Please wait
+    case -32002:
+    case 4001:
+      return 'provider.messages.extensionLogin'
+    default:
+      return 'provider.messages.checkExtension'
+  }
+}
+
 @Component
 export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @State(state => state.web3.ethAddress) ethAddress!: string
@@ -35,15 +66,21 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
 
   async connectExternalWallet (): Promise<void> {
     // For now it's only Metamask
+    const provider = Provider.Metamask
+
     if (this.isExternalWalletConnecting) {
       return
     }
     this.isExternalWalletConnecting = true
     try {
-      await this.connectExternalAccount({ provider: Provider.Metamask })
+      await this.connectExternalAccount({ provider })
     } catch (error) {
-      const provider = this.t(error.message)
-      this.$alert(this.t('walletProviderConnectionError', { provider }))
+      const name = this.t(getProviderName(provider))
+      const message = this.te(error.message)
+        ? error.message
+        : handleProviderError(provider, error)
+
+      this.$alert(this.t(message, { name }))
     } finally {
       this.isExternalWalletConnecting = false
     }

@@ -91,7 +91,12 @@
     <s-button v-if="!isLoggedIn" type="primary" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
-    <s-button v-else type="primary" :disabled="!areTokensSelected || !isAvailable || hasZeroAmount || isInsufficientLiquidity || isInsufficientAmount || isInsufficientBalance || isInsufficientXorForFee" @click="handleConfirmSwap">
+    <s-button
+      v-else
+      type="primary"
+      :disabled="!areTokensSelected || !isAvailable || hasZeroAmount || isInsufficientLiquidity || isInsufficientAmount || isInsufficientBalance || isInsufficientXorForFee" @click="handleConfirmSwap"
+      :loading="isRecountingProcess || isAvailableChecking"
+    >
       <template v-if="!areTokensSelected">
         {{ t('buttons.chooseTokens') }}
       </template>
@@ -163,6 +168,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Getter('networkFee', { namespace }) networkFee!: CodecString
   @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString
   @Getter('isAvailable', { namespace }) isAvailable!: boolean
+  @Getter('isAvailableChecking', { namespace }) isAvailableChecking!: boolean
 
   @Action('setTokenFromAddress', { namespace }) setTokenFromAddress!: (address?: string) => Promise<void>
   @Action('setTokenToAddress', { namespace }) setTokenToAddress!: (address?: string) => Promise<void>
@@ -201,6 +207,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Watch('isLoggedIn')
   private handleLoggedInStateChange (isLoggedIn: boolean, wasLoggedIn: boolean): void {
     if (!wasLoggedIn && isLoggedIn) {
+      this.getNetworkFee()
       this.recountSwapValues()
     }
   }
@@ -278,10 +285,12 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
         await this.setTokenToAddress()
       }
       if (this.areTokensSelected) {
-        await this.getNetworkFee()
         await this.checkSwap()
       }
-      await this.updatePairLiquiditySources()
+      await Promise.all([
+        this.updatePairLiquiditySources(),
+        this.getNetworkFee()
+      ])
     })
   }
 
@@ -353,7 +362,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     const value = this.isExchangeB ? this.toValue : this.fromValue
     const setOppositeValue = this.isExchangeB ? this.setFromValue : this.setToValue
     const resetOppositeValue = this.isExchangeB ? this.resetFieldFrom : this.resetFieldTo
-    const token = this.isExchangeB ? this.tokenTo : this.tokenFrom
+    const oppositeToken = this.isExchangeB ? this.tokenFrom : this.tokenTo
 
     if (!this.areTokensSelected || asZeroValue(value)) return
 
@@ -363,16 +372,17 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
       const { amount, fee, rewards } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, this.isExchangeB, this.liquiditySource)
 
-      setOppositeValue(this.getStringFromCodec(amount, token.decimals))
+      setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals))
       this.setLiquidityProviderFee(fee)
       this.setRewards(rewards)
 
-      await this.calcMinMaxRecieved()
-      await this.updatePrices()
-      await this.getNetworkFee()
+      await Promise.all([
+        this.calcMinMaxRecieved(),
+        this.updatePrices()
+      ])
     } catch (error) {
       resetOppositeValue()
-      if (!this.isInsufficientAmountError(token.symbol as string, error.message)) {
+      if (!this.isInsufficientAmountError(oppositeToken.symbol as string, error.message)) {
         throw error
       }
     } finally {
@@ -444,8 +454,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   async handleMaxValue (): Promise<void> {
     this.setExchangeB(false)
 
-    await this.getNetworkFee()
-
     const max = getMaxValue(this.tokenFrom, this.networkFee)
 
     this.handleInputFieldFrom(max)
@@ -470,8 +478,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       } else {
         await this.setTokenToAddress(token.address)
       }
-      await this.checkSwap()
-      await this.updatePairLiquiditySources()
+      await Promise.all([
+        this.checkSwap(),
+        this.updatePairLiquiditySources()
+      ])
       await this.recountSwapValues()
     }
   }
