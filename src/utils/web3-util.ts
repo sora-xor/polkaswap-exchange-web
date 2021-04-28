@@ -146,7 +146,7 @@ async function onConnect (options: ConnectOptions): Promise<string> {
 async function onConnectMetamask (): Promise<string> {
   provider = await detectEthereumProvider() as any
   if (!provider) {
-    throw new Error('providers.metamask')
+    throw new Error('provider.messages.installExtension')
   }
   const web3Instance = await getInstance()
   const accounts = await web3Instance.eth.requestAccounts()
