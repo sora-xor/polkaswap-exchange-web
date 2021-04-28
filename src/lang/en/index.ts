@@ -155,7 +155,7 @@ export default {
       title: 'Faster Trading',
       first: 'Polkaswap is a non-custodial, cross-chain AMM DEX protocol for swapping tokens based on Polkadot and Kusama relay chains, Polkadot and Kusama parachains, and blockchains directly connected via bridges.',
       second: 'Polkaswap removes trusted intermediaries and provides the opportunity for faster trading',
-      third: 'Polkaswap is a community project and devs collaborate on the open source code using the '
+      third: 'Polkaswap is a community project and devs collaborate on the open source code using the'
     },
     liquidity: {
       title: 'Boundless Liquidity',
@@ -424,7 +424,7 @@ export default {
     },
     transactions: {
       confimation: 'Confirm {order} of {total} transactions...',
-      success: 'Your will receive your rewards shortly',
+      success: 'You will receive your rewards shortly',
       failed: '{order} of {total} transactions failed. @:retryText'
     },
     hint: {
