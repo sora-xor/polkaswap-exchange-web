@@ -33,6 +33,7 @@ $badge-label-color: #53565A;
 
   &__label {
     color: $badge-label-color;
+    margin-right: $inner-spacing-mini / 2;
   }
 
   &__value {
