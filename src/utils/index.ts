@@ -124,22 +124,8 @@ export async function delay (ms = 50): Promise<void> {
   await new Promise(resolve => setTimeout(resolve, ms))
 }
 
-export const formatAssetSymbol = (assetSymbol: string | undefined | null, isEthereumSymbol?: boolean): string => {
-  if (!assetSymbol) {
-    return ''
-  }
-
-  if (isEthereumSymbol) {
-    return 'e' + assetSymbol
-  }
-
-  for (const symbol in KnownSymbols) {
-    if (KnownSymbols[symbol] === assetSymbol) {
-      return KnownSymbols[symbol]
-    }
-  }
-
-  return 's' + assetSymbol
+export const formatAssetSymbol = (assetSymbol: string | undefined | null): string => {
+  return assetSymbol ?? ''
 }
 
 export const formatDateItem = (date: number): number | string => {

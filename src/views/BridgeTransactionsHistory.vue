@@ -38,10 +38,13 @@
               @click="showHistory(item.id)"
             >
               <div class="history-item-info">
-                <div class="history-item-title p4">{{ t('bridgeTransaction.details', {
-                    from: `${item.amount} ${formatAssetSymbol(item.symbol, !isOutgoingType(item.type))}`,
-                    to: `${item.amount} ${formatAssetSymbol(item.symbol, isOutgoingType(item.type))}`
-                  }) }}</div>
+                <div class="history-item-title p4">
+                  {{ `${item.amount} ${formatAssetSymbol(item.symbol)}` }}
+                  <i :class="`s-icon--network s-icon-${isOutgoingType(item.type) ? 'sora' : 'eth'}`" />
+                  <span class="history-item-title-separator">{{ t('bridgeTransaction.for') }}</span>
+                  {{ `${item.amount} ${formatAssetSymbol(item.symbol)}` }}
+                  <i :class="`s-icon--network s-icon-${!isOutgoingType(item.type) ? 'sora' : 'eth'}`" />
+                </div>
                 <div class="history-item-date">{{ formatDate(item) }}</div>
               </div>
               <div :class="historyStatusIconClasses(item.type, item.transactionState)" />
@@ -143,7 +146,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
         `${item.assetAddress}`.toLowerCase().includes(query) ||
         `${this.registeredAssets.find(asset => asset.address === item.assetAddress)?.externalAddress}`.toLowerCase().includes(query) ||
         `${formatAssetSymbol(item.symbol)}`.toLowerCase().includes(query) ||
-        `${formatAssetSymbol(item.symbol, true)}`.toLowerCase().includes(query)
+        `${formatAssetSymbol(item.symbol)}`.toLowerCase().includes(query)
       )
     }
 
@@ -322,6 +325,15 @@ $history-item-top-border-height: 1px;
   }
   &-title {
     line-height: var(--s-line-height-big);
+    .s-icon {
+      &-sora, &-eth {
+        position: relative;
+        top: 1px;
+      }
+    }
+    &-separator {
+      font-weight: normal;
+    }
   }
   &-date {
     color: var(--s-color-base-content-secondary);

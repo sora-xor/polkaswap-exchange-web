@@ -27,6 +27,7 @@ const types = flow(
 
 interface RewardsState {
   fee: CodecString;
+  feeFetching: boolean;
   rewards: Array<RewardInfo>;
   rewardsFetching: boolean;
   rewardsClaiming: boolean;
@@ -40,6 +41,7 @@ interface RewardsState {
 function initialState (): RewardsState {
   return {
     fee: '',
+    feeFetching: false,
     rewards: [],
     rewardsFetching: false,
     rewardsClaiming: false,
@@ -146,11 +148,16 @@ const mutations = {
     state.rewardsFetching = false
   },
 
-  [types.GET_FEE_REQUEST] (state: RewardsState) {},
+  [types.GET_FEE_REQUEST] (state: RewardsState) {
+    state.feeFetching = true
+  },
   [types.GET_FEE_SUCCESS] (state: RewardsState, fee: CodecString) {
     state.fee = fee
+    state.feeFetching = false
   },
-  [types.GET_FEE_FAILURE] (state: RewardsState) {}
+  [types.GET_FEE_FAILURE] (state: RewardsState) {
+    state.feeFetching = false
+  }
 }
 
 const actions = {

@@ -14,16 +14,17 @@ export default {
   changeAccountText: 'Change account',
   connectedText: 'Connected',
   connectWalletTextTooltip: 'Connect to @:soraText Network with polkadot{.js}',
-  walletProviderConnectionError: '{provider} is not found. Please install it!',
   bridgeText: 'Bridge',
   comingSoonText: 'Coming Soon',
-  disclaimer: 'Disclaimer: This website is maintained by the @:soraText community. Before continuing to use this website, please review the Polkaswap FAQ and documentation, which includes a detailed explanation on how Polkaswap works, as well as the Polkaswap Memorandum and Terms of Services, and Privacy Policy. These documents are crucial to a secure and positive user experience. By using Polkaswap, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of Polkaswap in your legal jurisdiction; 2) your understanding that the current version of Polkaswap is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using Polkaswap, including, but not limited to, the risk of losing tokens. Once more, please do not continue without reading the FAQ, Polkaswap Memorandum and Terms of Services, and Privacy Policy!',
+  disclaimer: 'Disclaimer: This website is maintained by the @:soraText community. Before continuing to use this website, please review the @:polkaswapFaqLink and documentation, which includes a detailed explanation on how Polkaswap works, as well as the Polkaswap Memorandum and Terms of Services, and Privacy Policy. These documents are crucial to a secure and positive user experience. By using Polkaswap, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of Polkaswap in your legal jurisdiction; 2) your understanding that the current version of Polkaswap is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using Polkaswap, including, but not limited to, the risk of losing tokens. Once more, please do not continue without reading the FAQ, Polkaswap Memorandum and Terms of Services, and Privacy Policy!',
+  polkaswapFaqLink: '<a class="link" href="https://wiki.sora.org/polkaswap/polkaswap-faq" target="_blank" rel="nofollow noopener" title="Polkaswap FAQ">Polkaswap FAQ</a>',
   poweredBy: 'Powered by',
   confirmText: 'Confirm',
   confirmTransactionText: 'Confirm transaction in {direction}',
   retryText: 'Retry',
   networkFeeText: 'Network Fee',
   networkFeeTooltipText: 'Network fee is used to ensure @:soraText system\'s growth and stable performance.',
+  marketText: 'Market',
   marketAlgorithmText: 'Market algorithm',
   insufficientBalanceText: 'Insufficient {tokenSymbol} balance',
   firstPerSecond: '{first} per {second}',
@@ -72,8 +73,8 @@ export default {
     title: 'Help',
     termsOfService: 'Terms of Service',
     privacyPolicy: 'Privacy Policy',
-    termsOfServiceLink: 'https://polkaswap.io/terms',
-    privacyPolicyLink: 'https://polkaswap.io/privacy',
+    termsOfServiceLink: 'https://www.notion.so/Polkaswap-Memorandum-and-Terms-of-Services-dc7f815a6d0a497a924832cc9bda17b8', // 'https://polkaswap.io/terms',
+    privacyPolicyLink: 'https://www.notion.so/Polkaswap-Privacy-Policy-d0f26456f2974f0d94734b19f6e5fc70', // 'https://polkaswap.io/privacy',
     appVersion: '@:appName version',
     contactUs: 'Contact us'
   },
@@ -132,7 +133,7 @@ export default {
     title: 'Page not found',
     body: '404'
   },
-  metamask: 'Metamask',
+  metamask: 'MetaMask',
   sora: {
     [NetworkTypes.Devnet]: '@:soraText Devnet',
     [NetworkTypes.Testnet]: '@:soraText Testnet',
@@ -145,9 +146,6 @@ export default {
     [EthNetwork.Kovan]: 'Ethereum Kovan',
     [EthNetwork.Goerli]: 'Ethereum Goerli'
   },
-  providers: {
-    metamask: '@:metamask'
-  },
   about: {
     title: 'The DEX for the Interoperable Future.',
     description: 'Cross-chain exchange of assets, simple creation and listing of new assets, and the easiest swaps ever. The interoperable future of Polkadot is here and we are at the forefront!',
@@ -155,7 +153,7 @@ export default {
       title: 'Faster Trading',
       first: 'Polkaswap is a non-custodial, cross-chain AMM DEX protocol for swapping tokens based on Polkadot and Kusama relay chains, Polkadot and Kusama parachains, and blockchains directly connected via bridges.',
       second: 'Polkaswap removes trusted intermediaries and provides the opportunity for faster trading',
-      third: 'Polkaswap is a community project and devs collaborate on the open source code using the '
+      third: 'Polkaswap is a community project and devs collaborate on the open source code using the'
     },
     liquidity: {
       title: 'Boundless Liquidity',
@@ -282,6 +280,7 @@ export default {
   bridgeTransaction: {
     viewHistory: 'View transaction in transactions history',
     details: '{from} for {to}',
+    for: ' for ',
     steps: {
       step: '{step} of 2',
       step1: '1st',
@@ -424,7 +423,7 @@ export default {
     },
     transactions: {
       confimation: 'Confirm {order} of {total} transactions...',
-      success: 'Your will receive your rewards shortly',
+      success: 'You will receive your rewards shortly',
       failed: '{order} of {total} transactions failed. @:retryText'
     },
     hint: {
@@ -444,6 +443,15 @@ export default {
     },
     notification: {
       empty: 'No available claims for this account'
+    }
+  },
+  provider: {
+    default: '@:ethereumText provider',
+    metamask: '@:metamask',
+    messages: {
+      checkExtension: '{name} extension is busy, please check it',
+      extensionLogin: 'Please login to your {name} extension',
+      installExtension: '{name} extension is not found. Please install it!'
     }
   }
 }

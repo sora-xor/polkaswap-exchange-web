@@ -9,6 +9,30 @@ $font-weight-600: "wght" 600;
 $font-weight-700: "wght" 700;
 $font-weight-800: "wght" 800;
 
+/* Networks Icons */
+$s-icon-sora: "\0041";
+$s-icon-eth: "\0044";
+.s-icon-sora {
+  &.s-icon--network {
+    &, &:hover {
+      color: #E3232C !important;
+    }
+  }
+  &:before {
+    content: $s-icon-sora;
+  }
+}
+.s-icon-eth {
+  &.s-icon--network {
+    &, &:hover {
+      color: #627EEA !important;
+    }
+  }
+  &:before {
+    content: $s-icon-eth;
+  }
+}
+
 /*________________________________________ICONS________________________________________*/
 @font-face {
   font-family: "soramitsu-icons";
@@ -238,6 +262,7 @@ button.el-button--settings {
   background-color: var(--s-color-utility-surface) !important;
   box-shadow: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1);
   transition: all 0.125s ease-in-out;
+  border: none;
 }
 button.el-dialog__headerbtn:hover,
 div.page-header--center button.s-action.s-i-position-left:hover,

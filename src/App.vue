@@ -113,8 +113,7 @@
       <div class="app-body">
         <div class="app-content">
           <router-view :parent-loading="loading" />
-          <p v-if="isAboutPage" class="app-disclaimer about-disclaimer">{{ t('disclaimer') }}</p>
-          <p v-else class="app-disclaimer">{{ t('disclaimer') }}</p>
+          <p class="app-disclaimer" :class="isAboutPage ? 'about-disclaimer' : ''" v-html="t('disclaimer')" />
         </div>
         <footer v-if="isAboutPage" class="app-footer about-footer">
           <div class="sora-logo">
@@ -439,6 +438,9 @@ html {
   .el-loading-mask {
     border-radius: var(--s-border-radius-medium);
   }
+}
+.app-disclaimer > .link {
+  color: var(--s-color-base-content-primary);
 }
 </style>
 
