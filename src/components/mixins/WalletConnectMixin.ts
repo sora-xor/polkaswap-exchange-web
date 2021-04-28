@@ -17,8 +17,7 @@ const getProviderName = provider => {
   }
 }
 
-const handleProviderError = (provider, error): string => {
-  console.error(error)
+const handleProviderError = (provider: Provider, error: any): string => {
   switch (provider) {
     case Provider.Metamask:
       return handleMetamaskError(error)
@@ -27,7 +26,7 @@ const handleProviderError = (provider, error): string => {
   }
 }
 
-const handleMetamaskError = (error): string => {
+const handleMetamaskError = (error: any): string => {
   switch (error.code) {
     // 4001: User rejected the request
     // -32002: Already processing eth_requestAccounts. Please wait
