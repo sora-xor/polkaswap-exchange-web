@@ -13,7 +13,7 @@
       <p class="text">{{ t('about.trading.second') }}</p>
       <img src="@/assets/about/about02-2.png" draggable="false" class="unselectable bubble-icon">
       <p class="text">{{ t('about.trading.third') }}
-        <a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_(original_%22BSD_License%22)" title="BSD 4-clause license" class="text">BSD 4-clause license</a></p>
+        <a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_(original_%22BSD_License%22)" title="BSD 4-clause license" class="text" target="_blank" rel="nofollow noopener">BSD 4-clause license</a></p>
       <img src="@/assets/about/about03x.png" draggable="false" class="unselectable" style="width:75%;height:auto;margin-top:120px;">
       <p class="gradient liquidity">{{ t('about.liquidity.title') }}</p>
       <p class="text" style="margin-top:15px;">{{ t('about.liquidity.first') }}</p>
@@ -37,7 +37,7 @@
       <p class="text" style="margin-bottom:120px;">{{ t('about.pswap.second') }}</p>
 
       <div class="about-video" style="margin-bottom:120px;">
-        <a href="http://sora.org/pswap-soft-launch-video" target="_blank" style="text-align: center;">
+        <a href="http://sora.org/pswap-soft-launch-video" target="_blank" rel="nofollow noopener" style="text-align: center;">
           <img src="@/assets/about/about06.png" draggable="false" class="unselectable preview">
         </a>
         <img src="@/assets/about/about06-shadow-1.png" draggable="false" class="unselectable about-video-shadow-1">
@@ -47,13 +47,13 @@
           <img src="@/assets/about/about07-1.png" draggable="false" class="unselectable icon">
           <span class="title">{{ t('about.links.first.title') }}<img src="@/assets/about/about07-3.png" class="link"></span>
           <p class="text">{{ t('about.links.first.desc') }}</p>
-          <a class="link-mask" href="https://sora.org/validator" target="_blank" />
+          <a class="link-mask" href="https://sora.org/validator" target="_blank" rel="nofollow noopener" />
         </div>
         <div class="about-links-part" style="text-align:left;">
           <img src="@/assets/about/about07-2.png" draggable="false" class="unselectable icon">
           <span class="title">{{ t('about.links.second.title') }}<img src="@/assets/about/about07-3.png" class="link"></span>
           <p class="text">{{ t('about.links.second.desc') }}</p>
-          <a class="link-mask" href="https://sora.org" target="_blank" />
+          <a class="link-mask" href="https://sora.org" target="_blank" rel="nofollow noopener" />
         </div>
         <img src="@/assets/about/about07-shadow-1.png" draggable="false" class="unselectable about-links-shadow-1">
       </div>
@@ -67,29 +67,29 @@
       <div class="hr" />
       <div class="info-block">
         <div class="social-links">
-          <a href="https://twitter.com/polkaswap" title="Twitter" target="_blank">
+          <a href="https://twitter.com/polkaswap" title="Twitter" target="_blank" rel="nofollow noopener">
             <img src="@/assets/img/social/twitter.svg" class="link" />
           </a>
-          <a href="https://t.me/polkaswap" title="Telegram" target="_blank">
+          <a href="https://t.me/polkaswap" title="Telegram" target="_blank" rel="nofollow noopener">
             <img src="@/assets/img/social/telegram.svg" class="link" />
           </a>
-          <a href="https://medium.com/@polkaswap" title="Medium" target="_blank">
+          <a href="https://medium.com/@polkaswap" title="Medium" target="_blank" rel="nofollow noopener">
             <img src="@/assets/img/social/medium.svg" class="link" />
           </a>
-          <a href="https://reddit.com/r/polkaswap" title="Reddit" target="_blank">
+          <a href="https://reddit.com/r/polkaswap" title="Reddit" target="_blank" rel="nofollow noopener">
             <img src="@/assets/img/social/reddit.svg" class="link" />
           </a>
-          <a href="https://github.com/sora-xor" title="Github" target="_blank">
+          <a href="https://github.com/sora-xor" title="Github" target="_blank" rel="nofollow noopener">
             <img src="@/assets/img/social/github.svg" class="link" />
           </a>
-          <a href="https://sora.org" title="Sora" target="_blank">
+          <a href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener">
             <img src="@/assets/img/social/sora.svg" class="link" />
           </a>
         </div>
         <div class="info-links">
-          <a :href="t('helpDialog.termsOfServiceLink')" :title="t('footerMenu.memorandum')" target="_blank" class="text link">{{ t('footerMenu.memorandum') }}</a>
+          <a :href="t('helpDialog.termsOfServiceLink')" :title="t('footerMenu.memorandum')" target="_blank" rel="nofollow noopener" class="text link">{{ t('footerMenu.memorandum') }}</a>
           <span class="divider">|</span>
-          <a :href="t('helpDialog.privacyPolicyLink')" :title="t('footerMenu.privacy')" target="_blank" class="text link">{{ t('footerMenu.privacy') }}</a>
+          <a :href="t('helpDialog.privacyPolicyLink')" :title="t('footerMenu.privacy')" target="_blank" rel="nofollow noopener" class="text link">{{ t('footerMenu.privacy') }}</a>
         </div>
       </div>
     </footer>
