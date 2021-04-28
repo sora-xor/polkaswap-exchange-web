@@ -7,7 +7,7 @@
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedAmount }}</span>
         <div v-if="asset" class="token">
-          <i :class="`s-icon--network s-icon-${isSoraToEthereum ? 'sora' : 'eth'}`" />
+          <i class="s-icon--network s-icon-sora" />
           {{ formatAssetSymbol(asset.symbol) }}
         </div>
       </div>
@@ -15,7 +15,7 @@
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedAmount }}</span>
         <div v-if="asset" class="token token-ethereum">
-          <i :class="`s-icon--network s-icon-${!isSoraToEthereum ? 'sora' : 'eth'}`" />
+          <i class="s-icon--network s-icon-eth" />
           {{ formatAssetSymbol(asset.symbol) }}
         </div>
       </div>
