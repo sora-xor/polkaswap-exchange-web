@@ -15,7 +15,7 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
   @Prop({ type: Object, default: () => null }) readonly token!: AccountAsset | Asset
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
 
-  registeredAsset = RegisteredAssets
+  registeredAssets = RegisteredAssets
 
   get tokenClasses (): string {
     const tokenLogoClass = 'token-logo'
@@ -35,7 +35,7 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
   }
 
   get tokenStyles (): any {
-    const asset = this.registeredAsset[this.token.address]
+    const asset = this.registeredAssets[this.token.address]
     if (asset) {
       return {
         'background-size': '100%',
