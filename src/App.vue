@@ -634,7 +634,7 @@ $disclaimer-letter-spacing: -0.03em;
   margin-left: auto;
 
   & > *:not(:last-child) {
-    margin-right: $inner-spacing-mini
+    margin-right: $inner-spacing-mini;
   }
 
   .wallet-section {

@@ -1,3 +1,5 @@
+import axios from '@/api'
+
 export const getRpcEndpoint = (wsEndpoint: string): string => {
   return wsEndpoint.replace(/^wss:\/\/ws/, 'https://rpc')
 }
@@ -12,20 +14,12 @@ export async function fetchRpc (url: string, method: string, params?: any): Prom
   if (!method) return logError(fetchRpc.name, 'method')
 
   try {
-    const response = await (window as any).fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        id: 1,
-        jsonrpc: '2.0',
-        method,
-        params
-      })
+    const { data } = await axios.post(url, {
+      id: 1,
+      jsonrpc: '2.0',
+      method,
+      params
     })
-
-    const data = await response.json()
 
     return data.result
   } catch (error) {
