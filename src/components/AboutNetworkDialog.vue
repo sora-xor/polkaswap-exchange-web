@@ -7,10 +7,7 @@
     <div v-for="({ title, description, link }, index) in aboutBlocks" :key="index" class="about-network-block">
       <h4>{{ title }}</h4>
       <p class="p4">{{ description }}</p>
-      <a class="about-network-link p4" :href="link" target="_blank" rel="nofollow noopener">
-        <span>{{ t('aboutNetworkDialog.learnMore') }}</span>
-        <s-icon class="about-network-link-icon" name="external-link-16" />
-      </a>
+      <external-link :title="t('aboutNetworkDialog.learnMore')" :href="link" />
     </div>
   </dialog-base>
 </template>
@@ -22,11 +19,13 @@ import TranslationMixin from './mixins/TranslationMixin'
 import DialogMixin from './mixins/DialogMixin'
 import DialogBase from './DialogBase.vue'
 
-import { Links } from '@/consts'
+import { Components, Links } from '@/consts'
+import { lazyComponent } from '@/router'
 
 @Component({
   components: {
-    DialogBase
+    DialogBase,
+    ExternalLink: lazyComponent(Components.ExternalLink)
   }
 })
 export default class AboutNetworkDialog extends Mixins(TranslationMixin, DialogMixin) {
