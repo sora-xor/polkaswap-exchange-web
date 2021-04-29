@@ -244,14 +244,6 @@ function removeEthUserAddress (): void {
   storage.remove('ethAddress')
 }
 
-function storeNetwork (network: string): void {
-  storage.set('evmNetwork', network)
-}
-
-function getNetworkFromStorage (): string {
-  return storage.get('evmNetwork') || ''
-}
-
 function storeNetworkType (network: string): void {
   storage.set('networkType', EvmNetworkTypeName[network] || network)
 }
@@ -331,8 +323,6 @@ export default {
   checkAccountIsConnected,
   storeEthUserAddress,
   getEthUserAddress,
-  storeNetwork,
-  getNetworkFromStorage,
   storeNetworkType,
   getNetworkType,
   getNetworkTypeFromStorage,

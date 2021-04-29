@@ -4,7 +4,7 @@ import flatMap from 'lodash/fp/flatMap'
 import concat from 'lodash/fp/concat'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
-import { FPNumber } from '@sora-substrate/util'
+import { api, FPNumber } from '@sora-substrate/util'
 
 import web3Util, { ABI, Contract, EvmNetworkTypeName, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
 import { ZeroStringValue } from '@/consts'
@@ -41,7 +41,7 @@ function initialState () {
     networkType: web3Util.getNetworkTypeFromStorage(),
     defaultNetworkType: '',
     subNetworks: [],
-    evmNetwork: web3Util.getNetworkFromStorage(),
+    evmNetwork: 0,
     contractAddress: {
       XOR: '',
       VAL: '',
@@ -234,15 +234,14 @@ const actions = {
     commit(types.SET_SUB_NETWORKS, subNetworks)
   },
 
-  async setEvmNetwork ({ commit, getters, dispatch }, network) {
-    const evmNetwork = network || web3Util.getNetworkFromStorage() || getters.subNetworks[0]?.name
-    web3Util.storeNetwork(evmNetwork)
-    await dispatch('setDefaultNetworkType', evmNetwork)
-    commit(types.SET_ENV_NETWORK, network)
+  async setEvmNetwork ({ commit, dispatch }, networkId) {
+    api.bridge.externalNetwork = networkId
+    await dispatch('setDefaultNetworkType', networkId)
+    commit(types.SET_ENV_NETWORK, networkId)
   },
 
-  async setDefaultNetworkType ({ commit, getters }, network) {
-    commit(types.SET_DEFAULT_NETWORK_TYPE, getters.subNetworks?.find(item => item.name === network)?.defaultType)
+  async setDefaultNetworkType ({ commit, getters }, networkId) {
+    commit(types.SET_DEFAULT_NETWORK_TYPE, getters.subNetworks?.find(item => item.id === networkId)?.defaultType)
   },
 
   async setNetworkType ({ commit }, network) {

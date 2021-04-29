@@ -190,6 +190,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
+import { api } from '@soramitsu/soraneo-wallet-web'
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
@@ -383,7 +384,7 @@ export default class Bridge extends Mixins(
   }
 
   async mounted (): Promise<void> {
-    await this.setEvmNetwork()
+    await this.setEvmNetwork(api.bridge.externalNetwork || this.subNetworks[0]?.id)
     await this.setNetworkType()
     await this.syncExternalAccountWithAppState()
     this.getEthBalance()
@@ -514,10 +515,8 @@ export default class Bridge extends Mixins(
     this.showSelectTokenDialog = true
   }
 
-  async selectNetwork (network: string): Promise<void> {
-    if (network) {
-      await this.setEvmNetwork(network)
-    }
+  async selectNetwork (network: number): Promise<void> {
+    await this.setEvmNetwork(network)
   }
 
   async selectAsset (selectedAsset: any): Promise<void> {

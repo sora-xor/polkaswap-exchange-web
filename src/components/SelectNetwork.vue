@@ -10,7 +10,7 @@
       v-model="selectedNetwork"
       v-for="network in subNetworks"
       :key="network.id"
-      :label="network.name"
+      :label="network.id"
       class="network"
       @change="selectNetwork"
     >
@@ -22,14 +22,14 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
+import { Getter } from 'vuex-class'
+import { api } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components, BridgeNetwork } from '@/consts'
 import { lazyComponent } from '@/router'
-import web3Util from '@/utils/web3-util'
 
 @Component({
   components: {
@@ -38,13 +38,12 @@ import web3Util from '@/utils/web3-util'
   }
 })
 export default class SelectNetwork extends Mixins(TranslationMixin, DialogMixin) {
-  selectedNetwork = ''
+  selectedNetwork = 0
 
   @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<BridgeNetwork>
-  @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: string
 
   created () {
-    this.selectedNetwork = this.evmNetwork || web3Util.getNetworkFromStorage()
+    this.selectedNetwork = api.bridge.externalNetwork || this.subNetworks[0]?.id
   }
 
   async selectNetwork (): Promise<void> {
