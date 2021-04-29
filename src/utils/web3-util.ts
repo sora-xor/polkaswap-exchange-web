@@ -265,10 +265,6 @@ async function getNetworkType (): Promise<string> {
   return networkType
 }
 
-function removeEthNetwork (): void {
-  storage.remove('networkType')
-}
-
 async function readSmartContract (contract: Contract, name: string): Promise<JsonContract | undefined> {
   try {
     const { data } = await axios.get(`/abi/${contract}/${name}`)
@@ -327,7 +323,6 @@ export default {
   getNetworkType,
   getNetworkTypeFromStorage,
   removeNetworkType,
-  removeEthNetwork,
   getInstance,
   removeEthUserAddress,
   watchEthereum,
