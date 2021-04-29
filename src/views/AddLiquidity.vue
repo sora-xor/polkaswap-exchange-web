@@ -186,6 +186,17 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField
 
+  @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity
+  @Action('destroyUpdateAccountLiquiditySubscription', { namespace: 'pool' }) destroyUpdateAccountLiquiditySubscription
+
+  async mounted (): Promise<void> {
+    await this.withApi(this.updateAccountLiquidity)
+  }
+
+  destroyed (): void {
+    this.destroyUpdateAccountLiquiditySubscription()
+  }
+
   get firstAddress (): string {
     return router.currentRoute.params.firstAddress
   }
