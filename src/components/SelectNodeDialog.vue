@@ -140,6 +140,10 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
 
     try {
       await this.setCurrentNode(node)
+
+      if (this.selectedNode.address === node.address && this.currentView === NodeInfoView) {
+        this.handleBack()
+      }
     } catch (error) {
       const key = error instanceof AppHandledError ? error.translationKey : 'node.errors.connection'
 
