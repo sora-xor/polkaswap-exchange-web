@@ -208,7 +208,6 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   @Action setSelectNodeDialogVisibility!: (flag: boolean) => void
   @Action('setEthereumSmartContracts', { namespace: 'web3' }) setEthereumSmartContracts
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks
-  @Action('setDefaultEthNetwork', { namespace: 'web3' }) setDefaultEthNetwork
 
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction (value): void {
@@ -221,8 +220,6 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
 
       await this.setSoraNetwork(data)
       await this.setDefaultNodes(data?.DEFAULT_NETWORKS)
-      // TODO: Remove ETH_NETWORK from config after BE part changes, right now it could break the Bridge
-      await this.setDefaultEthNetwork(data.ETH_NETWORK)
       await this.setSubNetworks(data.SUB_NETWORKS)
       await this.setEthereumSmartContracts(data.BRIDGE)
 

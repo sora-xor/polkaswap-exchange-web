@@ -1,7 +1,7 @@
 import { Operation, TransactionStatus, RewardingEvents } from '@sora-substrate/util'
 
 import { PageNames, Topics, NetworkTypes } from '@/consts'
-import { EthNetwork, EnergyNetwork } from '@/utils/web3-util'
+import { EvmNetworkType } from '@/utils/web3-util'
 
 export default {
   appName: 'Polkaswap',
@@ -171,15 +171,14 @@ export default {
     [NetworkTypes.Testnet]: '@:soraText Testnet',
     [NetworkTypes.Mainnet]: '@:soraText Mainnet'
   },
-  ethereum: {
-    [EthNetwork.Mainnet]: 'Ethereum Mainnet',
-    [EthNetwork.Ropsten]: 'Ethereum Ropsten',
-    [EthNetwork.Rinkeby]: 'Ethereum Rinkeby',
-    [EthNetwork.Kovan]: 'Ethereum Kovan',
-    [EthNetwork.Goerli]: 'Ethereum Goerli'
-  },
-  energyweb: {
-    [EnergyNetwork.Testnet]: 'Energy Web Chain'
+  evm: {
+    [EvmNetworkType.Mainnet]: 'Ethereum Mainnet',
+    [EvmNetworkType.Ropsten]: 'Ethereum Ropsten',
+    [EvmNetworkType.Rinkeby]: 'Ethereum Rinkeby',
+    [EvmNetworkType.Kovan]: 'Ethereum Kovan',
+    [EvmNetworkType.Goerli]: 'Ethereum Goerli',
+    [EvmNetworkType.Private]: 'Volta Testnet',
+    [EvmNetworkType.EWC]: 'Energy Web Chain'
   },
   providers: {
     metamask: '@:metamask'
@@ -284,7 +283,11 @@ export default {
     viewHistory: 'View transactions history',
     transactionSubmitted: 'Transaction submitted',
     transactionMessage: '{assetA} for {assetB}',
-    notRegisteredAsset: 'Asset {assetSymbol} is not registered'
+    notRegisteredAsset: 'Asset {assetSymbol} is not registered',
+    selectNetwork: 'Select network',
+    networkInfo: 'Bridge @:soraText Network with:',
+    ethereum: '@:ethereumText',
+    energy: '@:evm.EWC'
   },
   selectRegisteredAsset: {
     title: 'Select a token',

@@ -89,6 +89,7 @@ export enum Components {
   HelpDialog = 'HelpDialog',
   AboutNetworkDialog = 'AboutNetworkDialog',
   SidebarItemContent = 'SidebarItemContent',
+  SelectNetwork = 'SelectNetwork',
   SelectRegisteredAsset = 'SelectRegisteredAsset',
   ConfirmBridgeTransactionDialog = 'ConfirmBridgeTransactionDialog',
   BridgeTransaction = 'BridgeTransaction',
@@ -108,6 +109,16 @@ interface SidebarMenuItem {
 
 interface SidebarMenuItemLink extends SidebarMenuItem {
   href?: string;
+}
+
+export interface BridgeNetwork {
+  name: string;
+  id: 0 | 1;
+  symbol: string;
+  currency: string;
+  defaultType: string;
+  address: number;
+  CONTRACTS: any;
 }
 
 const MainMenu: Array<SidebarMenuItem> = [

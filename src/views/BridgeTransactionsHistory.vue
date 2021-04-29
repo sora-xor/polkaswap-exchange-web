@@ -110,7 +110,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Action('getNetworkFee', { namespace }) getNetworkFee
   @Action('getEthNetworkFee', { namespace }) getEthNetworkFee
   @Action('clearHistory', { namespace }) clearHistory
-  @Action('setSoraToEthereum', { namespace }) setSoraToEthereum
+  @Action('setSoraToEvm', { namespace }) setSoraToEvm
   @Action('setTransactionConfirm', { namespace }) setTransactionConfirm
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
@@ -207,7 +207,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
         return
       }
       await this.setTransactionConfirm(true)
-      await this.setSoraToEthereum(this.isOutgoingType(tx.type))
+      await this.setSoraToEvm(this.isOutgoingType(tx.type))
       await this.setAssetAddress(tx.assetAddress)
       await this.setAmount(tx.amount)
       await this.setSoraTransactionHash(tx.hash)

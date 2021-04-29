@@ -41,8 +41,8 @@
       :asset-symbol="KnownSymbols.XOR"
     /> -->
     <template #footer>
-      <s-button type="primary" :loading="loading" :disabled="!isValidEthNetwork" @click="handleConfirm">
-        <template v-if="!isValidEthNetwork">
+      <s-button type="primary" :loading="loading" :disabled="!isValidNetworkType" @click="handleConfirm">
+        <template v-if="!isValidNetworkType">
           {{ t('confirmBridgeTransactionDialog.changeNetwork') }}
         </template>
         <template v-else-if="isEthereumToSoraConfirmation">
@@ -79,8 +79,8 @@ const namespace = 'bridge'
   }
 })
 export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMixin, DialogMixin, LoadingMixin, NumberFormatterMixin) {
-  @Getter('isValidEthNetwork', { namespace: 'web3' }) isValidEthNetwork!: boolean
-  @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
+  @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
+  @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean
   @Getter('asset', { namespace }) asset!: any
   @Getter('amount', { namespace }) amount!: string
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
@@ -104,7 +104,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
     const assetsClass = 'tokens'
     const classes = [assetsClass]
 
-    if (!this.isSoraToEthereum) {
+    if (!this.isSoraToEvm) {
       classes.push(`${assetsClass}--reverse`)
     }
 
@@ -176,8 +176,8 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
     margin-right: $inner-spacing-medium;
     flex-shrink: 0;
   }
-  &-ethereum {
-    @include ethereum-logo-styles;
+  &-evm {
+    @include evm-logo-styles;
   }
   .s-icon {
     &-sora, &-eth {
