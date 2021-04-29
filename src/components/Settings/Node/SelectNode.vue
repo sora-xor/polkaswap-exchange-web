@@ -21,7 +21,9 @@
               {{ node.address }}
             </div>
           </div>
-          <network-badge v-bind="node.networkStatus" />
+          <div class="select-node-badge">
+            <network-badge v-bind="node.networkStatus" />
+          </div>
           <s-button class="details select-node-details" type="link" @click="handleNode(node)">
             <s-icon name="arrows-chevron-right-rounded-24" />
           </s-button>
@@ -85,6 +87,7 @@ button:not(.s-action).s-i-position-left.select-node-details > span > i[class^=s-
 <style lang="scss" scoped>
 $list-item-height: 71px;
 $list-item-padding: 11px 0;
+$badge-container-width: 60px;
 
 .select-node {
   flex-direction: column;
@@ -133,6 +136,13 @@ $list-item-padding: 11px 0;
 
   &-button {
     width: 100%;
+  }
+
+  &-badge {
+    width: $badge-container-width;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
   }
 }
 </style>

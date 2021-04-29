@@ -1,8 +1,11 @@
 <template>
-  <div :class="['network-badge', { online, offline: !online && checked, connecting }]">
-    <div class="network-badge-text p4">
-      {{ statusText }}
+  <div>
+    <div v-if="!connecting" :class="['network-badge', { online, offline }]">
+      <div  class="network-badge-text p4">
+        {{ statusText }}
+      </div>
     </div>
+    <s-icon v-else name="el-icon-loading"/>
   </div>
 </template>
 
@@ -17,8 +20,11 @@ export default class NetworkBadge extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) checked!: boolean
   @Prop({ default: false, type: Boolean }) connecting!: boolean
 
+  get offline (): boolean {
+    return !this.online && this.checked
+  }
+
   get statusText (): string {
-    if (this.connecting) return this.t('networkStatus.connecting')
     if (!this.checked) return this.t('networkStatus.checking')
 
     return this.online ? this.t('networkStatus.online') : this.t('networkStatus.offline')
@@ -33,12 +39,16 @@ export default class NetworkBadge extends Mixins(TranslationMixin) {
   background: var(--s-color-status-warning-background);
   color: var(--s-color-status-warning);
 
-  &.online:not(.connecting) {
+  &-text {
+    text-align: center;
+  }
+
+  &.online {
     background: var(--s-color-status-success-background);
     color: var(--s-color-status-success);
   }
 
-  &.offline:not(.connecting) {
+  &.offline {
     background: var(--s-color-status-error-background);
     color: var(--s-color-status-error);
   }
