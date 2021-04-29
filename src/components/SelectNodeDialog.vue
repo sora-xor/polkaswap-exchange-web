@@ -36,6 +36,7 @@ import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import { NodeModel } from '@/components/Settings/Node/consts'
 import { Node, NodeItem, NodeItemNetworkStatus } from '@/types/nodes'
+import { AppHandledError } from '@/utils/error'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -61,7 +62,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   @Getter nodeAddressConnecting!: string
   @Getter soraNetwork!: string
   @Action getNodeChainGenesisHash!: (nodeAddress: string) => Promise<string>
-  @Action getNodeNetworkStatus!: (nodeAddress: string) => Promise<any>
+  @Action getNodeNetworkStatus!: (nodeAddress: string) => Promise<boolean>
   @Action setNode!: (node: Node) => void
   @Action addCustomNode!: (node: Node) => void
   @Action removeCustomNode!: (node: any) => void
@@ -139,20 +140,26 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
 
     try {
       await this.setCurrentNode(node)
+
+      if (this.selectedNode.address === node.address && this.currentView === NodeInfoView) {
+        this.handleBack()
+      }
     } catch (error) {
+      const key = error instanceof AppHandledError ? error.translationKey : 'node.errors.connection'
+
       this.$alert(
-        this.t('selectNodeDialog.messages.nodeConnectionError'),
+        this.t(key),
         { title: this.t('errorText') }
       )
     }
   }
 
   async removeNode (node: NodeItem): Promise<void> {
+    this.removeCustomNode(node)
+    this.handleBack()
     if (this.isConnectedNode(node)) {
       await this.setCurrentNode(this.defaultNodes[0])
     }
-    this.removeCustomNode(node)
-    this.handleBack()
   }
 
   navigateToNodeInfo (node: NodeItem | undefined): void {
@@ -183,6 +190,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
 
     if (!existingNode) {
       this.addCustomNode(nodeCopy)
+      this.selectedNode = this.findNodeInListByAddress(node.address)
       await this.updateNodeNetworkStatus(nodeCopy)
     }
   }
@@ -211,7 +219,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
 
   private async updateNodeNetworkStatus (node: NodeItem): Promise<void> {
     const address = node.address
-    const status = Boolean(await this.getNodeNetworkStatus(address))
+    const status = await this.getNodeNetworkStatus(address)
 
     this.networkStatuses = { ...this.networkStatuses, [address]: status }
   }

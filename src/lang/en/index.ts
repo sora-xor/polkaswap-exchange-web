@@ -61,8 +61,7 @@ export default {
   networkStatus: {
     online: 'online',
     offline: 'offline',
-    checking: 'checking',
-    connecting: 'connection'
+    checking: 'check'
   },
   social: {
     twitter: 'Twitter',
@@ -99,6 +98,12 @@ export default {
       description: 'Polkadot{.js} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including @:soraText, Polkadot and Kusama. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized.'
     }
   },
+  node: {
+    errors: {
+      connection: 'An error occurred while connecting to the node',
+      network: 'You selected the node from the different network'
+    }
+  },
   selectNodeDialog: {
     title: '@:soraText Network node selection',
     addNode: 'Add custom node',
@@ -112,8 +117,7 @@ export default {
       emptyName: 'Please input the name of the node',
       emptyAddress: 'Please input the address of the node',
       incorrectProtocol: 'Address should starts from ws:// or wss://',
-      incorrectAddress: 'Incorrect address',
-      nodeConnectionError: 'An error occurred while connecting to the node'
+      incorrectAddress: 'Incorrect address'
     }
   },
   buttons: {
