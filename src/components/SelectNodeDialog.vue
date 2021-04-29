@@ -19,6 +19,7 @@
       :disabled="isSelectedNodeDisabled"
       :loading="isSelectedNodeConnecting"
       :removable="isSelectedNodeRemovable"
+      :connected="isSelectedNodeConnected"
       :handle-back="handleBack"
       :handle-node="handleNode"
       :remove-node="removeNode"
@@ -90,7 +91,9 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   }
 
   get isSelectedNodeDisabled (): boolean {
-    return this.isConnectedNode(this.selectedNode) || (this.selectedNode.address && !this.selectedNode.networkStatus?.online)
+    if (this.isSelectedNodeConnected) return true
+
+    return this.existingNodeIsSelected && !this.selectedNode.networkStatus?.online
   }
 
   get isSelectedNodeRemovable (): boolean {
@@ -99,6 +102,10 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
 
   get isSelectedNodeConnecting (): boolean {
     return this.isConnectingNode(this.selectedNode)
+  }
+
+  get isSelectedNodeConnected (): boolean {
+    return this.isConnectedNode(this.selectedNode)
   }
 
   get existingNodeIsSelected (): boolean {
@@ -132,7 +139,6 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
 
     try {
       await this.setCurrentNode(node)
-      this.handleBack()
     } catch (error) {
       this.$alert(
         this.t('selectNodeDialog.messages.nodeConnectionError'),

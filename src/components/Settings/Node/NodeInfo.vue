@@ -1,5 +1,5 @@
 <template>
-  <s-form :model="nodeModel" :rules="validationRules" ref="nodeForm" class="node-info s-flex">
+  <s-form :model="nodeModel" :rules="validationRules" ref="nodeForm" class="node-info s-flex" @submit.prevent="submitForm">
     <generic-page-header has-button-back :title="title" @back="handleBack">
       <s-button
         v-if="existing && removable"
@@ -15,7 +15,7 @@
     <s-form-item prop="address">
       <s-input class="node-info-input" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="existing" />
     </s-form-item>
-    <s-button type="primary" class="node-info-button" :disabled="disabled" :loading="loading" @click="submitForm" >{{ buttonText }}</s-button>
+    <s-button type="primary" native-type="submit" class="node-info-button" :disabled="disabled" :loading="loading" @click="submitForm" >{{ buttonText }}</s-button>
     <external-link v-if="!existing" :href="tutorialLink" :title="t('selectNodeDialog.howToSetupOwnNode')" />
   </s-form>
 </template>
@@ -63,6 +63,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) disabled!: boolean
   @Prop({ default: false, type: Boolean }) loading!: boolean
   @Prop({ default: false, type: Boolean }) removable!: boolean
+  @Prop({ default: false, type: Boolean }) connected!: boolean
 
   readonly tutorialLink = Links.nodes.tutorial
 
@@ -85,6 +86,8 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   }
 
   get buttonText (): string {
+    if (this.connected) return this.t('selectNodeDialog.connected')
+
     return this.existing ? this.t('selectNodeDialog.select') : this.t('selectNodeDialog.addNode')
   }
 
@@ -98,7 +101,6 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
 
       this.handleNode(this.nodeModel)
     } catch (error) {
-      console.error(error)
     }
   }
 }

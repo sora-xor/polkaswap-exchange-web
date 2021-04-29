@@ -105,6 +105,7 @@ export default {
     customNode: 'Custom node',
     howToSetupOwnNode: 'How to setup your own @:soraText node',
     select: 'Select',
+    connected: 'Connected',
     selectNodeForEnvironment: 'Select a node for {environment} environment:',
     nodeTitle: '{name} hosted by {chain}',
     messages: {
