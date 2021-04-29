@@ -234,7 +234,6 @@ export default class Bridge extends Mixins(
 ) {
   @Action('getEthBalance', { namespace: 'web3' }) getEthBalance!: () => Promise<void>
   @Action('setEvmNetwork', { namespace: 'web3' }) setEvmNetwork
-  @Action('setDefaultNetworkType', { namespace: 'web3' }) setDefaultNetworkType
   @Action('setSoraToEvm', { namespace }) setSoraToEvm
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
@@ -384,8 +383,8 @@ export default class Bridge extends Mixins(
   }
 
   async mounted (): Promise<void> {
+    await this.setEvmNetwork()
     await this.setNetworkType()
-    await this.setDefaultNetworkType(this.subNetworks?.find(item => item.name === web3Util.getNetworkFromStorage())?.defaultType)
     await this.syncExternalAccountWithAppState()
     this.getEthBalance()
     this.resetBridgeForm(!!router.currentRoute.params?.address)
@@ -414,6 +413,7 @@ export default class Bridge extends Mixins(
   }
 
   beforeDestroy (): void {
+    web3Util.removeNetworkType()
     if (typeof this.unwatchEthereum === 'function') {
       this.unwatchEthereum()
     }
@@ -517,7 +517,6 @@ export default class Bridge extends Mixins(
   async selectNetwork (network: string): Promise<void> {
     if (network) {
       await this.setEvmNetwork(network)
-      await this.setDefaultNetworkType(this.subNetworks?.find(item => item.name === network)?.defaultType)
     }
   }
 

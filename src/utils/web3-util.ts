@@ -260,6 +260,10 @@ function getNetworkTypeFromStorage (): string {
   return storage.get('networkType') || ''
 }
 
+function removeNetworkType (): void {
+  storage.remove('networkType')
+}
+
 async function getNetworkType (): Promise<string> {
   const networkType = getNetworkTypeFromStorage()
   if (!networkType || networkType === 'undefined') {
@@ -332,6 +336,7 @@ export default {
   storeNetworkType,
   getNetworkType,
   getNetworkTypeFromStorage,
+  removeNetworkType,
   removeEthNetwork,
   getInstance,
   removeEthUserAddress,

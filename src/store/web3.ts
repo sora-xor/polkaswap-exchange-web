@@ -18,6 +18,7 @@ const types = flow(
     'SET_ETHEREUM_BALANCE',
     'SET_DEFAULT_NETWORK_TYPE',
     'SET_SORA_NETWORK',
+    'SET_SUB_NETWORKS',
     'SET_ENV_NETWORK'
   ]),
   map(x => [x, x]),
@@ -25,7 +26,6 @@ const types = flow(
 )([
   'CONNECT_ETH_WALLET',
   'SWITCH_ETH_WALLET',
-  'SET_SUB_NETWORKS',
   'SET_NETWORK_TYPE',
   'DISCONNECT_ETH_WALLET',
   'GET_BALANCE',
@@ -138,11 +138,9 @@ const mutations = {
     state.defaultNetworkType = networkType
   },
 
-  [types.SET_SUB_NETWORKS_REQUEST] () {},
-  [types.SET_SUB_NETWORKS_SUCCESS] (state, networks) {
+  [types.SET_SUB_NETWORKS] (state, networks) {
     state.subNetworks = networks
   },
-  [types.SET_SUB_NETWORKS_FAILURE] () {},
 
   [types.SET_ENV_NETWORK] (state, network) {
     state.evmNetwork = network
@@ -232,24 +230,19 @@ const actions = {
     commit(types.SET_SORA_NETWORK, network)
   },
 
-  async setDefaultNetworkType ({ commit }, networkType) {
-    commit(types.SET_DEFAULT_NETWORK_TYPE, networkType)
+  async setSubNetworks ({ commit }, subNetworks) {
+    commit(types.SET_SUB_NETWORKS, subNetworks)
   },
 
-  async setSubNetworks ({ commit, dispatch }, subNetworks) {
-    commit(types.SET_SUB_NETWORKS_REQUEST)
-    try {
-      await dispatch('setEvmNetwork', web3Util.getNetworkFromStorage() || subNetworks[0]?.name)
-      commit(types.SET_SUB_NETWORKS_SUCCESS, subNetworks)
-    } catch (error) {
-      commit(types.SET_SUB_NETWORKS_FAILURE)
-      console.error(error)
-    }
-  },
-
-  async setEvmNetwork ({ commit }, network) {
-    web3Util.storeNetwork(network)
+  async setEvmNetwork ({ commit, getters, dispatch }, network) {
+    const evmNetwork = network || web3Util.getNetworkFromStorage() || getters.subNetworks[0]?.name
+    web3Util.storeNetwork(evmNetwork)
+    await dispatch('setDefaultNetworkType', evmNetwork)
     commit(types.SET_ENV_NETWORK, network)
+  },
+
+  async setDefaultNetworkType ({ commit, getters }, network) {
+    commit(types.SET_DEFAULT_NETWORK_TYPE, getters.subNetworks?.find(item => item.name === network)?.defaultType)
   },
 
   async setNetworkType ({ commit }, network) {

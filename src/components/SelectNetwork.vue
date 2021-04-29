@@ -29,6 +29,7 @@ import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components, BridgeNetwork } from '@/consts'
 import { lazyComponent } from '@/router'
+import web3Util from '@/utils/web3-util'
 
 @Component({
   components: {
@@ -43,7 +44,7 @@ export default class SelectNetwork extends Mixins(TranslationMixin, DialogMixin)
   @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: string
 
   created () {
-    this.selectedNetwork = this.evmNetwork
+    this.selectedNetwork = this.evmNetwork || web3Util.getNetworkFromStorage()
   }
 
   async selectNetwork (): Promise<void> {
