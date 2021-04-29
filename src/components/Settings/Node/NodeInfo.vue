@@ -16,7 +16,7 @@
       <s-input class="node-info-input" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="existing" />
     </s-form-item>
     <s-button type="primary" class="node-info-button" :disabled="disabled" :loading="loading" @click="submitForm" >{{ buttonText }}</s-button>
-    <external-link v-if="!existing" :title="t('selectNodeDialog.howToSetupOwnNode')" />
+    <external-link v-if="!existing" :href="tutorialLink" :title="t('selectNodeDialog.howToSetupOwnNode')" />
   </s-form>
 </template>
 
@@ -24,7 +24,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 
 import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
+import { Components, Links } from '@/consts'
 import { wsRegexp, dnsRegexp, ipv4Regexp } from '@/utils/regexp'
 import { NodeModel } from './consts'
 
@@ -63,6 +63,8 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) disabled!: boolean
   @Prop({ default: false, type: Boolean }) loading!: boolean
   @Prop({ default: false, type: Boolean }) removable!: boolean
+
+  readonly tutorialLink = Links.nodes.tutorial
 
   readonly validationRules = {
     name: [

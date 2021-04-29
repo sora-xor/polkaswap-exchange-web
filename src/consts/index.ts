@@ -17,6 +17,9 @@ export const Links = {
   about: {
     sora: 'https://sora.org/',
     polkadot: 'https://medium.com/polkadot-network/polkadot-js-extension-release-update-3b0d2d87edb8'
+  },
+  nodes: {
+    tutorial: 'https://medium.com/sora-xor/how-to-run-a-sora-testnet-node-a4d42a9de1af'
   }
 }
 
