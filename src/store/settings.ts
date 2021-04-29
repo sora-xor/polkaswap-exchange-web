@@ -6,6 +6,7 @@ import concat from 'lodash/fp/concat'
 import { connection } from '@soramitsu/soraneo-wallet-web'
 
 import storage, { settingsStorage } from '@/utils/storage'
+import { AppHandledError } from '@/utils/error'
 import { DefaultSlippageTolerance, DefaultMarketAlgorithm, LiquiditySourceForMarketAlgorithm } from '@/consts'
 import { getRpcEndpoint, fetchRpc } from '@/utils/rpc'
 
@@ -160,10 +161,16 @@ const actions = {
 
       commit(types.SET_NODE_REQUEST, node)
 
+      const nodeIsAvailable = await dispatch('getNodeNetworkStatus', endpoint)
+
+      if (!nodeIsAvailable) {
+        throw new AppHandledError('node.errors.connection', `Couldn't connect to node by address: ${endpoint}`)
+      }
+
       const nodeChainGenesisHash = await dispatch('getNodeChainGenesisHash', endpoint)
 
       if (nodeChainGenesisHash !== state.chainGenesisHash) {
-        throw new Error(`Chain genesis hash doesn't match: "${nodeChainGenesisHash}" recieved, should be "${state.chainGenesisHash}"`)
+        throw new AppHandledError('node.errors.network', `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" recieved, should be "${state.chainGenesisHash}"`)
       }
 
       if (!connection.endpoint) {
@@ -218,16 +225,16 @@ const actions = {
 
     return genesisHash
   },
-  async getNodeNetworkStatus (_, nodeAddress: string) {
+  async getNodeNetworkStatus (_, nodeAddress: string): Promise<boolean> {
     if (!nodeAddress) {
       console.error('nodeAddress is required')
-      return null
+      return false
     }
 
     const rpc = getRpcEndpoint(nodeAddress)
     const response = await fetchRpc(rpc, 'system_health')
 
-    return response
+    return !!response
   },
   setSlippageTolerance ({ commit }, value) {
     commit(types.SET_SLIPPAGE_TOLERANCE, value)
