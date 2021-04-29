@@ -1,7 +1,7 @@
 <template>
   <div class="history-container">
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="never">
-      <generic-page-header has-button-back :back-page-name="PageNames.Bridge" :title="t('bridgeHistory.title')">
+      <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
         <s-button
           class="base-title_settings"
           type="action"
@@ -222,6 +222,10 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   handleResetSearch (): void {
     this.query = ''
     this.currentPage = 1
+  }
+
+  handleBack (): void {
+    router.push({ name: PageNames.Bridge })
   }
 }
 </script>

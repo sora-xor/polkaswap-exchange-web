@@ -1,6 +1,6 @@
 <template>
   <div class="container" v-loading="loading || parentLoading">
-    <generic-page-header has-button-back :title="t('removeLiquidity.title')" :tooltip="t('removeLiquidity.description')" />
+    <generic-page-header has-button-back :title="t('removeLiquidity.title')" :tooltip="t('removeLiquidity.description')" @back="handleBack" />
     <s-form
       class="el-form--actions"
       :show-message="false"
@@ -231,8 +231,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     })
     // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
     if (!this.liquidity) {
-      router.push({ name: PageNames.Pool })
-      return
+      return this.handleBack()
     }
     this.updatePrices()
     this.sliderDragButton = this.$el.querySelector('.slider-container .el-slider__button')
@@ -352,8 +351,12 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   async handleConfirmRemoveLiquidity (): Promise<void> {
     await this.handleConfirmDialog(async () => {
       await this.withNotifications(this.removeLiquidity)
-      router.push({ name: PageNames.Pool })
+      this.handleBack()
     })
+  }
+
+  handleBack (): void {
+    router.push({ name: PageNames.Pool })
   }
 }
 </script>

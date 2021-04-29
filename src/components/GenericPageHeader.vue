@@ -19,8 +19,8 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import router, { lazyComponent } from '@/router'
-import { Components, PageNames } from '@/consts'
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
 
 @Component({
   components: {
@@ -29,7 +29,6 @@ import { Components, PageNames } from '@/consts'
 })
 export default class GenericPageHeader extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly hasButtonBack?: boolean
-  @Prop({ default: PageNames.Pool, type: String }) readonly backPageName?: string
   @Prop({ default: '', type: String }) readonly title!: string
   @Prop({ default: '', type: String }) readonly tooltip?: string
   @Prop({ default: 'right-start', type: String }) readonly tooltipPlacement?: string
@@ -46,7 +45,7 @@ export default class GenericPageHeader extends Mixins(TranslationMixin) {
   }
 
   handleBack (): void {
-    router.push({ name: this.backPageName })
+    this.$emit('back')
   }
 }
 </script>

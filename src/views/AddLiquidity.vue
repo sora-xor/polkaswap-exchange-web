@@ -1,6 +1,6 @@
 <template>
   <div class="container" v-loading="parentLoading">
-    <generic-page-header has-button-back :title="t('addLiquidity.title')" :tooltip="t('pool.description')" />
+    <generic-page-header has-button-back :title="t('addLiquidity.title')" :tooltip="t('pool.description')" @back="handleBack" />
     <s-form
       class="el-form--actions"
       :show-message="false"

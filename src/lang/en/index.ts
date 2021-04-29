@@ -14,6 +14,7 @@ export default {
   changeAccountText: 'Change account',
   connectedText: 'Connected',
   connectWalletTextTooltip: 'Connect to @:soraText Network with polkadot{.js}',
+  selectNodeText: 'Select node',
   bridgeText: 'Bridge',
   comingSoonText: 'Coming Soon',
   disclaimer: 'Disclaimer: This website is maintained by the @:soraText community. Before continuing to use this website, please review the @:polkaswapFaqLink and documentation, which includes a detailed explanation on how Polkaswap works, as well as the Polkaswap Memorandum and Terms of Services, and Privacy Policy. These documents are crucial to a secure and positive user experience. By using Polkaswap, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of Polkaswap in your legal jurisdiction; 2) your understanding that the current version of Polkaswap is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using Polkaswap, including, but not limited to, the risk of losing tokens. Once more, please do not continue without reading the FAQ, Polkaswap Memorandum and Terms of Services, and Privacy Policy!',
@@ -29,6 +30,8 @@ export default {
   insufficientBalanceText: 'Insufficient {tokenSymbol} balance',
   firstPerSecond: '{first} per {second}',
   pairIsNotCreated: 'Token pair isn\'t created',
+  nameText: 'Name',
+  addressText: 'Address',
   pageTitle: {
     [PageNames.Swap]: 'Swap',
     [PageNames.Pool]: 'Pool',
@@ -54,6 +57,12 @@ export default {
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
     [PageNames.CreatePair]: 'Create Pair'
+  },
+  networkStatus: {
+    online: 'online',
+    offline: 'offline',
+    checking: 'checking',
+    connecting: 'connection'
   },
   social: {
     twitter: 'Twitter',
@@ -88,6 +97,23 @@ export default {
     polkadot: {
       title: 'What is polkadot{.js}?',
       description: 'Polkadot{.js} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including @:soraText, Polkadot and Kusama. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized.'
+    }
+  },
+  selectNodeDialog: {
+    title: '@:soraText Network node selection',
+    addNode: 'Add custom node',
+    customNode: 'Custom node',
+    howToSetupOwnNode: 'How to setup your own @:soraText node',
+    select: 'Select',
+    connected: 'Connected',
+    selectNodeForEnvironment: 'Select a node for {environment} environment:',
+    nodeTitle: '{name} hosted by {chain}',
+    messages: {
+      emptyName: 'Please input the name of the node',
+      emptyAddress: 'Please input the address of the node',
+      incorrectProtocol: 'Address should starts from ws:// or wss://',
+      incorrectAddress: 'Incorrect address',
+      nodeConnectionError: 'An error occurred while connecting to the node'
     }
   },
   buttons: {
