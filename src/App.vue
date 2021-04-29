@@ -125,10 +125,15 @@
       <div class="app-body">
         <div class="app-content">
           <router-view :parent-loading="loading" />
-          <p v-if="!isAboutPage" class="app-disclaimer">{{ t('disclaimer') }}</p>
+          <p class="app-disclaimer" :class="isAboutPage ? 'about-disclaimer' : ''" v-html="t('disclaimer')" />
         </div>
-        <footer class="app-footer">
-          <p v-if="isAboutPage" class="app-disclaimer">{{ t('disclaimer') }}</p>
+        <footer v-if="isAboutPage" class="app-footer about-footer">
+          <div class="sora-logo">
+            <span class="sora-logo__title">{{ t('poweredBy') }}</span>
+            <div class="sora-logo__image"></div>
+          </div>
+        </footer>
+        <footer v-else class="app-footer">
           <div class="sora-logo">
             <span class="sora-logo__title">{{ t('poweredBy') }}</span>
             <div class="sora-logo__image"></div>
@@ -469,6 +474,9 @@ html {
     border-radius: var(--s-border-radius-medium);
   }
 }
+.app-disclaimer > .link {
+  color: var(--s-color-base-content-primary);
+}
 </style>
 
 <style lang="scss" scoped>
@@ -476,7 +484,7 @@ $logo-width: 40px;
 $logo-width-big: 150px;
 $logo-horizontal-margin: $inner-spacing-mini / 2;
 $header-height: 64px;
-$sidebar-witdh: 160px;
+$sidebar-width: 160px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
 $account-name-margin: -2px 8px 0 12px;
@@ -500,7 +508,7 @@ $disclaimer-letter-spacing: -0.03em;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
-    width: $sidebar-witdh;
+    width: $sidebar-width;
     border-right: 1px solid var(--s-color-base-border-secondary);
     padding-top: $inner-spacing-small;
     padding-bottom: $inner-spacing-medium;

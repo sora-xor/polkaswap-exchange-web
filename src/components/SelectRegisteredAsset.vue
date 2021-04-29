@@ -214,11 +214,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
     if (isMirrorAsset) {
       assetName = this.t('selectRegisteredAsset.search.mirrorPrefix') + ' '
     }
-    assetName += (asset.name || asset.symbol) + ' ('
-    if (isMirrorAsset) {
-      assetName += this.isSoraToEthereum ? 's' : 'e'
-    }
-    assetName += asset.symbol + ')'
+    assetName += `${asset.name || asset.symbol} (${asset.symbol})`
     return assetName
   }
 

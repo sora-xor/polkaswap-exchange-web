@@ -29,7 +29,7 @@
             <div class="bridge-item-title">
               <span class="bridge-item-title-label">{{ t('transfers.from') }}</span>
               <span>{{ getBridgeItemTitle() }}</span>
-              <token-logo class="bridge-item-title-icon" :tokenSymbol="isSoraToEthereum ? 'bridge-item-xor' : 'bridge-item-eth'" size="mini" />
+              <i :class="`s-icon-${isSoraToEthereum ? 'sora' : 'eth'}`" />
             </div>
             <div v-if="isNetworkAConnected && isAssetSelected" class="token-balance">
               <span class="token-balance-title">{{ t('bridge.balance') }}</span>
@@ -56,7 +56,7 @@
               </s-button>
               <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectAssetDialog">
                 <token-logo :token="asset" size="small" />
-                {{ formatAssetSymbol(assetSymbol, !isSoraToEthereum) }}
+                {{ formatAssetSymbol(assetSymbol) }}
               </s-button>
             </div>
             <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" :disabled="!areNetworksConnected" @click="openSelectAssetDialog">
@@ -81,7 +81,7 @@
             <div class="bridge-item-title">
               <span class="bridge-item-title-label">{{ t('transfers.to') }}</span>
               <span>{{ getBridgeItemTitle(true) }}</span>
-              <token-logo class="bridge-item-title-icon" :tokenSymbol="isSoraToEthereum ? 'bridge-item-eth' : 'bridge-item-xor'" size="mini" />
+              <i :class="`s-icon-${!isSoraToEthereum ? 'sora' : 'eth'}`" />
             </div>
             <div v-if="areNetworksConnected && isAssetSelected" class="token-balance">
               <span class="token-balance-title">{{ t('bridge.balance') }}</span>
@@ -102,7 +102,7 @@
             <div v-if="areNetworksConnected && isAssetSelected" class="asset">
               <s-button class="el-button--choose-token el-button--disabled" type="tertiary" size="small" border-radius="medium">
                 <token-logo :token="asset" size="small" />
-                {{ formatAssetSymbol(assetSymbol, isSoraToEthereum) }}
+                {{ formatAssetSymbol(assetSymbol) }}
               </s-button>
             </div>
           </div>
@@ -140,7 +140,7 @@
             {{ t('buttons.enterAmount') }}
           </template>
           <template v-else-if="isInsufficientBalance">
-            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : formatAssetSymbol(assetSymbol, !isSoraToEthereum) }) }}
+            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : formatAssetSymbol(assetSymbol) }) }}
           </template>
           <template v-else-if="isInsufficientXorForFee">
             {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : KnownSymbols.XOR }) }}
@@ -625,11 +625,11 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
           white-space: nowrap;
         }
       }
-      &-icon {
-        margin-left: $inner-spacing-mini / 2;
-        display: block;
-        border: none;
-        box-shadow: none;
+      .s-icon {
+        &-sora, &-eth {
+          margin-top: $inner-spacing-mini / 4;
+          margin-left: $inner-spacing-mini / 4;
+        }
       }
     }
     &--ethereum {
