@@ -47,8 +47,8 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
-import { Asset, AccountAsset, KnownAssets } from '@sora-substrate/util'
+import { Getter } from 'vuex-class'
+import { Asset, AccountAsset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'

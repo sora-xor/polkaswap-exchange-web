@@ -282,7 +282,7 @@ export default {
     title: 'Select a token',
     search: {
       title: 'Tokens',
-      placeholder: 'Search Token Name, Symbol, or Address',
+      placeholder: 'Search by Asset ID, Name or Ticker Symbol',
       networkLabelSora: '@:soraText network tokens',
       networkLabelEthereum: '@:ethereumText network mirror tokens',
       mirrorPrefix: 'Mirror ',
@@ -365,7 +365,7 @@ export default {
   },
   selectToken: {
     title: 'Select a token',
-    searchPlaceholder: 'Search Token Name, Symbol, or Address',
+    searchPlaceholder: 'Search by Asset ID, Name or Ticker Symbol',
     emptyListMessage: 'No results',
     copy: 'Copy Asset ID',
     successCopy: '{symbol} Asset ID is copied to the clipboard'
