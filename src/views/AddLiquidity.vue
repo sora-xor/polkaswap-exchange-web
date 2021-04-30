@@ -1,6 +1,6 @@
 <template>
   <div class="container" v-loading="parentLoading">
-    <generic-page-header has-button-back :title="t('addLiquidity.title')" :tooltip="t('pool.description')" />
+    <generic-page-header has-button-back :title="t('addLiquidity.title')" :tooltip="t('pool.description')" @back="handleBack" />
     <s-form
       class="el-form--actions"
       :show-message="false"
@@ -185,6 +185,17 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField
+
+  @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity
+  @Action('destroyUpdateAccountLiquiditySubscription', { namespace: 'pool' }) destroyUpdateAccountLiquiditySubscription
+
+  async mounted (): Promise<void> {
+    await this.withApi(this.updateAccountLiquidity)
+  }
+
+  destroyed (): void {
+    this.destroyUpdateAccountLiquiditySubscription()
+  }
 
   get firstAddress (): string {
     return router.currentRoute.params.firstAddress

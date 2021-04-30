@@ -110,7 +110,7 @@ button {
     left: 1px; // because of inset shadow
   }
 }
-button.el-button.wallet {
+button.el-button.app-control {
   background-color: var(--s-color-utility-body) !important;
   box-shadow: 1px 1px 3px rgba(255, 255, 255, 0.75), inset 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
@@ -192,7 +192,9 @@ button.el-button.send.s-small, button.el-button.swap.s-small {
 div.asset-search-actions button.el-button--plain,
 div.asset-custom-actions button.el-button--plain,
 div.wallet-assets button.el-button--plain,
-button.el-button--create-pair {
+div.select-node button.el-button--plain,
+div.node-info button.el-button--plain,
+button.el-button--create-pair{
   color: #fff !important;
   border: 1px solid #ddd !important;
   transition: all 0.25s ease-in-out;
@@ -202,6 +204,8 @@ button.el-button--create-pair {
 div.asset-search-actions button.el-button--plain:hover,
 div.asset-custom-actions button.el-button--plain:hover,
 div.wallet-assets button.el-button--plain:hover,
+div.select-node button.el-button--plain:hover,
+div.node-info button.el-button--plain:hover,
 button.el-button--create-pair:hover {
   color: #fff !important;
   border: 1px solid #ddd !important;
@@ -333,7 +337,7 @@ div.slippage-tolerance-custom_input input.el-input__inner {
 div.transaction div.s-input-container {margin-top: 16px;}
 
 div.asset-search-input input.el-input__inner, div.asset-custom-address input.el-input__inner, div.transaction input.el-input__inner, div.asset-search input.el-input__inner, div.custom-asset-address input.el-input__inner,
-div.token-search input.el-input__inner, div.wallet-settings-create-token input.el-input__inner, span.el-switch__core {
+div.token-search input.el-input__inner, div.wallet-settings-create-token input.el-input__inner, span.el-switch__core, .node-info-input input.el-input__inner {
   box-shadow: inset 1px 1px 2px #FFFFFF;
   filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.1));
   font-size: var(--s-icon-font-size-mini) !important;
@@ -472,11 +476,6 @@ div.article-card {
 div.wallet-assets-item i.asset-logo {
   height: 40px !important;
   width: 40px !important;
-}
-div.wallet-assets-item i.asset-logo:not(.asset-logo--pswap,.asset-logo--val,.asset-logo--xor),
-div.el-card__body div.asset-details-container i.asset-logo:not(.asset-logo--pswap,.asset-logo--val,.asset-logo--xor),
-div.asset-search-list div.asset i.asset-logo:not(.asset-logo--pswap,.asset-logo--val,.asset-logo--xor) {
-  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGZpbGw9IiNBMTlBOUQiIGQ9Ik03LjUsMTcuNEM3LjksMTcuOCw4LjQsMTgsOSwxOHMxLjEtMC4yLDEuNS0wLjZjMC4xLTAuMSwwLjItMC4yLDAuNC0wLjVsMS45LTMuNGMwLjItMC4yLDAuMy0wLjQsMC40LTAuNQ0KCWMwLjEtMC4xLDAuMy0wLjIsMC41LTAuM2wzLjQtMS45YzAuMi0wLjEsMC4zLTAuMiwwLjUtMC40QzE3LjgsMTAuMSwxOCw5LjYsMTgsOXMtMC4yLTEuMS0wLjYtMS41Yy0wLjItMC4yLTAuMy0wLjMtMC41LTAuNA0KCWwtMy40LTEuOUMxMy4zLDUuMiwxMy4xLDUuMSwxMyw1Yy0wLjEtMC4xLTAuMi0wLjItMC40LTAuNWwtMS45LTMuNGMtMC4xLTAuMi0wLjItMC4zLTAuNC0wLjVDMTAuMSwwLjIsOS42LDAsOSwwUzcuOSwwLjIsNy41LDAuNg0KCUM3LjQsMC43LDcuMywwLjgsNy4yLDEuMUw1LjMsNC41QzUuMiw0LjcsNS4xLDQuOCw1LDVDNC44LDUuMSw0LjYsNS4yLDQuNSw1LjNMMS4xLDcuMkMwLjksNy4zLDAuNyw3LjQsMC42LDcuNUMwLjIsNy45LDAsOC40LDAsOQ0KCXMwLjIsMS4xLDAuNiwxLjVjMC4xLDAuMSwwLjMsMC4yLDAuNSwwLjNsMy40LDEuOWMwLjIsMC4xLDAuMywwLjIsMC41LDAuNGMwLjEsMC4xLDAuMiwwLjMsMC4zLDAuNWwxLjksMy40DQoJQzcuMywxNy4xLDcuNCwxNy4zLDcuNSwxNy40eiIvPg0KPC9zdmc+);
 }
 button.el-button.send.s-small, button.el-button.swap.s-small {
   height: 40px;

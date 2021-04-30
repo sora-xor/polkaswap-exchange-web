@@ -88,6 +88,11 @@ const actions = {
         commit(types.UPDATE_ACCOUNT_LIQUIDITY_FAILURE)
       }
     }, fiveSeconds)
+  },
+  destroyUpdateAccountLiquiditySubscription ({ commit }) {
+    if (updateLiquidityIntervalId) {
+      clearInterval(updateLiquidityIntervalId)
+    }
   }
 }
 
