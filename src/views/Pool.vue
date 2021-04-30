@@ -30,11 +30,10 @@
             <div>{{ t('pool.pairTokens', { pair: getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress)) }) }}</div>
             <div class="pool-info-value">{{ getBalance(liquidityItem) }}</div>
           </div>
-          <!-- TODO: we decided to hide it because of many requests like getLiquidityReserves -->
-          <!-- <div class="pool-info pool-info--share">
+          <div class="pool-info pool-info--share">
             <div>{{ t('pool.poolShare')}}</div>
-            <div class="pool-info-value">{{ getPoolShare(liquidityItem) }}%</div>
-          </div> -->
+            <div class="pool-info-value">{{ liquidityItem.poolShare }}%</div>
+          </div>
           <div class="pool-info--buttons">
             <s-button type="primary" size="small" @click="handleAddPairLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
               {{ t('pool.addLiquidity') }}
