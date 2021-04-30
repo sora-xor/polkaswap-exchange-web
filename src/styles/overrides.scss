@@ -477,11 +477,6 @@ div.wallet-assets-item i.asset-logo {
   height: 40px !important;
   width: 40px !important;
 }
-div.wallet-assets-item i.asset-logo:not(.asset-logo--pswap,.asset-logo--val,.asset-logo--xor),
-div.el-card__body div.asset-details-container i.asset-logo:not(.asset-logo--pswap,.asset-logo--val,.asset-logo--xor),
-div.asset-search-list div.asset i.asset-logo:not(.asset-logo--pswap,.asset-logo--val,.asset-logo--xor) {
-  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGZpbGw9IiNBMTlBOUQiIGQ9Ik03LjUsMTcuNEM3LjksMTcuOCw4LjQsMTgsOSwxOHMxLjEtMC4yLDEuNS0wLjZjMC4xLTAuMSwwLjItMC4yLDAuNC0wLjVsMS45LTMuNGMwLjItMC4yLDAuMy0wLjQsMC40LTAuNQ0KCWMwLjEtMC4xLDAuMy0wLjIsMC41LTAuM2wzLjQtMS45YzAuMi0wLjEsMC4zLTAuMiwwLjUtMC40QzE3LjgsMTAuMSwxOCw5LjYsMTgsOXMtMC4yLTEuMS0wLjYtMS41Yy0wLjItMC4yLTAuMy0wLjMtMC41LTAuNA0KCWwtMy40LTEuOUMxMy4zLDUuMiwxMy4xLDUuMSwxMyw1Yy0wLjEtMC4xLTAuMi0wLjItMC40LTAuNWwtMS45LTMuNGMtMC4xLTAuMi0wLjItMC4zLTAuNC0wLjVDMTAuMSwwLjIsOS42LDAsOSwwUzcuOSwwLjIsNy41LDAuNg0KCUM3LjQsMC43LDcuMywwLjgsNy4yLDEuMUw1LjMsNC41QzUuMiw0LjcsNS4xLDQuOCw1LDVDNC44LDUuMSw0LjYsNS4yLDQuNSw1LjNMMS4xLDcuMkMwLjksNy4zLDAuNyw3LjQsMC42LDcuNUMwLjIsNy45LDAsOC40LDAsOQ0KCXMwLjIsMS4xLDAuNiwxLjVjMC4xLDAuMSwwLjMsMC4yLDAuNSwwLjNsMy40LDEuOWMwLjIsMC4xLDAuMywwLjIsMC41LDAuNGMwLjEsMC4xLDAuMiwwLjMsMC4zLDAuNWwxLjksMy40DQoJQzcuMywxNy4xLDcuNCwxNy4zLDcuNSwxNy40eiIvPg0KPC9zdmc+);
-}
 button.el-button.send.s-small, button.el-button.swap.s-small {
   height: 40px;
   width: 40px;
