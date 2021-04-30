@@ -2,7 +2,7 @@
   <div class="history-container">
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="never">
       <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
-        <s-button
+        <!-- <s-button
           class="base-title_settings"
           type="action"
           icon="basic-trash-24"
@@ -10,7 +10,7 @@
           :tooltip="t('bridgeHistory.clearHistory')"
           tooltip-placement="bottom-end"
           @click="handleClearHistory"
-        />
+        /> -->
       </generic-page-header>
       <s-form
         class="history-form"

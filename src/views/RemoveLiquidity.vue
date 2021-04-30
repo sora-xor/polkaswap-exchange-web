@@ -214,6 +214,8 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   @Action('resetData', { namespace }) resetData
   @Action('getPrices', { namespace: 'prices' }) getPrices
   @Action('resetPrices', { namespace: 'prices' }) resetPrices
+  @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity
+  @Action('destroyUpdateAccountLiquiditySubscription', { namespace: 'pool' }) destroyUpdateAccountLiquiditySubscription
 
   removePartInput = 0
   sliderInput: any
@@ -223,6 +225,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     this.resetData()
     this.resetPrices()
     await this.withApi(async () => {
+      await this.updateAccountLiquidity()
       await this.getAssets()
       await this.getLiquidity({
         firstAddress: this.firstTokenAddress,
@@ -245,6 +248,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     if (this.sliderDragButton) {
       this.$el.removeEventListener('mousedown', this.sliderDragButton)
     }
+    this.destroyUpdateAccountLiquiditySubscription()
   }
 
   get firstTokenAddress (): string {

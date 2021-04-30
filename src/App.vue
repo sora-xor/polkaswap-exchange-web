@@ -208,8 +208,6 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   @Action connectToInitialNode
   @Action setFaucetUrl
   @Action getNetworkChainGenesisHash
-  @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity
-  @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity
   @Action('getAssets', { namespace: 'assets' }) getAssets
   @Action('setEthereumSmartContracts', { namespace: 'web3' }) setEthereumSmartContracts
   @Action('setDefaultEthNetwork', { namespace: 'web3' }) setDefaultEthNetwork
@@ -233,11 +231,9 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
 
       await initWallet({ permissions: WalletPermissions })
       await this.getAssets()
-      await this.getAccountLiquidity()
     })
 
     this.trackActiveTransactions()
-    this.updateAccountLiquidity()
   }
 
   @Watch('firstReadyTransaction', { deep: true })
