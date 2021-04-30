@@ -160,7 +160,7 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 
 import router, { lazyComponent } from '@/router'
 import axios from '@/api'
-import { formatAddress, toHTTPS } from '@/utils'
+import { formatAddress } from '@/utils'
 
 const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
 const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
@@ -211,12 +211,6 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   @Action('getAssets', { namespace: 'assets' }) getAssets
   @Action('setEthereumSmartContracts', { namespace: 'web3' }) setEthereumSmartContracts
   @Action('setDefaultEthNetwork', { namespace: 'web3' }) setDefaultEthNetwork
-
-  async beforeCreate () {
-    if (process.env.NODE_ENV !== 'development') {
-      toHTTPS()
-    }
-  }
 
   async created () {
     await this.withLoading(async () => {
