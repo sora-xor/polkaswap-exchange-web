@@ -153,7 +153,7 @@ import { Action, Getter } from 'vuex-class'
 import { connection, initWallet, WALLET_CONSTS, WalletAvatar, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
 import { KnownSymbols } from '@sora-substrate/util'
 
-import { WalletPermissions, PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize, NetworkTypes } from '@/consts'
+import { WalletPermissions, PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize } from '@/consts'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -176,6 +176,8 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
   }
 })
 export default class App extends Mixins(TransactionMixin, LoadingMixin) {
+  readonly nodesFeatureEnabled = process.env.NODE_ENV === 'development'
+
   readonly SidebarMenuGroups = SidebarMenuGroups
   readonly SocialNetworkLinks = SocialNetworkLinks
   readonly FaucetLink = FaucetLink
@@ -198,7 +200,6 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   @Getter faucetUrl!: string
   @Getter node!: any
   @Getter chainAndNetworkText!: string
-  @Getter soraNetwork!: string
 
   @Action navigate // Wallet
   @Action trackActiveTransactions
@@ -242,10 +243,6 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction (value): void {
     this.handleChangeTransaction(value)
-  }
-
-  get nodesFeatureEnabled () {
-    return !!this.soraNetwork && this.soraNetwork !== NetworkTypes.Mainnet
   }
 
   get nodeLogo (): any {
