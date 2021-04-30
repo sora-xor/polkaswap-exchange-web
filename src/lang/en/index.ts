@@ -282,7 +282,7 @@ export default {
     title: 'Select a token',
     search: {
       title: 'Tokens',
-      placeholder: 'Search by Asset ID, Name or Ticker Symbol',
+      placeholder: 'Filter by Asset ID, Name or Ticker Symbol',
       networkLabelSora: '@:soraText network tokens',
       networkLabelEthereum: '@:ethereumText network mirror tokens',
       mirrorPrefix: 'Mirror ',
@@ -361,11 +361,11 @@ export default {
     showHistory: 'Show history',
     clearHistory: 'Clear history',
     empty: 'Your transactions will appear here.',
-    filterPlaceholder: 'Filter by address, asset'
+    filterPlaceholder: 'Filter by Asset ID or Ticker Symbol'
   },
   selectToken: {
     title: 'Select a token',
-    searchPlaceholder: 'Search by Asset ID, Name or Ticker Symbol',
+    searchPlaceholder: 'Filter by Asset ID, Name or Ticker Symbol',
     emptyListMessage: 'No results',
     copy: 'Copy Asset ID',
     successCopy: '{symbol} Asset ID is copied to the clipboard'
