@@ -176,7 +176,7 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
   }
 })
 export default class App extends Mixins(TransactionMixin, LoadingMixin) {
-  readonly nodesFeatureEnabled = process.env.NODE_ENV === 'development'
+  readonly nodesFeatureEnabled = false
 
   readonly SidebarMenuGroups = SidebarMenuGroups
   readonly SocialNetworkLinks = SocialNetworkLinks
