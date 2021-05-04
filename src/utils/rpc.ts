@@ -5,7 +5,7 @@ export const getRpcEndpoint = (wsEndpoint: string): string => {
   if (/^wss:\/\/ws/.test(wsEndpoint)) {
     return wsEndpoint.replace(/^wss:\/\/ws/, 'https://rpc')
   }
-  return wsEndpoint.replace(/^wss:/, 'https:')
+  return wsEndpoint.replace(/^ws(s)?:/, 'http$1:')
 }
 
 export async function fetchRpc (url: string, method: string, params?: any): Promise<any> {
