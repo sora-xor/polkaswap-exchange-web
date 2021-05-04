@@ -32,7 +32,7 @@
                 <s-col>
                   <s-row flex justify="start" align="middle">
                     <token-logo :token="asset" />
-                    <div class="asset-item__name">{{ getAssetName(asset, !isSoraToEthereum) }}</div>
+                    <div class="asset-item__name">{{ getAssetName(asset) }}</div>
                   </s-row>
                 </s-col>
                 <div class="asset-item__balance-container">
@@ -209,13 +209,8 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
     this.isVisible = false
   }
 
-  getAssetName (asset: AccountAsset | RegisteredAccountAsset, isMirrorAsset = false): string {
-    let assetName = ''
-    if (isMirrorAsset) {
-      assetName = this.t('selectRegisteredAsset.search.mirrorPrefix') + ' '
-    }
-    assetName += `${asset.name || asset.symbol} (${asset.symbol})`
-    return assetName
+  getAssetName (asset: AccountAsset | RegisteredAccountAsset): string {
+    return `${asset.name || asset.symbol} (${asset.symbol})`
   }
 
   handleTabClick ({ name }): void {
