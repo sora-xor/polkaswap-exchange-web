@@ -1,8 +1,8 @@
 <template>
   <div class="history-container">
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="never">
-      <generic-page-header has-button-back :back-page-name="PageNames.Bridge" :title="t('bridgeHistory.title')">
-        <s-button
+      <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
+        <!-- <s-button
           class="base-title_settings"
           type="action"
           icon="basic-trash-24"
@@ -10,7 +10,7 @@
           :tooltip="t('bridgeHistory.clearHistory')"
           tooltip-placement="bottom-end"
           @click="handleClearHistory"
-        />
+        /> -->
       </generic-page-header>
       <s-form
         class="history-form"
@@ -38,10 +38,13 @@
               @click="showHistory(item.id)"
             >
               <div class="history-item-info">
-                <div class="history-item-title p4">{{ t('bridgeTransaction.details', {
-                    from: `${item.amount} ${formatAssetSymbol(item.symbol, !isOutgoingType(item.type))}`,
-                    to: `${item.amount} ${formatAssetSymbol(item.symbol, isOutgoingType(item.type))}`
-                  }) }}</div>
+                <div class="history-item-title p4">
+                  {{ `${formatAmount(item)} ${formatAssetSymbol(item.symbol)}` }}
+                  <i :class="`s-icon--network s-icon-${isOutgoingType(item.type) ? 'sora' : 'eth'}`" />
+                  <span class="history-item-title-separator">{{ t('bridgeTransaction.for') }}</span>
+                  {{ `${formatAmount(item)} ${formatAssetSymbol(item.symbol)}` }}
+                  <i :class="`s-icon--network s-icon-${!isOutgoingType(item.type) ? 'sora' : 'eth'}`" />
+                </div>
                 <div class="history-item-date">{{ formatDate(item) }}</div>
               </div>
               <div :class="historyStatusIconClasses(item.type, item.transactionState)" />
@@ -66,7 +69,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { RegisteredAccountAsset, BridgeTxStatus, Operation, isBridgeOperation, BridgeHistory, CodecString } from '@sora-substrate/util'
+import { RegisteredAccountAsset, BridgeTxStatus, Operation, isBridgeOperation, BridgeHistory, CodecString, FPNumber } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -116,9 +119,9 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   formatDateItem = formatDateItem
   query = ''
   currentPage = 1
-  pageAmount = 10
+  pageAmount = 8
 
-  get filteredHistory (): Array<any> {
+  get filteredHistory (): Array<BridgeHistory> {
     if (!this.history?.length) return []
     const historyCopy = this.history.sort((a: BridgeHistory, b: BridgeHistory) => a.startTime && b.startTime ? b.startTime - a.startTime : 0)
     return this.getFilteredHistory(historyCopy.filter(item => (isBridgeOperation(item.type) && item.transactionStep)))
@@ -136,18 +139,22 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     })
   }
 
-  getFilteredHistory (history: Array<any>): Array<any> {
+  getFilteredHistory (history: Array<BridgeHistory>): Array<BridgeHistory> {
     if (this.query) {
       const query = this.query.toLowerCase().trim()
       return history.filter(item =>
         `${item.assetAddress}`.toLowerCase().includes(query) ||
         `${this.registeredAssets.find(asset => asset.address === item.assetAddress)?.externalAddress}`.toLowerCase().includes(query) ||
         `${formatAssetSymbol(item.symbol)}`.toLowerCase().includes(query) ||
-        `${formatAssetSymbol(item.symbol, true)}`.toLowerCase().includes(query)
+        `${formatAssetSymbol(item.symbol)}`.toLowerCase().includes(query)
       )
     }
 
     return history
+  }
+
+  formatAmount (historyItem: any): string {
+    return new FPNumber(historyItem.amount, this.registeredAssets?.find(asset => asset.address === historyItem.address)?.decimals).format()
   }
 
   formatDate (response: any): string {
@@ -220,6 +227,10 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     this.query = ''
     this.currentPage = 1
   }
+
+  handleBack (): void {
+    router.push({ name: PageNames.Bridge })
+  }
 }
 </script>
 
@@ -258,6 +269,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 <style lang="scss" scoped>
 $history-item-horizontal-space: $inner-spacing-medium;
 $history-item-height: 48px;
+$page-amount: 8;
 $history-item-top-border-height: 1px;
 .history {
   &--search.el-form-item {
@@ -275,7 +287,7 @@ $history-item-top-border-height: 1px;
     @include bridge-content;
   }
   &-items {
-    height: #{$history-item-height * 10};
+    height: #{$history-item-height * $page-amount};
   }
   &-empty {
     text-align: center;
@@ -321,6 +333,15 @@ $history-item-top-border-height: 1px;
   }
   &-title {
     line-height: var(--s-line-height-big);
+    .s-icon {
+      &-sora, &-eth {
+        position: relative;
+        top: 1px;
+      }
+    }
+    &-separator {
+      font-weight: normal;
+    }
   }
   &-date {
     color: var(--s-color-base-content-secondary);

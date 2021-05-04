@@ -8,10 +8,18 @@ export const app = {
   email: 'jihoon@tutanota.de'
 }
 
+export const WalletPermissions = {
+  sendAssets: true, // enable 'send' button in assets list
+  swapAssets: true // enable 'swap' button in assets list
+}
+
 export const Links = {
   about: {
     sora: 'https://sora.org/',
     polkadot: 'https://medium.com/polkadot-network/polkadot-js-extension-release-update-3b0d2d87edb8'
+  },
+  nodes: {
+    tutorial: 'https://medium.com/sora-xor/how-to-run-a-sora-testnet-node-a4d42a9de1af'
   }
 }
 
@@ -71,7 +79,13 @@ export enum Components {
   SettingsTabs = 'Settings/Tabs',
   SlippageTolerance = 'Settings/SlippageTolerance',
   MarketAlgorithm = 'Settings/MarketAlgorithm',
+  SelectNode = 'Settings/Node/SelectNode',
+  NodeInfo = 'Settings/Node/NodeInfo',
+  NetworkBadge = 'NetworkBadge',
+  SelectNodeDialog = 'SelectNodeDialog',
+  StatusActionBadge = 'StatusActionBadge',
   BrandedTooltip = 'BrandedTooltip',
+  ExternalLink = 'ExternalLink',
   HelpDialog = 'HelpDialog',
   AboutNetworkDialog = 'AboutNetworkDialog',
   SidebarItemContent = 'SidebarItemContent',

@@ -1,13 +1,18 @@
 <template>
   <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
     <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
-      <s-button
-        v-if="pairLiquiditySourcesAvailable"
-        class="el-button--settings"
-        type="action"
-        icon="basic-settings-24"
-        @click="openSettingsDialog"
-      />
+      <status-action-badge v-if="pairLiquiditySourcesAvailable">
+        <template #label>{{ t('marketText') }}:</template>
+        <template #value>{{ marketAlgorithm }}</template>
+        <template #action>
+          <s-button
+            class="el-button--settings"
+            type="action"
+            icon="basic-settings-24"
+            @click="openSettingsDialog"
+          />
+        </template>
+      </status-action-badge>
     </generic-page-header>
     <div class="input-container">
       <div class="input-line-header">
@@ -86,7 +91,12 @@
     <s-button v-if="!isLoggedIn" type="primary" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
-    <s-button v-else type="primary" :disabled="!areTokensSelected || !isAvailable || hasZeroAmount || isInsufficientLiquidity || isInsufficientAmount || isInsufficientBalance || isInsufficientXorForFee" @click="handleConfirmSwap">
+    <s-button
+      v-else
+      type="primary"
+      :disabled="!areTokensSelected || !isAvailable || hasZeroAmount || isInsufficientLiquidity || isInsufficientAmount || isInsufficientBalance || isInsufficientXorForFee" @click="handleConfirmSwap"
+      :loading="isRecountingProcess || isAvailableChecking"
+    >
       <template v-if="!areTokensSelected">
         {{ t('buttons.chooseTokens') }}
       </template>
@@ -124,7 +134,7 @@
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes, LPRewardsInfo } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes, LPRewardsInfo, FPNumber } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -144,7 +154,8 @@ const namespace = 'swap'
     SwapInfo: lazyComponent(Components.SwapInfo),
     TokenLogo: lazyComponent(Components.TokenLogo),
     SelectToken: lazyComponent(Components.SelectToken),
-    ConfirmSwap: lazyComponent(Components.ConfirmSwap)
+    ConfirmSwap: lazyComponent(Components.ConfirmSwap),
+    StatusActionBadge: lazyComponent(Components.StatusActionBadge)
   }
 })
 export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
@@ -157,6 +168,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Getter('networkFee', { namespace }) networkFee!: CodecString
   @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString
   @Getter('isAvailable', { namespace }) isAvailable!: boolean
+  @Getter('isAvailableChecking', { namespace }) isAvailableChecking!: boolean
 
   @Action('setTokenFromAddress', { namespace }) setTokenFromAddress!: (address?: string) => Promise<void>
   @Action('setTokenToAddress', { namespace }) setTokenToAddress!: (address?: string) => Promise<void>
@@ -178,6 +190,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Getter isLoggedIn!: boolean
   @Getter slippageTolerance!: number
   @Getter accountAssets!: Array<AccountAsset> // Wallet store
+  @Getter marketAlgorithm!: string
   @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes
   @Getter('pairLiquiditySourcesAvailable', { namespace }) pairLiquiditySourcesAvailable!: boolean
 
@@ -194,6 +207,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Watch('isLoggedIn')
   private handleLoggedInStateChange (isLoggedIn: boolean, wasLoggedIn: boolean): void {
     if (!wasLoggedIn && isLoggedIn) {
+      this.getNetworkFee()
       this.recountSwapValues()
     }
   }
@@ -250,7 +264,16 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   get isInsufficientXorForFee (): boolean {
-    return this.preparedForSwap && hasInsufficientXorForFee(this.tokenXOR, this.networkFee, this.isXorOutputSwap)
+    const isInsufficientXorForFee = this.preparedForSwap && hasInsufficientXorForFee(this.tokenXOR, this.networkFee, this.isXorOutputSwap)
+    if (isInsufficientXorForFee || !this.isXorOutputSwap) {
+      return isInsufficientXorForFee
+    }
+    // It's required for XOR output without XOR or with XOR balance < network fee
+    const zero = this.getFPNumber(0, this.tokenXOR.decimals)
+    const xorBalance = this.getFPNumberFromCodec(this.tokenXOR.balance.transferable, this.tokenXOR.decimals)
+    const fpNetworkFee = this.getFPNumberFromCodec(this.networkFee, this.tokenXOR.decimals).sub(xorBalance)
+    const fpAmount = this.getFPNumber(this.toValue, this.tokenXOR.decimals).sub(FPNumber.gt(fpNetworkFee, zero) ? fpNetworkFee : zero)
+    return FPNumber.lte(fpAmount, zero)
   }
 
   created () {
@@ -262,10 +285,12 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
         await this.setTokenToAddress()
       }
       if (this.areTokensSelected) {
-        await this.getNetworkFee()
         await this.checkSwap()
       }
-      await this.updatePairLiquiditySources()
+      await Promise.all([
+        this.updatePairLiquiditySources(),
+        this.getNetworkFee()
+      ])
     })
   }
 
@@ -337,7 +362,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     const value = this.isExchangeB ? this.toValue : this.fromValue
     const setOppositeValue = this.isExchangeB ? this.setFromValue : this.setToValue
     const resetOppositeValue = this.isExchangeB ? this.resetFieldFrom : this.resetFieldTo
-    const token = this.isExchangeB ? this.tokenTo : this.tokenFrom
+    const oppositeToken = this.isExchangeB ? this.tokenFrom : this.tokenTo
 
     if (!this.areTokensSelected || asZeroValue(value)) return
 
@@ -347,16 +372,17 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
       const { amount, fee, rewards } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, this.isExchangeB, this.liquiditySource)
 
-      setOppositeValue(this.getStringFromCodec(amount, token.decimals))
+      setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals))
       this.setLiquidityProviderFee(fee)
       this.setRewards(rewards)
 
-      await this.calcMinMaxRecieved()
-      await this.updatePrices()
-      await this.getNetworkFee()
+      await Promise.all([
+        this.calcMinMaxRecieved(),
+        this.updatePrices()
+      ])
     } catch (error) {
       resetOppositeValue()
-      if (!this.isInsufficientAmountError(token.symbol as string, error.message)) {
+      if (!this.isInsufficientAmountError(oppositeToken.symbol as string, error.message)) {
         throw error
       }
     } finally {
@@ -428,8 +454,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   async handleMaxValue (): Promise<void> {
     this.setExchangeB(false)
 
-    await this.getNetworkFee()
-
     const max = getMaxValue(this.tokenFrom, this.networkFee)
 
     this.handleInputFieldFrom(max)
@@ -454,8 +478,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       } else {
         await this.setTokenToAddress(token.address)
       }
-      await this.checkSwap()
-      await this.updatePairLiquiditySources()
+      await Promise.all([
+        this.checkSwap(),
+        this.updatePairLiquiditySources()
+      ])
       await this.recountSwapValues()
     }
   }
@@ -515,5 +541,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   .el-button--switch-tokens {
     @include switch-button(var(--s-size-medium));
   }
+}
+
+.page-header--swap {
+  justify-content: space-between;
+  align-items: center;
 }
 </style>
