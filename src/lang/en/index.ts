@@ -1,6 +1,6 @@
-import { KnownSymbols, Operation, TransactionStatus } from '@sora-substrate/util'
+import { Operation, TransactionStatus } from '@sora-substrate/util'
 
-import { PageNames, Topics, NetworkTypes } from '@/consts'
+import { PageNames, NetworkTypes } from '@/consts'
 import { EthNetwork } from '@/utils/web3-util'
 
 export default {
@@ -286,7 +286,6 @@ export default {
       placeholder: 'Filter by Asset ID, Name or Ticker Symbol',
       networkLabelSora: '@:soraText network tokens',
       networkLabelEthereum: '@:ethereumText network mirror tokens',
-      mirrorPrefix: 'Mirror ',
       emptyListMessage: 'No results'
     },
     customAsset: {

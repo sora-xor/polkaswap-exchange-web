@@ -39,10 +39,10 @@
             >
               <div class="history-item-info">
                 <div class="history-item-title p4">
-                  {{ `${item.amount} ${formatAssetSymbol(item.symbol)}` }}
+                  {{ `${formatAmount(item)} ${formatAssetSymbol(item.symbol)}` }}
                   <i :class="`s-icon--network s-icon-${isOutgoingType(item.type) ? 'sora' : 'eth'}`" />
                   <span class="history-item-title-separator">{{ t('bridgeTransaction.for') }}</span>
-                  {{ `${item.amount} ${formatAssetSymbol(item.symbol)}` }}
+                  {{ `${formatAmount(item)} ${formatAssetSymbol(item.symbol)}` }}
                   <i :class="`s-icon--network s-icon-${!isOutgoingType(item.type) ? 'sora' : 'eth'}`" />
                 </div>
                 <div class="history-item-date">{{ formatDate(item) }}</div>
@@ -69,7 +69,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { RegisteredAccountAsset, BridgeTxStatus, Operation, isBridgeOperation, BridgeHistory, CodecString } from '@sora-substrate/util'
+import { RegisteredAccountAsset, BridgeTxStatus, Operation, isBridgeOperation, BridgeHistory, CodecString, FPNumber } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -121,7 +121,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   currentPage = 1
   pageAmount = 8
 
-  get filteredHistory (): Array<any> {
+  get filteredHistory (): Array<BridgeHistory> {
     if (!this.history?.length) return []
     const historyCopy = this.history.sort((a: BridgeHistory, b: BridgeHistory) => a.startTime && b.startTime ? b.startTime - a.startTime : 0)
     return this.getFilteredHistory(historyCopy.filter(item => (isBridgeOperation(item.type) && item.transactionStep)))
@@ -139,7 +139,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     })
   }
 
-  getFilteredHistory (history: Array<any>): Array<any> {
+  getFilteredHistory (history: Array<BridgeHistory>): Array<BridgeHistory> {
     if (this.query) {
       const query = this.query.toLowerCase().trim()
       return history.filter(item =>
@@ -151,6 +151,10 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     }
 
     return history
+  }
+
+  formatAmount (historyItem: any): string {
+    return new FPNumber(historyItem.amount, this.registeredAssets?.find(asset => asset.address === historyItem.address)?.decimals).format()
   }
 
   formatDate (response: any): string {
