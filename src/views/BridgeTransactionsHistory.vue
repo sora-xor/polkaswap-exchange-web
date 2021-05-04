@@ -62,6 +62,16 @@
           @next-click="handleNextClick"
         />
       </s-form>
+      <!-- TODO: Hide this button on restored === true  -->
+      <!-- v-if="!restored" -->
+      <s-button
+        class="s-button--restore"
+        icon="circle-plus-16"
+        icon-position="right"
+        @click="handleRestoreHistory"
+      >
+        {{ t('bridgeHistory.restoreHistory') }}
+      </s-button>
     </s-card>
   </div>
 </template>
@@ -91,10 +101,13 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
   @Getter('history', { namespace }) history!: Array<BridgeHistory> | null
+  @Getter('restored', { namespace }) restored!: boolean
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: string
   @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: CodecString
 
   @Action('getHistory', { namespace }) getHistory
+  @Action('getRestoredFlag', { namespace }) getRestoredFlag
+  @Action('getRestoredHistory', { namespace }) getRestoredHistory
   @Action('getNetworkFee', { namespace }) getNetworkFee
   @Action('getEthNetworkFee', { namespace }) getEthNetworkFee
   @Action('clearHistory', { namespace }) clearHistory
@@ -133,9 +146,11 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 
   async created (): Promise<void> {
     this.withApi(async () => {
+      await this.getRestoredFlag()
       await this.getHistory()
       await this.getNetworkFee()
       await this.getEthNetworkFee()
+      console.log('restored', this.restored)
     })
   }
 
@@ -226,6 +241,11 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   handleResetSearch (): void {
     this.query = ''
     this.currentPage = 1
+  }
+
+  handleRestoreHistory (): void {
+    // TODO: Get history here
+    this.getRestoredHistory()
   }
 
   handleBack (): void {
@@ -361,5 +381,9 @@ $history-item-top-border-height: 1px;
   margin-top: $inner-spacing-medium;
   padding-left: 0;
   padding-right: 0;
+}
+.s-button--restore {
+  margin-top: $inner-spacing-medium;
+  width: 100%;
 }
 </style>

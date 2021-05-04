@@ -360,7 +360,8 @@ export default {
     showHistory: 'Show history',
     clearHistory: 'Clear history',
     empty: 'Your transactions will appear here.',
-    filterPlaceholder: 'Filter by Asset ID or Ticker Symbol'
+    filterPlaceholder: 'Filter by Asset ID or Ticker Symbol',
+    restoreHistory: 'Restore history'
   },
   selectToken: {
     title: 'Select a token',

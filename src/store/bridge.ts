@@ -47,6 +47,8 @@ const types = flow(
   fromPairs
 )([
   'GET_HISTORY',
+  'GET_RESTORED_FLAG',
+  'GET_RESTORED_HISTORY',
   'GET_SORA_NETWORK_FEE',
   'GET_ETHEREUM_NETWORK_FEE',
   'SIGN_SORA_TRANSACTION_SORA_ETH',
@@ -139,7 +141,8 @@ function initialState () {
     currentTransactionState: STATES.INITIAL,
     transactionStep: 1,
     history: [],
-    historyItem: null
+    historyItem: null,
+    restored: true
   }
 }
 
@@ -196,6 +199,9 @@ const getters = {
   },
   historyItem (state) {
     return state.historyItem
+  },
+  restored (state) {
+    return state.restored
   }
 }
 
@@ -264,6 +270,18 @@ const mutations = {
   [types.GET_HISTORY_FAILURE] (state) {
     state.history = null
   },
+  [types.GET_RESTORED_FLAG_REQUEST] (state) {
+    state.restored = false
+  },
+  [types.GET_RESTORED_FLAG_SUCCESS] (state, restored: boolean) {
+    state.restored = restored
+  },
+  [types.GET_RESTORED_FLAG_FAILURE] (state) {
+    state.restored = false
+  },
+  [types.GET_RESTORED_HISTORY_REQUEST] (state) {},
+  [types.GET_RESTORED_HISTORY_SUCCESS] (state) {},
+  [types.GET_RESTORED_HISTORY_FAILURE] (state) {},
   [types.SET_HISTORY_ITEM] (state, historyItem: BridgeHistory | null) {
     state.historyItem = historyItem
   },
@@ -357,6 +375,31 @@ const actions = {
       commit(types.GET_HISTORY_SUCCESS, api.bridge.accountHistory)
     } catch (error) {
       commit(types.GET_HISTORY_FAILURE)
+      throw error
+    }
+  },
+  async getRestoredFlag ({ commit }) {
+    commit(types.GET_RESTORED_FLAG_REQUEST)
+    try {
+      console.log('Get Restored Flag', api.restored)
+      commit(types.GET_RESTORED_FLAG_SUCCESS, api.restored)
+    } catch (error) {
+      commit(types.GET_RESTORED_FLAG_FAILURE)
+      throw error
+    }
+  },
+  async getRestoredHistory ({ commit, getters }) {
+    commit(types.GET_RESTORED_HISTORY_REQUEST)
+    try {
+      // TODO: Set restored flag to true and Add history items to History
+      api.restored = !getters.restored
+      const hashes = await api.bridge.getAccountRequests()
+      console.log('hashes', hashes)
+      const history = api.bridge.getRequests(hashes)
+      console.log('history', history)
+      commit(types.GET_RESTORED_HISTORY_SUCCESS)
+    } catch (error) {
+      commit(types.GET_RESTORED_HISTORY_FAILURE)
       throw error
     }
   },
