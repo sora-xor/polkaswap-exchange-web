@@ -303,7 +303,7 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientEthereumForFee (): boolean {
-    return hasInsufficientEthForFee(this.ethBalance, this.ethereumNetworkFee)
+    return hasInsufficientEthForFee(this.evmBalance, this.ethereumNetworkFee)
   }
 
   get isInsufficientBalance (): boolean {

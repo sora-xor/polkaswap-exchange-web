@@ -29,7 +29,7 @@
                 <toggle-text-button
                   type="link"
                   size="mini"
-                  :primary-text="formatAddress(ethAddress, 8)"
+                  :primary-text="formatAddress(evmAddress, 8)"
                   :secondary-text="t('rewards.changeAccount')"
                   @click="handleWalletChange"
                 />
@@ -285,7 +285,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   private async getRewardsProcess (showNotification = false): Promise<void> {
-    await this.getRewards(this.ethAddress)
+    await this.getRewards(this.evmAddress)
 
     if (!this.rewardsAvailable && showNotification) {
       this.$notify({
@@ -312,7 +312,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 
   private async claimRewardsProcess (): Promise<void> {
     const internalAddress = this.getWalletAddress()
-    const externalAddress = this.ethAddress
+    const externalAddress = this.evmAddress
 
     if (!internalAddress) return
 

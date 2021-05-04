@@ -41,7 +41,7 @@ const handleMetamaskError = (error: any): string => {
 
 @Component
 export default class WalletConnectMixin extends Mixins(TranslationMixin) {
-  @State(state => state.web3.ethAddress) ethAddress!: string
+  @State(state => state.web3.evmAddress) evmAddress!: string
 
   @Getter('isLoggedIn') isSoraAccountConnected!: boolean
   @Getter('isExternalAccountConnected', { namespace: 'web3' }) isExternalAccountConnected!: boolean
@@ -100,7 +100,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   }
 
   async checkConnectionToExternalAccount (func: Function): Promise<void> {
-    const connected = await web3Util.checkAccountIsConnected(this.ethAddress)
+    const connected = await web3Util.checkAccountIsConnected(this.evmAddress)
 
     if (!connected) {
       await this.connectExternalWallet()
@@ -110,7 +110,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   }
 
   async syncExternalAccountWithAppState () {
-    const connected = await web3Util.checkAccountIsConnected(this.ethAddress)
+    const connected = await web3Util.checkAccountIsConnected(this.evmAddress)
 
     if (connected) return
 

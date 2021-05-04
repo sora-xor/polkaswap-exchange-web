@@ -109,10 +109,10 @@ export const hasInsufficientXorForFee = (xorAsset: AccountAsset | RegisteredAcco
   return FPNumber.lt(fpBalance, fpFee) && !isXorOutputSwap
 }
 
-export const hasInsufficientEthForFee = (ethBalance: CodecString, fee: CodecString): boolean => {
+export const hasInsufficientEthForFee = (evmBalance: CodecString, fee: CodecString): boolean => {
   if (!fee) return false
 
-  const fpBalance = FPNumber.fromCodecValue(ethBalance)
+  const fpBalance = FPNumber.fromCodecValue(evmBalance)
   const fpFee = FPNumber.fromCodecValue(fee)
 
   return FPNumber.lt(fpBalance, fpFee)

@@ -142,7 +142,7 @@ const actions = {
         const accountAsset = { ...item, externalBalance: ZeroStringValue }
         try {
           if (!accountAsset.externalAddress) {
-            const externalAddress = await dispatch('web3/getEthTokenAddressByAssetId', { address: item.address }, { root: true })
+            const externalAddress = await dispatch('web3/getEvmTokenAddressByAssetId', { address: item.address }, { root: true })
             accountAsset.externalAddress = externalAddress
           }
           if (accountAsset.externalAddress) {
