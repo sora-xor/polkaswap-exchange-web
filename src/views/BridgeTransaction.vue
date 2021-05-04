@@ -15,10 +15,10 @@
         <div class="header">
           <div v-loading="isTransactionFromPending || isTransactionToPending" :class="headerIconClasses" />
           <h5 class="header-details">
-            {{ `${amount} ${formatAssetSymbol(assetSymbol)}` }}
+            {{ `${formattedAmount} ${formatAssetSymbol(assetSymbol)}` }}
             <i :class="`s-icon--network s-icon-${isSoraToEthereum ? 'sora' : 'eth'}`" />
             <span class="header-details-separator">{{ t('bridgeTransaction.for') }}</span>
-            {{ `${amount} ${formatAssetSymbol(assetSymbol)}` }}
+            {{ `${formattedAmount} ${formatAssetSymbol(assetSymbol)}` }}
             <i :class="`s-icon--network s-icon-${!isSoraToEthereum ? 'sora' : 'eth'}`" />
           </h5>
           <p class="header-status">{{ headerStatus }}</p>
@@ -56,7 +56,7 @@
             <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionFromDate" />
             <info-line
               :label="t('bridgeTransaction.networkInfo.amount')"
-              :value="`-${amount}`"
+              :value="`-${formattedAmount}`"
               :asset-symbol="formatAssetSymbol(assetSymbol)"
             />
             <info-line
@@ -112,7 +112,7 @@
             <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionDate(!isSoraToEthereum ? soraTransactionDate : ethereumTransactionDate)" />
             <info-line
               :label="t('bridgeTransaction.networkInfo.amount')"
-              :value="`${amount}`"
+              :value="`${formattedAmount}`"
               :asset-symbol="formatAssetSymbol(assetSymbol)"
             />
             <info-line
@@ -156,7 +156,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { AccountAsset, RegisteredAccountAsset, KnownSymbols, CodecString, BridgeHistory } from '@sora-substrate/util'
+import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory } from '@sora-substrate/util'
 import { interpret } from 'xstate'
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
@@ -241,6 +241,10 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   activeTransactionStep: any = [this.transactionSteps.from, this.transactionSteps.to]
   currentTransactionStep = 1
   showConfirmTransactionDialog = false
+
+  get formattedAmount (): string {
+    return new FPNumber(this.amount, this.asset?.decimals).format()
+  }
 
   get assetSymbol (): string {
     return this.asset?.symbol ?? ''
