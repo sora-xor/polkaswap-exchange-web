@@ -241,7 +241,7 @@ function storeEthUserAddress (address: string): void {
   storage.set('evmAddress', address)
 }
 
-function getEvmUserAddress (): string {
+function getEthUserAddress (): string {
   return storage.get('evmAddress') || ''
 }
 

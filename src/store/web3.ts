@@ -6,7 +6,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import { api, FPNumber } from '@sora-substrate/util'
 
-import web3Util, { ABI, Contract, EvmNetworkTypeName, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
+import web3Util, { ABI, Contract, EvmNetworkTypeName, KnownBridgeAsset, OtherContractType, ContractNetwork } from '@/utils/web3-util'
 import { ZeroStringValue } from '@/consts'
 import { isEthereumAddress } from '@/utils'
 
