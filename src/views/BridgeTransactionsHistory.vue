@@ -102,7 +102,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Getter('history', { namespace }) history!: Array<BridgeHistory> | null
   @Getter('restored', { namespace }) restored!: boolean
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: string
-  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: CodecString
+  @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
 
   @Action('getHistory', { namespace }) getHistory
   @Action('getRestoredFlag', { namespace }) getRestoredFlag
@@ -115,11 +115,11 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
   @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash
-  @Action('setEthereumTransactionHash', { namespace }) setEthereumTransactionHash
+  @Action('setEvmTransactionHash', { namespace }) setEvmTransactionHash
   @Action('setSoraTransactionDate', { namespace }) setSoraTransactionDate
-  @Action('setEthereumTransactionDate', { namespace }) setEthereumTransactionDate
+  @Action('setEvmTransactionDate', { namespace }) setEvmTransactionDate
   @Action('setSoraNetworkFee', { namespace }) setSoraNetworkFee
-  @Action('setEthereumNetworkFee', { namespace }) setEthereumNetworkFee
+  @Action('setEvmNetworkFee', { namespace }) setEvmNetworkFee
   @Action('setCurrentTransactionState', { namespace }) setCurrentTransactionState
   @Action('setTransactionStep', { namespace }) setTransactionStep
   @Action('setHistoryItem', { namespace }) setHistoryItem
@@ -181,11 +181,11 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   historyStatusIconClasses (type: Operation, state: STATES): string {
     const iconClass = 'history-item-icon'
     const classes = [iconClass]
-    if ([STATES.SORA_REJECTED, STATES.ETHEREUM_REJECTED].includes(state)) {
+    if ([STATES.SORA_REJECTED, STATES.EVM_REJECTED].includes(state)) {
       classes.push(`${iconClass}--error`)
       return classes.join(' ')
     }
-    if (!(this.isOutgoingType(type) ? state === STATES.ETHEREUM_COMMITED : state === STATES.SORA_COMMITED)) {
+    if (!(this.isOutgoingType(type) ? state === STATES.EVM_COMMITED : state === STATES.SORA_COMMITED)) {
       classes.push(`${iconClass}--pending`)
       return classes.join(' ')
     }
@@ -212,23 +212,23 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
       await this.setAmount(tx.amount)
       await this.setSoraTransactionHash(tx.hash)
       await this.setSoraTransactionDate(tx[this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
-      await this.setEthereumTransactionHash(tx.ethereumHash)
-      await this.setEthereumTransactionDate(tx[!this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
+      await this.setEvmTransactionHash(tx.ethereumHash)
+      await this.setEvmTransactionDate(tx[!this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
       const soraNetworkFee = +(tx.soraNetworkFee || 0)
-      const ethereumNetworkFee = +(tx.ethereumNetworkFee || 0)
+      const evmNetworkFee = +(tx.ethereumNetworkFee || 0)
       if (!soraNetworkFee) {
         await this.getNetworkFee()
         tx.soraNetworkFee = this.soraNetworkFee
       }
-      if (!ethereumNetworkFee) {
-        tx.ethereumNetworkFee = this.ethereumNetworkFee
+      if (!evmNetworkFee) {
+        tx.ethereumNetworkFee = this.evmNetworkFee
         await this.getEthNetworkFee()
       }
-      if (!(soraNetworkFee && ethereumNetworkFee)) {
+      if (!(soraNetworkFee && evmNetworkFee)) {
         this.saveHistory(tx)
       }
       await this.setSoraNetworkFee(soraNetworkFee || this.soraNetworkFee)
-      await this.setEthereumNetworkFee(ethereumNetworkFee || this.ethereumNetworkFee)
+      await this.setEvmNetworkFee(evmNetworkFee || this.evmNetworkFee)
       await this.setTransactionStep(tx.transactionStep)
       await this.setCurrentTransactionState(tx.transactionState)
       await this.setHistoryItem(tx)

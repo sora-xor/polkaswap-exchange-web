@@ -6,7 +6,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import { api, FPNumber } from '@sora-substrate/util'
 
-import web3Util, { ABI, Contract, EvmNetworkTypeName, KnownBridgeAsset, OtherContractType, ContractNetwork } from '@/utils/web3-util'
+import web3Util, { ABI, Contract, EvmNetworkTypeName, KnownBridgeAsset, OtherContractType, ContractNetwork, EvmNetworkType, EvmNetwork } from '@/utils/web3-util'
 import { ZeroStringValue } from '@/consts'
 import { isEthereumAddress } from '@/utils'
 
@@ -15,7 +15,8 @@ const types = flow(
   concat([
     'RESET',
     'SET_ETHEREUM_SMART_CONTRACTS',
-    'SET_ETHEREUM_BALANCE',
+    'SET_ENERGY_SMART_CONTRACTS',
+    'SET_EVM_BALANCE',
     'SET_DEFAULT_NETWORK_TYPE',
     'SET_SORA_NETWORK',
     'SET_SUB_NETWORKS',
@@ -24,10 +25,10 @@ const types = flow(
   map(x => [x, x]),
   fromPairs
 )([
-  'CONNECT_ETH_WALLET',
-  'SWITCH_ETH_WALLET',
+  'CONNECT_EVM_WALLET',
+  'SWITCH_EVM_WALLET',
   'SET_NETWORK_TYPE',
-  'DISCONNECT_ETH_WALLET',
+  'DISCONNECT_EVM_WALLET',
   'GET_BALANCE',
   'GET_EVM_TOKEN_ADDRESS',
   'GET_ALLOWANCE'
@@ -36,23 +37,23 @@ const types = flow(
 function initialState () {
   return {
     soraNetwork: '',
-    ethAddress: web3Util.getEthUserAddress(),
-    ethBalance: ZeroStringValue,
+    evmAddress: web3Util.getEthUserAddress(),
+    evmBalance: ZeroStringValue,
     networkType: web3Util.getNetworkTypeFromStorage(),
     defaultNetworkType: '',
     subNetworks: [],
     evmNetwork: 0,
     contractAddress: {
-      XOR: '',
-      VAL: '',
-      OTHER: ''
+      ethereum: {
+        XOR: '',
+        VAL: '',
+        OTHER: ''
+      },
+      energy: {
+        OTHER: ''
+      }
     },
     smartContracts: {
-      XOR: '',
-      VAL: '',
-      OTHER: ''
-    },
-    smart: {
       ethereum: {
         XOR: '',
         VAL: '',
@@ -68,23 +69,11 @@ function initialState () {
 const state = initialState()
 
 const getters = {
-  contractXOR (state) {
-    return state.smartContracts.XOR
+  contractAbi (state, network: EvmNetwork, asset: KnownBridgeAsset) {
+    return state.smartContracts[network][asset]
   },
-  contractVAL (state) {
-    return state.smartContracts.VAL
-  },
-  contractOTHER (state) {
-    return state.smartContracts.OTHER
-  },
-  addressXOR (state) {
-    return state.contractAddress.XOR
-  },
-  addressVAL (state) {
-    return state.contractAddress.VAL
-  },
-  addressOTHER (state) {
-    return state.contractAddress.OTHER
+  contractAddress (state, network: EvmNetwork, asset: KnownBridgeAsset) {
+    return state.contractAddress[network][asset]
   },
   isExternalAccountConnected (state) {
     return !!state.evmAddress && state.evmAddress !== 'undefined'
@@ -176,12 +165,12 @@ const mutations = {
   [types.DISCONNECT_EVM_WALLET_FAILURE] () {},
 
   [types.SET_ETHEREUM_SMART_CONTRACTS] (state, params) {
-    Vue.set(state.smart, 'ethereum', {
+    Vue.set(state.smartContracts, EvmNetwork.Ethereum, {
       XOR: params.contracts.XOR,
       VAL: params.contracts.VAL,
       OTHER: params.contracts.OTHER
     })
-    Vue.set(state.smartAddress, 'ethereum', {
+    Vue.set(state.smartAddress, EvmNetwork.Ethereum, {
       XOR: params.address.XOR,
       VAL: params.address.VAL,
       OTHER: params.address.OTHER
@@ -189,10 +178,10 @@ const mutations = {
   },
 
   [types.SET_ENERGY_SMART_CONTRACTS] (state, params) {
-    Vue.set(state.smart, 'energy', {
+    Vue.set(state.smartContracts, EvmNetwork.Energy, {
       OTHER: params.contracts.OTHER
     })
-    Vue.set(state.smartAddress, 'energy', {
+    Vue.set(state.smartAddress, EvmNetwork.Energy, {
       OTHER: params.address.OTHER
     })
   },
@@ -289,7 +278,7 @@ const actions = {
     }
   },
 
-  async setEthereumSmartContracts ({ commit }, { ETHEREUM }) {
+  async setEvmSmartContracts ({ commit }, { ETHEREUM }) {
     const INTERNAL = await web3Util.readSmartContract(
       ContractNetwork.Ethereum,
       `${Contract.Internal}/Master.json`

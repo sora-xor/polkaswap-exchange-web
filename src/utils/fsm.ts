@@ -3,7 +3,7 @@ import { BridgeTxStatus } from '@sora-substrate/util'
 
 enum EVENTS {
   SEND_SORA = 'SEND_SORA',
-  SEND_ETHEREUM = 'SEND_ETHEREUM',
+  SEND_EVM = 'SEND_EVM',
   RETRY = 'RETRY'
 }
 
@@ -13,10 +13,10 @@ enum STATES {
   SORA_PENDING = 'SORA_PENDING',
   SORA_REJECTED = 'SORA_REJECTED',
   SORA_COMMITED = 'SORA_COMMITED',
-  ETHEREUM_SUBMITTED = 'ETHEREUM_SUBMITTED',
-  ETHEREUM_PENDING = 'ETHEREUM_PENDING',
-  ETHEREUM_REJECTED = 'ETHEREUM_REJECTED',
-  ETHEREUM_COMMITED = 'ETHEREUM_COMMITED'
+  EVM_SUBMITTED = 'EVM_SUBMITTED',
+  EVM_PENDING = 'EVM_PENDING',
+  EVM_REJECTED = 'EVM_REJECTED',
+  EVM_COMMITED = 'EVM_COMMITED'
 }
 
 enum ACTIONS {
@@ -24,7 +24,7 @@ enum ACTIONS {
   SET_TRANSACTION_STATE = 'SET_TRANSACTION_STATE',
   SET_SECOND_TRANSACTION_STEP = 'SET_SECOND_TRANSACTION_STEP',
   SET_SORA_TRANSACTION_HASH = 'SET_SORA_TRANSACTION_HASH',
-  SET_ETHEREUM_TRANSACTION_HASH = 'SET_ETHEREUM_TRANSACTION_HASH',
+  SET_EVM_TRANSACTION_HASH = 'SET_EVM_TRANSACTION_HASH',
   SET_BRIDGE_STATUS_PENDING = 'SET_BRIDGE_STATUS_PENDING',
   SET_BRIDGE_STATUS_FAILURE = 'SET_BRIDGE_STATUS_FAILURE',
   SET_BRIDGE_STATUS_DONE = 'SET_BRIDGE_STATUS_DONE'
@@ -33,8 +33,8 @@ enum ACTIONS {
 enum SERVICES {
   SIGN_SORA_TRANSACTION = 'SIGN_SORA_TRANSACTION',
   CHECK_SORA_TRANSACTION = 'CHECK_SORA_TRANSACTION',
-  SIGN_ETHEREUM_TRANSACTION = 'SIGN_ETHEREUM_TRANSACTION',
-  CHECK_ETHEREUM_TRANSACTION = 'CHECK_ETHEREUM_TRANSACTION'
+  SIGN_EVM_TRANSACTION = 'SIGN_EVM_TRANSACTION',
+  CHECK_EVM_TRANSACTION = 'CHECK_EVM_TRANSACTION'
 }
 
 interface SoraEthFlow {
@@ -42,25 +42,25 @@ interface SoraEthFlow {
     sign: ({ txId: string }) => Promise<any>;
     send: ({ txId: string }) => Promise<any>;
   };
-  ethereum: {
+  evm: {
     sign: ({ hash: string }) => Promise<any>;
-    send: ({ ethereumHash: string }) => Promise<any>;
+    send: ({ evmHash: string }) => Promise<any>;
   };
 }
 interface EthSoraFlow {
-  ethereum: {
+  evm: {
     sign: () => Promise<any>;
-    send: ({ ethereumHash: string }) => Promise<any>;
+    send: ({ evmHash: string }) => Promise<any>;
   };
   sora: {
-    sign: ({ ethereumHash: string }) => Promise<any>;
-    send: ({ ethereumHash: string }) => Promise<any>;
+    sign: ({ evmHash: string }) => Promise<any>;
+    send: ({ evmHash: string }) => Promise<any>;
   };
 }
 interface Context {
   history: any;
   SORA_ETH: SoraEthFlow;
-  ETH_SORA: EthSoraFlow;
+  EVM_SORA: EthSoraFlow;
 }
 
 const setTransactionState = (state: STATES) => {
@@ -74,7 +74,7 @@ const setTransactionState = (state: STATES) => {
   })
 }
 
-const SORA_ETHEREUM_STATES = {
+const SORA_EVM_STATES = {
   [STATES.INITIAL]: {
     entry: ACTIONS.SET_BRIDGE_STATUS_PENDING,
     on: {
@@ -118,96 +118,96 @@ const SORA_ETHEREUM_STATES = {
   [STATES.SORA_COMMITED]: {
     entry: setTransactionState(STATES.SORA_COMMITED),
     on: {
-      SEND_ETHEREUM: STATES.ETHEREUM_SUBMITTED
+      SEND_EVM: STATES.EVM_SUBMITTED
     }
   },
-  [STATES.ETHEREUM_SUBMITTED]: {
+  [STATES.EVM_SUBMITTED]: {
     entry: [
-      setTransactionState(STATES.ETHEREUM_PENDING),
+      setTransactionState(STATES.EVM_PENDING),
       ACTIONS.SET_SECOND_TRANSACTION_STEP,
       ACTIONS.SET_BRIDGE_STATUS_PENDING
     ],
     invoke: {
-      src: SERVICES.SIGN_ETHEREUM_TRANSACTION,
+      src: SERVICES.SIGN_EVM_TRANSACTION,
       onDone: {
-        target: STATES.ETHEREUM_PENDING,
+        target: STATES.EVM_PENDING,
         actions: [
           ACTIONS.SIGN_TRANSACTION,
-          ACTIONS.SET_ETHEREUM_TRANSACTION_HASH
+          ACTIONS.SET_EVM_TRANSACTION_HASH
         ]
       },
-      onError: STATES.ETHEREUM_REJECTED
+      onError: STATES.EVM_REJECTED
     }
   },
-  [STATES.ETHEREUM_PENDING]: {
-    entry: setTransactionState(STATES.ETHEREUM_PENDING),
+  [STATES.EVM_PENDING]: {
+    entry: setTransactionState(STATES.EVM_PENDING),
     invoke: {
-      src: SERVICES.CHECK_ETHEREUM_TRANSACTION,
-      onDone: STATES.ETHEREUM_COMMITED,
-      onError: STATES.ETHEREUM_REJECTED
+      src: SERVICES.CHECK_EVM_TRANSACTION,
+      onDone: STATES.EVM_COMMITED,
+      onError: STATES.EVM_REJECTED
     }
   },
-  [STATES.ETHEREUM_REJECTED]: {
+  [STATES.EVM_REJECTED]: {
     entry: [
-      setTransactionState(STATES.ETHEREUM_REJECTED),
+      setTransactionState(STATES.EVM_REJECTED),
       ACTIONS.SET_BRIDGE_STATUS_FAILURE
     ],
     on: {
-      RETRY: STATES.ETHEREUM_SUBMITTED
+      RETRY: STATES.EVM_SUBMITTED
     }
   },
-  [STATES.ETHEREUM_COMMITED]: {
+  [STATES.EVM_COMMITED]: {
     entry: [
-      setTransactionState(STATES.ETHEREUM_COMMITED),
+      setTransactionState(STATES.EVM_COMMITED),
       ACTIONS.SET_BRIDGE_STATUS_DONE
     ],
     type: 'final'
   }
 }
 
-const ETHEREUM_SORA_STATES = {
+const EVM_SORA_STATES = {
   [STATES.INITIAL]: {
     entry: ACTIONS.SET_BRIDGE_STATUS_PENDING,
     on: {
-      SEND_ETHEREUM: STATES.ETHEREUM_SUBMITTED
+      SEND_EVM: STATES.EVM_SUBMITTED
     }
   },
-  [STATES.ETHEREUM_SUBMITTED]: {
+  [STATES.EVM_SUBMITTED]: {
     entry: [
-      setTransactionState(STATES.ETHEREUM_PENDING),
+      setTransactionState(STATES.EVM_PENDING),
       ACTIONS.SET_BRIDGE_STATUS_PENDING
     ],
     invoke: {
-      src: SERVICES.SIGN_ETHEREUM_TRANSACTION,
+      src: SERVICES.SIGN_EVM_TRANSACTION,
       onDone: {
-        target: STATES.ETHEREUM_PENDING,
+        target: STATES.EVM_PENDING,
         actions: [
           ACTIONS.SIGN_TRANSACTION,
-          ACTIONS.SET_ETHEREUM_TRANSACTION_HASH
+          ACTIONS.SET_EVM_TRANSACTION_HASH
         ]
       },
-      onError: STATES.ETHEREUM_REJECTED
+      onError: STATES.EVM_REJECTED
     }
   },
-  [STATES.ETHEREUM_PENDING]: {
-    entry: setTransactionState(STATES.ETHEREUM_PENDING),
+  [STATES.EVM_PENDING]: {
+    entry: setTransactionState(STATES.EVM_PENDING),
     invoke: {
-      src: SERVICES.CHECK_ETHEREUM_TRANSACTION,
-      onDone: STATES.ETHEREUM_COMMITED,
-      onError: STATES.ETHEREUM_REJECTED
+      src: SERVICES.CHECK_EVM_TRANSACTION,
+      onDone: STATES.EVM_COMMITED,
+      onError: STATES.EVM_REJECTED
     }
   },
-  [STATES.ETHEREUM_REJECTED]: {
+  [STATES.EVM_REJECTED]: {
     entry: [
-      setTransactionState(STATES.ETHEREUM_REJECTED),
+      setTransactionState(STATES.EVM_REJECTED),
       ACTIONS.SET_BRIDGE_STATUS_FAILURE
     ],
     on: {
-      RETRY: STATES.ETHEREUM_SUBMITTED
+      RETRY: STATES.EVM_SUBMITTED
     }
   },
-  [STATES.ETHEREUM_COMMITED]: {
-    entry: setTransactionState(STATES.ETHEREUM_COMMITED),
+  [STATES.EVM_COMMITED]: {
+    entry: setTransactionState(STATES.EVM_COMMITED),
     on: {
       SEND_SORA: STATES.SORA_SUBMITTED
     }
@@ -256,7 +256,7 @@ const ETHEREUM_SORA_STATES = {
   }
 }
 
-const SORA_ETHEREUM_SERVICES = {
+const SORA_EVM_SERVICES = {
   [SERVICES.SIGN_SORA_TRANSACTION]: (context: Context, event: any): PromiseLike<any> => {
     if (!context.SORA_ETH.sora.sign) {
       throw new Error('Unexpected behaviour! Please check SORA transaction')
@@ -277,65 +277,65 @@ const SORA_ETHEREUM_SERVICES = {
       txId: context.history.id
     })
   },
-  [SERVICES.SIGN_ETHEREUM_TRANSACTION]: (context: Context, event: any): PromiseLike<any> => {
-    if (!context.SORA_ETH.ethereum.sign) {
+  [SERVICES.SIGN_EVM_TRANSACTION]: (context: Context, event: any): PromiseLike<any> => {
+    if (!context.SORA_ETH.evm.sign) {
       throw new Error('Unexpected behaviour! Please check ETH transaction')
     }
 
     if (context.history.signed) return Promise.resolve()
 
-    return context.SORA_ETH.ethereum.sign({
+    return context.SORA_ETH.evm.sign({
       hash: context.history.hash
     })
   },
-  [SERVICES.CHECK_ETHEREUM_TRANSACTION]: (context: Context, event: any): PromiseLike<any> => {
-    if (!context.SORA_ETH.ethereum.send) {
+  [SERVICES.CHECK_EVM_TRANSACTION]: (context: Context, event: any): PromiseLike<any> => {
+    if (!context.SORA_ETH.evm.send) {
       throw new Error('Unexpected behaviour! Please check ETH transaction')
     }
 
-    return context.SORA_ETH.ethereum.send({
-      ethereumHash: context.history.ethereumHash
+    return context.SORA_ETH.evm.send({
+      evmHash: context.history.evmHash
     })
   }
 }
 
-const ETHEREUM_SORA_SERVICES = {
+const EVM_SORA_SERVICES = {
   [SERVICES.SIGN_SORA_TRANSACTION]: (context: Context, event: any): PromiseLike<any> => {
-    if (!context.ETH_SORA.sora.sign) {
+    if (!context.EVM_SORA.sora.sign) {
       throw new Error('Unexpected behaviour! Please check SORA transaction')
     }
 
     if (context.history.signed) return Promise.resolve()
 
-    return context.ETH_SORA.sora.sign({
-      ethereumHash: context.history.ethereumHash
+    return context.EVM_SORA.sora.sign({
+      evmHash: context.history.evmHash
     })
   },
   [SERVICES.CHECK_SORA_TRANSACTION]: (context: Context, event: any): PromiseLike<any> => {
-    if (!context.ETH_SORA.sora.send) {
+    if (!context.EVM_SORA.sora.send) {
       throw new Error('Unexpected behaviour! Please check SORA transaction')
     }
 
-    return context.ETH_SORA.sora.send({
-      ethereumHash: context.history.ethereumHash
+    return context.EVM_SORA.sora.send({
+      evmHash: context.history.evmHash
     })
   },
-  [SERVICES.SIGN_ETHEREUM_TRANSACTION]: (context: Context, event: any): PromiseLike<any> => {
-    if (!context.ETH_SORA.ethereum.sign) {
+  [SERVICES.SIGN_EVM_TRANSACTION]: (context: Context, event: any): PromiseLike<any> => {
+    if (!context.EVM_SORA.evm.sign) {
       throw new Error('Unexpected behaviour! Please check ETH transaction')
     }
 
     if (context.history.signed) return Promise.resolve()
 
-    return context.ETH_SORA.ethereum.sign()
+    return context.EVM_SORA.evm.sign()
   },
-  [SERVICES.CHECK_ETHEREUM_TRANSACTION]: (context: Context, event: any): PromiseLike<any> => {
-    if (!context.ETH_SORA.ethereum.send) {
+  [SERVICES.CHECK_EVM_TRANSACTION]: (context: Context, event: any): PromiseLike<any> => {
+    if (!context.EVM_SORA.evm.send) {
       throw new Error('Unexpected behaviour! Please check ETH transaction')
     }
 
-    return context.ETH_SORA.ethereum.send({
-      ethereumHash: context.history.ethereumHash
+    return context.EVM_SORA.evm.send({
+      evmHash: context.history.evmHash
     })
   }
 }
@@ -343,18 +343,18 @@ const ETHEREUM_SORA_SERVICES = {
 function createFSM (context: Context, states, initialState = STATES.INITIAL) {
   type Transitions =
     | { type: EVENTS.SEND_SORA }
-    | { type: EVENTS.SEND_ETHEREUM }
+    | { type: EVENTS.SEND_EVM }
     | { type: EVENTS.RETRY }
 
   const initialContext: Context = {
     history: context.history,
     SORA_ETH: context.SORA_ETH,
-    ETH_SORA: context.ETH_SORA
+    EVM_SORA: context.EVM_SORA
   }
 
-  const services = states === SORA_ETHEREUM_STATES
-    ? SORA_ETHEREUM_SERVICES
-    : ETHEREUM_SORA_SERVICES
+  const services = states === SORA_EVM_STATES
+    ? SORA_EVM_SERVICES
+    : EVM_SORA_SERVICES
 
   const machineOptions: Partial<MachineOptions<Context, any>> = {
     actions: {
@@ -383,11 +383,11 @@ function createFSM (context: Context, states, initialState = STATES.INITIAL) {
           })
         }
       }),
-      [ACTIONS.SET_ETHEREUM_TRANSACTION_HASH]: assign({
+      [ACTIONS.SET_EVM_TRANSACTION_HASH]: assign({
         history: (context, event) => {
           return ({
             ...context.history,
-            ethereumHash: event.data
+            evmHash: event.data
           })
         }
       }),
@@ -435,6 +435,6 @@ export {
   createFSM,
   EVENTS,
   STATES,
-  SORA_ETHEREUM_STATES,
-  ETHEREUM_SORA_STATES
+  SORA_EVM_STATES,
+  EVM_SORA_STATES
 }

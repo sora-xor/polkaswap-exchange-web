@@ -69,7 +69,7 @@
           <div v-if="isNetworkAConnected && !isSoraToEvm" class="bridge-item-footer">
             <s-divider />
             <s-button class="el-button--change-wallet" type="link" size="mini" @click="isSoraToEvm ? connectInternalWallet() : changeExternalWallet()">
-              <span class="bridge-item-id">{{ formatAddress(isSoraToEvm ? getWalletAddress() : ethAddress, 8) }}</span>
+              <span class="bridge-item-id">{{ formatAddress(isSoraToEvm ? getWalletAddress() : evmAddress, 8) }}</span>
               <span class="change-wallet">{{ t('bridge.changeAccount') }}</span>
             </s-button>
             <span>{{ t('bridge.connected') }}</span>
@@ -112,7 +112,7 @@
           <div v-if="isNetworkBConnected && isSoraToEvm" class="bridge-item-footer">
             <s-divider />
             <s-button class="el-button--change-wallet" type="link" size="mini" @click="!isSoraToEvm ? connectInternalWallet() : changeExternalWallet()">
-              <span class="bridge-item-id">{{ formatAddress(isSoraToEvm ? ethAddress : getWalletAddress(), 8) }}</span>
+              <span class="bridge-item-id">{{ formatAddress(isSoraToEvm ? evmAddress : getWalletAddress(), 8) }}</span>
               <span class="change-wallet">{{ t('bridge.changeAccount') }}</span>
             </s-button>
             <span>{{ t('bridge.connected') }}</span>
@@ -165,7 +165,7 @@
           <info-line
             :label="t('bridge.ethereumNetworkFee')"
             :tooltip-content="t('ethNetworkFeeTooltipText')"
-            :value="formatFee(ethereumNetworkFee, formattedEthNetworkFee)"
+            :value="formatFee(evmNetworkFee, formattedEthNetworkFee)"
             :asset-symbol="EthSymbol"
           />
           <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
@@ -239,7 +239,7 @@ export default class Bridge extends Mixins(
   @Action('resetBalanceSubscription', { namespace }) resetBalanceSubscription
   @Action('getNetworkFee', { namespace }) getNetworkFee
 
-  @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: CodecString
+  @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
   @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<BridgeNetwork>
   @Getter('defaultNetworkType', { namespace: 'web3' }) defaultNetworkType!: string
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
@@ -250,7 +250,7 @@ export default class Bridge extends Mixins(
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('amount', { namespace }) amount!: string
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
-  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: CodecString
+  @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
@@ -292,7 +292,7 @@ export default class Bridge extends Mixins(
       return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee)
     }
     if (isEthereumAddress(this.asset.externalAddress) && !this.isSoraToEvm) {
-      const fpFee = this.getFPNumberFromCodec(this.ethereumNetworkFee)
+      const fpFee = this.getFPNumberFromCodec(this.evmNetworkFee)
       return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee)
     }
     return !FPNumber.eq(fpBalance, fpAmount)
@@ -303,11 +303,11 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientEthereumForFee (): boolean {
-    return hasInsufficientEthForFee(this.ethBalance, this.ethereumNetworkFee)
+    return hasInsufficientEthForFee(this.evmBalance, this.evmNetworkFee)
   }
 
   get isInsufficientBalance (): boolean {
-    const fee = this.isSoraToEvm ? this.soraNetworkFee : this.ethereumNetworkFee
+    const fee = this.isSoraToEvm ? this.soraNetworkFee : this.evmNetworkFee
 
     return this.isNetworkAConnected && this.isRegisteredAsset && hasInsufficientBalance(this.asset, this.amount, fee, !this.isSoraToEvm)
   }
@@ -340,7 +340,7 @@ export default class Bridge extends Mixins(
   }
 
   get formattedEthNetworkFee (): string {
-    return this.formatCodecNumber(this.ethereumNetworkFee)
+    return this.formatCodecNumber(this.evmNetworkFee)
   }
 
   formatFee (fee: string, formattedFee: string): string {
@@ -400,7 +400,7 @@ export default class Bridge extends Mixins(
 
   handleMaxValue (): void {
     if (this.asset && this.isRegisteredAsset) {
-      const fee = this.isSoraToEvm ? this.soraNetworkFee : this.ethereumNetworkFee
+      const fee = this.isSoraToEvm ? this.soraNetworkFee : this.evmNetworkFee
       const max = getMaxValue(this.asset, fee, !this.isSoraToEvm)
       this.setAmount(max)
     }
