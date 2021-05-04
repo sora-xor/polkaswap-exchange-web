@@ -28,8 +28,9 @@ import { api } from '@soramitsu/soraneo-wallet-web'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
-import { Components, BridgeNetwork } from '@/consts'
+import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
+import { SubNetwork } from '@/utils/web3-util'
 
 @Component({
   components: {
@@ -40,7 +41,7 @@ import { lazyComponent } from '@/router'
 export default class SelectNetwork extends Mixins(TranslationMixin, DialogMixin) {
   selectedNetwork = 0
 
-  @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<BridgeNetwork>
+  @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<SubNetwork>
 
   created () {
     this.selectedNetwork = api.bridge.externalNetwork || this.subNetworks[0]?.id

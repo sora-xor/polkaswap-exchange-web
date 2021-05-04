@@ -208,6 +208,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   @Action setSelectNodeDialogVisibility!: (flag: boolean) => void
   @Action('setEvmSmartContracts', { namespace: 'web3' }) setEvmSmartContracts
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks
+  @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts
 
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction (value): void {
@@ -221,7 +222,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
       await this.setSoraNetwork(data)
       await this.setDefaultNodes(data?.DEFAULT_NETWORKS)
       await this.setSubNetworks(data.SUB_NETWORKS)
-      await this.setEvmSmartContracts(data.BRIDGE)
+      await this.setSmartContracts(data.SUB_NETWORKS)
 
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL)

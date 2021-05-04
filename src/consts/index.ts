@@ -111,16 +111,6 @@ interface SidebarMenuItemLink extends SidebarMenuItem {
   href?: string;
 }
 
-export interface BridgeNetwork {
-  name: string;
-  id: 0 | 1;
-  symbol: string;
-  currency: string;
-  defaultType: string;
-  address: number;
-  CONTRACTS: any;
-}
-
 const MainMenu: Array<SidebarMenuItem> = [
   {
     icon: 'arrows-swap-90-24',

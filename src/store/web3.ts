@@ -4,9 +4,9 @@ import flatMap from 'lodash/fp/flatMap'
 import concat from 'lodash/fp/concat'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
-import { api, FPNumber } from '@sora-substrate/util'
+import { api, FPNumber, BridgeNetworks } from '@sora-substrate/util'
 
-import web3Util, { ABI, Contract, EvmNetworkTypeName, KnownBridgeAsset, OtherContractType, ContractNetwork, EvmNetworkType, EvmNetwork } from '@/utils/web3-util'
+import web3Util, { ABI, Contract, EvmNetworkTypeName, KnownBridgeAsset, OtherContractType, ContractNetwork, EvmNetworkType, EvmNetwork, SubNetwork } from '@/utils/web3-util'
 import { ZeroStringValue } from '@/consts'
 import { isEthereumAddress } from '@/utils'
 
@@ -37,7 +37,7 @@ const types = flow(
 function initialState () {
   return {
     soraNetwork: '',
-    evmAddress: web3Util.getEthUserAddress(),
+    evmAddress: web3Util.getEvmUserAddress(),
     evmBalance: ZeroStringValue,
     networkType: web3Util.getNetworkTypeFromStorage(),
     defaultNetworkType: '',
@@ -69,11 +69,11 @@ function initialState () {
 const state = initialState()
 
 const getters = {
-  contractAbi (state, network: EvmNetwork, asset: KnownBridgeAsset) {
-    return state.smartContracts[network][asset]
+  contractAbi (state, asset: KnownBridgeAsset) {
+    return state.smartContracts[state.evmNetwork][asset].abi
   },
-  contractAddress (state, network: EvmNetwork, asset: KnownBridgeAsset) {
-    return state.contractAddress[network][asset]
+  contractAddress (state, asset: KnownBridgeAsset) {
+    return state.contractAddress[state.evmNetwork][asset]
   },
   isExternalAccountConnected (state) {
     return !!state.evmAddress && state.evmAddress !== 'undefined'
@@ -164,25 +164,25 @@ const mutations = {
   },
   [types.DISCONNECT_EVM_WALLET_FAILURE] () {},
 
-  [types.SET_ETHEREUM_SMART_CONTRACTS] (state, params) {
+  [types.SET_ETHEREUM_SMART_CONTRACTS] (state, { contracts, address }) {
     Vue.set(state.smartContracts, EvmNetwork.Ethereum, {
-      XOR: params.contracts.XOR,
-      VAL: params.contracts.VAL,
-      OTHER: params.contracts.OTHER
+      XOR: contracts.XOR,
+      VAL: contracts.VAL,
+      OTHER: contracts.OTHER
     })
-    Vue.set(state.smartAddress, EvmNetwork.Ethereum, {
-      XOR: params.address.XOR,
-      VAL: params.address.VAL,
-      OTHER: params.address.OTHER
+    Vue.set(state.contractAddress, EvmNetwork.Ethereum, {
+      XOR: address.XOR,
+      VAL: address.VAL,
+      OTHER: address.OTHER
     })
   },
 
-  [types.SET_ENERGY_SMART_CONTRACTS] (state, params) {
+  [types.SET_ENERGY_SMART_CONTRACTS] (state, { contracts, address }) {
     Vue.set(state.smartContracts, EvmNetwork.Energy, {
-      OTHER: params.contracts.OTHER
+      OTHER: contracts.OTHER
     })
-    Vue.set(state.smartAddress, EvmNetwork.Energy, {
-      OTHER: params.address.OTHER
+    Vue.set(state.contractAddress, EvmNetwork.Energy, {
+      OTHER: address.OTHER
     })
   },
 
@@ -208,7 +208,7 @@ const actions = {
     commit(types.CONNECT_EVM_WALLET_REQUEST)
     try {
       const address = await web3Util.onConnect({ provider })
-      web3Util.storeEthUserAddress(address)
+      web3Util.storeEvmUserAddress(address)
       commit(types.CONNECT_EVM_WALLET_SUCCESS, address)
 
       // get ethereum balance
@@ -222,8 +222,8 @@ const actions = {
   async switchExternalAccount ({ commit, dispatch }, { address = '' } = {}) {
     commit(types.SWITCH_EVM_WALLET_REQUEST)
     try {
-      web3Util.removeEthUserAddress()
-      web3Util.storeEthUserAddress(address)
+      web3Util.removeEvmUserAddress()
+      web3Util.storeEvmUserAddress(address)
       commit(types.SWITCH_EVM_WALLET_SUCCESS, address)
 
       // get ethereum balance
@@ -238,18 +238,21 @@ const actions = {
     commit(types.SET_SORA_NETWORK, network)
   },
 
-  async setSubNetworks ({ commit }, subNetworks) {
+  async setSubNetworks ({ commit }, subNetworks: Array<SubNetwork>) {
     commit(types.SET_SUB_NETWORKS, subNetworks)
   },
 
-  async setEvmNetwork ({ commit, dispatch }, networkId) {
+  async setEvmNetwork ({ commit, dispatch }, networkId: BridgeNetworks) {
     api.bridge.externalNetwork = networkId
     await dispatch('setDefaultNetworkType', networkId)
     commit(types.SET_ENV_NETWORK, networkId)
   },
 
-  async setDefaultNetworkType ({ commit, getters }, networkId) {
-    commit(types.SET_DEFAULT_NETWORK_TYPE, getters.subNetworks?.find(item => item.id === networkId)?.defaultType)
+  async setDefaultNetworkType ({ commit, getters }, networkId: BridgeNetworks) {
+    const network: SubNetwork | undefined = getters.subNetworks.find(
+      (network: SubNetwork) => network.id === networkId
+    )
+    commit(types.SET_DEFAULT_NETWORK_TYPE, network?.defaultType)
   },
 
   async setNetworkType ({ commit }, network) {
@@ -269,7 +272,7 @@ const actions = {
   async disconnectExternalAccount ({ commit }) {
     commit(types.DISCONNECT_EVM_WALLET_REQUEST)
     try {
-      web3Util.removeEthUserAddress()
+      web3Util.removeEvmUserAddress()
       commit(types.DISCONNECT_EVM_WALLET_SUCCESS)
       commit(types.RESET)
     } catch (error) {
@@ -278,7 +281,18 @@ const actions = {
     }
   },
 
-  async setEvmSmartContracts ({ commit }, { ETHEREUM }) {
+  async setSmartContracts ({ commit, dispatch }, subNetworks: Array<SubNetwork>) {
+    for (const network of subNetworks) {
+      if (network.id === BridgeNetworks.ETH_NETWORK_ID) {
+        dispatch('setEvmSmartContracts', network)
+      }
+      if (network.id === BridgeNetworks.ENERGY_NETWORK_ID) {
+        dispatch('setEnergySmartContracts', network)
+      }
+    }
+  },
+
+  async setEvmSmartContracts ({ commit }, network: SubNetwork) {
     const INTERNAL = await web3Util.readSmartContract(
       ContractNetwork.Ethereum,
       `${Contract.Internal}/Master.json`
@@ -292,18 +306,26 @@ const actions = {
       `${Contract.Other}/ERC20.json`
     )
     commit(types.SET_ETHEREUM_SMART_CONTRACTS, {
-      address: ETHEREUM,
-      contracts: { VAL: INTERNAL, OTHER: { BRIDGE, ERC20 }, XOR: INTERNAL }
+      address: {
+        XOR: network.CONTRACTS.XOR.MASTER,
+        VAL: network.CONTRACTS.VAL.MASTER,
+        OTHER: network.CONTRACTS.OTHER.MASTER
+      },
+      contracts: {
+        XOR: INTERNAL,
+        VAL: INTERNAL,
+        OTHER: { BRIDGE, ERC20 }
+      }
     })
   },
 
-  async setEnergySmartContracts ({ commit }, { ENERGY }) {
+  async setEnergySmartContracts ({ commit }, network: SubNetwork) {
     const BRIDGE = await web3Util.readSmartContract(
       ContractNetwork.Other,
       'BridgeEVM.json'
     )
     commit(types.SET_ENERGY_SMART_CONTRACTS, {
-      address: ENERGY,
+      address: { OTHER: network.CONTRACTS.OTHER.MASTER },
       contracts: { OTHER: { BRIDGE } }
     })
   },
@@ -327,7 +349,7 @@ const actions = {
     return value
   },
 
-  async getBalanceByEthAddress ({ commit, getters, dispatch }, { address }) {
+  async getBalanceByEvmAddress ({ commit, getters, dispatch }, { address }) {
     let value = ZeroStringValue
     commit(types.GET_BALANCE_REQUEST)
     try {
@@ -363,9 +385,9 @@ const actions = {
         return ''
       }
       const web3 = await web3Util.getInstance()
-      const contract = getters[`contract${KnownBridgeAsset.Other}`]
-      const contractInstance = new web3.eth.Contract(contract[OtherContractType.Bridge].abi)
-      const contractAddress = getters[`address${KnownBridgeAsset.Other}`]
+      const contractAbi = getters.contractAbi(KnownBridgeAsset.Other)
+      const contractInstance = new web3.eth.Contract(contractAbi)
+      const contractAddress = getters.contractAddress(KnownBridgeAsset.Other)
       contractInstance.options.address = contractAddress.MASTER
       const methodArgs = [address]
       const contractMethod = contractInstance.methods._sidechainTokens(...methodArgs)
@@ -381,7 +403,7 @@ const actions = {
   async getAllowanceByEvmAddress ({ commit, getters }, { address }) {
     commit(types.GET_ALLOWANCE_REQUEST)
     try {
-      const contractAddress = getters[`address${KnownBridgeAsset.Other}`]
+      const contractAddress = getters.contractAddress(KnownBridgeAsset.Other)
       const web3 = await web3Util.getInstance()
       const tokenInstance = new web3.eth.Contract(ABI.allowance as any)
       tokenInstance.options.address = address

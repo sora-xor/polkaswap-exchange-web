@@ -146,7 +146,7 @@ const actions = {
             accountAsset.externalAddress = externalAddress
           }
           if (accountAsset.externalAddress) {
-            const externalBalance = await dispatch('web3/getBalanceByEthAddress', { address: accountAsset.externalAddress }, { root: true })
+            const externalBalance = await dispatch('web3/getBalanceByEvmAddress', { address: accountAsset.externalAddress }, { root: true })
             accountAsset.externalBalance = externalBalance
           }
         } catch (error) {

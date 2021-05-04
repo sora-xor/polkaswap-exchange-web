@@ -3,6 +3,7 @@ import { AbiItem } from 'web3-utils'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import detectEthereumProvider from '@metamask/detect-provider'
 import { decodeAddress } from '@polkadot/util-crypto'
+import { BridgeNetworks } from '@sora-substrate/util'
 
 import axios from '@/api'
 import storage from './storage'
@@ -68,6 +69,19 @@ export const ABI = {
 
 let provider: any = null
 let web3Istance: any = null
+
+export interface SubNetwork {
+  name: EvmNetwork;
+  id: BridgeNetworks;
+  symbol: string;
+  currency: string;
+  defaultType: EvmNetworkType;
+  CONTRACTS: {
+    XOR: { MASTER: string };
+    VAL: { MASTER: string };
+    OTHER: { MASTER: string };
+  };
+}
 
 export enum KnownBridgeAsset {
   VAL = 'VAL',
@@ -237,15 +251,15 @@ async function watchEthereum (cb: {
   }
 }
 
-function storeEthUserAddress (address: string): void {
+function storeEvmUserAddress (address: string): void {
   storage.set('evmAddress', address)
 }
 
-function getEthUserAddress (): string {
+function getEvmUserAddress (): string {
   return storage.get('evmAddress') || ''
 }
 
-function removeEthUserAddress (): void {
+function removeEvmUserAddress (): void {
   storage.remove('evmAddress')
 }
 
@@ -318,14 +332,14 @@ export default {
   onConnect,
   getAccount,
   checkAccountIsConnected,
-  storeEthUserAddress,
-  getEthUserAddress,
+  storeEvmUserAddress,
+  getEvmUserAddress,
   storeNetworkType,
   getNetworkType,
   getNetworkTypeFromStorage,
   removeNetworkType,
   getInstance,
-  removeEthUserAddress,
+  removeEvmUserAddress,
   watchEthereum,
   readSmartContract,
   getInfoFromContract,

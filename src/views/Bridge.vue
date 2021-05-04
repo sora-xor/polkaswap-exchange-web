@@ -197,7 +197,8 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
-import { Components, PageNames, EthSymbol, ZeroStringValue, BridgeNetwork } from '@/consts'
+import { Components, PageNames, EthSymbol, ZeroStringValue } from '@/consts'
+import { SubNetwork } from '@/utils/web3-util'
 import {
   isXorAccountAsset,
   hasInsufficientBalance,
@@ -240,7 +241,7 @@ export default class Bridge extends Mixins(
   @Action('getNetworkFee', { namespace }) getNetworkFee
 
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
-  @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<BridgeNetwork>
+  @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<SubNetwork>
   @Getter('defaultNetworkType', { namespace: 'web3' }) defaultNetworkType!: string
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
