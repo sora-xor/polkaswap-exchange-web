@@ -92,6 +92,17 @@ async function waitForEthereumTransactionStatus (hash: string): Promise<Transact
   return result
 }
 
+const topic = '0x0ce781a18c10c8289803c7c4cfd532d797113c4b41c9701ffad7d0a632ac555b'
+async function getEthUserTXs (address: string) {
+  const web3 = await web3Util.getInstance()
+  console.log(await web3.eth.getPastLogs({
+    topics: [topic],
+    address,
+    fromBlock: 12322912,
+    toBlock: web3.eth.defaultBlock
+  }))
+}
+
 async function waitForRequest (hash: string): Promise<BridgeRequest> {
   await delay(SORA_REQUESTS_TIMEOUT)
   const request = await api.bridge.getRequest(hash)
@@ -398,6 +409,7 @@ const actions = {
         const transactions = await api.bridge.getRequests(hashes)
         // TODO: Remove console.log
         console.log('transactions', transactions)
+        await getEthUserTXs(rootGetters['web3/addressOTHER'].MASTER)
         if (transactions?.length) {
           transactions.forEach(transaction => {
             const history = getters.history
@@ -409,7 +421,7 @@ const actions = {
               api.bridge.generateHistoryItem({
                 type: direction,
                 from: transaction.from,
-                // amount: getters.amount,
+                amount: transaction.amount,
                 symbol: rootGetters['assets/registeredAssets'].find(item => item.address === transaction.soraAssetAddress)?.symbol,
                 assetAddress: transaction.soraAssetAddress,
                 startTime: Date.now(),
