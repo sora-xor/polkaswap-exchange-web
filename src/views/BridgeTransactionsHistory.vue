@@ -169,7 +169,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   }
 
   formatAmount (historyItem: any): string {
-    return new FPNumber(historyItem.amount, this.registeredAssets?.find(asset => asset.address === historyItem.address)?.decimals).format()
+    return historyItem.amount ? new FPNumber(historyItem.amount, this.registeredAssets?.find(asset => asset.address === historyItem.address)?.decimals).format() : ''
   }
 
   formatDate (response: any): string {
@@ -243,9 +243,10 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     this.currentPage = 1
   }
 
-  handleRestoreHistory (): void {
-    // TODO: Get history here
-    this.getRestoredHistory()
+  async handleRestoreHistory (): Promise<void> {
+    await this.getRestoredHistory()
+    await this.getRestoredFlag()
+    await this.getHistory()
   }
 
   handleBack (): void {

@@ -9,6 +9,7 @@ import {
   BridgeCurrencyType,
   BridgeTxStatus,
   BridgeRequest,
+  BridgeDirection,
   Operation,
   BridgeHistory,
   TransactionStatus,
@@ -388,15 +389,43 @@ const actions = {
       throw error
     }
   },
-  async getRestoredHistory ({ commit, getters }) {
+  async getRestoredHistory ({ commit, getters, rootGetters }) {
     commit(types.GET_RESTORED_HISTORY_REQUEST)
     try {
       // TODO: Set restored flag to true and Add history items to History
       api.restored = !getters.restored
       const hashes = await api.bridge.getAccountRequests()
-      console.log('hashes', hashes)
-      const history = api.bridge.getRequests(hashes)
-      console.log('history', history)
+      if (hashes?.length) {
+        const transactions = await api.bridge.getRequests(hashes)
+        console.log('transactions', transactions)
+        if (transactions?.length) {
+          transactions.forEach(transaction => {
+            const history = getters.history
+            console.log('history', history)
+            if (!history.length || !history.find(item => item.hash === transaction.hash)) {
+              // TODO: Add more fields
+              api.bridge.generateHistoryItem({
+                type: transaction.direction === BridgeDirection.Outgoing ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
+                from: transaction.from,
+                to: transaction.to,
+                // amount: getters.amount,
+                symbol: rootGetters['assets/registeredAssets'].find(item => item.address === transaction.soraAssetAddress)?.symbol,
+                assetAddress: transaction.soraAssetAddress,
+                // startTime: playground.date,
+                // endTime: playground.date,
+                // signed: false,
+                status: transaction.status,
+                // transactionStep: playground.step,
+                hash: transaction.hash
+                // ethereumHash: '',
+                // transactionState: STATES.INITIAL,
+                // soraNetworkFee: getters.soraNetworkFee.toString(),
+                // ethereumNetworkFee: getters.ethereumNetworkFee
+              })
+            }
+          })
+        }
+      }
       commit(types.GET_RESTORED_HISTORY_SUCCESS)
     } catch (error) {
       commit(types.GET_RESTORED_HISTORY_FAILURE)

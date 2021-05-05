@@ -243,7 +243,7 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   showConfirmTransactionDialog = false
 
   get formattedAmount (): string {
-    return new FPNumber(this.amount, this.asset?.decimals).format()
+    return this.amount ? new FPNumber(this.amount, this.asset?.decimals).format() : ''
   }
 
   get assetSymbol (): string {
@@ -393,9 +393,9 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   }
 
   get isInsufficientBalance (): boolean {
-    if (!this.asset) return false
-
     const fee = this.isSoraToEthereum ? this.soraNetworkFee : this.ethereumNetworkFee
+
+    if (!this.asset || !this.amount || !fee) return false
 
     return hasInsufficientBalance(this.asset, this.amount, fee, !this.isSoraToEthereum)
   }
