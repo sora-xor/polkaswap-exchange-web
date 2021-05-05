@@ -404,21 +404,22 @@ const actions = {
             console.log('history', history)
             if (!history.length || !history.find(item => item.hash === transaction.hash)) {
               // TODO: Add more fields
+              const direction = transaction.direction === BridgeDirection.Outgoing ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming
               api.bridge.generateHistoryItem({
-                type: transaction.direction === BridgeDirection.Outgoing ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
+                type: direction,
                 from: transaction.from,
                 to: transaction.to,
                 // amount: getters.amount,
                 symbol: rootGetters['assets/registeredAssets'].find(item => item.address === transaction.soraAssetAddress)?.symbol,
                 assetAddress: transaction.soraAssetAddress,
-                // startTime: playground.date,
+                startTime: Date.now(),
                 // endTime: playground.date,
-                // signed: false,
+                signed: false,
                 status: transaction.status,
-                // transactionStep: playground.step,
-                hash: transaction.hash
+                transactionStep: direction === Operation.EthBridgeOutgoing ? 1 : 2,
+                hash: transaction.hash,
                 // ethereumHash: '',
-                // transactionState: STATES.INITIAL,
+                transactionState: STATES.INITIAL
                 // soraNetworkFee: getters.soraNetworkFee.toString(),
                 // ethereumNetworkFee: getters.ethereumNetworkFee
               })
@@ -458,7 +459,7 @@ const actions = {
       const asset = await dispatch('findRegisteredAsset')
       const fee = await (
         getters.isSoraToEthereum
-          ? api.bridge.getTransferToEthFee(asset, '', getters.amount)
+          ? api.bridge.getTransferToEthFee(asset, '', getters.amount || 0)
           : '0' // TODO: check it for other types of bridge
       )
       commit(types.GET_SORA_NETWORK_FEE_SUCCESS, fee)

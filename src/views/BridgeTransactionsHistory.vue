@@ -99,7 +99,6 @@ const namespace = 'bridge'
 })
 export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, LoadingMixin) {
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
-  @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
   @Getter('history', { namespace }) history!: Array<BridgeHistory> | null
   @Getter('restored', { namespace }) restored!: boolean
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: string
@@ -174,7 +173,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 
   formatDate (response: any): string {
     // We use current date if request is failed
-    const date = response && response.endTime ? new Date(response.endTime) : new Date()
+    const date = response && response.startTime ? new Date(response.startTime) : new Date()
     return `${date.getDate()} ${this.t(`months[${date.getMonth()}]`)} ${date.getFullYear()}, ${formatDateItem(date.getHours())}:${formatDateItem(date.getMinutes())}:${formatDateItem(date.getSeconds())}`
   }
 
@@ -210,7 +209,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
       await this.setSoraTransactionDate(tx[this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
       await this.setEthereumTransactionHash(tx.ethereumHash)
       await this.setEthereumTransactionDate(tx[!this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
-      if (tx.status === BridgeTxStatus.Failed) {
+      if (tx.status === BridgeTxStatus.Failed || this.soraNetworkFee) {
         await this.getNetworkFee()
         await this.getEthNetworkFee()
         await this.setSoraNetworkFee(this.isOutgoingType(tx.type) ? tx.soraNetworkFee : this.soraNetworkFee)

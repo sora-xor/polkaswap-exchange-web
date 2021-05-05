@@ -55,6 +55,7 @@
             <info-line :class="failedClass()" :label="t('bridgeTransaction.networkInfo.status')" :value="statusFrom" />
             <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionFromDate" />
             <info-line
+              v-if="amount"
               :label="t('bridgeTransaction.networkInfo.amount')"
               :value="`-${formattedAmount}`"
               :asset-symbol="formatAssetSymbol(assetSymbol)"
@@ -111,6 +112,7 @@
             <info-line :class="failedClass(true)" :label="t('bridgeTransaction.networkInfo.status')" :value="statusTo" />
             <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionDate(!isSoraToEthereum ? soraTransactionDate : ethereumTransactionDate)" />
             <info-line
+              v-if="amount"
               :label="t('bridgeTransaction.networkInfo.amount')"
               :value="`${formattedAmount}`"
               :asset-symbol="formatAssetSymbol(assetSymbol)"
