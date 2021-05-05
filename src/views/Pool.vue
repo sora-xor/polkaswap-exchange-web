@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { AccountLiquidity } from '@sora-substrate/util'
 
@@ -87,8 +87,6 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   @Action('updateAccountLiquidity', { namespace }) updateAccountLiquidity
   @Action('destroyUpdateAccountLiquiditySubscription', { namespace }) destroyUpdateAccountLiquiditySubscription
-
-  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
   async mounted () {
     await this.withApi(async () => {
