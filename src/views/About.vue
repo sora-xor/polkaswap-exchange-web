@@ -1,5 +1,5 @@
 <template>
-  <div class="layout">
+  <div class="layout" v-once>
     <div class="content">
 
       <img src="@/assets/about/hero.png" draggable="false" class="unselectable" style="max-width: 1040px;z-index: -1;" />
