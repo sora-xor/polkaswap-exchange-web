@@ -47,7 +47,7 @@
                 </div>
                 <div class="history-item-date">{{ formatDate(item) }}</div>
               </div>
-              <div :class="historyStatusIconClasses(item.type, item.transactionState)" />
+              <div :class="historyStatusIconClasses(item.type, item.transactionState, !!item.from)" />
             </div>
           </template>
           <p v-else class="history-empty p4">{{ t('bridgeHistory.empty') }}</p>
@@ -177,10 +177,10 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     return `${date.getDate()} ${this.t(`months[${date.getMonth()}]`)} ${date.getFullYear()}, ${formatDateItem(date.getHours())}:${formatDateItem(date.getMinutes())}:${formatDateItem(date.getSeconds())}`
   }
 
-  historyStatusIconClasses (type: Operation, state: STATES): string {
+  historyStatusIconClasses (type: Operation, state: STATES, isRestoredItem: false): string {
     const iconClass = 'history-item-icon'
     const classes = [iconClass]
-    if ([STATES.SORA_REJECTED, STATES.ETHEREUM_REJECTED].includes(state)) {
+    if ([STATES.SORA_REJECTED, STATES.ETHEREUM_REJECTED].includes(state) || isRestoredItem) {
       classes.push(`${iconClass}--error`)
       return classes.join(' ')
     }

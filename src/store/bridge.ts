@@ -403,25 +403,19 @@ const actions = {
             const history = getters.history
             console.log('history', history)
             if (!history.length || !history.find(item => item.hash === transaction.hash)) {
-              // TODO: Add more fields
               const direction = transaction.direction === BridgeDirection.Outgoing ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming
               api.bridge.generateHistoryItem({
                 type: direction,
                 from: transaction.from,
-                to: transaction.to,
                 // amount: getters.amount,
                 symbol: rootGetters['assets/registeredAssets'].find(item => item.address === transaction.soraAssetAddress)?.symbol,
                 assetAddress: transaction.soraAssetAddress,
                 startTime: Date.now(),
-                // endTime: playground.date,
                 signed: false,
                 status: transaction.status,
-                transactionStep: direction === Operation.EthBridgeOutgoing ? 1 : 2,
+                transactionStep: 2,
                 hash: transaction.hash,
-                // ethereumHash: '',
-                transactionState: STATES.INITIAL
-                // soraNetworkFee: getters.soraNetworkFee.toString(),
-                // ethereumNetworkFee: getters.ethereumNetworkFee
+                transactionState: STATES.SORA_COMMITED
               })
             }
           })
