@@ -382,7 +382,6 @@ const actions = {
   async getRestoredFlag ({ commit }) {
     commit(types.GET_RESTORED_FLAG_REQUEST)
     try {
-      console.log('Get Restored Flag', api.restored)
       commit(types.GET_RESTORED_FLAG_SUCCESS, api.restored)
     } catch (error) {
       commit(types.GET_RESTORED_FLAG_FAILURE)
@@ -392,18 +391,21 @@ const actions = {
   async getRestoredHistory ({ commit, getters, rootGetters }) {
     commit(types.GET_RESTORED_HISTORY_REQUEST)
     try {
-      // TODO: Set restored flag to true and Add history items to History
+      // TODO: Set restored flag to true and Add history items to History (change !getters.restored to true)
       api.restored = !getters.restored
       const hashes = await api.bridge.getAccountRequests()
       if (hashes?.length) {
         const transactions = await api.bridge.getRequests(hashes)
+        // TODO: Remove console.log
         console.log('transactions', transactions)
         if (transactions?.length) {
           transactions.forEach(transaction => {
             const history = getters.history
-            console.log('history', history)
             if (!history.length || !history.find(item => item.hash === transaction.hash)) {
               const direction = transaction.direction === BridgeDirection.Outgoing ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming
+              // TODO: transaction.status === 'ApprovalsReady' right now, we shoud set correct status somehow (BridgeTxStatus.Failed || BridgeTxStatus.Done)
+              // TODO: transactionState should be STATES.ETHEREUM_REJECTED (for BridgeTxStatus.Failed) and STATES.ETHEREUM_COMMITED (for BridgeTxStatus.Done)
+              // TODO: get amount and ethereumHash
               api.bridge.generateHistoryItem({
                 type: direction,
                 from: transaction.from,
@@ -415,7 +417,8 @@ const actions = {
                 status: transaction.status,
                 transactionStep: 2,
                 hash: transaction.hash,
-                transactionState: STATES.SORA_COMMITED
+                // ethereumHash: '',
+                transactionState: STATES.ETHEREUM_REJECTED
               })
             }
           })

@@ -47,7 +47,7 @@
                 </div>
                 <div class="history-item-date">{{ formatDate(item) }}</div>
               </div>
-              <div :class="historyStatusIconClasses(item.type, item.transactionState, !!item.from)" />
+              <div :class="historyStatusIconClasses(item.type, item.transactionState)" />
             </div>
           </template>
           <p v-else class="history-empty p4">{{ t('bridgeHistory.empty') }}</p>
@@ -149,7 +149,6 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
       await this.getHistory()
       await this.getNetworkFee()
       await this.getEthNetworkFee()
-      console.log('restored', this.restored)
     })
   }
 
@@ -177,10 +176,10 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     return `${date.getDate()} ${this.t(`months[${date.getMonth()}]`)} ${date.getFullYear()}, ${formatDateItem(date.getHours())}:${formatDateItem(date.getMinutes())}:${formatDateItem(date.getSeconds())}`
   }
 
-  historyStatusIconClasses (type: Operation, state: STATES, isRestoredItem: false): string {
+  historyStatusIconClasses (type: Operation, state: STATES): string {
     const iconClass = 'history-item-icon'
     const classes = [iconClass]
-    if ([STATES.SORA_REJECTED, STATES.ETHEREUM_REJECTED].includes(state) || isRestoredItem) {
+    if ([STATES.SORA_REJECTED, STATES.ETHEREUM_REJECTED].includes(state)) {
       classes.push(`${iconClass}--error`)
       return classes.join(' ')
     }
