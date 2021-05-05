@@ -6,6 +6,7 @@
   >
     <s-form-item class="el-form-item--search">
       <s-input
+        ref="search"
         v-model="query"
         :placeholder="t('selectRegisteredAsset.search.placeholder')"
         class="asset-search"
@@ -88,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { Asset, AccountAsset, RegisteredAccountAsset, KnownAssets } from '@sora-substrate/util'
 
@@ -132,6 +133,19 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
   @Getter('registeredAssets', { namespace }) registeredAssets!: Array<RegisteredAccountAsset>
 
   @Action('getCustomAsset', { namespace }) getAsset
+
+  @Watch('visible')
+  async handleVisibleChangeToFocusSearch (value: boolean): Promise<void> {
+    await this.$nextTick()
+
+    if (!value) return
+
+    const input = this.$refs.search as any
+
+    if (input && typeof input.focus === 'function') {
+      input.focus()
+    }
+  }
 
   get containerClasses (): string {
     const componentClass = 'asset-select'
