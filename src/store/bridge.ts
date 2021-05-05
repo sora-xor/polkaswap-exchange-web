@@ -676,6 +676,9 @@ const actions = {
     if (!ethereumHash) throw new Error('Hash cannot be empty!')
     commit(types.SEND_SORA_TRANSACTION_ETH_SORA_REQUEST)
     try {
+      if (getters.asset.address) {
+        await api.getAccountAsset(getters.asset.address, true)
+      }
       await waitForRequest(ethereumHash)
       commit(types.SEND_SORA_TRANSACTION_ETH_SORA_SUCCESS)
     } catch (error) {
