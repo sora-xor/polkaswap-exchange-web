@@ -73,7 +73,7 @@ const actions = {
     if (updateLiquidityIntervalId) {
       clearInterval(updateLiquidityIntervalId)
     }
-    dispatch('getAccountLiquidity')
+    await dispatch('getAccountLiquidity')
     const fiveSeconds = 5 * 1000
     updateLiquidityIntervalId = setInterval(async () => {
       if (!rootGetters.isLoggedIn) {
