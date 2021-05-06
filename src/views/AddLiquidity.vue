@@ -189,10 +189,6 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity
   @Action('destroyUpdateAccountLiquiditySubscription', { namespace: 'pool' }) destroyUpdateAccountLiquiditySubscription
 
-  async mounted (): Promise<void> {
-    await this.withApi(this.updateAccountLiquidity)
-  }
-
   destroyed (): void {
     this.destroyUpdateAccountLiquiditySubscription()
   }
@@ -242,6 +238,8 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   }
 
   async afterApiConnect (): Promise<void> {
+    await this.updateAccountLiquidity()
+
     if (this.firstAddress && this.secondAddress) {
       await this.setDataFromLiquidity({
         firstAddress: this.firstAddress,
