@@ -125,6 +125,8 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Action('setHistoryItem', { namespace }) setHistoryItem
   @Action('saveHistory', { namespace }) saveHistory
 
+  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets
+
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
   PageNames = PageNames
@@ -146,6 +148,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 
   async created (): Promise<void> {
     this.withApi(async () => {
+      await this.updateRegisteredAssets()
       await this.getRestoredFlag()
       await this.getHistory()
     })
