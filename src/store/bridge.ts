@@ -100,7 +100,7 @@ async function getEthUserTXs (contracts: Array<string>): Promise<Array<EthLogDat
   const web3 = await web3Util.getInstance()
   const getLogs = (address: string) => web3.eth.getPastLogs({
     topics: [topic],
-    fromBlock: 8463300, // TODO: SET CORRECT START BLOCK
+    fromBlock: 8371261,
     toBlock: web3.eth.defaultBlock,
     address
   })
