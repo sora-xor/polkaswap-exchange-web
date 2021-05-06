@@ -96,7 +96,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
   formatAssetSymbol = formatAssetSymbol
 
   get formattedAmount (): string {
-    return this.formatStringValue(this.amount, this.asset?.decimals)
+    return this.amount ? this.formatStringValue(this.amount, this.asset?.decimals) : ''
   }
 
   get assetsClasses (): string {

@@ -521,6 +521,7 @@ $disclaimer-letter-spacing: -0.03em;
 
   &-content {
     flex: 1;
+    margin: auto;
     .app-disclaimer {
       margin-left: auto;
       margin-bottom: $inner-spacing-big;
