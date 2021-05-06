@@ -55,6 +55,7 @@
             <info-line :class="failedClass()" :label="t('bridgeTransaction.networkInfo.status')" :value="statusFrom" />
             <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionFromDate" />
             <info-line
+              v-if="amount"
               :label="t('bridgeTransaction.networkInfo.amount')"
               :value="`-${formattedAmount}`"
               :asset-symbol="formatAssetSymbol(assetSymbol)"
@@ -111,6 +112,7 @@
             <info-line :class="failedClass(true)" :label="t('bridgeTransaction.networkInfo.status')" :value="statusTo" />
             <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionDate(!isSoraToEthereum ? soraTransactionDate : ethereumTransactionDate)" />
             <info-line
+              v-if="amount"
               :label="t('bridgeTransaction.networkInfo.amount')"
               :value="`${formattedAmount}`"
               :asset-symbol="formatAssetSymbol(assetSymbol)"
@@ -243,7 +245,7 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   showConfirmTransactionDialog = false
 
   get formattedAmount (): string {
-    return new FPNumber(this.amount, this.asset?.decimals).format()
+    return this.amount ? new FPNumber(this.amount, this.asset?.decimals).format() : ''
   }
 
   get assetSymbol (): string {
@@ -385,27 +387,29 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   }
 
   get formattedSoraNetworkFee (): string {
-    return this.formatCodecNumber(this.soraNetworkFee)
+    return this.formatCodecNumber(this.historyItem?.soraNetworkFee ?? this.soraNetworkFee)
   }
 
   get formattedEthNetworkFee (): string {
-    return this.formatCodecNumber(this.ethereumNetworkFee)
+    return this.formatCodecNumber(this.historyItem?.ethereumNetworkFee ?? this.ethereumNetworkFee)
   }
 
   get isInsufficientBalance (): boolean {
-    if (!this.asset) return false
+    const fee = this.isSoraToEthereum
+      ? this.historyItem?.soraNetworkFee ?? this.soraNetworkFee
+      : this.historyItem?.ethereumNetworkFee ?? this.ethereumNetworkFee
 
-    const fee = this.isSoraToEthereum ? this.soraNetworkFee : this.ethereumNetworkFee
+    if (!this.asset || !this.amount || !fee) return false
 
     return hasInsufficientBalance(this.asset, this.amount, fee, !this.isSoraToEthereum)
   }
 
   get isInsufficientXorForFee (): boolean {
-    return hasInsufficientXorForFee(this.tokenXOR, this.soraNetworkFee)
+    return hasInsufficientXorForFee(this.tokenXOR, this.historyItem?.soraNetworkFee ?? this.soraNetworkFee)
   }
 
   get isInsufficientEthereumForFee (): boolean {
-    return hasInsufficientEthForFee(this.ethBalance, this.ethereumNetworkFee)
+    return hasInsufficientEthForFee(this.ethBalance, this.historyItem?.ethereumNetworkFee ?? this.ethereumNetworkFee)
   }
 
   handleOpenEtherscan (): void {
@@ -424,16 +428,18 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   }
 
   async created (): Promise<void> {
-    if (this.isTransactionConfirmed) {
+    if (!this.isTransactionConfirmed) {
+      router.push({ name: PageNames.Bridge })
+      return
+    }
+    if (!this.historyItem) {
       await this.getNetworkFee()
       await this.getEthNetworkFee()
-      this.initializeTransactionStateMachine()
-      this.isInitRequestCompleted = true
-      this.currentTransactionStep = this.transactionStep
-      await this.handleSendTransactionFrom()
-    } else {
-      router.push({ name: PageNames.Bridge })
     }
+    this.initializeTransactionStateMachine()
+    this.isInitRequestCompleted = true
+    this.currentTransactionStep = this.transactionStep
+    await this.handleSendTransactionFrom()
   }
 
   async beforeDestroy (): Promise<void> {
