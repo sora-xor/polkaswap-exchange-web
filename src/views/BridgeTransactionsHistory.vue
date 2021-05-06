@@ -29,7 +29,7 @@
             </template>
           </s-input>
         </s-form-item>
-        <div class="history-items">
+        <div class="history-items" v-loading="loading">
           <template v-if="hasHistory">
             <div
               class="history-item"
@@ -39,10 +39,10 @@
             >
               <div class="history-item-info">
                 <div class="history-item-title p4">
-                  {{ `${item.amount} ${formatAssetSymbol(item.symbol)}` }}
+                  {{ `${formatAmount(item)} ${formatAssetSymbol(item.symbol)}` }}
                   <i :class="`s-icon--network s-icon-${isOutgoingType(item.type) ? 'sora' : 'eth'}`" />
                   <span class="history-item-title-separator">{{ t('bridgeTransaction.for') }}</span>
-                  {{ `${item.amount} ${formatAssetSymbol(item.symbol)}` }}
+                  {{ `${formatAmount(item)} ${formatAssetSymbol(item.symbol)}` }}
                   <i :class="`s-icon--network s-icon-${!isOutgoingType(item.type) ? 'sora' : 'eth'}`" />
                 </div>
                 <div class="history-item-date">{{ formatDate(item) }}</div>
@@ -62,6 +62,16 @@
           @next-click="handleNextClick"
         />
       </s-form>
+      <s-button
+        v-if="!restored"
+        class="s-button--restore"
+        icon="circle-plus-16"
+        icon-position="right"
+        :disabled="loading"
+        @click="handleRestoreHistory"
+      >
+        {{ t('bridgeHistory.restoreHistory') }}
+      </s-button>
     </s-card>
   </div>
 </template>
@@ -69,7 +79,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { RegisteredAccountAsset, BridgeTxStatus, Operation, isBridgeOperation, BridgeHistory, CodecString } from '@sora-substrate/util'
+import { RegisteredAccountAsset, Operation, isBridgeOperation, BridgeHistory, CodecString, FPNumber } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -89,12 +99,14 @@ const namespace = 'bridge'
 })
 export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, LoadingMixin) {
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
-  @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
   @Getter('history', { namespace }) history!: Array<BridgeHistory> | null
+  @Getter('restored', { namespace }) restored!: boolean
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: string
   @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: CodecString
 
   @Action('getHistory', { namespace }) getHistory
+  @Action('getRestoredFlag', { namespace }) getRestoredFlag
+  @Action('getRestoredHistory', { namespace }) getRestoredHistory
   @Action('getNetworkFee', { namespace }) getNetworkFee
   @Action('getEthNetworkFee', { namespace }) getEthNetworkFee
   @Action('clearHistory', { namespace }) clearHistory
@@ -111,6 +123,9 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Action('setCurrentTransactionState', { namespace }) setCurrentTransactionState
   @Action('setTransactionStep', { namespace }) setTransactionStep
   @Action('setHistoryItem', { namespace }) setHistoryItem
+  @Action('saveHistory', { namespace }) saveHistory
+
+  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
@@ -121,7 +136,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   currentPage = 1
   pageAmount = 8
 
-  get filteredHistory (): Array<any> {
+  get filteredHistory (): Array<BridgeHistory> {
     if (!this.history?.length) return []
     const historyCopy = this.history.sort((a: BridgeHistory, b: BridgeHistory) => a.startTime && b.startTime ? b.startTime - a.startTime : 0)
     return this.getFilteredHistory(historyCopy.filter(item => (isBridgeOperation(item.type) && item.transactionStep)))
@@ -133,13 +148,13 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 
   async created (): Promise<void> {
     this.withApi(async () => {
+      await this.updateRegisteredAssets()
+      await this.getRestoredFlag()
       await this.getHistory()
-      await this.getNetworkFee()
-      await this.getEthNetworkFee()
     })
   }
 
-  getFilteredHistory (history: Array<any>): Array<any> {
+  getFilteredHistory (history: Array<BridgeHistory>): Array<BridgeHistory> {
     if (this.query) {
       const query = this.query.toLowerCase().trim()
       return history.filter(item =>
@@ -153,9 +168,13 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     return history
   }
 
+  formatAmount (historyItem: any): string {
+    return historyItem.amount ? new FPNumber(historyItem.amount, this.registeredAssets?.find(asset => asset.address === historyItem.address)?.decimals).format() : ''
+  }
+
   formatDate (response: any): string {
     // We use current date if request is failed
-    const date = response && response.endTime ? new Date(response.endTime) : new Date()
+    const date = response && response.startTime ? new Date(response.startTime) : new Date()
     return `${date.getDate()} ${this.t(`months[${date.getMonth()}]`)} ${date.getFullYear()}, ${formatDateItem(date.getHours())}:${formatDateItem(date.getMinutes())}:${formatDateItem(date.getSeconds())}`
   }
 
@@ -181,8 +200,12 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   }
 
   async showHistory (id: string): Promise<void> {
-    const tx = api.bridge.getHistory(id)
-    if (tx) {
+    await this.withLoading(async () => {
+      const tx = api.bridge.getHistory(id)
+      if (!tx) {
+        router.push({ name: PageNames.BridgeTransaction })
+        return
+      }
       await this.setTransactionConfirm(true)
       await this.setSoraToEthereum(this.isOutgoingType(tx.type))
       await this.setAssetAddress(tx.assetAddress)
@@ -191,20 +214,26 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
       await this.setSoraTransactionDate(tx[this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
       await this.setEthereumTransactionHash(tx.ethereumHash)
       await this.setEthereumTransactionDate(tx[!this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
-      if (tx.status === BridgeTxStatus.Failed) {
+      const soraNetworkFee = +(tx.soraNetworkFee || 0)
+      const ethereumNetworkFee = +(tx.ethereumNetworkFee || 0)
+      if (!soraNetworkFee) {
         await this.getNetworkFee()
-        await this.getEthNetworkFee()
-        await this.setSoraNetworkFee(this.isOutgoingType(tx.type) ? tx.soraNetworkFee : this.soraNetworkFee)
-        await this.setEthereumNetworkFee(!this.isOutgoingType(tx.type) ? tx.ethereumNetworkFee : this.ethereumNetworkFee)
-      } else {
-        await this.setSoraNetworkFee(tx.soraNetworkFee)
-        await this.setEthereumNetworkFee(tx.ethereumNetworkFee)
+        tx.soraNetworkFee = this.soraNetworkFee
       }
+      if (!ethereumNetworkFee) {
+        tx.ethereumNetworkFee = this.ethereumNetworkFee
+        await this.getEthNetworkFee()
+      }
+      if (!(soraNetworkFee && ethereumNetworkFee)) {
+        this.saveHistory(tx)
+      }
+      await this.setSoraNetworkFee(soraNetworkFee || this.soraNetworkFee)
+      await this.setEthereumNetworkFee(ethereumNetworkFee || this.ethereumNetworkFee)
       await this.setTransactionStep(tx.transactionStep)
       await this.setCurrentTransactionState(tx.transactionState)
       await this.setHistoryItem(tx)
-    }
-    router.push({ name: PageNames.BridgeTransaction })
+      router.push({ name: PageNames.BridgeTransaction })
+    })
   }
 
   handlePrevClick (current: number): void {
@@ -222,6 +251,14 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   handleResetSearch (): void {
     this.query = ''
     this.currentPage = 1
+  }
+
+  async handleRestoreHistory (): Promise<void> {
+    await this.withLoading(async () => {
+      await this.getRestoredHistory()
+      await this.getRestoredFlag()
+      await this.getHistory()
+    })
   }
 
   handleBack (): void {
@@ -357,5 +394,9 @@ $history-item-top-border-height: 1px;
   margin-top: $inner-spacing-medium;
   padding-left: 0;
   padding-right: 0;
+}
+.s-button--restore {
+  margin-top: $inner-spacing-medium;
+  width: 100%;
 }
 </style>

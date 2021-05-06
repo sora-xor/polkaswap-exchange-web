@@ -90,6 +90,7 @@ div.input-title.p4 span:first-child,
 button.el-button--primary,
 div.asset-search-actions button.el-button,
 div.wallet-assets button.el-button,
+.s-button--restore,
 div.asset-custom-actions button.el-button,
 div.el-tabs__item,
 button.el-button--create-pair span {
@@ -194,7 +195,8 @@ div.asset-custom-actions button.el-button--plain,
 div.wallet-assets button.el-button--plain,
 div.select-node button.el-button--plain,
 div.node-info button.el-button--plain,
-button.el-button--create-pair{
+button.el-button--create-pair,
+.s-button--restore {
   color: #fff !important;
   border: 1px solid #ddd !important;
   transition: all 0.25s ease-in-out;
@@ -206,7 +208,8 @@ div.asset-custom-actions button.el-button--plain:hover,
 div.wallet-assets button.el-button--plain:hover,
 div.select-node button.el-button--plain:hover,
 div.node-info button.el-button--plain:hover,
-button.el-button--create-pair:hover {
+button.el-button--create-pair:hover,
+.s-button--restore:hover {
   color: #fff !important;
   border: 1px solid #ddd !important;
   background-color: var(--s-color-theme-secondary-hover) !important;
@@ -485,7 +488,8 @@ div.history-item-operation {
   padding: 0 !important;
 }
 button.el-button.wallet-assets-add,
-button.el-button--create-pair {
+button.el-button--create-pair,
+.s-button--restore {
   font-size: var(--s-icon-font-size-medium) !important;
 }
 i.s-icon-circle-plus-16, i.s-icon-circle-plus-16:hover {
