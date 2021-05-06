@@ -387,15 +387,17 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   }
 
   get formattedSoraNetworkFee (): string {
-    return this.formatCodecNumber(this.soraNetworkFee)
+    return this.formatCodecNumber(this.historyItem?.soraNetworkFee ?? this.soraNetworkFee)
   }
 
   get formattedEthNetworkFee (): string {
-    return this.formatCodecNumber(this.ethereumNetworkFee)
+    return this.formatCodecNumber(this.historyItem?.ethereumNetworkFee ?? this.ethereumNetworkFee)
   }
 
   get isInsufficientBalance (): boolean {
-    const fee = this.isSoraToEthereum ? this.soraNetworkFee : this.ethereumNetworkFee
+    const fee = this.isSoraToEthereum
+      ? this.historyItem?.soraNetworkFee ?? this.soraNetworkFee
+      : this.historyItem?.ethereumNetworkFee ?? this.ethereumNetworkFee
 
     if (!this.asset || !this.amount || !fee) return false
 
@@ -403,11 +405,11 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   }
 
   get isInsufficientXorForFee (): boolean {
-    return hasInsufficientXorForFee(this.tokenXOR, this.soraNetworkFee)
+    return hasInsufficientXorForFee(this.tokenXOR, this.historyItem?.soraNetworkFee ?? this.soraNetworkFee)
   }
 
   get isInsufficientEthereumForFee (): boolean {
-    return hasInsufficientEthForFee(this.ethBalance, this.ethereumNetworkFee)
+    return hasInsufficientEthForFee(this.ethBalance, this.historyItem?.ethereumNetworkFee ?? this.ethereumNetworkFee)
   }
 
   handleOpenEtherscan (): void {
@@ -426,16 +428,18 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   }
 
   async created (): Promise<void> {
-    if (this.isTransactionConfirmed) {
+    if (!this.isTransactionConfirmed) {
+      router.push({ name: PageNames.Bridge })
+      return
+    }
+    if (!this.historyItem) {
       await this.getNetworkFee()
       await this.getEthNetworkFee()
-      this.initializeTransactionStateMachine()
-      this.isInitRequestCompleted = true
-      this.currentTransactionStep = this.transactionStep
-      await this.handleSendTransactionFrom()
-    } else {
-      router.push({ name: PageNames.Bridge })
     }
+    this.initializeTransactionStateMachine()
+    this.isInitRequestCompleted = true
+    this.currentTransactionStep = this.transactionStep
+    await this.handleSendTransactionFrom()
   }
 
   async beforeDestroy (): Promise<void> {

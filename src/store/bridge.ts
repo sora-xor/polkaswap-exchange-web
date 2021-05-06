@@ -3,6 +3,7 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
+import flatten from 'lodash/fp/flatten'
 import {
   FPNumber,
   BridgeApprovedRequest,
@@ -66,8 +67,6 @@ async function waitForApprovedRequest (hash: string): Promise<BridgeApprovedRequ
   await delay(SORA_REQUESTS_TIMEOUT)
   const approvedRequest = await api.bridge.getApprovedRequest(hash)
   if (approvedRequest) {
-    // If Completed -> Done
-    // TODO: Check if this is a place with result of signing
     return approvedRequest
   }
   const request = await api.bridge.getRequest(hash)
@@ -92,15 +91,21 @@ async function waitForEthereumTransactionStatus (hash: string): Promise<Transact
   return result
 }
 
+interface EthLogData {
+  soraHash: string;
+  ethHash: string;
+}
 const topic = '0x0ce781a18c10c8289803c7c4cfd532d797113c4b41c9701ffad7d0a632ac555b'
-async function getEthUserTXs (address: string) {
+async function getEthUserTXs (contracts: Array<string>): Promise<Array<EthLogData>> {
   const web3 = await web3Util.getInstance()
-  console.log(await web3.eth.getPastLogs({
+  const getLogs = (address: string) => web3.eth.getPastLogs({
     topics: [topic],
-    address,
-    fromBlock: 12322912,
-    toBlock: web3.eth.defaultBlock
-  }))
+    fromBlock: 8463300, // TODO: SET CORRECT START BLOCK
+    toBlock: web3.eth.defaultBlock,
+    address
+  })
+  const logs = flatten(await Promise.all(contracts.map(contract => getLogs(contract))))
+  return logs.map<EthLogData>(log => ({ ethHash: log.transactionHash, soraHash: log.data }))
 }
 
 async function waitForRequest (hash: string): Promise<BridgeRequest> {
@@ -402,40 +407,42 @@ const actions = {
   async getRestoredHistory ({ commit, getters, rootGetters }) {
     commit(types.GET_RESTORED_HISTORY_REQUEST)
     try {
-      // TODO: Set restored flag to true and Add history items to History (change !getters.restored to true)
-      api.restored = !getters.restored
+      api.restored = true
       const hashes = await api.bridge.getAccountRequests()
-      if (hashes?.length) {
-        const transactions = await api.bridge.getRequests(hashes)
-        // TODO: Remove console.log
-        console.log('transactions', transactions)
-        await getEthUserTXs(rootGetters['web3/addressOTHER'].MASTER)
-        if (transactions?.length) {
-          transactions.forEach(transaction => {
-            const history = getters.history
-            if (!history.length || !history.find(item => item.hash === transaction.hash)) {
-              const direction = transaction.direction === BridgeDirection.Outgoing ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming
-              // TODO: transaction.status === 'ApprovalsReady' right now, we shoud set correct status somehow (BridgeTxStatus.Failed || BridgeTxStatus.Done)
-              // TODO: transactionState should be STATES.ETHEREUM_REJECTED (for BridgeTxStatus.Failed) and STATES.ETHEREUM_COMMITED (for BridgeTxStatus.Done)
-              // TODO: get amount and ethereumHash
-              api.bridge.generateHistoryItem({
-                type: direction,
-                from: transaction.from,
-                amount: transaction.amount,
-                symbol: rootGetters['assets/registeredAssets'].find(item => item.address === transaction.soraAssetAddress)?.symbol,
-                assetAddress: transaction.soraAssetAddress,
-                startTime: Date.now(),
-                signed: false,
-                status: transaction.status,
-                transactionStep: 2,
-                hash: transaction.hash,
-                // ethereumHash: '',
-                transactionState: STATES.ETHEREUM_REJECTED
-              })
-            }
+      if (!hashes?.length) {
+        commit(types.GET_RESTORED_HISTORY_SUCCESS)
+        return
+      }
+      const transactions = await api.bridge.getRequests(hashes)
+      if (!transactions?.length) {
+        commit(types.GET_RESTORED_HISTORY_SUCCESS)
+        return
+      }
+      const contracts = Object.values(KnownBridgeAsset).map<string>(key => rootGetters[`web3/address${key}`].MASTER)
+      const ethLogs = await getEthUserTXs(contracts)
+      transactions.forEach(transaction => {
+        const history = getters.history
+        if (!history.length || !history.find(item => item.hash === transaction.hash)) {
+          const direction = transaction.direction === BridgeDirection.Outgoing ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming
+          const ethLogData = ethLogs.find(logData => logData.soraHash === transaction.hash)
+          const time = Date.now()
+          api.bridge.generateHistoryItem({
+            type: direction,
+            from: transaction.from,
+            amount: transaction.amount,
+            symbol: rootGetters['assets/registeredAssets'].find(item => item.address === transaction.soraAssetAddress)?.symbol,
+            assetAddress: transaction.soraAssetAddress,
+            startTime: time,
+            endTime: ethLogData ? time : undefined,
+            signed: !!ethLogData,
+            status: ethLogData ? BridgeTxStatus.Done : BridgeTxStatus.Failed,
+            transactionStep: 2,
+            hash: transaction.hash,
+            ethereumHash: ethLogData ? ethLogData.ethHash : '',
+            transactionState: ethLogData ? STATES.ETHEREUM_COMMITED : STATES.ETHEREUM_REJECTED
           })
         }
-      }
+      })
       commit(types.GET_RESTORED_HISTORY_SUCCESS)
     } catch (error) {
       commit(types.GET_RESTORED_HISTORY_FAILURE)

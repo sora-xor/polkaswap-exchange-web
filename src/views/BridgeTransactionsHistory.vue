@@ -29,7 +29,7 @@
             </template>
           </s-input>
         </s-form-item>
-        <div class="history-items">
+        <div class="history-items" v-loading="loading">
           <template v-if="hasHistory">
             <div
               class="history-item"
@@ -62,12 +62,12 @@
           @next-click="handleNextClick"
         />
       </s-form>
-      <!-- TODO: Hide this button on restored === true  -->
-      <!-- v-if="!restored" -->
       <s-button
+        v-if="!restored"
         class="s-button--restore"
         icon="circle-plus-16"
         icon-position="right"
+        :disabled="loading"
         @click="handleRestoreHistory"
       >
         {{ t('bridgeHistory.restoreHistory') }}
@@ -79,7 +79,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { RegisteredAccountAsset, BridgeTxStatus, Operation, isBridgeOperation, BridgeHistory, CodecString, FPNumber } from '@sora-substrate/util'
+import { RegisteredAccountAsset, Operation, isBridgeOperation, BridgeHistory, CodecString, FPNumber } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -123,6 +123,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Action('setCurrentTransactionState', { namespace }) setCurrentTransactionState
   @Action('setTransactionStep', { namespace }) setTransactionStep
   @Action('setHistoryItem', { namespace }) setHistoryItem
+  @Action('saveHistory', { namespace }) saveHistory
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
@@ -147,8 +148,6 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     this.withApi(async () => {
       await this.getRestoredFlag()
       await this.getHistory()
-      await this.getNetworkFee()
-      await this.getEthNetworkFee()
     })
   }
 
@@ -198,8 +197,12 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   }
 
   async showHistory (id: string): Promise<void> {
-    const tx = api.bridge.getHistory(id)
-    if (tx) {
+    await this.withLoading(async () => {
+      const tx = api.bridge.getHistory(id)
+      if (!tx) {
+        router.push({ name: PageNames.BridgeTransaction })
+        return
+      }
       await this.setTransactionConfirm(true)
       await this.setSoraToEthereum(this.isOutgoingType(tx.type))
       await this.setAssetAddress(tx.assetAddress)
@@ -208,20 +211,26 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
       await this.setSoraTransactionDate(tx[this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
       await this.setEthereumTransactionHash(tx.ethereumHash)
       await this.setEthereumTransactionDate(tx[!this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
-      if (tx.status === BridgeTxStatus.Failed || this.soraNetworkFee) {
+      const soraNetworkFee = +(tx.soraNetworkFee || 0)
+      const ethereumNetworkFee = +(tx.ethereumNetworkFee || 0)
+      if (!soraNetworkFee) {
         await this.getNetworkFee()
-        await this.getEthNetworkFee()
-        await this.setSoraNetworkFee(this.isOutgoingType(tx.type) ? tx.soraNetworkFee : this.soraNetworkFee)
-        await this.setEthereumNetworkFee(!this.isOutgoingType(tx.type) ? tx.ethereumNetworkFee : this.ethereumNetworkFee)
-      } else {
-        await this.setSoraNetworkFee(tx.soraNetworkFee)
-        await this.setEthereumNetworkFee(tx.ethereumNetworkFee)
+        tx.soraNetworkFee = this.soraNetworkFee
       }
+      if (!ethereumNetworkFee) {
+        tx.ethereumNetworkFee = this.ethereumNetworkFee
+        await this.getEthNetworkFee()
+      }
+      if (!(soraNetworkFee && ethereumNetworkFee)) {
+        this.saveHistory(tx)
+      }
+      await this.setSoraNetworkFee(soraNetworkFee || this.soraNetworkFee)
+      await this.setEthereumNetworkFee(ethereumNetworkFee || this.ethereumNetworkFee)
       await this.setTransactionStep(tx.transactionStep)
       await this.setCurrentTransactionState(tx.transactionState)
       await this.setHistoryItem(tx)
-    }
-    router.push({ name: PageNames.BridgeTransaction })
+      router.push({ name: PageNames.BridgeTransaction })
+    })
   }
 
   handlePrevClick (current: number): void {
@@ -242,9 +251,11 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   }
 
   async handleRestoreHistory (): Promise<void> {
-    await this.getRestoredHistory()
-    await this.getRestoredFlag()
-    await this.getHistory()
+    await this.withLoading(async () => {
+      await this.getRestoredHistory()
+      await this.getRestoredFlag()
+      await this.getHistory()
+    })
   }
 
   handleBack (): void {
