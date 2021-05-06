@@ -21,7 +21,7 @@ $badge-label-color: #53565A;
   align-items: center;
   flex-flow: row nowrap;
   position: relative;
-  padding: $inner-spacing-mini / 2 $inner-spacing-big * 2 $inner-spacing-mini / 2 $inner-spacing-small;
+  padding: ($inner-spacing-mini + 4) / 2 ($inner-spacing-big - 2) * 2 $inner-spacing-mini / 2 $inner-spacing-small;
   line-height: $s-line-height-medium;
   font-size: var(--s-heading7-font-size);
   font-weight: 300;

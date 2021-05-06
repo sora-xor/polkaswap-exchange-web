@@ -15,10 +15,10 @@
         <div class="header">
           <div v-loading="isTransactionFromPending || isTransactionToPending" :class="headerIconClasses" />
           <h5 class="header-details">
-            {{ `${amount} ${formatAssetSymbol(assetSymbol)}` }}
+            {{ `${formattedAmount} ${formatAssetSymbol(assetSymbol)}` }}
             <i :class="`s-icon--network s-icon-${isSoraToEthereum ? 'sora' : 'eth'}`" />
             <span class="header-details-separator">{{ t('bridgeTransaction.for') }}</span>
-            {{ `${amount} ${formatAssetSymbol(assetSymbol)}` }}
+            {{ `${formattedAmount} ${formatAssetSymbol(assetSymbol)}` }}
             <i :class="`s-icon--network s-icon-${!isSoraToEthereum ? 'sora' : 'eth'}`" />
           </h5>
           <p class="header-status">{{ headerStatus }}</p>
@@ -55,8 +55,9 @@
             <info-line :class="failedClass()" :label="t('bridgeTransaction.networkInfo.status')" :value="statusFrom" />
             <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionFromDate" />
             <info-line
+              v-if="amount"
               :label="t('bridgeTransaction.networkInfo.amount')"
-              :value="`-${amount}`"
+              :value="`-${formattedAmount}`"
               :asset-symbol="formatAssetSymbol(assetSymbol)"
             />
             <info-line
@@ -111,8 +112,9 @@
             <info-line :class="failedClass(true)" :label="t('bridgeTransaction.networkInfo.status')" :value="statusTo" />
             <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionDate(!isSoraToEthereum ? soraTransactionDate : ethereumTransactionDate)" />
             <info-line
+              v-if="amount"
               :label="t('bridgeTransaction.networkInfo.amount')"
-              :value="`${amount}`"
+              :value="`${formattedAmount}`"
               :asset-symbol="formatAssetSymbol(assetSymbol)"
             />
             <info-line
@@ -156,7 +158,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { AccountAsset, RegisteredAccountAsset, KnownSymbols, CodecString, BridgeHistory } from '@sora-substrate/util'
+import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory } from '@sora-substrate/util'
 import { interpret } from 'xstate'
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
@@ -241,6 +243,10 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   activeTransactionStep: any = [this.transactionSteps.from, this.transactionSteps.to]
   currentTransactionStep = 1
   showConfirmTransactionDialog = false
+
+  get formattedAmount (): string {
+    return this.amount ? new FPNumber(this.amount, this.asset?.decimals).format() : ''
+  }
 
   get assetSymbol (): string {
     return this.asset?.symbol ?? ''
@@ -381,27 +387,29 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   }
 
   get formattedSoraNetworkFee (): string {
-    return this.formatCodecNumber(this.soraNetworkFee)
+    return this.formatCodecNumber(this.historyItem?.soraNetworkFee ?? this.soraNetworkFee)
   }
 
   get formattedEthNetworkFee (): string {
-    return this.formatCodecNumber(this.ethereumNetworkFee)
+    return this.formatCodecNumber(this.historyItem?.ethereumNetworkFee ?? this.ethereumNetworkFee)
   }
 
   get isInsufficientBalance (): boolean {
-    if (!this.asset) return false
+    const fee = this.isSoraToEthereum
+      ? this.historyItem?.soraNetworkFee ?? this.soraNetworkFee
+      : this.historyItem?.ethereumNetworkFee ?? this.ethereumNetworkFee
 
-    const fee = this.isSoraToEthereum ? this.soraNetworkFee : this.ethereumNetworkFee
+    if (!this.asset || !this.amount || !fee) return false
 
     return hasInsufficientBalance(this.asset, this.amount, fee, !this.isSoraToEthereum)
   }
 
   get isInsufficientXorForFee (): boolean {
-    return hasInsufficientXorForFee(this.tokenXOR, this.soraNetworkFee)
+    return hasInsufficientXorForFee(this.tokenXOR, this.historyItem?.soraNetworkFee ?? this.soraNetworkFee)
   }
 
   get isInsufficientEthereumForFee (): boolean {
-    return hasInsufficientEthForFee(this.ethBalance, this.ethereumNetworkFee)
+    return hasInsufficientEthForFee(this.ethBalance, this.historyItem?.ethereumNetworkFee ?? this.ethereumNetworkFee)
   }
 
   handleOpenEtherscan (): void {
@@ -420,16 +428,18 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   }
 
   async created (): Promise<void> {
-    if (this.isTransactionConfirmed) {
+    if (!this.isTransactionConfirmed) {
+      router.push({ name: PageNames.Bridge })
+      return
+    }
+    if (!this.historyItem) {
       await this.getNetworkFee()
       await this.getEthNetworkFee()
-      this.initializeTransactionStateMachine()
-      this.isInitRequestCompleted = true
-      this.currentTransactionStep = this.transactionStep
-      await this.handleSendTransactionFrom()
-    } else {
-      router.push({ name: PageNames.Bridge })
     }
+    this.initializeTransactionStateMachine()
+    this.isInitRequestCompleted = true
+    this.currentTransactionStep = this.transactionStep
+    await this.handleSendTransactionFrom()
   }
 
   async beforeDestroy (): Promise<void> {
