@@ -6,6 +6,7 @@
   >
     <div class="token-select__search">
       <s-input
+        ref="search"
         v-model="query"
         :placeholder="t('selectToken.searchPlaceholder')"
         class="token-search"
@@ -46,9 +47,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
-import { Asset, AccountAsset, KnownAssets } from '@sora-substrate/util'
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
+import { Asset, AccountAsset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -77,6 +78,19 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
 
   @Getter('assets', { namespace }) assets!: Array<Asset>
   @Getter accountAssets!: Array<AccountAsset> // Wallet store
+
+  @Watch('visible')
+  async handleVisibleChangeToFocusSearch (value: boolean): Promise<void> {
+    await this.$nextTick()
+
+    if (!value) return
+
+    const input = this.$refs.search as any
+
+    if (input && typeof input.focus === 'function') {
+      input.focus()
+    }
+  }
 
   get accountAssetsHashTable () {
     return this.accountAssets.reduce((result, item) => ({

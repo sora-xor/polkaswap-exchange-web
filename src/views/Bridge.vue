@@ -29,7 +29,7 @@
             <div class="bridge-item-title">
               <span class="bridge-item-title-label">{{ t('transfers.from') }}</span>
               <span>{{ getBridgeItemTitle() }}</span>
-              <token-logo class="bridge-item-title-icon" :tokenSymbol="isSoraToEthereum ? 'bridge-item-xor' : 'bridge-item-eth'" size="mini" />
+              <i :class="`s-icon-${isSoraToEthereum ? 'sora' : 'eth'}`" />
             </div>
             <div v-if="isNetworkAConnected && isAssetSelected" class="token-balance">
               <span class="token-balance-title">{{ t('bridge.balance') }}</span>
@@ -56,7 +56,7 @@
               </s-button>
               <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectAssetDialog">
                 <token-logo :token="asset" size="small" />
-                {{ formatAssetSymbol(assetSymbol, !isSoraToEthereum) }}
+                {{ formatAssetSymbol(assetSymbol) }}
               </s-button>
             </div>
             <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" :disabled="!areNetworksConnected" @click="openSelectAssetDialog">
@@ -81,7 +81,7 @@
             <div class="bridge-item-title">
               <span class="bridge-item-title-label">{{ t('transfers.to') }}</span>
               <span>{{ getBridgeItemTitle(true) }}</span>
-              <token-logo class="bridge-item-title-icon" :tokenSymbol="isSoraToEthereum ? 'bridge-item-eth' : 'bridge-item-xor'" size="mini" />
+              <i :class="`s-icon-${!isSoraToEthereum ? 'sora' : 'eth'}`" />
             </div>
             <div v-if="areNetworksConnected && isAssetSelected" class="token-balance">
               <span class="token-balance-title">{{ t('bridge.balance') }}</span>
@@ -102,7 +102,7 @@
             <div v-if="areNetworksConnected && isAssetSelected" class="asset">
               <s-button class="el-button--choose-token el-button--disabled" type="tertiary" size="small" border-radius="medium">
                 <token-logo :token="asset" size="small" />
-                {{ formatAssetSymbol(assetSymbol, isSoraToEthereum) }}
+                {{ formatAssetSymbol(assetSymbol) }}
               </s-button>
             </div>
           </div>
@@ -140,7 +140,7 @@
             {{ t('buttons.enterAmount') }}
           </template>
           <template v-else-if="isInsufficientBalance">
-            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : formatAssetSymbol(assetSymbol, !isSoraToEthereum) }) }}
+            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : formatAssetSymbol(assetSymbol) }) }}
           </template>
           <template v-else-if="isInsufficientXorForFee">
             {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : KnownSymbols.XOR }) }}
@@ -202,7 +202,8 @@ import {
   formatAssetSymbol,
   getAssetBalance,
   findAssetInCollection,
-  asZeroValue
+  asZeroValue,
+  isEthereumAddress
 } from '@/utils'
 
 const namespace = 'bridge'
@@ -234,7 +235,7 @@ export default class Bridge extends Mixins(
   @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets
   @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets
 
-  @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: string | number
+  @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: CodecString
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
   @Getter('isValidEthNetwork', { namespace: 'web3' }) isValidEthNetwork!: boolean
   @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
@@ -243,7 +244,7 @@ export default class Bridge extends Mixins(
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('amount', { namespace }) amount!: string
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
-  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: string
+  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: CodecString
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
@@ -287,6 +288,10 @@ export default class Bridge extends Mixins(
       const fpFee = this.getFPNumberFromCodec(this.soraNetworkFee, decimals)
       return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee)
     }
+    if (isEthereumAddress(this.asset.externalAddress) && !this.isSoraToEthereum) {
+      const fpFee = this.getFPNumberFromCodec(this.ethereumNetworkFee)
+      return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee)
+    }
     return !FPNumber.eq(fpBalance, fpAmount)
   }
 
@@ -295,7 +300,7 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientEthereumForFee (): boolean {
-    return hasInsufficientEthForFee(this.ethBalance.toString(), this.ethereumNetworkFee)
+    return hasInsufficientEthForFee(this.ethBalance, this.ethereumNetworkFee)
   }
 
   get isInsufficientBalance (): boolean {
@@ -332,7 +337,7 @@ export default class Bridge extends Mixins(
   }
 
   get formattedEthNetworkFee (): string {
-    return this.formatStringValue(this.ethereumNetworkFee)
+    return this.formatCodecNumber(this.ethereumNetworkFee)
   }
 
   formatFee (fee: string, formattedFee: string): string {
@@ -470,10 +475,10 @@ export default class Bridge extends Mixins(
     }
   }
 
-  async handleMaxValue (): Promise<void> {
+  handleMaxValue (): void {
     if (this.asset && this.isRegisteredAsset) {
-      await this.getNetworkFee()
-      const max = getMaxValue(this.asset, this.soraNetworkFee, !this.isSoraToEthereum)
+      const fee = this.isSoraToEthereum ? this.soraNetworkFee : this.ethereumNetworkFee
+      const max = getMaxValue(this.asset, fee, !this.isSoraToEthereum)
       this.setAmount(max)
     }
   }
@@ -620,11 +625,11 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
           white-space: nowrap;
         }
       }
-      &-icon {
-        margin-left: $inner-spacing-mini / 2;
-        display: block;
-        border: none;
-        box-shadow: none;
+      .s-icon {
+        &-sora, &-eth {
+          margin-top: $inner-spacing-mini / 4;
+          margin-left: $inner-spacing-mini / 4;
+        }
       }
     }
     &--ethereum {

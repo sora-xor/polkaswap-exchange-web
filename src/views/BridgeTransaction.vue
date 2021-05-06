@@ -14,7 +14,13 @@
       <template v-if="isInitRequestCompleted">
         <div class="header">
           <div v-loading="isTransactionFromPending || isTransactionToPending" :class="headerIconClasses" />
-          <h5 class="header-details">{{ transactionDetails }}</h5>
+          <h5 class="header-details">
+            {{ `${formattedAmount} ${formatAssetSymbol(assetSymbol)}` }}
+            <i :class="`s-icon--network s-icon-${isSoraToEthereum ? 'sora' : 'eth'}`" />
+            <span class="header-details-separator">{{ t('bridgeTransaction.for') }}</span>
+            {{ `${formattedAmount} ${formatAssetSymbol(assetSymbol)}` }}
+            <i :class="`s-icon--network s-icon-${!isSoraToEthereum ? 'sora' : 'eth'}`" />
+          </h5>
           <p class="header-status">{{ headerStatus }}</p>
         </div>
         <s-collapse :value="activeTransactionStep" :borders="true">
@@ -28,7 +34,7 @@
             </template>
             <div v-if="transactionFromHash" :class="hashContainerClasses(!isSoraToEthereum)">
               <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionFromHash, 32)" readonly />
-              <s-button class="s-button--hash-copy" type="link" icon="copy-16" @click="handleCopyTransactionHash(transactionFromHash)" />
+              <s-button class="s-button--hash-copy" type="link" icon="basic-copy-24" @click="handleCopyTransactionHash(transactionFromHash)" />
               <!-- TODO: Add work with Polkascan -->
               <s-dropdown
                 v-if="!isSoraToEthereum"
@@ -49,9 +55,10 @@
             <info-line :class="failedClass()" :label="t('bridgeTransaction.networkInfo.status')" :value="statusFrom" />
             <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionFromDate" />
             <info-line
+              v-if="amount"
               :label="t('bridgeTransaction.networkInfo.amount')"
-              :value="`-${amount}`"
-              :asset-symbol="formatAssetSymbol(assetSymbol, !isSoraToEthereum)"
+              :value="`-${formattedAmount}`"
+              :asset-symbol="formatAssetSymbol(assetSymbol)"
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
@@ -85,7 +92,7 @@
             </template>
             <div v-if="isTransactionStep2 && transactionToHash" :class="hashContainerClasses(isSoraToEthereum)">
               <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionToHash, 32)" readonly />
-              <s-button class="s-button--hash-copy" type="link" icon="copy-16" @click="handleCopyTransactionHash(transactionToHash)" />
+              <s-button class="s-button--hash-copy" type="link" icon="basic-copy-24" @click="handleCopyTransactionHash(transactionToHash)" />
               <s-dropdown
                 v-if="isSoraToEthereum"
                 class="s-dropdown--hash-menu"
@@ -105,9 +112,10 @@
             <info-line :class="failedClass(true)" :label="t('bridgeTransaction.networkInfo.status')" :value="statusTo" />
             <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionDate(!isSoraToEthereum ? soraTransactionDate : ethereumTransactionDate)" />
             <info-line
+              v-if="amount"
               :label="t('bridgeTransaction.networkInfo.amount')"
-              :value="`${amount}`"
-              :asset-symbol="formatAssetSymbol(assetSymbol, isSoraToEthereum)"
+              :value="`${formattedAmount}`"
+              :asset-symbol="formatAssetSymbol(assetSymbol)"
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
@@ -150,7 +158,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { AccountAsset, RegisteredAccountAsset, KnownSymbols, CodecString, BridgeHistory } from '@sora-substrate/util'
+import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory } from '@sora-substrate/util'
 import { interpret } from 'xstate'
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
@@ -177,9 +185,9 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   @Getter('asset', { namespace }) asset!: AccountAsset | RegisteredAccountAsset | null
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('amount', { namespace }) amount!: string
-  @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: string | number
+  @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: CodecString
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
-  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: string
+  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: CodecString
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
   @Getter('soraTransactionHash', { namespace }) soraTransactionHash!: string
   @Getter('ethereumTransactionHash', { namespace }) ethereumTransactionHash!: string
@@ -235,6 +243,10 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   activeTransactionStep: any = [this.transactionSteps.from, this.transactionSteps.to]
   currentTransactionStep = 1
   showConfirmTransactionDialog = false
+
+  get formattedAmount (): string {
+    return this.amount ? new FPNumber(this.amount, this.asset?.decimals).format() : ''
+  }
 
   get assetSymbol (): string {
     return this.asset?.symbol ?? ''
@@ -302,14 +314,6 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
     return classes.join(' ')
   }
 
-  get transactionDetails (): string {
-    // TODO: Check asset for null value
-    return this.t('bridgeTransaction.details', {
-      from: `${this.amount} ${formatAssetSymbol(this.assetSymbol, !this.isSoraToEthereum)}`,
-      to: `${this.amount} ${formatAssetSymbol(this.assetSymbol, this.isSoraToEthereum)}`
-    })
-  }
-
   get headerStatus (): string {
     if (this.isTransactionFromPending || this.isTransactionToPending) {
       return this.t(
@@ -349,7 +353,11 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
       return this.t('bridgeTransaction.statuses.waiting') + '...'
     }
     if (this.currentState === (!this.isSoraToEthereum ? STATES.SORA_PENDING : STATES.ETHEREUM_PENDING)) {
-      return this.t('bridgeTransaction.statuses.pending') + '...'
+      const message = this.t('bridgeTransaction.statuses.pending') + '...'
+      if (this.isSoraToEthereum) {
+        return message
+      }
+      return `${message} (${this.t('bridgeTransaction.wait30Block')})`
     }
     if (this.currentState === (!this.isSoraToEthereum ? STATES.SORA_REJECTED : STATES.ETHEREUM_REJECTED)) {
       return this.t('bridgeTransaction.statuses.failed')
@@ -379,27 +387,29 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   }
 
   get formattedSoraNetworkFee (): string {
-    return this.formatCodecNumber(this.soraNetworkFee)
+    return this.formatCodecNumber(this.historyItem?.soraNetworkFee ?? this.soraNetworkFee)
   }
 
   get formattedEthNetworkFee (): string {
-    return this.formatStringValue(this.ethereumNetworkFee)
+    return this.formatCodecNumber(this.historyItem?.ethereumNetworkFee ?? this.ethereumNetworkFee)
   }
 
   get isInsufficientBalance (): boolean {
-    if (!this.asset) return false
+    const fee = this.isSoraToEthereum
+      ? this.historyItem?.soraNetworkFee ?? this.soraNetworkFee
+      : this.historyItem?.ethereumNetworkFee ?? this.ethereumNetworkFee
 
-    const fee = this.isSoraToEthereum ? this.soraNetworkFee : this.ethereumNetworkFee
+    if (!this.asset || !this.amount || !fee) return false
 
     return hasInsufficientBalance(this.asset, this.amount, fee, !this.isSoraToEthereum)
   }
 
   get isInsufficientXorForFee (): boolean {
-    return hasInsufficientXorForFee(this.tokenXOR, this.soraNetworkFee)
+    return hasInsufficientXorForFee(this.tokenXOR, this.historyItem?.soraNetworkFee ?? this.soraNetworkFee)
   }
 
   get isInsufficientEthereumForFee (): boolean {
-    return hasInsufficientEthForFee(this.ethBalance.toString(), this.ethereumNetworkFee)
+    return hasInsufficientEthForFee(this.ethBalance, this.historyItem?.ethereumNetworkFee ?? this.ethereumNetworkFee)
   }
 
   handleOpenEtherscan (): void {
@@ -418,16 +428,18 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   }
 
   async created (): Promise<void> {
-    if (this.isTransactionConfirmed) {
+    if (!this.isTransactionConfirmed) {
+      router.push({ name: PageNames.Bridge })
+      return
+    }
+    if (!this.historyItem) {
       await this.getNetworkFee()
       await this.getEthNetworkFee()
-      this.initializeTransactionStateMachine()
-      this.isInitRequestCompleted = true
-      this.currentTransactionStep = this.transactionStep
-      await this.handleSendTransactionFrom()
-    } else {
-      router.push({ name: PageNames.Bridge })
     }
+    this.initializeTransactionStateMachine()
+    this.isInitRequestCompleted = true
+    this.currentTransactionStep = this.transactionStep
+    await this.handleSendTransactionFrom()
   }
 
   async beforeDestroy (): Promise<void> {
@@ -702,20 +714,20 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     }
   }
   &-hash-container {
+    .s-button--hash-copy {
+      padding: 0;
+      .s-icon-copy {
+        margin-right: 0 !important;
+      }
+    }
     &--with-dropdown {
       .s-button--hash-copy {
-        right: calc(#{$inner-spacing-medium * 2} + var(--s-size-mini));
+        right: calc(#{$inner-spacing-medium} + var(--s-size-mini));
       }
     }
     i {
       font-weight: 600;
     }
-  }
-}
-.s-button--hash-copy {
-  padding: 0;
-  .s-icon-copy {
-    margin-right: 0 !important;
   }
 }
 .s-button--hash-copy,
@@ -804,6 +816,15 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     font-feature-settings: $s-font-feature-settings-title;
     font-weight: 700;
     line-height: $s-line-height-medium;
+    .s-icon {
+      &-sora, &-eth {
+        position: relative;
+        top: 1px;
+      }
+    }
+    &-separator {
+      font-weight: normal;
+    }
   }
 }
 .network-info {

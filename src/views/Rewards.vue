@@ -77,6 +77,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
   @State(state => state.rewards.fee) fee!: CodecString
+  @State(state => state.rewards.feeFetching) feeFetching!: boolean
   @State(state => state.rewards.rewardsFetching) rewardsFetching!: boolean
   @State(state => state.rewards.rewardsClaiming) rewardsClaiming!: boolean
   @State(state => state.rewards.rewardsRecieved) rewardsRecieved!: boolean
@@ -199,11 +200,11 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   get actionButtonDisabled (): boolean {
-    return this.rewardsClaiming || (this.rewardsAvailable && this.isInsufficientBalance)
+    return this.feeFetching || this.rewardsClaiming || (this.rewardsAvailable && this.isInsufficientBalance)
   }
 
   get actionButtonLoading (): boolean {
-    return this.isExternalWalletConnecting || this.rewardsFetching
+    return this.isExternalWalletConnecting || this.rewardsFetching || this.feeFetching
   }
 
   async handleAction (): Promise<void> {

@@ -1,6 +1,6 @@
-import { KnownSymbols, Operation, TransactionStatus } from '@sora-substrate/util'
+import { Operation, TransactionStatus } from '@sora-substrate/util'
 
-import { PageNames, Topics, NetworkTypes } from '@/consts'
+import { PageNames, NetworkTypes } from '@/consts'
 import { EthNetwork } from '@/utils/web3-util'
 
 export default {
@@ -14,20 +14,24 @@ export default {
   changeAccountText: 'Change account',
   connectedText: 'Connected',
   connectWalletTextTooltip: 'Connect to @:soraText Network with polkadot{.js}',
-  walletProviderConnectionError: '{provider} is not found. Please install it!',
+  selectNodeText: 'Select node',
   bridgeText: 'Bridge',
   comingSoonText: 'Coming Soon',
-  disclaimer: 'Disclaimer: This website is maintained by the @:soraText community. Before continuing to use this website, please review the Polkaswap FAQ and documentation, which includes a detailed explanation on how Polkaswap works, as well as the Polkaswap Memorandum and Terms of Services, and Privacy Policy. These documents are crucial to a secure and positive user experience. By using Polkaswap, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of Polkaswap in your legal jurisdiction; 2) your understanding that the current version of Polkaswap is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using Polkaswap, including, but not limited to, the risk of losing tokens. Once more, please do not continue without reading the FAQ, Polkaswap Memorandum and Terms of Services, and Privacy Policy!',
+  disclaimer: 'Disclaimer: This website is maintained by the @:soraText community. Before continuing to use this website, please review the @:polkaswapFaqLink and documentation, which includes a detailed explanation on how Polkaswap works, as well as the Polkaswap Memorandum and Terms of Services, and Privacy Policy. These documents are crucial to a secure and positive user experience. By using Polkaswap, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of Polkaswap in your legal jurisdiction; 2) your understanding that the current version of Polkaswap is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using Polkaswap, including, but not limited to, the risk of losing tokens. Once more, please do not continue without reading the FAQ, Polkaswap Memorandum and Terms of Services, and Privacy Policy!',
+  polkaswapFaqLink: '<a class="link" href="https://wiki.sora.org/polkaswap/polkaswap-faq" target="_blank" rel="nofollow noopener" title="Polkaswap FAQ">Polkaswap FAQ</a>',
   poweredBy: 'Powered by',
   confirmText: 'Confirm',
   confirmTransactionText: 'Confirm transaction in {direction}',
   retryText: 'Retry',
   networkFeeText: 'Network Fee',
   networkFeeTooltipText: 'Network fee is used to ensure @:soraText system\'s growth and stable performance.',
+  marketText: 'Market',
   marketAlgorithmText: 'Market algorithm',
   insufficientBalanceText: 'Insufficient {tokenSymbol} balance',
   firstPerSecond: '{first} per {second}',
   pairIsNotCreated: 'Token pair isn\'t created',
+  nameText: 'Name',
+  addressText: 'Address',
   pageTitle: {
     [PageNames.Swap]: 'Swap',
     [PageNames.Pool]: 'Pool',
@@ -54,11 +58,17 @@ export default {
     [PageNames.Support]: 'Support',
     [PageNames.CreatePair]: 'Create Pair'
   },
+  networkStatus: {
+    online: 'online',
+    offline: 'offline',
+    checking: 'check'
+  },
   social: {
     twitter: 'Twitter',
     telegram: 'Telegram',
     medium: 'Medium',
-    reddit: 'Reddit'
+    reddit: 'Reddit',
+    github: 'GitHub'
   },
   footerMenu: {
     faucet: 'Faucet',
@@ -71,8 +81,8 @@ export default {
     title: 'Help',
     termsOfService: 'Terms of Service',
     privacyPolicy: 'Privacy Policy',
-    termsOfServiceLink: 'https://polkaswap.io/terms',
-    privacyPolicyLink: 'https://polkaswap.io/privacy',
+    termsOfServiceLink: 'https://www.notion.so/Polkaswap-Memorandum-and-Terms-of-Services-dc7f815a6d0a497a924832cc9bda17b8', // 'https://polkaswap.io/terms',
+    privacyPolicyLink: 'https://www.notion.so/Polkaswap-Privacy-Policy-d0f26456f2974f0d94734b19f6e5fc70', // 'https://polkaswap.io/privacy',
     appVersion: '@:appName version',
     contactUs: 'Contact us'
   },
@@ -86,6 +96,28 @@ export default {
     polkadot: {
       title: 'What is polkadot{.js}?',
       description: 'Polkadot{.js} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including @:soraText, Polkadot and Kusama. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized.'
+    }
+  },
+  node: {
+    errors: {
+      connection: 'An error occurred while connecting to the node',
+      network: 'You selected the node from the different network'
+    }
+  },
+  selectNodeDialog: {
+    title: '@:soraText Network node selection',
+    addNode: 'Add custom node',
+    customNode: 'Custom node',
+    howToSetupOwnNode: 'How to setup your own @:soraText node',
+    select: 'Select',
+    connected: 'Connected',
+    selectNodeForEnvironment: 'Select a node for {environment} environment:',
+    nodeTitle: '{name} hosted by {chain}',
+    messages: {
+      emptyName: 'Please input the name of the node',
+      emptyAddress: 'Please input the address of the node',
+      incorrectProtocol: 'Address should starts from ws:// or wss://',
+      incorrectAddress: 'Incorrect address'
     }
   },
   buttons: {
@@ -131,7 +163,7 @@ export default {
     title: 'Page not found',
     body: '404'
   },
-  metamask: 'Metamask',
+  metamask: 'MetaMask',
   sora: {
     [NetworkTypes.Devnet]: '@:soraText Devnet',
     [NetworkTypes.Testnet]: '@:soraText Testnet',
@@ -144,30 +176,43 @@ export default {
     [EthNetwork.Kovan]: 'Ethereum Kovan',
     [EthNetwork.Goerli]: 'Ethereum Goerli'
   },
-  providers: {
-    metamask: '@:metamask'
-  },
   about: {
-    polkaswapText: 'The DEX for the Interoperable Future. Cross-chain exchange of assets, simple creation and listing of new assets, and the easiest swaps ever. The interoperable future of Polkadot is here and we are at the forefront!',
-    openExchange: 'Open exchange',
-    mediumLink: 'Medium',
-    githubLink: 'Github',
-    [Topics.SwapTokens]: {
+    title: 'The DEX for the Interoperable Future.',
+    description: 'Cross-chain exchange of assets, simple creation and listing of new assets, and the easiest swaps ever. The interoperable future of Polkadot is here and we are at the forefront!',
+    trading: {
       title: 'Faster Trading',
-      text: 'Polkaswap is a non-custodial, cross-chain AMM DEX protocol for swapping tokens based on Polkadot and Kusama relay chains, Polkadot and Kusama parachains, and blockchains directly connected via bridges. Polkaswap removes trusted intermediaries and provides the opportunity for faster trading. Polkaswap is a community project and devs collaborate on the open source code using the BSD 4-clause license.'
+      first: 'Polkaswap is a non-custodial, cross-chain AMM DEX protocol for swapping tokens based on Polkadot and Kusama relay chains, Polkadot and Kusama parachains, and blockchains directly connected via bridges.',
+      second: 'Polkaswap removes trusted intermediaries and provides the opportunity for faster trading',
+      third: 'Polkaswap is a community project and devs collaborate on the open source code using the'
     },
-    [Topics.PassiveEarning]: {
+    liquidity: {
       title: 'Boundless Liquidity',
-      text: 'Polkaswap combines multiple liquidity sources under a common liquidity aggregation algorithm, operating completely on-chain, in a trustless and decentralized way. When traders call the swap function, the liquidity aggregation algorithm will fill orders using the best offers across all liquidity sources. Liquidity sources can be other DEXs, order books, or other API-driven sources. Because Polkaswap is an open-source project, anyone can add more liquidity sources by making contributions to the Polkaswap codebase.'
+      first: 'Polkaswap combines multiple liquidity sources under a common liquidity aggregation algorithm, operating completely on-chain, in a trustless and decentralized way.',
+      second: 'When traders call the swap function, the liquidity aggregation algorithm will fill orders using the best offers across all liquidity sources. Liquidity sources can be other DEXs, order books, or other API-driven sources.',
+      third: 'Because Polkaswap is an open-source project, anyone can add more liquidity sources by making contributions to the Polkaswap codebase.'
     },
-    [Topics.AddLiquidity]: {
+    swap: {
       title: 'Swap Any Token',
-      text: 'Go beyond the limits of current DEXs by adding tokens from the Polkadot ecosystem as well as other blockchains. Create, list and trade your own tokens on the @:soraText network. Our core infrastructure uses Parity Substrate, which is more scalable than Ethereum, and does not use expensive mining for consensus.'
+      first: 'Go beyond the limits of current DEXs by adding tokens from the Polkadot ecosystem as well as other blockchains.',
+      second: 'Create, list and trade your own tokens on the SORA network.',
+      third: 'Our core infrastructure uses Parity Substrate, which is more scalable than Ethereum, and does not use expensive mining for consensus.'
     },
-    [Topics.PriceFeeds]: {
+    pswap: {
       title: 'PSWAP Tokens',
-      text: 'PSWAP was created by community governance by voting on its release. It is a utility and governance token used to reward liquidity providers on Polkaswap. Unlike most other reward tokens, PSWAP is burned with transactions and decreases in supply over time. The 0.3% fee for every swap on the Polkaswap DEX is used to buy back PSWAP tokens, which are then burned. At first, 90% of burned PSWAP tokens are reminted to allocate to liquidity providers, but with time this percentage will decrease to 35% after 4 years. 10% of the burned amount will be reminted daily and given to the @:soraText Parliament to finance future development of Polkaswap and the ecosystem in a decentralized way.'
-    }
+      first: 'PSWAP was created by community governance by voting on its release. It is a utility and governance token used to reward liquidity providers on Polkaswap. Unlike most other reward tokens, PSWAP is burned with transactions and decreases in supply over time.',
+      second: 'The 0.3% fee for every swap on the Polkaswap DEX is used to buy back PSWAP tokens, which are then burned. At first, 90% of burned PSWAP tokens are reminted to allocate to liquidity providers, but with time this percentage will decrease to 35% after 4 years.'
+    },
+    links: {
+      first: {
+        title: 'Become a SORA Validator',
+        desc: 'Secure the future of the SORA network and decentralized apps like Polkaswap, and earn rewards along the way by becoming a SORA validator.'
+      },
+      second: {
+        title: 'Connect a Chain to SORA',
+        desc: 'Grow the decentralized world economy by connecting more chains to SORA and Polkaswap using the HASHI bridge protocol.'
+      }
+    },
+    network: 'Polkaswap is built on the SORA Network, focusing on interoperability to connect the rest of the crypto ecosystem to Polkadot.'
   },
   exchange: {
     [PageNames.Swap]: 'Swap',
@@ -198,7 +243,8 @@ export default {
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
     insufficientLiquidity: 'Insufficient liquidity',
     confirmSwap: 'Confirm swap',
-    swapOutputMessage: 'Output is estimated. You will receive <span class="min-received-label">at least</span> {transactionValue} or the transaction will revert.'
+    swapOutputMessage: 'Output is estimated. You will receive <span class="min-received-label">at least</span> {transactionValue} or the transaction will revert.',
+    rewardsForSwap: 'PSWAP Strategic Rewards'
   },
   pool: {
     connectWallet: '@:connectWalletText',
@@ -236,10 +282,9 @@ export default {
     title: 'Select a token',
     search: {
       title: 'Tokens',
-      placeholder: 'Search Token Name, Symbol, or Address',
+      placeholder: 'Filter by Asset ID, Name or Ticker Symbol',
       networkLabelSora: '@:soraText network tokens',
       networkLabelEthereum: '@:ethereumText network mirror tokens',
-      mirrorPrefix: 'Mirror ',
       emptyListMessage: 'No results'
     },
     customAsset: {
@@ -264,6 +309,7 @@ export default {
   bridgeTransaction: {
     viewHistory: 'View transaction in transactions history',
     details: '{from} for {to}',
+    for: ' for ',
     steps: {
       step: '{step} of 2',
       step1: '1st',
@@ -285,6 +331,7 @@ export default {
       done: 'Complete',
       waitingForConfirmation: 'Waiting for confirmation...'
     },
+    wait30Block: 'Please wait 30 block confirmations',
     viewInEtherscan: 'View in Etherscan',
     networkTitle: '{network} transaction',
     transactionHash: 'Transaction hash',
@@ -313,11 +360,12 @@ export default {
     showHistory: 'Show history',
     clearHistory: 'Clear history',
     empty: 'Your transactions will appear here.',
-    filterPlaceholder: 'Filter by address, asset'
+    filterPlaceholder: 'Filter by Asset ID or Ticker Symbol',
+    restoreHistory: 'Restore history'
   },
   selectToken: {
     title: 'Select a token',
-    searchPlaceholder: 'Search Token Name, Symbol, or Address',
+    searchPlaceholder: 'Filter by Asset ID, Name or Ticker Symbol',
     emptyListMessage: 'No results',
     copy: 'Copy Asset ID',
     successCopy: '{symbol} Asset ID is copied to the clipboard'
@@ -405,7 +453,7 @@ export default {
     },
     transactions: {
       confimation: 'Confirm {order} of {total} transactions...',
-      success: 'Your will receive your rewards shortly',
+      success: 'You will receive your rewards shortly',
       failed: '{order} of {total} transactions failed. @:retryText'
     },
     hint: {
@@ -425,6 +473,15 @@ export default {
     },
     notification: {
       empty: 'No available claims for this account'
+    }
+  },
+  provider: {
+    default: '@:ethereumText provider',
+    metamask: '@:metamask',
+    messages: {
+      checkExtension: '{name} extension is busy, please check it',
+      extensionLogin: 'Please login to your {name} extension',
+      installExtension: '{name} extension is not found. Please install it!'
     }
   }
 }

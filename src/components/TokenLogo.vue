@@ -1,10 +1,10 @@
 <template>
-  <span :class="tokenClasses" />
+  <span :class="tokenClasses" :style="tokenStyles"/>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { Asset, AccountAsset, KnownAssets } from '@sora-substrate/util'
+import { Asset, AccountAsset, KnownAssets, RegisteredAssets } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { LogoSize } from '@/consts'
@@ -14,6 +14,8 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
   @Prop({ type: String, default: '' }) readonly tokenSymbol!: string // ONLY for Bridge.vue
   @Prop({ type: Object, default: () => null }) readonly token!: AccountAsset | Asset
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
+
+  registeredAssets = RegisteredAssets
 
   get tokenClasses (): string {
     const tokenLogoClass = 'token-logo'
@@ -31,6 +33,19 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
     classes.push(`${tokenLogoClass}--${this.size.toLowerCase()}`)
     return classes.join(' ')
   }
+
+  get tokenStyles (): any {
+    if (!this.token) return {}
+    const asset = this.registeredAssets[this.token.address]
+    if (asset) {
+      return {
+        'background-size': '100%',
+        'background-image': `url("${asset}")`
+      }
+    } else {
+      return {}
+    }
+  }
 }
 </script>
 
@@ -38,10 +53,11 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
 // TODO: Check assets list + logo titles
 $tokens-list: "bridge-item-xor", "bridge-item-eth", "pswap", "val", "xor", "eth";
 $token-background-color: var(--s-color-base-on-accent);
+$default-logo: url("~@/assets/img/token-logo-default.svg");
 
 .token-logo {
   background-color: $token-background-color;
-  background-image: url("~@/assets/img/token-logo-default.svg");
+  background-image: $default-logo;
   background-size: 60%;
   background-repeat: no-repeat;
   background-position: 50%;

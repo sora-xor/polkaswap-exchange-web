@@ -7,7 +7,7 @@
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedAmount }}</span>
         <div v-if="asset" class="token">
-          <token-logo :token="asset" />
+          <i class="s-icon--network s-icon-sora" />
           {{ formatAssetSymbol(asset.symbol) }}
         </div>
       </div>
@@ -15,8 +15,8 @@
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedAmount }}</span>
         <div v-if="asset" class="token token-ethereum">
-          <token-logo :token="asset" />
-          {{ formatAssetSymbol(asset.symbol, true) }}
+          <i class="s-icon--network s-icon-eth" />
+          {{ formatAssetSymbol(asset.symbol) }}
         </div>
       </div>
     </div>
@@ -74,7 +74,6 @@ const namespace = 'bridge'
 @Component({
   components: {
     DialogBase,
-    TokenLogo: lazyComponent(Components.TokenLogo),
     InfoLine: lazyComponent(Components.InfoLine)
   }
 })
@@ -97,7 +96,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
   formatAssetSymbol = formatAssetSymbol
 
   get formattedAmount (): string {
-    return this.formatStringValue(this.amount, this.asset?.decimals)
+    return this.amount ? this.formatStringValue(this.amount, this.asset?.decimals) : ''
   }
 
   get assetsClasses (): string {
@@ -116,7 +115,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
   }
 
   get formattedEthNetworkFee (): string {
-    return this.formatStringValue(this.ethereumNetworkFee)
+    return this.formatCodecNumber(this.ethereumNetworkFee)
   }
 
   formatFee (fee: string, formattedFee: string): string {
@@ -178,6 +177,11 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
   }
   &-ethereum {
     @include ethereum-logo-styles;
+  }
+  .s-icon {
+    &-sora, &-eth {
+      margin-right: $inner-spacing-medium;
+    }
   }
 }
 </style>

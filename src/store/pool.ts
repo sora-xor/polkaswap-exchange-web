@@ -69,10 +69,11 @@ const actions = {
       commit(types.GET_ACCOUNT_LIQUIDITY_FAILURE)
     }
   },
-  async updateAccountLiquidity ({ commit, rootGetters }) {
+  async updateAccountLiquidity ({ commit, rootGetters, dispatch }) {
     if (updateLiquidityIntervalId) {
       clearInterval(updateLiquidityIntervalId)
     }
+    await dispatch('getAccountLiquidity')
     const fiveSeconds = 5 * 1000
     updateLiquidityIntervalId = setInterval(async () => {
       if (!rootGetters.isLoggedIn) {
@@ -88,6 +89,11 @@ const actions = {
         commit(types.UPDATE_ACCOUNT_LIQUIDITY_FAILURE)
       }
     }, fiveSeconds)
+  },
+  destroyUpdateAccountLiquiditySubscription ({ commit }) {
+    if (updateLiquidityIntervalId) {
+      clearInterval(updateLiquidityIntervalId)
+    }
   }
 }
 
