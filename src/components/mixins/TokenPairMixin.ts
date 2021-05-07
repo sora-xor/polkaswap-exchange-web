@@ -36,7 +36,6 @@ const CreateTokenPairMixin = (namespace: string) => {
     @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
     @Action('resetData', { namespace }) resetData
 
-    @Action('getNetworkFee', { namespace }) getNetworkFee
     @Action('getPrices', { namespace: 'prices' }) getPrices
     @Action('resetPrices', { namespace: 'prices' }) resetPrices
     @Action('getAssets', { namespace: 'assets' }) getAssets
@@ -58,8 +57,8 @@ const CreateTokenPairMixin = (namespace: string) => {
           const params = router.currentRoute.params
           this.resetPrices()
           this.resetData(params?.assetBAddress && params?.assetBAddress)
-          await this.getAssets()
           this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
+          await this.getAssets()
           await this.afterApiConnect()
         })
       )
@@ -107,7 +106,6 @@ const CreateTokenPairMixin = (namespace: string) => {
     }
 
     async handleMaxValue (token: any, setValue: (v: any) => void): Promise<void> {
-      await this.getNetworkFee()
       setValue(getMaxValue(token, this.fee))
       this.updatePrices()
     }
