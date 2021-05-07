@@ -164,13 +164,13 @@ const actions = {
       const nodeIsAvailable = await dispatch('getNodeNetworkStatus', endpoint)
 
       if (!nodeIsAvailable) {
-        throw new AppHandledError('node.errors.connection', `Couldn't connect to node by address: ${endpoint}`)
+        throw new AppHandledError({ key: 'node.errors.connection' }, `Couldn't connect to node by address: ${endpoint}`)
       }
 
       const nodeChainGenesisHash = await dispatch('getNodeChainGenesisHash', endpoint)
 
       if (nodeChainGenesisHash !== state.chainGenesisHash) {
-        throw new AppHandledError('node.errors.network', `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" recieved, should be "${state.chainGenesisHash}"`)
+        throw new AppHandledError({ key: 'node.errors.network' }, `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" recieved, should be "${state.chainGenesisHash}"`)
       }
 
       if (!connection.endpoint) {
