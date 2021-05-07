@@ -4,7 +4,7 @@
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
 
       <div class="app-controls s-flex">
-        <branded-tooltip popper-class="info-tooltip" placement="bottom">
+        <branded-tooltip v-if="nodesFeatureEnabled" popper-class="info-tooltip" placement="bottom">
           <div slot="content">
             {{ t('selectNodeText') }}
           </div>
@@ -176,6 +176,8 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
   }
 })
 export default class App extends Mixins(TransactionMixin, LoadingMixin) {
+  readonly nodesFeatureEnabled = true
+
   readonly SidebarMenuGroups = SidebarMenuGroups
   readonly SocialNetworkLinks = SocialNetworkLinks
   readonly FaucetLink = FaucetLink
