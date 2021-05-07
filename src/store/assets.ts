@@ -42,12 +42,12 @@ const getters = {
     return state.registeredAssets
   },
   assetsDataTable (state, getters, rootState, rootGetters) {
-    const { accountAssets } = rootGetters
+    const { accountAssetsAddressTable } = rootGetters
     const { assets, registeredAssets } = state
 
     return assets.reduce((result, asset) => {
       const { externalAddress, externalBalance } = findAssetInCollection(asset, registeredAssets) || {}
-      const { balance } = findAssetInCollection(asset, accountAssets) || {}
+      const { balance } = accountAssetsAddressTable[asset.address] || {}
 
       const item = {
         ...asset,

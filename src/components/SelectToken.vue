@@ -77,7 +77,7 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   @Prop({ default: () => false, type: Boolean }) readonly notNullBalanceOnly!: boolean
 
   @Getter('assets', { namespace }) assets!: Array<Asset>
-  @Getter accountAssets!: Array<AccountAsset> // Wallet store
+  @Getter accountAssetsAddressTable // Wallet store
 
   @Watch('visible')
   async handleVisibleChangeToFocusSearch (value: boolean): Promise<void> {
@@ -92,20 +92,13 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
     }
   }
 
-  get accountAssetsHashTable () {
-    return this.accountAssets.reduce((result, item) => ({
-      ...result,
-      [item.address]: item
-    }), {})
-  }
-
   get assetsList (): Array<AccountAsset> {
-    const { asset, assets, accountAssetsHashTable, notNullBalanceOnly, accountAssetsOnly } = this
+    const { asset, assets, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly } = this
 
     return assets.reduce((result: Array<AccountAsset>, item: Asset) => {
       if (!item || (asset && item.address === asset.address)) return result
 
-      const accountAsset = accountAssetsHashTable[item.address]
+      const accountAsset = accountAssetsAddressTable[item.address]
 
       if (accountAssetsOnly && !accountAsset) return result
 
