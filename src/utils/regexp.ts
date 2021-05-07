@@ -8,5 +8,5 @@ const exactStart = exp => `^${exp}`
 const exact = exp => `^${exp}$`
 
 export const wsRegexp = new RegExp(exactStart(ws))
-export const dnsRegexp = new RegExp(exact(`${dns}${port}?`))
-export const ipv4Regexp = new RegExp(exact(`${ipv4}${port}?`))
+export const dnsRegexp = new RegExp(exact(`${dns}${port}?/?`))
+export const ipv4Regexp = new RegExp(exact(`${ipv4}${port}?/?`))

@@ -106,7 +106,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   }
 
   get isSelectedNodeConnected (): boolean {
-    return this.isConnectedNode(this.selectedNode)
+    return this.isConnectedNodeAddress(this.selectedNode?.address)
   }
 
   get existingNodeIsSelected (): boolean {
@@ -135,20 +135,19 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     return this.isNodeListView ? '' : 'select-node-dialog--add-node'
   }
 
-  async handleNode (node: NodeItem): Promise<void> {
-    if (this.isConnectedNode(node)) return
-
+  async handleNode (node: NodeItem, isNewNode = false): Promise<void> {
     try {
-      await this.setCurrentNode(node)
+      await this.setCurrentNode(node, isNewNode)
 
       if (this.selectedNode.address === node.address && this.currentView === NodeInfoView) {
         this.handleBack()
       }
     } catch (error) {
       const key = error instanceof AppHandledError ? error.translationKey : 'node.errors.connection'
+      const payload = error instanceof AppHandledError ? error.translationPayload : {}
 
       this.$alert(
-        this.t(key),
+        this.t(key, payload),
         { title: this.t('errorText') }
       )
     }
@@ -157,7 +156,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   async removeNode (node: NodeItem): Promise<void> {
     this.removeCustomNode(node)
     this.handleBack()
-    if (this.isConnectedNode(node)) {
+    if (this.isConnectedNodeAddress(node.address)) {
       await this.setCurrentNode(this.defaultNodes[0])
     }
   }
@@ -180,15 +179,25 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     return pick(Object.keys(NodeModel))(node) as Node
   }
 
-  private async setCurrentNode (node: NodeItem): Promise<void> {
+  private async setCurrentNode (node: NodeItem, isNewNode = false): Promise<void> {
     const existingNode = this.findNodeInListByAddress(node.address)
+
+    if (isNewNode && existingNode) {
+      throw new AppHandledError({
+        key: 'node.errors.existing',
+        payload: {
+          title: existingNode.title
+        }
+      })
+    }
+
     const nodeCopy = this.getNodePermittedData(node)
 
     this.selectedNode = existingNode ?? nodeCopy
 
     await this.setNode(nodeCopy)
 
-    if (!existingNode) {
+    if (isNewNode) {
       this.addCustomNode(nodeCopy)
       this.selectedNode = this.findNodeInListByAddress(node.address)
       await this.updateNodeNetworkStatus(nodeCopy)
@@ -203,8 +212,8 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     return this.nodeList.find(item => item.address === address)
   }
 
-  private isConnectedNode (node: any): boolean {
-    return this.connectedNodeAddress === node?.address
+  private isConnectedNodeAddress (nodeAddress: any): boolean {
+    return this.connectedNodeAddress === nodeAddress
   }
 
   private isConnectingNode (node: any): boolean {
