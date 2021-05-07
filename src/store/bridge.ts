@@ -586,7 +586,7 @@ const actions = {
         (isValOrXor || request.currencyType === BridgeCurrencyType.TokenAddress)
           ? asset.externalAddress // address tokenAddress OR
           : asset.address, // bytes32 assetId
-        new FPNumber(getters.amount, asset.decimals).toCodecString(), // uint256 amount
+        new FPNumber(getters.amount, asset.externalDecimals).toCodecString(), // uint256 amount
         ethAccount // address beneficiary
       ]
       methodArgs.push(...(isValOrXor
