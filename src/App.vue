@@ -2,8 +2,6 @@
   <div id="app">
     <header class="header">
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
-      <lottie-animation path="json/loader.json" />
-
       <div class="app-controls s-flex">
         <branded-tooltip v-if="nodesFeatureEnabled" popper-class="info-tooltip" placement="bottom">
           <div slot="content">
@@ -26,7 +24,7 @@
               <div class="account-name">{{ accountInfo }}</div>
               <div class="account-icon">
                 <s-icon v-if="!isLoggedIn" name="finance-wallet-24" />
-                <WalletAvatar v-else :address="account.address"/>
+                <WalletAvatar v-else :address="account.address" />
               </div>
             </div>
           </s-button>
@@ -163,15 +161,12 @@ import router, { lazyComponent } from '@/router'
 import axios from '@/api'
 import { formatAddress } from '@/utils'
 
-import LottieAnimation from 'lottie-vuejs/src/LottieAnimation.vue'
-
 const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
 const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
 
 @Component({
   components: {
     WalletAvatar,
-    LottieAnimation,
     BrandedTooltip: lazyComponent(Components.BrandedTooltip),
     HelpDialog: lazyComponent(Components.HelpDialog),
     SidebarItemContent: lazyComponent(Components.SidebarItemContent),

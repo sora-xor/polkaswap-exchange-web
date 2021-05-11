@@ -1,5 +1,5 @@
 <template>
-  <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
+  <s-form v-loading="parentLoading" element-loading-spinner="el-lottie-loading" class="container el-form--actions" :show-message="false">
     <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
       <status-action-badge v-if="pairLiquiditySourcesAvailable">
         <template #label>{{ t('marketText') }}:</template>
@@ -127,6 +127,7 @@
     <select-token :visible.sync="showSelectTokenDialog" :connected="isLoggedIn" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
     <confirm-swap :visible.sync="showConfirmSwapDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmSwap" />
     <settings-dialog :visible.sync="showSettings" />
+    <lottie-loader size="42" />
   </s-form>
 </template>
 
@@ -139,6 +140,7 @@ import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTy
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
+import LottieLoader from '@/components/LottieLoader.vue'
 
 import { isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance } from '@/utils'
 import router, { lazyComponent } from '@/router'
@@ -148,6 +150,7 @@ const namespace = 'swap'
 
 @Component({
   components: {
+    LottieLoader,
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SettingsDialog: lazyComponent(Components.SettingsDialog),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),

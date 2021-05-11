@@ -1,5 +1,5 @@
 <template>
-  <div class="container rewards" v-loading="parentLoading">
+  <div v-loading="parentLoading" element-loading-spinner="el-lottie-loading" class="container rewards">
     <generic-page-header :title="t('rewards.title')" />
     <gradient-box class="rewards-block" :symbol="gradientSymbol">
       <div class="rewards-box">
@@ -38,6 +38,7 @@
       {{ actionButtonText }}
     </s-button>
     <info-line v-if="fee && areNetworksConnected && rewardsAvailable && !claimingInProgressOrFinished" v-bind="feeInfo" class="rewards-block" />
+    <lottie-loader size="42" />
   </div>
 </template>
 
@@ -55,6 +56,7 @@ import { RewardsAmountTableItem } from '@/types/rewards'
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
+import LottieLoader from '@/components/LottieLoader.vue'
 
 const RewardsTableTitles = {
   [RewardingEvents.XorErc20]: 'XOR ERC-20',
@@ -64,6 +66,7 @@ const RewardsTableTitles = {
 
 @Component({
   components: {
+    LottieLoader,
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     ToggleTextButton: lazyComponent(Components.ToggleTextButton),
     GradientBox: lazyComponent(Components.GradientBox),

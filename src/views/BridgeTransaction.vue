@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="!isInitRequestCompleted" class="transaction-container">
+  <div v-loading="!isInitRequestCompleted" element-loading-spinner="el-lottie-loading" class="transaction-container">
     <s-button
       v-if="isInitRequestCompleted"
       class="s-button--view-transactions-history"
@@ -13,7 +13,11 @@
     <s-card class="transaction-content" border-radius="medium" shadow="never">
       <template v-if="isInitRequestCompleted">
         <div class="header">
-          <div v-loading="isTransactionFromPending || isTransactionToPending" :class="headerIconClasses" />
+          <div
+            v-loading="isTransactionFromPending || isTransactionToPending"
+            element-loading-spinner="el-lottie-loading"
+            :class="headerIconClasses"
+          />
           <h5 class="header-details">
             {{ `${formattedAmount} ${formatAssetSymbol(assetSymbol)}` }}
             <i :class="`s-icon--network s-icon-${isSoraToEthereum ? 'sora' : 'eth'}`" />
@@ -152,6 +156,7 @@
       {{ t('bridgeTransaction.newTransaction') }}
     </s-button>
     <confirm-bridge-transaction-dialog :visible.sync="showConfirmTransactionDialog" @confirm="confirmTransaction" />
+    <lottie-loader size="83" />
   </div>
 </template>
 
@@ -165,6 +170,8 @@ import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
+import LottieLoader from '@/components/LottieLoader.vue'
+
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EthSymbol, MetamaskCancellationCode } from '@/consts'
 import { formatAssetSymbol, copyToClipboard, formatDateItem, hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEthForFee } from '@/utils'
@@ -174,6 +181,7 @@ const namespace = 'bridge'
 
 @Component({
   components: {
+    LottieLoader,
     InfoLine: lazyComponent(Components.InfoLine),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog)
   }
@@ -646,7 +654,6 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
 <style lang="scss">
 $collapse-horisontal-padding: $inner-spacing-medium;
 $header-icon-size: 100px;
-$header-spinner-size: 83px;
 $collapse-header-title-font-size: $s-heading3-caps-font-size;
 $collapse-header-title-line-height: $s-line-height-base;
 $collapse-header-title-height: #{$collapse-header-title-font-size * $collapse-header-title-line-height};
@@ -663,14 +670,6 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     .header-icon {
       position: relative;
       @include svg-icon('', $header-icon-size);
-      .el-loading-spinner {
-        top: 0;
-        margin-top: calc(#{$header-icon-size - $header-spinner-size} / 2);
-        .circular {
-          width: $header-spinner-size;
-          height: $header-spinner-size;
-        }
-      }
     }
     .el-button .network-title {
       text-transform: uppercase;

@@ -1,7 +1,7 @@
 <template>
-  <div v-loading="parentLoading" class="container el-form--pool">
+  <div v-loading="parentLoading" element-loading-spinner="el-lottie-loading" class="container el-form--pool">
     <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')" />
-    <div class="pool-wrapper" v-loading="loading">
+    <div v-loading="loading" element-loading-spinner="el-lottie-loading" class="pool-wrapper">
       <p v-if="!isLoggedIn" class="pool-info-container">
         {{ t('pool.connectToWallet') }}
       </p>
@@ -56,6 +56,7 @@
     <s-button v-else type="primary" @click="handleConnectWallet">
       {{ t('pool.connectWallet') }}
     </s-button>
+    <lottie-loader size="42" />
   </div>
 </template>
 
@@ -67,6 +68,8 @@ import { AccountLiquidity } from '@sora-substrate/util'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
+import LottieLoader from '@/components/LottieLoader.vue'
+
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -74,6 +77,7 @@ const namespace = 'pool'
 
 @Component({
   components: {
+    LottieLoader,
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)

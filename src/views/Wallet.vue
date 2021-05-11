@@ -1,8 +1,9 @@
 <template>
   <div>
     <sora-neo-wallet
-      class="container container--wallet"
       v-loading="parentLoading"
+      element-loading-spinner="el-lottie-loading"
+      class="container container--wallet"
       @close="handleClose"
       @swap="handleSwap"
       @liquidity="handleLiquidity"
@@ -10,6 +11,7 @@
       @learn-more="openAboutNetworkDialog"
     />
     <about-network-dialog :visible.sync="showAboutNetworkDialog" />
+    <lottie-loader size="42" />
   </div>
 </template>
 
@@ -19,12 +21,15 @@ import { Getter, Action } from 'vuex-class'
 import { AccountAsset, KnownAssets, KnownSymbols } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import LottieLoader from '@/components/LottieLoader.vue'
+
 import router, { lazyComponent } from '@/router'
 import { PageNames, Components } from '@/consts'
 import { isXorAccountAsset } from '@/utils'
 
 @Component({
   components: {
+    LottieLoader,
     AboutNetworkDialog: lazyComponent(Components.AboutNetworkDialog)
   }
 })

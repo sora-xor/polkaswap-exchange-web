@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-loading="parentLoading">
+  <div v-loading="parentLoading" element-loading-spinner="el-lottie-loading" class="container">
     <generic-page-header has-button-back :title="t('createPair.title')" :tooltip="t('pool.description')" @back="handleBack" />
     <s-form
       class="el-form--actions"
@@ -143,6 +143,7 @@
       :slippage-tolerance="slippageTolerance"
       @confirm="confirmCreatePair"
     />
+    <lottie-loader size="42" />
   </div>
 </template>
 
@@ -151,6 +152,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
+import LottieLoader from '@/components/LottieLoader.vue'
 
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -161,6 +163,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
 
 @Component({
   components: {
+    LottieLoader,
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SelectToken: lazyComponent(Components.SelectToken),
     InfoLine: lazyComponent(Components.InfoLine),

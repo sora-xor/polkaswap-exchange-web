@@ -1,5 +1,5 @@
 <template>
-  <span :class="tokenClasses" :style="tokenStyles"/>
+  <span :class="tokenClasses" :style="tokenStyles" />
 </template>
 
 <script lang="ts">

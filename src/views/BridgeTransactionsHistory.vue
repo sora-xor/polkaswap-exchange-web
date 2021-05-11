@@ -1,6 +1,12 @@
 <template>
   <div class="history-container">
-    <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="never">
+    <s-card
+      v-loading="parentLoading"
+      element-loading-spinner="el-lottie-loading"
+      class="history-content"
+      border-radius="medium"
+      shadow="never"
+    >
       <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
         <!-- <s-button
           class="base-title_settings"
@@ -29,7 +35,7 @@
             </template>
           </s-input>
         </s-form-item>
-        <div class="history-items" v-loading="loading">
+        <div v-loading="loading" element-loading-spinner="el-lottie-loading" class="history-items">
           <template v-if="hasHistory">
             <div
               class="history-item"
@@ -73,6 +79,7 @@
         {{ t('bridgeHistory.restoreHistory') }}
       </s-button>
     </s-card>
+    <lottie-loader size="42" />
   </div>
 </template>
 
@@ -84,6 +91,8 @@ import { api } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import LottieLoader from '@/components/LottieLoader.vue'
+
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 import { formatAssetSymbol, formatDateItem } from '@/utils'
@@ -93,6 +102,7 @@ const namespace = 'bridge'
 
 @Component({
   components: {
+    LottieLoader,
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     InfoLine: lazyComponent(Components.InfoLine)
   }
