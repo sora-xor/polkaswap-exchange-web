@@ -5,6 +5,7 @@ import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { connection } from '@soramitsu/soraneo-wallet-web'
 
+import { disconnectWallet } from '@/utils'
 import storage, { settingsStorage } from '@/utils/storage'
 import { AppHandledError } from '@/utils/error'
 import { DefaultSlippageTolerance, DefaultMarketAlgorithm, LiquiditySourceForMarketAlgorithm } from '@/consts'
@@ -21,7 +22,8 @@ const types = flow(
     'SET_DEFAULT_NODES',
     'SET_CUSTOM_NODES',
     'RESET_NODE',
-    'SET_NETWORK_CHAIN_GENESIS_HASH'
+    'SET_NETWORK_CHAIN_GENESIS_HASH',
+    'SET_NODE_CONNECTION_ALLOWANCE'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -39,6 +41,7 @@ function initialState () {
     defaultNodes: [],
     customNodes: JSON.parse(settingsStorage.get('customNodes')) || [],
     nodeAddressConnecting: '',
+    nodeConnectionAllowance: true,
     chainGenesisHash: '',
     faucetUrl: ''
   }
@@ -64,6 +67,9 @@ const getters = {
   },
   nodeAddressConnecting (state) {
     return state.nodeAddressConnecting
+  },
+  nodeConnectionAllowance (state) {
+    return state.nodeConnectionAllowance
   },
   soraNetwork (state) {
     return state.soraNetwork
@@ -91,14 +97,20 @@ const getters = {
 const mutations = {
   [types.SET_NODE_REQUEST] (state, node) {
     state.nodeAddressConnecting = node?.address ?? ''
+    state.nodeConnectionAllowance = false
   },
   [types.SET_NODE_SUCCESS] (state, node = {}) {
     state.node = { ...node }
     state.nodeAddressConnecting = ''
+    state.nodeConnectionAllowance = true
     settingsStorage.set('node', JSON.stringify(node))
   },
   [types.SET_NODE_FAILURE] (state) {
     state.nodeAddressConnecting = ''
+    state.nodeConnectionAllowance = true
+  },
+  [types.SET_NODE_CONNECTION_ALLOWANCE] (state, flag: boolean) {
+    state.nodeConnectionAllowance = flag
   },
   [types.SET_DEFAULT_NODES] (state, nodes) {
     state.defaultNodes = [...nodes]
@@ -134,6 +146,8 @@ const mutations = {
   }
 }
 
+const NodeConnectionTimeout = 30000
+
 const actions = {
   async connectToInitialNode ({ commit, dispatch, state }) {
     const node = state.node?.address ? state.node : state.defaultNodes[0]
@@ -148,9 +162,14 @@ const actions = {
     }
   },
   async setNode ({ commit, dispatch, state }, node) {
-    try {
-      const endpoint = node?.address ?? ''
+    const endpoint = node?.address ?? ''
+    const connectingNodeChanged = () => endpoint !== state.nodeAddressConnecting
 
+    const connectionTimeout = setTimeout(() => {
+      commit(types.SET_NODE_CONNECTION_ALLOWANCE, true)
+    }, NodeConnectionTimeout)
+
+    try {
       if (!endpoint) {
         throw new Error('Node address is not set')
       }
@@ -161,31 +180,43 @@ const actions = {
 
       commit(types.SET_NODE_REQUEST, node)
 
-      const nodeIsAvailable = await dispatch('getNodeNetworkStatus', endpoint)
+      const [nodeIsAvailable, nodeChainGenesisHash] = await Promise.all([
+        dispatch('getNodeNetworkStatus', endpoint),
+        dispatch('getNodeChainGenesisHash', endpoint)
+      ])
 
       if (!nodeIsAvailable) {
         throw new AppHandledError({ key: 'node.errors.connection' }, `Couldn't connect to node by address: ${endpoint}`)
       }
 
-      const nodeChainGenesisHash = await dispatch('getNodeChainGenesisHash', endpoint)
-
       if (nodeChainGenesisHash !== state.chainGenesisHash) {
         throw new AppHandledError({ key: 'node.errors.network' }, `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" recieved, should be "${state.chainGenesisHash}"`)
       }
 
-      if (!connection.endpoint) {
+      if (!connection.endpoint && !connection.loading) {
         connection.endpoint = endpoint
       } else {
-        await connection.restart(endpoint)
-        // to update subscription
-        dispatch('updateAccountAssets', undefined, { root: true })
+        if (connection.opened) {
+          await disconnectWallet()
+        }
+        await connection.open(endpoint)
+
+        if (!connectingNodeChanged()) {
+          dispatch('updateAccountAssets', undefined, { root: true }) // to update subscription
+        }
       }
 
-      commit(types.SET_NODE_SUCCESS, node)
+      if (!connectingNodeChanged()) {
+        commit(types.SET_NODE_SUCCESS, node)
+      }
     } catch (error) {
       console.error(error)
-      commit(types.SET_NODE_FAILURE)
+      if (!connectingNodeChanged()) {
+        commit(types.SET_NODE_FAILURE)
+      }
       throw error
+    } finally {
+      clearTimeout(connectionTimeout)
     }
   },
   setDefaultNodes ({ commit }, nodes) {

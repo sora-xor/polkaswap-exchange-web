@@ -11,12 +11,13 @@
       :nodes="nodeList"
       :handle-node="navigateToNodeInfo"
       :environment="soraNetwork"
+      :disable-select="!nodeConnectionAllowance"
     />
     <node-info
       v-else
       :node="selectedNode"
       :existing="existingNodeIsSelected"
-      :disabled="isSelectedNodeDisabled"
+      :disabled="isSelectedNodeDisabled || !nodeConnectionAllowance"
       :loading="isSelectedNodeConnecting"
       :removable="isSelectedNodeRemovable"
       :connected="isSelectedNodeConnected"
@@ -60,8 +61,8 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   @Getter customNodes!: Array<Node>
   @Getter chainGenesisHash!: string
   @Getter nodeAddressConnecting!: string
+  @Getter nodeConnectionAllowance!: boolean
   @Getter soraNetwork!: string
-  @Action getNodeChainGenesisHash!: (nodeAddress: string) => Promise<string>
   @Action getNodeNetworkStatus!: (nodeAddress: string) => Promise<boolean>
   @Action setNode!: (node: Node) => void
   @Action addCustomNode!: (node: Node) => void
