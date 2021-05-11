@@ -1,5 +1,5 @@
 <template>
-  <s-form :model="nodeModel" :rules="validationRules" ref="nodeForm" class="node-info s-flex" @submit.prevent="submitForm">
+  <s-form :model="nodeModel" :rules="validationRules" ref="nodeForm" class="node-info s-flex" @submit.native.prevent="submitForm">
     <generic-page-header has-button-back :title="title" @back="handleBack">
       <s-button
         v-if="existing && removable"
@@ -15,7 +15,7 @@
     <s-form-item prop="address">
       <s-input class="node-info-input" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="existing" />
     </s-form-item>
-    <s-button type="primary" native-type="submit" class="node-info-button" :disabled="disabled" :loading="loading" @click="submitForm" >{{ buttonText }}</s-button>
+    <s-button type="primary" native-type="submit" class="node-info-button" :disabled="disabled" :loading="loading">{{ buttonText }}</s-button>
     <external-link v-if="!existing" :href="tutorialLink" :title="t('selectNodeDialog.howToSetupOwnNode')" />
   </s-form>
 </template>
@@ -48,6 +48,8 @@ const checkAddress = (translate: Function): Function => (rule, value, callback):
   callback()
 }
 
+const stripEndingSlash = (str: string): string => str.charAt(str.length - 1) === '/' ? str.slice(0, -1) : str
+
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
@@ -56,8 +58,8 @@ const checkAddress = (translate: Function): Function => (rule, value, callback):
 })
 export default class NodeInfo extends Mixins(TranslationMixin) {
   @Prop({ default: () => {}, type: Function }) handleBack!: () => void
-  @Prop({ default: () => {}, type: Function }) handleNode!: (node) => void
-  @Prop({ default: () => {}, type: Function }) removeNode!: (node) => void
+  @Prop({ default: () => {}, type: Function }) handleNode!: (node: any, isNewNode: boolean) => void
+  @Prop({ default: () => {}, type: Function }) removeNode!: (node: any) => void
   @Prop({ default: () => ({}), type: Object }) node!: any
   @Prop({ default: false, type: Boolean }) existing!: boolean
   @Prop({ default: false, type: Boolean }) disabled!: boolean
@@ -99,7 +101,12 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
     try {
       await (this.$refs.nodeForm as any).validate()
 
-      this.handleNode(this.nodeModel)
+      const preparedModel = {
+        ...this.nodeModel,
+        address: stripEndingSlash(this.nodeModel.address)
+      }
+
+      this.handleNode(preparedModel, !this.existing)
     } catch (error) {
     }
   }

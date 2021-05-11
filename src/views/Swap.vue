@@ -192,7 +192,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   @Getter isLoggedIn!: boolean
   @Getter slippageTolerance!: number
-  @Getter accountAssets!: Array<AccountAsset> // Wallet store
   @Getter marketAlgorithm!: string
   @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes
   @Getter('pairLiquiditySourcesAvailable', { namespace }) pairLiquiditySourcesAvailable!: boolean
@@ -467,16 +466,13 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   openSelectTokenDialog (isTokenFrom: boolean): void {
-    if (isTokenFrom) {
-      this.isTokenFromSelected = true
-    }
+    this.isTokenFromSelected = isTokenFrom
     this.showSelectTokenDialog = true
   }
 
   async selectToken (token: any): Promise<void> {
     if (token) {
       if (this.isTokenFromSelected) {
-        this.isTokenFromSelected = false
         await this.setTokenFromAddress(token.address)
       } else {
         await this.setTokenToAddress(token.address)
