@@ -18,16 +18,23 @@ import { delay } from '@/utils'
 export default class LottieLoader extends Vue {
   @Prop({ default: '', type: String }) readonly size!: string
 
-  async mounted (): Promise<void> {
-    await delay(500)
+  async waitForLoadersMount (): Promise<void> {
+    await delay()
     const lottieLoader = document.querySelector('.lottie-loader') as any
     const loaders = document.querySelectorAll('.el-lottie-loading') as any
-    if (lottieLoader !== null && loaders !== null && loaders.length) {
+    if (lottieLoader === null || loaders === null) {
+      return await this.waitForLoadersMount()
+    }
+    if (loaders.length) {
       loaders.forEach(loader => {
         loader.parentElement.appendChild(lottieLoader as Node)
         loader.parentElement.removeChild(loader)
       })
     }
+  }
+
+  async mounted (): Promise<void> {
+    await this.waitForLoadersMount()
   }
 }
 </script>
