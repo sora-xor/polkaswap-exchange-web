@@ -469,19 +469,6 @@ html {
   @include container-styles;
   .el-loading-mask {
     border-radius: var(--s-border-radius-medium);
-    .el-loading-spinner {
-      // height: 42px;
-      // width: 42px;
-      // .circular {
-      //   background-image: url('~@/assets/img/pswap.svg');
-      //   background-size: cover;
-      //   animation: none;
-      //   .path {
-      //     display: none;
-      //     animation: none;
-      //   }
-      // }
-    }
   }
 }
 .app-disclaimer > .link {
