@@ -470,7 +470,7 @@ export default class BridgeTransaction extends Mixins(
       createFSM(
         {
           history: historyItem,
-          SORA_ETH: {
+          SORA_EVM: {
             sora: {
               sign: this.signSoraTransactionSoraToEvm,
               send: this.sendSoraTransactionSoraToEvm

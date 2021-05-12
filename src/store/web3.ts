@@ -4,9 +4,10 @@ import flatMap from 'lodash/fp/flatMap'
 import concat from 'lodash/fp/concat'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
-import { api, FPNumber, BridgeNetworks } from '@sora-substrate/util'
+import { FPNumber, BridgeNetworks } from '@sora-substrate/util'
 
-import web3Util, { ABI, Contract, EvmNetworkTypeName, KnownBridgeAsset, OtherContractType, ContractNetwork, EvmNetworkType, EvmNetwork, SubNetwork } from '@/utils/web3-util'
+import { bridgeApi } from '@/utils/bridge'
+import web3Util, { ABI, Contract, EvmNetworkTypeName, KnownBridgeAsset, ContractNetwork, SubNetwork } from '@/utils/web3-util'
 import { ZeroStringValue } from '@/consts'
 import { isEthereumAddress } from '@/utils'
 
@@ -44,22 +45,22 @@ function initialState () {
     subNetworks: [],
     evmNetwork: 0,
     contractAddress: {
-      ethereum: {
+      [BridgeNetworks.ETH_NETWORK_ID]: {
         XOR: '',
         VAL: '',
         OTHER: ''
       },
-      energy: {
+      [BridgeNetworks.ENERGY_NETWORK_ID]: {
         OTHER: ''
       }
     },
     smartContracts: {
-      ethereum: {
+      [BridgeNetworks.ETH_NETWORK_ID]: {
         XOR: '',
         VAL: '',
         OTHER: ''
       },
-      energy: {
+      [BridgeNetworks.ENERGY_NETWORK_ID]: {
         OTHER: ''
       }
     }
@@ -69,10 +70,10 @@ function initialState () {
 const state = initialState()
 
 const getters = {
-  contractAbi (state, asset: KnownBridgeAsset) {
-    return state.smartContracts[state.evmNetwork][asset].abi
+  contractAbi: (state) => (asset: KnownBridgeAsset) => {
+    return state.smartContracts[state.evmNetwork][asset]
   },
-  contractAddress (state, asset: KnownBridgeAsset) {
+  contractAddress: (state) => (asset: KnownBridgeAsset) => {
     return state.contractAddress[state.evmNetwork][asset]
   },
   isExternalAccountConnected (state) {
@@ -165,12 +166,12 @@ const mutations = {
   [types.DISCONNECT_EVM_WALLET_FAILURE] () {},
 
   [types.SET_ETHEREUM_SMART_CONTRACTS] (state, { contracts, address }) {
-    Vue.set(state.smartContracts, EvmNetwork.Ethereum, {
+    Vue.set(state.smartContracts, BridgeNetworks.ETH_NETWORK_ID, {
       XOR: contracts.XOR,
       VAL: contracts.VAL,
       OTHER: contracts.OTHER
     })
-    Vue.set(state.contractAddress, EvmNetwork.Ethereum, {
+    Vue.set(state.contractAddress, BridgeNetworks.ETH_NETWORK_ID, {
       XOR: address.XOR,
       VAL: address.VAL,
       OTHER: address.OTHER
@@ -178,10 +179,10 @@ const mutations = {
   },
 
   [types.SET_ENERGY_SMART_CONTRACTS] (state, { contracts, address }) {
-    Vue.set(state.smartContracts, EvmNetwork.Energy, {
+    Vue.set(state.smartContracts, BridgeNetworks.ENERGY_NETWORK_ID, {
       OTHER: contracts.OTHER
     })
-    Vue.set(state.contractAddress, EvmNetwork.Energy, {
+    Vue.set(state.contractAddress, BridgeNetworks.ENERGY_NETWORK_ID, {
       OTHER: address.OTHER
     })
   },
@@ -243,8 +244,9 @@ const actions = {
   },
 
   async setEvmNetwork ({ commit, dispatch }, networkId: BridgeNetworks) {
-    api.bridge.externalNetwork = networkId
+    bridgeApi.externalNetwork = networkId
     await dispatch('setDefaultNetworkType', networkId)
+    await dispatch('assets/updateRegisteredAssets', {}, { root: true })
     commit(types.SET_ENV_NETWORK, networkId)
   },
 
@@ -324,9 +326,13 @@ const actions = {
       ContractNetwork.Other,
       'BridgeEVM.json'
     )
+    const ERC20 = await web3Util.readSmartContract(
+      ContractNetwork.Other,
+      'ERC20.json'
+    )
     commit(types.SET_ENERGY_SMART_CONTRACTS, {
       address: { OTHER: network.CONTRACTS.OTHER.MASTER },
-      contracts: { OTHER: { BRIDGE } }
+      contracts: { OTHER: { BRIDGE, ERC20 } }
     })
   },
 
@@ -385,7 +391,7 @@ const actions = {
         return ''
       }
       const web3 = await web3Util.getInstance()
-      const contractAbi = getters.contractAbi(KnownBridgeAsset.Other)
+      const contractAbi = getters.contractAbi(KnownBridgeAsset.Other).abi
       const contractInstance = new web3.eth.Contract(contractAbi)
       const contractAddress = getters.contractAddress(KnownBridgeAsset.Other)
       contractInstance.options.address = contractAddress.MASTER

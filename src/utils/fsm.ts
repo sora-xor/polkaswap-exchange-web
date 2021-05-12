@@ -44,22 +44,22 @@ interface SoraEthFlow {
   };
   evm: {
     sign: ({ hash: string }) => Promise<any>;
-    send: ({ evmHash: string }) => Promise<any>;
+    send: ({ ethereumHash: string }) => Promise<any>;
   };
 }
 interface EthSoraFlow {
   evm: {
     sign: () => Promise<any>;
-    send: ({ evmHash: string }) => Promise<any>;
+    send: ({ ethereumHash: string }) => Promise<any>;
   };
   sora: {
-    sign: ({ evmHash: string }) => Promise<any>;
-    send: ({ evmHash: string }) => Promise<any>;
+    sign: ({ ethereumHash: string }) => Promise<any>;
+    send: ({ ethereumHash: string }) => Promise<any>;
   };
 }
 interface Context {
   history: any;
-  SORA_ETH: SoraEthFlow;
+  SORA_EVM: SoraEthFlow;
   EVM_SORA: EthSoraFlow;
 }
 
@@ -258,43 +258,43 @@ const EVM_SORA_STATES = {
 
 const SORA_EVM_SERVICES = {
   [SERVICES.SIGN_SORA_TRANSACTION]: (context: Context, event: any): PromiseLike<any> => {
-    if (!context.SORA_ETH.sora.sign) {
+    if (!context.SORA_EVM.sora.sign) {
       throw new Error('Unexpected behaviour! Please check SORA transaction')
     }
 
     if (context.history.signed) return Promise.resolve()
 
-    return context.SORA_ETH.sora.sign({
+    return context.SORA_EVM.sora.sign({
       txId: context.history.id
     })
   },
   [SERVICES.CHECK_SORA_TRANSACTION]: (context: Context, event: any): PromiseLike<any> => {
-    if (!context.SORA_ETH.sora.send) {
+    if (!context.SORA_EVM.sora.send) {
       throw new Error('Unexpected behaviour! Please check SORA transaction')
     }
 
-    return context.SORA_ETH.sora.send({
+    return context.SORA_EVM.sora.send({
       txId: context.history.id
     })
   },
   [SERVICES.SIGN_EVM_TRANSACTION]: (context: Context, event: any): PromiseLike<any> => {
-    if (!context.SORA_ETH.evm.sign) {
+    if (!context.SORA_EVM.evm.sign) {
       throw new Error('Unexpected behaviour! Please check ETH transaction')
     }
 
     if (context.history.signed) return Promise.resolve()
 
-    return context.SORA_ETH.evm.sign({
+    return context.SORA_EVM.evm.sign({
       hash: context.history.hash
     })
   },
   [SERVICES.CHECK_EVM_TRANSACTION]: (context: Context, event: any): PromiseLike<any> => {
-    if (!context.SORA_ETH.evm.send) {
+    if (!context.SORA_EVM.evm.send) {
       throw new Error('Unexpected behaviour! Please check ETH transaction')
     }
 
-    return context.SORA_ETH.evm.send({
-      evmHash: context.history.evmHash
+    return context.SORA_EVM.evm.send({
+      ethereumHash: context.history.ethereumHash
     })
   }
 }
@@ -308,7 +308,7 @@ const EVM_SORA_SERVICES = {
     if (context.history.signed) return Promise.resolve()
 
     return context.EVM_SORA.sora.sign({
-      evmHash: context.history.evmHash
+      ethereumHash: context.history.ethereumHash
     })
   },
   [SERVICES.CHECK_SORA_TRANSACTION]: (context: Context, event: any): PromiseLike<any> => {
@@ -317,7 +317,7 @@ const EVM_SORA_SERVICES = {
     }
 
     return context.EVM_SORA.sora.send({
-      evmHash: context.history.evmHash
+      ethereumHash: context.history.ethereumHash
     })
   },
   [SERVICES.SIGN_EVM_TRANSACTION]: (context: Context, event: any): PromiseLike<any> => {
@@ -335,7 +335,7 @@ const EVM_SORA_SERVICES = {
     }
 
     return context.EVM_SORA.evm.send({
-      evmHash: context.history.evmHash
+      ethereumHash: context.history.ethereumHash
     })
   }
 }
@@ -348,7 +348,7 @@ function createFSM (context: Context, states, initialState = STATES.INITIAL) {
 
   const initialContext: Context = {
     history: context.history,
-    SORA_ETH: context.SORA_ETH,
+    SORA_EVM: context.SORA_EVM,
     EVM_SORA: context.EVM_SORA
   }
 
@@ -387,7 +387,7 @@ function createFSM (context: Context, states, initialState = STATES.INITIAL) {
         history: (context, event) => {
           return ({
             ...context.history,
-            evmHash: event.data
+            ethereumHash: event.data
           })
         }
       }),

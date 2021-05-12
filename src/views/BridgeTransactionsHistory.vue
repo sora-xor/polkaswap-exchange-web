@@ -88,6 +88,7 @@ import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 import { formatAssetSymbol, formatDateItem } from '@/utils'
 import { STATES } from '@/utils/fsm'
+import { bridgeApi } from '@/utils/bridge'
 
 const namespace = 'bridge'
 
@@ -108,7 +109,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Action('getRestoredFlag', { namespace }) getRestoredFlag
   @Action('getRestoredHistory', { namespace }) getRestoredHistory
   @Action('getNetworkFee', { namespace }) getNetworkFee
-  @Action('getEthNetworkFee', { namespace }) getEthNetworkFee
+  @Action('getEvmNetworkFee', { namespace }) getEvmNetworkFee
   @Action('clearHistory', { namespace }) clearHistory
   @Action('setSoraToEvm', { namespace }) setSoraToEvm
   @Action('setTransactionConfirm', { namespace }) setTransactionConfirm
@@ -222,7 +223,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
       }
       if (!evmNetworkFee) {
         tx.ethereumNetworkFee = this.evmNetworkFee
-        await this.getEthNetworkFee()
+        await this.getEvmNetworkFee()
       }
       if (!(soraNetworkFee && evmNetworkFee)) {
         this.saveHistory(tx)

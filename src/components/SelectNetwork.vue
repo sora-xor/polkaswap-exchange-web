@@ -23,7 +23,6 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import { api } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -31,6 +30,7 @@ import DialogBase from '@/components/DialogBase.vue'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
 import { SubNetwork } from '@/utils/web3-util'
+import { bridgeApi } from '@/utils/bridge'
 
 @Component({
   components: {
@@ -44,7 +44,7 @@ export default class SelectNetwork extends Mixins(TranslationMixin, DialogMixin)
   @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<SubNetwork>
 
   created () {
-    this.selectedNetwork = api.bridge.externalNetwork || this.subNetworks[0]?.id
+    this.selectedNetwork = bridgeApi.externalNetwork || this.subNetworks[0]?.id
   }
 
   async selectNetwork (): Promise<void> {

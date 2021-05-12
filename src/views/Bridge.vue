@@ -189,7 +189,6 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
-import { api } from '@soramitsu/soraneo-wallet-web'
 
 import BridgeMixin from '@/components/mixins/BridgeMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
@@ -211,6 +210,7 @@ import {
   asZeroValue,
   isEthereumAddress
 } from '@/utils'
+import { bridgeApi } from '@/utils/bridge'
 
 const namespace = 'bridge'
 
@@ -447,7 +447,6 @@ export default class Bridge extends Mixins(
   private getNetworkFees (): void {
     if (this.isRegisteredAsset) {
       this.getNetworkFee()
-      this.getEthNetworkFee()
     }
   }
 }
