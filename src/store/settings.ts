@@ -164,7 +164,7 @@ const actions = {
   async setNode ({ commit, dispatch, state }, node) {
     const endpoint = node?.address ?? ''
     const connectingNodeChanged = () => endpoint !== state.nodeAddressConnecting
-
+    // if the connection process takes a long time, let user choose another node
     const connectionTimeout = setTimeout(() => {
       commit(types.SET_NODE_CONNECTION_ALLOWANCE, true)
     }, NodeConnectionTimeout)
