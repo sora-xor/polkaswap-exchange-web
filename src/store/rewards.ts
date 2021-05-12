@@ -169,10 +169,10 @@ const actions = {
     commit(types.SET_TRANSACTION_STEP, transactionStep)
   },
 
-  async getNetworkFee ({ commit }) {
+  async getNetworkFee ({ commit, state }) {
     commit(types.GET_FEE_REQUEST)
     try {
-      const fee = await api.getClaimRewardsNetworkFee()
+      const fee = await api.getClaimRewardsNetworkFee(state.rewards)
       commit(types.GET_FEE_SUCCESS, fee)
     } catch (error) {
       console.error(error)
@@ -217,10 +217,10 @@ const actions = {
       }
       if (state.transactionStep === 2 && state.signature) {
         await api.claimRewards(
+          state.rewards,
           state.signature,
           externalAddress,
-          state.fee,
-          state.rewards
+          state.fee
         )
 
         // update ui to success state if user not changed external account
