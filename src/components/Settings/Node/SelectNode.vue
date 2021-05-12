@@ -9,7 +9,7 @@
         :key="node.address"
         :label="node.address"
         :value="node.address"
-        :disabled="!node.networkStatus.online"
+        :disabled="disableSelect || !node.networkStatus.online"
         class="select-node-list__item s-flex"
       >
         <div class="select-node-item s-flex">
@@ -59,6 +59,7 @@ export default class SelectNode extends Mixins(TranslationMixin) {
   @Prop({ default: () => [], type: Array }) nodes!: Array<NodeItem>
   @Prop({ default: () => {}, type: Function }) handleNode!: (node: NodeItem) => void
   @Prop({ default: '', type: String }) environment!: string
+  @Prop({ default: false, type: Boolean }) disableSelect!: boolean
 
   @ModelSync('value', 'input', { type: String })
   readonly currentAddressValue!: boolean
