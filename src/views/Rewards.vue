@@ -228,10 +228,8 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 
   private async checkAccountRewards (showNotification = false): Promise<void> {
     if (this.areNetworksConnected) {
-      await Promise.all([
-        this.getNetworkFee(),
-        this.getRewardsProcess(showNotification)
-      ])
+      await this.getRewardsProcess(showNotification)
+      await this.getNetworkFee()
     }
   }
 
