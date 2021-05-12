@@ -1,4 +1,5 @@
 import { Asset, AccountAsset, RegisteredAccountAsset, AccountLiquidity, KnownSymbols, FPNumber, CodecString, KnownAssets } from '@sora-substrate/util'
+import { connection, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
 import storage from './storage'
 
 const FpZeroValue = new FPNumber(0)
@@ -162,4 +163,11 @@ export const findAssetInCollection = (asset, collection) => {
   if (!Array.isArray(collection) || !asset?.address) return undefined
 
   return collection.find(item => item.address === asset.address)
+}
+
+export const disconnectWallet = async (): Promise<void> => {
+  if (updateAccountAssetsSubscription) {
+    updateAccountAssetsSubscription.unsubscribe()
+  }
+  await connection.close()
 }
