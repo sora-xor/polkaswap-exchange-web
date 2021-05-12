@@ -40,10 +40,10 @@
               <div class="history-item-info">
                 <div class="history-item-title p4">
                   {{ `${formatAmount(item)} ${formatAssetSymbol(item.symbol)}` }}
-                  <i :class="`s-icon--network s-icon-${isOutgoingType(item.type) ? 'sora' : 'eth'}`" />
+                  <i :class="`s-icon--network s-icon-${isOutgoingType(item.type) ? 'sora' : getEvmIcon(item.externalNetwork)}`" />
                   <span class="history-item-title-separator">{{ t('bridgeTransaction.for') }}</span>
                   {{ `${formatAmount(item)} ${formatAssetSymbol(item.symbol)}` }}
-                  <i :class="`s-icon--network s-icon-${!isOutgoingType(item.type) ? 'sora' : 'eth'}`" />
+                  <i :class="`s-icon--network s-icon-${!isOutgoingType(item.type) ? 'sora' : getEvmIcon(item.externalNetwork)}`" />
                 </div>
                 <div class="history-item-date">{{ formatDate(item) }}</div>
               </div>
@@ -84,11 +84,11 @@ import { api } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 import { formatAssetSymbol, formatDateItem } from '@/utils'
 import { STATES } from '@/utils/fsm'
-import { bridgeApi } from '@/utils/bridge'
 
 const namespace = 'bridge'
 
@@ -98,7 +98,7 @@ const namespace = 'bridge'
     InfoLine: lazyComponent(Components.InfoLine)
   }
 })
-export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, LoadingMixin) {
+export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, LoadingMixin, NetworkFormatterMixin) {
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter('history', { namespace }) history!: Array<BridgeHistory> | null
   @Getter('restored', { namespace }) restored!: boolean

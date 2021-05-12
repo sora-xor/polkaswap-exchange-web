@@ -448,6 +448,7 @@ const actions = {
       throw error
     }
   },
+  // TODO: Need to restore transactions for all networks
   async getRestoredHistory ({ commit, getters, rootGetters }) {
     commit(types.GET_RESTORED_HISTORY_REQUEST)
     try {

@@ -32,7 +32,7 @@
             <div class="bridge-item-title">
               <span class="bridge-item-title-label">{{ t('transfers.from') }}</span>
               <span>{{ getBridgeItemTitle() }}</span>
-              <i :class="`s-icon-${isSoraToEthereum ? 'sora' : 'eth'}`" />
+              <i :class="`s-icon-${isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
             </div>
             <div v-if="isNetworkAConnected && isAssetSelected" class="token-balance">
               <span class="token-balance-title">{{ t('bridge.balance') }}</span>
@@ -84,7 +84,7 @@
             <div class="bridge-item-title bridge-item-title--to" @click="handleChangeNetwork">
               <span class="bridge-item-title-label">{{ t('transfers.to') }}</span>
               <span>{{ getBridgeItemTitle(true) }}</span>
-              <i :class="`s-icon-${!isSoraToEthereum ? 'sora' : 'eth'}`" />
+              <i :class="`s-icon-${!isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
             </div>
             <div v-if="areNetworksConnected && isAssetSelected" class="token-balance">
               <span class="token-balance-title">{{ t('bridge.balance') }}</span>
@@ -188,7 +188,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
+import { RegisteredAccountAsset, BridgeNetworks, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
 
 import BridgeMixin from '@/components/mixins/BridgeMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
@@ -241,6 +241,7 @@ export default class Bridge extends Mixins(
   @Action('getNetworkFee', { namespace }) getNetworkFee
 
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
+  @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks
   @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<SubNetwork>
   @Getter('defaultNetworkType', { namespace: 'web3' }) defaultNetworkType!: string
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean

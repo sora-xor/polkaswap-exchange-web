@@ -12,6 +12,7 @@ $font-weight-800: "wght" 800;
 /* Networks Icons */
 $s-icon-sora: "\0041";
 $s-icon-eth: "\0044";
+$s-icon-energy: "\0048";
 .s-icon-sora {
   &.s-icon--network {
     &, &:hover {
@@ -30,6 +31,16 @@ $s-icon-eth: "\0044";
   }
   &:before {
     content: $s-icon-eth;
+  }
+}
+.s-icon-energy {
+  &.s-icon--network {
+    &, &:hover {
+      color: #a566ff !important;
+    }
+  }
+  &:before {
+    content: $s-icon-energy;
   }
 }
 

@@ -1,4 +1,5 @@
 import { Vue, Component } from 'vue-property-decorator'
+import { BridgeNetworks } from '@sora-substrate/util'
 
 import store from '@/store'
 
@@ -17,6 +18,13 @@ export default class NetworkFormatterMixin extends Vue {
     }
 
     return `evm.${network}`
+  }
+
+  getEvmIcon (externalNetwork: BridgeNetworks): string {
+    if (externalNetwork === BridgeNetworks.ENERGY_NETWORK_ID) {
+      return 'energy'
+    }
+    return 'eth'
   }
 
   getEtherscanLink (hash: string, isDefaultNetworkType = false): string {
