@@ -68,9 +68,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     // For now it's only Metamask
     const provider = Provider.Metamask
 
-    if (this.isExternalWalletConnecting) {
-      return
-    }
     this.isExternalWalletConnecting = true
     try {
       await this.connectExternalAccount({ provider })

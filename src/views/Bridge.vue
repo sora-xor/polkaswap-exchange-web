@@ -45,7 +45,7 @@
                 :class="inputClasses"
                 :placeholder="isFieldAmountFocused ? '' : inputPlaceholder"
                 :disabled="!areNetworksConnected || !isAssetSelected"
-                @input="handleInputAmount"
+                @input="setAmount"
                 @focus="handleFocus"
                 @blur="handleBlur"
               />
@@ -366,8 +366,7 @@ export default class Bridge extends Mixins(
     this.setAmount('') // reset fields
     this.withApi(async () => {
       await this.getRegisteredAssets()
-      await this.getNetworkFee()
-      await this.getEthNetworkFee()
+      this.getNetworkFees()
     })
   }
 
@@ -449,16 +448,6 @@ export default class Bridge extends Mixins(
     return this.t(this.formatNetwork(isBTitle))
   }
 
-  async handleInputAmount (value): Promise<any> {
-    this.setAmount(value)
-    // TODO: only one time
-    if (this.isRegisteredAsset) {
-      this.getNetworkFee()
-      this.getEthNetworkFee()
-    }
-    // TODO: Add input functionality here
-  }
-
   handleBlur (): void {
     this.isFieldAmountFocused = false
   }
@@ -469,10 +458,7 @@ export default class Bridge extends Mixins(
 
   handleSwitchItems (): void {
     this.setSoraToEthereum(!this.isSoraToEthereum)
-    if (this.isRegisteredAsset) {
-      this.getNetworkFee()
-      this.getEthNetworkFee()
-    }
+    this.getNetworkFees()
   }
 
   handleMaxValue (): void {
@@ -500,11 +486,7 @@ export default class Bridge extends Mixins(
   async selectAsset (selectedAsset: any): Promise<void> {
     if (selectedAsset) {
       await this.setAssetAddress(selectedAsset?.address ?? '')
-      // TODO: Check SORA balance changing
-      if (this.isRegisteredAsset) {
-        this.getNetworkFee()
-        this.getEthNetworkFee()
-      }
+      this.getNetworkFees()
     }
   }
 
@@ -514,6 +496,13 @@ export default class Bridge extends Mixins(
     await this.checkConnectionToExternalAccount(() => {
       router.push({ name: PageNames.BridgeTransaction })
     })
+  }
+
+  private getNetworkFees (): void {
+    if (this.isRegisteredAsset) {
+      this.getNetworkFee()
+      this.getEthNetworkFee()
+    }
   }
 }
 </script>
