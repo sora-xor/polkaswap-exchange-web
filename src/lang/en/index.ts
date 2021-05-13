@@ -8,6 +8,7 @@ export default {
   soraText: 'SORA',
   ethereumText: 'Ethereum',
   changeNetworkText: 'Change network in Metamask',
+  transactionText: 'transaction | transactions',
   transactionSubmittedText: 'Transaction was submitted',
   unknownErrorText: 'ERROR Something went wrong...',
   connectWalletText: 'Connect account',
@@ -457,11 +458,15 @@ export default {
       success: 'You will receive your rewards shortly',
       failed: '{order} of {total} transactions failed. @:retryText'
     },
+    signing: {
+      extension: 'polkadot{.js} browser extension',
+      accounts: 'your @:soraText and @:ethereumText accounts respectively'
+    },
     hint: {
       connectExternalAccount: 'Connect an @:ethereumText account to check for available PSWAP and VAL rewards.',
       connectAccounts: 'To claim your PSWAP and VAL rewards you need to connect both your @:soraText and @:ethereumText accounts.',
       connectAnotherAccount: 'Connect another @:ethereumText account to check for available PSWAP and VAL rewards.',
-      howToClaimRewards: 'To claim your PSWAP and VAL rewards you need to sign 2 transactions in your @:soraText and @:ethereumText accounts respectively. Rewards will be deposited to your @:soraText account.'
+      howToClaimRewards: 'To claim your {symbols} rewards you need to sign {count} {transactions} in {destination}. Rewards will be deposited to your @:soraText account.'
     },
     action: {
       connectWallet: '@:connectWalletText',

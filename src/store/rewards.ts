@@ -4,16 +4,16 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { FPNumber, KnownSymbols, KnownAssets, RewardInfo, CodecString, AccountAsset } from '@sora-substrate/util'
+import { KnownSymbols, RewardInfo, CodecString } from '@sora-substrate/util'
 import web3Util from '@/utils/web3-util'
 import { RewardsAmountHeaderItem } from '@/types/rewards'
+import { findClaimableRewards, groupRewardsByAssetsList } from '@/utils/rewards'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
     'RESET',
     'SET_TRANSACTION_STEP',
-    'SET_TRANSACTION_STEPS_COUNT',
     'SET_TRANSACTION_ERROR',
     'SET_REWARDS_CLAIMING',
     'SET_REWARDS_RECIEVED',
@@ -36,7 +36,6 @@ interface RewardsState {
   rewardsRecieved: boolean;
   transactionError: boolean;
   transactionStep: number;
-  transactionStepsCount: number;
   signature: string;
 }
 
@@ -51,7 +50,6 @@ function initialState (): RewardsState {
     rewardsRecieved: false,
     transactionError: false,
     transactionStep: 1,
-    transactionStepsCount: 2,
     signature: ''
   }
 }
@@ -59,20 +57,23 @@ function initialState (): RewardsState {
 const state = initialState()
 
 const getters = {
-  rewards (state: RewardsState): Array<RewardInfo> {
-    return [...state.internalRewards, ...state.externalRewards]
+  claimableInternalRewards (state) {
+    return findClaimableRewards(state.internalRewards)
+  },
+  claimableExternalRewards (state) {
+    return findClaimableRewards(state.externalRewards)
   },
   claimableRewards (_, getters): Array<RewardInfo> {
-    return getters.rewards.reduce((claimableList: Array<RewardInfo>, item: RewardInfo) => {
-      if (FPNumber.fromCodecValue(item.amount, item.asset.decimals).isZero()) return claimableList
-
-      claimableList.push(item)
-
-      return claimableList
-    }, [])
+    return [
+      ...getters.claimableInternalRewards,
+      ...getters.claimableExternalRewards
+    ]
   },
-  rewardsFetched (_, getters): boolean {
-    return getters.rewards.length !== 0
+  externalRewardsAvailable (_, getters): boolean {
+    return getters.claimableExternalRewards.length !== 0
+  },
+  transactionStepsCount (_, getters): number {
+    return getters.externalRewardsAvailable ? 2 : 1
   },
   rewardsAvailable (_, getters): boolean {
     return getters.claimableRewards.length !== 0
@@ -91,28 +92,7 @@ const getters = {
       ]
     }
 
-    const rewardsHash = getters.claimableRewards.reduce((result, { asset, amount }: RewardInfo) => {
-      const { address, decimals } = asset
-      const current = result[address] || new FPNumber(0, decimals)
-      const addValue = FPNumber.fromCodecValue(amount, decimals)
-
-      result[address] = current.add(addValue)
-
-      return result
-    }, {})
-
-    return Object.entries(rewardsHash).reduce((total: Array<RewardsAmountHeaderItem>, [address, amount]) => {
-      if ((amount as FPNumber).isZero()) return total
-
-      const item = {
-        symbol: KnownAssets.get(address).symbol,
-        amount: (amount as FPNumber).format()
-      } as RewardsAmountHeaderItem
-
-      total.push(item)
-
-      return total
-    }, [])
+    return groupRewardsByAssetsList(getters.claimableRewards)
   }
 }
 
@@ -127,9 +107,6 @@ const mutations = {
 
   [types.SET_TRANSACTION_STEP] (state: RewardsState, transactionStep: number) {
     state.transactionStep = transactionStep
-  },
-  [types.SET_TRANSACTION_STEPS_COUNT] (state: RewardsState, count: number) {
-    state.transactionStepsCount = count
   },
   [types.SET_REWARDS_CLAIMING] (state: RewardsState, flag: boolean) {
     state.rewardsClaiming = flag
@@ -184,7 +161,7 @@ const actions = {
   async getNetworkFee ({ commit, getters }) {
     commit(types.GET_FEE_REQUEST)
     try {
-      const fee = await api.getClaimRewardsNetworkFee(getters.rewards)
+      const fee = await api.getClaimRewardsNetworkFee(getters.claimableRewards)
       commit(types.GET_FEE_SUCCESS, fee)
     } catch (error) {
       console.error(error)
@@ -192,10 +169,10 @@ const actions = {
     }
   },
 
-  async getRewards ({ commit, getters }, address) {
+  async getRewards ({ commit }, address) {
     commit(types.GET_REWARDS_REQUEST)
     try {
-      const requests: Array<Promise<any>> = [api.checkInternalAccountRewards()]
+      const requests: Array<Promise<RewardInfo[]>> = [api.checkInternalAccountRewards()]
       if (address) requests.push(api.checkExternalAccountRewards(address))
 
       const [internal, external] = await Promise.all(requests)
@@ -205,8 +182,6 @@ const actions = {
       console.error(error)
       commit(types.GET_REWARDS_FAILURE)
     }
-
-    return getters.rewards
   },
 
   async claimRewards (
@@ -216,11 +191,14 @@ const actions = {
     if (!internalAddress) return
 
     try {
-      commit(types.SET_TRANSACTION_STEPS_COUNT, externalAddress ? 2 : 1)
+      const { externalRewardsAvailable, claimableRewards } = getters
+
+      if (externalRewardsAvailable && !externalAddress) return
+
       commit(types.SET_REWARDS_CLAIMING, true)
       commit(types.SET_TRANSACTION_ERROR, false)
 
-      if (externalAddress && state.transactionStep === 1) {
+      if (externalRewardsAvailable && state.transactionStep === 1) {
         const web3 = await web3Util.getInstance()
         const internalAddressHex = await web3Util.accountAddressToHex(internalAddress)
         const message = web3.utils.sha3(internalAddressHex) as string
@@ -230,9 +208,9 @@ const actions = {
         commit(types.SET_SIGNATURE, signature)
         commit(types.SET_TRANSACTION_STEP, 2)
       }
-      if (!externalAddress || (state.transactionStep === 2 && state.signature)) {
+      if (!externalRewardsAvailable || (state.transactionStep === 2 && state.signature)) {
         await api.claimRewards(
-          getters.rewards,
+          claimableRewards,
           state.signature,
           state.fee,
           externalAddress

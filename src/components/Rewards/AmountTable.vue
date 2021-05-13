@@ -29,7 +29,7 @@ export default class AmountTable extends Vue {
     justify-content: space-between;
     font-size: 13px;
     line-height: $s-line-height-mini;
-    padding: $inner-spacing-mini 0;
+    padding: $inner-spacing-mini $inner-spacing-mini / 2;
 
     &__title {
       font-weight: 300;

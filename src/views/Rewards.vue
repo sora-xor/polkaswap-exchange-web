@@ -7,12 +7,12 @@
         <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text">
           {{ claimingStatusMessage }}
         </div>
-        <div v-if="isSoraAccountConnected && rewardsFetched" class="rewards-amount">
+        <div v-if="isSoraAccountConnected && !rewardsFetching" class="rewards-amount">
           <rewards-amount-header :items="rewardsByAssetsList" />
           <template v-if="!claimingInProgressOrFinished">
             <rewards-amount-table v-if="formattedClaimableRewards.length" :items="formattedClaimableRewards" />
+            <s-divider />
             <div class="rewards-footer">
-              <s-divider />
               <div v-if="isExternalAccountConnected" class="rewards-account">
                 <toggle-text-button
                   type="link"
@@ -23,12 +23,10 @@
                 />
                 <span>{{ t('rewards.connected') }}</span>
               </div>
-              <div v-else class="rewards-external">
-                <s-button class="rewards-connect-button" type="secondary" @click="connectExternalAccountProcess" :loading="isExternalWalletConnecting">
-                  {{ t('rewards.action.connectExternalWallet') }}
-                </s-button>
-                <div class="rewards-external-hint">{{ t('rewards.hint.connectExternalAccount') }}</div>
-              </div>
+              <s-button v-else class="rewards-connect-button" type="secondary" @click="connectExternalAccountProcess" :loading="isExternalWalletConnecting">
+                {{ t('rewards.action.connectExternalWallet') }}
+              </s-button>
+              <div v-if="externalRewardsHintText" class="rewards-footer-hint">{{ externalRewardsHintText }}</div>
             </div>
           </template>
         </div>
@@ -37,7 +35,7 @@
         </div>
       </div>
     </gradient-box>
-    <div v-if="!claimingInProgressOrFinished" class="rewards-block rewards-hint">
+    <div v-if="!claimingInProgressOrFinished && hintText" class="rewards-block rewards-hint">
       {{ hintText }}
     </div>
     <s-button
@@ -98,13 +96,13 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @State(state => state.rewards.rewardsRecieved) rewardsRecieved!: boolean
   @State(state => state.rewards.transactionError) transactionError!: boolean
   @State(state => state.rewards.transactionStep) transactionStep!: number
-  @State(state => state.rewards.transactionStepsCount) transactionStepsCount!: number
 
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset
-  @Getter('rewardsFetched', { namespace: 'rewards' }) rewardsFetched!: boolean
   @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean
+  @Getter('externalRewardsAvailable', { namespace: 'rewards' }) externalRewardsAvailable!: boolean
   @Getter('claimableRewards', { namespace: 'rewards' }) claimableRewards!: Array<RewardInfo>
   @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardsAmountTableItem>
+  @Getter('transactionStepsCount', { namespace: 'rewards' }) transactionStepsCount!: number
 
   @Action('reset', { namespace: 'rewards' }) reset!: () => void
   @Action('getRewards', { namespace: 'rewards' }) getRewards!: (address: string) => Promise<Array<RewardInfo>>
@@ -196,21 +194,37 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   get hintText (): string {
-    if (!this.isSoraAccountConnected || this.rewardsFetching) return this.t('rewards.hint.connectAccounts')
-    if (!this.rewardsAvailable) return this.t('rewards.hint.connectAnotherAccount')
-    return this.t('rewards.hint.howToClaimRewards')
+    if (!this.isSoraAccountConnected) return this.t('rewards.hint.connectAccounts')
+    if (this.rewardsAvailable) {
+      const symbols = this.rewardTokenSymbols.join(` ${this.t('rewards.andText')} `)
+      const transactions = this.tc('transactionText', this.transactionStepsCount)
+      const count = this.transactionStepsCount > 1
+        ? this.transactionStepsCount
+        : ''
+      const destination = this.transactionStepsCount > 1
+        ? this.t('rewards.signing.accounts')
+        : this.t('rewards.signing.extension')
+
+      return this.t('rewards.hint.howToClaimRewards', { symbols, transactions, count, destination })
+    }
+    return ''
+  }
+
+  get externalRewardsHintText (): string {
+    if (!this.isExternalAccountConnected) return this.t('rewards.hint.connectExternalAccount')
+    if (!this.externalRewardsAvailable) return this.t('rewards.hint.connectAnotherAccount')
+    return ''
   }
 
   get actionButtonText (): string {
     if (this.rewardsFetching) return ''
     if (!this.isSoraAccountConnected) return this.t('rewards.action.connectWallet')
-    // if (!this.isExternalAccountConnected) return this.t('rewards.action.connectExternalWallet')
     if (this.transactionError) return this.t('rewards.action.retry')
     if (!this.rewardsAvailable) return this.t('rewards.action.checkRewards')
     if (this.isInsufficientBalance) return this.t('rewards.action.insufficientBalance', { tokenSymbol: KnownSymbols.XOR })
     if (!this.rewardsClaiming) return this.t('rewards.action.signAndClaim')
-    if (this.transactionStep === 1) return this.t('rewards.action.pendingExternal')
-    if (this.transactionStep === 2) return this.t('rewards.action.pendingInternal')
+    if (this.externalRewardsAvailable && this.transactionStep === 1) return this.t('rewards.action.pendingExternal')
+    if (!this.externalRewardsAvailable || this.transactionStep === 2) return this.t('rewards.action.pendingInternal')
     return ''
   }
 
@@ -246,10 +260,9 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   private async getRewardsProcess (showNotification = false): Promise<void> {
-    const rewards = await this.getRewards(this.ethAddress)
-    const areEmptyRewards = rewards.every(item => +item.amount === 0)
+    await this.getRewards(this.ethAddress)
 
-    if (areEmptyRewards && showNotification) {
+    if (!this.rewardsAvailable && showNotification) {
       this.$notify({
         message: this.t('rewards.notification.empty'),
         title: ''
@@ -325,7 +338,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     font-size: var(--s-font-size-mini);
     font-weight: 300;
     line-height: $s-line-height-base;
-    color: var(--s-color-base-content-secondary);
+    color: var(--s-color-base-content-primary);
     padding: 0 46px;
     text-align: center;
   }
@@ -344,10 +357,10 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     }
   }
 
-  &-external {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
+  &-footer {
+    // display: flex;
+    // flex-flow: column nowrap;
+    // justify-content: center;
 
     & > *:not(:last-child) {
       margin-bottom: $inner-spacing-small;
@@ -368,6 +381,8 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     justify-content: space-between;
     font-size: var(--s-font-size-mini);
     line-height: $s-line-height-big;
+    margin-top: $inner-spacing-medium;
+    padding: 0 $inner-spacing-mini / 2;
   }
 
   &-action-button {
@@ -380,7 +395,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     text-transform: uppercase;
     font-size: var(--s-heading5-font-size);
 
-    &, &:hover, &:focus {
+    &, &:hover, &:focus, &:disabled {
       background: none;
       color: white;
       border-color: white;
