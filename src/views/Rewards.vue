@@ -270,14 +270,15 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     }
   }
 
-  private async connectExternalAccountProcess (): Promise<void> {
+  async connectExternalAccountProcess (): Promise<void> {
     await this.connectExternalWallet()
     await this.checkAccountRewards()
   }
 
-  private disconnectExternalAccountProcess (): void {
+  private async disconnectExternalAccountProcess (): Promise<void> {
     this.reset()
     this.disconnectExternalAccount()
+    await this.checkAccountRewards()
   }
 
   private async changeExternalAccountProcess (options?: any): Promise<void> {
