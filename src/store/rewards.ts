@@ -13,6 +13,7 @@ const types = flow(
   concat([
     'RESET',
     'SET_TRANSACTION_STEP',
+    'SET_TRANSACTION_STEPS_COUNT',
     'SET_TRANSACTION_ERROR',
     'SET_REWARDS_CLAIMING',
     'SET_REWARDS_RECIEVED',
@@ -28,7 +29,8 @@ const types = flow(
 interface RewardsState {
   fee: CodecString;
   feeFetching: boolean;
-  rewards: Array<RewardInfo>;
+  externalRewards: Array<RewardInfo>;
+  internalRewards: Array<RewardInfo>;
   rewardsFetching: boolean;
   rewardsClaiming: boolean;
   rewardsRecieved: boolean;
@@ -42,7 +44,8 @@ function initialState (): RewardsState {
   return {
     fee: '',
     feeFetching: false,
-    rewards: [],
+    externalRewards: [],
+    internalRewards: [],
     rewardsFetching: false,
     rewardsClaiming: false,
     rewardsRecieved: false,
@@ -56,8 +59,11 @@ function initialState (): RewardsState {
 const state = initialState()
 
 const getters = {
-  claimableRewards (state: RewardsState): Array<RewardInfo> {
-    return state.rewards.reduce((claimableList: Array<RewardInfo>, item: RewardInfo) => {
+  rewards (state: RewardsState): Array<RewardInfo> {
+    return [...state.internalRewards, ...state.externalRewards]
+  },
+  claimableRewards (_, getters): Array<RewardInfo> {
+    return getters.rewards.reduce((claimableList: Array<RewardInfo>, item: RewardInfo) => {
       if (FPNumber.fromCodecValue(item.amount, item.asset.decimals).isZero()) return claimableList
 
       claimableList.push(item)
@@ -65,13 +71,13 @@ const getters = {
       return claimableList
     }, [])
   },
-  rewardsFetched (state): boolean {
-    return state.rewards.length !== 0
+  rewardsFetched (_, getters): boolean {
+    return getters.rewards.length !== 0
   },
-  rewardsAvailable (state, getters): boolean {
+  rewardsAvailable (_, getters): boolean {
     return getters.claimableRewards.length !== 0
   },
-  rewardsByAssetsList (state, getters): Array<RewardsAmountHeaderItem> {
+  rewardsByAssetsList (_, getters): Array<RewardsAmountHeaderItem> {
     if (!getters.rewardsAvailable) {
       return [
         {
@@ -122,6 +128,9 @@ const mutations = {
   [types.SET_TRANSACTION_STEP] (state: RewardsState, transactionStep: number) {
     state.transactionStep = transactionStep
   },
+  [types.SET_TRANSACTION_STEPS_COUNT] (state: RewardsState, count: number) {
+    state.transactionStepsCount = count
+  },
   [types.SET_REWARDS_CLAIMING] (state: RewardsState, flag: boolean) {
     state.rewardsClaiming = flag
   },
@@ -136,15 +145,18 @@ const mutations = {
   },
 
   [types.GET_REWARDS_REQUEST] (state: RewardsState) {
-    state.rewards = []
+    state.internalRewards = []
+    state.externalRewards = []
     state.rewardsFetching = true
   },
-  [types.GET_REWARDS_SUCCESS] (state: RewardsState, rewards) {
-    state.rewards = rewards
+  [types.GET_REWARDS_SUCCESS] (state: RewardsState, { internal = [], external = [] } = {}) {
+    state.internalRewards = internal
+    state.externalRewards = external
     state.rewardsFetching = false
   },
   [types.GET_REWARDS_FAILURE] (state: RewardsState) {
-    state.rewards = []
+    state.internalRewards = []
+    state.externalRewards = []
     state.rewardsFetching = false
   },
 
@@ -169,10 +181,10 @@ const actions = {
     commit(types.SET_TRANSACTION_STEP, transactionStep)
   },
 
-  async getNetworkFee ({ commit, state }) {
+  async getNetworkFee ({ commit, getters }) {
     commit(types.GET_FEE_REQUEST)
     try {
-      const fee = await api.getClaimRewardsNetworkFee(state.rewards)
+      const fee = await api.getClaimRewardsNetworkFee(getters.rewards)
       commit(types.GET_FEE_SUCCESS, fee)
     } catch (error) {
       console.error(error)
@@ -180,33 +192,36 @@ const actions = {
     }
   },
 
-  async getRewards ({ commit, state }, address) {
+  async getRewards ({ commit, getters }, address) {
     commit(types.GET_REWARDS_REQUEST)
     try {
-      const rewards = await api.checkExternalAccountRewards(address)
+      const requests: Array<Promise<any>> = [api.checkInternalAccountRewards()]
+      if (address) requests.push(api.checkExternalAccountRewards(address))
 
-      commit(types.GET_REWARDS_SUCCESS, rewards)
+      const [internal, external] = await Promise.all(requests)
+
+      commit(types.GET_REWARDS_SUCCESS, { internal, external })
     } catch (error) {
       console.error(error)
       commit(types.GET_REWARDS_FAILURE)
     }
 
-    return state.rewards
+    return getters.rewards
   },
 
   async claimRewards (
-    { commit, state, rootGetters }: { commit: any; state: RewardsState; rootGetters: any },
+    { commit, state, getters, rootGetters }: { commit: any; state: RewardsState; getters: any; rootGetters: any },
     { internalAddress = '', externalAddress = '' } = {}
   ) {
-    if (!internalAddress || !externalAddress) return
+    if (!internalAddress) return
 
     try {
-      const web3 = await web3Util.getInstance()
-
+      commit(types.SET_TRANSACTION_STEPS_COUNT, externalAddress ? 2 : 1)
       commit(types.SET_REWARDS_CLAIMING, true)
       commit(types.SET_TRANSACTION_ERROR, false)
 
-      if (state.transactionStep === 1) {
+      if (externalAddress && state.transactionStep === 1) {
+        const web3 = await web3Util.getInstance()
         const internalAddressHex = await web3Util.accountAddressToHex(internalAddress)
         const message = web3.utils.sha3(internalAddressHex) as string
 
@@ -215,12 +230,12 @@ const actions = {
         commit(types.SET_SIGNATURE, signature)
         commit(types.SET_TRANSACTION_STEP, 2)
       }
-      if (state.transactionStep === 2 && state.signature) {
+      if (!externalAddress || (state.transactionStep === 2 && state.signature)) {
         await api.claimRewards(
-          state.rewards,
+          getters.rewards,
           state.signature,
-          externalAddress,
-          state.fee
+          state.fee,
+          externalAddress
         )
 
         // update ui to success state if user not changed external account

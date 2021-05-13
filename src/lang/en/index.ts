@@ -458,6 +458,7 @@ export default {
       failed: '{order} of {total} transactions failed. @:retryText'
     },
     hint: {
+      connectExternalAccount: 'Connect an @:ethereumText account to check for available PSWAP and VAL rewards.',
       connectAccounts: 'To claim your PSWAP and VAL rewards you need to connect both your @:soraText and @:ethereumText accounts.',
       connectAnotherAccount: 'Connect another @:ethereumText account to check for available PSWAP and VAL rewards.',
       howToClaimRewards: 'To claim your PSWAP and VAL rewards you need to sign 2 transactions in your @:soraText and @:ethereumText accounts respectively. Rewards will be deposited to your @:soraText account.'
