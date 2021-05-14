@@ -89,6 +89,7 @@ import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 import { formatAssetSymbol, formatDateItem } from '@/utils'
 import { STATES } from '@/utils/fsm'
+import { bridgeApi } from '@/utils/bridge'
 
 const namespace = 'bridge'
 
@@ -202,7 +203,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 
   async showHistory (id: string): Promise<void> {
     await this.withLoading(async () => {
-      const tx = api.bridge.getHistory(id)
+      const tx = bridgeApi.getHistory(id)
       if (!tx) {
         router.push({ name: PageNames.BridgeTransaction })
         return
