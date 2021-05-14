@@ -10,7 +10,7 @@ export const findClaimableRewards = (rewards: Array<RewardInfo>): Array<RewardIn
     return claimableList
   }, [])
 
-export const groupRewardsByAssetsList = rewards => {
+export const groupRewardsByAssetsList = (rewards: Array<RewardInfo>): Array<RewardsAmountHeaderItem> => {
   const rewardsHash = rewards.reduce((result, { asset, amount }: RewardInfo) => {
     const { address, decimals } = asset
     const current = result[address] || new FPNumber(0, decimals)

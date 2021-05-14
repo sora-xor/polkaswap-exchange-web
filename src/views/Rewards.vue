@@ -229,7 +229,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   get actionButtonDisabled (): boolean {
-    return this.feeFetching || this.rewardsClaiming || (this.rewardsAvailable && this.isInsufficientBalance)
+    return this.rewardsClaiming || (this.rewardsAvailable && this.isInsufficientBalance)
   }
 
   get actionButtonLoading (): boolean {
