@@ -391,7 +391,8 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   }
 
   get formattedEthNetworkFee (): string {
-    return this.formatCodecNumber(this.historyItem?.ethereumNetworkFee ?? this.ethereumNetworkFee)
+    const fee = this.formatCodecNumber(this.historyItem?.ethereumNetworkFee ?? this.ethereumNetworkFee)
+    return fee ? `~${fee}` : fee
   }
 
   get isInsufficientBalance (): boolean {

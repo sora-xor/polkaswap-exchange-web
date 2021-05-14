@@ -40,7 +40,7 @@
             <s-form-item>
               <s-float-input
                 :value="amount"
-                :decimals="(asset || {}).decimals"
+                :decimals="(asset || {}).externalDecimals"
                 :max="getMax((asset || {}).address)"
                 :class="inputClasses"
                 :placeholder="isFieldAmountFocused ? '' : inputPlaceholder"
@@ -92,7 +92,7 @@
             <s-form-item>
               <s-float-input
                 :value="amount"
-                :decimals="(asset || {}).decimals"
+                :decimals="(asset || {}).externalDecimals"
                 :max="getMax((asset || {}).address)"
                 :class="inputClasses"
                 :placeholder="inputPlaceholder"
