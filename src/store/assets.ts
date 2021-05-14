@@ -46,14 +46,15 @@ const getters = {
     const { assets, registeredAssets } = state
 
     return assets.reduce((result, asset) => {
-      const { externalAddress, externalBalance } = findAssetInCollection(asset, registeredAssets) || {}
+      const { externalAddress, externalBalance, externalDecimals } = findAssetInCollection(asset, registeredAssets) || {}
       const { balance } = accountAssetsAddressTable[asset.address] || {}
 
       const item = {
         ...asset,
         balance,
         externalAddress,
-        externalBalance
+        externalBalance,
+        externalDecimals
       }
 
       return {
