@@ -81,7 +81,6 @@ export enum Components {
   MarketAlgorithm = 'Settings/MarketAlgorithm',
   SelectNode = 'Settings/Node/SelectNode',
   NodeInfo = 'Settings/Node/NodeInfo',
-  NetworkBadge = 'NetworkBadge',
   SelectNodeDialog = 'SelectNodeDialog',
   StatusActionBadge = 'StatusActionBadge',
   BrandedTooltip = 'BrandedTooltip',
