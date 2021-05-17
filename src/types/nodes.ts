@@ -4,13 +4,7 @@ export interface Node {
   address: string;
 }
 
-export interface NodeItemNetworkStatus {
-  checked: boolean;
-  online: boolean;
-  connecting: boolean;
-}
-
 export interface NodeItem extends Node {
   title?: string;
-  networkStatus?: NodeItemNetworkStatus;
+  connecting?: boolean;
 }

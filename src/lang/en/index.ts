@@ -58,11 +58,6 @@ export default {
     [PageNames.Support]: 'Support',
     [PageNames.CreatePair]: 'Create Pair'
   },
-  networkStatus: {
-    online: 'online',
-    offline: 'offline',
-    checking: 'check'
-  },
   social: {
     twitter: 'Twitter',
     telegram: 'Telegram',

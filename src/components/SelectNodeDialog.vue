@@ -17,7 +17,7 @@
       v-else
       :node="selectedNode"
       :existing="existingNodeIsSelected"
-      :disabled="isSelectedNodeDisabled || !nodeConnectionAllowance"
+      :disabled="!nodeConnectionAllowance"
       :loading="isSelectedNodeConnecting"
       :removable="isSelectedNodeRemovable"
       :connected="isSelectedNodeConnected"
@@ -29,14 +29,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import pick from 'lodash/fp/pick'
 
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import { NodeModel } from '@/components/Settings/Node/consts'
-import { Node, NodeItem, NodeItemNetworkStatus } from '@/types/nodes'
+import { Node, NodeItem } from '@/types/nodes'
 import { AppHandledError } from '@/utils/error'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -63,22 +63,12 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   @Getter nodeAddressConnecting!: string
   @Getter nodeConnectionAllowance!: boolean
   @Getter soraNetwork!: string
-  @Action getNodeNetworkStatus!: (nodeAddress: string) => Promise<boolean>
   @Action setNode!: (node: Node) => void
   @Action addCustomNode!: (node: Node) => void
   @Action removeCustomNode!: (node: any) => void
 
-  @Watch('visible')
-  private handleVisibleChangeToUpdateNodeStatuses (newValue: boolean, oldValue: boolean): void {
-    if (!oldValue && newValue) {
-      this.updateNodesNetworkStatus()
-    }
-  }
-
   currentView = NodeListView
-
   selectedNode: any = {}
-  networkStatuses: any = {}
 
   get connectedNodeAddress (): string {
     return this.node.address
@@ -90,12 +80,6 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     const node = this.findNodeInListByAddress(address)
 
     this.handleNode(node)
-  }
-
-  get isSelectedNodeDisabled (): boolean {
-    if (this.isSelectedNodeConnected) return true
-
-    return this.existingNodeIsSelected && !this.selectedNode.networkStatus?.online
   }
 
   get isSelectedNodeRemovable (): boolean {
@@ -124,11 +108,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
       title: !!node.name && !!node.chain
         ? this.t('selectNodeDialog.nodeTitle', { chain: node.chain, name: node.name })
         : (node.name || node.chain),
-      networkStatus: {
-        checked: node.address in this.networkStatuses,
-        online: !!this.networkStatuses[node.address],
-        connecting: this.isConnectingNode(node)
-      } as NodeItemNetworkStatus
+      connecting: this.isConnectingNode(node)
     }))
   }
 
@@ -201,7 +181,6 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     if (isNewNode) {
       this.addCustomNode(nodeCopy)
       this.selectedNode = this.findNodeInListByAddress(node.address)
-      await this.updateNodeNetworkStatus(nodeCopy)
     }
   }
 
@@ -219,19 +198,6 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
 
   private isConnectingNode (node: any): boolean {
     return this.nodeAddressConnecting === node?.address
-  }
-
-  private async updateNodesNetworkStatus (): Promise<void> {
-    this.networkStatuses = {}
-
-    await Promise.all(this.nodeList.map(node => this.updateNodeNetworkStatus(node)))
-  }
-
-  private async updateNodeNetworkStatus (node: NodeItem): Promise<void> {
-    const address = node.address
-    const status = await this.getNodeNetworkStatus(address)
-
-    this.networkStatuses = { ...this.networkStatuses, [address]: status }
   }
 }
 </script>
