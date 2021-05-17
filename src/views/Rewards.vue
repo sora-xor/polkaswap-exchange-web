@@ -307,6 +307,8 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 </script>
 
 <style lang="scss" scoped>
+$hint-font-size: 13px;
+
 .rewards {
   &-block {
     & + & {
@@ -336,7 +338,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   &-hint {
-    font-size: var(--s-font-size-mini);
+    font-size: $hint-font-size;
     font-weight: 300;
     line-height: $s-line-height-base;
     color: var(--s-color-base-content-primary);
@@ -359,17 +361,13 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   &-footer {
-    // display: flex;
-    // flex-flow: column nowrap;
-    // justify-content: center;
-
     & > *:not(:last-child) {
       margin-bottom: $inner-spacing-small;
     }
 
     &-hint {
       padding: 0 $inner-spacing-medium;
-      font-size: 13px;
+      font-size: $hint-font-size;
       font-weight: 300;
       line-height: $s-line-height-base;
       text-align: center;
