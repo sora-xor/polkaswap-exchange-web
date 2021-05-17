@@ -9,7 +9,7 @@
         :key="node.address"
         :label="node.address"
         :value="node.address"
-        :disabled="disableSelect || !node.networkStatus.online"
+        :disabled="disableSelect"
         class="select-node-list__item s-flex"
       >
         <div class="select-node-item s-flex">
@@ -22,7 +22,7 @@
             </div>
           </div>
           <div class="select-node-badge">
-            <network-badge v-bind="node.networkStatus" />
+            <s-icon v-if="node.connecting" name="el-icon-loading"/>
           </div>
           <s-button class="details select-node-details" type="link" @click="handleNode(node)">
             <s-icon name="arrows-chevron-right-rounded-24" />
@@ -32,8 +32,6 @@
     </el-radio-group>
     <s-button
       class="select-node-button"
-      icon="circle-plus-16"
-      icon-position="right"
       @click="handleNode()"
     >
       {{ t('selectNodeDialog.addNode') }}
@@ -44,17 +42,11 @@
 <script lang="ts">
 import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator'
 
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
 import { NodeItem } from '@/types/nodes'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 
-@Component({
-  components: {
-    NetworkBadge: lazyComponent(Components.NetworkBadge)
-  }
-})
+@Component
 export default class SelectNode extends Mixins(TranslationMixin) {
   @Prop({ default: () => [], type: Array }) nodes!: Array<NodeItem>
   @Prop({ default: () => {}, type: Function }) handleNode!: (node: NodeItem) => void

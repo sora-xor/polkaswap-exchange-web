@@ -93,7 +93,8 @@ div.wallet-assets button.el-button,
 .s-button--restore,
 div.asset-custom-actions button.el-button,
 div.el-tabs__item,
-button.el-button--create-pair span {
+button.el-button--create-pair span,
+button.select-node-button span {
   text-transform: uppercase !important;
 }
 h3.page-header-title, h3.base-title_text {
@@ -487,6 +488,7 @@ button.el-button.send.s-small, button.el-button.swap.s-small {
 div.history-item-operation {
   padding: 0 !important;
 }
+button.select-node-button,
 button.el-button.wallet-assets-add,
 button.el-button--create-pair,
 .s-button--restore {

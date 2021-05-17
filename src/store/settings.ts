@@ -3,9 +3,8 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import { connection } from '@soramitsu/soraneo-wallet-web'
+import { connection, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
 
-import { disconnectWallet } from '@/utils'
 import storage, { settingsStorage } from '@/utils/storage'
 import { AppHandledError } from '@/utils/error'
 import { DefaultSlippageTolerance, DefaultMarketAlgorithm, LiquiditySourceForMarketAlgorithm } from '@/consts'
@@ -180,28 +179,25 @@ const actions = {
 
       commit(types.SET_NODE_REQUEST, node)
 
-      const [nodeIsAvailable, nodeChainGenesisHash] = await Promise.all([
-        dispatch('getNodeNetworkStatus', endpoint),
-        dispatch('getNodeChainGenesisHash', endpoint)
-      ])
-
-      if (!nodeIsAvailable) {
-        throw new AppHandledError({ key: 'node.errors.connection' }, `Couldn't connect to node by address: ${endpoint}`)
-      }
-
-      if (nodeChainGenesisHash !== state.chainGenesisHash) {
-        throw new AppHandledError({ key: 'node.errors.network' }, `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" recieved, should be "${state.chainGenesisHash}"`)
-      }
-
+      // first connection before wallet init
       if (!connection.endpoint && !connection.loading) {
         connection.endpoint = endpoint
       } else {
-        if (connection.opened) {
-          await disconnectWallet()
+        // keep the current connection until the success of the new one
+        await connection.open(endpoint, true)
+
+        const nodeChainGenesisHash = connection.api.genesisHash.toHex()
+
+        if (nodeChainGenesisHash !== state.chainGenesisHash) {
+          // reconnect back to current node
+          dispatch('connectToInitialNode')
+          throw new AppHandledError({ key: 'node.errors.network' }, `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" recieved, should be "${state.chainGenesisHash}"`)
         }
-        await connection.open(endpoint)
 
         if (!connectingNodeChanged()) {
+          if (updateAccountAssetsSubscription) {
+            updateAccountAssetsSubscription.unsubscribe()
+          }
           dispatch('updateAccountAssets', undefined, { root: true }) // to update subscription
         }
       }
@@ -211,6 +207,7 @@ const actions = {
       }
     } catch (error) {
       console.error(error)
+      console.log('error', connection)
       if (!connectingNodeChanged()) {
         commit(types.SET_NODE_FAILURE)
       }
@@ -255,17 +252,6 @@ const actions = {
     const genesisHash = await fetchRpc(rpc, 'chain_getBlockHash', [0]) ?? ''
 
     return genesisHash
-  },
-  async getNodeNetworkStatus (_, nodeAddress: string): Promise<boolean> {
-    if (!nodeAddress) {
-      console.error('nodeAddress is required')
-      return false
-    }
-
-    const rpc = getRpcEndpoint(nodeAddress)
-    const response = await fetchRpc(rpc, 'system_health')
-
-    return !!response
   },
   setSlippageTolerance ({ commit }, value) {
     commit(types.SET_SLIPPAGE_TOLERANCE, value)
