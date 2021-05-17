@@ -207,7 +207,6 @@ const actions = {
       }
     } catch (error) {
       console.error(error)
-      console.log('error', connection)
       if (!connectingNodeChanged()) {
         commit(types.SET_NODE_FAILURE)
       }
