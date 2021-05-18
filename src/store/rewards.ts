@@ -7,7 +7,7 @@ import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownSymbols, RewardInfo, CodecString } from '@sora-substrate/util'
 import web3Util from '@/utils/web3-util'
 import { RewardsAmountHeaderItem } from '@/types/rewards'
-import { findClaimableRewards, groupRewardsByAssetsList } from '@/utils/rewards'
+import { groupRewardsByAssetsList } from '@/utils/rewards'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -57,26 +57,20 @@ function initialState (): RewardsState {
 const state = initialState()
 
 const getters = {
-  claimableInternalRewards (state) {
-    return findClaimableRewards(state.internalRewards)
-  },
-  claimableExternalRewards (state) {
-    return findClaimableRewards(state.externalRewards)
-  },
-  claimableRewards (_, getters): Array<RewardInfo> {
+  claimableRewards (state: RewardsState): Array<RewardInfo> {
     return [
-      ...getters.claimableInternalRewards,
-      ...getters.claimableExternalRewards
+      ...state.internalRewards,
+      ...state.externalRewards
     ]
-  },
-  externalRewardsAvailable (_, getters): boolean {
-    return getters.claimableExternalRewards.length !== 0
   },
   transactionStepsCount (_, getters): number {
     return getters.externalRewardsAvailable ? 2 : 1
   },
   rewardsAvailable (_, getters): boolean {
     return getters.claimableRewards.length !== 0
+  },
+  externalRewardsAvailable (state: RewardsState): boolean {
+    return state.externalRewards.length !== 0
   },
   rewardsByAssetsList (_, getters): Array<RewardsAmountHeaderItem> {
     if (!getters.rewardsAvailable) {
