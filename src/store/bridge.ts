@@ -83,12 +83,23 @@ async function waitForApprovedRequest (hash: string): Promise<BridgeApprovedRequ
 
 async function waitForEthereumTransactionStatus (hash: string): Promise<Transaction> {
   const web3 = await web3Util.getInstance()
-  const result = await web3.eth.getTransaction(hash)
-  if (!result.blockNumber) {
+  const initialTx = await web3.eth.getTransaction(hash)
+  const blocksToWait = 5
+  if (!initialTx.blockNumber) {
     await delay(SORA_REQUESTS_TIMEOUT)
     return waitForEthereumTransactionStatus(hash)
+  } else {
+    const latestBlock = await web3.eth.getBlockNumber()
+    const blockDiff = latestBlock - initialTx.blockNumber
+    if (blockDiff >= blocksToWait) {
+      const currentTx = await web3.eth.getTransaction(hash)
+      if (currentTx.blockNumber) return currentTx
+      throw new Error(`Transaction (${hash}) does not exist / ended up as uncle block`)
+    } else {
+      await delay(SORA_REQUESTS_TIMEOUT)
+      return waitForEthereumTransactionStatus(hash)
+    }
   }
-  return result
 }
 
 interface EthLogData {

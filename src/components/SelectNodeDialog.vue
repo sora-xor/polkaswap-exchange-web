@@ -63,7 +63,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   @Getter nodeAddressConnecting!: string
   @Getter nodeConnectionAllowance!: boolean
   @Getter soraNetwork!: string
-  @Action setNode!: (node: Node) => void
+  @Action connectToNode!: (node: Node) => void
   @Action addCustomNode!: (node: Node) => void
   @Action removeCustomNode!: (node: any) => void
 
@@ -176,7 +176,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
 
     this.selectedNode = existingNode ?? nodeCopy
 
-    await this.setNode(nodeCopy)
+    await this.connectToNode(nodeCopy)
 
     if (isNewNode) {
       this.addCustomNode(nodeCopy)
