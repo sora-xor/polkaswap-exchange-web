@@ -3,7 +3,7 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import { connection, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
+import { connection, updateAccountAssetsSubscription, isWalletLoaded } from '@soramitsu/soraneo-wallet-web'
 
 import storage, { settingsStorage } from '@/utils/storage'
 import { AppHandledError } from '@/utils/error'
@@ -149,20 +149,30 @@ const NodeConnectionTimeout = 30000
 
 const actions = {
   async connectToInitialNode ({ commit, dispatch, state }) {
-    const node = state.node?.address ? state.node : state.defaultNodes[0]
+    const defaultNode = state.defaultNodes[0]
+    const node = state.node?.address ? state.node : defaultNode
 
     try {
       await dispatch('setNode', node)
     } catch (error) {
-      if (node.address !== state.defaultNodes[0].address) {
+      if (node.address !== defaultNode.address) {
         commit(types.RESET_NODE)
         await dispatch('connectToInitialNode')
       }
     }
   },
+  async connectToNode ({ dispatch }, node) {
+    try {
+      await dispatch('setNode', node)
+    } catch (error) {
+      dispatch('connectToInitialNode')
+      throw error
+    }
+  },
   async setNode ({ commit, dispatch, state }, node) {
     const endpoint = node?.address ?? ''
     const connectingNodeChanged = () => endpoint !== state.nodeAddressConnecting
+
     // if the connection process takes a long time, let user choose another node
     const connectionTimeout = setTimeout(() => {
       commit(types.SET_NODE_CONNECTION_ALLOWANCE, true)
@@ -179,32 +189,35 @@ const actions = {
 
       commit(types.SET_NODE_REQUEST, node)
 
-      // first connection before wallet init
-      if (!connection.endpoint && !connection.loading) {
-        connection.endpoint = endpoint
-      } else {
-        // keep the current connection until the success of the new one
-        await connection.open(endpoint, true)
+      console.info('Connection request to node', endpoint)
 
-        const nodeChainGenesisHash = connection.api.genesisHash.toHex()
+      const { endpoint: currentEndpoint, opened } = connection
 
-        if (nodeChainGenesisHash !== state.chainGenesisHash) {
-          // reconnect back to current node
-          dispatch('connectToInitialNode')
-          throw new AppHandledError({ key: 'node.errors.network' }, `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" recieved, should be "${state.chainGenesisHash}"`)
-        }
-
-        if (!connectingNodeChanged()) {
-          if (updateAccountAssetsSubscription) {
-            updateAccountAssetsSubscription.unsubscribe()
-          }
-          dispatch('updateAccountAssets', undefined, { root: true }) // to update subscription
-        }
+      if (currentEndpoint && opened) {
+        await connection.close()
+        console.info('Disconnected from node', currentEndpoint)
       }
 
-      if (!connectingNodeChanged()) {
-        commit(types.SET_NODE_SUCCESS, node)
+      await connection.open(endpoint, true)
+
+      if (connectingNodeChanged()) return
+
+      console.info('Connected to node', connection.endpoint)
+
+      const nodeChainGenesisHash = connection.api.genesisHash.toHex()
+
+      if (nodeChainGenesisHash !== state.chainGenesisHash) {
+        throw new AppHandledError({ key: 'node.errors.network' }, `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" recieved, should be "${state.chainGenesisHash}"`)
       }
+
+      if (isWalletLoaded) {
+        if (updateAccountAssetsSubscription) {
+          updateAccountAssetsSubscription.unsubscribe()
+        }
+        dispatch('updateAccountAssets', undefined, { root: true }) // to update subscription
+      }
+
+      commit(types.SET_NODE_SUCCESS, node)
     } catch (error) {
       console.error(error)
       if (!connectingNodeChanged()) {
