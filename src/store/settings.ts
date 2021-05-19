@@ -3,11 +3,11 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import { connection, updateAccountAssetsSubscription, isWalletLoaded } from '@soramitsu/soraneo-wallet-web'
+import { connection, updateAccountAssetsSubscription, isWalletLoaded, initWallet } from '@soramitsu/soraneo-wallet-web'
 
 import storage, { settingsStorage } from '@/utils/storage'
 import { AppHandledError } from '@/utils/error'
-import { DefaultSlippageTolerance, DefaultMarketAlgorithm, LiquiditySourceForMarketAlgorithm } from '@/consts'
+import { DefaultSlippageTolerance, DefaultMarketAlgorithm, LiquiditySourceForMarketAlgorithm, WalletPermissions } from '@/consts'
 import { getRpcEndpoint, fetchRpc } from '@/utils/rpc'
 
 const types = flow(
@@ -145,8 +145,6 @@ const mutations = {
   }
 }
 
-const NodeConnectionTimeout = 30000
-
 const actions = {
   async connectToInitialNode ({ commit, dispatch, state }) {
     const defaultNode = state.defaultNodes[0]
@@ -157,8 +155,8 @@ const actions = {
     } catch (error) {
       if (node.address !== defaultNode.address) {
         commit(types.RESET_NODE)
-        await dispatch('connectToInitialNode')
       }
+      await dispatch('connectToInitialNode')
     }
   },
   async connectToNode ({ dispatch }, node) {
@@ -172,11 +170,6 @@ const actions = {
   async setNode ({ commit, dispatch, state }, node) {
     const endpoint = node?.address ?? ''
     const connectingNodeChanged = () => endpoint !== state.nodeAddressConnecting
-
-    // if the connection process takes a long time, let user choose another node
-    const connectionTimeout = setTimeout(() => {
-      commit(types.SET_NODE_CONNECTION_ALLOWANCE, true)
-    }, NodeConnectionTimeout)
 
     try {
       if (!endpoint) {
@@ -224,8 +217,6 @@ const actions = {
         commit(types.SET_NODE_FAILURE)
       }
       throw error
-    } finally {
-      clearTimeout(connectionTimeout)
     }
   },
   setDefaultNodes ({ commit }, nodes) {
@@ -245,25 +236,20 @@ const actions = {
     const nodes = getters.customNodes.filter(item => item.address !== node.address)
     commit(types.SET_CUSTOM_NODES, nodes)
   },
-  async getNetworkChainGenesisHash ({ commit, state, dispatch }) {
+  async getNetworkChainGenesisHash ({ commit, state }) {
     const endpoint = state.defaultNodes?.[0]?.address
-    const genesisHash = await dispatch('getNodeChainGenesisHash', endpoint)
+
+    if (!endpoint) {
+      throw new Error('Address of default node is required')
+    }
+
+    const genesisHash = await fetchRpc(getRpcEndpoint(endpoint), 'chain_getBlockHash', [0]) ?? ''
 
     if (!genesisHash) {
       throw new Error('Failed to fetch network chain genesis hash')
     }
 
     commit(types.SET_NETWORK_CHAIN_GENESIS_HASH, genesisHash)
-  },
-  async getNodeChainGenesisHash (_, nodeAddress: string): Promise<string> {
-    if (!nodeAddress) {
-      throw new Error('nodeAddress is required')
-    }
-
-    const rpc = getRpcEndpoint(nodeAddress)
-    const genesisHash = await fetchRpc(rpc, 'chain_getBlockHash', [0]) ?? ''
-
-    return genesisHash
   },
   setSlippageTolerance ({ commit }, value) {
     commit(types.SET_SLIPPAGE_TOLERANCE, value)
