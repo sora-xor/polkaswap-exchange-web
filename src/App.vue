@@ -161,6 +161,7 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 import router, { lazyComponent } from '@/router'
 import axios from '@/api'
 import { formatAddress, disconnectWallet } from '@/utils'
+import { Node } from '@/types/nodes'
 
 const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
 const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
@@ -207,7 +208,6 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   @Action setDefaultNodes
   @Action connectToInitialNode
   @Action setFaucetUrl
-  @Action getNetworkChainGenesisHash
   @Action('getAssets', { namespace: 'assets' }) getAssets
   @Action('setEthereumSmartContracts', { namespace: 'web3' }) setEthereumSmartContracts
   @Action('setDefaultEthNetwork', { namespace: 'web3' }) setDefaultEthNetwork
@@ -226,8 +226,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
       }
 
       // connection to node
-      await this.getNetworkChainGenesisHash()
-      await this.connectToInitialNode()
+      await this.connectToInitialNode(this.handleNodeConnectionError)
 
       await initWallet({ permissions: WalletPermissions })
       await this.getAssets()
@@ -298,6 +297,22 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
 
   destroyed (): void {
     disconnectWallet()
+  }
+
+  private handleNodeConnectionError (node: Node, defaultNode: Node) {
+    const alertOptions = { title: this.t('errorText') }
+    const defaultNodeConnectionError = node.address === defaultNode.address
+
+    // if (defaultNodeConnectionError) {
+    //   this.openSelectNodeDialog()
+    // }
+
+    this.openSelectNodeDialog()
+
+    this.$alert(
+      this.t('node.errors.initialConnect', { address: node.address, default: defaultNode.address }),
+      alertOptions
+    )
   }
 }
 </script>
@@ -463,6 +478,13 @@ html {
     }
   }
 }
+
+.el-message-box {
+  &__message {
+    white-space: pre-line;
+  }
+}
+
 .container {
   @include container-styles;
   .el-loading-mask {

@@ -5,6 +5,7 @@ import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { connection, updateAccountAssetsSubscription, isWalletLoaded, initWallet } from '@soramitsu/soraneo-wallet-web'
 
+import { delay } from '@/utils'
 import storage, { settingsStorage } from '@/utils/storage'
 import { AppHandledError } from '@/utils/error'
 import { DefaultSlippageTolerance, DefaultMarketAlgorithm, LiquiditySourceForMarketAlgorithm, WalletPermissions } from '@/consts'
@@ -146,17 +147,21 @@ const mutations = {
 }
 
 const actions = {
-  async connectToInitialNode ({ commit, dispatch, state }) {
+  async connectToInitialNode ({ commit, dispatch, state }, callback?: Function) {
     const defaultNode = state.defaultNodes[0]
     const node = state.node?.address ? state.node : defaultNode
 
     try {
       await dispatch('setNode', node)
     } catch (error) {
-      if (node.address !== defaultNode.address) {
-        commit(types.RESET_NODE)
+      commit(types.RESET_NODE)
+      if (callback) {
+        callback(node, defaultNode)
       }
-      await dispatch('connectToInitialNode')
+      if (node.address !== defaultNode.address) {
+        await delay(2500)
+        await dispatch('connectToInitialNode')
+      }
     }
   },
   async connectToNode ({ dispatch }, node) {
@@ -177,7 +182,7 @@ const actions = {
       }
 
       if (!state.chainGenesisHash) {
-        throw new Error('Network chain genesis hash is not set')
+        await dispatch('getNetworkChainGenesisHash')
       }
 
       commit(types.SET_NODE_REQUEST, node)
@@ -237,13 +242,7 @@ const actions = {
     commit(types.SET_CUSTOM_NODES, nodes)
   },
   async getNetworkChainGenesisHash ({ commit, state }) {
-    const endpoint = state.defaultNodes?.[0]?.address
-
-    if (!endpoint) {
-      throw new Error('Address of default node is required')
-    }
-
-    const genesisHash = await fetchRpc(getRpcEndpoint(endpoint), 'chain_getBlockHash', [0]) ?? ''
+    const genesisHash = await Promise.any(state.defaultNodes.map(node => fetchRpc(getRpcEndpoint(node.address), 'chain_getBlockHash', [0])))
 
     if (!genesisHash) {
       throw new Error('Failed to fetch network chain genesis hash')

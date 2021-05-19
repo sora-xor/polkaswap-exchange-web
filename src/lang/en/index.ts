@@ -95,6 +95,7 @@ export default {
   },
   node: {
     errors: {
+      initialConnect: 'An error occurred while connecting to the node:\n{address}\n\nSwitching to the default node:\n{default}',
       connection: 'An error occurred while connecting to the node',
       network: 'You selected the node from the different network',
       existing: 'This node is already added: \'{title}\''
