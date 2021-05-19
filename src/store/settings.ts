@@ -5,11 +5,11 @@ import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { connection, updateAccountAssetsSubscription, isWalletLoaded, initWallet } from '@soramitsu/soraneo-wallet-web'
 
-import { delay } from '@/utils'
 import storage, { settingsStorage } from '@/utils/storage'
 import { AppHandledError } from '@/utils/error'
 import { DefaultSlippageTolerance, DefaultMarketAlgorithm, LiquiditySourceForMarketAlgorithm, WalletPermissions } from '@/consts'
 import { getRpcEndpoint, fetchRpc } from '@/utils/rpc'
+import { Node } from '@/types/nodes'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -59,7 +59,7 @@ const getters = {
   defaultNodes (state) {
     return state.defaultNodes
   },
-  defaultNodesHashTable (state, getters) {
+  defaultNodesHashTable (_, getters) {
     return getters.defaultNodes.reduce((result, node) => ({ ...result, [node.address]: node }), {})
   },
   customNodes (state, getters) {
@@ -147,28 +147,32 @@ const mutations = {
 }
 
 const actions = {
-  async connectToInitialNode ({ commit, dispatch, state }, callback?: Function) {
+  async connectToNode ({ commit, dispatch, state }, node: Node) {
     const defaultNode = state.defaultNodes[0]
-    const node = state.node?.address ? state.node : defaultNode
+    const requestedNode = node || (state.node.address ? state.node : defaultNode)
 
     try {
-      await dispatch('setNode', node)
-    } catch (error) {
-      commit(types.RESET_NODE)
-      if (callback) {
-        callback(node, defaultNode)
+      await dispatch('setNode', requestedNode)
+
+      // wallet init & update flow
+      if (!isWalletLoaded) {
+        await initWallet({ permissions: WalletPermissions })
+        await dispatch('getAssets', undefined, { root: true })
+      } else {
+        if (updateAccountAssetsSubscription) {
+          updateAccountAssetsSubscription.unsubscribe()
+        }
+        dispatch('updateAccountAssets', undefined, { root: true }) // to update subscription
       }
-      if (node.address !== defaultNode.address) {
-        await delay(2500)
-        await dispatch('connectToInitialNode')
-      }
-    }
-  },
-  async connectToNode ({ dispatch }, node) {
-    try {
-      await dispatch('setNode', node)
     } catch (error) {
-      dispatch('connectToInitialNode')
+      if (requestedNode.address === state.node.address) {
+        commit(types.RESET_NODE)
+      }
+
+      if (requestedNode.address !== defaultNode.address) {
+        await dispatch('connectToNode')
+      }
+
       throw error
     }
   },
@@ -196,7 +200,7 @@ const actions = {
         console.info('Disconnected from node', currentEndpoint)
       }
 
-      await connection.open(endpoint, true)
+      await connection.open(endpoint, { once: true, timeout: 30000 })
 
       if (connectingNodeChanged()) return
 
@@ -205,14 +209,12 @@ const actions = {
       const nodeChainGenesisHash = connection.api.genesisHash.toHex()
 
       if (nodeChainGenesisHash !== state.chainGenesisHash) {
-        throw new AppHandledError({ key: 'node.errors.network' }, `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" recieved, should be "${state.chainGenesisHash}"`)
-      }
-
-      if (isWalletLoaded) {
-        if (updateAccountAssetsSubscription) {
-          updateAccountAssetsSubscription.unsubscribe()
-        }
-        dispatch('updateAccountAssets', undefined, { root: true }) // to update subscription
+        throw new AppHandledError({
+          key: 'node.errors.network',
+          payload: { failed: endpoint }
+        },
+          `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" recieved, should be "${state.chainGenesisHash}"`
+        )
       }
 
       commit(types.SET_NODE_SUCCESS, node)

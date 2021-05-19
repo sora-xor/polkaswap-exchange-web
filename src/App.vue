@@ -150,10 +150,10 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { initWallet, WALLET_CONSTS, WalletAvatar } from '@soramitsu/soraneo-wallet-web'
+import { WALLET_CONSTS, WalletAvatar } from '@soramitsu/soraneo-wallet-web'
 import { KnownSymbols } from '@sora-substrate/util'
 
-import { WalletPermissions, PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize } from '@/consts'
+import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize } from '@/consts'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -206,7 +206,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   @Action trackActiveTransactions
   @Action setSoraNetwork
   @Action setDefaultNodes
-  @Action connectToInitialNode
+  @Action connectToNode
   @Action setFaucetUrl
   @Action('getAssets', { namespace: 'assets' }) getAssets
   @Action('setEthereumSmartContracts', { namespace: 'web3' }) setEthereumSmartContracts
@@ -226,10 +226,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
       }
 
       // connection to node
-      await this.connectToInitialNode(this.handleNodeConnectionError)
-
-      await initWallet({ permissions: WalletPermissions })
-      await this.getAssets()
+      await this.runAppConnectionToNode()
     })
 
     this.trackActiveTransactions()
@@ -299,20 +296,25 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
     disconnectWallet()
   }
 
-  private handleNodeConnectionError (node: Node, defaultNode: Node) {
-    const alertOptions = { title: this.t('errorText') }
-    const defaultNodeConnectionError = node.address === defaultNode.address
+  private async runAppConnectionToNode () {
+    try {
+      await this.connectToNode()
+    } catch (error) {
+      console.log('app error', error)
+    }
+  }
 
-    // if (defaultNodeConnectionError) {
-    //   this.openSelectNodeDialog()
-    // }
+  private handleNodeConnectionError (error) {
+    console.log('App handle error', error)
+    // const alertOptions = { title: this.t('errorText') }
+    // const defaultNodeConnectionError = node.address === defaultNode.address
 
-    this.openSelectNodeDialog()
+    // this.openSelectNodeDialog()
 
-    this.$alert(
-      this.t('node.errors.initialConnect', { address: node.address, default: defaultNode.address }),
-      alertOptions
-    )
+    // this.$alert(
+    //   this.t('node.errors.initialConnect', { address: node.address, default: defaultNode.address }),
+    //   alertOptions
+    // )
   }
 }
 </script>

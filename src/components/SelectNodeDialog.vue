@@ -17,8 +17,7 @@
       v-else
       :node="selectedNode"
       :existing="existingNodeIsSelected"
-      :disabled="!nodeConnectionAllowance"
-      :loading="isSelectedNodeConnecting"
+      :loading="isSelectedNodeLoading"
       :removable="isSelectedNodeRemovable"
       :connected="isSelectedNodeConnected"
       :handle-back="handleBack"
@@ -86,8 +85,8 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     return !this.defaultNodes.find(node => node.address === this.selectedNode?.address)
   }
 
-  get isSelectedNodeConnecting (): boolean {
-    return this.isConnectingNode(this.selectedNode)
+  get isSelectedNodeLoading (): boolean {
+    return !this.nodeConnectionAllowance || this.isConnectingNode(this.selectedNode)
   }
 
   get isSelectedNodeConnected (): boolean {
@@ -124,13 +123,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
         this.handleBack()
       }
     } catch (error) {
-      const key = error instanceof AppHandledError ? error.translationKey : 'node.errors.connection'
-      const payload = error instanceof AppHandledError ? error.translationPayload : {}
-
-      this.$alert(
-        this.t(key, payload),
-        { title: this.t('errorText') }
-      )
+      this.handleNodeError(error, node)
     }
   }
 
@@ -198,6 +191,23 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
 
   private isConnectingNode (node: any): boolean {
     return this.nodeAddressConnecting === node?.address
+  }
+
+  private handleNodeError (error, node?: Node) {
+    const key = error instanceof AppHandledError ? error.translationKey : 'node.errors.connection'
+    const payload = error instanceof AppHandledError ? error.translationPayload : {}
+
+    if (node && !payload.failed) {
+      payload.failed = node.address
+    }
+    if (!payload.success) {
+      payload.success = this.node.address
+    }
+
+    this.$alert(
+      this.t(key, payload),
+      { title: this.t('errorText') }
+    )
   }
 }
 </script>
