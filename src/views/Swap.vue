@@ -221,7 +221,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   showSelectTokenDialog = false
   showConfirmSwapDialog = false
   isRecountingProcess = false
-  recountSwapValues = null
+  recountSwapValues: any
 
   get areTokensSelected (): boolean {
     return !!(this.tokenFrom && this.tokenTo)
