@@ -2,6 +2,7 @@ import map from 'lodash/fp/map'
 import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
+import { isWhitelistAsset } from 'polkaswap-token-whitelist'
 import { KnownAssets, KnownSymbols, Asset, RegisteredAccountAsset } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 
@@ -22,7 +23,8 @@ const types = flow(
 function initialState () {
   return {
     assets: [],
-    registeredAssets: []
+    registeredAssets: [],
+    customAssets: []
   }
 }
 
@@ -32,6 +34,15 @@ const getters = {
   // list of all assets
   assets (state) {
     return state.assets
+  },
+  whitelistAssets (state) {
+    return state.assets.filter(asset => isWhitelistAsset(asset))
+  },
+  nonWhitelistAssets (state) {
+    return state.assets.filter(asset => !isWhitelistAsset(asset))
+  },
+  nonWhitelistAccountAssets (state, getters, rootState, rootGetters) {
+    return rootGetters.accountAssets.filter(asset => !isWhitelistAsset(asset))
   },
   tokenXOR (state, getters, rootState, rootGetters) {
     const token = KnownAssets.get(KnownSymbols.XOR)

@@ -198,7 +198,7 @@ const actions = {
         console.info('Disconnected from node', currentEndpoint)
       }
 
-      await connection.open(endpoint, true)
+      await connection.open(endpoint, { once: true })
 
       if (connectingNodeChanged()) return
 
