@@ -25,7 +25,6 @@ $table-item-font-size: 13px;
 
 .amount-table {
   &-item {
-    color: white;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;

@@ -55,7 +55,6 @@ $divider-height: 40px;
 
   &-block {
     flex: 1;
-    color: var(--s-color-base-on-accent);
     text-align: center;
 
     &:first-child:not(:last-child) {
@@ -67,7 +66,6 @@ $divider-height: 40px;
     }
 
     &__amount {
-      color: white;
       font-size: $amount-font-size;
       font-weight: $s-font-weight-big;
       line-height: $amount-line-height;
@@ -75,7 +73,6 @@ $divider-height: 40px;
     }
 
     &__symbol {
-      color: white;
       font-size: var(--s-font-size-small);
       font-weight: 300;
       line-height: $s-line-height-medium;
