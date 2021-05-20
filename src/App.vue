@@ -208,7 +208,6 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   @Action setDefaultNodes
   @Action connectToNode
   @Action setFaucetUrl
-  @Action('getAssets', { namespace: 'assets' }) getAssets
   @Action('setEthereumSmartContracts', { namespace: 'web3' }) setEthereumSmartContracts
   @Action('setDefaultEthNetwork', { namespace: 'web3' }) setDefaultEthNetwork
 

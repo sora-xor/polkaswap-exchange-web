@@ -159,7 +159,7 @@ const actions = {
       // wallet init & update flow
       if (!isWalletLoaded) {
         await initWallet({ permissions: WalletPermissions })
-        await dispatch('getAssets', undefined, { root: true })
+        await dispatch('assets/getAssets', undefined, { root: true })
       } else {
         if (updateAccountAssetsSubscription) {
           updateAccountAssetsSubscription.unsubscribe()
