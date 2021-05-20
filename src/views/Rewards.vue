@@ -111,7 +111,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 
   private unwatchEthereum!: any
 
-  created (): void {
+  destroyed (): void {
     this.reset()
   }
 
