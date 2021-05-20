@@ -161,6 +161,7 @@
           />
           <info-line
             :label="t('bridge.ethereumNetworkFee')"
+            :tooltip-content="t('ethNetworkFeeTooltipText')"
             :value="formatFee(ethereumNetworkFee, formattedEthNetworkFee)"
             :asset-symbol="EthSymbol"
           />
