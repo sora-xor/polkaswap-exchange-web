@@ -150,13 +150,14 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { initWallet, WALLET_CONSTS, WalletAvatar } from '@soramitsu/soraneo-wallet-web'
+import { WALLET_CONSTS, WalletAvatar } from '@soramitsu/soraneo-wallet-web'
 import { KnownSymbols } from '@sora-substrate/util'
 
-import { WalletPermissions, PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize } from '@/consts'
+import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize } from '@/consts'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
 
 import router, { lazyComponent } from '@/router'
 import axios from '@/api'
@@ -175,7 +176,7 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class App extends Mixins(TransactionMixin, LoadingMixin) {
+export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErrorMixin) {
   readonly nodesFeatureEnabled = true
 
   readonly SidebarMenuGroups = SidebarMenuGroups
@@ -205,10 +206,8 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   @Action trackActiveTransactions
   @Action setSoraNetwork
   @Action setDefaultNodes
-  @Action connectToInitialNode
+  @Action connectToNode
   @Action setFaucetUrl
-  @Action getNetworkChainGenesisHash
-  @Action('getAssets', { namespace: 'assets' }) getAssets
   @Action('setEthereumSmartContracts', { namespace: 'web3' }) setEthereumSmartContracts
   @Action('setDefaultEthNetwork', { namespace: 'web3' }) setDefaultEthNetwork
 
@@ -226,11 +225,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
       }
 
       // connection to node
-      await this.getNetworkChainGenesisHash()
-      await this.connectToInitialNode()
-
-      await initWallet({ permissions: WalletPermissions })
-      await this.getAssets()
+      await this.runAppConnectionToNode()
     })
 
     this.trackActiveTransactions()
@@ -298,6 +293,18 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
 
   destroyed (): void {
     disconnectWallet()
+  }
+
+  private async runAppConnectionToNode () {
+    try {
+      await this.connectToNode()
+    } catch (error) {
+      if (!this.node.address) {
+        this.openSelectNodeDialog()
+      }
+
+      this.handleNodeError(error)
+    }
   }
 }
 </script>
@@ -463,6 +470,13 @@ html {
     }
   }
 }
+
+.el-message-box {
+  &__message {
+    white-space: pre-line;
+  }
+}
+
 .container {
   @include container-styles;
   .el-loading-mask {

@@ -9,25 +9,19 @@ export const getRpcEndpoint = (wsEndpoint: string): string => {
 }
 
 export async function fetchRpc (url: string, method: string, params?: any): Promise<any> {
-  const logError = (fnName, arg) => {
-    console.error(`${fnName}: argument ${arg} is required`)
-    return null
+  const throwError = (fnName, arg) => {
+    throw new Error(`${fnName}: argument ${arg} is required`)
   }
 
-  if (!url) return logError(fetchRpc.name, 'url')
-  if (!method) return logError(fetchRpc.name, 'method')
+  if (!url) return throwError(fetchRpc.name, 'url')
+  if (!method) return throwError(fetchRpc.name, 'method')
 
-  try {
-    const { data } = await axios.post(url, {
-      id: 1,
-      jsonrpc: '2.0',
-      method,
-      params
-    })
+  const { data } = await axios.post(url, {
+    id: 1,
+    jsonrpc: '2.0',
+    method,
+    params
+  })
 
-    return data.result
-  } catch (error) {
-    console.error(error)
-    return null
-  }
+  return data.result
 }
