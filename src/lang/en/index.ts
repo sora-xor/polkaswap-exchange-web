@@ -26,6 +26,7 @@ export default {
   retryText: 'Retry',
   networkFeeText: 'Network Fee',
   networkFeeTooltipText: 'Network fee is used to ensure @:soraText system\'s growth and stable performance.',
+  ethNetworkFeeTooltipText: 'Please note that the Ethereum network fees displayed on Polkaswap are only rough estimations, you can see the correct fee amount in your connected Ethereum wallet prior to confirming the transaction.',
   marketText: 'Market',
   marketAlgorithmText: 'Market algorithm',
   insufficientBalanceText: 'Insufficient {tokenSymbol} balance',
