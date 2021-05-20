@@ -55,13 +55,15 @@
             prefix="el-icon-search"
             size="medium"
             border-radius="mini"
-            @change="handleSearchCustomAsset"
+            @input="debouncedCustomAssetSearch"
           >
             <template #suffix v-if="customAddress">
-              <s-button class="s-button--clear" icon="clear-X-16" @click="handleClearCustomAddress" />
+              <s-button class="s-button--clear" icon="clear-X-16" @click="resetCustomAssetFields" />
             </template>
           </s-input>
         </div>
+        <div class="asset-select__info" v-if="alreadyAttached">{{ t('selectToken.custom.alreadyAttached') }}</div>
+        <div class="asset-select__info" v-else-if="!customAsset && customAddress">{{ t('selectToken.custom.notFound') }}</div>
         <div class="add-asset-details" v-if="customAsset">
           <div class="add-asset-details_asset">
             <token-logo :token="customAsset" />
@@ -123,6 +125,7 @@ import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { Asset, AccountAsset } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
+import { isBlacklistAsset } from 'polkaswap-token-whitelist'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -131,8 +134,7 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
-import { copyToClipboard, formatAddress, asZeroValue, getAssetBalance, formatAssetBalance } from '@/utils'
-import { isBlacklistAsset } from 'polkaswap-token-whitelist'
+import { copyToClipboard, formatAddress, asZeroValue, getAssetBalance, formatAssetBalance, debouncedInputHandler } from '@/utils'
 
 const namespace = 'assets'
 
@@ -168,6 +170,13 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   // Wallet
   @Action addAsset!: (options: { address?: string }) => Promise<void>
 
+  resetCustomAssetFields (): void {
+    this.isConfirmed = false
+    this.alreadyAttached = false
+    this.customAsset = null
+    this.customAddress = ''
+  }
+
   @Watch('visible')
   async handleVisibleChangeToFocusSearch (value: boolean): Promise<void> {
     await this.$nextTick()
@@ -175,6 +184,7 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
     if (!value) return
 
     this.tabValue = first(this.tokenTabs)
+    this.resetCustomAssetFields()
 
     const input = this.$refs.search as any
 
@@ -298,7 +308,8 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
     return this.t('addAsset.unknown')
   }
 
-  handleSearchCustomAsset (value: string): void {
+  searchCustomAsset (): void {
+    const value = this.customAddress
     this.alreadyAttached = false
     if (!value.trim()) {
       this.customAsset = null
@@ -314,19 +325,19 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
     this.customAsset = asset ?? null
   }
 
+  debouncedCustomAssetSearch = debouncedInputHandler(this.searchCustomAsset)
+
   async handleAddAsset (): Promise<void> {
     await this.withLoading(async () => await this.addAsset({ address: (this.customAsset || {}).address }))
-    this.handleClearCustomAddress()
-  }
-
-  handleClearCustomAddress (): void {
-    this.customAddress = ''
-    this.customAsset = null
+    this.resetCustomAssetFields()
   }
 
   handleRemoveCustomAsset (asset: Asset, event: Event): void {
     event.stopImmediatePropagation()
     api.removeAsset(asset.address)
+    if (this.customAddress) {
+      this.searchCustomAsset()
+    }
   }
 }
 </script>
@@ -352,8 +363,12 @@ $token-item-height: 71px;
   font-weight: 800;
   color: var(--s-color-base-content-secondary);
 }
-.token-list_text, .token-item, .add-asset-details {
+.token-list_text, .token-item, .add-asset-details, .asset-select__info {
   padding: 0 $inner-spacing-big;
+}
+.asset-select__info {
+  color: var(--s-color-base-content-secondary);
+  margin-bottom: $inner-spacing-medium;
 }
 .token-item {
   height: $token-item-height;

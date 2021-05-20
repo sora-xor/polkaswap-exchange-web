@@ -221,7 +221,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   showSelectTokenDialog = false
   showConfirmSwapDialog = false
   isRecountingProcess = false
-  recountSwapValues: any
 
   get areTokensSelected (): boolean {
     return !!(this.tokenFrom && this.tokenTo)
@@ -277,8 +276,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   created () {
-    this.recountSwapValues = debouncedInputHandler(this.runRecountSwapValues)
-
     this.withApi(async () => {
       await this.getAssets()
       if (!this.tokenFrom) {
@@ -391,6 +388,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       this.isRecountingProcess = false
     }
   }
+
+  recountSwapValues = debouncedInputHandler(this.runRecountSwapValues)
 
   private async calcMinMaxRecieved (): Promise<void> {
     const amount = this.isExchangeB ? this.fromValue : this.toValue
