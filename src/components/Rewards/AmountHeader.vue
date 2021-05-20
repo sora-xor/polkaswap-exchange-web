@@ -24,7 +24,8 @@ export default class AmountHeader extends Vue {
 </script>
 
 <style lang="scss" scoped>
-$amount-font-size: 20px;
+$amount-font-size: 24px;
+$amount-line-height: 20px;
 $divider-width: 12px;
 $divider-height: 40px;
 
@@ -54,7 +55,6 @@ $divider-height: 40px;
 
   &-block {
     flex: 1;
-    color: var(--s-color-base-on-accent);
     text-align: center;
 
     &:first-child:not(:last-child) {
@@ -68,13 +68,14 @@ $divider-height: 40px;
     &__amount {
       font-size: $amount-font-size;
       font-weight: $s-font-weight-big;
-      line-height: $s-line-height-medium;
+      line-height: $amount-line-height;
       letter-spacing: $s-letter-spacing-big;
     }
 
     &__symbol {
       font-size: var(--s-font-size-small);
-      line-height: $s-line-height-base;
+      font-weight: 300;
+      line-height: $s-line-height-medium;
     }
   }
 }
