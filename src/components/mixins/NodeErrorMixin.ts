@@ -9,20 +9,22 @@ import { Node } from '@/types/nodes'
 export default class NodeErrorMixin extends Mixins(TranslationMixin) {
   @Getter node!: Node
 
-  private handleNodeError (error, node?: Node) {
-    const key = error instanceof AppHandledError ? error.translationKey : 'node.errors.connection'
-    const payload = error instanceof AppHandledError ? error.translationPayload : {}
+  protected handleNodeError (error, node?: Node) {
+    const errorKey = error instanceof AppHandledError ? error.translationKey : 'node.errors.connection'
+    const errorPayload = error instanceof AppHandledError ? error.translationPayload : {}
 
-    if (node && !payload.failed) {
-      payload.failed = node.address
-    }
-    if (!payload.success) {
-      payload.success = this.node.address
+    if (node && !errorPayload.address) {
+      errorPayload.address = node.address
     }
 
-    this.$alert(
-      this.t(key, payload),
-      { title: this.t('errorText') }
-    )
+    const errorMessage = this.t(errorKey, errorPayload)
+
+    const resultKey = this.node.address ? 'node.messages.connected' : 'node.messages.selectNode'
+    const resultPayload = { address: this.node.address }
+    const resultMessage = this.t(resultKey, resultPayload)
+
+    const message = errorMessage + resultMessage
+
+    this.$alert(message, { title: this.t('errorText') })
   }
 }

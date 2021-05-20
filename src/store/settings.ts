@@ -213,7 +213,7 @@ const actions = {
       if (nodeChainGenesisHash !== state.chainGenesisHash) {
         throw new AppHandledError({
           key: 'node.errors.network',
-          payload: { failed: endpoint }
+          payload: { address: endpoint }
         },
           `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" recieved, should be "${state.chainGenesisHash}"`
         )
@@ -222,10 +222,19 @@ const actions = {
       commit(types.SET_NODE_SUCCESS, node)
     } catch (error) {
       console.error(error)
+
+      const err = error instanceof AppHandledError
+        ? error
+        : new AppHandledError({
+          key: 'node.errors.connection',
+          payload: { address: endpoint }
+        })
+
       if (!connectingNodeChanged()) {
         commit(types.SET_NODE_FAILURE)
       }
-      throw error
+
+      throw err
     }
   },
   setDefaultNodes ({ commit }, nodes) {

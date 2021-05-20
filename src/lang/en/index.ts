@@ -95,9 +95,13 @@ export default {
   },
   node: {
     errors: {
-      connection: 'An error occurred while connecting to the node\n{failed}\nConnection estabilished with node\n{success}',
-      network: 'The node\n{failed}\n is from the another network\nConnection estabilished with node\n{success}',
-      existing: 'This node is already added: \'{title}\''
+      connection: 'An error occurred while connecting to the node\n{address}\n',
+      network: 'The node\n{address}\n is from the another network\n',
+      existing: 'This node is already added: \'{title}\'\n'
+    },
+    messages: {
+      connected: 'Connection estabilished with node\n{address}\n',
+      selectNode: 'Please select node to connect from the node list'
     }
   },
   selectNodeDialog: {

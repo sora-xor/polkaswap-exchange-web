@@ -300,21 +300,12 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
     try {
       await this.connectToNode()
     } catch (error) {
+      if (!this.node.address) {
+        this.openSelectNodeDialog()
+      }
+
       this.handleNodeError(error)
     }
-  }
-
-  private handleNodeConnectionError (error) {
-    console.log('App handle error', error)
-    // const alertOptions = { title: this.t('errorText') }
-    // const defaultNodeConnectionError = node.address === defaultNode.address
-
-    // this.openSelectNodeDialog()
-
-    // this.$alert(
-    //   this.t('node.errors.initialConnect', { address: node.address, default: defaultNode.address }),
-    //   alertOptions
-    // )
   }
 }
 </script>
