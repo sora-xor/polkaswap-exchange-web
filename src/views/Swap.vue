@@ -140,7 +140,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
-import { isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance } from '@/utils'
+import { isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance, debouncedInputHandler } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -221,6 +221,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   showSelectTokenDialog = false
   showConfirmSwapDialog = false
   isRecountingProcess = false
+  recountSwapValues: any
 
   get areTokensSelected (): boolean {
     return !!(this.tokenFrom && this.tokenTo)
@@ -276,6 +277,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   created () {
+    this.recountSwapValues = debouncedInputHandler(this.runRecountSwapValues)
+
     this.withApi(async () => {
       await this.getAssets()
       if (!this.tokenFrom) {
@@ -357,7 +360,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     }
   }
 
-  private async recountSwapValues (): Promise<void> {
+  private async runRecountSwapValues (): Promise<void> {
     const value = this.isExchangeB ? this.toValue : this.fromValue
     const setOppositeValue = this.isExchangeB ? this.setFromValue : this.setToValue
     const resetOppositeValue = this.isExchangeB ? this.resetFieldFrom : this.resetFieldTo
