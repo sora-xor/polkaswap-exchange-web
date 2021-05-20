@@ -1,8 +1,8 @@
 <template>
   <div class="amount-table">
     <div v-for="({ title, amount, symbol }, index) in items" :key="index" class="amount-table-item">
-      <span>{{ title }}</span>
-      <div>
+      <div class="amount-table-item__title">{{ title }}</div>
+      <div class="amount-table-item__amount">
         <span>{{ amount }}</span>&nbsp;<span>{{ symbol }}</span>
       </div>
     </div>
@@ -21,15 +21,28 @@ export default class AmountTable extends Vue {
 </script>
 
 <style lang="scss" scoped>
+$table-item-font-size: 13px;
+
 .amount-table {
   &-item {
-    color: var(--s-color-base-on-accent);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    font-size: var(--s-font-size-mini);
-    line-height: $s-line-height-base;
-    padding: $inner-spacing-mini / 2 0;
+    font-size: $table-item-font-size;
+    line-height: $s-line-height-mini;
+    padding: $inner-spacing-mini $inner-spacing-mini / 2;
+
+    &__title {
+      font-weight: 300;
+      text-transform: uppercase;
+      width: 60%;
+    }
+
+    &__amount {
+      font-weight: 600;
+      width: 40%;
+      text-align: right;
+    }
   }
 }
 </style>

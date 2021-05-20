@@ -229,11 +229,12 @@ export enum NetworkTypes {
 export const EthSymbol = 'ETH'
 
 const gasLimit = {
-  approve: 66000 * 2,
-  sendERC20ToSidechain: 81000 * 2,
-  mintTokensByPeers: 191285 * 2,
-  receiveByEthereumAssetAddress: 253979 * 2,
-  receiveBySidechainAssetId: 252659 * 2
+  approve: 70000,
+  sendERC20ToSidechain: 86000,
+  sendEthToSidechain: 50000,
+  mintTokensByPeers: 255000,
+  receiveByEthereumAssetAddress: 250000,
+  receiveBySidechainAssetId: 255000
 }
 /**
  * It's in gwei.
@@ -246,6 +247,7 @@ export const EthereumGasLimits = [
     XOR: gasLimit.approve + gasLimit.sendERC20ToSidechain,
     VAL: gasLimit.approve + gasLimit.sendERC20ToSidechain,
     PSWAP: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+    ETH: gasLimit.sendEthToSidechain,
     [KnownBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain
   },
   // SORA -> ETH
@@ -253,6 +255,7 @@ export const EthereumGasLimits = [
     XOR: gasLimit.mintTokensByPeers,
     VAL: gasLimit.mintTokensByPeers,
     PSWAP: gasLimit.receiveBySidechainAssetId,
+    ETH: gasLimit.receiveByEthereumAssetAddress,
     [KnownBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress
   }
 ]

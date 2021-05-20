@@ -136,7 +136,7 @@
         <footer v-else class="app-footer">
           <div class="sora-logo">
             <span class="sora-logo__title">{{ t('poweredBy') }}</span>
-            <div class="sora-logo__image"></div>
+            <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener" />
           </div>
         </footer>
       </div>

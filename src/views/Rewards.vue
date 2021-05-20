@@ -7,13 +7,13 @@
         <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text">
           {{ claimingStatusMessage }}
         </div>
-        <div v-if="areNetworksConnected && rewardsFetched" class="rewards-amount">
+        <div v-if="isSoraAccountConnected && !rewardsFetching" class="rewards-amount">
           <rewards-amount-header :items="rewardsByAssetsList" />
           <template v-if="!claimingInProgressOrFinished">
             <rewards-amount-table v-if="formattedClaimableRewards.length" :items="formattedClaimableRewards" />
+            <s-divider />
             <div class="rewards-footer">
-              <s-divider />
-              <div class="rewards-account">
+              <div v-if="isExternalAccountConnected" class="rewards-account">
                 <toggle-text-button
                   type="link"
                   size="mini"
@@ -23,6 +23,10 @@
                 />
                 <span>{{ t('rewards.connected') }}</span>
               </div>
+              <s-button v-else class="rewards-connect-button" type="secondary" @click="connectExternalAccountProcess">
+                {{ t('rewards.action.connectExternalWallet') }}
+              </s-button>
+              <div v-if="externalRewardsHintText" class="rewards-footer-hint">{{ externalRewardsHintText }}</div>
             </div>
           </template>
         </div>
@@ -31,13 +35,20 @@
         </div>
       </div>
     </gradient-box>
-    <div v-if="!claimingInProgressOrFinished" class="rewards-block rewards-hint">
+    <div v-if="!claimingInProgressOrFinished && hintText" class="rewards-block rewards-hint">
       {{ hintText }}
     </div>
-    <s-button v-if="!rewardsRecieved" class="rewards-block rewards-action-button" type="primary" @click="handleAction" :loading="actionButtonLoading" :disabled="actionButtonDisabled">
+    <s-button
+      v-if="!rewardsRecieved"
+      class="rewards-block rewards-action-button"
+      type="primary"
+      @click="handleAction"
+      :loading="actionButtonLoading"
+      :disabled="actionButtonDisabled"
+    >
       {{ actionButtonText }}
     </s-button>
-    <info-line v-if="fee && areNetworksConnected && rewardsAvailable && !claimingInProgressOrFinished" v-bind="feeInfo" class="rewards-block" />
+    <info-line v-if="fee && isSoraAccountConnected && rewardsAvailable && !claimingInProgressOrFinished" v-bind="feeInfo" class="rewards-block" />
   </div>
 </template>
 
@@ -59,7 +70,9 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 const RewardsTableTitles = {
   [RewardingEvents.XorErc20]: 'XOR ERC-20',
   [RewardingEvents.SoraFarmHarvest]: 'SORA.farm harvest',
-  [RewardingEvents.NtfAirdrop]: 'NFT Airdrop'
+  [RewardingEvents.NtfAirdrop]: 'NFT Airdrop',
+  [RewardingEvents.LiquidityProvision]: 'PSWAP STRATEGIC REWARDS for liquidity provision',
+  [RewardingEvents.BuyOnBondingCurve]: 'PSWAP STRATEGIC REWARDS for buying into TBC'
 }
 
 @Component({
@@ -83,13 +96,13 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @State(state => state.rewards.rewardsRecieved) rewardsRecieved!: boolean
   @State(state => state.rewards.transactionError) transactionError!: boolean
   @State(state => state.rewards.transactionStep) transactionStep!: number
-  @State(state => state.rewards.transactionStepsCount) transactionStepsCount!: number
 
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset
-  @Getter('rewardsFetched', { namespace: 'rewards' }) rewardsFetched!: boolean
   @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean
+  @Getter('externalRewardsAvailable', { namespace: 'rewards' }) externalRewardsAvailable!: boolean
   @Getter('claimableRewards', { namespace: 'rewards' }) claimableRewards!: Array<RewardInfo>
   @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardsAmountTableItem>
+  @Getter('transactionStepsCount', { namespace: 'rewards' }) transactionStepsCount!: number
 
   @Action('reset', { namespace: 'rewards' }) reset!: () => void
   @Action('getRewards', { namespace: 'rewards' }) getRewards!: (address: string) => Promise<Array<RewardInfo>>
@@ -98,7 +111,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 
   private unwatchEthereum!: any
 
-  created (): void {
+  destroyed (): void {
     this.reset()
   }
 
@@ -181,38 +194,51 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   get hintText (): string {
-    if (!this.areNetworksConnected || this.rewardsFetching) return this.t('rewards.hint.connectAccounts')
-    if (!this.rewardsAvailable) return this.t('rewards.hint.connectAnotherAccount')
-    return this.t('rewards.hint.howToClaimRewards')
+    if (!this.isSoraAccountConnected) return this.t('rewards.hint.connectAccounts')
+    if (this.rewardsAvailable) {
+      const symbols = this.rewardTokenSymbols.join(` ${this.t('rewards.andText')} `)
+      const transactions = this.tc('transactionText', this.transactionStepsCount)
+      const count = this.transactionStepsCount > 1
+        ? this.transactionStepsCount
+        : ''
+      const destination = this.transactionStepsCount > 1
+        ? this.t('rewards.signing.accounts')
+        : this.t('rewards.signing.extension')
+
+      return this.t('rewards.hint.howToClaimRewards', { symbols, transactions, count, destination })
+    }
+    return ''
+  }
+
+  get externalRewardsHintText (): string {
+    if (!this.isExternalAccountConnected) return this.t('rewards.hint.connectExternalAccount')
+    if (!this.externalRewardsAvailable) return this.t('rewards.hint.connectAnotherAccount')
+    return ''
   }
 
   get actionButtonText (): string {
     if (this.rewardsFetching) return ''
     if (!this.isSoraAccountConnected) return this.t('rewards.action.connectWallet')
-    if (!this.isExternalAccountConnected) return this.t('rewards.action.connectExternalWallet')
     if (this.transactionError) return this.t('rewards.action.retry')
     if (!this.rewardsAvailable) return this.t('rewards.action.checkRewards')
     if (this.isInsufficientBalance) return this.t('rewards.action.insufficientBalance', { tokenSymbol: KnownSymbols.XOR })
     if (!this.rewardsClaiming) return this.t('rewards.action.signAndClaim')
-    if (this.transactionStep === 1) return this.t('rewards.action.pendingExternal')
-    if (this.transactionStep === 2) return this.t('rewards.action.pendingInternal')
+    if (this.externalRewardsAvailable && this.transactionStep === 1) return this.t('rewards.action.pendingExternal')
+    if (!this.externalRewardsAvailable || this.transactionStep === 2) return this.t('rewards.action.pendingInternal')
     return ''
   }
 
   get actionButtonDisabled (): boolean {
-    return this.feeFetching || this.rewardsClaiming || (this.rewardsAvailable && this.isInsufficientBalance)
+    return this.rewardsClaiming || (this.rewardsAvailable && this.isInsufficientBalance)
   }
 
   get actionButtonLoading (): boolean {
-    return this.isExternalWalletConnecting || this.rewardsFetching || this.feeFetching
+    return this.rewardsFetching || this.feeFetching
   }
 
   async handleAction (): Promise<void> {
     if (!this.isSoraAccountConnected) {
       return this.connectInternalWallet()
-    }
-    if (!this.isExternalAccountConnected) {
-      return await this.connectExternalAccountProcess()
     }
     if (!this.rewardsAvailable) {
       return await this.checkAccountRewards(true)
@@ -227,17 +253,16 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   private async checkAccountRewards (showNotification = false): Promise<void> {
-    if (this.areNetworksConnected) {
+    if (this.isSoraAccountConnected) {
       await this.getRewardsProcess(showNotification)
       await this.getNetworkFee()
     }
   }
 
   private async getRewardsProcess (showNotification = false): Promise<void> {
-    const rewards = await this.getRewards(this.ethAddress)
-    const areEmptyRewards = rewards.every(item => +item.amount === 0)
+    await this.getRewards(this.ethAddress)
 
-    if (areEmptyRewards && showNotification) {
+    if (!this.rewardsAvailable && showNotification) {
       this.$notify({
         message: this.t('rewards.notification.empty'),
         title: ''
@@ -245,14 +270,15 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     }
   }
 
-  private async connectExternalAccountProcess (): Promise<void> {
+  async connectExternalAccountProcess (): Promise<void> {
     await this.connectExternalWallet()
     await this.checkAccountRewards()
   }
 
-  private disconnectExternalAccountProcess (): void {
+  private async disconnectExternalAccountProcess (): Promise<void> {
     this.reset()
     this.disconnectExternalAccount()
+    await this.checkAccountRewards()
   }
 
   private async changeExternalAccountProcess (options?: any): Promise<void> {
@@ -264,18 +290,25 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   private async claimRewardsProcess (): Promise<void> {
     const internalAddress = this.getWalletAddress()
     const externalAddress = this.ethAddress
-    const isConnected = await web3Util.checkAccountIsConnected(externalAddress)
 
-    if (isConnected && internalAddress) {
-      await this.withNotifications(
-        async () => await this.claimRewards({ internalAddress, externalAddress })
-      )
+    if (!internalAddress) return
+
+    if (externalAddress) {
+      const isConnected = await web3Util.checkAccountIsConnected(externalAddress)
+
+      if (!isConnected) return
     }
+
+    await this.withNotifications(
+      async () => await this.claimRewards({ internalAddress, externalAddress })
+    )
   }
 }
 </script>
 
 <style lang="scss" scoped>
+$hint-font-size: 13px;
+
 .rewards {
   &-block {
     & + & {
@@ -287,7 +320,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    color: var(--s-color-base-on-accent);
+    color: white; // TODO: use color variable from ui library
 
     & > *:not(:last-child) {
       margin-bottom: $inner-spacing-mini;
@@ -305,22 +338,39 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   &-hint {
-    font-size: var(--s-font-size-mini);
-    line-height: $s-line-height-big;
-    color: var(--s-color-base-content-secondary)
+    font-size: $hint-font-size;
+    font-weight: 300;
+    line-height: $s-line-height-base;
+    color: var(--s-color-base-content-primary);
+    padding: 0 46px;
+    text-align: center;
   }
 
   &-amount {
     width: 100%;
 
     & > *:not(:last-child) {
-      margin-bottom: $inner-spacing-small;
+      margin-bottom: $inner-spacing-mini;
     }
 
     & .el-divider {
-      background: var(--s-color-base-on-accent);
+      background: var(--s-color-theme-secondary-focused);
       opacity: 0.5;
-      margin: $inner-spacing-small 0;
+      margin: 0;
+    }
+  }
+
+  &-footer {
+    & > *:not(:last-child) {
+      margin-bottom: $inner-spacing-small;
+    }
+
+    &-hint {
+      padding: 0 $inner-spacing-medium;
+      font-size: $hint-font-size;
+      font-weight: 300;
+      line-height: $s-line-height-base;
+      text-align: center;
     }
   }
 
@@ -330,15 +380,22 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     justify-content: space-between;
     font-size: var(--s-font-size-mini);
     line-height: $s-line-height-big;
-    // padding: $inner-spacing-mini / 2; // to align with fee
+    margin-top: $inner-spacing-medium;
+    padding: 0 $inner-spacing-mini / 2;
   }
 
-  &-action-button {
-    & + & {
-      margin-left: 0;
+  &-connect-button {
+    text-transform: uppercase;
+    font-size: var(--s-heading5-font-size);
+
+    &, &:hover, &:focus, &:disabled {
+      background: none;
+      color: white; // TODO: use color variable from ui library
+      border-color: white; // TODO: use color variable from ui library
     }
   }
 
   @include full-width-button('rewards-action-button');
+  @include full-width-button('rewards-connect-button');
 }
 </style>
