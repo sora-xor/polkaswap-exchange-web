@@ -17,8 +17,7 @@
       v-else
       :node="selectedNode"
       :existing="existingNodeIsSelected"
-      :disabled="!nodeConnectionAllowance"
-      :loading="isSelectedNodeConnecting"
+      :loading="isSelectedNodeLoading"
       :removable="isSelectedNodeRemovable"
       :connected="isSelectedNodeConnected"
       :handle-back="handleBack"
@@ -42,6 +41,7 @@ import { AppHandledError } from '@/utils/error'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
+import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
 import DialogBase from './DialogBase.vue'
 
 const NodeListView = 'NodeListView'
@@ -55,7 +55,7 @@ const NodeInfoView = 'NodeInfoView'
     NodeInfo: lazyComponent(Components.NodeInfo)
   }
 })
-export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMixin, DialogMixin) {
+export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMixin, DialogMixin, NodeErrorMixin) {
   @Getter node!: Node
   @Getter defaultNodes!: Array<Node>
   @Getter customNodes!: Array<Node>
@@ -86,8 +86,8 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     return !this.defaultNodes.find(node => node.address === this.selectedNode?.address)
   }
 
-  get isSelectedNodeConnecting (): boolean {
-    return this.isConnectingNode(this.selectedNode)
+  get isSelectedNodeLoading (): boolean {
+    return !this.nodeConnectionAllowance || this.isConnectingNode(this.selectedNode)
   }
 
   get isSelectedNodeConnected (): boolean {
@@ -124,13 +124,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
         this.handleBack()
       }
     } catch (error) {
-      const key = error instanceof AppHandledError ? error.translationKey : 'node.errors.connection'
-      const payload = error instanceof AppHandledError ? error.translationPayload : {}
-
-      this.$alert(
-        this.t(key, payload),
-        { title: this.t('errorText') }
-      )
+      this.handleNodeError(error, node)
     }
   }
 
