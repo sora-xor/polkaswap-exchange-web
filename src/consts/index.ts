@@ -229,12 +229,12 @@ export enum NetworkTypes {
 export const EthSymbol = 'ETH'
 
 const gasLimit = {
-  approve: 69687,
-  sendERC20ToSidechain: 85474,
-  sendEthToSidechain: 39087,
-  mintTokensByPeers: 254627,
-  receiveByEthereumAssetAddress: 247274,
-  receiveBySidechainAssetId: 252659
+  approve: 70000,
+  sendERC20ToSidechain: 86000,
+  sendEthToSidechain: 50000,
+  mintTokensByPeers: 255000,
+  receiveByEthereumAssetAddress: 250000,
+  receiveBySidechainAssetId: 255000
 }
 /**
  * It's in gwei.
