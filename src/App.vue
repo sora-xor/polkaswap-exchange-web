@@ -157,11 +157,11 @@ import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, Fau
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
 
 import router, { lazyComponent } from '@/router'
 import axios from '@/api'
 import { formatAddress, disconnectWallet } from '@/utils'
-import { Node } from '@/types/nodes'
 
 const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
 const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
@@ -176,7 +176,7 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class App extends Mixins(TransactionMixin, LoadingMixin) {
+export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErrorMixin) {
   readonly nodesFeatureEnabled = true
 
   readonly SidebarMenuGroups = SidebarMenuGroups
@@ -300,7 +300,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
     try {
       await this.connectToNode()
     } catch (error) {
-      console.log('app error', error)
+      this.handleNodeError(error)
     }
   }
 

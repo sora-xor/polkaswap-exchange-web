@@ -41,6 +41,7 @@ import { AppHandledError } from '@/utils/error'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
+import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
 import DialogBase from './DialogBase.vue'
 
 const NodeListView = 'NodeListView'
@@ -54,7 +55,7 @@ const NodeInfoView = 'NodeInfoView'
     NodeInfo: lazyComponent(Components.NodeInfo)
   }
 })
-export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMixin, DialogMixin) {
+export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMixin, DialogMixin, NodeErrorMixin) {
   @Getter node!: Node
   @Getter defaultNodes!: Array<Node>
   @Getter customNodes!: Array<Node>
@@ -191,23 +192,6 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
 
   private isConnectingNode (node: any): boolean {
     return this.nodeAddressConnecting === node?.address
-  }
-
-  private handleNodeError (error, node?: Node) {
-    const key = error instanceof AppHandledError ? error.translationKey : 'node.errors.connection'
-    const payload = error instanceof AppHandledError ? error.translationPayload : {}
-
-    if (node && !payload.failed) {
-      payload.failed = node.address
-    }
-    if (!payload.success) {
-      payload.success = this.node.address
-    }
-
-    this.$alert(
-      this.t(key, payload),
-      { title: this.t('errorText') }
-    )
   }
 }
 </script>

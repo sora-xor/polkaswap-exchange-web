@@ -96,7 +96,7 @@ export default {
   node: {
     errors: {
       connection: 'An error occurred while connecting to the node\n{failed}\nConnection estabilished with node\n{success}',
-      network: 'The node {address} from the different network',
+      network: 'The node\n{failed}\n is from the another network\nConnection estabilished with node\n{success}',
       existing: 'This node is already added: \'{title}\''
     }
   },

@@ -11,6 +11,8 @@ import { DefaultSlippageTolerance, DefaultMarketAlgorithm, LiquiditySourceForMar
 import { getRpcEndpoint, fetchRpc } from '@/utils/rpc'
 import { Node } from '@/types/nodes'
 
+const NODE_CONNECTION_TIMEOUT = 60000
+
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
@@ -200,7 +202,7 @@ const actions = {
         console.info('Disconnected from node', currentEndpoint)
       }
 
-      await connection.open(endpoint, { once: true, timeout: 30000 })
+      await connection.open(endpoint, { once: true, timeout: NODE_CONNECTION_TIMEOUT })
 
       if (connectingNodeChanged()) return
 
