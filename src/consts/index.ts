@@ -1,6 +1,7 @@
+import { LiquiditySourceTypes } from '@sora-substrate/util'
+
 import pkg from '../../package.json'
 import { KnownBridgeAsset } from '@/utils/web3-util'
-import { LiquiditySourceTypes } from '@sora-substrate/util'
 
 export const app = {
   version: pkg.version,
