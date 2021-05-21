@@ -575,12 +575,12 @@ const actions = {
     commit(types.SIGN_ETH_TRANSACTION_SORA_ETH_REQUEST)
 
     try {
-      const request = await waitForApprovedRequest(hash) // If it causes an error, then -> catch -> SORA_REJECTED
-      const web3 = await web3Util.getInstance()
-
       if (!rootGetters['web3/isValidEthNetwork']) {
         throw new Error('Change eth network in Metamask')
       }
+      const request = await waitForApprovedRequest(hash) // If it causes an error, then -> catch -> SORA_REJECTED
+      const web3 = await web3Util.getInstance()
+
       const symbol = getters.asset.symbol
       const ethAccount = rootGetters['web3/ethAddress']
       const isValOrXor = [KnownBridgeAsset.XOR, KnownBridgeAsset.VAL].includes(symbol)
@@ -617,6 +617,9 @@ const actions = {
           request.s // bytes32[] memory s
         ])
       )
+      if (!rootGetters['web3/isValidEthNetwork']) {
+        throw new Error('Change eth network in Metamask')
+      }
       const contractMethod = contractInstance.methods[method](...methodArgs)
       const gas = await contractMethod.estimateGas()
       return new Promise((resolve, reject) => {
@@ -691,6 +694,9 @@ const actions = {
             contractAddress.MASTER, // address spender
             MaxUint256 // uint256 amount
           ]
+          if (!rootGetters['web3/isValidEthNetwork']) {
+            throw new Error('Change eth network in Metamask')
+          }
           const approveMethod = tokenInstance.methods.approve(...methodArgs)
           await approveMethod.send({ from: ethAccount })
         }
@@ -726,6 +732,9 @@ const actions = {
 
       const sendArgs = isETHSend ? { from: ethAccount, value: amount } : { from: ethAccount }
 
+      if (!rootGetters['web3/isValidEthNetwork']) {
+        throw new Error('Change eth network in Metamask')
+      }
       return new Promise((resolve, reject) => {
         contractMethod.send(sendArgs)
           .on('transactionHash', hash => {
