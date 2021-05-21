@@ -7,7 +7,7 @@
         <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text">
           {{ claimingStatusMessage }}
         </div>
-        <div v-if="isSoraAccountConnected && !rewardsFetching" class="rewards-amount">
+        <div v-if="isSoraAccountConnected" class="rewards-amount">
           <rewards-amount-header :items="rewardsByAssetsList" />
           <template v-if="!claimingInProgressOrFinished">
             <rewards-amount-table v-if="formattedClaimableRewards.length" :items="formattedClaimableRewards" />
@@ -276,13 +276,11 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   private async disconnectExternalAccountProcess (): Promise<void> {
-    this.reset()
     this.disconnectExternalAccount()
     await this.checkAccountRewards()
   }
 
   private async changeExternalAccountProcess (options?: any): Promise<void> {
-    this.reset()
     await this.changeExternalWallet(options)
     await this.checkAccountRewards()
   }

@@ -116,8 +116,6 @@ const mutations = {
   },
 
   [types.GET_REWARDS_REQUEST] (state: RewardsState) {
-    state.internalRewards = []
-    state.externalRewards = []
     state.rewardsFetching = true
   },
   [types.GET_REWARDS_SUCCESS] (state: RewardsState, { internal = [], external = [] } = {}) {
