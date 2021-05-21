@@ -17,7 +17,8 @@ const types = flow(
     'SET_TRANSACTION_ERROR',
     'SET_REWARDS_CLAIMING',
     'SET_REWARDS_RECIEVED',
-    'SET_SIGNATURE'
+    'SET_SIGNATURE',
+    'SET_SELECTED_REWARDS'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -30,7 +31,9 @@ interface RewardsState {
   fee: CodecString;
   feeFetching: boolean;
   externalRewards: Array<RewardInfo>;
+  selectedExternalRewards: Array<RewardInfo>;
   internalRewards: Array<RewardInfo>;
+  selectedInternalRewards: Array<RewardInfo>;
   rewardsFetching: boolean;
   rewardsClaiming: boolean;
   rewardsRecieved: boolean;
@@ -44,7 +47,9 @@ function initialState (): RewardsState {
     fee: '',
     feeFetching: false,
     externalRewards: [],
+    selectedExternalRewards: [],
     internalRewards: [],
+    selectedInternalRewards: [],
     rewardsFetching: false,
     rewardsClaiming: false,
     rewardsRecieved: false,
@@ -59,18 +64,21 @@ const state = initialState()
 const getters = {
   claimableRewards (state: RewardsState): Array<RewardInfo> {
     return [
-      ...state.internalRewards,
-      ...state.externalRewards
+      ...state.selectedInternalRewards,
+      ...state.selectedExternalRewards
     ]
-  },
-  transactionStepsCount (_, getters): number {
-    return getters.externalRewardsAvailable ? 2 : 1
   },
   rewardsAvailable (_, getters): boolean {
     return getters.claimableRewards.length !== 0
   },
   externalRewardsAvailable (state: RewardsState): boolean {
     return state.externalRewards.length !== 0
+  },
+  externalRewardsSelected (state: RewardsState): boolean {
+    return state.selectedExternalRewards.length !== 0
+  },
+  transactionStepsCount (_, getters): number {
+    return getters.externalRewardsSelected ? 2 : 1
   },
   rewardsByAssetsList (_, getters): Array<RewardsAmountHeaderItem> {
     if (!getters.rewardsAvailable) {
@@ -138,6 +146,11 @@ const mutations = {
   },
   [types.GET_FEE_FAILURE] (state: RewardsState) {
     state.feeFetching = false
+  },
+
+  [types.SET_SELECTED_REWARDS] (state: RewardsState, { internal = [], external = [] } = {}) {
+    state.selectedExternalRewards = [...external]
+    state.selectedInternalRewards = [...internal]
   }
 }
 
@@ -148,6 +161,11 @@ const actions = {
 
   setTransactionStep ({ commit }, transactionStep: number) {
     commit(types.SET_TRANSACTION_STEP, transactionStep)
+  },
+
+  async setSelectedRewards ({ commit, dispatch }, params) {
+    commit(types.SET_SELECTED_REWARDS, params)
+    await dispatch('getNetworkFee')
   },
 
   async getNetworkFee ({ commit, getters }) {
@@ -161,7 +179,7 @@ const actions = {
     }
   },
 
-  async getRewards ({ commit }, address) {
+  async getRewards ({ commit, dispatch }, address) {
     commit(types.GET_REWARDS_REQUEST)
     try {
       const requests: Array<Promise<RewardInfo[]>> = [api.checkInternalAccountRewards()]
@@ -170,6 +188,9 @@ const actions = {
       const [internal, external] = await Promise.all(requests)
 
       commit(types.GET_REWARDS_SUCCESS, { internal, external })
+
+      // select all rewards by default
+      await dispatch('setSelectedRewards', { internal, external })
     } catch (error) {
       console.error(error)
       commit(types.GET_REWARDS_FAILURE)
@@ -183,14 +204,14 @@ const actions = {
     if (!internalAddress) return
 
     try {
-      const { externalRewardsAvailable, claimableRewards } = getters
+      const { externalRewardsSelected, claimableRewards } = getters
 
-      if (externalRewardsAvailable && !externalAddress) return
+      if (externalRewardsSelected && !externalAddress) return
 
       commit(types.SET_REWARDS_CLAIMING, true)
       commit(types.SET_TRANSACTION_ERROR, false)
 
-      if (externalRewardsAvailable && state.transactionStep === 1) {
+      if (externalRewardsSelected && state.transactionStep === 1) {
         const web3 = await web3Util.getInstance()
         const internalAddressHex = await web3Util.accountAddressToHex(internalAddress)
         const message = web3.utils.sha3(internalAddressHex) as string
@@ -200,7 +221,7 @@ const actions = {
         commit(types.SET_SIGNATURE, signature)
         commit(types.SET_TRANSACTION_STEP, 2)
       }
-      if (!externalRewardsAvailable || (state.transactionStep === 2 && state.signature)) {
+      if (!externalRewardsSelected || (state.transactionStep === 2 && state.signature)) {
         await api.claimRewards(
           claimableRewards,
           state.signature,

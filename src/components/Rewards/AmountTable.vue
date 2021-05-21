@@ -1,7 +1,7 @@
 <template>
-  <component :is="wrapper" :class="['amount-table', { group }]" v-model="checkList">
-    <template v-for="({ title, amount, symbol }, index) in items">
-      <el-checkbox class="amount-table-checkbox" :key="index" v-if="!group" :label="index">
+  <component :is="wrapper" :class="['amount-table', { group }]" v-model="innerModel">
+    <template v-for="({ type, title, amount, symbol }, index) in items">
+      <el-checkbox v-if="!group" class="amount-table-checkbox" :key="index" :label="type">
         <div class="amount-table-item">
           <div class="amount-table-item__title">{{ title }}</div>
           <div class="amount-table-item__amount">
@@ -27,13 +27,20 @@ import { RewardsAmountTableItem } from '@/types/rewards'
 @Component
 export default class AmountTable extends Vue {
   @Prop({ default: () => [], type: Array }) items!: Array<RewardsAmountTableItem>
+  @Prop({ default: () => [], type: [Array, Boolean] }) value!: Array<string> | boolean
   @Prop({ default: false, type: Boolean }) group!: boolean
 
   get wrapper (): string {
     return this.group ? 'el-checkbox' : 'el-checkbox-group'
   }
 
-  checkList = []
+  get innerModel (): any {
+    return this.value
+  }
+
+  set innerModel (value: any) {
+    this.$emit('input', value)
+  }
 }
 </script>
 
@@ -70,6 +77,8 @@ $checkbox-width: 20px;
 
 .amount-table {
   &.group {
+    display: flex;
+    flex-flow: row nowrap;
     padding: $inner-spacing-mini $inner-spacing-mini / 2;
   }
 
