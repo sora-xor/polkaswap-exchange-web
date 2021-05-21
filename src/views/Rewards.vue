@@ -7,10 +7,22 @@
         <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text">
           {{ claimingStatusMessage }}
         </div>
-        <div v-if="isSoraAccountConnected && !rewardsFetching" class="rewards-amount">
+        <div v-if="isSoraAccountConnected" class="rewards-amount">
           <rewards-amount-header :items="rewardsByAssetsList" />
           <template v-if="!claimingInProgressOrFinished">
-            <rewards-amount-table v-if="formattedClaimableRewards.length" :items="formattedClaimableRewards" />
+            <rewards-amount-table
+              class="rewards-table"
+              v-if="formattedInternalRewards.length"
+              v-model="selectedInternalRewardsModel"
+              :items="formattedInternalRewards"
+            />
+            <rewards-amount-table
+              class="rewards-table"
+              v-if="formattedExternalRewards.length"
+              v-model="selectedExternalRewardsModel"
+              :items="formattedExternalRewards"
+              :group="true"
+            />
             <s-divider />
             <div class="rewards-footer">
               <div v-if="isExternalAccountConnected" class="rewards-account">
@@ -97,17 +109,21 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @State(state => state.rewards.transactionError) transactionError!: boolean
   @State(state => state.rewards.transactionStep) transactionStep!: number
 
+  @State(state => state.rewards.internalRewards) internalRewards!: Array<RewardInfo>
+  @State(state => state.rewards.externalRewards) externalRewards!: Array<RewardInfo>
+  @State(state => state.rewards.selectedInternalRewards) selectedInternalRewards!: Array<RewardInfo>
+  @State(state => state.rewards.selectedExternalRewards) selectedExternalRewards!: Array<RewardInfo>
+
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset
   @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean
   @Getter('externalRewardsAvailable', { namespace: 'rewards' }) externalRewardsAvailable!: boolean
-  @Getter('claimableRewards', { namespace: 'rewards' }) claimableRewards!: Array<RewardInfo>
   @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardsAmountTableItem>
   @Getter('transactionStepsCount', { namespace: 'rewards' }) transactionStepsCount!: number
 
   @Action('reset', { namespace: 'rewards' }) reset!: () => void
+  @Action('setSelectedRewards', { namespace: 'rewards' }) setSelectedRewards!: (params) => void
   @Action('getRewards', { namespace: 'rewards' }) getRewards!: (address: string) => Promise<Array<RewardInfo>>
   @Action('claimRewards', { namespace: 'rewards' }) claimRewards!: (options: any) => Promise<void>
-  @Action('getNetworkFee', { namespace: 'rewards' }) getNetworkFee!: () => Promise<void>
 
   private unwatchEthereum!: any
 
@@ -145,6 +161,24 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     }
   }
 
+  get selectedInternalRewardsModel (): Array<string> {
+    return this.selectedInternalRewards.map(item => item.type)
+  }
+
+  set selectedInternalRewardsModel (types: Array<string>) {
+    const internal = this.internalRewards.filter(item => types.includes(item.type))
+    this.setSelectedRewards({ internal, external: this.selectedExternalRewards })
+  }
+
+  get selectedExternalRewardsModel (): boolean {
+    return this.selectedExternalRewards.length !== 0
+  }
+
+  set selectedExternalRewardsModel (flag: boolean) {
+    const external = flag ? this.externalRewards : []
+    this.setSelectedRewards({ internal: this.selectedInternalRewards, external })
+  }
+
   get isInsufficientBalance (): boolean {
     return hasInsufficientXorForFee(this.tokenXOR, this.fee)
   }
@@ -177,12 +211,12 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     return this.t(translationKey, { order, total: this.transactionStepsCount })
   }
 
-  get formattedClaimableRewards (): Array<RewardsAmountTableItem> {
-    return this.claimableRewards.map((item: RewardInfo) => ({
-      title: RewardsTableTitles[item.type] ?? '',
-      amount: this.formatCodecNumber(item.amount),
-      symbol: item.asset.symbol
-    }) as RewardsAmountTableItem)
+  get formattedExternalRewards (): Array<RewardsAmountTableItem> {
+    return this.externalRewards.map((item: RewardInfo) => this.formatRewardToTableItem(item))
+  }
+
+  get formattedInternalRewards (): Array<RewardsAmountTableItem> {
+    return this.internalRewards.map((item: RewardInfo) => this.formatRewardToTableItem(item))
   }
 
   get rewardTokenSymbols (): Array<KnownSymbols> {
@@ -255,7 +289,6 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   private async checkAccountRewards (showNotification = false): Promise<void> {
     if (this.isSoraAccountConnected) {
       await this.getRewardsProcess(showNotification)
-      await this.getNetworkFee()
     }
   }
 
@@ -276,13 +309,11 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   private async disconnectExternalAccountProcess (): Promise<void> {
-    this.reset()
     this.disconnectExternalAccount()
     await this.checkAccountRewards()
   }
 
   private async changeExternalAccountProcess (options?: any): Promise<void> {
-    this.reset()
     await this.changeExternalWallet(options)
     await this.checkAccountRewards()
   }
@@ -302,6 +333,15 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     await this.withNotifications(
       async () => await this.claimRewards({ internalAddress, externalAddress })
     )
+  }
+
+  private formatRewardToTableItem (item: RewardInfo): RewardsAmountTableItem {
+    return {
+      type: item.type,
+      title: RewardsTableTitles[item.type] ?? '',
+      amount: this.formatCodecNumber(item.amount),
+      symbol: item.asset.symbol
+    } as RewardsAmountTableItem
   }
 }
 </script>
@@ -357,6 +397,12 @@ $hint-font-size: 13px;
       background: var(--s-color-theme-secondary-focused);
       opacity: 0.5;
       margin: 0;
+    }
+  }
+
+  &-table {
+    &:not(:last-child) {
+      margin-bottom: 0;
     }
   }
 
