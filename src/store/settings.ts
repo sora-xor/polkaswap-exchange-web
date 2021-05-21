@@ -3,12 +3,15 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import { connection } from '@soramitsu/soraneo-wallet-web'
+import { connection, updateAccountAssetsSubscription, isWalletLoaded, initWallet } from '@soramitsu/soraneo-wallet-web'
 
 import storage, { settingsStorage } from '@/utils/storage'
 import { AppHandledError } from '@/utils/error'
-import { DefaultSlippageTolerance, DefaultMarketAlgorithm, LiquiditySourceForMarketAlgorithm } from '@/consts'
+import { DefaultSlippageTolerance, DefaultMarketAlgorithm, LiquiditySourceForMarketAlgorithm, WalletPermissions } from '@/consts'
 import { getRpcEndpoint, fetchRpc } from '@/utils/rpc'
+import { Node } from '@/types/nodes'
+
+const NODE_CONNECTION_TIMEOUT = 60000
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -21,7 +24,8 @@ const types = flow(
     'SET_DEFAULT_NODES',
     'SET_CUSTOM_NODES',
     'RESET_NODE',
-    'SET_NETWORK_CHAIN_GENESIS_HASH'
+    'SET_NETWORK_CHAIN_GENESIS_HASH',
+    'SET_NODE_CONNECTION_ALLOWANCE'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -39,6 +43,7 @@ function initialState () {
     defaultNodes: [],
     customNodes: JSON.parse(settingsStorage.get('customNodes')) || [],
     nodeAddressConnecting: '',
+    nodeConnectionAllowance: true,
     chainGenesisHash: '',
     faucetUrl: ''
   }
@@ -56,7 +61,7 @@ const getters = {
   defaultNodes (state) {
     return state.defaultNodes
   },
-  defaultNodesHashTable (state, getters) {
+  defaultNodesHashTable (_, getters) {
     return getters.defaultNodes.reduce((result, node) => ({ ...result, [node.address]: node }), {})
   },
   customNodes (state, getters) {
@@ -64,6 +69,9 @@ const getters = {
   },
   nodeAddressConnecting (state) {
     return state.nodeAddressConnecting
+  },
+  nodeConnectionAllowance (state) {
+    return state.nodeConnectionAllowance
   },
   soraNetwork (state) {
     return state.soraNetwork
@@ -91,14 +99,20 @@ const getters = {
 const mutations = {
   [types.SET_NODE_REQUEST] (state, node) {
     state.nodeAddressConnecting = node?.address ?? ''
+    state.nodeConnectionAllowance = false
   },
   [types.SET_NODE_SUCCESS] (state, node = {}) {
     state.node = { ...node }
     state.nodeAddressConnecting = ''
+    state.nodeConnectionAllowance = true
     settingsStorage.set('node', JSON.stringify(node))
   },
   [types.SET_NODE_FAILURE] (state) {
     state.nodeAddressConnecting = ''
+    state.nodeConnectionAllowance = true
+  },
+  [types.SET_NODE_CONNECTION_ALLOWANCE] (state, flag: boolean) {
+    state.nodeConnectionAllowance = flag
   },
   [types.SET_DEFAULT_NODES] (state, nodes) {
     state.defaultNodes = [...nodes]
@@ -135,57 +149,92 @@ const mutations = {
 }
 
 const actions = {
-  async connectToInitialNode ({ commit, dispatch, state }) {
-    const node = state.node?.address ? state.node : state.defaultNodes[0]
+  async connectToNode ({ commit, dispatch, state }, node: Node) {
+    const defaultNode = state.defaultNodes[0]
+    const requestedNode = node || (state.node.address ? state.node : defaultNode)
 
     try {
-      await dispatch('setNode', node)
-    } catch (error) {
-      if (node.address !== state.defaultNodes[0].address) {
-        commit(types.RESET_NODE)
-        await dispatch('connectToInitialNode')
+      await dispatch('setNode', requestedNode)
+
+      // wallet init & update flow
+      if (!isWalletLoaded) {
+        await initWallet({ permissions: WalletPermissions })
+        await dispatch('assets/getAssets', undefined, { root: true })
+      } else {
+        if (updateAccountAssetsSubscription) {
+          updateAccountAssetsSubscription.unsubscribe()
+        }
+        dispatch('updateAccountAssets', undefined, { root: true }) // to update subscription
       }
+    } catch (error) {
+      if (requestedNode.address === state.node.address) {
+        commit(types.RESET_NODE)
+      }
+
+      if (requestedNode.address !== defaultNode.address) {
+        await dispatch('connectToNode')
+      }
+
+      throw error
     }
   },
   async setNode ({ commit, dispatch, state }, node) {
-    try {
-      const endpoint = node?.address ?? ''
+    const endpoint = node?.address ?? ''
+    const connectingNodeChanged = () => endpoint !== state.nodeAddressConnecting
 
+    try {
       if (!endpoint) {
         throw new Error('Node address is not set')
       }
 
       if (!state.chainGenesisHash) {
-        throw new Error('Network chain genesis hash is not set')
+        await dispatch('getNetworkChainGenesisHash')
       }
 
       commit(types.SET_NODE_REQUEST, node)
 
-      const nodeIsAvailable = await dispatch('getNodeNetworkStatus', endpoint)
+      console.info('Connection request to node', endpoint)
 
-      if (!nodeIsAvailable) {
-        throw new AppHandledError('node.errors.connection', `Couldn't connect to node by address: ${endpoint}`)
+      const { endpoint: currentEndpoint, opened } = connection
+
+      if (currentEndpoint && opened) {
+        await connection.close()
+        console.info('Disconnected from node', currentEndpoint)
       }
 
-      const nodeChainGenesisHash = await dispatch('getNodeChainGenesisHash', endpoint)
+      await connection.open(endpoint, { once: true, timeout: NODE_CONNECTION_TIMEOUT })
+
+      if (connectingNodeChanged()) return
+
+      console.info('Connected to node', connection.endpoint)
+
+      const nodeChainGenesisHash = connection.api.genesisHash.toHex()
 
       if (nodeChainGenesisHash !== state.chainGenesisHash) {
-        throw new AppHandledError('node.errors.network', `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" recieved, should be "${state.chainGenesisHash}"`)
-      }
-
-      if (!connection.endpoint) {
-        connection.endpoint = endpoint
-      } else {
-        await connection.restart(endpoint)
-        // to update subscription
-        dispatch('updateAccountAssets', undefined, { root: true })
+        throw new AppHandledError({
+          key: 'node.errors.network',
+          payload: { address: endpoint }
+        },
+          `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" recieved, should be "${state.chainGenesisHash}"`
+        )
       }
 
       commit(types.SET_NODE_SUCCESS, node)
     } catch (error) {
       console.error(error)
-      commit(types.SET_NODE_FAILURE)
-      throw error
+
+      const err = error instanceof AppHandledError
+        ? error
+        : new AppHandledError({
+          key: 'node.errors.connection',
+          payload: { address: endpoint }
+        })
+
+      if (!connectingNodeChanged()) {
+        commit(types.SET_NODE_FAILURE)
+      }
+
+      throw err
     }
   },
   setDefaultNodes ({ commit }, nodes) {
@@ -205,36 +254,14 @@ const actions = {
     const nodes = getters.customNodes.filter(item => item.address !== node.address)
     commit(types.SET_CUSTOM_NODES, nodes)
   },
-  async getNetworkChainGenesisHash ({ commit, state, dispatch }) {
-    const endpoint = state.defaultNodes?.[0]?.address
-    const genesisHash = await dispatch('getNodeChainGenesisHash', endpoint)
+  async getNetworkChainGenesisHash ({ commit, state }) {
+    const genesisHash = await Promise.any(state.defaultNodes.map(node => fetchRpc(getRpcEndpoint(node.address), 'chain_getBlockHash', [0])))
 
     if (!genesisHash) {
       throw new Error('Failed to fetch network chain genesis hash')
     }
 
     commit(types.SET_NETWORK_CHAIN_GENESIS_HASH, genesisHash)
-  },
-  async getNodeChainGenesisHash (_, nodeAddress: string): Promise<string> {
-    if (!nodeAddress) {
-      throw new Error('nodeAddress is required')
-    }
-
-    const rpc = getRpcEndpoint(nodeAddress)
-    const genesisHash = await fetchRpc(rpc, 'chain_getBlockHash', [0]) ?? ''
-
-    return genesisHash
-  },
-  async getNodeNetworkStatus (_, nodeAddress: string): Promise<boolean> {
-    if (!nodeAddress) {
-      console.error('nodeAddress is required')
-      return false
-    }
-
-    const rpc = getRpcEndpoint(nodeAddress)
-    const response = await fetchRpc(rpc, 'system_health')
-
-    return !!response
   },
   setSlippageTolerance ({ commit }, value) {
     commit(types.SET_SLIPPAGE_TOLERANCE, value)

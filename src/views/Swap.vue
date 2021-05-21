@@ -140,7 +140,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
-import { isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance } from '@/utils'
+import { isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance, debouncedInputHandler } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -189,7 +189,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   @Getter isLoggedIn!: boolean
   @Getter slippageTolerance!: number
-  @Getter accountAssets!: Array<AccountAsset> // Wallet store
   @Getter marketAlgorithm!: string
   @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes
   @Getter('pairLiquiditySourcesAvailable', { namespace }) pairLiquiditySourcesAvailable!: boolean
@@ -358,7 +357,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     }
   }
 
-  private async recountSwapValues (): Promise<void> {
+  private async runRecountSwapValues (): Promise<void> {
     const value = this.isExchangeB ? this.toValue : this.fromValue
     const setOppositeValue = this.isExchangeB ? this.setFromValue : this.setToValue
     const resetOppositeValue = this.isExchangeB ? this.resetFieldFrom : this.resetFieldTo
@@ -389,6 +388,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       this.isRecountingProcess = false
     }
   }
+
+  recountSwapValues = debouncedInputHandler(this.runRecountSwapValues)
 
   private async calcMinMaxRecieved (): Promise<void> {
     const amount = this.isExchangeB ? this.fromValue : this.toValue
@@ -464,16 +465,13 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   openSelectTokenDialog (isTokenFrom: boolean): void {
-    if (isTokenFrom) {
-      this.isTokenFromSelected = true
-    }
+    this.isTokenFromSelected = isTokenFrom
     this.showSelectTokenDialog = true
   }
 
   async selectToken (token: any): Promise<void> {
     if (token) {
       if (this.isTokenFromSelected) {
-        this.isTokenFromSelected = false
         await this.setTokenFromAddress(token.address)
       } else {
         await this.setTokenToAddress(token.address)

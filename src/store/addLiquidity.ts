@@ -236,7 +236,6 @@ const actions = {
       }
 
       dispatch('estimateMinted')
-      dispatch('getNetworkFee')
     }
   },
 
@@ -259,7 +258,6 @@ const actions = {
       }
 
       dispatch('estimateMinted')
-      dispatch('getNetworkFee')
     }
   },
 
@@ -307,7 +305,6 @@ const actions = {
 
     dispatch('setFirstTokenAddress', findAssetAddress(firstAddress))
     dispatch('setSecondTokenAddress', findAssetAddress(secondAddress))
-    dispatch('getNetworkFee')
   },
 
   resetFocusedField ({ commit }) {
