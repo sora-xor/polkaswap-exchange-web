@@ -19,12 +19,12 @@ import {
   RegisteredAssets
 } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
+import { Transaction } from 'web3-core'
 
 import { STATES } from '@/utils/fsm'
 import web3Util, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
 import { delay, isEthereumAddress } from '@/utils'
 import { EthereumGasLimits, MaxUint256, ZeroStringValue } from '@/consts'
-import { Transaction } from 'web3-core'
 
 const SORA_REQUESTS_TIMEOUT = 5 * 1000
 
@@ -100,6 +100,12 @@ async function waitForEthereumTransactionStatus (hash: string): Promise<Transact
       await delay(SORA_REQUESTS_TIMEOUT)
       return waitForEthereumTransactionStatus(hash)
     }
+  }
+}
+
+function checkEthNetwork (rootGetters): void {
+  if (!rootGetters['web3/isValidEthNetwork']) {
+    throw new Error('Change eth network in Metamask')
   }
 }
 
@@ -564,6 +570,15 @@ const actions = {
   },
   async signEthTransactionSoraToEth ({ commit, getters, rootGetters, dispatch }, { hash }) {
     if (!hash) throw new Error('TX ID cannot be empty!')
+    checkEthNetwork(rootGetters)
+    // TODO: Check the status of TX if it was already sent
+    // if (!!getters.ethereumTransactionHash) {
+    //   const web3 = await web3Util.getInstance()
+    //   const currentTx = await web3.eth.getTransaction(hash)
+    //   if (currentTx.blockNumber) {
+    //     commit(types.SEND_ETH_TRANSACTION_SORA_ETH_SUCCESS)
+    //   }
+    // }
     if (!getters.asset || !getters.asset.address || !getters.amount || !getters.isSoraToEthereum) {
       return
     }
@@ -575,9 +590,6 @@ const actions = {
     commit(types.SIGN_ETH_TRANSACTION_SORA_ETH_REQUEST)
 
     try {
-      if (!rootGetters['web3/isValidEthNetwork']) {
-        throw new Error('Change eth network in Metamask')
-      }
       const request = await waitForApprovedRequest(hash) // If it causes an error, then -> catch -> SORA_REJECTED
       const web3 = await web3Util.getInstance()
 
@@ -617,9 +629,7 @@ const actions = {
           request.s // bytes32[] memory s
         ])
       )
-      if (!rootGetters['web3/isValidEthNetwork']) {
-        throw new Error('Change eth network in Metamask')
-      }
+      checkEthNetwork(rootGetters)
       const contractMethod = contractInstance.methods[method](...methodArgs)
       const gas = await contractMethod.estimateGas()
       return new Promise((resolve, reject) => {
@@ -662,6 +672,15 @@ const actions = {
     if (!getters.asset || !getters.asset.address || !getters.amount || getters.isSoraToEthereum) {
       return
     }
+    checkEthNetwork(rootGetters)
+    // TODO: Check the status of TX if it was already sent
+    // if (!!getters.ethereumTransactionHash) {
+    //   const web3 = await web3Util.getInstance()
+    //   const currentTx = await web3.eth.getTransaction(hash)
+    //   if (currentTx.blockNumber) {
+    //     commit(types.SEND_ETH_TRANSACTION_ETH_SORA_SUCCESS)
+    //   }
+    // }
     const asset = await dispatch('findRegisteredAsset')
     // TODO: asset should be registered for now (ERC-20 tokens flow)
     if (!asset) {
@@ -670,9 +689,6 @@ const actions = {
     commit(types.SIGN_ETH_TRANSACTION_ETH_SORA_REQUEST)
 
     try {
-      if (!rootGetters['web3/isValidEthNetwork']) {
-        throw new Error('Change eth network in Metamask')
-      }
       const contract = rootGetters[`web3/contract${KnownBridgeAsset.Other}`]
       const ethAccount = rootGetters['web3/ethAddress']
       const isExternalAccountConnected = await web3Util.checkAccountIsConnected(ethAccount)
@@ -694,9 +710,7 @@ const actions = {
             contractAddress.MASTER, // address spender
             MaxUint256 // uint256 amount
           ]
-          if (!rootGetters['web3/isValidEthNetwork']) {
-            throw new Error('Change eth network in Metamask')
-          }
+          checkEthNetwork(rootGetters)
           const approveMethod = tokenInstance.methods.approve(...methodArgs)
           await approveMethod.send({ from: ethAccount })
         }
@@ -732,9 +746,7 @@ const actions = {
 
       const sendArgs = isETHSend ? { from: ethAccount, value: amount } : { from: ethAccount }
 
-      if (!rootGetters['web3/isValidEthNetwork']) {
-        throw new Error('Change eth network in Metamask')
-      }
+      checkEthNetwork(rootGetters)
       return new Promise((resolve, reject) => {
         contractMethod.send(sendArgs)
           .on('transactionHash', hash => {
@@ -751,12 +763,12 @@ const actions = {
   },
   async sendEthTransactionEthToSora ({ commit, getters, rootGetters, dispatch }, { ethereumHash }) {
     if (!ethereumHash) throw new Error('Hash cannot be empty!')
-    commit(types.SEND_ETH_TRANSACTION_SORA_ETH_REQUEST)
+    commit(types.SEND_ETH_TRANSACTION_ETH_SORA_REQUEST)
     try {
       await waitForEthereumTransactionStatus(ethereumHash)
-      commit(types.SEND_ETH_TRANSACTION_SORA_ETH_SUCCESS)
+      commit(types.SEND_ETH_TRANSACTION_ETH_SORA_SUCCESS)
     } catch (error) {
-      commit(types.SEND_ETH_TRANSACTION_SORA_ETH_FAILURE)
+      commit(types.SEND_ETH_TRANSACTION_ETH_SORA_FAILURE)
       throw error
     }
   },
