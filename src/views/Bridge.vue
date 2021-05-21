@@ -40,12 +40,12 @@
             <s-form-item>
               <s-float-input
                 :value="amount"
-                :decimals="(asset || {}).decimals"
+                :decimals="(asset || {}).externalDecimals"
                 :max="getMax((asset || {}).address)"
                 :class="inputClasses"
                 :placeholder="isFieldAmountFocused ? '' : inputPlaceholder"
                 :disabled="!areNetworksConnected || !isAssetSelected"
-                @input="handleInputAmount"
+                @input="setAmount"
                 @focus="handleFocus"
                 @blur="handleBlur"
               />
@@ -92,7 +92,7 @@
             <s-form-item>
               <s-float-input
                 :value="amount"
-                :decimals="(asset || {}).decimals"
+                :decimals="(asset || {}).externalDecimals"
                 :max="getMax((asset || {}).address)"
                 :class="inputClasses"
                 :placeholder="inputPlaceholder"
@@ -161,6 +161,7 @@
           />
           <info-line
             :label="t('bridge.ethereumNetworkFee')"
+            :tooltip-content="t('ethNetworkFeeTooltipText')"
             :value="formatFee(ethereumNetworkFee, formattedEthNetworkFee)"
             :asset-symbol="EthSymbol"
           />
@@ -185,14 +186,13 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
 
-import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
+import BridgeMixin from '@/components/mixins/BridgeMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EthSymbol, ZeroStringValue } from '@/consts'
-import web3Util from '@/utils/web3-util'
 import {
   isXorAccountAsset,
   hasInsufficientBalance,
@@ -219,21 +219,17 @@ const namespace = 'bridge'
   }
 })
 export default class Bridge extends Mixins(
+  BridgeMixin,
   TranslationMixin,
   LoadingMixin,
   NetworkFormatterMixin,
-  NumberFormatterMixin,
-  WalletConnectMixin
+  NumberFormatterMixin
 ) {
-  @Action('getEthBalance', { namespace: 'web3' }) getEthBalance!: () => Promise<void>
   @Action('setSoraToEthereum', { namespace }) setSoraToEthereum
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
   @Action('resetBridgeForm', { namespace }) resetBridgeForm
   @Action('getNetworkFee', { namespace }) getNetworkFee
-  @Action('getEthNetworkFee', { namespace }) getEthNetworkFee
-  @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets
-  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets
 
   @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: CodecString
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
@@ -248,8 +244,6 @@ export default class Bridge extends Mixins(
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
-  private unwatchEthereum!: any
-
   EthSymbol = EthSymbol
   KnownSymbols = KnownSymbols
   formatAssetSymbol = formatAssetSymbol
@@ -257,8 +251,6 @@ export default class Bridge extends Mixins(
   isFieldAmountFocused = false
   showSelectTokenDialog = false
   showConfirmTransactionDialog = false
-
-  blockHeadersSubscriber
 
   get isNetworkAConnected () {
     return this.isSoraToEthereum ? this.isSoraAccountConnected : this.isExternalAccountConnected
@@ -366,80 +358,12 @@ export default class Bridge extends Mixins(
     this.setAmount('') // reset fields
     this.withApi(async () => {
       await this.getRegisteredAssets()
-      await this.getNetworkFee()
-      await this.getEthNetworkFee()
+      this.getNetworkFees()
     })
   }
 
   async mounted (): Promise<void> {
-    await this.setEthNetwork()
-    await this.syncExternalAccountWithAppState()
-    this.getEthBalance()
     this.resetBridgeForm(!!router.currentRoute.params?.address)
-    this.withApi(async () => {
-      this.unwatchEthereum = await web3Util.watchEthereum({
-        onAccountChange: (addressList: string[]) => {
-          if (addressList.length) {
-            this.switchExternalAccount({ address: addressList[0] })
-            this.updateRegisteredAssets()
-          } else {
-            this.disconnectExternalAccount()
-          }
-        },
-        onNetworkChange: (networkId: string) => {
-          this.setEthNetwork(networkId)
-          this.getEthNetworkFee()
-          this.getRegisteredAssets()
-          this.updateExternalBalances()
-        },
-        onDisconnect: (code: number, reason: string) => {
-          this.disconnectExternalAccount()
-        }
-      })
-      this.subscribeToEthBlockHeaders()
-    })
-  }
-
-  beforeDestroy (): void {
-    if (typeof this.unwatchEthereum === 'function') {
-      this.unwatchEthereum()
-    }
-    this.unsubscribeEthBlockHeaders()
-  }
-
-  updateExternalBalances (): void {
-    this.getEthBalance()
-    this.updateRegisteredAssets()
-  }
-
-  async subscribeToEthBlockHeaders (): Promise<void> {
-    try {
-      await this.unsubscribeEthBlockHeaders()
-
-      const web3 = await web3Util.getInstance()
-
-      this.blockHeadersSubscriber = web3.eth.subscribe('newBlockHeaders', (error) => {
-        if (!error) {
-          this.updateExternalBalances()
-        }
-      })
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  unsubscribeEthBlockHeaders (): Promise<void> {
-    return new Promise((resolve, reject) => {
-      if (!this.blockHeadersSubscriber) return resolve()
-
-      this.blockHeadersSubscriber.unsubscribe((error) => {
-        if (error) {
-          reject(error)
-        } else {
-          resolve()
-        }
-      })
-    })
   }
 
   getBridgeItemTitle (isBTitle = false): string {
@@ -447,16 +371,6 @@ export default class Bridge extends Mixins(
       return this.t(this.formatNetwork(!isBTitle))
     }
     return this.t(this.formatNetwork(isBTitle))
-  }
-
-  async handleInputAmount (value): Promise<any> {
-    this.setAmount(value)
-    // TODO: only one time
-    if (this.isRegisteredAsset) {
-      this.getNetworkFee()
-      this.getEthNetworkFee()
-    }
-    // TODO: Add input functionality here
   }
 
   handleBlur (): void {
@@ -469,10 +383,7 @@ export default class Bridge extends Mixins(
 
   handleSwitchItems (): void {
     this.setSoraToEthereum(!this.isSoraToEthereum)
-    if (this.isRegisteredAsset) {
-      this.getNetworkFee()
-      this.getEthNetworkFee()
-    }
+    this.getNetworkFees()
   }
 
   handleMaxValue (): void {
@@ -500,11 +411,7 @@ export default class Bridge extends Mixins(
   async selectAsset (selectedAsset: any): Promise<void> {
     if (selectedAsset) {
       await this.setAssetAddress(selectedAsset?.address ?? '')
-      // TODO: Check SORA balance changing
-      if (this.isRegisteredAsset) {
-        this.getNetworkFee()
-        this.getEthNetworkFee()
-      }
+      this.getNetworkFees()
     }
   }
 
@@ -514,6 +421,13 @@ export default class Bridge extends Mixins(
     await this.checkConnectionToExternalAccount(() => {
       router.push({ name: PageNames.BridgeTransaction })
     })
+  }
+
+  private getNetworkFees (): void {
+    if (this.isRegisteredAsset) {
+      this.getNetworkFee()
+      this.getEthNetworkFee()
+    }
   }
 }
 </script>

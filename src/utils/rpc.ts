@@ -2,32 +2,26 @@ import axios from '@/api'
 
 export const getRpcEndpoint = (wsEndpoint: string): string => {
   // for soramitsu nodes
-  if (/^wss:\/\/ws/.test(wsEndpoint)) {
+  if (/^wss:\/\/ws\.(?:.+\.)*sora2\.soramitsu\.co\.jp\/?$/.test(wsEndpoint)) {
     return wsEndpoint.replace(/^wss:\/\/ws/, 'https://rpc')
   }
-  return wsEndpoint.replace(/^wss:/, 'https:')
+  return wsEndpoint.replace(/^ws(s)?:/, 'http$1:')
 }
 
 export async function fetchRpc (url: string, method: string, params?: any): Promise<any> {
-  const logError = (fnName, arg) => {
-    console.error(`${fnName}: argument ${arg} is required`)
-    return null
+  const throwError = (fnName, arg) => {
+    throw new Error(`${fnName}: argument ${arg} is required`)
   }
 
-  if (!url) return logError(fetchRpc.name, 'url')
-  if (!method) return logError(fetchRpc.name, 'method')
+  if (!url) return throwError(fetchRpc.name, 'url')
+  if (!method) return throwError(fetchRpc.name, 'method')
 
-  try {
-    const { data } = await axios.post(url, {
-      id: 1,
-      jsonrpc: '2.0',
-      method,
-      params
-    })
+  const { data } = await axios.post(url, {
+    id: 1,
+    jsonrpc: '2.0',
+    method,
+    params
+  })
 
-    return data.result
-  } catch (error) {
-    console.error(error)
-    return null
-  }
+  return data.result
 }

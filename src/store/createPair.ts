@@ -161,13 +161,11 @@ const actions = {
   setFirstTokenValue ({ commit, dispatch }, value: string | number) {
     commit(types.SET_FIRST_TOKEN_VALUE, value)
     dispatch('estimateMinted')
-    dispatch('getNetworkFee')
   },
 
   setSecondTokenValue ({ commit, dispatch }, value: string | number) {
     commit(types.SET_SECOND_TOKEN_VALUE, value)
     dispatch('estimateMinted')
-    dispatch('getNetworkFee')
   },
 
   async getNetworkFee ({ commit, getters }) {

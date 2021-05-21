@@ -93,7 +93,8 @@ div.wallet-assets button.el-button,
 .s-button--restore,
 div.asset-custom-actions button.el-button,
 div.el-tabs__item,
-button.el-button--create-pair span {
+button.el-button--create-pair span,
+button.select-node-button span {
   text-transform: uppercase !important;
 }
 h3.page-header-title, h3.base-title_text {
@@ -487,6 +488,7 @@ button.el-button.send.s-small, button.el-button.swap.s-small {
 div.history-item-operation {
   padding: 0 !important;
 }
+button.select-node-button,
 button.el-button.wallet-assets-add,
 button.el-button--create-pair,
 .s-button--restore {
@@ -638,4 +640,23 @@ p.about-disclaimer {
 footer.about-footer {
   min-width: 800px;
   justify-content: center !important;
+}
+
+/* Whitelist neumorphism */
+.add-asset-details_confirm {
+  flex-direction: row-reverse;
+  justify-content: flex-end !important;
+  background: none !important;
+  > :first-child {
+    padding-left: 12px;
+  }
+}
+.add-asset-details_text {
+  background: #C6E2FF !important;
+  color: #479AEF !important;
+  box-shadow: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+.add-asset-details_asset {
+  background: none !important;
+  box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.02), 1px 1px 3px rgba(0, 0, 0, 0.1), inset 1px 1px 2px rgba(255, 255, 255, 0.8);
 }

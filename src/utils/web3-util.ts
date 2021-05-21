@@ -246,12 +246,8 @@ function getEthNetworkFromStorage (): string {
 }
 
 async function getEthNetwork (): Promise<string> {
-  const network = getEthNetworkFromStorage()
-  if (!network) {
-    const web3 = await getInstance()
-    return await web3.eth.net.getNetworkType()
-  }
-  return network
+  const web3 = await getInstance()
+  return await web3.eth.net.getNetworkType()
 }
 
 function removeEthNetwork (): void {

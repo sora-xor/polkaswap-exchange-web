@@ -8,6 +8,7 @@ export default {
   soraText: 'SORA',
   ethereumText: 'Ethereum',
   changeNetworkText: 'Change network in Metamask',
+  transactionText: 'transaction | transactions',
   transactionSubmittedText: 'Transaction was submitted',
   unknownErrorText: 'ERROR Something went wrong...',
   connectWalletText: 'Connect account',
@@ -25,6 +26,7 @@ export default {
   retryText: 'Retry',
   networkFeeText: 'Network Fee',
   networkFeeTooltipText: 'Network fee is used to ensure @:soraText system\'s growth and stable performance.',
+  ethNetworkFeeTooltipText: 'Please note that the Ethereum network fees displayed on Polkaswap are only rough estimations, you can see the correct fee amount in your connected Ethereum wallet prior to confirming the transaction.',
   marketText: 'Market',
   marketAlgorithmText: 'Market algorithm',
   insufficientBalanceText: 'Insufficient {tokenSymbol} balance',
@@ -57,11 +59,6 @@ export default {
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
     [PageNames.CreatePair]: 'Create Pair'
-  },
-  networkStatus: {
-    online: 'online',
-    offline: 'offline',
-    checking: 'check'
   },
   social: {
     twitter: 'Twitter',
@@ -100,8 +97,13 @@ export default {
   },
   node: {
     errors: {
-      connection: 'An error occurred while connecting to the node',
-      network: 'You selected the node from the different network'
+      connection: 'An error occurred while connecting to the node\n{address}\n',
+      network: 'The node\n{address}\n is from the another network\n',
+      existing: 'This node is already added: \'{title}\'\n'
+    },
+    messages: {
+      connected: 'Connection estabilished with node\n{address}\n',
+      selectNode: 'Please select node to connect from the node list'
     }
   },
   selectNodeDialog: {
@@ -368,7 +370,17 @@ export default {
     searchPlaceholder: 'Filter by Asset ID, Name or Ticker Symbol',
     emptyListMessage: 'No results',
     copy: 'Copy Asset ID',
-    successCopy: '{symbol} Asset ID is copied to the clipboard'
+    successCopy: '{symbol} Asset ID is copied to the clipboard',
+    assets: {
+      title: 'Assets'
+    },
+    custom: {
+      title: 'Custom',
+      search: 'Search by Asset ID',
+      text: 'CUSTOM TOKENS',
+      alreadyAttached: 'This token was already attached',
+      notFound: 'Token not found'
+    }
   },
   createPair: {
     title: 'Create a pair',
@@ -456,10 +468,15 @@ export default {
       success: 'You will receive your rewards shortly',
       failed: '{order} of {total} transactions failed. @:retryText'
     },
+    signing: {
+      extension: 'polkadot{.js} browser extension',
+      accounts: 'your @:soraText and @:ethereumText accounts respectively'
+    },
     hint: {
+      connectExternalAccount: 'Connect an @:ethereumText account to check for available PSWAP and VAL rewards.',
       connectAccounts: 'To claim your PSWAP and VAL rewards you need to connect both your @:soraText and @:ethereumText accounts.',
       connectAnotherAccount: 'Connect another @:ethereumText account to check for available PSWAP and VAL rewards.',
-      howToClaimRewards: 'To claim your PSWAP and VAL rewards you need to sign 2 transactions in your @:soraText and @:ethereumText accounts respectively. Rewards will be deposited to your @:soraText account.'
+      howToClaimRewards: 'To claim your {symbols} rewards you need to sign {count} {transactions} in {destination}. Rewards will be deposited to your @:soraText account.'
     },
     action: {
       connectWallet: '@:connectWalletText',

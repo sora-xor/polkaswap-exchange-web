@@ -136,7 +136,7 @@
         <footer v-else class="app-footer">
           <div class="sora-logo">
             <span class="sora-logo__title">{{ t('poweredBy') }}</span>
-            <div class="sora-logo__image"></div>
+            <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener" />
           </div>
         </footer>
       </div>
@@ -150,17 +150,18 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { connection, initWallet, WALLET_CONSTS, WalletAvatar, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
+import { WALLET_CONSTS, WalletAvatar } from '@soramitsu/soraneo-wallet-web'
 import { KnownSymbols } from '@sora-substrate/util'
 
-import { WalletPermissions, PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize } from '@/consts'
+import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize } from '@/consts'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
 
 import router, { lazyComponent } from '@/router'
 import axios from '@/api'
-import { formatAddress } from '@/utils'
+import { formatAddress, disconnectWallet } from '@/utils'
 
 const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
 const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
@@ -175,8 +176,8 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class App extends Mixins(TransactionMixin, LoadingMixin) {
-  readonly nodesFeatureEnabled = false
+export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErrorMixin) {
+  readonly nodesFeatureEnabled = true
 
   readonly SidebarMenuGroups = SidebarMenuGroups
   readonly SocialNetworkLinks = SocialNetworkLinks
@@ -205,10 +206,8 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   @Action trackActiveTransactions
   @Action setSoraNetwork
   @Action setDefaultNodes
-  @Action connectToInitialNode
+  @Action connectToNode
   @Action setFaucetUrl
-  @Action getNetworkChainGenesisHash
-  @Action('getAssets', { namespace: 'assets' }) getAssets
   @Action('setEthereumSmartContracts', { namespace: 'web3' }) setEthereumSmartContracts
   @Action('setDefaultEthNetwork', { namespace: 'web3' }) setDefaultEthNetwork
 
@@ -226,11 +225,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
       }
 
       // connection to node
-      await this.getNetworkChainGenesisHash()
-      await this.connectToInitialNode()
-
-      await initWallet({ permissions: WalletPermissions })
-      await this.getAssets()
+      await this.runAppConnectionToNode()
     })
 
     this.trackActiveTransactions()
@@ -297,10 +292,19 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   }
 
   destroyed (): void {
-    if (updateAccountAssetsSubscription) {
-      updateAccountAssetsSubscription.unsubscribe()
+    disconnectWallet()
+  }
+
+  private async runAppConnectionToNode () {
+    try {
+      await this.connectToNode()
+    } catch (error) {
+      if (!this.node.address) {
+        this.openSelectNodeDialog()
+      }
+
+      this.handleNodeError(error)
     }
-    connection.close()
   }
 }
 </script>
@@ -466,6 +470,13 @@ html {
     }
   }
 }
+
+.el-message-box {
+  &__message {
+    white-space: pre-line;
+  }
+}
+
 .container {
   @include container-styles;
   .el-loading-mask {
