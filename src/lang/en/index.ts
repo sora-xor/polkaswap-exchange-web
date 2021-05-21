@@ -370,7 +370,17 @@ export default {
     searchPlaceholder: 'Filter by Asset ID, Name or Ticker Symbol',
     emptyListMessage: 'No results',
     copy: 'Copy Asset ID',
-    successCopy: '{symbol} Asset ID is copied to the clipboard'
+    successCopy: '{symbol} Asset ID is copied to the clipboard',
+    assets: {
+      title: 'Assets'
+    },
+    custom: {
+      title: 'Custom',
+      search: 'Search by Asset ID',
+      text: 'CUSTOM TOKENS',
+      alreadyAttached: 'This token was already attached',
+      notFound: 'Token not found'
+    }
   },
   createPair: {
     title: 'Create a pair',
