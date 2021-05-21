@@ -33,7 +33,7 @@
               </div>
             </template>
             <div v-if="transactionFromHash" :class="hashContainerClasses(!isSoraToEthereum)">
-              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionFromHash, 32)" readonly />
+              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionFromHash, 24)" readonly />
               <s-button class="s-button--hash-copy" type="link" icon="basic-copy-24" @click="handleCopyTransactionHash(transactionFromHash)" />
               <!-- TODO: Add work with Polkascan -->
               <s-dropdown
@@ -91,7 +91,7 @@
               </div>
             </template>
             <div v-if="isTransactionStep2 && transactionToHash" :class="hashContainerClasses(isSoraToEthereum)">
-              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionToHash, 32)" readonly />
+              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionToHash, 24)" readonly />
               <s-button class="s-button--hash-copy" type="link" icon="basic-copy-24" @click="handleCopyTransactionHash(transactionToHash)" />
               <s-dropdown
                 v-if="isSoraToEthereum"
@@ -161,7 +161,7 @@ import { Getter, Action } from 'vuex-class'
 import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory } from '@sora-substrate/util'
 import { interpret } from 'xstate'
 
-import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
+import BridgeMixin from '@/components/mixins/BridgeMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
@@ -178,7 +178,12 @@ const namespace = 'bridge'
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog)
   }
 })
-export default class BridgeTransaction extends Mixins(WalletConnectMixin, LoadingMixin, NetworkFormatterMixin, NumberFormatterMixin) {
+export default class BridgeTransaction extends Mixins(
+  BridgeMixin,
+  LoadingMixin,
+  NetworkFormatterMixin,
+  NumberFormatterMixin
+) {
   @Getter('isValidEthNetwork', { namespace: 'web3' }) isValidEthNetwork!: boolean
 
   @Getter('isSoraToEthereum', { namespace }) isSoraToEthereum!: boolean
@@ -199,7 +204,6 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
   @Getter('historyItem', { namespace }) historyItem!: any
 
   @Action('getNetworkFee', { namespace }) getNetworkFee
-  @Action('getEthNetworkFee', { namespace }) getEthNetworkFee
   @Action('setCurrentTransactionState', { namespace }) setCurrentTransactionState
   @Action('setInitialTransactionState', { namespace }) setInitialTransactionState
   @Action('setTransactionStep', { namespace }) setTransactionStep
@@ -513,8 +517,8 @@ export default class BridgeTransaction extends Mixins(WalletConnectMixin, Loadin
           [STATES.SORA_REJECTED, STATES.ETHEREUM_REJECTED].includes(state.value)
         ) {
           if (
-            state.event.data.message.includes('Cancelled') ||
-            state.event.data.code === MetamaskCancellationCode
+            state.event.data?.message.includes('Cancelled') ||
+            state.event.data?.code === MetamaskCancellationCode
           ) {
             await this.removeHistoryById(state.context.history.id)
           }
