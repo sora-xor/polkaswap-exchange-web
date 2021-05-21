@@ -17,13 +17,7 @@ const removeTokenSubscription = (key, { commit, type }) => {
   }
 }
 
-const updateTokenSubscription = (from = true, { token, addressTable, commit, type }) => {
-  const key = from ? 'from' : 'to'
-
-  removeTokenSubscription(key, { commit, type })
-
-  if (!token?.address || !addressTable || token.address in addressTable) return
-
+const addTokenSubscription = (key, { commit, type, token }) => {
   const subscription = (api as any).getAssetBalanceObservable(token).subscribe(balance => {
     commit(type, balance)
   })
@@ -210,19 +204,18 @@ const mutations = {
 }
 
 const actions = {
-  async setTokenFromAddress ({ commit, state, getters, rootGetters }, address?: string) {
+  async setTokenFromAddress ({ commit, getters, rootGetters }, address?: string) {
     if (!address) {
       commit(types.RESET_TOKEN_FROM_ADDRESS)
     } else {
       commit(types.SET_TOKEN_FROM_ADDRESS, address)
     }
 
-    updateTokenSubscription(true, {
-      token: getters.tokenFrom,
-      addressTable: rootGetters.accountAssetsAddressTable,
-      commit,
-      type: types.SET_TOKEN_FROM_BALANCE
-    })
+    removeTokenSubscription('from', { commit, type: types.SET_TOKEN_FROM_BALANCE })
+
+    if (!getters.tokenFrom?.address || getters.tokenFrom.address in rootGetters.accountAssetsAddressTable) return
+
+    addTokenSubscription('from', { commit, type: types.SET_TOKEN_FROM_BALANCE, token: getters.tokenFrom })
   },
 
   async setTokenToAddress ({ commit, getters, rootGetters }, address?: string) {
@@ -232,12 +225,11 @@ const actions = {
       commit(types.SET_TOKEN_TO_ADDRESS, address)
     }
 
-    updateTokenSubscription(false, {
-      token: getters.tokenTo,
-      addressTable: rootGetters.accountAssetsAddressTable,
-      commit,
-      type: types.SET_TOKEN_TO_BALANCE
-    })
+    removeTokenSubscription('to', { commit, type: types.SET_TOKEN_TO_BALANCE })
+
+    if (!getters.tokenTo?.address || getters.tokenTo.address in rootGetters.accountAssetsAddressTable) return
+
+    addTokenSubscription('to', { commit, type: types.SET_TOKEN_TO_BALANCE, token: getters.tokenTo })
   },
 
   setFromValue ({ commit }, fromValue: string | number) {
@@ -280,8 +272,8 @@ const actions = {
     commit(types.SET_NETWORK_FEE, networkFee)
   },
   reset ({ commit }) {
-    removeTokenSubscription('from', { commit, type: types.SET_TOKEN_TO_BALANCE })
-    removeTokenSubscription('to', { commit, type: types.SET_TOKEN_FROM_BALANCE })
+    removeTokenSubscription('from', { commit, type: types.SET_TOKEN_FROM_BALANCE })
+    removeTokenSubscription('to', { commit, type: types.SET_TOKEN_TO_BALANCE })
     commit(types.RESET)
   }
 }
