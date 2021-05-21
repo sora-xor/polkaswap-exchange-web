@@ -10,8 +10,8 @@
         <div v-if="isSoraAccountConnected" class="rewards-amount">
           <rewards-amount-header :items="rewardsByAssetsList" />
           <template v-if="!claimingInProgressOrFinished">
-            <rewards-amount-table v-if="formattedInternalRewards.length" :items="formattedInternalRewards" />
-            <rewards-amount-table v-if="formattedExternalRewards.length" :items="formattedExternalRewards" :group="true" />
+            <rewards-amount-table class="rewards-table" v-if="formattedInternalRewards.length" :items="formattedInternalRewards" />
+            <rewards-amount-table class="rewards-table" v-if="formattedExternalRewards.length" :items="formattedExternalRewards" :group="true" />
             <s-divider />
             <div class="rewards-footer">
               <div v-if="isExternalAccountConnected" class="rewards-account">
@@ -367,6 +367,12 @@ $hint-font-size: 13px;
       background: var(--s-color-theme-secondary-focused);
       opacity: 0.5;
       margin: 0;
+    }
+  }
+
+  &-table {
+    &:not(:last-child) {
+      margin-bottom: 0;
     }
   }
 
