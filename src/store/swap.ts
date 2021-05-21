@@ -18,7 +18,7 @@ const removeTokenSubscription = (key, { commit, type }) => {
 }
 
 const addTokenSubscription = (key, { commit, type, token }) => {
-  const subscription = (api as any).getAssetBalanceObservable(token).subscribe(balance => {
+  const subscription = api.getAssetBalanceObservable(token).subscribe(balance => {
     commit(type, balance)
   })
 
