@@ -1,12 +1,22 @@
 <template>
-  <div class="amount-table">
-    <div v-for="({ title, amount, symbol }, index) in items" :key="index" class="amount-table-item">
-      <div class="amount-table-item__title">{{ title }}</div>
-      <div class="amount-table-item__amount">
-        <span>{{ amount }}</span>&nbsp;<span>{{ symbol }}</span>
+  <component :is="wrapper" :class="['amount-table', { group }]" v-model="innerModel">
+    <template v-for="({ type, title, amount, symbol }, index) in items">
+      <el-checkbox v-if="!group" class="amount-table-checkbox" :key="index" :label="type">
+        <div class="amount-table-item">
+          <div class="amount-table-item__title">{{ title }}</div>
+          <div class="amount-table-item__amount">
+            <span>{{ amount }}</span>&nbsp;<span>{{ symbol }}</span>
+          </div>
+        </div>
+      </el-checkbox>
+      <div v-else class="amount-table-item amount-table-item--row" :key="index">
+        <div class="amount-table-item__title">{{ title }}</div>
+        <div class="amount-table-item__amount">
+          <span>{{ amount }}</span>&nbsp;<span>{{ symbol }}</span>
+        </div>
       </div>
-    </div>
-  </div>
+    </template>
+  </component>
 </template>
 
 <script lang="ts">
@@ -17,30 +27,87 @@ import { RewardsAmountTableItem } from '@/types/rewards'
 @Component
 export default class AmountTable extends Vue {
   @Prop({ default: () => [], type: Array }) items!: Array<RewardsAmountTableItem>
+  @Prop({ default: () => [], type: [Array, Boolean] }) value!: Array<string> | boolean
+  @Prop({ default: false, type: Boolean }) group!: boolean
+
+  get wrapper (): string {
+    return this.group ? 'el-checkbox' : 'el-checkbox-group'
+  }
+
+  get innerModel (): any {
+    return this.value
+  }
+
+  set innerModel (value: any) {
+    this.$emit('input', value)
+  }
 }
 </script>
 
+<style lang="scss">
+.amount-table {
+  &.el-checkbox {
+    color: inherit;
+
+    .el-checkbox__label {
+      flex-flow: column nowrap;
+    }
+  }
+
+  & .el-checkbox {
+    color: inherit;
+
+    & > * {
+      display: flex;
+    }
+
+    &__label {
+      white-space: normal;
+      display: flex;
+      flex: 1;
+      color: inherit !important;
+    }
+  }
+}
+</style>
+
 <style lang="scss" scoped>
 $table-item-font-size: 13px;
+$checkbox-width: 20px;
 
 .amount-table {
+  &.group {
+    display: flex;
+    flex-flow: row nowrap;
+    padding: $inner-spacing-mini $inner-spacing-mini / 2;
+  }
+
+  &-checkbox {
+    display: flex;
+    margin-right: 0;
+    padding: $inner-spacing-mini $inner-spacing-mini / 2;
+  }
+
   &-item {
     display: flex;
+    flex: 1;
     align-items: flex-start;
     justify-content: space-between;
     font-size: $table-item-font-size;
     line-height: $s-line-height-mini;
-    padding: $inner-spacing-mini $inner-spacing-mini / 2;
+
+    &--row:not(:last-child) {
+      margin-bottom: $inner-spacing-mini * 2;
+    }
 
     &__title {
       font-weight: 300;
       text-transform: uppercase;
-      width: 60%;
     }
 
     &__amount {
+      flex: 1;
       font-weight: 600;
-      width: 40%;
       text-align: right;
     }
   }
