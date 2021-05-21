@@ -91,14 +91,12 @@ const getters = {
   tokenFrom (state: SwapState, getters, rootState, rootGetters) {
     const token = rootGetters['assets/getAssetDataByAddress'](state.tokenFromAddress)
     const balance = state.tokenFromBalance
-    console.log('from', balance)
 
     return balance ? { ...token, balance } : token
   },
   tokenTo (state: SwapState, getters, rootState, rootGetters) {
     const token = rootGetters['assets/getAssetDataByAddress'](state.tokenToAddress)
     const balance = state.tokenToBalance
-    console.log('to', balance)
 
     return balance ? { ...token, balance } : token
   },
