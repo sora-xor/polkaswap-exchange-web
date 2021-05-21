@@ -10,7 +10,8 @@
         <div v-if="isSoraAccountConnected" class="rewards-amount">
           <rewards-amount-header :items="rewardsByAssetsList" />
           <template v-if="!claimingInProgressOrFinished">
-            <rewards-amount-table v-if="formattedClaimableRewards.length" :items="formattedClaimableRewards" />
+            <rewards-amount-table v-if="formattedInternalRewards.length" :items="formattedInternalRewards" />
+            <rewards-amount-table v-if="formattedExternalRewards.length" :items="formattedExternalRewards" :group="true" />
             <s-divider />
             <div class="rewards-footer">
               <div v-if="isExternalAccountConnected" class="rewards-account">
@@ -97,6 +98,9 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @State(state => state.rewards.transactionError) transactionError!: boolean
   @State(state => state.rewards.transactionStep) transactionStep!: number
 
+  @State(state => state.rewards.internalRewards) internalRewards!: Array<RewardInfo>
+  @State(state => state.rewards.externalRewards) externalRewards!: Array<RewardInfo>
+
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset
   @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean
   @Getter('externalRewardsAvailable', { namespace: 'rewards' }) externalRewardsAvailable!: boolean
@@ -177,12 +181,12 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     return this.t(translationKey, { order, total: this.transactionStepsCount })
   }
 
-  get formattedClaimableRewards (): Array<RewardsAmountTableItem> {
-    return this.claimableRewards.map((item: RewardInfo) => ({
-      title: RewardsTableTitles[item.type] ?? '',
-      amount: this.formatCodecNumber(item.amount),
-      symbol: item.asset.symbol
-    }) as RewardsAmountTableItem)
+  get formattedExternalRewards (): Array<RewardsAmountTableItem> {
+    return this.externalRewards.map((item: RewardInfo) => this.formatRewardToTableItem(item))
+  }
+
+  get formattedInternalRewards (): Array<RewardsAmountTableItem> {
+    return this.internalRewards.map((item: RewardInfo) => this.formatRewardToTableItem(item))
   }
 
   get rewardTokenSymbols (): Array<KnownSymbols> {
@@ -300,6 +304,14 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     await this.withNotifications(
       async () => await this.claimRewards({ internalAddress, externalAddress })
     )
+  }
+
+  private formatRewardToTableItem (item: RewardInfo): RewardsAmountTableItem {
+    return {
+      title: RewardsTableTitles[item.type] ?? '',
+      amount: this.formatCodecNumber(item.amount),
+      symbol: item.asset.symbol
+    } as RewardsAmountTableItem
   }
 }
 </script>
