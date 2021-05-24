@@ -362,7 +362,7 @@ export default class Bridge extends Mixins(
     })
   }
 
-  async mounted (): Promise<void> {
+  destroyed (): void {
     this.resetBridgeForm(!!router.currentRoute.params?.address)
   }
 
