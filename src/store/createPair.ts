@@ -7,6 +7,9 @@ import { api } from '@soramitsu/soraneo-wallet-web'
 import { CodecString } from '@sora-substrate/util'
 
 import { ZeroStringValue } from '@/consts'
+import { TokenBalanceSubscriptions } from '@/utils/subscriptions'
+
+const balanceSubscriptions = new TokenBalanceSubscriptions()
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -15,6 +18,8 @@ const types = flow(
     'SET_SECOND_TOKEN_ADDRESS',
     'SET_FIRST_TOKEN_VALUE',
     'SET_SECOND_TOKEN_VALUE',
+    'SET_FIRST_TOKEN_BALANCE',
+    'SET_SECOND_TOKEN_BALANCE',
     'SET_FOCUSED_FIELD'
   ]),
   map(x => [x, x]),
@@ -31,6 +36,8 @@ interface CreatePairState {
   secondTokenAddress: string;
   firstTokenValue: string;
   secondTokenValue: string;
+  firstTokenBalance: any;
+  secondTokenBalance: any;
   minted: CodecString;
   fee: CodecString;
   isAvailable: boolean;
@@ -42,6 +49,8 @@ function initialState (): CreatePairState {
     secondTokenAddress: '',
     firstTokenValue: '',
     secondTokenValue: '',
+    firstTokenBalance: null,
+    secondTokenBalance: null,
     minted: '',
     fee: '',
     isAvailable: false
@@ -52,10 +61,16 @@ const state = initialState()
 
 const getters = {
   firstToken (state: CreatePairState, getters, rootState, rootGetters) {
-    return rootGetters['assets/getAssetDataByAddress'](state.firstTokenAddress)
+    const token = rootGetters['assets/getAssetDataByAddress'](state.firstTokenAddress)
+    const balance = state.firstTokenBalance
+
+    return balance ? { ...token, balance } : token
   },
   secondToken (state: CreatePairState, getters, rootState, rootGetters) {
-    return rootGetters['assets/getAssetDataByAddress'](state.secondTokenAddress)
+    const token = rootGetters['assets/getAssetDataByAddress'](state.secondTokenAddress)
+    const balance = state.secondTokenBalance
+
+    return balance ? { ...token, balance } : token
   },
   firstTokenValue (state: CreatePairState) {
     return state.firstTokenValue
@@ -87,6 +102,12 @@ const mutations = {
   [types.SET_SECOND_TOKEN_VALUE] (state: CreatePairState, secondTokenValue: string) {
     state.secondTokenValue = secondTokenValue
   },
+  [types.SET_FIRST_TOKEN_BALANCE] (state: CreatePairState, balance = null) {
+    state.firstTokenBalance = balance
+  },
+  [types.SET_SECOND_TOKEN_BALANCE] (state: CreatePairState, balance = null) {
+    state.secondTokenBalance = balance
+  },
   [types.CREATE_PAIR_REQUEST] (state: CreatePairState) {
   },
   [types.CREATE_PAIR_SUCCESS] (state: CreatePairState) {
@@ -115,13 +136,31 @@ const mutations = {
 }
 
 const actions = {
-  async setFirstTokenAddress ({ commit, dispatch }, address: string) {
+  async setFirstTokenAddress ({ commit, dispatch, getters, rootGetters }, address: string) {
+    const updateBalance = balance => commit(types.SET_FIRST_TOKEN_BALANCE, balance)
+
     commit(types.SET_FIRST_TOKEN_ADDRESS, address)
+
+    balanceSubscriptions.remove('first', { updateBalance })
+
+    if (!getters.firstToken?.address || getters.firstToken.address in rootGetters.accountAssetsAddressTable) return
+
+    balanceSubscriptions.add('first', { updateBalance, token: getters.firstToken })
+
     await dispatch('checkLiquidity')
   },
 
-  async setSecondTokenAddress ({ commit, dispatch }, address: string) {
+  async setSecondTokenAddress ({ commit, dispatch, getters, rootGetters }, address: string) {
+    const updateBalance = balance => commit(types.SET_SECOND_TOKEN_BALANCE, balance)
+
     commit(types.SET_SECOND_TOKEN_ADDRESS, address)
+
+    balanceSubscriptions.remove('second', { updateBalance })
+
+    if (!getters.secondToken?.address || getters.secondToken.address in rootGetters.accountAssetsAddressTable) return
+
+    balanceSubscriptions.add('second', { updateBalance, token: getters.secondToken })
+
     await dispatch('checkLiquidity')
   },
 
@@ -205,6 +244,9 @@ const actions = {
   },
 
   resetData ({ commit }, withAssets = false) {
+    balanceSubscriptions.remove('first', { updateBalance: balance => commit(types.SET_FIRST_TOKEN_BALANCE, balance) })
+    balanceSubscriptions.remove('second', { updateBalance: balance => commit(types.SET_SECOND_TOKEN_BALANCE, balance) })
+
     if (!withAssets) {
       commit(types.SET_FIRST_TOKEN_ADDRESS, '')
       commit(types.SET_SECOND_TOKEN_ADDRESS, '')
