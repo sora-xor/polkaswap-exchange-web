@@ -10,6 +10,7 @@
         class="slippage-tolerance-custom_input"
         size="small"
         :decimals="2"
+        :hasLocaleString="true"
         :delimiters="delimiters"
         :max="slippageToleranceExtremeValues.max"
         v-model="customSlippageTolerance"

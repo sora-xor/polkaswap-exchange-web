@@ -41,10 +41,10 @@
               <s-float-input
                 :value="amount"
                 :decimals="(asset || {}).externalDecimals"
+                :hasLocaleString="true"
                 :delimiters="delimiters"
                 :max="getMax((asset || {}).address)"
                 :class="inputClasses"
-                :placeholder="isFieldAmountFocused ? '' : inputPlaceholder"
                 :disabled="!areNetworksConnected || !isAssetSelected"
                 @input="setAmount"
                 @focus="handleFocus"
@@ -94,10 +94,10 @@
               <s-float-input
                 :value="amount"
                 :decimals="(asset || {}).externalDecimals"
+                :hasLocaleString="true"
                 :delimiters="delimiters"
                 :max="getMax((asset || {}).address)"
                 :class="inputClasses"
-                :placeholder="inputPlaceholder"
                 disabled
               />
             </s-form-item>
@@ -194,7 +194,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
-import { Components, PageNames, EthSymbol, ZeroStringValue } from '@/consts'
+import { Components, PageNames, EthSymbol } from '@/consts'
 import {
   isXorAccountAsset,
   hasInsufficientBalance,
@@ -251,7 +251,6 @@ export default class Bridge extends Mixins(
   EthSymbol = EthSymbol
   KnownSymbols = KnownSymbols
   formatAssetSymbol = formatAssetSymbol
-  inputPlaceholder = ZeroStringValue
   isFieldAmountFocused = false
   showSelectTokenDialog = false
   showConfirmTransactionDialog = false
