@@ -190,8 +190,6 @@ const actions = {
   async setTokenFromAddress ({ commit, getters, rootGetters }, address?: string) {
     const updateBalance = balance => commit(types.SET_TOKEN_FROM_BALANCE, balance)
 
-    console.log(rootGetters)
-
     if (!address) {
       commit(types.RESET_TOKEN_FROM_ADDRESS)
     } else {
