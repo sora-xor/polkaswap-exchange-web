@@ -198,9 +198,9 @@ const actions = {
 
     balanceSubscriptions.remove('from', { updateBalance })
 
-    if (!getters.tokenFrom?.address || getters.tokenFrom.address in rootGetters.accountAssetsAddressTable) return
-
-    balanceSubscriptions.add('from', { updateBalance, token: getters.tokenFrom })
+    if (rootGetters.isLoggedIn && getters.tokenFrom?.address && !(getters.tokenFrom.address in rootGetters.accountAssetsAddressTable)) {
+      balanceSubscriptions.add('from', { updateBalance, token: getters.tokenFrom })
+    }
   },
 
   async setTokenToAddress ({ commit, getters, rootGetters }, address?: string) {
@@ -214,9 +214,9 @@ const actions = {
 
     balanceSubscriptions.remove('to', { updateBalance })
 
-    if (!getters.tokenTo?.address || getters.tokenTo.address in rootGetters.accountAssetsAddressTable) return
-
-    balanceSubscriptions.add('to', { updateBalance, token: getters.tokenTo })
+    if (rootGetters.isLoggedIn && getters.tokenTo?.address && !(getters.tokenTo.address in rootGetters.accountAssetsAddressTable)) {
+      balanceSubscriptions.add('to', { updateBalance, token: getters.tokenTo })
+    }
   },
 
   setFromValue ({ commit }, fromValue: string | number) {

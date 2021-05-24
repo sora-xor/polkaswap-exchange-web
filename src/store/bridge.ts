@@ -368,9 +368,9 @@ const actions = {
 
     balanceSubscriptions.remove('asset', { updateBalance })
 
-    if (!getters.asset?.address || getters.asset.address in rootGetters.accountAssetsAddressTable) return
-
-    balanceSubscriptions.add('asset', { updateBalance, token: getters.asset })
+    if (rootGetters.isLoggedIn && getters.asset?.address && !(getters.asset.address in rootGetters.accountAssetsAddressTable)) {
+      balanceSubscriptions.add('asset', { updateBalance, token: getters.asset })
+    }
   },
   setAmount ({ commit }, amount: string) {
     commit(types.SET_AMOUNT, amount)
