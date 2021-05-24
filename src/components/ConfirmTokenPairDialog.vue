@@ -12,7 +12,7 @@
       {{ t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol }) }}
     </s-row>
     <div class="output-description">
-      {{ t('confirmSupply.outputDescription', { slippageTolerance }) }}
+      {{ t('confirmSupply.outputDescription', { slippageTolerance: formatStringValue(String(slippageTolerance)) }) }}
     </div>
     <s-divider />
     <info-line
@@ -33,10 +33,10 @@
     </info-line>
     <info-line
       :label="t('confirmSupply.price')"
-      :value="`1 ${firstToken.symbol} = ${priceReversed}`"
+      :value="`1 ${firstToken.symbol} = ${formatStringValue(priceReversed)}`"
       :asset-symbol="secondToken.symbol"
     />
-    <info-line :value="`1 ${secondToken.symbol} = ${price}`" :asset-symbol="firstToken.symbol" />
+    <info-line :value="`1 ${secondToken.symbol} = ${formatStringValue(price)}`" :asset-symbol="firstToken.symbol" />
     <info-line :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
     <template #footer>
       <s-button

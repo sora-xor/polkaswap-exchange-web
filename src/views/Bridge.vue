@@ -41,6 +41,7 @@
               <s-float-input
                 :value="amount"
                 :decimals="(asset || {}).externalDecimals"
+                :delimiters="delimiters"
                 :max="getMax((asset || {}).address)"
                 :class="inputClasses"
                 :placeholder="isFieldAmountFocused ? '' : inputPlaceholder"
@@ -93,6 +94,7 @@
               <s-float-input
                 :value="amount"
                 :decimals="(asset || {}).externalDecimals"
+                :delimiters="delimiters"
                 :max="getMax((asset || {}).address)"
                 :class="inputClasses"
                 :placeholder="inputPlaceholder"
@@ -243,6 +245,8 @@ export default class Bridge extends Mixins(
   @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: CodecString
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
+
+  readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
   EthSymbol = EthSymbol
   KnownSymbols = KnownSymbols

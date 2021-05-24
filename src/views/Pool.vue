@@ -32,7 +32,7 @@
           </div>
           <div class="pool-info pool-info--share">
             <div>{{ t('pool.poolShare')}}</div>
-            <div class="pool-info-value">{{ liquidityItem.poolShare }}%</div>
+            <div class="pool-info-value">{{ getPoolShare(liquidityItem.poolShare) }}</div>
           </div>
           <div class="pool-info--buttons">
             <s-button type="primary" size="small" @click="handleAddPairLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
@@ -145,6 +145,10 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   getBalance (liquidityItem: AccountLiquidity): string {
     return this.formatCodecNumber(liquidityItem.balance, liquidityItem.decimals)
+  }
+
+  getPoolShare (poolShare: string): string {
+    return this.formatStringValue(poolShare).concat('%')
   }
 }
 </script>

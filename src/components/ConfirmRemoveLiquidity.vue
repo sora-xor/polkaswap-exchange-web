@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <p class="transaction-message" v-html="t('removeLiquidity.outputMessage', { slippageTolerance })" />
+    <p class="transaction-message" v-html="t('removeLiquidity.outputMessage', { slippageTolerance: formatStringValue(String(slippageTolerance)) })" />
     <s-divider />
     <info-line
       :label="t('confirmSupply.poolTokensBurned', { first: firstToken.symbol, second: secondToken.symbol })"
@@ -32,11 +32,11 @@
     </info-line>
     <info-line
       :label="t('removeLiquidity.price')"
-      :value="`1 ${firstToken.symbol} = ${priceReversed}`"
+      :value="`1 ${firstToken.symbol} = ${formatStringValue(priceReversed)}`"
       :asset-symbol="secondToken.symbol "
     />
     <info-line
-      :value="`1 ${secondToken.symbol} = ${price}`"
+      :value="`1 ${secondToken.symbol} = ${formatStringValue(price)}`"
       :asset-symbol="firstToken.symbol"
     />
     <template #footer>

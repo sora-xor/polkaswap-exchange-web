@@ -27,15 +27,15 @@ export default class TransactionMixin extends Mixins(TranslationMixin, LoadingMi
     if (value.type === Operation.Transfer) {
       params.address = formatAddress(value.to as string, 10)
     }
-    if ([Operation.Transfer, Operation.RemoveLiquidity].includes(value.type)) {
+    if ([Operation.AddLiquidity, Operation.CreatePair, Operation.Transfer, Operation.RemoveLiquidity, Operation.Swap].includes(value.type)) {
       params.amount = params.amount ? this.formatStringValue(params.amount) : ''
     }
-    if ([Operation.AddLiquidity, Operation.CreatePair, Operation.Swap].includes(value.type)) {
+    if ([Operation.AddLiquidity, Operation.CreatePair, Operation.RemoveLiquidity, Operation.Swap].includes(value.type)) {
       params.amount2 = params.amount2 ? this.formatStringValue(params.amount2) : ''
     }
     if (value.type === Operation.ClaimRewards) {
       params.rewards = groupRewardsByAssetsList(params.rewards)
-        .map(({ amount, symbol }) => `${amount} ${symbol}`)
+        .map(({ amount, symbol }) => `${this.formatStringValue(amount)} ${symbol}`)
         .join(` ${this.t('rewards.andText')} `)
     }
     return this.t(`operations.${value.status}.${value.type}`, params)

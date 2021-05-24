@@ -169,7 +169,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   }
 
   formatAmount (historyItem: any): string {
-    return historyItem.amount ? new FPNumber(historyItem.amount, this.registeredAssets?.find(asset => asset.address === historyItem.address)?.decimals).format() : ''
+    return historyItem.amount ? new FPNumber(historyItem.amount, this.registeredAssets?.find(asset => asset.address === historyItem.address)?.decimals).toLocaleString() : ''
   }
 
   formatDate (response: any): string {

@@ -2,7 +2,7 @@
   <div :class="slippageToleranceClasses">
     <div class="slippage-tolerance-default">
       <settings-header :title="t('dexSettings.slippageTolerance')" :tooltip="t('dexSettings.slippageToleranceHint')" />
-      <settings-tabs :value="String(slippageTolerance)" :tabs="SlippageToleranceTabs" @click="selectTab"/>
+      <settings-tabs :value="String(slippageTolerance)" :tabs="formattedSlippageToleranceTabs" @click="selectTab"/>
     </div>
     <div class="slippage-tolerance-custom">
       <settings-header :title="t('dexSettings.custom')" />
@@ -10,6 +10,7 @@
         class="slippage-tolerance-custom_input"
         size="small"
         :decimals="2"
+        :delimiters="delimiters"
         :max="slippageToleranceExtremeValues.max"
         v-model="customSlippageTolerance"
         @blur="handleSlippageToleranceOnBlur"
@@ -62,11 +63,12 @@ import { Components } from '@/consts'
   }
 })
 export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFormatterMixin) {
-  readonly SlippageToleranceTabs = [
+  readonly delimiters = FPNumber.DELIMITERS_CONFIG
+  SlippageToleranceTabs: any = [
     0.1,
     0.5,
     1
-  ].map(name => ({ name: String(name), label: `${name}%` }))
+  ]
 
   readonly slippageToleranceExtremeValues = {
     min: 0.01,
@@ -80,6 +82,10 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
   @Getter nodeAddress!: { ip: string; port: number }
   @Action setSlippageTolerance!: any
   @Action setTransactionDeadline!: any
+
+  get formattedSlippageToleranceTabs (): any {
+    return this.SlippageToleranceTabs.map(name => ({ name: String(name), label: `${this.formatStringValue(String(name))}%` }))
+  }
 
   get customSlippageTolerance (): string {
     const suffix = this.slippageToleranceFocused ? '' : '%'
