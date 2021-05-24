@@ -47,7 +47,6 @@ const CreateTokenPairMixin = (namespace: string) => {
       }
     }
 
-    showSelectFirstTokenDialog = false
     showSelectSecondTokenDialog = false
     insufficientBalanceTokenSymbol = ''
 
