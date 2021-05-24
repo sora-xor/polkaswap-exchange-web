@@ -18,7 +18,6 @@ const types = flow(
     'SET_SECOND_TOKEN_ADDRESS',
     'SET_FIRST_TOKEN_VALUE',
     'SET_SECOND_TOKEN_VALUE',
-    'SET_FIRST_TOKEN_BALANCE',
     'SET_SECOND_TOKEN_BALANCE',
     'SET_FOCUSED_FIELD'
   ]),
@@ -36,7 +35,6 @@ interface CreatePairState {
   secondTokenAddress: string;
   firstTokenValue: string;
   secondTokenValue: string;
-  firstTokenBalance: any;
   secondTokenBalance: any;
   minted: CodecString;
   fee: CodecString;
@@ -49,7 +47,6 @@ function initialState (): CreatePairState {
     secondTokenAddress: '',
     firstTokenValue: '',
     secondTokenValue: '',
-    firstTokenBalance: null,
     secondTokenBalance: null,
     minted: '',
     fee: '',
@@ -61,10 +58,7 @@ const state = initialState()
 
 const getters = {
   firstToken (state: CreatePairState, getters, rootState, rootGetters) {
-    const token = rootGetters['assets/getAssetDataByAddress'](state.firstTokenAddress)
-    const balance = state.firstTokenBalance
-
-    return balance ? { ...token, balance } : token
+    return rootGetters['assets/getAssetDataByAddress'](state.firstTokenAddress)
   },
   secondToken (state: CreatePairState, getters, rootState, rootGetters) {
     const token = rootGetters['assets/getAssetDataByAddress'](state.secondTokenAddress)
@@ -102,9 +96,6 @@ const mutations = {
   [types.SET_SECOND_TOKEN_VALUE] (state: CreatePairState, secondTokenValue: string) {
     state.secondTokenValue = secondTokenValue
   },
-  [types.SET_FIRST_TOKEN_BALANCE] (state: CreatePairState, balance = null) {
-    state.firstTokenBalance = balance
-  },
   [types.SET_SECOND_TOKEN_BALANCE] (state: CreatePairState, balance = null) {
     state.secondTokenBalance = balance
   },
@@ -136,17 +127,8 @@ const mutations = {
 }
 
 const actions = {
-  async setFirstTokenAddress ({ commit, dispatch, getters, rootGetters }, address: string) {
-    const updateBalance = balance => commit(types.SET_FIRST_TOKEN_BALANCE, balance)
-
+  async setFirstTokenAddress ({ commit, dispatch }, address: string) {
     commit(types.SET_FIRST_TOKEN_ADDRESS, address)
-
-    balanceSubscriptions.remove('first', { updateBalance })
-
-    if (!getters.firstToken?.address || getters.firstToken.address in rootGetters.accountAssetsAddressTable) return
-
-    balanceSubscriptions.add('first', { updateBalance, token: getters.firstToken })
-
     await dispatch('checkLiquidity')
   },
 
@@ -244,7 +226,6 @@ const actions = {
   },
 
   resetData ({ commit }, withAssets = false) {
-    balanceSubscriptions.remove('first', { updateBalance: balance => commit(types.SET_FIRST_TOKEN_BALANCE, balance) })
     balanceSubscriptions.remove('second', { updateBalance: balance => commit(types.SET_SECOND_TOKEN_BALANCE, balance) })
 
     if (!withAssets) {
