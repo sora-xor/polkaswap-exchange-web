@@ -132,7 +132,6 @@
       <info-line :label="secondToken.symbol" :value="secondTokenPosition" />
     </div>
 
-    <select-token :visible.sync="showSelectFirstTokenDialog" :connected="isLoggedIn" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstTokenAddress($event.address)" />
     <select-token :visible.sync="showSelectSecondTokenDialog" :connected="isLoggedIn" :asset="firstToken" @select="setSecondTokenAddress($event.address)" />
 
     <confirm-token-pair-dialog
