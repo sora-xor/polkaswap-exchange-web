@@ -23,16 +23,20 @@ import { Transaction } from 'web3-core'
 
 import { STATES } from '@/utils/fsm'
 import web3Util, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
+import { TokenBalanceSubscriptions } from '@/utils/subscriptions'
 import { delay, isEthereumAddress } from '@/utils'
 import { EthereumGasLimits, MaxUint256, ZeroStringValue } from '@/consts'
 
 const SORA_REQUESTS_TIMEOUT = 5 * 1000
+
+const balanceSubscriptions = new TokenBalanceSubscriptions()
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
     'SET_SORA_TO_ETHEREUM',
     'SET_ASSET_ADDRESS',
+    'SET_ASSET_BALANCE',
     'SET_AMOUNT',
     'SET_SORA_TOTAL',
     'SET_ETHEREUM_TOTAL',
@@ -162,6 +166,7 @@ function initialState () {
   return {
     isSoraToEthereum: true,
     assetAddress: '',
+    assetBalance: null,
     amount: '',
     soraNetworkFee: 0,
     ethereumNetworkFee: ZeroStringValue,
@@ -188,7 +193,10 @@ const getters = {
     return state.isSoraToEthereum
   },
   asset (state, getters, rootState, rootGetters) {
-    return rootGetters['assets/getAssetDataByAddress'](state.assetAddress)
+    const token = rootGetters['assets/getAssetDataByAddress'](state.assetAddress)
+    const balance = state.assetBalance
+
+    return balance ? { ...token, balance } : token
   },
   amount (state) {
     return state.amount
@@ -246,6 +254,9 @@ const mutations = {
   },
   [types.SET_ASSET_ADDRESS] (state, address: string) {
     state.assetAddress = address
+  },
+  [types.SET_ASSET_BALANCE] (state, balance = null) {
+    state.assetBalance = balance
   },
   [types.SET_AMOUNT] (state, amount: string) {
     state.amount = amount
@@ -350,8 +361,16 @@ const actions = {
   setSoraToEthereum ({ commit }, isSoraToEthereum: boolean) {
     commit(types.SET_SORA_TO_ETHEREUM, isSoraToEthereum)
   },
-  setAssetAddress ({ commit }, address?: string) {
+  setAssetAddress ({ commit, getters, rootGetters }, address?: string) {
+    const updateBalance = (balance) => commit(types.SET_ASSET_BALANCE, balance)
+
     commit(types.SET_ASSET_ADDRESS, address)
+
+    balanceSubscriptions.remove('asset', { updateBalance })
+
+    if (!getters.asset?.address || getters.asset.address in rootGetters.accountAssetsAddressTable) return
+
+    balanceSubscriptions.add('asset', { updateBalance, token: getters.asset })
   },
   setAmount ({ commit }, amount: string) {
     commit(types.SET_AMOUNT, amount)
@@ -392,7 +411,9 @@ const actions = {
   setTransactionStep ({ commit }, transactionStep: number) {
     commit(types.SET_TRANSACTION_STEP, transactionStep)
   },
-  resetBridgeForm ({ dispatch }, withAddress = false) {
+  resetBridgeForm ({ commit, dispatch }, withAddress = false) {
+    balanceSubscriptions.remove('asset', { updateBalance: balance => commit(types.SET_ASSET_BALANCE, balance) })
+
     if (!withAddress) {
       dispatch('setAssetAddress', '')
     }
