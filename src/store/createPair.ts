@@ -139,9 +139,9 @@ const actions = {
 
     balanceSubscriptions.remove('second', { updateBalance })
 
-    if (!getters.secondToken?.address || getters.secondToken.address in rootGetters.accountAssetsAddressTable) return
-
-    balanceSubscriptions.add('second', { updateBalance, token: getters.secondToken })
+    if (getters.secondToken?.address && !(getters.secondToken.address in rootGetters.accountAssetsAddressTable)) {
+      balanceSubscriptions.add('second', { updateBalance, token: getters.secondToken })
+    }
 
     await dispatch('checkLiquidity')
   },
