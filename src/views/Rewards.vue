@@ -79,14 +79,6 @@ import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
-const RewardsTableTitles = {
-  [RewardingEvents.XorErc20]: 'XOR ERC-20',
-  [RewardingEvents.SoraFarmHarvest]: 'SORA.farm harvest',
-  [RewardingEvents.NtfAirdrop]: 'NFT Airdrop',
-  [RewardingEvents.LiquidityProvision]: 'PSWAP STRATEGIC REWARDS for liquidity provision',
-  [RewardingEvents.BuyOnBondingCurve]: 'PSWAP STRATEGIC REWARDS for buying into TBC'
-}
-
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
@@ -338,7 +330,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   private formatRewardToTableItem (item: RewardInfo): RewardsAmountTableItem {
     return {
       type: item.type,
-      title: RewardsTableTitles[item.type] ?? '',
+      title: this.t(`rewards.events.${item.type}`),
       amount: this.formatCodecNumber(item.amount),
       symbol: item.asset.symbol
     } as RewardsAmountTableItem
