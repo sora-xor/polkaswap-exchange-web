@@ -124,7 +124,7 @@
       </aside>
       <div class="app-body">
         <div class="app-content">
-          <router-view :parent-loading="loading" />
+          <router-view :parent-loading="loading || !nodeConnectionAllowance" />
           <p class="app-disclaimer" :class="isAboutPage ? 'about-disclaimer' : ''" v-html="t('disclaimer')" />
         </div>
         <footer class="app-footer" :class="isAboutPage ? 'about-footer' : ''">
@@ -195,6 +195,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   @Getter faucetUrl!: string
   @Getter node!: any
   @Getter chainAndNetworkText!: string
+  @Getter nodeConnectionAllowance!: boolean
 
   @Action navigate // Wallet
   @Action trackActiveTransactions

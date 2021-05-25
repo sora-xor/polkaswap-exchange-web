@@ -150,6 +150,8 @@ const mutations = {
 
 const actions = {
   async connectToNode ({ commit, dispatch, state }, node: Node) {
+    if (!state.nodeConnectionAllowance) return
+
     const defaultNode = state.defaultNodes[0]
     const requestedNode = node || (state.node.address ? state.node : defaultNode)
 
@@ -181,6 +183,7 @@ const actions = {
   async setNode ({ commit, dispatch, state }, node) {
     const endpoint = node?.address ?? ''
     const connectingNodeChanged = () => endpoint !== state.nodeAddressConnecting
+    const connectionOnDisconnected = () => dispatch('connectToNode')
 
     try {
       if (!endpoint) {
@@ -202,7 +205,13 @@ const actions = {
         console.info('Disconnected from node', currentEndpoint)
       }
 
-      await connection.open(endpoint, { once: true, timeout: NODE_CONNECTION_TIMEOUT })
+      await connection.open(endpoint, {
+        once: true,
+        timeout: NODE_CONNECTION_TIMEOUT,
+        eventListeners: [
+          ['disconnected', connectionOnDisconnected]
+        ]
+      })
 
       if (connectingNodeChanged()) return
 
