@@ -63,7 +63,7 @@
           <s-input
             v-model="customAddress"
             class="custom-asset-address"
-            :placeholder="t(`selectRegisteredAsset.customAsset.addressPlaceholder`)"
+            :placeholder="t('selectRegisteredAsset.customAsset.addressPlaceholder')"
             :maxlength="128"
             border-radius="mini"
             @change="handleCustomAssetSearch"
@@ -72,7 +72,7 @@
             v-if="customSymbol"
             v-model="customSymbol"
             class="custom-asset-symbol"
-            :placeholder="t(`selectRegisteredAsset.customAsset.symbolPlaceholder`)"
+            :placeholder="t('selectRegisteredAsset.customAsset.symbolPlaceholder')"
             :maxlength="10"
             border-radius="mini"
             readonly
