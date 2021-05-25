@@ -120,7 +120,6 @@
 
 <script lang="ts">
 import first from 'lodash/fp/first'
-import isNil from 'lodash/fp/isNil'
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { Asset, AccountAsset } from '@sora-substrate/util'
@@ -128,13 +127,13 @@ import { api } from '@soramitsu/soraneo-wallet-web'
 import { isBlacklistAsset } from 'polkaswap-token-whitelist'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import DialogMixin from '@/components/mixins/DialogMixin'
+import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
-import { copyToClipboard, formatAddress, asZeroValue, getAssetBalance, formatAssetBalance, debouncedInputHandler } from '@/utils'
+import { copyToClipboard, formatAddress, formatAssetBalance, debouncedInputHandler } from '@/utils'
 
 const namespace = 'assets'
 
@@ -144,7 +143,7 @@ const namespace = 'assets'
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, LoadingMixin, NumberFormatterMixin) {
+export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMixin, LoadingMixin, NumberFormatterMixin) {
   readonly tokenTabs = [
     'assets',
     'custom'
@@ -185,19 +184,7 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
 
     this.tabValue = first(this.tokenTabs)
     this.resetCustomAssetFields()
-
-    const input = this.$refs.search as any
-
-    if (input && typeof input.focus === 'function') {
-      input.focus()
-    }
-  }
-
-  private sort (a: AccountAsset, b: AccountAsset): number {
-    const emptyABalance = isNil(a.balance) || !+a.balance.transferable
-    const emptyBBalance = isNil(b.balance) || !+b.balance.transferable
-    if (emptyABalance === emptyBBalance) return 0
-    return emptyABalance && !emptyBBalance ? 1 : -1
+    this.focusSearchInput()
   }
 
   handleTabClick ({ name }): void {
@@ -205,26 +192,9 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   }
 
   get whitelistAssetsList (): Array<AccountAsset> {
-    const { asset, whitelistAssets, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly } = this
+    const { asset: excludeAsset, whitelistAssets, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly } = this
 
-    return whitelistAssets.reduce((result: Array<AccountAsset>, item: Asset) => {
-      if (!item || (asset && item.address === asset.address)) return result
-
-      const accountAsset = accountAssetsAddressTable[item.address]
-
-      if (accountAssetsOnly && !accountAsset) return result
-
-      const balance = accountAsset?.balance
-
-      if (notNullBalanceOnly && asZeroValue(getAssetBalance(accountAsset))) return result
-
-      const prepared = {
-        ...item,
-        balance
-      } as AccountAsset
-
-      return [...result, prepared]
-    }, []).sort(this.sort)
+    return this.getWhitelistAssetsWithBalances({ whitelistAssets, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly, excludeAsset })
   }
 
   get filteredWhitelistTokens (): Array<AccountAsset> {
