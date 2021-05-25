@@ -411,9 +411,8 @@ const actions = {
   setTransactionStep ({ commit }, transactionStep: number) {
     commit(types.SET_TRANSACTION_STEP, transactionStep)
   },
-  resetBridgeForm ({ commit, dispatch }, withAddress = false) {
-    balanceSubscriptions.remove('asset', { updateBalance: balance => commit(types.SET_ASSET_BALANCE, balance) })
-
+  resetBridgeForm ({ dispatch }, withAddress = false) {
+    dispatch('resetBalanceSubscription')
     if (!withAddress) {
       dispatch('setAssetAddress', '')
     }
@@ -424,6 +423,9 @@ const actions = {
     dispatch('setSoraTransactionHash', '')
     dispatch('setEthereumTransactionDate', '')
     dispatch('setEthereumTransactionHash', '')
+  },
+  resetBalanceSubscription ({ commit }) {
+    balanceSubscriptions.remove('asset', { updateBalance: balance => commit(types.SET_ASSET_BALANCE, balance) })
   },
   async getHistory ({ commit }) {
     commit(types.GET_HISTORY_REQUEST)
@@ -542,7 +544,7 @@ const actions = {
       commit(types.GET_ETHEREUM_NETWORK_FEE_FAILURE)
     }
   },
-  async generateHistoryItem ({ commit, getters, dispatch }, playground) {
+  async generateHistoryItem ({ getters, dispatch }, playground) {
     await dispatch('setHistoryItem', api.bridge.generateHistoryItem({
       type: getters.isSoraToEthereum ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
       amount: getters.amount,
@@ -561,7 +563,7 @@ const actions = {
     }))
     return getters.historyItem
   },
-  async updateHistoryParams ({ commit, dispatch }, params) {
+  async updateHistoryParams ({ dispatch }, params) {
     await dispatch('saveHistory', params.tx)
     await dispatch('setHistoryItem', params.tx)
     if (!params.isEndTimeOnly) {
