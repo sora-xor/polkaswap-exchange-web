@@ -64,6 +64,9 @@ const getters = {
   nodeList (state, getters) {
     return [...state.defaultNodes, ...getters.customNodes]
   },
+  nodeIsConnected (state) {
+    return state.node?.address && state.nodeConnectionAllowance
+  },
   soraNetwork (state) {
     return state.soraNetwork
   },

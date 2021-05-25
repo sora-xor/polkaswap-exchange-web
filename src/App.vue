@@ -124,7 +124,7 @@
       </aside>
       <div class="app-body">
         <div class="app-content">
-          <router-view :parent-loading="loading || !nodeConnectionAllowance" />
+          <router-view :parent-loading="loading || !nodeIsConnected" />
           <p class="app-disclaimer" :class="isAboutPage ? 'about-disclaimer' : ''" v-html="t('disclaimer')" />
         </div>
         <footer class="app-footer" :class="isAboutPage ? 'about-footer' : ''">
@@ -190,7 +190,6 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   showSelectNodeDialog = false
 
   @State(state => state.settings.node) node!: Node
-  @State(state => state.settings.nodeConnectionAllowance) nodeConnectionAllowance!: boolean
   @State(state => state.settings.faucetUrl) faucetUrl!: string
 
   @Getter firstReadyTransaction!: any
@@ -198,6 +197,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   @Getter account!: any
   @Getter currentRoute!: WALLET_CONSTS.RouteNames
   @Getter chainAndNetworkText!: string
+  @Getter nodeIsConnected!: boolean
 
   @Action navigate // Wallet
   @Action trackActiveTransactions
