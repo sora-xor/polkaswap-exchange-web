@@ -145,7 +145,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { WALLET_CONSTS, WalletAvatar } from '@soramitsu/soraneo-wallet-web'
-import { KnownSymbols } from '@sora-substrate/util'
+import { KnownSymbols, FPNumber } from '@sora-substrate/util'
 
 import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize } from '@/consts'
 
@@ -206,6 +206,10 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   @Action('setDefaultEthNetwork', { namespace: 'web3' }) setDefaultEthNetwork
 
   async created () {
+    const localeLanguage = 'ru-RU'
+    FPNumber.DELIMITERS_CONFIG.thousand = Number(1000).toLocaleString(localeLanguage).substring(1, 2)
+    FPNumber.DELIMITERS_CONFIG.decimal = Number(1.1).toLocaleString(localeLanguage).substring(1, 2)
+
     await this.withLoading(async () => {
       const { data } = await axios.get('/env.json')
 
