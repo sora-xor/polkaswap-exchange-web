@@ -127,13 +127,7 @@
           <router-view :parent-loading="loading" />
           <p class="app-disclaimer" :class="isAboutPage ? 'about-disclaimer' : ''" v-html="t('disclaimer')" />
         </div>
-        <footer v-if="isAboutPage" class="app-footer about-footer">
-          <div class="sora-logo">
-            <span class="sora-logo__title">{{ t('poweredBy') }}</span>
-            <div class="sora-logo__image"></div>
-          </div>
-        </footer>
-        <footer v-else class="app-footer">
+        <footer class="app-footer" :class="isAboutPage ? 'about-footer' : ''">
           <div class="sora-logo">
             <span class="sora-logo__title">{{ t('poweredBy') }}</span>
             <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener" />
