@@ -231,6 +231,7 @@ export default class Bridge extends Mixins(
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
   @Action('resetBridgeForm', { namespace }) resetBridgeForm
+  @Action('resetBalanceSubscription', { namespace }) resetBalanceSubscription
   @Action('getNetworkFee', { namespace }) getNetworkFee
 
   @Getter('ethBalance', { namespace: 'web3' }) ethBalance!: CodecString
@@ -359,6 +360,7 @@ export default class Bridge extends Mixins(
 
   created (): void {
     this.setAmount('') // reset fields
+    this.resetBridgeForm(!!router.currentRoute.params?.address)
     this.withApi(async () => {
       await this.getRegisteredAssets()
       this.getNetworkFees()
@@ -366,7 +368,7 @@ export default class Bridge extends Mixins(
   }
 
   destroyed (): void {
-    this.resetBridgeForm(!!router.currentRoute.params?.address)
+    this.resetBalanceSubscription()
   }
 
   getBridgeItemTitle (isBTitle = false): string {
