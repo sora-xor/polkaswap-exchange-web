@@ -52,32 +52,20 @@ function initialState () {
 const state = initialState()
 
 const getters = {
-  node (state) {
-    return state.node
-  },
   chainAndNetworkText (state) {
     return state.node.chain || state.soraNetwork
   },
-  defaultNodes (state) {
-    return state.defaultNodes
-  },
-  defaultNodesHashTable (_, getters) {
-    return getters.defaultNodes.reduce((result, node) => ({ ...result, [node.address]: node }), {})
+  defaultNodesHashTable (state) {
+    return state.defaultNodes.reduce((result, node) => ({ ...result, [node.address]: node }), {})
   },
   customNodes (state, getters) {
     return state.customNodes.filter(node => !(node.address in getters.defaultNodesHashTable))
   },
-  nodeAddressConnecting (state) {
-    return state.nodeAddressConnecting
-  },
-  nodeConnectionAllowance (state) {
-    return state.nodeConnectionAllowance
+  nodeList (state, getters) {
+    return [...state.defaultNodes, ...getters.customNodes]
   },
   soraNetwork (state) {
     return state.soraNetwork
-  },
-  chainGenesisHash (state) {
-    return state.chainGenesisHash
   },
   slippageTolerance (state) {
     return state.slippageTolerance
@@ -85,14 +73,8 @@ const getters = {
   transactionDeadline (state) {
     return state.transactionDeadline
   },
-  faucetUrl (state) {
-    return state.faucetUrl
-  },
   liquiditySource (state) {
     return LiquiditySourceForMarketAlgorithm[state.marketAlgorithm]
-  },
-  marketAlgorithm (state) {
-    return state.marketAlgorithm
   }
 }
 

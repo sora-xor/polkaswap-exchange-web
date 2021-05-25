@@ -143,7 +143,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
+import { Action, Getter, State } from 'vuex-class'
 import { WALLET_CONSTS, WalletAvatar } from '@soramitsu/soraneo-wallet-web'
 import { KnownSymbols } from '@sora-substrate/util'
 
@@ -153,9 +153,10 @@ import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
 
-import router, { lazyComponent } from '@/router'
 import axios from '@/api'
+import router, { lazyComponent } from '@/router'
 import { formatAddress, disconnectWallet } from '@/utils'
+import { Node } from '@/types/nodes'
 
 const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
 const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
@@ -188,14 +189,15 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   showHelpDialog = false
   showSelectNodeDialog = false
 
+  @State(state => state.settings.node) node!: Node
+  @State(state => state.settings.nodeConnectionAllowance) nodeConnectionAllowance!: boolean
+  @State(state => state.settings.faucetUrl) faucetUrl!: string
+
   @Getter firstReadyTransaction!: any
   @Getter isLoggedIn!: boolean
   @Getter account!: any
   @Getter currentRoute!: WALLET_CONSTS.RouteNames
-  @Getter faucetUrl!: string
-  @Getter node!: any
   @Getter chainAndNetworkText!: string
-  @Getter nodeConnectionAllowance!: boolean
 
   @Action navigate // Wallet
   @Action trackActiveTransactions

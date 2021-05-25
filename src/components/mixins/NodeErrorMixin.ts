@@ -1,5 +1,5 @@
 import { Component, Mixins } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+import { State } from 'vuex-class'
 
 import TranslationMixin from './TranslationMixin'
 import { AppHandledError } from '@/utils/error'
@@ -7,7 +7,7 @@ import { Node } from '@/types/nodes'
 
 @Component
 export default class NodeErrorMixin extends Mixins(TranslationMixin) {
-  @Getter node!: Node
+  @State(state => state.settings.node) node!: Node
 
   protected handleNodeError (error, node?: Node) {
     const errorKey = error instanceof AppHandledError ? error.translationKey : 'node.errors.connection'

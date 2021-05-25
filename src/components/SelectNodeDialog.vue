@@ -8,7 +8,7 @@
     <select-node
       v-if="isNodeListView"
       v-model="connectedNodeAddress"
-      :nodes="nodeList"
+      :nodes="formattedNodeList"
       :handle-node="navigateToNodeInfo"
       :environment="soraNetwork"
       :disable-select="!nodeConnectionAllowance"
@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
+import { Action, Getter, State } from 'vuex-class'
 import pick from 'lodash/fp/pick'
 
 import { lazyComponent } from '@/router'
@@ -56,13 +56,12 @@ const NodeInfoView = 'NodeInfoView'
   }
 })
 export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMixin, DialogMixin, NodeErrorMixin) {
-  @Getter node!: Node
-  @Getter defaultNodes!: Array<Node>
-  @Getter customNodes!: Array<Node>
-  @Getter chainGenesisHash!: string
-  @Getter nodeAddressConnecting!: string
-  @Getter nodeConnectionAllowance!: boolean
-  @Getter soraNetwork!: string
+  @Getter nodeList!: Array<Node>
+  @State(state => state.settings.node) node!: Node
+  @State(state => state.settings.defaultNodes) defaultNodes!: Array<Node>
+  @State(state => state.settings.nodeAddressConnecting) nodeAddressConnecting!: string
+  @State(state => state.settings.nodeConnectionAllowance) nodeConnectionAllowance!: boolean
+  @State(state => state.settings.soraNetwork) soraNetwork!: string
   @Action connectToNode!: (node: Node) => void
   @Action addCustomNode!: (node: Node) => void
   @Action removeCustomNode!: (node: any) => void
@@ -102,8 +101,8 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     return this.currentView === NodeListView
   }
 
-  get nodeList (): Array<NodeItem> {
-    return [...this.defaultNodes, ...this.customNodes].map(node => ({
+  get formattedNodeList (): Array<NodeItem> {
+    return this.nodeList.map(node => ({
       ...node,
       title: !!node.name && !!node.chain
         ? this.t('selectNodeDialog.nodeTitle', { chain: node.chain, name: node.name })
@@ -183,7 +182,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   }
 
   private findNodeInListByAddress (address: string): any {
-    return this.nodeList.find(item => item.address === address)
+    return this.formattedNodeList.find(item => item.address === address)
   }
 
   private isConnectedNodeAddress (nodeAddress: any): boolean {
