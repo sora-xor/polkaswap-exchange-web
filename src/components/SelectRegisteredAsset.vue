@@ -91,10 +91,10 @@
 <script lang="ts">
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { Asset, AccountAsset, RegisteredAccountAsset, KnownAssets } from '@sora-substrate/util'
+import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import DialogMixin from '@/components/mixins/DialogMixin'
+import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
@@ -111,7 +111,7 @@ const namespace = 'assets'
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class SelectRegisteredAsset extends Mixins(TranslationMixin, DialogMixin, LoadingMixin, NumberFormatterMixin) {
+export default class SelectRegisteredAsset extends Mixins(TranslationMixin, SelectAssetMixin, LoadingMixin, NumberFormatterMixin) {
   query = ''
   selectedAsset: AccountAsset | RegisteredAccountAsset | null = null
   readonly tokenTabs = [
@@ -127,10 +127,10 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
 
   @Prop({ default: () => null, type: Object }) readonly asset!: AccountAsset
 
-  @Getter accountAssets!: Array<AccountAsset> // Wallet store
-
+  @Getter('whitelistAssets', { namespace }) whitelistAssets!: Array<Asset>
   @Getter('isSoraToEthereum', { namespace: 'bridge' }) isSoraToEthereum!: boolean
   @Getter('registeredAssets', { namespace }) registeredAssets!: Array<RegisteredAccountAsset>
+  @Getter accountAssetsAddressTable // Wallet store
 
   @Action('getCustomAsset', { namespace }) getAsset
 
@@ -140,11 +140,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
 
     if (!value) return
 
-    const input = this.$refs.search as any
-
-    if (input && typeof input.focus === 'function') {
-      input.focus()
-    }
+    this.focusSearchInput()
   }
 
   get containerClasses (): string {
@@ -158,8 +154,14 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
     return classes.join(' ')
   }
 
+  get whitelistAssetsList (): Array<AccountAsset> {
+    const { asset: excludeAsset, whitelistAssets, accountAssetsAddressTable } = this
+
+    return this.getWhitelistAssetsWithBalances({ whitelistAssets, accountAssetsAddressTable, excludeAsset })
+  }
+
   get assetsList (): Array<AccountAsset | RegisteredAccountAsset> {
-    return this.getAssets(this.isSoraToEthereum ? this.accountAssets : this.registeredAssets)
+    return this.getAssets(this.isSoraToEthereum ? this.whitelistAssetsList : this.registeredAssets)
   }
 
   get addressSymbol (): string {
@@ -183,8 +185,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Dial
   }
 
   getAssets (assets: Array<AccountAsset | RegisteredAccountAsset>): Array<AccountAsset | RegisteredAccountAsset> {
-    const assetsList = this.asset ? assets?.filter(asset => asset.address !== this.asset.address) : assets
-    return this.isSoraToEthereum ? assetsList.filter(asset => !Number.isNaN(+asset?.balance?.transferable)) : assetsList
+    return this.asset ? assets?.filter(asset => asset.address !== this.asset.address) : assets
   }
 
   getFilteredAssets (assets: Array<AccountAsset | RegisteredAccountAsset>): Array<AccountAsset | RegisteredAccountAsset> {
