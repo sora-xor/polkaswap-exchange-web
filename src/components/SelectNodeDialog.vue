@@ -35,7 +35,7 @@ import pick from 'lodash/fp/pick'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import { NodeModel } from '@/components/Settings/Node/consts'
-import { Node, NodeItem } from '@/types/nodes'
+import { Node, NodeItem, ConnectToNodeOptions } from '@/types/nodes'
 import { AppHandledError } from '@/utils/error'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -62,7 +62,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   @State(state => state.settings.nodeAddressConnecting) nodeAddressConnecting!: string
   @State(state => state.settings.nodeConnectionAllowance) nodeConnectionAllowance!: boolean
   @State(state => state.settings.soraNetwork) soraNetwork!: string
-  @Action connectToNode!: (node: Node) => void
+  @Action connectToNode!: (options: ConnectToNodeOptions) => void
   @Action addCustomNode!: (node: Node) => void
   @Action removeCustomNode!: (node: any) => void
 
@@ -123,7 +123,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
         this.handleBack()
       }
     } catch (error) {
-      this.handleNodeError(error, node)
+      // we handled error using callback, do nothing
     }
   }
 
@@ -157,12 +157,14 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     const existingNode = this.findNodeInListByAddress(node.address)
 
     if (isNewNode && existingNode) {
-      throw new AppHandledError({
+      const error = new AppHandledError({
         key: 'node.errors.existing',
         payload: {
           title: existingNode.title
         }
       })
+
+      return this.handleNodeError(error)
     }
 
     const nodeCopy = this.getNodePermittedData(node)

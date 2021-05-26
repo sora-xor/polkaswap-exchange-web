@@ -170,9 +170,9 @@ const actions = {
 
       if (onError && typeof onError === 'function') {
         onError(error)
-      } else {
-        throw error
       }
+
+      throw error
     }
   },
   async setNode ({ commit, dispatch, state }, options: ConnectToNodeOptions = {}) {

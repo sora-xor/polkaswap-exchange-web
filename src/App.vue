@@ -156,7 +156,7 @@ import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
 import axios from '@/api'
 import router, { lazyComponent } from '@/router'
 import { formatAddress, disconnectWallet } from '@/utils'
-import { Node } from '@/types/nodes'
+import { Node, ConnectToNodeOptions } from '@/types/nodes'
 
 const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
 const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
@@ -203,7 +203,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   @Action trackActiveTransactions
   @Action setSoraNetwork
   @Action setDefaultNodes
-  @Action connectToNode
+  @Action connectToNode!: (options: ConnectToNodeOptions) => void
   @Action setFaucetUrl
   @Action setSelectNodeDialogVisibility
   @Action('setEthereumSmartContracts', { namespace: 'web3' }) setEthereumSmartContracts
@@ -302,7 +302,11 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   }
 
   private async runAppConnectionToNode () {
-    await this.connectToNode({ onError: this.handleNodeError })
+    try {
+      await this.connectToNode({ onError: this.handleNodeError })
+    } catch (error) {
+      // we handled error using callback, do nothing
+    }
   }
 }
 </script>
