@@ -206,9 +206,12 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   @Action('setDefaultEthNetwork', { namespace: 'web3' }) setDefaultEthNetwork
 
   async created () {
-    const localeLanguage = 'ru-RU'
-    FPNumber.DELIMITERS_CONFIG.thousand = Number(1000).toLocaleString(localeLanguage).substring(1, 2)
-    FPNumber.DELIMITERS_CONFIG.decimal = Number(1.1).toLocaleString(localeLanguage).substring(1, 2)
+    const localeLanguage = navigator.language
+    const thousandSymbol = Number(1000).toLocaleString(localeLanguage).substring(1, 2)
+    if (thousandSymbol !== '0') {
+      FPNumber.DELIMITERS_CONFIG.thousand = Number(1234).toLocaleString(localeLanguage).substring(1, 2)
+    }
+    FPNumber.DELIMITERS_CONFIG.decimal = Number(1.2).toLocaleString(localeLanguage).substring(1, 2)
 
     await this.withLoading(async () => {
       const { data } = await axios.get('/env.json')

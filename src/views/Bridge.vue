@@ -41,7 +41,7 @@
               <s-float-input
                 :value="amount"
                 :decimals="(asset || {}).externalDecimals"
-                :hasLocaleString="true"
+                has-locale-string
                 :delimiters="delimiters"
                 :max="getMax((asset || {}).address)"
                 :class="inputClasses"
@@ -94,7 +94,7 @@
               <s-float-input
                 :value="amount"
                 :decimals="(asset || {}).externalDecimals"
-                :hasLocaleString="true"
+                has-locale-string
                 :delimiters="delimiters"
                 :max="getMax((asset || {}).address)"
                 :class="inputClasses"

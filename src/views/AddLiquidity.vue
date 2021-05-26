@@ -19,7 +19,7 @@
               class="s-input--token-value"
               :value="firstTokenValue"
               :decimals="(firstToken || {}).decimals"
-              :hasLocaleString="true"
+              has-locale-string
               :delimiters="delimiters"
               :max="getMax((firstToken || {}).address)"
               :disabled="!areTokensSelected"
@@ -55,7 +55,7 @@
               class="s-input--token-value"
               :value="secondTokenValue"
               :decimals="(secondToken || {}).decimals"
-              :hasLocaleString="true"
+              has-locale-string
               :delimiters="delimiters"
               :max="getMax((secondToken || {}).address)"
               :disabled="!areTokensSelected"
@@ -115,8 +115,8 @@
 
     <div v-if="areTokensSelected && isAvailable && !emptyAssets" class="info-line-container">
       <p class="p2">{{ t('createPair.pricePool') }}</p>
-      <info-line :label="t('addLiquidity.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="getFormattedPrice(price)" />
-      <info-line :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="getFormattedPrice(priceReversed)" />
+      <info-line :label="t('addLiquidity.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="formatStringValue(price)" />
+      <info-line :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formatStringValue(priceReversed)" />
       <info-line :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
       <info-line :label="t('createPair.networkFee')" :value="`${formattedFee} ${KnownSymbols.XOR}`" />
     </div>
@@ -256,10 +256,6 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatter
     if (this.firstAddress && this.secondAddress && !this.liquidityInfo) {
       router.push({ name: PageNames.Pool })
     }
-  }
-
-  getFormattedPrice (price: string): string {
-    return this.formatStringValue(price)
   }
 
   getTokenPosition (liquidityInfoBalance: string | undefined, tokenValue: string | CodecString | number, isPoolToken = false): string {

@@ -33,7 +33,7 @@
             class="s-input--token-value"
             :value="fromValue"
             :decimals="(tokenFrom || {}).decimals"
-            :hasLocaleString="true"
+            has-locale-string
             :delimiters="delimiters"
             :max="getMax((tokenFrom || {}).address)"
             @input="handleInputFieldFrom"
@@ -74,7 +74,7 @@
             class="s-input--token-value"
             :value="toValue"
             :decimals="(tokenTo || {}).decimals"
-            :hasLocaleString="true"
+            has-locale-string
             :delimiters="delimiters"
             :max="getMax((tokenTo || {}).address)"
             @input="handleInputFieldTo"

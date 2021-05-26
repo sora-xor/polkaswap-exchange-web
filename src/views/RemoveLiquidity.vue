@@ -38,7 +38,7 @@
               class="s-input--token-value"
               :value="liquidityAmount"
               :decimals="(liquidity || {}).decimals"
-              :hasLocaleString="true"
+              has-locale-string
               :delimiters="delimiters"
               :max="getTokenMaxAmount(liquidityBalance)"
               @input="setLiquidityAmount"
@@ -74,7 +74,7 @@
               class="s-input--token-value"
               :value="firstTokenAmount"
               :decimals="(firstToken || {}).decimals"
-              :hasLocaleString="true"
+              has-locale-string
               :delimiters="delimiters"
               :max="getTokenMaxAmount(firstTokenBalance)"
               @input="handleTokenChange($event, setFirstTokenAmount)"
@@ -105,7 +105,7 @@
               class="s-input--token-value"
               :value="secondTokenAmount"
               :decimals="(secondToken || {}).decimals"
-              :hasLocaleString="true"
+              has-locale-string
               :delimiters="delimiters"
               :max="getTokenMaxAmount(secondTokenBalance)"
               @input="handleTokenChange($event, setSecondTokenAmount)"

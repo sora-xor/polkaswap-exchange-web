@@ -148,7 +148,7 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   getPoolShare (poolShare: string): string {
-    return this.formatStringValue(poolShare).concat('%')
+    return `${this.formatStringValue(poolShare)}%`
   }
 }
 </script>
