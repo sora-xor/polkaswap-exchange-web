@@ -9,7 +9,7 @@ import storage, { settingsStorage } from '@/utils/storage'
 import { AppHandledError } from '@/utils/error'
 import { DefaultSlippageTolerance, DefaultMarketAlgorithm, LiquiditySourceForMarketAlgorithm, WalletPermissions } from '@/consts'
 import { getRpcEndpoint, fetchRpc } from '@/utils/rpc'
-import { Node } from '@/types/nodes'
+import { ConnectToNodeOptions } from '@/types/nodes'
 
 const NODE_CONNECTION_TIMEOUT = 60000
 
@@ -25,7 +25,8 @@ const types = flow(
     'SET_CUSTOM_NODES',
     'RESET_NODE',
     'SET_NETWORK_CHAIN_GENESIS_HASH',
-    'SET_NODE_CONNECTION_ALLOWANCE'
+    'SET_NODE_CONNECTION_ALLOWANCE',
+    'SET_SELECT_NODE_DIALOG_VISIBILIY'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -45,7 +46,8 @@ function initialState () {
     nodeAddressConnecting: '',
     nodeConnectionAllowance: true,
     chainGenesisHash: '',
-    faucetUrl: ''
+    faucetUrl: '',
+    selectNodeDialogVisibility: false
   }
 }
 
@@ -130,18 +132,22 @@ const mutations = {
   },
   [types.SET_FAUCET_URL] (state, url) {
     state.faucetUrl = url
+  },
+  [types.SET_SELECT_NODE_DIALOG_VISIBILIY] (state, flag) {
+    state.selectNodeDialogVisibility = flag
   }
 }
 
 const actions = {
-  async connectToNode ({ commit, dispatch, state }, node: Node) {
+  async connectToNode ({ commit, dispatch, state }, options: ConnectToNodeOptions = {}) {
     if (!state.nodeConnectionAllowance) return
 
+    const { node, onError } = options
     const defaultNode = state.defaultNodes[0]
     const requestedNode = node || (state.node.address ? state.node : defaultNode)
 
     try {
-      await dispatch('setNode', requestedNode)
+      await dispatch('setNode', { node: requestedNode, onError })
 
       // wallet init & update flow
       if (!isWalletLoaded) {
@@ -159,16 +165,21 @@ const actions = {
       }
 
       if (requestedNode.address !== defaultNode.address) {
-        await dispatch('connectToNode')
+        await dispatch('connectToNode', { onError })
       }
 
-      throw error
+      if (onError && typeof onError === 'function') {
+        onError(error)
+      } else {
+        throw error
+      }
     }
   },
-  async setNode ({ commit, dispatch, state }, node) {
+  async setNode ({ commit, dispatch, state }, options: ConnectToNodeOptions = {}) {
+    const { node, onError } = options
     const endpoint = node?.address ?? ''
     const connectingNodeChanged = () => endpoint !== state.nodeAddressConnecting
-    const connectionOnDisconnected = () => dispatch('connectToNode')
+    const connectionOnDisconnected = () => dispatch('connectToNode', { onError })
 
     try {
       if (!endpoint) {
@@ -268,6 +279,9 @@ const actions = {
   },
   setFaucetUrl ({ commit }, url) {
     commit(types.SET_FAUCET_URL, url)
+  },
+  setSelectNodeDialogVisibility ({ commit }, flag: boolean) {
+    commit(types.SET_SELECT_NODE_DIALOG_VISIBILIY, flag)
   }
 }
 

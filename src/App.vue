@@ -187,10 +187,10 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   ]
 
   showHelpDialog = false
-  showSelectNodeDialog = false
 
   @State(state => state.settings.node) node!: Node
   @State(state => state.settings.faucetUrl) faucetUrl!: string
+  @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
 
   @Getter firstReadyTransaction!: any
   @Getter isLoggedIn!: boolean
@@ -205,8 +205,14 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   @Action setDefaultNodes
   @Action connectToNode
   @Action setFaucetUrl
+  @Action setSelectNodeDialogVisibility
   @Action('setEthereumSmartContracts', { namespace: 'web3' }) setEthereumSmartContracts
   @Action('setDefaultEthNetwork', { namespace: 'web3' }) setDefaultEthNetwork
+
+  @Watch('firstReadyTransaction', { deep: true })
+  private handleNotifyAboutTransaction (value): void {
+    this.handleChangeTransaction(value)
+  }
 
   async created () {
     await this.withLoading(async () => {
@@ -228,9 +234,12 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
     this.trackActiveTransactions()
   }
 
-  @Watch('firstReadyTransaction', { deep: true })
-  private handleNotifyAboutTransaction (value): void {
-    this.handleChangeTransaction(value)
+  get showSelectNodeDialog (): boolean {
+    return this.selectNodeDialogVisibility
+  }
+
+  set showSelectNodeDialog (flag: boolean) {
+    this.setSelectNodeDialogVisibility(flag)
   }
 
   get nodeLogo (): any {
@@ -285,7 +294,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   }
 
   openSelectNodeDialog (): void {
-    this.showSelectNodeDialog = true
+    this.setSelectNodeDialogVisibility(true)
   }
 
   destroyed (): void {
@@ -293,15 +302,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   }
 
   private async runAppConnectionToNode () {
-    try {
-      await this.connectToNode()
-    } catch (error) {
-      if (!this.node.address) {
-        this.openSelectNodeDialog()
-      }
-
-      this.handleNodeError(error)
-    }
+    await this.connectToNode({ onError: this.handleNodeError })
   }
 }
 </script>

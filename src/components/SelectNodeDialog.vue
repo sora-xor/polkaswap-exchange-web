@@ -169,7 +169,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
 
     this.selectedNode = existingNode ?? nodeCopy
 
-    await this.connectToNode(nodeCopy)
+    await this.connectToNode({ node: nodeCopy, onError: this.handleNodeError })
 
     if (isNewNode) {
       this.addCustomNode(nodeCopy)
