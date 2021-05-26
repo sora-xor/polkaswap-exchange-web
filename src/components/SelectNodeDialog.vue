@@ -62,7 +62,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   @State(state => state.settings.nodeAddressConnecting) nodeAddressConnecting!: string
   @State(state => state.settings.nodeConnectionAllowance) nodeConnectionAllowance!: boolean
   @State(state => state.settings.soraNetwork) soraNetwork!: string
-  @Action connectToNode!: (options: ConnectToNodeOptions) => void
+  @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
   @Action addCustomNode!: (node: Node) => void
   @Action removeCustomNode!: (node: any) => void
 

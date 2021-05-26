@@ -202,10 +202,10 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   @Action navigate // Wallet
   @Action trackActiveTransactions
   @Action setSoraNetwork
-  @Action setDefaultNodes
-  @Action connectToNode!: (options: ConnectToNodeOptions) => void
-  @Action setFaucetUrl
-  @Action setSelectNodeDialogVisibility
+  @Action setDefaultNodes!: (nodes: any) => Promise<void>
+  @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
+  @Action setFaucetUrl!: (url: string) => void
+  @Action setSelectNodeDialogVisibility!: (flag: boolean) => void
   @Action('setEthereumSmartContracts', { namespace: 'web3' }) setEthereumSmartContracts
   @Action('setDefaultEthNetwork', { namespace: 'web3' }) setDefaultEthNetwork
 

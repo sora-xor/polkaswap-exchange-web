@@ -8,7 +8,7 @@ import { Node } from '@/types/nodes'
 @Component
 export default class NodeErrorMixin extends Mixins(TranslationMixin) {
   @State(state => state.settings.node) node!: Node
-  @Action setSelectNodeDialogVisibility
+  @Action setSelectNodeDialogVisibility!: (flag: boolean) => void
 
   protected handleNodeError (error, node?: Node) {
     const errorKey = error instanceof AppHandledError ? error.translationKey : 'node.errors.connection'
