@@ -17,7 +17,7 @@
             tooltip-placement="bottom-end"
             @click="handleViewTransactionsHistory"
           />
-          <s-button
+          <!-- <s-button
             v-if="areNetworksConnected"
             class="el-button--networks"
             type="action"
@@ -25,7 +25,7 @@
             :tooltip="t('bridge.selectNetwork')"
             tooltip-placement="bottom-end"
             @click="handleChangeNetwork"
-          />
+          /> -->
         </generic-page-header>
         <s-card :class="isSoraToEvm ? 'bridge-item' : 'bridge-item bridge-item--evm'" border-radius="mini" shadow="never">
           <div class="bridge-item-header">
@@ -178,7 +178,7 @@
         </div>
       </s-card>
       <select-registered-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
-      <select-network :visible.sync="showSelectNetworkDialog" @select="selectNetwork" />
+      <!-- <select-network :visible.sync="showSelectNetworkDialog" @select="selectNetwork" /> -->
       <confirm-bridge-transaction-dialog :visible.sync="showConfirmTransactionDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmTransaction" />
     </s-form>
     <div v-if="!areNetworksConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div>
