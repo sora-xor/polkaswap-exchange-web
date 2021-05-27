@@ -62,7 +62,7 @@
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
-              :value="isSoraToEvm ? formattedSoraNetworkFee : formattedEthNetworkFee"
+              :value="isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
               :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : EthSymbol"
             />
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
@@ -120,7 +120,7 @@
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
-              :value="!isSoraToEvm ? formattedSoraNetworkFee : formattedEthNetworkFee"
+              :value="!isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
               :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : EthSymbol"
             />
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
@@ -396,7 +396,7 @@ export default class BridgeTransaction extends Mixins(
     return this.formatCodecNumber(this.historyItem?.soraNetworkFee ?? this.soraNetworkFee)
   }
 
-  get formattedEthNetworkFee (): string {
+  get formattedEvmNetworkFee (): string {
     const fee = this.formatCodecNumber(this.historyItem?.ethereumNetworkFee ?? this.evmNetworkFee)
     return fee ? `~${fee}` : fee
   }

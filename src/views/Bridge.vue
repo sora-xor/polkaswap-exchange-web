@@ -165,7 +165,7 @@
           <info-line
             :label="t('bridge.ethereumNetworkFee')"
             :tooltip-content="t('ethNetworkFeeTooltipText')"
-            :value="formatFee(evmNetworkFee, formattedEthNetworkFee)"
+            :value="formatFee(evmNetworkFee, formattedEvmNetworkFee)"
             :asset-symbol="EthSymbol"
           />
           <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
@@ -341,7 +341,7 @@ export default class Bridge extends Mixins(
     return this.formatCodecNumber(this.soraNetworkFee)
   }
 
-  get formattedEthNetworkFee (): string {
+  get formattedEvmNetworkFee (): string {
     return this.formatCodecNumber(this.evmNetworkFee)
   }
 
