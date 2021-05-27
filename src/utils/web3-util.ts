@@ -263,21 +263,25 @@ function removeEvmUserAddress (): void {
   storage.remove('evmAddress')
 }
 
-function storeNetworkType (network: string): void {
-  storage.set('networkType', EvmNetworkTypeName[network] || network)
+function storeEvmNetworkType (network: string): void {
+  storage.set('evmNetworkType', EvmNetworkTypeName[network] || network)
 }
 
-function getNetworkTypeFromStorage (): string {
-  return storage.get('networkType') || ''
+function getEvmNetworkTypeFromStorage (): string {
+  return storage.get('evmNetworkType') || ''
 }
 
-async function getEthNetwork (): Promise<string> {
-  const web3 = await getInstance()
-  return await web3.eth.net.getNetworkType()
+function removeEvmNetworkType (): void {
+  storage.remove('evmNetworkType')
 }
 
-function removeEthNetwork (): void {
-  storage.remove('ethNetwork')
+async function getEvmNetworkType (): Promise<string> {
+  const networkType = getEvmNetworkTypeFromStorage()
+  if (!networkType || networkType === 'undefined') {
+    const web3 = await getInstance()
+    return await web3.eth.net.getNetworkType()
+  }
+  return networkType
 }
 
 async function readSmartContract (network: ContractNetwork, name: string): Promise<JsonContract | undefined> {
@@ -334,10 +338,10 @@ export default {
   checkAccountIsConnected,
   storeEvmUserAddress,
   getEvmUserAddress,
-  storeNetworkType,
-  getNetworkType,
-  getNetworkTypeFromStorage,
-  removeNetworkType,
+  storeEvmNetworkType,
+  getEvmNetworkType,
+  getEvmNetworkTypeFromStorage,
+  removeEvmNetworkType,
   getInstance,
   removeEvmUserAddress,
   watchEthereum,

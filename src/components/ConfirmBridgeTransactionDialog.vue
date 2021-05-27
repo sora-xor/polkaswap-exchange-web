@@ -31,7 +31,7 @@
       :label="t('bridge.ethereumNetworkFee')"
       :tooltip-content="t('ethNetworkFeeTooltipText')"
       :value="formatFee(evmNetworkFee, formattedEvmNetworkFee)"
-      :asset-symbol="EthSymbol"
+      :asset-symbol="currentEvmTokenSymbol"
     />
     <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
     <!-- <info-line
@@ -59,7 +59,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { KnownSymbols, CodecString } from '@sora-substrate/util'
+import { KnownSymbols, CodecString, BridgeNetworks } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -67,7 +67,7 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
-import { Components, EthSymbol } from '@/consts'
+import { Components, EvmSymbol } from '@/consts'
 import { formatAssetSymbol } from '@/utils'
 
 const namespace = 'bridge'
@@ -85,6 +85,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
   @Getter('amount', { namespace }) amount!: string
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
+  @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks
   @Action('setTransactionConfirm', { namespace }) setTransactionConfirm
   @Action('setTransactionStep', { namespace }) setTransactionStep
 
@@ -92,7 +93,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean
   @Prop({ default: false, type: Boolean }) readonly isEthereumToSoraConfirmation!: boolean
 
-  EthSymbol = EthSymbol
+  EvmSymbol = EvmSymbol
   KnownSymbols = KnownSymbols
   formatAssetSymbol = formatAssetSymbol
 
@@ -117,6 +118,13 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMi
 
   get formattedEvmNetworkFee (): string {
     return this.formatCodecNumber(this.evmNetworkFee)
+  }
+
+  get currentEvmTokenSymbol (): string {
+    if (this.evmNetwork === BridgeNetworks.ENERGY_NETWORK_ID) {
+      return this.EvmSymbol.VT
+    }
+    return this.EvmSymbol.ETH
   }
 
   formatFee (fee: string, formattedFee: string): string {

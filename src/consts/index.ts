@@ -228,7 +228,10 @@ export enum NetworkTypes {
   Mainnet = 'Mainnet'
 }
 
-export const EthSymbol = 'ETH'
+export enum EvmSymbol {
+  ETH = 'ETH',
+  VT = 'VT'
+}
 
 const gasLimit = {
   approve: 70000,

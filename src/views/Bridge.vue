@@ -124,7 +124,7 @@
         <s-button
           class="el-button--next"
           type="primary"
-          :disabled="!isAssetSelected || !areNetworksConnected || !isValidNetworkType || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEthereumForFee || isInsufficientBalance || !isRegisteredAsset"
+          :disabled="!isAssetSelected || !areNetworksConnected || !isValidNetworkType || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEvmNativeTokenForFee || isInsufficientBalance || !isRegisteredAsset"
           @click="handleConfirmTransaction"
         >
           <template v-if="!isAssetSelected">
@@ -148,8 +148,8 @@
           <template v-else-if="isInsufficientXorForFee">
             {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : KnownSymbols.XOR }) }}
           </template>
-          <template v-else-if="isInsufficientEthereumForFee">
-            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : EthSymbol }) }}
+          <template v-else-if="isInsufficientEvmNativeTokenForFee">
+            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : currentEvmTokenSymbol }) }}
           </template>
           <template v-else>
             {{ t('bridge.next') }}
@@ -166,7 +166,7 @@
             :label="t('bridge.ethereumNetworkFee')"
             :tooltip-content="t('ethNetworkFeeTooltipText')"
             :value="formatFee(evmNetworkFee, formattedEvmNetworkFee)"
-            :asset-symbol="EthSymbol"
+            :asset-symbol="currentEvmTokenSymbol"
           />
           <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
           <!-- <info-line
@@ -196,13 +196,13 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
-import { Components, PageNames, EthSymbol, ZeroStringValue } from '@/consts'
+import { Components, PageNames, EvmSymbol, ZeroStringValue } from '@/consts'
 import { SubNetwork } from '@/utils/web3-util'
 import {
   isXorAccountAsset,
   hasInsufficientBalance,
   hasInsufficientXorForFee,
-  hasInsufficientEthForFee,
+  hasInsufficientEvmNativeTokenForFee,
   getMaxValue,
   formatAssetSymbol,
   getAssetBalance,
@@ -256,7 +256,7 @@ export default class Bridge extends Mixins(
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
-  EthSymbol = EthSymbol
+  EvmSymbol = EvmSymbol
   KnownSymbols = KnownSymbols
   formatAssetSymbol = formatAssetSymbol
   inputPlaceholder = ZeroStringValue
@@ -304,8 +304,8 @@ export default class Bridge extends Mixins(
     return hasInsufficientXorForFee(this.tokenXOR, this.soraNetworkFee)
   }
 
-  get isInsufficientEthereumForFee (): boolean {
-    return hasInsufficientEthForFee(this.evmBalance, this.evmNetworkFee)
+  get isInsufficientEvmNativeTokenForFee (): boolean {
+    return hasInsufficientEvmNativeTokenForFee(this.evmBalance, this.evmNetworkFee)
   }
 
   get isInsufficientBalance (): boolean {
@@ -343,6 +343,13 @@ export default class Bridge extends Mixins(
 
   get formattedEvmNetworkFee (): string {
     return this.formatCodecNumber(this.evmNetworkFee)
+  }
+
+  get currentEvmTokenSymbol (): string {
+    if (this.evmNetwork === BridgeNetworks.ENERGY_NETWORK_ID) {
+      return this.EvmSymbol.VT
+    }
+    return this.EvmSymbol.ETH
   }
 
   formatFee (fee: string, formattedFee: string): string {

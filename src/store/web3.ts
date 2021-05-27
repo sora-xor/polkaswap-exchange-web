@@ -40,7 +40,7 @@ function initialState () {
     soraNetwork: '',
     evmAddress: web3Util.getEvmUserAddress(),
     evmBalance: ZeroStringValue,
-    networkType: web3Util.getNetworkTypeFromStorage(),
+    networkType: web3Util.getEvmNetworkTypeFromStorage(),
     defaultNetworkType: '',
     subNetworks: [],
     evmNetwork: 0,
@@ -257,13 +257,13 @@ const actions = {
     commit(types.SET_DEFAULT_NETWORK_TYPE, network?.defaultType)
   },
 
-  async setNetworkType ({ commit }, network) {
+  async setEvmNetworkType ({ commit }, network) {
     commit(types.SET_NETWORK_TYPE_REQUEST)
     try {
       const networkType = network
         ? EvmNetworkTypeName[network]
-        : await web3Util.getNetworkType()
-      web3Util.storeNetworkType(networkType)
+        : await web3Util.getEvmNetworkType()
+      web3Util.storeEvmNetworkType(networkType)
       commit(types.SET_NETWORK_TYPE_SUCCESS, networkType)
     } catch (error) {
       commit(types.SET_NETWORK_TYPE_FAILURE)
@@ -360,8 +360,8 @@ const actions = {
     commit(types.GET_BALANCE_REQUEST)
     try {
       const web3 = await web3Util.getInstance()
-      const isEther = isEthereumAddress(address)
-      if (isEther) {
+      const isNativeEvmToken = isEthereumAddress(address)
+      if (isNativeEvmToken) {
         value = await dispatch('getEvmBalance')
       } else {
         const tokenInstance = new web3.eth.Contract(ABI.balance as any)
