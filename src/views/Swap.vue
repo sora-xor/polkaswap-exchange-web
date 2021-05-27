@@ -136,7 +136,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
+import { Action, Getter, State } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes, LPRewardsInfo, FPNumber } from '@sora-substrate/util'
 
@@ -163,6 +163,8 @@ const namespace = 'swap'
   }
 })
 export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
+  @Getter isLoggedIn!: boolean
+  @Getter slippageTolerance!: number
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset
   @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset
@@ -173,6 +175,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString
   @Getter('isAvailable', { namespace }) isAvailable!: boolean
   @Getter('isAvailableChecking', { namespace }) isAvailableChecking!: boolean
+  @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes
+  @Getter('pairLiquiditySourcesAvailable', { namespace }) pairLiquiditySourcesAvailable!: boolean
 
   @Action('setTokenFromAddress', { namespace }) setTokenFromAddress!: (address?: string) => Promise<void>
   @Action('setTokenToAddress', { namespace }) setTokenToAddress!: (address?: string) => Promise<void>
@@ -184,18 +188,13 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('setNetworkFee', { namespace }) setNetworkFee!: (value: CodecString) => Promise<void>
   @Action('checkSwap', { namespace }) checkSwap!: () => Promise<void>
   @Action('reset', { namespace }) reset!: () => void
-
   @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: () => Promise<void>
   @Action('getAssets', { namespace: 'assets' }) getAssets
   @Action('setPairLiquiditySources', { namespace }) setPairLiquiditySources!: (liquiditySources: Array<LiquiditySourceTypes>) => Promise<void>
   @Action('setRewards', { namespace }) setRewards!: (rewards: Array<LPRewardsInfo>) => Promise<void>
 
-  @Getter isLoggedIn!: boolean
-  @Getter slippageTolerance!: number
-  @Getter marketAlgorithm!: string
-  @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes
-  @Getter('pairLiquiditySourcesAvailable', { namespace }) pairLiquiditySourcesAvailable!: boolean
+  @State(state => state.settings.marketAlgorithm) marketAlgorithm!: string
 
   @Watch('slippageTolerance')
   private handleSlippageToleranceChange (): void {

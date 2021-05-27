@@ -124,7 +124,7 @@
       </aside>
       <div class="app-body">
         <div class="app-content">
-          <router-view :parent-loading="loading" />
+          <router-view :parent-loading="loading || !nodeIsConnected" />
           <p class="app-disclaimer" :class="isAboutPage ? 'about-disclaimer' : ''" v-html="t('disclaimer')" />
         </div>
         <footer class="app-footer" :class="isAboutPage ? 'about-footer' : ''">
@@ -143,7 +143,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
+import { Action, Getter, State } from 'vuex-class'
 import { WALLET_CONSTS, WalletAvatar } from '@soramitsu/soraneo-wallet-web'
 import { KnownSymbols, FPNumber } from '@sora-substrate/util'
 
@@ -153,9 +153,10 @@ import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
 
-import router, { lazyComponent } from '@/router'
 import axios from '@/api'
+import router, { lazyComponent } from '@/router'
 import { formatAddress, disconnectWallet } from '@/utils'
+import { Node, ConnectToNodeOptions } from '@/types/nodes'
 
 const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
 const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
@@ -186,24 +187,32 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   ]
 
   showHelpDialog = false
-  showSelectNodeDialog = false
+
+  @State(state => state.settings.node) node!: Node
+  @State(state => state.settings.faucetUrl) faucetUrl!: string
+  @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
 
   @Getter firstReadyTransaction!: any
   @Getter isLoggedIn!: boolean
   @Getter account!: any
   @Getter currentRoute!: WALLET_CONSTS.RouteNames
-  @Getter faucetUrl!: string
-  @Getter node!: any
   @Getter chainAndNetworkText!: string
+  @Getter nodeIsConnected!: boolean
 
   @Action navigate // Wallet
   @Action trackActiveTransactions
   @Action setSoraNetwork
-  @Action setDefaultNodes
-  @Action connectToNode
-  @Action setFaucetUrl
+  @Action setDefaultNodes!: (nodes: any) => Promise<void>
+  @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
+  @Action setFaucetUrl!: (url: string) => void
+  @Action setSelectNodeDialogVisibility!: (flag: boolean) => void
   @Action('setEthereumSmartContracts', { namespace: 'web3' }) setEthereumSmartContracts
   @Action('setDefaultEthNetwork', { namespace: 'web3' }) setDefaultEthNetwork
+
+  @Watch('firstReadyTransaction', { deep: true })
+  private handleNotifyAboutTransaction (value): void {
+    this.handleChangeTransaction(value)
+  }
 
   async created () {
     const localeLanguage = navigator.language
@@ -232,9 +241,12 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
     this.trackActiveTransactions()
   }
 
-  @Watch('firstReadyTransaction', { deep: true })
-  private handleNotifyAboutTransaction (value): void {
-    this.handleChangeTransaction(value)
+  get showSelectNodeDialog (): boolean {
+    return this.selectNodeDialogVisibility
+  }
+
+  set showSelectNodeDialog (flag: boolean) {
+    this.setSelectNodeDialogVisibility(flag)
   }
 
   get nodeLogo (): any {
@@ -289,7 +301,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   }
 
   openSelectNodeDialog (): void {
-    this.showSelectNodeDialog = true
+    this.setSelectNodeDialogVisibility(true)
   }
 
   destroyed (): void {
@@ -298,13 +310,9 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
 
   private async runAppConnectionToNode () {
     try {
-      await this.connectToNode()
+      await this.connectToNode({ onError: this.handleNodeError })
     } catch (error) {
-      if (!this.node.address) {
-        this.openSelectNodeDialog()
-      }
-
-      this.handleNodeError(error)
+      // we handled error using callback, do nothing
     }
   }
 }

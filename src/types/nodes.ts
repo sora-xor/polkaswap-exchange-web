@@ -8,3 +8,8 @@ export interface NodeItem extends Node {
   title?: string;
   connecting?: boolean;
 }
+
+export interface ConnectToNodeOptions {
+  node?: Node;
+  onError?: Function;
+}
