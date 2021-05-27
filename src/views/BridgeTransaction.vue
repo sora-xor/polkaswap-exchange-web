@@ -76,6 +76,7 @@
               <template v-if="!isSoraToEthereum && !isExternalAccountConnected">{{ t('bridgeTransaction.connectWallet') }}</template>
               <template v-else-if="!(isSoraToEthereum || isValidEthNetwork)">{{ t('bridgeTransaction.changeNetwork') }}</template>
               <span v-else-if="isTransactionFromPending" v-html="t('bridgeTransaction.pending', { network: t(`bridgeTransaction.${isSoraToEthereum ? 'sora' : 'ethereum'}`) })" />
+              <template v-else-if="isInsufficientBalance">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : formatAssetSymbol(assetSymbol) }) }}</template>
               <template v-else-if="isInsufficientXorForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : KnownSymbols.XOR }) }}</template>
               <template v-else-if="isInsufficientEthereumForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : EthSymbol }) }}</template>
               <template v-else-if="isTransactionFromFailed">{{ t('bridgeTransaction.retry') }}</template>
