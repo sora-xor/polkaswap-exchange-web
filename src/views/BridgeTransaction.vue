@@ -74,7 +74,7 @@
               @click="handleSendTransactionFrom"
             >
               <template v-if="!isSoraToEvm && !isExternalAccountConnected">{{ t('bridgeTransaction.connectWallet') }}</template>
-              <template v-else-if="!(isSoraToEvm || isValidEthNetwork)">{{ t('bridgeTransaction.changeNetwork') }}</template>
+              <template v-else-if="!(isSoraToEvm || isValidNetworkType)">{{ t('bridgeTransaction.changeNetwork') }}</template>
               <span v-else-if="isTransactionFromPending" v-html="t('bridgeTransaction.pending', { network: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'ethereum'}`) })" />
               <template v-else-if="isInsufficientBalance">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : formatAssetSymbol(assetSymbol) }) }}</template>
               <template v-else-if="isInsufficientXorForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : KnownSymbols.XOR }) }}</template>
@@ -185,7 +185,7 @@ export default class BridgeTransaction extends Mixins(
   NetworkFormatterMixin,
   NumberFormatterMixin
 ) {
-  @Getter('isValidEthNetwork', { namespace: 'web3' }) isValidEthNetwork!: boolean
+  @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
 
   @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean
   @Getter('asset', { namespace }) asset!: AccountAsset | RegisteredAccountAsset | null

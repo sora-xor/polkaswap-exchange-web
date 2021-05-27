@@ -8,7 +8,6 @@ import web3Util from '@/utils/web3-util'
 
 @Component
 export default class BridgeMixin extends Mixins(LoadingMixin, WalletConnectMixin) {
-  @Action('setEvmNetworkType', { namespace: 'web3' }) setEvmNetworkType!: (network?: string) => Promise<void>
   @Action('getEvmBalance', { namespace: 'web3' }) getEvmBalance!: () => Promise<void>
   @Action('getEvmNetworkFee', { namespace: 'bridge' }) getEvmNetworkFee
   @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets

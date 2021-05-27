@@ -455,6 +455,7 @@ export default class Bridge extends Mixins(
   private getNetworkFees (): void {
     if (this.isRegisteredAsset) {
       this.getNetworkFee()
+      this.getEvmNetworkFee()
     }
   }
 }

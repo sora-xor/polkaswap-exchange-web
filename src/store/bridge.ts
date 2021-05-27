@@ -109,9 +109,9 @@ async function waitForEvmTransactionStatus (hash: string): Promise<Transaction> 
   }
 }
 
-function checkEthNetwork (rootGetters): void {
-  if (!rootGetters['web3/isValidEthNetwork']) {
-    throw new Error('Change eth network in Metamask')
+function checkEvmNetwork (rootGetters): void {
+  if (!rootGetters['web3/isValidNetworkType']) {
+    throw new Error('Change evm network in Metamask')
   }
 }
 
@@ -550,7 +550,7 @@ const actions = {
     }
   },
   async generateHistoryItem ({ getters, dispatch, rootGetters }, playground) {
-    await dispatch('setHistoryItem', api.bridge.generateHistoryItem({
+    await dispatch('setHistoryItem', bridgeApi.generateHistoryItem({
       type: getters.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
       amount: getters.amount,
       symbol: getters.asset.symbol,
@@ -599,7 +599,7 @@ const actions = {
   },
   async signEvmTransactionSoraToEvm ({ commit, getters, rootGetters, dispatch }, { hash }) {
     if (!hash) throw new Error('TX ID cannot be empty!')
-    checkEthNetwork(rootGetters)
+    checkEvmNetwork(rootGetters)
     // TODO: Check the status of TX if it was already sent
     // if (!!getters.ethereumTransactionHash) {
     //   const web3 = await web3Util.getInstance()
@@ -663,7 +663,7 @@ const actions = {
           request.s // bytes32[] memory s
         ])
       )
-      checkEthNetwork(rootGetters)
+      checkEvmNetwork(rootGetters)
       const contractMethod = contractInstance.methods[method](...methodArgs)
       const gas = await contractMethod.estimateGas()
       return new Promise((resolve, reject) => {
@@ -706,7 +706,7 @@ const actions = {
     if (!getters.asset || !getters.asset.address || !getters.amount || getters.isSoraToEvm) {
       return
     }
-    checkEthNetwork(rootGetters)
+    checkEvmNetwork(rootGetters)
     // TODO: Check the status of TX if it was already sent
     // if (!!getters.ethereumTransactionHash) {
     //   const web3 = await web3Util.getInstance()
@@ -744,7 +744,7 @@ const actions = {
             contractAddress, // address spender
             MaxUint256 // uint256 amount
           ]
-          checkEthNetwork(rootGetters)
+          checkEvmNetwork(rootGetters)
           const approveMethod = tokenInstance.methods.approve(...methodArgs)
           await approveMethod.send({ from: evmAccount })
         }
@@ -782,7 +782,7 @@ const actions = {
         ? { from: evmAccount, value: amount }
         : { from: evmAccount }
 
-      checkEthNetwork(rootGetters)
+      checkEvmNetwork(rootGetters)
       return new Promise((resolve, reject) => {
         contractMethod.send(sendArgs)
           .on('transactionHash', hash => {
