@@ -41,7 +41,7 @@ function initialState () {
     evmAddress: web3Util.getEvmUserAddress(),
     evmBalance: ZeroStringValue,
     networkType: web3Util.getEvmNetworkTypeFromStorage(),
-    defaultNetworkType: '',
+    defaultNetworkType: BridgeNetworks.ETH_NETWORK_ID,
     subNetworks: [],
     evmNetwork: 0,
     contractAddress: {

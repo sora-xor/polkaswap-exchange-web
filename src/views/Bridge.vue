@@ -378,6 +378,7 @@ export default class Bridge extends Mixins(
     this.setAmount('') // reset fields
     this.resetBridgeForm(!!router.currentRoute.params?.address)
     this.withApi(async () => {
+      await this.setEvmNetwork(bridgeApi.externalNetwork)
       await this.getRegisteredAssets()
       this.getNetworkFees()
     })

@@ -797,11 +797,11 @@ const actions = {
       throw error
     }
   },
-  async sendEvmTransactionEthToSora ({ commit }, { evmHash }) {
-    if (!evmHash) throw new Error('Hash cannot be empty!')
+  async sendEvmTransactionEvmToSora ({ commit }, { ethereumHash }) {
+    if (!ethereumHash) throw new Error('Hash cannot be empty!')
     commit(types.SEND_EVM_TRANSACTION_EVM_SORA_REQUEST)
     try {
-      await waitForEvmTransactionStatus(evmHash)
+      await waitForEvmTransactionStatus(ethereumHash)
       commit(types.SEND_EVM_TRANSACTION_EVM_SORA_SUCCESS)
     } catch (error) {
       commit(types.SEND_EVM_TRANSACTION_EVM_SORA_FAILURE)
