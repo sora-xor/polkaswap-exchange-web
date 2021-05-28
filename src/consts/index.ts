@@ -89,6 +89,7 @@ export enum Components {
   HelpDialog = 'HelpDialog',
   AboutNetworkDialog = 'AboutNetworkDialog',
   SidebarItemContent = 'SidebarItemContent',
+  SelectNetwork = 'SelectNetwork',
   SelectRegisteredAsset = 'SelectRegisteredAsset',
   ConfirmBridgeTransactionDialog = 'ConfirmBridgeTransactionDialog',
   BridgeTransaction = 'BridgeTransaction',
@@ -227,7 +228,10 @@ export enum NetworkTypes {
   Mainnet = 'Mainnet'
 }
 
-export const EthSymbol = 'ETH'
+export enum EvmSymbol {
+  ETH = 'ETH',
+  VT = 'VT'
+}
 
 const gasLimit = {
   approve: 70000,
