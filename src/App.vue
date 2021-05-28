@@ -145,7 +145,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
 import { WALLET_CONSTS, WalletAvatar } from '@soramitsu/soraneo-wallet-web'
-import { KnownSymbols } from '@sora-substrate/util'
+import { KnownSymbols, FPNumber } from '@sora-substrate/util'
 
 import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize } from '@/consts'
 
@@ -216,6 +216,13 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   }
 
   async created () {
+    const localeLanguage = navigator.language
+    const thousandSymbol = Number(1000).toLocaleString(localeLanguage).substring(1, 2)
+    if (thousandSymbol !== '0') {
+      FPNumber.DELIMITERS_CONFIG.thousand = Number(1234).toLocaleString(localeLanguage).substring(1, 2)
+    }
+    FPNumber.DELIMITERS_CONFIG.decimal = Number(1.2).toLocaleString(localeLanguage).substring(1, 2)
+
     await this.withLoading(async () => {
       const { data } = await axios.get('/env.json')
 

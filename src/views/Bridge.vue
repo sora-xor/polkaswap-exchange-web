@@ -44,9 +44,10 @@
               <s-float-input
                 :value="amount"
                 :decimals="(asset || {}).externalDecimals"
+                has-locale-string
+                :delimiters="delimiters"
                 :max="getMax((asset || {}).address)"
                 :class="inputClasses"
-                :placeholder="isFieldAmountFocused ? '' : inputPlaceholder"
                 :disabled="!areNetworksConnected || !isAssetSelected"
                 @input="setAmount"
                 @focus="handleFocus"
@@ -96,9 +97,10 @@
               <s-float-input
                 :value="amount"
                 :decimals="(asset || {}).externalDecimals"
+                has-locale-string
+                :delimiters="delimiters"
                 :max="getMax((asset || {}).address)"
                 :class="inputClasses"
-                :placeholder="inputPlaceholder"
                 disabled
               />
             </s-form-item>
@@ -196,7 +198,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import router, { lazyComponent } from '@/router'
-import { Components, PageNames, EvmSymbol, ZeroStringValue } from '@/consts'
+import { Components, PageNames, EvmSymbol } from '@/consts'
 import { SubNetwork } from '@/utils/web3-util'
 import {
   isXorAccountAsset,
@@ -256,10 +258,11 @@ export default class Bridge extends Mixins(
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
+  readonly delimiters = FPNumber.DELIMITERS_CONFIG
+
   EvmSymbol = EvmSymbol
   KnownSymbols = KnownSymbols
   formatAssetSymbol = formatAssetSymbol
-  inputPlaceholder = ZeroStringValue
   isFieldAmountFocused = false
   showSelectTokenDialog = false
   showSelectNetworkDialog = false

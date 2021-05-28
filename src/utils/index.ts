@@ -157,7 +157,7 @@ export const formatAssetBalance = (asset: any, { internal = true, parseAsLiquidi
 
   if (!balance || (!showZeroBalance && asZeroValue(balance))) return formattedZero
 
-  return FPNumber.fromCodecValue(balance, asset.decimals).format()
+  return FPNumber.fromCodecValue(balance, asset.decimals).toLocaleString()
 }
 
 export const findAssetInCollection = (asset, collection) => {

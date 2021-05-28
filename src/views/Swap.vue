@@ -33,6 +33,8 @@
             class="s-input--token-value"
             :value="fromValue"
             :decimals="(tokenFrom || {}).decimals"
+            has-locale-string
+            :delimiters="delimiters"
             :max="getMax((tokenFrom || {}).address)"
             @input="handleInputFieldFrom"
             @focus="handleFocusField(false)"
@@ -72,6 +74,8 @@
             class="s-input--token-value"
             :value="toValue"
             :decimals="(tokenTo || {}).decimals"
+            has-locale-string
+            :delimiters="delimiters"
             :max="getMax((tokenTo || {}).address)"
             @input="handleInputFieldTo"
             @focus="handleFocusField(true)"
@@ -212,6 +216,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
+  readonly delimiters = FPNumber.DELIMITERS_CONFIG
   KnownSymbols = KnownSymbols
   isInsufficientAmount = false
   insufficientAmountTokenSymbol = ''

@@ -19,6 +19,8 @@
               class="s-input--token-value"
               :value="firstTokenValue"
               :decimals="(firstToken || {}).decimals"
+              has-locale-string
+              :delimiters="delimiters"
               :max="getMax((firstToken || {}).address)"
               :disabled="!areTokensSelected"
               @input="handleTokenChange($event, setFirstTokenValue)"
@@ -53,6 +55,8 @@
               class="s-input--token-value"
               :value="secondTokenValue"
               :decimals="(secondToken || {}).decimals"
+              has-locale-string
+              :delimiters="delimiters"
               :max="getMax((secondToken || {}).address)"
               :disabled="!areTokensSelected"
               @input="handleTokenChange($event, setSecondTokenValue)"
@@ -104,8 +108,8 @@
       <template v-else>
         <div class="info-line-container">
           <p class="p2">{{ t('createPair.pricePool') }}</p>
-          <info-line :label="t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="price" />
-          <info-line :label="t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="priceReversed" />
+          <info-line :label="t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="formatStringValue(price)" />
+          <info-line :label="t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formatStringValue(priceReversed)" />
           <info-line :label="t('createPair.shareOfPool')" value="100%" />
           <info-line :label="t('createPair.networkFee')" :value="`${formattedFee} ${KnownSymbols.XOR}`" />
         </div>
@@ -121,8 +125,8 @@
             </template>
           </info-line>
           <s-divider />
-          <info-line :label="firstToken.symbol" :value="firstTokenValue" />
-          <info-line :label="secondToken.symbol" :value="secondTokenValue" />
+          <info-line :label="firstToken.symbol" :value="formatStringValue(firstTokenValue)" />
+          <info-line :label="secondToken.symbol" :value="formatStringValue(secondTokenValue)" />
         </div>
       </template>
     </template>
@@ -148,8 +152,10 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
+import { FPNumber } from '@sora-substrate/util'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
+import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -169,8 +175,10 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
   }
 })
 
-export default class CreatePair extends Mixins(TokenPairMixin) {
+export default class CreatePair extends Mixins(TokenPairMixin, NumberFormatterMixin) {
   @Action('createPair', { namespace }) createPair
+
+  readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
   confirmCreatePair (): Promise<void> {
     return this.handleConfirm(this.createPair)

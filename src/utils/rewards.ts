@@ -17,7 +17,7 @@ export const groupRewardsByAssetsList = (rewards: Array<RewardInfo>): Array<Rewa
 
     const item = {
       symbol: KnownAssets.get(address).symbol,
-      amount: (amount as FPNumber).format()
+      amount: (amount as FPNumber).toLocaleString()
     } as RewardsAmountHeaderItem
 
     total.push(item)

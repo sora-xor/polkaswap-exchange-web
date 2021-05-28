@@ -252,7 +252,7 @@ export default class BridgeTransaction extends Mixins(
   showConfirmTransactionDialog = false
 
   get formattedAmount (): string {
-    return this.amount ? new FPNumber(this.amount, this.asset?.decimals).format() : ''
+    return this.amount ? new FPNumber(this.amount, this.asset?.decimals).toLocaleString() : ''
   }
 
   get assetSymbol (): string {
