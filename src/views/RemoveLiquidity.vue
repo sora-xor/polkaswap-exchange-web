@@ -150,6 +150,7 @@
           {{ t('removeLiquidity.remove') }}
         </template>
       </s-button>
+      <slippage-tolerance class="slippage-tolerance-settings" />
     </s-form>
 
     <confirm-remove-liquidity :visible.sync="showConfirmDialog" :parent-loading="loading" @confirm="handleConfirmRemoveLiquidity" />
@@ -178,6 +179,7 @@ const namespace = 'removeLiquidity'
     InfoLine: lazyComponent(Components.InfoLine),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity)
   }
 })
