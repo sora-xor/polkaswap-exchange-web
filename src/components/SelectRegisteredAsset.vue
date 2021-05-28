@@ -26,9 +26,9 @@
         <div class="asset-lists-container">
           <template v-if="hasFilteredAssets">
             <h3 class="network-label">
-              {{ isSoraToEthereum ? t('selectRegisteredAsset.search.networkLabelSora') : t('selectRegisteredAsset.search.networkLabelEthereum') }}
+              {{ isSoraToEvm ? t('selectRegisteredAsset.search.networkLabelSora') : t('selectRegisteredAsset.search.networkLabelEthereum') }}
             </h3>
-            <div :class="assetListClasses(filteredAssets, !isSoraToEthereum)">
+            <div :class="assetListClasses(filteredAssets, !isSoraToEvm)">
               <div v-for="asset in filteredAssets" @click="selectAsset(asset)" :key="asset.address" class="asset-item">
                 <s-col>
                   <s-row flex justify="start" align="middle">
@@ -128,7 +128,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
   @Prop({ default: () => null, type: Object }) readonly asset!: AccountAsset
 
   @Getter('whitelistAssets', { namespace }) whitelistAssets!: Array<Asset>
-  @Getter('isSoraToEthereum', { namespace: 'bridge' }) isSoraToEthereum!: boolean
+  @Getter('isSoraToEvm', { namespace: 'bridge' }) isSoraToEvm!: boolean
   @Getter('registeredAssets', { namespace }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter accountAssetsAddressTable // Wallet store
 
@@ -161,11 +161,11 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
   }
 
   get assetsList (): Array<AccountAsset | RegisteredAccountAsset> {
-    return this.getAssets(this.isSoraToEthereum ? this.whitelistAssetsList : this.registeredAssets)
+    return this.getAssets(this.isSoraToEvm ? this.whitelistAssetsList : this.registeredAssets)
   }
 
   get addressSymbol (): string {
-    return this.isSoraToEthereum ? 'address' : 'externalAddress'
+    return this.isSoraToEvm ? 'address' : 'externalAddress'
   }
 
   get filteredAssets (): Array<AccountAsset | RegisteredAccountAsset> {
@@ -178,7 +178,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
 
   formatBalance (asset?: AccountAsset | RegisteredAccountAsset): string {
     return formatAssetBalance(asset, {
-      internal: this.isSoraToEthereum,
+      internal: this.isSoraToEvm,
       showZeroBalance: false,
       formattedZero: '-'
     })
@@ -206,7 +206,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
     const classes = [componentClass]
 
     if (isEthereumAssetsList) {
-      classes.push(`${componentClass}--ethereum`)
+      classes.push(`${componentClass}--evm`)
     }
     if (filteredAssetsList && filteredAssetsList.length > 6) {
       classes.push(`${componentClass}--scrollbar`)
@@ -348,8 +348,8 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
     height: #{$select-asset-item-height * 6};
     overflow: auto;
   }
-  &--ethereum {
-    @include ethereum-logo-styles;
+  &--evm {
+    @include evm-logo-styles;
   }
   &__empty {
     display: flex;

@@ -230,7 +230,7 @@ const actions = {
         )
 
         // update ui to success state if user not changed external account
-        if (rootGetters['web3/ethAddress'] === externalAddress) {
+        if (rootGetters['web3/evmAddress'] === externalAddress) {
           commit(types.SET_TRANSACTION_STEP, 1)
           commit(types.SET_REWARDS_RECIEVED, true)
           commit(types.SET_REWARDS_CLAIMING, false)
