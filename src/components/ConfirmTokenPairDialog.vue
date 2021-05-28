@@ -12,7 +12,7 @@
       {{ t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol }) }}
     </s-row>
     <div class="output-description">
-      {{ t('confirmSupply.outputDescription', { slippageTolerance: formatStringValue(`${slippageTolerance}`) }) }}
+      {{ t('confirmSupply.outputDescription', { slippageTolerance: formatStringValue(slippageTolerance) }) }}
     </div>
     <s-divider />
     <info-line
@@ -78,7 +78,7 @@ export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, Dia
   @Prop({ type: String }) readonly minted!: string
   @Prop({ type: String }) readonly price!: string
   @Prop({ type: String }) readonly priceReversed!: string
-  @Prop({ type: Number }) readonly slippageTolerance!: number
+  @Prop({ type: String }) readonly slippageTolerance!: string
 
   get formattedFirstTokenValue (): string {
     return this.formatStringValue(this.firstTokenValue, this.firstToken?.decimals)
