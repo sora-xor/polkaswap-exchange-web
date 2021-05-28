@@ -102,6 +102,7 @@
           {{ t('createPair.supply') }}
         </template>
       </s-button>
+      <slippage-tolerance class="slippage-tolerance-settings" />
     </s-form>
 
     <div v-if="areTokensSelected && isAvailable && !isNotFirstLiquidityProvider && emptyAssets" class="info-line-container">
@@ -177,6 +178,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
     InfoLine: lazyComponent(Components.InfoLine),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog)
   }
 })
