@@ -1,8 +1,7 @@
 <template>
   <div class="history-container">
     <s-card
-      v-loading="parentLoading"
-      element-loading-spinner="el-lottie-loading"
+      v-lottie-loader="{ loading: parentLoading }"
       class="history-content"
       border-radius="medium"
       shadow="never"
@@ -35,7 +34,7 @@
             </template>
           </s-input>
         </s-form-item>
-        <div v-loading="loading" element-loading-spinner="el-lottie-loading" class="history-items">
+        <div v-lottie-loader="{ loading: loading }" class="history-items">
           <template v-if="hasHistory">
             <div
               class="history-item"
@@ -79,7 +78,6 @@
         {{ t('bridgeHistory.restoreHistory') }}
       </s-button>
     </s-card>
-    <lottie-loader size="42" />
   </div>
 </template>
 
@@ -87,11 +85,9 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { RegisteredAccountAsset, Operation, isBridgeOperation, BridgeHistory, CodecString, FPNumber } from '@sora-substrate/util'
-import { api } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import LottieLoader from '@/components/LottieLoader.vue'
 
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import router, { lazyComponent } from '@/router'
@@ -104,7 +100,6 @@ const namespace = 'bridge'
 
 @Component({
   components: {
-    LottieLoader,
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     InfoLine: lazyComponent(Components.InfoLine)
   }

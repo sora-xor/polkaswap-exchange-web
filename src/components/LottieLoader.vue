@@ -1,5 +1,5 @@
 <template>
-  <div ref="lottie" class="lottie-loader" :style="`width: ${size}px; height: ${size}px`">
+  <div class="lottie-loader" :style="`width: ${size}; height: ${size};`">
     <lottie-animation path="json/loader.json" />
   </div>
 </template>
@@ -8,7 +8,6 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 
 import LottieAnimation from 'lottie-vuejs/src/LottieAnimation.vue'
-import { delay } from '@/utils'
 
 @Component({
   components: {
@@ -16,26 +15,7 @@ import { delay } from '@/utils'
   }
 })
 export default class LottieLoader extends Vue {
-  @Prop({ default: '', type: String }) readonly size!: string
-
-  async waitForLoadersMount (): Promise<void> {
-    await delay()
-    const lottieLoader = document.querySelector('.lottie-loader') as any
-    const loaders = document.querySelectorAll('.el-lottie-loading') as any
-    if (lottieLoader === null || loaders === null) {
-      return await this.waitForLoadersMount()
-    }
-    if (loaders.length) {
-      loaders.forEach(loader => {
-        loader.parentElement.appendChild(lottieLoader as Node)
-        loader.parentElement.removeChild(loader)
-      })
-    }
-  }
-
-  async mounted (): Promise<void> {
-    await this.waitForLoadersMount()
-  }
+  @Prop({ default: '42px', type: String }) readonly size!: string
 }
 </script>
 
@@ -49,14 +29,32 @@ $lottie-loader-class: '.lottie-loader';
   bottom: 0;
   left: 0;
   margin: auto;
-  z-index: 9999;
+  z-index: 3003;
 }
-.el-loading-mask {
-  .el-loading-spinner {
-    margin-top: 0;
+#{$lottie-loader-class}--loading {
+  position: relative;
+  &:before {
+    border-radius: inherit;
+    display: block;
+    height: 100%;
+    width: 100%;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3002;
+    background-color: var(--s-color-utility-body);
   }
   #{$lottie-loader-class} {
     display: block;
+  }
+  #{$lottie-loader-class}--loading {
+    &:before {
+      z-index: 3000;
+    }
+    #{$lottie-loader-class} {
+      z-index: 3001;
+    }
   }
 }
 </style>

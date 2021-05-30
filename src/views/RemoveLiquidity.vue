@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading || parentLoading" element-loading-spinner="el-lottie-loading" class="container">
+  <div v-lottie-loader="{ loading: loading || parentLoading }" class="container">
     <generic-page-header has-button-back :title="t('removeLiquidity.title')" :tooltip="t('removeLiquidity.description')" @back="handleBack" />
     <s-form
       class="el-form--actions"
@@ -160,7 +160,6 @@
     </s-form>
 
     <confirm-remove-liquidity :visible.sync="showConfirmDialog" :parent-loading="loading" @confirm="handleConfirmRemoveLiquidity" />
-    <lottie-loader size="42" />
   </div>
 </template>
 
@@ -173,7 +172,6 @@ import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
-import LottieLoader from '@/components/LottieLoader.vue'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
@@ -183,7 +181,6 @@ const namespace = 'removeLiquidity'
 
 @Component({
   components: {
-    LottieLoader,
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     InfoCard: lazyComponent(Components.InfoCard),
     InfoLine: lazyComponent(Components.InfoLine),

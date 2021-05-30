@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="parentLoading" element-loading-spinner="el-lottie-loading" class="container">
+  <div v-lottie-loader="{ loading: parentLoading }" class="container">
     <generic-page-header has-button-back :title="t('addLiquidity.title')" :tooltip="t('pool.description')" @back="handleBack" />
     <s-form
       class="el-form--actions"
@@ -153,7 +153,6 @@
       :slippage-tolerance="slippageTolerance"
       @confirm="handleConfirmAddLiquidity"
     />
-    <lottie-loader size="42" />
   </div>
 </template>
 
@@ -163,7 +162,6 @@ import { Action, Getter } from 'vuex-class'
 import { FPNumber, AccountLiquidity, CodecString } from '@sora-substrate/util'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
-import LottieLoader from '@/components/LottieLoader.vue'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
 import router, { lazyComponent } from '@/router'
@@ -175,7 +173,6 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
 
 @Component({
   components: {
-    LottieLoader,
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SelectToken: lazyComponent(Components.SelectToken),
     InfoLine: lazyComponent(Components.InfoLine),

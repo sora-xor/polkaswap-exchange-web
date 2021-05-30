@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="!isInitRequestCompleted" element-loading-spinner="el-lottie-loading" class="transaction-container">
+  <div v-lottie-loader="{ loading: !isInitRequestCompleted }" class="transaction-container">
     <s-button
       v-if="isInitRequestCompleted"
       class="s-button--view-transactions-history"
@@ -14,8 +14,10 @@
       <template v-if="isInitRequestCompleted">
         <div class="header">
           <div
-            v-loading="isTransactionFromPending || isTransactionToPending"
-            element-loading-spinner="el-lottie-loading"
+            v-lottie-loader="{
+              loading: isTransactionFromPending || isTransactionToPending,
+              size: '83px'
+            }"
             :class="headerIconClasses"
           />
           <h5 class="header-details">
@@ -157,7 +159,6 @@
       {{ t('bridgeTransaction.newTransaction') }}
     </s-button>
     <confirm-bridge-transaction-dialog :visible.sync="showConfirmTransactionDialog" @confirm="confirmTransaction" />
-    <lottie-loader size="83" />
   </div>
 </template>
 
@@ -171,7 +172,6 @@ import BridgeMixin from '@/components/mixins/BridgeMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
-import LottieLoader from '@/components/LottieLoader.vue'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EvmSymbol, MetamaskCancellationCode } from '@/consts'
@@ -182,7 +182,6 @@ const namespace = 'bridge'
 
 @Component({
   components: {
-    LottieLoader,
     InfoLine: lazyComponent(Components.InfoLine),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog)
   }
@@ -676,6 +675,16 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
 .transaction {
   &-container {
     @include bridge-container;
+    .header-icon {
+      &.lottie-loader--loading:before {
+        background-color: transparent;
+      }
+      &:not(.header-icon--success):not(.header-icon--wait):not(.header-icon--error) {
+        .lottie-loader {
+          display: block;
+        }
+      }
+    }
   }
   &-content {
     .el-card__body {

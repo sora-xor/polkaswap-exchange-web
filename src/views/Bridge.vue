@@ -2,8 +2,7 @@
   <div class="bridge s-flex">
     <s-form class="bridge-form" :show-message="false">
       <s-card
-        v-loading="parentLoading"
-        element-loading-spinner="el-lottie-loading"
+        v-lottie-loader="{ loading: parentLoading }"
         class="bridge-content"
         border-radius="medium"
         shadow="never"
@@ -185,7 +184,6 @@
       <confirm-bridge-transaction-dialog :visible.sync="showConfirmTransactionDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmTransaction" />
     </s-form>
     <div v-if="!areNetworksConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div>
-    <lottie-loader size="42" />
   </div>
 </template>
 
@@ -199,7 +197,6 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
-import LottieLoader from '@/components/LottieLoader.vue'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EvmSymbol } from '@/consts'
@@ -222,7 +219,6 @@ const namespace = 'bridge'
 
 @Component({
   components: {
-    LottieLoader,
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     TokenLogo: lazyComponent(Components.TokenLogo),
     InfoLine: lazyComponent(Components.InfoLine),
