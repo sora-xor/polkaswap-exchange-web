@@ -2,8 +2,10 @@ import map from 'lodash/fp/map'
 import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
+import { isWhitelistAsset } from 'polkaswap-token-whitelist'
 import { KnownAssets, KnownSymbols, Asset, RegisteredAccountAsset } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
+import { bridgeApi } from '@/utils/bridge'
 
 import { findAssetInCollection } from '@/utils'
 import { ZeroStringValue } from '@/consts'
@@ -22,7 +24,8 @@ const types = flow(
 function initialState () {
   return {
     assets: [],
-    registeredAssets: []
+    registeredAssets: [],
+    customAssets: []
   }
 }
 
@@ -32,6 +35,15 @@ const getters = {
   // list of all assets
   assets (state) {
     return state.assets
+  },
+  whitelistAssets (state) {
+    return state.assets.filter(asset => isWhitelistAsset(asset))
+  },
+  nonWhitelistAssets (state) {
+    return state.assets.filter(asset => !isWhitelistAsset(asset))
+  },
+  nonWhitelistAccountAssets (state, getters, rootState, rootGetters) {
+    return rootGetters.accountAssets.filter(asset => !isWhitelistAsset(asset))
   },
   tokenXOR (state, getters, rootState, rootGetters) {
     const token = KnownAssets.get(KnownSymbols.XOR)
@@ -46,14 +58,15 @@ const getters = {
     const { assets, registeredAssets } = state
 
     return assets.reduce((result, asset) => {
-      const { externalAddress, externalBalance } = findAssetInCollection(asset, registeredAssets) || {}
+      const { externalAddress, externalBalance, externalDecimals } = findAssetInCollection(asset, registeredAssets) || {}
       const { balance } = accountAssetsAddressTable[asset.address] || {}
 
       const item = {
         ...asset,
         balance,
         externalAddress,
-        externalBalance
+        externalBalance,
+        externalDecimals
       }
 
       return {
@@ -125,16 +138,16 @@ const actions = {
   },
   async updateRegisteredAssets ({ commit, dispatch }) {
     try {
-      const registeredAssets = await api.bridge.getRegisteredAssets()
+      const registeredAssets = await bridgeApi.getRegisteredAssets()
       const preparedRegisteredAssets = await Promise.all(registeredAssets.map(async item => {
         const accountAsset = { ...item, externalBalance: ZeroStringValue }
         try {
           if (!accountAsset.externalAddress) {
-            const externalAddress = await dispatch('web3/getEthTokenAddressByAssetId', { address: item.address }, { root: true })
+            const externalAddress = await dispatch('web3/getEvmTokenAddressByAssetId', { address: item.address }, { root: true })
             accountAsset.externalAddress = externalAddress
           }
           if (accountAsset.externalAddress) {
-            const externalBalance = await dispatch('web3/getBalanceByEthAddress', { address: accountAsset.externalAddress }, { root: true })
+            const externalBalance = await dispatch('web3/getBalanceByEvmAddress', { address: accountAsset.externalAddress }, { root: true })
             accountAsset.externalBalance = externalBalance
           }
         } catch (error) {

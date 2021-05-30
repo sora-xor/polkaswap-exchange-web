@@ -36,7 +36,6 @@ const CreateTokenPairMixin = (namespace: string) => {
     @Action('setSecondTokenValue', { namespace }) setSecondTokenValue
     @Action('resetData', { namespace }) resetData
 
-    @Action('getNetworkFee', { namespace }) getNetworkFee
     @Action('getPrices', { namespace: 'prices' }) getPrices
     @Action('resetPrices', { namespace: 'prices' }) resetPrices
     @Action('getAssets', { namespace: 'assets' }) getAssets
@@ -48,21 +47,23 @@ const CreateTokenPairMixin = (namespace: string) => {
       }
     }
 
-    showSelectFirstTokenDialog = false
     showSelectSecondTokenDialog = false
     insufficientBalanceTokenSymbol = ''
 
     async mounted () {
       await this.withParentLoading(async () =>
         await this.withApi(async () => {
-          const params = router.currentRoute.params
-          this.resetPrices()
-          this.resetData(params?.assetBAddress && params?.assetBAddress)
-          await this.getAssets()
           this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
+          await this.getAssets()
           await this.afterApiConnect()
         })
       )
+    }
+
+    destroyed (): void {
+      const params = router.currentRoute.params
+      this.resetPrices()
+      this.resetData(params?.assetBAddress && params?.assetBAddress)
     }
 
     get formattedMinted (): string {
@@ -107,7 +108,6 @@ const CreateTokenPairMixin = (namespace: string) => {
     }
 
     async handleMaxValue (token: any, setValue: (v: any) => void): Promise<void> {
-      await this.getNetworkFee()
       setValue(getMaxValue(token, this.fee))
       this.updatePrices()
     }

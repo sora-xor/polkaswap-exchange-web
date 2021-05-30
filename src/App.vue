@@ -123,19 +123,13 @@
       </aside>
       <div class="app-body">
         <div class="app-content">
-          <router-view :parent-loading="loading" />
+          <router-view :parent-loading="loading || !nodeIsConnected" />
           <p class="app-disclaimer" :class="isAboutPage ? 'about-disclaimer' : ''" v-html="t('disclaimer')" />
         </div>
-        <footer v-if="isAboutPage" class="app-footer about-footer">
+        <footer class="app-footer" :class="isAboutPage ? 'about-footer' : ''">
           <div class="sora-logo">
             <span class="sora-logo__title">{{ t('poweredBy') }}</span>
-            <div class="sora-logo__image"></div>
-          </div>
-        </footer>
-        <footer v-else class="app-footer">
-          <div class="sora-logo">
-            <span class="sora-logo__title">{{ t('poweredBy') }}</span>
-            <div class="sora-logo__image"></div>
+            <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener" />
           </div>
         </footer>
       </div>
@@ -148,18 +142,20 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
-import { connection, initWallet, WALLET_CONSTS, WalletAvatar, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
-import { KnownSymbols } from '@sora-substrate/util'
+import { Action, Getter, State } from 'vuex-class'
+import { WALLET_CONSTS, WalletAvatar } from '@soramitsu/soraneo-wallet-web'
+import { KnownSymbols, FPNumber } from '@sora-substrate/util'
 
-import { WalletPermissions, PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize } from '@/consts'
+import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize } from '@/consts'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
 
-import router, { lazyComponent } from '@/router'
 import axios from '@/api'
-import { formatAddress } from '@/utils'
+import router, { lazyComponent } from '@/router'
+import { formatAddress, disconnectWallet } from '@/utils'
+import { Node, ConnectToNodeOptions } from '@/types/nodes'
 
 const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
 const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
@@ -174,7 +170,7 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class App extends Mixins(TransactionMixin, LoadingMixin) {
+export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErrorMixin) {
   readonly nodesFeatureEnabled = true
 
   readonly SidebarMenuGroups = SidebarMenuGroups
@@ -190,54 +186,67 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   ]
 
   showHelpDialog = false
-  showSelectNodeDialog = false
+
+  @State(state => state.settings.node) node!: Node
+  @State(state => state.settings.faucetUrl) faucetUrl!: string
+  @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
 
   @Getter firstReadyTransaction!: any
   @Getter isLoggedIn!: boolean
   @Getter account!: any
   @Getter currentRoute!: WALLET_CONSTS.RouteNames
-  @Getter faucetUrl!: string
-  @Getter node!: any
   @Getter chainAndNetworkText!: string
+  @Getter nodeIsConnected!: boolean
 
   @Action navigate // Wallet
   @Action trackActiveTransactions
   @Action setSoraNetwork
-  @Action setDefaultNodes
-  @Action connectToInitialNode
-  @Action setFaucetUrl
-  @Action getNetworkChainGenesisHash
-  @Action('getAssets', { namespace: 'assets' }) getAssets
-  @Action('setEthereumSmartContracts', { namespace: 'web3' }) setEthereumSmartContracts
-  @Action('setDefaultEthNetwork', { namespace: 'web3' }) setDefaultEthNetwork
+  @Action setDefaultNodes!: (nodes: any) => Promise<void>
+  @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
+  @Action setFaucetUrl!: (url: string) => void
+  @Action setSelectNodeDialogVisibility!: (flag: boolean) => void
+  @Action('setEvmSmartContracts', { namespace: 'web3' }) setEvmSmartContracts
+  @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks
+  @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts
+
+  @Watch('firstReadyTransaction', { deep: true })
+  private handleNotifyAboutTransaction (value): void {
+    this.handleChangeTransaction(value)
+  }
 
   async created () {
+    const localeLanguage = navigator.language
+    const thousandSymbol = Number(1000).toLocaleString(localeLanguage).substring(1, 2)
+    if (thousandSymbol !== '0') {
+      FPNumber.DELIMITERS_CONFIG.thousand = Number(1234).toLocaleString(localeLanguage).substring(1, 2)
+    }
+    FPNumber.DELIMITERS_CONFIG.decimal = Number(1.2).toLocaleString(localeLanguage).substring(1, 2)
+
     await this.withLoading(async () => {
       const { data } = await axios.get('/env.json')
 
       await this.setSoraNetwork(data)
       await this.setDefaultNodes(data?.DEFAULT_NETWORKS)
-      await this.setDefaultEthNetwork(data.ETH_NETWORK)
-      await this.setEthereumSmartContracts(data.BRIDGE)
+      await this.setSubNetworks(data.SUB_NETWORKS)
+      await this.setSmartContracts(data.SUB_NETWORKS)
 
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL)
       }
 
       // connection to node
-      await this.getNetworkChainGenesisHash()
-      await this.connectToInitialNode()
-
-      await initWallet({ permissions: WalletPermissions })
-      await this.getAssets()
+      await this.runAppConnectionToNode()
     })
 
     this.trackActiveTransactions()
   }
 
-  @Watch('firstReadyTransaction', { deep: true })
-  private handleNotifyAboutTransaction (value): void {
-    this.handleChangeTransaction(value)
+  get showSelectNodeDialog (): boolean {
+    return this.selectNodeDialogVisibility
+  }
+
+  set showSelectNodeDialog (flag: boolean) {
+    this.setSelectNodeDialogVisibility(flag)
   }
 
   get nodeLogo (): any {
@@ -292,14 +301,19 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin) {
   }
 
   openSelectNodeDialog (): void {
-    this.showSelectNodeDialog = true
+    this.setSelectNodeDialogVisibility(true)
   }
 
   destroyed (): void {
-    if (updateAccountAssetsSubscription) {
-      updateAccountAssetsSubscription.unsubscribe()
+    disconnectWallet()
+  }
+
+  private async runAppConnectionToNode () {
+    try {
+      await this.connectToNode({ onError: this.handleNodeError })
+    } catch (error) {
+      // we handled error using callback, do nothing
     }
-    connection.close()
   }
 }
 </script>
@@ -465,6 +479,13 @@ html {
     }
   }
 }
+
+.el-message-box {
+  &__message {
+    white-space: pre-line;
+  }
+}
+
 .container {
   @include container-styles;
   .el-loading-mask {

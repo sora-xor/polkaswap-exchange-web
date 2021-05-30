@@ -10,12 +10,12 @@
       />
     </generic-page-header>
     <s-form-item prop="name">
-      <s-input class="node-info-input" :placeholder="t('nameText')" v-model="nodeModel.name" :disabled="existing" />
+      <s-input class="node-info-input" :placeholder="t('nameText')" v-model="nodeModel.name" :maxlength="128" :disabled="existing" />
     </s-form-item>
     <s-form-item prop="address">
       <s-input class="node-info-input" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="existing" />
     </s-form-item>
-    <s-button type="primary" native-type="submit" class="node-info-button" :disabled="disabled" :loading="loading">{{ buttonText }}</s-button>
+    <s-button type="primary" native-type="submit" class="node-info-button" :disabled="connected" :loading="loading">{{ buttonText }}</s-button>
     <external-link v-if="!existing" :href="tutorialLink" :title="t('selectNodeDialog.howToSetupOwnNode')" />
   </s-form>
 </template>
@@ -62,7 +62,6 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   @Prop({ default: () => {}, type: Function }) removeNode!: (node: any) => void
   @Prop({ default: () => ({}), type: Object }) node!: any
   @Prop({ default: false, type: Boolean }) existing!: boolean
-  @Prop({ default: false, type: Boolean }) disabled!: boolean
   @Prop({ default: false, type: Boolean }) loading!: boolean
   @Prop({ default: false, type: Boolean }) removable!: boolean
   @Prop({ default: false, type: Boolean }) connected!: boolean

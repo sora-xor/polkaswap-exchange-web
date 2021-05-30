@@ -41,12 +41,12 @@ const handleMetamaskError = (error: any): string => {
 
 @Component
 export default class WalletConnectMixin extends Mixins(TranslationMixin) {
-  @State(state => state.web3.ethAddress) ethAddress!: string
+  @State(state => state.web3.evmAddress) evmAddress!: string
 
   @Getter('isLoggedIn') isSoraAccountConnected!: boolean
   @Getter('isExternalAccountConnected', { namespace: 'web3' }) isExternalAccountConnected!: boolean
 
-  @Action('setEthNetwork', { namespace: 'web3' }) setEthNetwork!: (network?: string) => Promise<void>
+  @Action('setEvmNetworkType', { namespace: 'web3' }) setEvmNetworkType!: (network?: string) => Promise<void>
   @Action('connectExternalAccount', { namespace: 'web3' }) connectExternalAccount!: (options) => Promise<void>
   @Action('switchExternalAccount', { namespace: 'web3' }) switchExternalAccount!: (options) => Promise<void>
   @Action('disconnectExternalAccount', { namespace: 'web3' }) disconnectExternalAccount!: () => Promise<void>
@@ -68,9 +68,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     // For now it's only Metamask
     const provider = Provider.Metamask
 
-    if (this.isExternalWalletConnecting) {
-      return
-    }
     this.isExternalWalletConnecting = true
     try {
       await this.connectExternalAccount({ provider })
@@ -103,7 +100,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   }
 
   async checkConnectionToExternalAccount (func: Function): Promise<void> {
-    const connected = await web3Util.checkAccountIsConnected(this.ethAddress)
+    const connected = await web3Util.checkAccountIsConnected(this.evmAddress)
 
     if (!connected) {
       await this.connectExternalWallet()
@@ -113,7 +110,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   }
 
   async syncExternalAccountWithAppState () {
-    const connected = await web3Util.checkAccountIsConnected(this.ethAddress)
+    const connected = await web3Util.checkAccountIsConnected(this.evmAddress)
 
     if (connected) return
 

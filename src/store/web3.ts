@@ -4,9 +4,10 @@ import flatMap from 'lodash/fp/flatMap'
 import concat from 'lodash/fp/concat'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
-import { FPNumber } from '@sora-substrate/util'
+import { FPNumber, BridgeNetworks } from '@sora-substrate/util'
 
-import web3Util, { ABI, Contract, EthNetworkName, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
+import { bridgeApi } from '@/utils/bridge'
+import web3Util, { ABI, Contract, EvmNetworkTypeName, KnownBridgeAsset, ContractNetwork, SubNetwork } from '@/utils/web3-util'
 import { ZeroStringValue } from '@/consts'
 import { isEthereumAddress } from '@/utils'
 
@@ -15,38 +16,53 @@ const types = flow(
   concat([
     'RESET',
     'SET_ETHEREUM_SMART_CONTRACTS',
-    'SET_ETHEREUM_BALANCE',
-    'SET_DEFAULT_ETH_NETWORK',
-    'SET_SORA_NETWORK'
+    'SET_ENERGY_SMART_CONTRACTS',
+    'SET_EVM_BALANCE',
+    'SET_DEFAULT_NETWORK_TYPE',
+    'SET_SORA_NETWORK',
+    'SET_SUB_NETWORKS',
+    'SET_ENV_NETWORK'
   ]),
   map(x => [x, x]),
   fromPairs
 )([
-  'CONNECT_ETH_WALLET',
-  'SWITCH_ETH_WALLET',
-  'SET_ETH_NETWORK',
-  'DISCONNECT_ETH_WALLET',
+  'CONNECT_EVM_WALLET',
+  'SWITCH_EVM_WALLET',
+  'SET_NETWORK_TYPE',
+  'DISCONNECT_EVM_WALLET',
   'GET_BALANCE',
-  'GET_ETH_TOKEN_ADDRESS',
+  'GET_EVM_TOKEN_ADDRESS',
   'GET_ALLOWANCE'
 ])
 
 function initialState () {
   return {
     soraNetwork: '',
-    ethAddress: web3Util.getEthUserAddress(),
-    ethBalance: ZeroStringValue,
-    ethNetwork: web3Util.getEthNetworkFromStorage(),
-    defaultEthNetwork: '',
+    evmAddress: web3Util.getEvmUserAddress(),
+    evmBalance: ZeroStringValue,
+    networkType: web3Util.getEvmNetworkTypeFromStorage(),
+    defaultNetworkType: BridgeNetworks.ETH_NETWORK_ID,
+    subNetworks: [],
+    evmNetwork: 0,
     contractAddress: {
-      XOR: '',
-      VAL: '',
-      OTHER: ''
+      [BridgeNetworks.ETH_NETWORK_ID]: {
+        XOR: '',
+        VAL: '',
+        OTHER: ''
+      },
+      [BridgeNetworks.ENERGY_NETWORK_ID]: {
+        OTHER: ''
+      }
     },
     smartContracts: {
-      XOR: '',
-      VAL: '',
-      OTHER: ''
+      [BridgeNetworks.ETH_NETWORK_ID]: {
+        XOR: '',
+        VAL: '',
+        OTHER: ''
+      },
+      [BridgeNetworks.ENERGY_NETWORK_ID]: {
+        OTHER: ''
+      }
     }
   }
 }
@@ -54,51 +70,45 @@ function initialState () {
 const state = initialState()
 
 const getters = {
-  contractXOR (state) {
-    return state.smartContracts.XOR
+  contractAbi: (state) => (asset: KnownBridgeAsset) => {
+    return state.smartContracts[state.evmNetwork][asset]
   },
-  contractVAL (state) {
-    return state.smartContracts.VAL
-  },
-  contractOTHER (state) {
-    return state.smartContracts.OTHER
-  },
-  addressXOR (state) {
-    return state.contractAddress.XOR
-  },
-  addressVAL (state) {
-    return state.contractAddress.VAL
-  },
-  addressOTHER (state) {
-    return state.contractAddress.OTHER
+  contractAddress: (state) => (asset: KnownBridgeAsset) => {
+    return state.contractAddress[state.evmNetwork][asset]
   },
   isExternalAccountConnected (state) {
-    return !!state.ethAddress && state.ethAddress !== 'undefined'
+    return !!state.evmAddress && state.evmAddress !== 'undefined'
   },
-  ethAddress (state) {
-    return state.ethAddress
+  evmAddress (state) {
+    return state.evmAddress
   },
-  ethBalance (state) {
-    return state.ethBalance
+  evmBalance (state) {
+    return state.evmBalance
   },
-  ethNetwork (state) {
-    return state.ethNetwork
+  networkType (state) {
+    return state.networkType
   },
-  defaultEthNetwork (state) {
-    return state.defaultEthNetwork
+  defaultNetworkType (state) {
+    return state.defaultNetworkType
+  },
+  subNetworks (state) {
+    return state.subNetworks
+  },
+  evmNetwork (state) {
+    return state.evmNetwork
   },
   soraNetwork (state) {
     return state.soraNetwork
   },
-  isValidEthNetwork (state) {
-    return state.ethNetwork === state.defaultEthNetwork
+  isValidNetworkType (state) {
+    return state.networkType === state.defaultNetworkType
   }
 }
 
 const mutations = {
   [types.RESET] (state) {
     // we shouldn't reset networks, setted from env & contracts
-    const networkSettingsKeys = ['soraNetwork', 'defaultEthNetwork', 'contractAddress', 'smartContracts']
+    const networkSettingsKeys = ['soraNetwork', 'defaultNetworkType', 'contractAddress', 'subNetworks', 'smartContracts']
     const s = initialState()
 
     Object.keys(s).filter(key => !networkSettingsKeys.includes(key)).forEach(key => {
@@ -106,62 +116,88 @@ const mutations = {
     })
   },
 
-  [types.CONNECT_ETH_WALLET_REQUEST] () {},
-  [types.CONNECT_ETH_WALLET_SUCCESS] (state, address) {
-    state.ethAddress = address
+  [types.CONNECT_EVM_WALLET_REQUEST] () {},
+  [types.CONNECT_EVM_WALLET_SUCCESS] (state, address) {
+    state.evmAddress = address
   },
-  [types.CONNECT_ETH_WALLET_FAILURE] () {},
+  [types.CONNECT_EVM_WALLET_FAILURE] () {},
 
-  [types.SWITCH_ETH_WALLET_REQUEST] () {},
-  [types.SWITCH_ETH_WALLET_SUCCESS] (state, address) {
-    state.ethAddress = address
+  [types.SWITCH_EVM_WALLET_REQUEST] () {},
+  [types.SWITCH_EVM_WALLET_SUCCESS] (state, address) {
+    state.evmAddress = address
   },
-  [types.SWITCH_ETH_WALLET_FAILURE] () {},
+  [types.SWITCH_EVM_WALLET_FAILURE] () {},
 
-  [types.SET_ETH_NETWORK_REQUEST] () {},
-  [types.SET_ETH_NETWORK_SUCCESS] (state, network) {
-    state.ethNetwork = network
+  [types.SET_NETWORK_TYPE_REQUEST] () {},
+  [types.SET_NETWORK_TYPE_SUCCESS] (state, networkType) {
+    state.networkType = networkType
   },
-  [types.SET_ETH_NETWORK_FAILURE] () {},
+  [types.SET_NETWORK_TYPE_FAILURE] () {},
 
-  [types.SET_DEFAULT_ETH_NETWORK] (state, network) {
-    state.defaultEthNetwork = network
+  [types.SET_DEFAULT_NETWORK_TYPE] (state, networkType) {
+    state.defaultNetworkType = networkType
+  },
+
+  [types.SET_SUB_NETWORKS] (state, networks) {
+    state.subNetworks = networks
+  },
+
+  [types.SET_ENV_NETWORK] (state, network) {
+    state.evmNetwork = network
   },
 
   [types.SET_SORA_NETWORK] (state, network) {
     state.soraNetwork = network
   },
-
-  [types.DISCONNECT_ETH_WALLET_REQUEST] () {},
-  [types.DISCONNECT_ETH_WALLET_SUCCESS] (state) {
-    state.ethAddress = ''
+  [types.SET_NETWORK_TYPE_REQUEST] () {},
+  [types.SET_NETWORK_TYPE_SUCCESS] (state, network) {
+    state.networkType = network
   },
-  [types.DISCONNECT_ETH_WALLET_FAILURE] () {},
+  [types.SET_NETWORK_TYPE_FAILURE] () {},
 
-  [types.SET_ETHEREUM_SMART_CONTRACTS] (state, params) {
-    Vue.set(state, 'smartContracts', {
-      XOR: params.contracts.XOR,
-      VAL: params.contracts.VAL,
-      OTHER: params.contracts.OTHER
-    })
-    Vue.set(state, 'contractAddress', {
-      XOR: params.address.XOR,
-      VAL: params.address.VAL,
-      OTHER: params.address.OTHER
-    })
+  [types.SET_SORA_NETWORK] (state, network) {
+    state.soraNetwork = network
   },
 
-  [types.SET_ETHEREUM_BALANCE] (state, balance) {
-    state.ethBalance = balance
+  [types.DISCONNECT_EVM_WALLET_REQUEST] () {},
+  [types.DISCONNECT_EVM_WALLET_SUCCESS] (state) {
+    state.evmAddress = ''
+  },
+  [types.DISCONNECT_EVM_WALLET_FAILURE] () {},
+
+  [types.SET_ETHEREUM_SMART_CONTRACTS] (state, { contracts, address }) {
+    Vue.set(state.smartContracts, BridgeNetworks.ETH_NETWORK_ID, {
+      XOR: contracts.XOR,
+      VAL: contracts.VAL,
+      OTHER: contracts.OTHER
+    })
+    Vue.set(state.contractAddress, BridgeNetworks.ETH_NETWORK_ID, {
+      XOR: address.XOR,
+      VAL: address.VAL,
+      OTHER: address.OTHER
+    })
+  },
+
+  [types.SET_ENERGY_SMART_CONTRACTS] (state, { contracts, address }) {
+    Vue.set(state.smartContracts, BridgeNetworks.ENERGY_NETWORK_ID, {
+      OTHER: contracts.OTHER
+    })
+    Vue.set(state.contractAddress, BridgeNetworks.ENERGY_NETWORK_ID, {
+      OTHER: address.OTHER
+    })
+  },
+
+  [types.SET_EVM_BALANCE] (state, balance) {
+    state.evmBalance = balance
   },
 
   [types.GET_BALANCE_REQUEST] (state) {},
   [types.GET_BALANCE_SUCCESS] (state) {},
   [types.GET_BALANCE_FAILURE] (state) {},
 
-  [types.GET_ETH_TOKEN_ADDRESS_REQUEST] (state) {},
-  [types.GET_ETH_TOKEN_ADDRESS_SUCCESS] (state) {},
-  [types.GET_ETH_TOKEN_ADDRESS_FAILURE] (state) {},
+  [types.GET_EVM_TOKEN_ADDRESS_REQUEST] (state) {},
+  [types.GET_EVM_TOKEN_ADDRESS_SUCCESS] (state) {},
+  [types.GET_EVM_TOKEN_ADDRESS_FAILURE] (state) {},
 
   [types.GET_ALLOWANCE_REQUEST] (state) {},
   [types.GET_ALLOWANCE_SUCCESS] (state) {},
@@ -170,31 +206,31 @@ const mutations = {
 
 const actions = {
   async connectExternalAccount ({ commit, getters, dispatch }, { provider }) {
-    commit(types.CONNECT_ETH_WALLET_REQUEST)
+    commit(types.CONNECT_EVM_WALLET_REQUEST)
     try {
       const address = await web3Util.onConnect({ provider })
-      web3Util.storeEthUserAddress(address)
-      commit(types.CONNECT_ETH_WALLET_SUCCESS, address)
+      web3Util.storeEvmUserAddress(address)
+      commit(types.CONNECT_EVM_WALLET_SUCCESS, address)
 
       // get ethereum balance
-      await dispatch('getEthBalance')
+      await dispatch('getEvmBalance')
     } catch (error) {
-      commit(types.CONNECT_ETH_WALLET_FAILURE)
+      commit(types.CONNECT_EVM_WALLET_FAILURE)
       throw error
     }
   },
 
   async switchExternalAccount ({ commit, dispatch }, { address = '' } = {}) {
-    commit(types.SWITCH_ETH_WALLET_REQUEST)
+    commit(types.SWITCH_EVM_WALLET_REQUEST)
     try {
-      web3Util.removeEthUserAddress()
-      web3Util.storeEthUserAddress(address)
-      commit(types.SWITCH_ETH_WALLET_SUCCESS, address)
+      web3Util.removeEvmUserAddress()
+      web3Util.storeEvmUserAddress(address)
+      commit(types.SWITCH_EVM_WALLET_SUCCESS, address)
 
       // get ethereum balance
-      await dispatch('getEthBalance')
+      await dispatch('getEvmBalance')
     } catch (error) {
-      commit(types.SWITCH_ETH_WALLET_FAILURE)
+      commit(types.SWITCH_EVM_WALLET_FAILURE)
       throw error
     }
   },
@@ -203,50 +239,107 @@ const actions = {
     commit(types.SET_SORA_NETWORK, network)
   },
 
-  async setDefaultEthNetwork ({ commit }, network) {
-    commit(types.SET_DEFAULT_ETH_NETWORK, network)
+  async setSubNetworks ({ commit }, subNetworks: Array<SubNetwork>) {
+    commit(types.SET_SUB_NETWORKS, subNetworks)
   },
 
-  async setEthNetwork ({ commit }, network) {
-    commit(types.SET_ETH_NETWORK_REQUEST)
+  async setEvmNetwork ({ commit, dispatch }, networkId: BridgeNetworks) {
+    bridgeApi.externalNetwork = networkId
+    await dispatch('setDefaultNetworkType', networkId)
+    await dispatch('assets/updateRegisteredAssets', {}, { root: true })
+    commit(types.SET_ENV_NETWORK, networkId)
+  },
+
+  async setDefaultNetworkType ({ commit, getters }, networkId: BridgeNetworks) {
+    const network: SubNetwork | undefined = getters.subNetworks.find(
+      (network: SubNetwork) => network.id === networkId
+    )
+    commit(types.SET_DEFAULT_NETWORK_TYPE, network?.defaultType)
+  },
+
+  async setEvmNetworkType ({ commit }, network) {
+    commit(types.SET_NETWORK_TYPE_REQUEST)
     try {
-      const networkName = network
-        ? EthNetworkName[network]
-        : await web3Util.getEthNetwork()
-      web3Util.storeEthNetwork(networkName)
-      commit(types.SET_ETH_NETWORK_SUCCESS, networkName)
+      const networkType = network
+        ? EvmNetworkTypeName[network]
+        : await web3Util.getEvmNetworkType()
+      web3Util.storeEvmNetworkType(networkType)
+      commit(types.SET_NETWORK_TYPE_SUCCESS, networkType)
     } catch (error) {
-      commit(types.SET_ETH_NETWORK_FAILURE)
+      commit(types.SET_NETWORK_TYPE_FAILURE)
       throw error
     }
   },
 
   async disconnectExternalAccount ({ commit }) {
-    commit(types.DISCONNECT_ETH_WALLET_REQUEST)
+    commit(types.DISCONNECT_EVM_WALLET_REQUEST)
     try {
-      web3Util.removeEthUserAddress()
-      commit(types.DISCONNECT_ETH_WALLET_SUCCESS)
+      web3Util.removeEvmUserAddress()
+      commit(types.DISCONNECT_EVM_WALLET_SUCCESS)
       commit(types.RESET)
     } catch (error) {
-      commit(types.DISCONNECT_ETH_WALLET_FAILURE)
+      commit(types.DISCONNECT_EVM_WALLET_FAILURE)
       throw error
     }
   },
 
-  async setEthereumSmartContracts ({ commit }, { ETHEREUM }) {
-    const INTERNAL = await web3Util.readSmartContract(Contract.Internal, 'Master.json')
-    const BRIDGE = await web3Util.readSmartContract(Contract.Other, 'Bridge.json')
-    const ERC20 = await web3Util.readSmartContract(Contract.Other, 'ERC20.json')
+  async setSmartContracts ({ commit, dispatch }, subNetworks: Array<SubNetwork>) {
+    for (const network of subNetworks) {
+      if (network.id === BridgeNetworks.ETH_NETWORK_ID) {
+        dispatch('setEvmSmartContracts', network)
+      }
+      if (network.id === BridgeNetworks.ENERGY_NETWORK_ID) {
+        dispatch('setEnergySmartContracts', network)
+      }
+    }
+  },
+
+  async setEvmSmartContracts ({ commit }, network: SubNetwork) {
+    const INTERNAL = await web3Util.readSmartContract(
+      ContractNetwork.Ethereum,
+      `${Contract.Internal}/Master.json`
+    )
+    const BRIDGE = await web3Util.readSmartContract(
+      ContractNetwork.Ethereum,
+      `${Contract.Other}/Bridge.json`
+    )
+    const ERC20 = await web3Util.readSmartContract(
+      ContractNetwork.Ethereum,
+      `${Contract.Other}/ERC20.json`
+    )
     commit(types.SET_ETHEREUM_SMART_CONTRACTS, {
-      address: ETHEREUM,
-      contracts: { VAL: INTERNAL, OTHER: { BRIDGE, ERC20 }, XOR: INTERNAL }
+      address: {
+        XOR: network.CONTRACTS.XOR.MASTER,
+        VAL: network.CONTRACTS.VAL.MASTER,
+        OTHER: network.CONTRACTS.OTHER.MASTER
+      },
+      contracts: {
+        XOR: INTERNAL,
+        VAL: INTERNAL,
+        OTHER: { BRIDGE, ERC20 }
+      }
     })
   },
 
-  async getEthBalance ({ commit, getters }) {
+  async setEnergySmartContracts ({ commit }, network: SubNetwork) {
+    const BRIDGE = await web3Util.readSmartContract(
+      ContractNetwork.Other,
+      'BridgeEVM.json'
+    )
+    const ERC20 = await web3Util.readSmartContract(
+      ContractNetwork.Other,
+      'ERC20.json'
+    )
+    commit(types.SET_ENERGY_SMART_CONTRACTS, {
+      address: { OTHER: network.CONTRACTS.OTHER.MASTER },
+      contracts: { OTHER: { BRIDGE, ERC20 } }
+    })
+  },
+
+  async getEvmBalance ({ commit, getters }) {
     let value = ZeroStringValue
     try {
-      const address = getters.ethAddress
+      const address = getters.evmAddress
 
       if (address) {
         const web3 = await web3Util.getInstance()
@@ -258,22 +351,22 @@ const actions = {
       console.error(error)
     }
 
-    commit(types.SET_ETHEREUM_BALANCE, value)
+    commit(types.SET_EVM_BALANCE, value)
     return value
   },
 
-  async getBalanceByEthAddress ({ commit, getters, dispatch }, { address }) {
+  async getBalanceByEvmAddress ({ commit, getters, dispatch }, { address }) {
     let value = ZeroStringValue
     commit(types.GET_BALANCE_REQUEST)
     try {
       const web3 = await web3Util.getInstance()
-      const isEther = isEthereumAddress(address)
-      if (isEther) {
-        value = await dispatch('getEthBalance')
+      const isNativeEvmToken = isEthereumAddress(address)
+      if (isNativeEvmToken) {
+        value = await dispatch('getEvmBalance')
       } else {
         const tokenInstance = new web3.eth.Contract(ABI.balance as any)
         tokenInstance.options.address = address
-        const account = getters.ethAddress
+        const account = getters.evmAddress
         const methodArgs = [account]
         const balanceOfMethod = tokenInstance.methods.balanceOf(...methodArgs)
         const decimalsMethod = tokenInstance.methods.decimals()
@@ -290,37 +383,37 @@ const actions = {
 
     return value
   },
-  async getEthTokenAddressByAssetId ({ commit, getters }, { address }) {
-    commit(types.GET_ETH_TOKEN_ADDRESS_REQUEST)
+  async getEvmTokenAddressByAssetId ({ commit, getters }, { address }) {
+    commit(types.GET_EVM_TOKEN_ADDRESS_REQUEST)
     try {
       if (!address) {
-        commit(types.GET_ETH_TOKEN_ADDRESS_SUCCESS)
+        commit(types.GET_EVM_TOKEN_ADDRESS_SUCCESS)
         return ''
       }
       const web3 = await web3Util.getInstance()
-      const contract = getters[`contract${KnownBridgeAsset.Other}`]
-      const contractInstance = new web3.eth.Contract(contract[OtherContractType.Bridge].abi)
-      const contractAddress = getters[`address${KnownBridgeAsset.Other}`]
+      const contractAbi = getters.contractAbi(KnownBridgeAsset.Other).abi
+      const contractInstance = new web3.eth.Contract(contractAbi)
+      const contractAddress = getters.contractAddress(KnownBridgeAsset.Other)
       contractInstance.options.address = contractAddress.MASTER
       const methodArgs = [address]
       const contractMethod = contractInstance.methods._sidechainTokens(...methodArgs)
       const externalAddress = await contractMethod.call()
-      commit(types.GET_ETH_TOKEN_ADDRESS_SUCCESS)
+      commit(types.GET_EVM_TOKEN_ADDRESS_SUCCESS)
       return externalAddress
     } catch (error) {
       console.error(error)
-      commit(types.GET_ETH_TOKEN_ADDRESS_FAILURE)
+      commit(types.GET_EVM_TOKEN_ADDRESS_FAILURE)
       return ''
     }
   },
-  async getAllowanceByEthAddress ({ commit, getters }, { address }) {
+  async getAllowanceByEvmAddress ({ commit, getters }, { address }) {
     commit(types.GET_ALLOWANCE_REQUEST)
     try {
-      const contractAddress = getters[`address${KnownBridgeAsset.Other}`]
+      const contractAddress = getters.contractAddress(KnownBridgeAsset.Other)
       const web3 = await web3Util.getInstance()
       const tokenInstance = new web3.eth.Contract(ABI.allowance as any)
       tokenInstance.options.address = address
-      const account = getters.ethAddress
+      const account = getters.evmAddress
       const methodArgs = [account, contractAddress.MASTER]
       const contractMethod = tokenInstance.methods.allowance(...methodArgs)
       const allowance = await contractMethod.call()

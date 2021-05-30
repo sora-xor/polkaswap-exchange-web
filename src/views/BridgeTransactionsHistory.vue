@@ -46,10 +46,10 @@
               <div class="history-item-info">
                 <div class="history-item-title p4">
                   {{ `${formatAmount(item)} ${formatAssetSymbol(item.symbol)}` }}
-                  <i :class="`s-icon--network s-icon-${isOutgoingType(item.type) ? 'sora' : 'eth'}`" />
+                  <i :class="`s-icon--network s-icon-${isOutgoingType(item.type) ? 'sora' : getEvmIcon(item.externalNetwork)}`" />
                   <span class="history-item-title-separator">{{ t('bridgeTransaction.for') }}</span>
                   {{ `${formatAmount(item)} ${formatAssetSymbol(item.symbol)}` }}
-                  <i :class="`s-icon--network s-icon-${!isOutgoingType(item.type) ? 'sora' : 'eth'}`" />
+                  <i :class="`s-icon--network s-icon-${!isOutgoingType(item.type) ? 'sora' : getEvmIcon(item.externalNetwork)}`" />
                 </div>
                 <div class="history-item-date">{{ formatDate(item) }}</div>
               </div>
@@ -93,10 +93,12 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import LottieLoader from '@/components/LottieLoader.vue'
 
+import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 import { formatAssetSymbol, formatDateItem } from '@/utils'
 import { STATES } from '@/utils/fsm'
+import { bridgeApi } from '@/utils/bridge'
 
 const namespace = 'bridge'
 
@@ -107,29 +109,29 @@ const namespace = 'bridge'
     InfoLine: lazyComponent(Components.InfoLine)
   }
 })
-export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, LoadingMixin) {
+export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, LoadingMixin, NetworkFormatterMixin) {
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter('history', { namespace }) history!: Array<BridgeHistory> | null
   @Getter('restored', { namespace }) restored!: boolean
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: string
-  @Getter('ethereumNetworkFee', { namespace }) ethereumNetworkFee!: CodecString
+  @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
 
   @Action('getHistory', { namespace }) getHistory
   @Action('getRestoredFlag', { namespace }) getRestoredFlag
   @Action('getRestoredHistory', { namespace }) getRestoredHistory
   @Action('getNetworkFee', { namespace }) getNetworkFee
-  @Action('getEthNetworkFee', { namespace }) getEthNetworkFee
+  @Action('getEvmNetworkFee', { namespace }) getEvmNetworkFee
   @Action('clearHistory', { namespace }) clearHistory
-  @Action('setSoraToEthereum', { namespace }) setSoraToEthereum
+  @Action('setSoraToEvm', { namespace }) setSoraToEvm
   @Action('setTransactionConfirm', { namespace }) setTransactionConfirm
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
   @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash
-  @Action('setEthereumTransactionHash', { namespace }) setEthereumTransactionHash
+  @Action('setEvmTransactionHash', { namespace }) setEvmTransactionHash
   @Action('setSoraTransactionDate', { namespace }) setSoraTransactionDate
-  @Action('setEthereumTransactionDate', { namespace }) setEthereumTransactionDate
+  @Action('setEvmTransactionDate', { namespace }) setEvmTransactionDate
   @Action('setSoraNetworkFee', { namespace }) setSoraNetworkFee
-  @Action('setEthereumNetworkFee', { namespace }) setEthereumNetworkFee
+  @Action('setEvmNetworkFee', { namespace }) setEvmNetworkFee
   @Action('setCurrentTransactionState', { namespace }) setCurrentTransactionState
   @Action('setTransactionStep', { namespace }) setTransactionStep
   @Action('setHistoryItem', { namespace }) setHistoryItem
@@ -179,7 +181,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   }
 
   formatAmount (historyItem: any): string {
-    return historyItem.amount ? new FPNumber(historyItem.amount, this.registeredAssets?.find(asset => asset.address === historyItem.address)?.decimals).format() : ''
+    return historyItem.amount ? new FPNumber(historyItem.amount, this.registeredAssets?.find(asset => asset.address === historyItem.address)?.decimals).toLocaleString() : ''
   }
 
   formatDate (response: any): string {
@@ -191,11 +193,11 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   historyStatusIconClasses (type: Operation, state: STATES): string {
     const iconClass = 'history-item-icon'
     const classes = [iconClass]
-    if ([STATES.SORA_REJECTED, STATES.ETHEREUM_REJECTED].includes(state)) {
+    if ([STATES.SORA_REJECTED, STATES.EVM_REJECTED].includes(state)) {
       classes.push(`${iconClass}--error`)
       return classes.join(' ')
     }
-    if (!(this.isOutgoingType(type) ? state === STATES.ETHEREUM_COMMITED : state === STATES.SORA_COMMITED)) {
+    if (!(this.isOutgoingType(type) ? state === STATES.EVM_COMMITED : state === STATES.SORA_COMMITED)) {
       classes.push(`${iconClass}--pending`)
       return classes.join(' ')
     }
@@ -211,34 +213,34 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 
   async showHistory (id: string): Promise<void> {
     await this.withLoading(async () => {
-      const tx = api.bridge.getHistory(id)
+      const tx = bridgeApi.getHistory(id)
       if (!tx) {
         router.push({ name: PageNames.BridgeTransaction })
         return
       }
       await this.setTransactionConfirm(true)
-      await this.setSoraToEthereum(this.isOutgoingType(tx.type))
+      await this.setSoraToEvm(this.isOutgoingType(tx.type))
       await this.setAssetAddress(tx.assetAddress)
       await this.setAmount(tx.amount)
       await this.setSoraTransactionHash(tx.hash)
       await this.setSoraTransactionDate(tx[this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
-      await this.setEthereumTransactionHash(tx.ethereumHash)
-      await this.setEthereumTransactionDate(tx[!this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
+      await this.setEvmTransactionHash(tx.ethereumHash)
+      await this.setEvmTransactionDate(tx[!this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
       const soraNetworkFee = +(tx.soraNetworkFee || 0)
-      const ethereumNetworkFee = +(tx.ethereumNetworkFee || 0)
+      const evmNetworkFee = +(tx.ethereumNetworkFee || 0)
       if (!soraNetworkFee) {
         await this.getNetworkFee()
         tx.soraNetworkFee = this.soraNetworkFee
       }
-      if (!ethereumNetworkFee) {
-        tx.ethereumNetworkFee = this.ethereumNetworkFee
-        await this.getEthNetworkFee()
+      if (!evmNetworkFee) {
+        tx.ethereumNetworkFee = this.evmNetworkFee
+        await this.getEvmNetworkFee()
       }
-      if (!(soraNetworkFee && ethereumNetworkFee)) {
+      if (!(soraNetworkFee && evmNetworkFee)) {
         this.saveHistory(tx)
       }
       await this.setSoraNetworkFee(soraNetworkFee || this.soraNetworkFee)
-      await this.setEthereumNetworkFee(ethereumNetworkFee || this.ethereumNetworkFee)
+      await this.setEvmNetworkFee(evmNetworkFee || this.evmNetworkFee)
       await this.setTransactionStep(tx.transactionStep)
       await this.setCurrentTransactionState(tx.transactionState)
       await this.setHistoryItem(tx)

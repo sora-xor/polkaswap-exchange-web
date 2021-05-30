@@ -10,6 +10,8 @@
         class="slippage-tolerance-custom_input"
         size="small"
         :decimals="2"
+        has-locale-string
+        :delimiters="delimiters"
         :max="slippageToleranceExtremeValues.max"
         v-model="customSlippageTolerance"
         @blur="handleSlippageToleranceOnBlur"
@@ -62,11 +64,12 @@ import { Components } from '@/consts'
   }
 })
 export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFormatterMixin) {
-  readonly SlippageToleranceTabs = [
-    0.1,
-    0.5,
-    1
-  ].map(name => ({ name: String(name), label: `${name}%` }))
+  readonly delimiters = FPNumber.DELIMITERS_CONFIG
+  readonly SlippageToleranceTabs: Array<object> = [
+    '0.1',
+    '0.5',
+    '1'
+  ].map(name => ({ name: String(name), label: `${this.formatStringValue(name)}%` }))
 
   readonly slippageToleranceExtremeValues = {
     min: 0.01,
@@ -190,6 +193,11 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
 
   .s-placeholder {
     display: none;
+  }
+
+  .el-form--actions & {
+    margin-top: $inner-spacing-medium;
+    padding: 0 $inner-spacing-mini;
   }
 }
 </style>

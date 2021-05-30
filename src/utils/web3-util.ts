@@ -3,6 +3,7 @@ import { AbiItem } from 'web3-utils'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import detectEthereumProvider from '@metamask/detect-provider'
 import { decodeAddress } from '@polkadot/util-crypto'
+import { BridgeNetworks } from '@sora-substrate/util'
 
 import axios from '@/api'
 import storage from './storage'
@@ -69,10 +70,28 @@ export const ABI = {
 let provider: any = null
 let web3Istance: any = null
 
+export interface SubNetwork {
+  name: EvmNetwork;
+  id: BridgeNetworks;
+  symbol: string;
+  currency: string;
+  defaultType: EvmNetworkType;
+  CONTRACTS: {
+    XOR: { MASTER: string };
+    VAL: { MASTER: string };
+    OTHER: { MASTER: string };
+  };
+}
+
 export enum KnownBridgeAsset {
   VAL = 'VAL',
   XOR = 'XOR',
   Other = 'OTHER'
+}
+
+export enum ContractNetwork {
+  Ethereum = 'ethereum',
+  Other = 'other'
 }
 
 export enum Contract {
@@ -119,20 +138,28 @@ interface JsonContract {
   };
 }
 
-export enum EthNetwork {
+export enum EvmNetwork {
+  Ethereum = 'ethereum',
+  Energy = 'energy'
+}
+
+export enum EvmNetworkType {
   Mainnet = 'main',
   Ropsten = 'ropsten',
   Kovan = 'kovan',
   Rinkeby = 'rinkeby',
-  Goerli = 'goerli'
+  Goerli = 'goerli',
+  Private = 'private',
+  EWC = 'EWC'
 }
 
-export const EthNetworkName = {
-  '0x1': EthNetwork.Mainnet,
-  '0x3': EthNetwork.Ropsten,
-  '0x2a': EthNetwork.Kovan,
-  '0x4': EthNetwork.Rinkeby,
-  '0x5': EthNetwork.Goerli
+export const EvmNetworkTypeName = {
+  '0x1': EvmNetworkType.Mainnet,
+  '0x3': EvmNetworkType.Ropsten,
+  '0x2a': EvmNetworkType.Kovan,
+  '0x4': EvmNetworkType.Rinkeby,
+  '0x5': EvmNetworkType.Goerli,
+  '0x12047': EvmNetworkType.Private
 }
 
 async function onConnect (options: ConnectOptions): Promise<string> {
@@ -224,43 +251,42 @@ async function watchEthereum (cb: {
   }
 }
 
-function storeEthUserAddress (address: string): void {
-  storage.set('ethAddress', address)
+function storeEvmUserAddress (address: string): void {
+  storage.set('evmAddress', address)
 }
 
-function getEthUserAddress (): string {
-  return storage.get('ethAddress') || ''
+function getEvmUserAddress (): string {
+  return storage.get('evmAddress') || ''
 }
 
-function removeEthUserAddress (): void {
-  storage.remove('ethAddress')
+function removeEvmUserAddress (): void {
+  storage.remove('evmAddress')
 }
 
-function storeEthNetwork (network: string): void {
-  const networkName = EthNetworkName[network]
-  storage.set('ethNetwork', networkName || network)
+function storeEvmNetworkType (network: string): void {
+  storage.set('evmNetworkType', EvmNetworkTypeName[network] || network)
 }
 
-function getEthNetworkFromStorage (): string {
-  return storage.get('ethNetwork') || ''
+function getEvmNetworkTypeFromStorage (): string {
+  return storage.get('evmNetworkType') || ''
 }
 
-async function getEthNetwork (): Promise<string> {
-  const network = getEthNetworkFromStorage()
-  if (!network) {
+function removeEvmNetworkType (): void {
+  storage.remove('evmNetworkType')
+}
+
+async function getEvmNetworkType (): Promise<string> {
+  const networkType = getEvmNetworkTypeFromStorage()
+  if (!networkType || networkType === 'undefined') {
     const web3 = await getInstance()
     return await web3.eth.net.getNetworkType()
   }
-  return network
+  return networkType
 }
 
-function removeEthNetwork (): void {
-  storage.remove('ethNetwork')
-}
-
-async function readSmartContract (contract: Contract, name: string): Promise<JsonContract | undefined> {
+async function readSmartContract (network: ContractNetwork, name: string): Promise<JsonContract | undefined> {
   try {
-    const { data } = await axios.get(`/abi/${contract}/${name}`)
+    const { data } = await axios.get(`/abi/${network}/${name}`)
     return data
   } catch (error) {
     console.error(error)
@@ -310,14 +336,14 @@ export default {
   onConnect,
   getAccount,
   checkAccountIsConnected,
-  storeEthUserAddress,
-  getEthUserAddress,
-  storeEthNetwork,
-  getEthNetwork,
-  getEthNetworkFromStorage,
-  removeEthNetwork,
+  storeEvmUserAddress,
+  getEvmUserAddress,
+  storeEvmNetworkType,
+  getEvmNetworkType,
+  getEvmNetworkTypeFromStorage,
+  removeEvmNetworkType,
   getInstance,
-  removeEthUserAddress,
+  removeEvmUserAddress,
   watchEthereum,
   readSmartContract,
   getInfoFromContract,

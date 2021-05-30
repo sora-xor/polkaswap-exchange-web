@@ -19,6 +19,8 @@
               class="s-input--token-value"
               :value="firstTokenValue"
               :decimals="(firstToken || {}).decimals"
+              has-locale-string
+              :delimiters="delimiters"
               :max="getMax((firstToken || {}).address)"
               :disabled="!areTokensSelected"
               @input="handleTokenChange($event, setFirstTokenValue)"
@@ -53,6 +55,8 @@
               class="s-input--token-value"
               :value="secondTokenValue"
               :decimals="(secondToken || {}).decimals"
+              has-locale-string
+              :delimiters="delimiters"
               :max="getMax((secondToken || {}).address)"
               :disabled="!areTokensSelected"
               @input="handleTokenChange($event, setSecondTokenValue)"
@@ -98,6 +102,7 @@
           {{ t('createPair.supply') }}
         </template>
       </s-button>
+      <slippage-tolerance class="slippage-tolerance-settings" />
     </s-form>
 
     <div v-if="areTokensSelected && isAvailable && !isNotFirstLiquidityProvider && emptyAssets" class="info-line-container">
@@ -111,8 +116,8 @@
 
     <div v-if="areTokensSelected && isAvailable && !emptyAssets" class="info-line-container">
       <p class="p2">{{ t('createPair.pricePool') }}</p>
-      <info-line :label="t('addLiquidity.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="price" />
-      <info-line :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="priceReversed" />
+      <info-line :label="t('addLiquidity.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="formatStringValue(price)" />
+      <info-line :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formatStringValue(priceReversed)" />
       <info-line :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
       <info-line :label="t('createPair.networkFee')" :value="`${formattedFee} ${KnownSymbols.XOR}`" />
     </div>
@@ -132,7 +137,6 @@
       <info-line :label="secondToken.symbol" :value="secondTokenPosition" />
     </div>
 
-    <select-token :visible.sync="showSelectFirstTokenDialog" :connected="isLoggedIn" account-assets-only not-null-balance-only :asset="secondToken" @select="setFirstTokenAddress($event.address)" />
     <select-token :visible.sync="showSelectSecondTokenDialog" :connected="isLoggedIn" :asset="firstToken" @select="setSecondTokenAddress($event.address)" />
 
     <confirm-token-pair-dialog
@@ -160,6 +164,7 @@ import { FPNumber, AccountLiquidity, CodecString } from '@sora-substrate/util'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
 import LottieLoader from '@/components/LottieLoader.vue'
+import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
@@ -176,11 +181,12 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
     InfoLine: lazyComponent(Components.InfoLine),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog)
   }
 })
 
-export default class AddLiquidity extends Mixins(TokenPairMixin) {
+export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatterMixin) {
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('accountLiquidity', { namespace: 'pool' }) accountLiquidity!: Array<AccountLiquidity>
@@ -191,6 +197,8 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
 
   @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity
   @Action('destroyUpdateAccountLiquiditySubscription', { namespace: 'pool' }) destroyUpdateAccountLiquiditySubscription
+
+  readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
   destroyed (): void {
     this.destroyUpdateAccountLiquiditySubscription()
@@ -258,9 +266,9 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   getTokenPosition (liquidityInfoBalance: string | undefined, tokenValue: string | CodecString | number, isPoolToken = false): string {
     const prevPosition = FPNumber.fromCodecValue(liquidityInfoBalance ?? 0)
     if (!this.emptyAssets) {
-      return prevPosition.add(isPoolToken ? FPNumber.fromCodecValue(tokenValue) : new FPNumber(tokenValue)).format()
+      return prevPosition.add(isPoolToken ? FPNumber.fromCodecValue(tokenValue) : new FPNumber(tokenValue)).toLocaleString()
     }
-    return prevPosition.format()
+    return prevPosition.toLocaleString()
   }
 
   updatePrices (): void {

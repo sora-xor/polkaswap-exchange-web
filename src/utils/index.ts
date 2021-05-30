@@ -1,4 +1,6 @@
+import debounce from 'lodash/debounce'
 import { Asset, AccountAsset, RegisteredAccountAsset, AccountLiquidity, KnownSymbols, FPNumber, CodecString, KnownAssets } from '@sora-substrate/util'
+import { connection, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
 import storage from './storage'
 
 const FpZeroValue = new FPNumber(0)
@@ -107,10 +109,10 @@ export const hasInsufficientXorForFee = (xorAsset: AccountAsset | RegisteredAcco
   return FPNumber.lt(fpBalance, fpFee) && !isXorOutputSwap
 }
 
-export const hasInsufficientEthForFee = (ethBalance: CodecString, fee: CodecString): boolean => {
+export const hasInsufficientEvmNativeTokenForFee = (evmBalance: CodecString, fee: CodecString): boolean => {
   if (!fee) return false
 
-  const fpBalance = FPNumber.fromCodecValue(ethBalance)
+  const fpBalance = FPNumber.fromCodecValue(evmBalance)
   const fpFee = FPNumber.fromCodecValue(fee)
 
   return FPNumber.lt(fpBalance, fpFee)
@@ -155,7 +157,7 @@ export const formatAssetBalance = (asset: any, { internal = true, parseAsLiquidi
 
   if (!balance || (!showZeroBalance && asZeroValue(balance))) return formattedZero
 
-  return FPNumber.fromCodecValue(balance, asset.decimals).format()
+  return FPNumber.fromCodecValue(balance, asset.decimals).toLocaleString()
 }
 
 export const findAssetInCollection = (asset, collection) => {
@@ -163,3 +165,12 @@ export const findAssetInCollection = (asset, collection) => {
 
   return collection.find(item => item.address === asset.address)
 }
+
+export const disconnectWallet = async (): Promise<void> => {
+  if (updateAccountAssetsSubscription) {
+    updateAccountAssetsSubscription.unsubscribe()
+  }
+  await connection.close()
+}
+
+export const debouncedInputHandler = (fn: any, timeout = 500, options = { leading: true }) => debounce(fn, timeout, options)

@@ -7,6 +7,9 @@ import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets, FPNumber, CodecString } from '@sora-substrate/util'
 
 import { ZeroStringValue } from '@/consts'
+import { TokenBalanceSubscriptions } from '@/utils/subscriptions'
+
+const balanceSubscriptions = new TokenBalanceSubscriptions()
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -15,6 +18,7 @@ const types = flow(
     'SET_SECOND_TOKEN_ADDRESS',
     'SET_FIRST_TOKEN_VALUE',
     'SET_SECOND_TOKEN_VALUE',
+    'SET_SECOND_TOKEN_BALANCE',
     'SET_FOCUSED_FIELD'
   ]),
   map(x => [x, x]),
@@ -32,6 +36,7 @@ interface AddLiquidityState {
   secondTokenAddress: string;
   firstTokenValue: string;
   secondTokenValue: string;
+  secondTokenBalance: any;
   reserve: null | Array<CodecString>;
   minted: CodecString;
   fee: CodecString;
@@ -46,6 +51,7 @@ function initialState (): AddLiquidityState {
     secondTokenAddress: '',
     firstTokenValue: '',
     secondTokenValue: '',
+    secondTokenBalance: null,
     reserve: null,
     minted: '',
     fee: '',
@@ -62,7 +68,10 @@ const getters = {
     return rootGetters['assets/getAssetDataByAddress'](state.firstTokenAddress)
   },
   secondToken (state: AddLiquidityState, getters, rootState, rootGetters) {
-    return rootGetters['assets/getAssetDataByAddress'](state.secondTokenAddress)
+    const token = rootGetters['assets/getAssetDataByAddress'](state.secondTokenAddress)
+    const balance = state.secondTokenBalance
+
+    return balance ? { ...token, balance } : token
   },
   firstTokenValue (state: AddLiquidityState) {
     return state.firstTokenValue
@@ -97,7 +106,7 @@ const getters = {
   shareOfPool (state: AddLiquidityState, getters) {
     const minted = FPNumber.fromCodecValue(getters.minted)
     return getters.firstTokenValue && getters.secondTokenValue
-      ? minted.div(FPNumber.fromCodecValue(getters.totalSupply).add(minted)).mul(new FPNumber(100)).format() || ZeroStringValue
+      ? minted.div(FPNumber.fromCodecValue(getters.totalSupply).add(minted)).mul(new FPNumber(100)).toLocaleString() || ZeroStringValue
       : ZeroStringValue
   }
 }
@@ -114,6 +123,9 @@ const mutations = {
   },
   [types.SET_SECOND_TOKEN_VALUE] (state: AddLiquidityState, secondTokenValue: string) {
     state.secondTokenValue = secondTokenValue
+  },
+  [types.SET_SECOND_TOKEN_BALANCE] (state: AddLiquidityState, balance = null) {
+    state.secondTokenBalance = balance
   },
   [types.ADD_LIQUIDITY_REQUEST] (state) {
   },
@@ -161,10 +173,19 @@ const actions = {
     await dispatch('checkLiquidity')
   },
 
-  async setSecondTokenAddress ({ commit, dispatch }, address: string) {
+  async setSecondTokenAddress ({ commit, dispatch, getters, rootGetters }, address: string) {
+    const updateBalance = balance => commit(types.SET_SECOND_TOKEN_BALANCE, balance)
+
     commit(types.SET_SECOND_TOKEN_ADDRESS, address)
     commit(types.SET_FIRST_TOKEN_VALUE, '')
     commit(types.SET_SECOND_TOKEN_VALUE, '')
+
+    balanceSubscriptions.remove('second', { updateBalance })
+
+    if (getters.secondToken?.address && !(getters.secondToken.address in rootGetters.accountAssetsAddressTable)) {
+      balanceSubscriptions.add('second', { updateBalance, token: getters.secondToken })
+    }
+
     await dispatch('checkLiquidity')
   },
 
@@ -236,7 +257,6 @@ const actions = {
       }
 
       dispatch('estimateMinted')
-      dispatch('getNetworkFee')
     }
   },
 
@@ -259,7 +279,6 @@ const actions = {
       }
 
       dispatch('estimateMinted')
-      dispatch('getNetworkFee')
     }
   },
 
@@ -307,7 +326,6 @@ const actions = {
 
     dispatch('setFirstTokenAddress', findAssetAddress(firstAddress))
     dispatch('setSecondTokenAddress', findAssetAddress(secondAddress))
-    dispatch('getNetworkFee')
   },
 
   resetFocusedField ({ commit }) {
@@ -315,6 +333,8 @@ const actions = {
   },
 
   resetData ({ commit }, withAssets = false) {
+    balanceSubscriptions.remove('second', { updateBalance: balance => commit(types.SET_SECOND_TOKEN_BALANCE, balance) })
+
     if (!withAssets) {
       commit(types.SET_FIRST_TOKEN_ADDRESS, '')
       commit(types.SET_SECOND_TOKEN_ADDRESS, '')

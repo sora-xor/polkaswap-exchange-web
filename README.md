@@ -10,14 +10,18 @@ There is `public/env.json` file which contains `BASE_API_URL` and `DEFAULT_NETWO
 ```
 "DEFAULT_NETWORKS": [
     {
-        "name": "SORA-staging Testnet",
+        "chain": "SORA-staging Testnet",
+        "name": "SORA",
         "address": "wss://ws.stage.sora2.soramitsu.co.jp"
     }
 ]
 ```
 
-`"name"` is used as the network name.
-`"address"` is used for the address of the blockchain to which the frontend project will be connected.
+`"chain"` is used as the chain name.
+`"name"` is used as the node name.
+`"address"` is used for the address of the node to which the frontend project will be connected.
+
+`DEFAULT_NETWORKS[0]` must be a Soramitsu trusted node. App used it's `genesisHash` to check custom user node for connection
 
 ## Project setup
 ```

@@ -4,7 +4,11 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, CodecString, LiquiditySourceTypes, LPRewardsInfo } from '@sora-substrate/util'
+import { CodecString, LiquiditySourceTypes, LPRewardsInfo } from '@sora-substrate/util'
+
+import { TokenBalanceSubscriptions } from '@/utils/subscriptions'
+
+const balanceSubscriptions = new TokenBalanceSubscriptions()
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -13,6 +17,8 @@ const types = flow(
     'RESET_TOKEN_FROM_ADDRESS',
     'SET_TOKEN_TO_ADDRESS',
     'RESET_TOKEN_TO_ADDRESS',
+    'SET_TOKEN_FROM_BALANCE',
+    'SET_TOKEN_TO_BALANCE',
     'SET_FROM_VALUE',
     'SET_TO_VALUE',
     'SET_MIN_MAX_RECEIVED',
@@ -30,7 +36,9 @@ const types = flow(
 
 interface SwapState {
   tokenFromAddress: string | null;
+  tokenFromBalance: any;
   tokenToAddress: string | null;
+  tokenToBalance: any;
   fromValue: string;
   toValue: string;
   minMaxReceived: CodecString;
@@ -47,6 +55,8 @@ function initialState (): SwapState {
   return {
     tokenFromAddress: '',
     tokenToAddress: '',
+    tokenFromBalance: null,
+    tokenToBalance: null,
     fromValue: '',
     toValue: '',
     minMaxReceived: '',
@@ -64,10 +74,16 @@ const state = initialState()
 
 const getters = {
   tokenFrom (state: SwapState, getters, rootState, rootGetters) {
-    return rootGetters['assets/getAssetDataByAddress'](state.tokenFromAddress)
+    const token = rootGetters['assets/getAssetDataByAddress'](state.tokenFromAddress)
+    const balance = state.tokenFromBalance
+
+    return balance ? { ...token, balance } : token
   },
   tokenTo (state: SwapState, getters, rootState, rootGetters) {
-    return rootGetters['assets/getAssetDataByAddress'](state.tokenToAddress)
+    const token = rootGetters['assets/getAssetDataByAddress'](state.tokenToAddress)
+    const balance = state.tokenToBalance
+
+    return balance ? { ...token, balance } : token
   },
   pairLiquiditySourcesAvailable (state) {
     return state.pairLiquiditySources.length !== 0
@@ -120,6 +136,12 @@ const mutations = {
   [types.RESET_TOKEN_FROM_ADDRESS] (state: SwapState) {
     state.tokenFromAddress = ''
   },
+  [types.SET_TOKEN_FROM_BALANCE] (state: SwapState, balance = null) {
+    state.tokenFromBalance = balance
+  },
+  [types.SET_TOKEN_TO_BALANCE] (state: SwapState, balance = null) {
+    state.tokenToBalance = balance
+  },
   [types.SET_TOKEN_TO_ADDRESS] (state: SwapState, address: string) {
     state.tokenToAddress = address
   },
@@ -165,43 +187,35 @@ const mutations = {
 }
 
 const actions = {
-  async setTokenFromAddress ({ commit, rootGetters }, address?: string) {
-    try {
-      if (!address) {
-        commit(types.RESET_TOKEN_FROM_ADDRESS)
-        return
-      }
+  async setTokenFromAddress ({ commit, getters, rootGetters }, address?: string) {
+    const updateBalance = balance => commit(types.SET_TOKEN_FROM_BALANCE, balance)
 
-      const token = KnownAssets.get(address) || rootGetters['assets/getAssetDataByAddress'](address)
-
-      if (token) {
-        commit(types.SET_TOKEN_FROM_ADDRESS, address)
-      } else {
-        throw new Error(`There is no ${address} asset`)
-      }
-    } catch (error) {
+    if (!address) {
       commit(types.RESET_TOKEN_FROM_ADDRESS)
-      throw error
+    } else {
+      commit(types.SET_TOKEN_FROM_ADDRESS, address)
+    }
+
+    balanceSubscriptions.remove('from', { updateBalance })
+
+    if (rootGetters.isLoggedIn && getters.tokenFrom?.address && !(getters.tokenFrom.address in rootGetters.accountAssetsAddressTable)) {
+      balanceSubscriptions.add('from', { updateBalance, token: getters.tokenFrom })
     }
   },
 
-  async setTokenToAddress ({ commit, rootGetters }, address?: string) {
-    try {
-      if (!address) {
-        commit(types.RESET_TOKEN_TO_ADDRESS)
-        return
-      }
+  async setTokenToAddress ({ commit, getters, rootGetters }, address?: string) {
+    const updateBalance = balance => commit(types.SET_TOKEN_TO_BALANCE, balance)
 
-      const token = KnownAssets.get(address) || rootGetters['assets/getAssetDataByAddress'](address)
-
-      if (token) {
-        commit(types.SET_TOKEN_TO_ADDRESS, address)
-      } else {
-        throw new Error(`There is no ${address} asset`)
-      }
-    } catch (error) {
+    if (!address) {
       commit(types.RESET_TOKEN_TO_ADDRESS)
-      throw error
+    } else {
+      commit(types.SET_TOKEN_TO_ADDRESS, address)
+    }
+
+    balanceSubscriptions.remove('to', { updateBalance })
+
+    if (rootGetters.isLoggedIn && getters.tokenTo?.address && !(getters.tokenTo.address in rootGetters.accountAssetsAddressTable)) {
+      balanceSubscriptions.add('to', { updateBalance, token: getters.tokenTo })
     }
   },
 
@@ -245,6 +259,8 @@ const actions = {
     commit(types.SET_NETWORK_FEE, networkFee)
   },
   reset ({ commit }) {
+    balanceSubscriptions.remove('from', { updateBalance: balance => commit(types.SET_TOKEN_FROM_BALANCE, balance) })
+    balanceSubscriptions.remove('to', { updateBalance: balance => commit(types.SET_TOKEN_TO_BALANCE, balance) })
     commit(types.RESET)
   }
 }

@@ -1,6 +1,7 @@
+import { LiquiditySourceTypes } from '@sora-substrate/util'
+
 import pkg from '../../package.json'
 import { KnownBridgeAsset } from '@/utils/web3-util'
-import { LiquiditySourceTypes } from '@sora-substrate/util'
 
 export const app = {
   version: pkg.version,
@@ -81,7 +82,6 @@ export enum Components {
   MarketAlgorithm = 'Settings/MarketAlgorithm',
   SelectNode = 'Settings/Node/SelectNode',
   NodeInfo = 'Settings/Node/NodeInfo',
-  NetworkBadge = 'NetworkBadge',
   SelectNodeDialog = 'SelectNodeDialog',
   StatusActionBadge = 'StatusActionBadge',
   BrandedTooltip = 'BrandedTooltip',
@@ -89,6 +89,7 @@ export enum Components {
   HelpDialog = 'HelpDialog',
   AboutNetworkDialog = 'AboutNetworkDialog',
   SidebarItemContent = 'SidebarItemContent',
+  SelectNetwork = 'SelectNetwork',
   SelectRegisteredAsset = 'SelectRegisteredAsset',
   ConfirmBridgeTransactionDialog = 'ConfirmBridgeTransactionDialog',
   BridgeTransaction = 'BridgeTransaction',
@@ -227,14 +228,18 @@ export enum NetworkTypes {
   Mainnet = 'Mainnet'
 }
 
-export const EthSymbol = 'ETH'
+export enum EvmSymbol {
+  ETH = 'ETH',
+  VT = 'VT'
+}
 
 const gasLimit = {
-  approve: 66000 * 2,
-  sendERC20ToSidechain: 81000 * 2,
-  mintTokensByPeers: 191285 * 2,
-  receiveByEthereumAssetAddress: 253979 * 2,
-  receiveBySidechainAssetId: 252659 * 2
+  approve: 70000,
+  sendERC20ToSidechain: 86000,
+  sendEthToSidechain: 50000,
+  mintTokensByPeers: 255000,
+  receiveByEthereumAssetAddress: 250000,
+  receiveBySidechainAssetId: 255000
 }
 /**
  * It's in gwei.
@@ -247,6 +252,7 @@ export const EthereumGasLimits = [
     XOR: gasLimit.approve + gasLimit.sendERC20ToSidechain,
     VAL: gasLimit.approve + gasLimit.sendERC20ToSidechain,
     PSWAP: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+    ETH: gasLimit.sendEthToSidechain,
     [KnownBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain
   },
   // SORA -> ETH
@@ -254,6 +260,7 @@ export const EthereumGasLimits = [
     XOR: gasLimit.mintTokensByPeers,
     VAL: gasLimit.mintTokensByPeers,
     PSWAP: gasLimit.receiveBySidechainAssetId,
+    ETH: gasLimit.receiveByEthereumAssetAddress,
     [KnownBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress
   }
 ]

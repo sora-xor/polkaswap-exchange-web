@@ -1,13 +1,14 @@
-import { Operation, TransactionStatus } from '@sora-substrate/util'
+import { Operation, TransactionStatus, RewardingEvents } from '@sora-substrate/util'
 
-import { PageNames, NetworkTypes } from '@/consts'
-import { EthNetwork } from '@/utils/web3-util'
+import { PageNames, Topics, NetworkTypes } from '@/consts'
+import { EvmNetworkType } from '@/utils/web3-util'
 
 export default {
   appName: 'Polkaswap',
   soraText: 'SORA',
   ethereumText: 'Ethereum',
   changeNetworkText: 'Change network in Metamask',
+  transactionText: 'transaction | transactions',
   transactionSubmittedText: 'Transaction was submitted',
   unknownErrorText: 'ERROR Something went wrong...',
   connectWalletText: 'Connect account',
@@ -25,6 +26,7 @@ export default {
   retryText: 'Retry',
   networkFeeText: 'Network Fee',
   networkFeeTooltipText: 'Network fee is used to ensure @:soraText system\'s growth and stable performance.',
+  ethNetworkFeeTooltipText: 'Please note that the Ethereum network fees displayed on Polkaswap are only rough estimations, you can see the correct fee amount in your connected Ethereum wallet prior to confirming the transaction.',
   marketText: 'Market',
   marketAlgorithmText: 'Market algorithm',
   insufficientBalanceText: 'Insufficient {tokenSymbol} balance',
@@ -57,11 +59,6 @@ export default {
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
     [PageNames.CreatePair]: 'Create Pair'
-  },
-  networkStatus: {
-    online: 'online',
-    offline: 'offline',
-    checking: 'check'
   },
   social: {
     twitter: 'Twitter',
@@ -100,9 +97,13 @@ export default {
   },
   node: {
     errors: {
-      connection: 'An error occurred while connecting to the node',
-      network: 'You selected the node from the different network',
-      existing: 'This node is already added: \'{title}\''
+      connection: 'An error occurred while connecting to the node\n{address}\n',
+      network: 'The node\n{address}\n is from the another network\n',
+      existing: 'This node is already added: \'{title}\'\n'
+    },
+    messages: {
+      connected: 'Connection estabilished with node\n{address}\n',
+      selectNode: 'Please select node to connect from the node list'
     }
   },
   selectNodeDialog: {
@@ -170,12 +171,17 @@ export default {
     [NetworkTypes.Testnet]: '@:soraText Testnet',
     [NetworkTypes.Mainnet]: '@:soraText Mainnet'
   },
-  ethereum: {
-    [EthNetwork.Mainnet]: 'Ethereum Mainnet',
-    [EthNetwork.Ropsten]: 'Ethereum Ropsten',
-    [EthNetwork.Rinkeby]: 'Ethereum Rinkeby',
-    [EthNetwork.Kovan]: 'Ethereum Kovan',
-    [EthNetwork.Goerli]: 'Ethereum Goerli'
+  evm: {
+    [EvmNetworkType.Mainnet]: 'Ethereum Mainnet',
+    [EvmNetworkType.Ropsten]: 'Ethereum Ropsten',
+    [EvmNetworkType.Rinkeby]: 'Ethereum Rinkeby',
+    [EvmNetworkType.Kovan]: 'Ethereum Kovan',
+    [EvmNetworkType.Goerli]: 'Ethereum Goerli',
+    [EvmNetworkType.Private]: 'Volta Testnet',
+    [EvmNetworkType.EWC]: 'Energy Web Chain'
+  },
+  providers: {
+    metamask: '@:metamask'
   },
   about: {
     title: 'The DEX for the Interoperable Future.',
@@ -201,7 +207,7 @@ export default {
     pswap: {
       title: 'PSWAP Tokens',
       first: 'PSWAP was created by community governance by voting on its release. It is a utility and governance token used to reward liquidity providers on Polkaswap. Unlike most other reward tokens, PSWAP is burned with transactions and decreases in supply over time.',
-      second: 'The 0.3% fee for every swap on the Polkaswap DEX is used to buy back PSWAP tokens, which are then burned. At first, 90% of burned PSWAP tokens are reminted to allocate to liquidity providers, but with time this percentage will decrease to 35% after 4 years.'
+      second: 'The {percent}% fee for every swap on the Polkaswap DEX is used to buy back PSWAP tokens, which are then burned. At first, 90% of burned PSWAP tokens are reminted to allocate to liquidity providers, but with time this percentage will decrease to 35% after 4 years.'
     },
     links: {
       first: {
@@ -277,7 +283,11 @@ export default {
     viewHistory: 'View transactions history',
     transactionSubmitted: 'Transaction submitted',
     transactionMessage: '{assetA} for {assetB}',
-    notRegisteredAsset: 'Asset {assetSymbol} is not registered'
+    notRegisteredAsset: 'Asset {assetSymbol} is not registered',
+    selectNetwork: 'Select network',
+    networkInfo: 'Bridge @:soraText Network with:',
+    ethereum: '@:ethereumText',
+    energy: '@:evm.EWC'
   },
   selectRegisteredAsset: {
     title: 'Select a token',
@@ -369,7 +379,17 @@ export default {
     searchPlaceholder: 'Filter by Asset ID, Name or Ticker Symbol',
     emptyListMessage: 'No results',
     copy: 'Copy Asset ID',
-    successCopy: '{symbol} Asset ID is copied to the clipboard'
+    successCopy: '{symbol} Asset ID is copied to the clipboard',
+    assets: {
+      title: 'Assets'
+    },
+    custom: {
+      title: 'Custom',
+      search: 'Search by Asset ID',
+      text: 'CUSTOM TOKENS',
+      alreadyAttached: 'This token was already attached',
+      notFound: 'Token not found'
+    }
   },
   createPair: {
     title: 'Create a pair',
@@ -457,10 +477,15 @@ export default {
       success: 'You will receive your rewards shortly',
       failed: '{order} of {total} transactions failed. @:retryText'
     },
+    signing: {
+      extension: 'polkadot{.js} browser extension',
+      accounts: 'your @:soraText and @:ethereumText accounts respectively'
+    },
     hint: {
+      connectExternalAccount: 'Connect an @:ethereumText account to check for available PSWAP and VAL rewards.',
       connectAccounts: 'To claim your PSWAP and VAL rewards you need to connect both your @:soraText and @:ethereumText accounts.',
       connectAnotherAccount: 'Connect another @:ethereumText account to check for available PSWAP and VAL rewards.',
-      howToClaimRewards: 'To claim your PSWAP and VAL rewards you need to sign 2 transactions in your @:soraText and @:ethereumText accounts respectively. Rewards will be deposited to your @:soraText account.'
+      howToClaimRewards: 'To claim your {symbols} rewards you need to sign {count} {transactions} in {destination}. Rewards will be deposited to your @:soraText account.'
     },
     action: {
       connectWallet: '@:connectWalletText',
@@ -474,6 +499,13 @@ export default {
     },
     notification: {
       empty: 'No available claims for this account'
+    },
+    events: {
+      [RewardingEvents.XorErc20]: 'XOR ERC-20',
+      [RewardingEvents.SoraFarmHarvest]: '@:(soraText).farm harvest',
+      [RewardingEvents.NtfAirdrop]: 'NFT Airdrop',
+      [RewardingEvents.LiquidityProvision]: 'Fees gained from liquidity provision',
+      [RewardingEvents.BuyOnBondingCurve]: 'Strategic rewards for buying from the TBC'
     }
   },
   provider: {

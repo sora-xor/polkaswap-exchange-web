@@ -38,6 +38,8 @@
               class="s-input--token-value"
               :value="liquidityAmount"
               :decimals="(liquidity || {}).decimals"
+              has-locale-string
+              :delimiters="delimiters"
               :max="getTokenMaxAmount(liquidityBalance)"
               @input="setLiquidityAmount"
               @focus="setFocusedField('liquidityAmount')"
@@ -72,6 +74,8 @@
               class="s-input--token-value"
               :value="firstTokenAmount"
               :decimals="(firstToken || {}).decimals"
+              has-locale-string
+              :delimiters="delimiters"
               :max="getTokenMaxAmount(firstTokenBalance)"
               @input="handleTokenChange($event, setFirstTokenAmount)"
               @focus="setFocusedField('firstTokenAmount')"
@@ -101,6 +105,8 @@
               class="s-input--token-value"
               :value="secondTokenAmount"
               :decimals="(secondToken || {}).decimals"
+              has-locale-string
+              :delimiters="delimiters"
               :max="getTokenMaxAmount(secondTokenBalance)"
               @input="handleTokenChange($event, setSecondTokenAmount)"
               @focus="setFocusedField('secondTokenAmount')"
@@ -120,12 +126,12 @@
         <info-line
           v-if="price || priceReversed"
           :label="t('removeLiquidity.price')"
-          :value="`1 ${firstToken.symbol} = ${priceReversed}`"
+          :value="`1 ${firstToken.symbol} = ${formatStringValue(priceReversed)}`"
           :asset-symbol="secondToken.symbol"
         />
         <info-line
           v-if="price || priceReversed"
-          :value="`1 ${secondToken.symbol} = ${price}`"
+          :value="`1 ${secondToken.symbol} = ${formatStringValue(price)}`"
           :asset-symbol="firstToken.symbol"
         />
         <info-line
@@ -150,6 +156,7 @@
           {{ t('removeLiquidity.remove') }}
         </template>
       </s-button>
+      <slippage-tolerance class="slippage-tolerance-settings" />
     </s-form>
 
     <confirm-remove-liquidity :visible.sync="showConfirmDialog" :parent-loading="loading" @confirm="handleConfirmRemoveLiquidity" />
@@ -164,6 +171,7 @@ import { FPNumber, KnownSymbols, AccountLiquidity, CodecString } from '@sora-sub
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
 import LottieLoader from '@/components/LottieLoader.vue'
 
@@ -181,11 +189,13 @@ const namespace = 'removeLiquidity'
     InfoLine: lazyComponent(Components.InfoLine),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity)
   }
 })
-export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin) {
+export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMixin, NumberFormatterMixin, ConfirmDialogMixin) {
   readonly KnownSymbols = KnownSymbols
+  readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
