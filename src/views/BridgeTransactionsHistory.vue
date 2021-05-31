@@ -34,7 +34,7 @@
             </template>
           </s-input>
         </s-form-item>
-        <div v-lottie-loader="{ loading: loading }" class="history-items">
+        <div v-lottie-loader="{ loading }" class="history-items">
           <template v-if="hasHistory">
             <div
               class="history-item"

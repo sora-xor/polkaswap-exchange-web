@@ -1,7 +1,7 @@
 <template>
   <div v-lottie-loader="{ loading: parentLoading }" class="container el-form--pool">
     <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')" />
-    <div v-lottie-loader="{ loading: loading }" class="pool-wrapper">
+    <div v-lottie-loader="{ loading }" class="pool-wrapper">
       <p v-if="!isLoggedIn" class="pool-info-container">
         {{ t('pool.connectToWallet') }}
       </p>
