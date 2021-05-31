@@ -186,10 +186,6 @@ const actions = {
         throw new Error('Node address is not set')
       }
 
-      if (!state.chainGenesisHash) {
-        await dispatch('getNetworkChainGenesisHash')
-      }
-
       commit(types.SET_NODE_REQUEST, node)
 
       console.info('Connection request to node', endpoint)
@@ -197,7 +193,11 @@ const actions = {
       const { endpoint: currentEndpoint, opened } = connection
 
       if (currentEndpoint && opened) {
-        await connection.close()
+        try {
+          await connection.close()
+        } catch (error) {
+          console.error('Disconnection error', error)
+        }
         console.info('Disconnected from node', currentEndpoint)
       }
 
@@ -214,6 +214,8 @@ const actions = {
       console.info('Connected to node', connection.endpoint)
 
       const nodeChainGenesisHash = connection.api.genesisHash.toHex()
+
+      await dispatch('getNetworkChainGenesisHash')
 
       if (nodeChainGenesisHash !== state.chainGenesisHash) {
         throw new AppHandledError({
