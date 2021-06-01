@@ -148,8 +148,17 @@ const actions = {
 
     try {
       await dispatch('setNode', { node: requestedNode, onError })
-      await dispatch('initWallet')
-      await dispatch('assets/getAssets', undefined, { root: true })
+
+      // wallet init & update flow
+      if (!isWalletLoaded) {
+        await initWallet({ permissions: WalletPermissions })
+        await dispatch('assets/getAssets', undefined, { root: true })
+      } else {
+        if (updateAccountAssetsSubscription) {
+          updateAccountAssetsSubscription.unsubscribe()
+        }
+        dispatch('updateAccountAssets', undefined, { root: true }) // to update subscription
+      }
     } catch (error) {
       if (requestedNode.address === state.node.address) {
         commit(types.RESET_NODE)
@@ -169,7 +178,6 @@ const actions = {
   async setNode ({ commit, dispatch, state }, options: ConnectToNodeOptions = {}) {
     const { node, onError } = options
     const endpoint = node?.address ?? ''
-    const connectingNodeChanged = () => endpoint !== state.nodeAddressConnecting
     const connectionOnDisconnected = () => dispatch('connectToNode', { onError })
 
     try {
@@ -200,8 +208,6 @@ const actions = {
         ]
       })
 
-      if (connectingNodeChanged()) return
-
       console.info('Connected to node', connection.endpoint)
 
       const nodeChainGenesisHash = connection.api.genesisHash.toHex()
@@ -228,28 +234,9 @@ const actions = {
           payload: { address: endpoint }
         })
 
-      if (!connectingNodeChanged()) {
-        commit(types.SET_NODE_FAILURE)
-      }
+      commit(types.SET_NODE_FAILURE)
 
       throw err
-    }
-  },
-  // wallet init & update flow
-  async initWallet ({ dispatch }) {
-    try {
-      if (!isWalletLoaded) {
-        await initWallet({ permissions: WalletPermissions })
-      } else {
-        if (updateAccountAssetsSubscription) {
-          updateAccountAssetsSubscription.unsubscribe()
-        }
-        dispatch('updateAccountAssets', undefined, { root: true }) // to update subscription
-      }
-    } catch (error) {
-      // logout on error
-      console.error(error)
-      dispatch('logout', undefined, { root: true })
     }
   },
   setDefaultNodes ({ commit }, nodes) {
