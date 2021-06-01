@@ -148,17 +148,8 @@ const actions = {
 
     try {
       await dispatch('setNode', { node: requestedNode, onError })
-
-      // wallet init & update flow
-      if (!isWalletLoaded) {
-        await initWallet({ permissions: WalletPermissions })
-        await dispatch('assets/getAssets', undefined, { root: true })
-      } else {
-        if (updateAccountAssetsSubscription) {
-          updateAccountAssetsSubscription.unsubscribe()
-        }
-        dispatch('updateAccountAssets', undefined, { root: true }) // to update subscription
-      }
+      await dispatch('initWallet')
+      await dispatch('assets/getAssets', undefined, { root: true })
     } catch (error) {
       if (requestedNode.address === state.node.address) {
         commit(types.RESET_NODE)
@@ -242,6 +233,23 @@ const actions = {
       }
 
       throw err
+    }
+  },
+  // wallet init & update flow
+  async initWallet ({ dispatch }) {
+    try {
+      if (!isWalletLoaded) {
+        await initWallet({ permissions: WalletPermissions })
+      } else {
+        if (updateAccountAssetsSubscription) {
+          updateAccountAssetsSubscription.unsubscribe()
+        }
+        dispatch('updateAccountAssets', undefined, { root: true }) // to update subscription
+      }
+    } catch (error) {
+      // logout on error
+      console.error(error)
+      dispatch('logout', undefined, { root: true })
     }
   },
   setDefaultNodes ({ commit }, nodes) {
