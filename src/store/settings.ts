@@ -160,11 +160,11 @@ const actions = {
         dispatch('updateAccountAssets', undefined, { root: true }) // to update subscription
       }
     } catch (error) {
-      if (requestedNode.address === state.node.address) {
+      if (requestedNode && (requestedNode.address === state.node.address)) {
         commit(types.RESET_NODE)
       }
 
-      if (requestedNode.address !== defaultNode.address) {
+      if (defaultNode && (requestedNode?.address !== defaultNode.address)) {
         await dispatch('connectToNode', { onError })
       }
 
@@ -225,7 +225,7 @@ const actions = {
 
       commit(types.SET_NODE_SUCCESS, node)
     } catch (error) {
-      console.error(error)
+      console.error('setNode error', error)
 
       const err = error instanceof AppHandledError
         ? error
@@ -258,6 +258,8 @@ const actions = {
   },
   async getNetworkChainGenesisHash ({ commit, state }) {
     const genesisHash = await Promise.any(state.defaultNodes.map(node => fetchRpc(getRpcEndpoint(node.address), 'chain_getBlockHash', [0])))
+
+    console.log('genesisHash', genesisHash)
 
     if (!genesisHash) {
       throw new Error('Failed to fetch network chain genesis hash')

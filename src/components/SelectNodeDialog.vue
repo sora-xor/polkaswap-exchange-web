@@ -188,7 +188,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   }
 
   private isConnectedNodeAddress (nodeAddress: any): boolean {
-    return this.connectedNodeAddress === nodeAddress
+    return this.connectedNodeAddress && (this.connectedNodeAddress === nodeAddress)
   }
 
   private isConnectingNode (node: any): boolean {

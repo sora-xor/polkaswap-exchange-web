@@ -6,7 +6,7 @@ export default class DialogMixin extends Vue {
 
   isVisible = false
 
-  @Watch('visible')
+  @Watch('visible', { immediate: true })
   handleVisibleChange (value: boolean): void {
     this.isVisible = value
   }
