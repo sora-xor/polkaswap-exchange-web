@@ -232,7 +232,7 @@ const actions = {
 
       commit(types.SET_NODE_SUCCESS, node)
     } catch (error) {
-      console.error('setNode error', error)
+      console.error(error)
 
       const err = error instanceof AppHandledError
         ? error
