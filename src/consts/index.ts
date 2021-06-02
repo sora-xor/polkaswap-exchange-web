@@ -1,7 +1,7 @@
 import { LiquiditySourceTypes } from '@sora-substrate/util'
 
 import pkg from '../../package.json'
-import { KnownBridgeAsset } from '@/utils/web3-util'
+import { KnownBridgeAsset } from '../utils/web3-util'
 
 export const app = {
   version: pkg.version,
@@ -12,6 +12,10 @@ export const app = {
 export const WalletPermissions = {
   sendAssets: true, // enable 'send' button in assets list
   swapAssets: true // enable 'swap' button in assets list
+}
+
+export enum Language {
+  EN = 'en'
 }
 
 export const Links = {

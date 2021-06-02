@@ -1,9 +1,13 @@
+import { en as walletEn } from '@soramitsu/soraneo-wallet-web'
 import { Operation, TransactionStatus, RewardingEvents } from '@sora-substrate/util'
 
-import { PageNames, Topics, NetworkTypes } from '@/consts'
-import { EvmNetworkType } from '@/utils/web3-util'
+import { PageNames, NetworkTypes } from '../consts'
+import { EvmNetworkType } from '../utils/web3-util'
 
 export default {
+  // Wallet project keys
+  ...walletEn,
+  // Polkaswap project keys
   appName: 'Polkaswap',
   soraText: 'SORA',
   ethereumText: 'Ethereum',

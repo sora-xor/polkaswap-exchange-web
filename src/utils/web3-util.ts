@@ -5,7 +5,7 @@ import detectEthereumProvider from '@metamask/detect-provider'
 import { decodeAddress } from '@polkadot/util-crypto'
 import { BridgeNetworks } from '@sora-substrate/util'
 
-import axios from '@/api'
+import axios from '../api'
 import storage from './storage'
 
 export const ABI = {
