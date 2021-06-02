@@ -16,10 +16,10 @@
           <div v-loading="isTransactionFromPending || isTransactionToPending" :class="headerIconClasses" />
           <h5 class="header-details">
             {{ `${formattedAmount} ${formatAssetSymbol(assetSymbol)}` }}
-            <i :class="`s-icon--network s-icon-${isSoraToEvm ? 'sora' : getEvmIcon}`" />
+            <i :class="`s-icon--network s-icon-${isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
             <span class="header-details-separator">{{ t('bridgeTransaction.for') }}</span>
             {{ `${formattedAmount} ${formatAssetSymbol(assetSymbol)}` }}
-            <i :class="`s-icon--network s-icon-${!isSoraToEvm ? 'sora' : getEvmIcon}`" />
+            <i :class="`s-icon--network s-icon-${!isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
           </h5>
           <p class="header-status">{{ headerStatus }}</p>
         </div>

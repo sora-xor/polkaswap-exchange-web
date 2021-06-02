@@ -463,7 +463,7 @@ const actions = {
         commit(types.GET_RESTORED_HISTORY_SUCCESS)
         return
       }
-      const contracts = Object.values(KnownBridgeAsset).map<string>(key => rootGetters[`web3/address${key}`].MASTER)
+      const contracts = Object.values(KnownBridgeAsset).map<string>(key => rootGetters['web3/contractAddress'](key))
       const ethLogs = await getEthUserTXs(contracts)
       transactions.forEach(transaction => {
         const history = getters.history
@@ -633,7 +633,8 @@ const actions = {
         [KnownBridgeAsset.Other]: rootGetters['web3/contractAbi'](KnownBridgeAsset.Other)
       }
       const contract = contractMap[bridgeAsset]
-      const contractInstance = new web3.eth.Contract(contract[OtherContractType.Bridge].abi)
+      const jsonInterface = contract[OtherContractType.Bridge]?.abi ?? contract.abi
+      const contractInstance = new web3.eth.Contract(jsonInterface)
       const contractAddress = rootGetters['web3/contractAddress'](bridgeAsset)
       contractInstance.options.address = contractAddress
       const method = isEthereumChain
