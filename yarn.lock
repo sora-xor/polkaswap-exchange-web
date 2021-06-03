@@ -3253,7 +3253,7 @@
     "@babel/runtime" "^7.13.10"
     "@ledgerhq/hw-transport" "^5.49.0"
     bip32 "2.0.6"
-    bip32-ed25519 "https://github.com/Zondax/bip32-ed25519"
+    bip32-ed25519 "git+https://github.com/Zondax/bip32-ed25519.git"
     bip39 "3.0.3"
     blakejs "^1.1.0"
     bs58 "^4.0.1"
