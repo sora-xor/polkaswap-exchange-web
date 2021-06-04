@@ -7,7 +7,7 @@ import flow from 'lodash/fp/flow'
 import { FPNumber, BridgeNetworks } from '@sora-substrate/util'
 
 import { bridgeApi } from '@/utils/bridge'
-import web3Util, { ABI, Contract, EvmNetworkTypeName, KnownBridgeAsset, ContractNetwork, SubNetwork } from '@/utils/web3-util'
+import web3Util, { ABI, Contract, EvmNetworkTypeName, KnownBridgeAsset, ContractNetwork, SubNetwork, OtherContractType } from '@/utils/web3-util'
 import { ZeroStringValue } from '@/consts'
 import { isEthereumAddress } from '@/utils'
 
@@ -391,7 +391,7 @@ const actions = {
         return ''
       }
       const web3 = await web3Util.getInstance()
-      const contractAbi = getters.contractAbi(KnownBridgeAsset.Other).abi
+      const contractAbi = getters.contractAbi(KnownBridgeAsset.Other)[OtherContractType.Bridge].abi
       const contractInstance = new web3.eth.Contract(contractAbi)
       const contractAddress = getters.contractAddress(KnownBridgeAsset.Other)
       contractInstance.options.address = contractAddress
