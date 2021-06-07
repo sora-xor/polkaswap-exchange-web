@@ -212,10 +212,9 @@ const actions = {
 
       const nodeChainGenesisHash = connection.api.genesisHash.toHex()
 
-      // connected node is trusted (from config), just set to state node's genesisHash
-      if (endpoint in getters.defaultNodesHashTable) {
-        commit(types.SET_NETWORK_CHAIN_GENESIS_HASH, nodeChainGenesisHash)
-      } else {
+      // if connected node is custom node, we should check genesis hash
+      if (!(endpoint in getters.defaultNodesHashTable)) {
+        // if genesis hash is not set in state, fetch it
         if (!state.chainGenesisHash) {
           await dispatch('getNetworkChainGenesisHash')
         }
@@ -228,6 +227,9 @@ const actions = {
             `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" recieved, should be "${state.chainGenesisHash}"`
           )
         }
+      } else {
+        // just update genesis hash (needed for dev, test stands after their reset)
+        commit(types.SET_NETWORK_CHAIN_GENESIS_HASH, nodeChainGenesisHash)
       }
 
       commit(types.SET_NODE_SUCCESS, node)
@@ -252,6 +254,9 @@ const actions = {
   setSoraNetwork ({ commit }, data) {
     if (!data.NETWORK_TYPE) {
       throw new Error('NETWORK_TYPE is not set')
+    }
+    if (data.CHAIN_GENESIS_HASH) {
+      commit(types.SET_NETWORK_CHAIN_GENESIS_HASH, data.CHAIN_GENESIS_HASH)
     }
     commit(types.SET_SORA_NETWORK, data.NETWORK_TYPE)
   },
