@@ -23,6 +23,8 @@ There is `public/env.json` file which contains `BASE_API_URL` and `DEFAULT_NETWO
 
 `DEFAULT_NETWORKS[0]` must be a Soramitsu trusted node. App used it's `genesisHash` to check custom user node for connection
 
+`CHAIN_GENESIS_HASH` should be defined for 'prod' & 'stage' environments, to not polling nodes for getting it (because genesis hash for these env's not changing).
+
 ## Project setup
 ```
 yarn install
