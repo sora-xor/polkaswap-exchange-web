@@ -264,6 +264,7 @@ const actions = {
 
   async getBalanceByEthAddress ({ commit, getters, dispatch }, { address }) {
     let value = ZeroStringValue
+    let decimals = 18
     commit(types.GET_BALANCE_REQUEST)
     try {
       const web3 = await web3Util.getInstance()
@@ -271,6 +272,7 @@ const actions = {
       if (isEther) {
         value = await dispatch('getEthBalance')
       } else {
+        const precision18 = new FPNumber(0)
         const tokenInstance = new web3.eth.Contract(ABI.balance as any)
         tokenInstance.options.address = address
         const account = getters.ethAddress
@@ -278,9 +280,8 @@ const actions = {
         const balanceOfMethod = tokenInstance.methods.balanceOf(...methodArgs)
         const decimalsMethod = tokenInstance.methods.decimals()
         const balance = await balanceOfMethod.call()
-        const decimals = await decimalsMethod.call()
-        const precision18 = new FPNumber(0)
-        value = precision18.add(FPNumber.fromCodecValue(`${balance}`, +decimals)).toCodecString()
+        decimals = +(await decimalsMethod.call())
+        value = precision18.add(FPNumber.fromCodecValue(`${balance}`, decimals)).toCodecString()
       }
       commit(types.GET_BALANCE_SUCCESS)
     } catch (error) {
@@ -288,7 +289,7 @@ const actions = {
       commit(types.GET_BALANCE_FAILURE)
     }
 
-    return value
+    return { value, decimals }
   },
   async getEthTokenAddressByAssetId ({ commit, getters }, { address }) {
     commit(types.GET_ETH_TOKEN_ADDRESS_REQUEST)
