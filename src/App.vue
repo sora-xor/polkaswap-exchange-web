@@ -1,21 +1,16 @@
 <template>
-  <div id="app">
+  <s-design-system-provider :value="libraryDesignSystem" id="app">
     <header class="header">
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
 
       <div class="app-controls s-flex">
-        <branded-tooltip v-if="nodesFeatureEnabled" popper-class="info-tooltip" placement="bottom">
-          <div slot="content">
-            {{ t('selectNodeText') }}
+        <s-button type="tertiary" size="medium" class="app-control node-control" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
+          <div class="node-control__text">
+            <div class="node-control-title">{{ node.name }}</div>
+            <div class="node-control-network">{{ chainAndNetworkText }}</div>
           </div>
-          <s-button class="app-control node-control" @click="openSelectNodeDialog">
-            <token-logo class="node-control__logo" v-bind="nodeLogo" />
-            <div class="node-control__text">
-              <div class="node-control-title">{{ node.name }}</div>
-              <div class="node-control-network">{{ chainAndNetworkText }}</div>
-            </div>
-          </s-button>
-        </branded-tooltip>
+          <token-logo class="node-control__logo" v-bind="nodeLogo" />
+        </s-button>
         <branded-tooltip :disabled="isLoggedIn" popper-class="info-tooltip wallet-tooltip" placement="bottom">
           <div slot="content" class="app-controls__wallet-tooltip">
             {{ t('connectWalletTextTooltip') }}
@@ -138,7 +133,7 @@
 
     <help-dialog :visible.sync="showHelpDialog" />
     <select-node-dialog :visible.sync="showSelectNodeDialog" />
-  </div>
+  </s-design-system-provider>
 </template>
 
 <script lang="ts">
@@ -172,8 +167,6 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
   }
 })
 export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErrorMixin) {
-  readonly nodesFeatureEnabled = true
-
   readonly SidebarMenuGroups = SidebarMenuGroups
   readonly SocialNetworkLinks = SocialNetworkLinks
   readonly FaucetLink = FaucetLink
@@ -192,6 +185,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   @State(state => state.settings.faucetUrl) faucetUrl!: string
   @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
 
+  @Getter libraryDesignSystem!: string
   @Getter firstReadyTransaction!: any
   @Getter isLoggedIn!: boolean
   @Getter account!: any
@@ -714,23 +708,18 @@ $disclaimer-letter-spacing: -0.03em;
 }
 
 .node-control {
-  &__logo {
-    margin: $inner-spacing-mini / 2;
-  }
-
   &__text {
-    margin: $inner-spacing-mini / 2;
-    padding-right: $inner-spacing-mini / 2;
-    text-align: left;
+    padding-right: calc(var(--s-basic-spacing) / 2);
+    text-align: right;
     font-size: var(--s-font-size-mini);
   }
 
   &-title {
-    color: var(--s-color-base-content-primary);
+    // color: var(--s-color-base-content-primary);
   }
 
   &-network {
-    color: var(--s-color-base-content-secondary);
+    color: var(--s-color-base-content-tertiary);
   }
 }
 
