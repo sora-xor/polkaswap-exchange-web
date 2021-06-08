@@ -146,8 +146,11 @@ const actions = {
             accountAsset.externalAddress = externalAddress
           }
           if (accountAsset.externalAddress) {
-            const externalBalance = await dispatch('web3/getBalanceByEthAddress', { address: accountAsset.externalAddress }, { root: true })
-            accountAsset.externalBalance = externalBalance
+            const { value, decimals } = await dispatch('web3/getBalanceByEthAddress', { address: accountAsset.externalAddress }, { root: true })
+            accountAsset.externalBalance = value
+            if (!accountAsset.externalDecimals) {
+              accountAsset.externalDecimals = decimals
+            }
           }
         } catch (error) {
           console.error(error)
