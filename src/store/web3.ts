@@ -280,8 +280,8 @@ const actions = {
         const balanceOfMethod = tokenInstance.methods.balanceOf(...methodArgs)
         const decimalsMethod = tokenInstance.methods.decimals()
         const balance = await balanceOfMethod.call()
-        decimals = await decimalsMethod.call()
-        value = precision18.add(FPNumber.fromCodecValue(`${balance}`, +decimals)).toCodecString()
+        decimals = +(await decimalsMethod.call())
+        value = precision18.add(FPNumber.fromCodecValue(`${balance}`, decimals)).toCodecString()
       }
       commit(types.GET_BALANCE_SUCCESS)
     } catch (error) {
