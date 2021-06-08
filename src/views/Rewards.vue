@@ -1,66 +1,68 @@
 <template>
   <div class="container rewards" v-loading="parentLoading">
     <generic-page-header :title="t('rewards.title')" />
-    <gradient-box class="rewards-block" :symbol="gradientSymbol">
-      <div class="rewards-box">
-        <tokens-row :symbols="rewardTokenSymbols" />
-        <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text">
-          {{ claimingStatusMessage }}
-        </div>
-        <div v-if="isSoraAccountConnected" class="rewards-amount">
-          <rewards-amount-header :items="rewardsByAssetsList" />
-          <template v-if="!claimingInProgressOrFinished">
-            <rewards-amount-table
-              class="rewards-table"
-              v-if="formattedInternalRewards.length"
-              v-model="selectedInternalRewardsModel"
-              :items="formattedInternalRewards"
-            />
-            <rewards-amount-table
-              class="rewards-table"
-              v-if="formattedExternalRewards.length"
-              v-model="selectedExternalRewardsModel"
-              :items="formattedExternalRewards"
-              :group="true"
-            />
-            <s-divider />
-            <div class="rewards-footer">
-              <div v-if="isExternalAccountConnected" class="rewards-account">
-                <toggle-text-button
-                  type="link"
-                  size="mini"
-                  :primary-text="formatAddress(evmAddress, 8)"
-                  :secondary-text="t('rewards.changeAccount')"
-                  @click="handleWalletChange"
-                />
-                <span>{{ t('rewards.connected') }}</span>
+    <div :class="['rewards-content', { loading }]" v-loading="loading">
+      <gradient-box class="rewards-block" :symbol="gradientSymbol">
+        <div class="rewards-box">
+          <tokens-row :symbols="rewardTokenSymbols" />
+          <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text">
+            {{ claimingStatusMessage }}
+          </div>
+          <div v-if="isSoraAccountConnected" class="rewards-amount">
+            <rewards-amount-header :items="rewardsByAssetsList" />
+            <template v-if="!claimingInProgressOrFinished">
+              <rewards-amount-table
+                class="rewards-table"
+                v-if="formattedInternalRewards.length"
+                v-model="selectedInternalRewardsModel"
+                :items="formattedInternalRewards"
+              />
+              <rewards-amount-table
+                class="rewards-table"
+                v-if="formattedExternalRewards.length"
+                v-model="selectedExternalRewardsModel"
+                :items="formattedExternalRewards"
+                :group="true"
+              />
+              <s-divider />
+              <div class="rewards-footer">
+                <div v-if="isExternalAccountConnected" class="rewards-account">
+                  <toggle-text-button
+                    type="link"
+                    size="mini"
+                    :primary-text="formatAddress(evmAddress, 8)"
+                    :secondary-text="t('rewards.changeAccount')"
+                    @click="handleWalletChange"
+                  />
+                  <span>{{ t('rewards.connected') }}</span>
+                </div>
+                <s-button v-else class="rewards-connect-button" type="secondary" @click="connectExternalAccountProcess">
+                  {{ t('rewards.action.connectExternalWallet') }}
+                </s-button>
+                <div v-if="externalRewardsHintText" class="rewards-footer-hint">{{ externalRewardsHintText }}</div>
               </div>
-              <s-button v-else class="rewards-connect-button" type="secondary" @click="connectExternalAccountProcess">
-                {{ t('rewards.action.connectExternalWallet') }}
-              </s-button>
-              <div v-if="externalRewardsHintText" class="rewards-footer-hint">{{ externalRewardsHintText }}</div>
-            </div>
-          </template>
+            </template>
+          </div>
+          <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text--transaction">
+            {{ transactionStatusMessage }}
+          </div>
         </div>
-        <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text--transaction">
-          {{ transactionStatusMessage }}
-        </div>
+      </gradient-box>
+      <div v-if="!claimingInProgressOrFinished && hintText" class="rewards-block rewards-hint">
+        {{ hintText }}
       </div>
-    </gradient-box>
-    <div v-if="!claimingInProgressOrFinished && hintText" class="rewards-block rewards-hint">
-      {{ hintText }}
+      <s-button
+        v-if="!rewardsRecieved"
+        class="rewards-block rewards-action-button"
+        type="primary"
+        @click="handleAction"
+        :loading="actionButtonLoading"
+        :disabled="actionButtonDisabled"
+      >
+        {{ actionButtonText }}
+      </s-button>
+      <info-line v-if="fee && isSoraAccountConnected && rewardsAvailable && !claimingInProgressOrFinished" v-bind="feeInfo" class="rewards-block" />
     </div>
-    <s-button
-      v-if="!rewardsRecieved"
-      class="rewards-block rewards-action-button"
-      type="primary"
-      @click="handleAction"
-      :loading="actionButtonLoading"
-      :disabled="actionButtonDisabled"
-    >
-      {{ actionButtonText }}
-    </s-button>
-    <info-line v-if="fee && isSoraAccountConnected && rewardsAvailable && !claimingInProgressOrFinished" v-bind="feeInfo" class="rewards-block" />
   </div>
 </template>
 
@@ -123,7 +125,9 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     this.reset()
   }
 
-  async mounted (): Promise<void> {
+  async created (): Promise<void> {
+    this.loading = true
+
     await this.withApi(async () => {
       await this.setEvmNetworkType()
       await this.syncExternalAccountWithAppState()
@@ -338,6 +342,13 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 }
 </script>
 
+<style lang="scss">
+.rewards-content > .el-loading-mask {
+  background: var(--s-color-utility-surface);
+  border-radius: 0;
+}
+</style>
+
 <style lang="scss" scoped>
 $hint-font-size: 13px;
 
@@ -345,6 +356,14 @@ $hint-font-size: 13px;
   &-block {
     & + & {
       margin-top: $inner-spacing-medium;
+    }
+  }
+
+  &-content {
+    position: relative;
+
+    &.loading > *:not(.el-loading-mask) {
+      visibility: hidden;
     }
   }
 
