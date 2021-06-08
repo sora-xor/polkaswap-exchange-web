@@ -7,6 +7,7 @@ import { api } from '@soramitsu/soraneo-wallet-web'
 import { CodecString, LiquiditySourceTypes, LPRewardsInfo } from '@sora-substrate/util'
 
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions'
+import { Nullable } from '@/types'
 
 const balanceSubscriptions = new TokenBalanceSubscriptions()
 
@@ -35,9 +36,9 @@ const types = flow(
 )(['CHECK_AVAILABILITY'])
 
 interface SwapState {
-  tokenFromAddress: string | null;
+  tokenFromAddress: Nullable<string>;
   tokenFromBalance: any;
-  tokenToAddress: string | null;
+  tokenToAddress: Nullable<string>;
   tokenToBalance: any;
   fromValue: string;
   toValue: string;

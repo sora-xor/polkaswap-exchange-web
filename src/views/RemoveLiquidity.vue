@@ -176,6 +176,7 @@ import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 import { isMaxButtonAvailable, hasInsufficientXorForFee, formatAssetBalance } from '@/utils'
+import { Nullable } from '@/types'
 
 const namespace = 'removeLiquidity'
 
@@ -196,7 +197,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
 
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
-  @Getter('focusedField', { namespace }) focusedField!: null | string
+  @Getter('focusedField', { namespace }) focusedField!: Nullable<string>
   @Getter('liquidity', { namespace }) liquidity!: AccountLiquidity
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any

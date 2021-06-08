@@ -2,6 +2,7 @@ import debounce from 'lodash/debounce'
 import { Asset, AccountAsset, RegisteredAccountAsset, AccountLiquidity, KnownSymbols, FPNumber, CodecString, KnownAssets } from '@sora-substrate/util'
 import { connection, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
 import storage from './storage'
+import { Nullable } from '@/types'
 
 const FpZeroValue = new FPNumber(0)
 
@@ -97,7 +98,7 @@ export const hasInsufficientBalance = (
   return FPNumber.lt(fpMaxBalance, fpAmount)
 }
 
-export const hasInsufficientXorForFee = (xorAsset: AccountAsset | RegisteredAccountAsset | null, fee: CodecString, isXorOutputSwap = false): boolean => {
+export const hasInsufficientXorForFee = (xorAsset: Nullable<AccountAsset | RegisteredAccountAsset>, fee: CodecString, isXorOutputSwap = false): boolean => {
   if (!xorAsset) return true
   if (asZeroValue(fee)) return false
 
@@ -126,7 +127,7 @@ export async function delay (ms = 50): Promise<void> {
   await new Promise(resolve => setTimeout(resolve, ms))
 }
 
-export const formatAssetSymbol = (assetSymbol: string | undefined | null): string => {
+export const formatAssetSymbol = (assetSymbol: Nullable<string>): string => {
   return assetSymbol ?? ''
 }
 

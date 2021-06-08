@@ -85,7 +85,7 @@ export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, Dia
   @Getter('price', { namespace: 'prices' }) price!: string | number
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
 
-  @Getter slippageTolerance!: number
+  @Getter slippageTolerance!: string
 
   get formattedFromValue (): string {
     return this.formatStringValue(this.firstTokenAmount)

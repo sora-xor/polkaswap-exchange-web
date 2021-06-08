@@ -90,6 +90,7 @@ import { Components, PageNames } from '@/consts'
 import { formatAssetSymbol, formatDateItem } from '@/utils'
 import { STATES } from '@/utils/fsm'
 import { bridgeApi } from '@/utils/bridge'
+import { Nullable } from '@/types'
 
 const namespace = 'bridge'
 
@@ -101,7 +102,7 @@ const namespace = 'bridge'
 })
 export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, LoadingMixin, NetworkFormatterMixin) {
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
-  @Getter('history', { namespace }) history!: Array<BridgeHistory> | null
+  @Getter('history', { namespace }) history!: Nullable<Array<BridgeHistory>>
   @Getter('restored', { namespace }) restored!: boolean
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: string
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString

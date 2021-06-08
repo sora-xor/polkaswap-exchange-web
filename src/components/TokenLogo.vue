@@ -9,11 +9,12 @@ import { WhitelistAssets } from 'polkaswap-token-whitelist'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { LogoSize } from '@/consts'
+import { ObjectInit } from '@/types'
 
 @Component
 export default class TokenLogo extends Mixins(TranslationMixin) {
   @Prop({ type: String, default: '' }) readonly tokenSymbol!: string // ONLY for Bridge.vue
-  @Prop({ type: Object, default: () => null }) readonly token!: AccountAsset | Asset
+  @Prop({ type: Object, default: ObjectInit }) readonly token!: AccountAsset | Asset
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
 
   get tokenClasses (): string {

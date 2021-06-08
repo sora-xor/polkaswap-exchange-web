@@ -134,6 +134,7 @@ import DialogBase from '@/components/DialogBase.vue'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
 import { copyToClipboard, formatAddress, formatAssetBalance, debouncedInputHandler } from '@/utils'
+import { Nullable, ObjectInit } from '@/types'
 
 const namespace = 'assets'
 
@@ -154,12 +155,12 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   customAddress = ''
   alreadyAttached = false
   isConfirmed = false
-  customAsset: Asset | null = null
+  customAsset: Nullable<Asset> = null
 
-  @Prop({ default: () => false, type: Boolean }) readonly connected!: boolean
-  @Prop({ default: () => null, type: Object }) readonly asset!: Asset
-  @Prop({ default: () => false, type: Boolean }) readonly accountAssetsOnly!: boolean
-  @Prop({ default: () => false, type: Boolean }) readonly notNullBalanceOnly!: boolean
+  @Prop({ default: false, type: Boolean }) readonly connected!: boolean
+  @Prop({ default: ObjectInit, type: Object }) readonly asset!: Asset
+  @Prop({ default: false, type: Boolean }) readonly accountAssetsOnly!: boolean
+  @Prop({ default: false, type: Boolean }) readonly notNullBalanceOnly!: boolean
 
   @Getter('whitelistAssets', { namespace }) whitelistAssets!: Array<Asset>
   @Getter('nonWhitelistAccountAssets', { namespace }) nonWhitelistAccountAssets!: Array<AccountAsset>

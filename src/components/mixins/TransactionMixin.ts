@@ -9,12 +9,13 @@ import { groupRewardsByAssetsList } from '@/utils/rewards'
 import TranslationMixin from './TranslationMixin'
 import LoadingMixin from './LoadingMixin'
 import NumberFormatterMixin from './NumberFormatterMixin'
+import { Nullable } from '@/types'
 
 @Component
 export default class TransactionMixin extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
   private time = 0
 
-  transaction: History | null = null // It's used just for sync errors
+  transaction: Nullable<History> = null // It's used just for sync errors
 
   @Action addActiveTransaction
   @Action removeActiveTransaction

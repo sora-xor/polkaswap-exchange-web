@@ -170,6 +170,7 @@ import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EvmSymbol, MetamaskCancellationCode } from '@/consts'
 import { formatAssetSymbol, copyToClipboard, formatDateItem, hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils'
 import { createFSM, EVENTS, SORA_EVM_STATES, EVM_SORA_STATES, STATES } from '@/utils/fsm'
+import { Nullable } from '@/types'
 
 const namespace = 'bridge'
 
@@ -188,7 +189,7 @@ export default class BridgeTransaction extends Mixins(
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
 
   @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean
-  @Getter('asset', { namespace }) asset!: AccountAsset | RegisteredAccountAsset | null
+  @Getter('asset', { namespace }) asset!: Nullable<AccountAsset | RegisteredAccountAsset>
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('amount', { namespace }) amount!: string
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
