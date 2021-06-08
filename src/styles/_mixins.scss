@@ -57,31 +57,31 @@
 
 @mixin generic-input-lines($inputLineClass: "input-line") {
   .#{$inputLineClass} {
-    &-header, &-footer {
-      padding-top: $inner-spacing-mini / 2;
-      padding-right: $inner-spacing-medium;
-      padding-left: $inner-spacing-medium;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: $inner-spacing-mini;
+    font-size: var(--s-font-size-mini);
+    line-height: var(--s-line-height-medium);
+
+    .input-title, .token-balance {
+      text-transform: uppercase;
+    }
+
+    .input-title-estimated {
+      margin-left: $inner-spacing-mini / 2;
       font-size: var(--s-font-size-mini);
-      line-height: $s-line-height-big;
+      font-weight: 400;
+      opacity: 0;
+      &--show {
+        opacity: 1;
+      }
     }
-    &-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: $inner-spacing-mini;
-    }
-    &-content {
-      margin-bottom: $inner-spacing-mini;
-      display: flex;
-      justify-content: space-between;
-      padding-right: $inner-spacing-small;
-      padding-left: $inner-spacing-medium;
-    }
+
     .token-balance {
       text-align: right;
       &-title {
         margin-right: $inner-spacing-mini / 2;
-        color: var(--s-color-base-content-secondary);
       }
       &-value {
         word-break: break-all;
@@ -90,6 +90,7 @@
   }
 }
 
+// TODO: remove?
 @mixin input-form-styles {
   display: flex;
   flex-direction: column;

@@ -16,6 +16,7 @@
     </generic-page-header>
     <s-float-input
       class="s-input--token-value"
+      size="medium"
       :value="fromValue"
       :decimals="(tokenFrom || {}).decimals"
       has-locale-string
@@ -24,8 +25,8 @@
       @input="handleInputFieldFrom"
       @focus="handleFocusField(false)"
     >
-      <div slot="top" class="input-line-header">
-        <div class="input-title p4">
+      <div slot="top" class="input-line">
+        <div class="input-title">
           <span>{{ t('transfers.from') }}</span>
           <span :class="`input-title-estimated ${(areTokensSelected && !isZeroToAmount && isExchangeB) ? 'input-title-estimated--show' : ''}`">
             ({{ t('swap.estimated') }})
@@ -36,22 +37,7 @@
           <span class="token-balance-value">{{ formatBalance(tokenFrom) }}</span>
         </div>
       </div>
-    </s-float-input>
-    <div class="input-container">
-
-      <div class="input-line-content">
-        <s-form-item>
-          <s-float-input
-            class="s-input--token-value"
-            :value="fromValue"
-            :decimals="(tokenFrom || {}).decimals"
-            has-locale-string
-            :delimiters="delimiters"
-            :max="getMax((tokenFrom || {}).address)"
-            @input="handleInputFieldFrom"
-            @focus="handleFocusField(false)"
-          />
-        </s-form-item>
+      <template #right>
         <div v-if="tokenFrom" class="token">
           <s-button v-if="isMaxSwapAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue">
             {{ t('buttons.max') }}
@@ -64,8 +50,8 @@
         <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectTokenDialog(true)">
           {{ t('buttons.chooseToken') }}
         </s-button>
-      </div>
-    </div>
+      </template>
+    </s-float-input>
     <s-button class="el-button--switch-tokens" type="action" icon="arrows-swap-90-24" :disabled="!areTokensSelected || isRecountingProcess" @click="handleSwitchTokens" />
     <div class="input-container">
       <div class="input-line-header">
@@ -532,20 +518,11 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
 <style lang="scss" scoped>
 .el-form--actions {
-  @include input-form-styles;
+  @include generic-input-lines;
+  // @include input-form-styles;
   @include buttons;
   @include full-width-button;
   @include vertical-divider('el-button--switch-tokens', $inner-spacing-medium);
-
-  .input-title-estimated {
-    margin-left: $inner-spacing-mini / 2;
-    font-size: var(--s-font-size-mini);
-    font-weight: 400;
-    opacity: 0;
-    &--show {
-      opacity: 1;
-    }
-  }
 
   .el-button--switch-tokens {
     @include switch-button(var(--s-size-medium));
