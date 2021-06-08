@@ -121,7 +121,7 @@
         <s-button
           class="el-button--next"
           type="primary"
-          :disabled="!isAssetSelected || !areNetworksConnected || !isValidEthNetwork || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEthereumForFee || isInsufficientBalance || !isRegisteredAsset"
+          :disabled="!isAssetSelected || !areNetworksConnected || !isValidEthNetwork || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEthereumForFee || isInsufficientBalance || !isRegisteredAsset || feesFetching"
           @click="handleConfirmTransaction"
         >
           <template v-if="!isAssetSelected">
@@ -252,6 +252,7 @@ export default class Bridge extends Mixins(
   isFieldAmountFocused = false
   showSelectTokenDialog = false
   showConfirmTransactionDialog = false
+  feesFetching = false
 
   get isNetworkAConnected () {
     return this.isSoraToEthereum ? this.isSoraAccountConnected : this.isExternalAccountConnected
@@ -360,7 +361,7 @@ export default class Bridge extends Mixins(
     this.resetBridgeForm(!!router.currentRoute.params?.address)
     this.withApi(async () => {
       await this.getRegisteredAssets()
-      this.getNetworkFees()
+      await this.getNetworkFees()
     })
   }
 
@@ -383,9 +384,9 @@ export default class Bridge extends Mixins(
     this.isFieldAmountFocused = true
   }
 
-  handleSwitchItems (): void {
+  async handleSwitchItems (): Promise<void> {
     this.setSoraToEthereum(!this.isSoraToEthereum)
-    this.getNetworkFees()
+    await this.getNetworkFees()
   }
 
   handleMaxValue (): void {
@@ -413,7 +414,7 @@ export default class Bridge extends Mixins(
   async selectAsset (selectedAsset: any): Promise<void> {
     if (selectedAsset) {
       await this.setAssetAddress(selectedAsset?.address ?? '')
-      this.getNetworkFees()
+      await this.getNetworkFees()
     }
   }
 
@@ -425,10 +426,14 @@ export default class Bridge extends Mixins(
     })
   }
 
-  private getNetworkFees (): void {
+  private async getNetworkFees (): Promise<void> {
     if (this.isRegisteredAsset) {
-      this.getNetworkFee()
-      this.getEthNetworkFee()
+      this.feesFetching = true
+      await Promise.all([
+        this.getNetworkFee(),
+        this.getEthNetworkFee()
+      ])
+      this.feesFetching = false
     }
   }
 }
