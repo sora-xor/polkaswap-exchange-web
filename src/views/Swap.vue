@@ -14,8 +14,17 @@
         </template>
       </status-action-badge>
     </generic-page-header>
-    <div class="input-container">
-      <div class="input-line-header">
+    <s-float-input
+      class="s-input--token-value"
+      :value="fromValue"
+      :decimals="(tokenFrom || {}).decimals"
+      has-locale-string
+      :delimiters="delimiters"
+      :max="getMax((tokenFrom || {}).address)"
+      @input="handleInputFieldFrom"
+      @focus="handleFocusField(false)"
+    >
+      <div slot="top" class="input-line-header">
         <div class="input-title p4">
           <span>{{ t('transfers.from') }}</span>
           <span :class="`input-title-estimated ${(areTokensSelected && !isZeroToAmount && isExchangeB) ? 'input-title-estimated--show' : ''}`">
@@ -27,6 +36,9 @@
           <span class="token-balance-value">{{ formatBalance(tokenFrom) }}</span>
         </div>
       </div>
+    </s-float-input>
+    <div class="input-container">
+
       <div class="input-line-content">
         <s-form-item>
           <s-float-input

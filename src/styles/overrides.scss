@@ -108,9 +108,6 @@ button.el-button--create-pair span,
 button.select-node-button span {
   text-transform: uppercase !important;
 }
-h3.page-header-title, h3.base-title_text {
-  padding-left: 12px;
-}
 
 /* CARDS */
 div.el-card, div.el-dialog {
@@ -141,19 +138,6 @@ button.el-button--choose-token {
 button.el-button--choose-token:hover {
   background-color: white !important;
   filter: drop-shadow(-1px -1px 5px rgba(247, 84, 163, 0.25)) drop-shadow(1px 1px 5px rgba(247, 84, 163, 0.25));
-}
-
-button.el-button--empty-token {
-  background-color: var(--s-color-theme-secondary) !important;
-  border-color: var(--s-color-theme-secondary) !important;
-  color: white !important;
-  font-size: var(--s-font-size-mini) !important;
-  letter-spacing: var(--s-letter-spacing-medium) !important;
-  filter: drop-shadow(1px 1px 5px #FFFFFF) drop-shadow(-1px -1px 5px #FFFFFF);
-  height: 33px;
-  padding-right: 6px !important;
-  text-transform: uppercase;
-  transition: all 0.125s ease-in-out;
 }
 button.el-button--empty-token:hover {
   background-color: var(--s-color-theme-secondary-hover) !important;

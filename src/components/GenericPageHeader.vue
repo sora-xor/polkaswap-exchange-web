@@ -65,7 +65,8 @@ $title-padding: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
 #{$page-header-class} {
   position: relative;
   display: flex;
-  margin-bottom: $inner-spacing-medium;
+  margin: 0 0 $inner-spacing-medium;
+  padding: 0 $inner-spacing-small;
   width: 100%;
   &--center {
     .el-button {
@@ -80,13 +81,14 @@ $title-padding: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
     #{$page-header-class}-tooltip {
       position: absolute;
       top: 0;
-      right: 0;
+      right: $inner-spacing-small;
       bottom: 0;
     }
   }
   &-title {
     line-height: $tooltip-area-height;
     font-feature-settings: $s-font-feature-settings-title;
+    font-weight: 300;
     letter-spacing: $s-letter-spacing-small;
     & + .el-button {
       right: 0;

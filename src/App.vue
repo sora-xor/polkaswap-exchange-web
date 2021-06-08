@@ -4,27 +4,22 @@
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
 
       <div class="app-controls s-flex">
-        <s-button type="tertiary" size="medium" class="app-control node-control" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
+        <s-button type="tertiary" alternative size="medium" class="node-control" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
           <div class="node-control__text">
             <div class="node-control-title">{{ node.name }}</div>
             <div class="node-control-network">{{ chainAndNetworkText }}</div>
           </div>
           <token-logo class="node-control__logo" v-bind="nodeLogo" />
         </s-button>
-        <branded-tooltip :disabled="isLoggedIn" popper-class="info-tooltip wallet-tooltip" placement="bottom">
-          <div slot="content" class="app-controls__wallet-tooltip">
-            {{ t('connectWalletTextTooltip') }}
-          </div>
-          <s-button class="app-control wallet" :disabled="loading" @click="goTo(PageNames.Wallet)">
-            <div class="account">
-              <div class="account-name">{{ accountInfo }}</div>
-              <div class="account-icon">
-                <s-icon v-if="!isLoggedIn" name="finance-wallet-24" />
-                <WalletAvatar v-else :address="account.address"/>
-              </div>
+        <s-button type="tertiary" alternative size="medium" :tooltip="t('connectWalletTextTooltip')" :disabled="loading" @click="goTo(PageNames.Wallet)">
+          <div class="account">
+            <div class="account-name">{{ accountInfo }}</div>
+            <div class="account-icon">
+              <s-icon v-if="!isLoggedIn" name="finance-wallet-24" />
+              <WalletAvatar v-else :address="account.address"/>
             </div>
-          </s-button>
-        </branded-tooltip>
+          </div>
+        </s-button>
       </div>
     </header>
     <div class="app-main">
@@ -246,7 +241,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
 
   get nodeLogo (): any {
     return {
-      size: LogoSize.SMALL,
+      size: LogoSize.MEDIUM,
       tokenSymbol: KnownSymbols.XOR
     }
   }
@@ -648,34 +643,11 @@ $disclaimer-letter-spacing: -0.03em;
   margin-left: auto;
 
   & > *:not(:last-child) {
-    margin-right: $inner-spacing-mini;
-  }
-
-  .wallet-section {
-    border: 1px solid var(--s-color-base-border-secondary);
-    border-radius: var(--s-size-small);
-    background: var(--s-color-base-background);
-    align-items: center;
-  }
-
-  .app-control {
-    padding: $inner-spacing-mini / 2;
-    background-color: var(--s-color-base-background);
-    border-color: var(--s-color-base-background);
-
-    &:hover, &.focusing, &.s-pressed {
-      color: inherit;
-      background-color: var(--s-color-base-background-hover);
-      border-color: var(--s-color-base-background-hover);
-    }
-  }
-
-  &__wallet-tooltip {
-    max-width: 181px;
+    margin-right: $inner-spacing-mini * 2.5;
   }
 
   .el-button + .el-button {
-    margin-left: $inner-spacing-mini;
+    margin-left: 0;
   }
 }
 
@@ -686,8 +658,7 @@ $disclaimer-letter-spacing: -0.03em;
   &-name {
     font-size: var(--s-font-size-small);
     font-feature-settings: $s-font-feature-settings-common;
-    color: var(--s-color-base-content-primary);
-    margin: $account-name-margin;
+    margin-right: $inner-spacing-mini / 2;
   }
 
   &-icon {
@@ -711,13 +682,9 @@ $disclaimer-letter-spacing: -0.03em;
   &__text {
     padding-right: calc(var(--s-basic-spacing) / 2);
     text-align: right;
-    font-size: var(--s-font-size-mini);
+    font-size: var(--s-font-size-extra-small);
+    letter-spacing: var(--s-letter-spacing-small);
   }
-
-  &-title {
-    // color: var(--s-color-base-content-primary);
-  }
-
   &-network {
     color: var(--s-color-base-content-tertiary);
   }
