@@ -17,13 +17,16 @@ export default class ToggleTextButton extends Vue {
 
 <style lang="scss" scoped>
 .toggle-text-button {
-  padding: 0;
+  padding: 0 !important;
+  text-transform: none !important;
   color: inherit;
   font-size: inherit;
   line-height: inherit;
 
   span {
+    font-size: var(--s-font-size-mini);
     font-weight: 400 !important;
+    line-height: var(--s-line-height-medium);
   }
 
   .secondary-text {

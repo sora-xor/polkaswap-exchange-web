@@ -27,14 +27,12 @@
     >
       <div slot="top" class="input-line">
         <div class="input-title">
-          <span>{{ t('transfers.from') }}</span>
-          <span :class="`input-title-estimated ${(areTokensSelected && !isZeroToAmount && isExchangeB) ? 'input-title-estimated--show' : ''}`">
-            ({{ t('swap.estimated') }})
-          </span>
+          <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
+          <span class="input-title--uppercase input-title--primary" v-if="areTokensSelected && !isZeroToAmount && isExchangeB">({{ t('swap.estimated') }})</span>
         </div>
-        <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="token-balance">
-          <span class="token-balance-title">{{ t('exchange.balance') }}</span>
-          <span class="token-balance-value">{{ formatBalance(tokenFrom) }}</span>
+        <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="input-title">
+          <span class="input-title--uppercase">{{ t('exchange.balance') }}</span>
+          <span class="input-title--uppercase input-title--primary">{{ formatBalance(tokenFrom) }}</span>
         </div>
       </div>
       <div slot="right" class="s-flex el-buttons">
@@ -58,14 +56,12 @@
     >
       <div slot="top" class="input-line">
         <div class="input-title">
-          <span>{{ t('transfers.to') }}</span>
-          <span :class="`input-title-estimated ${(areTokensSelected && !isZeroFromAmount && !isExchangeB) ? 'input-title-estimated--show' : ''}`">
-            ({{ t('swap.estimated') }})
-          </span>
+          <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
+          <span class="input-title--uppercase input-title--primary" v-if="areTokensSelected && !isZeroFromAmount && !isExchangeB">({{ t('swap.estimated') }})</span>
         </div>
-        <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="token-balance">
-          <span class="token-balance-title">{{ t('exchange.balance') }}</span>
-          <span class="token-balance-value">{{ formatBalance(tokenTo) }}</span>
+        <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="input-title">
+          <span class="input-title--uppercase">{{ t('exchange.balance') }}</span>
+          <span class="input-title--uppercase input-title--primary">{{ formatBalance(tokenTo) }}</span>
         </div>
       </div>
       <div slot="right" class="s-flex el-buttons">

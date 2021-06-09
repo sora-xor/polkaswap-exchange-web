@@ -27,102 +27,83 @@
             @click="handleChangeNetwork"
           /> -->
         </generic-page-header>
-        <s-card :class="isSoraToEvm ? 'bridge-item' : 'bridge-item bridge-item--evm'" border-radius="mini" shadow="never">
-          <div class="bridge-item-header">
-            <div class="bridge-item-title">
-              <span class="bridge-item-title-label">{{ t('transfers.from') }}</span>
+
+        <s-float-input
+          :value="amount"
+          :decimals="(asset || {}).externalDecimals"
+          :delimiters="delimiters"
+          :max="getMax((asset || {}).address)"
+          :class="inputClasses"
+          :disabled="!areNetworksConnected || !isAssetSelected"
+          has-locale-string
+          size="medium"
+          @input="setAmount"
+          @focus="handleFocus"
+          @blur="handleBlur"
+        >
+          <div slot="top" class="input-line">
+            <div class="input-title">
+              <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
               <span>{{ getBridgeItemTitle() }}</span>
               <i :class="`s-icon-${isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
             </div>
-            <div v-if="isNetworkAConnected && isAssetSelected" class="token-balance">
-              <span class="token-balance-title">{{ t('bridge.balance') }}</span>
-              <span class="token-balance-value">{{ formatBalance(isSoraToEvm) }}</span>
+            <div v-if="isNetworkAConnected && isAssetSelected" class="input-title">
+              <span class="input-title--uppercase">{{ t('bridge.balance') }}</span>
+              <span class="input-title--uppercase input-title--primary">{{ formatBalance(isSoraToEvm) }}</span>
             </div>
           </div>
-          <div class="bridge-item-content">
-            <s-form-item>
-              <s-float-input
-                :value="amount"
-                :decimals="(asset || {}).externalDecimals"
-                has-locale-string
-                :delimiters="delimiters"
-                :max="getMax((asset || {}).address)"
-                :class="inputClasses"
-                :disabled="!areNetworksConnected || !isAssetSelected"
-                @input="setAmount"
-                @focus="handleFocus"
-                @blur="handleBlur"
-              />
-            </s-form-item>
-            <div v-if="isNetworkAConnected && isAssetSelected" class="asset">
-              <s-button v-if="isMaxAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue">
-                {{ t('buttons.max') }}
-              </s-button>
-              <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectAssetDialog">
-                <token-logo :token="asset" size="small" />
-                {{ formatAssetSymbol(assetSymbol) }}
-              </s-button>
-            </div>
-            <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" :disabled="!areNetworksConnected" @click="openSelectAssetDialog">
-              {{ t('buttons.chooseToken') }}
+          <div slot="right" v-if="isNetworkAConnected" class="s-flex el-buttons">
+            <s-button v-if="isMaxAvailable" class="el-button--max" type="tertiary" size="mini" border-radius="mini" @click="handleMaxValue">
+              {{ t('buttons.max') }}
             </s-button>
+            <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="asset" @click="openSelectAssetDialog" />
           </div>
-          <div v-if="isNetworkAConnected && !isSoraToEvm" class="bridge-item-footer">
-            <s-divider />
-            <s-button class="el-button--change-wallet" type="link" size="mini" @click="isSoraToEvm ? connectInternalWallet() : changeExternalWallet()">
-              <span class="bridge-item-id">{{ formatAddress(isSoraToEvm ? getWalletAddress() : evmAddress, 8) }}</span>
-              <span class="change-wallet">{{ t('bridge.changeAccount') }}</span>
-            </s-button>
-            <span>{{ t('bridge.connected') }}</span>
-          </div>
-          <s-button v-else-if="!isNetworkAConnected" class="el-button--connect" type="primary" @click="isSoraToEvm ? connectInternalWallet() : connectExternalWallet()">
-            {{ t('bridge.connectWallet') }}
-          </s-button>
-        </s-card>
+        </s-float-input>
+
         <s-button class="s-button--switch" type="action" icon="arrows-swap-90-24" @click="handleSwitchItems" />
-        <s-card :class="!isSoraToEvm ? 'bridge-item' : 'bridge-item bridge-item--evm'" border-radius="mini" shadow="never">
-          <div class="bridge-item-header">
-            <div class="bridge-item-title bridge-item-title--to" @click="handleChangeNetwork">
-              <span class="bridge-item-title-label">{{ t('transfers.to') }}</span>
+
+        <s-float-input
+          :value="amount"
+          :decimals="(asset || {}).externalDecimals"
+          :delimiters="delimiters"
+          :max="getMax((asset || {}).address)"
+          :class="inputClasses"
+          has-locale-string
+          size="medium"
+          disabled
+        >
+          <div slot="top" class="input-line">
+            <div class="input-title" @click="handleChangeNetwork">
+              <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
               <span>{{ getBridgeItemTitle(true) }}</span>
               <i :class="`s-icon-${!isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
             </div>
-            <div v-if="areNetworksConnected && isAssetSelected" class="token-balance">
-              <span class="token-balance-title">{{ t('bridge.balance') }}</span>
-              <span class="token-balance-value">{{ formatBalance(!isSoraToEvm) }}</span>
+            <div v-if="isNetworkAConnected && isAssetSelected" class="input-title">
+              <span class="input-title--uppercase">{{ t('bridge.balance') }}</span>
+              <span class="input-title--uppercase input-title--primary">{{ formatBalance(!isSoraToEvm) }}</span>
             </div>
           </div>
-          <div class="bridge-item-content">
-            <s-form-item>
-              <s-float-input
-                :value="amount"
-                :decimals="(asset || {}).externalDecimals"
-                has-locale-string
-                :delimiters="delimiters"
-                :max="getMax((asset || {}).address)"
-                :class="inputClasses"
-                disabled
+          <div slot="right" v-if="isNetworkAConnected && isAssetSelected" class="s-flex el-buttons">
+            <token-select-button class="el-button--select-token" :token="asset" />
+          </div>
+          <template #bottom>
+            <div v-if="isNetworkBConnected && isSoraToEvm" class="bridge-item-footer">
+              <s-divider />
+              <toggle-text-button
+                type="link"
+                size="mini"
+                :primary-text="formatAddress(isSoraToEvm ? evmAddress : getWalletAddress(), 8)"
+                :secondary-text="t('bridge.changeAccount')"
+                @click="!isSoraToEvm ? connectInternalWallet() : changeExternalWallet()"
               />
-            </s-form-item>
-            <div v-if="areNetworksConnected && isAssetSelected" class="asset">
-              <s-button class="el-button--choose-token el-button--disabled" type="tertiary" size="small" border-radius="medium">
-                <token-logo :token="asset" size="small" />
-                {{ formatAssetSymbol(assetSymbol) }}
-              </s-button>
+              <span>{{ t('bridge.connected') }}</span>
             </div>
-          </div>
-          <div v-if="isNetworkBConnected && isSoraToEvm" class="bridge-item-footer">
-            <s-divider />
-            <s-button class="el-button--change-wallet" type="link" size="mini" @click="!isSoraToEvm ? connectInternalWallet() : changeExternalWallet()">
-              <span class="bridge-item-id">{{ formatAddress(isSoraToEvm ? evmAddress : getWalletAddress(), 8) }}</span>
-              <span class="change-wallet">{{ t('bridge.changeAccount') }}</span>
+            <s-button v-else-if="!isNetworkBConnected" class="el-button--connect" type="primary" @click="!isSoraToEvm ? connectInternalWallet() : connectExternalWallet()">
+              {{ t('bridge.connectWallet') }}
             </s-button>
-            <span>{{ t('bridge.connected') }}</span>
-          </div>
-          <s-button v-else-if="!isNetworkBConnected" class="el-button--connect" type="primary" @click="!isSoraToEvm ? connectInternalWallet() : connectExternalWallet()">
-            {{ t('bridge.connectWallet') }}
-          </s-button>
-        </s-card>
+          </template>
+        </s-float-input>
+
         <s-button
           class="el-button--next"
           type="primary"
@@ -224,7 +205,8 @@ const namespace = 'bridge'
     SelectNetwork: lazyComponent(Components.SelectNetwork),
     SelectRegisteredAsset: lazyComponent(Components.SelectRegisteredAsset),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
-    ToggleTextButton: lazyComponent(Components.ToggleTextButton)
+    ToggleTextButton: lazyComponent(Components.ToggleTextButton),
+    TokenSelectButton: lazyComponent(Components.TokenSelectButton)
   }
 })
 export default class Bridge extends Mixins(
@@ -544,6 +526,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
   &-content {
     @include bridge-content;
   }
+  @include generic-input-lines;
   @include token-styles;
   @include vertical-divider('s-button--switch', $inner-spacing-medium);
   .s-button--switch {
@@ -561,42 +544,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     .el-button--change-wallet {
       margin-right: $inner-spacing-medium;
     }
-    &-title {
-      display: flex;
-      flex-wrap: nowrap;
-      align-items: center;
-      cursor: pointer;
-      &-label {
-        margin-right: $inner-spacing-mini / 2;
-        & + span {
-          color: var(--s-color-base-content-tertiary);
-          white-space: nowrap;
-        }
-      }
-      .s-icon {
-        &-sora, &-eth {
-          margin-top: $inner-spacing-mini / 4;
-          margin-left: $inner-spacing-mini / 4;
-        }
-      }
-    }
-    &--evm {
-      .el-button {
-        @include evm-logo-styles;
-      }
-      .el-button--choose-token {
-        cursor: initial;
-      }
-    }
-    .el-form-item {
-      margin-bottom: 0;
-      margin-right: $inner-spacing-mini;
-      width: 100%;
-    }
-    .s-input {
-      min-height: 0;
-      font-feature-settings: $s-font-feature-settings-title;
-    }
+
     .asset {
       display: flex;
       align-items: center;
