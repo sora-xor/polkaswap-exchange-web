@@ -182,7 +182,8 @@ const actions = {
   async getRewards ({ commit, dispatch }, address) {
     commit(types.GET_REWARDS_REQUEST)
     try {
-      const requests: Array<Promise<RewardInfo[]>> = [api.checkInternalAccountRewards()]
+      // TODO: Check this place later api.checkInternalAccountRewards -> api.checkLiquidityProvisionRewards()
+      const requests: Array<Promise<RewardInfo[]>> = [api.checkLiquidityProvisionRewards()]
       if (address) requests.push(api.checkExternalAccountRewards(address))
 
       const [internal, external] = await Promise.all(requests)
