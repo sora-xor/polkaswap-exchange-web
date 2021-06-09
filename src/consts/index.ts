@@ -88,7 +88,6 @@ export enum Components {
   NodeInfo = 'Settings/Node/NodeInfo',
   SelectNodeDialog = 'SelectNodeDialog',
   StatusActionBadge = 'StatusActionBadge',
-  BrandedTooltip = 'BrandedTooltip',
   ExternalLink = 'ExternalLink',
   HelpDialog = 'HelpDialog',
   AboutNetworkDialog = 'AboutNetworkDialog',

@@ -3,13 +3,12 @@
     :type="buttonType"
     size="small"
     border-radius="mini"
-    icon="chevron-down-rounded-16"
-    icon-position="right"
-    :class="['token-select-button', { token }]"
+    :class="['token-select-button', { token: hasToken }]"
     v-on="$listeners"
   >
-    <token-logo v-if="token" :token="token" size="small" class="token-select-button__icon" />
-    <span class="token-select-button__text">{{ token ? token.symbol : t('buttons.chooseToken') }}</span>
+    <component v-if="hasToken" :is="tokenLogoComponent" :token="token" :first-token="tokens[0]" :second-token="tokens[1]" :size="tokenComponentSize" class="token-select-button__logo" />
+    <span class="token-select-button__text">{{ buttonText }}</span>
+    <s-icon v-if="icon" class="token-select-button__icon" :name="icon" />
   </s-button>
 </template>
 
@@ -23,14 +22,37 @@ import { Components } from '@/consts'
 
 @Component({
   components: {
-    TokenLogo: lazyComponent(Components.TokenLogo)
+    TokenLogo: lazyComponent(Components.TokenLogo),
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
 export default class TokenSelectButton extends Mixins(TranslationMixin) {
   @Prop({ type: Object, default: () => null }) readonly token!: AccountAsset | Asset
+  @Prop({ type: Array, default: () => [] }) readonly tokens!: Array<AccountAsset | Asset>
+  @Prop({ type: String, default: '' }) readonly icon!: boolean
+
+  get hasToken (): boolean {
+    return this.tokens.length !== 0 || !!this.token
+  }
+
+  get tokenLogoComponent (): string {
+    return this.tokens.length !== 0 ? 'pair-token-logo' : 'token-logo'
+  }
+
+  get tokenComponentSize (): string {
+    return this.tokens.length !== 0 ? 'mini' : 'small'
+  }
 
   get buttonType (): string {
-    return this.token ? 'tertiary' : 'secondary'
+    return this.hasToken ? 'tertiary' : 'secondary'
+  }
+
+  get buttonText (): string {
+    if (!this.hasToken) return this.t('buttons.chooseToken')
+
+    return this.tokens.length !== 0
+      ? this.tokens.map(item => item.symbol).join('-')
+      : this.token.symbol
   }
 }
 </script>
@@ -39,8 +61,16 @@ export default class TokenSelectButton extends Mixins(TranslationMixin) {
 $baseClass: '.token-select-button';
 
 #{$baseClass} {
-  &__icon {
+  &__logo {
     margin-right: $inner-spacing-mini * 0.75;
+  }
+
+  &__icon {
+    margin-left: $inner-spacing-mini * 0.75;
+    background-color: var(--s-color-theme-secondary);
+    color: white !important;
+    border-radius: var(--s-border-radius-medium);
+    padding: 2px;
   }
 
   &.token {

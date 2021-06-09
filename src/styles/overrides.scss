@@ -104,7 +104,6 @@ div.wallet-assets button.el-button,
 .s-button--restore,
 div.asset-custom-actions button.el-button,
 div.el-tabs__item,
-button.el-button--create-pair span,
 button.select-node-button span {
   text-transform: uppercase !important;
 }
@@ -125,18 +124,11 @@ div.el-card.bridge-item {
   background-color: var(--s-color-base-background) !important;
 }
 
-button.el-button--empty-token span {
-  padding-left: 2px;
-}
 button.el-button.s-primary:disabled {
   border-color: var(--s-color-base-border-primary) !important;
   border: 2px solid;
   box-shadow: 1px 1px 5px #FFFFFF, -1px -1px 5px #FFFFFF;
   min-height: 42px;
-}
-button.el-button--empty-token i.s-icon-chevron-down-rounded-16 {
-  background-color: rgba(255,255,255,0.75) !important;
-  color: var(--s-color-theme-secondary) !important;
 }
 
 button.el-button.details.s-link {
@@ -160,12 +152,8 @@ button.el-button.send.s-small, button.el-button.swap.s-small {
   width: 48px;
 }
 
-div.asset-search-actions button.el-button--plain,
-div.asset-custom-actions button.el-button--plain,
-div.wallet-assets button.el-button--plain,
 div.select-node button.el-button--plain,
 div.node-info button.el-button--plain,
-button.el-button--create-pair,
 .s-button--restore {
   color: #fff !important;
   border: 1px solid #ddd !important;
@@ -173,12 +161,8 @@ button.el-button--create-pair,
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1), inset 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 
-div.asset-search-actions button.el-button--plain:hover,
-div.asset-custom-actions button.el-button--plain:hover,
-div.wallet-assets button.el-button--plain:hover,
 div.select-node button.el-button--plain:hover,
 div.node-info button.el-button--plain:hover,
-button.el-button--create-pair:hover,
 .s-button--restore:hover {
   color: #fff !important;
   border: 1px solid #ddd !important;
@@ -209,12 +193,9 @@ li.el-menu-item.is-active div.icon-container {
 }
 
 button.el-dialog__headerbtn,
-div.page-header--center button.s-action.s-i-position-left,
 button.base-title_back,
 button.base-title_trash,
-button.base-title_action,
 i.el-collapse-item__arrow,
-button.el-button--history,
 button.s-button--switch {
   background-color: var(--s-color-utility-surface) !important;
   box-shadow: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1);
@@ -222,23 +203,17 @@ button.s-button--switch {
   border: none;
 }
 button.el-dialog__headerbtn:hover,
-div.page-header--center button.s-action.s-i-position-left:hover,
 button.base-title_back:hover,
 button.base-title_trash:hover,
-button.base-title_action:hover,
 i.el-collapse-item__arrow:hover,
-button.el-button--history:hover,
 button.s-button--switch:hover {
   background-color: var(--s-color-theme-secondary-pressed) !important;
   opacity: 0.75;
   box-shadow: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 button.el-dialog__headerbtn:hover > i.el-icon,
-div.page-header--center button.s-action.s-i-position-left:hover > span > i,
 button.base-title_back:hover > span > i,
 button.base-title_trash:hover > span > i,
-button.base-title_action:hover > span > i,
-button.el-button--history:hover > span > i,
 button.s-button--switch:hover > span > i {
   color: white !important;
 }
@@ -255,16 +230,6 @@ div.el-pagination button, div.el-collapse-item__wrap { background-color: unset !
 span.el-pagination__total { padding: 0 8px; }
 div.asset-details-balance i.s-icon-chevron-down-rounded-16 { padding-right: 8px; }
 div.el-collapse-item__content {padding-top: 0 !important;font-weight: 600;}
-div.pool-info--buttons {margin: 0 auto !important; padding-bottom: 16px;justify-content: space-around;}
-div.pool-info--buttons button span {font-size: 16px !important;}
-div.pool-info-container {background-color: var(--s-color-utility-body) !important;}
-
-i.s-icon-chevron-down-rounded-16 {
-  background-color: var(--s-color-theme-secondary);
-  color: white !important;
-  border-radius: var(--s-border-radius-medium);
-  padding: 2px;
-}
 
 /* FORMS */
 div.s-input-amount input.el-input__inner {
@@ -285,19 +250,11 @@ div.slippage-tolerance-custom_input input.el-input__inner {
 
 div.transaction div.s-input-container {margin-top: 16px;}
 
-div.asset-search-input input.el-input__inner, div.asset-custom-address input.el-input__inner, div.transaction input.el-input__inner, div.asset-search input.el-input__inner, div.custom-asset-address input.el-input__inner,
-div.token-search input.el-input__inner, div.wallet-settings-create-token input.el-input__inner, span.el-switch__core, .node-info-input input.el-input__inner {
+div.transaction input.el-input__inner, div.custom-asset-address input.el-input__inner, span.el-switch__core, .node-info-input input.el-input__inner {
   box-shadow: inset 1px 1px 2px #FFFFFF;
   filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.1));
   font-size: var(--s-icon-font-size-mini) !important;
 }
-div.wallet-settings-create-token_supply-block {justify-content: left !important;}
-div.wallet-settings-create-token_supply-block div.s-switch {margin-left: 16px !important;}
-div.wallet-settings-create-token_supply-block span,
-div.wallet-settings-create-token input.el-input__inner {font-weight: 700 !important;}
-p.wallet-settings-create-token_desc {padding: 8px 16px 16px !important;line-height: 1.25 !important;}
-
-div.wallet-settings-create-token_supply-block {background: unset !important;}
 
 div.asset-value {font-weight: 800 !important; font-size: 16px;}
 div.asset-description_symbol {font-weight: 800 !important; font-size: 20px;}
@@ -345,18 +302,6 @@ span.asset-item__balance {font-size: 16px !important; letter-spacing: -0.04em; w
 
 i.el-notification__icon.el-icon-success, i.el-notification__icon.el-icon-success:hover {
   color: var(--s-color-status-success) !important;
-}
-i.asset-logo {
-  box-shadow: none !important;
-  border: none !important;
-}
-i.asset-logo--pswap {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath fill='%23ED145B' d='M11,0C4.9,0,0,4.9,0,11s4.9,11,11,11s11-4.9,11-11S17.1,0,11,0z'/%3E%3Cpath fill='%23FFFFFF' d='M16,6.1c0.7,0.7,0.7,1.7,0,2.4c-0.7,0.7-4.4,2-4.4,2s1.4-3.8,2-4.4S15.3,5.4,16,6.1z M11,1.8 c0.9,0,1.7,0.8,1.7,1.7C12.7,4.5,11,10,11,10S9.3,4.5,9.3,3.5C9.3,2.6,10.1,1.8,11,1.8z M6.1,6.1c0.7-0.7,1.7-0.7,2.4,0 c0.7,0.7,2,4.4,2,4.4s-3.8-1.4-4.4-2C5.4,7.8,5.4,6.7,6.1,6.1z M1.8,11c0-0.9,0.8-1.7,1.7-1.7S10,11,10,11s-5.5,1.7-6.5,1.7 S1.8,11.9,1.8,11z M6.1,15.9c-0.7-0.7-0.7-1.7,0-2.4c0.7-0.7,4.4-2,4.4-2s-1.4,3.8-2,4.4C7.8,16.6,6.8,16.6,6.1,15.9z M11,20.2 c-0.9,0-1.7-0.8-1.7-1.7S11,12,11,12s1.7,5.5,1.7,6.5S11.9,20.2,11,20.2z M16,15.9c-0.7,0.7-1.7,0.7-2.4,0c-0.7-0.7-2-4.4-2-4.4 s3.8,1.4,4.4,2C16.6,14.2,16.6,15.3,16,15.9z M18.5,12.7C17.5,12.7,12,11,12,11s5.5-1.7,6.5-1.7c0.9,0,1.7,0.8,1.7,1.7 C20.2,11.9,19.4,12.7,18.5,12.7z'/%3E%3C/svg%3E") !important;
-}
-div.el-tooltip__popper {
-  border-radius: var(--s-border-radius-mini) !important;
-  border-color: var(--s-color-brand-day) !important;
-  padding: 6px 8px !important;
 }
 span.token-item__amount {
   white-space: nowrap;
@@ -420,21 +365,11 @@ div.article-card {
 }
 
 /*_______________________ CURRENT UI FIXES FOR CONSISTENCY (GENERALLY BASED ON TEST USERS FEEDBACK) _______________________*/
-
-div.wallet-assets-item i.asset-logo {
-  height: 40px !important;
-  width: 40px !important;
-}
-button.el-button.send.s-small, button.el-button.swap.s-small {
-  height: 40px;
-  width: 40px;
-}
 div.history-item-operation {
   padding: 0 !important;
 }
 button.select-node-button,
 button.el-button.wallet-assets-add,
-button.el-button--create-pair,
 .s-button--restore {
   font-size: var(--s-icon-font-size-medium) !important;
 }
@@ -465,20 +400,10 @@ div.header-icon {
 button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-medium.s-border-radius-small.s-primary.s-i-position-left span {
   font-size: var(--s-icon-font-size-mini) !important;
 }
-div.pool-info--buttons button.el-button {
-  background-color: var(--s-color-theme-secondary);
-  border-color: var(--s-color-theme-secondary);
-}
 div.pool-list div.el-collapse-item__content {
   margin-top: 16px;
   padding-top: 16px !important;
   border-top: 1px solid var(--s-color-theme-secondary);
-}
-div.pool-info--buttons {
-  padding-bottom: 8px !important;
-}
-div.wallet-settings-create-token input.el-input__inner {
-  border-radius: var(--s-border-radius-mini) !important;
 }
 
 span.sora-logo__title,

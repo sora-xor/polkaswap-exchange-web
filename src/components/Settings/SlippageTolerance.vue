@@ -5,7 +5,6 @@
       <settings-tabs :value="String(slippageTolerance)" :tabs="SlippageToleranceTabs" @click="selectTab"/>
     </div>
     <div class="slippage-tolerance-custom">
-      <settings-header :title="t('dexSettings.custom')" />
       <s-float-input
         class="slippage-tolerance-custom_input"
         size="small"
@@ -198,14 +197,18 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
 
 <style lang="scss" scoped>
 .slippage-tolerance {
+  display: flex;
   flex-wrap: wrap;
+  align-items: flex-end;
+
   &-default {
-    flex: 2;
     margin-right: $inner-spacing-medium;
   }
+
   &-custom {
     flex: 1;
   }
+
   &_validation {
     margin-top: $inner-spacing-mini;
     width: 100%;

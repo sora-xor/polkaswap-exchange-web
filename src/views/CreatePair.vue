@@ -5,79 +5,60 @@
       class="el-form--actions"
       :show-message="false"
     >
-      <div class="input-container">
-        <div class="input-line-header">
-          <div class="input-title p4">{{ t('createPair.deposit') }}</div>
+      <s-float-input
+        class="s-input--token-value"
+        :value="firstTokenValue"
+        :decimals="(firstToken || {}).decimals"
+        has-locale-string
+        :delimiters="delimiters"
+        :max="getMax((firstToken || {}).address)"
+        :disabled="!areTokensSelected"
+        @input="handleTokenChange($event, setFirstTokenValue)"
+      >
+        <div slot="top" class="input-line">
+          <div class="input-title">
+            <span>{{ t('createPair.deposit') }}</span>
+          </div>
           <div v-if="isLoggedIn && firstToken" class="token-balance">
             <span class="token-balance-title">{{ t('createPair.balance') }}</span>
             <span class="token-balance-value">{{ getTokenBalance(firstToken) }}</span>
           </div>
         </div>
-        <div class="input-line-content">
-          <s-form-item>
-            <s-float-input
-              class="s-input--token-value"
-              :value="firstTokenValue"
-              :decimals="(firstToken || {}).decimals"
-              has-locale-string
-              :delimiters="delimiters"
-              :max="getMax((firstToken || {}).address)"
-              :disabled="!areTokensSelected"
-              @input="handleTokenChange($event, setFirstTokenValue)"
-            />
-          </s-form-item>
-          <div v-if="firstToken" class="token">
-            <!-- TODO 4 alexnatalia, stefashkaa: Add mini size here -->
-            <s-button v-if="isAvailable && isFirstMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue(firstToken, setFirstTokenValue)">
-              {{ t('buttons.max') }}
-            </s-button>
-            <s-button class="el-button--choose-token el-button--disabled" type="tertiary" size="small" border-radius="medium">
-              <token-logo :token="firstToken" size="small" />
-              {{ firstToken.symbol }}
-            </s-button>
-          </div>
+        <div slot="right" class="s-flex el-buttons">
+          <s-button v-if="isAvailable && isFirstMaxButtonAvailable" class="el-button--max" type="tertiary" size="mini" border-radius="mini" @click="handleMaxValue(firstToken, setFirstTokenValue)">
+            {{ t('buttons.max') }}
+          </s-button>
+          <token-select-button class="el-button--select-token" :token="firstToken" />
         </div>
-      </div>
+      </s-float-input>
       <s-icon class="icon-divider" name="plus-16" />
-      <div class="input-container">
-        <div class="input-line-header">
-          <div class="input-title p4">
+      <s-float-input
+        class="s-input--token-value"
+        :value="secondTokenValue"
+        :decimals="(secondToken || {}).decimals"
+        has-locale-string
+        :delimiters="delimiters"
+        :max="getMax((secondToken || {}).address)"
+        :disabled="!areTokensSelected"
+        @input="handleTokenChange($event, setSecondTokenValue)"
+      >
+        <div slot="top" class="input-line">
+          <div class="input-title">
             <span>{{ t('createPair.deposit') }}</span>
           </div>
           <div v-if="isLoggedIn && secondToken" class="token-balance">
-            <span class="token-balance-title">{{ t('exchange.balance') }}</span>
+            <span class="token-balance-title">{{ t('createPair.balance') }}</span>
             <span class="token-balance-value">{{ getTokenBalance(secondToken) }}</span>
           </div>
         </div>
-        <div class="input-line-content">
-          <s-form-item>
-            <s-float-input
-              class="s-input--token-value"
-              :value="secondTokenValue"
-              :decimals="(secondToken || {}).decimals"
-              has-locale-string
-              :delimiters="delimiters"
-              :max="getMax((secondToken || {}).address)"
-              :disabled="!areTokensSelected"
-              @input="handleTokenChange($event, setSecondTokenValue)"
-            />
-          </s-form-item>
-          <div v-if="secondToken" class="token">
-            <!-- TODO 4 alexnatalia, stefashkaa: Add mini size here -->
-            <s-button v-if="isAvailable && isSecondMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue(secondToken, setSecondTokenValue)">
-              {{ t('buttons.max') }}
-            </s-button>
-            <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectSecondTokenDialog">
-              <token-logo :token="secondToken" size="small" />
-              {{ secondToken.symbol }}
-            </s-button>
-          </div>
-          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectSecondTokenDialog">
-            {{ t('buttons.chooseToken') }}
+        <div slot="right" class="s-flex el-buttons">
+          <s-button v-if="isAvailable && isSecondMaxButtonAvailable" class="el-button--max" type="tertiary" size="mini" border-radius="mini" @click="handleMaxValue(secondToken, setSecondTokenValue)">
+            {{ t('buttons.max') }}
           </s-button>
+          <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="secondToken" @click="openSelectSecondTokenDialog" />
         </div>
-      </div>
-      <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="openConfirmDialog">
+      </s-float-input>
+      <s-button type="primary" class="s-typography-button--big" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="openConfirmDialog">
         <template v-if="!areTokensSelected">
           {{ t('buttons.chooseTokens') }}
         </template>
@@ -124,7 +105,6 @@
               <pair-token-logo class="pair-token-logo" :first-token="firstToken" :second-token="secondToken" size="mini" />
             </template>
           </info-line>
-          <s-divider />
           <info-line :label="firstToken.symbol" :value="formatStringValue(firstTokenValue)" />
           <info-line :label="secondToken.symbol" :value="formatStringValue(secondTokenValue)" />
         </div>
@@ -171,7 +151,8 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
     InfoLine: lazyComponent(Components.InfoLine),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog)
+    ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
+    TokenSelectButton: lazyComponent(Components.TokenSelectButton)
   }
 })
 
@@ -193,7 +174,7 @@ export default class CreatePair extends Mixins(TokenPairMixin, NumberFormatterMi
 }
 
 .el-form--actions {
-  @include input-form-styles;
+  @include generic-input-lines;
   @include buttons;
   @include full-width-button;
 }

@@ -2,7 +2,7 @@
   <div :class="headerClasses">
     <s-button v-if="hasButtonBack" type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack" />
     <h3 class="page-header-title">{{ title }}</h3>
-    <branded-tooltip
+    <s-tooltip
       v-if="!!tooltip"
       class="page-header-tooltip"
       popper-class="info-tooltip info-tooltip--page-header"
@@ -10,7 +10,7 @@
       :placement="tooltipPlacement"
     >
       <s-icon name="info-16" />
-    </branded-tooltip>
+    </s-tooltip>
     <slot />
   </div>
 </template>
@@ -19,14 +19,8 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
 
-@Component({
-  components: {
-    BrandedTooltip: lazyComponent(Components.BrandedTooltip)
-  }
-})
+@Component
 export default class GenericPageHeader extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly hasButtonBack?: boolean
   @Prop({ default: '', type: String }) readonly title!: string
@@ -78,12 +72,6 @@ $title-padding: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
       padding-left: $title-padding;
       text-align: center;
     }
-    #{$page-header-class}-tooltip {
-      position: absolute;
-      top: 0;
-      right: $inner-spacing-small;
-      bottom: 0;
-    }
   }
   &-title {
     line-height: $tooltip-area-height;
@@ -97,22 +85,12 @@ $title-padding: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
       }
     }
   }
-  &-tooltip .s-icon-info-16 {
+  &-tooltip {
     margin-top: auto;
     margin-bottom: auto;
     margin-left: $inner-spacing-mini;
-    height: $tooltip-size;
-    width: $tooltip-size;
-    padding-left: 1px;
-    border-radius: 50%;
     line-height: $tooltip-area-height;
-    color: var(--s-color-base-content-tertiary);
-    text-align: center;
     cursor: pointer;
-    &:before {
-      font-size: var(--s-icon-font-size-mini);
-      line-height: $tooltip-size;
-    }
   }
 }
 </style>

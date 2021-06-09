@@ -13,11 +13,11 @@
             :placeholder="t('selectToken.searchPlaceholder')"
             class="token-search"
             prefix="el-icon-search"
-            size="medium"
+            size="big"
             border-radius="mini"
           >
             <template #suffix v-if="query">
-              <s-button class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
+              <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
             </template>
           </s-input>
         </div>
@@ -53,12 +53,12 @@
             :placeholder="t('selectToken.custom.search')"
             class="token-search"
             prefix="el-icon-search"
-            size="medium"
+            size="big"
             border-radius="mini"
             @input="debouncedCustomAssetSearch"
           >
             <template #suffix v-if="customAddress">
-              <s-button class="s-button--clear" icon="clear-X-16" @click="resetCustomAssetFields" />
+              <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="resetCustomAssetFields" />
             </template>
           </s-input>
         </div>
@@ -356,7 +356,7 @@ $token-item-height: 71px;
     font-size: var(--s-font-size-small);
   }
   &__details {
-    color: var(--s-color-base-content-tertiary);
+    color: var(--s-color-base-content-quaternary);
     font-size: var(--s-font-size-mini);
   }
   &__address, &__symbol {

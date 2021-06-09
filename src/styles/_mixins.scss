@@ -156,9 +156,6 @@
   .#{$buttonClass} {
     margin-top: $marginTop;
     width: 100%;
-    &:not(:disabled) {
-      font-weight: 600 !important;
-    }
   }
 }
 

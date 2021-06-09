@@ -41,7 +41,7 @@
         <s-button v-if="tokenFrom && isMaxSwapAvailable" class="el-button--max" type="tertiary" size="mini" border-radius="mini" @click="handleMaxValue">
           {{ t('buttons.max') }}
         </s-button>
-        <token-select-button class="el-button--select-token" :token="tokenFrom" @click="openSelectTokenDialog(true)" />
+        <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenFrom" @click="openSelectTokenDialog(true)" />
       </div>
     </s-float-input>
     <s-button class="el-button--switch-tokens" type="action" icon="arrows-swap-90-24" :disabled="!areTokensSelected || isRecountingProcess" @click="handleSwitchTokens" />
@@ -69,7 +69,7 @@
         </div>
       </div>
       <div slot="right" class="s-flex el-buttons">
-        <token-select-button class="el-button--select-token" :token="tokenTo" @click="openSelectTokenDialog(false)" />
+        <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenTo" @click="openSelectTokenDialog(false)" />
       </div>
     </s-float-input>
     <slippage-tolerance class="slippage-tolerance-settings" />
@@ -82,7 +82,7 @@
       type="primary"
       :disabled="!areTokensSelected || !isAvailable || hasZeroAmount || isInsufficientLiquidity || isInsufficientAmount || isInsufficientBalance || isInsufficientXorForFee" @click="handleConfirmSwap"
       :loading="isRecountingProcess || isAvailableChecking"
-      class="s-typography-button--large"
+      class="s-typography-button--big"
     >
       <template v-if="!areTokensSelected">
         {{ t('buttons.chooseTokens') }}

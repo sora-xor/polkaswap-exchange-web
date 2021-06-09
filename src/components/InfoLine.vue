@@ -2,14 +2,14 @@
   <div class="info-line">
     <slot name="info-line-prefix" />
     <span class="info-line-label">{{ label }}</span>
-    <branded-tooltip
+    <s-tooltip
       v-if="tooltipContent"
       popper-class="info-tooltip info-tooltip--info-line"
       :content="tooltipContent"
       placement="right-start"
     >
       <s-icon name="info-16" />
-    </branded-tooltip>
+    </s-tooltip>
     <span class="info-line-value">{{ value }}<span v-if="assetSymbol" class="asset-symbol">{{ ' ' + assetSymbol }}</span></span>
     <slot />
   </div>
@@ -18,14 +18,9 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 
-import { Components, InfoTooltipPosition } from '@/consts'
-import { lazyComponent } from '@/router'
+import { InfoTooltipPosition } from '@/consts'
 
-@Component({
-  components: {
-    BrandedTooltip: lazyComponent(Components.BrandedTooltip)
-  }
-})
+@Component
 export default class InfoLine extends Vue {
   @Prop({ default: '', type: String }) readonly label!: string
   @Prop({ default: '', type: String }) readonly tooltipContent?: string

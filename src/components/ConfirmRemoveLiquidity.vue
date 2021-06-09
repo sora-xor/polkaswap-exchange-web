@@ -130,8 +130,8 @@ export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, Dia
 }
 .transaction-message {
   margin-top: $inner-spacing-big;
-  color: var(--s-color-base-content-tertiary);
-  line-height: $s-line-height-base;
+  color: var(--s-color-base-content-primary);
+  line-height: var(--s-line-height-base);
 }
 @include vertical-divider;
 @include vertical-divider('el-divider');

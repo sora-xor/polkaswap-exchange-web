@@ -159,8 +159,8 @@ export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
 }
 .transaction-message {
   margin-top: $inner-spacing-mini;
-  color: var(--s-color-base-content-tertiary);
-  line-height: $s-line-height-big;
+  color: var(--s-color-base-content-primary);
+  line-height: var(--s-line-height-big);
 }
 @include vertical-divider;
 @include vertical-divider('el-divider');
