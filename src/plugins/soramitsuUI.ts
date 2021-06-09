@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import SoramitsuElements, { Message, MessageBox, Notification, Loading } from '@soramitsu/soramitsu-js-ui'
+import SoramitsuElements, { Message, MessageBox, Notification } from '@soramitsu/soramitsu-js-ui'
 import '@soramitsu/soramitsu-js-ui/lib/styles'
 
 import store from '@/store'
