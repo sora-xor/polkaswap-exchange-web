@@ -408,6 +408,10 @@ html {
   }
 }
 .el-form--actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   $swap-input-class: ".el-input";
   .s-input--token-value {
     #{$swap-input-class} {
@@ -421,20 +425,8 @@ html {
       padding-left: 0;
       border-radius: 0 !important;
       color: var(--s-color-base-content-primary);
-      font-size: $s-font-size-input;
+      font-size: var(--s-font-size-large);
       line-height: $s-line-height-small;
-      &, &:hover, &:focus {
-        background-color: var(--s-color-base-background);
-        border-color: var(--s-color-base-background);
-      }
-      &:disabled {
-        color: var(--s-color-base-content-tertiary);
-      }
-      &:not(:disabled) {
-        &:hover, &:focus {
-          color: var(--s-color-base-content-primary);
-        }
-      }
     }
     .s-placeholder {
       display: none;

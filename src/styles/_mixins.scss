@@ -123,47 +123,18 @@
 }
 
 @mixin buttons() {
-  $buttonDisabledClass: '.el-button--disabled';
-  $buttonChooseTokenClass: '.el-button--choose-token';
-  .s-tertiary {
-    padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
+  .el-buttons {
+    display: flex;
+    align-items: center;
   }
+
   .el-button {
-    &--max,
-    &--empty-token,
-    &--choose-token {
-      font-feature-settings: $s-font-feature-settings-title;
-      font-weight: 700 !important;
-    }
-    &--max,
-    &--empty-token {
-      margin-left: $inner-spacing-mini / 2;
-    }
     &--max {
       margin-right: $inner-spacing-mini / 2;
-      padding-right: $inner-spacing-mini;
-      height: var(--s-size-mini);
+      margin-left: $inner-spacing-mini / 2;
     }
-    &--choose-token {
-      margin-left: 0;
-      padding-left: $inner-spacing-mini / 2;
-      background-color: var(--s-color-base-background);
-      border-color: var(--s-color-base-background);
-      color: var(--s-color-base-content-primary);
-      font-size: var(--s-font-size-small);
-      &#{$buttonDisabledClass} {
-        cursor: default;
-      }
-      &:not(#{$buttonDisabledClass}) {
-        &:hover, &:active {
-          cursor: pointer;
-        }
-        &:hover, &:active, &:focus {
-          background-color: var(--s-color-base-background-hover);
-          border-color: var(--s-color-base-background-hover);
-          color: var(--s-color-base-content-primary);
-        }
-      }
+    &--select-token {
+      margin-left: $inner-spacing-mini / 2;
     }
   }
 }

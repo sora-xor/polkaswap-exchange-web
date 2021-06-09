@@ -120,32 +120,6 @@ button {
     left: 1px; // because of inset shadow
   }
 }
-button.el-button.app-control {
-  background-color: var(--s-color-utility-body) !important;
-  box-shadow: 1px 1px 3px rgba(255, 255, 255, 0.75), inset 1px 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-button.el-button--choose-token {
-  background-color: var(--s-color-utility-surface) !important;
-  border: none !important;
-  color: var(--s-color-base-content-primary) !important;
-  font-size: var(--s-icon-font-size-small) !important;
-  filter: drop-shadow(-1px -1px 5px rgba(0, 0, 0, 0.05)) drop-shadow(1px 1px 5px rgba(0, 0, 0, 0.05));
-  height: 33px;
-  padding-right: 6px !important;
-  transition: all 0.25s ease-in-out;
-}
-button.el-button--choose-token:hover {
-  background-color: white !important;
-  filter: drop-shadow(-1px -1px 5px rgba(247, 84, 163, 0.25)) drop-shadow(1px 1px 5px rgba(247, 84, 163, 0.25));
-}
-button.el-button--empty-token:hover {
-  background-color: var(--s-color-theme-secondary-hover) !important;
-  color: var(--s-color-theme-secondary) !important;
-}
-button.el-button--empty-token:hover > span > i {
-  background-color: var(--s-color-base-on-disabled) !important;
-}
 
 div.el-card.bridge-item {
   background-color: var(--s-color-base-background) !important;
@@ -212,21 +186,6 @@ button.el-button--create-pair:hover,
   filter: drop-shadow(1px 1px 5px #ccc) drop-shadow(-1px -1px 5px #ccc);
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1), inset 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
-button.el-button.s-primary {
-  color: #fff;
-  box-shadow: 1px 1px 5px #FFFFFF, -1px -1px 5px #FFFFFF;
-  border: 1px solid #ddd;
-  transition: all 0.25s ease-in-out;
-}
-button.el-button.s-primary:hover {
-  border: 1px solid #F7F3F4;
-  filter: drop-shadow(1px 1px 3px #F754A3) drop-shadow(-1px -1px 3px #F754A3);
-  box-shadow: 1px 1px 3px #FFFFFF, -1px -1px 3px #FFFFFF;
-}
-button.el-button.s-primary:disabled {
-  border: 1px solid #F7F3F4;
-  filter: none;
-}
 button.el-button--max, button.asset-max {
   background-color: $color-max !important;
   color: #fff !important;
@@ -238,9 +197,6 @@ button.el-button--max:hover, button.asset-max:hover {
   border: 1px solid rgba(0,0,0,0);
   background-color: var(--s-color-status-success) !important;
   box-shadow: 1px 1px 5px #fff, -1px -1px 5px #fff;
-}
-button.el-button--primary.s-primary {
-  font-size: var(--s-icon-font-size-medium) !important;
 }
 
 a.menu-item--small div.icon-container {
@@ -259,9 +215,7 @@ button.base-title_trash,
 button.base-title_action,
 i.el-collapse-item__arrow,
 button.el-button--history,
-button.el-button--switch-tokens,
-button.s-button--switch,
-button.el-button--settings {
+button.s-button--switch {
   background-color: var(--s-color-utility-surface) !important;
   box-shadow: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1);
   transition: all 0.125s ease-in-out;
@@ -274,9 +228,7 @@ button.base-title_trash:hover,
 button.base-title_action:hover,
 i.el-collapse-item__arrow:hover,
 button.el-button--history:hover,
-button.el-button--switch-tokens:hover,
-button.s-button--switch:hover,
-button.el-button--settings:hover {
+button.s-button--switch:hover {
   background-color: var(--s-color-theme-secondary-pressed) !important;
   opacity: 0.75;
   box-shadow: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1);
@@ -287,9 +239,7 @@ button.base-title_back:hover > span > i,
 button.base-title_trash:hover > span > i,
 button.base-title_action:hover > span > i,
 button.el-button--history:hover > span > i,
-button.el-button--switch-tokens:hover > span > i,
-button.s-button--switch:hover > span > i,
-button.el-button--settings:hover > span > i {
+button.s-button--switch:hover > span > i {
   color: white !important;
 }
 i.el-icon, i.s-icon-arrows-chevron-left-rounded-24 {
@@ -317,7 +267,7 @@ i.s-icon-chevron-down-rounded-16 {
 }
 
 /* FORMS */
-div.s-input-amount input.el-input__inner, div.s-input--token-value input.el-input__inner {
+div.s-input-amount input.el-input__inner {
   font-variation-settings: $font-weight-700 !important;
   font-size: var(--s-heading3-font-size) !important;
   color: var(--s-color-base-content-quaternary) !important;
@@ -363,7 +313,7 @@ div.transaction-row_key {text-transform: uppercase;}
 div.transaction-row_value{color: var(--s-color-base-content-quaternary) !important;font-weight: 600;}
 
 /* TABS */
-div.el-tabs__nav-wrap, div.slippage-tolerance-custom input.el-input__inner, div.pool-info-container, div.wallet-send-address input.el-input__inner {
+div.el-tabs__nav-wrap, div.pool-info-container, div.wallet-send-address input.el-input__inner {
   box-shadow: inset 1px 1px 2px #FFFFFF;
   filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.1));
   font-size: var(--s-icon-font-size-mini) !important;
@@ -384,7 +334,6 @@ div.el-collapse-item__header h3 {font-weight: 700;}
 
 div.pool-tokens-amount {font-weight: 700; text-align: center}
 div.s-row.pool-tokens.row-flex {font-weight: 800;justify-content: center;}
-div.info-line {color: var(--s-color-base-content-primary) !important; font-size: 13px !important; line-height: 1.1 !important; border-bottom: 1px solid #ede4e7; margin-top: 12px !important;}
 span.info-line-label, div.input-title.p4 {text-transform: uppercase;}
 span.info-line-value {font-weight: 600;}
 div.output-description{text-align: center;max-width: 300px;margin: auto;}

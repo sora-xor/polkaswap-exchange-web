@@ -54,7 +54,6 @@ export default class InfoLine extends Vue {
   }
 }
 .info-line-container {
-  border: 1px solid var(--s-color-base-border-secondary);
   border-radius: var(--s-border-radius-small);
   margin-top: $inner-spacing-medium;
   padding: $inner-spacing-mini / 2 $inner-spacing-mini;
@@ -71,10 +70,16 @@ export default class InfoLine extends Vue {
   align-items: center;
   width: 100%;
   padding: $inner-spacing-mini / 4 $inner-spacing-mini / 2;
-  color: var(--s-color-base-content-secondary);
-  font-size: var(--s-font-size-mini);
+  color: var(--s-color-base-content-primary);
+  font-size: var(--s-font-size-extra-small);
+  line-height: var(--s-line-height-small);
   font-feature-settings: $s-font-feature-settings-common;
-  line-height: $s-line-height-big;
+  border-bottom: 1px solid var(--s-color-base-border-secondary);
+
+  & + .info-line {
+    margin-top: $inner-spacing-small;
+  }
+
   &:first-child {
     margin-top: 0;
   }

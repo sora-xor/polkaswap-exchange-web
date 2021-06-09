@@ -171,17 +171,11 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
     min-height: var(--s-size-small);
 
     .el-input > input {
-      font-size: var(--s-font-size-mini);
+      font-size: var(--s-font-size-medium);
       font-feature-settings: $s-font-feature-settings-common;
       font-weight: 600 !important;
-
-      height: var(--s-size-small);
       text-align: center;
       padding-top: 0; // TODO: if there is no placeholder, set padding-top to zero
-    }
-
-    &.s-focused > .el-input > input {
-      box-shadow: var(--s-shadow-tab);
     }
   }
 
