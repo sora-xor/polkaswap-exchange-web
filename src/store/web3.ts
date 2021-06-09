@@ -7,7 +7,7 @@ import flow from 'lodash/fp/flow'
 import { FPNumber, BridgeNetworks } from '@sora-substrate/util'
 
 import { bridgeApi } from '@/utils/bridge'
-import web3Util, { ABI, Contract, EvmNetworkTypeName, KnownBridgeAsset, ContractNetwork, SubNetwork } from '@/utils/web3-util'
+import web3Util, { ABI, Contract, EvmNetworkTypeName, KnownBridgeAsset, ContractNetwork, SubNetwork, OtherContractType } from '@/utils/web3-util'
 import { ZeroStringValue } from '@/consts'
 import { isEthereumAddress } from '@/utils'
 
@@ -391,10 +391,10 @@ const actions = {
         return ''
       }
       const web3 = await web3Util.getInstance()
-      const contractAbi = getters.contractAbi(KnownBridgeAsset.Other).abi
+      const contractAbi = getters.contractAbi(KnownBridgeAsset.Other)[OtherContractType.Bridge].abi
       const contractInstance = new web3.eth.Contract(contractAbi)
       const contractAddress = getters.contractAddress(KnownBridgeAsset.Other)
-      contractInstance.options.address = contractAddress.MASTER
+      contractInstance.options.address = contractAddress
       const methodArgs = [address]
       const contractMethod = contractInstance.methods._sidechainTokens(...methodArgs)
       const externalAddress = await contractMethod.call()
@@ -414,7 +414,7 @@ const actions = {
       const tokenInstance = new web3.eth.Contract(ABI.allowance as any)
       tokenInstance.options.address = address
       const account = getters.evmAddress
-      const methodArgs = [account, contractAddress.MASTER]
+      const methodArgs = [account, contractAddress]
       const contractMethod = tokenInstance.methods.allowance(...methodArgs)
       const allowance = await contractMethod.call()
       commit(types.GET_ALLOWANCE_SUCCESS)

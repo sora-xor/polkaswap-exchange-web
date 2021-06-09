@@ -15,7 +15,7 @@
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedAmount }}</span>
         <div v-if="asset" class="token token-ethereum">
-          <i class="s-icon--network s-icon-eth" />
+          <i :class="`s-icon--network s-icon-${getEvmIcon(evmNetwork)}`" />
           {{ formatAssetSymbol(asset.symbol) }}
         </div>
       </div>
@@ -64,6 +64,7 @@ import { KnownSymbols, CodecString, BridgeNetworks } from '@sora-substrate/util'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
@@ -78,7 +79,13 @@ const namespace = 'bridge'
     InfoLine: lazyComponent(Components.InfoLine)
   }
 })
-export default class ConfirmBridgeTransactionDialog extends Mixins(TranslationMixin, DialogMixin, LoadingMixin, NumberFormatterMixin) {
+export default class ConfirmBridgeTransactionDialog extends Mixins(
+  TranslationMixin,
+  DialogMixin,
+  LoadingMixin,
+  NetworkFormatterMixin,
+  NumberFormatterMixin
+) {
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
   @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean
   @Getter('asset', { namespace }) asset!: any

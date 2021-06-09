@@ -160,11 +160,11 @@ const actions = {
         dispatch('updateAccountAssets', undefined, { root: true }) // to update subscription
       }
     } catch (error) {
-      if (requestedNode.address === state.node.address) {
+      if (requestedNode && (requestedNode.address === state.node.address)) {
         commit(types.RESET_NODE)
       }
 
-      if (requestedNode.address !== defaultNode.address) {
+      if (defaultNode && (requestedNode?.address !== defaultNode.address)) {
         await dispatch('connectToNode', { onError })
       }
 
@@ -175,19 +175,14 @@ const actions = {
       throw error
     }
   },
-  async setNode ({ commit, dispatch, state }, options: ConnectToNodeOptions = {}) {
+  async setNode ({ commit, dispatch, state, getters }, options: ConnectToNodeOptions = {}) {
     const { node, onError } = options
     const endpoint = node?.address ?? ''
-    const connectingNodeChanged = () => endpoint !== state.nodeAddressConnecting
     const connectionOnDisconnected = () => dispatch('connectToNode', { onError })
 
     try {
       if (!endpoint) {
         throw new Error('Node address is not set')
-      }
-
-      if (!state.chainGenesisHash) {
-        await dispatch('getNetworkChainGenesisHash')
       }
 
       commit(types.SET_NODE_REQUEST, node)
@@ -197,7 +192,11 @@ const actions = {
       const { endpoint: currentEndpoint, opened } = connection
 
       if (currentEndpoint && opened) {
-        await connection.close()
+        try {
+          await connection.close()
+        } catch (error) {
+          console.error('Disconnection error', error)
+        }
         console.info('Disconnected from node', currentEndpoint)
       }
 
@@ -209,19 +208,28 @@ const actions = {
         ]
       })
 
-      if (connectingNodeChanged()) return
-
       console.info('Connected to node', connection.endpoint)
 
       const nodeChainGenesisHash = connection.api.genesisHash.toHex()
 
-      if (nodeChainGenesisHash !== state.chainGenesisHash) {
-        throw new AppHandledError({
-          key: 'node.errors.network',
-          payload: { address: endpoint }
-        },
-          `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" recieved, should be "${state.chainGenesisHash}"`
-        )
+      // if connected node is custom node, we should check genesis hash
+      if (!(endpoint in getters.defaultNodesHashTable)) {
+        // if genesis hash is not set in state, fetch it
+        if (!state.chainGenesisHash) {
+          await dispatch('getNetworkChainGenesisHash')
+        }
+
+        if (nodeChainGenesisHash !== state.chainGenesisHash) {
+          throw new AppHandledError({
+            key: 'node.errors.network',
+            payload: { address: endpoint }
+          },
+            `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" recieved, should be "${state.chainGenesisHash}"`
+          )
+        }
+      } else {
+        // just update genesis hash (needed for dev, test stands after their reset)
+        commit(types.SET_NETWORK_CHAIN_GENESIS_HASH, nodeChainGenesisHash)
       }
 
       commit(types.SET_NODE_SUCCESS, node)
@@ -235,9 +243,7 @@ const actions = {
           payload: { address: endpoint }
         })
 
-      if (!connectingNodeChanged()) {
-        commit(types.SET_NODE_FAILURE)
-      }
+      commit(types.SET_NODE_FAILURE)
 
       throw err
     }
@@ -248,6 +254,9 @@ const actions = {
   setSoraNetwork ({ commit }, data) {
     if (!data.NETWORK_TYPE) {
       throw new Error('NETWORK_TYPE is not set')
+    }
+    if (data.CHAIN_GENESIS_HASH) {
+      commit(types.SET_NETWORK_CHAIN_GENESIS_HASH, data.CHAIN_GENESIS_HASH)
     }
     commit(types.SET_SORA_NETWORK, data.NETWORK_TYPE)
   },
@@ -260,13 +269,13 @@ const actions = {
     commit(types.SET_CUSTOM_NODES, nodes)
   },
   async getNetworkChainGenesisHash ({ commit, state }) {
-    const genesisHash = await Promise.any(state.defaultNodes.map(node => fetchRpc(getRpcEndpoint(node.address), 'chain_getBlockHash', [0])))
-
-    if (!genesisHash) {
-      throw new Error('Failed to fetch network chain genesis hash')
+    try {
+      const genesisHash = await Promise.any(state.defaultNodes.map(node => fetchRpc(getRpcEndpoint(node.address), 'chain_getBlockHash', [0])))
+      commit(types.SET_NETWORK_CHAIN_GENESIS_HASH, genesisHash)
+    } catch (error) {
+      commit(types.SET_NETWORK_CHAIN_GENESIS_HASH, '')
+      throw error
     }
-
-    commit(types.SET_NETWORK_CHAIN_GENESIS_HASH, genesisHash)
   },
   setSlippageTolerance ({ commit }, value) {
     commit(types.SET_SLIPPAGE_TOLERANCE, value)
