@@ -2388,10 +2388,10 @@
     vuex "^3.1.3"
     vuex-class "^0.3.2"
 
-"@soramitsu/soraneo-wallet-web@^1.3.12":
-  version "1.3.12"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.3.12.tgz#6987ba3cfc913bd29c634c8edd06f8c782bff3af"
-  integrity sha512-76letgYGeHIUJpBp3cWmGrGWMHRcgiPtbOeovtj+5IHe5pJYuTIza28m5v8hxpDnH+lKpJmncndejD+aJ1M76A==
+"@soramitsu/soraneo-wallet-web@^1.3.12-1":
+  version "1.3.12-1"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.3.12-1.tgz#39ca8bca2911503644105204e623779053e11c34"
+  integrity sha512-LKr8gUld2g04V+ABg6/RrX18gok/fvaJ+mik3XArO5JHgKo0YSwAoSDB/1Sx7agqox71IWFlbDfCbZWhkjjsiQ==
   dependencies:
     "@polkadot/extension-dapp" "^0.35.0-beta.35"
     "@polkadot/vue-identicon" "^0.72.1"
