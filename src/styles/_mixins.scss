@@ -80,38 +80,6 @@
   }
 }
 
-// TODO: remove?
-@mixin input-form-styles {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .input-container {
-    position: relative;
-    width: 100%;
-    background-color: var(--s-color-base-background);
-    border-radius: var(--s-border-radius-mini);
-    @include generic-input-lines;
-    .el-form-item {
-      margin-bottom: 0;
-      margin-right: $inner-spacing-mini;
-      width: 100%;
-    }
-    .input-title {
-      display: flex;
-      margin-top: $inner-spacing-mini / 2;
-      margin-bottom: $inner-spacing-mini / 2;
-      align-items: baseline;
-      font-family: "Sora", sans-serif !important;
-      margin-right: $inner-spacing-mini;
-    }
-    @include token-styles;
-  }
-  .s-input {
-    min-height: 0;
-    font-feature-settings: $s-font-feature-settings-input;
-  }
-}
-
 @mixin buttons() {
   .el-buttons {
     display: flex;
