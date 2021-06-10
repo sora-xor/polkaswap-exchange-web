@@ -36,7 +36,7 @@
         </div>
       </div>
       <div slot="right" class="s-flex el-buttons">
-        <s-button v-if="tokenFrom && isMaxSwapAvailable" class="el-button--max" type="tertiary" size="mini" border-radius="mini" @click="handleMaxValue">
+        <s-button v-if="tokenFrom && isMaxSwapAvailable" class="el-button--max" type="primary" alternative size="mini" border-radius="mini" @click="handleMaxValue">
           {{ t('buttons.max') }}
         </s-button>
         <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenFrom" @click="openSelectTokenDialog(true)" />
@@ -86,7 +86,7 @@
     </s-float-input>
     <slippage-tolerance class="slippage-tolerance-settings" />
     <swap-info v-if="areTokensSelected && !hasZeroAmount" class="info-line-container" />
-    <s-button v-if="!isLoggedIn" type="primary" @click="handleConnectWallet">
+    <s-button v-if="!isLoggedIn" type="primary" class="action-button s-typography-button--big" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
     <s-button
@@ -94,7 +94,7 @@
       type="primary"
       :disabled="!areTokensSelected || !isAvailable || hasZeroAmount || isInsufficientLiquidity || isInsufficientAmount || isInsufficientBalance || isInsufficientXorForFee" @click="handleConfirmSwap"
       :loading="isRecountingProcess || isAvailableChecking"
-      class="s-typography-button--big"
+      class="action-button s-typography-button--big"
     >
       <template v-if="!areTokensSelected">
         {{ t('buttons.chooseTokens') }}
@@ -540,7 +540,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 .el-form--actions {
   @include generic-input-lines;
   @include buttons;
-  @include full-width-button;
+  @include full-width-button('action-button');
   @include vertical-divider('el-button--switch-tokens', $inner-spacing-medium);
 }
 

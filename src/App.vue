@@ -350,7 +350,7 @@ html {
     }
     &:hover:not(.is-active):not(.is-disabled) {
       i {
-        color: var(--s-color-theme-secondary-hover) !important;
+        color: var(--s-color-base-content-secondary) !important;
       }
     }
     &.is-active i {
@@ -452,34 +452,6 @@ html {
     }
     .s-placeholder {
       display: none;
-    }
-  }
-  .el-button {
-    // TODO: Check all icons settings after fix in UI Lib
-    &--choose-token,
-    &--empty-token {
-      > span {
-        display: inline-flex;
-        align-items: center;
-        > i[class^=s-icon-] {
-          font-size: $s-font-size-input;
-        }
-      }
-    }
-    &.el-button--empty-token {
-      > span {
-        > i[class^=s-icon-] {
-          margin-left: $inner-spacing-mini / 2;
-        }
-      }
-    }
-    &--choose-token {
-      font-feature-settings: $s-font-feature-settings-title;
-      > span {
-        > i[class^=s-icon-] {
-          margin-left: $inner-spacing-mini;
-        }
-      }
     }
   }
 }

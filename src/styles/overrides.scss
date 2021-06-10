@@ -1,5 +1,3 @@
-$color-max: #44E5B2; // green fluro emerald
-
 $font-weight-100: "wght" 100;
 $font-weight-200: "wght" 200;
 $font-weight-300: "wght" 300;
@@ -100,12 +98,6 @@ div.el-dialog {
 }
 
 /* BUTTONS */
-button {
-  > span {
-    left: 1px; // because of inset shadow
-  }
-}
-
 div.el-card.bridge-item {
   background-color: var(--s-color-base-background) !important;
 }
@@ -126,19 +118,6 @@ button.el-button.details.s-link:hover > span > i {
   color: var(--s-color-theme-accent);
 }
 
-button.el-button--max, button.asset-max {
-  background-color: $color-max !important;
-  color: #fff !important;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1), inset 1px 1px 1px rgba(0, 0, 0, 0.1);
-  font-size: var(--s-font-size-small);
-  transition: all 0.125s ease-in-out;
-}
-button.el-button--max:hover, button.asset-max:hover {
-  border: 1px solid rgba(0,0,0,0);
-  background-color: var(--s-color-status-success) !important;
-  box-shadow: 1px 1px 5px #fff, -1px -1px 5px #fff;
-}
-
 button.el-dialog__headerbtn,
 i.el-collapse-item__arrow {
   background-color: var(--s-color-utility-surface) !important;
@@ -156,7 +135,7 @@ button.el-dialog__headerbtn:hover > i.el-icon {
 }
 
 i.el-icon, i.s-icon-arrows-chevron-left-rounded-24 {
-  color: var(--s-color-theme-secondary) !important;
+  color: var(--s-color-base-content-tertiary) !important;
   font-size: var(--s-icon-font-size-big) !important;
   transition: all 0.125s ease-in-out;
 }

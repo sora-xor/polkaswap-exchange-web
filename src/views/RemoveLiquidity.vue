@@ -43,7 +43,7 @@
           </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
-          <s-button v-if="isMaxButtonAvailable" class="el-button--max" type="tertiary" size="mini" border-radius="mini" @click="handleLiquidityMaxValue">
+          <s-button v-if="isMaxButtonAvailable" class="el-button--max" type="primary" alternative size="mini" border-radius="mini" @click="handleLiquidityMaxValue">
             {{ t('buttons.max') }}
           </s-button>
           <token-select-button class="el-button--select-token" :tokens="[firstToken, secondToken]" />
@@ -120,7 +120,7 @@
         />
       </div>
 
-      <s-button type="primary" class="s-typography-button--big" border-radius="small" :disabled="isEmptyAmount || isInsufficientBalance || isInsufficientXorForFee" @click="openConfirmDialog">
+      <s-button type="primary" class="action-button s-typography-button--big" border-radius="small" :disabled="isEmptyAmount || isInsufficientBalance || isInsufficientXorForFee" @click="openConfirmDialog">
         <template v-if="isEmptyAmount">
           {{ t('buttons.enterAmount') }}
         </template>
@@ -358,7 +358,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
 .el-form--actions {
   @include generic-input-lines;
   @include buttons;
-  @include full-width-button;
+  @include full-width-button('action-button');
 }
 
 @include vertical-divider('icon-divider', $inner-spacing-medium);

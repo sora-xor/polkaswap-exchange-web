@@ -53,7 +53,7 @@
             </div>
           </div>
           <div slot="right" v-if="isNetworkAConnected" class="s-flex el-buttons">
-            <s-button v-if="isMaxAvailable" class="el-button--max" type="tertiary" size="mini" border-radius="mini" @click="handleMaxValue">
+            <s-button v-if="isMaxAvailable" class="el-button--max" type="primary" alternative size="mini" border-radius="mini" @click="handleMaxValue">
               {{ t('buttons.max') }}
             </s-button>
             <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="asset" @click="openSelectAssetDialog" />
