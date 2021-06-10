@@ -17,11 +17,11 @@
       >
         <div slot="top" class="input-line">
           <div class="input-title">
-            <span>{{ t('createPair.deposit') }}</span>
+            <span class="input-title--uppercase input-title--primary">{{ t('createPair.deposit') }}</span>
           </div>
-          <div v-if="isLoggedIn && firstToken" class="token-balance">
-            <span class="token-balance-title">{{ t('createPair.balance') }}</span>
-            <span class="token-balance-value">{{ getTokenBalance(firstToken) }}</span>
+          <div v-if="isLoggedIn && firstToken" class="input-title">
+            <span class="input-title--uppercase">{{ t('createPair.balance') }}</span>
+            <span class="input-title--uppercase input-title--primary">{{ getTokenBalance(firstToken) }}</span>
           </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
@@ -44,11 +44,11 @@
       >
         <div slot="top" class="input-line">
           <div class="input-title">
-            <span>{{ t('createPair.deposit') }}</span>
+            <span class="input-title--uppercase input-title--primary">{{ t('createPair.deposit') }}</span>
           </div>
-          <div v-if="isLoggedIn && secondToken" class="token-balance">
-            <span class="token-balance-title">{{ t('createPair.balance') }}</span>
-            <span class="token-balance-value">{{ getTokenBalance(secondToken) }}</span>
+          <div v-if="isLoggedIn && secondToken" class="input-title">
+            <span class="input-title--uppercase">{{ t('createPair.balance') }}</span>
+            <span class="input-title--uppercase input-title--primary">{{ getTokenBalance(secondToken) }}</span>
           </div>
         </div>
         <div slot="right" class="s-flex el-buttons">

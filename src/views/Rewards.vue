@@ -35,7 +35,7 @@
                 />
                 <span>{{ t('rewards.connected') }}</span>
               </div>
-              <s-button v-else class="rewards-connect-button" type="secondary" @click="connectExternalAccountProcess">
+              <s-button v-else class="rewards-connect-button s-typography-button--big" type="tertiary" @click="connectExternalAccountProcess">
                 {{ t('rewards.action.connectExternalWallet') }}
               </s-button>
               <div v-if="externalRewardsHintText" class="rewards-footer-hint">{{ externalRewardsHintText }}</div>
@@ -52,7 +52,7 @@
     </div>
     <s-button
       v-if="!rewardsRecieved"
-      class="rewards-block rewards-action-button"
+      class="rewards-block rewards-action-button s-typography-button--big"
       type="primary"
       @click="handleAction"
       :loading="actionButtonLoading"
@@ -423,14 +423,8 @@ $hint-font-size: 13px;
   }
 
   &-connect-button {
-    text-transform: uppercase;
-    font-size: var(--s-heading5-font-size);
-
-    &, &:hover, &:focus, &:disabled {
-      background: none;
-      color: white; // TODO: use color variable from ui library
-      border-color: white; // TODO: use color variable from ui library
-    }
+    background: transparent !important;
+    color: var(--s-color-base-on-accent) !important;
   }
 
   @include full-width-button('rewards-action-button');

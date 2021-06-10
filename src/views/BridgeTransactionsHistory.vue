@@ -25,7 +25,7 @@
             border-radius="mini"
           >
             <template #suffix v-if="query">
-              <s-button class="s-button--clear" icon="clear-X-16" @click="handleResetSearch" />
+              <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleResetSearch" />
             </template>
           </s-input>
         </s-form-item>
@@ -64,7 +64,7 @@
       </s-form>
       <s-button
         v-if="!restored"
-        class="s-button--restore"
+        class="s-button--restore s-typography-button--big"
         icon="circle-plus-16"
         icon-position="right"
         :disabled="loading"

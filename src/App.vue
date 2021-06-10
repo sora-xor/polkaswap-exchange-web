@@ -328,11 +328,6 @@ html {
     margin-bottom: $inner-spacing-small;
   }
 
-  .menu-link-container .el-menu-item:hover span {
-    // TODO: Remove important marks after design redevelopment
-    color: var(--s-color-base-on-accent) !important;
-  }
-
   .el-menu-item {
     &.is-disabled {
       opacity: 1;

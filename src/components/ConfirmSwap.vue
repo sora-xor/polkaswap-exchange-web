@@ -27,6 +27,7 @@
     <template #footer>
       <s-button
         type="primary"
+        class="s-typography-button--big"
         :disabled="loading"
         @click="handleConfirmSwap"
       >

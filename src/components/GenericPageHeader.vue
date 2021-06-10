@@ -54,7 +54,7 @@ export default class GenericPageHeader extends Mixins(TranslationMixin) {
 $page-header-class: '.page-header';
 $tooltip-area-height: var(--s-size-medium);
 $tooltip-size: var(--s-size-mini);
-$title-padding: calc(#{var(--s-size-small)} + #{$inner-spacing-small});
+$title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
 
 #{$page-header-class} {
   position: relative;

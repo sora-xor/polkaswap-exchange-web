@@ -3,18 +3,19 @@
     <div class="select-node-description p4">
       {{ t('selectNodeDialog.selectNodeForEnvironment', { environment }) }}
     </div>
-    <el-radio-group v-model="currentAddressValue" class="select-node-list s-flex">
-      <el-radio
+    <s-radio-group v-model="currentAddressValue" class="select-node-list s-flex">
+      <s-radio
         v-for="node in nodes"
         :key="node.address"
         :label="node.address"
         :value="node.address"
         :disabled="disableSelect"
+        size="medium"
         class="select-node-list__item s-flex"
       >
         <div class="select-node-item s-flex">
           <div class="select-node-info s-flex">
-            <div class="select-node-info__label h4">
+            <div class="select-node-info__label">
               {{ node.title }}
             </div>
             <div class="select-node-info__address">
@@ -28,10 +29,10 @@
             <s-icon name="arrows-chevron-right-rounded-24" />
           </s-button>
         </div>
-      </el-radio>
-    </el-radio-group>
+      </s-radio>
+    </s-radio-group>
     <s-button
-      class="select-node-button"
+      class="select-node-button s-typography-button--big"
       @click="handleNode()"
     >
       {{ t('selectNodeDialog.addNode') }}
@@ -59,22 +60,22 @@ export default class SelectNode extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss">
-button:not(.s-action).s-i-position-left.select-node-details > span > i[class^=s-icon-] {
-  margin-right: 0;
-}
-.select-node-list__item.el-radio {
-  & > .el-radio__input > .el-radio__inner {
-    // temporary, because primary border color is not contrast with background
-    border-color: var(--s-color-base-on-disabled);
-  }
+// button:not(.s-action).s-i-position-left.select-node-details > span > i[class^=s-icon-] {
+//   margin-right: 0;
+// }
+// .select-node-list__item.el-radio {
+//   & > .el-radio__input > .el-radio__inner {
+//     // temporary, because primary border color is not contrast with background
+//     border-color: var(--s-color-base-on-disabled);
+//   }
 
-  & > .el-radio__label {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    padding-left: $inner-spacing-small
-  }
-}
+//   & > .el-radio__label {
+//     display: flex;
+//     align-items: center;
+//     flex: 1;
+//     padding-left: $inner-spacing-small
+//   }
+// }
 </style>
 
 <style lang="scss" scoped>
@@ -100,6 +101,7 @@ $badge-container-width: 60px;
       padding: $list-item-padding;
       min-height: $list-item-height;
       white-space: normal;
+      height: initial;
     }
   }
 
@@ -115,11 +117,16 @@ $badge-container-width: 60px;
 
     &__label {
       color: var(--s-color-base-content-primary);
+      font-size: var(--s-font-size-big);
+      font-weight: 800;
+      line-height: var(--s-line-height-small);
     }
 
     &__address {
-      color: var(--s-color-base-content-tertiary);
+      color: var(--s-color-base-content-secondary);
       font-size: var(--s-heading8-font-size);
+      font-size: var(--s-font-size-mini);
+      line-height: var(--s-line-height-medium);
     }
   }
 

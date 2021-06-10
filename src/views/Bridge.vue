@@ -98,14 +98,14 @@
               />
               <span>{{ t('bridge.connected') }}</span>
             </div>
-            <s-button v-else-if="!isNetworkBConnected" class="el-button--connect" type="primary" @click="!isSoraToEvm ? connectInternalWallet() : connectExternalWallet()">
+            <s-button v-else-if="!isNetworkBConnected" class="el-button--connect s-typography-button--big" type="primary" @click="!isSoraToEvm ? connectInternalWallet() : connectExternalWallet()">
               {{ t('bridge.connectWallet') }}
             </s-button>
           </template>
         </s-float-input>
 
         <s-button
-          class="el-button--next"
+          class="el-button--next s-typography-button--big"
           type="primary"
           :disabled="!isAssetSelected || !areNetworksConnected || !isValidNetworkType || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEvmNativeTokenForFee || isInsufficientBalance || !isRegisteredAsset"
           @click="handleConfirmTransaction"
@@ -468,9 +468,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       padding: 0;
     }
   }
-  .s-button--switch {
-    @include switch-button-inherit-styles('medium');
-  }
+
   &-form {
     @include bridge-container;
     .s-input.s-input-amount {
@@ -529,9 +527,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
   @include generic-input-lines;
   @include token-styles;
   @include vertical-divider('s-button--switch', $inner-spacing-medium);
-  .s-button--switch {
-    @include switch-button(var(--s-size-medium));
-  }
+
   .bridge-item {
     margin-bottom: $inner-spacing-mini;
     background-color: var(--s-color-base-background);
@@ -556,14 +552,14 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
-      padding-bottom: $inner-spacing-mini;
-      background-color: var(--s-color-base-background);
+      font-size: var(--s-font-size-mini);
+      line-height: var(--s-line-height-medium);
       color: var(--s-color-base-content-secondary);
+
       .el-divider {
-        margin-top: 0;
+        margin-top: $inner-spacing-mini;
         margin-bottom: $inner-spacing-mini;
         width: 100%;
-        background-color: var(--s-color-base-border-primary);
       }
     }
     & + .bridge-info {
@@ -584,15 +580,13 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     color: var(--s-color-base-content-secondary);
     font-feature-settings: $s-font-feature-settings-common;
   }
-  .s-tertiary {
-    padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
-  }
+
   @include buttons;
 
   .el-button {
     &--connect {
-      margin: $inner-spacing-mini $inner-spacing-small $inner-spacing-small;
-      width: calc(100% - #{$inner-spacing-small * 2});
+      margin-top: $inner-spacing-mini;
+      width: 100%;
     }
     &--change-wallet {
       padding: 0;

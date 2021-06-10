@@ -70,6 +70,7 @@
             <s-button
               v-if="isTransactionStep1"
               type="primary"
+              class="s-typograhy-button--big"
               :disabled="!(isSoraToEvm || isValidNetworkType) || currentState === STATES.INITIAL || isInsufficientBalance || isInsufficientXorForFee || isInsufficientEvmNativeTokenForFee || isTransactionFromPending"
               @click="handleSendTransactionFrom"
             >
@@ -128,6 +129,7 @@
             <s-button
               v-if="isTransactionStep2 && !isTransferCompleted"
               type="primary"
+              class="s-typograhy-button--big"
               :disabled="(isSoraToEvm && !isValidNetworkType) || isInsufficientXorForFee || isInsufficientEvmNativeTokenForFee || isTransactionToPending"
               @click="handleSendTransactionTo"
             >
@@ -803,6 +805,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
       bottom: 0;
       margin-top: auto;
       margin-bottom: auto;
+      padding: 0;
       width: var(--s-size-mini);
       height: var(--s-size-mini);
       line-height: 1;

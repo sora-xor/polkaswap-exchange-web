@@ -35,11 +35,11 @@
       >
         <div slot="top" class="input-line">
           <div class="input-title">
-            <span>{{ t('removeLiquidity.input') }}</span>
+            <span class="input-title--uppercase input-title--primary">{{ t('removeLiquidity.input') }}</span>
           </div>
-          <div v-if="liquidity" class="token-balance">
-            <span class="token-balance-title">{{ t('createPair.balance') }}</span>
-            <span class="token-balance-value">{{ getFormattedLiquidityBalance(liquidity) }}</span>
+          <div v-if="liquidity" class="input-title">
+            <span class="input-title--uppercase">{{ t('createPair.balance') }}</span>
+            <span class="input-title--uppercase input-title--primary">{{ getFormattedLiquidityBalance(liquidity) }}</span>
           </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
@@ -65,9 +65,9 @@
       >
         <div slot="top" class="input-line">
           <div class="input-title">
-            <span>{{ t('removeLiquidity.output') }}</span>
+            <span class="input-title--uppercase input-title--primary">{{ t('removeLiquidity.output') }}</span>
           </div>
-          <div v-if="liquidity" class="token-balance">-</div>
+          <div v-if="liquidity" class="input-title">-</div>
         </div>
         <div slot="right" class="s-flex el-buttons">
           <token-select-button class="el-button--select-token" :token="firstToken" />
@@ -91,9 +91,9 @@
       >
         <div slot="top" class="input-line">
           <div class="input-title">
-            <span>{{ t('removeLiquidity.output') }}</span>
+            <span class="input-title--uppercase input-title--primary">{{ t('removeLiquidity.output') }}</span>
           </div>
-          <div v-if="liquidity" class="token-balance">-</div>
+          <div v-if="liquidity" class="input-title">-</div>
         </div>
         <div slot="right" class="s-flex el-buttons">
           <token-select-button class="el-button--select-token" :token="secondToken" />

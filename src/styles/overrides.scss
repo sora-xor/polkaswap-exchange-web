@@ -102,9 +102,7 @@ button.el-button--primary,
 div.asset-search-actions button.el-button,
 div.wallet-assets button.el-button,
 .s-button--restore,
-div.asset-custom-actions button.el-button,
-div.el-tabs__item,
-button.select-node-button span {
+div.asset-custom-actions button.el-button {
   text-transform: uppercase !important;
 }
 
@@ -124,13 +122,6 @@ div.el-card.bridge-item {
   background-color: var(--s-color-base-background) !important;
 }
 
-button.el-button.s-primary:disabled {
-  border-color: var(--s-color-base-border-primary) !important;
-  border: 2px solid;
-  box-shadow: 1px 1px 5px #FFFFFF, -1px -1px 5px #FFFFFF;
-  min-height: 42px;
-}
-
 button.el-button.details.s-link {
   border: none !important;
   color: inherit !important;
@@ -147,29 +138,6 @@ button.el-button.details.s-link:hover > span > i {
   color: var(--s-color-theme-accent);
 }
 
-button.el-button.send.s-small, button.el-button.swap.s-small {
-  height: 48px;
-  width: 48px;
-}
-
-div.select-node button.el-button--plain,
-div.node-info button.el-button--plain,
-.s-button--restore {
-  color: #fff !important;
-  border: 1px solid #ddd !important;
-  transition: all 0.25s ease-in-out;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1), inset 1px 1px 1px rgba(0, 0, 0, 0.1);
-}
-
-div.select-node button.el-button--plain:hover,
-div.node-info button.el-button--plain:hover,
-.s-button--restore:hover {
-  color: #fff !important;
-  border: 1px solid #ddd !important;
-  background-color: var(--s-color-theme-secondary-hover) !important;
-  filter: drop-shadow(1px 1px 5px #ccc) drop-shadow(-1px -1px 5px #ccc);
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1), inset 1px 1px 1px rgba(0, 0, 0, 0.1);
-}
 button.el-button--max, button.asset-max {
   background-color: $color-max !important;
   color: #fff !important;
@@ -193,30 +161,22 @@ li.el-menu-item.is-active div.icon-container {
 }
 
 button.el-dialog__headerbtn,
-button.base-title_back,
-button.base-title_trash,
-i.el-collapse-item__arrow,
-button.s-button--switch {
+i.el-collapse-item__arrow {
   background-color: var(--s-color-utility-surface) !important;
   box-shadow: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1);
   transition: all 0.125s ease-in-out;
   border: none;
 }
 button.el-dialog__headerbtn:hover,
-button.base-title_back:hover,
-button.base-title_trash:hover,
-i.el-collapse-item__arrow:hover,
-button.s-button--switch:hover {
+i.el-collapse-item__arrow:hover {
   background-color: var(--s-color-theme-secondary-pressed) !important;
   opacity: 0.75;
   box-shadow: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
-button.el-dialog__headerbtn:hover > i.el-icon,
-button.base-title_back:hover > span > i,
-button.base-title_trash:hover > span > i,
-button.s-button--switch:hover > span > i {
+button.el-dialog__headerbtn:hover > i.el-icon {
   color: white !important;
 }
+
 i.el-icon, i.s-icon-arrows-chevron-left-rounded-24 {
   color: var(--s-color-theme-secondary) !important;
   font-size: var(--s-icon-font-size-big) !important;
@@ -241,20 +201,6 @@ form.el-form.container > div.input-container ~ div.input-container,
 div.el-card__body > div.bridge-item ~ div.bridge-item {
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1), inset 1px 1px 2px #FFFFFF;
 }
-div.input-container, div.bridge-item, div.wallet-send-amount {
-  box-shadow: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1);
-}
-div.slippage-tolerance-custom_input input.el-input__inner {
-  color: var(--s-color-theme-accent) !important;
-}
-
-div.transaction div.s-input-container {margin-top: 16px;}
-
-div.transaction input.el-input__inner, div.custom-asset-address input.el-input__inner, span.el-switch__core, .node-info-input input.el-input__inner {
-  box-shadow: inset 1px 1px 2px #FFFFFF;
-  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.1));
-  font-size: var(--s-icon-font-size-mini) !important;
-}
 
 div.asset-value {font-weight: 800 !important; font-size: 16px;}
 div.asset-description_symbol {font-weight: 800 !important; font-size: 20px;}
@@ -270,21 +216,9 @@ div.transaction-row_key {text-transform: uppercase;}
 div.transaction-row_value{color: var(--s-color-base-content-quaternary) !important;font-weight: 600;}
 
 /* TABS */
-div.el-tabs__nav-wrap, div.pool-info-container, div.wallet-send-address input.el-input__inner {
-  box-shadow: inset 1px 1px 2px #FFFFFF;
-  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.1));
-  font-size: var(--s-icon-font-size-mini) !important;
-}
 div.el-tabs__nav-wrap div.el-tabs__item {
   font-size: var(--s-icon-font-size-mini) !important;
 }
-div.el-tabs__item.is-active {
-  color: var(--s-color-theme-accent) !important;
-  background-color: var(--s-color-utility-surface) !important;
-  box-shadow: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1) !important;
-}
-
-div.wallet div.wallet-assets { margin-top: 16px;}
 
 div.el-collapse-item__header {background-color: unset !important;}
 div.el-collapse-item__header h3 {font-weight: 700;}
@@ -368,11 +302,6 @@ div.article-card {
 div.history-item-operation {
   padding: 0 !important;
 }
-button.select-node-button,
-button.el-button.wallet-assets-add,
-.s-button--restore {
-  font-size: var(--s-icon-font-size-medium) !important;
-}
 i.s-icon-circle-plus-16, i.s-icon-circle-plus-16:hover {
   font-size: inherit !important;
   color: white !important;
@@ -426,9 +355,6 @@ div.el-tabs__item {
 aside.app-sidebar {
   border-right: 1px solid #e5dce0 !important;
   border-image: linear-gradient(#FAF4F8, #D5CDD0, #FAF4F8) 30;
-}
-div.app-controls span.el-tooltip button.el-button.el-tooltip.wallet.el-button--plain.el-button--medium.s-medium.s-border-radius-small.s-secondary.s-i-position-left {
-  margin-right: 4px;
 }
 footer.app-footer {
   padding-right: 22px !important;

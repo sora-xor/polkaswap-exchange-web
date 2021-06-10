@@ -129,19 +129,6 @@
   }
 }
 
-@mixin switch-button ($lineHeight: var(--s-size-small)) {
-  padding: 0;
-  font-size: var(--s-icon-font-size-big);
-  line-height: $lineHeight;
-}
-
-@mixin switch-button-inherit-styles ($size: 'small') {
-  &.s-action.s-#{$size} i {
-    font-size: inherit;
-    line-height: inherit;
-  }
-}
-
 @mixin full-width-button($buttonClass: 's-primary', $marginTop: $inner-spacing-medium) {
   .#{$buttonClass} {
     margin-top: $marginTop;
@@ -339,9 +326,6 @@
 
 @mixin exchange-tabs {
   $tabs-class: ".el-tabs";
-  $tabs-container-height: 40px;
-  $tabs-container-padding: 2px;
-  $tabs-item-height: 36px;
 
   .el-dialog {
     overflow: hidden;
@@ -370,9 +354,7 @@
           }
         }
         #{$tabs-class}__item {
-          height: $tabs-item-height;
           width: 50%;
-          line-height: $tabs-item-height;
           font-feature-settings: $s-font-feature-settings-title;
           font-weight: 700 !important;
           text-align: center;
@@ -384,7 +366,6 @@
       &__nav {
         width: 100%;
         &-wrap {
-          height: $tabs-container-height;
           background-color: var(--s-color-base-background);
         }
       }

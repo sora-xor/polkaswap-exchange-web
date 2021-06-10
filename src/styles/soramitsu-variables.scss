@@ -61,4 +61,8 @@ $s-font-feature-settings-card-title: normal;
 $s-font-feature-settings-input: normal;
 $s-font-feature-settings-button: normal;
 
+:root {
+  --s-color-brand-day: #{$s-color-brand-day};
+}
+
 @import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";
