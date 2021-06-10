@@ -386,7 +386,6 @@ $hint-font-size: 13px;
     }
 
     & .el-divider {
-      background: var(--s-color-theme-secondary-focused);
       opacity: 0.5;
       margin: 0;
     }

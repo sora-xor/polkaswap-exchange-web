@@ -67,7 +67,7 @@ $baseClass: '.token-select-button';
 
   &__icon {
     margin-left: $inner-spacing-mini * 0.75;
-    background-color: var(--s-color-theme-secondary);
+    background-color: var(--s-color-base-content-tertiary);
     color: white !important;
     border-radius: var(--s-border-radius-medium);
     padding: 2px;

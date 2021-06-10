@@ -588,27 +588,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       margin-top: $inner-spacing-mini;
       width: 100%;
     }
-    &--change-wallet {
-      padding: 0;
-      color: inherit;
-      font-size: inherit;
-      line-height: inherit;
-      span {
-        font-weight: 400 !important;
-      }
-      .change-wallet {
-        display: none;
-      }
-      &:hover {
-        .bridge-item-id {
-          display: none;
-        }
-        .change-wallet {
-          display: inline-block;
-          text-decoration: underline;
-        }
-      }
-    }
     &--next {
       margin-top: $inner-spacing-mini;
       width: 100%;

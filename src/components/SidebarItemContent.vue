@@ -53,7 +53,6 @@ $icon-size: 42px;
   height: $icon-size;
   border-radius: 50%;
   background-color: var(--s-color-utility-surface);
-  box-shadow: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1);
   transition: all 0.125s ease-in-out;
   > i {
     margin: auto;
