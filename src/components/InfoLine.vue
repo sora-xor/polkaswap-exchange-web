@@ -43,7 +43,7 @@ export default class InfoLine extends Vue {
 
 <style lang="scss">
 .info-tooltip--info-line {
-  margin-top: -$inner-spacing-mini * 1.25;
+  margin-top: -$basic-spacing-small;
   .popper__arrow {
     margin-top: $inner-spacing-mini * 0.5;
   }

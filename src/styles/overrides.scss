@@ -230,12 +230,6 @@ div.token-item__symbol {
 div.token-item {
   transition: all 0.125s ease-in-out;
 }
-.menu.el-menu:not(.el-menu--horizontal) > :not(:last-child) {
-    margin-bottom: 0 !important;
-}
-.s-menu:not(.el-menu--horizontal) > :not(:last-child) {
-    margin-bottom: 0 !important;
-}
 div.el-card__header i {
   display: none;
 }
@@ -292,23 +286,9 @@ div.el-tabs__item {
 }
 
 /*_______________________ CURRENT UI QUICK LAYOUT UPDATE PROPOSAL/FIX ALIGNMENTS + MIN-WIDTH 528px LOOK OK/USABLE  _______________________*/
-aside.app-sidebar {
-  border-right: 1px solid #e5dce0 !important;
-  border-image: linear-gradient(#FAF4F8, #D5CDD0, #FAF4F8) 30;
-}
 footer.app-footer {
   padding-right: 22px !important;
   padding-bottom: 20px !important;
-}
-aside.app-sidebar ul:nth-of-type(2) li:nth-of-type(2) li.menu-link-container a.sidebar-item-content--link {
-  padding: 10px 10px 4px 20px !important;
-  line-height: 1.1;
-}
-aside.app-sidebar ul:nth-of-type(2) li:nth-of-type(2) li.menu-link-container:before {
-  left: 20px;
-  opacity: 0.2;
-  margin-top: 3px;
-  width: 100px;
 }
 
 div#app {
@@ -318,44 +298,12 @@ div.app-body {
   min-width: 448px;
 }
 
-@media screen and (max-width: 900px) {
-  button.polkaswap-logo {
-    margin-right: 4px;
-    margin-left: 4px;
-    margin-bottom: 1.5px !important;
-    width: var(--s-size-medium) !important;
-    height: var(--s-size-medium) !important;
-    padding: 0;
-    border-radius: 0;
-  }
-}
 @media screen and (min-width: 900px) {
-  button.polkaswap-logo {
-    height: 44px !important;
-    width: 165px !important;
-    padding: 0 !important;
-    margin-top: 10px;
-    margin-bottom: 0 !important;
-  }
   .el-dialog__wrapper {
     left: 160px;
   }
 }
-@media screen and (max-width: 600px) {
-  aside.app-sidebar {
-    width: 70px !important;
-    margin-right: 10px !important;
-    overflow-x: hidden;
-    border-right: none !important;
-  }
-  div.icon-container + span {
-    display: none;
-  }
-}
 @media screen and (max-width: 460px) {
-  button.polkaswap-logo {
-    display: inherit !important;
-  }
   div.app-body {
     margin-left: -10px;
   }
