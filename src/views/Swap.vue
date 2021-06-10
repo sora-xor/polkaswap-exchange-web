@@ -41,6 +41,14 @@
         </s-button>
         <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenFrom" @click="openSelectTokenDialog(true)" />
       </div>
+      <div slot="bottom" class="input-line input-line--footer">
+        <div v-if="tokenFrom" class="input-title">
+          <span>{{ getTokenName(tokenFrom) }}</span>
+          <s-tooltip :content="t('selectToken.copy')">
+            <span class="token-address" @click="handleCopy(tokenFrom, $event)">({{ getFormattedAddress(tokenFrom) }})</span>
+          </s-tooltip>
+        </div>
+      </div>
     </s-float-input>
     <s-button class="el-button--switch-tokens" type="action" icon="arrows-swap-90-24" :disabled="!areTokensSelected || isRecountingProcess" @click="handleSwitchTokens" />
     <s-float-input
@@ -66,6 +74,14 @@
       </div>
       <div slot="right" class="s-flex el-buttons">
         <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenTo" @click="openSelectTokenDialog(false)" />
+      </div>
+      <div slot="bottom" class="input-line input-line--footer">
+        <div v-if="tokenTo" class="input-title">
+          <span>{{ getTokenName(tokenTo) }}</span>
+          <s-tooltip :content="t('selectToken.copy')">
+            <span class="token-address" @click="handleCopy(tokenTo, $event)">({{ getFormattedAddress(tokenTo) }})</span>
+          </s-tooltip>
+        </div>
       </div>
     </s-float-input>
     <slippage-tolerance class="slippage-tolerance-settings" />
@@ -121,7 +137,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
-import { isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance, debouncedInputHandler } from '@/utils'
+import { isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance, formatAddress, debouncedInputHandler, copyToClipboard } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -281,6 +297,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   formatBalance (token): string {
     return formatAssetBalance(token)
+  }
+
+  getFormattedAddress (token: AccountAsset): string {
+    return formatAddress(token.address, 10)
+  }
+
+  getTokenName (token: AccountAsset): string {
+    return `${token.name || token.symbol}`
   }
 
   resetFieldFrom (): void {
@@ -482,6 +506,24 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   openSettingsDialog (): void {
     this.showSettings = true
   }
+
+  async handleCopy (token: AccountAsset, event: Event): Promise<void> {
+    event.stopImmediatePropagation()
+    try {
+      await copyToClipboard(token.address)
+      this.$notify({
+        message: this.t('selectToken.successCopy', { symbol: token.symbol }),
+        type: 'success',
+        title: ''
+      })
+    } catch (error) {
+      this.$notify({
+        message: `${this.t('warningText')} ${error}`,
+        type: 'warning',
+        title: ''
+      })
+    }
+  }
 }
 </script>
 
@@ -505,5 +547,13 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 .page-header--swap {
   justify-content: space-between;
   align-items: center;
+}
+
+.token-address {
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 </style>

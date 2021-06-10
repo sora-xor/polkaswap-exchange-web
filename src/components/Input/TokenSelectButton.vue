@@ -50,9 +50,11 @@ export default class TokenSelectButton extends Mixins(TranslationMixin) {
   get buttonText (): string {
     if (!this.hasToken) return this.t('buttons.chooseToken')
 
-    return this.tokens.length !== 0
-      ? this.tokens.map(item => item.symbol).join('-')
-      : this.token.symbol
+    if (this.tokens.length !== 0) {
+      return this.tokens.map(item => item.symbol).join('-')
+    }
+
+    return this.token?.symbol ?? ''
   }
 }
 </script>

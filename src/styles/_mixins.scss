@@ -60,6 +60,13 @@
     font-size: var(--s-font-size-mini);
     line-height: var(--s-line-height-medium);
 
+    &--footer {
+      justify-content: flex-end;
+      margin-top: $inner-spacing-mini / 2;
+      margin-bottom: 0;
+      min-height: $inner-spacing-mini * 2.25;
+    }
+
     .input-title {
       display: flex;
       align-items: center;
