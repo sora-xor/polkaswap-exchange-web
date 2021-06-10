@@ -23,6 +23,13 @@
               :items="formattedExternalRewards"
               :group="true"
             />
+            <rewards-amount-table
+              class="rewards-table"
+              v-if="vestedRewards"
+              v-model="selectedVestedRewardsModel"
+              :items="formattedVestedRewards"
+              :group="true"
+            />
             <s-divider />
             <div class="rewards-footer">
               <div v-if="isExternalAccountConnected" class="rewards-account">
@@ -67,7 +74,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
-import { AccountAsset, KnownSymbols, RewardInfo, RewardingEvents, CodecString } from '@sora-substrate/util'
+import { AccountAsset, KnownSymbols, KnownAssets, RewardInfo, RewardsInfo, RewardingEvents, CodecString } from '@sora-substrate/util'
 
 import web3Util from '@/utils/web3-util'
 import { lazyComponent } from '@/router'
@@ -103,6 +110,8 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 
   @State(state => state.rewards.internalRewards) internalRewards!: Array<RewardInfo>
   @State(state => state.rewards.externalRewards) externalRewards!: Array<RewardInfo>
+  @State(state => state.rewards.vestedRewards) vestedRewards!: RewardsInfo | null
+  @State(state => state.rewards.selectedVestedRewards) selectedVestedRewards!: Array<RewardInfo>
   @State(state => state.rewards.selectedInternalRewards) selectedInternalRewards!: Array<RewardInfo>
   @State(state => state.rewards.selectedExternalRewards) selectedExternalRewards!: Array<RewardInfo>
 
@@ -111,6 +120,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @Getter('externalRewardsAvailable', { namespace: 'rewards' }) externalRewardsAvailable!: boolean
   @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardsAmountTableItem>
   @Getter('transactionStepsCount', { namespace: 'rewards' }) transactionStepsCount!: number
+  @Getter('vestedRewadsGroupItem', { namespace: 'rewards' }) vestedRewadsGroupItem!: RewardInfo
 
   @Action('reset', { namespace: 'rewards' }) reset!: () => void
   @Action('setSelectedRewards', { namespace: 'rewards' }) setSelectedRewards!: (params) => void
@@ -159,7 +169,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 
   set selectedInternalRewardsModel (types: Array<string>) {
     const internal = this.internalRewards.filter(item => types.includes(item.type))
-    this.setSelectedRewards({ internal, external: this.selectedExternalRewards })
+    this.setSelectedRewards({ internal, external: this.selectedExternalRewards, vested: this.selectedVestedRewards })
   }
 
   get selectedExternalRewardsModel (): boolean {
@@ -168,7 +178,16 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 
   set selectedExternalRewardsModel (flag: boolean) {
     const external = flag ? this.externalRewards : []
-    this.setSelectedRewards({ internal: this.selectedInternalRewards, external })
+    this.setSelectedRewards({ internal: this.selectedInternalRewards, external, vested: this.selectedVestedRewards })
+  }
+
+  get selectedVestedRewardsModel (): boolean {
+    return this.selectedVestedRewards.length !== 0
+  }
+
+  set selectedVestedRewardsModel (flag: boolean) {
+    const vested = flag && this.vestedRewards ? this.vestedRewards.rewards : []
+    this.setSelectedRewards({ internal: this.selectedInternalRewards, external: this.selectedExternalRewards, vested })
   }
 
   get isInsufficientBalance (): boolean {
@@ -209,6 +228,12 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 
   get formattedInternalRewards (): Array<RewardsAmountTableItem> {
     return this.internalRewards.map((item: RewardInfo) => this.formatRewardToTableItem(item))
+  }
+
+  get formattedVestedRewards () {
+    if (!this.vestedRewards) return []
+
+    return this.vestedRewards.rewards.map((item: RewardInfo) => this.formatRewardToTableItem(item))
   }
 
   get rewardTokenSymbols (): Array<KnownSymbols> {
