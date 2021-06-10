@@ -166,9 +166,8 @@ $pool-collapse-icon-width: 10px;
     }
     &__content {
       margin-top: $inner-spacing-medium;
-      padding-top: $basic-spacing * 2;
+      padding-top: $inner-spacing-medium;
       padding-bottom: 0;
-      border-top: 1px solid var(--s-color-base-border-primary);
     }
     .el-collapse-item__header {
       height: $pair-icon-height;

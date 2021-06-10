@@ -625,7 +625,7 @@ $disclaimer-letter-spacing: -0.03em;
       font-weight: 300;
       letter-spacing: var(--s-letter-spacing-small);
       line-height: var(--s-line-height-medium);
-      padding: 0 #{$menu-horizontal-padding};
+      padding: 0 13px;
       color: var(--s-color-base-content-secondary);
     }
     &:hover:not(.is-active):not(.is-disabled) {

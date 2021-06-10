@@ -236,9 +236,6 @@ div.token-item {
 .s-menu:not(.el-menu--horizontal) > :not(:last-child) {
     margin-bottom: 0 !important;
 }
-div.sidebar-item-content span {
-  line-height: 44px;
-}
 div.el-card__header i {
   display: none;
 }
@@ -276,11 +273,6 @@ div.header-icon {
 }
 button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-medium.s-border-radius-small.s-primary.s-i-position-left span {
   font-size: var(--s-icon-font-size-mini) !important;
-}
-div.pool-list div.el-collapse-item__content {
-  margin-top: 16px;
-  padding-top: 16px !important;
-  border-top: 1px solid var(--s-color-theme-secondary);
 }
 
 span.sora-logo__title,

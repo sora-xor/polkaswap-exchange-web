@@ -36,6 +36,7 @@ $icon-size: 42px;
 
 .sidebar-item-content {
   display: flex;
+  align-items: center;
 
   &--link {
     &, &:hover, &:focus, &:visited {
