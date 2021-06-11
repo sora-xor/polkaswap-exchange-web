@@ -64,11 +64,15 @@ $baseClass: '.token-select-button';
 
 #{$baseClass} {
   &__logo {
-    margin-right: $inner-spacing-mini * 0.75;
+    margin-right: $inner-spacing-mini / 2;
+  }
+
+  &__text {
+    margin: 0 $inner-spacing-mini / 2;
   }
 
   &__icon {
-    margin-left: $inner-spacing-mini * 0.75;
+    margin-left: $inner-spacing-mini / 2;
     background-color: var(--s-color-base-content-tertiary);
     color: white !important;
     border-radius: var(--s-border-radius-medium);

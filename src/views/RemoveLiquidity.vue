@@ -397,8 +397,8 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
 
   .el-input__inner {
     font-size: var(--s-heading1-font-size) !important;
-    line-height: $s-line-height-mini !important;
-    letter-spacing: $s-letter-spacing-mini !important;
+    line-height: var(--s-line-height-mini) !important;
+    letter-spacing: var(--s-letter-spacing-mini) !important;
     border: 0 !important;
     border-radius: 0 !important;
     background: none !important;

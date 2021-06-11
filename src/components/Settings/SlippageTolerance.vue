@@ -214,7 +214,7 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
     margin-top: $inner-spacing-mini;
     width: 100%;
     font-size: var(--s-font-size-mini);
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
   }
   &--warning {
     color: var(--s-color-status-warning)

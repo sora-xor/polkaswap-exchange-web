@@ -248,7 +248,7 @@ $pair-icon-height: 36px;
       }
     }
     h3 {
-      letter-spacing: $s-letter-spacing-small;
+      letter-spacing: var(--s-letter-spacing-small);
       font-feature-settings: $s-font-feature-settings-title;
     }
   }
@@ -256,7 +256,7 @@ $pair-icon-height: 36px;
     display: flex;
     align-items: center;
     font-size: var(--s-font-size-small);
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
     margin-bottom: $inner-spacing-mini;
     &,
     &--buttons {

@@ -664,8 +664,8 @@ $collapse-horisontal-padding: $inner-spacing-medium;
 $header-icon-size: 100px;
 $header-spinner-size: 83px;
 $collapse-header-title-font-size: $s-heading3-caps-font-size;
-$collapse-header-title-line-height: $s-line-height-base;
-$collapse-header-title-height: #{$collapse-header-title-font-size * $collapse-header-title-line-height};
+$collapse-header-title-line-height: var(--s-line-height-base);
+$collapse-header-title-height: calc(#{$collapse-header-title-font-size} * $collapse-header-title-line-height);
 $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-height});
 
 .transaction {
@@ -703,7 +703,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
             padding-left: #{$collapse-horisontal-padding + $inner-spacing-mini / 2};
             h3 {
               font-size: $s-heading3-caps-font-size;
-              line-height: $s-line-height-base;
+              line-height: var(--s-line-height-base);
             }
           }
         }
@@ -775,14 +775,14 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
       &--create-transaction {
         @include bottom-button;
         font-feature-settings: $s-font-feature-settings-title;
-        letter-spacing: $s-letter-spacing-big;
+        letter-spacing: var(--s-letter-spacing-big);
       }
       &--view-transactions-history,
       &--create-transaction {
         font-weight: 700;
       }
       &--view-transactions-history {
-        line-height: $s-line-height-medium;
+        line-height: var(--s-line-height-medium);
       }
     }
   }
@@ -832,7 +832,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     margin-bottom: $inner-spacing-mini;
     font-feature-settings: $s-font-feature-settings-title;
     font-weight: 700;
-    line-height: $s-line-height-medium;
+    line-height: var(--s-line-height-medium);
     .s-icon {
       &-sora, &-eth {
         position: relative;
@@ -850,13 +850,13 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     display: flex;
     align-items: baseline;
     font-size: var(--s-font-size-mini);
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
     h3 {
       padding-right: $inner-spacing-mini;
       padding-left: $inner-spacing-mini;
       font-feature-settings: $s-font-feature-settings-type;
       font-weight: 700;
-      letter-spacing: $s-letter-spacing-type;
+      letter-spacing: var(--s-letter-spacing-extra-large);
       text-transform: uppercase;
     }
   }

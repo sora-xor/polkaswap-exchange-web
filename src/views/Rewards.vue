@@ -361,18 +361,18 @@ $hint-font-size: 13px;
 
   &-claiming-text {
     font-size: var(--s-heading5-font-size);
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
 
     &--transaction {
       font-size: var(--s-font-size-mini);
-      line-height: $s-line-height-big;
+      line-height: var(--s-line-height-big);
     }
   }
 
   &-hint {
     font-size: $hint-font-size;
     font-weight: 300;
-    line-height: $s-line-height-base;
+    line-height: var(--s-line-height-base);
     color: var(--s-color-base-content-primary);
     padding: 0 46px;
     text-align: center;
@@ -406,7 +406,7 @@ $hint-font-size: 13px;
       padding: 0 $inner-spacing-medium;
       font-size: $hint-font-size;
       font-weight: 300;
-      line-height: $s-line-height-base;
+      line-height: var(--s-line-height-base);
       text-align: center;
     }
   }
@@ -416,7 +416,7 @@ $hint-font-size: 13px;
     flex-flow: row wrap;
     justify-content: space-between;
     font-size: var(--s-font-size-mini);
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
     margin-top: $inner-spacing-medium;
     padding: 0 $inner-spacing-mini / 2;
   }

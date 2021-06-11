@@ -22,7 +22,7 @@ $badge-label-color: #53565A;
   flex-flow: row nowrap;
   position: relative;
   padding: ($inner-spacing-mini + 4) / 2 ($inner-spacing-big - 2) * 2 $inner-spacing-mini / 2 $inner-spacing-small;
-  line-height: $s-line-height-medium;
+  line-height: var(--s-line-height-medium);
   font-size: var(--s-font-size-mini);
   font-weight: 300;
   letter-spacing: var(--s-letter-spacing-small);

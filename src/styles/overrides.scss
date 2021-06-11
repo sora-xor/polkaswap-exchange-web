@@ -154,10 +154,6 @@ div.s-input-amount input.el-input__inner {
   font-size: var(--s-heading3-font-size) !important;
   color: var(--s-color-base-content-quaternary) !important;
 }
-form.el-form.container > div.input-container ~ div.input-container,
-div.el-card__body > div.bridge-item ~ div.bridge-item {
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1), inset 1px 1px 2px #FFFFFF;
-}
 
 div.asset-search-actions {margin-bottom: 0 !important; margin-top: 16px;}
 div.history-item.s-flex {padding: 8px 24px;margin-left: -14px;margin-right: -16px;}
@@ -174,40 +170,14 @@ div.el-tabs__nav-wrap div.el-tabs__item {
 div.el-collapse-item__header {background-color: unset !important;}
 div.el-collapse-item__header h3 {font-weight: 700;}
 
-div.pool-tokens-amount {font-weight: 700; text-align: center}
-div.s-row.pool-tokens.row-flex {font-weight: 800;justify-content: center;}
 span.info-line-label, div.input-title.p4 {text-transform: uppercase;}
 span.info-line-value {font-weight: 600;}
 div.output-description{text-align: center;max-width: 300px;margin: auto;}
 
 div.tokens-info-container, span.asset-item__balance {font-weight: 800 !important;}
 
-div.asset-item__name,
-span.asset-item__balance {font-size: 16px !important; letter-spacing: -0.04em; white-space: nowrap;}
-
 i.el-notification__icon.el-icon-success, i.el-notification__icon.el-icon-success:hover {
   color: var(--s-color-status-success) !important;
-}
-span.token-item__amount {
-  white-space: nowrap;
-}
-div.token-item__amount-container {
-  margin-top: -25px;
-}
-div.token-item__amount-container span, div.token-item__symbol {
-  font-size: 20px !important;
-  letter-spacing: -0.06em !important;
-  font-weight: 800 !important;
-}
-div.token-item__symbol {
-  font-size: 20px !important;
-  letter-spacing: -0.02em !important;
-  font-weight: 800 !important;
-  margin-top: -6px !important;
-  margin-bottom: 2px !important;
-}
-div.token-item {
-  transition: all 0.125s ease-in-out;
 }
 div.el-card__header i {
   display: none;

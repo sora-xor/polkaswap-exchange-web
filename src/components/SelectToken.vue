@@ -346,6 +346,7 @@ $token-item-height: 71px;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  transition: all 0.125s ease-in-out;
   &:hover {
     background-color: var(--s-color-base-background-hover);
   }
@@ -369,13 +370,14 @@ $token-item-height: 71px;
       cursor: pointer;
     }
   }
-  &__symbol {
-    font-size: var(--s-font-size-small);
-    margin-bottom: $inner-spacing-mini;
-    font-weight: 600;
+  &__symbol, &__amount {
+    font-size: var(--s-font-size-big);
+    line-height: var(--s-line-height-small);
+    letter-spacing: var(--s-letter-spacing-small);
+    font-weight: 800;
+    white-space: nowrap;
   }
   &__amount {
-    font-weight: 600;
     &-container {
       width: 45%;
       text-align: right;
@@ -403,7 +405,7 @@ $token-item-height: 71px;
     padding-top: $inner-spacing-big;
     color: var(--s-color-base-content-tertiary);
     font-feature-settings: $s-font-feature-settings-common;
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
   }
   .empty-results-icon {
     margin-bottom: $inner-spacing-medium;

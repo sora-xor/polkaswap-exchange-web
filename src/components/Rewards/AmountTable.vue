@@ -94,7 +94,7 @@ $checkbox-width: 20px;
     align-items: flex-start;
     justify-content: space-between;
     font-size: $table-item-font-size;
-    line-height: $s-line-height-mini;
+    line-height: var(--s-line-height-mini);
 
     &--row:not(:last-child) {
       margin-bottom: $inner-spacing-mini * 2;

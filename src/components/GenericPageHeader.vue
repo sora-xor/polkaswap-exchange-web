@@ -77,7 +77,7 @@ $title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
     line-height: $tooltip-area-height;
     font-feature-settings: $s-font-feature-settings-title;
     font-weight: 300;
-    letter-spacing: $s-letter-spacing-small;
+    letter-spacing: var(--s-letter-spacing-small);
     & + .el-button {
       right: 0;
       &--settings {

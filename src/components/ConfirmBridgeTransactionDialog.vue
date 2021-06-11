@@ -165,7 +165,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   display: flex;
   flex-direction: column;
   font-size: var(--s-heading2-font-size);
-  line-height: $s-line-height-small;
+  line-height: var(--s-line-height-small);
   &-info-container {
     display: flex;
     justify-content: space-between;
@@ -182,7 +182,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   align-items: center;
   justify-content: flex-end;
   white-space: nowrap;
-  letter-spacing: $s-letter-spacing-mini;
+  letter-spacing: var(--s-letter-spacing-mini);
   &-value {
     margin-right: $inner-spacing-medium;
   }

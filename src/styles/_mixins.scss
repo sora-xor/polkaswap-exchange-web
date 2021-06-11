@@ -21,7 +21,7 @@
     &-balance-value {
       margin-left: $inner-spacing-mini / 2;
       font-feature-settings: $s-font-feature-settings-common;
-      letter-spacing: $s-letter-spacing-big;
+      letter-spacing: var(--s-letter-spacing-big);
       word-break: break-all;
     }
   }
@@ -217,8 +217,8 @@
 @mixin input-font-styles {
   height: var(--s-size-small);
   font-size: $s-font-size-input;
-  line-height: $s-line-height-small;
-  letter-spacing: $s-letter-spacing-small;
+  line-height: var(--s-line-height-small);
+  letter-spacing: var(--s-letter-spacing-small);
 }
 
 @mixin svg-icon ($url: '', $width: var(--s-icon-font-size-mini), $height: $width) {
@@ -272,15 +272,15 @@
   font-weight: 600 !important;
   text-transform:  uppercase;
   font-size: $s-font-size-button;
-  line-height: $s-line-height-small;
-  letter-spacing: $s-letter-spacing-small;
+  line-height: var(--s-line-height-small);
+  letter-spacing: var(--s-letter-spacing-small);
   font-feature-settings: $s-font-feature-settings-button;
 }
 
 @mixin next-button {
   width: 100%;
-  // line-height: $s-line-height-medium;
-  letter-spacing: $s-letter-spacing-big;
+  // line-height: var(--s-line-height-medium);
+  letter-spacing: var(--s-letter-spacing-big);
   font-feature-settings: $s-font-feature-settings-title;
 }
 
@@ -321,12 +321,6 @@
         #{$tabs-class}__nav-wrap #{$tabs-class}__item {
           padding-right: $inner-spacing-medium;
           padding-left: $inner-spacing-medium;
-          &.is-active {
-            box-shadow: var(--s-shadow-tab);
-            &, &:hover {
-              background-color: var(--s-color-base-on-accent);
-            }
-          }
         }
         #{$tabs-class}__item {
           width: 50%;

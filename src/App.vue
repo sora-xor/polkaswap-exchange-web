@@ -308,7 +308,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
 html {
   overflow-y: hidden;
   font-size: var(--s-font-size-small);
-  line-height: $s-line-height-base;
+  line-height: var(--s-line-height-base);
 }
 #app {
   -webkit-font-smoothing: antialiased;
@@ -448,7 +448,7 @@ html {
       border-radius: 0 !important;
       color: var(--s-color-base-content-primary);
       font-size: var(--s-font-size-large);
-      line-height: $s-line-height-small;
+      line-height: var(--s-line-height-small);
     }
     .s-placeholder {
       display: none;

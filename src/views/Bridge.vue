@@ -576,7 +576,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     align-items: center;
     margin-top: $inner-spacing-medium;
     font-size: var(--s-font-size-mini);
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
     color: var(--s-color-base-content-secondary);
     font-feature-settings: $s-font-feature-settings-common;
   }

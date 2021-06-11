@@ -313,8 +313,10 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
     background-color: var(--s-color-base-background-hover);
   }
   &__name, &__balance {
-    font-size: var(--s-font-size-small);
+    font-size: var(--s-font-size-medium);
+    letter-spacing: var(--s-letter-spacing-mini);
     font-weight: 600;
+    white-space: nowrap;
   }
   &__balance-container {
     width: 45%;
@@ -331,8 +333,8 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
 .network-label {
   color: var(--s-color-base-content-secondary);
   font-size: $s-heading3-caps-font-size;
-  line-height: $s-line-height-base;
-  letter-spacing: $s-letter-spacing-type;
+  line-height: var(--s-line-height-base);
+  letter-spacing: var(--s-letter-spacing-extra-large);
   font-weight: 700 !important;
   font-feature-settings: $s-font-feature-settings-type;
   text-transform: uppercase;
@@ -372,7 +374,7 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
     padding-left: $inner-spacing-mini / 2;
     color: var(--s-color-base-content-secondary);
     font-size: var(--s-font-size-mini);
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
     .s-link {
       height: auto;
       padding: 0;
