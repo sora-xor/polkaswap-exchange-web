@@ -31,6 +31,7 @@ export default class ToggleTextButton extends Vue {
 
   .secondary-text {
     display: none;
+    text-decoration: underline;
   }
 
   &:hover {
@@ -43,10 +44,6 @@ export default class ToggleTextButton extends Vue {
     .secondary-text {
       display: inline-block;
     }
-  }
-
-  &[type="link"]:hover .secondary-text {
-    text-decoration: underline;
   }
 }
 </style>
