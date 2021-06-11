@@ -24,7 +24,7 @@
               <div class="account-name">{{ accountInfo }}</div>
               <div class="account-icon">
                 <s-icon v-if="!isLoggedIn" name="finance-wallet-24" />
-                <WalletAvatar v-else :address="account.address"/>
+                <WalletAvatar v-else :address="account.address" />
               </div>
             </div>
           </s-button>

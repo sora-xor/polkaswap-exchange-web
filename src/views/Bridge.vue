@@ -2,7 +2,7 @@
   <div class="bridge s-flex">
     <s-form class="bridge-form" :show-message="false">
       <s-card
-        v-loading="parentLoading"
+        v-lottie-loader="{ loading: parentLoading }"
         class="bridge-content"
         border-radius="medium"
         shadow="never"
@@ -197,6 +197,7 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
+
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EvmSymbol } from '@/consts'
 import { SubNetwork } from '@/utils/web3-util'

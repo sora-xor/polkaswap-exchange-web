@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="!isInitRequestCompleted" class="transaction-container">
+  <div v-lottie-loader="{ loading: !isInitRequestCompleted }" class="transaction-container">
     <s-button
       v-if="isInitRequestCompleted"
       class="s-button--view-transactions-history"
@@ -13,7 +13,13 @@
     <s-card class="transaction-content" border-radius="medium" shadow="never">
       <template v-if="isInitRequestCompleted">
         <div class="header">
-          <div v-loading="isTransactionFromPending || isTransactionToPending" :class="headerIconClasses" />
+          <div
+            v-lottie-loader="{
+              loading: isTransactionFromPending || isTransactionToPending,
+              size: '83px'
+            }"
+            :class="headerIconClasses"
+          />
           <h5 class="header-details">
             {{ `${formattedAmount} ${formatAssetSymbol(assetSymbol)}` }}
             <i :class="`s-icon--network s-icon-${isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
@@ -166,6 +172,7 @@ import BridgeMixin from '@/components/mixins/BridgeMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
+
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EvmSymbol, MetamaskCancellationCode } from '@/consts'
 import { formatAssetSymbol, copyToClipboard, formatDateItem, hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils'
@@ -660,7 +667,6 @@ export default class BridgeTransaction extends Mixins(
 <style lang="scss">
 $collapse-horisontal-padding: $inner-spacing-medium;
 $header-icon-size: 100px;
-$header-spinner-size: 83px;
 $collapse-header-title-font-size: $s-heading3-caps-font-size;
 $collapse-header-title-line-height: $s-line-height-base;
 $collapse-header-title-height: #{$collapse-header-title-font-size * $collapse-header-title-line-height};
@@ -669,6 +675,16 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
 .transaction {
   &-container {
     @include bridge-container;
+    .header-icon {
+      &.lottie-loader--loading:before {
+        background-color: transparent;
+      }
+      &:not(.header-icon--success):not(.header-icon--wait):not(.header-icon--error) {
+        .lottie-loader {
+          display: block;
+        }
+      }
+    }
   }
   &-content {
     .el-card__body {
@@ -677,14 +693,6 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     .header-icon {
       position: relative;
       @include svg-icon('', $header-icon-size);
-      .el-loading-spinner {
-        top: 0;
-        margin-top: calc(#{$header-icon-size - $header-spinner-size} / 2);
-        .circular {
-          width: $header-spinner-size;
-          height: $header-spinner-size;
-        }
-      }
     }
     .el-button .network-title {
       text-transform: uppercase;

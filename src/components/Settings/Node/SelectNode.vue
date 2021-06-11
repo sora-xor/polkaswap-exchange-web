@@ -22,7 +22,7 @@
             </div>
           </div>
           <div class="select-node-badge">
-            <s-icon v-if="node.connecting" name="el-icon-loading"/>
+            <s-icon v-if="node.connecting" name="el-icon-loading" />
           </div>
           <s-button class="details select-node-details" type="link" @click="handleNode(node)">
             <s-icon name="arrows-chevron-right-rounded-24" />

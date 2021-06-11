@@ -6,7 +6,7 @@
       ...$attrs
     }"
   >
-    <slot slot="content" name="content"/>
+    <slot slot="content" name="content" />
     <!-- element-ui disabled tooltip disables wrapped button, this is the way to fix it -->
     <span>
       <slot/>
