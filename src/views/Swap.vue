@@ -527,15 +527,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 }
 </script>
 
-<style lang="scss">
-.el-form--actions {
-  .s-input--token-value .el-input .el-input__inner {
-    @include text-ellipsis;
-    font-weight: 800;
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 .el-form--actions {
   @include generic-input-lines;

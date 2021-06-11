@@ -133,12 +133,6 @@ i.el-collapse-item__arrow:hover {
 button.el-dialog__headerbtn:hover > i.el-icon {
   color: white !important;
 }
-
-i.el-icon, i.s-icon-arrows-chevron-left-rounded-24 {
-  color: var(--s-color-base-content-tertiary) !important;
-  font-size: var(--s-icon-font-size-big) !important;
-  transition: all 0.125s ease-in-out;
-}
 div.asset-details-actions i, div.wallet-assets-item.s-flex button.el-button--primary i {
   color: white !important;
 }
@@ -169,12 +163,6 @@ div.el-tabs__nav-wrap div.el-tabs__item {
 
 div.el-collapse-item__header {background-color: unset !important;}
 div.el-collapse-item__header h3 {font-weight: 700;}
-
-span.info-line-label, div.input-title.p4 {text-transform: uppercase;}
-span.info-line-value {font-weight: 600;}
-div.output-description{text-align: center;max-width: 300px;margin: auto;}
-
-div.tokens-info-container, span.asset-item__balance {font-weight: 800 !important;}
 
 i.el-notification__icon.el-icon-success, i.el-notification__icon.el-icon-success:hover {
   color: var(--s-color-status-success) !important;

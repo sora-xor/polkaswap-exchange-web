@@ -120,6 +120,9 @@ export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, Dia
   margin-bottom: $inner-spacing-mini;
   font-size: var(--s-font-size-mini);
   line-height: var(--s-line-height-big);
+  text-align: center;
+  max-width: 300px;
+  margin: auto;
 }
 
 .pair-info {

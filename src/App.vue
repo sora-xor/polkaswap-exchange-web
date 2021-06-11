@@ -442,6 +442,7 @@ html {
       }
     }
     #{$swap-input-class}__inner {
+      @include text-ellipsis;
       height: var(--s-size-small);
       padding-right: 0;
       padding-left: 0;
@@ -449,6 +450,7 @@ html {
       color: var(--s-color-base-content-primary);
       font-size: var(--s-font-size-large);
       line-height: var(--s-line-height-small);
+      font-weight: 800;
     }
     .s-placeholder {
       display: none;

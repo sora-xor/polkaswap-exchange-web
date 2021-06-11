@@ -318,9 +318,12 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
     font-weight: 600;
     white-space: nowrap;
   }
-  &__balance-container {
-    width: 45%;
-    text-align: right;
+  &__balance {
+    font-weight: 800;
+    &-container {
+      width: 45%;
+      text-align: right;
+    }
   }
   .s-col {
     padding-right: $inner-spacing-small;

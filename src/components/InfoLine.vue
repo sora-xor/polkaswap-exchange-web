@@ -84,11 +84,13 @@ export default class InfoLine extends Vue {
   &-label {
     margin-right: $inner-spacing-mini;
     word-break: keep-all;
+    text-transform: uppercase;
   }
   &-value {
     margin-left: auto;
     text-align: right;
     word-break: break-all;
+    font-weight: 600
   }
   .asset-symbol {
     word-break: keep-all;
