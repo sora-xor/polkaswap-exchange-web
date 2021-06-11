@@ -118,17 +118,19 @@ button.el-button.details.s-link:hover > span > i {
   color: var(--s-color-theme-accent);
 }
 
-button.el-dialog__headerbtn,
+.dialog-wrapper button.el-dialog__headerbtn,
 i.el-collapse-item__arrow {
-  background-color: var(--s-color-utility-surface) !important;
-  box-shadow: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+  background-color: var(--s-color-utility-body) !important;
+  box-shadow: var(--s-shadow-element);
+  color: var(--s-color-base-content-secondary);
   transition: all 0.125s ease-in-out;
   border: none;
 }
-button.el-dialog__headerbtn:hover,
-i.el-collapse-item__arrow:hover {
-  opacity: 0.75;
-  box-shadow: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+.dialog-wrapper button.el-dialog__headerbtn:hover .el-dialog__close {
+  color: var(--s-color-base-content-secondary) !important;
+}
+.dialog-wrapper .el-dialog__headerbtn .el-dialog__close {
+  color: var(--s-color-base-content-tertiary) !important;
 }
 button.el-dialog__headerbtn:hover > i.el-icon {
   color: white !important;

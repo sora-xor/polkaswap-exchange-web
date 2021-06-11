@@ -7,16 +7,16 @@
     <s-form-item class="el-form-item--search">
       <s-input
         ref="search"
+        size="big"
         v-model="query"
         :placeholder="t('selectRegisteredAsset.search.placeholder')"
         class="asset-search"
         prefix="el-icon-search"
-        size="medium"
         border-radius="mini"
         @focus="handleSearchFocus"
       >
         <template #suffix v-if="query">
-          <s-button class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
+          <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
         </template>
       </s-input>
     </s-form-item>
