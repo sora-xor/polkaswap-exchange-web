@@ -13,5 +13,7 @@ export interface RewardInfoGroup {
 }
 
 export interface RewardsAmountTableItem extends RewardsAmountHeaderItem {
+  type?: string;
   title?: string;
+  rewards?: Array<RewardInfo>;
 }

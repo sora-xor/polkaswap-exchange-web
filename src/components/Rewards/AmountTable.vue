@@ -17,7 +17,7 @@
       </div>
       <div v-if="rewards.length !== 0" :key="`${index}-inner`" class="amount-table-item-group">
         <div v-for="item in rewards" class="amount-table-item amount-table-item--inner" :key="`${index}-${item.type}`">
-          <div class="amount-table-item__title">{{ item.title }}</div>
+          <div class="amount-table-item__title">{{ item.title }}&nbsp;{{ t('rewards.vested') }}</div>
           <div class="amount-table-item__amount">
             <span>{{ item.amount }}</span>&nbsp;<span>{{ item.symbol }}</span>
           </div>
@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import { Component, Prop, Mixins } from 'vue-property-decorator'
-import { RewardInfo } from '@sora-substrate/util'
+import { RewardInfo, KnownSymbols } from '@sora-substrate/util'
 
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -37,7 +37,7 @@ import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards'
 
 @Component
 export default class AmountTable extends Mixins(NumberFormatterMixin, TranslationMixin) {
-  @Prop({ default: () => [], type: Array }) items!: Array<RewardInfo>
+  @Prop({ default: () => [], type: Array }) items!: Array<RewardInfoGroup | RewardInfo>
   @Prop({ default: () => [], type: [Array, Boolean] }) value!: Array<string> | boolean
   @Prop({ default: false, type: Boolean }) group!: boolean
 
@@ -60,13 +60,13 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
   formatItem (item: RewardInfoGroup | RewardInfo): RewardsAmountTableItem {
     const key = `rewards.events.${item.type}`
     const title = this.te(key) ? this.t(key) : item.type
-    const rewards = Array.isArray(item.rewards) ? item.rewards.map(this.formatItem) : []
+    const rewards = ('rewards' in item) && Array.isArray(item.rewards) ? item.rewards.map(this.formatItem) : []
 
     return {
       type: item.type,
       title,
       amount: this.formatCodecNumber(item.amount),
-      symbol: item.asset.symbol,
+      symbol: item.asset.symbol as KnownSymbols,
       rewards
     }
   }
@@ -110,20 +110,19 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
 
 <style lang="scss" scoped>
 $table-item-font-size: 13px;
-$checkbox-width: 20px;
 
 .amount-table {
   &.group {
     display: flex;
     flex-flow: row nowrap;
-    padding: $inner-spacing-mini $inner-spacing-mini / 2;
+    padding: $inner-spacing-mini 0;
     margin-right: 0;
   }
 
   &-checkbox {
     display: flex;
     margin-right: 0;
-    padding: $inner-spacing-mini $inner-spacing-mini / 2;
+    padding: $inner-spacing-mini 0;
   }
 
   &-item {

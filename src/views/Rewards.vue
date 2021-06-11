@@ -398,6 +398,7 @@ $hint-font-size: 13px;
     &:not(:last-child) {
       margin-bottom: 0;
     }
+    margin-left: -#{$checkbox-width};
   }
 
   &-footer {

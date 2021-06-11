@@ -472,6 +472,7 @@ export default {
     networkFee: '@:networkFeeText',
     networkFeeTooltip: '@:networkFeeTooltipText',
     andText: 'and',
+    vested: 'vested',
     claiming: {
       pending: 'Claiming...',
       success: 'Claimed successfully'
