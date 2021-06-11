@@ -12,22 +12,22 @@
           <template v-if="!claimingInProgressOrFinished">
             <rewards-amount-table
               class="rewards-table"
-              v-if="formattedInternalRewards.length"
-              v-model="selectedInternalRewardsModel"
-              :items="formattedInternalRewards"
+              v-if="externalRewards.length"
+              v-model="selectedExternalRewardsModel"
+              :items="externalRewards"
+              :group="true"
             />
             <rewards-amount-table
               class="rewards-table"
-              v-if="formattedExternalRewards.length"
-              v-model="selectedExternalRewardsModel"
-              :items="formattedExternalRewards"
-              :group="true"
+              v-if="internalRewards.length"
+              v-model="selectedInternalRewardsModel"
+              :items="internalRewards"
             />
             <rewards-amount-table
               class="rewards-table"
               v-if="vestedRewards"
               v-model="selectedVestedRewardsModel"
-              :items="formattedVestedRewards"
+              :items="[vestedRewadsGroupItem]"
               :group="true"
             />
             <s-divider />
@@ -80,7 +80,7 @@ import web3Util from '@/utils/web3-util'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import { hasInsufficientXorForFee } from '@/utils'
-import { RewardsAmountTableItem } from '@/types/rewards'
+import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards'
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import TransactionMixin from '@/components/mixins/TransactionMixin'
@@ -120,7 +120,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @Getter('externalRewardsAvailable', { namespace: 'rewards' }) externalRewardsAvailable!: boolean
   @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardsAmountTableItem>
   @Getter('transactionStepsCount', { namespace: 'rewards' }) transactionStepsCount!: number
-  @Getter('vestedRewadsGroupItem', { namespace: 'rewards' }) vestedRewadsGroupItem!: RewardInfo
+  @Getter('vestedRewadsGroupItem', { namespace: 'rewards' }) vestedRewadsGroupItem!: RewardInfoGroup
 
   @Action('reset', { namespace: 'rewards' }) reset!: () => void
   @Action('setSelectedRewards', { namespace: 'rewards' }) setSelectedRewards!: (params) => void
@@ -220,20 +220,6 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     const translationKey = this.transactionError ? 'rewards.transactions.failed' : 'rewards.transactions.confimation'
 
     return this.t(translationKey, { order, total: this.transactionStepsCount })
-  }
-
-  get formattedExternalRewards (): Array<RewardsAmountTableItem> {
-    return this.externalRewards.map((item: RewardInfo) => this.formatRewardToTableItem(item))
-  }
-
-  get formattedInternalRewards (): Array<RewardsAmountTableItem> {
-    return this.internalRewards.map((item: RewardInfo) => this.formatRewardToTableItem(item))
-  }
-
-  get formattedVestedRewards () {
-    if (!this.vestedRewards) return []
-
-    return this.vestedRewards.rewards.map((item: RewardInfo) => this.formatRewardToTableItem(item))
   }
 
   get rewardTokenSymbols (): Array<KnownSymbols> {
@@ -350,15 +336,6 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     await this.withNotifications(
       async () => await this.claimRewards({ internalAddress, externalAddress })
     )
-  }
-
-  private formatRewardToTableItem (item: RewardInfo): RewardsAmountTableItem {
-    return {
-      type: item.type,
-      title: this.t(`rewards.events.${item.type}`),
-      amount: this.formatCodecNumber(item.amount),
-      symbol: item.asset.symbol
-    } as RewardsAmountTableItem
   }
 }
 </script>

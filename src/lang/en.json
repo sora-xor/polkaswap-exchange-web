@@ -688,7 +688,7 @@
             "SoraFarmHarvest": "@:(soraText).farm harvest",
             "NtfAirdrop": "NFT Airdrop",
             "LiquidityProvision": "Fees gained from liquidity provision",
-            "BuyOnBondingCurve": "Strategic rewards for buying from the TBC"
+            "BuyOnBondingCurve": "buying from the TBC"
         }
     },
     "provider": {

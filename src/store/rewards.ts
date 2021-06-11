@@ -6,7 +6,7 @@ import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, RewardingEvents, CodecString } from '@sora-substrate/util'
 import web3Util from '@/utils/web3-util'
-import { RewardsAmountHeaderItem } from '@/types/rewards'
+import { RewardsAmountHeaderItem, RewardInfoGroup } from '@/types/rewards'
 import { groupRewardsByAssetsList } from '@/utils/rewards'
 
 const types = flow(
@@ -85,11 +85,12 @@ const getters = {
   transactionStepsCount (_, getters): number {
     return getters.externalRewardsSelected ? 2 : 1
   },
-  vestedRewadsGroupItem (state): RewardInfo {
+  vestedRewadsGroupItem (state): RewardInfoGroup {
     return {
-      type: RewardingEvents.Unspecified,
+      type: 'Strategic Rewards',
+      asset: KnownAssets.get(KnownSymbols.PSWAP),
       amount: state.vestedRewards?.limit ?? 0,
-      asset: KnownAssets.get(KnownSymbols.PSWAP)
+      rewards: state.vestedRewards?.rewards ?? []
     }
   },
   rewardsByAssetsList (state, getters): Array<RewardsAmountHeaderItem> {
@@ -210,7 +211,7 @@ const actions = {
       commit(types.GET_REWARDS_SUCCESS, { internal, external, vested })
 
       // select all rewards by default
-      await dispatch('setSelectedRewards', { internal, external })
+      await dispatch('setSelectedRewards', { internal, external, vested: vested?.rewards })
     } catch (error) {
       console.error(error)
       commit(types.GET_REWARDS_FAILURE)
