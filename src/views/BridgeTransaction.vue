@@ -665,7 +665,7 @@ $header-icon-size: 100px;
 $header-spinner-size: 83px;
 $collapse-header-title-font-size: $s-heading3-caps-font-size;
 $collapse-header-title-line-height: var(--s-line-height-base);
-$collapse-header-title-height: calc(#{$collapse-header-title-font-size} * $collapse-header-title-line-height);
+$collapse-header-title-height: calc(#{$collapse-header-title-font-size} * #{$collapse-header-title-line-height});
 $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-height});
 
 .transaction {
