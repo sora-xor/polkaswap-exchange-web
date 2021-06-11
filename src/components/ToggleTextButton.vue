@@ -1,8 +1,8 @@
 <template>
-  <s-button class="toggle-text-button" v-bind="$attrs" v-on="$listeners">
+  <div class="toggle-text-button" v-bind="$attrs" v-on="$listeners">
     <span class="primary-text">{{ primaryText }}</span>
     <span class="secondary-text">{{ secondaryText }}</span>
-  </s-button>
+  </div>
 </template>
 
 <script lang="ts">
@@ -17,11 +17,11 @@ export default class ToggleTextButton extends Vue {
 
 <style lang="scss" scoped>
 .toggle-text-button {
-  padding: 0 !important;
-  text-transform: none !important;
+  text-transform: unset;
   color: inherit;
   font-size: inherit;
   line-height: inherit;
+  cursor: pointer;
 
   span {
     font-size: var(--s-font-size-mini);

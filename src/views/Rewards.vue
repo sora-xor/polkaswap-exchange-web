@@ -27,8 +27,6 @@
             <div class="rewards-footer">
               <div v-if="isExternalAccountConnected" class="rewards-account">
                 <toggle-text-button
-                  type="link"
-                  size="mini"
                   :primary-text="formatAddress(evmAddress, 8)"
                   :secondary-text="t('rewards.changeAccount')"
                   @click="handleWalletChange"

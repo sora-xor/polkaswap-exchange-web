@@ -90,8 +90,6 @@
             <div v-if="isNetworkBConnected && isSoraToEvm" class="bridge-item-footer">
               <s-divider />
               <toggle-text-button
-                type="link"
-                size="mini"
                 :primary-text="formatAddress(isSoraToEvm ? evmAddress : getWalletAddress(), 8)"
                 :secondary-text="t('bridge.changeAccount')"
                 @click="!isSoraToEvm ? connectInternalWallet() : changeExternalWallet()"
