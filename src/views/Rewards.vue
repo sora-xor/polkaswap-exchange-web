@@ -12,15 +12,22 @@
           <template v-if="!claimingInProgressOrFinished">
             <rewards-amount-table
               class="rewards-table"
-              v-if="formattedInternalRewards.length"
-              v-model="selectedInternalRewardsModel"
-              :items="formattedInternalRewards"
+              v-if="externalRewards.length"
+              v-model="selectedExternalRewardsModel"
+              :items="externalRewards"
+              :group="true"
             />
             <rewards-amount-table
               class="rewards-table"
-              v-if="formattedExternalRewards.length"
-              v-model="selectedExternalRewardsModel"
-              :items="formattedExternalRewards"
+              v-if="internalRewards.length"
+              v-model="selectedInternalRewardsModel"
+              :items="internalRewards"
+            />
+            <rewards-amount-table
+              class="rewards-table"
+              v-if="vestedRewards"
+              v-model="selectedVestedRewardsModel"
+              :items="[vestedRewadsGroupItem]"
               :group="true"
             />
             <s-divider />
@@ -65,13 +72,13 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
-import { AccountAsset, KnownSymbols, RewardInfo, RewardingEvents, CodecString } from '@sora-substrate/util'
+import { AccountAsset, KnownSymbols, KnownAssets, RewardInfo, RewardsInfo, RewardingEvents, CodecString } from '@sora-substrate/util'
 
 import web3Util from '@/utils/web3-util'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import { hasInsufficientXorForFee } from '@/utils'
-import { RewardsAmountTableItem } from '@/types/rewards'
+import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards'
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import TransactionMixin from '@/components/mixins/TransactionMixin'
@@ -101,6 +108,8 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 
   @State(state => state.rewards.internalRewards) internalRewards!: Array<RewardInfo>
   @State(state => state.rewards.externalRewards) externalRewards!: Array<RewardInfo>
+  @State(state => state.rewards.vestedRewards) vestedRewards!: RewardsInfo | null
+  @State(state => state.rewards.selectedVestedRewards) selectedVestedRewards!: Array<RewardInfo>
   @State(state => state.rewards.selectedInternalRewards) selectedInternalRewards!: Array<RewardInfo>
   @State(state => state.rewards.selectedExternalRewards) selectedExternalRewards!: Array<RewardInfo>
 
@@ -109,6 +118,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @Getter('externalRewardsAvailable', { namespace: 'rewards' }) externalRewardsAvailable!: boolean
   @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardsAmountTableItem>
   @Getter('transactionStepsCount', { namespace: 'rewards' }) transactionStepsCount!: number
+  @Getter('vestedRewadsGroupItem', { namespace: 'rewards' }) vestedRewadsGroupItem!: RewardInfoGroup
 
   @Action('reset', { namespace: 'rewards' }) reset!: () => void
   @Action('setSelectedRewards', { namespace: 'rewards' }) setSelectedRewards!: (params) => void
@@ -157,7 +167,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 
   set selectedInternalRewardsModel (types: Array<string>) {
     const internal = this.internalRewards.filter(item => types.includes(item.type))
-    this.setSelectedRewards({ internal, external: this.selectedExternalRewards })
+    this.setSelectedRewards({ internal, external: this.selectedExternalRewards, vested: this.selectedVestedRewards })
   }
 
   get selectedExternalRewardsModel (): boolean {
@@ -166,7 +176,16 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 
   set selectedExternalRewardsModel (flag: boolean) {
     const external = flag ? this.externalRewards : []
-    this.setSelectedRewards({ internal: this.selectedInternalRewards, external })
+    this.setSelectedRewards({ internal: this.selectedInternalRewards, external, vested: this.selectedVestedRewards })
+  }
+
+  get selectedVestedRewardsModel (): boolean {
+    return this.selectedVestedRewards.length !== 0
+  }
+
+  set selectedVestedRewardsModel (flag: boolean) {
+    const vested = flag && this.vestedRewards ? this.vestedRewards.rewards : []
+    this.setSelectedRewards({ internal: this.selectedInternalRewards, external: this.selectedExternalRewards, vested })
   }
 
   get isInsufficientBalance (): boolean {
@@ -199,14 +218,6 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     const translationKey = this.transactionError ? 'rewards.transactions.failed' : 'rewards.transactions.confimation'
 
     return this.t(translationKey, { order, total: this.transactionStepsCount })
-  }
-
-  get formattedExternalRewards (): Array<RewardsAmountTableItem> {
-    return this.externalRewards.map((item: RewardInfo) => this.formatRewardToTableItem(item))
-  }
-
-  get formattedInternalRewards (): Array<RewardsAmountTableItem> {
-    return this.internalRewards.map((item: RewardInfo) => this.formatRewardToTableItem(item))
   }
 
   get rewardTokenSymbols (): Array<KnownSymbols> {
@@ -324,15 +335,6 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
       async () => await this.claimRewards({ internalAddress, externalAddress })
     )
   }
-
-  private formatRewardToTableItem (item: RewardInfo): RewardsAmountTableItem {
-    return {
-      type: item.type,
-      title: this.t(`rewards.events.${item.type}`),
-      amount: this.formatCodecNumber(item.amount),
-      symbol: item.asset.symbol
-    } as RewardsAmountTableItem
-  }
 }
 </script>
 
@@ -393,6 +395,7 @@ $hint-font-size: 13px;
     &:not(:last-child) {
       margin-bottom: 0;
     }
+    margin-left: -#{$checkbox-width};
   }
 
   &-footer {
