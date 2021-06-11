@@ -7,7 +7,7 @@
       popper-class="info-tooltip info-tooltip--settings-header"
       placement="right-start"
     >
-      <slot slot="content" :name="tooltipScopedSlot"/>
+      <slot slot="content" :name="tooltipScopedSlot" />
       <s-icon class="settings-header-hint" name="info-16" size="12px" />
     </branded-tooltip>
   </div>
@@ -40,9 +40,9 @@ export default class SettingsHeader extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .info-tooltip--settings-header {
-  margin-top: -$inner-spacing-mini * 1.25;
+  margin-top: -$basic-spacing-small;
   .popper__arrow {
-    margin-top: $inner-spacing-mini * 0.5;
+    margin-top: $basic-spacing-mini;
   }
 }
 </style>

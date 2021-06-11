@@ -1,6 +1,11 @@
 <template>
   <div class="history-container">
-    <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="never">
+    <s-card
+      v-lottie-loader="{ loading: parentLoading }"
+      class="history-content"
+      border-radius="medium"
+      shadow="never"
+    >
       <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
         <!-- <s-button
           class="base-title_settings"
@@ -29,7 +34,7 @@
             </template>
           </s-input>
         </s-form-item>
-        <div class="history-items" v-loading="loading">
+        <div v-lottie-loader="{ loading }" class="history-items">
           <template v-if="hasHistory">
             <div
               class="history-item"
@@ -80,10 +85,10 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { RegisteredAccountAsset, Operation, isBridgeOperation, BridgeHistory, CodecString, FPNumber } from '@sora-substrate/util'
-import { api } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
+
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'

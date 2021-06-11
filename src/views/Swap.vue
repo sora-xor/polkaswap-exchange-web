@@ -1,5 +1,9 @@
 <template>
-  <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
+  <s-form
+    v-lottie-loader="{ loading: parentLoading }"
+    class="container el-form--actions"
+    :show-message="false"
+  >
     <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
       <status-action-badge v-if="pairLiquiditySourcesAvailable">
         <template #label>{{ t('marketText') }}:</template>
