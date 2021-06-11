@@ -98,7 +98,7 @@
                 tag="a"
                 target="_blank"
                 rel="nofollow noopener"
-                class="el-menu-item menu-item--small"
+                class="el-menu-item menu-item--small menu-item--general-link"
               />
             </li>
             <li class="menu-link-container">
@@ -108,7 +108,7 @@
                 tag="a"
                 target="_blank"
                 rel="nofollow noopener"
-                class="el-menu-item menu-item--small"
+                class="el-menu-item menu-item--small menu-item--general-link"
               />
             </li>
             <!-- <sidebar-item-content
@@ -338,12 +338,11 @@ html {
   }
 
   &:not(.el-menu--horizontal) > :not(:last-child) {
-    margin-bottom: $inner-spacing-small;
+    margin-bottom: 0;
   }
 
-  .menu-link-container .el-menu-item:hover span {
-    // TODO: Remove important marks after design redevelopment
-    color: var(--s-color-base-on-accent) !important;
+  .sidebar-item-content {
+    align-items: center;
   }
 
   .el-menu-item {
@@ -355,9 +354,19 @@ html {
         color: var(--s-color-base-content-tertiary);
       }
     }
-    &:not(.is-disabled):hover i {
-      color: inherit;
+    &:hover:not(.is-active):not(.is-disabled) {
+      i {
+        color: var(--s-color-theme-secondary-hover) !important;
+      }
     }
+    &.is-active i {
+      color: var(--s-color-theme-accent) !important;
+    }
+  }
+
+  .el-menu-item.menu-item--small.menu-item--general-link {
+    padding: $basic-spacing-small $basic-spacing-small $inner-spacing-mini / 2 $basic-spacing-medium;
+    line-height: 1;
   }
 }
 
@@ -498,15 +507,12 @@ html {
 </style>
 
 <style lang="scss" scoped>
-$logo-width: 40px;
-$logo-width-big: 150px;
 $logo-horizontal-margin: $inner-spacing-mini / 2;
 $header-height: 64px;
 $sidebar-width: 160px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
 $account-name-margin: -2px 8px 0 12px;
-$menu-horizontal-padding: $inner-spacing-mini * 1.25;
 
 // TODO: Move disclaimer's variables to appropriate place after design redevelopment
 $disclaimer-font-size: 11px;
@@ -523,14 +529,15 @@ $disclaimer-letter-spacing: -0.03em;
   }
 
   &-sidebar {
+    overflow-x: hidden;
+    margin-right: $basic-spacing-small;
+    width: 70px;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
-    width: $sidebar-width;
-    border-right: 1px solid var(--s-color-base-border-secondary);
     padding-top: $inner-spacing-small;
     padding-bottom: $inner-spacing-medium;
-    overflow-y: auto;
+    border-right: none;
   }
 
   &-body {
@@ -554,7 +561,7 @@ $disclaimer-letter-spacing: -0.03em;
   }
 
   &-disclaimer {
-    margin-top: $inner-spacing-mini * 2.5;
+    margin-top: $basic-spacing-medium;
     font-size: $disclaimer-font-size;
     font-weight: $disclaimer-font-weight;
     line-height: var(--s-line-height-mini);
@@ -566,9 +573,9 @@ $disclaimer-letter-spacing: -0.03em;
     display: flex;
     flex-direction: column-reverse;
     justify-content: flex-end;
-    padding-right: $inner-spacing-mini * 5;
-    padding-left: $inner-spacing-mini * 5;
-    padding-bottom: $inner-spacing-mini * 5;
+    padding-right: $inner-spacing-large;
+    padding-left: $inner-spacing-large;
+    padding-bottom: $inner-spacing-large;
   }
 }
 
@@ -607,26 +614,31 @@ $disclaimer-letter-spacing: -0.03em;
       margin-top: $inner-spacing-mini;
       &:before {
         position: absolute;
-        left: $menu-horizontal-padding;
-        top: -$inner-spacing-mini / 2;
+        left: $basic-spacing-medium;
+        top: -1px;
         content: '';
         display: block;
         height: 1px;
-        width: calc(100% - #{$menu-horizontal-padding} * 2);
+        width: 100px;
         background-color: var(--s-color-theme-secondary);
+        opacity: 0.2;
       }
     }
   }
   .el-menu-item {
-    padding: $inner-spacing-medium #{$menu-horizontal-padding};
     height: initial;
-    font-size: var(--s-heading6-font-size);
-    font-feature-settings: $s-font-feature-settings-title;
-    font-weight: 600;
+    padding: $inner-spacing-mini $basic-spacing-medium;
+    font-size: var(--s-heading5-font-size);
     line-height: $s-line-height-big;
+    letter-spacing: var(--s-letter-spacing-small);
+    font-weight: $s-font-weight-small;
+    font-feature-settings: $s-font-feature-settings-title;
     &.menu-item--small {
-      padding: $inner-spacing-mini #{$menu-horizontal-padding};
-      color: var(--s-color-base-content-tertiary);
+      padding: 0 0 0 13px;
+      color: var(--s-color-brand-day);
+      &.menu-item--general-link:hover {
+        color: var(--s-color-base-on-accent)
+      }
     }
     &:hover:not(.is-active):not(.is-disabled) {
       background-color: var(--s-color-base-background-hover) !important;
@@ -645,8 +657,10 @@ $disclaimer-letter-spacing: -0.03em;
   background-size: cover;
   width: var(--s-size-medium);
   height: var(--s-size-medium);
-  padding: 0;
   border-radius: 0;
+  &.el-button {
+    padding: 0;
+  }
 }
 
 .app-controls {
@@ -757,22 +771,29 @@ $disclaimer-letter-spacing: -0.03em;
   }
 }
 
+@include large-mobile {
+  .app-sidebar {
+    overflow-y: auto;
+    margin-right: 0;
+    width: $sidebar-width;
+    border-right: 1px solid #e5dce0 !important;
+    border-image: linear-gradient(#FAF4F8, #D5CDD0, #FAF4F8) 30;
+  }
+}
+
 @include tablet {
   .polkaswap-logo {
-    width: $logo-width-big;
+    margin-top: $basic-spacing-small;
+    margin-bottom: 0;
+    width: 165px;
+    height: 44px;
     background-image: url('~@/assets/img/polkaswap-logo.svg');
   }
   .app-footer {
     flex-direction: row;
     .app-disclaimer {
-      padding-right: $inner-spacing-mini * 5;
+      padding-right: $inner-spacing-large;
     }
-  }
-}
-
-@media (max-width: 460px) {
-  .polkaswap-logo {
-    display: none;
   }
 }
 </style>
