@@ -1,7 +1,7 @@
 <template>
   <div v-lottie-loader="{ loading: parentLoading }" class="container rewards">
     <generic-page-header :title="t('rewards.title')" />
-    <div :class="['rewards-content', { loading }]" v-loading="loading">
+    <div class="rewards-content" v-lottie-loader="{ loading: !parentLoading && loading }">
       <gradient-box class="rewards-block" :symbol="gradientSymbol">
         <div class="rewards-box">
           <tokens-row :symbols="rewardTokenSymbols" />
@@ -345,9 +345,8 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 </script>
 
 <style lang="scss">
-.rewards-content > .el-loading-mask {
+.rewards-content.lottie-loader--loading:before{
   background: var(--s-color-utility-surface);
-  border-radius: 0;
 }
 </style>
 
@@ -363,10 +362,6 @@ $hint-font-size: 13px;
 
   &-content {
     position: relative;
-
-    &.loading > *:not(.el-loading-mask) {
-      visibility: hidden;
-    }
   }
 
   &-box {
