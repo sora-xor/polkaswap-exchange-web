@@ -32,6 +32,16 @@ export default class SidebarItemContent extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
+.menu-item--small {
+  span {
+    font-weight: $s-font-weight-small;
+    font-size: $s-font-size-menu-small;
+    letter-spacing: var(--s-letter-spacing-small);
+  }
+}
+</style>
+
+<style lang="scss" scoped>
 $icon-size: 42px;
 
 .sidebar-item-content {

@@ -7,7 +7,7 @@
       popper-class="info-tooltip info-tooltip--settings-header"
       placement="right-start"
     >
-      <slot slot="content" :name="tooltipScopedSlot"/>
+      <slot slot="content" :name="tooltipScopedSlot" />
       <s-icon class="settings-header-hint" name="info-16" size="12px" />
     </s-tooltip>
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-loading="parentLoading">
+  <div v-lottie-loader="{ loading: parentLoading }" class="container">
     <generic-page-header has-button-back :title="t('createPair.title')" :tooltip="t('pool.description')" @back="handleBack" />
     <s-form
       class="el-form--actions"

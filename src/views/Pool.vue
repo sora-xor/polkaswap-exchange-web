@@ -1,7 +1,7 @@
 <template>
-  <div v-loading="parentLoading" class="container el-form--pool">
+  <div v-lottie-loader="{ loading: parentLoading }" class="container el-form--pool">
     <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')" />
-    <div class="pool-wrapper" v-loading="loading">
+    <div v-lottie-loader="{ loading }" class="pool-wrapper">
       <p v-if="!isLoggedIn" class="pool-info-container">
         {{ t('pool.connectToWallet') }}
       </p>
@@ -67,6 +67,7 @@ import { AccountLiquidity } from '@sora-substrate/util'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
+
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 

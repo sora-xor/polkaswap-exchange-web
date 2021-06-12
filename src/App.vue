@@ -353,9 +353,6 @@ html {
         color: var(--s-color-base-content-secondary) !important;
       }
     }
-    &.is-active i {
-      color: var(--s-color-theme-accent) !important;
-    }
     &.is-active {
       i {
         color: var(--s-color-theme-accent) !important;
