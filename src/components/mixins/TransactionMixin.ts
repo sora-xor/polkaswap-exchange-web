@@ -1,5 +1,5 @@
 import { Component, Mixins } from 'vue-property-decorator'
-import { History, TransactionStatus, Operation, RewardInfo } from '@sora-substrate/util'
+import { History, TransactionStatus, Operation } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import findLast from 'lodash/fp/findLast'
 import { Action } from 'vuex-class'
@@ -9,7 +9,6 @@ import { groupRewardsByAssetsList } from '@/utils/rewards'
 import TranslationMixin from './TranslationMixin'
 import LoadingMixin from './LoadingMixin'
 import NumberFormatterMixin from './NumberFormatterMixin'
-import { Nullable } from '@/types'
 
 @Component
 export default class TransactionMixin extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {

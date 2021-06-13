@@ -7,7 +7,6 @@ import { api } from '@soramitsu/soraneo-wallet-web'
 import { FPNumber, CodecString } from '@sora-substrate/util'
 
 import { ZeroStringValue } from '@/consts'
-import { Nullable } from '@/types'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),

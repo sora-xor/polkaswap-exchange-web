@@ -7,7 +7,6 @@ import { api } from '@soramitsu/soraneo-wallet-web'
 import { CodecString, LiquiditySourceTypes, LPRewardsInfo } from '@sora-substrate/util'
 
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions'
-import { Nullable } from '@/types'
 
 const balanceSubscriptions = new TokenBalanceSubscriptions()
 

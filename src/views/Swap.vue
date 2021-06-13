@@ -139,7 +139,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes, LPRewardsInfo, FPNumber } from '@sora-substrate/util'
@@ -152,7 +152,6 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import { isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance, debouncedInputHandler } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
-import { Nullable } from '@/types'
 
 const namespace = 'swap'
 
@@ -192,11 +191,11 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('setExchangeB', { namespace }) setExchangeB!: (isExchangeB: boolean) => Promise<void>
   @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>
   @Action('setNetworkFee', { namespace }) setNetworkFee!: (value: CodecString) => Promise<void>
-  @Action('checkSwap', { namespace }) checkSwap!: () => Promise<void>
-  @Action('reset', { namespace }) reset!: () => void
+  @Action('checkSwap', { namespace }) checkSwap!: AsyncVoidFn
+  @Action('reset', { namespace }) reset!: AsyncVoidFn
   @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>
-  @Action('resetPrices', { namespace: 'prices' }) resetPrices!: () => Promise<void>
-  @Action('getAssets', { namespace: 'assets' }) getAssets
+  @Action('resetPrices', { namespace: 'prices' }) resetPrices!: AsyncVoidFn
+  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
   @Action('setPairLiquiditySources', { namespace }) setPairLiquiditySources!: (liquiditySources: Array<LiquiditySourceTypes>) => Promise<void>
   @Action('setRewards', { namespace }) setRewards!: (rewards: Array<LPRewardsInfo>) => Promise<void>
 
@@ -219,8 +218,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       this.recountSwapValues()
     }
   }
-
-  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
   KnownSymbols = KnownSymbols

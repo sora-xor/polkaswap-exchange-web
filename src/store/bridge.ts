@@ -28,7 +28,6 @@ import web3Util, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/web3
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions'
 import { delay, isEthereumAddress } from '@/utils'
 import { EthereumGasLimits, MaxUint256, ZeroStringValue } from '@/consts'
-import { Nullable } from '@/types'
 
 const SORA_REQUESTS_TIMEOUT = 5 * 1000
 

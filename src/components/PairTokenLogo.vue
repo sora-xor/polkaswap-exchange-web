@@ -10,9 +10,8 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { AccountAsset, Asset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import { LogoSize, Components } from '@/consts'
+import { LogoSize, Components, ObjectInit } from '@/consts'
 import { lazyComponent } from '@/router'
-import { ObjectInit } from '@/types'
 
 @Component({
   components: {

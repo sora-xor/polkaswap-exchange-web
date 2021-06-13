@@ -95,7 +95,6 @@ import { Components, PageNames } from '@/consts'
 import { formatAssetSymbol, formatDateItem } from '@/utils'
 import { STATES } from '@/utils/fsm'
 import { bridgeApi } from '@/utils/bridge'
-import { Nullable } from '@/types'
 
 const namespace = 'bridge'
 
@@ -112,14 +111,14 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: string
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
 
-  @Action('getHistory', { namespace }) getHistory
-  @Action('getRestoredFlag', { namespace }) getRestoredFlag
-  @Action('getRestoredHistory', { namespace }) getRestoredHistory
-  @Action('getNetworkFee', { namespace }) getNetworkFee
-  @Action('getEvmNetworkFee', { namespace }) getEvmNetworkFee
-  @Action('clearHistory', { namespace }) clearHistory
+  @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn
+  @Action('getRestoredFlag', { namespace }) getRestoredFlag!: AsyncVoidFn
+  @Action('getRestoredHistory', { namespace }) getRestoredHistory!: AsyncVoidFn
+  @Action('getNetworkFee', { namespace }) getNetworkFee!: AsyncVoidFn
+  @Action('getEvmNetworkFee', { namespace }) getEvmNetworkFee!: AsyncVoidFn
+  @Action('clearHistory', { namespace }) clearHistory!: AsyncVoidFn
   @Action('setSoraToEvm', { namespace }) setSoraToEvm
-  @Action('setTransactionConfirm', { namespace }) setTransactionConfirm
+  @Action('setTransactionConfirm', { namespace }) setTransactionConfirm!: (value: boolean) => Promise<void>
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
   @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash
@@ -133,9 +132,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Action('setHistoryItem', { namespace }) setHistoryItem
   @Action('saveHistory', { namespace }) saveHistory
 
-  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets
-
-  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
+  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn
 
   PageNames = PageNames
   formatAssetSymbol = formatAssetSymbol

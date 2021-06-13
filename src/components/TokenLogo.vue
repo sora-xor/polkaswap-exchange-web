@@ -8,8 +8,7 @@ import { Asset, AccountAsset, KnownAssets } from '@sora-substrate/util'
 import { WhitelistAssets } from 'polkaswap-token-whitelist'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import { LogoSize } from '@/consts'
-import { ObjectInit } from '@/types'
+import { LogoSize, ObjectInit } from '@/consts'
 
 @Component
 export default class TokenLogo extends Mixins(TranslationMixin) {

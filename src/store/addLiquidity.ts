@@ -8,7 +8,6 @@ import { KnownAssets, FPNumber, CodecString } from '@sora-substrate/util'
 
 import { ZeroStringValue } from '@/consts'
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions'
-import { Nullable } from '@/types'
 
 const balanceSubscriptions = new TokenBalanceSubscriptions()
 

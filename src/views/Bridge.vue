@@ -188,14 +188,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { RegisteredAccountAsset, BridgeNetworks, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
 
 import BridgeMixin from '@/components/mixins/BridgeMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
 import router, { lazyComponent } from '@/router'
@@ -231,7 +230,6 @@ const namespace = 'bridge'
 export default class Bridge extends Mixins(
   BridgeMixin,
   TranslationMixin,
-  LoadingMixin,
   NetworkFormatterMixin,
   NumberFormatterMixin
 ) {
@@ -240,8 +238,8 @@ export default class Bridge extends Mixins(
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
   @Action('resetBridgeForm', { namespace }) resetBridgeForm
-  @Action('resetBalanceSubscription', { namespace }) resetBalanceSubscription
-  @Action('getNetworkFee', { namespace }) getNetworkFee
+  @Action('resetBalanceSubscription', { namespace }) resetBalanceSubscription!: AsyncVoidFn
+  @Action('getNetworkFee', { namespace }) getNetworkFee!: AsyncVoidFn
 
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
   @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks
@@ -256,8 +254,6 @@ export default class Bridge extends Mixins(
   @Getter('amount', { namespace }) amount!: string
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
-
-  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 

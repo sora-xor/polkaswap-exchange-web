@@ -43,7 +43,7 @@ export default class SelectNetwork extends Mixins(TranslationMixin, DialogMixin)
 
   @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<SubNetwork>
 
-  created () {
+  created (): void {
     this.selectedNetwork = bridgeApi.externalNetwork || this.subNetworks[0]?.id
   }
 

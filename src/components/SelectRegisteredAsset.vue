@@ -98,10 +98,9 @@ import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
-import { Components } from '@/consts'
+import { Components, ObjectInit } from '@/consts'
 import { lazyComponent } from '@/router'
 import { formatAssetBalance } from '@/utils'
-import { Nullable, ObjectInit } from '@/types'
 
 const namespace = 'assets'
 
