@@ -368,7 +368,7 @@ $hint-font-size: 13px;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    color: white; // TODO: use color variable from ui library
+    color: var(--s-color-base-on-accent); // TODO: use color variable from ui library
 
     & > *:not(:last-child) {
       margin-bottom: $inner-spacing-mini;

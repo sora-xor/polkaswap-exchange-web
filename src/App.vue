@@ -661,7 +661,7 @@ $disclaimer-letter-spacing: -0.03em;
 
   &:hover, &.s-focused {
     .account-control-icon i {
-      color: white !important;
+      color: var(--s-color-base-on-accent) !important;
     }
   }
 }

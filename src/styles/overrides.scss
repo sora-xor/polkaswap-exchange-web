@@ -61,7 +61,7 @@ i[class^="s-icon-"], i[class*=" s-icon-"] {
   button.el-button span {
     left: 0;
     i:hover {
-      color: white !important;
+      color: var(--s-color-base-on-accent) !important;
     }
   }
 }
@@ -133,10 +133,10 @@ i.el-collapse-item__arrow {
   color: var(--s-color-base-content-tertiary) !important;
 }
 button.el-dialog__headerbtn:hover > i.el-icon {
-  color: white !important;
+  color: var(--s-color-base-on-accent) !important;
 }
 div.asset-details-actions i, div.wallet-assets-item.s-flex button.el-button--primary i {
-  color: white !important;
+  color: var(--s-color-base-on-accent) !important;
 }
 
 div.el-pagination button, div.el-collapse-item__wrap { background-color: unset !important; }
@@ -182,7 +182,7 @@ div.history-item-operation {
 }
 i.s-icon-circle-plus-16, i.s-icon-circle-plus-16:hover {
   font-size: inherit !important;
-  color: white !important;
+  color: var(--s-color-base-on-accent) !important;
 }
 div.el-message-box {
   border-radius: 24px !important;
