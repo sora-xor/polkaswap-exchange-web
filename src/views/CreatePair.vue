@@ -94,7 +94,7 @@
           <info-line :label="t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="formatStringValue(price)" />
           <info-line :label="t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formatStringValue(priceReversed)" />
           <info-line :label="t('createPair.shareOfPool')" value="100%" />
-          <info-line :label="t('createPair.networkFee')" :value="`${formattedFee} ${KnownSymbols.XOR}`" />
+          <info-line :label="t('createPair.networkFee')" :value="`${formattedFee} ${KnownSymbols.XOR}`" :tooltip-content="t('networkFeeTooltipText')" />
         </div>
 
         <div class="info-line-container">

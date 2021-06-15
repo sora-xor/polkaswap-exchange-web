@@ -117,6 +117,7 @@
           :label="t('createPair.networkFee')"
           :value="formattedFee"
           :asset-symbol="KnownSymbols.XOR"
+          :tooltip-content="t('networkFeeTooltipText')"
         />
       </div>
 

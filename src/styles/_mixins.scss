@@ -58,6 +58,7 @@
     align-items: baseline;
     margin-bottom: $inner-spacing-mini;
     font-size: var(--s-font-size-mini);
+    font-feature-settings: normal;
     line-height: var(--s-line-height-medium);
 
     &--footer {

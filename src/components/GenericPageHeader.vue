@@ -10,7 +10,7 @@
       :content="tooltip"
       :placement="tooltipPlacement"
     >
-      <s-icon name="info-16" />
+      <s-icon name="info-16" size="18px" />
     </s-tooltip>
     <slot />
   </div>

@@ -96,7 +96,7 @@
       <info-line :label="t('addLiquidity.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="formatStringValue(price)" />
       <info-line :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formatStringValue(priceReversed)" />
       <info-line :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
-      <info-line :label="t('createPair.networkFee')" :value="`${formattedFee} ${KnownSymbols.XOR}`" />
+      <info-line :label="t('createPair.networkFee')" :value="`${formattedFee} ${KnownSymbols.XOR}`" :tooltip-content="t('networkFeeTooltipText')" />
     </div>
 
     <div v-if="areTokensSelected && isAvailable && (!emptyAssets || (liquidityInfo || {}).balance)" class="info-line-container">

@@ -1,6 +1,6 @@
 <template>
   <div class="bridge s-flex">
-    <s-form class="bridge-form" :show-message="false">
+    <s-form class="bridge-form el-form--actions" :show-message="false">
       <s-card
         v-lottie-loader="{ loading: parentLoading }"
         class="bridge-content"
@@ -486,25 +486,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
   @include vertical-divider('s-button--switch', $inner-spacing-medium);
 
   .bridge-item {
-    margin-bottom: $inner-spacing-mini;
-    background-color: var(--s-color-base-background);
-    &,
-    &:hover {
-      border: none;
-    }
-    @include generic-input-lines('bridge-item');
-    &-title,
-    .el-button--change-wallet {
-      margin-right: $inner-spacing-medium;
-    }
-
-    .asset {
-      display: flex;
-      align-items: center;
-      &-logo {
-        margin-right: $inner-spacing-mini;
-      }
-    }
     &-footer {
       display: flex;
       justify-content: space-between;

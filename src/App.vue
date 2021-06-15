@@ -432,7 +432,7 @@ html {
   align-items: center;
 
   $swap-input-class: ".el-input";
-  .s-input--token-value {
+  .s-input--token-value, .s-input-amount {
     #{$swap-input-class} {
       #{$swap-input-class}__inner {
         padding-top: 0;
@@ -678,6 +678,7 @@ $disclaimer-letter-spacing: -0.03em;
     text-align: right;
     font-size: var(--s-font-size-extra-small);
     letter-spacing: var(--s-letter-spacing-small);
+    text-transform: none;
   }
   &-title {
     font-variation-settings: "wght" 800;
