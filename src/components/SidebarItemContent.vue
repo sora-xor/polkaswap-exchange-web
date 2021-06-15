@@ -64,7 +64,7 @@ $icon-size: 42px;
   height: $icon-size;
   border-radius: 50%;
   background-color: var(--s-color-utility-surface);
-  transition: all 0.125s ease-in-out;
+  transition: var(--s-transition-default);
   > i {
     margin: auto;
   }

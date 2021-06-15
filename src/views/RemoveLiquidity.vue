@@ -384,10 +384,10 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   &.one-char .el-input__inner {
     width: 1ch;
   }
-  &.two-char .el-input__inner{
+  &.two-char .el-input__inner {
     width: 2ch;
   }
-  &.three-char .el-input__inner{
+  &.three-char .el-input__inner {
     width: 3ch;
   }
 

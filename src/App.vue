@@ -478,7 +478,6 @@ $header-height: 64px;
 $sidebar-width: 160px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
-$account-name-margin: -2px 8px 0 12px;
 
 // TODO: Move disclaimer's variables to appropriate place after design redevelopment
 $disclaimer-font-size: 11px;
@@ -646,6 +645,7 @@ $disclaimer-letter-spacing: -0.03em;
   &-title {
     font-size: var(--s-font-size-small);
     font-feature-settings: $s-font-feature-settings-common;
+    font-variation-settings: "wght" 800;
     margin-right: $inner-spacing-mini / 2;
   }
 
@@ -672,6 +672,9 @@ $disclaimer-letter-spacing: -0.03em;
     text-align: right;
     font-size: var(--s-font-size-extra-small);
     letter-spacing: var(--s-letter-spacing-small);
+  }
+  &-title {
+    font-variation-settings: "wght" 800;
   }
   &-network {
     color: var(--s-color-base-content-tertiary);

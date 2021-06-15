@@ -346,7 +346,7 @@ $token-item-height: 71px;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  transition: all 0.125s ease-in-out;
+  transition: var(--s-transition-default);
   &:hover {
     background-color: var(--s-color-base-background-hover);
   }

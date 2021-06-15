@@ -81,7 +81,7 @@
       }
 
       & > *:not(:last-child) {
-        margin-right: 4px
+        margin-right: $inner-spacing-mini / 2;
       }
     }
   }
@@ -279,7 +279,6 @@
 
 @mixin next-button {
   width: 100%;
-  // line-height: var(--s-line-height-medium);
   letter-spacing: var(--s-letter-spacing-big);
   font-feature-settings: $s-font-feature-settings-title;
 }

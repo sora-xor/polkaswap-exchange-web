@@ -60,9 +60,12 @@ $s-font-feature-settings-singleline: normal;
 $s-font-feature-settings-card-title: normal;
 $s-font-feature-settings-input: normal;
 $s-font-feature-settings-button: normal;
+// Transition
+$s-transition-default: all 0.125s ease-in-out;
 
 :root {
   --s-color-brand-day: #{$s-color-brand-day};
+  --s-transition-default: #{$s-transition-default};
 }
 
 @import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";

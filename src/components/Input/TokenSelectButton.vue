@@ -1,9 +1,9 @@
 <template>
   <s-button
     :type="buttonType"
+    :class="computedClasses"
     size="small"
     border-radius="mini"
-    :class="['token-select-button', { token: hasToken }]"
     v-on="$listeners"
   >
     <component v-if="hasToken" :is="tokenLogoComponent" :token="token" :first-token="tokens[0]" :second-token="tokens[1]" :size="tokenComponentSize" class="token-select-button__logo" />
@@ -33,6 +33,15 @@ export default class TokenSelectButton extends Mixins(TranslationMixin) {
 
   get hasToken (): boolean {
     return this.tokens.length !== 0 || !!this.token
+  }
+
+  get computedClasses (): Array<string> {
+    const baseClass = 'token-select-button'
+    const classes = [baseClass]
+    if (this.hasToken) {
+      classes.push(`${baseClass}--token`)
+    }
+    return classes
   }
 
   get tokenLogoComponent (): string {
@@ -74,16 +83,13 @@ $baseClass: '.token-select-button';
   &__icon {
     margin-left: $inner-spacing-mini / 2;
     background-color: var(--s-color-base-content-tertiary);
-    color: white !important;
+    color: var(--s-color-base-on-accent) !important;
     border-radius: var(--s-border-radius-medium);
     padding: 2px;
   }
 
-  &.token {
-    background-color: var(--s-color-utility-surface) !important;
-
+  &--token {
     &:hover {
-      background-color: white !important;
       filter: drop-shadow(-1px -1px 5px rgba(247, 84, 163, 0.25)) drop-shadow(1px 1px 5px rgba(247, 84, 163, 0.25));
     }
 

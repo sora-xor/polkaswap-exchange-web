@@ -59,25 +59,6 @@ export default class SelectNode extends Mixins(TranslationMixin) {
 }
 </script>
 
-<style lang="scss">
-// button:not(.s-action).s-i-position-left.select-node-details > span > i[class^=s-icon-] {
-//   margin-right: 0;
-// }
-// .select-node-list__item.el-radio {
-//   & > .el-radio__input > .el-radio__inner {
-//     // temporary, because primary border color is not contrast with background
-//     border-color: var(--s-color-base-on-disabled);
-//   }
-
-//   & > .el-radio__label {
-//     display: flex;
-//     align-items: center;
-//     flex: 1;
-//     padding-left: $inner-spacing-small
-//   }
-// }
-</style>
-
 <style lang="scss" scoped>
 $list-item-height: 71px;
 $list-item-padding: 11px 0;
