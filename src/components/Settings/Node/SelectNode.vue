@@ -25,9 +25,7 @@
           <div class="select-node-badge">
             <s-icon v-if="node.connecting" name="el-icon-loading" />
           </div>
-          <s-button class="details select-node-details" type="link" @click="handleNode(node)">
-            <s-icon name="arrows-chevron-right-rounded-24" />
-          </s-button>
+          <s-button class="select-node-details" type="action" alternative icon="arrows-chevron-right-rounded-24" @click="handleNode(node)" />
         </div>
       </s-radio>
     </s-radio-group>

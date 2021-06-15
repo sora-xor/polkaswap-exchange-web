@@ -95,26 +95,6 @@ div.el-dialog {
 }
 
 /* BUTTONS */
-div.el-card.bridge-item {
-  background-color: var(--s-color-base-background) !important;
-}
-
-button.el-button.details.s-link {
-  border: none !important;
-  color: inherit !important;
-  box-shadow: unset !important;
-}
-button.el-button.details.s-link:hover {
-  border: none !important;
-  color: inherit !important;
-  box-shadow: unset !important;
-  background-color: unset !important;
-  filter: unset !important;
-}
-button.el-button.details.s-link:hover > span > i {
-  color: var(--s-color-theme-accent);
-}
-
 .dialog-wrapper button.el-dialog__headerbtn,
 i.el-collapse-item__arrow {
   background-color: var(--s-color-utility-body) !important;
