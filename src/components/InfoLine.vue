@@ -7,8 +7,9 @@
       popper-class="info-tooltip info-tooltip--info-line"
       :content="tooltipContent"
       placement="right-start"
+      border-radius="mini"
     >
-      <s-icon name="info-16" />
+      <s-icon name="info-16" size="14px" />
     </s-tooltip>
     <span class="info-line-value">{{ value }}<span v-if="assetSymbol" class="asset-symbol">{{ ' ' + assetSymbol }}</span></span>
     <slot />

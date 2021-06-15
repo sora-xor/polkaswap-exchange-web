@@ -48,7 +48,7 @@
       <div slot="bottom" class="input-line input-line--footer">
         <div v-if="tokenFrom" class="input-title">
           <span>{{ getTokenName(tokenFrom) }}</span>
-          <s-tooltip :content="t('selectToken.copy')">
+          <s-tooltip :content="t('selectToken.copy')" border-radius="mini">
             <span class="token-address" @click="handleCopy(tokenFrom, $event)">({{ getFormattedAddress(tokenFrom) }})</span>
           </s-tooltip>
         </div>
@@ -82,7 +82,7 @@
       <div slot="bottom" class="input-line input-line--footer">
         <div v-if="tokenTo" class="input-title">
           <span>{{ getTokenName(tokenTo) }}</span>
-          <s-tooltip :content="t('selectToken.copy')">
+          <s-tooltip :content="t('selectToken.copy')" border-radius="mini">
             <span class="token-address" @click="handleCopy(tokenTo, $event)">({{ getFormattedAddress(tokenTo) }})</span>
           </s-tooltip>
         </div>

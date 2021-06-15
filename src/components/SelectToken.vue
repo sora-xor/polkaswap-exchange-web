@@ -29,7 +29,7 @@
                 <div class="token-item__info s-flex">
                   <div class="token-item__symbol">{{ token.symbol }}</div>
                   <div class="token-item__details">{{ getTokenName(token) }}
-                    <s-tooltip :content="t('selectToken.copy')">
+                    <s-tooltip :content="t('selectToken.copy')" border-radius="mini">
                       <span class="token-item__address" @click="handleCopy(token, $event)">({{ getFormattedAddress(token) }})</span>
                     </s-tooltip>
                   </div>
@@ -70,7 +70,7 @@
             <div class="asset-description s-flex">
               <div class="asset-description_symbol">{{ customAsset.symbol }}</div>
               <div class="asset-description_info">{{ getTokenName(customAsset) }}
-                <s-tooltip :content="t('assets.copy')">
+                <s-tooltip :content="t('assets.copy')" border-radius="mini">
                   <span class="asset-id" @click="handleCopy(customAsset, $event)">({{ getFormattedAddress(customAsset) }})</span>
                 </s-tooltip>
               </div>
@@ -98,7 +98,7 @@
                 <div class="token-item__info s-flex">
                   <div class="token-item__symbol">{{ token.symbol }}</div>
                   <div class="token-item__details">{{ getTokenName(token) }}
-                    <s-tooltip :content="t('selectToken.copy')">
+                    <s-tooltip :content="t('selectToken.copy')" border-radius="mini">
                       <span class="token-item__address" @click="handleCopy(token, $event)">({{ getFormattedAddress(token) }})</span>
                     </s-tooltip>
                   </div>
