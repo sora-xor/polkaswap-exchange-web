@@ -98,7 +98,7 @@ import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
-import { Components } from '@/consts'
+import { Components, ObjectInit } from '@/consts'
 import { lazyComponent } from '@/router'
 import { formatAssetBalance } from '@/utils'
 
@@ -113,7 +113,7 @@ const namespace = 'assets'
 })
 export default class SelectRegisteredAsset extends Mixins(TranslationMixin, SelectAssetMixin, LoadingMixin, NumberFormatterMixin) {
   query = ''
-  selectedAsset: AccountAsset | RegisteredAccountAsset | null = null
+  selectedAsset: Nullable<AccountAsset | RegisteredAccountAsset> = null
   readonly tokenTabs = [
     'tokens',
     'custom'
@@ -123,9 +123,9 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
   customAddress = ''
   customSymbol = ''
   alreadyAttached = false
-  selectedCustomAsset: Asset | undefined | null = null
+  selectedCustomAsset: Nullable<Asset> = null
 
-  @Prop({ default: () => null, type: Object }) readonly asset!: AccountAsset
+  @Prop({ default: ObjectInit, type: Object }) readonly asset!: AccountAsset
 
   @Getter('whitelistAssets', { namespace }) whitelistAssets!: Array<Asset>
   @Getter('isSoraToEvm', { namespace: 'bridge' }) isSoraToEvm!: boolean

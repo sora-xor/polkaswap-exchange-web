@@ -169,8 +169,8 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatter
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField
 
-  @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity
-  @Action('destroyUpdateAccountLiquiditySubscription', { namespace: 'pool' }) destroyUpdateAccountLiquiditySubscription
+  @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity!: AsyncVoidFn
+  @Action('destroyUpdateAccountLiquiditySubscription', { namespace: 'pool' }) destroyUpdateAccountLiquiditySubscription!: AsyncVoidFn
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 

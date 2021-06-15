@@ -77,10 +77,10 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
 
   slippageToleranceFocused = false
 
-  @Getter slippageTolerance!: number
+  @Getter slippageTolerance!: string
   @Getter transactionDeadline!: number
   @Getter nodeAddress!: { ip: string; port: number }
-  @Action setSlippageTolerance!: any
+  @Action setSlippageTolerance!: (value: string) => Promise<void>
   @Action setTransactionDeadline!: any
 
   get customSlippageTolerance (): string {
@@ -106,14 +106,16 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
   }
 
   get isErrorValue (): boolean {
-    return this.slippageTolerance < this.slippageToleranceExtremeValues.min || this.slippageTolerance > this.slippageToleranceExtremeValues.max
+    const slippageTolerance = Number(this.slippageTolerance)
+    return slippageTolerance < this.slippageToleranceExtremeValues.min || slippageTolerance > this.slippageToleranceExtremeValues.max
   }
 
   get slippageToleranceValidation (): string {
-    if (this.slippageTolerance >= this.slippageToleranceExtremeValues.min && this.slippageTolerance <= 0.1) {
+    const slippageTolerance = Number(this.slippageTolerance)
+    if (slippageTolerance >= this.slippageToleranceExtremeValues.min && slippageTolerance <= 0.1) {
       return 'warning'
     }
-    if (this.slippageTolerance >= 5 && this.slippageTolerance <= this.slippageToleranceExtremeValues.max) {
+    if (slippageTolerance >= 5 && slippageTolerance <= this.slippageToleranceExtremeValues.max) {
       return 'frontrun'
     }
     if (this.isErrorValue) {
@@ -143,12 +145,10 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
     if (
       FPNumber.lt(
         this.getFPNumber(this.slippageTolerance),
-        this.getFPNumber(
-          this.slippageToleranceExtremeValues.min
-        )
+        this.getFPNumber(this.slippageToleranceExtremeValues.min)
       )
     ) {
-      value = this.slippageToleranceExtremeValues.min
+      value = `${this.slippageToleranceExtremeValues.min}`
     }
     this.setSlippageTolerance(value)
     this.slippageToleranceFocused = false

@@ -35,9 +35,9 @@ const types = flow(
 )(['CHECK_AVAILABILITY'])
 
 interface SwapState {
-  tokenFromAddress: string | null;
+  tokenFromAddress: Nullable<string>;
   tokenFromBalance: any;
-  tokenToAddress: string | null;
+  tokenToAddress: Nullable<string>;
   tokenToBalance: any;
   fromValue: string;
   toValue: string;

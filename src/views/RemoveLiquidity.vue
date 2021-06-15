@@ -143,13 +143,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { FPNumber, KnownSymbols, AccountLiquidity, CodecString } from '@sora-substrate/util'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
-import LoadingMixin from '@/components/mixins/LoadingMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
 
 import router, { lazyComponent } from '@/router'
@@ -170,13 +168,11 @@ const namespace = 'removeLiquidity'
     TokenSelectButton: lazyComponent(Components.TokenSelectButton)
   }
 })
-export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMixin, NumberFormatterMixin, ConfirmDialogMixin) {
+export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDialogMixin) {
   readonly KnownSymbols = KnownSymbols
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
-  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
-
-  @Getter('focusedField', { namespace }) focusedField!: null | string
+  @Getter('focusedField', { namespace }) focusedField!: Nullable<string>
   @Getter('liquidity', { namespace }) liquidity!: AccountLiquidity
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
@@ -200,18 +196,18 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   @Action('setFocusedField', { namespace }) setFocusedField
   @Action('resetFocusedField', { namespace }) resetFocusedField
   @Action('removeLiquidity', { namespace }) removeLiquidity
-  @Action('getAssets', { namespace: 'assets' }) getAssets
-  @Action('resetData', { namespace }) resetData
+  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
+  @Action('resetData', { namespace }) resetData!: AsyncVoidFn
   @Action('getPrices', { namespace: 'prices' }) getPrices
-  @Action('resetPrices', { namespace: 'prices' }) resetPrices
-  @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity
-  @Action('destroyUpdateAccountLiquiditySubscription', { namespace: 'pool' }) destroyUpdateAccountLiquiditySubscription
+  @Action('resetPrices', { namespace: 'prices' }) resetPrices!: AsyncVoidFn
+  @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity!: AsyncVoidFn
+  @Action('destroyUpdateAccountLiquiditySubscription', { namespace: 'pool' }) destroyUpdateAccountLiquiditySubscription!: AsyncVoidFn
 
   removePartInput = 0
   sliderInput: any
   sliderDragButton: any
 
-  async mounted () {
+  async mounted (): Promise<void> {
     this.resetData()
     this.resetPrices()
     await this.withApi(async () => {
@@ -234,7 +230,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     }
   }
 
-  destroyed () {
+  destroyed (): void {
     if (this.sliderDragButton) {
       this.$el.removeEventListener('mousedown', this.sliderDragButton)
     }

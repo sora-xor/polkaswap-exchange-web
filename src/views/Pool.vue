@@ -62,7 +62,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { AccountLiquidity } from '@sora-substrate/util'
+import { AccountLiquidity, Asset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -83,11 +83,11 @@ const namespace = 'pool'
 export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
   @Getter isLoggedIn!: boolean
   @Getter('accountLiquidity', { namespace }) accountLiquidity!: any
-  @Getter('assets', { namespace: 'assets' }) assets
-  @Action('getAssets', { namespace: 'assets' }) getAssets
+  @Getter('assets', { namespace: 'assets' }) assets!: Array<Asset>
+  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
 
-  @Action('updateAccountLiquidity', { namespace }) updateAccountLiquidity
-  @Action('destroyUpdateAccountLiquiditySubscription', { namespace }) destroyUpdateAccountLiquiditySubscription
+  @Action('updateAccountLiquidity', { namespace }) updateAccountLiquidity!: AsyncVoidFn
+  @Action('destroyUpdateAccountLiquiditySubscription', { namespace }) destroyUpdateAccountLiquiditySubscription!: AsyncVoidFn
 
   async mounted () {
     await this.withApi(async () => {

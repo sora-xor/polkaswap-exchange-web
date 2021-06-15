@@ -28,6 +28,8 @@ export const Links = {
   }
 }
 
+export const ObjectInit = () => null
+
 export const ZeroStringValue = '0'
 
 export const MetamaskCancellationCode = 4001
