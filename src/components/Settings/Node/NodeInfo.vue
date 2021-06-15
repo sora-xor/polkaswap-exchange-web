@@ -15,7 +15,7 @@
     <s-form-item prop="address">
       <s-input class="node-info-input s-typography-input-field" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="existing" />
     </s-form-item>
-    <s-button type="primary" native-type="submit" class="node-info-button s-typography-button--big" :disabled="connected" :loading="loading">{{ buttonText }}</s-button>
+    <s-button type="primary" native-type="submit" class="node-info-button s-typography-button--large" :disabled="connected" :loading="loading">{{ buttonText }}</s-button>
     <external-link v-if="!existing" :href="tutorialLink" :title="t('selectNodeDialog.howToSetupOwnNode')" />
   </s-form>
 </template>

@@ -81,7 +81,7 @@
           <div v-if="customAddress && !customSymbol" class="custom-asset-info">
             {{ t(`selectRegisteredAsset.customAsset.${alreadyAttached ? 'alreadyAttached' : 'empty'}`) }}
           </div>
-          <s-button class="s-button--next s-typography-button--big" type="primary" :disabled="!(customAddress && customSymbol)" @click="handleCustomAssetNext">{{ t('bridge.next') }}</s-button>
+          <s-button class="s-button--next s-typography-button--large" type="primary" :disabled="!(customAddress && customSymbol)" @click="handleCustomAssetNext">{{ t('bridge.next') }}</s-button>
         </div>
       </s-tab>
     </s-tabs>

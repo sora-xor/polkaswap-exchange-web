@@ -41,7 +41,7 @@
       :asset-symbol="KnownSymbols.XOR"
     /> -->
     <template #footer>
-      <s-button type="primary" class="s-typography-button--big" :loading="loading" :disabled="!isValidNetworkType" @click="handleConfirm">
+      <s-button type="primary" class="s-typography-button--large" :loading="loading" :disabled="!isValidNetworkType" @click="handleConfirm">
         <template v-if="!isValidNetworkType">
           {{ t('confirmBridgeTransactionDialog.changeNetwork') }}
         </template>

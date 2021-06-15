@@ -46,14 +46,14 @@
       </s-collapse>
     </div>
     <template v-if="isLoggedIn">
-      <s-button class="el-button--add-liquidity s-typography-button--big" type="primary" @click="handleAddLiquidity">
+      <s-button class="el-button--add-liquidity s-typography-button--large" type="primary" @click="handleAddLiquidity">
         {{ t('pool.addLiquidity') }}
       </s-button>
-      <s-button class="el-button--create-pair s-typography-button--big" type="secondary" @click="handleCreatePair">
+      <s-button class="el-button--create-pair s-typography-button--large" type="secondary" @click="handleCreatePair">
         {{ t('pool.createPair') }}
       </s-button>
     </template>
-    <s-button v-else type="primary s-typography-button--big" @click="handleConnectWallet">
+    <s-button v-else type="primary s-typography-button--large" @click="handleConnectWallet">
       {{ t('pool.connectWallet') }}
     </s-button>
   </div>

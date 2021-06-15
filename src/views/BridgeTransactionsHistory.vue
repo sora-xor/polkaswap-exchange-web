@@ -69,7 +69,7 @@
       </s-form>
       <s-button
         v-if="!restored"
-        class="s-button--restore s-typography-button--big"
+        class="s-button--restore s-typography-button--large"
         icon="circle-plus-16"
         icon-position="right"
         :disabled="loading"

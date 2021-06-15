@@ -85,7 +85,7 @@
             <span>{{ t('addAsset.understand') }}</span>
             <s-switch v-model="isConfirmed" :disabled="loading" />
           </div>
-          <s-button class="add-asset-details_action s-typography-button--big" type="primary" :disabled="!customAsset || !isConfirmed || loading" @click="handleAddAsset">
+          <s-button class="add-asset-details_action s-typography-button--large" type="primary" :disabled="!customAsset || !isConfirmed || loading" @click="handleAddAsset">
             {{ t('addAsset.action') }}
           </s-button>
         </div>

@@ -82,15 +82,31 @@ $baseClass: '.token-select-button';
 
   &__icon {
     margin-left: $inner-spacing-mini / 2;
-    background-color: var(--s-color-base-content-tertiary);
-    color: var(--s-color-base-on-accent) !important;
+    background-color: var(--s-color-base-on-accent);
+    color: var(--s-color-base-content-tertiary) !important;
     border-radius: var(--s-border-radius-medium);
     padding: 2px;
   }
 
+  &:hover, &:active, &.focusing {
+    #{$baseClass}__icon {
+      color: var(--s-color-base-content-secondary) !important;
+    }
+  }
+
   &--token {
-    &:hover {
+    &:hover, &:active, &.focusing {
       filter: drop-shadow(-1px -1px 5px rgba(247, 84, 163, 0.25)) drop-shadow(1px 1px 5px rgba(247, 84, 163, 0.25));
+
+      #{$baseClass}__icon {
+        background-color: var(--s-color-base-content-secondary);
+        color: var(--s-color-base-on-accent) !important;
+      }
+    }
+
+    #{$baseClass}__icon {
+      background-color: var(--s-color-base-content-tertiary);
+      color: var(--s-color-base-on-accent) !important;
     }
 
     #{$baseClass}__text {

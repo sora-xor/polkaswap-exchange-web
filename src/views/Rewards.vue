@@ -60,7 +60,7 @@
       </div>
       <s-button
         v-if="!rewardsRecieved"
-        class="rewards-block rewards-action-button s-typography-button--big"
+        class="rewards-block rewards-action-button s-typography-button--large"
         type="primary"
         @click="handleAction"
         :loading="actionButtonLoading"

@@ -42,7 +42,7 @@
     <template #footer>
       <s-button
         type="primary"
-        class="s-typography-button--big"
+        class="s-typography-button--large"
         :loading="parentLoading"
         @click="handleConfirmRemoveLiquidity"
       >

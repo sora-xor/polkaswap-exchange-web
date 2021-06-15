@@ -659,7 +659,7 @@ $disclaimer-letter-spacing: -0.03em;
     border-radius: 50%;
   }
 
-  &:hover, &.s-focused {
+  &:hover, &:focus, &:active, &.focusing, &.s-pressed {
     .account-control-icon i {
       color: var(--s-color-base-on-accent) !important;
     }

@@ -53,7 +53,7 @@
             </div>
           </div>
           <div slot="right" v-if="isNetworkAConnected" class="s-flex el-buttons">
-            <s-button v-if="isMaxAvailable" class="el-button--max" type="primary" alternative size="mini" border-radius="mini" @click="handleMaxValue">
+            <s-button v-if="isMaxAvailable" class="el-button--max s-typography-button--small" type="primary" alternative size="mini" border-radius="mini" @click="handleMaxValue">
               {{ t('buttons.max') }}
             </s-button>
             <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="asset" @click="openSelectAssetDialog" />
@@ -96,14 +96,14 @@
               />
               <span>{{ t('bridge.connected') }}</span>
             </div>
-            <s-button v-else-if="!isNetworkBConnected" class="el-button--connect s-typography-button--big" type="primary" @click="!isSoraToEvm ? connectInternalWallet() : connectExternalWallet()">
+            <s-button v-else-if="!isNetworkBConnected" class="el-button--connect s-typography-button--large" type="primary" @click="!isSoraToEvm ? connectInternalWallet() : connectExternalWallet()">
               {{ t('bridge.connectWallet') }}
             </s-button>
           </template>
         </s-float-input>
 
         <s-button
-          class="el-button--next s-typography-button--big"
+          class="el-button--next s-typography-button--large"
           type="primary"
           :disabled="!isAssetSelected || !areNetworksConnected || !isValidNetworkType || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEvmNativeTokenForFee || isInsufficientBalance || !isRegisteredAsset"
           @click="handleConfirmTransaction"

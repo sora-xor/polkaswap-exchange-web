@@ -27,7 +27,7 @@
           </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
-          <s-button v-if="isFirstMaxButtonAvailable" class="el-button--max" type="primary" alternative size="mini" border-radius="mini" @click="handleMaxValue(firstToken, setFirstTokenValue)">
+          <s-button v-if="isFirstMaxButtonAvailable" class="el-button--max s-typography-button--small" type="primary" alternative size="mini" border-radius="mini" @click="handleMaxValue(firstToken, setFirstTokenValue)">
             {{ t('buttons.max') }}
           </s-button>
           <token-select-button class="el-button--select-token" :token="firstToken" />
@@ -56,13 +56,13 @@
           </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
-          <s-button v-if="isSecondMaxButtonAvailable" class="el-button--max" type="primary" alternative size="mini" border-radius="mini" @click="handleMaxValue(secondToken, setSecondTokenValue)">
+          <s-button v-if="isSecondMaxButtonAvailable" class="el-button--max s-typography-button--small" type="primary" alternative size="mini" border-radius="mini" @click="handleMaxValue(secondToken, setSecondTokenValue)">
             {{ t('buttons.max') }}
           </s-button>
           <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="secondToken" @click="openSelectSecondTokenDialog" />
         </div>
       </s-float-input>
-      <s-button type="primary" class="action-button s-typography-button--big" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="openConfirmDialog">
+      <s-button type="primary" class="action-button s-typography-button--large" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="openConfirmDialog">
         <template v-if="!areTokensSelected">
           {{ t('buttons.chooseTokens') }}
         </template>

@@ -32,7 +32,7 @@
       </s-radio>
     </s-radio-group>
     <s-button
-      class="select-node-button s-typography-button--big"
+      class="select-node-button s-typography-button--large"
       @click="handleNode()"
     >
       {{ t('selectNodeDialog.addNode') }}
