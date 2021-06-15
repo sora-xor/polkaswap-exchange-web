@@ -325,7 +325,7 @@
         #{$tabs-class}__item {
           width: 50%;
           font-feature-settings: $s-font-feature-settings-title;
-          font-weight: 700 !important;
+          font-weight: 400 !important;
           text-align: center;
           &.is-focus:not(.is-active) {
             box-shadow: none !important;
