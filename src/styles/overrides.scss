@@ -82,9 +82,6 @@ span.el-dialog__title {
   font-variation-settings: $font-weight-400 !important;
   letter-spacing: var(--s-letter-spacing-mini) !important;
 }
-button.el-button span {
-  font-variation-settings: $font-weight-600 !important;
-}
 button.el-button--primary span,
 button.el-button--choose-token span,
 div.asset-search-actions button.el-button span,
@@ -235,7 +232,7 @@ div#app {
   min-width: 528px;
 }
 div.app-body {
-  min-width: 448px;
+  min-width: 464px;
 }
 
 @media screen and (min-width: 900px) {

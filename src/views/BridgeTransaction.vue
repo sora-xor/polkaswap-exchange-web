@@ -10,7 +10,7 @@
     >
       {{ t('bridgeTransaction.viewHistory') }}
     </s-button>
-    <s-card class="transaction-content" border-radius="medium" shadow="never">
+    <s-card class="transaction-content" border-radius="medium" shadow="always" primary>
       <template v-if="isInitRequestCompleted">
         <div class="header">
           <div

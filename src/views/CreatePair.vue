@@ -81,7 +81,7 @@
 
     <template v-if="areTokensSelected && isAvailable">
       <div v-if="isEmptyBalance" class="info-line-container">
-        <p class="p2">{{ t('createPair.firstLiquidityProvider') }}</p>
+        <p class="info-line-container__title">{{ t('createPair.firstLiquidityProvider') }}</p>
         <info-line>
           <template #info-line-prefix>
             <p class="info-line--first-liquidity" v-html="t('createPair.firstLiquidityProviderInfo')" />
@@ -90,7 +90,7 @@
       </div>
       <template v-else>
         <div class="info-line-container">
-          <p class="p2">{{ t('createPair.pricePool') }}</p>
+          <p class="info-line-container__title">{{ t('createPair.pricePool') }}</p>
           <info-line :label="t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="formatStringValue(price)" />
           <info-line :label="t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formatStringValue(priceReversed)" />
           <info-line :label="t('createPair.shareOfPool')" value="100%" />
@@ -98,7 +98,7 @@
         </div>
 
         <div class="info-line-container">
-          <p class="p2">{{ t('createPair.yourPositionEstimated') }}</p>
+          <p class="info-line-container__title">{{ t('createPair.yourPositionEstimated') }}</p>
           <info-line
             :label="t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol })"
             :value="formattedMinted"

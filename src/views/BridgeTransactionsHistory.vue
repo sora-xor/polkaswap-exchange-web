@@ -4,7 +4,8 @@
       v-lottie-loader="{ loading: parentLoading }"
       class="history-content"
       border-radius="medium"
-      shadow="never"
+      shadow="always"
+      primary
     >
       <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
         <!-- <s-button

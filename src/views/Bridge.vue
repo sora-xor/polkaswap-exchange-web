@@ -5,7 +5,8 @@
         v-lottie-loader="{ loading: parentLoading }"
         class="bridge-content"
         border-radius="medium"
-        shadow="never"
+        shadow="always"
+        primary
       >
         <generic-page-header class="header--bridge" :title="t('bridge.title')" :tooltip="t('bridge.info')">
           <s-button

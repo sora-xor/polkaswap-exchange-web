@@ -188,7 +188,6 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
 
   .el-form--actions & {
     margin-top: $inner-spacing-medium;
-    padding: 0 $inner-spacing-mini;
   }
 }
 </style>

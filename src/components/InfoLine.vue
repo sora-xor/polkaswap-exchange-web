@@ -52,10 +52,15 @@ export default class InfoLine extends Vue {
 .info-line-container {
   border-radius: var(--s-border-radius-small);
   margin-top: $inner-spacing-medium;
-  padding: $inner-spacing-mini / 2 $inner-spacing-mini;
+  padding: $inner-spacing-mini 0 0;
   width: 100%;
-  .p2 {
-    padding: $inner-spacing-mini / 4 $inner-spacing-mini / 2;
+
+  &__title {
+    font-size: var(--s-font-size-medium);
+    font-weight: 300;
+    line-height: var(--s-line-height-medium);
+    color: var(--s-color-base-content-secondary);
+    margin-bottom: $inner-spacing-small;
   }
 }
 </style>

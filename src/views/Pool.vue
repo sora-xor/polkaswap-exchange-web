@@ -53,7 +53,7 @@
         {{ t('pool.createPair') }}
       </s-button>
     </template>
-    <s-button v-else type="primary s-typography-button--large" @click="handleConnectWallet">
+    <s-button v-else type="primary" class="s-typography-button--large" @click="handleConnectWallet">
       {{ t('pool.connectWallet') }}
     </s-button>
   </div>
