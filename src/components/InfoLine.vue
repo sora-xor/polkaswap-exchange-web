@@ -2,14 +2,15 @@
   <div class="info-line">
     <slot name="info-line-prefix" />
     <span class="info-line-label">{{ label }}</span>
-    <branded-tooltip
+    <s-tooltip
       v-if="tooltipContent"
       popper-class="info-tooltip info-tooltip--info-line"
       :content="tooltipContent"
       placement="right-start"
+      border-radius="mini"
     >
-      <s-icon name="info-16" />
-    </branded-tooltip>
+      <s-icon name="info-16" size="14px" />
+    </s-tooltip>
     <span class="info-line-value">{{ value }}<span v-if="assetSymbol" class="asset-symbol">{{ ' ' + assetSymbol }}</span></span>
     <slot />
   </div>
@@ -18,14 +19,9 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 
-import { Components, InfoTooltipPosition } from '@/consts'
-import { lazyComponent } from '@/router'
+import { InfoTooltipPosition } from '@/consts'
 
-@Component({
-  components: {
-    BrandedTooltip: lazyComponent(Components.BrandedTooltip)
-  }
-})
+@Component
 export default class InfoLine extends Vue {
   @Prop({ default: '', type: String }) readonly label!: string
   @Prop({ default: '', type: String }) readonly tooltipContent?: string
@@ -54,13 +50,17 @@ export default class InfoLine extends Vue {
   }
 }
 .info-line-container {
-  border: 1px solid var(--s-color-base-border-secondary);
   border-radius: var(--s-border-radius-small);
   margin-top: $inner-spacing-medium;
-  padding: $inner-spacing-mini / 2 $inner-spacing-mini;
+  padding: $inner-spacing-mini 0 0;
   width: 100%;
-  .p2 {
-    padding: $inner-spacing-mini / 4 $inner-spacing-mini / 2;
+
+  &__title {
+    font-size: var(--s-font-size-medium);
+    font-weight: 300;
+    line-height: var(--s-line-height-medium);
+    color: var(--s-color-base-content-secondary);
+    margin-bottom: $inner-spacing-small;
   }
 }
 </style>
@@ -71,10 +71,16 @@ export default class InfoLine extends Vue {
   align-items: center;
   width: 100%;
   padding: $inner-spacing-mini / 4 $inner-spacing-mini / 2;
-  color: var(--s-color-base-content-secondary);
-  font-size: var(--s-font-size-mini);
+  color: var(--s-color-base-content-primary);
+  font-size: var(--s-font-size-extra-small);
+  line-height: var(--s-line-height-small);
   font-feature-settings: $s-font-feature-settings-common;
-  line-height: $s-line-height-big;
+  border-bottom: 1px solid var(--s-color-base-border-secondary);
+
+  & + .info-line {
+    margin-top: $inner-spacing-small;
+  }
+
   &:first-child {
     margin-top: 0;
   }
@@ -84,11 +90,13 @@ export default class InfoLine extends Vue {
   &-label {
     margin-right: $inner-spacing-mini;
     word-break: keep-all;
+    text-transform: uppercase;
   }
   &-value {
     margin-left: auto;
     text-align: right;
     word-break: break-all;
+    font-weight: 600
   }
   .asset-symbol {
     word-break: keep-all;

@@ -30,7 +30,7 @@ export default class SettingsTabs extends Vue {
   .el-tabs__item {
     font-size: var(--s-font-size-mini);
     font-feature-settings: $s-font-feature-settings-common;
-    font-weight: 600 !important;
+    font-weight: 400 !important;
     text-align: center;
 
     &.is-focus:not(.is-active) {

@@ -7,16 +7,16 @@
     <s-form-item class="el-form-item--search">
       <s-input
         ref="search"
+        size="big"
         v-model="query"
         :placeholder="t('selectRegisteredAsset.search.placeholder')"
         class="asset-search"
         prefix="el-icon-search"
-        size="medium"
         border-radius="mini"
         @focus="handleSearchFocus"
       >
         <template #suffix v-if="query">
-          <s-button class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
+          <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
         </template>
       </s-input>
     </s-form-item>
@@ -81,7 +81,7 @@
           <div v-if="customAddress && !customSymbol" class="custom-asset-info">
             {{ t(`selectRegisteredAsset.customAsset.${alreadyAttached ? 'alreadyAttached' : 'empty'}`) }}
           </div>
-          <s-button class="s-button--next" type="primary" :disabled="!(customAddress && customSymbol)" @click="handleCustomAssetNext">{{ t('bridge.next') }}</s-button>
+          <s-button class="s-button--next s-typography-button--large" type="primary" :disabled="!(customAddress && customSymbol)" @click="handleCustomAssetNext">{{ t('bridge.next') }}</s-button>
         </div>
       </s-tab>
     </s-tabs>
@@ -313,12 +313,17 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
     background-color: var(--s-color-base-background-hover);
   }
   &__name, &__balance {
-    font-size: var(--s-font-size-small);
+    font-size: var(--s-font-size-medium);
+    letter-spacing: var(--s-letter-spacing-mini);
     font-weight: 600;
+    white-space: nowrap;
   }
-  &__balance-container {
-    width: 45%;
-    text-align: right;
+  &__balance {
+    font-weight: 800;
+    &-container {
+      width: 45%;
+      text-align: right;
+    }
   }
   .s-col {
     padding-right: $inner-spacing-small;
@@ -331,8 +336,8 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
 .network-label {
   color: var(--s-color-base-content-secondary);
   font-size: $s-heading3-caps-font-size;
-  line-height: $s-line-height-base;
-  letter-spacing: $s-letter-spacing-type;
+  line-height: var(--s-line-height-base);
+  letter-spacing: var(--s-letter-spacing-extra-large);
   font-weight: 700 !important;
   font-feature-settings: $s-font-feature-settings-type;
   text-transform: uppercase;
@@ -372,7 +377,7 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
     padding-left: $inner-spacing-mini / 2;
     color: var(--s-color-base-content-secondary);
     font-size: var(--s-font-size-mini);
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
     .s-link {
       height: auto;
       padding: 0;

@@ -18,85 +18,79 @@
         </template>
       </status-action-badge>
     </generic-page-header>
-    <div class="input-container">
-      <div class="input-line-header">
-        <div class="input-title p4">
-          <span>{{ t('transfers.from') }}</span>
-          <span :class="`input-title-estimated ${(areTokensSelected && !isZeroToAmount && isExchangeB) ? 'input-title-estimated--show' : ''}`">
-            ({{ t('swap.estimated') }})
-          </span>
+    <s-float-input
+      class="s-input--token-value"
+      size="medium"
+      :value="fromValue"
+      :decimals="(tokenFrom || {}).decimals"
+      has-locale-string
+      :delimiters="delimiters"
+      :max="getMax((tokenFrom || {}).address)"
+      @input="handleInputFieldFrom"
+      @focus="handleFocusField(false)"
+    >
+      <div slot="top" class="input-line">
+        <div class="input-title">
+          <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
+          <span class="input-title--uppercase input-title--primary" v-if="areTokensSelected && !isZeroToAmount && isExchangeB">({{ t('swap.estimated') }})</span>
         </div>
-        <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="token-balance">
-          <span class="token-balance-title">{{ t('exchange.balance') }}</span>
-          <span class="token-balance-value">{{ formatBalance(tokenFrom) }}</span>
+        <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="input-title">
+          <span class="input-title--uppercase">{{ t('exchange.balance') }}</span>
+          <span class="input-title--uppercase input-title--primary">{{ formatBalance(tokenFrom) }}</span>
         </div>
       </div>
-      <div class="input-line-content">
-        <s-form-item>
-          <s-float-input
-            class="s-input--token-value"
-            :value="fromValue"
-            :decimals="(tokenFrom || {}).decimals"
-            has-locale-string
-            :delimiters="delimiters"
-            :max="getMax((tokenFrom || {}).address)"
-            @input="handleInputFieldFrom"
-            @focus="handleFocusField(false)"
-          />
-        </s-form-item>
-        <div v-if="tokenFrom" class="token">
-          <s-button v-if="isMaxSwapAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue">
-            {{ t('buttons.max') }}
-          </s-button>
-          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectTokenDialog(true)">
-            <token-logo :token="tokenFrom" size="small" />
-            {{ tokenFrom.symbol }}
-          </s-button>
-        </div>
-        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectTokenDialog(true)">
-          {{ t('buttons.chooseToken') }}
+      <div slot="right" class="s-flex el-buttons">
+        <s-button v-if="tokenFrom && isMaxSwapAvailable" class="el-button--max s-typography-button--small" type="primary" alternative size="mini" border-radius="mini" @click="handleMaxValue">
+          {{ t('buttons.max') }}
         </s-button>
+        <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenFrom" @click="openSelectTokenDialog(true)" />
       </div>
-    </div>
+      <div slot="bottom" class="input-line input-line--footer">
+        <div v-if="tokenFrom" class="input-title">
+          <span>{{ getTokenName(tokenFrom) }}</span>
+          <s-tooltip :content="t('selectToken.copy')" border-radius="mini" placement="bottom-end">
+            <span class="token-address" @click="handleCopy(tokenFrom, $event)">({{ getFormattedAddress(tokenFrom) }})</span>
+          </s-tooltip>
+        </div>
+      </div>
+    </s-float-input>
     <s-button class="el-button--switch-tokens" type="action" icon="arrows-swap-90-24" :disabled="!areTokensSelected || isRecountingProcess" @click="handleSwitchTokens" />
-    <div class="input-container">
-      <div class="input-line-header">
-        <div class="input-title p4">
-          <span>{{ t('transfers.to') }}</span>
-          <span :class="`input-title-estimated ${(areTokensSelected && !isZeroFromAmount && !isExchangeB) ? 'input-title-estimated--show' : ''}`">
-            ({{ t('swap.estimated') }})
-          </span>
+    <s-float-input
+      class="s-input--token-value"
+      size="medium"
+      :value="toValue"
+      :decimals="(tokenTo || {}).decimals"
+      has-locale-string
+      :delimiters="delimiters"
+      :max="getMax((tokenTo || {}).address)"
+      @input="handleInputFieldTo"
+      @focus="handleFocusField(true)"
+    >
+      <div slot="top" class="input-line">
+        <div class="input-title">
+          <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
+          <span class="input-title--uppercase input-title--primary" v-if="areTokensSelected && !isZeroFromAmount && !isExchangeB">({{ t('swap.estimated') }})</span>
         </div>
-        <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="token-balance">
-          <span class="token-balance-title">{{ t('exchange.balance') }}</span>
-          <span class="token-balance-value">{{ formatBalance(tokenTo) }}</span>
+        <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="input-title">
+          <span class="input-title--uppercase">{{ t('exchange.balance') }}</span>
+          <span class="input-title--uppercase input-title--primary">{{ formatBalance(tokenTo) }}</span>
         </div>
       </div>
-      <div class="input-line-content">
-        <s-form-item>
-          <s-float-input
-            class="s-input--token-value"
-            :value="toValue"
-            :decimals="(tokenTo || {}).decimals"
-            has-locale-string
-            :delimiters="delimiters"
-            :max="getMax((tokenTo || {}).address)"
-            @input="handleInputFieldTo"
-            @focus="handleFocusField(true)"
-          />
-        </s-form-item>
-        <div v-if="tokenTo" class="token">
-          <s-button class="el-button--choose-token" type="tertiary" size="small" border-radius="medium" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectTokenDialog(false)">
-            <token-logo :token="tokenTo" size="small" />
-            {{ tokenTo.symbol }}
-          </s-button>
-        </div>
-        <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectTokenDialog(false)">
-          {{ t('buttons.chooseToken') }}
-        </s-button>
+      <div slot="right" class="s-flex el-buttons">
+        <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenTo" @click="openSelectTokenDialog(false)" />
       </div>
-    </div>
-    <s-button v-if="!isLoggedIn" type="primary" @click="handleConnectWallet">
+      <div slot="bottom" class="input-line input-line--footer">
+        <div v-if="tokenTo" class="input-title">
+          <span>{{ getTokenName(tokenTo) }}</span>
+          <s-tooltip :content="t('selectToken.copy')" border-radius="mini" placement="bottom-end">
+            <span class="token-address" @click="handleCopy(tokenTo, $event)">({{ getFormattedAddress(tokenTo) }})</span>
+          </s-tooltip>
+        </div>
+      </div>
+    </s-float-input>
+    <slippage-tolerance class="slippage-tolerance-settings" />
+    <swap-info v-if="areTokensSelected && !hasZeroAmount" class="info-line-container" />
+    <s-button v-if="!isLoggedIn" type="primary" class="action-button s-typography-button--large" @click="handleConnectWallet">
       {{ t('swap.connectWallet') }}
     </s-button>
     <s-button
@@ -104,6 +98,7 @@
       type="primary"
       :disabled="!areTokensSelected || !isAvailable || hasZeroAmount || isInsufficientLiquidity || isInsufficientAmount || isInsufficientBalance || isInsufficientXorForFee" @click="handleConfirmSwap"
       :loading="isRecountingProcess || isAvailableChecking"
+      class="action-button s-typography-button--large"
     >
       <template v-if="!areTokensSelected">
         {{ t('buttons.chooseTokens') }}
@@ -130,8 +125,6 @@
         {{ t('exchange.Swap') }}
       </template>
     </s-button>
-    <slippage-tolerance class="slippage-tolerance-settings" />
-    <swap-info v-if="areTokensSelected && !hasZeroAmount" class="info-line-container" />
     <select-token :visible.sync="showSelectTokenDialog" :connected="isLoggedIn" :asset="isTokenFromSelected ? tokenTo : tokenFrom" @select="selectToken" />
     <confirm-swap :visible.sync="showConfirmSwapDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmSwap" />
     <settings-dialog :visible.sync="showSettings" />
@@ -149,7 +142,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
-import { isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance, debouncedInputHandler } from '@/utils'
+import { isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance, formatAddress, debouncedInputHandler, copyToClipboard } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -164,7 +157,8 @@ const namespace = 'swap'
     TokenLogo: lazyComponent(Components.TokenLogo),
     SelectToken: lazyComponent(Components.SelectToken),
     ConfirmSwap: lazyComponent(Components.ConfirmSwap),
-    StatusActionBadge: lazyComponent(Components.StatusActionBadge)
+    StatusActionBadge: lazyComponent(Components.StatusActionBadge),
+    TokenSelectButton: lazyComponent(Components.TokenSelectButton)
   }
 })
 export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
@@ -303,6 +297,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   formatBalance (token): string {
     return formatAssetBalance(token)
+  }
+
+  getFormattedAddress (token: AccountAsset): string {
+    return formatAddress(token.address, 10)
+  }
+
+  getTokenName (token: AccountAsset): string {
+    return `${token.name || token.symbol}`
   }
 
   resetFieldFrom (): void {
@@ -530,44 +532,45 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     this.reset()
     this.cleanSwapReservesSubscription()
   }
+
+  async handleCopy (token: AccountAsset, event: Event): Promise<void> {
+    event.stopImmediatePropagation()
+    try {
+      await copyToClipboard(token.address)
+      this.$notify({
+        message: this.t('selectToken.successCopy', { symbol: token.symbol }),
+        type: 'success',
+        title: ''
+      })
+    } catch (error) {
+      this.$notify({
+        message: `${this.t('warningText')} ${error}`,
+        type: 'warning',
+        title: ''
+      })
+    }
+  }
 }
 </script>
 
-<style lang="scss">
-.el-form--actions {
-  .el-button--switch-tokens {
-    @include switch-button-inherit-styles('medium');
-  }
-  .s-input--token-value .el-input .el-input__inner {
-    @include text-ellipsis;
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 .el-form--actions {
-  @include input-form-styles;
+  @include generic-input-lines;
   @include buttons;
-  @include full-width-button;
+  @include full-width-button('action-button');
   @include vertical-divider('el-button--switch-tokens', $inner-spacing-medium);
-
-  .input-title-estimated {
-    margin-left: $inner-spacing-mini / 2;
-    font-size: var(--s-font-size-mini);
-    font-weight: 400;
-    opacity: 0;
-    &--show {
-      opacity: 1;
-    }
-  }
-
-  .el-button--switch-tokens {
-    @include switch-button(var(--s-size-medium));
-  }
 }
 
 .page-header--swap {
   justify-content: space-between;
   align-items: center;
+}
+
+.token-address {
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 </style>

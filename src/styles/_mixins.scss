@@ -17,15 +17,11 @@
     }
     &-balance {
       margin-left: auto;
-      &-title {
-        color: var(--s-color-base-content-tertiary);
-        font-size: var(--s-font-size-mini);
-      }
     }
     &-balance-value {
       margin-left: $inner-spacing-mini / 2;
       font-feature-settings: $s-font-feature-settings-common;
-      letter-spacing: $s-letter-spacing-big;
+      letter-spacing: var(--s-letter-spacing-big);
       word-break: break-all;
     }
   }
@@ -40,7 +36,7 @@
 
 @mixin container-styles {
   margin: $inner-spacing-big auto 0;
-  padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
+  padding: $inner-spacing-big $inner-spacing-big $inner-spacing-mini * 4;
   min-height: $inner-window-height;
   width: $inner-window-width;
   background-color: var(--s-color-utility-surface);
@@ -57,126 +53,55 @@
 
 @mixin generic-input-lines($inputLineClass: "input-line") {
   .#{$inputLineClass} {
-    &-header, &-footer {
-      padding-top: $inner-spacing-mini / 2;
-      padding-right: $inner-spacing-medium;
-      padding-left: $inner-spacing-medium;
-      font-size: var(--s-font-size-mini);
-      line-height: $s-line-height-big;
-    }
-    &-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: $inner-spacing-mini;
-    }
-    &-content {
-      margin-bottom: $inner-spacing-mini;
-      display: flex;
-      justify-content: space-between;
-      padding-right: $inner-spacing-small;
-      padding-left: $inner-spacing-medium;
-    }
-    .token-balance {
-      text-align: right;
-      &-title {
-        margin-right: $inner-spacing-mini / 2;
-        color: var(--s-color-base-content-secondary);
-      }
-      &-value {
-        word-break: break-all;
-      }
-    }
-  }
-}
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: $inner-spacing-mini;
+    font-size: var(--s-font-size-mini);
+    font-feature-settings: normal;
+    line-height: var(--s-line-height-medium);
 
-@mixin input-form-styles {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .input-container {
-    position: relative;
-    width: 100%;
-    background-color: var(--s-color-base-background);
-    border-radius: var(--s-border-radius-mini);
-    @include generic-input-lines;
-    .el-form-item {
+    &--footer {
+      justify-content: flex-end;
+      margin-top: $inner-spacing-mini / 2;
       margin-bottom: 0;
-      margin-right: $inner-spacing-mini;
-      width: 100%;
+      min-height: $inner-spacing-mini * 2.25;
     }
+
     .input-title {
       display: flex;
-      margin-top: $inner-spacing-mini / 2;
-      margin-bottom: $inner-spacing-mini / 2;
-      align-items: baseline;
-      font-family: "Sora", sans-serif !important;
-      margin-right: $inner-spacing-mini;
+      align-items: center;
+      color: var(--s-color-base-content-secondary);
+
+      &--primary {
+        color: var(--s-color-base-content-primary);
+      }
+
+      &--uppercase {
+        text-transform: uppercase;
+      }
+
+      & > *:not(:last-child) {
+        margin-right: $inner-spacing-mini / 2;
+      }
     }
-    @include token-styles;
-  }
-  .s-input {
-    min-height: 0;
-    font-feature-settings: $s-font-feature-settings-input;
   }
 }
 
 @mixin buttons() {
-  $buttonDisabledClass: '.el-button--disabled';
-  $buttonChooseTokenClass: '.el-button--choose-token';
-  .s-tertiary {
-    padding: $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini / 2 $inner-spacing-mini;
+  .el-buttons {
+    display: flex;
+    align-items: center;
   }
+
   .el-button {
-    &--max,
-    &--empty-token,
-    &--choose-token {
-      font-feature-settings: $s-font-feature-settings-title;
-      font-weight: 700 !important;
-    }
-    &--max,
-    &--empty-token {
-      margin-left: $inner-spacing-mini / 2;
-    }
     &--max {
       margin-right: $inner-spacing-mini / 2;
-      padding-right: $inner-spacing-mini;
-      height: var(--s-size-mini);
+      margin-left: $inner-spacing-mini / 2;
     }
-    &--choose-token {
-      margin-left: 0;
-      padding-left: $inner-spacing-mini / 2;
-      background-color: var(--s-color-base-background);
-      border-color: var(--s-color-base-background);
-      color: var(--s-color-base-content-primary);
-      font-size: var(--s-font-size-small);
-      &#{$buttonDisabledClass} {
-        cursor: default;
-      }
-      &:not(#{$buttonDisabledClass}) {
-        &:hover, &:active {
-          cursor: pointer;
-        }
-        &:hover, &:active, &:focus {
-          background-color: var(--s-color-base-background-hover);
-          border-color: var(--s-color-base-background-hover);
-          color: var(--s-color-base-content-primary);
-        }
-      }
+    &--select-token {
+      margin-left: $inner-spacing-mini / 2;
     }
-  }
-}
-
-@mixin switch-button ($lineHeight: var(--s-size-small)) {
-  padding: 0;
-  font-size: var(--s-icon-font-size-big);
-  line-height: $lineHeight;
-}
-
-@mixin switch-button-inherit-styles ($size: 'small') {
-  &.s-action.s-#{$size} i {
-    font-size: inherit;
-    line-height: inherit;
   }
 }
 
@@ -184,9 +109,6 @@
   .#{$buttonClass} {
     margin-top: $marginTop;
     width: 100%;
-    &:not(:disabled) {
-      font-weight: 600 !important;
-    }
   }
 }
 
@@ -277,8 +199,8 @@
 }
 
 @mixin bridge-container {
-  max-width: $bridge-width;
-  width: 100%;
+  width: $bridge-width;
+
   .el-loading-mask {
     border-radius: var(--s-border-radius-medium);
   }
@@ -286,18 +208,14 @@
 
 @mixin bridge-content {
   margin-top: $basic-spacing * 2;
-  border: none;
-  &,
-  &.is-hover-shadow:hover {
-    box-shadow: var(--s-shadow-surface);
-  }
+  width: 100%;
 }
 
 @mixin input-font-styles {
   height: var(--s-size-small);
   font-size: $s-font-size-input;
-  line-height: $s-line-height-small;
-  letter-spacing: $s-letter-spacing-small;
+  line-height: var(--s-line-height-small);
+  letter-spacing: var(--s-letter-spacing-small);
 }
 
 @mixin svg-icon ($url: '', $width: var(--s-icon-font-size-mini), $height: $width) {
@@ -351,15 +269,14 @@
   font-weight: 600 !important;
   text-transform:  uppercase;
   font-size: $s-font-size-button;
-  line-height: $s-line-height-small;
-  letter-spacing: $s-letter-spacing-small;
+  line-height: var(--s-line-height-small);
+  letter-spacing: var(--s-letter-spacing-small);
   font-feature-settings: $s-font-feature-settings-button;
 }
 
 @mixin next-button {
   width: 100%;
-  // line-height: $s-line-height-medium;
-  letter-spacing: $s-letter-spacing-big;
+  letter-spacing: var(--s-letter-spacing-big);
   font-feature-settings: $s-font-feature-settings-title;
 }
 
@@ -380,9 +297,6 @@
 
 @mixin exchange-tabs {
   $tabs-class: ".el-tabs";
-  $tabs-container-height: 40px;
-  $tabs-container-padding: 2px;
-  $tabs-item-height: 36px;
 
   .el-dialog {
     overflow: hidden;
@@ -403,19 +317,11 @@
         #{$tabs-class}__nav-wrap #{$tabs-class}__item {
           padding-right: $inner-spacing-medium;
           padding-left: $inner-spacing-medium;
-          &.is-active {
-            box-shadow: var(--s-shadow-tab);
-            &, &:hover {
-              background-color: var(--s-color-base-on-accent);
-            }
-          }
         }
         #{$tabs-class}__item {
-          height: $tabs-item-height;
           width: 50%;
-          line-height: $tabs-item-height;
           font-feature-settings: $s-font-feature-settings-title;
-          font-weight: 700 !important;
+          font-weight: 400 !important;
           text-align: center;
           &.is-focus:not(.is-active) {
             box-shadow: none !important;
@@ -425,7 +331,6 @@
       &__nav {
         width: 100%;
         &-wrap {
-          height: $tabs-container-height;
           background-color: var(--s-color-base-background);
         }
       }

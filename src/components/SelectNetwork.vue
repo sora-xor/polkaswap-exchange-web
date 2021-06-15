@@ -72,20 +72,6 @@ $radio-checked-size: 18px;
     padding-left: $inner-spacing-small;
     width: 100%;
   }
-  .el-radio.s-medium > .el-radio__input .el-radio__inner {
-    height: $radio-size;
-    width: $radio-size;
-    background-color: var(--s-color-base-background);
-    border-color: var(--s-color-theme-secondary-focused);
-    border-width: 1px;
-    box-shadow: var(--s-shadow-tab);
-    border-radius: 50%;
-  }
-  .el-radio__input.is-checked .el-radio__inner::after {
-    height: $radio-checked-size;
-    width: $radio-checked-size;
-    box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.02), 1px 1px 3px rgba(0, 0, 0, 0.1), inset 1px 1px 2px rgba(255, 255, 255, 0.8);
-  }
 }
 </style>
 
@@ -117,7 +103,7 @@ $network-logo-size: 49px;
       font-weight: 400;
     }
     + .network {
-      border-top: 1px solid var(--s-color-theme-secondary-focused);
+      border-top: 1px solid var(--s-color-base-border-secondary);
     }
     .token-logo {
       height: $network-logo-size;

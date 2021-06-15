@@ -5,7 +5,6 @@
       <settings-tabs :value="String(slippageTolerance)" :tabs="SlippageToleranceTabs" @click="selectTab" />
     </div>
     <div class="slippage-tolerance-custom">
-      <settings-header :title="t('dexSettings.custom')" />
       <s-float-input
         class="slippage-tolerance-custom_input"
         size="small"
@@ -171,17 +170,9 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
     min-height: var(--s-size-small);
 
     .el-input > input {
-      font-size: var(--s-font-size-mini);
+      font-size: var(--s-font-size-medium);
       font-feature-settings: $s-font-feature-settings-common;
-      font-weight: 600 !important;
-
-      height: var(--s-size-small);
       text-align: center;
-      padding-top: 0; // TODO: if there is no placeholder, set padding-top to zero
-    }
-
-    &.s-focused > .el-input > input {
-      box-shadow: var(--s-shadow-tab);
     }
   }
 
@@ -197,26 +188,29 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
 
   .el-form--actions & {
     margin-top: $inner-spacing-medium;
-    padding: 0 $inner-spacing-mini;
   }
 }
 </style>
 
 <style lang="scss" scoped>
 .slippage-tolerance {
+  display: flex;
   flex-wrap: wrap;
+  align-items: flex-end;
+
   &-default {
-    flex: 2;
     margin-right: $inner-spacing-medium;
   }
+
   &-custom {
     flex: 1;
   }
+
   &_validation {
     margin-top: $inner-spacing-mini;
     width: 100%;
     font-size: var(--s-font-size-mini);
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
   }
   &--warning {
     color: var(--s-color-status-warning)

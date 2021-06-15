@@ -1,34 +1,22 @@
 <template>
-  <div id="app">
+  <s-design-system-provider :value="libraryDesignSystem" id="app">
     <header class="header">
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
       <div class="app-controls s-flex">
-        <branded-tooltip v-if="nodesFeatureEnabled" popper-class="info-tooltip" placement="bottom">
-          <div slot="content">
-            {{ t('selectNodeText') }}
+        <s-button type="tertiary" alternative size="medium" class="node-control" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
+          <div class="node-control__text">
+            <div class="node-control-title">{{ node.name }}</div>
+            <div class="node-control-network">{{ chainAndNetworkText }}</div>
           </div>
-          <s-button class="app-control node-control" @click="openSelectNodeDialog">
-            <token-logo class="node-control__logo" v-bind="nodeLogo" />
-            <div class="node-control__text">
-              <div class="node-control-title">{{ node.name }}</div>
-              <div class="node-control-network">{{ chainAndNetworkText }}</div>
-            </div>
-          </s-button>
-        </branded-tooltip>
-        <branded-tooltip :disabled="isLoggedIn" popper-class="info-tooltip wallet-tooltip" placement="bottom">
-          <div slot="content" class="app-controls__wallet-tooltip">
-            {{ t('connectWalletTextTooltip') }}
+          <token-logo class="node-control__logo" v-bind="nodeLogo" />
+        </s-button>
+        <s-button :type="isLoggedIn ? 'tertiary' : 'secondary'" class="account-control" alternative size="medium" :tooltip="t('connectWalletTextTooltip')" :disabled="loading" @click="goTo(PageNames.Wallet)">
+          <div class="account-control-title">{{ accountInfo }}</div>
+          <div class="account-control-icon">
+            <s-icon v-if="!isLoggedIn" name="finance-wallet-24" />
+            <WalletAvatar v-else :address="account.address"/>
           </div>
-          <s-button class="app-control wallet" :disabled="loading" @click="goTo(PageNames.Wallet)">
-            <div class="account">
-              <div class="account-name">{{ accountInfo }}</div>
-              <div class="account-icon">
-                <s-icon v-if="!isLoggedIn" name="finance-wallet-24" />
-                <WalletAvatar v-else :address="account.address" />
-              </div>
-            </div>
-          </s-button>
-        </branded-tooltip>
+        </s-button>
       </div>
     </header>
     <div class="app-main">
@@ -137,7 +125,7 @@
 
     <help-dialog :visible.sync="showHelpDialog" />
     <select-node-dialog :visible.sync="showSelectNodeDialog" />
-  </div>
+  </s-design-system-provider>
 </template>
 
 <script lang="ts">
@@ -162,7 +150,6 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
 @Component({
   components: {
     WalletAvatar,
-    BrandedTooltip: lazyComponent(Components.BrandedTooltip),
     HelpDialog: lazyComponent(Components.HelpDialog),
     SidebarItemContent: lazyComponent(Components.SidebarItemContent),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
@@ -189,6 +176,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   @State(state => state.settings.faucetUrl) faucetUrl!: string
   @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
 
+  @Getter libraryDesignSystem!: string
   @Getter firstReadyTransaction!: any
   @Getter isLoggedIn!: boolean
   @Getter account!: any
@@ -248,7 +236,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
 
   get nodeLogo (): any {
     return {
-      size: LogoSize.SMALL,
+      size: LogoSize.MEDIUM,
       tokenSymbol: KnownSymbols.XOR
     }
   }
@@ -319,7 +307,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
 html {
   overflow-y: hidden;
   font-size: var(--s-font-size-small);
-  line-height: $s-line-height-base;
+  line-height: var(--s-line-height-base);
 }
 #app {
   -webkit-font-smoothing: antialiased;
@@ -338,11 +326,19 @@ html {
     margin-bottom: 0;
   }
 
-  .sidebar-item-content {
-    align-items: center;
-  }
-
   .el-menu-item {
+    .icon-container {
+      box-shadow: var(--s-shadow-element);
+    }
+
+    &.menu-item--small {
+      .icon-container {
+        box-shadow: none;
+        margin: 0;
+        background-color: unset;
+      }
+    }
+
     &.is-disabled {
       opacity: 1;
       color: var(--s-color-base-content-tertiary) !important;
@@ -353,11 +349,17 @@ html {
     }
     &:hover:not(.is-active):not(.is-disabled) {
       i {
-        color: var(--s-color-theme-secondary-hover) !important;
+        color: var(--s-color-base-content-secondary) !important;
       }
     }
-    &.is-active i {
-      color: var(--s-color-theme-accent) !important;
+    &.is-active {
+      i {
+        color: var(--s-color-theme-accent) !important;
+      }
+
+      .icon-container {
+        box-shadow: var(--s-shadow-element-pressed);
+      }
     }
   }
 
@@ -424,64 +426,31 @@ html {
   }
 }
 .el-form--actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   $swap-input-class: ".el-input";
-  .s-input--token-value {
+  .s-input--token-value, .s-input-amount {
     #{$swap-input-class} {
       #{$swap-input-class}__inner {
         padding-top: 0;
       }
     }
     #{$swap-input-class}__inner {
+      @include text-ellipsis;
       height: var(--s-size-small);
       padding-right: 0;
       padding-left: 0;
       border-radius: 0 !important;
       color: var(--s-color-base-content-primary);
-      font-size: $s-font-size-input;
-      line-height: $s-line-height-small;
-      &, &:hover, &:focus {
-        background-color: var(--s-color-base-background);
-        border-color: var(--s-color-base-background);
-      }
-      &:disabled {
-        color: var(--s-color-base-content-tertiary);
-      }
-      &:not(:disabled) {
-        &:hover, &:focus {
-          color: var(--s-color-base-content-primary);
-        }
-      }
+      font-size: var(--s-font-size-large);
+      font-feature-settings: normal;
+      line-height: var(--s-line-height-small);
+      font-weight: 800;
     }
     .s-placeholder {
       display: none;
-    }
-  }
-  .el-button {
-    // TODO: Check all icons settings after fix in UI Lib
-    &--choose-token,
-    &--empty-token {
-      > span {
-        display: inline-flex;
-        align-items: center;
-        > i[class^=s-icon-] {
-          font-size: $s-font-size-input;
-        }
-      }
-    }
-    &.el-button--empty-token {
-      > span {
-        > i[class^=s-icon-] {
-          margin-left: $inner-spacing-mini / 2;
-        }
-      }
-    }
-    &--choose-token {
-      font-feature-settings: $s-font-feature-settings-title;
-      > span {
-        > i[class^=s-icon-] {
-          margin-left: $inner-spacing-mini;
-        }
-      }
     }
   }
 }
@@ -501,6 +470,11 @@ html {
 .app-disclaimer > .link {
   color: var(--s-color-base-content-primary);
 }
+
+// Disabled button large typography
+.s-typography-button--large.is-disabled {
+  font-size: var(--s-font-size-medium) !important;
+}
 </style>
 
 <style lang="scss" scoped>
@@ -509,7 +483,6 @@ $header-height: 64px;
 $sidebar-width: 160px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
-$account-name-margin: -2px 8px 0 12px;
 
 // TODO: Move disclaimer's variables to appropriate place after design redevelopment
 $disclaimer-font-size: 11px;
@@ -617,25 +590,26 @@ $disclaimer-letter-spacing: -0.03em;
         display: block;
         height: 1px;
         width: 100px;
-        background-color: var(--s-color-theme-secondary);
+        background-color: var(--s-color-base-content-tertiary);
         opacity: 0.2;
       }
     }
   }
   .el-menu-item {
+    padding: $inner-spacing-mini $inner-spacing-mini * 2.5;
     height: initial;
-    padding: $inner-spacing-mini $basic-spacing-medium;
-    font-size: var(--s-heading5-font-size);
-    line-height: $s-line-height-big;
-    letter-spacing: var(--s-letter-spacing-small);
-    font-weight: $s-font-weight-small;
+    font-size: var(--s-font-size-medium);
     font-feature-settings: $s-font-feature-settings-title;
+    font-weight: 300;
+    line-height: var(--s-line-height-medium);
+
     &.menu-item--small {
-      padding: 0 0 0 13px;
-      color: var(--s-color-brand-day);
-      &.menu-item--general-link:hover {
-        color: var(--s-color-base-on-accent)
-      }
+      font-size: var(--s-font-size-extra-mini);
+      font-weight: 300;
+      letter-spacing: var(--s-letter-spacing-small);
+      line-height: var(--s-line-height-medium);
+      padding: 0 13px;
+      color: var(--s-color-base-content-secondary);
     }
     &:hover:not(.is-active):not(.is-disabled) {
       background-color: var(--s-color-base-background-hover) !important;
@@ -664,46 +638,20 @@ $disclaimer-letter-spacing: -0.03em;
   margin-left: auto;
 
   & > *:not(:last-child) {
-    margin-right: $inner-spacing-mini;
-  }
-
-  .wallet-section {
-    border: 1px solid var(--s-color-base-border-secondary);
-    border-radius: var(--s-size-small);
-    background: var(--s-color-base-background);
-    align-items: center;
-  }
-
-  .app-control {
-    padding: $inner-spacing-mini / 2;
-    background-color: var(--s-color-base-background);
-    border-color: var(--s-color-base-background);
-
-    &:hover, &.focusing, &.s-pressed {
-      color: inherit;
-      background-color: var(--s-color-base-background-hover);
-      border-color: var(--s-color-base-background-hover);
-    }
-  }
-
-  &__wallet-tooltip {
-    max-width: 181px;
+    margin-right: $inner-spacing-mini * 2.5;
   }
 
   .el-button + .el-button {
-    margin-left: $inner-spacing-mini;
+    margin-left: 0;
   }
 }
 
-.account {
-  display: flex;
-  align-items: center;
-
-  &-name {
+.account-control {
+  &-title {
     font-size: var(--s-font-size-small);
     font-feature-settings: $s-font-feature-settings-common;
-    color: var(--s-color-base-content-primary);
-    margin: $account-name-margin;
+    font-variation-settings: "wght" 800;
+    margin-right: $inner-spacing-mini / 2;
   }
 
   &-icon {
@@ -716,31 +664,26 @@ $disclaimer-letter-spacing: -0.03em;
     border-radius: 50%;
   }
 
-  &-avatar {
-    width: 100%;
-    height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 16C0 7.16344 7.16344 0 16 0C24.8366 0 32 7.16344 32 16C32 24.8366 24.8366 32 16 32C7.16344 32 0 24.8366 0 16Z' fill='white'/%3E%3Cellipse cx='16.0001' cy='4.79999' rx='2.4' ry='2.4' fill='%2331DF57'/%3E%3Ccircle cx='11.2' cy='7.19999' r='2.4' fill='%239A1892'/%3E%3Cellipse cx='20.7999' cy='7.19999' rx='2.4' ry='2.4' fill='%2331DF57'/%3E%3Cellipse cx='16.0001' cy='10.4' rx='2.4' ry='2.4' fill='%230A2342'/%3E%3Cellipse cx='25.6' cy='10.4' rx='2.4' ry='2.4' fill='%232D4DDC'/%3E%3Ccircle cx='6.4' cy='10.4' r='2.4' fill='%232D4DDC'/%3E%3Ccircle cx='11.2' cy='12.8' r='2.4' fill='%23EB90EB'/%3E%3Cellipse cx='20.7999' cy='12.8' rx='2.4' ry='2.4' fill='%23EB90EB'/%3E%3Ccircle cx='16.0001' cy='21.6' r='2.4' fill='%23EB90EB'/%3E%3Ccircle cx='25.6' cy='21.6' r='2.4' fill='%2331DF57'/%3E%3Cellipse cx='6.4' cy='21.6' rx='2.4' ry='2.4' fill='%2331DF57'/%3E%3Cellipse cx='11.2' cy='24' rx='2.4' ry='2.4' fill='%239A1892'/%3E%3Cellipse cx='20.7999' cy='24' rx='2.4' ry='2.4' fill='%2331DF57'/%3E%3Cellipse cx='16.0001' cy='27.2' rx='2.4' ry='2.4' fill='%232D4DDC'/%3E%3Ccircle cx='16.0001' cy='16' r='2.4' fill='%23433F10'/%3E%3Ccircle cx='25.6' cy='16' r='2.4' fill='%239A1892'/%3E%3Cellipse cx='6.4' cy='16' rx='2.4' ry='2.4' fill='%2331DF57'/%3E%3Cellipse cx='11.2' cy='18.4' rx='2.4' ry='2.4' fill='%230A2342'/%3E%3Cellipse cx='20.7999' cy='18.4' rx='2.4' ry='2.4' fill='%230A2342'/%3E%3Cpath d='M16 31C7.71573 31 1 24.2843 1 16H-1C-1 25.3888 6.61116 33 16 33V31ZM31 16C31 24.2843 24.2843 31 16 31V33C25.3888 33 33 25.3888 33 16H31ZM16 1C24.2843 1 31 7.71573 31 16H33C33 6.61116 25.3888 -1 16 -1V1ZM16 -1C6.61116 -1 -1 6.61116 -1 16H1C1 7.71573 7.71573 1 16 1V-1Z' fill='%23DDE0E1'/%3E%3C/svg%3E")
+  &:hover, &:focus, &:active, &.focusing, &.s-pressed {
+    .account-control-icon i {
+      color: var(--s-color-base-on-accent) !important;
+    }
   }
 }
 
 .node-control {
-  &__logo {
-    margin: $inner-spacing-mini / 2;
-  }
-
   &__text {
-    margin: $inner-spacing-mini / 2;
-    padding-right: $inner-spacing-mini / 2;
-    text-align: left;
-    font-size: var(--s-font-size-mini);
+    padding-right: calc(var(--s-basic-spacing) / 2);
+    text-align: right;
+    font-size: var(--s-font-size-extra-small);
+    letter-spacing: var(--s-letter-spacing-small);
+    text-transform: none;
   }
-
   &-title {
-    color: var(--s-color-base-content-primary);
+    font-variation-settings: "wght" 800;
   }
-
   &-network {
-    color: var(--s-color-base-content-secondary);
+    color: var(--s-color-base-content-tertiary);
   }
 }
 

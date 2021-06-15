@@ -4,7 +4,8 @@
       v-lottie-loader="{ loading: parentLoading }"
       class="history-content"
       border-radius="medium"
-      shadow="never"
+      shadow="always"
+      primary
     >
       <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
         <!-- <s-button
@@ -30,7 +31,7 @@
             border-radius="mini"
           >
             <template #suffix v-if="query">
-              <s-button class="s-button--clear" icon="clear-X-16" @click="handleResetSearch" />
+              <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleResetSearch" />
             </template>
           </s-input>
         </s-form-item>
@@ -69,7 +70,7 @@
       </s-form>
       <s-button
         v-if="!restored"
-        class="s-button--restore"
+        class="s-button--restore s-typography-button--large"
         icon="circle-plus-16"
         icon-position="right"
         :disabled="loading"

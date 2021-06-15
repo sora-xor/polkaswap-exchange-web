@@ -35,10 +35,10 @@
             <div class="pool-info-value">{{ getPoolShare(liquidityItem.poolShare) }}</div>
           </div>
           <div class="pool-info--buttons">
-            <s-button type="primary" size="small" @click="handleAddPairLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
+            <s-button type="secondary" class="s-typography-button--medium" @click="handleAddPairLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
               {{ t('pool.addLiquidity') }}
             </s-button>
-            <s-button type="primary" size="small" @click="handleRemoveLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
+            <s-button type="secondary" class="s-typography-button--medium" @click="handleRemoveLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
               {{ t('pool.removeLiquidity') }}
             </s-button>
           </div>
@@ -46,14 +46,14 @@
       </s-collapse>
     </div>
     <template v-if="isLoggedIn">
-      <s-button class="el-button--add-liquidity" type="primary" @click="handleAddLiquidity">
+      <s-button class="el-button--add-liquidity s-typography-button--large" type="primary" @click="handleAddLiquidity">
         {{ t('pool.addLiquidity') }}
       </s-button>
-      <s-button class="el-button--create-pair" type="secondary" @click="handleCreatePair">
+      <s-button class="el-button--create-pair s-typography-button--large" type="secondary" @click="handleCreatePair">
         {{ t('pool.createPair') }}
       </s-button>
     </template>
-    <s-button v-else type="primary" @click="handleConnectWallet">
+    <s-button v-else type="primary" class="s-typography-button--large" @click="handleConnectWallet">
       {{ t('pool.connectWallet') }}
     </s-button>
   </div>
@@ -167,9 +167,8 @@ $pool-collapse-icon-width: 10px;
     }
     &__content {
       margin-top: $inner-spacing-medium;
-      padding-top: $basic-spacing * 2;
+      padding-top: $inner-spacing-medium;
       padding-bottom: 0;
-      border-top: 1px solid var(--s-color-base-border-primary);
     }
     .el-collapse-item__header {
       height: $pair-icon-height;
@@ -228,20 +227,6 @@ $pair-icon-height: 36px;
   .el-button {
     &--create-pair {
       margin-left: 0;
-      color: var(--s-color-theme-accent);
-      &:hover,
-      &:active,
-      &:disabled {
-        border-color: var(--s-color-base-content-quaternary);
-      }
-      &:active {
-        background-color: var(--s-color-base-disabled);
-      }
-      &:disabled,
-      &:disabled:hover {
-        background-color: transparent;
-        color: var(--s-color-base-on-disabled);
-      }
     }
   }
   @include full-width-button;
@@ -264,7 +249,7 @@ $pair-icon-height: 36px;
       }
     }
     h3 {
-      letter-spacing: $s-letter-spacing-small;
+      letter-spacing: var(--s-letter-spacing-small);
       font-feature-settings: $s-font-feature-settings-title;
     }
   }
@@ -272,7 +257,7 @@ $pair-icon-height: 36px;
     display: flex;
     align-items: center;
     font-size: var(--s-font-size-small);
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
     margin-bottom: $inner-spacing-mini;
     &,
     &--buttons {
@@ -290,9 +275,9 @@ $pair-icon-height: 36px;
       padding: $inner-spacing-big;
       border-radius: var(--s-border-radius-small);
       border: 1px solid var(--s-color-base-border-secondary);
-      color: var(--s-color-base-content-tertiary);
+      color: var(--s-color-base-content-secondary);
       font-size: var(--s-font-size-mini);
-      line-height: $s-line-height-small;
+      line-height: var(--s-line-height-small);
       font-feature-settings: $s-font-feature-settings-common;
       text-align: center;
       & + .el-button {
@@ -304,17 +289,8 @@ $pair-icon-height: 36px;
     }
     &--buttons {
       display: flex;
+      justify-content: space-around;
       margin-top: $inner-spacing-medium;
-      .el-button {
-        padding-left: $inner-spacing-small;
-        padding-right: $inner-spacing-small;
-        font-feature-settings: $s-font-feature-settings-title;
-        width: auto;
-        font-weight: 700;
-        + .el-button {
-          margin-left: $inner-spacing-mini;
-        }
-      }
     }
   }
 }

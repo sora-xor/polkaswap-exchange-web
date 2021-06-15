@@ -46,6 +46,7 @@ $icon-size: 42px;
 
 .sidebar-item-content {
   display: flex;
+  align-items: center;
 
   &--link {
     &, &:hover, &:focus, &:visited {
@@ -63,8 +64,7 @@ $icon-size: 42px;
   height: $icon-size;
   border-radius: 50%;
   background-color: var(--s-color-utility-surface);
-  box-shadow: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1);
-  transition: all 0.125s ease-in-out;
+  transition: var(--s-transition-default);
   > i {
     margin: auto;
   }
