@@ -331,7 +331,7 @@ const mutations = {
   [types.GET_RESTORED_HISTORY_REQUEST] (state) {},
   [types.GET_RESTORED_HISTORY_SUCCESS] (state) {},
   [types.GET_RESTORED_HISTORY_FAILURE] (state) {},
-  [types.SET_HISTORY_ITEM] (state, historyItem: BridgeHistory | null) {
+  [types.SET_HISTORY_ITEM] (state, historyItem: Nullable<BridgeHistory>) {
     state.historyItem = historyItem
   },
   [types.SIGN_SORA_TRANSACTION_SORA_EVM_REQUEST] (state) {},
@@ -495,7 +495,7 @@ const actions = {
       throw error
     }
   },
-  setHistoryItem ({ commit }, historyItem: BridgeHistory | null) {
+  setHistoryItem ({ commit }, historyItem: Nullable<BridgeHistory>) {
     commit(types.SET_HISTORY_ITEM, historyItem)
   },
   saveHistory ({ commit }, history: BridgeHistory) {

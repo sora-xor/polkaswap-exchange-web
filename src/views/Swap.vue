@@ -139,10 +139,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes, LPRewardsInfo, FPNumber } from '@sora-substrate/util'
+import type { Subscription } from '@polkadot/x-rxjs'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -168,7 +169,7 @@ const namespace = 'swap'
 })
 export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
   @Getter isLoggedIn!: boolean
-  @Getter slippageTolerance!: number
+  @Getter slippageTolerance!: string
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset
   @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset
@@ -190,11 +191,11 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('setExchangeB', { namespace }) setExchangeB!: (isExchangeB: boolean) => Promise<void>
   @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>
   @Action('setNetworkFee', { namespace }) setNetworkFee!: (value: CodecString) => Promise<void>
-  @Action('checkSwap', { namespace }) checkSwap!: () => Promise<void>
-  @Action('reset', { namespace }) reset!: () => void
+  @Action('checkSwap', { namespace }) checkSwap!: AsyncVoidFn
+  @Action('reset', { namespace }) reset!: AsyncVoidFn
   @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>
-  @Action('resetPrices', { namespace: 'prices' }) resetPrices!: () => Promise<void>
-  @Action('getAssets', { namespace: 'assets' }) getAssets
+  @Action('resetPrices', { namespace: 'prices' }) resetPrices!: AsyncVoidFn
+  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
   @Action('setPairLiquiditySources', { namespace }) setPairLiquiditySources!: (liquiditySources: Array<LiquiditySourceTypes>) => Promise<void>
   @Action('setRewards', { namespace }) setRewards!: (rewards: Array<LPRewardsInfo>) => Promise<void>
 
@@ -207,7 +208,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   @Watch('liquiditySource')
   private handleLiquiditySourceChange (): void {
-    this.recountSwapValues()
+    this.subscribeOnSwapReserves()
   }
 
   @Watch('isLoggedIn')
@@ -218,8 +219,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     }
   }
 
-  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
-
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
   KnownSymbols = KnownSymbols
   isInsufficientAmount = false
@@ -229,6 +228,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   showSelectTokenDialog = false
   showConfirmSwapDialog = false
   isRecountingProcess = false
+  liquidityReservesSubscription: Nullable<Subscription> = null
 
   get areTokensSelected (): boolean {
     return !!(this.tokenFrom && this.tokenTo)
@@ -301,10 +301,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     })
   }
 
-  destroyed () {
-    this.reset()
-  }
-
   formatBalance (token): string {
     return formatAssetBalance(token)
   }
@@ -340,7 +336,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       this.tokenTo?.address
     )) : []
 
-    this.setPairLiquiditySources(sources)
+    await this.setPairLiquiditySources(sources)
   }
 
   async handleInputFieldFrom (value): Promise<any> {
@@ -367,11 +363,11 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   private async runRecountSwapValues (): Promise<void> {
     const value = this.isExchangeB ? this.toValue : this.fromValue
+    if (!this.areTokensSelected || asZeroValue(value)) return
+
     const setOppositeValue = this.isExchangeB ? this.setFromValue : this.setToValue
     const resetOppositeValue = this.isExchangeB ? this.resetFieldFrom : this.resetFieldTo
     const oppositeToken = this.isExchangeB ? this.tokenFrom : this.tokenTo
-
-    if (!this.areTokensSelected || asZeroValue(value)) return
 
     try {
       this.isRecountingProcess = true
@@ -398,6 +394,25 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   recountSwapValues = debouncedInputHandler(this.runRecountSwapValues)
+
+  private cleanSwapReservesSubscription (): void {
+    if (!this.liquidityReservesSubscription) {
+      return
+    }
+    this.liquidityReservesSubscription.unsubscribe()
+    this.liquidityReservesSubscription = null
+  }
+
+  private subscribeOnSwapReserves (): void {
+    this.cleanSwapReservesSubscription()
+    if (!this.areTokensSelected) return
+
+    this.liquidityReservesSubscription = api.subscribeOnSwapReserves(
+      this.tokenFrom.address,
+      this.tokenTo.address,
+      this.liquiditySource
+    ).subscribe(this.recountSwapValues)
+  }
 
   private async calcMinMaxRecieved (): Promise<void> {
     const amount = this.isExchangeB ? this.fromValue : this.toValue
@@ -449,7 +464,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     await this.setTokenFromAddress(toAddress)
     await this.setTokenToAddress(fromAddress)
 
-    this.updatePairLiquiditySources()
+    await this.updatePairLiquiditySources()
 
     if (this.isExchangeB) {
       this.setExchangeB(false)
@@ -458,6 +473,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       this.setExchangeB(true)
       await this.handleInputFieldTo(this.fromValue)
     }
+
+    this.subscribeOnSwapReserves()
   }
 
   async handleMaxValue (): Promise<void> {
@@ -488,7 +505,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
         this.checkSwap(),
         this.updatePairLiquiditySources()
       ])
-      await this.recountSwapValues()
+      this.subscribeOnSwapReserves()
     }
   }
 
@@ -507,6 +524,11 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   openSettingsDialog (): void {
     this.showSettings = true
+  }
+
+  destroyed (): void {
+    this.reset()
+    this.cleanSwapReservesSubscription()
   }
 }
 </script>

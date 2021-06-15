@@ -65,7 +65,7 @@ export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
   @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString
   @Getter('isExchangeB', { namespace }) isExchangeB!: boolean
 
-  @Getter slippageTolerance!: number
+  @Getter slippageTolerance!: string
   @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes
 
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean

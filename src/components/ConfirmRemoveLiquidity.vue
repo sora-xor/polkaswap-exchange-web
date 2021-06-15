@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -74,8 +74,6 @@ const namespace = 'removeLiquidity'
   }
 })
 export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, DialogMixin, LoadingMixin, NumberFormatterMixin) {
-  @Prop({ default: false, type: Boolean }) readonly visible!: boolean
-
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('liquidityAmount', { namespace }) liquidityAmount!: string
@@ -85,7 +83,7 @@ export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, Dia
   @Getter('price', { namespace: 'prices' }) price!: string | number
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
 
-  @Getter slippageTolerance!: number
+  @Getter slippageTolerance!: string
 
   get formattedFromValue (): string {
     return this.formatStringValue(this.firstTokenAmount)

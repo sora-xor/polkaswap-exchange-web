@@ -163,7 +163,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory, BridgeNetworks } from '@sora-substrate/util'
 import { interpret } from 'xstate'
@@ -188,14 +188,13 @@ const namespace = 'bridge'
 })
 export default class BridgeTransaction extends Mixins(
   BridgeMixin,
-  LoadingMixin,
   NetworkFormatterMixin,
   NumberFormatterMixin
 ) {
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
 
   @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean
-  @Getter('asset', { namespace }) asset!: AccountAsset | RegisteredAccountAsset | null
+  @Getter('asset', { namespace }) asset!: Nullable<AccountAsset | RegisteredAccountAsset>
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('amount', { namespace }) amount!: string
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
@@ -212,7 +211,7 @@ export default class BridgeTransaction extends Mixins(
   @Getter('transactionStep', { namespace }) transactionStep!: number
   @Getter('historyItem', { namespace }) historyItem!: any
 
-  @Action('getNetworkFee', { namespace }) getNetworkFee
+  @Action('getNetworkFee', { namespace }) getNetworkFee!: AsyncVoidFn
 
   @Action('setCurrentTransactionState', { namespace }) setCurrentTransactionState
   @Action('setInitialTransactionState', { namespace }) setInitialTransactionState
@@ -235,8 +234,6 @@ export default class BridgeTransaction extends Mixins(
   @Action('removeHistoryById', { namespace }) removeHistoryById
   @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash
   @Action('setEvmTransactionHash', { namespace }) setEvmTransactionHash
-
-  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
   EvmSymbol = EvmSymbol
   KnownSymbols = KnownSymbols

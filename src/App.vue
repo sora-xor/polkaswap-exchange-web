@@ -149,13 +149,12 @@ import { KnownSymbols, FPNumber } from '@sora-substrate/util'
 import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize } from '@/consts'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
-import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
 
 import axios from '@/api'
 import router, { lazyComponent } from '@/router'
 import { formatAddress, disconnectWallet } from '@/utils'
-import { Node, ConnectToNodeOptions } from '@/types/nodes'
+import { ConnectToNodeOptions } from '@/types/nodes'
 
 const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
 const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
@@ -170,7 +169,7 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErrorMixin) {
+export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   readonly nodesFeatureEnabled = true
 
   readonly SidebarMenuGroups = SidebarMenuGroups
@@ -187,7 +186,6 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
 
   showHelpDialog = false
 
-  @State(state => state.settings.node) node!: Node
   @State(state => state.settings.faucetUrl) faucetUrl!: string
   @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
 
@@ -199,12 +197,11 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   @Getter nodeIsConnected!: boolean
 
   @Action navigate // Wallet
-  @Action trackActiveTransactions
-  @Action setSoraNetwork
+  @Action trackActiveTransactions!: AsyncVoidFn
+  @Action setSoraNetwork!: (data: any) => Promise<void>
   @Action setDefaultNodes!: (nodes: any) => Promise<void>
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
   @Action setFaucetUrl!: (url: string) => void
-  @Action setSelectNodeDialogVisibility!: (flag: boolean) => void
   @Action('setEvmSmartContracts', { namespace: 'web3' }) setEvmSmartContracts
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts
