@@ -407,8 +407,8 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     max-width: 3ch;
   }
 
-  .el-slider__runaway {
-    background-color: var(--s-color-utility-surface);
+  .el-slider__runway {
+    background-color: var(--s-color-base-content-tertiary);
   }
 }
 </style>

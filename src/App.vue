@@ -446,6 +446,7 @@ html {
       border-radius: 0 !important;
       color: var(--s-color-base-content-primary);
       font-size: var(--s-font-size-large);
+      font-feature-settings: normal;
       line-height: var(--s-line-height-small);
       font-weight: 800;
     }
@@ -469,6 +470,11 @@ html {
 }
 .app-disclaimer > .link {
   color: var(--s-color-base-content-primary);
+}
+
+// Disabled button large typography
+.s-typography-button--large.is-disabled {
+  font-size: var(--s-font-size-medium) !important;
 }
 </style>
 

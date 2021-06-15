@@ -470,48 +470,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
 
   &-form {
     @include bridge-container;
-    .s-input.s-input-amount {
-      position: relative;
-      &--filled {
-        &:not(.s-disabled) {
-          color: var(--s-color-base-content-primary);
-        }
-        &.s-disabled {
-          color: $bridge-input-color;
-        }
-      }
-      #{$bridge-input-class} {
-        #{$bridge-input-class}__inner {
-          padding-top: 0;
-          @include text-ellipsis;
-        }
-      }
-      #{$bridge-input-class}__inner {
-        padding-right: 0;
-        padding-left: 0;
-        border-radius: 0 !important;
-        color: inherit;
-        @include input-font-styles;
-        &, &:hover, &:focus {
-          background-color: transparent;
-          border-color: transparent;
-        }
-        &:disabled {
-          color: var(--s-color-base-content-tertiary);
-        }
-        &:not(:disabled) {
-          &:hover, &:focus {
-            color: var(--s-color-base-content-primary);
-          }
-        }
-        &::placeholder {
-          color: var(--s-color-base-content-tertiary);
-        }
-      }
-      .s-placeholder {
-        display: none;
-      }
-    }
   }
 }
 </style>

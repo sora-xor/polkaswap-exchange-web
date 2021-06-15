@@ -128,9 +128,11 @@ i.el-collapse-item__arrow {
 }
 .dialog-wrapper button.el-dialog__headerbtn:hover .el-dialog__close {
   color: var(--s-color-base-content-secondary) !important;
+  
 }
 .dialog-wrapper .el-dialog__headerbtn .el-dialog__close {
   color: var(--s-color-base-content-tertiary) !important;
+  font-size: var(--s-icon-font-size-big) !important;
 }
 button.el-dialog__headerbtn:hover > i.el-icon {
   color: var(--s-color-base-on-accent) !important;
@@ -148,7 +150,6 @@ div.el-collapse-item__content {padding-top: 0 !important;font-weight: 600;}
 div.s-input-amount input.el-input__inner {
   font-variation-settings: $font-weight-700 !important;
   font-size: var(--s-heading3-font-size) !important;
-  color: var(--s-color-base-content-quaternary) !important;
 }
 
 div.asset-search-actions {margin-bottom: 0 !important; margin-top: 16px;}
