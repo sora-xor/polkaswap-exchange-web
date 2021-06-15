@@ -199,8 +199,8 @@
 }
 
 @mixin bridge-container {
-  max-width: $bridge-width;
-  width: 100%;
+  width: $bridge-width;
+
   .el-loading-mask {
     border-radius: var(--s-border-radius-medium);
   }
