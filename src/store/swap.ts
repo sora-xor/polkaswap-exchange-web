@@ -6,6 +6,7 @@ import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { CodecString, LiquiditySourceTypes, LPRewardsInfo } from '@sora-substrate/util'
 
+import { MarketAlgorithmForLiquiditySource } from '@/consts'
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions'
 
 const balanceSubscriptions = new TokenBalanceSubscriptions()
@@ -85,7 +86,7 @@ const getters = {
 
     return balance ? { ...token, balance } : token
   },
-  pairLiquiditySourcesAvailable (state) {
+  pairLiquiditySourcesAvailable (state: SwapState) {
     return state.pairLiquiditySources.length !== 0
   },
   fromValue (state: SwapState) {
@@ -111,7 +112,10 @@ const getters = {
 
     return rootGetters.liquiditySource
   },
-  rewards (state) {
+  swapMarketAlgorithm (state, getters) {
+    return MarketAlgorithmForLiquiditySource[getters.swapLiquiditySource ?? '']
+  },
+  rewards (state: SwapState) {
     return state.rewards
   },
   isAvailable (state: SwapState) {
