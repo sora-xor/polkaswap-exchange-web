@@ -61,7 +61,8 @@
     "ts-jest": "^26.4.4",
     "typescript": "~3.9.3",
     "vue-i18n": "^8.21.0",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "webpack-bundle-analyzer": "^4.4.2"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
