@@ -109,8 +109,8 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 
   @State(state => state.rewards.internalRewards) internalRewards!: Array<RewardInfo>
   @State(state => state.rewards.externalRewards) externalRewards!: Array<RewardInfo>
-  @State(state => state.rewards.vestedRewards) vestedRewards!: RewardsInfo | null
-  @State(state => state.rewards.selectedVestedRewards) selectedVestedRewards!: RewardsInfo | null
+  @State(state => state.rewards.vestedRewards) vestedRewards!: Nullable<RewardsInfo>
+  @State(state => state.rewards.selectedVestedRewards) selectedVestedRewards!: Nullable<RewardsInfo>
   @State(state => state.rewards.selectedInternalRewards) selectedInternalRewards!: Array<RewardInfo>
   @State(state => state.rewards.selectedExternalRewards) selectedExternalRewards!: Array<RewardInfo>
 

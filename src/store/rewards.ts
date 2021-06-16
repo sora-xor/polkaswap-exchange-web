@@ -4,7 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, RewardingEvents, CodecString } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, CodecString } from '@sora-substrate/util'
 import web3Util from '@/utils/web3-util'
 import { RewardsAmountHeaderItem, RewardInfoGroup } from '@/types/rewards'
 import { groupRewardsByAssetsList } from '@/utils/rewards'
@@ -34,8 +34,8 @@ interface RewardsState {
   selectedExternalRewards: Array<RewardInfo>;
   internalRewards: Array<RewardInfo>;
   selectedInternalRewards: Array<RewardInfo>;
-  vestedRewards: RewardsInfo | null;
-  selectedVestedRewards: RewardsInfo | null;
+  vestedRewards: Nullable<RewardsInfo>;
+  selectedVestedRewards: Nullable<RewardsInfo>;
   rewardsFetching: boolean;
   rewardsClaiming: boolean;
   rewardsRecieved: boolean;
