@@ -43,7 +43,7 @@
                   />
                   <span>{{ t('rewards.connected') }}</span>
                 </div>
-                <s-button v-else class="rewards-connect-button" type="secondary" @click="connectExternalAccountProcess">
+                <s-button v-else class="rewards-connect-button" type="tertiary" @click="connectExternalAccountProcess">
                   {{ t('rewards.action.connectExternalWallet') }}
                 </s-button>
                 <div v-if="externalRewardsHintText" class="rewards-footer-hint">{{ externalRewardsHintText }}</div>
@@ -345,6 +345,12 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 .rewards-content.lottie-loader--loading:before{
   background: var(--s-color-utility-surface);
 }
+.rewards-connect-button.el-button.neumorphic {
+  background: transparent;
+  color: var(--s-color-base-on-accent);
+  border: 1px solid var(--s-color-base-on-accent);
+  box-shadow: none;
+}
 </style>
 
 <style lang="scss" scoped>
@@ -433,11 +439,6 @@ $hint-font-size: 13px;
     line-height: var(--s-line-height-big);
     margin-top: $inner-spacing-medium;
     padding: 0 $inner-spacing-mini / 2;
-  }
-
-  &-connect-button {
-    background: transparent !important;
-    color: var(--s-color-base-on-accent) !important;
   }
 
   @include full-width-button('rewards-action-button');
