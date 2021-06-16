@@ -35,7 +35,7 @@ interface RewardsState {
   internalRewards: Array<RewardInfo>;
   selectedInternalRewards: Array<RewardInfo>;
   vestedRewards: RewardsInfo | null;
-  selectedVestedRewards: Array<RewardInfo>;
+  selectedVestedRewards: RewardsInfo | null;
   rewardsFetching: boolean;
   rewardsClaiming: boolean;
   rewardsRecieved: boolean;
@@ -53,7 +53,7 @@ function initialState (): RewardsState {
     internalRewards: [],
     selectedInternalRewards: [],
     vestedRewards: null,
-    selectedVestedRewards: [],
+    selectedVestedRewards: null,
     rewardsFetching: false,
     rewardsClaiming: false,
     rewardsRecieved: false,
@@ -66,12 +66,17 @@ function initialState (): RewardsState {
 const state = initialState()
 
 const getters = {
-  claimableRewards (state: RewardsState): Array<RewardInfo> {
-    return [
+  claimableRewards (state: RewardsState): Array<RewardInfo | RewardsInfo> {
+    const buffer: Array<RewardInfo | RewardsInfo> = [
       ...state.selectedInternalRewards,
-      ...state.selectedExternalRewards,
-      ...state.selectedVestedRewards
+      ...state.selectedExternalRewards
     ]
+
+    if (state.selectedVestedRewards) {
+      buffer.push(state.selectedVestedRewards)
+    }
+
+    return buffer
   },
   rewardsAvailable (_, getters): boolean {
     return getters.claimableRewards.length !== 0
@@ -107,13 +112,7 @@ const getters = {
       ]
     }
 
-    const items = [
-      ...state.selectedInternalRewards,
-      ...state.selectedExternalRewards,
-      getters.vestedRewadsGroupItem
-    ]
-
-    return groupRewardsByAssetsList(items)
+    return groupRewardsByAssetsList(getters.claimableRewards)
   }
 }
 
@@ -169,10 +168,10 @@ const mutations = {
     state.feeFetching = false
   },
 
-  [types.SET_SELECTED_REWARDS] (state: RewardsState, { internal = [], external = [], vested = [] } = {}) {
+  [types.SET_SELECTED_REWARDS] (state: RewardsState, { internal = [], external = [], vested = null } = {}) {
     state.selectedExternalRewards = [...external]
     state.selectedInternalRewards = [...internal]
-    state.selectedVestedRewards = [...vested]
+    state.selectedVestedRewards = vested
   }
 }
 
@@ -211,7 +210,7 @@ const actions = {
       commit(types.GET_REWARDS_SUCCESS, { internal, external, vested })
 
       // select all rewards by default
-      await dispatch('setSelectedRewards', { internal, external, vested: vested?.rewards })
+      await dispatch('setSelectedRewards', { internal, external, vested })
     } catch (error) {
       console.error(error)
       commit(types.GET_REWARDS_FAILURE)

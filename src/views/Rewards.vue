@@ -110,7 +110,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @State(state => state.rewards.internalRewards) internalRewards!: Array<RewardInfo>
   @State(state => state.rewards.externalRewards) externalRewards!: Array<RewardInfo>
   @State(state => state.rewards.vestedRewards) vestedRewards!: RewardsInfo | null
-  @State(state => state.rewards.selectedVestedRewards) selectedVestedRewards!: Array<RewardInfo>
+  @State(state => state.rewards.selectedVestedRewards) selectedVestedRewards!: RewardsInfo | null
   @State(state => state.rewards.selectedInternalRewards) selectedInternalRewards!: Array<RewardInfo>
   @State(state => state.rewards.selectedExternalRewards) selectedExternalRewards!: Array<RewardInfo>
 
@@ -183,11 +183,11 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   get selectedVestedRewardsModel (): boolean {
-    return this.selectedVestedRewards.length !== 0
+    return this.selectedVestedRewards !== null
   }
 
   set selectedVestedRewardsModel (flag: boolean) {
-    const vested = flag && this.vestedRewards ? this.vestedRewards.rewards : []
+    const vested = flag && this.vestedRewards ? this.vestedRewards : null
     this.setSelectedRewards({ internal: this.selectedInternalRewards, external: this.selectedExternalRewards, vested })
   }
 
