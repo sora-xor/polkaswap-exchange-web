@@ -27,7 +27,7 @@ const CreateTokenPairMixin = (namespace: string) => {
     @Getter('price', { namespace: 'prices' }) price!: string
     @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
 
-    @Getter slippageTolerance!: number
+    @Getter slippageTolerance!: string
     @Getter isLoggedIn!: boolean
 
     @Action('setFirstTokenAddress', { namespace }) setFirstTokenAddress

@@ -30,7 +30,7 @@ import { TabItem } from '@/types/tabs'
 export default class MarketAlgorithm extends Mixins(TranslationMixin) {
   @State(state => state.settings.marketAlgorithm) marketAlgorithm!: MarketAlgorithms
   @State(state => state.swap.pairLiquiditySources) liquiditySources!: Array<LiquiditySourceTypes>
-  @Action('setMarketAlgorithm') setMarketAlgorithm!: (name: string) => void
+  @Action('setMarketAlgorithm') setMarketAlgorithm!: (name: string) => Promise<void>
 
   get marketAlgorithms (): Array<MarketAlgorithms> {
     const items = Object.keys(LiquiditySourceForMarketAlgorithm) as Array<MarketAlgorithms>

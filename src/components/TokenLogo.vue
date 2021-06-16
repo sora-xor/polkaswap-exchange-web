@@ -8,12 +8,12 @@ import { Asset, AccountAsset, KnownAssets } from '@sora-substrate/util'
 import { WhitelistAssets } from 'polkaswap-token-whitelist'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import { LogoSize } from '@/consts'
+import { LogoSize, ObjectInit } from '@/consts'
 
 @Component
 export default class TokenLogo extends Mixins(TranslationMixin) {
   @Prop({ type: String, default: '' }) readonly tokenSymbol!: string // ONLY for Bridge.vue
-  @Prop({ type: Object, default: () => null }) readonly token!: AccountAsset | Asset
+  @Prop({ type: Object, default: ObjectInit }) readonly token!: AccountAsset | Asset
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
 
   get tokenClasses (): string {
@@ -76,6 +76,6 @@ $default-logo: url("~@/assets/img/token-logo-default.svg");
 
 @include element-size('token-logo--mini', 16px);
 @include element-size('token-logo--small', 24px);
-@include element-size('token-logo--medium');
+@include element-size('token-logo--medium', 32px);
 @include element-size('token-logo--large', 80px);
 </style>

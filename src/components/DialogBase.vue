@@ -52,8 +52,8 @@ $el-dialog-button-size: var(--s-size-medium);
       font-size: var(--s-heading3-font-size);
       font-weight: normal;
       font-feature-settings: $s-font-feature-settings-title;
-      line-height: $s-line-height-small;
-      letter-spacing: $s-letter-spacing-small;
+      line-height: var(--s-line-height-small);
+      letter-spacing: var(--s-letter-spacing-small);
     }
   }
   #{$el-dialog-class}__headerbtn {

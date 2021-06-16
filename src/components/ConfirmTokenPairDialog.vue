@@ -41,6 +41,7 @@
     <template #footer>
       <s-button
         type="primary"
+        class="s-typography-button--large"
         :loading="parentLoading"
         @click="handleConfirm"
       >
@@ -96,7 +97,7 @@ export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, Dia
 
 <style lang="scss" scoped>
 .tokens {
-  line-height: $s-line-height-big;
+  line-height: var(--s-line-height-big);
   .token {
     &-logo {
       display: inline-block;
@@ -118,11 +119,14 @@ export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, Dia
   margin-top: $inner-spacing-mini;
   margin-bottom: $inner-spacing-mini;
   font-size: var(--s-font-size-mini);
-  line-height: $s-line-height-big;
+  line-height: var(--s-line-height-big);
+  text-align: center;
+  max-width: 300px;
+  margin: auto;
 }
 
 .pair-info {
-  line-height: $s-line-height-big;
+  line-height: var(--s-line-height-big);
   color: var(--s-color-base-content-secondary);
   margin-top: $inner-spacing-big;
   &__line {
@@ -144,14 +148,18 @@ export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, Dia
 
 .pool-tokens-amount {
   font-size: var(--s-heading1-font-size);
-  line-height: $s-line-height-mini;
-  letter-spacing: $s-letter-spacing-mini;
+  line-height: var(--s-line-height-mini);
+  letter-spacing: var(--s-letter-spacing-mini);
+  font-weight: 700;
+  text-align: center;
 }
 
 .pool-tokens {
   margin: $inner-spacing-mini 0;
   font-size: var(--s-heading4-font-size);
-  line-height: $s-line-height-medium;
-  letter-spacing: $s-letter-spacing-small;
+  font-weight: 800;
+  line-height: var(--s-line-height-medium);
+  letter-spacing: var(--s-letter-spacing-small);
+  justify-content: center;
 }
 </style>

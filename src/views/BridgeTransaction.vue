@@ -10,7 +10,7 @@
     >
       {{ t('bridgeTransaction.viewHistory') }}
     </s-button>
-    <s-card class="transaction-content" border-radius="medium" shadow="never">
+    <s-card class="transaction-content" border-radius="medium" shadow="always" primary>
       <template v-if="isInitRequestCompleted">
         <div class="header">
           <div
@@ -76,6 +76,7 @@
             <s-button
               v-if="isTransactionStep1"
               type="primary"
+              class="s-typograhy-button--big"
               :disabled="!(isSoraToEvm || isValidNetworkType) || currentState === STATES.INITIAL || isInsufficientBalance || isInsufficientXorForFee || isInsufficientEvmNativeTokenForFee || isTransactionFromPending"
               @click="handleSendTransactionFrom"
             >
@@ -134,6 +135,7 @@
             <s-button
               v-if="isTransactionStep2 && !isTransferCompleted"
               type="primary"
+              class="s-typograhy-button--big"
               :disabled="(isSoraToEvm && !isValidNetworkType) || isInsufficientXorForFee || isInsufficientEvmNativeTokenForFee || isTransactionToPending"
               @click="handleSendTransactionTo"
             >
@@ -163,7 +165,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory, BridgeNetworks } from '@sora-substrate/util'
 import { interpret } from 'xstate'
@@ -188,14 +190,13 @@ const namespace = 'bridge'
 })
 export default class BridgeTransaction extends Mixins(
   BridgeMixin,
-  LoadingMixin,
   NetworkFormatterMixin,
   NumberFormatterMixin
 ) {
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
 
   @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean
-  @Getter('asset', { namespace }) asset!: AccountAsset | RegisteredAccountAsset | null
+  @Getter('asset', { namespace }) asset!: Nullable<AccountAsset | RegisteredAccountAsset>
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('amount', { namespace }) amount!: string
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
@@ -212,7 +213,7 @@ export default class BridgeTransaction extends Mixins(
   @Getter('transactionStep', { namespace }) transactionStep!: number
   @Getter('historyItem', { namespace }) historyItem!: any
 
-  @Action('getNetworkFee', { namespace }) getNetworkFee
+  @Action('getNetworkFee', { namespace }) getNetworkFee!: AsyncVoidFn
 
   @Action('setCurrentTransactionState', { namespace }) setCurrentTransactionState
   @Action('setInitialTransactionState', { namespace }) setInitialTransactionState
@@ -235,8 +236,6 @@ export default class BridgeTransaction extends Mixins(
   @Action('removeHistoryById', { namespace }) removeHistoryById
   @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash
   @Action('setEvmTransactionHash', { namespace }) setEvmTransactionHash
-
-  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
 
   EvmSymbol = EvmSymbol
   KnownSymbols = KnownSymbols
@@ -668,8 +667,8 @@ export default class BridgeTransaction extends Mixins(
 $collapse-horisontal-padding: $inner-spacing-medium;
 $header-icon-size: 100px;
 $collapse-header-title-font-size: $s-heading3-caps-font-size;
-$collapse-header-title-line-height: $s-line-height-base;
-$collapse-header-title-height: #{$collapse-header-title-font-size * $collapse-header-title-line-height};
+$collapse-header-title-line-height: var(--s-line-height-base);
+$collapse-header-title-height: calc(#{$collapse-header-title-font-size} * #{$collapse-header-title-line-height});
 $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-height});
 
 .transaction {
@@ -709,7 +708,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
             padding-left: #{$collapse-horisontal-padding + $inner-spacing-mini / 2};
             h3 {
               font-size: $s-heading3-caps-font-size;
-              line-height: $s-line-height-base;
+              line-height: var(--s-line-height-base);
             }
           }
         }
@@ -781,14 +780,14 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
       &--create-transaction {
         @include bottom-button;
         font-feature-settings: $s-font-feature-settings-title;
-        letter-spacing: $s-letter-spacing-big;
+        letter-spacing: var(--s-letter-spacing-big);
       }
       &--view-transactions-history,
       &--create-transaction {
         font-weight: 700;
       }
       &--view-transactions-history {
-        line-height: $s-line-height-medium;
+        line-height: var(--s-line-height-medium);
       }
     }
   }
@@ -811,6 +810,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
       bottom: 0;
       margin-top: auto;
       margin-bottom: auto;
+      padding: 0;
       width: var(--s-size-mini);
       height: var(--s-size-mini);
       line-height: 1;
@@ -837,7 +837,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     margin-bottom: $inner-spacing-mini;
     font-feature-settings: $s-font-feature-settings-title;
     font-weight: 700;
-    line-height: $s-line-height-medium;
+    line-height: var(--s-line-height-medium);
     .s-icon {
       &-sora, &-eth {
         position: relative;
@@ -855,13 +855,13 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     display: flex;
     align-items: baseline;
     font-size: var(--s-font-size-mini);
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
     h3 {
       padding-right: $inner-spacing-mini;
       padding-left: $inner-spacing-mini;
       font-feature-settings: $s-font-feature-settings-type;
       font-weight: 700;
-      letter-spacing: $s-letter-spacing-type;
+      letter-spacing: var(--s-letter-spacing-extra-large);
       text-transform: uppercase;
     }
   }

@@ -1,7 +1,7 @@
 <template>
   <div v-lottie-loader="{ loading: parentLoading }" class="container rewards">
     <generic-page-header :title="t('rewards.title')" />
-    <div :class="['rewards-content', { loading }]" v-loading="loading">
+    <div class="rewards-content" v-lottie-loader="{ loading: !parentLoading && loading }">
       <gradient-box class="rewards-block" :symbol="gradientSymbol">
         <div class="rewards-box">
           <tokens-row :symbols="rewardTokenSymbols" />
@@ -60,7 +60,7 @@
       </div>
       <s-button
         v-if="!rewardsRecieved"
-        class="rewards-block rewards-action-button"
+        class="rewards-block rewards-action-button s-typography-button--large"
         type="primary"
         @click="handleAction"
         :loading="actionButtonLoading"
@@ -74,9 +74,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
-import { AccountAsset, KnownSymbols, KnownAssets, RewardInfo, RewardsInfo, RewardingEvents, CodecString } from '@sora-substrate/util'
+import { AccountAsset, KnownSymbols, RewardInfo, RewardsInfo, CodecString } from '@sora-substrate/util'
 
 import web3Util from '@/utils/web3-util'
 import { lazyComponent } from '@/router'
@@ -86,7 +86,6 @@ import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards'
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import TransactionMixin from '@/components/mixins/TransactionMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
 @Component({
   components: {
@@ -99,9 +98,7 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
     InfoLine: lazyComponent(Components.InfoLine)
   }
 })
-export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin, NumberFormatterMixin) {
-  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
-
+export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin) {
   @State(state => state.rewards.fee) fee!: CodecString
   @State(state => state.rewards.feeFetching) feeFetching!: boolean
   @State(state => state.rewards.rewardsFetching) rewardsFetching!: boolean
@@ -124,8 +121,8 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @Getter('transactionStepsCount', { namespace: 'rewards' }) transactionStepsCount!: number
   @Getter('vestedRewadsGroupItem', { namespace: 'rewards' }) vestedRewadsGroupItem!: RewardInfoGroup
 
-  @Action('reset', { namespace: 'rewards' }) reset!: () => void
-  @Action('setSelectedRewards', { namespace: 'rewards' }) setSelectedRewards!: (params) => void
+  @Action('reset', { namespace: 'rewards' }) reset!: AsyncVoidFn
+  @Action('setSelectedRewards', { namespace: 'rewards' }) setSelectedRewards!: (params: any) => Promise<void>
   @Action('getRewards', { namespace: 'rewards' }) getRewards!: (address: string) => Promise<Array<RewardInfo>>
   @Action('claimRewards', { namespace: 'rewards' }) claimRewards!: (options: any) => Promise<void>
 
@@ -345,9 +342,8 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 </script>
 
 <style lang="scss">
-.rewards-content > .el-loading-mask {
+.rewards-content.lottie-loader--loading:before{
   background: var(--s-color-utility-surface);
-  border-radius: 0;
 }
 </style>
 
@@ -363,17 +359,13 @@ $hint-font-size: 13px;
 
   &-content {
     position: relative;
-
-    &.loading > *:not(.el-loading-mask) {
-      visibility: hidden;
-    }
   }
 
   &-box {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    color: white; // TODO: use color variable from ui library
+    color: var(--s-color-base-on-accent); // TODO: use color variable from ui library
 
     & > *:not(:last-child) {
       margin-bottom: $inner-spacing-mini;
@@ -382,18 +374,18 @@ $hint-font-size: 13px;
 
   &-claiming-text {
     font-size: var(--s-heading5-font-size);
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
 
     &--transaction {
       font-size: var(--s-font-size-mini);
-      line-height: $s-line-height-big;
+      line-height: var(--s-line-height-big);
     }
   }
 
   &-hint {
     font-size: $hint-font-size;
     font-weight: 300;
-    line-height: $s-line-height-base;
+    line-height: var(--s-line-height-base);
     color: var(--s-color-base-content-primary);
     padding: 0 46px;
     text-align: center;
@@ -407,7 +399,6 @@ $hint-font-size: 13px;
     }
 
     & .el-divider {
-      background: var(--s-color-theme-secondary-focused);
       opacity: 0.5;
       margin: 0;
     }
@@ -429,7 +420,7 @@ $hint-font-size: 13px;
       padding: 0 $inner-spacing-medium;
       font-size: $hint-font-size;
       font-weight: 300;
-      line-height: $s-line-height-base;
+      line-height: var(--s-line-height-base);
       text-align: center;
     }
   }
@@ -439,20 +430,14 @@ $hint-font-size: 13px;
     flex-flow: row wrap;
     justify-content: space-between;
     font-size: var(--s-font-size-mini);
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
     margin-top: $inner-spacing-medium;
     padding: 0 $inner-spacing-mini / 2;
   }
 
   &-connect-button {
-    text-transform: uppercase;
-    font-size: var(--s-heading5-font-size);
-
-    &, &:hover, &:focus, &:disabled {
-      background: none;
-      color: white; // TODO: use color variable from ui library
-      border-color: white; // TODO: use color variable from ui library
-    }
+    background: transparent !important;
+    color: var(--s-color-base-on-accent) !important;
   }
 
   @include full-width-button('rewards-action-button');

@@ -1,31 +1,25 @@
 <template>
   <div class="settings-header">
     {{ title }}
-    <branded-tooltip
+    <s-tooltip
       v-if="hasTooltipContent"
       :content="tooltip"
       popper-class="info-tooltip info-tooltip--settings-header"
       placement="right-start"
+      border-radius="mini"
     >
       <slot slot="content" :name="tooltipScopedSlot" />
-      <s-icon class="settings-header-hint" name="info-16" size="12px" />
-    </branded-tooltip>
+      <s-icon class="settings-header-hint" name="info-16" size="14px" />
+    </s-tooltip>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
-
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 
-@Component({
-  components: {
-    BrandedTooltip: lazyComponent(Components.BrandedTooltip)
-  }
-})
+@Component
 export default class SettingsHeader extends Mixins(TranslationMixin) {
   private tooltipScopedSlot = 'tooltip-content'
 
@@ -49,20 +43,22 @@ export default class SettingsHeader extends Mixins(TranslationMixin) {
 
 <style lang="scss" scoped>
 .settings-header {
-  padding-bottom: $inner-spacing-mini;
-  padding-left: $inner-spacing-mini / 2;
-  color: var(--s-color-base-content-tertiary);
-  font-size: $s-font-size-settings;
-  line-height: $s-line-height-base;
-  letter-spacing: $s-letter-spacing-type;
-  font-weight: 700;
+  display: flex;
+  align-items: center;
+  margin-bottom: $inner-spacing-mini;
+  margin-left: $inner-spacing-mini / 2;
+  color: var(--s-color-base-content-secondary);
+  font-size: var(--s-font-size-small);
+  line-height: var(--s-line-height-small);
+  letter-spacing: var(--s-letter-spacing-small);
+  font-weight: 800;
 
   .el-tooltip {
     vertical-align: middle;
   }
 
   &-hint {
-    margin-left: $inner-spacing-mini / 2;
+    margin-left: $inner-spacing-mini;
     cursor: pointer;
   }
 }

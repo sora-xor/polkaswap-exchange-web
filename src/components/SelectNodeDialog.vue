@@ -57,14 +57,13 @@ const NodeInfoView = 'NodeInfoView'
 })
 export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMixin, DialogMixin, NodeErrorMixin) {
   @Getter nodeList!: Array<Node>
-  @State(state => state.settings.node) node!: Node
   @State(state => state.settings.defaultNodes) defaultNodes!: Array<Node>
   @State(state => state.settings.nodeAddressConnecting) nodeAddressConnecting!: string
   @State(state => state.settings.nodeConnectionAllowance) nodeConnectionAllowance!: boolean
   @State(state => state.settings.soraNetwork) soraNetwork!: string
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
-  @Action addCustomNode!: (node: Node) => void
-  @Action removeCustomNode!: (node: any) => void
+  @Action addCustomNode!: (node: Node) => Promise<void>
+  @Action removeCustomNode!: (node: any) => Promise<void>
 
   currentView = NodeListView
   selectedNode: any = {}

@@ -10,7 +10,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { AccountAsset, Asset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import { LogoSize, Components } from '@/consts'
+import { LogoSize, Components, ObjectInit } from '@/consts'
 import { lazyComponent } from '@/router'
 
 @Component({
@@ -19,8 +19,8 @@ import { lazyComponent } from '@/router'
   }
 })
 export default class PairTokenLogo extends Mixins(TranslationMixin) {
-  @Prop({ type: Object, default: () => null }) readonly firstToken!: AccountAsset | Asset
-  @Prop({ type: Object, default: () => null }) readonly secondToken!: AccountAsset | Asset
+  @Prop({ type: Object, default: ObjectInit }) readonly firstToken!: AccountAsset | Asset
+  @Prop({ type: Object, default: ObjectInit }) readonly secondToken!: AccountAsset | Asset
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
 
   get computedClasses (): string {

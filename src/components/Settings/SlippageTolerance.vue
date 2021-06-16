@@ -5,7 +5,6 @@
       <settings-tabs :value="String(slippageTolerance)" :tabs="SlippageToleranceTabs" @click="selectTab" />
     </div>
     <div class="slippage-tolerance-custom">
-      <settings-header :title="t('dexSettings.custom')" />
       <s-float-input
         class="slippage-tolerance-custom_input"
         size="small"
@@ -78,10 +77,10 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
 
   slippageToleranceFocused = false
 
-  @Getter slippageTolerance!: number
+  @Getter slippageTolerance!: string
   @Getter transactionDeadline!: number
   @Getter nodeAddress!: { ip: string; port: number }
-  @Action setSlippageTolerance!: any
+  @Action setSlippageTolerance!: (value: string) => Promise<void>
   @Action setTransactionDeadline!: any
 
   get customSlippageTolerance (): string {
@@ -107,14 +106,16 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
   }
 
   get isErrorValue (): boolean {
-    return this.slippageTolerance < this.slippageToleranceExtremeValues.min || this.slippageTolerance > this.slippageToleranceExtremeValues.max
+    const slippageTolerance = Number(this.slippageTolerance)
+    return slippageTolerance < this.slippageToleranceExtremeValues.min || slippageTolerance > this.slippageToleranceExtremeValues.max
   }
 
   get slippageToleranceValidation (): string {
-    if (this.slippageTolerance >= this.slippageToleranceExtremeValues.min && this.slippageTolerance <= 0.1) {
+    const slippageTolerance = Number(this.slippageTolerance)
+    if (slippageTolerance >= this.slippageToleranceExtremeValues.min && slippageTolerance <= 0.1) {
       return 'warning'
     }
-    if (this.slippageTolerance >= 5 && this.slippageTolerance <= this.slippageToleranceExtremeValues.max) {
+    if (slippageTolerance >= 5 && slippageTolerance <= this.slippageToleranceExtremeValues.max) {
       return 'frontrun'
     }
     if (this.isErrorValue) {
@@ -144,12 +145,10 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
     if (
       FPNumber.lt(
         this.getFPNumber(this.slippageTolerance),
-        this.getFPNumber(
-          this.slippageToleranceExtremeValues.min
-        )
+        this.getFPNumber(this.slippageToleranceExtremeValues.min)
       )
     ) {
-      value = this.slippageToleranceExtremeValues.min
+      value = `${this.slippageToleranceExtremeValues.min}`
     }
     this.setSlippageTolerance(value)
     this.slippageToleranceFocused = false
@@ -171,17 +170,9 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
     min-height: var(--s-size-small);
 
     .el-input > input {
-      font-size: var(--s-font-size-mini);
+      font-size: var(--s-font-size-medium);
       font-feature-settings: $s-font-feature-settings-common;
-      font-weight: 600 !important;
-
-      height: var(--s-size-small);
       text-align: center;
-      padding-top: 0; // TODO: if there is no placeholder, set padding-top to zero
-    }
-
-    &.s-focused > .el-input > input {
-      box-shadow: var(--s-shadow-tab);
     }
   }
 
@@ -197,26 +188,29 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
 
   .el-form--actions & {
     margin-top: $inner-spacing-medium;
-    padding: 0 $inner-spacing-mini;
   }
 }
 </style>
 
 <style lang="scss" scoped>
 .slippage-tolerance {
+  display: flex;
   flex-wrap: wrap;
+  align-items: flex-end;
+
   &-default {
-    flex: 2;
     margin-right: $inner-spacing-medium;
   }
+
   &-custom {
     flex: 1;
   }
+
   &_validation {
     margin-top: $inner-spacing-mini;
     width: 100%;
     font-size: var(--s-font-size-mini);
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
   }
   &--warning {
     color: var(--s-color-status-warning)

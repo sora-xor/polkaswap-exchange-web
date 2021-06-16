@@ -13,11 +13,11 @@
             :placeholder="t('selectToken.searchPlaceholder')"
             class="token-search"
             prefix="el-icon-search"
-            size="medium"
+            size="big"
             border-radius="mini"
           >
             <template #suffix v-if="query">
-              <s-button class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
+              <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
             </template>
           </s-input>
         </div>
@@ -29,7 +29,7 @@
                 <div class="token-item__info s-flex">
                   <div class="token-item__symbol">{{ token.symbol }}</div>
                   <div class="token-item__details">{{ getTokenName(token) }}
-                    <s-tooltip :content="t('selectToken.copy')">
+                    <s-tooltip :content="t('selectToken.copy')" border-radius="mini">
                       <span class="token-item__address" @click="handleCopy(token, $event)">({{ getFormattedAddress(token) }})</span>
                     </s-tooltip>
                   </div>
@@ -53,12 +53,12 @@
             :placeholder="t('selectToken.custom.search')"
             class="token-search"
             prefix="el-icon-search"
-            size="medium"
+            size="big"
             border-radius="mini"
             @input="debouncedCustomAssetSearch"
           >
             <template #suffix v-if="customAddress">
-              <s-button class="s-button--clear" icon="clear-X-16" @click="resetCustomAssetFields" />
+              <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="resetCustomAssetFields" />
             </template>
           </s-input>
         </div>
@@ -70,7 +70,7 @@
             <div class="asset-description s-flex">
               <div class="asset-description_symbol">{{ customAsset.symbol }}</div>
               <div class="asset-description_info">{{ getTokenName(customAsset) }}
-                <s-tooltip :content="t('assets.copy')">
+                <s-tooltip :content="t('assets.copy')" border-radius="mini">
                   <span class="asset-id" @click="handleCopy(customAsset, $event)">({{ getFormattedAddress(customAsset) }})</span>
                 </s-tooltip>
               </div>
@@ -85,7 +85,7 @@
             <span>{{ t('addAsset.understand') }}</span>
             <s-switch v-model="isConfirmed" :disabled="loading" />
           </div>
-          <s-button class="add-asset-details_action" type="primary" :disabled="!customAsset || !isConfirmed || loading" @click="handleAddAsset">
+          <s-button class="add-asset-details_action s-typography-button--large" type="primary" :disabled="!customAsset || !isConfirmed || loading" @click="handleAddAsset">
             {{ t('addAsset.action') }}
           </s-button>
         </div>
@@ -98,7 +98,7 @@
                 <div class="token-item__info s-flex">
                   <div class="token-item__symbol">{{ token.symbol }}</div>
                   <div class="token-item__details">{{ getTokenName(token) }}
-                    <s-tooltip :content="t('selectToken.copy')">
+                    <s-tooltip :content="t('selectToken.copy')" border-radius="mini">
                       <span class="token-item__address" @click="handleCopy(token, $event)">({{ getFormattedAddress(token) }})</span>
                     </s-tooltip>
                   </div>
@@ -131,7 +131,7 @@ import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
-import { Components } from '@/consts'
+import { Components, ObjectInit } from '@/consts'
 import { lazyComponent } from '@/router'
 import { copyToClipboard, formatAddress, formatAssetBalance, debouncedInputHandler } from '@/utils'
 
@@ -154,12 +154,12 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   customAddress = ''
   alreadyAttached = false
   isConfirmed = false
-  customAsset: Asset | null = null
+  customAsset: Nullable<Asset> = null
 
-  @Prop({ default: () => false, type: Boolean }) readonly connected!: boolean
-  @Prop({ default: () => null, type: Object }) readonly asset!: Asset
-  @Prop({ default: () => false, type: Boolean }) readonly accountAssetsOnly!: boolean
-  @Prop({ default: () => false, type: Boolean }) readonly notNullBalanceOnly!: boolean
+  @Prop({ default: false, type: Boolean }) readonly connected!: boolean
+  @Prop({ default: ObjectInit, type: Object }) readonly asset!: Asset
+  @Prop({ default: false, type: Boolean }) readonly accountAssetsOnly!: boolean
+  @Prop({ default: false, type: Boolean }) readonly notNullBalanceOnly!: boolean
 
   @Getter('whitelistAssets', { namespace }) whitelistAssets!: Array<Asset>
   @Getter('nonWhitelistAccountAssets', { namespace }) nonWhitelistAccountAssets!: Array<AccountAsset>
@@ -346,6 +346,7 @@ $token-item-height: 71px;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  transition: var(--s-transition-default);
   &:hover {
     background-color: var(--s-color-base-background-hover);
   }
@@ -356,7 +357,7 @@ $token-item-height: 71px;
     font-size: var(--s-font-size-small);
   }
   &__details {
-    color: var(--s-color-base-content-tertiary);
+    color: var(--s-color-base-content-quaternary);
     font-size: var(--s-font-size-mini);
   }
   &__address, &__symbol {
@@ -369,13 +370,14 @@ $token-item-height: 71px;
       cursor: pointer;
     }
   }
-  &__symbol {
-    font-size: var(--s-font-size-small);
-    margin-bottom: $inner-spacing-mini;
-    font-weight: 600;
+  &__symbol, &__amount {
+    font-size: var(--s-font-size-big);
+    line-height: var(--s-line-height-small);
+    letter-spacing: var(--s-letter-spacing-small);
+    font-weight: 800;
+    white-space: nowrap;
   }
   &__amount {
-    font-weight: 600;
     &-container {
       width: 45%;
       text-align: right;
@@ -403,7 +405,7 @@ $token-item-height: 71px;
     padding-top: $inner-spacing-big;
     color: var(--s-color-base-content-tertiary);
     font-feature-settings: $s-font-feature-settings-common;
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
   }
   .empty-results-icon {
     margin-bottom: $inner-spacing-medium;

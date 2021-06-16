@@ -109,8 +109,6 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
 </style>
 
 <style lang="scss" scoped>
-$table-item-font-size: 13px;
-
 .amount-table {
   &.group {
     display: flex;
@@ -130,8 +128,8 @@ $table-item-font-size: 13px;
     flex: 1;
     align-items: flex-start;
     justify-content: space-between;
-    font-size: $table-item-font-size;
-    line-height: $s-line-height-mini;
+    font-size: var(--s-font-size-extra-small);
+    line-height: var(--s-line-height-mini);
     background-color: rgba(0, 0, 0, 0.25);
     padding: $inner-spacing-small;
     border-top-left-radius: var(--s-border-radius-mini);

@@ -5,122 +5,100 @@
       class="el-form--actions"
       :show-message="false"
     >
-      <info-card class="slider-container" :title="t('removeLiquidity.amount')">
-        <div class="slider-container__amount">
-          <s-float-input
-            ref="removePart"
-            :class="['s-input--token-value', 's-input--remove-part', removePartCharClass]"
-            :value="String(removePartInput)"
-            :decimals="0"
-            :max="100"
-            @input="handleRemovePartChange"
-            @focus="setFocusedField('removePart')"
-            @blur="resetFocusedField"
-          />
-          <span class="percent">%</span>
-        </div>
-        <div>
-          <s-slider :value="removePartInput" :showTooltip="false" @change="handleRemovePartChange" />
-        </div>
-      </info-card>
-      <div class="input-container">
-        <div class="input-line-header">
-          <div class="input-title p4">{{ t('removeLiquidity.input') }}</div>
-          <div v-if="liquidity" class="token-balance">
-            <span class="token-balance-title">{{ t('createPair.balance') }}</span>
-            <span class="token-balance-value">{{ getFormattedLiquidityBalance(liquidity) }}</span>
+      <s-float-input
+        ref="removePart"
+        size="medium"
+        :class="['s-input--token-value', 's-input--remove-part', removePartCharClass]"
+        :value="String(removePartInput)"
+        :decimals="0"
+        :max="100"
+        @input="handleRemovePartChange"
+        @focus="setFocusedField('removePart')"
+        @blur="resetFocusedField"
+      >
+        <div slot="top" class="amount">{{ t('removeLiquidity.amount') }}</div>
+        <div slot="right"><span class="percent">%</span></div>
+        <s-slider slot="bottom" :value="removePartInput" :showTooltip="false" @change="handleRemovePartChange" />
+      </s-float-input>
+      <s-float-input
+        ref="liquidityAmount"
+        size="medium"
+        class="s-input--token-value"
+        :value="liquidityAmount"
+        :decimals="(liquidity || {}).decimals"
+        has-locale-string
+        :delimiters="delimiters"
+        :max="getTokenMaxAmount(liquidityBalance)"
+        @input="setLiquidityAmount"
+        @focus="setFocusedField('liquidityAmount')"
+        @blur="resetFocusedField"
+      >
+        <div slot="top" class="input-line">
+          <div class="input-title">
+            <span class="input-title--uppercase input-title--primary">{{ t('removeLiquidity.input') }}</span>
+          </div>
+          <div v-if="liquidity" class="input-title">
+            <span class="input-title--uppercase">{{ t('createPair.balance') }}</span>
+            <span class="input-title--uppercase input-title--primary">{{ getFormattedLiquidityBalance(liquidity) }}</span>
           </div>
         </div>
-        <div class="input-line-content">
-          <s-form-item>
-            <s-float-input
-              ref="liquidityAmount"
-              class="s-input--token-value"
-              :value="liquidityAmount"
-              :decimals="(liquidity || {}).decimals"
-              has-locale-string
-              :delimiters="delimiters"
-              :max="getTokenMaxAmount(liquidityBalance)"
-              @input="setLiquidityAmount"
-              @focus="setFocusedField('liquidityAmount')"
-              @blur="resetFocusedField"
-            />
-          </s-form-item>
-          <div class="token">
-            <s-button v-if="isMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleLiquidityMaxValue">
-              {{ t('buttons.max') }}
-            </s-button>
-            <s-button class="el-button--choose-token el-button--disabled" type="tertiary" size="small" border-radius="medium">
-              <div class="liquidity-logo">
-                <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="mini" />
-              </div>
-              {{ firstToken.symbol }}-{{ secondToken.symbol }}
-            </s-button>
-          </div>
+        <div slot="right" class="s-flex el-buttons">
+          <s-button v-if="isMaxButtonAvailable" class="el-button--max s-typography-button--small" type="primary" alternative size="mini" border-radius="mini" @click="handleLiquidityMaxValue">
+            {{ t('buttons.max') }}
+          </s-button>
+          <token-select-button class="el-button--select-token" :tokens="[firstToken, secondToken]" />
         </div>
-      </div>
-
+      </s-float-input>
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
-
-      <div class="input-container">
-        <div class="input-line-header">
-          <div class="input-title p4">{{ t('removeLiquidity.output') }}</div>
-          <div v-if="liquidity" class="token-balance">-</div>
-        </div>
-        <div class="input-line-content">
-          <s-form-item>
-            <s-float-input
-              ref="firstTokenAmount"
-              class="s-input--token-value"
-              :value="firstTokenAmount"
-              :decimals="(firstToken || {}).decimals"
-              has-locale-string
-              :delimiters="delimiters"
-              :max="getTokenMaxAmount(firstTokenBalance)"
-              @input="handleTokenChange($event, setFirstTokenAmount)"
-              @focus="setFocusedField('firstTokenAmount')"
-              @blur="resetFocusedField"
-            />
-          </s-form-item>
-          <div v-if="firstToken" class="token">
-            <s-button class="el-button--choose-token el-button--disabled" type="tertiary" size="small" border-radius="medium">
-              <token-logo :token="firstToken" size="small" />
-              {{ firstToken.symbol }}
-            </s-button>
+      <s-float-input
+        ref="firstTokenAmount"
+        size="medium"
+        class="s-input--token-value"
+        :value="firstTokenAmount"
+        :decimals="(firstToken || {}).decimals"
+        has-locale-string
+        :delimiters="delimiters"
+        :max="getTokenMaxAmount(firstTokenBalance)"
+        @input="handleTokenChange($event, setFirstTokenAmount)"
+        @focus="setFocusedField('firstTokenAmount')"
+        @blur="resetFocusedField"
+      >
+        <div slot="top" class="input-line">
+          <div class="input-title">
+            <span class="input-title--uppercase input-title--primary">{{ t('removeLiquidity.output') }}</span>
           </div>
+          <div v-if="liquidity" class="input-title">-</div>
         </div>
-      </div>
+        <div slot="right" class="s-flex el-buttons">
+          <token-select-button class="el-button--select-token" :token="firstToken" />
+        </div>
+      </s-float-input>
 
       <s-icon class="icon-divider" name="plus-16" />
 
-      <div class="input-container">
-        <div class="input-line-header">
-          <div class="input-title p4">{{ t('removeLiquidity.output') }}</div>
-          <div v-if="liquidity" class="token-balance">-</div>
-        </div>
-        <div class="input-line-content">
-          <s-form-item>
-            <s-float-input
-              ref="secondTokenAmount"
-              class="s-input--token-value"
-              :value="secondTokenAmount"
-              :decimals="(secondToken || {}).decimals"
-              has-locale-string
-              :delimiters="delimiters"
-              :max="getTokenMaxAmount(secondTokenBalance)"
-              @input="handleTokenChange($event, setSecondTokenAmount)"
-              @focus="setFocusedField('secondTokenAmount')"
-              @blur="resetFocusedField"
-            />
-          </s-form-item>
-          <div v-if="secondToken" class="token">
-            <s-button class="el-button--choose-token el-button--disabled" type="tertiary" size="small" border-radius="medium">
-              <token-logo :token="secondToken" size="small" />
-              {{ secondToken.symbol }}
-            </s-button>
+      <s-float-input
+        ref="secondTokenAmount"
+        size="medium"
+        class="s-input--token-value"
+        :value="secondTokenAmount"
+        :decimals="(secondToken || {}).decimals"
+        has-locale-string
+        :delimiters="delimiters"
+        :max="getTokenMaxAmount(secondTokenBalance)"
+        @input="handleTokenChange($event, setSecondTokenAmount)"
+        @focus="setFocusedField('secondTokenAmount')"
+        @blur="resetFocusedField"
+      >
+        <div slot="top" class="input-line">
+          <div class="input-title">
+            <span class="input-title--uppercase input-title--primary">{{ t('removeLiquidity.output') }}</span>
           </div>
+          <div v-if="liquidity" class="input-title">-</div>
         </div>
-      </div>
+        <div slot="right" class="s-flex el-buttons">
+          <token-select-button class="el-button--select-token" :token="secondToken" />
+        </div>
+      </s-float-input>
 
       <div v-if="price || priceReversed || fee" class="info-line-container">
         <info-line
@@ -139,10 +117,11 @@
           :label="t('createPair.networkFee')"
           :value="formattedFee"
           :asset-symbol="KnownSymbols.XOR"
+          :tooltip-content="t('networkFeeTooltipText')"
         />
       </div>
 
-      <s-button type="primary" border-radius="small" :disabled="isEmptyAmount || isInsufficientBalance || isInsufficientXorForFee" @click="openConfirmDialog">
+      <s-button type="primary" class="action-button s-typography-button--large" border-radius="small" :disabled="isEmptyAmount || isInsufficientBalance || isInsufficientXorForFee" @click="openConfirmDialog">
         <template v-if="isEmptyAmount">
           {{ t('buttons.enterAmount') }}
         </template>
@@ -164,13 +143,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { FPNumber, KnownSymbols, AccountLiquidity, CodecString } from '@sora-substrate/util'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
-import LoadingMixin from '@/components/mixins/LoadingMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
 
 import router, { lazyComponent } from '@/router'
@@ -187,16 +164,15 @@ const namespace = 'removeLiquidity'
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
-    ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity)
+    ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity),
+    TokenSelectButton: lazyComponent(Components.TokenSelectButton)
   }
 })
-export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMixin, NumberFormatterMixin, ConfirmDialogMixin) {
+export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDialogMixin) {
   readonly KnownSymbols = KnownSymbols
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
-  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
-
-  @Getter('focusedField', { namespace }) focusedField!: null | string
+  @Getter('focusedField', { namespace }) focusedField!: Nullable<string>
   @Getter('liquidity', { namespace }) liquidity!: AccountLiquidity
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
@@ -220,18 +196,18 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
   @Action('setFocusedField', { namespace }) setFocusedField
   @Action('resetFocusedField', { namespace }) resetFocusedField
   @Action('removeLiquidity', { namespace }) removeLiquidity
-  @Action('getAssets', { namespace: 'assets' }) getAssets
-  @Action('resetData', { namespace }) resetData
+  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
+  @Action('resetData', { namespace }) resetData!: AsyncVoidFn
   @Action('getPrices', { namespace: 'prices' }) getPrices
-  @Action('resetPrices', { namespace: 'prices' }) resetPrices
-  @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity
-  @Action('destroyUpdateAccountLiquiditySubscription', { namespace: 'pool' }) destroyUpdateAccountLiquiditySubscription
+  @Action('resetPrices', { namespace: 'prices' }) resetPrices!: AsyncVoidFn
+  @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity!: AsyncVoidFn
+  @Action('destroyUpdateAccountLiquiditySubscription', { namespace: 'pool' }) destroyUpdateAccountLiquiditySubscription!: AsyncVoidFn
 
   removePartInput = 0
   sliderInput: any
   sliderDragButton: any
 
-  async mounted () {
+  async mounted (): Promise<void> {
     this.resetData()
     this.resetPrices()
     await this.withApi(async () => {
@@ -254,7 +230,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
     }
   }
 
-  destroyed () {
+  destroyed (): void {
     if (this.sliderDragButton) {
       this.$el.removeEventListener('mousedown', this.sliderDragButton)
     }
@@ -376,53 +352,60 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, LoadingMix
 </script>
 
 <style lang="scss" scoped>
-.icon-divider {
-  padding: $inner-spacing-medium;
-}
-
 .el-form--actions {
-  .slider-container {
-    width: 100%;
-
-    &__amount {
-      font-size: var(--s-heading1-font-size);
-      line-height: $s-line-height-mini;
-      letter-spacing: $s-letter-spacing-mini;
-    }
-    .percent {
-      color: var(--s-color-base-content-secondary)
-    }
-  }
-  @include input-form-styles;
+  @include generic-input-lines;
   @include buttons;
-  @include full-width-button;
+  @include full-width-button('action-button');
 }
 
-@include vertical-divider;
+@include vertical-divider('icon-divider', $inner-spacing-medium);
+
+.s-input--remove-part {
+  margin-bottom: $inner-spacing-medium;
+}
+
+.amount {
+  line-height: var(--s-line-height-big);
+  font-weight: 600;
+}
+
+.percent {
+  font-size: var(--s-heading1-font-size);
+}
 </style>
 
 <style lang="scss">
 .s-input.s-input--remove-part.s-input--token-value {
   display: inline-block;
 
-  &.one-char {
+  &.one-char .el-input__inner {
     width: 1ch;
   }
-  &.two-char {
+  &.two-char .el-input__inner {
     width: 2ch;
   }
-  &.three-char {
+  &.three-char .el-input__inner {
     width: 3ch;
+  }
+
+  .s-input__input {
+    flex: 0;
   }
 
   .el-input__inner {
     font-size: var(--s-heading1-font-size) !important;
-    line-height: $s-line-height-mini !important;
-    letter-spacing: $s-letter-spacing-mini !important;
+    line-height: var(--s-line-height-mini) !important;
+    letter-spacing: var(--s-letter-spacing-mini) !important;
     border: 0 !important;
     border-radius: 0 !important;
     background: none !important;
     height: auto !important;
+    min-width: 1ch;
+    max-width: 3ch;
+  }
+
+  .el-slider__runway {
+    background-color: var(--s-color-base-content-tertiary);
   }
 }
 </style>

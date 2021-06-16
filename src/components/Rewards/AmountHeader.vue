@@ -69,13 +69,13 @@ $divider-height: 40px;
       font-size: $amount-font-size;
       font-weight: $s-font-weight-big;
       line-height: $amount-line-height;
-      letter-spacing: $s-letter-spacing-big;
+      letter-spacing: var(--s-letter-spacing-big);
     }
 
     &__symbol {
       font-size: var(--s-font-size-small);
       font-weight: 300;
-      line-height: $s-line-height-medium;
+      line-height: var(--s-line-height-medium);
     }
   }
 }

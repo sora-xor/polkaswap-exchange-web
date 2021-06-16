@@ -10,12 +10,12 @@
       />
     </generic-page-header>
     <s-form-item prop="name">
-      <s-input class="node-info-input" :placeholder="t('nameText')" v-model="nodeModel.name" :maxlength="128" :disabled="existing" />
+      <s-input class="node-info-input s-typography-input-field" :placeholder="t('nameText')" v-model="nodeModel.name" :maxlength="128" :disabled="existing" />
     </s-form-item>
     <s-form-item prop="address">
-      <s-input class="node-info-input" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="existing" />
+      <s-input class="node-info-input s-typography-input-field" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="existing" />
     </s-form-item>
-    <s-button type="primary" native-type="submit" class="node-info-button" :disabled="connected" :loading="loading">{{ buttonText }}</s-button>
+    <s-button type="primary" native-type="submit" class="node-info-button s-typography-button--large" :disabled="connected" :loading="loading">{{ buttonText }}</s-button>
     <external-link v-if="!existing" :href="tutorialLink" :title="t('selectNodeDialog.howToSetupOwnNode')" />
   </s-form>
 </template>

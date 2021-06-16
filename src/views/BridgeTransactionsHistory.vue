@@ -4,7 +4,8 @@
       v-lottie-loader="{ loading: parentLoading }"
       class="history-content"
       border-radius="medium"
-      shadow="never"
+      shadow="always"
+      primary
     >
       <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
         <!-- <s-button
@@ -30,7 +31,7 @@
             border-radius="mini"
           >
             <template #suffix v-if="query">
-              <s-button class="s-button--clear" icon="clear-X-16" @click="handleResetSearch" />
+              <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleResetSearch" />
             </template>
           </s-input>
         </s-form-item>
@@ -69,7 +70,7 @@
       </s-form>
       <s-button
         v-if="!restored"
-        class="s-button--restore"
+        class="s-button--restore s-typography-button--large"
         icon="circle-plus-16"
         icon-position="right"
         :disabled="loading"
@@ -106,19 +107,19 @@ const namespace = 'bridge'
 })
 export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, LoadingMixin, NetworkFormatterMixin) {
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
-  @Getter('history', { namespace }) history!: Array<BridgeHistory> | null
+  @Getter('history', { namespace }) history!: Nullable<Array<BridgeHistory>>
   @Getter('restored', { namespace }) restored!: boolean
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: string
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
 
-  @Action('getHistory', { namespace }) getHistory
-  @Action('getRestoredFlag', { namespace }) getRestoredFlag
-  @Action('getRestoredHistory', { namespace }) getRestoredHistory
-  @Action('getNetworkFee', { namespace }) getNetworkFee
-  @Action('getEvmNetworkFee', { namespace }) getEvmNetworkFee
-  @Action('clearHistory', { namespace }) clearHistory
+  @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn
+  @Action('getRestoredFlag', { namespace }) getRestoredFlag!: AsyncVoidFn
+  @Action('getRestoredHistory', { namespace }) getRestoredHistory!: AsyncVoidFn
+  @Action('getNetworkFee', { namespace }) getNetworkFee!: AsyncVoidFn
+  @Action('getEvmNetworkFee', { namespace }) getEvmNetworkFee!: AsyncVoidFn
+  @Action('clearHistory', { namespace }) clearHistory!: AsyncVoidFn
   @Action('setSoraToEvm', { namespace }) setSoraToEvm
-  @Action('setTransactionConfirm', { namespace }) setTransactionConfirm
+  @Action('setTransactionConfirm', { namespace }) setTransactionConfirm!: (value: boolean) => Promise<void>
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
   @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash
@@ -132,9 +133,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Action('setHistoryItem', { namespace }) setHistoryItem
   @Action('saveHistory', { namespace }) saveHistory
 
-  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets
-
-  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean
+  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn
 
   PageNames = PageNames
   formatAssetSymbol = formatAssetSymbol
