@@ -7,9 +7,10 @@ import flow from 'lodash/fp/flow'
 import { FPNumber, BridgeNetworks } from '@sora-substrate/util'
 
 import { bridgeApi } from '@/utils/bridge'
-import web3Util, { ABI, Contract, EvmNetworkTypeName, KnownBridgeAsset, ContractNetwork, SubNetwork, OtherContractType } from '@/utils/web3-util'
+import ethersUtil, { ABI, Contract, EvmNetworkTypeName, KnownBridgeAsset, ContractNetwork, SubNetwork, OtherContractType } from '@/utils/ethers-util'
 import { ZeroStringValue } from '@/consts'
 import { isEthereumAddress } from '@/utils'
+import { ethers } from 'ethers'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -38,9 +39,9 @@ const types = flow(
 function initialState () {
   return {
     soraNetwork: '',
-    evmAddress: web3Util.getEvmUserAddress(),
+    evmAddress: ethersUtil.getEvmUserAddress(),
     evmBalance: ZeroStringValue,
-    networkType: web3Util.getEvmNetworkTypeFromStorage(),
+    networkType: ethersUtil.getEvmNetworkTypeFromStorage(),
     defaultNetworkType: BridgeNetworks.ETH_NETWORK_ID,
     subNetworks: [],
     evmNetwork: 0,
@@ -208,8 +209,8 @@ const actions = {
   async connectExternalAccount ({ commit, getters, dispatch }, { provider }) {
     commit(types.CONNECT_EVM_WALLET_REQUEST)
     try {
-      const address = await web3Util.onConnect({ provider })
-      web3Util.storeEvmUserAddress(address)
+      const address = await ethersUtil.onConnect({ provider })
+      ethersUtil.storeEvmUserAddress(address)
       commit(types.CONNECT_EVM_WALLET_SUCCESS, address)
 
       // get ethereum balance
@@ -223,8 +224,8 @@ const actions = {
   async switchExternalAccount ({ commit, dispatch }, { address = '' } = {}) {
     commit(types.SWITCH_EVM_WALLET_REQUEST)
     try {
-      web3Util.removeEvmUserAddress()
-      web3Util.storeEvmUserAddress(address)
+      ethersUtil.removeEvmUserAddress()
+      ethersUtil.storeEvmUserAddress(address)
       commit(types.SWITCH_EVM_WALLET_SUCCESS, address)
 
       // get ethereum balance
@@ -261,8 +262,8 @@ const actions = {
     try {
       const networkType = network
         ? EvmNetworkTypeName[network]
-        : await web3Util.getEvmNetworkType()
-      web3Util.storeEvmNetworkType(networkType)
+        : await ethersUtil.getEvmNetworkType()
+      ethersUtil.storeEvmNetworkType(networkType)
       commit(types.SET_NETWORK_TYPE_SUCCESS, networkType)
     } catch (error) {
       commit(types.SET_NETWORK_TYPE_FAILURE)
@@ -273,7 +274,7 @@ const actions = {
   async disconnectExternalAccount ({ commit }) {
     commit(types.DISCONNECT_EVM_WALLET_REQUEST)
     try {
-      web3Util.removeEvmUserAddress()
+      ethersUtil.removeEvmUserAddress()
       commit(types.DISCONNECT_EVM_WALLET_SUCCESS)
       commit(types.RESET)
     } catch (error) {
@@ -294,15 +295,15 @@ const actions = {
   },
 
   async setEvmSmartContracts ({ commit }, network: SubNetwork) {
-    const INTERNAL = await web3Util.readSmartContract(
+    const INTERNAL = await ethersUtil.readSmartContract(
       ContractNetwork.Ethereum,
       `${Contract.Internal}/Master.json`
     )
-    const BRIDGE = await web3Util.readSmartContract(
+    const BRIDGE = await ethersUtil.readSmartContract(
       ContractNetwork.Ethereum,
       `${Contract.Other}/Bridge.json`
     )
-    const ERC20 = await web3Util.readSmartContract(
+    const ERC20 = await ethersUtil.readSmartContract(
       ContractNetwork.Ethereum,
       `${Contract.Other}/ERC20.json`
     )
@@ -321,11 +322,11 @@ const actions = {
   },
 
   async setEnergySmartContracts ({ commit }, network: SubNetwork) {
-    const BRIDGE = await web3Util.readSmartContract(
+    const BRIDGE = await ethersUtil.readSmartContract(
       ContractNetwork.Other,
       'BridgeEVM.json'
     )
-    const ERC20 = await web3Util.readSmartContract(
+    const ERC20 = await ethersUtil.readSmartContract(
       ContractNetwork.Other,
       'ERC20.json'
     )
@@ -341,9 +342,9 @@ const actions = {
       const address = getters.evmAddress
 
       if (address) {
-        const web3 = await web3Util.getInstance()
-        const wei = await web3.eth.getBalance(address)
-        const balance = web3.utils.fromWei(`${wei}`, 'ether')
+        const ethersInstance = await ethersUtil.getEthersInstance()
+        const wei = await ethersInstance.getBalance(address)
+        const balance = ethers.utils.formatEther(wei.toString())
         value = new FPNumber(balance).toCodecString()
       }
     } catch (error) {
@@ -359,21 +360,22 @@ const actions = {
     let decimals = 18
     commit(types.GET_BALANCE_REQUEST)
     try {
-      const web3 = await web3Util.getInstance()
+      const ethersInstance = await ethersUtil.getEthersInstance()
       const isNativeEvmToken = isEthereumAddress(address)
       if (isNativeEvmToken) {
         value = await dispatch('getEvmBalance')
       } else {
         const precision18 = new FPNumber(0)
-        const tokenInstance = new web3.eth.Contract(ABI.balance as any)
-        tokenInstance.options.address = address
+        const tokenInstance = new ethers.Contract(
+          address,
+          ABI.balance,
+          ethersInstance.getSigner()
+        )
         const account = getters.evmAddress
         const methodArgs = [account]
-        const balanceOfMethod = tokenInstance.methods.balanceOf(...methodArgs)
-        const decimalsMethod = tokenInstance.methods.decimals()
-        const balance = await balanceOfMethod.call()
-        decimals = +(await decimalsMethod.call())
-        value = precision18.add(FPNumber.fromCodecValue(`${balance}`, decimals)).toCodecString()
+        const balance = await tokenInstance.balanceOf(...methodArgs)
+        decimals = await tokenInstance.decimals()
+        value = precision18.add(FPNumber.fromCodecValue(balance._hex, +decimals)).toCodecString()
       }
       commit(types.GET_BALANCE_SUCCESS)
     } catch (error) {
@@ -390,14 +392,17 @@ const actions = {
         commit(types.GET_EVM_TOKEN_ADDRESS_SUCCESS)
         return ''
       }
-      const web3 = await web3Util.getInstance()
+      const ethersInstance = await ethersUtil.getEthersInstance()
       const contractAbi = getters.contractAbi(KnownBridgeAsset.Other)[OtherContractType.Bridge].abi
-      const contractInstance = new web3.eth.Contract(contractAbi)
       const contractAddress = getters.contractAddress(KnownBridgeAsset.Other)
-      contractInstance.options.address = contractAddress
+      const contractInstance = new ethers.Contract(
+        contractAddress,
+        contractAbi,
+        ethersInstance.getSigner()
+      )
       const methodArgs = [address]
-      const contractMethod = contractInstance.methods._sidechainTokens(...methodArgs)
-      const externalAddress = await contractMethod.call()
+      const externalAddress = await contractInstance._sidechainTokens(...methodArgs)
+      console.log('oppa2', externalAddress)
       commit(types.GET_EVM_TOKEN_ADDRESS_SUCCESS)
       return externalAddress
     } catch (error) {
@@ -410,13 +415,12 @@ const actions = {
     commit(types.GET_ALLOWANCE_REQUEST)
     try {
       const contractAddress = getters.contractAddress(KnownBridgeAsset.Other)
-      const web3 = await web3Util.getInstance()
-      const tokenInstance = new web3.eth.Contract(ABI.allowance as any)
-      tokenInstance.options.address = address
+      const ethersInstance = await ethersUtil.getEthersInstance()
+      const tokenInstance = new ethers.Contract(address, ABI.allowance, ethersInstance.getSigner())
       const account = getters.evmAddress
       const methodArgs = [account, contractAddress]
-      const contractMethod = tokenInstance.methods.allowance(...methodArgs)
-      const allowance = await contractMethod.call()
+      const allowance = await tokenInstance.allowance(...methodArgs)
+      console.log('oppa3', allowance)
       commit(types.GET_ALLOWANCE_SUCCESS)
       return FPNumber.fromCodecValue(allowance).toString()
     } catch (error) {

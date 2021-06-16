@@ -28,7 +28,8 @@ import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
-import { SubNetwork } from '@/utils/web3-util'
+import { SubNetwork } from '@/utils/ethers-util'
+import { bridgeApi } from '@/utils/bridge'
 
 @Component({
   components: {

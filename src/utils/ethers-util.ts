@@ -1,4 +1,5 @@
 import Web3 from 'web3'
+import { ethers } from 'ethers'
 import { AbiItem } from 'web3-utils'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import detectEthereumProvider from '@metamask/detect-provider'
@@ -67,8 +68,10 @@ export const ABI = {
   ]
 }
 
+type ethersProvider = ethers.providers.Web3Provider
+
 let provider: any = null
-let web3Istance: any = null
+let ethersInstance: ethersProvider | null = null
 
 export interface SubNetwork {
   name: EvmNetwork;
@@ -114,21 +117,6 @@ interface ConnectOptions {
   url?: string;
 }
 
-interface ExecutionInfo {
-  web3: Web3;
-  contractInfo: InfoContract;
-  contractAddress: string;
-  method: string;
-  methodArgs: string[];
-  accountPrivate: string;
-  accountAddress: string;
-}
-
-interface InfoContract {
-  abi: AbiItem;
-  code: string;
-}
-
 interface JsonContract {
   abi: AbiItem;
   evm: {
@@ -172,12 +160,11 @@ async function onConnect (options: ConnectOptions): Promise<string> {
 
 async function onConnectMetamask (): Promise<string> {
   provider = await detectEthereumProvider() as any
+  console.log(provider)
   if (!provider) {
     throw new Error('provider.messages.installExtension')
   }
-  const web3Instance = await getInstance()
-  const accounts = await web3Instance.eth.requestAccounts()
-  return accounts.length ? accounts[0] : ''
+  return getAccount()
 }
 
 async function onConnectWallet (url = 'https://cloudflare-eth.com'): Promise<string> {
@@ -185,18 +172,16 @@ async function onConnectWallet (url = 'https://cloudflare-eth.com'): Promise<str
     rpc: { 1: url }
   })
   await provider.enable()
-
-  const account = await getAccount()
-
-  return account
+  return getAccount()
 }
 
 async function getAccount (): Promise<string> {
   try {
-    const web3Instance = await getInstance()
-    const accounts = await web3Instance.eth.getAccounts()
-
-    return accounts.length ? accounts[0] : ''
+    const ethersInstance = await getEthersInstance()
+    await ethersInstance.send('eth_requestAccounts', [])
+    const account = ethersInstance.getSigner()
+    console.log('ethers get account', account)
+    return account.getAddress()
   } catch (error) {
     console.error(error)
     return ''
@@ -214,17 +199,17 @@ async function checkAccountIsConnected (address: string): Promise<boolean> {
   return !!currentAccount && currentAccount.toLowerCase() === address.toLowerCase()
 }
 
-async function getInstance (): Promise<Web3> {
+async function getEthersInstance (): Promise<ethersProvider> {
   if (!provider) {
     provider = await detectEthereumProvider() as any
   }
   if (!provider) {
-    throw new Error('No Web3 instance!')
+    throw new Error('No ethereum provider instance!')
   }
-  if (!web3Istance) {
-    web3Istance = new Web3(provider)
+  if (!ethersInstance) {
+    ethersInstance = new ethers.providers.Web3Provider(provider)
   }
-  return web3Istance
+  return ethersInstance
 }
 
 async function watchEthereum (cb: {
@@ -232,7 +217,7 @@ async function watchEthereum (cb: {
   onNetworkChange: Function;
   onDisconnect: Function;
 }): Promise<Function> {
-  await getInstance()
+  await getEthersInstance()
 
   const ethereum = (window as any).ethereum
 
@@ -278,8 +263,9 @@ function removeEvmNetworkType (): void {
 async function getEvmNetworkType (): Promise<string> {
   const networkType = getEvmNetworkTypeFromStorage()
   if (!networkType || networkType === 'undefined') {
-    const web3 = await getInstance()
-    return await web3.eth.net.getNetworkType()
+    const ethersInstance = await getEthersInstance()
+    const network = await ethersInstance.getNetwork()
+    return network.name
   }
   return networkType
 }
@@ -293,43 +279,16 @@ async function readSmartContract (network: ContractNetwork, name: string): Promi
   }
 }
 
-function getInfoFromContract (contract: JsonContract): InfoContract {
-  return {
-    abi: contract.abi,
-    code: `0x${contract.evm.bytecode.object}`
-  }
-}
-
 async function accountAddressToHex (address: string): Promise<string> {
-  const web3 = await getInstance()
-
-  return web3.utils.bytesToHex(Array.from(decodeAddress(address).values()))
-}
-
-async function executeContractMethod ({
-  contractInfo,
-  contractAddress,
-  method,
-  methodArgs,
-  accountAddress
-}: ExecutionInfo) {
-  const web3 = await getInstance()
-  const createWeb3Contract = ({ abi }) => {
-    return new web3.eth.Contract(abi)
-  }
-
-  const contract = createWeb3Contract(contractInfo)
-
-  contract.options.address = contractAddress
-
-  const contractMethod = contract.methods[method](...methodArgs)
-  const gas = await contractMethod.estimateGas()
-
-  return contractMethod
-    .send({
-      gas,
-      from: accountAddress
-    })
+  console.log(
+    'web3', Web3.utils.bytesToHex(Array.from(decodeAddress(address).values())),
+    'ethers', ethers.utils.hexlify(
+      Array.from(decodeAddress(address).values())
+    )
+  )
+  return ethers.utils.hexlify(
+    Array.from(decodeAddress(address).values())
+  )
 }
 
 export default {
@@ -342,11 +301,9 @@ export default {
   getEvmNetworkType,
   getEvmNetworkTypeFromStorage,
   removeEvmNetworkType,
-  getInstance,
+  getEthersInstance,
   removeEvmUserAddress,
   watchEthereum,
   readSmartContract,
-  getInfoFromContract,
-  executeContractMethod,
   accountAddressToHex
 }

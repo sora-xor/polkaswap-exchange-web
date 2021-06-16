@@ -2,7 +2,7 @@ import { en as walletEn } from '@soramitsu/soraneo-wallet-web'
 import { Operation, TransactionStatus, RewardingEvents } from '@sora-substrate/util'
 
 import { PageNames, NetworkTypes } from '../consts'
-import { EvmNetworkType } from '../utils/web3-util'
+import { EvmNetworkType } from '../utils/ethers-util'
 
 export default {
   // Wallet project keys
