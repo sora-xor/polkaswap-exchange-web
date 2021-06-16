@@ -1,3 +1,4 @@
+import invert from 'lodash/fp/invert'
 import { LiquiditySourceTypes } from '@sora-substrate/util'
 
 import pkg from '../../package.json'
@@ -49,6 +50,8 @@ export const LiquiditySourceForMarketAlgorithm = {
   [MarketAlgorithms.TBC]: LiquiditySourceTypes.MulticollateralBondingCurvePool,
   [MarketAlgorithms.XYK]: LiquiditySourceTypes.XYKPool
 }
+
+export const MarketAlgorithmForLiquiditySource = invert(LiquiditySourceForMarketAlgorithm)
 
 export enum PageNames {
   About = 'About',

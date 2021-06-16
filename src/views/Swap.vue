@@ -5,14 +5,15 @@
     :show-message="false"
   >
     <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
-      <status-action-badge v-if="pairLiquiditySourcesAvailable">
+      <status-action-badge>
         <template #label>{{ t('marketText') }}:</template>
-        <template #value>{{ marketAlgorithm }}</template>
+        <template #value>{{ swapMarketAlgorithm }}</template>
         <template #action>
           <s-button
             class="el-button--settings"
             type="action"
             icon="basic-settings-24"
+            :disabled="!pairLiquiditySourcesAvailable"
             @click="openSettingsDialog"
           />
         </template>
@@ -133,7 +134,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
-import { Action, Getter, State } from 'vuex-class'
+import { Action, Getter } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes, LPRewardsInfo, FPNumber } from '@sora-substrate/util'
 import type { Subscription } from '@polkadot/x-rxjs'
@@ -176,6 +177,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Getter('isAvailableChecking', { namespace }) isAvailableChecking!: boolean
   @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes
   @Getter('pairLiquiditySourcesAvailable', { namespace }) pairLiquiditySourcesAvailable!: boolean
+  @Getter('swapMarketAlgorithm', { namespace }) swapMarketAlgorithm!: string
 
   @Action('setTokenFromAddress', { namespace }) setTokenFromAddress!: (address?: string) => Promise<void>
   @Action('setTokenToAddress', { namespace }) setTokenToAddress!: (address?: string) => Promise<void>
@@ -192,8 +194,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
   @Action('setPairLiquiditySources', { namespace }) setPairLiquiditySources!: (liquiditySources: Array<LiquiditySourceTypes>) => Promise<void>
   @Action('setRewards', { namespace }) setRewards!: (rewards: Array<LPRewardsInfo>) => Promise<void>
-
-  @State(state => state.settings.marketAlgorithm) marketAlgorithm!: string
 
   @Watch('slippageTolerance')
   private handleSlippageToleranceChange (): void {
