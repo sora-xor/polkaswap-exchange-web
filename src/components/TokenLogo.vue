@@ -4,14 +4,16 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { Asset, AccountAsset, KnownAssets } from '@sora-substrate/util'
-import { WhitelistAssets } from 'polkaswap-token-whitelist'
+import { Getter } from 'vuex-class'
+import { Asset, AccountAsset, KnownAssets, Whitelist } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { LogoSize, ObjectInit } from '@/consts'
 
 @Component
 export default class TokenLogo extends Mixins(TranslationMixin) {
+  @Getter whitelist!: Whitelist
+
   @Prop({ type: String, default: '' }) readonly tokenSymbol!: string // ONLY for Bridge.vue
   @Prop({ type: Object, default: ObjectInit }) readonly token!: AccountAsset | Asset
   @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
@@ -35,7 +37,7 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
 
   get tokenStyles (): any {
     if (!this.token) return {}
-    const asset = WhitelistAssets[this.token.address]
+    const asset = this.whitelist[this.token.address]
     if (asset) {
       return {
         'background-size': '100%',
