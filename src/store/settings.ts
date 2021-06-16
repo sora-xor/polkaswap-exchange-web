@@ -178,7 +178,10 @@ const actions = {
   async setNode ({ commit, dispatch, state, getters }, options: ConnectToNodeOptions = {}) {
     const { node, onError } = options
     const endpoint = node?.address ?? ''
-    const connectionOnDisconnected = () => dispatch('connectToNode', { onError })
+    const connectionOnDisconnected = () => {
+      connection.unsubscribeEventHandlers()
+      dispatch('connectToNode', { onError })
+    }
 
     try {
       if (!endpoint) {
