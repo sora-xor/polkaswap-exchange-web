@@ -342,8 +342,15 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 </script>
 
 <style lang="scss">
-.rewards-content.lottie-loader--loading:before{
-  background: var(--s-color-utility-surface);
+.rewards.lottie-loader--loading,
+.rewards-content.lottie-loader--loading {
+  .lottie-loader {
+    z-index: 4;
+  }
+  &:after {
+    z-index: 3;
+    background: var(--s-color-utility-surface);
+  }
 }
 </style>
 
