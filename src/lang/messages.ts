@@ -118,7 +118,7 @@ export default {
     select: 'Select',
     connected: 'Connected',
     selectNodeForEnvironment: 'Select a node for {environment} environment:',
-    nodeTitle: '{name} hosted by {chain}',
+    nodeTitle: '{chain} hosted by {name}',
     messages: {
       emptyName: 'Please input the name of the node',
       emptyAddress: 'Please input the address of the node',
