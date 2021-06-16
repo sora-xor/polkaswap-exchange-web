@@ -336,7 +336,6 @@
       }
       &__content {
         height: calc(#{$select-asset-item-height} * 7);
-        overflow-y: auto;
       }
     }
   }
