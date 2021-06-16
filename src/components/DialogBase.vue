@@ -3,6 +3,7 @@
     :visible.sync="isVisible"
     :title="title"
     :custom-class="customClass"
+    :show-close="false"
     v-bind="{
       top: '80px',
       width: '496px',
@@ -11,6 +12,10 @@
     }"
     class="dialog-wrapper"
   >
+    <template #title>
+      <span class="el-dialog__title">{{ title }}</span>
+      <s-button class="el-dialog__close" type="action" icon="x-16" @click="isVisible = false" />
+    </template>
     <slot />
     <slot slot="footer" name="footer" />
   </s-dialog>
@@ -33,55 +38,47 @@ $el-dialog-class: '.el-dialog';
 $el-dialog-button-size: var(--s-size-medium);
 
 .dialog-wrapper {
-  #{$el-dialog-class} #{$el-dialog-class} {
-    &__header {
-      padding: $inner-spacing-big $inner-spacing-big $inner-spacing-mini;
-    }
-    &__body {
-      padding: $inner-spacing-mini $inner-spacing-big;
-    }
-    &__footer {
-      padding: $inner-spacing-mini $inner-spacing-big $inner-spacing-big;
-    }
-  }
-  #{$el-dialog-class}__header {
-    display: inline-flex;
-    align-items: center;
-    width: 100%;
-    #{$el-dialog-class}__title {
-      font-size: var(--s-heading3-font-size);
-      font-weight: normal;
-      font-feature-settings: $s-font-feature-settings-title;
-      line-height: var(--s-line-height-small);
-      letter-spacing: var(--s-letter-spacing-small);
-    }
-  }
-  #{$el-dialog-class}__headerbtn {
-    position: static;
-    margin-left: auto;
-    height: $el-dialog-button-size;
-    width: $el-dialog-button-size;
-    background-color: var(--s-color-base-background);
-    border-color: var(--s-color-base-background);
-    border-radius: var(--s-border-radius-small);
-    #{$el-dialog-class}__close {
-      color: var(--s-color-base-content-primary);
-      font-size: calc(#{$el-dialog-button-size} / 2);
-      font-weight: $s-font-weight-big;
-    }
-    color: var(--s-color-base-content-primary);
-    &:hover, &:active, &:focus {
-      background-color: var(--s-color-base-background-hover);
-      border-color: var(--s-color-base-background-hover);
-      #{$el-dialog-class}__close {
-        color: var(--s-color-base-content-primary);
+  #{$el-dialog-class} {
+    background: var(--s-color-utility-surface);
+
+    & > #{$el-dialog-class} {
+      &__header {
+        padding: $inner-spacing-big $inner-spacing-big $inner-spacing-mini;
+      }
+      &__body {
+        padding: $inner-spacing-mini $inner-spacing-big;
+      }
+      &__footer {
+        padding: $inner-spacing-mini $inner-spacing-big $inner-spacing-big;
       }
     }
-  }
-  #{$el-dialog-class}__footer {
-    .el-button {
-      padding: $inner-spacing-mini;
+
+    &__header {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
       width: 100%;
+
+      #{$el-dialog-class}__title {
+        font-size: var(--s-heading3-font-size);
+        font-weight: 400 !important;
+        font-feature-settings: $s-font-feature-settings-title;
+        line-height: var(--s-line-height-small);
+        letter-spacing: var(--s-letter-spacing-mini);
+      }
+
+      #{$el-dialog-class}__close {
+        i {
+          font-size: var(--s-icon-font-size-big) !important;
+        }
+      }
+    }
+
+    &__footer {
+      .el-button {
+        padding: $inner-spacing-mini;
+        width: 100%;
+      }
     }
   }
 }

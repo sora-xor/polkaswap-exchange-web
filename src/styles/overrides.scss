@@ -78,41 +78,19 @@ h3 {
 }
 
 /* FONT WEIGHTS */
-span.el-dialog__title {
-  font-variation-settings: $font-weight-400 !important;
-  letter-spacing: var(--s-letter-spacing-mini) !important;
-}
 button.el-button--primary span,
-button.el-button--choose-token span,
 div.asset-search-actions button.el-button span,
 button.el-button--max {
   font-variation-settings: $font-weight-800 !important;
 }
 
-/* CARDS */
-div.el-dialog {
-  background-color: var(--s-color-utility-surface) !important;
-}
-
 /* BUTTONS */
-.dialog-wrapper button.el-dialog__headerbtn,
 i.el-collapse-item__arrow {
   background-color: var(--s-color-utility-body) !important;
   box-shadow: var(--s-shadow-element);
   color: var(--s-color-base-content-secondary);
   transition: var(--s-transition-default);
   border: none;
-}
-.dialog-wrapper button.el-dialog__headerbtn:hover .el-dialog__close {
-  color: var(--s-color-base-content-secondary) !important;
-  
-}
-.dialog-wrapper .el-dialog__headerbtn .el-dialog__close {
-  color: var(--s-color-base-content-tertiary) !important;
-  font-size: var(--s-icon-font-size-big) !important;
-}
-button.el-dialog__headerbtn:hover > i.el-icon {
-  color: var(--s-color-base-on-accent) !important;
 }
 div.asset-details-actions i, div.wallet-assets-item.s-flex button.el-button--primary i {
   color: var(--s-color-base-on-accent) !important;
@@ -124,11 +102,6 @@ div.asset-details-balance i.s-icon-chevron-down-rounded-16 { padding-right: 8px;
 div.el-collapse-item__content {padding-top: 0 !important;font-weight: 600;}
 
 /* FORMS */
-div.s-input-amount input.el-input__inner {
-  font-variation-settings: $font-weight-700 !important;
-  font-size: var(--s-heading3-font-size) !important;
-}
-
 div.asset-search-actions {margin-bottom: 0 !important; margin-top: 16px;}
 div.history-item.s-flex {padding: 8px 24px;margin-left: -14px;margin-right: -16px;}
 div.history-item-operation { color: var(--s-color-theme-accent-hover) !important;}
