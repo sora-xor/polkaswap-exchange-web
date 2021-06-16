@@ -78,6 +78,7 @@ $baseClass: '.token-select-button';
 
   &__text {
     margin: 0 $inner-spacing-mini / 2;
+    font-weight: 800 !important;
   }
 
   &__icon {
@@ -112,8 +113,6 @@ $baseClass: '.token-select-button';
     #{$baseClass}__text {
       font-size: var(--s-icon-font-size-small);
       color: var(--s-color-base-content-primary);
-      font-weight: 800 !important;
-      font-variation-settings: "wght" 800 !important;
     }
   }
 }
