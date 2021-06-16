@@ -152,6 +152,7 @@ const actions = {
       // wallet init & update flow
       if (!isWalletLoaded) {
         await initWallet({ permissions: WalletPermissions })
+        // TODO [tech]: maybe we should replace it, cuz it executes twice except bridge screens
         await dispatch('assets/getAssets', undefined, { root: true })
       } else {
         if (updateAccountAssetsSubscription) {
