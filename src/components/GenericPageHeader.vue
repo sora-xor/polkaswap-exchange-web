@@ -64,8 +64,8 @@ $title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
   padding: 0 $inner-spacing-small;
   width: 100%;
   &--center {
-    .el-button {
-      position: absolute;
+    .el-button.s-medium {
+      min-width: var(--s-size-medium);
     }
     #{$page-header-class}-title {
       width: 100%;
@@ -79,12 +79,6 @@ $title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
     font-feature-settings: $s-font-feature-settings-title;
     font-weight: 300;
     letter-spacing: var(--s-letter-spacing-small);
-    & + .el-button {
-      right: 0;
-      &--settings {
-        margin-left: auto;
-      }
-    }
   }
   &-tooltip {
     margin-top: auto;

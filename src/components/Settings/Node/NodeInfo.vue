@@ -2,10 +2,13 @@
   <s-form :model="nodeModel" :rules="validationRules" ref="nodeForm" class="node-info s-flex" @submit.native.prevent="submitForm">
     <generic-page-header has-button-back :title="title" @back="handleBack">
       <s-button
+        type="action"
+        icon="basic-pencil-create-24"
+      />
+      <s-button
         v-if="existing && removable"
         type="action"
         icon="basic-trash-24"
-        tooltip-placement="bottom-end"
         @click="removeNode(nodeModel)"
       />
     </generic-page-header>
