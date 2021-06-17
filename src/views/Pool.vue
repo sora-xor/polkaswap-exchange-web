@@ -8,7 +8,6 @@
       <p v-else-if="!accountLiquidity || !accountLiquidity.length" class="pool-info-container">
         {{ t('pool.liquidityNotFound') }}
       </p>
-      <!-- TODO 4 alexnatalia: Whole pool area should be clickable -->
       <s-collapse v-else class="pool-list" :borders="true">
         <s-collapse-item v-for="liquidityItem of accountLiquidity" :key="liquidityItem.address" :name="liquidityItem.address" class="pool-info-container">
           <template #title>
@@ -166,13 +165,13 @@ $pool-collapse-icon-width: 10px;
       border-bottom: none;
     }
     &__content {
-      margin-top: $inner-spacing-medium;
-      padding-top: $inner-spacing-medium;
-      padding-bottom: 0;
+      margin-top: 0;
+      padding: 0 $inner-spacing-medium $inner-spacing-medium;
     }
     .el-collapse-item__header {
-      height: $pair-icon-height;
+      height: #{$pair-icon-height + $inner-spacing-medium * 2};
       line-height: $pair-icon-height;
+      padding: $inner-spacing-medium;
       .pair-logo {
         margin-right: $inner-spacing-medium;
       }
@@ -212,7 +211,7 @@ $pair-icon-height: 36px;
     border-bottom: none;
     .pool-info-container {
       margin-bottom: $inner-spacing-mini;
-      padding: calc(#{$inner-spacing-big} - (#{$pair-icon-height} - var(--s-size-small)) / 2) $inner-spacing-medium;
+      padding: 0;
       &:last-child {
         margin-bottom: 0;
       }
