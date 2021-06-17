@@ -106,7 +106,7 @@
         <s-button
           class="el-button--next s-typography-button--large"
           type="primary"
-          :disabled="!isAssetSelected || !areNetworksConnected || !isValidEthNetwork || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEthereumForFee || isInsufficientBalance || !isRegisteredAsset || feesFetching"
+          :disabled="!isAssetSelected || !areNetworksConnected || !isValidNetworkType  || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEvmNativeTokenForFee  || isInsufficientBalance || !isRegisteredAsset || feesFetching"
           @click="handleConfirmTransaction"
         >
           <template v-if="!isAssetSelected">
