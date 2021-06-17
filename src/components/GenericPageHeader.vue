@@ -1,6 +1,6 @@
 <template>
   <div :class="headerClasses">
-    <s-button v-if="hasButtonBack" type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack" />
+    <s-button v-if="hasButtonBack" class="action-button--back" type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack" />
     <h3 class="page-header-title">{{ title }}</h3>
     <s-tooltip
       v-if="!!tooltip"
@@ -66,6 +66,9 @@ $title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
   &--center {
     .el-button.s-medium {
       min-width: var(--s-size-medium);
+    }
+    .action-button--back {
+      position: absolute;
     }
     #{$page-header-class}-title {
       width: 100%;
