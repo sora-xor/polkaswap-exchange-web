@@ -25,7 +25,7 @@
           <div v-for="token in filteredWhitelistTokens" @click="selectToken(token)" :key="token.address" class="token-item">
             <s-col>
               <s-row flex justify="start" align="middle">
-                <token-logo :token="token" />
+                <token-logo :token="token" size="medium" />
                 <div class="token-item__info s-flex">
                   <div class="token-item__symbol">{{ token.symbol }}</div>
                   <div class="token-item__details">{{ getTokenName(token) }}
@@ -65,61 +65,62 @@
         <div class="asset-select__info" v-if="alreadyAttached">{{ t('selectToken.custom.alreadyAttached') }}</div>
         <div class="asset-select__info" v-else-if="!customAsset && customAddress">{{ t('selectToken.custom.notFound') }}</div>
         <div class="add-asset-details" v-if="customAsset">
-          <div class="add-asset-details_asset">
-            <token-logo :token="customAsset" />
-            <div class="asset-description s-flex">
-              <div class="asset-description_symbol">{{ customAsset.symbol }}</div>
-              <div class="asset-description_info">{{ getTokenName(customAsset) }}
-                <s-tooltip :content="t('assets.copy')" border-radius="mini">
-                  <span class="asset-id" @click="handleCopy(customAsset, $event)">({{ getFormattedAddress(customAsset) }})</span>
-                </s-tooltip>
+          <s-card shadow="always" size="small" border-radius="mini">
+            <div class="add-asset-details_asset">
+              <token-logo :token="customAsset" />
+              <div class="asset-description s-flex">
+                <div class="asset-description_symbol">{{ customAsset.symbol }}</div>
+                <div class="asset-description_info">{{ getTokenName(customAsset) }}
+                  <s-tooltip :content="t('assets.copy')" border-radius="mini">
+                    <span class="asset-id" @click="handleCopy(customAsset, $event)">({{ getFormattedAddress(customAsset) }})</span>
+                  </s-tooltip>
+                </div>
+                <s-card size="mini" :status="assetCardStatus">
+                  <div class="asset-nature">{{ assetNatureText }}</div>
+                </s-card>
               </div>
-              <div class="asset-nature" :style="assetNatureStyles">{{ assetNatureText }}</div>
             </div>
-          </div>
+          </s-card>
           <template v-if="connected">
-            <div class="add-asset-details_text">
-              <span class="p2">{{ t('addAsset.warningTitle') }}</span>
-              <span class="warning-text p4">{{ t('addAsset.warningMessage') }}</span>
-            </div>
+            <s-card status="warning" shadow="always" pressed class="add-asset-details_text">
+              <div class="p2">{{ t('addAsset.warningTitle') }}</div>
+              <div class="warning-text p4">{{ t('addAsset.warningMessage') }}</div>
+            </s-card>
             <div class="add-asset-details_confirm">
-              <span>{{ t('addAsset.understand') }}</span>
               <s-switch v-model="isConfirmed" :disabled="loading" />
+              <span>{{ t('addAsset.understand') }}</span>
             </div>
-            <s-button
-              class="add-asset-details_action s-typography-button--large"
-              type="primary"
-              :disabled="!customAsset || !isConfirmed || loading"
-              @click="handleAddAsset"
-            >
+            <s-button class="add-asset-details_action s-typography-button--large" type="primary" :disabled="!customAsset || !isConfirmed || loading" @click="handleAddAsset">
               {{ t('addAsset.action') }}
             </s-button>
           </template>
         </div>
-        <div v-if="connected && nonWhitelistAccountAssets" class="token-list">
+        <template v-if="connected && nonWhitelistAccountAssets">
           <div class="token-list_text">{{ nonWhitelistAccountAssets.length }} {{ t('selectToken.custom.text') }}</div>
-          <div v-for="token in sortedNonWhitelistAccountAssets" @click="selectToken(token)" :key="token.address" class="token-item">
-            <s-col>
-              <s-row flex justify="start" align="middle">
-                <token-logo :token="token" />
-                <div class="token-item__info s-flex">
-                  <div class="token-item__symbol">{{ token.symbol }}</div>
-                  <div class="token-item__details">{{ getTokenName(token) }}
-                    <s-tooltip :content="t('selectToken.copy')" border-radius="mini">
-                      <span class="token-item__address" @click="handleCopy(token, $event)">({{ getFormattedAddress(token) }})</span>
-                    </s-tooltip>
+          <div class="token-list">
+            <div v-for="token in sortedNonWhitelistAccountAssets" @click="selectToken(token)" :key="token.address" class="token-item">
+              <s-col>
+                <s-row flex justify="start" align="middle">
+                  <token-logo :token="token" />
+                  <div class="token-item__info s-flex">
+                    <div class="token-item__symbol">{{ token.symbol }}</div>
+                    <div class="token-item__details">{{ getTokenName(token) }}
+                      <s-tooltip :content="t('selectToken.copy')" border-radius="mini">
+                        <span class="token-item__address" @click="handleCopy(token, $event)">({{ getFormattedAddress(token) }})</span>
+                      </s-tooltip>
+                    </div>
                   </div>
-                </div>
-              </s-row>
-            </s-col>
-            <div v-if="connected" class="token-item__amount-container">
-              <span class="token-item__amount">{{ formatBalance(token) }}</span>
-            </div>
-            <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
-              <s-icon name="basic-trash-24" />
+                </s-row>
+              </s-col>
+              <div v-if="connected" class="token-item__amount-container">
+                <span class="token-item__amount">{{ formatBalance(token) }}</span>
+              </div>
+              <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
+                <s-icon name="basic-trash-24" />
+              </div>
             </div>
           </div>
-        </div>
+        </template>
       </s-tab>
     </s-tabs>
   </dialog-base>
@@ -265,14 +266,8 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     return this.nonWhitelistAccountAssets.sort(this.sort)
   }
 
-  get assetNatureStyles (): object {
-    const styles = {}
-    if (!this.customAsset) {
-      return styles
-    }
-    return {
-      color: 'var(--s-color-status-error)'
-    }
+  get assetCardStatus (): string {
+    return !this.customAsset ? 'success' : 'error'
   }
 
   get assetNatureText (): string {
@@ -392,7 +387,7 @@ $token-item-height: 71px;
     }
   }
   &__remove {
-    margin-top: -25px;
+    margin-top: -5px;
     margin-left: $inner-spacing-medium;
   }
   .s-col {
@@ -404,8 +399,8 @@ $token-item-height: 71px;
   }
 }
 .token-list {
-  height: calc(#{$token-item-height} * 7);
-  overflow: auto;
+  max-height: calc(#{$token-item-height} * 7);
+  overflow-y: auto;
   &__empty {
     display: flex;
     align-items: center;
@@ -424,26 +419,32 @@ $token-item-height: 71px;
   }
 }
 .add-asset-details {
+  & > * {
+    margin-bottom: $inner-spacing-medium;
+  }
+
   &_asset {
     display: flex;
     align-items: center;
-    background: var(--s-color-base-background);
-    padding: $inner-spacing-small $inner-spacing-medium;
-    margin-bottom: $inner-spacing-medium;
-    border-radius: var(--s-border-radius-small);
+
     .asset {
       &-description {
+        align-items: flex-start;
         flex: 1;
         flex-direction: column;
         line-height: var(--s-line-height-big);
         margin-left: $inner-spacing-small;
         &_symbol {
+          font-size: var(--s-font-size-big);
           font-feature-settings: var(--s-font-feature-settings-common);
           font-weight: 600;
+          line-height: var(--s-line-height-small);
         }
         &_info {
-          color: var(--s-color-base-content-tertiary);
+          color: var(--s-color-base-content-secondary);
           font-size: var(--s-font-size-mini);
+          font-weight: 300;
+          line-height: var(--s-line-height-medium);
           .asset-id {
             outline: none;
             &:hover {
@@ -458,25 +459,19 @@ $token-item-height: 71px;
       }
     }
   }
-  &_text {
-    display: flex;
-    flex-direction: column;
-    padding: $inner-spacing-medium;
-    margin-bottom: $inner-spacing-medium;
-    border: 1px solid var(--s-color-base-border-secondary);
-    border-radius: var(--s-border-radius-small);
-    .warning-text {
-      color: var(-s-color-base-content-secondary);
-    }
-  }
   &_confirm {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background: var(--s-color-base-background);
-    padding: $inner-spacing-small $inner-spacing-medium;
-    border-radius: var(--s-border-radius-mini);
-    margin-bottom: $inner-spacing-medium;
+    justify-content: flex-start;
+    padding: 0 $inner-spacing-medium;
+
+    & > span {
+      margin-left: calc(var(--s-basic-spacing) * 1.5);
+      font-size: var(--s-font-size-medium);
+      font-weight: 300;
+      letter-spacing: var(--s-letter-spacing-small);
+      line-height: var(--s-line-height-medium);;
+    }
   }
   &_action {
     width: 100%;
