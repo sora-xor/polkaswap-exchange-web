@@ -160,7 +160,6 @@ async function onConnect (options: ConnectOptions): Promise<string> {
 
 async function onConnectMetamask (): Promise<string> {
   provider = await detectEthereumProvider() as any
-  console.log(provider)
   if (!provider) {
     throw new Error('provider.messages.installExtension')
   }
@@ -180,7 +179,6 @@ async function getAccount (): Promise<string> {
     const ethersInstance = await getEthersInstance()
     await ethersInstance.send('eth_requestAccounts', [])
     const account = ethersInstance.getSigner()
-    console.log('ethers get account', account)
     return account.getAddress()
   } catch (error) {
     console.error(error)
