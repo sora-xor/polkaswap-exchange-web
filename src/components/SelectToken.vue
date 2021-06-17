@@ -81,19 +81,21 @@
               </div>
             </div>
           </s-card>
-          <s-card status="warning" shadow="always" pressed class="add-asset-details_text">
-            <div class="p2">{{ t('addAsset.warningTitle') }}</div>
-            <div class="warning-text p4">{{ t('addAsset.warningMessage') }}</div>
-          </s-card>
-          <div class="add-asset-details_confirm">
-            <s-switch v-model="isConfirmed" :disabled="loading" />
-            <span>{{ t('addAsset.understand') }}</span>
-          </div>
-          <s-button class="add-asset-details_action s-typography-button--large" type="primary" :disabled="!customAsset || !isConfirmed || loading" @click="handleAddAsset">
-            {{ t('addAsset.action') }}
-          </s-button>
+          <template v-if="connected">
+            <s-card status="warning" shadow="always" pressed class="add-asset-details_text">
+              <div class="p2">{{ t('addAsset.warningTitle') }}</div>
+              <div class="warning-text p4">{{ t('addAsset.warningMessage') }}</div>
+            </s-card>
+            <div class="add-asset-details_confirm">
+              <s-switch v-model="isConfirmed" :disabled="loading" />
+              <span>{{ t('addAsset.understand') }}</span>
+            </div>
+            <s-button class="add-asset-details_action s-typography-button--large" type="primary" :disabled="!customAsset || !isConfirmed || loading" @click="handleAddAsset">
+              {{ t('addAsset.action') }}
+            </s-button>
+          </template>
         </div>
-        <template v-if="nonWhitelistAccountAssets">
+        <template v-if="connected && nonWhitelistAccountAssets">
           <div class="token-list_text">{{ nonWhitelistAccountAssets.length }} {{ t('selectToken.custom.text') }}</div>
           <div class="token-list">
             <div v-for="token in sortedNonWhitelistAccountAssets" @click="selectToken(token)" :key="token.address" class="token-item">
@@ -128,9 +130,8 @@
 import first from 'lodash/fp/first'
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { Asset, AccountAsset } from '@sora-substrate/util'
+import { Asset, AccountAsset, isBlacklistAsset, Whitelist } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { isBlacklistAsset } from 'polkaswap-token-whitelist'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
@@ -170,7 +171,9 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @Getter('whitelistAssets', { namespace }) whitelistAssets!: Array<Asset>
   @Getter('nonWhitelistAccountAssets', { namespace }) nonWhitelistAccountAssets!: Array<AccountAsset>
   @Getter('nonWhitelistAssets', { namespace }) nonWhitelistAssets!: Array<Asset>
-  @Getter accountAssetsAddressTable // Wallet store
+  // Wallet store
+  @Getter whitelist!: Whitelist
+  @Getter accountAssetsAddressTable
 
   // Wallet
   @Action addAsset!: (options: { address?: string }) => Promise<void>
@@ -271,7 +274,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     if (!this.customAsset) {
       return ''
     }
-    const isBlacklist = isBlacklistAsset(this.customAsset)
+    const isBlacklist = isBlacklistAsset(this.customAsset, this.whitelist)
     if (isBlacklist) {
       return this.t('addAsset.scam')
     }

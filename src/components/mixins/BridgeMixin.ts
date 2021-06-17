@@ -1,17 +1,16 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
 
-import { BridgeNetworks } from '@sora-substrate/util'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import web3Util from '@/utils/web3-util'
 
 @Component
 export default class BridgeMixin extends Mixins(LoadingMixin, WalletConnectMixin) {
-  @Action('getEvmBalance', { namespace: 'web3' }) getEvmBalance!: () => Promise<void>
-  @Action('getEvmNetworkFee', { namespace: 'bridge' }) getEvmNetworkFee
-  @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets
-  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets
+  @Action('getEvmBalance', { namespace: 'web3' }) getEvmBalance!: AsyncVoidFn
+  @Action('getEvmNetworkFee', { namespace: 'bridge' }) getEvmNetworkFee!: AsyncVoidFn
+  @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets!: AsyncVoidFn
+  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn
 
   private unwatchEthereum!: any
   blockHeadersSubscriber
