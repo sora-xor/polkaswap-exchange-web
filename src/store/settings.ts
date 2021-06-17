@@ -268,6 +268,10 @@ const actions = {
     const nodes = [...getters.customNodes, node]
     commit(types.SET_CUSTOM_NODES, nodes)
   },
+  updateCustomNode ({ commit, getters }, node) {
+    const nodes = getters.customNodes.filter(item => item.address !== node.address)
+    commit(types.SET_CUSTOM_NODES, [...nodes, node])
+  },
   removeCustomNode ({ commit, getters }, node) {
     const nodes = getters.customNodes.filter(item => item.address !== node.address)
     commit(types.SET_CUSTOM_NODES, nodes)

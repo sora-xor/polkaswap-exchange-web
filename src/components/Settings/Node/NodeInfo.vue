@@ -1,20 +1,22 @@
 <template>
   <s-form :model="nodeModel" :rules="validationRules" ref="nodeForm" class="node-info s-flex" @submit.native.prevent="submitForm">
     <generic-page-header has-button-back :title="title" @back="handleBack">
-      <s-button
-        v-if="existing && removable"
-        type="action"
-        icon="basic-pencil-create-24"
-      />
-      <s-button
-        v-if="existing && removable"
-        type="action"
-        icon="basic-trash-24"
-        @click="removeNode(nodeModel)"
-      />
+      <template v-if="existing && removable">
+        <s-button
+          v-if="nodeDataChanged"
+          type="action"
+          icon="basic-check-mark-24"
+          @click="submitForm"
+        />
+        <s-button
+          type="action"
+          icon="basic-trash-24"
+          @click="removeNode(nodeModel)"
+        />
+      </template>
     </generic-page-header>
     <s-form-item prop="name">
-      <s-input class="node-info-input s-typography-input-field" :placeholder="t('nameText')" v-model="nodeModel.name" :maxlength="128" :disabled="existing" />
+      <s-input class="node-info-input s-typography-input-field" :placeholder="t('nameText')" v-model="nodeModel.name" :maxlength="128" :disabled="existing && !removable" />
     </s-form-item>
     <s-form-item prop="address">
       <s-input class="node-info-input s-typography-input-field" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="existing" />
@@ -100,6 +102,10 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
     return this.existing ? this.node.title : this.t('selectNodeDialog.customNode')
   }
 
+  get nodeDataChanged (): boolean {
+    return this.nodeModel.name !== this.node.name
+  }
+
   async submitForm (): Promise<void> {
     try {
       await (this.$refs.nodeForm as any).validate()
@@ -109,7 +115,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
         address: stripEndingSlash(this.nodeModel.address)
       }
 
-      this.handleNode(preparedModel, !this.existing)
+      this.handleNode(preparedModel, !this.existing || this.nodeDataChanged)
     } catch (error) {
     }
   }

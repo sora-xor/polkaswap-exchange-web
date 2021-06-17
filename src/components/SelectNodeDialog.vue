@@ -63,6 +63,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   @State(state => state.settings.soraNetwork) soraNetwork!: string
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
   @Action addCustomNode!: (node: Node) => Promise<void>
+  @Action updateCustomNode!: (node: Node) => Promise<void>
   @Action removeCustomNode!: (node: any) => Promise<void>
 
   currentView = NodeListView
@@ -156,14 +157,18 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     const existingNode = this.findNodeInListByAddress(node.address)
 
     if (isNewNode && existingNode) {
-      const error = new AppHandledError({
-        key: 'node.errors.existing',
-        payload: {
-          title: existingNode.title
-        }
-      })
+      if (existingNode.name !== node.name) {
+        return this.updateCustomNode(node)
+      } else {
+        const error = new AppHandledError({
+          key: 'node.errors.existing',
+          payload: {
+            title: existingNode.title
+          }
+        })
 
-      return this.handleNodeError(error)
+        return this.handleNodeError(error)
+      }
     }
 
     const nodeCopy = this.getNodePermittedData(node)

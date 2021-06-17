@@ -12,7 +12,9 @@
     >
       <s-icon name="info-16" size="18px" />
     </s-tooltip>
-    <slot />
+    <div class="page-header-buttons">
+      <slot />
+    </div>
   </div>
 </template>
 
@@ -55,7 +57,7 @@ export default class GenericPageHeader extends Mixins(TranslationMixin) {
 $page-header-class: '.page-header';
 $tooltip-area-height: var(--s-size-medium);
 $tooltip-size: var(--s-size-mini);
-$title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
+$title-padding: calc(#{calc(var(--s-size-medium) * 2)} + #{$inner-spacing-small});
 
 #{$page-header-class} {
   position: relative;
@@ -75,6 +77,10 @@ $title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
       padding-right: $title-padding;
       padding-left: $title-padding;
       text-align: center;
+    }
+    #{$page-header-class}-buttons {
+      position: absolute;
+      right: $inner-spacing-small;
     }
   }
   &-title {
