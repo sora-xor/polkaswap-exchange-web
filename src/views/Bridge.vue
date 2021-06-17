@@ -106,7 +106,7 @@
         <s-button
           class="el-button--next s-typography-button--large"
           type="primary"
-          :disabled="!isAssetSelected || !areNetworksConnected || !isValidNetworkType || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEvmNativeTokenForFee || isInsufficientBalance || !isRegisteredAsset"
+          :disabled="!isAssetSelected || !areNetworksConnected || !isValidNetworkType || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEvmNativeTokenForFee || isInsufficientBalance || !isRegisteredAsset || feesFetching"
           @click="handleConfirmTransaction"
         >
           <template v-if="!isAssetSelected">
@@ -245,6 +245,7 @@ export default class Bridge extends Mixins(
   showSelectTokenDialog = false
   showSelectNetworkDialog = false
   showConfirmTransactionDialog = false
+  feesFetching = false
 
   get isNetworkAConnected () {
     return this.isSoraToEvm ? this.isSoraAccountConnected : this.isExternalAccountConnected
@@ -361,7 +362,7 @@ export default class Bridge extends Mixins(
     this.withApi(async () => {
       await this.setEvmNetwork(bridgeApi.externalNetwork)
       await this.getRegisteredAssets()
-      this.getNetworkFees()
+      await this.getNetworkFees()
     })
   }
 
@@ -384,9 +385,9 @@ export default class Bridge extends Mixins(
     this.isFieldAmountFocused = true
   }
 
-  handleSwitchItems (): void {
+  async handleSwitchItems (): Promise<void> {
     this.setSoraToEvm(!this.isSoraToEvm)
-    this.getNetworkFees()
+    await this.getNetworkFees()
   }
 
   handleMaxValue (): void {
@@ -422,7 +423,7 @@ export default class Bridge extends Mixins(
   async selectAsset (selectedAsset: any): Promise<void> {
     if (selectedAsset) {
       await this.setAssetAddress(selectedAsset?.address ?? '')
-      this.getNetworkFees()
+      await this.getNetworkFees()
     }
   }
 
@@ -434,10 +435,14 @@ export default class Bridge extends Mixins(
     })
   }
 
-  private getNetworkFees (): void {
+  private async getNetworkFees (): Promise<void> {
     if (this.isRegisteredAsset) {
-      this.getNetworkFee()
-      this.getEvmNetworkFee()
+      this.feesFetching = true
+      await Promise.all([
+        this.getNetworkFee(),
+        this.getEvmNetworkFee()
+      ])
+      this.feesFetching = false
     }
   }
 }
