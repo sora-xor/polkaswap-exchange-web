@@ -402,7 +402,6 @@ const actions = {
       )
       const methodArgs = [address]
       const externalAddress = await contractInstance._sidechainTokens(...methodArgs)
-      console.log('oppa2', externalAddress)
       commit(types.GET_EVM_TOKEN_ADDRESS_SUCCESS)
       return externalAddress
     } catch (error) {
@@ -420,7 +419,6 @@ const actions = {
       const account = getters.evmAddress
       const methodArgs = [account, contractAddress]
       const allowance = await tokenInstance.allowance(...methodArgs)
-      console.log('oppa3', allowance)
       commit(types.GET_ALLOWANCE_SUCCESS)
       return FPNumber.fromCodecValue(allowance).toString()
     } catch (error) {
