@@ -177,37 +177,6 @@ $pool-collapse-icon-width: 10px;
         margin-right: $inner-spacing-medium;
       }
     }
-    .el-icon-arrow-right {
-      position: relative;
-      &:before,
-      &:after {
-        position: absolute;
-        display: block;
-        content: '';
-        border-radius: 2px;
-        background-color: var(--s-color-base-content-primary);
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        margin: auto;
-      }
-      &:before {
-        height: $pool-collapse-icon-height;
-        width: $pool-collapse-icon-width;
-      }
-      &:after {
-        height: $pool-collapse-icon-width;
-        width: $pool-collapse-icon-height;
-      }
-      &.is-active:after {
-        background-color: transparent;
-      }
-    }
-  }
-  .el-icon-arrow-right {
-    margin-right: 0;
-    border-radius: var(--s-border-radius-small);
   }
 }
 </style>
