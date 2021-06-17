@@ -280,12 +280,6 @@ async function readSmartContract (network: ContractNetwork, name: string): Promi
 }
 
 async function accountAddressToHex (address: string): Promise<string> {
-  console.log(
-    'web3', Web3.utils.bytesToHex(Array.from(decodeAddress(address).values())),
-    'ethers', ethers.utils.hexlify(
-      Array.from(decodeAddress(address).values())
-    )
-  )
   return ethers.utils.hexlify(
     Array.from(decodeAddress(address).values())
   )

@@ -420,7 +420,7 @@ const actions = {
       const methodArgs = [account, contractAddress]
       const allowance = await tokenInstance.allowance(...methodArgs)
       commit(types.GET_ALLOWANCE_SUCCESS)
-      return FPNumber.fromCodecValue(allowance).toString()
+      return FPNumber.fromCodecValue(allowance._hex).toString()
     } catch (error) {
       console.error(error)
       commit(types.GET_ALLOWANCE_FAILURE)

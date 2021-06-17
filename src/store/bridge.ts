@@ -90,25 +90,34 @@ async function waitForEvmTransactionStatus (
   hash: string,
   replaceCallback: (hash: string) => any,
   cancelCallback: (hash: string) => any
-): Promise<ethers.providers.TransactionResponse> {
+) {
   const ethersInstance = await ethersUtil.getEthersInstance()
-  const tx = await ethersInstance.getTransaction(hash)
-  console.log(tx)
   try {
-    await tx.wait(5)
+    const currentBlock = await ethersInstance.getBlockNumber()
+    const blockOffset = currentBlock - 20
+    const { data, from, nonce, to, value } = await ethersInstance.getTransaction(hash)
+    await ethersInstance._waitForTransaction(
+      hash,
+      5,
+      0,
+      {
+        data,
+        from,
+        nonce,
+        to: to ?? '',
+        value,
+        startBlock: blockOffset
+      }
+    )
   } catch (error) {
     if (error.code === ethers.errors.TRANSACTION_REPLACED) {
-      console.log(error.receipt.hash)
-      if (error.replaced) {
-        console.log('replaced')
-        replaceCallback(error.receipt.hash)
-      } else if (error.receipt.hash) {
-        console.log('cancelled')
-        cancelCallback(error.receipt.hash)
+      if (error.reason === 'repriced' || error.reason === 'replaced') {
+        replaceCallback(error.replacement.hash)
+      } else if (error.reason === 'canceled') {
+        cancelCallback(error.replacement.hash)
       }
     }
   }
-  return tx
 }
 
 function checkEvmNetwork (rootGetters): void {
@@ -705,9 +714,7 @@ const actions = {
         ethereumHash,
         (hash: string) => {
           const history = getters.historyItem
-          console.log(getters.historyItem)
           history.ethereumHash = hash
-          console.log(history, getters.historyItem)
           dispatch('updateHistoryParams', { tx: history })
           dispatch('setEvmTransactionHash', { hash })
           dispatch('sendEvmTransactionSoraToEvm', { ethereumHash: hash })
@@ -767,10 +774,10 @@ const actions = {
             MaxUint256 // uint256 amount
           ]
           checkEvmNetwork(rootGetters)
-          await tokenInstance.approve(...methodArgs)
+          const tx = await tokenInstance.approve(...methodArgs)
+          await tx.wait(2)
         }
       }
-
       const soraAccountAddress = rootGetters.account.address
       const accountId = await ethersUtil.accountAddressToHex(soraAccountAddress)
       const contractInstance = new ethers.Contract(
@@ -788,7 +795,6 @@ const actions = {
             ethersInstance.getSigner()
           )
           const decimals = await tokenInstance.decimals()
-          console.log(decimals)
 
           return +decimals
         })()
@@ -823,9 +829,7 @@ const actions = {
         ethereumHash,
         (hash: string) => {
           const history = getters.historyItem
-          console.log(getters.historyItem)
           history.ethereumHash = hash
-          console.log(history, getters.historyItem)
           dispatch('updateHistoryParams', { tx: history })
           dispatch('setEvmTransactionHash', { hash })
           dispatch('sendEvmTransactionSoraToEvm', { ethereumHash: hash })
