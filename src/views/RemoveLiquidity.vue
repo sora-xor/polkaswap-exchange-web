@@ -1,5 +1,5 @@
 <template>
-  <div v-lottie-loader="{ loading: loading || parentLoading }" class="container">
+  <div v-lottie-loader="{ loading: loading || parentLoading }" class="container container--remove-liquidity">
     <generic-page-header has-button-back :title="t('removeLiquidity.title')" :tooltip="t('removeLiquidity.description')" @back="handleBack" />
     <s-form
       class="el-form--actions"
@@ -350,6 +350,17 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
   }
 }
 </script>
+
+<style lang="scss">
+.container--remove-liquidity.lottie-loader--loading {
+  .lottie-loader {
+    z-index: 1004;
+  }
+  &:after {
+    z-index: 1003;
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .el-form--actions {

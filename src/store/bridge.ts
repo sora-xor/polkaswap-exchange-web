@@ -16,8 +16,7 @@ import {
   BridgeHistory,
   TransactionStatus,
   KnownAssets,
-  CodecString,
-  RegisteredAssets
+  CodecString
 } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { Transaction } from 'web3-core'
@@ -530,7 +529,7 @@ const actions = {
       commit(types.GET_SORA_NETWORK_FEE_FAILURE)
     }
   },
-  async getEvmNetworkFee ({ commit, getters }) {
+  async getEvmNetworkFee ({ commit, getters, rootGetters }) {
     if (!getters.asset || !getters.asset.address) {
       return
     }
@@ -538,8 +537,8 @@ const actions = {
     try {
       const web3 = await web3Util.getInstance()
       const gasPrice = +(await web3.eth.getGasPrice())
-      // TODO: Add whitelist checks
-      const knownAsset = KnownAssets.get(getters.asset.address) || (RegisteredAssets[getters.asset.address] && getters.asset.symbol === 'ETH')
+      const registeredAssets = rootGetters.whitelist
+      const knownAsset = KnownAssets.get(getters.asset.address) || (registeredAssets[getters.asset.address] && getters.asset.symbol === 'ETH')
       const gasLimit = EthereumGasLimits[+getters.isSoraToEvm][knownAsset ? getters.asset.symbol : KnownBridgeAsset.Other]
       const fee = gasPrice * gasLimit
       const fpFee = new FPNumber(web3.utils.fromWei(`${fee}`, 'ether')).toCodecString()

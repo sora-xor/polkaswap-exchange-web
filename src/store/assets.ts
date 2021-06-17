@@ -2,8 +2,7 @@ import map from 'lodash/fp/map'
 import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
-import { isWhitelistAsset } from 'polkaswap-token-whitelist'
-import { KnownAssets, KnownSymbols, Asset, RegisteredAccountAsset } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, Asset, RegisteredAccountAsset, isWhitelistAsset } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { bridgeApi } from '@/utils/bridge'
 
@@ -36,14 +35,14 @@ const getters = {
   assets (state) {
     return state.assets
   },
-  whitelistAssets (state) {
-    return state.assets.filter(asset => isWhitelistAsset(asset))
+  whitelistAssets (state, getters, rootState, rootGetters) {
+    return state.assets.filter(asset => isWhitelistAsset(asset, rootGetters.whitelist))
   },
-  nonWhitelistAssets (state) {
-    return state.assets.filter(asset => !isWhitelistAsset(asset))
+  nonWhitelistAssets (state, getters, rootState, rootGetters) {
+    return state.assets.filter(asset => !isWhitelistAsset(asset, rootGetters.whitelist))
   },
   nonWhitelistAccountAssets (state, getters, rootState, rootGetters) {
-    return rootGetters.accountAssets.filter(asset => !isWhitelistAsset(asset))
+    return rootGetters.accountAssets.filter(asset => !isWhitelistAsset(asset, rootGetters.whitelist))
   },
   tokenXOR (state, getters, rootState, rootGetters) {
     const token = KnownAssets.get(KnownSymbols.XOR)
@@ -111,10 +110,10 @@ const mutations = {
 }
 
 const actions = {
-  async getAssets ({ commit }) {
+  async getAssets ({ commit, rootGetters: { whitelist } }) {
     commit(types.GET_ASSETS_LIST_REQUEST)
     try {
-      const assets = await api.getAssets()
+      const assets = await api.getAssets(whitelist)
 
       commit(types.GET_ASSETS_LIST_SUCCESS, assets)
     } catch (error) {

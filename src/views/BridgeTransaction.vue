@@ -675,7 +675,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
   &-container {
     @include bridge-container;
     .header-icon {
-      &.lottie-loader--loading:before {
+      &.lottie-loader--loading:after {
         background-color: transparent;
       }
       &:not(.header-icon--success):not(.header-icon--wait):not(.header-icon--error) {
