@@ -712,6 +712,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
         &__header {
           height: $collapse-header-height;
           line-height: $collapse-header-height;
+          background-color: unset;
           .network-info-title {
             padding-left: #{$collapse-horisontal-padding + $inner-spacing-mini / 2};
             h3 {
