@@ -33,13 +33,4 @@ export default class LoadingMixin extends Vue {
       return await this.withLoading(func)
     }
   }
-
-  async withParentLoading (func: Function): Promise<any> {
-    if (this.parentLoading) {
-      await delay()
-      return await this.withParentLoading(func)
-    } else {
-      return await func()
-    }
-  }
 }

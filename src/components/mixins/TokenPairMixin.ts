@@ -50,14 +50,12 @@ const CreateTokenPairMixin = (namespace: string) => {
     showSelectSecondTokenDialog = false
     insufficientBalanceTokenSymbol = ''
 
-    async mounted () {
-      await this.withParentLoading(async () =>
-        await this.withApi(async () => {
-          this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
-          await this.getAssets()
-          await this.afterApiConnect()
-        })
-      )
+    async created () {
+      await this.withApi(async () => {
+        this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
+        await this.getAssets()
+        await this.afterApiConnect()
+      })
     }
 
     destroyed (): void {

@@ -1,7 +1,7 @@
 <template>
   <div :class="computedClasses">
-    <token-logo :token="firstToken" :size="size" />
     <token-logo :token="secondToken" :size="size" />
+    <token-logo :token="firstToken" :size="size" />
   </div>
 </template>
 
@@ -46,12 +46,11 @@ export default class PairTokenLogo extends Mixins(TranslationMixin) {
   .token-logo {
     position: absolute;
 
-    &:first-child {
+    &:last-child {
       top: 0;
       left: 0;
-      z-index: 1;
     }
-    &:last-child {
+    &:first-child {
       bottom: 0;
       right: 0;
     }

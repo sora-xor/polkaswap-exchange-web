@@ -23,6 +23,7 @@ const types = flow(
 function initialState () {
   return {
     assets: [],
+    assetsLoading: false,
     registeredAssets: [],
     customAssets: []
   }
@@ -85,13 +86,15 @@ const getters = {
 
 const mutations = {
   [types.GET_ASSETS_LIST_REQUEST] (state) {
-    state.assets = []
+    state.assetsLoading = true
   },
   [types.GET_ASSETS_LIST_SUCCESS] (state, assets: Array<Asset>) {
     state.assets = assets
+    state.assetsLoading = false
   },
   [types.GET_ASSETS_LIST_FAILURE] (state) {
     state.assets = []
+    state.assetsLoading = false
   },
 
   [types.GET_ASSET_REQUEST] (state) {},
@@ -110,7 +113,9 @@ const mutations = {
 }
 
 const actions = {
-  async getAssets ({ commit, rootGetters: { whitelist } }) {
+  async getAssets ({ commit, state, rootGetters: { whitelist } }) {
+    if (state.assetsLoading) return
+
     commit(types.GET_ASSETS_LIST_REQUEST)
     try {
       const assets = await api.getAssets(whitelist)
@@ -118,17 +123,6 @@ const actions = {
       commit(types.GET_ASSETS_LIST_SUCCESS, assets)
     } catch (error) {
       commit(types.GET_ASSETS_LIST_FAILURE)
-    }
-  },
-  async getAsset ({ commit }, { address }) {
-    commit(types.GET_ASSET_REQUEST)
-    try {
-      const assets = await api.getAssets()
-      const asset = assets.find(asset => asset.address === address)
-      commit(types.GET_ASSET_SUCCESS)
-      return asset
-    } catch (error) {
-      commit(types.GET_ASSET_FAILURE)
     }
   },
   async getRegisteredAssets ({ commit, dispatch }) {

@@ -2,11 +2,10 @@
   <div class="tokens-row">
     <div class="tokens-row-container">
       <token-logo
-        v-for="(symbol, index) in symbols"
+        v-for="symbol in rowSymbols"
         :key="symbol"
         :token-symbol="symbol"
         :size="size"
-        :style="{ zIndex: symbols.length - index }"
         class="tokens-row__item"
       />
     </div>
@@ -28,6 +27,10 @@ import { Components, LogoSize } from '@/consts'
 export default class TokensRow extends Vue {
   @Prop({ default: () => [], type: Array }) symbols!: Array<KnownSymbols>
   @Prop({ default: LogoSize.LARGE, type: String }) readonly size!: LogoSize
+
+  get rowSymbols (): Array<KnownSymbols> {
+    return [...this.symbols].reverse()
+  }
 }
 </script>
 
@@ -41,13 +44,14 @@ export default class TokensRow extends Vue {
   &-container {
     display: flex;
     flex-flow: row nowrap;
+    direction: rtl;
   }
 
   &__item {
     display: block;
 
     & + & {
-      margin-left: -$basic-spacing * 2;
+      margin-right: -$basic-spacing * 2;
     }
   }
 }
