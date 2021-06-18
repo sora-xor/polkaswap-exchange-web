@@ -208,8 +208,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
   sliderDragButton: any
 
   async mounted (): Promise<void> {
-    this.resetData()
-    this.resetPrices()
     await this.withApi(async () => {
       await this.updateAccountLiquidity()
       await this.getAssets()
@@ -235,6 +233,8 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
       this.$el.removeEventListener('mousedown', this.sliderDragButton)
     }
     this.destroyUpdateAccountLiquiditySubscription()
+    this.resetData()
+    this.resetPrices()
   }
 
   get firstTokenAddress (): string {
