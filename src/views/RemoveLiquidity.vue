@@ -211,7 +211,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
   async created (): Promise<void> {
     await this.withApi(async () => {
       await this.updateAccountLiquidity()
-      await this.setLiquidity({
+      this.setLiquidity({
         firstAddress: this.firstTokenAddress,
         secondAddress: this.secondTokenAddress
       })

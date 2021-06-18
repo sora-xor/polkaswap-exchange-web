@@ -136,7 +136,7 @@ const mutations = {
 }
 
 const actions = {
-  async setLiquidity ({ commit, dispatch, getters }, { firstAddress, secondAddress }) {
+  setLiquidity ({ commit }, { firstAddress, secondAddress }) {
     try {
       commit(types.SET_LIQUIDITY_TOKENS_ADDRESSES, { firstAddress, secondAddress })
     } catch (error) {
