@@ -90,8 +90,10 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
   async created () {
     await this.withApi(async () => {
-      await this.getAssets()
-      await this.updateAccountLiquidity()
+      await Promise.all([
+        this.getAssets(),
+        this.updateAccountLiquidity()
+      ])
     })
   }
 

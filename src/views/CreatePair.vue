@@ -160,11 +160,16 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
 
 export default class CreatePair extends Mixins(TokenPairMixin, NumberFormatterMixin) {
   @Action('createPair', { namespace }) createPair
+  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
   confirmCreatePair (): Promise<void> {
     return this.handleConfirm(this.createPair)
+  }
+
+  async afterApiConnect (): Promise<void> {
+    await this.getAssets()
   }
 }
 </script>

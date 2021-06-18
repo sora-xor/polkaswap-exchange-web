@@ -38,7 +38,6 @@ const CreateTokenPairMixin = (namespace: string) => {
 
     @Action('getPrices', { namespace: 'prices' }) getPrices
     @Action('resetPrices', { namespace: 'prices' }) resetPrices
-    @Action('getAssets', { namespace: 'assets' }) getAssets
 
     @Watch('isLoggedIn')
     private handleLoggedInStateChange (isLoggedIn: boolean, wasLoggedIn: boolean): void {
@@ -53,7 +52,6 @@ const CreateTokenPairMixin = (namespace: string) => {
     async created () {
       await this.withApi(async () => {
         this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
-        await this.getAssets()
         await this.afterApiConnect()
       })
     }
