@@ -469,13 +469,29 @@ html {
     border-radius: var(--s-border-radius-medium);
   }
 }
-.app-disclaimer > .link {
-  color: var(--s-color-base-content-primary);
+.app-disclaimer {
+  span {
+    display: none;
+  }
+  .link {
+    color: var(--s-color-base-content-primary);
+  }
 }
 
 // Disabled button large typography
 .s-typography-button--large.is-disabled {
   font-size: var(--s-font-size-medium) !important;
+}
+
+@include large-mobile {
+  .app-disclaimer {
+    span {
+      display: inline;
+    }
+    .link--mobile {
+      display: none;
+    }
+  }
 }
 </style>
 
@@ -578,6 +594,7 @@ $disclaimer-letter-spacing: -0.03em;
     }
   }
   .menu-link-container {
+    display: none;
     .el-menu-item {
       white-space: initial;
     }
@@ -720,6 +737,9 @@ $disclaimer-letter-spacing: -0.03em;
     width: $sidebar-width;
     border-right: 1px solid #e5dce0 !important;
     border-image: linear-gradient(#FAF4F8, #D5CDD0, #FAF4F8) 30;
+  }
+  .menu .menu-link-container {
+    display: block;
   }
 }
 
