@@ -347,6 +347,7 @@ export default {
       waitingForConfirmation: 'Waiting for confirmation...'
     },
     wait30Block: 'Please wait 30 block confirmations',
+    viewInSorascan: 'View in SORAScan',
     viewInEtherscan: 'View in Etherscan',
     networkTitle: '{network} transaction',
     transactionHash: 'Transaction hash',

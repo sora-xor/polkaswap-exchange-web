@@ -201,7 +201,7 @@
         "total": "Total",
         "from": "From",
         "to": "To",
-        "viewInPolkascan": "View in Polkascan",
+        "viewInSorascan": "View in SORAScan",
         "successCopy": "{value} is copied to the clipboard",
         "copy": "Copy {value}",
         "history": {
@@ -514,6 +514,7 @@
             "waitingForConfirmation": "Waiting for confirmation..."
         },
         "wait30Block": "Please wait 30 block confirmations",
+        "viewInSorascan": "View in SORAScan",
         "viewInEtherscan": "View in Etherscan",
         "networkTitle": "{network} transaction",
         "transactionHash": "Transaction hash",

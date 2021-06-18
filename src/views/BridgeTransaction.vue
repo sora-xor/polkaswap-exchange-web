@@ -38,22 +38,20 @@
                 <span :class="transactionIconStatusClasses()" />
               </div>
             </template>
-            <div v-if="transactionFromHash" :class="hashContainerClasses(!isSoraToEvm)">
+            <div v-if="transactionFromHash" :class="hashContainerClasses()">
               <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionFromHash, 24)" readonly />
               <s-button class="s-button--hash-copy" type="link" icon="basic-copy-24" @click="handleCopyTransactionHash(transactionFromHash)" />
-              <!-- TODO: Add work with Polkascan -->
               <s-dropdown
-                v-if="!isSoraToEvm"
                 class="s-dropdown--hash-menu"
                 borderRadius="mini"
                 type="ellipsis"
                 icon="basic-more-vertical-24"
                 placement="bottom-end"
-                @select="handleOpenEtherscan"
+                @select="(isSoraToEvm ? handleOpenSorascan : handleOpenEtherscan)()"
               >
                 <template slot="menu">
                   <s-dropdown-item>
-                    <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
+                    <span>{{ t(`bridgeTransaction.${isSoraToEvm ? 'viewInSorascan' : 'viewInEtherscan'}`) }}</span>
                   </s-dropdown-item>
                 </template>
               </s-dropdown>
@@ -168,11 +166,11 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory, BridgeNetworks } from '@sora-substrate/util'
+import { getExplorerLink } from '@soramitsu/soraneo-wallet-web'
 import { interpret } from 'xstate'
 
 import BridgeMixin from '@/components/mixins/BridgeMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
-import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
 import router, { lazyComponent } from '@/router'
@@ -193,6 +191,7 @@ export default class BridgeTransaction extends Mixins(
   NetworkFormatterMixin,
   NumberFormatterMixin
 ) {
+  @Getter soraNetwork!: string
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
 
   @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean
@@ -383,7 +382,7 @@ export default class BridgeTransaction extends Mixins(
 
   get transactionFromHash (): string {
     if (this.isSoraToEvm) {
-      return this.soraTransactionHash
+      return this.historyItem.blockId
     }
     return this.evmTransactionHash
   }
@@ -436,6 +435,15 @@ export default class BridgeTransaction extends Mixins(
   handleOpenEtherscan (): void {
     const hash = this.isSoraToEvm ? this.transactionToHash : this.transactionFromHash
     const url = this.getEtherscanLink(hash, true)
+    const win = window.open(url, '_blank')
+    win && win.focus()
+  }
+
+  handleOpenSorascan (): void {
+    if (!this.isSoraToEvm) {
+      return
+    }
+    const url = `${getExplorerLink(this.soraNetwork)}/block/${this.transactionFromHash}`
     const win = window.open(url, '_blank')
     win && win.focus()
   }
@@ -589,7 +597,7 @@ export default class BridgeTransaction extends Mixins(
     return classes.join(' ')
   }
 
-  hashContainerClasses (hasMenuDropdown: boolean): string {
+  hashContainerClasses (hasMenuDropdown = true): string {
     const container = 'transaction-hash-container'
     const classes = [container]
     if (hasMenuDropdown) {
