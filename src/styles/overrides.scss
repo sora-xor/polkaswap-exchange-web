@@ -99,7 +99,6 @@ div.asset-details-actions i, div.wallet-assets-item.s-flex button.el-button--pri
 div.el-pagination button, div.el-collapse-item__wrap { background-color: unset !important; }
 span.el-pagination__total { padding: 0 8px; }
 div.asset-details-balance i.s-icon-chevron-down-rounded-16 { padding-right: 8px; }
-div.el-collapse-item__content {padding-top: 0 !important;font-weight: 600;}
 
 /* FORMS */
 div.asset-search-actions {margin-bottom: 0 !important; margin-top: 16px;}
@@ -108,9 +107,6 @@ div.history-item-operation { color: var(--s-color-theme-accent-hover) !important
 div.history-item-title {font-weight: 600;letter-spacing: -0.02em;}
 div.transaction-row_key {text-transform: uppercase;}
 div.transaction-row_value{color: var(--s-color-base-content-quaternary) !important;font-weight: 600;}
-
-div.el-collapse-item__header {background-color: unset !important;}
-div.el-collapse-item__header h3 {font-weight: 700;}
 
 i.el-notification__icon.el-icon-success, i.el-notification__icon.el-icon-success:hover {
   color: var(--s-color-status-success) !important;
