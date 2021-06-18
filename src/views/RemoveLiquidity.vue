@@ -172,7 +172,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
   readonly KnownSymbols = KnownSymbols
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
-  @Getter('focusedField', { namespace }) focusedField!: Nullable<string>
   @Getter('liquidity', { namespace }) liquidity!: AccountLiquidity
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
@@ -188,7 +187,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
 
-  @Action('getLiquidity', { namespace }) getLiquidity
+  @Action('setLiquidity', { namespace }) setLiquidity
   @Action('setRemovePart', { namespace }) setRemovePart
   @Action('setLiquidityAmount', { namespace }) setLiquidityAmount
   @Action('setFirstTokenAmount', { namespace }) setFirstTokenAmount
@@ -207,20 +206,25 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
   sliderInput: any
   sliderDragButton: any
 
-  async mounted (): Promise<void> {
+  async created (): Promise<void> {
     await this.withApi(async () => {
-      await this.updateAccountLiquidity()
-      await this.getAssets()
-      await this.getLiquidity({
-        firstAddress: this.firstTokenAddress,
-        secondAddress: this.secondTokenAddress
-      })
+      await Promise.all([
+        this.getAssets(),
+        this.updateAccountLiquidity(),
+        this.setLiquidity({
+          firstAddress: this.firstTokenAddress,
+          secondAddress: this.secondTokenAddress
+        })
+      ])
+      // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
+      if (!this.liquidity) {
+        return this.handleBack()
+      }
+      this.updatePrices()
     })
-    // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
-    if (!this.liquidity) {
-      return this.handleBack()
-    }
-    this.updatePrices()
+  }
+
+  mounted (): void {
     this.sliderDragButton = this.$el.querySelector('.slider-container .el-slider__button')
     this.sliderInput = this.$el.querySelector('.s-input--remove-part .el-input__inner')
     if (this.sliderDragButton) {

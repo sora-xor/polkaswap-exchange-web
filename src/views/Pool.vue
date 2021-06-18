@@ -180,6 +180,13 @@ $pool-collapse-icon-width: 10px;
     }
   }
 }
+.pool-wrapper.lottie-loader--loading {
+  overflow: hidden;
+
+  &:after {
+    background-color: var(--s-color-utility-surface);
+  }
+}
 </style>
 
 <style lang="scss" scoped>
