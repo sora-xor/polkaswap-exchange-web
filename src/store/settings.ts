@@ -179,6 +179,7 @@ const actions = {
   async setNode ({ commit, dispatch, state, getters }, options: ConnectToNodeOptions = {}) {
     const { node, onError } = options
     const endpoint = node?.address ?? ''
+    const isTrustedEndpoint = endpoint in getters.defaultNodesHashTable
     const connectionOnDisconnected = () => {
       connection.unsubscribeEventHandlers()
       dispatch('connectToNode', { onError })
@@ -206,7 +207,7 @@ const actions = {
 
       await connection.open(endpoint, {
         once: true,
-        timeout: NODE_CONNECTION_TIMEOUT,
+        timeout: isTrustedEndpoint ? undefined : NODE_CONNECTION_TIMEOUT, // connect to trusted node without connection timeout
         eventListeners: [
           ['disconnected', connectionOnDisconnected]
         ]
@@ -217,7 +218,7 @@ const actions = {
       const nodeChainGenesisHash = connection.api.genesisHash.toHex()
 
       // if connected node is custom node, we should check genesis hash
-      if (!(endpoint in getters.defaultNodesHashTable)) {
+      if (!isTrustedEndpoint) {
         // if genesis hash is not set in state, fetch it
         if (!state.chainGenesisHash) {
           await dispatch('getNetworkChainGenesisHash')

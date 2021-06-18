@@ -46,7 +46,7 @@ export default class SettingsHeader extends Mixins(TranslationMixin) {
   display: flex;
   align-items: center;
   margin-bottom: $inner-spacing-mini;
-  margin-left: $inner-spacing-mini / 2;
+  padding-left: $inner-spacing-medium;
   color: var(--s-color-base-content-secondary);
   font-size: var(--s-font-size-small);
   line-height: var(--s-line-height-small);
