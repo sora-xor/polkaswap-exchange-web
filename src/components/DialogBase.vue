@@ -6,7 +6,7 @@
     :show-close="false"
     v-bind="{
       top: '80px',
-      width: '496px',
+      width: width || '496px',
       borderRadius: 'medium',
       ...$attrs
     }"
@@ -30,6 +30,7 @@ import DialogMixin from '@/components/mixins/DialogMixin'
 export default class DialogBase extends Mixins(DialogMixin) {
   @Prop({ default: '', type: String }) readonly customClass!: string
   @Prop({ default: '', type: String }) readonly title!: string
+  @Prop({ default: '', type: String }) readonly width!: string
 }
 </script>
 

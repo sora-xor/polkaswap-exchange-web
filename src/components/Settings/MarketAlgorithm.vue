@@ -43,7 +43,7 @@ export default class MarketAlgorithm extends Mixins(TranslationMixin) {
   }
 
   get marketAlgorithmTabs (): Array<TabItem> {
-    return this.marketAlgorithms.map(name => ({ name, label: name }))
+    return this.marketAlgorithms.map(name => ({ name, label: name, content: this.t(`dexSettings.marketAlgorithms.${name}`) }))
   }
 
   selectTab ({ name }): void {

@@ -8,7 +8,6 @@
       <p v-else-if="!accountLiquidity || !accountLiquidity.length" class="pool-info-container">
         {{ t('pool.liquidityNotFound') }}
       </p>
-      <!-- TODO 4 alexnatalia: Whole pool area should be clickable -->
       <s-collapse v-else class="pool-list" :borders="true">
         <s-collapse-item v-for="liquidityItem of accountLiquidity" :key="liquidityItem.address" :name="liquidityItem.address" class="pool-info-container">
           <template #title>
@@ -166,48 +165,17 @@ $pool-collapse-icon-width: 10px;
       border-bottom: none;
     }
     &__content {
-      margin-top: $inner-spacing-medium;
-      padding-top: $inner-spacing-medium;
-      padding-bottom: 0;
+      margin-top: 0;
+      padding: 0 $inner-spacing-medium $inner-spacing-medium;
     }
     .el-collapse-item__header {
-      height: $pair-icon-height;
+      height: #{$pair-icon-height + $inner-spacing-medium * 2};
       line-height: $pair-icon-height;
+      padding: $inner-spacing-medium;
       .pair-logo {
         margin-right: $inner-spacing-medium;
       }
     }
-    .el-icon-arrow-right {
-      position: relative;
-      &:before,
-      &:after {
-        position: absolute;
-        display: block;
-        content: '';
-        border-radius: 2px;
-        background-color: var(--s-color-base-content-primary);
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        margin: auto;
-      }
-      &:before {
-        height: $pool-collapse-icon-height;
-        width: $pool-collapse-icon-width;
-      }
-      &:after {
-        height: $pool-collapse-icon-width;
-        width: $pool-collapse-icon-height;
-      }
-      &.is-active:after {
-        background-color: transparent;
-      }
-    }
-  }
-  .el-icon-arrow-right {
-    margin-right: 0;
-    border-radius: var(--s-border-radius-small);
   }
 }
 </style>
@@ -243,7 +211,7 @@ $pair-icon-height: 36px;
     border-bottom: none;
     .pool-info-container {
       margin-bottom: $inner-spacing-mini;
-      padding: calc(#{$inner-spacing-big} - (#{$pair-icon-height} - var(--s-size-small)) / 2) $inner-spacing-medium;
+      padding: 0;
       &:last-child {
         margin-bottom: 0;
       }
