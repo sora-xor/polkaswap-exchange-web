@@ -207,6 +207,7 @@
 }
 
 @mixin bridge-content {
+  min-height: 400px;
   margin-top: $basic-spacing * 2;
   width: 100%;
 }
