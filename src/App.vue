@@ -456,6 +456,8 @@ html {
 }
 
 .el-message-box {
+  border-radius: var(--s-border-radius-small) !important;
+
   &__message {
     white-space: pre-line;
   }

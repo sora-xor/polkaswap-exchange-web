@@ -781,12 +781,14 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
         @include bottom-button;
         font-feature-settings: $s-font-feature-settings-title;
         letter-spacing: var(--s-letter-spacing-big);
-      }
-      &--view-transactions-history,
-      &--create-transaction {
-        font-weight: 700;
+        margin-top: $inner-spacing-mini * 2.5;
+        &:hover, &:focus, &:active {
+          color: var(--s-color-base-content-secondary);
+          border: none;
+        }
       }
       &--view-transactions-history {
+        font-weight: 700;
         line-height: var(--s-line-height-medium);
       }
     }
@@ -821,7 +823,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
   margin-bottom: $basic-spacing * 2;
   text-align: center;
   &-icon {
-    margin: 0 auto $inner-spacing-medium;
+    margin: $inner-spacing-medium auto;
     &--success {
       background-image: url("~@/assets/img/status-success.svg");
       background-size: 84%;

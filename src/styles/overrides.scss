@@ -109,11 +109,6 @@ div.history-item-title {font-weight: 600;letter-spacing: -0.02em;}
 div.transaction-row_key {text-transform: uppercase;}
 div.transaction-row_value{color: var(--s-color-base-content-quaternary) !important;font-weight: 600;}
 
-/* TABS */
-div.el-tabs__nav-wrap div.el-tabs__item {
-  font-size: var(--s-icon-font-size-mini) !important;
-}
-
 div.el-collapse-item__header {background-color: unset !important;}
 div.el-collapse-item__header h3 {font-weight: 700;}
 
@@ -128,32 +123,9 @@ div.article-card {
 }
 
 /*_______________________ CURRENT UI FIXES FOR CONSISTENCY (GENERALLY BASED ON TEST USERS FEEDBACK) _______________________*/
-div.history-item-operation {
-  padding: 0 !important;
-}
 i.s-icon-circle-plus-16, i.s-icon-circle-plus-16:hover {
   font-size: inherit !important;
   color: var(--s-color-base-on-accent) !important;
-}
-div.el-message-box {
-  border-radius: 24px !important;
-}
-div.transaction-content div.el-collapse, div.history-item {
-  margin-right: inherit !important;
-  margin-left: inherit !important;
-  border-radius: var(--s-border-radius-mini) !important;
-}
-button.s-button--create-transaction {
-  margin-top: 20px;
-}
-button.s-button--create-transaction:hover {
-  color: var(--s-color-base-content-secondary) !important;
-}
-button.s-button--create-transaction:active {
-  border: none !important;
-}
-div.header-icon {
-  margin: 16px auto !important;
 }
 button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-medium.s-border-radius-small.s-primary.s-i-position-left span {
   font-size: var(--s-icon-font-size-mini) !important;
