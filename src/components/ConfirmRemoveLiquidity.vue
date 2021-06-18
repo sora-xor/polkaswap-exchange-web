@@ -54,7 +54,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+import { Getter, State } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -75,12 +75,12 @@ const namespace = 'removeLiquidity'
   }
 })
 export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, DialogMixin, LoadingMixin, NumberFormatterMixin) {
+  @State(state => state[namespace].liquidityAmount) liquidityAmount!: any
+  @State(state => state[namespace].firstTokenAmount) firstTokenAmount!: any
+  @State(state => state[namespace].secondTokenAmount) secondTokenAmount!: any
+
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
-  @Getter('liquidityAmount', { namespace }) liquidityAmount!: string
-  @Getter('firstTokenAmount', { namespace }) firstTokenAmount!: string
-  @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: string
-
   @Getter('price', { namespace: 'prices' }) price!: string | number
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
 

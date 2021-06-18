@@ -59,9 +59,6 @@ function initialState (): RemoveLiquidityState {
 const state = initialState()
 
 const getters = {
-  focusedField (state: RemoveLiquidityState) {
-    return state.focusedField
-  },
   liquidity (state: RemoveLiquidityState, getters, rootState, rootGetters) {
     return rootGetters['pool/accountLiquidity'].find(liquidity =>
       liquidity.firstAddress === state.firstTokenAddress &&
@@ -91,30 +88,6 @@ const getters = {
   },
   secondTokenDecimals (_, getters) {
     return getters.secondToken.decimals || 0
-  },
-  removePart (state: RemoveLiquidityState) {
-    return state.removePart
-  },
-  liquidityAmount (state: RemoveLiquidityState) {
-    return state.liquidityAmount
-  },
-  firstTokenAmount (state: RemoveLiquidityState) {
-    return state.firstTokenAmount
-  },
-  secondTokenAmount (state: RemoveLiquidityState) {
-    return state.secondTokenAmount
-  },
-  fee (state: RemoveLiquidityState) {
-    return state.fee
-  },
-  reserveA (state: RemoveLiquidityState) {
-    return state.reserveA
-  },
-  reserveB (state: RemoveLiquidityState) {
-    return state.reserveB
-  },
-  totalSupply (state: RemoveLiquidityState) {
-    return state.totalSupply
   }
 }
 
@@ -163,17 +136,16 @@ const mutations = {
 }
 
 const actions = {
-  async setLiquidity ({ commit, dispatch }, { firstAddress, secondAddress }) {
+  async setLiquidity ({ commit, dispatch, getters }, { firstAddress, secondAddress }) {
     try {
       commit(types.SET_LIQUIDITY_TOKENS_ADDRESSES, { firstAddress, secondAddress })
-      await dispatch('getRemoveLiquidityData')
     } catch (error) {
       console.error(error)
     }
   },
 
-  setRemovePart ({ commit, getters, dispatch }, removePart) {
-    if (!getters.focusedField || getters.focusedField === 'removePart') {
+  setRemovePart ({ commit, getters, dispatch, state }, removePart) {
+    if (!state.focusedField || state.focusedField === 'removePart') {
       commit(types.SET_FOCUSED_FIELD, 'removePart')
       const part = new FPNumber(Math.round(removePart))
 
@@ -193,12 +165,12 @@ const actions = {
     }
   },
 
-  setLiquidityAmount ({ commit, getters, dispatch }, liquidityAmount) {
-    if (!getters.focusedField || getters.focusedField === 'liquidityAmount') {
+  setLiquidityAmount ({ commit, getters, dispatch, state }, liquidityAmount) {
+    if (!state.focusedField || state.focusedField === 'liquidityAmount') {
       commit(types.SET_FOCUSED_FIELD, 'liquidityAmount')
 
       if (liquidityAmount) {
-        if (liquidityAmount !== getters.liquidityAmount && !Number.isNaN(liquidityAmount)) {
+        if (liquidityAmount !== state.liquidityAmount && !Number.isNaN(liquidityAmount)) {
           const part = new FPNumber(liquidityAmount).div(FPNumber.fromCodecValue(getters.liquidityBalance))
 
           commit(types.SET_REMOVE_PART, Math.round(part.mul(new FPNumber(100)).toNumber()))
@@ -212,11 +184,11 @@ const actions = {
       dispatch('getRemoveLiquidityData')
     }
   },
-  setFirstTokenAmount ({ commit, getters, dispatch }, firstTokenAmount) {
-    if (!getters.focusedField || getters.focusedField === 'firstTokenAmount') {
+  setFirstTokenAmount ({ commit, getters, dispatch, state }, firstTokenAmount) {
+    if (!state.focusedField || state.focusedField === 'firstTokenAmount') {
       commit(types.SET_FOCUSED_FIELD, 'firstTokenAmount')
       if (firstTokenAmount) {
-        if (firstTokenAmount !== getters.firstTokenAmount && !Number.isNaN(firstTokenAmount)) {
+        if (firstTokenAmount !== state.firstTokenAmount && !Number.isNaN(firstTokenAmount)) {
           const part = new FPNumber(firstTokenAmount).div(FPNumber.fromCodecValue(getters.firstTokenBalance))
           commit(types.SET_REMOVE_PART, Math.round(part.mul(new FPNumber(100)).toNumber()))
           commit(types.SET_LIQUIDITY_AMOUNT, part.mul(FPNumber.fromCodecValue(getters.liquidityBalance)).toString())
@@ -229,11 +201,11 @@ const actions = {
       dispatch('getRemoveLiquidityData')
     }
   },
-  setSecondTokenAmount ({ commit, getters, dispatch }, secondTokenAmount) {
-    if (!getters.focusedField || getters.focusedField === 'secondTokenAmount') {
+  setSecondTokenAmount ({ commit, getters, dispatch, state }, secondTokenAmount) {
+    if (!state.focusedField || state.focusedField === 'secondTokenAmount') {
       commit(types.SET_FOCUSED_FIELD, 'secondTokenAmount')
       if (secondTokenAmount) {
-        if (Number(secondTokenAmount) !== getters.secondTokenAmount && !Number.isNaN(secondTokenAmount)) {
+        if (Number(secondTokenAmount) !== state.secondTokenAmount && !Number.isNaN(secondTokenAmount)) {
           const part = new FPNumber(secondTokenAmount).div(FPNumber.fromCodecValue(getters.secondTokenBalance))
 
           commit(types.SET_REMOVE_PART, Math.round(part.mul(new FPNumber(100)).toNumber()))
@@ -263,7 +235,7 @@ const actions = {
     await dispatch('getNetworkFee')
   },
 
-  async getNetworkFee ({ commit, getters, state }) {
+  async getNetworkFee ({ commit, state }) {
     if (state.firstTokenAddress && state.secondTokenAddress) {
       commit(types.GET_FEE_REQUEST)
 
@@ -271,10 +243,10 @@ const actions = {
         const fee = await api.getRemoveLiquidityNetworkFee(
           state.firstTokenAddress,
           state.secondTokenAddress,
-          getters.liquidityAmount || 0,
-          getters.reserveA,
-          getters.reserveB,
-          getters.totalSupply
+          state.liquidityAmount || 0,
+          state.reserveA,
+          state.reserveB,
+          state.totalSupply
         )
         commit(types.GET_FEE_SUCCESS, fee)
       } catch (error) {
@@ -295,15 +267,15 @@ const actions = {
     }
   },
 
-  async getTotalSupply ({ commit, getters, state }) {
+  async getTotalSupply ({ commit, state }) {
     try {
       commit(types.GET_TOTAL_SUPPLY_REQUEST)
       const [aOut, bOut, pts] = await api.estimateTokensRetrieved(
         state.firstTokenAddress,
         state.secondTokenAddress,
-        getters.liquidityAmount,
-        getters.reserveA,
-        getters.reserveB
+        state.liquidityAmount,
+        state.reserveA,
+        state.reserveB
       )
 
       commit(types.GET_TOTAL_SUPPLY_SUCCESS, pts)
@@ -312,14 +284,14 @@ const actions = {
     }
   },
 
-  async removeLiquidity ({ commit, getters, state, rootGetters }) {
+  async removeLiquidity ({ state, rootGetters }) {
     await api.removeLiquidity(
       state.firstTokenAddress,
       state.secondTokenAddress,
-      getters.liquidityAmount,
-      getters.reserveA,
-      getters.reserveB,
-      getters.totalSupply,
+      state.liquidityAmount,
+      state.reserveA,
+      state.reserveB,
+      state.totalSupply,
       rootGetters.slippageTolerance
     )
   },
