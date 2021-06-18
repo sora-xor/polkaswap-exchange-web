@@ -35,7 +35,7 @@ export const ZeroStringValue = '0'
 
 export const MetamaskCancellationCode = 4001
 
-export const DefaultSlippageTolerance = 0.5
+export const DefaultSlippageTolerance = '0.5'
 
 export enum MarketAlgorithms {
   SMART = 'SMART',

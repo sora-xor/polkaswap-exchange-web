@@ -336,10 +336,10 @@ $history-item-top-border-height: 1px;
 @include search-item('history--search');
 .history-item {
   display: flex;
-  margin-right: -#{$history-item-horizontal-space};
-  margin-left: -#{$history-item-horizontal-space};
   height: $history-item-height;
   padding: #{$inner-spacing-mini / 2 + $history-item-top-border-height} $history-item-horizontal-space $inner-spacing-mini;
+  border-radius: var(--s-border-radius-mini);
+
   &:not(:first-child) {
     position: relative;
     &:before {

@@ -207,6 +207,7 @@
 }
 
 @mixin bridge-content {
+  min-height: 400px;
   margin-top: $basic-spacing * 2;
   width: 100%;
 }
@@ -320,6 +321,7 @@
         }
         #{$tabs-class}__item {
           width: 50%;
+          font-size: var(--s-font-size-medium);
           font-feature-settings: $s-font-feature-settings-title;
           font-weight: 400 !important;
           text-align: center;
