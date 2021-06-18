@@ -5,7 +5,9 @@
       :key="tab.name"
       :name="tab.name"
       :label="tab.label"
-    />
+    >
+      <p v-if="tab.content" v-html="tab.content" class="settings-content" />
+    </s-tab>
   </s-tabs>
 </template>
 
@@ -39,6 +41,16 @@ export default class SettingsTabs extends Vue {
 
     &.is-active {
       box-shadow: var(--s-shadow-tab) !important;
+    }
+  }
+
+  .settings-content {
+    padding: $inner-spacing-medium $inner-spacing-small $inner-spacing-mini;
+    font-size: var(--s-font-size-extra-small);
+    line-height: var(--s-line-height-base);
+    font-weight: 300;
+    .algorithm {
+      font-weight: 400;
     }
   }
 }
