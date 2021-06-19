@@ -173,6 +173,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @Getter('nonWhitelistAssets', { namespace }) nonWhitelistAssets!: Array<Asset>
   // Wallet store
   @Getter whitelist!: Whitelist
+  @Getter whitelistIdsBySymbol!: any
   @Getter accountAssetsAddressTable
 
   // Wallet
@@ -274,7 +275,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     if (!this.customAsset) {
       return ''
     }
-    const isBlacklist = isBlacklistAsset(this.customAsset, this.whitelist)
+    const isBlacklist = isBlacklistAsset(this.customAsset, this.whitelistIdsBySymbol)
     if (isBlacklist) {
       return this.t('addAsset.scam')
     }
