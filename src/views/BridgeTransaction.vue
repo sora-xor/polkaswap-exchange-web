@@ -50,7 +50,7 @@
                 @select="(isSoraToEvm ? handleOpenSorascan : handleOpenEtherscan)()"
               >
                 <template slot="menu">
-                  <s-dropdown-item :disabled="isSoraToEvm && !soraTxBlockId">
+                  <s-dropdown-item class="s-dropdown-menu__item" :disabled="isSoraToEvm && !soraTxBlockId">
                     <span>{{ t(`bridgeTransaction.${isSoraToEvm ? 'viewInSorascan' : 'viewInEtherscan'}`) }}</span>
                   </s-dropdown-item>
                 </template>
@@ -109,7 +109,7 @@
                 @select="handleOpenEtherscan"
               >
                 <template slot="menu">
-                  <s-dropdown-item>
+                  <s-dropdown-item class="s-dropdown-menu__item">
                     <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
                   </s-dropdown-item>
                 </template>
@@ -166,7 +166,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory, BridgeNetworks } from '@sora-substrate/util'
-import { getExplorerLink } from '@soramitsu/soraneo-wallet-web'
+import { getExplorerLink, api } from '@soramitsu/soraneo-wallet-web'
 import { interpret } from 'xstate'
 
 import BridgeMixin from '@/components/mixins/BridgeMixin'
@@ -381,7 +381,10 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get soraTxBlockId (): Nullable<string> {
-    return this.historyItem?.blockId
+    if (!this.historyItem?.id) {
+      return null
+    }
+    return this.historyItem.blockId || api.bridge.getHistory(this.historyItem.id)?.blockId
   }
 
   get transactionFromHash (): string {
@@ -779,6 +782,10 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
   display: block;
   text-align: center;
   font-size: var(--s-size-mini);
+}
+// TODO: fix UI library
+.s-dropdown-menu__item {
+  border-radius: calc(var(--s-border-radius-mini) / 2);
 }
 </style>
 
