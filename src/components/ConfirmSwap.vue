@@ -125,7 +125,6 @@ export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
   }
   .transaction-number {
     color: var(--s-color-base-content-primary);
-    font-feature-settings: $s-font-feature-settings-common;
     font-weight: 600;
     word-break: break-all;
   }

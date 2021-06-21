@@ -806,7 +806,6 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     .s-button {
       &--create-transaction {
         @include bottom-button;
-        font-feature-settings: $s-font-feature-settings-title;
         letter-spacing: var(--s-letter-spacing-big);
         margin-top: $inner-spacing-mini * 2.5;
         &:hover, &:focus, &:active {
@@ -864,7 +863,6 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
   }
   &-details {
     margin-bottom: $inner-spacing-mini;
-    font-feature-settings: $s-font-feature-settings-title;
     font-weight: 700;
     line-height: var(--s-line-height-medium);
     .s-icon {
@@ -888,7 +886,6 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     h3 {
       padding-right: $inner-spacing-mini;
       padding-left: $inner-spacing-mini;
-      font-feature-settings: $s-font-feature-settings-type;
       font-weight: 700;
       letter-spacing: var(--s-letter-spacing-extra-large);
       text-transform: uppercase;

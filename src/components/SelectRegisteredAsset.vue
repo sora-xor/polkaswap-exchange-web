@@ -319,7 +319,6 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
   line-height: var(--s-line-height-base);
   letter-spacing: var(--s-letter-spacing-extra-large);
   font-weight: 700 !important;
-  font-feature-settings: $s-font-feature-settings-type;
   text-transform: uppercase;
   .asset-list + & {
     margin-top: $inner-spacing-medium;

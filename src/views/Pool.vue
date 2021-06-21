@@ -225,7 +225,6 @@ $pair-icon-height: 36px;
     }
     h3 {
       letter-spacing: var(--s-letter-spacing-small);
-      font-feature-settings: $s-font-feature-settings-title;
     }
   }
   &-info {
@@ -254,7 +253,6 @@ $pair-icon-height: 36px;
       color: var(--s-color-base-content-secondary);
       font-size: var(--s-font-size-mini);
       line-height: var(--s-line-height-small);
-      font-feature-settings: $s-font-feature-settings-common;
       text-align: center;
 
       &.is-active {

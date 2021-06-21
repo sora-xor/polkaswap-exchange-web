@@ -401,7 +401,6 @@ $token-item-height: 71px;
     flex-direction: column;
     padding-top: $inner-spacing-big;
     color: var(--s-color-base-content-tertiary);
-    font-feature-settings: $s-font-feature-settings-common;
     line-height: var(--s-line-height-big);
   }
   .empty-results-icon {
@@ -430,7 +429,6 @@ $token-item-height: 71px;
         margin-left: $inner-spacing-small;
         &_symbol {
           font-size: var(--s-font-size-big);
-          font-feature-settings: var(--s-font-feature-settings-common);
           font-weight: 600;
           line-height: var(--s-line-height-small);
         }
