@@ -13,6 +13,12 @@ import { Component, Vue } from 'vue-property-decorator'
 export default class StatusActionBadge extends Vue {}
 </script>
 
+<style lang="scss">
+.status-action-badge.s-card.neumorphic.s-size-small {
+  padding: $inner-spacing-mini / 2 $inner-spacing-big * 2 $inner-spacing-mini / 2 $inner-spacing-small;
+}
+</style>
+
 <style lang="scss" scoped>
 $base-class: '.status-action-badge';
 
@@ -21,7 +27,6 @@ $base-class: '.status-action-badge';
   align-items: center;
   flex-flow: row nowrap;
   position: relative;
-  padding: $inner-spacing-mini / 2 $inner-spacing-big * 2 $inner-spacing-mini / 2 $inner-spacing-small;
   line-height: var(--s-line-height-medium);
   font-size: var(--s-font-size-mini);
   font-weight: 300;
