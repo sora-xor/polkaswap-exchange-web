@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import SoramitsuElements, { Message, MessageBox, Notification, setTheme, setDesignSystem } from '@soramitsu/soramitsu-js-ui'
-import '@soramitsu/soramitsu-js-ui/lib/styles'
+// temporary load necessary fonts from overrides.scss
+// import '@soramitsu/soramitsu-js-ui/lib/styles'
 
 import store from '@/store'
 
