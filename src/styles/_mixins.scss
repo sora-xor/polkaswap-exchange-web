@@ -328,6 +328,11 @@
           &.is-focus:not(.is-active) {
             box-shadow: none !important;
           }
+          &.is-disabled {
+            &, &:hover, &:focus.is-focus {
+              color: var(--s-color-base-content-tertiary);
+            }
+          }
         }
       }
       &__nav {

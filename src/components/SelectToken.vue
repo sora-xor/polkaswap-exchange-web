@@ -202,21 +202,14 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get whitelistAssetsList (): Array<AccountAsset> {
-    const { asset: excludeAsset, whitelistAssets, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly } = this
+    const { asset: excludeAsset, whitelistAssets: assets, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly } = this
 
-    return this.getWhitelistAssetsWithBalances({ whitelistAssets, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly, excludeAsset })
+    return this.getAssetsWithBalances({ assets, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly, excludeAsset })
+      .sort(this.sortByBalance())
   }
 
   get filteredWhitelistTokens (): Array<AccountAsset> {
-    if (!this.query) {
-      return this.whitelistAssetsList
-    }
-    const query = this.query.toLowerCase().trim()
-    return this.whitelistAssetsList.filter(t =>
-      t.address?.toLowerCase?.() === query ||
-      t.symbol?.toLowerCase?.()?.includes?.(query) ||
-      t.name?.toLowerCase?.()?.includes?.(query)
-    )
+    return this.filterAssetsByQuery(this.whitelistAssetsList)(this.query)
   }
 
   selectToken (token: AccountAsset): void {
@@ -264,7 +257,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get sortedNonWhitelistAccountAssets (): Array<AccountAsset> {
-    return this.nonWhitelistAccountAssets.sort(this.sort)
+    return this.nonWhitelistAccountAssets.sort(this.sortByBalance())
   }
 
   get assetCardStatus (): string {
