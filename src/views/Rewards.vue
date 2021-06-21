@@ -255,7 +255,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   get actionButtonText (): string {
-    if (this.rewardsFetching) return ''
+    if (this.actionButtonLoading) return ''
     if (!this.isSoraAccountConnected) return this.t('rewards.action.connectWallet')
     if (this.transactionError) return this.t('rewards.action.retry')
     if (!this.rewardsAvailable) return this.t('rewards.action.checkRewards')
@@ -266,12 +266,12 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     return ''
   }
 
-  get actionButtonDisabled (): boolean {
-    return this.rewardsClaiming || (this.rewardsAvailable && this.isInsufficientBalance)
-  }
-
   get actionButtonLoading (): boolean {
     return this.rewardsFetching || this.feeFetching
+  }
+
+  get actionButtonDisabled (): boolean {
+    return this.rewardsClaiming || (this.rewardsAvailable && this.isInsufficientBalance)
   }
 
   async handleAction (): Promise<void> {
@@ -357,6 +357,9 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   color: var(--s-color-base-on-accent);
   border: 1px solid var(--s-color-base-on-accent);
   box-shadow: none;
+}
+.rewards-action-button i {
+  top: $inner-spacing-mini;
 }
 </style>
 
