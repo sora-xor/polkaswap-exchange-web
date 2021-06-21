@@ -64,8 +64,8 @@ const mutations = {
 }
 
 const actions = {
-  async getAccountLiquidity ({ commit, rootGetters }) {
-    if (!rootGetters.isLoggedIn) {
+  async getAccountLiquidity ({ commit, rootGetters, state }) {
+    if (!rootGetters.isLoggedIn || state.accountLiquidityFetching) {
       return
     }
     commit(types.GET_ACCOUNT_LIQUIDITY_REQUEST)
