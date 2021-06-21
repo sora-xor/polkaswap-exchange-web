@@ -2,7 +2,7 @@
   <div class="bridge s-flex">
     <s-form class="bridge-form el-form--actions" :show-message="false">
       <s-card
-        v-lottie-loader="{ loading: parentLoading }"
+        v-loading="parentLoading"
         class="bridge-content"
         border-radius="medium"
         shadow="always"
