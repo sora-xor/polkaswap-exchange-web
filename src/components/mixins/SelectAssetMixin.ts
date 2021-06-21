@@ -31,7 +31,7 @@ export default class SelectAsset extends Mixins(DialogMixin) {
     }
   }
 
-  public filteredAssetsByQuery (assets: Array<AccountAsset | RegisteredAccountAsset>, isRegisteredAssets = false) {
+  public filterAssetsByQuery (assets: Array<AccountAsset | RegisteredAccountAsset>, isRegisteredAssets = false) {
     const addressField = isRegisteredAssets ? 'externalAddress' : 'address'
 
     return (query: string): Array<AccountAsset | RegisteredAccountAsset> => {

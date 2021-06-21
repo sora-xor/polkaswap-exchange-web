@@ -209,7 +209,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get filteredWhitelistTokens (): Array<AccountAsset> {
-    return this.filteredAssetsByQuery(this.whitelistAssetsList)(this.query)
+    return this.filterAssetsByQuery(this.whitelistAssetsList)(this.query)
   }
 
   selectToken (token: AccountAsset): void {
