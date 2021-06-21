@@ -85,14 +85,21 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Getter('assets', { namespace: 'assets' }) assets!: Array<Asset>
   @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
 
+  @Action('getAccountLiquidity', { namespace }) getAccountLiquidity!: AsyncVoidFn
   @Action('updateAccountLiquidity', { namespace }) updateAccountLiquidity!: AsyncVoidFn
   @Action('destroyUpdateAccountLiquiditySubscription', { namespace }) destroyUpdateAccountLiquiditySubscription!: AsyncVoidFn
 
-  async mounted () {
+  async created () {
     await this.withApi(async () => {
-      await this.getAssets()
-      await this.updateAccountLiquidity()
+      await Promise.all([
+        this.getAssets(),
+        this.getAccountLiquidity()
+      ])
     })
+  }
+
+  mounted (): void {
+    this.updateAccountLiquidity()
   }
 
   destroyed (): void {

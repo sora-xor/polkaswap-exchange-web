@@ -200,6 +200,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
   @Action('resetData', { namespace }) resetData!: AsyncVoidFn
   @Action('getPrices', { namespace: 'prices' }) getPrices
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: AsyncVoidFn
+  @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity!: AsyncVoidFn
   @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity!: AsyncVoidFn
   @Action('destroyUpdateAccountLiquiditySubscription', { namespace: 'pool' }) destroyUpdateAccountLiquiditySubscription!: AsyncVoidFn
 
@@ -211,7 +212,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
     this.resetData()
     this.resetPrices()
     await this.withApi(async () => {
-      await this.updateAccountLiquidity()
+      await this.getAccountLiquidity()
       await this.getAssets()
       await this.getLiquidity({
         firstAddress: this.firstTokenAddress,
@@ -223,6 +224,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
       return this.handleBack()
     }
     this.updatePrices()
+    this.updateAccountLiquidity()
     this.sliderDragButton = this.$el.querySelector('.slider-container .el-slider__button')
     this.sliderInput = this.$el.querySelector('.s-input--remove-part .el-input__inner')
     if (this.sliderDragButton) {
