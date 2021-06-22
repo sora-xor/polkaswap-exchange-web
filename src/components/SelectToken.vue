@@ -356,6 +356,7 @@ $token-item-height: 71px;
   &__details {
     color: var(--s-color-base-content-quaternary);
     font-size: var(--s-font-size-mini);
+    line-height: var(--s-line-height-medium);
   }
   &__address, &__symbol {
     white-space: nowrap;
@@ -376,7 +377,6 @@ $token-item-height: 71px;
   }
   &__amount {
     &-container {
-      width: 45%;
       text-align: right;
     }
   }
@@ -395,6 +395,7 @@ $token-item-height: 71px;
 .token-list {
   max-height: calc(#{$token-item-height} * 7);
   overflow-y: auto;
+  overflow-x: hidden;
   &__empty {
     display: flex;
     align-items: center;
