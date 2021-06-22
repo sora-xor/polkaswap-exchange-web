@@ -57,6 +57,7 @@
     align-items: baseline;
     margin-bottom: $inner-spacing-mini;
     font-size: var(--s-font-size-mini);
+    font-weight: 300;
     line-height: var(--s-line-height-medium);
 
     &--footer {
@@ -335,7 +336,7 @@
         }
       }
       &__content {
-        height: calc(#{$select-asset-item-height} * 7);
+        min-height: calc(#{$select-asset-item-height} * 7);
       }
     }
   }
