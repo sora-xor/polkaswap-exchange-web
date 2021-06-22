@@ -40,7 +40,7 @@
             </template>
             <div v-if="transactionFromHash" :class="hashContainerClasses()">
               <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatTxHash(transactionFromHash)" readonly />
-              <s-button class="s-button--hash-copy" type="link" icon="basic-copy-24" @click="handleCopyTransactionHash(transactionFromHash)" />
+              <s-button class="s-button--hash-copy" type="action" alternative icon="basic-copy-24" @click="handleCopyTransactionHash(transactionFromHash)" />
               <s-dropdown
                 class="s-dropdown--hash-menu"
                 borderRadius="mini"
@@ -98,7 +98,7 @@
             </template>
             <div v-if="isTransactionStep2 && transactionToHash" :class="hashContainerClasses(isSoraToEvm)">
               <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatTxHash(transactionToHash)" readonly />
-              <s-button class="s-button--hash-copy" type="link" icon="basic-copy-24" @click="handleCopyTransactionHash(transactionToHash)" />
+              <s-button class="s-button--hash-copy" type="action" alternative icon="basic-copy-24" @click="handleCopyTransactionHash(transactionToHash)" />
               <s-dropdown
                 v-if="isSoraToEvm"
                 class="s-dropdown--hash-menu"
@@ -760,6 +760,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
   &-hash-container {
     .s-button--hash-copy {
       padding: 0;
+      color: var(--s-color-base-content-tertiary) !important;
       .s-icon-copy {
         margin-right: 0 !important;
       }
@@ -806,6 +807,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     .s-button {
       &--create-transaction {
         @include bottom-button;
+        color: var(--s-color-base-content-tertiary);
         font-feature-settings: $s-font-feature-settings-title;
         letter-spacing: var(--s-letter-spacing-big);
         margin-top: $inner-spacing-mini * 2.5;
