@@ -1,7 +1,7 @@
 <template>
   <div>
     <sora-neo-wallet
-      v-lottie-loader="{ loading: parentLoading }"
+      v-loading="parentLoading"
       class="container container--wallet"
       @close="handleClose"
       @swap="handleSwap"
