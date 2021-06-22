@@ -48,7 +48,7 @@
           </div>
         </div>
       </s-tab>
-      <s-tab :label="t('selectRegisteredAsset.customAsset.title')" name="custom">
+      <s-tab :label="t('selectRegisteredAsset.customAsset.title')" name="custom" disabled>
         <div class="custom-asset">
           <p class="custom-asset-info">
             {{ t('selectRegisteredAsset.customAsset.customInfo') }}
@@ -154,29 +154,26 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
     return classes.join(' ')
   }
 
-  get whitelistAssetsList (): Array<AccountAsset> {
-    const { asset: excludeAsset, whitelistAssets, accountAssetsAddressTable } = this
+  get assetsList (): Array<RegisteredAccountAsset> {
+    const { registeredAssets: assets, accountAssetsAddressTable, asset: excludeAsset } = this
 
-    return this.getWhitelistAssetsWithBalances({ whitelistAssets, accountAssetsAddressTable, excludeAsset })
-  }
-
-  get assetsList (): Array<AccountAsset | RegisteredAccountAsset> {
-    return this.getAssets(this.isSoraToEvm ? this.whitelistAssetsList : this.registeredAssets)
+    return this.getAssetsWithBalances({ assets, accountAssetsAddressTable, excludeAsset })
+      .sort(this.sortByBalance(!this.isSoraToEvm)) as Array<RegisteredAccountAsset>
   }
 
   get addressSymbol (): string {
     return this.isSoraToEvm ? 'address' : 'externalAddress'
   }
 
-  get filteredAssets (): Array<AccountAsset | RegisteredAccountAsset> {
-    return this.getFilteredAssets(this.assetsList)
+  get filteredAssets (): Array<RegisteredAccountAsset> {
+    return this.filterAssetsByQuery(this.assetsList, !this.isSoraToEvm)(this.query) as Array<RegisteredAccountAsset>
   }
 
   get hasFilteredAssets (): boolean {
     return Array.isArray(this.filteredAssets) && this.filteredAssets.length > 0
   }
 
-  formatBalance (asset?: AccountAsset | RegisteredAccountAsset): string {
+  formatBalance (asset?: RegisteredAccountAsset): string {
     return formatAssetBalance(asset, {
       internal: this.isSoraToEvm,
       showZeroBalance: false,
@@ -184,24 +181,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
     })
   }
 
-  getAssets (assets: Array<AccountAsset | RegisteredAccountAsset>): Array<AccountAsset | RegisteredAccountAsset> {
-    return this.asset ? assets?.filter(asset => asset.address !== this.asset.address) : assets
-  }
-
-  getFilteredAssets (assets: Array<AccountAsset | RegisteredAccountAsset>): Array<AccountAsset | RegisteredAccountAsset> {
-    if (this.query) {
-      const query = this.query.toLowerCase().trim()
-      return assets.filter(asset =>
-        `${asset.name}`.toLowerCase().includes(query) ||
-        `${asset.symbol}`.toLowerCase().includes(query) ||
-        `${asset[this.addressSymbol]}`.toLowerCase() === query
-      )
-    }
-
-    return assets
-  }
-
-  assetListClasses (filteredAssetsList: Array<AccountAsset>, isEthereumAssetsList = false): string {
+  assetListClasses (filteredAssetsList: Array<RegisteredAccountAsset>, isEthereumAssetsList = false): string {
     const componentClass = 'asset-list'
     const classes = [componentClass]
 
@@ -215,7 +195,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
     return classes.join(' ')
   }
 
-  selectAsset (asset: AccountAsset | RegisteredAccountAsset): void {
+  selectAsset (asset: RegisteredAccountAsset): void {
     this.selectedAsset = asset
     this.query = ''
     this.tabValue = this.tokenTabs[0]
@@ -224,7 +204,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
     this.isVisible = false
   }
 
-  getAssetName (asset: AccountAsset | RegisteredAccountAsset): string {
+  getAssetName (asset: RegisteredAccountAsset): string {
     return `${asset.name || asset.symbol} (${asset.symbol})`
   }
 

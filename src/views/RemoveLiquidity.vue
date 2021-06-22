@@ -201,6 +201,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
   @Action('resetData', { namespace }) resetData!: AsyncVoidFn
   @Action('getPrices', { namespace: 'prices' }) getPrices
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: AsyncVoidFn
+  @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity!: AsyncVoidFn
   @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity!: AsyncVoidFn
   @Action('destroyUpdateAccountLiquiditySubscription', { namespace: 'pool' }) destroyUpdateAccountLiquiditySubscription!: AsyncVoidFn
 
@@ -210,8 +211,9 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
 
   async created (): Promise<void> {
     await this.withApi(async () => {
-      await this.updateAccountLiquidity()
-      this.setLiquidity({
+      await this.getAccountLiquidity()
+      await this.getAssets()
+      await this.setLiquidity({
         firstAddress: this.firstTokenAddress,
         secondAddress: this.secondTokenAddress
       })
@@ -219,11 +221,14 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
       if (!this.liquidity) {
         return this.handleBack()
       }
+
       await Promise.all([
         this.getRemoveLiquidityData(),
         this.getAssets(),
         this.updatePrices()
       ])
+
+      this.updateAccountLiquidity()
     })
   }
 

@@ -39,7 +39,7 @@
               </div>
             </template>
             <div v-if="transactionFromHash" :class="hashContainerClasses()">
-              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionFromHash, 24)" readonly />
+              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatTxHash(transactionFromHash)" readonly />
               <s-button class="s-button--hash-copy" type="link" icon="basic-copy-24" @click="handleCopyTransactionHash(transactionFromHash)" />
               <s-dropdown
                 class="s-dropdown--hash-menu"
@@ -50,7 +50,7 @@
                 @select="(isSoraToEvm ? handleOpenSorascan : handleOpenEtherscan)()"
               >
                 <template slot="menu">
-                  <s-dropdown-item>
+                  <s-dropdown-item class="s-dropdown-menu__item" :disabled="isSoraToEvm && !soraTxBlockId">
                     <span>{{ t(`bridgeTransaction.${isSoraToEvm ? 'viewInSorascan' : 'viewInEtherscan'}`) }}</span>
                   </s-dropdown-item>
                 </template>
@@ -97,7 +97,7 @@
               </div>
             </template>
             <div v-if="isTransactionStep2 && transactionToHash" :class="hashContainerClasses(isSoraToEvm)">
-              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatAddress(transactionToHash, 24)" readonly />
+              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatTxHash(transactionToHash)" readonly />
               <s-button class="s-button--hash-copy" type="link" icon="basic-copy-24" @click="handleCopyTransactionHash(transactionToHash)" />
               <s-dropdown
                 v-if="isSoraToEvm"
@@ -109,7 +109,7 @@
                 @select="handleOpenEtherscan"
               >
                 <template slot="menu">
-                  <s-dropdown-item>
+                  <s-dropdown-item class="s-dropdown-menu__item">
                     <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
                   </s-dropdown-item>
                 </template>
@@ -166,7 +166,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory, BridgeNetworks } from '@sora-substrate/util'
-import { getExplorerLink } from '@soramitsu/soraneo-wallet-web'
+import { getExplorerLink, api } from '@soramitsu/soraneo-wallet-web'
 import { interpret } from 'xstate'
 
 import BridgeMixin from '@/components/mixins/BridgeMixin'
@@ -380,9 +380,16 @@ export default class BridgeTransaction extends Mixins(
     return this.t('bridgeTransaction.statuses.waitingForConfirmation')
   }
 
+  get soraTxBlockId (): Nullable<string> {
+    if (!this.historyItem?.id) {
+      return null
+    }
+    return this.historyItem.blockId || api.bridge.getHistory(this.historyItem.id)?.blockId
+  }
+
   get transactionFromHash (): string {
     if (this.isSoraToEvm) {
-      return this.historyItem.blockId
+      return this.soraTransactionHash
     }
     return this.evmTransactionHash
   }
@@ -432,20 +439,27 @@ export default class BridgeTransaction extends Mixins(
     return this.EvmSymbol.ETH
   }
 
-  handleOpenEtherscan (): void {
-    const hash = this.isSoraToEvm ? this.transactionToHash : this.transactionFromHash
-    const url = this.getEtherscanLink(hash, true)
+  private openBlockExplorer (url: string): void {
     const win = window.open(url, '_blank')
     win && win.focus()
   }
 
+  handleOpenEtherscan (): void {
+    const hash = this.isSoraToEvm ? this.transactionToHash : this.transactionFromHash
+    const url = this.getEtherscanLink(hash, true)
+    this.openBlockExplorer(url)
+  }
+
   handleOpenSorascan (): void {
-    if (!this.isSoraToEvm) {
+    if (!(this.isSoraToEvm && this.soraTxBlockId)) {
       return
     }
-    const url = `${getExplorerLink(this.soraNetwork)}/block/${this.transactionFromHash}`
-    const win = window.open(url, '_blank')
-    win && win.focus()
+    const url = `${getExplorerLink(this.soraNetwork)}/block/${this.soraTxBlockId}`
+    this.openBlockExplorer(url)
+  }
+
+  formatTxHash (hash: string): string {
+    return this.formatAddress(hash, 24)
   }
 
   handleViewTransactionsHistory (): void {
@@ -768,6 +782,10 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
   display: block;
   text-align: center;
   font-size: var(--s-size-mini);
+}
+// TODO: fix UI library
+.s-dropdown-menu__item {
+  border-radius: calc(var(--s-border-radius-mini) / 2);
 }
 </style>
 

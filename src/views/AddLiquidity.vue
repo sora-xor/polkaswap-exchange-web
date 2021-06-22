@@ -170,6 +170,7 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatter
   @Action('resetFocusedField', { namespace }) resetFocusedField
 
   @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
+  @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity!: AsyncVoidFn
   @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity!: AsyncVoidFn
   @Action('destroyUpdateAccountLiquiditySubscription', { namespace: 'pool' }) destroyUpdateAccountLiquiditySubscription!: AsyncVoidFn
 
@@ -224,7 +225,7 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatter
   }
 
   async afterApiConnect (): Promise<void> {
-    await this.updateAccountLiquidity()
+    await this.getAccountLiquidity()
 
     if (this.firstAddress && this.secondAddress) {
       await this.setDataFromLiquidity({
@@ -234,10 +235,12 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatter
     }
     // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
     if (this.firstAddress && this.secondAddress && !this.liquidityInfo) {
-      return router.push({ name: PageNames.Pool })
+      router.push({ name: PageNames.Pool })
+      return
     }
 
     await this.getAssets()
+    this.updateAccountLiquidity()
   }
 
   getTokenPosition (liquidityInfoBalance: string | undefined, tokenValue: string | CodecString | number, isPoolToken = false): string {
