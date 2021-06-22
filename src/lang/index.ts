@@ -2,7 +2,7 @@ import first from 'lodash/fp/first'
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 
-import { Language } from '@/consts'
+import { Language } from '@/consts/lang'
 
 import en from './en.json'
 

@@ -15,10 +15,6 @@ export const WalletPermissions = {
   swapAssets: true // enable 'swap' button in assets list
 }
 
-export enum Language {
-  EN = 'en'
-}
-
 export const Links = {
   about: {
     sora: 'https://sora.org/',

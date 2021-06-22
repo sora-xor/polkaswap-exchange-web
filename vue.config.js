@@ -1,3 +1,7 @@
+/* eslint @typescript-eslint/no-var-requires: "off" */
+const Language = require('./src/consts/lang.js').Language
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin')
+
 module.exports = {
   publicPath: './',
   configureWebpack: config => {
@@ -11,6 +15,10 @@ module.exports = {
             { loader: require.resolve('css-unicode-loader') })
         })
       })
+
+    config.plugins.push(new MomentLocalesPlugin({
+      localesToKeep: Object.values(Language)
+    }))
 
     if (process.env.NODE_ENV === 'production') {
       const buildDateTime = Date.now()
