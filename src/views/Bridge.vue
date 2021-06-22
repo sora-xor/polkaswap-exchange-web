@@ -6,6 +6,7 @@
         class="bridge-content"
         border-radius="medium"
         shadow="always"
+        size="big"
         primary
       >
         <generic-page-header class="header--bridge" :title="t('bridge.title')" :tooltip="t('bridge.info')">
@@ -529,7 +530,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       width: 100%;
     }
     &--next {
-      margin-top: $inner-spacing-mini;
+      margin-top: $inner-spacing-medium;
       width: 100%;
     }
   }
