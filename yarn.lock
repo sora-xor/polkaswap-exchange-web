@@ -2175,10 +2175,10 @@
     crypto-js "^4.0.0"
     lodash "^4.17.15"
 
-"@soramitsu/soramitsu-js-ui@^0.9.4":
-  version "0.9.4"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-0.9.4.tgz#6f818f0c8568b2bba6c60190c86816d2d25c6c76"
-  integrity sha512-CUrRJUpfJT5pE5P4QG3fZYNe/qXHjXd2koR/RNJhx1zy2P4AB40B5bJbfGiruyT+/Ic8WQr2PAtTn7jOV9sxxg==
+"@soramitsu/soramitsu-js-ui@^0.9.9":
+  version "0.9.9"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-0.9.9.tgz#432cf9dc5c594e24028c5ac0b474e696eeea7bff"
+  integrity sha512-LoEHmhi2CpguY3ReYY2Xaf9VuNh390eiX5dfU+XZ32PZ2S/X1kAhDo9sqxGhYaxseXBJ7EmExs9n0jYP9ODlsg==
   dependencies:
     core-js "^3.6.4"
     element-ui "^2.13.2"
@@ -2190,19 +2190,18 @@
     vuex "^3.1.3"
     vuex-class "^0.3.2"
 
-"@soramitsu/soraneo-wallet-web@^1.3.29":
-  version "1.3.29"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.3.29.tgz#dd3f11720c91689a0b3c76e41b5b54e5a7d768f0"
-  integrity sha512-sLEVBoTFUom4FBQ3M4C9b13qzA9flU73hOv8ChzOjIGYwjKhM6xBMWFBOhtpPk3l8sfrMyPXsm9uxi3sWy4tzQ==
+"@soramitsu/soraneo-wallet-web@^1.3.31":
+  version "1.3.31"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.3.31.tgz#465767cb69868f8664c99fae6904ee13715e28bc"
+  integrity sha512-cvP+XbwYSesxCEmokWcz8t0HKNH43SSESigumvQr54yidBQuKq+fU7yC8Vjti+EoQs/lSqdlu7JszwPuH4Y2QA==
   dependencies:
     "@polkadot/extension-dapp" "^0.35.0-beta.35"
     "@polkadot/vue-identicon" "^0.72.1"
     "@sora-substrate/util" "1.3.28"
-    "@soramitsu/soramitsu-js-ui" "^0.9.4"
+    "@soramitsu/soramitsu-js-ui" "^0.9.9"
     axios "^0.19.0"
     core-js "^3.6.4"
     lodash "^4.17.15"
-    lottie-vuejs "^0.4.0"
     maska "^1.4.0"
     moment "^2.29.1"
     vue "^2.6.11"
@@ -10590,19 +10589,6 @@ loose-envify@^1.0.0:
   integrity sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
-
-lottie-vuejs@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/lottie-vuejs/-/lottie-vuejs-0.4.0.tgz#9a28c2bd0ddc402a4354ce83a60cf19a8fb672ad"
-  integrity sha512-0gmUq/RGbu6EptrUEBKlr+o4YV1vuWs6wcjNcnPODz9Rrrgn664xY/QaGzJHCL6GU/Oab2oJ7MDxs4HqCY9ryA==
-  dependencies:
-    axios "^0.19.0"
-    lottie-web "^5.1.9"
-
-lottie-web@^5.1.9:
-  version "5.7.11"
-  resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.7.11.tgz#4ba74e8a629f76d3c0a0062ddc37d2b96e13765c"
-  integrity sha512-Jvz3PQqwrDj1rXGqfeQtipH/WNtM/Y4l8t8NIQXe1xUI0nVooH2bTYJGef0UkdBcWUx1s3miKsRhyP196g9tvQ==
 
 loud-rejection@^1.0.0:
   version "1.6.0"
