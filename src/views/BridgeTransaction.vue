@@ -44,7 +44,7 @@
                 @select="(isSoraToEvm ? handleOpenSorascan : handleOpenEtherscan)()"
               >
                 <template slot="menu">
-                  <s-dropdown-item class="s-dropdown-menu__item" :disabled="isSoraToEvm && !soraTxBlockId">
+                  <s-dropdown-item class="s-dropdown-menu__item" :disabled="isSoraToEvm && !(soraTxId || soraTxBlockId)">
                     <span>{{ t(`bridgeTransaction.${isSoraToEvm ? 'viewInSorascan' : 'viewInEtherscan'}`) }}</span>
                   </s-dropdown-item>
                 </template>
@@ -374,6 +374,13 @@ export default class BridgeTransaction extends Mixins(
     return this.t('bridgeTransaction.statuses.waitingForConfirmation')
   }
 
+  get soraTxId (): Nullable<string> {
+    if (!this.historyItem?.id) {
+      return null
+    }
+    return this.historyItem.txId || api.bridge.getHistory(this.historyItem.id)?.txId
+  }
+
   get soraTxBlockId (): Nullable<string> {
     if (!this.historyItem?.id) {
       return null
@@ -445,10 +452,12 @@ export default class BridgeTransaction extends Mixins(
   }
 
   handleOpenSorascan (): void {
-    if (!(this.isSoraToEvm && this.soraTxBlockId)) {
+    const txId = this.soraTxId || this.soraTxBlockId
+    const explorerPath = this.soraTxId ? 'transaction' : 'block'
+    if (!(this.isSoraToEvm && txId)) {
       return
     }
-    const url = `${getExplorerLink(this.soraNetwork)}/block/${this.soraTxBlockId}`
+    const url = `${getExplorerLink(this.soraNetwork)}/${explorerPath}/${txId}`
     this.openBlockExplorer(url)
   }
 
