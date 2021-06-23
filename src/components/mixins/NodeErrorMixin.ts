@@ -11,7 +11,7 @@ export default class NodeErrorMixin extends Mixins(TranslationMixin) {
   @State(state => state.settings.node) node!: Node
   @Action setSelectNodeDialogVisibility!: (flag: boolean) => void
 
-  protected async handleNodeError (error, node?: Node) {
+  protected async handleNodeError (error, node?: Node): Promise<void> {
     const errorKey = error instanceof AppHandledError ? error.translationKey : 'node.errors.connection'
     const errorPayload = error instanceof AppHandledError ? error.translationPayload : {}
 
@@ -34,5 +34,21 @@ export default class NodeErrorMixin extends Mixins(TranslationMixin) {
     }
 
     this.$alert(message, { title: this.t('errorText') })
+  }
+
+  protected handleNodeDisconnect (node: Node): void {
+    this.$notify({
+      message: this.t('node.warnings.disconnect', { address: node.address }),
+      type: 'warning',
+      title: ''
+    })
+  }
+
+  protected handleNodeReconnect (node: Node): void {
+    this.$notify({
+      message: this.t('node.messages.connected', { address: node.address }),
+      type: 'success',
+      title: ''
+    })
   }
 }

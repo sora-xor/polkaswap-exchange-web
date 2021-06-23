@@ -81,7 +81,7 @@ export default class SelectNode extends Mixins(TranslationMixin) {
       align-items: center;
       padding: $inner-spacing-small 0;
       white-space: normal;
-      height: initial;
+      height: initial !important;
     }
   }
 
