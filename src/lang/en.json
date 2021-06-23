@@ -693,7 +693,7 @@
         "events": {
             "XorErc20": "XOR ERC-20",
             "SoraFarmHarvest": "@:(soraText).farm harvest",
-            "NtfAirdrop": "NFT Airdrop",
+            "NftAirdrop": "NFT Airdrop",
             "LiquidityProvision": "Fees gained from liquidity provision",
             "BuyOnBondingCurve": "buying from the TBC"
         }
