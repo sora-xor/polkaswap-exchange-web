@@ -53,7 +53,7 @@ export default class SelectNode extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) disableSelect!: boolean
 
   @ModelSync('value', 'input', { type: String })
-  readonly currentAddressValue!: boolean
+  readonly currentAddressValue!: string
 }
 </script>
 

@@ -246,7 +246,6 @@ const actions = {
   async setEvmNetwork ({ commit, dispatch }, networkId: BridgeNetworks) {
     bridgeApi.externalNetwork = networkId
     await dispatch('setDefaultNetworkType', networkId)
-    await dispatch('assets/updateRegisteredAssets', {}, { root: true })
     commit(types.SET_ENV_NETWORK, networkId)
   },
 
