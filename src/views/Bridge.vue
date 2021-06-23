@@ -197,8 +197,7 @@ import {
   getAssetBalance,
   findAssetInCollection,
   asZeroValue,
-  isEthereumAddress,
-  formatAddress
+  isEthereumAddress
 } from '@/utils'
 import { bridgeApi } from '@/utils/bridge'
 
@@ -228,7 +227,6 @@ export default class Bridge extends Mixins(
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
   @Action('resetBridgeForm', { namespace }) resetBridgeForm
-  @Action('resetBalanceSubscription', { namespace }) resetBalanceSubscription!: AsyncVoidFn
   @Action('getNetworkFee', { namespace }) getNetworkFee!: AsyncVoidFn
 
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
@@ -365,18 +363,20 @@ export default class Bridge extends Mixins(
     return this.formatCodecNumber(balance, decimals)
   }
 
+  async onEvmNetworkChange (network: number): Promise<void> {
+    await this.setEvmNetwork(network)
+    await this.getRegisteredAssets()
+    await this.getNetworkFees()
+  }
+
   created (): void {
-    this.setAmount('') // reset fields
-    this.resetBridgeForm(!!router.currentRoute.params?.address)
     this.withApi(async () => {
-      await this.setEvmNetwork(bridgeApi.externalNetwork)
-      await this.getRegisteredAssets()
-      await this.getNetworkFees()
+      await this.onEvmNetworkChange(bridgeApi.externalNetwork)
     })
   }
 
   destroyed (): void {
-    this.resetBalanceSubscription()
+    this.resetBridgeForm(!!router.currentRoute.params?.address)
   }
 
   getBridgeItemTitle (isBTitle = false): string {
@@ -426,7 +426,7 @@ export default class Bridge extends Mixins(
   }
 
   async selectNetwork (network: number): Promise<void> {
-    await this.setEvmNetwork(network)
+    await this.onEvmNetworkChange(network)
   }
 
   async selectAsset (selectedAsset: any): Promise<void> {
