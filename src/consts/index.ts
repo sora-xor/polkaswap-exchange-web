@@ -103,7 +103,8 @@ export enum Components {
   TokensRow = 'Rewards/TokensRow',
   RewardsAmountHeader = 'Rewards/AmountHeader',
   RewardsAmountTable = 'Rewards/AmountTable',
-  TokenSelectButton = 'Input/TokenSelectButton'
+  TokenSelectButton = 'Input/TokenSelectButton',
+  TokenAddress = 'Input/TokenAddress'
 }
 
 interface SidebarMenuItem {

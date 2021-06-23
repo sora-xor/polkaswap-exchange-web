@@ -60,6 +60,9 @@
             </s-button>
             <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="asset" @click="openSelectAssetDialog" />
           </div>
+          <div slot="bottom" class="input-line input-line--footer">
+            <token-address v-if="isAssetSelected" v-bind="asset" :external="!isSoraToEvm" />
+          </div>
         </s-float-input>
 
         <s-button class="s-button--switch" type="action" icon="arrows-swap-90-24" @click="handleSwitchItems" />
@@ -89,6 +92,9 @@
             <token-select-button class="el-button--select-token" :token="asset" />
           </div>
           <template #bottom>
+            <div class="input-line input-line--footer">
+              <token-address v-if="isAssetSelected" v-bind="asset" :external="isSoraToEvm" />
+            </div>
             <div v-if="isNetworkBConnected && isSoraToEvm" class="bridge-item-footer">
               <s-divider />
               <toggle-text-button
@@ -191,7 +197,8 @@ import {
   getAssetBalance,
   findAssetInCollection,
   asZeroValue,
-  isEthereumAddress
+  isEthereumAddress,
+  formatAddress
 } from '@/utils'
 import { bridgeApi } from '@/utils/bridge'
 
@@ -206,7 +213,8 @@ const namespace = 'bridge'
     SelectRegisteredAsset: lazyComponent(Components.SelectRegisteredAsset),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
     ToggleTextButton: lazyComponent(Components.ToggleTextButton),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton)
+    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
 export default class Bridge extends Mixins(
