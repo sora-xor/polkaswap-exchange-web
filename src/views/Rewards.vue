@@ -1,7 +1,7 @@
 <template>
   <div v-loading="parentLoading" class="container rewards">
     <generic-page-header :title="t('rewards.title')" />
-    <div class="rewards-content" v-lottie-loader="{ loading: !parentLoading && loading }">
+    <div class="rewards-content" v-loading="!parentLoading && loading">
       <gradient-box class="rewards-block" :symbol="gradientSymbol">
         <div class="rewards-box">
           <tokens-row :symbols="rewardTokenSymbols" />
@@ -342,16 +342,6 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 </script>
 
 <style lang="scss">
-.rewards.lottie-loader--loading,
-.rewards-content.lottie-loader--loading {
-  .lottie-loader {
-    z-index: 4;
-  }
-  &:after {
-    z-index: 3;
-    background: var(--s-color-utility-surface);
-  }
-}
 .rewards-connect-button.el-button.neumorphic {
   background: transparent;
   color: var(--s-color-base-on-accent);
