@@ -445,7 +445,6 @@ html {
       border-radius: 0 !important;
       color: var(--s-color-base-content-primary);
       font-size: var(--s-font-size-large);
-      font-feature-settings: normal;
       line-height: var(--s-line-height-small);
       font-weight: 800;
     }
@@ -618,7 +617,6 @@ $disclaimer-letter-spacing: -0.03em;
     padding: $inner-spacing-mini $inner-spacing-mini * 2.5;
     height: initial;
     font-size: var(--s-font-size-medium);
-    font-feature-settings: $s-font-feature-settings-title;
     font-weight: 300;
     line-height: var(--s-line-height-medium);
 
@@ -668,7 +666,6 @@ $disclaimer-letter-spacing: -0.03em;
 .account-control {
   &-title {
     font-size: var(--s-font-size-small);
-    font-feature-settings: $s-font-feature-settings-common;
     font-variation-settings: "wght" 800;
     margin-right: $inner-spacing-mini / 2;
   }
@@ -718,7 +715,6 @@ $disclaimer-letter-spacing: -0.03em;
     font-size: 15px;
     line-height: 16px;
     margin-right: $basic-spacing;
-    font-feature-settings: var(--s-font-feature-settings-singleline);
     white-space: nowrap;
   }
 

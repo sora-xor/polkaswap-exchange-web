@@ -1,5 +1,5 @@
 <template>
-  <div v-lottie-loader="{ loading: loading || parentLoading }" class="container container--remove-liquidity">
+  <div v-loading="loading || parentLoading" class="container container--remove-liquidity">
     <generic-page-header has-button-back :title="t('removeLiquidity.title')" :tooltip="t('removeLiquidity.description')" @back="handleBack" />
     <s-form
       class="el-form--actions"
