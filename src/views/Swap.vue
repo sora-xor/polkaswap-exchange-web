@@ -347,6 +347,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   private async runRecountSwapValues (): Promise<void> {
+    if (this.isRecountingProcess) return
+
     const value = this.isExchangeB ? this.toValue : this.fromValue
     if (!this.areTokensSelected || asZeroValue(value)) return
 
@@ -396,7 +398,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       this.tokenFrom.address,
       this.tokenTo.address,
       this.liquiditySource
-    ).subscribe(this.recountSwapValues)
+    ).subscribe(this.runRecountSwapValues)
   }
 
   private async calcMinMaxRecieved (): Promise<void> {
@@ -453,10 +455,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
     if (this.isExchangeB) {
       this.setExchangeB(false)
-      await this.handleInputFieldFrom(this.toValue)
+      this.handleInputFieldFrom(this.toValue)
     } else {
       this.setExchangeB(true)
-      await this.handleInputFieldTo(this.fromValue)
+      this.handleInputFieldTo(this.fromValue)
     }
 
     this.subscribeOnSwapReserves()
