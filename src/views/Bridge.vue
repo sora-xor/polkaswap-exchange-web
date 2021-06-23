@@ -167,7 +167,7 @@
         </div>
       </s-card>
       <select-registered-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
-      <!-- <select-network :visible.sync="showSelectNetworkDialog" @select="selectNetwork" /> -->
+      <!-- <select-network :visible.sync="showSelectNetworkDialog" :value="evmNetwork" :sub-networks="subNetworks" @input="selectNetwork" /> -->
       <confirm-bridge-transaction-dialog :visible.sync="showConfirmTransactionDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmTransaction" />
     </s-form>
     <div v-if="!areNetworksConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div>
@@ -197,8 +197,7 @@ import {
   getAssetBalance,
   findAssetInCollection,
   asZeroValue,
-  isEthereumAddress,
-  formatAddress
+  isEthereumAddress
 } from '@/utils'
 import { bridgeApi } from '@/utils/bridge'
 
@@ -228,7 +227,6 @@ export default class Bridge extends Mixins(
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
   @Action('resetBridgeForm', { namespace }) resetBridgeForm
-  @Action('resetBalanceSubscription', { namespace }) resetBalanceSubscription!: AsyncVoidFn
   @Action('getNetworkFee', { namespace }) getNetworkFee!: AsyncVoidFn
 
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
@@ -365,18 +363,22 @@ export default class Bridge extends Mixins(
     return this.formatCodecNumber(balance, decimals)
   }
 
+  async onEvmNetworkChange (network: number): Promise<void> {
+    await Promise.all([
+      this.setEvmNetwork(network),
+      this.getRegisteredAssets(),
+      this.getNetworkFees()
+    ])
+  }
+
   created (): void {
-    this.setAmount('') // reset fields
-    this.resetBridgeForm(!!router.currentRoute.params?.address)
     this.withApi(async () => {
-      await this.setEvmNetwork(bridgeApi.externalNetwork)
-      await this.getRegisteredAssets()
-      await this.getNetworkFees()
+      await this.onEvmNetworkChange(bridgeApi.externalNetwork)
     })
   }
 
   destroyed (): void {
-    this.resetBalanceSubscription()
+    this.resetBridgeForm(!!router.currentRoute.params?.address)
   }
 
   getBridgeItemTitle (isBTitle = false): string {
@@ -426,7 +428,8 @@ export default class Bridge extends Mixins(
   }
 
   async selectNetwork (network: number): Promise<void> {
-    await this.setEvmNetwork(network)
+    this.showSelectNetworkDialog = false
+    await this.onEvmNetworkChange(network)
   }
 
   async selectAsset (selectedAsset: any): Promise<void> {

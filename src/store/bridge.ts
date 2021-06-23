@@ -418,6 +418,7 @@ const actions = {
     if (!withAddress) {
       dispatch('setAssetAddress', '')
     }
+    dispatch('setAmount', '')
     dispatch('setSoraToEvm', true)
     dispatch('setTransactionConfirm', false)
     dispatch('setCurrentTransactionState', STATES.INITIAL)

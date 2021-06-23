@@ -6,23 +6,22 @@
     width="464px"
   >
     <p class="networks-info">{{ t('bridge.networkInfo') }}</p>
-    <s-radio
-      v-model="selectedNetwork"
-      v-for="network in subNetworks"
-      :key="network.id"
-      :label="network.id"
-      class="network"
-      @change="selectNetwork"
-    >
-      <span class="network-name">{{ t(`bridge.${network.name}`) }}</span>
-      <token-logo :tokenSymbol="network.symbol" />
-    </s-radio>
+    <s-radio-group v-model="selectedNetworkId">
+      <s-radio
+        v-for="network in subNetworks"
+        :key="network.id"
+        :label="network.id"
+        class="network"
+      >
+        <span class="network-name">{{ t(`bridge.${network.name}`) }}</span>
+        <token-logo :tokenSymbol="network.symbol" />
+      </s-radio>
+    </s-radio-group>
   </dialog-base>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -30,7 +29,6 @@ import DialogBase from '@/components/DialogBase.vue'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
 import { SubNetwork } from '@/utils/web3-util'
-import { bridgeApi } from '@/utils/bridge'
 
 @Component({
   components: {
@@ -39,19 +37,9 @@ import { bridgeApi } from '@/utils/bridge'
   }
 })
 export default class SelectNetwork extends Mixins(TranslationMixin, DialogMixin) {
-  selectedNetwork = 0
-
-  @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<SubNetwork>
-
-  created (): void {
-    this.selectedNetwork = bridgeApi.externalNetwork || this.subNetworks[0]?.id
-  }
-
-  async selectNetwork (): Promise<void> {
-    this.$emit('select', this.selectedNetwork)
-    this.$emit('close')
-    this.isVisible = false
-  }
+  @Prop({ default: () => [], type: Array }) subNetworks!: Array<SubNetwork>
+  @ModelSync('value', 'input', { type: Number })
+  readonly selectedNetworkId!: number
 }
 </script>
 
