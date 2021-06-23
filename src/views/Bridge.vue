@@ -167,7 +167,7 @@
         </div>
       </s-card>
       <select-registered-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
-      <!-- <select-network :visible.sync="showSelectNetworkDialog" @select="selectNetwork" /> -->
+      <!-- <select-network :visible.sync="showSelectNetworkDialog" :value="evmNetwork" :sub-networks="subNetworks" @input="selectNetwork" /> -->
       <confirm-bridge-transaction-dialog :visible.sync="showConfirmTransactionDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmTransaction" />
     </s-form>
     <div v-if="!areNetworksConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div>
@@ -364,9 +364,11 @@ export default class Bridge extends Mixins(
   }
 
   async onEvmNetworkChange (network: number): Promise<void> {
-    await this.setEvmNetwork(network)
-    await this.getRegisteredAssets()
-    await this.getNetworkFees()
+    await Promise.all([
+      this.setEvmNetwork(network),
+      this.getRegisteredAssets(),
+      this.getNetworkFees()
+    ])
   }
 
   created (): void {
@@ -426,6 +428,7 @@ export default class Bridge extends Mixins(
   }
 
   async selectNetwork (network: number): Promise<void> {
+    this.showSelectNetworkDialog = false
     await this.onEvmNetworkChange(network)
   }
 
