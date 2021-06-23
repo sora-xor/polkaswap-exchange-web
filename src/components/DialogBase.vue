@@ -63,7 +63,6 @@ $el-dialog-button-size: var(--s-size-medium);
       #{$el-dialog-class}__title {
         font-size: var(--s-heading3-font-size);
         font-weight: 400 !important;
-        font-feature-settings: $s-font-feature-settings-title;
         line-height: var(--s-line-height-small);
         letter-spacing: var(--s-letter-spacing-mini);
       }

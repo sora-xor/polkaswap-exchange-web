@@ -1,5 +1,5 @@
 <template>
-  <div v-lottie-loader="{ loading: parentLoading }" class="container rewards">
+  <div v-loading="parentLoading" class="container rewards">
     <generic-page-header :title="t('rewards.title')" />
     <div class="rewards-content" v-lottie-loader="{ loading: !parentLoading && loading }">
       <gradient-box class="rewards-block" :symbol="gradientSymbol">

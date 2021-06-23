@@ -426,7 +426,6 @@ export default class About extends Mixins(TranslationMixin) {
         line-height: 100%;
 
         letter-spacing: -0.02em;
-        font-feature-settings: 'case' on, 'liga' off;
 
         padding: 10px 0;
 
@@ -483,7 +482,6 @@ export default class About extends Mixins(TranslationMixin) {
   line-height: 1.4;
 
   letter-spacing: -0.02em;
-  font-feature-settings: 'case' on, 'liga' off;
 
   color: #2A171F;
   @media screen and (min-width: 1400px) {
@@ -534,7 +532,6 @@ export default class About extends Mixins(TranslationMixin) {
         line-height: 320%;
         text-align: right;
         letter-spacing: -0.02em;
-        font-feature-settings: 'case' on;
       }
     }
   }
@@ -565,7 +562,6 @@ export default class About extends Mixins(TranslationMixin) {
   font-style: normal;
   font-weight: 800;
   letter-spacing: -0.02em;
-  font-feature-settings: 'case' on, 'liga' off;
   box-decoration-break: clone;
   -webkit-text-fill-color: transparent;
   -webkit-box-decoration-break: clone;

@@ -517,7 +517,7 @@ export default {
     events: {
       [RewardingEvents.XorErc20]: 'XOR ERC-20',
       [RewardingEvents.SoraFarmHarvest]: '@:(soraText).farm harvest',
-      [RewardingEvents.NtfAirdrop]: 'NFT Airdrop',
+      [RewardingEvents.NftAirdrop]: 'NFT Airdrop',
       [RewardingEvents.LiquidityProvision]: 'Fees gained from liquidity provision',
       [RewardingEvents.BuyOnBondingCurve]: 'buying from the TBC'
     }

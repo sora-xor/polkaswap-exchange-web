@@ -2,7 +2,7 @@
   <div class="bridge s-flex">
     <s-form class="bridge-form el-form--actions" :show-message="false">
       <s-card
-        v-lottie-loader="{ loading: parentLoading }"
+        v-loading="parentLoading"
         class="bridge-content"
         border-radius="medium"
         shadow="always"
@@ -530,7 +530,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     font-size: var(--s-font-size-mini);
     line-height: var(--s-line-height-big);
     color: var(--s-color-base-content-secondary);
-    font-feature-settings: $s-font-feature-settings-common;
   }
 
   @include buttons;
