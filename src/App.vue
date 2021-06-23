@@ -384,7 +384,7 @@ html {
   .el-notification {
     &__icon {
       position: relative;
-      width: 20px;;
+      width: 20px;
       height: 20px;
       border-radius: 50%;
       background: var(--s-color-utility-surface);
