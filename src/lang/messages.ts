@@ -105,6 +105,9 @@ export default {
       network: 'The node\n{address}\n is from the another network\n',
       existing: 'This node is already added: \'{title}\'\n'
     },
+    warnings: {
+      disconnect: 'Сonnection to the node has been lost. Reconnecting...'
+    },
     messages: {
       connected: 'Connection estabilished with node\n{address}\n',
       selectNode: 'Please select node to connect from the node list'

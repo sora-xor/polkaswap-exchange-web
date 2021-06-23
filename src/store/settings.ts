@@ -67,7 +67,7 @@ const getters = {
     return [...state.defaultNodes, ...getters.customNodes]
   },
   nodeIsConnected (state) {
-    return state.node?.address && state.nodeConnectionAllowance
+    return state.node?.address && !state.nodeAddressConnecting
   },
   soraNetwork (state) {
     return state.soraNetwork
@@ -84,9 +84,9 @@ const getters = {
 }
 
 const mutations = {
-  [types.SET_NODE_REQUEST] (state, node) {
+  [types.SET_NODE_REQUEST] (state, { node, isReconnection = false }) {
     state.nodeAddressConnecting = node?.address ?? ''
-    state.nodeConnectionAllowance = false
+    state.nodeConnectionAllowance = isReconnection
   },
   [types.SET_NODE_SUCCESS] (state, node = {}) {
     state.node = { ...node }
@@ -142,12 +142,12 @@ const actions = {
   async connectToNode ({ commit, dispatch, state }, options: ConnectToNodeOptions = {}) {
     if (!state.nodeConnectionAllowance) return
 
-    const { node, onError } = options
+    const { node, onError, ...restOptions } = options
     const defaultNode = state.defaultNodes[0]
     const requestedNode = node || (state.node.address ? state.node : defaultNode)
 
     try {
-      await dispatch('setNode', { node: requestedNode, onError })
+      await dispatch('setNode', { node: requestedNode, onError, ...restOptions })
 
       // wallet init & update flow
       if (!isWalletLoaded) {
@@ -166,7 +166,7 @@ const actions = {
       }
 
       if (defaultNode && (requestedNode?.address !== defaultNode.address)) {
-        await dispatch('connectToNode', { onError })
+        await dispatch('connectToNode', { onError, ...restOptions })
       }
 
       if (onError && typeof onError === 'function') {
@@ -177,12 +177,31 @@ const actions = {
     }
   },
   async setNode ({ commit, dispatch, state, getters }, options: ConnectToNodeOptions = {}) {
-    const { node, onError } = options
+    const {
+      node,
+      connectionOptions = {},
+      onError,
+      onDisconnect,
+      onReconnect
+    } = options
+
     const endpoint = node?.address ?? ''
     const isTrustedEndpoint = endpoint in getters.defaultNodesHashTable
+
+    const connectionOpenOptions = {
+      once: true, // by default we are trying to connect once, but keep trying after disconnect from connected node
+      timeout: isTrustedEndpoint ? undefined : NODE_CONNECTION_TIMEOUT, // connect to trusted node without connection timeout
+      ...connectionOptions
+    }
+    const isReconnection = !connectionOpenOptions.once
+    const connectingNodeChanged = () => endpoint !== state.nodeAddressConnecting
+
     const connectionOnDisconnected = () => {
       connection.unsubscribeEventHandlers()
-      dispatch('connectToNode', { onError })
+      if (typeof onDisconnect === 'function') {
+        onDisconnect(node)
+      }
+      dispatch('connectToNode', { node, onError, onDisconnect, onReconnect, connectionOptions: { once: false } })
     }
 
     try {
@@ -190,7 +209,7 @@ const actions = {
         throw new Error('Node address is not set')
       }
 
-      commit(types.SET_NODE_REQUEST, node)
+      commit(types.SET_NODE_REQUEST, { node, isReconnection })
 
       console.info('Connection request to node', endpoint)
 
@@ -198,6 +217,7 @@ const actions = {
 
       if (currentEndpoint && opened) {
         try {
+          connection.unsubscribeEventHandlers() // TODO: unsubscribe in connection.close
           await connection.close()
         } catch (error) {
           console.error('Disconnection error', error)
@@ -206,12 +226,13 @@ const actions = {
       }
 
       await connection.open(endpoint, {
-        once: true,
-        timeout: isTrustedEndpoint ? undefined : NODE_CONNECTION_TIMEOUT, // connect to trusted node without connection timeout
+        ...connectionOpenOptions,
         eventListeners: [
           ['disconnected', connectionOnDisconnected]
         ]
       })
+
+      if (connectingNodeChanged()) return
 
       console.info('Connected to node', connection.endpoint)
 
@@ -237,6 +258,10 @@ const actions = {
         commit(types.SET_NETWORK_CHAIN_GENESIS_HASH, nodeChainGenesisHash)
       }
 
+      if (isReconnection && typeof onReconnect === 'function') {
+        onReconnect(node)
+      }
+
       commit(types.SET_NODE_SUCCESS, node)
     } catch (error) {
       console.error(error)
@@ -248,7 +273,9 @@ const actions = {
           payload: { address: endpoint }
         })
 
-      commit(types.SET_NODE_FAILURE)
+      if (!connectingNodeChanged()) {
+        commit(types.SET_NODE_FAILURE)
+      }
 
       throw err
     }

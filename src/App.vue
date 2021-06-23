@@ -295,7 +295,11 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
 
   private async runAppConnectionToNode () {
     try {
-      await this.connectToNode({ onError: this.handleNodeError })
+      await this.connectToNode({
+        onError: this.handleNodeError,
+        onDisconnect: this.handleNodeDisconnect,
+        onReconnect: this.handleNodeReconnect
+      })
     } catch (error) {
       // we handled error using callback, do nothing
     }
@@ -384,6 +388,7 @@ html {
       height: 20px;
       border-radius: 50%;
       background: var(--s-color-utility-surface);
+      flex-shrink: 0;
       &:before {
         position: absolute;
         top: -2px;

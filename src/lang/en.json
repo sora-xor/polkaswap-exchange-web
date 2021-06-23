@@ -187,6 +187,7 @@
     "transaction": {
         "title": "Transaction details",
         "blockId": "Block Id",
+        "txId": "Transaction Id",
         "status": "Status",
         "statuses": {
             "pending": "Pending...",
@@ -299,6 +300,9 @@
             "connection": "An error occurred while connecting to the node\n{address}\n",
             "network": "The node\n{address}\n is from the another network\n",
             "existing": "This node is already added: '{title}'\n"
+        },
+        "warnings": {
+            "disconnect": "Сonnection to the node has been lost. Reconnecting..."
         },
         "messages": {
             "connected": "Connection estabilished with node\n{address}\n",
