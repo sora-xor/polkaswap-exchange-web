@@ -55,8 +55,6 @@ export default class TokenAddress extends Mixins(TranslationMixin) {
 
 <style lang="scss" scoped>
 .token-address {
-  color: var(--s-color-base-content-secondary);
-
   &__name {
     margin-right: $inner-spacing-mini / 2;
   }

@@ -43,7 +43,7 @@
         <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenFrom" @click="openSelectTokenDialog(true)" />
       </div>
       <div slot="bottom" class="input-line input-line--footer">
-        <token-address v-if="tokenFrom" v-bind="tokenFrom" />
+        <token-address v-if="tokenFrom" :name="tokenFrom.name" :symbol="tokenFrom.symbol" :address="tokenFrom.address" />
       </div>
     </s-float-input>
     <s-button class="el-button--switch-tokens" type="action" icon="arrows-swap-90-24" :disabled="!areTokensSelected || isRecountingProcess" @click="handleSwitchTokens" />
@@ -72,7 +72,7 @@
         <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenTo" @click="openSelectTokenDialog(false)" />
       </div>
       <div slot="bottom" class="input-line input-line--footer">
-        <token-address v-if="tokenTo" v-bind="tokenTo" />
+        <token-address v-if="tokenTo" :name="tokenTo.name" :symbol="tokenTo.symbol" :address="tokenTo.address" />
       </div>
     </s-float-input>
     <slippage-tolerance class="slippage-tolerance-settings" />
