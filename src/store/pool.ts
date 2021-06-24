@@ -13,8 +13,6 @@ const types = flow(
   'UPDATE_ACCOUNT_LIQUIDITY'
 ])
 
-let updateLiquidityIntervalId: any = null
-
 function initialState () {
   return {
     accountLiquidity: [],
@@ -76,10 +74,10 @@ const actions = {
       commit(types.GET_ACCOUNT_LIQUIDITY_FAILURE)
     }
   },
-  updateAccountLiquidity ({ commit, rootGetters, dispatch, state }) {
-    dispatch('destroyUpdateAccountLiquiditySubscription')
+  createAccountLiquiditySubscription ({ commit, rootGetters, state }) {
     const fiveSeconds = 5 * 1000
-    updateLiquidityIntervalId = setInterval(async () => {
+
+    let subscription: NodeJS.Timeout | null = setInterval(async () => {
       if (!rootGetters.isLoggedIn || state.accountLiquidityFetching) {
         return
       }
@@ -93,9 +91,15 @@ const actions = {
         commit(types.UPDATE_ACCOUNT_LIQUIDITY_FAILURE)
       }
     }, fiveSeconds)
-  },
-  destroyUpdateAccountLiquiditySubscription () {
-    clearInterval(updateLiquidityIntervalId)
+
+    const unsubscribe = () => {
+      if (subscription !== null) {
+        clearInterval(subscription)
+        subscription = null
+      }
+    }
+
+    return unsubscribe
   }
 }
 

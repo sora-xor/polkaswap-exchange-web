@@ -201,12 +201,12 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
   @Action('getPrices', { namespace: 'prices' }) getPrices
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: AsyncVoidFn
   @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity!: AsyncVoidFn
-  @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity!: AsyncVoidFn
-  @Action('destroyUpdateAccountLiquiditySubscription', { namespace: 'pool' }) destroyUpdateAccountLiquiditySubscription!: AsyncVoidFn
+  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<Function>
 
   removePartInput = 0
   sliderInput: any
   sliderDragButton: any
+  accountLiquiditySubscription!: Function
 
   async mounted (): Promise<void> {
     this.resetData()
@@ -223,8 +223,10 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
     if (!this.liquidity) {
       return this.handleBack()
     }
+
+    this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
+
     this.updatePrices()
-    this.updateAccountLiquidity()
     this.sliderDragButton = this.$el.querySelector('.slider-container .el-slider__button')
     this.sliderInput = this.$el.querySelector('.s-input--remove-part .el-input__inner')
     if (this.sliderDragButton) {
@@ -232,11 +234,13 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
     }
   }
 
-  destroyed (): void {
+  beforeDestroy (): void {
     if (this.sliderDragButton) {
       this.$el.removeEventListener('mousedown', this.sliderDragButton)
     }
-    this.destroyUpdateAccountLiquiditySubscription()
+    if (typeof this.accountLiquiditySubscription === 'function') {
+      this.accountLiquiditySubscription() // unsubscribe
+    }
   }
 
   get firstTokenAddress (): string {
