@@ -190,13 +190,12 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatter
           firstAddress: this.firstAddress,
           secondAddress: this.secondAddress
         })
+
+        if (!this.liquidityInfo) {
+          return this.handleBack()
+        }
       } else {
         await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
-      }
-
-      // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
-      if (this.firstAddress && this.secondAddress && !this.liquidityInfo) {
-        this.handleBack()
       }
     })
   }
