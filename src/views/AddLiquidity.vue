@@ -177,9 +177,9 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatter
   accountLiquiditySubscription!: Function
 
   async created (): Promise<void> {
-    await this.withApi(async () => {
-      this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
+    this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
 
+    await this.withApi(async () => {
       await Promise.all([
         this.getAssets(),
         this.getAccountLiquidity()
