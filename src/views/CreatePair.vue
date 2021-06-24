@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="parentLoading" class="container">
+  <div v-loading="parentLoading || loading" class="container">
     <generic-page-header has-button-back :title="t('createPair.title')" :tooltip="t('pool.description')" @back="handleBack" />
     <s-form
       class="el-form--actions"
@@ -134,7 +134,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
-import { FPNumber } from '@sora-substrate/util'
+import { FPNumber, KnownAssets, KnownSymbols } from '@sora-substrate/util'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
@@ -162,6 +162,13 @@ export default class CreatePair extends Mixins(TokenPairMixin, NumberFormatterMi
   @Action('createPair', { namespace }) createPair
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
+
+  async created (): Promise<void> {
+    await this.withApi(async () => {
+      await this.getAssets()
+      await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
+    })
+  }
 
   confirmCreatePair (): Promise<void> {
     return this.handleConfirm(this.createPair)

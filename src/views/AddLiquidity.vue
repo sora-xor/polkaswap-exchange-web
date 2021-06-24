@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="parentLoading" class="container">
+  <div v-loading="parentLoading || loading" class="container">
     <generic-page-header has-button-back :title="t('addLiquidity.title')" :tooltip="t('pool.description')" @back="handleBack" />
     <s-form
       class="el-form--actions"
@@ -135,13 +135,13 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { FPNumber, AccountLiquidity, CodecString } from '@sora-substrate/util'
+import { FPNumber, AccountLiquidity, CodecString, KnownAssets, KnownSymbols } from '@sora-substrate/util'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
 import router, { lazyComponent } from '@/router'
-import { Components, PageNames } from '@/consts'
+import { Components } from '@/consts'
 
 const namespace = 'addLiquidity'
 
@@ -175,6 +175,31 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatter
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
   accountLiquiditySubscription!: Function
+
+  async created (): Promise<void> {
+    await this.withApi(async () => {
+      this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
+
+      await Promise.all([
+        this.getAssets(),
+        this.getAccountLiquidity()
+      ])
+
+      if (this.firstAddress && this.secondAddress) {
+        await this.setDataFromLiquidity({
+          firstAddress: this.firstAddress,
+          secondAddress: this.secondAddress
+        })
+      } else {
+        await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
+      }
+
+      // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
+      if (this.firstAddress && this.secondAddress && !this.liquidityInfo) {
+        this.handleBack()
+      }
+    })
+  }
 
   beforeDestroy (): void {
     if (typeof this.accountLiquiditySubscription === 'function') {
@@ -224,23 +249,6 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatter
 
   get secondTokenPosition (): string {
     return this.getTokenPosition(this.liquidityInfo?.secondBalance, this.secondTokenValue)
-  }
-
-  async afterApiConnect (): Promise<void> {
-    await this.getAccountLiquidity()
-
-    if (this.firstAddress && this.secondAddress) {
-      await this.setDataFromLiquidity({
-        firstAddress: this.firstAddress,
-        secondAddress: this.secondAddress
-      })
-    }
-    // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
-    if (this.firstAddress && this.secondAddress && !this.liquidityInfo) {
-      router.push({ name: PageNames.Pool })
-    }
-
-    this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
   }
 
   getTokenPosition (liquidityInfoBalance: string | undefined, tokenValue: string | CodecString | number, isPoolToken = false): string {
