@@ -170,13 +170,16 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatter
   @Action('resetFocusedField', { namespace }) resetFocusedField
 
   @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity!: AsyncVoidFn
-  @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity!: AsyncVoidFn
-  @Action('destroyUpdateAccountLiquiditySubscription', { namespace: 'pool' }) destroyUpdateAccountLiquiditySubscription!: AsyncVoidFn
+  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<Function>
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
-  destroyed (): void {
-    this.destroyUpdateAccountLiquiditySubscription()
+  accountLiquiditySubscription!: Function
+
+  beforeDestroy (): void {
+    if (typeof this.accountLiquiditySubscription === 'function') {
+      this.accountLiquiditySubscription() // unsubscribe
+    }
   }
 
   get firstAddress (): string {
@@ -237,7 +240,7 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatter
       router.push({ name: PageNames.Pool })
     }
 
-    this.updateAccountLiquidity()
+    this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
   }
 
   getTokenPosition (liquidityInfoBalance: string | undefined, tokenValue: string | CodecString | number, isPoolToken = false): string {

@@ -86,12 +86,13 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
 
   @Action('getAccountLiquidity', { namespace }) getAccountLiquidity!: AsyncVoidFn
-  @Action('updateAccountLiquidity', { namespace }) updateAccountLiquidity!: AsyncVoidFn
-  @Action('destroyUpdateAccountLiquiditySubscription', { namespace }) destroyUpdateAccountLiquiditySubscription!: AsyncVoidFn
+  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<Function>
+
+  accountLiquiditySubscription!: Function
 
   async created () {
     await this.withApi(async () => {
-      this.updateAccountLiquidity()
+      this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
 
       await Promise.all([
         this.getAssets(),
@@ -100,8 +101,10 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
     })
   }
 
-  destroyed (): void {
-    this.destroyUpdateAccountLiquiditySubscription()
+  beforeDestroy (): void {
+    if (typeof this.accountLiquiditySubscription === 'function') {
+      this.accountLiquiditySubscription() // unsubscribe
+    }
   }
 
   getAsset (address): any {
