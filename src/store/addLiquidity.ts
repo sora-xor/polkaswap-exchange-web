@@ -37,11 +37,11 @@ interface AddLiquidityState {
   firstTokenValue: string;
   secondTokenValue: string;
   secondTokenBalance: any;
-  reserve: null | Array<CodecString>;
+  reserve: Nullable<Array<CodecString>>;
   minted: CodecString;
   fee: CodecString;
   totalSupply: CodecString;
-  focusedField: null | string;
+  focusedField: Nullable<string>;
   isAvailable: boolean;
 }
 
@@ -106,7 +106,7 @@ const getters = {
   shareOfPool (state: AddLiquidityState, getters) {
     const minted = FPNumber.fromCodecValue(getters.minted)
     return getters.firstTokenValue && getters.secondTokenValue
-      ? minted.div(FPNumber.fromCodecValue(getters.totalSupply).add(minted)).mul(new FPNumber(100)).format() || ZeroStringValue
+      ? minted.div(FPNumber.fromCodecValue(getters.totalSupply).add(minted)).mul(new FPNumber(100)).toLocaleString() || ZeroStringValue
       : ZeroStringValue
   }
 }
@@ -135,7 +135,7 @@ const mutations = {
   },
   [types.GET_RESERVE_REQUEST] (state) {
   },
-  [types.GET_RESERVE_SUCCESS] (state: AddLiquidityState, reserve: null | Array<CodecString>) {
+  [types.GET_RESERVE_SUCCESS] (state: AddLiquidityState, reserve: Nullable<Array<CodecString>>) {
     state.reserve = reserve
   },
   [types.GET_RESERVE_FAILURE] (state, error) {

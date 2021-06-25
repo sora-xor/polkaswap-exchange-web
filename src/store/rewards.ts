@@ -4,9 +4,9 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownSymbols, RewardInfo, CodecString } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, CodecString } from '@sora-substrate/util'
 import web3Util from '@/utils/web3-util'
-import { RewardsAmountHeaderItem } from '@/types/rewards'
+import { RewardsAmountHeaderItem, RewardInfoGroup } from '@/types/rewards'
 import { groupRewardsByAssetsList } from '@/utils/rewards'
 
 const types = flow(
@@ -34,6 +34,8 @@ interface RewardsState {
   selectedExternalRewards: Array<RewardInfo>;
   internalRewards: Array<RewardInfo>;
   selectedInternalRewards: Array<RewardInfo>;
+  vestedRewards: Nullable<RewardsInfo>;
+  selectedVestedRewards: Nullable<RewardsInfo>;
   rewardsFetching: boolean;
   rewardsClaiming: boolean;
   rewardsRecieved: boolean;
@@ -50,6 +52,8 @@ function initialState (): RewardsState {
     selectedExternalRewards: [],
     internalRewards: [],
     selectedInternalRewards: [],
+    vestedRewards: null,
+    selectedVestedRewards: null,
     rewardsFetching: false,
     rewardsClaiming: false,
     rewardsRecieved: false,
@@ -62,11 +66,17 @@ function initialState (): RewardsState {
 const state = initialState()
 
 const getters = {
-  claimableRewards (state: RewardsState): Array<RewardInfo> {
-    return [
+  claimableRewards (state: RewardsState): Array<RewardInfo | RewardsInfo> {
+    const buffer: Array<RewardInfo | RewardsInfo> = [
       ...state.selectedInternalRewards,
       ...state.selectedExternalRewards
     ]
+
+    if (state.selectedVestedRewards) {
+      buffer.push(state.selectedVestedRewards)
+    }
+
+    return buffer
   },
   rewardsAvailable (_, getters): boolean {
     return getters.claimableRewards.length !== 0
@@ -80,7 +90,15 @@ const getters = {
   transactionStepsCount (_, getters): number {
     return getters.externalRewardsSelected ? 2 : 1
   },
-  rewardsByAssetsList (_, getters): Array<RewardsAmountHeaderItem> {
+  vestedRewadsGroupItem (state): RewardInfoGroup {
+    return {
+      type: 'Strategic Rewards',
+      asset: KnownAssets.get(KnownSymbols.PSWAP),
+      amount: state.vestedRewards?.limit ?? 0,
+      rewards: state.vestedRewards?.rewards ?? []
+    }
+  },
+  rewardsByAssetsList (state, getters): Array<RewardsAmountHeaderItem> {
     if (!getters.rewardsAvailable) {
       return [
         {
@@ -126,14 +144,16 @@ const mutations = {
   [types.GET_REWARDS_REQUEST] (state: RewardsState) {
     state.rewardsFetching = true
   },
-  [types.GET_REWARDS_SUCCESS] (state: RewardsState, { internal = [], external = [] } = {}) {
+  [types.GET_REWARDS_SUCCESS] (state: RewardsState, { internal = [], external = [], vested = null } = {}) {
     state.internalRewards = internal
     state.externalRewards = external
+    state.vestedRewards = vested
     state.rewardsFetching = false
   },
   [types.GET_REWARDS_FAILURE] (state: RewardsState) {
     state.internalRewards = []
     state.externalRewards = []
+    state.vestedRewards = null
     state.rewardsFetching = false
   },
 
@@ -148,9 +168,10 @@ const mutations = {
     state.feeFetching = false
   },
 
-  [types.SET_SELECTED_REWARDS] (state: RewardsState, { internal = [], external = [] } = {}) {
+  [types.SET_SELECTED_REWARDS] (state: RewardsState, { internal = [], external = [], vested = null } = {}) {
     state.selectedExternalRewards = [...external]
     state.selectedInternalRewards = [...internal]
+    state.selectedVestedRewards = vested
   }
 }
 
@@ -182,15 +203,14 @@ const actions = {
   async getRewards ({ commit, dispatch }, address) {
     commit(types.GET_REWARDS_REQUEST)
     try {
-      const requests: Array<Promise<RewardInfo[]>> = [api.checkInternalAccountRewards()]
-      if (address) requests.push(api.checkExternalAccountRewards(address))
+      const internal = await api.checkLiquidityProvisionRewards()
+      const vested = await api.checkVestedRewards()
+      const external = address ? await api.checkExternalAccountRewards(address) : []
 
-      const [internal, external] = await Promise.all(requests)
-
-      commit(types.GET_REWARDS_SUCCESS, { internal, external })
+      commit(types.GET_REWARDS_SUCCESS, { internal, external, vested })
 
       // select all rewards by default
-      await dispatch('setSelectedRewards', { internal, external })
+      await dispatch('setSelectedRewards', { internal, external, vested })
     } catch (error) {
       console.error(error)
       commit(types.GET_REWARDS_FAILURE)
@@ -230,7 +250,7 @@ const actions = {
         )
 
         // update ui to success state if user not changed external account
-        if (rootGetters['web3/ethAddress'] === externalAddress) {
+        if (rootGetters['web3/evmAddress'] === externalAddress) {
           commit(types.SET_TRANSACTION_STEP, 1)
           commit(types.SET_REWARDS_RECIEVED, true)
           commit(types.SET_REWARDS_CLAIMING, false)

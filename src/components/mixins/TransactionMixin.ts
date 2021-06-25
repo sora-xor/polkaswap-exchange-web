@@ -1,5 +1,5 @@
 import { Component, Mixins } from 'vue-property-decorator'
-import { History, TransactionStatus, Operation, RewardInfo } from '@sora-substrate/util'
+import { History, TransactionStatus, Operation } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import findLast from 'lodash/fp/findLast'
 import { Action } from 'vuex-class'
@@ -14,7 +14,7 @@ import NumberFormatterMixin from './NumberFormatterMixin'
 export default class TransactionMixin extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
   private time = 0
 
-  transaction: History | null = null // It's used just for sync errors
+  transaction: Nullable<History> = null // It's used just for sync errors
 
   @Action addActiveTransaction
   @Action removeActiveTransaction
@@ -27,10 +27,10 @@ export default class TransactionMixin extends Mixins(TranslationMixin, LoadingMi
     if (value.type === Operation.Transfer) {
       params.address = formatAddress(value.to as string, 10)
     }
-    if ([Operation.Transfer, Operation.RemoveLiquidity].includes(value.type)) {
+    if ([Operation.AddLiquidity, Operation.CreatePair, Operation.Transfer, Operation.RemoveLiquidity, Operation.Swap].includes(value.type)) {
       params.amount = params.amount ? this.formatStringValue(params.amount) : ''
     }
-    if ([Operation.AddLiquidity, Operation.CreatePair, Operation.Swap].includes(value.type)) {
+    if ([Operation.AddLiquidity, Operation.CreatePair, Operation.RemoveLiquidity, Operation.Swap].includes(value.type)) {
       params.amount2 = params.amount2 ? this.formatStringValue(params.amount2) : ''
     }
     if (value.type === Operation.ClaimRewards) {

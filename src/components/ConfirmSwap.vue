@@ -27,6 +27,7 @@
     <template #footer>
       <s-button
         type="primary"
+        class="s-typography-button--large"
         :disabled="loading"
         @click="handleConfirmSwap"
       >
@@ -65,7 +66,7 @@ export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
   @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString
   @Getter('isExchangeB', { namespace }) isExchangeB!: boolean
 
-  @Getter slippageTolerance!: number
+  @Getter slippageTolerance!: string
   @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes
 
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean
@@ -124,7 +125,6 @@ export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
   }
   .transaction-number {
     color: var(--s-color-base-content-primary);
-    font-feature-settings: $s-font-feature-settings-common;
     font-weight: 600;
     word-break: break-all;
   }
@@ -136,7 +136,7 @@ export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
   display: flex;
   flex-direction: column;
   font-size: var(--s-heading2-font-size);
-  line-height: $s-line-height-small;
+  line-height: var(--s-line-height-small);
   &-info-container {
     display: flex;
     justify-content: space-between;
@@ -159,8 +159,8 @@ export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
 }
 .transaction-message {
   margin-top: $inner-spacing-mini;
-  color: var(--s-color-base-content-tertiary);
-  line-height: $s-line-height-big;
+  color: var(--s-color-base-content-primary);
+  line-height: var(--s-line-height-big);
 }
 @include vertical-divider;
 @include vertical-divider('el-divider');

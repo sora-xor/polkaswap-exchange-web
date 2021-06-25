@@ -3,18 +3,19 @@
     <div class="select-node-description p4">
       {{ t('selectNodeDialog.selectNodeForEnvironment', { environment }) }}
     </div>
-    <el-radio-group v-model="currentAddressValue" class="select-node-list s-flex">
-      <el-radio
+    <s-radio-group v-model="currentAddressValue" class="select-node-list s-flex">
+      <s-radio
         v-for="node in nodes"
         :key="node.address"
         :label="node.address"
         :value="node.address"
         :disabled="disableSelect"
+        size="medium"
         class="select-node-list__item s-flex"
       >
         <div class="select-node-item s-flex">
           <div class="select-node-info s-flex">
-            <div class="select-node-info__label h4">
+            <div class="select-node-info__label">
               {{ node.title }}
             </div>
             <div class="select-node-info__address">
@@ -22,16 +23,14 @@
             </div>
           </div>
           <div class="select-node-badge">
-            <s-icon v-if="node.connecting" name="el-icon-loading"/>
+            <s-icon v-if="node.connecting" name="el-icon-loading" />
           </div>
-          <s-button class="details select-node-details" type="link" @click="handleNode(node)">
-            <s-icon name="arrows-chevron-right-rounded-24" />
-          </s-button>
+          <s-button class="select-node-details" type="action" alternative icon="arrows-chevron-right-rounded-24" @click="handleNode(node)" />
         </div>
-      </el-radio>
-    </el-radio-group>
+      </s-radio>
+    </s-radio-group>
     <s-button
-      class="select-node-button"
+      class="select-node-button s-typography-button--large"
       @click="handleNode()"
     >
       {{ t('selectNodeDialog.addNode') }}
@@ -54,34 +53,23 @@ export default class SelectNode extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) disableSelect!: boolean
 
   @ModelSync('value', 'input', { type: String })
-  readonly currentAddressValue!: boolean
+  readonly currentAddressValue!: string
 }
 </script>
 
 <style lang="scss">
-button:not(.s-action).s-i-position-left.select-node-details > span > i[class^=s-icon-] {
-  margin-right: 0;
-}
 .select-node-list__item.el-radio {
-  & > .el-radio__input > .el-radio__inner {
-    // temporary, because primary border color is not contrast with background
-    border-color: var(--s-color-base-on-disabled);
+  &.s-medium {
+    height: initial;
   }
 
-  & > .el-radio__label {
-    display: flex;
-    align-items: center;
+  .el-radio__label {
     flex: 1;
-    padding-left: $inner-spacing-small
   }
 }
 </style>
 
 <style lang="scss" scoped>
-$list-item-height: 71px;
-$list-item-padding: 11px 0;
-$badge-container-width: 60px;
-
 .select-node {
   flex-direction: column;
   align-items: center;
@@ -97,8 +85,7 @@ $badge-container-width: 60px;
     &__item {
       margin-right: 0;
       align-items: center;
-      padding: $list-item-padding;
-      min-height: $list-item-height;
+      padding: $inner-spacing-small 0;
       white-space: normal;
     }
   }
@@ -115,11 +102,18 @@ $badge-container-width: 60px;
 
     &__label {
       color: var(--s-color-base-content-primary);
+      font-size: var(--s-font-size-big);
+      font-weight: 800;
+      letter-spacing: var(--s-letter-spacing-small);
+      line-height: var(--s-line-height-small);
     }
 
     &__address {
-      color: var(--s-color-base-content-tertiary);
-      font-size: var(--s-heading8-font-size);
+      color: var(--s-color-base-content-secondary);
+      font-size: var(--s-font-size-mini);
+      font-weight: 300;
+      letter-spacing: var(--s-letter-spacing-small);
+      line-height: var(--s-line-height-medium);
     }
   }
 
@@ -132,7 +126,7 @@ $badge-container-width: 60px;
   }
 
   &-badge {
-    width: $badge-container-width;
+    width: var(--s-size-mini);
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;

@@ -13,26 +13,22 @@
             :placeholder="t('selectToken.searchPlaceholder')"
             class="token-search"
             prefix="el-icon-search"
-            size="medium"
+            size="big"
             border-radius="mini"
           >
             <template #suffix v-if="query">
-              <s-button class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
+              <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
             </template>
           </s-input>
         </div>
-        <div v-if="filteredWhitelistTokens && filteredWhitelistTokens.length > 0" class="token-list">
+        <div v-if="filteredWhitelistTokens && filteredWhitelistTokens.length > 0" key="filtered" class="token-list">
           <div v-for="token in filteredWhitelistTokens" @click="selectToken(token)" :key="token.address" class="token-item">
             <s-col>
               <s-row flex justify="start" align="middle">
-                <token-logo :token="token" />
+                <token-logo :token="token" size="medium" />
                 <div class="token-item__info s-flex">
                   <div class="token-item__symbol">{{ token.symbol }}</div>
-                  <div class="token-item__details">{{ getTokenName(token) }}
-                    <s-tooltip :content="t('selectToken.copy')">
-                      <span class="token-item__address" @click="handleCopy(token, $event)">({{ getFormattedAddress(token) }})</span>
-                    </s-tooltip>
-                  </div>
+                  <token-address :name="token.name" :symbol="token.symbol" :address="token.address" class="token-item__details" />
                 </div>
               </s-row>
             </s-col>
@@ -41,7 +37,7 @@
             </div>
           </div>
         </div>
-        <div v-else class="token-list token-list__empty">
+        <div v-else key="empty" class="token-list token-list__empty">
           <span class="empty-results-icon" />
           {{ t('selectToken.emptyListMessage') }}
         </div>
@@ -53,66 +49,66 @@
             :placeholder="t('selectToken.custom.search')"
             class="token-search"
             prefix="el-icon-search"
-            size="medium"
+            size="big"
             border-radius="mini"
             @input="debouncedCustomAssetSearch"
           >
             <template #suffix v-if="customAddress">
-              <s-button class="s-button--clear" icon="clear-X-16" @click="resetCustomAssetFields" />
+              <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="resetCustomAssetFields" />
             </template>
           </s-input>
         </div>
         <div class="asset-select__info" v-if="alreadyAttached">{{ t('selectToken.custom.alreadyAttached') }}</div>
         <div class="asset-select__info" v-else-if="!customAsset && customAddress">{{ t('selectToken.custom.notFound') }}</div>
         <div class="add-asset-details" v-if="customAsset">
-          <div class="add-asset-details_asset">
-            <token-logo :token="customAsset" />
-            <div class="asset-description s-flex">
-              <div class="asset-description_symbol">{{ customAsset.symbol }}</div>
-              <div class="asset-description_info">{{ getTokenName(customAsset) }}
-                <s-tooltip :content="t('assets.copy')">
-                  <span class="asset-id" @click="handleCopy(customAsset, $event)">({{ getFormattedAddress(customAsset) }})</span>
-                </s-tooltip>
+          <s-card shadow="always" size="small" border-radius="mini">
+            <div class="add-asset-details_asset">
+              <token-logo :token="customAsset" />
+              <div class="asset-description s-flex">
+                <div class="asset-description_symbol">{{ customAsset.symbol }}</div>
+                <token-address :name="customAsset.name" :symbol="customAsset.symbol" :address="customAsset.address" class="asset-description_info" />
+                <s-card size="mini" :status="assetCardStatus">
+                  <div class="asset-nature">{{ assetNatureText }}</div>
+                </s-card>
               </div>
-              <div class="asset-nature" :style="assetNatureStyles">{{ assetNatureText }}</div>
             </div>
-          </div>
-          <div class="add-asset-details_text">
-            <span class="p2">{{ t('addAsset.warningTitle') }}</span>
-            <span class="warning-text p4">{{ t('addAsset.warningMessage') }}</span>
-          </div>
-          <div class="add-asset-details_confirm">
-            <span>{{ t('addAsset.understand') }}</span>
-            <s-switch v-model="isConfirmed" :disabled="loading" />
-          </div>
-          <s-button class="add-asset-details_action" type="primary" :disabled="!customAsset || !isConfirmed || loading" @click="handleAddAsset">
-            {{ t('addAsset.action') }}
-          </s-button>
+          </s-card>
+          <template v-if="connected">
+            <s-card status="warning" shadow="always" pressed class="add-asset-details_text">
+              <div class="p2">{{ t('addAsset.warningTitle') }}</div>
+              <div class="warning-text p4">{{ t('addAsset.warningMessage') }}</div>
+            </s-card>
+            <div class="add-asset-details_confirm">
+              <s-switch v-model="isConfirmed" :disabled="loading" />
+              <span>{{ t('addAsset.understand') }}</span>
+            </div>
+            <s-button class="add-asset-details_action s-typography-button--large" type="primary" :disabled="!customAsset || !isConfirmed || loading" @click="handleAddAsset">
+              {{ t('addAsset.action') }}
+            </s-button>
+          </template>
         </div>
-        <div v-if="nonWhitelistAccountAssets" class="token-list">
+        <template v-if="connected && nonWhitelistAccountAssets">
           <div class="token-list_text">{{ nonWhitelistAccountAssets.length }} {{ t('selectToken.custom.text') }}</div>
-          <div v-for="token in sortedNonWhitelistAccountAssets" @click="selectToken(token)" :key="token.address" class="token-item">
-            <s-col>
-              <s-row flex justify="start" align="middle">
-                <token-logo :token="token" />
-                <div class="token-item__info s-flex">
-                  <div class="token-item__symbol">{{ token.symbol }}</div>
-                  <div class="token-item__details">{{ getTokenName(token) }}
-                    <s-tooltip :content="t('selectToken.copy')">
-                      <span class="token-item__address" @click="handleCopy(token, $event)">({{ getFormattedAddress(token) }})</span>
-                    </s-tooltip>
+          <div class="token-list">
+            <div v-for="token in sortedNonWhitelistAccountAssets" @click="selectToken(token)" :key="token.address" class="token-item">
+              <s-col>
+                <s-row flex justify="start" align="middle">
+                  <token-logo :token="token" />
+                  <div class="token-item__info s-flex">
+                    <div class="token-item__symbol">{{ token.symbol }}</div>
+                    <token-address :name="token.name" :symbol="token.symbol" :address="token.address" class="token-item__details" />
                   </div>
-                </div>
-              </s-row>
-            </s-col>
-            <div v-if="connected" class="token-item__amount-container">
-              <span class="token-item__amount">{{ formatBalance(token) }}</span>
-            </div>
-            <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
-              <s-icon name="basic-trash-24" />
+                </s-row>
+              </s-col>
+              <div v-if="connected" class="token-item__amount-container">
+                <span class="token-item__amount">{{ formatBalance(token) }}</span>
+              </div>
+              <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
+                <s-icon name="basic-trash-24" />
+              </div>
             </div>
           </div>
-        </div>
+        </template>
       </s-tab>
     </s-tabs>
   </dialog-base>
@@ -120,31 +116,30 @@
 
 <script lang="ts">
 import first from 'lodash/fp/first'
-import isNil from 'lodash/fp/isNil'
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { Asset, AccountAsset } from '@sora-substrate/util'
+import { Asset, AccountAsset, isBlacklistAsset, Whitelist } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { isBlacklistAsset } from 'polkaswap-token-whitelist'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import DialogMixin from '@/components/mixins/DialogMixin'
+import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
-import { Components } from '@/consts'
+import { Components, ObjectInit } from '@/consts'
 import { lazyComponent } from '@/router'
-import { copyToClipboard, formatAddress, asZeroValue, getAssetBalance, formatAssetBalance, debouncedInputHandler } from '@/utils'
+import { formatAssetBalance, debouncedInputHandler } from '@/utils'
 
 const namespace = 'assets'
 
 @Component({
   components: {
     DialogBase,
-    TokenLogo: lazyComponent(Components.TokenLogo)
+    TokenLogo: lazyComponent(Components.TokenLogo),
+    TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
-export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, LoadingMixin, NumberFormatterMixin) {
+export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMixin, LoadingMixin, NumberFormatterMixin) {
   readonly tokenTabs = [
     'assets',
     'custom'
@@ -155,17 +150,20 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   customAddress = ''
   alreadyAttached = false
   isConfirmed = false
-  customAsset: Asset | null = null
+  customAsset: Nullable<Asset> = null
 
-  @Prop({ default: () => false, type: Boolean }) readonly connected!: boolean
-  @Prop({ default: () => null, type: Object }) readonly asset!: Asset
-  @Prop({ default: () => false, type: Boolean }) readonly accountAssetsOnly!: boolean
-  @Prop({ default: () => false, type: Boolean }) readonly notNullBalanceOnly!: boolean
+  @Prop({ default: false, type: Boolean }) readonly connected!: boolean
+  @Prop({ default: ObjectInit, type: Object }) readonly asset!: Asset
+  @Prop({ default: false, type: Boolean }) readonly accountAssetsOnly!: boolean
+  @Prop({ default: false, type: Boolean }) readonly notNullBalanceOnly!: boolean
 
   @Getter('whitelistAssets', { namespace }) whitelistAssets!: Array<Asset>
   @Getter('nonWhitelistAccountAssets', { namespace }) nonWhitelistAccountAssets!: Array<AccountAsset>
   @Getter('nonWhitelistAssets', { namespace }) nonWhitelistAssets!: Array<Asset>
-  @Getter accountAssetsAddressTable // Wallet store
+  // Wallet store
+  @Getter whitelist!: Whitelist
+  @Getter whitelistIdsBySymbol!: any
+  @Getter accountAssetsAddressTable
 
   // Wallet
   @Action addAsset!: (options: { address?: string }) => Promise<void>
@@ -185,19 +183,7 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
 
     this.tabValue = first(this.tokenTabs)
     this.resetCustomAssetFields()
-
-    const input = this.$refs.search as any
-
-    if (input && typeof input.focus === 'function') {
-      input.focus()
-    }
-  }
-
-  private sort (a: AccountAsset, b: AccountAsset): number {
-    const emptyABalance = isNil(a.balance) || !+a.balance.transferable
-    const emptyBBalance = isNil(b.balance) || !+b.balance.transferable
-    if (emptyABalance === emptyBBalance) return 0
-    return emptyABalance && !emptyBBalance ? 1 : -1
+    this.focusSearchInput()
   }
 
   handleTabClick ({ name }): void {
@@ -205,38 +191,14 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   }
 
   get whitelistAssetsList (): Array<AccountAsset> {
-    const { asset, whitelistAssets, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly } = this
+    const { asset: excludeAsset, whitelistAssets: assets, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly } = this
 
-    return whitelistAssets.reduce((result: Array<AccountAsset>, item: Asset) => {
-      if (!item || (asset && item.address === asset.address)) return result
-
-      const accountAsset = accountAssetsAddressTable[item.address]
-
-      if (accountAssetsOnly && !accountAsset) return result
-
-      const balance = accountAsset?.balance
-
-      if (notNullBalanceOnly && asZeroValue(getAssetBalance(accountAsset))) return result
-
-      const prepared = {
-        ...item,
-        balance
-      } as AccountAsset
-
-      return [...result, prepared]
-    }, []).sort(this.sort)
+    return this.getAssetsWithBalances({ assets, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly, excludeAsset })
+      .sort(this.sortByBalance())
   }
 
   get filteredWhitelistTokens (): Array<AccountAsset> {
-    if (!this.query) {
-      return this.whitelistAssetsList
-    }
-    const query = this.query.toLowerCase().trim()
-    return this.whitelistAssetsList.filter(t =>
-      t.address?.toLowerCase?.() === query ||
-      t.symbol?.toLowerCase?.()?.includes?.(query) ||
-      t.name?.toLowerCase?.()?.includes?.(query)
-    )
+    return this.filterAssetsByQuery(this.whitelistAssetsList)(this.query)
   }
 
   selectToken (token: AccountAsset): void {
@@ -244,32 +206,6 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
     this.$emit('select', token)
     this.$emit('close')
     this.isVisible = false
-  }
-
-  async handleCopy (token: AccountAsset, event: Event): Promise<void> {
-    event.stopImmediatePropagation()
-    try {
-      await copyToClipboard(token.address)
-      this.$notify({
-        message: this.t('selectToken.successCopy', { symbol: token.symbol }),
-        type: 'success',
-        title: ''
-      })
-    } catch (error) {
-      this.$notify({
-        message: `${this.t('warningText')} ${error}`,
-        type: 'warning',
-        title: ''
-      })
-    }
-  }
-
-  getFormattedAddress (token: AccountAsset): string {
-    return formatAddress(token.address, 10)
-  }
-
-  getTokenName (token: AccountAsset): string {
-    return `${token.name || token.symbol}`
   }
 
   formatBalance (token: AccountAsset): string {
@@ -284,24 +220,18 @@ export default class SelectToken extends Mixins(TranslationMixin, DialogMixin, L
   }
 
   get sortedNonWhitelistAccountAssets (): Array<AccountAsset> {
-    return this.nonWhitelistAccountAssets.sort(this.sort)
+    return this.nonWhitelistAccountAssets.sort(this.sortByBalance())
   }
 
-  get assetNatureStyles (): object {
-    const styles = {}
-    if (!this.customAsset) {
-      return styles
-    }
-    return {
-      color: 'var(--s-color-status-error)'
-    }
+  get assetCardStatus (): string {
+    return !this.customAsset ? 'success' : 'error'
   }
 
   get assetNatureText (): string {
     if (!this.customAsset) {
       return ''
     }
-    const isBlacklist = isBlacklistAsset(this.customAsset)
+    const isBlacklist = isBlacklistAsset(this.customAsset, this.whitelistIdsBySymbol)
     if (isBlacklist) {
       return this.t('addAsset.scam')
     }
@@ -376,43 +306,35 @@ $token-item-height: 71px;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  transition: var(--s-transition-default);
   &:hover {
     background-color: var(--s-color-base-background-hover);
   }
   &__info {
     flex-direction: column;
   }
-  &__info, &__amount {
-    font-size: var(--s-font-size-small);
-  }
   &__details {
-    color: var(--s-color-base-content-tertiary);
+    color: var(--s-color-base-content-quaternary);
     font-size: var(--s-font-size-mini);
+    line-height: var(--s-line-height-medium);
   }
   &__address, &__symbol {
     white-space: nowrap;
   }
-  &__address {
-    outline: none;
-    &:hover {
-      text-decoration: underline;
-      cursor: pointer;
-    }
-  }
-  &__symbol {
-    font-size: var(--s-font-size-small);
-    margin-bottom: $inner-spacing-mini;
-    font-weight: 600;
+  &__symbol, &__amount {
+    font-size: var(--s-font-size-big);
+    line-height: var(--s-line-height-small);
+    letter-spacing: var(--s-letter-spacing-small);
+    font-weight: 800;
+    white-space: nowrap;
   }
   &__amount {
-    font-weight: 600;
     &-container {
-      width: 45%;
       text-align: right;
     }
   }
   &__remove {
-    margin-top: -25px;
+    margin-top: -5px;
     margin-left: $inner-spacing-medium;
   }
   .s-col {
@@ -424,16 +346,16 @@ $token-item-height: 71px;
   }
 }
 .token-list {
-  height: calc(#{$token-item-height} * 7);
-  overflow: auto;
+  max-height: calc(#{$token-item-height} * 7);
+  overflow-y: auto;
+  overflow-x: hidden;
   &__empty {
     display: flex;
     align-items: center;
     flex-direction: column;
     padding-top: $inner-spacing-big;
     color: var(--s-color-base-content-tertiary);
-    font-feature-settings: $s-font-feature-settings-common;
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
   }
   .empty-results-icon {
     margin-bottom: $inner-spacing-medium;
@@ -444,26 +366,31 @@ $token-item-height: 71px;
   }
 }
 .add-asset-details {
+  & > * {
+    margin-bottom: $inner-spacing-medium;
+  }
+
   &_asset {
     display: flex;
     align-items: center;
-    background: var(--s-color-base-background);
-    padding: $inner-spacing-small $inner-spacing-medium;
-    margin-bottom: $inner-spacing-medium;
-    border-radius: var(--s-border-radius-small);
+
     .asset {
       &-description {
+        align-items: flex-start;
         flex: 1;
         flex-direction: column;
         line-height: var(--s-line-height-big);
         margin-left: $inner-spacing-small;
         &_symbol {
-          font-feature-settings: var(--s-font-feature-settings-common);
+          font-size: var(--s-font-size-big);
           font-weight: 600;
+          line-height: var(--s-line-height-small);
         }
         &_info {
-          color: var(--s-color-base-content-tertiary);
+          color: var(--s-color-base-content-secondary);
           font-size: var(--s-font-size-mini);
+          font-weight: 300;
+          line-height: var(--s-line-height-medium);
           .asset-id {
             outline: none;
             &:hover {
@@ -478,25 +405,19 @@ $token-item-height: 71px;
       }
     }
   }
-  &_text {
-    display: flex;
-    flex-direction: column;
-    padding: $inner-spacing-medium;
-    margin-bottom: $inner-spacing-medium;
-    border: 1px solid var(--s-color-base-border-secondary);
-    border-radius: var(--s-border-radius-small);
-    .warning-text {
-      color: var(-s-color-base-content-secondary);
-    }
-  }
   &_confirm {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background: var(--s-color-base-background);
-    padding: $inner-spacing-small $inner-spacing-medium;
-    border-radius: var(--s-border-radius-mini);
-    margin-bottom: $inner-spacing-medium;
+    justify-content: flex-start;
+    padding: 0 $inner-spacing-medium;
+
+    & > span {
+      margin-left: calc(var(--s-basic-spacing) * 1.5);
+      font-size: var(--s-font-size-medium);
+      font-weight: 300;
+      letter-spacing: var(--s-letter-spacing-small);
+      line-height: var(--s-line-height-medium);;
+    }
   }
   &_action {
     width: 100%;

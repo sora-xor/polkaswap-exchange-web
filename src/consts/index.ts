@@ -1,7 +1,8 @@
+import invert from 'lodash/fp/invert'
 import { LiquiditySourceTypes } from '@sora-substrate/util'
 
 import pkg from '../../package.json'
-import { KnownBridgeAsset } from '@/utils/web3-util'
+import { KnownBridgeAsset } from '../utils/web3-util'
 
 export const app = {
   version: pkg.version,
@@ -14,6 +15,10 @@ export const WalletPermissions = {
   swapAssets: true // enable 'swap' button in assets list
 }
 
+export enum Language {
+  EN = 'en'
+}
+
 export const Links = {
   about: {
     sora: 'https://sora.org/',
@@ -24,11 +29,13 @@ export const Links = {
   }
 }
 
+export const ObjectInit = () => null
+
 export const ZeroStringValue = '0'
 
 export const MetamaskCancellationCode = 4001
 
-export const DefaultSlippageTolerance = 0.5
+export const DefaultSlippageTolerance = '0.5'
 
 export enum MarketAlgorithms {
   SMART = 'SMART',
@@ -43,6 +50,8 @@ export const LiquiditySourceForMarketAlgorithm = {
   [MarketAlgorithms.TBC]: LiquiditySourceTypes.MulticollateralBondingCurvePool,
   [MarketAlgorithms.XYK]: LiquiditySourceTypes.XYKPool
 }
+
+export const MarketAlgorithmForLiquiditySource = invert(LiquiditySourceForMarketAlgorithm)
 
 export enum PageNames {
   About = 'About',
@@ -84,11 +93,11 @@ export enum Components {
   NodeInfo = 'Settings/Node/NodeInfo',
   SelectNodeDialog = 'SelectNodeDialog',
   StatusActionBadge = 'StatusActionBadge',
-  BrandedTooltip = 'BrandedTooltip',
   ExternalLink = 'ExternalLink',
   HelpDialog = 'HelpDialog',
   AboutNetworkDialog = 'AboutNetworkDialog',
   SidebarItemContent = 'SidebarItemContent',
+  SelectNetwork = 'SelectNetwork',
   SelectRegisteredAsset = 'SelectRegisteredAsset',
   ConfirmBridgeTransactionDialog = 'ConfirmBridgeTransactionDialog',
   BridgeTransaction = 'BridgeTransaction',
@@ -97,7 +106,9 @@ export enum Components {
   GradientBox = 'Rewards/GradientBox',
   TokensRow = 'Rewards/TokensRow',
   RewardsAmountHeader = 'Rewards/AmountHeader',
-  RewardsAmountTable = 'Rewards/AmountTable'
+  RewardsAmountTable = 'Rewards/AmountTable',
+  TokenSelectButton = 'Input/TokenSelectButton',
+  TokenAddress = 'Input/TokenAddress'
 }
 
 interface SidebarMenuItem {
@@ -227,7 +238,10 @@ export enum NetworkTypes {
   Mainnet = 'Mainnet'
 }
 
-export const EthSymbol = 'ETH'
+export enum EvmSymbol {
+  ETH = 'ETH',
+  VT = 'VT'
+}
 
 const gasLimit = {
   approve: 70000,
