@@ -19,14 +19,14 @@ export default class ExternalLink extends Vue {
 .external-link {
   display: inline-block;
   text-decoration: none;
-  color: var(--s-color-button-tertiary-color);
+  color: var(--s-color-theme-accent);
 
   &__icon {
     margin-left: $inner-spacing-mini / 2;
     font-size: 0.75em !important;
 
     &, &:hover {
-      color: var(--s-color-button-tertiary-color) !important;
+      color: var(--s-color-theme-accent) !important;
     }
   }
 }

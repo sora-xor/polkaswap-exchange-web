@@ -1,35 +1,22 @@
 <template>
-  <div id="app">
+  <s-design-system-provider :value="libraryDesignSystem" id="app">
     <header class="header">
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
-
       <div class="app-controls s-flex">
-        <branded-tooltip v-if="nodesFeatureEnabled" popper-class="info-tooltip" placement="bottom">
-          <div slot="content">
-            {{ t('selectNodeText') }}
+        <s-button type="tertiary" alternative size="medium" class="node-control" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
+          <div class="node-control__text">
+            <div class="node-control-title">{{ node.name }}</div>
+            <div class="node-control-network">{{ chainAndNetworkText }}</div>
           </div>
-          <s-button class="app-control node-control" @click="openSelectNodeDialog">
-            <token-logo class="node-control__logo" v-bind="nodeLogo" />
-            <div class="node-control__text">
-              <div class="node-control-title">{{ node.name }}</div>
-              <div class="node-control-network">{{ chainAndNetworkText }}</div>
-            </div>
-          </s-button>
-        </branded-tooltip>
-        <branded-tooltip :disabled="isLoggedIn" popper-class="info-tooltip wallet-tooltip" placement="bottom">
-          <div slot="content" class="app-controls__wallet-tooltip">
-            {{ t('connectWalletTextTooltip') }}
+          <token-logo class="node-control__logo" v-bind="nodeLogo" />
+        </s-button>
+        <s-button :type="isLoggedIn ? 'tertiary' : 'secondary'" class="account-control" alternative size="medium" :tooltip="t('connectWalletTextTooltip')" :disabled="loading" @click="goTo(PageNames.Wallet)">
+          <div class="account-control-title">{{ accountInfo }}</div>
+          <div class="account-control-icon">
+            <s-icon v-if="!isLoggedIn" name="finance-wallet-24" />
+            <WalletAvatar v-else :address="account.address"/>
           </div>
-          <s-button class="app-control wallet" :disabled="loading" @click="goTo(PageNames.Wallet)">
-            <div class="account">
-              <div class="account-name">{{ accountInfo }}</div>
-              <div class="account-icon">
-                <s-icon v-if="!isLoggedIn" name="finance-wallet-24" />
-                <WalletAvatar v-else :address="account.address"/>
-              </div>
-            </div>
-          </s-button>
-        </branded-tooltip>
+        </s-button>
       </div>
     </header>
     <div class="app-main">
@@ -99,7 +86,7 @@
                 tag="a"
                 target="_blank"
                 rel="nofollow noopener"
-                class="el-menu-item menu-item--small"
+                class="el-menu-item menu-item--small menu-item--general-link"
               />
             </li>
             <li class="menu-link-container">
@@ -109,7 +96,7 @@
                 tag="a"
                 target="_blank"
                 rel="nofollow noopener"
-                class="el-menu-item menu-item--small"
+                class="el-menu-item menu-item--small menu-item--general-link"
               />
             </li>
             <!-- <sidebar-item-content
@@ -124,7 +111,7 @@
       </aside>
       <div class="app-body">
         <div class="app-content">
-          <router-view :parent-loading="loading" />
+          <router-view :parent-loading="loading || !nodeIsConnected" />
           <p class="app-disclaimer" :class="isAboutPage ? 'about-disclaimer' : ''" v-html="t('disclaimer')" />
         </div>
         <footer class="app-footer" :class="isAboutPage ? 'about-footer' : ''">
@@ -138,24 +125,24 @@
 
     <help-dialog :visible.sync="showHelpDialog" />
     <select-node-dialog :visible.sync="showSelectNodeDialog" />
-  </div>
+  </s-design-system-provider>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
-import { WALLET_CONSTS, WalletAvatar } from '@soramitsu/soraneo-wallet-web'
-import { KnownSymbols } from '@sora-substrate/util'
+import { Action, Getter, State } from 'vuex-class'
+import { WALLET_CONSTS, WalletAvatar, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
+import { KnownSymbols, FPNumber } from '@sora-substrate/util'
 
 import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize } from '@/consts'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
-import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
 
-import router, { lazyComponent } from '@/router'
 import axios from '@/api'
+import router, { lazyComponent } from '@/router'
 import { formatAddress, disconnectWallet } from '@/utils'
+import { ConnectToNodeOptions } from '@/types/nodes'
 
 const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
 const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
@@ -163,14 +150,13 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
 @Component({
   components: {
     WalletAvatar,
-    BrandedTooltip: lazyComponent(Components.BrandedTooltip),
     HelpDialog: lazyComponent(Components.HelpDialog),
     SidebarItemContent: lazyComponent(Components.SidebarItemContent),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErrorMixin) {
+export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   readonly nodesFeatureEnabled = true
 
   readonly SidebarMenuGroups = SidebarMenuGroups
@@ -186,33 +172,60 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   ]
 
   showHelpDialog = false
-  showSelectNodeDialog = false
 
+  @State(state => state.settings.faucetUrl) faucetUrl!: string
+  @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
+
+  @Getter libraryDesignSystem!: string
   @Getter firstReadyTransaction!: any
   @Getter isLoggedIn!: boolean
   @Getter account!: any
   @Getter currentRoute!: WALLET_CONSTS.RouteNames
-  @Getter faucetUrl!: string
-  @Getter node!: any
   @Getter chainAndNetworkText!: string
+  @Getter nodeIsConnected!: boolean
 
   @Action navigate // Wallet
-  @Action trackActiveTransactions
-  @Action setSoraNetwork
-  @Action setDefaultNodes
-  @Action connectToNode
-  @Action setFaucetUrl
-  @Action('setEthereumSmartContracts', { namespace: 'web3' }) setEthereumSmartContracts
-  @Action('setDefaultEthNetwork', { namespace: 'web3' }) setDefaultEthNetwork
+  @Action updateAccountAssets!: AsyncVoidFn
+  @Action trackActiveTransactions!: AsyncVoidFn
+  @Action setSoraNetwork!: (data: any) => Promise<void>
+  @Action setDefaultNodes!: (nodes: any) => Promise<void>
+  @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
+  @Action setFaucetUrl!: (url: string) => void
+  @Action('setEvmSmartContracts', { namespace: 'web3' }) setEvmSmartContracts
+  @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks
+  @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts
+
+  @Watch('firstReadyTransaction', { deep: true })
+  private handleNotifyAboutTransaction (value): void {
+    this.handleChangeTransaction(value)
+  }
+
+  @Watch('nodeIsConnected')
+  private updateConnectionSubsriptions (nodeConnected: boolean) {
+    if (nodeConnected) {
+      this.updateAccountAssets()
+    } else {
+      if (updateAccountAssetsSubscription) {
+        updateAccountAssetsSubscription.unsubscribe()
+      }
+    }
+  }
 
   async created () {
+    const localeLanguage = navigator.language
+    const thousandSymbol = Number(1000).toLocaleString(localeLanguage).substring(1, 2)
+    if (thousandSymbol !== '0') {
+      FPNumber.DELIMITERS_CONFIG.thousand = Number(1234).toLocaleString(localeLanguage).substring(1, 2)
+    }
+    FPNumber.DELIMITERS_CONFIG.decimal = Number(1.2).toLocaleString(localeLanguage).substring(1, 2)
+
     await this.withLoading(async () => {
       const { data } = await axios.get('/env.json')
 
       await this.setSoraNetwork(data)
       await this.setDefaultNodes(data?.DEFAULT_NETWORKS)
-      await this.setDefaultEthNetwork(data.ETH_NETWORK)
-      await this.setEthereumSmartContracts(data.BRIDGE)
+      await this.setSubNetworks(data.SUB_NETWORKS)
+      await this.setSmartContracts(data.SUB_NETWORKS)
 
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL)
@@ -225,14 +238,17 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
     this.trackActiveTransactions()
   }
 
-  @Watch('firstReadyTransaction', { deep: true })
-  private handleNotifyAboutTransaction (value): void {
-    this.handleChangeTransaction(value)
+  get showSelectNodeDialog (): boolean {
+    return this.selectNodeDialogVisibility
+  }
+
+  set showSelectNodeDialog (flag: boolean) {
+    this.setSelectNodeDialogVisibility(flag)
   }
 
   get nodeLogo (): any {
     return {
-      size: LogoSize.SMALL,
+      size: LogoSize.MEDIUM,
       tokenSymbol: KnownSymbols.XOR
     }
   }
@@ -282,7 +298,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
   }
 
   openSelectNodeDialog (): void {
-    this.showSelectNodeDialog = true
+    this.setSelectNodeDialogVisibility(true)
   }
 
   destroyed (): void {
@@ -291,13 +307,13 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
 
   private async runAppConnectionToNode () {
     try {
-      await this.connectToNode()
+      await this.connectToNode({
+        onError: this.handleNodeError,
+        onDisconnect: this.handleNodeDisconnect,
+        onReconnect: this.handleNodeReconnect
+      })
     } catch (error) {
-      if (!this.node.address) {
-        this.openSelectNodeDialog()
-      }
-
-      this.handleNodeError(error)
+      // we handled error using callback, do nothing
     }
   }
 }
@@ -307,7 +323,7 @@ export default class App extends Mixins(TransactionMixin, LoadingMixin, NodeErro
 html {
   overflow-y: hidden;
   font-size: var(--s-font-size-small);
-  line-height: $s-line-height-base;
+  line-height: var(--s-line-height-base);
 }
 #app {
   -webkit-font-smoothing: antialiased;
@@ -323,15 +339,22 @@ html {
   }
 
   &:not(.el-menu--horizontal) > :not(:last-child) {
-    margin-bottom: $inner-spacing-small;
-  }
-
-  .menu-link-container .el-menu-item:hover span {
-    // TODO: Remove important marks after design redevelopment
-    color: var(--s-color-base-on-accent) !important;
+    margin-bottom: 0;
   }
 
   .el-menu-item {
+    .icon-container {
+      box-shadow: var(--s-shadow-element);
+    }
+
+    &.menu-item--small {
+      .icon-container {
+        box-shadow: none;
+        margin: 0;
+        background-color: unset;
+      }
+    }
+
     &.is-disabled {
       opacity: 1;
       color: var(--s-color-base-content-tertiary) !important;
@@ -340,9 +363,25 @@ html {
         color: var(--s-color-base-content-tertiary);
       }
     }
-    &:not(.is-disabled):hover i {
-      color: inherit;
+    &:hover:not(.is-active):not(.is-disabled) {
+      i {
+        color: var(--s-color-base-content-secondary) !important;
+      }
     }
+    &.is-active {
+      i {
+        color: var(--s-color-theme-accent) !important;
+      }
+
+      .icon-container {
+        box-shadow: var(--s-shadow-element-pressed);
+      }
+    }
+  }
+
+  .el-menu-item.menu-item--small.menu-item--general-link {
+    padding: $basic-spacing-small $basic-spacing-small $inner-spacing-mini / 2 $basic-spacing-medium;
+    line-height: 1;
   }
 }
 
@@ -361,6 +400,7 @@ html {
       height: 20px;
       border-radius: 50%;
       background: var(--s-color-utility-surface);
+      flex-shrink: 0;
       &:before {
         position: absolute;
         top: -2px;
@@ -403,69 +443,37 @@ html {
   }
 }
 .el-form--actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   $swap-input-class: ".el-input";
-  .s-input--token-value {
+  .s-input--token-value, .s-input-amount {
     #{$swap-input-class} {
       #{$swap-input-class}__inner {
         padding-top: 0;
       }
     }
     #{$swap-input-class}__inner {
+      @include text-ellipsis;
       height: var(--s-size-small);
       padding-right: 0;
       padding-left: 0;
       border-radius: 0 !important;
       color: var(--s-color-base-content-primary);
-      font-size: $s-font-size-input;
-      line-height: $s-line-height-small;
-      &, &:hover, &:focus {
-        background-color: var(--s-color-base-background);
-        border-color: var(--s-color-base-background);
-      }
-      &:disabled {
-        color: var(--s-color-base-content-tertiary);
-      }
-      &:not(:disabled) {
-        &:hover, &:focus {
-          color: var(--s-color-base-content-primary);
-        }
-      }
+      font-size: var(--s-font-size-large);
+      line-height: var(--s-line-height-small);
+      font-weight: 800;
     }
     .s-placeholder {
       display: none;
     }
   }
-  .el-button {
-    // TODO: Check all icons settings after fix in UI Lib
-    &--choose-token,
-    &--empty-token {
-      > span {
-        display: inline-flex;
-        align-items: center;
-        > i[class^=s-icon-] {
-          font-size: $s-font-size-input;
-        }
-      }
-    }
-    &.el-button--empty-token {
-      > span {
-        > i[class^=s-icon-] {
-          margin-left: $inner-spacing-mini / 2;
-        }
-      }
-    }
-    &--choose-token {
-      font-feature-settings: $s-font-feature-settings-title;
-      > span {
-        > i[class^=s-icon-] {
-          margin-left: $inner-spacing-mini;
-        }
-      }
-    }
-  }
 }
 
 .el-message-box {
+  border-radius: var(--s-border-radius-small) !important;
+
   &__message {
     white-space: pre-line;
   }
@@ -477,21 +485,38 @@ html {
     border-radius: var(--s-border-radius-medium);
   }
 }
-.app-disclaimer > .link {
-  color: var(--s-color-base-content-primary);
+.app-disclaimer {
+  span {
+    display: none;
+  }
+  .link {
+    color: var(--s-color-base-content-primary);
+  }
+}
+
+// Disabled button large typography
+.s-typography-button--large.is-disabled {
+  font-size: var(--s-font-size-medium) !important;
+}
+
+@include large-mobile {
+  .app-disclaimer {
+    span {
+      display: inline;
+    }
+    .link--mobile {
+      display: none;
+    }
+  }
 }
 </style>
 
 <style lang="scss" scoped>
-$logo-width: 40px;
-$logo-width-big: 150px;
 $logo-horizontal-margin: $inner-spacing-mini / 2;
 $header-height: 64px;
 $sidebar-width: 160px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
-$account-name-margin: -2px 8px 0 12px;
-$menu-horizontal-padding: $inner-spacing-mini * 1.25;
 
 // TODO: Move disclaimer's variables to appropriate place after design redevelopment
 $disclaimer-font-size: 11px;
@@ -508,14 +533,15 @@ $disclaimer-letter-spacing: -0.03em;
   }
 
   &-sidebar {
+    overflow-x: hidden;
+    margin-right: $basic-spacing-small;
+    width: 70px;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
-    width: $sidebar-width;
-    border-right: 1px solid var(--s-color-base-border-secondary);
     padding-top: $inner-spacing-small;
     padding-bottom: $inner-spacing-medium;
-    overflow-y: auto;
+    border-right: none;
   }
 
   &-body {
@@ -539,7 +565,7 @@ $disclaimer-letter-spacing: -0.03em;
   }
 
   &-disclaimer {
-    margin-top: $inner-spacing-mini * 2.5;
+    margin-top: $basic-spacing-medium;
     font-size: $disclaimer-font-size;
     font-weight: $disclaimer-font-weight;
     line-height: var(--s-line-height-mini);
@@ -551,9 +577,9 @@ $disclaimer-letter-spacing: -0.03em;
     display: flex;
     flex-direction: column-reverse;
     justify-content: flex-end;
-    padding-right: $inner-spacing-mini * 5;
-    padding-left: $inner-spacing-mini * 5;
-    padding-bottom: $inner-spacing-mini * 5;
+    padding-right: $inner-spacing-large;
+    padding-left: $inner-spacing-large;
+    padding-bottom: $inner-spacing-large;
   }
 }
 
@@ -584,6 +610,7 @@ $disclaimer-letter-spacing: -0.03em;
     }
   }
   .menu-link-container {
+    display: none;
     .el-menu-item {
       white-space: initial;
     }
@@ -592,26 +619,31 @@ $disclaimer-letter-spacing: -0.03em;
       margin-top: $inner-spacing-mini;
       &:before {
         position: absolute;
-        left: $menu-horizontal-padding;
-        top: -$inner-spacing-mini / 2;
+        left: $basic-spacing-medium;
+        top: -1px;
         content: '';
         display: block;
         height: 1px;
-        width: calc(100% - #{$menu-horizontal-padding} * 2);
-        background-color: var(--s-color-theme-secondary);
+        width: 100px;
+        background-color: var(--s-color-base-content-tertiary);
+        opacity: 0.2;
       }
     }
   }
   .el-menu-item {
-    padding: $inner-spacing-medium #{$menu-horizontal-padding};
+    padding: $inner-spacing-mini $inner-spacing-mini * 2.5;
     height: initial;
-    font-size: var(--s-heading6-font-size);
-    font-feature-settings: $s-font-feature-settings-title;
-    font-weight: 600;
-    line-height: $s-line-height-big;
+    font-size: var(--s-font-size-medium);
+    font-weight: 300;
+    line-height: var(--s-line-height-medium);
+
     &.menu-item--small {
-      padding: $inner-spacing-mini #{$menu-horizontal-padding};
-      color: var(--s-color-base-content-tertiary);
+      font-size: var(--s-font-size-extra-mini);
+      font-weight: 300;
+      letter-spacing: var(--s-letter-spacing-small);
+      line-height: var(--s-line-height-medium);
+      padding: 0 13px;
+      color: var(--s-color-base-content-secondary);
     }
     &:hover:not(.is-active):not(.is-disabled) {
       background-color: var(--s-color-base-background-hover) !important;
@@ -630,54 +662,29 @@ $disclaimer-letter-spacing: -0.03em;
   background-size: cover;
   width: var(--s-size-medium);
   height: var(--s-size-medium);
-  padding: 0;
   border-radius: 0;
+  &.el-button {
+    padding: 0;
+  }
 }
 
 .app-controls {
   margin-left: auto;
 
   & > *:not(:last-child) {
-    margin-right: $inner-spacing-mini;
-  }
-
-  .wallet-section {
-    border: 1px solid var(--s-color-base-border-secondary);
-    border-radius: var(--s-size-small);
-    background: var(--s-color-base-background);
-    align-items: center;
-  }
-
-  .app-control {
-    padding: $inner-spacing-mini / 2;
-    background-color: var(--s-color-base-background);
-    border-color: var(--s-color-base-background);
-
-    &:hover, &.focusing, &.s-pressed {
-      color: inherit;
-      background-color: var(--s-color-base-background-hover);
-      border-color: var(--s-color-base-background-hover);
-    }
-  }
-
-  &__wallet-tooltip {
-    max-width: 181px;
+    margin-right: $inner-spacing-mini * 2.5;
   }
 
   .el-button + .el-button {
-    margin-left: $inner-spacing-mini;
+    margin-left: 0;
   }
 }
 
-.account {
-  display: flex;
-  align-items: center;
-
-  &-name {
+.account-control {
+  &-title {
     font-size: var(--s-font-size-small);
-    font-feature-settings: $s-font-feature-settings-common;
-    color: var(--s-color-base-content-primary);
-    margin: $account-name-margin;
+    font-variation-settings: "wght" 800;
+    margin-right: $inner-spacing-mini / 2;
   }
 
   &-icon {
@@ -690,31 +697,26 @@ $disclaimer-letter-spacing: -0.03em;
     border-radius: 50%;
   }
 
-  &-avatar {
-    width: 100%;
-    height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 16C0 7.16344 7.16344 0 16 0C24.8366 0 32 7.16344 32 16C32 24.8366 24.8366 32 16 32C7.16344 32 0 24.8366 0 16Z' fill='white'/%3E%3Cellipse cx='16.0001' cy='4.79999' rx='2.4' ry='2.4' fill='%2331DF57'/%3E%3Ccircle cx='11.2' cy='7.19999' r='2.4' fill='%239A1892'/%3E%3Cellipse cx='20.7999' cy='7.19999' rx='2.4' ry='2.4' fill='%2331DF57'/%3E%3Cellipse cx='16.0001' cy='10.4' rx='2.4' ry='2.4' fill='%230A2342'/%3E%3Cellipse cx='25.6' cy='10.4' rx='2.4' ry='2.4' fill='%232D4DDC'/%3E%3Ccircle cx='6.4' cy='10.4' r='2.4' fill='%232D4DDC'/%3E%3Ccircle cx='11.2' cy='12.8' r='2.4' fill='%23EB90EB'/%3E%3Cellipse cx='20.7999' cy='12.8' rx='2.4' ry='2.4' fill='%23EB90EB'/%3E%3Ccircle cx='16.0001' cy='21.6' r='2.4' fill='%23EB90EB'/%3E%3Ccircle cx='25.6' cy='21.6' r='2.4' fill='%2331DF57'/%3E%3Cellipse cx='6.4' cy='21.6' rx='2.4' ry='2.4' fill='%2331DF57'/%3E%3Cellipse cx='11.2' cy='24' rx='2.4' ry='2.4' fill='%239A1892'/%3E%3Cellipse cx='20.7999' cy='24' rx='2.4' ry='2.4' fill='%2331DF57'/%3E%3Cellipse cx='16.0001' cy='27.2' rx='2.4' ry='2.4' fill='%232D4DDC'/%3E%3Ccircle cx='16.0001' cy='16' r='2.4' fill='%23433F10'/%3E%3Ccircle cx='25.6' cy='16' r='2.4' fill='%239A1892'/%3E%3Cellipse cx='6.4' cy='16' rx='2.4' ry='2.4' fill='%2331DF57'/%3E%3Cellipse cx='11.2' cy='18.4' rx='2.4' ry='2.4' fill='%230A2342'/%3E%3Cellipse cx='20.7999' cy='18.4' rx='2.4' ry='2.4' fill='%230A2342'/%3E%3Cpath d='M16 31C7.71573 31 1 24.2843 1 16H-1C-1 25.3888 6.61116 33 16 33V31ZM31 16C31 24.2843 24.2843 31 16 31V33C25.3888 33 33 25.3888 33 16H31ZM16 1C24.2843 1 31 7.71573 31 16H33C33 6.61116 25.3888 -1 16 -1V1ZM16 -1C6.61116 -1 -1 6.61116 -1 16H1C1 7.71573 7.71573 1 16 1V-1Z' fill='%23DDE0E1'/%3E%3C/svg%3E")
+  &:hover, &:focus, &:active, &.focusing, &.s-pressed {
+    .account-control-icon i {
+      color: var(--s-color-base-on-accent) !important;
+    }
   }
 }
 
 .node-control {
-  &__logo {
-    margin: $inner-spacing-mini / 2;
-  }
-
   &__text {
-    margin: $inner-spacing-mini / 2;
-    padding-right: $inner-spacing-mini / 2;
-    text-align: left;
-    font-size: var(--s-font-size-mini);
+    padding-right: calc(var(--s-basic-spacing) / 2);
+    text-align: right;
+    font-size: var(--s-font-size-extra-small);
+    letter-spacing: var(--s-letter-spacing-small);
+    text-transform: none;
   }
-
   &-title {
-    color: var(--s-color-base-content-primary);
+    font-variation-settings: "wght" 800;
   }
-
   &-network {
-    color: var(--s-color-base-content-secondary);
+    color: var(--s-color-base-content-tertiary);
   }
 }
 
@@ -730,7 +732,6 @@ $disclaimer-letter-spacing: -0.03em;
     font-size: 15px;
     line-height: 16px;
     margin-right: $basic-spacing;
-    font-feature-settings: var(--s-font-feature-settings-singleline);
     white-space: nowrap;
   }
 
@@ -740,13 +741,6 @@ $disclaimer-letter-spacing: -0.03em;
     background-image: url('~@/assets/img/sora-logo.svg');
     background-size: cover;
   }
-}
-
-@include tablet {
-  .polkaswap-logo {
-    width: $logo-width-big;
-    background-image: url('~@/assets/img/polkaswap-logo.svg');
-  }
   .app-footer {
     flex-direction: row;
     .app-disclaimer {
@@ -755,9 +749,32 @@ $disclaimer-letter-spacing: -0.03em;
   }
 }
 
-@media (max-width: 460px) {
+@include large-mobile {
+  .app-sidebar {
+    overflow-y: auto;
+    margin-right: 0;
+    width: $sidebar-width;
+    border-right: 1px solid #e5dce0 !important;
+    border-image: linear-gradient(#FAF4F8, #D5CDD0, #FAF4F8) 30;
+  }
+  .menu .menu-link-container {
+    display: block;
+  }
+}
+
+@include tablet {
   .polkaswap-logo {
-    display: none;
+    margin-top: $basic-spacing-small;
+    margin-bottom: 0;
+    width: 165px;
+    height: 44px;
+    background-image: url('~@/assets/img/polkaswap-logo.svg');
+  }
+  .app-footer {
+    flex-direction: row;
+    .app-disclaimer {
+      padding-right: $inner-spacing-large;
+    }
   }
 }
 </style>

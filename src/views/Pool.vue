@@ -1,19 +1,18 @@
 <template>
   <div v-loading="parentLoading" class="container el-form--pool">
     <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')" />
-    <div class="pool-wrapper" v-loading="loading">
+    <div v-loading="loading" class="pool-wrapper">
       <p v-if="!isLoggedIn" class="pool-info-container">
         {{ t('pool.connectToWallet') }}
       </p>
       <p v-else-if="!accountLiquidity || !accountLiquidity.length" class="pool-info-container">
         {{ t('pool.liquidityNotFound') }}
       </p>
-      <!-- TODO 4 alexnatalia: Whole pool area should be clickable -->
       <s-collapse v-else class="pool-list" :borders="true">
         <s-collapse-item v-for="liquidityItem of accountLiquidity" :key="liquidityItem.address" :name="liquidityItem.address" class="pool-info-container">
           <template #title>
             <pair-token-logo :first-token="getAsset(liquidityItem.firstAddress)" :second-token="getAsset(liquidityItem.secondAddress)" size="small" />
-            <h3>{{ getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress)) }}</h3>
+            <h3 class="pool-info-container__title">{{ getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress)) }}</h3>
           </template>
           <div class="pool-info">
             <token-logo :token="getAsset(liquidityItem.firstAddress)" size="small" />
@@ -32,13 +31,13 @@
           </div>
           <div class="pool-info pool-info--share">
             <div>{{ t('pool.poolShare')}}</div>
-            <div class="pool-info-value">{{ liquidityItem.poolShare }}%</div>
+            <div class="pool-info-value">{{ getPoolShare(liquidityItem.poolShare) }}</div>
           </div>
           <div class="pool-info--buttons">
-            <s-button type="primary" size="small" @click="handleAddPairLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
+            <s-button type="secondary" class="s-typography-button--medium" @click="handleAddPairLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
               {{ t('pool.addLiquidity') }}
             </s-button>
-            <s-button type="primary" size="small" @click="handleRemoveLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
+            <s-button type="secondary" class="s-typography-button--medium" @click="handleRemoveLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
               {{ t('pool.removeLiquidity') }}
             </s-button>
           </div>
@@ -46,14 +45,14 @@
       </s-collapse>
     </div>
     <template v-if="isLoggedIn">
-      <s-button class="el-button--add-liquidity" type="primary" @click="handleAddLiquidity">
+      <s-button class="el-button--add-liquidity s-typography-button--large" type="primary" @click="handleAddLiquidity">
         {{ t('pool.addLiquidity') }}
       </s-button>
-      <s-button class="el-button--create-pair" type="secondary" @click="handleCreatePair">
+      <s-button class="el-button--create-pair s-typography-button--large" type="secondary" @click="handleCreatePair">
         {{ t('pool.createPair') }}
       </s-button>
     </template>
-    <s-button v-else type="primary" @click="handleConnectWallet">
+    <s-button v-else type="primary" class="s-typography-button--large" @click="handleConnectWallet">
       {{ t('pool.connectWallet') }}
     </s-button>
   </div>
@@ -62,11 +61,12 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { AccountLiquidity } from '@sora-substrate/util'
+import { AccountLiquidity, Asset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
+
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -82,21 +82,29 @@ const namespace = 'pool'
 export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
   @Getter isLoggedIn!: boolean
   @Getter('accountLiquidity', { namespace }) accountLiquidity!: any
-  @Getter('assets', { namespace: 'assets' }) assets
-  @Action('getAssets', { namespace: 'assets' }) getAssets
+  @Getter('assets', { namespace: 'assets' }) assets!: Array<Asset>
+  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
 
-  @Action('updateAccountLiquidity', { namespace }) updateAccountLiquidity
-  @Action('destroyUpdateAccountLiquiditySubscription', { namespace }) destroyUpdateAccountLiquiditySubscription
+  @Action('getAccountLiquidity', { namespace }) getAccountLiquidity!: AsyncVoidFn
+  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<Function>
 
-  async mounted () {
+  accountLiquiditySubscription!: Function
+
+  async created () {
+    this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
+
     await this.withApi(async () => {
-      await this.getAssets()
-      await this.updateAccountLiquidity()
+      await Promise.all([
+        this.getAssets(),
+        this.getAccountLiquidity()
+      ])
     })
   }
 
-  destroyed (): void {
-    this.destroyUpdateAccountLiquiditySubscription()
+  beforeDestroy (): void {
+    if (typeof this.accountLiquiditySubscription === 'function') {
+      this.accountLiquiditySubscription() // unsubscribe
+    }
   }
 
   getAsset (address): any {
@@ -146,6 +154,10 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
   getBalance (liquidityItem: AccountLiquidity): string {
     return this.formatCodecNumber(liquidityItem.balance, liquidityItem.decimals)
   }
+
+  getPoolShare (poolShare: string): string {
+    return `${this.formatStringValue(poolShare)}%`
+  }
 }
 </script>
 
@@ -159,51 +171,21 @@ $pool-collapse-icon-width: 10px;
     &__header,
     &__wrap {
       border-bottom: none;
+      background-color: unset;
     }
     &__content {
-      margin-top: $inner-spacing-medium;
-      padding-top: $basic-spacing * 2;
-      padding-bottom: 0;
-      border-top: 1px solid var(--s-color-base-border-primary);
+      margin-top: 0;
+      padding: 0 $inner-spacing-medium $inner-spacing-medium;
+      font-weight: 600;
     }
     .el-collapse-item__header {
-      height: $pair-icon-height;
+      height: #{$pair-icon-height + $inner-spacing-medium * 2};
       line-height: $pair-icon-height;
+      padding: $inner-spacing-medium;
       .pair-logo {
         margin-right: $inner-spacing-medium;
       }
     }
-    .el-icon-arrow-right {
-      position: relative;
-      &:before,
-      &:after {
-        position: absolute;
-        display: block;
-        content: '';
-        border-radius: 2px;
-        background-color: var(--s-color-base-content-primary);
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        margin: auto;
-      }
-      &:before {
-        height: $pool-collapse-icon-height;
-        width: $pool-collapse-icon-width;
-      }
-      &:after {
-        height: $pool-collapse-icon-width;
-        width: $pool-collapse-icon-height;
-      }
-      &.is-active:after {
-        background-color: transparent;
-      }
-    }
-  }
-  .el-icon-arrow-right {
-    margin-right: 0;
-    border-radius: var(--s-border-radius-small);
   }
 }
 </style>
@@ -223,20 +205,6 @@ $pair-icon-height: 36px;
   .el-button {
     &--create-pair {
       margin-left: 0;
-      color: var(--s-color-theme-accent);
-      &:hover,
-      &:active,
-      &:disabled {
-        border-color: var(--s-color-base-content-quaternary);
-      }
-      &:active {
-        background-color: var(--s-color-base-disabled);
-      }
-      &:disabled,
-      &:disabled:hover {
-        background-color: transparent;
-        color: var(--s-color-base-on-disabled);
-      }
     }
   }
   @include full-width-button;
@@ -252,22 +220,21 @@ $pair-icon-height: 36px;
     border-top: none;
     border-bottom: none;
     .pool-info-container {
-      margin-bottom: $inner-spacing-mini;
-      padding: calc(#{$inner-spacing-big} - (#{$pair-icon-height} - var(--s-size-small)) / 2) $inner-spacing-medium;
+      margin-bottom: $inner-spacing-medium;
+      padding: 0;
       &:last-child {
         margin-bottom: 0;
       }
     }
     h3 {
-      letter-spacing: $s-letter-spacing-small;
-      font-feature-settings: $s-font-feature-settings-title;
+      letter-spacing: var(--s-letter-spacing-small);
     }
   }
   &-info {
     display: flex;
     align-items: center;
     font-size: var(--s-font-size-small);
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
     margin-bottom: $inner-spacing-mini;
     &,
     &--buttons {
@@ -283,13 +250,22 @@ $pair-icon-height: 36px;
     &-container {
       width: 100%;
       padding: $inner-spacing-big;
+      background: var(--s-color-base-background);
       border-radius: var(--s-border-radius-small);
-      border: 1px solid var(--s-color-base-border-secondary);
-      color: var(--s-color-base-content-tertiary);
+      box-shadow: var(--s-shadow-element);
+      color: var(--s-color-base-content-secondary);
       font-size: var(--s-font-size-mini);
-      line-height: $s-line-height-small;
-      font-feature-settings: $s-font-feature-settings-common;
+      line-height: var(--s-line-height-small);
       text-align: center;
+
+      &.is-active {
+        box-shadow: var(--s-shadow-element-pressed);
+      }
+
+      &__title {
+        font-weight: 700;
+      }
+
       & + .el-button {
         margin-top: $inner-spacing-medium;
       }
@@ -299,17 +275,8 @@ $pair-icon-height: 36px;
     }
     &--buttons {
       display: flex;
+      justify-content: space-around;
       margin-top: $inner-spacing-medium;
-      .el-button {
-        padding-left: $inner-spacing-small;
-        padding-right: $inner-spacing-small;
-        font-feature-settings: $s-font-feature-settings-title;
-        width: auto;
-        font-weight: 700;
-        + .el-button {
-          margin-left: $inner-spacing-mini;
-        }
-      }
     }
   }
 }

@@ -12,7 +12,7 @@
       {{ t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol }) }}
     </s-row>
     <div class="output-description">
-      {{ t('confirmSupply.outputDescription', { slippageTolerance }) }}
+      {{ t('confirmSupply.outputDescription', { slippageTolerance: formatStringValue(slippageTolerance) }) }}
     </div>
     <s-divider />
     <info-line
@@ -33,14 +33,15 @@
     </info-line>
     <info-line
       :label="t('confirmSupply.price')"
-      :value="`1 ${firstToken.symbol} = ${priceReversed}`"
+      :value="`1 ${firstToken.symbol} = ${formatStringValue(priceReversed)}`"
       :asset-symbol="secondToken.symbol"
     />
-    <info-line :value="`1 ${secondToken.symbol} = ${price}`" :asset-symbol="firstToken.symbol" />
+    <info-line :value="`1 ${secondToken.symbol} = ${formatStringValue(price)}`" :asset-symbol="firstToken.symbol" />
     <info-line :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
     <template #footer>
       <s-button
         type="primary"
+        class="s-typography-button--large"
         :loading="parentLoading"
         @click="handleConfirm"
       >
@@ -52,7 +53,6 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -60,7 +60,6 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
-
 @Component({
   components: {
     DialogBase,
@@ -78,7 +77,7 @@ export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, Dia
   @Prop({ type: String }) readonly minted!: string
   @Prop({ type: String }) readonly price!: string
   @Prop({ type: String }) readonly priceReversed!: string
-  @Prop({ type: [String, Number] }) readonly slippageTolerance!: string | number
+  @Prop({ type: String }) readonly slippageTolerance!: string
 
   get formattedFirstTokenValue (): string {
     return this.formatStringValue(this.firstTokenValue, this.firstToken?.decimals)
@@ -96,7 +95,7 @@ export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, Dia
 
 <style lang="scss" scoped>
 .tokens {
-  line-height: $s-line-height-big;
+  line-height: var(--s-line-height-big);
   .token {
     &-logo {
       display: inline-block;
@@ -107,51 +106,51 @@ export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, Dia
     margin-bottom: $inner-spacing-mini;
   }
 }
-
 .tokens,
 .pair-info {
   padding-left: $inner-spacing-mini;
   padding-right: $inner-spacing-mini;
 }
-
 .output-description {
   margin-top: $inner-spacing-mini;
   margin-bottom: $inner-spacing-mini;
   font-size: var(--s-font-size-mini);
-  line-height: $s-line-height-big;
+  line-height: var(--s-line-height-big);
+  text-align: center;
+  max-width: 300px;
+  margin: auto;
 }
-
 .pair-info {
-  line-height: $s-line-height-big;
+  line-height: var(--s-line-height-big);
   color: var(--s-color-base-content-secondary);
   margin-top: $inner-spacing-big;
   &__line {
     margin-top: $inner-spacing-mini;
   }
 }
-
 .price {
   text-align: right;
   div:last-child {
     margin-top: $inner-spacing-mini;
   }
 }
-
 .supply-info {
   display: flex;
   justify-content: space-between;
 }
-
 .pool-tokens-amount {
   font-size: var(--s-heading1-font-size);
-  line-height: $s-line-height-mini;
-  letter-spacing: $s-letter-spacing-mini;
+  line-height: var(--s-line-height-mini);
+  letter-spacing: var(--s-letter-spacing-mini);
+  font-weight: 700;
+  text-align: center;
 }
-
 .pool-tokens {
   margin: $inner-spacing-mini 0;
   font-size: var(--s-heading4-font-size);
-  line-height: $s-line-height-medium;
-  letter-spacing: $s-letter-spacing-small;
+  font-weight: 800;
+  line-height: var(--s-line-height-medium);
+  letter-spacing: var(--s-letter-spacing-small);
+  justify-content: center;
 }
 </style>

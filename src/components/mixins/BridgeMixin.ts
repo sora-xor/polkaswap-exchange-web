@@ -7,18 +7,18 @@ import web3Util from '@/utils/web3-util'
 
 @Component
 export default class BridgeMixin extends Mixins(LoadingMixin, WalletConnectMixin) {
-  @Action('getEthBalance', { namespace: 'web3' }) getEthBalance!: () => Promise<void>
-  @Action('getEthNetworkFee', { namespace: 'bridge' }) getEthNetworkFee
-  @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets
-  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets
+  @Action('getEvmBalance', { namespace: 'web3' }) getEvmBalance!: AsyncVoidFn
+  @Action('getEvmNetworkFee', { namespace: 'bridge' }) getEvmNetworkFee!: AsyncVoidFn
+  @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets!: AsyncVoidFn
+  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn
 
   private unwatchEthereum!: any
   blockHeadersSubscriber
 
   async mounted (): Promise<void> {
-    await this.setEthNetwork()
+    await this.setEvmNetworkType()
     await this.syncExternalAccountWithAppState()
-    this.getEthBalance()
+    this.getEvmBalance()
     this.withApi(async () => {
       this.unwatchEthereum = await web3Util.watchEthereum({
         onAccountChange: (addressList: string[]) => {
@@ -30,8 +30,8 @@ export default class BridgeMixin extends Mixins(LoadingMixin, WalletConnectMixin
           }
         },
         onNetworkChange: (networkId: string) => {
-          this.setEthNetwork(networkId)
-          this.getEthNetworkFee()
+          this.setEvmNetworkType(networkId)
+          this.getEvmNetworkFee()
           this.getRegisteredAssets()
           this.updateExternalBalances()
         },
@@ -39,7 +39,7 @@ export default class BridgeMixin extends Mixins(LoadingMixin, WalletConnectMixin
           this.disconnectExternalAccount()
         }
       })
-      this.subscribeToEthBlockHeaders()
+      this.subscribeToEvmBlockHeaders()
     })
   }
 
@@ -47,17 +47,17 @@ export default class BridgeMixin extends Mixins(LoadingMixin, WalletConnectMixin
     if (typeof this.unwatchEthereum === 'function') {
       this.unwatchEthereum()
     }
-    this.unsubscribeEthBlockHeaders()
+    this.unsubscribeEvmBlockHeaders()
   }
 
   updateExternalBalances (): void {
-    this.getEthBalance()
+    this.getEvmBalance()
     this.updateRegisteredAssets()
   }
 
-  async subscribeToEthBlockHeaders (): Promise<void> {
+  async subscribeToEvmBlockHeaders (): Promise<void> {
     try {
-      await this.unsubscribeEthBlockHeaders()
+      await this.unsubscribeEvmBlockHeaders()
 
       const web3 = await web3Util.getInstance()
 
@@ -71,7 +71,7 @@ export default class BridgeMixin extends Mixins(LoadingMixin, WalletConnectMixin
     }
   }
 
-  unsubscribeEthBlockHeaders (): Promise<void> {
+  unsubscribeEvmBlockHeaders (): Promise<void> {
     return new Promise((resolve, reject) => {
       if (!this.blockHeadersSubscriber) return resolve()
 

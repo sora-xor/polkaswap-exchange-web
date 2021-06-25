@@ -46,8 +46,6 @@ export default class AboutNetworkDialog extends Mixins(TranslationMixin, DialogM
 <style lang="scss">
 .dialog-wrapper.about-network-dialog {
   .el-dialog {
-    width: 448px !important;
-
     &__body {
       padding: $inner-spacing-mini $inner-spacing-big $inner-spacing-mini * 4;
     }

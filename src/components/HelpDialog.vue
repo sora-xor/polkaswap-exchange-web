@@ -68,7 +68,7 @@ export default class HelpDialog extends Mixins(TranslationMixin, DialogMixin) {
   &-information {
     color: var(--s-color-base-content-tertiary);
     font-size: var(--s-font-size-mini);
-    line-height: $s-line-height-big;
+    line-height: var(--s-line-height-big);
     margin-bottom: $inner-spacing-mini * 3;
   }
 
@@ -81,8 +81,8 @@ export default class HelpDialog extends Mixins(TranslationMixin, DialogMixin) {
       text-decoration: unset;
       color: unset;
       font-size: var(--s-heading4-font-size);
-      line-height: $s-line-height-medium;
-      letter-spacing: $s-letter-spacing-small;
+      line-height: var(--s-line-height-medium);
+      letter-spacing: var(--s-letter-spacing-small);
 
       &_divider {
         margin: unset;

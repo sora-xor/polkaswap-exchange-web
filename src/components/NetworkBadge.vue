@@ -5,7 +5,7 @@
         {{ statusText }}
       </div>
     </div>
-    <s-icon v-else name="el-icon-loading"/>
+    <s-icon v-else name="el-icon-loading" />
   </div>
 </template>
 

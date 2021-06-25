@@ -34,7 +34,7 @@
       <p class="gradient pswap">{{ t('about.pswap.title') }}</p>
       <p class="text" >{{ t('about.pswap.first') }}</p>
       <img src="@/assets/about/about05-1.png" draggable="false" class="unselectable bubble-icon">
-      <p class="text" style="margin-bottom:120px;">{{ t('about.pswap.second') }}</p>
+      <p class="text" style="margin-bottom:120px;">{{ t('about.pswap.second', { percent : feePercent }) }}</p>
 
       <div class="about-video" style="margin-bottom:120px;">
         <a href="http://sora.org/pswap-soft-launch-video" target="_blank" rel="nofollow noopener" style="text-align: center;">
@@ -98,11 +98,15 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
+import { FPNumber } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 
 @Component
 export default class About extends Mixins(TranslationMixin) {
+  get feePercent (): string {
+    return new FPNumber('0.3').toLocaleString()
+  }
 }
 </script>
 
@@ -422,7 +426,6 @@ export default class About extends Mixins(TranslationMixin) {
         line-height: 100%;
 
         letter-spacing: -0.02em;
-        font-feature-settings: 'case' on, 'liga' off;
 
         padding: 10px 0;
 
@@ -479,7 +482,6 @@ export default class About extends Mixins(TranslationMixin) {
   line-height: 1.4;
 
   letter-spacing: -0.02em;
-  font-feature-settings: 'case' on, 'liga' off;
 
   color: #2A171F;
   @media screen and (min-width: 1400px) {
@@ -530,7 +532,6 @@ export default class About extends Mixins(TranslationMixin) {
         line-height: 320%;
         text-align: right;
         letter-spacing: -0.02em;
-        font-feature-settings: 'case' on;
       }
     }
   }
@@ -561,7 +562,6 @@ export default class About extends Mixins(TranslationMixin) {
   font-style: normal;
   font-weight: 800;
   letter-spacing: -0.02em;
-  font-feature-settings: 'case' on, 'liga' off;
   box-decoration-break: clone;
   -webkit-text-fill-color: transparent;
   -webkit-box-decoration-break: clone;

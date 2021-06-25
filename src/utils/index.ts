@@ -97,7 +97,7 @@ export const hasInsufficientBalance = (
   return FPNumber.lt(fpMaxBalance, fpAmount)
 }
 
-export const hasInsufficientXorForFee = (xorAsset: AccountAsset | RegisteredAccountAsset | null, fee: CodecString, isXorOutputSwap = false): boolean => {
+export const hasInsufficientXorForFee = (xorAsset: Nullable<AccountAsset | RegisteredAccountAsset>, fee: CodecString, isXorOutputSwap = false): boolean => {
   if (!xorAsset) return true
   if (asZeroValue(fee)) return false
 
@@ -109,10 +109,10 @@ export const hasInsufficientXorForFee = (xorAsset: AccountAsset | RegisteredAcco
   return FPNumber.lt(fpBalance, fpFee) && !isXorOutputSwap
 }
 
-export const hasInsufficientEthForFee = (ethBalance: CodecString, fee: CodecString): boolean => {
+export const hasInsufficientEvmNativeTokenForFee = (evmBalance: CodecString, fee: CodecString): boolean => {
   if (!fee) return false
 
-  const fpBalance = FPNumber.fromCodecValue(ethBalance)
+  const fpBalance = FPNumber.fromCodecValue(evmBalance)
   const fpFee = FPNumber.fromCodecValue(fee)
 
   return FPNumber.lt(fpBalance, fpFee)
@@ -126,7 +126,7 @@ export async function delay (ms = 50): Promise<void> {
   await new Promise(resolve => setTimeout(resolve, ms))
 }
 
-export const formatAssetSymbol = (assetSymbol: string | undefined | null): string => {
+export const formatAssetSymbol = (assetSymbol: Nullable<string>): string => {
   return assetSymbol ?? ''
 }
 
@@ -157,7 +157,7 @@ export const formatAssetBalance = (asset: any, { internal = true, parseAsLiquidi
 
   if (!balance || (!showZeroBalance && asZeroValue(balance))) return formattedZero
 
-  return FPNumber.fromCodecValue(balance, asset.decimals).format()
+  return FPNumber.fromCodecValue(balance, asset.decimals).toLocaleString()
 }
 
 export const findAssetInCollection = (asset, collection) => {

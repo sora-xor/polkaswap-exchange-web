@@ -1,9 +1,13 @@
+import { en as walletEn } from '@soramitsu/soraneo-wallet-web'
 import { Operation, TransactionStatus, RewardingEvents } from '@sora-substrate/util'
 
-import { PageNames, NetworkTypes } from '@/consts'
-import { EthNetwork } from '@/utils/web3-util'
+import { PageNames, NetworkTypes } from '../consts'
+import { EvmNetworkType } from '../utils/web3-util'
 
 export default {
+  // Wallet project keys
+  ...walletEn,
+  // Polkaswap project keys
   appName: 'Polkaswap',
   soraText: 'SORA',
   ethereumText: 'Ethereum',
@@ -18,7 +22,7 @@ export default {
   selectNodeText: 'Select node',
   bridgeText: 'Bridge',
   comingSoonText: 'Coming Soon',
-  disclaimer: 'Disclaimer: This website is maintained by the @:soraText community. Before continuing to use this website, please review the @:polkaswapFaqLink and documentation, which includes a detailed explanation on how Polkaswap works, as well as the Polkaswap Memorandum and Terms of Services, and Privacy Policy. These documents are crucial to a secure and positive user experience. By using Polkaswap, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of Polkaswap in your legal jurisdiction; 2) your understanding that the current version of Polkaswap is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using Polkaswap, including, but not limited to, the risk of losing tokens. Once more, please do not continue without reading the FAQ, Polkaswap Memorandum and Terms of Services, and Privacy Policy!',
+  disclaimer: 'Disclaimer: This website is maintained by the @:soraText community. Before continuing to use this website, please review the @:polkaswapFaqLink and documentation, which includes a detailed explanation on how Polkaswap works, as well as the @:footerMenu.memorandum, and @:(footerMenu.privacy). These documents are crucial to a secure and positive user experience. By using Polkaswap, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of Polkaswap in your legal jurisdiction; 2) your understanding that the current version of Polkaswap is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using Polkaswap, including, but not limited to, the risk of losing tokens. Once more, please do not continue without reading the FAQ, <span>@:footerMenu.memorandum</span><a href="@:helpDialog.termsOfServiceLink" target="_blank" rel="nofollow noopener" class="link link--mobile">@:footerMenu.memorandum</a>, and <span>@:footerMenu.privacy</span><a href="@:helpDialog.privacyPolicyLink" target="_blank" rel="nofollow noopener" class="link link--mobile">@:footerMenu.privacy</a>!',
   polkaswapFaqLink: '<a class="link" href="https://wiki.sora.org/polkaswap/polkaswap-faq" target="_blank" rel="nofollow noopener" title="Polkaswap FAQ">Polkaswap FAQ</a>',
   poweredBy: 'Powered by',
   confirmText: 'Confirm',
@@ -101,6 +105,9 @@ export default {
       network: 'The node\n{address}\n is from the another network\n',
       existing: 'This node is already added: \'{title}\'\n'
     },
+    warnings: {
+      disconnect: 'Сonnection to the node has been lost. Reconnecting...'
+    },
     messages: {
       connected: 'Connection estabilished with node\n{address}\n',
       selectNode: 'Please select node to connect from the node list'
@@ -114,7 +121,7 @@ export default {
     select: 'Select',
     connected: 'Connected',
     selectNodeForEnvironment: 'Select a node for {environment} environment:',
-    nodeTitle: '{name} hosted by {chain}',
+    nodeTitle: '{chain} hosted by {name}',
     messages: {
       emptyName: 'Please input the name of the node',
       emptyAddress: 'Please input the address of the node',
@@ -171,12 +178,17 @@ export default {
     [NetworkTypes.Testnet]: '@:soraText Testnet',
     [NetworkTypes.Mainnet]: '@:soraText Mainnet'
   },
-  ethereum: {
-    [EthNetwork.Mainnet]: 'Ethereum Mainnet',
-    [EthNetwork.Ropsten]: 'Ethereum Ropsten',
-    [EthNetwork.Rinkeby]: 'Ethereum Rinkeby',
-    [EthNetwork.Kovan]: 'Ethereum Kovan',
-    [EthNetwork.Goerli]: 'Ethereum Goerli'
+  evm: {
+    [EvmNetworkType.Mainnet]: 'Ethereum Mainnet',
+    [EvmNetworkType.Ropsten]: 'Ethereum Ropsten',
+    [EvmNetworkType.Rinkeby]: 'Ethereum Rinkeby',
+    [EvmNetworkType.Kovan]: 'Ethereum Kovan',
+    [EvmNetworkType.Goerli]: 'Ethereum Goerli',
+    [EvmNetworkType.Private]: 'Volta Testnet',
+    [EvmNetworkType.EWC]: 'Energy Web Chain'
+  },
+  providers: {
+    metamask: '@:metamask'
   },
   about: {
     title: 'The DEX for the Interoperable Future.',
@@ -202,7 +214,7 @@ export default {
     pswap: {
       title: 'PSWAP Tokens',
       first: 'PSWAP was created by community governance by voting on its release. It is a utility and governance token used to reward liquidity providers on Polkaswap. Unlike most other reward tokens, PSWAP is burned with transactions and decreases in supply over time.',
-      second: 'The 0.3% fee for every swap on the Polkaswap DEX is used to buy back PSWAP tokens, which are then burned. At first, 90% of burned PSWAP tokens are reminted to allocate to liquidity providers, but with time this percentage will decrease to 35% after 4 years.'
+      second: 'The {percent}% fee for every swap on the Polkaswap DEX is used to buy back PSWAP tokens, which are then burned. At first, 90% of burned PSWAP tokens are reminted to allocate to liquidity providers, but with time this percentage will decrease to 35% after 4 years.'
     },
     links: {
       first: {
@@ -278,7 +290,11 @@ export default {
     viewHistory: 'View transactions history',
     transactionSubmitted: 'Transaction submitted',
     transactionMessage: '{assetA} for {assetB}',
-    notRegisteredAsset: 'Asset {assetSymbol} is not registered'
+    notRegisteredAsset: 'Asset {assetSymbol} is not registered',
+    selectNetwork: 'Select network',
+    networkInfo: 'Bridge @:soraText Network with:',
+    ethereum: '@:ethereumText',
+    energy: '@:evm.EWC'
   },
   selectRegisteredAsset: {
     title: 'Select a token',
@@ -334,6 +350,7 @@ export default {
       waitingForConfirmation: 'Waiting for confirmation...'
     },
     wait30Block: 'Please wait 30 block confirmations',
+    viewInSorascan: 'View in SORAScan',
     viewInEtherscan: 'View in Etherscan',
     networkTitle: '{network} transaction',
     transactionHash: 'Transaction hash',
@@ -430,6 +447,11 @@ export default {
   dexSettings: {
     title: 'Transaction settings',
     marketAlgorithm: '@.upper:marketAlgorithmText',
+    marketAlgorithms: {
+      SMART: '<span class="algorithm">SMART</span> liquidity routing ensures the best price for any transaction by combining only the best price options from all available markets. When available, Token Bonding Curve (<span class="algorithm">TBC</span>) will be used for liquidity as long as the asset price is more affordable than from other sources, upon which the <span class="algorithm">XYK</span> pool is utilized.',
+      TBC: '<span class="algorithm">TBC</span> — buying only from the Token Bonding Curve (Primary Market). There is a possibility that the price can become unfavorable compared to the <span class="algorithm">XYK</span> pool (Secondary Market), but the value received from the vested rewards might turn out to be much more favorable over time.',
+      XYK: '<span class="algorithm">XYK</span> — buying only from the XYK Pool (Secondary Market). Traditional XYK pool swap.'
+    },
     marketAlgorithmTooltip: {
       main: ' - option to choose between Primary Market (TBC), Secondary Market (XYK) or a combined smart algorithm for guaranteed best price for any given transaction.'
     },
@@ -459,6 +481,7 @@ export default {
     networkFee: '@:networkFeeText',
     networkFeeTooltip: '@:networkFeeTooltipText',
     andText: 'and',
+    vested: 'vested',
     claiming: {
       pending: 'Claiming...',
       success: 'Claimed successfully'
@@ -494,9 +517,9 @@ export default {
     events: {
       [RewardingEvents.XorErc20]: 'XOR ERC-20',
       [RewardingEvents.SoraFarmHarvest]: '@:(soraText).farm harvest',
-      [RewardingEvents.NtfAirdrop]: 'NFT Airdrop',
+      [RewardingEvents.NftAirdrop]: 'NFT Airdrop',
       [RewardingEvents.LiquidityProvision]: 'Fees gained from liquidity provision',
-      [RewardingEvents.BuyOnBondingCurve]: 'Strategic rewards for buying from the TBC'
+      [RewardingEvents.BuyOnBondingCurve]: 'buying from the TBC'
     }
   },
   provider: {

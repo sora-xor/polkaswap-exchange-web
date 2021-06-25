@@ -19,7 +19,7 @@
     /> -->
     <info-line
       :label="t('swap.liquidityProviderFee')"
-      :tooltip-content="t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: 0.3})"
+      :tooltip-content="liquidityProviderFeeTooltipText"
       :value="formattedLiquidityProviderFee"
       :asset-symbol="xorSymbol"
     />
@@ -64,6 +64,10 @@ export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMi
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
   @Getter isLoggedIn!: boolean
 
+  get liquidityProviderFeeTooltipText (): string {
+    return this.t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: this.liquidityProviderFeeValue })
+  }
+
   get priceValues (): Array<object> {
     const fromSymbol = this.tokenFrom?.symbol ?? ''
     const toSymbol = this.tokenTo?.symbol ?? ''
@@ -72,12 +76,12 @@ export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMi
       {
         id: 'from',
         label: this.t('swap.firstPerSecond', { first: fromSymbol, second: toSymbol }),
-        value: this.price
+        value: this.formatStringValue(this.price)
       },
       {
         id: 'to',
         label: this.t('swap.firstPerSecond', { first: toSymbol, second: fromSymbol }),
-        value: this.priceReversed
+        value: this.formatStringValue(this.priceReversed)
       }
     ]
   }
@@ -92,6 +96,10 @@ export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMi
 
   get formattedNetworkFee (): string {
     return this.formatCodecNumber(this.networkFee)
+  }
+
+  get liquidityProviderFeeValue (): string {
+    return this.formatStringValue('0.3')
   }
 
   get formattedLiquidityProviderFee (): string {
