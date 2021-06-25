@@ -191,14 +191,28 @@ const mutations = {
 }
 
 const actions = {
-  async setTokenFromAddress ({ commit, getters, rootGetters }, address?: string) {
-    const updateBalance = balance => commit(types.SET_TOKEN_FROM_BALANCE, balance)
-
+  async setTokenFromAddress ({ commit, dispatch }, address?: string) {
     if (!address) {
       commit(types.RESET_TOKEN_FROM_ADDRESS)
     } else {
       commit(types.SET_TOKEN_FROM_ADDRESS, address)
     }
+
+    dispatch('updateTokenFromSubscription')
+  },
+
+  async setTokenToAddress ({ commit, dispatch }, address?: string) {
+    if (!address) {
+      commit(types.RESET_TOKEN_TO_ADDRESS)
+    } else {
+      commit(types.SET_TOKEN_TO_ADDRESS, address)
+    }
+
+    dispatch('updateTokenToSubscription')
+  },
+
+  updateTokenFromSubscription ({ commit, getters, rootGetters }) {
+    const updateBalance = balance => commit(types.SET_TOKEN_FROM_BALANCE, balance)
 
     balanceSubscriptions.remove('from', { updateBalance })
 
@@ -207,14 +221,8 @@ const actions = {
     }
   },
 
-  async setTokenToAddress ({ commit, getters, rootGetters }, address?: string) {
+  updateTokenToSubscription ({ commit, getters, rootGetters }) {
     const updateBalance = balance => commit(types.SET_TOKEN_TO_BALANCE, balance)
-
-    if (!address) {
-      commit(types.RESET_TOKEN_TO_ADDRESS)
-    } else {
-      commit(types.SET_TOKEN_TO_ADDRESS, address)
-    }
 
     balanceSubscriptions.remove('to', { updateBalance })
 
@@ -262,10 +270,17 @@ const actions = {
   setNetworkFee ({ commit }, networkFee: string) {
     commit(types.SET_NETWORK_FEE, networkFee)
   },
-  reset ({ commit }) {
+  reset ({ commit, dispatch }) {
+    dispatch('resetSubscriptions')
+    commit(types.RESET)
+  },
+  resetSubscriptions ({ commit }) {
     balanceSubscriptions.remove('from', { updateBalance: balance => commit(types.SET_TOKEN_FROM_BALANCE, balance) })
     balanceSubscriptions.remove('to', { updateBalance: balance => commit(types.SET_TOKEN_TO_BALANCE, balance) })
-    commit(types.RESET)
+  },
+  updateSubscriptions ({ dispatch }) {
+    dispatch('updateTokenFromSubscription')
+    dispatch('updateTokenToSubscription')
   }
 }
 
