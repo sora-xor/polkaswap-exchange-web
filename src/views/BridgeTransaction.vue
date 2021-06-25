@@ -867,6 +867,9 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     &--error {
       background-image: url("~@/assets/img/header-error.svg");
     }
+    &.el-loading-parent--relative {
+      background-image: none;
+    }
   }
   &-details {
     margin-bottom: $inner-spacing-mini;
