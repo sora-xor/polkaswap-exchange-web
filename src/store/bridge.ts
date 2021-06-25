@@ -363,16 +363,9 @@ const actions = {
   setSoraToEvm ({ commit }, isSoraToEvm: boolean) {
     commit(types.SET_SORA_TO_EVM, isSoraToEvm)
   },
-  setAssetAddress ({ commit, getters, rootGetters }, address?: string) {
-    const updateBalance = (balance) => commit(types.SET_ASSET_BALANCE, balance)
-
+  setAssetAddress ({ commit, dispatch }, address?: string) {
     commit(types.SET_ASSET_ADDRESS, address)
-
-    balanceSubscriptions.remove('asset', { updateBalance })
-
-    if (rootGetters.isLoggedIn && getters.asset?.address && !(getters.asset.address in rootGetters.accountAssetsAddressTable)) {
-      balanceSubscriptions.add('asset', { updateBalance, token: getters.asset })
-    }
+    dispatch('updateBalanceSubscription')
   },
   setAmount ({ commit }, amount: string) {
     commit(types.SET_AMOUNT, amount)
@@ -429,6 +422,15 @@ const actions = {
   },
   resetBalanceSubscription ({ commit }) {
     balanceSubscriptions.remove('asset', { updateBalance: balance => commit(types.SET_ASSET_BALANCE, balance) })
+  },
+  updateBalanceSubscription ({ commit, getters, rootGetters }) {
+    const updateBalance = (balance) => commit(types.SET_ASSET_BALANCE, balance)
+
+    balanceSubscriptions.remove('asset', { updateBalance })
+
+    if (rootGetters.isLoggedIn && getters.asset?.address && !(getters.asset.address in rootGetters.accountAssetsAddressTable)) {
+      balanceSubscriptions.add('asset', { updateBalance, token: getters.asset })
+    }
   },
   async getHistory ({ commit }) {
     commit(types.GET_HISTORY_REQUEST)

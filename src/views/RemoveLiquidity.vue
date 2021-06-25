@@ -208,25 +208,30 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
   sliderDragButton: any
   accountLiquiditySubscription!: Function
 
-  async mounted (): Promise<void> {
-    this.resetData()
-    this.resetPrices()
+  async created (): Promise<void> {
+    this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
+
     await this.withApi(async () => {
-      await this.getAccountLiquidity()
-      await this.getAssets()
+      await Promise.all([
+        this.getAssets(),
+        this.getAccountLiquidity()
+      ])
+
       await this.getLiquidity({
         firstAddress: this.firstTokenAddress,
         secondAddress: this.secondTokenAddress
       })
+
+      // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
+      if (!this.liquidity) {
+        return this.handleBack()
+      }
+
+      this.updatePrices()
     })
-    // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
-    if (!this.liquidity) {
-      return this.handleBack()
-    }
+  }
 
-    this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
-
-    this.updatePrices()
+  mounted (): void {
     this.sliderDragButton = this.$el.querySelector('.slider-container .el-slider__button')
     this.sliderInput = this.$el.querySelector('.s-input--remove-part .el-input__inner')
     if (this.sliderDragButton) {
@@ -241,6 +246,8 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
     if (typeof this.accountLiquiditySubscription === 'function') {
       this.accountLiquiditySubscription() // unsubscribe
     }
+    this.resetData()
+    this.resetPrices()
   }
 
   get firstTokenAddress (): string {
@@ -352,7 +359,9 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
   }
 
   handleBack (): void {
-    router.push({ name: PageNames.Pool })
+    if (router.currentRoute.name === PageNames.RemoveLiquidity) {
+      router.push({ name: PageNames.Pool })
+    }
   }
 }
 </script>
