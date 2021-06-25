@@ -617,6 +617,10 @@ const actions = {
       return
     }
     commit(types.SIGN_EVM_TRANSACTION_SORA_EVM_REQUEST)
+    if (getters.evmTransactionHash) {
+      commit(types.SIGN_EVM_TRANSACTION_SORA_EVM_SUCCESS)
+      return getters.evmTransactionHash
+    }
 
     try {
       const request = await waitForApprovedRequest(hash) // If it causes an error, then -> catch -> SORA_REJECTED
@@ -670,6 +674,7 @@ const actions = {
       return new Promise((resolve, reject) => {
         contractMethod.send({ gas, from: evmAccount })
           .on('transactionHash', hash => {
+            dispatch('setEvmTransactionHash', hash)
             commit(types.SIGN_EVM_TRANSACTION_SORA_EVM_SUCCESS)
             resolve(hash)
           })

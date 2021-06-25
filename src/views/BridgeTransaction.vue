@@ -861,11 +861,14 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
       background-image: url("~@/assets/img/status-success.svg");
       background-size: 84%;
     }
-    &--wait:not(.el-loading-parent--relative) {
+    &--wait {
       background-image: url("~@/assets/img/header-wait.svg");
     }
     &--error {
       background-image: url("~@/assets/img/header-error.svg");
+    }
+    &.el-loading-parent--relative {
+      background-image: none;
     }
   }
   &-details {

@@ -230,7 +230,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
       await this.setSoraNetworkFee(soraNetworkFee || this.soraNetworkFee)
       await this.setEvmNetworkFee(evmNetworkFee || this.evmNetworkFee)
       await this.setTransactionStep(tx.transactionStep)
-      await this.setCurrentTransactionState(this.isOutgoingType(tx.type) && !tx.signed && tx.transactionStep === 2 && tx.transactionState === STATES.EVM_PENDING ? STATES.EVM_SUBMITTED : tx.transactionState)
+      await this.setCurrentTransactionState(tx.transactionState)
       await this.setHistoryItem(tx)
       router.push({ name: PageNames.BridgeTransaction })
     })
