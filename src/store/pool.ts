@@ -2,7 +2,7 @@ import map from 'lodash/fp/map'
 import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
-import { api, isWalletLoaded } from '@soramitsu/soraneo-wallet-web'
+import { api, connection } from '@soramitsu/soraneo-wallet-web'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -78,7 +78,7 @@ const actions = {
     const fiveSeconds = 5 * 1000
 
     let subscription: NodeJS.Timeout | null = setInterval(async () => {
-      if (!isWalletLoaded || !rootGetters.isLoggedIn || state.accountLiquidityFetching) {
+      if (!connection.opened || !rootGetters.isLoggedIn || state.accountLiquidityFetching) {
         return
       }
       commit(types.UPDATE_ACCOUNT_LIQUIDITY_REQUEST)

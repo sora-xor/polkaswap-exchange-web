@@ -150,6 +150,7 @@ const namespace = 'swap'
   }
 })
 export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
+  @Getter nodeIsConnected!: boolean
   @Getter isLoggedIn!: boolean
   @Getter slippageTolerance!: string
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset
@@ -181,6 +182,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
   @Action('setPairLiquiditySources', { namespace }) setPairLiquiditySources!: (liquiditySources: Array<LiquiditySourceTypes>) => Promise<void>
   @Action('setRewards', { namespace }) setRewards!: (rewards: Array<LPRewardsInfo>) => Promise<void>
+  @Action('resetSubscriptions', { namespace }) resetSubscriptions!: AsyncVoidFn
+  @Action('updateSubscriptions', { namespace }) updateSubscriptions!: AsyncVoidFn
 
   @Watch('slippageTolerance')
   private handleSlippageToleranceChange (): void {
@@ -197,6 +200,17 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     if (!wasLoggedIn && isLoggedIn) {
       this.getNetworkFee()
       this.recountSwapValues()
+    }
+  }
+
+  @Watch('nodeIsConnected')
+  private updateConnectionSubsriptions (nodeConnected: boolean) {
+    if (nodeConnected) {
+      this.updateSubscriptions()
+      this.subscribeOnSwapReserves()
+    } else {
+      this.resetSubscriptions()
+      this.cleanSwapReservesSubscription()
     }
   }
 

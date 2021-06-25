@@ -175,7 +175,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { RegisteredAccountAsset, BridgeNetworks, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
 
@@ -228,6 +228,7 @@ export default class Bridge extends Mixins(
   @Action('setAmount', { namespace }) setAmount
   @Action('resetBridgeForm', { namespace }) resetBridgeForm
   @Action('resetBalanceSubscription', { namespace }) resetBalanceSubscription!: AsyncVoidFn
+  @Action('updateBalanceSubscription', { namespace }) updateBalanceSubscription!: AsyncVoidFn
   @Action('getNetworkFee', { namespace }) getNetworkFee!: AsyncVoidFn
 
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
@@ -243,6 +244,16 @@ export default class Bridge extends Mixins(
   @Getter('amount', { namespace }) amount!: string
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
+  @Getter nodeIsConnected!: boolean
+
+  @Watch('nodeIsConnected')
+  private updateConnectionSubsriptions (nodeConnected: boolean) {
+    if (nodeConnected) {
+      this.updateBalanceSubscription()
+    } else {
+      this.resetBalanceSubscription()
+    }
+  }
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
