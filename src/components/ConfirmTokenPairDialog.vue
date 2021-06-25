@@ -53,6 +53,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
+
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -60,6 +61,7 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
+
 @Component({
   components: {
     DialogBase,
@@ -106,11 +108,13 @@ export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, Dia
     margin-bottom: $inner-spacing-mini;
   }
 }
+
 .tokens,
 .pair-info {
   padding-left: $inner-spacing-mini;
   padding-right: $inner-spacing-mini;
 }
+
 .output-description {
   margin-top: $inner-spacing-mini;
   margin-bottom: $inner-spacing-mini;
@@ -120,6 +124,7 @@ export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, Dia
   max-width: 300px;
   margin: auto;
 }
+
 .pair-info {
   line-height: var(--s-line-height-big);
   color: var(--s-color-base-content-secondary);
@@ -128,16 +133,19 @@ export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, Dia
     margin-top: $inner-spacing-mini;
   }
 }
+
 .price {
   text-align: right;
   div:last-child {
     margin-top: $inner-spacing-mini;
   }
 }
+
 .supply-info {
   display: flex;
   justify-content: space-between;
 }
+
 .pool-tokens-amount {
   font-size: var(--s-heading1-font-size);
   line-height: var(--s-line-height-mini);
@@ -145,6 +153,7 @@ export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, Dia
   font-weight: 700;
   text-align: center;
 }
+
 .pool-tokens {
   margin: $inner-spacing-mini 0;
   font-size: var(--s-heading4-font-size);
