@@ -154,11 +154,6 @@ const actions = {
         await initWallet({ permissions: WalletPermissions })
         // TODO [tech]: maybe we should replace it, cuz it executes twice except bridge screens
         await dispatch('assets/getAssets', undefined, { root: true })
-      } else {
-        if (updateAccountAssetsSubscription) {
-          updateAccountAssetsSubscription.unsubscribe()
-        }
-        dispatch('updateAccountAssets', undefined, { root: true }) // to update subscription
       }
     } catch (error) {
       if (requestedNode && (requestedNode.address === state.node.address)) {
@@ -217,7 +212,6 @@ const actions = {
 
       if (currentEndpoint && opened) {
         try {
-          connection.unsubscribeEventHandlers() // TODO: unsubscribe in connection.close
           await connection.close()
         } catch (error) {
           console.error('Disconnection error', error)
