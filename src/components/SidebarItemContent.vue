@@ -32,10 +32,21 @@ export default class SidebarItemContent extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
+.menu-item--small {
+  span {
+    font-weight: $s-font-weight-small;
+    font-size: $s-font-size-menu-small;
+    letter-spacing: var(--s-letter-spacing-small);
+  }
+}
+</style>
+
+<style lang="scss" scoped>
 $icon-size: 42px;
 
 .sidebar-item-content {
   display: flex;
+  align-items: center;
 
   &--link {
     &, &:hover, &:focus, &:visited {
@@ -53,10 +64,26 @@ $icon-size: 42px;
   height: $icon-size;
   border-radius: 50%;
   background-color: var(--s-color-utility-surface);
-  box-shadow: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1);
-  transition: all 0.125s ease-in-out;
+  transition: var(--s-transition-default);
   > i {
     margin: auto;
+  }
+  & + span {
+    display: none;
+  }
+  .el-menu-item.is-active & {
+    box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.02), 1px 1px 3px rgba(0, 0, 0, 0.1), inset 1px 1px 2px rgba(255, 255, 255, 0.8);
+  }
+  .menu-item--small & {
+    margin-right: 0;
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
+
+@include large-mobile {
+  .icon-container + span {
+    display: block;
   }
 }
 </style>

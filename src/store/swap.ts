@@ -6,6 +6,7 @@ import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { CodecString, LiquiditySourceTypes, LPRewardsInfo } from '@sora-substrate/util'
 
+import { MarketAlgorithmForLiquiditySource } from '@/consts'
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions'
 
 const balanceSubscriptions = new TokenBalanceSubscriptions()
@@ -35,9 +36,9 @@ const types = flow(
 )(['CHECK_AVAILABILITY'])
 
 interface SwapState {
-  tokenFromAddress: string | null;
+  tokenFromAddress: Nullable<string>;
   tokenFromBalance: any;
-  tokenToAddress: string | null;
+  tokenToAddress: Nullable<string>;
   tokenToBalance: any;
   fromValue: string;
   toValue: string;
@@ -85,7 +86,7 @@ const getters = {
 
     return balance ? { ...token, balance } : token
   },
-  pairLiquiditySourcesAvailable (state) {
+  pairLiquiditySourcesAvailable (state: SwapState) {
     return state.pairLiquiditySources.length !== 0
   },
   fromValue (state: SwapState) {
@@ -111,7 +112,10 @@ const getters = {
 
     return rootGetters.liquiditySource
   },
-  rewards (state) {
+  swapMarketAlgorithm (state, getters) {
+    return MarketAlgorithmForLiquiditySource[getters.swapLiquiditySource ?? '']
+  },
+  rewards (state: SwapState) {
     return state.rewards
   },
   isAvailable (state: SwapState) {
@@ -187,14 +191,28 @@ const mutations = {
 }
 
 const actions = {
-  async setTokenFromAddress ({ commit, getters, rootGetters }, address?: string) {
-    const updateBalance = balance => commit(types.SET_TOKEN_FROM_BALANCE, balance)
-
+  async setTokenFromAddress ({ commit, dispatch }, address?: string) {
     if (!address) {
       commit(types.RESET_TOKEN_FROM_ADDRESS)
     } else {
       commit(types.SET_TOKEN_FROM_ADDRESS, address)
     }
+
+    dispatch('updateTokenFromSubscription')
+  },
+
+  async setTokenToAddress ({ commit, dispatch }, address?: string) {
+    if (!address) {
+      commit(types.RESET_TOKEN_TO_ADDRESS)
+    } else {
+      commit(types.SET_TOKEN_TO_ADDRESS, address)
+    }
+
+    dispatch('updateTokenToSubscription')
+  },
+
+  updateTokenFromSubscription ({ commit, getters, rootGetters }) {
+    const updateBalance = balance => commit(types.SET_TOKEN_FROM_BALANCE, balance)
 
     balanceSubscriptions.remove('from', { updateBalance })
 
@@ -203,14 +221,8 @@ const actions = {
     }
   },
 
-  async setTokenToAddress ({ commit, getters, rootGetters }, address?: string) {
+  updateTokenToSubscription ({ commit, getters, rootGetters }) {
     const updateBalance = balance => commit(types.SET_TOKEN_TO_BALANCE, balance)
-
-    if (!address) {
-      commit(types.RESET_TOKEN_TO_ADDRESS)
-    } else {
-      commit(types.SET_TOKEN_TO_ADDRESS, address)
-    }
 
     balanceSubscriptions.remove('to', { updateBalance })
 
@@ -258,10 +270,17 @@ const actions = {
   setNetworkFee ({ commit }, networkFee: string) {
     commit(types.SET_NETWORK_FEE, networkFee)
   },
-  reset ({ commit }) {
+  reset ({ commit, dispatch }) {
+    dispatch('resetSubscriptions')
+    commit(types.RESET)
+  },
+  resetSubscriptions ({ commit }) {
     balanceSubscriptions.remove('from', { updateBalance: balance => commit(types.SET_TOKEN_FROM_BALANCE, balance) })
     balanceSubscriptions.remove('to', { updateBalance: balance => commit(types.SET_TOKEN_TO_BALANCE, balance) })
-    commit(types.RESET)
+  },
+  updateSubscriptions ({ dispatch }) {
+    dispatch('updateTokenFromSubscription')
+    dispatch('updateTokenToSubscription')
   }
 }
 

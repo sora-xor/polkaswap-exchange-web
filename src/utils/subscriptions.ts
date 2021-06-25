@@ -7,12 +7,12 @@ export class TokenBalanceSubscriptions {
     this.subscriptions = new Map()
   }
 
-  add (key: string, { updateBalance, token }) {
+  add (key: string, { updateBalance, token }): void {
     const subscription = api.getAssetBalanceObservable(token).subscribe(balance => updateBalance(balance))
     this.subscriptions.set(key, subscription)
   }
 
-  remove (key: string, { updateBalance }) {
+  remove (key: string, { updateBalance }): void {
     if (this.subscriptions.has(key)) {
       const subscription = this.subscriptions.get(key)
       subscription.unsubscribe()

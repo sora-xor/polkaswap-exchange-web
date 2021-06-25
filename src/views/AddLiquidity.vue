@@ -1,87 +1,68 @@
 <template>
-  <div class="container" v-loading="parentLoading">
+  <div v-loading="parentLoading || loading" class="container">
     <generic-page-header has-button-back :title="t('addLiquidity.title')" :tooltip="t('pool.description')" @back="handleBack" />
     <s-form
       class="el-form--actions"
       :show-message="false"
     >
-      <div class="input-container">
-        <div class="input-line-header">
-          <div class="input-title p4">{{ t('createPair.deposit') }}</div>
-          <div v-if="isLoggedIn && firstToken" class="token-balance">
-            <span class="token-balance-title">{{ t('createPair.balance') }}</span>
-            <span class="token-balance-value">{{ getTokenBalance(firstToken) }}</span>
+      <s-float-input
+        class="s-input--token-value"
+        size="medium"
+        :value="firstTokenValue"
+        :decimals="(firstToken || {}).decimals"
+        has-locale-string
+        :delimiters="delimiters"
+        :max="getMax((firstToken || {}).address)"
+        :disabled="!areTokensSelected"
+        @input="handleTokenChange($event, setFirstTokenValue)"
+        @blur="resetFocusedField"
+      >
+        <div slot="top" class="input-line">
+          <div class="input-title">
+            <span class="input-title--uppercase input-title--primary">{{ t('createPair.deposit') }}</span>
+          </div>
+          <div v-if="isLoggedIn && firstToken" class="input-title">
+            <span class="input-title--uppercase">{{ t('createPair.balance') }}</span>
+            <span class="input-title--uppercase input-title--primary">{{ getTokenBalance(firstToken) }}</span>
           </div>
         </div>
-        <div class="input-line-content">
-          <s-form-item>
-            <s-float-input
-              class="s-input--token-value"
-              :value="firstTokenValue"
-              :decimals="(firstToken || {}).decimals"
-              :max="getMax((firstToken || {}).address)"
-              :disabled="!areTokensSelected"
-              @input="handleTokenChange($event, setFirstTokenValue)"
-              @blur="resetFocusedField"
-            />
-          </s-form-item>
-          <div v-if="firstToken" class="token">
-            <s-button v-if="isFirstMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue(firstToken, setFirstTokenValue)">
-              {{ t('buttons.max') }}
-            </s-button>
-            <s-button class="el-button--choose-token el-button--disabled" type="tertiary" size="small" border-radius="medium">
-              <token-logo :token="firstToken" size="small" />
-              {{ firstToken.symbol }}
-            </s-button>
-          </div>
-        </div>
-      </div>
-      <s-icon class="icon-divider" name="plus-16" />
-      <div class="input-container">
-        <div class="input-line-header">
-          <div class="input-title p4">
-            <span>{{ t('createPair.deposit') }}</span>
-          </div>
-          <div v-if="isLoggedIn && secondToken" class="token-balance">
-            <span class="token-balance-title">{{ t('exchange.balance') }}</span>
-            <span class="token-balance-value">{{ getTokenBalance(secondToken) }}</span>
-          </div>
-        </div>
-        <div class="input-line-content">
-          <s-form-item>
-            <s-float-input
-              class="s-input--token-value"
-              :value="secondTokenValue"
-              :decimals="(secondToken || {}).decimals"
-              :max="getMax((secondToken || {}).address)"
-              :disabled="!areTokensSelected"
-              @input="handleTokenChange($event, setSecondTokenValue)"
-              @blur="resetFocusedField"
-            />
-          </s-form-item>
-          <div v-if="secondToken" class="token">
-            <s-button v-if="isSecondMaxButtonAvailable" class="el-button--max" type="tertiary" size="small" border-radius="mini" @click="handleMaxValue(secondToken, setSecondTokenValue)">
-              {{ t('buttons.max') }}
-            </s-button>
-            <s-button
-              :class="chooseTokenClasses"
-              type="tertiary"
-              size="small"
-              border-radius="medium"
-              :icon="!secondAddress ? 'chevron-down-rounded-16' : undefined"
-              icon-position="right"
-              @click="!secondAddress ? openSelectSecondTokenDialog() : undefined"
-            >
-              <token-logo :token="secondToken" size="small" />
-              {{ secondToken.symbol }}
-            </s-button>
-          </div>
-          <s-button v-else class="el-button--empty-token" type="tertiary" size="small" border-radius="mini" icon="chevron-down-rounded-16" icon-position="right" @click="openSelectSecondTokenDialog">
-            {{ t('buttons.chooseToken') }}
+        <div slot="right" class="s-flex el-buttons">
+          <s-button v-if="isFirstMaxButtonAvailable" class="el-button--max s-typography-button--small" type="primary" alternative size="mini" border-radius="mini" @click="handleMaxValue(firstToken, setFirstTokenValue)">
+            {{ t('buttons.max') }}
           </s-button>
+          <token-select-button class="el-button--select-token" :token="firstToken" />
         </div>
-      </div>
-        <s-button type="primary" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="openConfirmDialog">
+      </s-float-input>
+      <s-icon class="icon-divider" name="plus-16" />
+      <s-float-input
+        class="s-input--token-value"
+        size="medium"
+        :value="secondTokenValue"
+        :decimals="(secondToken || {}).decimals"
+        has-locale-string
+        :delimiters="delimiters"
+        :max="getMax((secondToken || {}).address)"
+        :disabled="!areTokensSelected"
+        @input="handleTokenChange($event, setSecondTokenValue)"
+        @blur="resetFocusedField"
+      >
+        <div slot="top" class="input-line">
+          <div class="input-title">
+            <span class="input-title--uppercase input-title--primary">{{ t('createPair.deposit') }}</span>
+          </div>
+          <div v-if="isLoggedIn && secondToken" class="input-title">
+            <span class="input-title--uppercase">{{ t('createPair.balance') }}</span>
+            <span class="input-title--uppercase input-title--primary">{{ getTokenBalance(secondToken) }}</span>
+          </div>
+        </div>
+        <div slot="right" class="s-flex el-buttons">
+          <s-button v-if="isSecondMaxButtonAvailable" class="el-button--max s-typography-button--small" type="primary" alternative size="mini" border-radius="mini" @click="handleMaxValue(secondToken, setSecondTokenValue)">
+            {{ t('buttons.max') }}
+          </s-button>
+          <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="secondToken" @click="openSelectSecondTokenDialog" />
+        </div>
+      </s-float-input>
+      <s-button type="primary" class="action-button s-typography-button--large" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="openConfirmDialog">
         <template v-if="!areTokensSelected">
           {{ t('buttons.chooseTokens') }}
         </template>
@@ -98,10 +79,11 @@
           {{ t('createPair.supply') }}
         </template>
       </s-button>
+      <slippage-tolerance class="slippage-tolerance-settings" />
     </s-form>
 
     <div v-if="areTokensSelected && isAvailable && !isNotFirstLiquidityProvider && emptyAssets" class="info-line-container">
-      <p class="p2">{{ t('createPair.firstLiquidityProvider') }}</p>
+      <p class="info-line-container__title">{{ t('createPair.firstLiquidityProvider') }}</p>
       <info-line>
         <template #info-line-prefix>
           <p class="info-line--first-liquidity" v-html="t('createPair.firstLiquidityProviderInfo')" />
@@ -110,15 +92,15 @@
     </div>
 
     <div v-if="areTokensSelected && isAvailable && !emptyAssets" class="info-line-container">
-      <p class="p2">{{ t('createPair.pricePool') }}</p>
-      <info-line :label="t('addLiquidity.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="price" />
-      <info-line :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="priceReversed" />
+      <p class="info-line-container__title">{{ t('createPair.pricePool') }}</p>
+      <info-line :label="t('addLiquidity.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="formatStringValue(price)" />
+      <info-line :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formatStringValue(priceReversed)" />
       <info-line :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
-      <info-line :label="t('createPair.networkFee')" :value="`${formattedFee} ${KnownSymbols.XOR}`" />
+      <info-line :label="t('createPair.networkFee')" :value="`${formattedFee} ${KnownSymbols.XOR}`" :tooltip-content="t('networkFeeTooltipText')" />
     </div>
 
     <div v-if="areTokensSelected && isAvailable && (!emptyAssets || (liquidityInfo || {}).balance)" class="info-line-container">
-      <p class="p2">{{ t(`createPair.yourPosition${!emptyAssets ? 'Estimated' : ''}`) }}</p>
+      <p class="info-line-container__title">{{ t(`createPair.yourPosition${!emptyAssets ? 'Estimated' : ''}`) }}</p>
       <info-line
         :label="t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol })"
         :value="poolTokenPosition"
@@ -127,7 +109,6 @@
           <pair-token-logo class="pair-token-logo" :first-token="firstToken" :second-token="secondToken" size="mini" />
         </template>
       </info-line>
-      <s-divider />
       <info-line :label="firstToken.symbol" :value="firstTokenPosition" />
       <info-line :label="secondToken.symbol" :value="secondTokenPosition" />
     </div>
@@ -154,12 +135,13 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { FPNumber, AccountLiquidity, CodecString } from '@sora-substrate/util'
+import { FPNumber, AccountLiquidity, CodecString, KnownAssets, KnownSymbols } from '@sora-substrate/util'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
+import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
 import router, { lazyComponent } from '@/router'
-import { Components, PageNames } from '@/consts'
+import { Components } from '@/consts'
 
 const namespace = 'addLiquidity'
 
@@ -172,11 +154,13 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
     InfoLine: lazyComponent(Components.InfoLine),
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog)
+    SlippageTolerance: lazyComponent(Components.SlippageTolerance),
+    ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
+    TokenSelectButton: lazyComponent(Components.TokenSelectButton)
   }
 })
 
-export default class AddLiquidity extends Mixins(TokenPairMixin) {
+export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatterMixin) {
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('accountLiquidity', { namespace: 'pool' }) accountLiquidity!: Array<AccountLiquidity>
@@ -185,11 +169,41 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField
 
-  @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity
-  @Action('destroyUpdateAccountLiquiditySubscription', { namespace: 'pool' }) destroyUpdateAccountLiquiditySubscription
+  @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity!: AsyncVoidFn
+  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<Function>
 
-  destroyed (): void {
-    this.destroyUpdateAccountLiquiditySubscription()
+  readonly delimiters = FPNumber.DELIMITERS_CONFIG
+
+  accountLiquiditySubscription!: Function
+
+  async created (): Promise<void> {
+    this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
+
+    await this.withApi(async () => {
+      await Promise.all([
+        this.getAssets(),
+        this.getAccountLiquidity()
+      ])
+
+      if (this.firstAddress && this.secondAddress) {
+        await this.setDataFromLiquidity({
+          firstAddress: this.firstAddress,
+          secondAddress: this.secondAddress
+        })
+
+        if (!this.liquidityInfo) {
+          return this.handleBack()
+        }
+      } else {
+        await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
+      }
+    })
+  }
+
+  beforeDestroy (): void {
+    if (typeof this.accountLiquiditySubscription === 'function') {
+      this.accountLiquiditySubscription() // unsubscribe
+    }
   }
 
   get firstAddress (): string {
@@ -236,27 +250,12 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
     return this.getTokenPosition(this.liquidityInfo?.secondBalance, this.secondTokenValue)
   }
 
-  async afterApiConnect (): Promise<void> {
-    await this.updateAccountLiquidity()
-
-    if (this.firstAddress && this.secondAddress) {
-      await this.setDataFromLiquidity({
-        firstAddress: this.firstAddress,
-        secondAddress: this.secondAddress
-      })
-    }
-    // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
-    if (this.firstAddress && this.secondAddress && !this.liquidityInfo) {
-      router.push({ name: PageNames.Pool })
-    }
-  }
-
   getTokenPosition (liquidityInfoBalance: string | undefined, tokenValue: string | CodecString | number, isPoolToken = false): string {
     const prevPosition = FPNumber.fromCodecValue(liquidityInfoBalance ?? 0)
     if (!this.emptyAssets) {
-      return prevPosition.add(isPoolToken ? FPNumber.fromCodecValue(tokenValue) : new FPNumber(tokenValue)).format()
+      return prevPosition.add(isPoolToken ? FPNumber.fromCodecValue(tokenValue) : new FPNumber(tokenValue)).toLocaleString()
     }
-    return prevPosition.format()
+    return prevPosition.toLocaleString()
   }
 
   updatePrices (): void {
@@ -284,12 +283,10 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
 
 <style lang="scss" scoped>
 .el-form--actions {
-  @include input-form-styles;
-  @include full-width-button;
-}
-.input-container {
+  @include generic-input-lines;
   @include buttons;
+  @include full-width-button('action-button');
 }
-@include vertical-divider;
+@include vertical-divider('icon-divider', $inner-spacing-medium);
 @include vertical-divider('el-divider');
 </style>

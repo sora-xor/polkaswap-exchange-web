@@ -12,11 +12,11 @@ export default class NumberFormatterMixin extends Vue {
   }
 
   formatCodecNumber (value: CodecString, decimals?: number): string {
-    return this.getFPNumberFromCodec(value, decimals).format()
+    return this.getFPNumberFromCodec(value, decimals).toLocaleString()
   }
 
   formatStringValue (value: string, decimals?: number): string {
-    return this.getFPNumber(value, decimals).format()
+    return this.getFPNumber(value, decimals).toLocaleString()
   }
 
   getStringFromCodec (value: CodecString, decimals?: number): string {

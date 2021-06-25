@@ -2,7 +2,7 @@ import map from 'lodash/fp/map'
 import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
-import { api } from '@soramitsu/soraneo-wallet-web'
+import { api, connection } from '@soramitsu/soraneo-wallet-web'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -13,11 +13,10 @@ const types = flow(
   'UPDATE_ACCOUNT_LIQUIDITY'
 ])
 
-let updateLiquidityIntervalId: any = null
-
 function initialState () {
   return {
-    accountLiquidity: []
+    accountLiquidity: [],
+    accountLiquidityFetching: false
   }
 }
 
@@ -32,33 +31,39 @@ const getters = {
 const mutations = {
   [types.GET_ACCOUNT_LIQUIDITY_REQUEST] (state) {
     state.accountLiquidity = []
+    state.accountLiquidityFetching = true
   },
 
   [types.GET_ACCOUNT_LIQUIDITY_SUCCESS] (state, liquidity) {
     state.accountLiquidity = []
     state.accountLiquidity = liquidity
+    state.accountLiquidityFetching = false
   },
 
   [types.GET_ACCOUNT_LIQUIDITY_FAILURE] (state) {
     state.accountLiquidity = []
+    state.accountLiquidityFetching = false
   },
 
   [types.UPDATE_ACCOUNT_LIQUIDITY_REQUEST] (state) {
+    state.accountLiquidityFetching = true
   },
 
   [types.UPDATE_ACCOUNT_LIQUIDITY_SUCCESS] (state, liquidity) {
     state.accountLiquidity = []
     state.accountLiquidity = liquidity
+    state.accountLiquidityFetching = false
   },
 
   [types.UPDATE_ACCOUNT_LIQUIDITY_FAILURE] (state) {
     state.accountLiquidity = []
+    state.accountLiquidityFetching = false
   }
 }
 
 const actions = {
-  async getAccountLiquidity ({ commit, rootGetters }) {
-    if (!rootGetters.isLoggedIn) {
+  async getAccountLiquidity ({ commit, rootGetters, state }) {
+    if (!rootGetters.isLoggedIn || state.accountLiquidityFetching) {
       return
     }
     commit(types.GET_ACCOUNT_LIQUIDITY_REQUEST)
@@ -69,14 +74,11 @@ const actions = {
       commit(types.GET_ACCOUNT_LIQUIDITY_FAILURE)
     }
   },
-  async updateAccountLiquidity ({ commit, rootGetters, dispatch }) {
-    if (updateLiquidityIntervalId) {
-      clearInterval(updateLiquidityIntervalId)
-    }
-    await dispatch('getAccountLiquidity')
+  createAccountLiquiditySubscription ({ commit, rootGetters, state }) {
     const fiveSeconds = 5 * 1000
-    updateLiquidityIntervalId = setInterval(async () => {
-      if (!rootGetters.isLoggedIn) {
+
+    let subscription: NodeJS.Timeout | null = setInterval(async () => {
+      if (!connection.opened || !rootGetters.isLoggedIn || state.accountLiquidityFetching) {
         return
       }
       commit(types.UPDATE_ACCOUNT_LIQUIDITY_REQUEST)
@@ -89,11 +91,15 @@ const actions = {
         commit(types.UPDATE_ACCOUNT_LIQUIDITY_FAILURE)
       }
     }, fiveSeconds)
-  },
-  destroyUpdateAccountLiquiditySubscription ({ commit }) {
-    if (updateLiquidityIntervalId) {
-      clearInterval(updateLiquidityIntervalId)
+
+    const unsubscribe = () => {
+      if (subscription !== null) {
+        clearInterval(subscription)
+        subscription = null
+      }
     }
+
+    return unsubscribe
   }
 }
 

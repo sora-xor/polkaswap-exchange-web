@@ -20,7 +20,9 @@
         </div>
       </div>
     </div>
-    <p class="transaction-message" v-html="t('removeLiquidity.outputMessage', { slippageTolerance })" />
+    <p class="transaction-message">
+      {{ t('removeLiquidity.outputMessage', { slippageTolerance: formatStringValue(`${slippageTolerance}`) }) }}
+    </p>
     <s-divider />
     <info-line
       :label="t('confirmSupply.poolTokensBurned', { first: firstToken.symbol, second: secondToken.symbol })"
@@ -32,16 +34,17 @@
     </info-line>
     <info-line
       :label="t('removeLiquidity.price')"
-      :value="`1 ${firstToken.symbol} = ${priceReversed}`"
+      :value="`1 ${firstToken.symbol} = ${formatStringValue(priceReversed)}`"
       :asset-symbol="secondToken.symbol "
     />
     <info-line
-      :value="`1 ${secondToken.symbol} = ${price}`"
+      :value="`1 ${secondToken.symbol} = ${formatStringValue(price)}`"
       :asset-symbol="firstToken.symbol"
     />
     <template #footer>
       <s-button
         type="primary"
+        class="s-typography-button--large"
         :loading="parentLoading"
         @click="handleConfirmRemoveLiquidity"
       >
@@ -52,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -74,8 +77,6 @@ const namespace = 'removeLiquidity'
   }
 })
 export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, DialogMixin, LoadingMixin, NumberFormatterMixin) {
-  @Prop({ default: false, type: Boolean }) readonly visible!: boolean
-
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('liquidityAmount', { namespace }) liquidityAmount!: string
@@ -85,7 +86,7 @@ export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, Dia
   @Getter('price', { namespace: 'prices' }) price!: string | number
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
 
-  @Getter slippageTolerance!: number
+  @Getter slippageTolerance!: string
 
   get formattedFromValue (): string {
     return this.formatStringValue(this.firstTokenAmount)
@@ -110,7 +111,7 @@ export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, Dia
   display: flex;
   justify-content: space-between;
   font-size: var(--s-heading2-font-size);
-  line-height: $s-line-height-small;
+  line-height: var(--s-line-height-small);
   &-info-container {
     display: flex;
     flex-direction: column;
@@ -130,8 +131,8 @@ export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, Dia
 }
 .transaction-message {
   margin-top: $inner-spacing-big;
-  color: var(--s-color-base-content-tertiary);
-  line-height: $s-line-height-base;
+  color: var(--s-color-base-content-primary);
+  line-height: var(--s-line-height-base);
 }
 @include vertical-divider;
 @include vertical-divider('el-divider');

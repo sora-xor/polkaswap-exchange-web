@@ -1,14 +1,14 @@
-import { FPNumber, KnownAssets, RewardInfo } from '@sora-substrate/util'
+import { FPNumber, KnownAssets, RewardInfo, RewardsInfo } from '@sora-substrate/util'
 import { RewardsAmountHeaderItem } from '@/types/rewards'
 
-export const groupRewardsByAssetsList = (rewards: Array<RewardInfo>): Array<RewardsAmountHeaderItem> => {
-  const rewardsHash = rewards.reduce((result, { asset, amount }: RewardInfo) => {
-    const { address, decimals } = asset
+export const groupRewardsByAssetsList = (rewards: Array<RewardInfo | RewardsInfo>): Array<RewardsAmountHeaderItem> => {
+  const rewardsHash = rewards.reduce((result, item) => {
+    const isRewardsInfo = 'rewards' in item
+    const { address, decimals } = isRewardsInfo ? (item as RewardsInfo).rewards[0].asset : (item as RewardInfo).asset
+    const amount = isRewardsInfo ? (item as RewardsInfo).limit : (item as RewardInfo).amount
     const current = result[address] || new FPNumber(0, decimals)
     const addValue = FPNumber.fromCodecValue(amount, decimals)
-
     result[address] = current.add(addValue)
-
     return result
   }, {})
 
@@ -17,7 +17,7 @@ export const groupRewardsByAssetsList = (rewards: Array<RewardInfo>): Array<Rewa
 
     const item = {
       symbol: KnownAssets.get(address).symbol,
-      amount: (amount as FPNumber).format()
+      amount: (amount as FPNumber).toLocaleString()
     } as RewardsAmountHeaderItem
 
     total.push(item)
