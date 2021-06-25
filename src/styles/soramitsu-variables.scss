@@ -67,19 +67,7 @@ $neu-button-action-text-color-alternative: var(--s-color-base-content-secondary)
 
 @import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";
 
-$s-font-feature-settings-common: normal;
-$s-font-feature-settings-heading: normal;
-$s-font-feature-settings-caps-heading: normal;
-$s-font-feature-settings-caps: normal;
-$s-font-feature-settings-singleline: normal;
-$s-font-feature-settings-card-title: normal;
-$s-font-feature-settings-input: normal;
-$s-font-feature-settings-button: normal;
-
-@import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";
-
 :root {
-  // Colors
   --s-color-brand-day: #{$s-color-brand-day};
   --s-transition-default: #{$s-transition-default};
   // Font Feature Settings

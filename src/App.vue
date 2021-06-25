@@ -741,12 +741,6 @@ $disclaimer-letter-spacing: -0.03em;
     background-image: url('~@/assets/img/sora-logo.svg');
     background-size: cover;
   }
-  .app-footer {
-    flex-direction: row;
-    .app-disclaimer {
-      padding-right: $inner-spacing-mini * 5;
-    }
-  }
 }
 
 @include large-mobile {
