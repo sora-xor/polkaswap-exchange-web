@@ -59,7 +59,7 @@
         {{ hintText }}
       </div>
       <s-button
-        v-if="!rewardsRecieved"
+        v-if="!(rewardsRecieved || loading)"
         class="rewards-block rewards-action-button s-typography-button--large"
         type="primary"
         @click="handleAction"
@@ -342,6 +342,9 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 </script>
 
 <style lang="scss">
+.container.rewards .el-loading-mask {
+  border-radius: var(--s-border-radius-small);
+}
 .rewards-connect-button.el-button.neumorphic {
   background: transparent;
   color: var(--s-color-base-on-accent);
