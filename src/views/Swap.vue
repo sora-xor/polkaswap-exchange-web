@@ -1,9 +1,5 @@
 <template>
-  <s-form
-    v-lottie-loader="{ loading: parentLoading }"
-    class="container el-form--actions"
-    :show-message="false"
-  >
+  <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
     <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
       <status-action-badge>
         <template #label>{{ t('marketText') }}:</template>
@@ -47,12 +43,7 @@
         <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenFrom" @click="openSelectTokenDialog(true)" />
       </div>
       <div slot="bottom" class="input-line input-line--footer">
-        <div v-if="tokenFrom" class="input-title">
-          <span>{{ getTokenName(tokenFrom) }}</span>
-          <s-tooltip :content="t('selectToken.copy')" border-radius="mini" placement="bottom-end">
-            <span class="token-address" @click="handleCopy(tokenFrom, $event)">({{ getFormattedAddress(tokenFrom) }})</span>
-          </s-tooltip>
-        </div>
+        <token-address v-if="tokenFrom" :name="tokenFrom.name" :symbol="tokenFrom.symbol" :address="tokenFrom.address" />
       </div>
     </s-float-input>
     <s-button class="el-button--switch-tokens" type="action" icon="arrows-swap-90-24" :disabled="!areTokensSelected || isRecountingProcess" @click="handleSwitchTokens" />
@@ -81,12 +72,7 @@
         <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenTo" @click="openSelectTokenDialog(false)" />
       </div>
       <div slot="bottom" class="input-line input-line--footer">
-        <div v-if="tokenTo" class="input-title">
-          <span>{{ getTokenName(tokenTo) }}</span>
-          <s-tooltip :content="t('selectToken.copy')" border-radius="mini" placement="bottom-end">
-            <span class="token-address" @click="handleCopy(tokenTo, $event)">({{ getFormattedAddress(tokenTo) }})</span>
-          </s-tooltip>
-        </div>
+        <token-address v-if="tokenTo" :name="tokenTo.name" :symbol="tokenTo.symbol" :address="tokenTo.address" />
       </div>
     </s-float-input>
     <slippage-tolerance class="slippage-tolerance-settings" />
@@ -143,7 +129,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
-import { isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance, formatAddress, debouncedInputHandler, copyToClipboard } from '@/utils'
+import { isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance, debouncedInputHandler } from '@/utils'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 
@@ -159,10 +145,12 @@ const namespace = 'swap'
     SelectToken: lazyComponent(Components.SelectToken),
     ConfirmSwap: lazyComponent(Components.ConfirmSwap),
     StatusActionBadge: lazyComponent(Components.StatusActionBadge),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton)
+    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
 export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
+  @Getter nodeIsConnected!: boolean
   @Getter isLoggedIn!: boolean
   @Getter slippageTolerance!: string
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset
@@ -194,6 +182,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
   @Action('setPairLiquiditySources', { namespace }) setPairLiquiditySources!: (liquiditySources: Array<LiquiditySourceTypes>) => Promise<void>
   @Action('setRewards', { namespace }) setRewards!: (rewards: Array<LPRewardsInfo>) => Promise<void>
+  @Action('resetSubscriptions', { namespace }) resetSubscriptions!: AsyncVoidFn
+  @Action('updateSubscriptions', { namespace }) updateSubscriptions!: AsyncVoidFn
 
   @Watch('slippageTolerance')
   private handleSlippageToleranceChange (): void {
@@ -210,6 +200,17 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     if (!wasLoggedIn && isLoggedIn) {
       this.getNetworkFee()
       this.recountSwapValues()
+    }
+  }
+
+  @Watch('nodeIsConnected')
+  private updateConnectionSubsriptions (nodeConnected: boolean) {
+    if (nodeConnected) {
+      this.updateSubscriptions()
+      this.subscribeOnSwapReserves()
+    } else {
+      this.resetSubscriptions()
+      this.cleanSwapReservesSubscription()
     }
   }
 
@@ -299,14 +300,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     return formatAssetBalance(token)
   }
 
-  getFormattedAddress (token: AccountAsset): string {
-    return formatAddress(token.address, 10)
-  }
-
-  getTokenName (token: AccountAsset): string {
-    return `${token.name || token.symbol}`
-  }
-
   resetFieldFrom (): void {
     this.setFromValue('')
   }
@@ -364,6 +357,8 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   }
 
   private async runRecountSwapValues (): Promise<void> {
+    if (this.isRecountingProcess) return
+
     const value = this.isExchangeB ? this.toValue : this.fromValue
     if (!this.areTokensSelected || asZeroValue(value)) return
 
@@ -413,7 +408,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       this.tokenFrom.address,
       this.tokenTo.address,
       this.liquiditySource
-    ).subscribe(this.recountSwapValues)
+    ).subscribe(this.runRecountSwapValues)
   }
 
   private async calcMinMaxRecieved (): Promise<void> {
@@ -470,10 +465,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 
     if (this.isExchangeB) {
       this.setExchangeB(false)
-      await this.handleInputFieldFrom(this.toValue)
+      this.handleInputFieldFrom(this.toValue)
     } else {
       this.setExchangeB(true)
-      await this.handleInputFieldTo(this.fromValue)
+      this.handleInputFieldTo(this.fromValue)
     }
 
     this.subscribeOnSwapReserves()
@@ -532,24 +527,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     this.reset()
     this.cleanSwapReservesSubscription()
   }
-
-  async handleCopy (token: AccountAsset, event: Event): Promise<void> {
-    event.stopImmediatePropagation()
-    try {
-      await copyToClipboard(token.address)
-      this.$notify({
-        message: this.t('selectToken.successCopy', { symbol: token.symbol }),
-        type: 'success',
-        title: ''
-      })
-    } catch (error) {
-      this.$notify({
-        message: `${this.t('warningText')} ${error}`,
-        type: 'warning',
-        title: ''
-      })
-    }
-  }
 }
 </script>
 
@@ -564,13 +541,5 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
 .page-header--swap {
   justify-content: space-between;
   align-items: center;
-}
-
-.token-address {
-  cursor: pointer;
-
-  &:hover {
-    text-decoration: underline;
-  }
 }
 </style>

@@ -131,7 +131,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
-import { WALLET_CONSTS, WalletAvatar } from '@soramitsu/soraneo-wallet-web'
+import { WALLET_CONSTS, WalletAvatar, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
 import { KnownSymbols, FPNumber } from '@sora-substrate/util'
 
 import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize } from '@/consts'
@@ -185,6 +185,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   @Getter nodeIsConnected!: boolean
 
   @Action navigate // Wallet
+  @Action updateAccountAssets!: AsyncVoidFn
   @Action trackActiveTransactions!: AsyncVoidFn
   @Action setSoraNetwork!: (data: any) => Promise<void>
   @Action setDefaultNodes!: (nodes: any) => Promise<void>
@@ -197,6 +198,17 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction (value): void {
     this.handleChangeTransaction(value)
+  }
+
+  @Watch('nodeIsConnected')
+  private updateConnectionSubsriptions (nodeConnected: boolean) {
+    if (nodeConnected) {
+      this.updateAccountAssets()
+    } else {
+      if (updateAccountAssetsSubscription) {
+        updateAccountAssetsSubscription.unsubscribe()
+      }
+    }
   }
 
   async created () {
@@ -295,7 +307,11 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
 
   private async runAppConnectionToNode () {
     try {
-      await this.connectToNode({ onError: this.handleNodeError })
+      await this.connectToNode({
+        onError: this.handleNodeError,
+        onDisconnect: this.handleNodeDisconnect,
+        onReconnect: this.handleNodeReconnect
+      })
     } catch (error) {
       // we handled error using callback, do nothing
     }
@@ -384,6 +400,7 @@ html {
       height: 20px;
       border-radius: 50%;
       background: var(--s-color-utility-surface);
+      flex-shrink: 0;
       &:before {
         position: absolute;
         top: -2px;
@@ -445,7 +462,6 @@ html {
       border-radius: 0 !important;
       color: var(--s-color-base-content-primary);
       font-size: var(--s-font-size-large);
-      font-feature-settings: normal;
       line-height: var(--s-line-height-small);
       font-weight: 800;
     }
@@ -618,7 +634,6 @@ $disclaimer-letter-spacing: -0.03em;
     padding: $inner-spacing-mini $inner-spacing-mini * 2.5;
     height: initial;
     font-size: var(--s-font-size-medium);
-    font-feature-settings: $s-font-feature-settings-title;
     font-weight: 300;
     line-height: var(--s-line-height-medium);
 
@@ -668,7 +683,6 @@ $disclaimer-letter-spacing: -0.03em;
 .account-control {
   &-title {
     font-size: var(--s-font-size-small);
-    font-feature-settings: $s-font-feature-settings-common;
     font-variation-settings: "wght" 800;
     margin-right: $inner-spacing-mini / 2;
   }
@@ -718,7 +732,6 @@ $disclaimer-letter-spacing: -0.03em;
     font-size: 15px;
     line-height: 16px;
     margin-right: $basic-spacing;
-    font-feature-settings: var(--s-font-feature-settings-singleline);
     white-space: nowrap;
   }
 

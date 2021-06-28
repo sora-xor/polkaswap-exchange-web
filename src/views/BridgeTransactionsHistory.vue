@@ -1,12 +1,6 @@
 <template>
   <div class="history-container">
-    <s-card
-      v-lottie-loader="{ loading: parentLoading }"
-      class="history-content"
-      border-radius="medium"
-      shadow="always"
-      primary
-    >
+    <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="always" primary>
       <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
         <!-- <s-button
           class="base-title_settings"
@@ -35,7 +29,7 @@
             </template>
           </s-input>
         </s-form-item>
-        <div v-lottie-loader="{ loading }" class="history-items">
+        <div v-loading="loading" class="history-items">
           <template v-if="hasHistory">
             <div
               class="history-item"

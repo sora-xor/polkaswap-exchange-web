@@ -65,9 +65,18 @@ $s-transition-default: all 0.125s ease-in-out;
 // Neu button settings
 $neu-button-action-text-color-alternative: var(--s-color-base-content-secondary);
 
+@import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";
+
 :root {
   --s-color-brand-day: #{$s-color-brand-day};
   --s-transition-default: #{$s-transition-default};
+  // Font Feature Settings
+  --s-font-feature-settings-common: #{$s-font-feature-settings-common};
+  --s-font-feature-settings-heading: #{$s-font-feature-settings-heading};
+  --s-font-feature-settings-caps-heading: #{$s-font-feature-settings-caps-heading};
+  --s-font-feature-settings-caps: #{$s-font-feature-settings-caps};
+  --s-font-feature-settings-singleline: #{$s-font-feature-settings-singleline};
+  --s-font-feature-settings-card-title: #{$s-font-feature-settings-card-title};
+  --s-font-feature-settings-input: #{$s-font-feature-settings-input};
+  --s-font-feature-settings-button: #{$s-font-feature-settings-button};
 }
-
-@import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";

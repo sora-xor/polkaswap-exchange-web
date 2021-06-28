@@ -20,7 +20,9 @@
         </div>
       </div>
     </div>
-    <p class="transaction-message" v-html="t('removeLiquidity.outputMessage', { slippageTolerance: formatStringValue(`${slippageTolerance}`) })" />
+    <p class="transaction-message">
+      {{ t('removeLiquidity.outputMessage', { slippageTolerance: formatStringValue(`${slippageTolerance}`) }) }}
+    </p>
     <s-divider />
     <info-line
       :label="t('confirmSupply.poolTokensBurned', { first: firstToken.symbol, second: secondToken.symbol })"

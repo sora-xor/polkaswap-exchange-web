@@ -2,7 +2,7 @@ import map from 'lodash/fp/map'
 import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
-import { api } from '@soramitsu/soraneo-wallet-web'
+import { api, connection } from '@soramitsu/soraneo-wallet-web'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -12,8 +12,6 @@ const types = flow(
   'GET_ACCOUNT_LIQUIDITY',
   'UPDATE_ACCOUNT_LIQUIDITY'
 ])
-
-let updateLiquidityIntervalId: any = null
 
 function initialState () {
   return {
@@ -74,11 +72,11 @@ const actions = {
       commit(types.GET_ACCOUNT_LIQUIDITY_FAILURE)
     }
   },
-  updateAccountLiquidity ({ commit, rootGetters, dispatch, state }) {
-    dispatch('destroyUpdateAccountLiquiditySubscription')
+  createAccountLiquiditySubscription ({ commit, rootGetters, state }) {
     const fiveSeconds = 5 * 1000
-    updateLiquidityIntervalId = setInterval(async () => {
-      if (!rootGetters.isLoggedIn || state.accountLiquidityFetching) {
+
+    let subscription: NodeJS.Timeout | null = setInterval(async () => {
+      if (!connection.opened || !rootGetters.isLoggedIn || state.accountLiquidityFetching) {
         return
       }
       commit(types.UPDATE_ACCOUNT_LIQUIDITY_REQUEST)
@@ -91,9 +89,15 @@ const actions = {
         commit(types.UPDATE_ACCOUNT_LIQUIDITY_FAILURE)
       }
     }, fiveSeconds)
-  },
-  destroyUpdateAccountLiquiditySubscription () {
-    clearInterval(updateLiquidityIntervalId)
+
+    const unsubscribe = () => {
+      if (subscription !== null) {
+        clearInterval(subscription)
+        subscription = null
+      }
+    }
+
+    return unsubscribe
   }
 }
 

@@ -1,7 +1,7 @@
 <template>
-  <div v-lottie-loader="{ loading: parentLoading }" class="container el-form--pool">
+  <div v-loading="parentLoading" class="container el-form--pool">
     <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')" />
-    <div v-lottie-loader="{ loading }" class="pool-wrapper">
+    <div v-loading="loading" class="pool-wrapper">
       <p v-if="!isLoggedIn" class="pool-info-container">
         {{ t('pool.connectToWallet') }}
       </p>
@@ -86,13 +86,14 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
 
   @Action('getAccountLiquidity', { namespace }) getAccountLiquidity!: AsyncVoidFn
-  @Action('updateAccountLiquidity', { namespace }) updateAccountLiquidity!: AsyncVoidFn
-  @Action('destroyUpdateAccountLiquiditySubscription', { namespace }) destroyUpdateAccountLiquiditySubscription!: AsyncVoidFn
+  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<Function>
+
+  accountLiquiditySubscription!: Function
 
   async created () {
-    await this.withApi(async () => {
-      this.updateAccountLiquidity()
+    this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
 
+    await this.withApi(async () => {
       await Promise.all([
         this.getAssets(),
         this.getAccountLiquidity()
@@ -100,8 +101,10 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
     })
   }
 
-  destroyed (): void {
-    this.destroyUpdateAccountLiquiditySubscription()
+  beforeDestroy (): void {
+    if (typeof this.accountLiquiditySubscription === 'function') {
+      this.accountLiquiditySubscription() // unsubscribe
+    }
   }
 
   getAsset (address): any {
@@ -232,7 +235,6 @@ $pair-icon-height: 36px;
     }
     h3 {
       letter-spacing: var(--s-letter-spacing-small);
-      font-feature-settings: $s-font-feature-settings-title;
     }
   }
   &-info {
@@ -261,7 +263,6 @@ $pair-icon-height: 36px;
       color: var(--s-color-base-content-secondary);
       font-size: var(--s-font-size-mini);
       line-height: var(--s-line-height-small);
-      font-feature-settings: $s-font-feature-settings-common;
       text-align: center;
 
       &.is-active {

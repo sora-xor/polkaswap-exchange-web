@@ -2,10 +2,11 @@
   <div class="bridge s-flex">
     <s-form class="bridge-form el-form--actions" :show-message="false">
       <s-card
-        v-lottie-loader="{ loading: parentLoading }"
+        v-loading="parentLoading"
         class="bridge-content"
         border-radius="medium"
         shadow="always"
+        size="big"
         primary
       >
         <generic-page-header class="header--bridge" :title="t('bridge.title')" :tooltip="t('bridge.info')">
@@ -59,6 +60,9 @@
             </s-button>
             <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="asset" @click="openSelectAssetDialog" />
           </div>
+          <div slot="bottom" class="input-line input-line--footer">
+            <token-address v-if="isAssetSelected" v-bind="asset" :external="!isSoraToEvm" />
+          </div>
         </s-float-input>
 
         <s-button class="s-button--switch" type="action" icon="arrows-swap-90-24" @click="handleSwitchItems" />
@@ -88,6 +92,9 @@
             <token-select-button class="el-button--select-token" :token="asset" />
           </div>
           <template #bottom>
+            <div class="input-line input-line--footer">
+              <token-address v-if="isAssetSelected" v-bind="asset" :external="isSoraToEvm" />
+            </div>
             <div v-if="isNetworkBConnected && isSoraToEvm" class="bridge-item-footer">
               <s-divider />
               <toggle-text-button
@@ -160,7 +167,7 @@
         </div>
       </s-card>
       <select-registered-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
-      <!-- <select-network :visible.sync="showSelectNetworkDialog" @select="selectNetwork" /> -->
+      <!-- <select-network :visible.sync="showSelectNetworkDialog" :value="evmNetwork" :sub-networks="subNetworks" @input="selectNetwork" /> -->
       <confirm-bridge-transaction-dialog :visible.sync="showConfirmTransactionDialog" :isInsufficientBalance="isInsufficientBalance" @confirm="confirmTransaction" />
     </s-form>
     <div v-if="!areNetworksConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div>
@@ -168,7 +175,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { RegisteredAccountAsset, BridgeNetworks, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
 
@@ -205,7 +212,8 @@ const namespace = 'bridge'
     SelectRegisteredAsset: lazyComponent(Components.SelectRegisteredAsset),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
     ToggleTextButton: lazyComponent(Components.ToggleTextButton),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton)
+    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
 export default class Bridge extends Mixins(
@@ -220,6 +228,7 @@ export default class Bridge extends Mixins(
   @Action('setAmount', { namespace }) setAmount
   @Action('resetBridgeForm', { namespace }) resetBridgeForm
   @Action('resetBalanceSubscription', { namespace }) resetBalanceSubscription!: AsyncVoidFn
+  @Action('updateBalanceSubscription', { namespace }) updateBalanceSubscription!: AsyncVoidFn
   @Action('getNetworkFee', { namespace }) getNetworkFee!: AsyncVoidFn
 
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
@@ -235,6 +244,16 @@ export default class Bridge extends Mixins(
   @Getter('amount', { namespace }) amount!: string
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
+  @Getter nodeIsConnected!: boolean
+
+  @Watch('nodeIsConnected')
+  private updateConnectionSubsriptions (nodeConnected: boolean) {
+    if (nodeConnected) {
+      this.updateBalanceSubscription()
+    } else {
+      this.resetBalanceSubscription()
+    }
+  }
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
@@ -356,13 +375,19 @@ export default class Bridge extends Mixins(
     return this.formatCodecNumber(balance, decimals)
   }
 
+  async onEvmNetworkChange (network: number): Promise<void> {
+    await Promise.all([
+      this.setEvmNetwork(network),
+      this.getRegisteredAssets(),
+      this.getNetworkFees()
+    ])
+  }
+
   created (): void {
-    this.setAmount('') // reset fields
+    // we should reset data only on created, because it's used on another bridge views
     this.resetBridgeForm(!!router.currentRoute.params?.address)
     this.withApi(async () => {
-      await this.setEvmNetwork(bridgeApi.externalNetwork)
-      await this.getRegisteredAssets()
-      await this.getNetworkFees()
+      await this.onEvmNetworkChange(bridgeApi.externalNetwork)
     })
   }
 
@@ -417,7 +442,8 @@ export default class Bridge extends Mixins(
   }
 
   async selectNetwork (network: number): Promise<void> {
-    await this.setEvmNetwork(network)
+    this.showSelectNetworkDialog = false
+    await this.onEvmNetworkChange(network)
   }
 
   async selectAsset (selectedAsset: any): Promise<void> {
@@ -518,7 +544,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     font-size: var(--s-font-size-mini);
     line-height: var(--s-line-height-big);
     color: var(--s-color-base-content-secondary);
-    font-feature-settings: $s-font-feature-settings-common;
   }
 
   @include buttons;
@@ -529,7 +554,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       width: 100%;
     }
     &--next {
-      margin-top: $inner-spacing-mini;
+      margin-top: $inner-spacing-medium;
       width: 100%;
     }
   }

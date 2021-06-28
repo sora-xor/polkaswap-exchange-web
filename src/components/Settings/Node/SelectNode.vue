@@ -53,13 +53,19 @@ export default class SelectNode extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) disableSelect!: boolean
 
   @ModelSync('value', 'input', { type: String })
-  readonly currentAddressValue!: boolean
+  readonly currentAddressValue!: string
 }
 </script>
 
 <style lang="scss">
-.select-node-list__item .el-radio__label {
-  flex: 1;
+.select-node-list__item.el-radio {
+  &.s-medium {
+    height: initial;
+  }
+
+  .el-radio__label {
+    flex: 1;
+  }
 }
 </style>
 
@@ -81,7 +87,6 @@ export default class SelectNode extends Mixins(TranslationMixin) {
       align-items: center;
       padding: $inner-spacing-small 0;
       white-space: normal;
-      height: initial;
     }
   }
 

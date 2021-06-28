@@ -39,6 +39,8 @@ const CreateTokenPairMixin = (namespace: string) => {
     @Action('getPrices', { namespace: 'prices' }) getPrices
     @Action('resetPrices', { namespace: 'prices' }) resetPrices
 
+    @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
+
     @Watch('isLoggedIn')
     private handleLoggedInStateChange (isLoggedIn: boolean, wasLoggedIn: boolean): void {
       if (wasLoggedIn && !isLoggedIn) {
@@ -48,13 +50,6 @@ const CreateTokenPairMixin = (namespace: string) => {
 
     showSelectSecondTokenDialog = false
     insufficientBalanceTokenSymbol = ''
-
-    async created () {
-      await this.withApi(async () => {
-        this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
-        await this.afterApiConnect()
-      })
-    }
 
     destroyed (): void {
       const params = router.currentRoute.params
@@ -137,9 +132,7 @@ const CreateTokenPairMixin = (namespace: string) => {
       })
     }
 
-    async afterApiConnect (): Promise<void> {}
-
-    private handleBack (): void {
+    handleBack (): void {
       router.push({ name: PageNames.Pool })
     }
   }

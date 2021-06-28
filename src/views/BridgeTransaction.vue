@@ -1,5 +1,5 @@
 <template>
-  <div v-lottie-loader="{ loading: !isInitRequestCompleted }" class="transaction-container">
+  <div v-loading="!isInitRequestCompleted" class="transaction-container">
     <s-button
       v-if="isInitRequestCompleted"
       class="s-button--view-transactions-history"
@@ -13,13 +13,7 @@
     <s-card class="transaction-content" border-radius="medium" shadow="always" primary>
       <template v-if="isInitRequestCompleted">
         <div class="header">
-          <div
-            v-lottie-loader="{
-              loading: isTransactionFromPending || isTransactionToPending,
-              size: '83px'
-            }"
-            :class="headerIconClasses"
-          />
+          <div v-loading="isTransactionFromPending || isTransactionToPending" :class="headerIconClasses" />
           <h5 class="header-details">
             {{ `${formattedAmount} ${formatAssetSymbol(assetSymbol)}` }}
             <i :class="`s-icon--network s-icon-${isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
@@ -40,7 +34,7 @@
             </template>
             <div v-if="transactionFromHash" :class="hashContainerClasses()">
               <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatTxHash(transactionFromHash)" readonly />
-              <s-button class="s-button--hash-copy" type="link" icon="basic-copy-24" @click="handleCopyTransactionHash(transactionFromHash)" />
+              <s-button class="s-button--hash-copy" type="action" alternative icon="basic-copy-24" @click="handleCopyTransactionHash(transactionFromHash)" />
               <s-dropdown
                 class="s-dropdown--hash-menu"
                 borderRadius="mini"
@@ -50,7 +44,7 @@
                 @select="(isSoraToEvm ? handleOpenSorascan : handleOpenEtherscan)()"
               >
                 <template slot="menu">
-                  <s-dropdown-item class="s-dropdown-menu__item" :disabled="isSoraToEvm && !soraTxBlockId">
+                  <s-dropdown-item class="s-dropdown-menu__item" :disabled="isSoraToEvm && !(soraTxId || soraTxBlockId)">
                     <span>{{ t(`bridgeTransaction.${isSoraToEvm ? 'viewInSorascan' : 'viewInEtherscan'}`) }}</span>
                   </s-dropdown-item>
                 </template>
@@ -98,7 +92,7 @@
             </template>
             <div v-if="isTransactionStep2 && transactionToHash" :class="hashContainerClasses(isSoraToEvm)">
               <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatTxHash(transactionToHash)" readonly />
-              <s-button class="s-button--hash-copy" type="link" icon="basic-copy-24" @click="handleCopyTransactionHash(transactionToHash)" />
+              <s-button class="s-button--hash-copy" type="action" alternative icon="basic-copy-24" @click="handleCopyTransactionHash(transactionToHash)" />
               <s-dropdown
                 v-if="isSoraToEvm"
                 class="s-dropdown--hash-menu"
@@ -380,6 +374,13 @@ export default class BridgeTransaction extends Mixins(
     return this.t('bridgeTransaction.statuses.waitingForConfirmation')
   }
 
+  get soraTxId (): Nullable<string> {
+    if (!this.historyItem?.id) {
+      return null
+    }
+    return this.historyItem.txId || api.bridge.getHistory(this.historyItem.id)?.txId
+  }
+
   get soraTxBlockId (): Nullable<string> {
     if (!this.historyItem?.id) {
       return null
@@ -451,10 +452,12 @@ export default class BridgeTransaction extends Mixins(
   }
 
   handleOpenSorascan (): void {
-    if (!(this.isSoraToEvm && this.soraTxBlockId)) {
+    const txId = this.soraTxId || this.soraTxBlockId
+    const explorerPath = this.soraTxId ? 'transaction' : 'block'
+    if (!(this.isSoraToEvm && txId)) {
       return
     }
-    const url = `${getExplorerLink(this.soraNetwork)}/block/${this.soraTxBlockId}`
+    const url = `${getExplorerLink(this.soraNetwork)}/${explorerPath}/${txId}`
     this.openBlockExplorer(url)
   }
 
@@ -688,6 +691,7 @@ export default class BridgeTransaction extends Mixins(
 <style lang="scss">
 $collapse-horisontal-padding: $inner-spacing-medium;
 $header-icon-size: 100px;
+$header-spinner-size: 83px;
 $collapse-header-title-font-size: $s-heading3-caps-font-size;
 $collapse-header-title-line-height: var(--s-line-height-base);
 $collapse-header-title-height: calc(#{$collapse-header-title-font-size} * #{$collapse-header-title-line-height});
@@ -696,16 +700,6 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
 .transaction {
   &-container {
     @include bridge-container;
-    .header-icon {
-      &.lottie-loader--loading:after {
-        background-color: transparent;
-      }
-      &:not(.header-icon--success):not(.header-icon--wait):not(.header-icon--error) {
-        .lottie-loader {
-          display: block;
-        }
-      }
-    }
   }
   &-content {
     .el-card__body {
@@ -714,6 +708,17 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     .header-icon {
       position: relative;
       @include svg-icon('', $header-icon-size);
+      .el-loading-mask {
+        background-color: var(--s-color-utility-surface);
+      }
+      .el-loading-spinner {
+        top: 0;
+        margin-top: calc(#{$header-icon-size - $header-spinner-size} / 2);
+        .circular {
+          width: $header-spinner-size;
+          height: $header-spinner-size;
+        }
+      }
     }
     .el-button .network-title {
       text-transform: uppercase;
@@ -760,6 +765,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
   &-hash-container {
     .s-button--hash-copy {
       padding: 0;
+      color: var(--s-color-base-content-tertiary) !important;
       .s-icon-copy {
         margin-right: 0 !important;
       }
@@ -806,7 +812,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     .s-button {
       &--create-transaction {
         @include bottom-button;
-        font-feature-settings: $s-font-feature-settings-title;
+        color: var(--s-color-base-content-tertiary);
         letter-spacing: var(--s-letter-spacing-big);
         margin-top: $inner-spacing-mini * 2.5;
         &:hover, &:focus, &:active {
@@ -861,10 +867,12 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     &--error {
       background-image: url("~@/assets/img/header-error.svg");
     }
+    &.el-loading-parent--relative {
+      background-image: none;
+    }
   }
   &-details {
     margin-bottom: $inner-spacing-mini;
-    font-feature-settings: $s-font-feature-settings-title;
     font-weight: 700;
     line-height: var(--s-line-height-medium);
     .s-icon {
@@ -888,7 +896,6 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     h3 {
       padding-right: $inner-spacing-mini;
       padding-left: $inner-spacing-mini;
-      font-feature-settings: $s-font-feature-settings-type;
       font-weight: 700;
       letter-spacing: var(--s-letter-spacing-extra-large);
       text-transform: uppercase;
