@@ -61,7 +61,7 @@
             <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="asset" @click="openSelectAssetDialog" />
           </div>
           <div slot="bottom" class="input-line input-line--footer">
-            <token-address v-if="isAssetSelected" v-bind="asset" :external="!isSoraToEvm" />
+            <token-address v-if="isAssetSelected" v-bind="asset" :external="!isSoraToEvm" class="input-title" />
           </div>
         </s-float-input>
 
@@ -93,7 +93,7 @@
           </div>
           <template #bottom>
             <div class="input-line input-line--footer">
-              <token-address v-if="isAssetSelected" v-bind="asset" :external="isSoraToEvm" />
+              <token-address v-if="isAssetSelected" v-bind="asset" :external="isSoraToEvm" class="input-title" />
             </div>
             <div v-if="isNetworkBConnected && isSoraToEvm" class="bridge-item-footer">
               <s-divider />
