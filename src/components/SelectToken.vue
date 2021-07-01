@@ -21,18 +21,14 @@
             </template>
           </s-input>
         </div>
-        <div v-if="filteredWhitelistTokens && filteredWhitelistTokens.length > 0" class="token-list">
+        <div v-if="filteredWhitelistTokens && filteredWhitelistTokens.length > 0" key="filtered" class="token-list">
           <div v-for="token in filteredWhitelistTokens" @click="selectToken(token)" :key="token.address" class="token-item">
             <s-col>
               <s-row flex justify="start" align="middle">
                 <token-logo :token="token" size="medium" />
                 <div class="token-item__info s-flex">
                   <div class="token-item__symbol">{{ token.symbol }}</div>
-                  <div class="token-item__details">{{ getTokenName(token) }}
-                    <s-tooltip :content="t('selectToken.copy')" border-radius="mini">
-                      <span class="token-item__address" @click="handleCopy(token, $event)">({{ getFormattedAddress(token) }})</span>
-                    </s-tooltip>
-                  </div>
+                  <token-address :name="token.name" :symbol="token.symbol" :address="token.address" class="token-item__details" />
                 </div>
               </s-row>
             </s-col>
@@ -41,7 +37,7 @@
             </div>
           </div>
         </div>
-        <div v-else class="token-list token-list__empty">
+        <div v-else key="empty" class="token-list token-list__empty">
           <span class="empty-results-icon" />
           {{ t('selectToken.emptyListMessage') }}
         </div>
@@ -70,11 +66,7 @@
               <token-logo :token="customAsset" />
               <div class="asset-description s-flex">
                 <div class="asset-description_symbol">{{ customAsset.symbol }}</div>
-                <div class="asset-description_info">{{ getTokenName(customAsset) }}
-                  <s-tooltip :content="t('assets.copy')" border-radius="mini">
-                    <span class="asset-id" @click="handleCopy(customAsset, $event)">({{ getFormattedAddress(customAsset) }})</span>
-                  </s-tooltip>
-                </div>
+                <token-address :name="customAsset.name" :symbol="customAsset.symbol" :address="customAsset.address" class="asset-description_info" />
                 <s-card size="mini" :status="assetCardStatus">
                   <div class="asset-nature">{{ assetNatureText }}</div>
                 </s-card>
@@ -104,11 +96,7 @@
                   <token-logo :token="token" />
                   <div class="token-item__info s-flex">
                     <div class="token-item__symbol">{{ token.symbol }}</div>
-                    <div class="token-item__details">{{ getTokenName(token) }}
-                      <s-tooltip :content="t('selectToken.copy')" border-radius="mini">
-                        <span class="token-item__address" @click="handleCopy(token, $event)">({{ getFormattedAddress(token) }})</span>
-                      </s-tooltip>
-                    </div>
+                    <token-address :name="token.name" :symbol="token.symbol" :address="token.address" class="token-item__details" />
                   </div>
                 </s-row>
               </s-col>
@@ -140,14 +128,15 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components, ObjectInit } from '@/consts'
 import { lazyComponent } from '@/router'
-import { copyToClipboard, formatAddress, formatAssetBalance, debouncedInputHandler } from '@/utils'
+import { formatAssetBalance, debouncedInputHandler } from '@/utils'
 
 const namespace = 'assets'
 
 @Component({
   components: {
     DialogBase,
-    TokenLogo: lazyComponent(Components.TokenLogo)
+    TokenLogo: lazyComponent(Components.TokenLogo),
+    TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
 export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMixin, LoadingMixin, NumberFormatterMixin) {
@@ -173,6 +162,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @Getter('nonWhitelistAssets', { namespace }) nonWhitelistAssets!: Array<Asset>
   // Wallet store
   @Getter whitelist!: Whitelist
+  @Getter whitelistIdsBySymbol!: any
   @Getter accountAssetsAddressTable
 
   // Wallet
@@ -201,21 +191,14 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get whitelistAssetsList (): Array<AccountAsset> {
-    const { asset: excludeAsset, whitelistAssets, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly } = this
+    const { asset: excludeAsset, whitelistAssets: assets, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly } = this
 
-    return this.getWhitelistAssetsWithBalances({ whitelistAssets, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly, excludeAsset })
+    return this.getAssetsWithBalances({ assets, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly, excludeAsset })
+      .sort(this.sortByBalance())
   }
 
   get filteredWhitelistTokens (): Array<AccountAsset> {
-    if (!this.query) {
-      return this.whitelistAssetsList
-    }
-    const query = this.query.toLowerCase().trim()
-    return this.whitelistAssetsList.filter(t =>
-      t.address?.toLowerCase?.() === query ||
-      t.symbol?.toLowerCase?.()?.includes?.(query) ||
-      t.name?.toLowerCase?.()?.includes?.(query)
-    )
+    return this.filterAssetsByQuery(this.whitelistAssetsList)(this.query)
   }
 
   selectToken (token: AccountAsset): void {
@@ -223,32 +206,6 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     this.$emit('select', token)
     this.$emit('close')
     this.isVisible = false
-  }
-
-  async handleCopy (token: AccountAsset, event: Event): Promise<void> {
-    event.stopImmediatePropagation()
-    try {
-      await copyToClipboard(token.address)
-      this.$notify({
-        message: this.t('selectToken.successCopy', { symbol: token.symbol }),
-        type: 'success',
-        title: ''
-      })
-    } catch (error) {
-      this.$notify({
-        message: `${this.t('warningText')} ${error}`,
-        type: 'warning',
-        title: ''
-      })
-    }
-  }
-
-  getFormattedAddress (token: AccountAsset): string {
-    return formatAddress(token.address, 10)
-  }
-
-  getTokenName (token: AccountAsset): string {
-    return `${token.name || token.symbol}`
   }
 
   formatBalance (token: AccountAsset): string {
@@ -263,7 +220,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get sortedNonWhitelistAccountAssets (): Array<AccountAsset> {
-    return this.nonWhitelistAccountAssets.sort(this.sort)
+    return this.nonWhitelistAccountAssets.sort(this.sortByBalance())
   }
 
   get assetCardStatus (): string {
@@ -274,7 +231,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     if (!this.customAsset) {
       return ''
     }
-    const isBlacklist = isBlacklistAsset(this.customAsset, this.whitelist)
+    const isBlacklist = isBlacklistAsset(this.customAsset, this.whitelistIdsBySymbol)
     if (isBlacklist) {
       return this.t('addAsset.scam')
     }
@@ -356,22 +313,13 @@ $token-item-height: 71px;
   &__info {
     flex-direction: column;
   }
-  &__info, &__amount {
-    font-size: var(--s-font-size-small);
-  }
   &__details {
     color: var(--s-color-base-content-quaternary);
     font-size: var(--s-font-size-mini);
+    line-height: var(--s-line-height-medium);
   }
   &__address, &__symbol {
     white-space: nowrap;
-  }
-  &__address {
-    outline: none;
-    &:hover {
-      text-decoration: underline;
-      cursor: pointer;
-    }
   }
   &__symbol, &__amount {
     font-size: var(--s-font-size-big);
@@ -382,7 +330,6 @@ $token-item-height: 71px;
   }
   &__amount {
     &-container {
-      width: 45%;
       text-align: right;
     }
   }
@@ -401,13 +348,13 @@ $token-item-height: 71px;
 .token-list {
   max-height: calc(#{$token-item-height} * 7);
   overflow-y: auto;
+  overflow-x: hidden;
   &__empty {
     display: flex;
     align-items: center;
     flex-direction: column;
     padding-top: $inner-spacing-big;
     color: var(--s-color-base-content-tertiary);
-    font-feature-settings: $s-font-feature-settings-common;
     line-height: var(--s-line-height-big);
   }
   .empty-results-icon {
@@ -436,7 +383,6 @@ $token-item-height: 71px;
         margin-left: $inner-spacing-small;
         &_symbol {
           font-size: var(--s-font-size-big);
-          font-feature-settings: var(--s-font-feature-settings-common);
           font-weight: 600;
           line-height: var(--s-line-height-small);
         }

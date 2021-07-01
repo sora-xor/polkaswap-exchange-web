@@ -171,7 +171,6 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
 
     .el-input > input {
       font-size: var(--s-font-size-medium);
-      font-feature-settings: $s-font-feature-settings-common;
       text-align: center;
     }
   }

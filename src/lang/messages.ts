@@ -105,6 +105,9 @@ export default {
       network: 'The node\n{address}\n is from the another network\n',
       existing: 'This node is already added: \'{title}\'\n'
     },
+    warnings: {
+      disconnect: 'Сonnection to the node has been lost. Reconnecting...'
+    },
     messages: {
       connected: 'Connection estabilished with node\n{address}\n',
       selectNode: 'Please select node to connect from the node list'
@@ -347,6 +350,7 @@ export default {
       waitingForConfirmation: 'Waiting for confirmation...'
     },
     wait30Block: 'Please wait 30 block confirmations',
+    viewInSorascan: 'View in SORAScan',
     viewInEtherscan: 'View in Etherscan',
     networkTitle: '{network} transaction',
     transactionHash: 'Transaction hash',
@@ -368,7 +372,6 @@ export default {
     changeNetwork: '@:changeNetworkText',
     connectWallet: '@:connectWalletText'
   },
-  // TODO: Add moment.js (it has translation and formatting)
   months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   bridgeHistory: {
     title: 'History',
@@ -513,7 +516,7 @@ export default {
     events: {
       [RewardingEvents.XorErc20]: 'XOR ERC-20',
       [RewardingEvents.SoraFarmHarvest]: '@:(soraText).farm harvest',
-      [RewardingEvents.NtfAirdrop]: 'NFT Airdrop',
+      [RewardingEvents.NftAirdrop]: 'NFT Airdrop',
       [RewardingEvents.LiquidityProvision]: 'Fees gained from liquidity provision',
       [RewardingEvents.BuyOnBondingCurve]: 'buying from the TBC'
     }

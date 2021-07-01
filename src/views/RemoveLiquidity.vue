@@ -1,5 +1,5 @@
 <template>
-  <div v-lottie-loader="{ loading: loading || parentLoading }" class="container container--remove-liquidity">
+  <div v-loading="loading || parentLoading" class="container container--remove-liquidity">
     <generic-page-header has-button-back :title="t('removeLiquidity.title')" :tooltip="t('removeLiquidity.description')" @back="handleBack" />
     <s-form
       class="el-form--actions"
@@ -200,29 +200,38 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
   @Action('resetData', { namespace }) resetData!: AsyncVoidFn
   @Action('getPrices', { namespace: 'prices' }) getPrices
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: AsyncVoidFn
-  @Action('updateAccountLiquidity', { namespace: 'pool' }) updateAccountLiquidity!: AsyncVoidFn
-  @Action('destroyUpdateAccountLiquiditySubscription', { namespace: 'pool' }) destroyUpdateAccountLiquiditySubscription!: AsyncVoidFn
+  @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity!: AsyncVoidFn
+  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<Function>
 
   removePartInput = 0
   sliderInput: any
   sliderDragButton: any
+  accountLiquiditySubscription!: Function
 
-  async mounted (): Promise<void> {
-    this.resetData()
-    this.resetPrices()
+  async created (): Promise<void> {
+    this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
+
     await this.withApi(async () => {
-      await this.updateAccountLiquidity()
-      await this.getAssets()
+      await Promise.all([
+        this.getAssets(),
+        this.getAccountLiquidity()
+      ])
+
       await this.getLiquidity({
         firstAddress: this.firstTokenAddress,
         secondAddress: this.secondTokenAddress
       })
+
+      // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
+      if (!this.liquidity) {
+        return this.handleBack()
+      }
+
+      this.updatePrices()
     })
-    // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
-    if (!this.liquidity) {
-      return this.handleBack()
-    }
-    this.updatePrices()
+  }
+
+  mounted (): void {
     this.sliderDragButton = this.$el.querySelector('.slider-container .el-slider__button')
     this.sliderInput = this.$el.querySelector('.s-input--remove-part .el-input__inner')
     if (this.sliderDragButton) {
@@ -230,11 +239,15 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
     }
   }
 
-  destroyed (): void {
+  beforeDestroy (): void {
     if (this.sliderDragButton) {
       this.$el.removeEventListener('mousedown', this.sliderDragButton)
     }
-    this.destroyUpdateAccountLiquiditySubscription()
+    if (typeof this.accountLiquiditySubscription === 'function') {
+      this.accountLiquiditySubscription() // unsubscribe
+    }
+    this.resetData()
+    this.resetPrices()
   }
 
   get firstTokenAddress (): string {
@@ -346,21 +359,12 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
   }
 
   handleBack (): void {
-    router.push({ name: PageNames.Pool })
+    if (router.currentRoute.name === PageNames.RemoveLiquidity) {
+      router.push({ name: PageNames.Pool })
+    }
   }
 }
 </script>
-
-<style lang="scss">
-.container--remove-liquidity.lottie-loader--loading {
-  .lottie-loader {
-    z-index: 1004;
-  }
-  &:after {
-    z-index: 1003;
-  }
-}
-</style>
 
 <style lang="scss" scoped>
 .el-form--actions {

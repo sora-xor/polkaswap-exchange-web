@@ -1,12 +1,6 @@
 <template>
   <div class="history-container">
-    <s-card
-      v-lottie-loader="{ loading: parentLoading }"
-      class="history-content"
-      border-radius="medium"
-      shadow="always"
-      primary
-    >
+    <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="always" primary>
       <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
         <!-- <s-button
           class="base-title_settings"
@@ -35,7 +29,7 @@
             </template>
           </s-input>
         </s-form-item>
-        <div v-lottie-loader="{ loading }" class="history-items">
+        <div v-loading="loading" class="history-items">
           <template v-if="hasHistory">
             <div
               class="history-item"
@@ -277,11 +271,15 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 .history {
   &-container {
     @include bridge-container;
+    .el-card .el-card__body .history-form {
+      padding: 0 $inner-spacing-mini;
+    }
+  }
+  &-item-title {
+    font-weight: 600;
+    letter-spacing: var(--s-letter-spacing-small);
   }
   &-content {
-    .el-card__body {
-      padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
-    }
     .el-pagination {
       .btn {
         &-prev,
@@ -336,10 +334,12 @@ $history-item-top-border-height: 1px;
 @include search-item('history--search');
 .history-item {
   display: flex;
-  margin-right: -#{$history-item-horizontal-space};
-  margin-left: -#{$history-item-horizontal-space};
+  margin-right: -#{$inner-spacing-small};
+  margin-left: -#{$inner-spacing-small};
   height: $history-item-height;
-  padding: #{$inner-spacing-mini / 2 + $history-item-top-border-height} $history-item-horizontal-space $inner-spacing-mini;
+  padding: $inner-spacing-mini $inner-spacing-big;
+  border-radius: var(--s-border-radius-small);
+
   &:not(:first-child) {
     position: relative;
     &:before {
@@ -359,9 +359,6 @@ $history-item-top-border-height: 1px;
   &:hover {
     background-color: var(--s-color-base-background-hover);
     cursor: pointer;
-    &:before, & + .history-item::before {
-      width: 100%;
-    }
   }
   &-info {
     font-size: var(--s-font-size-mini);

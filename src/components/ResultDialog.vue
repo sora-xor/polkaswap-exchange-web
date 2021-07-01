@@ -68,7 +68,6 @@ $transactionIconSize: 68px;
     margin-right: $inner-spacing-mini / 2;
     text-transform: uppercase;
     font-size: $s-font-size-settings;
-    font-feature-settings: $s-font-feature-settings-type;
     letter-spacing: var(--s-letter-spacing-extra-large);
     background-color: var(--s-color-base-background);
     border-radius: var(--s-border-radius-mini);
@@ -77,7 +76,6 @@ $transactionIconSize: 68px;
   }
   &-info {
     margin-right: $inner-spacing-mini;
-    font-feature-settings: $s-font-feature-settings-common;
     font-weight: 600;
   }
   .s-icon-external-link {

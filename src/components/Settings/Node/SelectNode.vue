@@ -53,15 +53,23 @@ export default class SelectNode extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) disableSelect!: boolean
 
   @ModelSync('value', 'input', { type: String })
-  readonly currentAddressValue!: boolean
+  readonly currentAddressValue!: string
 }
 </script>
 
-<style lang="scss" scoped>
-$list-item-height: 71px;
-$list-item-padding: 11px 0;
-$badge-container-width: 60px;
+<style lang="scss">
+.select-node-list__item.el-radio {
+  &.s-medium {
+    height: initial;
+  }
 
+  .el-radio__label {
+    flex: 1;
+  }
+}
+</style>
+
+<style lang="scss" scoped>
 .select-node {
   flex-direction: column;
   align-items: center;
@@ -77,10 +85,8 @@ $badge-container-width: 60px;
     &__item {
       margin-right: 0;
       align-items: center;
-      padding: $list-item-padding;
-      min-height: $list-item-height;
+      padding: $inner-spacing-small 0;
       white-space: normal;
-      height: initial;
     }
   }
 
@@ -98,13 +104,15 @@ $badge-container-width: 60px;
       color: var(--s-color-base-content-primary);
       font-size: var(--s-font-size-big);
       font-weight: 800;
+      letter-spacing: var(--s-letter-spacing-small);
       line-height: var(--s-line-height-small);
     }
 
     &__address {
       color: var(--s-color-base-content-secondary);
-      font-size: var(--s-heading8-font-size);
       font-size: var(--s-font-size-mini);
+      font-weight: 300;
+      letter-spacing: var(--s-letter-spacing-small);
       line-height: var(--s-line-height-medium);
     }
   }
@@ -118,7 +126,7 @@ $badge-container-width: 60px;
   }
 
   &-badge {
-    width: $badge-container-width;
+    width: var(--s-size-mini);
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;

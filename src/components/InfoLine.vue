@@ -74,7 +74,6 @@ export default class InfoLine extends Vue {
   color: var(--s-color-base-content-primary);
   font-size: var(--s-font-size-extra-small);
   line-height: var(--s-line-height-small);
-  font-feature-settings: $s-font-feature-settings-common;
   border-bottom: 1px solid var(--s-color-base-border-secondary);
 
   & + .info-line {

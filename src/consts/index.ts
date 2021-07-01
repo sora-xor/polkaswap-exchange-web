@@ -35,7 +35,7 @@ export const ZeroStringValue = '0'
 
 export const MetamaskCancellationCode = 4001
 
-export const DefaultSlippageTolerance = 0.5
+export const DefaultSlippageTolerance = '0.5'
 
 export enum MarketAlgorithms {
   SMART = 'SMART',
@@ -107,7 +107,8 @@ export enum Components {
   TokensRow = 'Rewards/TokensRow',
   RewardsAmountHeader = 'Rewards/AmountHeader',
   RewardsAmountTable = 'Rewards/AmountTable',
-  TokenSelectButton = 'Input/TokenSelectButton'
+  TokenSelectButton = 'Input/TokenSelectButton',
+  TokenAddress = 'Input/TokenAddress'
 }
 
 interface SidebarMenuItem {

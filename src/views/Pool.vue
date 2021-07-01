@@ -1,7 +1,7 @@
 <template>
-  <div v-lottie-loader="{ loading: parentLoading }" class="container el-form--pool">
+  <div v-loading="parentLoading" class="container el-form--pool">
     <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')" />
-    <div v-lottie-loader="{ loading }" class="pool-wrapper">
+    <div v-loading="loading" class="pool-wrapper">
       <p v-if="!isLoggedIn" class="pool-info-container">
         {{ t('pool.connectToWallet') }}
       </p>
@@ -12,7 +12,7 @@
         <s-collapse-item v-for="liquidityItem of accountLiquidity" :key="liquidityItem.address" :name="liquidityItem.address" class="pool-info-container">
           <template #title>
             <pair-token-logo :first-token="getAsset(liquidityItem.firstAddress)" :second-token="getAsset(liquidityItem.secondAddress)" size="small" />
-            <h3>{{ getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress)) }}</h3>
+            <h3 class="pool-info-container__title">{{ getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress)) }}</h3>
           </template>
           <div class="pool-info">
             <token-logo :token="getAsset(liquidityItem.firstAddress)" size="small" />
@@ -85,18 +85,26 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Getter('assets', { namespace: 'assets' }) assets!: Array<Asset>
   @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
 
-  @Action('updateAccountLiquidity', { namespace }) updateAccountLiquidity!: AsyncVoidFn
-  @Action('destroyUpdateAccountLiquiditySubscription', { namespace }) destroyUpdateAccountLiquiditySubscription!: AsyncVoidFn
+  @Action('getAccountLiquidity', { namespace }) getAccountLiquidity!: AsyncVoidFn
+  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<Function>
 
-  async mounted () {
+  accountLiquiditySubscription!: Function
+
+  async created () {
+    this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
+
     await this.withApi(async () => {
-      await this.getAssets()
-      await this.updateAccountLiquidity()
+      await Promise.all([
+        this.getAssets(),
+        this.getAccountLiquidity()
+      ])
     })
   }
 
-  destroyed (): void {
-    this.destroyUpdateAccountLiquiditySubscription()
+  beforeDestroy (): void {
+    if (typeof this.accountLiquiditySubscription === 'function') {
+      this.accountLiquiditySubscription() // unsubscribe
+    }
   }
 
   getAsset (address): any {
@@ -163,10 +171,12 @@ $pool-collapse-icon-width: 10px;
     &__header,
     &__wrap {
       border-bottom: none;
+      background-color: unset;
     }
     &__content {
       margin-top: 0;
       padding: 0 $inner-spacing-medium $inner-spacing-medium;
+      font-weight: 600;
     }
     .el-collapse-item__header {
       height: #{$pair-icon-height + $inner-spacing-medium * 2};
@@ -210,7 +220,7 @@ $pair-icon-height: 36px;
     border-top: none;
     border-bottom: none;
     .pool-info-container {
-      margin-bottom: $inner-spacing-mini;
+      margin-bottom: $inner-spacing-medium;
       padding: 0;
       &:last-child {
         margin-bottom: 0;
@@ -218,7 +228,6 @@ $pair-icon-height: 36px;
     }
     h3 {
       letter-spacing: var(--s-letter-spacing-small);
-      font-feature-settings: $s-font-feature-settings-title;
     }
   }
   &-info {
@@ -241,13 +250,22 @@ $pair-icon-height: 36px;
     &-container {
       width: 100%;
       padding: $inner-spacing-big;
+      background: var(--s-color-base-background);
       border-radius: var(--s-border-radius-small);
-      border: 1px solid var(--s-color-base-border-secondary);
+      box-shadow: var(--s-shadow-element);
       color: var(--s-color-base-content-secondary);
       font-size: var(--s-font-size-mini);
       line-height: var(--s-line-height-small);
-      font-feature-settings: $s-font-feature-settings-common;
       text-align: center;
+
+      &.is-active {
+        box-shadow: var(--s-shadow-element-pressed);
+      }
+
+      &__title {
+        font-weight: 700;
+      }
+
       & + .el-button {
         margin-top: $inner-spacing-medium;
       }

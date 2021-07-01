@@ -3,7 +3,7 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import { connection, updateAccountAssetsSubscription, isWalletLoaded, initWallet } from '@soramitsu/soraneo-wallet-web'
+import { connection, isWalletLoaded, initWallet } from '@soramitsu/soraneo-wallet-web'
 
 import storage, { settingsStorage } from '@/utils/storage'
 import { AppHandledError } from '@/utils/error'
@@ -25,7 +25,6 @@ const types = flow(
     'SET_CUSTOM_NODES',
     'RESET_NODE',
     'SET_NETWORK_CHAIN_GENESIS_HASH',
-    'SET_NODE_CONNECTION_ALLOWANCE',
     'SET_SELECT_NODE_DIALOG_VISIBILIY'
   ]),
   map(x => [x, x]),
@@ -67,7 +66,7 @@ const getters = {
     return [...state.defaultNodes, ...getters.customNodes]
   },
   nodeIsConnected (state) {
-    return state.node?.address && state.nodeConnectionAllowance
+    return state.node?.address && !state.nodeAddressConnecting && connection.opened
   },
   soraNetwork (state) {
     return state.soraNetwork
@@ -84,9 +83,9 @@ const getters = {
 }
 
 const mutations = {
-  [types.SET_NODE_REQUEST] (state, node) {
+  [types.SET_NODE_REQUEST] (state, { node, isReconnection = false }) {
     state.nodeAddressConnecting = node?.address ?? ''
-    state.nodeConnectionAllowance = false
+    state.nodeConnectionAllowance = isReconnection
   },
   [types.SET_NODE_SUCCESS] (state, node = {}) {
     state.node = { ...node }
@@ -97,9 +96,6 @@ const mutations = {
   [types.SET_NODE_FAILURE] (state) {
     state.nodeAddressConnecting = ''
     state.nodeConnectionAllowance = true
-  },
-  [types.SET_NODE_CONNECTION_ALLOWANCE] (state, flag: boolean) {
-    state.nodeConnectionAllowance = flag
   },
   [types.SET_DEFAULT_NODES] (state, nodes) {
     state.defaultNodes = [...nodes]
@@ -142,31 +138,26 @@ const actions = {
   async connectToNode ({ commit, dispatch, state }, options: ConnectToNodeOptions = {}) {
     if (!state.nodeConnectionAllowance) return
 
-    const { node, onError } = options
+    const { node, onError, ...restOptions } = options
     const defaultNode = state.defaultNodes[0]
     const requestedNode = node || (state.node.address ? state.node : defaultNode)
 
     try {
-      await dispatch('setNode', { node: requestedNode, onError })
+      await dispatch('setNode', { node: requestedNode, onError, ...restOptions })
 
       // wallet init & update flow
       if (!isWalletLoaded) {
         await initWallet({ permissions: WalletPermissions })
         // TODO [tech]: maybe we should replace it, cuz it executes twice except bridge screens
         await dispatch('assets/getAssets', undefined, { root: true })
-      } else {
-        if (updateAccountAssetsSubscription) {
-          updateAccountAssetsSubscription.unsubscribe()
-        }
-        dispatch('updateAccountAssets', undefined, { root: true }) // to update subscription
       }
     } catch (error) {
       if (requestedNode && (requestedNode.address === state.node.address)) {
         commit(types.RESET_NODE)
       }
 
-      if (defaultNode && (requestedNode?.address !== defaultNode.address)) {
-        await dispatch('connectToNode', { onError })
+      if (state.node.address || (defaultNode && (requestedNode?.address !== defaultNode.address))) {
+        await dispatch('connectToNode', { onError, ...restOptions })
       }
 
       if (onError && typeof onError === 'function') {
@@ -177,12 +168,31 @@ const actions = {
     }
   },
   async setNode ({ commit, dispatch, state, getters }, options: ConnectToNodeOptions = {}) {
-    const { node, onError } = options
+    const {
+      node,
+      connectionOptions = {},
+      onError,
+      onDisconnect,
+      onReconnect
+    } = options
+
     const endpoint = node?.address ?? ''
     const isTrustedEndpoint = endpoint in getters.defaultNodesHashTable
+
+    const connectionOpenOptions = {
+      once: true, // by default we are trying to connect once, but keep trying after disconnect from connected node
+      timeout: isTrustedEndpoint ? undefined : NODE_CONNECTION_TIMEOUT, // connect to trusted node without connection timeout
+      ...connectionOptions
+    }
+    const isReconnection = !connectionOpenOptions.once
+    const connectingNodeChanged = () => endpoint !== state.nodeAddressConnecting
+
     const connectionOnDisconnected = () => {
       connection.unsubscribeEventHandlers()
-      dispatch('connectToNode', { onError })
+      if (typeof onDisconnect === 'function') {
+        onDisconnect(node)
+      }
+      dispatch('connectToNode', { node, onError, onDisconnect, onReconnect, connectionOptions: { once: false } })
     }
 
     try {
@@ -190,7 +200,7 @@ const actions = {
         throw new Error('Node address is not set')
       }
 
-      commit(types.SET_NODE_REQUEST, node)
+      commit(types.SET_NODE_REQUEST, { node, isReconnection })
 
       console.info('Connection request to node', endpoint)
 
@@ -206,12 +216,13 @@ const actions = {
       }
 
       await connection.open(endpoint, {
-        once: true,
-        timeout: isTrustedEndpoint ? undefined : NODE_CONNECTION_TIMEOUT, // connect to trusted node without connection timeout
+        ...connectionOpenOptions,
         eventListeners: [
           ['disconnected', connectionOnDisconnected]
         ]
       })
+
+      if (connectingNodeChanged()) return
 
       console.info('Connected to node', connection.endpoint)
 
@@ -237,6 +248,10 @@ const actions = {
         commit(types.SET_NETWORK_CHAIN_GENESIS_HASH, nodeChainGenesisHash)
       }
 
+      if (isReconnection && typeof onReconnect === 'function') {
+        onReconnect(node)
+      }
+
       commit(types.SET_NODE_SUCCESS, node)
     } catch (error) {
       console.error(error)
@@ -248,7 +263,9 @@ const actions = {
           payload: { address: endpoint }
         })
 
-      commit(types.SET_NODE_FAILURE)
+      if (!connectingNodeChanged()) {
+        commit(types.SET_NODE_FAILURE)
+      }
 
       throw err
     }

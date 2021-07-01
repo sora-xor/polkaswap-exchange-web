@@ -363,16 +363,9 @@ const actions = {
   setSoraToEvm ({ commit }, isSoraToEvm: boolean) {
     commit(types.SET_SORA_TO_EVM, isSoraToEvm)
   },
-  setAssetAddress ({ commit, getters, rootGetters }, address?: string) {
-    const updateBalance = (balance) => commit(types.SET_ASSET_BALANCE, balance)
-
+  setAssetAddress ({ commit, dispatch }, address?: string) {
     commit(types.SET_ASSET_ADDRESS, address)
-
-    balanceSubscriptions.remove('asset', { updateBalance })
-
-    if (rootGetters.isLoggedIn && getters.asset?.address && !(getters.asset.address in rootGetters.accountAssetsAddressTable)) {
-      balanceSubscriptions.add('asset', { updateBalance, token: getters.asset })
-    }
+    dispatch('updateBalanceSubscription')
   },
   setAmount ({ commit }, amount: string) {
     commit(types.SET_AMOUNT, amount)
@@ -418,6 +411,7 @@ const actions = {
     if (!withAddress) {
       dispatch('setAssetAddress', '')
     }
+    dispatch('setAmount', '')
     dispatch('setSoraToEvm', true)
     dispatch('setTransactionConfirm', false)
     dispatch('setCurrentTransactionState', STATES.INITIAL)
@@ -428,6 +422,15 @@ const actions = {
   },
   resetBalanceSubscription ({ commit }) {
     balanceSubscriptions.remove('asset', { updateBalance: balance => commit(types.SET_ASSET_BALANCE, balance) })
+  },
+  updateBalanceSubscription ({ commit, getters, rootGetters }) {
+    const updateBalance = (balance) => commit(types.SET_ASSET_BALANCE, balance)
+
+    balanceSubscriptions.remove('asset', { updateBalance })
+
+    if (rootGetters.isLoggedIn && getters.asset?.address && !(getters.asset.address in rootGetters.accountAssetsAddressTable)) {
+      balanceSubscriptions.add('asset', { updateBalance, token: getters.asset })
+    }
   },
   async getHistory ({ commit }) {
     commit(types.GET_HISTORY_REQUEST)
@@ -616,6 +619,10 @@ const actions = {
       return
     }
     commit(types.SIGN_EVM_TRANSACTION_SORA_EVM_REQUEST)
+    if (getters.evmTransactionHash) {
+      commit(types.SIGN_EVM_TRANSACTION_SORA_EVM_SUCCESS)
+      return getters.evmTransactionHash
+    }
 
     try {
       const request = await waitForApprovedRequest(hash) // If it causes an error, then -> catch -> SORA_REJECTED
@@ -669,6 +676,7 @@ const actions = {
       return new Promise((resolve, reject) => {
         contractMethod.send({ gas, from: evmAccount })
           .on('transactionHash', hash => {
+            dispatch('setEvmTransactionHash', hash)
             commit(types.SIGN_EVM_TRANSACTION_SORA_EVM_SUCCESS)
             resolve(hash)
           })
