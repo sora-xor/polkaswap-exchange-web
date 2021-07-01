@@ -1,13 +1,50 @@
 import Vue from 'vue'
-import SoramitsuElements, { Message, MessageBox, Notification, setTheme, setDesignSystem } from '@soramitsu/soramitsu-js-ui'
-// TODO: temporary load necessary fonts from overrides.scss, uncomment after ui-lib icon font update
-// import '@soramitsu/soramitsu-js-ui/lib/styles'
+import SoramitsuElements, {
+  setDesignSystem,
+  DesignSystemTypes,
+  Components,
+  Message,
+  MessageBox,
+  Notification
+} from '@soramitsu/soramitsu-js-ui'
 
 import store from '@/store'
 
-setDesignSystem('neumorphic')
+const components = [
+  Components.SButton,
+  Components.SCard,
+  Components.SCol,
+  Components.SCollapse,
+  Components.SCollapseItem,
+  Components.SDesignSystemProvider,
+  Components.SDialog,
+  Components.SDivider,
+  Components.SDropdown,
+  Components.SDropdownItem,
+  Components.SFloatInput,
+  Components.SForm,
+  Components.SFormItem,
+  Components.SIcon,
+  Components.SInput,
+  Components.SMenu,
+  Components.SMenuItem,
+  Components.SMenuItemGroup,
+  Components.SPagination,
+  Components.SRadio,
+  Components.SRadioGroup,
+  Components.SRow,
+  Components.SSwitch,
+  Components.SSlider,
+  Components.STab,
+  Components.STabs,
+  Components.STooltip
+]
 
-Vue.use(SoramitsuElements, { store })
+const directives = []
+
+setDesignSystem(DesignSystemTypes.NEUMORPHIC)
+
+Vue.use(SoramitsuElements, { store, components, directives })
 Vue.prototype.$prompt = MessageBox.prompt
 Vue.prototype.$alert = MessageBox.alert
 Vue.prototype.$message = Message

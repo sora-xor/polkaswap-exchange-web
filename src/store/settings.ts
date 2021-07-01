@@ -3,7 +3,7 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import { connection, updateAccountAssetsSubscription, isWalletLoaded, initWallet } from '@soramitsu/soraneo-wallet-web'
+import { connection, isWalletLoaded, initWallet } from '@soramitsu/soraneo-wallet-web'
 
 import storage, { settingsStorage } from '@/utils/storage'
 import { AppHandledError } from '@/utils/error'
@@ -25,7 +25,6 @@ const types = flow(
     'SET_CUSTOM_NODES',
     'RESET_NODE',
     'SET_NETWORK_CHAIN_GENESIS_HASH',
-    'SET_NODE_CONNECTION_ALLOWANCE',
     'SET_SELECT_NODE_DIALOG_VISIBILIY'
   ]),
   map(x => [x, x]),
@@ -67,7 +66,7 @@ const getters = {
     return [...state.defaultNodes, ...getters.customNodes]
   },
   nodeIsConnected (state) {
-    return state.node?.address && !state.nodeAddressConnecting
+    return state.node?.address && !state.nodeAddressConnecting && connection.opened
   },
   soraNetwork (state) {
     return state.soraNetwork
@@ -97,9 +96,6 @@ const mutations = {
   [types.SET_NODE_FAILURE] (state) {
     state.nodeAddressConnecting = ''
     state.nodeConnectionAllowance = true
-  },
-  [types.SET_NODE_CONNECTION_ALLOWANCE] (state, flag: boolean) {
-    state.nodeConnectionAllowance = flag
   },
   [types.SET_DEFAULT_NODES] (state, nodes) {
     state.defaultNodes = [...nodes]
@@ -160,7 +156,7 @@ const actions = {
         commit(types.RESET_NODE)
       }
 
-      if (defaultNode && (requestedNode?.address !== defaultNode.address)) {
+      if (state.node.address || (defaultNode && (requestedNode?.address !== defaultNode.address))) {
         await dispatch('connectToNode', { onError, ...restOptions })
       }
 
