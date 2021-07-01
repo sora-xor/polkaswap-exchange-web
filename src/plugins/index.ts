@@ -1,2 +1,2 @@
-import './wallet'
 import './soramitsuUI'
+import './wallet'
