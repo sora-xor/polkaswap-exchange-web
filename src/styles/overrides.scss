@@ -56,10 +56,10 @@ $s-icon-energy: "\0048";
   font-weight: 1 999;
 }
 i[class^="s-icon-"], i[class*=" s-icon-"] {
-  color: var(--s-color-base-content-tertiary);
+  color: var(--s-color-base-content-tertiary) !important;
   transition: var(--s-transition-default);
   &:hover {
-    color: var(--s-color-base-content-secondary);
+    color: var(--s-color-base-content-secondary) !important;
   }
 }
 .asset-details-actions {
