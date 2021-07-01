@@ -93,13 +93,15 @@ async function waitForEvmTransactionStatus (
 ) {
   const ethersInstance = await ethersUtil.getEthersInstance()
   try {
+    const confirmations = 5
+    const timeout = 0
     const currentBlock = await ethersInstance.getBlockNumber()
     const blockOffset = currentBlock - 20
     const { data, from, nonce, to, value } = await ethersInstance.getTransaction(hash)
     await ethersInstance._waitForTransaction(
       hash,
-      5,
-      0,
+      confirmations,
+      timeout,
       {
         data,
         from,
@@ -719,7 +721,9 @@ const actions = {
           dispatch('setEvmTransactionHash', { hash })
           dispatch('sendEvmTransactionSoraToEvm', { ethereumHash: hash })
         },
-        () => {}
+        () => {
+          throw new Error('The transaction was canceled by the user')
+        }
       )
       commit(types.SEND_EVM_TRANSACTION_SORA_EVM_SUCCESS)
     } catch (error) {
@@ -834,7 +838,9 @@ const actions = {
           dispatch('setEvmTransactionHash', { hash })
           dispatch('sendEvmTransactionSoraToEvm', { ethereumHash: hash })
         },
-        () => {}
+        () => {
+          throw new Error('The transaction was canceled by the user')
+        }
       )
       commit(types.SEND_EVM_TRANSACTION_EVM_SORA_SUCCESS)
     } catch (error) {
