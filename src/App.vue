@@ -3,6 +3,7 @@
     <header class="header">
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
       <div class="app-controls s-flex">
+        <s-button alternative icon="basic-globe-24">EN</s-button>
         <s-button type="tertiary" alternative size="medium" class="node-control" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
           <div class="node-control__text">
             <div class="node-control-title">{{ node.name }}</div>
@@ -125,6 +126,7 @@
 
     <help-dialog :visible.sync="showHelpDialog" />
     <select-node-dialog :visible.sync="showSelectNodeDialog" />
+    <select-language-dialog :visible.sync="showSelectLanguageDialog" />
   </s-design-system-provider>
 </template>
 
@@ -153,6 +155,7 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
     HelpDialog: lazyComponent(Components.HelpDialog),
     SidebarItemContent: lazyComponent(Components.SidebarItemContent),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
+    SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
@@ -172,6 +175,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   ]
 
   showHelpDialog = false
+  showSelectLanguageDialog = false
 
   @State(state => state.settings.faucetUrl) faucetUrl!: string
   @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean

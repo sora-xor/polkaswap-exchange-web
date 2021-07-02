@@ -16,7 +16,13 @@ export const WalletPermissions = {
 }
 
 export enum Language {
-  EN = 'en'
+  EN = 'en',
+  RU = 'ru'
+}
+
+export const Languages = {
+  [Language.EN]: 'English',
+  [Language.RU]: 'Russian'
 }
 
 export const Links = {
@@ -108,7 +114,8 @@ export enum Components {
   RewardsAmountHeader = 'Rewards/AmountHeader',
   RewardsAmountTable = 'Rewards/AmountTable',
   TokenSelectButton = 'Input/TokenSelectButton',
-  TokenAddress = 'Input/TokenAddress'
+  TokenAddress = 'Input/TokenAddress',
+  SelectLanguageDialog = 'SelectLanguageDialog'
 }
 
 interface SidebarMenuItem {
