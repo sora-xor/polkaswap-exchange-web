@@ -3,7 +3,7 @@
     <header class="header">
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
       <div class="app-controls s-flex">
-        <s-button alternative icon="basic-globe-24">EN</s-button>
+        <s-button alternative icon="basic-globe-24" @click="openSelectLanguageDialog">EN</s-button>
         <s-button type="tertiary" alternative size="medium" class="node-control" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
           <div class="node-control__text">
             <div class="node-control-title">{{ node.name }}</div>
@@ -303,6 +303,10 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
 
   openSelectNodeDialog (): void {
     this.setSelectNodeDialogVisibility(true)
+  }
+
+  openSelectLanguageDialog (): void {
+    this.showSelectLanguageDialog = true
   }
 
   destroyed (): void {
