@@ -37,6 +37,8 @@ const components = [
   Components.SSlider,
   Components.STab,
   Components.STabs,
+  Components.STable,
+  Components.STableColumn,
   Components.STooltip
 ]
 
