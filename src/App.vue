@@ -79,26 +79,6 @@
                 class="el-menu-item menu-item--small"
               />
             </li>
-            <li class="menu-link-container">
-              <sidebar-item-content
-                :title="t('footerMenu.memorandum')"
-                :href="t('helpDialog.termsOfServiceLink')"
-                tag="a"
-                target="_blank"
-                rel="nofollow noopener"
-                class="el-menu-item menu-item--small menu-item--general-link"
-              />
-            </li>
-            <li class="menu-link-container">
-              <sidebar-item-content
-                :title="t('footerMenu.privacy')"
-                :href="t('helpDialog.privacyPolicyLink')"
-                tag="a"
-                target="_blank"
-                rel="nofollow noopener"
-                class="el-menu-item menu-item--small menu-item--general-link"
-              />
-            </li>
             <!-- <sidebar-item-content
               :title="t('footerMenu.help')"
               icon="notifications-info-24"
@@ -378,11 +358,6 @@ html {
       }
     }
   }
-
-  .el-menu-item.menu-item--small.menu-item--general-link {
-    padding: $basic-spacing-small $basic-spacing-small $inner-spacing-mini / 2 $basic-spacing-medium;
-    line-height: 1;
-  }
 }
 
 .el-notification.sora {
@@ -486,8 +461,8 @@ html {
   }
 }
 .app-disclaimer {
-  span {
-    display: none;
+  &__title {
+    color: var(--s-color-theme-accent);
   }
   .link {
     color: var(--s-color-base-content-primary);
@@ -503,9 +478,6 @@ html {
   .app-disclaimer {
     span {
       display: inline;
-    }
-    .link--mobile {
-      display: none;
     }
   }
 }
@@ -613,21 +585,6 @@ $disclaimer-letter-spacing: -0.03em;
     display: none;
     .el-menu-item {
       white-space: initial;
-    }
-    + .menu-link-container {
-      position: relative;
-      margin-top: $inner-spacing-mini;
-      &:before {
-        position: absolute;
-        left: $basic-spacing-medium;
-        top: -1px;
-        content: '';
-        display: block;
-        height: 1px;
-        width: 100px;
-        background-color: var(--s-color-base-content-tertiary);
-        opacity: 0.2;
-      }
     }
   }
   .el-menu-item {
