@@ -473,14 +473,6 @@ html {
 .s-typography-button--large.is-disabled {
   font-size: var(--s-font-size-medium) !important;
 }
-
-@include large-mobile {
-  .app-disclaimer {
-    span {
-      display: inline;
-    }
-  }
-}
 </style>
 
 <style lang="scss" scoped>
@@ -489,11 +481,6 @@ $header-height: 64px;
 $sidebar-width: 160px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
-
-// TODO: Move disclaimer's variables to appropriate place after design redevelopment
-$disclaimer-font-size: 11px;
-$disclaimer-font-weight: 200;
-$disclaimer-letter-spacing: -0.03em;
 
 .app {
   &-main {
@@ -538,10 +525,10 @@ $disclaimer-letter-spacing: -0.03em;
 
   &-disclaimer {
     margin-top: $basic-spacing-medium;
-    font-size: $disclaimer-font-size;
-    font-weight: $disclaimer-font-weight;
-    line-height: var(--s-line-height-mini);
-    letter-spacing: $disclaimer-letter-spacing;
+    font-size: var(--s-font-size-extra-mini);
+    font-weight: 300;
+    line-height: var(--s-line-height-extra-small);
+    letter-spacing: var(--s-letter-spacing-small);
     color: var(--s-color-base-content-secondary);
   }
 
