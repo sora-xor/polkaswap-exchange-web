@@ -342,3 +342,8 @@
     }
   }
 }
+
+@mixin radio-title {
+  font-size: var(--s-font-size-medium);
+  font-weight: 600;
+}
