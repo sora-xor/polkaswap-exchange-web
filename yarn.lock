@@ -2375,14 +2375,16 @@
     crypto-js "^4.0.0"
     lodash "^4.17.15"
 
-"@soramitsu/soramitsu-js-ui@0.9.14":
-  version "0.9.14"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-0.9.14.tgz#5cfc77c7898cfd2c63ccecf151444b37ba59dcc8"
-  integrity sha512-uS0KRvh72xv0ZCVUCR570iNIgvh3FmFKwKt1SAAkOft01UuK/xLIWsghPD/wJJG0vcX8ikr7n1OYhoy048Afyw==
+"@soramitsu/soramitsu-js-ui@0.9.15":
+  version "0.9.15"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-0.9.15.tgz#dcd8805a52ff8b054974dc36da2362c0e6031005"
+  integrity sha512-9/qsfLTd6DmkmG5Y2+SieNEsLw8tpqBDmta/fjVF1I3FZpyi+pe+NzOB0toespXxRtGAc4ZZ7j6wsmnkEFlOFw==
   dependencies:
     core-js "^3.6.4"
+    element-resize-detector "^1.2.1"
     element-ui "^2.13.2"
     lodash "^4.17.15"
+    throttle-debounce "^1.0.1"
     v-jsoneditor "^1.4.1"
     vue "^2.6.11"
     vue-class-component "^7.2.3"
@@ -2391,15 +2393,15 @@
     vuex "^3.1.3"
     vuex-class "^0.3.2"
 
-"@soramitsu/soraneo-wallet-web@^1.3.38":
-  version "1.3.38"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.3.38.tgz#c383a9b8af39c89e7e5d90014f0ec16b8c02b38a"
-  integrity sha512-VOhHL7vVE+X4ntcJzWipAdGuUtCWD7b8BVNIkTgMyfHllP5l5Gkbde+ja3CCEw5LVO/Ty+hm3qoDT0Hh2ogX0Q==
+"@soramitsu/soraneo-wallet-web@^1.3.39":
+  version "1.3.39"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.3.39.tgz#f25a7b886bd9ce5722beaaa1b4174af232305867"
+  integrity sha512-ZcyiGdF4+yYpqtqO7WqvxwMkwlJotbeZPXfIyic3T8LVanO5ZfkcHWC5AHSssgUL7tKBtETVeO5bLc3l/INRmQ==
   dependencies:
     "@polkadot/extension-dapp" "^0.35.0-beta.35"
     "@polkadot/vue-identicon" "^0.72.1"
     "@sora-substrate/util" "1.3.32"
-    "@soramitsu/soramitsu-js-ui" "0.9.14"
+    "@soramitsu/soramitsu-js-ui" "0.9.15"
     axios "^0.19.0"
     core-js "^3.6.4"
     dayjs "^1.10.5"
@@ -4226,6 +4228,11 @@ base@^0.11.1:
     isobject "^3.0.1"
     mixin-deep "^1.2.0"
     pascalcase "^0.1.1"
+
+batch-processor@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/batch-processor/-/batch-processor-1.0.0.tgz#75c95c32b748e0850d10c2b168f6bdbe9891ace8"
+  integrity sha1-dclcMrdI4IUNEMKxaPa9vpiRrOg=
 
 batch@0.6.1:
   version "0.6.1"
@@ -6300,6 +6307,13 @@ elegant-spinner@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/elegant-spinner/-/elegant-spinner-1.0.1.tgz#db043521c95d7e303fd8f345bedc3349cfb0729e"
   integrity sha1-2wQ1IcldfjA/2PNFvtwzSc+wcp4=
+
+element-resize-detector@^1.2.1:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/element-resize-detector/-/element-resize-detector-1.2.3.tgz#5078d9b99398fe4c589f8c8df94ff99e5d413ff3"
+  integrity sha512-+dhNzUgLpq9ol5tyhoG7YLoXL3ssjfFW+0gpszXPwRU6NjGr1fVHMEAF8fVzIiRJq57Nre0RFeIjJwI8Nh2NmQ==
+  dependencies:
+    batch-processor "1.0.0"
 
 element-ui@^2.13.2:
   version "2.15.2"
@@ -15649,11 +15663,6 @@ vue-i18n@^8.11.2:
   version "8.24.5"
   resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-8.24.5.tgz#7127a666d5be2199be69be39e439a419a90ff931"
   integrity sha512-p8W5xOmniuZ8fj76VXe0vBL3bRWVU87jHuC/v8VwmhKVH2iMQsKnheB1U+umxDBqC/5g9K+NwzokepcLxnBAVQ==
-
-vue-i18n@^8.21.0:
-  version "8.24.4"
-  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-8.24.4.tgz#b158614c1df7db183d9cadddbb73e1d540269492"
-  integrity sha512-RZE94WUAGxEiBAANxQ0pptbRwDkNKNSXl3fnJslpFOxVMF6UkUtMDSuYGuW2blDrVgweIXVpethOVkYoNNT9xw==
 
 vue-jest@^3.0.5:
   version "3.0.7"
