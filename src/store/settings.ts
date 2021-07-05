@@ -7,9 +7,10 @@ import { connection, isWalletLoaded, initWallet } from '@soramitsu/soraneo-walle
 
 import storage, { settingsStorage } from '@/utils/storage'
 import { AppHandledError } from '@/utils/error'
-import { DefaultSlippageTolerance, DefaultMarketAlgorithm, LiquiditySourceForMarketAlgorithm, WalletPermissions } from '@/consts'
+import { DefaultSlippageTolerance, DefaultMarketAlgorithm, LiquiditySourceForMarketAlgorithm, WalletPermissions, Language } from '@/consts'
 import { getRpcEndpoint, fetchRpc } from '@/utils/rpc'
 import { ConnectToNodeOptions } from '@/types/nodes'
+import { getLocale } from '@/lang'
 
 const NODE_CONNECTION_TIMEOUT = 60000
 
@@ -25,7 +26,8 @@ const types = flow(
     'SET_CUSTOM_NODES',
     'RESET_NODE',
     'SET_NETWORK_CHAIN_GENESIS_HASH',
-    'SET_SELECT_NODE_DIALOG_VISIBILIY'
+    'SET_SELECT_NODE_DIALOG_VISIBILIY',
+    'SET_LANGUAGE'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -40,6 +42,7 @@ function initialState () {
     marketAlgorithm: storage.get('marketAlgorithm') || DefaultMarketAlgorithm,
     transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
     node: JSON.parse(settingsStorage.get('node')) || {},
+    language: settingsStorage.get('language') || getLocale(),
     defaultNodes: [],
     customNodes: JSON.parse(settingsStorage.get('customNodes')) || [],
     nodeAddressConnecting: '',
@@ -79,6 +82,9 @@ const getters = {
   },
   liquiditySource (state) {
     return LiquiditySourceForMarketAlgorithm[state.marketAlgorithm]
+  },
+  language (state) {
+    return state.language
   }
 }
 
@@ -131,6 +137,10 @@ const mutations = {
   },
   [types.SET_SELECT_NODE_DIALOG_VISIBILIY] (state, flag) {
     state.selectNodeDialogVisibility = flag
+  },
+  [types.SET_LANGUAGE] (state, lang: Language) {
+    state.language = lang
+    settingsStorage.set('language', lang)
   }
 }
 
@@ -313,6 +323,9 @@ const actions = {
   },
   setSelectNodeDialogVisibility ({ commit }, flag: boolean) {
     commit(types.SET_SELECT_NODE_DIALOG_VISIBILIY, flag)
+  },
+  setLanguage ({ commit }, lang: Language) {
+    commit(types.SET_LANGUAGE, lang)
   }
 }
 

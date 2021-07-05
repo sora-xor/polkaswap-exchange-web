@@ -3,16 +3,19 @@ import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 
 import { Language } from '@/consts'
+import { settingsStorage } from '@/utils/storage'
 
 import en from './en.json'
+import ru from './ru.json'
 
 Vue.use(VueI18n)
 
 const messages = {
-  en
+  en,
+  ru
 }
 
-function getLocale (): string {
+export function getLocale (): string {
   const locale = first((navigator.language || (navigator as any).userLanguage).split('-')) as string
   if (!Object.values(Language).includes(locale as any)) {
     return Language.EN
@@ -21,7 +24,7 @@ function getLocale (): string {
 }
 
 const i18n = new VueI18n({
-  locale: getLocale(),
+  locale: settingsStorage.get('language') || getLocale(),
   messages
 })
 

@@ -129,6 +129,9 @@ export default {
       incorrectAddress: 'Incorrect address'
     }
   },
+  selectLanguageDialog: {
+    title: 'Language'
+  },
   buttons: {
     max: 'MAX',
     chooseToken: 'Choose token',

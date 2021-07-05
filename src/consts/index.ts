@@ -20,10 +20,10 @@ export enum Language {
   RU = 'ru'
 }
 
-export const Languages = {
-  [Language.EN]: 'English',
-  [Language.RU]: 'Russian'
-}
+export const Languages = [
+  { key: Language.EN, value: 'English', name: 'English (UK)' },
+  { key: Language.RU, value: 'Russian', name: 'Русский' }
+]
 
 export const Links = {
   about: {

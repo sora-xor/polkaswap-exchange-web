@@ -3,7 +3,7 @@
     <header class="header">
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
       <div class="app-controls s-flex">
-        <s-button alternative icon="basic-globe-24" @click="openSelectLanguageDialog">EN</s-button>
+        <s-button alternative icon="basic-globe-24" @click="openSelectLanguageDialog">{{ selectedLanguage }}</s-button>
         <s-button type="tertiary" alternative size="medium" class="node-control" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
           <div class="node-control__text">
             <div class="node-control-title">{{ node.name }}</div>
@@ -136,7 +136,7 @@ import { Action, Getter, State } from 'vuex-class'
 import { WALLET_CONSTS, WalletAvatar, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
 import { KnownSymbols, FPNumber } from '@sora-substrate/util'
 
-import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize } from '@/consts'
+import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize, Language } from '@/consts'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
@@ -187,6 +187,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   @Getter currentRoute!: WALLET_CONSTS.RouteNames
   @Getter chainAndNetworkText!: string
   @Getter nodeIsConnected!: boolean
+  @Getter language!: Language
 
   @Action navigate // Wallet
   @Action updateAccountAssets!: AsyncVoidFn
@@ -240,6 +241,10 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
     })
 
     this.trackActiveTransactions()
+  }
+
+  get selectedLanguage (): string {
+    return this.language.toUpperCase()
   }
 
   get showSelectNodeDialog (): boolean {
