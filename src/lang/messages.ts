@@ -518,7 +518,9 @@ export default {
       [RewardingEvents.SoraFarmHarvest]: '@:(soraText).farm harvest',
       [RewardingEvents.NftAirdrop]: 'NFT Airdrop',
       [RewardingEvents.LiquidityProvision]: 'Fees gained from liquidity provision',
-      [RewardingEvents.BuyOnBondingCurve]: 'buying from the TBC'
+      [RewardingEvents.BuyOnBondingCurve]: 'buying from the TBC',
+      [RewardingEvents.MarketMakerVolume]: 'Market Maker',
+      [RewardingEvents.LiquidityProvisionFarming]: 'Farming'
     }
   },
   provider: {
