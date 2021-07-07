@@ -160,7 +160,7 @@ const OtherPagesMenu: Array<SidebarMenuItem> = [
     title: PageNames.About
   },
   {
-    icon: 'file-file-text-24',
+    icon: 'various-bone-24',
     title: PageNames.Tokens
   }
 ]
