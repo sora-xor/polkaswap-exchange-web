@@ -701,7 +701,9 @@
             "SoraFarmHarvest": "@:(soraText).farm harvest",
             "NftAirdrop": "NFT Airdrop",
             "LiquidityProvision": "Fees gained from liquidity provision",
-            "BuyOnBondingCurve": "buying from the TBC"
+            "BuyOnBondingCurve": "buying from the TBC",
+            "MarketMakerVolume": "Market Maker",
+            "LiquidityProvisionFarming": "Farming"
         }
     },
     "provider": {
