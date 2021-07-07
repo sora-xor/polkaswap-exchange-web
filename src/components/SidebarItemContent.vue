@@ -72,7 +72,7 @@ $icon-size: 42px;
     display: none;
   }
   .el-menu-item.is-active & {
-    box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.02), 1px 1px 3px rgba(0, 0, 0, 0.1), inset 1px 1px 2px rgba(255, 255, 255, 0.8);
+    box-shadow: -1px -1px 1px var(--s-shadow-color-dark-light), 1px 1px 3px var(--s-shadow-color-dark), inset 1px 1px 2px var(--s-shadow-color-light-dark);
   }
   .menu-item--small & {
     margin-right: 0;

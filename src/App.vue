@@ -313,6 +313,10 @@ html {
   height: 100vh;
 }
 
+.node-control > span {
+  flex-direction: row-reverse;
+}
+
 .menu.el-menu {
   .el-menu-item-group__title {
     display: none;
@@ -518,7 +522,7 @@ $sora-logo-width: 173.7px;
       margin-left: auto;
       margin-bottom: $inner-spacing-big;
       margin-right: auto;
-      width: calc(#{$inner-window-width} - #{$inner-spacing-medium * 2});
+      width: calc(#{$inner-window-width} - #{$basic-spacing-medium * 2});
       text-align: justify;
     }
   }
@@ -627,8 +631,9 @@ $sora-logo-width: 173.7px;
 .account-control {
   &-title {
     font-size: var(--s-font-size-small);
-    font-variation-settings: "wght" 800;
+    font-variation-settings: "wght" 700;
     margin-right: $inner-spacing-mini / 2;
+    text-transform: none;
   }
 
   &-icon {
@@ -650,14 +655,14 @@ $sora-logo-width: 173.7px;
 
 .node-control {
   &__text {
-    padding-right: calc(var(--s-basic-spacing) / 2);
-    text-align: right;
+    padding-left: calc(var(--s-basic-spacing) / 2);
+    text-align: left;
     font-size: var(--s-font-size-extra-small);
     letter-spacing: var(--s-letter-spacing-small);
     text-transform: none;
   }
   &-title {
-    font-variation-settings: "wght" 800;
+    font-variation-settings: "wght" 700;
   }
   &-network {
     color: var(--s-color-base-content-tertiary);
