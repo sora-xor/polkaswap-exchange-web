@@ -1,5 +1,5 @@
 <template>
-  <div class="container tokens-container" v-loading="parentLoading">
+  <div class="container" v-loading="parentLoading">
     <generic-page-header :title="t('tokens.title')" class="page-header-title--tokens" />
     <s-table
       v-if="whitelistAssets.length"
@@ -7,18 +7,15 @@
       :highlight-current-row="false"
       size="small"
       class="tokens-table"
-      height="initial"
     >
       <s-table-column label="#" width="40">
         <template v-slot="{ $index }">
-          <span>{{ $index + 1 }}</span>
+          <span class="tokens-item-index">{{ $index + 1 }}</span>
         </template>
       </s-table-column>
-      <s-table-column width="104">
+      <s-table-column width="104" header-align="center" align="center">
         <template #header>
-          <div class="tokens-table__center">
-            <span class="tokens-table__primary">{{ t('tokens.symbol') }}</span>
-          </div>
+          <span class="tokens-table__primary">{{ t('tokens.symbol') }}</span>
         </template>
         <template v-slot="{ row }">
           <s-card size="mini" shadow="always" pressed>
@@ -26,11 +23,9 @@
           </s-card>
         </template>
       </s-table-column>
-      <s-table-column width="52" align="center">
+      <s-table-column width="52" header-align="center" align="center">
         <template #header>
-          <div class="tokens-table__center">
-            <s-icon name="various-bone-24" size="14px" />
-          </div>
+          <s-icon name="various-bone-24" size="14px" />
         </template>
         <template v-slot="{ row }">
           <token-logo class="tokens-item-logo" :token-symbol="row.symbol" />
@@ -97,8 +92,6 @@ export default class Tokens extends Mixins(LoadingMixin, TranslationMixin) {
 </script>
 
 <style lang="scss">
-$item-height: 71px;
-
 .page-header-title--tokens {
   justify-content: center;
 }
@@ -128,7 +121,7 @@ $item-height: 71px;
   }
 
   .el-table__body-wrapper {
-    height: $item-height * 10 !important;
+    height: auto !important;
   }
 
   .token-address {
@@ -140,6 +133,7 @@ $item-height: 71px;
 
 .tokens-table-pagination {
   display: flex;
+  margin-top: $inner-spacing-medium;
 
   .el-pagination__total {
     margin: auto;
@@ -148,6 +142,8 @@ $item-height: 71px;
 </style>
 
 <style lang="scss" scoped>
+$icon-size: 36px;
+
 .tokens-table {
   display: flex;
   flex-flow: column nowrap;
@@ -160,12 +156,14 @@ $item-height: 71px;
     color: var(--s-color-base-content-quaternary);
     font-size: var(--s-font-size-mini);
   }
-  &__center {
-    text-align: center;
-  }
 }
 
 .tokens-item {
+  &-index {
+    color: var(--s-color-base-content-tertiary);
+    font-size: var(--s-font-size-small);
+    font-weight: 800;
+  }
   &-symbol {
     font-size: var(--s-font-size-big);
     font-weight: 800;
@@ -175,15 +173,9 @@ $item-height: 71px;
   &-logo {
     &.token-logo {
       display: inline-flex;
-      height: 36px;
-      width: 36px;
+      height: $icon-size;
+      width: $icon-size;
     }
-  }
-  &-data {
-    color: var(--s-color-base-content-primary);
-    font-size: var(--s-font-size-small);
-    font-weight: 300;
-    line-height: var(--s-line-height-medium);
   }
 }
 </style>
