@@ -258,7 +258,8 @@
         "About": "About",
         "Stats": "Stats",
         "Support": "Support",
-        "CreatePair": "Create Pair"
+        "CreatePair": "Create Pair",
+        "Tokens": "Tokens"
     },
     "social": {
         "twitter": "Twitter",
@@ -623,6 +624,12 @@
         "description": "Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.",
         "outputMessage": "Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.",
         "confirmTitle": "You will receive"
+    },
+    "tokens": {
+        "title": "Listed Tokens",
+        "symbol": "Symbol",
+        "name": "Name",
+        "assetId": "Asset ID"
     },
     "dexSettings": {
         "title": "Transaction settings",
