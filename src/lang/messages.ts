@@ -66,7 +66,8 @@ export default {
     [PageNames.About]: 'About',
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
-    [PageNames.CreatePair]: 'Create Pair'
+    [PageNames.CreatePair]: 'Create Pair',
+    [PageNames.Tokens]: 'Tokens'
   },
   social: {
     twitter: 'Twitter',
@@ -444,6 +445,12 @@ export default {
     description: 'Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.',
     outputMessage: 'Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.',
     confirmTitle: 'You will receive'
+  },
+  tokens: {
+    title: 'Listed Tokens',
+    symbol: 'Symbol',
+    name: 'Name',
+    assetId: 'Asset ID'
   },
   dexSettings: {
     title: 'Transaction settings',
