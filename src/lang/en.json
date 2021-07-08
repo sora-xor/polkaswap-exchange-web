@@ -258,7 +258,8 @@
         "About": "About",
         "Stats": "Stats",
         "Support": "Support",
-        "CreatePair": "Create Pair"
+        "CreatePair": "Create Pair",
+        "Tokens": "Tokens"
     },
     "social": {
         "twitter": "Twitter",
@@ -624,6 +625,12 @@
         "outputMessage": "Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.",
         "confirmTitle": "You will receive"
     },
+    "tokens": {
+        "title": "Listed Tokens",
+        "symbol": "Symbol",
+        "name": "Name",
+        "assetId": "Asset ID"
+    },
     "dexSettings": {
         "title": "Transaction settings",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
@@ -699,7 +706,9 @@
             "SoraFarmHarvest": "@:(soraText).farm harvest",
             "NftAirdrop": "NFT Airdrop",
             "LiquidityProvision": "Fees gained from liquidity provision",
-            "BuyOnBondingCurve": "buying from the TBC"
+            "BuyOnBondingCurve": "buying from the TBC",
+            "MarketMakerVolume": "Market Maker",
+            "LiquidityProvisionFarming": "Farming"
         }
     },
     "provider": {

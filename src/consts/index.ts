@@ -69,7 +69,8 @@ export enum PageNames {
   PageNotFound = 'PageNotFound',
   Bridge = 'Bridge',
   BridgeTransaction = 'BridgeTransaction',
-  BridgeTransactionsHistory = 'BridgeTransactionsHistory'
+  BridgeTransactionsHistory = 'BridgeTransactionsHistory',
+  Tokens = 'Tokens'
 }
 
 export enum Components {
@@ -157,6 +158,10 @@ const OtherPagesMenu: Array<SidebarMenuItem> = [
   {
     icon: 'file-file-text-24',
     title: PageNames.About
+  },
+  {
+    icon: 'various-bone-24',
+    title: PageNames.Tokens
   }
 ]
 

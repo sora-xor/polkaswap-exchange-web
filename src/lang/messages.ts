@@ -62,7 +62,8 @@ export default {
     [PageNames.About]: 'About',
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
-    [PageNames.CreatePair]: 'Create Pair'
+    [PageNames.CreatePair]: 'Create Pair',
+    [PageNames.Tokens]: 'Tokens'
   },
   social: {
     twitter: 'Twitter',
@@ -443,6 +444,12 @@ export default {
     outputMessage: 'Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.',
     confirmTitle: 'You will receive'
   },
+  tokens: {
+    title: 'Listed Tokens',
+    symbol: 'Symbol',
+    name: 'Name',
+    assetId: 'Asset ID'
+  },
   dexSettings: {
     title: 'Transaction settings',
     marketAlgorithm: '@.upper:marketAlgorithmText',
@@ -518,7 +525,9 @@ export default {
       [RewardingEvents.SoraFarmHarvest]: '@:(soraText).farm harvest',
       [RewardingEvents.NftAirdrop]: 'NFT Airdrop',
       [RewardingEvents.LiquidityProvision]: 'Fees gained from liquidity provision',
-      [RewardingEvents.BuyOnBondingCurve]: 'buying from the TBC'
+      [RewardingEvents.BuyOnBondingCurve]: 'buying from the TBC',
+      [RewardingEvents.MarketMakerVolume]: 'Market Maker',
+      [RewardingEvents.LiquidityProvisionFarming]: 'Farming'
     }
   },
   provider: {
