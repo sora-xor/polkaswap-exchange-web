@@ -23,7 +23,7 @@
       </s-table-column>
       <s-table-column width="52" header-align="center" align="center">
         <template #header>
-          <img :src="tokensImage" width="14" />
+          <tokens-icon class="tokens-icon" />
         </template>
         <template v-slot="{ row }">
           <token-logo class="tokens-item-logo" :token-symbol="row.symbol" />
@@ -67,10 +67,11 @@ import { lazyComponent } from '@/router'
 
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import tokensImage from '../assets/img/tokens.svg'
+import TokensIcon from '@/components/TokensIcon'
 
 @Component({
   components: {
+    TokensIcon,
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     TokenLogo: lazyComponent(Components.TokenLogo),
     TokenAddress: lazyComponent(Components.TokenAddress)
@@ -81,7 +82,6 @@ export default class Tokens extends Mixins(LoadingMixin, TranslationMixin) {
 
   currentPage = 1
   pageAmount = 10
-  tokensImage = tokensImage
 
   get tableItems (): Array<Asset> {
     return this.whitelistAssets.slice((this.currentPage - 1) * this.pageAmount, this.currentPage * this.pageAmount)
@@ -145,6 +145,11 @@ export default class Tokens extends Mixins(LoadingMixin, TranslationMixin) {
   .el-pagination__total {
     margin: auto;
   }
+}
+
+.tokens-icon {
+  width: 14px;
+  height: 14px;
 }
 </style>
 

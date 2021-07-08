@@ -2,7 +2,8 @@ import { LiquiditySourceTypes } from '@sora-substrate/util'
 
 import pkg from '../../package.json'
 import { KnownBridgeAsset } from '@/utils/web3-util'
-import tokensImage from '../assets/img/tokens.svg'
+
+import TokensIcon from '../components/TokensIcon.vue'
 
 export const app = {
   version: pkg.version,
@@ -107,7 +108,7 @@ interface SidebarMenuItem {
   icon: string;
   title: string;
   disabled?: boolean;
-  img?: string;
+  img?: any;
 }
 
 interface SidebarMenuItemLink extends SidebarMenuItem {
@@ -153,7 +154,7 @@ const OtherPagesMenu: Array<SidebarMenuItem> = [
   },
   {
     icon: '',
-    img: tokensImage,
+    img: TokensIcon,
     title: PageNames.Tokens
   }
 ]

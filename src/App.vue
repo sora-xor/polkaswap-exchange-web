@@ -344,7 +344,7 @@ html {
       color: inherit;
     }
     &.is-active {
-      .svg-icon svg path {
+      svg path {
         fill: var(--s-color-theme-accent);
       }
     }
