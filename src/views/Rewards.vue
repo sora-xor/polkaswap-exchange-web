@@ -78,7 +78,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
 import { AccountAsset, KnownSymbols, RewardInfo, RewardsInfo, CodecString } from '@sora-substrate/util'
 
-import web3Util from '@/utils/web3-util'
+import ethersUtil from '@/utils/ethers-util'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import { hasInsufficientXorForFee } from '@/utils'
@@ -140,7 +140,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
       await this.syncExternalAccountWithAppState()
       await this.checkAccountRewards()
 
-      this.unwatchEthereum = await web3Util.watchEthereum({
+      this.unwatchEthereum = await ethersUtil.watchEthereum({
         onAccountChange: (addressList: string[]) => {
           if (addressList.length) {
             this.changeExternalAccountProcess({ address: addressList[0] })
@@ -329,7 +329,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     if (!internalAddress) return
 
     if (externalAddress) {
-      const isConnected = await web3Util.checkAccountIsConnected(externalAddress)
+      const isConnected = await ethersUtil.checkAccountIsConnected(externalAddress)
 
       if (!isConnected) return
     }
