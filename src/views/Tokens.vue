@@ -23,7 +23,7 @@
       </s-table-column>
       <s-table-column width="52" header-align="center" align="center">
         <template #header>
-          <s-icon name="various-bone-24" size="14px" />
+          <img :src="tokensImage" width="14" />
         </template>
         <template v-slot="{ row }">
           <token-logo class="tokens-item-logo" :token-symbol="row.symbol" />
@@ -67,6 +67,7 @@ import { lazyComponent } from '@/router'
 
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import tokensImage from '../assets/img/tokens.svg'
 
 @Component({
   components: {
@@ -80,6 +81,7 @@ export default class Tokens extends Mixins(LoadingMixin, TranslationMixin) {
 
   currentPage = 1
   pageAmount = 10
+  tokensImage = tokensImage
 
   get tableItems (): Array<Asset> {
     return this.whitelistAssets.slice((this.currentPage - 1) * this.pageAmount, this.currentPage * this.pageAmount)

@@ -1,7 +1,8 @@
 <template>
   <component :is="tag" :class="classes">
-    <div v-if="icon" class="icon-container">
-      <s-icon :name="icon" size="28" />
+    <div class="icon-container">
+      <s-icon v-if="icon" :name="icon" size="28" />
+      <object v-else-if="img" class="svg-icon" :data="img" />
     </div>
     <span>{{ title }}</span>
   </component>
@@ -15,6 +16,7 @@ import TranslationMixin from './mixins/TranslationMixin'
 @Component
 export default class SidebarItemContent extends Mixins(TranslationMixin) {
   @Prop({ default: '', type: String }) readonly icon!: string
+  @Prop({ default: '', type: String }) readonly img!: string
   @Prop({ default: '', type: String }) readonly title!: string
   @Prop({ default: 'div', type: String }) readonly tag!: string
 
@@ -47,6 +49,8 @@ $icon-size: 42px;
 
 .icon-container {
   display: flex;
+  justify-content: center;
+  align-items: center;
   margin-right: $inner-spacing-small;
   padding-left: 1px; // because of inset shadow
   width: $icon-size;
@@ -57,6 +61,12 @@ $icon-size: 42px;
   transition: all 0.125s ease-in-out;
   > i {
     margin: auto;
+  }
+
+  .svg-icon {
+    width: 28px;
+    height: 28px;
+    background-size: contain;
   }
 }
 </style>

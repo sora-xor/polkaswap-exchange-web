@@ -53,7 +53,7 @@
               :disabled="item.disabled"
               class="menu-item"
             >
-              <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
+              <sidebar-item-content :icon="item.icon" :img="item.img" :title="t(`mainMenu.${item.title}`)" />
             </s-menu-item>
           </s-menu-item-group>
         </s-menu>
@@ -342,6 +342,11 @@ html {
     }
     &:not(.is-disabled):hover i {
       color: inherit;
+    }
+    &.is-active {
+      .svg-icon svg path {
+        fill: var(--s-color-theme-accent);
+      }
     }
   }
 }
