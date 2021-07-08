@@ -13,14 +13,12 @@
           <span class="tokens-item-index">{{ $index + 1 }}</span>
         </template>
       </s-table-column>
-      <s-table-column width="104" header-align="center" align="center">
+      <s-table-column width="112" header-align="center" align="center">
         <template #header>
           <span class="tokens-table__primary">{{ t('tokens.symbol') }}</span>
         </template>
         <template v-slot="{ row }">
-          <s-card size="mini" shadow="always" pressed>
-            <div class="tokens-item-symbol">{{ row.symbol }}</div>
-          </s-card>
+          <div class="tokens-item-symbol">{{ row.symbol }}</div>
         </template>
       </s-table-column>
       <s-table-column width="52" header-align="center" align="center">
@@ -37,7 +35,13 @@
           <span class="tokens-table__secondary">({{ t('tokens.assetId') }})</span>
         </template>
         <template v-slot="{ row }">
-          <token-address :name="row.name" :symbol="row.symbol" :address="row.address" />
+          <div class="tokens-item-info">
+            <div class="tokens-item-name">{{ row.name }}</div>
+            <div class="tokens-item-address">
+              <span>{{ t('soraText') }}:</span>&nbsp;
+              <token-address class="tokens-item-address__value" :show-name="false" :name="row.name" :symbol="row.symbol" :address="row.address" />
+            </div>
+          </div>
         </template>
       </s-table-column>
     </s-table>
@@ -165,6 +169,8 @@ $icon-size: 36px;
     font-weight: 800;
   }
   &-symbol {
+    background-color: var(--s-color-base-border-secondary);
+    border-radius: var(--s-border-radius-medium);
     font-size: var(--s-font-size-big);
     font-weight: 800;
     line-height: var(--s-line-height-big);
@@ -172,9 +178,25 @@ $icon-size: 36px;
   }
   &-logo {
     &.token-logo {
-      display: inline-flex;
+      display: block;
       height: $icon-size;
       width: $icon-size;
+    }
+  }
+  &-info {
+    line-height: var(--s-line-height-medium);
+    letter-spacing: var(--s-letter-spacing-mini);
+    font-weight: 300;
+  }
+  &-name {
+    font-size: var(--s-font-size-small);
+  }
+  &-address {
+    display: flex;
+    font-size: var(--s-font-size-extra-mini);
+
+    &__value {
+      font-weight: 600;
     }
   }
 }
