@@ -1,6 +1,6 @@
 <template>
   <component :is="tag" :class="classes">
-    <div class="icon-container">
+    <div v-if="icon || img" class="icon-container">
       <s-icon v-if="icon" :name="icon" size="28" />
       <component v-else-if="img" class="svg-icon" :is="img" />
     </div>
