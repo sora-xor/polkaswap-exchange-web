@@ -81,7 +81,7 @@ import ethersUtil from '@/utils/ethers-util'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import { hasInsufficientXorForFee } from '@/utils'
-import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards'
+import { RewardsAmountHeaderItem, RewardInfoGroup } from '@/types/rewards'
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import TransactionMixin from '@/components/mixins/TransactionMixin'
@@ -116,7 +116,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset
   @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean
   @Getter('externalRewardsAvailable', { namespace: 'rewards' }) externalRewardsAvailable!: boolean
-  @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardsAmountTableItem>
+  @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardsAmountHeaderItem>
   @Getter('transactionStepsCount', { namespace: 'rewards' }) transactionStepsCount!: number
   @Getter('vestedRewadsGroupItem', { namespace: 'rewards' }) vestedRewadsGroupItem!: RewardInfoGroup
   @Getter('externalRewardsGroupItem', { namespace: 'rewards' }) externalRewardsGroupItem!: RewardInfoGroup

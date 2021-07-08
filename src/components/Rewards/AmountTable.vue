@@ -63,13 +63,12 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
       symbol
     })
 
-    const isGroup = ('rewards' in item) && Array.isArray(item.rewards)
     const key = `rewards.events.${item.type}`
     const title = this.te(key) ? this.t(key) : item.type
-    const rewards = isGroup ? item.rewards.map(this.formatItem) : []
-    const limit = isGroup
-      ? item.limit
-      : [toLimit(item.amount, item.asset.symbol)]
+    const rewards = ('rewards' in item) && Array.isArray(item.rewards) ? item.rewards.map(this.formatItem) : []
+    const limit = ('rewards' in item) && Array.isArray(item.rewards)
+      ? (item as RewardInfoGroup).limit
+      : [toLimit((item as RewardInfo).amount, (item as RewardInfo).asset.symbol)]
 
     return {
       type: item.type,
