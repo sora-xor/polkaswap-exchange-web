@@ -1,16 +1,16 @@
 <template>
-  <div class="container" v-loading="parentLoading">
+  <div class="container" v-loading="parentLoading || loading">
     <generic-page-header :title="t('tokens.title')" class="page-header-title--tokens" />
     <s-table
-      v-if="whitelistAssets.length"
+      v-if="whitelist.length"
       :data="tableItems"
       :highlight-current-row="false"
       size="small"
       class="tokens-table"
     >
       <s-table-column label="#" width="40">
-        <template v-slot="{ $index }">
-          <span class="tokens-item-index">{{ $index + 1 }}</span>
+        <template v-slot="{ row }">
+          <span class="tokens-item-index">{{ row.idx + 1 }}</span>
         </template>
       </s-table-column>
       <s-table-column width="112" header-align="center" align="center">
@@ -26,7 +26,7 @@
           <tokens-icon class="tokens-icon" />
         </template>
         <template v-slot="{ row }">
-          <token-logo class="tokens-item-logo" :token-symbol="row.symbol" />
+          <img class="tokens-item-logo" :src="row.icon" width="36px"/>
         </template>
       </s-table-column>
       <s-table-column>
@@ -50,7 +50,7 @@
       :layout="'prev, total, next'"
       :current-page.sync="currentPage"
       :page-size="pageAmount"
-      :total="whitelistAssets.length"
+      :total="whitelist.length"
       @prev-click="handlePrevClick"
       @next-click="handleNextClick"
     />
@@ -59,15 +59,15 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
 import { Asset } from '@sora-substrate/util'
+import axios from '@/api'
 
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
 
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import TokensIcon from '@/components/TokensIcon'
+import TokensIcon from '@/components/TokensIcon.vue'
 
 @Component({
   components: {
@@ -78,13 +78,19 @@ import TokensIcon from '@/components/TokensIcon'
   }
 })
 export default class Tokens extends Mixins(LoadingMixin, TranslationMixin) {
-  @Getter('whitelistAssets', { namespace: 'assets' }) whitelistAssets!: Array<Asset>
-
   currentPage = 1
   pageAmount = 10
+  whitelist = []
+
+  async created (): Promise<void> {
+    await this.withLoading(async () => {
+      const { data } = await axios.get('/whitelist.json')
+      this.whitelist = data.map((item, idx) => ({ ...item, idx }))
+    })
+  }
 
   get tableItems (): Array<Asset> {
-    return this.whitelistAssets.slice((this.currentPage - 1) * this.pageAmount, this.currentPage * this.pageAmount)
+    return this.whitelist.slice((this.currentPage - 1) * this.pageAmount, this.currentPage * this.pageAmount)
   }
 
   handlePrevClick (current: number): void {
@@ -177,7 +183,7 @@ $icon-size: 36px;
     font-weight: 800;
   }
   &-symbol {
-    background-color: var(--s-color-base-border-secondary);
+    background-color: #EDE4E7;
     border-radius: var(--s-border-radius-medium);
     font-size: 18px;
     font-weight: 800;
