@@ -7,6 +7,7 @@ import SoramitsuUIStorePlugin from '@soramitsu/soramitsu-js-ui/src/plugins/soram
 
 import SButton from '@soramitsu/soramitsu-js-ui/src/components/Button/SButton'
 import SCard from '@soramitsu/soramitsu-js-ui/src/components/Card/SCard'
+import SCheckbox from '@soramitsu/soramitsu-js-ui/src/components/Checkbox'
 import SCol from '@soramitsu/soramitsu-js-ui/src/components/Layout/Col'
 import SCollapse from '@soramitsu/soramitsu-js-ui/src/components/Collapse/SCollapse'
 import SCollapseItem from '@soramitsu/soramitsu-js-ui/src/components/Collapse/SCollapseItem'
@@ -41,6 +42,7 @@ Vue.use(ElementUIPlugin)
 Vue.use(SoramitsuUIStorePlugin, { store })
 Vue.use(SButton)
 Vue.use(SCard)
+Vue.use(SCheckbox)
 Vue.use(SCol)
 Vue.use(SCollapse)
 Vue.use(SCollapseItem)

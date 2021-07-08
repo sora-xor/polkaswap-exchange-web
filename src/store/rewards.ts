@@ -4,7 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, CodecString } from '@sora-substrate/util'
+import { FPNumber, KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, CodecString } from '@sora-substrate/util'
 import ethersUtil from '@/utils/ethers-util'
 import { RewardsAmountHeaderItem, RewardInfoGroup } from '@/types/rewards'
 import { groupRewardsByAssetsList } from '@/utils/rewards'
@@ -92,11 +92,23 @@ const getters = {
     return getters.externalRewardsSelected ? 2 : 1
   },
   vestedRewadsGroupItem (state): RewardInfoGroup {
+    const rewards = state.vestedRewards?.rewards ?? []
+    const pswap = KnownAssets.get(KnownSymbols.PSWAP)
+
     return {
       type: 'Strategic Rewards',
-      asset: KnownAssets.get(KnownSymbols.PSWAP),
-      amount: state.vestedRewards?.limit ?? 0,
-      rewards: state.vestedRewards?.rewards ?? []
+      limit: [{
+        symbol: pswap.symbol as KnownSymbols,
+        amount: FPNumber.fromCodecValue(state.vestedRewards?.limit ?? 0, pswap.decimals).toLocaleString()
+      }],
+      rewards
+    }
+  },
+  externalRewardsGroupItem (state): RewardInfoGroup {
+    return {
+      type: 'REWARDS FOR THE CONNECTED ETHEREUM ACCOUNT',
+      limit: groupRewardsByAssetsList(state.externalRewards),
+      rewards: state.externalRewards
     }
   },
   rewardsByAssetsList (state, getters): Array<RewardsAmountHeaderItem> {

@@ -7,13 +7,13 @@ export interface RewardsAmountHeaderItem {
 
 export interface RewardInfoGroup {
   type: RewardingEvents | string;
-  asset: Asset;
-  amount: CodecString;
+  limit: Array<RewardsAmountHeaderItem>;
   rewards?: Array<RewardInfo>;
 }
 
-export interface RewardsAmountTableItem extends RewardsAmountHeaderItem {
+export interface RewardsAmountTableItem {
   type?: string;
   title?: string;
+  limit?: Array<RewardsAmountHeaderItem>;
   rewards?: Array<RewardsAmountTableItem>;
 }

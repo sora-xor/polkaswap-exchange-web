@@ -1,35 +1,39 @@
 <template>
-  <component :is="wrapper" :class="['amount-table', { group }]" v-model="innerModel">
-    <template v-for="({ type, title, amount, symbol, rewards }, index) in formattedItems">
-      <el-checkbox v-if="!group" class="amount-table-checkbox" :key="index" :label="type">
-        <div :class="['amount-table-item', { rewards: rewards.length }]">
-          <div class="amount-table-item__title">{{ title }}</div>
-          <div class="amount-table-item__amount">
-            <span>{{ amount }}</span>&nbsp;<span>{{ symbol }}</span>
+  <div class="amount-table">
+    <div class="amount-table-item">
+      <div class="amount-table-item__title">{{ formatted.title }}</div>
+      <template v-if="showTable">
+        <s-checkbox class="amount-table-item-group" v-model="innerModel" size="big">
+          <div class="amount-table-item-content">
+            <div class="amount-table-item-content__header">
+              <div v-for="(item, index) in formatted.limit" class="amount-table-item__amount" :key="index">
+                <span class="amount-table-value">{{ item.amount }}</span>&nbsp;
+                <span class="amount-table-symbol">{{ item.symbol }}</span>
+              </div>
+            </div>
+            <div v-if="formatted.rewards.length !== 0" class="amount-table-item-content__body">
+              <div v-for="item in formatted.rewards" :key="item.type">
+                <s-divider class="amount-table-divider" />
+                <div class="amount-table-subitem">
+                  <div class="amount-table-subitem__title">- {{ item.title }}</div>
+                  <div v-for="(item, index) in item.limit" :key="index">
+                    <span class="amount-table-value">{{ item.amount }}</span>&nbsp;
+                    <span class="amount-table-symbol">{{ item.symbol }}</span>&nbsp;
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </el-checkbox>
-      <div v-else :class="['amount-table-item', { rewards: rewards.length }]" :key="index">
-        <div class="amount-table-item__title">{{ title }}</div>
-        <div class="amount-table-item__amount">
-          <span>{{ amount }}</span>&nbsp;<span>{{ symbol }}</span>
-        </div>
-      </div>
-      <div v-if="rewards.length !== 0" :key="`${index}-inner`" class="amount-table-item-group">
-        <div v-for="item in rewards" class="amount-table-item amount-table-item--inner" :key="`${index}-${item.type}`">
-          <div class="amount-table-item__title">{{ item.title }}&nbsp;{{ t('rewards.vested') }}</div>
-          <div class="amount-table-item__amount">
-            <span>{{ item.amount }}</span>&nbsp;<span>{{ item.symbol }}</span>
-          </div>
-        </div>
-      </div>
-    </template>
-  </component>
+        </s-checkbox>
+      </template>
+    </div>
+    <slot />
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Mixins } from 'vue-property-decorator'
-import { RewardInfo, KnownSymbols } from '@sora-substrate/util'
+import { RewardInfo } from '@sora-substrate/util'
 
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -37,13 +41,9 @@ import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards'
 
 @Component
 export default class AmountTable extends Mixins(NumberFormatterMixin, TranslationMixin) {
-  @Prop({ default: () => [], type: Array }) items!: Array<RewardInfoGroup | RewardInfo>
-  @Prop({ default: () => [], type: [Array, Boolean] }) value!: Array<string> | boolean
-  @Prop({ default: false, type: Boolean }) group!: boolean
-
-  get wrapper (): string {
-    return this.group ? 'el-checkbox' : 'el-checkbox-group'
-  }
+  @Prop({ default: () => {}, type: Object }) item!: RewardInfoGroup | RewardInfo
+  @Prop({ default: true, type: Boolean }) showTable!: boolean
+  @Prop({ default: false, type: Boolean }) value!: boolean
 
   get innerModel (): any {
     return this.value
@@ -53,20 +53,28 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
     this.$emit('input', value)
   }
 
-  get formattedItems (): Array<RewardsAmountTableItem> {
-    return this.items.map(this.formatItem)
+  get formatted (): RewardsAmountTableItem {
+    return this.formatItem(this.item)
   }
 
   formatItem (item: RewardInfoGroup | RewardInfo): RewardsAmountTableItem {
+    const toLimit = (amount, symbol) => ({
+      amount: this.formatCodecNumber(amount),
+      symbol
+    })
+
+    const isGroup = ('rewards' in item) && Array.isArray(item.rewards)
     const key = `rewards.events.${item.type}`
     const title = this.te(key) ? this.t(key) : item.type
-    const rewards = ('rewards' in item) && Array.isArray(item.rewards) ? item.rewards.map(this.formatItem) : []
+    const rewards = isGroup ? item.rewards.map(this.formatItem) : []
+    const limit = isGroup
+      ? item.limit
+      : [toLimit(item.amount, item.asset.symbol)]
 
     return {
       type: item.type,
       title,
-      amount: this.formatCodecNumber(item.amount),
-      symbol: item.asset.symbol as KnownSymbols,
+      limit,
       rewards
     }
   }
@@ -75,18 +83,6 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
 
 <style lang="scss">
 .amount-table {
-  &.el-checkbox {
-    color: inherit;
-
-    .el-checkbox__label {
-      flex-flow: column nowrap;
-    }
-
-    .el-checkbox__inner {
-      margin-top: 10px;
-    }
-  }
-
   & .el-checkbox {
     color: inherit;
 
@@ -94,15 +90,16 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
       display: flex;
     }
 
-    &__inner {
-      margin-top: 10px;
-    }
-
     &__label {
       white-space: normal;
       display: flex;
       flex: 1;
       color: inherit !important;
+      padding-left: $inner-spacing-mini;
+    }
+
+    &__inner {
+      border-radius: 6px !important;
     }
   }
 }
@@ -110,63 +107,71 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
 
 <style lang="scss" scoped>
 .amount-table {
-  &.group {
-    display: flex;
-    flex-flow: row nowrap;
-    padding: $inner-spacing-mini 0;
-    margin-right: 0;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--s-border-radius-mini);
+  padding: $inner-spacing-medium;
+
+  &-symbol {
+    font-size: var(--s-font-size-small);
   }
 
-  &-checkbox {
-    display: flex;
-    margin-right: 0;
-    padding: $inner-spacing-mini 0;
+  &-value {
+    font-size: var(--s-font-size-medium);
+    font-weight: 600;
   }
 
   &-item {
-    display: flex;
-    flex: 1;
-    align-items: flex-start;
-    justify-content: space-between;
-    font-size: var(--s-font-size-extra-small);
-    line-height: var(--s-line-height-mini);
-    background-color: rgba(0, 0, 0, 0.25);
-    padding: $inner-spacing-small;
-    border-top-left-radius: var(--s-border-radius-mini);
-    border-top-right-radius: var(--s-border-radius-mini);
-
-    & + & {
-      padding-top: 0;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-    }
-
-    &:last-child, &.rewards {
-      border-bottom-left-radius: var(--s-border-radius-mini);
-      border-bottom-right-radius: var(--s-border-radius-mini);
-    }
-
     &-group {
-      background-color: rgba(255, 255, 255, 0.1);
-      border-bottom-left-radius: var(--s-border-radius-mini);
-      border-bottom-right-radius: var(--s-border-radius-mini);
-      margin: 0 $inner-spacing-small;
+      display: flex;
+      flex-flow: nowrap;
+      padding: 0;
+      height: initial;
     }
 
-    &--inner {
-      background-color: unset;
+    &-content {
+      display: flex;
+      flex-flow: column nowrap;
+      flex: 1;
+
+      &__header {
+        display: flex;
+        flex: 1;
+        flex-flow: column nowrap;
+      }
+
+      &__body {
+        margin-top: $inner-spacing-small;
+      }
     }
 
     &__title {
-      font-weight: 300;
+      font-size: var(--s-font-size-mini);
+      line-height: var(--s-line-height-medium);
+      font-weight: 400;
       text-transform: uppercase;
+      margin-bottom: $inner-spacing-mini;
     }
 
     &__amount {
-      flex: 1;
-      font-weight: 600;
-      text-align: right;
+      line-height: 20px;
     }
   }
+
+  &-subitem {
+    padding: $inner-spacing-mini 0;
+    font-weight: 300;
+    text-transform: uppercase;
+
+    &__title {
+      font-size: var(--s-font-size-mini);
+      line-height: var(--s-line-height-reset);
+    }
+  }
+
+  &-divider {
+    opacity: 0.5;
+  }
+
+  @include vertical-divider('amount-table-divider', 0);
 }
 </style>
