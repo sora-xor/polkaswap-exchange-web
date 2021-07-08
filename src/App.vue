@@ -328,7 +328,7 @@ html {
 
   .el-menu-item {
     .icon-container {
-      box-shadow: var(--s-shadow-element);
+      box-shadow: var(--s-shadow-drop);
     }
 
     &.menu-item--small {
@@ -341,7 +341,7 @@ html {
 
     &.is-disabled {
       opacity: 1;
-      color: var(--s-color-base-content-tertiary) !important;
+      color: var(--s-color-base-content-secondary) !important;
 
       i {
         color: var(--s-color-base-content-tertiary);
@@ -352,13 +352,19 @@ html {
         color: var(--s-color-base-content-secondary) !important;
       }
     }
+    &:active,
+    &.is-disabled,
+    &.is-active {
+      .icon-container {
+        box-shadow: var(--s-shadow-inset);
+      }
+    }
     &.is-active {
       i {
         color: var(--s-color-theme-accent) !important;
       }
-
-      .icon-container {
-        box-shadow: var(--s-shadow-element-pressed);
+      span {
+        font-weight: 400;
       }
     }
   }

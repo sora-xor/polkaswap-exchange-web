@@ -398,7 +398,7 @@ export default class About extends Mixins(TranslationMixin) {
         font-size: 36px;
         line-height: 100%;
 
-        letter-spacing: -0.02em;
+        letter-spacing: var(--s-letter-spacing-small);
 
         padding: 10px 0;
 
@@ -454,9 +454,9 @@ export default class About extends Mixins(TranslationMixin) {
   font-size: 18px;
   line-height: 1.4;
 
-  letter-spacing: -0.02em;
+  letter-spacing: var(--s-letter-spacing-small);
 
-  color: #2A171F;
+  color: var(--s-color-base-content-primary);
   @media screen and (min-width: 1400px) {
     font-size: 20px;
     line-height: 1.4;
@@ -505,7 +505,7 @@ export default class About extends Mixins(TranslationMixin) {
   font-family: Sora;
   font-style: normal;
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: var(--s-letter-spacing-small);
   box-decoration-break: clone;
   -webkit-text-fill-color: transparent;
   -webkit-box-decoration-break: clone;
