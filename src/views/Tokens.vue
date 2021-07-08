@@ -107,6 +107,7 @@ export default class Tokens extends Mixins(LoadingMixin, TranslationMixin) {
     text-transform: uppercase;
     font-size: var(--s-font-size-small);
     letter-spacing: var(--s-letter-spacing-mini);
+    color: var(--s-color-base-on-accent);
   }
 
   tr, th {
@@ -171,7 +172,7 @@ $icon-size: 36px;
   &-symbol {
     background-color: var(--s-color-base-border-secondary);
     border-radius: var(--s-border-radius-medium);
-    font-size: var(--s-font-size-big);
+    font-size: 18px;
     font-weight: 800;
     line-height: var(--s-line-height-big);
     text-align: center;
@@ -193,7 +194,7 @@ $icon-size: 36px;
   }
   &-address {
     display: flex;
-    font-size: var(--s-font-size-extra-mini);
+    font-size: 11px;
 
     &__value {
       font-weight: 600;
