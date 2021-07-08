@@ -8,7 +8,7 @@
       size="small"
       class="tokens-table"
     >
-      <s-table-column label="#" width="40">
+      <s-table-column label="#" width="48">
         <template v-slot="{ row }">
           <span class="tokens-item-index">{{ row.idx + 1 }}</span>
         </template>
@@ -181,6 +181,7 @@ $icon-size: 36px;
     color: var(--s-color-base-content-tertiary);
     font-size: var(--s-font-size-small);
     font-weight: 800;
+    white-space: nowrap;
   }
   &-symbol {
     background-color: #EDE4E7;
