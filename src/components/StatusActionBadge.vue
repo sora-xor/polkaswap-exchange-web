@@ -1,5 +1,5 @@
 <template>
-  <s-card shadow="always" pressed size="small" class="status-action-badge">
+  <s-card shadow="always" size="small" class="status-action-badge">
     <span class="status-action-badge__label"><slot name="label" /></span>
     <span class="status-action-badge__value"><slot name="value" /></span>
     <div class="status-action-badge__action"><slot name="action" /></div>
@@ -33,6 +33,7 @@ $base-class: '.status-action-badge';
   letter-spacing: var(--s-letter-spacing-small);
   text-transform: uppercase;
   overflow: unset;
+  box-shadow: var(--s-shadow-inset);
 
   #{$base-class}__label {
     margin-right: $inner-spacing-mini / 2;
