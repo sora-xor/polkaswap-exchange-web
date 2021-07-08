@@ -2,18 +2,18 @@
   <div class="container" v-loading="parentLoading">
     <generic-page-header :title="t('tokens.title')" class="page-header-title--tokens" />
     <s-table
-      v-if="whitelistAssets.length"
+      v-if="items.length"
       :data="tableItems"
       :highlight-current-row="false"
       size="small"
       class="tokens-table"
     >
-      <s-table-column label="#" width="40">
+      <s-table-column label="#" width="48">
         <template v-slot="{ $index }">
-          <span class="tokens-item-index">{{ $index + 1 }}</span>
+          <span class="tokens-item-index">{{ $index + startIndex + 1 }}</span>
         </template>
       </s-table-column>
-      <s-table-column width="112" header-align="center" align="center">
+      <s-table-column width="112" header-align="center" align="center" prop="symbol" sortable>
         <template #header>
           <span class="tokens-table__primary">{{ t('tokens.symbol') }}</span>
         </template>
@@ -50,7 +50,7 @@
       :layout="'prev, total, next'"
       :current-page.sync="currentPage"
       :page-size="pageAmount"
-      :total="whitelistAssets.length"
+      :total="items.length"
       @prev-click="handlePrevClick"
       @next-click="handleNextClick"
     />
@@ -76,13 +76,21 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
   }
 })
 export default class Tokens extends Mixins(LoadingMixin, TranslationMixin) {
-  @Getter('whitelistAssets', { namespace: 'assets' }) whitelistAssets!: Array<Asset>
+  @Getter('whitelistAssets', { namespace: 'assets' }) items!: Array<Asset>
 
   currentPage = 1
   pageAmount = 10
 
+  get startIndex (): number {
+    return (this.currentPage - 1) * this.pageAmount
+  }
+
+  get lastIndex (): number {
+    return this.currentPage * this.pageAmount
+  }
+
   get tableItems (): Array<Asset> {
-    return this.whitelistAssets.slice((this.currentPage - 1) * this.pageAmount, this.currentPage * this.pageAmount)
+    return this.items.slice(this.startIndex, this.lastIndex)
   }
 
   handlePrevClick (current: number): void {
