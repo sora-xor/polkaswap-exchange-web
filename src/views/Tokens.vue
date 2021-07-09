@@ -15,7 +15,6 @@
       </template>
     </s-input>
     <s-table
-      v-if="items.length"
       :data="tableItems"
       :highlight-current-row="false"
       size="small"
