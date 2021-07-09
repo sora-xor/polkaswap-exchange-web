@@ -2,7 +2,7 @@ import invert from 'lodash/fp/invert'
 import { LiquiditySourceTypes } from '@sora-substrate/util'
 
 import pkg from '../../package.json'
-import { KnownBridgeAsset } from '../utils/web3-util'
+import { KnownBridgeAsset } from '../utils/ethers-util'
 
 export const app = {
   version: pkg.version,
