@@ -1,19 +1,33 @@
 <template>
   <div class="container" v-loading="parentLoading">
     <generic-page-header :title="t('tokens.title')" class="page-header-title--tokens" />
+    <s-input
+      ref="search"
+      v-model="query"
+      :placeholder="t('selectToken.searchPlaceholder')"
+      class="tokens-table-search"
+      prefix="el-icon-search"
+      size="big"
+      border-radius="mini"
+    >
+      <template #suffix v-if="query">
+        <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
+      </template>
+    </s-input>
     <s-table
       v-if="items.length"
       :data="tableItems"
       :highlight-current-row="false"
       size="small"
       class="tokens-table"
+      @sort-change="log"
     >
       <s-table-column label="#" width="48">
         <template v-slot="{ $index }">
           <span class="tokens-item-index">{{ $index + startIndex + 1 }}</span>
         </template>
       </s-table-column>
-      <s-table-column width="112" header-align="center" align="center" prop="symbol" sortable>
+      <s-table-column width="112" header-align="center" align="center" prop="symbol" sortable="custom">
         <template #header>
           <span class="tokens-table__primary">{{ t('tokens.symbol') }}</span>
         </template>
@@ -50,7 +64,7 @@
       :layout="'prev, total, next'"
       :current-page.sync="currentPage"
       :page-size="pageAmount"
-      :total="items.length"
+      :total="filteredItems.length"
       @prev-click="handlePrevClick"
       @next-click="handleNextClick"
     />
@@ -61,12 +75,14 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { Asset } from '@sora-substrate/util'
+import { SortDirection } from '@soramitsu/soramitsu-js-ui/src/components/Table/consts'
 
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
 
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin'
 
 @Component({
   components: {
@@ -75,11 +91,23 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
     TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
-export default class Tokens extends Mixins(LoadingMixin, TranslationMixin) {
+export default class Tokens extends Mixins(LoadingMixin, TranslationMixin, AssetsSearchMixin) {
   @Getter('whitelistAssets', { namespace: 'assets' }) items!: Array<Asset>
 
   currentPage = 1
   pageAmount = 10
+  query = ''
+  order = ''
+  property = ''
+
+  log ({ order, property }): void {
+    this.order = order
+    this.property = property
+  }
+
+  mounted (): void {
+    this.focusSearchInput()
+  }
 
   get startIndex (): number {
     return (this.currentPage - 1) * this.pageAmount
@@ -89,8 +117,27 @@ export default class Tokens extends Mixins(LoadingMixin, TranslationMixin) {
     return this.currentPage * this.pageAmount
   }
 
+  get filteredItems (): Array<Asset> {
+    return this.filterAssetsByQuery(this.items)(this.query) as Array<Asset>
+  }
+
+  get sortedItems (): Array<Asset> {
+    if (!this.order || !this.property) return this.filteredItems
+
+    const isAscending = this.order === SortDirection.ASC
+
+    return [...this.filteredItems].sort((a, b) => {
+      const aValue = a[this.property]
+      const bValue = b[this.property]
+
+      if (aValue === bValue) return 0
+
+      return (isAscending ? aValue > bValue : aValue < bValue) ? 1 : -1
+    })
+  }
+
   get tableItems (): Array<Asset> {
-    return this.items.slice(this.startIndex, this.lastIndex)
+    return this.sortedItems.slice(this.startIndex, this.lastIndex)
   }
 
   handlePrevClick (current: number): void {
@@ -99,6 +146,10 @@ export default class Tokens extends Mixins(LoadingMixin, TranslationMixin) {
 
   handleNextClick (current: number): void {
     this.currentPage = current
+  }
+
+  handleClearSearch (): void {
+    this.query = ''
   }
 }
 </script>
@@ -155,6 +206,8 @@ export default class Tokens extends Mixins(LoadingMixin, TranslationMixin) {
 
 <style lang="scss" scoped>
 $icon-size: 36px;
+
+@include search-item('tokens-table-search');
 
 .tokens-table {
   display: flex;
