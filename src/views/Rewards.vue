@@ -75,12 +75,13 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
-import { AccountAsset, KnownSymbols, RewardInfo, RewardsInfo, CodecString } from '@sora-substrate/util'
+import { AccountAsset, KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, CodecString, FPNumber } from '@sora-substrate/util'
 
 import ethersUtil from '@/utils/ethers-util'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import { hasInsufficientXorForFee } from '@/utils'
+import { groupRewardsByAssetsList } from '@/utils/rewards'
 import { RewardsAmountHeaderItem, RewardInfoGroup } from '@/types/rewards'
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
@@ -118,8 +119,6 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @Getter('externalRewardsAvailable', { namespace: 'rewards' }) externalRewardsAvailable!: boolean
   @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardsAmountHeaderItem>
   @Getter('transactionStepsCount', { namespace: 'rewards' }) transactionStepsCount!: number
-  @Getter('vestedRewadsGroupItem', { namespace: 'rewards' }) vestedRewadsGroupItem!: RewardInfoGroup
-  @Getter('externalRewardsGroupItem', { namespace: 'rewards' }) externalRewardsGroupItem!: RewardInfoGroup
 
   @Action('reset', { namespace: 'rewards' }) reset!: AsyncVoidFn
   @Action('setSelectedRewards', { namespace: 'rewards' }) setSelectedRewards!: (params: any) => Promise<void>
@@ -161,6 +160,28 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   beforeDestroy (): void {
     if (typeof this.unwatchEthereum === 'function') {
       this.unwatchEthereum()
+    }
+  }
+
+  get externalRewardsGroupItem (): RewardInfoGroup {
+    return {
+      type: this.t('rewards.groups.external'),
+      limit: groupRewardsByAssetsList(this.externalRewards),
+      rewards: this.externalRewards
+    }
+  }
+
+  get vestedRewadsGroupItem (): RewardInfoGroup {
+    const rewards = this.vestedRewards?.rewards ?? []
+    const pswap = KnownAssets.get(KnownSymbols.PSWAP)
+
+    return {
+      type: this.t('rewards.groups.strategic'),
+      limit: [{
+        symbol: pswap.symbol as KnownSymbols,
+        amount: FPNumber.fromCodecValue(this.vestedRewards?.limit ?? 0, pswap.decimals).toLocaleString()
+      }],
+      rewards
     }
   }
 

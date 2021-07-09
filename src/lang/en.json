@@ -711,6 +711,10 @@
             "BuyOnBondingCurve": "buying from the TBC",
             "MarketMakerVolume": "Market Maker",
             "LiquidityProvisionFarming": "Farming"
+        },
+        "groups": {
+            "strategic": "Strategic Rewards",
+            "external": "Rewards for the connected ethereum account"
         }
     },
     "provider": {

@@ -528,6 +528,10 @@ export default {
       [RewardingEvents.BuyOnBondingCurve]: 'buying from the TBC',
       [RewardingEvents.MarketMakerVolume]: 'Market Maker',
       [RewardingEvents.LiquidityProvisionFarming]: 'Farming'
+    },
+    groups: {
+      strategic: 'Strategic Rewards',
+      external: 'Rewards for the connected ethereum account'
     }
   },
   provider: {
