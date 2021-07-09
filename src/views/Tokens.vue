@@ -20,7 +20,7 @@
       :highlight-current-row="false"
       size="small"
       class="tokens-table"
-      @sort-change="log"
+      @sort-change="changeSort"
     >
       <s-table-column label="#" width="48">
         <template v-slot="{ $index }">
@@ -100,7 +100,7 @@ export default class Tokens extends Mixins(LoadingMixin, TranslationMixin, Asset
   order = ''
   property = ''
 
-  log ({ order, property }): void {
+  changeSort ({ order = '', property = '' } = {}): void {
     this.order = order
     this.property = property
   }
