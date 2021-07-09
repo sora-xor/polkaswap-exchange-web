@@ -313,8 +313,14 @@ html {
   height: 100vh;
 }
 
-.node-control > span {
-  flex-direction: row-reverse;
+.node-control {
+  &.el-button.neumorphic.el-button--plain {
+    padding-left: 5px;
+    box-shadow: var(--s-shadow-inset);
+  }
+  > span {
+   flex-direction: row-reverse;
+ }
 }
 
 .menu.el-menu {
@@ -673,6 +679,10 @@ $sora-logo-width: 173.7px;
   &-network {
     color: var(--s-color-base-content-tertiary);
   }
+}
+
+.account-control.neumorphic.s-tertiary {
+  box-shadow: var(--s-shadow-inset);
 }
 
 .sora-logo {
