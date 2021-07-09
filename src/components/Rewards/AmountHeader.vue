@@ -2,8 +2,7 @@
   <div class="amount-header">
     <template v-for="({ amount, symbol }, index) in items">
       <div :key="symbol" class="amount-block">
-        <span class="amount-block__amount">{{ amount }}</span>&nbsp;
-        <span class="amount-block__symbol">{{ symbol }}</span>
+        <formatted-amount class="amount-block__amount" :value="amount" :currency="symbol" />&nbsp;
       </div>
       <div v-if="items.length - 1 !== index" class="amount-header-divider" :key="index">
         <s-divider direction="vertical" class="amount-header-divider__slash" />
@@ -16,8 +15,14 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 
 import { RewardsAmountHeaderItem } from '@/types/rewards'
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
 
-@Component
+@Component({
+  components: {
+    FormattedAmount: lazyComponent(Components.FormattedAmount)
+  }
+})
 export default class AmountHeader extends Vue {
   @Prop({ default: () => [], type: Array }) items!: Array<RewardsAmountHeaderItem>
 }

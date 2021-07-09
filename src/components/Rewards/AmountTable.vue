@@ -7,8 +7,7 @@
           <div class="amount-table-item-content">
             <div class="amount-table-item-content__header">
               <div v-for="(item, index) in formatted.limit" class="amount-table-item__amount" :key="index">
-                <span class="amount-table-value">{{ item.amount }}</span>&nbsp;
-                <span class="amount-table-symbol">{{ item.symbol }}</span>
+                <formatted-amount class="amount-table-value" :value="item.amount" :currency="item.symbol" />
               </div>
             </div>
             <div v-if="formatted.rewards.length !== 0" class="amount-table-item-content__body">
@@ -17,8 +16,7 @@
                 <div class="amount-table-subitem">
                   <div class="amount-table-subitem__title">- {{ item.title }}</div>
                   <div v-for="(item, index) in item.limit" :key="index">
-                    <span class="amount-table-value">{{ item.amount }}</span>&nbsp;
-                    <span class="amount-table-symbol">{{ item.symbol }}</span>&nbsp;
+                    <formatted-amount class="amount-table-value" :value="item.amount" :currency="item.symbol" />
                   </div>
                 </div>
               </div>
@@ -35,11 +33,18 @@
 import { Component, Prop, Mixins } from 'vue-property-decorator'
 import { RewardInfo } from '@sora-substrate/util'
 
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
+
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards'
 
-@Component
+@Component({
+  components: {
+    FormattedAmount: lazyComponent(Components.FormattedAmount)
+  }
+})
 export default class AmountTable extends Mixins(NumberFormatterMixin, TranslationMixin) {
   @Prop({ default: () => {}, type: Object }) item!: RewardInfoGroup | RewardInfo
   @Prop({ default: true, type: Boolean }) showTable!: boolean
