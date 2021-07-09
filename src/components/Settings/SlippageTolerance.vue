@@ -168,6 +168,11 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
 .slippage-tolerance {
   &-custom_input.s-input {
     min-height: var(--s-size-small);
+    box-shadow: var(--s-shadow-drop);
+
+    &.s-focused {
+      box-shadow: var(--s-shadow-inset);
+    }
 
     .el-input > input {
       font-size: var(--s-font-size-medium);

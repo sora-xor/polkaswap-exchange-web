@@ -97,8 +97,6 @@ $baseClass: '.token-select-button';
 
   &--token {
     &:hover, &:active, &.focusing {
-      filter: drop-shadow(-1px -1px 5px rgba(247, 84, 163, 0.25)) drop-shadow(1px 1px 5px rgba(247, 84, 163, 0.25));
-
       #{$baseClass}__icon {
         background-color: var(--s-color-base-content-secondary);
         color: var(--s-color-base-on-accent) !important;

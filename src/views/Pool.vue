@@ -2,13 +2,13 @@
   <div v-loading="parentLoading" class="container el-form--pool">
     <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')" />
     <div v-loading="loading" class="pool-wrapper">
-      <p v-if="!isLoggedIn" class="pool-info-container">
+      <p v-if="!isLoggedIn" class="pool-info-container pool-info-container--empty">
         {{ t('pool.connectToWallet') }}
       </p>
-      <p v-else-if="!accountLiquidity || !accountLiquidity.length" class="pool-info-container">
+      <p v-else-if="!accountLiquidity || !accountLiquidity.length" class="pool-info-container pool-info-container--empty">
         {{ t('pool.liquidityNotFound') }}
       </p>
-      <s-collapse v-else class="pool-list" :borders="true">
+      <s-collapse v-else class="neumorphic pool-list" :borders="true">
         <s-collapse-item v-for="liquidityItem of accountLiquidity" :key="liquidityItem.address" :name="liquidityItem.address" class="pool-info-container">
           <template #title>
             <pair-token-logo :first-token="getAsset(liquidityItem.firstAddress)" :second-token="getAsset(liquidityItem.secondAddress)" size="small" />
@@ -252,14 +252,23 @@ $pair-icon-height: 36px;
       padding: $inner-spacing-big;
       background: var(--s-color-base-background);
       border-radius: var(--s-border-radius-small);
-      box-shadow: var(--s-shadow-element);
+      box-shadow: var(--s-shadow-drop);
       color: var(--s-color-base-content-secondary);
       font-size: var(--s-font-size-mini);
       line-height: var(--s-line-height-small);
       text-align: center;
 
+      &--empty {
+        background: var(--s-color-base-border-primary);
+        box-shadow: 0.4px -0.4px 0px var(--s-color-base-content-tertiary), -0.4px 0.4px 0px var(--s-color-base-content-tertiary), -0.4px -0.4px 0px var(--s-color-base-content-tertiary), 0.4px 0.4px 0px var(--s-color-base-content-tertiary);
+        font-size: var(--s-font-size-small);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: var(--s-letter-spacing-small);
+      }
+
       &.is-active {
-        box-shadow: var(--s-shadow-element-pressed);
+        box-shadow: var(--s-shadow-inset);
       }
 
       &__title {

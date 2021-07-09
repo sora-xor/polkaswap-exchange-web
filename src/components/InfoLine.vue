@@ -56,10 +56,12 @@ export default class InfoLine extends Vue {
   width: 100%;
 
   &__title {
-    font-size: var(--s-font-size-medium);
+    font-size: var(--s-heading6-font-size);
     font-weight: 300;
     line-height: var(--s-line-height-medium);
+    letter-spacing: var(--s-letter-spacing-small);
     color: var(--s-color-base-content-secondary);
+    text-transform: uppercase;
     margin-bottom: $inner-spacing-small;
   }
 }
