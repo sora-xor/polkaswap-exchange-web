@@ -7,7 +7,9 @@
           <div class="amount-table-item-content">
             <div class="amount-table-item-content__header">
               <div v-for="(item, index) in formatted.limit" class="amount-table-item__amount" :key="index">
-                <formatted-amount class="amount-table-value" :value="item.amount" :currency="item.symbol" />
+                <formatted-amount class="amount-table-value" :value="item.amount">
+                  <template v-slot="{ decimal }">{{ decimal }} {{ item.symbol }}</template>
+                </formatted-amount>
               </div>
             </div>
             <div v-if="formatted.rewards.length !== 0" class="amount-table-item-content__body">
@@ -16,7 +18,12 @@
                 <div class="amount-table-subitem">
                   <div class="amount-table-subitem__title">- {{ item.title }}</div>
                   <div v-for="(item, index) in item.limit" :key="index">
-                    <formatted-amount class="amount-table-value" :value="item.amount" :currency="item.symbol" />
+                    <formatted-amount class="amount-table-value" :value="item.amount">
+                      <template v-slot="{ decimal }">
+                        {{ decimal }}
+                        <span class="amount-table-symbol">{{ item.symbol }}</span>
+                      </template>
+                    </formatted-amount>
                   </div>
                 </div>
               </div>
@@ -116,7 +123,7 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
   padding: $inner-spacing-medium;
 
   &-symbol {
-    font-size: var(--s-font-size-small);
+    font-weight: 300;
   }
 
   &-value {
@@ -167,7 +174,6 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
     text-transform: uppercase;
 
     &__title {
-      font-size: var(--s-font-size-mini);
       line-height: var(--s-line-height-reset);
     }
   }

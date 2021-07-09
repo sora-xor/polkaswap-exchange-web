@@ -1,7 +1,9 @@
 <template>
   <span class="formatted-amount">
-    <span class="formatted-amount__integer">{{ formatted.main }}</span>
-    <span class="formatted-amount__decimals">{{ formatted.other }} {{ currency }}</span>
+    <span class="formatted-amount__integer">{{ formatted.integer }}</span>
+    <span class="formatted-amount__decimals">
+      <slot :decimal="formatted.decimal">{{ formatted.decimal }}</slot>
+    </span>
   </span>
 </template>
 
@@ -10,23 +12,22 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import { FPNumber } from '@sora-substrate/util'
 
 interface FormattedAmountValues {
-  main: string;
-  other: string;
+  integer: string;
+  decimal: string;
 }
 
 @Component
 export default class FormattedAmount extends Vue {
   @Prop({ default: '', type: String }) value!: string
-  @Prop({ default: '', type: String }) currency!: string
 
   get formatted (): FormattedAmountValues {
-    const [int, other] = this.value.split(FPNumber.DELIMITERS_CONFIG.decimal)
+    const [int, decimal] = this.value.split(FPNumber.DELIMITERS_CONFIG.decimal)
 
-    const main = other ? int + FPNumber.DELIMITERS_CONFIG.decimal : int
+    const integer = decimal ? int + FPNumber.DELIMITERS_CONFIG.decimal : int
 
     return {
-      main,
-      other
+      integer,
+      decimal
     }
   }
 }

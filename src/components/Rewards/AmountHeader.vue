@@ -2,7 +2,9 @@
   <div class="amount-header">
     <template v-for="({ amount, symbol }, index) in items">
       <div :key="symbol" class="amount-block">
-        <formatted-amount class="amount-block__amount" :value="amount" :currency="symbol" />&nbsp;
+        <formatted-amount class="amount-block__amount" :value="amount">
+          <template v-slot="{ decimal }">{{ decimal }} {{ symbol }}</template>
+        </formatted-amount>
       </div>
       <div v-if="items.length - 1 !== index" class="amount-header-divider" :key="index">
         <s-divider direction="vertical" class="amount-header-divider__slash" />
