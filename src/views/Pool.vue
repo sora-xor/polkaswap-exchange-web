@@ -252,7 +252,7 @@ $pair-icon-height: 36px;
       padding: $inner-spacing-big;
       background: var(--s-color-base-background);
       border-radius: var(--s-border-radius-small);
-      box-shadow: var(--s-shadow-drop);
+      box-shadow: var(--s-shadow-element-pressed);
       color: var(--s-color-base-content-secondary);
       font-size: var(--s-font-size-mini);
       line-height: var(--s-line-height-small);
@@ -268,7 +268,7 @@ $pair-icon-height: 36px;
       }
 
       &.is-active {
-        box-shadow: var(--s-shadow-inset);
+        box-shadow: var(--s-shadow-element);
       }
 
       &__title {

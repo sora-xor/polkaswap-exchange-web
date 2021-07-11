@@ -33,7 +33,7 @@ $base-class: '.status-action-badge';
   letter-spacing: var(--s-letter-spacing-small);
   text-transform: uppercase;
   overflow: unset;
-  box-shadow: var(--s-shadow-inset);
+  box-shadow: var(--s-shadow-element);
 
   #{$base-class}__label {
     margin-right: $inner-spacing-mini / 2;

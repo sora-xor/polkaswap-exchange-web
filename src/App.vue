@@ -316,7 +316,7 @@ html {
 .node-control {
   &.el-button.neumorphic.el-button--plain {
     padding-left: 5px;
-    box-shadow: var(--s-shadow-inset);
+    box-shadow: var(--s-shadow-element);
   }
   > span {
    flex-direction: row-reverse;
@@ -334,7 +334,7 @@ html {
 
   .el-menu-item {
     .icon-container {
-      box-shadow: var(--s-shadow-drop);
+      box-shadow: var(--s-shadow-element-pressed);
     }
 
     &.menu-item--small {
@@ -362,7 +362,7 @@ html {
     &.is-disabled,
     &.is-active {
       .icon-container {
-        box-shadow: var(--s-shadow-inset);
+        box-shadow: var(--s-shadow-element);
       }
     }
     &.is-active {
@@ -682,7 +682,7 @@ $sora-logo-width: 173.7px;
 }
 
 .account-control.neumorphic.s-tertiary {
-  box-shadow: var(--s-shadow-inset);
+  box-shadow: var(--s-shadow-element);
 }
 
 .sora-logo {
