@@ -3,6 +3,7 @@
     <div class="amount-table-item">
       <div class="amount-table-item__title">{{ formatted.title }}</div>
       <template v-if="showTable">
+        <div v-if="formatted.subtitle" class="amount-table-item__subtitle">{{ formatted.subtitle }}</div>
         <s-checkbox class="amount-table-item-group" v-model="innerModel" size="big">
           <div class="amount-table-item-content">
             <div class="amount-table-item-content__header">
@@ -16,7 +17,7 @@
               <div v-for="item in formatted.rewards" :key="item.type">
                 <s-divider class="amount-table-divider" />
                 <div class="amount-table-subitem">
-                  <div class="amount-table-subitem__title">- {{ item.title }}</div>
+                  <div class="amount-table-subitem__title">{{ item.title }}</div>
                   <div v-for="(item, index) in item.limit" :key="index">
                     <formatted-amount class="amount-table-value" :value="item.amount">
                       <template v-slot="{ decimal }">
@@ -77,6 +78,7 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
 
     const key = `rewards.events.${item.type}`
     const title = this.te(key) ? this.t(key) : item.type
+    const subtitle = item.title
     const rewards = ('rewards' in item) && Array.isArray(item.rewards) ? item.rewards.map(this.formatItem) : []
     const limit = ('rewards' in item) && Array.isArray(item.rewards)
       ? (item as RewardInfoGroup).limit
@@ -85,6 +87,7 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
     return {
       type: item.type,
       title,
+      subtitle,
       limit,
       rewards
     }

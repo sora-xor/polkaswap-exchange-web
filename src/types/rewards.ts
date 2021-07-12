@@ -8,12 +8,14 @@ export interface RewardsAmountHeaderItem {
 export interface RewardInfoGroup {
   type: RewardingEvents | string;
   limit: Array<RewardsAmountHeaderItem>;
+  title?: string;
   rewards?: Array<RewardInfo>;
 }
 
 export interface RewardsAmountTableItem {
   type?: string;
   title?: string;
+  subtitle?: string;
   limit?: Array<RewardsAmountHeaderItem>;
   rewards?: Array<RewardsAmountTableItem>;
 }
