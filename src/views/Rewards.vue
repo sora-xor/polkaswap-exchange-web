@@ -28,6 +28,7 @@
                 v-model="selectedExternalRewardsModel"
                 :item="externalRewardsGroupItem"
                 :show-table="!!externalRewards.length"
+                :simple-group="true"
               >
                 <div class="rewards-footer">
                   <s-divider />

@@ -14,18 +14,23 @@
               </div>
             </div>
             <div v-if="formatted.rewards.length !== 0" class="amount-table-item-content__body">
-              <div v-for="item in formatted.rewards" :key="item.type">
-                <s-divider class="amount-table-divider" />
+              <div v-for="(item, index) in formatted.rewards" :key="item.type">
+                <s-divider v-if="!simpleGroup || index === 0" class="amount-table-divider" />
                 <div class="amount-table-subitem">
-                  <div class="amount-table-subitem__title">{{ item.title }}</div>
-                  <div v-for="(item, index) in item.limit" :key="index">
-                    <formatted-amount class="amount-table-value" :value="item.amount">
-                      <template v-slot="{ decimal }">
-                        {{ decimal }}
-                        <span class="amount-table-symbol">{{ item.symbol }}</span>
-                      </template>
-                    </formatted-amount>
+                  <div class="amount-table-subitem__title">
+                    <template v-if="simpleGroup">—</template>
+                    {{ item.title }}
                   </div>
+                  <template v-if="!simpleGroup">
+                    <div v-for="(item, index) in item.limit" :key="index">
+                      <formatted-amount class="amount-table-value" :value="item.amount">
+                        <template v-slot="{ decimal }">
+                          {{ decimal }}
+                          <span class="amount-table-symbol">{{ item.symbol }}</span>
+                        </template>
+                      </formatted-amount>
+                    </div>
+                  </template>
                 </div>
               </div>
             </div>
@@ -56,6 +61,7 @@ import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards'
 export default class AmountTable extends Mixins(NumberFormatterMixin, TranslationMixin) {
   @Prop({ default: () => {}, type: Object }) item!: RewardInfoGroup | RewardInfo
   @Prop({ default: true, type: Boolean }) showTable!: boolean
+  @Prop({ default: false, type: Boolean }) simpleGroup!: boolean
   @Prop({ default: false, type: Boolean }) value!: boolean
 
   get innerModel (): any {
@@ -78,7 +84,7 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
 
     const key = `rewards.events.${item.type}`
     const title = this.te(key) ? this.t(key) : item.type
-    const subtitle = item.title
+    const subtitle = 'title' in item ? item.title : ''
     const rewards = ('rewards' in item) && Array.isArray(item.rewards) ? item.rewards.map(this.formatItem) : []
     const limit = ('rewards' in item) && Array.isArray(item.rewards)
       ? (item as RewardInfoGroup).limit
@@ -172,7 +178,7 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
   }
 
   &-subitem {
-    padding: $inner-spacing-mini 0;
+    margin: $inner-spacing-mini 0;
     font-weight: 300;
     text-transform: uppercase;
 
