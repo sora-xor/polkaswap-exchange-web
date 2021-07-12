@@ -1,17 +1,19 @@
 <template>
   <div :class="headerClasses">
     <s-button v-if="hasButtonBack" type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack" />
-    <h3 class="page-header-title">{{ title }}</h3>
-    <s-tooltip
-      v-if="!!tooltip"
-      class="page-header-tooltip"
-      popper-class="info-tooltip info-tooltip--page-header"
-      border-radius="mini"
-      :content="tooltip"
-      :placement="tooltipPlacement"
-    >
-      <s-icon name="info-16" size="18px" />
-    </s-tooltip>
+    <h3 class="page-header-title">
+      {{ title }}
+      <s-tooltip
+        v-if="!!tooltip"
+        class="page-header-tooltip"
+        popper-class="info-tooltip info-tooltip--page-header"
+        border-radius="mini"
+        :content="tooltip"
+        :placement="tooltipPlacement"
+      >
+        <s-icon name="info-16" size="18px" />
+      </s-tooltip>
+    </h3>
     <slot />
   </div>
 </template>
@@ -61,7 +63,6 @@ $title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
   position: relative;
   display: flex;
   margin: 0 0 $inner-spacing-medium;
-  padding: 0 $inner-spacing-small;
   width: 100%;
   &--center {
     .el-button {
@@ -77,7 +78,7 @@ $title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
   &-title {
     line-height: $tooltip-area-height;
     font-weight: 300;
-    letter-spacing: var(--s-letter-spacing-small);
+    letter-spacing: var(--s-letter-spacing-mini);
     & + .el-button {
       right: 0;
       &--settings {

@@ -12,7 +12,6 @@
         :placeholder="t('selectRegisteredAsset.search.placeholder')"
         class="asset-search"
         prefix="el-icon-search"
-        border-radius="mini"
         @focus="handleSearchFocus"
       >
         <template #suffix v-if="query">
@@ -65,7 +64,6 @@
             class="custom-asset-address"
             :placeholder="t('selectRegisteredAsset.customAsset.addressPlaceholder')"
             :maxlength="128"
-            border-radius="mini"
             @change="handleCustomAssetSearch"
           />
           <s-input
@@ -74,7 +72,6 @@
             class="custom-asset-symbol"
             :placeholder="t('selectRegisteredAsset.customAsset.symbolPlaceholder')"
             :maxlength="10"
-            border-radius="mini"
             readonly
           />
           <!-- TODO: Add appropriate validation styles -->

@@ -21,8 +21,7 @@
             v-model="query"
             :placeholder="t('bridgeHistory.filterPlaceholder')"
             prefix="el-icon-search"
-            size="medium"
-            border-radius="mini"
+            size="big"
           >
             <template #suffix v-if="query">
               <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleResetSearch" />
