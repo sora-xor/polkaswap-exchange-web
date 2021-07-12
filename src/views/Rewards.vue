@@ -183,6 +183,10 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
         symbol: pswap.symbol as KnownSymbols,
         amount: FPNumber.fromCodecValue(this.vestedRewards?.limit ?? 0, pswap.decimals).toLocaleString()
       }],
+      total: {
+        symbol: pswap.symbol as KnownSymbols,
+        amount: FPNumber.fromCodecValue(this.vestedRewards?.total ?? 0, pswap.decimals).toLocaleString()
+      },
       rewards
     }
   }
@@ -369,10 +373,12 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   border-radius: var(--s-border-radius-small);
 }
 .rewards-connect-button.el-button.neumorphic {
-  background: transparent;
-  color: var(--s-color-base-on-accent);
-  border: 1px solid var(--s-color-base-on-accent);
-  box-shadow: none;
+  &, &:hover, &.focusing {
+    background: transparent;
+    color: var(--s-color-base-on-accent);
+    border: 1px solid var(--s-color-base-on-accent);
+    box-shadow: none;
+  }
 }
 .rewards-action-button i {
   top: $inner-spacing-mini;

@@ -11,6 +11,15 @@
                 <formatted-amount class="amount-table-value" :value="item.amount">
                   <template v-slot="{ decimal }">{{ decimal }} {{ item.symbol }}</template>
                 </formatted-amount>
+                <s-tooltip v-if="formatted.total && index === 0" popper-class="amount-table-tooltip" placement="right">
+                  <div slot="content" class="amount-table-tooltip-content">
+                    <div>{{ t('rewards.totalVested') }}:</div>
+                    <formatted-amount class="amount-table-value" :value="formatted.total.amount">
+                      <template v-slot="{ decimal }">{{ decimal }} {{ formatted.total.symbol }}</template>
+                    </formatted-amount>
+                  </div>
+                  <s-icon name="info-16" size="14px" class="amount-table-value-icon" />
+                </s-tooltip>
               </div>
             </div>
             <div v-if="formatted.rewards.length !== 0" class="amount-table-item-content__body">
@@ -19,6 +28,7 @@
                 <div class="amount-table-subitem">
                   <div class="amount-table-subitem__title">
                     <template v-if="simpleGroup">—</template>
+                    <template v-else-if="formatted.total">{{ t('rewards.totalVested') }} {{ t('rewards.forText') }}</template>
                     {{ item.title }}
                   </div>
                   <template v-if="!simpleGroup">
@@ -85,6 +95,7 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
     const key = `rewards.events.${item.type}`
     const title = this.te(key) ? this.t(key) : item.type
     const subtitle = 'title' in item ? item.title : ''
+    const total = 'total' in item ? toLimit(item.total.amount, item.total.symbol) : ''
     const rewards = ('rewards' in item) && Array.isArray(item.rewards) ? item.rewards.map(this.formatItem) : []
     const limit = ('rewards' in item) && Array.isArray(item.rewards)
       ? (item as RewardInfoGroup).limit
@@ -95,6 +106,7 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
       title,
       subtitle,
       limit,
+      total,
       rewards
     }
   }
@@ -122,6 +134,10 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
       border-radius: 6px !important;
     }
   }
+
+  &-tooltip.neumorphic.is-light {
+    background-color: var(--s-color-status-success);
+  }
 }
 </style>
 
@@ -138,6 +154,10 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
   &-value {
     font-size: var(--s-font-size-medium);
     font-weight: 600;
+
+    &-icon {
+      margin-left: $inner-spacing-mini / 2;
+    }
   }
 
   &-item {
@@ -172,7 +192,17 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
       margin-bottom: $inner-spacing-mini;
     }
 
+    &__subtitle {
+      font-size: var(--s-font-size-small);
+      line-height: var(--s-line-height-reset);
+      font-weight: 300;
+      text-transform: uppercase;
+      margin-bottom: $inner-spacing-mini / 2;
+    }
+
     &__amount {
+      display: flex;
+      align-items: center;
       line-height: 20px;
     }
   }
@@ -189,6 +219,10 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
 
   &-divider {
     opacity: 0.5;
+  }
+
+  &-tooltip-content {
+    font-size: var(--s-font-size-small);
   }
 
   @include vertical-divider('amount-table-divider', 0);
