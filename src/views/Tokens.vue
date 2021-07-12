@@ -8,7 +8,6 @@
       class="tokens-table-search"
       prefix="el-icon-search"
       size="big"
-      border-radius="mini"
     >
       <template #suffix v-if="query">
         <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
@@ -19,16 +18,20 @@
       :highlight-current-row="false"
       size="small"
       class="tokens-table"
-      @sort-change="changeSort"
     >
       <s-table-column label="#" width="48">
+        <template #header>
+          <span @click="resetSort" :class="['tokens-item-head-index', { active: isDefaultSort }]">#</span>
+        </template>
         <template v-slot="{ $index }">
           <span class="tokens-item-index">{{ $index + startIndex + 1 }}</span>
         </template>
       </s-table-column>
-      <s-table-column width="112" header-align="center" align="center" prop="symbol" sortable="custom">
+      <s-table-column width="112" header-align="center" align="center" prop="symbol">
         <template #header>
-          <span class="tokens-table__primary">{{ t('tokens.symbol') }}</span>
+          <sort-button name="symbol" :sort="{ order, property }" @change-sort="changeSort">
+            <span class="tokens-table__primary">{{ t('tokens.symbol') }}</span>
+          </sort-button>
         </template>
         <template v-slot="{ row }">
           <div class="tokens-item-symbol">{{ row.symbol }}</div>
@@ -82,12 +85,14 @@ import { lazyComponent } from '@/router'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin'
+import SortButton from '@/components/SortButton.vue'
 
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     TokenLogo: lazyComponent(Components.TokenLogo),
-    TokenAddress: lazyComponent(Components.TokenAddress)
+    TokenAddress: lazyComponent(Components.TokenAddress),
+    SortButton
   }
 })
 export default class Tokens extends Mixins(LoadingMixin, TranslationMixin, AssetsSearchMixin) {
@@ -99,13 +104,12 @@ export default class Tokens extends Mixins(LoadingMixin, TranslationMixin, Asset
   order = ''
   property = ''
 
-  changeSort ({ order = '', property = '' } = {}): void {
-    this.order = order
-    this.property = property
-  }
-
   mounted (): void {
     this.focusSearchInput()
+  }
+
+  get isDefaultSort (): boolean {
+    return !this.order || !this.property
   }
 
   get startIndex (): number {
@@ -150,6 +154,16 @@ export default class Tokens extends Mixins(LoadingMixin, TranslationMixin, Asset
   handleClearSearch (): void {
     this.query = ''
   }
+
+  changeSort ({ order = '', property = '' } = {}): void {
+    this.order = order
+    this.property = property
+  }
+
+  resetSort (): void {
+    this.order = ''
+    this.property = ''
+  }
 }
 </script>
 
@@ -177,6 +191,8 @@ export default class Tokens extends Mixins(LoadingMixin, TranslationMixin, Asset
 
         .cell {
           padding: $inner-spacing-mini / 2 $inner-spacing-mini;
+          display: flex;
+          align-items: center;
         }
       }
     }
@@ -220,6 +236,12 @@ $icon-size: 36px;
     color: var(--s-color-base-content-quaternary);
     font-size: var(--s-font-size-mini);
   }
+
+  &-head {
+    display: flex;
+    align-items: center;
+    margin: auto;
+  }
 }
 
 .tokens-item {
@@ -229,6 +251,7 @@ $icon-size: 36px;
     font-weight: 800;
   }
   &-symbol {
+    flex: 1;
     background-color: var(--s-color-base-border-secondary);
     border-radius: var(--s-border-radius-medium);
     font-size: var(--s-font-size-big);
@@ -257,6 +280,16 @@ $icon-size: 36px;
 
     &__value {
       font-weight: 600;
+    }
+  }
+
+  &-head {
+    &-index {
+      cursor: pointer;
+
+      &.active {
+        color: var(--s-color-theme-accent);
+      }
     }
   }
 }
