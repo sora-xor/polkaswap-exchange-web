@@ -40,7 +40,7 @@
   width: $inner-window-width;
   background-color: var(--s-color-utility-surface);
   border-radius: var(--s-border-radius-medium);
-  box-shadow: var(--s-shadow-surface);
+  box-shadow: -5px -5px 15px rgba(255, 255, 255, 0.9), 1px 1px 15px var(--s-shadow-color-dark), inset 1px 1px 10px var(--s-shadow-color-light);
   color: var(--s-color-base-content-primary);
 }
 
@@ -100,6 +100,14 @@
     }
     &--select-token {
       margin-left: $inner-spacing-mini / 2;
+      &.token-select-button--token {
+        &, &:hover, &:active, &:focus, &.focusing, &.s-pressed {
+          background-color: var(--s-color-utility-surface);
+        }
+      }
+      &, &:hover, &:active, &:focus, &.focusing, &.s-pressed {
+        box-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0, 0, 0.05);
+      }
     }
   }
 }
@@ -341,4 +349,9 @@
       }
     }
   }
+}
+
+@mixin radio-title {
+  font-size: var(--s-font-size-medium);
+  font-weight: 600;
 }

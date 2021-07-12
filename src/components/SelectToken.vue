@@ -14,7 +14,6 @@
             class="token-search"
             prefix="el-icon-search"
             size="big"
-            border-radius="mini"
           >
             <template #suffix v-if="query">
               <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
@@ -50,7 +49,6 @@
             class="token-search"
             prefix="el-icon-search"
             size="big"
-            border-radius="mini"
             @input="debouncedCustomAssetSearch"
           >
             <template #suffix v-if="customAddress">

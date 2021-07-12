@@ -102,10 +102,9 @@ export default class SelectNode extends Mixins(TranslationMixin) {
 
     &__label {
       color: var(--s-color-base-content-primary);
-      font-size: var(--s-font-size-big);
-      font-weight: 800;
       letter-spacing: var(--s-letter-spacing-small);
       line-height: var(--s-line-height-small);
+      @include radio-title;
     }
 
     &__address {
