@@ -132,6 +132,12 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
 
     &__inner {
       border-radius: 6px !important;
+      border: 2px solid var(--s-color-status-error);
+      background: var(--s-color-status-error-background);
+
+      &:after {
+        left: 4px;
+      }
     }
   }
 
