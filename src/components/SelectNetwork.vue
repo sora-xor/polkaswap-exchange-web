@@ -87,8 +87,7 @@ $network-logo-size: 49px;
     height: auto;
     padding: $inner-spacing-small 0;
     &-name {
-      font-size: var(--s-heading5-font-size);
-      font-weight: 400;
+      @include radio-title;
     }
     + .network {
       border-top: 1px solid var(--s-color-base-border-secondary);

@@ -78,13 +78,6 @@ button.el-button--max {
 }
 
 /* BUTTONS */
-i.el-collapse-item__arrow {
-  background-color: var(--s-color-utility-body) !important;
-  box-shadow: var(--s-shadow-element);
-  color: var(--s-color-base-content-secondary);
-  transition: var(--s-transition-default);
-  border: none;
-}
 div.asset-details-actions i, div.wallet-assets-item.s-flex button.el-button--primary i {
   color: var(--s-color-base-on-accent) !important;
 }
