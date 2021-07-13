@@ -11,7 +11,7 @@
                 <formatted-amount class="amount-table-value" :value="item.amount">
                   <template v-slot="{ decimal }">{{ decimal }} {{ item.symbol }}</template>
                 </formatted-amount>
-                <s-tooltip v-if="formatted.total && index === 0" popper-class="amount-table-tooltip" placement="right">
+                <s-tooltip v-if="formatted.total && index === 0" popper-class="amount-table-tooltip" placement="right" border-radius="mini">
                   <div slot="content" class="amount-table-tooltip-content">
                     <div>{{ t('rewards.totalVested') }}:</div>
                     <formatted-amount class="amount-table-value" :value="formatted.total.amount">
@@ -95,7 +95,7 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
     const key = `rewards.events.${item.type}`
     const title = this.te(key) ? this.t(key) : item.type
     const subtitle = 'title' in item ? item.title : ''
-    const total = 'total' in item ? toLimit(item.total.amount, item.total.symbol) : ''
+    const total = 'total' in item ? item.total : ''
     const rewards = ('rewards' in item) && Array.isArray(item.rewards) ? item.rewards.map(this.formatItem) : []
     const limit = ('rewards' in item) && Array.isArray(item.rewards)
       ? (item as RewardInfoGroup).limit
@@ -229,6 +229,7 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
 
   &-tooltip-content {
     font-size: var(--s-font-size-small);
+    text-transform: uppercase;
   }
 
   @include vertical-divider('amount-table-divider', 0);
