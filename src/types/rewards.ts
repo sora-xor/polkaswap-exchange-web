@@ -17,6 +17,7 @@ export interface RewardsAmountTableItem {
   type?: string;
   title?: string;
   subtitle?: string;
+  total?: RewardsAmountHeaderItem;
   limit?: Array<RewardsAmountHeaderItem>;
   rewards?: Array<RewardsAmountTableItem>;
 }

@@ -35,8 +35,7 @@
                     <div v-for="(item, index) in item.limit" :key="index">
                       <formatted-amount class="amount-table-value" :value="item.amount">
                         <template v-slot="{ decimal }">
-                          {{ decimal }}
-                          <span class="amount-table-symbol">{{ item.symbol }}</span>
+                          {{ decimal }} {{ item.symbol }}
                         </template>
                       </formatted-amount>
                     </div>
@@ -95,7 +94,7 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
     const key = `rewards.events.${item.type}`
     const title = this.te(key) ? this.t(key) : item.type
     const subtitle = 'title' in item ? item.title : ''
-    const total = 'total' in item ? item.total : ''
+    const total = 'total' in item ? item.total : undefined
     const rewards = ('rewards' in item) && Array.isArray(item.rewards) ? item.rewards.map(this.formatItem) : []
     const limit = ('rewards' in item) && Array.isArray(item.rewards)
       ? (item as RewardInfoGroup).limit
@@ -152,10 +151,6 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
   background: rgba(0, 0, 0, 0.2);
   border-radius: var(--s-border-radius-mini);
   padding: $inner-spacing-medium;
-
-  &-symbol {
-    font-weight: 300;
-  }
 
   &-value {
     font-size: var(--s-font-size-medium);
