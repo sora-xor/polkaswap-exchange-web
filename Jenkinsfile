@@ -1,4 +1,4 @@
-@Library('jenkins-library@feature/DOPS-1380') _
+@Library('jenkins-library') _
 
 def pipeline = new org.js.AppPipeline(steps: this,
     dockerImageName: 'polkaswap/exchange-web',
