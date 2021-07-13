@@ -5,6 +5,5 @@ def pipeline = new org.js.AppPipeline(steps: this,
     buildDockerImage: 'docker.soramitsu.co.jp/build-tools/node:14-ubuntu',
     dockerRegistryCred: 'bot-polkaswap-rw',
     pushToIPFS: true,
-    ipfsProjectID: 'ipfsProjectID',
-    ipfsProjectSecret: 'ipfsProjectSecret')
+    ipfsCreds: 'ipfsCreds')
 pipeline.runPipeline()
