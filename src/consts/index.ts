@@ -157,12 +157,12 @@ const AccountMenu: Array<SidebarMenuItem> = [
 
 const OtherPagesMenu: Array<SidebarMenuItem> = [
   {
-    icon: 'file-file-text-24',
-    title: PageNames.About
-  },
-  {
     icon: 'various-bone-24',
     title: PageNames.Tokens
+  },
+  {
+    icon: 'file-file-text-24',
+    title: PageNames.About
   }
 ]
 
