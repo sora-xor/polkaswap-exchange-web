@@ -25,7 +25,7 @@ $s-color-base-on-accent: #FFFFFF;
 // Utility colors
 $s-color-utility-body: #F7F3F4;
 $s-color-utility-surface: #FDF7FB;
-$s-color-utility-overlay: rgba(0, 0, 0, 0.45);
+$s-color-utility-overlay: rgba(42, 23, 31, 0.1);
 // Status colors
 $s-color-status-success: #34AD87;
 $s-color-status-warning: #479AEF;
@@ -51,6 +51,10 @@ $s-border-radius-mini: $s-border-radius-base;
 $s-border-radius-small: $s-border-radius-base * 1.5;
 $s-border-radius-medium: $s-border-radius-base * 2;
 $s-border-radius-big: $s-border-radius-base * 3;
+// Fonts paths
+$s-font-family-default-path: '~@soramitsu/soramitsu-js-ui/lib/assets/fonts/Sora-VariableFont_wght.ttf' !default;
+$s-font-family-mono-path: '~@soramitsu/soramitsu-js-ui/lib/assets/fonts/JetBrainsMono-Regular.woff' !default;
+$s-font-family-icons-path: '~@/assets/fonts/polkaswap_icons.ttf' !default;
 // Font Feature Settings
 $s-font-feature-settings-common: normal;
 $s-font-feature-settings-heading: normal;
@@ -70,13 +74,4 @@ $neu-button-action-text-color-alternative: var(--s-color-base-content-secondary)
 :root {
   --s-color-brand-day: #{$s-color-brand-day};
   --s-transition-default: #{$s-transition-default};
-  // Font Feature Settings
-  --s-font-feature-settings-common: #{$s-font-feature-settings-common};
-  --s-font-feature-settings-heading: #{$s-font-feature-settings-heading};
-  --s-font-feature-settings-caps-heading: #{$s-font-feature-settings-caps-heading};
-  --s-font-feature-settings-caps: #{$s-font-feature-settings-caps};
-  --s-font-feature-settings-singleline: #{$s-font-feature-settings-singleline};
-  --s-font-feature-settings-card-title: #{$s-font-feature-settings-card-title};
-  --s-font-feature-settings-input: #{$s-font-feature-settings-input};
-  --s-font-feature-settings-button: #{$s-font-feature-settings-button};
 }

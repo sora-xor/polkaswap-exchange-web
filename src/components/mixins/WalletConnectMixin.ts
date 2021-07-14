@@ -4,7 +4,7 @@ import { Action, Getter, State } from 'vuex-class'
 import router from '@/router'
 import { getWalletAddress, formatAddress } from '@/utils'
 import { PageNames } from '@/consts'
-import web3Util, { Provider } from '@/utils/web3-util'
+import ethersUtil, { Provider } from '@/utils/ethers-util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 
@@ -100,7 +100,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   }
 
   async checkConnectionToExternalAccount (func: Function): Promise<void> {
-    const connected = await web3Util.checkAccountIsConnected(this.evmAddress)
+    const connected = await ethersUtil.checkAccountIsConnected(this.evmAddress)
 
     if (!connected) {
       await this.connectExternalWallet()
@@ -110,13 +110,13 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   }
 
   async syncExternalAccountWithAppState () {
-    const connected = await web3Util.checkAccountIsConnected(this.evmAddress)
+    const connected = await ethersUtil.checkAccountIsConnected(this.evmAddress)
 
     if (connected) return
 
     await this.disconnectExternalAccount()
 
-    const account = await web3Util.getAccount()
+    const account = await ethersUtil.getAccount()
 
     if (account) {
       await this.changeExternalWallet({ address: account })

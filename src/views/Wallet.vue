@@ -96,5 +96,8 @@ export default class Wallet extends Mixins(TranslationMixin) {
       padding: $inner-spacing-medium 0 0;
     }
   }
+  .history .history-items {
+    padding: 0 $inner-spacing-mini;
+  }
 }
 </style>

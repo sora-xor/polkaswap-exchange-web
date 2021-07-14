@@ -21,8 +21,7 @@
             v-model="query"
             :placeholder="t('bridgeHistory.filterPlaceholder')"
             prefix="el-icon-search"
-            size="medium"
-            border-radius="mini"
+            size="big"
           >
             <template #suffix v-if="query">
               <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleResetSearch" />
@@ -77,7 +76,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { RegisteredAccountAsset, Operation, isBridgeOperation, BridgeHistory, CodecString, FPNumber } from '@sora-substrate/util'
 
@@ -271,11 +270,15 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 .history {
   &-container {
     @include bridge-container;
+    .el-card .el-card__body .history-form {
+      padding: 0 $inner-spacing-mini;
+    }
+  }
+  &-item-title {
+    font-weight: 600;
+    letter-spacing: var(--s-letter-spacing-small);
   }
   &-content {
-    .el-card__body {
-      padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
-    }
     .el-pagination {
       .btn {
         &-prev,
@@ -330,9 +333,11 @@ $history-item-top-border-height: 1px;
 @include search-item('history--search');
 .history-item {
   display: flex;
+  margin-right: -#{$inner-spacing-small};
+  margin-left: -#{$inner-spacing-small};
   height: $history-item-height;
-  padding: #{$inner-spacing-mini / 2 + $history-item-top-border-height} $history-item-horizontal-space $inner-spacing-mini;
-  border-radius: var(--s-border-radius-mini);
+  padding: $inner-spacing-mini $inner-spacing-big;
+  border-radius: var(--s-border-radius-small);
 
   &:not(:first-child) {
     position: relative;
@@ -353,9 +358,6 @@ $history-item-top-border-height: 1px;
   &:hover {
     background-color: var(--s-color-base-background-hover);
     cursor: pointer;
-    &:before, & + .history-item::before {
-      width: 100%;
-    }
   }
   &-info {
     font-size: var(--s-font-size-mini);
