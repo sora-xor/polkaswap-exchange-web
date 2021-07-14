@@ -489,7 +489,9 @@ export default {
     networkFee: '@:networkFeeText',
     networkFeeTooltip: '@:networkFeeTooltipText',
     andText: 'and',
-    vested: 'vested',
+    forText: 'for',
+    totalVested: 'Total vested',
+    claimableAmountDoneVesting: 'Claimable amount (done vesting)',
     claiming: {
       pending: 'Claiming...',
       success: 'Claimed successfully'
@@ -530,6 +532,10 @@ export default {
       [RewardingEvents.BuyOnBondingCurve]: 'buying from the TBC',
       [RewardingEvents.MarketMakerVolume]: 'Market Maker',
       [RewardingEvents.LiquidityProvisionFarming]: 'Farming'
+    },
+    groups: {
+      strategic: 'Strategic Rewards',
+      external: 'Rewards for the connected ethereum account'
     }
   },
   provider: {

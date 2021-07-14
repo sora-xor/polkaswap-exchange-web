@@ -4,9 +4,9 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, CodecString } from '@sora-substrate/util'
+import { KnownSymbols, RewardInfo, RewardsInfo, CodecString } from '@sora-substrate/util'
 import ethersUtil from '@/utils/ethers-util'
-import { RewardsAmountHeaderItem, RewardInfoGroup } from '@/types/rewards'
+import { RewardsAmountHeaderItem } from '@/types/rewards'
 import { groupRewardsByAssetsList } from '@/utils/rewards'
 import { ethers } from 'ethers'
 
@@ -90,14 +90,6 @@ const getters = {
   },
   transactionStepsCount (_, getters): number {
     return getters.externalRewardsSelected ? 2 : 1
-  },
-  vestedRewadsGroupItem (state): RewardInfoGroup {
-    return {
-      type: 'Strategic Rewards',
-      asset: KnownAssets.get(KnownSymbols.PSWAP),
-      amount: state.vestedRewards?.limit ?? 0,
-      rewards: state.vestedRewards?.rewards ?? []
-    }
   },
   rewardsByAssetsList (state, getters): Array<RewardsAmountHeaderItem> {
     if (!getters.rewardsAvailable) {
