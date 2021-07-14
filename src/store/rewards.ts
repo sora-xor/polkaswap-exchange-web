@@ -5,9 +5,10 @@ import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, CodecString } from '@sora-substrate/util'
-import web3Util from '@/utils/web3-util'
+import ethersUtil from '@/utils/ethers-util'
 import { RewardsAmountHeaderItem, RewardInfoGroup } from '@/types/rewards'
 import { groupRewardsByAssetsList } from '@/utils/rewards'
+import { ethers } from 'ethers'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -232,11 +233,11 @@ const actions = {
       commit(types.SET_TRANSACTION_ERROR, false)
 
       if (externalRewardsSelected && state.transactionStep === 1) {
-        const web3 = await web3Util.getInstance()
-        const internalAddressHex = await web3Util.accountAddressToHex(internalAddress)
-        const message = web3.utils.sha3(internalAddressHex) as string
+        const ethersInstance = await ethersUtil.getEthersInstance()
+        const internalAddressHex = await ethersUtil.accountAddressToHex(internalAddress)
 
-        const signature = await web3.eth.personal.sign(message, externalAddress, '')
+        const message = ethers.utils.keccak256(internalAddressHex)
+        const signature = ethersInstance.getSigner().signMessage(message)
 
         commit(types.SET_SIGNATURE, signature)
         commit(types.SET_TRANSACTION_STEP, 2)

@@ -186,7 +186,7 @@ import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EvmSymbol } from '@/consts'
-import { SubNetwork } from '@/utils/web3-util'
+import { SubNetwork } from '@/utils/ethers-util'
 import {
   isXorAccountAsset,
   hasInsufficientBalance,

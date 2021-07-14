@@ -31,6 +31,8 @@ import SSlider from '@soramitsu/soramitsu-js-ui/src/components/Slider'
 import SSwitch from '@soramitsu/soramitsu-js-ui/src/components/Switch'
 import STab from '@soramitsu/soramitsu-js-ui/src/components/Tab/STab'
 import STabs from '@soramitsu/soramitsu-js-ui/src/components/Tab/STabs'
+import STable from '@soramitsu/soramitsu-js-ui/src/components/Table/STable'
+import STableColumn from '@soramitsu/soramitsu-js-ui/src/components/Table/STableColumn'
 import STooltip from '@soramitsu/soramitsu-js-ui/src/components/Tooltip'
 
 import store from '@/store'
@@ -63,6 +65,8 @@ Vue.use(SSlider)
 Vue.use(SSwitch)
 Vue.use(STab)
 Vue.use(STabs)
+Vue.use(STable)
+Vue.use(STableColumn)
 Vue.use(STooltip)
 Vue.prototype.$prompt = MessageBox.prompt
 Vue.prototype.$alert = MessageBox.alert

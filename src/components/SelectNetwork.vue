@@ -28,7 +28,7 @@ import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
-import { SubNetwork } from '@/utils/web3-util'
+import { SubNetwork } from '@/utils/ethers-util'
 
 @Component({
   components: {
@@ -87,8 +87,7 @@ $network-logo-size: 49px;
     height: auto;
     padding: $inner-spacing-small 0;
     &-name {
-      font-size: var(--s-heading5-font-size);
-      font-weight: 400;
+      @include radio-title;
     }
     + .network {
       border-top: 1px solid var(--s-color-base-border-secondary);
