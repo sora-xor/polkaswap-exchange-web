@@ -8,8 +8,12 @@
           window.location.protocol = https
         }
       }
-      if (window.location.pathname !== '/') {
-        window.location.replace(window.location.origin + '/' + window.location.hash)
+      const pathname = window.location.pathname
+      if (pathname !== '/' && pathname.slice(-1) !== '/') {
+        const paths = pathname.split('/')
+        paths.pop()
+        paths.push('')
+        window.location.pathname = paths.join('/')
       }
     </script>
     <meta charset="utf-8">
