@@ -119,7 +119,7 @@ import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, Fau
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
 
-import axios from '@/api'
+import axios, { updateBaseUrl } from '@/api'
 import router, { lazyComponent } from '@/router'
 import { formatAddress, disconnectWallet } from '@/utils'
 import { ConnectToNodeOptions } from '@/types/nodes'
@@ -192,6 +192,8 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   }
 
   async created () {
+    updateBaseUrl(router)
+
     const localeLanguage = navigator.language
     const thousandSymbol = Number(1000).toLocaleString(localeLanguage).substring(1, 2)
     if (thousandSymbol !== '0') {
