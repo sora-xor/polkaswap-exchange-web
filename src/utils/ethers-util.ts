@@ -1,4 +1,3 @@
-import Web3 from 'web3'
 import { ethers } from 'ethers'
 import { AbiItem } from 'web3-utils'
 import WalletConnectProvider from '@walletconnect/web3-provider'
