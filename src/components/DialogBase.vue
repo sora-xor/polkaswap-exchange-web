@@ -2,7 +2,7 @@
   <s-dialog
     :visible.sync="isVisible"
     :title="title"
-    :custom-class="customClass"
+    :custom-class="computedCustomClasses"
     :show-close="false"
     v-bind="{
       top: '80px',
@@ -31,6 +31,15 @@ export default class DialogBase extends Mixins(DialogMixin) {
   @Prop({ default: '', type: String }) readonly customClass!: string
   @Prop({ default: '', type: String }) readonly title!: string
   @Prop({ default: '', type: String }) readonly width!: string
+
+  get computedCustomClasses (): string {
+    const cssClasses: Array<string> = []
+    cssClasses.push('neumorphic')
+    if (this.customClass) {
+      cssClasses.push(this.customClass)
+    }
+    return cssClasses.join(' ')
+  }
 }
 </script>
 
