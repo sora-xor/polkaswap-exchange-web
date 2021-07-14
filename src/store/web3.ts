@@ -285,11 +285,14 @@ const actions = {
 
   async setSmartContracts ({ commit, dispatch }, subNetworks: Array<SubNetwork>) {
     for (const network of subNetworks) {
-      if (network.id === BridgeNetworks.ETH_NETWORK_ID) {
-        dispatch('setEvmSmartContracts', network)
-      }
-      if (network.id === BridgeNetworks.ENERGY_NETWORK_ID) {
-        dispatch('setEnergySmartContracts', network)
+      switch (network.id) {
+        case BridgeNetworks.ETH_NETWORK_ID:
+          dispatch('setEvmSmartContracts', network)
+          break
+        case BridgeNetworks.ENERGY_NETWORK_ID:
+          // TODO: [BRIDGE] Reduce file size
+          // dispatch('setEnergySmartContracts', network)
+          break
       }
     }
   },
@@ -297,15 +300,15 @@ const actions = {
   async setEvmSmartContracts ({ commit }, network: SubNetwork) {
     const INTERNAL = await ethersUtil.readSmartContract(
       ContractNetwork.Ethereum,
-      `${Contract.Internal}/Master.json`
+      `${Contract.Internal}/MASTER.json`
     )
     const BRIDGE = await ethersUtil.readSmartContract(
       ContractNetwork.Ethereum,
-      `${Contract.Other}/Bridge.json`
+      `${Contract.Other}/${OtherContractType.Bridge}.json`
     )
     const ERC20 = await ethersUtil.readSmartContract(
       ContractNetwork.Ethereum,
-      `${Contract.Other}/ERC20.json`
+      `${Contract.Other}/${OtherContractType.ERC20}.json`
     )
     commit(types.SET_ETHEREUM_SMART_CONTRACTS, {
       address: {
@@ -324,11 +327,11 @@ const actions = {
   async setEnergySmartContracts ({ commit }, network: SubNetwork) {
     const BRIDGE = await ethersUtil.readSmartContract(
       ContractNetwork.Other,
-      'BridgeEVM.json'
+      `${OtherContractType.Bridge}.json`
     )
     const ERC20 = await ethersUtil.readSmartContract(
       ContractNetwork.Other,
-      'ERC20.json'
+      `${OtherContractType.ERC20}.json`
     )
     commit(types.SET_ENERGY_SMART_CONTRACTS, {
       address: { OTHER: network.CONTRACTS.OTHER.MASTER },
