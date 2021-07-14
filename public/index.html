@@ -8,6 +8,9 @@
           window.location.protocol = https
         }
       }
+      if (window.location.pathname !== '/') {
+        window.location.replace(window.location.origin + '/' + window.location.hash)
+      }
     </script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
