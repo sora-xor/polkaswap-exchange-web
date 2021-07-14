@@ -704,6 +704,7 @@ $sora-logo-width: 173.7px;
   &-title {
     font-weight: 700;
   }
+  @include element-size('token-logo', 26px);
 }
 
 .node-control,

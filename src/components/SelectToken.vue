@@ -12,7 +12,7 @@
             v-model="query"
             :placeholder="t('selectToken.searchPlaceholder')"
             class="token-search"
-            prefix="el-icon-search"
+            prefix="s-icon-search-16"
             size="big"
           >
             <template #suffix v-if="query">
@@ -24,7 +24,7 @@
           <div v-for="token in filteredWhitelistTokens" @click="selectToken(token)" :key="token.address" class="token-item">
             <s-col>
               <s-row flex justify="start" align="middle">
-                <token-logo :token="token" size="medium" />
+                <token-logo :token="token" size="big" />
                 <div class="token-item__info s-flex">
                   <div class="token-item__symbol">{{ token.symbol }}</div>
                   <token-address :name="token.name" :symbol="token.symbol" :address="token.address" class="token-item__details" />
@@ -47,7 +47,7 @@
             v-model="customAddress"
             :placeholder="t('selectToken.custom.search')"
             class="token-search"
-            prefix="el-icon-search"
+            prefix="s-icon-search-16"
             size="big"
             @input="debouncedCustomAssetSearch"
           >
@@ -339,7 +339,7 @@ $token-item-height: 71px;
     padding-right: $inner-spacing-small;
   }
   .token-logo {
-    margin-right: $inner-spacing-medium;
+    margin-right: $inner-spacing-mini;
     flex-shrink: 0;
   }
 }
