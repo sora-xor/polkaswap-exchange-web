@@ -5,6 +5,8 @@ export const BASE_URL = process.env.BASE_URL
 
 const axios = axiosInstance.create()
 
+axios.defaults.headers.common['Cache-Control'] = 'no-cache'
+
 const detectBaseUrl = (router?: VueRouter): string => {
   if (BASE_URL) return BASE_URL
 
