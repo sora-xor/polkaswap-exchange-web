@@ -672,7 +672,9 @@
         "networkFee": "@:networkFeeText",
         "networkFeeTooltip": "@:networkFeeTooltipText",
         "andText": "and",
-        "vested": "vested",
+        "forText": "for",
+        "totalVested": "Total vested",
+        "claimableAmountDoneVesting": "Claimable amount (done vesting)",
         "claiming": {
             "pending": "Claiming...",
             "success": "Claimed successfully"
@@ -713,6 +715,10 @@
             "BuyOnBondingCurve": "buying from the TBC",
             "MarketMakerVolume": "Market Maker",
             "LiquidityProvisionFarming": "Farming"
+        },
+        "groups": {
+            "strategic": "Strategic Rewards",
+            "external": "Rewards for the connected ethereum account"
         }
     },
     "provider": {
