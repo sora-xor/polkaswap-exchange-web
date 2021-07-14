@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { AbiItem } from 'web3-utils'
+import { AbiItem } from 'web3-utils' // TODO: omit AbiItem type usage and remove dependency?
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import detectEthereumProvider from '@metamask/detect-provider'
 import { decodeAddress } from '@polkadot/util-crypto'
