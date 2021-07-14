@@ -1,5 +1,4 @@
 import { ethers } from 'ethers'
-import { AbiItem } from 'web3-utils' // TODO: omit AbiItem type usage and remove dependency?
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import detectEthereumProvider from '@metamask/detect-provider'
 import { decodeAddress } from '@polkadot/util-crypto'
@@ -7,6 +6,36 @@ import { BridgeNetworks } from '@sora-substrate/util'
 
 import axios from '../api'
 import storage from './storage'
+
+type AbiType = 'function' | 'constructor' | 'event' | 'fallback';
+type StateMutabilityType = 'pure' | 'view' | 'nonpayable' | 'payable';
+
+interface AbiInput {
+  name: string;
+  type: string;
+  indexed?: boolean;
+  components?: AbiInput[];
+  internalType?: string;
+}
+
+interface AbiOutput {
+  name: string;
+  type: string;
+  components?: AbiOutput[];
+  internalType?: string;
+}
+
+interface AbiItem {
+  anonymous?: boolean;
+  constant?: boolean;
+  inputs?: AbiInput[];
+  name?: string;
+  outputs?: AbiOutput[];
+  payable?: boolean;
+  stateMutability?: StateMutabilityType;
+  type: AbiType;
+  gas?: number;
+}
 
 export const ABI = {
   balance: [
