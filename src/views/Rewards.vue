@@ -13,41 +13,42 @@
             <template v-if="!claimingInProgressOrFinished">
               <rewards-amount-table
                 class="rewards-table"
-                v-if="externalRewards.length"
-                v-model="selectedExternalRewardsModel"
-                :items="externalRewards"
-                :group="true"
-              />
-              <rewards-amount-table
-                class="rewards-table"
                 v-if="internalRewards.length"
                 v-model="selectedInternalRewardsModel"
-                :items="internalRewards"
+                :item="internalRewards[0]"
               />
               <rewards-amount-table
                 class="rewards-table"
                 v-if="vestedRewards"
                 v-model="selectedVestedRewardsModel"
-                :items="[vestedRewadsGroupItem]"
-                :group="true"
+                :item="vestedRewadsGroupItem"
               />
-              <s-divider />
-              <div class="rewards-footer">
-                <div v-if="isExternalAccountConnected" class="rewards-account">
-                  <toggle-text-button
-                    type="link"
-                    size="mini"
-                    :primary-text="formatAddress(evmAddress, 8)"
-                    :secondary-text="t('rewards.changeAccount')"
-                    @click="handleWalletChange"
-                  />
-                  <span>{{ t('rewards.connected') }}</span>
+              <rewards-amount-table
+                class="rewards-table"
+                v-model="selectedExternalRewardsModel"
+                :item="externalRewardsGroupItem"
+                :show-table="!!externalRewards.length"
+                :simple-group="true"
+              >
+                <div class="rewards-footer">
+                  <s-divider />
+                  <div v-if="isExternalAccountConnected" class="rewards-account">
+                    <toggle-text-button
+                      type="link"
+                      size="mini"
+                      :primary-text="formatAddress(evmAddress, 8)"
+                      :secondary-text="t('rewards.changeAccount')"
+                      @click="handleWalletChange"
+                    />
+                    <span>{{ t('rewards.connected') }}</span>
+                  </div>
+                  <s-button v-else class="rewards-connect-button" type="tertiary" @click="connectExternalAccountProcess">
+                    {{ t('rewards.action.connectExternalWallet') }}
+                  </s-button>
+                  <div v-if="externalRewardsHintText" class="rewards-footer-hint">{{ externalRewardsHintText }}</div>
                 </div>
-                <s-button v-else class="rewards-connect-button" type="tertiary" @click="connectExternalAccountProcess">
-                  {{ t('rewards.action.connectExternalWallet') }}
-                </s-button>
-                <div v-if="externalRewardsHintText" class="rewards-footer-hint">{{ externalRewardsHintText }}</div>
-              </div>
+              </rewards-amount-table>
+              <info-line v-if="fee && isSoraAccountConnected && rewardsAvailable && !claimingInProgressOrFinished" v-bind="feeInfo" class="rewards-fee" />
             </template>
           </div>
           <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text--transaction">
@@ -68,7 +69,6 @@
       >
         {{ actionButtonText }}
       </s-button>
-      <info-line v-if="fee && isSoraAccountConnected && rewardsAvailable && !claimingInProgressOrFinished" v-bind="feeInfo" class="rewards-block" />
     </div>
   </div>
 </template>
@@ -76,13 +76,14 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
-import { AccountAsset, KnownSymbols, RewardInfo, RewardsInfo, CodecString } from '@sora-substrate/util'
+import { AccountAsset, KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, CodecString, FPNumber } from '@sora-substrate/util'
 
-import web3Util from '@/utils/web3-util'
+import ethersUtil from '@/utils/ethers-util'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import { hasInsufficientXorForFee } from '@/utils'
-import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards'
+import { groupRewardsByAssetsList } from '@/utils/rewards'
+import { RewardsAmountHeaderItem, RewardInfoGroup } from '@/types/rewards'
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import TransactionMixin from '@/components/mixins/TransactionMixin'
@@ -117,9 +118,8 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset
   @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean
   @Getter('externalRewardsAvailable', { namespace: 'rewards' }) externalRewardsAvailable!: boolean
-  @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardsAmountTableItem>
+  @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardsAmountHeaderItem>
   @Getter('transactionStepsCount', { namespace: 'rewards' }) transactionStepsCount!: number
-  @Getter('vestedRewadsGroupItem', { namespace: 'rewards' }) vestedRewadsGroupItem!: RewardInfoGroup
 
   @Action('reset', { namespace: 'rewards' }) reset!: AsyncVoidFn
   @Action('setSelectedRewards', { namespace: 'rewards' }) setSelectedRewards!: (params: any) => Promise<void>
@@ -140,7 +140,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
       await this.syncExternalAccountWithAppState()
       await this.checkAccountRewards()
 
-      this.unwatchEthereum = await web3Util.watchEthereum({
+      this.unwatchEthereum = await ethersUtil.watchEthereum({
         onAccountChange: (addressList: string[]) => {
           if (addressList.length) {
             this.changeExternalAccountProcess({ address: addressList[0] })
@@ -164,12 +164,39 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     }
   }
 
-  get selectedInternalRewardsModel (): Array<string> {
-    return this.selectedInternalRewards.map(item => item.type)
+  get externalRewardsGroupItem (): RewardInfoGroup {
+    return {
+      type: this.t('rewards.groups.external'),
+      limit: groupRewardsByAssetsList(this.externalRewards),
+      rewards: this.externalRewards
+    }
   }
 
-  set selectedInternalRewardsModel (types: Array<string>) {
-    const internal = this.internalRewards.filter(item => types.includes(item.type))
+  get vestedRewadsGroupItem (): RewardInfoGroup {
+    const rewards = this.vestedRewards?.rewards ?? []
+    const pswap = KnownAssets.get(KnownSymbols.PSWAP)
+
+    return {
+      type: this.t('rewards.groups.strategic'),
+      title: this.t('rewards.claimableAmountDoneVesting'),
+      limit: [{
+        symbol: pswap.symbol as KnownSymbols,
+        amount: FPNumber.fromCodecValue(this.vestedRewards?.limit ?? 0, pswap.decimals).toLocaleString()
+      }],
+      total: {
+        symbol: pswap.symbol as KnownSymbols,
+        amount: FPNumber.fromCodecValue(this.vestedRewards?.total ?? 0, pswap.decimals).toLocaleString()
+      },
+      rewards
+    }
+  }
+
+  get selectedInternalRewardsModel (): boolean {
+    return this.selectedInternalRewards.length !== 0
+  }
+
+  set selectedInternalRewardsModel (flag: boolean) {
+    const internal = flag ? this.internalRewards : []
     this.setSelectedRewards({ internal, external: this.selectedExternalRewards, vested: this.selectedVestedRewards })
   }
 
@@ -329,7 +356,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     if (!internalAddress) return
 
     if (externalAddress) {
-      const isConnected = await web3Util.checkAccountIsConnected(externalAddress)
+      const isConnected = await ethersUtil.checkAccountIsConnected(externalAddress)
 
       if (!isConnected) return
     }
@@ -346,10 +373,12 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   border-radius: var(--s-border-radius-small);
 }
 .rewards-connect-button.el-button.neumorphic {
-  background: transparent;
-  color: var(--s-color-base-on-accent);
-  border: 1px solid var(--s-color-base-on-accent);
-  box-shadow: none;
+  &, &:hover, &.focusing {
+    background: transparent;
+    color: var(--s-color-base-on-accent);
+    border: 1px solid var(--s-color-base-on-accent);
+    box-shadow: none;
+  }
 }
 .rewards-action-button i {
   top: $inner-spacing-mini;
@@ -413,13 +442,6 @@ $hint-font-size: 13px;
     }
   }
 
-  &-table {
-    &:not(:last-child) {
-      margin-bottom: 0;
-    }
-    margin-left: -#{$checkbox-width};
-  }
-
   &-footer {
     & > *:not(:last-child) {
       margin-bottom: $inner-spacing-small;
@@ -440,11 +462,16 @@ $hint-font-size: 13px;
     justify-content: space-between;
     font-size: var(--s-font-size-mini);
     line-height: var(--s-line-height-big);
-    margin-top: $inner-spacing-medium;
+    margin-top: $inner-spacing-small;
     padding: 0 $inner-spacing-mini / 2;
   }
 
+  &-fee.info-line {
+    color: var(--s-olor-base-on-acccent);
+    margin-top: $inner-spacing-medium;
+  }
+
   @include full-width-button('rewards-action-button');
-  @include full-width-button('rewards-connect-button');
+  @include full-width-button('rewards-connect-button', 0);
 }
 </style>

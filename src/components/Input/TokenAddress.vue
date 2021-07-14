@@ -1,6 +1,6 @@
 <template>
   <div class="token-address">
-    <span class="token-address__name">{{ tokenName }}</span>
+    <span v-if="showName" class="token-address__name">{{ tokenName }}</span>
     <s-tooltip :content="t('selectToken.copy')" border-radius="mini" placement="bottom-end">
       <span class="token-address__value" @click="handleCopy">({{ formattedAddress }})</span>
     </s-tooltip>
@@ -20,6 +20,7 @@ export default class TokenAddress extends Mixins(TranslationMixin) {
   @Prop({ default: '', type: String }) readonly address!: string
   @Prop({ default: '', type: String }) readonly externalAddress!: string
   @Prop({ default: false, type: Boolean }) readonly external!: boolean
+  @Prop({ default: true, type: Boolean }) readonly showName!: boolean
 
   get tokenName (): string {
     return this.name || this.symbol

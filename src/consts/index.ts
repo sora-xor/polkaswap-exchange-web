@@ -2,7 +2,7 @@ import invert from 'lodash/fp/invert'
 import { LiquiditySourceTypes } from '@sora-substrate/util'
 
 import pkg from '../../package.json'
-import { KnownBridgeAsset } from '../utils/web3-util'
+import { KnownBridgeAsset } from '../utils/ethers-util'
 
 export const app = {
   version: pkg.version,
@@ -69,7 +69,8 @@ export enum PageNames {
   PageNotFound = 'PageNotFound',
   Bridge = 'Bridge',
   BridgeTransaction = 'BridgeTransaction',
-  BridgeTransactionsHistory = 'BridgeTransactionsHistory'
+  BridgeTransactionsHistory = 'BridgeTransactionsHistory',
+  Tokens = 'Tokens'
 }
 
 export enum Components {
@@ -108,7 +109,8 @@ export enum Components {
   RewardsAmountHeader = 'Rewards/AmountHeader',
   RewardsAmountTable = 'Rewards/AmountTable',
   TokenSelectButton = 'Input/TokenSelectButton',
-  TokenAddress = 'Input/TokenAddress'
+  TokenAddress = 'Input/TokenAddress',
+  FormattedAmount = 'FormattedAmount'
 }
 
 interface SidebarMenuItem {
@@ -154,6 +156,10 @@ const AccountMenu: Array<SidebarMenuItem> = [
 ]
 
 const OtherPagesMenu: Array<SidebarMenuItem> = [
+  {
+    icon: 'various-bone-24',
+    title: PageNames.Tokens
+  },
   {
     icon: 'file-file-text-24',
     title: PageNames.About
