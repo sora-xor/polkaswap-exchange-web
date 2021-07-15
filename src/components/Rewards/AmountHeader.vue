@@ -2,8 +2,9 @@
   <div class="amount-header">
     <template v-for="({ amount, symbol }, index) in items">
       <div :key="symbol" class="amount-block">
-        <div class="amount-block__amount">{{ amount || '-' }}</div>
-        <div class="amount-block__symbol">{{ symbol }}</div>
+        <formatted-amount class="amount-block__amount" :value="amount">
+          <template v-slot="{ decimal }">{{ decimal }} {{ symbol }}</template>
+        </formatted-amount>
       </div>
       <div v-if="items.length - 1 !== index" class="amount-header-divider" :key="index">
         <s-divider direction="vertical" class="amount-header-divider__slash" />
@@ -16,8 +17,14 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 
 import { RewardsAmountHeaderItem } from '@/types/rewards'
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
 
-@Component
+@Component({
+  components: {
+    FormattedAmount: lazyComponent(Components.FormattedAmount)
+  }
+})
 export default class AmountHeader extends Vue {
   @Prop({ default: () => [], type: Array }) items!: Array<RewardsAmountHeaderItem>
 }
@@ -27,7 +34,7 @@ export default class AmountHeader extends Vue {
 $amount-font-size: 24px;
 $amount-line-height: 20px;
 $divider-width: 12px;
-$divider-height: 40px;
+$divider-height: 20px;
 
 .amount {
   &-header {
@@ -54,8 +61,10 @@ $divider-height: 40px;
   }
 
   &-block {
-    flex: 1;
-    text-align: center;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: baseline;
+    line-height: $amount-line-height
 
     &:first-child:not(:last-child) {
       text-align: right;
@@ -66,16 +75,14 @@ $divider-height: 40px;
     }
 
     &__amount {
-      font-size: $amount-font-size;
-      font-weight: $s-font-weight-big;
-      line-height: $amount-line-height;
+      font-size: var(--s-font-size-large);
+      font-weight: 700;
       letter-spacing: var(--s-letter-spacing-big);
     }
 
     &__symbol {
-      font-size: var(--s-font-size-small);
-      font-weight: 300;
-      line-height: var(--s-line-height-medium);
+      font-size: var(--s-font-size-big);
+      font-weight: 600;
     }
   }
 }

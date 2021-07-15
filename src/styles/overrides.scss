@@ -102,10 +102,6 @@ div.article-card {
 }
 
 /*_______________________ CURRENT UI FIXES FOR CONSISTENCY (GENERALLY BASED ON TEST USERS FEEDBACK) _______________________*/
-i.s-icon-circle-plus-16, i.s-icon-circle-plus-16:hover {
-  font-size: inherit !important;
-  color: var(--s-color-base-on-accent) !important;
-}
 button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-medium.s-border-radius-small.s-primary.s-i-position-left span {
   font-size: var(--s-icon-font-size-mini) !important;
 }
