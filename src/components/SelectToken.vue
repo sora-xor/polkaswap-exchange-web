@@ -414,7 +414,7 @@ $token-item-height: 71px;
       font-size: var(--s-font-size-medium);
       font-weight: 300;
       letter-spacing: var(--s-letter-spacing-small);
-      line-height: var(--s-line-height-medium);;
+      line-height: var(--s-line-height-medium);
     }
   }
   &_action {
