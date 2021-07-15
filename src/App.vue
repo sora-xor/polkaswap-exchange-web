@@ -648,8 +648,16 @@ $sora-logo-width: 173.7px;
     margin-right: $inner-spacing-mini;
   }
 
-  .el-button + .el-button {
-    margin-left: 0;
+  .el-button {
+    + .el-button {
+      margin-left: 0;
+    }
+    &.s-tertiary {
+      color: var(--s-color-base-content-secondary);
+      &:hover, &:focus, &:active, &.focusing, &.s-pressed {
+        color: var(--s-color-base-content-primary);
+      }
+    }
   }
 }
 
