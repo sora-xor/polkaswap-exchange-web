@@ -30,9 +30,7 @@ export default class SettingsTabs extends Vue {
   }
 
   .el-tabs__item {
-    font-size: var(--s-font-size-medium);
-    font-weight: 400 !important;
-    text-align: center;
+    @include slippage-tolerance-tabs;
 
     &.is-focus:not(.is-active) {
       box-shadow: none !important;

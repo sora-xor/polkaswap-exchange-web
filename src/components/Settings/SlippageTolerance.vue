@@ -172,11 +172,13 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
 
     &.s-focused {
       box-shadow: var(--s-shadow-element);
+      .el-input__inner {
+        color: var(--s-color-theme-accent);
+      }
     }
 
     .el-input > input {
-      font-size: var(--s-font-size-medium);
-      text-align: center;
+      @include slippage-tolerance-tabs;
     }
   }
 

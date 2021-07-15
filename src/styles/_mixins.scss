@@ -351,6 +351,12 @@
   }
 }
 
+@mixin slippage-tolerance-tabs {
+  font-size: var(--s-font-size-medium);
+  font-weight: 400 !important;
+  text-align: center;
+}
+
 @mixin radio-title {
   font-size: var(--s-font-size-medium);
   font-weight: 600;
