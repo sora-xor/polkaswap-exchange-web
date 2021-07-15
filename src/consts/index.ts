@@ -12,7 +12,7 @@ export const app = {
 
 export const WalletPermissions = {
   sendAssets: true, // enable 'send' button in assets list
-  swapAssets: true // enable 'swap' button in assets list
+  swapAssets: false // enable 'swap' button in assets list
 }
 
 export enum Language {
@@ -230,6 +230,7 @@ export enum LogoSize {
   MINI = 'mini',
   SMALL = 'small',
   MEDIUM = 'medium',
+  BIG = 'big',
   LARGE = 'large'
 }
 

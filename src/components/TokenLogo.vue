@@ -64,5 +64,6 @@ $default-logo: url("~@/assets/img/token-logo-default.svg");
 @include element-size('token-logo--mini', 16px);
 @include element-size('token-logo--small', 24px);
 @include element-size('token-logo--medium', 32px);
+@include element-size('token-logo--big', var(--s-size-medium));
 @include element-size('token-logo--large', 80px);
 </style>
