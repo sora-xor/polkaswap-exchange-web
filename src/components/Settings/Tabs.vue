@@ -37,10 +37,6 @@ export default class SettingsTabs extends Vue {
     &.is-focus:not(.is-active) {
       box-shadow: none !important;
     }
-
-    &.is-active {
-      box-shadow: var(--s-shadow-tab) !important;
-    }
   }
 
   .settings-content {

@@ -65,33 +65,6 @@
     <footer class="app-footer">
       <img src="@/assets/about/web3.svg" draggable="false" class="web3 unselectable" />
       <div class="hr" />
-      <div class="info-block">
-        <div class="social-links">
-          <a href="https://twitter.com/polkaswap" title="Twitter" target="_blank" rel="nofollow noopener">
-            <img src="@/assets/img/social/twitter.svg" class="link" />
-          </a>
-          <a href="https://t.me/polkaswap" title="Telegram" target="_blank" rel="nofollow noopener">
-            <img src="@/assets/img/social/telegram.svg" class="link" />
-          </a>
-          <a href="https://medium.com/@polkaswap" title="Medium" target="_blank" rel="nofollow noopener">
-            <img src="@/assets/img/social/medium.svg" class="link" />
-          </a>
-          <a href="https://reddit.com/r/polkaswap" title="Reddit" target="_blank" rel="nofollow noopener">
-            <img src="@/assets/img/social/reddit.svg" class="link" />
-          </a>
-          <a href="https://github.com/sora-xor" title="Github" target="_blank" rel="nofollow noopener">
-            <img src="@/assets/img/social/github.svg" class="link" />
-          </a>
-          <a href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener">
-            <img src="@/assets/img/social/sora.svg" class="link" />
-          </a>
-        </div>
-        <div class="info-links">
-          <a :href="t('helpDialog.termsOfServiceLink')" :title="t('footerMenu.memorandum')" target="_blank" rel="nofollow noopener" class="text link">{{ t('footerMenu.memorandum') }}</a>
-          <span class="divider">|</span>
-          <a :href="t('helpDialog.privacyPolicyLink')" :title="t('footerMenu.privacy')" target="_blank" rel="nofollow noopener" class="text link">{{ t('footerMenu.privacy') }}</a>
-        </div>
-      </div>
     </footer>
   </div>
 </template>
@@ -425,7 +398,7 @@ export default class About extends Mixins(TranslationMixin) {
         font-size: 36px;
         line-height: 100%;
 
-        letter-spacing: -0.02em;
+        letter-spacing: var(--s-letter-spacing-small);
 
         padding: 10px 0;
 
@@ -481,9 +454,9 @@ export default class About extends Mixins(TranslationMixin) {
   font-size: 18px;
   line-height: 1.4;
 
-  letter-spacing: -0.02em;
+  letter-spacing: var(--s-letter-spacing-small);
 
-  color: #2A171F;
+  color: var(--s-color-base-content-primary);
   @media screen and (min-width: 1400px) {
     font-size: 20px;
     line-height: 1.4;
@@ -505,35 +478,6 @@ export default class About extends Mixins(TranslationMixin) {
     min-width: 760px;
     width: 100%;
     margin: 0 auto;
-  }
-  .info-block {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    display: none;
-
-    .social-links {
-      display: flex;
-      align-items: center;
-      .link {
-        padding: 0 5px;
-      }
-    }
-    .info-links {
-      display: flex;
-      align-items: center;
-      .divider {
-        margin: 0 5px;
-      }
-      .link {
-        font-weight: 200;
-        font-size: 12px;
-        line-height: 320%;
-        text-align: right;
-        letter-spacing: -0.02em;
-      }
-    }
   }
   .disclaimer {
     margin-top: 40px;
@@ -561,7 +505,7 @@ export default class About extends Mixins(TranslationMixin) {
   font-family: Sora;
   font-style: normal;
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: var(--s-letter-spacing-small);
   box-decoration-break: clone;
   -webkit-text-fill-color: transparent;
   -webkit-box-decoration-break: clone;

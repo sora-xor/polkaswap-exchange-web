@@ -80,26 +80,6 @@
                 class="el-menu-item menu-item--small"
               />
             </li>
-            <li class="menu-link-container">
-              <sidebar-item-content
-                :title="t('footerMenu.memorandum')"
-                :href="t('helpDialog.termsOfServiceLink')"
-                tag="a"
-                target="_blank"
-                rel="nofollow noopener"
-                class="el-menu-item menu-item--small menu-item--general-link"
-              />
-            </li>
-            <li class="menu-link-container">
-              <sidebar-item-content
-                :title="t('footerMenu.privacy')"
-                :href="t('helpDialog.privacyPolicyLink')"
-                tag="a"
-                target="_blank"
-                rel="nofollow noopener"
-                class="el-menu-item menu-item--small menu-item--general-link"
-              />
-            </li>
             <!-- <sidebar-item-content
               :title="t('footerMenu.help')"
               icon="notifications-info-24"
@@ -141,7 +121,7 @@ import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, Fau
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
 
-import axios from '@/api'
+import axios, { updateBaseUrl } from '@/api'
 import router, { lazyComponent } from '@/router'
 import { formatAddress, disconnectWallet } from '@/utils'
 import { ConnectToNodeOptions } from '@/types/nodes'
@@ -217,6 +197,8 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   }
 
   async created () {
+    updateBaseUrl(router)
+
     const localeLanguage = navigator.language
     const thousandSymbol = Number(1000).toLocaleString(localeLanguage).substring(1, 2)
     if (thousandSymbol !== '0') {
@@ -346,6 +328,16 @@ html {
   height: 100vh;
 }
 
+.node-control {
+  &.el-button.neumorphic.el-button--plain {
+    padding-left: 5px;
+    box-shadow: var(--s-shadow-element);
+  }
+  > span {
+   flex-direction: row-reverse;
+ }
+}
+
 .menu.el-menu {
   .el-menu-item-group__title {
     display: none;
@@ -357,7 +349,7 @@ html {
 
   .el-menu-item {
     .icon-container {
-      box-shadow: var(--s-shadow-element);
+      box-shadow: var(--s-shadow-element-pressed);
     }
 
     &.menu-item--small {
@@ -370,7 +362,7 @@ html {
 
     &.is-disabled {
       opacity: 1;
-      color: var(--s-color-base-content-tertiary) !important;
+      color: var(--s-color-base-content-secondary) !important;
 
       i {
         color: var(--s-color-base-content-tertiary);
@@ -381,20 +373,21 @@ html {
         color: var(--s-color-base-content-secondary) !important;
       }
     }
+    &:active,
+    &.is-disabled,
+    &.is-active {
+      .icon-container {
+        box-shadow: var(--s-shadow-element);
+      }
+    }
     &.is-active {
       i {
         color: var(--s-color-theme-accent) !important;
       }
-
-      .icon-container {
-        box-shadow: var(--s-shadow-element-pressed);
+      span {
+        font-weight: 400;
       }
     }
-  }
-
-  .el-menu-item.menu-item--small.menu-item--general-link {
-    padding: $basic-spacing-small $basic-spacing-small $inner-spacing-mini / 2 $basic-spacing-medium;
-    line-height: 1;
   }
 }
 
@@ -499,8 +492,8 @@ html {
   }
 }
 .app-disclaimer {
-  span {
-    display: none;
+  &__title {
+    color: var(--s-color-theme-accent);
   }
   .link {
     color: var(--s-color-base-content-primary);
@@ -511,17 +504,6 @@ html {
 .s-typography-button--large.is-disabled {
   font-size: var(--s-font-size-medium) !important;
 }
-
-@include large-mobile {
-  .app-disclaimer {
-    span {
-      display: inline;
-    }
-    .link--mobile {
-      display: none;
-    }
-  }
-}
 </style>
 
 <style lang="scss" scoped>
@@ -530,11 +512,6 @@ $header-height: 64px;
 $sidebar-width: 160px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
-
-// TODO: Move disclaimer's variables to appropriate place after design redevelopment
-$disclaimer-font-size: 11px;
-$disclaimer-font-weight: 200;
-$disclaimer-letter-spacing: -0.03em;
 
 .app {
   &-main {
@@ -572,17 +549,17 @@ $disclaimer-letter-spacing: -0.03em;
       margin-left: auto;
       margin-bottom: $inner-spacing-big;
       margin-right: auto;
-      width: calc(#{$inner-window-width} - #{$inner-spacing-medium * 2});
+      width: calc(#{$inner-window-width} - #{$basic-spacing-medium * 2});
       text-align: justify;
     }
   }
 
   &-disclaimer {
     margin-top: $basic-spacing-medium;
-    font-size: $disclaimer-font-size;
-    font-weight: $disclaimer-font-weight;
-    line-height: var(--s-line-height-mini);
-    letter-spacing: $disclaimer-letter-spacing;
+    font-size: var(--s-font-size-extra-mini);
+    font-weight: 300;
+    line-height: var(--s-line-height-extra-small);
+    letter-spacing: var(--s-letter-spacing-small);
     color: var(--s-color-base-content-secondary);
   }
 
@@ -626,21 +603,6 @@ $disclaimer-letter-spacing: -0.03em;
     display: none;
     .el-menu-item {
       white-space: initial;
-    }
-    + .menu-link-container {
-      position: relative;
-      margin-top: $inner-spacing-mini;
-      &:before {
-        position: absolute;
-        left: $basic-spacing-medium;
-        top: -1px;
-        content: '';
-        display: block;
-        height: 1px;
-        width: 100px;
-        background-color: var(--s-color-base-content-tertiary);
-        opacity: 0.2;
-      }
     }
   }
   .el-menu-item {
@@ -696,8 +658,9 @@ $disclaimer-letter-spacing: -0.03em;
 .account-control {
   &-title {
     font-size: var(--s-font-size-small);
-    font-variation-settings: "wght" 800;
+    font-variation-settings: "wght" 700;
     margin-right: $inner-spacing-mini / 2;
+    text-transform: none;
   }
 
   &-icon {
@@ -719,18 +682,22 @@ $disclaimer-letter-spacing: -0.03em;
 
 .node-control {
   &__text {
-    padding-right: calc(var(--s-basic-spacing) / 2);
-    text-align: right;
+    padding-left: calc(var(--s-basic-spacing) / 2);
+    text-align: left;
     font-size: var(--s-font-size-extra-small);
     letter-spacing: var(--s-letter-spacing-small);
     text-transform: none;
   }
   &-title {
-    font-variation-settings: "wght" 800;
+    font-variation-settings: "wght" 700;
   }
   &-network {
     color: var(--s-color-base-content-tertiary);
   }
+}
+
+.account-control.neumorphic.s-tertiary {
+  box-shadow: var(--s-shadow-element);
 }
 
 .sora-logo {

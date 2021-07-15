@@ -2,7 +2,7 @@ import { en as walletEn } from '@soramitsu/soraneo-wallet-web'
 import { Operation, TransactionStatus, RewardingEvents } from '@sora-substrate/util'
 
 import { PageNames, NetworkTypes } from '../consts'
-import { EvmNetworkType } from '../utils/web3-util'
+import { EvmNetworkType } from '../utils/ethers-util'
 
 export default {
   // Wallet project keys
@@ -22,8 +22,12 @@ export default {
   selectNodeText: 'Select node',
   bridgeText: 'Bridge',
   comingSoonText: 'Coming Soon',
-  disclaimer: 'Disclaimer: This website is maintained by the @:soraText community. Before continuing to use this website, please review the @:polkaswapFaqLink and documentation, which includes a detailed explanation on how Polkaswap works, as well as the @:footerMenu.memorandum, and @:(footerMenu.privacy). These documents are crucial to a secure and positive user experience. By using Polkaswap, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of Polkaswap in your legal jurisdiction; 2) your understanding that the current version of Polkaswap is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using Polkaswap, including, but not limited to, the risk of losing tokens. Once more, please do not continue without reading the FAQ, <span>@:footerMenu.memorandum</span><a href="@:helpDialog.termsOfServiceLink" target="_blank" rel="nofollow noopener" class="link link--mobile">@:footerMenu.memorandum</a>, and <span>@:footerMenu.privacy</span><a href="@:helpDialog.privacyPolicyLink" target="_blank" rel="nofollow noopener" class="link link--mobile">@:footerMenu.privacy</a>!',
-  polkaswapFaqLink: '<a class="link" href="https://wiki.sora.org/polkaswap/polkaswap-faq" target="_blank" rel="nofollow noopener" title="Polkaswap FAQ">Polkaswap FAQ</a>',
+  memorandum: 'Polkaswap Memorandum and Terms of Services',
+  memorandumLink: '<a href="@:helpDialog.termsOfServiceLink" target="_blank" rel="nofollow noopener" class="link" title="@:memorandum">@:memorandum</a>',
+  privacyLink: '<a href="@:helpDialog.privacyPolicyLink" target="_blank" rel="nofollow noopener" class="link" title="@:helpDialog.privacyPolicy">@:helpDialog.privacyPolicy</a>',
+  FAQ: 'Polkaswap FAQ',
+  polkaswapFaqLink: '<a class="link" href="https://wiki.sora.org/polkaswap/polkaswap-faq" target="_blank" rel="nofollow noopener" title="@:FAQ">@:FAQ</a>',
+  disclaimer: '<span class="app-disclaimer__title">Disclaimer</span>: This website is maintained by the @:soraText community. Before continuing to use this website, please review the @:polkaswapFaqLink and documentation, which includes a detailed explanation on how Polkaswap works, as well as the @:memorandumLink, and @:(privacyLink). These documents are crucial to a secure and positive user experience. By using Polkaswap, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of Polkaswap in your legal jurisdiction; 2) your understanding that the current version of Polkaswap is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using Polkaswap, including, but not limited to, the risk of losing tokens. Once more, please do not continue without reading the @:polkaswapFaqLink, @:memorandumLink, and @:privacyLink!',
   poweredBy: 'Powered by',
   confirmText: 'Confirm',
   confirmTransactionText: 'Confirm transaction in {direction}',
@@ -62,7 +66,8 @@ export default {
     [PageNames.About]: 'About',
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
-    [PageNames.CreatePair]: 'Create Pair'
+    [PageNames.CreatePair]: 'Create Pair',
+    [PageNames.Tokens]: 'Tokens'
   },
   social: {
     twitter: 'Twitter',
@@ -74,9 +79,7 @@ export default {
   footerMenu: {
     faucet: 'Faucet',
     github: 'GitHub',
-    sorawiki: '@:soraText Wiki',
-    memorandum: 'Polkaswap Memorandum and Terms of Services',
-    privacy: 'Privacy Policy'
+    sorawiki: '@:soraText Wiki'
   },
   helpDialog: {
     title: 'Help',
@@ -265,7 +268,7 @@ export default {
   },
   pool: {
     connectWallet: '@:connectWalletText',
-    connectToWallet: 'Connect to a wallet to add and view your liquidity.',
+    connectToWallet: 'Connect an account to view your liquidity.',
     liquidityNotFound: 'No liquidity found.',
     addLiquidity: 'Add liquidity',
     removeLiquidity: 'Remove liquidity',
@@ -446,6 +449,12 @@ export default {
     outputMessage: 'Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.',
     confirmTitle: 'You will receive'
   },
+  tokens: {
+    title: 'Listed Tokens',
+    symbol: 'Symbol',
+    name: 'Name',
+    assetId: 'Asset ID'
+  },
   dexSettings: {
     title: 'Transaction settings',
     marketAlgorithm: '@.upper:marketAlgorithmText',
@@ -483,7 +492,9 @@ export default {
     networkFee: '@:networkFeeText',
     networkFeeTooltip: '@:networkFeeTooltipText',
     andText: 'and',
-    vested: 'vested',
+    forText: 'for',
+    totalVested: 'Total vested',
+    claimableAmountDoneVesting: 'Claimable amount (done vesting)',
     claiming: {
       pending: 'Claiming...',
       success: 'Claimed successfully'
@@ -521,7 +532,13 @@ export default {
       [RewardingEvents.SoraFarmHarvest]: '@:(soraText).farm harvest',
       [RewardingEvents.NftAirdrop]: 'NFT Airdrop',
       [RewardingEvents.LiquidityProvision]: 'Fees gained from liquidity provision',
-      [RewardingEvents.BuyOnBondingCurve]: 'buying from the TBC'
+      [RewardingEvents.BuyOnBondingCurve]: 'buying from the TBC',
+      [RewardingEvents.MarketMakerVolume]: 'Market Maker',
+      [RewardingEvents.LiquidityProvisionFarming]: 'Farming'
+    },
+    groups: {
+      strategic: 'Strategic Rewards',
+      external: 'Rewards for the connected ethereum account'
     }
   },
   provider: {

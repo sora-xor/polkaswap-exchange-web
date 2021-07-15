@@ -81,6 +81,11 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.Rewards)
   },
   {
+    path: '/tokens',
+    name: PageNames.Tokens,
+    component: lazyView(PageNames.Tokens)
+  },
+  {
     path: '/stats',
     name: PageNames.Stats
   },

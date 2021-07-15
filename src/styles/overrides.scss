@@ -78,13 +78,6 @@ button.el-button--max {
 }
 
 /* BUTTONS */
-i.el-collapse-item__arrow {
-  background-color: var(--s-color-utility-body) !important;
-  box-shadow: var(--s-shadow-element);
-  color: var(--s-color-base-content-secondary);
-  transition: var(--s-transition-default);
-  border: none;
-}
 div.asset-details-actions i, div.wallet-assets-item.s-flex button.el-button--primary i {
   color: var(--s-color-base-on-accent) !important;
 }
@@ -110,10 +103,6 @@ div.article-card {
 }
 
 /*_______________________ CURRENT UI FIXES FOR CONSISTENCY (GENERALLY BASED ON TEST USERS FEEDBACK) _______________________*/
-i.s-icon-circle-plus-16, i.s-icon-circle-plus-16:hover {
-  font-size: inherit !important;
-  color: var(--s-color-base-on-accent) !important;
-}
 button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-medium.s-border-radius-small.s-primary.s-i-position-left span {
   font-size: var(--s-icon-font-size-mini) !important;
 }

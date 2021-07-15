@@ -3,19 +3,12 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util'
 
 import DialogMixin from '@/components/mixins/DialogMixin'
+import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin'
 
 import { asZeroValue, getAssetBalance } from '@/utils'
 
 @Component
-export default class SelectAsset extends Mixins(DialogMixin) {
-  public focusSearchInput (): void {
-    const input = this.$refs.search as any
-
-    if (input && typeof input.focus === 'function') {
-      input.focus()
-    }
-  }
-
+export default class SelectAsset extends Mixins(DialogMixin, AssetsSearchMixin) {
   public sortByBalance (external = false) {
     const isEmpty = (a): boolean => external
       ? !+a.externalBalance
@@ -28,22 +21,6 @@ export default class SelectAsset extends Mixins(DialogMixin) {
       if (emptyABalance === emptyBBalance) return 0
 
       return emptyABalance && !emptyBBalance ? 1 : -1
-    }
-  }
-
-  public filterAssetsByQuery (assets: Array<AccountAsset | RegisteredAccountAsset>, isRegisteredAssets = false) {
-    const addressField = isRegisteredAssets ? 'externalAddress' : 'address'
-
-    return (query: string): Array<AccountAsset | RegisteredAccountAsset> => {
-      if (!query) return assets
-
-      const search = query.toLowerCase().trim()
-
-      return assets.filter(asset =>
-        asset.name?.toLowerCase?.()?.includes?.(search) ||
-        asset.symbol?.toLowerCase?.()?.includes?.(search) ||
-        asset[addressField]?.toLowerCase?.() === search
-      )
     }
   }
 
