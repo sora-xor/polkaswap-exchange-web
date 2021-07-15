@@ -103,7 +103,6 @@ export enum Components {
   ConfirmBridgeTransactionDialog = 'ConfirmBridgeTransactionDialog',
   BridgeTransaction = 'BridgeTransaction',
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
-  ToggleTextButton = 'ToggleTextButton',
   GradientBox = 'Rewards/GradientBox',
   TokensRow = 'Rewards/TokensRow',
   RewardsAmountHeader = 'Rewards/AmountHeader',
