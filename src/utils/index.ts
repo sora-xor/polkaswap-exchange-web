@@ -3,7 +3,7 @@ import { Asset, AccountAsset, RegisteredAccountAsset, AccountLiquidity, KnownSym
 import { connection, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
 import storage from './storage'
 
-const FpZeroValue = new FPNumber(0)
+export const FpZeroValue = new FPNumber(0)
 
 export const copyToClipboard = async (text: string): Promise<void> => {
   try {

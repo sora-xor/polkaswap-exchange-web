@@ -172,6 +172,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('setFromValue', { namespace }) setFromValue!: (value: string) => Promise<void>
   @Action('setToValue', { namespace }) setToValue!: (value: string) => Promise<void>
   @Action('setMinMaxReceived', { namespace }) setMinMaxReceived!: (value: CodecString) => Promise<void>
+  @Action('setAmountWithoutImpact', { namespace }) setAmountWithoutImpact!: (amount: CodecString) => Promise<void>
   @Action('setExchangeB', { namespace }) setExchangeB!: (isExchangeB: boolean) => Promise<void>
   @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>
   @Action('setNetworkFee', { namespace }) setNetworkFee!: (value: CodecString) => Promise<void>
@@ -370,9 +371,10 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
       this.isRecountingProcess = true
       this.isInsufficientAmount = false
 
-      const { amount, fee, rewards } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, this.isExchangeB, this.liquiditySource)
+      const { amount, fee, rewards, amountWithoutImpact } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, this.isExchangeB, this.liquiditySource)
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals))
+      this.setAmountWithoutImpact(amountWithoutImpact)
       this.setLiquidityProviderFee(fee)
       this.setRewards(rewards)
 

@@ -12,11 +12,11 @@
       :key="index"
       v-bind="reward"
     />
-    <!-- <info-line
+    <info-line
       :label="t('swap.priceImpact')"
       :tooltip-content="t('swap.priceImpactTooltip')"
       :value="`${priceImpact}%`"
-    /> -->
+    />
     <info-line
       :label="t('swap.liquidityProviderFee')"
       :tooltip-content="liquidityProviderFeeTooltipText"
@@ -59,6 +59,7 @@ export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMi
   @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString
   @Getter('networkFee', { namespace }) networkFee!: CodecString
   @Getter('rewards', { namespace }) rewards!: Array<LPRewardsInfo>
+  @Getter('priceImpact', { namespace }) priceImpact!: string
 
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
