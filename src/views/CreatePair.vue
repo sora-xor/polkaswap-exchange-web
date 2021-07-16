@@ -31,6 +31,9 @@
           </s-button>
           <token-select-button class="el-button--select-token" :token="firstToken" />
         </div>
+        <div slot="bottom" class="input-line input-line--footer">
+          <token-address v-if="firstToken" :name="firstToken.name" :symbol="firstToken.symbol" :address="firstToken.address" class="input-title" />
+        </div>
       </s-float-input>
       <s-icon class="icon-divider" name="plus-16" />
       <s-float-input
@@ -58,6 +61,9 @@
             {{ t('buttons.max') }}
           </s-button>
           <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="secondToken" @click="openSelectSecondTokenDialog" />
+        </div>
+        <div slot="bottom" class="input-line input-line--footer">
+          <token-address v-if="secondToken" :name="secondToken.name" :symbol="secondToken.symbol" :address="secondToken.address" class="input-title" />
         </div>
       </s-float-input>
       <s-button type="primary" class="action-button s-typography-button--large" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="openConfirmDialog">
@@ -146,7 +152,8 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton)
+    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
 
