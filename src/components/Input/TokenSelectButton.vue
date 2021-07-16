@@ -8,7 +8,7 @@
   >
     <component v-if="hasToken" :is="tokenLogoComponent" :token="token" :first-token="tokens[0]" :second-token="tokens[1]" :size="tokenComponentSize" class="token-select-button__logo" />
     <span class="token-select-button__text">{{ buttonText }}</span>
-    <s-icon v-if="icon" class="token-select-button__icon" :name="icon" />
+    <s-icon v-if="icon" class="token-select-button__icon" :name="icon" size="18" />
   </s-button>
 </template>
 
@@ -86,7 +86,6 @@ $baseClass: '.token-select-button';
     background-color: var(--s-color-base-on-accent);
     color: var(--s-color-base-content-tertiary) !important;
     border-radius: var(--s-border-radius-medium);
-    padding: 2px;
   }
 
   &:hover, &:active, &.focusing {

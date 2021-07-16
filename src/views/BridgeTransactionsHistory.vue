@@ -20,7 +20,7 @@
           <s-input
             v-model="query"
             :placeholder="t('bridgeHistory.filterPlaceholder')"
-            prefix="el-icon-search"
+            prefix="s-icon-search-16"
             size="big"
           >
             <template #suffix v-if="query">

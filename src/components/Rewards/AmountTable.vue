@@ -140,7 +140,12 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
     }
   }
 
-  &-tooltip.neumorphic.is-light {
+  &-item-group.el-checkbox.s-big {
+    padding: 0;
+    height: initial;
+  }
+
+  &-tooltip.el-tooltip__popper.neumorphic.is-light {
     background-color: var(--s-color-status-success);
   }
 }
@@ -165,8 +170,6 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
     &-group {
       display: flex;
       flex-flow: nowrap;
-      padding: 0;
-      height: initial;
     }
 
     &-content {
