@@ -86,7 +86,6 @@ const getters = {
     )
   },
   reserve (state: AddLiquidityState) {
-    console.log(state.reserve)
     return state.reserve
   },
   reserveA (state: AddLiquidityState) {
