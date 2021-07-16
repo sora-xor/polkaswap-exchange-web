@@ -33,13 +33,7 @@
                 <div class="rewards-footer">
                   <s-divider />
                   <div v-if="isExternalAccountConnected" class="rewards-account">
-                    <toggle-text-button
-                      type="link"
-                      size="mini"
-                      :primary-text="formatAddress(evmAddress, 8)"
-                      :secondary-text="t('rewards.changeAccount')"
-                      @click="handleWalletChange"
-                    />
+                    <span>{{ formatAddress(evmAddress, 8) }}</span>
                     <span>{{ t('rewards.connected') }}</span>
                   </div>
                   <s-button v-else class="rewards-connect-button" type="tertiary" @click="connectExternalAccountProcess">
@@ -91,7 +85,6 @@ import TransactionMixin from '@/components/mixins/TransactionMixin'
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    ToggleTextButton: lazyComponent(Components.ToggleTextButton),
     GradientBox: lazyComponent(Components.GradientBox),
     TokensRow: lazyComponent(Components.TokensRow),
     RewardsAmountHeader: lazyComponent(Components.RewardsAmountHeader),
