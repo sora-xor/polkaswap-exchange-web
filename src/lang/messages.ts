@@ -408,7 +408,7 @@ export default {
     pricePool: 'Prices and fees',
     shareOfPool: 'Share of pool',
     firstPerSecond: '@:firstPerSecond',
-    firstSecondPoolTokens: '{first}-{second} Pool tokens',
+    firstSecondPoolTokens: '{first}-{second} Pool',
     connect: 'Connect wallet',
     supply: 'Supply',
     yourPosition: 'Your position',
@@ -423,7 +423,7 @@ export default {
     firstLiquidityProviderInfo: 'The ratio of tokens you add will set the price of this pool.<br/>Once you are happy with the rate click supply to review.'
   },
   confirmSupply: {
-    title: 'You will receive',
+    title: 'Your pool share will be',
     outputDescription: 'Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.',
     poolTokensBurned: '{first}-{second} Pool Tokens Burned',
     price: 'Price'

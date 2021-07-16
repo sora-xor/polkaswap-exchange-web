@@ -93,22 +93,14 @@
           <p class="info-line-container__title">{{ t('createPair.pricePool') }}</p>
           <info-line :label="t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="formatStringValue(price)" />
           <info-line :label="t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formatStringValue(priceReversed)" />
-          <info-line :label="t('createPair.shareOfPool')" value="100%" />
           <info-line :label="t('createPair.networkFee')" :value="`${formattedFee} ${KnownSymbols.XOR}`" :tooltip-content="t('networkFeeTooltipText')" />
         </div>
 
         <div class="info-line-container">
           <p class="info-line-container__title">{{ t('createPair.yourPositionEstimated') }}</p>
-          <info-line
-            :label="t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol })"
-            :value="formattedMinted"
-          >
-            <template #info-line-prefix>
-              <pair-token-logo class="pair-token-logo" :first-token="firstToken" :second-token="secondToken" size="mini" />
-            </template>
-          </info-line>
           <info-line :label="firstToken.symbol" :value="formatStringValue(firstTokenValue)" />
           <info-line :label="secondToken.symbol" :value="formatStringValue(secondTokenValue)" />
+          <info-line :label="t('createPair.shareOfPool')" value="100%" />
         </div>
       </template>
     </template>

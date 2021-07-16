@@ -79,7 +79,14 @@ const getters = {
   secondTokenValue (state: AddLiquidityState) {
     return state.secondTokenValue
   },
+  liquidityInfo (state: AddLiquidityState, getters, rootState, rootGetters) {
+    return rootGetters['pool/accountLiquidity'].find(liquidity =>
+      liquidity.firstAddress === state.firstTokenAddress &&
+      liquidity.secondAddress === state.secondTokenAddress
+    )
+  },
   reserve (state: AddLiquidityState) {
+    console.log(state.reserve)
     return state.reserve
   },
   reserveA (state: AddLiquidityState) {
@@ -105,7 +112,8 @@ const getters = {
   },
   shareOfPool (state: AddLiquidityState, getters) {
     const minted = FPNumber.fromCodecValue(getters.minted)
-    return minted.div(FPNumber.fromCodecValue(getters.totalSupply).add(minted)).mul(new FPNumber(100)).toLocaleString() || ZeroStringValue
+    const existed = FPNumber.fromCodecValue(getters.liquidityInfo?.balance ?? 0)
+    return minted.add(existed).div(FPNumber.fromCodecValue(getters.totalSupply).add(minted)).mul(new FPNumber(100)).toLocaleString() || ZeroStringValue
   }
 }
 
@@ -219,7 +227,7 @@ const actions = {
   },
 
   async estimateMinted ({ commit, getters }) {
-    if (getters.firstToken?.address && getters.secondToken?.address && getters.firstTokenValue && getters.secondTokenValue) {
+    if (getters.firstToken?.address && getters.secondToken?.address) {
       commit(types.ESTIMATE_MINTED_REQUEST)
 
       try {
