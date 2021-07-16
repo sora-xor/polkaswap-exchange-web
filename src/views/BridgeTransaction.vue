@@ -23,7 +23,7 @@
           </h5>
           <p class="header-status">{{ headerStatus }}</p>
         </div>
-        <s-collapse class="neumorphic" :value="activeTransactionStep" :borders="true">
+        <s-collapse :value="activeTransactionStep" :borders="true">
           <s-collapse-item :name="transactionSteps.from">
             <template #title>
               <div class="network-info-title">
