@@ -105,9 +105,7 @@ const getters = {
   },
   shareOfPool (state: AddLiquidityState, getters) {
     const minted = FPNumber.fromCodecValue(getters.minted)
-    return getters.firstTokenValue && getters.secondTokenValue
-      ? minted.div(FPNumber.fromCodecValue(getters.totalSupply).add(minted)).mul(new FPNumber(100)).toLocaleString() || ZeroStringValue
-      : ZeroStringValue
+    return minted.div(FPNumber.fromCodecValue(getters.totalSupply).add(minted)).mul(new FPNumber(100)).toLocaleString() || ZeroStringValue
   }
 }
 
@@ -171,6 +169,7 @@ const actions = {
     commit(types.SET_FIRST_TOKEN_VALUE, '')
     commit(types.SET_SECOND_TOKEN_VALUE, '')
     await dispatch('checkLiquidity')
+    await dispatch('estimateMinted')
   },
 
   async setSecondTokenAddress ({ commit, dispatch, getters, rootGetters }, address: string) {
@@ -187,6 +186,7 @@ const actions = {
     }
 
     await dispatch('checkLiquidity')
+    await dispatch('estimateMinted')
   },
 
   async checkReserve ({ commit, getters, dispatch }) {

@@ -95,22 +95,14 @@
       <p class="info-line-container__title">{{ t('createPair.pricePool') }}</p>
       <info-line :label="t('addLiquidity.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="formatStringValue(price)" />
       <info-line :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formatStringValue(priceReversed)" />
-      <info-line :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
       <info-line :label="t('createPair.networkFee')" :value="`${formattedFee} ${KnownSymbols.XOR}`" :tooltip-content="t('networkFeeTooltipText')" />
     </div>
 
     <div v-if="areTokensSelected && isAvailable && (!emptyAssets || (liquidityInfo || {}).balance)" class="info-line-container">
       <p class="info-line-container__title">{{ t(`createPair.yourPosition${!emptyAssets ? 'Estimated' : ''}`) }}</p>
-      <info-line
-        :label="t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol })"
-        :value="poolTokenPosition"
-      >
-        <template #info-line-prefix>
-          <pair-token-logo class="pair-token-logo" :first-token="firstToken" :second-token="secondToken" size="mini" />
-        </template>
-      </info-line>
       <info-line :label="firstToken.symbol" :value="firstTokenPosition" />
       <info-line :label="secondToken.symbol" :value="secondTokenPosition" />
+      <info-line :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
     </div>
 
     <select-token :visible.sync="showSelectSecondTokenDialog" :connected="isLoggedIn" :asset="firstToken" @select="setSecondTokenAddress($event.address)" />

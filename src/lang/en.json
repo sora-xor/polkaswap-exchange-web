@@ -588,7 +588,7 @@
         "title": "Create a pair",
         "deposit": "Deposit",
         "balance": "Balance",
-        "pricePool": "Prices and pool share",
+        "pricePool": "Prices and fees",
         "shareOfPool": "Share of pool",
         "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{first}-{second} Pool tokens",
