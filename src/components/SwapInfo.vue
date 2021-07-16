@@ -6,6 +6,7 @@
       :tooltip-content="t('swap.minReceivedTooltip')"
       :value="formattedMinMaxReceived"
       :asset-symbol="getAssetSymbolText"
+      :fiat-value="getFiatAmount(formattedMinMaxReceived, getAssetFiatPrice(whitelist, this.isExchangeB ? this.tokenFrom : this.tokenTo))"
     />
     <info-line
       v-for="(reward, index) in rewardsValues"
@@ -22,6 +23,7 @@
       :tooltip-content="liquidityProviderFeeTooltipText"
       :value="formattedLiquidityProviderFee"
       :asset-symbol="xorSymbol"
+      :fiat-value="xorPrice ? getFiatAmount(formattedLiquidityProviderFee, xorPrice) : ''"
     />
     <!-- TODO 4 alexnatalia: Show if logged in and have info about Network Fee -->
     <info-line
@@ -30,6 +32,7 @@
       :tooltip-content="t('swap.networkFeeTooltip')"
       :value="formattedNetworkFee"
       :asset-symbol="xorSymbol"
+      :fiat-value="xorPrice ? getFiatAmount(formattedNetworkFee, xorPrice) : ''"
     />
   </div>
 </template>
@@ -37,10 +40,11 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LPRewardsInfo } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LPRewardsInfo, Whitelist } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
+import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 
@@ -51,7 +55,7 @@ const namespace = 'swap'
     InfoLine: lazyComponent(Components.InfoLine)
   }
 })
-export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMixin) {
+export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMixin, FiatValueMixin) {
   @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset
   @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString
@@ -59,6 +63,7 @@ export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMi
   @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString
   @Getter('networkFee', { namespace }) networkFee!: CodecString
   @Getter('rewards', { namespace }) rewards!: Array<LPRewardsInfo>
+  @Getter whitelist!: Whitelist
 
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
@@ -104,6 +109,10 @@ export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMi
 
   get formattedLiquidityProviderFee (): string {
     return this.formatCodecNumber(this.liquidityProviderFee)
+  }
+
+  get xorPrice (): null | string {
+    return this.getAssetFiatPrice(this.whitelist, KnownAssets.get(KnownSymbols.XOR))
   }
 
   get formattedMinMaxReceived (): string {

@@ -66,6 +66,12 @@
       margin-top: $inner-spacing-mini / 2;
       margin-bottom: 0;
       min-height: $inner-spacing-mini * 2.25;
+      .fiat-value {
+        margin-right: auto;
+        + .token-address {
+          margin-left: var(--s-basic-spacing);
+        }
+      }
     }
 
     .input-title {

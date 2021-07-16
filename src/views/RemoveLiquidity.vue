@@ -40,6 +40,7 @@
           <div v-if="liquidity" class="input-title">
             <span class="input-title--uppercase">{{ t('createPair.balance') }}</span>
             <span class="input-title--uppercase input-title--primary">{{ getFormattedLiquidityBalance(liquidity) }}</span>
+            <fiat-value :value="'1234.56'" />
           </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
@@ -47,6 +48,9 @@
             {{ t('buttons.max') }}
           </s-button>
           <token-select-button class="el-button--select-token" :tokens="[firstToken, secondToken]" />
+        </div>
+        <div slot="bottom" class="input-line input-line--footer">
+          <fiat-value :value="'1234.56'" />
         </div>
       </s-float-input>
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
@@ -71,6 +75,9 @@
         </div>
         <div slot="right" class="s-flex el-buttons">
           <token-select-button class="el-button--select-token" :token="firstToken" />
+        </div>
+        <div slot="bottom" class="input-line input-line--footer">
+          <fiat-value :value="'1234.56'" />
         </div>
       </s-float-input>
 
@@ -97,6 +104,9 @@
         </div>
         <div slot="right" class="s-flex el-buttons">
           <token-select-button class="el-button--select-token" :token="secondToken" />
+        </div>
+        <div slot="bottom" class="input-line input-line--footer">
+          <fiat-value :value="'1234.56'" />
         </div>
       </s-float-input>
 
@@ -145,9 +155,11 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { FPNumber, KnownSymbols, AccountLiquidity, CodecString } from '@sora-substrate/util'
+import { FPNumber, KnownSymbols, AccountLiquidity, CodecString, Whitelist } from '@sora-substrate/util'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
+import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
+import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
 
 import router, { lazyComponent } from '@/router'
@@ -165,10 +177,12 @@ const namespace = 'removeLiquidity'
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton)
+    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    TokenAddress: lazyComponent(Components.TokenAddress),
+    FiatValue: lazyComponent(Components.FiatValue)
   }
 })
-export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDialogMixin) {
+export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDialogMixin, NumberFormatterMixin, FiatValueMixin) {
   readonly KnownSymbols = KnownSymbols
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
@@ -187,6 +201,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
+  @Getter whitelist!: Whitelist
 
   @Action('getLiquidity', { namespace }) getLiquidity
   @Action('setRemovePart', { namespace }) setRemovePart

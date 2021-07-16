@@ -33,6 +33,8 @@ $s-color-status-error: #F754A3;
 $s-color-status-success-background: #B9EBDB;
 $s-color-status-warning-background: #C6E2FF;
 $s-color-status-error-background: #FFD8EB;
+// Fiat colors
+$s-color-fiat-value: rgba(71, 154, 239, 1) !default;
 // Sizes
 $s-size-mini: 24px;
 $s-size-small: 32px;
@@ -72,4 +74,6 @@ $s-transition-default: all 0.125s ease-in-out;
 :root {
   --s-color-brand-day: #{$s-color-brand-day};
   --s-transition-default: #{$s-transition-default};
+  // Fiat colors
+  --s-color-fiat-value: #{$s-color-fiat-value};
 }

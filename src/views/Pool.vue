@@ -18,16 +18,19 @@
             <token-logo :token="getAsset(liquidityItem.firstAddress)" size="small" />
             <div>{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.firstAddress) }) }}</div>
             <div class="pool-info-value">{{ getFirstBalance(liquidityItem) }}</div>
+            <fiat-value :value="'1234.56'" />
           </div>
           <div class="pool-info">
             <token-logo :token="getAsset(liquidityItem.secondAddress)" size="small" />
             <div>{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.secondAddress) }) }}</div>
             <div class="pool-info-value">{{ getSecondBalance(liquidityItem) }}</div>
+            <fiat-value :value="'1234.56'" />
           </div>
           <div class="pool-info">
             <pair-token-logo :first-token="getAsset(liquidityItem.firstAddress)" :second-token="getAsset(liquidityItem.secondAddress)" size="mini" />
             <div>{{ t('pool.pairTokens', { pair: getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress)) }) }}</div>
             <div class="pool-info-value">{{ getBalance(liquidityItem) }}</div>
+            <fiat-value :value="'1234.56'" />
           </div>
           <div class="pool-info pool-info--share">
             <div>{{ t('pool.poolShare')}}</div>
@@ -61,11 +64,12 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { AccountLiquidity, Asset } from '@sora-substrate/util'
+import { AccountLiquidity, Asset, Whitelist } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
+import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
@@ -76,13 +80,15 @@ const namespace = 'pool'
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     TokenLogo: lazyComponent(Components.TokenLogo),
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo)
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    FiatValue: lazyComponent(Components.FiatValue)
   }
 })
-export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
+export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin, FiatValueMixin) {
   @Getter isLoggedIn!: boolean
   @Getter('accountLiquidity', { namespace }) accountLiquidity!: any
   @Getter('assets', { namespace: 'assets' }) assets!: Array<Asset>
+  @Getter whitelist!: Whitelist
   @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
 
   @Action('getAccountLiquidity', { namespace }) getAccountLiquidity!: AsyncVoidFn

@@ -12,6 +12,7 @@
       <s-icon name="info-16" size="14px" />
     </s-tooltip>
     <span class="info-line-value">{{ value }}<span v-if="assetSymbol" class="asset-symbol">{{ ' ' + assetSymbol }}</span></span>
+    <fiat-value v-if="fiatValue" :value="fiatValue" :withLeftShift="true" />
     <slot />
   </div>
 </template>
@@ -19,15 +20,19 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 
-import { InfoTooltipPosition } from '@/consts'
+import { Components, InfoTooltipPosition } from '@/consts'
+import { lazyComponent } from '@/router'
 
-@Component
+@Component({
+  components: { FiatValue: lazyComponent(Components.FiatValue) }
+})
 export default class InfoLine extends Vue {
   @Prop({ default: '', type: String }) readonly label!: string
   @Prop({ default: '', type: String }) readonly tooltipContent?: string
   @Prop({ default: InfoTooltipPosition.RIGHT, type: String }) readonly tooltipPosition?: string
   @Prop({ default: '' }) readonly value!: string | number
   @Prop({ default: '', type: String }) readonly assetSymbol?: string
+  @Prop({ default: '', type: String }) readonly fiatValue?: string
 
   get tooltipClasses (): string {
     const iconClass = 'info-line-icon'

@@ -23,6 +23,7 @@
           <div v-if="isLoggedIn && firstToken" class="input-title">
             <span class="input-title--uppercase">{{ t('createPair.balance') }}</span>
             <span class="input-title--uppercase input-title--primary">{{ getTokenBalance(firstToken) }}</span>
+            <fiat-value v-if="firstTokenPrice" :value="getFiatAmount(getTokenBalance(firstToken), firstTokenPrice)" :withLeftShift="true" />
           </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
@@ -30,6 +31,10 @@
             {{ t('buttons.max') }}
           </s-button>
           <token-select-button class="el-button--select-token" :token="firstToken" />
+        </div>
+        <div slot="bottom" class="input-line input-line--footer">
+          <fiat-value v-if="firstToken && firstTokenPrice" :value="getFiatAmount(firstTokenValue, firstTokenPrice)" />
+          <token-address v-if="firstToken" :name="firstToken.name" :symbol="firstToken.symbol" :address="firstToken.address" class="input-title" />
         </div>
       </s-float-input>
       <s-icon class="icon-divider" name="plus-16" />
@@ -51,6 +56,7 @@
           <div v-if="isLoggedIn && secondToken" class="input-title">
             <span class="input-title--uppercase">{{ t('createPair.balance') }}</span>
             <span class="input-title--uppercase input-title--primary">{{ getTokenBalance(secondToken) }}</span>
+            <fiat-value v-if="secondTokenPrice" :value="getFiatAmount(getTokenBalance(secondToken), secondTokenPrice)" :withLeftShift="true" />
           </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
@@ -58,6 +64,10 @@
             {{ t('buttons.max') }}
           </s-button>
           <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="secondToken" @click="openSelectSecondTokenDialog" />
+        </div>
+        <div slot="bottom" class="input-line input-line--footer">
+          <fiat-value v-if="secondToken && secondTokenPrice" :value="getFiatAmount(secondTokenValue, secondTokenPrice)" />
+          <token-address v-if="secondToken" :name="secondToken.name" :symbol="secondToken.symbol" :address="secondToken.address" class="input-title" />
         </div>
       </s-float-input>
       <s-button type="primary" class="action-button s-typography-button--large" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="openConfirmDialog">
@@ -94,7 +104,7 @@
           <info-line :label="t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="formatStringValue(price)" />
           <info-line :label="t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formatStringValue(priceReversed)" />
           <info-line :label="t('createPair.shareOfPool')" value="100%" />
-          <info-line :label="t('createPair.networkFee')" :value="`${formattedFee} ${KnownSymbols.XOR}`" :tooltip-content="t('networkFeeTooltipText')" />
+          <info-line :label="t('createPair.networkFee')" :value="`${formattedFee} ${KnownSymbols.XOR}`" :tooltip-content="t('networkFeeTooltipText')" :fiat-value="xorPrice ? getFiatAmount(formattedFee, xorPrice) : ''" />
         </div>
 
         <div class="info-line-container">
@@ -133,11 +143,12 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
-import { Action } from 'vuex-class'
-import { FPNumber, KnownAssets, KnownSymbols } from '@sora-substrate/util'
+import { Getter, Action } from 'vuex-class'
+import { FPNumber, KnownAssets, KnownSymbols, Whitelist } from '@sora-substrate/util'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
+import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -154,14 +165,29 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton)
+    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    TokenAddress: lazyComponent(Components.TokenAddress),
+    FiatValue: lazyComponent(Components.FiatValue)
   }
 })
 
-export default class CreatePair extends Mixins(TokenPairMixin, NumberFormatterMixin) {
+export default class CreatePair extends Mixins(TokenPairMixin, NumberFormatterMixin, FiatValueMixin) {
+  @Getter whitelist!: Whitelist
   @Action('createPair', { namespace }) createPair
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
+
+  get xorPrice (): null | string {
+    return this.getAssetFiatPrice(this.whitelist, KnownAssets.get(KnownSymbols.XOR))
+  }
+
+  get firstTokenPrice (): null | string {
+    return this.getAssetFiatPrice(this.whitelist, this.firstToken)
+  }
+
+  get secondTokenPrice (): null | string {
+    return this.getAssetFiatPrice(this.whitelist, this.secondToken)
+  }
 
   async created (): Promise<void> {
     await this.withApi(async () => {

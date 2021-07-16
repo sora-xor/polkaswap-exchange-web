@@ -33,6 +33,10 @@
             </s-col>
             <div v-if="connected" class="token-item__amount-container">
               <span class="token-item__amount">{{ formatBalance(token) }}</span>
+              <fiat-value
+                v-if="getAssetFiatPrice(whitelist, token) && formatBalance(token) !== formattedZeroSymbol"
+                :value="getFiatAmount(formatBalance(token), getAssetFiatPrice(whitelist, token))"
+              />
             </div>
           </div>
         </div>
@@ -100,6 +104,10 @@
               </s-col>
               <div v-if="connected" class="token-item__amount-container">
                 <span class="token-item__amount">{{ formatBalance(token) }}</span>
+                <fiat-value
+                  v-if="getAssetFiatPrice(whitelist, token) && formatBalance(token) !== formattedZeroSymbol"
+                  :value="getFiatAmount(formatBalance(token), getAssetFiatPrice(whitelist, token))"
+                />
               </div>
               <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
                 <s-icon name="basic-trash-24" />
@@ -123,6 +131,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin'
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
+import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components, ObjectInit } from '@/consts'
 import { lazyComponent } from '@/router'
@@ -133,11 +142,12 @@ const namespace = 'assets'
 @Component({
   components: {
     DialogBase,
+    FiatValue: lazyComponent(Components.FiatValue),
     TokenLogo: lazyComponent(Components.TokenLogo),
     TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
-export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMixin, LoadingMixin, NumberFormatterMixin) {
+export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMixin, LoadingMixin, NumberFormatterMixin, FiatValueMixin) {
   readonly tokenTabs = [
     'assets',
     'custom'
@@ -149,6 +159,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   alreadyAttached = false
   isConfirmed = false
   customAsset: Nullable<Asset> = null
+  formattedZeroSymbol = '-'
 
   @Prop({ default: false, type: Boolean }) readonly connected!: boolean
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: Asset
@@ -209,7 +220,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   formatBalance (token: AccountAsset): string {
     return formatAssetBalance(token, {
       showZeroBalance: false,
-      formattedZero: '-'
+      formattedZero: this.formattedZeroSymbol
     })
   }
 
@@ -329,6 +340,9 @@ $token-item-height: 71px;
   &__amount {
     &-container {
       text-align: right;
+      .fiat-value {
+        display: block;
+      }
     }
   }
   &__remove {

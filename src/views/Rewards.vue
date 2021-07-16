@@ -89,7 +89,8 @@ import TransactionMixin from '@/components/mixins/TransactionMixin'
     TokensRow: lazyComponent(Components.TokensRow),
     RewardsAmountHeader: lazyComponent(Components.RewardsAmountHeader),
     RewardsAmountTable: lazyComponent(Components.RewardsAmountTable),
-    InfoLine: lazyComponent(Components.InfoLine)
+    InfoLine: lazyComponent(Components.InfoLine),
+    FiatValue: lazyComponent(Components.FiatValue)
   }
 })
 export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin) {
