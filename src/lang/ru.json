@@ -259,7 +259,8 @@
         "About": "О приложении",
         "Stats": "Статистика",
         "Support": "Поддержка",
-        "CreatePair": "Создать пару"
+        "CreatePair": "Создать пару",
+        "Tokens": "Токены"
     },
     "social": {
         "twitter": "Twitter",

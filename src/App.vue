@@ -125,6 +125,7 @@ import axios, { updateBaseUrl } from '@/api'
 import router, { lazyComponent } from '@/router'
 import { formatAddress, disconnectWallet } from '@/utils'
 import { ConnectToNodeOptions } from '@/types/nodes'
+import { getLocale } from '@/lang'
 
 const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
 const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
@@ -199,7 +200,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   async created () {
     updateBaseUrl(router)
 
-    const localeLanguage = navigator.language
+    const localeLanguage = getLocale()
     const thousandSymbol = Number(1000).toLocaleString(localeLanguage).substring(1, 2)
     if (thousandSymbol !== '0') {
       FPNumber.DELIMITERS_CONFIG.thousand = Number(1234).toLocaleString(localeLanguage).substring(1, 2)

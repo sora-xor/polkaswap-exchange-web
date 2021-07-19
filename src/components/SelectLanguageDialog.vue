@@ -30,6 +30,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
+import { FPNumber } from '@sora-substrate/util'
 
 import { Language, Languages } from '@/consts'
 
@@ -55,6 +56,11 @@ export default class SelectLanguageDialog extends Mixins(TranslationMixin, Dialo
   set selectedLang (value: Language) {
     this.setLanguage(value)
     this.$root.$i18n.locale = value
+    const thousandSymbol = Number(1000).toLocaleString(value).substring(1, 2)
+    if (thousandSymbol !== '0') {
+      FPNumber.DELIMITERS_CONFIG.thousand = Number(1234).toLocaleString(value).substring(1, 2)
+    }
+    FPNumber.DELIMITERS_CONFIG.decimal = Number(1.2).toLocaleString(value).substring(1, 2)
   }
 
   beforeClose (closeFn: Function): void {
