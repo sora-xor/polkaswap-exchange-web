@@ -111,16 +111,9 @@
 
     <div v-if="areTokensSelected && isAvailable && (!emptyAssets || (liquidityInfo || {}).balance)" class="info-line-container">
       <p class="info-line-container__title">{{ t(`createPair.yourPosition${!emptyAssets ? 'Estimated' : ''}`) }}</p>
-      <info-line
-        :label="t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol })"
-        :value="poolTokenPosition"
-      >
-        <template #info-line-prefix>
-          <pair-token-logo class="pair-token-logo" :first-token="firstToken" :second-token="secondToken" size="mini" />
-        </template>
-      </info-line>
       <info-line :label="firstToken.symbol" :value="firstTokenPosition" />
       <info-line :label="secondToken.symbol" :value="secondTokenPosition" />
+      <info-line :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
     </div>
 
     <select-token :visible.sync="showSelectSecondTokenDialog" :connected="isLoggedIn" :asset="firstToken" @select="setSecondTokenAddress($event.address)" />
@@ -164,7 +157,6 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
     SelectToken: lazyComponent(Components.SelectToken),
     InfoLine: lazyComponent(Components.InfoLine),
     TokenLogo: lazyComponent(Components.TokenLogo),
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
@@ -176,7 +168,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
 export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatterMixin, FiatValueMixin) {
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
-  @Getter('accountLiquidity', { namespace: 'pool' }) accountLiquidity!: Array<AccountLiquidity>
+  @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity
   @Getter whitelist!: Whitelist
 
   @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
@@ -251,10 +243,6 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatter
     return classes.join(' ')
   }
 
-  get liquidityInfo () {
-    return this.accountLiquidity.find(l => l.firstAddress === this.firstToken?.address && l.secondAddress === this.secondToken?.address)
-  }
-
   get emptyAssets (): boolean {
     if (!(this.firstTokenValue || this.secondTokenValue)) {
       return true
@@ -262,10 +250,6 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatter
     const first = new FPNumber(this.firstTokenValue)
     const second = new FPNumber(this.secondTokenValue)
     return (first.isNaN() || first.isZero()) || (second.isNaN() || second.isZero())
-  }
-
-  get poolTokenPosition (): string {
-    return this.getTokenPosition(this.liquidityInfo?.balance, this.minted, true)
   }
 
   get firstTokenPosition (): string {
@@ -276,10 +260,10 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatter
     return this.getTokenPosition(this.liquidityInfo?.secondBalance, this.secondTokenValue)
   }
 
-  getTokenPosition (liquidityInfoBalance: string | undefined, tokenValue: string | CodecString | number, isPoolToken = false): string {
+  getTokenPosition (liquidityInfoBalance: string | undefined, tokenValue: string | CodecString | number): string {
     const prevPosition = FPNumber.fromCodecValue(liquidityInfoBalance ?? 0)
     if (!this.emptyAssets) {
-      return prevPosition.add(isPoolToken ? FPNumber.fromCodecValue(tokenValue) : new FPNumber(tokenValue)).toLocaleString()
+      return prevPosition.add(new FPNumber(tokenValue)).toLocaleString()
     }
     return prevPosition.toLocaleString()
   }

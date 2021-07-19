@@ -87,6 +87,7 @@
           {{ t('createPair.supply') }}
         </template>
       </s-button>
+      <slippage-tolerance class="slippage-tolerance-settings" />
     </s-form>
 
     <template v-if="areTokensSelected && isAvailable">
@@ -109,16 +110,9 @@
 
         <div class="info-line-container">
           <p class="info-line-container__title">{{ t('createPair.yourPositionEstimated') }}</p>
-          <info-line
-            :label="t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol })"
-            :value="formattedMinted"
-          >
-            <template #info-line-prefix>
-              <pair-token-logo class="pair-token-logo" :first-token="firstToken" :second-token="secondToken" size="mini" />
-            </template>
-          </info-line>
           <info-line :label="firstToken.symbol" :value="formatStringValue(firstTokenValue)" />
           <info-line :label="secondToken.symbol" :value="formatStringValue(secondTokenValue)" />
+          <info-line :label="t('createPair.shareOfPool')" value="100%" />
         </div>
       </template>
     </template>
@@ -163,7 +157,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
     SelectToken: lazyComponent(Components.SelectToken),
     InfoLine: lazyComponent(Components.InfoLine),
     TokenLogo: lazyComponent(Components.TokenLogo),
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),

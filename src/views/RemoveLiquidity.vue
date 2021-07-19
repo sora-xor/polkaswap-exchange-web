@@ -78,6 +78,7 @@
         </div>
         <div slot="bottom" class="input-line input-line--footer">
           <fiat-value :value="'1234.56'" />
+          <token-address v-if="firstToken" :name="firstToken.name" :symbol="firstToken.symbol" :address="firstToken.address" class="input-title" />
         </div>
       </s-float-input>
 
@@ -107,10 +108,12 @@
         </div>
         <div slot="bottom" class="input-line input-line--footer">
           <fiat-value :value="'1234.56'" />
+          <token-address v-if="secondToken" :name="secondToken.name" :symbol="secondToken.symbol" :address="secondToken.address" class="input-title" />
         </div>
       </s-float-input>
 
-      <div v-if="price || priceReversed || fee" class="info-line-container">
+      <div v-if="price || priceReversed || fee || shareOfPool" class="info-line-container">
+        <info-line v-if="shareOfPool" :label="t('removeLiquidity.shareOfPool')" :value="`${shareOfPool}%`" />
         <info-line
           v-if="price || priceReversed"
           :label="t('removeLiquidity.price')"
@@ -164,7 +167,7 @@ import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
-import { isMaxButtonAvailable, hasInsufficientXorForFee, formatAssetBalance } from '@/utils'
+import { hasInsufficientXorForFee, formatAssetBalance } from '@/utils'
 
 const namespace = 'removeLiquidity'
 
@@ -174,7 +177,6 @@ const namespace = 'removeLiquidity'
     InfoCard: lazyComponent(Components.InfoCard),
     InfoLine: lazyComponent(Components.InfoLine),
     TokenLogo: lazyComponent(Components.TokenLogo),
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
@@ -198,6 +200,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
   @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
   @Getter('secondTokenBalance', { namespace }) secondTokenBalance!: CodecString
   @Getter('fee', { namespace }) fee!: CodecString
+  @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
@@ -205,7 +208,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
 
   @Action('getLiquidity', { namespace }) getLiquidity
   @Action('setRemovePart', { namespace }) setRemovePart
-  @Action('setLiquidityAmount', { namespace }) setLiquidityAmount
   @Action('setFirstTokenAmount', { namespace }) setFirstTokenAmount
   @Action('setSecondTokenAmount', { namespace }) setSecondTokenAmount
   @Action('setFocusedField', { namespace }) setFocusedField
@@ -273,15 +275,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
     return this.$route.params.secondAddress
   }
 
-  // TODO: could be reused from TokenPairMixin
-  get areTokensSelected (): boolean {
-    return !!this.firstToken && !!this.secondToken
-  }
-
-  get isMaxButtonAvailable (): boolean {
-    return isMaxButtonAvailable(this.areTokensSelected, this.liquidity, this.liquidityAmount, this.fee, this.tokenXOR, true)
-  }
-
   get isEmptyAmount (): boolean {
     return !this.removePart || !this.liquidityAmount || !this.firstTokenAmount || !this.secondTokenAmount
   }
@@ -313,6 +306,10 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
     return `${charClassName}-char`
   }
 
+  get formattedFee (): string {
+    return this.formatCodecNumber(this.fee)
+  }
+
   @Watch('removePart')
   removePartChange (newValue): void {
     this.handleRemovePartChange(newValue)
@@ -340,10 +337,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
       return undefined
     }
     return this.getStringFromCodec(tokenBalance, decimals)
-  }
-
-  get formattedFee (): string {
-    return this.formatCodecNumber(this.fee)
   }
 
   handleLiquidityMaxValue (): void {
@@ -389,10 +382,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
 }
 
 @include vertical-divider('icon-divider', $inner-spacing-medium);
-
-.s-input--remove-part {
-  margin-bottom: $inner-spacing-medium;
-}
 
 .amount {
   line-height: var(--s-line-height-big);
