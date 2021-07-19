@@ -33,10 +33,7 @@
             </s-col>
             <div v-if="connected" class="token-item__amount-container">
               <span class="token-item__amount">{{ formatBalance(token) }}</span>
-              <fiat-value
-                v-if="getAssetFiatPrice(whitelist, token) && formatBalance(token) !== formattedZeroSymbol"
-                :value="getFiatAmount(formatBalance(token), getAssetFiatPrice(whitelist, token))"
-              />
+              <fiat-value v-if="getAssetFiatPrice(token) && formatBalance(token) !== formattedZeroSymbol" :value="getFiatAmount(token)" />
             </div>
           </div>
         </div>
@@ -104,10 +101,7 @@
               </s-col>
               <div v-if="connected" class="token-item__amount-container">
                 <span class="token-item__amount">{{ formatBalance(token) }}</span>
-                <fiat-value
-                  v-if="getAssetFiatPrice(whitelist, token) && formatBalance(token) !== formattedZeroSymbol"
-                  :value="getFiatAmount(formatBalance(token), getAssetFiatPrice(whitelist, token))"
-                />
+                <fiat-value v-if="getAssetFiatPrice(token) && formatBalance(token) !== formattedZeroSymbol" :value="getFiatAmount(token)" />
               </div>
               <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
                 <s-icon name="basic-trash-24" />
@@ -124,7 +118,7 @@
 import first from 'lodash/fp/first'
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { Asset, AccountAsset, isBlacklistAsset, Whitelist } from '@sora-substrate/util'
+import { Asset, AccountAsset, isBlacklistAsset } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -170,7 +164,6 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @Getter('nonWhitelistAccountAssets', { namespace }) nonWhitelistAccountAssets!: Array<AccountAsset>
   @Getter('nonWhitelistAssets', { namespace }) nonWhitelistAssets!: Array<Asset>
   // Wallet store
-  @Getter whitelist!: Whitelist
   @Getter whitelistIdsBySymbol!: any
   @Getter accountAssetsAddressTable
 

@@ -158,7 +158,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { FPNumber, KnownSymbols, AccountLiquidity, CodecString, Whitelist } from '@sora-substrate/util'
+import { FPNumber, KnownSymbols, AccountLiquidity, CodecString } from '@sora-substrate/util'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
@@ -204,7 +204,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
-  @Getter whitelist!: Whitelist
 
   @Action('getLiquidity', { namespace }) getLiquidity
   @Action('setRemovePart', { namespace }) setRemovePart

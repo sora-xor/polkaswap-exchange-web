@@ -24,8 +24,8 @@
           <div v-if="isLoggedIn && firstToken" class="input-title">
             <span class="input-title--uppercase">{{ t('createPair.balance') }}</span>
             <span class="input-title--uppercase input-title--primary">{{ getTokenBalance(firstToken) }}</span>
-            <fiat-value v-if="firstTokenPrice" :value="getFiatAmount(getTokenBalance(firstToken), firstTokenPrice)" :withLeftShift="true" />
-          </div>
+            <fiat-value v-if="firstTokenPrice" :value="getFiatAmount(firstToken)" :withLeftShift="true" />
+        </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
           <s-button v-if="isFirstMaxButtonAvailable" class="el-button--max s-typography-button--small" type="primary" alternative size="mini" border-radius="mini" @click="handleMaxValue(firstToken, setFirstTokenValue)">
@@ -34,7 +34,7 @@
           <token-select-button class="el-button--select-token" :token="firstToken" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <fiat-value v-if="firstToken && firstTokenPrice" :value="getFiatAmount(firstTokenValue, firstTokenPrice)" />
+          <fiat-value v-if="firstToken && firstTokenPrice" :value="getFiatAmountByString(firstToken, firstTokenValue || '0')" />
           <token-address v-if="firstToken" :name="firstToken.name" :symbol="firstToken.symbol" :address="firstToken.address" class="input-title" />
         </div>
       </s-float-input>
@@ -58,8 +58,8 @@
           <div v-if="isLoggedIn && secondToken" class="input-title">
             <span class="input-title--uppercase">{{ t('createPair.balance') }}</span>
             <span class="input-title--uppercase input-title--primary">{{ getTokenBalance(secondToken) }}</span>
-            <fiat-value v-if="secondTokenPrice" :value="getFiatAmount(getTokenBalance(secondToken), secondTokenPrice)" :withLeftShift="true" />
-          </div>
+            <fiat-value v-if="secondTokenPrice" :value="getFiatAmount(secondToken)" :withLeftShift="true" />
+        </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
           <s-button v-if="isSecondMaxButtonAvailable" class="el-button--max s-typography-button--small" type="primary" alternative size="mini" border-radius="mini" @click="handleMaxValue(secondToken, setSecondTokenValue)">
@@ -68,7 +68,7 @@
           <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="secondToken" @click="openSelectSecondTokenDialog" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <fiat-value v-if="secondToken && secondTokenPrice" :value="getFiatAmount(secondTokenValue, secondTokenPrice)" />
+          <fiat-value v-if="secondToken && secondTokenPrice" :value="getFiatAmountByString(secondToken, secondTokenValue || '0')" />
           <token-address v-if="secondToken" :name="secondToken.name" :symbol="secondToken.symbol" :address="secondToken.address" class="input-title" />
         </div>
       </s-float-input>
@@ -106,7 +106,7 @@
       <info-line :label="t('addLiquidity.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="formatStringValue(price)" />
       <info-line :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formatStringValue(priceReversed)" />
       <info-line :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
-      <info-line :label="t('createPair.networkFee')" :value="`${formattedFee} ${KnownSymbols.XOR}`" :tooltip-content="t('networkFeeTooltipText')" :fiat-value="xorPrice ? getFiatAmount(formattedFee, xorPrice) : ''" />
+      <info-line :label="t('createPair.networkFee')" :value="`${formattedFee} ${KnownSymbols.XOR}`" :tooltip-content="t('networkFeeTooltipText')" :fiat-value="getFiatAmountByString(xorAsset, formattedFee)" />
     </div>
 
     <div v-if="areTokensSelected && isAvailable && (!emptyAssets || (liquidityInfo || {}).balance)" class="info-line-container">
@@ -138,7 +138,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { FPNumber, AccountLiquidity, CodecString, KnownAssets, KnownSymbols, Whitelist } from '@sora-substrate/util'
+import { FPNumber, AccountLiquidity, CodecString, KnownAssets, KnownSymbols, Asset } from '@sora-substrate/util'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
@@ -169,7 +169,6 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatter
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity
-  @Getter whitelist!: Whitelist
 
   @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
   @Action('addLiquidity', { namespace }) addLiquidity
@@ -182,16 +181,12 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatter
 
   accountLiquiditySubscription!: Function
 
-  get xorPrice (): null | string {
-    return this.getAssetFiatPrice(this.whitelist, KnownAssets.get(KnownSymbols.XOR))
-  }
-
   get firstTokenPrice (): null | string {
-    return this.getAssetFiatPrice(this.whitelist, this.firstToken)
+    return this.getAssetFiatPrice(this.firstToken)
   }
 
   get secondTokenPrice (): null | string {
-    return this.getAssetFiatPrice(this.whitelist, this.secondToken)
+    return this.getAssetFiatPrice(this.secondToken)
   }
 
   async created (): Promise<void> {

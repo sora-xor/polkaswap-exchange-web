@@ -64,7 +64,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { AccountLiquidity, Asset, Whitelist } from '@sora-substrate/util'
+import { AccountLiquidity, Asset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -88,7 +88,6 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Getter isLoggedIn!: boolean
   @Getter('accountLiquidity', { namespace }) accountLiquidity!: any
   @Getter('assets', { namespace: 'assets' }) assets!: Array<Asset>
-  @Getter whitelist!: Whitelist
   @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
 
   @Action('getAccountLiquidity', { namespace }) getAccountLiquidity!: AsyncVoidFn

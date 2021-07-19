@@ -34,7 +34,7 @@
         <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="input-title">
           <span class="input-title--uppercase">{{ t('exchange.balance') }}</span>
           <span class="input-title--uppercase input-title--primary">{{ formatBalance(tokenFrom) }}</span>
-          <fiat-value v-if="tokenFromPrice" :value="getFiatAmount(formatBalance(tokenFrom), tokenFromPrice)" :withLeftShift="true" />
+          <fiat-value v-if="tokenFromPrice" :value="getFiatAmount(tokenFrom)" :withLeftShift="true" />
         </div>
       </div>
       <div slot="right" class="s-flex el-buttons">
@@ -44,7 +44,7 @@
         <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenFrom" @click="openSelectTokenDialog(true)" />
       </div>
       <div slot="bottom" class="input-line input-line--footer">
-        <fiat-value v-if="tokenFrom && tokenFromPrice" :value="getFiatAmount(fromValue, tokenFromPrice)" />
+        <fiat-value v-if="tokenFrom && tokenFromPrice" :value="getFiatAmountByString(tokenFrom, fromValue || '0')" />
         <token-address v-if="tokenFrom" :name="tokenFrom.name" :symbol="tokenFrom.symbol" :address="tokenFrom.address" class="input-title" />
       </div>
     </s-float-input>
@@ -68,14 +68,14 @@
         <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="input-title">
           <span class="input-title--uppercase">{{ t('exchange.balance') }}</span>
           <span class="input-title--uppercase input-title--primary">{{ formatBalance(tokenTo) }}</span>
-          <fiat-value v-if="tokenToPrice" :value="getFiatAmount(formatBalance(tokenTo), tokenToPrice)" :withLeftShift="true" />
+          <fiat-value v-if="tokenToPrice" :value="getFiatAmount(tokenTo)" :withLeftShift="true" />
         </div>
       </div>
       <div slot="right" class="s-flex el-buttons">
         <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenTo" @click="openSelectTokenDialog(false)" />
       </div>
       <div slot="bottom" class="input-line input-line--footer">
-        <fiat-value v-if="tokenTo && tokenToPrice" :value="getFiatAmount(toValue, tokenToPrice)" />
+        <fiat-value v-if="tokenTo && tokenToPrice" :value="getFiatAmountByString(tokenTo, toValue || '0')" />
         <token-address v-if="tokenTo" :name="tokenTo.name" :symbol="tokenTo.symbol" :address="tokenTo.address" class="input-title" />
       </div>
     </s-float-input>
@@ -126,7 +126,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes, LPRewardsInfo, FPNumber, Whitelist } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes, LPRewardsInfo, FPNumber } from '@sora-substrate/util'
 import type { Subscription } from '@polkadot/x-rxjs'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -159,7 +159,6 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Getter nodeIsConnected!: boolean
   @Getter isLoggedIn!: boolean
   @Getter slippageTolerance!: string
-  @Getter whitelist!: Whitelist
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset
   @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset
@@ -285,12 +284,12 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     return FPNumber.lte(fpAmount, zero)
   }
 
-  get tokenFromPrice (): null | string {
-    return this.getAssetFiatPrice(this.whitelist, this.tokenFrom)
+  get tokenFromPrice (): string | null {
+    return this.getAssetFiatPrice(this.tokenFrom)
   }
 
-  get tokenToPrice (): null | string {
-    return this.getAssetFiatPrice(this.whitelist, this.tokenTo)
+  get tokenToPrice (): string | null {
+    return this.getAssetFiatPrice(this.tokenTo)
   }
 
   created () {
