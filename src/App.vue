@@ -114,7 +114,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
 import { WALLET_CONSTS, WalletAvatar, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
-import { KnownSymbols, FPNumber } from '@sora-substrate/util'
+import { KnownSymbols } from '@sora-substrate/util'
 
 import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize, Language } from '@/consts'
 
@@ -177,6 +177,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   @Action setDefaultNodes!: (nodes: any) => Promise<void>
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
   @Action setFaucetUrl!: (url: string) => void
+  @Action setLanguage!: (lang: Language) => Promise<void>
   @Action('setEvmSmartContracts', { namespace: 'web3' }) setEvmSmartContracts
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts
@@ -200,12 +201,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   async created () {
     updateBaseUrl(router)
 
-    const localeLanguage = getLocale()
-    const thousandSymbol = Number(1000).toLocaleString(localeLanguage).substring(1, 2)
-    if (thousandSymbol !== '0') {
-      FPNumber.DELIMITERS_CONFIG.thousand = Number(1234).toLocaleString(localeLanguage).substring(1, 2)
-    }
-    FPNumber.DELIMITERS_CONFIG.decimal = Number(1.2).toLocaleString(localeLanguage).substring(1, 2)
+    await this.setLanguage(getLocale() as any)
 
     await this.withLoading(async () => {
       const { data } = await axios.get('/env.json')

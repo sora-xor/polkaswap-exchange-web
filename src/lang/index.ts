@@ -6,26 +6,46 @@ import { Language } from '@/consts'
 import { settingsStorage } from '@/utils/storage'
 
 import en from './en.json'
-import ru from './ru.json'
 
 Vue.use(VueI18n)
 
-const messages = {
-  en,
-  ru
+const i18n = new VueI18n({
+  locale: Language.EN,
+  messages: {
+    [Language.EN]: en
+  }
+})
+
+const loadedLanguages = [Language.EN]
+
+const getSupportedLocale = (locale: Language): string => {
+  return Object.values(Language).includes(locale as any)
+    ? locale
+    : Language.EN
 }
 
 export function getLocale (): string {
-  const locale = first((navigator.language || (navigator as any).userLanguage).split('-')) as string
-  if (!Object.values(Language).includes(locale as any)) {
-    return Language.EN
-  }
-  return locale
+  const locale = settingsStorage.get('language') || first((navigator.language || (navigator as any).userLanguage).split('-')) as string
+
+  return getSupportedLocale(locale as any)
 }
 
-const i18n = new VueI18n({
-  locale: settingsStorage.get('language') || getLocale(),
-  messages
-})
+export async function setI18nLocale (lang: Language): Promise<void> {
+  const locale = getSupportedLocale(lang) as any
+
+  if (!loadedLanguages.includes(locale)) {
+    import(
+      /* webpackChunkName: "lang-[request]" */
+      /* webpackMode: "lazy" */
+      `@/lang/${locale}.json`).then(
+      messages => {
+        i18n.setLocaleMessage(locale, messages.default)
+        loadedLanguages.push(locale)
+      }
+    )
+  }
+
+  i18n.locale = locale
+}
 
 export default i18n
