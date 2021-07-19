@@ -60,9 +60,14 @@
             </s-button>
             <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="asset" @click="openSelectAssetDialog" />
           </div>
-          <div slot="bottom" class="input-line input-line--footer">
-            <token-address v-if="isAssetSelected" v-bind="asset" :external="!isSoraToEvm" class="input-title" />
-          </div>
+          <template #bottom>
+            <div class="input-line input-line--footer">
+              <token-address v-if="isAssetSelected" v-bind="asset" :external="!isSoraToEvm" class="input-title" />
+            </div>
+            <s-button v-if="!isNetworkAConnected" class="el-button--connect s-typography-button--large" type="primary" @click="isSoraToEvm ? connectInternalWallet() : connectExternalWallet()">
+              {{ t('bridge.connectWallet') }}
+            </s-button>
+          </template>
         </s-float-input>
 
         <s-button class="s-button--switch" type="action" icon="arrows-swap-90-24" @click="handleSwitchItems" />
@@ -97,11 +102,7 @@
             </div>
             <div v-if="isNetworkBConnected && isSoraToEvm" class="bridge-item-footer">
               <s-divider />
-              <toggle-text-button
-                :primary-text="formatAddress(isSoraToEvm ? evmAddress : getWalletAddress(), 8)"
-                :secondary-text="t('bridge.changeAccount')"
-                @click="!isSoraToEvm ? connectInternalWallet() : changeExternalWallet()"
-              />
+              <span>{{ formatAddress(isSoraToEvm ? evmAddress : getWalletAddress(), 8) }}</span>
               <span>{{ t('bridge.connected') }}</span>
             </div>
             <s-button v-else-if="!isNetworkBConnected" class="el-button--connect s-typography-button--large" type="primary" @click="!isSoraToEvm ? connectInternalWallet() : connectExternalWallet()">
@@ -211,7 +212,6 @@ const namespace = 'bridge'
     SelectNetwork: lazyComponent(Components.SelectNetwork),
     SelectRegisteredAsset: lazyComponent(Components.SelectRegisteredAsset),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
-    ToggleTextButton: lazyComponent(Components.ToggleTextButton),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress)
   }
@@ -519,8 +519,9 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       justify-content: space-between;
       flex-wrap: wrap;
       font-size: var(--s-font-size-mini);
+      letter-spacing: var(--s-letter-spacing-mini);
       line-height: var(--s-line-height-medium);
-      color: var(--s-color-base-content-secondary);
+      color: var(--s-color-base-content-primary);
 
       .el-divider {
         margin-top: $inner-spacing-mini;
