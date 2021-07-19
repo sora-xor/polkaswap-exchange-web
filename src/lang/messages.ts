@@ -373,7 +373,9 @@ export default {
     confirm: '@:confirmTransactionText',
     newTransaction: 'Create new transaction',
     changeNetwork: '@:changeNetworkText',
-    connectWallet: '@:connectWalletText'
+    connectWallet: '@:connectWalletText',
+    changeAccount: '@:changeAccountText in @:metamask',
+    expectedAddress: 'Expected address in @:metamask'
   },
   months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   bridgeHistory: {
