@@ -545,7 +545,9 @@
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Create new transaction",
         "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText"
+        "connectWallet": "@:connectWalletText",
+        "changeAccount": "@:changeAccountText in @:metamask",
+        "expectedAddress": "Expected address in @:metamask"
     },
     "months": {
         "0": "Jan",
