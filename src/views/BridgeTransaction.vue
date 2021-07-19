@@ -23,7 +23,7 @@
           </h5>
           <p class="header-status">{{ headerStatus }}</p>
         </div>
-        <s-collapse class="neumorphic" :value="activeTransactionStep" :borders="true">
+        <s-collapse :value="activeTransactionStep" :borders="true">
           <s-collapse-item :name="transactionSteps.from">
             <template #title>
               <div class="network-info-title">
@@ -90,6 +90,10 @@
                 <span v-if="isTransactionStep2" :class="transactionIconStatusClasses(true)" />
               </div>
             </template>
+            <div v-if="isSoraToEvm && !isTxEvmAccount" class="transaction-error">
+              <span class="transaction-error__title">Expected address in MetaMask:</span>
+              <span class="transaction-error__value">{{ transactionEvmAddress }}</span>
+            </div>
             <div v-if="isTransactionStep2 && transactionToHash" :class="hashContainerClasses(isSoraToEvm)">
               <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="formatTxHash(transactionToHash)" readonly />
               <s-button class="s-button--hash-copy" type="action" alternative icon="basic-copy-24" @click="handleCopyTransactionHash(transactionToHash)" />
@@ -128,10 +132,11 @@
               v-if="isTransactionStep2 && !isTransferCompleted"
               type="primary"
               class="s-typograhy-button--big"
-              :disabled="(isSoraToEvm && !isValidNetworkType) || isInsufficientXorForFee || isInsufficientEvmNativeTokenForFee || isTransactionToPending"
+              :disabled="(isSoraToEvm && (!isValidNetworkType || !isTxEvmAccount)) || isInsufficientXorForFee || isInsufficientEvmNativeTokenForFee || isTransactionToPending"
               @click="handleSendTransactionTo"
             >
               <template v-if="isSoraToEvm && !isExternalAccountConnected">{{ t('bridgeTransaction.connectWallet') }}</template>
+              <template v-else-if="isSoraToEvm && !isTxEvmAccount">{{ t('bridgeTransaction.changeAccount') }}</template>
               <template v-else-if="isSoraToEvm && !isValidNetworkType">{{ t('bridgeTransaction.changeNetwork') }}</template>
               <span v-else-if="isTransactionToPending" v-html="t('bridgeTransaction.pending', { network: t(`bridgeTransaction.${!isSoraToEvm ? 'sora' : 'ethereum'}`) })" />
               <template v-else-if="isInsufficientXorForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : KnownSymbols.XOR }) }}</template>
@@ -205,6 +210,7 @@ export default class BridgeTransaction extends Mixins(
   @Getter('initialTransactionState', { namespace }) initialTransactionState!: STATES
   @Getter('transactionStep', { namespace }) transactionStep!: number
   @Getter('historyItem', { namespace }) historyItem!: any
+  @Getter('isTxEvmAccount', { namespace }) isTxEvmAccount!: boolean
 
   @Action('getNetworkFee', { namespace }) getNetworkFee!: AsyncVoidFn
 
@@ -372,6 +378,10 @@ export default class BridgeTransaction extends Mixins(
       return this.t('bridgeTransaction.statuses.done')
     }
     return this.t('bridgeTransaction.statuses.waitingForConfirmation')
+  }
+
+  get transactionEvmAddress (): string {
+    return this.historyItem?.to ?? ''
   }
 
   get soraTxId (): Nullable<string> {
@@ -849,6 +859,20 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
       width: var(--s-size-mini);
       height: var(--s-size-mini);
       line-height: 1;
+    }
+  }
+  &-error {
+    color: var(--s-color-status-error);
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 0 $inner-spacing-mini / 2;
+    margin-bottom: $inner-spacing-mini;
+
+    &__title {
+      text-transform: uppercase;
+    }
+    &__value {
+      font-weight: 600;
     }
   }
 }

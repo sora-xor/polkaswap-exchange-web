@@ -14,7 +14,7 @@
         <s-button :type="isLoggedIn ? 'tertiary' : 'secondary'" class="account-control" alternative size="medium" :tooltip="t('connectWalletTextTooltip')" :disabled="loading" @click="goTo(PageNames.Wallet)">
           <div class="account-control-title">{{ accountInfo }}</div>
           <div class="account-control-icon">
-            <s-icon v-if="!isLoggedIn" name="finance-wallet-24" />
+            <s-icon v-if="!isLoggedIn" name="finance-wallet-24" size="28" />
             <WalletAvatar v-else :address="account.address"/>
           </div>
         </s-button>
@@ -339,6 +339,17 @@ html {
  }
 }
 
+.account-control {
+  &-icon {
+    svg circle:first-child {
+      fill: var(--s-color-utility-surface);
+    }
+  }
+  span {
+    flex-direction: row-reverse;
+  }
+}
+
 .menu.el-menu {
   .el-menu-item-group__title {
     display: none;
@@ -648,22 +659,46 @@ $sora-logo-width: 173.7px;
   margin-left: auto;
 
   & > *:not(:last-child) {
-    margin-right: $inner-spacing-mini * 2.5;
+    margin-right: $inner-spacing-mini;
   }
 
-  .el-button + .el-button {
-    margin-left: 0;
+  .el-button {
+    + .el-button {
+      margin-left: 0;
+    }
+    &.s-tertiary {
+      color: var(--s-color-base-content-secondary);
+      &:hover, &:focus, &:active, &.focusing, &.s-pressed {
+        color: var(--s-color-base-content-primary);
+      }
+    }
   }
 }
 
 .account-control {
   &-title {
     font-size: var(--s-font-size-small);
-    font-variation-settings: "wght" 700;
-    margin-right: $inner-spacing-mini / 2;
-    text-transform: none;
   }
-
+  &.s-secondary {
+    &.el-button.s-alternative {
+      padding-right: $inner-spacing-medium;
+      padding-left: $inner-spacing-small;
+    }
+    .account-control-title {
+      margin-left: $inner-spacing-small / 2;
+      font-weight: 800;
+      letter-spacing: var(--s-letter-spacing-small);
+    }
+  }
+  &.s-tertiary {
+    &.el-button {
+      padding-left: $basic-spacing-mini;
+    }
+    text-transform: none;
+    .account-control-title {
+      margin-left: $basic-spacing-mini;
+    }
+  }
   &-icon {
     display: flex;
     align-items: center;
@@ -686,19 +721,22 @@ $sora-logo-width: 173.7px;
     padding-left: calc(var(--s-basic-spacing) / 2);
     text-align: left;
     font-size: var(--s-font-size-extra-small);
-    letter-spacing: var(--s-letter-spacing-small);
     text-transform: none;
   }
   &-title {
-    font-variation-settings: "wght" 700;
+    font-weight: 700;
   }
-  &-network {
-    color: var(--s-color-base-content-tertiary);
-  }
+  @include element-size('token-logo', 26px);
 }
 
-.account-control.neumorphic.s-tertiary {
-  box-shadow: var(--s-shadow-element);
+.node-control,
+.account-control {
+  letter-spacing: var(--s-letter-spacing-small);
+}
+
+.node-control-network,
+.account-control-network {
+  font-weight: 600;
 }
 
 .sora-logo {

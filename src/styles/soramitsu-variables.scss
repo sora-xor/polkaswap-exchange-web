@@ -66,8 +66,6 @@ $s-font-feature-settings-input: normal;
 $s-font-feature-settings-button: normal;
 // Transition
 $s-transition-default: all 0.125s ease-in-out;
-// Neu button settings
-$neu-button-action-text-color-alternative: var(--s-color-base-content-secondary);
 
 @import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";
 

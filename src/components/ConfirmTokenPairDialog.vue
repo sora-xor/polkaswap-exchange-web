@@ -5,7 +5,7 @@
     v-if="firstToken && secondToken"
   >
     <div class="pool-tokens-amount">
-      {{ minted }}
+      {{ shareOfPool }}%
     </div>
     <s-row v-if="firstToken && secondToken" flex align="middle" class="pool-tokens">
       <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="small" />
@@ -37,7 +37,6 @@
       :asset-symbol="secondToken.symbol"
     />
     <info-line :value="`1 ${secondToken.symbol} = ${formatStringValue(price)}`" :asset-symbol="firstToken.symbol" />
-    <info-line :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
     <template #footer>
       <s-button
         type="primary"

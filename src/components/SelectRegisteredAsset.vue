@@ -7,11 +7,11 @@
     <s-form-item class="el-form-item--search">
       <s-input
         ref="search"
-        size="big"
         v-model="query"
         :placeholder="t('selectRegisteredAsset.search.placeholder')"
         class="asset-search"
-        prefix="el-icon-search"
+        prefix="s-icon-search-16"
+        size="big"
         @focus="handleSearchFocus"
       >
         <template #suffix v-if="query">
@@ -31,7 +31,7 @@
               <div v-for="asset in filteredAssets" @click="selectAsset(asset)" :key="asset.address" class="asset-item">
                 <s-col>
                   <s-row flex justify="start" align="middle">
-                    <token-logo :token="asset" />
+                    <token-logo :token="asset" size="big" />
                     <div class="asset-item__name">{{ getAssetName(asset) }}</div>
                   </s-row>
                 </s-col>
@@ -306,7 +306,7 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
     padding-right: $inner-spacing-small;
   }
   .token-logo {
-    margin-right: $inner-spacing-medium;
+    margin-right: $inner-spacing-mini;
     flex-shrink: 0;
   }
 }
