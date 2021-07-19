@@ -69,19 +69,18 @@ const types = flow(
 ])
 
 async function waitForApprovedRequest (hash: string): Promise<BridgeApprovedRequest> {
-  await delay(SORA_REQUESTS_TIMEOUT)
   const approvedRequest = await bridgeApi.getApprovedRequest(hash)
   if (approvedRequest) {
     return approvedRequest
   }
   const request = await bridgeApi.getRequest(hash)
-  if (!request) {
-    return await waitForApprovedRequest(hash)
-  }
-  if ([BridgeTxStatus.Failed, BridgeTxStatus.Frozen].includes(request.status)) {
+
+  if (request && [BridgeTxStatus.Failed, BridgeTxStatus.Frozen].includes(request.status)) {
     // Set SORA_REJECTED
     throw new Error('Transaction was failed or canceled')
   }
+
+  await delay(SORA_REQUESTS_TIMEOUT)
   return await waitForApprovedRequest(hash)
   // Sora Pending
 }
@@ -260,6 +259,9 @@ const getters = {
   },
   restored (state) {
     return state.restored
+  },
+  isTxEvmAccount (state, getters, rootState, rootGetters) {
+    return !getters.historyItem?.to || getters.historyItem.to === rootGetters['web3/evmAddress']
   }
 }
 
@@ -500,7 +502,8 @@ const actions = {
             hash: transaction.hash,
             ethereumHash: ethLogData ? ethLogData.ethHash : '',
             transactionState: ethLogData ? STATES.EVM_COMMITED : STATES.EVM_REJECTED,
-            externalNetwork: BridgeNetworks.ETH_NETWORK_ID
+            externalNetwork: BridgeNetworks.ETH_NETWORK_ID,
+            to: transaction.to
           })
         }
       })
@@ -580,7 +583,8 @@ const actions = {
       transactionState: STATES.INITIAL,
       soraNetworkFee: getters.soraNetworkFee.toString(),
       ethereumNetworkFee: getters.evmNetworkFee,
-      externalNetwork: rootGetters['web3/evmNetwork']
+      externalNetwork: rootGetters['web3/evmNetwork'],
+      to: rootGetters['web3/evmAddress']
     }))
     return getters.historyItem
   },
@@ -618,7 +622,10 @@ const actions = {
     try {
       const tx = await waitForExtrinsicFinalization(txId)
       commit(types.SEND_SORA_TRANSACTION_SORA_EVM_SUCCESS)
-      return tx.hash
+      if (tx.hash) {
+        await waitForApprovedRequest(tx.hash)
+      }
+      return tx
     } catch (error) {
       commit(types.SEND_SORA_TRANSACTION_SORA_EVM_FAILURE)
       throw error
@@ -651,6 +658,16 @@ const actions = {
 
     try {
       const request = await waitForApprovedRequest(hash) // If it causes an error, then -> catch -> SORA_REJECTED
+
+      // update history item, if it hasn't 'to' field
+      if (!getters.historyItem.to) {
+        const tx = { ...getters.historyItem, to: request.to }
+        dispatch('updateHistoryParams', { tx })
+      }
+      if (!getters.isTxEvmAccount) {
+        throw new Error(`Change account in MetaMask to ${request.to}`)
+      }
+
       const ethersInstance = await ethersUtil.getEthersInstance()
 
       const symbol = getters.asset.symbol
