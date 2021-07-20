@@ -40,7 +40,6 @@
           <div v-if="liquidity" class="input-title">
             <span class="input-title--uppercase">{{ t('createPair.balance') }}</span>
             <span class="input-title--uppercase input-title--primary">{{ getFormattedLiquidityBalance(liquidity) }}</span>
-            <fiat-value :value="'1234.56'" />
           </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
@@ -48,9 +47,6 @@
             {{ t('buttons.max') }}
           </s-button>
           <token-select-button class="el-button--select-token" :tokens="[firstToken, secondToken]" />
-        </div>
-        <div slot="bottom" class="input-line input-line--footer">
-          <fiat-value :value="'1234.56'" />
         </div>
       </s-float-input>
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
@@ -77,7 +73,6 @@
           <token-select-button class="el-button--select-token" :token="firstToken" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <fiat-value :value="'1234.56'" />
           <token-address v-if="firstToken" :name="firstToken.name" :symbol="firstToken.symbol" :address="firstToken.address" class="input-title" />
         </div>
       </s-float-input>
@@ -107,7 +102,6 @@
           <token-select-button class="el-button--select-token" :token="secondToken" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <fiat-value :value="'1234.56'" />
           <token-address v-if="secondToken" :name="secondToken.name" :symbol="secondToken.symbol" :address="secondToken.address" class="input-title" />
         </div>
       </s-float-input>
@@ -131,6 +125,7 @@
           :value="formattedFee"
           :asset-symbol="KnownSymbols.XOR"
           :tooltip-content="t('networkFeeTooltipText')"
+          :fiat-value="getFiatAmountByString(xorAsset, FPNumber.fromCodecValue(this.fee).toString())"
         />
       </div>
 
@@ -187,6 +182,7 @@ const namespace = 'removeLiquidity'
 export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDialogMixin, NumberFormatterMixin, FiatValueMixin) {
   readonly KnownSymbols = KnownSymbols
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
+  readonly FPNumber = FPNumber
 
   @Getter('focusedField', { namespace }) focusedField!: Nullable<string>
   @Getter('liquidity', { namespace }) liquidity!: AccountLiquidity

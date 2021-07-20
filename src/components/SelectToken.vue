@@ -33,7 +33,11 @@
             </s-col>
             <div v-if="connected" class="token-item__amount-container">
               <span class="token-item__amount">{{ formatBalance(token) }}</span>
-              <fiat-value v-if="getAssetFiatPrice(token) && formatBalance(token) !== formattedZeroSymbol" :value="getFiatAmount(token)" />
+              <fiat-value
+                v-if="getAssetFiatPrice(token) && formatBalance(token) !== formattedZeroSymbol"
+                :value="getFiatAmount(token)"
+                with-decimals
+              />
             </div>
           </div>
         </div>
@@ -101,7 +105,7 @@
               </s-col>
               <div v-if="connected" class="token-item__amount-container">
                 <span class="token-item__amount">{{ formatBalance(token) }}</span>
-                <fiat-value v-if="getAssetFiatPrice(token) && formatBalance(token) !== formattedZeroSymbol" :value="getFiatAmount(token)" />
+                <fiat-value v-if="getAssetFiatPrice(token) && formatBalance(token) !== formattedZeroSymbol" :value="getFiatAmount(token)" with-decimals />
               </div>
               <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
                 <s-icon name="basic-trash-24" />

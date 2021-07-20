@@ -12,7 +12,7 @@
       <s-icon name="info-16" size="14px" />
     </s-tooltip>
     <span class="info-line-value">{{ value }}<span v-if="assetSymbol" class="asset-symbol">{{ ' ' + assetSymbol }}</span></span>
-    <fiat-value v-if="fiatValue" :value="fiatValue" :withLeftShift="true" />
+    <fiat-value v-if="fiatValue" :value="fiatValue" with-decimals with-left-shift />
     <slot />
   </div>
 </template>

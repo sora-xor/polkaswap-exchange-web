@@ -24,7 +24,7 @@
           <div v-if="isLoggedIn && firstToken" class="input-title">
             <span class="input-title--uppercase">{{ t('createPair.balance') }}</span>
             <span class="input-title--uppercase input-title--primary">{{ getTokenBalance(firstToken) }}</span>
-            <fiat-value v-if="firstTokenPrice" :value="getFiatAmount(firstToken)" :withLeftShift="true" />
+            <fiat-value v-if="firstTokenPrice" :value="getFiatAmount(firstToken)" with-decimals with-left-shift />
         </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
@@ -34,7 +34,7 @@
           <token-select-button class="el-button--select-token" :token="firstToken" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <fiat-value v-if="firstToken && firstTokenPrice" :value="getFiatAmountByString(firstToken, firstTokenValue || '0')" />
+          <fiat-value v-if="firstToken && firstTokenPrice" :value="getFiatAmountByString(firstToken, firstTokenValue || '0')" with-decimals />
           <token-address v-if="firstToken" :name="firstToken.name" :symbol="firstToken.symbol" :address="firstToken.address" class="input-title" />
         </div>
       </s-float-input>
@@ -58,7 +58,7 @@
           <div v-if="isLoggedIn && secondToken" class="input-title">
             <span class="input-title--uppercase">{{ t('createPair.balance') }}</span>
             <span class="input-title--uppercase input-title--primary">{{ getTokenBalance(secondToken) }}</span>
-            <fiat-value v-if="secondTokenPrice" :value="getFiatAmount(secondToken)" :withLeftShift="true" />
+            <fiat-value v-if="secondTokenPrice" :value="getFiatAmount(secondToken)" with-decimals with-left-shift />
         </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
@@ -68,7 +68,7 @@
           <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="secondToken" @click="openSelectSecondTokenDialog" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <fiat-value v-if="secondToken && secondTokenPrice" :value="getFiatAmountByString(secondToken, secondTokenValue || '0')" />
+          <fiat-value v-if="secondToken && secondTokenPrice" :value="getFiatAmountByString(secondToken, secondTokenValue || '0')" with-decimals />
           <token-address v-if="secondToken" :name="secondToken.name" :symbol="secondToken.symbol" :address="secondToken.address" class="input-title" />
         </div>
       </s-float-input>
