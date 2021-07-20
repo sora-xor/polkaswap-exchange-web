@@ -92,7 +92,8 @@
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Подтвердить транзакцию",
         "confirm": "@:confirmText",
-        "errorAddress": "Неверный адрес. Пожалуйста, перепроверьте и попробуйте еще раз."
+        "errorAddress": "Неверный адрес. Пожалуйста, перепроверьте и попробуйте еще раз.",
+        "addressDesc": ""
     },
     "account": {
         "successCopy": "Адрес кошелька скопирован в буфер обмена",
@@ -181,7 +182,8 @@
             "desc": "Вы получите эти токены при создании."
         },
         "extensibleSupply": {
-            "placeholder": "Увеличимое количество токенов"
+            "placeholder": "Увеличимое количество токенов",
+            "desc": ""
         }
     },
     "transaction": {
@@ -260,7 +262,7 @@
         "Stats": "Статистика",
         "Support": "Поддержка",
         "CreatePair": "Создать пару",
-        "Tokens": "Токены"
+        "Tokens": ""
     },
     "social": {
         "twitter": "Twitter",
@@ -540,7 +542,9 @@
         "newTransaction": "Создать новую транзакцию",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "viewInSorascan": "Просмотреть в SORAScan"
+        "viewInSorascan": "Просмотреть в SORAScan",
+        "changeAccount": "",
+        "expectedAddress": ""
     },
     "months": {
         "0": "Январь",
@@ -624,7 +628,8 @@
         "remove": "Забрать",
         "description": "Вывод токенов пула конвертирует вашу позицию обратно в базовые токены по текущему курсу, пропорциональному вашей доле в пуле. Начисленные комиссионные включаются в получаемые вами суммы.",
         "outputMessage": "Вывод является оценочным. Если цена изменится более чем на {slippageTolerance}%, ваша транзакция будет отменена.",
-        "confirmTitle": "Вы получите"
+        "confirmTitle": "Вы получите",
+        "shareOfPool": ""
     },
     "dexSettings": {
         "title": "Настройки транзакции",
@@ -701,9 +706,18 @@
             "NtfAirdrop": "NFT Airdrop",
             "LiquidityProvision": "Комиссия за предоставление ликвидности",
             "BuyOnBondingCurve": "покупка с TBC",
-            "NftAirdrop": "NFT Airdrop"
+            "NftAirdrop": "NFT Airdrop",
+            "MarketMakerVolume": "",
+            "LiquidityProvisionFarming": ""
         },
-        "vested": "vested"
+        "vested": "vested",
+        "forText": "",
+        "totalVested": "",
+        "claimableAmountDoneVesting": "",
+        "groups": {
+            "strategic": "",
+            "external": ""
+        }
     },
     "provider": {
         "default": "@:ethereumText провайдер",
@@ -716,5 +730,15 @@
     },
     "selectLanguageDialog": {
         "title": "Язык"
-    }
+    },
+    "tokens": {
+        "title": "",
+        "symbol": "",
+        "name": "",
+        "assetId": ""
+    },
+    "memorandum": "",
+    "memorandumLink": "",
+    "privacyLink": "",
+    "FAQ": ""
 }
