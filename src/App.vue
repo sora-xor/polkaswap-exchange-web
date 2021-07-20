@@ -517,7 +517,6 @@ html {
 <style lang="scss" scoped>
 $logo-horizontal-margin: $inner-spacing-mini / 2;
 $header-height: 64px;
-$sidebar-width: 160px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
 
@@ -762,7 +761,7 @@ $sora-logo-width: 173.7px;
   .app-sidebar {
     overflow-y: auto;
     margin-right: 0;
-    width: $sidebar-width;
+    width: auto;
     border-right: 1px solid #e5dce0 !important;
     border-image: linear-gradient(#FAF4F8, #D5CDD0, #FAF4F8) 30;
   }
