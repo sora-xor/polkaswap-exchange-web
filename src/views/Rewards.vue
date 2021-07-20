@@ -42,7 +42,12 @@
                   <div v-if="externalRewardsHintText" class="rewards-footer-hint">{{ externalRewardsHintText }}</div>
                 </div>
               </rewards-amount-table>
-              <info-line v-if="fee && isSoraAccountConnected && rewardsAvailable && !claimingInProgressOrFinished" v-bind="feeInfo" class="rewards-fee" />
+              <info-line
+                v-if="fee && isSoraAccountConnected && rewardsAvailable && !claimingInProgressOrFinished"
+                v-bind="feeInfo"
+                class="rewards-fee"
+                :fiat-value="getFiatAmountByString(xorAsset, FPNumber.fromCodecValue(fee).toString())"
+              />
             </template>
           </div>
           <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text--transaction">
@@ -81,6 +86,7 @@ import { RewardsAmountHeaderItem, RewardInfoGroup } from '@/types/rewards'
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import TransactionMixin from '@/components/mixins/TransactionMixin'
+import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 
 @Component({
   components: {
@@ -89,11 +95,10 @@ import TransactionMixin from '@/components/mixins/TransactionMixin'
     TokensRow: lazyComponent(Components.TokensRow),
     RewardsAmountHeader: lazyComponent(Components.RewardsAmountHeader),
     RewardsAmountTable: lazyComponent(Components.RewardsAmountTable),
-    InfoLine: lazyComponent(Components.InfoLine),
-    FiatValue: lazyComponent(Components.FiatValue)
+    InfoLine: lazyComponent(Components.InfoLine)
   }
 })
-export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin) {
+export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin, FiatValueMixin) {
   @State(state => state.rewards.fee) fee!: CodecString
   @State(state => state.rewards.feeFetching) feeFetching!: boolean
   @State(state => state.rewards.rewardsFetching) rewardsFetching!: boolean
@@ -121,6 +126,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @Action('claimRewards', { namespace: 'rewards' }) claimRewards!: (options: any) => Promise<void>
 
   private unwatchEthereum!: any
+  readonly FPNumber = FPNumber
 
   destroyed (): void {
     this.reset()
@@ -363,6 +369,11 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 </script>
 
 <style lang="scss">
+.rewards {
+  .fiat-value {
+    color: #c0e2ff;
+  }
+}
 .container.rewards .el-loading-mask {
   border-radius: var(--s-border-radius-small);
 }

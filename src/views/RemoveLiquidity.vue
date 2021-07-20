@@ -96,7 +96,7 @@
           :value="formattedFee"
           :asset-symbol="KnownSymbols.XOR"
           :tooltip-content="t('networkFeeTooltipText')"
-          :fiat-value="getFiatAmountByString(xorAsset, FPNumber.fromCodecValue(this.fee).toString())"
+          :fiat-value="getFiatAmountByString(xorAsset, FPNumber.fromCodecValue(fee).toString())"
         />
       </div>
 

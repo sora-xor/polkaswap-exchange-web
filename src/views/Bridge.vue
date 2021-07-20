@@ -52,6 +52,7 @@
             <div v-if="isNetworkAConnected && isAssetSelected" class="input-title">
               <span class="input-title--uppercase">{{ t('bridge.balance') }}</span>
               <span class="input-title--uppercase input-title--primary">{{ formatBalance(isSoraToEvm) }}</span>
+              <fiat-value v-if="asset && isSoraToEvm" :value="getFiatAmount(asset)" with-decimals with-left-shift />
             </div>
           </div>
           <div slot="right" v-if="isNetworkAConnected" class="s-flex el-buttons">
@@ -62,6 +63,7 @@
           </div>
           <template #bottom>
             <div class="input-line input-line--footer">
+              <fiat-value v-if="asset && isSoraToEvm" :value="getFiatAmountByString(asset, amount || '0')" with-decimals />
               <token-address v-if="isAssetSelected" v-bind="asset" :external="!isSoraToEvm" class="input-title" />
             </div>
             <s-button v-if="!isNetworkAConnected" class="el-button--connect s-typography-button--large" type="primary" @click="isSoraToEvm ? connectInternalWallet() : connectExternalWallet()">
@@ -151,6 +153,7 @@
             :tooltip-content="t('networkFeeTooltipText')"
             :value="formatFee(soraNetworkFee, formattedSoraNetworkFee)"
             :asset-symbol="KnownSymbols.XOR"
+            :fiat-value="getFiatAmountByString(xorAsset, FPNumber.fromCodecValue(soraNetworkFee).toString())"
           />
           <info-line
             :label="t('bridge.ethereumNetworkFee')"
@@ -183,7 +186,7 @@ import { RegisteredAccountAsset, BridgeNetworks, KnownSymbols, FPNumber, CodecSt
 import BridgeMixin from '@/components/mixins/BridgeMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
+import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EvmSymbol } from '@/consts'
@@ -213,6 +216,7 @@ const namespace = 'bridge'
     SelectRegisteredAsset: lazyComponent(Components.SelectRegisteredAsset),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    FiatValue: lazyComponent(Components.FiatValue),
     TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
@@ -220,8 +224,10 @@ export default class Bridge extends Mixins(
   BridgeMixin,
   TranslationMixin,
   NetworkFormatterMixin,
-  NumberFormatterMixin
+  FiatValueMixin
 ) {
+  readonly FPNumber = FPNumber
+
   @Action('setSoraToEvm', { namespace }) setSoraToEvm
   @Action('setEvmNetwork', { namespace: 'web3' }) setEvmNetwork
   @Action('setAssetAddress', { namespace }) setAssetAddress

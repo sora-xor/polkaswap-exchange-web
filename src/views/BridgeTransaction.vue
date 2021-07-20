@@ -57,11 +57,13 @@
               :label="t('bridgeTransaction.networkInfo.amount')"
               :value="`-${formattedAmount}`"
               :asset-symbol="formatAssetSymbol(assetSymbol)"
+              :fiat-value="isSoraToEvm ? getFiatAmountByString(asset, new FPNumber(amount).toString()) : null"
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
               :value="isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
               :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : currentEvmTokenSymbol"
+              :fiat-value="isSoraToEvm ? getFiatAmountByString(xorAsset, FPNumber.fromCodecValue(historyItem.soraNetworkFee || soraNetworkFee).toString()) : null"
             />
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
             <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : EvmSymbol.ETH" /> -->
@@ -120,11 +122,13 @@
               :label="t('bridgeTransaction.networkInfo.amount')"
               :value="`${formattedAmount}`"
               :asset-symbol="formatAssetSymbol(assetSymbol)"
+              :fiat-value="!isSoraToEvm ? getFiatAmountByString(asset, new FPNumber(amount).toString()) : null"
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
               :value="!isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
               :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : currentEvmTokenSymbol"
+              :fiat-value="!isSoraToEvm ? getFiatAmountByString(xorAsset, FPNumber.fromCodecValue(historyItem.soraNetworkFee || soraNetworkFee).toString()) : null"
             />
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
             <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="!isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : EvmSymbol.ETH" /> -->
@@ -170,7 +174,7 @@ import { interpret } from 'xstate'
 
 import BridgeMixin from '@/components/mixins/BridgeMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
+import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EvmSymbol, MetamaskCancellationCode } from '@/consts'
@@ -188,7 +192,7 @@ const namespace = 'bridge'
 export default class BridgeTransaction extends Mixins(
   BridgeMixin,
   NetworkFormatterMixin,
-  NumberFormatterMixin
+  FiatValueMixin
 ) {
   @Getter soraNetwork!: string
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
@@ -238,6 +242,7 @@ export default class BridgeTransaction extends Mixins(
 
   EvmSymbol = EvmSymbol
   KnownSymbols = KnownSymbols
+  FPNumber = FPNumber
   formatAssetSymbol = formatAssetSymbol
   formatDateItem = formatDateItem
   STATES = STATES

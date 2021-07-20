@@ -27,7 +27,7 @@ export default class FiatValueMixin extends Mixins(NumberFormatterMixin) {
 
   getFiatAmount (asset: AccountAsset, type: BalanceTypes): string | null {
     const price = this.getAssetFiatPrice(asset)
-    if (!price) {
+    if (!price || !asset.balance) {
       return null
     }
     const balance: FPNumber = this.getFPNumberFromCodec(asset.balance[type || BalanceTypes.Transferable], asset.decimals)

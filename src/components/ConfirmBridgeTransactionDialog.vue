@@ -26,6 +26,7 @@
       :tooltip-content="t('networkFeeTooltipText')"
       :value="formatFee(soraNetworkFee, formattedSoraNetworkFee)"
       :asset-symbol="KnownSymbols.XOR"
+      :fiat-value="getFiatAmountByString(xorAsset, FPNumber.fromCodecValue(soraNetworkFee).toString())"
     />
     <info-line
       :label="t('bridge.ethereumNetworkFee')"
@@ -59,13 +60,13 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { KnownSymbols, CodecString, BridgeNetworks } from '@sora-substrate/util'
+import { KnownSymbols, FPNumber, CodecString, BridgeNetworks } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
+import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components, EvmSymbol } from '@/consts'
@@ -84,8 +85,10 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   DialogMixin,
   LoadingMixin,
   NetworkFormatterMixin,
-  NumberFormatterMixin
+  FiatValueMixin
 ) {
+  readonly FPNumber = FPNumber
+
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
   @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean
   @Getter('asset', { namespace }) asset!: any

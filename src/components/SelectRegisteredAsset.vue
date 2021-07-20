@@ -37,6 +37,11 @@
                 </s-col>
                 <div class="asset-item__balance-container">
                   <span class="asset-item__balance">{{ formatBalance(asset) }}</span>
+                  <fiat-value
+                    v-if="isSoraToEvm && asset && getAssetFiatPrice(asset)"
+                    :value="getFiatAmount(asset)"
+                    with-decimals
+                  />
                 </div>
               </div>
             </div>
@@ -93,7 +98,7 @@ import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/uti
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
+import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components, ObjectInit } from '@/consts'
 import { lazyComponent } from '@/router'
@@ -105,10 +110,11 @@ const namespace = 'assets'
 @Component({
   components: {
     DialogBase,
+    FiatValue: lazyComponent(Components.FiatValue),
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class SelectRegisteredAsset extends Mixins(TranslationMixin, SelectAssetMixin, LoadingMixin, NumberFormatterMixin) {
+export default class SelectRegisteredAsset extends Mixins(TranslationMixin, SelectAssetMixin, LoadingMixin, FiatValueMixin) {
   query = ''
   selectedAsset: Nullable<AccountAsset | RegisteredAccountAsset> = null
   readonly tokenTabs = [

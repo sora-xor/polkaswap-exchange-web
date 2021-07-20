@@ -6,7 +6,7 @@
       :tooltip-content="t('swap.minReceivedTooltip')"
       :value="formattedMinMaxReceived"
       :asset-symbol="getAssetSymbolText"
-      :fiat-value="getFiatAmountByString(this.isExchangeB ? this.tokenFrom : this.tokenTo, formattedMinMaxReceived.toString())"
+      :fiat-value="getFiatAmountByString(isExchangeB ? tokenFrom : tokenTo, formattedMinMaxReceived.toString())"
     />
     <info-line
       v-for="(reward, index) in rewardsValues"
@@ -23,7 +23,7 @@
       :tooltip-content="liquidityProviderFeeTooltipText"
       :value="formattedLiquidityProviderFee"
       :asset-symbol="xorSymbol"
-      :fiat-value="getFiatAmountByString(this.isExchangeB ? this.tokenFrom : this.tokenTo, FPNumber.fromCodecValue(this.liquidityProviderFee).toString())"
+      :fiat-value="getFiatAmountByString(isExchangeB ? tokenFrom : tokenTo, FPNumber.fromCodecValue(liquidityProviderFee).toString())"
     />
     <!-- TODO 4 alexnatalia: Show if logged in and have info about Network Fee -->
     <info-line
@@ -32,7 +32,7 @@
       :tooltip-content="t('swap.networkFeeTooltip')"
       :value="formattedNetworkFee"
       :asset-symbol="xorSymbol"
-      :fiat-value="getFiatAmountByString(xorAsset, FPNumber.fromCodecValue(this.networkFee).toString())"
+      :fiat-value="getFiatAmountByString(xorAsset, FPNumber.fromCodecValue(networkFee).toString())"
     />
   </div>
 </template>
@@ -55,6 +55,8 @@ const namespace = 'swap'
   }
 })
 export default class SwapInfo extends Mixins(TranslationMixin, FiatValueMixin) {
+  readonly FPNumber = FPNumber
+
   @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset
   @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString
@@ -66,8 +68,6 @@ export default class SwapInfo extends Mixins(TranslationMixin, FiatValueMixin) {
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
   @Getter isLoggedIn!: boolean
-
-  FPNumber = FPNumber
 
   get liquidityProviderFeeTooltipText (): string {
     return this.t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: this.liquidityProviderFeeValue })
