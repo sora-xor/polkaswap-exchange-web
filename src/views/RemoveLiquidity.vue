@@ -150,7 +150,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
   readonly KnownSymbols = KnownSymbols
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
-  @Getter('focusedField', { namespace }) focusedField!: Nullable<string>
+  @Getter('focusedField', { namespace }) focusedField!: string | null | undefined
   @Getter('liquidity', { namespace }) liquidity!: AccountLiquidity
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
@@ -174,17 +174,17 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
   @Action('setFocusedField', { namespace }) setFocusedField
   @Action('resetFocusedField', { namespace }) resetFocusedField
   @Action('removeLiquidity', { namespace }) removeLiquidity
-  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
-  @Action('resetData', { namespace }) resetData!: AsyncVoidFn
+  @Action('getAssets', { namespace: 'assets' }) getAssets!: () => Promise<void>
+  @Action('resetData', { namespace }) resetData!: () => Promise<void>
   @Action('getPrices', { namespace: 'prices' }) getPrices
-  @Action('resetPrices', { namespace: 'prices' }) resetPrices!: AsyncVoidFn
-  @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity!: AsyncVoidFn
-  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<Function>
+  @Action('resetPrices', { namespace: 'prices' }) resetPrices!: () => Promise<void>
+  @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity!: () => Promise<void>
+  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<() => void>
 
   removePartInput = 0
   sliderInput: any
   sliderDragButton: any
-  accountLiquiditySubscription!: Function
+  accountLiquiditySubscription!: () => void
 
   async created (): Promise<void> {
     this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
@@ -272,11 +272,11 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
   }
 
   @Watch('removePart')
-  removePartChange (newValue): void {
+  removePartChange (newValue: string): void {
     this.handleRemovePartChange(newValue)
   }
 
-  handleRemovePartChange (value): void {
+  handleRemovePartChange (value: string): void {
     const newValue = parseFloat(value) || 0
     this.removePartInput = newValue > 100 ? 100 : newValue < 0 ? 0 : newValue
     this.setRemovePart(this.removePartInput)
@@ -302,7 +302,7 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
 
   handleLiquidityMaxValue (): void {
     this.setRemovePart(100)
-    this.handleRemovePartChange(100)
+    this.handleRemovePartChange('100')
   }
 
   private updatePrices (): void {

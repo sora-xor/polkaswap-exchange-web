@@ -148,7 +148,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   customAddress = ''
   alreadyAttached = false
   isConfirmed = false
-  customAsset: Nullable<Asset> = null
+  customAsset: Asset | null | undefined = null
 
   @Prop({ default: false, type: Boolean }) readonly connected!: boolean
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: Asset

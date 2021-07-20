@@ -35,8 +35,8 @@ interface RewardsState {
   selectedExternalRewards: Array<RewardInfo>;
   internalRewards: Array<RewardInfo>;
   selectedInternalRewards: Array<RewardInfo>;
-  vestedRewards: Nullable<RewardsInfo>;
-  selectedVestedRewards: Nullable<RewardsInfo>;
+  vestedRewards: RewardsInfo | null | undefined;
+  selectedVestedRewards: RewardsInfo | null | undefined;
   rewardsFetching: boolean;
   rewardsClaiming: boolean;
   rewardsRecieved: boolean;

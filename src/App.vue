@@ -165,11 +165,11 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   @Getter nodeIsConnected!: boolean
 
   @Action navigate // Wallet
-  @Action updateAccountAssets!: AsyncVoidFn
-  @Action trackActiveTransactions!: AsyncVoidFn
-  @Action setSoraNetwork!: (data: any) => Promise<void>
-  @Action setDefaultNodes!: (nodes: any) => Promise<void>
-  @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
+  @Action updateAccountAssets!: () => Promise<void>
+  @Action trackActiveTransactions!: () => Promise<void>
+  @Action setSoraNetwork!: (data: any) => () => Promise<void>
+  @Action setDefaultNodes!: (nodes: any) => () => Promise<void>
+  @Action connectToNode!: (options: ConnectToNodeOptions) => () => Promise<void>
   @Action setFaucetUrl!: (url: string) => void
   @Action('setEvmSmartContracts', { namespace: 'web3' }) setEvmSmartContracts
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks

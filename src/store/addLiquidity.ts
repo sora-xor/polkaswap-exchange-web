@@ -37,11 +37,11 @@ interface AddLiquidityState {
   firstTokenValue: string;
   secondTokenValue: string;
   secondTokenBalance: any;
-  reserve: Nullable<Array<CodecString>>;
+  reserve: Array<CodecString> | null | undefined;
   minted: CodecString;
   fee: CodecString;
   totalSupply: CodecString;
-  focusedField: Nullable<string>;
+  focusedField: string | null | undefined;
   isAvailable: boolean;
 }
 
@@ -141,7 +141,7 @@ const mutations = {
   },
   [types.GET_RESERVE_REQUEST] (state) {
   },
-  [types.GET_RESERVE_SUCCESS] (state: AddLiquidityState, reserve: Nullable<Array<CodecString>>) {
+  [types.GET_RESERVE_SUCCESS] (state: AddLiquidityState, reserve: Array<CodecString> | null | undefined) {
     state.reserve = reserve
   },
   [types.GET_RESERVE_FAILURE] (state, error) {

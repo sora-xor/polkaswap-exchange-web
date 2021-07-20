@@ -6,7 +6,7 @@ import SoraNeoWalletElements from '@soramitsu/soraneo-wallet-web'
 export const TranslationMock = (vue: VueConstructor) =>
   vue.mixin({ name: 'TranslationMixin', methods: { t: jest.fn(), tc: jest.fn() } })
 
-export const SoramitsuElementsImport = (vue: VueConstructor) => {
+export const SoramitsuElementsImport = (vue: VueConstructor): void => {
   vue.use(Vuex)
   const store = new Vuex.Store({ modules: {} })
   vue.use(SoramitsuElements, { store })
@@ -16,7 +16,7 @@ export const SoramitsuElementsImport = (vue: VueConstructor) => {
   vue.prototype.$notify = Notification
 }
 
-export const WalletImport = (vue: VueConstructor) => {
+export const WalletImport = (vue: VueConstructor): void => {
   vue.use(Vuex)
   const store = new Vuex.Store({ modules: {} })
   vue.use(SoraNeoWalletElements, { store })

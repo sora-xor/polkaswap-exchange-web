@@ -14,7 +14,7 @@ import NumberFormatterMixin from './NumberFormatterMixin'
 export default class TransactionMixin extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
   private time = 0
 
-  transaction: Nullable<History> = null // It's used just for sync errors
+  transaction: History | null | undefined = null // It's used just for sync errors
 
   @Action addActiveTransaction
   @Action removeActiveTransaction

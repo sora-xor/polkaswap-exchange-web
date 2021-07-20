@@ -8,10 +8,10 @@ import { ethers } from 'ethers'
 
 @Component
 export default class BridgeMixin extends Mixins(LoadingMixin, WalletConnectMixin) {
-  @Action('getEvmBalance', { namespace: 'web3' }) getEvmBalance!: AsyncVoidFn
-  @Action('getEvmNetworkFee', { namespace: 'bridge' }) getEvmNetworkFee!: AsyncVoidFn
-  @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets!: AsyncVoidFn
-  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn
+  @Action('getEvmBalance', { namespace: 'web3' }) getEvmBalance!: () => Promise<void>
+  @Action('getEvmNetworkFee', { namespace: 'bridge' }) getEvmNetworkFee!: () => Promise<void>
+  @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets!: () => Promise<void>
+  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: () => Promise<void>
 
   private unwatchEthereum!: any
   blockHeadersSubscriber: ethers.providers.Web3Provider | undefined

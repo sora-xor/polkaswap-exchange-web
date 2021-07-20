@@ -167,12 +167,12 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatter
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField
 
-  @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity!: AsyncVoidFn
-  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<Function>
+  @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity!: () => Promise<void>
+  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<() => void>
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
-  accountLiquiditySubscription!: Function
+  accountLiquiditySubscription!: () => void
 
   async created (): Promise<void> {
     this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()

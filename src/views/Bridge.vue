@@ -227,9 +227,9 @@ export default class Bridge extends Mixins(
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
   @Action('resetBridgeForm', { namespace }) resetBridgeForm
-  @Action('resetBalanceSubscription', { namespace }) resetBalanceSubscription!: AsyncVoidFn
-  @Action('updateBalanceSubscription', { namespace }) updateBalanceSubscription!: AsyncVoidFn
-  @Action('getNetworkFee', { namespace }) getNetworkFee!: AsyncVoidFn
+  @Action('resetBalanceSubscription', { namespace }) resetBalanceSubscription!: () => Promise<void>
+  @Action('updateBalanceSubscription', { namespace }) updateBalanceSubscription!: () => Promise<void>
+  @Action('getNetworkFee', { namespace }) getNetworkFee!: () => Promise<void>
 
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
   @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks

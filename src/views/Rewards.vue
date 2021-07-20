@@ -103,8 +103,8 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 
   @State(state => state.rewards.internalRewards) internalRewards!: Array<RewardInfo>
   @State(state => state.rewards.externalRewards) externalRewards!: Array<RewardInfo>
-  @State(state => state.rewards.vestedRewards) vestedRewards!: Nullable<RewardsInfo>
-  @State(state => state.rewards.selectedVestedRewards) selectedVestedRewards!: Nullable<RewardsInfo>
+  @State(state => state.rewards.vestedRewards) vestedRewards!: RewardsInfo | null | undefined
+  @State(state => state.rewards.selectedVestedRewards) selectedVestedRewards!: RewardsInfo | null | undefined
   @State(state => state.rewards.selectedInternalRewards) selectedInternalRewards!: Array<RewardInfo>
   @State(state => state.rewards.selectedExternalRewards) selectedExternalRewards!: Array<RewardInfo>
 
@@ -114,7 +114,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardsAmountHeaderItem>
   @Getter('transactionStepsCount', { namespace: 'rewards' }) transactionStepsCount!: number
 
-  @Action('reset', { namespace: 'rewards' }) reset!: AsyncVoidFn
+  @Action('reset', { namespace: 'rewards' }) reset!: () => Promise<void>
   @Action('setSelectedRewards', { namespace: 'rewards' }) setSelectedRewards!: (params: any) => Promise<void>
   @Action('getRewards', { namespace: 'rewards' }) getRewards!: (address: string) => Promise<Array<RewardInfo>>
   @Action('claimRewards', { namespace: 'rewards' }) claimRewards!: (options: any) => Promise<void>

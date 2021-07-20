@@ -39,7 +39,7 @@ const CreateTokenPairMixin = (namespace: string) => {
     @Action('getPrices', { namespace: 'prices' }) getPrices
     @Action('resetPrices', { namespace: 'prices' }) resetPrices
 
-    @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
+    @Action('getAssets', { namespace: 'assets' }) getAssets!: () => Promise<void>
 
     @Watch('isLoggedIn')
     private handleLoggedInStateChange (isLoggedIn: boolean, wasLoggedIn: boolean): void {

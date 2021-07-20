@@ -28,12 +28,12 @@ const types = flow(
 ])
 
 interface RemoveLiquidityState {
-  liquidity: Nullable<any>;
+  liquidity: any | null | undefined;
   removePart: number;
   liquidityAmount: string;
   firstTokenAmount: string;
   secondTokenAmount: string;
-  focusedField: Nullable<string>;
+  focusedField: string | null | undefined;
   fee: CodecString;
   reserveA: CodecString;
   reserveB: CodecString;

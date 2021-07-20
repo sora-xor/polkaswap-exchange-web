@@ -83,14 +83,14 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Getter isLoggedIn!: boolean
   @Getter('accountLiquidity', { namespace }) accountLiquidity!: any
   @Getter('assets', { namespace: 'assets' }) assets!: Array<Asset>
-  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
+  @Action('getAssets', { namespace: 'assets' }) getAssets!: () => Promise<void>
 
-  @Action('getAccountLiquidity', { namespace }) getAccountLiquidity!: AsyncVoidFn
-  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<Function>
+  @Action('getAccountLiquidity', { namespace }) getAccountLiquidity!: () => Promise<void>
+  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<() => void>
 
-  accountLiquiditySubscription!: Function
+  accountLiquiditySubscription!: () => void
 
-  async created () {
+  async created (): Promise<void> {
     this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
 
     await this.withApi(async () => {
@@ -107,11 +107,11 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
     }
   }
 
-  getAsset (address): any {
+  getAsset (address: string): any {
     return this.assets.find(a => a.address === address)
   }
 
-  getAssetSymbol (address): string {
+  getAssetSymbol (address: string): string {
     const asset = this.assets.find(a => a.address === address)
     return asset ? asset.symbol : this.t('pool.unknownAsset')
   }
@@ -124,11 +124,11 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
     router.push({ name: PageNames.CreatePair })
   }
 
-  handleAddPairLiquidity (firstAddress, secondAddress): void {
+  handleAddPairLiquidity (firstAddress: string, secondAddress: string): void {
     router.push({ name: PageNames.AddLiquidityId, params: { firstAddress, secondAddress } })
   }
 
-  handleRemoveLiquidity (firstAddress, secondAddress): void {
+  handleRemoveLiquidity (firstAddress: string, secondAddress: string): void {
     router.push({ name: PageNames.RemoveLiquidity, params: { firstAddress, secondAddress } })
   }
 

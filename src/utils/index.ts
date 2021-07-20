@@ -97,7 +97,7 @@ export const hasInsufficientBalance = (
   return FPNumber.lt(fpMaxBalance, fpAmount)
 }
 
-export const hasInsufficientXorForFee = (xorAsset: Nullable<AccountAsset | RegisteredAccountAsset>, fee: CodecString, isXorOutputSwap = false): boolean => {
+export const hasInsufficientXorForFee = (xorAsset: AccountAsset | RegisteredAccountAsset, fee: CodecString, isXorOutputSwap = false): boolean => {
   if (!xorAsset) return true
   if (asZeroValue(fee)) return false
 
@@ -126,7 +126,7 @@ export async function delay (ms = 50): Promise<void> {
   await new Promise(resolve => setTimeout(resolve, ms))
 }
 
-export const formatAssetSymbol = (assetSymbol: Nullable<string>): string => {
+export const formatAssetSymbol = (assetSymbol: string): string => {
   return assetSymbol ?? ''
 }
 

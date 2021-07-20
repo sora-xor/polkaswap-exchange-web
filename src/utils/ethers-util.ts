@@ -101,6 +101,30 @@ type ethersProvider = ethers.providers.Web3Provider
 let provider: any = null
 let ethersInstance: ethersProvider | null = null
 
+export enum EvmNetwork {
+  Ethereum = 'ethereum',
+  Energy = 'energy'
+}
+
+export enum EvmNetworkType {
+  Mainnet = 'main',
+  Ropsten = 'ropsten',
+  Kovan = 'kovan',
+  Rinkeby = 'rinkeby',
+  Goerli = 'goerli',
+  Private = 'private',
+  EWC = 'EWC'
+}
+
+export const EvmNetworkTypeName = {
+  '0x1': EvmNetworkType.Mainnet,
+  '0x3': EvmNetworkType.Ropsten,
+  '0x2a': EvmNetworkType.Kovan,
+  '0x4': EvmNetworkType.Rinkeby,
+  '0x5': EvmNetworkType.Goerli,
+  '0x12047': EvmNetworkType.Private
+}
+
 export interface SubNetwork {
   name: EvmNetwork;
   id: BridgeNetworks;
@@ -152,30 +176,6 @@ interface JsonContract {
       object: string;
     };
   };
-}
-
-export enum EvmNetwork {
-  Ethereum = 'ethereum',
-  Energy = 'energy'
-}
-
-export enum EvmNetworkType {
-  Mainnet = 'main',
-  Ropsten = 'ropsten',
-  Kovan = 'kovan',
-  Rinkeby = 'rinkeby',
-  Goerli = 'goerli',
-  Private = 'private',
-  EWC = 'EWC'
-}
-
-export const EvmNetworkTypeName = {
-  '0x1': EvmNetworkType.Mainnet,
-  '0x3': EvmNetworkType.Ropsten,
-  '0x2a': EvmNetworkType.Kovan,
-  '0x4': EvmNetworkType.Rinkeby,
-  '0x5': EvmNetworkType.Goerli,
-  '0x12047': EvmNetworkType.Private
 }
 
 async function onConnect (options: ConnectOptions): Promise<string> {

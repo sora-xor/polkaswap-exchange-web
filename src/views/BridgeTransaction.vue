@@ -194,7 +194,7 @@ export default class BridgeTransaction extends Mixins(
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
 
   @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean
-  @Getter('asset', { namespace }) asset!: Nullable<AccountAsset | RegisteredAccountAsset>
+  @Getter('asset', { namespace }) asset!: AccountAsset | RegisteredAccountAsset | null | undefined
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('amount', { namespace }) amount!: string
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
@@ -212,7 +212,7 @@ export default class BridgeTransaction extends Mixins(
   @Getter('historyItem', { namespace }) historyItem!: any
   @Getter('isTxEvmAccount', { namespace }) isTxEvmAccount!: boolean
 
-  @Action('getNetworkFee', { namespace }) getNetworkFee!: AsyncVoidFn
+  @Action('getNetworkFee', { namespace }) getNetworkFee!: () => Promise<void>
 
   @Action('setCurrentTransactionState', { namespace }) setCurrentTransactionState
   @Action('setInitialTransactionState', { namespace }) setInitialTransactionState
@@ -384,14 +384,14 @@ export default class BridgeTransaction extends Mixins(
     return this.historyItem?.to ?? ''
   }
 
-  get soraTxId (): Nullable<string> {
+  get soraTxId (): string | null | undefined {
     if (!this.historyItem?.id) {
       return null
     }
     return this.historyItem.txId || api.bridge.getHistory(this.historyItem.id)?.txId
   }
 
-  get soraTxBlockId (): Nullable<string> {
+  get soraTxBlockId (): string | null | undefined {
     if (!this.historyItem?.id) {
       return null
     }

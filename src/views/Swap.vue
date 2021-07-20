@@ -175,15 +175,15 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @Action('setExchangeB', { namespace }) setExchangeB!: (isExchangeB: boolean) => Promise<void>
   @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>
   @Action('setNetworkFee', { namespace }) setNetworkFee!: (value: CodecString) => Promise<void>
-  @Action('checkSwap', { namespace }) checkSwap!: AsyncVoidFn
-  @Action('reset', { namespace }) reset!: AsyncVoidFn
+  @Action('checkSwap', { namespace }) checkSwap!: () => Promise<void>
+  @Action('reset', { namespace }) reset!: () => Promise<void>
   @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>
-  @Action('resetPrices', { namespace: 'prices' }) resetPrices!: AsyncVoidFn
-  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
+  @Action('resetPrices', { namespace: 'prices' }) resetPrices!: () => Promise<void>
+  @Action('getAssets', { namespace: 'assets' }) getAssets!: () => Promise<void>
   @Action('setPairLiquiditySources', { namespace }) setPairLiquiditySources!: (liquiditySources: Array<LiquiditySourceTypes>) => Promise<void>
   @Action('setRewards', { namespace }) setRewards!: (rewards: Array<LPRewardsInfo>) => Promise<void>
-  @Action('resetSubscriptions', { namespace }) resetSubscriptions!: AsyncVoidFn
-  @Action('updateSubscriptions', { namespace }) updateSubscriptions!: AsyncVoidFn
+  @Action('resetSubscriptions', { namespace }) resetSubscriptions!: () => Promise<void>
+  @Action('updateSubscriptions', { namespace }) updateSubscriptions!: () => Promise<void>
 
   @Watch('slippageTolerance')
   private handleSlippageToleranceChange (): void {
@@ -223,7 +223,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   showSelectTokenDialog = false
   showConfirmSwapDialog = false
   isRecountingProcess = false
-  liquidityReservesSubscription: Nullable<Subscription> = null
+  liquidityReservesSubscription: Subscription | null | undefined = null
 
   get areTokensSelected (): boolean {
     return !!(this.tokenFrom && this.tokenTo)
@@ -278,7 +278,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     return FPNumber.lte(fpAmount, zero)
   }
 
-  created () {
+  created (): void {
     this.withApi(async () => {
       await this.getAssets()
       if (!this.tokenFrom) {
@@ -326,15 +326,17 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   async updatePairLiquiditySources (): Promise<void> {
     const isPair = !!this.tokenFrom?.address && !!this.tokenTo?.address
 
-    const sources = isPair ? (await api.getListEnabledSourcesForPath(
-      this.tokenFrom?.address,
-      this.tokenTo?.address
-    )) : []
+    const sources = isPair
+      ? (await api.getListEnabledSourcesForPath(
+          this.tokenFrom?.address,
+          this.tokenTo?.address
+        ))
+      : []
 
     await this.setPairLiquiditySources(sources)
   }
 
-  async handleInputFieldFrom (value): Promise<any> {
+  async handleInputFieldFrom (value: string): Promise<any> {
     if (!this.areTokensSelected || asZeroValue(value)) {
       this.resetFieldTo()
     }
@@ -345,7 +347,7 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     }
   }
 
-  async handleInputFieldTo (value): Promise<any> {
+  async handleInputFieldTo (value: string): Promise<any> {
     if (!this.areTokensSelected || asZeroValue(value)) {
       this.resetFieldFrom()
     }

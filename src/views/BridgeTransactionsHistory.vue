@@ -98,17 +98,17 @@ const namespace = 'bridge'
 })
 export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, LoadingMixin, NetworkFormatterMixin) {
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
-  @Getter('history', { namespace }) history!: Nullable<Array<BridgeHistory>>
+  @Getter('history', { namespace }) history!: Array<BridgeHistory> | null | undefined
   @Getter('restored', { namespace }) restored!: boolean
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: string
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
 
-  @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn
-  @Action('getRestoredFlag', { namespace }) getRestoredFlag!: AsyncVoidFn
-  @Action('getRestoredHistory', { namespace }) getRestoredHistory!: AsyncVoidFn
-  @Action('getNetworkFee', { namespace }) getNetworkFee!: AsyncVoidFn
-  @Action('getEvmNetworkFee', { namespace }) getEvmNetworkFee!: AsyncVoidFn
-  @Action('clearHistory', { namespace }) clearHistory!: AsyncVoidFn
+  @Action('getHistory', { namespace }) getHistory!: () => Promise<void>
+  @Action('getRestoredFlag', { namespace }) getRestoredFlag!: () => Promise<void>
+  @Action('getRestoredHistory', { namespace }) getRestoredHistory!: () => Promise<void>
+  @Action('getNetworkFee', { namespace }) getNetworkFee!: () => Promise<void>
+  @Action('getEvmNetworkFee', { namespace }) getEvmNetworkFee!: () => Promise<void>
+  @Action('clearHistory', { namespace }) clearHistory!: () => Promise<void>
   @Action('setSoraToEvm', { namespace }) setSoraToEvm
   @Action('setTransactionConfirm', { namespace }) setTransactionConfirm!: (value: boolean) => Promise<void>
   @Action('setAssetAddress', { namespace }) setAssetAddress
@@ -124,7 +124,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Action('setHistoryItem', { namespace }) setHistoryItem
   @Action('saveHistory', { namespace }) saveHistory
 
-  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn
+  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: () => Promise<void>
 
   PageNames = PageNames
   formatAssetSymbol = formatAssetSymbol
@@ -157,8 +157,8 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
       return history.filter(item =>
         `${item.assetAddress}`.toLowerCase().includes(query) ||
         `${this.registeredAssets.find(asset => asset.address === item.assetAddress)?.externalAddress}`.toLowerCase().includes(query) ||
-        `${formatAssetSymbol(item.symbol)}`.toLowerCase().includes(query) ||
-        `${formatAssetSymbol(item.symbol)}`.toLowerCase().includes(query)
+        `${formatAssetSymbol(item.symbol || '')}`.toLowerCase().includes(query) ||
+        `${formatAssetSymbol(item.symbol || '')}`.toLowerCase().includes(query)
       )
     }
 

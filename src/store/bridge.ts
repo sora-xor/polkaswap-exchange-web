@@ -345,7 +345,7 @@ const mutations = {
   [types.GET_RESTORED_HISTORY_REQUEST] (state) {},
   [types.GET_RESTORED_HISTORY_SUCCESS] (state) {},
   [types.GET_RESTORED_HISTORY_FAILURE] (state) {},
-  [types.SET_HISTORY_ITEM] (state, historyItem: Nullable<BridgeHistory>) {
+  [types.SET_HISTORY_ITEM] (state, historyItem: BridgeHistory | null | undefined) {
     state.historyItem = historyItem
   },
   [types.SIGN_SORA_TRANSACTION_SORA_EVM_REQUEST] (state) {},
@@ -513,7 +513,7 @@ const actions = {
       throw error
     }
   },
-  setHistoryItem ({ commit }, historyItem: Nullable<BridgeHistory>) {
+  setHistoryItem ({ commit }, historyItem: BridgeHistory | null | undefined) {
     commit(types.SET_HISTORY_ITEM, historyItem)
   },
   saveHistory ({ commit }, history: BridgeHistory) {
@@ -702,18 +702,19 @@ const actions = {
       ]
       methodArgs.push(...(isEthereumChain
         ? [
-          hash, // bytes32 txHash
-          request.v, // uint8[] memory v
-          request.r, // bytes32[] memory r
-          request.s, // bytes32[] memory s
-          request.from // address from
-        ] : [
-          request.from, // address from
-          hash, // bytes32 txHash
-          request.v, // uint8[] memory v
-          request.r, // bytes32[] memory r
-          request.s // bytes32[] memory s
-        ])
+            hash, // bytes32 txHash
+            request.v, // uint8[] memory v
+            request.r, // bytes32[] memory r
+            request.s, // bytes32[] memory s
+            request.from // address from
+          ]
+        : [
+            request.from, // address from
+            hash, // bytes32 txHash
+            request.v, // uint8[] memory v
+            request.r, // bytes32[] memory r
+            request.s // bytes32[] memory s
+          ])
       )
       checkEvmNetwork(rootGetters)
       const tx: ethers.providers.TransactionResponse = await contractInstance[method](...methodArgs)
@@ -823,13 +824,15 @@ const actions = {
       const amount = new FPNumber(getters.amount, decimals).toCodecString()
 
       const method = isNativeEvmToken ? 'sendEthToSidechain' : 'sendERC20ToSidechain'
-      const methodArgs = isNativeEvmToken ? [
-        accountId // bytes32 to
-      ] : [
-        accountId, // bytes32 to
-        amount, // uint256 amount
-        asset.externalAddress // address tokenAddress
-      ]
+      const methodArgs = isNativeEvmToken
+        ? [
+            accountId // bytes32 to
+          ]
+        : [
+            accountId, // bytes32 to
+            amount, // uint256 amount
+            asset.externalAddress // address tokenAddress
+          ]
 
       const overrides = isNativeEvmToken ? { value: amount } : {}
       checkEvmNetwork(rootGetters)

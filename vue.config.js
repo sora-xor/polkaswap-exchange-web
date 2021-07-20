@@ -1,6 +1,16 @@
 module.exports = {
   publicPath: './',
   configureWebpack: config => {
+    config.resolve.fallback = {
+      util: false,
+      crypto: false,
+      stream: false,
+      assert: false,
+      http: false,
+      https: false,
+      os: false
+    }
+
     // prepare icons content to unicode
     config.module.rules.filter(rule => {
       return rule.test.toString().indexOf('scss') !== -1

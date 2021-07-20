@@ -110,7 +110,7 @@ const namespace = 'assets'
 })
 export default class SelectRegisteredAsset extends Mixins(TranslationMixin, SelectAssetMixin, LoadingMixin, NumberFormatterMixin) {
   query = ''
-  selectedAsset: Nullable<AccountAsset | RegisteredAccountAsset> = null
+  selectedAsset: AccountAsset | RegisteredAccountAsset | null | undefined = null
   readonly tokenTabs = [
     'tokens',
     'custom'
@@ -120,7 +120,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
   customAddress = ''
   customSymbol = ''
   alreadyAttached = false
-  selectedCustomAsset: Nullable<Asset> = null
+  selectedCustomAsset: Asset | null | undefined = null
 
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: AccountAsset
 
