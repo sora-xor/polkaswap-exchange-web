@@ -93,7 +93,7 @@
         "confirmTitle": "Подтвердить транзакцию",
         "confirm": "@:confirmText",
         "errorAddress": "Неверный адрес. Пожалуйста, перепроверьте и попробуйте еще раз.",
-        "addressDesc": ""
+        "addressDesc": "Принимаются только адреса сетевых аккаунтов SORA. Убедитесь, что у вас есть правильно отформатированный адрес сетевой учетной записи SORA, начинающийся с префикса «cn»."
     },
     "account": {
         "successCopy": "Адрес кошелька скопирован в буфер обмена",
@@ -183,7 +183,7 @@
         },
         "extensibleSupply": {
             "placeholder": "Увеличимое количество токенов",
-            "desc": ""
+            "desc": "Возможность чеканить больше токенов."
         }
     },
     "transaction": {
@@ -262,7 +262,7 @@
         "Stats": "Статистика",
         "Support": "Поддержка",
         "CreatePair": "Создать пару",
-        "Tokens": ""
+        "Tokens": "Токены"
     },
     "social": {
         "twitter": "Twitter",
@@ -543,8 +543,8 @@
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
         "viewInSorascan": "Просмотреть в SORAScan",
-        "changeAccount": "",
-        "expectedAddress": ""
+        "changeAccount": "@:changeAccountText в @:metamask",
+        "expectedAddress": "Ожидаемый адрес в @:metamask"
     },
     "months": {
         "0": "Январь",
@@ -629,7 +629,7 @@
         "description": "Вывод токенов пула конвертирует вашу позицию обратно в базовые токены по текущему курсу, пропорциональному вашей доле в пуле. Начисленные комиссионные включаются в получаемые вами суммы.",
         "outputMessage": "Вывод является оценочным. Если цена изменится более чем на {slippageTolerance}%, ваша транзакция будет отменена.",
         "confirmTitle": "Вы получите",
-        "shareOfPool": ""
+        "shareOfPool": "Доля пула после транзакции"
     },
     "dexSettings": {
         "title": "Настройки транзакции",
@@ -707,16 +707,16 @@
             "LiquidityProvision": "Комиссия за предоставление ликвидности",
             "BuyOnBondingCurve": "покупка с TBC",
             "NftAirdrop": "NFT Airdrop",
-            "MarketMakerVolume": "",
-            "LiquidityProvisionFarming": ""
+            "MarketMakerVolume": "Маркет-мейкер",
+            "LiquidityProvisionFarming": "Фарминг"
         },
         "vested": "vested",
-        "forText": "",
-        "totalVested": "",
-        "claimableAmountDoneVesting": "",
+        "forText": "для",
+        "totalVested": "Всего наделено",
+        "claimableAmountDoneVesting": "Требуемая сумма (наделение завершено)",
         "groups": {
-            "strategic": "",
-            "external": ""
+            "strategic": "Стратегические вознаграждения",
+            "external": "Вознаграждения за подключенный аккаунт Ethereum"
         }
     },
     "provider": {
@@ -732,13 +732,13 @@
         "title": "Язык"
     },
     "tokens": {
-        "title": "",
-        "symbol": "",
-        "name": "",
-        "assetId": ""
+        "title": "Список токенов",
+        "symbol": "Символ",
+        "name": "Название",
+        "assetId": "ID актива"
     },
-    "memorandum": "",
-    "memorandumLink": "",
-    "privacyLink": "",
-    "FAQ": ""
+    "memorandum": "Меморандум Polkaswap и Условия предоставления услуг",
+    "memorandumLink": "@:memorandum",
+    "privacyLink": "@:helpDialog.privacyPolicy",
+    "FAQ": "Polkaswap FAQ"
 }

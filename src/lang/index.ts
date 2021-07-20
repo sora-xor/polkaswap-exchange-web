@@ -5,13 +5,18 @@ import VueI18n from 'vue-i18n'
 import { Language } from '@/consts'
 import { settingsStorage } from '@/utils/storage'
 
+import en from './en.json'
+
 Vue.use(VueI18n)
 
 const i18n = new VueI18n({
-  locale: Language.EN
+  locale: Language.EN,
+  messages: {
+    [Language.EN]: en
+  }
 })
 
-const loadedLanguages: Array<string> = []
+const loadedLanguages: Array<string> = [Language.EN]
 
 const getSupportedLocale = (locale: Language): string => {
   return Object.values(Language).includes(locale as any)

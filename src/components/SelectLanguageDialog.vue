@@ -84,9 +84,6 @@ export default class SelectLanguageDialog extends Mixins(TranslationMixin, Dialo
     padding-left: $inner-spacing-mini;
     padding-right: $inner-spacing-mini;
     border-radius: var(--s-border-radius-mini);
-    &:hover {
-      background-color: var(--s-color-base-background-hover);
-    }
   }
 }
 .select-language-item {
