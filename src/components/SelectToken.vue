@@ -128,7 +128,6 @@ import { api } from '@soramitsu/soraneo-wallet-web'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components, ObjectInit } from '@/consts'
@@ -145,7 +144,7 @@ const namespace = 'assets'
     TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
-export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMixin, LoadingMixin, NumberFormatterMixin, FiatValueMixin) {
+export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMixin, LoadingMixin, FiatValueMixin) {
   readonly tokenTabs = [
     'assets',
     'custom'

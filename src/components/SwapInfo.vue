@@ -43,7 +43,6 @@ import { Getter } from 'vuex-class'
 import { KnownAssets, KnownSymbols, FPNumber, CodecString, Asset, AccountAsset, LPRewardsInfo } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -55,7 +54,7 @@ const namespace = 'swap'
     InfoLine: lazyComponent(Components.InfoLine)
   }
 })
-export default class SwapInfo extends Mixins(TranslationMixin, NumberFormatterMixin, FiatValueMixin) {
+export default class SwapInfo extends Mixins(TranslationMixin, FiatValueMixin) {
   @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset
   @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString

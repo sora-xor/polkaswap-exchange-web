@@ -51,7 +51,6 @@ export default class FiatValue extends Mixins(NumberFormatterMixin) {
   line-height: var(--s-line-height-medium);
   letter-spacing: var(--s-letter-spacing-small);
   white-space: nowrap;
-  word-spacing: -1em;
   &--shifted {
     margin-left: calc(var(--s-basic-spacing) / 2);
   }

@@ -131,7 +131,6 @@ import type { Subscription } from '@polkadot/x-rxjs'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 
 import { isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance, debouncedInputHandler } from '@/utils'
@@ -155,7 +154,7 @@ const namespace = 'swap'
     FiatValue: lazyComponent(Components.FiatValue)
   }
 })
-export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin, FiatValueMixin) {
+export default class Swap extends Mixins(TranslationMixin, LoadingMixin, FiatValueMixin) {
   @Getter nodeIsConnected!: boolean
   @Getter isLoggedIn!: boolean
   @Getter slippageTolerance!: string

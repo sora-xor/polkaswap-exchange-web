@@ -105,7 +105,6 @@
       <p class="info-line-container__title">{{ t('createPair.pricePool') }}</p>
       <info-line :label="t('addLiquidity.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="formatStringValue(price)" />
       <info-line :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formatStringValue(priceReversed)" />
-      <info-line :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
       <info-line :label="t('createPair.networkFee')" :value="`${formattedFee} ${KnownSymbols.XOR}`" :tooltip-content="t('networkFeeTooltipText')" :fiat-value="getFiatAmountByString(xorAsset, formattedFee)" />
     </div>
 
@@ -138,10 +137,9 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { FPNumber, AccountLiquidity, CodecString, KnownAssets, KnownSymbols, Asset } from '@sora-substrate/util'
+import { FPNumber, AccountLiquidity, CodecString, KnownAssets, KnownSymbols } from '@sora-substrate/util'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 
 import router, { lazyComponent } from '@/router'
@@ -165,7 +163,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
   }
 })
 
-export default class AddLiquidity extends Mixins(TokenPairMixin, NumberFormatterMixin, FiatValueMixin) {
+export default class AddLiquidity extends Mixins(TokenPairMixin, FiatValueMixin) {
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity

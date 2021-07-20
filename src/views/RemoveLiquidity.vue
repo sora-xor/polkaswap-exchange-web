@@ -20,35 +20,6 @@
         <div slot="right"><span class="percent">%</span></div>
         <s-slider slot="bottom" :value="removePartInput" :showTooltip="false" @change="handleRemovePartChange" />
       </s-float-input>
-      <s-float-input
-        ref="liquidityAmount"
-        size="medium"
-        class="s-input--token-value"
-        :value="liquidityAmount"
-        :decimals="(liquidity || {}).decimals"
-        has-locale-string
-        :delimiters="delimiters"
-        :max="getTokenMaxAmount(liquidityBalance)"
-        @input="setLiquidityAmount"
-        @focus="setFocusedField('liquidityAmount')"
-        @blur="resetFocusedField"
-      >
-        <div slot="top" class="input-line">
-          <div class="input-title">
-            <span class="input-title--uppercase input-title--primary">{{ t('removeLiquidity.input') }}</span>
-          </div>
-          <div v-if="liquidity" class="input-title">
-            <span class="input-title--uppercase">{{ t('createPair.balance') }}</span>
-            <span class="input-title--uppercase input-title--primary">{{ getFormattedLiquidityBalance(liquidity) }}</span>
-          </div>
-        </div>
-        <div slot="right" class="s-flex el-buttons">
-          <s-button v-if="isMaxButtonAvailable" class="el-button--max s-typography-button--small" type="primary" alternative size="mini" border-radius="mini" @click="handleLiquidityMaxValue">
-            {{ t('buttons.max') }}
-          </s-button>
-          <token-select-button class="el-button--select-token" :tokens="[firstToken, secondToken]" />
-        </div>
-      </s-float-input>
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
       <s-float-input
         ref="firstTokenAmount"
@@ -156,7 +127,6 @@ import { Action, Getter } from 'vuex-class'
 import { FPNumber, KnownSymbols, AccountLiquidity, CodecString } from '@sora-substrate/util'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
 
@@ -179,7 +149,7 @@ const namespace = 'removeLiquidity'
     FiatValue: lazyComponent(Components.FiatValue)
   }
 })
-export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDialogMixin, NumberFormatterMixin, FiatValueMixin) {
+export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDialogMixin, FiatValueMixin) {
   readonly KnownSymbols = KnownSymbols
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
   readonly FPNumber = FPNumber
