@@ -227,9 +227,8 @@ const actions = {
       if (externalRewardsSelected && state.transactionStep === 1) {
         const ethersInstance = await ethersUtil.getEthersInstance()
         const internalAddressHex = await ethersUtil.accountAddressToHex(internalAddress)
-
         const message = ethers.utils.keccak256(internalAddressHex)
-        const signature = ethersInstance.getSigner().signMessage(message)
+        const signature = await ethersInstance.getSigner().signMessage(message)
 
         commit(types.SET_SIGNATURE, signature)
         commit(types.SET_TRANSACTION_STEP, 2)
