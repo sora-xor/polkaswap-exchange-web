@@ -1,5 +1,8 @@
 module.exports = {
   publicPath: './',
+  chainWebpack: config => {
+    config.plugins.delete('prefetch')
+  },
   configureWebpack: config => {
     // prepare icons content to unicode
     config.module.rules.filter(rule => {
