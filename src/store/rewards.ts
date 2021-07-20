@@ -249,7 +249,6 @@ const actions = {
         }
       }
     } catch (error) {
-      console.log(error)
       commit(types.SET_TRANSACTION_ERROR, true)
       commit(types.SET_REWARDS_CLAIMING, false)
       throw error
