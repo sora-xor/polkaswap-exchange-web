@@ -325,8 +325,8 @@ const actions = {
   setSelectNodeDialogVisibility ({ commit }, flag: boolean) {
     commit(types.SET_SELECT_NODE_DIALOG_VISIBILIY, flag)
   },
-  setLanguage ({ commit }, lang: Language) {
-    setI18nLocale(lang)
+  async setLanguage ({ commit }, lang: Language) {
+    await setI18nLocale(lang)
     updateFpNumberLocale(lang)
     commit(types.SET_LANGUAGE, lang)
   }

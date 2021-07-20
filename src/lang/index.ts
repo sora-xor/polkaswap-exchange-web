@@ -34,15 +34,13 @@ export async function setI18nLocale (lang: Language): Promise<void> {
   const locale = getSupportedLocale(lang) as any
 
   if (!loadedLanguages.includes(locale)) {
-    import(
+    const { default: messages } = await import(
       /* webpackChunkName: "lang-[request]" */
       /* webpackMode: "lazy" */
-      `@/lang/${locale}.json`).then(
-      messages => {
-        i18n.setLocaleMessage(locale, messages.default)
-        loadedLanguages.push(locale)
-      }
-    )
+      `@/lang/${locale}.json`)
+
+    i18n.setLocaleMessage(locale, messages)
+    loadedLanguages.push(locale)
   }
 
   i18n.locale = locale
