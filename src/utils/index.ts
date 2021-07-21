@@ -1,10 +1,10 @@
 import debounce from 'lodash/debounce'
 import { Asset, AccountAsset, RegisteredAccountAsset, AccountLiquidity, KnownSymbols, FPNumber, CodecString, KnownAssets } from '@sora-substrate/util'
 import { connection, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
-import router from '../router'
-import i18n from '../lang'
+import router from '@/router'
+import i18n from '@/lang'
 import storage from './storage'
-import { app } from '../consts'
+import { app } from '@/consts'
 
 const FpZeroValue = new FPNumber(0)
 
