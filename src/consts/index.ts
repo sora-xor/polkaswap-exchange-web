@@ -98,10 +98,8 @@ export enum PageNames {
 export enum Components {
   GenericPageHeader = 'GenericPageHeader',
   SwapInfo = 'SwapInfo',
-  InfoLine = 'InfoLine', // TODO: Check its usage
-  InfoCard = 'InfoCard',
+  InfoLine = 'InfoLine',
   SelectToken = 'SelectToken',
-  ResultDialog = 'ResultDialog',
   TokenLogo = 'TokenLogo',
   PairTokenLogo = 'PairTokenLogo',
   ConfirmSwap = 'ConfirmSwap',
