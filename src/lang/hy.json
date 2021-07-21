@@ -691,7 +691,7 @@
             "connectWallet": "@:միանալԴրամապանակՏեքստին",
             "connectExternalWallet": "Միացնել @:ethereumText հաշիվը",
             "signAndClaim": "Ստորագրեք և հաստատեք",
-            "pendingInternal": "@: soraText գործարքը ընթացքի մեջ է ...",
+            "pendingInternal": "@:soraText գործարքը ընթացքի մեջ է ...",
             "pendingExternal": "@:ethereumText գործարքը ընթացքի մեջ է ...",
             "retry": "@: կրկնել Տեքստը",
             "checkRewards": "Ստուգել",
@@ -702,7 +702,7 @@
         },
         "events": {
             "XorErc20": "XOR ERC-20",
-            "SoraFarmHarvest": "@ :( soraText). գյուղմթերքի բերք",
+            "SoraFarmHarvest": "@:(soraText). գյուղմթերքի բերք",
             "NtfAirdrop": "NFT Airdrop",
             "LiquidityProvision": "Հեղուկի մատակարարումից ստացված վճարներ",
             "BuyOnBondingCurve": "TBC-ից գնելու դեպքում  ստրատեգիական պարգևատրումներ",
