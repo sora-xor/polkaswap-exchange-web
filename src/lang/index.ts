@@ -11,6 +11,7 @@ Vue.use(VueI18n)
 
 const i18n = new VueI18n({
   locale: Language.EN,
+  fallbackLocale: Language.EN,
   messages: {
     [Language.EN]: en
   }
