@@ -11,7 +11,7 @@ import { DefaultSlippageTolerance, DefaultMarketAlgorithm, LiquiditySourceForMar
 import { getRpcEndpoint, fetchRpc } from '@/utils/rpc'
 import { ConnectToNodeOptions } from '@/types/nodes'
 import { getLocale, getSupportedLocale, setI18nLocale } from '@/lang'
-import { updateFpNumberLocale } from '@/utils'
+import { updateFpNumberLocale, updateDocumentTitle } from '@/utils'
 
 const NODE_CONNECTION_TIMEOUT = 60000
 
@@ -328,6 +328,7 @@ const actions = {
   async setLanguage ({ commit }, lang: Language) {
     const locale = getSupportedLocale(lang)
     await setI18nLocale(locale as any)
+    updateDocumentTitle()
     updateFpNumberLocale(locale)
     commit(types.SET_LANGUAGE, locale)
   }
