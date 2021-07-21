@@ -26,7 +26,7 @@
       :tooltip-content="t('networkFeeTooltipText')"
       :value="formatFee(soraNetworkFee, formattedSoraNetworkFee)"
       :asset-symbol="KnownSymbols.XOR"
-      :fiat-value="getFiatAmountByString(xorAsset, FPNumber.fromCodecValue(soraNetworkFee).toString())"
+      :fiat-value="getFiatAmountByCodecString(soraNetworkFee)"
     />
     <info-line
       :label="t('bridge.ethereumNetworkFee')"

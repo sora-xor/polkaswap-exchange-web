@@ -6,7 +6,7 @@
       :tooltip-content="t('swap.minReceivedTooltip')"
       :value="formattedMinMaxReceived"
       :asset-symbol="getAssetSymbolText"
-      :fiat-value="getFiatAmountByString(isExchangeB ? tokenFrom : tokenTo, formattedMinMaxReceived.toString())"
+      :fiat-value="getFiatAmountByCodecString(minMaxReceived, isExchangeB ? tokenFrom : tokenTo)"
     />
     <info-line
       v-for="(reward, index) in rewardsValues"
@@ -23,7 +23,7 @@
       :tooltip-content="liquidityProviderFeeTooltipText"
       :value="formattedLiquidityProviderFee"
       :asset-symbol="xorSymbol"
-      :fiat-value="getFiatAmountByString(isExchangeB ? tokenFrom : tokenTo, FPNumber.fromCodecValue(liquidityProviderFee).toString())"
+      :fiat-value="getFiatAmountByCodecString(liquidityProviderFee)"
     />
     <!-- TODO 4 alexnatalia: Show if logged in and have info about Network Fee -->
     <info-line
@@ -32,7 +32,7 @@
       :tooltip-content="t('swap.networkFeeTooltip')"
       :value="formattedNetworkFee"
       :asset-symbol="xorSymbol"
-      :fiat-value="getFiatAmountByString(xorAsset, FPNumber.fromCodecValue(networkFee).toString())"
+      :fiat-value="getFiatAmountByCodecString(networkFee)"
     />
   </div>
 </template>

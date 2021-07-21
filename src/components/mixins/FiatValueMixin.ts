@@ -1,47 +1,45 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
+import { Whitelist, Asset, AccountAsset, KnownAssets, KnownSymbols, BalanceType, FPNumber, CodecString } from '@sora-substrate/util'
 
-import { Whitelist, Asset, AccountAsset, KnownAssets, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
 import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
-
-enum BalanceTypes {
-  Transferable = 'transferable',
-  Frozen = 'frozen',
-  Locked = 'locked',
-  Reserved = 'reserved',
-  Total = 'total'
-}
 
 @Component
 export default class FiatValueMixin extends Mixins(NumberFormatterMixin) {
   @Getter whitelist!: Whitelist
 
-  get xorAsset (): Asset {
-    return KnownAssets.get(KnownSymbols.XOR)
-  }
-
-  getAssetFiatPrice (accountAsset: Asset | AccountAsset): CodecString | null {
+  getAssetFiatPrice (accountAsset: Asset | AccountAsset): Nullable<CodecString> {
     const asset = this.whitelist[accountAsset.address]
     return !asset || !asset.price ? null : asset.price
   }
 
-  getFiatAmount (asset: AccountAsset, type: BalanceTypes): string | null {
+  getFiatBalance (asset: AccountAsset, type = BalanceType.Transferable): Nullable<string> {
     const price = this.getAssetFiatPrice(asset)
     if (!price || !asset.balance) {
       return null
     }
-    const balance: FPNumber = this.getFPNumberFromCodec(asset.balance[type || BalanceTypes.Transferable], asset.decimals)
-    return balance.mul(FPNumber.fromCodecValue(price)).toString()
+    return this.getFPNumberFromCodec(asset.balance[type], asset.decimals)
+      .mul(FPNumber.fromCodecValue(price)).toString()
   }
 
-  getFiatAmountByString (asset: AccountAsset, amount: string): string | null {
-    if (amount === '') {
+  getFiatAmount (amount: string | CodecString, asset: Asset | AccountAsset, isCodecString = false): Nullable<string> {
+    // When input is empty, zero should be shown
+    if (!amount && amount !== '') {
       return null
     }
     const price = this.getAssetFiatPrice(asset)
     if (!price) {
       return null
     }
-    return this.getFPNumber(amount, asset.decimals).mul(FPNumber.fromCodecValue(price)).toString()
+    return (isCodecString ? this.getFPNumberFromCodec(amount || '0', asset.decimals) : this.getFPNumber(amount || '0', asset.decimals))
+      .mul(FPNumber.fromCodecValue(price)).toString()
+  }
+
+  getFiatAmountByString (amount: string, asset: AccountAsset): Nullable<string> {
+    return this.getFiatAmount(amount, asset)
+  }
+
+  getFiatAmountByCodecString (amount: CodecString, asset = KnownAssets.get(KnownSymbols.XOR)): Nullable<string> {
+    return this.getFiatAmount(amount, asset, true)
   }
 }

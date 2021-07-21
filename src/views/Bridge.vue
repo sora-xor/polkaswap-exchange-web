@@ -52,7 +52,7 @@
             <div v-if="isNetworkAConnected && isAssetSelected" class="input-title">
               <span class="input-title--uppercase">{{ t('bridge.balance') }}</span>
               <span class="input-title--uppercase input-title--primary">{{ formatBalance(isSoraToEvm) }}</span>
-              <fiat-value v-if="asset && isSoraToEvm" :value="getFiatAmount(asset)" with-decimals with-left-shift />
+              <fiat-value v-if="asset && isSoraToEvm" :value="getFiatBalance(asset)" with-decimals with-left-shift />
             </div>
           </div>
           <div slot="right" v-if="isNetworkAConnected" class="s-flex el-buttons">
@@ -63,7 +63,7 @@
           </div>
           <template #bottom>
             <div class="input-line input-line--footer">
-              <fiat-value v-if="asset && isSoraToEvm" :value="getFiatAmountByString(asset, amount || '0')" with-decimals />
+              <fiat-value v-if="asset && isSoraToEvm" :value="getFiatAmountByString(amount, asset)" with-decimals />
               <token-address v-if="isAssetSelected" v-bind="asset" :external="!isSoraToEvm" class="input-title" />
             </div>
             <s-button v-if="!isNetworkAConnected" class="el-button--connect s-typography-button--large" type="primary" @click="isSoraToEvm ? connectInternalWallet() : connectExternalWallet()">
@@ -153,7 +153,7 @@
             :tooltip-content="t('networkFeeTooltipText')"
             :value="formatFee(soraNetworkFee, formattedSoraNetworkFee)"
             :asset-symbol="KnownSymbols.XOR"
-            :fiat-value="getFiatAmountByString(xorAsset, FPNumber.fromCodecValue(soraNetworkFee).toString())"
+            :fiat-value="getFiatAmountByCodecString(soraNetworkFee)"
           />
           <info-line
             :label="t('bridge.ethereumNetworkFee')"

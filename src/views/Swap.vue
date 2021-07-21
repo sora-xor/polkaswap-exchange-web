@@ -34,7 +34,7 @@
         <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="input-title">
           <span class="input-title--uppercase">{{ t('exchange.balance') }}</span>
           <span class="input-title--uppercase input-title--primary">{{ formatBalance(tokenFrom) }}</span>
-          <fiat-value v-if="tokenFromPrice" :value="getFiatAmount(tokenFrom)" with-decimals with-left-shift />
+          <fiat-value v-if="tokenFromPrice" :value="getFiatBalance(tokenFrom)" with-decimals with-left-shift />
         </div>
       </div>
       <div slot="right" class="s-flex el-buttons">
@@ -44,7 +44,7 @@
         <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenFrom" @click="openSelectTokenDialog(true)" />
       </div>
       <div slot="bottom" class="input-line input-line--footer">
-        <fiat-value v-if="tokenFrom && tokenFromPrice" :value="getFiatAmountByString(tokenFrom, fromValue || '0')" with-decimals />
+        <fiat-value v-if="tokenFrom && tokenFromPrice" :value="getFiatAmountByString(fromValue, tokenFrom)" with-decimals />
         <token-address v-if="tokenFrom" :name="tokenFrom.name" :symbol="tokenFrom.symbol" :address="tokenFrom.address" class="input-title" />
       </div>
     </s-float-input>
@@ -68,14 +68,14 @@
         <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="input-title">
           <span class="input-title--uppercase">{{ t('exchange.balance') }}</span>
           <span class="input-title--uppercase input-title--primary">{{ formatBalance(tokenTo) }}</span>
-          <fiat-value v-if="tokenToPrice" :value="getFiatAmount(tokenTo)" with-decimals with-left-shift />
+          <fiat-value v-if="tokenToPrice" :value="getFiatBalance(tokenTo)" with-decimals with-left-shift />
         </div>
       </div>
       <div slot="right" class="s-flex el-buttons">
         <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenTo" @click="openSelectTokenDialog(false)" />
       </div>
       <div slot="bottom" class="input-line input-line--footer">
-        <fiat-value v-if="tokenTo && tokenToPrice" :value="getFiatAmountByString(tokenTo, toValue || '0')" with-decimals />
+        <fiat-value v-if="tokenTo && tokenToPrice" :value="getFiatAmountByString(toValue, tokenTo)" with-decimals />
         <token-address v-if="tokenTo" :name="tokenTo.name" :symbol="tokenTo.symbol" :address="tokenTo.address" class="input-title" />
       </div>
     </s-float-input>
@@ -283,11 +283,11 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, FiatVal
     return FPNumber.lte(fpAmount, zero)
   }
 
-  get tokenFromPrice (): string | null {
+  get tokenFromPrice (): Nullable<string> {
     return this.getAssetFiatPrice(this.tokenFrom)
   }
 
-  get tokenToPrice (): string | null {
+  get tokenToPrice (): Nullable<string> {
     return this.getAssetFiatPrice(this.tokenTo)
   }
 

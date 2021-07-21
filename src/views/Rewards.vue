@@ -46,7 +46,7 @@
                 v-if="fee && isSoraAccountConnected && rewardsAvailable && !claimingInProgressOrFinished"
                 v-bind="feeInfo"
                 class="rewards-fee"
-                :fiat-value="getFiatAmountByString(xorAsset, FPNumber.fromCodecValue(fee).toString())"
+                :fiat-value="getFiatAmountByCodecString(fee)"
               />
             </template>
           </div>

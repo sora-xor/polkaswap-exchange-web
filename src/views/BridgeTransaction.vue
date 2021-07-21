@@ -57,13 +57,13 @@
               :label="t('bridgeTransaction.networkInfo.amount')"
               :value="`-${formattedAmount}`"
               :asset-symbol="formatAssetSymbol(assetSymbol)"
-              :fiat-value="isSoraToEvm ? getFiatAmountByString(asset, new FPNumber(amount).toString()) : null"
+              :fiat-value="isSoraToEvm ? getFiatAmountByString(amount, asset) : null"
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
               :value="isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
               :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : currentEvmTokenSymbol"
-              :fiat-value="isSoraToEvm ? getFiatAmountByString(xorAsset, FPNumber.fromCodecValue(historyItem.soraNetworkFee || soraNetworkFee).toString()) : null"
+              :fiat-value="isSoraToEvm ? getFiatAmountByCodecString(historyItem.soraNetworkFee || soraNetworkFee) : null"
             />
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
             <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : EvmSymbol.ETH" /> -->
@@ -122,13 +122,13 @@
               :label="t('bridgeTransaction.networkInfo.amount')"
               :value="`${formattedAmount}`"
               :asset-symbol="formatAssetSymbol(assetSymbol)"
-              :fiat-value="!isSoraToEvm ? getFiatAmountByString(asset, new FPNumber(amount).toString()) : null"
+              :fiat-value="!isSoraToEvm ? getFiatAmountByString(amount, asset) : null"
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
               :value="!isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
               :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : currentEvmTokenSymbol"
-              :fiat-value="!isSoraToEvm ? getFiatAmountByString(xorAsset, FPNumber.fromCodecValue(historyItem.soraNetworkFee || soraNetworkFee).toString()) : null"
+              :fiat-value="!isSoraToEvm ? getFiatAmountByCodecString(historyItem.soraNetworkFee || soraNetworkFee) : null"
             />
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
             <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="!isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : EvmSymbol.ETH" /> -->

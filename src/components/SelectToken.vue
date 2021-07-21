@@ -33,11 +33,7 @@
             </s-col>
             <div v-if="connected" class="token-item__amount-container">
               <span class="token-item__amount">{{ formatBalance(token) }}</span>
-              <fiat-value
-                v-if="getAssetFiatPrice(token) && formatBalance(token) !== formattedZeroSymbol"
-                :value="getFiatAmount(token)"
-                with-decimals
-              />
+              <fiat-value v-if="shoudFiatBeShown(token)" :value="getFiatBalance(token)" with-decimals />
             </div>
           </div>
         </div>
@@ -105,7 +101,7 @@
               </s-col>
               <div v-if="connected" class="token-item__amount-container">
                 <span class="token-item__amount">{{ formatBalance(token) }}</span>
-                <fiat-value v-if="getAssetFiatPrice(token) && formatBalance(token) !== formattedZeroSymbol" :value="getFiatAmount(token)" with-decimals />
+                <fiat-value v-if="shoudFiatBeShown(token)" :value="getFiatBalance(token)" with-decimals />
               </div>
               <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
                 <s-icon name="basic-trash-24" />
@@ -145,6 +141,7 @@ const namespace = 'assets'
   }
 })
 export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMixin, LoadingMixin, FiatValueMixin) {
+  private readonly formattedZeroSymbol = '-'
   readonly tokenTabs = [
     'assets',
     'custom'
@@ -156,7 +153,6 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   alreadyAttached = false
   isConfirmed = false
   customAsset: Nullable<Asset> = null
-  formattedZeroSymbol = '-'
 
   @Prop({ default: false, type: Boolean }) readonly connected!: boolean
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: Asset
@@ -273,6 +269,10 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     if (this.customAddress) {
       this.searchCustomAsset()
     }
+  }
+
+  shoudFiatBeShown (asset: AccountAsset): boolean {
+    return !!this.getAssetFiatPrice(asset) && this.formatBalance(asset) !== this.formattedZeroSymbol
   }
 }
 </script>

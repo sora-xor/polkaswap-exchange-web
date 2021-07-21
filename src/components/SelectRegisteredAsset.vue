@@ -39,7 +39,7 @@
                   <span class="asset-item__balance">{{ formatBalance(asset) }}</span>
                   <fiat-value
                     v-if="isSoraToEvm && asset && getAssetFiatPrice(asset)"
-                    :value="getFiatAmount(asset)"
+                    :value="getFiatBalance(asset)"
                     with-decimals
                   />
                 </div>
