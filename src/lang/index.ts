@@ -19,7 +19,7 @@ const i18n = new VueI18n({
 
 const loadedLanguages: Array<string> = [Language.EN]
 
-const getSupportedLocale = (locale: Language): string => {
+export const getSupportedLocale = (locale: Language): string => {
   return Object.values(Language).includes(locale as any)
     ? locale
     : Language.EN

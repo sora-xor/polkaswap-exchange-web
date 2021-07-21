@@ -10,7 +10,7 @@ import { AppHandledError } from '@/utils/error'
 import { DefaultSlippageTolerance, DefaultMarketAlgorithm, LiquiditySourceForMarketAlgorithm, WalletPermissions, Language } from '@/consts'
 import { getRpcEndpoint, fetchRpc } from '@/utils/rpc'
 import { ConnectToNodeOptions } from '@/types/nodes'
-import { getLocale, setI18nLocale } from '@/lang'
+import { getLocale, getSupportedLocale, setI18nLocale } from '@/lang'
 import { updateFpNumberLocale } from '@/utils'
 
 const NODE_CONNECTION_TIMEOUT = 60000
@@ -326,9 +326,10 @@ const actions = {
     commit(types.SET_SELECT_NODE_DIALOG_VISIBILIY, flag)
   },
   async setLanguage ({ commit }, lang: Language) {
-    await setI18nLocale(lang)
-    updateFpNumberLocale(lang)
-    commit(types.SET_LANGUAGE, lang)
+    const locale = getSupportedLocale(lang)
+    await setI18nLocale(locale as any)
+    updateFpNumberLocale(locale)
+    commit(types.SET_LANGUAGE, locale)
   }
 }
 
