@@ -242,7 +242,6 @@ export default class BridgeTransaction extends Mixins(
 
   EvmSymbol = EvmSymbol
   KnownSymbols = KnownSymbols
-  FPNumber = FPNumber
   formatAssetSymbol = formatAssetSymbol
   formatDateItem = formatDateItem
   STATES = STATES

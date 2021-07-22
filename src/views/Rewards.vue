@@ -126,7 +126,6 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @Action('claimRewards', { namespace: 'rewards' }) claimRewards!: (options: any) => Promise<void>
 
   private unwatchEthereum!: any
-  readonly FPNumber = FPNumber
 
   destroyed (): void {
     this.reset()

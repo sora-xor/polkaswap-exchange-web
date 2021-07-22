@@ -60,7 +60,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { KnownSymbols, FPNumber, CodecString, BridgeNetworks } from '@sora-substrate/util'
+import { KnownSymbols, CodecString, BridgeNetworks } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -87,8 +87,6 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   NetworkFormatterMixin,
   FiatValueMixin
 ) {
-  readonly FPNumber = FPNumber
-
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
   @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean
   @Getter('asset', { namespace }) asset!: any

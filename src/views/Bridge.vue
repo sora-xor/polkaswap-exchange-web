@@ -228,8 +228,6 @@ export default class Bridge extends Mixins(
   NetworkFormatterMixin,
   FiatValueMixin
 ) {
-  readonly FPNumber = FPNumber
-
   @Action('setSoraToEvm', { namespace }) setSoraToEvm
   @Action('setEvmNetwork', { namespace: 'web3' }) setEvmNetwork
   @Action('setAssetAddress', { namespace }) setAssetAddress

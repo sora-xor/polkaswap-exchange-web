@@ -152,7 +152,6 @@ const namespace = 'removeLiquidity'
 export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDialogMixin, FiatValueMixin) {
   readonly KnownSymbols = KnownSymbols
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
-  readonly FPNumber = FPNumber
 
   @Getter('focusedField', { namespace }) focusedField!: Nullable<string>
   @Getter('liquidity', { namespace }) liquidity!: AccountLiquidity
