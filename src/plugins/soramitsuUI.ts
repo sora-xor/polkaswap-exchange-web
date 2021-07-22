@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { DesignSystemTypes } from '@soramitsu/soramitsu-js-ui/src/utils/DesignSystem'
+import { DesignSystem } from '@soramitsu/soramitsu-js-ui/src/utils/DesignSystem'
 import { setDesignSystem } from '@soramitsu/soramitsu-js-ui/src/utils'
 
 import ElementUIPlugin, { Message, MessageBox, Notification } from '@soramitsu/soramitsu-js-ui/src/plugins/elementUI'
@@ -90,4 +90,4 @@ Vue.prototype.$notify = ({ message, type }) => {
   current.appendChild(el)
 }
 
-setDesignSystem(DesignSystemTypes.NEUMORPHIC)
+setDesignSystem(DesignSystem.NEUMORPHIC)
