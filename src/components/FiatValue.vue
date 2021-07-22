@@ -1,5 +1,5 @@
 <template>
-  <span :class="computedClasses" v-if="value">
+  <span v-if="value && isFiniteValue" :class="computedClasses">
     <span class="fiat-value__prefix">~$</span>
     <span class="fiat-value__number">{{ formatted.value }}</span>
     <span v-if="withDecimals" class="fiat-value__decimals">{{ formatted.decimals }}</span>
@@ -17,6 +17,10 @@ export default class FiatValue extends Mixins(NumberFormatterMixin) {
   @Prop({ default: '', type: String }) readonly value!: string
   @Prop({ default: false, type: Boolean }) readonly withDecimals!: boolean
   @Prop({ default: false, type: Boolean }) readonly withLeftShift!: boolean
+
+  get isFiniteValue (): boolean {
+    return Number.isFinite(+this.value)
+  }
 
   get formatted (): any {
     const formattedValue = this.formatStringValue(this.value)
