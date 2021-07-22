@@ -475,6 +475,9 @@ html {
   }
 }
 
+@include custom-fiat-styles;
+@include custom-fiat-styles('.input-line.input-line--footer', var(--s-font-size-small), 600);
+
 .el-message-box {
   border-radius: var(--s-border-radius-small) !important;
 

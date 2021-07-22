@@ -93,6 +93,7 @@
             <div v-if="isNetworkAConnected && isAssetSelected" class="input-title">
               <span class="input-title--uppercase">{{ t('bridge.balance') }}</span>
               <span class="input-title--uppercase input-title--primary">{{ formatBalance(!isSoraToEvm) }}</span>
+              <fiat-value v-if="asset && !isSoraToEvm" :value="getFiatBalance(asset)" with-decimals with-left-shift />
             </div>
           </div>
           <div slot="right" v-if="isNetworkAConnected && isAssetSelected" class="s-flex el-buttons">
@@ -100,6 +101,7 @@
           </div>
           <template #bottom>
             <div class="input-line input-line--footer">
+              <fiat-value v-if="asset && !isSoraToEvm" :value="getFiatAmountByString(amount, asset)" with-decimals />
               <token-address v-if="isAssetSelected" v-bind="asset" :external="isSoraToEvm" class="input-title" />
             </div>
             <div v-if="isNetworkBConnected && isSoraToEvm" class="bridge-item-footer">

@@ -94,6 +94,20 @@
   }
 }
 
+@mixin custom-fiat-styles($containerClass: '.input-line .input-title', $font-size: inherit, $font-weight: 400) {
+  #{$containerClass} {
+    .fiat-value {
+      font-size: $font-size;
+      font-weight: $font-weight;
+      &__number,
+      &__decimals {
+        font-size: inherit;
+        font-weight: inherit;
+      }
+    }
+  }
+}
+
 @mixin buttons() {
   .el-buttons {
     display: flex;
