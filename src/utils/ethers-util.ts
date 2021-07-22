@@ -187,7 +187,7 @@ async function onConnect (options: ConnectOptions): Promise<string> {
 }
 
 async function onConnectMetamask (): Promise<string> {
-  provider = await detectEthereumProvider() as any
+  provider = await detectEthereumProvider({ timeout: 0 }) as any
   if (!provider) {
     throw new Error('provider.messages.installExtension')
   }
@@ -203,15 +203,10 @@ async function onConnectWallet (url = 'https://cloudflare-eth.com'): Promise<str
 }
 
 async function getAccount (): Promise<string> {
-  try {
-    const ethersInstance = await getEthersInstance()
-    await ethersInstance.send('eth_requestAccounts', [])
-    const account = ethersInstance.getSigner()
-    return account.getAddress()
-  } catch (error) {
-    console.error(error)
-    return ''
-  }
+  const ethersInstance = await getEthersInstance()
+  await ethersInstance.send('eth_requestAccounts', [])
+  const account = ethersInstance.getSigner()
+  return account.getAddress()
 }
 
 // TODO: remove this check, when MetaMask issue will be resolved
@@ -227,7 +222,7 @@ async function checkAccountIsConnected (address: string): Promise<boolean> {
 
 async function getEthersInstance (): Promise<ethersProvider> {
   if (!provider) {
-    provider = await detectEthereumProvider() as any
+    provider = await detectEthereumProvider({ timeout: 0 }) as any
   }
   if (!provider) {
     throw new Error('No ethereum provider instance!')

@@ -547,7 +547,8 @@ export default {
     messages: {
       checkExtension: '{name} extension is busy, please check it',
       extensionLogin: 'Please login to your {name} extension',
-      installExtension: '{name} extension is not found. Please install it!'
+      installExtension: '{name} extension is not found. Please install it!\nAlready installed it? - Reload page',
+      reloadPage: 'Reload page'
     }
   }
 }
