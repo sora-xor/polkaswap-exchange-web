@@ -94,12 +94,12 @@ export default {
     title: 'About',
     learnMore: 'Learn more',
     network: {
-      title: 'What is @:soraText?',
+      title: 'What is @:(soraText)?',
       description: 'Polkaswap is built on top of the @:soraText Network, and the @:soraText token (XOR) is used for gas/fees and liquidity provision on Polkaswap. @:soraText Network allows for reduced fees, faster transactions and simpler consensus finalization and is focused on delivering interoperability across other blockchain ecosystems like @:(ethereumText).'
     },
     polkadot: {
       title: 'What is polkadot{.js}?',
-      description: 'Polkadot{.js} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including @:soraText, Polkadot and Kusama. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized.'
+      description: 'Polkadot{.js} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including @:(soraText), Polkadot and Kusama. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized.'
     }
   },
   node: {
@@ -131,6 +131,9 @@ export default {
       incorrectProtocol: 'Address should starts from ws:// or wss://',
       incorrectAddress: 'Incorrect address'
     }
+  },
+  selectLanguageDialog: {
+    title: 'Language'
   },
   buttons: {
     max: 'MAX',
@@ -373,7 +376,9 @@ export default {
     confirm: '@:confirmTransactionText',
     newTransaction: 'Create new transaction',
     changeNetwork: '@:changeNetworkText',
-    connectWallet: '@:connectWalletText'
+    connectWallet: '@:connectWalletText',
+    changeAccount: '@:changeAccountText in @:metamask',
+    expectedAddress: 'Expected address in @:metamask'
   },
   months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   bridgeHistory: {
@@ -545,7 +550,8 @@ export default {
     messages: {
       checkExtension: '{name} extension is busy, please check it',
       extensionLogin: 'Please login to your {name} extension',
-      installExtension: '{name} extension is not found. Please install it!'
+      installExtension: '{name} extension is not found. Please install it!\n\nAlready installed extension? Please reload the page',
+      reloadPage: 'Reload page'
     }
   }
 }
