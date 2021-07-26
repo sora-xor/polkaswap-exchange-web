@@ -171,7 +171,6 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   @Action setDefaultNodes!: (nodes: any) => Promise<void>
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
   @Action setFaucetUrl!: (url: string) => void
-  @Action('setEvmSmartContracts', { namespace: 'web3' }) setEvmSmartContracts
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts
 
