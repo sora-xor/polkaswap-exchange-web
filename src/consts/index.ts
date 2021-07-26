@@ -16,8 +16,30 @@ export const WalletPermissions = {
 }
 
 export enum Language {
-  EN = 'en'
+  EN = 'en',
+  RU = 'ru',
+  CS = 'cs',
+  ES = 'es',
+  HY = 'hy',
+  ID = 'id',
+  IT = 'it',
+  NL = 'nl',
+  PL = 'pl',
+  YO = 'yo'
 }
+
+export const Languages = [
+  { key: Language.EN, value: 'English', name: 'English (UK)' },
+  { key: Language.HY, value: 'Armenian', name: 'հայերեն' },
+  { key: Language.CS, value: 'Czech', name: 'Čeština' },
+  { key: Language.NL, value: 'Dutch', name: 'Nederlands' },
+  { key: Language.ID, value: 'Indonesian', name: 'bahasa Indonesia' },
+  { key: Language.IT, value: 'Italian', name: 'Italiano' },
+  { key: Language.PL, value: 'Polish', name: 'Polskie' },
+  { key: Language.RU, value: 'Russian', name: 'Русский' },
+  { key: Language.ES, value: 'Spanish', name: 'Español' },
+  { key: Language.YO, value: 'Yoruba', name: 'Yoruba' }
+]
 
 export const Links = {
   about: {
@@ -76,10 +98,8 @@ export enum PageNames {
 export enum Components {
   GenericPageHeader = 'GenericPageHeader',
   SwapInfo = 'SwapInfo',
-  InfoLine = 'InfoLine', // TODO: Check its usage
-  InfoCard = 'InfoCard',
+  InfoLine = 'InfoLine',
   SelectToken = 'SelectToken',
-  ResultDialog = 'ResultDialog',
   TokenLogo = 'TokenLogo',
   PairTokenLogo = 'PairTokenLogo',
   ConfirmSwap = 'ConfirmSwap',
@@ -109,6 +129,7 @@ export enum Components {
   RewardsAmountTable = 'Rewards/AmountTable',
   TokenSelectButton = 'Input/TokenSelectButton',
   TokenAddress = 'Input/TokenAddress',
+  SelectLanguageDialog = 'SelectLanguageDialog'
 }
 
 interface SidebarMenuItem {

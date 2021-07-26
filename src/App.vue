@@ -3,6 +3,7 @@
     <header class="header">
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
       <div class="app-controls s-flex">
+        <s-button type="tertiary" class="lang-control" icon="basic-globe-24" @click="openSelectLanguageDialog">{{ selectedLanguage }}</s-button>
         <s-button type="tertiary" alternative size="medium" class="node-control" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
           <div class="node-control__text">
             <div class="node-control-title">{{ node.name }}</div>
@@ -105,6 +106,7 @@
 
     <help-dialog :visible.sync="showHelpDialog" />
     <select-node-dialog :visible.sync="showSelectNodeDialog" />
+    <select-language-dialog :visible.sync="showSelectLanguageDialog" />
   </s-design-system-provider>
 </template>
 
@@ -112,9 +114,9 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
 import { WALLET_CONSTS, WalletAvatar, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
-import { KnownSymbols, FPNumber } from '@sora-substrate/util'
+import { KnownSymbols } from '@sora-substrate/util'
 
-import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize } from '@/consts'
+import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize, Language } from '@/consts'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
@@ -123,6 +125,7 @@ import axios, { updateBaseUrl } from '@/api'
 import router, { lazyComponent } from '@/router'
 import { formatAddress, disconnectWallet } from '@/utils'
 import { ConnectToNodeOptions } from '@/types/nodes'
+import { getLocale } from '@/lang'
 
 const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
 const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
@@ -133,6 +136,7 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
     HelpDialog: lazyComponent(Components.HelpDialog),
     SidebarItemContent: lazyComponent(Components.SidebarItemContent),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
+    SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
@@ -152,6 +156,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   ]
 
   showHelpDialog = false
+  showSelectLanguageDialog = false
 
   @State(state => state.settings.faucetUrl) faucetUrl!: string
   @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
@@ -163,6 +168,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   @Getter currentRoute!: WALLET_CONSTS.RouteNames
   @Getter chainAndNetworkText!: string
   @Getter nodeIsConnected!: boolean
+  @Getter language!: Language
 
   @Action navigate // Wallet
   @Action updateAccountAssets!: AsyncVoidFn
@@ -171,6 +177,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   @Action setDefaultNodes!: (nodes: any) => Promise<void>
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
   @Action setFaucetUrl!: (url: string) => void
+  @Action setLanguage!: (lang: Language) => Promise<void>
   @Action('setEvmSmartContracts', { namespace: 'web3' }) setEvmSmartContracts
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts
@@ -194,12 +201,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   async created () {
     updateBaseUrl(router)
 
-    const localeLanguage = navigator.language
-    const thousandSymbol = Number(1000).toLocaleString(localeLanguage).substring(1, 2)
-    if (thousandSymbol !== '0') {
-      FPNumber.DELIMITERS_CONFIG.thousand = Number(1234).toLocaleString(localeLanguage).substring(1, 2)
-    }
-    FPNumber.DELIMITERS_CONFIG.decimal = Number(1.2).toLocaleString(localeLanguage).substring(1, 2)
+    await this.setLanguage(getLocale() as any)
 
     await this.withLoading(async () => {
       const { data } = await axios.get('/env.json')
@@ -218,6 +220,10 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
     })
 
     this.trackActiveTransactions()
+  }
+
+  get selectedLanguage (): string {
+    return this.language.toUpperCase()
   }
 
   get showSelectNodeDialog (): boolean {
@@ -281,6 +287,10 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
 
   openSelectNodeDialog (): void {
     this.setSelectNodeDialogVisibility(true)
+  }
+
+  openSelectLanguageDialog (): void {
+    this.showSelectLanguageDialog = true
   }
 
   destroyed (): void {
@@ -507,7 +517,6 @@ html {
 <style lang="scss" scoped>
 $logo-horizontal-margin: $inner-spacing-mini / 2;
 $header-height: 64px;
-$sidebar-width: 160px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
 
@@ -652,7 +661,7 @@ $sora-logo-width: 173.7px;
     + .el-button {
       margin-left: 0;
     }
-    &.s-tertiary {
+    &.s-tertiary:not(.lang-control) {
       color: var(--s-color-base-content-secondary);
       &:hover, &:focus, &:active, &.focusing, &.s-pressed {
         color: var(--s-color-base-content-primary);
@@ -752,7 +761,7 @@ $sora-logo-width: 173.7px;
   .app-sidebar {
     overflow-y: auto;
     margin-right: 0;
-    width: $sidebar-width;
+    width: auto;
     border-right: 1px solid #e5dce0 !important;
     border-image: linear-gradient(#FAF4F8, #D5CDD0, #FAF4F8) 30;
   }

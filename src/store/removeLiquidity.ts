@@ -3,11 +3,11 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
+import debounce from 'lodash/debounce'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { FPNumber, CodecString } from '@sora-substrate/util'
 
 import { ZeroStringValue } from '@/consts'
-import { debouncedInputHandler } from '@/utils'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -254,11 +254,11 @@ const actions = {
     await dispatch('setFocusedField', null)
   },
 
-  getRemoveLiquidityData: debouncedInputHandler(async ({ dispatch }) => {
+  getRemoveLiquidityData: debounce(async ({ dispatch }) => {
     await dispatch('getLiquidityReserves')
     await dispatch('getTotalSupply')
     await dispatch('getNetworkFee')
-  }),
+  }, 500, { leading: true }),
 
   async getNetworkFee ({ commit, getters }) {
     if (getters.firstTokenAddress && getters.secondTokenAddress) {

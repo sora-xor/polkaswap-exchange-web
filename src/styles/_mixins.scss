@@ -339,6 +339,8 @@
             font-size: var(--s-font-size-medium);
             font-weight: 400 !important;
             text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
             &.is-focus:not(.is-active) {
               box-shadow: none !important;
             }
