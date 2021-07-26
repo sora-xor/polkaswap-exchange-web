@@ -47,6 +47,7 @@
                 v-bind="feeInfo"
                 class="rewards-fee"
                 :fiat-value="getFiatAmountByCodecString(fee)"
+                is-formatted
               />
             </template>
           </div>
@@ -76,6 +77,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
 import { AccountAsset, KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, CodecString, FPNumber } from '@sora-substrate/util'
+import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
 
 import ethersUtil from '@/utils/ethers-util'
 import { lazyComponent } from '@/router'
@@ -86,7 +88,6 @@ import { RewardsAmountHeaderItem, RewardInfoGroup } from '@/types/rewards'
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import TransactionMixin from '@/components/mixins/TransactionMixin'
-import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 
 @Component({
   components: {
@@ -98,7 +99,7 @@ import FiatValueMixin from '@/components/mixins/FiatValueMixin'
     InfoLine: lazyComponent(Components.InfoLine)
   }
 })
-export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin, FiatValueMixin) {
+export default class Rewards extends Mixins(FormattedAmountMixin, WalletConnectMixin, TransactionMixin) {
   @State(state => state.rewards.fee) fee!: CodecString
   @State(state => state.rewards.feeFetching) feeFetching!: boolean
   @State(state => state.rewards.rewardsFetching) rewardsFetching!: boolean
@@ -369,7 +370,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 
 <style lang="scss">
 .rewards {
-  .fiat-value {
+  .formatted-amount--fiat-value {
     color: #c0e2ff;
   }
 }

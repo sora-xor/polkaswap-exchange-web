@@ -33,8 +33,8 @@
         </div>
         <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="input-title">
           <span class="input-title--uppercase">{{ t('exchange.balance') }}</span>
-          <span class="input-title--uppercase input-title--primary">{{ formatBalance(tokenFrom) }}</span>
-          <fiat-value v-if="tokenFromPrice" :value="getFiatBalance(tokenFrom)" with-decimals with-left-shift />
+          <span class="input-title--primary">{{ formatBalance(tokenFrom) }}</span>
+          <formatted-amount v-if="tokenFromPrice" :value="getFiatBalance(tokenFrom)" is-fiat-value />
         </div>
       </div>
       <div slot="right" class="s-flex el-buttons">
@@ -44,7 +44,7 @@
         <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenFrom" @click="openSelectTokenDialog(true)" />
       </div>
       <div slot="bottom" class="input-line input-line--footer">
-        <fiat-value v-if="tokenFrom && tokenFromPrice" :value="getFiatAmountByString(fromValue, tokenFrom)" with-decimals />
+        <formatted-amount v-if="tokenFrom && tokenFromPrice" :value="getFiatAmountByString(fromValue, tokenFrom)" is-fiat-value />
         <token-address v-if="tokenFrom" :name="tokenFrom.name" :symbol="tokenFrom.symbol" :address="tokenFrom.address" class="input-title" />
       </div>
     </s-float-input>
@@ -67,15 +67,15 @@
         </div>
         <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="input-title">
           <span class="input-title--uppercase">{{ t('exchange.balance') }}</span>
-          <span class="input-title--uppercase input-title--primary">{{ formatBalance(tokenTo) }}</span>
-          <fiat-value v-if="tokenToPrice" :value="getFiatBalance(tokenTo)" with-decimals with-left-shift />
+          <span class="input-title--primary">{{ formatBalance(tokenTo) }}</span>
+          <formatted-amount v-if="tokenToPrice" :value="getFiatBalance(tokenTo)" is-fiat-value />
         </div>
       </div>
       <div slot="right" class="s-flex el-buttons">
         <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenTo" @click="openSelectTokenDialog(false)" />
       </div>
       <div slot="bottom" class="input-line input-line--footer">
-        <fiat-value v-if="tokenTo && tokenToPrice" :value="getFiatAmountByString(toValue, tokenTo)" with-decimals />
+        <formatted-amount v-if="tokenTo && tokenToPrice" :value="getFiatAmountByString(toValue, tokenTo)" is-fiat-value />
         <token-address v-if="tokenTo" :name="tokenTo.name" :symbol="tokenTo.symbol" :address="tokenTo.address" class="input-title" />
       </div>
     </s-float-input>
@@ -125,13 +125,12 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { api } from '@soramitsu/soraneo-wallet-web'
+import { api, FormattedAmountMixin, FormattedAmount } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes, LPRewardsInfo, FPNumber } from '@sora-substrate/util'
 import type { Subscription } from '@polkadot/x-rxjs'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 
 import { isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance, debouncedInputHandler } from '@/utils'
 import router, { lazyComponent } from '@/router'
@@ -151,10 +150,10 @@ const namespace = 'swap'
     StatusActionBadge: lazyComponent(Components.StatusActionBadge),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
-    FiatValue: lazyComponent(Components.FiatValue)
+    FormattedAmount
   }
 })
-export default class Swap extends Mixins(TranslationMixin, LoadingMixin, FiatValueMixin) {
+export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin, LoadingMixin) {
   @Getter nodeIsConnected!: boolean
   @Getter isLoggedIn!: boolean
   @Getter slippageTolerance!: string
@@ -283,11 +282,11 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, FiatVal
     return FPNumber.lte(fpAmount, zero)
   }
 
-  get tokenFromPrice (): Nullable<string> {
+  get tokenFromPrice (): Nullable<CodecString> {
     return this.getAssetFiatPrice(this.tokenFrom)
   }
 
-  get tokenToPrice (): Nullable<string> {
+  get tokenToPrice (): Nullable<CodecString> {
     return this.getAssetFiatPrice(this.tokenTo)
   }
 

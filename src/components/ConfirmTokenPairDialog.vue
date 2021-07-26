@@ -18,6 +18,8 @@
     <info-line
       :label="`${firstToken.symbol} ${t('createPair.deposit')}`"
       :value="formattedFirstTokenValue"
+      :fiat-value="getFiatAmount(formattedFirstTokenValue, firstToken)"
+      is-formatted
     >
       <template #info-line-prefix>
         <token-logo :token="firstToken" size="small" />
@@ -26,6 +28,8 @@
     <info-line
       :label="`${secondToken.symbol} ${t('createPair.deposit')}`"
       :value="formattedSecondTokenValue"
+      :fiat-value="getFiatAmount(formattedSecondTokenValue, secondToken)"
+      is-formatted
     >
       <template #info-line-prefix>
         <token-logo :token="secondToken" size="small" />
@@ -52,11 +56,11 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -69,7 +73,7 @@ import { Components } from '@/consts'
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
-export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, DialogMixin, LoadingMixin, NumberFormatterMixin) {
+export default class ConfirmTokenPairDialog extends Mixins(FormattedAmountMixin, TranslationMixin, DialogMixin, LoadingMixin) {
   @Prop({ type: String, default: '100' }) readonly shareOfPool!: string
   @Prop({ type: Object }) readonly firstToken!: any
   @Prop({ type: Object }) readonly secondToken!: any

@@ -6,6 +6,12 @@
           <template v-slot="{ decimal }">{{ decimal }} {{ symbol }}</template>
         </formatted-amount>
       </div>
+      <formatted-amount
+        v-if="getAssetFiatPrice(getAsset(symbol))"
+        :key="symbol"
+        :value="getFiatAmount(amount, getAsset(symbol))"
+        is-fiat-value
+      />
       <div v-if="items.length - 1 !== index" class="amount-header-divider" :key="index">
         <s-divider direction="vertical" class="amount-header-divider__slash" />
       </div>
@@ -14,19 +20,24 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { FormattedAmountMixin, FormattedAmount } from '@soramitsu/soraneo-wallet-web'
+import { KnownAssets } from '@sora-substrate/util'
 
 import { RewardsAmountHeaderItem } from '@/types/rewards'
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
 
 @Component({
   components: {
-    FormattedAmount: lazyComponent(Components.FormattedAmount)
+    FormattedAmount
   }
 })
-export default class AmountHeader extends Vue {
+export default class AmountHeader extends Mixins(FormattedAmountMixin) {
   @Prop({ default: () => [], type: Array }) items!: Array<RewardsAmountHeaderItem>
+
+  getAsset (symbol: string): Nullable<any> {
+    const asset = KnownAssets.get(symbol)
+    return asset?.address ? this.whitelist[asset.address] : null
+  }
 }
 </script>
 

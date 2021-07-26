@@ -23,8 +23,8 @@
           </div>
           <div v-if="isLoggedIn && firstToken" class="input-title">
             <span class="input-title--uppercase">{{ t('createPair.balance') }}</span>
-            <span class="input-title--uppercase input-title--primary">{{ getTokenBalance(firstToken) }}</span>
-            <fiat-value v-if="firstTokenPrice" :value="getFiatBalance(firstToken)" with-decimals with-left-shift />
+            <span class="input-title--primary">{{ getTokenBalance(firstToken) }}</span>
+            <formatted-amount v-if="firstTokenPrice" :value="getFiatBalance(firstToken)" is-fiat-value />
         </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
@@ -34,7 +34,7 @@
           <token-select-button class="el-button--select-token" :token="firstToken" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <fiat-value v-if="firstToken && firstTokenPrice" :value="getFiatAmountByString(firstTokenValue, firstToken)" with-decimals />
+          <formatted-amount v-if="firstToken && firstTokenPrice" :value="getFiatAmountByString(firstTokenValue, firstToken)" is-fiat-value />
           <token-address v-if="firstToken" :name="firstToken.name" :symbol="firstToken.symbol" :address="firstToken.address" class="input-title" />
         </div>
       </s-float-input>
@@ -57,8 +57,8 @@
           </div>
           <div v-if="isLoggedIn && secondToken" class="input-title">
             <span class="input-title--uppercase">{{ t('createPair.balance') }}</span>
-            <span class="input-title--uppercase input-title--primary">{{ getTokenBalance(secondToken) }}</span>
-            <fiat-value v-if="secondTokenPrice" :value="getFiatBalance(secondToken)" with-decimals with-left-shift />
+            <span class="input-title--primary">{{ getTokenBalance(secondToken) }}</span>
+            <formatted-amount v-if="secondTokenPrice" :value="getFiatBalance(secondToken)" is-fiat-value />
         </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
@@ -68,7 +68,7 @@
           <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="secondToken" @click="openSelectSecondTokenDialog" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <fiat-value v-if="secondToken && secondTokenPrice" :value="getFiatAmountByString(secondTokenValue, secondToken)" with-decimals />
+          <formatted-amount v-if="secondToken && secondTokenPrice" :value="getFiatAmountByString(secondTokenValue, secondToken)" is-fiat-value />
           <token-address v-if="secondToken" :name="secondToken.name" :symbol="secondToken.symbol" :address="secondToken.address" class="input-title" />
         </div>
       </s-float-input>
@@ -107,16 +107,28 @@
       <info-line :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formatStringValue(priceReversed)" />
       <info-line
        :label="t('createPair.networkFee')"
-       :value="`${formattedFee} ${KnownSymbols.XOR}`"
+       :value="formattedFee"
+       :asset-symbol="KnownSymbols.XOR"
        :tooltip-content="t('networkFeeTooltipText')"
        :fiat-value="getFiatAmountByCodecString(fee)"
+       is-formatted
       />
     </div>
 
     <div v-if="areTokensSelected && isAvailable && (!emptyAssets || (liquidityInfo || {}).balance)" class="info-line-container">
       <p class="info-line-container__title">{{ t(`createPair.yourPosition${!emptyAssets ? 'Estimated' : ''}`) }}</p>
-      <info-line :label="firstToken.symbol" :value="firstTokenPosition" />
-      <info-line :label="secondToken.symbol" :value="secondTokenPosition" />
+      <info-line
+        :label="firstToken.symbol"
+        :value="firstTokenPosition"
+        :fiat-value="getFiatAmount(firstTokenPosition, firstToken)"
+        is-formatted
+      />
+      <info-line
+        :label="secondToken.symbol"
+        :value="secondTokenPosition"
+        :fiat-value="getFiatAmount(secondTokenPosition, secondToken)"
+        is-formatted
+      />
       <info-line :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
     </div>
 
@@ -143,9 +155,9 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { FPNumber, AccountLiquidity, CodecString, KnownAssets, KnownSymbols } from '@sora-substrate/util'
+import { FormattedAmount, FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
-import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -164,11 +176,11 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
-    FiatValue: lazyComponent(Components.FiatValue)
+    FormattedAmount
   }
 })
 
-export default class AddLiquidity extends Mixins(TokenPairMixin, FiatValueMixin) {
+export default class AddLiquidity extends Mixins(FormattedAmountMixin, TokenPairMixin) {
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity
@@ -184,11 +196,11 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, FiatValueMixin)
 
   accountLiquiditySubscription!: Function
 
-  get firstTokenPrice (): Nullable<string> {
+  get firstTokenPrice (): Nullable<CodecString> {
     return this.getAssetFiatPrice(this.firstToken)
   }
 
-  get secondTokenPrice (): Nullable<string> {
+  get secondTokenPrice (): Nullable<CodecString> {
     return this.getAssetFiatPrice(this.secondToken)
   }
 

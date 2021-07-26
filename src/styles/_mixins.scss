@@ -66,8 +66,10 @@
       margin-top: $inner-spacing-mini / 2;
       margin-bottom: 0;
       min-height: $inner-spacing-mini * 2.25;
-      .fiat-value {
+      .formatted-amount--fiat-value {
         margin-right: auto;
+        font-size: var(--s-font-size-small);
+        font-weight: 600;
         + .token-address {
           margin-left: var(--s-basic-spacing);
         }
@@ -89,20 +91,6 @@
 
       & > *:not(:last-child) {
         margin-right: $inner-spacing-mini / 2;
-      }
-    }
-  }
-}
-
-@mixin custom-fiat-styles($containerClass: '.input-line .input-title', $font-size: inherit, $font-weight: 400) {
-  #{$containerClass} {
-    .fiat-value {
-      font-size: $font-size;
-      font-weight: $font-weight;
-      &__number,
-      &__decimals {
-        font-size: inherit;
-        font-weight: inherit;
       }
     }
   }

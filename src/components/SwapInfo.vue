@@ -7,6 +7,7 @@
       :value="formattedMinMaxReceived"
       :asset-symbol="getAssetSymbolText"
       :fiat-value="getFiatAmountByCodecString(minMaxReceived, isExchangeB ? tokenFrom : tokenTo)"
+      is-formatted
     />
     <info-line
       v-for="(reward, index) in rewardsValues"
@@ -24,6 +25,7 @@
       :value="formattedLiquidityProviderFee"
       :asset-symbol="xorSymbol"
       :fiat-value="getFiatAmountByCodecString(liquidityProviderFee)"
+      is-formatted
     />
     <!-- TODO 4 alexnatalia: Show if logged in and have info about Network Fee -->
     <info-line
@@ -33,6 +35,7 @@
       :value="formattedNetworkFee"
       :asset-symbol="xorSymbol"
       :fiat-value="getFiatAmountByCodecString(networkFee)"
+      is-formatted
     />
   </div>
 </template>
@@ -41,9 +44,9 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LPRewardsInfo } from '@sora-substrate/util'
+import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 
@@ -54,7 +57,7 @@ const namespace = 'swap'
     InfoLine: lazyComponent(Components.InfoLine)
   }
 })
-export default class SwapInfo extends Mixins(TranslationMixin, FiatValueMixin) {
+export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMixin) {
   @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset
   @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString

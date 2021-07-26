@@ -97,6 +97,7 @@
           :asset-symbol="KnownSymbols.XOR"
           :tooltip-content="t('networkFeeTooltipText')"
           :fiat-value="getFiatAmountByCodecString(fee)"
+          is-formatted
         />
       </div>
 
@@ -125,9 +126,9 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { FPNumber, KnownSymbols, AccountLiquidity, CodecString } from '@sora-substrate/util'
+import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
-import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
 
 import router, { lazyComponent } from '@/router'
@@ -145,11 +146,10 @@ const namespace = 'removeLiquidity'
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    TokenAddress: lazyComponent(Components.TokenAddress),
-    FiatValue: lazyComponent(Components.FiatValue)
+    TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
-export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDialogMixin, FiatValueMixin) {
+export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, TransactionMixin, ConfirmDialogMixin) {
   readonly KnownSymbols = KnownSymbols
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 

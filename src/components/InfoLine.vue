@@ -11,28 +11,45 @@
     >
       <s-icon name="info-16" size="14px" />
     </s-tooltip>
-    <span class="info-line-value">{{ value }}<span v-if="assetSymbol" class="asset-symbol">{{ ' ' + assetSymbol }}</span></span>
-    <fiat-value v-if="fiatValue" :value="fiatValue" with-decimals with-left-shift />
+    <span v-if="!value && altValue" class="info-line-value">{{ altValue }}</span>
+    <formatted-amount
+      v-else-if="isFormatted"
+      class="info-line-value"
+      :value="value"
+      :font-size-rate="formattedFontSize"
+      :font-weight-rate="formattedFontWeight"
+    >
+      <template v-slot="{ decimal }">{{ decimal }} <span v-if="assetSymbol" class="formatted-amount__symbol">{{ assetSymbol }}</span></template>
+    </formatted-amount>
+    <span v-else class="info-line-value">{{ value }}<span v-if="assetSymbol" class="asset-symbol">{{ ' ' + assetSymbol }}</span></span>
+    <formatted-amount
+      :value="fiatValue"
+      is-fiat-value
+      :font-size-rate="formattedFontSize"
+      with-left-shift
+    />
     <slot />
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
+import { FormattedAmount, FontSizeRate, FontWeightRate } from '@soramitsu/soraneo-wallet-web'
 
-import { Components, InfoTooltipPosition } from '@/consts'
-import { lazyComponent } from '@/router'
+import { InfoTooltipPosition } from '@/consts'
 
 @Component({
-  components: { FiatValue: lazyComponent(Components.FiatValue) }
+  components: { FormattedAmount }
 })
 export default class InfoLine extends Vue {
   @Prop({ default: '', type: String }) readonly label!: string
   @Prop({ default: '', type: String }) readonly tooltipContent?: string
   @Prop({ default: InfoTooltipPosition.RIGHT, type: String }) readonly tooltipPosition?: string
   @Prop({ default: '' }) readonly value!: string | number
+  @Prop({ default: false, type: Boolean }) readonly isFormatted?: boolean
   @Prop({ default: '', type: String }) readonly assetSymbol?: string
   @Prop({ default: '', type: String }) readonly fiatValue?: string
+  @Prop({ default: '', type: String }) readonly altValue?: string
 
   get tooltipClasses (): string {
     const iconClass = 'info-line-icon'
@@ -43,6 +60,14 @@ export default class InfoLine extends Vue {
     }
 
     return classes.join(' ')
+  }
+
+  get formattedFontSize (): Nullable<FontSizeRate> {
+    return this.isFormatted ? FontSizeRate.MEDIUM : null
+  }
+
+  get formattedFontWeight (): Nullable<FontWeightRate> {
+    return this.isFormatted ? FontWeightRate.SMALL : null
   }
 }
 </script>
@@ -102,7 +127,7 @@ export default class InfoLine extends Vue {
     margin-left: auto;
     text-align: right;
     word-break: break-all;
-    font-weight: 600
+    font-weight: 600;
   }
   .asset-symbol {
     word-break: keep-all;

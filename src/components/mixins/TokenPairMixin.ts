@@ -1,6 +1,6 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { KnownAssets, KnownSymbols, CodecString } from '@sora-substrate/util'
+import { KnownSymbols, CodecString } from '@sora-substrate/util'
 
 import TransactionMixin from './TransactionMixin'
 import LoadingMixin from './LoadingMixin'

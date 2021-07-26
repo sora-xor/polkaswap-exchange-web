@@ -54,17 +54,14 @@
 <script lang="ts">
 import { Component, Prop, Mixins } from 'vue-property-decorator'
 import { RewardInfo } from '@sora-substrate/util'
+import { NumberFormatterMixin, FormattedAmount } from '@soramitsu/soraneo-wallet-web'
 
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
-
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards'
 
 @Component({
   components: {
-    FormattedAmount: lazyComponent(Components.FormattedAmount)
+    FormattedAmount
   }
 })
 export default class AmountTable extends Mixins(NumberFormatterMixin, TranslationMixin) {
@@ -160,6 +157,9 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
   &-value {
     font-size: var(--s-font-size-medium);
     font-weight: 600;
+    + .formatted-amount--fiat-value {
+      margin-left: auto;
+    }
 
     &-icon {
       margin-left: $inner-spacing-mini / 2;

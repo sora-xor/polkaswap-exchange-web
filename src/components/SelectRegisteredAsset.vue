@@ -36,11 +36,17 @@
                   </s-row>
                 </s-col>
                 <div class="asset-item__balance-container">
-                  <span class="asset-item__balance">{{ formatBalance(asset) }}</span>
-                  <fiat-value
+                  <formatted-amount
+                    class="asset-item__balance"
+                    :value="formatBalance(asset)"
+                    :font-size-rate="FontSizeRate.MEDIUM"
+                  />
+                  <formatted-amount
                     v-if="isSoraToEvm && asset && getAssetFiatPrice(asset)"
                     :value="getFiatBalance(asset)"
-                    with-decimals
+                    :font-size-rate="FontSizeRate.MEDIUM"
+                    :font-weight-rate="FontWeightRate.MEDIUM"
+                    is-fiat-value
                   />
                 </div>
               </div>
@@ -94,11 +100,11 @@
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util'
+import { FormattedAmountMixin, FormattedAmount, FontSizeRate, FontWeightRate } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components, ObjectInit } from '@/consts'
 import { lazyComponent } from '@/router'
@@ -110,17 +116,20 @@ const namespace = 'assets'
 @Component({
   components: {
     DialogBase,
-    FiatValue: lazyComponent(Components.FiatValue),
+    FormattedAmount,
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
-export default class SelectRegisteredAsset extends Mixins(TranslationMixin, SelectAssetMixin, LoadingMixin, FiatValueMixin) {
+export default class SelectRegisteredAsset extends Mixins(FormattedAmountMixin, TranslationMixin, SelectAssetMixin, LoadingMixin) {
   query = ''
   selectedAsset: Nullable<AccountAsset | RegisteredAccountAsset> = null
   readonly tokenTabs = [
     'tokens',
     'custom'
   ]
+
+  readonly FontSizeRate = FontSizeRate
+  readonly FontWeightRate = FontWeightRate
 
   tabValue = this.tokenTabs[0]
   customAddress = ''
@@ -263,6 +272,11 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
 .asset-select {
   @include exchange-tabs();
 }
+.asset-item__balance {
+  .formatted-amount__decimal {
+    font-weight: 600;
+  }
+}
 </style>
 
 <style lang="scss" scoped>
@@ -296,13 +310,12 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
     background-color: var(--s-color-base-background-hover);
   }
   &__name, &__balance {
-    font-size: var(--s-font-size-medium);
+    font-size: var(--s-font-size-big);
     letter-spacing: var(--s-letter-spacing-mini);
-    font-weight: 600;
+    font-weight: 800;
     white-space: nowrap;
   }
   &__balance {
-    font-weight: 800;
     &-container {
       width: 45%;
       text-align: right;

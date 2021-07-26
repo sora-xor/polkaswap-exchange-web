@@ -57,13 +57,17 @@
               :label="t('bridgeTransaction.networkInfo.amount')"
               :value="`-${formattedAmount}`"
               :asset-symbol="formatAssetSymbol(assetSymbol)"
-              :fiat-value="isSoraToEvm ? getFiatAmountByString(amount, asset) : null"
+              :fiat-value="soraAmountFiatValue"
+              is-formatted
+              alt-value="-"
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
               :value="isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
               :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : currentEvmTokenSymbol"
-              :fiat-value="isSoraToEvm ? getFiatAmountByCodecString(historyItem.soraNetworkFee || soraNetworkFee) : null"
+              :fiat-value="soraFeeFiatValue"
+              is-formatted
+              alt-value="-"
             />
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
             <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : EvmSymbol.ETH" /> -->
@@ -123,12 +127,16 @@
               :value="`${formattedAmount}`"
               :asset-symbol="formatAssetSymbol(assetSymbol)"
               :fiat-value="!isSoraToEvm ? getFiatAmountByString(amount, asset) : null"
+              is-formatted
+              alt-value="-"
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
               :value="!isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
               :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : currentEvmTokenSymbol"
-              :fiat-value="!isSoraToEvm ? getFiatAmountByCodecString(historyItem.soraNetworkFee || soraNetworkFee) : null"
+              :fiat-value="!isSoraToEvm ? (historyItem.soraNetworkFee ? getFiatAmountByString(historyItem.soraNetworkFee, asset) : getFiatAmountByCodecString(soraNetworkFee)) : null"
+              is-formatted
+              alt-value="-"
             />
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
             <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="!isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : EvmSymbol.ETH" /> -->
@@ -169,12 +177,11 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory, BridgeNetworks } from '@sora-substrate/util'
-import { getExplorerLink, api } from '@soramitsu/soraneo-wallet-web'
+import { getExplorerLink, api, FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
 import { interpret } from 'xstate'
 
 import BridgeMixin from '@/components/mixins/BridgeMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
-import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EvmSymbol, MetamaskCancellationCode } from '@/consts'
@@ -190,9 +197,9 @@ const namespace = 'bridge'
   }
 })
 export default class BridgeTransaction extends Mixins(
+  FormattedAmountMixin,
   BridgeMixin,
-  NetworkFormatterMixin,
-  FiatValueMixin
+  NetworkFormatterMixin
 ) {
   @Getter soraNetwork!: string
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
@@ -261,11 +268,25 @@ export default class BridgeTransaction extends Mixins(
   showConfirmTransactionDialog = false
 
   get formattedAmount (): string {
-    return this.amount ? new FPNumber(this.amount, this.asset?.decimals).toLocaleString() : ''
+    return this.amount && this.asset ? new FPNumber(this.amount, this.asset.decimals).toLocaleString() : ''
   }
 
   get assetSymbol (): string {
     return this.asset?.symbol ?? ''
+  }
+
+  get soraFeeFiatValue (): Nullable<string> {
+    if (this.isSoraToEvm && this.asset) {
+      return this.getFiatAmountByString(this.historyItem.soraNetworkFee || this.soraNetworkFee, this.asset)
+    }
+    return null
+  }
+
+  get soraAmountFiatValue (): Nullable<string> {
+    if (this.isSoraToEvm && this.asset) {
+      return this.getFiatAmountByString(this.amount, this.asset)
+    }
+    return null
   }
 
   get currentState (): STATES {
@@ -421,7 +442,18 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get formattedSoraNetworkFee (): string {
-    return this.formatCodecNumber(this.historyItem?.soraNetworkFee ?? this.soraNetworkFee)
+    if (this.historyItem?.soraNetworkFee) {
+      return this.formatStringValue(this.historyItem.soraNetworkFee)
+    }
+    return this.getFPNumberFromCodec(this.soraNetworkFee).toLocaleString()
+  }
+
+  formatCodecNumber (value: CodecString, decimals?: number): string {
+    return this.getFPNumberFromCodec(value, decimals).toLocaleString()
+  }
+
+  formatStringValue (value: string, decimals?: number): string {
+    return this.getFPNumber(value, decimals).toLocaleString()
   }
 
   get formattedEvmNetworkFee (): string {

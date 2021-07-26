@@ -32,8 +32,18 @@
               </s-row>
             </s-col>
             <div v-if="connected" class="token-item__amount-container">
-              <span class="token-item__amount">{{ formatBalance(token) }}</span>
-              <fiat-value v-if="shoudFiatBeShown(token)" :value="getFiatBalance(token)" with-decimals />
+              <formatted-amount
+                class="token-item__amount"
+                :value="formatBalance(token)"
+                :font-size-rate="FontSizeRate.MEDIUM"
+              />
+              <formatted-amount
+                v-if="shouldFiatBeShown(token)"
+                :value="getFiatBalance(token)"
+                :font-size-rate="FontSizeRate.MEDIUM"
+                :font-weight-rate="FontWeightRate.MEDIUM"
+                is-fiat-value
+              />
             </div>
           </div>
         </div>
@@ -100,8 +110,18 @@
                 </s-row>
               </s-col>
               <div v-if="connected" class="token-item__amount-container">
-                <span class="token-item__amount">{{ formatBalance(token) }}</span>
-                <fiat-value v-if="shoudFiatBeShown(token)" :value="getFiatBalance(token)" with-decimals />
+                <formatted-amount
+                  class="token-item__amount"
+                  :value="formatBalance(token)"
+                  :font-size-rate="FontSizeRate.MEDIUM"
+                />
+                <formatted-amount
+                  v-if="shouldFiatBeShown(token)"
+                  :value="getFiatBalance(token)"
+                  :font-size-rate="FontSizeRate.MEDIUM"
+                  :font-weight-rate="FontWeightRate.MEDIUM"
+                  is-fiat-value
+                />
               </div>
               <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
                 <s-icon name="basic-trash-24" />
@@ -119,12 +139,11 @@ import first from 'lodash/fp/first'
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { Asset, AccountAsset, isBlacklistAsset } from '@sora-substrate/util'
-import { api } from '@soramitsu/soraneo-wallet-web'
+import { api, FormattedAmountMixin, FormattedAmount, FontSizeRate, FontWeightRate } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import FiatValueMixin from '@/components/mixins/FiatValueMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components, ObjectInit } from '@/consts'
 import { lazyComponent } from '@/router'
@@ -134,18 +153,21 @@ const namespace = 'assets'
 
 @Component({
   components: {
+    FormattedAmount,
     DialogBase,
-    FiatValue: lazyComponent(Components.FiatValue),
     TokenLogo: lazyComponent(Components.TokenLogo),
     TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
-export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMixin, LoadingMixin, FiatValueMixin) {
+export default class SelectToken extends Mixins(FormattedAmountMixin, TranslationMixin, SelectAssetMixin, LoadingMixin) {
   private readonly formattedZeroSymbol = '-'
   readonly tokenTabs = [
     'assets',
     'custom'
   ]
+
+  readonly FontSizeRate = FontSizeRate
+  readonly FontWeightRate = FontWeightRate
 
   tabValue = first(this.tokenTabs)
   query = ''
@@ -271,7 +293,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     }
   }
 
-  shoudFiatBeShown (asset: AccountAsset): boolean {
+  shouldFiatBeShown (asset: AccountAsset): boolean {
     return !!this.getAssetFiatPrice(asset) && this.formatBalance(asset) !== this.formattedZeroSymbol
   }
 }
@@ -280,6 +302,11 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
 <style lang="scss">
 .asset-select {
   @include exchange-tabs();
+}
+.token-item__amount {
+  .formatted-amount__decimal {
+    font-weight: 600;
+  }
 }
 </style>
 
@@ -336,9 +363,6 @@ $token-item-height: 71px;
   &__amount {
     &-container {
       text-align: right;
-      .fiat-value {
-        display: block;
-      }
     }
   }
   &__remove {
