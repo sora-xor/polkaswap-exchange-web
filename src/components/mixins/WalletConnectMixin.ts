@@ -8,6 +8,9 @@ import ethersUtil, { Provider } from '@/utils/ethers-util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 
+const checkExtensionKey = 'provider.messages.checkExtension'
+const installExtensionKey = 'provider.messages.installExtension'
+
 const getProviderName = provider => {
   switch (provider) {
     case Provider.Metamask:
@@ -22,7 +25,7 @@ const handleProviderError = (provider: Provider, error: any): string => {
     case Provider.Metamask:
       return handleMetamaskError(error)
     default:
-      return 'provider.messages.checkExtension'
+      return checkExtensionKey
   }
 }
 
@@ -35,7 +38,7 @@ const handleMetamaskError = (error: any): string => {
     case 4001:
       return 'provider.messages.extensionLogin'
     default:
-      return 'provider.messages.checkExtension'
+      return checkExtensionKey
   }
 }
 
@@ -73,11 +76,22 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
       await this.connectExternalAccount({ provider })
     } catch (error) {
       const name = this.t(getProviderName(provider))
-      const message = this.te(error.message)
+      const key = this.te(error.message)
         ? error.message
         : handleProviderError(provider, error)
 
-      this.$alert(this.t(message, { name }))
+      const message = this.t(key, { name })
+      const showCancelButton = key === installExtensionKey
+
+      this.$alert(message, {
+        showCancelButton,
+        cancelButtonText: this.t('provider.messages.reloadPage'),
+        callback: action => {
+          if (action === 'cancel') {
+            router.go(0)
+          }
+        }
+      })
     } finally {
       this.isExternalWalletConnecting = false
     }
@@ -110,16 +124,14 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   }
 
   async syncExternalAccountWithAppState () {
-    const connected = await ethersUtil.checkAccountIsConnected(this.evmAddress)
+    try {
+      const connected = await ethersUtil.checkAccountIsConnected(this.evmAddress)
 
-    if (connected) return
-
-    await this.disconnectExternalAccount()
-
-    const account = await ethersUtil.getAccount()
-
-    if (account) {
-      await this.changeExternalWallet({ address: account })
+      if (!connected && this.evmAddress) {
+        await this.disconnectExternalAccount()
+      }
+    } catch (error) {
+      await this.disconnectExternalAccount()
     }
   }
 }

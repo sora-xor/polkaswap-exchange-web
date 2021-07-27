@@ -306,10 +306,6 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
     }
   }
 
-  async handleWalletChange (): Promise<void> {
-    await this.changeExternalAccountProcess()
-  }
-
   private async checkAccountRewards (showNotification = false): Promise<void> {
     if (this.isSoraAccountConnected) {
       await this.getRewardsProcess(showNotification)
