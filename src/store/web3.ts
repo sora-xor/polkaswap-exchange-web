@@ -287,11 +287,11 @@ const actions = {
     for (const network of subNetworks) {
       switch (network.id) {
         case BridgeNetworks.ETH_NETWORK_ID:
-          dispatch('setEvmSmartContracts', network)
+          await dispatch('setEvmSmartContracts', network)
           break
         case BridgeNetworks.ENERGY_NETWORK_ID:
           // TODO: [BRIDGE] Reduce file size
-          // dispatch('setEnergySmartContracts', network)
+          // await dispatch('setEnergySmartContracts', network)
           break
       }
     }
