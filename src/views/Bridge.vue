@@ -47,7 +47,7 @@
             <div class="input-title">
               <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
               <span>{{ getBridgeItemTitle() }}</span>
-              <i :class="`s-icon-${isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
+              <i :class="`s-icon--network s-icon-${isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
             </div>
             <div v-if="isNetworkAConnected && isAssetSelected" class="input-title">
               <span class="input-title--uppercase">{{ t('bridge.balance') }}</span>
@@ -86,7 +86,7 @@
             <div class="input-title" @click="handleChangeNetwork">
               <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
               <span>{{ getBridgeItemTitle(true) }}</span>
-              <i :class="`s-icon-${!isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
+              <i :class="`s-icon--network s-icon-${!isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
             </div>
             <div v-if="isNetworkAConnected && isAssetSelected" class="input-title">
               <span class="input-title--uppercase">{{ t('bridge.balance') }}</span>
@@ -512,6 +512,10 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
   @include generic-input-lines;
   @include token-styles;
   @include vertical-divider('s-button--switch', $inner-spacing-medium);
+  .s-icon--network {
+    margin-top: 1px;
+    font-size: 10px;
+  }
 
   .bridge-item {
     &-footer {

@@ -1,16 +1,17 @@
 <template>
-  <div v-loading="!isInitRequestCompleted" class="transaction-container">
-    <s-button
-      v-if="isInitRequestCompleted"
-      class="s-button--view-transactions-history"
-      type="link"
-      icon="arrows-arrow-left-24"
-      icon-position="left"
-      @click="handleViewTransactionsHistory"
-    >
-      {{ t('bridgeTransaction.viewHistory') }}
-    </s-button>
-    <s-card class="transaction-content" border-radius="medium" shadow="always" primary>
+  <div v-loading="!isInitRequestCompleted" class="container transaction-container">
+    <generic-page-header has-button-back :title="t('bridgeTransaction.title')" @back="handleBack">
+      <s-button
+        v-if="isInitRequestCompleted"
+        class="el-button--history"
+        type="action"
+        icon="time-time-history-24"
+        :tooltip="t('bridgeHistory.showHistory')"
+        tooltip-placement="bottom-end"
+        @click="handleViewTransactionsHistory"
+      />
+    </generic-page-header>
+    <div class="transaction-content">
       <template v-if="isInitRequestCompleted">
         <div class="header">
           <div v-loading="isTransactionFromPending || isTransactionToPending" :class="headerIconClasses" />
@@ -23,12 +24,11 @@
           </h5>
           <p class="header-status">{{ headerStatus }}</p>
         </div>
-        <s-collapse :value="activeTransactionStep" :borders="true">
+        <s-collapse :value="activeTransactionStep">
           <s-collapse-item :name="transactionSteps.from">
             <template #title>
               <div class="network-info-title">
-                <span>{{ t('bridgeTransaction.steps.step', { step: '1' }) }}</span>
-                <h3>{{ t('bridgeTransaction.networkTitle', { network: t(formatNetwork(isSoraToEvm, true)) }) }}</h3>
+                <h3>{{ `${t('bridgeTransaction.steps.step', { step: '1' })} ${t('bridgeTransaction.networkTitle', { network: t(formatNetwork(isSoraToEvm, true)) })}` }}</h3>
                 <span :class="transactionIconStatusClasses()" />
               </div>
             </template>
@@ -85,13 +85,12 @@
           <s-collapse-item :name="transactionSteps.to">
             <template #title>
               <div class="network-info-title">
-                <span>{{ t('bridgeTransaction.steps.step', { step: '2' }) }}</span>
-                <h3>{{ t('bridgeTransaction.networkTitle', { network: t(formatNetwork(!isSoraToEvm, true)) }) }}</h3>
+                <h3>{{ `${t('bridgeTransaction.steps.step', { step: '2' })} ${t('bridgeTransaction.networkTitle', { network: t(formatNetwork(!isSoraToEvm, true)) })}` }}</h3>
                 <span v-if="isTransactionStep2" :class="transactionIconStatusClasses(true)" />
               </div>
             </template>
             <div v-if="isSoraToEvm && !isTxEvmAccount" class="transaction-error">
-              <span class="transaction-error__title">Expected address in MetaMask:</span>
+              <span class="transaction-error__title">{{ t('bridgeTransaction.expectedMetaMaskAddress') }}</span>
               <span class="transaction-error__value">{{ transactionEvmAddress }}</span>
             </div>
             <div v-if="isTransactionStep2 && transactionToHash" :class="hashContainerClasses(isSoraToEvm)">
@@ -147,12 +146,11 @@
           </s-collapse-item>
         </s-collapse>
       </template>
-    </s-card>
+    </div>
     <s-button
       v-if="isInitRequestCompleted && isTransferCompleted"
-      class="s-button--create-transaction"
-      type="link"
-      icon="basic-circle-plus-24"
+      class="s-typography-button--large"
+      type="secondary"
       @click="handleCreateTransaction"
     >
       {{ t('bridgeTransaction.newTransaction') }}
@@ -181,6 +179,7 @@ const namespace = 'bridge'
 
 @Component({
   components: {
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     InfoLine: lazyComponent(Components.InfoLine),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog)
   }
@@ -695,13 +694,17 @@ export default class BridgeTransaction extends Mixins(
       }
     }
   }
+
+  handleBack (): void {
+    router.push({ name: PageNames.Bridge })
+  }
 }
 </script>
 
 <style lang="scss">
 $collapse-horisontal-padding: $inner-spacing-medium;
-$header-icon-size: 100px;
-$header-spinner-size: 83px;
+$header-icon-size: 52px;
+$header-spinner-size: 62px;
 $collapse-header-title-font-size: $s-heading3-caps-font-size;
 $collapse-header-title-line-height: var(--s-line-height-base);
 $collapse-header-title-height: calc(#{$collapse-header-title-font-size} * #{$collapse-header-title-line-height});
@@ -712,9 +715,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     @include bridge-container;
   }
   &-content {
-    .el-card__body {
-      padding: $inner-spacing-medium;
-    }
+    @include collapse-items;
     .header-icon {
       position: relative;
       @include svg-icon('', $header-icon-size);
@@ -733,43 +734,15 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     .el-button .network-title {
       text-transform: uppercase;
     }
-    .el-collapse {
-      margin-right: -#{$collapse-horisontal-padding};
-      margin-left: -#{$collapse-horisontal-padding};
-      border-bottom: none;
-      &-item {
-        &__header {
-          height: $collapse-header-height;
-          line-height: $collapse-header-height;
-          background-color: unset;
-          .network-info-title {
-            padding-left: #{$collapse-horisontal-padding + $inner-spacing-mini / 2};
-            h3 {
-              font-size: $s-heading3-caps-font-size;
-              line-height: var(--s-line-height-base);
-            }
-          }
-        }
-        &__content {
-          padding-right: $collapse-horisontal-padding;
-          padding-left: $collapse-horisontal-padding;
-        }
-        &:last-child {
-          .el-collapse-item__header,
-          .el-collapse-item__wrap {
-            border-bottom: none;
-          }
-        }
-        &__arrow.el-icon-arrow-right {
-          margin-right: $inner-spacing-small;
-          &, &:hover {
-            background-color: transparent;
-          }
-        }
+    .info-line {
+      &--error .info-line-value {
+        color: var(--s-color-status-error);
+        font-weight: 600;
+        text-transform: uppercase;
       }
-    }
-    .info-line--error .info-line-value {
-      color: var(--s-color-status-error);
+      &-label {
+        font-weight: 300;
+      }
     }
   }
   &-hash-container {
@@ -816,33 +789,15 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     &.el-loading-parent--relative .transaction-content {
       min-height: $bridge-height;
     }
-    .el-button {
-      width: 100%;
-    }
-    .s-button {
-      &--create-transaction {
-        @include bottom-button;
-        color: var(--s-color-base-content-tertiary);
-        letter-spacing: var(--s-letter-spacing-big);
-        margin-top: $inner-spacing-mini * 2.5;
-        &:hover, &:focus, &:active {
-          color: var(--s-color-base-content-secondary);
-          border: none;
-        }
-      }
-      &--view-transactions-history {
-        font-weight: 700;
-        line-height: var(--s-line-height-medium);
-      }
-    }
+  }
+  &-content .el-button,
+  &-container .s-typography-button--large {
+    width: 100%;
+    margin-top: $inner-spacing-medium;
   }
   &-content {
-    margin-top: $inner-spacing-large;
-    @include bridge-content;
-    .el-button {
-      margin-top: $basic-spacing;
-      font-weight: 600;
-    }
+    @include bridge-content (285px);
+    margin-top: $inner-spacing-big;
   }
   &-hash-container {
     position: relative;
@@ -866,24 +821,28 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     display: flex;
     flex-flow: column nowrap;
     padding: 0 $inner-spacing-mini / 2;
-    margin-bottom: $inner-spacing-mini;
+    margin-bottom: $inner-spacing-medium;
+    line-height: var(--s-line-height-mini);
+    text-align: left;
 
     &__title {
+      margin-bottom: $inner-spacing-mini / 2;
       text-transform: uppercase;
+      font-weight: 300;
     }
     &__value {
-      font-weight: 600;
+      font-weight: 400;
     }
   }
 }
 .header {
-  margin-bottom: $basic-spacing * 2;
+  margin-bottom: $inner-spacing-medium;
   text-align: center;
   &-icon {
     margin: $inner-spacing-medium auto;
     &--success {
       background-image: url("~@/assets/img/status-success.svg");
-      background-size: 84%;
+      background-size: 110%;
     }
     &--wait {
       background-image: url("~@/assets/img/header-wait.svg");
@@ -912,17 +871,16 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
 }
 .network-info {
   &-title {
-    color: var(--s-color-base-content-secondary);
     display: flex;
     align-items: baseline;
-    font-size: var(--s-font-size-mini);
-    line-height: var(--s-line-height-big);
     h3 {
       padding-right: $inner-spacing-mini;
       padding-left: $inner-spacing-mini;
-      font-weight: 700;
-      letter-spacing: var(--s-letter-spacing-extra-large);
-      text-transform: uppercase;
+      font-size: var(--s-font-size-small);
+      line-height: var(--s-line-height-reset);
+      font-weight: 600;
+      letter-spacing: var(--s-letter-spacing-small);
+      text-transform: inherit;
     }
   }
   @include status-icon(true);

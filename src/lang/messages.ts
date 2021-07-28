@@ -331,8 +331,9 @@ export default {
     buttonConfirm: '@:confirmText'
   },
   bridgeTransaction: {
-    viewHistory: 'View transaction in transactions history',
+    title: 'Bridge Transaction',
     details: '{from} for {to}',
+    expectedMetaMaskAddress: 'Expected address in MetaMask:',
     for: ' for ',
     steps: {
       step: '{step} of 2',
