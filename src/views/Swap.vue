@@ -31,9 +31,9 @@
           <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
           <span class="input-title--uppercase input-title--primary" v-if="areTokensSelected && !isZeroToAmount && isExchangeB">({{ t('swap.estimated') }})</span>
         </div>
-        <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="input-title">
-          <span class="input-title--uppercase">{{ t('exchange.balance') }}</span>
-          <span class="input-title--primary">{{ formatBalance(tokenFrom) }}</span>
+        <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="input-value">
+          <span class="input-value--uppercase">{{ t('exchange.balance') }}</span>
+          <span class="input-value--primary">{{ formatBalance(tokenFrom) }}</span>
           <formatted-amount v-if="tokenFromPrice" :value="getFiatBalance(tokenFrom)" is-fiat-value />
         </div>
       </div>
@@ -72,9 +72,9 @@
           <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
           <span class="input-title--uppercase input-title--primary" v-if="areTokensSelected && !isZeroFromAmount && !isExchangeB">({{ t('swap.estimated') }})</span>
         </div>
-        <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="input-title">
-          <span class="input-title--uppercase">{{ t('exchange.balance') }}</span>
-          <span class="input-title--primary">{{ formatBalance(tokenTo) }}</span>
+        <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="input-value">
+          <span class="input-value--uppercase">{{ t('exchange.balance') }}</span>
+          <span class="input-value--primary">{{ formatBalance(tokenTo) }}</span>
           <formatted-amount v-if="tokenToPrice" :value="getFiatBalance(tokenTo)" is-fiat-value />
         </div>
       </div>

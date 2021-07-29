@@ -46,12 +46,12 @@
           <div slot="top" class="input-line">
             <div class="input-title">
               <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
-              <span>{{ getBridgeItemTitle() }}</span>
+              <span class="input-title--network">{{ getBridgeItemTitle() }}</span>
               <i :class="`s-icon-${isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
             </div>
-            <div v-if="isNetworkAConnected && isAssetSelected" class="input-title">
-              <span class="input-title--uppercase">{{ t('bridge.balance') }}</span>
-              <span class="input-title--uppercase input-title--primary">{{ formatBalance(isSoraToEvm) }}</span>
+            <div v-if="isNetworkAConnected && isAssetSelected" class="input-value">
+              <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
+              <span class="input-value--uppercase input-value--primary">{{ formatBalance(isSoraToEvm) }}</span>
               <formatted-amount v-if="asset && isSoraToEvm" :value="getFiatBalance(asset)" is-fiat-value with-left-shift />
             </div>
           </div>
@@ -87,12 +87,12 @@
           <div slot="top" class="input-line">
             <div class="input-title" @click="handleChangeNetwork">
               <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
-              <span>{{ getBridgeItemTitle(true) }}</span>
+              <span class="input-title--network">{{ getBridgeItemTitle(true) }}</span>
               <i :class="`s-icon-${!isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
             </div>
-            <div v-if="isNetworkAConnected && isAssetSelected" class="input-title">
-              <span class="input-title--uppercase">{{ t('bridge.balance') }}</span>
-              <span class="input-title--uppercase input-title--primary">{{ formatBalance(!isSoraToEvm) }}</span>
+            <div v-if="isNetworkAConnected && isAssetSelected" class="input-value">
+              <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
+              <span class="input-value--uppercase input-value--primary">{{ formatBalance(!isSoraToEvm) }}</span>
               <formatted-amount v-if="asset && !isSoraToEvm" :value="getFiatBalance(asset)" is-fiat-value with-left-shift />
             </div>
           </div>
@@ -512,6 +512,9 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
   align-items: center;
   &-content {
     @include bridge-content;
+    .input-title--network {
+      white-space: nowrap;
+    }
   }
   @include generic-input-lines;
   @include token-styles;

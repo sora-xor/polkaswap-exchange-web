@@ -21,9 +21,9 @@
           <div class="input-title">
             <span class="input-title--uppercase input-title--primary">{{ t('createPair.deposit') }}</span>
           </div>
-          <div v-if="isLoggedIn && firstToken" class="input-title">
-            <span class="input-title--uppercase">{{ t('createPair.balance') }}</span>
-            <span class="input-title--primary">{{ getTokenBalance(firstToken) }}</span>
+          <div v-if="isLoggedIn && firstToken" class="input-value">
+            <span class="input-value--uppercase">{{ t('createPair.balance') }}</span>
+            <span class="input-value--primary">{{ getTokenBalance(firstToken) }}</span>
             <formatted-amount v-if="firstTokenPrice" :value="getFiatBalance(firstToken)" is-fiat-value />
         </div>
         </div>
@@ -53,11 +53,11 @@
       >
         <div slot="top" class="input-line">
           <div class="input-title">
-            <span class="input-title--uppercase input-title--primary">{{ t('createPair.deposit') }}</span>
+            <span class="input-value--uppercase input-value--primary">{{ t('createPair.deposit') }}</span>
           </div>
-          <div v-if="isLoggedIn && secondToken" class="input-title">
-            <span class="input-title--uppercase">{{ t('createPair.balance') }}</span>
-            <span class="input-title--primary">{{ getTokenBalance(secondToken) }}</span>
+          <div v-if="isLoggedIn && secondToken" class="input-value">
+            <span class="input-value--uppercase">{{ t('createPair.balance') }}</span>
+            <span class="input-value--primary">{{ getTokenBalance(secondToken) }}</span>
             <formatted-amount v-if="secondTokenPrice" :value="getFiatBalance(secondToken)" is-fiat-value />
         </div>
         </div>

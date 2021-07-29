@@ -76,7 +76,8 @@
       }
     }
 
-    .input-title {
+    .input-title,
+    .input-value {
       display: flex;
       align-items: center;
       color: var(--s-color-base-content-secondary);
@@ -92,6 +93,12 @@
       & > *:not(:last-child) {
         margin-right: $inner-spacing-mini / 2;
       }
+    }
+
+    .input-value {
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      margin-left: $inner-spacing-mini;
     }
   }
 }
