@@ -8,15 +8,11 @@
           <div class="amount-table-item-content">
             <div class="amount-table-item-content__header">
               <div v-for="(item, index) in formatted.limit" class="amount-table-item__amount" :key="index">
-                <formatted-amount class="amount-table-value" :value="item.amount">
-                  <template v-slot="{ decimal }">{{ decimal }} {{ item.symbol }}</template>
-                </formatted-amount>
+                <formatted-amount class="amount-table-value" :value="item.amount" :asset-symbol="item.symbol" />
                 <s-tooltip v-if="formatted.total && index === 0" popper-class="amount-table-tooltip" placement="right" border-radius="mini">
                   <div slot="content" class="amount-table-tooltip-content">
                     <div>{{ t('rewards.totalVested') }}:</div>
-                    <formatted-amount class="amount-table-value" :value="formatted.total.amount">
-                      <template v-slot="{ decimal }">{{ decimal }} {{ formatted.total.symbol }}</template>
-                    </formatted-amount>
+                    <formatted-amount class="amount-table-value" :value="formatted.total.amount" :asset-symbol="formatted.total.symbol" />
                   </div>
                   <s-icon name="info-16" size="14px" class="amount-table-value-icon" />
                 </s-tooltip>
@@ -33,11 +29,7 @@
                   </div>
                   <template v-if="!simpleGroup">
                     <div v-for="(item, index) in item.limit" :key="index">
-                      <formatted-amount class="amount-table-value" :value="item.amount">
-                        <template v-slot="{ decimal }">
-                          {{ decimal }} {{ item.symbol }}
-                        </template>
-                      </formatted-amount>
+                      <formatted-amount class="amount-table-value" :value="item.amount" :asset-symbol="item.symbol" />
                     </div>
                   </template>
                 </div>

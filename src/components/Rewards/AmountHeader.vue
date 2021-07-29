@@ -2,9 +2,7 @@
   <div class="amount-header">
     <template v-for="({ amount, symbol }, index) in items">
       <div :key="symbol" class="amount-block">
-        <formatted-amount class="amount-block__amount" :value="amount">
-          <template v-slot="{ decimal }">{{ decimal }} {{ symbol }}</template>
-        </formatted-amount>
+        <formatted-amount class="amount-block__amount" :value="amount" :asset-symbol="symbol" />
       </div>
       <formatted-amount
         v-if="getAssetFiatPrice(getAsset(symbol))"

@@ -16,11 +16,10 @@
       v-else-if="isFormatted"
       class="info-line-value"
       :value="value"
+      :asset-symbol="assetSymbol"
       :font-size-rate="formattedFontSize"
       :font-weight-rate="formattedFontWeight"
-    >
-      <template v-slot="{ decimal }">{{ decimal }} <span v-if="assetSymbol" class="formatted-amount__symbol">{{ assetSymbol }}</span></template>
-    </formatted-amount>
+    />
     <span v-else class="info-line-value">{{ value }}<span v-if="assetSymbol" class="asset-symbol">{{ ' ' + assetSymbol }}</span></span>
     <formatted-amount
       :value="fiatValue"
