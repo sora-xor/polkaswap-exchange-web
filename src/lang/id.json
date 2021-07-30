@@ -429,8 +429,9 @@
         "insufficientAmount": "Jumlah {tokenSymbol} tidak mencukupi",
         "insufficientLiquidity": "Likuiditas tidak mencukupi",
         "confirmSwap": "Konfirmasi swap",
-        "swapOutputMessage": "Keluaran diperkirakan. Anda akan menerima <span class=\"min-received-label\"> setidaknya <\/span> {transactionValue} atau transaksi akan dibatalkan.",
-        "rewardsForSwap": "Reward Strategis PSWAP"
+        "swapOutputMessage": "Keluaran diperkirakan. Anda akan menerima setidaknya {transactionValue} atau transaksi akan dibatalkan.",
+        "rewardsForSwap": "Reward Strategis PSWAP",
+        "swapInputMessage": ""
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -725,7 +726,8 @@
         "messages": {
             "checkExtension": "{name} ekstensi sedang sibuk, harap periksa",
             "extensionLogin": "Silakan masuk ke ekstensi {name} Anda",
-            "installExtension": "{name} ekstensi tidak ditemukan. Silahkan menginstal!"
+            "installExtension": "{name} ekstensi tidak ditemukan. Silahkan menginstal!",
+            "reloadPage": ""
         }
     },
     "selectLanguageDialog": {

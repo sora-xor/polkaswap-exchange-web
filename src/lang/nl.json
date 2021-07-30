@@ -429,8 +429,9 @@
         "insufficientAmount": "Onvoldoende {tokenSymbol} hoeveelheid",
         "insufficientLiquidity": "Onvoldoende liquiditeit",
         "confirmSwap": "Swap bevestigen",
-        "swapOutputMessage": "De output wordt geschat. U ontvangt <span class=\"min-received-label\"> minimaal <\/span> {transactionValue} of de transactie wordt teruggedraaid.",
-        "rewardsForSwap": "PSWAP Strategische Beloningen"
+        "swapOutputMessage": "De output wordt geschat. U ontvangt minimaal {transactionValue} of de transactie wordt teruggedraaid.",
+        "rewardsForSwap": "PSWAP Strategische Beloningen",
+        "swapInputMessage": ""
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -725,7 +726,8 @@
         "messages": {
             "checkExtension": "{naam} extensie is bezet, gelieve ze te controleren",
             "extensionLogin": "Gelieve in te loggen op uw {naam} extensie",
-            "installExtension": "{name} extensie is niet gevonden. Gelieve ze te installeren!"
+            "installExtension": "{name} extensie is niet gevonden. Gelieve ze te installeren!",
+            "reloadPage": ""
         }
     },
     "selectLanguageDialog": {
