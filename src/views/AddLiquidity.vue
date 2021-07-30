@@ -35,7 +35,7 @@
         </div>
         <div slot="bottom" class="input-line input-line--footer">
           <formatted-amount v-if="firstToken && firstTokenPrice" :value="getFiatAmountByString(firstTokenValue, firstToken)" is-fiat-value />
-          <token-address v-if="firstToken" :name="firstToken.name" :symbol="firstToken.symbol" :address="firstToken.address" class="input-title" />
+          <token-address v-if="firstToken" :name="firstToken.name" :symbol="firstToken.symbol" :address="firstToken.address" class="input-value" />
         </div>
       </s-float-input>
       <s-icon class="icon-divider" name="plus-16" />
@@ -69,7 +69,7 @@
         </div>
         <div slot="bottom" class="input-line input-line--footer">
           <formatted-amount v-if="secondToken && secondTokenPrice" :value="getFiatAmountByString(secondTokenValue, secondToken)" is-fiat-value />
-          <token-address v-if="secondToken" :name="secondToken.name" :symbol="secondToken.symbol" :address="secondToken.address" class="input-title" />
+          <token-address v-if="secondToken" :name="secondToken.name" :symbol="secondToken.symbol" :address="secondToken.address" class="input-value" />
         </div>
       </s-float-input>
       <s-button type="primary" class="action-button s-typography-button--large" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="openConfirmDialog">

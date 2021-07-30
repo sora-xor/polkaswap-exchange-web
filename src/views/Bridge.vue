@@ -64,7 +64,7 @@
           <template #bottom>
             <div class="input-line input-line--footer">
               <formatted-amount v-if="asset && isSoraToEvm" :value="getFiatAmountByString(amount, asset)" is-fiat-value />
-              <token-address v-if="isAssetSelected" v-bind="asset" :external="!isSoraToEvm" class="input-title" />
+              <token-address v-if="isAssetSelected" v-bind="asset" :external="!isSoraToEvm" class="input-value" />
             </div>
             <s-button v-if="!isNetworkAConnected" class="el-button--connect s-typography-button--large" type="primary" @click="isSoraToEvm ? connectInternalWallet() : connectExternalWallet()">
               {{ t('bridge.connectWallet') }}
@@ -102,7 +102,7 @@
           <template #bottom>
             <div class="input-line input-line--footer">
               <formatted-amount v-if="asset && !isSoraToEvm" :value="getFiatAmountByString(amount, asset)" is-fiat-value />
-              <token-address v-if="isAssetSelected" v-bind="asset" :external="isSoraToEvm" class="input-title" />
+              <token-address v-if="isAssetSelected" v-bind="asset" :external="isSoraToEvm" class="input-value" />
             </div>
             <div v-if="isNetworkBConnected && isSoraToEvm" class="bridge-item-footer">
               <s-divider />

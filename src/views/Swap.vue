@@ -45,7 +45,7 @@
       </div>
       <div slot="bottom" class="input-line input-line--footer">
         <formatted-amount v-if="tokenFrom && tokenFromPrice" :value="getFiatAmountByString(fromValue, tokenFrom)" is-fiat-value />
-        <token-address v-if="tokenFrom" :name="tokenFrom.name" :symbol="tokenFrom.symbol" :address="tokenFrom.address" class="input-title" />
+        <token-address v-if="tokenFrom" :name="tokenFrom.name" :symbol="tokenFrom.symbol" :address="tokenFrom.address" class="input-value" />
       </div>
     </s-float-input>
     <s-button
@@ -83,7 +83,7 @@
       </div>
       <div slot="bottom" class="input-line input-line--footer">
         <formatted-amount v-if="tokenTo && tokenToPrice" :value="getFiatAmountByString(toValue, tokenTo)" is-fiat-value />
-        <token-address v-if="tokenTo" :name="tokenTo.name" :symbol="tokenTo.symbol" :address="tokenTo.address" class="input-title" />
+        <token-address v-if="tokenTo" :name="tokenTo.name" :symbol="tokenTo.symbol" :address="tokenTo.address" class="input-value" />
       </div>
     </s-float-input>
     <slippage-tolerance class="slippage-tolerance-settings" />

@@ -44,7 +44,7 @@
           <token-select-button class="el-button--select-token" :token="firstToken" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <token-address v-if="firstToken" :name="firstToken.name" :symbol="firstToken.symbol" :address="firstToken.address" class="input-title" />
+          <token-address v-if="firstToken" :name="firstToken.name" :symbol="firstToken.symbol" :address="firstToken.address" class="input-value" />
         </div>
       </s-float-input>
 
@@ -73,7 +73,7 @@
           <token-select-button class="el-button--select-token" :token="secondToken" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <token-address v-if="secondToken" :name="secondToken.name" :symbol="secondToken.symbol" :address="secondToken.address" class="input-title" />
+          <token-address v-if="secondToken" :name="secondToken.name" :symbol="secondToken.symbol" :address="secondToken.address" class="input-value" />
         </div>
       </s-float-input>
 
