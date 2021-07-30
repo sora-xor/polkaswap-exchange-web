@@ -429,8 +429,9 @@
         "insufficientAmount": "Недостаточный {tokenSymbol} баланс",
         "insufficientLiquidity": "Недостаточная ликвидность",
         "confirmSwap": "Подтвердить обмен",
-        "swapOutputMessage": "Вывод оценён. Вы получите <span class=\"min-received-label\">как минимум<\/span> {transactionValue} или транзакция будет отменена.",
-        "rewardsForSwap": "Стратегические вознаграждения PSWAP"
+        "swapOutputMessage": "Вывод оценён. Вы получите как минимум {transactionValue} или транзакция будет отменена.",
+        "rewardsForSwap": "Стратегические вознаграждения PSWAP",
+        "swapInputMessage": ""
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -725,7 +726,8 @@
         "messages": {
             "checkExtension": "{name} расширение занято, пожалуйста, проверьте его",
             "extensionLogin": "Пожалуйста, войдите в Ваше {name} расширение",
-            "installExtension": "Расширение {name} не найдено. Пожалуйста, установите его!"
+            "installExtension": "Расширение {name} не найдено. Пожалуйста, установите его!",
+            "reloadPage": ""
         }
     },
     "selectLanguageDialog": {
