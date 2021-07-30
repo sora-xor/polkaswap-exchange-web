@@ -16,6 +16,7 @@ export const groupRewardsByAssetsList = (rewards: Array<RewardInfo | RewardsInfo
     if ((amount as FPNumber).isZero()) return total
 
     const item = {
+      asset: KnownAssets.get(address),
       symbol: KnownAssets.get(address).symbol,
       amount: (amount as FPNumber).toLocaleString()
     } as RewardsAmountHeaderItem

@@ -1,6 +1,7 @@
 import { KnownSymbols, RewardInfo, RewardingEvents, CodecString, Asset } from '@sora-substrate/util'
 
 export interface RewardsAmountHeaderItem {
+  asset?: Asset;
   amount: string;
   symbol: KnownSymbols;
 }

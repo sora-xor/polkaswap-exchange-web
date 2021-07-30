@@ -9,10 +9,13 @@
             <div class="amount-table-item-content__header">
               <div v-for="(item, index) in formatted.limit" class="amount-table-item__amount" :key="index">
                 <formatted-amount class="amount-table-value" :value="item.amount" :asset-symbol="item.symbol" />
+                <!-- TODO: Get asset to calculate fiat value for all similar places -->
+                <!-- <formatted-amount :value="getFiatAmountByString(item.amount, asset)" is-fiat-value with-left-shift /> -->
                 <s-tooltip v-if="formatted.total && index === 0" popper-class="amount-table-tooltip" placement="right" border-radius="mini">
                   <div slot="content" class="amount-table-tooltip-content">
                     <div>{{ t('rewards.totalVested') }}:</div>
                     <formatted-amount class="amount-table-value" :value="formatted.total.amount" :asset-symbol="formatted.total.symbol" />
+                    <!-- <formatted-amount :value="getFiatAmountByString(formatted.total.amount, asset)" is-fiat-value with-left-shift /> -->
                   </div>
                   <s-icon name="info-16" size="14px" class="amount-table-value-icon" />
                 </s-tooltip>
@@ -30,6 +33,7 @@
                   <template v-if="!simpleGroup">
                     <div v-for="(item, index) in item.limit" :key="index">
                       <formatted-amount class="amount-table-value" :value="item.amount" :asset-symbol="item.symbol" />
+                      <!-- <formatted-amount :value="getFiatAmountByString(item.amount, asset)" is-fiat-value with-left-shift /> -->
                     </div>
                   </template>
                 </div>
@@ -46,7 +50,7 @@
 <script lang="ts">
 import { Component, Prop, Mixins } from 'vue-property-decorator'
 import { RewardInfo } from '@sora-substrate/util'
-import { NumberFormatterMixin, FormattedAmount } from '@soramitsu/soraneo-wallet-web'
+import { FormattedAmountMixin, FormattedAmount } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards'
@@ -56,7 +60,7 @@ import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards'
     FormattedAmount
   }
 })
-export default class AmountTable extends Mixins(NumberFormatterMixin, TranslationMixin) {
+export default class AmountTable extends Mixins(FormattedAmountMixin, TranslationMixin) {
   @Prop({ default: () => {}, type: Object }) item!: RewardInfoGroup | RewardInfo
   @Prop({ default: true, type: Boolean }) showTable!: boolean
   @Prop({ default: false, type: Boolean }) simpleGroup!: boolean

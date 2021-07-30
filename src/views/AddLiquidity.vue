@@ -53,7 +53,7 @@
       >
         <div slot="top" class="input-line">
           <div class="input-title">
-            <span class="input-value--uppercase input-value--primary">{{ t('createPair.deposit') }}</span>
+            <span class="input-title--uppercase input-title--primary">{{ t('createPair.deposit') }}</span>
           </div>
           <div v-if="isLoggedIn && secondToken" class="input-value">
             <span class="input-value--uppercase">{{ t('createPair.balance') }}</span>

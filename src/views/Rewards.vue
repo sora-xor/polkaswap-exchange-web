@@ -366,8 +366,8 @@ export default class Rewards extends Mixins(FormattedAmountMixin, WalletConnectM
 
 <style lang="scss">
 .rewards {
-  .formatted-amount--fiat-value {
-    color: #c0e2ff;
+  .formatted-amount.formatted-amount--fiat-value {
+    color: var(--s-color-rewards);
   }
 }
 .container.rewards .el-loading-mask {

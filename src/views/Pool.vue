@@ -48,12 +48,12 @@
           </div>
           <div class="pool-info">
             <pair-token-logo :first-token="getAsset(liquidityItem.firstAddress)" :second-token="getAsset(liquidityItem.secondAddress)" size="mini" />
-            <div>{{ t('pool.pairTokens', { pair: getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress)) }) }}</div>
-            <div class="pool-info-value">{{ getBalance(liquidityItem) }}</div>
+            <div class="pool-info__label">{{ t('pool.pairTokens', { pair: getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress)) }) }}</div>
+            <div class="pool-info__value">{{ getBalance(liquidityItem) }}</div>
           </div>
           <div class="pool-info pool-info--share">
-            <div>{{ t('pool.poolShare')}}</div>
-            <div class="pool-info-value">{{ getPoolShare(liquidityItem.poolShare) }}</div>
+            <div class="pool-info__label">{{ t('pool.poolShare')}}</div>
+            <div class="pool-info__value">{{ getPoolShare(liquidityItem.poolShare) }}</div>
           </div>
           <div class="pool-info--buttons">
             <s-button type="secondary" class="s-typography-button--medium" @click="handleAddPairLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
@@ -272,6 +272,7 @@ $pair-icon-height: 36px;
     }
     &__label {
       margin-right: var(--s-basic-spacing);
+      white-space: nowrap;
     }
     &__value {
       margin-left: auto;

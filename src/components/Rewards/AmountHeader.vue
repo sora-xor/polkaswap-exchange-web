@@ -1,15 +1,20 @@
 <template>
   <div class="amount-header">
-    <template v-for="({ amount, symbol }, index) in items">
+    <template v-for="({ asset, amount, symbol }, index) in items">
       <div :key="symbol" class="amount-block">
-        <formatted-amount class="amount-block__amount" :value="amount" :asset-symbol="symbol" />
+        <formatted-amount
+          class="amount-block__amount"
+          :value="formatStringValue(amount, asset.decimal)"
+          :font-size-rate="FontSizeRate.MEDIUM"
+          :asset-symbol="symbol"
+          symbol-as-decimal
+        />
+        <formatted-amount
+          :value="getFiatAmountByString(amount, asset)"
+          is-fiat-value
+          with-left-shift
+        />
       </div>
-      <formatted-amount
-        v-if="getAssetFiatPrice(getAsset(symbol))"
-        :key="symbol"
-        :value="getFiatAmount(amount, getAsset(symbol))"
-        is-fiat-value
-      />
       <div v-if="items.length - 1 !== index" class="amount-header-divider" :key="index">
         <s-divider direction="vertical" class="amount-header-divider__slash" />
       </div>
@@ -19,8 +24,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { FormattedAmountMixin, FormattedAmount } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets } from '@sora-substrate/util'
+import { FormattedAmountMixin, FormattedAmount, FontSizeRate } from '@soramitsu/soraneo-wallet-web'
 
 import { RewardsAmountHeaderItem } from '@/types/rewards'
 
@@ -30,12 +34,9 @@ import { RewardsAmountHeaderItem } from '@/types/rewards'
   }
 })
 export default class AmountHeader extends Mixins(FormattedAmountMixin) {
-  @Prop({ default: () => [], type: Array }) items!: Array<RewardsAmountHeaderItem>
+  readonly FontSizeRate = FontSizeRate
 
-  getAsset (symbol: string): Nullable<any> {
-    const asset = KnownAssets.get(symbol)
-    return asset?.address ? this.whitelist[asset.address] : null
-  }
+  @Prop({ default: () => [], type: Array }) items!: Array<RewardsAmountHeaderItem>
 }
 </script>
 
@@ -71,9 +72,11 @@ $divider-height: 20px;
 
   &-block {
     display: flex;
-    flex-flow: row nowrap;
     align-items: baseline;
-    line-height: $amount-line-height
+    flex-wrap: wrap;
+    justify-content: center;
+    line-height: $amount-line-height;
+    text-align: center;
 
     &:first-child:not(:last-child) {
       text-align: right;
@@ -83,15 +86,18 @@ $divider-height: 20px;
       text-align: left;
     }
 
-    &__amount {
-      font-size: var(--s-font-size-large);
+    &__amount,
+    .formatted-amount--fiat-value {
       font-weight: 700;
-      letter-spacing: var(--s-letter-spacing-big);
+      letter-spacing: var(--s-letter-spacing-small);
     }
 
-    &__symbol {
-      font-size: var(--s-font-size-big);
-      font-weight: 600;
+    &__amount {
+      font-size: var(--s-font-size-large);
+    }
+
+    .formatted-amount--fiat-value {
+      font-size: calc(var(--s-font-size-large) * 0.875);
     }
   }
 }
