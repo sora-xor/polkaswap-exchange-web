@@ -36,18 +36,21 @@
                   </s-row>
                 </s-col>
                 <div class="asset-item__balance-container">
-                  <formatted-amount
-                    class="asset-item__balance"
-                    :value="formatBalance(asset)"
-                    :font-size-rate="FontSizeRate.MEDIUM"
-                  />
-                  <formatted-amount
-                    v-if="isSoraToEvm && asset && getAssetFiatPrice(asset)"
-                    :value="getFiatBalance(asset)"
-                    :font-size-rate="FontSizeRate.MEDIUM"
-                    :font-weight-rate="FontWeightRate.MEDIUM"
-                    is-fiat-value
-                  />
+                  <template v-if="isSoraToEvm && asset && formatBalance(asset) !== formattedZeroSymbol">
+                    <formatted-amount
+                      class="asset-item__balance"
+                      :value="formatBalance(asset)"
+                      :font-size-rate="FontSizeRate.MEDIUM"
+                    />
+                    <formatted-amount
+                      v-if="!!getAssetFiatPrice(asset)"
+                      :value="getFiatBalance(asset)"
+                      :font-size-rate="FontSizeRate.MEDIUM"
+                      :font-weight-rate="FontWeightRate.MEDIUM"
+                      is-fiat-value
+                    />
+                  </template>
+                  <span v-else class="asset-item__balance">{{ formattedZeroSymbol }}</span>
                 </div>
               </div>
             </div>
@@ -130,6 +133,7 @@ export default class SelectRegisteredAsset extends Mixins(FormattedAmountMixin, 
 
   readonly FontSizeRate = FontSizeRate
   readonly FontWeightRate = FontWeightRate
+  readonly formattedZeroSymbol = '-'
 
   tabValue = this.tokenTabs[0]
   customAddress = ''
@@ -189,7 +193,7 @@ export default class SelectRegisteredAsset extends Mixins(FormattedAmountMixin, 
     return formatAssetBalance(asset, {
       internal: this.isSoraToEvm,
       showZeroBalance: false,
-      formattedZero: '-'
+      formattedZero: this.formattedZeroSymbol
     })
   }
 

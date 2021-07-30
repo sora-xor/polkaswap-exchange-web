@@ -32,18 +32,21 @@
               </s-row>
             </s-col>
             <div v-if="connected" class="token-item__amount-container">
-              <formatted-amount
-                class="token-item__amount"
-                :value="formatBalance(token)"
-                :font-size-rate="FontSizeRate.MEDIUM"
-              />
-              <formatted-amount
-                v-if="shouldFiatBeShown(token)"
-                :value="getFiatBalance(token)"
-                :font-size-rate="FontSizeRate.MEDIUM"
-                :font-weight-rate="FontWeightRate.MEDIUM"
-                is-fiat-value
-              />
+              <template v-if="formatBalance(token) !== formattedZeroSymbol">
+                <formatted-amount
+                  class="token-item__amount"
+                  :value="formatBalance(token)"
+                  :font-size-rate="FontSizeRate.MEDIUM"
+                />
+                <formatted-amount
+                  v-if="shouldFiatBeShown(token)"
+                  :value="getFiatBalance(token)"
+                  :font-size-rate="FontSizeRate.MEDIUM"
+                  :font-weight-rate="FontWeightRate.MEDIUM"
+                  is-fiat-value
+                />
+              </template>
+              <span v-else class="token-item__amount">{{ formattedZeroSymbol }}</span>
             </div>
           </div>
         </div>
@@ -110,18 +113,21 @@
                 </s-row>
               </s-col>
               <div v-if="connected" class="token-item__amount-container">
-                <formatted-amount
-                  class="token-item__amount"
-                  :value="formatBalance(token)"
-                  :font-size-rate="FontSizeRate.MEDIUM"
-                />
-                <formatted-amount
-                  v-if="shouldFiatBeShown(token)"
-                  :value="getFiatBalance(token)"
-                  :font-size-rate="FontSizeRate.MEDIUM"
-                  :font-weight-rate="FontWeightRate.MEDIUM"
-                  is-fiat-value
-                />
+                <template v-if="formatBalance(token) !== formattedZeroSymbol">
+                  <formatted-amount
+                    class="token-item__amount"
+                    :value="formatBalance(token)"
+                    :font-size-rate="FontSizeRate.MEDIUM"
+                  />
+                  <formatted-amount
+                    v-if="shouldFiatBeShown(token)"
+                    :value="getFiatBalance(token)"
+                    :font-size-rate="FontSizeRate.MEDIUM"
+                    :font-weight-rate="FontWeightRate.MEDIUM"
+                    is-fiat-value
+                  />
+                </template>
+                <span v-else class="token-item__amount">{{ formattedZeroSymbol }}</span>
               </div>
               <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
                 <s-icon name="basic-trash-24" />
@@ -294,7 +300,7 @@ export default class SelectToken extends Mixins(FormattedAmountMixin, Translatio
   }
 
   shouldFiatBeShown (asset: AccountAsset): boolean {
-    return !!this.getAssetFiatPrice(asset) && this.formatBalance(asset) !== this.formattedZeroSymbol
+    return !!this.getAssetFiatPrice(asset)
   }
 }
 </script>
