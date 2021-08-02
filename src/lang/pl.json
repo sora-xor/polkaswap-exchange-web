@@ -431,7 +431,7 @@
         "confirmSwap": "Potwierdź zamianę",
         "swapOutputMessage": "Wynik jest szacunkowy. Otrzymasz co najmniej {transactionValue} lub transakcja zostanie odwrócona.",
         "rewardsForSwap": "Nagrody strategiczne PSWAP",
-        "swapInputMessage": ""
+        "swapInputMessage": "Dane wejściowe są szacowane. Sprzedasz maksymalnie {transactionValue} lub transakcja zostanie cofnięta."
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -544,8 +544,8 @@
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
         "viewInSorascan": "Pokaż na SORAScanie",
-        "changeAccount": "",
-        "expectedAddress": ""
+        "changeAccount": "@:changeAccountText w @:metamask",
+        "expectedAddress": "Oczekiwany adres w @:metamask"
     },
     "months": {
         "0": "STY",
@@ -630,7 +630,7 @@
         "description": "Usunięcie tokenów z puli przelicza Twoją pozycję z powrotem na tokeny bazowe po aktualnym kursie, proporcjonalnym do Twojego udziału w puli. Naliczone opłaty są wliczone w kwotę, którą otrzymasz.",
         "outputMessage": "Wynik jest szacowany. Jeśli cena zmieni się o więcej niż {slippageTolerance}%, Twoja transakcja zostanie odwrócona.",
         "confirmTitle": "Otrzymasz",
-        "shareOfPool": ""
+        "shareOfPool": "Udział puli po transakcji"
     },
     "dexSettings": {
         "title": "Ustawienia transakcji",
@@ -712,12 +712,12 @@
             "LiquidityProvisionFarming": "Farming"
         },
         "vested": "przysługujące",
-        "forText": "",
-        "totalVested": "",
-        "claimableAmountDoneVesting": "",
+        "forText": " do ",
+        "totalVested": "Wynagrodzenia ogółem",
+        "claimableAmountDoneVesting": "Kwota roszczenia (ukończono nabywanie uprawnień)",
         "groups": {
-            "strategic": "",
-            "external": ""
+            "strategic": "Nagrody strategiczne",
+            "external": "Nagrody za połączone konto ethereum"
         }
     },
     "provider": {
@@ -727,7 +727,7 @@
             "checkExtension": "Rozszerzenie {name} jest zajęte, sprawdź je",
             "extensionLogin": "Zaloguj się do swojego rozszerzenia {name}",
             "installExtension": "Rozszerzenie {name} nie zostało znalezione. Zainstaluj je!",
-            "reloadPage": ""
+            "reloadPage": "Odśwież stronę"
         }
     },
     "selectLanguageDialog": {
@@ -739,8 +739,8 @@
         "name": "Nazwa",
         "assetId": "Identyfikator waluty"
     },
-    "memorandum": "",
-    "memorandumLink": "",
-    "privacyLink": "",
-    "FAQ": ""
+    "memorandum": "Memo giełdy Polkaswap oraz warunki korzystania z usług",
+    "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\"> @:memorandum <\/a>",
+    "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\"> @:helpDialog.privacyPolicy <\/a>",
+    "FAQ": "Polkaswap FAQ"
 }

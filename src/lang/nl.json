@@ -93,7 +93,7 @@
         "confirmTitle": "Bevestig transactie",
         "confirm": "@:confirmText",
         "errorAddress": "Ongeldig adres. Controleer het en probeer het opnieuw.",
-        "addressDesc": ""
+        "addressDesc": "Alleen SORA-netwerkaccountadressen worden geaccepteerd. Zorg ervoor dat je een correct opgemaakt SORA-netwerkaccountadres hebt dat begint met het voorvoegsel 'cn'."
     },
     "account": {
         "successCopy": "Wallet-adres werd gekopieerd naar het klembord",
@@ -183,7 +183,7 @@
         },
         "extensibleSupply": {
             "placeholder": "Uitbreidbaar aanbod",
-            "desc": ""
+            "desc": "Mogelijkheid om meer tokens te slaan."
         }
     },
     "transaction": {
@@ -262,7 +262,7 @@
         "Stats": "Stats",
         "Support": "Support",
         "CreatePair": "Maak Paar",
-        "Tokens": ""
+        "Tokens": "Tokens"
     },
     "social": {
         "twitter": "Twitter",
@@ -431,7 +431,7 @@
         "confirmSwap": "Swap bevestigen",
         "swapOutputMessage": "De output wordt geschat. U ontvangt minimaal {transactionValue} of de transactie wordt teruggedraaid.",
         "rewardsForSwap": "PSWAP Strategische Beloningen",
-        "swapInputMessage": ""
+        "swapInputMessage": "Invoer wordt geschat. U verkoopt maximaal {transactionValue} of de transactie wordt teruggedraaid."
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -544,8 +544,8 @@
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
         "viewInSorascan": "Bekijk in Sorascan",
-        "changeAccount": "",
-        "expectedAddress": ""
+        "changeAccount": "@:changeAccountText in @:metamask",
+        "expectedAddress": "Verwacht adres in @:metamask"
     },
     "months": {
         "0": "Jan",
@@ -630,7 +630,7 @@
         "description": "Het verwijderen van pool-tokens zet uw positie terug in onderliggende tokens tegen de huidige koers, evenredig met uw aandeel in de pool. Opgebouwde vergoedingen zijn inbegrepen in de bedragen die u ontvangt.",
         "outputMessage": "De output wordt geschat. Als de prijs meer dan {slippageTolerance}% verandert, zal uw transactie worden teruggedraaid.",
         "confirmTitle": "U ontvangt",
-        "shareOfPool": ""
+        "shareOfPool": "Aandeel van pool na transactie"
     },
     "dexSettings": {
         "title": "Transactie-instellingen",
@@ -708,16 +708,16 @@
             "LiquidityProvision": "Vergoedingen verkregen uit liquiditeitsvoorziening",
             "BuyOnBondingCurve": "kopen van de TBC",
             "NftAirdrop": "NFT Airdrop",
-            "MarketMakerVolume": "",
-            "LiquidityProvisionFarming": ""
+            "MarketMakerVolume": "Marktmaker",
+            "LiquidityProvisionFarming": "Landbouw"
         },
         "vested": "Gevestigde",
-        "forText": "",
-        "totalVested": "",
-        "claimableAmountDoneVesting": "",
+        "forText": "voor",
+        "totalVested": "Totale beloningen",
+        "claimableAmountDoneVesting": "Opeisbaar bedrag (klaar onvoorwaardelijk)",
         "groups": {
-            "strategic": "",
-            "external": ""
+            "strategic": "Strategische beloningen",
+            "external": "Beloningen voor het verbonden ethereum-account"
         }
     },
     "provider": {
@@ -727,20 +727,20 @@
             "checkExtension": "{naam} extensie is bezet, gelieve ze te controleren",
             "extensionLogin": "Gelieve in te loggen op uw {naam} extensie",
             "installExtension": "{name} extensie is niet gevonden. Gelieve ze te installeren!",
-            "reloadPage": ""
+            "reloadPage": "Herlaad pagina"
         }
     },
     "selectLanguageDialog": {
-        "title": ""
+        "title": "Taal"
     },
     "tokens": {
-        "title": "",
-        "symbol": "",
-        "name": "",
-        "assetId": ""
+        "title": "Vermelde tokens",
+        "symbol": "Symbool",
+        "name": "Naam",
+        "assetId": "Asset-ID"
     },
-    "memorandum": "",
-    "memorandumLink": "",
-    "privacyLink": "",
-    "FAQ": ""
+    "memorandum": "Polkaswap memorandum en servicevoorwaarden",
+    "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\"> @:memorandum <\/a>",
+    "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\"> @:helpDialog.privacyPolicy <\/a>",
+    "FAQ": "Polkaswap FAQ"
 }

@@ -708,7 +708,7 @@
             "LiquidityProvision": "Fees gained from liquidity provision",
             "BuyOnBondingCurve": "buying from the TBC",
             "NftAirdrop": "NFT Airdrop",
-            "MarketMakerVolume": "Market Maker",
+            "MarketMakerVolume": "Market Making",
             "LiquidityProvisionFarming": "Farming"
         },
         "vested": "vested",

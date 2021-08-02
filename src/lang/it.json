@@ -431,7 +431,7 @@
         "confirmSwap": "Conferma lo scambio",
         "swapOutputMessage": "L'output è stimato. Riceverai almeno {transactionValue} o la transazione tornerà indietro.",
         "rewardsForSwap": "PSWAP Strategic Rewards",
-        "swapInputMessage": ""
+        "swapInputMessage": "L'input è stimato. Venderai al massimo {transactionValue} o la transazione verrà annullata."
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -713,7 +713,7 @@
         },
         "vested": "vested",
         "forText": "per",
-        "totalVested": "Totale in attesa di maturazione",
+        "totalVested": "Ricompense totali",
         "claimableAmountDoneVesting": "Importo che puoi ottenere (maturazione effettuata)",
         "groups": {
             "strategic": "Strategic Rewards",
@@ -727,7 +727,7 @@
             "checkExtension": "L'estensione {name} non è stata trovata. Si prega di controllarla",
             "extensionLogin": "Per favore accedi all' estensione {name}",
             "installExtension": "L'estensione {name} non è stata trovata. Si prega di installarla!",
-            "reloadPage": ""
+            "reloadPage": "Ricarica la pagina"
         }
     },
     "selectLanguageDialog": {

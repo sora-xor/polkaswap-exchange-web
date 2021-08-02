@@ -431,7 +431,7 @@
         "confirmSwap": "Confirmar el intercambio",
         "swapOutputMessage": "La cantidad esta estimada. Recibirá al menos {transactionValue} o la transacción se revertirá.",
         "rewardsForSwap": "Recompensas estratégicas de PSWAP",
-        "swapInputMessage": ""
+        "swapInputMessage": "La entrada es estimada. Venderá el máximo de {transactionValue} o la transacción se revertirá"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -713,7 +713,7 @@
         },
         "vested": "establecido",
         "forText": "por",
-        "totalVested": "Total adquirido",
+        "totalVested": "Recompensas totales",
         "claimableAmountDoneVesting": "Monto reclamable (otorgado)",
         "groups": {
             "strategic": "Recompensas estratégicas",
@@ -726,8 +726,8 @@
         "messages": {
             "checkExtension": "{name} está ocupada, verifíquela",
             "extensionLogin": "Por favor, inicie sesión en su extensión de {name}",
-            "installExtension": "La extensión {name} no se encuentra. Por favor, instálela.",
-            "reloadPage": ""
+            "installExtension": "La extensión {name} no se encuentra. Por favor, instálela.\n\n¿Ya ha instalado la extensión? Por favor, recargue la página",
+            "reloadPage": "Recargar página"
         }
     },
     "selectLanguageDialog": {

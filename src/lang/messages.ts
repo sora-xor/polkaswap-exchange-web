@@ -537,7 +537,7 @@ export default {
       [RewardingEvents.NftAirdrop]: 'NFT Airdrop',
       [RewardingEvents.LiquidityProvision]: 'Fees gained from liquidity provision',
       [RewardingEvents.BuyOnBondingCurve]: 'buying from the TBC',
-      [RewardingEvents.MarketMakerVolume]: 'Market Maker',
+      [RewardingEvents.MarketMakerVolume]: 'Market Making',
       [RewardingEvents.LiquidityProvisionFarming]: 'Farming'
     },
     groups: {
