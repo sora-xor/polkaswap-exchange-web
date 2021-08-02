@@ -207,13 +207,11 @@ const actions = {
     }
 
     const connectionOnDisconnected = async () => {
-      console.log('connectionOnDisconnected')
+      await closeConnection()
 
       if (typeof onDisconnect === 'function') {
         onDisconnect(node)
       }
-
-      await closeConnection()
 
       dispatch('connectToNode', { node, onError, onDisconnect, onReconnect, connectionOptions: { once: false } })
     }
