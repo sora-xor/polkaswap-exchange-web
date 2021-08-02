@@ -286,7 +286,8 @@ async function getEvmNetworkType (): Promise<string> {
   if (!networkType || networkType === 'undefined') {
     const ethersInstance = await getEthersInstance()
     const network = await ethersInstance.getNetwork()
-    return network.name
+    const networkType = ethers.utils.hexValue(network.chainId)
+    return EvmNetworkTypeName[networkType]
   }
   return networkType
 }
