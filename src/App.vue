@@ -194,9 +194,9 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
     updateBaseUrl(router)
 
     const localeLanguage = navigator.language
-    const thousandSymbol = Number(1000).toLocaleString(localeLanguage).substring(1, 2)
+    const thousandSymbol = Number(10000).toLocaleString(localeLanguage).substring(2, 3)
     if (thousandSymbol !== '0') {
-      FPNumber.DELIMITERS_CONFIG.thousand = Number(1234).toLocaleString(localeLanguage).substring(1, 2)
+      FPNumber.DELIMITERS_CONFIG.thousand = Number(12345).toLocaleString(localeLanguage).substring(2, 3)
     }
     FPNumber.DELIMITERS_CONFIG.decimal = Number(1.2).toLocaleString(localeLanguage).substring(1, 2)
 
