@@ -708,13 +708,13 @@
             "LiquidityProvision": "Fees gained from liquidity provision",
             "BuyOnBondingCurve": "buying from the TBC",
             "NftAirdrop": "NFT Airdrop",
-            "MarketMakerVolume": "Market Maker",
+            "MarketMakerVolume": "Market Making",
             "LiquidityProvisionFarming": "Farming"
         },
         "vested": "vested",
         "forText": "for",
-        "totalVested": "Total vested",
-        "claimableAmountDoneVesting": "Claimable amount (done vesting)",
+        "totalVested": "Total rewards",
+        "claimableAmountDoneVesting": "Claimable rewards",
         "groups": {
             "strategic": "Strategic Rewards",
             "external": "Rewards for the connected ethereum account"

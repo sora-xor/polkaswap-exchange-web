@@ -497,8 +497,8 @@ export default {
     networkFeeTooltip: '@:networkFeeTooltipText',
     andText: 'and',
     forText: 'for',
-    totalVested: 'Total vested',
-    claimableAmountDoneVesting: 'Claimable amount (done vesting)',
+    totalVested: 'Total rewards',
+    claimableAmountDoneVesting: 'Claimable rewards',
     claiming: {
       pending: 'Claiming...',
       success: 'Claimed successfully'
@@ -537,7 +537,7 @@ export default {
       [RewardingEvents.NftAirdrop]: 'NFT Airdrop',
       [RewardingEvents.LiquidityProvision]: 'Fees gained from liquidity provision',
       [RewardingEvents.BuyOnBondingCurve]: 'buying from the TBC',
-      [RewardingEvents.MarketMakerVolume]: 'Market Maker',
+      [RewardingEvents.MarketMakerVolume]: 'Market Making',
       [RewardingEvents.LiquidityProvisionFarming]: 'Farming'
     },
     groups: {

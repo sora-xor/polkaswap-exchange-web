@@ -431,7 +431,7 @@
         "confirmSwap": "Jẹrisi afiropo ",
         "swapOutputMessage": "Ti ṣe iṣiro iṣẹjade. Iwọ yoo gba o kere ju {transactionValue} tabi idunadura naa yoo pada.",
         "rewardsForSwap": "Awọn ere ilana PSWAP",
-        "swapInputMessage": ""
+        "swapInputMessage": "Iṣagbewọle ti ni iṣiro. Iwọ yoo ta o pọju {transactionValue} tabi idunadura naa yoo pada."
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -727,7 +727,7 @@
             "checkExtension": "{name}extension nsise, jọwọ ṣayẹwo",
             "extensionLogin": "Jọwọ buwolu wọle lati {name} itesiwaju",
             "installExtension": "a ko ri apele {name} Jọwọ install re! ",
-            "reloadPage": ""
+            "reloadPage": "Ṣe atunkọ oju -iwe"
         }
     },
     "selectLanguageDialog": {

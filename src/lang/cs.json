@@ -431,7 +431,7 @@
         "confirmSwap": "Potvrďte výměnu",
         "swapOutputMessage": "Výstup je odhadován. Obdržíte alespoň {transactionValue}, jinak se transakce vrátí zpět.",
         "rewardsForSwap": "Strategické odměny PSWAP",
-        "swapInputMessage": ""
+        "swapInputMessage": "Vstup je odhadován. Prodáte maximálně {transactionValue} nebo se transakce vrátí."
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -713,7 +713,7 @@
         },
         "vested": "uzamčené",
         "forText": "za",
-        "totalVested": "Celkem uzamčeno",
+        "totalVested": "Celkové odměny",
         "claimableAmountDoneVesting": "Nárokovatelná částka (po odemknutí)",
         "groups": {
             "strategic": "Strategické odměny",
@@ -727,7 +727,7 @@
             "checkExtension": "{name} rozšíření je zaneprázdněné, zkontrolujte ho prosím",
             "extensionLogin": "Přihlašte se prosím do svého {name} rozšíření",
             "installExtension": "{name} rozšíření nebylo nalezeno. Nainstalujte ho prosím!",
-            "reloadPage": ""
+            "reloadPage": "Znovu načíst stránku"
         }
     },
     "selectLanguageDialog": {
