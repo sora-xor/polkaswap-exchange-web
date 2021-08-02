@@ -429,8 +429,9 @@
         "insufficientAmount": "Niewystarczająca kwota {tokenSymbol}",
         "insufficientLiquidity": "Niewystarczająca płynność",
         "confirmSwap": "Potwierdź zamianę",
-        "swapOutputMessage": "Wynik jest szacunkowy. Otrzymasz <span class=\"min-received-label\">co najmniej<\/span> {transactionValue} lub transakcja zostanie odwrócona.",
-        "rewardsForSwap": "Nagrody strategiczne PSWAP"
+        "swapOutputMessage": "Wynik jest szacunkowy. Otrzymasz co najmniej {transactionValue} lub transakcja zostanie odwrócona.",
+        "rewardsForSwap": "Nagrody strategiczne PSWAP",
+        "swapInputMessage": ""
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -725,7 +726,8 @@
         "messages": {
             "checkExtension": "Rozszerzenie {name} jest zajęte, sprawdź je",
             "extensionLogin": "Zaloguj się do swojego rozszerzenia {name}",
-            "installExtension": "Rozszerzenie {name} nie zostało znalezione. Zainstaluj je!"
+            "installExtension": "Rozszerzenie {name} nie zostało znalezione. Zainstaluj je!",
+            "reloadPage": ""
         }
     },
     "selectLanguageDialog": {

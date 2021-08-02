@@ -429,8 +429,9 @@
         "insufficientAmount": "{tokenSymbol} անբավարար գումար",
         "insufficientLiquidity": "Անբավարար իրացվելիություն",
         "confirmSwap": "Հաստատեք փոխանակումը",
-        "swapOutputMessage": "Արդյունքը գնահատվում է: Դուք կստանաք <span class=\"min-received-label\"> առնվազն <\/span> {transactionValue} կամ գործարքը կվերականգնվի:",
-        "rewardsForSwap": "PSWAP ստրատեգիական պարգևատրումներ"
+        "swapOutputMessage": "Արդյունքը գնահատվում է: Դուք կստանաք առնվազն {transactionValue} կամ գործարքը կվերականգնվի:",
+        "rewardsForSwap": "PSWAP ստրատեգիական պարգևատրումներ",
+        "swapInputMessage": ""
     },
     "pool": {
         "connectWallet": "@: connectWalletText",
@@ -725,7 +726,8 @@
         "messages": {
             "checkExtension": "{name} Հավելվածը զբաղված է, խնդրում ենք ստուգել այն",
             "extensionLogin": "Խնդրում ենք մուտք գործելՁեր {name} հավելված",
-            "installExtension": "{name} Հավելվածը չի գտնվել: Խնդրում ենք տեղադրել այն:"
+            "installExtension": "{name} Հավելվածը չի գտնվել: Խնդրում ենք տեղադրել այն:",
+            "reloadPage": ""
         }
     },
     "selectLanguageDialog": {

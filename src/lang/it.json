@@ -429,8 +429,9 @@
         "insufficientAmount": "Quantità insufficiente di {tokenSymbol}",
         "insufficientLiquidity": "Liquidità insufficiente",
         "confirmSwap": "Conferma lo scambio",
-        "swapOutputMessage": "L'output è stimato. Riceverai <span class=\"min-received-label\">almeno<\/span> {transactionValue} o la transazione tornerà indietro.",
-        "rewardsForSwap": "PSWAP Strategic Rewards"
+        "swapOutputMessage": "L'output è stimato. Riceverai almeno {transactionValue} o la transazione tornerà indietro.",
+        "rewardsForSwap": "PSWAP Strategic Rewards",
+        "swapInputMessage": ""
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -725,7 +726,8 @@
         "messages": {
             "checkExtension": "L'estensione {name} non è stata trovata. Si prega di controllarla",
             "extensionLogin": "Per favore accedi all' estensione {name}",
-            "installExtension": "L'estensione {name} non è stata trovata. Si prega di installarla!"
+            "installExtension": "L'estensione {name} non è stata trovata. Si prega di installarla!",
+            "reloadPage": ""
         }
     },
     "selectLanguageDialog": {

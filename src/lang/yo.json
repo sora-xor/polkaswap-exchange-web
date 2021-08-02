@@ -429,8 +429,9 @@
         "insufficientAmount": "Iye {tokenSymbol} Oto",
         "insufficientLiquidity": "Liquidity ko to",
         "confirmSwap": "Jẹrisi afiropo ",
-        "swapOutputMessage": "Ti ṣe iṣiro iṣẹjade. Iwọ yoo gba <span class=\"min-received-label\"> o kere ju <\/span> {transactionValue} tabi idunadura naa yoo pada.",
-        "rewardsForSwap": "Awọn ere ilana PSWAP"
+        "swapOutputMessage": "Ti ṣe iṣiro iṣẹjade. Iwọ yoo gba o kere ju {transactionValue} tabi idunadura naa yoo pada.",
+        "rewardsForSwap": "Awọn ere ilana PSWAP",
+        "swapInputMessage": ""
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -543,8 +544,8 @@
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
         "viewInSorascan": "Wo ni SORAScan",
-        "changeAccount": "",
-        "expectedAddress": ""
+        "changeAccount": "@:changeAccountText Inu @:metamask",
+        "expectedAddress": "Adirẹsi ti a nireti ni @:metamask"
     },
     "months": {
         "0": "Oṣu Kini",
@@ -629,7 +630,7 @@
         "description": "Yiyọ awọn ami adagun yi pada ipo rẹ pada si awọn ami atokọ ni oṣuwọn lọwọlọwọ, ni ibamu si ipin rẹ ti adagun-odo. Awọn owo ti a gba ni o wa ninu awọn oye ti o gba.",
         "outputMessage": "Ti ṣe iṣiro iṣẹjade. Ti idiyele ba yipada diẹ sii ju {slippageTolerance} % iṣowo rẹ yoo pada.",
         "confirmTitle": "Iwo yoo gba",
-        "shareOfPool": ""
+        "shareOfPool": "Pinpin pool lẹhin idunadura"
     },
     "dexSettings": {
         "title": "Awọn eto iṣowo",
@@ -711,12 +712,12 @@
             "LiquidityProvisionFarming": "Farming"
         },
         "vested": "Tà fun",
-        "forText": "",
-        "totalVested": "",
-        "claimableAmountDoneVesting": "",
+        "forText": "fun",
+        "totalVested": "Apapo Ta fun",
+        "claimableAmountDoneVesting": "Iye ti o ni ẹtọ (ti a ṣe)",
         "groups": {
-            "strategic": "",
-            "external": ""
+            "strategic": "Ere Awọn ilana",
+            "external": "Awọn ere fun iroyin ethereum ti a sopọ"
         }
     },
     "provider": {
@@ -725,7 +726,8 @@
         "messages": {
             "checkExtension": "{name}extension nsise, jọwọ ṣayẹwo",
             "extensionLogin": "Jọwọ buwolu wọle lati {name} itesiwaju",
-            "installExtension": "a ko ri apele {name} Jọwọ install re! "
+            "installExtension": "a ko ri apele {name} Jọwọ install re! ",
+            "reloadPage": ""
         }
     },
     "selectLanguageDialog": {
