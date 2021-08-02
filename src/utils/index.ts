@@ -179,10 +179,10 @@ export const disconnectWallet = async (): Promise<void> => {
 export const debouncedInputHandler = (fn: any, timeout = 500, options = { leading: true }) => debounce(fn, timeout, options)
 
 export const updateFpNumberLocale = (locale: string): void => {
-  const thousandSymbol = Number(1000).toLocaleString(locale).substring(1, 2)
+  const thousandSymbol = Number(10000).toLocaleString(locale).substring(2, 3)
 
   if (thousandSymbol !== '0') {
-    FPNumber.DELIMITERS_CONFIG.thousand = Number(1234).toLocaleString(locale).substring(1, 2)
+    FPNumber.DELIMITERS_CONFIG.thousand = Number(12345).toLocaleString(locale).substring(2, 3)
   }
 
   FPNumber.DELIMITERS_CONFIG.decimal = Number(1.2).toLocaleString(locale).substring(1, 2)

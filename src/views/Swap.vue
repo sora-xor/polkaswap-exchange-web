@@ -46,7 +46,14 @@
         <token-address v-if="tokenFrom" :name="tokenFrom.name" :symbol="tokenFrom.symbol" :address="tokenFrom.address" class="input-title" />
       </div>
     </s-float-input>
-    <s-button class="el-button--switch-tokens" type="action" icon="arrows-swap-90-24" :disabled="!areTokensSelected || isRecountingProcess" @click="handleSwitchTokens" />
+    <s-button
+      class="el-button--switch-tokens"
+      :class="{ 'loading': isRecountingProcess }"
+      type="action"
+      icon="arrows-swap-90-24"
+      :disabled="!areTokensSelected || isRecountingProcess"
+      @click="handleSwitchTokens"
+    />
     <s-float-input
       class="s-input--token-value"
       size="medium"
@@ -538,6 +545,15 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
   @include buttons;
   @include full-width-button('action-button');
   @include vertical-divider('el-button--switch-tokens', $inner-spacing-medium);
+}
+
+.el-button.neumorphic.s-action:disabled {
+  &, &:hover {
+    &.el-button--switch-tokens.loading {
+      border-color: transparent;
+      box-shadow: var(--s-shadow-element-pressed);
+    }
+  }
 }
 
 .page-header--swap {

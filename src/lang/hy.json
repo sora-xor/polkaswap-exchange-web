@@ -93,7 +93,7 @@
         "confirmTitle": "Հաստատել գործարքը",
         "confirm": "@: confirmText",
         "errorAddress": "Անվավեր հասցե: Խնդրում ենք ստուգել այն և կրկին փորձել:",
-        "addressDesc": ""
+        "addressDesc": "Ընդունվում են միայն SORA ցանցի հաշվի հասցեները: Խնդրում ենք համոզվել, որ ունեք ճիշտ ձևաչափված SORA ցանցի հաշվի հասցե ՝ սկսած «cn» նախածանցից:"
     },
     "account": {
         "successCopy": "Դրամապանակի հասցեն պատճենվում է սեղմատախտակին",
@@ -183,7 +183,7 @@
         },
         "extensibleSupply": {
             "placeholder": "Ընդարձակվող մատակարարում",
-            "desc": ""
+            "desc": "Ավելի շատ նշաններ հատելու ունակություն:"
         }
     },
     "transaction": {
@@ -262,7 +262,7 @@
         "Stats": "Վիճակագրություն",
         "Support": "Աջակցություն",
         "CreatePair": "Ստեղծել զույգ",
-        "Tokens": ""
+        "Tokens": "Տոկեններ"
     },
     "social": {
         "twitter": "Twitter (Թվիթթեր)",
@@ -429,8 +429,9 @@
         "insufficientAmount": "{tokenSymbol} անբավարար գումար",
         "insufficientLiquidity": "Անբավարար իրացվելիություն",
         "confirmSwap": "Հաստատեք փոխանակումը",
-        "swapOutputMessage": "Արդյունքը գնահատվում է: Դուք կստանաք <span class=\"min-received-label\"> առնվազն <\/span> {transactionValue} կամ գործարքը կվերականգնվի:",
-        "rewardsForSwap": "PSWAP ստրատեգիական պարգևատրումներ"
+        "swapOutputMessage": "Արդյունքը գնահատվում է: Դուք կստանաք առնվազն {transactionValue} կամ գործարքը կվերականգնվի:",
+        "rewardsForSwap": "PSWAP ստրատեգիական պարգևատրումներ",
+        "swapInputMessage": "Արդյունքը գնահատվում է: Դուք կստանաք առնվազն {transactionValue} կամ գործարքը կվերականգնվի:"
     },
     "pool": {
         "connectWallet": "@: connectWalletText",
@@ -543,8 +544,8 @@
         "changeNetwork": "@: changeNetworkText",
         "connectWallet": "@: connectWalletText",
         "viewInSorascan": "Դիտել SORAScan- ում",
-        "changeAccount": "",
-        "expectedAddress": ""
+        "changeAccount": "@: changeAccountText in @: metamask",
+        "expectedAddress": "Սպասվող հասցե @հասցեում ՝ @:metamask"
     },
     "months": {
         "0": "Հունվար",
@@ -629,7 +630,7 @@
         "description": "Պահուստի տոկենների վերացումը ձեր դիրքը վերափոխում է հիմքում ընկած տոկենների ներկայիս արագությամբ ՝ համամասնորեն պահուստի ձեր մասնաբաժնի: Հաշվարկված վճարները ներառված են ձեր ստացած գումարների մեջ:",
         "outputMessage": "Արդյունքը գնահատվում է: Եթե գինը փոխվի ավելի քան {slippageTolerance} %, ձեր գործարքը կվերականգնվի:",
         "confirmTitle": "Դուք կստանաք",
-        "shareOfPool": ""
+        "shareOfPool": "Գործարքից հետո լողավազանի մասնաբաժինը"
     },
     "dexSettings": {
         "title": "Գործարքի պարամետրերը",
@@ -707,16 +708,16 @@
             "LiquidityProvision": "Հեղուկի մատակարարումից ստացված վճարներ",
             "BuyOnBondingCurve": "TBC-ից գնելու դեպքում  ստրատեգիական պարգևատրումներ",
             "NftAirdrop": "NFT Airdrop",
-            "MarketMakerVolume": "",
-            "LiquidityProvisionFarming": ""
+            "MarketMakerVolume": "Շուկա ստեղծող",
+            "LiquidityProvisionFarming": "Ֆարմինգ"
         },
         "vested": "երաշխավորված",
-        "forText": "",
-        "totalVested": "",
-        "claimableAmountDoneVesting": "",
+        "forText": "համար",
+        "totalVested": "երաշխավորված",
+        "claimableAmountDoneVesting": "Պահանջվող գումարը (կատարված ապահովումը)",
         "groups": {
-            "strategic": "",
-            "external": ""
+            "strategic": "PSWAP ստրատեգիական պարգևատրումներ",
+            "external": "Պարգևատրումներ կապված ethereum հաշվի համար"
         }
     },
     "provider": {
@@ -725,20 +726,21 @@
         "messages": {
             "checkExtension": "{name} Հավելվածը զբաղված է, խնդրում ենք ստուգել այն",
             "extensionLogin": "Խնդրում ենք մուտք գործելՁեր {name} հավելված",
-            "installExtension": "{name} Հավելվածը չի գտնվել: Խնդրում ենք տեղադրել այն:"
+            "installExtension": "{name} Հավելվածը չի գտնվել: Խնդրում ենք տեղադրել այն:",
+            "reloadPage": "Վերաբեռնել էջը"
         }
     },
     "selectLanguageDialog": {
-        "title": ""
+        "title": "Լեզու"
     },
     "tokens": {
-        "title": "",
-        "symbol": "",
-        "name": "",
-        "assetId": ""
+        "title": "Թվարկված Տոկեններ",
+        "symbol": "Խորհրդանիշ",
+        "name": "Անուն",
+        "assetId": "Ակտիվի ID"
     },
-    "memorandum": "",
-    "memorandumLink": "",
-    "privacyLink": "",
-    "FAQ": ""
+    "memorandum": "Polkaswap- ի հուշագիր և ծառայությունների մատուցման պայմաններ",
+    "memorandumLink": "@:memorandum",
+    "privacyLink": "@:helpDialog.privacyPolicy",
+    "FAQ": "Polkaswap ՀՏՀ"
 }

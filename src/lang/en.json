@@ -429,8 +429,9 @@
         "insufficientAmount": "Insufficient {tokenSymbol} amount",
         "insufficientLiquidity": "Insufficient liquidity",
         "confirmSwap": "Confirm swap",
-        "swapOutputMessage": "Output is estimated. You will receive <span class=\"min-received-label\">at least<\/span> {transactionValue} or the transaction will revert.",
-        "rewardsForSwap": "PSWAP Strategic Rewards"
+        "swapOutputMessage": "Output is estimated. You will receive at least {transactionValue} or the transaction will revert.",
+        "rewardsForSwap": "PSWAP Strategic Rewards",
+        "swapInputMessage": "Input is estimated. You will sell maximum {transactionValue} or the transaction will revert."
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -707,13 +708,13 @@
             "LiquidityProvision": "Fees gained from liquidity provision",
             "BuyOnBondingCurve": "buying from the TBC",
             "NftAirdrop": "NFT Airdrop",
-            "MarketMakerVolume": "Market Maker",
+            "MarketMakerVolume": "Market Making",
             "LiquidityProvisionFarming": "Farming"
         },
         "vested": "vested",
         "forText": "for",
-        "totalVested": "Total vested",
-        "claimableAmountDoneVesting": "Claimable amount (done vesting)",
+        "totalVested": "Total rewards",
+        "claimableAmountDoneVesting": "Claimable rewards",
         "groups": {
             "strategic": "Strategic Rewards",
             "external": "Rewards for the connected ethereum account"
