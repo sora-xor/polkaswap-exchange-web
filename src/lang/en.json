@@ -713,8 +713,8 @@
         },
         "vested": "vested",
         "forText": "for",
-        "totalVested": "Total vested",
-        "claimableAmountDoneVesting": "Claimable amount (done vesting)",
+        "totalVested": "Total rewards",
+        "claimableAmountDoneVesting": "Claimable rewards",
         "groups": {
             "strategic": "Strategic Rewards",
             "external": "Rewards for the connected ethereum account"

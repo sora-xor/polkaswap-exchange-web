@@ -497,8 +497,8 @@ export default {
     networkFeeTooltip: '@:networkFeeTooltipText',
     andText: 'and',
     forText: 'for',
-    totalVested: 'Total vested',
-    claimableAmountDoneVesting: 'Claimable amount (done vesting)',
+    totalVested: 'Total rewards',
+    claimableAmountDoneVesting: 'Claimable rewards',
     claiming: {
       pending: 'Claiming...',
       success: 'Claimed successfully'
