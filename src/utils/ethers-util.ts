@@ -228,7 +228,8 @@ async function getEthersInstance (): Promise<ethersProvider> {
     throw new Error('No ethereum provider instance!')
   }
   if (!ethersInstance) {
-    ethersInstance = new ethers.providers.Web3Provider(provider)
+    // 'any' - because ethers throws errors after network switch
+    ethersInstance = new ethers.providers.Web3Provider(provider, 'any')
   }
   return ethersInstance
 }
