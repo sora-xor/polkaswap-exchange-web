@@ -387,6 +387,7 @@
   display: block !important;
   font-size: 0 !important;
   word-break: break-all;
+  white-space: initial;
 
   .formatted-amount {
     &__integer {

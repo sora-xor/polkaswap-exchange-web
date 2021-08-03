@@ -10,19 +10,25 @@
               <div v-for="(item, index) in formatted.limit" class="amount-table-item__amount" :key="index">
                 <formatted-amount
                   class="amount-table-value"
-                  :value="item.amount"
+                  :value="isCodecString ? getFPNumberFromCodec(item.amount, item.asset.decimals).toLocaleString() : item.amount"
                   :font-size-rate="FontSizeRate.MEDIUM"
-                  :asset-symbol="item.symbol"
+                  :asset-symbol="item.asset.symbol"
                 >
                   <s-tooltip v-if="formatted.total && index === 0" popper-class="amount-table-tooltip" placement="right" border-radius="mini">
                     <div slot="content" class="amount-table-tooltip-content">
                       <div>{{ t('rewards.totalVested') }}:</div>
-                      <formatted-amount class="amount-table-value" :value="formatted.total.amount" :font-size-rate="FontSizeRate.MEDIUM" :asset-symbol="formatted.total.symbol" symbol-as-decimal />
+                      <formatted-amount
+                        class="amount-table-value"
+                        :value="formatted.total.amount"
+                        :font-size-rate="FontSizeRate.MEDIUM"
+                        :asset-symbol="formatted.total.asset.symbol"
+                        symbol-as-decimal
+                      />
                     </div>
                     <s-icon name="info-16" size="14px" class="amount-table-value-icon" />
                   </s-tooltip>
                 </formatted-amount>
-                <formatted-amount :value="getFiatAmountByString(item.amount, item.asset)" is-fiat-value with-left-shift :font-size-rate="FontSizeRate.MEDIUM" />
+                <formatted-amount :value="getFiatAmountByCodecString(item.amount, item.asset)" is-fiat-value with-left-shift :font-size-rate="FontSizeRate.MEDIUM" />
               </div>
             </div>
             <div v-if="formatted.rewards.length !== 0" class="amount-table-item-content__body">
@@ -36,8 +42,8 @@
                   </div>
                   <template v-if="!simpleGroup">
                     <div v-for="(item, index) in item.limit" :key="index" class="amount-table-subitem__row">
-                      <formatted-amount class="amount-table-value" :value="item.amount" :asset-symbol="item.symbol" :font-size-rate="FontSizeRate.MEDIUM" />
-                      <formatted-amount :value="getFiatAmountByString(item.amount, item.asset)" is-fiat-value with-left-shift :font-size-rate="FontSizeRate.MEDIUM" />
+                      <formatted-amount class="amount-table-value" :value="formatCodecNumber(item.amount)" :asset-symbol="item.asset.symbol" :font-size-rate="FontSizeRate.MEDIUM" />
+                      <formatted-amount :value="getFiatAmountByCodecString(item.amount, item.asset)" is-fiat-value with-left-shift :font-size-rate="FontSizeRate.MEDIUM" />
                     </div>
                   </template>
                 </div>
@@ -71,6 +77,7 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
   @Prop({ default: true, type: Boolean }) showTable!: boolean
   @Prop({ default: false, type: Boolean }) simpleGroup!: boolean
   @Prop({ default: false, type: Boolean }) value!: boolean
+  @Prop({ default: false, type: Boolean }) isCodecString!: boolean
 
   get innerModel (): any {
     return this.value
@@ -85,10 +92,9 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
   }
 
   formatItem (item: RewardInfoGroup | RewardInfo): RewardsAmountTableItem {
-    const toLimit = (amount, asset, symbol) => ({
-      amount: this.formatCodecNumber(amount),
-      asset: asset,
-      symbol
+    const toLimit = (amount, asset) => ({
+      amount: amount,
+      asset: asset
     })
 
     const key = `rewards.events.${item.type}`
@@ -98,7 +104,7 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
     const rewards = ('rewards' in item) && Array.isArray(item.rewards) ? item.rewards.map(this.formatItem) : []
     const limit = ('rewards' in item) && Array.isArray(item.rewards)
       ? (item as RewardInfoGroup).limit
-      : [toLimit((item as RewardInfo).amount, (item as RewardInfo).asset, (item as RewardInfo).asset.symbol)]
+      : [toLimit((item as RewardInfo).amount, (item as RewardInfo).asset)]
 
     return {
       type: item.type,

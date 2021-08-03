@@ -34,7 +34,7 @@ export default class TransactionMixin extends Mixins(NumberFormatterMixin, Trans
     }
     if (value.type === Operation.ClaimRewards) {
       params.rewards = groupRewardsByAssetsList(params.rewards)
-        .map(({ amount, symbol }) => `${amount} ${symbol}`)
+        .map(({ amount, asset }) => `${amount} ${asset.symbol}`)
         .join(` ${this.t('rewards.andText')} `)
     }
     return this.t(`operations.${value.status}.${value.type}`, params)

@@ -16,6 +16,7 @@
                 v-if="internalRewards.length"
                 v-model="selectedInternalRewardsModel"
                 :item="internalRewards[0]"
+                is-codec-string
               />
               <rewards-amount-table
                 class="rewards-table"
@@ -180,12 +181,10 @@ export default class Rewards extends Mixins(FormattedAmountMixin, WalletConnectM
       type: this.t('rewards.groups.strategic'),
       title: this.t('rewards.claimableAmountDoneVesting'),
       limit: [{
-        symbol: pswap.symbol as KnownSymbols,
         amount: FPNumber.fromCodecValue(this.vestedRewards?.limit ?? 0, pswap.decimals).toLocaleString(),
         asset: pswap
       }],
       total: {
-        symbol: pswap.symbol as KnownSymbols,
         amount: FPNumber.fromCodecValue(this.vestedRewards?.total ?? 0, pswap.decimals).toLocaleString(),
         asset: pswap
       },
@@ -253,7 +252,7 @@ export default class Rewards extends Mixins(FormattedAmountMixin, WalletConnectM
   }
 
   get rewardTokenSymbols (): Array<KnownSymbols> {
-    return this.rewardsByAssetsList.map(item => item.symbol)
+    return this.rewardsByAssetsList.map(item => item.asset.symbol as KnownSymbols)
   }
 
   get gradientSymbol (): string {

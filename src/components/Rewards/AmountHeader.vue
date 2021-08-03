@@ -1,12 +1,12 @@
 <template>
   <div class="amount-header">
-    <template v-for="{ asset, amount, symbol } in items">
-      <div :key="symbol" class="amount-block">
+    <template v-for="{ asset, amount } in items">
+      <div :key="asset.symbol" class="amount-block">
         <formatted-amount
           class="amount-block__amount"
           :value="formatStringValue(amount, asset.decimal)"
           :font-size-rate="FontSizeRate.MEDIUM"
-          :asset-symbol="symbol"
+          :asset-symbol="asset.symbol"
           symbol-as-decimal
         />
         <formatted-amount
