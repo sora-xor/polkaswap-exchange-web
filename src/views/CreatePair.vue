@@ -33,7 +33,7 @@
           <token-select-button class="el-button--select-token" :token="firstToken" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <formatted-amount v-if="firstToken && firstTokenPrice" :value="getFiatAmountByString(firstTokenValue, firstToken)" is-fiat-value />
+          <formatted-amount v-if="firstToken && firstTokenPrice" :value="fiatFirstAmount" is-fiat-value />
           <token-address v-if="firstToken" :name="firstToken.name" :symbol="firstToken.symbol" :address="firstToken.address" class="input-value" />
         </div>
       </s-float-input>
@@ -66,7 +66,7 @@
           <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="secondToken" @click="openSelectSecondTokenDialog" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <formatted-amount v-if="secondToken && secondTokenPrice" :value="getFiatAmountByString(secondTokenValue, secondToken)" is-fiat-value />
+          <formatted-amount v-if="secondToken && secondTokenPrice" :value="fiatSecondAmount" is-fiat-value />
           <token-address v-if="secondToken" :name="secondToken.name" :symbol="secondToken.symbol" :address="secondToken.address" class="input-value" />
         </div>
       </s-float-input>
@@ -102,8 +102,8 @@
       <template v-else>
         <div class="info-line-container">
           <p class="info-line-container__title">{{ t('createPair.pricePool') }}</p>
-          <info-line :label="t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="formatStringValue(price)" />
-          <info-line :label="t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formatStringValue(priceReversed)" />
+          <info-line :label="t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="formattedPrice" />
+          <info-line :label="t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formattedPriceReversed" />
           <info-line
             :label="t('createPair.networkFee')"
             :value="formattedFee"
@@ -119,13 +119,13 @@
           <info-line
             :label="firstToken.symbol"
             :value="formattedFirstTokenValue"
-            :fiat-value="getFiatAmount(formattedFirstTokenValue, firstToken)"
+            :fiat-value="fiatFirstAmount"
             is-formatted
           />
           <info-line
             :label="secondToken.symbol"
             :value="formattedSecondTokenValue"
-            :fiat-value="getFiatAmount(formattedFirstTokenValue, secondToken)"
+            :fiat-value="fiatSecondAmount"
             is-formatted
           />
           <info-line :label="t('createPair.shareOfPool')" value="100%" />
@@ -154,8 +154,8 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
-import { FPNumber, KnownAssets, KnownSymbols, CodecString } from '@sora-substrate/util'
-import { FormattedAmountMixin, FormattedAmount } from '@soramitsu/soraneo-wallet-web'
+import { FPNumber, KnownAssets, KnownSymbols } from '@sora-substrate/util'
+import { FormattedAmount } from '@soramitsu/soraneo-wallet-web'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
 
@@ -180,18 +180,10 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
   }
 })
 
-export default class CreatePair extends Mixins(FormattedAmountMixin, TokenPairMixin) {
+export default class CreatePair extends Mixins(TokenPairMixin) {
   @Action('createPair', { namespace }) createPair
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
-
-  get firstTokenPrice (): Nullable<CodecString> {
-    return this.getAssetFiatPrice(this.firstToken)
-  }
-
-  get secondTokenPrice (): Nullable<CodecString> {
-    return this.getAssetFiatPrice(this.secondToken)
-  }
 
   get formattedFirstTokenValue (): string {
     return this.formatStringValue(this.firstTokenValue.toString())

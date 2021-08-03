@@ -34,7 +34,7 @@
           <token-select-button class="el-button--select-token" :token="firstToken" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <formatted-amount v-if="firstToken && firstTokenPrice" :value="getFiatAmountByString(firstTokenValue, firstToken)" is-fiat-value />
+          <formatted-amount v-if="firstToken && firstTokenPrice" :value="fiatFirstAmount" is-fiat-value />
           <token-address v-if="firstToken" :name="firstToken.name" :symbol="firstToken.symbol" :address="firstToken.address" class="input-value" />
         </div>
       </s-float-input>
@@ -68,7 +68,7 @@
           <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="secondToken" @click="openSelectSecondTokenDialog" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <formatted-amount v-if="secondToken && secondTokenPrice" :value="getFiatAmountByString(secondTokenValue, secondToken)" is-fiat-value />
+          <formatted-amount v-if="secondToken && secondTokenPrice" :value="fiatSecondAmount" is-fiat-value />
           <token-address v-if="secondToken" :name="secondToken.name" :symbol="secondToken.symbol" :address="secondToken.address" class="input-value" />
         </div>
       </s-float-input>
@@ -103,8 +103,8 @@
 
     <div v-if="areTokensSelected && isAvailable && !emptyAssets" class="info-line-container">
       <p class="info-line-container__title">{{ t('createPair.pricePool') }}</p>
-      <info-line :label="t('addLiquidity.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="formatStringValue(price)" />
-      <info-line :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formatStringValue(priceReversed)" />
+      <info-line :label="t('addLiquidity.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="formattedPrice" />
+      <info-line :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formattedPriceReversed" />
       <info-line
        :label="t('createPair.networkFee')"
        :value="formattedFee"
@@ -119,14 +119,14 @@
       <p class="info-line-container__title">{{ t(`createPair.yourPosition${!emptyAssets ? 'Estimated' : ''}`) }}</p>
       <info-line
         :label="firstToken.symbol"
-        :value="firstTokenPosition"
-        :fiat-value="getFiatAmount(firstTokenPosition, firstToken)"
+        :value="formattedFirstTokenPosition"
+        :fiat-value="fiatFirstTokenPosition"
         is-formatted
       />
       <info-line
         :label="secondToken.symbol"
-        :value="secondTokenPosition"
-        :fiat-value="getFiatAmount(secondTokenPosition, secondToken)"
+        :value="formattedSecondTokenPosition"
+        :fiat-value="fiatSecondTokenPosition"
         is-formatted
       />
       <info-line :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
@@ -180,7 +180,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
   }
 })
 
-export default class AddLiquidity extends Mixins(FormattedAmountMixin, TokenPairMixin) {
+export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity
@@ -195,14 +195,6 @@ export default class AddLiquidity extends Mixins(FormattedAmountMixin, TokenPair
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
   accountLiquiditySubscription!: Function
-
-  get firstTokenPrice (): Nullable<CodecString> {
-    return this.getAssetFiatPrice(this.firstToken)
-  }
-
-  get secondTokenPrice (): Nullable<CodecString> {
-    return this.getAssetFiatPrice(this.secondToken)
-  }
 
   async created (): Promise<void> {
     this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
@@ -262,20 +254,36 @@ export default class AddLiquidity extends Mixins(FormattedAmountMixin, TokenPair
     return (first.isNaN() || first.isZero()) || (second.isNaN() || second.isZero())
   }
 
-  get firstTokenPosition (): string {
+  get firstTokenPosition (): FPNumber {
     return this.getTokenPosition(this.liquidityInfo?.firstBalance, this.firstTokenValue)
   }
 
-  get secondTokenPosition (): string {
+  get secondTokenPosition (): FPNumber {
     return this.getTokenPosition(this.liquidityInfo?.secondBalance, this.secondTokenValue)
   }
 
-  getTokenPosition (liquidityInfoBalance: string | undefined, tokenValue: string | CodecString | number): string {
+  get formattedFirstTokenPosition (): string {
+    return this.firstTokenPosition.toLocaleString()
+  }
+
+  get formattedSecondTokenPosition (): string {
+    return this.secondTokenPosition.toLocaleString()
+  }
+
+  get fiatFirstTokenPosition (): Nullable<string> {
+    return this.getFiatAmountByFPNumber(this.firstTokenPosition, this.firstToken)
+  }
+
+  get fiatSecondTokenPosition (): Nullable<string> {
+    return this.getFiatAmountByFPNumber(this.secondTokenPosition, this.secondToken)
+  }
+
+  getTokenPosition (liquidityInfoBalance: string | undefined, tokenValue: string | CodecString | number): FPNumber {
     const prevPosition = FPNumber.fromCodecValue(liquidityInfoBalance ?? 0)
     if (!this.emptyAssets) {
-      return prevPosition.add(new FPNumber(tokenValue)).toLocaleString()
+      return prevPosition.add(new FPNumber(tokenValue))
     }
-    return prevPosition.toLocaleString()
+    return prevPosition
   }
 
   updatePrices (): void {
