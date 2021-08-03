@@ -263,8 +263,9 @@ export default {
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
     insufficientLiquidity: 'Insufficient liquidity',
     confirmSwap: 'Confirm swap',
-    swapOutputMessage: 'Output is estimated. You will receive <span class="min-received-label">at least</span> {transactionValue} or the transaction will revert.',
-    rewardsForSwap: 'PSWAP Strategic Rewards'
+    swapOutputMessage: 'Output is estimated. You will receive at least {transactionValue} or the transaction will revert.',
+    rewardsForSwap: 'PSWAP Strategic Rewards',
+    swapInputMessage: 'Input is estimated. You will sell maximum {transactionValue} or the transaction will revert.'
   },
   pool: {
     connectWallet: '@:connectWalletText',
@@ -496,8 +497,8 @@ export default {
     networkFeeTooltip: '@:networkFeeTooltipText',
     andText: 'and',
     forText: 'for',
-    totalVested: 'Total vested',
-    claimableAmountDoneVesting: 'Claimable amount (done vesting)',
+    totalVested: 'Total rewards',
+    claimableAmountDoneVesting: 'Claimable rewards',
     claiming: {
       pending: 'Claiming...',
       success: 'Claimed successfully'
@@ -536,7 +537,7 @@ export default {
       [RewardingEvents.NftAirdrop]: 'NFT Airdrop',
       [RewardingEvents.LiquidityProvision]: 'Fees gained from liquidity provision',
       [RewardingEvents.BuyOnBondingCurve]: 'buying from the TBC',
-      [RewardingEvents.MarketMakerVolume]: 'Market Maker',
+      [RewardingEvents.MarketMakerVolume]: 'Market Making',
       [RewardingEvents.LiquidityProvisionFarming]: 'Farming'
     },
     groups: {
