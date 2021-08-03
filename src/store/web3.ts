@@ -408,6 +408,7 @@ const actions = {
       commit(types.GET_EVM_TOKEN_ADDRESS_SUCCESS)
       return externalAddress
     } catch (error) {
+      console.error(error)
       commit(types.GET_EVM_TOKEN_ADDRESS_FAILURE)
       return ''
     }
