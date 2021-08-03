@@ -134,7 +134,6 @@ const CreateTokenPairMixin = (namespace: string) => {
     }
 
     updatePrices (): void {
-      console.log(typeof this.firstTokenValue)
       this.getPrices({
         assetAAddress: this.firstToken.address,
         assetBAddress: this.secondToken.address,
