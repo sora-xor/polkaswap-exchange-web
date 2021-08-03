@@ -13,6 +13,7 @@
     </s-tooltip>
     <span v-if="!value && altValue" class="info-line-value">{{ altValue }}</span>
     <div v-else class="info-line-content">
+      <span v-if="valuePrefix" class="info-line-value-prefix">{{ valuePrefix }}</span>
       <formatted-amount
         v-if="isFormatted"
         class="info-line-value"
@@ -51,6 +52,7 @@ export default class InfoLine extends Vue {
   @Prop({ default: '', type: String }) readonly assetSymbol?: string
   @Prop({ default: '', type: String }) readonly fiatValue?: string
   @Prop({ default: '', type: String }) readonly altValue?: string
+  @Prop({ default: '', type: String }) readonly valuePrefix?: string
 
   get tooltipClasses (): string {
     const iconClass = 'info-line-icon'
@@ -135,6 +137,12 @@ export default class InfoLine extends Vue {
     margin-left: auto;
     text-align: right;
     font-weight: 600;
+    &-prefix {
+      margin-left: auto;
+      + .info-line-value {
+        margin-left: 0;
+      }
+    }
   }
   .asset-symbol {
     word-break: keep-all;

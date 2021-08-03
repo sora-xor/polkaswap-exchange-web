@@ -67,6 +67,7 @@
               :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : currentEvmTokenSymbol"
               :fiat-value="soraFeeFiatValue"
               is-formatted
+              :value-prefix="!isSoraToEvm && formattedEvmNetworkFee ? '~' : null"
               alt-value="-"
             />
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
@@ -134,8 +135,9 @@
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
               :value="!isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
               :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : currentEvmTokenSymbol"
-              :fiat-value="!isSoraToEvm ? (historyItem.soraNetworkFee ? getFiatAmountByString(historyItem.soraNetworkFee, asset) : getFiatAmountByCodecString(soraNetworkFee)) : null"
+              :fiat-value="soraNetworkFeeFiatValue"
               is-formatted
+              :value-prefix="isSoraToEvm && formattedEvmNetworkFee ? '~' : null"
               alt-value="-"
             />
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
@@ -276,8 +278,8 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get soraFeeFiatValue (): Nullable<string> {
-    if (this.isSoraToEvm && this.asset) {
-      return this.getFiatAmountByString(this.historyItem.soraNetworkFee || this.soraNetworkFee, this.asset)
+    if (this.isSoraToEvm) {
+      return this.getFiatAmountByCodecString(this.historyItem?.soraNetworkFee || this.soraNetworkFee)
     }
     return null
   }
@@ -442,23 +444,18 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get formattedSoraNetworkFee (): string {
-    if (this.historyItem?.soraNetworkFee) {
-      return this.formatStringValue(this.historyItem.soraNetworkFee)
+    return this.getStringFromCodec(this.historyItem?.soraNetworkFee || this.soraNetworkFee, this.tokenXOR?.decimals)
+  }
+
+  get soraNetworkFeeFiatValue (): Nullable<string> {
+    if (this.isSoraToEvm) {
+      return null
     }
-    return this.getFPNumberFromCodec(this.soraNetworkFee).toLocaleString()
-  }
-
-  formatCodecNumber (value: CodecString, decimals?: number): string {
-    return this.getFPNumberFromCodec(value, decimals).toLocaleString()
-  }
-
-  formatStringValue (value: string, decimals?: number): string {
-    return this.getFPNumber(value, decimals).toLocaleString()
+    return this.getFiatAmountByCodecString(this.historyItem?.soraNetworkFee || this.soraNetworkFee)
   }
 
   get formattedEvmNetworkFee (): string {
-    const fee = this.formatCodecNumber(this.historyItem?.ethereumNetworkFee ?? this.evmNetworkFee)
-    return fee ? `~${fee}` : fee
+    return this.getFPNumberFromCodec(this.historyItem?.ethereumNetworkFee ?? this.evmNetworkFee).toLocaleString()
   }
 
   get isInsufficientBalance (): boolean {
