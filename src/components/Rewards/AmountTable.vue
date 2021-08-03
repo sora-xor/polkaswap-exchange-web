@@ -9,16 +9,14 @@
             <div class="amount-table-item-content__header">
               <div v-for="(item, index) in formatted.limit" class="amount-table-item__amount" :key="index">
                 <formatted-amount class="amount-table-value" :value="item.amount" :asset-symbol="item.symbol" />
-                <!-- TODO: Get asset to calculate fiat value for all similar places -->
-                <!-- <formatted-amount :value="getFiatAmountByString(item.amount, asset)" is-fiat-value with-left-shift /> -->
                 <s-tooltip v-if="formatted.total && index === 0" popper-class="amount-table-tooltip" placement="right" border-radius="mini">
                   <div slot="content" class="amount-table-tooltip-content">
                     <div>{{ t('rewards.totalVested') }}:</div>
                     <formatted-amount class="amount-table-value" :value="formatted.total.amount" :asset-symbol="formatted.total.symbol" />
-                    <!-- <formatted-amount :value="getFiatAmountByString(formatted.total.amount, asset)" is-fiat-value with-left-shift /> -->
                   </div>
                   <s-icon name="info-16" size="14px" class="amount-table-value-icon" />
                 </s-tooltip>
+                <formatted-amount :value="getFiatAmountByString(item.amount, item.asset)" is-fiat-value with-left-shift />
               </div>
             </div>
             <div v-if="formatted.rewards.length !== 0" class="amount-table-item-content__body">
@@ -31,9 +29,9 @@
                     {{ item.title }}
                   </div>
                   <template v-if="!simpleGroup">
-                    <div v-for="(item, index) in item.limit" :key="index">
+                    <div v-for="(item, index) in item.limit" :key="index" class="amount-table-subitem__row">
                       <formatted-amount class="amount-table-value" :value="item.amount" :asset-symbol="item.symbol" />
-                      <!-- <formatted-amount :value="getFiatAmountByString(item.amount, asset)" is-fiat-value with-left-shift /> -->
+                      <formatted-amount :value="getFiatAmountByString(item.amount, item.asset)" is-fiat-value with-left-shift />
                     </div>
                   </template>
                 </div>
@@ -79,8 +77,9 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
   }
 
   formatItem (item: RewardInfoGroup | RewardInfo): RewardsAmountTableItem {
-    const toLimit = (amount, symbol) => ({
+    const toLimit = (amount, asset, symbol) => ({
       amount: this.formatCodecNumber(amount),
+      asset: asset,
       symbol
     })
 
@@ -91,7 +90,7 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
     const rewards = ('rewards' in item) && Array.isArray(item.rewards) ? item.rewards.map(this.formatItem) : []
     const limit = ('rewards' in item) && Array.isArray(item.rewards)
       ? (item as RewardInfoGroup).limit
-      : [toLimit((item as RewardInfo).amount, (item as RewardInfo).asset.symbol)]
+      : [toLimit((item as RewardInfo).amount, (item as RewardInfo).asset, (item as RewardInfo).asset.symbol)]
 
     return {
       type: item.type,
@@ -150,6 +149,12 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
   border-radius: var(--s-border-radius-mini);
   padding: $inner-spacing-medium;
 
+  &.rewards-table {
+    .formatted-amount--fiat-value {
+      font-weight: 600;
+    }
+  }
+
   &-value {
     font-size: var(--s-font-size-medium);
     font-weight: 600;
@@ -202,7 +207,7 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
 
     &__amount {
       display: flex;
-      align-items: center;
+      align-items: baseline;
       line-height: 20px;
     }
   }
@@ -214,6 +219,12 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
 
     &__title {
       line-height: var(--s-line-height-reset);
+    }
+
+    &__row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
     }
   }
 

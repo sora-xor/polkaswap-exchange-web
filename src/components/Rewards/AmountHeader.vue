@@ -49,7 +49,7 @@ $divider-height: 20px;
 .amount {
   &-header {
     display: flex;
-    flex-flow: row nowrap;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
 
@@ -67,6 +67,10 @@ $divider-height: 20px;
         opacity: 0.5;
         transform: rotate(15deg)
       }
+    }
+    .formatted-amount {
+      flex-wrap: wrap;
+      justify-content: center;
     }
   }
 

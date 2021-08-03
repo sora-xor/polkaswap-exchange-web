@@ -181,11 +181,13 @@ export default class Rewards extends Mixins(FormattedAmountMixin, WalletConnectM
       title: this.t('rewards.claimableAmountDoneVesting'),
       limit: [{
         symbol: pswap.symbol as KnownSymbols,
-        amount: FPNumber.fromCodecValue(this.vestedRewards?.limit ?? 0, pswap.decimals).toLocaleString()
+        amount: FPNumber.fromCodecValue(this.vestedRewards?.limit ?? 0, pswap.decimals).toLocaleString(),
+        asset: pswap
       }],
       total: {
         symbol: pswap.symbol as KnownSymbols,
-        amount: FPNumber.fromCodecValue(this.vestedRewards?.total ?? 0, pswap.decimals).toLocaleString()
+        amount: FPNumber.fromCodecValue(this.vestedRewards?.total ?? 0, pswap.decimals).toLocaleString(),
+        asset: pswap
       },
       rewards
     }
