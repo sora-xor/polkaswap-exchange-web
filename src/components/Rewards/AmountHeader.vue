@@ -61,6 +61,7 @@ $amount-line-height: 20px;
     justify-content: center;
     line-height: $amount-line-height;
     text-align: center;
+    font-size: var(--s-font-size-large);
 
     &:first-child:not(:last-child) {
       text-align: right;
@@ -76,12 +77,8 @@ $amount-line-height: 20px;
       letter-spacing: var(--s-letter-spacing-small);
     }
 
-    &__amount {
-      font-size: var(--s-font-size-large);
-    }
-
     .formatted-amount--fiat-value {
-      font-size: calc(var(--s-font-size-large) * 0.875);
+      font-size: 0.875em;
     }
   }
 }

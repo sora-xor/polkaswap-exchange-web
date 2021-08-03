@@ -8,15 +8,21 @@
           <div class="amount-table-item-content">
             <div class="amount-table-item-content__header">
               <div v-for="(item, index) in formatted.limit" class="amount-table-item__amount" :key="index">
-                <formatted-amount class="amount-table-value" :value="item.amount" :asset-symbol="item.symbol" />
-                <s-tooltip v-if="formatted.total && index === 0" popper-class="amount-table-tooltip" placement="right" border-radius="mini">
-                  <div slot="content" class="amount-table-tooltip-content">
-                    <div>{{ t('rewards.totalVested') }}:</div>
-                    <formatted-amount class="amount-table-value" :value="formatted.total.amount" :asset-symbol="formatted.total.symbol" />
-                  </div>
-                  <s-icon name="info-16" size="14px" class="amount-table-value-icon" />
-                </s-tooltip>
-                <formatted-amount :value="getFiatAmountByString(item.amount, item.asset)" is-fiat-value with-left-shift />
+                <formatted-amount
+                  class="amount-table-value"
+                  :value="item.amount"
+                  :font-size-rate="FontSizeRate.MEDIUM"
+                  :asset-symbol="item.symbol"
+                >
+                  <s-tooltip v-if="formatted.total && index === 0" popper-class="amount-table-tooltip" placement="right" border-radius="mini">
+                    <div slot="content" class="amount-table-tooltip-content">
+                      <div>{{ t('rewards.totalVested') }}:</div>
+                      <formatted-amount class="amount-table-value" :value="formatted.total.amount" :font-size-rate="FontSizeRate.MEDIUM" :asset-symbol="formatted.total.symbol" symbol-as-decimal />
+                    </div>
+                    <s-icon name="info-16" size="14px" class="amount-table-value-icon" />
+                  </s-tooltip>
+                </formatted-amount>
+                <formatted-amount :value="getFiatAmountByString(item.amount, item.asset)" is-fiat-value with-left-shift :font-size-rate="FontSizeRate.MEDIUM" />
               </div>
             </div>
             <div v-if="formatted.rewards.length !== 0" class="amount-table-item-content__body">
@@ -30,8 +36,8 @@
                   </div>
                   <template v-if="!simpleGroup">
                     <div v-for="(item, index) in item.limit" :key="index" class="amount-table-subitem__row">
-                      <formatted-amount class="amount-table-value" :value="item.amount" :asset-symbol="item.symbol" />
-                      <formatted-amount :value="getFiatAmountByString(item.amount, item.asset)" is-fiat-value with-left-shift />
+                      <formatted-amount class="amount-table-value" :value="item.amount" :asset-symbol="item.symbol" :font-size-rate="FontSizeRate.MEDIUM" />
+                      <formatted-amount :value="getFiatAmountByString(item.amount, item.asset)" is-fiat-value with-left-shift :font-size-rate="FontSizeRate.MEDIUM" />
                     </div>
                   </template>
                 </div>
@@ -48,7 +54,7 @@
 <script lang="ts">
 import { Component, Prop, Mixins } from 'vue-property-decorator'
 import { RewardInfo } from '@sora-substrate/util'
-import { FormattedAmountMixin, FormattedAmount } from '@soramitsu/soraneo-wallet-web'
+import { FormattedAmountMixin, FormattedAmount, FontSizeRate } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards'
@@ -59,6 +65,8 @@ import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards'
   }
 })
 export default class AmountTable extends Mixins(FormattedAmountMixin, TranslationMixin) {
+  readonly FontSizeRate = FontSizeRate
+
   @Prop({ default: () => {}, type: Object }) item!: RewardInfoGroup | RewardInfo
   @Prop({ default: true, type: Boolean }) showTable!: boolean
   @Prop({ default: false, type: Boolean }) simpleGroup!: boolean
@@ -144,24 +152,25 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
 </style>
 
 <style lang="scss" scoped>
+$amount-value-font-size: var(--s-font-size-medium);
+
 .amount-table {
   background: rgba(0, 0, 0, 0.2);
   border-radius: var(--s-border-radius-mini);
   padding: $inner-spacing-medium;
 
   &.rewards-table {
+    .formatted-amount {
+      flex-wrap: wrap;
+      font-size: $amount-value-font-size;
+    }
     .formatted-amount--fiat-value {
       font-weight: 600;
     }
   }
 
   &-value {
-    font-size: var(--s-font-size-medium);
     font-weight: 600;
-    .formatted-amount--fiat-value {
-      font-size: inherit;
-    }
-
     &-icon {
       margin-left: $inner-spacing-mini / 2;
     }
@@ -208,6 +217,7 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
     &__amount {
       display: flex;
       align-items: baseline;
+      flex-wrap: wrap;
       line-height: 20px;
     }
   }
