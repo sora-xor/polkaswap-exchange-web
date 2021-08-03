@@ -12,13 +12,13 @@
       {{ t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol }) }}
     </s-row>
     <div class="output-description">
-      {{ t('confirmSupply.outputDescription', { slippageTolerance: formatStringValue(slippageTolerance) }) }}
+      {{ t('confirmSupply.outputDescription', { slippageTolerance: formattedSlippageTolerance }) }}
     </div>
     <s-divider />
     <info-line
       :label="`${firstToken.symbol} ${t('createPair.deposit')}`"
       :value="formattedFirstTokenValue"
-      :fiat-value="getFiatAmount(formattedFirstTokenValue, firstToken)"
+      :fiat-value="fiatFirstAmount"
       is-formatted
     >
       <template #info-line-prefix>
@@ -28,7 +28,7 @@
     <info-line
       :label="`${secondToken.symbol} ${t('createPair.deposit')}`"
       :value="formattedSecondTokenValue"
-      :fiat-value="getFiatAmount(formattedSecondTokenValue, secondToken)"
+      :fiat-value="fiatSecondAmount"
       is-formatted
     >
       <template #info-line-prefix>
@@ -37,10 +37,10 @@
     </info-line>
     <info-line
       :label="t('confirmSupply.price')"
-      :value="`1 ${firstToken.symbol} = ${formatStringValue(priceReversed)}`"
+      :value="`1 ${firstToken.symbol} = ${formattedPriceReversed}`"
       :asset-symbol="secondToken.symbol"
     />
-    <info-line :value="`1 ${secondToken.symbol} = ${formatStringValue(price)}`" :asset-symbol="firstToken.symbol" />
+    <info-line :value="`1 ${secondToken.symbol} = ${formattedPrice}`" :asset-symbol="firstToken.symbol" />
     <template #footer>
       <s-button
         type="primary"
@@ -90,6 +90,26 @@ export default class ConfirmTokenPairDialog extends Mixins(FormattedAmountMixin,
 
   get formattedSecondTokenValue (): string {
     return this.formatStringValue(this.secondTokenValue, this.secondToken?.decimals)
+  }
+
+  get fiatFirstAmount (): Nullable<string> {
+    return this.getFiatAmount(this.firstTokenValue, this.firstToken)
+  }
+
+  get fiatSecondAmount (): Nullable<string> {
+    return this.getFiatAmount(this.secondTokenValue, this.secondToken)
+  }
+
+  get formattedPrice (): string {
+    return this.formatStringValue(this.price)
+  }
+
+  get formattedPriceReversed (): string {
+    return this.formatStringValue(this.priceReversed)
+  }
+
+  get formattedSlippageTolerance (): string {
+    return this.formatStringValue(this.slippageTolerance)
   }
 
   handleConfirm (): void {

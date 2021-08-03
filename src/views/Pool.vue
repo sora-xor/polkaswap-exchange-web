@@ -24,7 +24,7 @@
               :font-weight-rate="FontWeightRate.SMALL"
             />
             <formatted-amount
-              :value="getFiatAmount(getFirstBalance(liquidityItem), getAsset(liquidityItem.firstAddress))"
+              :value="getFiatAmountByCodecString(liquidityItem.firstBalance, getAsset(liquidityItem.firstAddress))"
               is-fiat-value
               :font-size-rate="FontSizeRate.MEDIUM"
               with-left-shift
@@ -40,16 +40,11 @@
               :font-weight-rate="FontWeightRate.SMALL"
             />
             <formatted-amount
-              :value="getFiatAmount(getSecondBalance(liquidityItem), getAsset(liquidityItem.secondAddress))"
+              :value="getFiatAmountByCodecString(liquidityItem.secondBalance, getAsset(liquidityItem.secondAddress))"
               is-fiat-value
               :font-size-rate="FontSizeRate.MEDIUM"
               with-left-shift
             />
-          </div>
-          <div class="pool-info">
-            <pair-token-logo :first-token="getAsset(liquidityItem.firstAddress)" :second-token="getAsset(liquidityItem.secondAddress)" size="mini" />
-            <div class="pool-info__label">{{ t('pool.pairTokens', { pair: getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress)) }) }}</div>
-            <div class="pool-info__value">{{ getBalance(liquidityItem) }}</div>
           </div>
           <div class="pool-info pool-info--share">
             <div class="pool-info__label">{{ t('pool.poolShare')}}</div>
