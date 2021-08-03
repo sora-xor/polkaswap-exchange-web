@@ -382,3 +382,18 @@
   font-size: var(--s-font-size-medium);
   font-weight: 600;
 }
+
+@mixin formatted-amount ($fontSize: var(--s-font-size-big), $fontSizeRate: 0.875) {
+  display: block !important;
+  font-size: 0 !important;
+  word-break: break-all;
+
+  .formatted-amount {
+    &__integer {
+      font-size: $fontSize;
+    }
+    &__decimal {
+      font-size: calc(#{$fontSize} * #{$fontSizeRate}) !important;
+    }
+  }
+}

@@ -17,18 +17,20 @@
           <div class="pool-info">
             <token-logo :token="getAsset(liquidityItem.firstAddress)" size="small" />
             <div class="pool-info__label">{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.firstAddress) }) }}</div>
-            <formatted-amount
-              class="pool-info__value"
-              :value="getFirstBalance(liquidityItem)"
-              :font-size-rate="FontSizeRate.MEDIUM"
-              :font-weight-rate="FontWeightRate.SMALL"
-            />
-            <formatted-amount
-              :value="getFiatAmountByCodecString(liquidityItem.firstBalance, getAsset(liquidityItem.firstAddress))"
-              is-fiat-value
-              :font-size-rate="FontSizeRate.MEDIUM"
-              with-left-shift
-            />
+            <div class="pool-info__content">
+              <formatted-amount
+                class="pool-info__value"
+                :value="getFirstBalance(liquidityItem)"
+                :font-size-rate="FontSizeRate.MEDIUM"
+                :font-weight-rate="FontWeightRate.SMALL"
+              />
+              <formatted-amount
+                :value="getFiatAmountByCodecString(liquidityItem.firstBalance, getAsset(liquidityItem.firstAddress))"
+                is-fiat-value
+                :font-size-rate="FontSizeRate.MEDIUM"
+                with-left-shift
+              />
+            </div>
           </div>
           <div class="pool-info">
             <token-logo :token="getAsset(liquidityItem.secondAddress)" size="small" />
@@ -268,6 +270,13 @@ $pair-icon-height: 36px;
     &__label {
       margin-right: var(--s-basic-spacing);
       white-space: nowrap;
+    }
+    &__content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: baseline;
+      flex-grow: 1;
     }
     &__value {
       margin-left: auto;

@@ -309,7 +309,8 @@ export default class SelectToken extends Mixins(FormattedAmountMixin, Translatio
 .asset-select {
   @include exchange-tabs();
 }
-.token-item__amount {
+.token-item__amount.formatted-amount {
+  @include formatted-amount;
   .formatted-amount__decimal {
     font-weight: 600;
   }
@@ -359,17 +360,18 @@ $token-item-height: 71px;
   &__address, &__symbol {
     white-space: nowrap;
   }
-  &__symbol, &__amount {
+  &__symbol {
     font-size: var(--s-font-size-big);
+    white-space: nowrap;
+  }
+  &__symbol, &__amount {
     line-height: var(--s-line-height-small);
     letter-spacing: var(--s-letter-spacing-small);
     font-weight: 800;
-    white-space: nowrap;
   }
-  &__amount {
-    &-container {
-      text-align: right;
-    }
+  &__amount-container {
+    text-align: right;
+    min-width: 40%;
   }
   &__remove {
     margin-top: -5px;

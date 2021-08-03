@@ -277,6 +277,7 @@ export default class SelectRegisteredAsset extends Mixins(FormattedAmountMixin, 
   @include exchange-tabs();
 }
 .asset-item__balance {
+  @include formatted-amount;
   .formatted-amount__decimal {
     font-weight: 600;
   }
@@ -317,7 +318,6 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
     font-size: var(--s-font-size-big);
     letter-spacing: var(--s-letter-spacing-mini);
     font-weight: 800;
-    white-space: nowrap;
   }
   &__balance {
     &-container {

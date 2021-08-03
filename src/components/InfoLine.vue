@@ -12,21 +12,23 @@
       <s-icon name="info-16" size="14px" />
     </s-tooltip>
     <span v-if="!value && altValue" class="info-line-value">{{ altValue }}</span>
-    <formatted-amount
-      v-else-if="isFormatted"
-      class="info-line-value"
-      :value="value"
-      :asset-symbol="assetSymbol"
-      :font-size-rate="formattedFontSize"
-      :font-weight-rate="formattedFontWeight"
-    />
-    <span v-else class="info-line-value">{{ value }}<span v-if="assetSymbol" class="asset-symbol">{{ ' ' + assetSymbol }}</span></span>
-    <formatted-amount
-      :value="fiatValue"
-      is-fiat-value
-      :font-size-rate="formattedFontSize"
-      with-left-shift
-    />
+    <div v-else class="info-line-content">
+      <formatted-amount
+        v-if="isFormatted"
+        class="info-line-value"
+        :value="value"
+        :asset-symbol="assetSymbol"
+        :font-size-rate="formattedFontSize"
+        :font-weight-rate="formattedFontWeight"
+      />
+      <span v-else class="info-line-value">{{ value }}<span v-if="assetSymbol" class="asset-symbol">{{ ' ' + assetSymbol }}</span></span>
+      <formatted-amount
+        :value="fiatValue"
+        is-fiat-value
+        :font-size-rate="formattedFontSize"
+        with-left-shift
+      />
+    </div>
     <slot />
   </div>
 </template>
@@ -122,10 +124,16 @@ export default class InfoLine extends Vue {
     word-break: keep-all;
     text-transform: uppercase;
   }
+  &-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: baseline;
+    flex-grow: 1;
+  }
   &-value {
     margin-left: auto;
     text-align: right;
-    word-break: break-all;
     font-weight: 600;
   }
   .asset-symbol {
