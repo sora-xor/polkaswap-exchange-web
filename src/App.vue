@@ -21,7 +21,7 @@
       </div>
     </header>
     <div class="app-main">
-      <aside class="app-sidebar">
+      <s-scrollbar class="app-sidebar" tag="aside">
         <s-menu
           class="menu"
           mode="vertical"
@@ -89,8 +89,8 @@
             /> -->
           </s-menu-item-group>
         </s-menu>
-      </aside>
-      <div class="app-body">
+      </s-scrollbar>
+      <s-scrollbar class="app-body">
         <div class="app-content">
           <router-view :parent-loading="loading || !nodeIsConnected" />
           <p class="app-disclaimer" :class="isAboutPage ? 'about-disclaimer' : ''" v-html="t('disclaimer')" />
@@ -101,7 +101,7 @@
             <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener" />
           </div>
         </footer>
-      </div>
+      </s-scrollbar>
     </div>
 
     <help-dialog :visible.sync="showHelpDialog" />
