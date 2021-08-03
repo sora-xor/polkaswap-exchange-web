@@ -158,8 +158,8 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
   &-value {
     font-size: var(--s-font-size-medium);
     font-weight: 600;
-    + .formatted-amount--fiat-value {
-      margin-left: auto;
+    .formatted-amount--fiat-value {
+      font-size: inherit;
     }
 
     &-icon {

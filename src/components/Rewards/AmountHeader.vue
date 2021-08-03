@@ -1,6 +1,6 @@
 <template>
   <div class="amount-header">
-    <template v-for="({ asset, amount, symbol }, index) in items">
+    <template v-for="{ asset, amount, symbol } in items">
       <div :key="symbol" class="amount-block">
         <formatted-amount
           class="amount-block__amount"
@@ -14,9 +14,6 @@
           is-fiat-value
           with-left-shift
         />
-      </div>
-      <div v-if="items.length - 1 !== index" class="amount-header-divider" :key="index">
-        <s-divider direction="vertical" class="amount-header-divider__slash" />
       </div>
     </template>
   </div>
@@ -43,31 +40,14 @@ export default class AmountHeader extends Mixins(FormattedAmountMixin) {
 <style lang="scss" scoped>
 $amount-font-size: 24px;
 $amount-line-height: 20px;
-$divider-width: 12px;
-$divider-height: 20px;
 
 .amount {
   &-header {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 
-    &-divider {
-      display: flex;
-      justify-content: center;
-      margin: 0 $inner-spacing-mini;
-      width: $divider-width;
-
-      &__slash {
-        width: 1px;
-        height: $divider-height;
-        margin: 0;
-        background: var(--s-color-base-on-accent);
-        opacity: 0.5;
-        transform: rotate(15deg)
-      }
-    }
     .formatted-amount {
       flex-wrap: wrap;
       justify-content: center;
