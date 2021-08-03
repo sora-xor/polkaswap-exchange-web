@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { DesignSystem } from '@soramitsu/soramitsu-js-ui/lib/utils/DesignSystem'
+import DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem'
 import { setDesignSystem } from '@soramitsu/soramitsu-js-ui/lib/utils'
 
 import ElementUIPlugin, { Message, MessageBox, Notification } from '@soramitsu/soramitsu-js-ui/lib/plugins/elementUI'
