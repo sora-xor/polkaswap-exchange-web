@@ -429,8 +429,9 @@
         "insufficientAmount": "Недостаточный {tokenSymbol} баланс",
         "insufficientLiquidity": "Недостаточная ликвидность",
         "confirmSwap": "Подтвердить обмен",
-        "swapOutputMessage": "Вывод оценён. Вы получите <span class=\"min-received-label\">как минимум<\/span> {transactionValue} или транзакция будет отменена.",
-        "rewardsForSwap": "Стратегические вознаграждения PSWAP"
+        "swapOutputMessage": "Вывод оценён. Вы получите как минимум {transactionValue} или транзакция будет отменена.",
+        "rewardsForSwap": "Стратегические вознаграждения PSWAP",
+        "swapInputMessage": "Ввод оценивается. Вы продадите максимум {transactionValue} иначе транзакция будет отменена."
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -705,14 +706,14 @@
             "SoraFarmHarvest": "@:(soraText).farm урожай",
             "NtfAirdrop": "NFT Airdrop",
             "LiquidityProvision": "Комиссия за предоставление ликвидности",
-            "BuyOnBondingCurve": "покупка с TBC",
+            "BuyOnBondingCurve": "покупки с TBC",
             "NftAirdrop": "NFT Airdrop",
-            "MarketMakerVolume": "Маркет-мейкер",
+            "MarketMakerVolume": "Маркет-мейкинг",
             "LiquidityProvisionFarming": "Фарминг"
         },
         "vested": "vested",
-        "forText": "для",
-        "totalVested": "Всего наделено",
+        "forText": "за",
+        "totalVested": "Все вознаграждения",
         "claimableAmountDoneVesting": "Требуемая сумма (наделение завершено)",
         "groups": {
             "strategic": "Стратегические вознаграждения",
@@ -725,7 +726,8 @@
         "messages": {
             "checkExtension": "{name} расширение занято, пожалуйста, проверьте его",
             "extensionLogin": "Пожалуйста, войдите в Ваше {name} расширение",
-            "installExtension": "Расширение {name} не найдено. Пожалуйста, установите его!"
+            "installExtension": "Расширение {name} не найдено. Пожалуйста, установите его!",
+            "reloadPage": "Перезагрузить страницу"
         }
     },
     "selectLanguageDialog": {
