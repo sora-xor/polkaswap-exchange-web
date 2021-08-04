@@ -16,11 +16,13 @@
         <div class="header">
           <div v-loading="isTransactionFromPending || isTransactionToPending" :class="headerIconClasses" />
           <h5 class="header-details">
-            {{ header }}
-            <i :class="`s-icon--network s-icon-${isSoraToEvm ? 'sora' : evmIcon}`" />
+            <formatted-amount class="info-line-value" :value="formattedAmount" :asset-symbol="formattedAssetSymbol">
+              <i :class="`s-icon--network s-icon-${isSoraToEvm ? 'sora' : evmIcon}`" />
+            </formatted-amount>
             <span class="header-details-separator">{{ t('bridgeTransaction.for') }}</span>
-            {{ header }}
-            <i :class="`s-icon--network s-icon-${!isSoraToEvm ? 'sora' : evmIcon}`" />
+            <formatted-amount class="info-line-value" :value="formattedAmount" :asset-symbol="formattedAssetSymbol">
+              <i :class="`s-icon--network s-icon-${!isSoraToEvm ? 'sora' : evmIcon}`" />
+            </formatted-amount>
           </h5>
           <p class="header-status">{{ headerStatus }}</p>
         </div>
@@ -177,7 +179,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory, BridgeNetworks } from '@sora-substrate/util'
-import { getExplorerLink, api, FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
+import { getExplorerLink, api, FormattedAmountMixin, FormattedAmount } from '@soramitsu/soraneo-wallet-web'
 import { interpret } from 'xstate'
 
 import BridgeMixin from '@/components/mixins/BridgeMixin'
@@ -194,7 +196,8 @@ const namespace = 'bridge'
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     InfoLine: lazyComponent(Components.InfoLine),
-    ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog)
+    ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
+    FormattedAmount
   }
 })
 export default class BridgeTransaction extends Mixins(
@@ -280,10 +283,6 @@ export default class BridgeTransaction extends Mixins(
 
   get evmIcon (): string {
     return this.getEvmIcon(this.evmNetwork)
-  }
-
-  get header (): string {
-    return `${this.formattedAmount} ${this.formattedAssetSymbol}`
   }
 
   get soraFeeFiatValue (): Nullable<string> {
@@ -763,18 +762,23 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
   }
   &-content {
     @include collapse-items;
-    .header-icon {
-      position: relative;
-      @include svg-icon('', $header-icon-size);
-      .el-loading-mask {
-        background-color: var(--s-color-utility-surface);
+    .header {
+      &-details .info-line-value {
+        @include formatted-amount(var(--s-heading3-font-size), 0.75);
       }
-      .el-loading-spinner {
-        top: 0;
-        margin-top: calc(#{$header-icon-size - $header-spinner-size} / 2);
-        .circular {
-          width: $header-spinner-size;
-          height: $header-spinner-size;
+      &-icon {
+        position: relative;
+        @include svg-icon('', $header-icon-size);
+        .el-loading-mask {
+          background-color: var(--s-color-utility-surface);
+        }
+        .el-loading-spinner {
+          top: 0;
+          margin-top: calc(#{$header-icon-size - $header-spinner-size} / 2);
+          .circular {
+            width: $header-spinner-size;
+            height: $header-spinner-size;
+          }
         }
       }
     }
@@ -902,6 +906,9 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     }
   }
   &-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     margin-bottom: $inner-spacing-mini;
     font-weight: 700;
     line-height: var(--s-line-height-medium);
@@ -910,9 +917,15 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
         position: relative;
         top: 1px;
       }
+      &--network {
+        font-size: var(--s-heading4-font-size);
+      }
     }
     &-separator {
-      font-weight: normal;
+      margin-right: $inner-spacing-mini / 2;
+      margin-left: $inner-spacing-mini / 2;
+      font-size: var(--s-heading3-font-size);
+      font-weight: 300;
     }
   }
 }
