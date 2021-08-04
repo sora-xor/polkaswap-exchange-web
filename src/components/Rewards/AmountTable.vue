@@ -158,8 +158,6 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
 </style>
 
 <style lang="scss" scoped>
-$amount-value-font-size: var(--s-font-size-medium);
-
 .amount-table {
   background: rgba(0, 0, 0, 0.2);
   border-radius: var(--s-border-radius-mini);
@@ -168,14 +166,14 @@ $amount-value-font-size: var(--s-font-size-medium);
   &.rewards-table {
     .formatted-amount {
       flex-wrap: wrap;
-      font-size: $amount-value-font-size;
     }
     .formatted-amount--fiat-value {
-      font-weight: 600;
+      font-weight: 400;
     }
   }
 
   &-value {
+    font-size: var(--s-font-size-medium);
     font-weight: 600;
     &-icon {
       margin-left: $inner-spacing-mini / 2;
@@ -223,6 +221,7 @@ $amount-value-font-size: var(--s-font-size-medium);
     &__amount {
       display: flex;
       align-items: baseline;
+      justify-content: space-between;
       flex-wrap: wrap;
       line-height: 20px;
     }
@@ -241,6 +240,7 @@ $amount-value-font-size: var(--s-font-size-medium);
       display: flex;
       flex-wrap: wrap;
       align-items: baseline;
+      justify-content: space-between;
     }
   }
 
