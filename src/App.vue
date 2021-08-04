@@ -3,6 +3,7 @@
     <header class="header">
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
       <div class="app-controls s-flex">
+        <s-button type="action" class="theme-control" @click="switchTheme">{{ /* [DARK]: add an icon */ }}</s-button>
         <s-button type="tertiary" class="lang-control" icon="basic-globe-24" @click="openSelectLanguageDialog">{{ selectedLanguage }}</s-button>
         <s-button type="tertiary" alternative size="medium" class="node-control" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
           <div class="node-control__text">
@@ -115,6 +116,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
 import { WALLET_CONSTS, WalletAvatar, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
 import { History, KnownSymbols } from '@sora-substrate/util'
+import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils'
 
 import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize, Language } from '@/consts'
 
@@ -158,6 +160,8 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
 
   showHelpDialog = false
   showSelectLanguageDialog = false
+
+  switchTheme = switchTheme // can be @Action as well
 
   @State(state => state.settings.faucetUrl) faucetUrl!: string
   @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
@@ -322,7 +326,12 @@ html {
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Sora', sans-serif;
   color: var(--s-color-base-content-primary);
+  background-color: var(--s-color-utility-body);
   height: 100vh;
+  transition: var(--s-transition-default);
+  .el-loading-mask {
+    background-color: var(--s-color-utility-body);
+  }
 }
 
 .node-control {
