@@ -123,8 +123,8 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
 <style lang="scss">
 .node-info {
   &-tutorial-button {
-    .s-icon-question-circle-16 {
-      font-size: 18px !important;
+    .s-icon-question-circle-16:before {
+      font-size: 18px;
     }
   }
 
