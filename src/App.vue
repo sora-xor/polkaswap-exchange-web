@@ -3,7 +3,7 @@
     <header class="header">
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
       <div class="app-controls s-flex">
-        <s-button type="action" class="theme-control" @click="switchTheme">{{ /* [DARK]: add an icon */ }}</s-button>
+        <s-button type="action" class="theme-control" :icon="themeIcon" @click="switchTheme" />
         <s-button type="tertiary" class="lang-control" icon="basic-globe-24" @click="openSelectLanguageDialog">{{ selectedLanguage }}</s-button>
         <s-button type="tertiary" alternative size="medium" class="node-control" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
           <div class="node-control__text">
@@ -117,6 +117,8 @@ import { Action, Getter, State } from 'vuex-class'
 import { WALLET_CONSTS, WalletAvatar, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
 import { History, KnownSymbols } from '@sora-substrate/util'
 import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils'
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
+import DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem'
 
 import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize, Language } from '@/consts'
 
@@ -161,12 +163,14 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   showHelpDialog = false
   showSelectLanguageDialog = false
 
-  switchTheme = switchTheme // can be @Action as well
+  switchTheme: AsyncVoidFn = switchTheme
 
   @State(state => state.settings.faucetUrl) faucetUrl!: string
   @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
 
-  @Getter libraryDesignSystem!: string
+  @Getter libraryTheme!: Theme
+  @Getter libraryDesignSystem!: DesignSystem
+
   @Getter firstReadyTransaction!: any
   @Getter isLoggedIn!: boolean
   @Getter account!: any
@@ -236,6 +240,10 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
 
   set showSelectNodeDialog (flag: boolean) {
     this.setSelectNodeDialogVisibility(flag)
+  }
+
+  get themeIcon (): string {
+    return this.libraryTheme === Theme.LIGHT ? 'various-brightness-low-24' : 'various-moon-24'
   }
 
   get nodeLogo (): any {
@@ -321,14 +329,16 @@ html {
   font-size: var(--s-font-size-small);
   line-height: var(--s-line-height-base);
 }
+
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Sora', sans-serif;
+  height: 100vh;
+  min-width: 528px;
   color: var(--s-color-base-content-primary);
   background-color: var(--s-color-utility-body);
-  height: 100vh;
-  transition: var(--s-transition-default);
+  transition: background-color 500ms linear;
   .el-loading-mask {
     background-color: var(--s-color-utility-body);
   }
@@ -551,6 +561,7 @@ $sora-logo-width: 173.7px;
   }
 
   &-body {
+    min-width: 464px;
     position: relative;
     overflow-y: auto;
     display: flex;
@@ -577,6 +588,13 @@ $sora-logo-width: 173.7px;
     line-height: var(--s-line-height-extra-small);
     letter-spacing: var(--s-letter-spacing-small);
     color: var(--s-color-base-content-secondary);
+    &.about-disclaimer {
+      min-width: 800px;
+      width: 100%;
+      max-width: 900px;
+      padding: 0 20px;
+      margin: 0 auto 120px;
+    }
   }
 
   &-footer {
@@ -586,15 +604,25 @@ $sora-logo-width: 173.7px;
     padding-right: $inner-spacing-large;
     padding-left: $inner-spacing-large;
     padding-bottom: $inner-spacing-large;
+    &.about-footer {
+      min-width: 800px;
+      justify-content: center;
+    }
   }
 }
 
 .header {
+  $header-box-shadow: 240px 16px 32px -16px;
+  $header-box-shadow-light: #{$header-box-shadow} #e5dce0;
+  $header-box-shadow-dark: #{$header-box-shadow} rgba(73, 32, 103, 0.5);
   display: flex;
   align-items: center;
   padding: 2px $inner-spacing-medium;
   min-height: $header-height;
-  box-shadow: 240px 16px 32px -16px #e5dce0;
+  box-shadow: $header-box-shadow-light;
+  [design-system-theme="dark"] & {
+    box-shadow: $header-box-shadow-dark;
+  }
 }
 
 .menu {
@@ -767,12 +795,17 @@ $sora-logo-width: 173.7px;
 }
 
 @include large-mobile {
+  $border-image-light: linear-gradient(#FAF4F8, #D5CDD0, #FAF4F8) 30;
+  $border-image-dark: linear-gradient(180deg, rgba(36, 2, 65, 0) 0%, rgba(36, 2, 65, 0.5) 50.45%, rgba(36, 2, 65, 0) 100%) 30;
   .app-sidebar {
     overflow-y: auto;
     margin-right: 0;
     width: auto;
-    border-right: 1px solid #e5dce0 !important;
-    border-image: linear-gradient(#FAF4F8, #D5CDD0, #FAF4F8) 30;
+    border-right: 1px solid;
+    border-image: $border-image-light;
+    [design-system-theme="dark"] & {
+      border-image: $border-image-dark;
+    }
   }
   .menu .menu-link-container {
     display: block;
@@ -789,9 +822,16 @@ $sora-logo-width: 173.7px;
   }
   .app-footer {
     flex-direction: row;
+    padding-right: 22px;
+    padding-bottom: 20px;
     .app-disclaimer {
       padding-right: $inner-spacing-large;
     }
+  }
+}
+@media screen and (max-width: 460px) {
+  .app-body {
+    margin-left: -10px;
   }
 }
 </style>
