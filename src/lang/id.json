@@ -93,7 +93,8 @@
         "confirmTitle": "Konfirmasi transaksi",
         "confirm": "@:confirmText",
         "errorAddress": "Alamat tidak valid. Silakan periksa dan coba lagi.",
-        "addressDesc": "Hanya alamat akun jaringan SORA yang diterima. Harap pastikan bahwa Anda memiliki alamat akun jaringan SORA yang diformat dengan benar yang dimulai dengan awalan 'cn'."
+        "addressDesc": "Hanya alamat akun jaringan SORA yang diterima. Harap pastikan bahwa Anda memiliki alamat akun jaringan SORA yang diformat dengan benar yang dimulai dengan awalan 'cn'.",
+        "feeTooltip": "@:networkFeeTooltipText"
     },
     "account": {
         "successCopy": "Alamat dompet disalin ke clipboard",
@@ -124,7 +125,8 @@
             "locked": "- Terkunci",
             "reserved": " - Dicadangkan",
             "total": "Total"
-        }
+        },
+        "totalAssetsValue": "Nilai total aset Anda:"
     },
     "asset": {
         "remove": "Hapus aset"
@@ -498,7 +500,6 @@
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
-        "viewHistory": "Lihat transaksi di riwayat transaksi",
         "details": "{from} untuk {to}",
         "for": " untuk ",
         "steps": {
@@ -545,7 +546,9 @@
         "connectWallet": "@:connectWalletText",
         "viewInSorascan": "Lihat di Sorascan",
         "changeAccount": "@:changeAccountText di @:metamask",
-        "expectedAddress": "Alamat yang diharapkan di @:metamask"
+        "expectedAddress": "Alamat yang diharapkan di @:metamask",
+        "title": "Transaksi Jembatan",
+        "expectedMetaMaskAddress": "Alamat yang diharapkan di @:metamask"
     },
     "months": {
         "0": "Jan",
