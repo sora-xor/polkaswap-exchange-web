@@ -16,6 +16,7 @@
                 v-if="internalRewards.length"
                 v-model="selectedInternalRewardsModel"
                 :item="internalRewards[0]"
+                :theme="libraryTheme"
                 is-codec-string
               />
               <rewards-amount-table
@@ -23,6 +24,7 @@
                 v-if="vestedRewards"
                 v-model="selectedVestedRewardsModel"
                 :item="vestedRewadsGroupItem"
+                :theme="libraryTheme"
               />
               <rewards-amount-table
                 class="rewards-table"
@@ -30,6 +32,7 @@
                 :item="externalRewardsGroupItem"
                 :show-table="!!externalRewards.length"
                 :simple-group="true"
+                :theme="libraryTheme"
               >
                 <div class="rewards-footer">
                   <s-divider />

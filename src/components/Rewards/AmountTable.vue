@@ -33,7 +33,7 @@
             </div>
             <div v-if="formatted.rewards.length !== 0" class="amount-table-item-content__body">
               <div v-for="(item, index) in formatted.rewards" :key="item.type">
-                <s-divider v-if="!simpleGroup || index === 0" class="amount-table-divider" />
+                <s-divider v-if="!simpleGroup || index === 0" :class="['amount-table-divider', theme]" />
                 <div class="amount-table-subitem">
                   <div class="amount-table-subitem__title">
                     <template v-if="simpleGroup">—</template>
@@ -61,6 +61,7 @@
 import { Component, Prop, Mixins } from 'vue-property-decorator'
 import { RewardInfo } from '@sora-substrate/util'
 import { FormattedAmountMixin, FormattedAmount, FontSizeRate } from '@soramitsu/soraneo-wallet-web'
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards'
@@ -78,6 +79,7 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
   @Prop({ default: false, type: Boolean }) simpleGroup!: boolean
   @Prop({ default: false, type: Boolean }) value!: boolean
   @Prop({ default: false, type: Boolean }) isCodecString!: boolean
+  @Prop({ default: Theme.LIGHT, type: String }) theme!: Theme
 
   get innerModel (): any {
     return this.value
@@ -153,6 +155,10 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
 
   &-tooltip.el-tooltip__popper.neumorphic.is-light {
     background-color: var(--s-color-status-success);
+  }
+
+  &-divider.s-divider-secondary.dark {
+    background-color: var(--s-color-base-content-secondary);
   }
 }
 </style>
