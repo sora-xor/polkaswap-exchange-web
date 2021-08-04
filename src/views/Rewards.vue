@@ -3,7 +3,7 @@
     <generic-page-header :title="t('rewards.title')" />
     <div class="rewards-content" v-loading="!parentLoading && loading">
       <gradient-box class="rewards-block" :symbol="gradientSymbol">
-        <div class="rewards-box">
+        <div :class="['rewards-box', libraryTheme]">
           <tokens-row :symbols="rewardTokenSymbols" />
           <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text">
             {{ claimingStatusMessage }}
@@ -16,6 +16,7 @@
                 v-if="internalRewards.length"
                 v-model="selectedInternalRewardsModel"
                 :item="internalRewards[0]"
+                :theme="libraryTheme"
                 is-codec-string
               />
               <rewards-amount-table
@@ -23,6 +24,7 @@
                 v-if="vestedRewards"
                 v-model="selectedVestedRewardsModel"
                 :item="vestedRewadsGroupItem"
+                :theme="libraryTheme"
               />
               <rewards-amount-table
                 class="rewards-table"
@@ -30,6 +32,7 @@
                 :item="externalRewardsGroupItem"
                 :show-table="!!externalRewards.length"
                 :simple-group="true"
+                :theme="libraryTheme"
               >
                 <div class="rewards-footer">
                   <s-divider />
@@ -46,7 +49,7 @@
               <info-line
                 v-if="fee && isSoraAccountConnected && rewardsAvailable && !claimingInProgressOrFinished"
                 v-bind="feeInfo"
-                class="rewards-fee"
+                :class="['rewards-fee', libraryTheme]"
                 :fiat-value="getFiatAmountByCodecString(fee)"
                 is-formatted
               />
@@ -79,6 +82,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
 import { AccountAsset, KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, CodecString, FPNumber } from '@sora-substrate/util'
 import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
 
 import ethersUtil from '@/utils/ethers-util'
 import { lazyComponent } from '@/router'
@@ -116,6 +120,7 @@ export default class Rewards extends Mixins(FormattedAmountMixin, WalletConnectM
   @State(state => state.rewards.selectedInternalRewards) selectedInternalRewards!: Array<RewardInfo>
   @State(state => state.rewards.selectedExternalRewards) selectedExternalRewards!: Array<RewardInfo>
 
+  @Getter libraryTheme!: Theme
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset
   @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean
   @Getter('externalRewardsAvailable', { namespace: 'rewards' }) externalRewardsAvailable!: boolean
@@ -374,14 +379,6 @@ export default class Rewards extends Mixins(FormattedAmountMixin, WalletConnectM
 .container.rewards .el-loading-mask {
   border-radius: var(--s-border-radius-small);
 }
-.rewards-connect-button.el-button.neumorphic {
-  &, &:hover, &.focusing {
-    background: transparent;
-    color: var(--s-color-base-on-accent);
-    border: 1px solid var(--s-color-base-on-accent);
-    box-shadow: none;
-  }
-}
 .rewards-action-button i {
   top: $inner-spacing-mini;
 }
@@ -405,7 +402,11 @@ $hint-font-size: 13px;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    color: var(--s-color-base-on-accent); // TODO: use color variable from ui library
+    color: var(--s-color-base-on-accent);
+
+    &.dark {
+      color: var(--s-color-base-content-primary);
+    }
 
     & > *:not(:last-child) {
       margin-bottom: $inner-spacing-mini;
@@ -468,9 +469,14 @@ $hint-font-size: 13px;
     padding: 0 $inner-spacing-mini / 2;
   }
 
-  &-fee.info-line {
-    color: var(--s-olor-base-on-acccent);
-    margin-top: $inner-spacing-medium;
+  &-fee {
+    &.info-line {
+      color: var(--s-color-base-on-acccent);
+      margin-top: $inner-spacing-medium;
+      &.dark {
+        border-bottom-color: var(--s-color-base-content-secondary);
+      }
+    }
   }
 
   @include full-width-button('rewards-action-button');
