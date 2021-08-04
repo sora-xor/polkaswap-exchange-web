@@ -93,7 +93,8 @@
         "confirmTitle": "Potvrďte transakci",
         "confirm": "@:confirmText",
         "errorAddress": "Neplatná adresa. Zkontrolujte ji a zkuste to znovu.",
-        "addressDesc": "Akceptovány jsou pouze adresy síťových účtů SORA. Ujistěte se, že máte správně naformátovanou adresu síťového účtu SORA začínající předponou \"cn\"."
+        "addressDesc": "Akceptovány jsou pouze adresy síťových účtů SORA. Ujistěte se, že máte správně naformátovanou adresu síťového účtu SORA začínající předponou \"cn\".",
+        "feeTooltip": "@:networkFeeTooltipText"
     },
     "account": {
         "successCopy": "Adresa peněženky je zkopírována do schránky",
@@ -124,7 +125,8 @@
             "locked": "- Zamčeno",
             "reserved": " - Rezervováno",
             "total": "Celkem"
-        }
+        },
+        "totalAssetsValue": "Celková hodnota vašich aktiv:"
     },
     "asset": {
         "remove": "Odebrat aktivum"
@@ -498,7 +500,6 @@
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
-        "viewHistory": "Zobrazit transakci v historii transakcí",
         "details": "{from} pro {to}",
         "for": " pro ",
         "steps": {
@@ -508,7 +509,7 @@
         },
         "status": {
             "pending": "{step} čekající transakce...",
-            "failed": "{step} transakce se nezdařily. @:( retryText).",
+            "failed": "{step} transakce se nezdařily. @:(retryText).",
             "confirm": "Potvrďte 2. ze 2 transakcí ...",
             "complete": "Hotovo",
             "convertionComplete": "Převod je dokončen"
@@ -545,7 +546,9 @@
         "connectWallet": "@:connectWalletText",
         "viewInSorascan": "Zobrazit v SORAScanu",
         "changeAccount": "@:changeAccountText v @:metamask",
-        "expectedAddress": "Očekávaná adresa v @:metamask"
+        "expectedAddress": "Očekávaná adresa v @:metamask",
+        "title": "Překlenovací transakce",
+        "expectedMetaMaskAddress": "Očekávaná adresa v @:metamask"
     },
     "months": {
         "0": "Leden",
