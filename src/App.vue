@@ -337,7 +337,7 @@ html {
   height: 100vh;
   color: var(--s-color-base-content-primary);
   background-color: var(--s-color-utility-body);
-  transition: background-color 1s linear;
+  transition: background-color 500ms linear;
   .el-loading-mask {
     background-color: var(--s-color-utility-body);
   }
