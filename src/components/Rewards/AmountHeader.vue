@@ -1,31 +1,38 @@
 <template>
   <div class="amount-header">
-    <template v-for="({ amount, symbol }, index) in items">
-      <div :key="symbol" class="amount-block">
-        <formatted-amount class="amount-block__amount" :value="amount">
-          <template v-slot="{ decimal }">{{ decimal }} {{ symbol }}</template>
-        </formatted-amount>
-      </div>
-      <div v-if="items.length - 1 !== index" class="amount-header-divider" :key="index">
-        <s-divider direction="vertical" class="amount-header-divider__slash" />
+    <template v-for="{ asset, amount } in items">
+      <div :key="asset.symbol" class="amount-block">
+        <formatted-amount
+          class="amount-block__amount"
+          :value="formatStringValue(amount, asset.decimal)"
+          :font-size-rate="FontSizeRate.MEDIUM"
+          :asset-symbol="asset.symbol"
+          symbol-as-decimal
+        />
+        <formatted-amount
+          :value="getFiatAmountByString(amount, asset)"
+          is-fiat-value
+          with-left-shift
+        />
       </div>
     </template>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { FormattedAmountMixin, FormattedAmount, FontSizeRate } from '@soramitsu/soraneo-wallet-web'
 
 import { RewardsAmountHeaderItem } from '@/types/rewards'
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
 
 @Component({
   components: {
-    FormattedAmount: lazyComponent(Components.FormattedAmount)
+    FormattedAmount
   }
 })
-export default class AmountHeader extends Vue {
+export default class AmountHeader extends Mixins(FormattedAmountMixin) {
+  readonly FontSizeRate = FontSizeRate
+
   @Prop({ default: () => [], type: Array }) items!: Array<RewardsAmountHeaderItem>
 }
 </script>
@@ -33,38 +40,28 @@ export default class AmountHeader extends Vue {
 <style lang="scss" scoped>
 $amount-font-size: 24px;
 $amount-line-height: 20px;
-$divider-width: 12px;
-$divider-height: 20px;
 
 .amount {
   &-header {
     display: flex;
-    flex-flow: row nowrap;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 
-    &-divider {
-      display: flex;
+    .formatted-amount {
+      flex-wrap: wrap;
       justify-content: center;
-      margin: 0 $inner-spacing-mini;
-      width: $divider-width;
-
-      &__slash {
-        width: 1px;
-        height: $divider-height;
-        margin: 0;
-        background: var(--s-color-base-on-accent);
-        opacity: 0.5;
-        transform: rotate(15deg)
-      }
     }
   }
 
   &-block {
     display: flex;
-    flex-flow: row nowrap;
     align-items: baseline;
-    line-height: $amount-line-height
+    flex-wrap: wrap;
+    justify-content: center;
+    line-height: $amount-line-height;
+    text-align: center;
+    font-size: var(--s-font-size-large);
 
     &:first-child:not(:last-child) {
       text-align: right;
@@ -74,15 +71,14 @@ $divider-height: 20px;
       text-align: left;
     }
 
-    &__amount {
-      font-size: var(--s-font-size-large);
+    &__amount,
+    .formatted-amount--fiat-value {
       font-weight: 700;
-      letter-spacing: var(--s-letter-spacing-big);
+      letter-spacing: var(--s-letter-spacing-small);
     }
 
-    &__symbol {
-      font-size: var(--s-font-size-big);
-      font-weight: 600;
+    .formatted-amount--fiat-value {
+      font-size: 0.875em;
     }
   }
 }
