@@ -329,14 +329,15 @@ html {
   font-size: var(--s-font-size-small);
   line-height: var(--s-line-height-base);
 }
+
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Sora', sans-serif;
+  height: 100vh;
   color: var(--s-color-base-content-primary);
   background-color: var(--s-color-utility-body);
-  height: 100vh;
-  transition: var(--s-transition-default);
+  transition: background-color 1s linear;
   .el-loading-mask {
     background-color: var(--s-color-utility-body);
   }
