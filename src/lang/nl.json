@@ -93,7 +93,8 @@
         "confirmTitle": "Bevestig transactie",
         "confirm": "@:confirmText",
         "errorAddress": "Ongeldig adres. Controleer het en probeer het opnieuw.",
-        "addressDesc": "Alleen SORA-netwerkaccountadressen worden geaccepteerd. Zorg ervoor dat je een correct opgemaakt SORA-netwerkaccountadres hebt dat begint met het voorvoegsel 'cn'."
+        "addressDesc": "Alleen SORA-netwerkaccountadressen worden geaccepteerd. Zorg ervoor dat je een correct opgemaakt SORA-netwerkaccountadres hebt dat begint met het voorvoegsel 'cn'.",
+        "feeTooltip": "@:networkFeeTooltipText"
     },
     "account": {
         "successCopy": "Wallet-adres werd gekopieerd naar het klembord",
@@ -124,7 +125,8 @@
             "locked": " - Vergrendeld",
             "reserved": " - Gereserveerd",
             "total": "Totaal"
-        }
+        },
+        "totalAssetsValue": "Uw totale activawaarde:"
     },
     "asset": {
         "remove": "Asset verwijderen"
@@ -498,7 +500,6 @@
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
-        "viewHistory": "Bekijk transactie in transactie geschiedenis",
         "details": "{van} voor {naar}",
         "for": " voor ",
         "steps": {
@@ -545,7 +546,9 @@
         "connectWallet": "@:connectWalletText",
         "viewInSorascan": "Bekijk in Sorascan",
         "changeAccount": "@:changeAccountText in @:metamask",
-        "expectedAddress": "Verwacht adres in @:metamask"
+        "expectedAddress": "Verwacht adres in @:metamask",
+        "title": "Overbruggingstransactie",
+        "expectedMetaMaskAddress": "Verwacht adres in @:metamask"
     },
     "months": {
         "0": "Jan",

@@ -93,7 +93,8 @@
         "confirmTitle": "Conferma la transazione",
         "confirm": "@:confirmText",
         "errorAddress": "Indirizzo non valido. Si prega di controllare e riprovare.",
-        "addressDesc": "Sono accettati solo address di account di rete SORA. Assicurati di avere un indirizzo di account di rete SORA formattato correttamente che inizia con il prefisso 'cn'."
+        "addressDesc": "Sono accettati solo address di account di rete SORA. Assicurati di avere un indirizzo di account di rete SORA formattato correttamente che inizia con il prefisso 'cn'.",
+        "feeTooltip": "@:networkFeeTooltipText"
     },
     "account": {
         "successCopy": "L'indirizzo del wallet è stato copiato negli appunti",
@@ -124,7 +125,8 @@
             "locked": "- Bloccato",
             "reserved": " - Riservato",
             "total": "Totale"
-        }
+        },
+        "totalAssetsValue": "Il valore totale del tuo patrimonio:"
     },
     "asset": {
         "remove": "Rimuovi l'asset"
@@ -498,7 +500,6 @@
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
-        "viewHistory": "Visualizza la transazione nella cronologia delle transazioni",
         "details": "{from} per {to}",
         "for": "per",
         "steps": {
@@ -545,7 +546,9 @@
         "connectWallet": "@:connectWalletText",
         "viewInSorascan": "Visualizza su Sorascan",
         "changeAccount": "@:changeAccountText in @:metamask",
-        "expectedAddress": "Indirizzo previsto in @:metamask"
+        "expectedAddress": "Indirizzo previsto in @:metamask",
+        "title": "Transazione ponte",
+        "expectedMetaMaskAddress": "Indirizzo previsto in @:metamask"
     },
     "months": {
         "0": "Jan",

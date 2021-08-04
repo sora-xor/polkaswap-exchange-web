@@ -93,7 +93,8 @@
         "confirmTitle": "Подтвердить транзакцию",
         "confirm": "@:confirmText",
         "errorAddress": "Неверный адрес. Пожалуйста, перепроверьте и попробуйте еще раз.",
-        "addressDesc": "Принимаются только адреса сетевых аккаунтов SORA. Убедитесь, что у вас есть правильно отформатированный адрес сетевой учетной записи SORA, начинающийся с префикса «cn»."
+        "addressDesc": "Принимаются только адреса сетевых аккаунтов SORA. Убедитесь, что у вас есть правильно отформатированный адрес сетевой учетной записи SORA, начинающийся с префикса «cn».",
+        "feeTooltip": "@:networkFeeTooltipText"
     },
     "account": {
         "successCopy": "Адрес кошелька скопирован в буфер обмена",
@@ -124,7 +125,8 @@
             "locked": "- Заблокировано",
             "reserved": " - Зарезервировано",
             "total": "Всего"
-        }
+        },
+        "totalAssetsValue": "Общая стоимость ваших активов:"
     },
     "asset": {
         "remove": "Удалить актив"
@@ -498,7 +500,6 @@
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
-        "viewHistory": "Просмотр транзакцию в истории транзакций",
         "details": "{from} для {to}",
         "for": "для",
         "steps": {
@@ -545,7 +546,9 @@
         "connectWallet": "@:connectWalletText",
         "viewInSorascan": "Просмотреть в SORAScan",
         "changeAccount": "@:changeAccountText в @:metamask",
-        "expectedAddress": "Ожидаемый адрес в @:metamask"
+        "expectedAddress": "Ожидаемый адрес в @:metamask",
+        "title": "Транзакция Моста",
+        "expectedMetaMaskAddress": "Ожидаемый адрес в @:metamask"
     },
     "months": {
         "0": "Январь",

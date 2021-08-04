@@ -93,7 +93,8 @@
         "confirmTitle": "Confirmar transacción",
         "confirm": "@:confirmText",
         "errorAddress": "Dirección no válida. Por favor, compruébela e inténtelo de nuevo.",
-        "addressDesc": "Sólo se aceptan direcciones de cuentas de la Red SORA. Por favor, asegúrate de que tienes una dirección de cuenta de la Red SORA correctamente formateada que comience con el prefijo 'cn'."
+        "addressDesc": "Sólo se aceptan direcciones de cuentas de la Red SORA. Por favor, asegúrate de que tienes una dirección de cuenta de la Red SORA correctamente formateada que comience con el prefijo 'cn'.",
+        "feeTooltip": "@:networkFeeTooltipText"
     },
     "account": {
         "successCopy": "La dirección de la cartera se ha copiado en el portapapeles",
@@ -124,7 +125,8 @@
             "locked": "- Bloqueado",
             "reserved": "- Reservado",
             "total": "Total"
-        }
+        },
+        "totalAssetsValue": "El valor total de sus activos:"
     },
     "asset": {
         "remove": "Eliminar el Activo"
@@ -498,7 +500,6 @@
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
-        "viewHistory": "Ver la transacción en el historial de transacciones",
         "details": "{de} por {a}",
         "for": "por",
         "steps": {
@@ -545,7 +546,9 @@
         "connectWallet": "@:connectWalletText",
         "viewInSorascan": "Ver en SORAscan",
         "changeAccount": "@:changeAccountText en @:metamask",
-        "expectedAddress": "Dirección esperada en @:metamask"
+        "expectedAddress": "Dirección esperada en @:metamask",
+        "title": "Transacción puente",
+        "expectedMetaMaskAddress": "Dirección esperada en @:metamask"
     },
     "months": {
         "0": "Enero",

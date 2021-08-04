@@ -93,7 +93,8 @@
         "confirmTitle": "Հաստատել գործարքը",
         "confirm": "@: confirmText",
         "errorAddress": "Անվավեր հասցե: Խնդրում ենք ստուգել այն և կրկին փորձել:",
-        "addressDesc": "Ընդունվում են միայն SORA ցանցի հաշվի հասցեները: Խնդրում ենք համոզվել, որ ունեք ճիշտ ձևաչափված SORA ցանցի հաշվի հասցե ՝ սկսած «cn» նախածանցից:"
+        "addressDesc": "Ընդունվում են միայն SORA ցանցի հաշվի հասցեները: Խնդրում ենք համոզվել, որ ունեք ճիշտ ձևաչափված SORA ցանցի հաշվի հասցե ՝ սկսած «cn» նախածանցից:",
+        "feeTooltip": "@: networkFeeTooltipText"
     },
     "account": {
         "successCopy": "Դրամապանակի հասցեն պատճենվում է սեղմատախտակին",
@@ -124,7 +125,8 @@
             "locked": "- կողպված է",
             "reserved": "- վերապահված է",
             "total": "Ընդհանուր"
-        }
+        },
+        "totalAssetsValue": "Ձեր ակտիվների ընդհանուր արժեքը."
     },
     "asset": {
         "remove": "Հեռացնել ակտիվը"
@@ -498,7 +500,6 @@
         "buttonConfirm": "@: confirmText"
     },
     "bridgeTransaction": {
-        "viewHistory": "Դիտել գործարքները գործարքների պատմության մեջ",
         "details": "{from} համար {to}",
         "for": "համար",
         "steps": {
@@ -545,7 +546,9 @@
         "connectWallet": "@: connectWalletText",
         "viewInSorascan": "Դիտել SORAScan- ում",
         "changeAccount": "@: changeAccountText in @: metamask",
-        "expectedAddress": "Սպասվող հասցե @հասցեում ՝ @:metamask"
+        "expectedAddress": "Սպասվող հասցե @հասցեում ՝ @:metamask",
+        "title": "Կամուրջի գործարք",
+        "expectedMetaMaskAddress": "Սպասվող հասցե @հասցեում ՝ @:metamask"
     },
     "months": {
         "0": "Հունվար",

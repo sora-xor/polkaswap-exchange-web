@@ -93,7 +93,8 @@
         "confirmTitle": "Jẹrisi idunadura",
         "confirm": "@:confirmText",
         "errorAddress": "Adirẹsi ti ko wulo. Jọwọ ṣayẹwo rẹ ki o tun gbiyanju.",
-        "addressDesc": "Awọn adirẹsi akọọlẹ nẹtiwọọki SORA nikan ni a gba. Jọwọ rii daju pe o ni kika akọọlẹ nẹtiwọọki nẹtiwọọki SORA kan ti o bẹrẹ pẹlu prefix 'cn'."
+        "addressDesc": "Awọn adirẹsi akọọlẹ nẹtiwọọki SORA nikan ni a gba. Jọwọ rii daju pe o ni kika akọọlẹ nẹtiwọọki nẹtiwọọki SORA kan ti o bẹrẹ pẹlu prefix 'cn'.",
+        "feeTooltip": "@:networkFeeTooltipText"
     },
     "account": {
         "successCopy": "Ti daakọ adirẹsi apamọwọ si agekuru naa",
@@ -124,7 +125,8 @@
             "locked": "- Ti tiipa",
             "reserved": "- Ni ipamọ",
             "total": "Lapapọ"
-        }
+        },
+        "totalAssetsValue": "Iye awọn ohun -ini rẹ lapapọ:"
     },
     "asset": {
         "remove": "Yọ dukia kuro"
@@ -498,7 +500,6 @@
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
-        "viewHistory": "Wo iṣowo ni itan-iṣowo",
         "details": "{from} fun {to}",
         "for": "fun",
         "steps": {
@@ -545,7 +546,9 @@
         "connectWallet": "@:connectWalletText",
         "viewInSorascan": "Wo ni SORAScan",
         "changeAccount": "@:changeAccountText Inu @:metamask",
-        "expectedAddress": "Adirẹsi ti a nireti ni @:metamask"
+        "expectedAddress": "Adirẹsi ti a nireti ni @:metamask",
+        "title": "Idunadura Bridge",
+        "expectedMetaMaskAddress": "Adirẹsi ti a nireti ni @:metamask"
     },
     "months": {
         "0": "Oṣu Kini",
