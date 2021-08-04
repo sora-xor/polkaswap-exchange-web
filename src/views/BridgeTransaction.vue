@@ -15,15 +15,15 @@
         <div class="header">
           <div v-loading="isTransactionFromPending || isTransactionToPending" :class="headerIconClasses" />
           <h5 class="header-details">
-            {{ `${formattedAmount} ${formatAssetSymbol(assetSymbol)}` }}
-            <i :class="`s-icon--network s-icon-${isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
+            {{ header }}
+            <i :class="`s-icon--network s-icon-${isSoraToEvm ? 'sora' : evmIcon}`" />
             <span class="header-details-separator">{{ t('bridgeTransaction.for') }}</span>
-            {{ `${formattedAmount} ${formatAssetSymbol(assetSymbol)}` }}
-            <i :class="`s-icon--network s-icon-${!isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
+            {{ header }}
+            <i :class="`s-icon--network s-icon-${!isSoraToEvm ? 'sora' : evmIcon}`" />
           </h5>
           <p class="header-status">{{ headerStatus }}</p>
         </div>
-        <s-collapse :value="activeTransactionStep" :borders="true">
+        <s-collapse borders :value="activeTransactionStep">
           <s-collapse-item :name="transactionSteps.from">
             <template #title>
               <div class="network-info-title">
@@ -51,17 +51,24 @@
               </s-dropdown>
             </div>
             <info-line :class="failedClass()" :label="t('bridgeTransaction.networkInfo.status')" :value="statusFrom" />
-            <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionFromDate" />
+            <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionFirstDate" />
             <info-line
               v-if="amount"
               :label="t('bridgeTransaction.networkInfo.amount')"
               :value="`-${formattedAmount}`"
-              :asset-symbol="formatAssetSymbol(assetSymbol)"
+              :asset-symbol="formattedAssetSymbol"
+              :fiat-value="soraAmountFiatValue"
+              is-formatted
+              alt-value="-"
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
               :value="isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
               :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : currentEvmTokenSymbol"
+              :fiat-value="soraFeeFiatValue"
+              is-formatted
+              :value-prefix="!isSoraToEvm && formattedEvmNetworkFee ? '~' : null"
+              alt-value="-"
             />
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
             <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : EvmSymbol.ETH" /> -->
@@ -75,7 +82,7 @@
               <template v-if="!isSoraToEvm && !isExternalAccountConnected">{{ t('bridgeTransaction.connectWallet') }}</template>
               <template v-else-if="!(isSoraToEvm || isValidNetworkType)">{{ t('bridgeTransaction.changeNetwork') }}</template>
               <span v-else-if="isTransactionFromPending" v-html="t('bridgeTransaction.pending', { network: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'ethereum'}`) })" />
-              <template v-else-if="isInsufficientBalance">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : formatAssetSymbol(assetSymbol) }) }}</template>
+              <template v-else-if="isInsufficientBalance">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : formattedAssetSymbol }) }}</template>
               <template v-else-if="isInsufficientXorForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : KnownSymbols.XOR }) }}</template>
               <template v-else-if="isInsufficientEvmNativeTokenForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : EvmSymbol.ETH }) }}</template>
               <template v-else-if="isTransactionFromFailed">{{ t('bridgeTransaction.retry') }}</template>
@@ -114,17 +121,24 @@
               </s-dropdown>
             </div>
             <info-line :class="failedClass(true)" :label="t('bridgeTransaction.networkInfo.status')" :value="statusTo" />
-            <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionDate(!isSoraToEvm ? soraTransactionDate : evmTransactionDate)" />
+            <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionSecondDate" />
             <info-line
               v-if="amount"
               :label="t('bridgeTransaction.networkInfo.amount')"
               :value="`${formattedAmount}`"
-              :asset-symbol="formatAssetSymbol(assetSymbol)"
+              :asset-symbol="formattedAssetSymbol"
+              :fiat-value="!isSoraToEvm ? getFiatAmountByString(amount, asset) : null"
+              is-formatted
+              alt-value="-"
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
               :value="!isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
               :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : currentEvmTokenSymbol"
+              :fiat-value="soraNetworkFeeFiatValue"
+              is-formatted
+              :value-prefix="isSoraToEvm && formattedEvmNetworkFee ? '~' : null"
+              alt-value="-"
             />
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
             <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="!isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : EvmSymbol.ETH" /> -->
@@ -165,12 +179,11 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory, BridgeNetworks } from '@sora-substrate/util'
-import { getExplorerLink, api } from '@soramitsu/soraneo-wallet-web'
+import { getExplorerLink, api, FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
 import { interpret } from 'xstate'
 
 import BridgeMixin from '@/components/mixins/BridgeMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EvmSymbol, MetamaskCancellationCode } from '@/consts'
@@ -186,9 +199,9 @@ const namespace = 'bridge'
   }
 })
 export default class BridgeTransaction extends Mixins(
+  FormattedAmountMixin,
   BridgeMixin,
-  NetworkFormatterMixin,
-  NumberFormatterMixin
+  NetworkFormatterMixin
 ) {
   @Getter soraNetwork!: string
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
@@ -238,8 +251,6 @@ export default class BridgeTransaction extends Mixins(
 
   EvmSymbol = EvmSymbol
   KnownSymbols = KnownSymbols
-  formatAssetSymbol = formatAssetSymbol
-  formatDateItem = formatDateItem
   STATES = STATES
 
   callFirstTransition = () => {}
@@ -257,11 +268,37 @@ export default class BridgeTransaction extends Mixins(
   showConfirmTransactionDialog = false
 
   get formattedAmount (): string {
-    return this.amount ? new FPNumber(this.amount, this.asset?.decimals).toLocaleString() : ''
+    return this.amount && this.asset ? new FPNumber(this.amount, this.asset.decimals).toLocaleString() : ''
   }
 
   get assetSymbol (): string {
     return this.asset?.symbol ?? ''
+  }
+
+  get formattedAssetSymbol (): string {
+    return formatAssetSymbol(this.assetSymbol)
+  }
+
+  get evmIcon (): string {
+    return this.getEvmIcon(this.evmNetwork)
+  }
+
+  get header (): string {
+    return `${this.formattedAmount} ${this.formattedAssetSymbol}`
+  }
+
+  get soraFeeFiatValue (): Nullable<string> {
+    if (this.isSoraToEvm) {
+      return this.getFiatAmountByCodecString(this.historyItem?.soraNetworkFee || this.soraNetworkFee)
+    }
+    return null
+  }
+
+  get soraAmountFiatValue (): Nullable<string> {
+    if (this.isSoraToEvm && this.asset) {
+      return this.getFiatAmountByString(this.amount, this.asset)
+    }
+    return null
   }
 
   get currentState (): STATES {
@@ -412,17 +449,27 @@ export default class BridgeTransaction extends Mixins(
     return this.evmTransactionHash
   }
 
-  get transactionFromDate (): string {
-    return this.transactionDate(this.isSoraToEvm ? this.soraTransactionDate : this.evmTransactionDate)
+  get transactionFirstDate (): string {
+    return this.getTransactionDate(this.isSoraToEvm ? this.soraTransactionDate : this.evmTransactionDate)
+  }
+
+  get transactionSecondDate (): string {
+    return this.getTransactionDate(!this.isSoraToEvm ? this.soraTransactionDate : this.evmTransactionDate)
   }
 
   get formattedSoraNetworkFee (): string {
-    return this.formatCodecNumber(this.historyItem?.soraNetworkFee ?? this.soraNetworkFee)
+    return this.getStringFromCodec(this.historyItem?.soraNetworkFee || this.soraNetworkFee, this.tokenXOR?.decimals)
+  }
+
+  get soraNetworkFeeFiatValue (): Nullable<string> {
+    if (this.isSoraToEvm) {
+      return null
+    }
+    return this.getFiatAmountByCodecString(this.historyItem?.soraNetworkFee || this.soraNetworkFee)
   }
 
   get formattedEvmNetworkFee (): string {
-    const fee = this.formatCodecNumber(this.historyItem?.ethereumNetworkFee ?? this.evmNetworkFee)
-    return fee ? `~${fee}` : fee
+    return this.getFPNumberFromCodec(this.historyItem?.ethereumNetworkFee ?? this.evmNetworkFee).toLocaleString()
   }
 
   get isInsufficientBalance (): boolean {
@@ -658,7 +705,7 @@ export default class BridgeTransaction extends Mixins(
     return this.currentState === (!this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED) ? 'info-line--error' : ''
   }
 
-  transactionDate (transactionDate: string): string {
+  getTransactionDate (transactionDate: string): string {
     // We use current date if request is failed
     const date = transactionDate ? new Date(transactionDate) : new Date()
     return `${date.getDate()} ${this.t(`months[${date.getMonth()}]`)} ${date.getFullYear()}, ${formatDateItem(date.getHours())}:${formatDateItem(date.getMinutes())}:${formatDateItem(date.getSeconds())}`
