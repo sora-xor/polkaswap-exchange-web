@@ -105,7 +105,7 @@
               <token-address v-if="isAssetSelected" v-bind="asset" :external="isSoraToEvm" class="input-value" />
             </div>
             <div v-if="isNetworkBConnected && isSoraToEvm" class="bridge-item-footer">
-              <s-divider />
+              <s-divider type="tertiary" />
               <span>{{ formatAddress(isSoraToEvm ? evmAddress : getWalletAddress(), 8) }}</span>
               <span>{{ t('bridge.connected') }}</span>
             </div>
@@ -484,6 +484,9 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
 
 .bridge {
   &-content > .el-card__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
   }
   .bridge-item {
@@ -512,42 +515,39 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
   align-items: center;
   &-content {
     @include bridge-content;
-    .input-title--network {
-      white-space: nowrap;
+    @include generic-input-lines;
+    @include token-styles;
+    @include vertical-divider('s-button--switch', $inner-spacing-medium);
+    @include vertical-divider('s-divider-tertiary');
+    .el-button--history {
+      margin-left: auto;
+    }
+    @include buttons;
+    @include full-width-button('el-button--connect', $inner-spacing-mini);
+    @include full-width-button('el-button--next');
+    .input-title {
+      &--network {
+        white-space: nowrap;
+      }
+      i {
+        margin-top: 1px;
+        font-size: 10px;
+      }
     }
   }
-  @include generic-input-lines;
-  @include token-styles;
-  @include vertical-divider('s-button--switch', $inner-spacing-medium);
-  .s-icon--network {
-    margin-top: 1px;
-    font-size: 10px;
-  }
-
   .bridge-item {
     &-footer {
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
       font-size: var(--s-font-size-mini);
-      letter-spacing: var(--s-letter-spacing-mini);
+      letter-spacing: var(--s-letter-spacing-small);
       line-height: var(--s-line-height-medium);
       color: var(--s-color-base-content-primary);
-
-      .el-divider {
-        margin-top: $inner-spacing-mini;
-        margin-bottom: $inner-spacing-mini;
-        width: 100%;
-      }
     }
     & + .bridge-info {
       margin-top: $basic-spacing * 2;
     }
-  }
-  .s-button--switch {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
   }
   &-footer {
     display: flex;
@@ -556,22 +556,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     font-size: var(--s-font-size-mini);
     line-height: var(--s-line-height-big);
     color: var(--s-color-base-content-secondary);
-  }
-
-  @include buttons;
-
-  .el-button {
-    &--connect {
-      margin-top: $inner-spacing-mini;
-      width: 100%;
-    }
-    &--next {
-      margin-top: $inner-spacing-medium;
-      width: 100%;
-    }
-  }
-  .el-button--history {
-    margin-left: auto;
   }
 }
 </style>
