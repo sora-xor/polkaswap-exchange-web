@@ -3,7 +3,7 @@
     <header class="header">
       <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
       <div class="app-controls s-flex">
-        <s-button type="action" class="theme-control" @click="switchTheme">{{ /* [DARK]: add an icon */ }}</s-button>
+        <s-button type="action" class="theme-control" :icon="themeIcon" @click="switchTheme" />
         <s-button type="tertiary" class="lang-control" icon="basic-globe-24" @click="openSelectLanguageDialog">{{ selectedLanguage }}</s-button>
         <s-button type="tertiary" alternative size="medium" class="node-control" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
           <div class="node-control__text">
@@ -117,6 +117,8 @@ import { Action, Getter, State } from 'vuex-class'
 import { WALLET_CONSTS, WalletAvatar, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
 import { History, KnownSymbols } from '@sora-substrate/util'
 import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils'
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
+import DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem'
 
 import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize, Language } from '@/consts'
 
@@ -161,12 +163,14 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   showHelpDialog = false
   showSelectLanguageDialog = false
 
-  switchTheme = switchTheme // can be @Action as well
+  switchTheme: AsyncVoidFn = switchTheme
 
   @State(state => state.settings.faucetUrl) faucetUrl!: string
   @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
 
-  @Getter libraryDesignSystem!: string
+  @Getter libraryTheme!: Theme
+  @Getter libraryDesignSystem!: DesignSystem
+
   @Getter firstReadyTransaction!: any
   @Getter isLoggedIn!: boolean
   @Getter account!: any
@@ -236,6 +240,10 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
 
   set showSelectNodeDialog (flag: boolean) {
     this.setSelectNodeDialogVisibility(flag)
+  }
+
+  get themeIcon (): string {
+    return this.libraryTheme === Theme.LIGHT ? 'various-brightness-low-24' : 'various-moon-24'
   }
 
   get nodeLogo (): any {
