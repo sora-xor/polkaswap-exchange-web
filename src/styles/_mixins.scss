@@ -434,7 +434,8 @@
   white-space: initial;
 
   .formatted-amount {
-    &__integer {
+    &__integer,
+    &__symbol {
       font-size: $fontSize;
     }
     &__decimal {
