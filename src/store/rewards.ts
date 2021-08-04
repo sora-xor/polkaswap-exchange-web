@@ -4,7 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownSymbols, RewardInfo, RewardsInfo, CodecString } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, CodecString } from '@sora-substrate/util'
 import ethersUtil from '@/utils/ethers-util'
 import { RewardsAmountHeaderItem } from '@/types/rewards'
 import { groupRewardsByAssetsList } from '@/utils/rewards'
@@ -95,10 +95,12 @@ const getters = {
     if (!getters.rewardsAvailable) {
       return [
         {
+          asset: KnownAssets.get(KnownSymbols.PSWAP),
           symbol: KnownSymbols.PSWAP,
           amount: ''
         } as RewardsAmountHeaderItem,
         {
+          asset: KnownAssets.get(KnownSymbols.VAL),
           symbol: KnownSymbols.VAL,
           amount: ''
         } as RewardsAmountHeaderItem

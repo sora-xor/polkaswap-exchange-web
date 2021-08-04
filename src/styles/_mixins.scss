@@ -66,9 +66,18 @@
       margin-top: $inner-spacing-mini / 2;
       margin-bottom: 0;
       min-height: $inner-spacing-mini * 2.25;
+      .formatted-amount--fiat-value {
+        margin-right: auto;
+        font-size: var(--s-font-size-small);
+        font-weight: 600;
+        + .token-address {
+          margin-left: var(--s-basic-spacing);
+        }
+      }
     }
 
-    .input-title {
+    .input-title,
+    .input-value {
       display: flex;
       align-items: center;
       color: var(--s-color-base-content-secondary);
@@ -84,6 +93,12 @@
       & > *:not(:last-child) {
         margin-right: $inner-spacing-mini / 2;
       }
+    }
+
+    .input-value {
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      margin-left: $inner-spacing-mini;
     }
   }
 }
@@ -366,4 +381,20 @@
 @mixin radio-title {
   font-size: var(--s-font-size-medium);
   font-weight: 600;
+}
+
+@mixin formatted-amount ($fontSize: var(--s-font-size-big), $fontSizeRate: 0.875) {
+  display: block !important;
+  font-size: 0 !important;
+  word-break: break-all;
+  white-space: initial;
+
+  .formatted-amount {
+    &__integer {
+      font-size: $fontSize;
+    }
+    &__decimal {
+      font-size: calc(#{$fontSize} * #{$fontSizeRate}) !important;
+    }
+  }
 }

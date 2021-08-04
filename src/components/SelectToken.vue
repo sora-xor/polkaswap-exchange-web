@@ -32,7 +32,21 @@
               </s-row>
             </s-col>
             <div v-if="connected" class="token-item__amount-container">
-              <span class="token-item__amount">{{ formatBalance(token) }}</span>
+              <template v-if="formatBalance(token) !== formattedZeroSymbol">
+                <formatted-amount
+                  class="token-item__amount"
+                  :value="formatBalance(token)"
+                  :font-size-rate="FontSizeRate.MEDIUM"
+                />
+                <formatted-amount
+                  v-if="shouldFiatBeShown(token)"
+                  :value="getFiatBalance(token)"
+                  :font-size-rate="FontSizeRate.MEDIUM"
+                  :font-weight-rate="FontWeightRate.MEDIUM"
+                  is-fiat-value
+                />
+              </template>
+              <span v-else class="token-item__amount">{{ formattedZeroSymbol }}</span>
             </div>
           </div>
         </div>
@@ -99,7 +113,21 @@
                 </s-row>
               </s-col>
               <div v-if="connected" class="token-item__amount-container">
-                <span class="token-item__amount">{{ formatBalance(token) }}</span>
+                <template v-if="formatBalance(token) !== formattedZeroSymbol">
+                  <formatted-amount
+                    class="token-item__amount"
+                    :value="formatBalance(token)"
+                    :font-size-rate="FontSizeRate.MEDIUM"
+                  />
+                  <formatted-amount
+                    v-if="shouldFiatBeShown(token)"
+                    :value="getFiatBalance(token)"
+                    :font-size-rate="FontSizeRate.MEDIUM"
+                    :font-weight-rate="FontWeightRate.MEDIUM"
+                    is-fiat-value
+                  />
+                </template>
+                <span v-else class="token-item__amount">{{ formattedZeroSymbol }}</span>
               </div>
               <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
                 <s-icon name="basic-trash-24" />
@@ -116,13 +144,12 @@
 import first from 'lodash/fp/first'
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { Asset, AccountAsset, isBlacklistAsset, Whitelist } from '@sora-substrate/util'
-import { api } from '@soramitsu/soraneo-wallet-web'
+import { Asset, AccountAsset, isBlacklistAsset } from '@sora-substrate/util'
+import { api, FormattedAmountMixin, FormattedAmount, FontSizeRate, FontWeightRate } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components, ObjectInit } from '@/consts'
 import { lazyComponent } from '@/router'
@@ -132,16 +159,21 @@ const namespace = 'assets'
 
 @Component({
   components: {
+    FormattedAmount,
     DialogBase,
     TokenLogo: lazyComponent(Components.TokenLogo),
     TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
-export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMixin, LoadingMixin, NumberFormatterMixin) {
+export default class SelectToken extends Mixins(FormattedAmountMixin, TranslationMixin, SelectAssetMixin, LoadingMixin) {
+  private readonly formattedZeroSymbol = '-'
   readonly tokenTabs = [
     'assets',
     'custom'
   ]
+
+  readonly FontSizeRate = FontSizeRate
+  readonly FontWeightRate = FontWeightRate
 
   tabValue = first(this.tokenTabs)
   query = ''
@@ -159,7 +191,6 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @Getter('nonWhitelistAccountAssets', { namespace }) nonWhitelistAccountAssets!: Array<AccountAsset>
   @Getter('nonWhitelistAssets', { namespace }) nonWhitelistAssets!: Array<Asset>
   // Wallet store
-  @Getter whitelist!: Whitelist
   @Getter whitelistIdsBySymbol!: any
   @Getter accountAssetsAddressTable
 
@@ -209,7 +240,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   formatBalance (token: AccountAsset): string {
     return formatAssetBalance(token, {
       showZeroBalance: false,
-      formattedZero: '-'
+      formattedZero: this.formattedZeroSymbol
     })
   }
 
@@ -267,12 +298,22 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
       this.searchCustomAsset()
     }
   }
+
+  shouldFiatBeShown (asset: AccountAsset): boolean {
+    return !!this.getAssetFiatPrice(asset)
+  }
 }
 </script>
 
 <style lang="scss">
 .asset-select {
   @include exchange-tabs();
+}
+.token-item__amount.formatted-amount {
+  @include formatted-amount;
+  .formatted-amount__decimal {
+    font-weight: 600;
+  }
 }
 </style>
 
@@ -319,17 +360,18 @@ $token-item-height: 71px;
   &__address, &__symbol {
     white-space: nowrap;
   }
-  &__symbol, &__amount {
+  &__symbol {
     font-size: var(--s-font-size-big);
+    white-space: nowrap;
+  }
+  &__symbol, &__amount {
     line-height: var(--s-line-height-small);
     letter-spacing: var(--s-letter-spacing-small);
     font-weight: 800;
-    white-space: nowrap;
   }
-  &__amount {
-    &-container {
-      text-align: right;
-    }
+  &__amount-container {
+    text-align: right;
+    min-width: 40%;
   }
   &__remove {
     margin-top: -5px;
