@@ -93,7 +93,8 @@
         "confirmTitle": "Confirmar transacción",
         "confirm": "@:confirmText",
         "errorAddress": "Dirección no válida. Por favor, compruébela e inténtelo de nuevo.",
-        "addressDesc": "Sólo se aceptan direcciones de cuentas de la Red SORA. Por favor, asegúrate de que tienes una dirección de cuenta de la Red SORA correctamente formateada que comience con el prefijo 'cn'."
+        "addressDesc": "Sólo se aceptan direcciones de cuentas de la Red SORA. Por favor, asegúrate de que tienes una dirección de cuenta de la Red SORA correctamente formateada que comience con el prefijo 'cn'.",
+        "feeTooltip": "@:networkFeeTooltipText"
     },
     "account": {
         "successCopy": "La dirección de la cartera se ha copiado en el portapapeles",
@@ -124,7 +125,8 @@
             "locked": "- Bloqueado",
             "reserved": "- Reservado",
             "total": "Total"
-        }
+        },
+        "totalAssetsValue": "El valor total de sus activos:"
     },
     "asset": {
         "remove": "Eliminar el Activo"
@@ -429,8 +431,9 @@
         "insufficientAmount": "Cantidad insuficiente de {tokenSymbol}",
         "insufficientLiquidity": "Liquidez insuficiente",
         "confirmSwap": "Confirmar el intercambio",
-        "swapOutputMessage": "La cantidad esta estimada. Recibirá <span class=\"min-received-label\">al menos<\/span> {transactionValue} o la transacción se revertirá.",
-        "rewardsForSwap": "Recompensas estratégicas de PSWAP"
+        "swapOutputMessage": "La cantidad esta estimada. Recibirá al menos {transactionValue} o la transacción se revertirá.",
+        "rewardsForSwap": "Recompensas estratégicas de PSWAP",
+        "swapInputMessage": "La entrada es estimada. Venderá el máximo de {transactionValue} o la transacción se revertirá"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -497,7 +500,6 @@
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
-        "viewHistory": "Ver la transacción en el historial de transacciones",
         "details": "{de} por {a}",
         "for": "por",
         "steps": {
@@ -507,7 +509,7 @@
         },
         "status": {
             "pending": "{step} transacciones pendientes ...",
-            "failed": "{step} transacciones fallaron. @:( retryText).",
+            "failed": "{step} transacciones fallaron. @:(retryText).",
             "confirm": "Confirmar 2ª de 2 transacciones...",
             "complete": "Completa",
             "convertionComplete": "Conversión completa"
@@ -543,8 +545,10 @@
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
         "viewInSorascan": "Ver en SORAscan",
-        "changeAccount": "",
-        "expectedAddress": ""
+        "changeAccount": "@:changeAccountText en @:metamask",
+        "expectedAddress": "Dirección esperada en @:metamask",
+        "title": "Transacción puente",
+        "expectedMetaMaskAddress": "Dirección esperada en @:metamask"
     },
     "months": {
         "0": "Enero",
@@ -589,7 +593,7 @@
         "title": "Crear un par",
         "deposit": "Depositar",
         "balance": "Balance",
-        "pricePool": "Precios y Participación en el Fondo común",
+        "pricePool": "Precios y tarifas",
         "shareOfPool": "Participación del Fondo común",
         "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{first}-{second} Tokens del Fondo común",
@@ -607,7 +611,7 @@
         "firstLiquidityProviderInfo": "La proporción de Tokens que añadas fijará el precio de este Fondo común.<br\/>Una vez que estés satisfecho con la tarifa, haz clic en el suministro para revisar."
     },
     "confirmSupply": {
-        "title": "Usted recibirá",
+        "title": "Su participación en el fondo común será",
         "outputDescription": "La cantidad esta estimada. Si el precio cambia más de {slippageTolerance}% su transacción se revertirá.",
         "poolTokensBurned": "{first}-{second} Tokens del Fondo común quemados",
         "price": "Precio"
@@ -629,7 +633,7 @@
         "description": "La retirada de Tokens del Fondo común convierte su posición de nuevo en Tokens subyacentes a la tasa actual, proporcional a su Participación en el Fondo común. Las comisiones acumuladas se incluyen en las cantidades que recibe.",
         "outputMessage": "La cantidad esta estimada. Si el precio cambia más de {slippageTolerance}% su transacción se revertirá.",
         "confirmTitle": "Usted recibirá",
-        "shareOfPool": ""
+        "shareOfPool": "Parte del fondo común después de la transacción"
     },
     "dexSettings": {
         "title": "Configuración de transacciones",
@@ -706,17 +710,17 @@
             "NtfAirdrop": "NFT Airdrop",
             "LiquidityProvision": "Comisiones obtenidas por la provisión de Liquidez",
             "BuyOnBondingCurve": "Comprando en la TBC",
-            "NftAirdrop": "NFT Airdrop",
+            "NftAirdrop": "Lanzamiento de NFT",
             "MarketMakerVolume": "Creador de Mercado",
             "LiquidityProvisionFarming": "Farming \"Agricultura del Rendimiento\""
         },
         "vested": "establecido",
-        "forText": "",
-        "totalVested": "",
-        "claimableAmountDoneVesting": "",
+        "forText": "por",
+        "totalVested": "Recompensas totales",
+        "claimableAmountDoneVesting": "Monto reclamable (otorgado)",
         "groups": {
-            "strategic": "",
-            "external": ""
+            "strategic": "Recompensas estratégicas",
+            "external": "Recompensas para la cuenta de Ethereum conectada"
         }
     },
     "provider": {
@@ -725,7 +729,8 @@
         "messages": {
             "checkExtension": "{name} está ocupada, verifíquela",
             "extensionLogin": "Por favor, inicie sesión en su extensión de {name}",
-            "installExtension": "La extensión {name} no se encuentra. Por favor, instálela."
+            "installExtension": "La extensión {name} no se encuentra. Por favor, instálela.\n\n¿Ya ha instalado la extensión? Por favor, recargue la página",
+            "reloadPage": "Recargar página"
         }
     },
     "selectLanguageDialog": {

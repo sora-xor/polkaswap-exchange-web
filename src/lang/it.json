@@ -93,7 +93,8 @@
         "confirmTitle": "Conferma la transazione",
         "confirm": "@:confirmText",
         "errorAddress": "Indirizzo non valido. Si prega di controllare e riprovare.",
-        "addressDesc": "Sono accettati solo address di account di rete SORA. Assicurati di avere un indirizzo di account di rete SORA formattato correttamente che inizia con il prefisso 'cn'."
+        "addressDesc": "Sono accettati solo address di account di rete SORA. Assicurati di avere un indirizzo di account di rete SORA formattato correttamente che inizia con il prefisso 'cn'.",
+        "feeTooltip": "@:networkFeeTooltipText"
     },
     "account": {
         "successCopy": "L'indirizzo del wallet è stato copiato negli appunti",
@@ -124,7 +125,8 @@
             "locked": "- Bloccato",
             "reserved": " - Riservato",
             "total": "Totale"
-        }
+        },
+        "totalAssetsValue": "Il valore totale del tuo patrimonio:"
     },
     "asset": {
         "remove": "Rimuovi l'asset"
@@ -429,8 +431,9 @@
         "insufficientAmount": "Quantità insufficiente di {tokenSymbol}",
         "insufficientLiquidity": "Liquidità insufficiente",
         "confirmSwap": "Conferma lo scambio",
-        "swapOutputMessage": "L'output è stimato. Riceverai <span class=\"min-received-label\">almeno<\/span> {transactionValue} o la transazione tornerà indietro.",
-        "rewardsForSwap": "PSWAP Strategic Rewards"
+        "swapOutputMessage": "L'output è stimato. Riceverai almeno {transactionValue} o la transazione tornerà indietro.",
+        "rewardsForSwap": "PSWAP Strategic Rewards",
+        "swapInputMessage": "L'input è stimato. Venderai al massimo {transactionValue} o la transazione verrà annullata."
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -497,7 +500,6 @@
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
-        "viewHistory": "Visualizza la transazione nella cronologia delle transazioni",
         "details": "{from} per {to}",
         "for": "per",
         "steps": {
@@ -544,7 +546,9 @@
         "connectWallet": "@:connectWalletText",
         "viewInSorascan": "Visualizza su Sorascan",
         "changeAccount": "@:changeAccountText in @:metamask",
-        "expectedAddress": "Indirizzo previsto in @:metamask"
+        "expectedAddress": "Indirizzo previsto in @:metamask",
+        "title": "Transazione ponte",
+        "expectedMetaMaskAddress": "Indirizzo previsto in @:metamask"
     },
     "months": {
         "0": "Jan",
@@ -712,7 +716,7 @@
         },
         "vested": "vested",
         "forText": "per",
-        "totalVested": "Totale in attesa di maturazione",
+        "totalVested": "Ricompense totali",
         "claimableAmountDoneVesting": "Importo che puoi ottenere (maturazione effettuata)",
         "groups": {
             "strategic": "Strategic Rewards",
@@ -725,7 +729,8 @@
         "messages": {
             "checkExtension": "L'estensione {name} non è stata trovata. Si prega di controllarla",
             "extensionLogin": "Per favore accedi all' estensione {name}",
-            "installExtension": "L'estensione {name} non è stata trovata. Si prega di installarla!"
+            "installExtension": "L'estensione {name} non è stata trovata. Si prega di installarla!",
+            "reloadPage": "Ricarica la pagina"
         }
     },
     "selectLanguageDialog": {

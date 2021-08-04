@@ -93,7 +93,8 @@
         "confirmTitle": "Konfirmasi transaksi",
         "confirm": "@:confirmText",
         "errorAddress": "Alamat tidak valid. Silakan periksa dan coba lagi.",
-        "addressDesc": ""
+        "addressDesc": "Hanya alamat akun jaringan SORA yang diterima. Harap pastikan bahwa Anda memiliki alamat akun jaringan SORA yang diformat dengan benar yang dimulai dengan awalan 'cn'.",
+        "feeTooltip": "@:networkFeeTooltipText"
     },
     "account": {
         "successCopy": "Alamat dompet disalin ke clipboard",
@@ -124,7 +125,8 @@
             "locked": "- Terkunci",
             "reserved": " - Dicadangkan",
             "total": "Total"
-        }
+        },
+        "totalAssetsValue": "Nilai total aset Anda:"
     },
     "asset": {
         "remove": "Hapus aset"
@@ -183,7 +185,7 @@
         },
         "extensibleSupply": {
             "placeholder": "Suplai yang dapat diperluas",
-            "desc": ""
+            "desc": "Kemampuan untuk mencetak lebih banyak token."
         }
     },
     "transaction": {
@@ -262,7 +264,7 @@
         "Stats": "Statistik",
         "Support": "Dukungan",
         "CreatePair": "Buat Pair",
-        "Tokens": ""
+        "Tokens": "Token"
     },
     "social": {
         "twitter": "Twitter",
@@ -429,8 +431,9 @@
         "insufficientAmount": "Jumlah {tokenSymbol} tidak mencukupi",
         "insufficientLiquidity": "Likuiditas tidak mencukupi",
         "confirmSwap": "Konfirmasi swap",
-        "swapOutputMessage": "Keluaran diperkirakan. Anda akan menerima <span class=\"min-received-label\"> setidaknya <\/span> {transactionValue} atau transaksi akan dibatalkan.",
-        "rewardsForSwap": "Reward Strategis PSWAP"
+        "swapOutputMessage": "Keluaran diperkirakan. Anda akan menerima setidaknya {transactionValue} atau transaksi akan dibatalkan.",
+        "rewardsForSwap": "Reward Strategis PSWAP",
+        "swapInputMessage": "Masukan diperkirakan. Anda akan menjual maksimum {transactionValue} atau transaksi akan kembali."
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -497,7 +500,6 @@
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
-        "viewHistory": "Lihat transaksi di riwayat transaksi",
         "details": "{from} untuk {to}",
         "for": " untuk ",
         "steps": {
@@ -543,8 +545,10 @@
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
         "viewInSorascan": "Lihat di Sorascan",
-        "changeAccount": "",
-        "expectedAddress": ""
+        "changeAccount": "@:changeAccountText di @:metamask",
+        "expectedAddress": "Alamat yang diharapkan di @:metamask",
+        "title": "Transaksi Jembatan",
+        "expectedMetaMaskAddress": "Alamat yang diharapkan di @:metamask"
     },
     "months": {
         "0": "Jan",
@@ -629,7 +633,7 @@
         "description": "Menghapus token pool mengubah posisi Anda kembali menjadi token asal berdasarkan nilai tukar saat ini, sebanding dengan jumlah bagian pool Anda. keuntungan didapat sudah termasuk dalam jumlah yang Anda terima.",
         "outputMessage": "Output merupakan estimasi. Jika harga berubah lebih dari {slippageTolerance}% transaksi Anda akan dikembalikan.",
         "confirmTitle": "Anda akan menerima",
-        "shareOfPool": ""
+        "shareOfPool": "Pembagian pool setelah transaksi"
     },
     "dexSettings": {
         "title": "Pengaturan transaksi",
@@ -707,16 +711,16 @@
             "LiquidityProvision": "Biaya yang diperoleh dari penyediaan likuiditas",
             "BuyOnBondingCurve": "membeli dari TBC",
             "NftAirdrop": "Airdrop NFT",
-            "MarketMakerVolume": "",
-            "LiquidityProvisionFarming": ""
+            "MarketMakerVolume": "Pembuat Pasar",
+            "LiquidityProvisionFarming": "Farming"
         },
         "vested": "vested",
-        "forText": "",
-        "totalVested": "",
-        "claimableAmountDoneVesting": "",
+        "forText": "untuk",
+        "totalVested": "Hadiah total",
+        "claimableAmountDoneVesting": "Jumlah yang dapat diklaim (selesai vesting)",
         "groups": {
-            "strategic": "",
-            "external": ""
+            "strategic": "Imbalan Strategis",
+            "external": "Hadiah untuk akun ethereum yang terhubung"
         }
     },
     "provider": {
@@ -725,20 +729,21 @@
         "messages": {
             "checkExtension": "{name} ekstensi sedang sibuk, harap periksa",
             "extensionLogin": "Silakan masuk ke ekstensi {name} Anda",
-            "installExtension": "{name} ekstensi tidak ditemukan. Silahkan menginstal!"
+            "installExtension": "{name} ekstensi tidak ditemukan. Silahkan menginstal!",
+            "reloadPage": "Muat ulang halaman"
         }
     },
     "selectLanguageDialog": {
         "title": "Bahasa"
     },
     "tokens": {
-        "title": "",
-        "symbol": "",
-        "name": "",
-        "assetId": ""
+        "title": "Token Terdaftar",
+        "symbol": "Simbol",
+        "name": "Nama",
+        "assetId": "ID Aset"
     },
-    "memorandum": "",
-    "memorandumLink": "",
-    "privacyLink": "",
-    "FAQ": ""
+    "memorandum": "Memorandum Polkaswap dan Ketentuan Layanan",
+    "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\"> @:memorandum <\/a>",
+    "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\"> @:helpDialog.privacyPolicy <\/a>",
+    "FAQ": "Tanya Jawab Polkaswap"
 }

@@ -93,7 +93,8 @@
         "confirmTitle": "Jẹrisi idunadura",
         "confirm": "@:confirmText",
         "errorAddress": "Adirẹsi ti ko wulo. Jọwọ ṣayẹwo rẹ ki o tun gbiyanju.",
-        "addressDesc": "Awọn adirẹsi akọọlẹ nẹtiwọọki SORA nikan ni a gba. Jọwọ rii daju pe o ni kika akọọlẹ nẹtiwọọki nẹtiwọọki SORA kan ti o bẹrẹ pẹlu prefix 'cn'."
+        "addressDesc": "Awọn adirẹsi akọọlẹ nẹtiwọọki SORA nikan ni a gba. Jọwọ rii daju pe o ni kika akọọlẹ nẹtiwọọki nẹtiwọọki SORA kan ti o bẹrẹ pẹlu prefix 'cn'.",
+        "feeTooltip": "@:networkFeeTooltipText"
     },
     "account": {
         "successCopy": "Ti daakọ adirẹsi apamọwọ si agekuru naa",
@@ -124,7 +125,8 @@
             "locked": "- Ti tiipa",
             "reserved": "- Ni ipamọ",
             "total": "Lapapọ"
-        }
+        },
+        "totalAssetsValue": "Iye awọn ohun -ini rẹ lapapọ:"
     },
     "asset": {
         "remove": "Yọ dukia kuro"
@@ -296,7 +298,7 @@
         },
         "polkadot": {
             "title": "Kini polkadot {.js} ?",
-            "description": "Itẹsiwaju Polkadot {.js} jẹ itẹsiwaju aṣawakiri ti o wa fun Firefox ati Chrome ti a ṣe igbẹhin si iṣakoso awọn iroyin fun Awọn ẹwọn ti o da lori Substrate, pẹlu @: soraText, Polkadot ati Kusama. O le ṣafikun, gbe wọle, ati gbejade awọn iroyin ati buwọlu awọn iṣowo tabi awọn nkan elekeji ti o ti bẹrẹ lati awọn oju opo wẹẹbu ti o fun ni aṣẹ."
+            "description": "Itẹsiwaju Polkadot {.js} jẹ itẹsiwaju aṣawakiri ti o wa fun Firefox ati Chrome ti a ṣe igbẹhin si iṣakoso awọn iroyin fun Awọn ẹwọn ti o da lori Substrate, pẹlu @:soraText, Polkadot ati Kusama. O le ṣafikun, gbe wọle, ati gbejade awọn iroyin ati buwọlu awọn iṣowo tabi awọn nkan elekeji ti o ti bẹrẹ lati awọn oju opo wẹẹbu ti o fun ni aṣẹ."
         }
     },
     "node": {
@@ -429,8 +431,9 @@
         "insufficientAmount": "Iye {tokenSymbol} Oto",
         "insufficientLiquidity": "Liquidity ko to",
         "confirmSwap": "Jẹrisi afiropo ",
-        "swapOutputMessage": "Ti ṣe iṣiro iṣẹjade. Iwọ yoo gba <span class=\"min-received-label\"> o kere ju <\/span> {transactionValue} tabi idunadura naa yoo pada.",
-        "rewardsForSwap": "Awọn ere ilana PSWAP"
+        "swapOutputMessage": "Ti ṣe iṣiro iṣẹjade. Iwọ yoo gba o kere ju {transactionValue} tabi idunadura naa yoo pada.",
+        "rewardsForSwap": "Awọn ere ilana PSWAP",
+        "swapInputMessage": "Iṣagbewọle ti ni iṣiro. Iwọ yoo ta o pọju {transactionValue} tabi idunadura naa yoo pada."
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -497,7 +500,6 @@
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
-        "viewHistory": "Wo iṣowo ni itan-iṣowo",
         "details": "{from} fun {to}",
         "for": "fun",
         "steps": {
@@ -507,7 +509,7 @@
         },
         "status": {
             "pending": "{step} Idunadura n sunmọtosi ...",
-            "failed": "{step} idunadura kuna. @:(gbiyanjuText).",
+            "failed": "{step} idunadura kuna. @:(retryText).",
             "confirm": "Jẹrisi ikeji ninu awọn iṣowo meji ...",
             "complete": "Pari",
             "convertionComplete": "Iyipada ti pari"
@@ -543,8 +545,10 @@
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
         "viewInSorascan": "Wo ni SORAScan",
-        "changeAccount": "",
-        "expectedAddress": ""
+        "changeAccount": "@:changeAccountText Inu @:metamask",
+        "expectedAddress": "Adirẹsi ti a nireti ni @:metamask",
+        "title": "Idunadura Bridge",
+        "expectedMetaMaskAddress": "Adirẹsi ti a nireti ni @:metamask"
     },
     "months": {
         "0": "Oṣu Kini",
@@ -629,7 +633,7 @@
         "description": "Yiyọ awọn ami adagun yi pada ipo rẹ pada si awọn ami atokọ ni oṣuwọn lọwọlọwọ, ni ibamu si ipin rẹ ti adagun-odo. Awọn owo ti a gba ni o wa ninu awọn oye ti o gba.",
         "outputMessage": "Ti ṣe iṣiro iṣẹjade. Ti idiyele ba yipada diẹ sii ju {slippageTolerance} % iṣowo rẹ yoo pada.",
         "confirmTitle": "Iwo yoo gba",
-        "shareOfPool": ""
+        "shareOfPool": "Pinpin pool lẹhin idunadura"
     },
     "dexSettings": {
         "title": "Awọn eto iṣowo",
@@ -711,12 +715,12 @@
             "LiquidityProvisionFarming": "Farming"
         },
         "vested": "Tà fun",
-        "forText": "",
-        "totalVested": "",
-        "claimableAmountDoneVesting": "",
+        "forText": "fun",
+        "totalVested": "Apapo Ta fun",
+        "claimableAmountDoneVesting": "Iye ti o ni ẹtọ (ti a ṣe)",
         "groups": {
-            "strategic": "",
-            "external": ""
+            "strategic": "Ere Awọn ilana",
+            "external": "Awọn ere fun iroyin ethereum ti a sopọ"
         }
     },
     "provider": {
@@ -725,7 +729,8 @@
         "messages": {
             "checkExtension": "{name}extension nsise, jọwọ ṣayẹwo",
             "extensionLogin": "Jọwọ buwolu wọle lati {name} itesiwaju",
-            "installExtension": "a ko ri apele {name} Jọwọ install re! "
+            "installExtension": "a ko ri apele {name} Jọwọ install re! ",
+            "reloadPage": "Ṣe atunkọ oju -iwe"
         }
     },
     "selectLanguageDialog": {

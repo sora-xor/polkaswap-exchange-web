@@ -93,7 +93,8 @@
         "confirmTitle": "Подтвердить транзакцию",
         "confirm": "@:confirmText",
         "errorAddress": "Неверный адрес. Пожалуйста, перепроверьте и попробуйте еще раз.",
-        "addressDesc": "Принимаются только адреса сетевых аккаунтов SORA. Убедитесь, что у вас есть правильно отформатированный адрес сетевой учетной записи SORA, начинающийся с префикса «cn»."
+        "addressDesc": "Принимаются только адреса сетевых аккаунтов SORA. Убедитесь, что у вас есть правильно отформатированный адрес сетевой учетной записи SORA, начинающийся с префикса «cn».",
+        "feeTooltip": "@:networkFeeTooltipText"
     },
     "account": {
         "successCopy": "Адрес кошелька скопирован в буфер обмена",
@@ -124,7 +125,8 @@
             "locked": "- Заблокировано",
             "reserved": " - Зарезервировано",
             "total": "Всего"
-        }
+        },
+        "totalAssetsValue": "Общая стоимость ваших активов:"
     },
     "asset": {
         "remove": "Удалить актив"
@@ -296,7 +298,7 @@
         },
         "polkadot": {
             "title": "Что такое polkadot{.js}?",
-            "description": "Расширение Polkadot {.js} - это расширение браузера, доступное для Firefox и Chrome, предназначенное для управления аккаунтами цепей на основе Substrate, включая @: soraText, Polkadot и Kusama. Вы можете добавлять, импортировать и экспортировать аккаунты и подписывать транзакции или внешние данные, которые вы инициировали с авторизованных вами веб-сайтов."
+            "description": "Расширение Polkadot {.js} - это расширение браузера, доступное для Firefox и Chrome, предназначенное для управления аккаунтами цепей на основе Substrate, включая @:soraText, Polkadot и Kusama. Вы можете добавлять, импортировать и экспортировать аккаунты и подписывать транзакции или внешние данные, которые вы инициировали с авторизованных вами веб-сайтов."
         }
     },
     "node": {
@@ -314,7 +316,7 @@
         }
     },
     "selectNodeDialog": {
-        "title": "@: soraText Выбор сетевого узла",
+        "title": "@:soraText Выбор сетевого узла",
         "addNode": "Добавить персонализированную ноду",
         "customNode": "Персонализированная нода",
         "howToSetupOwnNode": "Как настроить собственную ноду @:soraText",
@@ -348,7 +350,7 @@
     "sora": {
         "Devnet": "@:soraText Сеть для разработчиков",
         "Testnet": "@:soraText Тестовая сеть",
-        "Mainnet": "@: soraText Основная сеть"
+        "Mainnet": "@:soraText Основная сеть"
     },
     "evm": {
         "main": "Основная сеть Ethereum",
@@ -429,8 +431,9 @@
         "insufficientAmount": "Недостаточный {tokenSymbol} баланс",
         "insufficientLiquidity": "Недостаточная ликвидность",
         "confirmSwap": "Подтвердить обмен",
-        "swapOutputMessage": "Вывод оценён. Вы получите <span class=\"min-received-label\">как минимум<\/span> {transactionValue} или транзакция будет отменена.",
-        "rewardsForSwap": "Стратегические вознаграждения PSWAP"
+        "swapOutputMessage": "Вывод оценён. Вы получите как минимум {transactionValue} или транзакция будет отменена.",
+        "rewardsForSwap": "Стратегические вознаграждения PSWAP",
+        "swapInputMessage": "Ввод оценивается. Вы продадите максимум {transactionValue} иначе транзакция будет отменена."
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -497,7 +500,6 @@
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
-        "viewHistory": "Просмотр транзакцию в истории транзакций",
         "details": "{from} для {to}",
         "for": "для",
         "steps": {
@@ -507,7 +509,7 @@
         },
         "status": {
             "pending": "{step} транзакция в обработке...",
-            "failed": "{step} транзакция не удалась. @:( retryText).",
+            "failed": "{step} транзакция не удалась. @:(retryText).",
             "confirm": "Подтверждена 2ая из 2 транзакций...",
             "complete": "Выполнено",
             "convertionComplete": "Конверсия завершена"
@@ -544,7 +546,9 @@
         "connectWallet": "@:connectWalletText",
         "viewInSorascan": "Просмотреть в SORAScan",
         "changeAccount": "@:changeAccountText в @:metamask",
-        "expectedAddress": "Ожидаемый адрес в @:metamask"
+        "expectedAddress": "Ожидаемый адрес в @:metamask",
+        "title": "Транзакция Моста",
+        "expectedMetaMaskAddress": "Ожидаемый адрес в @:metamask"
     },
     "months": {
         "0": "Январь",
@@ -705,14 +709,14 @@
             "SoraFarmHarvest": "@:(soraText).farm урожай",
             "NtfAirdrop": "NFT Airdrop",
             "LiquidityProvision": "Комиссия за предоставление ликвидности",
-            "BuyOnBondingCurve": "покупка с TBC",
+            "BuyOnBondingCurve": "покупки с TBC",
             "NftAirdrop": "NFT Airdrop",
-            "MarketMakerVolume": "Маркет-мейкер",
+            "MarketMakerVolume": "Маркет-мейкинг",
             "LiquidityProvisionFarming": "Фарминг"
         },
         "vested": "vested",
-        "forText": "для",
-        "totalVested": "Всего наделено",
+        "forText": "за",
+        "totalVested": "Все вознаграждения",
         "claimableAmountDoneVesting": "Требуемая сумма (наделение завершено)",
         "groups": {
             "strategic": "Стратегические вознаграждения",
@@ -725,7 +729,8 @@
         "messages": {
             "checkExtension": "{name} расширение занято, пожалуйста, проверьте его",
             "extensionLogin": "Пожалуйста, войдите в Ваше {name} расширение",
-            "installExtension": "Расширение {name} не найдено. Пожалуйста, установите его!"
+            "installExtension": "Расширение {name} не найдено. Пожалуйста, установите его!",
+            "reloadPage": "Перезагрузить страницу"
         }
     },
     "selectLanguageDialog": {

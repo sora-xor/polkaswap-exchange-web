@@ -93,7 +93,8 @@
         "confirmTitle": "Potvrďte transakci",
         "confirm": "@:confirmText",
         "errorAddress": "Neplatná adresa. Zkontrolujte ji a zkuste to znovu.",
-        "addressDesc": ""
+        "addressDesc": "Akceptovány jsou pouze adresy síťových účtů SORA. Ujistěte se, že máte správně naformátovanou adresu síťového účtu SORA začínající předponou \"cn\".",
+        "feeTooltip": "@:networkFeeTooltipText"
     },
     "account": {
         "successCopy": "Adresa peněženky je zkopírována do schránky",
@@ -124,7 +125,8 @@
             "locked": "- Zamčeno",
             "reserved": " - Rezervováno",
             "total": "Celkem"
-        }
+        },
+        "totalAssetsValue": "Celková hodnota vašich aktiv:"
     },
     "asset": {
         "remove": "Odebrat aktivum"
@@ -183,7 +185,7 @@
         },
         "extensibleSupply": {
             "placeholder": "Rozšiřitelná nabídka",
-            "desc": ""
+            "desc": "Možnost tisknout více tokenů."
         }
     },
     "transaction": {
@@ -262,7 +264,7 @@
         "Stats": "Statistiky",
         "Support": "Podpora",
         "CreatePair": "Vytvořit pár",
-        "Tokens": ""
+        "Tokens": "Tokeny"
     },
     "social": {
         "twitter": "Twitter",
@@ -429,8 +431,9 @@
         "insufficientAmount": "Nedostatečné množství {tokenSymbol}",
         "insufficientLiquidity": "Nedostatečná likvidita",
         "confirmSwap": "Potvrďte výměnu",
-        "swapOutputMessage": "Výstup je odhadován. Obdržíte <span class=\"min-received-label\">alespoň<\/span> {transactionValue}, jinak se transakce vrátí zpět.",
-        "rewardsForSwap": "Strategické odměny PSWAP"
+        "swapOutputMessage": "Výstup je odhadován. Obdržíte alespoň {transactionValue}, jinak se transakce vrátí zpět.",
+        "rewardsForSwap": "Strategické odměny PSWAP",
+        "swapInputMessage": "Vstup je odhadován. Prodáte maximálně {transactionValue} nebo se transakce vrátí."
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -497,7 +500,6 @@
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
-        "viewHistory": "Zobrazit transakci v historii transakcí",
         "details": "{from} pro {to}",
         "for": " pro ",
         "steps": {
@@ -507,7 +509,7 @@
         },
         "status": {
             "pending": "{step} čekající transakce...",
-            "failed": "{step} transakce se nezdařily. @:( retryText).",
+            "failed": "{step} transakce se nezdařily. @:(retryText).",
             "confirm": "Potvrďte 2. ze 2 transakcí ...",
             "complete": "Hotovo",
             "convertionComplete": "Převod je dokončen"
@@ -543,8 +545,10 @@
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
         "viewInSorascan": "Zobrazit v SORAScanu",
-        "changeAccount": "",
-        "expectedAddress": ""
+        "changeAccount": "@:changeAccountText v @:metamask",
+        "expectedAddress": "Očekávaná adresa v @:metamask",
+        "title": "Překlenovací transakce",
+        "expectedMetaMaskAddress": "Očekávaná adresa v @:metamask"
     },
     "months": {
         "0": "Leden",
@@ -629,7 +633,7 @@
         "description": "Výběrem tokenů z poolu se vaše pozice převede zpět na podkladové tokeny v aktuálním kurzu, který je úměrný vašemu podílu v poolu.  Nasbírané poplatky jsou zahrnuty v částkách, které obdržíte.",
         "outputMessage": "Výstup je odhadován. Pokud se cena změní o více než {slippageTolerance}%, transakce se vrátí zpět.",
         "confirmTitle": "Obdržíte",
-        "shareOfPool": ""
+        "shareOfPool": "Podíl z poolu po transakci"
     },
     "dexSettings": {
         "title": "Nastavení transakcí",
@@ -707,16 +711,16 @@
             "LiquidityProvision": "Poplatky získané za poskytování likvidity",
             "BuyOnBondingCurve": "Strategické odměny za nákup z TBC",
             "NftAirdrop": "NFT Airdrop",
-            "MarketMakerVolume": "",
-            "LiquidityProvisionFarming": ""
+            "MarketMakerVolume": "Market Maker",
+            "LiquidityProvisionFarming": "Farming"
         },
         "vested": "uzamčené",
-        "forText": "",
-        "totalVested": "",
-        "claimableAmountDoneVesting": "",
+        "forText": "za",
+        "totalVested": "Celkové odměny",
+        "claimableAmountDoneVesting": "Nárokovatelná částka (po odemknutí)",
         "groups": {
-            "strategic": "",
-            "external": ""
+            "strategic": "Strategické odměny",
+            "external": "Odměny za připojený účet ethereum"
         }
     },
     "provider": {
@@ -725,20 +729,21 @@
         "messages": {
             "checkExtension": "{name} rozšíření je zaneprázdněné, zkontrolujte ho prosím",
             "extensionLogin": "Přihlašte se prosím do svého {name} rozšíření",
-            "installExtension": "{name} rozšíření nebylo nalezeno. Nainstalujte ho prosím!"
+            "installExtension": "{name} rozšíření nebylo nalezeno. Nainstalujte ho prosím!",
+            "reloadPage": "Znovu načíst stránku"
         }
     },
     "selectLanguageDialog": {
-        "title": ""
+        "title": "Jazyk"
     },
     "tokens": {
-        "title": "",
-        "symbol": "",
-        "name": "",
-        "assetId": ""
+        "title": "Zalistované tokeny",
+        "symbol": "Symbol",
+        "name": "Název",
+        "assetId": "ID aktiva"
     },
-    "memorandum": "",
-    "memorandumLink": "",
-    "privacyLink": "",
-    "FAQ": ""
+    "memorandum": "Memorandum Polkaswap a smluvní podmínky",
+    "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\">@:memorandum<\/a>",
+    "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\">@:helpDialog.privacyPolicy<\/a>",
+    "FAQ": "Polkaswap FAQ"
 }
