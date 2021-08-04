@@ -76,25 +76,25 @@
         "title": "SORA ցանցի հաշիվ",
         "WalletAssets": "Ակտիվներ",
         "WalletActivity": "Գործունեություն",
-        "addAsset": "@: addAssetText",
-        "createToken": "@: createTokenText"
+        "addAsset": "@:addAssetText",
+        "createToken": "@:createTokenText"
     },
     "walletSend": {
         "title": "Ուղարկել",
-        "address": "@: addressText",
-        "amount": "@: amountText",
+        "address": "@:addressText",
+        "amount": "@:amountText",
         "balance": "Բալանս",
         "max": "Մաքսիմում",
         "fee": "Գործարքի վճար",
         "enterAddress": "Մուտքագրեք հասցեն",
         "badAddress": "Սխալ հասցե",
         "enterAmount": "Մուտքագրեք գումարը",
-        "badAmount": "@: insufficBalanceText",
+        "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Հաստատել գործարքը",
-        "confirm": "@: confirmText",
+        "confirm": "@:confirmText",
         "errorAddress": "Անվավեր հասցե: Խնդրում ենք ստուգել այն և կրկին փորձել:",
         "addressDesc": "Ընդունվում են միայն SORA ցանցի հաշվի հասցեները: Խնդրում ենք համոզվել, որ ունեք ճիշտ ձևաչափված SORA ցանցի հաշվի հասցե ՝ սկսած «cn» նախածանցից:",
-        "feeTooltip": "@: networkFeeTooltipText"
+        "feeTooltip": "@:networkFeeTooltipText"
     },
     "account": {
         "successCopy": "Դրամապանակի հասցեն պատճենվում է սեղմատախտակին",
@@ -110,10 +110,10 @@
     },
     "assets": {
         "empty": "Ակտիվներ չկան",
-        "add": "@: addAssetText",
-        "swap": "@: swapText",
-        "send": "@: sendText",
-        "receive": "@: account.copy",
+        "add": "@:addAssetText",
+        "swap": "@:swapText",
+        "send": "@:sendText",
+        "receive": "@:account.copy",
         "liquidity": "Ավելացրեք իրացվելիություն",
         "bridge": "Կամուրջ",
         "copy": "Պատճենել Ակտիվի ID- ն",
@@ -132,16 +132,16 @@
         "remove": "Հեռացնել ակտիվը"
     },
     "addAsset": {
-        "title": "@: addAssetText",
-        "action": "@: addAssetText",
+        "title": "@:addAssetText",
+        "action": "@:addAssetText",
         "success": "Ակտիվը հաջողությամբ ավելացվեց:",
         "AddAssetSearch": {
-            "title": "@: searchText",
+            "title": "@:searchText",
             "placeholder": "Ֆիլտր ըստ Ակտիվի ID-ի, Անվան կամ Նշիչի սիմվոլի"
         },
         "AddAssetCustom": {
             "title": "Անհատական ակտիվ ",
-            "addressPlaceholder": "@: addressText",
+            "addressPlaceholder": "@:addressText",
             "symbolPlaceholder": "Ակտիվի սիմվոլ"
         },
         "empty": "Ոչ մի տոկեն չի գտնվել",
@@ -155,20 +155,20 @@
         "next": "Հաջորդը"
     },
     "createToken": {
-        "title": "@: createTokenText",
+        "title": "@:createTokenText",
         "desc": "Ստեղծեք և տեղակայեք անհատական ակտիվ SORA- ում",
-        "action": "@: createTokenText",
+        "action": "@:createTokenText",
         "enterSymbol": "Մուտքագրեք տոկենի սիմվոլը",
         "enterName": "Մուտքագրեք տոկենի անվանումը",
         "enterSupply": "Մուտքագրեք տոկենի մատակարարը",
-        "confirm": "@: confirmText",
+        "confirm": "@:confirmText",
         "success": {
             "title": "Գործարքը ներկայացված է",
             "desc": "Ստեղծեք {symbol} տոկեն"
         },
         "tooltipValue": "Տոկեն ստեղծելու համար Դուք պետք է վճարեք",
         "fee": "Ցանցային վճար",
-        "insufficientBalance": "@: insufficBalanceText",
+        "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "Չհաջողվեց վճար ստանալ գործարքի համար",
         "error": "Չհաջողվեց ստեղծել {symbol} տոկեն",
         "tokenSymbol": {
@@ -199,7 +199,7 @@
         },
         "errorMessage": "Սխալ",
         "startTime": "Ամսաթիվ",
-        "amount": "@: amountText",
+        "amount": "@:amountText",
         "amount2": "@:amountText 2",
         "fee": "Գործարքի վճար",
         "total": "Ընդհանուր",
@@ -227,13 +227,13 @@
     "connectWalletTextTooltip": "Միացեք @:soraText Network-ին polkadot{.js} -ի միջոցով",
     "selectNodeText": "Ընտրել հանգույցը",
     "bridgeText": "Կամուրջ",
-    "disclaimer": "Հրաժարում Պատասխանատվությունից. Այս կայքը վարում է @: soraText համայնքը: Այս կայքի օգտագործումը շարունակելուց առաջ խնդրում ենք դիտել @: polkaswapFaqLink- ը և փաստաթղթերը, որոնք պարունակում են մանրամասն բացատրություն Polkaswap- ի աշխատանքի, ինչպես նաև Polkaswap- ի հուշագրի և ծառայությունների պայմանների և Գաղտնիության քաղաքականության վերաբերյալ: Այս փաստաթղթերը կարևոր նշանակություն ունեն օգտագործողի անվտանգ և դրական փորձի համար: Օգտագործելով Polkaswap- ը, դուք ընդունում եք, որ կարդացել և հասկացել եք այդ փաստաթղթերը: Դուք նաև ընդունում եք հետևյալը. 1) ձեր միակ պատասխանատվությունը բոլոր այն օրենքներին համապատասխանելու համար, որոնք կարող են տարածվել ձեր օրինական իրավասության մեջ Polkaswap- ի որոշակի օգտագործման վրա. 2) ձեր ըմբռնումը, որ Polkaswap- ի ներկա տարբերակը ալֆա տարբերակ է. Այն ամբողջությամբ չի փորձարկվել, և որոշ գործառույթներ կարող են չաշխատել այնպես, ինչպես նախագծված է. և 3) Polkaswap- ի օգտագործման հետ կապված ռիսկերի ձեր ըմբռնումը և կամավոր ընդունումը, ներառյալ,բայց չսահմանափակված տոկենների կորստի ռիսկով : Եվս մեկ անգամ խնդրում ենք չշարունակել առանց կարդալու ՀՏՀ-ն, Polkaswap- ի հուշագիրը և ծառայությունների մատուցման պայմաններն ու Գաղտնիության քաղաքականությունը:",
+    "disclaimer": "Հրաժարում Պատասխանատվությունից. Այս կայքը վարում է @:soraText համայնքը: Այս կայքի օգտագործումը շարունակելուց առաջ խնդրում ենք դիտել @:polkaswapFaqLink- ը և փաստաթղթերը, որոնք պարունակում են մանրամասն բացատրություն Polkaswap- ի աշխատանքի, ինչպես նաև Polkaswap- ի հուշագրի և ծառայությունների պայմանների և Գաղտնիության քաղաքականության վերաբերյալ: Այս փաստաթղթերը կարևոր նշանակություն ունեն օգտագործողի անվտանգ և դրական փորձի համար: Օգտագործելով Polkaswap- ը, դուք ընդունում եք, որ կարդացել և հասկացել եք այդ փաստաթղթերը: Դուք նաև ընդունում եք հետևյալը. 1) ձեր միակ պատասխանատվությունը բոլոր այն օրենքներին համապատասխանելու համար, որոնք կարող են տարածվել ձեր օրինական իրավասության մեջ Polkaswap- ի որոշակի օգտագործման վրա. 2) ձեր ըմբռնումը, որ Polkaswap- ի ներկա տարբերակը ալֆա տարբերակ է. Այն ամբողջությամբ չի փորձարկվել, և որոշ գործառույթներ կարող են չաշխատել այնպես, ինչպես նախագծված է. և 3) Polkaswap- ի օգտագործման հետ կապված ռիսկերի ձեր ըմբռնումը և կամավոր ընդունումը, ներառյալ,բայց չսահմանափակված տոկենների կորստի ռիսկով : Եվս մեկ անգամ խնդրում ենք չշարունակել առանց կարդալու ՀՏՀ-ն, Polkaswap- ի հուշագիրը և ծառայությունների մատուցման պայմաններն ու Գաղտնիության քաղաքականությունը:",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"Polkaswap FAQ\"> title=\"Polkaswap FAQ <\/a>",
     "poweredBy": "Երաշխավորվոած է",
     "confirmTransactionText": "Հաստատեք գործարքը {direction}",
     "retryText": "Նորից փորձել",
     "networkFeeText": "Ցանցային վճար",
-    "networkFeeTooltipText": "Ցանցի վճարն օգտագործվում է @: soraText համակարգի աճն ու կայուն աշխատանքը ապահովելու համար:",
+    "networkFeeTooltipText": "Ցանցի վճարն օգտագործվում է @:soraText համակարգի աճն ու կայուն աշխատանքը ապահովելու համար:",
     "ethNetworkFeeTooltipText": "Խնդրում ենք նկատի ունենալ, որ Polkaswap- ում ցուցադրված Ethereum ցանցի վճարները միայն կոպիտ գնահատականներ են, նախքան գործարքը հաստատելը, դուք կարող եք տեսնել վճարման ճիշտ գումարը Ձեր միացված Ethereum դրամապանակում:",
     "marketText": "Շուկա",
     "marketAlgorithmText": "Շուկայի ալգորիթմ",
@@ -242,7 +242,7 @@
     "pageTitle": {
         "Swap": "Փոխանակում",
         "Pool": "պահուստ",
-        "Bridge": "@: BridgeText",
+        "Bridge": "@:bridgeText",
         "About": "Մասին",
         "Stats": "Վիճակագրություն",
         "Support": "Աջակցություն",
@@ -256,7 +256,7 @@
     "mainMenu": {
         "Swap": "Փոխանակում",
         "Pool": "պահուստ",
-        "Bridge": "@: BridgeText",
+        "Bridge": "@:bridgeText",
         "Farming": "Ֆարմինգ",
         "Wallet": "Հաշիվ",
         "Rewards": "Պարգեւատրումներ",
@@ -276,7 +276,7 @@
     "footerMenu": {
         "faucet": "Faucet(Ֆասեթ)",
         "github": "GitHub(Գիթհաբ)",
-        "sorawiki": "@: soraText Վիքին",
+        "sorawiki": "@:soraText Վիքին",
         "memorandum": "Polkaswap- ի հուշագիր և ծառայությունների մատուցման պայմաններ",
         "privacy": "Գաղտնիության քաղաքականություն"
     },
@@ -286,19 +286,19 @@
         "privacyPolicy": "Գաղտնիության քաղաքականություն",
         "termsOfServiceLink": "https:\/\/www.notion.so\/Polkaswap-Memorandum-and-Terms-of-Service-dc7f815a6d0a497a924832cc9bda17b8",
         "privacyPolicyLink": "https:\/\/www.notion.so\/Polkaswap-Privacy-Policy-d0f26456f2974f0d94734b19f6e5fc70",
-        "appVersion": "@: appName տարբերակը",
+        "appVersion": "@:appName տարբերակը",
         "contactUs": "Կապվեք մեզ հետ"
     },
     "aboutNetworkDialog": {
         "title": "Մասին",
         "learnMore": "Իմանալ ավելին",
         "network": {
-            "title": "Ի՞նչ է @: soraText- ը:",
-            "description": "Polkaswap- ը կառուցված է @: soraText ցանցի հիման վրա, իսկ @: soraText տոկենը (XOR) օգտագործվում է Polkaswap- ում գազի \/ վճարների և իրացվելիության ապահովման համար: @: soraText ցանցը թույլ է տալիս նվազեցնել վճարները, արագացնել գործարքները և ավելի պարզ համաձայնության հասնելը և կենտրոնացած է այլ բլոկչեյն էկոհամակարգերի միջև փոխգործունակության ապահովման վրա, ինչպիսիք են @ :( ethereumText):"
+            "title": "Ի՞նչ է @:soraText- ը:",
+            "description": "Polkaswap- ը կառուցված է @:soraText ցանցի հիման վրա, իսկ @:soraText տոկենը (XOR) օգտագործվում է Polkaswap- ում գազի \/ վճարների և իրացվելիության ապահովման համար: @:soraText ցանցը թույլ է տալիս նվազեցնել վճարները, արագացնել գործարքները և ավելի պարզ համաձայնության հասնելը և կենտրոնացած է այլ բլոկչեյն էկոհամակարգերի միջև փոխգործունակության ապահովման վրա, ինչպիսիք են @:(ethereumText):"
         },
         "polkadot": {
             "title": "Ի՞նչ է polkadot {.js}-ը :",
-            "description": "Polkadot {.js} ընդլայնումը Firefox- ի և Chrome- ի համար հասանելի բրաուզերի ընդլայնում է, որը շեշտադրված է Substrate- ի վրա հիմնված շղթաների հաշիվների կառավարմանը, ներառյալ @: soraText, Polkadot և Kusama: Կարող եք ավելացնել, ներմուծել և արտահանել հաշիվներ և կնքել գործարքներ կամ այլազերծումներ, որոնք նախաձեռնել եք ձեր կողմից թույլատրված կայքերից:"
+            "description": "Polkadot {.js} ընդլայնումը Firefox- ի և Chrome- ի համար հասանելի բրաուզերի ընդլայնում է, որը շեշտադրված է Substrate- ի վրա հիմնված շղթաների հաշիվների կառավարմանը, ներառյալ @:soraText, Polkadot և Kusama: Կարող եք ավելացնել, ներմուծել և արտահանել հաշիվներ և կնքել գործարքներ կամ այլազերծումներ, որոնք նախաձեռնել եք ձեր կողմից թույլատրված կայքերից:"
         }
     },
     "node": {
@@ -319,7 +319,7 @@
         "title": "@:soraText Ցանցային հանգույցի ընտրություն",
         "addNode": "Ավելացրեք օգտատերի հանգույցը",
         "customNode": "Օգտատերի հանգույց",
-        "howToSetupOwnNode": "Ինչպես կարգավորել ձեր սեփական @: soraText հանգույցը",
+        "howToSetupOwnNode": "Ինչպես կարգավորել ձեր սեփական @:soraText հանգույցը",
         "select": "Ընտրել",
         "connected": "Միացված է",
         "selectNodeForEnvironment": "Ընտրեք հանգույց {environment} միջավայրի համար.",
@@ -348,9 +348,9 @@
     },
     "metamask": "MetaMask",
     "sora": {
-        "Devnet": "@: soraText Դեվնեթ",
-        "Testnet": "@: soraText Թեսթնեթ",
-        "Mainnet": "@: soraText Մայնեթ"
+        "Devnet": "@:soraText Դեվնեթ",
+        "Testnet": "@:soraText Թեսթնեթ",
+        "Mainnet": "@:soraText Մայնեթ"
     },
     "evm": {
         "main": "Էթերիում Մայննեթ",
@@ -362,7 +362,7 @@
         "EWC": "Էներգիայի վեբ շղթա"
     },
     "providers": {
-        "metamask": "@: metamask"
+        "metamask": "@:metamask"
     },
     "about": {
         "title": "Համատեղելի ապագայի DEX- ը:",
@@ -406,7 +406,7 @@
         "Swap": "Փոխանակում",
         "Pool": "պահուստային",
         "balance": "Բալանս",
-        "insufficientBalance": "@: insufficBalanceText",
+        "insufficientBalance": "@:insufficBalanceText",
         "price": "Գին",
         "transactionSubmitted": "Գործարքը ներկայացված է",
         "transactionMessage": "{firstToken} և {secondToken}",
@@ -414,7 +414,7 @@
         "ok": "Լավ"
     },
     "swap": {
-        "connectWallet": "@: connectWalletText",
+        "connectWallet": "@:connectWalletText",
         "estimated": "գնահատված",
         "slippageTolerance": "Սայթաքման վճար",
         "minReceived": "Ստացված նվազագույնը",
@@ -424,10 +424,10 @@
         "priceImpactTooltip": "Առևտրի չափաքանակի հետևանքով շուկայական գնի և գնահատված գնի տարբերությունը:",
         "liquidityProviderFee": "Իրացվելիության մատակարարի վճար",
         "liquidityProviderFeeTooltip": "Յուրաքանչյուր առևտրի մի մասը ( {liquidityProviderFee} %) բաժին է ընկնում իրացվելիության մատակարարներին ՝ որպես պրոտոկոլային խթան:",
-        "networkFee": "@: networkFeeText",
+        "networkFee": "@:networkFeeText",
         "pairIsNotCreated": "@:pairIsNotCreated",
-        "networkFeeTooltip": "@: networkFeeTooltipText",
-        "firstPerSecond": "@: firstPerSecond",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "{tokenSymbol} անբավարար գումար",
         "insufficientLiquidity": "Անբավարար իրացվելիություն",
         "confirmSwap": "Հաստատեք փոխանակումը",
@@ -436,7 +436,7 @@
         "swapInputMessage": "Արդյունքը գնահատվում է: Դուք կստանաք առնվազն {transactionValue} կամ գործարքը կվերականգնվի:"
     },
     "pool": {
-        "connectWallet": "@: connectWalletText",
+        "connectWallet": "@:connectWalletText",
         "connectToWallet": "Միացեք դրամապանակին ՝ ձեր իրացվելիությունն ավելացնելու և դիտելու համար:",
         "liquidityNotFound": "Իրացվելիություն չի հայտնաբերվել:",
         "addLiquidity": "Ավելացնել իրացվելիություն",
@@ -452,15 +452,15 @@
         "title": "ՀԱՇԻ կամուրջ",
         "info": "Փոխարկել տոկենները @:soraText և @:ethereumText ցանցերի միջև:",
         "balance": "Բալանս",
-        "connectWallet": "@: connectWalletText",
+        "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
-        "changeAccount": "@: changeAccountText",
-        "changeNetwork": "@: changeNetworkText",
+        "changeAccount": "@:changeAccountText",
+        "changeNetwork": "@:changeNetworkText",
         "next": "Հաջորդը",
         "connectWallets": "Միացրեք դրամապանակները ՝ համապատասխան գործարքի պատմությունը դիտելու համար:",
         "soraNetworkFee": "@:soraText ցանցային վճար",
         "ethereumNetworkFee": "@:ethereumText ցանցային վճար",
-        "tooltipValue": "@: comingSoonText",
+        "tooltipValue": "@:comingSoonText",
         "total": "Ընդհանուր",
         "viewHistory": "Դիտել գործարքների պատմությունը",
         "transactionSubmitted": "Գործարքը ներկայացված է",
@@ -468,21 +468,21 @@
         "notRegisteredAsset": "Ակտիվը  {assetSymbol} գրանցված չէ",
         "selectNetwork": "Ընտրեք ցանցը",
         "networkInfo": "Միացեք @:soraText Ցանցով.",
-        "ethereum": "@: ethereumText",
-        "energy": "@: evm.EWC"
+        "ethereum": "@:ethereumText",
+        "energy": "@:evm.EWC"
     },
     "selectRegisteredAsset": {
         "title": "Ընտրեք տոկեն",
         "search": {
             "title": "Տոկեններ",
             "placeholder": "Ֆիլտր ըստ Ակտիվի ID-ի, Անվան կամ Նշիչի սիմվոլի",
-            "networkLabelSora": "@: soraText ցանցի տոկեններ",
-            "networkLabelEthereum": "@: ethereumText ցանցի հայելային տոկեններ",
+            "networkLabelSora": "@:soraText ցանցի տոկեններ",
+            "networkLabelEthereum": "@:ethereumText ցանցի հայելային տոկեններ",
             "emptyListMessage": "Ոչ մի արդյունք"
         },
         "customAsset": {
             "title": "Պատվեր",
-            "customInfo": "Կարևո՛ր է: Պատվերով տոկենները պետք է գրանցված լինեն @ :( soraText) - ում:",
+            "customInfo": "Կարևո՛ր է: Պատվերով տոկենները պետք է գրանցված լինեն @:(soraText) - ում:",
             "registerToken": "Գրանցել token",
             "addressPlaceholder": "Ակտիվի ID",
             "symbolPlaceholder": "Տոկենի խորհրդանիշ",
@@ -492,12 +492,12 @@
     },
     "confirmBridgeTransactionDialog": {
         "confirmTransaction": "Հաստատել գործարքը",
-        "insufficientBalance": "@: insufficBalanceText",
-        "changeNetwork": "@: changeNetworkText",
-        "metamask": "@: metamask",
-        "sora": "@: soraText",
-        "confirm": "@: confirmTransactionText",
-        "buttonConfirm": "@: confirmText"
+        "insufficientBalance": "@:insufficBalanceText",
+        "changeNetwork": "@:changeNetworkText",
+        "metamask": "@:metamask",
+        "sora": "@:soraText",
+        "confirm": "@:confirmTransactionText",
+        "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
         "details": "{from} համար {to}",
@@ -509,7 +509,7 @@
         },
         "status": {
             "pending": "{step} գործարքները սպասման մեջ են ",
-            "failed": "{step} գործարքները ձախողվեցին: @:(retryText):",
+            "failed": "{step} գործարքները ձախողվեցին: @:(retryText).",
             "confirm": "Հաստատեք 2 գործարքներից 2-րդը ...",
             "complete": "Վերջացված է",
             "convertionComplete": "Փոխարկումն ավարտված է"
@@ -535,17 +535,17 @@
             "total": "Ընդհանուր"
         },
         "successCopy": "Գործարքի հաշը պատճենահանված է սեղմատախտակին",
-        "ethereum": "@: ethereumText",
-        "sora": "@: soraText",
+        "ethereum": "@:ethereumText",
+        "sora": "@:soraText",
         "pending": "<span class=\"network-title\"> {network} <\/span> գործարքը սպասման մեջ է...",
-        "retry": "@: retryText",
-        "metamask": "@: metamask",
-        "confirm": "@: confirmTransactionText",
+        "retry": "@:retryText",
+        "metamask": "@:metamask",
+        "confirm": "@:confirmTransactionText",
         "newTransaction": "Ստեղծել նոր գործարք",
-        "changeNetwork": "@: changeNetworkText",
-        "connectWallet": "@: connectWalletText",
+        "changeNetwork": "@:changeNetworkText",
+        "connectWallet": "@:connectWalletText",
         "viewInSorascan": "Դիտել SORAScan- ում",
-        "changeAccount": "@: changeAccountText in @: metamask",
+        "changeAccount": "@:changeAccountText in @:metamask",
         "expectedAddress": "Սպասվող հասցե @հասցեում ՝ @:metamask",
         "title": "Կամուրջի գործարք",
         "expectedMetaMaskAddress": "Սպասվող հասցե @հասցեում ՝ @:metamask"
@@ -595,7 +595,7 @@
         "balance": "Բալանս",
         "pricePool": "Գները և պահուստի բաժինը",
         "shareOfPool": "Պահուստի բաժինը",
-        "firstPerSecond": "@: firstPerSecond",
+        "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{first}-{second} պահուստային տոկեններ",
         "connect": "Միացրեք դրամապանակը",
         "supply": "Մատակարարում",
@@ -619,7 +619,7 @@
     "addLiquidity": {
         "title": "Ավելացրեք իրացվելիություն",
         "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@: firstPerSecond"
+        "firstPerSecond": "@:firstPerSecond"
     },
     "removeLiquidity": {
         "title": "Հեռացնել իրացվելիությունը",
@@ -667,10 +667,10 @@
     },
     "rewards": {
         "title": "Հաստատել Պարգևները",
-        "changeAccount": "@: changeAccountText",
+        "changeAccount": "@:changeAccountText",
         "connected": "@:connectedText",
-        "networkFee": "@: networkFeeText",
-        "networkFeeTooltip": "@: networkFeeTooltipText",
+        "networkFee": "@:networkFeeText",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
         "andText": "և",
         "claiming": {
             "pending": "Հաստատման ընթացքում է...",
@@ -697,9 +697,9 @@
             "signAndClaim": "Ստորագրեք և հաստատեք",
             "pendingInternal": "@:soraText գործարքը ընթացքի մեջ է ...",
             "pendingExternal": "@:ethereumText գործարքը ընթացքի մեջ է ...",
-            "retry": "@: կրկնել Տեքստը",
+            "retry": "@:կրկնել Տեքստը",
             "checkRewards": "Ստուգել",
-            "insufficientBalance": "@:անբավարարՀաշվիՏեքստ"
+            "insufficientBalance": "@:insufficientBalanceText"
         },
         "notification": {
             "empty": "Չկան առկա պահանջներ այս հաշվի համար"
@@ -724,7 +724,7 @@
         }
     },
     "provider": {
-        "default": "@: էթերիումիՏեքստ մատակարար",
+        "default": "@:էթերիումիՏեքստ մատակարար",
         "metamask": "@:մետամասկ",
         "messages": {
             "checkExtension": "{name} Հավելվածը զբաղված է, խնդրում ենք ստուգել այն",

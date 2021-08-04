@@ -509,7 +509,7 @@
         },
         "status": {
             "pending": "{step} čekající transakce...",
-            "failed": "{step} transakce se nezdařily. @:( retryText).",
+            "failed": "{step} transakce se nezdařily. @:(retryText).",
             "confirm": "Potvrďte 2. ze 2 transakcí ...",
             "complete": "Hotovo",
             "convertionComplete": "Převod je dokončen"

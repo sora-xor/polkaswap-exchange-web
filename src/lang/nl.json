@@ -82,7 +82,7 @@
     "walletSend": {
         "title": "Verzenden",
         "address": "@:addressText",
-        "amount": "@:amountTekst",
+        "amount": "@:amountText",
         "balance": "Saldo",
         "max": "MAX",
         "fee": "Transactievergoeding",

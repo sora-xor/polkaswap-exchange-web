@@ -298,7 +298,7 @@
         },
         "polkadot": {
             "title": "Kini polkadot {.js} ?",
-            "description": "Itẹsiwaju Polkadot {.js} jẹ itẹsiwaju aṣawakiri ti o wa fun Firefox ati Chrome ti a ṣe igbẹhin si iṣakoso awọn iroyin fun Awọn ẹwọn ti o da lori Substrate, pẹlu @: soraText, Polkadot ati Kusama. O le ṣafikun, gbe wọle, ati gbejade awọn iroyin ati buwọlu awọn iṣowo tabi awọn nkan elekeji ti o ti bẹrẹ lati awọn oju opo wẹẹbu ti o fun ni aṣẹ."
+            "description": "Itẹsiwaju Polkadot {.js} jẹ itẹsiwaju aṣawakiri ti o wa fun Firefox ati Chrome ti a ṣe igbẹhin si iṣakoso awọn iroyin fun Awọn ẹwọn ti o da lori Substrate, pẹlu @:soraText, Polkadot ati Kusama. O le ṣafikun, gbe wọle, ati gbejade awọn iroyin ati buwọlu awọn iṣowo tabi awọn nkan elekeji ti o ti bẹrẹ lati awọn oju opo wẹẹbu ti o fun ni aṣẹ."
         }
     },
     "node": {
@@ -509,7 +509,7 @@
         },
         "status": {
             "pending": "{step} Idunadura n sunmọtosi ...",
-            "failed": "{step} idunadura kuna. @:(gbiyanjuText).",
+            "failed": "{step} idunadura kuna. @:(retryText).",
             "confirm": "Jẹrisi ikeji ninu awọn iṣowo meji ...",
             "complete": "Pari",
             "convertionComplete": "Iyipada ti pari"
