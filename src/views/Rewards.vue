@@ -3,7 +3,7 @@
     <generic-page-header :title="t('rewards.title')" />
     <div class="rewards-content" v-loading="!parentLoading && loading">
       <gradient-box class="rewards-block" :symbol="gradientSymbol">
-        <div :class="rewardsBoxClasses">
+        <div :class="['rewards-box', libraryTheme]">
           <tokens-row :symbols="rewardTokenSymbols" />
           <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text">
             {{ claimingStatusMessage }}
@@ -46,7 +46,7 @@
               <info-line
                 v-if="fee && isSoraAccountConnected && rewardsAvailable && !claimingInProgressOrFinished"
                 v-bind="feeInfo"
-                class="rewards-fee"
+                :class="['rewards-fee', libraryTheme]"
                 :fiat-value="getFiatAmountByCodecString(fee)"
                 is-formatted
               />
@@ -304,17 +304,6 @@ export default class Rewards extends Mixins(FormattedAmountMixin, WalletConnectM
     return this.rewardsClaiming || (this.rewardsAvailable && this.isInsufficientBalance)
   }
 
-  get rewardsBoxClasses (): Array<string> {
-    const base = 'rewards-box'
-    const classes = [base]
-
-    if (this.libraryTheme === Theme.DARK) {
-      classes.push(`${base}--dark`)
-    }
-
-    return classes
-  }
-
   async handleAction (): Promise<void> {
     if (!this.isSoraAccountConnected) {
       return this.connectInternalWallet()
@@ -412,7 +401,7 @@ $hint-font-size: 13px;
     align-items: center;
     color: var(--s-color-base-on-accent);
 
-    &--dark {
+    &.dark {
       color: var(--s-color-base-content-primary);
     }
 
@@ -477,9 +466,14 @@ $hint-font-size: 13px;
     padding: 0 $inner-spacing-mini / 2;
   }
 
-  &-fee.info-line {
-    color: var(--s-olor-base-on-acccent);
-    margin-top: $inner-spacing-medium;
+  &-fee {
+    &.info-line {
+      color: var(--s-color-base-on-acccent);
+      margin-top: $inner-spacing-medium;
+      &.dark {
+        border-bottom-color: var(--s-color-base-content-secondary);
+      }
+    }
   }
 
   @include full-width-button('rewards-action-button');
