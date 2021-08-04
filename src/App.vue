@@ -599,11 +599,17 @@ $sora-logo-width: 173.7px;
 }
 
 .header {
+  $header-box-shadow: 240px 16px 32px -16px;
+  $header-box-shadow-light: #{$header-box-shadow} #e5dce0;
+  $header-box-shadow-dark: #{$header-box-shadow} rgba(73, 32, 103, 0.5);
   display: flex;
   align-items: center;
   padding: 2px $inner-spacing-medium;
   min-height: $header-height;
-  box-shadow: 240px 16px 32px -16px #e5dce0;
+  box-shadow: $header-box-shadow-light;
+  [design-system-theme="dark"] & {
+    box-shadow: $header-box-shadow-dark;
+  }
 }
 
 .menu {
