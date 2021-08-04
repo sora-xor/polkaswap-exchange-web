@@ -21,86 +21,90 @@
       </div>
     </header>
     <div class="app-main">
-      <s-scrollbar class="app-sidebar" tag="aside">
-        <s-menu
-          class="menu"
-          mode="vertical"
-          background-color="transparent"
-          box-shadow="none"
-          text-color="var(--s-color-base-content-primary)"
-          active-text-color="var(--s-color-theme-accent)"
-          active-hover-color="transparent"
-          :default-active="getCurrentPath()"
-          @select="goTo"
-        >
-          <s-menu-item-group v-for="(group, index) in SidebarMenuGroups" :key="index">
-            <s-menu-item
-              v-for="item in group"
-              :key="item.title"
-              :index="item.title"
-              :disabled="item.disabled"
-              class="menu-item"
-            >
-              <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
-            </s-menu-item>
-          </s-menu-item-group>
-        </s-menu>
+      <s-scrollbar class="app-sidebar-scrollbar">
+        <aside class="app-sidebar" tag="aside">
+          <s-menu
+            class="menu"
+            mode="vertical"
+            background-color="transparent"
+            box-shadow="none"
+            text-color="var(--s-color-base-content-primary)"
+            active-text-color="var(--s-color-theme-accent)"
+            active-hover-color="transparent"
+            :default-active="getCurrentPath()"
+            @select="goTo"
+          >
+            <s-menu-item-group v-for="(group, index) in SidebarMenuGroups" :key="index">
+              <s-menu-item
+                v-for="item in group"
+                :key="item.title"
+                :index="item.title"
+                :disabled="item.disabled"
+                class="menu-item"
+              >
+                <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
+              </s-menu-item>
+            </s-menu-item-group>
+          </s-menu>
 
-        <s-menu
-          class="menu"
-          mode="vertical"
-          background-color="transparent"
-          box-shadow="none"
-          text-color="var(--s-color-base-content-tertiary)"
-          active-text-color="var(--s-color-base-content-tertiary)"
-          active-hover-color="transparent"
-        >
-          <s-menu-item-group>
-            <li v-for="item in SocialNetworkLinks" :key="item.title">
-              <sidebar-item-content
-                :icon="item.icon"
-                :title="t(`social.${item.title}`)"
-                :href="item.href"
-                tag="a"
-                target="_blank"
-                rel="nofollow noopener"
+          <s-menu
+            class="menu"
+            mode="vertical"
+            background-color="transparent"
+            box-shadow="none"
+            text-color="var(--s-color-base-content-tertiary)"
+            active-text-color="var(--s-color-base-content-tertiary)"
+            active-hover-color="transparent"
+          >
+            <s-menu-item-group>
+              <li v-for="item in SocialNetworkLinks" :key="item.title">
+                <sidebar-item-content
+                  :icon="item.icon"
+                  :title="t(`social.${item.title}`)"
+                  :href="item.href"
+                  tag="a"
+                  target="_blank"
+                  rel="nofollow noopener"
+                  class="el-menu-item menu-item--small"
+                />
+              </li>
+            </s-menu-item-group>
+            <s-menu-item-group>
+              <li v-if="faucetUrl">
+                <sidebar-item-content
+                  :icon="FaucetLink.icon"
+                  :title="t(`footerMenu.${FaucetLink.title}`)"
+                  :href="faucetUrl"
+                  tag="a"
+                  target="_blank"
+                  rel="nofollow noopener"
+                  class="el-menu-item menu-item--small"
+                />
+              </li>
+              <!-- <sidebar-item-content
+                :title="t('footerMenu.help')"
+                icon="notifications-info-24"
+                tag="li"
                 class="el-menu-item menu-item--small"
-              />
-            </li>
-          </s-menu-item-group>
-          <s-menu-item-group>
-            <li v-if="faucetUrl">
-              <sidebar-item-content
-                :icon="FaucetLink.icon"
-                :title="t(`footerMenu.${FaucetLink.title}`)"
-                :href="faucetUrl"
-                tag="a"
-                target="_blank"
-                rel="nofollow noopener"
-                class="el-menu-item menu-item--small"
-              />
-            </li>
-            <!-- <sidebar-item-content
-              :title="t('footerMenu.help')"
-              icon="notifications-info-24"
-              tag="li"
-              class="el-menu-item menu-item--small"
-              @click.native="openHelpDialog"
-            /> -->
-          </s-menu-item-group>
-        </s-menu>
+                @click.native="openHelpDialog"
+              /> -->
+            </s-menu-item-group>
+          </s-menu>
+        </aside>
       </s-scrollbar>
-      <s-scrollbar class="app-body">
-        <div class="app-content">
-          <router-view :parent-loading="loading || !nodeIsConnected" />
-          <p class="app-disclaimer" :class="isAboutPage ? 'about-disclaimer' : ''" v-html="t('disclaimer')" />
-        </div>
-        <footer class="app-footer" :class="isAboutPage ? 'about-footer' : ''">
-          <div class="sora-logo">
-            <span class="sora-logo__title">{{ t('poweredBy') }}</span>
-            <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener" />
+      <s-scrollbar class="app-body-scrollbar">
+        <div class="app-body">
+          <div class="app-content">
+            <router-view :parent-loading="loading || !nodeIsConnected" />
+            <p class="app-disclaimer" :class="isAboutPage ? 'about-disclaimer' : ''" v-html="t('disclaimer')" />
           </div>
-        </footer>
+          <footer class="app-footer" :class="isAboutPage ? 'about-footer' : ''">
+            <div class="sora-logo">
+              <span class="sora-logo__title">{{ t('poweredBy') }}</span>
+              <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener" />
+            </div>
+          </footer>
+        </div>
       </s-scrollbar>
     </div>
 
@@ -325,6 +329,12 @@ html {
   height: 100vh;
 }
 
+.app-body, .app-sidebar {
+  &-scrollbar {
+    @include scrollbar;
+  }
+}
+
 .node-control {
   &.el-button.neumorphic.el-button--plain {
     padding-left: 5px;
@@ -534,6 +544,7 @@ $sora-logo-width: 173.7px;
     margin-right: $basic-spacing-small;
     width: 70px;
     display: flex;
+    flex: 1;
     flex-flow: column nowrap;
     justify-content: space-between;
     padding-top: $inner-spacing-small;
@@ -543,10 +554,13 @@ $sora-logo-width: 173.7px;
 
   &-body {
     position: relative;
-    overflow-y: auto;
     display: flex;
     flex: 1;
     flex-flow: column nowrap;
+
+    &-scrollbar {
+      flex: 1;
+    }
   }
 
   &-content {

@@ -367,3 +367,18 @@
   font-size: var(--s-font-size-medium);
   font-weight: 600;
 }
+
+@mixin scrollbar {
+  &.el-scrollbar {
+    .el-scrollbar__wrap {
+      overflow-x: hidden;
+      display: flex;
+
+      .el-scrollbar__view {
+        display: flex;
+        flex-flow: column nowrap;
+        flex: 1;
+      }
+    }
+  }
+}
