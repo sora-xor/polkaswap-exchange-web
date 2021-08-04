@@ -12,12 +12,11 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
 
 @Component({
   components: {
@@ -25,7 +24,7 @@ import DialogBase from '@/components/DialogBase.vue'
     MarketAlgorithm: lazyComponent(Components.MarketAlgorithm)
   }
 })
-export default class SettingsDialog extends Mixins(TranslationMixin, DialogMixin, NumberFormatterMixin) {}
+export default class SettingsDialog extends Mixins(TranslationMixin, DialogMixin) {}
 </script>
 
 <style lang="scss">

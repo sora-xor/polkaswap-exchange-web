@@ -26,12 +26,17 @@
       :tooltip-content="t('networkFeeTooltipText')"
       :value="formatFee(soraNetworkFee, formattedSoraNetworkFee)"
       :asset-symbol="KnownSymbols.XOR"
+      :fiat-value="getFiatAmountByCodecString(soraNetworkFee)"
+      is-formatted
+      alt-value="-"
     />
     <info-line
       :label="t('bridge.ethereumNetworkFee')"
       :tooltip-content="t('ethNetworkFeeTooltipText')"
       :value="formatFee(evmNetworkFee, formattedEvmNetworkFee)"
       :asset-symbol="currentEvmTokenSymbol"
+      is-formatted
+      alt-value="-"
     />
     <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
     <!-- <info-line
@@ -60,12 +65,12 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { KnownSymbols, CodecString, BridgeNetworks } from '@sora-substrate/util'
+import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components, EvmSymbol } from '@/consts'
@@ -80,11 +85,11 @@ const namespace = 'bridge'
   }
 })
 export default class ConfirmBridgeTransactionDialog extends Mixins(
+  FormattedAmountMixin,
   TranslationMixin,
   DialogMixin,
   LoadingMixin,
-  NetworkFormatterMixin,
-  NumberFormatterMixin
+  NetworkFormatterMixin
 ) {
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
   @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean
@@ -135,13 +140,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   }
 
   formatFee (fee: string, formattedFee: string): string {
-    if (!fee) {
-      return '-'
-    }
-    if (fee === '0') {
-      return fee
-    }
-    return `~${formattedFee}`
+    return fee !== '0' ? formattedFee : '0'
   }
 
   async handleConfirm (): Promise<void> {

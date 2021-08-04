@@ -2302,39 +2302,39 @@
   resolved "https://registry.yarnpkg.com/@soda/get-current-script/-/get-current-script-1.0.2.tgz#a53515db25d8038374381b73af20bb4f2e508d87"
   integrity sha512-T7VNNlYVM1SgQ+VsMYhnDkcGmWhQdL0bDyGm5TlQ3GBXnJscEClUUOKduWTmm2zCnvNLC1hc3JpuXjs/nFOc5w==
 
-"@sora-substrate/api-derive@^1.3.34":
-  version "1.3.34"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/api-derive/-/api-derive-1.3.34.tgz#77124c66b3a804f34df8c3fa66a0484674a462ba"
-  integrity sha512-SiBD1/WywmwMy12FwTAt69evbFzWTURmnJHj+f2Hs9CHJ3Z2Oy6nE0Bj+tSRcF2b9EG1dkno/bgLReTU6mP/Sw==
+"@sora-substrate/api-derive@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/api-derive/-/api-derive-1.4.1.tgz#4cf80683599894eec5b5a1aa364489149b1e585c"
+  integrity sha512-GQwhOupGU2ewKIXTS3YAeTvlJ3hO2E1e4k/odrZ6QKDvUqHzDO16aYKgskzLJh2NvhdcULJj4To76panH8lkqw==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@polkadot/api-derive" "^4.10.1"
-    "@sora-substrate/types" "^1.3.34"
+    "@sora-substrate/types" "^1.4.1"
     rxjs "^6.5.5"
 
-"@sora-substrate/api@^1.3.34":
-  version "1.3.34"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.3.34.tgz#537b5e27a1b8c394e29169b033cb151b9accef03"
-  integrity sha512-XPxrCd2gJhXgJ5X5xPlq3INw8h2A4mUxsmzKWpCmOcLDtkJ+64wvnIZHNBfV/NlGxYDBC/cbae7W9/ATJood7A==
+"@sora-substrate/api@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.4.1.tgz#1757785b1cab7d20abf207922fc2e2df56ba8c2f"
+  integrity sha512-EM8gV/tIhZUuusM9WApLX+WxFYEEqTA5enAD2/jvne4d/svcZLdgMUihgU1sKjmvOxLt2V65q0kBqj8AFMDbog==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@open-web3/orml-api-derive" "^0.8.2-9"
     "@polkadot/api" "^4.10.1"
     "@polkadot/rpc-core" "^4.10.1"
-    "@sora-substrate/api-derive" "^1.3.34"
-    "@sora-substrate/types" "^1.3.34"
+    "@sora-substrate/api-derive" "^1.4.1"
+    "@sora-substrate/types" "^1.4.1"
 
-"@sora-substrate/type-definitions@^1.3.34":
-  version "1.3.34"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.3.34.tgz#91f475d7dc7926f42e9f2a8d9561f6cb5e0ebc16"
-  integrity sha512-mpyCwGwkBYGYmIpwpexWJ1kBO4lCL8dOlqLz/qODmdmaJlfv9vwk5TFw9EnbZatcM9w+giD6DwIBx/eFRshcLw==
+"@sora-substrate/type-definitions@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.4.1.tgz#ae18c05328c2e72a26269a74ba003f4d22b2c652"
+  integrity sha512-3OeKJPxIQ1B+hW4RsqocSCREGuLz7K2yDdyi4M3PvdmHKR9w3vE/NY5sZU4PJIDiILYZaWNwJPmRp2vzUVoD/A==
   dependencies:
     "@open-web3/orml-type-definitions" "^0.8.2-9"
 
-"@sora-substrate/types@^1.3.34":
-  version "1.3.34"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.3.34.tgz#e364430d1311d014c1dc4a38269fe269b558ae4c"
-  integrity sha512-0gJywohknki70pkhGXHIoSU4nF/+CrscBL9PQRMxwxrqrD6/VAcCFmTyUMCRGkh4wiY97XCkgRZIz8pznscrXQ==
+"@sora-substrate/types@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.4.1.tgz#7f724a20c6af757572520670b7ffe9056e4c0ea8"
+  integrity sha512-bxRjSIQXFNM09oJwqPDDbGbQcOlcDCRGuCMIuOM8fr/+h14K9MSnAqkg/PZ92MwoyedF0YGTuIvGPADNDSFrBQ==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@open-web3/api-mobx" "^0.8.2-9"
@@ -2342,23 +2342,23 @@
     "@polkadot/api" "^4.10.1"
     "@polkadot/typegen" "^4.10.1"
     "@polkadot/types" "^4.10.1"
-    "@sora-substrate/type-definitions" "^1.3.34"
+    "@sora-substrate/type-definitions" "^1.4.1"
 
-"@sora-substrate/util@1.3.34":
-  version "1.3.34"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.3.34.tgz#bd5ff056b5fa20afb30dc3055ef236bc1dce1b42"
-  integrity sha512-y5gaIM9r+++ilfBl8ouxcRqGET6OP2eNlhfwlUVTLpgB0inrLoLmXBNA/s4eModylhJ6mZ4oA2AVezIWEEQ0oQ==
+"@sora-substrate/util@1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.4.1.tgz#e2ad385241d095acd81610f849cd41b933c390ba"
+  integrity sha512-gfXi6Bv2iOtcgVrGwXb9BJQhyABL9rdAeIlBHQqUPJP9CaviFj+VWtegG8U5mGsCaVWuSW0EBmWhdxZ596XL2w==
   dependencies:
     "@polkadot/ui-keyring" "^0.77.1"
-    "@sora-substrate/api" "^1.3.34"
+    "@sora-substrate/api" "^1.4.1"
     bignumber.js "^9.0.1"
     crypto-js "^4.0.0"
     lodash "^4.17.15"
 
-"@soramitsu/soramitsu-js-ui@0.9.17":
-  version "0.9.17"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-0.9.17.tgz#49cfe7d2801b27a29072d866ad0e05dc0c2c2645"
-  integrity sha512-02416o+PlEmSHJGbOIs2mroVoMhxw2d+wsDZNr6UuCCtfwbCC5O4CVEizHBPN2uib5O4LLes5V4qn/VUUOZVNQ==
+"@soramitsu/soramitsu-js-ui@1.0.6":
+  version "1.0.6"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-1.0.6.tgz#8090e4f3c24f88ed4cbdba0679d277196e412efe"
+  integrity sha512-pLfEg0SPvXFsej1sDqU84NiPDoH2GZ/iP7aTmBKzuQP4+hXrR3Z0K0Qm3QFAOJGP+WqW6T6ytUhG+DAPb4kAuw==
   dependencies:
     core-js "^3.6.4"
     element-resize-detector "^1.2.1"
@@ -2373,15 +2373,15 @@
     vuex "^3.1.3"
     vuex-class "^0.3.2"
 
-"@soramitsu/soraneo-wallet-web@^1.3.47":
-  version "1.3.47"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.3.47.tgz#9cdba940dd18337f820fa3323f1a134c3862849b"
-  integrity sha512-AStBEH0SmRNGxyyzcZrffV3dTsb5Sg216LQrI9cUbQjpyD9LdeUjcLvm6EP0OP1Qme6SBgZPWZ/yQnDYCte8VQ==
+"@soramitsu/soraneo-wallet-web@^1.4.4":
+  version "1.4.4"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.4.4.tgz#cd79486046016d521494a8264a5e293547dbe9c9"
+  integrity sha512-JVdat7vgtiX84xtYgV89WNKncOrSUlvdiunLc70b71cKudkN6fqCi/g4KCXEHswIZSM4lLOBiFUZ6n6+XBSqOw==
   dependencies:
     "@polkadot/extension-dapp" "^0.35.0-beta.35"
     "@polkadot/vue-identicon" "^0.72.1"
-    "@sora-substrate/util" "1.3.34"
-    "@soramitsu/soramitsu-js-ui" "0.9.17"
+    "@sora-substrate/util" "1.4.1"
+    "@soramitsu/soramitsu-js-ui" "1.0.6"
     axios "^0.19.0"
     core-js "^3.6.4"
     dayjs "^1.10.5"
@@ -2940,7 +2940,7 @@
   resolved "https://registry.yarnpkg.com/@vue/cli-overlay/-/cli-overlay-4.5.13.tgz#4f1fd2161be8f69d6cba8079f3f0d7dc4dee47a7"
   integrity sha512-jhUIg3klgi5Cxhs8dnat5hi/W2tQJvsqCxR0u6hgfSob0ORODgUBlN+F/uwq7cKIe/pzedVUk1y07F13GQvPqg==
 
-"@vue/cli-plugin-babel@~4.5.0":
+"@vue/cli-plugin-babel@^4.5.13":
   version "4.5.13"
   resolved "https://registry.yarnpkg.com/@vue/cli-plugin-babel/-/cli-plugin-babel-4.5.13.tgz#a89c482edcc4ea1d135645cec502a7f5fd4c30e7"
   integrity sha512-ykvEAfD8PgGs+dGMGqr7l/nRmIS39NRzWLhMluPLTvDV1L+IxcoB73HNLGA/aENDpl8CuWrTE+1VgydcOhp+wg==
@@ -2953,7 +2953,7 @@
     thread-loader "^2.1.3"
     webpack "^4.0.0"
 
-"@vue/cli-plugin-e2e-cypress@~4.5.0":
+"@vue/cli-plugin-e2e-cypress@^4.5.13":
   version "4.5.13"
   resolved "https://registry.yarnpkg.com/@vue/cli-plugin-e2e-cypress/-/cli-plugin-e2e-cypress-4.5.13.tgz#c014ba1b4d08e582c26b36890cc65844b12e9dde"
   integrity sha512-7AyqCgDqgCj93QxkJYJG5YuXW07enHAYCdGZHPBHZKniIiq8VfvA6/ZT6TTU7DRr2/QxoIbXtbGnmNyDF/Urww==
@@ -2962,7 +2962,7 @@
     cypress "^3.8.3"
     eslint-plugin-cypress "^2.10.3"
 
-"@vue/cli-plugin-eslint@~4.5.0":
+"@vue/cli-plugin-eslint@^4.5.13":
   version "4.5.13"
   resolved "https://registry.yarnpkg.com/@vue/cli-plugin-eslint/-/cli-plugin-eslint-4.5.13.tgz#8baf22d0d96d76720c7506646b96f4f62c05bdfa"
   integrity sha512-yc2uXX6aBiy3vEf5TwaueaDqQbdIXIhk0x0KzEtpPo23jBdLkpOSoU5NCgE06g/ZiGAcettpmBSv73Hfp4wHEw==
@@ -2974,14 +2974,14 @@
     webpack "^4.0.0"
     yorkie "^2.0.0"
 
-"@vue/cli-plugin-router@^4.5.13", "@vue/cli-plugin-router@~4.5.0":
+"@vue/cli-plugin-router@^4.5.13":
   version "4.5.13"
   resolved "https://registry.yarnpkg.com/@vue/cli-plugin-router/-/cli-plugin-router-4.5.13.tgz#0b67c8898a2bf132941919a2a2e5f3aacbd9ffbe"
   integrity sha512-tgtMDjchB/M1z8BcfV4jSOY9fZSMDTPgF9lsJIiqBWMxvBIsk9uIZHxp62DibYME4CCKb/nNK61XHaikFp+83w==
   dependencies:
     "@vue/cli-shared-utils" "^4.5.13"
 
-"@vue/cli-plugin-typescript@~4.5.0":
+"@vue/cli-plugin-typescript@^4.5.13":
   version "4.5.13"
   resolved "https://registry.yarnpkg.com/@vue/cli-plugin-typescript/-/cli-plugin-typescript-4.5.13.tgz#f514f661e16f9096a89a9ca6e69a2d762c6d8464"
   integrity sha512-CpLlIdFNV1gn9uC4Yh6QgWI42uk2x5Z3cb2ScxNSwWsR1vgSdr0/1DdNzoBm68aP8RUtnHHO/HZfPnvXiq42xA==
@@ -2999,7 +2999,7 @@
   optionalDependencies:
     fork-ts-checker-webpack-plugin-v5 "npm:fork-ts-checker-webpack-plugin@^5.0.11"
 
-"@vue/cli-plugin-unit-jest@~4.5.0":
+"@vue/cli-plugin-unit-jest@^4.5.13":
   version "4.5.13"
   resolved "https://registry.yarnpkg.com/@vue/cli-plugin-unit-jest/-/cli-plugin-unit-jest-4.5.13.tgz#6aca031452a5883f39580ec50ea926c982e1d138"
   integrity sha512-8t7QIihJWB9Kv85FamrEzWbJnvsLhQdyXHl3h+qhAihrZdLL+9mj905y88cBCq+i2PqqZ/qAoabbpf4DxDAb7g==
@@ -3020,12 +3020,12 @@
     ts-jest "^24.2.0"
     vue-jest "^3.0.5"
 
-"@vue/cli-plugin-vuex@^4.5.13", "@vue/cli-plugin-vuex@~4.5.0":
+"@vue/cli-plugin-vuex@^4.5.13":
   version "4.5.13"
   resolved "https://registry.yarnpkg.com/@vue/cli-plugin-vuex/-/cli-plugin-vuex-4.5.13.tgz#98646d8bc1e69cf6c6a6cba2fed3eace0356c360"
   integrity sha512-I1S9wZC7iI0Wn8kw8Zh+A2Qkf6s1M6vTGBkx8boXjuzfwEEyEHRxadsVCecZc8Mkpydo0nykj+MyYF96TKFuVA==
 
-"@vue/cli-service@~4.5.0":
+"@vue/cli-service@^4.5.13":
   version "4.5.13"
   resolved "https://registry.yarnpkg.com/@vue/cli-service/-/cli-service-4.5.13.tgz#a09e684a801684b6e24e5414ad30650970eec9ed"
   integrity sha512-CKAZN4iokMMsaUyJRU22oUAz3oS/X9sVBSKAF2/shFBV5xh3jqAlKl8OXZYz4cXGFLA6djNuYrniuLAo7Ku97A==

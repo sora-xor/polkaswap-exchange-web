@@ -16,6 +16,7 @@
                 v-if="internalRewards.length"
                 v-model="selectedInternalRewardsModel"
                 :item="internalRewards[0]"
+                is-codec-string
               />
               <rewards-amount-table
                 class="rewards-table"
@@ -42,7 +43,13 @@
                   <div v-if="externalRewardsHintText" class="rewards-footer-hint">{{ externalRewardsHintText }}</div>
                 </div>
               </rewards-amount-table>
-              <info-line v-if="fee && isSoraAccountConnected && rewardsAvailable && !claimingInProgressOrFinished" v-bind="feeInfo" class="rewards-fee" />
+              <info-line
+                v-if="fee && isSoraAccountConnected && rewardsAvailable && !claimingInProgressOrFinished"
+                v-bind="feeInfo"
+                class="rewards-fee"
+                :fiat-value="getFiatAmountByCodecString(fee)"
+                is-formatted
+              />
             </template>
           </div>
           <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text--transaction">
@@ -71,6 +78,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
 import { AccountAsset, KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, CodecString, FPNumber } from '@sora-substrate/util'
+import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
 
 import ethersUtil from '@/utils/ethers-util'
 import { lazyComponent } from '@/router'
@@ -92,7 +100,7 @@ import TransactionMixin from '@/components/mixins/TransactionMixin'
     InfoLine: lazyComponent(Components.InfoLine)
   }
 })
-export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin) {
+export default class Rewards extends Mixins(FormattedAmountMixin, WalletConnectMixin, TransactionMixin) {
   @State(state => state.rewards.fee) fee!: CodecString
   @State(state => state.rewards.feeFetching) feeFetching!: boolean
   @State(state => state.rewards.rewardsFetching) rewardsFetching!: boolean
@@ -173,12 +181,12 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
       type: this.t('rewards.groups.strategic'),
       title: this.t('rewards.claimableAmountDoneVesting'),
       limit: [{
-        symbol: pswap.symbol as KnownSymbols,
-        amount: FPNumber.fromCodecValue(this.vestedRewards?.limit ?? 0, pswap.decimals).toLocaleString()
+        amount: FPNumber.fromCodecValue(this.vestedRewards?.limit ?? 0, pswap.decimals).toLocaleString(),
+        asset: pswap
       }],
       total: {
-        symbol: pswap.symbol as KnownSymbols,
-        amount: FPNumber.fromCodecValue(this.vestedRewards?.total ?? 0, pswap.decimals).toLocaleString()
+        amount: FPNumber.fromCodecValue(this.vestedRewards?.total ?? 0, pswap.decimals).toLocaleString(),
+        asset: pswap
       },
       rewards
     }
@@ -244,7 +252,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   get rewardTokenSymbols (): Array<KnownSymbols> {
-    return this.rewardsByAssetsList.map(item => item.symbol)
+    return this.rewardsByAssetsList.map(item => item.asset.symbol as KnownSymbols)
   }
 
   get gradientSymbol (): string {
@@ -358,6 +366,11 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 </script>
 
 <style lang="scss">
+.rewards {
+  .formatted-amount.formatted-amount--fiat-value {
+    color: var(--s-color-rewards);
+  }
+}
 .container.rewards .el-loading-mask {
   border-radius: var(--s-border-radius-small);
 }
