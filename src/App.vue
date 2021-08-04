@@ -776,12 +776,17 @@ $sora-logo-width: 173.7px;
 }
 
 @include large-mobile {
+  $border-image-light: linear-gradient(#FAF4F8, #D5CDD0, #FAF4F8) 30;
+  $border-image-dark: linear-gradient(180deg, rgba(36, 2, 65, 0) 0%, rgba(36, 2, 65, 0.5) 50.45%, rgba(36, 2, 65, 0) 100%) 30;
   .app-sidebar {
     overflow-y: auto;
     margin-right: 0;
     width: auto;
-    border-right: 1px solid #e5dce0 !important;
-    border-image: linear-gradient(#FAF4F8, #D5CDD0, #FAF4F8) 30;
+    border-right: 1px solid;
+    border-image: $border-image-light;
+    [design-system-theme="dark"] & {
+      border-image: $border-image-dark;
+    }
   }
   .menu .menu-link-container {
     display: block;
