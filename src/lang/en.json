@@ -85,7 +85,8 @@
         "amount": "@:amountText",
         "balance": "Balance",
         "max": "MAX",
-        "fee": "Transaction Fee",
+        "fee": "@:networkFeeText",
+        "feeTooltip": "@:networkFeeTooltipText",
         "enterAddress": "Enter address",
         "badAddress": "Incorrect address",
         "enterAmount": "Enter amount",
@@ -109,6 +110,7 @@
     },
     "assets": {
         "empty": "There are no assets",
+        "totalAssetsValue": "Your total assets value:",
         "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
@@ -164,8 +166,8 @@
             "title": "Transaction submitted",
             "desc": "Create {symbol} token"
         },
-        "tooltipValue": "To create a token, you have to pay a fee",
-        "fee": "Network fee",
+        "tooltipValue": "@:networkFeeTooltipText",
+        "fee": "@:networkFeeText",
         "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "Failed to get a fee for a transaction",
         "error": "Failed to create {symbol} token",
@@ -602,7 +604,7 @@
         "remove": "remove",
         "add": "ADD",
         "ok": "OK",
-        "networkFee": "Network fee",
+        "networkFee": "@:networkFeeText",
         "alreadyCreated": "Token pair is already created",
         "firstLiquidityProvider": "You are the first liquidity provider",
         "firstLiquidityProviderInfo": "The ratio of tokens you add will set the price of this pool.<br\/>Once you are happy with the rate click supply to review."

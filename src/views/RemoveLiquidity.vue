@@ -44,7 +44,7 @@
           <token-select-button class="el-button--select-token" :token="firstToken" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <token-address v-if="firstToken" :name="firstToken.name" :symbol="firstToken.symbol" :address="firstToken.address" class="input-title" />
+          <token-address v-if="firstToken" :name="firstToken.name" :symbol="firstToken.symbol" :address="firstToken.address" class="input-value" />
         </div>
       </s-float-input>
 
@@ -73,7 +73,7 @@
           <token-select-button class="el-button--select-token" :token="secondToken" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <token-address v-if="secondToken" :name="secondToken.name" :symbol="secondToken.symbol" :address="secondToken.address" class="input-title" />
+          <token-address v-if="secondToken" :name="secondToken.name" :symbol="secondToken.symbol" :address="secondToken.address" class="input-value" />
         </div>
       </s-float-input>
 
@@ -96,6 +96,8 @@
           :value="formattedFee"
           :asset-symbol="KnownSymbols.XOR"
           :tooltip-content="t('networkFeeTooltipText')"
+          :fiat-value="getFiatAmountByCodecString(fee)"
+          is-formatted
         />
       </div>
 
@@ -124,6 +126,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { FPNumber, KnownSymbols, AccountLiquidity, CodecString } from '@sora-substrate/util'
+import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
@@ -145,7 +148,7 @@ const namespace = 'removeLiquidity'
     TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
-export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDialogMixin) {
+export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, TransactionMixin, ConfirmDialogMixin) {
   readonly KnownSymbols = KnownSymbols
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 

@@ -31,9 +31,10 @@
           <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
           <span class="input-title--uppercase input-title--primary" v-if="areTokensSelected && !isZeroToAmount && isExchangeB">({{ t('swap.estimated') }})</span>
         </div>
-        <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="input-title">
-          <span class="input-title--uppercase">{{ t('exchange.balance') }}</span>
-          <span class="input-title--uppercase input-title--primary">{{ formatBalance(tokenFrom) }}</span>
+        <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="input-value">
+          <span class="input-value--uppercase">{{ t('exchange.balance') }}</span>
+          <span class="input-value--primary">{{ formatBalance(tokenFrom) }}</span>
+          <formatted-amount v-if="tokenFromPrice" :value="getFiatBalance(tokenFrom)" is-fiat-value />
         </div>
       </div>
       <div slot="right" class="s-flex el-buttons">
@@ -43,7 +44,8 @@
         <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenFrom" @click="openSelectTokenDialog(true)" />
       </div>
       <div slot="bottom" class="input-line input-line--footer">
-        <token-address v-if="tokenFrom" :name="tokenFrom.name" :symbol="tokenFrom.symbol" :address="tokenFrom.address" class="input-title" />
+        <formatted-amount v-if="tokenFrom && tokenFromPrice" :value="getFiatAmountByString(fromValue, tokenFrom)" is-fiat-value />
+        <token-address v-if="tokenFrom" :name="tokenFrom.name" :symbol="tokenFrom.symbol" :address="tokenFrom.address" class="input-value" />
       </div>
     </s-float-input>
     <s-button
@@ -70,16 +72,18 @@
           <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
           <span class="input-title--uppercase input-title--primary" v-if="areTokensSelected && !isZeroFromAmount && !isExchangeB">({{ t('swap.estimated') }})</span>
         </div>
-        <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="input-title">
-          <span class="input-title--uppercase">{{ t('exchange.balance') }}</span>
-          <span class="input-title--uppercase input-title--primary">{{ formatBalance(tokenTo) }}</span>
+        <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="input-value">
+          <span class="input-value--uppercase">{{ t('exchange.balance') }}</span>
+          <span class="input-value--primary">{{ formatBalance(tokenTo) }}</span>
+          <formatted-amount v-if="tokenToPrice" :value="getFiatBalance(tokenTo)" is-fiat-value />
         </div>
       </div>
       <div slot="right" class="s-flex el-buttons">
         <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenTo" @click="openSelectTokenDialog(false)" />
       </div>
       <div slot="bottom" class="input-line input-line--footer">
-        <token-address v-if="tokenTo" :name="tokenTo.name" :symbol="tokenTo.symbol" :address="tokenTo.address" class="input-title" />
+        <formatted-amount v-if="tokenTo && tokenToPrice" :value="getFiatAmountByString(toValue, tokenTo)" is-fiat-value />
+        <token-address v-if="tokenTo" :name="tokenTo.name" :symbol="tokenTo.symbol" :address="tokenTo.address" class="input-value" />
       </div>
     </s-float-input>
     <slippage-tolerance class="slippage-tolerance-settings" />
@@ -128,13 +132,12 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { api } from '@soramitsu/soraneo-wallet-web'
+import { api, FormattedAmountMixin, FormattedAmount } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes, LPRewardsInfo, FPNumber } from '@sora-substrate/util'
 import type { Subscription } from '@polkadot/x-rxjs'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
 import { isMaxButtonAvailable, getMaxValue, hasInsufficientBalance, hasInsufficientXorForFee, asZeroValue, formatAssetBalance, debouncedInputHandler } from '@/utils'
 import router, { lazyComponent } from '@/router'
@@ -153,10 +156,11 @@ const namespace = 'swap'
     ConfirmSwap: lazyComponent(Components.ConfirmSwap),
     StatusActionBadge: lazyComponent(Components.StatusActionBadge),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    TokenAddress: lazyComponent(Components.TokenAddress)
+    TokenAddress: lazyComponent(Components.TokenAddress),
+    FormattedAmount
   }
 })
-export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
+export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin, LoadingMixin) {
   @Getter nodeIsConnected!: boolean
   @Getter isLoggedIn!: boolean
   @Getter slippageTolerance!: string
@@ -283,6 +287,14 @@ export default class Swap extends Mixins(TranslationMixin, LoadingMixin, NumberF
     const fpNetworkFee = this.getFPNumberFromCodec(this.networkFee, this.tokenXOR.decimals).sub(xorBalance)
     const fpAmount = this.getFPNumber(this.toValue, this.tokenXOR.decimals).sub(FPNumber.gt(fpNetworkFee, zero) ? fpNetworkFee : zero)
     return FPNumber.lte(fpAmount, zero)
+  }
+
+  get tokenFromPrice (): Nullable<CodecString> {
+    return this.getAssetFiatPrice(this.tokenFrom)
+  }
+
+  get tokenToPrice (): Nullable<CodecString> {
+    return this.getAssetFiatPrice(this.tokenTo)
   }
 
   created () {

@@ -1,6 +1,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { KnownAssets, KnownSymbols, CodecString } from '@sora-substrate/util'
+import { KnownSymbols, CodecString } from '@sora-substrate/util'
+import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
 
 import TransactionMixin from './TransactionMixin'
 import LoadingMixin from './LoadingMixin'
@@ -12,14 +13,14 @@ import { getMaxValue, isMaxButtonAvailable, isXorAccountAsset, hasInsufficientBa
 
 const CreateTokenPairMixin = (namespace: string) => {
   @Component
-  class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin) {
+  class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin, FormattedAmountMixin) {
     readonly KnownSymbols = KnownSymbols
 
     @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
     @Getter('firstToken', { namespace }) firstToken!: any
     @Getter('secondToken', { namespace }) secondToken!: any
-    @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
-    @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
+    @Getter('firstTokenValue', { namespace }) firstTokenValue!: string
+    @Getter('secondTokenValue', { namespace }) secondTokenValue!: string
 
     @Getter('isAvailable', { namespace }) isAvailable!: boolean
     @Getter('minted', { namespace }) minted!: CodecString
@@ -96,6 +97,30 @@ const CreateTokenPairMixin = (namespace: string) => {
         // TODO: [Release 2] Add check for pair without XOR
       }
       return false
+    }
+
+    get firstTokenPrice (): Nullable<CodecString> {
+      return this.getAssetFiatPrice(this.firstToken)
+    }
+
+    get secondTokenPrice (): Nullable<CodecString> {
+      return this.getAssetFiatPrice(this.secondToken)
+    }
+
+    get fiatFirstAmount (): Nullable<string> {
+      return this.getFiatAmount(this.firstTokenValue, this.firstToken)
+    }
+
+    get fiatSecondAmount (): Nullable<string> {
+      return this.getFiatAmount(this.secondTokenValue, this.secondToken)
+    }
+
+    get formattedPrice (): string {
+      return this.formatStringValue(this.price)
+    }
+
+    get formattedPriceReversed (): string {
+      return this.formatStringValue(this.priceReversed)
     }
 
     async handleMaxValue (token: any, setValue: (v: any) => void): Promise<void> {
