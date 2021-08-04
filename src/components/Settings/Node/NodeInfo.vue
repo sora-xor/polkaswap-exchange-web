@@ -15,8 +15,12 @@
     <s-form-item prop="address">
       <s-input class="node-info-input s-typography-input-field" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="existing" />
     </s-form-item>
-    <s-button type="primary" native-type="submit" class="node-info-button s-typography-button--large" :disabled="connected" :loading="loading">{{ buttonText }}</s-button>
-    <external-link v-if="!existing" :href="tutorialLink" :title="t('selectNodeDialog.howToSetupOwnNode')" />
+    <s-button :type="buttonType" native-type="submit" class="node-info-button s-typography-button--large" :disabled="connected" :loading="loading">{{ buttonText }}</s-button>
+    <a :href="tutorialLink" class="node-info-button" target="_blank" rel="noreferrer noopener">
+      <s-button type="tertiary" class="node-info-tutorial-button s-typography-button--big" icon="question-circle-16" icon-position="right">
+        {{ t('selectNodeDialog.howToSetupOwnNode') }}
+      </s-button>
+    </a>
   </s-form>
 </template>
 
@@ -92,6 +96,10 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
     return this.existing ? this.t('selectNodeDialog.select') : this.t('selectNodeDialog.addNode')
   }
 
+  get buttonType (): string {
+    return this.existing ? 'tertiary' : 'primary'
+  }
+
   get title (): string {
     return this.existing ? this.node.title : this.t('selectNodeDialog.customNode')
   }
@@ -114,6 +122,12 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .node-info {
+  &-tutorial-button {
+    .s-icon-question-circle-16 {
+      font-size: 18px !important;
+    }
+  }
+
   .el-form-item.is-error > .el-form-item__content {
     & > [class^="s-input"]:not(.s-disabled) {
       &, &:hover {
@@ -146,7 +160,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
     width: 100%;
   }
 
-  &-button {
+  &-button, &-tutorial-button {
     width: 100%;
   }
 }
