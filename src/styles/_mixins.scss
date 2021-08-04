@@ -447,13 +447,11 @@
   &.el-scrollbar {
     .el-scrollbar__wrap {
       overflow-x: hidden;
+    }
+    .el-scrollbar__wrap, .el-scrollbar__view {
       display: flex;
-
-      .el-scrollbar__view {
-        display: flex;
-        flex-flow: column nowrap;
-        flex: 1;
-      }
+      flex: 1;
+      flex-flow: column nowrap;
     }
   }
 }
