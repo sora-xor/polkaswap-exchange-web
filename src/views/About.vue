@@ -469,7 +469,7 @@ export default class About extends Mixins(TranslationMixin) {
 .app-footer {
   display: flex;
   flex-direction: column;
-  padding: 0 0 0 20px;
+  padding: 0 22px 20px 20px;
 
   .hr {
     height: 1px;

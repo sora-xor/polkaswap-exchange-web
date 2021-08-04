@@ -335,6 +335,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Sora', sans-serif;
   height: 100vh;
+  min-width: 528px;
   color: var(--s-color-base-content-primary);
   background-color: var(--s-color-utility-body);
   transition: background-color 500ms linear;
@@ -560,6 +561,7 @@ $sora-logo-width: 173.7px;
   }
 
   &-body {
+    min-width: 464px;
     position: relative;
     overflow-y: auto;
     display: flex;
@@ -586,6 +588,13 @@ $sora-logo-width: 173.7px;
     line-height: var(--s-line-height-extra-small);
     letter-spacing: var(--s-letter-spacing-small);
     color: var(--s-color-base-content-secondary);
+    &.about-disclaimer {
+      min-width: 800px;
+      width: 100%;
+      max-width: 900px;
+      padding: 0 20px;
+      margin: 0 auto 120px;
+    }
   }
 
   &-footer {
@@ -595,6 +604,10 @@ $sora-logo-width: 173.7px;
     padding-right: $inner-spacing-large;
     padding-left: $inner-spacing-large;
     padding-bottom: $inner-spacing-large;
+    &.about-footer {
+      min-width: 800px;
+      justify-content: center;
+    }
   }
 }
 
@@ -809,9 +822,16 @@ $sora-logo-width: 173.7px;
   }
   .app-footer {
     flex-direction: row;
+    padding-right: 22px;
+    padding-bottom: 20px;
     .app-disclaimer {
       padding-right: $inner-spacing-large;
     }
+  }
+}
+@media screen and (max-width: 460px) {
+  .app-body {
+    margin-left: -10px;
   }
 }
 </style>
