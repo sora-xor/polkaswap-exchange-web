@@ -519,6 +519,10 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
   @include generic-input-lines;
   @include token-styles;
   @include vertical-divider('s-button--switch', $inner-spacing-medium);
+  .s-icon--network {
+    margin-top: 1px;
+    font-size: 10px;
+  }
 
   .bridge-item {
     &-footer {

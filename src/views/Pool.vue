@@ -185,29 +185,11 @@ export default class Pool extends Mixins(FormattedAmountMixin, TranslationMixin,
 </script>
 
 <style lang="scss">
-$pair-icon-height: 36px;
-$pool-collapse-icon-height: 2px;
-$pool-collapse-icon-width: 10px;
-
 .pool-list {
-  .el-collapse-item {
-    &__header,
-    &__wrap {
-      border-bottom: none;
-      background-color: unset;
-    }
-    &__content {
-      margin-top: 0;
-      padding: 0 $inner-spacing-medium $inner-spacing-medium;
-      font-weight: 600;
-    }
-    .el-collapse-item__header {
-      height: #{$pair-icon-height + $inner-spacing-medium * 2};
-      line-height: $pair-icon-height;
-      padding: $inner-spacing-medium;
-      .pair-logo {
-        margin-right: $inner-spacing-medium;
-      }
+  @include collapse-items;
+  .el-collapse-item__header {
+    .pair-logo {
+      margin-right: $inner-spacing-medium;
     }
   }
 }
@@ -242,13 +224,6 @@ $pair-icon-height: 36px;
     width: 100%;
     border-top: none;
     border-bottom: none;
-    .pool-info-container {
-      margin-bottom: $inner-spacing-medium;
-      padding: 0;
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
     h3 {
       letter-spacing: var(--s-letter-spacing-small);
     }
@@ -285,27 +260,18 @@ $pair-icon-height: 36px;
       font-size: var(--s-font-size-extra-small);
     }
     &-container {
-      width: 100%;
-      padding: $inner-spacing-big;
-      background: var(--s-color-base-background);
-      border-radius: var(--s-border-radius-small);
-      box-shadow: var(--s-shadow-element-pressed);
-      color: var(--s-color-base-content-secondary);
-      font-size: var(--s-font-size-mini);
-      line-height: var(--s-line-height-small);
-      text-align: center;
-
       &--empty {
+        color: var(--s-color-base-content-secondary);
+        padding: $basic-spacing-medium $inner-spacing-big;
         background: var(--s-color-base-border-primary);
-        box-shadow: 0.4px -0.4px 0px var(--s-color-base-content-tertiary), -0.4px 0.4px 0px var(--s-color-base-content-tertiary), -0.4px -0.4px 0px var(--s-color-base-content-tertiary), 0.4px 0.4px 0px var(--s-color-base-content-tertiary);
+        border-radius: var(--s-border-radius-small);
+        box-shadow: var(--s-shadow-dialog);
         font-size: var(--s-font-size-small);
+        line-height: var(--s-line-height-medium);
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: var(--s-letter-spacing-small);
-      }
-
-      &.is-active {
-        box-shadow: var(--s-shadow-element);
+        text-align: center;
       }
 
       &__title {
