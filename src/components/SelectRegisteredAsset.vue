@@ -32,7 +32,10 @@
                 <s-col>
                   <s-row flex justify="start" align="middle">
                     <token-logo :token="asset" size="big" />
-                    <div class="asset-item__name">{{ getAssetName(asset) }}</div>
+                    <div class="asset-item__info s-flex">
+                      <div class="asset-item__symbol">{{ asset.symbol }}</div>
+                      <token-address :name="getAssetName(asset)" :symbol="asset.symbol" :address="asset.address" class="asset-item__details" />
+                    </div>
                   </s-row>
                 </s-col>
                 <div class="asset-item__balance-container">
@@ -120,7 +123,8 @@ const namespace = 'assets'
   components: {
     DialogBase,
     FormattedAmount,
-    TokenLogo: lazyComponent(Components.TokenLogo)
+    TokenLogo: lazyComponent(Components.TokenLogo),
+    TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
 export default class SelectRegisteredAsset extends Mixins(FormattedAmountMixin, TranslationMixin, SelectAssetMixin, LoadingMixin) {
@@ -221,7 +225,7 @@ export default class SelectRegisteredAsset extends Mixins(FormattedAmountMixin, 
   }
 
   getAssetName (asset: RegisteredAccountAsset): string {
-    return `${asset.name || asset.symbol} (${asset.symbol})`
+    return `${asset.name || asset.symbol}`
   }
 
   handleTabClick ({ name }): void {
@@ -276,7 +280,7 @@ export default class SelectRegisteredAsset extends Mixins(FormattedAmountMixin, 
 .asset-select {
   @include exchange-tabs();
 }
-.asset-item__balance {
+.asset-item__balance.formatted-amount {
   @include formatted-amount;
   .formatted-amount__decimal {
     font-weight: 600;
@@ -305,33 +309,7 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
   margin-bottom: $inner-spacing-medium;
 }
 .asset-item {
-  height: $select-asset-item-height;
-  padding: 0 $select-asset-horizontal-spacing;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
-    background-color: var(--s-color-base-background-hover);
-  }
-  &__name, &__balance {
-    font-size: var(--s-font-size-big);
-    letter-spacing: var(--s-letter-spacing-mini);
-    font-weight: 800;
-  }
-  &__balance {
-    &-container {
-      width: 45%;
-      text-align: right;
-    }
-  }
-  .s-col {
-    padding-right: $inner-spacing-small;
-  }
-  .token-logo {
-    margin-right: $inner-spacing-mini;
-    flex-shrink: 0;
-  }
+  @include select-asset;
 }
 .network-label {
   color: var(--s-color-base-content-secondary);
