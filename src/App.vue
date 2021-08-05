@@ -551,6 +551,13 @@ html {
 .s-typography-button--large.is-disabled {
   font-size: var(--s-font-size-medium) !important;
 }
+
+.el-tooltip__popper.neumorphic {
+  .popper__arrow {
+    margin-top: $inner-spacing-mini / 2;
+    border-width: 7px;
+  }
+}
 </style>
 
 <style lang="scss" scoped>

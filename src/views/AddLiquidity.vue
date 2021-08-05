@@ -315,6 +315,7 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @include buttons;
   @include full-width-button('action-button');
 }
+
 @include vertical-divider('icon-divider', $inner-spacing-medium);
 @include vertical-divider('el-divider');
 </style>

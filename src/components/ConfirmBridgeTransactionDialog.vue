@@ -190,12 +190,10 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
     margin-right: $inner-spacing-medium;
     flex-shrink: 0;
   }
-  &-evm {
-    @include evm-logo-styles;
-  }
   .s-icon {
     &-sora, &-eth {
       margin-right: $inner-spacing-medium;
+      font-size: 21px;
     }
   }
 }
