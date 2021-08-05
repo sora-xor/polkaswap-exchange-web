@@ -28,6 +28,7 @@ import SPagination from '@soramitsu/soramitsu-js-ui/lib/components/Pagination'
 import SRadio from '@soramitsu/soramitsu-js-ui/lib/components/Radio/SRadio'
 import SRadioGroup from '@soramitsu/soramitsu-js-ui/lib/components/Radio/SRadioGroup'
 import SRow from '@soramitsu/soramitsu-js-ui/lib/components/Layout/Row'
+import SScrollbar from '@soramitsu/soramitsu-js-ui/lib/components/Scrollbar'
 import SSlider from '@soramitsu/soramitsu-js-ui/lib/components/Slider'
 import SSwitch from '@soramitsu/soramitsu-js-ui/lib/components/Switch'
 import STab from '@soramitsu/soramitsu-js-ui/lib/components/Tab/STab'
@@ -63,6 +64,7 @@ Vue.use(SPagination)
 Vue.use(SRadio)
 Vue.use(SRadioGroup)
 Vue.use(SRow)
+Vue.use(SScrollbar)
 Vue.use(SSlider)
 Vue.use(SSwitch)
 Vue.use(STab)

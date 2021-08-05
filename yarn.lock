@@ -2355,10 +2355,10 @@
     crypto-js "^4.0.0"
     lodash "^4.17.15"
 
-"@soramitsu/soramitsu-js-ui@1.0.11":
-  version "1.0.11"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-1.0.11.tgz#7439ab2973ba8ba51264658cd6f389f4f9a8c2fb"
-  integrity sha512-xhlv7iC8fYP+v+WqimpiT30BURljg11+N64Tghlr4tYSKlbZAoY0d3gEpyf/nbJK+hevbSiObNUzcSRPcwBEvg==
+"@soramitsu/soramitsu-js-ui@1.0.12":
+  version "1.0.12"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-1.0.12.tgz#056080d53ba79143a0d71a581d76a3286e29529f"
+  integrity sha512-fDdecr8jnOvkg1cw5vF39aIkX0Tk6Lc0PT2bDLO8uK2VuRAByGWMvXBRGWGjhF3VG+KSONJ9fVTyXDT2nXkOxA==
   dependencies:
     core-js "^3.6.4"
     element-resize-detector "^1.2.1"
@@ -2373,15 +2373,15 @@
     vuex "^3.1.3"
     vuex-class "^0.3.2"
 
-"@soramitsu/soraneo-wallet-web@^1.4.7":
-  version "1.4.7"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.4.7.tgz#8b97761df97adbcb1828e625ddfac055919b3fd3"
-  integrity sha512-nDNzGAZTg7G5UVkDxjcgNoL3cAM1drUuzAb6HSbFItTLaGXVRrQG5Np0UTSFDYmbq5RXWk16X0bB4bkYTPRflQ==
+"@soramitsu/soraneo-wallet-web@^1.4.8":
+  version "1.4.8"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.4.8.tgz#c9028dd40b856a32c712c6aee98e93e74034e133"
+  integrity sha512-hESbySoaK5TNGOPKP+X6ehbM211kmfscpC29Trsaj/anLf7fcGRt4+I4bCOvd3AVZwaskXpPkeC1L7c7FfZ9dA==
   dependencies:
     "@polkadot/extension-dapp" "^0.35.0-beta.35"
     "@polkadot/vue-identicon" "^0.72.1"
     "@sora-substrate/util" "1.4.1"
-    "@soramitsu/soramitsu-js-ui" "1.0.11"
+    "@soramitsu/soramitsu-js-ui" "1.0.12"
     axios "^0.19.0"
     core-js "^3.6.4"
     dayjs "^1.10.5"
