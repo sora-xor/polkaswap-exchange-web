@@ -93,13 +93,13 @@
           </s-menu>
         </aside>
       </s-scrollbar>
-      <div class="app-body">
+      <div class="app-body" :class="isAboutPage ? 'app-body__about' : ''">
         <s-scrollbar class="app-body-scrollbar">
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
-            <p class="app-disclaimer" :class="isAboutPage ? 'about-disclaimer' : ''" v-html="t('disclaimer')" />
+            <p class="app-disclaimer" v-html="t('disclaimer')" />
           </div>
-          <footer class="app-footer" :class="isAboutPage ? 'about-footer' : ''">
+          <footer class="app-footer">
             <div class="sora-logo">
               <span class="sora-logo__title">{{ t('poweredBy') }}</span>
               <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener" />
@@ -348,12 +348,18 @@ html {
   }
 }
 
-.app-body-scrollbar, .app-sidebar-scrollbar {
-  @include scrollbar;
-}
-
-.app-body-scrollbar {
-  flex: 1;
+.app {
+  &-body-scrollbar, &-sidebar-scrollbar {
+    @include scrollbar;
+  }
+  &-body {
+    &-scrollbar {
+      flex: 1;
+    }
+    &__about &-scrollbar .el-scrollbar__wrap {
+      overflow-x: auto;
+    }
+  }
 }
 
 .node-control {
@@ -579,6 +585,19 @@ $sora-logo-width: 173.7px;
     display: flex;
     flex: 1;
     flex-flow: column nowrap;
+    &__about {
+      .app-content .app-disclaimer {
+        min-width: 800px;
+        width: 100%;
+        max-width: 900px;
+        padding: 0 20px;
+        margin: 0 auto 120px;
+      }
+      .app-footer {
+        min-width: 800px;
+        justify-content: center;
+      }
+    }
   }
 
   &-content {
@@ -600,13 +619,6 @@ $sora-logo-width: 173.7px;
     line-height: var(--s-line-height-extra-small);
     letter-spacing: var(--s-letter-spacing-small);
     color: var(--s-color-base-content-secondary);
-    &.about-disclaimer {
-      min-width: 800px;
-      width: 100%;
-      max-width: 900px;
-      padding: 0 20px;
-      margin: 0 auto 120px;
-    }
   }
 
   &-footer {
@@ -616,10 +628,6 @@ $sora-logo-width: 173.7px;
     padding-right: $inner-spacing-large;
     padding-left: $inner-spacing-large;
     padding-bottom: $inner-spacing-large;
-    &.about-footer {
-      min-width: 800px;
-      justify-content: center;
-    }
   }
 }
 
