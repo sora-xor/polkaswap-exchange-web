@@ -441,3 +441,16 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     }
   }
 }
+
+@mixin scrollbar {
+  &.el-scrollbar {
+    .el-scrollbar__wrap {
+      overflow-x: hidden;
+    }
+    .el-scrollbar__wrap, .el-scrollbar__view {
+      display: flex;
+      flex: 1;
+      flex-flow: column nowrap;
+    }
+  }
+}
