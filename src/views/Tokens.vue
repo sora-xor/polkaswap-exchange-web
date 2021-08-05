@@ -202,6 +202,10 @@ export default class Tokens extends Mixins(LoadingMixin, TranslationMixin, Asset
     height: auto !important;
   }
 
+  .el-table__empty-text {
+    color: var(--s-color-base-content-primary);
+  }
+
   .token-address {
     &__name {
       display: block;
