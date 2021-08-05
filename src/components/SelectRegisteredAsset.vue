@@ -352,9 +352,6 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
     height: #{$select-asset-item-height * 6};
     overflow: auto;
   }
-  &--evm {
-    @include evm-logo-styles;
-  }
   &__empty {
     display: flex;
     align-items: center;

@@ -219,13 +219,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
-@mixin evm-logo-styles {
-  .token-logo {
-    // filter: grayscale(1);
-    // opacity: .5;
-  }
-}
-
 @mixin bridge-container {
   width: $bridge-width;
 

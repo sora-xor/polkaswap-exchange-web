@@ -827,6 +827,14 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
 .s-dropdown-menu__item {
   border-radius: calc(var(--s-border-radius-mini) / 2);
 }
+html[design-system-theme="dark"] {
+  .transaction-content .s-input {
+    background-color: var(--s-color-base-on-accent);
+  }
+  .s-icon--network {
+    color: var(--s-color-base-content-tertiary);
+  }
+}
 </style>
 
 <style lang="scss" scoped>
