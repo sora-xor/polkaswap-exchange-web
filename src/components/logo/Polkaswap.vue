@@ -23,7 +23,7 @@ export default class PolkaswapLogo extends Vue {
   @Prop({ default: Theme.LIGHT, type: String }) theme!: Theme
 
   get textColor (): string {
-    if (this.theme === Theme.DARK) return '#F0D7DC'
+    if (this.theme === Theme.DARK) return 'var(--s-color-base-content-primary)'
     return '#0D0248'
   }
 }
