@@ -31,10 +31,10 @@
                 </div>
               </s-row>
             </s-col>
-            <div v-if="connected" class="token-item__amount-container">
+            <div v-if="connected" class="token-item__balance-container">
               <template v-if="formatBalance(token) !== formattedZeroSymbol">
                 <formatted-amount
-                  class="token-item__amount"
+                  class="token-item__balance"
                   :value="formatBalance(token)"
                   :font-size-rate="FontSizeRate.MEDIUM"
                 />
@@ -46,7 +46,7 @@
                   is-fiat-value
                 />
               </template>
-              <span v-else class="token-item__amount">{{ formattedZeroSymbol }}</span>
+              <span v-else class="token-item__balance">{{ formattedZeroSymbol }}</span>
             </div>
           </div>
         </div>
@@ -112,10 +112,10 @@
                   </div>
                 </s-row>
               </s-col>
-              <div v-if="connected" class="token-item__amount-container">
+              <div v-if="connected" class="token-item__balance-container">
                 <template v-if="formatBalance(token) !== formattedZeroSymbol">
                   <formatted-amount
-                    class="token-item__amount"
+                    class="token-item__balance"
                     :value="formatBalance(token)"
                     :font-size-rate="FontSizeRate.MEDIUM"
                   />
@@ -127,7 +127,7 @@
                     is-fiat-value
                   />
                 </template>
-                <span v-else class="token-item__amount">{{ formattedZeroSymbol }}</span>
+                <span v-else class="token-item__balance">{{ formattedZeroSymbol }}</span>
               </div>
               <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
                 <s-icon name="basic-trash-24" />
@@ -309,7 +309,7 @@ export default class SelectToken extends Mixins(FormattedAmountMixin, Translatio
 .asset-select {
   @include exchange-tabs();
 }
-.token-item__amount.formatted-amount {
+.token-item__balance.formatted-amount {
   @include formatted-amount;
   .formatted-amount__decimal {
     font-weight: 600;
@@ -332,7 +332,7 @@ $token-item-height: 71px;
   font-weight: 800;
   color: var(--s-color-base-content-secondary);
 }
-.token-list_text, .token-item, .add-asset-details, .asset-select__info {
+.token-list_text, .add-asset-details, .asset-select__info {
   padding: 0 $inner-spacing-big;
 }
 .asset-select__info {
@@ -340,49 +340,10 @@ $token-item-height: 71px;
   margin-bottom: $inner-spacing-medium;
 }
 .token-item {
-  height: $token-item-height;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  transition: var(--s-transition-default);
-  &:hover {
-    background-color: var(--s-color-base-background-hover);
-  }
-  &__info {
-    flex-direction: column;
-  }
-  &__details {
-    color: var(--s-color-base-content-quaternary);
-    font-size: var(--s-font-size-mini);
-    line-height: var(--s-line-height-medium);
-  }
-  &__address, &__symbol {
-    white-space: nowrap;
-  }
-  &__symbol {
-    font-size: var(--s-font-size-big);
-    white-space: nowrap;
-  }
-  &__symbol, &__amount {
-    line-height: var(--s-line-height-small);
-    letter-spacing: var(--s-letter-spacing-small);
-    font-weight: 800;
-  }
-  &__amount-container {
-    text-align: right;
-    min-width: 40%;
-  }
+  @include select-asset;
   &__remove {
     margin-top: -5px;
     margin-left: $inner-spacing-medium;
-  }
-  .s-col {
-    padding-right: $inner-spacing-small;
-  }
-  .token-logo {
-    margin-right: $inner-spacing-mini;
-    flex-shrink: 0;
   }
 }
 .token-list {
