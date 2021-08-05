@@ -22,86 +22,90 @@
       </div>
     </header>
     <div class="app-main">
-      <aside class="app-sidebar">
-        <s-menu
-          class="menu"
-          mode="vertical"
-          background-color="transparent"
-          box-shadow="none"
-          text-color="var(--s-color-base-content-primary)"
-          active-text-color="var(--s-color-theme-accent)"
-          active-hover-color="transparent"
-          :default-active="getCurrentPath()"
-          @select="goTo"
-        >
-          <s-menu-item-group v-for="(group, index) in SidebarMenuGroups" :key="index">
-            <s-menu-item
-              v-for="item in group"
-              :key="item.title"
-              :index="item.title"
-              :disabled="item.disabled"
-              class="menu-item"
-            >
-              <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
-            </s-menu-item>
-          </s-menu-item-group>
-        </s-menu>
+      <s-scrollbar class="app-sidebar-scrollbar">
+        <aside class="app-sidebar">
+          <s-menu
+            class="menu"
+            mode="vertical"
+            background-color="transparent"
+            box-shadow="none"
+            text-color="var(--s-color-base-content-primary)"
+            active-text-color="var(--s-color-theme-accent)"
+            active-hover-color="transparent"
+            :default-active="getCurrentPath()"
+            @select="goTo"
+          >
+            <s-menu-item-group v-for="(group, index) in SidebarMenuGroups" :key="index">
+              <s-menu-item
+                v-for="item in group"
+                :key="item.title"
+                :index="item.title"
+                :disabled="item.disabled"
+                class="menu-item"
+              >
+                <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
+              </s-menu-item>
+            </s-menu-item-group>
+          </s-menu>
 
-        <s-menu
-          class="menu"
-          mode="vertical"
-          background-color="transparent"
-          box-shadow="none"
-          text-color="var(--s-color-base-content-tertiary)"
-          active-text-color="var(--s-color-base-content-tertiary)"
-          active-hover-color="transparent"
-        >
-          <s-menu-item-group>
-            <li v-for="item in SocialNetworkLinks" :key="item.title">
-              <sidebar-item-content
-                :icon="item.icon"
-                :title="t(`social.${item.title}`)"
-                :href="item.href"
-                tag="a"
-                target="_blank"
-                rel="nofollow noopener"
+          <s-menu
+            class="menu"
+            mode="vertical"
+            background-color="transparent"
+            box-shadow="none"
+            text-color="var(--s-color-base-content-tertiary)"
+            active-text-color="var(--s-color-base-content-tertiary)"
+            active-hover-color="transparent"
+          >
+            <s-menu-item-group>
+              <li v-for="item in SocialNetworkLinks" :key="item.title">
+                <sidebar-item-content
+                  :icon="item.icon"
+                  :title="t(`social.${item.title}`)"
+                  :href="item.href"
+                  tag="a"
+                  target="_blank"
+                  rel="nofollow noopener"
+                  class="el-menu-item menu-item--small"
+                />
+              </li>
+            </s-menu-item-group>
+            <s-menu-item-group>
+              <li v-if="faucetUrl">
+                <sidebar-item-content
+                  :icon="FaucetLink.icon"
+                  :title="t(`footerMenu.${FaucetLink.title}`)"
+                  :href="faucetUrl"
+                  tag="a"
+                  target="_blank"
+                  rel="nofollow noopener"
+                  class="el-menu-item menu-item--small"
+                />
+              </li>
+              <!-- <sidebar-item-content
+                :title="t('footerMenu.help')"
+                icon="notifications-info-24"
+                tag="li"
                 class="el-menu-item menu-item--small"
-              />
-            </li>
-          </s-menu-item-group>
-          <s-menu-item-group>
-            <li v-if="faucetUrl">
-              <sidebar-item-content
-                :icon="FaucetLink.icon"
-                :title="t(`footerMenu.${FaucetLink.title}`)"
-                :href="faucetUrl"
-                tag="a"
-                target="_blank"
-                rel="nofollow noopener"
-                class="el-menu-item menu-item--small"
-              />
-            </li>
-            <!-- <sidebar-item-content
-              :title="t('footerMenu.help')"
-              icon="notifications-info-24"
-              tag="li"
-              class="el-menu-item menu-item--small"
-              @click.native="openHelpDialog"
-            /> -->
-          </s-menu-item-group>
-        </s-menu>
-      </aside>
-      <div class="app-body">
-        <div class="app-content">
-          <router-view :parent-loading="loading || !nodeIsConnected" />
-          <p class="app-disclaimer" :class="isAboutPage ? 'about-disclaimer' : ''" v-html="t('disclaimer')" />
-        </div>
-        <footer class="app-footer" :class="isAboutPage ? 'about-footer' : ''">
-          <div class="sora-logo">
-            <span class="sora-logo__title">{{ t('poweredBy') }}</span>
-            <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener" />
+                @click.native="openHelpDialog"
+              /> -->
+            </s-menu-item-group>
+          </s-menu>
+        </aside>
+      </s-scrollbar>
+      <div class="app-body" :class="isAboutPage ? 'app-body__about' : ''">
+        <s-scrollbar class="app-body-scrollbar">
+          <div class="app-content">
+            <router-view :parent-loading="loading || !nodeIsConnected" />
+            <p class="app-disclaimer" v-html="t('disclaimer')" />
           </div>
-        </footer>
+          <footer class="app-footer">
+            <div class="sora-logo">
+              <span class="sora-logo__title">{{ t('poweredBy') }}</span>
+              <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener" />
+            </div>
+          </footer>
+        </s-scrollbar>
       </div>
     </div>
 
@@ -344,6 +348,20 @@ html {
   }
 }
 
+.app {
+  &-body-scrollbar, &-sidebar-scrollbar {
+    @include scrollbar;
+  }
+  &-body {
+    &-scrollbar {
+      flex: 1;
+    }
+    &__about &-scrollbar .el-scrollbar__wrap {
+      overflow-x: auto;
+    }
+  }
+}
+
 .node-control {
   &.el-button.neumorphic.el-button--plain {
     padding-left: 5px;
@@ -553,6 +571,7 @@ $sora-logo-width: 173.7px;
     margin-right: $basic-spacing-small;
     width: 70px;
     display: flex;
+    flex: 1;
     flex-flow: column nowrap;
     justify-content: space-between;
     padding-top: $inner-spacing-small;
@@ -563,10 +582,22 @@ $sora-logo-width: 173.7px;
   &-body {
     min-width: 464px;
     position: relative;
-    overflow-y: auto;
     display: flex;
     flex: 1;
     flex-flow: column nowrap;
+    &__about {
+      .app-content .app-disclaimer {
+        min-width: 800px;
+        width: 100%;
+        max-width: 900px;
+        padding: 0 20px;
+        margin: 0 auto 120px;
+      }
+      .app-footer {
+        min-width: 800px;
+        justify-content: center;
+      }
+    }
   }
 
   &-content {
@@ -588,13 +619,6 @@ $sora-logo-width: 173.7px;
     line-height: var(--s-line-height-extra-small);
     letter-spacing: var(--s-letter-spacing-small);
     color: var(--s-color-base-content-secondary);
-    &.about-disclaimer {
-      min-width: 800px;
-      width: 100%;
-      max-width: 900px;
-      padding: 0 20px;
-      margin: 0 auto 120px;
-    }
   }
 
   &-footer {
@@ -604,10 +628,6 @@ $sora-logo-width: 173.7px;
     padding-right: $inner-spacing-large;
     padding-left: $inner-spacing-large;
     padding-bottom: $inner-spacing-large;
-    &.about-footer {
-      min-width: 800px;
-      justify-content: center;
-    }
   }
 }
 
