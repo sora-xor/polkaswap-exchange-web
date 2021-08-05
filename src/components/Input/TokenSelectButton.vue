@@ -98,13 +98,13 @@ $baseClass: '.token-select-button';
     &:hover, &:active, &.focusing {
       #{$baseClass}__icon {
         background-color: var(--s-color-base-content-secondary);
-        color: var(--s-color-base-on-accent) !important;
+        color: var(--s-color-utility-surface) !important;
       }
     }
 
     #{$baseClass}__icon {
       background-color: var(--s-color-base-content-tertiary);
-      color: var(--s-color-base-on-accent) !important;
+      color: var(--s-color-utility-surface) !important;
     }
 
     #{$baseClass}__text {
