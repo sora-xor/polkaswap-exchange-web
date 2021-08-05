@@ -66,12 +66,12 @@
               <formatted-amount v-if="asset && isSoraToEvm" :value="getFiatAmountByString(amount, asset)" is-fiat-value />
               <token-address v-if="isAssetSelected" v-bind="asset" :external="!isSoraToEvm" class="input-value" />
             </div>
-            <div v-if="isNetworkBConnected && !isSoraToEvm" class="bridge-item-footer">
+            <div v-if="isNetworkAConnected" class="bridge-item-footer">
               <s-divider type="tertiary" />
               <span>{{ formatAddress(!isSoraToEvm ? evmAddress : getWalletAddress(), 8) }}</span>
               <span>{{ t('bridge.connected') }}</span>
             </div>
-            <s-button v-if="!isNetworkAConnected" class="el-button--connect s-typography-button--large" type="primary" @click="isSoraToEvm ? connectInternalWallet() : connectExternalWallet()">
+            <s-button v-else class="el-button--connect s-typography-button--large" type="primary" @click="isSoraToEvm ? connectInternalWallet() : connectExternalWallet()">
               {{ t('bridge.connectWallet') }}
             </s-button>
           </template>
@@ -109,12 +109,12 @@
               <formatted-amount v-if="asset && !isSoraToEvm" :value="getFiatAmountByString(amount, asset)" is-fiat-value />
               <token-address v-if="isAssetSelected" v-bind="asset" :external="isSoraToEvm" class="input-value" />
             </div>
-            <div v-if="isNetworkBConnected && isSoraToEvm" class="bridge-item-footer">
+            <div v-if="isNetworkBConnected" class="bridge-item-footer">
               <s-divider type="tertiary" />
               <span>{{ formatAddress(isSoraToEvm ? evmAddress : getWalletAddress(), 8) }}</span>
               <span>{{ t('bridge.connected') }}</span>
             </div>
-            <s-button v-else-if="!isNetworkBConnected" class="el-button--connect s-typography-button--large" type="primary" @click="!isSoraToEvm ? connectInternalWallet() : connectExternalWallet()">
+            <s-button v-else class="el-button--connect s-typography-button--large" type="primary" @click="!isSoraToEvm ? connectInternalWallet() : connectExternalWallet()">
               {{ t('bridge.connectWallet') }}
             </s-button>
           </template>
