@@ -775,6 +775,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
         .el-loading-spinner {
           top: 0;
           margin-top: calc(#{$header-icon-size - $header-spinner-size} / 2);
+          margin-left: calc(#{$header-icon-size - $header-spinner-size} / 2);
           .circular {
             width: $header-spinner-size;
             height: $header-spinner-size;
@@ -908,6 +909,7 @@ html[design-system-theme="dark"] {
     }
     &--error {
       background-image: url("~@/assets/img/header-error.svg");
+      background-size: 125%;
     }
     &.el-loading-parent--relative {
       background-image: none;
@@ -920,14 +922,9 @@ html[design-system-theme="dark"] {
     margin-bottom: $inner-spacing-mini;
     font-weight: 700;
     line-height: var(--s-line-height-medium);
-    .s-icon {
-      &-sora, &-eth {
-        position: relative;
-        top: 1px;
-      }
-      &--network {
-        font-size: var(--s-heading4-font-size);
-      }
+    .s-icon--network {
+      font-size: var(--s-heading4-font-size);
+      margin-left: $inner-spacing-mini / 4;
     }
     &-separator {
       margin-right: $inner-spacing-mini / 2;
