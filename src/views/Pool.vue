@@ -14,44 +14,22 @@
             <pair-token-logo :first-token="getAsset(liquidityItem.firstAddress)" :second-token="getAsset(liquidityItem.secondAddress)" size="small" />
             <h3 class="pool-info-container__title">{{ getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress)) }}</h3>
           </template>
-          <div class="pool-info">
-            <token-logo :token="getAsset(liquidityItem.firstAddress)" size="small" />
-            <div class="pool-info__label">{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.firstAddress) }) }}</div>
-            <div class="pool-info__content">
-              <formatted-amount
-                class="pool-info__value"
-                :value="getFirstBalance(liquidityItem)"
-                :font-size-rate="FontSizeRate.MEDIUM"
-                :font-weight-rate="FontWeightRate.SMALL"
-              />
-              <formatted-amount
-                :value="getFiatAmountByCodecString(liquidityItem.firstBalance, getAsset(liquidityItem.firstAddress))"
-                is-fiat-value
-                :font-size-rate="FontSizeRate.MEDIUM"
-                with-left-shift
-              />
-            </div>
-          </div>
-          <div class="pool-info">
-            <token-logo :token="getAsset(liquidityItem.secondAddress)" size="small" />
-            <div class="pool-info__label">{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.secondAddress) }) }}</div>
-            <formatted-amount
-              class="pool-info__value"
-              :value="getSecondBalance(liquidityItem)"
-              :font-size-rate="FontSizeRate.MEDIUM"
-              :font-weight-rate="FontWeightRate.SMALL"
-            />
-            <formatted-amount
-              :value="getFiatAmountByCodecString(liquidityItem.secondBalance, getAsset(liquidityItem.secondAddress))"
-              is-fiat-value
-              :font-size-rate="FontSizeRate.MEDIUM"
-              with-left-shift
-            />
-          </div>
-          <div class="pool-info pool-info--share">
-            <div class="pool-info__label">{{ t('pool.poolShare')}}</div>
-            <div class="pool-info__value">{{ getPoolShare(liquidityItem.poolShare) }}</div>
-          </div>
+          <info-line
+            :label="t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.firstAddress) })"
+            :value="getFirstBalance(liquidityItem)"
+            :fiat-value="getFiatAmountByCodecString(liquidityItem.firstBalance, getAsset(liquidityItem.firstAddress))"
+            is-formatted
+          />
+          <info-line
+            :label="t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.secondAddress) })"
+            :value="getSecondBalance(liquidityItem)"
+            :fiat-value="getFiatAmountByCodecString(liquidityItem.secondBalance, getAsset(liquidityItem.secondAddress))"
+            is-formatted
+          />
+          <info-line
+            :label="t('pool.poolShare')"
+            :value="getPoolShare(liquidityItem.poolShare)"
+          />
           <div class="pool-info--buttons">
             <s-button type="secondary" class="s-typography-button--medium" @click="handleAddPairLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
               {{ t('pool.addLiquidity') }}
@@ -94,7 +72,7 @@ const namespace = 'pool'
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    TokenLogo: lazyComponent(Components.TokenLogo),
+    InfoLine: lazyComponent(Components.InfoLine),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     FormattedAmount
   }
@@ -229,41 +207,11 @@ $pair-icon-height: 36px;
     }
   }
   &-info {
-    display: flex;
-    align-items: center;
-    font-size: var(--s-font-size-small);
-    line-height: var(--s-line-height-big);
-    margin-bottom: $inner-spacing-mini;
-    &,
-    &--buttons {
-      padding-left: $inner-spacing-mini;
-      padding-right: $inner-spacing-mini;
-    }
-    &--share {
-      color: var(--s-color-base-content-secondary);
-    }
-    &__label {
-      margin-right: var(--s-basic-spacing);
-      white-space: nowrap;
-    }
-    &__content {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      align-items: baseline;
-      flex-grow: 1;
-    }
-    &__value {
-      margin-left: auto;
-    }
-    .formatted-amount--fiat-value {
-      font-size: var(--s-font-size-extra-small);
-    }
     &-container {
       &--empty {
         color: var(--s-color-base-content-secondary);
         padding: $basic-spacing-medium $inner-spacing-big;
-        background: var(--s-color-base-border-primary);
+        background: var(--s-color-utility-surface);
         border-radius: var(--s-border-radius-small);
         box-shadow: var(--s-shadow-dialog);
         font-size: var(--s-font-size-small);
@@ -287,8 +235,11 @@ $pair-icon-height: 36px;
     }
     &--buttons {
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
       margin-top: $inner-spacing-medium;
+      .el-button + .el-button {
+        margin-left: $inner-spacing-small;
+      }
     }
   }
 }

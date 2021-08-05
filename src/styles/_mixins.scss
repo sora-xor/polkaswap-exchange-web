@@ -1,5 +1,5 @@
 // This file includes mixins for usage in different components
-
+$button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0, 0, 0.05);
 
 // TODO 4 alexnatalia: Right now this is just a mixin because there are no appropriate focus behaviour for some elements (tabs for example) and we need more time to investigate the problem
 @mixin focus {
@@ -113,6 +113,9 @@
     &--max {
       margin-right: $inner-spacing-mini / 2;
       margin-left: $inner-spacing-mini / 2;
+      &.el-button.neumorphic {
+        box-shadow: $button-custom-shadow;
+      }
     }
     &--select-token {
       margin-left: $inner-spacing-mini / 2;
@@ -125,7 +128,7 @@
         }
       }
       &, &:hover, &:active, &:focus, &.focusing, &.s-pressed {
-        box-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0, 0, 0.05);
+        box-shadow: $button-custom-shadow;
       }
     }
   }
@@ -379,13 +382,16 @@
     width: 100%;
     margin-bottom: $inner-spacing-medium;
     padding: 0;
-    background: var(--s-color-base-background);
+    background: var(--s-color-utility-surface);
     border-radius: var(--s-border-radius-small);
     box-shadow: var(--s-shadow-element-pressed);
     color: var(--s-color-base-content-secondary);
     font-size: var(--s-font-size-mini);
     line-height: var(--s-line-height-small);
     text-align: center;
+    &.is-active {
+      background: var(--s-color-base-background);
+    }
     &:last-child {
       margin-bottom: 0;
     }
@@ -398,7 +404,6 @@
     &__content {
       margin-top: 0;
       padding: 0 $inner-spacing-medium $inner-spacing-medium;
-      font-weight: 600;
     }
     &__arrow {
       margin-right: 0;
@@ -434,7 +439,8 @@
   white-space: initial;
 
   .formatted-amount {
-    &__integer {
+    &__integer,
+    &__symbol {
       font-size: $fontSize;
     }
     &__decimal {

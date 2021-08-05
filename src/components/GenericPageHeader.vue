@@ -50,6 +50,9 @@ export default class GenericPageHeader extends Mixins(TranslationMixin) {
 <style lang="scss">
 .info-tooltip--page-header {
   margin-top: 0 !important;
+  .popper__arrow {
+    margin-top: $inner-spacing-mini;
+  }
 }
 </style>
 
@@ -76,6 +79,7 @@ $title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
     }
   }
   &-title {
+    color: var(--s-color-base-content-primary);
     line-height: $tooltip-area-height;
     font-weight: 300;
     letter-spacing: var(--s-letter-spacing-mini);
