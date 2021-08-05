@@ -95,13 +95,13 @@
           </s-menu>
         </aside>
       </s-scrollbar>
-      <div class="app-body">
+      <div class="app-body" :class="isAboutPage ? 'app-body__about' : ''">
         <s-scrollbar class="app-body-scrollbar">
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
-            <p class="app-disclaimer" :class="isAboutPage ? 'about-disclaimer' : ''" v-html="t('disclaimer')" />
+            <p class="app-disclaimer" v-html="t('disclaimer')" />
           </div>
-          <footer class="app-footer" :class="isAboutPage ? 'about-footer' : ''">
+          <footer class="app-footer">
             <div class="sora-logo">
               <span class="sora-logo__title">{{ t('poweredBy') }}</span>
               <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener">
