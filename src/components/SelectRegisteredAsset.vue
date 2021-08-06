@@ -28,25 +28,25 @@
               {{ isSoraToEvm ? t('selectRegisteredAsset.search.networkLabelSora') : t('selectRegisteredAsset.search.networkLabelEthereum') }}
             </h3>
             <div :class="assetListClasses(filteredAssets, !isSoraToEvm)">
-              <div v-for="asset in filteredAssets" @click="selectAsset(asset)" :key="asset.address" class="asset-item">
+              <div v-for="asset in filteredAssets" :key="asset.address" :set="formattedAssetBalance = formatBalance(asset)" class="asset-item" @click="selectAsset(asset)">
                 <s-col>
                   <s-row flex justify="start" align="middle">
                     <token-logo :token="asset" size="big" />
                     <div class="asset-item__info s-flex">
                       <div class="asset-item__symbol">{{ asset.symbol }}</div>
-                      <token-address :name="getAssetName(asset)" :symbol="asset.symbol" :address="asset.address" class="asset-item__details" />
+                      <token-address :name="asset.name || asset.symbol" :symbol="asset.symbol" :address="asset.address" class="asset-item__details" />
                     </div>
                   </s-row>
                 </s-col>
                 <div class="asset-item__balance-container">
-                  <template v-if="isSoraToEvm && asset && formatBalance(asset) !== formattedZeroSymbol">
+                  <template v-if="formattedAssetBalance !== formattedZeroSymbol">
                     <formatted-amount
                       class="asset-item__balance"
-                      :value="formatBalance(asset)"
+                      :value="formattedAssetBalance"
                       :font-size-rate="FontSizeRate.MEDIUM"
                     />
                     <formatted-amount
-                      v-if="!!getAssetFiatPrice(asset)"
+                      v-if="isSoraToEvm && getAssetFiatPrice(asset)"
                       :value="getFiatBalance(asset)"
                       :font-size-rate="FontSizeRate.MEDIUM"
                       :font-weight-rate="FontWeightRate.MEDIUM"
@@ -222,10 +222,6 @@ export default class SelectRegisteredAsset extends Mixins(FormattedAmountMixin, 
     this.$emit('select', asset)
     this.$emit('close')
     this.isVisible = false
-  }
-
-  getAssetName (asset: RegisteredAccountAsset): string {
-    return `${asset.name || asset.symbol}`
   }
 
   handleTabClick ({ name }): void {
