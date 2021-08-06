@@ -57,7 +57,7 @@ export default class GenericPageHeader extends Mixins(TranslationMixin) {
 $page-header-class: '.page-header';
 $tooltip-area-height: var(--s-size-medium);
 $tooltip-size: var(--s-size-mini);
-$title-padding: calc(#{calc(var(--s-size-medium) * 2)} + #{$inner-spacing-small});
+$title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
 
 #{$page-header-class} {
   position: relative;
@@ -65,10 +65,7 @@ $title-padding: calc(#{calc(var(--s-size-medium) * 2)} + #{$inner-spacing-small}
   margin: 0 0 $inner-spacing-medium;
   width: 100%;
   &--center {
-    .el-button.s-medium {
-      min-width: var(--s-size-medium);
-    }
-    .action-button--back {
+    .el-button {
       position: absolute;
     }
     #{$page-header-class}-title {
@@ -76,10 +73,6 @@ $title-padding: calc(#{calc(var(--s-size-medium) * 2)} + #{$inner-spacing-small}
       padding-right: $title-padding;
       padding-left: $title-padding;
       text-align: center;
-    }
-    #{$page-header-class}-buttons {
-      position: absolute;
-      right: $inner-spacing-small;
     }
   }
   &-title {
