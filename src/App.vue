@@ -564,6 +564,7 @@ html {
 $header-height: 64px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
+$account-control-name-max-width: 200px;
 
 .app {
   &-main {
@@ -737,6 +738,9 @@ $sora-logo-width: 173.7px;
 
   &-title {
     font-size: var(--s-font-size-small);
+    max-width: $account-control-name-max-width;
+    overflow: hidden;
+    text-overflow: ellipsis;
     &.name {
       text-transform: none;
     }
