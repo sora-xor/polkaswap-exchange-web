@@ -154,7 +154,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
       const defaultNode = this.findInList(this.defaultNodes, nodeCopy.address)
 
       if (defaultNode) {
-        const formatted = this.formatNode(nodeCopy)
+        const formatted = this.formatNode(defaultNode)
         const error = new AppHandledError({
           key: 'node.errors.existing',
           payload: {
