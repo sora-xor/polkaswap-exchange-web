@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "commonjs",
+    "module": "esnext",
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
@@ -17,7 +17,8 @@
     "types": [
       "webpack-env",
       "jest",
-      "node"
+      "node",
+      "element-ui"
     ],
     "paths": {
       "@/*": [

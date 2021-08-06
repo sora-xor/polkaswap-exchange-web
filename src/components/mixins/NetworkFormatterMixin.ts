@@ -3,7 +3,7 @@ import { BridgeNetworks } from '@sora-substrate/util'
 
 import store from '@/store'
 
-import { EvmNetworkType } from '@/utils/web3-util'
+import { EvmNetworkType } from '@/utils/ethers-util'
 
 @Component
 export default class NetworkFormatterMixin extends Vue {

@@ -3,12 +3,6 @@
     <generic-page-header has-button-back :title="title" @back="handleBack">
       <template v-if="existing && removable">
         <s-button
-          v-if="nodeDataChanged"
-          type="action"
-          icon="basic-check-mark-24"
-          @click="submitForm"
-        />
-        <s-button
           type="action"
           icon="basic-trash-24"
           @click="removeNode(nodeModel)"
@@ -21,8 +15,12 @@
     <s-form-item prop="address">
       <s-input class="node-info-input s-typography-input-field" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="existing" />
     </s-form-item>
-    <s-button type="primary" native-type="submit" class="node-info-button s-typography-button--large" :disabled="connected" :loading="loading">{{ buttonText }}</s-button>
-    <external-link v-if="!existing" :href="tutorialLink" :title="t('selectNodeDialog.howToSetupOwnNode')" />
+    <s-button :type="buttonType" native-type="submit" class="node-info-button s-typography-button--large" :disabled="connected" :loading="loading">{{ buttonText }}</s-button>
+    <a :href="tutorialLink" class="node-info-button" target="_blank" rel="noreferrer noopener">
+      <s-button type="tertiary" class="node-info-tutorial-button s-typography-button--big" icon="question-circle-16" icon-position="right">
+        {{ t('selectNodeDialog.howToSetupOwnNode') }}
+      </s-button>
+    </a>
   </s-form>
 </template>
 
@@ -93,9 +91,14 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   }
 
   get buttonText (): string {
+    if (this.nodeDataChanged) return this.t('selectNodeDialog.save')
     if (this.connected) return this.t('selectNodeDialog.connected')
 
     return this.existing ? this.t('selectNodeDialog.select') : this.t('selectNodeDialog.addNode')
+  }
+
+  get buttonType (): string {
+    return this.existing ? 'tertiary' : 'primary'
   }
 
   get title (): string {
@@ -124,6 +127,12 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .node-info {
+  &-tutorial-button {
+    .s-icon-question-circle-16:before {
+      font-size: 18px;
+    }
+  }
+
   .el-form-item.is-error > .el-form-item__content {
     & > [class^="s-input"]:not(.s-disabled) {
       &, &:hover {
@@ -156,7 +165,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
     width: 100%;
   }
 
-  &-button {
+  &-button, &-tutorial-button {
     width: 100%;
   }
 }

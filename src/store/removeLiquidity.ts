@@ -3,6 +3,7 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
+import debounce from 'lodash/debounce'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { FPNumber, CodecString } from '@sora-substrate/util'
 
@@ -116,6 +117,12 @@ const getters = {
   },
   totalSupply (state: RemoveLiquidityState) {
     return state.totalSupply
+  },
+  shareOfPool (state: RemoveLiquidityState, getters) {
+    const balance = FPNumber.fromCodecValue(getters.liquidityBalance)
+    const removed = new FPNumber(state.liquidityAmount ?? 0)
+    const total = FPNumber.fromCodecValue(getters.totalSupply)
+    return balance.sub(removed).div(total.sub(removed)).mul(new FPNumber(100)).toLocaleString() || ZeroStringValue
   }
 }
 
@@ -202,25 +209,6 @@ const actions = {
     }
   },
 
-  setLiquidityAmount ({ commit, getters, dispatch }, liquidityAmount) {
-    if (!getters.focusedField || getters.focusedField === 'liquidityAmount') {
-      commit(types.SET_FOCUSED_FIELD, 'liquidityAmount')
-
-      if (liquidityAmount) {
-        if (liquidityAmount !== getters.liquidityAmount && !Number.isNaN(liquidityAmount)) {
-          const part = new FPNumber(liquidityAmount).div(FPNumber.fromCodecValue(getters.liquidityBalance))
-
-          commit(types.SET_REMOVE_PART, Math.round(part.mul(new FPNumber(100)).toNumber()))
-          commit(types.SET_LIQUIDITY_AMOUNT, liquidityAmount)
-          commit(types.SET_FIRST_TOKEN_AMOUNT, part.mul(FPNumber.fromCodecValue(getters.firstTokenBalance)).toString())
-          commit(types.SET_SECOND_TOKEN_AMOUNT, part.mul(FPNumber.fromCodecValue(getters.secondTokenBalance)).toString())
-        }
-      } else {
-        commit(types.SET_LIQUIDITY_AMOUNT)
-      }
-      dispatch('getRemoveLiquidityData')
-    }
-  },
   setFirstTokenAmount ({ commit, getters, dispatch }, firstTokenAmount) {
     if (!getters.focusedField || getters.focusedField === 'firstTokenAmount') {
       commit(types.SET_FOCUSED_FIELD, 'firstTokenAmount')
@@ -266,11 +254,11 @@ const actions = {
     await dispatch('setFocusedField', null)
   },
 
-  async getRemoveLiquidityData ({ dispatch }) {
+  getRemoveLiquidityData: debounce(async ({ dispatch }) => {
     await dispatch('getLiquidityReserves')
     await dispatch('getTotalSupply')
     await dispatch('getNetworkFee')
-  },
+  }, 500, { leading: true }),
 
   async getNetworkFee ({ commit, getters }) {
     if (getters.firstTokenAddress && getters.secondTokenAddress) {
@@ -307,10 +295,11 @@ const actions = {
   async getTotalSupply ({ commit, getters }) {
     try {
       commit(types.GET_TOTAL_SUPPLY_REQUEST)
-      const [aOut, bOut, pts] = await api.estimateTokensRetrieved(
+      const [_, pts] = await api.estimatePoolTokensMinted(
         getters.firstTokenAddress,
         getters.secondTokenAddress,
-        getters.liquidityAmount,
+        getters.firstTokenAmount,
+        getters.secondTokenAmount,
         getters.reserveA,
         getters.reserveB
       )

@@ -1,20 +1,20 @@
 <template>
   <div :class="headerClasses">
-    <s-button v-if="hasButtonBack" class="action-button--back" type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack" />
-    <h3 class="page-header-title">{{ title }}</h3>
-    <s-tooltip
-      v-if="!!tooltip"
-      class="page-header-tooltip"
-      popper-class="info-tooltip info-tooltip--page-header"
-      border-radius="mini"
-      :content="tooltip"
-      :placement="tooltipPlacement"
-    >
-      <s-icon name="info-16" size="18px" />
-    </s-tooltip>
-    <div class="page-header-buttons">
-      <slot />
-    </div>
+    <s-button v-if="hasButtonBack" type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack" />
+    <h3 class="page-header-title">
+      {{ title }}
+      <s-tooltip
+        v-if="!!tooltip"
+        class="page-header-tooltip"
+        popper-class="info-tooltip info-tooltip--page-header"
+        border-radius="mini"
+        :content="tooltip"
+        :placement="tooltipPlacement"
+      >
+        <s-icon name="info-16" size="18px" />
+      </s-tooltip>
+    </h3>
+    <slot />
   </div>
 </template>
 
@@ -63,7 +63,6 @@ $title-padding: calc(#{calc(var(--s-size-medium) * 2)} + #{$inner-spacing-small}
   position: relative;
   display: flex;
   margin: 0 0 $inner-spacing-medium;
-  padding: 0 $inner-spacing-small;
   width: 100%;
   &--center {
     .el-button.s-medium {
@@ -84,9 +83,16 @@ $title-padding: calc(#{calc(var(--s-size-medium) * 2)} + #{$inner-spacing-small}
     }
   }
   &-title {
+    color: var(--s-color-base-content-primary);
     line-height: $tooltip-area-height;
     font-weight: 300;
-    letter-spacing: var(--s-letter-spacing-small);
+    letter-spacing: var(--s-letter-spacing-mini);
+    & + .el-button {
+      right: 0;
+      &--settings {
+        margin-left: auto;
+      }
+    }
   }
   &-tooltip {
     margin-top: auto;

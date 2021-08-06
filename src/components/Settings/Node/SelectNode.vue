@@ -1,6 +1,6 @@
 <template>
   <div class="select-node s-flex">
-    <div class="select-node-description p4">
+    <div class="select-node-description">
       {{ t('selectNodeDialog.selectNodeForEnvironment', { environment }) }}
     </div>
     <s-radio-group v-model="currentAddressValue" class="select-node-list s-flex">
@@ -102,10 +102,9 @@ export default class SelectNode extends Mixins(TranslationMixin) {
 
     &__label {
       color: var(--s-color-base-content-primary);
-      font-size: var(--s-font-size-big);
-      font-weight: 800;
       letter-spacing: var(--s-letter-spacing-small);
-      line-height: var(--s-line-height-small);
+      line-height: var(--s-line-height-medium);
+      @include radio-title;
     }
 
     &__address {
@@ -130,6 +129,13 @@ export default class SelectNode extends Mixins(TranslationMixin) {
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
+  }
+
+  &-description {
+    font-size: var(--s-font-size-extra-small);
+    font-weight: 300;
+    line-height: var(--s-line-height-base);
+    padding: 0 $inner-spacing-small;
   }
 }
 </style>

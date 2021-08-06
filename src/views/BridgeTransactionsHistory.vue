@@ -20,9 +20,8 @@
           <s-input
             v-model="query"
             :placeholder="t('bridgeHistory.filterPlaceholder')"
-            prefix="el-icon-search"
-            size="medium"
-            border-radius="mini"
+            prefix="s-icon-search-16"
+            size="big"
           >
             <template #suffix v-if="query">
               <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleResetSearch" />
@@ -65,8 +64,6 @@
       <s-button
         v-if="!restored"
         class="s-button--restore s-typography-button--large"
-        icon="circle-plus-16"
-        icon-position="right"
         :disabled="loading"
         @click="handleRestoreHistory"
       >
@@ -77,7 +74,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { RegisteredAccountAsset, Operation, isBridgeOperation, BridgeHistory, CodecString, FPNumber } from '@sora-substrate/util'
 

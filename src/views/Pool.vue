@@ -2,10 +2,10 @@
   <div v-loading="parentLoading" class="container el-form--pool">
     <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')" />
     <div v-loading="loading" class="pool-wrapper">
-      <p v-if="!isLoggedIn" class="pool-info-container">
+      <p v-if="!isLoggedIn" class="pool-info-container pool-info-container--empty">
         {{ t('pool.connectToWallet') }}
       </p>
-      <p v-else-if="!accountLiquidity || !accountLiquidity.length" class="pool-info-container">
+      <p v-else-if="!accountLiquidity || !accountLiquidity.length" class="pool-info-container pool-info-container--empty">
         {{ t('pool.liquidityNotFound') }}
       </p>
       <s-collapse v-else class="pool-list" :borders="true">
@@ -14,25 +14,22 @@
             <pair-token-logo :first-token="getAsset(liquidityItem.firstAddress)" :second-token="getAsset(liquidityItem.secondAddress)" size="small" />
             <h3 class="pool-info-container__title">{{ getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress)) }}</h3>
           </template>
-          <div class="pool-info">
-            <token-logo :token="getAsset(liquidityItem.firstAddress)" size="small" />
-            <div>{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.firstAddress) }) }}</div>
-            <div class="pool-info-value">{{ getFirstBalance(liquidityItem) }}</div>
-          </div>
-          <div class="pool-info">
-            <token-logo :token="getAsset(liquidityItem.secondAddress)" size="small" />
-            <div>{{ t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.secondAddress) }) }}</div>
-            <div class="pool-info-value">{{ getSecondBalance(liquidityItem) }}</div>
-          </div>
-          <div class="pool-info">
-            <pair-token-logo :first-token="getAsset(liquidityItem.firstAddress)" :second-token="getAsset(liquidityItem.secondAddress)" size="mini" />
-            <div>{{ t('pool.pairTokens', { pair: getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress)) }) }}</div>
-            <div class="pool-info-value">{{ getBalance(liquidityItem) }}</div>
-          </div>
-          <div class="pool-info pool-info--share">
-            <div>{{ t('pool.poolShare')}}</div>
-            <div class="pool-info-value">{{ getPoolShare(liquidityItem.poolShare) }}</div>
-          </div>
+          <info-line
+            :label="t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.firstAddress) })"
+            :value="getFirstBalance(liquidityItem)"
+            :fiat-value="getFiatAmountByCodecString(liquidityItem.firstBalance, getAsset(liquidityItem.firstAddress))"
+            is-formatted
+          />
+          <info-line
+            :label="t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.secondAddress) })"
+            :value="getSecondBalance(liquidityItem)"
+            :fiat-value="getFiatAmountByCodecString(liquidityItem.secondBalance, getAsset(liquidityItem.secondAddress))"
+            is-formatted
+          />
+          <info-line
+            :label="t('pool.poolShare')"
+            :value="getPoolShare(liquidityItem.poolShare)"
+          />
           <div class="pool-info--buttons">
             <s-button type="secondary" class="s-typography-button--medium" @click="handleAddPairLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
               {{ t('pool.addLiquidity') }}
@@ -62,10 +59,10 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { AccountLiquidity, Asset } from '@sora-substrate/util'
+import { FormattedAmountMixin, FormattedAmount, FontSizeRate, FontWeightRate } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
@@ -75,11 +72,15 @@ const namespace = 'pool'
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    TokenLogo: lazyComponent(Components.TokenLogo),
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo)
+    InfoLine: lazyComponent(Components.InfoLine),
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    FormattedAmount
   }
 })
-export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberFormatterMixin) {
+export default class Pool extends Mixins(FormattedAmountMixin, TranslationMixin, LoadingMixin) {
+  readonly FontSizeRate = FontSizeRate
+  readonly FontWeightRate = FontWeightRate
+
   @Getter isLoggedIn!: boolean
   @Getter('accountLiquidity', { namespace }) accountLiquidity!: any
   @Getter('assets', { namespace: 'assets' }) assets!: Array<Asset>
@@ -162,29 +163,11 @@ export default class Pool extends Mixins(TranslationMixin, LoadingMixin, NumberF
 </script>
 
 <style lang="scss">
-$pair-icon-height: 36px;
-$pool-collapse-icon-height: 2px;
-$pool-collapse-icon-width: 10px;
-
 .pool-list {
-  .el-collapse-item {
-    &__header,
-    &__wrap {
-      border-bottom: none;
-      background-color: unset;
-    }
-    &__content {
-      margin-top: 0;
-      padding: 0 $inner-spacing-medium $inner-spacing-medium;
-      font-weight: 600;
-    }
-    .el-collapse-item__header {
-      height: #{$pair-icon-height + $inner-spacing-medium * 2};
-      line-height: $pair-icon-height;
-      padding: $inner-spacing-medium;
-      .pair-logo {
-        margin-right: $inner-spacing-medium;
-      }
+  @include collapse-items;
+  .el-collapse-item__header {
+    .pair-logo {
+      margin-right: $inner-spacing-medium;
     }
   }
 }
@@ -219,47 +202,24 @@ $pair-icon-height: 36px;
     width: 100%;
     border-top: none;
     border-bottom: none;
-    .pool-info-container {
-      margin-bottom: $inner-spacing-medium;
-      padding: 0;
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
     h3 {
       letter-spacing: var(--s-letter-spacing-small);
     }
   }
   &-info {
-    display: flex;
-    align-items: center;
-    font-size: var(--s-font-size-small);
-    line-height: var(--s-line-height-big);
-    margin-bottom: $inner-spacing-mini;
-    &,
-    &--buttons {
-      padding-left: $inner-spacing-mini;
-      padding-right: $inner-spacing-mini;
-    }
-    &--share {
-      color: var(--s-color-base-content-secondary);
-    }
-    &-value {
-      margin-left: auto;
-    }
     &-container {
-      width: 100%;
-      padding: $inner-spacing-big;
-      background: var(--s-color-base-background);
-      border-radius: var(--s-border-radius-small);
-      box-shadow: var(--s-shadow-element);
-      color: var(--s-color-base-content-secondary);
-      font-size: var(--s-font-size-mini);
-      line-height: var(--s-line-height-small);
-      text-align: center;
-
-      &.is-active {
-        box-shadow: var(--s-shadow-element-pressed);
+      &--empty {
+        color: var(--s-color-base-content-secondary);
+        padding: $basic-spacing-medium $inner-spacing-big;
+        background: var(--s-color-utility-surface);
+        border-radius: var(--s-border-radius-small);
+        box-shadow: var(--s-shadow-dialog);
+        font-size: var(--s-font-size-small);
+        line-height: var(--s-line-height-medium);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: var(--s-letter-spacing-small);
+        text-align: center;
       }
 
       &__title {
@@ -275,8 +235,11 @@ $pair-icon-height: 36px;
     }
     &--buttons {
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
       margin-top: $inner-spacing-medium;
+      .el-button + .el-button {
+        margin-left: $inner-spacing-small;
+      }
     }
   }
 }
