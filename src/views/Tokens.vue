@@ -77,7 +77,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { Asset } from '@sora-substrate/util'
-import { SortDirection } from '@soramitsu/soramitsu-js-ui/src/components/Table/consts'
+import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts'
 
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'

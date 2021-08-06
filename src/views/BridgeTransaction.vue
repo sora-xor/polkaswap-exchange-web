@@ -1,34 +1,36 @@
 <template>
-  <div v-loading="!isInitRequestCompleted" class="transaction-container">
-    <s-button
-      v-if="isInitRequestCompleted"
-      class="s-button--view-transactions-history"
-      type="link"
-      icon="arrows-arrow-left-24"
-      icon-position="left"
-      @click="handleViewTransactionsHistory"
-    >
-      {{ t('bridgeTransaction.viewHistory') }}
-    </s-button>
-    <s-card class="transaction-content" border-radius="medium" shadow="always" primary>
+  <div v-loading="!isInitRequestCompleted" class="container transaction-container">
+    <generic-page-header has-button-back :title="t('bridgeTransaction.title')" @back="handleBack">
+      <s-button
+        v-if="isInitRequestCompleted"
+        class="el-button--history"
+        type="action"
+        icon="time-time-history-24"
+        :tooltip="t('bridgeHistory.showHistory')"
+        tooltip-placement="bottom-end"
+        @click="handleViewTransactionsHistory"
+      />
+    </generic-page-header>
+    <div class="transaction-content">
       <template v-if="isInitRequestCompleted">
         <div class="header">
           <div v-loading="isTransactionFromPending || isTransactionToPending" :class="headerIconClasses" />
           <h5 class="header-details">
-            {{ `${formattedAmount} ${formatAssetSymbol(assetSymbol)}` }}
-            <i :class="`s-icon--network s-icon-${isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
+            <formatted-amount class="info-line-value" :value="formattedAmount" :asset-symbol="formattedAssetSymbol">
+              <i :class="`s-icon--network s-icon-${isSoraToEvm ? 'sora' : evmIcon}`" />
+            </formatted-amount>
             <span class="header-details-separator">{{ t('bridgeTransaction.for') }}</span>
-            {{ `${formattedAmount} ${formatAssetSymbol(assetSymbol)}` }}
-            <i :class="`s-icon--network s-icon-${!isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
+            <formatted-amount class="info-line-value" :value="formattedAmount" :asset-symbol="formattedAssetSymbol">
+              <i :class="`s-icon--network s-icon-${!isSoraToEvm ? 'sora' : evmIcon}`" />
+            </formatted-amount>
           </h5>
           <p class="header-status">{{ headerStatus }}</p>
         </div>
-        <s-collapse :value="activeTransactionStep" :borders="true">
+        <s-collapse borders :value="activeTransactionStep">
           <s-collapse-item :name="transactionSteps.from">
             <template #title>
               <div class="network-info-title">
-                <span>{{ t('bridgeTransaction.steps.step', { step: '1' }) }}</span>
-                <h3>{{ t('bridgeTransaction.networkTitle', { network: t(formatNetwork(isSoraToEvm, true)) }) }}</h3>
+                <h3>{{ `${t('bridgeTransaction.steps.step', { step: '1' })} ${t('bridgeTransaction.networkTitle', { network: t(formatNetwork(isSoraToEvm, true)) })}` }}</h3>
                 <span :class="transactionIconStatusClasses()" />
               </div>
             </template>
@@ -51,17 +53,24 @@
               </s-dropdown>
             </div>
             <info-line :class="failedClass()" :label="t('bridgeTransaction.networkInfo.status')" :value="statusFrom" />
-            <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionFromDate" />
+            <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionFirstDate" />
             <info-line
               v-if="amount"
               :label="t('bridgeTransaction.networkInfo.amount')"
               :value="`-${formattedAmount}`"
-              :asset-symbol="formatAssetSymbol(assetSymbol)"
+              :asset-symbol="formattedAssetSymbol"
+              :fiat-value="soraAmountFiatValue"
+              is-formatted
+              alt-value="-"
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
               :value="isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
               :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : currentEvmTokenSymbol"
+              :fiat-value="soraFeeFiatValue"
+              is-formatted
+              :value-prefix="!isSoraToEvm && formattedEvmNetworkFee ? '~' : null"
+              alt-value="-"
             />
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
             <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : EvmSymbol.ETH" /> -->
@@ -75,7 +84,7 @@
               <template v-if="!isSoraToEvm && !isExternalAccountConnected">{{ t('bridgeTransaction.connectWallet') }}</template>
               <template v-else-if="!(isSoraToEvm || isValidNetworkType)">{{ t('bridgeTransaction.changeNetwork') }}</template>
               <span v-else-if="isTransactionFromPending" v-html="t('bridgeTransaction.pending', { network: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'ethereum'}`) })" />
-              <template v-else-if="isInsufficientBalance">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : formatAssetSymbol(assetSymbol) }) }}</template>
+              <template v-else-if="isInsufficientBalance">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : formattedAssetSymbol }) }}</template>
               <template v-else-if="isInsufficientXorForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : KnownSymbols.XOR }) }}</template>
               <template v-else-if="isInsufficientEvmNativeTokenForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : EvmSymbol.ETH }) }}</template>
               <template v-else-if="isTransactionFromFailed">{{ t('bridgeTransaction.retry') }}</template>
@@ -85,13 +94,12 @@
           <s-collapse-item :name="transactionSteps.to">
             <template #title>
               <div class="network-info-title">
-                <span>{{ t('bridgeTransaction.steps.step', { step: '2' }) }}</span>
-                <h3>{{ t('bridgeTransaction.networkTitle', { network: t(formatNetwork(!isSoraToEvm, true)) }) }}</h3>
+                <h3>{{ `${t('bridgeTransaction.steps.step', { step: '2' })} ${t('bridgeTransaction.networkTitle', { network: t(formatNetwork(!isSoraToEvm, true)) })}` }}</h3>
                 <span v-if="isTransactionStep2" :class="transactionIconStatusClasses(true)" />
               </div>
             </template>
             <div v-if="isSoraToEvm && !isTxEvmAccount" class="transaction-error">
-              <span class="transaction-error__title">Expected address in MetaMask:</span>
+              <span class="transaction-error__title">{{ t('bridgeTransaction.expectedMetaMaskAddress') }}</span>
               <span class="transaction-error__value">{{ transactionEvmAddress }}</span>
             </div>
             <div v-if="isTransactionStep2 && transactionToHash" :class="hashContainerClasses(isSoraToEvm)">
@@ -114,17 +122,24 @@
               </s-dropdown>
             </div>
             <info-line :class="failedClass(true)" :label="t('bridgeTransaction.networkInfo.status')" :value="statusTo" />
-            <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionDate(!isSoraToEvm ? soraTransactionDate : evmTransactionDate)" />
+            <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionSecondDate" />
             <info-line
               v-if="amount"
               :label="t('bridgeTransaction.networkInfo.amount')"
               :value="`${formattedAmount}`"
-              :asset-symbol="formatAssetSymbol(assetSymbol)"
+              :asset-symbol="formattedAssetSymbol"
+              :fiat-value="!isSoraToEvm ? getFiatAmountByString(amount, asset) : null"
+              is-formatted
+              alt-value="-"
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
               :value="!isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
               :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : currentEvmTokenSymbol"
+              :fiat-value="soraNetworkFeeFiatValue"
+              is-formatted
+              :value-prefix="isSoraToEvm && formattedEvmNetworkFee ? '~' : null"
+              alt-value="-"
             />
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
             <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="!isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : EvmSymbol.ETH" /> -->
@@ -147,12 +162,11 @@
           </s-collapse-item>
         </s-collapse>
       </template>
-    </s-card>
+    </div>
     <s-button
       v-if="isInitRequestCompleted && isTransferCompleted"
-      class="s-button--create-transaction"
-      type="link"
-      icon="basic-circle-plus-24"
+      class="s-typography-button--large"
+      type="secondary"
       @click="handleCreateTransaction"
     >
       {{ t('bridgeTransaction.newTransaction') }}
@@ -165,12 +179,11 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory, BridgeNetworks } from '@sora-substrate/util'
-import { getExplorerLink, api } from '@soramitsu/soraneo-wallet-web'
+import { getExplorerLink, api, FormattedAmountMixin, FormattedAmount } from '@soramitsu/soraneo-wallet-web'
 import { interpret } from 'xstate'
 
 import BridgeMixin from '@/components/mixins/BridgeMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames, EvmSymbol, MetamaskCancellationCode } from '@/consts'
@@ -181,14 +194,16 @@ const namespace = 'bridge'
 
 @Component({
   components: {
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     InfoLine: lazyComponent(Components.InfoLine),
-    ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog)
+    ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
+    FormattedAmount
   }
 })
 export default class BridgeTransaction extends Mixins(
+  FormattedAmountMixin,
   BridgeMixin,
-  NetworkFormatterMixin,
-  NumberFormatterMixin
+  NetworkFormatterMixin
 ) {
   @Getter soraNetwork!: string
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
@@ -238,8 +253,6 @@ export default class BridgeTransaction extends Mixins(
 
   EvmSymbol = EvmSymbol
   KnownSymbols = KnownSymbols
-  formatAssetSymbol = formatAssetSymbol
-  formatDateItem = formatDateItem
   STATES = STATES
 
   callFirstTransition = () => {}
@@ -257,11 +270,33 @@ export default class BridgeTransaction extends Mixins(
   showConfirmTransactionDialog = false
 
   get formattedAmount (): string {
-    return this.amount ? new FPNumber(this.amount, this.asset?.decimals).toLocaleString() : ''
+    return this.amount && this.asset ? new FPNumber(this.amount, this.asset.decimals).toLocaleString() : ''
   }
 
   get assetSymbol (): string {
     return this.asset?.symbol ?? ''
+  }
+
+  get formattedAssetSymbol (): string {
+    return formatAssetSymbol(this.assetSymbol)
+  }
+
+  get evmIcon (): string {
+    return this.getEvmIcon(this.evmNetwork)
+  }
+
+  get soraFeeFiatValue (): Nullable<string> {
+    if (this.isSoraToEvm) {
+      return this.getFiatAmountByCodecString(this.historyItem?.soraNetworkFee || this.soraNetworkFee)
+    }
+    return null
+  }
+
+  get soraAmountFiatValue (): Nullable<string> {
+    if (this.isSoraToEvm && this.asset) {
+      return this.getFiatAmountByString(this.amount, this.asset)
+    }
+    return null
   }
 
   get currentState (): STATES {
@@ -412,17 +447,27 @@ export default class BridgeTransaction extends Mixins(
     return this.evmTransactionHash
   }
 
-  get transactionFromDate (): string {
-    return this.transactionDate(this.isSoraToEvm ? this.soraTransactionDate : this.evmTransactionDate)
+  get transactionFirstDate (): string {
+    return this.getTransactionDate(this.isSoraToEvm ? this.soraTransactionDate : this.evmTransactionDate)
+  }
+
+  get transactionSecondDate (): string {
+    return this.getTransactionDate(!this.isSoraToEvm ? this.soraTransactionDate : this.evmTransactionDate)
   }
 
   get formattedSoraNetworkFee (): string {
-    return this.formatCodecNumber(this.historyItem?.soraNetworkFee ?? this.soraNetworkFee)
+    return this.getStringFromCodec(this.historyItem?.soraNetworkFee || this.soraNetworkFee, this.tokenXOR?.decimals)
+  }
+
+  get soraNetworkFeeFiatValue (): Nullable<string> {
+    if (this.isSoraToEvm) {
+      return null
+    }
+    return this.getFiatAmountByCodecString(this.historyItem?.soraNetworkFee || this.soraNetworkFee)
   }
 
   get formattedEvmNetworkFee (): string {
-    const fee = this.formatCodecNumber(this.historyItem?.ethereumNetworkFee ?? this.evmNetworkFee)
-    return fee ? `~${fee}` : fee
+    return this.getFPNumberFromCodec(this.historyItem?.ethereumNetworkFee ?? this.evmNetworkFee).toLocaleString()
   }
 
   get isInsufficientBalance (): boolean {
@@ -658,7 +703,7 @@ export default class BridgeTransaction extends Mixins(
     return this.currentState === (!this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED) ? 'info-line--error' : ''
   }
 
-  transactionDate (transactionDate: string): string {
+  getTransactionDate (transactionDate: string): string {
     // We use current date if request is failed
     const date = transactionDate ? new Date(transactionDate) : new Date()
     return `${date.getDate()} ${this.t(`months[${date.getMonth()}]`)} ${date.getFullYear()}, ${formatDateItem(date.getHours())}:${formatDateItem(date.getMinutes())}:${formatDateItem(date.getSeconds())}`
@@ -695,13 +740,17 @@ export default class BridgeTransaction extends Mixins(
       }
     }
   }
+
+  handleBack (): void {
+    router.push({ name: PageNames.Bridge })
+  }
 }
 </script>
 
 <style lang="scss">
 $collapse-horisontal-padding: $inner-spacing-medium;
-$header-icon-size: 100px;
-$header-spinner-size: 83px;
+$header-icon-size: 52px;
+$header-spinner-size: 62px;
 $collapse-header-title-font-size: $s-heading3-caps-font-size;
 $collapse-header-title-line-height: var(--s-line-height-base);
 $collapse-header-title-height: calc(#{$collapse-header-title-font-size} * #{$collapse-header-title-line-height});
@@ -712,64 +761,40 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     @include bridge-container;
   }
   &-content {
-    .el-card__body {
-      padding: $inner-spacing-medium;
-    }
-    .header-icon {
-      position: relative;
-      @include svg-icon('', $header-icon-size);
-      .el-loading-mask {
-        background-color: var(--s-color-utility-surface);
+    @include collapse-items;
+    .header {
+      &-details .info-line-value {
+        @include formatted-amount(var(--s-heading3-font-size), 0.75);
       }
-      .el-loading-spinner {
-        top: 0;
-        margin-top: calc(#{$header-icon-size - $header-spinner-size} / 2);
-        .circular {
-          width: $header-spinner-size;
-          height: $header-spinner-size;
+      &-icon {
+        position: relative;
+        @include svg-icon('', $header-icon-size);
+        .el-loading-mask {
+          background-color: var(--s-color-utility-surface);
+        }
+        .el-loading-spinner {
+          top: 0;
+          margin-top: calc(#{$header-icon-size - $header-spinner-size} / 2);
+          margin-left: calc(#{$header-icon-size - $header-spinner-size} / 2);
+          .circular {
+            width: $header-spinner-size;
+            height: $header-spinner-size;
+          }
         }
       }
     }
     .el-button .network-title {
       text-transform: uppercase;
     }
-    .el-collapse {
-      margin-right: -#{$collapse-horisontal-padding};
-      margin-left: -#{$collapse-horisontal-padding};
-      border-bottom: none;
-      &-item {
-        &__header {
-          height: $collapse-header-height;
-          line-height: $collapse-header-height;
-          background-color: unset;
-          .network-info-title {
-            padding-left: #{$collapse-horisontal-padding + $inner-spacing-mini / 2};
-            h3 {
-              font-size: $s-heading3-caps-font-size;
-              line-height: var(--s-line-height-base);
-            }
-          }
-        }
-        &__content {
-          padding-right: $collapse-horisontal-padding;
-          padding-left: $collapse-horisontal-padding;
-        }
-        &:last-child {
-          .el-collapse-item__header,
-          .el-collapse-item__wrap {
-            border-bottom: none;
-          }
-        }
-        &__arrow.el-icon-arrow-right {
-          margin-right: $inner-spacing-small;
-          &, &:hover {
-            background-color: transparent;
-          }
-        }
+    .info-line {
+      &--error .info-line-value {
+        color: var(--s-color-status-error);
+        font-weight: 600;
+        text-transform: uppercase;
       }
-    }
-    .info-line--error .info-line-value {
-      color: var(--s-color-status-error);
+      &-label {
+        font-weight: 300;
+      }
     }
   }
   &-hash-container {
@@ -803,6 +828,14 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
 .s-dropdown-menu__item {
   border-radius: calc(var(--s-border-radius-mini) / 2);
 }
+[design-system-theme="dark"] {
+  .transaction-content .s-input {
+    background-color: var(--s-color-base-on-accent);
+  }
+  .s-icon--network {
+    color: var(--s-color-base-content-tertiary);
+  }
+}
 </style>
 
 <style lang="scss" scoped>
@@ -816,33 +849,15 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     &.el-loading-parent--relative .transaction-content {
       min-height: $bridge-height;
     }
-    .el-button {
-      width: 100%;
-    }
-    .s-button {
-      &--create-transaction {
-        @include bottom-button;
-        color: var(--s-color-base-content-tertiary);
-        letter-spacing: var(--s-letter-spacing-big);
-        margin-top: $inner-spacing-mini * 2.5;
-        &:hover, &:focus, &:active {
-          color: var(--s-color-base-content-secondary);
-          border: none;
-        }
-      }
-      &--view-transactions-history {
-        font-weight: 700;
-        line-height: var(--s-line-height-medium);
-      }
-    }
+  }
+  &-content .el-button,
+  &-container .s-typography-button--large {
+    width: 100%;
+    margin-top: $inner-spacing-medium;
   }
   &-content {
-    margin-top: $inner-spacing-large;
-    @include bridge-content;
-    .el-button {
-      margin-top: $basic-spacing;
-      font-weight: 600;
-    }
+    @include bridge-content (285px);
+    margin-top: $inner-spacing-big;
   }
   &-hash-container {
     position: relative;
@@ -866,63 +881,71 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     display: flex;
     flex-flow: column nowrap;
     padding: 0 $inner-spacing-mini / 2;
-    margin-bottom: $inner-spacing-mini;
+    margin-bottom: $inner-spacing-medium;
+    line-height: var(--s-line-height-mini);
+    text-align: left;
 
     &__title {
+      margin-bottom: $inner-spacing-mini / 2;
       text-transform: uppercase;
+      font-weight: 300;
     }
     &__value {
-      font-weight: 600;
+      font-weight: 400;
     }
   }
 }
 .header {
-  margin-bottom: $basic-spacing * 2;
+  margin-bottom: $inner-spacing-medium;
   text-align: center;
   &-icon {
     margin: $inner-spacing-medium auto;
     &--success {
       background-image: url("~@/assets/img/status-success.svg");
-      background-size: 84%;
+      background-size: 110%;
     }
     &--wait {
       background-image: url("~@/assets/img/header-wait.svg");
     }
     &--error {
       background-image: url("~@/assets/img/header-error.svg");
+      background-size: 125%;
     }
     &.el-loading-parent--relative {
       background-image: none;
     }
   }
   &-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     margin-bottom: $inner-spacing-mini;
     font-weight: 700;
     line-height: var(--s-line-height-medium);
-    .s-icon {
-      &-sora, &-eth {
-        position: relative;
-        top: 1px;
-      }
+    .s-icon--network {
+      font-size: var(--s-heading4-font-size);
+      margin-left: $inner-spacing-mini / 4;
     }
     &-separator {
-      font-weight: normal;
+      margin-right: $inner-spacing-mini / 2;
+      margin-left: $inner-spacing-mini / 2;
+      font-size: var(--s-heading3-font-size);
+      font-weight: 300;
     }
   }
 }
 .network-info {
   &-title {
-    color: var(--s-color-base-content-secondary);
     display: flex;
     align-items: baseline;
-    font-size: var(--s-font-size-mini);
-    line-height: var(--s-line-height-big);
     h3 {
       padding-right: $inner-spacing-mini;
       padding-left: $inner-spacing-mini;
-      font-weight: 700;
-      letter-spacing: var(--s-letter-spacing-extra-large);
-      text-transform: uppercase;
+      font-size: var(--s-font-size-small);
+      line-height: var(--s-line-height-reset);
+      font-weight: 600;
+      letter-spacing: var(--s-letter-spacing-small);
+      text-transform: inherit;
     }
   }
   @include status-icon(true);

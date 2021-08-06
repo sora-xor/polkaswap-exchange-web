@@ -8,23 +8,32 @@
           <div class="amount-table-item-content">
             <div class="amount-table-item-content__header">
               <div v-for="(item, index) in formatted.limit" class="amount-table-item__amount" :key="index">
-                <formatted-amount class="amount-table-value" :value="item.amount">
-                  <template v-slot="{ decimal }">{{ decimal }} {{ item.symbol }}</template>
+                <formatted-amount
+                  class="amount-table-value"
+                  :value="isCodecString ? getFPNumberFromCodec(item.amount, item.asset.decimals).toLocaleString() : item.amount"
+                  :font-size-rate="FontSizeRate.MEDIUM"
+                  :asset-symbol="item.asset.symbol"
+                >
+                  <s-tooltip v-if="formatted.total && index === 0" popper-class="amount-table-tooltip" placement="right" border-radius="mini">
+                    <div slot="content" class="amount-table-tooltip-content">
+                      <div>{{ t('rewards.totalVested') }}:</div>
+                      <formatted-amount
+                        class="amount-table-value"
+                        :value="formatted.total.amount"
+                        :font-size-rate="FontSizeRate.MEDIUM"
+                        :asset-symbol="formatted.total.asset.symbol"
+                        symbol-as-decimal
+                      />
+                    </div>
+                    <s-icon name="info-16" size="14px" class="amount-table-value-icon" />
+                  </s-tooltip>
                 </formatted-amount>
-                <s-tooltip v-if="formatted.total && index === 0" popper-class="amount-table-tooltip" placement="right" border-radius="mini">
-                  <div slot="content" class="amount-table-tooltip-content">
-                    <div>{{ t('rewards.totalVested') }}:</div>
-                    <formatted-amount class="amount-table-value" :value="formatted.total.amount">
-                      <template v-slot="{ decimal }">{{ decimal }} {{ formatted.total.symbol }}</template>
-                    </formatted-amount>
-                  </div>
-                  <s-icon name="info-16" size="14px" class="amount-table-value-icon" />
-                </s-tooltip>
+                <formatted-amount :value="getFiatAmountByCodecString(item.amount, item.asset)" is-fiat-value with-left-shift :font-size-rate="FontSizeRate.MEDIUM" />
               </div>
             </div>
             <div v-if="formatted.rewards.length !== 0" class="amount-table-item-content__body">
               <div v-for="(item, index) in formatted.rewards" :key="item.type">
-                <s-divider v-if="!simpleGroup || index === 0" class="amount-table-divider" />
+                <s-divider v-if="!simpleGroup || index === 0" :class="['amount-table-divider', theme]" />
                 <div class="amount-table-subitem">
                   <div class="amount-table-subitem__title">
                     <template v-if="simpleGroup">—</template>
@@ -32,12 +41,9 @@
                     {{ item.title }}
                   </div>
                   <template v-if="!simpleGroup">
-                    <div v-for="(item, index) in item.limit" :key="index">
-                      <formatted-amount class="amount-table-value" :value="item.amount">
-                        <template v-slot="{ decimal }">
-                          {{ decimal }} {{ item.symbol }}
-                        </template>
-                      </formatted-amount>
+                    <div v-for="(item, index) in item.limit" :key="index" class="amount-table-subitem__row">
+                      <formatted-amount class="amount-table-value" :value="formatCodecNumber(item.amount)" :asset-symbol="item.asset.symbol" :font-size-rate="FontSizeRate.MEDIUM" />
+                      <formatted-amount :value="getFiatAmountByCodecString(item.amount, item.asset)" is-fiat-value with-left-shift :font-size-rate="FontSizeRate.MEDIUM" />
                     </div>
                   </template>
                 </div>
@@ -54,24 +60,26 @@
 <script lang="ts">
 import { Component, Prop, Mixins } from 'vue-property-decorator'
 import { RewardInfo } from '@sora-substrate/util'
+import { FormattedAmountMixin, FormattedAmount, FontSizeRate } from '@soramitsu/soraneo-wallet-web'
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
 
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
-
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards'
 
 @Component({
   components: {
-    FormattedAmount: lazyComponent(Components.FormattedAmount)
+    FormattedAmount
   }
 })
-export default class AmountTable extends Mixins(NumberFormatterMixin, TranslationMixin) {
+export default class AmountTable extends Mixins(FormattedAmountMixin, TranslationMixin) {
+  readonly FontSizeRate = FontSizeRate
+
   @Prop({ default: () => {}, type: Object }) item!: RewardInfoGroup | RewardInfo
   @Prop({ default: true, type: Boolean }) showTable!: boolean
   @Prop({ default: false, type: Boolean }) simpleGroup!: boolean
   @Prop({ default: false, type: Boolean }) value!: boolean
+  @Prop({ default: false, type: Boolean }) isCodecString!: boolean
+  @Prop({ default: Theme.LIGHT, type: String }) theme!: Theme
 
   get innerModel (): any {
     return this.value
@@ -86,9 +94,9 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
   }
 
   formatItem (item: RewardInfoGroup | RewardInfo): RewardsAmountTableItem {
-    const toLimit = (amount, symbol) => ({
-      amount: this.formatCodecNumber(amount),
-      symbol
+    const toLimit = (amount, asset) => ({
+      amount: amount,
+      asset: asset
     })
 
     const key = `rewards.events.${item.type}`
@@ -98,7 +106,7 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
     const rewards = ('rewards' in item) && Array.isArray(item.rewards) ? item.rewards.map(this.formatItem) : []
     const limit = ('rewards' in item) && Array.isArray(item.rewards)
       ? (item as RewardInfoGroup).limit
-      : [toLimit((item as RewardInfo).amount, (item as RewardInfo).asset.symbol)]
+      : [toLimit((item as RewardInfo).amount, (item as RewardInfo).asset)]
 
     return {
       type: item.type,
@@ -148,6 +156,10 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
   &-tooltip.el-tooltip__popper.neumorphic.is-light {
     background-color: var(--s-color-status-success);
   }
+
+  &-divider.s-divider-secondary.dark {
+    background-color: var(--s-color-base-content-secondary);
+  }
 }
 </style>
 
@@ -157,10 +169,18 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
   border-radius: var(--s-border-radius-mini);
   padding: $inner-spacing-medium;
 
+  &.rewards-table {
+    .formatted-amount {
+      flex-wrap: wrap;
+    }
+    .formatted-amount--fiat-value {
+      font-weight: 400;
+    }
+  }
+
   &-value {
     font-size: var(--s-font-size-medium);
     font-weight: 600;
-
     &-icon {
       margin-left: $inner-spacing-mini / 2;
     }
@@ -206,7 +226,9 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
 
     &__amount {
       display: flex;
-      align-items: center;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
       line-height: 20px;
     }
   }
@@ -218,6 +240,13 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
 
     &__title {
       line-height: var(--s-line-height-reset);
+    }
+
+    &__row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
     }
   }
 

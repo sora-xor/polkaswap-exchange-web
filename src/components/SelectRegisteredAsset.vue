@@ -32,11 +32,28 @@
                 <s-col>
                   <s-row flex justify="start" align="middle">
                     <token-logo :token="asset" size="big" />
-                    <div class="asset-item__name">{{ getAssetName(asset) }}</div>
+                    <div class="asset-item__info s-flex">
+                      <div class="asset-item__symbol">{{ asset.symbol }}</div>
+                      <token-address :name="getAssetName(asset)" :symbol="asset.symbol" :address="asset.address" class="asset-item__details" />
+                    </div>
                   </s-row>
                 </s-col>
                 <div class="asset-item__balance-container">
-                  <span class="asset-item__balance">{{ formatBalance(asset) }}</span>
+                  <template v-if="isSoraToEvm && asset && formatBalance(asset) !== formattedZeroSymbol">
+                    <formatted-amount
+                      class="asset-item__balance"
+                      :value="formatBalance(asset)"
+                      :font-size-rate="FontSizeRate.MEDIUM"
+                    />
+                    <formatted-amount
+                      v-if="!!getAssetFiatPrice(asset)"
+                      :value="getFiatBalance(asset)"
+                      :font-size-rate="FontSizeRate.MEDIUM"
+                      :font-weight-rate="FontWeightRate.MEDIUM"
+                      is-fiat-value
+                    />
+                  </template>
+                  <span v-else class="asset-item__balance">{{ formattedZeroSymbol }}</span>
                 </div>
               </div>
             </div>
@@ -89,11 +106,11 @@
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util'
+import { FormattedAmountMixin, FormattedAmount, FontSizeRate, FontWeightRate } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components, ObjectInit } from '@/consts'
 import { lazyComponent } from '@/router'
@@ -105,16 +122,22 @@ const namespace = 'assets'
 @Component({
   components: {
     DialogBase,
-    TokenLogo: lazyComponent(Components.TokenLogo)
+    FormattedAmount,
+    TokenLogo: lazyComponent(Components.TokenLogo),
+    TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
-export default class SelectRegisteredAsset extends Mixins(TranslationMixin, SelectAssetMixin, LoadingMixin, NumberFormatterMixin) {
+export default class SelectRegisteredAsset extends Mixins(FormattedAmountMixin, TranslationMixin, SelectAssetMixin, LoadingMixin) {
   query = ''
   selectedAsset: Nullable<AccountAsset | RegisteredAccountAsset> = null
   readonly tokenTabs = [
     'tokens',
     'custom'
   ]
+
+  readonly FontSizeRate = FontSizeRate
+  readonly FontWeightRate = FontWeightRate
+  readonly formattedZeroSymbol = '-'
 
   tabValue = this.tokenTabs[0]
   customAddress = ''
@@ -174,7 +197,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
     return formatAssetBalance(asset, {
       internal: this.isSoraToEvm,
       showZeroBalance: false,
-      formattedZero: '-'
+      formattedZero: this.formattedZeroSymbol
     })
   }
 
@@ -202,7 +225,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
   }
 
   getAssetName (asset: RegisteredAccountAsset): string {
-    return `${asset.name || asset.symbol} (${asset.symbol})`
+    return `${asset.name || asset.symbol}`
   }
 
   handleTabClick ({ name }): void {
@@ -257,6 +280,12 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
 .asset-select {
   @include exchange-tabs();
 }
+.asset-item__balance.formatted-amount {
+  @include formatted-amount;
+  .formatted-amount__decimal {
+    font-weight: 600;
+  }
+}
 </style>
 
 <style lang="scss" scoped>
@@ -280,35 +309,7 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
   margin-bottom: $inner-spacing-medium;
 }
 .asset-item {
-  height: $select-asset-item-height;
-  padding: 0 $select-asset-horizontal-spacing;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
-    background-color: var(--s-color-base-background-hover);
-  }
-  &__name, &__balance {
-    font-size: var(--s-font-size-medium);
-    letter-spacing: var(--s-letter-spacing-mini);
-    font-weight: 600;
-    white-space: nowrap;
-  }
-  &__balance {
-    font-weight: 800;
-    &-container {
-      width: 45%;
-      text-align: right;
-    }
-  }
-  .s-col {
-    padding-right: $inner-spacing-small;
-  }
-  .token-logo {
-    margin-right: $inner-spacing-mini;
-    flex-shrink: 0;
-  }
+  @include select-asset;
 }
 .network-label {
   color: var(--s-color-base-content-secondary);
@@ -328,9 +329,6 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
   &--scrollbar {
     height: #{$select-asset-item-height * 6};
     overflow: auto;
-  }
-  &--evm {
-    @include evm-logo-styles;
   }
   &__empty {
     display: flex;

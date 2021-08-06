@@ -93,7 +93,8 @@
         "confirmTitle": "Potwierdź transakcję",
         "confirm": "@:confirmText",
         "errorAddress": "Nieprawidłowy adres. Sprawdź to i spróbuj ponownie.",
-        "addressDesc": "Akceptowane są tylko adresy kont Sieci SORA. Upewnij się, czy masz poprawnie sformatowany adres konta Sieci SORA zaczynający się od prefiksu „cn-”."
+        "addressDesc": "Akceptowane są tylko adresy kont Sieci SORA. Upewnij się, czy masz poprawnie sformatowany adres konta Sieci SORA zaczynający się od prefiksu „cn-”.",
+        "feeTooltip": "@:networkFeeTooltipText"
     },
     "account": {
         "successCopy": "Adres portfela jest został skopiowany do schowka",
@@ -124,7 +125,8 @@
             "locked": " – Zablokowane",
             "reserved": " – Zarezerwowane",
             "total": "Łącznie"
-        }
+        },
+        "totalAssetsValue": "Twoja całkowita wartość aktywów:"
     },
     "asset": {
         "remove": "Usuń walutę"
@@ -498,7 +500,6 @@
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
-        "viewHistory": "Pokaż transakcję w historii transakcji",
         "details": "{from} do {to}",
         "for": " do ",
         "steps": {
@@ -545,7 +546,9 @@
         "connectWallet": "@:connectWalletText",
         "viewInSorascan": "Pokaż na SORAScanie",
         "changeAccount": "@:changeAccountText w @:metamask",
-        "expectedAddress": "Oczekiwany adres w @:metamask"
+        "expectedAddress": "Oczekiwany adres w @:metamask",
+        "title": "Transakcja pomostowa",
+        "expectedMetaMaskAddress": "Oczekiwany adres w @:metamask"
     },
     "months": {
         "0": "STY",

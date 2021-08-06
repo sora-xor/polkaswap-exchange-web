@@ -1,5 +1,5 @@
 // This file includes mixins for usage in different components
-
+$button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0, 0, 0.05);
 
 // TODO 4 alexnatalia: Right now this is just a mixin because there are no appropriate focus behaviour for some elements (tabs for example) and we need more time to investigate the problem
 @mixin focus {
@@ -23,6 +23,51 @@
       letter-spacing: var(--s-letter-spacing-big);
       word-break: break-all;
     }
+  }
+}
+
+@mixin select-asset {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: $select-asset-item-height;
+  padding: 0 $inner-spacing-big;
+  cursor: pointer;
+  transition: var(--s-transition-default);
+  &:hover {
+    background-color: var(--s-color-base-background-hover);
+  }
+  &__info {
+    flex-direction: column;
+  }
+  &__details {
+    color: var(--s-color-base-content-quaternary);
+    font-size: var(--s-font-size-mini);
+    line-height: var(--s-line-height-medium);
+  }
+  &__address,
+  &__symbol {
+    white-space: nowrap;
+  }
+  &__symbol {
+    font-size: var(--s-font-size-big);
+    white-space: nowrap;
+  }
+  &__symbol, &__balance {
+    line-height: var(--s-line-height-small);
+    letter-spacing: var(--s-letter-spacing-small);
+    font-weight: 800;
+  }
+  &__balance-container {
+    text-align: right;
+    min-width: 45%;
+  }
+  .s-col {
+    padding-right: $inner-spacing-small;
+  }
+  .token-logo {
+    margin-right: $inner-spacing-mini;
+    flex-shrink: 0;
   }
 }
 
@@ -59,16 +104,25 @@
     font-size: var(--s-font-size-mini);
     font-weight: 300;
     line-height: var(--s-line-height-medium);
-    letter-spacing: var(--s-letter-spacing-mini);
+    letter-spacing: var(--s-letter-spacing-small);
 
     &--footer {
       justify-content: flex-end;
       margin-top: $inner-spacing-mini / 2;
       margin-bottom: 0;
       min-height: $inner-spacing-mini * 2.25;
+      .formatted-amount--fiat-value {
+        margin-right: auto;
+        font-size: var(--s-font-size-small);
+        font-weight: 600;
+        + .token-address {
+          margin-left: var(--s-basic-spacing);
+        }
+      }
     }
 
-    .input-title {
+    .input-title,
+    .input-value {
       display: flex;
       align-items: center;
       color: var(--s-color-base-content-secondary);
@@ -85,6 +139,12 @@
         margin-right: $inner-spacing-mini / 2;
       }
     }
+
+    .input-value {
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      margin-left: $inner-spacing-mini;
+    }
   }
 }
 
@@ -98,6 +158,9 @@
     &--max {
       margin-right: $inner-spacing-mini / 2;
       margin-left: $inner-spacing-mini / 2;
+      &.el-button.neumorphic {
+        box-shadow: $button-custom-shadow;
+      }
     }
     &--select-token {
       margin-left: $inner-spacing-mini / 2;
@@ -110,7 +173,7 @@
         }
       }
       &, &:hover, &:active, &:focus, &.focusing, &.s-pressed {
-        box-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0, 0, 0.05);
+        box-shadow: $button-custom-shadow;
       }
     }
   }
@@ -201,13 +264,6 @@
   }
 }
 
-@mixin evm-logo-styles {
-  .token-logo {
-    // filter: grayscale(1);
-    // opacity: .5;
-  }
-}
-
 @mixin bridge-container {
   width: $bridge-width;
 
@@ -216,8 +272,8 @@
   }
 }
 
-@mixin bridge-content {
-  min-height: 400px;
+@mixin bridge-content ($min-height: 400px) {
+  min-height: $min-height;
   margin-top: $basic-spacing * 2;
   width: 100%;
 }
@@ -357,6 +413,52 @@
   }
 }
 
+@mixin collapse-items {
+  $collapse-icon-height: 36px;
+
+  .el-collapse-item {
+    width: 100%;
+    margin-bottom: $inner-spacing-medium;
+    padding: 0;
+    background: var(--s-color-utility-surface);
+    border-radius: var(--s-border-radius-small);
+    box-shadow: var(--s-shadow-element-pressed);
+    color: var(--s-color-base-content-secondary);
+    font-size: var(--s-font-size-mini);
+    line-height: var(--s-line-height-small);
+    text-align: center;
+    &.is-active {
+      background: var(--s-color-base-background);
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &__header,
+    &__wrap {
+      border-bottom: none;
+      background-color: unset;
+    }
+    &__content {
+      margin-top: 0;
+      padding: 0 $inner-spacing-medium $inner-spacing-medium;
+    }
+    &__arrow {
+      margin-right: 0;
+    }
+
+    &.is-active {
+      box-shadow: var(--s-shadow-element);
+    }
+
+    .el-collapse-item__header {
+      height: #{$collapse-icon-height + $inner-spacing-medium * 2};
+      line-height: $collapse-icon-height;
+      padding: $inner-spacing-medium;
+    }
+  }
+}
+
 @mixin slippage-tolerance-tabs {
   font-size: var(--s-font-size-medium);
   font-weight: 400 !important;
@@ -366,4 +468,34 @@
 @mixin radio-title {
   font-size: var(--s-font-size-medium);
   font-weight: 600;
+}
+
+@mixin formatted-amount ($fontSize: var(--s-font-size-big), $fontSizeRate: 0.875) {
+  display: block !important;
+  font-size: 0 !important;
+  word-break: break-all;
+  white-space: initial;
+
+  .formatted-amount {
+    &__integer,
+    &__symbol {
+      font-size: $fontSize;
+    }
+    &__decimal {
+      font-size: calc(#{$fontSize} * #{$fontSizeRate}) !important;
+    }
+  }
+}
+
+@mixin scrollbar {
+  &.el-scrollbar {
+    .el-scrollbar__wrap {
+      overflow-x: hidden;
+    }
+    .el-scrollbar__wrap, .el-scrollbar__view {
+      display: flex;
+      flex: 1;
+      flex-flow: column nowrap;
+    }
+  }
 }

@@ -85,7 +85,7 @@
         "amount": "@:amountText",
         "balance": "Balance",
         "max": "MAX",
-        "fee": "Transaction Fee",
+        "fee": "@:networkFeeText",
         "enterAddress": "Enter address",
         "badAddress": "Incorrect address",
         "enterAmount": "Enter amount",
@@ -93,7 +93,8 @@
         "confirmTitle": "Confirm transaction",
         "confirm": "@:confirmText",
         "errorAddress": "Invalid address. Please check it and try again.",
-        "addressDesc": "Only SORA network account addresses are accepted. Please ensure that you have a correctly formatted SORA network account address starting with the ‘cn’ prefix."
+        "addressDesc": "Only SORA network account addresses are accepted. Please ensure that you have a correctly formatted SORA network account address starting with the ‘cn’ prefix.",
+        "feeTooltip": "@:networkFeeTooltipText"
     },
     "account": {
         "successCopy": "Wallet address is copied to the clipboard",
@@ -124,7 +125,8 @@
             "locked": " - Locked",
             "reserved": " - Reserved",
             "total": "Total"
-        }
+        },
+        "totalAssetsValue": "Your total assets value:"
     },
     "asset": {
         "remove": "Remove asset"
@@ -164,8 +166,8 @@
             "title": "Transaction submitted",
             "desc": "Create {symbol} token"
         },
-        "tooltipValue": "To create a token, you have to pay a fee",
-        "fee": "Network fee",
+        "tooltipValue": "@:networkFeeTooltipText",
+        "fee": "@:networkFeeText",
         "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "Failed to get a fee for a transaction",
         "error": "Failed to create {symbol} token",
@@ -498,7 +500,6 @@
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
-        "viewHistory": "View transaction in transactions history",
         "details": "{from} for {to}",
         "for": " for ",
         "steps": {
@@ -545,7 +546,9 @@
         "connectWallet": "@:connectWalletText",
         "viewInSorascan": "View in SORAScan",
         "changeAccount": "@:changeAccountText in @:metamask",
-        "expectedAddress": "Expected address in @:metamask"
+        "expectedAddress": "Expected address in @:metamask",
+        "title": "Bridge Transaction",
+        "expectedMetaMaskAddress": "Expected address in MetaMask:"
     },
     "months": {
         "0": "Jan",
@@ -602,7 +605,7 @@
         "remove": "remove",
         "add": "ADD",
         "ok": "OK",
-        "networkFee": "Network fee",
+        "networkFee": "@:networkFeeText",
         "alreadyCreated": "Token pair is already created",
         "firstLiquidityProvider": "You are the first liquidity provider",
         "firstLiquidityProviderInfo": "The ratio of tokens you add will set the price of this pool.<br\/>Once you are happy with the rate click supply to review."
