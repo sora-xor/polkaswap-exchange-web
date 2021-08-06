@@ -26,6 +26,51 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
+@mixin select-asset {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: $select-asset-item-height;
+  padding: 0 $inner-spacing-big;
+  cursor: pointer;
+  transition: var(--s-transition-default);
+  &:hover {
+    background-color: var(--s-color-base-background-hover);
+  }
+  &__info {
+    flex-direction: column;
+  }
+  &__details {
+    color: var(--s-color-base-content-quaternary);
+    font-size: var(--s-font-size-mini);
+    line-height: var(--s-line-height-medium);
+  }
+  &__address,
+  &__symbol {
+    white-space: nowrap;
+  }
+  &__symbol {
+    font-size: var(--s-font-size-big);
+    white-space: nowrap;
+  }
+  &__symbol, &__balance {
+    line-height: var(--s-line-height-small);
+    letter-spacing: var(--s-letter-spacing-small);
+    font-weight: 800;
+  }
+  &__balance-container {
+    text-align: right;
+    min-width: 45%;
+  }
+  .s-col {
+    padding-right: $inner-spacing-small;
+  }
+  .token-logo {
+    margin-right: $inner-spacing-mini;
+    flex-shrink: 0;
+  }
+}
+
 @mixin element-size($className: "", $width: 40px, $height: $width) {
   .#{$className} {
     height: $height;
@@ -59,7 +104,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     font-size: var(--s-font-size-mini);
     font-weight: 300;
     line-height: var(--s-line-height-medium);
-    letter-spacing: var(--s-letter-spacing-mini);
+    letter-spacing: var(--s-letter-spacing-small);
 
     &--footer {
       justify-content: flex-end;
@@ -216,13 +261,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       border-radius: 0;
       border: none;
     }
-  }
-}
-
-@mixin evm-logo-styles {
-  .token-logo {
-    // filter: grayscale(1);
-    // opacity: .5;
   }
 }
 
@@ -445,6 +483,19 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     }
     &__decimal {
       font-size: calc(#{$fontSize} * #{$fontSizeRate}) !important;
+    }
+  }
+}
+
+@mixin scrollbar {
+  &.el-scrollbar {
+    .el-scrollbar__wrap {
+      overflow-x: hidden;
+    }
+    .el-scrollbar__wrap, .el-scrollbar__view {
+      display: flex;
+      flex: 1;
+      flex-flow: column nowrap;
     }
   }
 }

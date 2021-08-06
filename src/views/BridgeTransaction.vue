@@ -775,6 +775,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
         .el-loading-spinner {
           top: 0;
           margin-top: calc(#{$header-icon-size - $header-spinner-size} / 2);
+          margin-left: calc(#{$header-icon-size - $header-spinner-size} / 2);
           .circular {
             width: $header-spinner-size;
             height: $header-spinner-size;
@@ -826,6 +827,14 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
 // TODO: fix UI library
 .s-dropdown-menu__item {
   border-radius: calc(var(--s-border-radius-mini) / 2);
+}
+[design-system-theme="dark"] {
+  .transaction-content .s-input {
+    background-color: var(--s-color-base-on-accent);
+  }
+  .s-icon--network {
+    color: var(--s-color-base-content-tertiary);
+  }
 }
 </style>
 
@@ -900,6 +909,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     }
     &--error {
       background-image: url("~@/assets/img/header-error.svg");
+      background-size: 125%;
     }
     &.el-loading-parent--relative {
       background-image: none;
@@ -912,14 +922,9 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     margin-bottom: $inner-spacing-mini;
     font-weight: 700;
     line-height: var(--s-line-height-medium);
-    .s-icon {
-      &-sora, &-eth {
-        position: relative;
-        top: 1px;
-      }
-      &--network {
-        font-size: var(--s-heading4-font-size);
-      }
+    .s-icon--network {
+      font-size: var(--s-heading4-font-size);
+      margin-left: $inner-spacing-mini / 4;
     }
     &-separator {
       margin-right: $inner-spacing-mini / 2;

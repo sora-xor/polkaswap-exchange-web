@@ -12,23 +12,27 @@ $s-icon-sora: "\0041";
 $s-icon-eth: "\0044";
 $s-icon-energy: "\0048";
 .s-icon-sora {
-  &.s-icon--network {
-    &, &:hover {
-      color: #E3232C !important;
-    }
-  }
   &:before {
     content: $s-icon-sora;
   }
 }
 .s-icon-eth {
-  &.s-icon--network {
-    &, &:hover {
-      color: #627EEA !important;
-    }
-  }
   &:before {
     content: $s-icon-eth;
+  }
+}
+[design-system-theme="light"] {
+  .s-icon--network.s-icon {
+    &-sora {
+      &, &:hover {
+        color: #E3232C !important;
+      }
+    }
+    &-eth {
+      &, &:hover {
+        color: #627EEA !important;
+      }
+    }
   }
 }
 .s-icon-energy {

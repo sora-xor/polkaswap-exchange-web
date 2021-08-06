@@ -50,9 +50,6 @@ export default class GenericPageHeader extends Mixins(TranslationMixin) {
 <style lang="scss">
 .info-tooltip--page-header {
   margin-top: 0 !important;
-  .popper__arrow {
-    margin-top: $inner-spacing-mini;
-  }
 }
 </style>
 
