@@ -15,7 +15,7 @@
           <token-logo class="node-control__logo" v-bind="nodeLogo" />
         </s-button>
         <s-button type="tertiary" class="account-control" size="medium" :tooltip="t('connectWalletTextTooltip')" :disabled="loading" @click="goTo(PageNames.Wallet)">
-          <div class="account-control-title">{{ accountInfo }}</div>
+          <div :class="['account-control-title', { name: isLoggedIn }]">{{ accountInfo }}</div>
           <div class="account-control-icon">
             <s-icon v-if="!isLoggedIn" name="finance-wallet-24" size="28" />
             <WalletAvatar v-else :address="account.address"/>
@@ -737,6 +737,9 @@ $sora-logo-width: 173.7px;
 
   &-title {
     font-size: var(--s-font-size-small);
+    &.name {
+      text-transform: none;
+    }
   }
   &.s-tertiary {
     &.el-button {
