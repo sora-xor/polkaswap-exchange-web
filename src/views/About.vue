@@ -1,6 +1,6 @@
 <template>
   <div :class="['layout', { loading }]" v-loading="loading">
-    <div class="content">
+    <div class="content" v-show="!loading">
       <img :src="images.hero" draggable="false" class="unselectable" style="max-width: 1040px;" />
       <p class="gradient main" style="line-height:1;margin-top:-60px;margin-bottom:10px;">{{ t('about.title') }}</p>
       <p class="text">{{ t('about.description') }}</p>
@@ -153,7 +153,7 @@ export default class About extends Mixins(TranslationMixin, LoadingMixin) {
 
   // temporary solution until lazy loading images
   &.loading {
-    max-height: 100vh;
+    min-height: 100vh;
     overflow: hidden;
   }
 }
