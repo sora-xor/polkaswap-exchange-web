@@ -1,19 +1,21 @@
 <template>
   <s-design-system-provider :value="libraryDesignSystem" id="app">
     <header class="header">
-      <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
+      <s-button class="polkaswap-logo" type="link" size="large" @click="goTo(PageNames.Swap)">
+        <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo--tablet"/>
+      </s-button>
       <div class="app-controls s-flex">
-        <s-button type="action" class="theme-control" :icon="themeIcon" @click="switchTheme" />
-        <s-button type="tertiary" class="lang-control" icon="basic-globe-24" @click="openSelectLanguageDialog">{{ selectedLanguage }}</s-button>
-        <s-button type="tertiary" alternative size="medium" class="node-control" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
-          <div class="node-control__text">
-            <div class="node-control-title">{{ node.name }}</div>
-            <div class="node-control-network">{{ chainAndNetworkText }}</div>
-          </div>
+        <s-button type="action" class="theme-control" @click="switchTheme">
+          <s-icon :name="themeIcon" size="28" />
+        </s-button>
+        <s-button type="action" class="lang-control" @click="openSelectLanguageDialog">
+          <s-icon name="basic-globe-24" size="28" />
+        </s-button>
+        <s-button type="action" class="node-control" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
           <token-logo class="node-control__logo" v-bind="nodeLogo" />
         </s-button>
-        <s-button :type="isLoggedIn ? 'tertiary' : 'secondary'" class="account-control" alternative size="medium" :tooltip="t('connectWalletTextTooltip')" :disabled="loading" @click="goTo(PageNames.Wallet)">
-          <div class="account-control-title">{{ accountInfo }}</div>
+        <s-button type="tertiary" class="account-control" size="medium" :tooltip="t('connectWalletTextTooltip')" :disabled="loading" @click="goTo(PageNames.Wallet)">
+          <div :class="['account-control-title', { name: isLoggedIn }]">{{ accountInfo }}</div>
           <div class="account-control-icon">
             <s-icon v-if="!isLoggedIn" name="finance-wallet-24" size="28" />
             <WalletAvatar v-else :address="account.address"/>
@@ -30,7 +32,7 @@
             background-color="transparent"
             box-shadow="none"
             text-color="var(--s-color-base-content-primary)"
-            active-text-color="var(--s-color-theme-accent)"
+            :active-text-color="mainMenuActiveColor"
             active-hover-color="transparent"
             :default-active="getCurrentPath()"
             @select="goTo"
@@ -102,7 +104,9 @@
           <footer class="app-footer">
             <div class="sora-logo">
               <span class="sora-logo__title">{{ t('poweredBy') }}</span>
-              <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener" />
+              <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener">
+                <sora-logo :theme="libraryTheme" />
+              </a>
             </div>
           </footer>
         </s-scrollbar>
@@ -123,6 +127,8 @@ import { History, KnownSymbols } from '@sora-substrate/util'
 import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils'
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
 import DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem'
+import PolkaswapLogo from './components/logo/Polkaswap.vue'
+import SoraLogo from './components/logo/Sora.vue'
 
 import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize, Language } from '@/consts'
 
@@ -142,6 +148,8 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
 @Component({
   components: {
     WalletAvatar,
+    PolkaswapLogo,
+    SoraLogo,
     HelpDialog: lazyComponent(Components.HelpDialog),
     SidebarItemContent: lazyComponent(Components.SidebarItemContent),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
@@ -248,6 +256,10 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
 
   get themeIcon (): string {
     return this.libraryTheme === Theme.LIGHT ? 'various-brightness-low-24' : 'various-moon-24'
+  }
+
+  get mainMenuActiveColor (): string {
+    return this.libraryTheme === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)'
   }
 
   get nodeLogo (): any {
@@ -360,16 +372,6 @@ html {
       overflow-x: auto;
     }
   }
-}
-
-.node-control {
-  &.el-button.neumorphic.el-button--plain {
-    padding-left: 5px;
-    box-shadow: var(--s-shadow-element);
-  }
-  > span {
-   flex-direction: row-reverse;
- }
 }
 
 .account-control {
@@ -559,10 +561,10 @@ html {
 </style>
 
 <style lang="scss" scoped>
-$logo-horizontal-margin: $inner-spacing-mini / 2;
 $header-height: 64px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
+$account-control-name-max-width: 200px;
 
 .app {
   &-main {
@@ -644,7 +646,7 @@ $sora-logo-width: 173.7px;
   $header-box-shadow-dark: #{$header-box-shadow} rgba(73, 32, 103, 0.5);
   display: flex;
   align-items: center;
-  padding: 2px $inner-spacing-medium;
+  padding: $inner-spacing-mini $inner-spacing-medium;
   min-height: $header-height;
   box-shadow: $header-box-shadow-light;
   [design-system-theme="dark"] & {
@@ -691,19 +693,10 @@ $sora-logo-width: 173.7px;
       padding: 0 13px;
       color: var(--s-color-base-content-secondary);
     }
-    &:hover:not(.is-active):not(.is-disabled) {
-      background-color: var(--s-color-base-background-hover) !important;
-    }
-    &:focus {
-      background-color: transparent !important;
-    }
   }
 }
 
 .polkaswap-logo {
-  margin-right: $logo-horizontal-margin;
-  margin-left: $logo-horizontal-margin;
-  margin-bottom: 1.5px;
   background-image: url('~@/assets/img/pswap.svg');
   background-size: cover;
   width: var(--s-size-medium);
@@ -711,6 +704,10 @@ $sora-logo-width: 173.7px;
   border-radius: 0;
   &.el-button {
     padding: 0;
+  }
+
+  &--tablet {
+    visibility: hidden;
   }
 }
 
@@ -725,35 +722,33 @@ $sora-logo-width: 173.7px;
     + .el-button {
       margin-left: 0;
     }
-    &.s-tertiary:not(.lang-control) {
-      color: var(--s-color-base-content-secondary);
-      &:hover, &:focus, &:active, &.focusing, &.s-pressed {
-        color: var(--s-color-base-content-primary);
-      }
-    }
+  }
+}
+
+.node-control {
+  @include element-size('token-logo', 28px);
+  .token-logo {
+    display: block;
+    margin: auto;
   }
 }
 
 .account-control {
+  letter-spacing: var(--s-letter-spacing-small);
+
   &-title {
     font-size: var(--s-font-size-small);
-  }
-  &.s-secondary {
-    &.el-button.s-alternative {
-      padding-right: $inner-spacing-medium;
-      padding-left: $inner-spacing-small;
-    }
-    .account-control-title {
-      margin-left: $inner-spacing-small / 2;
-      font-weight: 800;
-      letter-spacing: var(--s-letter-spacing-small);
+    max-width: $account-control-name-max-width;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    &.name {
+      text-transform: none;
     }
   }
   &.s-tertiary {
     &.el-button {
       padding-left: $basic-spacing-mini;
     }
-    text-transform: none;
     .account-control-title {
       margin-left: $basic-spacing-mini;
     }
@@ -767,35 +762,6 @@ $sora-logo-width: 173.7px;
     overflow: hidden;
     border-radius: 50%;
   }
-
-  &:hover, &:focus, &:active, &.focusing, &.s-pressed {
-    .account-control-icon i {
-      color: var(--s-color-base-on-accent) !important;
-    }
-  }
-}
-
-.node-control {
-  &__text {
-    padding-left: calc(var(--s-basic-spacing) / 2);
-    text-align: left;
-    font-size: var(--s-font-size-extra-small);
-    text-transform: none;
-  }
-  &-title {
-    font-weight: 700;
-  }
-  @include element-size('token-logo', 26px);
-}
-
-.node-control,
-.account-control {
-  letter-spacing: var(--s-letter-spacing-small);
-}
-
-.node-control-network,
-.account-control-network {
-  font-weight: 600;
 }
 
 .sora-logo {
@@ -816,8 +782,6 @@ $sora-logo-width: 173.7px;
   &__image {
     width: $sora-logo-width;
     height: $sora-logo-height;
-    background-image: url('~@/assets/img/sora-logo.svg');
-    background-size: cover;
   }
 }
 
@@ -841,11 +805,13 @@ $sora-logo-width: 173.7px;
 
 @include tablet {
   .polkaswap-logo {
-    margin-top: $basic-spacing-small;
     margin-bottom: 0;
-    width: 165px;
-    height: 44px;
-    background-image: url('~@/assets/img/polkaswap-logo.svg');
+    width: 172px;
+    height: 46px;
+    background-image: none;
+    &--tablet {
+      visibility: visible;
+    }
   }
   .app-footer {
     flex-direction: row;
