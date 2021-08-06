@@ -15,6 +15,7 @@
       v-bind="reward"
     />
     <info-line
+      v-if="hasPriceImpact"
       :label="t('swap.priceImpact')"
       :tooltip-content="t('swap.priceImpactTooltip')"
       :value="`${priceImpact}%`"
@@ -49,6 +50,7 @@ import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
+import { asZeroValue } from '@/utils'
 
 const namespace = 'swap'
 
@@ -91,6 +93,10 @@ export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMi
         value: this.formatStringValue(this.priceReversed)
       }
     ]
+  }
+
+  get hasPriceImpact (): boolean {
+    return !asZeroValue(this.priceImpact)
   }
 
   get rewardsValues (): Array<any> {

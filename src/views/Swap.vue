@@ -44,7 +44,7 @@
         <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenFrom" @click="openSelectTokenDialog(true)" />
       </div>
       <div slot="bottom" class="input-line input-line--footer">
-        <formatted-amount v-if="tokenFrom && tokenFromPrice" :value="getFiatAmountByString(fromValue, tokenFrom)" is-fiat-value />
+        <formatted-amount v-if="tokenFrom && tokenFromPrice" :value="fromFiatAmount" is-fiat-value />
         <token-address v-if="tokenFrom" :name="tokenFrom.name" :symbol="tokenFrom.symbol" :address="tokenFrom.address" class="input-value" />
       </div>
     </s-float-input>
@@ -82,7 +82,10 @@
         <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenTo" @click="openSelectTokenDialog(false)" />
       </div>
       <div slot="bottom" class="input-line input-line--footer">
-        <formatted-amount v-if="tokenTo && tokenToPrice" :value="getFiatAmountByString(toValue, tokenTo)" is-fiat-value />
+        <div v-if="tokenTo && tokenToPrice">
+          <formatted-amount :value="toFiatAmount" is-fiat-value />
+          <formatted-amount :value="fiatDifferenceFormatted" />
+        </div>
         <token-address v-if="tokenTo" :name="tokenTo.name" :symbol="tokenTo.symbol" :address="tokenTo.address" class="input-value" />
       </div>
     </s-float-input>
@@ -257,6 +260,35 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
     return this.isZeroFromAmount && this.isZeroToAmount
   }
 
+  get fromFiatAmount (): string {
+    return this.fromValue ? (this.getFiatAmountByString(this.fromValue, this.tokenFrom) || '0') : '0'
+  }
+
+  get toFiatAmount (): string {
+    return this.toValue ? (this.getFiatAmountByString(this.toValue, this.tokenTo) || '0') : '0'
+  }
+
+  get fiatDifference (): string {
+    const thousandRegExp = new RegExp(`\\${FPNumber.DELIMITERS_CONFIG.thousand}`, 'g')
+    const decimalsRegExp = new RegExp(`\\${FPNumber.DELIMITERS_CONFIG.decimal}`, 'g')
+    const toNumberString = (value: string) => value.replace(thousandRegExp, '').replace(decimalsRegExp, '.')
+
+    const a = toNumberString(this.fromFiatAmount)
+    const b = toNumberString(this.toFiatAmount)
+
+    if (asZeroValue(a) || asZeroValue(b)) return '0'
+
+    const from = new FPNumber(a)
+    const to = new FPNumber(b)
+    const difference = to.sub(from).div(from).mul(new FPNumber(100)).toFixed(2)
+
+    return difference
+  }
+
+  get fiatDifferenceFormatted (): string {
+    return new FPNumber(this.fiatDifference).toLocaleString()
+  }
+
   get isXorOutputSwap (): boolean {
     return this.tokenTo?.address === KnownAssets.get(KnownSymbols.XOR)?.address
   }
@@ -291,11 +323,11 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
   }
 
   get tokenFromPrice (): Nullable<CodecString> {
-    return this.getAssetFiatPrice(this.tokenFrom)
+    return this.tokenFrom ? this.getAssetFiatPrice(this.tokenFrom) : null
   }
 
   get tokenToPrice (): Nullable<CodecString> {
-    return this.getAssetFiatPrice(this.tokenTo)
+    return this.tokenTo ? this.getAssetFiatPrice(this.tokenTo) : null
   }
 
   created () {
