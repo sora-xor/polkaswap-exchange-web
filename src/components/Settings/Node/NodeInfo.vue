@@ -13,9 +13,9 @@
       <s-input class="node-info-input s-typography-input-field" :placeholder="t('nameText')" v-model="nodeModel.name" :maxlength="128" :disabled="existing && !removable" />
     </s-form-item>
     <s-form-item prop="address">
-      <s-input class="node-info-input s-typography-input-field" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="existing" />
+      <s-input class="node-info-input s-typography-input-field" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="existing && !removable" />
     </s-form-item>
-    <s-button :type="buttonType" native-type="submit" class="node-info-button s-typography-button--large" :disabled="connected" :loading="loading">{{ buttonText }}</s-button>
+    <s-button :type="buttonType" native-type="submit" class="node-info-button s-typography-button--large" :disabled="buttonDisabled" :loading="loading">{{ buttonText }}</s-button>
     <a :href="tutorialLink" class="node-info-button" target="_blank" rel="noreferrer noopener">
       <s-button type="tertiary" class="node-info-tutorial-button s-typography-button--big" icon="question-circle-16" icon-position="right">
         {{ t('selectNodeDialog.howToSetupOwnNode') }}
@@ -91,14 +91,19 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   }
 
   get buttonText (): string {
-    if (this.nodeDataChanged) return this.t('selectNodeDialog.save')
+    if (!this.existing) return this.t('selectNodeDialog.addNode')
+    if (this.nodeDataChanged) return this.t('selectNodeDialog.updateNode')
     if (this.connected) return this.t('selectNodeDialog.connected')
 
-    return this.existing ? this.t('selectNodeDialog.select') : this.t('selectNodeDialog.addNode')
+    return this.t('selectNodeDialog.select')
+  }
+
+  get buttonDisabled (): boolean {
+    return this.connected && !this.nodeDataChanged
   }
 
   get buttonType (): string {
-    return this.existing ? 'tertiary' : 'primary'
+    return this.nodeDataChanged || !this.existing ? 'primary' : 'tertiary'
   }
 
   get title (): string {
@@ -106,7 +111,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   }
 
   get nodeDataChanged (): boolean {
-    return this.nodeModel.name !== this.node.name
+    return this.nodeModel.name !== this.node.name || this.nodeModel.address !== this.node.address
   }
 
   async submitForm (): Promise<void> {

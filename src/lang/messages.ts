@@ -119,6 +119,7 @@ export default {
   selectNodeDialog: {
     title: '@:soraText Network node selection',
     addNode: 'Add custom node',
+    updateNode: 'Update node',
     customNode: 'Custom node',
     howToSetupOwnNode: 'How to setup your own @:soraText node',
     select: 'Select',
