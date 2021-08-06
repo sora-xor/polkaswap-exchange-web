@@ -164,7 +164,18 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
 
         return this.handleNodeError(error)
       }
+    }
 
+    if (nodeCopy.address !== this.connectedNodeAddress) {
+      await this.connectToNode({
+        node: nodeCopy,
+        onError: this.handleNodeError,
+        onDisconnect: this.handleNodeDisconnect,
+        onReconnect: this.handleNodeReconnect
+      })
+    }
+
+    if (isNewOrUpdatedNode) {
       const existingNode = this.findNodeInListByAddress(nodeCopy.address)
       const address = this.selectedNode.address || existingNode?.address
 
@@ -176,15 +187,6 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     }
 
     this.selectedNode = this.findNodeInListByAddress(nodeCopy.address)
-
-    if (nodeCopy.address !== this.connectedNodeAddress) {
-      await this.connectToNode({
-        node: nodeCopy,
-        onError: this.handleNodeError,
-        onDisconnect: this.handleNodeDisconnect,
-        onReconnect: this.handleNodeReconnect
-      })
-    }
   }
 
   private formatNode (node: Node): NodeItem {
