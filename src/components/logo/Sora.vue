@@ -9,7 +9,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
 
 @Component
-export default class PolkaswapLogo extends Vue {
+export default class SoraLogo extends Vue {
   @Prop({ default: Theme.LIGHT, type: String }) theme!: Theme
 
   get textColor (): string {

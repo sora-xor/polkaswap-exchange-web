@@ -203,7 +203,7 @@ export default class Tokens extends Mixins(LoadingMixin, TranslationMixin, Asset
   }
 
   .el-table__empty-text {
-    color: var(--s-color-base-content-primary);
+    color: var(--s-color-base-content-tertiary); // TODO: remove after fix in ui-lib
   }
 
   .token-address {

@@ -37,9 +37,8 @@
 
       <div class="about-video" style="margin-bottom:120px;">
         <a href="http://sora.org/pswap-soft-launch-video" target="_blank" rel="nofollow noopener" style="text-align: center;">
-          <img :src="images.about06" draggable="false" class="unselectable preview">
+          <img src="@/assets/about/shared/about06.png" draggable="false" class="unselectable preview">
         </a>
-        <img :src="images.about06_shadow_1" draggable="false" class="unselectable about-video-shadow-1">
       </div>
       <div class="about-links" style="margin-bottom:120px;">
         <div class="about-links-part" style="text-align:left;">
@@ -54,7 +53,6 @@
           <p class="text">{{ t('about.links.second.desc') }}</p>
           <a class="link-mask" href="https://sora.org" target="_blank" rel="nofollow noopener" />
         </div>
-        <img :src="images.about07_shadow_1" draggable="false" class="unselectable about-links-shadow-1">
       </div>
       <div class="about-network">
         <img :src="images.about08" draggable="false" class="unselectable network-img">
@@ -62,7 +60,7 @@
       </div>
     </div>
     <footer class="app-footer">
-      <img :src="images.web3" draggable="false" class="web3 unselectable" />
+      <web-3-logo :theme="libraryTheme" draggable="false" class="web3 unselectable"/>
       <div class="hr" />
     </footer>
   </div>
@@ -77,6 +75,8 @@ import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 
+import Web3Logo from '@/components/logo/Web3.vue'
+
 const ABOUT_IMAGES = [
   'about02-1.png',
   'about02-2.png',
@@ -89,22 +89,22 @@ const ABOUT_IMAGES = [
   'about04x.png',
   'about05-1.png',
   'about05x.png',
-  'about06-shadow-1.png',
-  'about06.png',
   'about07-1.png',
   'about07-2.png',
   'about07-3.png',
-  'about07-shadow-1.png',
   'about08.png',
-  'hero.png',
-  'web3.svg'
+  'hero.png'
 ].reduce((result, name) => {
   const key = name.split('.')[0].replace('-', '_')
 
   return { ...result, [key]: name }
 }, {})
 
-@Component
+@Component({
+  components: {
+    Web3Logo
+  }
+})
 export default class About extends Mixins(TranslationMixin, LoadingMixin) {
   @Getter libraryTheme!: Theme
 
