@@ -329,7 +329,8 @@
             "emptyAddress": "Wprowadź adres węzła",
             "incorrectProtocol": "Adres powinien zaczynać się od ws:\/\/ lub wss:\/\/",
             "incorrectAddress": "Nieprawidłowy adres"
-        }
+        },
+        "updateNode": "Zaktualizuj węzeł"
     },
     "buttons": {
         "max": "MAX.",

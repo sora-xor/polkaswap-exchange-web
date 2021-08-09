@@ -5,25 +5,27 @@
     :title="t('selectLanguageDialog.title')"
     class="select-language-dialog"
   >
-    <s-radio-group v-model="selectedLang" class="select-language-list s-flex">
-      <s-radio
-        v-for="lang in languages"
-        :key="lang.key"
-        :label="lang.key"
-        :value="lang.key"
-        size="medium"
-        class="select-language-list__item s-flex"
-      >
-        <div class="select-language-item s-flex">
-          <div class="select-language-item__value">
-            {{ lang.value }}
+    <s-scrollbar>
+      <s-radio-group v-model="selectedLang" class="select-language-list s-flex">
+        <s-radio
+          v-for="lang in languages"
+          :key="lang.key"
+          :label="lang.key"
+          :value="lang.key"
+          size="medium"
+          class="select-language-list__item s-flex"
+        >
+          <div class="select-language-item s-flex">
+            <div class="select-language-item__value">
+              {{ lang.value }}
+            </div>
+            <div class="select-language-item__name">
+              {{ lang.name }}
+            </div>
           </div>
-          <div class="select-language-item__name">
-            {{ lang.name }}
-          </div>
-        </div>
-      </s-radio>
-    </s-radio-group>
+        </s-radio>
+      </s-radio-group>
+    </s-scrollbar>
   </dialog-base>
 </template>
 
@@ -74,27 +76,35 @@ export default class SelectLanguageDialog extends Mixins(TranslationMixin, Dialo
 </style>
 
 <style lang="scss" scoped>
+$item-height: 66px;
+$list-items: 7;
+
 .select-language-list, .select-language-item {
   flex-direction: column;
 }
 .select-language-list {
+  max-height: calc(#{$item-height} * #{$list-items});
+
   &__item {
     align-items: center;
-    height: 65px;
-    padding-left: $inner-spacing-mini;
-    padding-right: $inner-spacing-mini;
+    height: $item-height;
+    padding: $inner-spacing-small 0;
     border-radius: var(--s-border-radius-mini);
   }
 }
 .select-language-item {
+  letter-spacing: var(--s-letter-spacing-small);
+
   &__value {
     color: var(--s-color-base-content-primary);
-    font-size: var(--s-icon-font-size-small);
-    font-weight: 800;
+    font-size: var(--s-font-size-medium);
+    line-height: var(--s-line-height-medium);
+    font-weight: 600;
   }
   &__name {
     color: var(--s-color-base-content-secondary);
     font-size: var(--s-font-size-mini);
+    line-height: var(--s-line-height-medium);
     font-weight: 300;
   }
 }
