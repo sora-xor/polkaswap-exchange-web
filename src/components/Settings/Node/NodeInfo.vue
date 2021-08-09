@@ -155,6 +155,10 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
     & > .s-icon-status-error {
       color: var(--s-color-status-error) !important;
     }
+
+    .s-icon-status-error:before {
+      content: '\ea29';
+    }
   }
 }
 
