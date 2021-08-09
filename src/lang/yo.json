@@ -329,7 +329,8 @@
             "emptyAddress": "Jọwọ tẹ adirẹsi ti oju ipade naa sii",
             "incorrectProtocol": "Adirẹsi yẹ ki o bẹrẹ lati ws:\/\/ tabi wss:\/\/",
             "incorrectAddress": "Adirẹsi ti ko tọ"
-        }
+        },
+        "updateNode": "Imudojuiwọn oju ipade"
     },
     "buttons": {
         "max": "To poju",

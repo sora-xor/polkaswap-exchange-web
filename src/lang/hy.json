@@ -329,7 +329,8 @@
             "emptyAddress": "Խնդրում ենք մուտքագրել հանգույցի հասցեն",
             "incorrectProtocol": "Հասցեն պետք է սկսվի ws:\/\/ կամ wss:\/\/",
             "incorrectAddress": "Սխալ հասցե"
-        }
+        },
+        "updateNode": "Թարմացնել հանգույցը"
     },
     "buttons": {
         "max": "Մաքսիմալ",

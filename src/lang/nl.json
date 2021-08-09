@@ -126,7 +126,7 @@
             "reserved": " - Gereserveerd",
             "total": "Totaal"
         },
-        "totalAssetsValue": "Uw totale activawaarde:"
+        "totalAssetsValue": "Totale waarde van bezittingen:"
     },
     "asset": {
         "remove": "Asset verwijderen"
@@ -329,7 +329,8 @@
             "emptyAddress": "Voer het adres van het knooppunt in",
             "incorrectProtocol": "Het adres moet beginnen met ws:\/\/ of wss:\/\/",
             "incorrectAddress": "Onjuist adres"
-        }
+        },
+        "updateNode": "Knooppunt bijwerken"
     },
     "buttons": {
         "max": "MAX",
@@ -547,8 +548,8 @@
         "viewInSorascan": "Bekijk in Sorascan",
         "changeAccount": "@:changeAccountText in @:metamask",
         "expectedAddress": "Verwacht adres in @:metamask",
-        "title": "Overbruggingstransactie",
-        "expectedMetaMaskAddress": "Verwacht adres in @:metamask"
+        "title": "Bridge-transactie",
+        "expectedMetaMaskAddress": "Verwacht adres in Metamask:"
     },
     "months": {
         "0": "Jan",
