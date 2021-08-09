@@ -85,7 +85,7 @@
         "amount": "@:amountText",
         "balance": "Saldo",
         "max": "Maks",
-        "fee": "Biaya transaksi",
+        "fee": "@:networkFeeText",
         "enterAddress": "Masukkan alamat",
         "badAddress": "Alamat salah",
         "enterAmount": "Masukkan jumlah",
@@ -224,11 +224,11 @@
     "connectWalletText": "Hubungkan akun",
     "changeAccountText": "Ganti akun",
     "connectedText": "Terhubung",
-    "connectWalletTextTooltip": "Hubungkan ke Jaringan @:soraText menggunakan polkadot{.js}",
+    "connectWalletTextTooltip": "Hubungkan ke Jaringan @:soraText menggunakan polkadot {.js}",
     "selectNodeText": "Pilih node",
     "bridgeText": "Bridge",
-    "disclaimer": "Disclaimer: Situs web ini dikelola oleh komunitas @:soraText. Sebelum melanjutkan menggunakan situs web ini, harap tinjau @:polkaswapFaqLink dan dokumentasinya, yang berisi penjelasan rinci tentang cara kerja Polkaswap, serta @:footerMenu.memorandum, dan @:(footerMenu.privacy). Dokumen-dokumen ini sangat penting untuk pengalaman pengguna yang aman dan positif. Dengan menggunakan Polkaswap, Anda menyatakan bahwa Anda telah membaca dan memahami dokumen-dokumen ini. Anda juga mengakui hal-hal berikut: 1) Tanggung jawab utama Anda adalah benar-benar mematuhi semua undang-undang yang mungkin berlaku untuk penggunaan khusus Anda atas Polkaswap di yurisdiksi hukum Anda; 2) pemahaman Anda bahwa versi Polkaswap saat ini adalah versi alfa: belum sepenuhnya diuji, dan beberapa fungsi mungkin tidak berfungsi seperti yang dirancang; dan 3) pemahaman dan penerimaan sukarela Anda atas risiko yang terkait dengan penggunaan Polkaswap, termasuk, namun tidak terbatas pada, risiko kehilangan token. Sekali lagi, jangan melanjutkan tanpa membaca FAQ, <span> @:footerMenu.memorandum <\/span> <a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\"> @:footerMenu.memorandum <\/a> , dan <span> @:footerMenu.privacy <\/span> <a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\"> @:footerMenu.privacy <\/a> !",
-    "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"Polkaswap FAQ\">Polkaswap FAQ<\/a>",
+    "disclaimer": "<span class=\"app-disclaimer__title\"> Penafian <\/span> : Situs web ini dikelola oleh komunitas @:soraText. Sebelum melanjutkan menggunakan situs web ini, harap tinjau @:polkaswapFaqLink dan dokumentasinya, yang berisi penjelasan rinci tentang cara kerja Polkaswap, serta @:memorandumLink, dan @:(privacyLink). Dokumen-dokumen ini sangat penting untuk pengalaman pengguna yang aman dan positif. Dengan menggunakan Polkaswap, Anda menyatakan bahwa Anda telah membaca dan memahami dokumen-dokumen ini. Anda juga mengakui hal-hal berikut: 1) satu-satunya tanggung jawab Anda untuk mematuhi semua undang-undang yang mungkin berlaku untuk penggunaan khusus Anda atas Polkaswap di yurisdiksi hukum Anda; 2) pemahaman Anda bahwa versi Polkaswap saat ini adalah versi alfa: belum sepenuhnya diuji, dan beberapa fungsi mungkin tidak berfungsi seperti yang dirancang; dan 3) pemahaman dan penerimaan sukarela Anda atas risiko yang terkait dengan penggunaan Polkaswap, termasuk, namun tidak terbatas pada, risiko kehilangan token. Sekali lagi, mohon jangan melanjutkan tanpa membaca FAQ @:polkaswapFaqLink, @:memorandumLink, dan @:privacyLink!",
+    "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
     "poweredBy": "Didukung oleh",
     "confirmTransactionText": "Konfirmasi transaksi untuk {direction}",
     "retryText": "Coba lagi",
@@ -303,12 +303,12 @@
     },
     "node": {
         "errors": {
-            "connection": "Terjadi kesalahan saat menghubungkan ke node\n {address}\n",
-            "network": "Node\n[alamat]\n berasal dari jaringan lain\n",
-            "existing": "Node ini sudah ditambahkan: '{title}'\n"
+            "connection": "Terjadi kesalahan saat menghubungkan ke node\n {address}",
+            "network": "Node\n {address}\n berasal dari jaringan lain",
+            "existing": "Node ini sudah ditambahkan: '{title}'"
         },
         "messages": {
-            "connected": "Koneksi dibuat dengan node\n {address}\n",
+            "connected": "Koneksi dibuat dengan node\n {address}",
             "selectNode": "Silakan pilih node untuk terhubung dari daftar node"
         },
         "warnings": {
@@ -329,7 +329,8 @@
             "emptyAddress": "Silakan masukkan alamat node",
             "incorrectProtocol": "Alamat harus dimulai dari ws:\/\/ atau wss:\/\/",
             "incorrectAddress": "Alamat salah"
-        }
+        },
+        "updateNode": "Perbarui node"
     },
     "buttons": {
         "max": "Maks",
@@ -388,7 +389,7 @@
         "pswap": {
             "title": "Token PSWAP",
             "first": "PSWAP diciptakan oleh komunitas governance dengan cara vote pada saat rilis. Merupakan token utilitas dan governance yang digunakan untuk memberi reward kepada penyedia likuiditas di Polkaswap. Tidak seperti kebanyakan token reward lainnya, PSWAP akan diburn setiap kali terjadi transaksi dan penyusutan suplai dari waktu ke waktu.",
-            "second": "Biaya {persen}% untuk setiap swap pada Polkaswap DEX digunakan untuk membeli kembali token PSWAP, yang kemudian diburn. Pada tahap awal, 90% token PSWAP yang diburn diolah untuk dialokasikan ke penyedia likuiditas, tetapi seiring waktu, persentase ini akan menurun menjadi 35% setelah 4 tahun."
+            "second": "Biaya {persen}% untuk setiap swap pada Polkaswap DEX digunakan untuk membeli kembali token PSWAP, yang kemudian dibakar. Pada awalnya, 90% token PSWAP yang terbakar diolah untuk mengalokasikan ke penyedia likuiditas, tetapi seiring waktu persentase ini akan menurun menjadi 35% setelah 4 tahun."
         },
         "links": {
             "first": {
@@ -423,7 +424,7 @@
         "priceImpact": "Dampak Harga",
         "priceImpactTooltip": "Selisih antara harga pasar dan perkiraan harga disebabkan oleh ukuran perdagangan.",
         "liquidityProviderFee": "Biaya Penyedia Likuiditas",
-        "liquidityProviderFeeTooltip": "Sebagian dari setiap perdagangan ({likuidityProviderFee}%) diberikan kepada penyedia likuiditas sebagai insentif protokol.",
+        "liquidityProviderFeeTooltip": "Sebagian dari setiap perdagangan ( {liquidityProviderFee} %) diberikan kepada penyedia likuiditas sebagai insentif protokol.",
         "networkFee": "@:networkFeeText",
         "pairIsNotCreated": "@:pairIsNotCreated",
         "networkFeeTooltip": "@:networkFeeTooltipText",
@@ -548,7 +549,7 @@
         "changeAccount": "@:changeAccountText di @:metamask",
         "expectedAddress": "Alamat yang diharapkan di @:metamask",
         "title": "Transaksi Jembatan",
-        "expectedMetaMaskAddress": "Alamat yang diharapkan di @:metamask"
+        "expectedMetaMaskAddress": "Alamat yang diharapkan di metamask"
     },
     "months": {
         "0": "Jan",
@@ -590,7 +591,7 @@
         }
     },
     "createPair": {
-        "title": "Membuat pair",
+        "title": "Membuat pasangan",
         "deposit": "Deposit",
         "balance": "Saldo",
         "pricePool": "Harga dan bagian pool",
@@ -613,7 +614,7 @@
     "confirmSupply": {
         "title": "Anda akan menerima",
         "outputDescription": "Output merupakan estimasi. Jika harga berubah lebih dari {slippageTolerance}% transaksi Anda akan dikembalikan.",
-        "poolTokensBurned": "{first}-{second} Token Pool Diburn",
+        "poolTokensBurned": "{first} - {second} Token Pool Dibakar",
         "price": "Harga"
     },
     "addLiquidity": {
@@ -699,7 +700,7 @@
             "pendingExternal": "@:ethereumText transaksi tertunda...",
             "retry": "@:retryText",
             "checkRewards": "Periksa",
-            "insufficientBalance": "@:insufficientBalanceText"
+            "insufficientBalance": "@:tidak mencukupiBalanceText"
         },
         "notification": {
             "empty": "Tidak ada klaim yang tersedia untuk akun ini"
@@ -716,7 +717,7 @@
         },
         "vested": "vested",
         "forText": "untuk",
-        "totalVested": "Hadiah total",
+        "totalVested": "Total hadiah",
         "claimableAmountDoneVesting": "Jumlah yang dapat diklaim (selesai vesting)",
         "groups": {
             "strategic": "Imbalan Strategis",

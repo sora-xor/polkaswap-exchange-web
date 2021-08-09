@@ -85,7 +85,7 @@
         "amount": "@:amountText",
         "balance": "Balance",
         "max": "MAX",
-        "fee": "Cuota de transacción",
+        "fee": "@:networkFeeText",
         "enterAddress": "Introduzca dirección",
         "badAddress": "Dirección incorrecta",
         "enterAmount": "Introduzca la cantidad",
@@ -166,8 +166,8 @@
             "title": "Transacción enviada",
             "desc": "Crear token {symbol}"
         },
-        "tooltipValue": "Para crear un token, hay que pagar una cuota",
-        "fee": "Tarifa de la Red",
+        "tooltipValue": "@:networkFeeTooltipText",
+        "fee": "@:networkFeeText",
         "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "No se pudo obtener una tarifa por una transacción",
         "error": "Fallo al crear el token {symbol}",
@@ -185,7 +185,7 @@
         },
         "extensibleSupply": {
             "placeholder": "Suministro extensible",
-            "desc": "Posibilidad de acuñar más Tokens."
+            "desc": "habilidad de acuñar más Tokens."
         }
     },
     "transaction": {
@@ -312,7 +312,7 @@
             "selectNode": "Por favor, seleccione el nodo a conectar de la lista de nodos"
         },
         "warnings": {
-            "disconnect": "Se perdió la conexión al nodo. Reconectando ..."
+            "disconnect": "Se ha perdido la conexión con el nodo. Reconectando..."
         }
     },
     "selectNodeDialog": {
@@ -329,7 +329,8 @@
             "emptyAddress": "Por favor, ingrese la dirección del nodo",
             "incorrectProtocol": "La dirección debe comenzar por ws:\/\/ o wss:\/\/",
             "incorrectAddress": "Dirección incorrecta"
-        }
+        },
+        "updateNode": "Actualizar nodo"
     },
     "buttons": {
         "max": "MAX",
@@ -437,10 +438,10 @@
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
-        "connectToWallet": "Conecte a una cartera para añadir y ver su Liquidez.",
+        "connectToWallet": "Conecte una cuenta para ver su liquidez.",
         "liquidityNotFound": "No se ha encontrado Liquidez.",
         "addLiquidity": "Añadir Liquidez",
-        "removeLiquidity": "Eliminar Liquidez",
+        "removeLiquidity": "Remover Liquidez",
         "createPair": "Crear un par",
         "pooledToken": "{tokenSymbol} mancomunado",
         "pairTokens": "{pair} Tokens del Fondo común",
@@ -509,7 +510,7 @@
         },
         "status": {
             "pending": "{step} transacciones pendientes ...",
-            "failed": "{step} transacciones fallaron. @:(retryText).",
+            "failed": "{step} transacciones fallidas. @:(retryText).",
             "confirm": "Confirmar 2ª de 2 transacciones...",
             "complete": "Completa",
             "convertionComplete": "Conversión completa"
@@ -565,9 +566,9 @@
         "11": "Diciembre"
     },
     "bridgeHistory": {
-        "title": "Historia",
+        "title": "Historial",
         "showHistory": "Mostrar historial",
-        "clearHistory": "Borrar el historial",
+        "clearHistory": "Limpiar historial",
         "empty": "Sus transacciones aparecerán aquí.",
         "filterPlaceholder": "Filtrar por ID del Activo o el símbolo bursátil (ticker)",
         "restoreHistory": "Restaurar historial"
@@ -596,7 +597,7 @@
         "pricePool": "Precios y tarifas",
         "shareOfPool": "Participación del Fondo común",
         "firstPerSecond": "@:firstPerSecond",
-        "firstSecondPoolTokens": "{first}-{second} Tokens del Fondo común",
+        "firstSecondPoolTokens": "{first}-{second} Fondo común",
         "connect": "Conectar cartera",
         "supply": "Suministro",
         "yourPosition": "Tu posición",
@@ -605,14 +606,14 @@
         "remove": "Eliminar",
         "add": "AGREGAR",
         "ok": "OK",
-        "networkFee": "Comisión de la red",
+        "networkFee": "@:networkFeeText",
         "alreadyCreated": "El par de tokens ya fue creado",
         "firstLiquidityProvider": "Eres el primer proveedor de liquidez",
         "firstLiquidityProviderInfo": "La proporción de Tokens que añadas fijará el precio de este Fondo común.<br\/>Una vez que estés satisfecho con la tarifa, haz clic en el suministro para revisar."
     },
     "confirmSupply": {
         "title": "Su participación en el fondo común será",
-        "outputDescription": "La cantidad esta estimada. Si el precio cambia más de {slippageTolerance}% su transacción se revertirá.",
+        "outputDescription": "La cantidad es estimada. Si el precio cambia más de {slippageTolerance}% su transacción se revertirá.",
         "poolTokensBurned": "{first}-{second} Tokens del Fondo común quemados",
         "price": "Precio"
     },
@@ -622,7 +623,7 @@
         "firstPerSecond": "@:firstPerSecond"
     },
     "removeLiquidity": {
-        "title": "Eliminar la Liquidez",
+        "title": "Remover Liquidez",
         "liquidity": "Liquidez",
         "balance": "Balance",
         "amount": "Cantidad",
@@ -631,7 +632,7 @@
         "price": "Precio",
         "remove": "Eliminar",
         "description": "La retirada de Tokens del Fondo común convierte su posición de nuevo en Tokens subyacentes a la tasa actual, proporcional a su Participación en el Fondo común. Las comisiones acumuladas se incluyen en las cantidades que recibe.",
-        "outputMessage": "La cantidad esta estimada. Si el precio cambia más de {slippageTolerance}% su transacción se revertirá.",
+        "outputMessage": "La cantidad es estimada. Si el precio cambia más de {slippageTolerance}% su transacción se revertirá.",
         "confirmTitle": "Usted recibirá",
         "shareOfPool": "Parte del fondo común después de la transacción"
     },
@@ -639,7 +640,7 @@
         "title": "Configuración de transacciones",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
-            "main": "- opción para elegir entre mercado primario (TBC), mercado secundario (XYK) o un algoritmo inteligente combinado para obtener el mejor precio garantizado para cualquier transacción determinada."
+            "main": "- opción para elegir entre mercado primario (TBC), mercado secundario (XYK) o un algoritmo inteligente combinado para garantizar el mejor precio para cualquier transacción dada."
         },
         "slippageTolerance": "TOLERANCIA AL DESLIZAMIENTO",
         "slippageToleranceHint": "Su transacción se revertirá si el precio cambia desfavorablemente en más de este porcentaje.",
@@ -679,7 +680,7 @@
         "transactions": {
             "confimation": "Confirmar {order} de {total} transacciones ...",
             "success": "En breve recibirás tus recompensas",
-            "failed": "{order} de {total} transacciones con errores. @:retryText"
+            "failed": "{order} de {total} transacciones fallidas. @:retryText"
         },
         "signing": {
             "extension": "extensión de navegador polkadot{.js}",
@@ -687,7 +688,7 @@
         },
         "hint": {
             "connectExternalAccount": "Conecta una cuenta @:ethereumText para comprobar las Recompensas PSWAP y VAL disponibles.",
-            "connectAccounts": "Para reclamar tus Recompensas de PSWAP y VAL debes conectar tus cuentas de @:soraText y @:ethereumText.",
+            "connectAccounts": "Para reclamar tus Recompensas de PSWAP y VAL debes conectar ambas, tus cuentas de @:soraText y @:ethereumText.",
             "connectAnotherAccount": "Conecta otra cuenta @:ethereumText para comprobar las Recompensas PSWAP y VAL disponibles.",
             "howToClaimRewards": "Para reclamar tus Recompensas de {symbols} debes firmar {count} {transactions} en {destination}. Las Recompensas se depositarán en tu cuenta @:soraText."
         },
@@ -707,17 +708,17 @@
         "events": {
             "XorErc20": "XOR ERC-20",
             "SoraFarmHarvest": "@:(soraText).cosecha de la granja",
-            "NtfAirdrop": "NFT Airdrop",
+            "NtfAirdrop": "Lanzamiento de NFT",
             "LiquidityProvision": "Comisiones obtenidas por la provisión de Liquidez",
             "BuyOnBondingCurve": "Comprando en la TBC",
             "NftAirdrop": "Lanzamiento de NFT",
-            "MarketMakerVolume": "Creador de Mercado",
-            "LiquidityProvisionFarming": "Farming \"Agricultura del Rendimiento\""
+            "MarketMakerVolume": "Creación de Mercado",
+            "LiquidityProvisionFarming": "Agricultura"
         },
         "vested": "establecido",
         "forText": "por",
         "totalVested": "Recompensas totales",
-        "claimableAmountDoneVesting": "Monto reclamable (otorgado)",
+        "claimableAmountDoneVesting": "Recompensas reclamables",
         "groups": {
             "strategic": "Recompensas estratégicas",
             "external": "Recompensas para la cuenta de Ethereum conectada"
@@ -727,7 +728,7 @@
         "default": "@:ethereumText proveedor",
         "metamask": "@:metamask",
         "messages": {
-            "checkExtension": "{name} está ocupada, verifíquela",
+            "checkExtension": "La extensión {nombre} está ocupada, por favor compruébelo",
             "extensionLogin": "Por favor, inicie sesión en su extensión de {name}",
             "installExtension": "La extensión {name} no se encuentra. Por favor, instálela.\n\n¿Ya ha instalado la extensión? Por favor, recargue la página",
             "reloadPage": "Recargar página"

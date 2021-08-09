@@ -329,7 +329,8 @@
             "emptyAddress": "Si prega di inserire l'indirizzo del nodo",
             "incorrectProtocol": "L'indirizzo dovrebbe iniziare da ws:\/\/ o wss:\/\/",
             "incorrectAddress": "Indirizzo errato"
-        }
+        },
+        "updateNode": "Aggiorna nodo"
     },
     "buttons": {
         "max": "MAX",
