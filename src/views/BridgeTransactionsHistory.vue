@@ -321,7 +321,7 @@ $history-item-top-border-height: 1px;
     @include bridge-content;
   }
   &-items {
-    height: #{$history-item-height * $page-amount};
+    min-height: #{$history-item-height * $page-amount};
   }
   &-empty {
     text-align: center;
@@ -333,7 +333,7 @@ $history-item-top-border-height: 1px;
   display: flex;
   margin-right: -#{$inner-spacing-small};
   margin-left: -#{$inner-spacing-small};
-  height: $history-item-height;
+  min-height: $history-item-height;
   padding: $inner-spacing-mini $inner-spacing-big;
   border-radius: var(--s-border-radius-small);
 
@@ -366,6 +366,7 @@ $history-item-top-border-height: 1px;
   }
   &-title {
     line-height: var(--s-line-height-big);
+    word-break: break-all;
     .s-icon {
       &-sora, &-eth {
         position: relative;
