@@ -675,7 +675,7 @@ $account-control-name-max-width: 200px;
   .menu-link-container {
     display: none;
     .el-menu-item {
-      white-space: initial;
+      white-space: normal;
     }
   }
   .el-menu-item {

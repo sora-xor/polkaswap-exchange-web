@@ -2,16 +2,14 @@
   <div class="amount-header">
     <template v-for="{ asset, amount } in items">
       <div :key="asset.symbol" class="amount-block">
-        <formatted-amount
-          class="amount-block__amount"
+        <formatted-amount-with-fiat-value
+          value-class="amount-block__amount"
           :value="formatStringValue(amount, asset.decimal)"
           :font-size-rate="FontSizeRate.MEDIUM"
           :asset-symbol="asset.symbol"
+          :fiat-value="getFiatAmountByString(amount, asset)"
+          :fiat-font-size-rate="FontSizeRate.MEDIUM"
           symbol-as-decimal
-        />
-        <formatted-amount
-          :value="getFiatAmountByString(amount, asset)"
-          is-fiat-value
           with-left-shift
         />
       </div>
@@ -21,13 +19,13 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { FormattedAmountMixin, FormattedAmount, FontSizeRate } from '@soramitsu/soraneo-wallet-web'
+import { FormattedAmountMixin, FormattedAmountWithFiatValue, FontSizeRate } from '@soramitsu/soraneo-wallet-web'
 
 import { RewardsAmountHeaderItem } from '@/types/rewards'
 
 @Component({
   components: {
-    FormattedAmount
+    FormattedAmountWithFiatValue
   }
 })
 export default class AmountHeader extends Mixins(FormattedAmountMixin) {
@@ -37,8 +35,30 @@ export default class AmountHeader extends Mixins(FormattedAmountMixin) {
 }
 </script>
 
+<style lang="scss">
+.amount {
+  &-header {
+    .formatted-amount__container {
+      justify-content: center;
+      text-align: center;
+    }
+  }
+
+  &-block {
+    &__amount,
+    .formatted-amount--fiat-value {
+      font-weight: 700;
+      letter-spacing: var(--s-letter-spacing-small);
+    }
+
+    .formatted-amount--fiat-value {
+      font-size: 0.875em;
+    }
+  }
+}
+</style>
+
 <style lang="scss" scoped>
-$amount-font-size: 24px;
 $amount-line-height: 20px;
 
 .amount {
@@ -47,11 +67,6 @@ $amount-line-height: 20px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    .formatted-amount {
-      flex-wrap: wrap;
-      justify-content: center;
-    }
   }
 
   &-block {
@@ -69,16 +84,6 @@ $amount-line-height: 20px;
 
     &:last-child:not(:first-child) {
       text-align: left;
-    }
-
-    &__amount,
-    .formatted-amount--fiat-value {
-      font-weight: 700;
-      letter-spacing: var(--s-letter-spacing-small);
-    }
-
-    .formatted-amount--fiat-value {
-      font-size: 0.875em;
     }
   }
 }
