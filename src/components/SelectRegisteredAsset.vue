@@ -44,7 +44,7 @@
                     value-class="asset-item__balance"
                     :value="formattedAssetBalance"
                     :font-size-rate="FontSizeRate.MEDIUM"
-                    :has-fiat-value="isSoraToEvm && !!getAssetFiatPrice(asset)"
+                    :has-fiat-value="shouldFiatBeShown(asset)"
                     :fiat-value="getFiatBalance(asset)"
                     :fiat-font-size-rate="FontSizeRate.MEDIUM"
                     :fiat-font-weight-rate="FontWeightRate.MEDIUM"
@@ -260,6 +260,10 @@ export default class SelectRegisteredAsset extends Mixins(FormattedAmountMixin, 
       this.selectedCustomAsset = null
       this.customSymbol = ''
     }
+  }
+
+  shouldFiatBeShown (asset: RegisteredAccountAsset): boolean {
+    return this.isSoraToEvm && !!this.getAssetFiatPrice(asset)
   }
 
   handleCustomAssetNext (): void {
