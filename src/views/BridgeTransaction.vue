@@ -751,6 +751,7 @@ export default class BridgeTransaction extends Mixins(
 $collapse-horisontal-padding: $inner-spacing-medium;
 $header-icon-size: 52px;
 $header-spinner-size: 62px;
+$header-font-size: var(--s-heading3-font-size);
 $collapse-header-title-font-size: $s-heading3-caps-font-size;
 $collapse-header-title-line-height: var(--s-line-height-base);
 $collapse-header-title-height: calc(#{$collapse-header-title-font-size} * #{$collapse-header-title-line-height});
@@ -764,7 +765,15 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     @include collapse-items;
     .header {
       &-details .info-line-value {
-        @include formatted-amount(var(--s-heading3-font-size), 0.75);
+        .formatted-amount {
+          &__integer,
+          &__symbol {
+            font-size: $header-font-size;
+          }
+          &__decimal {
+            font-size: calc(#{$header-font-size} * 0.75) !important;
+          }
+        }
       }
       &-icon {
         position: relative;

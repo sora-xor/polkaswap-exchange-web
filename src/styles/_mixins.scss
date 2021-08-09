@@ -26,48 +26,79 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
-@mixin select-asset {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: $select-asset-item-height;
-  padding: 0 $inner-spacing-big;
-  cursor: pointer;
-  transition: var(--s-transition-default);
-  &:hover {
-    background-color: var(--s-color-base-background-hover);
+@mixin select-asset ($class: "token-item") {
+  .#{$class} {
+    &__symbol, &__balance {
+      line-height: var(--s-line-height-small);
+      letter-spacing: var(--s-letter-spacing-small);
+      font-weight: 800;
+    }
+    &__balance-container {
+      .formatted-amount__container {
+        flex-direction: column;
+        align-items: flex-end;
+      }
+    }
+    .formatted-amount {
+      display: block;
+      width: 100%;
+      &__integer {
+        font-size: var(--s-font-size-big);
+        font-weight: 800;
+      }
+      &__decimal {
+        font-weight: 600;
+      }
+      &.formatted-amount--fiat-value {
+        line-height: var(--s-line-height-reset);
+        word-break: break-all;
+        .formatted-amount__integer {
+          font-size: var(--s-font-size-small);
+        }
+      }
+    }
   }
-  &__info {
-    flex-direction: column;
-  }
-  &__details {
-    color: var(--s-color-base-content-quaternary);
-    font-size: var(--s-font-size-mini);
-    line-height: var(--s-line-height-medium);
-  }
-  &__address,
-  &__symbol {
-    white-space: nowrap;
-  }
-  &__symbol {
-    font-size: var(--s-font-size-big);
-    white-space: nowrap;
-  }
-  &__symbol, &__balance {
-    line-height: var(--s-line-height-small);
-    letter-spacing: var(--s-letter-spacing-small);
-    font-weight: 800;
-  }
-  &__balance-container {
-    text-align: right;
-    min-width: 45%;
-  }
-  .s-col {
-    padding-right: $inner-spacing-small;
-  }
-  .token-logo {
-    margin-right: $inner-spacing-mini;
-    flex-shrink: 0;
+}
+
+@mixin select-asset-scoped ($class: "token-item") {
+  .#{$class} {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: $select-asset-item-height;
+    padding: 0 $inner-spacing-big;
+    cursor: pointer;
+    transition: var(--s-transition-default);
+    &:hover {
+      background-color: var(--s-color-base-background-hover);
+    }
+    &__info {
+      flex-direction: column;
+    }
+    &__details {
+      color: var(--s-color-base-content-quaternary);
+      font-size: var(--s-font-size-mini);
+      line-height: var(--s-line-height-medium);
+    }
+    &__address,
+    &__symbol {
+      white-space: nowrap;
+    }
+    &__symbol {
+      font-size: var(--s-font-size-big);
+      white-space: nowrap;
+    }
+    &__balance-container {
+      text-align: right;
+      min-width: 40%;
+    }
+    .s-col {
+      padding-right: $inner-spacing-small;
+    }
+    .token-logo {
+      margin-right: $inner-spacing-mini;
+      flex-shrink: 0;
+    }
   }
 }
 
@@ -112,9 +143,11 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       margin-bottom: 0;
       min-height: $inner-spacing-mini * 2.25;
       .formatted-amount--fiat-value {
-        margin-right: auto;
+        flex-grow: 1;
+        margin-right: calc(var(--s-basic-spacing) / 2);
         font-size: var(--s-font-size-small);
         font-weight: 600;
+        word-break: break-all;
         + .token-address {
           margin-left: var(--s-basic-spacing);
         }
@@ -135,7 +168,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
         text-transform: uppercase;
       }
 
-      & > *:not(:last-child) {
+      & > *:not(:last-child):not(.input-value--primary) {
         margin-right: $inner-spacing-mini / 2;
       }
     }
@@ -144,6 +177,10 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       flex-wrap: wrap;
       justify-content: flex-end;
       margin-left: $inner-spacing-mini;
+      .formatted-amount--fiat-value {
+        margin-left: $inner-spacing-mini / 2;
+        text-align: right;
+      }
     }
   }
 }
@@ -468,23 +505,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 @mixin radio-title {
   font-size: var(--s-font-size-medium);
   font-weight: 600;
-}
-
-@mixin formatted-amount ($fontSize: var(--s-font-size-big), $fontSizeRate: 0.875) {
-  display: block !important;
-  font-size: 0 !important;
-  word-break: break-all;
-  white-space: initial;
-
-  .formatted-amount {
-    &__integer,
-    &__symbol {
-      font-size: $fontSize;
-    }
-    &__decimal {
-      font-size: calc(#{$fontSize} * #{$fontSizeRate}) !important;
-    }
-  }
 }
 
 @mixin scrollbar {

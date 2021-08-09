@@ -32,20 +32,16 @@
               </s-row>
             </s-col>
             <div v-if="connected" class="token-item__balance-container">
-              <template v-if="formatBalance(token) !== formattedZeroSymbol">
-                <formatted-amount
-                  class="token-item__balance"
-                  :value="formatBalance(token)"
-                  :font-size-rate="FontSizeRate.MEDIUM"
-                />
-                <formatted-amount
-                  v-if="shouldFiatBeShown(token)"
-                  :value="getFiatBalance(token)"
-                  :font-size-rate="FontSizeRate.MEDIUM"
-                  :font-weight-rate="FontWeightRate.MEDIUM"
-                  is-fiat-value
-                />
-              </template>
+              <formatted-amount-with-fiat-value
+                v-if="formatBalance(token) !== formattedZeroSymbol"
+                value-class="token-item__balance"
+                :value="formatBalance(token)"
+                :font-size-rate="FontSizeRate.MEDIUM"
+                :has-fiat-value="shouldFiatBeShown(token)"
+                :fiat-value="getFiatBalance(token)"
+                :fiat-font-size-rate="FontSizeRate.MEDIUM"
+                :fiat-font-weight-rate="FontWeightRate.MEDIUM"
+              />
               <span v-else class="token-item__balance">{{ formattedZeroSymbol }}</span>
             </div>
           </div>
@@ -113,20 +109,16 @@
                 </s-row>
               </s-col>
               <div v-if="connected" class="token-item__balance-container">
-                <template v-if="formatBalance(token) !== formattedZeroSymbol">
-                  <formatted-amount
-                    class="token-item__balance"
-                    :value="formatBalance(token)"
-                    :font-size-rate="FontSizeRate.MEDIUM"
-                  />
-                  <formatted-amount
-                    v-if="shouldFiatBeShown(token)"
-                    :value="getFiatBalance(token)"
-                    :font-size-rate="FontSizeRate.MEDIUM"
-                    :font-weight-rate="FontWeightRate.MEDIUM"
-                    is-fiat-value
-                  />
-                </template>
+                <formatted-amount-with-fiat-value
+                  v-if="formatBalance(token) !== formattedZeroSymbol"
+                  value-class="token-item__balance"
+                  :value="formatBalance(token)"
+                  :font-size-rate="FontSizeRate.MEDIUM"
+                  :has-fiat-value="shouldFiatBeShown(token)"
+                  :fiat-value="getFiatBalance(token)"
+                  :fiat-font-size-rate="FontSizeRate.MEDIUM"
+                  :fiat-font-weight-rate="FontWeightRate.MEDIUM"
+                />
                 <span v-else class="token-item__balance">{{ formattedZeroSymbol }}</span>
               </div>
               <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
@@ -145,7 +137,7 @@ import first from 'lodash/fp/first'
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { Asset, AccountAsset, isBlacklistAsset } from '@sora-substrate/util'
-import { api, FormattedAmountMixin, FormattedAmount, FontSizeRate, FontWeightRate } from '@soramitsu/soraneo-wallet-web'
+import { api, FormattedAmountMixin, FormattedAmountWithFiatValue, FontSizeRate, FontWeightRate } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
@@ -159,7 +151,7 @@ const namespace = 'assets'
 
 @Component({
   components: {
-    FormattedAmount,
+    FormattedAmountWithFiatValue,
     DialogBase,
     TokenLogo: lazyComponent(Components.TokenLogo),
     TokenAddress: lazyComponent(Components.TokenAddress)
@@ -308,12 +300,7 @@ export default class SelectToken extends Mixins(FormattedAmountMixin, Translatio
 <style lang="scss">
 .asset-select {
   @include exchange-tabs();
-}
-.token-item__balance.formatted-amount {
-  @include formatted-amount;
-  .formatted-amount__decimal {
-    font-weight: 600;
-  }
+  @include select-asset;
 }
 </style>
 
@@ -339,12 +326,10 @@ $token-item-height: 71px;
   color: var(--s-color-base-content-secondary);
   margin-bottom: $inner-spacing-medium;
 }
-.token-item {
-  @include select-asset;
-  &__remove {
-    margin-top: -5px;
-    margin-left: $inner-spacing-medium;
-  }
+@include select-asset-scoped;
+.token-item__remove {
+  margin-top: -5px;
+  margin-left: $inner-spacing-medium;
 }
 .token-list {
   max-height: calc(#{$token-item-height} * 7);

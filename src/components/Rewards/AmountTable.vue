@@ -8,11 +8,14 @@
           <div class="amount-table-item-content">
             <div class="amount-table-item-content__header">
               <div v-for="(item, index) in formatted.limit" class="amount-table-item__amount" :key="index">
-                <formatted-amount
-                  class="amount-table-value"
+                <formatted-amount-with-fiat-value
+                  value-class="amount-table-value"
                   :value="isCodecString ? getFPNumberFromCodec(item.amount, item.asset.decimals).toLocaleString() : item.amount"
                   :font-size-rate="FontSizeRate.MEDIUM"
                   :asset-symbol="item.asset.symbol"
+                  :fiat-value="getFiatAmountByCodecString(item.amount, item.asset)"
+                  :fiat-font-size-rate="FontSizeRate.MEDIUM"
+                  with-left-shift
                 >
                   <s-tooltip v-if="formatted.total && index === 0" popper-class="amount-table-tooltip" placement="right" border-radius="mini">
                     <div slot="content" class="amount-table-tooltip-content">
@@ -27,8 +30,7 @@
                     </div>
                     <s-icon name="info-16" size="14px" class="amount-table-value-icon" />
                   </s-tooltip>
-                </formatted-amount>
-                <formatted-amount :value="getFiatAmountByCodecString(item.amount, item.asset)" is-fiat-value with-left-shift :font-size-rate="FontSizeRate.MEDIUM" />
+                </formatted-amount-with-fiat-value>
               </div>
             </div>
             <div v-if="formatted.rewards.length !== 0" class="amount-table-item-content__body">
@@ -42,8 +44,15 @@
                   </div>
                   <template v-if="!simpleGroup">
                     <div v-for="(item, index) in item.limit" :key="index" class="amount-table-subitem__row">
-                      <formatted-amount class="amount-table-value" :value="formatCodecNumber(item.amount)" :asset-symbol="item.asset.symbol" :font-size-rate="FontSizeRate.MEDIUM" />
-                      <formatted-amount :value="getFiatAmountByCodecString(item.amount, item.asset)" is-fiat-value with-left-shift :font-size-rate="FontSizeRate.MEDIUM" />
+                      <formatted-amount-with-fiat-value
+                        value-class="amount-table-value"
+                        :value="formatCodecNumber(item.amount)"
+                        :font-size-rate="FontSizeRate.MEDIUM"
+                        :asset-symbol="item.asset.symbol"
+                        :fiat-value="getFiatAmountByCodecString(item.amount, item.asset)"
+                        :fiat-font-size-rate="FontSizeRate.MEDIUM"
+                        with-left-shift
+                      />
                     </div>
                   </template>
                 </div>
@@ -60,7 +69,7 @@
 <script lang="ts">
 import { Component, Prop, Mixins } from 'vue-property-decorator'
 import { RewardInfo } from '@sora-substrate/util'
-import { FormattedAmountMixin, FormattedAmount, FontSizeRate } from '@soramitsu/soraneo-wallet-web'
+import { FormattedAmountMixin, FormattedAmount, FormattedAmountWithFiatValue, FontSizeRate } from '@soramitsu/soraneo-wallet-web'
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -68,7 +77,8 @@ import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards'
 
 @Component({
   components: {
-    FormattedAmount
+    FormattedAmount,
+    FormattedAmountWithFiatValue
   }
 })
 export default class AmountTable extends Mixins(FormattedAmountMixin, TranslationMixin) {
@@ -148,9 +158,28 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
     }
   }
 
-  &-item-group.el-checkbox.s-big {
-    padding: 0;
-    height: initial;
+  .formatted-amount__container {
+    width: 100%;
+    text-align: left;
+  }
+
+  &-value {
+    font-size: var(--s-font-size-medium);
+    font-weight: 600;
+    margin-right: auto;
+    &-icon {
+      margin-left: $inner-spacing-mini / 2;
+    }
+  }
+
+  &-item {
+    &-group.el-checkbox.s-big {
+      padding: 0;
+      height: initial;
+    }
+    &__amount .formatted-amount--fiat-value {
+      text-align: right;
+    }
   }
 
   &-tooltip.el-tooltip__popper.neumorphic.is-light {
@@ -175,14 +204,6 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
     }
     .formatted-amount--fiat-value {
       font-weight: 400;
-    }
-  }
-
-  &-value {
-    font-size: var(--s-font-size-medium);
-    font-weight: 600;
-    &-icon {
-      margin-left: $inner-spacing-mini / 2;
     }
   }
 
