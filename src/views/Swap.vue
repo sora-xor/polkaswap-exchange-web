@@ -82,9 +82,11 @@
         <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenTo" @click="openSelectTokenDialog(false)" />
       </div>
       <div slot="bottom" class="input-line input-line--footer">
-        <div v-if="tokenTo && tokenToPrice">
+        <div v-if="tokenTo && tokenToPrice" class="price-difference">
           <formatted-amount :value="toFiatAmount" is-fiat-value />
-          <formatted-amount :value="fiatDifferenceFormatted" />
+          <value-status-wrapper :value="fiatDifference" class="price-difference__value">
+            (<formatted-amount :value="fiatDifferenceFormatted">%</formatted-amount>)
+          </value-status-wrapper>
         </div>
         <token-address v-if="tokenTo" :name="tokenTo.name" :symbol="tokenTo.symbol" :address="tokenTo.address" class="input-value" />
       </div>
@@ -160,6 +162,7 @@ const namespace = 'swap'
     StatusActionBadge: lazyComponent(Components.StatusActionBadge),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
+    ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     FormattedAmount
   }
 })
@@ -603,5 +606,22 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
 .page-header--swap {
   justify-content: space-between;
   align-items: center;
+}
+.price-difference {
+  display: flex;
+  align-items: center;
+
+  & > * {
+    flex-shrink: 0;
+  }
+
+  &__value {
+    font-weight: 600;
+    font-size: var(--s-font-size-small);
+
+    & > span {
+      padding-right: 2px;
+    }
+  }
 }
 </style>

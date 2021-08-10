@@ -18,8 +18,11 @@
       v-if="hasPriceImpact"
       :label="t('swap.priceImpact')"
       :tooltip-content="t('swap.priceImpactTooltip')"
-      :value="`${priceImpact}%`"
-    />
+    >
+      <value-status-wrapper :value="priceImpact">
+        <formatted-amount class="price-impact-value" :value="priceImpactFormatted">%</formatted-amount>
+      </value-status-wrapper>
+    </info-line>
     <info-line
       :label="t('swap.liquidityProviderFee')"
       :tooltip-content="liquidityProviderFeeTooltipText"
@@ -45,7 +48,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LPRewardsInfo } from '@sora-substrate/util'
-import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
+import { FormattedAmount, FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { lazyComponent } from '@/router'
@@ -56,7 +59,9 @@ const namespace = 'swap'
 
 @Component({
   components: {
-    InfoLine: lazyComponent(Components.InfoLine)
+    InfoLine: lazyComponent(Components.InfoLine),
+    ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
+    FormattedAmount
   }
 })
 export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMixin) {
@@ -97,6 +102,10 @@ export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMi
 
   get hasPriceImpact (): boolean {
     return !asZeroValue(this.priceImpact)
+  }
+
+  get priceImpactFormatted (): string {
+    return this.formatStringValue(this.priceImpact)
   }
 
   get rewardsValues (): Array<any> {
@@ -151,20 +160,14 @@ export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMi
 <style lang="scss" scoped>
 @include info-line;
 .swap-info {
-  // TODO: [Release 2] Check these styles on
-  .price-impact {
-    &-positive {
-      color: var(--s-color-status-success);
-    }
-    &-negative {
-      color: var(--s-color-status-error);
-    }
-  }
   &-value.el-button {
     margin-right: 0;
     height: var(--s-font-size-small);
     padding: 0;
     color: inherit;
   }
+}
+.price-impact-value {
+  font-weight: 600;
 }
 </style>
