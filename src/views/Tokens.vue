@@ -29,7 +29,7 @@
       </s-table-column>
       <s-table-column width="112" header-align="center" align="center" prop="symbol">
         <template #header>
-          <sort-button name="symbol" :sort="{ order, property }" @change-sort="changeSort">
+          <sort-button name="symbol" class="tokens-table--center" :sort="{ order, property }" @change-sort="changeSort">
             <span class="tokens-table__primary">{{ t('tokens.symbol') }}</span>
           </sort-button>
         </template>
@@ -39,7 +39,7 @@
       </s-table-column>
       <s-table-column width="52" header-align="center" align="center">
         <template #header>
-          <s-icon name="various-bone-24" size="14px" />
+          <s-icon name="various-bone-24" size="14px" class="tokens-table--center" />
         </template>
         <template v-slot="{ row }">
           <token-logo class="tokens-item-logo" :token-symbol="row.symbol" />
@@ -47,8 +47,10 @@
       </s-table-column>
       <s-table-column>
         <template #header>
-          <span class="tokens-table__primary">{{ t('tokens.name') }}</span>&nbsp;
-          <span class="tokens-table__secondary">({{ t('tokens.assetId') }})</span>
+          <div class="tokens-item-info-header">
+            <span class="tokens-table__primary">{{ t('tokens.name') }}</span>
+            <span class="tokens-table__secondary">({{ t('tokens.assetId') }})</span>
+          </div>
         </template>
         <template v-slot="{ row }">
           <div class="tokens-item-info">
@@ -77,7 +79,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { Asset } from '@sora-substrate/util'
-import { SortDirection } from '@soramitsu/soramitsu-js-ui/src/components/Table/consts'
+import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts'
 
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
@@ -202,6 +204,10 @@ export default class Tokens extends Mixins(LoadingMixin, TranslationMixin, Asset
     height: auto !important;
   }
 
+  .el-table__empty-text {
+    color: var(--s-color-base-content-tertiary); // TODO [1.4]: remove after fix in ui-lib
+  }
+
   .token-address {
     &__name {
       display: block;
@@ -234,12 +240,16 @@ $icon-size: 36px;
   }
   &__secondary {
     color: var(--s-color-base-content-quaternary);
-    font-size: var(--s-font-size-mini);
+    font-size: var(--s-font-size-extra-mini);
   }
 
   &-head {
     display: flex;
     align-items: center;
+    margin: auto;
+  }
+
+  &--center {
     margin: auto;
   }
 }
@@ -270,6 +280,16 @@ $icon-size: 36px;
     line-height: var(--s-line-height-medium);
     letter-spacing: var(--s-letter-spacing-mini);
     font-weight: 300;
+
+    &-header {
+      flex-flow: column wrap;
+      line-height: var(--s-line-height-small);
+
+      & > span {
+        margin-right: $inner-spacing-mini / 2;
+        white-space: nowrap;
+      }
+    }
   }
   &-name {
     font-size: var(--s-font-size-small);

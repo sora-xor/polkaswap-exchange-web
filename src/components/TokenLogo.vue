@@ -48,6 +48,8 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
 
 <style lang="scss" scoped>
 $token-background-color: var(--s-color-base-on-accent);
+// TODO: replace background color with the next one after icon color fix
+// $token-background-color: var(--s-color-base-content-tertiary);
 $default-logo: url("~@/assets/img/token-logo-default.svg");
 
 .token-logo {

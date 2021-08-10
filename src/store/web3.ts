@@ -361,6 +361,10 @@ const actions = {
   async getBalanceByEvmAddress ({ commit, getters, dispatch }, { address }) {
     let value = ZeroStringValue
     let decimals = 18
+    const account = getters.evmAddress
+    if (!account) {
+      return { value, decimals }
+    }
     commit(types.GET_BALANCE_REQUEST)
     try {
       const ethersInstance = await ethersUtil.getEthersInstance()
@@ -374,7 +378,6 @@ const actions = {
           ABI.balance,
           ethersInstance.getSigner()
         )
-        const account = getters.evmAddress
         const methodArgs = [account]
         const balance = await tokenInstance.balanceOf(...methodArgs)
         decimals = await tokenInstance.decimals()

@@ -1,22 +1,26 @@
 <template>
   <s-form :model="nodeModel" :rules="validationRules" ref="nodeForm" class="node-info s-flex" @submit.native.prevent="submitForm">
     <generic-page-header has-button-back :title="title" @back="handleBack">
-      <s-button
-        v-if="existing && removable"
-        type="action"
-        icon="basic-trash-24"
-        tooltip-placement="bottom-end"
-        @click="removeNode(nodeModel)"
-      />
+      <template v-if="existing && removable">
+        <s-button
+          type="action"
+          icon="basic-trash-24"
+          @click="removeNode(nodeModel)"
+        />
+      </template>
     </generic-page-header>
     <s-form-item prop="name">
-      <s-input class="node-info-input s-typography-input-field" :placeholder="t('nameText')" v-model="nodeModel.name" :maxlength="128" :disabled="existing" />
+      <s-input class="node-info-input s-typography-input-field" :placeholder="t('nameText')" v-model="nodeModel.name" :maxlength="128" :disabled="existing && !removable" />
     </s-form-item>
     <s-form-item prop="address">
-      <s-input class="node-info-input s-typography-input-field" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="existing" />
+      <s-input class="node-info-input s-typography-input-field" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="existing && !removable" />
     </s-form-item>
-    <s-button type="primary" native-type="submit" class="node-info-button s-typography-button--large" :disabled="connected" :loading="loading">{{ buttonText }}</s-button>
-    <external-link v-if="!existing" :href="tutorialLink" :title="t('selectNodeDialog.howToSetupOwnNode')" />
+    <s-button :type="buttonType" native-type="submit" class="node-info-button s-typography-button--large" :disabled="buttonDisabled" :loading="loading">{{ buttonText }}</s-button>
+    <a :href="tutorialLink" class="node-info-button" target="_blank" rel="noreferrer noopener">
+      <s-button type="tertiary" class="node-info-tutorial-button s-typography-button--big" icon="question-circle-16" icon-position="right">
+        {{ t('selectNodeDialog.howToSetupOwnNode') }}
+      </s-button>
+    </a>
   </s-form>
 </template>
 
@@ -87,13 +91,27 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   }
 
   get buttonText (): string {
+    if (!this.existing) return this.t('selectNodeDialog.addNode')
+    if (this.nodeDataChanged) return this.t('selectNodeDialog.updateNode')
     if (this.connected) return this.t('selectNodeDialog.connected')
 
-    return this.existing ? this.t('selectNodeDialog.select') : this.t('selectNodeDialog.addNode')
+    return this.t('selectNodeDialog.select')
+  }
+
+  get buttonDisabled (): boolean {
+    return this.connected && !this.nodeDataChanged
+  }
+
+  get buttonType (): string {
+    return this.nodeDataChanged || !this.existing ? 'primary' : 'tertiary'
   }
 
   get title (): string {
     return this.existing ? this.node.title : this.t('selectNodeDialog.customNode')
+  }
+
+  get nodeDataChanged (): boolean {
+    return this.nodeModel.name !== this.node.name || this.nodeModel.address !== this.node.address
   }
 
   async submitForm (): Promise<void> {
@@ -105,7 +123,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
         address: stripEndingSlash(this.nodeModel.address)
       }
 
-      this.handleNode(preparedModel, !this.existing)
+      this.handleNode(preparedModel, !this.existing || this.nodeDataChanged)
     } catch (error) {
     }
   }
@@ -114,6 +132,12 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .node-info {
+  &-tutorial-button {
+    .s-icon-question-circle-16:before {
+      font-size: 18px;
+    }
+  }
+
   .el-form-item.is-error > .el-form-item__content {
     & > [class^="s-input"]:not(.s-disabled) {
       &, &:hover {
@@ -131,6 +155,10 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
     & > .s-icon-status-error {
       color: var(--s-color-status-error) !important;
     }
+
+    .s-icon-status-error:before {
+      content: '\ea29';
+    }
   }
 }
 
@@ -146,7 +174,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
     width: 100%;
   }
 
-  &-button {
+  &-button, &-tutorial-button {
     width: 100%;
   }
 }

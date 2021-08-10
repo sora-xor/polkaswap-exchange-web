@@ -94,12 +94,12 @@ export default {
     title: 'About',
     learnMore: 'Learn more',
     network: {
-      title: 'What is @:soraText?',
+      title: 'What is @:(soraText)?',
       description: 'Polkaswap is built on top of the @:soraText Network, and the @:soraText token (XOR) is used for gas/fees and liquidity provision on Polkaswap. @:soraText Network allows for reduced fees, faster transactions and simpler consensus finalization and is focused on delivering interoperability across other blockchain ecosystems like @:(ethereumText).'
     },
     polkadot: {
       title: 'What is polkadot{.js}?',
-      description: 'Polkadot{.js} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including @:soraText, Polkadot and Kusama. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized.'
+      description: 'Polkadot{.js} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including @:(soraText), Polkadot and Kusama. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized.'
     }
   },
   node: {
@@ -119,6 +119,7 @@ export default {
   selectNodeDialog: {
     title: '@:soraText Network node selection',
     addNode: 'Add custom node',
+    updateNode: 'Update node',
     customNode: 'Custom node',
     howToSetupOwnNode: 'How to setup your own @:soraText node',
     select: 'Select',
@@ -131,6 +132,9 @@ export default {
       incorrectProtocol: 'Address should starts from ws:// or wss://',
       incorrectAddress: 'Incorrect address'
     }
+  },
+  selectLanguageDialog: {
+    title: 'Language'
   },
   buttons: {
     max: 'MAX',
@@ -260,9 +264,9 @@ export default {
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
     insufficientLiquidity: 'Insufficient liquidity',
     confirmSwap: 'Confirm swap',
-    swapInputMessage: 'Input is estimated. You will sell maximum {transactionValue} or the transaction will revert.',
     swapOutputMessage: 'Output is estimated. You will receive at least {transactionValue} or the transaction will revert.',
-    rewardsForSwap: 'PSWAP Strategic Rewards'
+    rewardsForSwap: 'PSWAP Strategic Rewards',
+    swapInputMessage: 'Input is estimated. You will sell maximum {transactionValue} or the transaction will revert.'
   },
   pool: {
     connectWallet: '@:connectWalletText',
@@ -329,8 +333,9 @@ export default {
     buttonConfirm: '@:confirmText'
   },
   bridgeTransaction: {
-    viewHistory: 'View transaction in transactions history',
+    title: 'Bridge Transaction',
     details: '{from} for {to}',
+    expectedMetaMaskAddress: 'Expected address in MetaMask:',
     for: ' for ',
     steps: {
       step: '{step} of 2',
@@ -374,7 +379,9 @@ export default {
     confirm: '@:confirmTransactionText',
     newTransaction: 'Create new transaction',
     changeNetwork: '@:changeNetworkText',
-    connectWallet: '@:connectWalletText'
+    connectWallet: '@:connectWalletText',
+    changeAccount: '@:changeAccountText in @:metamask',
+    expectedAddress: 'Expected address in @:metamask'
   },
   months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   bridgeHistory: {
@@ -406,10 +413,10 @@ export default {
     title: 'Create a pair',
     deposit: 'Deposit',
     balance: 'Balance',
-    pricePool: 'Prices and pool share',
+    pricePool: 'Prices and fees',
     shareOfPool: 'Share of pool',
     firstPerSecond: '@:firstPerSecond',
-    firstSecondPoolTokens: '{first}-{second} Pool tokens',
+    firstSecondPoolTokens: '{first}-{second} Pool',
     connect: 'Connect wallet',
     supply: 'Supply',
     yourPosition: 'Your position',
@@ -424,7 +431,7 @@ export default {
     firstLiquidityProviderInfo: 'The ratio of tokens you add will set the price of this pool.<br/>Once you are happy with the rate click supply to review.'
   },
   confirmSupply: {
-    title: 'You will receive',
+    title: 'Your pool share will be',
     outputDescription: 'Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.',
     poolTokensBurned: '{first}-{second} Pool Tokens Burned',
     price: 'Price'
@@ -445,7 +452,8 @@ export default {
     remove: 'Remove',
     description: 'Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.',
     outputMessage: 'Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.',
-    confirmTitle: 'You will receive'
+    confirmTitle: 'You will receive',
+    shareOfPool: 'Share of pool after transaction'
   },
   tokens: {
     title: 'Listed Tokens',
@@ -531,7 +539,7 @@ export default {
       [RewardingEvents.NftAirdrop]: 'NFT Airdrop',
       [RewardingEvents.LiquidityProvision]: 'Fees gained from liquidity provision',
       [RewardingEvents.BuyOnBondingCurve]: 'buying from the TBC',
-      [RewardingEvents.MarketMakerVolume]: 'Market Maker',
+      [RewardingEvents.MarketMakerVolume]: 'Market Making',
       [RewardingEvents.LiquidityProvisionFarming]: 'Farming'
     },
     groups: {

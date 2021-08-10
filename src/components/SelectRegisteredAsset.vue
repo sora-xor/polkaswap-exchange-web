@@ -28,15 +28,28 @@
               {{ isSoraToEvm ? t('selectRegisteredAsset.search.networkLabelSora') : t('selectRegisteredAsset.search.networkLabelEthereum') }}
             </h3>
             <div :class="assetListClasses(filteredAssets, !isSoraToEvm)">
-              <div v-for="asset in filteredAssets" @click="selectAsset(asset)" :key="asset.address" class="asset-item">
+              <div v-for="asset in filteredAssets" :key="asset.address" :set="formattedAssetBalance = formatBalance(asset)" class="asset-item" @click="selectAsset(asset)">
                 <s-col>
                   <s-row flex justify="start" align="middle">
                     <token-logo :token="asset" size="big" />
-                    <div class="asset-item__name">{{ getAssetName(asset) }}</div>
+                    <div class="asset-item__info s-flex">
+                      <div class="asset-item__symbol">{{ asset.symbol }}</div>
+                      <token-address :name="asset.name || asset.symbol" :symbol="asset.symbol" :address="asset.address" class="asset-item__details" />
+                    </div>
                   </s-row>
                 </s-col>
                 <div class="asset-item__balance-container">
-                  <span class="asset-item__balance">{{ formatBalance(asset) }}</span>
+                  <formatted-amount-with-fiat-value
+                    v-if="formattedAssetBalance !== formattedZeroSymbol"
+                    value-class="asset-item__balance"
+                    :value="formattedAssetBalance"
+                    :font-size-rate="FontSizeRate.MEDIUM"
+                    :has-fiat-value="shouldFiatBeShown(asset)"
+                    :fiat-value="getFiatBalance(asset)"
+                    :fiat-font-size-rate="FontSizeRate.MEDIUM"
+                    :fiat-font-weight-rate="FontWeightRate.MEDIUM"
+                  />
+                  <span v-else class="asset-item__balance">{{ formattedZeroSymbol }}</span>
                 </div>
               </div>
             </div>
@@ -89,11 +102,11 @@
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util'
+import { FormattedAmountMixin, FormattedAmountWithFiatValue, FontSizeRate, FontWeightRate } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components, ObjectInit } from '@/consts'
 import { lazyComponent } from '@/router'
@@ -105,16 +118,22 @@ const namespace = 'assets'
 @Component({
   components: {
     DialogBase,
-    TokenLogo: lazyComponent(Components.TokenLogo)
+    FormattedAmountWithFiatValue,
+    TokenLogo: lazyComponent(Components.TokenLogo),
+    TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
-export default class SelectRegisteredAsset extends Mixins(TranslationMixin, SelectAssetMixin, LoadingMixin, NumberFormatterMixin) {
+export default class SelectRegisteredAsset extends Mixins(FormattedAmountMixin, TranslationMixin, SelectAssetMixin, LoadingMixin) {
   query = ''
   selectedAsset: Nullable<AccountAsset | RegisteredAccountAsset> = null
   readonly tokenTabs = [
     'tokens',
     'custom'
   ]
+
+  readonly FontSizeRate = FontSizeRate
+  readonly FontWeightRate = FontWeightRate
+  readonly formattedZeroSymbol = '-'
 
   tabValue = this.tokenTabs[0]
   customAddress = ''
@@ -174,7 +193,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
     return formatAssetBalance(asset, {
       internal: this.isSoraToEvm,
       showZeroBalance: false,
-      formattedZero: '-'
+      formattedZero: this.formattedZeroSymbol
     })
   }
 
@@ -199,10 +218,6 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
     this.$emit('select', asset)
     this.$emit('close')
     this.isVisible = false
-  }
-
-  getAssetName (asset: RegisteredAccountAsset): string {
-    return `${asset.name || asset.symbol} (${asset.symbol})`
   }
 
   handleTabClick ({ name }): void {
@@ -247,6 +262,10 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
     }
   }
 
+  shouldFiatBeShown (asset: RegisteredAccountAsset): boolean {
+    return this.isSoraToEvm && !!this.getAssetFiatPrice(asset)
+  }
+
   handleCustomAssetNext (): void {
     // TODO: Should we rename the button to Add Asset?
   }
@@ -256,6 +275,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
 <style lang="scss">
 .asset-select {
   @include exchange-tabs();
+  @include select-asset('asset-item');
 }
 </style>
 
@@ -279,37 +299,7 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
 .asset-search {
   margin-bottom: $inner-spacing-medium;
 }
-.asset-item {
-  height: $select-asset-item-height;
-  padding: 0 $select-asset-horizontal-spacing;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
-    background-color: var(--s-color-base-background-hover);
-  }
-  &__name, &__balance {
-    font-size: var(--s-font-size-medium);
-    letter-spacing: var(--s-letter-spacing-mini);
-    font-weight: 600;
-    white-space: nowrap;
-  }
-  &__balance {
-    font-weight: 800;
-    &-container {
-      width: 45%;
-      text-align: right;
-    }
-  }
-  .s-col {
-    padding-right: $inner-spacing-small;
-  }
-  .token-logo {
-    margin-right: $inner-spacing-mini;
-    flex-shrink: 0;
-  }
-}
+@include select-asset-scoped('asset-item');
 .network-label {
   color: var(--s-color-base-content-secondary);
   font-size: $s-heading3-caps-font-size;
@@ -328,9 +318,6 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
   &--scrollbar {
     height: #{$select-asset-item-height * 6};
     overflow: auto;
-  }
-  &--evm {
-    @include evm-logo-styles;
   }
   &__empty {
     display: flex;
