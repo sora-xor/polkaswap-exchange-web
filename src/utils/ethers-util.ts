@@ -275,7 +275,12 @@ function storeEvmNetworkType (network: string): void {
 }
 
 function getEvmNetworkTypeFromStorage (): string {
-  return storage.get('evmNetworkType') || ''
+  // return storage.get('evmNetworkType') || '' TODO: [1.5] return it back after 1.4 release to mainnet
+  let evmNetworkType = storage.get('evmNetworkType') || ''
+  if (evmNetworkType === 'homestead') {
+    evmNetworkType = 'main'
+  }
+  return evmNetworkType
 }
 
 function removeEvmNetworkType (): void {
