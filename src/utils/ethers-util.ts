@@ -228,7 +228,8 @@ async function getEthersInstance (): Promise<ethersProvider> {
     throw new Error('No ethereum provider instance!')
   }
   if (!ethersInstance) {
-    ethersInstance = new ethers.providers.Web3Provider(provider)
+    // 'any' - because ethers throws errors after network switch
+    ethersInstance = new ethers.providers.Web3Provider(provider, 'any')
   }
   return ethersInstance
 }
@@ -274,7 +275,12 @@ function storeEvmNetworkType (network: string): void {
 }
 
 function getEvmNetworkTypeFromStorage (): string {
-  return storage.get('evmNetworkType') || ''
+  // return storage.get('evmNetworkType') || '' TODO: [1.5] return it back after 1.4 release to mainnet
+  let evmNetworkType = storage.get('evmNetworkType') || ''
+  if (evmNetworkType === 'homestead') {
+    evmNetworkType = 'main'
+  }
+  return evmNetworkType
 }
 
 function removeEvmNetworkType (): void {

@@ -76,6 +76,7 @@ $title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
     }
   }
   &-title {
+    color: var(--s-color-base-content-primary);
     line-height: $tooltip-area-height;
     font-weight: 300;
     letter-spacing: var(--s-letter-spacing-mini);

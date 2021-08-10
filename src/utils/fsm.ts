@@ -377,9 +377,12 @@ function createFSM (context: Context, states, initialState = STATES.INITIAL) {
       }),
       [ACTIONS.SET_SORA_TRANSACTION_HASH]: assign({
         history: (context, event) => {
+          if (!event.data) return context.history
+
           return ({
             ...context.history,
-            hash: event.data
+            hash: event.data.hash,
+            to: event.data.to
           })
         }
       }),

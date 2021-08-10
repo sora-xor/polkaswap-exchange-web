@@ -20,35 +20,6 @@
         <div slot="right"><span class="percent">%</span></div>
         <s-slider slot="bottom" :value="removePartInput" :showTooltip="false" @change="handleRemovePartChange" />
       </s-float-input>
-      <s-float-input
-        ref="liquidityAmount"
-        size="medium"
-        class="s-input--token-value"
-        :value="liquidityAmount"
-        :decimals="(liquidity || {}).decimals"
-        has-locale-string
-        :delimiters="delimiters"
-        :max="getTokenMaxAmount(liquidityBalance)"
-        @input="setLiquidityAmount"
-        @focus="setFocusedField('liquidityAmount')"
-        @blur="resetFocusedField"
-      >
-        <div slot="top" class="input-line">
-          <div class="input-title">
-            <span class="input-title--uppercase input-title--primary">{{ t('removeLiquidity.input') }}</span>
-          </div>
-          <div v-if="liquidity" class="input-title">
-            <span class="input-title--uppercase">{{ t('createPair.balance') }}</span>
-            <span class="input-title--uppercase input-title--primary">{{ getFormattedLiquidityBalance(liquidity) }}</span>
-          </div>
-        </div>
-        <div slot="right" class="s-flex el-buttons">
-          <s-button v-if="isMaxButtonAvailable" class="el-button--max s-typography-button--small" type="primary" alternative size="mini" border-radius="mini" @click="handleLiquidityMaxValue">
-            {{ t('buttons.max') }}
-          </s-button>
-          <token-select-button class="el-button--select-token" :tokens="[firstToken, secondToken]" />
-        </div>
-      </s-float-input>
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
       <s-float-input
         ref="firstTokenAmount"
@@ -71,6 +42,9 @@
         </div>
         <div slot="right" class="s-flex el-buttons">
           <token-select-button class="el-button--select-token" :token="firstToken" />
+        </div>
+        <div slot="bottom" class="input-line input-line--footer">
+          <token-address v-if="firstToken" :name="firstToken.name" :symbol="firstToken.symbol" :address="firstToken.address" class="input-value" />
         </div>
       </s-float-input>
 
@@ -98,9 +72,13 @@
         <div slot="right" class="s-flex el-buttons">
           <token-select-button class="el-button--select-token" :token="secondToken" />
         </div>
+        <div slot="bottom" class="input-line input-line--footer">
+          <token-address v-if="secondToken" :name="secondToken.name" :symbol="secondToken.symbol" :address="secondToken.address" class="input-value" />
+        </div>
       </s-float-input>
 
-      <div v-if="price || priceReversed || fee" class="info-line-container">
+      <div v-if="price || priceReversed || fee || shareOfPool" class="info-line-container">
+        <info-line v-if="shareOfPool" :label="t('removeLiquidity.shareOfPool')" :value="`${shareOfPool}%`" />
         <info-line
           v-if="price || priceReversed"
           :label="t('removeLiquidity.price')"
@@ -118,6 +96,8 @@
           :value="formattedFee"
           :asset-symbol="KnownSymbols.XOR"
           :tooltip-content="t('networkFeeTooltipText')"
+          :fiat-value="getFiatAmountByCodecString(fee)"
+          is-formatted
         />
       </div>
 
@@ -146,29 +126,29 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { FPNumber, KnownSymbols, AccountLiquidity, CodecString } from '@sora-substrate/util'
+import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
-import { isMaxButtonAvailable, hasInsufficientXorForFee, formatAssetBalance } from '@/utils'
+import { hasInsufficientXorForFee, formatAssetBalance } from '@/utils'
 
 const namespace = 'removeLiquidity'
 
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    InfoCard: lazyComponent(Components.InfoCard),
     InfoLine: lazyComponent(Components.InfoLine),
     TokenLogo: lazyComponent(Components.TokenLogo),
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton)
+    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
-export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDialogMixin) {
+export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, TransactionMixin, ConfirmDialogMixin) {
   readonly KnownSymbols = KnownSymbols
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
@@ -184,13 +164,13 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
   @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
   @Getter('secondTokenBalance', { namespace }) secondTokenBalance!: CodecString
   @Getter('fee', { namespace }) fee!: CodecString
+  @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
 
   @Action('getLiquidity', { namespace }) getLiquidity
   @Action('setRemovePart', { namespace }) setRemovePart
-  @Action('setLiquidityAmount', { namespace }) setLiquidityAmount
   @Action('setFirstTokenAmount', { namespace }) setFirstTokenAmount
   @Action('setSecondTokenAmount', { namespace }) setSecondTokenAmount
   @Action('setFocusedField', { namespace }) setFocusedField
@@ -258,15 +238,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
     return this.$route.params.secondAddress
   }
 
-  // TODO: could be reused from TokenPairMixin
-  get areTokensSelected (): boolean {
-    return !!this.firstToken && !!this.secondToken
-  }
-
-  get isMaxButtonAvailable (): boolean {
-    return isMaxButtonAvailable(this.areTokensSelected, this.liquidity, this.liquidityAmount, this.fee, this.tokenXOR, true)
-  }
-
   get isEmptyAmount (): boolean {
     return !this.removePart || !this.liquidityAmount || !this.firstTokenAmount || !this.secondTokenAmount
   }
@@ -298,6 +269,10 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
     return `${charClassName}-char`
   }
 
+  get formattedFee (): string {
+    return this.formatCodecNumber(this.fee)
+  }
+
   @Watch('removePart')
   removePartChange (newValue): void {
     this.handleRemovePartChange(newValue)
@@ -325,10 +300,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
       return undefined
     }
     return this.getStringFromCodec(tokenBalance, decimals)
-  }
-
-  get formattedFee (): string {
-    return this.formatCodecNumber(this.fee)
   }
 
   handleLiquidityMaxValue (): void {
@@ -374,10 +345,6 @@ export default class RemoveLiquidity extends Mixins(TransactionMixin, ConfirmDia
 }
 
 @include vertical-divider('icon-divider', $inner-spacing-medium);
-
-.s-input--remove-part {
-  margin-bottom: $inner-spacing-medium;
-}
 
 .amount {
   line-height: var(--s-line-height-big);

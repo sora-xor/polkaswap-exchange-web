@@ -3,7 +3,7 @@
     <generic-page-header :title="t('rewards.title')" />
     <div class="rewards-content" v-loading="!parentLoading && loading">
       <gradient-box class="rewards-block" :symbol="gradientSymbol">
-        <div class="rewards-box">
+        <div :class="['rewards-box', libraryTheme]">
           <tokens-row :symbols="rewardTokenSymbols" />
           <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text">
             {{ claimingStatusMessage }}
@@ -16,12 +16,15 @@
                 v-if="internalRewards.length"
                 v-model="selectedInternalRewardsModel"
                 :item="internalRewards[0]"
+                :theme="libraryTheme"
+                is-codec-string
               />
               <rewards-amount-table
                 class="rewards-table"
                 v-if="vestedRewards"
                 v-model="selectedVestedRewardsModel"
                 :item="vestedRewadsGroupItem"
+                :theme="libraryTheme"
               />
               <rewards-amount-table
                 class="rewards-table"
@@ -29,6 +32,7 @@
                 :item="externalRewardsGroupItem"
                 :show-table="!!externalRewards.length"
                 :simple-group="true"
+                :theme="libraryTheme"
               >
                 <div class="rewards-footer">
                   <s-divider />
@@ -42,7 +46,13 @@
                   <div v-if="externalRewardsHintText" class="rewards-footer-hint">{{ externalRewardsHintText }}</div>
                 </div>
               </rewards-amount-table>
-              <info-line v-if="fee && isSoraAccountConnected && rewardsAvailable && !claimingInProgressOrFinished" v-bind="feeInfo" class="rewards-fee" />
+              <info-line
+                v-if="fee && isSoraAccountConnected && rewardsAvailable && !claimingInProgressOrFinished"
+                v-bind="feeInfo"
+                :class="['rewards-fee', libraryTheme]"
+                :fiat-value="getFiatAmountByCodecString(fee)"
+                is-formatted
+              />
             </template>
           </div>
           <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text--transaction">
@@ -71,6 +81,8 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
 import { AccountAsset, KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, CodecString, FPNumber } from '@sora-substrate/util'
+import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
 
 import ethersUtil from '@/utils/ethers-util'
 import { lazyComponent } from '@/router'
@@ -92,7 +104,7 @@ import TransactionMixin from '@/components/mixins/TransactionMixin'
     InfoLine: lazyComponent(Components.InfoLine)
   }
 })
-export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin) {
+export default class Rewards extends Mixins(FormattedAmountMixin, WalletConnectMixin, TransactionMixin) {
   @State(state => state.rewards.fee) fee!: CodecString
   @State(state => state.rewards.feeFetching) feeFetching!: boolean
   @State(state => state.rewards.rewardsFetching) rewardsFetching!: boolean
@@ -108,6 +120,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   @State(state => state.rewards.selectedInternalRewards) selectedInternalRewards!: Array<RewardInfo>
   @State(state => state.rewards.selectedExternalRewards) selectedExternalRewards!: Array<RewardInfo>
 
+  @Getter libraryTheme!: Theme
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset
   @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean
   @Getter('externalRewardsAvailable', { namespace: 'rewards' }) externalRewardsAvailable!: boolean
@@ -173,12 +186,12 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
       type: this.t('rewards.groups.strategic'),
       title: this.t('rewards.claimableAmountDoneVesting'),
       limit: [{
-        symbol: pswap.symbol as KnownSymbols,
-        amount: FPNumber.fromCodecValue(this.vestedRewards?.limit ?? 0, pswap.decimals).toLocaleString()
+        amount: FPNumber.fromCodecValue(this.vestedRewards?.limit ?? 0, pswap.decimals).toLocaleString(),
+        asset: pswap
       }],
       total: {
-        symbol: pswap.symbol as KnownSymbols,
-        amount: FPNumber.fromCodecValue(this.vestedRewards?.total ?? 0, pswap.decimals).toLocaleString()
+        amount: FPNumber.fromCodecValue(this.vestedRewards?.total ?? 0, pswap.decimals).toLocaleString(),
+        asset: pswap
       },
       rewards
     }
@@ -244,7 +257,7 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
   }
 
   get rewardTokenSymbols (): Array<KnownSymbols> {
-    return this.rewardsByAssetsList.map(item => item.symbol)
+    return this.rewardsByAssetsList.map(item => item.asset.symbol as KnownSymbols)
   }
 
   get gradientSymbol (): string {
@@ -358,16 +371,13 @@ export default class Rewards extends Mixins(WalletConnectMixin, TransactionMixin
 </script>
 
 <style lang="scss">
+.rewards {
+  .formatted-amount.formatted-amount--fiat-value {
+    color: var(--s-color-rewards);
+  }
+}
 .container.rewards .el-loading-mask {
   border-radius: var(--s-border-radius-small);
-}
-.rewards-connect-button.el-button.neumorphic {
-  &, &:hover, &.focusing {
-    background: transparent;
-    color: var(--s-color-base-on-accent);
-    border: 1px solid var(--s-color-base-on-accent);
-    box-shadow: none;
-  }
 }
 .rewards-action-button i {
   top: $inner-spacing-mini;
@@ -392,7 +402,11 @@ $hint-font-size: 13px;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    color: var(--s-color-base-on-accent); // TODO: use color variable from ui library
+    color: var(--s-color-base-on-accent);
+
+    &.dark {
+      color: var(--s-color-base-content-primary);
+    }
 
     & > *:not(:last-child) {
       margin-bottom: $inner-spacing-mini;
@@ -455,9 +469,14 @@ $hint-font-size: 13px;
     padding: 0 $inner-spacing-mini / 2;
   }
 
-  &-fee.info-line {
-    color: var(--s-olor-base-on-acccent);
-    margin-top: $inner-spacing-medium;
+  &-fee {
+    &.info-line {
+      color: var(--s-color-base-on-acccent);
+      margin-top: $inner-spacing-medium;
+      &.dark {
+        border-bottom-color: var(--s-color-base-content-secondary);
+      }
+    }
   }
 
   @include full-width-button('rewards-action-button');

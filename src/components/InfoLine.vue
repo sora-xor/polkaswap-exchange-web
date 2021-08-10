@@ -11,23 +11,48 @@
     >
       <s-icon name="info-16" size="14px" />
     </s-tooltip>
-    <span class="info-line-value">{{ value }}<span v-if="assetSymbol" class="asset-symbol">{{ ' ' + assetSymbol }}</span></span>
+    <span v-if="!value && altValue" class="info-line-value">{{ altValue }}</span>
+    <div v-else class="info-line-content">
+      <span v-if="valuePrefix" class="info-line-value-prefix">{{ valuePrefix }}</span>
+      <formatted-amount
+        v-if="isFormatted"
+        class="info-line-value"
+        :value="value"
+        :asset-symbol="assetSymbol"
+        :font-size-rate="formattedFontSize"
+        :font-weight-rate="formattedFontWeight"
+      />
+      <span v-else class="info-line-value">{{ value }}<span v-if="assetSymbol" class="asset-symbol">{{ ' ' + assetSymbol }}</span></span>
+      <formatted-amount
+        :value="fiatValue"
+        is-fiat-value
+        :font-size-rate="formattedFontSize"
+        with-left-shift
+      />
+    </div>
     <slot />
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
+import { FormattedAmount, FormattedAmountWithFiatValue, FontSizeRate, FontWeightRate } from '@soramitsu/soraneo-wallet-web'
 
 import { InfoTooltipPosition } from '@/consts'
 
-@Component
+@Component({
+  components: { FormattedAmount }
+})
 export default class InfoLine extends Vue {
   @Prop({ default: '', type: String }) readonly label!: string
   @Prop({ default: '', type: String }) readonly tooltipContent?: string
   @Prop({ default: InfoTooltipPosition.RIGHT, type: String }) readonly tooltipPosition?: string
   @Prop({ default: '' }) readonly value!: string | number
+  @Prop({ default: false, type: Boolean }) readonly isFormatted?: boolean
   @Prop({ default: '', type: String }) readonly assetSymbol?: string
+  @Prop({ default: '', type: String }) readonly fiatValue?: string
+  @Prop({ default: '', type: String }) readonly altValue?: string
+  @Prop({ default: '', type: String }) readonly valuePrefix?: string
 
   get tooltipClasses (): string {
     const iconClass = 'info-line-icon'
@@ -39,6 +64,14 @@ export default class InfoLine extends Vue {
 
     return classes.join(' ')
   }
+
+  get formattedFontSize (): Nullable<FontSizeRate> {
+    return this.isFormatted ? FontSizeRate.MEDIUM : null
+  }
+
+  get formattedFontWeight (): Nullable<FontWeightRate> {
+    return this.isFormatted ? FontWeightRate.SMALL : null
+  }
 }
 </script>
 
@@ -49,20 +82,22 @@ export default class InfoLine extends Vue {
     margin-top: $inner-spacing-mini * 0.5;
   }
 }
-.info-line-container {
-  border-radius: var(--s-border-radius-small);
-  margin-top: $inner-spacing-medium;
-  padding: $inner-spacing-mini 0 0;
-  width: 100%;
+.info-line {
+  &-container {
+    border-radius: var(--s-border-radius-small);
+    margin-top: $inner-spacing-medium;
+    padding: $inner-spacing-mini 0 0;
+    width: 100%;
 
-  &__title {
-    font-size: var(--s-heading6-font-size);
-    font-weight: 300;
-    line-height: var(--s-line-height-medium);
-    letter-spacing: var(--s-letter-spacing-small);
-    color: var(--s-color-base-content-secondary);
-    text-transform: uppercase;
-    margin-bottom: $inner-spacing-small;
+    &__title {
+      font-size: var(--s-heading6-font-size);
+      font-weight: 300;
+      line-height: var(--s-line-height-medium);
+      letter-spacing: var(--s-letter-spacing-small);
+      color: var(--s-color-base-content-secondary);
+      text-transform: uppercase;
+      margin-bottom: $inner-spacing-small;
+    }
   }
 }
 </style>
@@ -93,11 +128,25 @@ export default class InfoLine extends Vue {
     word-break: keep-all;
     text-transform: uppercase;
   }
+  &-content {
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    word-break: break-all;
+    text-align: right;
+  }
   &-value {
     margin-left: auto;
     text-align: right;
-    word-break: break-all;
-    font-weight: 600
+    font-weight: 600;
+    &-prefix {
+      margin-left: auto;
+      + .info-line-value {
+        margin-left: 0;
+      }
+    }
   }
   .asset-symbol {
     word-break: keep-all;

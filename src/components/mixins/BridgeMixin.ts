@@ -34,7 +34,7 @@ export default class BridgeMixin extends Mixins(LoadingMixin, WalletConnectMixin
           this.setEvmNetworkType(networkId)
           this.getEvmNetworkFee()
           this.getRegisteredAssets()
-          this.updateExternalBalances()
+          this.getEvmBalance() // update only evm balance because assets balances updated during getRegisteredAssets call
         },
         onDisconnect: (code: number, reason: string) => {
           this.disconnectExternalAccount()

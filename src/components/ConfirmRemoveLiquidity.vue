@@ -24,14 +24,7 @@
       {{ t('removeLiquidity.outputMessage', { slippageTolerance: formatStringValue(`${slippageTolerance}`) }) }}
     </p>
     <s-divider />
-    <info-line
-      :label="t('confirmSupply.poolTokensBurned', { first: firstToken.symbol, second: secondToken.symbol })"
-      :value="formattedLiquidityValue"
-    >
-      <template #info-line-prefix>
-        <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="mini" />
-      </template>
-    </info-line>
+    <info-line :label="t('removeLiquidity.shareOfPool')" :value="`${shareOfPool}%`" />
     <info-line
       :label="t('removeLiquidity.price')"
       :value="`1 ${firstToken.symbol} = ${formatStringValue(priceReversed)}`"
@@ -57,11 +50,11 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
+import { NumberFormatterMixin } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -72,16 +65,16 @@ const namespace = 'removeLiquidity'
   components: {
     DialogBase,
     TokenLogo: lazyComponent(Components.TokenLogo),
-    InfoLine: lazyComponent(Components.InfoLine),
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo)
+    InfoLine: lazyComponent(Components.InfoLine)
   }
 })
-export default class ConfirmRemoveLiquidity extends Mixins(TranslationMixin, DialogMixin, LoadingMixin, NumberFormatterMixin) {
+export default class ConfirmRemoveLiquidity extends Mixins(NumberFormatterMixin, TranslationMixin, DialogMixin, LoadingMixin) {
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('liquidityAmount', { namespace }) liquidityAmount!: string
   @Getter('firstTokenAmount', { namespace }) firstTokenAmount!: string
   @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: string
+  @Getter('shareOfPool', { namespace }) shareOfPool!: string
 
   @Getter('price', { namespace: 'prices' }) price!: string | number
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
