@@ -12,36 +12,41 @@
             v-model="query"
             :placeholder="t('selectToken.searchPlaceholder')"
             class="token-search"
-            prefix="el-icon-search"
+            prefix="s-icon-search-16"
             size="big"
-            border-radius="mini"
           >
             <template #suffix v-if="query">
               <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
             </template>
           </s-input>
         </div>
-        <div v-if="filteredWhitelistTokens && filteredWhitelistTokens.length > 0" class="token-list">
+        <div v-if="filteredWhitelistTokens && filteredWhitelistTokens.length > 0" key="filtered" class="token-list">
           <div v-for="token in filteredWhitelistTokens" @click="selectToken(token)" :key="token.address" class="token-item">
             <s-col>
               <s-row flex justify="start" align="middle">
-                <token-logo :token="token" size="medium" />
+                <token-logo :token="token" size="big" />
                 <div class="token-item__info s-flex">
                   <div class="token-item__symbol">{{ token.symbol }}</div>
-                  <div class="token-item__details">{{ getTokenName(token) }}
-                    <s-tooltip :content="t('selectToken.copy')" border-radius="mini">
-                      <span class="token-item__address" @click="handleCopy(token, $event)">({{ getFormattedAddress(token) }})</span>
-                    </s-tooltip>
-                  </div>
+                  <token-address :name="token.name" :symbol="token.symbol" :address="token.address" class="token-item__details" />
                 </div>
               </s-row>
             </s-col>
-            <div v-if="connected" class="token-item__amount-container">
-              <span class="token-item__amount">{{ formatBalance(token) }}</span>
+            <div v-if="connected" class="token-item__balance-container">
+              <formatted-amount-with-fiat-value
+                v-if="formatBalance(token) !== formattedZeroSymbol"
+                value-class="token-item__balance"
+                :value="formatBalance(token)"
+                :font-size-rate="FontSizeRate.MEDIUM"
+                :has-fiat-value="shouldFiatBeShown(token)"
+                :fiat-value="getFiatBalance(token)"
+                :fiat-font-size-rate="FontSizeRate.MEDIUM"
+                :fiat-font-weight-rate="FontWeightRate.MEDIUM"
+              />
+              <span v-else class="token-item__balance">{{ formattedZeroSymbol }}</span>
             </div>
           </div>
         </div>
-        <div v-else class="token-list token-list__empty">
+        <div v-else key="empty" class="token-list token-list__empty">
           <span class="empty-results-icon" />
           {{ t('selectToken.emptyListMessage') }}
         </div>
@@ -52,9 +57,8 @@
             v-model="customAddress"
             :placeholder="t('selectToken.custom.search')"
             class="token-search"
-            prefix="el-icon-search"
+            prefix="s-icon-search-16"
             size="big"
-            border-radius="mini"
             @input="debouncedCustomAssetSearch"
           >
             <template #suffix v-if="customAddress">
@@ -70,11 +74,7 @@
               <token-logo :token="customAsset" />
               <div class="asset-description s-flex">
                 <div class="asset-description_symbol">{{ customAsset.symbol }}</div>
-                <div class="asset-description_info">{{ getTokenName(customAsset) }}
-                  <s-tooltip :content="t('assets.copy')" border-radius="mini">
-                    <span class="asset-id" @click="handleCopy(customAsset, $event)">({{ getFormattedAddress(customAsset) }})</span>
-                  </s-tooltip>
-                </div>
+                <token-address :name="customAsset.name" :symbol="customAsset.symbol" :address="customAsset.address" class="asset-description_info" />
                 <s-card size="mini" :status="assetCardStatus">
                   <div class="asset-nature">{{ assetNatureText }}</div>
                 </s-card>
@@ -104,16 +104,22 @@
                   <token-logo :token="token" />
                   <div class="token-item__info s-flex">
                     <div class="token-item__symbol">{{ token.symbol }}</div>
-                    <div class="token-item__details">{{ getTokenName(token) }}
-                      <s-tooltip :content="t('selectToken.copy')" border-radius="mini">
-                        <span class="token-item__address" @click="handleCopy(token, $event)">({{ getFormattedAddress(token) }})</span>
-                      </s-tooltip>
-                    </div>
+                    <token-address :name="token.name" :symbol="token.symbol" :address="token.address" class="token-item__details" />
                   </div>
                 </s-row>
               </s-col>
-              <div v-if="connected" class="token-item__amount-container">
-                <span class="token-item__amount">{{ formatBalance(token) }}</span>
+              <div v-if="connected" class="token-item__balance-container">
+                <formatted-amount-with-fiat-value
+                  v-if="formatBalance(token) !== formattedZeroSymbol"
+                  value-class="token-item__balance"
+                  :value="formatBalance(token)"
+                  :font-size-rate="FontSizeRate.MEDIUM"
+                  :has-fiat-value="shouldFiatBeShown(token)"
+                  :fiat-value="getFiatBalance(token)"
+                  :fiat-font-size-rate="FontSizeRate.MEDIUM"
+                  :fiat-font-weight-rate="FontWeightRate.MEDIUM"
+                />
+                <span v-else class="token-item__balance">{{ formattedZeroSymbol }}</span>
               </div>
               <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
                 <s-icon name="basic-trash-24" />
@@ -130,31 +136,36 @@
 import first from 'lodash/fp/first'
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { Asset, AccountAsset, isBlacklistAsset, Whitelist } from '@sora-substrate/util'
-import { api } from '@soramitsu/soraneo-wallet-web'
+import { Asset, AccountAsset, isBlacklistAsset } from '@sora-substrate/util'
+import { api, FormattedAmountMixin, FormattedAmountWithFiatValue, FontSizeRate, FontWeightRate } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components, ObjectInit } from '@/consts'
 import { lazyComponent } from '@/router'
-import { copyToClipboard, formatAddress, formatAssetBalance, debouncedInputHandler } from '@/utils'
+import { formatAssetBalance, debouncedInputHandler } from '@/utils'
 
 const namespace = 'assets'
 
 @Component({
   components: {
+    FormattedAmountWithFiatValue,
     DialogBase,
-    TokenLogo: lazyComponent(Components.TokenLogo)
+    TokenLogo: lazyComponent(Components.TokenLogo),
+    TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
-export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMixin, LoadingMixin, NumberFormatterMixin) {
+export default class SelectToken extends Mixins(FormattedAmountMixin, TranslationMixin, SelectAssetMixin, LoadingMixin) {
+  private readonly formattedZeroSymbol = '-'
   readonly tokenTabs = [
     'assets',
     'custom'
   ]
+
+  readonly FontSizeRate = FontSizeRate
+  readonly FontWeightRate = FontWeightRate
 
   tabValue = first(this.tokenTabs)
   query = ''
@@ -172,7 +183,6 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @Getter('nonWhitelistAccountAssets', { namespace }) nonWhitelistAccountAssets!: Array<AccountAsset>
   @Getter('nonWhitelistAssets', { namespace }) nonWhitelistAssets!: Array<Asset>
   // Wallet store
-  @Getter whitelist!: Whitelist
   @Getter whitelistIdsBySymbol!: any
   @Getter accountAssetsAddressTable
 
@@ -202,21 +212,14 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get whitelistAssetsList (): Array<AccountAsset> {
-    const { asset: excludeAsset, whitelistAssets, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly } = this
+    const { asset: excludeAsset, whitelistAssets: assets, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly } = this
 
-    return this.getWhitelistAssetsWithBalances({ whitelistAssets, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly, excludeAsset })
+    return this.getAssetsWithBalances({ assets, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly, excludeAsset })
+      .sort(this.sortByBalance())
   }
 
   get filteredWhitelistTokens (): Array<AccountAsset> {
-    if (!this.query) {
-      return this.whitelistAssetsList
-    }
-    const query = this.query.toLowerCase().trim()
-    return this.whitelistAssetsList.filter(t =>
-      t.address?.toLowerCase?.() === query ||
-      t.symbol?.toLowerCase?.()?.includes?.(query) ||
-      t.name?.toLowerCase?.()?.includes?.(query)
-    )
+    return this.filterAssetsByQuery(this.whitelistAssetsList)(this.query) as Array<AccountAsset>
   }
 
   selectToken (token: AccountAsset): void {
@@ -226,36 +229,10 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     this.isVisible = false
   }
 
-  async handleCopy (token: AccountAsset, event: Event): Promise<void> {
-    event.stopImmediatePropagation()
-    try {
-      await copyToClipboard(token.address)
-      this.$notify({
-        message: this.t('selectToken.successCopy', { symbol: token.symbol }),
-        type: 'success',
-        title: ''
-      })
-    } catch (error) {
-      this.$notify({
-        message: `${this.t('warningText')} ${error}`,
-        type: 'warning',
-        title: ''
-      })
-    }
-  }
-
-  getFormattedAddress (token: AccountAsset): string {
-    return formatAddress(token.address, 10)
-  }
-
-  getTokenName (token: AccountAsset): string {
-    return `${token.name || token.symbol}`
-  }
-
   formatBalance (token: AccountAsset): string {
     return formatAssetBalance(token, {
       showZeroBalance: false,
-      formattedZero: '-'
+      formattedZero: this.formattedZeroSymbol
     })
   }
 
@@ -264,7 +241,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get sortedNonWhitelistAccountAssets (): Array<AccountAsset> {
-    return this.nonWhitelistAccountAssets.sort(this.sort)
+    return this.nonWhitelistAccountAssets.sort(this.sortByBalance())
   }
 
   get assetCardStatus (): string {
@@ -313,12 +290,17 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
       this.searchCustomAsset()
     }
   }
+
+  shouldFiatBeShown (asset: AccountAsset): boolean {
+    return !!this.getAssetFiatPrice(asset)
+  }
 }
 </script>
 
 <style lang="scss">
 .asset-select {
   @include exchange-tabs();
+  @include select-asset;
 }
 </style>
 
@@ -337,78 +319,28 @@ $token-item-height: 71px;
   font-weight: 800;
   color: var(--s-color-base-content-secondary);
 }
-.token-list_text, .token-item, .add-asset-details, .asset-select__info {
+.token-list_text, .add-asset-details, .asset-select__info {
   padding: 0 $inner-spacing-big;
 }
 .asset-select__info {
   color: var(--s-color-base-content-secondary);
   margin-bottom: $inner-spacing-medium;
 }
-.token-item {
-  height: $token-item-height;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  transition: var(--s-transition-default);
-  &:hover {
-    background-color: var(--s-color-base-background-hover);
-  }
-  &__info {
-    flex-direction: column;
-  }
-  &__info, &__amount {
-    font-size: var(--s-font-size-small);
-  }
-  &__details {
-    color: var(--s-color-base-content-quaternary);
-    font-size: var(--s-font-size-mini);
-  }
-  &__address, &__symbol {
-    white-space: nowrap;
-  }
-  &__address {
-    outline: none;
-    &:hover {
-      text-decoration: underline;
-      cursor: pointer;
-    }
-  }
-  &__symbol, &__amount {
-    font-size: var(--s-font-size-big);
-    line-height: var(--s-line-height-small);
-    letter-spacing: var(--s-letter-spacing-small);
-    font-weight: 800;
-    white-space: nowrap;
-  }
-  &__amount {
-    &-container {
-      width: 45%;
-      text-align: right;
-    }
-  }
-  &__remove {
-    margin-top: -5px;
-    margin-left: $inner-spacing-medium;
-  }
-  .s-col {
-    padding-right: $inner-spacing-small;
-  }
-  .token-logo {
-    margin-right: $inner-spacing-medium;
-    flex-shrink: 0;
-  }
+@include select-asset-scoped;
+.token-item__remove {
+  margin-top: -5px;
+  margin-left: $inner-spacing-medium;
 }
 .token-list {
   max-height: calc(#{$token-item-height} * 7);
   overflow-y: auto;
+  overflow-x: hidden;
   &__empty {
     display: flex;
     align-items: center;
     flex-direction: column;
     padding-top: $inner-spacing-big;
     color: var(--s-color-base-content-tertiary);
-    font-feature-settings: $s-font-feature-settings-common;
     line-height: var(--s-line-height-big);
   }
   .empty-results-icon {
@@ -437,7 +369,6 @@ $token-item-height: 71px;
         margin-left: $inner-spacing-small;
         &_symbol {
           font-size: var(--s-font-size-big);
-          font-feature-settings: var(--s-font-feature-settings-common);
           font-weight: 600;
           line-height: var(--s-line-height-small);
         }
@@ -471,7 +402,7 @@ $token-item-height: 71px;
       font-size: var(--s-font-size-medium);
       font-weight: 300;
       letter-spacing: var(--s-letter-spacing-small);
-      line-height: var(--s-line-height-medium);;
+      line-height: var(--s-line-height-medium);
     }
   }
   &_action {

@@ -1,34 +1,36 @@
 <template>
   <div class="select-node s-flex">
-    <div class="select-node-description p4">
+    <div class="select-node-description">
       {{ t('selectNodeDialog.selectNodeForEnvironment', { environment }) }}
     </div>
-    <s-radio-group v-model="currentAddressValue" class="select-node-list s-flex">
-      <s-radio
-        v-for="node in nodes"
-        :key="node.address"
-        :label="node.address"
-        :value="node.address"
-        :disabled="disableSelect"
-        size="medium"
-        class="select-node-list__item s-flex"
-      >
-        <div class="select-node-item s-flex">
-          <div class="select-node-info s-flex">
-            <div class="select-node-info__label">
-              {{ node.title }}
+    <s-scrollbar>
+      <s-radio-group v-model="currentAddressValue" class="select-node-list s-flex">
+        <s-radio
+          v-for="node in nodes"
+          :key="node.address"
+          :label="node.address"
+          :value="node.address"
+          :disabled="disableSelect"
+          size="medium"
+          class="select-node-list__item s-flex"
+        >
+          <div class="select-node-item s-flex">
+            <div class="select-node-info s-flex">
+              <div class="select-node-info__label">
+                {{ node.title }}
+              </div>
+              <div class="select-node-info__address">
+                {{ node.address }}
+              </div>
             </div>
-            <div class="select-node-info__address">
-              {{ node.address }}
+            <div class="select-node-badge">
+              <s-icon v-if="node.connecting" name="el-icon-loading" />
             </div>
+            <s-button class="select-node-details" type="action" alternative icon="arrows-chevron-right-rounded-24" @click="handleNode(node)" />
           </div>
-          <div class="select-node-badge">
-            <s-icon v-if="node.connecting" name="el-icon-loading" />
-          </div>
-          <s-button class="select-node-details" type="action" alternative icon="arrows-chevron-right-rounded-24" @click="handleNode(node)" />
-        </div>
-      </s-radio>
-    </s-radio-group>
+        </s-radio>
+      </s-radio-group>
+    </s-scrollbar>
     <s-button
       class="select-node-button s-typography-button--large"
       @click="handleNode()"
@@ -53,17 +55,26 @@ export default class SelectNode extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) disableSelect!: boolean
 
   @ModelSync('value', 'input', { type: String })
-  readonly currentAddressValue!: boolean
+  readonly currentAddressValue!: string
 }
 </script>
 
 <style lang="scss">
-.select-node-list__item .el-radio__label {
-  flex: 1;
+.select-node-list__item.el-radio {
+  &.s-medium {
+    height: initial;
+  }
+
+  .el-radio__label {
+    flex: 1;
+  }
 }
 </style>
 
 <style lang="scss" scoped>
+$node-list-item-height: 66px;
+$node-list-items: 5;
+
 .select-node {
   flex-direction: column;
   align-items: center;
@@ -74,6 +85,7 @@ export default class SelectNode extends Mixins(TranslationMixin) {
   }
 
   &-list {
+    max-height: calc(#{$node-list-item-height} * #{$node-list-items});
     flex-direction: column;
 
     &__item {
@@ -81,7 +93,6 @@ export default class SelectNode extends Mixins(TranslationMixin) {
       align-items: center;
       padding: $inner-spacing-small 0;
       white-space: normal;
-      height: initial;
     }
   }
 
@@ -97,10 +108,9 @@ export default class SelectNode extends Mixins(TranslationMixin) {
 
     &__label {
       color: var(--s-color-base-content-primary);
-      font-size: var(--s-font-size-big);
-      font-weight: 800;
       letter-spacing: var(--s-letter-spacing-small);
-      line-height: var(--s-line-height-small);
+      line-height: var(--s-line-height-medium);
+      @include radio-title;
     }
 
     &__address {
@@ -125,6 +135,13 @@ export default class SelectNode extends Mixins(TranslationMixin) {
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
+  }
+
+  &-description {
+    font-size: var(--s-font-size-extra-small);
+    font-weight: 300;
+    line-height: var(--s-line-height-base);
+    padding: 0 $inner-spacing-small;
   }
 }
 </style>

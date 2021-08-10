@@ -2,7 +2,7 @@ import invert from 'lodash/fp/invert'
 import { LiquiditySourceTypes } from '@sora-substrate/util'
 
 import pkg from '../../package.json'
-import { KnownBridgeAsset } from '../utils/web3-util'
+import { KnownBridgeAsset } from '../utils/ethers-util'
 
 export const app = {
   version: pkg.version,
@@ -12,12 +12,34 @@ export const app = {
 
 export const WalletPermissions = {
   sendAssets: true, // enable 'send' button in assets list
-  swapAssets: true // enable 'swap' button in assets list
+  swapAssets: false // enable 'swap' button in assets list
 }
 
 export enum Language {
-  EN = 'en'
+  EN = 'en',
+  RU = 'ru',
+  CS = 'cs',
+  ES = 'es',
+  HY = 'hy',
+  ID = 'id',
+  IT = 'it',
+  NL = 'nl',
+  PL = 'pl',
+  YO = 'yo'
 }
+
+export const Languages = [
+  { key: Language.EN, value: 'English', name: 'English (UK)' },
+  { key: Language.HY, value: 'Armenian', name: 'հայերեն' },
+  { key: Language.CS, value: 'Czech', name: 'Čeština' },
+  { key: Language.NL, value: 'Dutch', name: 'Nederlands' },
+  { key: Language.ID, value: 'Indonesian', name: 'bahasa Indonesia' },
+  { key: Language.IT, value: 'Italian', name: 'Italiano' },
+  { key: Language.PL, value: 'Polish', name: 'Polskie' },
+  { key: Language.RU, value: 'Russian', name: 'Русский' },
+  { key: Language.ES, value: 'Spanish', name: 'Español' },
+  { key: Language.YO, value: 'Yoruba', name: 'Yoruba' }
+]
 
 export const Links = {
   about: {
@@ -69,16 +91,15 @@ export enum PageNames {
   PageNotFound = 'PageNotFound',
   Bridge = 'Bridge',
   BridgeTransaction = 'BridgeTransaction',
-  BridgeTransactionsHistory = 'BridgeTransactionsHistory'
+  BridgeTransactionsHistory = 'BridgeTransactionsHistory',
+  Tokens = 'Tokens'
 }
 
 export enum Components {
   GenericPageHeader = 'GenericPageHeader',
   SwapInfo = 'SwapInfo',
-  InfoLine = 'InfoLine', // TODO: Check its usage
-  InfoCard = 'InfoCard',
+  InfoLine = 'InfoLine',
   SelectToken = 'SelectToken',
-  ResultDialog = 'ResultDialog',
   TokenLogo = 'TokenLogo',
   PairTokenLogo = 'PairTokenLogo',
   ConfirmSwap = 'ConfirmSwap',
@@ -102,12 +123,13 @@ export enum Components {
   ConfirmBridgeTransactionDialog = 'ConfirmBridgeTransactionDialog',
   BridgeTransaction = 'BridgeTransaction',
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
-  ToggleTextButton = 'ToggleTextButton',
   GradientBox = 'Rewards/GradientBox',
   TokensRow = 'Rewards/TokensRow',
   RewardsAmountHeader = 'Rewards/AmountHeader',
   RewardsAmountTable = 'Rewards/AmountTable',
-  TokenSelectButton = 'Input/TokenSelectButton'
+  TokenSelectButton = 'Input/TokenSelectButton',
+  TokenAddress = 'Input/TokenAddress',
+  SelectLanguageDialog = 'SelectLanguageDialog'
 }
 
 interface SidebarMenuItem {
@@ -153,6 +175,10 @@ const AccountMenu: Array<SidebarMenuItem> = [
 ]
 
 const OtherPagesMenu: Array<SidebarMenuItem> = [
+  {
+    icon: 'various-bone-24',
+    title: PageNames.Tokens
+  },
   {
     icon: 'file-file-text-24',
     title: PageNames.About
@@ -223,6 +249,7 @@ export enum LogoSize {
   MINI = 'mini',
   SMALL = 'small',
   MEDIUM = 'medium',
+  BIG = 'big',
   LARGE = 'large'
 }
 

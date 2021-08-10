@@ -49,10 +49,9 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { FPNumber } from '@sora-substrate/util'
+import { NumberFormatterMixin } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
-
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 
@@ -62,7 +61,7 @@ import { Components } from '@/consts'
     SettingsTabs: lazyComponent(Components.SettingsTabs)
   }
 })
-export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFormatterMixin) {
+export default class SlippageTolerance extends Mixins(NumberFormatterMixin, TranslationMixin) {
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
   readonly SlippageToleranceTabs: Array<object> = [
     '0.1',
@@ -168,11 +167,17 @@ export default class SlippageTolerance extends Mixins(TranslationMixin, NumberFo
 .slippage-tolerance {
   &-custom_input.s-input {
     min-height: var(--s-size-small);
+    box-shadow: var(--s-shadow-element-pressed);
+
+    &.s-focused {
+      box-shadow: var(--s-shadow-element);
+      .el-input__inner {
+        color: var(--s-color-theme-accent);
+      }
+    }
 
     .el-input > input {
-      font-size: var(--s-font-size-medium);
-      font-feature-settings: $s-font-feature-settings-common;
-      text-align: center;
+      @include slippage-tolerance-tabs;
     }
   }
 

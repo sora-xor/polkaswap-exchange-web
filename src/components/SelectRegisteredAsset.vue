@@ -7,12 +7,11 @@
     <s-form-item class="el-form-item--search">
       <s-input
         ref="search"
-        size="big"
         v-model="query"
         :placeholder="t('selectRegisteredAsset.search.placeholder')"
         class="asset-search"
-        prefix="el-icon-search"
-        border-radius="mini"
+        prefix="s-icon-search-16"
+        size="big"
         @focus="handleSearchFocus"
       >
         <template #suffix v-if="query">
@@ -29,15 +28,28 @@
               {{ isSoraToEvm ? t('selectRegisteredAsset.search.networkLabelSora') : t('selectRegisteredAsset.search.networkLabelEthereum') }}
             </h3>
             <div :class="assetListClasses(filteredAssets, !isSoraToEvm)">
-              <div v-for="asset in filteredAssets" @click="selectAsset(asset)" :key="asset.address" class="asset-item">
+              <div v-for="asset in filteredAssets" :key="asset.address" :set="formattedAssetBalance = formatBalance(asset)" class="asset-item" @click="selectAsset(asset)">
                 <s-col>
                   <s-row flex justify="start" align="middle">
-                    <token-logo :token="asset" />
-                    <div class="asset-item__name">{{ getAssetName(asset) }}</div>
+                    <token-logo :token="asset" size="big" />
+                    <div class="asset-item__info s-flex">
+                      <div class="asset-item__symbol">{{ asset.symbol }}</div>
+                      <token-address :name="asset.name || asset.symbol" :symbol="asset.symbol" :address="asset.address" class="asset-item__details" />
+                    </div>
                   </s-row>
                 </s-col>
                 <div class="asset-item__balance-container">
-                  <span class="asset-item__balance">{{ formatBalance(asset) }}</span>
+                  <formatted-amount-with-fiat-value
+                    v-if="formattedAssetBalance !== formattedZeroSymbol"
+                    value-class="asset-item__balance"
+                    :value="formattedAssetBalance"
+                    :font-size-rate="FontSizeRate.MEDIUM"
+                    :has-fiat-value="shouldFiatBeShown(asset)"
+                    :fiat-value="getFiatBalance(asset)"
+                    :fiat-font-size-rate="FontSizeRate.MEDIUM"
+                    :fiat-font-weight-rate="FontWeightRate.MEDIUM"
+                  />
+                  <span v-else class="asset-item__balance">{{ formattedZeroSymbol }}</span>
                 </div>
               </div>
             </div>
@@ -48,7 +60,7 @@
           </div>
         </div>
       </s-tab>
-      <s-tab :label="t('selectRegisteredAsset.customAsset.title')" name="custom">
+      <s-tab :label="t('selectRegisteredAsset.customAsset.title')" name="custom" disabled>
         <div class="custom-asset">
           <p class="custom-asset-info">
             {{ t('selectRegisteredAsset.customAsset.customInfo') }}
@@ -65,7 +77,6 @@
             class="custom-asset-address"
             :placeholder="t('selectRegisteredAsset.customAsset.addressPlaceholder')"
             :maxlength="128"
-            border-radius="mini"
             @change="handleCustomAssetSearch"
           />
           <s-input
@@ -74,7 +85,6 @@
             class="custom-asset-symbol"
             :placeholder="t('selectRegisteredAsset.customAsset.symbolPlaceholder')"
             :maxlength="10"
-            border-radius="mini"
             readonly
           />
           <!-- TODO: Add appropriate validation styles -->
@@ -92,11 +102,11 @@
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util'
+import { FormattedAmountMixin, FormattedAmountWithFiatValue, FontSizeRate, FontWeightRate } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { Components, ObjectInit } from '@/consts'
 import { lazyComponent } from '@/router'
@@ -108,16 +118,22 @@ const namespace = 'assets'
 @Component({
   components: {
     DialogBase,
-    TokenLogo: lazyComponent(Components.TokenLogo)
+    FormattedAmountWithFiatValue,
+    TokenLogo: lazyComponent(Components.TokenLogo),
+    TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
-export default class SelectRegisteredAsset extends Mixins(TranslationMixin, SelectAssetMixin, LoadingMixin, NumberFormatterMixin) {
+export default class SelectRegisteredAsset extends Mixins(FormattedAmountMixin, TranslationMixin, SelectAssetMixin, LoadingMixin) {
   query = ''
   selectedAsset: Nullable<AccountAsset | RegisteredAccountAsset> = null
   readonly tokenTabs = [
     'tokens',
     'custom'
   ]
+
+  readonly FontSizeRate = FontSizeRate
+  readonly FontWeightRate = FontWeightRate
+  readonly formattedZeroSymbol = '-'
 
   tabValue = this.tokenTabs[0]
   customAddress = ''
@@ -154,54 +170,34 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
     return classes.join(' ')
   }
 
-  get whitelistAssetsList (): Array<AccountAsset> {
-    const { asset: excludeAsset, whitelistAssets, accountAssetsAddressTable } = this
+  get assetsList (): Array<RegisteredAccountAsset> {
+    const { registeredAssets: assets, accountAssetsAddressTable, asset: excludeAsset } = this
 
-    return this.getWhitelistAssetsWithBalances({ whitelistAssets, accountAssetsAddressTable, excludeAsset })
-  }
-
-  get assetsList (): Array<AccountAsset | RegisteredAccountAsset> {
-    return this.getAssets(this.isSoraToEvm ? this.whitelistAssetsList : this.registeredAssets)
+    return this.getAssetsWithBalances({ assets, accountAssetsAddressTable, excludeAsset })
+      .sort(this.sortByBalance(!this.isSoraToEvm)) as Array<RegisteredAccountAsset>
   }
 
   get addressSymbol (): string {
     return this.isSoraToEvm ? 'address' : 'externalAddress'
   }
 
-  get filteredAssets (): Array<AccountAsset | RegisteredAccountAsset> {
-    return this.getFilteredAssets(this.assetsList)
+  get filteredAssets (): Array<RegisteredAccountAsset> {
+    return this.filterAssetsByQuery(this.assetsList, !this.isSoraToEvm)(this.query) as Array<RegisteredAccountAsset>
   }
 
   get hasFilteredAssets (): boolean {
     return Array.isArray(this.filteredAssets) && this.filteredAssets.length > 0
   }
 
-  formatBalance (asset?: AccountAsset | RegisteredAccountAsset): string {
+  formatBalance (asset?: RegisteredAccountAsset): string {
     return formatAssetBalance(asset, {
       internal: this.isSoraToEvm,
       showZeroBalance: false,
-      formattedZero: '-'
+      formattedZero: this.formattedZeroSymbol
     })
   }
 
-  getAssets (assets: Array<AccountAsset | RegisteredAccountAsset>): Array<AccountAsset | RegisteredAccountAsset> {
-    return this.asset ? assets?.filter(asset => asset.address !== this.asset.address) : assets
-  }
-
-  getFilteredAssets (assets: Array<AccountAsset | RegisteredAccountAsset>): Array<AccountAsset | RegisteredAccountAsset> {
-    if (this.query) {
-      const query = this.query.toLowerCase().trim()
-      return assets.filter(asset =>
-        `${asset.name}`.toLowerCase().includes(query) ||
-        `${asset.symbol}`.toLowerCase().includes(query) ||
-        `${asset[this.addressSymbol]}`.toLowerCase() === query
-      )
-    }
-
-    return assets
-  }
-
-  assetListClasses (filteredAssetsList: Array<AccountAsset>, isEthereumAssetsList = false): string {
+  assetListClasses (filteredAssetsList: Array<RegisteredAccountAsset>, isEthereumAssetsList = false): string {
     const componentClass = 'asset-list'
     const classes = [componentClass]
 
@@ -215,17 +211,13 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
     return classes.join(' ')
   }
 
-  selectAsset (asset: AccountAsset | RegisteredAccountAsset): void {
+  selectAsset (asset: RegisteredAccountAsset): void {
     this.selectedAsset = asset
     this.query = ''
     this.tabValue = this.tokenTabs[0]
     this.$emit('select', asset)
     this.$emit('close')
     this.isVisible = false
-  }
-
-  getAssetName (asset: AccountAsset | RegisteredAccountAsset): string {
-    return `${asset.name || asset.symbol} (${asset.symbol})`
   }
 
   handleTabClick ({ name }): void {
@@ -270,6 +262,10 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
     }
   }
 
+  shouldFiatBeShown (asset: RegisteredAccountAsset): boolean {
+    return this.isSoraToEvm && !!this.getAssetFiatPrice(asset)
+  }
+
   handleCustomAssetNext (): void {
     // TODO: Should we rename the button to Add Asset?
   }
@@ -279,6 +275,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
 <style lang="scss">
 .asset-select {
   @include exchange-tabs();
+  @include select-asset('asset-item');
 }
 </style>
 
@@ -302,44 +299,13 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
 .asset-search {
   margin-bottom: $inner-spacing-medium;
 }
-.asset-item {
-  height: $select-asset-item-height;
-  padding: 0 $select-asset-horizontal-spacing;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
-    background-color: var(--s-color-base-background-hover);
-  }
-  &__name, &__balance {
-    font-size: var(--s-font-size-medium);
-    letter-spacing: var(--s-letter-spacing-mini);
-    font-weight: 600;
-    white-space: nowrap;
-  }
-  &__balance {
-    font-weight: 800;
-    &-container {
-      width: 45%;
-      text-align: right;
-    }
-  }
-  .s-col {
-    padding-right: $inner-spacing-small;
-  }
-  .token-logo {
-    margin-right: $inner-spacing-medium;
-    flex-shrink: 0;
-  }
-}
+@include select-asset-scoped('asset-item');
 .network-label {
   color: var(--s-color-base-content-secondary);
   font-size: $s-heading3-caps-font-size;
   line-height: var(--s-line-height-base);
   letter-spacing: var(--s-letter-spacing-extra-large);
   font-weight: 700 !important;
-  font-feature-settings: $s-font-feature-settings-type;
   text-transform: uppercase;
   .asset-list + & {
     margin-top: $inner-spacing-medium;
@@ -352,9 +318,6 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
   &--scrollbar {
     height: #{$select-asset-item-height * 6};
     overflow: auto;
-  }
-  &--evm {
-    @include evm-logo-styles;
   }
   &__empty {
     display: flex;

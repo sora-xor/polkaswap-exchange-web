@@ -2,7 +2,7 @@
   <s-dialog
     :visible.sync="isVisible"
     :title="title"
-    :custom-class="customClass"
+    :custom-class="computedCustomClasses"
     :show-close="false"
     v-bind="{
       top: '80px',
@@ -31,6 +31,15 @@ export default class DialogBase extends Mixins(DialogMixin) {
   @Prop({ default: '', type: String }) readonly customClass!: string
   @Prop({ default: '', type: String }) readonly title!: string
   @Prop({ default: '', type: String }) readonly width!: string
+
+  get computedCustomClasses (): string {
+    const cssClasses: Array<string> = []
+    cssClasses.push('neumorphic')
+    if (this.customClass) {
+      cssClasses.push(this.customClass)
+    }
+    return cssClasses.join(' ')
+  }
 }
 </script>
 
@@ -54,7 +63,7 @@ $el-dialog-button-size: var(--s-size-medium);
       }
     }
 
-    &__header {
+    #{$el-dialog-class}__header {
       display: inline-flex;
       align-items: center;
       justify-content: space-between;
@@ -62,8 +71,7 @@ $el-dialog-button-size: var(--s-size-medium);
 
       #{$el-dialog-class}__title {
         font-size: var(--s-heading3-font-size);
-        font-weight: 400 !important;
-        font-feature-settings: $s-font-feature-settings-title;
+        font-weight: 300 !important;
         line-height: var(--s-line-height-small);
         letter-spacing: var(--s-letter-spacing-mini);
       }
@@ -75,7 +83,7 @@ $el-dialog-button-size: var(--s-size-medium);
       }
     }
 
-    &__footer {
+    #{$el-dialog-class}__footer {
       .el-button {
         padding: $inner-spacing-mini;
         width: 100%;

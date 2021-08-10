@@ -63,6 +63,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   @State(state => state.settings.soraNetwork) soraNetwork!: string
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
   @Action addCustomNode!: (node: Node) => Promise<void>
+  @Action updateCustomNode!: (options: any) => Promise<void>
   @Action removeCustomNode!: (node: any) => Promise<void>
 
   currentView = NodeListView
@@ -101,22 +102,16 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
   }
 
   get formattedNodeList (): Array<NodeItem> {
-    return this.nodeList.map(node => ({
-      ...node,
-      title: !!node.name && !!node.chain
-        ? this.t('selectNodeDialog.nodeTitle', { chain: node.chain, name: node.name })
-        : (node.name || node.chain),
-      connecting: this.isConnectingNode(node)
-    }))
+    return this.nodeList.map(node => this.formatNode(node))
   }
 
   get dialogCustomClass (): string {
     return this.isNodeListView ? '' : 'select-node-dialog--add-node'
   }
 
-  async handleNode (node: NodeItem, isNewNode = false): Promise<void> {
+  async handleNode (node: NodeItem, isNewOrUpdatedNode = false): Promise<void> {
     try {
-      await this.setCurrentNode(node, isNewNode)
+      await this.setCurrentNode(node, isNewOrUpdatedNode)
 
       if (this.selectedNode.address === node.address && this.currentView === NodeInfoView) {
         this.handleBack()
@@ -152,29 +147,55 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     return pick(Object.keys(NodeModel))(node) as Node
   }
 
-  private async setCurrentNode (node: NodeItem, isNewNode = false): Promise<void> {
-    const existingNode = this.findNodeInListByAddress(node.address)
-
-    if (isNewNode && existingNode) {
-      const error = new AppHandledError({
-        key: 'node.errors.existing',
-        payload: {
-          title: existingNode.title
-        }
-      })
-
-      return this.handleNodeError(error)
-    }
-
+  private async setCurrentNode (node: NodeItem, isNewOrUpdatedNode = false): Promise<void> {
     const nodeCopy = this.getNodePermittedData(node)
 
-    this.selectedNode = existingNode ?? nodeCopy
+    if (isNewOrUpdatedNode) {
+      const defaultNode = this.findInList(this.defaultNodes, nodeCopy.address)
 
-    await this.connectToNode({ node: nodeCopy, onError: this.handleNodeError })
+      if (defaultNode) {
+        const formatted = this.formatNode(defaultNode)
+        const error = new AppHandledError({
+          key: 'node.errors.existing',
+          payload: {
+            title: formatted.title
+          }
+        })
 
-    if (isNewNode) {
-      this.addCustomNode(nodeCopy)
-      this.selectedNode = this.findNodeInListByAddress(node.address)
+        return this.handleNodeError(error)
+      }
+    }
+
+    if (nodeCopy.address !== this.connectedNodeAddress) {
+      await this.connectToNode({
+        node: nodeCopy,
+        onError: this.handleNodeError,
+        onDisconnect: this.handleNodeDisconnect,
+        onReconnect: this.handleNodeReconnect
+      })
+    }
+
+    if (isNewOrUpdatedNode) {
+      const existingNode = this.findNodeInListByAddress(nodeCopy.address)
+      const address = this.selectedNode.address || existingNode?.address
+
+      if (address) {
+        this.updateCustomNode({ address, node: nodeCopy })
+      } else {
+        this.addCustomNode(nodeCopy)
+      }
+    }
+
+    this.selectedNode = this.findNodeInListByAddress(nodeCopy.address)
+  }
+
+  private formatNode (node: Node): NodeItem {
+    return {
+      ...node,
+      title: !!node.name && !!node.chain
+        ? this.t('selectNodeDialog.nodeTitle', { chain: node.chain, name: node.name })
+        : (node.name || node.chain),
+      connecting: this.isConnectingNode(node)
     }
   }
 
@@ -182,8 +203,12 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     this.currentView = view
   }
 
+  private findInList (list, address: string): any {
+    return list.find(item => item.address === address)
+  }
+
   private findNodeInListByAddress (address: string): any {
-    return this.formattedNodeList.find(item => item.address === address)
+    return this.findInList(this.formattedNodeList, address)
   }
 
   private isConnectedNodeAddress (nodeAddress: any): boolean {

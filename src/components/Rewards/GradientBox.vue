@@ -22,7 +22,7 @@ export default class GradientBox extends Vue {
 
 <style lang="scss" scoped>
 .gradient-box {
-  padding: $basic-spacing * 2;
+  padding: $inner-spacing-medium * 2 $inner-spacing-medium $inner-spacing-medium * 1.5;
   border-radius: var(--s-border-radius-medium);
   background: linear-gradient(101.79deg, #E81860 8.64%, #F89B29 93.47%);
   display: flex;

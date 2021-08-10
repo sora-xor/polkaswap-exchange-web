@@ -5,19 +5,21 @@
     v-if="firstToken && secondToken"
   >
     <div class="pool-tokens-amount">
-      {{ minted }}
+      {{ shareOfPool }}%
     </div>
     <s-row v-if="firstToken && secondToken" flex align="middle" class="pool-tokens">
       <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="small" />
       {{ t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol }) }}
     </s-row>
     <div class="output-description">
-      {{ t('confirmSupply.outputDescription', { slippageTolerance: formatStringValue(slippageTolerance) }) }}
+      {{ t('confirmSupply.outputDescription', { slippageTolerance: formattedSlippageTolerance }) }}
     </div>
     <s-divider />
     <info-line
       :label="`${firstToken.symbol} ${t('createPair.deposit')}`"
       :value="formattedFirstTokenValue"
+      :fiat-value="fiatFirstAmount"
+      is-formatted
     >
       <template #info-line-prefix>
         <token-logo :token="firstToken" size="small" />
@@ -26,6 +28,8 @@
     <info-line
       :label="`${secondToken.symbol} ${t('createPair.deposit')}`"
       :value="formattedSecondTokenValue"
+      :fiat-value="fiatSecondAmount"
+      is-formatted
     >
       <template #info-line-prefix>
         <token-logo :token="secondToken" size="small" />
@@ -33,11 +37,10 @@
     </info-line>
     <info-line
       :label="t('confirmSupply.price')"
-      :value="`1 ${firstToken.symbol} = ${formatStringValue(priceReversed)}`"
+      :value="`1 ${firstToken.symbol} = ${formattedPriceReversed}`"
       :asset-symbol="secondToken.symbol"
     />
-    <info-line :value="`1 ${secondToken.symbol} = ${formatStringValue(price)}`" :asset-symbol="firstToken.symbol" />
-    <info-line :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
+    <info-line :value="`1 ${secondToken.symbol} = ${formattedPrice}`" :asset-symbol="firstToken.symbol" />
     <template #footer>
       <s-button
         type="primary"
@@ -53,11 +56,11 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -70,7 +73,7 @@ import { Components } from '@/consts'
     PairTokenLogo: lazyComponent(Components.PairTokenLogo)
   }
 })
-export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, DialogMixin, LoadingMixin, NumberFormatterMixin) {
+export default class ConfirmTokenPairDialog extends Mixins(FormattedAmountMixin, TranslationMixin, DialogMixin, LoadingMixin) {
   @Prop({ type: String, default: '100' }) readonly shareOfPool!: string
   @Prop({ type: Object }) readonly firstToken!: any
   @Prop({ type: Object }) readonly secondToken!: any
@@ -87,6 +90,26 @@ export default class ConfirmTokenPairDialog extends Mixins(TranslationMixin, Dia
 
   get formattedSecondTokenValue (): string {
     return this.formatStringValue(this.secondTokenValue, this.secondToken?.decimals)
+  }
+
+  get fiatFirstAmount (): Nullable<string> {
+    return this.getFiatAmount(this.firstTokenValue, this.firstToken)
+  }
+
+  get fiatSecondAmount (): Nullable<string> {
+    return this.getFiatAmount(this.secondTokenValue, this.secondToken)
+  }
+
+  get formattedPrice (): string {
+    return this.formatStringValue(this.price)
+  }
+
+  get formattedPriceReversed (): string {
+    return this.formatStringValue(this.priceReversed)
+  }
+
+  get formattedSlippageTolerance (): string {
+    return this.formatStringValue(this.slippageTolerance)
   }
 
   handleConfirm (): void {

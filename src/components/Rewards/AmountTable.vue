@@ -1,49 +1,95 @@
 <template>
-  <component :is="wrapper" :class="['amount-table', { group }]" v-model="innerModel">
-    <template v-for="({ type, title, amount, symbol, rewards }, index) in formattedItems">
-      <el-checkbox v-if="!group" class="amount-table-checkbox" :key="index" :label="type">
-        <div :class="['amount-table-item', { rewards: rewards.length }]">
-          <div class="amount-table-item__title">{{ title }}</div>
-          <div class="amount-table-item__amount">
-            <span>{{ amount }}</span>&nbsp;<span>{{ symbol }}</span>
+  <div class="amount-table">
+    <div class="amount-table-item">
+      <div class="amount-table-item__title">{{ formatted.title }}</div>
+      <template v-if="showTable">
+        <div v-if="formatted.subtitle" class="amount-table-item__subtitle">{{ formatted.subtitle }}</div>
+        <s-checkbox class="amount-table-item-group" v-model="innerModel" size="big">
+          <div class="amount-table-item-content">
+            <div class="amount-table-item-content__header">
+              <div v-for="(item, index) in formatted.limit" class="amount-table-item__amount" :key="index">
+                <formatted-amount-with-fiat-value
+                  value-class="amount-table-value"
+                  :value="isCodecString ? getFPNumberFromCodec(item.amount, item.asset.decimals).toLocaleString() : item.amount"
+                  :font-size-rate="FontSizeRate.MEDIUM"
+                  :asset-symbol="item.asset.symbol"
+                  :fiat-value="getFiatAmountByCodecString(item.amount, item.asset)"
+                  :fiat-font-size-rate="FontSizeRate.MEDIUM"
+                  with-left-shift
+                >
+                  <s-tooltip v-if="formatted.total && index === 0" popper-class="amount-table-tooltip" placement="right" border-radius="mini">
+                    <div slot="content" class="amount-table-tooltip-content">
+                      <div>{{ t('rewards.totalVested') }}:</div>
+                      <formatted-amount
+                        class="amount-table-value"
+                        :value="formatted.total.amount"
+                        :font-size-rate="FontSizeRate.MEDIUM"
+                        :asset-symbol="formatted.total.asset.symbol"
+                        symbol-as-decimal
+                      />
+                    </div>
+                    <s-icon name="info-16" size="14px" class="amount-table-value-icon" />
+                  </s-tooltip>
+                </formatted-amount-with-fiat-value>
+              </div>
+            </div>
+            <div v-if="formatted.rewards.length !== 0" class="amount-table-item-content__body">
+              <div v-for="(item, index) in formatted.rewards" :key="item.type">
+                <s-divider v-if="!simpleGroup || index === 0" :class="['amount-table-divider', theme]" />
+                <div class="amount-table-subitem">
+                  <div class="amount-table-subitem__title">
+                    <template v-if="simpleGroup">—</template>
+                    <template v-else-if="formatted.total">{{ t('rewards.totalVested') }} {{ t('rewards.forText') }}</template>
+                    {{ item.title }}
+                  </div>
+                  <template v-if="!simpleGroup">
+                    <div v-for="(item, index) in item.limit" :key="index" class="amount-table-subitem__row">
+                      <formatted-amount-with-fiat-value
+                        value-class="amount-table-value"
+                        :value="formatCodecNumber(item.amount)"
+                        :font-size-rate="FontSizeRate.MEDIUM"
+                        :asset-symbol="item.asset.symbol"
+                        :fiat-value="getFiatAmountByCodecString(item.amount, item.asset)"
+                        :fiat-font-size-rate="FontSizeRate.MEDIUM"
+                        with-left-shift
+                      />
+                    </div>
+                  </template>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </el-checkbox>
-      <div v-else :class="['amount-table-item', { rewards: rewards.length }]" :key="index">
-        <div class="amount-table-item__title">{{ title }}</div>
-        <div class="amount-table-item__amount">
-          <span>{{ amount }}</span>&nbsp;<span>{{ symbol }}</span>
-        </div>
-      </div>
-      <div v-if="rewards.length !== 0" :key="`${index}-inner`" class="amount-table-item-group">
-        <div v-for="item in rewards" class="amount-table-item amount-table-item--inner" :key="`${index}-${item.type}`">
-          <div class="amount-table-item__title">{{ item.title }}&nbsp;{{ t('rewards.vested') }}</div>
-          <div class="amount-table-item__amount">
-            <span>{{ item.amount }}</span>&nbsp;<span>{{ item.symbol }}</span>
-          </div>
-        </div>
-      </div>
-    </template>
-  </component>
+        </s-checkbox>
+      </template>
+    </div>
+    <slot />
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Mixins } from 'vue-property-decorator'
-import { RewardInfo, KnownSymbols } from '@sora-substrate/util'
+import { RewardInfo } from '@sora-substrate/util'
+import { FormattedAmountMixin, FormattedAmount, FormattedAmountWithFiatValue, FontSizeRate } from '@soramitsu/soraneo-wallet-web'
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
 
-import NumberFormatterMixin from '@/components/mixins/NumberFormatterMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards'
 
-@Component
-export default class AmountTable extends Mixins(NumberFormatterMixin, TranslationMixin) {
-  @Prop({ default: () => [], type: Array }) items!: Array<RewardInfoGroup | RewardInfo>
-  @Prop({ default: () => [], type: [Array, Boolean] }) value!: Array<string> | boolean
-  @Prop({ default: false, type: Boolean }) group!: boolean
-
-  get wrapper (): string {
-    return this.group ? 'el-checkbox' : 'el-checkbox-group'
+@Component({
+  components: {
+    FormattedAmount,
+    FormattedAmountWithFiatValue
   }
+})
+export default class AmountTable extends Mixins(FormattedAmountMixin, TranslationMixin) {
+  readonly FontSizeRate = FontSizeRate
+
+  @Prop({ default: () => {}, type: Object }) item!: RewardInfoGroup | RewardInfo
+  @Prop({ default: true, type: Boolean }) showTable!: boolean
+  @Prop({ default: false, type: Boolean }) simpleGroup!: boolean
+  @Prop({ default: false, type: Boolean }) value!: boolean
+  @Prop({ default: false, type: Boolean }) isCodecString!: boolean
+  @Prop({ default: Theme.LIGHT, type: String }) theme!: Theme
 
   get innerModel (): any {
     return this.value
@@ -53,20 +99,31 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
     this.$emit('input', value)
   }
 
-  get formattedItems (): Array<RewardsAmountTableItem> {
-    return this.items.map(this.formatItem)
+  get formatted (): RewardsAmountTableItem {
+    return this.formatItem(this.item)
   }
 
   formatItem (item: RewardInfoGroup | RewardInfo): RewardsAmountTableItem {
+    const toLimit = (amount, asset) => ({
+      amount: amount,
+      asset: asset
+    })
+
     const key = `rewards.events.${item.type}`
     const title = this.te(key) ? this.t(key) : item.type
+    const subtitle = 'title' in item ? item.title : ''
+    const total = 'total' in item ? item.total : undefined
     const rewards = ('rewards' in item) && Array.isArray(item.rewards) ? item.rewards.map(this.formatItem) : []
+    const limit = ('rewards' in item) && Array.isArray(item.rewards)
+      ? (item as RewardInfoGroup).limit
+      : [toLimit((item as RewardInfo).amount, (item as RewardInfo).asset)]
 
     return {
       type: item.type,
       title,
-      amount: this.formatCodecNumber(item.amount),
-      symbol: item.asset.symbol as KnownSymbols,
+      subtitle,
+      limit,
+      total,
       rewards
     }
   }
@@ -75,18 +132,6 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
 
 <style lang="scss">
 .amount-table {
-  &.el-checkbox {
-    color: inherit;
-
-    .el-checkbox__label {
-      flex-flow: column nowrap;
-    }
-
-    .el-checkbox__inner {
-      margin-top: 10px;
-    }
-  }
-
   & .el-checkbox {
     color: inherit;
 
@@ -94,79 +139,147 @@ export default class AmountTable extends Mixins(NumberFormatterMixin, Translatio
       display: flex;
     }
 
-    &__inner {
-      margin-top: 10px;
-    }
-
     &__label {
       white-space: normal;
       display: flex;
       flex: 1;
       color: inherit !important;
+      padding-left: $inner-spacing-mini;
     }
+
+    &__inner {
+      border-radius: 6px !important;
+      border: 2px solid var(--s-color-status-error);
+      background: var(--s-color-status-error-background);
+
+      &:after {
+        left: 4px;
+      }
+    }
+  }
+
+  .formatted-amount__container {
+    width: 100%;
+    text-align: left;
+  }
+
+  &-value {
+    font-size: var(--s-font-size-medium);
+    font-weight: 600;
+    margin-right: auto;
+    &-icon {
+      margin-left: $inner-spacing-mini / 2;
+    }
+  }
+
+  &-item {
+    &-group.el-checkbox.s-big {
+      padding: 0;
+      height: initial;
+    }
+    &__amount .formatted-amount--fiat-value {
+      text-align: right;
+    }
+  }
+
+  &-tooltip.el-tooltip__popper.neumorphic.is-light {
+    background-color: var(--s-color-status-success);
+  }
+
+  &-divider.s-divider-secondary.dark {
+    background-color: var(--s-color-base-content-secondary);
   }
 }
 </style>
 
 <style lang="scss" scoped>
 .amount-table {
-  &.group {
-    display: flex;
-    flex-flow: row nowrap;
-    padding: $inner-spacing-mini 0;
-    margin-right: 0;
-  }
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--s-border-radius-mini);
+  padding: $inner-spacing-medium;
 
-  &-checkbox {
-    display: flex;
-    margin-right: 0;
-    padding: $inner-spacing-mini 0;
+  &.rewards-table {
+    .formatted-amount {
+      flex-wrap: wrap;
+    }
+    .formatted-amount--fiat-value {
+      font-weight: 400;
+    }
   }
 
   &-item {
-    display: flex;
-    flex: 1;
-    align-items: flex-start;
-    justify-content: space-between;
-    font-size: var(--s-font-size-extra-small);
-    line-height: var(--s-line-height-mini);
-    background-color: rgba(0, 0, 0, 0.25);
-    padding: $inner-spacing-small;
-    border-top-left-radius: var(--s-border-radius-mini);
-    border-top-right-radius: var(--s-border-radius-mini);
-
-    & + & {
-      padding-top: 0;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-    }
-
-    &:last-child, &.rewards {
-      border-bottom-left-radius: var(--s-border-radius-mini);
-      border-bottom-right-radius: var(--s-border-radius-mini);
-    }
-
     &-group {
-      background-color: rgba(255, 255, 255, 0.1);
-      border-bottom-left-radius: var(--s-border-radius-mini);
-      border-bottom-right-radius: var(--s-border-radius-mini);
-      margin: 0 $inner-spacing-small;
+      display: flex;
+      flex-flow: nowrap;
     }
 
-    &--inner {
-      background-color: unset;
+    &-content {
+      display: flex;
+      flex-flow: column nowrap;
+      flex: 1;
+
+      &__header {
+        display: flex;
+        flex: 1;
+        flex-flow: column nowrap;
+      }
+
+      &__body {
+        margin-top: $inner-spacing-small;
+      }
     }
 
     &__title {
+      font-size: var(--s-font-size-mini);
+      line-height: var(--s-line-height-medium);
+      font-weight: 400;
+      text-transform: uppercase;
+      margin-bottom: $inner-spacing-mini;
+    }
+
+    &__subtitle {
+      font-size: var(--s-font-size-small);
+      line-height: var(--s-line-height-reset);
       font-weight: 300;
       text-transform: uppercase;
+      margin-bottom: $inner-spacing-mini / 2;
     }
 
     &__amount {
-      flex: 1;
-      font-weight: 600;
-      text-align: right;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      line-height: 20px;
     }
   }
+
+  &-subitem {
+    margin: $inner-spacing-mini 0;
+    font-weight: 300;
+    text-transform: uppercase;
+
+    &__title {
+      line-height: var(--s-line-height-reset);
+    }
+
+    &__row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+  }
+
+  &-divider {
+    opacity: 0.5;
+  }
+
+  &-tooltip-content {
+    font-size: var(--s-font-size-small);
+    text-transform: uppercase;
+  }
+
+  @include vertical-divider('amount-table-divider', 0);
 }
 </style>

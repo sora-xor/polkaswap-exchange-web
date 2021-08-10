@@ -1,42 +1,43 @@
 import isNil from 'lodash/fp/isNil'
 import { Component, Mixins } from 'vue-property-decorator'
-import { Asset, AccountAsset } from '@sora-substrate/util'
+import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util'
 
 import DialogMixin from '@/components/mixins/DialogMixin'
+import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin'
 
 import { asZeroValue, getAssetBalance } from '@/utils'
 
 @Component
-export default class SelectAsset extends Mixins(DialogMixin) {
-  public focusSearchInput (): void {
-    const input = this.$refs.search as any
+export default class SelectAsset extends Mixins(DialogMixin, AssetsSearchMixin) {
+  public sortByBalance (external = false) {
+    const isEmpty = (a): boolean => external
+      ? !+a.externalBalance
+      : isNil(a.balance) || !+a.balance.transferable
 
-    if (input && typeof input.focus === 'function') {
-      input.focus()
+    return (a: AccountAsset | RegisteredAccountAsset, b: AccountAsset | RegisteredAccountAsset): number => {
+      const emptyABalance = isEmpty(a)
+      const emptyBBalance = isEmpty(b)
+
+      if (emptyABalance === emptyBBalance) return 0
+
+      return emptyABalance && !emptyBBalance ? 1 : -1
     }
   }
 
-  public sort (a: AccountAsset, b: AccountAsset): number {
-    const emptyABalance = isNil(a.balance) || !+a.balance.transferable
-    const emptyBBalance = isNil(b.balance) || !+b.balance.transferable
-    if (emptyABalance === emptyBBalance) return 0
-    return emptyABalance && !emptyBBalance ? 1 : -1
-  }
-
-  public getWhitelistAssetsWithBalances ({
-    whitelistAssets,
+  public getAssetsWithBalances ({
+    assets,
     accountAssetsAddressTable,
     notNullBalanceOnly = false,
     accountAssetsOnly = false,
     excludeAsset
   }: {
-    whitelistAssets: Array<Asset>;
+    assets: Array<Asset | RegisteredAccountAsset>;
     accountAssetsAddressTable: any;
     notNullBalanceOnly?: boolean;
     accountAssetsOnly?: boolean;
     excludeAsset?: Asset | AccountAsset;
-  }): Array<AccountAsset> {
-    return whitelistAssets.reduce((result: Array<AccountAsset>, item: Asset) => {
+  }): Array<AccountAsset | RegisteredAccountAsset> {
+    return assets.reduce((result: Array<AccountAsset>, item) => {
       if (!item || (excludeAsset && item.address === excludeAsset.address)) return result
 
       const accountAsset = accountAssetsAddressTable[item.address]
@@ -50,9 +51,9 @@ export default class SelectAsset extends Mixins(DialogMixin) {
       const prepared = {
         ...item,
         balance
-      } as AccountAsset
+      }
 
       return [...result, prepared]
-    }, []).sort(this.sort)
+    }, [])
   }
 }

@@ -79,6 +79,12 @@ const getters = {
   secondTokenValue (state: AddLiquidityState) {
     return state.secondTokenValue
   },
+  liquidityInfo (state: AddLiquidityState, getters, rootState, rootGetters) {
+    return rootGetters['pool/accountLiquidity'].find(liquidity =>
+      liquidity.firstAddress === state.firstTokenAddress &&
+      liquidity.secondAddress === state.secondTokenAddress
+    )
+  },
   reserve (state: AddLiquidityState) {
     return state.reserve
   },
@@ -105,9 +111,9 @@ const getters = {
   },
   shareOfPool (state: AddLiquidityState, getters) {
     const minted = FPNumber.fromCodecValue(getters.minted)
-    return getters.firstTokenValue && getters.secondTokenValue
-      ? minted.div(FPNumber.fromCodecValue(getters.totalSupply).add(minted)).mul(new FPNumber(100)).toLocaleString() || ZeroStringValue
-      : ZeroStringValue
+    const existed = FPNumber.fromCodecValue(getters.liquidityInfo?.balance ?? 0)
+    const total = FPNumber.fromCodecValue(getters.totalSupply)
+    return minted.add(existed).div(total.add(minted)).mul(new FPNumber(100)).toLocaleString() || ZeroStringValue
   }
 }
 
@@ -171,6 +177,7 @@ const actions = {
     commit(types.SET_FIRST_TOKEN_VALUE, '')
     commit(types.SET_SECOND_TOKEN_VALUE, '')
     await dispatch('checkLiquidity')
+    await dispatch('estimateMinted')
   },
 
   async setSecondTokenAddress ({ commit, dispatch, getters, rootGetters }, address: string) {
@@ -187,6 +194,7 @@ const actions = {
     }
 
     await dispatch('checkLiquidity')
+    await dispatch('estimateMinted')
   },
 
   async checkReserve ({ commit, getters, dispatch }) {
@@ -219,7 +227,7 @@ const actions = {
   },
 
   async estimateMinted ({ commit, getters }) {
-    if (getters.firstToken?.address && getters.secondToken?.address && getters.firstTokenValue && getters.secondTokenValue) {
+    if (getters.firstToken?.address && getters.secondToken?.address) {
       commit(types.ESTIMATE_MINTED_REQUEST)
 
       try {

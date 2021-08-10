@@ -1,7 +1,7 @@
 <template>
   <div>
     <sora-neo-wallet
-      v-lottie-loader="{ loading: parentLoading }"
+      v-loading="parentLoading"
       class="container container--wallet"
       @close="handleClose"
       @swap="handleSwap"
@@ -95,6 +95,9 @@ export default class Wallet extends Mixins(TranslationMixin) {
     &__body {
       padding: $inner-spacing-medium 0 0;
     }
+  }
+  .history .history-items {
+    padding: 0 $inner-spacing-mini;
   }
 }
 </style>

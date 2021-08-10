@@ -1,19 +1,23 @@
-import { KnownSymbols, RewardInfo, RewardingEvents, CodecString, Asset } from '@sora-substrate/util'
+import { RewardInfo, RewardingEvents, CodecString, Asset } from '@sora-substrate/util'
 
 export interface RewardsAmountHeaderItem {
+  asset: Asset;
   amount: string;
-  symbol: KnownSymbols;
 }
 
 export interface RewardInfoGroup {
   type: RewardingEvents | string;
-  asset: Asset;
-  amount: CodecString;
+  limit: Array<RewardsAmountHeaderItem>;
+  total?: RewardsAmountHeaderItem;
+  title?: string;
   rewards?: Array<RewardInfo>;
 }
 
-export interface RewardsAmountTableItem extends RewardsAmountHeaderItem {
+export interface RewardsAmountTableItem {
   type?: string;
   title?: string;
+  subtitle?: string;
+  total?: RewardsAmountHeaderItem;
+  limit?: Array<RewardsAmountHeaderItem>;
   rewards?: Array<RewardsAmountTableItem>;
 }

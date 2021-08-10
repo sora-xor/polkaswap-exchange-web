@@ -1,6 +1,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { KnownAssets, KnownSymbols, CodecString } from '@sora-substrate/util'
+import { KnownSymbols, CodecString } from '@sora-substrate/util'
+import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
 
 import TransactionMixin from './TransactionMixin'
 import LoadingMixin from './LoadingMixin'
@@ -12,14 +13,14 @@ import { getMaxValue, isMaxButtonAvailable, isXorAccountAsset, hasInsufficientBa
 
 const CreateTokenPairMixin = (namespace: string) => {
   @Component
-  class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin) {
+  class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin, FormattedAmountMixin) {
     readonly KnownSymbols = KnownSymbols
 
     @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
     @Getter('firstToken', { namespace }) firstToken!: any
     @Getter('secondToken', { namespace }) secondToken!: any
-    @Getter('firstTokenValue', { namespace }) firstTokenValue!: number
-    @Getter('secondTokenValue', { namespace }) secondTokenValue!: number
+    @Getter('firstTokenValue', { namespace }) firstTokenValue!: string
+    @Getter('secondTokenValue', { namespace }) secondTokenValue!: string
 
     @Getter('isAvailable', { namespace }) isAvailable!: boolean
     @Getter('minted', { namespace }) minted!: CodecString
@@ -38,7 +39,8 @@ const CreateTokenPairMixin = (namespace: string) => {
 
     @Action('getPrices', { namespace: 'prices' }) getPrices
     @Action('resetPrices', { namespace: 'prices' }) resetPrices
-    @Action('getAssets', { namespace: 'assets' }) getAssets
+
+    @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
 
     @Watch('isLoggedIn')
     private handleLoggedInStateChange (isLoggedIn: boolean, wasLoggedIn: boolean): void {
@@ -49,16 +51,6 @@ const CreateTokenPairMixin = (namespace: string) => {
 
     showSelectSecondTokenDialog = false
     insufficientBalanceTokenSymbol = ''
-
-    async mounted () {
-      await this.withParentLoading(async () =>
-        await this.withApi(async () => {
-          this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
-          await this.getAssets()
-          await this.afterApiConnect()
-        })
-      )
-    }
 
     destroyed (): void {
       const params = router.currentRoute.params
@@ -107,6 +99,30 @@ const CreateTokenPairMixin = (namespace: string) => {
       return false
     }
 
+    get firstTokenPrice (): Nullable<CodecString> {
+      return this.getAssetFiatPrice(this.firstToken)
+    }
+
+    get secondTokenPrice (): Nullable<CodecString> {
+      return this.getAssetFiatPrice(this.secondToken)
+    }
+
+    get fiatFirstAmount (): Nullable<string> {
+      return this.getFiatAmount(this.firstTokenValue, this.firstToken)
+    }
+
+    get fiatSecondAmount (): Nullable<string> {
+      return this.getFiatAmount(this.secondTokenValue, this.secondToken)
+    }
+
+    get formattedPrice (): string {
+      return this.formatStringValue(this.price)
+    }
+
+    get formattedPriceReversed (): string {
+      return this.formatStringValue(this.priceReversed)
+    }
+
     async handleMaxValue (token: any, setValue: (v: any) => void): Promise<void> {
       setValue(getMaxValue(token, this.fee))
       this.updatePrices()
@@ -143,7 +159,7 @@ const CreateTokenPairMixin = (namespace: string) => {
 
     async afterApiConnect (): Promise<void> {}
 
-    private handleBack (): void {
+    handleBack (): void {
       router.push({ name: PageNames.Pool })
     }
   }

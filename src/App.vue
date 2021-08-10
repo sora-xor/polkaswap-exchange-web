@@ -1,148 +1,146 @@
 <template>
   <s-design-system-provider :value="libraryDesignSystem" id="app">
     <header class="header">
-      <s-button class="polkaswap-logo" type="link" @click="goTo(PageNames.Swap)" />
+      <s-button class="polkaswap-logo" type="link" size="large" @click="goTo(PageNames.Swap)">
+        <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo--tablet"/>
+      </s-button>
       <div class="app-controls s-flex">
-        <s-button type="tertiary" alternative size="medium" class="node-control" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
-          <div class="node-control__text">
-            <div class="node-control-title">{{ node.name }}</div>
-            <div class="node-control-network">{{ chainAndNetworkText }}</div>
-          </div>
+        <s-button type="action" class="theme-control" @click="switchTheme">
+          <s-icon :name="themeIcon" size="28" />
+        </s-button>
+        <s-button type="action" class="lang-control" @click="openSelectLanguageDialog">
+          <s-icon name="basic-globe-24" size="28" />
+        </s-button>
+        <s-button type="action" class="node-control" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
           <token-logo class="node-control__logo" v-bind="nodeLogo" />
         </s-button>
-        <s-button :type="isLoggedIn ? 'tertiary' : 'secondary'" class="account-control" alternative size="medium" :tooltip="t('connectWalletTextTooltip')" :disabled="loading" @click="goTo(PageNames.Wallet)">
-          <div class="account-control-title">{{ accountInfo }}</div>
+        <s-button type="tertiary" class="account-control" size="medium" :tooltip="t('connectWalletTextTooltip')" :disabled="loading" @click="goTo(PageNames.Wallet)">
+          <div :class="['account-control-title', { name: isLoggedIn }]">{{ accountInfo }}</div>
           <div class="account-control-icon">
-            <s-icon v-if="!isLoggedIn" name="finance-wallet-24" />
+            <s-icon v-if="!isLoggedIn" name="finance-wallet-24" size="28" />
             <WalletAvatar v-else :address="account.address"/>
           </div>
         </s-button>
       </div>
     </header>
     <div class="app-main">
-      <aside class="app-sidebar">
-        <s-menu
-          class="menu"
-          mode="vertical"
-          background-color="transparent"
-          box-shadow="none"
-          text-color="var(--s-color-base-content-primary)"
-          active-text-color="var(--s-color-theme-accent)"
-          active-hover-color="transparent"
-          :default-active="getCurrentPath()"
-          @select="goTo"
-        >
-          <s-menu-item-group v-for="(group, index) in SidebarMenuGroups" :key="index">
-            <s-menu-item
-              v-for="item in group"
-              :key="item.title"
-              :index="item.title"
-              :disabled="item.disabled"
-              class="menu-item"
-            >
-              <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
-            </s-menu-item>
-          </s-menu-item-group>
-        </s-menu>
+      <s-scrollbar class="app-sidebar-scrollbar">
+        <aside class="app-sidebar">
+          <s-menu
+            class="menu"
+            mode="vertical"
+            background-color="transparent"
+            box-shadow="none"
+            text-color="var(--s-color-base-content-primary)"
+            :active-text-color="mainMenuActiveColor"
+            active-hover-color="transparent"
+            :default-active="getCurrentPath()"
+            @select="goTo"
+          >
+            <s-menu-item-group v-for="(group, index) in SidebarMenuGroups" :key="index">
+              <s-menu-item
+                v-for="item in group"
+                :key="item.title"
+                :index="item.title"
+                :disabled="item.disabled"
+                class="menu-item"
+              >
+                <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
+              </s-menu-item>
+            </s-menu-item-group>
+          </s-menu>
 
-        <s-menu
-          class="menu"
-          mode="vertical"
-          background-color="transparent"
-          box-shadow="none"
-          text-color="var(--s-color-base-content-tertiary)"
-          active-text-color="var(--s-color-base-content-tertiary)"
-          active-hover-color="transparent"
-        >
-          <s-menu-item-group>
-            <li v-for="item in SocialNetworkLinks" :key="item.title">
-              <sidebar-item-content
-                :icon="item.icon"
-                :title="t(`social.${item.title}`)"
-                :href="item.href"
-                tag="a"
-                target="_blank"
-                rel="nofollow noopener"
+          <s-menu
+            class="menu"
+            mode="vertical"
+            background-color="transparent"
+            box-shadow="none"
+            text-color="var(--s-color-base-content-tertiary)"
+            active-text-color="var(--s-color-base-content-tertiary)"
+            active-hover-color="transparent"
+          >
+            <s-menu-item-group>
+              <li v-for="item in SocialNetworkLinks" :key="item.title">
+                <sidebar-item-content
+                  :icon="item.icon"
+                  :title="t(`social.${item.title}`)"
+                  :href="item.href"
+                  tag="a"
+                  target="_blank"
+                  rel="nofollow noopener"
+                  class="el-menu-item menu-item--small"
+                />
+              </li>
+            </s-menu-item-group>
+            <s-menu-item-group>
+              <li v-if="faucetUrl">
+                <sidebar-item-content
+                  :icon="FaucetLink.icon"
+                  :title="t(`footerMenu.${FaucetLink.title}`)"
+                  :href="faucetUrl"
+                  tag="a"
+                  target="_blank"
+                  rel="nofollow noopener"
+                  class="el-menu-item menu-item--small"
+                />
+              </li>
+              <!-- <sidebar-item-content
+                :title="t('footerMenu.help')"
+                icon="notifications-info-24"
+                tag="li"
                 class="el-menu-item menu-item--small"
-              />
-            </li>
-          </s-menu-item-group>
-          <s-menu-item-group>
-            <li v-if="faucetUrl">
-              <sidebar-item-content
-                :icon="FaucetLink.icon"
-                :title="t(`footerMenu.${FaucetLink.title}`)"
-                :href="faucetUrl"
-                tag="a"
-                target="_blank"
-                rel="nofollow noopener"
-                class="el-menu-item menu-item--small"
-              />
-            </li>
-            <li class="menu-link-container">
-              <sidebar-item-content
-                :title="t('footerMenu.memorandum')"
-                :href="t('helpDialog.termsOfServiceLink')"
-                tag="a"
-                target="_blank"
-                rel="nofollow noopener"
-                class="el-menu-item menu-item--small menu-item--general-link"
-              />
-            </li>
-            <li class="menu-link-container">
-              <sidebar-item-content
-                :title="t('footerMenu.privacy')"
-                :href="t('helpDialog.privacyPolicyLink')"
-                tag="a"
-                target="_blank"
-                rel="nofollow noopener"
-                class="el-menu-item menu-item--small menu-item--general-link"
-              />
-            </li>
-            <!-- <sidebar-item-content
-              :title="t('footerMenu.help')"
-              icon="notifications-info-24"
-              tag="li"
-              class="el-menu-item menu-item--small"
-              @click.native="openHelpDialog"
-            /> -->
-          </s-menu-item-group>
-        </s-menu>
-      </aside>
-      <div class="app-body">
-        <div class="app-content">
-          <router-view :parent-loading="loading || !nodeIsConnected" />
-          <p class="app-disclaimer" :class="isAboutPage ? 'about-disclaimer' : ''" v-html="t('disclaimer')" />
-        </div>
-        <footer class="app-footer" :class="isAboutPage ? 'about-footer' : ''">
-          <div class="sora-logo">
-            <span class="sora-logo__title">{{ t('poweredBy') }}</span>
-            <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener" />
+                @click.native="openHelpDialog"
+              /> -->
+            </s-menu-item-group>
+          </s-menu>
+        </aside>
+      </s-scrollbar>
+      <div class="app-body" :class="isAboutPage ? 'app-body__about' : ''">
+        <s-scrollbar class="app-body-scrollbar">
+          <div class="app-content">
+            <router-view :parent-loading="loading || !nodeIsConnected" />
+            <p class="app-disclaimer" v-html="t('disclaimer')" />
           </div>
-        </footer>
+          <footer class="app-footer">
+            <div class="sora-logo">
+              <span class="sora-logo__title">{{ t('poweredBy') }}</span>
+              <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener">
+                <sora-logo :theme="libraryTheme" />
+              </a>
+            </div>
+          </footer>
+        </s-scrollbar>
       </div>
     </div>
 
     <help-dialog :visible.sync="showHelpDialog" />
     <select-node-dialog :visible.sync="showSelectNodeDialog" />
+    <select-language-dialog :visible.sync="showSelectLanguageDialog" />
   </s-design-system-provider>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
-import { WALLET_CONSTS, WalletAvatar } from '@soramitsu/soraneo-wallet-web'
-import { KnownSymbols, FPNumber } from '@sora-substrate/util'
+import { WALLET_CONSTS, WalletAvatar, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
+import { History, KnownSymbols } from '@sora-substrate/util'
+import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils'
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
+import DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem'
+import PolkaswapLogo from './components/logo/Polkaswap.vue'
+import SoraLogo from './components/logo/Sora.vue'
 
-import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize } from '@/consts'
+import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize, Language } from '@/consts'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
 
-import axios from '@/api'
+import axios, { updateBaseUrl } from '@/api'
 import router, { lazyComponent } from '@/router'
 import { formatAddress, disconnectWallet } from '@/utils'
 import { ConnectToNodeOptions } from '@/types/nodes'
+import { getLocale } from '@/lang'
+import { SubNetwork } from '@/utils/ethers-util'
 
 const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
 const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
@@ -150,9 +148,12 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
 @Component({
   components: {
     WalletAvatar,
+    PolkaswapLogo,
+    SoraLogo,
     HelpDialog: lazyComponent(Components.HelpDialog),
     SidebarItemContent: lazyComponent(Components.SidebarItemContent),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
+    SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
     TokenLogo: lazyComponent(Components.TokenLogo)
   }
 })
@@ -172,40 +173,55 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   ]
 
   showHelpDialog = false
+  showSelectLanguageDialog = false
+
+  switchTheme: AsyncVoidFn = switchTheme
 
   @State(state => state.settings.faucetUrl) faucetUrl!: string
   @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
 
-  @Getter libraryDesignSystem!: string
+  @Getter libraryTheme!: Theme
+  @Getter libraryDesignSystem!: DesignSystem
+
   @Getter firstReadyTransaction!: any
   @Getter isLoggedIn!: boolean
   @Getter account!: any
   @Getter currentRoute!: WALLET_CONSTS.RouteNames
   @Getter chainAndNetworkText!: string
   @Getter nodeIsConnected!: boolean
+  @Getter language!: Language
 
   @Action navigate // Wallet
+  @Action updateAccountAssets!: AsyncVoidFn
   @Action trackActiveTransactions!: AsyncVoidFn
   @Action setSoraNetwork!: (data: any) => Promise<void>
   @Action setDefaultNodes!: (nodes: any) => Promise<void>
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
   @Action setFaucetUrl!: (url: string) => void
-  @Action('setEvmSmartContracts', { namespace: 'web3' }) setEvmSmartContracts
-  @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks
-  @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts
+  @Action setLanguage!: (lang: Language) => Promise<void>
+  @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>
+  @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>
 
   @Watch('firstReadyTransaction', { deep: true })
-  private handleNotifyAboutTransaction (value): void {
+  private handleNotifyAboutTransaction (value: History): void {
     this.handleChangeTransaction(value)
   }
 
-  async created () {
-    const localeLanguage = navigator.language
-    const thousandSymbol = Number(1000).toLocaleString(localeLanguage).substring(1, 2)
-    if (thousandSymbol !== '0') {
-      FPNumber.DELIMITERS_CONFIG.thousand = Number(1234).toLocaleString(localeLanguage).substring(1, 2)
+  @Watch('nodeIsConnected')
+  private updateConnectionSubsriptions (nodeConnected: boolean) {
+    if (nodeConnected) {
+      this.updateAccountAssets()
+    } else {
+      if (updateAccountAssetsSubscription) {
+        updateAccountAssetsSubscription.unsubscribe()
+      }
     }
-    FPNumber.DELIMITERS_CONFIG.decimal = Number(1.2).toLocaleString(localeLanguage).substring(1, 2)
+  }
+
+  async created () {
+    updateBaseUrl(router)
+
+    await this.setLanguage(getLocale() as any)
 
     await this.withLoading(async () => {
       const { data } = await axios.get('/env.json')
@@ -226,12 +242,24 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
     this.trackActiveTransactions()
   }
 
+  get selectedLanguage (): string {
+    return this.language.toUpperCase()
+  }
+
   get showSelectNodeDialog (): boolean {
     return this.selectNodeDialogVisibility
   }
 
   set showSelectNodeDialog (flag: boolean) {
     this.setSelectNodeDialogVisibility(flag)
+  }
+
+  get themeIcon (): string {
+    return this.libraryTheme === Theme.LIGHT ? 'various-brightness-low-24' : 'various-moon-24'
+  }
+
+  get mainMenuActiveColor (): string {
+    return this.libraryTheme === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)'
   }
 
   get nodeLogo (): any {
@@ -289,13 +317,21 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
     this.setSelectNodeDialogVisibility(true)
   }
 
+  openSelectLanguageDialog (): void {
+    this.showSelectLanguageDialog = true
+  }
+
   destroyed (): void {
     disconnectWallet()
   }
 
   private async runAppConnectionToNode () {
     try {
-      await this.connectToNode({ onError: this.handleNodeError })
+      await this.connectToNode({
+        onError: this.handleNodeError,
+        onDisconnect: this.handleNodeDisconnect,
+        onReconnect: this.handleNodeReconnect
+      })
     } catch (error) {
       // we handled error using callback, do nothing
     }
@@ -309,12 +345,44 @@ html {
   font-size: var(--s-font-size-small);
   line-height: var(--s-line-height-base);
 }
+
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Sora', sans-serif;
-  color: var(--s-color-base-content-primary);
   height: 100vh;
+  min-width: 528px;
+  color: var(--s-color-base-content-primary);
+  background-color: var(--s-color-utility-body);
+  transition: background-color 500ms linear;
+  .el-loading-mask {
+    background-color: var(--s-color-utility-body);
+  }
+}
+
+.app {
+  &-body-scrollbar, &-sidebar-scrollbar {
+    @include scrollbar;
+  }
+  &-body {
+    &-scrollbar {
+      flex: 1;
+    }
+    &__about &-scrollbar .el-scrollbar__wrap {
+      overflow-x: auto;
+    }
+  }
+}
+
+.account-control {
+  &-icon {
+    svg circle:first-child {
+      fill: var(--s-color-utility-surface);
+    }
+  }
+  span {
+    flex-direction: row-reverse;
+  }
 }
 
 .menu.el-menu {
@@ -328,7 +396,7 @@ html {
 
   .el-menu-item {
     .icon-container {
-      box-shadow: var(--s-shadow-element);
+      box-shadow: var(--s-shadow-element-pressed);
     }
 
     &.menu-item--small {
@@ -341,7 +409,7 @@ html {
 
     &.is-disabled {
       opacity: 1;
-      color: var(--s-color-base-content-tertiary) !important;
+      color: var(--s-color-base-content-secondary) !important;
 
       i {
         color: var(--s-color-base-content-tertiary);
@@ -352,20 +420,21 @@ html {
         color: var(--s-color-base-content-secondary) !important;
       }
     }
+    &:active,
+    &.is-disabled,
+    &.is-active {
+      .icon-container {
+        box-shadow: var(--s-shadow-element);
+      }
+    }
     &.is-active {
       i {
         color: var(--s-color-theme-accent) !important;
       }
-
-      .icon-container {
-        box-shadow: var(--s-shadow-element-pressed);
+      span {
+        font-weight: 400;
       }
     }
-  }
-
-  .el-menu-item.menu-item--small.menu-item--general-link {
-    padding: $basic-spacing-small $basic-spacing-small $inner-spacing-mini / 2 $basic-spacing-medium;
-    line-height: 1;
   }
 }
 
@@ -384,6 +453,7 @@ html {
       height: 20px;
       border-radius: 50%;
       background: var(--s-color-utility-surface);
+      flex-shrink: 0;
       &:before {
         position: absolute;
         top: -2px;
@@ -445,7 +515,6 @@ html {
       border-radius: 0 !important;
       color: var(--s-color-base-content-primary);
       font-size: var(--s-font-size-large);
-      font-feature-settings: normal;
       line-height: var(--s-line-height-small);
       font-weight: 800;
     }
@@ -470,8 +539,8 @@ html {
   }
 }
 .app-disclaimer {
-  span {
-    display: none;
+  &__title {
+    color: var(--s-color-theme-accent);
   }
   .link {
     color: var(--s-color-base-content-primary);
@@ -483,29 +552,19 @@ html {
   font-size: var(--s-font-size-medium) !important;
 }
 
-@include large-mobile {
-  .app-disclaimer {
-    span {
-      display: inline;
-    }
-    .link--mobile {
-      display: none;
-    }
+.el-tooltip__popper.neumorphic {
+  .popper__arrow {
+    margin-top: $inner-spacing-mini / 2;
+    border-width: 7px;
   }
 }
 </style>
 
 <style lang="scss" scoped>
-$logo-horizontal-margin: $inner-spacing-mini / 2;
 $header-height: 64px;
-$sidebar-width: 160px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
-
-// TODO: Move disclaimer's variables to appropriate place after design redevelopment
-$disclaimer-font-size: 11px;
-$disclaimer-font-weight: 200;
-$disclaimer-letter-spacing: -0.03em;
+$account-control-name-max-width: 200px;
 
 .app {
   &-main {
@@ -521,6 +580,7 @@ $disclaimer-letter-spacing: -0.03em;
     margin-right: $basic-spacing-small;
     width: 70px;
     display: flex;
+    flex: 1;
     flex-flow: column nowrap;
     justify-content: space-between;
     padding-top: $inner-spacing-small;
@@ -529,11 +589,24 @@ $disclaimer-letter-spacing: -0.03em;
   }
 
   &-body {
+    min-width: 464px;
     position: relative;
-    overflow-y: auto;
     display: flex;
     flex: 1;
     flex-flow: column nowrap;
+    &__about {
+      .app-content .app-disclaimer {
+        min-width: 800px;
+        width: 100%;
+        max-width: 900px;
+        padding: 0 20px;
+        margin: 0 auto 120px;
+      }
+      .app-footer {
+        min-width: 800px;
+        justify-content: center;
+      }
+    }
   }
 
   &-content {
@@ -543,17 +616,17 @@ $disclaimer-letter-spacing: -0.03em;
       margin-left: auto;
       margin-bottom: $inner-spacing-big;
       margin-right: auto;
-      width: calc(#{$inner-window-width} - #{$inner-spacing-medium * 2});
+      width: calc(#{$inner-window-width} - #{$basic-spacing-medium * 2});
       text-align: justify;
     }
   }
 
   &-disclaimer {
     margin-top: $basic-spacing-medium;
-    font-size: $disclaimer-font-size;
-    font-weight: $disclaimer-font-weight;
-    line-height: var(--s-line-height-mini);
-    letter-spacing: $disclaimer-letter-spacing;
+    font-size: var(--s-font-size-extra-mini);
+    font-weight: 300;
+    line-height: var(--s-line-height-extra-small);
+    letter-spacing: var(--s-letter-spacing-small);
     color: var(--s-color-base-content-secondary);
   }
 
@@ -568,11 +641,17 @@ $disclaimer-letter-spacing: -0.03em;
 }
 
 .header {
+  $header-box-shadow: 240px 16px 32px -16px;
+  $header-box-shadow-light: #{$header-box-shadow} #e5dce0;
+  $header-box-shadow-dark: #{$header-box-shadow} rgba(73, 32, 103, 0.5);
   display: flex;
   align-items: center;
-  padding: 2px $inner-spacing-medium;
+  padding: $inner-spacing-mini $inner-spacing-medium;
   min-height: $header-height;
-  box-shadow: 240px 16px 32px -16px #e5dce0;
+  box-shadow: $header-box-shadow-light;
+  [design-system-theme="dark"] & {
+    box-shadow: $header-box-shadow-dark;
+  }
 }
 
 .menu {
@@ -596,29 +675,13 @@ $disclaimer-letter-spacing: -0.03em;
   .menu-link-container {
     display: none;
     .el-menu-item {
-      white-space: initial;
-    }
-    + .menu-link-container {
-      position: relative;
-      margin-top: $inner-spacing-mini;
-      &:before {
-        position: absolute;
-        left: $basic-spacing-medium;
-        top: -1px;
-        content: '';
-        display: block;
-        height: 1px;
-        width: 100px;
-        background-color: var(--s-color-base-content-tertiary);
-        opacity: 0.2;
-      }
+      white-space: normal;
     }
   }
   .el-menu-item {
     padding: $inner-spacing-mini $inner-spacing-mini * 2.5;
     height: initial;
     font-size: var(--s-font-size-medium);
-    font-feature-settings: $s-font-feature-settings-title;
     font-weight: 300;
     line-height: var(--s-line-height-medium);
 
@@ -630,19 +693,10 @@ $disclaimer-letter-spacing: -0.03em;
       padding: 0 13px;
       color: var(--s-color-base-content-secondary);
     }
-    &:hover:not(.is-active):not(.is-disabled) {
-      background-color: var(--s-color-base-background-hover) !important;
-    }
-    &:focus {
-      background-color: transparent !important;
-    }
   }
 }
 
 .polkaswap-logo {
-  margin-right: $logo-horizontal-margin;
-  margin-left: $logo-horizontal-margin;
-  margin-bottom: 1.5px;
   background-image: url('~@/assets/img/pswap.svg');
   background-size: cover;
   width: var(--s-size-medium);
@@ -651,28 +705,54 @@ $disclaimer-letter-spacing: -0.03em;
   &.el-button {
     padding: 0;
   }
+
+  &--tablet {
+    visibility: hidden;
+  }
 }
 
 .app-controls {
   margin-left: auto;
 
   & > *:not(:last-child) {
-    margin-right: $inner-spacing-mini * 2.5;
+    margin-right: $inner-spacing-mini;
   }
 
-  .el-button + .el-button {
-    margin-left: 0;
+  .el-button {
+    + .el-button {
+      margin-left: 0;
+    }
+  }
+}
+
+.node-control {
+  @include element-size('token-logo', 28px);
+  .token-logo {
+    display: block;
+    margin: auto;
   }
 }
 
 .account-control {
+  letter-spacing: var(--s-letter-spacing-small);
+
   &-title {
     font-size: var(--s-font-size-small);
-    font-feature-settings: $s-font-feature-settings-common;
-    font-variation-settings: "wght" 800;
-    margin-right: $inner-spacing-mini / 2;
+    max-width: $account-control-name-max-width;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    &.name {
+      text-transform: none;
+    }
   }
-
+  &.s-tertiary {
+    &.el-button {
+      padding-left: $basic-spacing-mini;
+    }
+    .account-control-title {
+      margin-left: $basic-spacing-mini;
+    }
+  }
   &-icon {
     display: flex;
     align-items: center;
@@ -681,28 +761,6 @@ $disclaimer-letter-spacing: -0.03em;
     height: var(--s-size-small);
     overflow: hidden;
     border-radius: 50%;
-  }
-
-  &:hover, &:focus, &:active, &.focusing, &.s-pressed {
-    .account-control-icon i {
-      color: var(--s-color-base-on-accent) !important;
-    }
-  }
-}
-
-.node-control {
-  &__text {
-    padding-right: calc(var(--s-basic-spacing) / 2);
-    text-align: right;
-    font-size: var(--s-font-size-extra-small);
-    letter-spacing: var(--s-letter-spacing-small);
-    text-transform: none;
-  }
-  &-title {
-    font-variation-settings: "wght" 800;
-  }
-  &-network {
-    color: var(--s-color-base-content-tertiary);
   }
 }
 
@@ -718,25 +776,27 @@ $disclaimer-letter-spacing: -0.03em;
     font-size: 15px;
     line-height: 16px;
     margin-right: $basic-spacing;
-    font-feature-settings: var(--s-font-feature-settings-singleline);
     white-space: nowrap;
   }
 
   &__image {
     width: $sora-logo-width;
     height: $sora-logo-height;
-    background-image: url('~@/assets/img/sora-logo.svg');
-    background-size: cover;
   }
 }
 
 @include large-mobile {
+  $border-image-light: linear-gradient(#FAF4F8, #D5CDD0, #FAF4F8) 30;
+  $border-image-dark: linear-gradient(180deg, rgba(36, 2, 65, 0) 0%, rgba(36, 2, 65, 0.5) 50.45%, rgba(36, 2, 65, 0) 100%) 30;
   .app-sidebar {
     overflow-y: auto;
     margin-right: 0;
-    width: $sidebar-width;
-    border-right: 1px solid #e5dce0 !important;
-    border-image: linear-gradient(#FAF4F8, #D5CDD0, #FAF4F8) 30;
+    width: auto;
+    border-right: 1px solid;
+    border-image: $border-image-light;
+    [design-system-theme="dark"] & {
+      border-image: $border-image-dark;
+    }
   }
   .menu .menu-link-container {
     display: block;
@@ -745,17 +805,26 @@ $disclaimer-letter-spacing: -0.03em;
 
 @include tablet {
   .polkaswap-logo {
-    margin-top: $basic-spacing-small;
     margin-bottom: 0;
-    width: 165px;
-    height: 44px;
-    background-image: url('~@/assets/img/polkaswap-logo.svg');
+    width: 172px;
+    height: 46px;
+    background-image: none;
+    &--tablet {
+      visibility: visible;
+    }
   }
   .app-footer {
     flex-direction: row;
+    padding-right: 22px;
+    padding-bottom: 20px;
     .app-disclaimer {
       padding-right: $inner-spacing-large;
     }
+  }
+}
+@media screen and (max-width: 460px) {
+  .app-body {
+    margin-left: -10px;
   }
 }
 </style>

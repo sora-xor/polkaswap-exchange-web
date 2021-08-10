@@ -1,12 +1,6 @@
 <template>
   <div class="history-container">
-    <s-card
-      v-lottie-loader="{ loading: parentLoading }"
-      class="history-content"
-      border-radius="medium"
-      shadow="always"
-      primary
-    >
+    <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="always" primary>
       <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
         <!-- <s-button
           class="base-title_settings"
@@ -26,16 +20,15 @@
           <s-input
             v-model="query"
             :placeholder="t('bridgeHistory.filterPlaceholder')"
-            prefix="el-icon-search"
-            size="medium"
-            border-radius="mini"
+            prefix="s-icon-search-16"
+            size="big"
           >
             <template #suffix v-if="query">
               <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleResetSearch" />
             </template>
           </s-input>
         </s-form-item>
-        <div v-lottie-loader="{ loading }" class="history-items">
+        <div v-loading="loading" class="history-items">
           <template v-if="hasHistory">
             <div
               class="history-item"
@@ -71,8 +64,6 @@
       <s-button
         v-if="!restored"
         class="s-button--restore s-typography-button--large"
-        icon="circle-plus-16"
-        icon-position="right"
         :disabled="loading"
         @click="handleRestoreHistory"
       >
@@ -83,7 +74,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { RegisteredAccountAsset, Operation, isBridgeOperation, BridgeHistory, CodecString, FPNumber } from '@sora-substrate/util'
 
@@ -277,11 +268,15 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 .history {
   &-container {
     @include bridge-container;
+    .el-card .el-card__body .history-form {
+      padding: 0 $inner-spacing-mini;
+    }
+  }
+  &-item-title {
+    font-weight: 600;
+    letter-spacing: var(--s-letter-spacing-small);
   }
   &-content {
-    .el-card__body {
-      padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
-    }
     .el-pagination {
       .btn {
         &-prev,
@@ -326,7 +321,7 @@ $history-item-top-border-height: 1px;
     @include bridge-content;
   }
   &-items {
-    height: #{$history-item-height * $page-amount};
+    min-height: #{$history-item-height * $page-amount};
   }
   &-empty {
     text-align: center;
@@ -336,9 +331,11 @@ $history-item-top-border-height: 1px;
 @include search-item('history--search');
 .history-item {
   display: flex;
-  height: $history-item-height;
-  padding: #{$inner-spacing-mini / 2 + $history-item-top-border-height} $history-item-horizontal-space $inner-spacing-mini;
-  border-radius: var(--s-border-radius-mini);
+  margin-right: -#{$inner-spacing-small};
+  margin-left: -#{$inner-spacing-small};
+  min-height: $history-item-height;
+  padding: $inner-spacing-mini $inner-spacing-big;
+  border-radius: var(--s-border-radius-small);
 
   &:not(:first-child) {
     position: relative;
@@ -359,9 +356,6 @@ $history-item-top-border-height: 1px;
   &:hover {
     background-color: var(--s-color-base-background-hover);
     cursor: pointer;
-    &:before, & + .history-item::before {
-      width: 100%;
-    }
   }
   &-info {
     font-size: var(--s-font-size-mini);
@@ -372,6 +366,7 @@ $history-item-top-border-height: 1px;
   }
   &-title {
     line-height: var(--s-line-height-big);
+    word-break: break-all;
     .s-icon {
       &-sora, &-eth {
         position: relative;

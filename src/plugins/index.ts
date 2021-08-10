@@ -1,2 +1,2 @@
 import './wallet'
-import './soramitsuUI'
+import './soramitsuUI' // to override $notify in vue prototype

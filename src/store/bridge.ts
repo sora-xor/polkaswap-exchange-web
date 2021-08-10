@@ -19,14 +19,13 @@ import {
   CodecString
 } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { Transaction } from 'web3-core'
-
 import { bridgeApi } from '@/utils/bridge'
 import { STATES } from '@/utils/fsm'
-import web3Util, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/web3-util'
+import ethersUtil, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/ethers-util'
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions'
 import { delay, isEthereumAddress } from '@/utils'
 import { EthereumGasLimits, MaxUint256, ZeroStringValue } from '@/consts'
+import { ethers } from 'ethers'
 
 const SORA_REQUESTS_TIMEOUT = 5 * 1000
 
@@ -70,40 +69,54 @@ const types = flow(
 ])
 
 async function waitForApprovedRequest (hash: string): Promise<BridgeApprovedRequest> {
-  await delay(SORA_REQUESTS_TIMEOUT)
   const approvedRequest = await bridgeApi.getApprovedRequest(hash)
   if (approvedRequest) {
     return approvedRequest
   }
   const request = await bridgeApi.getRequest(hash)
-  if (!request) {
-    return await waitForApprovedRequest(hash)
-  }
-  if ([BridgeTxStatus.Failed, BridgeTxStatus.Frozen].includes(request.status)) {
+
+  if (request && [BridgeTxStatus.Failed, BridgeTxStatus.Frozen].includes(request.status)) {
     // Set SORA_REJECTED
     throw new Error('Transaction was failed or canceled')
   }
+
+  await delay(SORA_REQUESTS_TIMEOUT)
   return await waitForApprovedRequest(hash)
   // Sora Pending
 }
 
-async function waitForEvmTransactionStatus (hash: string): Promise<Transaction> {
-  const web3 = await web3Util.getInstance()
-  const initialTx = await web3.eth.getTransaction(hash)
-  const blocksToWait = 5
-  if (!initialTx.blockNumber) {
-    await delay(SORA_REQUESTS_TIMEOUT)
-    return waitForEvmTransactionStatus(hash)
-  } else {
-    const latestBlock = await web3.eth.getBlockNumber()
-    const blockDiff = latestBlock - initialTx.blockNumber
-    if (blockDiff >= blocksToWait) {
-      const currentTx = await web3.eth.getTransaction(hash)
-      if (currentTx.blockNumber) return currentTx
-      throw new Error(`Transaction (${hash}) does not exist / ended up as uncle block`)
-    } else {
-      await delay(SORA_REQUESTS_TIMEOUT)
-      return waitForEvmTransactionStatus(hash)
+async function waitForEvmTransactionStatus (
+  hash: string,
+  replaceCallback: (hash: string) => any,
+  cancelCallback: (hash: string) => any
+) {
+  const ethersInstance = await ethersUtil.getEthersInstance()
+  try {
+    const confirmations = 5
+    const timeout = 0
+    const currentBlock = await ethersInstance.getBlockNumber()
+    const blockOffset = currentBlock - 20
+    const { data, from, nonce, to, value } = await ethersInstance.getTransaction(hash)
+    await ethersInstance._waitForTransaction(
+      hash,
+      confirmations,
+      timeout,
+      {
+        data,
+        from,
+        nonce,
+        to: to ?? '',
+        value,
+        startBlock: blockOffset
+      }
+    )
+  } catch (error) {
+    if (error.code === ethers.errors.TRANSACTION_REPLACED) {
+      if (error.reason === 'repriced' || error.reason === 'replaced') {
+        replaceCallback(error.replacement.hash)
+      } else if (error.reason === 'canceled') {
+        cancelCallback(error.replacement.hash)
+      }
     }
   }
 }
@@ -120,11 +133,10 @@ interface EthLogData {
 }
 const topic = '0x0ce781a18c10c8289803c7c4cfd532d797113c4b41c9701ffad7d0a632ac555b'
 async function getEthUserTXs (contracts: Array<string>): Promise<Array<EthLogData>> {
-  const web3 = await web3Util.getInstance()
-  const getLogs = (address: string) => web3.eth.getPastLogs({
+  const ethersInstance = await ethersUtil.getEthersInstance()
+  const getLogs = (address: string) => ethersInstance.getLogs({
     topics: [topic],
     fromBlock: 8371261,
-    toBlock: web3.eth.defaultBlock,
     address
   })
   const logs = flatten(await Promise.all(contracts.map(contract => getLogs(contract))))
@@ -247,6 +259,9 @@ const getters = {
   },
   restored (state) {
     return state.restored
+  },
+  isTxEvmAccount (state, getters, rootState, rootGetters) {
+    return !getters.historyItem?.to || getters.historyItem.to === rootGetters['web3/evmAddress']
   }
 }
 
@@ -363,16 +378,9 @@ const actions = {
   setSoraToEvm ({ commit }, isSoraToEvm: boolean) {
     commit(types.SET_SORA_TO_EVM, isSoraToEvm)
   },
-  setAssetAddress ({ commit, getters, rootGetters }, address?: string) {
-    const updateBalance = (balance) => commit(types.SET_ASSET_BALANCE, balance)
-
+  setAssetAddress ({ commit, dispatch }, address?: string) {
     commit(types.SET_ASSET_ADDRESS, address)
-
-    balanceSubscriptions.remove('asset', { updateBalance })
-
-    if (rootGetters.isLoggedIn && getters.asset?.address && !(getters.asset.address in rootGetters.accountAssetsAddressTable)) {
-      balanceSubscriptions.add('asset', { updateBalance, token: getters.asset })
-    }
+    dispatch('updateBalanceSubscription')
   },
   setAmount ({ commit }, amount: string) {
     commit(types.SET_AMOUNT, amount)
@@ -418,6 +426,7 @@ const actions = {
     if (!withAddress) {
       dispatch('setAssetAddress', '')
     }
+    dispatch('setAmount', '')
     dispatch('setSoraToEvm', true)
     dispatch('setTransactionConfirm', false)
     dispatch('setCurrentTransactionState', STATES.INITIAL)
@@ -428,6 +437,15 @@ const actions = {
   },
   resetBalanceSubscription ({ commit }) {
     balanceSubscriptions.remove('asset', { updateBalance: balance => commit(types.SET_ASSET_BALANCE, balance) })
+  },
+  updateBalanceSubscription ({ commit, getters, rootGetters }) {
+    const updateBalance = (balance) => commit(types.SET_ASSET_BALANCE, balance)
+
+    balanceSubscriptions.remove('asset', { updateBalance })
+
+    if (rootGetters.isLoggedIn && getters.asset?.address && !(getters.asset.address in rootGetters.accountAssetsAddressTable)) {
+      balanceSubscriptions.add('asset', { updateBalance, token: getters.asset })
+    }
   },
   async getHistory ({ commit }) {
     commit(types.GET_HISTORY_REQUEST)
@@ -484,7 +502,8 @@ const actions = {
             hash: transaction.hash,
             ethereumHash: ethLogData ? ethLogData.ethHash : '',
             transactionState: ethLogData ? STATES.EVM_COMMITED : STATES.EVM_REJECTED,
-            externalNetwork: BridgeNetworks.ETH_NETWORK_ID
+            externalNetwork: BridgeNetworks.ETH_NETWORK_ID,
+            to: transaction.to
           })
         }
       })
@@ -535,13 +554,13 @@ const actions = {
     }
     commit(types.GET_EVM_NETWORK_FEE_REQUEST)
     try {
-      const web3 = await web3Util.getInstance()
-      const gasPrice = +(await web3.eth.getGasPrice())
+      const ethersInstance = await ethersUtil.getEthersInstance()
+      const gasPrice = await (await ethersInstance.getGasPrice()).toNumber()
       const registeredAssets = rootGetters.whitelist
       const knownAsset = KnownAssets.get(getters.asset.address) || (registeredAssets[getters.asset.address] && getters.asset.symbol === 'ETH')
       const gasLimit = EthereumGasLimits[+getters.isSoraToEvm][knownAsset ? getters.asset.symbol : KnownBridgeAsset.Other]
       const fee = gasPrice * gasLimit
-      const fpFee = new FPNumber(web3.utils.fromWei(`${fee}`, 'ether')).toCodecString()
+      const fpFee = new FPNumber(ethers.utils.formatEther(fee)).toCodecString()
       commit(types.GET_EVM_NETWORK_FEE_SUCCESS, fpFee)
     } catch (error) {
       console.error(error)
@@ -564,7 +583,8 @@ const actions = {
       transactionState: STATES.INITIAL,
       soraNetworkFee: getters.soraNetworkFee.toString(),
       ethereumNetworkFee: getters.evmNetworkFee,
-      externalNetwork: rootGetters['web3/evmNetwork']
+      externalNetwork: rootGetters['web3/evmNetwork'],
+      to: rootGetters['web3/evmAddress']
     }))
     return getters.historyItem
   },
@@ -596,12 +616,27 @@ const actions = {
       throw error
     }
   },
+  async sendSoraTransactionSoraToEvm ({ commit }, { txId }) {
+    if (!txId) throw new Error('TX ID cannot be empty!')
+    commit(types.SEND_SORA_TRANSACTION_SORA_EVM_REQUEST)
+    try {
+      const tx = await waitForExtrinsicFinalization(txId)
+      commit(types.SEND_SORA_TRANSACTION_SORA_EVM_SUCCESS)
+      if (tx.hash) {
+        await waitForApprovedRequest(tx.hash)
+      }
+      return tx
+    } catch (error) {
+      commit(types.SEND_SORA_TRANSACTION_SORA_EVM_FAILURE)
+      throw error
+    }
+  },
   async signEvmTransactionSoraToEvm ({ commit, getters, rootGetters, dispatch }, { hash }) {
     if (!hash) throw new Error('TX ID cannot be empty!')
     checkEvmNetwork(rootGetters)
     // TODO: Check the status of TX if it was already sent
     // if (!!getters.ethereumTransactionHash) {
-    //   const web3 = await web3Util.getInstance()
+    //   const ethersInstance = await ethersUtil.getEthersInstance()
     //   const currentTx = await web3.eth.getTransaction(hash)
     //   if (currentTx.blockNumber) {
     //     commit(types.SEND_ETH_TRANSACTION_SORA_ETH_SUCCESS)
@@ -616,10 +651,24 @@ const actions = {
       return
     }
     commit(types.SIGN_EVM_TRANSACTION_SORA_EVM_REQUEST)
+    if (getters.evmTransactionHash) {
+      commit(types.SIGN_EVM_TRANSACTION_SORA_EVM_SUCCESS)
+      return getters.evmTransactionHash
+    }
 
     try {
       const request = await waitForApprovedRequest(hash) // If it causes an error, then -> catch -> SORA_REJECTED
-      const web3 = await web3Util.getInstance()
+
+      // update history item, if it hasn't 'to' field
+      if (!getters.historyItem.to) {
+        const tx = { ...getters.historyItem, to: request.to }
+        dispatch('updateHistoryParams', { tx })
+      }
+      if (!getters.isTxEvmAccount) {
+        throw new Error(`Change account in MetaMask to ${request.to}`)
+      }
+
+      const ethersInstance = await ethersUtil.getEthersInstance()
 
       const symbol = getters.asset.symbol
       const evmAccount = rootGetters['web3/evmAddress']
@@ -633,9 +682,12 @@ const actions = {
       }
       const contract = contractMap[bridgeAsset]
       const jsonInterface = contract[OtherContractType.Bridge]?.abi ?? contract.abi
-      const contractInstance = new web3.eth.Contract(jsonInterface)
       const contractAddress = rootGetters['web3/contractAddress'](bridgeAsset)
-      contractInstance.options.address = contractAddress
+      const contractInstance = new ethers.Contract(
+        contractAddress,
+        jsonInterface,
+        ethersInstance.getSigner()
+      )
       const method = isEthereumChain
         ? 'mintTokensByPeers'
         : request.currencyType === BridgeCurrencyType.TokenAddress
@@ -664,44 +716,39 @@ const actions = {
         ])
       )
       checkEvmNetwork(rootGetters)
-      const contractMethod = contractInstance.methods[method](...methodArgs)
-      const gas = await contractMethod.estimateGas()
-      return new Promise((resolve, reject) => {
-        contractMethod.send({ gas, from: evmAccount })
-          .on('transactionHash', hash => {
-            commit(types.SIGN_EVM_TRANSACTION_SORA_EVM_SUCCESS)
-            resolve(hash)
-          })
-          .on('error', (error) => reject(error))
-      })
+      const tx: ethers.providers.TransactionResponse = await contractInstance[method](...methodArgs)
+      commit(types.SIGN_EVM_TRANSACTION_SORA_EVM_SUCCESS)
+      return tx.hash
     } catch (error) {
       commit(types.SIGN_EVM_TRANSACTION_SORA_EVM_FAILURE)
       throw error
     }
   },
-  async sendSoraTransactionSoraToEvm ({ commit }, { txId }) {
-    if (!txId) throw new Error('TX ID cannot be empty!')
-    commit(types.SEND_SORA_TRANSACTION_SORA_EVM_REQUEST)
-    try {
-      const tx = await waitForExtrinsicFinalization(txId)
-      commit(types.SEND_SORA_TRANSACTION_SORA_EVM_SUCCESS)
-      return tx.hash
-    } catch (error) {
-      commit(types.SEND_SORA_TRANSACTION_SORA_EVM_FAILURE)
-      throw error
-    }
-  },
-  async sendEvmTransactionSoraToEvm ({ commit }, { ethereumHash }) {
+  async sendEvmTransactionSoraToEvm ({ commit, getters, dispatch }, { ethereumHash }) {
+    // TODO: Change args to tx due to new data flow
     if (!ethereumHash) throw new Error('Hash cannot be empty!')
     commit(types.SEND_EVM_TRANSACTION_SORA_EVM_REQUEST)
     try {
-      await waitForEvmTransactionStatus(ethereumHash)
+      await waitForEvmTransactionStatus(
+        ethereumHash,
+        (hash: string) => {
+          const history = getters.historyItem
+          history.ethereumHash = hash
+          dispatch('updateHistoryParams', { tx: history })
+          dispatch('setEvmTransactionHash', { hash })
+          dispatch('sendEvmTransactionSoraToEvm', { ethereumHash: hash })
+        },
+        () => {
+          throw new Error('The transaction was canceled by the user')
+        }
+      )
       commit(types.SEND_EVM_TRANSACTION_SORA_EVM_SUCCESS)
     } catch (error) {
       commit(types.SEND_EVM_TRANSACTION_SORA_EVM_FAILURE)
       throw error
     }
   },
+
   async signEvmTransactionEvmToSora ({ commit, getters, rootGetters, dispatch }) {
     if (!getters.asset || !getters.asset.address || !getters.amount || getters.isSoraToEvm) {
       return
@@ -709,7 +756,7 @@ const actions = {
     checkEvmNetwork(rootGetters)
     // TODO: Check the status of TX if it was already sent
     // if (!!getters.ethereumTransactionHash) {
-    //   const web3 = await web3Util.getInstance()
+    //   const ethersInstance = await ethersUtil.getEthersInstance()
     //   const currentTx = await web3.eth.getTransaction(hash)
     //   if (currentTx.blockNumber) {
     //     commit(types.SEND_ETH_TRANSACTION_ETH_SORA_SUCCESS)
@@ -725,12 +772,12 @@ const actions = {
     try {
       const contract = rootGetters['web3/contractAbi'](KnownBridgeAsset.Other)
       const evmAccount = rootGetters['web3/evmAddress']
-      const isExternalAccountConnected = await web3Util.checkAccountIsConnected(evmAccount)
+      const isExternalAccountConnected = await ethersUtil.checkAccountIsConnected(evmAccount)
       if (!isExternalAccountConnected) {
         await dispatch('web3/disconnectExternalAccount', {}, { root: true })
         throw new Error('Connect account in Metamask')
       }
-      const web3 = await web3Util.getInstance()
+      const ethersInstance = await ethersUtil.getEthersInstance()
       const contractAddress = rootGetters['web3/contractAddress'](KnownBridgeAsset.Other)
       const isNativeEvmToken = isEthereumAddress(asset.externalAddress)
 
@@ -738,30 +785,37 @@ const actions = {
       if (!isNativeEvmToken) {
         const allowance = await dispatch('web3/getAllowanceByEvmAddress', { address: asset.externalAddress }, { root: true })
         if (FPNumber.lte(new FPNumber(allowance), new FPNumber(getters.amount))) {
-          const tokenInstance = new web3.eth.Contract(contract[OtherContractType.ERC20].abi)
-          tokenInstance.options.address = asset.externalAddress
+          const tokenInstance = new ethers.Contract(
+            asset.externalAddress,
+            contract[OtherContractType.ERC20].abi,
+            ethersInstance.getSigner()
+          )
           const methodArgs = [
             contractAddress, // address spender
             MaxUint256 // uint256 amount
           ]
           checkEvmNetwork(rootGetters)
-          const approveMethod = tokenInstance.methods.approve(...methodArgs)
-          await approveMethod.send({ from: evmAccount })
+          const tx = await tokenInstance.approve(...methodArgs)
+          await tx.wait(2)
         }
       }
-
       const soraAccountAddress = rootGetters.account.address
-      const accountId = await web3Util.accountAddressToHex(soraAccountAddress)
-      const contractInstance = new web3.eth.Contract(contract[OtherContractType.Bridge].abi)
-      contractInstance.options.address = contractAddress
+      const accountId = await ethersUtil.accountAddressToHex(soraAccountAddress)
+      const contractInstance = new ethers.Contract(
+        contractAddress,
+        contract[OtherContractType.Bridge].abi,
+        ethersInstance.getSigner()
+      )
 
       const decimals = isNativeEvmToken
         ? undefined
         : await (async () => {
-          const tokenInstance = new web3.eth.Contract(ABI.balance as any)
-          tokenInstance.options.address = asset.externalAddress
-          const decimalsMethod = tokenInstance.methods.decimals()
-          const decimals = await decimalsMethod.call()
+          const tokenInstance = new ethers.Contract(
+            asset.externalAddress,
+            ABI.balance,
+            ethersInstance.getSigner()
+          )
+          const decimals = await tokenInstance.decimals()
 
           return +decimals
         })()
@@ -776,32 +830,35 @@ const actions = {
         amount, // uint256 amount
         asset.externalAddress // address tokenAddress
       ]
-      const contractMethod = contractInstance.methods[method](...methodArgs)
 
-      const sendArgs = isNativeEvmToken
-        ? { from: evmAccount, value: amount }
-        : { from: evmAccount }
-
+      const overrides = isNativeEvmToken ? { value: amount } : {}
       checkEvmNetwork(rootGetters)
-      return new Promise((resolve, reject) => {
-        contractMethod.send(sendArgs)
-          .on('transactionHash', hash => {
-            commit(types.SIGN_EVM_TRANSACTION_EVM_SORA_SUCCESS)
-            resolve(hash)
-          })
-          .on('error', (error) => reject(error))
-      })
+      const tx: ethers.providers.TransactionResponse = await contractInstance[method](...methodArgs, overrides)
+      commit(types.SIGN_EVM_TRANSACTION_EVM_SORA_SUCCESS)
+      return tx.hash
     } catch (error) {
       commit(types.SIGN_EVM_TRANSACTION_EVM_SORA_FAILURE)
       console.error(error)
       throw error
     }
   },
-  async sendEvmTransactionEvmToSora ({ commit }, { ethereumHash }) {
+  async sendEvmTransactionEvmToSora ({ commit, getters, dispatch }, { ethereumHash }) {
     if (!ethereumHash) throw new Error('Hash cannot be empty!')
     commit(types.SEND_EVM_TRANSACTION_EVM_SORA_REQUEST)
     try {
-      await waitForEvmTransactionStatus(ethereumHash)
+      await waitForEvmTransactionStatus(
+        ethereumHash,
+        (hash: string) => {
+          const history = getters.historyItem
+          history.ethereumHash = hash
+          dispatch('updateHistoryParams', { tx: history })
+          dispatch('setEvmTransactionHash', { hash })
+          dispatch('sendEvmTransactionSoraToEvm', { ethereumHash: hash })
+        },
+        () => {
+          throw new Error('The transaction was canceled by the user')
+        }
+      )
       commit(types.SEND_EVM_TRANSACTION_EVM_SORA_SUCCESS)
     } catch (error) {
       commit(types.SEND_EVM_TRANSACTION_EVM_SORA_FAILURE)

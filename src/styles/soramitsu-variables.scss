@@ -25,7 +25,7 @@ $s-color-base-on-accent: #FFFFFF;
 // Utility colors
 $s-color-utility-body: #F7F3F4;
 $s-color-utility-surface: #FDF7FB;
-$s-color-utility-overlay: rgba(0, 0, 0, 0.45);
+$s-color-utility-overlay: rgba(42, 23, 31, 0.1);
 // Status colors
 $s-color-status-success: #34AD87;
 $s-color-status-warning: #479AEF;
@@ -33,6 +33,9 @@ $s-color-status-error: #F754A3;
 $s-color-status-success-background: #B9EBDB;
 $s-color-status-warning-background: #C6E2FF;
 $s-color-status-error-background: #FFD8EB;
+// Fiat colors
+$s-color-fiat-value: rgba(71, 154, 239, 1) !default;
+$s-color-rewards: #c0e2ff !default;
 // Sizes
 $s-size-mini: 24px;
 $s-size-small: 32px;
@@ -51,6 +54,10 @@ $s-border-radius-mini: $s-border-radius-base;
 $s-border-radius-small: $s-border-radius-base * 1.5;
 $s-border-radius-medium: $s-border-radius-base * 2;
 $s-border-radius-big: $s-border-radius-base * 3;
+// Fonts paths
+$s-font-family-default-path: '~@soramitsu/soramitsu-js-ui/lib/assets/fonts/Sora-VariableFont_wght.ttf' !default;
+$s-font-family-mono-path: '~@soramitsu/soramitsu-js-ui/lib/assets/fonts/JetBrainsMono-Regular.woff' !default;
+$s-font-family-icons-path: '~@/assets/fonts/polkaswap_icons.ttf' !default;
 // Font Feature Settings
 $s-font-feature-settings-common: normal;
 $s-font-feature-settings-heading: normal;
@@ -63,9 +70,12 @@ $s-font-feature-settings-button: normal;
 // Transition
 $s-transition-default: all 0.125s ease-in-out;
 
+@import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";
+
 :root {
   --s-color-brand-day: #{$s-color-brand-day};
   --s-transition-default: #{$s-transition-default};
+  // Fiat colors
+  --s-color-fiat-value: #{$s-color-fiat-value};
+  --s-color-rewards: #{$s-color-rewards};
 }
-
-@import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";

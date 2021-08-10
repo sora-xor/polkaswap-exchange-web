@@ -3,7 +3,8 @@ import { Action } from 'vuex-class'
 
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
-import web3Util from '@/utils/web3-util'
+import ethersUtil from '@/utils/ethers-util'
+import { ethers } from 'ethers'
 
 @Component
 export default class BridgeMixin extends Mixins(LoadingMixin, WalletConnectMixin) {
@@ -13,14 +14,14 @@ export default class BridgeMixin extends Mixins(LoadingMixin, WalletConnectMixin
   @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn
 
   private unwatchEthereum!: any
-  blockHeadersSubscriber
+  blockHeadersSubscriber: ethers.providers.Web3Provider | undefined
 
   async mounted (): Promise<void> {
     await this.setEvmNetworkType()
     await this.syncExternalAccountWithAppState()
     this.getEvmBalance()
     this.withApi(async () => {
-      this.unwatchEthereum = await web3Util.watchEthereum({
+      this.unwatchEthereum = await ethersUtil.watchEthereum({
         onAccountChange: (addressList: string[]) => {
           if (addressList.length) {
             this.switchExternalAccount({ address: addressList[0] })
@@ -33,7 +34,7 @@ export default class BridgeMixin extends Mixins(LoadingMixin, WalletConnectMixin
           this.setEvmNetworkType(networkId)
           this.getEvmNetworkFee()
           this.getRegisteredAssets()
-          this.updateExternalBalances()
+          this.getEvmBalance() // update only evm balance because assets balances updated during getRegisteredAssets call
         },
         onDisconnect: (code: number, reason: string) => {
           this.disconnectExternalAccount()
@@ -59,12 +60,10 @@ export default class BridgeMixin extends Mixins(LoadingMixin, WalletConnectMixin
     try {
       await this.unsubscribeEvmBlockHeaders()
 
-      const web3 = await web3Util.getInstance()
+      const ethersInstance = await ethersUtil.getEthersInstance()
 
-      this.blockHeadersSubscriber = web3.eth.subscribe('newBlockHeaders', (error) => {
-        if (!error) {
-          this.updateExternalBalances()
-        }
+      this.blockHeadersSubscriber = ethersInstance.on('block', (blockNumber) => {
+        this.updateExternalBalances()
       })
     } catch (error) {
       console.error(error)
@@ -75,13 +74,12 @@ export default class BridgeMixin extends Mixins(LoadingMixin, WalletConnectMixin
     return new Promise((resolve, reject) => {
       if (!this.blockHeadersSubscriber) return resolve()
 
-      this.blockHeadersSubscriber.unsubscribe((error) => {
-        if (error) {
-          reject(error)
-        } else {
-          resolve()
-        }
-      })
+      try {
+        this.blockHeadersSubscriber.off('block')
+        resolve()
+      } catch (error) {
+        reject(error)
+      }
     })
   }
 }

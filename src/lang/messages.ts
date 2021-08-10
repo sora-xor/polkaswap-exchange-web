@@ -2,7 +2,7 @@ import { en as walletEn } from '@soramitsu/soraneo-wallet-web'
 import { Operation, TransactionStatus, RewardingEvents } from '@sora-substrate/util'
 
 import { PageNames, NetworkTypes } from '../consts'
-import { EvmNetworkType } from '../utils/web3-util'
+import { EvmNetworkType } from '../utils/ethers-util'
 
 export default {
   // Wallet project keys
@@ -22,8 +22,12 @@ export default {
   selectNodeText: 'Select node',
   bridgeText: 'Bridge',
   comingSoonText: 'Coming Soon',
-  disclaimer: 'Disclaimer: This website is maintained by the @:soraText community. Before continuing to use this website, please review the @:polkaswapFaqLink and documentation, which includes a detailed explanation on how Polkaswap works, as well as the @:footerMenu.memorandum, and @:(footerMenu.privacy). These documents are crucial to a secure and positive user experience. By using Polkaswap, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of Polkaswap in your legal jurisdiction; 2) your understanding that the current version of Polkaswap is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using Polkaswap, including, but not limited to, the risk of losing tokens. Once more, please do not continue without reading the FAQ, <span>@:footerMenu.memorandum</span><a href="@:helpDialog.termsOfServiceLink" target="_blank" rel="nofollow noopener" class="link link--mobile">@:footerMenu.memorandum</a>, and <span>@:footerMenu.privacy</span><a href="@:helpDialog.privacyPolicyLink" target="_blank" rel="nofollow noopener" class="link link--mobile">@:footerMenu.privacy</a>!',
-  polkaswapFaqLink: '<a class="link" href="https://wiki.sora.org/polkaswap/polkaswap-faq" target="_blank" rel="nofollow noopener" title="Polkaswap FAQ">Polkaswap FAQ</a>',
+  memorandum: 'Polkaswap Memorandum and Terms of Services',
+  memorandumLink: '<a href="@:helpDialog.termsOfServiceLink" target="_blank" rel="nofollow noopener" class="link" title="@:memorandum">@:memorandum</a>',
+  privacyLink: '<a href="@:helpDialog.privacyPolicyLink" target="_blank" rel="nofollow noopener" class="link" title="@:helpDialog.privacyPolicy">@:helpDialog.privacyPolicy</a>',
+  FAQ: 'Polkaswap FAQ',
+  polkaswapFaqLink: '<a class="link" href="https://wiki.sora.org/polkaswap/polkaswap-faq" target="_blank" rel="nofollow noopener" title="@:FAQ">@:FAQ</a>',
+  disclaimer: '<span class="app-disclaimer__title">Disclaimer</span>: This website is maintained by the @:soraText community. Before continuing to use this website, please review the @:polkaswapFaqLink and documentation, which includes a detailed explanation on how Polkaswap works, as well as the @:memorandumLink, and @:(privacyLink). These documents are crucial to a secure and positive user experience. By using Polkaswap, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of Polkaswap in your legal jurisdiction; 2) your understanding that the current version of Polkaswap is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using Polkaswap, including, but not limited to, the risk of losing tokens. Once more, please do not continue without reading the @:polkaswapFaqLink, @:memorandumLink, and @:privacyLink!',
   poweredBy: 'Powered by',
   confirmText: 'Confirm',
   confirmTransactionText: 'Confirm transaction in {direction}',
@@ -62,7 +66,8 @@ export default {
     [PageNames.About]: 'About',
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
-    [PageNames.CreatePair]: 'Create Pair'
+    [PageNames.CreatePair]: 'Create Pair',
+    [PageNames.Tokens]: 'Tokens'
   },
   social: {
     twitter: 'Twitter',
@@ -74,9 +79,7 @@ export default {
   footerMenu: {
     faucet: 'Faucet',
     github: 'GitHub',
-    sorawiki: '@:soraText Wiki',
-    memorandum: 'Polkaswap Memorandum and Terms of Services',
-    privacy: 'Privacy Policy'
+    sorawiki: '@:soraText Wiki'
   },
   helpDialog: {
     title: 'Help',
@@ -91,12 +94,12 @@ export default {
     title: 'About',
     learnMore: 'Learn more',
     network: {
-      title: 'What is @:soraText?',
+      title: 'What is @:(soraText)?',
       description: 'Polkaswap is built on top of the @:soraText Network, and the @:soraText token (XOR) is used for gas/fees and liquidity provision on Polkaswap. @:soraText Network allows for reduced fees, faster transactions and simpler consensus finalization and is focused on delivering interoperability across other blockchain ecosystems like @:(ethereumText).'
     },
     polkadot: {
       title: 'What is polkadot{.js}?',
-      description: 'Polkadot{.js} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including @:soraText, Polkadot and Kusama. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized.'
+      description: 'Polkadot{.js} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including @:(soraText), Polkadot and Kusama. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized.'
     }
   },
   node: {
@@ -104,6 +107,9 @@ export default {
       connection: 'An error occurred while connecting to the node\n{address}\n',
       network: 'The node\n{address}\n is from the another network\n',
       existing: 'This node is already added: \'{title}\'\n'
+    },
+    warnings: {
+      disconnect: 'Сonnection to the node has been lost. Reconnecting...'
     },
     messages: {
       connected: 'Connection estabilished with node\n{address}\n',
@@ -113,6 +119,7 @@ export default {
   selectNodeDialog: {
     title: '@:soraText Network node selection',
     addNode: 'Add custom node',
+    updateNode: 'Update node',
     customNode: 'Custom node',
     howToSetupOwnNode: 'How to setup your own @:soraText node',
     select: 'Select',
@@ -125,6 +132,9 @@ export default {
       incorrectProtocol: 'Address should starts from ws:// or wss://',
       incorrectAddress: 'Incorrect address'
     }
+  },
+  selectLanguageDialog: {
+    title: 'Language'
   },
   buttons: {
     max: 'MAX',
@@ -254,12 +264,13 @@ export default {
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
     insufficientLiquidity: 'Insufficient liquidity',
     confirmSwap: 'Confirm swap',
-    swapOutputMessage: 'Output is estimated. You will receive <span class="min-received-label">at least</span> {transactionValue} or the transaction will revert.',
-    rewardsForSwap: 'PSWAP Strategic Rewards'
+    swapOutputMessage: 'Output is estimated. You will receive at least {transactionValue} or the transaction will revert.',
+    rewardsForSwap: 'PSWAP Strategic Rewards',
+    swapInputMessage: 'Input is estimated. You will sell maximum {transactionValue} or the transaction will revert.'
   },
   pool: {
     connectWallet: '@:connectWalletText',
-    connectToWallet: 'Connect to a wallet to add and view your liquidity.',
+    connectToWallet: 'Connect an account to view your liquidity.',
     liquidityNotFound: 'No liquidity found.',
     addLiquidity: 'Add liquidity',
     removeLiquidity: 'Remove liquidity',
@@ -322,8 +333,9 @@ export default {
     buttonConfirm: '@:confirmText'
   },
   bridgeTransaction: {
-    viewHistory: 'View transaction in transactions history',
+    title: 'Bridge Transaction',
     details: '{from} for {to}',
+    expectedMetaMaskAddress: 'Expected address in MetaMask:',
     for: ' for ',
     steps: {
       step: '{step} of 2',
@@ -367,9 +379,10 @@ export default {
     confirm: '@:confirmTransactionText',
     newTransaction: 'Create new transaction',
     changeNetwork: '@:changeNetworkText',
-    connectWallet: '@:connectWalletText'
+    connectWallet: '@:connectWalletText',
+    changeAccount: '@:changeAccountText in @:metamask',
+    expectedAddress: 'Expected address in @:metamask'
   },
-  // TODO: Add moment.js (it has translation and formatting)
   months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   bridgeHistory: {
     title: 'History',
@@ -400,10 +413,10 @@ export default {
     title: 'Create a pair',
     deposit: 'Deposit',
     balance: 'Balance',
-    pricePool: 'Prices and pool share',
+    pricePool: 'Prices and fees',
     shareOfPool: 'Share of pool',
     firstPerSecond: '@:firstPerSecond',
-    firstSecondPoolTokens: '{first}-{second} Pool tokens',
+    firstSecondPoolTokens: '{first}-{second} Pool',
     connect: 'Connect wallet',
     supply: 'Supply',
     yourPosition: 'Your position',
@@ -418,7 +431,7 @@ export default {
     firstLiquidityProviderInfo: 'The ratio of tokens you add will set the price of this pool.<br/>Once you are happy with the rate click supply to review.'
   },
   confirmSupply: {
-    title: 'You will receive',
+    title: 'Your pool share will be',
     outputDescription: 'Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.',
     poolTokensBurned: '{first}-{second} Pool Tokens Burned',
     price: 'Price'
@@ -439,7 +452,14 @@ export default {
     remove: 'Remove',
     description: 'Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.',
     outputMessage: 'Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.',
-    confirmTitle: 'You will receive'
+    confirmTitle: 'You will receive',
+    shareOfPool: 'Share of pool after transaction'
+  },
+  tokens: {
+    title: 'Listed Tokens',
+    symbol: 'Symbol',
+    name: 'Name',
+    assetId: 'Asset ID'
   },
   dexSettings: {
     title: 'Transaction settings',
@@ -478,7 +498,9 @@ export default {
     networkFee: '@:networkFeeText',
     networkFeeTooltip: '@:networkFeeTooltipText',
     andText: 'and',
-    vested: 'vested',
+    forText: 'for',
+    totalVested: 'Total rewards',
+    claimableAmountDoneVesting: 'Claimable rewards',
     claiming: {
       pending: 'Claiming...',
       success: 'Claimed successfully'
@@ -514,9 +536,15 @@ export default {
     events: {
       [RewardingEvents.XorErc20]: 'XOR ERC-20',
       [RewardingEvents.SoraFarmHarvest]: '@:(soraText).farm harvest',
-      [RewardingEvents.NtfAirdrop]: 'NFT Airdrop',
+      [RewardingEvents.NftAirdrop]: 'NFT Airdrop',
       [RewardingEvents.LiquidityProvision]: 'Fees gained from liquidity provision',
-      [RewardingEvents.BuyOnBondingCurve]: 'buying from the TBC'
+      [RewardingEvents.BuyOnBondingCurve]: 'buying from the TBC',
+      [RewardingEvents.MarketMakerVolume]: 'Market Making',
+      [RewardingEvents.LiquidityProvisionFarming]: 'Farming'
+    },
+    groups: {
+      strategic: 'Strategic Rewards',
+      external: 'Rewards for the connected ethereum account'
     }
   },
   provider: {
@@ -525,7 +553,8 @@ export default {
     messages: {
       checkExtension: '{name} extension is busy, please check it',
       extensionLogin: 'Please login to your {name} extension',
-      installExtension: '{name} extension is not found. Please install it!'
+      installExtension: '{name} extension is not found. Please install it!\n\nAlready installed extension? Please reload the page',
+      reloadPage: 'Reload page'
     }
   }
 }

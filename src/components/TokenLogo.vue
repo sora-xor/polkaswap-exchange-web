@@ -5,7 +5,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import { Asset, AccountAsset, KnownAssets, Whitelist } from '@sora-substrate/util'
+import { Asset, AccountAsset, Whitelist } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { LogoSize, ObjectInit } from '@/consts'
@@ -48,6 +48,8 @@ export default class TokenLogo extends Mixins(TranslationMixin) {
 
 <style lang="scss" scoped>
 $token-background-color: var(--s-color-base-on-accent);
+// TODO: replace background color with the next one after icon color fix
+// $token-background-color: var(--s-color-base-content-tertiary);
 $default-logo: url("~@/assets/img/token-logo-default.svg");
 
 .token-logo {
@@ -64,5 +66,6 @@ $default-logo: url("~@/assets/img/token-logo-default.svg");
 @include element-size('token-logo--mini', 16px);
 @include element-size('token-logo--small', 24px);
 @include element-size('token-logo--medium', 32px);
+@include element-size('token-logo--big', var(--s-size-medium));
 @include element-size('token-logo--large', 80px);
 </style>

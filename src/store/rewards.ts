@@ -5,9 +5,10 @@ import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, CodecString } from '@sora-substrate/util'
-import web3Util from '@/utils/web3-util'
-import { RewardsAmountHeaderItem, RewardInfoGroup } from '@/types/rewards'
+import ethersUtil from '@/utils/ethers-util'
+import { RewardsAmountHeaderItem } from '@/types/rewards'
 import { groupRewardsByAssetsList } from '@/utils/rewards'
+import { ethers } from 'ethers'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -90,22 +91,16 @@ const getters = {
   transactionStepsCount (_, getters): number {
     return getters.externalRewardsSelected ? 2 : 1
   },
-  vestedRewadsGroupItem (state): RewardInfoGroup {
-    return {
-      type: 'Strategic Rewards',
-      asset: KnownAssets.get(KnownSymbols.PSWAP),
-      amount: state.vestedRewards?.limit ?? 0,
-      rewards: state.vestedRewards?.rewards ?? []
-    }
-  },
   rewardsByAssetsList (state, getters): Array<RewardsAmountHeaderItem> {
     if (!getters.rewardsAvailable) {
       return [
         {
+          asset: KnownAssets.get(KnownSymbols.PSWAP),
           symbol: KnownSymbols.PSWAP,
           amount: ''
         } as RewardsAmountHeaderItem,
         {
+          asset: KnownAssets.get(KnownSymbols.VAL),
           symbol: KnownSymbols.VAL,
           amount: ''
         } as RewardsAmountHeaderItem
@@ -232,11 +227,11 @@ const actions = {
       commit(types.SET_TRANSACTION_ERROR, false)
 
       if (externalRewardsSelected && state.transactionStep === 1) {
-        const web3 = await web3Util.getInstance()
-        const internalAddressHex = await web3Util.accountAddressToHex(internalAddress)
-        const message = web3.utils.sha3(internalAddressHex) as string
-
-        const signature = await web3.eth.personal.sign(message, externalAddress, '')
+        const ethersInstance = await ethersUtil.getEthersInstance()
+        const internalAddressHex = await ethersUtil.accountAddressToHex(internalAddress)
+        const keccakHex = ethers.utils.keccak256(internalAddressHex)
+        const message = ethers.utils.arrayify(keccakHex) // Uint8Array
+        const signature = await ethersInstance.getSigner().signMessage(message)
 
         commit(types.SET_SIGNATURE, signature)
         commit(types.SET_TRANSACTION_STEP, 2)

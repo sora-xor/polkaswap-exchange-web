@@ -1,7 +1,10 @@
 import debounce from 'lodash/debounce'
 import { Asset, AccountAsset, RegisteredAccountAsset, AccountLiquidity, KnownSymbols, FPNumber, CodecString, KnownAssets } from '@sora-substrate/util'
 import { connection, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
+import router from '@/router'
+import i18n from '@/lang'
 import storage from './storage'
+import { app } from '@/consts'
 
 const FpZeroValue = new FPNumber(0)
 
@@ -174,3 +177,23 @@ export const disconnectWallet = async (): Promise<void> => {
 }
 
 export const debouncedInputHandler = (fn: any, timeout = 500, options = { leading: true }) => debounce(fn, timeout, options)
+
+export const updateFpNumberLocale = (locale: string): void => {
+  const thousandSymbol = Number(10000).toLocaleString(locale).substring(2, 3)
+
+  if (thousandSymbol !== '0') {
+    FPNumber.DELIMITERS_CONFIG.thousand = Number(12345).toLocaleString(locale).substring(2, 3)
+  }
+
+  FPNumber.DELIMITERS_CONFIG.decimal = Number(1.2).toLocaleString(locale).substring(1, 2)
+}
+
+export const updateDocumentTitle = (to?: any) => {
+  const page = to ?? router.currentRoute
+
+  if (page && page.name && i18n.te(`pageTitle.${page.name}`)) {
+    document.title = `${i18n.t(`pageTitle.${page.name}`)} - ${app.name}`
+  } else {
+    document.title = app.name
+  }
+}

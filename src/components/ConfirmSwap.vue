@@ -21,7 +21,11 @@
         </div>
       </div>
     </div>
-    <p :class="isExchangeB ? 'transaction-message' : 'transaction-message transaction-message--min-received'" v-html="t('swap.swapOutputMessage', { transactionValue : `<span class='transaction-number'>${ formattedMinMaxReceived }</span>` })" />
+    <p
+      class="transaction-message"
+      :class="{ 'transaction-message--min-received': !isExchangeB }"
+      v-html="t(`swap.swap${isExchangeB ? 'Input' : 'Output'}Message`, { transactionValue : `<span class='transaction-number'>${ formattedMinMaxReceived }</span>` })"
+    />
     <s-divider />
     <swap-info />
     <template #footer>
@@ -113,19 +117,8 @@ export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
 
 <style lang="scss">
 .dialog--confirm-swap {
-  .transaction-message {
-    .min-received-label {
-      display: none;
-    }
-    &--min-received {
-      .min-received-label {
-        display: inline;
-      }
-    }
-  }
   .transaction-number {
     color: var(--s-color-base-content-primary);
-    font-feature-settings: $s-font-feature-settings-common;
     font-weight: 600;
     word-break: break-all;
   }
