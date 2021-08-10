@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { FormattedAmount, FontSizeRate, FontWeightRate } from '@soramitsu/soraneo-wallet-web'
+import { FormattedAmount, FormattedAmountWithFiatValue, FontSizeRate, FontWeightRate } from '@soramitsu/soraneo-wallet-web'
 
 import { InfoTooltipPosition } from '@/consts'
 
@@ -82,20 +82,22 @@ export default class InfoLine extends Vue {
     margin-top: $inner-spacing-mini * 0.5;
   }
 }
-.info-line-container {
-  border-radius: var(--s-border-radius-small);
-  margin-top: $inner-spacing-medium;
-  padding: $inner-spacing-mini 0 0;
-  width: 100%;
+.info-line {
+  &-container {
+    border-radius: var(--s-border-radius-small);
+    margin-top: $inner-spacing-medium;
+    padding: $inner-spacing-mini 0 0;
+    width: 100%;
 
-  &__title {
-    font-size: var(--s-heading6-font-size);
-    font-weight: 300;
-    line-height: var(--s-line-height-medium);
-    letter-spacing: var(--s-letter-spacing-small);
-    color: var(--s-color-base-content-secondary);
-    text-transform: uppercase;
-    margin-bottom: $inner-spacing-small;
+    &__title {
+      font-size: var(--s-heading6-font-size);
+      font-weight: 300;
+      line-height: var(--s-line-height-medium);
+      letter-spacing: var(--s-letter-spacing-small);
+      color: var(--s-color-base-content-secondary);
+      text-transform: uppercase;
+      margin-bottom: $inner-spacing-small;
+    }
   }
 }
 </style>
@@ -128,10 +130,12 @@ export default class InfoLine extends Vue {
   }
   &-content {
     display: flex;
-    flex-wrap: wrap;
     justify-content: flex-end;
     align-items: baseline;
+    flex-wrap: wrap;
     flex-grow: 1;
+    word-break: break-all;
+    text-align: right;
   }
   &-value {
     margin-left: auto;

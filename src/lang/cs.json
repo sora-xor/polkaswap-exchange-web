@@ -329,7 +329,8 @@
             "emptyAddress": "Zadejte adresu nodu, prosím",
             "incorrectProtocol": "Adresa by měla začínat ws:\/\/ nebo wss:\/\/",
             "incorrectAddress": "Nesprávná adresa"
-        }
+        },
+        "updateNode": "Aktualizovat uzel"
     },
     "buttons": {
         "max": "MAX",

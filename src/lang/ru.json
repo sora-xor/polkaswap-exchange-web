@@ -225,7 +225,7 @@
     "changeAccountText": "Сменить аккаунт",
     "connectedText": "Подключено",
     "connectWalletTextTooltip": "Подключение к сети @:soraText с помощью polkadot{.js}",
-    "selectNodeText": "Выбрать ноду",
+    "selectNodeText": "Выбрать узел",
     "bridgeText": "Мост",
     "disclaimer": "Отказ от ответственности: этот веб-сайт поддерживается @:soraText сообществом. Прежде чем продолжить использование этого веб-сайта, просмотрите @:polkaswapFaqLink и документацию, которая включает подробное объяснение того, как работает Polkaswap, а также @:footerMenu.memorandum и @:(footerMenu.privacy). Эти документы имеют решающее значение для безопасного и положительного взаимодействия с пользователем. Используя Polkaswap, вы подтверждаете, что прочитали и поняли эти документы. Вы также соглашаетесь со следующим: 1) Ваша исключительная ответственность за соблюдение всех законов, которые могут применяться к конкретному использованию Polkaswap в Вашей правовой юрисдикции; 2) Вы понимаете, что текущая версия Polkaswap является альфа-версией: она не была полностью протестирована, и некоторые функции могут работать не так, как задумано; и 3) Ваше понимание и добровольное принятие рисков, связанных с использованием Polkaswap, включая, помимо прочего, риск потери токенов. Еще раз, пожалуйста, не продолжайте, не прочитав @:polkaswapFaqLink, @:memorandumLink и @:privacyLink!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
@@ -304,12 +304,12 @@
     "node": {
         "errors": {
             "connection": "Произошла ошибка при подключении к ноде\n {address}\n",
-            "network": "Нода\n {address}\n из другой сети\n",
-            "existing": "Эта нода уже добавлена: '{title}'\n"
+            "network": "Узел\n {address}\n из другой сети\n",
+            "existing": "Этот узел уже добавлен: '{title}'\n"
         },
         "messages": {
             "connected": "Установлено соединение с нодой\n {address}\n",
-            "selectNode": "Пожалуйста, выберите ноду для подключения из списка узлов"
+            "selectNode": "Пожалуйста, выберите узел для подключения из списка узлов"
         },
         "warnings": {
             "disconnect": "Соединение с узлом было потеряно. Переподключение..."
@@ -317,19 +317,20 @@
     },
     "selectNodeDialog": {
         "title": "@:soraText Выбор сетевого узла",
-        "addNode": "Добавить персонализированную ноду",
-        "customNode": "Персонализированная нода",
-        "howToSetupOwnNode": "Как настроить собственную ноду @:soraText",
+        "addNode": "Добавить узел",
+        "customNode": "Персонализированный узел",
+        "howToSetupOwnNode": "Как настроить собственный узел @:soraText",
         "select": "Выберите",
         "connected": "Подключено",
-        "selectNodeForEnvironment": "Выберите ноду для {environment} среды:",
+        "selectNodeForEnvironment": "Выберите узел для {environment} среды:",
         "nodeTitle": "{chain} на базе {name}",
         "messages": {
             "emptyName": "Пожалуйста, введите название ноды",
             "emptyAddress": "Пожалуйста, введите адрес ноды",
             "incorrectProtocol": "Адрес должен начинаться с ws:\/\/ или wss:\/\/",
             "incorrectAddress": "Неверный адрес"
-        }
+        },
+        "updateNode": "Обновить узел"
     },
     "buttons": {
         "max": "МАКСИМУМ",

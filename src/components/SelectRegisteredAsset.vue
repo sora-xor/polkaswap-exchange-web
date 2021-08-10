@@ -39,20 +39,16 @@
                   </s-row>
                 </s-col>
                 <div class="asset-item__balance-container">
-                  <template v-if="formattedAssetBalance !== formattedZeroSymbol">
-                    <formatted-amount
-                      class="asset-item__balance"
-                      :value="formattedAssetBalance"
-                      :font-size-rate="FontSizeRate.MEDIUM"
-                    />
-                    <formatted-amount
-                      v-if="isSoraToEvm && getAssetFiatPrice(asset)"
-                      :value="getFiatBalance(asset)"
-                      :font-size-rate="FontSizeRate.MEDIUM"
-                      :font-weight-rate="FontWeightRate.MEDIUM"
-                      is-fiat-value
-                    />
-                  </template>
+                  <formatted-amount-with-fiat-value
+                    v-if="formattedAssetBalance !== formattedZeroSymbol"
+                    value-class="asset-item__balance"
+                    :value="formattedAssetBalance"
+                    :font-size-rate="FontSizeRate.MEDIUM"
+                    :has-fiat-value="shouldFiatBeShown(asset)"
+                    :fiat-value="getFiatBalance(asset)"
+                    :fiat-font-size-rate="FontSizeRate.MEDIUM"
+                    :fiat-font-weight-rate="FontWeightRate.MEDIUM"
+                  />
                   <span v-else class="asset-item__balance">{{ formattedZeroSymbol }}</span>
                 </div>
               </div>
@@ -106,7 +102,7 @@
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util'
-import { FormattedAmountMixin, FormattedAmount, FontSizeRate, FontWeightRate } from '@soramitsu/soraneo-wallet-web'
+import { FormattedAmountMixin, FormattedAmountWithFiatValue, FontSizeRate, FontWeightRate } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
@@ -122,7 +118,7 @@ const namespace = 'assets'
 @Component({
   components: {
     DialogBase,
-    FormattedAmount,
+    FormattedAmountWithFiatValue,
     TokenLogo: lazyComponent(Components.TokenLogo),
     TokenAddress: lazyComponent(Components.TokenAddress)
   }
@@ -266,6 +262,10 @@ export default class SelectRegisteredAsset extends Mixins(FormattedAmountMixin, 
     }
   }
 
+  shouldFiatBeShown (asset: RegisteredAccountAsset): boolean {
+    return this.isSoraToEvm && !!this.getAssetFiatPrice(asset)
+  }
+
   handleCustomAssetNext (): void {
     // TODO: Should we rename the button to Add Asset?
   }
@@ -275,12 +275,7 @@ export default class SelectRegisteredAsset extends Mixins(FormattedAmountMixin, 
 <style lang="scss">
 .asset-select {
   @include exchange-tabs();
-}
-.asset-item__balance.formatted-amount {
-  @include formatted-amount;
-  .formatted-amount__decimal {
-    font-weight: 600;
-  }
+  @include select-asset('asset-item');
 }
 </style>
 
@@ -304,9 +299,7 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
 .asset-search {
   margin-bottom: $inner-spacing-medium;
 }
-.asset-item {
-  @include select-asset;
-}
+@include select-asset-scoped('asset-item');
 .network-label {
   color: var(--s-color-base-content-secondary);
   font-size: $s-heading3-caps-font-size;
