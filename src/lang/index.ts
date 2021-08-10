@@ -1,12 +1,14 @@
 import first from 'lodash/fp/first'
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
+import VueLazyImageLoading from 'vue-lazy-image-loading'
 
 import { Language } from '@/consts'
 
 import en from './en.json'
 
 Vue.use(VueI18n)
+Vue.use(VueLazyImageLoading)
 
 const messages = {
   en

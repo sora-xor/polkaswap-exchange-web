@@ -1,15 +1,16 @@
 <template>
   <div class="layout" v-once>
     <div class="content">
-
-      <img src="@/assets/about/hero.png" draggable="false" class="unselectable" style="max-width: 1040px;z-index: -1;" />
+      <lazy-img src="@/assets/about/hero.png" />
+      <!-- <img src="@/assets/about/hero.png" draggable="false" class="unselectable" style="max-width: 1040px;z-index: -1;" /> -->
       <p class="gradient main" style="line-height:1;margin-top:-60px;margin-bottom:10px;">{{ t('about.title') }}</p>
       <p class="text">{{ t('about.description') }}</p>
-
-      <img src="@/assets/about/about02x.png" draggable="false" class="unselectable" style="width:75%;height:auto;margin-top:120px;">
+      <lazy-img src="@/assets/about/about02x.png" />
+      <!-- <img src="@/assets/about/about02x.png" draggable="false" class="unselectable" style="width:75%;height:auto;margin-top:120px;"> -->
       <p class="gradient trading">{{ t('about.trading.title') }}</p>
       <p class="text" style="margin-top:15px;">{{ t('about.trading.first') }}</p>
-      <img src="@/assets/about/about02-1.png" draggable="false" class="unselectable bubble-icon">
+      <lazy-img src="@/assets/about/about02-1.png" />
+      <!-- <img src="@/assets/about/about02-1.png" draggable="false" class="unselectable bubble-icon"> -->
       <p class="text">{{ t('about.trading.second') }}</p>
       <img src="@/assets/about/about02-2.png" draggable="false" class="unselectable bubble-icon">
       <p class="text">{{ t('about.trading.third') }}
