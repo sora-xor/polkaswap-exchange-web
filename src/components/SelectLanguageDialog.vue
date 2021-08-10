@@ -5,7 +5,7 @@
     :title="t('selectLanguageDialog.title')"
     class="select-language-dialog"
   >
-    <s-scrollbar>
+    <s-scrollbar class="select-language-scrollbar">
       <s-radio-group v-model="selectedLang" class="select-language-list s-flex">
         <s-radio
           v-for="lang in languages"
@@ -72,6 +72,9 @@ export default class SelectLanguageDialog extends Mixins(TranslationMixin, Dialo
   .el-radio {
     margin-right: 0;
   }
+}
+.select-language-scrollbar {
+  @include scrollbar;
 }
 </style>
 

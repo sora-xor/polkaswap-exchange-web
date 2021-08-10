@@ -3,7 +3,7 @@
     <div class="select-node-description">
       {{ t('selectNodeDialog.selectNodeForEnvironment', { environment }) }}
     </div>
-    <s-scrollbar>
+    <s-scrollbar class="select-node-scrollbar">
       <s-radio-group v-model="currentAddressValue" class="select-node-list s-flex">
         <s-radio
           v-for="node in nodes"
@@ -68,6 +68,9 @@ export default class SelectNode extends Mixins(TranslationMixin) {
   .el-radio__label {
     flex: 1;
   }
+}
+.select-node-scrollbar {
+  @include scrollbar;
 }
 </style>
 
