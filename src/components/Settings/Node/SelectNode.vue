@@ -70,7 +70,7 @@ export default class SelectNode extends Mixins(TranslationMixin) {
   }
 }
 .select-node-scrollbar {
-  @include scrollbar;
+  @include scrollbar(-$inner-spacing-big);
 }
 </style>
 
@@ -80,11 +80,9 @@ $node-list-items: 5;
 
 .select-node {
   flex-direction: column;
-  align-items: center;
 
   & > *:not(:last-child) {
     margin-bottom: $inner-spacing-medium;
-    width: 100%;
   }
 
   &-list {
@@ -94,7 +92,7 @@ $node-list-items: 5;
     &__item {
       margin-right: 0;
       align-items: center;
-      padding: $inner-spacing-small 0;
+      padding: $inner-spacing-small $inner-spacing-big;
       white-space: normal;
     }
   }

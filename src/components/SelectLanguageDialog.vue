@@ -74,7 +74,7 @@ export default class SelectLanguageDialog extends Mixins(TranslationMixin, Dialo
   }
 }
 .select-language-scrollbar {
-  @include scrollbar;
+  @include scrollbar(-$inner-spacing-big);
 }
 </style>
 
@@ -91,7 +91,7 @@ $list-items: 7;
   &__item {
     align-items: center;
     height: $item-height;
-    padding: $inner-spacing-small 0;
+    padding: $inner-spacing-small $inner-spacing-big;
     border-radius: var(--s-border-radius-mini);
   }
 }
