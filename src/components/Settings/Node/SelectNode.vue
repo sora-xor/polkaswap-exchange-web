@@ -3,7 +3,7 @@
     <div class="select-node-description">
       {{ t('selectNodeDialog.selectNodeForEnvironment', { environment }) }}
     </div>
-    <s-scrollbar>
+    <s-scrollbar class="select-node-scrollbar">
       <s-radio-group v-model="currentAddressValue" class="select-node-list s-flex">
         <s-radio
           v-for="node in nodes"
@@ -69,6 +69,9 @@ export default class SelectNode extends Mixins(TranslationMixin) {
     flex: 1;
   }
 }
+.select-node-scrollbar {
+  @include scrollbar(-$inner-spacing-big);
+}
 </style>
 
 <style lang="scss" scoped>
@@ -77,11 +80,9 @@ $node-list-items: 5;
 
 .select-node {
   flex-direction: column;
-  align-items: center;
 
   & > *:not(:last-child) {
     margin-bottom: $inner-spacing-medium;
-    width: 100%;
   }
 
   &-list {
@@ -91,7 +92,7 @@ $node-list-items: 5;
     &__item {
       margin-right: 0;
       align-items: center;
-      padding: $inner-spacing-small 0;
+      padding: $inner-spacing-small $inner-spacing-big;
       white-space: normal;
     }
   }

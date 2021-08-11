@@ -5,7 +5,7 @@
     :title="t('selectLanguageDialog.title')"
     class="select-language-dialog"
   >
-    <s-scrollbar>
+    <s-scrollbar class="select-language-scrollbar">
       <s-radio-group v-model="selectedLang" class="select-language-list s-flex">
         <s-radio
           v-for="lang in languages"
@@ -73,6 +73,9 @@ export default class SelectLanguageDialog extends Mixins(TranslationMixin, Dialo
     margin-right: 0;
   }
 }
+.select-language-scrollbar {
+  @include scrollbar(-$inner-spacing-big);
+}
 </style>
 
 <style lang="scss" scoped>
@@ -88,7 +91,7 @@ $list-items: 7;
   &__item {
     align-items: center;
     height: $item-height;
-    padding: $inner-spacing-small 0;
+    padding: $inner-spacing-small $inner-spacing-big;
     border-radius: var(--s-border-radius-mini);
   }
 }
