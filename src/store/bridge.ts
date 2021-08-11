@@ -166,7 +166,8 @@ async function waitForExtrinsicFinalization (id?: string): Promise<BridgeHistory
     throw new Error('History id error')
   }
   const tx = bridgeApi.getHistory(id)
-  if (tx && tx.status === TransactionStatus.Error) {
+  if (tx && [TransactionStatus.Error, TransactionStatus.Invalid, TransactionStatus.Usurped].includes(tx.status as TransactionStatus)) {
+    // TODO: maybe it's better to display a message about this errors from tx.errorMessage
     throw new Error(tx.errorMessage)
   }
   if (!tx || tx.status !== TransactionStatus.Finalized) {
