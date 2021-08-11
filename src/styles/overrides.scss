@@ -70,19 +70,6 @@ button.el-button--max {
   font-variation-settings: $font-weight-800 !important;
 }
 
-// TODO: move to wallet
-div.asset-details-actions i, div.wallet-assets-item.s-flex button.el-button--primary i {
-  color: var(--s-color-base-on-accent) !important;
-}
-.asset-details-actions {
-  button.el-button span {
-    left: 0;
-    i:hover {
-      color: var(--s-color-base-on-accent) !important;
-    }
-  }
-}
-
 div.el-pagination button, div.el-collapse-item__wrap { background-color: unset !important; }
 span.el-pagination__total { padding: 0 8px; }
 
