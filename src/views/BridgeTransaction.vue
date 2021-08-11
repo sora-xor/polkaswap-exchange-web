@@ -810,7 +810,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   handleBack (): void {
-    router.push({ name: PageNames.Bridge })
+    router.push({ name: this.prevRoute })
   }
 }
 </script>
