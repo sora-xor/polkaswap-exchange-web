@@ -32,18 +32,22 @@ export default class ValueStatusWrapper extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@mixin wrapper-status ($status: 'success') {
+  &.#{$status} {
+    color: var(--s-color-status-#{$status});
+
+    [design-system-theme="dark"] & {
+      --s-color-status-#{$status}: var(--s-color-status-#{$status}-background);
+    }
+  }
+}
+
 .value-status-wrapper {
   display: flex;
   flex-flow: row nowrap;
 
-  &.success {
-    color: var(--s-color-status-success);
-  }
-  &.warning {
-    color: var(--s-color-status-warning);
-  }
-  &.error {
-    color: var(--s-color-status-error);
-  }
+  @include wrapper-status('success');
+  @include wrapper-status('warning');
+  @include wrapper-status('error');
 }
 </style>
