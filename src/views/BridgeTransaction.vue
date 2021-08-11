@@ -207,6 +207,7 @@ export default class BridgeTransaction extends Mixins(
 ) {
   @Getter soraNetwork!: string
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
+  @Getter('prev', { namespace: 'router' }) prevRoute!: PageNames
 
   @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean
   @Getter('asset', { namespace }) asset!: Nullable<AccountAsset | RegisteredAccountAsset>
@@ -539,7 +540,8 @@ export default class BridgeTransaction extends Mixins(
     this.initializeTransactionStateMachine()
     this.isInitRequestCompleted = true
     this.currentTransactionStep = this.transactionStep
-    await this.handleSendTransactionFrom()
+    const withAutoRetry = this.prevRoute !== PageNames.BridgeTransactionsHistory
+    await this.handleSendTransactionFrom(withAutoRetry)
   }
 
   async beforeDestroy (): Promise<void> {
@@ -709,9 +711,9 @@ export default class BridgeTransaction extends Mixins(
     return `${date.getDate()} ${this.t(`months[${date.getMonth()}]`)} ${date.getFullYear()}, ${formatDateItem(date.getHours())}:${formatDateItem(date.getMinutes())}:${formatDateItem(date.getSeconds())}`
   }
 
-  async handleSendTransactionFrom (): Promise<void> {
+  async handleSendTransactionFrom (withAutoRetry = true): Promise<void> {
     await this.checkConnectionToExternalAccount(() => {
-      if (this.isTransactionFromFailed) {
+      if (this.isTransactionFromFailed && withAutoRetry) {
         this.callRetryTransition()
       } else {
         this.callFirstTransition()

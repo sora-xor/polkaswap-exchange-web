@@ -610,13 +610,9 @@ const actions = {
     commit(types.SIGN_SORA_TRANSACTION_SORA_EVM_REQUEST)
     try {
       const evmAccount = rootGetters['web3/evmAddress']
-      console.log('1')
       await bridgeApi.transferToEth(asset, evmAccount, getters.amount, txId)
-      console.log('2')
       commit(types.SIGN_SORA_TRANSACTION_SORA_EVM_SUCCESS)
-      // Check USURPED status in history when waiting for request
     } catch (error) {
-      console.log('3')
       commit(types.SIGN_SORA_TRANSACTION_SORA_EVM_FAILURE)
       throw error
     }
@@ -768,7 +764,7 @@ const actions = {
     //   }
     // }
     const asset = await dispatch('findRegisteredAsset')
-    // TODO: asset should be registered for now (ERC-20 tokens flow)
+    // asset should be registered for now (ERC-20 tokens flow)
     if (!asset) {
       return
     }
@@ -876,7 +872,7 @@ const actions = {
       return
     }
     const asset = await dispatch('findRegisteredAsset')
-    // TODO: asset should be registered just for now
+    // asset should be registered for now
     if (!asset) {
       return
     }
