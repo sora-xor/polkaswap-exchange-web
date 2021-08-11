@@ -5,7 +5,6 @@
     :custom-class="computedCustomClasses"
     :show-close="false"
     v-bind="{
-      top: '80px',
       width: width || '496px',
       borderRadius: 'medium',
       ...$attrs

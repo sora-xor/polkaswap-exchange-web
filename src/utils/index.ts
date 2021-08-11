@@ -6,7 +6,7 @@ import i18n from '@/lang'
 import storage from './storage'
 import { app } from '@/consts'
 
-const FpZeroValue = new FPNumber(0)
+export const FpZeroValue = new FPNumber(0)
 
 export const copyToClipboard = async (text: string): Promise<void> => {
   try {
