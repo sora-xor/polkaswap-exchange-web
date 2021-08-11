@@ -66,27 +66,27 @@
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
               :value="isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
-              :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : currentEvmTokenSymbol"
+              :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol"
               :fiat-value="soraFeeFiatValue"
               is-formatted
               :value-prefix="!isSoraToEvm && formattedEvmNetworkFee ? '~' : null"
               alt-value="-"
             />
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
-            <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : EvmSymbol.ETH" /> -->
+            <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol" /> -->
             <s-button
               v-if="isTransactionStep1"
               type="primary"
               class="s-typograhy-button--big"
-              :disabled="!(isSoraToEvm || isValidNetworkType) || currentState === STATES.INITIAL || isInsufficientBalance || isInsufficientXorForFee || isInsufficientEvmNativeTokenForFee || isTransactionFromPending"
+              :disabled="isFirstConfirmationButtonDisabled"
               @click="handleSendTransactionFrom"
             >
-              <template v-if="!isSoraToEvm && !isExternalAccountConnected">{{ t('bridgeTransaction.connectWallet') }}</template>
+              <template v-if="!(isSoraToEvm || isExternalAccountConnected)">{{ t('bridgeTransaction.connectWallet') }}</template>
               <template v-else-if="!(isSoraToEvm || isValidNetworkType)">{{ t('bridgeTransaction.changeNetwork') }}</template>
               <span v-else-if="isTransactionFromPending" v-html="t('bridgeTransaction.pending', { network: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'ethereum'}`) })" />
-              <template v-else-if="isInsufficientBalance">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : formattedAssetSymbol }) }}</template>
-              <template v-else-if="isInsufficientXorForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : KnownSymbols.XOR }) }}</template>
-              <template v-else-if="isInsufficientEvmNativeTokenForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol : EvmSymbol.ETH }) }}</template>
+              <template v-else-if="isInsufficientBalance">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: formattedAssetSymbol }) }}</template>
+              <template v-else-if="isInsufficientXorForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}</template>
+              <template v-else-if="isInsufficientEvmNativeTokenForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: evmTokenSymbol }) }}</template>
               <template v-else-if="isTransactionFromFailed">{{ t('bridgeTransaction.retry') }}</template>
               <template v-else>{{ t('bridgeTransaction.confirm', { direction: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'metamask'}`) }) }}</template>
             </s-button>
@@ -135,27 +135,26 @@
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
               :value="!isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
-              :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : currentEvmTokenSymbol"
+              :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol"
               :fiat-value="soraNetworkFeeFiatValue"
               is-formatted
               :value-prefix="isSoraToEvm && formattedEvmNetworkFee ? '~' : null"
               alt-value="-"
             />
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
-            <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="!isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : EvmSymbol.ETH" /> -->
+            <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="!isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol" /> -->
             <s-button
               v-if="isTransactionStep2 && !isTransferCompleted"
               type="primary"
               class="s-typograhy-button--big"
-              :disabled="(isSoraToEvm && (!isValidNetworkType || !isTxEvmAccount)) || isInsufficientXorForFee || isInsufficientEvmNativeTokenForFee || isTransactionToPending"
+              :disabled="isSecondConfirmationButtonDisabled"
               @click="handleSendTransactionTo"
             >
               <template v-if="isSoraToEvm && !isExternalAccountConnected">{{ t('bridgeTransaction.connectWallet') }}</template>
               <template v-else-if="isSoraToEvm && !isTxEvmAccount">{{ t('bridgeTransaction.changeAccount') }}</template>
               <template v-else-if="isSoraToEvm && !isValidNetworkType">{{ t('bridgeTransaction.changeNetwork') }}</template>
               <span v-else-if="isTransactionToPending" v-html="t('bridgeTransaction.pending', { network: t(`bridgeTransaction.${!isSoraToEvm ? 'sora' : 'ethereum'}`) })" />
-              <template v-else-if="isInsufficientXorForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : KnownSymbols.XOR }) }}</template>
-              <template v-else-if="isInsufficientEvmNativeTokenForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { assetSymbol : EvmSymbol.ETH }) }}</template>
+              <template v-else-if="isSoraToEvm ? isInsufficientEvmNativeTokenForFee : isInsufficientXorForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: isSoraToEvm ? evmTokenSymbol : KnownSymbols.XOR }) }}</template>
               <template v-else-if="isTransactionToFailed">{{ t('bridgeTransaction.retry') }}</template>
               <template v-else>{{ t('bridgeTransaction.confirm', { direction: t(`bridgeTransaction.${!isSoraToEvm ? 'sora' : 'metamask'}`) }) }}</template>
             </s-button>
@@ -489,11 +488,26 @@ export default class BridgeTransaction extends Mixins(
     return hasInsufficientEvmNativeTokenForFee(this.evmBalance, this.historyItem?.ethereumNetworkFee ?? this.evmNetworkFee)
   }
 
-  get currentEvmTokenSymbol (): string {
+  get evmTokenSymbol (): string {
     if (this.evmNetwork === BridgeNetworks.ENERGY_NETWORK_ID) {
       return this.EvmSymbol.VT
     }
     return this.EvmSymbol.ETH
+  }
+
+  get isFirstConfirmationButtonDisabled (): boolean {
+    return !(this.isSoraToEvm || this.isValidNetworkType) ||
+      this.currentState === STATES.INITIAL ||
+      this.isInsufficientBalance ||
+      this.isInsufficientXorForFee ||
+      this.isInsufficientEvmNativeTokenForFee ||
+      this.isTransactionFromPending
+  }
+
+  get isSecondConfirmationButtonDisabled (): boolean {
+    return (this.isSoraToEvm && !(this.isValidNetworkType && this.isTxEvmAccount)) ||
+      (this.isSoraToEvm ? this.isInsufficientEvmNativeTokenForFee : this.isInsufficientXorForFee) ||
+      this.isTransactionToPending
   }
 
   private openBlockExplorer (url: string): void {
