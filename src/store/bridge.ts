@@ -19,13 +19,14 @@ import {
   CodecString
 } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
+import { ethers } from 'ethers'
+
 import { bridgeApi } from '@/utils/bridge'
 import { STATES } from '@/utils/fsm'
 import ethersUtil, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/ethers-util'
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions'
 import { delay, isEthereumAddress } from '@/utils'
 import { EthereumGasLimits, MaxUint256, ZeroStringValue } from '@/consts'
-import { ethers } from 'ethers'
 
 const SORA_REQUESTS_TIMEOUT = 5 * 1000
 
@@ -181,11 +182,10 @@ function initialState () {
     assetAddress: '',
     assetBalance: null,
     amount: '',
-    soraNetworkFee: 0,
-    // Why only evmNetworkFee have ZeroStringValue variable?
+    soraNetworkFee: ZeroStringValue,
     evmNetworkFee: ZeroStringValue,
-    soraTotal: 0,
-    evmTotal: 0,
+    soraTotal: ZeroStringValue,
+    evmTotal: ZeroStringValue,
     isTransactionConfirmed: false,
     soraTransactionHash: '',
     evmTransactionHash: '',
@@ -581,7 +581,7 @@ const actions = {
       hash: '',
       ethereumHash: '',
       transactionState: STATES.INITIAL,
-      soraNetworkFee: getters.soraNetworkFee.toString(),
+      soraNetworkFee: getters.soraNetworkFee,
       ethereumNetworkFee: getters.evmNetworkFee,
       externalNetwork: rootGetters['web3/evmNetwork'],
       to: rootGetters['web3/evmAddress']
@@ -602,16 +602,20 @@ const actions = {
       return
     }
     const asset = await dispatch('findRegisteredAsset')
-    // TODO: asset should be registered just for now
+    // asset should be registered for now
     if (!asset) {
       return
     }
     commit(types.SIGN_SORA_TRANSACTION_SORA_EVM_REQUEST)
     try {
       const evmAccount = rootGetters['web3/evmAddress']
+      console.log('1')
       await bridgeApi.transferToEth(asset, evmAccount, getters.amount, txId)
+      console.log('2')
       commit(types.SIGN_SORA_TRANSACTION_SORA_EVM_SUCCESS)
+      // Check USURPED status in history when waiting for request
     } catch (error) {
+      console.log('3')
       commit(types.SIGN_SORA_TRANSACTION_SORA_EVM_FAILURE)
       throw error
     }
@@ -646,7 +650,7 @@ const actions = {
       return
     }
     const asset = await dispatch('findRegisteredAsset')
-    // TODO: asset should be registered just for now
+    // asset should be registered for now
     if (!asset) {
       return
     }
