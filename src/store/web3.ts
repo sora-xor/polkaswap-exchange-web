@@ -385,7 +385,7 @@ const actions = {
       }
       commit(types.GET_BALANCE_SUCCESS)
     } catch (error) {
-      console.error(error)
+      console.error(`There was a problem with "${address}" token registration flow`, error)
       commit(types.GET_BALANCE_FAILURE)
     }
 
