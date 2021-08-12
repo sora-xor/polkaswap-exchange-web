@@ -35,10 +35,6 @@ export default class ValueStatusWrapper extends Vue {
 @mixin wrapper-status ($status: 'success') {
   &.#{$status} {
     color: var(--s-color-status-#{$status});
-
-    [design-system-theme="dark"] & {
-      --s-color-status-#{$status}: var(--s-color-status-#{$status}-background);
-    }
   }
 }
 
