@@ -233,7 +233,6 @@ export default class BridgeTransaction extends Mixins(
   @Action('setCurrentTransactionState', { namespace }) setCurrentTransactionState
   @Action('setInitialTransactionState', { namespace }) setInitialTransactionState
   @Action('setTransactionStep', { namespace }) setTransactionStep
-  @Action('setTransactionConfirm', { namespace }) setTransactionConfirm
   @Action('setHistoryItem', { namespace }) setHistoryItem
 
   @Action('signSoraTransactionSoraToEvm', { namespace }) signSoraTransactionSoraToEvm
@@ -267,7 +266,6 @@ export default class BridgeTransaction extends Mixins(
   }
 
   activeTransactionStep: any = [this.transactionSteps.from, this.transactionSteps.to]
-  currentTransactionStep = 1
   showConfirmTransactionDialog = false
 
   get formattedAmount (): string {
@@ -312,11 +310,11 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get isTransactionStep1 (): boolean {
-    return this.currentTransactionStep === 1
+    return this.transactionStep === 1
   }
 
   get isTransactionStep2 (): boolean {
-    return this.currentTransactionStep === 2
+    return this.transactionStep === 2
   }
 
   get isTransactionFromPending (): boolean {
@@ -372,13 +370,13 @@ export default class BridgeTransaction extends Mixins(
     if (this.isTransactionFromPending || this.isTransactionToPending) {
       return this.t(
         'bridgeTransaction.status.pending',
-        { step: this.t('bridgeTransaction.steps.step', { step: this.t(`bridgeTransaction.steps.step${this.currentTransactionStep}`) }) }
+        { step: this.t('bridgeTransaction.steps.step', { step: this.t(`bridgeTransaction.steps.step${this.transactionStep}`) }) }
       )
     }
     if (this.isTransactionFromFailed || this.isTransactionToFailed) {
       return this.t(
         'bridgeTransaction.status.failed',
-        { step: this.t('bridgeTransaction.steps.step', { step: this.t(`bridgeTransaction.steps.step${this.currentTransactionStep}`) }) }
+        { step: this.t('bridgeTransaction.steps.step', { step: this.t(`bridgeTransaction.steps.step${this.transactionStep}`) }) }
       )
     }
     if (this.isTransferCompleted) {
@@ -572,7 +570,6 @@ export default class BridgeTransaction extends Mixins(
     }
     this.initializeTransactionStateMachine()
     this.isInitRequestCompleted = true
-    this.currentTransactionStep = this.transactionStep
     const withAutoRetry = this.prevRoute !== PageNames.BridgeTransactionsHistory
     await this.handleSendTransactionFrom(withAutoRetry)
   }
@@ -673,7 +670,6 @@ export default class BridgeTransaction extends Mixins(
   }
 
   setFromTransactionCompleted () {
-    this.currentTransactionStep = 2
     this.setTransactionStep(2)
     this.activeTransactionStep = this.transactionSteps.to
   }

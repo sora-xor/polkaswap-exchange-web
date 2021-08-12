@@ -39,8 +39,6 @@ const types = flow(
     'SET_ASSET_ADDRESS',
     'SET_ASSET_BALANCE',
     'SET_AMOUNT',
-    'SET_SORA_TOTAL',
-    'SET_EVM_TOTAL',
     'SET_TRANSACTION_CONFIRM',
     'SET_SORA_TRANSACTION_HASH',
     'SET_SORA_TRANSACTION_DATE',
@@ -295,12 +293,6 @@ const mutations = {
   [types.GET_EVM_NETWORK_FEE_FAILURE] (state) {
     state.evmNetworkFee = ZeroStringValue
   },
-  [types.SET_SORA_TOTAL] (state, soraTotal: string | number) {
-    state.soraTotal = soraTotal
-  },
-  [types.SET_EVM_TOTAL] (state, evmTotal: string | number) {
-    state.evmTotal = evmTotal
-  },
   [types.SET_TRANSACTION_CONFIRM] (state, isTransactionConfirmed: boolean) {
     state.isTransactionConfirmed = isTransactionConfirmed
   },
@@ -391,12 +383,6 @@ const actions = {
   },
   setEvmNetworkFee ({ commit }, evmNetworkFee: CodecString) {
     commit(types.GET_EVM_NETWORK_FEE_SUCCESS, evmNetworkFee)
-  },
-  getSoraTotal ({ commit }, soraTotal: string | number) {
-    commit(types.SET_SORA_TOTAL, soraTotal)
-  },
-  getevmTotal ({ commit }, evmTotal: string | number) {
-    commit(types.SET_EVM_TOTAL, evmTotal)
   },
   setTransactionConfirm ({ commit }, isTransactionConfirmed: boolean) {
     commit(types.SET_TRANSACTION_CONFIRM, isTransactionConfirmed)
