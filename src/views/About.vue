@@ -1,5 +1,5 @@
 <template>
-  <div class="layout">
+  <div class="layout about">
     <div class="content">
       <s-image :src="images.hero[libraryTheme]" lazy fit="cover" draggable="false" class="unselectable" style="max-width: 1040px; height: 585px;" />
       <p class="gradient main" style="line-height:1;margin-top:-60px;margin-bottom:10px;">{{ t('about.title') }}</p>
@@ -67,7 +67,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { FPNumber } from '@sora-substrate/util'
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
@@ -120,6 +120,21 @@ export default class About extends Mixins(TranslationMixin, LoadingMixin) {
   }
 }
 </script>
+
+<style lang="scss">
+.about {
+  .s-skeleton .el-skeleton {
+    &.is-animated .el-skeleton__item {
+      background: none;
+      color: var(--s-color-base-content-tertiary);
+    }
+    &__image svg {
+      fill: var(--s-color-base-content-tertiary);
+      width: 100%;
+    }
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 @mixin backgroundImageWidth {
