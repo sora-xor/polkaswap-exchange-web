@@ -4,6 +4,9 @@ import { RewardsAmountHeaderItem } from '@/types/rewards'
 export const groupRewardsByAssetsList = (rewards: Array<RewardInfo | RewardsInfo>): Array<RewardsAmountHeaderItem> => {
   const rewardsHash = rewards.reduce((result, item) => {
     const isRewardsInfo = 'rewards' in item
+
+    if (isRewardsInfo && !(item as RewardsInfo).rewards.length) return result
+
     const { address, decimals } = isRewardsInfo ? (item as RewardsInfo).rewards[0].asset : (item as RewardInfo).asset
     const amount = isRewardsInfo ? (item as RewardsInfo).limit : (item as RewardInfo).amount
     const current = result[address] || new FPNumber(0, decimals)
