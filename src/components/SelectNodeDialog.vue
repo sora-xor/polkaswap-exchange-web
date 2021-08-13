@@ -169,7 +169,7 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
     if (nodeCopy.address !== this.connectedNodeAddress) {
       await this.connectToNode({
         node: nodeCopy,
-        onError: this.handleNodeError,
+        onError: (error) => this.handleNodeError(error, !isNewOrUpdatedNode),
         onDisconnect: this.handleNodeDisconnect,
         onReconnect: this.handleNodeReconnect
       })
