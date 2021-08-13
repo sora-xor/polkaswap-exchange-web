@@ -20,6 +20,7 @@ import SFloatInput from '@soramitsu/soramitsu-js-ui/lib/components/Input/SFloatI
 import SForm from '@soramitsu/soramitsu-js-ui/lib/components/Form/SForm'
 import SFormItem from '@soramitsu/soramitsu-js-ui/lib/components/Form/SFormItem'
 import SIcon from '@soramitsu/soramitsu-js-ui/lib/components/Icon/SIcon'
+import SImage from '@soramitsu/soramitsu-js-ui/lib/components/Image/SImage'
 import SInput from '@soramitsu/soramitsu-js-ui/lib/components/Input/SInput'
 import SMenu from '@soramitsu/soramitsu-js-ui/lib/components/Menu/SMenu'
 import SMenuItem from '@soramitsu/soramitsu-js-ui/lib/components/Menu/SMenuItem'
@@ -29,6 +30,8 @@ import SRadio from '@soramitsu/soramitsu-js-ui/lib/components/Radio/SRadio'
 import SRadioGroup from '@soramitsu/soramitsu-js-ui/lib/components/Radio/SRadioGroup'
 import SRow from '@soramitsu/soramitsu-js-ui/lib/components/Layout/Row'
 import SScrollbar from '@soramitsu/soramitsu-js-ui/lib/components/Scrollbar'
+import SSkeleton from '@soramitsu/soramitsu-js-ui/lib/components/Skeleton/SSkeleton'
+import SSkeletonItem from '@soramitsu/soramitsu-js-ui/lib/components/Skeleton/SSkeletonItem'
 import SSlider from '@soramitsu/soramitsu-js-ui/lib/components/Slider'
 import SSwitch from '@soramitsu/soramitsu-js-ui/lib/components/Switch'
 import STab from '@soramitsu/soramitsu-js-ui/lib/components/Tab/STab'
@@ -56,6 +59,7 @@ Vue.use(SFloatInput)
 Vue.use(SForm)
 Vue.use(SFormItem)
 Vue.use(SIcon)
+Vue.use(SImage)
 Vue.use(SInput)
 Vue.use(SMenu)
 Vue.use(SMenuItem)
@@ -65,6 +69,8 @@ Vue.use(SRadio)
 Vue.use(SRadioGroup)
 Vue.use(SRow)
 Vue.use(SScrollbar)
+Vue.use(SSkeleton)
+Vue.use(SSkeletonItem)
 Vue.use(SSlider)
 Vue.use(SSwitch)
 Vue.use(STab)

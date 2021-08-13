@@ -1,7 +1,6 @@
 import first from 'lodash/fp/first'
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
-import VueLazyImageLoading from 'vue-lazy-image-loading'
 
 import { Language } from '@/consts'
 import { settingsStorage } from '@/utils/storage'
@@ -9,7 +8,6 @@ import { settingsStorage } from '@/utils/storage'
 import en from './en.json'
 
 Vue.use(VueI18n)
-Vue.use(VueLazyImageLoading)
 
 const i18n = new VueI18n({
   locale: Language.EN,
