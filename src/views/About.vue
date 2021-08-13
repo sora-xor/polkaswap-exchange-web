@@ -1,61 +1,61 @@
 <template>
   <div class="layout">
     <div class="content">
-      <s-image :src="images.hero" lazy fit="cover" draggable="false" class="unselectable" style="max-width: 1040px; height: 585px;" />
+      <s-image :src="images.hero[libraryTheme]" lazy fit="cover" draggable="false" class="unselectable" style="max-width: 1040px; height: 585px;" />
       <p class="gradient main" style="line-height:1;margin-top:-60px;margin-bottom:10px;">{{ t('about.title') }}</p>
       <p class="text">{{ t('about.description') }}</p>
-      <s-image :src="images.about02x" lazy fit="cover" draggable="false" class="unselectable" style="width: 75%; height: auto; margin-top: 120px; height: 343px;" />
+      <s-image :src="images.about02x[libraryTheme]" lazy fit="cover" draggable="false" class="unselectable" style="width: 75%; height: auto; margin-top: 120px; height: 343px;" />
       <p class="gradient trading">{{ t('about.trading.title') }}</p>
       <p class="text" style="margin-top:15px;">{{ t('about.trading.first') }}</p>
-      <s-image :src="images.about02_1" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px;" />
+      <s-image :src="images.about02_1[libraryTheme]" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px;" />
       <p class="text">{{ t('about.trading.second') }}</p>
-      <s-image :src="images.about02_2" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px;" />
+      <s-image :src="images.about02_2[libraryTheme]" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px;" />
       <p class="text">{{ t('about.trading.third') }}
         <a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_(original_%22BSD_License%22)" :title="t('about.trading.license')" class="text" target="_blank" rel="nofollow noopener">{{ t('about.trading.license') }}</a>
       </p>
-      <s-image :src="images.about03x" lazy fit="cover" draggable="false" class="unselectable" style="width: 75%; margin-top: 120px; height: 343px;" />
+      <s-image :src="images.about03x[libraryTheme]" lazy fit="cover" draggable="false" class="unselectable" style="width: 75%; margin-top: 120px; height: 343px;" />
       <p class="gradient liquidity">{{ t('about.liquidity.title') }}</p>
       <p class="text" style="margin-top:15px;">{{ t('about.liquidity.first') }}</p>
-      <s-image :src="images.about03_1" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px;" />
+      <s-image :src="images.about03_1[libraryTheme]" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px;" />
       <p class="text">{{ t('about.liquidity.second') }}</p>
-      <s-image :src="images.about03_2" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px;" />
+      <s-image :src="images.about03_2[libraryTheme]" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px;" />
       <p class="text">{{ t('about.liquidity.third') }}</p>
 
-      <s-image :src="images.about04x" lazy fit="cover" draggable="false" class="unselectable" style="width: 75%; margin-top: 120px; height: 366px;" />
+      <s-image :src="images.about04x[libraryTheme]" lazy fit="cover" draggable="false" class="unselectable" style="width: 75%; margin-top: 120px; height: 366px;" />
       <p class="gradient swap">{{ t('about.swap.title') }}</p>
       <p class="text" style="margin-top:15px;">{{ t('about.swap.first') }}</p>
-      <s-image :src="images.about04_1" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px;" />
+      <s-image :src="images.about04_1[libraryTheme]" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px;" />
       <p class="text">{{ t('about.swap.second') }}</p>
-      <s-image :src="images.about04_2" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px;" />
+      <s-image :src="images.about04_2[libraryTheme]" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px;" />
       <p class="text">{{ t('about.swap.third') }}</p>
 
-      <s-image :src="images.about05x" lazy fit="cover" draggable="false" class="unselectable" style="width: 75%; margin-top: 120px; height: 366px;" />
+      <s-image :src="images.about05x[libraryTheme]" lazy fit="cover" draggable="false" class="unselectable" style="width: 75%; margin-top: 120px; height: 366px;" />
       <p class="gradient pswap">{{ t('about.pswap.title') }}</p>
       <p class="text" >{{ t('about.pswap.first') }}</p>
-      <s-image :src="images.about05_1" lazy draggable="false" class="unselectable bubble-icon" style="height: 281px;" />
+      <s-image :src="images.about05_1[libraryTheme]" lazy draggable="false" class="unselectable bubble-icon" style="height: 281px;" />
       <p class="text" style="margin-bottom:120px;">{{ t('about.pswap.second', { percent : feePercent }) }}</p>
 
       <div class="about-video" style="margin-bottom:120px;">
         <a href="http://sora.org/pswap-soft-launch-video" target="_blank" rel="nofollow noopener" style="text-align: center;">
-          <s-image :src="images.about06" lazy fit="cover" draggable="false" class="unselectable preview" style="width: 672px; height: 378px;" />
+          <s-image :src="images.about06[libraryTheme]" lazy fit="cover" draggable="false" class="unselectable preview" style="width: 672px; height: 378px;" />
         </a>
       </div>
       <div class="about-links" style="margin-bottom:120px;">
         <div class="about-links-part" style="text-align:left;">
-          <s-image :src="images.about07_1" lazy fit="fill" draggable="false" class="unselectable icon" style="height: 49px;" />
-          <span class="title">{{ t('about.links.first.title') }}<img :src="images.about07_3" class="link"></span>
+          <s-image :src="images.about07_1[libraryTheme]" lazy fit="fill" draggable="false" class="unselectable icon" style="height: 49px;" />
+          <span class="title">{{ t('about.links.first.title') }}<img :src="images.about07_3[libraryTheme]" class="link"></span>
           <p class="text">{{ t('about.links.first.desc') }}</p>
           <a class="link-mask" href="https://sora.org/validator" target="_blank" rel="nofollow noopener" />
         </div>
         <div class="about-links-part" style="text-align:left;">
-          <s-image :src="images.about07_2" lazy fit="fill" draggable="false" class="unselectable icon" style="height: 49px;" />
-          <span class="title">{{ t('about.links.second.title') }}<img :src="images.about07_3" class="link"></span>
+          <s-image :src="images.about07_2[libraryTheme]" lazy fit="fill" draggable="false" class="unselectable icon" style="height: 49px;" />
+          <span class="title">{{ t('about.links.second.title') }}<img :src="images.about07_3[libraryTheme]" class="link"></span>
           <p class="text">{{ t('about.links.second.desc') }}</p>
           <a class="link-mask" href="https://sora.org" target="_blank" rel="nofollow noopener" />
         </div>
       </div>
       <div class="about-network">
-        <s-image :src="images.about08" lazy fit="fill" draggable="false" class="unselectable network-img" style="height: 468px;" />
+        <s-image :src="images.about08[libraryTheme]" lazy fit="fill" draggable="false" class="unselectable network-img" style="height: 468px;" />
         <p class="text">{{ t('about.network') }}</p>
       </div>
     </div>
@@ -77,29 +77,6 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 
 import Web3Logo from '@/components/logo/Web3.vue'
 
-const ABOUT_IMAGES = [
-  'about02-1.png',
-  'about02-2.png',
-  'about02x.png',
-  'about03-1.png',
-  'about03-2.png',
-  'about03x.png',
-  'about04-1.png',
-  'about04-2.png',
-  'about04x.png',
-  'about05-1.png',
-  'about05x.png',
-  'about07-1.png',
-  'about07-2.png',
-  'about07-3.png',
-  'about08.png',
-  'hero.png'
-].reduce((result, name) => {
-  const key = name.split('.')[0].replace('-', '_')
-
-  return { ...result, [key]: name }
-}, {})
-
 @Component({
   components: {
     Web3Logo
@@ -108,40 +85,38 @@ const ABOUT_IMAGES = [
 export default class About extends Mixins(TranslationMixin, LoadingMixin) {
   @Getter libraryTheme!: Theme
 
-  @Watch('libraryTheme', { immediate: true })
-  private loadThemeImages () {
-    this.loadImages()
-  }
+  images = [
+    'about02-1.png',
+    'about02-2.png',
+    'about02x.png',
+    'about03-1.png',
+    'about03-2.png',
+    'about03x.png',
+    'about04-1.png',
+    'about04-2.png',
+    'about04x.png',
+    'about05-1.png',
+    'about06.png',
+    'about05x.png',
+    'about07-1.png',
+    'about07-2.png',
+    'about07-3.png',
+    'about08.png',
+    'hero.png'
+  ].reduce((result, name) => {
+    const key = name.split('.')[0].replace('-', '_')
 
-  images = { about06: '' }
+    return {
+      ...result,
+      [key]: {
+        dark: `/about/${name === 'about06.png' ? 'shared' : 'dark'}/${name}`,
+        light: `/about/${name === 'about06.png' ? 'shared' : 'light'}/${name}`
+      }
+    }
+  }, {})
 
   get feePercent (): string {
     return new FPNumber('0.3').toLocaleString()
-  }
-
-  async loadImages () {
-    await this.withLoading(async () => {
-      for (const key in ABOUT_IMAGES) {
-        try {
-          const path = await this.loadImage(ABOUT_IMAGES[key])
-          this.images = { ...this.images, [key]: path }
-        } catch (error) {
-          console.error(error)
-        }
-      }
-      try {
-        const path = await this.loadImage('about06.png', true)
-        this.images.about06 = path
-      } catch (error) {
-        console.error(error)
-      }
-    })
-  }
-
-  async loadImage (name, isShared = false) {
-    const imgModule = await import(`../../public/about/${!isShared ? this.libraryTheme : 'shared'}/${name}`)
-
-    return imgModule.default
   }
 }
 </script>
