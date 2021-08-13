@@ -108,16 +108,20 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  const prev = from.name
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (BridgeChildPages.includes(to.name as PageNames) && store.getters.isLoggedIn && !store.getters['web3/isExternalAccountConnected']) {
       next({ name: PageNames.Bridge })
+      store.dispatch('router/setRoute', { prev, current: PageNames.Bridge })
       return
     }
     if (!store.getters.isLoggedIn) {
       next({ name: PageNames.Wallet })
+      store.dispatch('router/setRoute', { prev, current: PageNames.Wallet })
       return
     }
   }
+  store.dispatch('router/setRoute', { prev, current: to.name })
   next()
 })
 

@@ -138,7 +138,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     letter-spacing: var(--s-letter-spacing-small);
 
     &--footer {
-      justify-content: flex-end;
       margin-top: $inner-spacing-mini / 2;
       margin-bottom: 0;
       min-height: $inner-spacing-mini * 2.25;
@@ -151,6 +150,11 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
         + .token-address {
           margin-left: var(--s-basic-spacing);
         }
+      }
+
+      .token-address.input-value {
+        margin-left: auto;
+        padding-left: $inner-spacing-mini;
       }
     }
 
@@ -507,10 +511,14 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   font-weight: 600;
 }
 
-@mixin scrollbar {
+@mixin scrollbar ($marginOffset: 0) {
   &.el-scrollbar {
+    margin-left: $marginOffset;
+    margin-right: $marginOffset;
+
     .el-scrollbar__wrap {
       overflow-x: hidden;
+      margin-bottom: 0px !important; // to disable element-ui negative margin
     }
     .el-scrollbar__wrap, .el-scrollbar__view {
       display: flex;
