@@ -4,7 +4,7 @@
       <div class="amount-table-item__title">{{ formatted.title }}</div>
       <template v-if="showTable">
         <div v-if="formatted.subtitle" class="amount-table-item__subtitle">{{ formatted.subtitle }}</div>
-        <s-checkbox class="amount-table-item-group" v-model="innerModel" size="big">
+        <s-checkbox class="amount-table-item-group" v-model="innerModel" :disabled="disabled" size="big">
           <div class="amount-table-item-content">
             <div class="amount-table-item-content__header">
               <div v-for="(item, index) in formatted.limit" class="amount-table-item__amount" :key="index">
@@ -89,6 +89,7 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
   @Prop({ default: false, type: Boolean }) simpleGroup!: boolean
   @Prop({ default: false, type: Boolean }) value!: boolean
   @Prop({ default: false, type: Boolean }) isCodecString!: boolean
+  @Prop({ default: false, type: Boolean }) disabled!: boolean
   @Prop({ default: Theme.LIGHT, type: String }) theme!: Theme
 
   get innerModel (): any {
@@ -147,13 +148,22 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
       padding-left: $inner-spacing-mini;
     }
 
-    &__inner {
-      border-radius: 6px !important;
-      border: 2px solid var(--s-color-status-error);
-      background: var(--s-color-status-error-background);
-
-      &:after {
-        left: 4px;
+    &__input {
+      & .el-checkbox__inner {
+        border-radius: 6px !important;
+        &:after {
+          left: 4px;
+        }
+      }
+      &:not(.is-checked) {
+        & .el-checkbox__inner {
+          border: 2px solid var(--s-color-status-error);
+        }
+      }
+      &.is-disabled {
+        & .el-checkbox__inner {
+          background-color: var(--s-color-base-on-disabled);
+        }
       }
     }
   }
@@ -182,7 +192,7 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
     }
   }
 
-  &-tooltip.el-tooltip__popper.neumorphic.is-light {
+  &-tooltip.el-tooltip__popper.neumorphic {
     background-color: var(--s-color-status-success);
   }
 
