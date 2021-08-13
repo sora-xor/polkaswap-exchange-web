@@ -192,7 +192,7 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
     }
   }
 
-  &-tooltip.el-tooltip__popper.neumorphic.is-light {
+  &-tooltip.el-tooltip__popper.neumorphic {
     background-color: var(--s-color-status-success);
   }
 
