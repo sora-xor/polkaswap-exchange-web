@@ -5,6 +5,11 @@
         <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo--tablet"/>
       </s-button>
       <div class="app-controls s-flex">
+        <s-button type="tertiary" size="medium" icon="various-atom-24" @click="openMoonpayDialog">
+          Buy Tokens
+        </s-button>
+      </div>
+      <div class="app-controls s-flex">
         <s-button type="action" class="theme-control s-pressed" @click="switchTheme">
           <s-icon :name="themeIcon" size="28" />
         </s-button>
@@ -116,6 +121,7 @@
     <help-dialog :visible.sync="showHelpDialog" />
     <select-node-dialog :visible.sync="showSelectNodeDialog" />
     <select-language-dialog :visible.sync="showSelectLanguageDialog" />
+    <moonpay :visible.sync="showMoonpayDialog" />
   </s-design-system-provider>
 </template>
 
@@ -134,6 +140,7 @@ import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, Fau
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
+import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 
 import axios, { updateBaseUrl } from '@/api'
 import router, { lazyComponent } from '@/router'
@@ -154,10 +161,11 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
     SidebarItemContent: lazyComponent(Components.SidebarItemContent),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
-    TokenLogo: lazyComponent(Components.TokenLogo)
+    TokenLogo: lazyComponent(Components.TokenLogo),
+    Moonpay: lazyComponent(Components.Moonpay)
   }
 })
-export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
+export default class App extends Mixins(TransactionMixin, NodeErrorMixin, WalletConnectMixin) {
   readonly nodesFeatureEnabled = true
 
   readonly SidebarMenuGroups = SidebarMenuGroups
@@ -174,6 +182,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
 
   showHelpDialog = false
   showSelectLanguageDialog = false
+  showMoonpayDialog = false
 
   switchTheme: AsyncVoidFn = switchTheme
 
@@ -199,6 +208,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
   @Action setFaucetUrl!: (url: string) => void
   @Action setLanguage!: (lang: Language) => Promise<void>
+  @Action setApiKeys!: (options: any) => Promise<void>
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>
 
@@ -233,6 +243,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
       await this.setDefaultNodes(data?.DEFAULT_NETWORKS)
       await this.setSubNetworks(data.SUB_NETWORKS)
       await this.setSmartContracts(data.SUB_NETWORKS)
+      await this.setApiKeys(data?.API_KEYS)
 
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL)
@@ -322,6 +333,15 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
 
   openSelectLanguageDialog (): void {
     this.showSelectLanguageDialog = true
+  }
+
+  async openMoonpayDialog (): Promise<void> {
+    if (!this.isSoraAccountConnected) {
+      return this.connectInternalWallet()
+    }
+    await this.checkConnectionToExternalAccount(() => {
+      this.showMoonpayDialog = true
+    })
   }
 
   destroyed (): void {

@@ -28,7 +28,8 @@ const types = flow(
     'RESET_NODE',
     'SET_NETWORK_CHAIN_GENESIS_HASH',
     'SET_SELECT_NODE_DIALOG_VISIBILIY',
-    'SET_LANGUAGE'
+    'SET_LANGUAGE',
+    'SET_API_KEYS'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -38,6 +39,7 @@ const types = flow(
 
 function initialState () {
   return {
+    apiKeys: {},
     soraNetwork: '',
     slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
     marketAlgorithm: storage.get('marketAlgorithm') || DefaultMarketAlgorithm,
@@ -142,6 +144,9 @@ const mutations = {
   [types.SET_LANGUAGE] (state, lang: Language) {
     state.language = lang
     settingsStorage.set('language', lang)
+  },
+  [types.SET_API_KEYS] (state, keys = {}) {
+    state.apiKeys = { ...state.apiKeys, ...keys }
   }
 }
 
@@ -333,6 +338,9 @@ const actions = {
     updateDocumentTitle()
     updateFpNumberLocale(locale)
     commit(types.SET_LANGUAGE, locale)
+  },
+  setApiKeys ({ commit }, keys) {
+    commit(types.SET_API_KEYS, keys)
   }
 }
 
