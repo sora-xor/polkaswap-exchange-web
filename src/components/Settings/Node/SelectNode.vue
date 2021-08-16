@@ -136,6 +136,9 @@ $node-list-items: 5;
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
+    .el-icon-loading {
+      color: var(--s-color-base-content-tertiary);
+    }
   }
 
   &-description {
