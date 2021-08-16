@@ -137,7 +137,7 @@ import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
 
 import axios, { updateBaseUrl } from '@/api'
 import router, { lazyComponent } from '@/router'
-import { formatAddress, disconnectWallet } from '@/utils'
+import { formatAddress, disconnectWallet, preloadFontFace } from '@/utils'
 import { ConnectToNodeOptions } from '@/types/nodes'
 import { getLocale } from '@/lang'
 import { SubNetwork } from '@/utils/ethers-util'
@@ -219,6 +219,9 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   }
 
   async created () {
+    // element-icons is not common used, but should be visible after network connection lost
+    preloadFontFace('element-icons')
+
     updateBaseUrl(router)
 
     await this.setLanguage(getLocale() as any)
