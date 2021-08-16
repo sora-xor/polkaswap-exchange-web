@@ -100,7 +100,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter('history', { namespace }) history!: Nullable<Array<BridgeHistory>>
   @Getter('restored', { namespace }) restored!: boolean
-  @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: string
+  @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
 
   @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn

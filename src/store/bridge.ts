@@ -19,13 +19,14 @@ import {
   CodecString
 } from '@sora-substrate/util'
 import { api } from '@soramitsu/soraneo-wallet-web'
+import { ethers } from 'ethers'
+
 import { bridgeApi } from '@/utils/bridge'
 import { STATES } from '@/utils/fsm'
 import ethersUtil, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/ethers-util'
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions'
 import { delay, isEthereumAddress } from '@/utils'
 import { EthereumGasLimits, MaxUint256, ZeroStringValue } from '@/consts'
-import { ethers } from 'ethers'
 
 const SORA_REQUESTS_TIMEOUT = 5 * 1000
 
@@ -165,7 +166,8 @@ async function waitForExtrinsicFinalization (id?: string): Promise<BridgeHistory
     throw new Error('History id error')
   }
   const tx = bridgeApi.getHistory(id)
-  if (tx && tx.status === TransactionStatus.Error) {
+  if (tx && [TransactionStatus.Error, 'invalid', 'usurped'].includes(tx.status as TransactionStatus)) {
+    // TODO: maybe it's better to display a message about this errors from tx.errorMessage
     throw new Error(tx.errorMessage)
   }
   if (!tx || tx.status !== TransactionStatus.Finalized) {
@@ -181,11 +183,10 @@ function initialState () {
     assetAddress: '',
     assetBalance: null,
     amount: '',
-    soraNetworkFee: 0,
-    // Why only evmNetworkFee have ZeroStringValue variable?
+    soraNetworkFee: ZeroStringValue,
     evmNetworkFee: ZeroStringValue,
-    soraTotal: 0,
-    evmTotal: 0,
+    soraTotal: ZeroStringValue,
+    evmTotal: ZeroStringValue,
     isTransactionConfirmed: false,
     soraTransactionHash: '',
     evmTransactionHash: '',
@@ -581,7 +582,7 @@ const actions = {
       hash: '',
       ethereumHash: '',
       transactionState: STATES.INITIAL,
-      soraNetworkFee: getters.soraNetworkFee.toString(),
+      soraNetworkFee: getters.soraNetworkFee,
       ethereumNetworkFee: getters.evmNetworkFee,
       externalNetwork: rootGetters['web3/evmNetwork'],
       to: rootGetters['web3/evmAddress']
@@ -602,7 +603,7 @@ const actions = {
       return
     }
     const asset = await dispatch('findRegisteredAsset')
-    // TODO: asset should be registered just for now
+    // asset should be registered for now
     if (!asset) {
       return
     }
@@ -646,7 +647,7 @@ const actions = {
       return
     }
     const asset = await dispatch('findRegisteredAsset')
-    // TODO: asset should be registered just for now
+    // asset should be registered for now
     if (!asset) {
       return
     }
@@ -763,7 +764,7 @@ const actions = {
     //   }
     // }
     const asset = await dispatch('findRegisteredAsset')
-    // TODO: asset should be registered for now (ERC-20 tokens flow)
+    // asset should be registered for now (ERC-20 tokens flow)
     if (!asset) {
       return
     }
@@ -871,7 +872,7 @@ const actions = {
       return
     }
     const asset = await dispatch('findRegisteredAsset')
-    // TODO: asset should be registered just for now
+    // asset should be registered for now
     if (!asset) {
       return
     }
