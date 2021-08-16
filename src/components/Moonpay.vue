@@ -1,11 +1,14 @@
 <template>
   <dialog-base :visible.sync="isVisible" class="moonpay-dialog">
-    <iframe class="moonpay-frame" src="https://buy-staging.moonpay.com?apiKey=pk_test_4ASGxHKGpLPE6sdQq1V3QjtpUFSpWLk" />
+    <template #title>
+      <moonpay-logo :theme="libraryTheme" />
+    </template>
+    <iframe class="moonpay-frame" :src="moonpayUrl" />
   </dialog-base>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { State, Getter } from 'vuex-class'
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
 
@@ -15,16 +18,19 @@ import DialogBase from '@/components/DialogBase.vue'
 import { NetworkTypes } from '@/consts'
 import { getCssVariableValue } from '@/utils'
 
+import MoonpayLogo from '@/components/logo/Moonpay.vue'
+
 const getMoonpayBaseUrl = (soraNetwork: string): string => {
   if (soraNetwork === NetworkTypes.Mainnet) {
-    return ''
+    return 'https://buy.moonpay.com'
   }
   return 'https://buy-staging.moonpay.com'
 }
 
 @Component({
   components: {
-    DialogBase
+    DialogBase,
+    MoonpayLogo
   }
 })
 export default class Moonpay extends Mixins(DialogMixin) {
@@ -33,12 +39,26 @@ export default class Moonpay extends Mixins(DialogMixin) {
   @State(state => state.settings.soraNetwork) soraNetwork!: NetworkTypes
   @State(state => state.settings.language) language!: string
 
+  @Watch('isVisible')
+  private updateMoonpayUrl (visible: boolean) {
+    if (visible) {
+      this.moonpayUrl = this.createMoonpayUrl()
+    }
+  }
+
   moonpayUrl= ''
 
-  created (): void {
-    const color = getCssVariableValue('--s-color-theme-accent')
+  createMoonpayUrl (): string {
     const baseUrl = getMoonpayBaseUrl(this.soraNetwork)
-    const apiKey = this.apiKeys.moonpay
+    const params = {
+      colorCode: getCssVariableValue('--s-color-theme-accent'),
+      apiKey: this.apiKeys.moonpay,
+      language: this.language
+    }
+    const query = Object.entries(params).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&')
+    const url = `${baseUrl}?${query}`
+
+    return url
   }
 }
 </script>

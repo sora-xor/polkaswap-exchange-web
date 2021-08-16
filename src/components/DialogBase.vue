@@ -12,7 +12,9 @@
     class="dialog-wrapper"
   >
     <template #title>
-      <span class="el-dialog__title">{{ title }}</span>
+      <slot name="title">
+        <span class="el-dialog__title">{{ title }}</span>
+      </slot>
       <s-button class="el-dialog__close" type="action" icon="x-16" @click="isVisible = false" />
     </template>
     <slot />
