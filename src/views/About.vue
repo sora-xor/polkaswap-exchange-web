@@ -11,7 +11,7 @@
       <p class="text">{{ t('about.trading.second') }}</p>
       <s-image :src="images.about02_2[libraryTheme]" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px;" />
       <p class="text">{{ t('about.trading.third') }}
-        <a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_(original_%22BSD_License%22)" :title="t('about.trading.license')" class="text" target="_blank" rel="nofollow noopener">{{ t('about.trading.license') }}</a>
+        <a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_(original_%22BSD_License%22)" title="BSD 4-clause license" class="text" target="_blank" rel="nofollow noopener">BSD 4-clause license</a>
       </p>
       <s-image :src="images.about03x[libraryTheme]" lazy fit="cover" draggable="false" class="unselectable" style="width: 75%; margin-top: 120px; height: 343px;" />
       <p class="gradient liquidity">{{ t('about.liquidity.title') }}</p>
