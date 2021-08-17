@@ -384,6 +384,11 @@ export default class Rewards extends Mixins(FormattedAmountMixin, WalletConnectM
 .rewards-action-button i {
   top: $inner-spacing-mini;
 }
+.rewards-connect-button.el-button.neumorphic.s-tertiary {
+  [design-system-theme="light"] & {
+    box-shadow: none;
+  }
+}
 </style>
 
 <style lang="scss" scoped>
