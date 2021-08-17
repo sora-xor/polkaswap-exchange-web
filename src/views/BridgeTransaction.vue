@@ -367,17 +367,12 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get headerStatus (): string {
+    const failedAndPendingParams = { step: this.t('bridgeTransaction.steps.step', { step: this.t(`bridgeTransaction.steps.step${this.transactionStep}`) }) }
     if (this.isTransactionFromPending || this.isTransactionToPending) {
-      return this.t(
-        'bridgeTransaction.status.pending',
-        { step: this.t('bridgeTransaction.steps.step', { step: this.t(`bridgeTransaction.steps.step${this.transactionStep}`) }) }
-      )
+      return this.t('bridgeTransaction.status.pending', failedAndPendingParams)
     }
     if (this.isTransactionFromFailed || this.isTransactionToFailed) {
-      return this.t(
-        'bridgeTransaction.status.failed',
-        { step: this.t('bridgeTransaction.steps.step', { step: this.t(`bridgeTransaction.steps.step${this.transactionStep}`) }) }
-      )
+      return this.t('bridgeTransaction.status.failed', failedAndPendingParams)
     }
     if (this.isTransferCompleted) {
       return this.t('bridgeTransaction.status.convertionComplete')
