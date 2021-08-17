@@ -197,3 +197,11 @@ export const updateDocumentTitle = (to?: any) => {
     document.title = app.name
   }
 }
+
+export const preloadFontFace = async (name: string): Promise<void> => {
+  try {
+    await (document as any).fonts.load(`1em ${name}`)
+  } catch (err) {
+    console.error(err)
+  }
+}

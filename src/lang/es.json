@@ -28,7 +28,7 @@
         "Swap": "Intercambiar",
         "Transfer": "Transferir",
         "AddLiquidity": "Añadir Liquidez",
-        "RemoveLiquidity": "Eliminar Liquidez",
+        "RemoveLiquidity": "Remover Liquidez",
         "CreatePair": "Crear Par",
         "RegisterAsset": "Registrar Activo",
         "ClaimRewards": "Reclamar Recompensas",
@@ -43,8 +43,8 @@
             "ClaimRewards": "{rewards} Recompensa reclamada correctamente"
         },
         "error": {
-            "Transfer": "Envío fallido de {amount} {symbol} a {address}",
-            "Swap": "Intercambio fallido de {amount} {symbol} por {amount2} {symbol2}",
+            "Transfer": "Fallo al enviar {amount} {symbol} a {address}",
+            "Swap": "Fallo al intercambiar {amount} {symbol} por {amount2} {symbol2}",
             "AddLiquidity": "Fallo al suministrar {amount} {symbol} y {amount2} {symbol2}",
             "RemoveLiquidity": "Fallo al eliminar {amount} {symbol} y {amount2} {symbol2}",
             "CreatePair": "Fallo al suministrar {amount} {symbol} y {amount2} {symbol2}",
@@ -53,20 +53,20 @@
         }
     },
     "polkadotjs": {
-        "noExtensions": "No se encontró la extensión Polkadot.js. Por favor, instálela y vuelva a cargar esta página.\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Parece que no hay cuentas en su extensión Polkadot.js. Por favor, añada una cuenta e inténtelo de nuevo.",
-        "noAccount": "Error en la cuenta de Polkadot.js. Por favor, compruebe su cuenta en la extensión Polkadot.js"
+        "noExtensions": "No se encontró la extensión Polkadot.js. Por favor instálela y vuelva a cargar esta página.\n https:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Parece que no hay cuentas en su extensión Polkadot.js. Por favor añada una cuenta e inténtelo de nuevo.",
+        "noAccount": "Error en la cuenta de Polkadot.js. Por favor compruebe su cuenta en la extensión Polkadot.js"
     },
     "connection": {
         "title": "Cuenta de la Red SORA",
         "text": "Conecte sus cuentas de la Red SORA o cree otras nuevas con la extensión de navegador Polkadot{.js}. Esta extensión le permite firmar de forma segura las transacciones y gestionar Activos en la Red SORA.",
         "install": "No se encontró la extensión polkadot.js. Instálala y <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">recarga<\/a> la página. <br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "¿Solicitud de permiso rechazada accidentalmente? <\/br> Actualmente, la extensión Polkadot{.js} no tiene gestión de permisos. Como solución alternativa, puede reiniciar su navegador y volver a visitar esta página para continuar con la autorización.",
-        "noAccounts": "No se ha encontrado ninguna cuenta en su extensión de navegador Polkadot{.js}. Por favor, añade una cuenta e inténtalo de nuevo.",
+        "noPermissions": "¿Solicitud de permiso rechazada accidentalmente? <\/br> Actualmente, la extensión Polkadot{.js} no tiene gestión de permisos. Como solución alternativa, puede reiniciar su navegador y volver a visitar esta página para proceder con la autorización.",
+        "noAccounts": "No se ha encontrado ninguna cuenta en su extensión de navegador Polkadot{.js}. Por favor añade una cuenta e inténtalo de nuevo.",
         "selectAccount": "Seleccione la cuenta con la que desea trabajar",
         "loadingTitle": "Esperando que permita el acceso a la extensión Polkadot{.js}.",
         "action": {
-            "install": "Instalar la extensión",
+            "install": "Instalar extensión",
             "learnMore": "Aprende más",
             "connect": "Conectar cuenta",
             "refresh": "Actualizar"
@@ -88,12 +88,12 @@
         "fee": "@:networkFeeText",
         "enterAddress": "Introduzca dirección",
         "badAddress": "Dirección incorrecta",
-        "enterAmount": "Introduzca la cantidad",
+        "enterAmount": "Introduzca monto",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Confirmar transacción",
         "confirm": "@:confirmText",
-        "errorAddress": "Dirección no válida. Por favor, compruébela e inténtelo de nuevo.",
-        "addressDesc": "Sólo se aceptan direcciones de cuentas de la Red SORA. Por favor, asegúrate de que tienes una dirección de cuenta de la Red SORA correctamente formateada que comience con el prefijo 'cn'.",
+        "errorAddress": "Dirección no válida. Por favor compruébela e inténtelo de nuevo.",
+        "addressDesc": "Sólo se aceptan direcciones de cuentas de la Red SORA. Por favor asegúrate de que tienes una dirección de cuenta de la Red SORA correctamente formateada que comience con el prefijo 'cn'.",
         "feeTooltip": "@:networkFeeTooltipText"
     },
     "account": {
@@ -151,7 +151,7 @@
         "warningMessage": "Cualquiera puede crear un Token, incluso crear versiones falsas de Tokens existentes que dicen representar proyectos.\nSi compras este Token, es posible que no puedas volver a venderlo.",
         "approved": "Activo aprobado por la comunidad",
         "unknown": "Fuente desconocida",
-        "scam": "SCAM",
+        "scam": "ESTAFA",
         "next": "Siguiente"
     },
     "createToken": {
@@ -160,7 +160,7 @@
         "action": "@:createTokenText",
         "enterSymbol": "Ingrese el símbolo del token",
         "enterName": "Escriba el nombre del token",
-        "enterSupply": "Ingrese el suministro de tokens",
+        "enterSupply": "Ingrese el suministro del token",
         "confirm": "@:confirmText",
         "success": {
             "title": "Transacción enviada",
@@ -173,7 +173,7 @@
         "error": "Fallo al crear el token {symbol}",
         "tokenSymbol": {
             "placeholder": "Símbolo del token",
-            "desc": "Este es un identificador del token. Puede utilizar de 1 a 7 caracteres para la selección."
+            "desc": "Este es un identificador para el token. Puede utilizar de 1 a 7 caracteres para la selección."
         },
         "tokenName": {
             "placeholder": "Nombre del token",
@@ -201,16 +201,16 @@
         "startTime": "Fecha",
         "amount": "@:amountText",
         "amount2": "@:amountText 2",
-        "fee": "Cuota de transacción",
+        "fee": "Comisión de la transacción",
         "total": "Total",
         "from": "Desde",
         "to": "A",
         "viewInPolkascan": "Ver en Polkascan",
-        "successCopy": "{value} se copia en el portapapeles",
+        "successCopy": "{value} es copiado en el portapapeles",
         "copy": "Copiar {value}",
         "history": {
             "created": "Se ha creado una transacción por {amount} {symbol}",
-            "submitted": "Transacción enviada con una tarifa de {fee} {symbol}",
+            "submitted": "Transacción enviada con una comisión de {fee} {symbol}",
             "confirmed": "Transacción confirmada"
         },
         "viewInSorascan": "Ver en SORAscan",
@@ -227,7 +227,7 @@
     "connectWalletTextTooltip": "Conectar a la Red @:soraText con polkadot{.js}",
     "selectNodeText": "Seleccione nodo",
     "bridgeText": "Puente",
-    "disclaimer": "Descargo de responsabilidad: este sitio web es mantenido por la comunidad @:soraText. Antes de continuar utilizando este sitio web, por favor revise las @:polkaswapFaqLink y la documentación, que incluye una explicación detallada sobre cómo funciona Polkaswap, así como el @:footerMenu.memorandum y el @:(footerMenu.privacy). Estos documentos son cruciales para una experiencia de usuario segura y positiva. Al utilizar Polkaswap, reconoce haber leído y comprendido estos documentos. También reconoce lo siguiente: 1) su exclusiva responsabilidad por el cumplimiento de todas las leyes que puedan aplicarse a su uso particular de Polkaswap en su jurisdicción legal; 2) su comprensión de que la versión actual de Polkaswap es una versión alfa: no se ha probado completamente y es posible que algunas funciones no funcionen según lo diseñado; y 3) su comprensión y aceptación voluntaria de los riesgos involucrados en el uso de Polkaswap, incluido, entre otros, el riesgo de perder tokens. Una vez más, por favor ¡no continúe sin leer las preguntas frecuentes (FAQ), <span>@:footerMenu.memorandum<\/span> <a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\">@:footerMenu.memorandum<\/a> y <span>@:footerMenu.privacy<\/span> <a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\">@:footerMenu.privacy<\/a>!",
+    "disclaimer": "Descargo de responsabilidad: este sitio web es mantenido por la comunidad @:soraText. Antes de continuar utilizando este sitio web, por favor revise las @:polkaswapFaqLink y la documentación, que incluye una explicación detallada sobre cómo funciona Polkaswap, así como el @:footerMenu.memorandum y el @:(footerMenu.privacy). Estos documentos son cruciales para una experiencia de usuario segura y positiva. Al utilizar Polkaswap, reconoce haber leído y comprendido estos documentos. También reconoce lo siguiente: 1) su exclusiva responsabilidad por el cumplimiento de todas las leyes que puedan aplicarse a su uso particular de Polkaswap en su jurisdicción legal; 2) su comprensión de que la versión actual de Polkaswap es una versión alfa: no se ha probado completamente y es posible que algunas funciones no funcionen según lo diseñado; y 3) su comprensión y aceptación voluntaria de los riesgos involucrados en el uso de Polkaswap, incluido, pero no limitado a, el riesgo de perder tokens. Una vez más, por favor ¡no continúe sin leer las preguntas frecuentes (FAQ), <span>@:footerMenu.memorandum<\/span> <a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\">@:footerMenu.memorandum<\/a> y <span>@:footerMenu.privacy<\/span> <a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\">@:footerMenu.privacy<\/a>!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
     "poweredBy": "Desarrollado por",
     "confirmTransactionText": "Confirmar transacción en {direction}",
@@ -238,7 +238,7 @@
     "marketText": "Mercado",
     "marketAlgorithmText": "Algoritmo de mercado",
     "firstPerSecond": "{first} por {second}",
-    "pairIsNotCreated": "El par de fichas no se ha creado",
+    "pairIsNotCreated": "El par de token no se ha creado",
     "pageTitle": {
         "Swap": "Intercambio",
         "Pool": "Fondo común",
@@ -255,7 +255,7 @@
     },
     "mainMenu": {
         "Swap": "Intercambio",
-        "Pool": "Pool \"Fondo común\"",
+        "Pool": "Fondo común",
         "Bridge": "@:bridgeText",
         "Farming": "Farming \"Agricultura del Rendimiento\"",
         "Wallet": "Cuenta",
@@ -294,7 +294,7 @@
         "learnMore": "Aprende más",
         "network": {
             "title": "¿Qué es @:soraText?",
-            "description": "Polkaswap está construido sobre la Red @:soraText, y el token @:soraText (XOR) se utiliza para la provisión de gas\/cuotas y liquidez en Polkaswap. La red @:soraText permite reducir las tarifas, agilizar las transacciones y simplificar la finalización del consenso, y se centra en ofrecer interoperabilidad en otros ecosistemas de blockchain como @:(ethereumText)."
+            "description": "Polkaswap está construido sobre la Red @:soraText, y el token @:soraText (XOR) se utiliza para la provisión de gas\/comisiones y liquidez en Polkaswap. La red @:soraText permite reducir las tarifas, agilizar las transacciones y simplificar la finalización del consenso, y se centra en ofrecer interoperabilidad en otros ecosistemas de blockchain como @:(ethereumText)."
         },
         "polkadot": {
             "title": "¿Qué es polkadot{.js}?",
@@ -309,14 +309,14 @@
         },
         "messages": {
             "connected": "Conexión establecida con el nodo\n{address}",
-            "selectNode": "Por favor, seleccione el nodo a conectar de la lista de nodos"
+            "selectNode": "Por favor seleccione el nodo a conectar de la lista de nodos"
         },
         "warnings": {
             "disconnect": "Se ha perdido la conexión con el nodo. Reconectando..."
         }
     },
     "selectNodeDialog": {
-        "title": "@:soraText Selección de nodos de la Red",
+        "title": "Selección de nodos de la Red @:soraText ",
         "addNode": "Añadir nodo personalizado",
         "customNode": "Nodo personalizado",
         "howToSetupOwnNode": "Cómo configurar su propio nodo @:soraText",
@@ -325,8 +325,8 @@
         "selectNodeForEnvironment": "Seleccione un nodo para el entorno {environment}:",
         "nodeTitle": "{chain} alojada por {name}",
         "messages": {
-            "emptyName": "Por favor, ingrese el nombre del nodo",
-            "emptyAddress": "Por favor, ingrese la dirección del nodo",
+            "emptyName": "Por favor ingrese el nombre del nodo",
+            "emptyAddress": "Por favor ingrese la dirección del nodo",
             "incorrectProtocol": "La dirección debe comenzar por ws:\/\/ o wss:\/\/",
             "incorrectAddress": "Dirección incorrecta"
         },
@@ -349,12 +349,12 @@
     },
     "metamask": "MetaMask",
     "sora": {
-        "Devnet": "@:soraText Devnet (Red de desarrolladores)",
-        "Testnet": "@:soraText Testnet (Red de prueba)",
-        "Mainnet": "@:soraText Mainnet (Red principal)"
+        "Devnet": "@:soraText Red de desarrolladores",
+        "Testnet": "@:soraText Red de prueba",
+        "Mainnet": "@:soraText Red principal"
     },
     "evm": {
-        "main": "Ethereum Mainnet",
+        "main": "Red principal de Ethereum",
         "ropsten": "Ethereum Ropsten",
         "rinkeby": "Ethereum Rinkeby",
         "kovan": "Ethereum Kovan",
@@ -370,26 +370,26 @@
         "description": "Intercambio de Activos a través de Cadena cruzada, creación y listado sencillo de nuevos Activos y los intercambios más fáciles de la historia. ¡El futuro interoperable de Polkadot está aquí y nosotros estamos a la vanguardia!",
         "trading": {
             "title": "Comercio más rápido",
-            "first": "Polkaswap es un protocolo AMM DEX no custodiado para el intercambio de tokens basado en cadenas principales como Polkadot y Kusama, parachains de Polkadot y Kusama, y blockchains conectadas directamente a través de puentes.",
+            "first": "Polkaswap es un protocolo AMM DEX no custodiado para el intercambio de tokens basado en las cadenas principales de Polkadot y Kusama, parachains de Polkadot y Kusama, y blockchains conectadas directamente a través de puentes.",
             "second": "Polkaswap elimina los intermediarios de confianza y ofrece la oportunidad de negociar más rápidamente",
-            "third": "Polkaswap es un proyecto comunitario y los desarrolladores colaboran en el código fuente abierto utilizando el"
+            "third": "Polkaswap es un proyecto comunitario y los desarrolladores colaboran en el código de fuente abierta utilizando el"
         },
         "liquidity": {
             "title": "Liquidez ilimitada",
             "first": "Polkaswap combina múltiples fuentes de liquidez bajo un algoritmo común de agregación de liquidez, operando completamente en cadena, de manera descentralizada y sin intermediarios.",
-            "second": "Cuando los traders llaman la función de intercambio, el algoritmo de agregación de liquidez completará las órdenes utilizando las mejores ofertas en todas las fuentes de liquidez. Las fuentes de liquidez pueden ser otros DEX, libros de pedidos u otras fuentes añadidas por API.",
+            "second": "Cuando los traders llaman la función de intercambio, el algoritmo de agregación de liquidez completará las órdenes utilizando las mejores ofertas en todas las fuentes de liquidez. Las fuentes de liquidez pueden ser otros DEX, libros de ordenes u otras fuentes añadidas por API.",
             "third": "Dado que Polkaswap es un proyecto de código abierto, cualquiera puede añadir más fuentes de liquidez haciendo contribuciones al código base de Polkaswap."
         },
         "swap": {
             "title": "Intercambia cualquier token",
-            "first": "Vaya más allá de los límites de los DEX actuales agregando tokens del ecosistema Polkadot, así como otras cadenas de bloques.",
+            "first": "Vaya más allá de los límites de los DEX actuales agregando tokens del ecosistema Polkadot, así como de otras cadenas de bloques.",
             "second": "Cree, enumere y opere con sus propios tokens en la red SORA.",
             "third": "Nuestra infraestructura principal utiliza Parity Substrate, que es más escalable que Ethereum, y no utiliza la costosa minería para el consenso."
         },
         "pswap": {
             "title": "Tokens PSWAP",
             "first": "PSWAP fue creado por el gobierno de la comunidad mediante la votación de su lanzamiento. Es un token de utilidad y gobernanza utilizado para recompensar a los proveedores de liquidez en Polkaswap. A diferencia de la mayoría de otros tokens de recompensa, PSWAP se quema con las transacciones y disminuye su oferta con el tiempo.",
-            "second": "El {percent}% de la comisión por cada intercambio en el DEX de Polkaswap se utiliza para recomprar tokens PSWAP, que luego se queman. Al principio, el 90% de los tokens PSWAP quemados se rematan para asignarlos a los proveedores de liquidez, pero con el tiempo este porcentaje se reducirá al 35% después de 4 años."
+            "second": "El {percent}% de la comisión por cada intercambio en el DEX de Polkaswap se utiliza para recomprar tokens PSWAP, que luego se queman. Al principio, el 90% de los tokens PSWAP quemados se reacuñan para asignarlos a los proveedores de liquidez, pero con el tiempo este porcentaje se reducirá al 35% después de 4 años."
         },
         "links": {
             "first": {
@@ -424,7 +424,7 @@
         "priceImpact": "Impacto del precio",
         "priceImpactTooltip": "La diferencia entre el precio de mercado y el precio estimado debido al tamaño de la operación.",
         "liquidityProviderFee": "Comisión del proveedor de Liquidez",
-        "liquidityProviderFeeTooltip": "Una parte de cada operación ({liquidityProviderFee}%) se destina a los proveedores de Liquidez como incentivo del protocolo.",
+        "liquidityProviderFeeTooltip": "Una parte de cada operación ({liquidityProviderFee}%) se destina a los proveedores de liquidez como incentivo del protocolo.",
         "networkFee": "@:networkFeeText",
         "pairIsNotCreated": "@:pairIsNotCreated",
         "networkFeeTooltip": "@:networkFeeTooltipText",
@@ -432,7 +432,7 @@
         "insufficientAmount": "Cantidad insuficiente de {tokenSymbol}",
         "insufficientLiquidity": "Liquidez insuficiente",
         "confirmSwap": "Confirmar el intercambio",
-        "swapOutputMessage": "La cantidad esta estimada. Recibirá al menos {transactionValue} o la transacción se revertirá.",
+        "swapOutputMessage": "La cantidad de salida es estimada. Recibirá al menos {transactionValue} o la transacción se revertirá.",
         "rewardsForSwap": "Recompensas estratégicas de PSWAP",
         "swapInputMessage": "La entrada es estimada. Venderá el máximo de {transactionValue} o la transacción se revertirá"
     },
@@ -447,7 +447,7 @@
         "pairTokens": "{pair} Tokens del Fondo común",
         "poolShare": "Su Participación en el Fondo común",
         "unknownAsset": "Activo desconocido",
-        "description": "Cuando añades Liquidez, recibes Tokens del Fondo común que representan tu posición. Estos Tokens ganan automáticamente comisiones proporcionales a su Participación en el Fondo común y pueden ser redimidos en cualquier momento."
+        "description": "Cuando añades Liquidez, recibes Tokens del Fondo común que representan tu posición. Estos Tokens ganan automáticamente comisiones proporcionales a su participación en el fondo común y pueden ser redimidos en cualquier momento."
     },
     "bridge": {
         "title": "Puente HASHI",
@@ -459,8 +459,8 @@
         "changeNetwork": "@:changeNetworkText",
         "next": "Siguiente",
         "connectWallets": "Conecte las carteras para ver el respectivo historial de transacciones.",
-        "soraNetworkFee": "@:soraText Tasa de red",
-        "ethereumNetworkFee": "@:ethereumText Tasa de red",
+        "soraNetworkFee": "@:soraText comisión de red",
+        "ethereumNetworkFee": "@:ethereumText comisión de red",
         "tooltipValue": "@:comingSoonText",
         "total": "Total",
         "viewHistory": "Ver historial de transacciones",
@@ -501,7 +501,7 @@
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
-        "details": "{de} por {a}",
+        "details": "{from} para {to}",
         "for": "por",
         "steps": {
             "step": "{step} de 2",
@@ -510,7 +510,7 @@
         },
         "status": {
             "pending": "{step} transacciones pendientes ...",
-            "failed": "{step} transacciones fallidas. @:(retryText).",
+            "failed": "Transacciones fallidas {step} . @:(retryText).",
             "confirm": "Confirmar 2ª de 2 transacciones...",
             "complete": "Completa",
             "convertionComplete": "Conversión completa"
@@ -631,7 +631,7 @@
         "output": "Salida",
         "price": "Precio",
         "remove": "Eliminar",
-        "description": "La retirada de Tokens del Fondo común convierte su posición de nuevo en Tokens subyacentes a la tasa actual, proporcional a su Participación en el Fondo común. Las comisiones acumuladas se incluyen en las cantidades que recibe.",
+        "description": "La retirada de Tokens del Fondo común convierte su posición de nuevo en Tokens subyacentes a la tasa actual, proporcional a su participación en el fondo común. Las comisiones acumuladas están incluídas en las cantidades que recibe.",
         "outputMessage": "La cantidad es estimada. Si el precio cambia más de {slippageTolerance}% su transacción se revertirá.",
         "confirmTitle": "Usted recibirá",
         "shareOfPool": "Parte del fondo común después de la transacción"
@@ -728,7 +728,7 @@
         "default": "@:ethereumText proveedor",
         "metamask": "@:metamask",
         "messages": {
-            "checkExtension": "La extensión {nombre} está ocupada, por favor compruébelo",
+            "checkExtension": "La extensión {name} está ocupada, por favor compruébelo",
             "extensionLogin": "Por favor, inicie sesión en su extensión de {name}",
             "installExtension": "La extensión {name} no se encuentra. Por favor, instálela.\n\n¿Ya ha instalado la extensión? Por favor, recargue la página",
             "reloadPage": "Recargar página"
