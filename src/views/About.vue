@@ -112,7 +112,7 @@ export default class About extends Mixins(TranslationMixin, LoadingMixin) {
 
   @Getter libraryTheme!: Theme
 
-  get images (): any {
+  get images (): Array<any> {
     return this.IMAGES[this.libraryTheme]
   }
 
