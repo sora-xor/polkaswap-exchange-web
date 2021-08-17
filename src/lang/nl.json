@@ -93,8 +93,10 @@
         "confirmTitle": "Bevestig transactie",
         "confirm": "@:confirmText",
         "errorAddress": "Ongeldig adres. Controleer het en probeer het opnieuw.",
-        "addressDesc": "Alleen SORA-netwerkaccountadressen worden geaccepteerd. Zorg ervoor dat je een correct opgemaakt SORA-netwerkaccountadres hebt dat begint met het voorvoegsel 'cn'.",
-        "feeTooltip": "@:networkFeeTooltipText"
+        "feeTooltip": "@:networkFeeTooltipText",
+        "tooltip": "Verzend tokens tussen SORA-netwerk accounts",
+        "addressWarning": "Tokens worden naar het onderstaande SORA-adres gestuurd. Zorg ervoor dat de ontvanger toegang heeft tot de SORA-keten om de tokens te gebruiken:",
+        "addressError": "U kunt geen tokens verzenden naar hetzelfde account waarmee u momenteel bent verbonden."
     },
     "account": {
         "successCopy": "Wallet-adres werd gekopieerd naar het klembord",

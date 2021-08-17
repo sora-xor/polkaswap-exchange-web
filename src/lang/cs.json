@@ -93,8 +93,10 @@
         "confirmTitle": "Potvrďte transakci",
         "confirm": "@:confirmText",
         "errorAddress": "Neplatná adresa. Zkontrolujte ji a zkuste to znovu.",
-        "addressDesc": "Akceptovány jsou pouze adresy síťových účtů SORA. Ujistěte se, že máte správně naformátovanou adresu síťového účtu SORA začínající předponou \"cn\".",
-        "feeTooltip": "@:networkFeeTooltipText"
+        "feeTooltip": "@:networkFeeTooltipText",
+        "tooltip": "Odesílejte tokeny mezi síťovými účty SORA",
+        "addressWarning": "Tokeny budou zaslány na níže uvedenou adresu SORA. Zajistěte, aby měl příjemce přístup k řetězci SORA, aby mohl používat tokeny:",
+        "addressError": "Žetony nemůžete posílat na stejný účet, ke kterému jste aktuálně připojeni."
     },
     "account": {
         "successCopy": "Adresa peněženky je zkopírována do schránky",
