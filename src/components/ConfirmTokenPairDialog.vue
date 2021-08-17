@@ -56,7 +56,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
+import { FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -69,8 +69,8 @@ import { Components } from '@/consts'
   components: {
     DialogBase,
     TokenLogo: lazyComponent(Components.TokenLogo),
-    InfoLine: lazyComponent(Components.InfoLine),
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo)
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    InfoLine
   }
 })
 export default class ConfirmTokenPairDialog extends Mixins(FormattedAmountMixin, TranslationMixin, DialogMixin, LoadingMixin) {

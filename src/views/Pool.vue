@@ -59,7 +59,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { AccountLiquidity, Asset } from '@sora-substrate/util'
-import { FormattedAmountMixin, FormattedAmount, FontSizeRate, FontWeightRate } from '@soramitsu/soraneo-wallet-web'
+import { FormattedAmountMixin, FormattedAmount, FontSizeRate, FontWeightRate, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -72,9 +72,9 @@ const namespace = 'pool'
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    InfoLine: lazyComponent(Components.InfoLine),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    FormattedAmount
+    FormattedAmount,
+    InfoLine
   }
 })
 export default class Pool extends Mixins(FormattedAmountMixin, TranslationMixin, LoadingMixin) {

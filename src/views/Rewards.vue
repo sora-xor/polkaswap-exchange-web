@@ -82,7 +82,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
 import { AccountAsset, KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, CodecString, FPNumber } from '@sora-substrate/util'
-import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
+import { FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
 
 import ethersUtil from '@/utils/ethers-util'
@@ -102,7 +102,7 @@ import TransactionMixin from '@/components/mixins/TransactionMixin'
     TokensRow: lazyComponent(Components.TokensRow),
     RewardsAmountHeader: lazyComponent(Components.RewardsAmountHeader),
     RewardsAmountTable: lazyComponent(Components.RewardsAmountTable),
-    InfoLine: lazyComponent(Components.InfoLine)
+    InfoLine
   }
 })
 export default class Rewards extends Mixins(FormattedAmountMixin, WalletConnectMixin, TransactionMixin) {
@@ -233,7 +233,7 @@ export default class Rewards extends Mixins(FormattedAmountMixin, WalletConnectM
   get feeInfo (): object {
     return {
       label: this.t('rewards.networkFee'),
-      tooltipContent: this.t('rewards.networkFeeTooltip'),
+      labelTooltip: this.t('rewards.networkFeeTooltip'),
       value: this.formatCodecNumber(this.fee),
       assetSymbol: KnownSymbols.XOR
     }

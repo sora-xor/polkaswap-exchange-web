@@ -92,8 +92,7 @@ const namespace = 'bridge'
 
 @Component({
   components: {
-    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    InfoLine: lazyComponent(Components.InfoLine)
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader)
   }
 })
 export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, LoadingMixin, NetworkFormatterMixin) {

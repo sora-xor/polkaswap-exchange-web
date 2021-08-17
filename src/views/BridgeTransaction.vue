@@ -61,7 +61,6 @@
               :asset-symbol="formattedAssetSymbol"
               :fiat-value="firstAmountFiatValue"
               is-formatted
-              alt-value="-"
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
@@ -69,9 +68,11 @@
               :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol"
               :fiat-value="soraFeeFiatValue"
               is-formatted
-              :value-prefix="!isSoraToEvm && formattedEvmNetworkFee ? '~' : null"
-              alt-value="-"
-            />
+            >
+              <template v-if="!isSoraToEvm && formattedEvmNetworkFee" #info-line-value-prefix>
+                <span class="info-line-value-prefix">~</span>
+              </template>
+            </info-line>
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
             <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol" /> -->
             <s-button
@@ -130,7 +131,6 @@
               :asset-symbol="formattedAssetSymbol"
               :fiat-value="secondAmountFiatValue"
               is-formatted
-              alt-value="-"
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
@@ -138,9 +138,11 @@
               :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol"
               :fiat-value="soraNetworkFeeFiatValue"
               is-formatted
-              :value-prefix="isSoraToEvm && formattedEvmNetworkFee ? '~' : null"
-              alt-value="-"
-            />
+            >
+              <template v-if="isSoraToEvm && formattedEvmNetworkFee" #info-line-value-prefix>
+                <span class="info-line-value-prefix">~</span>
+              </template>
+            </info-line>
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
             <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="!isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol" /> -->
             <s-button
@@ -178,7 +180,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory, BridgeNetworks } from '@sora-substrate/util'
-import { getExplorerLink, api, FormattedAmountMixin, FormattedAmount } from '@soramitsu/soraneo-wallet-web'
+import { getExplorerLink, api, FormattedAmountMixin, FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
 import { interpret } from 'xstate'
 
 import BridgeMixin from '@/components/mixins/BridgeMixin'
@@ -195,9 +197,9 @@ const namespace = 'bridge'
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    InfoLine: lazyComponent(Components.InfoLine),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
-    FormattedAmount
+    FormattedAmount,
+    InfoLine
   }
 })
 export default class BridgeTransaction extends Mixins(

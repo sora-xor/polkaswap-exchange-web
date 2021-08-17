@@ -98,7 +98,6 @@ export enum PageNames {
 export enum Components {
   GenericPageHeader = 'GenericPageHeader',
   SwapInfo = 'SwapInfo',
-  InfoLine = 'InfoLine',
   SelectToken = 'SelectToken',
   TokenLogo = 'TokenLogo',
   PairTokenLogo = 'PairTokenLogo',
@@ -252,11 +251,6 @@ export enum LogoSize {
   MEDIUM = 'medium',
   BIG = 'big',
   LARGE = 'large'
-}
-
-export enum InfoTooltipPosition {
-  LEFT = 'left',
-  RIGHT = 'right'
 }
 
 export enum NetworkTypes {

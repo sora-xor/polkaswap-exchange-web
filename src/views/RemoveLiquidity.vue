@@ -93,9 +93,9 @@
         <info-line
           v-if="fee"
           :label="t('createPair.networkFee')"
+          :label-tooltip="t('networkFeeTooltipText')"
           :value="formattedFee"
           :asset-symbol="KnownSymbols.XOR"
-          :tooltip-content="t('networkFeeTooltipText')"
           :fiat-value="getFiatAmountByCodecString(fee)"
           is-formatted
         />
@@ -126,7 +126,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { FPNumber, KnownSymbols, AccountLiquidity, CodecString } from '@sora-substrate/util'
-import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
+import { FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
@@ -140,12 +140,12 @@ const namespace = 'removeLiquidity'
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    InfoLine: lazyComponent(Components.InfoLine),
     TokenLogo: lazyComponent(Components.TokenLogo),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    TokenAddress: lazyComponent(Components.TokenAddress)
+    TokenAddress: lazyComponent(Components.TokenAddress),
+    InfoLine
   }
 })
 export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, TransactionMixin, ConfirmDialogMixin) {
