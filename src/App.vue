@@ -331,7 +331,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   private async runAppConnectionToNode () {
     try {
       await this.connectToNode({
-        onError: this.handleNodeError,
+        onError: (error) => this.handleNodeError(error, true), // prefer notification on connection success
         onDisconnect: this.handleNodeDisconnect,
         onReconnect: this.handleNodeReconnect
       })

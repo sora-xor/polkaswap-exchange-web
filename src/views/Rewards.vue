@@ -25,6 +25,7 @@
                 v-model="selectedVestedRewardsModel"
                 :item="vestedRewadsGroupItem"
                 :theme="libraryTheme"
+                :disabled="!vestedRewardsAvailable"
               />
               <rewards-amount-table
                 class="rewards-table"
@@ -123,6 +124,7 @@ export default class Rewards extends Mixins(FormattedAmountMixin, WalletConnectM
   @Getter libraryTheme!: Theme
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset
   @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean
+  @Getter('vestedRewardsAvailable', { namespace: 'rewards' }) vestedRewardsAvailable!: boolean
   @Getter('externalRewardsAvailable', { namespace: 'rewards' }) externalRewardsAvailable!: boolean
   @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardsAmountHeaderItem>
   @Getter('transactionStepsCount', { namespace: 'rewards' }) transactionStepsCount!: number
@@ -216,7 +218,7 @@ export default class Rewards extends Mixins(FormattedAmountMixin, WalletConnectM
   }
 
   get selectedVestedRewardsModel (): boolean {
-    return this.selectedVestedRewards !== null
+    return this.vestedRewardsAvailable && this.selectedVestedRewards !== null
   }
 
   set selectedVestedRewardsModel (flag: boolean) {
@@ -381,6 +383,11 @@ export default class Rewards extends Mixins(FormattedAmountMixin, WalletConnectM
 }
 .rewards-action-button i {
   top: $inner-spacing-mini;
+}
+.rewards-connect-button.el-button.neumorphic.s-tertiary {
+  [design-system-theme="light"] & {
+    box-shadow: none;
+  }
 }
 </style>
 
