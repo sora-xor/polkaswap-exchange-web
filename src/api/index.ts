@@ -7,7 +7,7 @@ const axios = axiosInstance.create()
 
 axios.defaults.headers.common['Cache-Control'] = 'no-cache'
 
-const detectBaseUrl = (router?: VueRouter): string => {
+export const detectBaseUrl = (router?: VueRouter): string => {
   if (BASE_URL) return BASE_URL
 
   if (router && router.mode === 'hash') {

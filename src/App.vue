@@ -182,12 +182,12 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
 
   showHelpDialog = false
   showSelectLanguageDialog = false
-  showMoonpayDialog = false
 
   switchTheme: AsyncVoidFn = switchTheme
 
   @State(state => state.settings.faucetUrl) faucetUrl!: string
   @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
+  @State(state => state.settings.moonpayDialogVisibility) moonpayDialogVisibility!: boolean
 
   @Getter libraryTheme!: Theme
   @Getter libraryDesignSystem!: DesignSystem
@@ -203,6 +203,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
   @Action navigate // Wallet
   @Action updateAccountAssets!: AsyncVoidFn
   @Action trackActiveTransactions!: AsyncVoidFn
+  @Action setMoonpayDialogVisibility!: (flag: boolean) => void
   @Action setSoraNetwork!: (data: any) => Promise<void>
   @Action setDefaultNodes!: (nodes: any) => Promise<void>
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
@@ -266,6 +267,14 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
 
   set showSelectNodeDialog (flag: boolean) {
     this.setSelectNodeDialogVisibility(flag)
+  }
+
+  get showMoonpayDialog (): boolean {
+    return this.moonpayDialogVisibility
+  }
+
+  set showMoonpayDialog (flag: boolean) {
+    this.setMoonpayDialogVisibility(flag)
   }
 
   get themeIcon (): string {
@@ -340,7 +349,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
       return this.connectInternalWallet()
     }
     await this.checkConnectionToExternalAccount(() => {
-      this.showMoonpayDialog = true
+      this.setMoonpayDialogVisibility(true)
     })
   }
 

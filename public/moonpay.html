@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script>
+      const search = window.location.search.substring(1)
+
+      if (search) {
+        const params = search.split('&').reduce((result, queryPart) => {
+          const [key, value] = queryPart.split('=')
+          if (!value) return result
+          return {
+            ...result,
+            [key]: decodeURIComponent(value)
+          }
+        }, {})
+
+        const transactions = JSON.parse(window.localStorage.getItem('moonpay.transactions')) || []
+        transactions.push(params)
+        window.localStorage.setItem('moonpay.transactions', JSON.stringify(transactions))
+      }
+
+      if (window.parent) {
+        window.parent.focus()
+      }
+      window.close()
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Polkaswap</title>
+  </head>
+  <body>
+  </body>
+</html>

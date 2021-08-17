@@ -9,14 +9,18 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
-import { State, Getter } from 'vuex-class'
+import { Action, State, Getter } from 'vuex-class'
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
+import debounce from 'lodash/fp/debounce'
 
 import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
 
+import router from '@/router'
 import { NetworkTypes } from '@/consts'
 import { getCssVariableValue } from '@/utils'
+import { detectBaseUrl } from '@/api'
+import { moonpayStorage } from '@/utils/storage'
 
 import MoonpayLogo from '@/components/logo/Moonpay.vue'
 
@@ -34,10 +38,14 @@ const getMoonpayBaseUrl = (soraNetwork: string): string => {
   }
 })
 export default class Moonpay extends Mixins(DialogMixin) {
+  moonpayUrl = ''
+  storageHandler
+
   @Getter libraryTheme!: Theme
   @State(state => state.settings.apiKeys) apiKeys!: any
   @State(state => state.settings.soraNetwork) soraNetwork!: NetworkTypes
   @State(state => state.settings.language) language!: string
+  @Action setMoonpayDialogVisibility!: (flag: boolean) => void
 
   @Watch('isVisible')
   private updateMoonpayUrl (visible: boolean) {
@@ -46,19 +54,38 @@ export default class Moonpay extends Mixins(DialogMixin) {
     }
   }
 
-  moonpayUrl= ''
+  created (): void {
+    this.storageHandler = debounce(100)(this.handleStorageChange)
+
+    window.addEventListener('storage', this.storageHandler)
+  }
+
+  destroyed (): void {
+    window.removeEventListener('storage', this.storageHandler)
+  }
 
   createMoonpayUrl (): string {
     const baseUrl = getMoonpayBaseUrl(this.soraNetwork)
+    const redirectURL = `${detectBaseUrl(router)}moonpay.html`
     const params = {
       colorCode: getCssVariableValue('--s-color-theme-accent'),
       apiKey: this.apiKeys.moonpay,
-      language: this.language
+      language: this.language,
+      redirectURL
     }
     const query = Object.entries(params).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&')
     const url = `${baseUrl}?${query}`
 
     return url
+  }
+
+  handleStorageChange (): void {
+    const transactions = JSON.parse(moonpayStorage.get('transactions')) || []
+
+    if (transactions.length !== 0) {
+      this.setMoonpayDialogVisibility(false)
+      console.log(transactions)
+    }
   }
 }
 </script>
