@@ -3,7 +3,7 @@
     <template #title>
       <moonpay-logo :theme="libraryTheme" />
     </template>
-    <iframe class="moonpay-frame" :src="moonpayUrl" />
+    <iframe class="moonpay-frame" :src="widgetUrl" v-loading="loading" />
   </dialog-base>
 </template>
 
@@ -11,25 +11,18 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, State, Getter } from 'vuex-class'
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
-import debounce from 'lodash/fp/debounce'
 
 import DialogMixin from '@/components/mixins/DialogMixin'
+import LoadingMixin from '@/components/mixins/LoadingMixin'
 import DialogBase from '@/components/DialogBase.vue'
 
-import router from '@/router'
 import { NetworkTypes } from '@/consts'
 import { getCssVariableValue } from '@/utils'
-import { detectBaseUrl } from '@/api'
-import { moonpayStorage } from '@/utils/storage'
+import { MoonpayApi } from '@/utils/moonpay'
 
 import MoonpayLogo from '@/components/logo/Moonpay.vue'
 
-const getMoonpayBaseUrl = (soraNetwork: string): string => {
-  if (soraNetwork === NetworkTypes.Mainnet) {
-    return 'https://buy.moonpay.com'
-  }
-  return 'https://buy-staging.moonpay.com'
-}
+const namespace = 'moonpay'
 
 @Component({
   components: {
@@ -37,54 +30,75 @@ const getMoonpayBaseUrl = (soraNetwork: string): string => {
     MoonpayLogo
   }
 })
-export default class Moonpay extends Mixins(DialogMixin) {
-  moonpayUrl = ''
-  storageHandler
+export default class Moonpay extends Mixins(DialogMixin, LoadingMixin) {
+  widgetUrl = ''
+  transactionsPolling!: Function
 
+  @Getter account
+  @Getter isLoggedIn!: boolean
   @Getter libraryTheme!: Theme
+  @Getter('lastCompletedTransaction', { namespace }) lastCompletedTransaction!: any
+
+  @State(state => state[namespace].api) moonpayApi!: MoonpayApi
   @State(state => state.settings.apiKeys) apiKeys!: any
   @State(state => state.settings.soraNetwork) soraNetwork!: NetworkTypes
   @State(state => state.settings.language) language!: string
-  @Action setMoonpayDialogVisibility!: (flag: boolean) => void
 
-  @Watch('isVisible')
-  private updateMoonpayUrl (visible: boolean) {
-    if (visible) {
-      this.moonpayUrl = this.createMoonpayUrl()
+  // @Action('setDialogVisibility', { namespace: 'moonpay' }) setMoonpayDialogVisibility!: (flag: boolean) => void
+  @Action('createTransactionsPolling', { namespace: 'moonpay' }) createTransactionsPolling!: () => Promise<Function>
+  @Action('updatePollingTimestamp', { namespace: 'moonpay' }) updatePollingTimestamp!: () => Promise<void>
+
+  @Watch('isLoggedIn', { immediate: true })
+  private handleLoggedInStateChange (isLoggedIn: boolean): void {
+    this.stopPolling()
+
+    if (isLoggedIn) {
+      this.startPolling()
     }
   }
 
-  created (): void {
-    this.storageHandler = debounce(100)(this.handleStorageChange)
-
-    window.addEventListener('storage', this.storageHandler)
+  @Watch('lastCompletedTransaction')
+  private async afterTransactionComplete (transaction): Promise<void> {
+    if (transaction) {
+      // bridge it
+      console.log(transaction)
+      this.updatePollingTimestamp()
+    }
   }
 
-  destroyed (): void {
-    window.removeEventListener('storage', this.storageHandler)
+  async created (): Promise<void> {
+    this.withApi(() => {
+      this.moonpayApi.setPublicKey(this.apiKeys.moonpay)
+      this.moonpayApi.setNetwork(this.soraNetwork)
+      this.updateWidgetUrl()
+    })
   }
 
-  createMoonpayUrl (): string {
-    const baseUrl = getMoonpayBaseUrl(this.soraNetwork)
-    const redirectURL = `${detectBaseUrl(router)}moonpay.html`
-    const params = {
+  beforeDestroy (): void {
+    this.stopPolling()
+  }
+
+  createMoonpayWidgetUrl (): string {
+    return this.moonpayApi.createWidgetUrl({
       colorCode: getCssVariableValue('--s-color-theme-accent'),
-      apiKey: this.apiKeys.moonpay,
-      language: this.language,
-      redirectURL
-    }
-    const query = Object.entries(params).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&')
-    const url = `${baseUrl}?${query}`
-
-    return url
+      externalTransactionId: this.account.address,
+      language: this.language
+    })
   }
 
-  handleStorageChange (): void {
-    const transactions = JSON.parse(moonpayStorage.get('transactions')) || []
+  private updateWidgetUrl (): void {
+    this.widgetUrl = this.createMoonpayWidgetUrl()
+  }
 
-    if (transactions.length !== 0) {
-      this.setMoonpayDialogVisibility(false)
-      console.log(transactions)
+  private async startPolling (): Promise<void> {
+    console.log('startPolling')
+    this.transactionsPolling = await this.createTransactionsPolling()
+  }
+
+  private stopPolling (): void {
+    console.log('stopPolling')
+    if (typeof this.transactionsPolling === 'function') {
+      this.transactionsPolling() // call stop polling function
     }
   }
 }

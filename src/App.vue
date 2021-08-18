@@ -187,7 +187,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
 
   @State(state => state.settings.faucetUrl) faucetUrl!: string
   @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
-  @State(state => state.settings.moonpayDialogVisibility) moonpayDialogVisibility!: boolean
+  @State(state => state.moonpay.dialogVisibility) moonpayDialogVisibility!: boolean
 
   @Getter libraryTheme!: Theme
   @Getter libraryDesignSystem!: DesignSystem
@@ -203,7 +203,6 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
   @Action navigate // Wallet
   @Action updateAccountAssets!: AsyncVoidFn
   @Action trackActiveTransactions!: AsyncVoidFn
-  @Action setMoonpayDialogVisibility!: (flag: boolean) => void
   @Action setSoraNetwork!: (data: any) => Promise<void>
   @Action setDefaultNodes!: (nodes: any) => Promise<void>
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
@@ -212,6 +211,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
   @Action setApiKeys!: (options: any) => Promise<void>
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>
+  @Action('setDialogVisibility', { namespace: 'moonpay' }) setMoonpayDialogVisibility!: (flag: boolean) => void
 
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction (value: History): void {

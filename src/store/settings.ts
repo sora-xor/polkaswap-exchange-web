@@ -53,8 +53,7 @@ function initialState () {
     nodeConnectionAllowance: true,
     chainGenesisHash: '',
     faucetUrl: '',
-    selectNodeDialogVisibility: false,
-    moonpayDialogVisibility: false
+    selectNodeDialogVisibility: false
   }
 }
 
@@ -142,9 +141,6 @@ const mutations = {
   },
   [types.SET_SELECT_NODE_DIALOG_VISIBILIY] (state, flag) {
     state.selectNodeDialogVisibility = flag
-  },
-  [types.SET_MOONPAY_DIALOG_VISIBILITY] (state, flag) {
-    state.moonpayDialogVisibility = flag
   },
   [types.SET_LANGUAGE] (state, lang: Language) {
     state.language = lang
@@ -336,9 +332,6 @@ const actions = {
   },
   setSelectNodeDialogVisibility ({ commit }, flag: boolean) {
     commit(types.SET_SELECT_NODE_DIALOG_VISIBILIY, flag)
-  },
-  setMoonpayDialogVisibility ({ commit }, flag: boolean) {
-    commit(types.SET_MOONPAY_DIALOG_VISIBILITY, flag)
   },
   async setLanguage ({ commit }, lang: Language) {
     const locale = getSupportedLocale(lang)

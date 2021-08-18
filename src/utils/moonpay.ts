@@ -4,38 +4,62 @@ import { NetworkTypes } from '@/consts'
 
 export class MoonpayApi {
   public static apiUrl = 'https://api.moonpay.com'
-  public publicKey: string
+  public publicKey = ''
+  public soraNetwork = ''
 
-  public static getWidgetUrl (soraNetwork: string): string {
+  public static getWidgetBaseUrl (soraNetwork: string): string {
     if (soraNetwork === NetworkTypes.Mainnet) {
       return 'https://buy.moonpay.com'
     }
     return 'https://buy-staging.moonpay.com'
   }
 
-  constructor (publicKey: string) {
+  get requiredParams () {
+    return {
+      apiKey: this.publicKey
+    }
+  }
+
+  public createWidgetUrl (queryParams): string {
+    const baseUrl = MoonpayApi.getWidgetBaseUrl(this.soraNetwork)
+    const params = {
+      ...this.requiredParams,
+      ...queryParams
+    }
+    const query = Object.entries(params).map(([key, value]) => `${key}=${encodeURIComponent(value as string)}`).join('&')
+    const url = `${baseUrl}?${query}`
+
+    return url
+  }
+
+  public setPublicKey (publicKey: string) {
     this.publicKey = publicKey
   }
 
-  public async getTransaction (id: string): Promise<any> {
-    const url = `${MoonpayApi.apiUrl}/v1/transactions/${id}`
-    const data = await this.apiRequest(url)
-
-    return data
+  public setNetwork (soraNetwork: string) {
+    this.soraNetwork = soraNetwork
   }
 
-  private async apiRequest (url: string) {
-    try {
-      const { data } = await axios.get(url, {
-        params: {
-          apiKey: this.publicKey
-        }
-      })
+  public getTransactionById (id: string): Promise<any> {
+    const url = `${MoonpayApi.apiUrl}/v1/transactions/${id}`
+    return this.apiRequest(url)
+  }
 
-      return data
-    } catch (error) {
-      console.error(error)
-      return null
+  public getTransactionsByExtId (id: string): Promise<any> {
+    const url = `${MoonpayApi.apiUrl}/v1/transactions/ext/${id}`
+    return this.apiRequest(url)
+  }
+
+  private async apiRequest (url: string, params = {}) {
+    const options = {
+      params: {
+        ...this.requiredParams,
+        ...params
+      }
     }
+
+    const { data } = await axios.get(url, options)
+
+    return data
   }
 }
