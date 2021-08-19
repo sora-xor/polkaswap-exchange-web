@@ -4,10 +4,11 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { ethers } from 'ethers'
-import { FPNumber } from '@sora-substrate/util'
+import { FPNumber, RegisteredAccountAsset } from '@sora-substrate/util'
 
-import { MoonpayApi } from '@/utils/moonpay'
-import ethersUtil, { KnownBridgeAsset } from '@/utils/ethers-util'
+import { MoonpayApi, MoonpayEVMTransferAssetData } from '@/utils/moonpay'
+import ethersUtil from '@/utils/ethers-util'
+import { EthAddress } from '@/consts'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -115,41 +116,74 @@ const actions = {
     return stopPolling
   },
 
-  async getTransactionTranserData (_, hash) {
+  async getTransactionTranserData (_, hash: string): Promise<Nullable<MoonpayEVMTransferAssetData>> {
     try {
-      const confirmations = 5
+      console.log('getTransactionTranserData')
+      const confirmations = 1
       const timeout = 0
       const ethersInstance = await ethersUtil.getEthersInstance()
 
+      console.log('start wait')
+
       // wait until transaction complete
-      // ISSUE: moonpay send eth in ropsten, erc20 in rinkeby
+      // ISSUE: moonpay sending eth in ropsten, erc20 in rinkeby
       await ethersInstance.waitForTransaction(
         hash,
         confirmations,
         timeout
       )
 
-      // TODO: research how to detect ETH transfer
-      // parse ERC20 token transfer
-      const tx = await ethersInstance.getTransaction(hash)
-      const abi = ['function transfer(address to, uint256 value)']
-      const inter = new ethers.utils.Interface(abi)
-      const decodedInput = inter.parseTransaction({ data: tx.data })
-      const assetExternalAddress = tx.to // asset address
-      const {
-        value, // BigNumber
-        to // ethereum address
-      } = decodedInput.args
-      const amount = new FPNumber(value).toString() // transferred amount
+      console.log('end wait')
 
-      return {
-        amount,
-        assetExternalAddress,
-        to
+      const tx = await ethersInstance.getTransaction(hash)
+
+      console.log('tx', tx)
+
+      if (tx.data === '0x') {
+        // Parse ETH transfer
+        const { to = '', value } = tx
+        const amount = new FPNumber(value as any).toString() // transferred amount
+        const address = EthAddress
+
+        return {
+          amount,
+          address,
+          to
+        }
+      } else {
+        // Parse ERC-20 transfer
+        const abi = ['function transfer(address to, uint256 value)']
+        const inter = new ethers.utils.Interface(abi)
+        const decodedInput = inter.parseTransaction({ data: tx.data })
+        const address = tx.to ?? '' // asset address
+        const {
+          value, // BigNumber
+          to = '' // ethereum address
+        } = decodedInput.args
+        const amount = new FPNumber(value).toString() // transferred amount
+
+        return {
+          amount,
+          address,
+          to
+        }
       }
     } catch (error) {
       console.error(error)
+      return null
     }
+  },
+
+  async findRegisteredAssetByExternalAddress ({ dispatch, rootGetters }, externalAddress: string): Promise<Nullable<RegisteredAccountAsset>> {
+    if (!externalAddress) return undefined
+
+    await dispatch('assets/updateRegisteredAssets', undefined, { root: true })
+
+    const registeredAssets = rootGetters['assets/registeredAssets']
+    const searchAddress = externalAddress.toLowerCase()
+    const asset = registeredAssets.find(asset => asset.externalAddress.toLowerCase() === searchAddress)
+
+    return asset
   }
 }
 

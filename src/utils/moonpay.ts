@@ -2,6 +2,12 @@ import axios from '@/api'
 
 import { NetworkTypes } from '@/consts'
 
+export interface MoonpayEVMTransferAssetData {
+  amount: string;
+  address: string; // asset address
+  to: string; // evm address of recipient
+}
+
 export class MoonpayApi {
   public static apiUrl = 'https://api.moonpay.com'
   public publicKey = ''

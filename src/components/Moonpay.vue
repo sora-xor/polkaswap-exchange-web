@@ -12,6 +12,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, State, Getter } from 'vuex-class'
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
+import { RegisteredAccountAsset } from '@sora-substrate/util'
 
 import DialogMixin from '@/components/mixins/DialogMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -41,21 +42,22 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin) {
   @Getter('lastCompletedTransaction', { namespace }) lastCompletedTransaction!: any
 
   @State(state => state[namespace].api) moonpayApi!: MoonpayApi
+  @State(state => state[namespace].pollingTimestamp) pollingTimestamp!: number
   @State(state => state.settings.apiKeys) apiKeys!: any
   @State(state => state.settings.soraNetwork) soraNetwork!: NetworkTypes
   @State(state => state.settings.language) language!: string
 
-  @Action('setDialogVisibility', { namespace: 'moonpay' }) setMoonpayDialogVisibility!: (flag: boolean) => void
-  @Action('createTransactionsPolling', { namespace: 'moonpay' }) createTransactionsPolling!: () => Promise<Function>
-  @Action('updatePollingTimestamp', { namespace: 'moonpay' }) updatePollingTimestamp!: () => Promise<void>
-  @Action('getTransactionTranserData', { namespace: 'moonpay' }) getTransactionTranserData!: (tx: any) => Promise<any>
+  @Action('setDialogVisibility', { namespace }) setMoonpayDialogVisibility!: (flag: boolean) => void
+  @Action('createTransactionsPolling', { namespace }) createTransactionsPolling!: () => Promise<Function>
+  @Action('getTransactionTranserData', { namespace }) getTransactionTranserData!: (tx: any) => Promise<any>
+  @Action('findRegisteredAssetByExternalAddress', { namespace }) findRegisteredAssetByExternalAddress!: (data: any) => Promise<Nullable<RegisteredAccountAsset>>
 
   @Watch('isLoggedIn', { immediate: true })
   private handleLoggedInStateChange (isLoggedIn: boolean): void {
-    this.stopPolling()
+    this.stopPollingMoonpay()
 
     if (isLoggedIn) {
-      this.startPolling()
+      this.startPollingMoonpay()
     }
   }
 
@@ -63,14 +65,24 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin) {
   private async handleLastTransaction (transaction, prevTransaction): Promise<void> {
     if (!transaction || (prevTransaction && prevTransaction.id === transaction.id)) return
 
-    // check that we can bridge this token
-    // then bridge it
-    console.log(transaction)
-    await this.getTransactionTranserData(transaction.cryptoTransactionId)
-    // update polling timestamp to search new moonpay tx
-    this.updatePollingTimestamp()
-    this.setMoonpayDialogVisibility(false)
-    // this.updateWidgetUrl()
+    try {
+      this.stopPollingMoonpay()
+      // get necessary ethereum transaction data
+      const ethTransferData = await this.getTransactionTranserData(transaction.cryptoTransactionId)
+      // check that we can bridge this token
+      const registeredAsset = await this.findRegisteredAssetByExternalAddress(ethTransferData.address)
+
+      if (registeredAsset) {
+        // bridge it
+        // close dialog & reset it ?
+        this.setMoonpayDialogVisibility(false)
+        this.updateWidgetUrl()
+      } else {
+        // TODO: show something, we can not transfer token to sora
+      }
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   async created (): Promise<void> {
@@ -82,7 +94,7 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin) {
   }
 
   beforeDestroy (): void {
-    this.stopPolling()
+    this.stopPollingMoonpay()
   }
 
   createMoonpayWidgetUrl (): string {
@@ -100,20 +112,22 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin) {
     })
   }
 
-  private async startPolling (): Promise<void> {
-    console.log('startPolling')
+  private async startPollingMoonpay (): Promise<void> {
+    console.log('startPollingMoonpay')
     this.transactionsPolling = await this.createTransactionsPolling()
   }
 
-  private stopPolling (): void {
-    console.log('stopPolling')
+  private stopPollingMoonpay (): void {
+    console.log('stopPollingMoonpay')
     if (typeof this.transactionsPolling === 'function') {
       this.transactionsPolling() // call stop polling function
     }
   }
 
   async check () {
-    const data = await this.getTransactionTranserData('0x56d8acc366a0c0b61d285f1ceccaac54171ddf18c433fdb661844fdedef8d3e0')
+    // const data = await this.getTransactionTranserData('0x56d8acc366a0c0b61d285f1ceccaac54171ddf18c433fdb661844fdedef8d3e0')
+    const data = await this.getTransactionTranserData('0x67fbede96e58033fdf4656b5a6f2ed14c6a6b18ffd944e4d8e5b37848a45f307')
+    console.log(data)
   }
 }
 </script>
