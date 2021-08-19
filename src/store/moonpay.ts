@@ -3,9 +3,11 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
+import { ethers } from 'ethers'
+import { FPNumber } from '@sora-substrate/util'
 
 import { MoonpayApi } from '@/utils/moonpay'
-import ethersUtil from '@/utils/ethers-util'
+import ethersUtil, { KnownBridgeAsset } from '@/utils/ethers-util'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -113,26 +115,38 @@ const actions = {
     return stopPolling
   },
 
-  async getTransactionTokenAddress (_, transaction) {
+  async getTransactionTranserData (_, hash) {
     try {
       const confirmations = 5
       const timeout = 0
-      const hash = transaction.cryptoTransactionId
       const ethersInstance = await ethersUtil.getEthersInstance()
 
-      console.log('waitForTransaction start')
-
+      // wait until transaction complete
+      // ISSUE: moonpay send eth in ropsten, erc20 in rinkeby
       await ethersInstance.waitForTransaction(
         hash,
         confirmations,
         timeout
       )
 
-      console.log('waitForTransaction end')
+      // TODO: research how to detect ETH transfer
+      // parse ERC20 token transfer
+      const tx = await ethersInstance.getTransaction(hash)
+      const abi = ['function transfer(address to, uint256 value)']
+      const inter = new ethers.utils.Interface(abi)
+      const decodedInput = inter.parseTransaction({ data: tx.data })
+      const assetExternalAddress = tx.to // asset address
+      const {
+        value, // BigNumber
+        to // ethereum address
+      } = decodedInput.args
+      const amount = new FPNumber(value).toString() // transferred amount
 
-      const data = await ethersInstance.getTransaction(hash)
-
-      console.log(data)
+      return {
+        amount,
+        assetExternalAddress,
+        to
+      }
     } catch (error) {
       console.error(error)
     }

@@ -3,6 +3,7 @@
     <template #title>
       <moonpay-logo :theme="libraryTheme" />
     </template>
+    <s-button @click="check"></s-button>
     <iframe class="moonpay-frame" :src="widgetUrl" v-loading="loading" />
   </dialog-base>
 </template>
@@ -47,7 +48,7 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin) {
   @Action('setDialogVisibility', { namespace: 'moonpay' }) setMoonpayDialogVisibility!: (flag: boolean) => void
   @Action('createTransactionsPolling', { namespace: 'moonpay' }) createTransactionsPolling!: () => Promise<Function>
   @Action('updatePollingTimestamp', { namespace: 'moonpay' }) updatePollingTimestamp!: () => Promise<void>
-  @Action('getTransactionTokenAddress', { namespace: 'moonpay' }) getTransactionTokenAddress!: (tx: any) => Promise<void>
+  @Action('getTransactionTranserData', { namespace: 'moonpay' }) getTransactionTranserData!: (tx: any) => Promise<any>
 
   @Watch('isLoggedIn', { immediate: true })
   private handleLoggedInStateChange (isLoggedIn: boolean): void {
@@ -65,7 +66,8 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin) {
     // check that we can bridge this token
     // then bridge it
     console.log(transaction)
-    await this.getTransactionTokenAddress(transaction)
+    await this.getTransactionTranserData(transaction.cryptoTransactionId)
+    // update polling timestamp to search new moonpay tx
     this.updatePollingTimestamp()
     this.setMoonpayDialogVisibility(false)
     // this.updateWidgetUrl()
@@ -108,6 +110,10 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin) {
     if (typeof this.transactionsPolling === 'function') {
       this.transactionsPolling() // call stop polling function
     }
+  }
+
+  async check () {
+    const data = await this.getTransactionTranserData('0x56d8acc366a0c0b61d285f1ceccaac54171ddf18c433fdb661844fdedef8d3e0')
   }
 }
 </script>
