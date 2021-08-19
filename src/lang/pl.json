@@ -227,7 +227,7 @@
     "connectWalletTextTooltip": "Połącz się z Siecią @:soraText za pomocą polkadot{.js}",
     "selectNodeText": "Wybierz węzeł",
     "bridgeText": "Most",
-    "disclaimer": "Zastrzeżenie: Niniejsza strona internetowa jest prowadzona przez społeczność @:soraText. Zanim zaczniesz korzystać z tej witryny, zapoznaj się z @:polkaswapFaqLink oraz dokumentacją, która zawiera szczegółowe wyjaśnienie działania giełdy Polkaswap, a także z @:footerMenu.memorandum oraz @:(footerMenu.privacy). Dokumenty te mają kluczowe znaczenie dla bezpiecznego i komfortowego użytkowania. Korzystając z Polkaswap, potwierdzasz, że przeczytałeś i rozumiesz te dokumenty. Przyjmujesz również do wiadomości, że: 1) ponosisz wyłączną odpowiedzialność za zgodność ze wszystkimi prawami, które mogą mieć zastosowanie do konkretnego korzystania z Polkaswap w Twojej jurysdykcji; 2) rozumiesz, że aktualna wersja Polkaswap jest wersją alfa: nie została w pełni przetestowana, a niektóre funkcje mogą nie działać zgodnie z przeznaczeniem; oraz że 3) rozumiesz i dobrowolnie akceptujesz ryzyko związane z korzystaniem z Polkaswap, w tym między innymi ryzyko utraty tokenów. Przypominamy raz jeszcze: zanim zaczniesz korzystać z witryny, przeczytaj FAQ, <span>@:footerMenu.memorandum<\/span><a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\"> @:footerMenu.memorandum<\/a> i <span>@:footerMenu.privacy<\/span><a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\">@:footerMenu.privacy<\/a>!",
+    "disclaimer": "<span class=\"app-disclaimer__title\">Zastrzeżenie<\/span>: Niniejsza strona internetowa jest prowadzona przez społeczność @:soraText. Zanim zaczniesz korzystać z tej witryny, zapoznaj się z @:polkaswapFaqLink oraz dokumentacją, która zawiera szczegółowe wyjaśnienie działania giełdy Polkaswap, a także z @:footerMenu.memorandum oraz @:(footerMenu.privacy). Dokumenty te mają kluczowe znaczenie dla bezpiecznego i komfortowego użytkowania. Korzystając z Polkaswap, potwierdzasz, że przeczytałeś i rozumiesz te dokumenty. Przyjmujesz również do wiadomości, że: 1) ponosisz wyłączną odpowiedzialność za zgodność ze wszystkimi prawami, które mogą mieć zastosowanie do konkretnego korzystania z Polkaswap w Twojej jurysdykcji; 2) rozumiesz, że aktualna wersja Polkaswap jest wersją alfa: nie została w pełni przetestowana, a niektóre funkcje mogą nie działać zgodnie z przeznaczeniem; oraz że 3) rozumiesz i dobrowolnie akceptujesz ryzyko związane z korzystaniem z Polkaswap, w tym między innymi ryzyko utraty tokenów. Przypominamy raz jeszcze: zanim zaczniesz korzystać z witryny, przeczytaj FAQ, <span>@:footerMenu.memorandum<\/span><a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\"> @:footerMenu.memorandum<\/a> i <span>@:footerMenu.privacy<\/span><a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\">@:footerMenu.privacy<\/a>!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"Polkaswap FAQ\">FAQ Polkaswap<\/a>",
     "poweredBy": "Technologia:",
     "confirmTransactionText": "Potwierdź transakcję w {direction}",
@@ -716,12 +716,12 @@
             "LiquidityProvisionFarming": "Farming"
         },
         "vested": "przysługujące",
-        "forText": " do ",
+        "forText": "do",
         "totalVested": "Wynagrodzenia ogółem",
         "claimableAmountDoneVesting": "Kwota roszczenia (ukończono nabywanie uprawnień)",
         "groups": {
             "strategic": "Nagrody strategiczne",
-            "external": "Nagrody za połączone konto ethereum"
+            "external": "Nagrody za połączone konto Ethereum"
         }
     },
     "provider": {

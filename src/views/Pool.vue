@@ -237,6 +237,9 @@ $pair-icon-height: 36px;
       display: flex;
       justify-content: center;
       margin-top: $inner-spacing-medium;
+      > * {
+        width: 50%;
+      }
       .el-button + .el-button {
         margin-left: $inner-spacing-small;
       }
