@@ -49,6 +49,7 @@ import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
+import { Account } from '../../../sora2-wallet-web/src/types'
 
 const namespace = 'swap'
 
@@ -99,7 +100,7 @@ export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMi
 
       return {
         value,
-        fiatValue: this.getFiatAmountByString(value, asset),
+        fiatValue: this.getFiatAmountByString(value, asset as AccountAsset),
         assetSymbol: asset?.symbol ?? '',
         label: index === 0 ? this.t('swap.rewardsForSwap') : ''
       }
