@@ -716,12 +716,12 @@
             "LiquidityProvisionFarming": "Farming"
         },
         "vested": "przysługujące",
-        "forText": " do ",
+        "forText": "do",
         "totalVested": "Wynagrodzenia ogółem",
         "claimableAmountDoneVesting": "Kwota roszczenia (ukończono nabywanie uprawnień)",
         "groups": {
             "strategic": "Nagrody strategiczne",
-            "external": "Nagrody za połączone konto ethereum"
+            "external": "Nagrody za połączone konto Ethereum"
         }
     },
     "provider": {
