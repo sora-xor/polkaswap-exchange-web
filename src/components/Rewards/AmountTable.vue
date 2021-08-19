@@ -13,7 +13,7 @@
                   :value="isCodecString ? getFPNumberFromCodec(item.amount, item.asset.decimals).toLocaleString() : item.amount"
                   :font-size-rate="FontSizeRate.MEDIUM"
                   :asset-symbol="item.asset.symbol"
-                  :fiat-value="getFiatAmountByCodecString(item.amount, item.asset)"
+                  :fiat-value="isCodecString ? getFiatAmountByCodecString(item.amount, item.asset) : getFiatAmountByString(item.amount, item.asset)"
                   :fiat-font-size-rate="FontSizeRate.MEDIUM"
                   with-left-shift
                 >
@@ -105,10 +105,7 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
   }
 
   formatItem (item: RewardInfoGroup | RewardInfo): RewardsAmountTableItem {
-    const toLimit = (amount, asset) => ({
-      amount: amount,
-      asset: asset
-    })
+    const toLimit = (amount, asset) => ({ amount, asset })
 
     const key = `rewards.events.${item.type}`
     const title = this.te(key) ? this.t(key) : item.type
