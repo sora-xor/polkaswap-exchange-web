@@ -44,7 +44,7 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin) {
   @State(state => state.settings.soraNetwork) soraNetwork!: NetworkTypes
   @State(state => state.settings.language) language!: string
 
-  // @Action('setDialogVisibility', { namespace: 'moonpay' }) setMoonpayDialogVisibility!: (flag: boolean) => void
+  @Action('setDialogVisibility', { namespace: 'moonpay' }) setMoonpayDialogVisibility!: (flag: boolean) => void
   @Action('createTransactionsPolling', { namespace: 'moonpay' }) createTransactionsPolling!: () => Promise<Function>
   @Action('updatePollingTimestamp', { namespace: 'moonpay' }) updatePollingTimestamp!: () => Promise<void>
 
@@ -60,9 +60,12 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin) {
   @Watch('lastCompletedTransaction')
   private async afterTransactionComplete (transaction): Promise<void> {
     if (transaction) {
-      // bridge it
+      // check that we can bridge this token
+      // then bridge it
       console.log(transaction)
       this.updatePollingTimestamp()
+      this.setMoonpayDialogVisibility(false)
+      this.updateWidgetUrl()
     }
   }
 
@@ -87,7 +90,10 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin) {
   }
 
   private updateWidgetUrl (): void {
-    this.widgetUrl = this.createMoonpayWidgetUrl()
+    this.widgetUrl = ''
+    setTimeout(() => {
+      this.widgetUrl = this.createMoonpayWidgetUrl()
+    })
   }
 
   private async startPolling (): Promise<void> {
