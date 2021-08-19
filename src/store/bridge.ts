@@ -47,7 +47,8 @@ const types = flow(
     'SET_INITIAL_TRANSACTION_STATE',
     'SET_CURRENT_TRANSACTION_STATE',
     'SET_TRANSACTION_STEP',
-    'SET_HISTORY_ITEM'
+    'SET_HISTORY_ITEM',
+    'SORA_NETWORK_FEE'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -55,7 +56,6 @@ const types = flow(
   'GET_HISTORY',
   'GET_RESTORED_FLAG',
   'GET_RESTORED_HISTORY',
-  'GET_SORA_NETWORK_FEE',
   'GET_EVM_NETWORK_FEE',
   'SIGN_SORA_TRANSACTION_SORA_EVM',
   'SIGN_EVM_TRANSACTION_SORA_EVM',
@@ -277,13 +277,8 @@ const mutations = {
   [types.SET_AMOUNT] (state, amount: string) {
     state.amount = amount
   },
-  [types.GET_SORA_NETWORK_FEE_REQUEST] (state) {
-  },
-  [types.GET_SORA_NETWORK_FEE_SUCCESS] (state, fee) {
+  [types.SORA_NETWORK_FEE] (state, fee) {
     state.soraNetworkFee = fee
-  },
-  [types.GET_SORA_NETWORK_FEE_FAILURE] (state) {
-    state.soraNetworkFee = ''
   },
   [types.GET_EVM_NETWORK_FEE_REQUEST] (state) {
   },
@@ -379,7 +374,7 @@ const actions = {
     commit(types.SET_AMOUNT, amount)
   },
   setSoraNetworkFee ({ commit }, soraNetworkFee: string) {
-    commit(types.GET_SORA_NETWORK_FEE_SUCCESS, soraNetworkFee)
+    commit(types.SORA_NETWORK_FEE, soraNetworkFee)
   },
   setEvmNetworkFee ({ commit }, evmNetworkFee: CodecString) {
     commit(types.GET_EVM_NETWORK_FEE_SUCCESS, evmNetworkFee)
@@ -517,23 +512,13 @@ const actions = {
   findRegisteredAsset ({ commit, getters, rootGetters }) {
     return rootGetters['assets/registeredAssets'].find(item => item.address === getters.asset.address)
   },
-  async getNetworkFee ({ commit, getters, dispatch }) {
-    if (!getters.asset || !getters.asset.address) {
-      return
-    }
-    commit(types.GET_SORA_NETWORK_FEE_REQUEST)
-    try {
-      const asset = await dispatch('findRegisteredAsset')
-      const fee = await (
-        getters.isSoraToEvm
-          ? bridgeApi.getTransferToEthFee(asset, '', getters.amount || 0)
-          : '0' // TODO: check it for other types of bridge
-      )
-      commit(types.GET_SORA_NETWORK_FEE_SUCCESS, fee)
-    } catch (error) {
-      console.error(error)
-      commit(types.GET_SORA_NETWORK_FEE_FAILURE)
-    }
+  async getNetworkFee ({ commit, getters }) {
+    commit(
+      types.SORA_NETWORK_FEE,
+      getters.isSoraToEvm
+        ? api.NetworkFee[Operation.EthBridgeOutgoing]
+        : ZeroStringValue // TODO: check it for other types of bridge
+    )
   },
   async getEvmNetworkFee ({ commit, getters, rootGetters }) {
     if (!getters.asset || !getters.asset.address) {

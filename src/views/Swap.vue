@@ -138,7 +138,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { api, FormattedAmountMixin, FormattedAmount } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes, LPRewardsInfo, FPNumber } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes, LPRewardsInfo, FPNumber, Operation } from '@sora-substrate/util'
 import type { Subscription } from '@polkadot/x-rxjs'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -344,11 +344,9 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
       if (this.areTokensSelected) {
         await this.checkSwap()
       }
-      await Promise.all([
-        this.updatePairLiquiditySources(),
-        this.getNetworkFee()
-      ])
+      await this.updatePairLiquiditySources()
     })
+    this.getNetworkFee()
   }
 
   formatBalance (token): string {
@@ -363,18 +361,9 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
     this.setToValue('')
   }
 
-  async getNetworkFee (): Promise<void> {
+  getNetworkFee (): void {
     if (this.isLoggedIn) {
-      const networkFee = await api.getSwapNetworkFee(
-        this.tokenFrom?.address,
-        this.tokenTo?.address,
-        this.fromValue,
-        this.toValue,
-        this.slippageTolerance,
-        this.isExchangeB,
-        this.liquiditySource
-      )
-      this.setNetworkFee(networkFee)
+      this.setNetworkFee(api.NetworkFee[Operation.Swap])
     }
   }
 

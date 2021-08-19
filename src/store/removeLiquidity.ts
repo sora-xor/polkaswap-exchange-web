@@ -5,7 +5,7 @@ import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import debounce from 'lodash/debounce'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { FPNumber, CodecString } from '@sora-substrate/util'
+import { FPNumber, CodecString, Operation } from '@sora-substrate/util'
 
 import { ZeroStringValue } from '@/consts'
 
@@ -16,13 +16,13 @@ const types = flow(
     'SET_LIQUIDITY_AMOUNT',
     'SET_FIRST_TOKEN_AMOUNT',
     'SET_SECOND_TOKEN_AMOUNT',
-    'SET_FOCUSED_FIELD'
+    'SET_FOCUSED_FIELD',
+    'NETWORK_FEE'
   ]),
   map(x => [x, x]),
   fromPairs
 )([
   'GET_LIQUIDITY',
-  'GET_FEE',
   'GET_LIQUIDITY_RESERVE',
   'GET_TOTAL_SUPPLY'
 ])
@@ -146,12 +146,8 @@ const mutations = {
   [types.SET_SECOND_TOKEN_AMOUNT] (state, secondTokenAmount = '') {
     state.secondTokenAmount = secondTokenAmount
   },
-  [types.GET_FEE_REQUEST] (state) {
-  },
-  [types.GET_FEE_SUCCESS] (state, fee) {
+  [types.NETWORK_FEE] (state, fee) {
     state.fee = fee
-  },
-  [types.GET_FEE_FAILURE] (state, error) {
   },
   [types.GET_TOTAL_SUPPLY_REQUEST] (state) {
   },
@@ -178,7 +174,7 @@ const actions = {
     commit(types.GET_LIQUIDITY_REQUEST)
 
     try {
-      await api.getKnownAccountLiquidity()
+      // await api.getKnownAccountLiquidity()
       const liquidity = api.accountLiquidity.find(liquidity => liquidity.firstAddress === firstAddress && liquidity.secondAddress === secondAddress)
 
       commit(types.GET_LIQUIDITY_SUCCESS, liquidity)
@@ -260,26 +256,8 @@ const actions = {
     await dispatch('getNetworkFee')
   }, 500, { leading: true }),
 
-  async getNetworkFee ({ commit, getters }) {
-    if (getters.firstTokenAddress && getters.secondTokenAddress) {
-      commit(types.GET_FEE_REQUEST)
-
-      try {
-        const fee = await api.getRemoveLiquidityNetworkFee(
-          getters.firstTokenAddress,
-          getters.secondTokenAddress,
-          getters.liquidityAmount || 0,
-          getters.reserveA,
-          getters.reserveB,
-          getters.totalSupply
-        )
-        commit(types.GET_FEE_SUCCESS, fee)
-      } catch (error) {
-        commit(types.GET_FEE_FAILURE, error)
-      }
-    } else {
-      commit(types.GET_FEE_SUCCESS, 0)
-    }
+  async getNetworkFee ({ commit }) {
+    commit(types.NETWORK_FEE, api.NetworkFee[Operation.RemoveLiquidity])
   },
 
   async getLiquidityReserves ({ commit, getters }) {

@@ -4,7 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, FPNumber, CodecString } from '@sora-substrate/util'
+import { KnownAssets, FPNumber, CodecString, Operation } from '@sora-substrate/util'
 
 import { ZeroStringValue } from '@/consts'
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions'
@@ -19,7 +19,8 @@ const types = flow(
     'SET_FIRST_TOKEN_VALUE',
     'SET_SECOND_TOKEN_VALUE',
     'SET_SECOND_TOKEN_BALANCE',
-    'SET_FOCUSED_FIELD'
+    'SET_FOCUSED_FIELD',
+    'NETWORK_FEE'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -27,7 +28,6 @@ const types = flow(
   'ADD_LIQUIDITY',
   'GET_RESERVE',
   'ESTIMATE_MINTED',
-  'GET_FEE',
   'CHECK_LIQUIDITY'
 ])
 
@@ -154,12 +154,8 @@ const mutations = {
   },
   [types.ESTIMATE_MINTED_FAILURE] (state, error) {
   },
-  [types.GET_FEE_REQUEST] (state) {
-  },
-  [types.GET_FEE_SUCCESS] (state: AddLiquidityState, fee: CodecString) {
+  [types.NETWORK_FEE] (state: AddLiquidityState, fee: CodecString) {
     state.fee = fee
-  },
-  [types.GET_FEE_FAILURE] (state, error) {
   },
   [types.SET_FOCUSED_FIELD] (state: AddLiquidityState, field: string) {
     state.focusedField = field
@@ -290,23 +286,8 @@ const actions = {
     }
   },
 
-  async getNetworkFee ({ commit, getters }) {
-    if (getters.firstToken?.address && getters.secondToken?.address) {
-      commit(types.GET_FEE_REQUEST)
-      try {
-        const fee = await api.getAddLiquidityNetworkFee(
-          getters.firstToken.address,
-          getters.secondToken.address,
-          getters.firstTokenValue || 0,
-          getters.secondTokenValue || 0
-        )
-        commit(types.GET_FEE_SUCCESS, fee)
-      } catch (error) {
-        commit(types.GET_FEE_FAILURE, error)
-      }
-    } else {
-      commit(types.GET_FEE_SUCCESS, ZeroStringValue)
-    }
+  async getNetworkFee ({ commit }) {
+    commit(types.NETWORK_FEE, api.NetworkFee[Operation.AddLiquidity])
   },
 
   async addLiquidity ({ commit, getters, rootGetters }) {
