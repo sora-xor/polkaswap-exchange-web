@@ -47,6 +47,7 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin) {
   @Action('setDialogVisibility', { namespace: 'moonpay' }) setMoonpayDialogVisibility!: (flag: boolean) => void
   @Action('createTransactionsPolling', { namespace: 'moonpay' }) createTransactionsPolling!: () => Promise<Function>
   @Action('updatePollingTimestamp', { namespace: 'moonpay' }) updatePollingTimestamp!: () => Promise<void>
+  @Action('getTransactionTokenAddress', { namespace: 'moonpay' }) getTransactionTokenAddress!: (tx: any) => Promise<void>
 
   @Watch('isLoggedIn', { immediate: true })
   private handleLoggedInStateChange (isLoggedIn: boolean): void {
@@ -58,15 +59,16 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin) {
   }
 
   @Watch('lastCompletedTransaction')
-  private async afterTransactionComplete (transaction): Promise<void> {
-    if (transaction) {
-      // check that we can bridge this token
-      // then bridge it
-      console.log(transaction)
-      this.updatePollingTimestamp()
-      this.setMoonpayDialogVisibility(false)
-      this.updateWidgetUrl()
-    }
+  private async handleLastTransaction (transaction, prevTransaction): Promise<void> {
+    if (!transaction || (prevTransaction && prevTransaction.id === transaction.id)) return
+
+    // check that we can bridge this token
+    // then bridge it
+    console.log(transaction)
+    await this.getTransactionTokenAddress(transaction)
+    this.updatePollingTimestamp()
+    this.setMoonpayDialogVisibility(false)
+    // this.updateWidgetUrl()
   }
 
   async created (): Promise<void> {

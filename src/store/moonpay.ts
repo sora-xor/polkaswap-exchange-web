@@ -5,6 +5,7 @@ import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 
 import { MoonpayApi } from '@/utils/moonpay'
+import ethersUtil from '@/utils/ethers-util'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -88,6 +89,7 @@ const actions = {
     try {
       console.log('getTransactions')
       const transactions = await state.api.getTransactionsByExtId(rootGetters.account.address)
+      console.log(transactions)
       commit(types.UPDATE_TRANSACTIONS_SUCCESS, transactions)
     } catch (error) {
       console.error(error)
@@ -109,6 +111,31 @@ const actions = {
     }
 
     return stopPolling
+  },
+
+  async getTransactionTokenAddress (_, transaction) {
+    try {
+      const confirmations = 5
+      const timeout = 0
+      const hash = transaction.cryptoTransactionId
+      const ethersInstance = await ethersUtil.getEthersInstance()
+
+      console.log('waitForTransaction start')
+
+      await ethersInstance.waitForTransaction(
+        hash,
+        confirmations,
+        timeout
+      )
+
+      console.log('waitForTransaction end')
+
+      const data = await ethersInstance.getTransaction(hash)
+
+      console.log(data)
+    } catch (error) {
+      console.error(error)
+    }
   }
 }
 
