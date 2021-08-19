@@ -32,7 +32,7 @@
           <template v-if="hasHistory">
             <div
               class="history-item"
-              v-for="item in filteredHistory.slice((currentPage - 1) * pageAmount, currentPage * pageAmount)"
+              v-for="item in filteredHistoryItems"
               :key="`history-${item.id}`"
               @click="showHistory(item.id)"
             >
@@ -76,12 +76,13 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { RegisteredAccountAsset, Operation, isBridgeOperation, BridgeHistory, CodecString, FPNumber } from '@sora-substrate/util'
+import { RegisteredAccountAsset, Operation, BridgeHistory, CodecString, FPNumber } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
+import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin'
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 import { formatAssetSymbol, formatDateItem } from '@/utils'
@@ -95,7 +96,7 @@ const namespace = 'bridge'
     GenericPageHeader: lazyComponent(Components.GenericPageHeader)
   }
 })
-export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, LoadingMixin, NetworkFormatterMixin) {
+export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, LoadingMixin, NetworkFormatterMixin, PaginationSearchMixin) {
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter('history', { namespace }) history!: Nullable<Array<BridgeHistory>>
   @Getter('restored', { namespace }) restored!: boolean
@@ -128,18 +129,24 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   PageNames = PageNames
   formatAssetSymbol = formatAssetSymbol
   formatDateItem = formatDateItem
-  query = ''
-  currentPage = 1
-  pageAmount = 8
+  pageAmount = 8 // override PaginationSearchMixin
 
   get filteredHistory (): Array<BridgeHistory> {
     if (!this.history?.length) return []
-    const historyCopy = this.history.sort((a: BridgeHistory, b: BridgeHistory) => a.startTime && b.startTime ? b.startTime - a.startTime : 0)
-    return this.getFilteredHistory(historyCopy.filter(item => (isBridgeOperation(item.type) && item.transactionStep)))
+
+    const historyCopy = this.history
+      .filter(item => !!item.transactionStep)
+      .sort((a: BridgeHistory, b: BridgeHistory) => a.startTime && b.startTime ? b.startTime - a.startTime : 0)
+
+    return this.getFilteredHistory(historyCopy)
   }
 
   get hasHistory (): boolean {
     return this.filteredHistory && this.filteredHistory.length > 0
+  }
+
+  get filteredHistoryItems (): Array<BridgeHistory> {
+    return this.getPageItems(this.filteredHistory)
   }
 
   async created (): Promise<void> {
@@ -189,10 +196,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   }
 
   isOutgoingType (type: string | undefined): boolean {
-    if (type) {
-      return type !== Operation.EthBridgeIncoming
-    }
-    return true
+    return type !== Operation.EthBridgeIncoming
   }
 
   async showHistory (id: string): Promise<void> {
@@ -232,21 +236,8 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     })
   }
 
-  handlePrevClick (current: number): void {
-    this.currentPage = current
-  }
-
-  handleNextClick (current: number): void {
-    this.currentPage = current
-  }
-
   async handleClearHistory (): Promise<void> {
     await this.clearHistory()
-  }
-
-  handleResetSearch (): void {
-    this.query = ''
-    this.currentPage = 1
   }
 
   async handleRestoreHistory (): Promise<void> {
