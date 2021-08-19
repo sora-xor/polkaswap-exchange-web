@@ -93,8 +93,10 @@
         "confirmTitle": "Potwierdź transakcję",
         "confirm": "@:confirmText",
         "errorAddress": "Nieprawidłowy adres. Sprawdź to i spróbuj ponownie.",
-        "addressDesc": "Akceptowane są tylko adresy kont Sieci SORA. Upewnij się, czy masz poprawnie sformatowany adres konta Sieci SORA zaczynający się od prefiksu „cn-”.",
-        "feeTooltip": "@:networkFeeTooltipText"
+        "feeTooltip": "@:networkFeeTooltipText",
+        "tooltip": "Wysyłaj tokeny między kontami sieci SORA",
+        "addressWarning": "Tokeny zostaną wysłane na poniższy adres SORA. Upewnij się, że odbiorca może uzyskać dostęp do sieci SORA, aby korzystać z tokenów:",
+        "addressError": "Nie możesz wysyłać tokenów na to samo konto, z którym jesteś aktualnie połączony."
     },
     "account": {
         "successCopy": "Adres portfela jest został skopiowany do schowka",

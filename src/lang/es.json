@@ -93,8 +93,10 @@
         "confirmTitle": "Confirmar transacción",
         "confirm": "@:confirmText",
         "errorAddress": "Dirección no válida. Por favor compruébela e inténtelo de nuevo.",
-        "addressDesc": "Sólo se aceptan direcciones de cuentas de la Red SORA. Por favor asegúrate de que tienes una dirección de cuenta de la Red SORA correctamente formateada que comience con el prefijo 'cn'.",
-        "feeTooltip": "@:networkFeeTooltipText"
+        "feeTooltip": "@:networkFeeTooltipText",
+        "tooltip": "Enviar tokens entre cuentas de la red SORA",
+        "addressWarning": "Los tokens se enviarán a la dirección de SORA a continuación. Asegúrese de que el destinatario pueda acceder a la cadena SORA para usar los tokens:",
+        "addressError": "No puede enviar tokens a la misma cuenta a la que está conectado actualmente."
     },
     "account": {
         "successCopy": "La dirección de la cartera se ha copiado en el portapapeles",
