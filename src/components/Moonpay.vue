@@ -73,8 +73,14 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin) {
       const registeredAsset = await this.findRegisteredAssetByExternalAddress(ethTransferData.address)
 
       if (registeredAsset) {
-        // bridge it
-        // close dialog & reset it ?
+        // can we transfer tokens?
+        // 1) fetch network fees (SORA, EVM)
+        // 2) Calc transfer amount minus fee
+        // 3) If amount is not positive, return
+        // 4) Prepare bridge state
+        // 5) Create bridge history item
+        // 6) close moonpay dialog & reset it ?
+        // 7) Navigate to the bridge
         this.setMoonpayDialogVisibility(false)
         this.updateWidgetUrl()
       } else {
