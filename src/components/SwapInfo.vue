@@ -19,7 +19,6 @@
       :label="t('swap.priceImpact')"
       :label-tooltip="t('swap.priceImpactTooltip')"
     >
-      <!-- TODO: Ask the team should we have formatted value here? -->
       <value-status-wrapper :value="priceImpact">
         <formatted-amount class="price-impact-value" :value="priceImpactFormatted">%</formatted-amount>
       </value-status-wrapper>
