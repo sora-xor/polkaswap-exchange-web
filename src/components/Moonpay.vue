@@ -86,6 +86,14 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
     }
   }
 
+  @Watch('language')
+  @Watch('libraryTheme')
+  private handleLanguageChange (): void {
+    if (!this.pollingTimestamp) {
+      this.updateWidgetUrl()
+    }
+  }
+
   @Watch('lastCompletedTransaction')
   private async handleLastTransaction (transaction, prevTransaction): Promise<void> {
     if (!transaction || (prevTransaction && prevTransaction.id === transaction.id)) return
@@ -133,14 +141,14 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
   }
 
   private async startPollingMoonpay (): Promise<void> {
-    console.log('startPollingMoonpay')
+    console.info('Moonpay: start polling to get user transactions')
     this.transactionsPolling = await this.createTransactionsPolling()
   }
 
   private stopPollingMoonpay (): void {
-    console.log('stopPollingMoonpay')
+    console.info('Moonpay: stop polling')
     if (typeof this.transactionsPolling === 'function') {
-      this.transactionsPolling() // call stop polling function
+      this.transactionsPolling()
     }
   }
 
@@ -210,7 +218,6 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
 
     // close moonpay dialog & reset it ?
     this.setMoonpayDialogVisibility(false)
-    this.updateWidgetUrl()
   }
 }
 </script>

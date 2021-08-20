@@ -90,8 +90,8 @@ const actions = {
     commit(types.UPDATE_TRANSACTIONS_REQUEST, clearTransactions)
 
     try {
-      console.log('getTransactions')
       const transactions = await state.api.getTransactionsByExtId(rootGetters.account.address)
+      console.info('Moonpay: user transactions request')
       commit(types.UPDATE_TRANSACTIONS_SUCCESS, transactions)
     } catch (error) {
       console.error(error)
@@ -117,12 +117,11 @@ const actions = {
 
   async getTransactionTranserData (_, hash: string): Promise<Nullable<MoonpayEVMTransferAssetData>> {
     try {
-      console.log('getTransactionTranserData')
       const confirmations = 1
       const timeout = 0
       const ethersInstance = await ethersUtil.getEthersInstance()
 
-      console.log('start wait')
+      console.info(`Moonpay: found latest moonpay transaction.\nChecking ethereum transaction by hash:\n${hash}`)
 
       // wait until transaction complete
       // ISSUE: moonpay sending eth in ropsten, erc20 in rinkeby
@@ -132,11 +131,9 @@ const actions = {
         timeout
       )
 
-      console.log('end wait')
-
       const tx = await ethersInstance.getTransaction(hash)
 
-      console.log('tx', tx)
+      console.info('Moonpay: ethereum transaction data recieved:', tx)
 
       if (tx.data === '0x') {
         // Parse ETH transfer
