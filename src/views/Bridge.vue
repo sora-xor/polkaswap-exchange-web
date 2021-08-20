@@ -238,7 +238,6 @@ export default class Bridge extends Mixins(
   NetworkFormatterMixin
 ) {
   @Action('setSoraToEvm', { namespace }) setSoraToEvm
-  @Action('setEvmNetwork', { namespace: 'web3' }) setEvmNetwork
   @Action('setAssetAddress', { namespace }) setAssetAddress
   @Action('setAmount', { namespace }) setAmount
   @Action('resetBridgeForm', { namespace }) resetBridgeForm

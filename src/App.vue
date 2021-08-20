@@ -1,5 +1,5 @@
 <template>
-  <s-design-system-provider :value="libraryDesignSystem" id="app">
+  <s-design-system-provider :value="libraryDesignSystem" id="app" class="app">
     <header class="header">
       <s-button class="polkaswap-logo" type="link" size="large" @click="goTo(PageNames.Swap)">
         <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo--tablet"/>
@@ -387,12 +387,13 @@ html {
   color: var(--s-color-base-content-primary);
   background-color: var(--s-color-utility-body);
   transition: background-color 500ms linear;
-  .el-loading-mask {
-    background-color: var(--s-color-utility-body);
-  }
 }
 
 .app {
+  .el-loading-mask {
+    background-color: var(--s-color-utility-body);
+  }
+
   &-body-scrollbar, &-sidebar-scrollbar {
     @include scrollbar;
   }

@@ -48,8 +48,6 @@ const getters = {
   lastCompletedTransaction (state: MoonpayState) {
     if (state.pollingTimestamp === 0) return undefined
 
-    console.log(state.transactions)
-
     return state.transactions.find(tx => Date.parse(tx.createdAt) >= state.pollingTimestamp && tx.status === 'completed')
   }
 }
@@ -93,17 +91,7 @@ const actions = {
 
     try {
       console.log('getTransactions')
-      // to check bridge init with mock data
-      // const testTransactions = [
-      //   {
-      //     cryptoTransactionId: '0x67fbede96e58033fdf4656b5a6f2ed14c6a6b18ffd944e4d8e5b37848a45f307',
-      //     createdAt: (new Date(Date.now())).toISOString(),
-      //     status: 'completed'
-      //   }
-      // ]
-      // commit(types.UPDATE_TRANSACTIONS_SUCCESS, testTransactions)
       const transactions = await state.api.getTransactionsByExtId(rootGetters.account.address)
-      console.log(transactions)
       commit(types.UPDATE_TRANSACTIONS_SUCCESS, transactions)
     } catch (error) {
       console.error(error)
