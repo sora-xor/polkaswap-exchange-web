@@ -118,6 +118,8 @@ export const hasInsufficientEvmNativeTokenForFee = (evmBalance: CodecString, fee
   const fpBalance = FPNumber.fromCodecValue(evmBalance)
   const fpFee = FPNumber.fromCodecValue(fee)
 
+  console.log(evmBalance, fee)
+
   return FPNumber.lt(fpBalance, fpFee)
 }
 

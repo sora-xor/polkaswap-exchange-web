@@ -170,7 +170,6 @@
     >
       {{ t('bridgeTransaction.newTransaction') }}
     </s-button>
-    <confirm-bridge-transaction-dialog :visible.sync="showConfirmTransactionDialog" @confirm="confirmTransaction" />
   </div>
 </template>
 
@@ -196,7 +195,6 @@ const namespace = 'bridge'
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     InfoLine: lazyComponent(Components.InfoLine),
-    ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
     FormattedAmount
   }
 })
@@ -266,7 +264,6 @@ export default class BridgeTransaction extends Mixins(
   }
 
   activeTransactionStep: any = [this.transactionSteps.from, this.transactionSteps.to]
-  showConfirmTransactionDialog = false
 
   get formattedAmount (): string {
     return this.amount && this.asset ? new FPNumber(this.amount, this.asset.decimals).toLocaleString() : ''
@@ -786,18 +783,6 @@ export default class BridgeTransaction extends Mixins(
         this.callSecondTransition()
       }
     })
-  }
-
-  async confirmTransaction (isTransactionConfirmed: boolean) {
-    if (isTransactionConfirmed) {
-      if (this.isTransactionFromFailed || this.isTransactionToFailed) {
-        this.callRetryTransition()
-      } else {
-        if (this.isTransactionStep2) {
-          this.callSecondTransition()
-        }
-      }
-    }
   }
 
   handleBack (): void {

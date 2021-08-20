@@ -12,15 +12,16 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, State, Getter } from 'vuex-class'
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
-import { RegisteredAccountAsset } from '@sora-substrate/util'
+import { RegisteredAccountAsset, CodecString } from '@sora-substrate/util'
 
 import DialogMixin from '@/components/mixins/DialogMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import DialogBase from '@/components/DialogBase.vue'
 
-import { NetworkTypes } from '@/consts'
-import { getCssVariableValue } from '@/utils'
-import { MoonpayApi } from '@/utils/moonpay'
+import { getCssVariableValue, getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils'
+import { MoonpayApi, MoonpayEVMTransferAssetData } from '@/utils/moonpay'
+import router from '@/router'
+import { NetworkTypes, PageNames } from '@/consts'
 
 import MoonpayLogo from '@/components/logo/Moonpay.vue'
 
@@ -49,8 +50,23 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin) {
 
   @Action('setDialogVisibility', { namespace }) setMoonpayDialogVisibility!: (flag: boolean) => void
   @Action('createTransactionsPolling', { namespace }) createTransactionsPolling!: () => Promise<Function>
-  @Action('getTransactionTranserData', { namespace }) getTransactionTranserData!: (tx: any) => Promise<any>
+  @Action('getTransactionTranserData', { namespace }) getTransactionTranserData!: (tx: any) => Promise<Nullable<MoonpayEVMTransferAssetData>>
   @Action('findRegisteredAssetByExternalAddress', { namespace }) findRegisteredAssetByExternalAddress!: (data: any) => Promise<Nullable<RegisteredAccountAsset>>
+
+  // from bridge
+  @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
+  @Getter('soraNetworkFee', { namespace: 'bridge' }) soraNetworkFee!: CodecString
+  @Getter('evmNetworkFee', { namespace: 'bridge' }) evmNetworkFee!: CodecString
+  @Action('getEvmBalance', { namespace: 'web3' }) getEvmBalance!: AsyncVoidFn
+  @Action('setSoraToEvm', { namespace: 'bridge' }) setSoraToEvm
+  @Action('setAssetAddress', { namespace: 'bridge' }) setAssetAddress
+  @Action('getNetworkFee', { namespace: 'bridge' }) getNetworkFee!: AsyncVoidFn
+  @Action('getEvmNetworkFee', { namespace: 'bridge' }) getEvmNetworkFee!: AsyncVoidFn
+  @Action('setTransactionConfirm', { namespace: 'bridge' }) setTransactionConfirm!: (value: boolean) => Promise<void>
+  @Action('setAmount', { namespace: 'bridge' }) setAmount
+  @Action('bridgeDataToHistoryItem', { namespace: 'bridge' }) bridgeDataToHistoryItem!: () => Promise<any>
+  @Action('saveHistory', { namespace: 'bridge' }) saveHistory!: (history: any) => Promise<void>
+  @Action('setHistoryItem', { namespace: 'bridge' }) setHistoryItem
 
   @Watch('isLoggedIn', { immediate: true })
   private handleLoggedInStateChange (isLoggedIn: boolean): void {
@@ -69,23 +85,61 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin) {
       this.stopPollingMoonpay()
       // get necessary ethereum transaction data
       const ethTransferData = await this.getTransactionTranserData(transaction.cryptoTransactionId)
-      // check that we can bridge this token
-      const registeredAsset = await this.findRegisteredAssetByExternalAddress(ethTransferData.address)
-
-      if (registeredAsset) {
-        // can we transfer tokens?
-        // 1) fetch network fees (SORA, EVM)
-        // 2) Calc transfer amount minus fee
-        // 3) If amount is not positive, return
-        // 4) Prepare bridge state
-        // 5) Create bridge history item
-        // 6) close moonpay dialog & reset it ?
-        // 7) Navigate to the bridge
-        this.setMoonpayDialogVisibility(false)
-        this.updateWidgetUrl()
-      } else {
+      if (!ethTransferData) {
         // TODO: show something, we can not transfer token to sora
+        throw new Error('Cannot fetch transaction data')
       }
+
+      // check that we can bridge this token
+      // while registered assets updating, evmBalance updating too
+      const registeredAsset = await this.findRegisteredAssetByExternalAddress(ethTransferData.address)
+      if (!registeredAsset) {
+        // TODO: show something, we can not transfer token to sora
+        throw new Error('Asset is not registered')
+      }
+
+      // prepare bridge state for fetching fees
+      await this.setTransactionConfirm(true)
+      await this.setSoraToEvm(false)
+      await this.setAssetAddress(registeredAsset.address)
+      // fetching fees & evm balance
+      await this.getNetworkFee()
+      await this.getEvmNetworkFee()
+      // TODO: check connection to account
+      await this.getEvmBalance()
+      // check eth fee
+      const hasEthForFee = !hasInsufficientEvmNativeTokenForFee(this.evmBalance, this.evmNetworkFee)
+      if (!hasEthForFee) {
+        // TODO: show something, we can not transfer token to sora
+        throw new Error('Insufficient ETH for fee')
+      }
+      const maxAmount = getMaxValue(registeredAsset, this.evmNetworkFee, true) // max balance (minus fee if eth asset)
+      const amount = Number(maxAmount) >= Number(ethTransferData.amount) ? ethTransferData.amount : maxAmount
+
+      if (+amount <= 0) {
+        // TODO: show something, we can not transfer token to sora
+        throw new Error('Insufficient amount')
+      }
+
+      await this.setAmount(amount)
+
+      // Create bridge history item
+      const bridgeDataAsHistory = await this.bridgeDataToHistoryItem()
+      const historyItem = {
+        // we can check is moonpay purchase was transfered to sora: moonpayTx.id === historyItem.id
+        id: transaction.id,
+        ...bridgeDataAsHistory
+      }
+
+      await this.saveHistory(historyItem)
+      await this.setHistoryItem(historyItem)
+
+      // close moonpay dialog & reset it ?
+      this.setMoonpayDialogVisibility(false)
+      this.updateWidgetUrl()
+
+      // Navigate to the bridge
+      router.push({ name: PageNames.BridgeTransaction })
     } catch (error) {
       console.error(error)
     }
