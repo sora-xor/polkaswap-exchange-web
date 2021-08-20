@@ -109,11 +109,17 @@ export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMi
   }
 
   get rewardsValues (): Array<any> {
-    return this.rewards.map((reward, index) => ({
-      label: index === 0 ? this.t('swap.rewardsForSwap') : '',
-      value: this.formatCodecNumber(reward.amount),
-      assetSymbol: KnownAssets.get(reward.currency)?.symbol ?? ''
-    }))
+    return this.rewards.map((reward, index) => {
+      const asset = KnownAssets.get(reward.currency)
+      const value = this.formatCodecNumber(reward.amount)
+
+      return {
+        value,
+        fiatValue: this.getFiatAmountByString(value, asset as AccountAsset),
+        assetSymbol: asset?.symbol ?? '',
+        label: index === 0 ? this.t('swap.rewardsForSwap') : ''
+      }
+    })
   }
 
   get formattedNetworkFee (): string {

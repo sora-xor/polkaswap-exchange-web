@@ -142,7 +142,7 @@
             "placeholder": "Фильтр по ID актива, имени или символу тикера"
         },
         "AddAssetCustom": {
-            "title": "Пользовательский актив",
+            "title": "Кастомный",
             "addressPlaceholder": "@:addressText",
             "symbolPlaceholder": "Символ актива"
         },
@@ -442,8 +442,8 @@
         "connectWallet": "@:connectWalletText",
         "connectToWallet": "Подключитесь к кошельку, чтобы добавить и посмотреть Вашу ликвидность.",
         "liquidityNotFound": "Ликвидность не найдена",
-        "addLiquidity": "Добавить ликвидность",
-        "removeLiquidity": "Забрать ликвидность",
+        "addLiquidity": "Добавить",
+        "removeLiquidity": "Забрать",
         "createPair": "Создать пару",
         "pooledToken": "{tokenSymbol} в пуле",
         "pairTokens": "{pair} Токены Пула",
@@ -484,7 +484,7 @@
             "emptyListMessage": "Нет результатов"
         },
         "customAsset": {
-            "title": "Пользовательский",
+            "title": "Кастомный",
             "customInfo": "Важно! Персонализированные токены должны быть зарегистрированы в @:(soraText).",
             "registerToken": "Зарегистрировать токен",
             "addressPlaceholder": "ID актива",
@@ -585,7 +585,7 @@
             "title": "Активы"
         },
         "custom": {
-            "title": "Пользовательский",
+            "title": "Кастомный",
             "search": "Поиск по ID актива",
             "text": "ПЕРСОНАЛИЗИРОВАННЫЕ ТОКЕНЫ",
             "alreadyAttached": "Этот токен уже добавлен",
