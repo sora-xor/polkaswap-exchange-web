@@ -174,7 +174,6 @@ const actions = {
     commit(types.GET_LIQUIDITY_REQUEST)
 
     try {
-      // await api.getKnownAccountLiquidity()
       const liquidity = api.accountLiquidity.find(liquidity => liquidity.firstAddress === firstAddress && liquidity.secondAddress === secondAddress)
 
       commit(types.GET_LIQUIDITY_SUCCESS, liquidity)

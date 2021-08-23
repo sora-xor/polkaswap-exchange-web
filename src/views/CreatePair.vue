@@ -182,6 +182,9 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
 
 export default class CreatePair extends Mixins(TokenPairMixin) {
   @Action('createPair', { namespace }) createPair
+  @Action('subscribeUserPoolsSubscription', { namespace }) subscribeUserPoolsSubscription!: any
+  @Action('subscribeLiquidityUpdateSubscription', { namespace }) subscribeLiquidityUpdateSubscription!: any
+  @Action('unsubscribePoolAndLiquidityUpdate', { namespace }) unsubscribePoolAndLiquidityUpdate!: any
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
@@ -198,6 +201,13 @@ export default class CreatePair extends Mixins(TokenPairMixin) {
       await this.getAssets()
       await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
     })
+
+    this.subscribeUserPoolsSubscription()
+    this.subscribeLiquidityUpdateSubscription()
+  }
+
+  beforeDestroy (): void {
+    this.unsubscribePoolAndLiquidityUpdate()
   }
 
   confirmCreatePair (): Promise<void> {

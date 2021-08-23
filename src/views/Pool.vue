@@ -85,31 +85,20 @@ export default class Pool extends Mixins(FormattedAmountMixin, TranslationMixin,
   @Getter('accountLiquidity', { namespace }) accountLiquidity!: any
   @Getter('assets', { namespace: 'assets' }) assets!: Array<Asset>
   @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
-
-  @Action('getAccountLiquidity', { namespace }) getAccountLiquidity!: AsyncVoidFn
-  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<Function>
   @Action('subscribeUserPoolsSubscription', { namespace }) subscribeUserPoolsSubscription!: any
   @Action('subscribeLiquidityUpdateSubscription', { namespace }) subscribeLiquidityUpdateSubscription!: any
   @Action('unsubscribePoolAndLiquidityUpdate', { namespace }) unsubscribePoolAndLiquidityUpdate!: any
 
-  accountLiquiditySubscription!: Function
-
-  async created () {
-    // this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
-    this.subscribeUserPoolsSubscription()
-
+  async created (): Promise<void> {
     await this.withApi(async () => {
-      await Promise.all([
-        this.getAssets(),
-        this.getAccountLiquidity()
-      ])
+      await this.getAssets()
     })
+
+    this.subscribeUserPoolsSubscription()
+    this.subscribeLiquidityUpdateSubscription()
   }
 
   beforeDestroy (): void {
-    // if (typeof this.accountLiquiditySubscription === 'function') {
-    //   this.accountLiquiditySubscription() // unsubscribe
-    // }
     this.unsubscribePoolAndLiquidityUpdate()
   }
 

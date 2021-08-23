@@ -188,22 +188,15 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField
-
-  @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity!: AsyncVoidFn
-  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<Function>
+  @Action('subscribeUserPoolsSubscription', { namespace }) subscribeUserPoolsSubscription!: any
+  @Action('subscribeLiquidityUpdateSubscription', { namespace }) subscribeLiquidityUpdateSubscription!: any
+  @Action('unsubscribePoolAndLiquidityUpdate', { namespace }) unsubscribePoolAndLiquidityUpdate!: any
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
-  accountLiquiditySubscription!: Function
-
   async created (): Promise<void> {
-    this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
-
     await this.withApi(async () => {
-      await Promise.all([
-        this.getAssets(),
-        this.getAccountLiquidity()
-      ])
+      await this.getAssets()
 
       if (this.firstAddress && this.secondAddress) {
         await this.setDataFromLiquidity({
@@ -218,12 +211,13 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
         await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
       }
     })
+
+    this.subscribeUserPoolsSubscription()
+    this.subscribeLiquidityUpdateSubscription()
   }
 
   beforeDestroy (): void {
-    if (typeof this.accountLiquiditySubscription === 'function') {
-      this.accountLiquiditySubscription() // unsubscribe
-    }
+    this.unsubscribePoolAndLiquidityUpdate()
   }
 
   get firstAddress (): string {

@@ -180,22 +180,17 @@ export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, Transa
   @Action('resetData', { namespace }) resetData!: AsyncVoidFn
   @Action('getPrices', { namespace: 'prices' }) getPrices
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: AsyncVoidFn
-  @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity!: AsyncVoidFn
-  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<Function>
+  @Action('subscribeUserPoolsSubscription', { namespace }) subscribeUserPoolsSubscription!: any
+  @Action('subscribeLiquidityUpdateSubscription', { namespace }) subscribeLiquidityUpdateSubscription!: any
+  @Action('unsubscribePoolAndLiquidityUpdate', { namespace }) unsubscribePoolAndLiquidityUpdate!: any
 
   removePartInput = 0
   sliderInput: any
   sliderDragButton: any
-  accountLiquiditySubscription!: Function
 
   async created (): Promise<void> {
-    this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
-
     await this.withApi(async () => {
-      await Promise.all([
-        this.getAssets(),
-        this.getAccountLiquidity()
-      ])
+      await this.getAssets()
 
       await this.getLiquidity({
         firstAddress: this.firstTokenAddress,
@@ -209,6 +204,9 @@ export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, Transa
 
       this.updatePrices()
     })
+
+    this.subscribeUserPoolsSubscription()
+    this.subscribeLiquidityUpdateSubscription()
   }
 
   mounted (): void {
@@ -223,9 +221,7 @@ export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, Transa
     if (this.sliderDragButton) {
       this.$el.removeEventListener('mousedown', this.sliderDragButton)
     }
-    if (typeof this.accountLiquiditySubscription === 'function') {
-      this.accountLiquiditySubscription() // unsubscribe
-    }
+    this.unsubscribePoolAndLiquidityUpdate()
     this.resetData()
     this.resetPrices()
   }
