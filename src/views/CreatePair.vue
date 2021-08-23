@@ -106,9 +106,9 @@
           <info-line :label="t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formattedPriceReversed" />
           <info-line
             :label="t('createPair.networkFee')"
+            :label-tooltip="t('networkFeeTooltipText')"
             :value="formattedFee"
             :asset-symbol="KnownSymbols.XOR"
-            :tooltip-content="t('networkFeeTooltipText')"
             :fiat-value="getFiatAmountByCodecString(fee)"
             is-formatted
           />
@@ -155,7 +155,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
 import { FPNumber, KnownAssets, KnownSymbols } from '@sora-substrate/util'
-import { FormattedAmount } from '@soramitsu/soraneo-wallet-web'
+import { FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
 
@@ -170,13 +170,13 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SelectToken: lazyComponent(Components.SelectToken),
-    InfoLine: lazyComponent(Components.InfoLine),
     TokenLogo: lazyComponent(Components.TokenLogo),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
-    FormattedAmount
+    FormattedAmount,
+    InfoLine
   }
 })
 

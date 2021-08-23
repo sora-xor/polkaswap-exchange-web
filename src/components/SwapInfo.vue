@@ -3,7 +3,7 @@
     <info-line v-for="({ id, label, value }) in priceValues" :key="id" :label="label" :value="value" />
     <info-line
       :label="t(`swap.${isExchangeB ? 'maxSold' : 'minReceived'}`)"
-      :tooltip-content="t('swap.minReceivedTooltip')"
+      :label-tooltip="t('swap.minReceivedTooltip')"
       :value="formattedMinMaxReceived"
       :asset-symbol="getAssetSymbolText"
       :fiat-value="getFiatAmountByCodecString(minMaxReceived, isExchangeB ? tokenFrom : tokenTo)"
@@ -17,7 +17,7 @@
     <info-line
       v-if="hasPriceImpact"
       :label="t('swap.priceImpact')"
-      :tooltip-content="t('swap.priceImpactTooltip')"
+      :label-tooltip="t('swap.priceImpactTooltip')"
     >
       <value-status-wrapper :value="priceImpact">
         <formatted-amount class="price-impact-value" :value="priceImpactFormatted">%</formatted-amount>
@@ -25,7 +25,7 @@
     </info-line>
     <info-line
       :label="t('swap.liquidityProviderFee')"
-      :tooltip-content="liquidityProviderFeeTooltipText"
+      :label-tooltip="liquidityProviderFeeTooltipText"
       :value="formattedLiquidityProviderFee"
       :asset-symbol="xorSymbol"
       :fiat-value="getFiatAmountByCodecString(liquidityProviderFee)"
@@ -35,7 +35,7 @@
     <info-line
       v-if="isLoggedIn"
       :label="t('swap.networkFee')"
-      :tooltip-content="t('swap.networkFeeTooltip')"
+      :label-tooltip="t('swap.networkFeeTooltip')"
       :value="formattedNetworkFee"
       :asset-symbol="xorSymbol"
       :fiat-value="getFiatAmountByCodecString(networkFee)"
@@ -48,7 +48,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LPRewardsInfo } from '@sora-substrate/util'
-import { FormattedAmount, FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
+import { FormattedAmount, FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { lazyComponent } from '@/router'
@@ -59,9 +59,9 @@ const namespace = 'swap'
 
 @Component({
   components: {
-    InfoLine: lazyComponent(Components.InfoLine),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
-    FormattedAmount
+    FormattedAmount,
+    InfoLine
   }
 })
 export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMixin) {
