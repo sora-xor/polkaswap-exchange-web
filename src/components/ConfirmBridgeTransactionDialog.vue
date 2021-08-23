@@ -23,25 +23,23 @@
     <s-divider class="s-divider--dialog" />
     <info-line
       :label="t('bridge.soraNetworkFee')"
-      :tooltip-content="t('networkFeeTooltipText')"
+      :label-tooltip="t('networkFeeTooltipText')"
       :value="formatFee(soraNetworkFee, formattedSoraNetworkFee)"
       :asset-symbol="KnownSymbols.XOR"
       :fiat-value="getFiatAmountByCodecString(soraNetworkFee)"
       is-formatted
-      alt-value="-"
     />
     <info-line
       :label="t('bridge.ethereumNetworkFee')"
-      :tooltip-content="t('ethNetworkFeeTooltipText')"
+      :label-tooltip="t('ethNetworkFeeTooltipText')"
       :value="formatFee(evmNetworkFee, formattedEvmNetworkFee)"
       :asset-symbol="currentEvmTokenSymbol"
       is-formatted
-      alt-value="-"
     />
     <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
     <!-- <info-line
       :label="t('bridge.total')"
-      :tooltip-content="t('bridge.tooltipValue')"
+      :label-tooltip="t('bridge.tooltipValue')"
       :value="`~${soraTotal}`"
       :asset-symbol="KnownSymbols.XOR"
     /> -->
@@ -65,15 +63,14 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { KnownSymbols, CodecString, BridgeNetworks } from '@sora-substrate/util'
-import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
+import { FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
-import { lazyComponent } from '@/router'
-import { Components, EvmSymbol } from '@/consts'
+import { EvmSymbol } from '@/consts'
 import { formatAssetSymbol } from '@/utils'
 
 const namespace = 'bridge'
@@ -81,7 +78,7 @@ const namespace = 'bridge'
 @Component({
   components: {
     DialogBase,
-    InfoLine: lazyComponent(Components.InfoLine)
+    InfoLine
   }
 })
 export default class ConfirmBridgeTransactionDialog extends Mixins(
