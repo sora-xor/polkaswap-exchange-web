@@ -27,32 +27,34 @@
             <h3 class="network-label">
               {{ isSoraToEvm ? t('selectRegisteredAsset.search.networkLabelSora') : t('selectRegisteredAsset.search.networkLabelEthereum') }}
             </h3>
-            <div :class="assetListClasses(filteredAssets, !isSoraToEvm)">
-              <div v-for="asset in filteredAssets" :key="asset.address" :set="formattedAssetBalance = formatBalance(asset)" class="asset-item" @click="selectAsset(asset)">
-                <s-col>
-                  <s-row flex justify="start" align="middle">
-                    <token-logo :token="asset" size="big" />
-                    <div class="asset-item__info s-flex">
-                      <div class="asset-item__symbol">{{ asset.symbol }}</div>
-                      <token-address :name="asset.name || asset.symbol" :symbol="asset.symbol" :address="asset.address" class="asset-item__details" />
-                    </div>
-                  </s-row>
-                </s-col>
-                <div class="asset-item__balance-container">
-                  <formatted-amount-with-fiat-value
-                    v-if="formattedAssetBalance !== formattedZeroSymbol"
-                    value-class="asset-item__balance"
-                    :value="formattedAssetBalance"
-                    :font-size-rate="FontSizeRate.MEDIUM"
-                    :has-fiat-value="shouldFiatBeShown(asset)"
-                    :fiat-value="getFiatBalance(asset)"
-                    :fiat-font-size-rate="FontSizeRate.MEDIUM"
-                    :fiat-font-weight-rate="FontWeightRate.MEDIUM"
-                  />
-                  <span v-else class="asset-item__balance">{{ formattedZeroSymbol }}</span>
+            <s-scrollbar class="asset-list-scrollbar">
+              <div :class="assetListClasses(filteredAssets, !isSoraToEvm)">
+                <div v-for="asset in filteredAssets" :key="asset.address" :set="formattedAssetBalance = formatBalance(asset)" class="asset-item" @click="selectAsset(asset)">
+                  <s-col>
+                    <s-row flex justify="start" align="middle">
+                      <token-logo :token="asset" size="big" />
+                      <div class="asset-item__info s-flex">
+                        <div class="asset-item__symbol">{{ asset.symbol }}</div>
+                        <token-address :name="asset.name || asset.symbol" :symbol="asset.symbol" :address="asset.address" class="asset-item__details" />
+                      </div>
+                    </s-row>
+                  </s-col>
+                  <div class="asset-item__balance-container">
+                    <formatted-amount-with-fiat-value
+                      v-if="formattedAssetBalance !== formattedZeroSymbol"
+                      value-class="asset-item__balance"
+                      :value="formattedAssetBalance"
+                      :font-size-rate="FontSizeRate.MEDIUM"
+                      :has-fiat-value="shouldFiatBeShown(asset)"
+                      :fiat-value="getFiatBalance(asset)"
+                      :fiat-font-size-rate="FontSizeRate.MEDIUM"
+                      :fiat-font-weight-rate="FontWeightRate.MEDIUM"
+                    />
+                    <span v-else class="asset-item__balance">{{ formattedZeroSymbol }}</span>
+                  </div>
                 </div>
               </div>
-            </div>
+            </s-scrollbar>
           </template>
           <div v-else class="asset-list asset-list__empty p4">
             <span class="empty-results-icon" />
@@ -277,6 +279,9 @@ export default class SelectRegisteredAsset extends Mixins(FormattedAmountMixin, 
   @include exchange-tabs();
   @include select-asset('asset-item');
 }
+.asset-list-scrollbar {
+  @include scrollbar(0, 0);
+}
 </style>
 
 <style lang="scss" scoped>
@@ -315,10 +320,8 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
   margin-top: $inner-spacing-mini;
 }
 .asset-list {
-  &--scrollbar {
-    height: #{$select-asset-item-height * 6};
-    overflow: auto;
-  }
+  height: calc(#{$select-asset-item-height} * 7);
+
   &__empty {
     display: flex;
     align-items: center;
