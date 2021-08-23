@@ -77,7 +77,7 @@
         </div>
       </s-float-input>
 
-      <div v-if="price || priceReversed || fee || shareOfPool" class="info-line-container">
+      <div v-if="price || priceReversed || networkFee || shareOfPool" class="info-line-container">
         <info-line v-if="shareOfPool" :label="t('removeLiquidity.shareOfPool')" :value="`${shareOfPool}%`" />
         <info-line
           v-if="price || priceReversed"
@@ -91,12 +91,12 @@
           :asset-symbol="firstToken.symbol"
         />
         <info-line
-          v-if="fee"
+          v-if="networkFee"
           :label="t('createPair.networkFee')"
           :label-tooltip="t('networkFeeTooltipText')"
           :value="formattedFee"
           :asset-symbol="KnownSymbols.XOR"
-          :fiat-value="getFiatAmountByCodecString(fee)"
+          :fiat-value="getFiatAmountByCodecString(networkFee)"
           is-formatted
         />
       </div>
@@ -125,8 +125,8 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { FPNumber, KnownSymbols, AccountLiquidity, CodecString } from '@sora-substrate/util'
-import { FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { FPNumber, KnownSymbols, AccountLiquidity, CodecString, Operation } from '@sora-substrate/util'
+import { api, FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
@@ -163,7 +163,6 @@ export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, Transa
   @Getter('firstTokenBalance', { namespace }) firstTokenBalance!: CodecString
   @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
   @Getter('secondTokenBalance', { namespace }) secondTokenBalance!: CodecString
-  @Getter('fee', { namespace }) fee!: CodecString
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('price', { namespace: 'prices' }) price!: string
@@ -180,9 +179,6 @@ export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, Transa
   @Action('resetData', { namespace }) resetData!: AsyncVoidFn
   @Action('getPrices', { namespace: 'prices' }) getPrices
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: AsyncVoidFn
-  @Action('subscribeUserPoolsSubscription', { namespace }) subscribeUserPoolsSubscription!: any
-  @Action('subscribeLiquidityUpdateSubscription', { namespace }) subscribeLiquidityUpdateSubscription!: any
-  @Action('unsubscribePoolAndLiquidityUpdate', { namespace }) unsubscribePoolAndLiquidityUpdate!: any
 
   removePartInput = 0
   sliderInput: any
@@ -204,9 +200,6 @@ export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, Transa
 
       this.updatePrices()
     })
-
-    this.subscribeUserPoolsSubscription()
-    this.subscribeLiquidityUpdateSubscription()
   }
 
   mounted (): void {
@@ -221,7 +214,6 @@ export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, Transa
     if (this.sliderDragButton) {
       this.$el.removeEventListener('mousedown', this.sliderDragButton)
     }
-    this.unsubscribePoolAndLiquidityUpdate()
     this.resetData()
     this.resetPrices()
   }
@@ -253,7 +245,7 @@ export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, Transa
   }
 
   get isInsufficientXorForFee (): boolean {
-    return hasInsufficientXorForFee(this.tokenXOR, this.fee)
+    return hasInsufficientXorForFee(this.tokenXOR, this.networkFee)
   }
 
   get removePartCharClass (): string {
@@ -265,8 +257,12 @@ export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, Transa
     return `${charClassName}-char`
   }
 
+  get networkFee (): CodecString {
+    return api.NetworkFee[Operation.RemoveLiquidity]
+  }
+
   get formattedFee (): string {
-    return this.formatCodecNumber(this.fee)
+    return this.formatCodecNumber(this.networkFee)
   }
 
   @Watch('removePart')

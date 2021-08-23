@@ -77,6 +77,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { RegisteredAccountAsset, Operation, BridgeHistory, CodecString, FPNumber } from '@sora-substrate/util'
+import { api } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -100,8 +101,6 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter('history', { namespace }) history!: Nullable<Array<BridgeHistory>>
   @Getter('restored', { namespace }) restored!: boolean
-  @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
-  @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
 
   @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn
   @Action('getRestoredFlag', { namespace }) getRestoredFlag!: AsyncVoidFn
@@ -147,6 +146,14 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 
   get filteredHistoryItems (): Array<BridgeHistory> {
     return this.getPageItems(this.filteredHistory)
+  }
+
+  get soraNetworkFee (): CodecString {
+    return api.NetworkFee[Operation.EthBridgeOutgoing]
+  }
+
+  get evmNetworkFee (): CodecString {
+    return api.NetworkFee[Operation.EthBridgeIncoming]
   }
 
   async created (): Promise<void> {

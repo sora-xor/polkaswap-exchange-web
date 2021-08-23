@@ -85,21 +85,21 @@ export default class Pool extends Mixins(FormattedAmountMixin, TranslationMixin,
   @Getter('accountLiquidity', { namespace }) accountLiquidity!: any
   @Getter('assets', { namespace: 'assets' }) assets!: Array<Asset>
   @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
-  @Action('subscribeUserPoolsSubscription', { namespace }) subscribeUserPoolsSubscription!: any
-  @Action('subscribeLiquidityUpdateSubscription', { namespace }) subscribeLiquidityUpdateSubscription!: any
-  @Action('unsubscribePoolAndLiquidityUpdate', { namespace }) unsubscribePoolAndLiquidityUpdate!: any
+  @Action('subscribeOnAccountLiquidityList', { namespace }) subscribeOnAccountLiquidityList!: any
+  @Action('subscribeOnAccountLiquidityUpdates', { namespace }) subscribeOnAccountLiquidityUpdates!: any
+  @Action('unsubscribeAccountLiquidityListAndUpdates', { namespace }) unsubscribeAccountLiquidityListAndUpdates!: any
 
   async created (): Promise<void> {
     await this.withApi(async () => {
       await this.getAssets()
     })
 
-    this.subscribeUserPoolsSubscription()
-    this.subscribeLiquidityUpdateSubscription()
+    this.subscribeOnAccountLiquidityList()
+    this.subscribeOnAccountLiquidityUpdates()
   }
 
   beforeDestroy (): void {
-    this.unsubscribePoolAndLiquidityUpdate()
+    this.unsubscribeAccountLiquidityListAndUpdates()
   }
 
   getAsset (address): any {

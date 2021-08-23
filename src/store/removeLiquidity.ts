@@ -5,7 +5,7 @@ import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import debounce from 'lodash/debounce'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { FPNumber, CodecString, Operation } from '@sora-substrate/util'
+import { FPNumber, CodecString } from '@sora-substrate/util'
 
 import { ZeroStringValue } from '@/consts'
 
@@ -16,8 +16,7 @@ const types = flow(
     'SET_LIQUIDITY_AMOUNT',
     'SET_FIRST_TOKEN_AMOUNT',
     'SET_SECOND_TOKEN_AMOUNT',
-    'SET_FOCUSED_FIELD',
-    'NETWORK_FEE'
+    'SET_FOCUSED_FIELD'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -34,7 +33,6 @@ interface RemoveLiquidityState {
   firstTokenAmount: string;
   secondTokenAmount: string;
   focusedField: Nullable<string>;
-  fee: CodecString;
   reserveA: CodecString;
   reserveB: CodecString;
   totalSupply: CodecString;
@@ -48,7 +46,6 @@ function initialState (): RemoveLiquidityState {
     firstTokenAmount: '',
     secondTokenAmount: '',
     focusedField: null,
-    fee: '',
     reserveA: ZeroStringValue,
     reserveB: ZeroStringValue,
     totalSupply: ZeroStringValue
@@ -106,9 +103,6 @@ const getters = {
   secondTokenAmount (state: RemoveLiquidityState) {
     return state.secondTokenAmount
   },
-  fee (state: RemoveLiquidityState) {
-    return state.fee
-  },
   reserveA (state: RemoveLiquidityState) {
     return state.reserveA
   },
@@ -145,9 +139,6 @@ const mutations = {
   },
   [types.SET_SECOND_TOKEN_AMOUNT] (state, secondTokenAmount = '') {
     state.secondTokenAmount = secondTokenAmount
-  },
-  [types.NETWORK_FEE] (state, fee) {
-    state.fee = fee
   },
   [types.GET_TOTAL_SUPPLY_REQUEST] (state) {
   },
@@ -252,12 +243,7 @@ const actions = {
   getRemoveLiquidityData: debounce(async ({ dispatch }) => {
     await dispatch('getLiquidityReserves')
     await dispatch('getTotalSupply')
-    await dispatch('getNetworkFee')
   }, 500, { leading: true }),
-
-  async getNetworkFee ({ commit }) {
-    commit(types.NETWORK_FEE, api.NetworkFee[Operation.RemoveLiquidity])
-  },
 
   async getLiquidityReserves ({ commit, getters }) {
     try {

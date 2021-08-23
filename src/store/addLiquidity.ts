@@ -4,7 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, FPNumber, CodecString, Operation } from '@sora-substrate/util'
+import { KnownAssets, FPNumber, CodecString } from '@sora-substrate/util'
 
 import { ZeroStringValue } from '@/consts'
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions'
@@ -19,8 +19,7 @@ const types = flow(
     'SET_FIRST_TOKEN_VALUE',
     'SET_SECOND_TOKEN_VALUE',
     'SET_SECOND_TOKEN_BALANCE',
-    'SET_FOCUSED_FIELD',
-    'NETWORK_FEE'
+    'SET_FOCUSED_FIELD'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -39,7 +38,6 @@ interface AddLiquidityState {
   secondTokenBalance: any;
   reserve: Nullable<Array<CodecString>>;
   minted: CodecString;
-  fee: CodecString;
   totalSupply: CodecString;
   focusedField: Nullable<string>;
   isAvailable: boolean;
@@ -54,7 +52,6 @@ function initialState (): AddLiquidityState {
     secondTokenBalance: null,
     reserve: null,
     minted: '',
-    fee: '',
     totalSupply: '',
     focusedField: null,
     isAvailable: false
@@ -102,9 +99,6 @@ const getters = {
   },
   minted (state: AddLiquidityState) {
     return state.minted || ZeroStringValue
-  },
-  fee (state: AddLiquidityState) {
-    return state.fee || ZeroStringValue
   },
   totalSupply (state: AddLiquidityState) {
     return state.totalSupply || ZeroStringValue
@@ -154,9 +148,6 @@ const mutations = {
   },
   [types.ESTIMATE_MINTED_FAILURE] (state, error) {
   },
-  [types.NETWORK_FEE] (state: AddLiquidityState, fee: CodecString) {
-    state.fee = fee
-  },
   [types.SET_FOCUSED_FIELD] (state: AddLiquidityState, field: string) {
     state.focusedField = field
   },
@@ -201,7 +192,6 @@ const actions = {
         commit(types.GET_RESERVE_SUCCESS, reserve)
 
         dispatch('estimateMinted')
-        dispatch('getNetworkFee')
       } catch (error) {
         commit(types.GET_RESERVE_FAILURE, error)
       }
@@ -284,10 +274,6 @@ const actions = {
 
       dispatch('estimateMinted')
     }
-  },
-
-  async getNetworkFee ({ commit }) {
-    commit(types.NETWORK_FEE, api.NetworkFee[Operation.AddLiquidity])
   },
 
   async addLiquidity ({ commit, getters, rootGetters }) {

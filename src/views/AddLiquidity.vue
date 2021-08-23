@@ -110,7 +110,7 @@
        :label-tooltip="t('networkFeeTooltipText')"
        :value="formattedFee"
        :asset-symbol="KnownSymbols.XOR"
-       :fiat-value="getFiatAmountByCodecString(fee)"
+       :fiat-value="getFiatAmountByCodecString(networkFee)"
        is-formatted
       />
     </div>
@@ -188,9 +188,6 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField
-  @Action('subscribeUserPoolsSubscription', { namespace }) subscribeUserPoolsSubscription!: any
-  @Action('subscribeLiquidityUpdateSubscription', { namespace }) subscribeLiquidityUpdateSubscription!: any
-  @Action('unsubscribePoolAndLiquidityUpdate', { namespace }) unsubscribePoolAndLiquidityUpdate!: any
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
@@ -211,13 +208,6 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
         await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
       }
     })
-
-    this.subscribeUserPoolsSubscription()
-    this.subscribeLiquidityUpdateSubscription()
-  }
-
-  beforeDestroy (): void {
-    this.unsubscribePoolAndLiquidityUpdate()
   }
 
   get firstAddress (): string {

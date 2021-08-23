@@ -19,8 +19,7 @@ const types = flow(
     'SET_FIRST_TOKEN_VALUE',
     'SET_SECOND_TOKEN_VALUE',
     'SET_SECOND_TOKEN_BALANCE',
-    'SET_FOCUSED_FIELD',
-    'NETWORK_FEE'
+    'SET_FOCUSED_FIELD'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -37,7 +36,6 @@ interface CreatePairState {
   secondTokenValue: string;
   secondTokenBalance: any;
   minted: CodecString;
-  fee: CodecString;
   isAvailable: boolean;
 }
 
@@ -49,7 +47,6 @@ function initialState (): CreatePairState {
     secondTokenValue: '',
     secondTokenBalance: null,
     minted: '',
-    fee: '',
     isAvailable: false
   }
 }
@@ -77,9 +74,6 @@ const getters = {
   },
   minted (state: CreatePairState) {
     return state.minted || ZeroStringValue
-  },
-  fee (state: CreatePairState) {
-    return state.fee || ZeroStringValue
   }
 }
 
@@ -111,9 +105,6 @@ const mutations = {
     state.minted = minted
   },
   [types.ESTIMATE_MINTED_FAILURE] (state: CreatePairState, error) {
-  },
-  [types.NETWORK_FEE] (state: CreatePairState, fee: CodecString) {
-    state.fee = fee
   },
   [types.CHECK_LIQUIDITY_REQUEST] (state: CreatePairState) {},
   [types.CHECK_LIQUIDITY_SUCCESS] (state: CreatePairState, isAvailable: boolean) {
@@ -149,7 +140,6 @@ const actions = {
         const exists = await api.checkLiquidity(getters.firstToken.address, getters.secondToken.address)
         commit(types.CHECK_LIQUIDITY_SUCCESS, !exists)
         dispatch('estimateMinted')
-        dispatch('getNetworkFee')
       } catch (error) {
         commit(types.CHECK_LIQUIDITY_FAILURE, error)
       }
@@ -183,10 +173,6 @@ const actions = {
   setSecondTokenValue ({ commit, dispatch }, value: string | number) {
     commit(types.SET_SECOND_TOKEN_VALUE, value)
     dispatch('estimateMinted')
-  },
-
-  async getNetworkFee ({ commit }) {
-    commit(types.NETWORK_FEE, api.NetworkFee[Operation.CreatePair])
   },
 
   async createPair ({ commit, getters, rootGetters }) {

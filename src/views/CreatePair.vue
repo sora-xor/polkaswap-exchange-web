@@ -109,7 +109,7 @@
             :label-tooltip="t('networkFeeTooltipText')"
             :value="formattedFee"
             :asset-symbol="KnownSymbols.XOR"
-            :fiat-value="getFiatAmountByCodecString(fee)"
+            :fiat-value="getFiatAmountByCodecString(networkFee)"
             is-formatted
           />
         </div>
@@ -158,12 +158,10 @@ import { FPNumber, KnownAssets, KnownSymbols } from '@sora-substrate/util'
 import { FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
-
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 
 const namespace = 'createPair'
-
 const TokenPairMixin = CreateTokenPairMixin(namespace)
 
 @Component({
@@ -182,9 +180,6 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
 
 export default class CreatePair extends Mixins(TokenPairMixin) {
   @Action('createPair', { namespace }) createPair
-  @Action('subscribeUserPoolsSubscription', { namespace }) subscribeUserPoolsSubscription!: any
-  @Action('subscribeLiquidityUpdateSubscription', { namespace }) subscribeLiquidityUpdateSubscription!: any
-  @Action('unsubscribePoolAndLiquidityUpdate', { namespace }) unsubscribePoolAndLiquidityUpdate!: any
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
@@ -201,13 +196,6 @@ export default class CreatePair extends Mixins(TokenPairMixin) {
       await this.getAssets()
       await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
     })
-
-    this.subscribeUserPoolsSubscription()
-    this.subscribeLiquidityUpdateSubscription()
-  }
-
-  beforeDestroy (): void {
-    this.unsubscribePoolAndLiquidityUpdate()
   }
 
   confirmCreatePair (): Promise<void> {

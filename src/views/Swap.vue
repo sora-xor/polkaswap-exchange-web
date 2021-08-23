@@ -176,7 +176,6 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
   @Getter('fromValue', { namespace }) fromValue!: string
   @Getter('toValue', { namespace }) toValue!: string
   @Getter('isExchangeB', { namespace }) isExchangeB!: boolean
-  @Getter('networkFee', { namespace }) networkFee!: CodecString
   @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString
   @Getter('isAvailable', { namespace }) isAvailable!: boolean
   @Getter('isAvailableChecking', { namespace }) isAvailableChecking!: boolean
@@ -192,7 +191,6 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
   @Action('setAmountWithoutImpact', { namespace }) setAmountWithoutImpact!: (amount: CodecString) => Promise<void>
   @Action('setExchangeB', { namespace }) setExchangeB!: (isExchangeB: boolean) => Promise<void>
   @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>
-  @Action('setNetworkFee', { namespace }) setNetworkFee!: (value: CodecString) => Promise<void>
   @Action('checkSwap', { namespace }) checkSwap!: AsyncVoidFn
   @Action('reset', { namespace }) reset!: AsyncVoidFn
   @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>
@@ -216,7 +214,6 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
   @Watch('isLoggedIn')
   private handleLoggedInStateChange (isLoggedIn: boolean, wasLoggedIn: boolean): void {
     if (!wasLoggedIn && isLoggedIn) {
-      this.getNetworkFee()
       this.recountSwapValues()
     }
   }
@@ -333,6 +330,10 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
     return this.tokenTo ? this.getAssetFiatPrice(this.tokenTo) : null
   }
 
+  get networkFee (): CodecString {
+    return api.NetworkFee[Operation.Swap]
+  }
+
   created () {
     this.withApi(async () => {
       await this.getAssets()
@@ -346,7 +347,6 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
       }
       await this.updatePairLiquiditySources()
     })
-    this.getNetworkFee()
   }
 
   formatBalance (token): string {
@@ -359,12 +359,6 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
 
   resetFieldTo (): void {
     this.setToValue('')
-  }
-
-  getNetworkFee (): void {
-    if (this.isLoggedIn) {
-      this.setNetworkFee(api.NetworkFee[Operation.Swap])
-    }
   }
 
   async updatePairLiquiditySources (): Promise<void> {

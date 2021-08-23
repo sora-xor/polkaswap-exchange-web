@@ -45,10 +45,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LPRewardsInfo } from '@sora-substrate/util'
-import { FormattedAmount, FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LPRewardsInfo, Operation } from '@sora-substrate/util'
+import { api, FormattedAmount, FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { lazyComponent } from '@/router'
@@ -70,7 +70,6 @@ export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMi
   @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString
   @Getter('isExchangeB', { namespace }) isExchangeB!: boolean
   @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString
-  @Getter('networkFee', { namespace }) networkFee!: CodecString
   @Getter('rewards', { namespace }) rewards!: Array<LPRewardsInfo>
   @Getter('priceImpact', { namespace }) priceImpact!: string
 
@@ -120,6 +119,10 @@ export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMi
         label: index === 0 ? this.t('swap.rewardsForSwap') : ''
       }
     })
+  }
+
+  get networkFee (): CodecString {
+    return api.NetworkFee[Operation.Swap]
   }
 
   get formattedNetworkFee (): string {
