@@ -217,6 +217,7 @@ export default class BridgeTransaction extends Mixins(
   @Getter('amount', { namespace }) amount!: string
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
   @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks
+  @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
   @Getter('soraTransactionHash', { namespace }) soraTransactionHash!: string
   @Getter('evmTransactionHash', { namespace }) evmTransactionHash!: string
@@ -455,10 +456,6 @@ export default class BridgeTransaction extends Mixins(
 
   get soraNetworkFee (): CodecString {
     return api.NetworkFee[Operation.EthBridgeOutgoing]
-  }
-
-  get evmNetworkFee (): CodecString {
-    return api.NetworkFee[Operation.EthBridgeIncoming]
   }
 
   get formattedSoraNetworkFee (): string {

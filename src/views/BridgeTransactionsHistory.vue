@@ -101,6 +101,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter('history', { namespace }) history!: Nullable<Array<BridgeHistory>>
   @Getter('restored', { namespace }) restored!: boolean
+  @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
 
   @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn
   @Action('getRestoredFlag', { namespace }) getRestoredFlag!: AsyncVoidFn
@@ -116,7 +117,6 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Action('setEvmTransactionHash', { namespace }) setEvmTransactionHash
   @Action('setSoraTransactionDate', { namespace }) setSoraTransactionDate
   @Action('setEvmTransactionDate', { namespace }) setEvmTransactionDate
-  @Action('setSoraNetworkFee', { namespace }) setSoraNetworkFee
   @Action('setEvmNetworkFee', { namespace }) setEvmNetworkFee
   @Action('setCurrentTransactionState', { namespace }) setCurrentTransactionState
   @Action('setTransactionStep', { namespace }) setTransactionStep
@@ -150,10 +150,6 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 
   get soraNetworkFee (): CodecString {
     return api.NetworkFee[Operation.EthBridgeOutgoing]
-  }
-
-  get evmNetworkFee (): CodecString {
-    return api.NetworkFee[Operation.EthBridgeIncoming]
   }
 
   async created (): Promise<void> {
@@ -234,7 +230,6 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
       if (!(soraNetworkFee && evmNetworkFee)) {
         this.saveHistory(tx)
       }
-      await this.setSoraNetworkFee(soraNetworkFee || this.soraNetworkFee)
       await this.setEvmNetworkFee(evmNetworkFee || this.evmNetworkFee)
       await this.setTransactionStep(tx.transactionStep)
       await this.setCurrentTransactionState(tx.transactionState)

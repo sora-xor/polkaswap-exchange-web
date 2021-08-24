@@ -92,6 +92,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean
   @Getter('asset', { namespace }) asset!: any
   @Getter('amount', { namespace }) amount!: string
+  @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
   @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks
   @Action('setTransactionConfirm', { namespace }) setTransactionConfirm
   @Action('setTransactionStep', { namespace }) setTransactionStep
@@ -121,10 +122,6 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
 
   get soraNetworkFee (): CodecString {
     return api.NetworkFee[Operation.EthBridgeOutgoing]
-  }
-
-  get evmNetworkFee (): CodecString {
-    return api.NetworkFee[Operation.EthBridgeIncoming]
   }
 
   get formattedSoraNetworkFee (): string {

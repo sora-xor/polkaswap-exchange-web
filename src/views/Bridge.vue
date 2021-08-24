@@ -123,7 +123,7 @@
         <s-button
           class="el-button--next s-typography-button--large"
           type="primary"
-          :disabled="!isAssetSelected || !areNetworksConnected || !isValidNetworkType || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEvmNativeTokenForFee || isInsufficientBalance || !isRegisteredAsset"
+          :disabled="!isAssetSelected || !areNetworksConnected || !isValidNetworkType || !isAssetSelected || isZeroAmount || isInsufficientXorForFee || isInsufficientEvmNativeTokenForFee || isInsufficientBalance || !isRegisteredAsset || feesFetching"
           @click="handleConfirmTransaction"
         >
           <template v-if="!isAssetSelected">
@@ -253,6 +253,7 @@ export default class Bridge extends Mixins(
   @Getter('asset', { namespace }) asset!: any
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('amount', { namespace }) amount!: string
+  @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
   @Getter nodeIsConnected!: boolean
 
   @Watch('nodeIsConnected')
@@ -273,6 +274,7 @@ export default class Bridge extends Mixins(
   showSelectTokenDialog = false
   showSelectNetworkDialog = false
   showConfirmTransactionDialog = false
+  feesFetching = false
 
   get isNetworkAConnected () {
     return this.isSoraToEvm ? this.isSoraAccountConnected : this.isExternalAccountConnected
@@ -288,10 +290,6 @@ export default class Bridge extends Mixins(
 
   get soraNetworkFee (): CodecString {
     return api.NetworkFee[Operation.EthBridgeOutgoing]
-  }
-
-  get evmNetworkFee (): CodecString {
-    return api.NetworkFee[Operation.EthBridgeIncoming]
   }
 
   get isMaxAvailable (): boolean {
@@ -388,7 +386,8 @@ export default class Bridge extends Mixins(
   async onEvmNetworkChange (network: number): Promise<void> {
     await Promise.all([
       this.setEvmNetwork(network),
-      this.getRegisteredAssets()
+      this.getRegisteredAssets(),
+      this.getNetworkFees()
     ])
   }
 
@@ -421,6 +420,7 @@ export default class Bridge extends Mixins(
 
   async handleSwitchItems (): Promise<void> {
     this.setSoraToEvm(!this.isSoraToEvm)
+    await this.getNetworkFees()
   }
 
   handleMaxValue (): void {
@@ -457,6 +457,7 @@ export default class Bridge extends Mixins(
   async selectAsset (selectedAsset: any): Promise<void> {
     if (selectedAsset) {
       await this.setAssetAddress(selectedAsset?.address ?? '')
+      await this.getNetworkFees()
     }
   }
 
@@ -466,6 +467,14 @@ export default class Bridge extends Mixins(
     await this.checkConnectionToExternalAccount(() => {
       router.push({ name: PageNames.BridgeTransaction })
     })
+  }
+
+  private async getNetworkFees (): Promise<void> {
+    if (this.isRegisteredAsset) {
+      this.feesFetching = true
+      await this.getEvmNetworkFee()
+      this.feesFetching = false
+    }
   }
 }
 </script>

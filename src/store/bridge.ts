@@ -182,6 +182,7 @@ function initialState () {
     amount: '',
     soraTotal: ZeroStringValue,
     evmTotal: ZeroStringValue,
+    evmNetworkFee: ZeroStringValue,
     isTransactionConfirmed: false,
     soraTransactionHash: '',
     evmTransactionHash: '',
@@ -210,6 +211,9 @@ const getters = {
   },
   amount (state) {
     return state.amount
+  },
+  evmNetworkFee (state) {
+    return state.evmNetworkFee
   },
   soraTotal (state) {
     return state.soraTotal
@@ -268,8 +272,13 @@ const mutations = {
   [types.SET_AMOUNT] (state, amount: string) {
     state.amount = amount
   },
+  [types.GET_EVM_NETWORK_FEE_REQUEST] (state) {
+  },
   [types.GET_EVM_NETWORK_FEE_SUCCESS] (state, fee: CodecString) {
     state.evmNetworkFee = fee
+  },
+  [types.GET_EVM_NETWORK_FEE_FAILURE] (state) {
+    state.evmNetworkFee = ZeroStringValue
   },
   [types.SET_TRANSACTION_CONFIRM] (state, isTransactionConfirmed: boolean) {
     state.isTransactionConfirmed = isTransactionConfirmed
@@ -526,7 +535,7 @@ const actions = {
       ethereumHash: '',
       transactionState: STATES.INITIAL,
       soraNetworkFee: api.NetworkFee[Operation.EthBridgeOutgoing],
-      ethereumNetworkFee: api.NetworkFee[Operation.EthBridgeIncoming],
+      ethereumNetworkFee: getters.evmNetworkFee,
       externalNetwork: rootGetters['web3/evmNetwork'],
       to: rootGetters['web3/evmAddress']
     }))
