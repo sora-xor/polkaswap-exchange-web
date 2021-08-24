@@ -192,20 +192,20 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, PoolUpdatesMixi
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
-  async created (): Promise<void> {
-    await this.onCreated(async () => {
-      if (this.firstAddress && this.secondAddress) {
-        await this.setDataFromLiquidity({
-          firstAddress: this.firstAddress,
-          secondAddress: this.secondAddress
-        })
-        if (!this.liquidityInfo) {
-          return this.handleBack()
-        }
-      } else {
-        await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
+  async mounted (): Promise<void> {
+    await this.onCreated()
+
+    if (this.firstAddress && this.secondAddress) {
+      await this.setDataFromLiquidity({
+        firstAddress: this.firstAddress,
+        secondAddress: this.secondAddress
+      })
+      if (!this.liquidityInfo) {
+        return this.handleBack()
       }
-    })
+    } else {
+      await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
+    }
   }
 
   async beforeDestroy (): Promise<void> {
