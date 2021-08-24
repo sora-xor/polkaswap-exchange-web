@@ -3,7 +3,7 @@
     <info-line v-for="({ id, label, value }) in priceValues" :key="id" :label="label" :value="value" />
     <info-line
       :label="t(`swap.${isExchangeB ? 'maxSold' : 'minReceived'}`)"
-      :tooltip-content="t('swap.minReceivedTooltip')"
+      :label-tooltip="t('swap.minReceivedTooltip')"
       :value="formattedMinMaxReceived"
       :asset-symbol="getAssetSymbolText"
       :fiat-value="getFiatAmountByCodecString(minMaxReceived, isExchangeB ? tokenFrom : tokenTo)"
@@ -14,14 +14,18 @@
       :key="index"
       v-bind="reward"
     />
-    <!-- <info-line
+    <info-line
+      v-if="hasPriceImpact"
       :label="t('swap.priceImpact')"
-      :tooltip-content="t('swap.priceImpactTooltip')"
-      :value="`${priceImpact}%`"
-    /> -->
+      :label-tooltip="t('swap.priceImpactTooltip')"
+    >
+      <value-status-wrapper :value="priceImpact">
+        <formatted-amount class="price-impact-value" :value="priceImpactFormatted">%</formatted-amount>
+      </value-status-wrapper>
+    </info-line>
     <info-line
       :label="t('swap.liquidityProviderFee')"
-      :tooltip-content="liquidityProviderFeeTooltipText"
+      :label-tooltip="liquidityProviderFeeTooltipText"
       :value="formattedLiquidityProviderFee"
       :asset-symbol="xorSymbol"
       :fiat-value="getFiatAmountByCodecString(liquidityProviderFee)"
@@ -31,7 +35,7 @@
     <info-line
       v-if="isLoggedIn"
       :label="t('swap.networkFee')"
-      :tooltip-content="t('swap.networkFeeTooltip')"
+      :label-tooltip="t('swap.networkFeeTooltip')"
       :value="formattedNetworkFee"
       :asset-symbol="xorSymbol"
       :fiat-value="getFiatAmountByCodecString(networkFee)"
@@ -41,20 +45,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LPRewardsInfo } from '@sora-substrate/util'
-import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
+import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LPRewardsInfo, Operation } from '@sora-substrate/util'
+import { api, FormattedAmount, FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
+import { asZeroValue } from '@/utils'
 
 const namespace = 'swap'
 
 @Component({
   components: {
-    InfoLine: lazyComponent(Components.InfoLine)
+    ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
+    FormattedAmount,
+    InfoLine
   }
 })
 export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMixin) {
@@ -63,8 +70,8 @@ export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMi
   @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString
   @Getter('isExchangeB', { namespace }) isExchangeB!: boolean
   @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString
-  @Getter('networkFee', { namespace }) networkFee!: CodecString
   @Getter('rewards', { namespace }) rewards!: Array<LPRewardsInfo>
+  @Getter('priceImpact', { namespace }) priceImpact!: string
 
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
@@ -92,6 +99,14 @@ export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMi
     ]
   }
 
+  get hasPriceImpact (): boolean {
+    return !asZeroValue(this.priceImpact)
+  }
+
+  get priceImpactFormatted (): string {
+    return this.formatStringValue(this.priceImpact)
+  }
+
   get rewardsValues (): Array<any> {
     return this.rewards.map((reward, index) => {
       const asset = KnownAssets.get(reward.currency)
@@ -104,6 +119,10 @@ export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMi
         label: index === 0 ? this.t('swap.rewardsForSwap') : ''
       }
     })
+  }
+
+  get networkFee (): CodecString {
+    return api.NetworkFee[Operation.Swap]
   }
 
   get formattedNetworkFee (): string {
@@ -150,20 +169,14 @@ export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMi
 <style lang="scss" scoped>
 @include info-line;
 .swap-info {
-  // TODO: [Release 2] Check these styles on
-  .price-impact {
-    &-positive {
-      color: var(--s-color-status-success);
-    }
-    &-negative {
-      color: var(--s-color-status-error);
-    }
-  }
   &-value.el-button {
     margin-right: 0;
     height: var(--s-font-size-small);
     padding: 0;
     color: inherit;
   }
+}
+.price-impact-value {
+  font-weight: 600;
 }
 </style>

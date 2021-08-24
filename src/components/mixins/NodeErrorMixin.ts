@@ -1,5 +1,5 @@
 import { Component, Mixins } from 'vue-property-decorator'
-import { State, Action } from 'vuex-class'
+import { State, Action, Getter } from 'vuex-class'
 
 import TranslationMixin from './TranslationMixin'
 import { AppHandledError } from '@/utils/error'
@@ -9,23 +9,17 @@ import { Node } from '@/types/nodes'
 @Component
 export default class NodeErrorMixin extends Mixins(TranslationMixin) {
   @State(state => state.settings.node) node!: Node
+  @Getter nodeIsConnected!: boolean
   @Action setSelectNodeDialogVisibility!: (flag: boolean) => void
 
-  protected async handleNodeError (error, node?: Node): Promise<void> {
+  protected async handleNodeError (error, preferNotification = false): Promise<void> {
     const errorKey = error instanceof AppHandledError ? error.translationKey : 'node.errors.connection'
     const errorPayload = error instanceof AppHandledError ? error.translationPayload : {}
-
-    if (node && !errorPayload.address) {
-      errorPayload.address = node.address
-    }
-
     const errorMessage = this.t(errorKey, errorPayload)
 
     const resultKey = this.node.address ? 'node.messages.connected' : 'node.messages.selectNode'
     const resultPayload = { address: this.node.address }
     const resultMessage = this.t(resultKey, resultPayload)
-
-    const message = errorMessage + resultMessage
 
     if (!this.node.address) {
       this.setSelectNodeDialogVisibility(true)
@@ -33,7 +27,15 @@ export default class NodeErrorMixin extends Mixins(TranslationMixin) {
       await delay(500) // wait for render select node modal
     }
 
-    this.$alert(message, { title: this.t('errorText') })
+    if (this.nodeIsConnected && preferNotification) {
+      this.$notify({
+        message: resultMessage,
+        type: 'success',
+        title: ''
+      })
+    } else {
+      this.$alert(errorMessage + resultMessage, { title: this.t('errorText') })
+    }
   }
 
   protected handleNodeDisconnect (node: Node): void {

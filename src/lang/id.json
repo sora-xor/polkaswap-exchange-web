@@ -93,8 +93,10 @@
         "confirmTitle": "Konfirmasi transaksi",
         "confirm": "@:confirmText",
         "errorAddress": "Alamat tidak valid. Silakan periksa dan coba lagi.",
-        "addressDesc": "Hanya alamat akun jaringan SORA yang diterima. Harap pastikan bahwa Anda memiliki alamat akun jaringan SORA yang diformat dengan benar yang dimulai dengan awalan 'cn'.",
-        "feeTooltip": "@:networkFeeTooltipText"
+        "feeTooltip": "@:networkFeeTooltipText",
+        "tooltip": "Kirim token antar akun jaringan SORA",
+        "addressWarning": "Token akan dikirim ke alamat SORA di bawah ini. Pastikan penerima dapat mengakses rantai SORA untuk menggunakan token:",
+        "addressError": "Anda tidak dapat mengirim token ke akun yang sama dengan yang saat ini terhubung dengan Anda."
     },
     "account": {
         "successCopy": "Alamat dompet disalin ke clipboard",

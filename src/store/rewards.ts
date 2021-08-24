@@ -8,6 +8,7 @@ import { KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, CodecString } from 
 import ethersUtil from '@/utils/ethers-util'
 import { RewardsAmountHeaderItem } from '@/types/rewards'
 import { groupRewardsByAssetsList } from '@/utils/rewards'
+import { asZeroValue } from '@/utils'
 import { ethers } from 'ethers'
 
 const types = flow(
@@ -81,6 +82,9 @@ const getters = {
   },
   rewardsAvailable (_, getters): boolean {
     return getters.claimableRewards.length !== 0
+  },
+  vestedRewardsAvailable (state: RewardsState): boolean {
+    return !asZeroValue(state.vestedRewards?.limit)
   },
   externalRewardsAvailable (state: RewardsState): boolean {
     return state.externalRewards.length !== 0
@@ -195,7 +199,7 @@ const actions = {
     }
   },
 
-  async getRewards ({ commit, dispatch }, address) {
+  async getRewards ({ commit, dispatch, getters }, address) {
     commit(types.GET_REWARDS_REQUEST)
     try {
       const internal = await api.checkLiquidityProvisionRewards()
@@ -205,7 +209,7 @@ const actions = {
       commit(types.GET_REWARDS_SUCCESS, { internal, external, vested })
 
       // select all rewards by default
-      await dispatch('setSelectedRewards', { internal, external, vested })
+      await dispatch('setSelectedRewards', { internal, external, vested: getters.vestedRewardsAvailable ? vested : null })
     } catch (error) {
       console.error(error)
       commit(types.GET_REWARDS_FAILURE)
