@@ -10,7 +10,7 @@
       size="big"
     >
       <template #suffix v-if="query">
-        <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
+        <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleResetSearch" />
       </template>
     </s-input>
     <s-table
@@ -87,6 +87,7 @@ import { lazyComponent } from '@/router'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin'
+import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin'
 import SortButton from '@/components/SortButton.vue'
 
 @Component({
@@ -97,12 +98,9 @@ import SortButton from '@/components/SortButton.vue'
     SortButton
   }
 })
-export default class Tokens extends Mixins(LoadingMixin, TranslationMixin, AssetsSearchMixin) {
+export default class Tokens extends Mixins(LoadingMixin, TranslationMixin, AssetsSearchMixin, PaginationSearchMixin) {
   @Getter('whitelistAssets', { namespace: 'assets' }) items!: Array<Asset>
 
-  currentPage = 1
-  pageAmount = 10
-  query = ''
   order = ''
   property = ''
 
@@ -112,14 +110,6 @@ export default class Tokens extends Mixins(LoadingMixin, TranslationMixin, Asset
 
   get isDefaultSort (): boolean {
     return !this.order || !this.property
-  }
-
-  get startIndex (): number {
-    return (this.currentPage - 1) * this.pageAmount
-  }
-
-  get lastIndex (): number {
-    return this.currentPage * this.pageAmount
   }
 
   get filteredItems (): Array<Asset> {
@@ -142,19 +132,7 @@ export default class Tokens extends Mixins(LoadingMixin, TranslationMixin, Asset
   }
 
   get tableItems (): Array<Asset> {
-    return this.sortedItems.slice(this.startIndex, this.lastIndex)
-  }
-
-  handlePrevClick (current: number): void {
-    this.currentPage = current
-  }
-
-  handleNextClick (current: number): void {
-    this.currentPage = current
-  }
-
-  handleClearSearch (): void {
-    this.query = ''
+    return this.getPageItems(this.sortedItems)
   }
 
   changeSort ({ order = '', property = '' } = {}): void {

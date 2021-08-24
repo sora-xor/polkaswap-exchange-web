@@ -35,7 +35,7 @@ export const Languages = [
   { key: Language.NL, value: 'Dutch', name: 'Nederlands' },
   { key: Language.ID, value: 'Indonesian', name: 'bahasa Indonesia' },
   { key: Language.IT, value: 'Italian', name: 'Italiano' },
-  { key: Language.PL, value: 'Polish', name: 'Polskie' },
+  { key: Language.PL, value: 'Polish', name: 'Polski' },
   { key: Language.RU, value: 'Russian', name: 'Русский' },
   { key: Language.ES, value: 'Spanish', name: 'Español' },
   { key: Language.YO, value: 'Yoruba', name: 'Yoruba' }
@@ -98,7 +98,6 @@ export enum PageNames {
 export enum Components {
   GenericPageHeader = 'GenericPageHeader',
   SwapInfo = 'SwapInfo',
-  InfoLine = 'InfoLine',
   SelectToken = 'SelectToken',
   TokenLogo = 'TokenLogo',
   PairTokenLogo = 'PairTokenLogo',
@@ -129,7 +128,8 @@ export enum Components {
   RewardsAmountTable = 'Rewards/AmountTable',
   TokenSelectButton = 'Input/TokenSelectButton',
   TokenAddress = 'Input/TokenAddress',
-  SelectLanguageDialog = 'SelectLanguageDialog'
+  SelectLanguageDialog = 'SelectLanguageDialog',
+  ValueStatusWrapper = 'ValueStatusWrapper'
 }
 
 interface SidebarMenuItem {
@@ -251,11 +251,6 @@ export enum LogoSize {
   MEDIUM = 'medium',
   BIG = 'big',
   LARGE = 'large'
-}
-
-export enum InfoTooltipPosition {
-  LEFT = 'left',
-  RIGHT = 'right'
 }
 
 export enum NetworkTypes {

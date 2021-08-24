@@ -44,7 +44,7 @@
         <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenFrom" @click="openSelectTokenDialog(true)" />
       </div>
       <div slot="bottom" class="input-line input-line--footer">
-        <formatted-amount v-if="tokenFrom && tokenFromPrice" :value="getFiatAmountByString(fromValue, tokenFrom)" is-fiat-value />
+        <formatted-amount v-if="tokenFrom && tokenFromPrice" :value="fromFiatAmount" is-fiat-value />
         <token-address v-if="tokenFrom" :name="tokenFrom.name" :symbol="tokenFrom.symbol" :address="tokenFrom.address" class="input-value" />
       </div>
     </s-float-input>
@@ -82,7 +82,12 @@
         <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="tokenTo" @click="openSelectTokenDialog(false)" />
       </div>
       <div slot="bottom" class="input-line input-line--footer">
-        <formatted-amount v-if="tokenTo && tokenToPrice" :value="getFiatAmountByString(toValue, tokenTo)" is-fiat-value />
+        <div v-if="tokenTo && tokenToPrice" class="price-difference">
+          <formatted-amount :value="toFiatAmount" is-fiat-value />
+          <value-status-wrapper :value="fiatDifference" class="price-difference__value">
+            (<formatted-amount :value="fiatDifferenceFormatted">%</formatted-amount>)
+          </value-status-wrapper>
+        </div>
         <token-address v-if="tokenTo" :name="tokenTo.name" :symbol="tokenTo.symbol" :address="tokenTo.address" class="input-value" />
       </div>
     </s-float-input>
@@ -133,7 +138,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { api, FormattedAmountMixin, FormattedAmount } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes, LPRewardsInfo, FPNumber } from '@sora-substrate/util'
+import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes, LPRewardsInfo, FPNumber, Operation } from '@sora-substrate/util'
 import type { Subscription } from '@polkadot/x-rxjs'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -157,6 +162,7 @@ const namespace = 'swap'
     StatusActionBadge: lazyComponent(Components.StatusActionBadge),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
+    ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     FormattedAmount
   }
 })
@@ -170,7 +176,6 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
   @Getter('fromValue', { namespace }) fromValue!: string
   @Getter('toValue', { namespace }) toValue!: string
   @Getter('isExchangeB', { namespace }) isExchangeB!: boolean
-  @Getter('networkFee', { namespace }) networkFee!: CodecString
   @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString
   @Getter('isAvailable', { namespace }) isAvailable!: boolean
   @Getter('isAvailableChecking', { namespace }) isAvailableChecking!: boolean
@@ -183,9 +188,9 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
   @Action('setFromValue', { namespace }) setFromValue!: (value: string) => Promise<void>
   @Action('setToValue', { namespace }) setToValue!: (value: string) => Promise<void>
   @Action('setMinMaxReceived', { namespace }) setMinMaxReceived!: (value: CodecString) => Promise<void>
+  @Action('setAmountWithoutImpact', { namespace }) setAmountWithoutImpact!: (amount: CodecString) => Promise<void>
   @Action('setExchangeB', { namespace }) setExchangeB!: (isExchangeB: boolean) => Promise<void>
   @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>
-  @Action('setNetworkFee', { namespace }) setNetworkFee!: (value: CodecString) => Promise<void>
   @Action('checkSwap', { namespace }) checkSwap!: AsyncVoidFn
   @Action('reset', { namespace }) reset!: AsyncVoidFn
   @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>
@@ -209,7 +214,6 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
   @Watch('isLoggedIn')
   private handleLoggedInStateChange (isLoggedIn: boolean, wasLoggedIn: boolean): void {
     if (!wasLoggedIn && isLoggedIn) {
-      this.getNetworkFee()
       this.recountSwapValues()
     }
   }
@@ -256,6 +260,35 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
     return this.isZeroFromAmount && this.isZeroToAmount
   }
 
+  get fromFiatAmount (): string {
+    return this.fromValue ? (this.getFiatAmountByString(this.fromValue, this.tokenFrom) || '0') : '0'
+  }
+
+  get toFiatAmount (): string {
+    return this.toValue ? (this.getFiatAmountByString(this.toValue, this.tokenTo) || '0') : '0'
+  }
+
+  get fiatDifference (): string {
+    const thousandRegExp = new RegExp(`\\${FPNumber.DELIMITERS_CONFIG.thousand}`, 'g')
+    const decimalsRegExp = new RegExp(`\\${FPNumber.DELIMITERS_CONFIG.decimal}`, 'g')
+    const toNumberString = (value: string) => value.replace(thousandRegExp, '').replace(decimalsRegExp, '.')
+
+    const a = toNumberString(this.fromFiatAmount)
+    const b = toNumberString(this.toFiatAmount)
+
+    if (asZeroValue(a) || asZeroValue(b)) return '0'
+
+    const from = new FPNumber(a)
+    const to = new FPNumber(b)
+    const difference = to.sub(from).div(from).mul(new FPNumber(100)).toFixed(2)
+
+    return difference
+  }
+
+  get fiatDifferenceFormatted (): string {
+    return new FPNumber(this.fiatDifference).toLocaleString()
+  }
+
   get isXorOutputSwap (): boolean {
     return this.tokenTo?.address === KnownAssets.get(KnownSymbols.XOR)?.address
   }
@@ -290,11 +323,15 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
   }
 
   get tokenFromPrice (): Nullable<CodecString> {
-    return this.getAssetFiatPrice(this.tokenFrom)
+    return this.tokenFrom ? this.getAssetFiatPrice(this.tokenFrom) : null
   }
 
   get tokenToPrice (): Nullable<CodecString> {
-    return this.getAssetFiatPrice(this.tokenTo)
+    return this.tokenTo ? this.getAssetFiatPrice(this.tokenTo) : null
+  }
+
+  get networkFee (): CodecString {
+    return api.NetworkFee[Operation.Swap]
   }
 
   created () {
@@ -308,10 +345,7 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
       if (this.areTokensSelected) {
         await this.checkSwap()
       }
-      await Promise.all([
-        this.updatePairLiquiditySources(),
-        this.getNetworkFee()
-      ])
+      await this.updatePairLiquiditySources()
     })
   }
 
@@ -325,21 +359,6 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
 
   resetFieldTo (): void {
     this.setToValue('')
-  }
-
-  async getNetworkFee (): Promise<void> {
-    if (this.isLoggedIn) {
-      const networkFee = await api.getSwapNetworkFee(
-        this.tokenFrom?.address,
-        this.tokenTo?.address,
-        this.fromValue,
-        this.toValue,
-        this.slippageTolerance,
-        this.isExchangeB,
-        this.liquiditySource
-      )
-      this.setNetworkFee(networkFee)
-    }
   }
 
   async updatePairLiquiditySources (): Promise<void> {
@@ -389,9 +408,10 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
       this.isRecountingProcess = true
       this.isInsufficientAmount = false
 
-      const { amount, fee, rewards } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, this.isExchangeB, this.liquiditySource)
+      const { amount, fee, rewards, amountWithoutImpact } = await api.getSwapResult(this.tokenFrom.address, this.tokenTo.address, value, this.isExchangeB, this.liquiditySource)
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals))
+      this.setAmountWithoutImpact(amountWithoutImpact)
       this.setLiquidityProviderFee(fee)
       this.setRewards(rewards)
 
@@ -569,5 +589,22 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
 .page-header--swap {
   justify-content: space-between;
   align-items: center;
+}
+.price-difference {
+  display: flex;
+  align-items: center;
+
+  & > * {
+    flex-shrink: 0;
+  }
+
+  &__value {
+    font-weight: 600;
+    font-size: var(--s-font-size-small);
+
+    & > span {
+      padding-right: 2px;
+    }
+  }
 }
 </style>

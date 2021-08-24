@@ -5,16 +5,16 @@
         <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo--tablet"/>
       </s-button>
       <div class="app-controls s-flex">
-        <s-button type="action" class="theme-control" @click="switchTheme">
+        <s-button type="action" class="theme-control s-pressed" @click="switchTheme">
           <s-icon :name="themeIcon" size="28" />
         </s-button>
-        <s-button type="action" class="lang-control" @click="openSelectLanguageDialog">
+        <s-button type="action" class="lang-control s-pressed" @click="openSelectLanguageDialog">
           <s-icon name="basic-globe-24" size="28" />
         </s-button>
-        <s-button type="action" class="node-control" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
+        <s-button type="action" class="node-control s-pressed" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
           <token-logo class="node-control__logo" v-bind="nodeLogo" />
         </s-button>
-        <s-button type="tertiary" class="account-control" size="medium" :tooltip="t('connectWalletTextTooltip')" :disabled="loading" @click="goTo(PageNames.Wallet)">
+        <s-button type="tertiary" :class="['account-control', { 's-pressed': isLoggedIn }]" size="medium" :tooltip="t('connectWalletTextTooltip')" :disabled="loading" @click="goTo(PageNames.Wallet)">
           <div :class="['account-control-title', { name: isLoggedIn }]">{{ accountInfo }}</div>
           <div class="account-control-icon">
             <s-icon v-if="!isLoggedIn" name="finance-wallet-24" size="28" />
@@ -331,7 +331,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   private async runAppConnectionToNode () {
     try {
       await this.connectToNode({
-        onError: this.handleNodeError,
+        onError: (error) => this.handleNodeError(error, true), // prefer notification on connection success
         onDisconnect: this.handleNodeDisconnect,
         onReconnect: this.handleNodeReconnect
       })
@@ -553,13 +553,6 @@ html {
 // Disabled button large typography
 .s-typography-button--large.is-disabled {
   font-size: var(--s-font-size-medium) !important;
-}
-
-.el-tooltip__popper.neumorphic {
-  .popper__arrow {
-    margin-top: $inner-spacing-mini / 2;
-    border-width: 7px;
-  }
 }
 </style>
 

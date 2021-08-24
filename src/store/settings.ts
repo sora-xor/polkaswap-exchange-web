@@ -198,16 +198,8 @@ const actions = {
     const isReconnection = !connectionOpenOptions.once
     const connectingNodeChanged = () => endpoint !== state.nodeAddressConnecting
 
-    const closeConnection = async () => {
-      try {
-        await connection.close()
-      } catch (error) {
-        console.error('Disconnection error', error)
-      }
-    }
-
     const connectionOnDisconnected = async () => {
-      await closeConnection()
+      await connection.close()
 
       if (typeof onDisconnect === 'function') {
         onDisconnect(node)
@@ -228,7 +220,7 @@ const actions = {
       const { endpoint: currentEndpoint, opened } = connection
 
       if (currentEndpoint && opened) {
-        await closeConnection()
+        await connection.close()
         console.info('Disconnected from node', currentEndpoint)
       }
 

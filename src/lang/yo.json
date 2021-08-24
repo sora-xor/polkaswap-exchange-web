@@ -93,8 +93,10 @@
         "confirmTitle": "Jẹrisi idunadura",
         "confirm": "@:confirmText",
         "errorAddress": "Adirẹsi ti ko wulo. Jọwọ ṣayẹwo rẹ ki o tun gbiyanju.",
-        "addressDesc": "Awọn adirẹsi akọọlẹ nẹtiwọọki SORA nikan ni a gba. Jọwọ rii daju pe o ni kika akọọlẹ nẹtiwọọki nẹtiwọọki SORA kan ti o bẹrẹ pẹlu prefix 'cn'.",
-        "feeTooltip": "@:networkFeeTooltipText"
+        "feeTooltip": "@:networkFeeTooltipText",
+        "tooltip": "Fi awọn ami ranṣẹ laarin awọn iroyin nẹtiwọọki SORA",
+        "addressWarning": "Awọn ami -ami yoo firanṣẹ si adirẹsi SORA ni isalẹ. Rii daju pe olugba le wọle si ẹwọn SORA lati lo awọn àmi:",
+        "addressError": "O ko le fi awọn ami ranṣẹ si akọọlẹ kanna ti o sopọ si lọwọlọwọ."
     },
     "account": {
         "successCopy": "Ti daakọ adirẹsi apamọwọ si agekuru naa",

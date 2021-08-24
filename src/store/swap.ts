@@ -4,10 +4,11 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { CodecString, LiquiditySourceTypes, LPRewardsInfo } from '@sora-substrate/util'
+import { FPNumber, CodecString, LiquiditySourceTypes, LPRewardsInfo } from '@sora-substrate/util'
 
 import { MarketAlgorithmForLiquiditySource } from '@/consts'
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions'
+import { FpZeroValue } from '@/utils'
 
 const balanceSubscriptions = new TokenBalanceSubscriptions()
 
@@ -23,10 +24,10 @@ const types = flow(
     'SET_FROM_VALUE',
     'SET_TO_VALUE',
     'SET_MIN_MAX_RECEIVED',
+    'SET_AMOUNT_WITHOUT_IMPACT',
     'SET_EXCHANGE_B',
     'SET_LIQUIDITY_PROVIDER_FEE',
     'SET_PAIR_LIQUIDITY_SOURCES',
-    'SET_NETWORK_FEE',
     'SET_REWARDS',
     'GET_SWAP_CONFIRM',
     'RESET'
@@ -43,10 +44,10 @@ interface SwapState {
   fromValue: string;
   toValue: string;
   minMaxReceived: CodecString;
+  amountWithoutImpact: CodecString;
   isExchangeB: boolean;
   liquidityProviderFee: CodecString;
   pairLiquiditySources: Array<LiquiditySourceTypes>;
-  networkFee: CodecString;
   isAvailable: boolean;
   isAvailableChecking: boolean;
   rewards: Array<LPRewardsInfo>;
@@ -61,9 +62,9 @@ function initialState (): SwapState {
     fromValue: '',
     toValue: '',
     minMaxReceived: '',
+    amountWithoutImpact: '',
     isExchangeB: false,
     liquidityProviderFee: '',
-    networkFee: '',
     isAvailable: false,
     isAvailableChecking: false,
     pairLiquiditySources: [],
@@ -104,9 +105,6 @@ const getters = {
   liquidityProviderFee (state: SwapState) {
     return state.liquidityProviderFee
   },
-  networkFee (state: SwapState) {
-    return state.networkFee
-  },
   swapLiquiditySource (state, getters, rootState, rootGetters) {
     if (!getters.pairLiquiditySourcesAvailable) return undefined
 
@@ -123,6 +121,19 @@ const getters = {
   },
   isAvailableChecking (state: SwapState) {
     return state.isAvailableChecking
+  },
+  priceImpact (state: SwapState, getters) {
+    if (!state.toValue || !state.amountWithoutImpact || !getters.tokenTo) return '0'
+
+    const withoutImpact = FPNumber.fromCodecValue(state.amountWithoutImpact, getters.tokenTo.decimals)
+
+    if (withoutImpact.isZero()) return '0'
+
+    const amount = new FPNumber(state.toValue)
+    const div = amount.div(withoutImpact)
+    const result = new FPNumber(1).sub(div).mul(new FPNumber(100))
+
+    return FPNumber.lte(result, FpZeroValue) ? '0' : FpZeroValue.sub(result).toFixed(2)
   }
 }
 
@@ -161,6 +172,9 @@ const mutations = {
   [types.SET_MIN_MAX_RECEIVED] (state: SwapState, minMaxReceived: CodecString) {
     state.minMaxReceived = minMaxReceived
   },
+  [types.SET_AMOUNT_WITHOUT_IMPACT] (state: SwapState, amount: CodecString) {
+    state.amountWithoutImpact = amount
+  },
   [types.SET_EXCHANGE_B] (state: SwapState, isExchangeB: boolean) {
     state.isExchangeB = isExchangeB
   },
@@ -184,9 +198,6 @@ const mutations = {
   },
   [types.SET_REWARDS] (state: SwapState, rewards: Array<LPRewardsInfo>) {
     state.rewards = [...rewards]
-  },
-  [types.SET_NETWORK_FEE] (state: SwapState, networkFee: CodecString) {
-    state.networkFee = networkFee
   }
 }
 
@@ -240,6 +251,9 @@ const actions = {
   setMinMaxReceived ({ commit }, minMaxReceived) {
     commit(types.SET_MIN_MAX_RECEIVED, minMaxReceived)
   },
+  setAmountWithoutImpact ({ commit }, amount: CodecString) {
+    commit(types.SET_AMOUNT_WITHOUT_IMPACT, amount)
+  },
   setExchangeB ({ commit }, flag: boolean) {
     commit(types.SET_EXCHANGE_B, flag)
   },
@@ -266,9 +280,6 @@ const actions = {
   },
   setRewards ({ commit }, rewards: Array<LPRewardsInfo>) {
     commit(types.SET_REWARDS, rewards)
-  },
-  setNetworkFee ({ commit }, networkFee: string) {
-    commit(types.SET_NETWORK_FEE, networkFee)
   },
   reset ({ commit, dispatch }) {
     dispatch('resetSubscriptions')

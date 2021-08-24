@@ -4,7 +4,7 @@
     <h3 class="page-header-title">
       {{ title }}
       <s-tooltip
-        v-if="!!tooltip"
+        v-if="tooltip"
         class="page-header-tooltip"
         popper-class="info-tooltip info-tooltip--page-header"
         border-radius="mini"

@@ -39,8 +39,6 @@ const types = flow(
     'SET_ASSET_ADDRESS',
     'SET_ASSET_BALANCE',
     'SET_AMOUNT',
-    'SET_SORA_TOTAL',
-    'SET_EVM_TOTAL',
     'SET_TRANSACTION_CONFIRM',
     'SET_SORA_TRANSACTION_HASH',
     'SET_SORA_TRANSACTION_DATE',
@@ -57,7 +55,6 @@ const types = flow(
   'GET_HISTORY',
   'GET_RESTORED_FLAG',
   'GET_RESTORED_HISTORY',
-  'GET_SORA_NETWORK_FEE',
   'GET_EVM_NETWORK_FEE',
   'SIGN_SORA_TRANSACTION_SORA_EVM',
   'SIGN_EVM_TRANSACTION_SORA_EVM',
@@ -166,7 +163,7 @@ async function waitForExtrinsicFinalization (id?: string): Promise<BridgeHistory
     throw new Error('History id error')
   }
   const tx = bridgeApi.getHistory(id)
-  if (tx && [TransactionStatus.Error, 'invalid', 'usurped'].includes(tx.status as TransactionStatus)) {
+  if (tx && [TransactionStatus.Error, TransactionStatus.Invalid, TransactionStatus.Usurped].includes(tx.status as TransactionStatus)) {
     // TODO: maybe it's better to display a message about this errors from tx.errorMessage
     throw new Error(tx.errorMessage)
   }
@@ -183,10 +180,9 @@ function initialState () {
     assetAddress: '',
     assetBalance: null,
     amount: '',
-    soraNetworkFee: ZeroStringValue,
-    evmNetworkFee: ZeroStringValue,
     soraTotal: ZeroStringValue,
     evmTotal: ZeroStringValue,
+    evmNetworkFee: ZeroStringValue,
     isTransactionConfirmed: false,
     soraTransactionHash: '',
     evmTransactionHash: '',
@@ -215,9 +211,6 @@ const getters = {
   },
   amount (state) {
     return state.amount
-  },
-  soraNetworkFee (state) {
-    return state.soraNetworkFee
   },
   evmNetworkFee (state) {
     return state.evmNetworkFee
@@ -279,14 +272,6 @@ const mutations = {
   [types.SET_AMOUNT] (state, amount: string) {
     state.amount = amount
   },
-  [types.GET_SORA_NETWORK_FEE_REQUEST] (state) {
-  },
-  [types.GET_SORA_NETWORK_FEE_SUCCESS] (state, fee) {
-    state.soraNetworkFee = fee
-  },
-  [types.GET_SORA_NETWORK_FEE_FAILURE] (state) {
-    state.soraNetworkFee = ''
-  },
   [types.GET_EVM_NETWORK_FEE_REQUEST] (state) {
   },
   [types.GET_EVM_NETWORK_FEE_SUCCESS] (state, fee: CodecString) {
@@ -294,12 +279,6 @@ const mutations = {
   },
   [types.GET_EVM_NETWORK_FEE_FAILURE] (state) {
     state.evmNetworkFee = ZeroStringValue
-  },
-  [types.SET_SORA_TOTAL] (state, soraTotal: string | number) {
-    state.soraTotal = soraTotal
-  },
-  [types.SET_EVM_TOTAL] (state, evmTotal: string | number) {
-    state.evmTotal = evmTotal
   },
   [types.SET_TRANSACTION_CONFIRM] (state, isTransactionConfirmed: boolean) {
     state.isTransactionConfirmed = isTransactionConfirmed
@@ -386,17 +365,8 @@ const actions = {
   setAmount ({ commit }, amount: string) {
     commit(types.SET_AMOUNT, amount)
   },
-  setSoraNetworkFee ({ commit }, soraNetworkFee: string) {
-    commit(types.GET_SORA_NETWORK_FEE_SUCCESS, soraNetworkFee)
-  },
   setEvmNetworkFee ({ commit }, evmNetworkFee: CodecString) {
     commit(types.GET_EVM_NETWORK_FEE_SUCCESS, evmNetworkFee)
-  },
-  getSoraTotal ({ commit }, soraTotal: string | number) {
-    commit(types.SET_SORA_TOTAL, soraTotal)
-  },
-  getevmTotal ({ commit }, evmTotal: string | number) {
-    commit(types.SET_EVM_TOTAL, evmTotal)
   },
   setTransactionConfirm ({ commit }, isTransactionConfirmed: boolean) {
     commit(types.SET_TRANSACTION_CONFIRM, isTransactionConfirmed)
@@ -531,24 +501,6 @@ const actions = {
   findRegisteredAsset ({ commit, getters, rootGetters }) {
     return rootGetters['assets/registeredAssets'].find(item => item.address === getters.asset.address)
   },
-  async getNetworkFee ({ commit, getters, dispatch }) {
-    if (!getters.asset || !getters.asset.address) {
-      return
-    }
-    commit(types.GET_SORA_NETWORK_FEE_REQUEST)
-    try {
-      const asset = await dispatch('findRegisteredAsset')
-      const fee = await (
-        getters.isSoraToEvm
-          ? bridgeApi.getTransferToEthFee(asset, '', getters.amount || 0)
-          : '0' // TODO: check it for other types of bridge
-      )
-      commit(types.GET_SORA_NETWORK_FEE_SUCCESS, fee)
-    } catch (error) {
-      console.error(error)
-      commit(types.GET_SORA_NETWORK_FEE_FAILURE)
-    }
-  },
   async getEvmNetworkFee ({ commit, getters, rootGetters }) {
     if (!getters.asset || !getters.asset.address) {
       return
@@ -556,12 +508,11 @@ const actions = {
     commit(types.GET_EVM_NETWORK_FEE_REQUEST)
     try {
       const ethersInstance = await ethersUtil.getEthersInstance()
-      const gasPrice = await (await ethersInstance.getGasPrice()).toNumber()
+      const gasPrice = (await ethersInstance.getGasPrice()).toNumber()
       const registeredAssets = rootGetters.whitelist
-      const knownAsset = KnownAssets.get(getters.asset.address) || (registeredAssets[getters.asset.address] && getters.asset.symbol === 'ETH')
+      const knownAsset = !!KnownAssets.get(getters.asset.address) || (registeredAssets[getters.asset.address] && getters.asset.symbol === 'ETH')
       const gasLimit = EthereumGasLimits[+getters.isSoraToEvm][knownAsset ? getters.asset.symbol : KnownBridgeAsset.Other]
-      const fee = gasPrice * gasLimit
-      const fpFee = new FPNumber(ethers.utils.formatEther(fee)).toCodecString()
+      const fpFee = FPNumber.fromCodecValue(gasPrice).mul(new FPNumber(gasLimit)).toCodecString()
       commit(types.GET_EVM_NETWORK_FEE_SUCCESS, fpFee)
     } catch (error) {
       console.error(error)
@@ -582,7 +533,7 @@ const actions = {
       hash: '',
       ethereumHash: '',
       transactionState: STATES.INITIAL,
-      soraNetworkFee: getters.soraNetworkFee,
+      soraNetworkFee: api.NetworkFee[Operation.EthBridgeOutgoing],
       ethereumNetworkFee: getters.evmNetworkFee,
       externalNetwork: rootGetters['web3/evmNetwork'],
       to: rootGetters['web3/evmAddress']

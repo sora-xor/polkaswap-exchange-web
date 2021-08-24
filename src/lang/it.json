@@ -93,8 +93,10 @@
         "confirmTitle": "Conferma la transazione",
         "confirm": "@:confirmText",
         "errorAddress": "Indirizzo non valido. Si prega di controllare e riprovare.",
-        "addressDesc": "Sono accettati solo address di account di rete SORA. Assicurati di avere un indirizzo di account di rete SORA formattato correttamente che inizia con il prefisso 'cn'.",
-        "feeTooltip": "@:networkFeeTooltipText"
+        "feeTooltip": "@:networkFeeTooltipText",
+        "tooltip": "Invia token tra account di rete SORA",
+        "addressWarning": "I token verranno inviati all'indirizzo SORA riportato di seguito. Assicurati che il destinatario possa accedere alla catena SORA per utilizzare i token:",
+        "addressError": "Non puoi inviare token allo stesso account a cui sei attualmente connesso."
     },
     "account": {
         "successCopy": "L'indirizzo del wallet è stato copiato negli appunti",
