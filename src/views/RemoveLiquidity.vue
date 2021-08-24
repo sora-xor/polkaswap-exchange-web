@@ -77,7 +77,7 @@
         </div>
       </s-float-input>
 
-      <div v-if="price || priceReversed || fee || shareOfPool" class="info-line-container">
+      <div v-if="price || priceReversed || networkFee || shareOfPool" class="info-line-container">
         <info-line v-if="shareOfPool" :label="t('removeLiquidity.shareOfPool')" :value="`${shareOfPool}%`" />
         <info-line
           v-if="price || priceReversed"
@@ -91,12 +91,12 @@
           :asset-symbol="firstToken.symbol"
         />
         <info-line
-          v-if="fee"
+          v-if="networkFee"
           :label="t('createPair.networkFee')"
           :label-tooltip="t('networkFeeTooltipText')"
           :value="formattedFee"
           :asset-symbol="KnownSymbols.XOR"
-          :fiat-value="getFiatAmountByCodecString(fee)"
+          :fiat-value="getFiatAmountByCodecString(networkFee)"
           is-formatted
         />
       </div>
@@ -125,11 +125,12 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { FPNumber, KnownSymbols, AccountLiquidity, CodecString } from '@sora-substrate/util'
-import { FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { FPNumber, KnownSymbols, AccountLiquidity, CodecString, Operation } from '@sora-substrate/util'
+import { api, FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
+import PoolUpdatesMixin from '@/components/mixins/PoolUpdatesMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
@@ -148,7 +149,7 @@ const namespace = 'removeLiquidity'
     InfoLine
   }
 })
-export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, TransactionMixin, ConfirmDialogMixin) {
+export default class RemoveLiquidity extends Mixins(PoolUpdatesMixin, FormattedAmountMixin, TransactionMixin, ConfirmDialogMixin) {
   readonly KnownSymbols = KnownSymbols
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
@@ -163,7 +164,6 @@ export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, Transa
   @Getter('firstTokenBalance', { namespace }) firstTokenBalance!: CodecString
   @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
   @Getter('secondTokenBalance', { namespace }) secondTokenBalance!: CodecString
-  @Getter('fee', { namespace }) fee!: CodecString
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('price', { namespace: 'prices' }) price!: string
@@ -176,56 +176,33 @@ export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, Transa
   @Action('setFocusedField', { namespace }) setFocusedField
   @Action('resetFocusedField', { namespace }) resetFocusedField
   @Action('removeLiquidity', { namespace }) removeLiquidity
-  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
   @Action('resetData', { namespace }) resetData!: AsyncVoidFn
   @Action('getPrices', { namespace: 'prices' }) getPrices
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: AsyncVoidFn
-  @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity!: AsyncVoidFn
-  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<Function>
 
   removePartInput = 0
   sliderInput: any
   sliderDragButton: any
-  accountLiquiditySubscription!: Function
 
-  async created (): Promise<void> {
-    this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
+  async mounted (): Promise<void> {
+    await this.onCreated()
 
-    await this.withApi(async () => {
-      await Promise.all([
-        this.getAssets(),
-        this.getAccountLiquidity()
-      ])
-
-      await this.getLiquidity({
-        firstAddress: this.firstTokenAddress,
-        secondAddress: this.secondTokenAddress
-      })
-
-      // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
-      if (!this.liquidity) {
-        return this.handleBack()
-      }
-
-      this.updatePrices()
+    await this.getLiquidity({
+      firstAddress: this.firstTokenAddress,
+      secondAddress: this.secondTokenAddress
     })
+    // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
+    if (!this.liquidity) {
+      return this.handleBack()
+    }
+    this.updatePrices()
+    this.addListenerToSliderDragButton()
   }
 
-  mounted (): void {
-    this.sliderDragButton = this.$el.querySelector('.slider-container .el-slider__button')
-    this.sliderInput = this.$el.querySelector('.s-input--remove-part .el-input__inner')
-    if (this.sliderDragButton) {
-      this.sliderDragButton.addEventListener('mousedown', this.focusSliderInput)
-    }
-  }
+  async beforeDestroy (): Promise<void> {
+    await this.onDestroyed()
 
-  beforeDestroy (): void {
-    if (this.sliderDragButton) {
-      this.$el.removeEventListener('mousedown', this.sliderDragButton)
-    }
-    if (typeof this.accountLiquiditySubscription === 'function') {
-      this.accountLiquiditySubscription() // unsubscribe
-    }
+    this.removeListenerFromSliderDragButton()
     this.resetData()
     this.resetPrices()
   }
@@ -257,7 +234,7 @@ export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, Transa
   }
 
   get isInsufficientXorForFee (): boolean {
-    return hasInsufficientXorForFee(this.tokenXOR, this.fee)
+    return hasInsufficientXorForFee(this.tokenXOR, this.networkFee)
   }
 
   get removePartCharClass (): string {
@@ -269,8 +246,12 @@ export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, Transa
     return `${charClassName}-char`
   }
 
+  get networkFee (): CodecString {
+    return api.NetworkFee[Operation.RemoveLiquidity]
+  }
+
   get formattedFee (): string {
-    return this.formatCodecNumber(this.fee)
+    return this.formatCodecNumber(this.networkFee)
   }
 
   @Watch('removePart')
@@ -332,6 +313,20 @@ export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, Transa
   handleBack (): void {
     if (router.currentRoute.name === PageNames.RemoveLiquidity) {
       router.push({ name: PageNames.Pool })
+    }
+  }
+
+  private addListenerToSliderDragButton (): void {
+    this.sliderDragButton = this.$el.querySelector('.slider-container .el-slider__button')
+    this.sliderInput = this.$el.querySelector('.s-input--remove-part .el-input__inner')
+    if (this.sliderDragButton) {
+      this.sliderDragButton.addEventListener('mousedown', this.focusSliderInput)
+    }
+  }
+
+  private removeListenerFromSliderDragButton (): void {
+    if (this.sliderDragButton) {
+      this.$el.removeEventListener('mousedown', this.sliderDragButton)
     }
   }
 }

@@ -5,7 +5,7 @@
       <p v-if="!isLoggedIn" class="pool-info-container pool-info-container--empty">
         {{ t('pool.connectToWallet') }}
       </p>
-      <p v-else-if="!accountLiquidity || !accountLiquidity.length" class="pool-info-container pool-info-container--empty">
+      <p v-else-if="!accountLiquidity || !accountLiquidity.length || loading" class="pool-info-container pool-info-container--empty">
         {{ t('pool.liquidityNotFound') }}
       </p>
       <s-collapse v-else class="pool-list" :borders="true">
@@ -57,12 +57,12 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
+import { Getter } from 'vuex-class'
 import { AccountLiquidity, Asset } from '@sora-substrate/util'
 import { FormattedAmountMixin, FormattedAmount, FontSizeRate, FontWeightRate, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import LoadingMixin from '@/components/mixins/LoadingMixin'
+import PoolUpdatesMixin from '@/components/mixins/PoolUpdatesMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
@@ -77,35 +77,20 @@ const namespace = 'pool'
     InfoLine
   }
 })
-export default class Pool extends Mixins(FormattedAmountMixin, TranslationMixin, LoadingMixin) {
+export default class Pool extends Mixins(PoolUpdatesMixin, FormattedAmountMixin, TranslationMixin) {
   readonly FontSizeRate = FontSizeRate
   readonly FontWeightRate = FontWeightRate
 
   @Getter isLoggedIn!: boolean
-  @Getter('accountLiquidity', { namespace }) accountLiquidity!: any
   @Getter('assets', { namespace: 'assets' }) assets!: Array<Asset>
-  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
+  @Getter('accountLiquidity', { namespace }) accountLiquidity!: Array<AccountLiquidity>
 
-  @Action('getAccountLiquidity', { namespace }) getAccountLiquidity!: AsyncVoidFn
-  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<Function>
-
-  accountLiquiditySubscription!: Function
-
-  async created () {
-    this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
-
-    await this.withApi(async () => {
-      await Promise.all([
-        this.getAssets(),
-        this.getAccountLiquidity()
-      ])
-    })
+  async mounted (): Promise<void> {
+    await this.onCreated()
   }
 
-  beforeDestroy (): void {
-    if (typeof this.accountLiquiditySubscription === 'function') {
-      this.accountLiquiditySubscription() // unsubscribe
-    }
+  async beforeDestroy (): Promise<void> {
+    await this.onDestroyed()
   }
 
   getAsset (address): any {

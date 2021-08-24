@@ -22,7 +22,6 @@ const types = flow(
   fromPairs
 )([
   'GET_LIQUIDITY',
-  'GET_FEE',
   'GET_LIQUIDITY_RESERVE',
   'GET_TOTAL_SUPPLY'
 ])
@@ -34,7 +33,6 @@ interface RemoveLiquidityState {
   firstTokenAmount: string;
   secondTokenAmount: string;
   focusedField: Nullable<string>;
-  fee: CodecString;
   reserveA: CodecString;
   reserveB: CodecString;
   totalSupply: CodecString;
@@ -48,7 +46,6 @@ function initialState (): RemoveLiquidityState {
     firstTokenAmount: '',
     secondTokenAmount: '',
     focusedField: null,
-    fee: '',
     reserveA: ZeroStringValue,
     reserveB: ZeroStringValue,
     totalSupply: ZeroStringValue
@@ -106,9 +103,6 @@ const getters = {
   secondTokenAmount (state: RemoveLiquidityState) {
     return state.secondTokenAmount
   },
-  fee (state: RemoveLiquidityState) {
-    return state.fee
-  },
   reserveA (state: RemoveLiquidityState) {
     return state.reserveA
   },
@@ -146,13 +140,6 @@ const mutations = {
   [types.SET_SECOND_TOKEN_AMOUNT] (state, secondTokenAmount = '') {
     state.secondTokenAmount = secondTokenAmount
   },
-  [types.GET_FEE_REQUEST] (state) {
-  },
-  [types.GET_FEE_SUCCESS] (state, fee) {
-    state.fee = fee
-  },
-  [types.GET_FEE_FAILURE] (state, error) {
-  },
   [types.GET_TOTAL_SUPPLY_REQUEST] (state) {
   },
   [types.GET_TOTAL_SUPPLY_SUCCESS] (state, totalSupply) {
@@ -178,7 +165,6 @@ const actions = {
     commit(types.GET_LIQUIDITY_REQUEST)
 
     try {
-      await api.getKnownAccountLiquidity()
       const liquidity = api.accountLiquidity.find(liquidity => liquidity.firstAddress === firstAddress && liquidity.secondAddress === secondAddress)
 
       commit(types.GET_LIQUIDITY_SUCCESS, liquidity)
@@ -257,30 +243,7 @@ const actions = {
   getRemoveLiquidityData: debounce(async ({ dispatch }) => {
     await dispatch('getLiquidityReserves')
     await dispatch('getTotalSupply')
-    await dispatch('getNetworkFee')
   }, 500, { leading: true }),
-
-  async getNetworkFee ({ commit, getters }) {
-    if (getters.firstTokenAddress && getters.secondTokenAddress) {
-      commit(types.GET_FEE_REQUEST)
-
-      try {
-        const fee = await api.getRemoveLiquidityNetworkFee(
-          getters.firstTokenAddress,
-          getters.secondTokenAddress,
-          getters.liquidityAmount || 0,
-          getters.reserveA,
-          getters.reserveB,
-          getters.totalSupply
-        )
-        commit(types.GET_FEE_SUCCESS, fee)
-      } catch (error) {
-        commit(types.GET_FEE_FAILURE, error)
-      }
-    } else {
-      commit(types.GET_FEE_SUCCESS, 0)
-    }
-  },
 
   async getLiquidityReserves ({ commit, getters }) {
     try {
