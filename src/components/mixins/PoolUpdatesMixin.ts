@@ -1,4 +1,4 @@
-import { Component, Mixins, Watch } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 
 import LoadingMixin from './LoadingMixin'
