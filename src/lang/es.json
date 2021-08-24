@@ -586,7 +586,7 @@
         },
         "custom": {
             "title": "Personalizado",
-            "search": "Buscar por ID del Activo",
+            "search": "ID de activo de entrada",
             "text": "TOKENS PERSONALIZADOS",
             "alreadyAttached": "Este Token ya estaba adjuntado",
             "notFound": "Token no encontrado"
@@ -692,7 +692,7 @@
             "connectExternalAccount": "Conecta una cuenta @:ethereumText para comprobar las Recompensas PSWAP y VAL disponibles.",
             "connectAccounts": "Para reclamar tus Recompensas de PSWAP y VAL debes conectar ambas, tus cuentas de @:soraText y @:ethereumText.",
             "connectAnotherAccount": "Conecta otra cuenta @:ethereumText para comprobar las Recompensas PSWAP y VAL disponibles.",
-            "howToClaimRewards": "Para reclamar tus Recompensas de {symbols} debes firmar {count} {transactions} en {destination}. Las Recompensas se depositarán en tu cuenta @:soraText."
+            "howToClaimRewards": "Para reclamar tus Recompensas de {symbols} debes firmar {count} {transactions} en {destination}. Las Recompensas se depositarán en tu cuenta @:(soraText)."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
@@ -712,7 +712,7 @@
             "SoraFarmHarvest": "@:(soraText).cosecha de la granja",
             "NtfAirdrop": "Lanzamiento de NFT",
             "LiquidityProvision": "Comisiones obtenidas por la provisión de Liquidez",
-            "BuyOnBondingCurve": "Comprando en la TBC",
+            "BuyOnBondingCurve": "haber comprado en la TBC",
             "NftAirdrop": "Lanzamiento de NFT",
             "MarketMakerVolume": "Creación de Mercado",
             "LiquidityProvisionFarming": "Agricultura"

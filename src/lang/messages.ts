@@ -403,7 +403,7 @@ export default {
     },
     custom: {
       title: 'Custom',
-      search: 'Search by Asset ID',
+      search: 'Input Asset ID',
       text: 'CUSTOM TOKENS',
       alreadyAttached: 'This token was already attached',
       notFound: 'Token not found'

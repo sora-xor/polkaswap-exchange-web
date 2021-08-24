@@ -396,11 +396,11 @@
         "links": {
             "first": {
                 "title": "Menjadi Validator SORA",
-                "desc": "Amankan masa depan jaringan SORA dan aplikasi terdesentralisasi seperti Polkaswap, dan dapatkan hadiah disepanjang perjalanan dengan menjadi validator SORA."
+                "desc": "Amankan masa depan jaringan SORA dan aplikasi terdesentralisasi seperti Polkaswap, dan dapatkan reward disepanjang perjalanan dengan menjadi validator SORA."
             },
             "second": {
                 "title": "Hubungkan Chain ke SORA",
-                "desc": "Menumbuhkan ekonomi dunia yang terdesentralisasi dengan menghubungkan lebih banyak chain ke SORA dan Polkaswap menggunakan protokol HASHI bridge."
+                "desc": "Tumbuhkan ekonomi dunia yang terdesentralisasi dengan menghubungkan lebih banyak Chain ke SORA dan Polkaswap menggunakan protokol jembatan HASHI."
             }
         },
         "network": "Polkaswap dibangun diatas Jaringan SORA, berfokus pada interoperabilitas untuk menghubungkan ekosistem kripto lainnya untuk Polkadot."
@@ -550,7 +550,7 @@
         "viewInSorascan": "Lihat di Sorascan",
         "changeAccount": "@:changeAccountText di @:metamask",
         "expectedAddress": "Alamat yang diharapkan di @:metamask",
-        "title": "Transaksi Jembatan",
+        "title": "Jembatan Transaksi",
         "expectedMetaMaskAddress": "Alamat yang diharapkan di metamask"
     },
     "months": {
@@ -586,7 +586,7 @@
         },
         "custom": {
             "title": "Custom",
-            "search": "Cari berdasarkan ID Aset",
+            "search": "Masukkan ID Aset",
             "text": "TOKEN CUSTOM",
             "alreadyAttached": "Token ini sudah ditambahkan",
             "notFound": "Token tidak ditemukan"

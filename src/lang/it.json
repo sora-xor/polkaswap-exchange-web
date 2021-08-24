@@ -229,7 +229,7 @@
     "connectWalletTextTooltip": "Connettiti a @:soraText Network con polkadot{.js}",
     "selectNodeText": "Seleziona nodo",
     "bridgeText": "Bridge",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Disclaimer<\/span>: questo sito Web è gestito dalla community @:soraText. Prima di continuare a utilizzare questo sito Web, guarda @:polkaswapFaqLink e la documentazione, che include una spiegazione dettagliata sul funzionamento di Polkaswap, nonché @:footerMenu.memorandum e @:(footerMenu.privacy). Questi documenti sono fondamentali per un'esperienza utente sicura e positiva. Utilizzando Polkaswap, riconosci di aver letto e compreso questi documenti. Riconosci anche quanto segue: 1) solo tua è la responsabilità per il rispetto di tutte le leggi che possono applicarsi al tuo uso personale di Polkaswap nella tua giurisdizione legale; 2) tua la comprensione che la versione corrente di Polkaswap è una versione alpha: non è stata completamente testata e alcune funzioni potrebbero non funzionare come previsto; e 3) tua la comprensione e accettazione volontaria dei rischi connessi all'utilizzo di Polkaswap, incluso, ma non limitato a, il rischio di perdere token. Ancora una volta, non continuare senza leggere @:polkaswapFaqLink, @:memorandumLink e @:privacyLink!",
+    "disclaimer": "<span class=\"app-disclaimer__title\">Disclaimer<\/span>: questo sito Web è gestito dalla community @:soraText . Prima di continuare a utilizzare questo sito Web, guarda @:polkaswapFaqLink e la documentazione, che include una spiegazione dettagliata sul funzionamento di Polkaswap, nonché il @:memorandumLink e la @:(privacyLink).  . Questi documenti sono fondamentali per un'esperienza utente sicura e positiva. Utilizzando Polkaswap, riconosci di aver letto e compreso questi documenti. Riconosci anche quanto segue: 1) solo tua è la responsabilità per il rispetto di tutte le leggi che possono applicarsi al tuo uso personale di Polkaswap nella tua giurisdizione legale; 2) tua la comprensione che la versione corrente di Polkaswap è una versione alpha: non è stata completamente testata e alcune funzioni potrebbero non funzionare come previsto; e 3) tua la comprensione e accettazione volontaria dei rischi connessi all'utilizzo di Polkaswap, incluso, ma non limitato a, il rischio di perdere token. Ancora una volta, non continuare senza leggere le @:polkaswapFaqLink, @:memorandumLink e @:privacyLink!r",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ <\/a>",
     "poweredBy": "Offerto da",
     "confirmTransactionText": "Conferma transazione in {direction}",
@@ -372,7 +372,7 @@
         "description": "Scambio cross-chain di assets, semplice creazione e listing di nuovi asset e gli swap più facili di sempre. Il futuro interoperabile di Polkadot è qui e noi siamo in prima linea!",
         "trading": {
             "title": "Trading più veloce",
-            "first": "Polkaswap è un protocollo DEX AMM, cross-chain e non-custodial per lo scambio di token basati su Polkadot e Kusama, on Polkadot e Kusama parachains e blockchains collegate direttamente tramite bridges.",
+            "first": "Polkaswap è un protocollo DEX AMM, cross-chain e non-custodial per lo scambio di token basati su Polkadot e Kusama, sulle parachains di Polkadot e Kusama e su blockchains collegate direttamente tramite bridges.",
             "second": "Polkaswap rimuove gli intermediari e offre l'opportunità di un trading più veloce",
             "third": "Polkaswap è un progetto della comunità e gli sviluppatori collaborano sul codice open source utilizzando il"
         },
@@ -391,7 +391,7 @@
         "pswap": {
             "title": "PSWAP Tokens",
             "first": "PSWAP è stato creato dalla governance della community votando il suo rilascio. È un token di governance e uno utility token, utilizzato per premiare i liquidity providers su Polkaswap. A differenza della maggior parte degli altri token di ricompensa, PSWAP viene bruciato con le transazioni e la sua supply diminuisce nel tempo.",
-            "second": "Lo {percent} % per ogni swap su Polkaswap viene utilizzata per riacquistare i token PSWAP, che vengono poi bruciati. All'inizio, il 90% dei token PSWAP bruciati viene riemesso per essere allocato ai liquidity providers, ma con il tempo questa percentuale scenderà al 35% dopo 4 anni."
+            "second": "Lo {percent} % di ogni swap su Polkaswap viene utilizzato per riacquistare i token PSWAP, che vengono poi bruciati. All'inizio, il 90% dei token PSWAP bruciati viene riemesso per essere allocato ai liquidity providers, ma con il tempo questa percentuale scenderà fino al 35% dopo 4 anni."
         },
         "links": {
             "first": {
@@ -528,7 +528,7 @@
         },
         "wait30Block": "Si prega di attendere 30 blocchi di conferma",
         "viewInEtherscan": "Visualizza in Etherscan",
-        "networkTitle": "{network} transazione",
+        "networkTitle": "transazione {network}",
         "transactionHash": "Hash della transazione",
         "networkInfo": {
             "status": "Stato",
@@ -586,7 +586,7 @@
         },
         "custom": {
             "title": "Personalizzato",
-            "search": "Cerca con l' Asset ID",
+            "search": "Inserisci ID risorsa",
             "text": "TOKENS PERSONALIZZATI",
             "alreadyAttached": "Questo token era già stato aggiunto",
             "notFound": "Token non trovato"
@@ -692,7 +692,7 @@
             "connectExternalAccount": "Collega un account @:ethereumText per verificare le tue ricompense in PSWAP e VAL disponibili.",
             "connectAccounts": "Per richiedere le tue ricompense in PSWAP e VAL devi collegare entrambi i tuoi account @:soraText e @:ethereumText.",
             "connectAnotherAccount": "Collega un altro account @:ethereumText per verificare le ricompense in PSWAP e VAL disponibili.",
-            "howToClaimRewards": "Per richiedere i tuoi {symbols} devi firmare {count} {transactions} in {destination} . I premi verranno depositati sul tuo account @:soraText ."
+            "howToClaimRewards": "Per richiedere i tuoi {symbols} devi firmare {count} {transactions} in {destination} . I premi verranno depositati sul tuo account @:(soraText)."
         },
         "action": {
             "connectWallet": "@:connectWalletText",

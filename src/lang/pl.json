@@ -586,7 +586,7 @@
         },
         "custom": {
             "title": "Niestandardowe",
-            "search": "Szukaj według identyfikatora waluty",
+            "search": "Wprowadź identyfikator zasobu",
             "text": "TOKENY NIESTANDARDOWE",
             "alreadyAttached": "Ten token został już dodany",
             "notFound": "Nie znaleziono tokena"
@@ -692,7 +692,7 @@
             "connectExternalAccount": "Połącz z kontem @:ethereumText, aby sprawdzić dostępne nagrody PSWAP i VAL.",
             "connectAccounts": "Aby odebrać swoje nagrody PSWAP i VAL, musisz połączyć się zarówno z kontem @:soraText, jak i @:ethereumText.",
             "connectAnotherAccount": "Połącz z innym kontem @:ethereumText, aby sprawdzić dostępne nagrody PSWAP i VAL.",
-            "howToClaimRewards": "Aby odebrać swoje nagrody {symbols}, musisz podpisać {count} {transactions} w {destination}. Nagrody zostaną wypłacone na Twoje konto @:soraText."
+            "howToClaimRewards": "Aby odebrać swoje nagrody {symbols}, musisz podpisać {count} {transactions} w {destination}. Nagrody zostaną wypłacone na Twoje konto @:(soraText)."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
