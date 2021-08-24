@@ -2,104 +2,76 @@ import map from 'lodash/fp/map'
 import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
-import { api, connection } from '@soramitsu/soraneo-wallet-web'
+import concat from 'lodash/fp/concat'
+import { api } from '@soramitsu/soraneo-wallet-web'
+import type { Subscription } from '@polkadot/x-rxjs'
+import type { AccountLiquidity } from '@sora-substrate/util'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
+  concat([
+    'SET_ACCOUNT_LIQUIDITY_LIST',
+    'SET_ACCOUNT_LIQUIDITY_UPDATES',
+    'SET_ACCOUNT_LIQUIDITY'
+  ]),
   map(x => [x, x]),
   fromPairs
-)([
-  'GET_ACCOUNT_LIQUIDITY',
-  'UPDATE_ACCOUNT_LIQUIDITY'
-])
+)([])
 
-function initialState () {
+interface PoolState {
+  accountLiquidity: Array<AccountLiquidity>;
+  accountLiquidityList: Nullable<Subscription>;
+  accountLiquidityUpdates: Nullable<Subscription>;
+}
+
+function initialState (): PoolState {
   return {
     accountLiquidity: [],
-    accountLiquidityFetching: false
+    accountLiquidityList: null,
+    accountLiquidityUpdates: null
   }
 }
 
 const state = initialState()
 
 const getters = {
-  accountLiquidity (state) {
+  accountLiquidity (state: PoolState): Array<AccountLiquidity> {
     return state.accountLiquidity
   }
 }
 
 const mutations = {
-  [types.GET_ACCOUNT_LIQUIDITY_REQUEST] (state) {
-    state.accountLiquidity = []
-    state.accountLiquidityFetching = true
+  [types.SET_ACCOUNT_LIQUIDITY_LIST] (state: PoolState, subscription: Subscription) {
+    state.accountLiquidityList = subscription
   },
-
-  [types.GET_ACCOUNT_LIQUIDITY_SUCCESS] (state, liquidity) {
-    state.accountLiquidity = []
-    state.accountLiquidity = liquidity
-    state.accountLiquidityFetching = false
+  [types.SET_ACCOUNT_LIQUIDITY_UPDATES] (state: PoolState, subscription: Subscription) {
+    state.accountLiquidityUpdates = subscription
   },
-
-  [types.GET_ACCOUNT_LIQUIDITY_FAILURE] (state) {
-    state.accountLiquidity = []
-    state.accountLiquidityFetching = false
-  },
-
-  [types.UPDATE_ACCOUNT_LIQUIDITY_REQUEST] (state) {
-    state.accountLiquidityFetching = true
-  },
-
-  [types.UPDATE_ACCOUNT_LIQUIDITY_SUCCESS] (state, liquidity) {
+  [types.SET_ACCOUNT_LIQUIDITY] (state: PoolState, liquidity: Array<AccountLiquidity>) {
     state.accountLiquidity = []
     state.accountLiquidity = liquidity
-    state.accountLiquidityFetching = false
-  },
-
-  [types.UPDATE_ACCOUNT_LIQUIDITY_FAILURE] (state) {
-    state.accountLiquidity = []
-    state.accountLiquidityFetching = false
   }
 }
 
 const actions = {
-  async getAccountLiquidity ({ commit, rootGetters, state }) {
-    if (!rootGetters.isLoggedIn || state.accountLiquidityFetching) {
-      return
-    }
-    commit(types.GET_ACCOUNT_LIQUIDITY_REQUEST)
-    try {
-      await api.getKnownAccountLiquidity()
-      commit(types.GET_ACCOUNT_LIQUIDITY_SUCCESS, api.accountLiquidity)
-    } catch (error) {
-      commit(types.GET_ACCOUNT_LIQUIDITY_FAILURE)
-    }
+  subscribeOnAccountLiquidityList ({ commit }) {
+    const userPoolsSubscription = api.getUserPoolsSubscription()
+    commit(types.SET_ACCOUNT_LIQUIDITY_LIST, userPoolsSubscription)
   },
-  createAccountLiquiditySubscription ({ commit, rootGetters, state }) {
-    const fiveSeconds = 5 * 1000
-
-    let subscription: NodeJS.Timeout | null = setInterval(async () => {
-      if (!connection.opened || !rootGetters.isLoggedIn || state.accountLiquidityFetching) {
-        return
-      }
-      commit(types.UPDATE_ACCOUNT_LIQUIDITY_REQUEST)
-      try {
-        // It's not a real update because we cannot add pool token by address.
-        // So, we need to find all pairs every time (5 sec)
-        await api.getKnownAccountLiquidity()
-        commit(types.UPDATE_ACCOUNT_LIQUIDITY_SUCCESS, api.accountLiquidity)
-      } catch (error) {
-        commit(types.UPDATE_ACCOUNT_LIQUIDITY_FAILURE)
-      }
-    }, fiveSeconds)
-
-    const unsubscribe = () => {
-      if (subscription !== null) {
-        clearInterval(subscription)
-        subscription = null
-      }
+  subscribeOnAccountLiquidityUpdates ({ commit }) {
+    const liquidityUpdatedSubscription = api.liquidityUpdated.subscribe(() => {
+      commit(types.SET_ACCOUNT_LIQUIDITY, api.accountLiquidity)
+    })
+    commit(types.SET_ACCOUNT_LIQUIDITY_UPDATES, liquidityUpdatedSubscription)
+  },
+  unsubscribeAccountLiquidityListAndUpdates ({ commit }) {
+    if (state.accountLiquidityList) {
+      state.accountLiquidityList.unsubscribe()
     }
-
-    return unsubscribe
+    if (state.accountLiquidityUpdates) {
+      state.accountLiquidityUpdates.unsubscribe()
+    }
+    api.unsubscribeFromAllLiquidityUpdates()
   }
 }
 

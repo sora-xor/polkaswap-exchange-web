@@ -4,7 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { CodecString } from '@sora-substrate/util'
+import { CodecString, Operation } from '@sora-substrate/util'
 
 import { ZeroStringValue } from '@/consts'
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions'
@@ -26,7 +26,6 @@ const types = flow(
 )([
   'CREATE_PAIR',
   'ESTIMATE_MINTED',
-  'GET_FEE',
   'CHECK_LIQUIDITY'
 ])
 
@@ -37,7 +36,6 @@ interface CreatePairState {
   secondTokenValue: string;
   secondTokenBalance: any;
   minted: CodecString;
-  fee: CodecString;
   isAvailable: boolean;
 }
 
@@ -49,7 +47,6 @@ function initialState (): CreatePairState {
     secondTokenValue: '',
     secondTokenBalance: null,
     minted: '',
-    fee: '',
     isAvailable: false
   }
 }
@@ -77,9 +74,6 @@ const getters = {
   },
   minted (state: CreatePairState) {
     return state.minted || ZeroStringValue
-  },
-  fee (state: CreatePairState) {
-    return state.fee || ZeroStringValue
   }
 }
 
@@ -111,13 +105,6 @@ const mutations = {
     state.minted = minted
   },
   [types.ESTIMATE_MINTED_FAILURE] (state: CreatePairState, error) {
-  },
-  [types.GET_FEE_REQUEST] (state: CreatePairState) {
-  },
-  [types.GET_FEE_SUCCESS] (state: CreatePairState, fee: CodecString) {
-    state.fee = fee
-  },
-  [types.GET_FEE_FAILURE] (state: CreatePairState, error) {
   },
   [types.CHECK_LIQUIDITY_REQUEST] (state: CreatePairState) {},
   [types.CHECK_LIQUIDITY_SUCCESS] (state: CreatePairState, isAvailable: boolean) {
@@ -153,7 +140,6 @@ const actions = {
         const exists = await api.checkLiquidity(getters.firstToken.address, getters.secondToken.address)
         commit(types.CHECK_LIQUIDITY_SUCCESS, !exists)
         dispatch('estimateMinted')
-        dispatch('getNetworkFee')
       } catch (error) {
         commit(types.CHECK_LIQUIDITY_FAILURE, error)
       }
@@ -187,25 +173,6 @@ const actions = {
   setSecondTokenValue ({ commit, dispatch }, value: string | number) {
     commit(types.SET_SECOND_TOKEN_VALUE, value)
     dispatch('estimateMinted')
-  },
-
-  async getNetworkFee ({ commit, getters }) {
-    if (getters.firstToken?.address && getters.secondToken?.address) {
-      commit(types.GET_FEE_REQUEST)
-      try {
-        const fee = await api.getCreatePairNetworkFee(
-          getters.firstToken.address,
-          getters.secondToken.address,
-          getters.firstTokenValue || 0,
-          getters.secondTokenValue || 0
-        )
-        commit(types.GET_FEE_SUCCESS, fee)
-      } catch (error) {
-        commit(types.GET_FEE_FAILURE, error)
-      }
-    } else {
-      commit(types.GET_FEE_SUCCESS, ZeroStringValue)
-    }
   },
 
   async createPair ({ commit, getters, rootGetters }) {

@@ -179,8 +179,8 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory, BridgeNetworks } from '@sora-substrate/util'
-import { getExplorerLink, api, FormattedAmountMixin, FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory, BridgeNetworks, Operation } from '@sora-substrate/util'
+import { api, getExplorerLink, FormattedAmountMixin, FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
 import { interpret } from 'xstate'
 
 import BridgeMixin from '@/components/mixins/BridgeMixin'
@@ -217,7 +217,6 @@ export default class BridgeTransaction extends Mixins(
   @Getter('amount', { namespace }) amount!: string
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
   @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks
-  @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
   @Getter('soraTransactionHash', { namespace }) soraTransactionHash!: string
@@ -229,8 +228,6 @@ export default class BridgeTransaction extends Mixins(
   @Getter('transactionStep', { namespace }) transactionStep!: number
   @Getter('historyItem', { namespace }) historyItem!: any
   @Getter('isTxEvmAccount', { namespace }) isTxEvmAccount!: boolean
-
-  @Action('getNetworkFee', { namespace }) getNetworkFee!: AsyncVoidFn
 
   @Action('setCurrentTransactionState', { namespace }) setCurrentTransactionState
   @Action('setInitialTransactionState', { namespace }) setInitialTransactionState
@@ -457,6 +454,10 @@ export default class BridgeTransaction extends Mixins(
     return this.getTransactionDate(!this.isSoraToEvm ? this.soraTransactionDate : this.evmTransactionDate)
   }
 
+  get soraNetworkFee (): CodecString {
+    return api.NetworkFee[Operation.EthBridgeOutgoing]
+  }
+
   get formattedSoraNetworkFee (): string {
     return this.getStringFromCodec(this.historyItem?.soraNetworkFee || this.soraNetworkFee, this.tokenXOR?.decimals)
   }
@@ -561,9 +562,6 @@ export default class BridgeTransaction extends Mixins(
     if (!this.isTransactionConfirmed) {
       router.push({ name: PageNames.Bridge })
       return
-    }
-    if (!this.historyItem) {
-      await this.getNetworkFee()
     }
     this.initializeTransactionStateMachine()
     this.isInitRequestCompleted = true

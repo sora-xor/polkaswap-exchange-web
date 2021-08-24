@@ -109,7 +109,7 @@
             :label-tooltip="t('networkFeeTooltipText')"
             :value="formattedFee"
             :asset-symbol="KnownSymbols.XOR"
-            :fiat-value="getFiatAmountByCodecString(fee)"
+            :fiat-value="getFiatAmountByCodecString(networkFee)"
             is-formatted
           />
         </div>
@@ -158,12 +158,10 @@ import { FPNumber, KnownAssets, KnownSymbols } from '@sora-substrate/util'
 import { FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
-
 import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 
 const namespace = 'createPair'
-
 const TokenPairMixin = CreateTokenPairMixin(namespace)
 
 @Component({

@@ -110,7 +110,7 @@
        :label-tooltip="t('networkFeeTooltipText')"
        :value="formattedFee"
        :asset-symbol="KnownSymbols.XOR"
-       :fiat-value="getFiatAmountByCodecString(fee)"
+       :fiat-value="getFiatAmountByCodecString(networkFee)"
        is-formatted
       />
     </div>
@@ -158,6 +158,7 @@ import { FPNumber, AccountLiquidity, CodecString, KnownAssets, KnownSymbols } fr
 import { FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
+import PoolUpdatesMixin from '@/components/mixins/PoolUpdatesMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -180,7 +181,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
   }
 })
 
-export default class AddLiquidity extends Mixins(TokenPairMixin) {
+export default class AddLiquidity extends Mixins(TokenPairMixin, PoolUpdatesMixin) {
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity
@@ -189,41 +190,26 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField
 
-  @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity!: AsyncVoidFn
-  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<Function>
-
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
-  accountLiquiditySubscription!: Function
+  async mounted (): Promise<void> {
+    await this.onCreated()
 
-  async created (): Promise<void> {
-    this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
-
-    await this.withApi(async () => {
-      await Promise.all([
-        this.getAssets(),
-        this.getAccountLiquidity()
-      ])
-
-      if (this.firstAddress && this.secondAddress) {
-        await this.setDataFromLiquidity({
-          firstAddress: this.firstAddress,
-          secondAddress: this.secondAddress
-        })
-
-        if (!this.liquidityInfo) {
-          return this.handleBack()
-        }
-      } else {
-        await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
+    if (this.firstAddress && this.secondAddress) {
+      await this.setDataFromLiquidity({
+        firstAddress: this.firstAddress,
+        secondAddress: this.secondAddress
+      })
+      if (!this.liquidityInfo) {
+        return this.handleBack()
       }
-    })
+    } else {
+      await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
+    }
   }
 
-  beforeDestroy (): void {
-    if (typeof this.accountLiquiditySubscription === 'function') {
-      this.accountLiquiditySubscription() // unsubscribe
-    }
+  async beforeDestroy (): Promise<void> {
+    await this.onDestroyed()
   }
 
   get firstAddress (): string {
