@@ -130,6 +130,7 @@ import { api, FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-w
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
+import PoolUpdatesMixin from '@/components/mixins/PoolUpdatesMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
@@ -148,7 +149,7 @@ const namespace = 'removeLiquidity'
     InfoLine
   }
 })
-export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, TransactionMixin, ConfirmDialogMixin) {
+export default class RemoveLiquidity extends Mixins(PoolUpdatesMixin, FormattedAmountMixin, TransactionMixin, ConfirmDialogMixin) {
   readonly KnownSymbols = KnownSymbols
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
@@ -175,7 +176,6 @@ export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, Transa
   @Action('setFocusedField', { namespace }) setFocusedField
   @Action('resetFocusedField', { namespace }) resetFocusedField
   @Action('removeLiquidity', { namespace }) removeLiquidity
-  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
   @Action('resetData', { namespace }) resetData!: AsyncVoidFn
   @Action('getPrices', { namespace: 'prices' }) getPrices
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: AsyncVoidFn
@@ -185,19 +185,15 @@ export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, Transa
   sliderDragButton: any
 
   async created (): Promise<void> {
-    await this.withApi(async () => {
-      await this.getAssets()
-
+    await this.onCreated(async () => {
       await this.getLiquidity({
         firstAddress: this.firstTokenAddress,
         secondAddress: this.secondTokenAddress
       })
-
       // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
       if (!this.liquidity) {
         return this.handleBack()
       }
-
       this.updatePrices()
     })
   }
@@ -210,12 +206,14 @@ export default class RemoveLiquidity extends Mixins(FormattedAmountMixin, Transa
     }
   }
 
-  beforeDestroy (): void {
-    if (this.sliderDragButton) {
-      this.$el.removeEventListener('mousedown', this.sliderDragButton)
-    }
-    this.resetData()
-    this.resetPrices()
+  async beforeDestroy (): Promise<void> {
+    await this.onDestroyed(() => {
+      if (this.sliderDragButton) {
+        this.$el.removeEventListener('mousedown', this.sliderDragButton)
+      }
+      this.resetData()
+      this.resetPrices()
+    })
   }
 
   get firstTokenAddress (): string {

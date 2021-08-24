@@ -158,6 +158,7 @@ import { FPNumber, AccountLiquidity, CodecString, KnownAssets, KnownSymbols } fr
 import { FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
+import PoolUpdatesMixin from '@/components/mixins/PoolUpdatesMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -180,7 +181,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
   }
 })
 
-export default class AddLiquidity extends Mixins(TokenPairMixin) {
+export default class AddLiquidity extends Mixins(TokenPairMixin, PoolUpdatesMixin) {
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity
@@ -192,15 +193,12 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
   async created (): Promise<void> {
-    await this.withApi(async () => {
-      await this.getAssets()
-
+    await this.onCreated(async () => {
       if (this.firstAddress && this.secondAddress) {
         await this.setDataFromLiquidity({
           firstAddress: this.firstAddress,
           secondAddress: this.secondAddress
         })
-
         if (!this.liquidityInfo) {
           return this.handleBack()
         }
@@ -208,6 +206,10 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
         await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
       }
     })
+  }
+
+  async beforeDestroy (): Promise<void> {
+    await this.onDestroyed()
   }
 
   get firstAddress (): string {

@@ -3,8 +3,9 @@ import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
-import type { Subscription } from '@polkadot/x-rxjs'
 import { api } from '@soramitsu/soraneo-wallet-web'
+import type { Subscription } from '@polkadot/x-rxjs'
+import type { AccountLiquidity } from '@sora-substrate/util'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -18,9 +19,9 @@ const types = flow(
 )([])
 
 interface PoolState {
-  accountLiquidity: [];
+  accountLiquidity: Array<AccountLiquidity>;
   accountLiquidityList: Nullable<Subscription>;
-  accountLiquidityUpdates: Nullable<any>;
+  accountLiquidityUpdates: Nullable<Subscription>;
 }
 
 function initialState (): PoolState {
@@ -34,19 +35,19 @@ function initialState (): PoolState {
 const state = initialState()
 
 const getters = {
-  accountLiquidity (state: PoolState) {
+  accountLiquidity (state: PoolState): Array<AccountLiquidity> {
     return state.accountLiquidity
   }
 }
 
 const mutations = {
-  [types.SET_ACCOUNT_LIQUIDITY_LIST] (state: PoolState, subscription) {
+  [types.SET_ACCOUNT_LIQUIDITY_LIST] (state: PoolState, subscription: Subscription) {
     state.accountLiquidityList = subscription
   },
-  [types.SET_ACCOUNT_LIQUIDITY_UPDATES] (state: PoolState, subscription) {
+  [types.SET_ACCOUNT_LIQUIDITY_UPDATES] (state: PoolState, subscription: Subscription) {
     state.accountLiquidityUpdates = subscription
   },
-  [types.SET_ACCOUNT_LIQUIDITY] (state: PoolState, liquidity) {
+  [types.SET_ACCOUNT_LIQUIDITY] (state: PoolState, liquidity: Array<AccountLiquidity>) {
     state.accountLiquidity = []
     state.accountLiquidity = liquidity
   }
@@ -54,21 +55,20 @@ const mutations = {
 
 const actions = {
   subscribeOnAccountLiquidityList ({ commit }) {
-    commit(types.SET_ACCOUNT_LIQUIDITY_LIST, api.getUserPoolsSubscription())
+    const userPoolsSubscription = api.getUserPoolsSubscription()
+    commit(types.SET_ACCOUNT_LIQUIDITY_LIST, userPoolsSubscription)
   },
   subscribeOnAccountLiquidityUpdates ({ commit }) {
-    commit(
-      types.SET_ACCOUNT_LIQUIDITY_UPDATES,
-      api.liquidityUpdated.subscribe(() => {
-        commit(types.SET_ACCOUNT_LIQUIDITY, api.accountLiquidity)
-      })
-    )
+    const liquidityUpdatedSubscription = api.liquidityUpdated.subscribe(() => {
+      commit(types.SET_ACCOUNT_LIQUIDITY, api.accountLiquidity)
+    })
+    commit(types.SET_ACCOUNT_LIQUIDITY_UPDATES, liquidityUpdatedSubscription)
   },
-  unsubscribeAccountLiquidityListAndUpdates ({ commit, state: PoolState }) {
-    if (state.accountLiquidityList !== null && state.accountLiquidityList !== undefined) {
+  unsubscribeAccountLiquidityListAndUpdates ({ commit }) {
+    if (state.accountLiquidityList) {
       state.accountLiquidityList.unsubscribe()
     }
-    if (state.accountLiquidityUpdates !== null) {
+    if (state.accountLiquidityUpdates) {
       state.accountLiquidityUpdates.unsubscribe()
     }
     api.unsubscribeFromAllLiquidityUpdates()
