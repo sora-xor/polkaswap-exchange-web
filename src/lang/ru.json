@@ -84,7 +84,7 @@
         "address": "@:addressText",
         "amount": "@:amountText",
         "balance": "Баланс",
-        "max": "МАКСИМУМ",
+        "max": "МАКС",
         "fee": "Комиссия за транзакцию",
         "enterAddress": "Введите адрес",
         "badAddress": "Неверный адрес",
@@ -333,7 +333,7 @@
         "updateNode": "Обновить узел"
     },
     "buttons": {
-        "max": "МАКСИМУМ",
+        "max": "МАКС",
         "chooseToken": "Выберите токен",
         "chooseAToken": "Выберите токен",
         "chooseTokens": "Выберите токены",
