@@ -542,12 +542,11 @@ const actions = {
     commit(types.GET_EVM_NETWORK_FEE_REQUEST)
     try {
       const ethersInstance = await ethersUtil.getEthersInstance()
-      const gasPrice = await (await ethersInstance.getGasPrice()).toNumber()
+      const gasPrice = (await ethersInstance.getGasPrice()).toNumber()
       const registeredAssets = rootGetters.whitelist
-      const knownAsset = KnownAssets.get(getters.asset.address) || (registeredAssets[getters.asset.address] && getters.asset.symbol === 'ETH')
+      const knownAsset = !!KnownAssets.get(getters.asset.address) || (registeredAssets[getters.asset.address] && getters.asset.symbol === 'ETH')
       const gasLimit = EthereumGasLimits[+getters.isSoraToEvm][knownAsset ? getters.asset.symbol : KnownBridgeAsset.Other]
-      const fee = gasPrice * gasLimit
-      const fpFee = new FPNumber(ethers.utils.formatEther(fee)).toCodecString()
+      const fpFee = FPNumber.fromCodecValue(gasPrice).mul(new FPNumber(gasLimit)).toCodecString()
       commit(types.GET_EVM_NETWORK_FEE_SUCCESS, fpFee)
     } catch (error) {
       console.error(error)
