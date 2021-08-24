@@ -1,5 +1,5 @@
-import { Component, Mixins } from 'vue-property-decorator'
-import { Action } from 'vuex-class'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
+import { Action, Getter } from 'vuex-class'
 
 import LoadingMixin from './LoadingMixin'
 
@@ -13,23 +13,23 @@ export default class PoolUpdatesMixin extends Mixins(LoadingMixin) {
   @Action('subscribeOnAccountLiquidityUpdates', { namespace }) subscribeOnAccountLiquidityUpdates!: AsyncVoidFn
   @Action('unsubscribeAccountLiquidityListAndUpdates', { namespace }) unsubscribeAccountLiquidityListAndUpdates!: AsyncVoidFn
 
-  async onCreated (fn?: () => Promise<void>): Promise<void> {
+  @Getter isLoggedIn!: boolean
+
+  async onCreated (): Promise<void> {
     await this.withApi(async () => {
-      await Promise.all([
-        this.subscribeOnAccountLiquidityList(),
-        this.subscribeOnAccountLiquidityUpdates(),
-        this.getAssets()
-      ])
-      if (fn) {
-        await fn()
+      if (this.isLoggedIn) {
+        await Promise.all([
+          this.subscribeOnAccountLiquidityList(),
+          this.subscribeOnAccountLiquidityUpdates()
+        ])
       }
+      await this.getAssets()
     })
   }
 
-  async onDestroyed (fn?: () => void): Promise<void> {
-    await this.unsubscribeAccountLiquidityListAndUpdates()
-    if (fn) {
-      fn()
-    }
+  async onDestroyed (): Promise<void> {
+    await this.withApi(async () => {
+      await this.unsubscribeAccountLiquidityListAndUpdates()
+    })
   }
 }

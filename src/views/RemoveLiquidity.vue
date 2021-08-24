@@ -184,36 +184,27 @@ export default class RemoveLiquidity extends Mixins(PoolUpdatesMixin, FormattedA
   sliderInput: any
   sliderDragButton: any
 
-  async created (): Promise<void> {
-    await this.onCreated(async () => {
-      await this.getLiquidity({
-        firstAddress: this.firstTokenAddress,
-        secondAddress: this.secondTokenAddress
-      })
-      // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
-      if (!this.liquidity) {
-        return this.handleBack()
-      }
-      this.updatePrices()
-    })
-  }
+  async mounted (): Promise<void> {
+    await this.onCreated()
 
-  mounted (): void {
-    this.sliderDragButton = this.$el.querySelector('.slider-container .el-slider__button')
-    this.sliderInput = this.$el.querySelector('.s-input--remove-part .el-input__inner')
-    if (this.sliderDragButton) {
-      this.sliderDragButton.addEventListener('mousedown', this.focusSliderInput)
+    await this.getLiquidity({
+      firstAddress: this.firstTokenAddress,
+      secondAddress: this.secondTokenAddress
+    })
+    // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
+    if (!this.liquidity) {
+      return this.handleBack()
     }
+    this.updatePrices()
+    this.addListenerToSliderDragButton()
   }
 
   async beforeDestroy (): Promise<void> {
-    await this.onDestroyed(() => {
-      if (this.sliderDragButton) {
-        this.$el.removeEventListener('mousedown', this.sliderDragButton)
-      }
-      this.resetData()
-      this.resetPrices()
-    })
+    await this.onDestroyed()
+
+    this.removeListenerFromSliderDragButton()
+    this.resetData()
+    this.resetPrices()
   }
 
   get firstTokenAddress (): string {
@@ -322,6 +313,20 @@ export default class RemoveLiquidity extends Mixins(PoolUpdatesMixin, FormattedA
   handleBack (): void {
     if (router.currentRoute.name === PageNames.RemoveLiquidity) {
       router.push({ name: PageNames.Pool })
+    }
+  }
+
+  private addListenerToSliderDragButton (): void {
+    this.sliderDragButton = this.$el.querySelector('.slider-container .el-slider__button')
+    this.sliderInput = this.$el.querySelector('.s-input--remove-part .el-input__inner')
+    if (this.sliderDragButton) {
+      this.sliderDragButton.addEventListener('mousedown', this.focusSliderInput)
+    }
+  }
+
+  private removeListenerFromSliderDragButton (): void {
+    if (this.sliderDragButton) {
+      this.$el.removeEventListener('mousedown', this.sliderDragButton)
     }
   }
 }
