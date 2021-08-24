@@ -512,7 +512,7 @@
         },
         "status": {
             "pending": "{step} transacciones pendientes ...",
-            "failed": "Transacciones fallidas {step} . @:(retryText).",
+            "failed": "Transacciones fallidas {step}. @:(retryText).",
             "confirm": "Confirmar 2ª de 2 transacciones...",
             "complete": "Completa",
             "convertionComplete": "Conversión completa"

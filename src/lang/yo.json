@@ -692,7 +692,7 @@
             "connectExternalAccount": "So iroyin miiran pọ mọ @:ethereumText lati ṣayẹwo fun awọn ere PSWAP ati VAL ti o wa.",
             "connectAccounts": "Lati beere awọn ẹbun PSWAP rẹ ati VAL o nilo lati sopọ mejeeji rẹ @:soraText ati @:ethereumText awọn iroyin.",
             "connectAnotherAccount": "So ifowosi miiran pọ mọ @:ethereumText lati ṣayẹwo fun awọn ere PSWAP ati VAL ti o wa.",
-            "howToClaimRewards": "Lati beere fun awọn ere {symbols} o nilo lati buwolu wọle {count} {transactions} ni {destination} . Awọn ere yoo wa ni idogo si akọọlẹ @:soraText rẹ."
+            "howToClaimRewards": "Lati beere fun awọn ere {symbols} o nilo lati buwolu wọle {count} {transactions} ni {destination}. Awọn ere yoo wa ni idogo si akọọlẹ @:soraText rẹ."
         },
         "action": {
             "connectWallet": "@:connectWalletText",

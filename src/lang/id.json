@@ -692,7 +692,7 @@
             "connectExternalAccount": "Hubungkan akun @:ethereumText untuk memeriksa reward PSWAP dan VAL yang tersedia.",
             "connectAccounts": "Untuk mengklaim hasil PSWAP dan VAL Anda, Anda perlu menghubungkan akun @:soraText dan @:ethereumText Anda.",
             "connectAnotherAccount": "Hubungkan akun @:ethereumText lain untuk memeriksa hasil PSWAP dan VAL yang tersedia.",
-            "howToClaimRewards": "Untuk mengklaim {symbols} Anda harus menandatangani {count} {transactions} di {destination} . Hasil akan disetorkan ke akun @:soraText Anda."
+            "howToClaimRewards": "Untuk mengklaim {symbols} Anda harus menandatangani {count} {transactions} di {destination}. Hasil akan disetorkan ke akun @:soraText Anda."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
