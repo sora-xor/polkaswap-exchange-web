@@ -115,8 +115,12 @@ const getters = {
   shareOfPool (state: RemoveLiquidityState, getters) {
     const balance = FPNumber.fromCodecValue(getters.liquidityBalance)
     const removed = new FPNumber(state.liquidityAmount ?? 0)
-    const total = FPNumber.fromCodecValue(getters.totalSupply)
-    return balance.sub(removed).div(total.sub(removed)).mul(new FPNumber(100)).toLocaleString() || ZeroStringValue
+    const totalSupply = FPNumber.fromCodecValue(getters.totalSupply)
+    const totalSupplyAfter = totalSupply.sub(removed)
+
+    if (balance.isZero() || totalSupply.isZero() || totalSupplyAfter.isZero()) return ZeroStringValue
+
+    return balance.sub(removed).div(totalSupplyAfter).mul(new FPNumber(100)).toLocaleString() || ZeroStringValue
   }
 }
 
@@ -146,6 +150,7 @@ const mutations = {
     state.totalSupply = totalSupply
   },
   [types.GET_TOTAL_SUPPLY_FAILURE] (state, error) {
+    state.totalSupply = ZeroStringValue
   },
   [types.GET_LIQUIDITY_RESERVE_REQUEST] (state) {
   },
