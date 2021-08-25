@@ -11,10 +11,10 @@
         <s-button type="action" class="lang-control s-pressed" @click="openSelectLanguageDialog">
           <s-icon name="basic-globe-24" size="28" />
         </s-button>
-        <s-button type="action" class="node-control s-pressed" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
+        <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openSelectNodeDialog">
           <token-logo class="node-control__logo" v-bind="nodeLogo" />
         </s-button>
-        <s-button type="tertiary" :class="['account-control', { 's-pressed': isLoggedIn }]" size="medium" :tooltip="t('connectWalletTextTooltip')" :disabled="loading" @click="goTo(PageNames.Wallet)">
+        <s-button type="tertiary" :class="['account-control', { 's-pressed': isLoggedIn }]" size="medium" :tooltip="accountTooltip" :disabled="loading" @click="goTo(PageNames.Wallet)">
           <div :class="['account-control-title', { name: isLoggedIn }]">{{ accountInfo }}</div>
           <div class="account-control-icon">
             <s-icon v-if="!isLoggedIn" name="finance-wallet-24" size="28" />
@@ -265,6 +265,10 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
     return this.libraryTheme === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)'
   }
 
+  get nodeTooltip (): string {
+    return this.t(`${this.nodeIsConnected ? this.node.chain : 'selectNodeText'}`)
+  }
+
   get nodeLogo (): any {
     return {
       size: LogoSize.MEDIUM,
@@ -274,6 +278,10 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
 
   get isAboutPage (): boolean {
     return this.$route.name === PageNames.About
+  }
+
+  get accountTooltip (): string {
+    return this.t(`${this.isLoggedIn ? 'connectedAccount' : 'connectWalletTextTooltip'}`)
   }
 
   get accountInfo (): string {
