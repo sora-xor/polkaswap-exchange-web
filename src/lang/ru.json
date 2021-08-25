@@ -586,7 +586,7 @@
         },
         "custom": {
             "title": "Кастомный",
-            "search": "Поиск по ID актива",
+            "search": "Введите ID актива",
             "text": "ПЕРСОНАЛИЗИРОВАННЫЕ ТОКЕНЫ",
             "alreadyAttached": "Этот токен уже добавлен",
             "notFound": "Токен не найден"
@@ -692,7 +692,7 @@
             "connectExternalAccount": "Подключите аккаунт @:ethereumText, чтобы проверить наличие доступных наград PSWAP и VAL.",
             "connectAccounts": "Для получения наград PSWAP и VAL необходимо подключить оба аккаунта @:soraText и @:ethereumText.",
             "connectAnotherAccount": "Подключите другой аккаунт @:ethereumText, чтобы проверить наличие доступных наград PSWAP и VAL.",
-            "howToClaimRewards": "Чтобы получить Ваше {symbols} вознаграждение, Вы должны войти {count} {transactions} в {destination}. Вознаграждения будут перечислены на ваш счет @:soraText."
+            "howToClaimRewards": "Чтобы получить Ваше {symbols} вознаграждение, Вы должны войти {count} {transactions} в {destination}. Вознаграждения будут перечислены на ваш счет @:(soraText)."
         },
         "action": {
             "connectWallet": "@:connectWalletText",

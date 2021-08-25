@@ -229,7 +229,7 @@
     "connectWalletTextTooltip": "Připojte se k síti @:soraText pomocí polkadot{.js}",
     "selectNodeText": "Vyberte node",
     "bridgeText": "Bridge",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Disclaimer \/ zřeknutí se odpovědnosti <\/span>: Tento web spravuje komunita @:soraText. Před dalším používáním tohoto webu, si prosím prostudujte @:polkaswapFaqLink a dokumentaci, která obsahuje podrobné vysvětlení toho, jak Polkaswap funguje, a také @:footerMenu.memorandum a @:(footerMenu.privacy). Tyto dokumenty jsou zásadní pro bezpečnou a pozitivní uživatelskou zkušenost. Používáním Polkaswap potvrzujete, že jste si tyto dokumenty přečetli a porozuměli jim. Rovněž berete na vědomí následující: 1) svou výhradní odpovědnost za soulad se všemi zákony, které se mohou vztahovat na vaše konkrétní použití Polkaswap ve vaší právní jurisdikci; 2) chápete, že aktuální verze Polkaswap je alfa verzí: nebyla plně otestována a některé funkce nemusí fungovat tak, jak byly navrženy; a 3) vaše porozumění a dobrovolné přijetí rizik spojených s používáním Polkaswap, mimo jiné včetně rizika ztráty tokenů. Ještě jednou vás žádáme, abyste nepokračovali bez přečtení FAQ, <span> @:footerMenu.memorandum <\/span> <a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\"> @:footerMenu.memorandum <\/a> a <span> @:footerMenu.privacy <\/span> <a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\"> @:footerMenu.privacy <\/a>!",
+    "disclaimer": "<span class=\"app-disclaimer__title\">Disclaimer \/ zřeknutí se odpovědnosti<\/span>: Tento web spravuje komunita @:(soraText). Před dalším používáním tohoto webu, si prosím prostudujte @:polkaswapFaqLink a dokumentaci, která obsahuje podrobné vysvětlení toho, jak Polkaswap funguje, a také @:footerMenu.memorandum a @:(footerMenu.privacy). Tyto dokumenty jsou zásadní pro bezpečnou a pozitivní uživatelskou zkušenost. Používáním Polkaswap potvrzujete, že jste si tyto dokumenty přečetli a porozuměli jim. Rovněž berete na vědomí následující: 1) svou výhradní odpovědnost za soulad se všemi zákony, které se mohou vztahovat na vaše konkrétní použití Polkaswap ve vaší právní jurisdikci; 2) chápete, že aktuální verze Polkaswap je alfa verzí: nebyla plně otestována a některé funkce nemusí fungovat tak, jak byly navrženy; a 3) vaše porozumění a dobrovolné přijetí rizik spojených s používáním Polkaswap, mimo jiné včetně rizika ztráty tokenů. Ještě jednou vás žádáme, abyste nepokračovali bez přečtení FAQ, <span> @:footerMenu.memorandum <\/span> <a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\"> @:footerMenu.memorandum <\/a> a <span> @:footerMenu.privacy <\/span> <a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\"> @:footerMenu.privacy <\/a>!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"Polkaswap FAQ\">Polkaswap FAQ<\/a>",
     "poweredBy": "Běží na",
     "confirmTransactionText": "Potvrďte transakci ve {direction}",
@@ -586,7 +586,7 @@
         },
         "custom": {
             "title": "Vlastní",
-            "search": "Vyhledávání podle ID aktiva",
+            "search": "Zadejte ID aktiva",
             "text": "VLASTNÍ TOKENY",
             "alreadyAttached": "Tento token byl již přidán",
             "notFound": "Token nebyl nalezen"
@@ -692,7 +692,7 @@
             "connectExternalAccount": "Připojte účet @:ethereumText a zkontrolujte dostupné odměny PSWAP a VAL.",
             "connectAccounts": "Pro získání svých PSWAP a VAL odměn musíte připojit oba své účty @:soraText a @:ethereumText.",
             "connectAnotherAccount": "Připojte další účet @:ethereumText a zkontrolujte dostupné odměny PSWAP a VAL.",
-            "howToClaimRewards": "Pro získání své {symbols} odměny musíte podepsat {count} {transactions} v {destination}. Odměny budou připsány na váš účet @:soraText."
+            "howToClaimRewards": "Pro získání své {symbols} odměny musíte podepsat {count} {transactions} v {destination}. Odměny budou připsány na váš účet @:(soraText)."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
