@@ -104,10 +104,14 @@ const getters = {
     return state.totalSupply || ZeroStringValue
   },
   shareOfPool (state: AddLiquidityState, getters) {
+    const full = new FPNumber(100)
     const minted = FPNumber.fromCodecValue(getters.minted)
-    const existed = FPNumber.fromCodecValue(getters.liquidityInfo?.balance ?? 0)
     const total = FPNumber.fromCodecValue(getters.totalSupply)
-    return minted.add(existed).div(total.add(minted)).mul(new FPNumber(100)).toLocaleString() || ZeroStringValue
+    const existed = FPNumber.fromCodecValue(getters.liquidityInfo?.balance ?? 0)
+
+    if (total.isZero() && minted.isZero()) return full.toLocaleString() // pair created but hasn't liquidity
+
+    return minted.add(existed).div(total.add(minted)).mul(full).toLocaleString() || ZeroStringValue
   }
 }
 
@@ -147,6 +151,8 @@ const mutations = {
     state.totalSupply = pts
   },
   [types.ESTIMATE_MINTED_FAILURE] (state, error) {
+    state.minted = ZeroStringValue
+    state.totalSupply = ZeroStringValue
   },
   [types.SET_FOCUSED_FIELD] (state: AddLiquidityState, field: string) {
     state.focusedField = field
