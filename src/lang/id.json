@@ -749,5 +749,6 @@
     "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\"> @:memorandum <\/a>",
     "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\"> @:helpDialog.privacyPolicy <\/a>",
     "FAQ": "Tanya Jawab Polkaswap",
-    "connectedAccount": "Akun terhubung"
+    "connectedAccount": "Akun terhubung",
+    "selectNodeConnected": "Terhubung ke: {chain}"
 }

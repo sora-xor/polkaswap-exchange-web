@@ -749,5 +749,6 @@
     "memorandumLink": "@:memorandum",
     "privacyLink": "@:helpDialog.privacyPolicy",
     "FAQ": "Polkaswap ՀՏՀ",
-    "connectedAccount": "Միացված հաշիվ"
+    "connectedAccount": "Միացված հաշիվ",
+    "selectNodeConnected": "Միացված է ՝ {chain}"
 }

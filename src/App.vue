@@ -266,7 +266,10 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   }
 
   get nodeTooltip (): string {
-    return this.t(`${this.nodeIsConnected ? this.node.chain : 'selectNodeText'}`)
+    if (this.nodeIsConnected) {
+      return this.t('selectNodeConnected', { chain: this.node.chain })
+    }
+    return this.t('selectNodeText')
   }
 
   get nodeLogo (): any {
