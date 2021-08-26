@@ -48,14 +48,13 @@ const mutations = {
     state.accountLiquidityUpdates = subscription
   },
   [types.SET_ACCOUNT_LIQUIDITY] (state: PoolState, liquidity: Array<AccountLiquidity>) {
-    state.accountLiquidity = []
-    state.accountLiquidity = liquidity
+    state.accountLiquidity = [...liquidity]
   }
 }
 
 const actions = {
-  subscribeOnAccountLiquidityList ({ commit }) {
-    const userPoolsSubscription = api.getUserPoolsSubscription()
+  async subscribeOnAccountLiquidityList ({ commit }) {
+    const userPoolsSubscription = await api.getUserPoolsSubscription()
     commit(types.SET_ACCOUNT_LIQUIDITY_LIST, userPoolsSubscription)
   },
   subscribeOnAccountLiquidityUpdates ({ commit }) {

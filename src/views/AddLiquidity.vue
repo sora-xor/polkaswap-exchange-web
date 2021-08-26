@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="parentLoading || loading" class="container">
+  <div v-loading="parentLoading" class="container">
     <generic-page-header has-button-back :title="t('addLiquidity.title')" :tooltip="t('pool.description')" @back="handleBack" />
     <s-form
       class="el-form--actions"
@@ -136,7 +136,7 @@
 
     <confirm-token-pair-dialog
       :visible.sync="showConfirmDialog"
-      :parent-loading="loading"
+      :parent-loading="parentLoading"
       :share-of-pool="shareOfPool"
       :first-token="firstToken"
       :second-token="secondToken"
@@ -158,7 +158,7 @@ import { FPNumber, AccountLiquidity, CodecString, KnownAssets, KnownSymbols } fr
 import { FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
-import PoolUpdatesMixin from '@/components/mixins/PoolUpdatesMixin'
+import LoadingMixin from '@/components/mixins/LoadingMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -181,7 +181,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
   }
 })
 
-export default class AddLiquidity extends Mixins(TokenPairMixin, PoolUpdatesMixin) {
+export default class AddLiquidity extends Mixins(LoadingMixin, TokenPairMixin) {
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity
@@ -193,23 +193,20 @@ export default class AddLiquidity extends Mixins(TokenPairMixin, PoolUpdatesMixi
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
   async mounted (): Promise<void> {
-    await this.onCreated()
-
-    if (this.firstAddress && this.secondAddress) {
-      await this.setDataFromLiquidity({
-        firstAddress: this.firstAddress,
-        secondAddress: this.secondAddress
-      })
-      if (!this.liquidityInfo) {
-        return this.handleBack()
+    await this.withParentLoading(async () => {
+      if (this.firstAddress && this.secondAddress) {
+        await this.setDataFromLiquidity({
+          firstAddress: this.firstAddress,
+          secondAddress: this.secondAddress
+        })
+        // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
+        if (!this.liquidityInfo) {
+          return this.handleBack()
+        }
+      } else {
+        await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
       }
-    } else {
-      await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
-    }
-  }
-
-  async beforeDestroy (): Promise<void> {
-    await this.onDestroyed()
+    })
   }
 
   get firstAddress (): string {
