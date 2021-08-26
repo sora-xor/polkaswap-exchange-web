@@ -19,6 +19,7 @@ export default {
   changeAccountText: 'Change account',
   connectedText: 'Connected',
   connectedAccount: 'Connected account',
+  selectNodeConnected: 'Connected to: {chain}',
   connectWalletTextTooltip: 'Connect to @:soraText Network with polkadot{.js}',
   selectNodeText: 'Select node',
   bridgeText: 'Bridge',
