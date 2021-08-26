@@ -29,7 +29,7 @@ export default class PoolContainer extends Mixins(LoadingMixin) {
 
   @Watch('isLoggedIn')
   @Watch('nodeIsConnected')
-  private async updateSubsriptions (value: boolean) {
+  private async updateSubscriptions (value: boolean) {
     if (value) {
       await this.updateLiquiditySubscription()
     } else {
