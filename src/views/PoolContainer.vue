@@ -23,17 +23,17 @@ export default class PoolContainer extends Mixins(LoadingMixin) {
   @Action('subscribeOnAccountLiquidityList', { namespace }) subscribeOnAccountLiquidityList!: AsyncVoidFn
   @Action('subscribeOnAccountLiquidityUpdates', { namespace }) subscribeOnAccountLiquidityUpdates!: AsyncVoidFn
   @Action('unsubscribeAccountLiquidityListAndUpdates', { namespace }) unsubscribeAccountLiquidityListAndUpdates!: AsyncVoidFn
-  @Action('resetAccountLiquidity', { namespace }) resetAccountLiquidity!: AsyncVoidFn
 
   @Getter isLoggedIn!: boolean
   @Getter nodeIsConnected!: boolean
 
+  @Watch('isLoggedIn')
   @Watch('nodeIsConnected')
-  private updateConnectionSubsriptions (nodeConnected: boolean) {
-    if (nodeConnected) {
-      this.updateLiquiditySubscription()
+  private async updateSubsriptions (value: boolean) {
+    if (value) {
+      await this.updateLiquiditySubscription()
     } else {
-      this.resetLiquiditySubscription()
+      await this.unsubscribeAccountLiquidityListAndUpdates()
     }
   }
 
@@ -41,31 +41,30 @@ export default class PoolContainer extends Mixins(LoadingMixin) {
     return this.parentLoading || this.loading
   }
 
-  async created (): Promise<void> {
-    await this.withApi(async () => {
-      await this.updateLiquiditySubscription()
-      await this.getAssets()
-    })
+  async mounted (): Promise<void> {
+    await this.updateLiquiditySubscription()
   }
 
   async beforeDestroy (): Promise<void> {
-    await this.withApi(async () => {
-      await this.resetLiquiditySubscription()
-    })
-  }
-
-  private async updateLiquiditySubscription (): Promise<void> {
-    if (this.isLoggedIn) {
-      await Promise.all([
-        this.subscribeOnAccountLiquidityList(),
-        this.subscribeOnAccountLiquidityUpdates()
-      ])
-    }
-  }
-
-  private async resetLiquiditySubscription (): Promise<void> {
     await this.unsubscribeAccountLiquidityListAndUpdates()
-    await this.resetAccountLiquidity()
+  }
+
+  /**
+   * Update liquidity subscriptions & necessary data
+   * If this page is loaded first time by url, "watch" & "mounted" call this method
+   */
+  private async updateLiquiditySubscription (): Promise<void> {
+    // wait for node connection & wallet init (App.vue)
+    await this.withParentLoading(async () => {
+      // return if updateLiquiditySubscription is already called by "watch" or "mounted"
+      if (this.loading) return
+
+      await this.withLoading(async () => {
+        await this.subscribeOnAccountLiquidityList()
+        await this.subscribeOnAccountLiquidityUpdates()
+        await this.getAssets()
+      })
+    })
   }
 }
 </script>
