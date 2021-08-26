@@ -71,6 +71,9 @@ const actions = {
       state.accountLiquidityUpdates.unsubscribe()
     }
     api.unsubscribeFromAllLiquidityUpdates()
+  },
+  resetAccountLiquidity ({ commit }) {
+    commit(types.SET_ACCOUNT_LIQUIDITY, [])
   }
 }
 
