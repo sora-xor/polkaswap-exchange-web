@@ -50,7 +50,7 @@ $s-icon-energy: "\0048";
 i[class^="s-icon-"], i[class*=" s-icon-"] {
   color: var(--s-color-base-content-tertiary);
   transition: var(--s-transition-default);
-  &:hover {
+  &:hover:not(.s-icon-finance-send-24) {
     color: var(--s-color-base-content-secondary);
   }
 }
