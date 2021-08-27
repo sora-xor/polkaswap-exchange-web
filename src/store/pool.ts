@@ -73,7 +73,7 @@ const mutations = {
     state.accountLiquidityUpdates = null
   },
   [types.SET_ACCOUNT_LIQUIDITY] (state: PoolState, liquidity: Array<AccountLiquidity>) {
-    state.accountLiquidity = [...liquidity]
+    state.accountLiquidity = [...liquidity] // update vuex state by creating new copy of array
   }
 }
 
