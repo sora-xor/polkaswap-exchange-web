@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading || parentLoading" class="container container--remove-liquidity">
+  <div v-loading="parentLoading" class="container container--remove-liquidity">
     <generic-page-header has-button-back :title="t('removeLiquidity.title')" :tooltip="t('removeLiquidity.description')" @back="handleBack" />
     <s-form
       class="el-form--actions"
@@ -118,7 +118,7 @@
       <slippage-tolerance class="slippage-tolerance-settings" />
     </s-form>
 
-    <confirm-remove-liquidity :visible.sync="showConfirmDialog" :parent-loading="loading" @confirm="handleConfirmRemoveLiquidity" />
+    <confirm-remove-liquidity :visible.sync="showConfirmDialog" :parent-loading="parentLoading" @confirm="handleConfirmRemoveLiquidity" />
   </div>
 </template>
 
@@ -130,7 +130,7 @@ import { api, FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-w
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
-import PoolUpdatesMixin from '@/components/mixins/PoolUpdatesMixin'
+import LoadingMixin from '@/components/mixins/LoadingMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
@@ -149,7 +149,7 @@ const namespace = 'removeLiquidity'
     InfoLine
   }
 })
-export default class RemoveLiquidity extends Mixins(PoolUpdatesMixin, FormattedAmountMixin, TransactionMixin, ConfirmDialogMixin) {
+export default class RemoveLiquidity extends Mixins(LoadingMixin, FormattedAmountMixin, TransactionMixin, ConfirmDialogMixin) {
   readonly KnownSymbols = KnownSymbols
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
@@ -185,23 +185,21 @@ export default class RemoveLiquidity extends Mixins(PoolUpdatesMixin, FormattedA
   sliderDragButton: any
 
   async mounted (): Promise<void> {
-    await this.onCreated()
-
-    await this.getLiquidity({
-      firstAddress: this.firstTokenAddress,
-      secondAddress: this.secondTokenAddress
+    await this.withParentLoading(async () => {
+      await this.getLiquidity({
+        firstAddress: this.firstTokenAddress,
+        secondAddress: this.secondTokenAddress
+      })
+      // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
+      if (!this.liquidity) {
+        return this.handleBack()
+      }
+      this.updatePrices()
+      this.addListenerToSliderDragButton()
     })
-    // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
-    if (!this.liquidity) {
-      return this.handleBack()
-    }
-    this.updatePrices()
-    this.addListenerToSliderDragButton()
   }
 
   async beforeDestroy (): Promise<void> {
-    await this.onDestroyed()
-
     this.removeListenerFromSliderDragButton()
     this.resetData()
     this.resetPrices()

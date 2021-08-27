@@ -447,7 +447,15 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
       this.tokenFrom.address,
       this.tokenTo.address,
       this.liquiditySource
-    ).subscribe(this.runRecountSwapValues)
+    ).subscribe(this.onChangeSwapReserves)
+  }
+
+  private onChangeSwapReserves () {
+    if (!this.isAvailable) {
+      this.checkSwap()
+      this.updatePairLiquiditySources()
+    }
+    this.runRecountSwapValues()
   }
 
   private async calcMinMaxRecieved (): Promise<void> {
