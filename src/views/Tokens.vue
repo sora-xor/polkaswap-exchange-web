@@ -178,6 +178,11 @@ export default class Tokens extends Mixins(LoadingMixin, TranslationMixin, Asset
     }
   }
 
+  [class^="s-icon-"],
+  [class*=" s-icon-"] {
+    @include icon-styles;
+  }
+
   .el-table__body-wrapper {
     height: auto !important;
   }

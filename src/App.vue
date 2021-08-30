@@ -397,6 +397,9 @@ html {
   span {
     flex-direction: row-reverse;
   }
+  [class^="s-icon-"] {
+    @include icon-styles;
+  }
 }
 
 .menu.el-menu {
@@ -564,6 +567,15 @@ html {
 // Disabled button large typography
 .s-typography-button--large.is-disabled {
   font-size: var(--s-font-size-medium) !important;
+}
+
+// Icons colors
+.el-tooltip[class*=" s-icon-"],
+.el-button.el-tooltip i[class*=" s-icon-"] {
+  @include icon-styles(true);
+}
+i.icon-divider {
+  @include icon-styles;
 }
 </style>
 

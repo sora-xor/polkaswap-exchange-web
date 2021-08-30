@@ -533,6 +533,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       i {
         margin-top: 1px;
         font-size: 10px;
+        @include icon-styles;
       }
     }
   }
