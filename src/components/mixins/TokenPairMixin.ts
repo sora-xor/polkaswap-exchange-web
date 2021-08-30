@@ -160,8 +160,6 @@ const CreateTokenPairMixin = (namespace: string) => {
       })
     }
 
-    async afterApiConnect (): Promise<void> {}
-
     handleBack (): void {
       router.push({ name: PageNames.Pool })
     }

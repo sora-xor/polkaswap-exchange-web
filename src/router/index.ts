@@ -20,11 +20,6 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.Swap)
   },
   {
-    path: '/pool',
-    name: PageNames.Pool,
-    component: lazyView(PageNames.Pool)
-  },
-  {
     path: '/about',
     name: PageNames.About,
     component: lazyView(PageNames.About)
@@ -52,28 +47,33 @@ const routes: Array<RouteConfig> = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/pool/create-pair',
-    name: PageNames.CreatePair,
-    component: lazyView(PageNames.CreatePair),
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/pool/add/:firstAddress/:secondAddress',
-    name: PageNames.AddLiquidityId,
-    component: lazyView(PageNames.AddLiquidity),
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/pool/add',
-    name: PageNames.AddLiquidity,
-    component: lazyView(PageNames.AddLiquidity),
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/pool/remove/:firstAddress/:secondAddress',
-    name: PageNames.RemoveLiquidity,
-    component: lazyView(PageNames.RemoveLiquidity),
-    meta: { requiresAuth: true }
+    path: '/pool',
+    component: lazyView(PageNames.PoolContainer),
+    children: [
+      {
+        path: '',
+        name: PageNames.Pool,
+        component: lazyView(PageNames.Pool)
+      },
+      {
+        path: 'create-pair',
+        name: PageNames.CreatePair,
+        component: lazyView(PageNames.CreatePair),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'add/:firstAddress?/:secondAddress?',
+        name: PageNames.AddLiquidity,
+        component: lazyView(PageNames.AddLiquidity),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'remove/:firstAddress/:secondAddress',
+        name: PageNames.RemoveLiquidity,
+        component: lazyView(PageNames.RemoveLiquidity),
+        meta: { requiresAuth: true }
+      }
+    ]
   },
   {
     path: '/rewards',

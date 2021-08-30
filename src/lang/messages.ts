@@ -54,7 +54,6 @@ export default {
     [PageNames.Wallet]: 'Wallet',
     [PageNames.CreatePair]: 'Create Pair',
     [PageNames.AddLiquidity]: 'Add Liquidity',
-    [PageNames.AddLiquidityId]: 'Add Liquidity',
     [PageNames.RemoveLiquidity]: 'Remove Liquidity',
     [PageNames.PageNotFound]: 'Page Not Found'
   },

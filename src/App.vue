@@ -167,7 +167,6 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
 
   readonly PoolChildPages = [
     PageNames.AddLiquidity,
-    PageNames.AddLiquidityId,
     PageNames.RemoveLiquidity,
     PageNames.CreatePair
   ]

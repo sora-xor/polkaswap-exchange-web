@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="parentLoading || loading" class="container">
+  <div v-loading="parentLoading" class="container">
     <generic-page-header has-button-back :title="t('createPair.title')" :tooltip="t('pool.description')" @back="handleBack" />
     <s-form
       class="el-form--actions"
@@ -137,7 +137,7 @@
 
     <confirm-token-pair-dialog
       :visible.sync="showConfirmDialog"
-      :parent-loading="loading"
+      :parent-loading="parentLoading"
       :first-token="firstToken"
       :second-token="secondToken"
       :first-token-value="firstTokenValue"
@@ -192,8 +192,7 @@ export default class CreatePair extends Mixins(TokenPairMixin) {
   }
 
   async created (): Promise<void> {
-    await this.withApi(async () => {
-      await this.getAssets()
+    await this.withParentLoading(async () => {
       await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
     })
   }
