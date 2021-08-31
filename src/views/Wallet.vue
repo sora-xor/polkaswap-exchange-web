@@ -99,5 +99,8 @@ export default class Wallet extends Mixins(TranslationMixin) {
   .history .history-items {
     padding: 0 $inner-spacing-mini;
   }
+  .s-icon-basic-check-mark-24 {
+    @include icon-styles;
+  }
 }
 </style>

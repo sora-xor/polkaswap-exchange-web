@@ -333,6 +333,9 @@ export default class SelectToken extends Mixins(FormattedAmountMixin, Translatio
 .token-item__remove {
   margin-top: -5px;
   margin-left: $inner-spacing-medium;
+  [class^="s-icon-"] {
+    @include icon-styles(true);
+  }
 }
 .token-list {
   max-height: calc(#{$select-asset-item-height} * 7);

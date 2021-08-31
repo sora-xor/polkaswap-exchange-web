@@ -880,6 +880,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     }
     i {
       font-weight: 600;
+      @include icon-styles;
     }
   }
 }

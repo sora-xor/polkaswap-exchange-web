@@ -532,3 +532,14 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     }
   }
 }
+
+@mixin icon-styles ($hasPointerCursor: false) {
+  color: var(--s-color-base-content-tertiary);
+  transition: var(--s-transition-default);
+  @if $hasPointerCursor == true {
+    cursor: pointer;
+  }
+  &:hover {
+    color: var(--s-color-base-content-secondary);
+  }
+}

@@ -748,5 +748,7 @@
     "memorandum": "Polkaswap- ի հուշագիր և ծառայությունների մատուցման պայմաններ",
     "memorandumLink": "@:memorandum",
     "privacyLink": "@:helpDialog.privacyPolicy",
-    "FAQ": "Polkaswap ՀՏՀ"
+    "FAQ": "Polkaswap ՀՏՀ",
+    "connectedAccount": "Միացված հաշիվ",
+    "selectNodeConnected": "Միացված է ՝ {chain}"
 }
