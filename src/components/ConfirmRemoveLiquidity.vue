@@ -28,7 +28,7 @@
     <info-line
       :label="t('removeLiquidity.price')"
       :value="`1 ${firstToken.symbol} = ${formatStringValue(priceReversed)}`"
-      :asset-symbol="secondToken.symbol "
+      :asset-symbol="secondToken.symbol"
     />
     <info-line
       :value="`1 ${secondToken.symbol} = ${formatStringValue(price)}`"
@@ -50,7 +50,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import { NumberFormatterMixin } from '@soramitsu/soraneo-wallet-web'
+import { NumberFormatterMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -65,7 +65,7 @@ const namespace = 'removeLiquidity'
   components: {
     DialogBase,
     TokenLogo: lazyComponent(Components.TokenLogo),
-    InfoLine: lazyComponent(Components.InfoLine)
+    InfoLine
   }
 })
 export default class ConfirmRemoveLiquidity extends Mixins(NumberFormatterMixin, TranslationMixin, DialogMixin, LoadingMixin) {

@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="parentLoading || loading" class="container">
+  <div v-loading="parentLoading" class="container">
     <generic-page-header has-button-back :title="t('addLiquidity.title')" :tooltip="t('pool.description')" @back="handleBack" />
     <s-form
       class="el-form--actions"
@@ -107,10 +107,10 @@
       <info-line :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formattedPriceReversed" />
       <info-line
        :label="t('createPair.networkFee')"
+       :label-tooltip="t('networkFeeTooltipText')"
        :value="formattedFee"
        :asset-symbol="KnownSymbols.XOR"
-       :tooltip-content="t('networkFeeTooltipText')"
-       :fiat-value="getFiatAmountByCodecString(fee)"
+       :fiat-value="getFiatAmountByCodecString(networkFee)"
        is-formatted
       />
     </div>
@@ -136,7 +136,7 @@
 
     <confirm-token-pair-dialog
       :visible.sync="showConfirmDialog"
-      :parent-loading="loading"
+      :parent-loading="parentLoading"
       :share-of-pool="shareOfPool"
       :first-token="firstToken"
       :second-token="secondToken"
@@ -155,9 +155,10 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { FPNumber, AccountLiquidity, CodecString, KnownAssets, KnownSymbols } from '@sora-substrate/util'
-import { FormattedAmount, FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
+import { FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
+import LoadingMixin from '@/components/mixins/LoadingMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components } from '@/consts'
@@ -170,17 +171,17 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SelectToken: lazyComponent(Components.SelectToken),
-    InfoLine: lazyComponent(Components.InfoLine),
     TokenLogo: lazyComponent(Components.TokenLogo),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
-    FormattedAmount
+    FormattedAmount,
+    InfoLine
   }
 })
 
-export default class AddLiquidity extends Mixins(TokenPairMixin) {
+export default class AddLiquidity extends Mixins(LoadingMixin, TokenPairMixin) {
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity
@@ -189,28 +190,16 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
   @Action('addLiquidity', { namespace }) addLiquidity
   @Action('resetFocusedField', { namespace }) resetFocusedField
 
-  @Action('getAccountLiquidity', { namespace: 'pool' }) getAccountLiquidity!: AsyncVoidFn
-  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<Function>
-
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
-  accountLiquiditySubscription!: Function
-
-  async created (): Promise<void> {
-    this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
-
-    await this.withApi(async () => {
-      await Promise.all([
-        this.getAssets(),
-        this.getAccountLiquidity()
-      ])
-
+  async mounted (): Promise<void> {
+    await this.withParentLoading(async () => {
       if (this.firstAddress && this.secondAddress) {
         await this.setDataFromLiquidity({
           firstAddress: this.firstAddress,
           secondAddress: this.secondAddress
         })
-
+        // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
         if (!this.liquidityInfo) {
           return this.handleBack()
         }
@@ -218,12 +207,6 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
         await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
       }
     })
-  }
-
-  beforeDestroy (): void {
-    if (typeof this.accountLiquiditySubscription === 'function') {
-      this.accountLiquiditySubscription() // unsubscribe
-    }
   }
 
   get firstAddress (): string {

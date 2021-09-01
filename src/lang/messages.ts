@@ -18,6 +18,8 @@ export default {
   connectWalletText: 'Connect account',
   changeAccountText: 'Change account',
   connectedText: 'Connected',
+  connectedAccount: 'Connected account',
+  selectNodeConnected: 'Connected to: {chain}',
   connectWalletTextTooltip: 'Connect to @:soraText Network with polkadot{.js}',
   selectNodeText: 'Select node',
   bridgeText: 'Bridge',
@@ -52,7 +54,6 @@ export default {
     [PageNames.Wallet]: 'Wallet',
     [PageNames.CreatePair]: 'Create Pair',
     [PageNames.AddLiquidity]: 'Add Liquidity',
-    [PageNames.AddLiquidityId]: 'Add Liquidity',
     [PageNames.RemoveLiquidity]: 'Remove Liquidity',
     [PageNames.PageNotFound]: 'Page Not Found'
   },
@@ -403,7 +404,7 @@ export default {
     },
     custom: {
       title: 'Custom',
-      search: 'Search by Asset ID',
+      search: 'Input Asset ID',
       text: 'CUSTOM TOKENS',
       alreadyAttached: 'This token was already attached',
       notFound: 'Token not found'

@@ -61,7 +61,6 @@
               :asset-symbol="formattedAssetSymbol"
               :fiat-value="firstAmountFiatValue"
               is-formatted
-              alt-value="-"
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
@@ -69,9 +68,11 @@
               :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol"
               :fiat-value="soraFeeFiatValue"
               is-formatted
-              :value-prefix="!isSoraToEvm && formattedEvmNetworkFee ? '~' : null"
-              alt-value="-"
-            />
+            >
+              <template v-if="!isSoraToEvm && formattedEvmNetworkFee" #info-line-value-prefix>
+                <span class="info-line-value-prefix">~</span>
+              </template>
+            </info-line>
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
             <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol" /> -->
             <s-button
@@ -130,7 +131,6 @@
               :asset-symbol="formattedAssetSymbol"
               :fiat-value="secondAmountFiatValue"
               is-formatted
-              alt-value="-"
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
@@ -138,9 +138,11 @@
               :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol"
               :fiat-value="soraNetworkFeeFiatValue"
               is-formatted
-              :value-prefix="isSoraToEvm && formattedEvmNetworkFee ? '~' : null"
-              alt-value="-"
-            />
+            >
+              <template v-if="isSoraToEvm && formattedEvmNetworkFee" #info-line-value-prefix>
+                <span class="info-line-value-prefix">~</span>
+              </template>
+            </info-line>
             <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
             <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="!isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol" /> -->
             <s-button
@@ -176,8 +178,8 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory, BridgeNetworks } from '@sora-substrate/util'
-import { getExplorerLink, api, FormattedAmountMixin, FormattedAmount } from '@soramitsu/soraneo-wallet-web'
+import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory, BridgeNetworks, Operation } from '@sora-substrate/util'
+import { api, getExplorerLink, FormattedAmountMixin, FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
 import { interpret } from 'xstate'
 
 import BridgeMixin from '@/components/mixins/BridgeMixin'
@@ -194,8 +196,9 @@ const namespace = 'bridge'
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    InfoLine: lazyComponent(Components.InfoLine),
-    FormattedAmount
+    ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
+    FormattedAmount,
+    InfoLine
   }
 })
 export default class BridgeTransaction extends Mixins(
@@ -213,7 +216,6 @@ export default class BridgeTransaction extends Mixins(
   @Getter('amount', { namespace }) amount!: string
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
   @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks
-  @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
   @Getter('soraTransactionHash', { namespace }) soraTransactionHash!: string
@@ -225,8 +227,6 @@ export default class BridgeTransaction extends Mixins(
   @Getter('transactionStep', { namespace }) transactionStep!: number
   @Getter('historyItem', { namespace }) historyItem!: any
   @Getter('isTxEvmAccount', { namespace }) isTxEvmAccount!: boolean
-
-  @Action('getNetworkFee', { namespace }) getNetworkFee!: AsyncVoidFn
 
   @Action('setCurrentTransactionState', { namespace }) setCurrentTransactionState
   @Action('setInitialTransactionState', { namespace }) setInitialTransactionState
@@ -452,6 +452,10 @@ export default class BridgeTransaction extends Mixins(
     return this.getTransactionDate(!this.isSoraToEvm ? this.soraTransactionDate : this.evmTransactionDate)
   }
 
+  get soraNetworkFee (): CodecString {
+    return api.NetworkFee[Operation.EthBridgeOutgoing]
+  }
+
   get formattedSoraNetworkFee (): string {
     return this.getStringFromCodec(this.historyItem?.soraNetworkFee || this.soraNetworkFee, this.tokenXOR?.decimals)
   }
@@ -556,9 +560,6 @@ export default class BridgeTransaction extends Mixins(
     if (!this.isTransactionConfirmed) {
       router.push({ name: PageNames.Bridge })
       return
-    }
-    if (!this.historyItem) {
-      await this.getNetworkFee()
     }
     this.initializeTransactionStateMachine()
     this.isInitRequestCompleted = true
@@ -865,6 +866,7 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     }
     i {
       font-weight: 600;
+      @include icon-styles;
     }
   }
 }

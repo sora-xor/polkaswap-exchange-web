@@ -28,7 +28,6 @@ const types = flow(
     'SET_EXCHANGE_B',
     'SET_LIQUIDITY_PROVIDER_FEE',
     'SET_PAIR_LIQUIDITY_SOURCES',
-    'SET_NETWORK_FEE',
     'SET_REWARDS',
     'GET_SWAP_CONFIRM',
     'RESET'
@@ -49,7 +48,6 @@ interface SwapState {
   isExchangeB: boolean;
   liquidityProviderFee: CodecString;
   pairLiquiditySources: Array<LiquiditySourceTypes>;
-  networkFee: CodecString;
   isAvailable: boolean;
   isAvailableChecking: boolean;
   rewards: Array<LPRewardsInfo>;
@@ -67,7 +65,6 @@ function initialState (): SwapState {
     amountWithoutImpact: '',
     isExchangeB: false,
     liquidityProviderFee: '',
-    networkFee: '',
     isAvailable: false,
     isAvailableChecking: false,
     pairLiquiditySources: [],
@@ -107,9 +104,6 @@ const getters = {
   },
   liquidityProviderFee (state: SwapState) {
     return state.liquidityProviderFee
-  },
-  networkFee (state: SwapState) {
-    return state.networkFee
   },
   swapLiquiditySource (state, getters, rootState, rootGetters) {
     if (!getters.pairLiquiditySourcesAvailable) return undefined
@@ -204,9 +198,6 @@ const mutations = {
   },
   [types.SET_REWARDS] (state: SwapState, rewards: Array<LPRewardsInfo>) {
     state.rewards = [...rewards]
-  },
-  [types.SET_NETWORK_FEE] (state: SwapState, networkFee: CodecString) {
-    state.networkFee = networkFee
   }
 }
 
@@ -289,9 +280,6 @@ const actions = {
   },
   setRewards ({ commit }, rewards: Array<LPRewardsInfo>) {
     commit(types.SET_REWARDS, rewards)
-  },
-  setNetworkFee ({ commit }, networkFee: string) {
-    commit(types.SET_NETWORK_FEE, networkFee)
   },
   reset ({ commit, dispatch }) {
     dispatch('resetSubscriptions')

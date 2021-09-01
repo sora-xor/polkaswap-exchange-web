@@ -586,7 +586,7 @@
         },
         "custom": {
             "title": "Հատուկ",
-            "search": "Որոնում Asset ID-ի կողմից",
+            "search": "Մուտքագրեք ակտիվի ID",
             "text": "ՀԱՏՈՒԿ ՏՈԿԵՆՆԵՐ ",
             "alreadyAttached": "Այս տոկենն արդեն ամրակցված էր",
             "notFound": "Տոկենը չի գտնվել"
@@ -748,5 +748,7 @@
     "memorandum": "Polkaswap- ի հուշագիր և ծառայությունների մատուցման պայմաններ",
     "memorandumLink": "@:memorandum",
     "privacyLink": "@:helpDialog.privacyPolicy",
-    "FAQ": "Polkaswap ՀՏՀ"
+    "FAQ": "Polkaswap ՀՏՀ",
+    "connectedAccount": "Միացված հաշիվ",
+    "selectNodeConnected": "Միացված է ՝ {chain}"
 }

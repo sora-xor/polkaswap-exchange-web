@@ -157,25 +157,23 @@
         <div v-if="areNetworksConnected && !isZeroAmount && isRegisteredAsset" class="info-line-container">
           <info-line
             :label="t('bridge.soraNetworkFee')"
-            :tooltip-content="t('networkFeeTooltipText')"
+            :label-tooltip="t('networkFeeTooltipText')"
             :value="formatFee(soraNetworkFee, formattedSoraNetworkFee)"
             :asset-symbol="KnownSymbols.XOR"
             :fiat-value="getFiatAmountByCodecString(soraNetworkFee)"
             is-formatted
-            alt-value="-"
           />
           <info-line
             :label="t('bridge.ethereumNetworkFee')"
-            :tooltip-content="t('ethNetworkFeeTooltipText')"
+            :label-tooltip="t('ethNetworkFeeTooltipText')"
             :value="formatFee(evmNetworkFee, formattedEvmNetworkFee)"
             :asset-symbol="currentEvmTokenSymbol"
             is-formatted
-            alt-value="-"
           />
           <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
           <!-- <info-line
             :label="t('bridge.total')"
-            :tooltip-content="t('bridge.tooltipValue')"
+            :label-tooltip="t('bridge.tooltipValue')"
             :value="`~${soraTotal}`"
             :asset-symbol="KnownSymbols.XOR"
           /> -->
@@ -192,8 +190,8 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { RegisteredAccountAsset, BridgeNetworks, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
-import { FormattedAmountMixin, FormattedAmount } from '@soramitsu/soraneo-wallet-web'
+import { RegisteredAccountAsset, BridgeNetworks, KnownSymbols, FPNumber, CodecString, Operation } from '@sora-substrate/util'
+import { api, FormattedAmountMixin, FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import BridgeMixin from '@/components/mixins/BridgeMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
@@ -222,13 +220,13 @@ const namespace = 'bridge'
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     TokenLogo: lazyComponent(Components.TokenLogo),
-    InfoLine: lazyComponent(Components.InfoLine),
     SelectNetwork: lazyComponent(Components.SelectNetwork),
     SelectRegisteredAsset: lazyComponent(Components.SelectRegisteredAsset),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
-    FormattedAmount
+    FormattedAmount,
+    InfoLine
   }
 })
 export default class Bridge extends Mixins(
@@ -243,7 +241,6 @@ export default class Bridge extends Mixins(
   @Action('resetBridgeForm', { namespace }) resetBridgeForm
   @Action('resetBalanceSubscription', { namespace }) resetBalanceSubscription!: AsyncVoidFn
   @Action('updateBalanceSubscription', { namespace }) updateBalanceSubscription!: AsyncVoidFn
-  @Action('getNetworkFee', { namespace }) getNetworkFee!: AsyncVoidFn
 
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
   @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks
@@ -255,7 +252,6 @@ export default class Bridge extends Mixins(
   @Getter('asset', { namespace }) asset!: any
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('amount', { namespace }) amount!: string
-  @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
   @Getter nodeIsConnected!: boolean
 
@@ -289,6 +285,10 @@ export default class Bridge extends Mixins(
 
   get isZeroAmount (): boolean {
     return +this.amount === 0
+  }
+
+  get soraNetworkFee (): CodecString {
+    return api.NetworkFee[Operation.EthBridgeOutgoing]
   }
 
   get isMaxAvailable (): boolean {
@@ -471,10 +471,7 @@ export default class Bridge extends Mixins(
   private async getNetworkFees (): Promise<void> {
     if (this.isRegisteredAsset) {
       this.feesFetching = true
-      await Promise.all([
-        this.getNetworkFee(),
-        this.getEvmNetworkFee()
-      ])
+      await this.getEvmNetworkFee()
       this.feesFetching = false
     }
   }
@@ -535,6 +532,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       i {
         margin-top: 1px;
         font-size: 10px;
+        @include icon-styles;
       }
     }
   }

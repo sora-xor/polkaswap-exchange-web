@@ -20,32 +20,34 @@
             </template>
           </s-input>
         </div>
-        <div v-if="filteredWhitelistTokens && filteredWhitelistTokens.length > 0" key="filtered" class="token-list">
-          <div v-for="token in filteredWhitelistTokens" @click="selectToken(token)" :key="token.address" class="token-item">
-            <s-col>
-              <s-row flex justify="start" align="middle">
-                <token-logo :token="token" size="big" />
-                <div class="token-item__info s-flex">
-                  <div class="token-item__symbol">{{ token.symbol }}</div>
-                  <token-address :name="token.name" :symbol="token.symbol" :address="token.address" class="token-item__details" />
-                </div>
-              </s-row>
-            </s-col>
-            <div v-if="connected" class="token-item__balance-container">
-              <formatted-amount-with-fiat-value
-                v-if="formatBalance(token) !== formattedZeroSymbol"
-                value-class="token-item__balance"
-                :value="formatBalance(token)"
-                :font-size-rate="FontSizeRate.MEDIUM"
-                :has-fiat-value="shouldFiatBeShown(token)"
-                :fiat-value="getFiatBalance(token)"
-                :fiat-font-size-rate="FontSizeRate.MEDIUM"
-                :fiat-font-weight-rate="FontWeightRate.MEDIUM"
-              />
-              <span v-else class="token-item__balance">{{ formattedZeroSymbol }}</span>
+        <s-scrollbar v-if="filteredWhitelistTokens && filteredWhitelistTokens.length > 0" key="filtered" class="token-list-scrollbar">
+          <div class="token-list">
+            <div v-for="token in filteredWhitelistTokens" @click="selectToken(token)" :key="token.address" class="token-item">
+              <s-col>
+                <s-row flex justify="start" align="middle">
+                  <token-logo :token="token" size="big" />
+                  <div class="token-item__info s-flex">
+                    <div class="token-item__symbol">{{ token.symbol }}</div>
+                    <token-address :name="token.name" :symbol="token.symbol" :address="token.address" class="token-item__details" />
+                  </div>
+                </s-row>
+              </s-col>
+              <div v-if="connected" class="token-item__balance-container">
+                <formatted-amount-with-fiat-value
+                  v-if="formatBalance(token) !== formattedZeroSymbol"
+                  value-class="token-item__balance"
+                  :value="formatBalance(token)"
+                  :font-size-rate="FontSizeRate.MEDIUM"
+                  :has-fiat-value="shouldFiatBeShown(token)"
+                  :fiat-value="getFiatBalance(token)"
+                  :fiat-font-size-rate="FontSizeRate.MEDIUM"
+                  :fiat-font-weight-rate="FontWeightRate.MEDIUM"
+                />
+                <span v-else class="token-item__balance">{{ formattedZeroSymbol }}</span>
+              </div>
             </div>
           </div>
-        </div>
+        </s-scrollbar>
         <div v-else key="empty" class="token-list token-list__empty">
           <span class="empty-results-icon" />
           {{ t('selectToken.emptyListMessage') }}
@@ -302,12 +304,13 @@ export default class SelectToken extends Mixins(FormattedAmountMixin, Translatio
   @include exchange-tabs();
   @include select-asset;
 }
+.token-list-scrollbar {
+  @include scrollbar(0, 0)
+}
 </style>
 
 <style lang="scss" scoped>
 @include search-item('asset-select__search');
-
-$token-item-height: 71px;
 
 .token-search {
   // TODO: Fix input styles (paddings and icon position)
@@ -330,11 +333,13 @@ $token-item-height: 71px;
 .token-item__remove {
   margin-top: -5px;
   margin-left: $inner-spacing-medium;
+  [class^="s-icon-"] {
+    @include icon-styles(true);
+  }
 }
 .token-list {
-  max-height: calc(#{$token-item-height} * 7);
-  overflow-y: auto;
-  overflow-x: hidden;
+  max-height: calc(#{$select-asset-item-height} * 7);
+
   &__empty {
     display: flex;
     align-items: center;

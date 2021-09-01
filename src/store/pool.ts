@@ -2,104 +2,110 @@ import map from 'lodash/fp/map'
 import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
-import { api, connection } from '@soramitsu/soraneo-wallet-web'
+import concat from 'lodash/fp/concat'
+import { api } from '@soramitsu/soraneo-wallet-web'
+import type { Subscription } from '@polkadot/x-rxjs'
+import type { AccountLiquidity } from '@sora-substrate/util'
+
+import { delay } from '@/utils'
+
+const waitForAccountPair = async (func: Function): Promise<any> => {
+  if (!api.accountPair) {
+    await delay()
+    return await waitForAccountPair(func)
+  } else {
+    return await func()
+  }
+}
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
+  concat([
+    'SET_ACCOUNT_LIQUIDITY_LIST',
+    'SET_ACCOUNT_LIQUIDITY_UPDATES',
+    'RESET_ACCOUNT_LIQUIDITY_LIST',
+    'RESET_ACCOUNT_LIQUIDITY_UPDATES',
+    'SET_ACCOUNT_LIQUIDITY'
+  ]),
   map(x => [x, x]),
   fromPairs
-)([
-  'GET_ACCOUNT_LIQUIDITY',
-  'UPDATE_ACCOUNT_LIQUIDITY'
-])
+)([])
 
-function initialState () {
+interface PoolState {
+  accountLiquidity: Array<AccountLiquidity>;
+  accountLiquidityList: Nullable<Subscription>;
+  accountLiquidityUpdates: Nullable<Subscription>;
+}
+
+function initialState (): PoolState {
   return {
     accountLiquidity: [],
-    accountLiquidityFetching: false
+    accountLiquidityList: null,
+    accountLiquidityUpdates: null
   }
 }
 
 const state = initialState()
 
 const getters = {
-  accountLiquidity (state) {
+  accountLiquidity (state: PoolState): Array<AccountLiquidity> {
     return state.accountLiquidity
   }
 }
 
 const mutations = {
-  [types.GET_ACCOUNT_LIQUIDITY_REQUEST] (state) {
-    state.accountLiquidity = []
-    state.accountLiquidityFetching = true
+  [types.SET_ACCOUNT_LIQUIDITY_LIST] (state: PoolState, subscription: Subscription) {
+    state.accountLiquidityList = subscription
   },
-
-  [types.GET_ACCOUNT_LIQUIDITY_SUCCESS] (state, liquidity) {
-    state.accountLiquidity = []
-    state.accountLiquidity = liquidity
-    state.accountLiquidityFetching = false
+  [types.RESET_ACCOUNT_LIQUIDITY_LIST] (state: PoolState) {
+    if (state.accountLiquidityList) {
+      state.accountLiquidityList.unsubscribe()
+    }
+    state.accountLiquidityList = null
   },
-
-  [types.GET_ACCOUNT_LIQUIDITY_FAILURE] (state) {
-    state.accountLiquidity = []
-    state.accountLiquidityFetching = false
+  [types.SET_ACCOUNT_LIQUIDITY_UPDATES] (state: PoolState, subscription: Subscription) {
+    state.accountLiquidityUpdates = subscription
   },
-
-  [types.UPDATE_ACCOUNT_LIQUIDITY_REQUEST] (state) {
-    state.accountLiquidityFetching = true
+  [types.RESET_ACCOUNT_LIQUIDITY_UPDATES] (state: PoolState) {
+    if (state.accountLiquidityUpdates) {
+      state.accountLiquidityUpdates.unsubscribe()
+    }
+    state.accountLiquidityUpdates = null
   },
-
-  [types.UPDATE_ACCOUNT_LIQUIDITY_SUCCESS] (state, liquidity) {
-    state.accountLiquidity = []
-    state.accountLiquidity = liquidity
-    state.accountLiquidityFetching = false
-  },
-
-  [types.UPDATE_ACCOUNT_LIQUIDITY_FAILURE] (state) {
-    state.accountLiquidity = []
-    state.accountLiquidityFetching = false
+  [types.SET_ACCOUNT_LIQUIDITY] (state: PoolState, liquidity: Array<AccountLiquidity>) {
+    state.accountLiquidity = [...liquidity] // update vuex state by creating new copy of array
   }
 }
 
 const actions = {
-  async getAccountLiquidity ({ commit, rootGetters, state }) {
-    if (!rootGetters.isLoggedIn || state.accountLiquidityFetching) {
-      return
-    }
-    commit(types.GET_ACCOUNT_LIQUIDITY_REQUEST)
-    try {
-      await api.getKnownAccountLiquidity()
-      commit(types.GET_ACCOUNT_LIQUIDITY_SUCCESS, api.accountLiquidity)
-    } catch (error) {
-      commit(types.GET_ACCOUNT_LIQUIDITY_FAILURE)
-    }
+  async subscribeOnAccountLiquidityList ({ commit, rootGetters }) {
+    commit(types.RESET_ACCOUNT_LIQUIDITY_LIST)
+
+    if (!rootGetters.isLoggedIn) return
+
+    await waitForAccountPair(() => {
+      const userPoolsSubscription = api.getUserPoolsSubscription()
+      commit(types.SET_ACCOUNT_LIQUIDITY_LIST, userPoolsSubscription)
+    })
   },
-  createAccountLiquiditySubscription ({ commit, rootGetters, state }) {
-    const fiveSeconds = 5 * 1000
+  async subscribeOnAccountLiquidityUpdates ({ commit, rootGetters }) {
+    commit(types.RESET_ACCOUNT_LIQUIDITY_UPDATES)
 
-    let subscription: NodeJS.Timeout | null = setInterval(async () => {
-      if (!connection.opened || !rootGetters.isLoggedIn || state.accountLiquidityFetching) {
-        return
-      }
-      commit(types.UPDATE_ACCOUNT_LIQUIDITY_REQUEST)
-      try {
-        // It's not a real update because we cannot add pool token by address.
-        // So, we need to find all pairs every time (5 sec)
-        await api.getKnownAccountLiquidity()
-        commit(types.UPDATE_ACCOUNT_LIQUIDITY_SUCCESS, api.accountLiquidity)
-      } catch (error) {
-        commit(types.UPDATE_ACCOUNT_LIQUIDITY_FAILURE)
-      }
-    }, fiveSeconds)
+    if (!rootGetters.isLoggedIn) return
 
-    const unsubscribe = () => {
-      if (subscription !== null) {
-        clearInterval(subscription)
-        subscription = null
-      }
-    }
+    await waitForAccountPair(() => {
+      const liquidityUpdatedSubscription = api.liquidityUpdated.subscribe(() => {
+        commit(types.SET_ACCOUNT_LIQUIDITY, api.accountLiquidity)
+      })
 
-    return unsubscribe
+      commit(types.SET_ACCOUNT_LIQUIDITY_UPDATES, liquidityUpdatedSubscription)
+    })
+  },
+  unsubscribeAccountLiquidityListAndUpdates ({ commit }) {
+    commit(types.RESET_ACCOUNT_LIQUIDITY_LIST)
+    commit(types.RESET_ACCOUNT_LIQUIDITY_UPDATES)
+    commit(types.SET_ACCOUNT_LIQUIDITY, []) // reset account liquidity
+    api.unsubscribeFromAllLiquidityUpdates()
   }
 }
 

@@ -1,7 +1,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { KnownSymbols, CodecString } from '@sora-substrate/util'
-import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
+import { KnownSymbols, CodecString, Operation } from '@sora-substrate/util'
+import { FormattedAmountMixin, api } from '@soramitsu/soraneo-wallet-web'
 
 import TransactionMixin from './TransactionMixin'
 import LoadingMixin from './LoadingMixin'
@@ -24,7 +24,6 @@ const CreateTokenPairMixin = (namespace: string) => {
 
     @Getter('isAvailable', { namespace }) isAvailable!: boolean
     @Getter('minted', { namespace }) minted!: CodecString
-    @Getter('fee', { namespace }) fee!: CodecString
     @Getter('price', { namespace: 'prices' }) price!: string
     @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
 
@@ -62,8 +61,12 @@ const CreateTokenPairMixin = (namespace: string) => {
       return this.formatCodecNumber(this.minted)
     }
 
+    get networkFee (): CodecString {
+      return api.NetworkFee[Operation[namespace.charAt(0).toUpperCase() + namespace.slice(1)]]
+    }
+
     get formattedFee (): string {
-      return this.formatCodecNumber(this.fee)
+      return this.formatCodecNumber(this.networkFee)
     }
 
     get areTokensSelected (): boolean {
@@ -75,21 +78,21 @@ const CreateTokenPairMixin = (namespace: string) => {
     }
 
     get isFirstMaxButtonAvailable (): boolean {
-      return this.isLoggedIn && isMaxButtonAvailable(this.areTokensSelected, this.firstToken, this.firstTokenValue, this.fee, this.tokenXOR)
+      return this.isLoggedIn && isMaxButtonAvailable(this.areTokensSelected, this.firstToken, this.firstTokenValue, this.networkFee, this.tokenXOR)
     }
 
     get isSecondMaxButtonAvailable (): boolean {
-      return this.isLoggedIn && isMaxButtonAvailable(this.areTokensSelected, this.secondToken, this.secondTokenValue, this.fee, this.tokenXOR)
+      return this.isLoggedIn && isMaxButtonAvailable(this.areTokensSelected, this.secondToken, this.secondTokenValue, this.networkFee, this.tokenXOR)
     }
 
     get isInsufficientBalance (): boolean {
       if (this.isLoggedIn && this.areTokensSelected) {
         if (isXorAccountAsset(this.firstToken) || isXorAccountAsset(this.secondToken)) {
-          if (hasInsufficientBalance(this.firstToken, this.firstTokenValue, this.fee)) {
+          if (hasInsufficientBalance(this.firstToken, this.firstTokenValue, this.networkFee)) {
             this.insufficientBalanceTokenSymbol = this.firstToken.symbol
             return true
           }
-          if (hasInsufficientBalance(this.secondToken, this.secondTokenValue, this.fee)) {
+          if (hasInsufficientBalance(this.secondToken, this.secondTokenValue, this.networkFee)) {
             this.insufficientBalanceTokenSymbol = this.secondToken.symbol
             return true
           }
@@ -124,7 +127,7 @@ const CreateTokenPairMixin = (namespace: string) => {
     }
 
     async handleMaxValue (token: any, setValue: (v: any) => void): Promise<void> {
-      setValue(getMaxValue(token, this.fee))
+      setValue(getMaxValue(token, this.networkFee))
       this.updatePrices()
     }
 
@@ -156,8 +159,6 @@ const CreateTokenPairMixin = (namespace: string) => {
         this.handleBack()
       })
     }
-
-    async afterApiConnect (): Promise<void> {}
 
     handleBack (): void {
       router.push({ name: PageNames.Pool })

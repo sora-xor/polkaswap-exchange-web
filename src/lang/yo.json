@@ -229,7 +229,7 @@
     "connectWalletTextTooltip": "Sopọ si Nẹtiwọọki @:soraText pẹlu polkadot {.js}",
     "selectNodeText": "Yan ipade",
     "bridgeText": "Afara",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Akiyesi<\/span>: Oju opo wẹẹbu yii ni itọju nipasẹ agbegbe @:soraText. Ṣaaju ki o to tẹsiwaju lati lo oju opo wẹẹbu yii, jọwọ ṣe atunyẹwo @:polkaswapFaqLink ati iwe, eyiti o ni alaye alaye lori bi Polkaswap ṣe n ṣiṣẹ, ati pẹlu @:footerMenu.memorandum, ati @:(footerMenu.privacy). Awọn iwe aṣẹ wọnyi jẹ pataki si aabo olumulo ati aabo olumulo. Nipa lilo Polkaswap, o gba pe o ti ka ati loye awọn iwe wọnyi. O tun gba eleyi: Ikini)  ojuṣe rẹ nikan fun ibamu pẹlu gbogbo awọn ofin ti o le kan si lilo rẹ pato ti Polkaswap ni aṣẹ ofin rẹ; Ikeji)  oye rẹ pe ẹya lọwọlọwọ ti Polkaswap jẹ ẹya alpha: ko ti ni idanwo ni kikun, ati pe awọn iṣẹ kan le ma ṣe bi a ti ṣe apẹrẹ; ati Iketa)  oye rẹ ati gbigba iyọọda ti awọn eewu ti o wa ninu lilo Polkaswap, pẹlu, ṣugbọn kii ṣe opin si, eewu ti awọn ami ami padanu. Lẹẹkan si, jọwọ maṣe tẹsiwaju laisi kika Awọn ibeere, <span> @:footerMenu.memorandum <\/span> <a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\"> @:footerMenu.memorandum <\/a> , ati <span> @:footerMenu.privacy <\/span> <a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\"> @:footerMenu.privacy <\/a>!",
+    "disclaimer": "<span class=\"app-disclaimer__title\">Akiyesi<\/span>: Oju opo wẹẹbu yii ni itọju nipasẹ agbegbe @:(soraText). Ṣaaju ki o to tẹsiwaju lati lo oju opo wẹẹbu yii, jọwọ ṣe atunyẹwo @:polkaswapFaqLink ati iwe, eyiti o ni alaye alaye lori bi Polkaswap ṣe n ṣiṣẹ, ati pẹlu @:footerMenu.memorandum, ati @:(footerMenu.privacy). Awọn iwe aṣẹ wọnyi jẹ pataki si aabo olumulo ati aabo olumulo. Nipa lilo Polkaswap, o gba pe o ti ka ati loye awọn iwe wọnyi. O tun gba eleyi: Ikini)  ojuṣe rẹ nikan fun ibamu pẹlu gbogbo awọn ofin ti o le kan si lilo rẹ pato ti Polkaswap ni aṣẹ ofin rẹ; Ikeji)  oye rẹ pe ẹya lọwọlọwọ ti Polkaswap jẹ ẹya alpha: ko ti ni idanwo ni kikun, ati pe awọn iṣẹ kan le ma ṣe bi a ti ṣe apẹrẹ; ati Iketa)  oye rẹ ati gbigba iyọọda ti awọn eewu ti o wa ninu lilo Polkaswap, pẹlu, ṣugbọn kii ṣe opin si, eewu ti awọn ami ami padanu. Lẹẹkan si, jọwọ maṣe tẹsiwaju laisi kika Awọn ibeere, <span> @:footerMenu.memorandum <\/span> <a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\"> @:footerMenu.memorandum <\/a> , ati <span> @:footerMenu.privacy <\/span> <a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\"> @:footerMenu.privacy <\/a>!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"Polkaswap FAQ\">Polkaswap FAQ<\/a>",
     "poweredBy": "Itileyin lati",
     "confirmTransactionText": "Jẹrisi iṣowo ni {direction}",
@@ -586,7 +586,7 @@
         },
         "custom": {
             "title": "Atowunwa",
-            "search": "Ṣawari nipasẹ Idanimo dukia",
+            "search": "Idanimo dukia",
             "text": "Token atowunwa",
             "alreadyAttached": "Token yii ti ni asopọ tẹlẹ",
             "notFound": "A ko ri token"
@@ -692,7 +692,7 @@
             "connectExternalAccount": "So iroyin miiran pọ mọ @:ethereumText lati ṣayẹwo fun awọn ere PSWAP ati VAL ti o wa.",
             "connectAccounts": "Lati beere awọn ẹbun PSWAP rẹ ati VAL o nilo lati sopọ mejeeji rẹ @:soraText ati @:ethereumText awọn iroyin.",
             "connectAnotherAccount": "So ifowosi miiran pọ mọ @:ethereumText lati ṣayẹwo fun awọn ere PSWAP ati VAL ti o wa.",
-            "howToClaimRewards": "Lati beere fun awọn ere {symbols} o nilo lati buwolu wọle {count} {transactions} ni {destination} . Awọn ere yoo wa ni idogo si akọọlẹ @:soraText rẹ."
+            "howToClaimRewards": "Lati beere fun awọn ere {symbols} o nilo lati buwolu wọle {count} {transactions} ni {destination}. Awọn ere yoo wa ni idogo si akọọlẹ @:soraText rẹ."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
@@ -748,5 +748,7 @@
     "memorandum": "Memorandum Polkaswap ati Awọn ofin lilo",
     "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\">@:memorandum<\/a>",
     "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\">@:helpDialog.privacyPolicy<\/a>",
-    "FAQ": "Ibere ati Idaun lori Polkaswap"
+    "FAQ": "Ibere ati Idaun lori Polkaswap",
+    "connectedAccount": "Ti sopọ iroyin",
+    "selectNodeConnected": "Ti sopọ mọ: {chain}"
 }

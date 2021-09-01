@@ -57,6 +57,7 @@ $icon-size: 42px;
   transition: var(--s-transition-default);
   > i {
     margin: auto;
+    @include icon-styles(true);
   }
   & + span {
     display: none;

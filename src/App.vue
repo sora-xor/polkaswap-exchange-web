@@ -16,10 +16,10 @@
         <s-button type="action" class="lang-control s-pressed" @click="openSelectLanguageDialog">
           <s-icon name="basic-globe-24" size="28" />
         </s-button>
-        <s-button type="action" class="node-control s-pressed" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
+        <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openSelectNodeDialog">
           <token-logo class="node-control__logo" v-bind="nodeLogo" />
         </s-button>
-        <s-button type="tertiary" :class="['account-control', { 's-pressed': isLoggedIn }]" size="medium" :tooltip="t('connectWalletTextTooltip')" :disabled="loading" @click="goTo(PageNames.Wallet)">
+        <s-button type="tertiary" :class="['account-control', { 's-pressed': isLoggedIn }]" size="medium" :tooltip="accountTooltip" :disabled="loading" @click="goTo(PageNames.Wallet)">
           <div :class="['account-control-title', { name: isLoggedIn }]">{{ accountInfo }}</div>
           <div class="account-control-icon">
             <s-icon v-if="!isLoggedIn" name="finance-wallet-24" size="28" />
@@ -175,7 +175,6 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
 
   readonly PoolChildPages = [
     PageNames.AddLiquidity,
-    PageNames.AddLiquidityId,
     PageNames.RemoveLiquidity,
     PageNames.CreatePair
   ]
@@ -285,6 +284,13 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
     return this.libraryTheme === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)'
   }
 
+  get nodeTooltip (): string {
+    if (this.nodeIsConnected) {
+      return this.t('selectNodeConnected', { chain: this.node.chain })
+    }
+    return this.t('selectNodeText')
+  }
+
   get nodeLogo (): any {
     return {
       size: LogoSize.MEDIUM,
@@ -294,6 +300,10 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
 
   get isAboutPage (): boolean {
     return this.$route.name === PageNames.About
+  }
+
+  get accountTooltip (): string {
+    return this.t(`${this.isLoggedIn ? 'connectedAccount' : 'connectWalletTextTooltip'}`)
   }
 
   get accountInfo (): string {
@@ -415,6 +425,9 @@ html {
   }
   span {
     flex-direction: row-reverse;
+  }
+  [class^="s-icon-"] {
+    @include icon-styles;
   }
 }
 
@@ -583,6 +596,15 @@ html {
 // Disabled button large typography
 .s-typography-button--large.is-disabled {
   font-size: var(--s-font-size-medium) !important;
+}
+
+// Icons colors
+.el-tooltip[class*=" s-icon-"],
+.el-button.el-tooltip i[class*=" s-icon-"] {
+  @include icon-styles(true);
+}
+i.icon-divider {
+  @include icon-styles;
 }
 </style>
 

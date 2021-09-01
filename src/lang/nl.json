@@ -94,8 +94,8 @@
         "confirm": "@:confirmText",
         "errorAddress": "Ongeldig adres. Controleer het en probeer het opnieuw.",
         "feeTooltip": "@:networkFeeTooltipText",
-        "tooltip": "Verzend tokens tussen SORA-netwerk accounts",
-        "addressWarning": "Tokens worden naar het onderstaande SORA-adres gestuurd. Zorg ervoor dat de ontvanger toegang heeft tot de SORA-keten om de tokens te gebruiken:",
+        "tooltip": "Verzend tokens tussen accounts op het  SORA-netwerk",
+        "addressWarning": "Tokens worden naar het onderstaande SORA-adres gestuurd. Zorg ervoor dat de ontvanger toegang heeft tot de SORA-chain om de tokens te gebruiken:",
         "addressError": "U kunt geen tokens verzenden naar hetzelfde account waarmee u momenteel bent verbonden."
     },
     "account": {
@@ -332,7 +332,7 @@
             "incorrectProtocol": "Het adres moet beginnen met ws:\/\/ of wss:\/\/",
             "incorrectAddress": "Onjuist adres"
         },
-        "updateNode": "Knooppunt bijwerken"
+        "updateNode": "Node bijwerken"
     },
     "buttons": {
         "max": "MAX",
@@ -586,7 +586,7 @@
         },
         "custom": {
             "title": "Aangepast",
-            "search": "Zoeken op asset-ID",
+            "search": "Invoer activum ID",
             "text": "AANGEPASTE TOKENS",
             "alreadyAttached": "Deze token was al gehecht",
             "notFound": "Token niet gevonden"
@@ -748,5 +748,7 @@
     "memorandum": "Polkaswap memorandum en servicevoorwaarden",
     "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\"> @:memorandum <\/a>",
     "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\"> @:helpDialog.privacyPolicy <\/a>",
-    "FAQ": "Polkaswap FAQ"
+    "FAQ": "Polkaswap FAQ",
+    "connectedAccount": "Verbonden account",
+    "selectNodeConnected": "Verbonden met: {chain}"
 }

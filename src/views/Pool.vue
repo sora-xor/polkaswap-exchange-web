@@ -1,11 +1,11 @@
 <template>
   <div v-loading="parentLoading" class="container el-form--pool">
     <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')" />
-    <div v-loading="loading" class="pool-wrapper">
+    <div v-loading="parentLoading" class="pool-wrapper">
       <p v-if="!isLoggedIn" class="pool-info-container pool-info-container--empty">
         {{ t('pool.connectToWallet') }}
       </p>
-      <p v-else-if="!accountLiquidity || !accountLiquidity.length" class="pool-info-container pool-info-container--empty">
+      <p v-else-if="!accountLiquidity || !accountLiquidity.length || parentLoading" class="pool-info-container pool-info-container--empty">
         {{ t('pool.liquidityNotFound') }}
       </p>
       <s-collapse v-else class="pool-list" :borders="true">
@@ -31,7 +31,7 @@
             :value="getPoolShare(liquidityItem.poolShare)"
           />
           <div class="pool-info--buttons">
-            <s-button type="secondary" class="s-typography-button--medium" @click="handleAddPairLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
+            <s-button type="secondary" class="s-typography-button--medium" @click="handleAddLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
               {{ t('pool.addLiquidity') }}
             </s-button>
             <s-button type="secondary" class="s-typography-button--medium" @click="handleRemoveLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
@@ -42,7 +42,7 @@
       </s-collapse>
     </div>
     <template v-if="isLoggedIn">
-      <s-button class="el-button--add-liquidity s-typography-button--large" type="primary" @click="handleAddLiquidity">
+      <s-button class="el-button--add-liquidity s-typography-button--large" type="primary" @click="handleAddLiquidity()">
         {{ t('pool.addLiquidity') }}
       </s-button>
       <s-button class="el-button--create-pair s-typography-button--large" type="secondary" @click="handleCreatePair">
@@ -56,10 +56,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
+import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 import { AccountLiquidity, Asset } from '@sora-substrate/util'
-import { FormattedAmountMixin, FormattedAmount, FontSizeRate, FontWeightRate } from '@soramitsu/soraneo-wallet-web'
+import { FormattedAmountMixin, FormattedAmount, FontSizeRate, FontWeightRate, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -72,41 +72,18 @@ const namespace = 'pool'
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    InfoLine: lazyComponent(Components.InfoLine),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    FormattedAmount
+    FormattedAmount,
+    InfoLine
   }
 })
-export default class Pool extends Mixins(FormattedAmountMixin, TranslationMixin, LoadingMixin) {
+export default class Pool extends Mixins(LoadingMixin, FormattedAmountMixin, TranslationMixin) {
   readonly FontSizeRate = FontSizeRate
   readonly FontWeightRate = FontWeightRate
 
   @Getter isLoggedIn!: boolean
-  @Getter('accountLiquidity', { namespace }) accountLiquidity!: any
   @Getter('assets', { namespace: 'assets' }) assets!: Array<Asset>
-  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
-
-  @Action('getAccountLiquidity', { namespace }) getAccountLiquidity!: AsyncVoidFn
-  @Action('createAccountLiquiditySubscription', { namespace: 'pool' }) createAccountLiquiditySubscription!: () => Promise<Function>
-
-  accountLiquiditySubscription!: Function
-
-  async created () {
-    this.accountLiquiditySubscription = await this.createAccountLiquiditySubscription()
-
-    await this.withApi(async () => {
-      await Promise.all([
-        this.getAssets(),
-        this.getAccountLiquidity()
-      ])
-    })
-  }
-
-  beforeDestroy (): void {
-    if (typeof this.accountLiquiditySubscription === 'function') {
-      this.accountLiquiditySubscription() // unsubscribe
-    }
-  }
+  @Getter('accountLiquidity', { namespace }) accountLiquidity!: Array<AccountLiquidity>
 
   getAsset (address): any {
     return this.assets.find(a => a.address === address)
@@ -117,16 +94,12 @@ export default class Pool extends Mixins(FormattedAmountMixin, TranslationMixin,
     return asset ? asset.symbol : this.t('pool.unknownAsset')
   }
 
-  handleAddLiquidity (): void {
-    router.push({ name: PageNames.AddLiquidity })
+  handleAddLiquidity (firstAddress, secondAddress): void {
+    router.push({ name: PageNames.AddLiquidity, params: { firstAddress, secondAddress } })
   }
 
   handleCreatePair (): void {
     router.push({ name: PageNames.CreatePair })
-  }
-
-  handleAddPairLiquidity (firstAddress, secondAddress): void {
-    router.push({ name: PageNames.AddLiquidityId, params: { firstAddress, secondAddress } })
   }
 
   handleRemoveLiquidity (firstAddress, secondAddress): void {
