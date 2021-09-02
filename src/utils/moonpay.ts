@@ -56,6 +56,11 @@ export class MoonpayApi {
     return this.apiRequest(url)
   }
 
+  public getCurrencies (): Promise<any> {
+    const url = `${MoonpayApi.apiUrl}/v3/currencies`
+    return this.apiRequest(url)
+  }
+
   private async apiRequest (url: string, params = {}) {
     const options = {
       params: {

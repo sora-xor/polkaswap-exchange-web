@@ -92,7 +92,8 @@ export enum PageNames {
   Bridge = 'Bridge',
   BridgeTransaction = 'BridgeTransaction',
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
-  Tokens = 'Tokens'
+  Tokens = 'Tokens',
+  MoonpayHistory = 'MoonpayHistory'
 }
 
 export enum Components {

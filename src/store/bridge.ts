@@ -540,7 +540,7 @@ const actions = {
     }
   },
   async generateHistoryItem ({ getters, dispatch }, playground) {
-    const historyItem = dispatch('bridgeDataToHistoryItem', playground)
+    const historyItem = await dispatch('bridgeDataToHistoryItem', playground)
 
     await dispatch('setHistoryItem', bridgeApi.generateHistoryItem(historyItem))
 

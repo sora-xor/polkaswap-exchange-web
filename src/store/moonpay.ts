@@ -21,7 +21,8 @@ const types = flow(
   map(x => [x, x]),
   fromPairs
 )([
-  'UPDATE_TRANSACTIONS'
+  'UPDATE_TRANSACTIONS',
+  'GET_CURRENCIES'
 ])
 
 const POLLING_INTERVAL = 5 * 1000
@@ -33,6 +34,7 @@ interface MoonpayState {
   pollingTimestamp: number;
   transactions: Array<any>;
   transactionsFetching: boolean;
+  currencies: Array<any>;
 }
 
 function initialState (): MoonpayState {
@@ -42,7 +44,8 @@ function initialState (): MoonpayState {
     dialogState: MoonpayDialogState.Purchase,
     pollingTimestamp: 0,
     transactions: [],
-    transactionsFetching: false
+    transactionsFetching: false,
+    currencies: []
   }
 }
 
@@ -53,6 +56,12 @@ const getters = {
     if (state.pollingTimestamp === 0) return undefined
 
     return state.transactions.find(tx => Date.parse(tx.createdAt) >= state.pollingTimestamp && tx.status === 'completed')
+  },
+  currenciesById (state: MoonpayState) {
+    return state.currencies.reduce((result, item) => ({
+      ...result,
+      [item.id]: item
+    }), {})
   }
 }
 
@@ -79,6 +88,15 @@ const mutations = {
   [types.UPDATE_TRANSACTIONS_FAILURE] (state: MoonpayState) {
     state.transactions = []
     state.transactionsFetching = false
+  },
+  [types.GET_CURRENCIES_REQUEST] (state: MoonpayState) {
+    state.currencies = []
+  },
+  [types.GET_CURRENCIES_SUCCESS] (state: MoonpayState, currencies: Array<any>) {
+    state.currencies = [...currencies]
+  },
+  [types.GET_CURRENCIES_FAILURE] (state: MoonpayState) {
+    state.currencies = []
   }
 }
 
@@ -93,6 +111,18 @@ const actions = {
 
   updatePollingTimestamp ({ commit }, timestamp = Date.now()) {
     commit(types.SET_POLLING_TIMESTAMP, timestamp)
+  },
+
+  async getCurrencies ({ commit, state }) {
+    commit(types.GET_CURRENCIES_REQUEST)
+
+    try {
+      const currencies = await state.api.getCurrencies()
+      commit(types.GET_CURRENCIES_SUCCESS, currencies)
+    } catch (error) {
+      console.error(error)
+      commit(types.GET_CURRENCIES_FAILURE)
+    }
   },
 
   async getTransactions ({ commit, state, rootGetters }, clearTransactions = false) {
