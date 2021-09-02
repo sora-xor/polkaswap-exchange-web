@@ -3,7 +3,7 @@
     <s-icon :class="['moonpay-notification-icon', { success }]" :name="iconName" size="64" />
     <div class="moonpay-notification__title">{{ title }}</div>
     <div class="moonpay-notification__text">{{ text }}</div>
-    <s-button class="moonpay-notification__button s-typography-button--large">OK</s-button>
+    <s-button class="moonpay-notification__button s-typography-button--large" @click="onClick">OK</s-button>
   </div>
 </template>
 
@@ -16,6 +16,7 @@ import { MoonpayNotifications } from './consts'
 @Component
 export default class MoonpayNotification extends Mixins(TranslationMixin) {
   @Prop({ default: MoonpayNotifications.Success, type: String }) readonly notification!: MoonpayNotifications
+  @Prop({ default: () => {}, type: Function }) readonly onClick!: () => void
 
   get success (): boolean {
     return this.notification === MoonpayNotifications.Success

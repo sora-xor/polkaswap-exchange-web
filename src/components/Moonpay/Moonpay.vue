@@ -3,6 +3,9 @@
     <template #title>
       <moonpay-logo :theme="libraryTheme" />
     </template>
+    <template #close>
+      <s-button class="el-dialog__close" type="action" icon="x-16" @click="closeDialog" />
+    </template>
     <component :is="dialogComponent.name" v-bind="dialogComponent.props" />
   </dialog-base>
 </template>
@@ -93,7 +96,7 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
   @Watch('libraryTheme')
   private handleLanguageChange (): void {
     if (!this.pollingTimestamp) {
-      this.updateWidgetUrl()
+      this.resetDialogState()
     }
   }
 
@@ -115,7 +118,7 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
     this.withApi(() => {
       this.moonpayApi.setPublicKey(this.apiKeys.moonpay)
       this.moonpayApi.setNetwork(this.soraNetwork)
-      this.updateWidgetUrl()
+      this.resetDialogState()
     })
   }
 
@@ -137,10 +140,15 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
         return {
           name: 'MoonpayNotification',
           props: {
-            notification: this.notification
+            notification: this.notification,
+            onClick: this.closeDialog
           }
         }
     }
+  }
+
+  get inProcessState (): boolean {
+    return this.dialogState !== MoonpayDialogState.Notification || this.notification === MoonpayNotifications.Success
   }
 
   createMoonpayWidgetUrl (): string {
@@ -151,7 +159,15 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
     })
   }
 
-  private async updateWidgetUrl (): Promise<void> {
+  private async closeDialog (): Promise<void> {
+    await this.setDialogVisibility(false)
+
+    if (!this.inProcessState) {
+      await this.resetDialogState()
+    }
+  }
+
+  private updateWidgetUrl (): void {
     this.widgetUrl = ''
 
     const url = this.createMoonpayWidgetUrl()
@@ -159,6 +175,12 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
     setTimeout(() => {
       this.widgetUrl = url
     })
+  }
+
+  private async resetDialogState (): Promise<void> {
+    await this.setDialogState(MoonpayDialogState.Purchase)
+    this.updateWidgetUrl()
+    this.notification = ''
   }
 
   private async startPollingMoonpay (): Promise<void> {
