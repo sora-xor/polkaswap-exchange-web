@@ -3,6 +3,7 @@ import { Operation, TransactionStatus, RewardingEvents } from '@sora-substrate/u
 
 import { PageNames, NetworkTypes } from '../consts'
 import { EvmNetworkType } from '../utils/ethers-util'
+import { MoonpayNotifications } from '@/components/Moonpay/consts'
 
 export default {
   // Wallet project keys
@@ -546,6 +547,26 @@ export default {
     groups: {
       strategic: 'Strategic Rewards',
       external: 'Rewards for the connected ethereum account'
+    }
+  },
+  moonpay: {
+    notifications: {
+      [MoonpayNotifications.Success]: {
+        title: 'Tokens purchased',
+        text: 'Token purchase is finished. The HASHI bridge transaction will start automatically as soon as the tokens have been received in the connected Ethereum account. It is safe to close this window and continue using Polkaswap. There will be a notification about the bridge transaction when ready.'
+      },
+      [MoonpayNotifications.SupportError]: {
+        title: 'Token not supported',
+        text: 'Unfortunately the token purchased via MoonPay is not yet supported by the HASHI bridge in Polkaswap. Normally only the supported tokens should be available for purchase via MoonPay in Polkaswap, hence something must have gone wrong somewhere. Please don’t hesitate to let the community know about this case in the Polkaswap Telegram group.'
+      },
+      [MoonpayNotifications.FeeError]: {
+        title: 'Not enough ETH for the bridge tx',
+        text: 'Unfortunately the HASHI bridge transaction has failed due to there not being enough ETH to pay for the Ethereum network transation fees. Please add more ETH and try again.'
+      },
+      [MoonpayNotifications.TransactionError]: {
+        title: 'Transaction has failed',
+        text: 'Unfortunately it appears that the MoonPay transaction has failed. Please try again. For MoonPay support go to https://support.moonpay.com'
+      }
     }
   },
   provider: {

@@ -9,12 +9,14 @@ import { FPNumber, RegisteredAccountAsset } from '@sora-substrate/util'
 import { MoonpayApi, MoonpayEVMTransferAssetData } from '@/utils/moonpay'
 import ethersUtil from '@/utils/ethers-util'
 import { EthAddress } from '@/consts'
+import { MoonpayDialogState } from '@/components/Moonpay/consts'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
     'SET_POLLING_TIMESTAMP',
-    'SET_DIALOG_VISIBILITY'
+    'SET_DIALOG_VISIBILITY',
+    'SET_DIALOG_STATE'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -27,6 +29,7 @@ const POLLING_INTERVAL = 5 * 1000
 interface MoonpayState {
   api: MoonpayApi;
   dialogVisibility: boolean;
+  dialogState: MoonpayDialogState;
   pollingTimestamp: number;
   transactions: Array<any>;
   transactionsFetching: boolean;
@@ -36,6 +39,7 @@ function initialState (): MoonpayState {
   return {
     api: new MoonpayApi(),
     dialogVisibility: false,
+    dialogState: MoonpayDialogState.Purchase,
     pollingTimestamp: 0,
     transactions: [],
     transactionsFetching: false
@@ -59,6 +63,9 @@ const mutations = {
   [types.SET_DIALOG_VISIBILITY] (state, flag: boolean) {
     state.dialogVisibility = flag
   },
+  [types.SET_DIALOG_STATE] (state, value: MoonpayDialogState) {
+    state.dialogState = value
+  },
   [types.UPDATE_TRANSACTIONS_REQUEST] (state: MoonpayState, clearTransactions: boolean) {
     if (clearTransactions) {
       state.transactions = []
@@ -78,6 +85,10 @@ const mutations = {
 const actions = {
   setDialogVisibility ({ commit }, flag: boolean) {
     commit(types.SET_DIALOG_VISIBILITY, flag)
+  },
+
+  setDialogState ({ commit }, value: MoonpayDialogState) {
+    commit(types.SET_DIALOG_STATE, value)
   },
 
   updatePollingTimestamp ({ commit }, timestamp = Date.now()) {

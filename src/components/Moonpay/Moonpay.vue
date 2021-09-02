@@ -3,9 +3,7 @@
     <template #title>
       <moonpay-logo :theme="libraryTheme" />
     </template>
-    <div class="widget-container" v-loading="parentLoading || widgetLoading">
-      <iframe class="widget" :src="widgetUrl" @load="onLoadWidget" />
-    </div>
+    <component :is="dialogComponent.name" v-bind="dialogComponent.props" />
   </dialog-base>
 </template>
 
@@ -23,8 +21,9 @@ import DialogBase from '@/components/DialogBase.vue'
 import { getCssVariableValue, getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils'
 import ethersUtil from '@/utils/ethers-util'
 import { MoonpayApi, MoonpayEVMTransferAssetData } from '@/utils/moonpay'
-import router from '@/router'
-import { NetworkTypes, PageNames } from '@/consts'
+import router, { lazyComponent } from '@/router'
+import { NetworkTypes, PageNames, Components } from '@/consts'
+import { MoonpayDialogState, MoonpayNotifications } from '@/components/Moonpay/consts'
 
 import MoonpayLogo from '@/components/logo/Moonpay.vue'
 
@@ -33,12 +32,14 @@ const namespace = 'moonpay'
 @Component({
   components: {
     DialogBase,
-    MoonpayLogo
+    MoonpayLogo,
+    MoonpayWidget: lazyComponent(Components.MoonpayWidget),
+    MoonpayNotification: lazyComponent(Components.MoonpayNotification)
   }
 })
 export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletConnectMixin) {
   widgetUrl = ''
-  widgetLoading = true
+  notification = ''
   transactionsPolling!: Function
 
   @Getter account
@@ -48,11 +49,13 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
 
   @State(state => state[namespace].api) moonpayApi!: MoonpayApi
   @State(state => state[namespace].pollingTimestamp) pollingTimestamp!: number
+  @State(state => state[namespace].dialogState) dialogState!: MoonpayDialogState
   @State(state => state.settings.apiKeys) apiKeys!: any
   @State(state => state.settings.soraNetwork) soraNetwork!: NetworkTypes
   @State(state => state.settings.language) language!: string
 
-  @Action('setDialogVisibility', { namespace }) setMoonpayDialogVisibility!: (flag: boolean) => void
+  @Action('setDialogVisibility', { namespace }) setDialogVisibility!: (flag: boolean) => Promise<void>
+  @Action('setDialogState', { namespace }) setDialogState!: (value: MoonpayDialogState) => Promise<void>
   @Action('createTransactionsPolling', { namespace }) createTransactionsPolling!: () => Promise<Function>
   @Action('getTransactionTranserData', { namespace }) getTransactionTranserData!: (tx: any) => Promise<Nullable<MoonpayEVMTransferAssetData>>
   @Action('findRegisteredAssetByExternalAddress', { namespace }) findRegisteredAssetByExternalAddress!: (data: any) => Promise<Nullable<RegisteredAccountAsset>>
@@ -81,7 +84,7 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
 
   @Watch('isVisible', { immediate: true })
   private handleVisibleStateChange (visible: boolean): void {
-    if (visible && !this.pollingTimestamp) {
+    if (visible && !this.pollingTimestamp && this.dialogState === MoonpayDialogState.Purchase) {
       this.startPollingMoonpay()
     }
   }
@@ -120,6 +123,26 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
     this.stopPollingMoonpay()
   }
 
+  get dialogComponent (): any {
+    switch (this.dialogState) {
+      case MoonpayDialogState.Purchase:
+        return {
+          name: 'MoonpayWidget',
+          props: {
+            src: this.widgetUrl
+          }
+        }
+      case MoonpayDialogState.Notification:
+      default:
+        return {
+          name: 'MoonpayNotification',
+          props: {
+            notification: this.notification
+          }
+        }
+    }
+  }
+
   createMoonpayWidgetUrl (): string {
     return this.moonpayApi.createWidgetUrl({
       colorCode: getCssVariableValue('--s-color-theme-accent'),
@@ -128,15 +151,13 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
     })
   }
 
-  onLoadWidget (): void {
-    this.widgetLoading = false
-  }
-
-  private updateWidgetUrl (): void {
-    this.widgetLoading = true
+  private async updateWidgetUrl (): Promise<void> {
     this.widgetUrl = ''
+
+    const url = this.createMoonpayWidgetUrl()
+
     setTimeout(() => {
-      this.widgetUrl = this.createMoonpayWidgetUrl()
+      this.widgetUrl = url
     })
   }
 
@@ -153,71 +174,73 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
   }
 
   private async prepareBridgeForTransfer (transaction): Promise<void> {
-    this.stopPollingMoonpay()
+    try {
+      this.stopPollingMoonpay()
+      this.notification = MoonpayNotifications.Success
 
-    // get necessary ethereum transaction data
-    const ethTransferData = await this.getTransactionTranserData(transaction.cryptoTransactionId)
+      await this.setDialogState(MoonpayDialogState.Notification)
 
-    if (!ethTransferData) {
-      // TODO: show something, we can not transfer token to sora
-      throw new Error('Cannot fetch transaction data')
+      // get necessary ethereum transaction data
+      const ethTransferData = await this.getTransactionTranserData(transaction.cryptoTransactionId)
+
+      if (!ethTransferData) {
+        this.notification = MoonpayNotifications.TransactionError
+        throw new Error('Cannot fetch transaction data')
+      }
+
+      // check connection to account
+      const isAccountConnected = await ethersUtil.checkAccountIsConnected(ethTransferData.to)
+
+      if (!isAccountConnected) {
+        // TODO: show something, we can not transfer token to sora
+        throw new Error('Account for transfer is not connected ')
+      }
+
+      // while registered assets updating, evmBalance updating too
+      const registeredAsset = await this.findRegisteredAssetByExternalAddress(ethTransferData.address)
+      if (!registeredAsset) {
+        this.notification = MoonpayNotifications.SupportError
+        throw new Error('Asset is not registered')
+      }
+
+      // prepare bridge state for fetching fees
+      await this.setTransactionConfirm(true)
+      await this.setSoraToEvm(false)
+      await this.setAssetAddress(registeredAsset.address)
+      // fetching fees & evm balance
+      await this.getNetworkFee()
+      await this.getEvmNetworkFee()
+      // await this.getEvmBalance()
+      // check eth fee
+      const hasEthForFee = !hasInsufficientEvmNativeTokenForFee(this.evmBalance, this.evmNetworkFee)
+      if (!hasEthForFee) {
+        this.notification = MoonpayNotifications.FeeError
+        throw new Error('Insufficient ETH for fee')
+      }
+      const maxAmount = getMaxValue(registeredAsset, this.evmNetworkFee, true) // max balance (minus fee if eth asset)
+      const amount = Number(maxAmount) >= Number(ethTransferData.amount) ? ethTransferData.amount : maxAmount
+
+      if (+amount <= 0) {
+        // TODO: show something, we can not transfer token to sora
+        throw new Error('Insufficient amount')
+      }
+
+      await this.setAmount(amount)
+
+      // Create bridge history item
+      const bridgeDataAsHistory = await this.bridgeDataToHistoryItem({ to: ethTransferData.to })
+      const historyItem = {
+        // we can check is moonpay purchase was transfered to sora: moonpayTx.id === historyItem.id
+        id: transaction.id,
+        ...bridgeDataAsHistory
+      }
+
+      await this.saveHistory(historyItem)
+      await this.setHistoryItem(historyItem)
+    } catch (error) {
+      await this.setDialogState(MoonpayDialogState.Notification)
+      await this.setDialogVisibility(true)
     }
-
-    // check connection to account
-    const isAccountConnected = await ethersUtil.checkAccountIsConnected(ethTransferData.to)
-
-    if (!isAccountConnected) {
-      // TODO: show something, we can not transfer token to sora
-      throw new Error('Account for transfer is not connected ')
-    }
-
-    // while registered assets updating, evmBalance updating too
-    const registeredAsset = await this.findRegisteredAssetByExternalAddress(ethTransferData.address)
-    if (!registeredAsset) {
-      // TODO: show something, we can not transfer token to sora
-      throw new Error('Asset is not registered')
-    }
-
-    // prepare bridge state for fetching fees
-    await this.setTransactionConfirm(true)
-    await this.setSoraToEvm(false)
-    await this.setAssetAddress(registeredAsset.address)
-    // fetching fees & evm balance
-    await this.getNetworkFee()
-    await this.getEvmNetworkFee()
-    // await this.getEvmBalance()
-    // check eth fee
-    const hasEthForFee = !hasInsufficientEvmNativeTokenForFee(this.evmBalance, this.evmNetworkFee)
-    if (!hasEthForFee) {
-      // TODO: show something, we can not transfer token to sora
-      throw new Error('Insufficient ETH for fee')
-    }
-    const maxAmount = getMaxValue(registeredAsset, this.evmNetworkFee, true) // max balance (minus fee if eth asset)
-    const amount = Number(maxAmount) >= Number(ethTransferData.amount) ? ethTransferData.amount : maxAmount
-
-    if (+amount <= 0) {
-      // TODO: show something, we can not transfer token to sora
-      throw new Error('Insufficient amount')
-    }
-
-    await this.setAmount(amount)
-
-    // Create bridge history item
-    const bridgeDataAsHistory = await this.bridgeDataToHistoryItem({ to: ethTransferData.to })
-    const historyItem = {
-      // we can check is moonpay purchase was transfered to sora: moonpayTx.id === historyItem.id
-      id: transaction.id,
-      ...bridgeDataAsHistory
-    }
-
-    await this.saveHistory(historyItem)
-    await this.setHistoryItem(historyItem)
-
-    // Navigate to the bridge
-    router.push({ name: PageNames.BridgeTransaction })
-
-    // close moonpay dialog & reset it ?
-    this.setMoonpayDialogVisibility(false)
   }
 }
 </script>
@@ -227,23 +250,5 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
   .el-dialog .el-dialog__body {
     padding: $inner-spacing-mini $inner-spacing-big $inner-spacing-big;
   }
-}
-.widget-container .el-loading-mask {
-  background-color: var(--s-color-utility-surface);
-}
-</style>
-
-<style lang="scss" scoped>
-.widget-container {
-  display: flex;
-  border: none;
-  width: 100%;
-  min-height: 574px;
-  overflow: hidden;
-}
-.widget {
-  flex: 1;
-  border: none;
-  border-radius: 20px;
 }
 </style>

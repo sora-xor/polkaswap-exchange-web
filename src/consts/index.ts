@@ -130,7 +130,9 @@ export enum Components {
   TokenAddress = 'Input/TokenAddress',
   SelectLanguageDialog = 'SelectLanguageDialog',
   ValueStatusWrapper = 'ValueStatusWrapper',
-  Moonpay = 'Moonpay'
+  Moonpay = 'Moonpay/Moonpay',
+  MoonpayWidget = 'Moonpay/MoonpayWidget',
+  MoonpayNotification = 'Moonpay/MoonpayNotification'
 }
 
 interface SidebarMenuItem {
