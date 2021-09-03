@@ -1,43 +1,51 @@
 <template>
   <div class="container" v-loading="parentLoading">
+    <generic-page-header :has-button-back="!isHistoryView" class="page-header-title--moonpay-history" @back="handleBack">
+      <moonpay-logo :theme="libraryTheme" slot="title"/>
+    </generic-page-header>
     <div class="moonpay-history">
-      <moonpay-logo :theme="libraryTheme" />
-      <div class="moonpay-history-title">Purchase history</div>
-      <div :class="['moonpay-history-list', { empty: emptyHistory }]" v-loading="loading">
-        <div v-for="item in formattedItems" :key="item.id" class="moonpay-history-item">
-          <div class="moonpay-history-item-data">
-            <div class="moonpay-history-item__date">{{ item.formatted.date }}</div>
-            <div class="moonpay-history-item__amount">
-              <formatted-amount
-                class="moonpay-history-item-amount"
-                :value="item.formatted.cryptoAmount"
-                :font-size-rate="FontSizeRate.MEDIUM"
-                :asset-symbol="item.formatted.crypto"
-              />
-              <i class="s-icon--network s-icon-eth" />&nbsp;
-              <span>for</span>&nbsp;
-              <formatted-amount
-                class="moonpay-history-item-amount"
-                :value="item.formatted.fiatAmount"
-                :font-size-rate="FontSizeRate.MEDIUM"
-                :asset-symbol="item.formatted.fiat"
-              />
+      <template v-if="isHistoryView">
+        <div class="moonpay-history-title">Purchase history</div>
+        <div :class="['moonpay-history-list', { empty: emptyHistory }]" v-loading="loading">
+          <div v-for="item in formattedItems" :key="item.id" class="moonpay-history-item" @click="navigateToDetails(item)">
+            <div class="moonpay-history-item-data">
+              <div class="moonpay-history-item__date">{{ item.formatted.date }}</div>
+              <div class="moonpay-history-item__amount">
+                <formatted-amount
+                  class="moonpay-history-item-amount"
+                  :value="item.formatted.cryptoAmount"
+                  :font-size-rate="FontSizeRate.MEDIUM"
+                  :asset-symbol="item.formatted.crypto"
+                />
+                <i class="s-icon--network s-icon-eth" />&nbsp;
+                <span>for</span>&nbsp;
+                <formatted-amount
+                  class="moonpay-history-item-amount"
+                  :value="item.formatted.fiatAmount"
+                  :font-size-rate="FontSizeRate.MEDIUM"
+                  :asset-symbol="item.formatted.fiat"
+                />
+              </div>
             </div>
+            <s-icon :class="['moonpay-history-item-icon', item.status]" :name="item.formatted.icon" size="14" />
           </div>
-          <s-icon :class="['moonpay-history-item-icon', item.status]" :name="item.formatted.icon" size="14" />
+          <span v-if="emptyHistory">No data</span>
         </div>
-        <span v-if="emptyHistory">No data</span>
-      </div>
-      <s-pagination
-        v-if="transactions.length"
-        class="moonpay-history-pagination"
-        :layout="'prev, total, next'"
-        :current-page.sync="currentPage"
-        :page-size="pageAmount"
-        :total="transactions.length"
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
-      />
+        <s-pagination
+          v-if="!emptyHistory"
+          class="moonpay-history-pagination"
+          :layout="'prev, total, next'"
+          :current-page.sync="currentPage"
+          :page-size="pageAmount"
+          :total="transactions.length"
+          @prev-click="handlePrevClick"
+          @next-click="handleNextClick"
+        />
+      </template>
+      <template v-else>
+        <moonpay-widget :src="detailsWidgetUrl" />
+        <s-button type="primary" class="moonpay-details-button s-typography-button--large">Start Bridge</s-button>
+      </template>
     </div>
   </div>
 </template>
@@ -53,15 +61,22 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin'
 
+import { getCssVariableValue, toQueryString } from '@/utils'
 import { MoonpayApi } from '@/utils/moonpay'
-import { NetworkTypes } from '@/consts'
+import { Components, NetworkTypes } from '@/consts'
+import { lazyComponent } from '@/router'
 
 import MoonpayLogo from '@/components/logo/Moonpay.vue'
 
 const namespace = 'moonpay'
 
+const HistoryView = 'history'
+const DetailsView = 'details'
+
 @Component({
   components: {
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    MoonpayWidget: lazyComponent(Components.MoonpayWidget),
     MoonpayLogo,
     FormattedAmount
   }
@@ -74,12 +89,15 @@ export default class MoonpayHistory extends Mixins(LoadingMixin, TranslationMixi
   @State(state => state[namespace].transactionsFetching) transactionsFetching!: boolean
   @State(state => state.settings.apiKeys) apiKeys!: any
   @State(state => state.settings.soraNetwork) soraNetwork!: NetworkTypes
+  @State(state => state.settings.language) language!: string
   @Getter libraryTheme!: Theme
   @Getter('currenciesById', { namespace }) currenciesById!: any
   @Action('getTransactions', { namespace }) getTransactions!: () => Promise<void>
   @Action('getCurrencies', { namespace }) getCurrencies!: () => Promise<void>
 
   pageAmount = 5
+  currentView = HistoryView
+  selectedItem: any = {}
 
   created (): void {
     this.withApi(async () => {
@@ -124,10 +142,43 @@ export default class MoonpayHistory extends Mixins(LoadingMixin, TranslationMixi
       }
     })
   }
+
+  get detailsWidgetUrl (): string {
+    if (!this.selectedItem.id) return ''
+
+    const query = toQueryString({
+      colorCode: getCssVariableValue('--s-color-theme-accent'),
+      language: this.language,
+      transactionId: this.selectedItem.id
+    })
+    return `${this.selectedItem.returnUrl}?${query}`
+  }
+
+  get isHistoryView (): boolean {
+    return this.currentView === HistoryView
+  }
+
+  private changeView (view: string): void {
+    this.currentView = view
+  }
+
+  handleBack (): void {
+    this.changeView(HistoryView)
+  }
+
+  navigateToDetails (item) {
+    this.selectedItem = item
+    this.changeView(DetailsView)
+  }
 }
 </script>
 
 <style lang="scss">
+.page-header-title--moonpay-history {
+  .page-header-title {
+    margin: auto;
+  }
+}
 .moonpay-history-pagination {
   display: flex;
   width: 100%;
@@ -206,6 +257,12 @@ export default class MoonpayHistory extends Mixins(LoadingMixin, TranslationMixi
         color: var(--s-color-status-error);
       }
     }
+  }
+}
+
+.moonpay-details {
+  &-button {
+    width: 100%;
   }
 }
 </style>

@@ -1,6 +1,7 @@
 import axios from '@/api'
 
 import { NetworkTypes } from '@/consts'
+import { toQueryString } from '@/utils'
 
 export interface MoonpayEVMTransferAssetData {
   amount: string;
@@ -26,13 +27,13 @@ export class MoonpayApi {
     }
   }
 
-  public createWidgetUrl (queryParams): string {
-    const baseUrl = MoonpayApi.getWidgetBaseUrl(this.soraNetwork)
+  public createWidgetUrl (queryParams, widgetUrl?: string): string {
+    const baseUrl = widgetUrl || MoonpayApi.getWidgetBaseUrl(this.soraNetwork)
     const params = {
       ...this.requiredParams,
       ...queryParams
     }
-    const query = Object.entries(params).map(([key, value]) => `${key}=${encodeURIComponent(value as string)}`).join('&')
+    const query = toQueryString(params)
     const url = `${baseUrl}?${query}`
 
     return url

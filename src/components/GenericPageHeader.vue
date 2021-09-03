@@ -2,7 +2,9 @@
   <div :class="headerClasses">
     <s-button v-if="hasButtonBack" type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack" />
     <h3 class="page-header-title">
-      {{ title }}
+      <slot name="title">
+        {{ title }}
+      </slot>
       <s-tooltip
         v-if="tooltip"
         class="page-header-tooltip"

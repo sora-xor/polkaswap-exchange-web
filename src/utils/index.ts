@@ -209,3 +209,7 @@ export const preloadFontFace = async (name: string): Promise<void> => {
 export const getCssVariableValue = (name: string): any => {
   return getComputedStyle(document.documentElement as any).getPropertyValue(name).trim()
 }
+
+export const toQueryString = (params: any): string => {
+  return Object.entries(params).map(([key, value]) => `${key}=${encodeURIComponent(value as string)}`).join('&')
+}
