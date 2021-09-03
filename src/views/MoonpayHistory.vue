@@ -44,7 +44,14 @@
       </template>
       <template v-else>
         <moonpay-widget :src="detailsWidgetUrl" />
-        <s-button type="primary" class="moonpay-details-button s-typography-button--large">Start Bridge</s-button>
+        <s-button
+          :type="actionButton.type"
+          :loading="loading"
+          class="moonpay-details-button s-typography-button--large"
+          @click="handleTransaction"
+        >
+          {{ actionButton.text }}
+        </s-button>
       </template>
     </div>
   </div>
@@ -56,10 +63,12 @@ import { Action, State, Getter } from 'vuex-class'
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
 import dayjs from 'dayjs'
 import { FormattedAmount, FontSizeRate } from '@soramitsu/soraneo-wallet-web'
+import { BridgeHistory } from '@sora-substrate/util'
 
-import LoadingMixin from '@/components/mixins/LoadingMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin'
+import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin'
+import MoonpayBridgeInitMixin from '@/components/Moonpay/MoonpayBridgeInitMixin'
 
 import { getCssVariableValue, toQueryString } from '@/utils'
 import { MoonpayApi } from '@/utils/moonpay'
@@ -81,7 +90,7 @@ const DetailsView = 'details'
     FormattedAmount
   }
 })
-export default class MoonpayHistory extends Mixins(LoadingMixin, TranslationMixin, PaginationSearchMixin) {
+export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationSearchMixin, MoonpayBridgeInitMixin, BridgeHistoryMixin) {
   readonly FontSizeRate = FontSizeRate
 
   @State(state => state[namespace].api) moonpayApi!: MoonpayApi
@@ -90,10 +99,12 @@ export default class MoonpayHistory extends Mixins(LoadingMixin, TranslationMixi
   @State(state => state.settings.apiKeys) apiKeys!: any
   @State(state => state.settings.soraNetwork) soraNetwork!: NetworkTypes
   @State(state => state.settings.language) language!: string
+  @State(state => state.bridge.history) bridgeHistory!: Array<BridgeHistory>
   @Getter libraryTheme!: Theme
   @Getter('currenciesById', { namespace }) currenciesById!: any
   @Action('getTransactions', { namespace }) getTransactions!: () => Promise<void>
   @Action('getCurrencies', { namespace }) getCurrencies!: () => Promise<void>
+  @Action('getHistory', { namespace: 'bridge' }) getHistory!: AsyncVoidFn
 
   pageAmount = 5
   currentView = HistoryView
@@ -106,7 +117,8 @@ export default class MoonpayHistory extends Mixins(LoadingMixin, TranslationMixi
 
       await Promise.all([
         this.getTransactions(),
-        this.getCurrencies()
+        this.getCurrencies(),
+        this.getHistory()
       ])
     })
   }
@@ -154,6 +166,19 @@ export default class MoonpayHistory extends Mixins(LoadingMixin, TranslationMixi
     return `${this.selectedItem.returnUrl}?${query}`
   }
 
+  get transferTransactionToSora (): Nullable<BridgeHistory> {
+    if (!this.selectedItem.id) return undefined
+
+    return this.bridgeHistory.find(item => (item as any).payload?.moonpayId === this.selectedItem.id)
+  }
+
+  get actionButton (): any {
+    return {
+      type: this.transferTransactionToSora ? 'secondary' : 'primary',
+      text: this.transferTransactionToSora ? 'View transaction' : 'Start Bridge'
+    }
+  }
+
   get isHistoryView (): boolean {
     return this.currentView === HistoryView
   }
@@ -169,6 +194,16 @@ export default class MoonpayHistory extends Mixins(LoadingMixin, TranslationMixi
   navigateToDetails (item) {
     this.selectedItem = item
     this.changeView(DetailsView)
+  }
+
+  async handleTransaction (): Promise<void> {
+    if (!this.selectedItem.id) return
+
+    if (!this.transferTransactionToSora) {
+      await this.checkTxTransferAvailability(this.selectedItem)
+    } else {
+      await this.showHistory(this.transferTransactionToSora.id)
+    }
   }
 }
 </script>

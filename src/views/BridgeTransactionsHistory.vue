@@ -76,19 +76,17 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { RegisteredAccountAsset, Operation, BridgeHistory, CodecString, FPNumber } from '@sora-substrate/util'
-import { api } from '@soramitsu/soraneo-wallet-web'
+import { RegisteredAccountAsset, Operation, BridgeHistory, FPNumber } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
-import LoadingMixin from '@/components/mixins/LoadingMixin'
-
+import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin'
+
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
 import { formatAssetSymbol, formatDateItem } from '@/utils'
 import { STATES } from '@/utils/fsm'
-import { bridgeApi } from '@/utils/bridge'
 
 const namespace = 'bridge'
 
@@ -97,31 +95,15 @@ const namespace = 'bridge'
     GenericPageHeader: lazyComponent(Components.GenericPageHeader)
   }
 })
-export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, LoadingMixin, NetworkFormatterMixin, PaginationSearchMixin) {
+export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, BridgeHistoryMixin, NetworkFormatterMixin, PaginationSearchMixin) {
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter('history', { namespace }) history!: Nullable<Array<BridgeHistory>>
   @Getter('restored', { namespace }) restored!: boolean
-  @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
 
   @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn
   @Action('getRestoredFlag', { namespace }) getRestoredFlag!: AsyncVoidFn
   @Action('getRestoredHistory', { namespace }) getRestoredHistory!: AsyncVoidFn
-  @Action('getNetworkFee', { namespace }) getNetworkFee!: AsyncVoidFn
-  @Action('getEvmNetworkFee', { namespace }) getEvmNetworkFee!: AsyncVoidFn
   @Action('clearHistory', { namespace }) clearHistory!: AsyncVoidFn
-  @Action('setSoraToEvm', { namespace }) setSoraToEvm
-  @Action('setTransactionConfirm', { namespace }) setTransactionConfirm!: (value: boolean) => Promise<void>
-  @Action('setAssetAddress', { namespace }) setAssetAddress
-  @Action('setAmount', { namespace }) setAmount
-  @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash
-  @Action('setEvmTransactionHash', { namespace }) setEvmTransactionHash
-  @Action('setSoraTransactionDate', { namespace }) setSoraTransactionDate
-  @Action('setEvmTransactionDate', { namespace }) setEvmTransactionDate
-  @Action('setEvmNetworkFee', { namespace }) setEvmNetworkFee
-  @Action('setCurrentTransactionState', { namespace }) setCurrentTransactionState
-  @Action('setTransactionStep', { namespace }) setTransactionStep
-  @Action('setHistoryItem', { namespace }) setHistoryItem
-  @Action('saveHistory', { namespace }) saveHistory
 
   @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn
 
@@ -146,10 +128,6 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
 
   get filteredHistoryItems (): Array<BridgeHistory> {
     return this.getPageItems(this.filteredHistory)
-  }
-
-  get soraNetworkFee (): CodecString {
-    return api.NetworkFee[Operation.EthBridgeOutgoing]
   }
 
   async created (): Promise<void> {
@@ -196,46 +174,6 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
       return classes.join(' ')
     }
     return classes.join(' ')
-  }
-
-  isOutgoingType (type: string | undefined): boolean {
-    return type !== Operation.EthBridgeIncoming
-  }
-
-  async showHistory (id: string): Promise<void> {
-    await this.withLoading(async () => {
-      const tx = bridgeApi.getHistory(id)
-      if (!tx) {
-        router.push({ name: PageNames.BridgeTransaction })
-        return
-      }
-      await this.setTransactionConfirm(true)
-      await this.setSoraToEvm(this.isOutgoingType(tx.type))
-      await this.setAssetAddress(tx.assetAddress)
-      await this.setAmount(tx.amount)
-      await this.setSoraTransactionHash(tx.hash)
-      await this.setSoraTransactionDate(tx[this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
-      await this.setEvmTransactionHash(tx.ethereumHash)
-      await this.setEvmTransactionDate(tx[!this.isOutgoingType(tx.type) ? 'startTime' : 'endTime'])
-      const soraNetworkFee = +(tx.soraNetworkFee || 0)
-      const evmNetworkFee = +(tx.ethereumNetworkFee || 0)
-      if (!soraNetworkFee) {
-        await this.getNetworkFee()
-        tx.soraNetworkFee = this.soraNetworkFee
-      }
-      if (!evmNetworkFee) {
-        tx.ethereumNetworkFee = this.evmNetworkFee
-        await this.getEvmNetworkFee()
-      }
-      if (!(soraNetworkFee && evmNetworkFee)) {
-        this.saveHistory(tx)
-      }
-      await this.setEvmNetworkFee(evmNetworkFee || this.evmNetworkFee)
-      await this.setTransactionStep(tx.transactionStep)
-      await this.setCurrentTransactionState(tx.transactionState)
-      await this.setHistoryItem(tx)
-      router.push({ name: PageNames.BridgeTransaction })
-    })
   }
 
   async handleClearHistory (): Promise<void> {
