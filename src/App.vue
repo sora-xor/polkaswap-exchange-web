@@ -1,15 +1,18 @@
 <template>
   <s-design-system-provider :value="libraryDesignSystem" id="app" class="app">
     <header class="header">
-      <s-button class="polkaswap-logo" type="link" size="large" @click="goTo(PageNames.Swap)">
-        <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo--tablet"/>
-      </s-button>
+      <div class="app-controls s-flex">
+        <s-button class="polkaswap-logo" type="link" size="large" @click="goTo(PageNames.Swap)">
+          <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo--tablet"/>
+        </s-button>
+      </div>
       <div class="app-controls s-flex">
         <s-button type="tertiary" size="medium" icon="various-atom-24" @click="openMoonpayDialog">
           Buy Tokens
         </s-button>
-      </div>
-      <div class="app-controls s-flex">
+        <s-button type="tertiary" size="medium" icon="time-time-history-24" @click="openMoonpayHistory">
+          Tx History
+        </s-button>
         <s-button type="action" class="theme-control s-pressed" @click="switchTheme">
           <s-icon :name="themeIcon" size="28" />
         </s-button>
@@ -361,6 +364,10 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
     await this.checkConnectionToExternalAccount(() => {
       this.setMoonpayDialogVisibility(true)
     })
+  }
+
+  openMoonpayHistory (): void {
+    this.goTo(PageNames.MoonpayHistory)
   }
 
   destroyed (): void {
@@ -760,7 +767,13 @@ $account-control-name-max-width: 200px;
 }
 
 .app-controls {
-  margin-left: auto;
+  &:first-child {
+    margin-right: auto;
+  }
+
+  &:last-child {
+    margin-left: auto;
+  }
 
   & > *:not(:last-child) {
     margin-right: $inner-spacing-mini;
