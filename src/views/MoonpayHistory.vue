@@ -74,8 +74,7 @@ import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin'
 import MoonpayBridgeInitMixin from '@/components/Moonpay/MoonpayBridgeInitMixin'
 
 import { getCssVariableValue, toQueryString } from '@/utils'
-import { MoonpayApi } from '@/utils/moonpay'
-import { Components, NetworkTypes } from '@/consts'
+import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
 
 import MoonpayLogo from '@/components/logo/Moonpay.vue'
@@ -87,27 +86,23 @@ const DetailsView = 'details'
 
 @Component({
   components: {
-    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    MoonpayWidget: lazyComponent(Components.MoonpayWidget),
     MoonpayLogo,
-    FormattedAmount
+    FormattedAmount,
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    MoonpayWidget: lazyComponent(Components.MoonpayWidget)
   }
 })
 export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationSearchMixin, MoonpayBridgeInitMixin, BridgeHistoryMixin) {
   readonly FontSizeRate = FontSizeRate
 
-  @State(state => state[namespace].api) moonpayApi!: MoonpayApi
   @State(state => state[namespace].transactions) transactions!: Array<any>
-  @State(state => state[namespace].transactionsFetching) transactionsFetching!: boolean
-  @State(state => state.settings.apiKeys) apiKeys!: any
-  @State(state => state.settings.soraNetwork) soraNetwork!: NetworkTypes
   @State(state => state.settings.language) language!: string
   @State(state => state.bridge.history) bridgeHistory!: Array<BridgeHistory>
   @Getter libraryTheme!: Theme
   @Getter('currenciesById', { namespace }) currenciesById!: any
   @Action('getTransactions', { namespace }) getTransactions!: () => Promise<void>
   @Action('getCurrencies', { namespace }) getCurrencies!: () => Promise<void>
-  @Action('getHistory', { namespace: 'bridge' }) getHistory!: AsyncVoidFn
+  @Action('getHistory', { namespace: 'bridge' }) getHistory!: () => Promise<void>
 
   pageAmount = 5
   currentView = HistoryView
@@ -115,8 +110,7 @@ export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationS
 
   created (): void {
     this.withApi(async () => {
-      this.moonpayApi.setPublicKey(this.apiKeys.moonpay)
-      this.moonpayApi.setNetwork(this.soraNetwork)
+      this.initMoonpayApi() // MoonpayBridgeInitMixin
 
       await Promise.all([
         this.getTransactions(),

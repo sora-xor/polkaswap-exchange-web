@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
-import { Action, State, Getter } from 'vuex-class'
+import { State, Getter } from 'vuex-class'
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
 
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -36,7 +36,6 @@ const namespace = 'moonpay'
 export default class MoonpayNotification extends Mixins(DialogMixin, TranslationMixin) {
   @Getter libraryTheme!: Theme
   @State(state => state[namespace].notificationKey) notificationKey!: MoonpayNotifications
-  @Action('setNotificationVisibility', { namespace }) setNotificationVisibility!: (flag: boolean) => Promise<void>
 
   get success (): boolean {
     return this.notificationKey === MoonpayNotifications.Success

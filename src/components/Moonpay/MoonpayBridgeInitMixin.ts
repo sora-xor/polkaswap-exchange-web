@@ -1,17 +1,17 @@
 import { Component, Mixins } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
+import { Action, Getter, State } from 'vuex-class'
 import { BridgeNetworks, RegisteredAccountAsset, CodecString } from '@sora-substrate/util'
 
 import ethersUtil from '@/utils/ethers-util'
 import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils'
-import { MoonpayEVMTransferAssetData } from '@/utils/moonpay'
+import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay'
 import { MoonpayNotifications } from '@/components/Moonpay/consts'
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 
 import router from '@/router'
-import { PageNames } from '@/consts'
+import { NetworkTypes, PageNames } from '@/consts'
 
 const createError = (text: string, notification: MoonpayNotifications) => {
   const error = new Error(text)
@@ -21,6 +21,10 @@ const createError = (text: string, notification: MoonpayNotifications) => {
 
 @Component
 export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, LoadingMixin) {
+  @State(state => state.moonpay.api) moonpayApi!: MoonpayApi
+  @State(state => state.settings.apiKeys) apiKeys!: any
+  @State(state => state.settings.soraNetwork) soraNetwork!: NetworkTypes
+
   @Action('setAmount', { namespace: 'bridge' }) setAmount!: (value: string) => Promise<void>
   @Action('getEvmNetworkFee', { namespace: 'bridge' }) getEvmNetworkFee!: AsyncVoidFn
   @Action('setAssetAddress', { namespace: 'bridge' }) setAssetAddress!: (value: string) => Promise<void>
@@ -40,6 +44,11 @@ export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, L
     await this.setEvmNetwork(networkId) // WalletConnectMixin
     await this.setEvmNetworkType() // WalletConnectMixin
     await this.syncExternalAccountWithAppState() // WalletConnectMixin
+  }
+
+  initMoonpayApi (): void {
+    this.moonpayApi.setPublicKey(this.apiKeys.moonpay)
+    this.moonpayApi.setNetwork(this.soraNetwork)
   }
 
   async checkTxTransferAvailability (transaction): Promise<void> {

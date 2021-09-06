@@ -47,8 +47,6 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
 
   @State(state => state[namespace].api) moonpayApi!: MoonpayApi
   @State(state => state[namespace].pollingTimestamp) pollingTimestamp!: number
-  @State(state => state.settings.apiKeys) apiKeys!: any
-  @State(state => state.settings.soraNetwork) soraNetwork!: NetworkTypes
   @State(state => state.settings.language) language!: string
 
   @Action('setDialogVisibility', { namespace }) setDialogVisibility!: (flag: boolean) => Promise<void>
@@ -87,8 +85,7 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
 
   async created (): Promise<void> {
     this.withApi(() => {
-      this.moonpayApi.setPublicKey(this.apiKeys.moonpay)
-      this.moonpayApi.setNetwork(this.soraNetwork)
+      this.initMoonpayApi() // MoonpayBridgeInitMixin
       this.updateWidgetUrl()
     })
   }
