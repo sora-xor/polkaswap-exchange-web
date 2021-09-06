@@ -88,7 +88,8 @@ const routes: Array<RouteConfig> = [
   {
     path: '/moonpay-history',
     name: PageNames.MoonpayHistory,
-    component: lazyView(PageNames.MoonpayHistory)
+    component: lazyView(PageNames.MoonpayHistory),
+    meta: { requiresAuth: true }
   },
   {
     path: '/stats',

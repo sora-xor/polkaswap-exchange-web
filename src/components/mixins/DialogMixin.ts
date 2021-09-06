@@ -15,4 +15,8 @@ export default class DialogMixin extends Vue {
   handleIsVisibleChange (value: boolean): void {
     this.$emit('update:visible', value)
   }
+
+  closeDialog (): void {
+    this.isVisible = false
+  }
 }

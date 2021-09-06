@@ -10,7 +10,7 @@
         <s-button type="tertiary" size="medium" icon="various-atom-24" @click="openMoonpayDialog">
           Buy Tokens
         </s-button>
-        <s-button type="tertiary" size="medium" icon="time-time-history-24" @click="openMoonpayHistory">
+        <s-button v-if="isLoggedIn" type="tertiary" size="medium" icon="time-time-history-24" @click="openMoonpayHistory">
           Tx History
         </s-button>
         <s-button type="action" class="theme-control s-pressed" @click="switchTheme">

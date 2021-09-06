@@ -7,7 +7,7 @@
       <s-icon :class="['moonpay-notification-icon', { success }]" :name="iconName" size="64" />
       <div class="moonpay-notification__title">{{ title }}</div>
       <div class="moonpay-notification__text">{{ text }}</div>
-      <s-button class="moonpay-notification__button s-typography-button--large" @click="close">OK</s-button>
+      <s-button class="moonpay-notification__button s-typography-button--large" @click="closeDialog">OK</s-button>
     </div>
   </dialog-base>
 </template>
@@ -53,10 +53,6 @@ export default class MoonpayNotification extends Mixins(DialogMixin, Translation
   get text (): string {
     if (!this.notificationKey) return ''
     return this.t(`moonpay.notifications.${this.notificationKey}.text`)
-  }
-
-  close (): void {
-    this.isVisible = false
   }
 }
 </script>

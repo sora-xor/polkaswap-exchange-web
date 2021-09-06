@@ -49,7 +49,6 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
   @State(state => state[namespace].pollingTimestamp) pollingTimestamp!: number
   @State(state => state.settings.language) language!: string
 
-  @Action('setDialogVisibility', { namespace }) setDialogVisibility!: (flag: boolean) => Promise<void>
   @Action('setNotificationVisibility', { namespace }) setNotificationVisibility!: (flag: boolean) => Promise<void>
   @Action('setNotificationKey', { namespace }) setNotificationKey!: (key: string) => Promise<void>
   @Action('createTransactionsPolling', { namespace }) createTransactionsPolling!: () => Promise<Function>
@@ -94,7 +93,7 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
     this.stopPollingMoonpay()
   }
 
-  createMoonpayWidgetUrl (): string {
+  private createMoonpayWidgetUrl (): string {
     return this.moonpayApi.createWidgetUrl({
       colorCode: getCssVariableValue('--s-color-theme-accent'),
       externalTransactionId: this.account.address,
@@ -126,8 +125,7 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
 
   private async prepareBridgeForTransfer (transaction): Promise<void> {
     try {
-      await this.setDialogVisibility(false)
-
+      this.closeDialog() // DialogMixin
       this.stopPollingMoonpay()
       this.updateWidgetUrl()
 
