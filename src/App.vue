@@ -125,6 +125,7 @@
     <select-node-dialog :visible.sync="showSelectNodeDialog" />
     <select-language-dialog :visible.sync="showSelectLanguageDialog" />
     <moonpay :visible.sync="showMoonpayDialog" />
+    <moonpay-notification :visible.sync="showMoonpayNotification" />
   </s-design-system-provider>
 </template>
 
@@ -165,7 +166,8 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
     TokenLogo: lazyComponent(Components.TokenLogo),
-    Moonpay: lazyComponent(Components.Moonpay)
+    Moonpay: lazyComponent(Components.Moonpay),
+    MoonpayNotification: lazyComponent(Components.MoonpayNotification)
   }
 })
 export default class App extends Mixins(TransactionMixin, NodeErrorMixin, WalletConnectMixin) {
@@ -190,6 +192,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
   @State(state => state.settings.faucetUrl) faucetUrl!: string
   @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
   @State(state => state.moonpay.dialogVisibility) moonpayDialogVisibility!: boolean
+  @State(state => state.moonpay.notificationVisibility) moonpayNotificationVisibility!: boolean
 
   @Getter libraryTheme!: Theme
   @Getter libraryDesignSystem!: DesignSystem
@@ -214,6 +217,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>
   @Action('setDialogVisibility', { namespace: 'moonpay' }) setMoonpayDialogVisibility!: (flag: boolean) => void
+  @Action('setNotificationVisibility', { namespace: 'moonpay' }) setMoonpayNotificationVisibility!: (flag: boolean) => void
 
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction (value: History): void {
@@ -277,6 +281,14 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
 
   set showMoonpayDialog (flag: boolean) {
     this.setMoonpayDialogVisibility(flag)
+  }
+
+  get showMoonpayNotification (): boolean {
+    return this.moonpayNotificationVisibility
+  }
+
+  set showMoonpayNotification (flag: boolean) {
+    this.setMoonpayNotificationVisibility(flag)
   }
 
   get themeIcon (): string {

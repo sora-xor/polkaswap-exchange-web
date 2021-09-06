@@ -3,10 +3,7 @@
     <template #title>
       <moonpay-logo :theme="libraryTheme" />
     </template>
-    <template #close>
-      <s-button class="el-dialog__close" type="action" icon="x-16" @click="closeDialog" />
-    </template>
-    <component :is="dialogComponent.name" v-bind="dialogComponent.props" />
+    <moonpay-widget :src="widgetUrl" />
   </dialog-base>
 </template>
 
@@ -26,7 +23,7 @@ import { getCssVariableValue } from '@/utils'
 import { MoonpayApi } from '@/utils/moonpay'
 import { lazyComponent } from '@/router'
 import { NetworkTypes, Components } from '@/consts'
-import { MoonpayDialogState, MoonpayNotifications } from '@/components/Moonpay/consts'
+import { MoonpayNotifications } from '@/components/Moonpay/consts'
 
 import MoonpayLogo from '@/components/logo/Moonpay.vue'
 
@@ -36,13 +33,11 @@ const namespace = 'moonpay'
   components: {
     DialogBase,
     MoonpayLogo,
-    MoonpayWidget: lazyComponent(Components.MoonpayWidget),
-    MoonpayNotification: lazyComponent(Components.MoonpayNotification)
+    MoonpayWidget: lazyComponent(Components.MoonpayWidget)
   }
 })
 export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletConnectMixin, MoonpayBridgeInitMixin) {
   widgetUrl = ''
-  notification = ''
   transactionsPolling!: Function
 
   @Getter account
@@ -52,13 +47,13 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
 
   @State(state => state[namespace].api) moonpayApi!: MoonpayApi
   @State(state => state[namespace].pollingTimestamp) pollingTimestamp!: number
-  @State(state => state[namespace].dialogState) dialogState!: MoonpayDialogState
   @State(state => state.settings.apiKeys) apiKeys!: any
   @State(state => state.settings.soraNetwork) soraNetwork!: NetworkTypes
   @State(state => state.settings.language) language!: string
 
   @Action('setDialogVisibility', { namespace }) setDialogVisibility!: (flag: boolean) => Promise<void>
-  @Action('setDialogState', { namespace }) setDialogState!: (value: MoonpayDialogState) => Promise<void>
+  @Action('setNotificationVisibility', { namespace }) setNotificationVisibility!: (flag: boolean) => Promise<void>
+  @Action('setNotificationKey', { namespace }) setNotificationKey!: (key: string) => Promise<void>
   @Action('createTransactionsPolling', { namespace }) createTransactionsPolling!: () => Promise<Function>
 
   @Watch('isLoggedIn', { immediate: true })
@@ -70,7 +65,7 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
 
   @Watch('isVisible', { immediate: true })
   private handleVisibleStateChange (visible: boolean): void {
-    if (visible && !this.pollingTimestamp && this.dialogState === MoonpayDialogState.Purchase) {
+    if (visible && !this.pollingTimestamp) {
       this.startPollingMoonpay()
     }
   }
@@ -79,7 +74,7 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
   @Watch('libraryTheme')
   private handleLanguageChange (): void {
     if (!this.pollingTimestamp) {
-      this.resetDialogState()
+      this.updateWidgetUrl()
     }
   }
 
@@ -94,37 +89,12 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
     this.withApi(() => {
       this.moonpayApi.setPublicKey(this.apiKeys.moonpay)
       this.moonpayApi.setNetwork(this.soraNetwork)
-      this.resetDialogState()
+      this.updateWidgetUrl()
     })
   }
 
   beforeDestroy (): void {
     this.stopPollingMoonpay()
-  }
-
-  get dialogComponent (): any {
-    switch (this.dialogState) {
-      case MoonpayDialogState.Purchase:
-        return {
-          name: 'MoonpayWidget',
-          props: {
-            src: this.widgetUrl
-          }
-        }
-      case MoonpayDialogState.Notification:
-      default:
-        return {
-          name: 'MoonpayNotification',
-          props: {
-            notification: this.notification,
-            onClick: this.closeDialog
-          }
-        }
-    }
-  }
-
-  get inProcessState (): boolean {
-    return this.dialogState !== MoonpayDialogState.Notification || this.notification === MoonpayNotifications.Success
   }
 
   createMoonpayWidgetUrl (): string {
@@ -135,14 +105,6 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
     })
   }
 
-  private async closeDialog (): Promise<void> {
-    await this.setDialogVisibility(false)
-
-    if (!this.inProcessState) {
-      await this.resetDialogState()
-    }
-  }
-
   private updateWidgetUrl (): void {
     this.widgetUrl = ''
 
@@ -151,12 +113,6 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
     setTimeout(() => {
       this.widgetUrl = url
     })
-  }
-
-  private async resetDialogState (): Promise<void> {
-    await this.setDialogState(MoonpayDialogState.Purchase)
-    this.updateWidgetUrl()
-    this.notification = ''
   }
 
   private async startPollingMoonpay (): Promise<void> {
@@ -173,19 +129,15 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
 
   private async prepareBridgeForTransfer (transaction): Promise<void> {
     try {
-      this.stopPollingMoonpay()
-      this.notification = MoonpayNotifications.Success
+      await this.setDialogVisibility(false)
 
-      await this.setDialogState(MoonpayDialogState.Notification)
+      this.stopPollingMoonpay()
+      this.updateWidgetUrl()
+
+      await this.showNotification(MoonpayNotifications.Success)
       await this.checkTxTransferAvailability(transaction) // MoonpayBridgeInitMixin
     } catch (error) {
-      if (Object.values(MoonpayNotifications).includes(error.name)) {
-        this.notification = error.name
-        await this.setDialogState(MoonpayDialogState.Notification)
-        await this.setDialogVisibility(true)
-      } else {
-        console.error(error)
-      }
+      await this.handleBridgeInitError(error)
     }
   }
 }

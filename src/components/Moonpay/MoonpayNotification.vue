@@ -1,25 +1,45 @@
 <template>
-  <div class="moonpay-notification">
-    <s-icon :class="['moonpay-notification-icon', { success }]" :name="iconName" size="64" />
-    <div class="moonpay-notification__title">{{ title }}</div>
-    <div class="moonpay-notification__text">{{ text }}</div>
-    <s-button class="moonpay-notification__button s-typography-button--large" @click="onClick">OK</s-button>
-  </div>
+  <dialog-base :visible.sync="isVisible" class="moonpay-dialog">
+    <template #title>
+      <moonpay-logo :theme="libraryTheme" />
+    </template>
+    <div class="moonpay-notification">
+      <s-icon :class="['moonpay-notification-icon', { success }]" :name="iconName" size="64" />
+      <div class="moonpay-notification__title">{{ title }}</div>
+      <div class="moonpay-notification__text">{{ text }}</div>
+      <s-button class="moonpay-notification__button s-typography-button--large" @click="close">OK</s-button>
+    </div>
+  </dialog-base>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
+import { Action, State, Getter } from 'vuex-class'
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
 
+import DialogMixin from '@/components/mixins/DialogMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
+
+import DialogBase from '@/components/DialogBase.vue'
+import MoonpayLogo from '@/components/logo/Moonpay.vue'
+
 import { MoonpayNotifications } from './consts'
 
-@Component
-export default class MoonpayNotification extends Mixins(TranslationMixin) {
-  @Prop({ default: MoonpayNotifications.Success, type: String }) readonly notification!: MoonpayNotifications
-  @Prop({ default: () => {}, type: Function }) readonly onClick!: () => void
+const namespace = 'moonpay'
+
+@Component({
+  components: {
+    DialogBase,
+    MoonpayLogo
+  }
+})
+export default class MoonpayNotification extends Mixins(DialogMixin, TranslationMixin) {
+  @Getter libraryTheme!: Theme
+  @State(state => state[namespace].notificationKey) notificationKey!: MoonpayNotifications
+  @Action('setNotificationVisibility', { namespace }) setNotificationVisibility!: (flag: boolean) => Promise<void>
 
   get success (): boolean {
-    return this.notification === MoonpayNotifications.Success
+    return this.notificationKey === MoonpayNotifications.Success
   }
 
   get iconName (): string {
@@ -27,11 +47,17 @@ export default class MoonpayNotification extends Mixins(TranslationMixin) {
   }
 
   get title (): string {
-    return this.t(`moonpay.notifications.${this.notification}.title`)
+    if (!this.notificationKey) return ''
+    return this.t(`moonpay.notifications.${this.notificationKey}.title`)
   }
 
   get text (): string {
-    return this.t(`moonpay.notifications.${this.notification}.text`)
+    if (!this.notificationKey) return ''
+    return this.t(`moonpay.notifications.${this.notificationKey}.text`)
+  }
+
+  close (): void {
+    this.isVisible = false
   }
 }
 </script>

@@ -11,14 +11,16 @@
             <div class="moonpay-history-item-data">
               <div class="moonpay-history-item__date">{{ item.formatted.date }}</div>
               <div class="moonpay-history-item__amount">
-                <formatted-amount
-                  class="moonpay-history-item-amount"
-                  :value="item.formatted.cryptoAmount"
-                  :font-size-rate="FontSizeRate.MEDIUM"
-                  :asset-symbol="item.formatted.crypto"
-                />
-                <i class="s-icon--network s-icon-eth" />&nbsp;
-                <span>for</span>&nbsp;
+                <template v-if="item.formatted.cryptoAmount">
+                  <formatted-amount
+                    class="moonpay-history-item-amount"
+                    :value="item.formatted.cryptoAmount"
+                    :font-size-rate="FontSizeRate.MEDIUM"
+                    :asset-symbol="item.formatted.crypto"
+                  />
+                  <i class="s-icon--network s-icon-eth" />&nbsp;
+                  <span>for</span>&nbsp;
+                </template>
                 <formatted-amount
                   class="moonpay-history-item-amount"
                   :value="item.formatted.fiatAmount"
@@ -45,6 +47,7 @@
       <template v-else>
         <moonpay-widget :src="detailsWidgetUrl" />
         <s-button
+          v-if="isCompletedTransaction"
           :type="actionButton.type"
           :loading="loading"
           class="moonpay-details-button s-typography-button--large"
@@ -134,6 +137,7 @@ export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationS
   get formattedItems (): Array<any> {
     const { currenciesById, historyItems } = this
     const formatCurrencyName = (id: string) => (currenciesById[id]?.code ?? '').toUpperCase()
+    const formatCurrencyAmount = (amount: number) => Number.isFinite(amount) ? String(amount) : amount
     const iconStatus = status => {
       if (status === 'completed') return 'basic-check-mark-24'
       if (status === 'failed') return 'basic-clear-X-24'
@@ -145,9 +149,9 @@ export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationS
         ...item,
         formatted: {
           fiat: formatCurrencyName(item.baseCurrencyId),
-          fiatAmount: String(item.baseCurrencyAmount),
+          fiatAmount: formatCurrencyAmount(item.baseCurrencyAmount),
           crypto: formatCurrencyName(item.currencyId),
-          cryptoAmount: String(item.quoteCurrencyAmount),
+          cryptoAmount: formatCurrencyAmount(item.quoteCurrencyAmount),
           date: dayjs(item.updatedAt).format('DD.MM.YYYY,HH:mm:ss'),
           icon: iconStatus(item.status)
         }
@@ -170,6 +174,10 @@ export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationS
     if (!this.selectedItem.id) return undefined
 
     return this.bridgeHistory.find(item => (item as any).payload?.moonpayId === this.selectedItem.id)
+  }
+
+  get isCompletedTransaction (): boolean {
+    return this.selectedItem?.status === 'completed'
   }
 
   get actionButton (): any {
@@ -196,6 +204,14 @@ export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationS
     this.changeView(DetailsView)
   }
 
+  async prepareBridgeForTransfer (): Promise<void> {
+    try {
+      await this.checkTxTransferAvailability(this.selectedItem)
+    } catch (error) {
+      await this.handleBridgeInitError(error)
+    }
+  }
+
   async handleTransaction (): Promise<void> {
     if (!this.selectedItem.id) return
 
@@ -203,7 +219,7 @@ export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationS
       await this.prepareEvmNetwork(this.transferTransactionToSora.externalNetwork) // MoonpayBridgeInitMixin
       await this.showHistory(this.transferTransactionToSora.id) // BridgeHistoryMixin
     } else {
-      await this.checkTxTransferAvailability(this.selectedItem)
+      await this.prepareBridgeForTransfer()
     }
   }
 }

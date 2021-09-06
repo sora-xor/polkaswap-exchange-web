@@ -4,9 +4,3 @@ export enum MoonpayNotifications {
   SupportError = 'supportError',
   TransactionError = 'transactionError'
 }
-
-export enum MoonpayDialogState {
-  Purchase = 'purchase',
-  Notification = 'notification',
-  Transfer = 'transfer'
-}

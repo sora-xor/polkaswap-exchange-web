@@ -27,8 +27,11 @@ export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, L
   @Action('setSoraToEvm', { namespace: 'bridge' }) setSoraToEvm!: (value: boolean) => Promise<void>
   @Action('setTransactionConfirm', { namespace: 'bridge' }) setTransactionConfirm!: (value: boolean) => Promise<void>
   @Action('generateHistoryItem', { namespace: 'bridge' }) generateHistoryItem!: (history: any) => Promise<void>
+
   @Action('getTransactionTranserData', { namespace: 'moonpay' }) getTransactionTranserData!: (tx: any) => Promise<Nullable<MoonpayEVMTransferAssetData>>
   @Action('findRegisteredAssetByExternalAddress', { namespace: 'moonpay' }) findRegisteredAssetByExternalAddress!: (data: any) => Promise<Nullable<RegisteredAccountAsset>>
+  @Action('setNotificationVisibility', { namespace: 'moonpay' }) setNotificationVisibility!: (flag: boolean) => Promise<void>
+  @Action('setNotificationKey', { namespace: 'moonpay' }) setNotificationKey!: (key: string) => Promise<void>
 
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
   @Getter('evmNetworkFee', { namespace: 'bridge' }) evmNetworkFee!: CodecString
@@ -102,5 +105,18 @@ export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, L
 
   navigateToBridgeTransaction (): void {
     router.push({ name: PageNames.BridgeTransaction })
+  }
+
+  async showNotification (key: string): Promise<void> {
+    await this.setNotificationKey(key)
+    await this.setNotificationVisibility(true)
+  }
+
+  async handleBridgeInitError (error: Error): Promise<void> {
+    if (Object.values(MoonpayNotifications).includes(error.name as MoonpayNotifications)) {
+      await this.showNotification(error.name)
+    } else {
+      console.error(error)
+    }
   }
 }
