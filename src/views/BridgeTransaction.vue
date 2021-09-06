@@ -222,7 +222,7 @@ export default class BridgeTransaction extends Mixins(
   @Getter('evmTransactionHash', { namespace }) evmTransactionHash!: string
   @Getter('soraTransactionDate', { namespace }) soraTransactionDate!: string
   @Getter('evmTransactionDate', { namespace }) evmTransactionDate!: string
-  @Getter('currentTransactionState', { namespace }) currentTransactionState!: STATES
+  @Getter('currentTransactionState', { namespace }) currentState!: STATES
   @Getter('initialTransactionState', { namespace }) initialTransactionState!: STATES
   @Getter('transactionStep', { namespace }) transactionStep!: number
   @Getter('historyItem', { namespace }) historyItem!: any
@@ -300,10 +300,6 @@ export default class BridgeTransaction extends Mixins(
       return this.getFiatAmountByString(this.amount, this.asset)
     }
     return null
-  }
-
-  get currentState (): STATES {
-    return this.currentTransactionState
   }
 
   get isTransactionStep1 (): boolean {
@@ -569,6 +565,7 @@ export default class BridgeTransaction extends Mixins(
 
   async beforeDestroy (): Promise<void> {
     this.setInitialTransactionState(STATES.INITIAL)
+    this.setCurrentTransactionState(STATES.INITIAL)
     this.setTransactionStep(1)
     this.setHistoryItem(null)
     if (this.sendService) {
@@ -582,9 +579,11 @@ export default class BridgeTransaction extends Mixins(
       ? this.historyItem
       : await this.generateHistoryItem({ date: Date.now() })
     const machineStates = this.isSoraToEvm ? SORA_EVM_STATES : EVM_SORA_STATES
-    const initialState = this.initialTransactionState === this.currentTransactionState
+    const initialState = this.initialTransactionState === this.currentState
       ? this.initialTransactionState
-      : this.currentTransactionState
+      : this.currentState
+    console.log(this.currentState)
+    console.log(initialState)
     this.sendService = interpret(
       createFSM(
         {

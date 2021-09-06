@@ -33,12 +33,15 @@ export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, L
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
   @Getter('evmNetworkFee', { namespace: 'bridge' }) evmNetworkFee!: CodecString
 
+  async prepareEvmNetwork (networkId = BridgeNetworks.ETH_NETWORK_ID): Promise<void> {
+    await this.setEvmNetwork(networkId) // WalletConnectMixin
+    await this.setEvmNetworkType() // WalletConnectMixin
+    await this.syncExternalAccountWithAppState() // WalletConnectMixin
+  }
+
   async checkTxTransferAvailability (transaction): Promise<void> {
     await this.withLoading(async () => {
-      await this.setEvmNetwork(BridgeNetworks.ETH_NETWORK_ID) // WalletConnectMixin
-      await this.setEvmNetworkType() // WalletConnectMixin
-      await this.syncExternalAccountWithAppState() // WalletConnectMixin
-
+      await this.prepareEvmNetwork()
       // get necessary ethereum transaction data
       const ethTransferData = await this.getTransactionTranserData(transaction.cryptoTransactionId)
 

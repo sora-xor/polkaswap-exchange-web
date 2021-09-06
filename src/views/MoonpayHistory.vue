@@ -199,10 +199,11 @@ export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationS
   async handleTransaction (): Promise<void> {
     if (!this.selectedItem.id) return
 
-    if (!this.transferTransactionToSora) {
-      await this.checkTxTransferAvailability(this.selectedItem)
+    if (this.transferTransactionToSora?.id) {
+      await this.prepareEvmNetwork(this.transferTransactionToSora.externalNetwork) // MoonpayBridgeInitMixin
+      await this.showHistory(this.transferTransactionToSora.id) // BridgeHistoryMixin
     } else {
-      await this.showHistory(this.transferTransactionToSora.id)
+      await this.checkTxTransferAvailability(this.selectedItem)
     }
   }
 }
