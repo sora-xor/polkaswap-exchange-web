@@ -47,11 +47,13 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
 
   @State(state => state[namespace].api) moonpayApi!: MoonpayApi
   @State(state => state[namespace].pollingTimestamp) pollingTimestamp!: number
+  @State(state => state[namespace].notificationVisibility) notificationVisibility!: boolean
   @State(state => state.settings.language) language!: string
 
   @Action('setNotificationVisibility', { namespace }) setNotificationVisibility!: (flag: boolean) => Promise<void>
   @Action('setNotificationKey', { namespace }) setNotificationKey!: (key: string) => Promise<void>
   @Action('createTransactionsPolling', { namespace }) createTransactionsPolling!: () => Promise<Function>
+  @Action('setReadyBridgeTransactionId', { namespace: 'moonpay' }) setReadyBridgeTransactionId!: (id: string) => Promise<void>
 
   @Watch('isLoggedIn', { immediate: true })
   private handleLoggedInStateChange (isLoggedIn: boolean): void {
@@ -130,7 +132,10 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
       this.updateWidgetUrl()
 
       await this.showNotification(MoonpayNotifications.Success)
-      await this.checkTxTransferAvailability(transaction) // MoonpayBridgeInitMixin
+
+      const id = await this.checkTxTransferAvailability(transaction) // MoonpayBridgeInitMixin
+
+      await this.setReadyBridgeTransactionId(id)
     } catch (error) {
       await this.handleBridgeInitError(error)
     }

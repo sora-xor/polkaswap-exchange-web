@@ -133,7 +133,8 @@ export enum Components {
   ValueStatusWrapper = 'ValueStatusWrapper',
   Moonpay = 'Moonpay/Moonpay',
   MoonpayWidget = 'Moonpay/MoonpayWidget',
-  MoonpayNotification = 'Moonpay/MoonpayNotification'
+  MoonpayNotification = 'Moonpay/MoonpayNotification',
+  MoonpayHistoryButton = 'Moonpay/MoonpayHistoryButton'
 }
 
 interface SidebarMenuItem {

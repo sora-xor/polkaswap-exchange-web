@@ -485,7 +485,6 @@ const actions = {
     }
   },
   setHistoryItem ({ commit }, historyItem: Nullable<BridgeHistory>) {
-    console.log(historyItem)
     commit(types.SET_HISTORY_ITEM, historyItem)
   },
   saveHistory ({ commit }, history: BridgeHistory) {

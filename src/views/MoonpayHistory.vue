@@ -201,6 +201,7 @@ export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationS
   async prepareBridgeForTransfer (): Promise<void> {
     try {
       await this.checkTxTransferAvailability(this.selectedItem)
+      this.navigateToBridgeTransaction()
     } catch (error) {
       await this.handleBridgeInitError(error)
     }

@@ -1,6 +1,6 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
-import { BridgeNetworks, RegisteredAccountAsset, CodecString } from '@sora-substrate/util'
+import { BridgeNetworks, RegisteredAccountAsset, CodecString, BridgeHistory } from '@sora-substrate/util'
 
 import ethersUtil from '@/utils/ethers-util'
 import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils'
@@ -30,7 +30,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, L
   @Action('setAssetAddress', { namespace: 'bridge' }) setAssetAddress!: (value: string) => Promise<void>
   @Action('setSoraToEvm', { namespace: 'bridge' }) setSoraToEvm!: (value: boolean) => Promise<void>
   @Action('setTransactionConfirm', { namespace: 'bridge' }) setTransactionConfirm!: (value: boolean) => Promise<void>
-  @Action('generateHistoryItem', { namespace: 'bridge' }) generateHistoryItem!: (history: any) => Promise<void>
+  @Action('generateHistoryItem', { namespace: 'bridge' }) generateHistoryItem!: (history: any) => Promise<BridgeHistory>
 
   @Action('getTransactionTranserData', { namespace: 'moonpay' }) getTransactionTranserData!: (tx: any) => Promise<Nullable<MoonpayEVMTransferAssetData>>
   @Action('findRegisteredAssetByExternalAddress', { namespace: 'moonpay' }) findRegisteredAssetByExternalAddress!: (data: any) => Promise<Nullable<RegisteredAccountAsset>>
@@ -51,8 +51,8 @@ export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, L
     this.moonpayApi.setNetwork(this.soraNetwork)
   }
 
-  async checkTxTransferAvailability (transaction): Promise<void> {
-    await this.withLoading(async () => {
+  async checkTxTransferAvailability (transaction): Promise<string> {
+    return await this.withLoading(async () => {
       await this.prepareEvmNetwork()
       // get necessary ethereum transaction data
       const ethTransferData = await this.getTransactionTranserData(transaction.cryptoTransactionId)
@@ -101,19 +101,15 @@ export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, L
       await this.setAmount(amount)
 
       // Create bridge history item
-      await this.generateHistoryItem({
+      const historyItem = await this.generateHistoryItem({
         to: ethTransferData.to,
         payload: {
           moonpayId: transaction.id
         }
       })
 
-      this.navigateToBridgeTransaction()
+      return historyItem.id
     })
-  }
-
-  navigateToBridgeTransaction (): void {
-    router.push({ name: PageNames.BridgeTransaction })
   }
 
   async showNotification (key: string): Promise<void> {

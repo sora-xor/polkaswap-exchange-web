@@ -16,7 +16,8 @@ const types = flow(
     'SET_POLLING_TIMESTAMP',
     'SET_DIALOG_VISIBILITY',
     'SET_NOTIFICATION_VISIBILITY',
-    'SET_NOTIFICATION_KEY'
+    'SET_NOTIFICATION_KEY',
+    'SET_READY_BRIDGE_TRANSACTION_ID'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -35,6 +36,7 @@ interface MoonpayState {
   pollingTimestamp: number;
   transactions: Array<any>;
   transactionsFetching: boolean;
+  readyBridgeTransactionId: string;
   currencies: Array<any>;
 }
 
@@ -47,6 +49,7 @@ function initialState (): MoonpayState {
     pollingTimestamp: 0,
     transactions: [],
     transactionsFetching: false,
+    readyBridgeTransactionId: '',
     currencies: []
   }
 }
@@ -79,6 +82,9 @@ const mutations = {
   },
   [types.SET_NOTIFICATION_KEY] (state, key: string) {
     state.notificationKey = key
+  },
+  [types.SET_READY_BRIDGE_TRANSACTION_ID] (state: MoonpayState, id: string) {
+    state.readyBridgeTransactionId = id
   },
   [types.UPDATE_TRANSACTIONS_REQUEST] (state: MoonpayState, clearTransactions: boolean) {
     if (clearTransactions) {
@@ -116,6 +122,10 @@ const actions = {
 
   setNotificationKey ({ commit }, key: string) {
     commit(types.SET_NOTIFICATION_KEY, key)
+  },
+
+  setReadyBridgeTransactionId ({ commit }, id: string) {
+    commit(types.SET_READY_BRIDGE_TRANSACTION_ID, id)
   },
 
   updatePollingTimestamp ({ commit }, timestamp = Date.now()) {

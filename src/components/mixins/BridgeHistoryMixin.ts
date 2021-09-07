@@ -70,7 +70,11 @@ export default class BridgeHistoryMixin extends Mixins(LoadingMixin) {
       await this.setCurrentTransactionState(tx.transactionState)
       await this.setHistoryItem(tx)
 
-      router.push({ name: PageNames.BridgeTransaction })
+      this.navigateToBridgeTransaction()
     })
+  }
+
+  navigateToBridgeTransaction (): void {
+    router.push({ name: PageNames.BridgeTransaction })
   }
 }

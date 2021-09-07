@@ -10,9 +10,7 @@
         <s-button type="tertiary" size="medium" icon="various-atom-24" @click="openMoonpayDialog">
           Buy Tokens
         </s-button>
-        <s-button v-if="isLoggedIn" type="tertiary" size="medium" icon="time-time-history-24" @click="openMoonpayHistory">
-          Tx History
-        </s-button>
+        <moonpay-history-button v-if="isLoggedIn" />
         <s-button type="action" class="theme-control s-pressed" @click="switchTheme">
           <s-icon :name="themeIcon" size="28" />
         </s-button>
@@ -167,7 +165,8 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
     TokenLogo: lazyComponent(Components.TokenLogo),
     Moonpay: lazyComponent(Components.Moonpay),
-    MoonpayNotification: lazyComponent(Components.MoonpayNotification)
+    MoonpayNotification: lazyComponent(Components.MoonpayNotification),
+    MoonpayHistoryButton: lazyComponent(Components.MoonpayHistoryButton)
   }
 })
 export default class App extends Mixins(TransactionMixin, NodeErrorMixin, WalletConnectMixin) {
@@ -376,10 +375,6 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
     await this.checkConnectionToExternalAccount(() => {
       this.setMoonpayDialogVisibility(true)
     })
-  }
-
-  openMoonpayHistory (): void {
-    this.goTo(PageNames.MoonpayHistory)
   }
 
   destroyed (): void {
