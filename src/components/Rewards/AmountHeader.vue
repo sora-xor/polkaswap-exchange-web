@@ -21,6 +21,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { NumberFormatterMixin, FormattedAmountMixin, FormattedAmount, FormattedAmountWithFiatValue, FontSizeRate } from '@soramitsu/soraneo-wallet-web'
+import { AccountAsset } from '@sora-substrate/util'
 
 import { RewardsAmountHeaderItem } from '@/types/rewards'
 
@@ -39,7 +40,13 @@ export default class AmountHeader extends Mixins(FormattedAmountMixin, NumberFor
     const value = this.items.reduce((result, item) => {
       if (!item.amount || !item.asset) return result
 
-      return result.add(this.getFPNumber(this.getFiatAmountByString(item.amount, item.asset)))
+      const fiatAmount = this.getFiatAmountByString(item.amount, item.asset as AccountAsset)
+
+      if (!fiatAmount) return result
+
+      const fpfiatAmount = this.getFPNumber(fiatAmount)
+
+      return result.add(fpfiatAmount)
     }, this.getFPNumber(0))
 
     return value.toLocaleString()
