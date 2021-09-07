@@ -191,6 +191,10 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
 
   &-tooltip.el-tooltip__popper.neumorphic {
     background-color: var(--s-color-status-success);
+
+    &[x-placement^="right"] .popper__arrow {
+      border-right-color: var(--s-color-status-success);
+    }
   }
 
   &-divider.s-divider-secondary.dark {
@@ -284,6 +288,7 @@ export default class AmountTable extends Mixins(FormattedAmountMixin, Translatio
 
   &-tooltip-content {
     font-size: var(--s-font-size-small);
+    line-height: var(--s-line-height-small);
     text-transform: uppercase;
   }
 
