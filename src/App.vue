@@ -122,25 +122,24 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
-import { WALLET_CONSTS, WalletAvatar, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
-import { History, KnownSymbols } from '@sora-substrate/util'
+import { WALLET_CONSTS, WalletAvatar } from '@soramitsu/soraneo-wallet-web'
+import { History, KnownSymbols, connection } from '@sora-substrate/util'
 import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils'
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
-import DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem'
-import PolkaswapLogo from './components/logo/Polkaswap.vue'
-import SoraLogo from './components/logo/Sora.vue'
-
-import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize, Language } from '@/consts'
+import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
+import PolkaswapLogo from '@/components/logo/Polkaswap.vue'
+import SoraLogo from '@/components/logo/Sora.vue'
 
+import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize, Language } from '@/consts'
 import axios, { updateBaseUrl } from '@/api'
 import router, { lazyComponent } from '@/router'
-import { formatAddress, disconnectWallet, preloadFontFace } from '@/utils'
-import { ConnectToNodeOptions } from '@/types/nodes'
+import { formatAddress, preloadFontFace } from '@/utils'
 import { getLocale } from '@/lang'
-import { SubNetwork } from '@/utils/ethers-util'
+import type { ConnectToNodeOptions } from '@/types/nodes'
+import type { SubNetwork } from '@/utils/ethers-util'
 
 const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
 const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
@@ -182,21 +181,25 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   @Getter libraryTheme!: Theme
   @Getter libraryDesignSystem!: DesignSystem
 
-  @Getter firstReadyTransaction!: any
+  @Getter firstReadyTransaction!: History
   @Getter isLoggedIn!: boolean
   @Getter account!: any
   @Getter currentRoute!: WALLET_CONSTS.RouteNames
   @Getter chainAndNetworkText!: string
-  @Getter nodeIsConnected!: boolean
   @Getter language!: Language
 
-  @Action navigate // Wallet
-  @Action updateAccountAssets!: AsyncVoidFn
+  // Wallet
+  @Action navigate!: (options: { name: string; params?: object }) => Promise<void>
+  @Action resetAccountAssetsSubscription!: AsyncVoidFn
   @Action trackActiveTransactions!: AsyncVoidFn
+  @Action resetActiveTransactions!: AsyncVoidFn
+  @Action resetFiatPriceAndApySubscription!: AsyncVoidFn
+
+  @Action updateAccountAssets!: AsyncVoidFn
   @Action setSoraNetwork!: (data: any) => Promise<void>
   @Action setDefaultNodes!: (nodes: any) => Promise<void>
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
-  @Action setFaucetUrl!: (url: string) => void
+  @Action setFaucetUrl!: (url: string) => Promise<void>
   @Action setLanguage!: (lang: Language) => Promise<void>
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>
@@ -207,13 +210,11 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   }
 
   @Watch('nodeIsConnected')
-  private updateConnectionSubsriptions (nodeConnected: boolean) {
+  private updateConnectionSubsriptions (nodeConnected: boolean): void {
     if (nodeConnected) {
       this.updateAccountAssets()
     } else {
-      if (updateAccountAssetsSubscription) {
-        updateAccountAssetsSubscription.unsubscribe()
-      }
+      this.resetAccountAssetsSubscription()
     }
   }
 
@@ -334,8 +335,11 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
     this.showSelectLanguageDialog = true
   }
 
-  destroyed (): void {
-    disconnectWallet()
+  async beforeDestroy (): Promise<void> {
+    await this.resetFiatPriceAndApySubscription()
+    await this.resetActiveTransactions()
+    await this.resetAccountAssetsSubscription()
+    await connection.close()
   }
 
   private async runAppConnectionToNode () {
