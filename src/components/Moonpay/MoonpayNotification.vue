@@ -7,7 +7,7 @@
       <s-icon :class="['moonpay-notification-icon', { success }]" :name="iconName" size="64" />
       <div class="moonpay-notification__title">{{ title }}</div>
       <div class="moonpay-notification__text">{{ text }}</div>
-      <s-button class="moonpay-notification__button s-typography-button--large" @click="closeDialog">OK</s-button>
+      <s-button class="moonpay-notification__button s-typography-button--large" @click="closeDialog">{{ t('closeText') }}</s-button>
     </div>
   </dialog-base>
 </template>

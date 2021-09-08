@@ -45,6 +45,7 @@ export default {
   pairIsNotCreated: 'Token pair isn\'t created',
   nameText: 'Name',
   addressText: 'Address',
+  forText: 'for',
   pageTitle: {
     [PageNames.Swap]: 'Swap',
     [PageNames.Pool]: 'Pool',
@@ -567,6 +568,16 @@ export default {
         title: 'Transaction has failed',
         text: 'Unfortunately it appears that the MoonPay transaction has failed. Please try again. For MoonPay support go to https://support.moonpay.com'
       }
+    },
+    buttons: {
+      buy: 'Buy Tokens',
+      history: 'Tx History',
+      transfer: 'Start bridge',
+      view: 'View transaction'
+    },
+    history: {
+      title: 'Purchase history',
+      empty: 'No data'
     }
   },
   provider: {

@@ -582,8 +582,6 @@ export default class BridgeTransaction extends Mixins(
     const initialState = this.initialTransactionState === this.currentState
       ? this.initialTransactionState
       : this.currentState
-    console.log(this.currentState)
-    console.log(initialState)
     this.sendService = interpret(
       createFSM(
         {

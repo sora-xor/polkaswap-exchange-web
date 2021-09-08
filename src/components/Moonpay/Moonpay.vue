@@ -21,8 +21,8 @@ import MoonpayBridgeInitMixin from './MoonpayBridgeInitMixin'
 
 import { getCssVariableValue } from '@/utils'
 import { MoonpayApi } from '@/utils/moonpay'
-import { lazyComponent } from '@/router'
-import { NetworkTypes, Components } from '@/consts'
+import router, { lazyComponent } from '@/router'
+import { PageNames, Components } from '@/consts'
 import { MoonpayNotifications } from '@/components/Moonpay/consts'
 
 import MoonpayLogo from '@/components/logo/Moonpay.vue'
@@ -50,10 +50,11 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
   @State(state => state[namespace].notificationVisibility) notificationVisibility!: boolean
   @State(state => state.settings.language) language!: string
 
+  @Action('setConfirmationVisibility', { namespace }) setConfirmationVisibility!: (flag: boolean) => Promise<void>
   @Action('setNotificationVisibility', { namespace }) setNotificationVisibility!: (flag: boolean) => Promise<void>
   @Action('setNotificationKey', { namespace }) setNotificationKey!: (key: string) => Promise<void>
   @Action('createTransactionsPolling', { namespace }) createTransactionsPolling!: () => Promise<Function>
-  @Action('setReadyBridgeTransactionId', { namespace: 'moonpay' }) setReadyBridgeTransactionId!: (id: string) => Promise<void>
+  @Action('setReadyBridgeTransactionId', { namespace: 'moonpay' }) setReadyBridgeTransactionId!: (id?: string) => Promise<void>
 
   @Watch('isLoggedIn', { immediate: true })
   private handleLoggedInStateChange (isLoggedIn: boolean): void {
@@ -135,10 +136,20 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
 
       const id = await this.checkTxTransferAvailability(transaction) // MoonpayBridgeInitMixin
 
-      await this.setReadyBridgeTransactionId(id)
+      if (!this.notificationVisibility) {
+        await this.setReadyBridgeTransactionId(id)
+        await this.setConfirmationVisibility(true)
+      } else {
+        await this.setNotificationVisibility(false)
+        this.navigateToBridgeTransaction()
+      }
     } catch (error) {
       await this.handleBridgeInitError(error)
     }
+  }
+
+  navigateToBridgeTransaction (): void {
+    router.push({ name: PageNames.BridgeTransaction })
   }
 }
 </script>

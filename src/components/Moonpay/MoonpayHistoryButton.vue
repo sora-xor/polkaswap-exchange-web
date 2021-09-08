@@ -14,31 +14,37 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action, State } from 'vuex-class'
 
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin'
+import TranslationMixin from '@/components/mixins/TranslationMixin'
 
 import router from '@/router'
 import { PageNames } from '@/consts'
 
 @Component
-export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin) {
+export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin, TranslationMixin) {
   @State(state => state.moonpay.readyBridgeTransactionId) transactionId!: string
-  @Action('setReadyBridgeTransactionId', { namespace: 'moonpay' }) setReadyBridgeTransactionId!: (id: string) => Promise<void>
+  @State(state => state.moonpay.confirmationVisibility) confirmationVisibility!: string
+  @Action('setReadyBridgeTransactionId', { namespace: 'moonpay' }) setReadyBridgeTransactionId!: (id?: string) => Promise<void>
+
+  get isReadyForTransfer (): boolean {
+    return !!this.transactionId && !this.confirmationVisibility
+  }
 
   get icon (): string {
-    return this.transactionId ? '' : 'time-time-history-24'
+    return this.isReadyForTransfer ? '' : 'time-time-history-24'
   }
 
   get type (): string {
-    return this.transactionId ? 'primary' : 'tertiary'
+    return this.isReadyForTransfer ? 'primary' : 'tertiary'
   }
 
   get text (): string {
-    return this.transactionId ? 'Start Bridge' : 'Tx History'
+    return this.isReadyForTransfer ? this.t('moonpay.buttons.transfer') : this.t('moonpay.buttons.history')
   }
 
-  handleClick (): void {
-    if (this.transactionId) {
-      this.showHistory(this.transactionId)
-      this.setReadyBridgeTransactionId('')
+  async handleClick (): Promise<void> {
+    if (this.isReadyForTransfer) {
+      await this.setReadyBridgeTransactionId()
+      await this.showHistory(this.transactionId)
     } else {
       router.push({ name: PageNames.MoonpayHistory })
     }

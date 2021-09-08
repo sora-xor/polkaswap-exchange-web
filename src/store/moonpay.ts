@@ -17,6 +17,7 @@ const types = flow(
     'SET_DIALOG_VISIBILITY',
     'SET_NOTIFICATION_VISIBILITY',
     'SET_NOTIFICATION_KEY',
+    'SET_CONFIRMATION_VISIBILITY',
     'SET_READY_BRIDGE_TRANSACTION_ID'
   ]),
   map(x => [x, x]),
@@ -33,6 +34,7 @@ interface MoonpayState {
   dialogVisibility: boolean;
   notificationVisibility: boolean;
   notificationKey: string;
+  confirmationVisibility: boolean;
   pollingTimestamp: number;
   transactions: Array<any>;
   transactionsFetching: boolean;
@@ -46,6 +48,7 @@ function initialState (): MoonpayState {
     dialogVisibility: false,
     notificationVisibility: false,
     notificationKey: '',
+    confirmationVisibility: false,
     pollingTimestamp: 0,
     transactions: [],
     transactionsFetching: false,
@@ -82,6 +85,9 @@ const mutations = {
   },
   [types.SET_NOTIFICATION_KEY] (state, key: string) {
     state.notificationKey = key
+  },
+  [types.SET_CONFIRMATION_VISIBILITY] (state, flag: boolean) {
+    state.confirmationVisibility = flag
   },
   [types.SET_READY_BRIDGE_TRANSACTION_ID] (state: MoonpayState, id: string) {
     state.readyBridgeTransactionId = id
@@ -124,7 +130,11 @@ const actions = {
     commit(types.SET_NOTIFICATION_KEY, key)
   },
 
-  setReadyBridgeTransactionId ({ commit }, id: string) {
+  setConfirmationVisibility ({ commit }, flag: boolean) {
+    commit(types.SET_CONFIRMATION_VISIBILITY, flag)
+  },
+
+  setReadyBridgeTransactionId ({ commit }, id = '') {
     commit(types.SET_READY_BRIDGE_TRANSACTION_ID, id)
   },
 

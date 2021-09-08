@@ -8,7 +8,7 @@
       </div>
       <div class="app-controls s-flex">
         <s-button type="tertiary" size="medium" icon="various-atom-24" @click="openMoonpayDialog">
-          Buy Tokens
+          {{ t('moonpay.buttons.buy') }}
         </s-button>
         <moonpay-history-button v-if="isLoggedIn" />
         <s-button type="action" class="theme-control s-pressed" @click="switchTheme">
@@ -124,6 +124,7 @@
     <select-language-dialog :visible.sync="showSelectLanguageDialog" />
     <moonpay :visible.sync="showMoonpayDialog" />
     <moonpay-notification :visible.sync="showMoonpayNotification" />
+    <confirm-bridge-transaction-dialog :visible.sync="showMoonpayConfirmation" @confirm="handleMoonpayBridgeConfirm" />
   </s-design-system-provider>
 </template>
 
@@ -166,7 +167,8 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
     TokenLogo: lazyComponent(Components.TokenLogo),
     Moonpay: lazyComponent(Components.Moonpay),
     MoonpayNotification: lazyComponent(Components.MoonpayNotification),
-    MoonpayHistoryButton: lazyComponent(Components.MoonpayHistoryButton)
+    MoonpayHistoryButton: lazyComponent(Components.MoonpayHistoryButton),
+    ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog)
   }
 })
 export default class App extends Mixins(TransactionMixin, NodeErrorMixin, WalletConnectMixin) {
@@ -192,6 +194,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
   @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
   @State(state => state.moonpay.dialogVisibility) moonpayDialogVisibility!: boolean
   @State(state => state.moonpay.notificationVisibility) moonpayNotificationVisibility!: boolean
+  @State(state => state.moonpay.confirmationVisibility) moonpayConfirmationVisibility!: boolean
 
   @Getter libraryTheme!: Theme
   @Getter libraryDesignSystem!: DesignSystem
@@ -215,8 +218,10 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
   @Action setApiKeys!: (options: any) => Promise<void>
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>
-  @Action('setDialogVisibility', { namespace: 'moonpay' }) setMoonpayDialogVisibility!: (flag: boolean) => void
-  @Action('setNotificationVisibility', { namespace: 'moonpay' }) setMoonpayNotificationVisibility!: (flag: boolean) => void
+  @Action('setDialogVisibility', { namespace: 'moonpay' }) setMoonpayDialogVisibility!: (flag: boolean) => Promise<void>
+  @Action('setNotificationVisibility', { namespace: 'moonpay' }) setMoonpayNotificationVisibility!: (flag: boolean) => Promise<void>
+  @Action('setConfirmationVisibility', { namespace: 'moonpay' }) setMoonpayConfirmationVisibility!: (flag: boolean) => Promise<void>
+  @Action('setReadyBridgeTransactionId', { namespace: 'moonpay' }) setReadyBridgeTransactionId!: (id?: string) => Promise<void>
 
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction (value: History): void {
@@ -290,6 +295,14 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
     this.setMoonpayNotificationVisibility(flag)
   }
 
+  get showMoonpayConfirmation (): boolean {
+    return this.moonpayConfirmationVisibility
+  }
+
+  set showMoonpayConfirmation (flag: boolean) {
+    this.setMoonpayConfirmationVisibility(flag)
+  }
+
   get themeIcon (): string {
     return this.libraryTheme === Theme.LIGHT ? 'various-brightness-low-24' : 'various-moon-24'
   }
@@ -325,6 +338,13 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
       return this.t('connectWalletText')
     }
     return this.account.name || formatAddress(this.account.address, 8)
+  }
+
+  async handleMoonpayBridgeConfirm (): Promise<void> {
+    await this.setMoonpayConfirmationVisibility(false)
+    await this.setReadyBridgeTransactionId()
+
+    this.goTo(PageNames.BridgeTransaction)
   }
 
   getCurrentPath (): string {
@@ -372,8 +392,8 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
     if (!this.isSoraAccountConnected) {
       return this.connectInternalWallet()
     }
-    await this.checkConnectionToExternalAccount(() => {
-      this.setMoonpayDialogVisibility(true)
+    await this.checkConnectionToExternalAccount(async () => {
+      await this.setMoonpayDialogVisibility(true)
     })
   }
 

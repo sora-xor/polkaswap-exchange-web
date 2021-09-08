@@ -5,7 +5,7 @@
     </generic-page-header>
     <div class="moonpay-history">
       <template v-if="isHistoryView">
-        <div class="moonpay-history-title">Purchase history</div>
+        <div class="moonpay-history-title">{{ t('moonpay.history.title') }}</div>
         <div :class="['moonpay-history-list', { empty: emptyHistory }]" v-loading="loading">
           <div v-for="item in formattedItems" :key="item.id" class="moonpay-history-item" @click="navigateToDetails(item)">
             <div class="moonpay-history-item-data">
@@ -19,7 +19,7 @@
                     :asset-symbol="item.formatted.crypto"
                   />
                   <i class="s-icon--network s-icon-eth" />&nbsp;
-                  <span>for</span>&nbsp;
+                  <span>{{ t('forText') }}</span>&nbsp;
                 </template>
                 <formatted-amount
                   class="moonpay-history-item-amount"
@@ -31,7 +31,7 @@
             </div>
             <s-icon :class="['moonpay-history-item-icon', item.status]" :name="item.formatted.icon" size="14" />
           </div>
-          <span v-if="emptyHistory">No data</span>
+          <span v-if="emptyHistory">{{ t('moonpay.history.empty') }}</span>
         </div>
         <s-pagination
           v-if="!emptyHistory"
@@ -177,7 +177,7 @@ export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationS
   get actionButton (): any {
     return {
       type: this.transferTransactionToSora ? 'secondary' : 'primary',
-      text: this.transferTransactionToSora ? 'View transaction' : 'Start Bridge'
+      text: this.transferTransactionToSora ? this.t('moonpay.buttons.view') : this.t('moonpay.buttons.transfer')
     }
   }
 
