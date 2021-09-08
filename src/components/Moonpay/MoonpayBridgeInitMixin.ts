@@ -6,12 +6,10 @@ import ethersUtil from '@/utils/ethers-util'
 import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils'
 import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay'
 import { MoonpayNotifications } from '@/components/Moonpay/consts'
+import { NetworkTypes } from '@/consts'
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
-
-import router from '@/router'
-import { NetworkTypes, PageNames } from '@/consts'
 
 const createError = (text: string, notification: MoonpayNotifications) => {
   const error = new Error(text)
@@ -58,7 +56,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, L
       const ethTransferData = await this.getTransactionTranserData(transaction.cryptoTransactionId)
 
       if (!ethTransferData) {
-        throw createError('Cannot fetch transaction data', MoonpayNotifications.TransactionError)
+        throw createError(`Cannot fetch transaction data: ${transaction.cryptoTransactionId}`, MoonpayNotifications.TransactionError)
       }
 
       // check connection to account
@@ -66,14 +64,14 @@ export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, L
 
       if (!isAccountConnected) {
         // TODO: show something, we can not transfer token to sora
-        throw new Error('Account for transfer is not connected ')
+        throw new Error(`Account for transfer is not connected: ${ethTransferData.to}`)
       }
 
       // while registered assets updating, evmBalance updating too
       const registeredAsset = await this.findRegisteredAssetByExternalAddress(ethTransferData.address)
 
       if (!registeredAsset) {
-        throw createError('Asset is not registered', MoonpayNotifications.SupportError)
+        throw createError(`Asset is not registered: ethereum address ${ethTransferData.address}`, MoonpayNotifications.SupportError)
       }
 
       // prepare bridge state for fetching fees

@@ -119,7 +119,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
 
     if (!connected) {
       await this.connectExternalWallet()
-      await this.checkConnectionToExternalAccount(func)
     } else {
       await func()
     }

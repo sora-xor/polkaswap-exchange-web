@@ -1,5 +1,6 @@
 <template>
   <s-button
+    :class="['moonpay-history-button', { active }]"
     size="medium"
     :type="type"
     :icon="icon"
@@ -24,6 +25,10 @@ export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin, Tra
   @State(state => state.moonpay.readyBridgeTransactionId) transactionId!: string
   @State(state => state.moonpay.confirmationVisibility) confirmationVisibility!: string
   @Action('setReadyBridgeTransactionId', { namespace: 'moonpay' }) setReadyBridgeTransactionId!: (id?: string) => Promise<void>
+
+  get active (): boolean {
+    return this.$route.name === PageNames.MoonpayHistory
+  }
 
   get isReadyForTransfer (): boolean {
     return !!this.transactionId && !this.confirmationVisibility
@@ -51,3 +56,12 @@ export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin, Tra
   }
 }
 </script>
+
+<style lang="scss">
+.moonpay-history-button.neumorphic.s-tertiary {
+  &.active {
+    color: var(--s-color-theme-accent-focused);
+    box-shadow: var(--s-shadow-element);
+  }
+}
+</style>

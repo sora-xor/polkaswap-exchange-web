@@ -21,8 +21,8 @@ import MoonpayBridgeInitMixin from './MoonpayBridgeInitMixin'
 
 import { getCssVariableValue } from '@/utils'
 import { MoonpayApi } from '@/utils/moonpay'
-import router, { lazyComponent } from '@/router'
-import { PageNames, Components } from '@/consts'
+import { lazyComponent } from '@/router'
+import { Components } from '@/consts'
 import { MoonpayNotifications } from '@/components/Moonpay/consts'
 
 import MoonpayLogo from '@/components/logo/Moonpay.vue'
@@ -132,24 +132,18 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
       this.stopPollingMoonpay()
       this.updateWidgetUrl()
 
+      // show notification what tokens are purchased
       await this.showNotification(MoonpayNotifications.Success)
-
+      // create bridge history item & get it ID
       const id = await this.checkTxTransferAvailability(transaction) // MoonpayBridgeInitMixin
 
-      if (!this.notificationVisibility) {
-        await this.setReadyBridgeTransactionId(id)
-        await this.setConfirmationVisibility(true)
-      } else {
-        await this.setNotificationVisibility(false)
-        this.navigateToBridgeTransaction()
-      }
+      // show notification for transfer to Sora
+      await this.setNotificationVisibility(false)
+      await this.setReadyBridgeTransactionId(id)
+      await this.setConfirmationVisibility(true)
     } catch (error) {
       await this.handleBridgeInitError(error)
     }
-  }
-
-  navigateToBridgeTransaction (): void {
-    router.push({ name: PageNames.BridgeTransaction })
   }
 }
 </script>

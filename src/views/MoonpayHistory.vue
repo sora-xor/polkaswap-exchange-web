@@ -28,6 +28,9 @@
                   :asset-symbol="item.formatted.fiat"
                 />
               </div>
+              <div class="moonpay-history-item__wallet-address">
+                {{ item.walletAddress }}
+              </div>
             </div>
             <s-icon :class="['moonpay-history-item-icon', item.status]" :name="item.formatted.icon" size="14" />
           </div>
@@ -48,12 +51,13 @@
         <moonpay-widget :src="detailsWidgetUrl" />
         <s-button
           v-if="isCompletedTransaction"
-          :type="actionButton.type"
+          :type="actionButtonType"
+          :disabled="actionButtonDisabled"
           :loading="loading"
           class="moonpay-details-button s-typography-button--large"
           @click="handleTransaction"
         >
-          {{ actionButton.text }}
+          {{ actionButtonText }}
         </s-button>
       </template>
     </div>
@@ -73,6 +77,7 @@ import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin'
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin'
 import MoonpayBridgeInitMixin from '@/components/Moonpay/MoonpayBridgeInitMixin'
 
+import ethersUtil from '@/utils/ethers-util'
 import { getCssVariableValue, toQueryString } from '@/utils'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
@@ -99,10 +104,13 @@ export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationS
   @State(state => state.settings.language) language!: string
   @State(state => state.bridge.history) bridgeHistory!: Array<BridgeHistory>
   @Getter libraryTheme!: Theme
+  @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
   @Getter('currenciesById', { namespace }) currenciesById!: any
   @Action('getTransactions', { namespace }) getTransactions!: () => Promise<void>
   @Action('getCurrencies', { namespace }) getCurrencies!: () => Promise<void>
   @Action('getHistory', { namespace: 'bridge' }) getHistory!: () => Promise<void>
+
+  private unwatchEthereum!: any
 
   pageAmount = 5
   currentView = HistoryView
@@ -113,11 +121,34 @@ export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationS
       this.initMoonpayApi() // MoonpayBridgeInitMixin
 
       await Promise.all([
+        this.prepareEvmNetwork(), // MoonpayBridgeInitMixin
         this.getTransactions(),
         this.getCurrencies(),
         this.getHistory()
       ])
+
+      this.unwatchEthereum = await ethersUtil.watchEthereum({
+        onAccountChange: (addressList: string[]) => {
+          if (addressList.length) {
+            this.changeExternalWallet({ address: addressList[0] })
+          } else {
+            this.disconnectExternalAccount()
+          }
+        },
+        onNetworkChange: (networkId: string) => {
+          this.setEvmNetworkType(networkId)
+        },
+        onDisconnect: () => {
+          this.disconnectExternalAccount()
+        }
+      })
     })
+  }
+
+  beforeDestroy (): void {
+    if (typeof this.unwatchEthereum === 'function') {
+      this.unwatchEthereum()
+    }
   }
 
   get emptyHistory (): boolean {
@@ -164,7 +195,7 @@ export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationS
     return `${this.selectedItem.returnUrl}?${query}`
   }
 
-  get transferTransactionToSora (): Nullable<BridgeHistory> {
+  get bridgeTxToSora (): Nullable<BridgeHistory> {
     if (!this.selectedItem.id) return undefined
 
     return this.bridgeHistory.find(item => (item as any).payload?.moonpayId === this.selectedItem.id)
@@ -174,11 +205,31 @@ export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationS
     return this.selectedItem?.status === 'completed'
   }
 
-  get actionButton (): any {
-    return {
-      type: this.transferTransactionToSora ? 'secondary' : 'primary',
-      text: this.transferTransactionToSora ? this.t('moonpay.buttons.view') : this.t('moonpay.buttons.transfer')
-    }
+  get externalAccountIsMoonpayRecipient (): boolean {
+    return this.selectedItem?.walletAddress === this.evmAddress
+  }
+
+  get actionButtonType (): string {
+    return this.bridgeTxToSora ? 'secondary' : 'primary'
+  }
+
+  get actionButtonDisabled (): boolean {
+    if (this.bridgeTxToSora) return false
+
+    return (
+      !this.externalAccountIsMoonpayRecipient ||
+      !this.isValidNetworkType
+    )
+  }
+
+  get actionButtonText (): string {
+    if (!this.isExternalAccountConnected) return this.t('connectWalletText')
+
+    if (this.bridgeTxToSora) return this.t('moonpay.buttons.view')
+    if (!this.externalAccountIsMoonpayRecipient) return this.t('bridgeTransaction.changeAccount')
+    if (!this.isValidNetworkType) return this.t('bridgeTransaction.changeNetwork')
+
+    return this.t('moonpay.buttons.transfer')
   }
 
   get isHistoryView (): boolean {
@@ -193,14 +244,21 @@ export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationS
     this.changeView(HistoryView)
   }
 
-  navigateToDetails (item) {
-    this.selectedItem = item
-    this.changeView(DetailsView)
+  async navigateToDetails (item): Promise<void> {
+    try {
+      await this.checkConnectionToExternalAccount(() => {
+        this.selectedItem = item
+        this.changeView(DetailsView)
+      })
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   async prepareBridgeForTransfer (): Promise<void> {
     try {
       await this.checkTxTransferAvailability(this.selectedItem)
+
       this.navigateToBridgeTransaction()
     } catch (error) {
       await this.handleBridgeInitError(error)
@@ -210,9 +268,9 @@ export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationS
   async handleTransaction (): Promise<void> {
     if (!this.selectedItem.id) return
 
-    if (this.transferTransactionToSora?.id) {
-      await this.prepareEvmNetwork(this.transferTransactionToSora.externalNetwork) // MoonpayBridgeInitMixin
-      await this.showHistory(this.transferTransactionToSora.id) // BridgeHistoryMixin
+    if (this.bridgeTxToSora?.id) {
+      await this.prepareEvmNetwork(this.bridgeTxToSora.externalNetwork) // MoonpayBridgeInitMixin
+      await this.showHistory(this.bridgeTxToSora.id) // BridgeHistoryMixin
     } else {
       await this.prepareBridgeForTransfer()
     }
@@ -283,6 +341,10 @@ export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationS
     &__date {
       color: var(--s-color-base-content-secondary);
       font-size: var(--s-font-size-mini);
+    }
+
+    &__wallet-address {
+      color: var(--s-color-base-content-secondary);
     }
 
     &__amount {
