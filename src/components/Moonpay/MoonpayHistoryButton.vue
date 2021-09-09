@@ -57,7 +57,7 @@ export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin, Tra
 <style lang="scss">
 .moonpay-history-button.neumorphic.s-action.active {
   &, &:hover, &:focus, &.focusing {
-    color: var(--s-color-theme-accent-focused);
+    color: var(--s-color-theme-accent);
     box-shadow: var(--s-shadow-element);
   }
 }
