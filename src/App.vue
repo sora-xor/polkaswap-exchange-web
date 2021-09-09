@@ -196,8 +196,9 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   @Action resetFiatPriceAndApySubscription!: AsyncVoidFn
 
   @Action updateAccountAssets!: AsyncVoidFn
-  @Action setSoraNetwork!: (data: any) => Promise<void>
+  @Action setSoraNetwork!: (networkType: string) => Promise<void> // wallet
   @Action setDefaultNodes!: (nodes: any) => Promise<void>
+  @Action setNetworkChainGenesisHash!: (hash: string) => Promise<void>
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
   @Action setFaucetUrl!: (url: string) => Promise<void>
   @Action setLanguage!: (lang: Language) => Promise<void>
@@ -229,13 +230,20 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
     await this.withLoading(async () => {
       const { data } = await axios.get('/env.json')
 
-      await this.setSoraNetwork(data)
+      if (!data.NETWORK_TYPE) {
+        throw new Error('NETWORK_TYPE is not set')
+      }
+
+      await this.setSoraNetwork(data.NETWORK_TYPE)
       await this.setDefaultNodes(data?.DEFAULT_NETWORKS)
       await this.setSubNetworks(data.SUB_NETWORKS)
       await this.setSmartContracts(data.SUB_NETWORKS)
 
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL)
+      }
+      if (data.CHAIN_GENESIS_HASH) {
+        await this.setNetworkChainGenesisHash(data.CHAIN_GENESIS_HASH)
       }
 
       // connection to node
