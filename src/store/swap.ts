@@ -8,7 +8,6 @@ import { FPNumber, CodecString, LiquiditySourceTypes, LPRewardsInfo } from '@sor
 
 import { MarketAlgorithmForLiquiditySource } from '@/consts'
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions'
-import { FpZeroValue } from '@/utils'
 
 const balanceSubscriptions = new TokenBalanceSubscriptions()
 
@@ -133,7 +132,7 @@ const getters = {
     const div = amount.div(withoutImpact)
     const result = new FPNumber(1).sub(div).mul(new FPNumber(100))
 
-    return FPNumber.lte(result, FpZeroValue) ? '0' : FpZeroValue.sub(result).toFixed(2)
+    return FPNumber.lte(result, FPNumber.ZERO) ? '0' : FPNumber.ZERO.sub(result).toFixed(2)
   }
 }
 
