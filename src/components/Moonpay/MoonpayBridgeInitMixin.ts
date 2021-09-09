@@ -64,7 +64,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, L
 
       if (!isAccountConnected) {
         // TODO: show something, we can not transfer token to sora
-        throw new Error(`Account for transfer is not connected: ${ethTransferData.to}`)
+        throw createError(`Account for transfer is not connected: ${ethTransferData.to}`, MoonpayNotifications.AccountAddressError)
       }
 
       // while registered assets updating, evmBalance updating too
@@ -89,14 +89,14 @@ export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, L
       }
 
       const maxAmount = getMaxValue(registeredAsset, this.evmNetworkFee, true) // max balance (minus fee if eth asset)
-      const amount = Number(maxAmount) >= Number(ethTransferData.amount) ? ethTransferData.amount : maxAmount
+      const amount = Math.min(Number(maxAmount), Number(ethTransferData.amount))
 
-      if (+amount <= 0) {
+      if (amount <= 0) {
         // TODO: show something, we can not transfer token to sora
-        throw new Error('Insufficient amount')
+        throw createError('Insufficient amount', MoonpayNotifications.AmountError)
       }
 
-      await this.setAmount(amount)
+      await this.setAmount(String(amount))
 
       // Create bridge history item
       const historyItem = await this.generateHistoryItem({

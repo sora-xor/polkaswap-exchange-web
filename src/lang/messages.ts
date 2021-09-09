@@ -567,6 +567,14 @@ export default {
       [MoonpayNotifications.TransactionError]: {
         title: 'Transaction has failed',
         text: 'Unfortunately it appears that the MoonPay transaction has failed. Please try again. For MoonPay support go to https://support.moonpay.com'
+      },
+      [MoonpayNotifications.AmountError]: {
+        title: 'Insufficient balance',
+        text: 'Unfortunately the HASHI bridge transaction has failed due to there not being enough tokens for transaction. Please check your Ethereum account balance and try again.'
+      },
+      [MoonpayNotifications.AccountAddressError]: {
+        title: 'Wrong Ethereum account',
+        text: 'Unfortunately, the HASHI bridge transaction failed due to the recipient address of the tokens in the MoonPay order does not match your current Ethereum account address. Please switch Ethereum account in extension and try again.'
       }
     },
     buttons: {
