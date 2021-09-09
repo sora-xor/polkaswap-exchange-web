@@ -315,11 +315,10 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
       return isInsufficientXorForFee
     }
     // It's required for XOR output without XOR or with XOR balance < network fee
-    const zero = this.getFPNumber(0, this.tokenXOR.decimals)
     const xorBalance = this.getFPNumberFromCodec(this.tokenXOR.balance.transferable, this.tokenXOR.decimals)
     const fpNetworkFee = this.getFPNumberFromCodec(this.networkFee, this.tokenXOR.decimals).sub(xorBalance)
-    const fpAmount = this.getFPNumber(this.toValue, this.tokenXOR.decimals).sub(FPNumber.gt(fpNetworkFee, zero) ? fpNetworkFee : zero)
-    return FPNumber.lte(fpAmount, zero)
+    const fpAmount = this.getFPNumber(this.toValue, this.tokenXOR.decimals).sub(FPNumber.gt(fpNetworkFee, FPNumber.ZERO) ? fpNetworkFee : FPNumber.ZERO)
+    return FPNumber.lte(fpAmount, FPNumber.ZERO)
   }
 
   get tokenFromPrice (): Nullable<CodecString> {
