@@ -26,11 +26,11 @@
             :fiat-value="getFiatAmountByCodecString(liquidityItem.secondBalance, getAsset(liquidityItem.secondAddress))"
             is-formatted
           />
-          <info-line
+          <!-- <info-line
             v-if="fiatPriceAndApyObject[liquidityItem.secondAddress]"
             label="APY"
             :value="getApy(liquidityItem.secondAddress)"
-          />
+          /> -->
           <info-line
             :label="t('pool.poolShare')"
             :value="getPoolShare(liquidityItem.poolShare)"
