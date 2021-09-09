@@ -12,6 +12,7 @@ export default {
   appName: 'Polkaswap',
   soraText: 'SORA',
   ethereumText: 'Ethereum',
+  moonpayText: 'MoonPay',
   changeNetworkText: 'Change network in Metamask',
   transactionText: 'transaction | transactions',
   transactionSubmittedText: 'Transaction was submitted',
@@ -558,7 +559,7 @@ export default {
       },
       [MoonpayNotifications.SupportError]: {
         title: 'Token not supported',
-        text: 'Unfortunately the token purchased via MoonPay is not yet supported by the HASHI bridge in Polkaswap. Normally only the supported tokens should be available for purchase via MoonPay in Polkaswap, hence something must have gone wrong somewhere. Please don’t hesitate to let the community know about this case in the Polkaswap Telegram group.'
+        text: 'Unfortunately the token purchased via @:moonpayText is not yet supported by the HASHI bridge in Polkaswap. Normally only the supported tokens should be available for purchase via @:moonpayText in Polkaswap, hence something must have gone wrong somewhere. Please don’t hesitate to let the community know about this case in the <a class="link" href="https://t.me/polkaswap" target="_blank" rel="nofollow noopener" title="@:appName">Polkaswap Telegram group</a>'
       },
       [MoonpayNotifications.FeeError]: {
         title: 'Not enough ETH for the bridge tx',
@@ -566,7 +567,7 @@ export default {
       },
       [MoonpayNotifications.TransactionError]: {
         title: 'Transaction has failed',
-        text: 'Unfortunately it appears that the MoonPay transaction has failed. Please try again. For MoonPay support go to https://support.moonpay.com'
+        text: 'Unfortunately it appears that the @:moonpayText transaction has failed. Please try again. For @:moonpayText support go to <a class="link" href="https://support.moonpay.com" target="_blank" rel="nofollow noopener" title="@:moonpayText">https://support.moonpay.com</a>'
       },
       [MoonpayNotifications.AmountError]: {
         title: 'Insufficient balance',
@@ -574,7 +575,7 @@ export default {
       },
       [MoonpayNotifications.AccountAddressError]: {
         title: 'Wrong Ethereum account',
-        text: 'Unfortunately, the HASHI bridge transaction failed due to the recipient address of the tokens in the MoonPay order does not match your current Ethereum account address. Please switch Ethereum account in extension and try again.'
+        text: 'Unfortunately, the HASHI bridge transaction failed due to the recipient address of the tokens in the @:moonpayText order does not match your current Ethereum account address. Please switch Ethereum account in extension and try again.'
       }
     },
     buttons: {

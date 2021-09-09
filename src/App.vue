@@ -634,9 +634,10 @@ html {
   &__title {
     color: var(--s-color-theme-accent);
   }
-  .link {
-    color: var(--s-color-base-content-primary);
-  }
+}
+
+.link {
+  color: var(--s-color-base-content-primary);
 }
 
 // Disabled button large typography
