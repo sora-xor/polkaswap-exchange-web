@@ -1,12 +1,11 @@
 import debounce from 'lodash/debounce'
 import { Asset, AccountAsset, RegisteredAccountAsset, AccountLiquidity, KnownSymbols, FPNumber, CodecString, KnownAssets } from '@sora-substrate/util'
-import { connection, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
+
 import router from '@/router'
 import i18n from '@/lang'
-import storage from './storage'
 import { app } from '@/consts'
 
-export const FpZeroValue = new FPNumber(0)
+import storage from './storage'
 
 export const copyToClipboard = async (text: string): Promise<void> => {
   try {
@@ -62,7 +61,7 @@ const getMaxBalance = (
 ): FPNumber => {
   const balance = getAssetBalance(asset, { internal: !isExternalBalance, parseAsLiquidity })
 
-  if (asZeroValue(balance)) return FpZeroValue
+  if (asZeroValue(balance)) return FPNumber.ZERO
 
   let fpResult = FPNumber.fromCodecValue(balance, asset.decimals)
 
@@ -77,7 +76,7 @@ const getMaxBalance = (
     fpResult = fpResult.sub(fpFee)
   }
 
-  return FPNumber.lt(fpResult, FpZeroValue) ? FpZeroValue : fpResult
+  return FPNumber.lt(fpResult, FPNumber.ZERO) ? FPNumber.ZERO : fpResult
 }
 
 export const getMaxValue = (
@@ -167,13 +166,6 @@ export const findAssetInCollection = (asset, collection) => {
   if (!Array.isArray(collection) || !asset?.address) return undefined
 
   return collection.find(item => item.address === asset.address)
-}
-
-export const disconnectWallet = async (): Promise<void> => {
-  if (updateAccountAssetsSubscription) {
-    updateAccountAssetsSubscription.unsubscribe()
-  }
-  await connection.close()
 }
 
 export const debouncedInputHandler = (fn: any, timeout = 500, options = { leading: true }) => debounce(fn, timeout, options)

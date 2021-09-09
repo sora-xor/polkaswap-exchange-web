@@ -186,10 +186,10 @@ export default class SelectToken extends Mixins(FormattedAmountMixin, Translatio
   @Getter('nonWhitelistAssets', { namespace }) nonWhitelistAssets!: Array<Asset>
   // Wallet store
   @Getter whitelistIdsBySymbol!: any
-  @Getter accountAssetsAddressTable
+  @Getter accountAssetsAddressTable!: any
 
   // Wallet
-  @Action addAsset!: (options: { address?: string }) => Promise<void>
+  @Action addAsset!: (address?: string) => Promise<void>
 
   resetCustomAssetFields (): void {
     this.isConfirmed = false
@@ -281,7 +281,7 @@ export default class SelectToken extends Mixins(FormattedAmountMixin, Translatio
   debouncedCustomAssetSearch = debouncedInputHandler(this.searchCustomAsset)
 
   async handleAddAsset (): Promise<void> {
-    await this.withLoading(async () => await this.addAsset({ address: (this.customAsset || {}).address }))
+    await this.withLoading(async () => await this.addAsset((this.customAsset || {}).address))
     this.resetCustomAssetFields()
   }
 
