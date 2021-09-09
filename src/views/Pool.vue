@@ -30,6 +30,11 @@
             :label="t('pool.poolShare')"
             :value="getPoolShare(liquidityItem.poolShare)"
           />
+          <info-line
+            v-if="fiatPriceAndApyObject[liquidityItem.secondAddress]"
+            label="APY"
+            :value="getApy(liquidityItem.secondAddress)"
+          />
           <div class="pool-info--buttons">
             <s-button type="secondary" class="s-typography-button--medium" @click="handleAddLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
               {{ t('pool.addLiquidity') }}
@@ -56,7 +61,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { AccountLiquidity, Asset } from '@sora-substrate/util'
 import { FormattedAmountMixin, FormattedAmount, FontSizeRate, FontWeightRate, InfoLine } from '@soramitsu/soraneo-wallet-web'
@@ -81,7 +86,10 @@ export default class Pool extends Mixins(LoadingMixin, FormattedAmountMixin, Tra
   readonly FontSizeRate = FontSizeRate
   readonly FontWeightRate = FontWeightRate
 
+  // Wallet
   @Getter isLoggedIn!: boolean
+  @Getter fiatPriceAndApyObject!: any
+
   @Getter('assets', { namespace: 'assets' }) assets!: Array<Asset>
   @Getter('accountLiquidity', { namespace }) accountLiquidity!: Array<AccountLiquidity>
 
@@ -131,6 +139,11 @@ export default class Pool extends Mixins(LoadingMixin, FormattedAmountMixin, Tra
 
   getPoolShare (poolShare: string): string {
     return `${this.formatStringValue(poolShare)}%`
+  }
+
+  getApy (targetAssetAddress: string): string {
+    const apy = this.getFPNumberFromCodec(this.fiatPriceAndApyObject[targetAssetAddress].apy)
+    return `${apy.mul(this.getFPNumber(100)).toLocaleString()}%`
   }
 }
 </script>

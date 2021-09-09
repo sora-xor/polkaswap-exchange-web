@@ -2,36 +2,55 @@
   <div class="amount-header">
     <template v-for="{ asset, amount } in items">
       <div :key="asset.symbol" class="amount-block">
-        <formatted-amount-with-fiat-value
-          value-class="amount-block__amount"
+        <formatted-amount
+          class="amount-block__amount"
           :value="formatStringValue(amount, asset.decimal)"
           :font-size-rate="FontSizeRate.MEDIUM"
           :asset-symbol="asset.symbol"
-          :fiat-value="getFiatAmountByString(amount, asset)"
-          :fiat-font-size-rate="FontSizeRate.MEDIUM"
           symbol-as-decimal
-          with-left-shift
         />
       </div>
     </template>
+    <formatted-amount
+      is-fiat-value
+      :value="totalFiatValue"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { FormattedAmountMixin, FormattedAmountWithFiatValue, FontSizeRate } from '@soramitsu/soraneo-wallet-web'
+import { NumberFormatterMixin, FormattedAmountMixin, FormattedAmount, FormattedAmountWithFiatValue, FontSizeRate } from '@soramitsu/soraneo-wallet-web'
+import { Asset, FPNumber } from '@sora-substrate/util'
 
 import { RewardsAmountHeaderItem } from '@/types/rewards'
 
 @Component({
   components: {
+    FormattedAmount,
     FormattedAmountWithFiatValue
   }
 })
-export default class AmountHeader extends Mixins(FormattedAmountMixin) {
+export default class AmountHeader extends Mixins(FormattedAmountMixin, NumberFormatterMixin) {
   readonly FontSizeRate = FontSizeRate
 
   @Prop({ default: () => [], type: Array }) items!: Array<RewardsAmountHeaderItem>
+
+  get totalFiatValue (): string {
+    const value = this.items.reduce((result, item) => {
+      if (!item.amount || !item.asset) return result
+
+      const fpAmount = this.getFPNumber(item.amount)
+
+      if (!fpAmount) return result
+
+      const fpFiatAmount = this.getFPNumberFiatAmountByFPNumber(fpAmount, item.asset as Asset)
+
+      return fpFiatAmount ? result.add(fpFiatAmount) : result
+    }, FPNumber.ZERO)
+
+    return value.toLocaleString()
+  }
 }
 </script>
 

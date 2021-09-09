@@ -22,7 +22,6 @@ const types = flow(
     'SET_MARKET_ALGORITHM',
     'SET_TRANSACTION_DEADLINE',
     'SET_FAUCET_URL',
-    'SET_SORA_NETWORK',
     'SET_DEFAULT_NODES',
     'SET_CUSTOM_NODES',
     'RESET_NODE',
@@ -40,7 +39,6 @@ const types = flow(
 function initialState () {
   return {
     apiKeys: {},
-    soraNetwork: '',
     slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
     marketAlgorithm: storage.get('marketAlgorithm') || DefaultMarketAlgorithm,
     transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
@@ -59,8 +57,8 @@ function initialState () {
 const state = initialState()
 
 const getters = {
-  chainAndNetworkText (state) {
-    return state.node.chain || state.soraNetwork
+  chainAndNetworkText (state, getters, rootState, rootGetters) {
+    return state.node.chain || rootGetters.soraNetwork
   },
   defaultNodesHashTable (state) {
     return state.defaultNodes.reduce((result, node) => ({ ...result, [node.address]: node }), {})
@@ -73,9 +71,6 @@ const getters = {
   },
   nodeIsConnected (state) {
     return state.node?.address && !state.nodeAddressConnecting && connection.opened
-  },
-  soraNetwork (state) {
-    return state.soraNetwork
   },
   slippageTolerance (state) {
     return state.slippageTolerance
@@ -116,9 +111,6 @@ const mutations = {
   [types.RESET_NODE] (state) {
     state.node = {}
     settingsStorage.remove('node')
-  },
-  [types.SET_SORA_NETWORK] (state, value) {
-    state.soraNetwork = value
   },
   [types.SET_NETWORK_CHAIN_GENESIS_HASH] (state, value) {
     state.chainGenesisHash = value
@@ -292,15 +284,6 @@ const actions = {
   setDefaultNodes ({ commit }, nodes) {
     commit(types.SET_DEFAULT_NODES, nodes)
   },
-  setSoraNetwork ({ commit }, data) {
-    if (!data.NETWORK_TYPE) {
-      throw new Error('NETWORK_TYPE is not set')
-    }
-    if (data.CHAIN_GENESIS_HASH) {
-      commit(types.SET_NETWORK_CHAIN_GENESIS_HASH, data.CHAIN_GENESIS_HASH)
-    }
-    commit(types.SET_SORA_NETWORK, data.NETWORK_TYPE)
-  },
   addCustomNode ({ commit, getters }, node) {
     const nodes = [...getters.customNodes, node]
     commit(types.SET_CUSTOM_NODES, nodes)
@@ -312,6 +295,9 @@ const actions = {
   removeCustomNode ({ commit, getters }, node) {
     const nodes = getters.customNodes.filter(item => item.address !== node.address)
     commit(types.SET_CUSTOM_NODES, nodes)
+  },
+  setNetworkChainGenesisHash ({ commit }, data) {
+    commit(types.SET_NETWORK_CHAIN_GENESIS_HASH, data.CHAIN_GENESIS_HASH)
   },
   async getNetworkChainGenesisHash ({ commit, state }) {
     try {

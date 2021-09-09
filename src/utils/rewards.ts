@@ -9,7 +9,7 @@ export const groupRewardsByAssetsList = (rewards: Array<RewardInfo | RewardsInfo
 
     const { address, decimals } = isRewardsInfo ? (item as RewardsInfo).rewards[0].asset : (item as RewardInfo).asset
     const amount = isRewardsInfo ? (item as RewardsInfo).limit : (item as RewardInfo).amount
-    const current = result[address] || new FPNumber(0, decimals)
+    const current = result[address] || FPNumber.ZERO
     const addValue = FPNumber.fromCodecValue(amount, decimals)
     result[address] = current.add(addValue)
     return result

@@ -20,7 +20,6 @@ const types = flow(
     'SET_ENERGY_SMART_CONTRACTS',
     'SET_EVM_BALANCE',
     'SET_DEFAULT_NETWORK_TYPE',
-    'SET_SORA_NETWORK',
     'SET_SUB_NETWORKS',
     'SET_ENV_NETWORK'
   ]),
@@ -38,7 +37,6 @@ const types = flow(
 
 function initialState () {
   return {
-    soraNetwork: '',
     evmAddress: ethersUtil.getEvmUserAddress(),
     evmBalance: ZeroStringValue,
     networkType: ethersUtil.getEvmNetworkTypeFromStorage(),
@@ -98,9 +96,6 @@ const getters = {
   evmNetwork (state) {
     return state.evmNetwork
   },
-  soraNetwork (state) {
-    return state.soraNetwork
-  },
   isValidNetworkType (state) {
     return state.networkType === state.defaultNetworkType
   }
@@ -109,7 +104,7 @@ const getters = {
 const mutations = {
   [types.RESET] (state) {
     // we shouldn't reset networks, setted from env & contracts
-    const networkSettingsKeys = ['soraNetwork', 'defaultNetworkType', 'contractAddress', 'subNetworks', 'smartContracts']
+    const networkSettingsKeys = ['defaultNetworkType', 'contractAddress', 'subNetworks', 'smartContracts']
     const s = initialState()
 
     Object.keys(s).filter(key => !networkSettingsKeys.includes(key)).forEach(key => {
@@ -147,18 +142,11 @@ const mutations = {
     state.evmNetwork = network
   },
 
-  [types.SET_SORA_NETWORK] (state, network) {
-    state.soraNetwork = network
-  },
   [types.SET_NETWORK_TYPE_REQUEST] () {},
   [types.SET_NETWORK_TYPE_SUCCESS] (state, network) {
     state.networkType = network
   },
   [types.SET_NETWORK_TYPE_FAILURE] () {},
-
-  [types.SET_SORA_NETWORK] (state, network) {
-    state.soraNetwork = network
-  },
 
   [types.DISCONNECT_EVM_WALLET_REQUEST] () {},
   [types.DISCONNECT_EVM_WALLET_SUCCESS] (state) {
@@ -234,10 +222,6 @@ const actions = {
       commit(types.SWITCH_EVM_WALLET_FAILURE)
       throw error
     }
-  },
-
-  async setSoraNetwork ({ commit }, network) {
-    commit(types.SET_SORA_NETWORK, network)
   },
 
   async setSubNetworks ({ commit }, subNetworks: Array<SubNetwork>) {
@@ -372,7 +356,6 @@ const actions = {
       if (isNativeEvmToken) {
         value = await dispatch('getEvmBalance')
       } else {
-        const precision18 = new FPNumber(0)
         const tokenInstance = new ethers.Contract(
           address,
           ABI.balance,
@@ -381,7 +364,7 @@ const actions = {
         const methodArgs = [account]
         const balance = await tokenInstance.balanceOf(...methodArgs)
         decimals = await tokenInstance.decimals()
-        value = precision18.add(FPNumber.fromCodecValue(balance._hex, +decimals)).toCodecString()
+        value = FPNumber.fromCodecValue(balance._hex, +decimals).toCodecString()
       }
       commit(types.GET_BALANCE_SUCCESS)
     } catch (error) {
