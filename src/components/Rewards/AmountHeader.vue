@@ -40,13 +40,13 @@ export default class AmountHeader extends Mixins(FormattedAmountMixin, NumberFor
     const value = this.items.reduce((result, item) => {
       if (!item.amount || !item.asset) return result
 
-      const fiatAmount = this.getFiatAmountByString(item.amount, item.asset as AccountAsset)
+      const fpAmount = this.getFPNumber(item.amount)
 
-      if (!fiatAmount) return result
+      if (!fpAmount) return result
 
-      const fpfiatAmount = this.getFPNumber(fiatAmount)
+      const fpFiatAmount = this.getFPNumberFiatAmountByFPNumber(fpAmount, item.asset as AccountAsset)
 
-      return result.add(fpfiatAmount)
+      return fpFiatAmount ? result.add(fpFiatAmount) : result
     }, this.getFPNumber(0))
 
     return value.toLocaleString()
