@@ -7,10 +7,12 @@
         </s-button>
       </div>
       <div class="app-controls s-flex">
-        <s-button type="tertiary" size="medium" icon="various-atom-24" @click="openMoonpayDialog">
-          {{ t('moonpay.buttons.buy') }}
+        <s-button type="action" :tooltip="t('moonpay.buttons.buy')" @click="openMoonpayDialog">
+          <s-icon name="various-atom-24" size="28" />
         </s-button>
         <moonpay-history-button v-if="isLoggedIn" />
+      </div>
+      <div class="app-controls s-flex">
         <s-button type="action" class="theme-control s-pressed" @click="switchTheme">
           <s-icon :name="themeIcon" size="28" />
         </s-button>
@@ -811,8 +813,8 @@ $account-control-name-max-width: 200px;
     margin-right: auto;
   }
 
-  &:last-child {
-    margin-left: auto;
+  & + & {
+    margin-left: $inner-spacing-big;
   }
 
   & > *:not(:last-child) {
