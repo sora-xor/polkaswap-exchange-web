@@ -356,7 +356,6 @@ const actions = {
       if (isNativeEvmToken) {
         value = await dispatch('getEvmBalance')
       } else {
-        const precision18 = new FPNumber(0)
         const tokenInstance = new ethers.Contract(
           address,
           ABI.balance,
@@ -365,7 +364,7 @@ const actions = {
         const methodArgs = [account]
         const balance = await tokenInstance.balanceOf(...methodArgs)
         decimals = await tokenInstance.decimals()
-        value = precision18.add(FPNumber.fromCodecValue(balance._hex, +decimals)).toCodecString()
+        value = FPNumber.fromCodecValue(balance._hex, +decimals).toCodecString()
       }
       commit(types.GET_BALANCE_SUCCESS)
     } catch (error) {
