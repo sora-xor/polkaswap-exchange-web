@@ -26,6 +26,11 @@
             :fiat-value="getFiatAmountByCodecString(liquidityItem.secondBalance, getAsset(liquidityItem.secondAddress))"
             is-formatted
           />
+          <!-- <info-line
+            v-if="fiatPriceAndApyObject[liquidityItem.secondAddress]"
+            label="APY"
+            :value="getApy(liquidityItem.secondAddress)"
+          /> -->
           <info-line
             :label="t('pool.poolShare')"
             :value="getPoolShare(liquidityItem.poolShare)"
@@ -56,7 +61,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { AccountLiquidity, Asset } from '@sora-substrate/util'
 import { FormattedAmountMixin, FormattedAmount, FontSizeRate, FontWeightRate, InfoLine } from '@soramitsu/soraneo-wallet-web'
@@ -81,7 +86,10 @@ export default class Pool extends Mixins(LoadingMixin, FormattedAmountMixin, Tra
   readonly FontSizeRate = FontSizeRate
   readonly FontWeightRate = FontWeightRate
 
+  // Wallet
   @Getter isLoggedIn!: boolean
+  @Getter fiatPriceAndApyObject!: any
+
   @Getter('assets', { namespace: 'assets' }) assets!: Array<Asset>
   @Getter('accountLiquidity', { namespace }) accountLiquidity!: Array<AccountLiquidity>
 
@@ -131,6 +139,10 @@ export default class Pool extends Mixins(LoadingMixin, FormattedAmountMixin, Tra
 
   getPoolShare (poolShare: string): string {
     return `${this.formatStringValue(poolShare)}%`
+  }
+
+  getApy (targetAssetAddress: string): string {
+    return this.formatCodecNumber(this.fiatPriceAndApyObject[targetAssetAddress].apy)
   }
 }
 </script>
