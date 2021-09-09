@@ -12,7 +12,7 @@
       </div>
     </template>
     <formatted-amount
-      :is-fiat-value="true"
+      is-fiat-value
       :value="totalFiatValue"
     />
   </div>
