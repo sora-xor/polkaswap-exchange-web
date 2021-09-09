@@ -26,14 +26,14 @@
             :fiat-value="getFiatAmountByCodecString(liquidityItem.secondBalance, getAsset(liquidityItem.secondAddress))"
             is-formatted
           />
-          <!-- <info-line
-            v-if="fiatPriceAndApyObject[liquidityItem.secondAddress]"
-            label="APY"
-            :value="getApy(liquidityItem.secondAddress)"
-          /> -->
           <info-line
             :label="t('pool.poolShare')"
             :value="getPoolShare(liquidityItem.poolShare)"
+          />
+          <info-line
+            v-if="fiatPriceAndApyObject[liquidityItem.secondAddress]"
+            label="APY"
+            :value="getApy(liquidityItem.secondAddress)"
           />
           <div class="pool-info--buttons">
             <s-button type="secondary" class="s-typography-button--medium" @click="handleAddLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
@@ -142,7 +142,8 @@ export default class Pool extends Mixins(LoadingMixin, FormattedAmountMixin, Tra
   }
 
   getApy (targetAssetAddress: string): string {
-    return this.formatCodecNumber(this.fiatPriceAndApyObject[targetAssetAddress].apy)
+    const apy = this.getFPNumberFromCodec(this.fiatPriceAndApyObject[targetAssetAddress].apy)
+    return `${apy.mul(this.getFPNumber(100)).toLocaleString()}%`
   }
 }
 </script>
