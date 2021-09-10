@@ -84,13 +84,18 @@
             >
               <template v-if="!(isSoraToEvm || isExternalAccountConnected)">{{ t('bridgeTransaction.connectWallet') }}</template>
               <template v-else-if="!(isSoraToEvm || isValidNetworkType)">{{ t('bridgeTransaction.changeNetwork') }}</template>
-              <span v-else-if="isTransactionFromPending" v-html="t('bridgeTransaction.pending', { network: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'ethereum'}`) })" />
               <template v-else-if="isInsufficientBalance">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: formattedAssetSymbol }) }}</template>
               <template v-else-if="isInsufficientXorForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}</template>
               <template v-else-if="isInsufficientEvmNativeTokenForFee">{{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: evmTokenSymbol }) }}</template>
               <template v-else-if="isTransactionFromFailed">{{ t('bridgeTransaction.retry') }}</template>
+              <template v-else-if="waitingForApprove">{{ t('bridgeTransaction.allowToken', { tokenSymbol: formattedAssetSymbol }) }}</template>
+              <span v-else-if="isTransactionFromPending" v-html="t('bridgeTransaction.pending', { network: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'ethereum'}`) })" />
               <template v-else>{{ t('bridgeTransaction.confirm', { direction: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'metamask'}`) }) }}</template>
             </s-button>
+
+            <div v-if="waitingForApprove" class="transaction-approval-text">
+              {{ t('bridgeTransaction.approveToken') }}
+            </div>
           </s-collapse-item>
           <s-collapse-item :name="transactionSteps.to">
             <template #title>
@@ -228,6 +233,7 @@ export default class BridgeTransaction extends Mixins(
   @Getter('transactionStep', { namespace }) transactionStep!: number
   @Getter('historyItem', { namespace }) historyItem!: any
   @Getter('isTxEvmAccount', { namespace }) isTxEvmAccount!: boolean
+  @Getter('waitingForApprove', { namespace }) waitingForApprove!: boolean
 
   @Action('setCurrentTransactionState', { namespace }) setCurrentTransactionState
   @Action('setInitialTransactionState', { namespace }) setInitialTransactionState
@@ -962,6 +968,10 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     &__value {
       font-weight: 400;
     }
+  }
+  &-approval-text {
+    margin-top: $inner-spacing-medium;
+    font-size: var(--s-font-size-mini);
   }
 }
 .header {

@@ -382,7 +382,9 @@ export default {
     changeNetwork: '@:changeNetworkText',
     connectWallet: '@:connectWalletText',
     changeAccount: '@:changeAccountText in @:metamask',
-    expectedAddress: 'Expected address in @:metamask'
+    expectedAddress: 'Expected address in @:metamask',
+    allowToken: 'Allow @:appName to use your {tokenSymbol}',
+    approveToken: 'Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest.'
   },
   months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   bridgeHistory: {

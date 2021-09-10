@@ -551,7 +551,9 @@
         "changeAccount": "@:changeAccountText in @:metamask",
         "expectedAddress": "Expected address in @:metamask",
         "title": "Bridge Transaction",
-        "expectedMetaMaskAddress": "Expected address in MetaMask:"
+        "expectedMetaMaskAddress": "Expected address in MetaMask:",
+        "allowToken": "Allow @:appName to use your {tokenSymbol}",
+        "approveToken": "Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest."
     },
     "months": {
         "0": "Jan",
