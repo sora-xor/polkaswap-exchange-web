@@ -124,7 +124,7 @@
     <select-language-dialog :visible.sync="showSelectLanguageDialog" />
     <moonpay :visible.sync="showMoonpayDialog" />
     <moonpay-notification :visible.sync="showMoonpayNotification" />
-    <confirm-bridge-transaction-dialog :visible.sync="showMoonpayConfirmation" @confirm="handleMoonpayBridgeConfirm" />
+    <moonpay-confirmation :visible.sync="showMoonpayConfirmation" @confirm="handleMoonpayBridgeConfirm" />
   </s-design-system-provider>
 </template>
 
@@ -167,7 +167,7 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
     Moonpay: lazyComponent(Components.Moonpay),
     MoonpayNotification: lazyComponent(Components.MoonpayNotification),
     MoonpayHistoryButton: lazyComponent(Components.MoonpayHistoryButton),
-    ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog)
+    MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation)
   }
 })
 export default class App extends Mixins(TransactionMixin, NodeErrorMixin, WalletConnectMixin) {

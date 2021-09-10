@@ -1,8 +1,11 @@
 <template>
-  <dialog-base
-    :visible.sync="isVisible"
-    :title="t('confirmBridgeTransactionDialog.confirmTransaction')"
-  >
+  <dialog-base :visible.sync="isVisible">
+    <template #title>
+      <slot name="title">
+        <span class="el-dialog__title">{{ t('confirmBridgeTransactionDialog.confirmTransaction') }}</span>
+      </slot>
+    </template>
+    <slot name="content-title" />
     <div :class="assetsClasses">
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedAmount }}</span>
@@ -52,7 +55,7 @@
           {{ t('confirmBridgeTransactionDialog.confirm', { direction: t('confirmBridgeTransactionDialog.sora') }) }}
         </template>
         <template v-else>
-          {{ t('confirmBridgeTransactionDialog.buttonConfirm') }}
+          {{ confirmText }}
         </template>
       </s-button>
     </template>
@@ -100,10 +103,15 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   // TODO: Check/Ask if the Bridge could have the same errors as other projects
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean
   @Prop({ default: false, type: Boolean }) readonly isEthereumToSoraConfirmation!: boolean
+  @Prop({ default: '', type: String }) readonly confirmButtonText!: string
 
   EvmSymbol = EvmSymbol
   KnownSymbols = KnownSymbols
   formatAssetSymbol = formatAssetSymbol
+
+  get confirmText (): string {
+    return this.confirmButtonText || this.t('confirmBridgeTransactionDialog.buttonConfirm')
+  }
 
   get formattedAmount (): string {
     return this.amount ? this.formatStringValue(this.amount, this.asset?.decimals) : ''

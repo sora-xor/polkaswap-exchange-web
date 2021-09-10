@@ -134,6 +134,7 @@ export enum Components {
   Moonpay = 'Moonpay/Moonpay',
   MoonpayWidget = 'Moonpay/MoonpayWidget',
   MoonpayNotification = 'Moonpay/MoonpayNotification',
+  MoonpayConfirmation = 'Moonpay/MoonpayConfirmation',
   MoonpayHistoryButton = 'Moonpay/MoonpayHistoryButton'
 }
 
