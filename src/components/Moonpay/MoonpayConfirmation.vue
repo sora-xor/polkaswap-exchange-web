@@ -9,7 +9,7 @@
     </template>
     <template #content-title>
       <div class="moonpay-confirmation__title">
-        Transaction Ready For Bridge
+        {{ t('moonpay.confirmations.txReady') }}
       </div>
     </template>
   </confirm-bridge-transaction-dialog>

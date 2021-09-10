@@ -587,6 +587,9 @@ export default {
     history: {
       title: 'Purchase history',
       empty: 'No data'
+    },
+    confirmations: {
+      txReady: 'Transaction Ready For Bridge'
     }
   },
   provider: {
