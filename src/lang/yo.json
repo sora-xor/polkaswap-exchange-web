@@ -551,7 +551,9 @@
         "changeAccount": "@:changeAccountText Inu @:metamask",
         "expectedAddress": "Adirẹsi ti a nireti ni @:metamask",
         "title": "Idunadura Bridge",
-        "expectedMetaMaskAddress": "Adirẹsi ti a nireti ni @:metamask"
+        "expectedMetaMaskAddress": "Adirẹsi ti a nireti ni @:metamask",
+        "allowToken": "Gba @:appName lati lo {tokenSymbol}",
+        "approveToken": "Jọwọ ṣe akiyesi pe o nilo lati fọwọsi ami -ẹri lẹẹkan. Ti itẹsiwaju rẹ ba ni awọn ibeere ifọwọsi ọpọ, rii daju lati jẹrisi ọkan ti o kẹhin lakoko ti o kọ iyoku."
     },
     "months": {
         "0": "Oṣu Kini",
@@ -750,5 +752,48 @@
     "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\">@:helpDialog.privacyPolicy<\/a>",
     "FAQ": "Ibere ati Idaun lori Polkaswap",
     "connectedAccount": "Ti sopọ iroyin",
-    "selectNodeConnected": "Ti sopọ mọ: {chain}"
+    "selectNodeConnected": "Ti sopọ mọ: {chain}",
+    "moonpayText": "MoonPay",
+    "forText": "fun",
+    "moonpay": {
+        "notifications": {
+            "success": {
+                "title": "Awọn ami ti o ra",
+                "text": "Rira àmi ti pari. Iṣowo Afara HASHI yoo bẹrẹ laifọwọyi ni kete ti a ti gba awọn ami ni akọọlẹ Ethereum ti o sopọ. O jẹ ailewu lati pa window yii ki o tẹsiwaju lilo Polkaswap. Ifitonileti yoo wa nipa idunadura afara nigbati o ba ṣetan."
+            },
+            "supportError": {
+                "title": "Àmi ko ni atilẹyin",
+                "text": "Laanu ami ti o ra nipasẹ @:moonpayText ko ni atilẹyin sibẹsibẹ nipasẹ afara HASHI ni Polkaswap. Ni deede awọn ami ti o ni atilẹyin nikan yẹ ki o wa fun rira nipasẹ MoonPay ni Polkaswap, nitorinaa ohun kan gbọdọ ti jẹ aṣiṣe ni ibikan. Jọwọ ma ṣe ṣiyemeji lati jẹ ki agbegbe mọ nipa ọran yii ni <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> Ẹgbẹ Telegram Polkaswap <\/a> ."
+            },
+            "feeError": {
+                "title": "Ko ti to ETH fun afara tx",
+                "text": "Laanu idunadura Afara HASHI ti kuna nitori nibẹ ko to ETH lati sanwo fun awọn idiyele gbigbe nẹtiwọọki Ethereum. Jọwọ ṣafikun ETH diẹ sii ki o tun gbiyanju lẹẹkansi."
+            },
+            "transactionError": {
+                "title": "Iṣowo ti kuna",
+                "text": "Laanu o han pe idunadura @:moonpayText ti kuna. Jọwọ gbiyanju lẹẹkansi. Fun @:moonpayText lọ si <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https: \/\/ support.moonpay.com <\/a>"
+            },
+            "amountError": {
+                "title": "Iwontunwonsi ti ko to",
+                "text": "Laanu idunadura Afara HASHI ti kuna nitori nibẹ ko ni awọn ami to fun idunadura. Jọwọ ṣayẹwo iwọntunwọnsi akọọlẹ Ethereum rẹ ki o tun gbiyanju lẹẹkansi."
+            },
+            "accountAddressError": {
+                "title": "Iroyin Ethereum ti ko tọ",
+                "text": "Laanu, idunadura Afara HASHI kuna nitori adirẹsi olugba ti awọn ami ni @:moonpayText aṣẹ ko baamu adirẹsi akọọlẹ Ethereum lọwọlọwọ rẹ. Jọwọ yipada iroyin Ethereum ni itẹsiwaju ki o tun gbiyanju lẹẹkansi."
+            }
+        },
+        "buttons": {
+            "buy": "Ra Awọn ami",
+            "history": "Tx Itan",
+            "transfer": "Bẹrẹ afara",
+            "view": "Wo idunadura"
+        },
+        "history": {
+            "title": "Itan rira",
+            "empty": "Ko si data"
+        },
+        "confirmations": {
+            "txReady": "Idunadura Ṣetan Fun Afara"
+        }
+    }
 }

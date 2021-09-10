@@ -551,7 +551,9 @@
         "changeAccount": "@:changeAccountText in @:metamask",
         "expectedAddress": "Սպասվող հասցե @հասցեում ՝ @:metamask",
         "title": "Կամուրջի գործարք",
-        "expectedMetaMaskAddress": "Սպասվող հասցե @հասցեում ՝ @:metamask"
+        "expectedMetaMaskAddress": "Սպասվող հասցե @հասցեում ՝ @:metamask",
+        "allowToken": "Թույլ տվեք @:appName ին օգտագործել ձեր {tokenSymbol}",
+        "approveToken": "Խնդրում ենք նկատի ունենալ, որ անհրաժեշտ է միայն մեկ անգամ հաստատել նշանը: Եթե ձեր ընդլայնումն ունի նշանների հաստատման բազմաթիվ խնդրանքներ, համոզվեք, որ միայն վերջինը հաստատեք ՝ մնացածը մերժելով:"
     },
     "months": {
         "0": "Հունվար",
@@ -750,5 +752,48 @@
     "privacyLink": "@:helpDialog.privacyPolicy",
     "FAQ": "Polkaswap ՀՏՀ",
     "connectedAccount": "Միացված հաշիվ",
-    "selectNodeConnected": "Միացված է ՝ {chain}"
+    "selectNodeConnected": "Միացված է ՝ {chain}",
+    "moonpayText": "MoonPay",
+    "forText": "համար",
+    "moonpay": {
+        "notifications": {
+            "success": {
+                "title": "Գնված նշաններ",
+                "text": "Տոկենի գնումն ավարտված է: HASHI կամուրջի գործարքը կսկսվի ավտոմատ կերպով, հենց որ միացված Էթերիումի հաշվի մեջ ստացվել են նշանները: Անվտանգ է փակել այս պատուհանը եւ շարունակել օգտագործել Polkaswap. Կամրջի գործարքի մասին ծանուցում կլինի, երբ պատրաստ լինի:"
+            },
+            "supportError": {
+                "title": "Նշանը չի աջակցվում",
+                "text": "Ցավոք, @:moonpayText-ի միջոցով գնված նշանը դեռեւս չի աջակցվում Պոլկասվափի HASHI կամրջով: Սովորաբար միայն աջակցվող նշանները պետք է մատչելի լինեն Պոլկասվափի MoonPay-ի միջոցով գնելու համար, ուստի ինչ-որ բան պետք է որ ինչ-որ տեղ սխալ լիներ։ Խնդրում ենք չվարանել համայնքին տեղեկացնել այս դեպքի մասին <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\">Polkaswap Telegram group<\/a>."
+            },
+            "feeError": {
+                "title": "Կամրջի համար tx բավարար ETH չէ",
+                "text": "Ցավոք, HASHI կամուրջի գործարքը ձախողվել է, քանի որ բավականաչափ ETH չկար Ethereum ցանցի տրանսլյացիայի ծախսերը վճարելու համար: Խնդրում ենք ավելացնել ավելին ETH եւ կրկին փորձել:"
+            },
+            "transactionError": {
+                "title": "Գործարքը ձախողվեց",
+                "text": "Ցավոք, երեւում է, որ @:moonpayText գործարքը ձախողվել է: Խնդրում եմ նորից փորձեք: @:moonpayText-ի աջակցության համար անցեք <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\">https:\/\/support.moonpay.com<\/a>"
+            },
+            "amountError": {
+                "title": "Անբավարար մնացորդ",
+                "text": "Ցավոք, HASHI կամրջի գործարքը ձախողվել է, քանի որ գործարքի համար բավարար նշաններ չկան: Խնդրում ենք ստուգել ձեր Ethereum հաշվի հաշվեկշիռը եւ կրկին փորձել:"
+            },
+            "accountAddressError": {
+                "title": "Սխալ Ethereum հաշիվ",
+                "text": "Ցավոք, HASHI կամրջի գործարքը ձախողվեց @:moonpayText պատվերի նշանը ստացողի հասցեի պատճառով, որը չի համապատասխանում ձեր ընթացիկ Ethereum հաշվի հասցեին: Խնդրում ենք երկարացման դեպքում փոխել Ethereum հաշիվը եւ կրկին փորձել:"
+            }
+        },
+        "buttons": {
+            "buy": "Գնեք խորհրդանիշներ",
+            "history": "Tx Պատմություն",
+            "transfer": "Սկսել կամուրջը",
+            "view": "Դիտել գործարքը"
+        },
+        "history": {
+            "title": "Գնումների պատմություն",
+            "empty": "Տվյալներ չկան"
+        },
+        "confirmations": {
+            "txReady": "Գործարքը պատրաստ է կամրջի համար"
+        }
+    }
 }

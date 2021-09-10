@@ -551,7 +551,9 @@
         "changeAccount": "@:changeAccountText en @:metamask",
         "expectedAddress": "Dirección esperada en @:metamask",
         "title": "Transacción puente",
-        "expectedMetaMaskAddress": "Dirección esperada en @:metamask"
+        "expectedMetaMaskAddress": "Dirección esperada en @:metamask",
+        "allowToken": "",
+        "approveToken": ""
     },
     "months": {
         "0": "Enero",
@@ -586,7 +588,7 @@
         },
         "custom": {
             "title": "Personalizado",
-            "search": "ID de activo de entrada",
+            "search": "Introducir el ID de los activos",
             "text": "TOKENS PERSONALIZADOS",
             "alreadyAttached": "Este Token ya estaba adjuntado",
             "notFound": "Token no encontrado"
@@ -692,7 +694,7 @@
             "connectExternalAccount": "Conecta una cuenta @:ethereumText para comprobar las Recompensas PSWAP y VAL disponibles.",
             "connectAccounts": "Para reclamar tus Recompensas de PSWAP y VAL debes conectar ambas, tus cuentas de @:soraText y @:ethereumText.",
             "connectAnotherAccount": "Conecta otra cuenta @:ethereumText para comprobar las Recompensas PSWAP y VAL disponibles.",
-            "howToClaimRewards": "Para reclamar tus Recompensas de {symbols} debes firmar {count} {transactions} en {destination}. Las Recompensas se depositarán en tu cuenta @:(soraText)."
+            "howToClaimRewards": "Para reclamar tus Recompensas de {symbols} necesitas firmar {count} {transactions} en {destination}. Las Recompensas se depositarán en tu cuenta @:(soraText)."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
@@ -750,5 +752,48 @@
     "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\">@:helpDialog.privacyPolicy<\/a>",
     "FAQ": "Preguntas frecuentes sobre Polkaswap",
     "connectedAccount": "Cuenta conectada",
-    "selectNodeConnected": "Conectado a: {chain}"
+    "selectNodeConnected": "Conectado a: {chain}",
+    "moonpayText": "MoonPay",
+    "forText": "por",
+    "moonpay": {
+        "notifications": {
+            "success": {
+                "title": "Fichas compradas",
+                "text": "La compra de tokens ha finalizado. La transacción del puente HASHI comenzará automáticamente tan pronto como se hayan recibido los tokens en la cuenta Ethereum conectada. Es seguro cerrar esta ventana y continuar usando Polkaswap. Habrá una notificación sobre la transacción puente cuando esté lista."
+            },
+            "supportError": {
+                "title": "Token no admitido",
+                "text": "Desafortunadamente, el token comprado a través de @:moonpayText aún no es compatible con el puente HASHI en Polkaswap. Normalmente, solo los tokens admitidos deberían estar disponibles para su compra a través de MoonPay en Polkaswap, por lo que algo debe haber salido mal en alguna parte. No dude en informar a la comunidad sobre este caso en el <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> grupo de Telegram Polkaswap <\/a> ."
+            },
+            "feeError": {
+                "title": "No hay suficiente ETH para el puente tx",
+                "text": "Desafortunadamente, la transacción del puente HASHI ha fallado debido a que no hay suficiente ETH para pagar las tarifas de transacción de la red Ethereum. Por favor agregue más ETH y vuelva a intentarlo."
+            },
+            "transactionError": {
+                "title": "La transacción ha fallado",
+                "text": "Desafortunadamente, parece que la transacción @: moonpayText ha fallado. Inténtalo de nuevo. Para obtener asistencia de @:moonpayText, vaya a <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https:\/\/support.moonpay.com <\/a>"
+            },
+            "amountError": {
+                "title": "Saldo insuficiente",
+                "text": "Desafortunadamente, la transacción del puente HASHI ha fallado debido a que no hay suficientes tokens para la transacción. Por favor verifique el saldo de su cuenta Ethereum y vuelva a intentarlo."
+            },
+            "accountAddressError": {
+                "title": "Cuenta de Ethereum incorrecta",
+                "text": "Desafortunadamente, la transacción del puente HASHI falló debido a que la dirección del destinatario de los tokens en el pedido @:moonpayText no coincide con la dirección de su cuenta Ethereum actual. Cambie la extensión de la cuenta Ethereum e inténtelo de nuevo."
+            }
+        },
+        "buttons": {
+            "buy": "Comprar Tokens",
+            "history": "Historia de Tx",
+            "transfer": "Empezar puente",
+            "view": "Ver transacción"
+        },
+        "history": {
+            "title": "Historial de compras",
+            "empty": "Sin datos"
+        },
+        "confirmations": {
+            "txReady": "Transacción lista para puente"
+        }
+    }
 }

@@ -45,9 +45,9 @@
         "error": {
             "Transfer": "Kon {amount} {symbol} niet verzenden naar {adres}",
             "Swap": "Mislukt om {amount} {symbol} te swappen voor {amount2} {symbol2}",
-            "AddLiquidity": "Kon {bedrag} {symbool} en {bedrag2} {symbool2} niet leveren",
+            "AddLiquidity": "Kon {bedrag} {symbool} en {bedrag2} {symbool2} niet toevoegen",
             "RemoveLiquidity": "Het is niet gelukt om {amount} {symbol} en {amount2} {symbol2}",
-            "CreatePair": "Kon {bedrag} {symbool} en {bedrag2} {symbool2} niet leveren",
+            "CreatePair": "Kon {bedrag} {symbool} en {bedrag2} {symbool2} niet toevoegen",
             "RegisterAsset": "Mislukt om {symbool} asset te registreren",
             "ClaimRewards": "Kan geen beloningen claimen {beloningen}"
         }
@@ -551,7 +551,9 @@
         "changeAccount": "@:changeAccountText in @:metamask",
         "expectedAddress": "Verwacht adres in @:metamask",
         "title": "Bridge-transactie",
-        "expectedMetaMaskAddress": "Verwacht adres in Metamask:"
+        "expectedMetaMaskAddress": "Verwacht adres in Metamask:",
+        "allowToken": "Sta @:appName toe om je {tokenSymbol}",
+        "approveToken": "Houd er rekening mee dat het slechts één keer nodig is om de token goed te keuren. Als uw extensie meerdere goedkeuringsverzoeken voor tokens heeft, moet u ervoor zorgen dat u alleen de laatste bevestigt en de rest afwijst."
     },
     "months": {
         "0": "Jan",
@@ -601,7 +603,7 @@
         "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{eerste}-{tweede} Pool tokens",
         "connect": "wallet verbinden",
-        "supply": "Voorraad",
+        "supply": "Toevoegen",
         "yourPosition": "Uw positie",
         "yourPositionEstimated": "Uw positie (geschat)",
         "youWillReceive": "U ontvangt",
@@ -750,5 +752,48 @@
     "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\"> @:helpDialog.privacyPolicy <\/a>",
     "FAQ": "Polkaswap FAQ",
     "connectedAccount": "Verbonden account",
-    "selectNodeConnected": "Verbonden met: {chain}"
+    "selectNodeConnected": "Verbonden met: {chain}",
+    "moonpayText": "MoonPay",
+    "forText": "voor",
+    "moonpay": {
+        "notifications": {
+            "success": {
+                "title": "Tokens gekocht",
+                "text": "Tokenaankoop is voltooid. De HASHI-bridgetransactie start automatisch zodra de tokens zijn ontvangen op het gekoppelde Ethereum-account. Het is veilig om dit venster te sluiten en Polkaswap te blijven gebruiken. Er komt een melding over de overbruggingstransactie wanneer deze gereed is."
+            },
+            "supportError": {
+                "title": "Token niet ondersteund",
+                "text": "Helaas wordt het token gekocht via @:moonpayText nog niet ondersteund door de HASHI-brug in Polkaswap. Normaal gesproken zouden alleen de ondersteunde tokens beschikbaar moeten zijn voor aankoop via MoonPay in Polkaswap, dus er moet ergens iets mis zijn gegaan. Aarzel niet om de community op de hoogte te stellen van deze zaak in de <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> Polkaswap Telegram-groep <\/a> ."
+            },
+            "feeError": {
+                "title": "Niet genoeg ETH voor de bridge tx",
+                "text": "Helaas is de HASHI-brugtransactie mislukt omdat er niet genoeg ETH is om de transactiekosten van het Ethereum-netwerk te betalen. Voeg meer ETH toe en probeer het opnieuw."
+            },
+            "transactionError": {
+                "title": "Transactie is mislukt",
+                "text": "Helaas blijkt dat de @:moonpayText transactie is mislukt. Probeer het opnieuw. Ga voor @:moonpayText ondersteuning naar <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https:\/\/ support.moonpay.com <\/a>"
+            },
+            "amountError": {
+                "title": "Onvoldoende balans",
+                "text": "Helaas is de HASHI-brugtransactie mislukt omdat er niet genoeg tokens zijn voor de transactie. Controleer uw Ethereum-accountsaldo en probeer het opnieuw."
+            },
+            "accountAddressError": {
+                "title": "Verkeerd Ethereum-account",
+                "text": "Helaas is de HASHI-brugtransactie mislukt omdat het adres van de ontvanger van de tokens in de @:moonpayText bestelling niet overeenkomt met uw huidige Ethereum-accountadres. Schakel het Ethereum-account in extensie en probeer het opnieuw."
+            }
+        },
+        "buttons": {
+            "buy": "Tokens kopen",
+            "history": "Tx Geschiedenis",
+            "transfer": "Start brug",
+            "view": "Transactie bekijken"
+        },
+        "history": {
+            "title": "Aankoop geschiedenis",
+            "empty": "Geen informatie"
+        },
+        "confirmations": {
+            "txReady": "Transactie klaar voor brug"
+        }
+    }
 }

@@ -551,7 +551,9 @@
         "changeAccount": "@:changeAccountText di @:metamask",
         "expectedAddress": "Alamat yang diharapkan di @:metamask",
         "title": "Jembatan Transaksi",
-        "expectedMetaMaskAddress": "Alamat yang diharapkan di metamask"
+        "expectedMetaMaskAddress": "Alamat yang diharapkan di metamask",
+        "allowToken": "Izinkan @:appName untuk menggunakan {tokenSymbol}",
+        "approveToken": "Harap dicatat bahwa itu hanya diperlukan untuk menyetujui token sekali. Jika ekstensi Anda memiliki beberapa permintaan persetujuan token, pastikan untuk hanya mengonfirmasi yang terakhir sambil menolak sisanya."
     },
     "months": {
         "0": "Jan",
@@ -750,5 +752,48 @@
     "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\"> @:helpDialog.privacyPolicy <\/a>",
     "FAQ": "Tanya Jawab Polkaswap",
     "connectedAccount": "Akun terhubung",
-    "selectNodeConnected": "Terhubung ke: {chain}"
+    "selectNodeConnected": "Terhubung ke: {chain}",
+    "moonpayText": "MoonPay",
+    "forText": "untuk",
+    "moonpay": {
+        "notifications": {
+            "success": {
+                "title": "Token dibeli",
+                "text": "Pembelian token selesai. Transaksi jembatan HASHI akan dimulai secara otomatis segera setelah token diterima di akun Ethereum yang terhubung. Aman untuk menutup jendela ini dan terus menggunakan Polkaswap. Akan ada notifikasi tentang transaksi bridge jika sudah siap."
+            },
+            "supportError": {
+                "title": "Token tidak didukung",
+                "text": "Sayangnya token yang dibeli melalui @:moonpayText belum didukung oleh HASHI bridge di Polkaswap. Biasanya hanya token yang didukung yang tersedia untuk dibeli melalui MoonPay di Polkaswap, oleh karena itu pasti ada yang tidak beres di suatu tempat. Jangan ragu untuk memberi tahu komunitas tentang kasus ini di <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> Grup Telegram Polkaswap <\/a> ."
+            },
+            "feeError": {
+                "title": "Tidak cukup ETH untuk jembatan tx",
+                "text": "Sayangnya transaksi jembatan HASHI telah gagal karena tidak ada cukup ETH untuk membayar biaya transaksi jaringan Ethereum. Harap tambahkan lebih banyak ETH dan coba lagi."
+            },
+            "transactionError": {
+                "title": "Transaksi gagal",
+                "text": "Sayangnya sepertinya transaksi @:moonpayText gagal. Silakan coba lagi. Untuk dukungan @:(moonpayText), buka <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https:\/\/ support.moonpay.com <\/a>"
+            },
+            "amountError": {
+                "title": "Saldo tidak mencukupi",
+                "text": "Sayangnya transaksi jembatan HASHI gagal karena tidak ada cukup token untuk transaksi. Silakan periksa saldo akun Ethereum Anda dan coba lagi."
+            },
+            "accountAddressError": {
+                "title": "Salah akun Ethereum",
+                "text": "Sayangnya, transaksi jembatan HASHI gagal karena alamat penerima token dalam urutan @:moonpayText tidak sesuai dengan alamat akun Ethereum Anda saat ini. Silakan ganti akun Ethereum dalam ekstensi dan coba lagi."
+            }
+        },
+        "buttons": {
+            "buy": "Beli Token",
+            "history": "Tx Sejarah",
+            "transfer": "Mulai jembatan",
+            "view": "Lihat transaksi"
+        },
+        "history": {
+            "title": "Riwayat pembelian",
+            "empty": "Tidak ada data"
+        },
+        "confirmations": {
+            "txReady": "Transaksi Siap Untuk Jembatan"
+        }
+    }
 }

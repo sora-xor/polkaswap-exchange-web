@@ -551,7 +551,9 @@
         "changeAccount": "@:changeAccountText in @:metamask",
         "expectedAddress": "Indirizzo previsto in @:metamask",
         "title": "Transazione ponte",
-        "expectedMetaMaskAddress": "Indirizzo previsto in @:metamask"
+        "expectedMetaMaskAddress": "Indirizzo previsto in @:metamask",
+        "allowToken": "Consenti a @:appName di utilizzare il tuo {tokenSymbol}",
+        "approveToken": "Tieni presente che è necessario approvare il token solo una volta. Se la tua estensione ha più richieste di approvazione di token, assicurati di confermare solo l'ultima mentre rifiuti le altre."
     },
     "months": {
         "0": "Jan",
@@ -750,5 +752,48 @@
     "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\">@:helpDialog.privacyPolicy<\/a>",
     "FAQ": "Polkaswap FAQ",
     "connectedAccount": "Account connesso",
-    "selectNodeConnected": "Collegato a: {chain}"
+    "selectNodeConnected": "Collegato a: {chain}",
+    "moonpayText": "MoonPay",
+    "forText": "per",
+    "moonpay": {
+        "notifications": {
+            "success": {
+                "title": "Token acquistati",
+                "text": "L'acquisto del token è terminato. La transazione del bridge HASHI inizierà automaticamente non appena i token saranno stati ricevuti nell'account Ethereum collegato. È sicuro chiudere questa finestra e continuare a utilizzare Polkaswap. Quando sarà pronta, verrà inviata una notifica sulla transazione del ponte."
+            },
+            "supportError": {
+                "title": "Token non supportato",
+                "text": "Sfortunatamente il token acquistato tramite @:moonpayText non è ancora supportato dal bridge HASHI in Polkaswap. Normalmente solo i token supportati dovrebbero essere disponibili per l'acquisto tramite MoonPay in Polkaswap, quindi qualcosa deve essere andato storto da qualche parte. Non esitare a informare la community di questo caso nel <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> Gruppo Telegram Polkaswap <\/a> ."
+            },
+            "feeError": {
+                "title": "Non abbastanza ETH per il bridge tx",
+                "text": "Sfortunatamente la transazione del bridge HASHI è fallita perché non c'è abbastanza ETH per pagare le commissioni di transazione della rete Ethereum. Aggiungi più ETH e riprova."
+            },
+            "transactionError": {
+                "title": "La transazione è fallita",
+                "text": "Sfortunatamente sembra che la transazione @:moonpayText sia fallita. Per favore riprova. Per il supporto di @:moonpayText vai su <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https:\/\/ support.moonpay.com <\/a>"
+            },
+            "amountError": {
+                "title": "Saldo insufficiente",
+                "text": "Sfortunatamente la transazione del bridge HASHI non è riuscita a causa della mancanza di token sufficienti per la transazione. Controlla il saldo del tuo account Ethereum e riprova."
+            },
+            "accountAddressError": {
+                "title": "Account Ethereum sbagliato",
+                "text": "Sfortunatamente, la transazione del bridge HASHI non è riuscita a causa dell'indirizzo del destinatario dei token nell'ordine @:moonpayText non corrisponde all'attuale indirizzo del tuo account Ethereum. Cambia account Ethereum nell'estensione e riprova."
+            }
+        },
+        "buttons": {
+            "buy": "Acquista token",
+            "history": "Tx Storia",
+            "transfer": "Inizia il ponte",
+            "view": "Visualizza transazione"
+        },
+        "history": {
+            "title": "Cronologia degli acquisti",
+            "empty": "Nessun dato"
+        },
+        "confirmations": {
+            "txReady": "Transazione pronta per il bridge"
+        }
+    }
 }
