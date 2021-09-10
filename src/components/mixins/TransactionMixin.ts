@@ -15,11 +15,11 @@ export default class TransactionMixin extends Mixins(NumberFormatterMixin, Trans
 
   transaction: Nullable<History> = null // It's used just for sync errors
 
-  @Action addActiveTransaction
-  @Action removeActiveTransaction
+  @Action addActiveTransaction!: (tx: History) => Promise<void>
+  @Action removeActiveTransaction!: (tx: History) => Promise<void>
 
   private getMessage (value?: History): string {
-    if (!value || !Object.values(Operation).includes(value.type as any)) {
+    if (!value || !Object.values(Operation).includes(value.type as Operation)) {
       return ''
     }
     const params = { ...value } as any
@@ -51,7 +51,7 @@ export default class TransactionMixin extends Mixins(NumberFormatterMixin, Trans
       return await this.getLastTransaction()
     }
     this.transaction = tx
-    this.addActiveTransaction({ tx: this.transaction })
+    this.addActiveTransaction(this.transaction)
   }
 
   /** Should be used with @Watch like a singletone in a root of the project */
@@ -74,10 +74,10 @@ export default class TransactionMixin extends Mixins(NumberFormatterMixin, Trans
       })
     }
     this.time = 0
-    this.removeActiveTransaction({ tx: value })
+    this.removeActiveTransaction(value)
   }
 
-  async withNotifications (func: () => Promise<void>): Promise<void> {
+  async withNotifications (func: AsyncVoidFn): Promise<void> {
     await this.withLoading(async () => {
       try {
         this.time = Date.now()
@@ -87,8 +87,10 @@ export default class TransactionMixin extends Mixins(NumberFormatterMixin, Trans
       } catch (error) {
         const message = this.getMessage(this.transaction as History)
         this.time = 0
-        this.removeActiveTransaction({ tx: this.transaction })
-        this.transaction = null
+        if (this.transaction) {
+          this.removeActiveTransaction(this.transaction)
+          this.transaction = null
+        }
         this.$notify({
           message: message || this.t('unknownErrorText'),
           type: 'error',
