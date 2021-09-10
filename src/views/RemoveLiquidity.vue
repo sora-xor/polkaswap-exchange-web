@@ -153,6 +153,8 @@ export default class RemoveLiquidity extends Mixins(LoadingMixin, FormattedAmoun
   readonly KnownSymbols = KnownSymbols
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
+  @Getter networkFees!: any
+
   @Getter('focusedField', { namespace }) focusedField!: Nullable<string>
   @Getter('liquidity', { namespace }) liquidity!: AccountLiquidity
   @Getter('firstToken', { namespace }) firstToken!: any
@@ -245,7 +247,7 @@ export default class RemoveLiquidity extends Mixins(LoadingMixin, FormattedAmoun
   }
 
   get networkFee (): CodecString {
-    return api.NetworkFee[Operation.RemoveLiquidity]
+    return this.networkFees[Operation.RemoveLiquidity]
   }
 
   get formattedFee (): string {
