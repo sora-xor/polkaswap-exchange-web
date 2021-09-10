@@ -789,6 +789,9 @@
         "history": {
             "title": "Historia zakupów",
             "empty": "Brak danych"
+        },
+        "confirmations": {
+            "txReady": "Transakcja gotowa do mostu"
         }
     }
 }

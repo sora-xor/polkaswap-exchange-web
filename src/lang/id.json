@@ -789,6 +789,9 @@
         "history": {
             "title": "Riwayat pembelian",
             "empty": "Tidak ada data"
+        },
+        "confirmations": {
+            "txReady": "Transaksi Siap Untuk Jembatan"
         }
     }
 }

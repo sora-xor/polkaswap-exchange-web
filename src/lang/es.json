@@ -765,15 +765,15 @@
             },
             "feeError": {
                 "title": "No hay suficiente ETH para el puente tx",
-                "text": "Desafortunadamente, la transacción del puente HASHI ha fallado debido a que no hay suficiente ETH para pagar las tarifas de transacción de la red Ethereum. Agregue más ETH y vuelva a intentarlo."
+                "text": "Desafortunadamente, la transacción del puente HASHI ha fallado debido a que no hay suficiente ETH para pagar las tarifas de transacción de la red Ethereum. Por favor agregue más ETH y vuelva a intentarlo."
             },
             "transactionError": {
                 "title": "La transacción ha fallado",
-                "text": "Desafortunadamente, parece que la transacción @:moonpayText ha fallado. Inténtalo de nuevo. Para obtener asistencia de @:moonpayText, vaya a <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https: \/\/ support.moonpay.com <\/a>"
+                "text": "Desafortunadamente, parece que la transacción @: moonpayText ha fallado. Inténtalo de nuevo. Para obtener asistencia de @:moonpayText, vaya a <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https:\/\/support.moonpay.com <\/a>"
             },
             "amountError": {
                 "title": "Saldo insuficiente",
-                "text": "Desafortunadamente, la transacción del puente HASHI ha fallado debido a que no hay suficientes tokens para la transacción. Verifique el saldo de su cuenta Ethereum y vuelva a intentarlo."
+                "text": "Desafortunadamente, la transacción del puente HASHI ha fallado debido a que no hay suficientes tokens para la transacción. Por favor verifique el saldo de su cuenta Ethereum y vuelva a intentarlo."
             },
             "accountAddressError": {
                 "title": "Cuenta de Ethereum incorrecta",
@@ -781,7 +781,7 @@
             }
         },
         "buttons": {
-            "buy": "Comprar fichas",
+            "buy": "Comprar Tokens",
             "history": "Historia de Tx",
             "transfer": "Empezar puente",
             "view": "Ver transacción"
@@ -789,6 +789,9 @@
         "history": {
             "title": "Historial de compras",
             "empty": "Sin datos"
+        },
+        "confirmations": {
+            "txReady": "Transacción lista para puente"
         }
     }
 }

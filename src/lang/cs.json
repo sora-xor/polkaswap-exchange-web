@@ -789,6 +789,9 @@
         "history": {
             "title": "Historie nákupů",
             "empty": "Žádná data"
+        },
+        "confirmations": {
+            "txReady": "Transakce připravena pro Bridge"
         }
     }
 }

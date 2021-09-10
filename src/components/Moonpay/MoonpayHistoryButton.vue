@@ -22,7 +22,7 @@ import { PageNames } from '@/consts'
 
 @Component
 export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin, TranslationMixin) {
-  @State(state => state.moonpay.readyBridgeTransactionId) transactionId!: string
+  @State(state => state.moonpay.readyBridgeTransactionId) readyBridgeTransactionId!: string
   @State(state => state.moonpay.confirmationVisibility) confirmationVisibility!: string
   @Action('setReadyBridgeTransactionId', { namespace: 'moonpay' }) setReadyBridgeTransactionId!: (id?: string) => Promise<void>
 
@@ -31,7 +31,7 @@ export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin, Tra
   }
 
   get isReadyForTransfer (): boolean {
-    return !!this.transactionId && !this.confirmationVisibility
+    return !!this.readyBridgeTransactionId && !this.confirmationVisibility
   }
 
   get icon (): string {
@@ -49,7 +49,7 @@ export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin, Tra
   async handleClick (): Promise<void> {
     if (this.isReadyForTransfer) {
       await this.setReadyBridgeTransactionId()
-      await this.showHistory(this.transactionId)
+      await this.showHistory(this.readyBridgeTransactionId)
     } else {
       router.push({ name: PageNames.MoonpayHistory })
     }
