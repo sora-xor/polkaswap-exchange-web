@@ -6,27 +6,31 @@
           <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo--tablet"/>
         </s-button>
       </div>
-      <div class="app-controls s-flex">
-        <s-button type="tertiary" size="medium" icon="various-atom-24" @click="openMoonpayDialog">
-          {{ t('moonpay.buttons.buy') }}
-        </s-button>
-        <moonpay-history-button v-if="isLoggedIn" />
-        <s-button type="action" class="theme-control s-pressed" @click="switchTheme">
-          <s-icon :name="themeIcon" size="28" />
-        </s-button>
-        <s-button type="action" class="lang-control s-pressed" @click="openSelectLanguageDialog">
-          <s-icon name="basic-globe-24" size="28" />
-        </s-button>
-        <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openSelectNodeDialog">
-          <token-logo class="node-control__logo" v-bind="nodeLogo" />
-        </s-button>
-        <s-button type="tertiary" :class="['account-control', { 's-pressed': isLoggedIn }]" size="medium" :tooltip="accountTooltip" :disabled="loading" @click="goTo(PageNames.Wallet)">
-          <div :class="['account-control-title', { name: isLoggedIn }]">{{ accountInfo }}</div>
-          <div class="account-control-icon">
-            <s-icon v-if="!isLoggedIn" name="finance-wallet-24" size="28" />
-            <WalletAvatar v-else :address="account.address"/>
-          </div>
-        </s-button>
+      <div class="header-container">
+        <div class="app-controls app-controls--moonpay s-flex">
+          <s-button type="tertiary" size="medium" icon="various-atom-24" @click="openMoonpayDialog">
+            {{ t('moonpay.buttons.buy') }}
+          </s-button>
+          <moonpay-history-button v-if="isLoggedIn" />
+        </div>
+        <div class="app-controls s-flex">
+          <s-button type="action" class="theme-control s-pressed" @click="switchTheme">
+            <s-icon :name="themeIcon" size="28" />
+          </s-button>
+          <s-button type="action" class="lang-control s-pressed" @click="openSelectLanguageDialog">
+            <s-icon name="basic-globe-24" size="28" />
+          </s-button>
+          <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openSelectNodeDialog">
+            <token-logo class="node-control__logo" v-bind="nodeLogo" />
+          </s-button>
+          <s-button type="tertiary" :class="['account-control', { 's-pressed': isLoggedIn }]" size="medium" :tooltip="accountTooltip" :disabled="loading" @click="goTo(PageNames.Wallet)">
+            <div :class="['account-control-title', { name: isLoggedIn }]">{{ accountInfo }}</div>
+            <div class="account-control-icon">
+              <s-icon v-if="!isLoggedIn" name="finance-wallet-24" size="28" />
+              <WalletAvatar v-else :address="account.address"/>
+            </div>
+          </s-button>
+        </div>
       </div>
     </header>
     <div class="app-main">
@@ -753,6 +757,13 @@ $account-control-name-max-width: 200px;
   [design-system-theme="dark"] & {
     box-shadow: $header-box-shadow-dark;
   }
+
+  &-container {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    position: relative;
+  }
 }
 
 .menu {
@@ -813,8 +824,8 @@ $account-control-name-max-width: 200px;
 }
 
 .app-controls {
-  &:first-child {
-    margin-right: auto;
+  &:not(:last-child) {
+    margin-right: $inner-spacing-mini;
   }
 
   &:last-child {
@@ -892,9 +903,19 @@ $account-control-name-max-width: 200px;
   }
 }
 
+@include large-desktop {
+  .app-controls--moonpay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
 @include large-mobile {
   $border-image-light: linear-gradient(#FAF4F8, #D5CDD0, #FAF4F8) 30;
   $border-image-dark: linear-gradient(180deg, rgba(36, 2, 65, 0) 0%, rgba(36, 2, 65, 0.5) 50.45%, rgba(36, 2, 65, 0) 100%) 30;
+
   .app-sidebar {
     overflow-y: auto;
     margin-right: 0;
@@ -929,6 +950,7 @@ $account-control-name-max-width: 200px;
     }
   }
 }
+
 @media screen and (max-width: 460px) {
   .app-body {
     margin-left: -10px;
