@@ -77,7 +77,6 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { RegisteredAccountAsset, Operation, BridgeHistory, CodecString, FPNumber } from '@sora-substrate/util'
-import { api } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -85,7 +84,7 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin'
 import router, { lazyComponent } from '@/router'
-import { Components, PageNames } from '@/consts'
+import { Components, PageNames, ZeroStringValue } from '@/consts'
 import { formatAssetSymbol, formatDateItem } from '@/utils'
 import { STATES } from '@/utils/fsm'
 import { bridgeApi } from '@/utils/bridge'
@@ -98,6 +97,8 @@ const namespace = 'bridge'
   }
 })
 export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, LoadingMixin, NetworkFormatterMixin, PaginationSearchMixin) {
+  @Getter networkFees!: any
+
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter('history', { namespace }) history!: Nullable<Array<BridgeHistory>>
   @Getter('restored', { namespace }) restored!: boolean
@@ -106,7 +107,6 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn
   @Action('getRestoredFlag', { namespace }) getRestoredFlag!: AsyncVoidFn
   @Action('getRestoredHistory', { namespace }) getRestoredHistory!: AsyncVoidFn
-  @Action('getNetworkFee', { namespace }) getNetworkFee!: AsyncVoidFn
   @Action('getEvmNetworkFee', { namespace }) getEvmNetworkFee!: AsyncVoidFn
   @Action('clearHistory', { namespace }) clearHistory!: AsyncVoidFn
   @Action('setSoraToEvm', { namespace }) setSoraToEvm
@@ -148,8 +148,8 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     return this.getPageItems(this.filteredHistory)
   }
 
-  get soraNetworkFee (): CodecString {
-    return api.NetworkFee[Operation.EthBridgeOutgoing]
+  getSoraNetworkFee (type: Operation): CodecString {
+    return this.isOutgoingType(type) ? this.networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue
   }
 
   async created (): Promise<void> {
@@ -220,8 +220,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
       const soraNetworkFee = +(tx.soraNetworkFee || 0)
       const evmNetworkFee = +(tx.ethereumNetworkFee || 0)
       if (!soraNetworkFee) {
-        await this.getNetworkFee()
-        tx.soraNetworkFee = this.soraNetworkFee
+        tx.soraNetworkFee = this.getSoraNetworkFee(tx.type)
       }
       if (!evmNetworkFee) {
         tx.ethereumNetworkFee = this.evmNetworkFee

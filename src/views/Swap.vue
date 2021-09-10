@@ -167,6 +167,7 @@ const namespace = 'swap'
   }
 })
 export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin, LoadingMixin) {
+  @Getter networkFees!: any
   @Getter nodeIsConnected!: boolean
   @Getter isLoggedIn!: boolean
   @Getter slippageTolerance!: string
@@ -330,7 +331,7 @@ export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin,
   }
 
   get networkFee (): CodecString {
-    return api.NetworkFee[Operation.Swap]
+    return this.networkFees[Operation.Swap]
   }
 
   created () {
