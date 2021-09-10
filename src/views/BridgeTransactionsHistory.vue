@@ -85,7 +85,7 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin'
 import router, { lazyComponent } from '@/router'
-import { Components, PageNames } from '@/consts'
+import { Components, PageNames, ZeroStringValue } from '@/consts'
 import { formatAssetSymbol, formatDateItem } from '@/utils'
 import { STATES } from '@/utils/fsm'
 import { bridgeApi } from '@/utils/bridge'
@@ -106,7 +106,6 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn
   @Action('getRestoredFlag', { namespace }) getRestoredFlag!: AsyncVoidFn
   @Action('getRestoredHistory', { namespace }) getRestoredHistory!: AsyncVoidFn
-  @Action('getNetworkFee', { namespace }) getNetworkFee!: AsyncVoidFn
   @Action('getEvmNetworkFee', { namespace }) getEvmNetworkFee!: AsyncVoidFn
   @Action('clearHistory', { namespace }) clearHistory!: AsyncVoidFn
   @Action('setSoraToEvm', { namespace }) setSoraToEvm
@@ -148,8 +147,8 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
     return this.getPageItems(this.filteredHistory)
   }
 
-  get soraNetworkFee (): CodecString {
-    return api.NetworkFee[Operation.EthBridgeOutgoing]
+  getSoraNetworkFee (type: Operation): CodecString {
+    return this.isOutgoingType(type) ? api.NetworkFee[Operation.EthBridgeOutgoing] : ZeroStringValue
   }
 
   async created (): Promise<void> {
@@ -220,8 +219,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
       const soraNetworkFee = +(tx.soraNetworkFee || 0)
       const evmNetworkFee = +(tx.ethereumNetworkFee || 0)
       if (!soraNetworkFee) {
-        await this.getNetworkFee()
-        tx.soraNetworkFee = this.soraNetworkFee
+        tx.soraNetworkFee = this.getSoraNetworkFee(tx.type)
       }
       if (!evmNetworkFee) {
         tx.ethereumNetworkFee = this.evmNetworkFee

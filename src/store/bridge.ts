@@ -533,7 +533,7 @@ const actions = {
       hash: '',
       ethereumHash: '',
       transactionState: STATES.INITIAL,
-      soraNetworkFee: api.NetworkFee[Operation.EthBridgeOutgoing],
+      soraNetworkFee: getters.isSoraToEvm ? api.NetworkFee[Operation.EthBridgeOutgoing] : ZeroStringValue,
       ethereumNetworkFee: getters.evmNetworkFee,
       externalNetwork: rootGetters['web3/evmNetwork'],
       to: rootGetters['web3/evmAddress']

@@ -187,7 +187,7 @@ import BridgeMixin from '@/components/mixins/BridgeMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 
 import router, { lazyComponent } from '@/router'
-import { Components, PageNames, EvmSymbol, MetamaskCancellationCode } from '@/consts'
+import { Components, PageNames, EvmSymbol, MetamaskCancellationCode, ZeroStringValue } from '@/consts'
 import { formatAssetSymbol, copyToClipboard, formatDateItem, hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils'
 import { createFSM, EVENTS, SORA_EVM_STATES, EVM_SORA_STATES, STATES } from '@/utils/fsm'
 
@@ -455,7 +455,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get soraNetworkFee (): CodecString {
-    return api.NetworkFee[Operation.EthBridgeOutgoing]
+    return this.isSoraToEvm ? api.NetworkFee[Operation.EthBridgeOutgoing] : ZeroStringValue
   }
 
   get formattedSoraNetworkFee (): string {

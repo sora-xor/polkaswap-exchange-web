@@ -198,7 +198,7 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 
 import router, { lazyComponent } from '@/router'
-import { Components, PageNames, EvmSymbol } from '@/consts'
+import { Components, PageNames, EvmSymbol, ZeroStringValue } from '@/consts'
 import { SubNetwork } from '@/utils/ethers-util'
 import {
   isXorAccountAsset,
@@ -289,7 +289,7 @@ export default class Bridge extends Mixins(
   }
 
   get soraNetworkFee (): CodecString {
-    return api.NetworkFee[Operation.EthBridgeOutgoing]
+    return this.isSoraToEvm ? api.NetworkFee[Operation.EthBridgeOutgoing] : ZeroStringValue
   }
 
   get isMaxAvailable (): boolean {
