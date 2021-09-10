@@ -264,13 +264,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
       await this.setDefaultNodes(data?.DEFAULT_NETWORKS)
       await this.setSubNetworks(data.SUB_NETWORKS)
       await this.setSmartContracts(data.SUB_NETWORKS)
-      // TODO: uncomment
-      // await this.setApiKeys(data?.API_KEYS)
-
-      // TODO: remove
-      await this.setApiKeys({
-        moonpay: 'pk_test_4ASGxHKGpLPE6sdQq1V3QjtpUFSpWLk'
-      })
+      await this.setApiKeys(data?.API_KEYS)
 
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL)
