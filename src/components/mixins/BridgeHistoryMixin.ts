@@ -1,18 +1,18 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { api } from '@soramitsu/soraneo-wallet-web'
 import { Operation, CodecString } from '@sora-substrate/util'
 
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 
 import router from '@/router'
-import { PageNames } from '@/consts'
+import { PageNames, ZeroStringValue } from '@/consts'
 import { bridgeApi } from '@/utils/bridge'
 
 const namespace = 'bridge'
 
 @Component
 export default class BridgeHistoryMixin extends Mixins(LoadingMixin) {
+  @Getter networkFees!: any
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
 
   @Action('getEvmNetworkFee', { namespace }) getEvmNetworkFee!: AsyncVoidFn
@@ -30,8 +30,8 @@ export default class BridgeHistoryMixin extends Mixins(LoadingMixin) {
   @Action('setHistoryItem', { namespace }) setHistoryItem
   @Action('saveHistory', { namespace }) saveHistory
 
-  get soraNetworkFee (): CodecString {
-    return api.NetworkFee[Operation.EthBridgeOutgoing]
+  getSoraNetworkFee (type: Operation): CodecString {
+    return this.isOutgoingType(type) ? this.networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue
   }
 
   isOutgoingType (type: string | undefined): boolean {
@@ -56,7 +56,7 @@ export default class BridgeHistoryMixin extends Mixins(LoadingMixin) {
       const soraNetworkFee = +(tx.soraNetworkFee || 0)
       const evmNetworkFee = +(tx.ethereumNetworkFee || 0)
       if (!soraNetworkFee) {
-        tx.soraNetworkFee = this.soraNetworkFee
+        tx.soraNetworkFee = this.getSoraNetworkFee(tx.type)
       }
       if (!evmNetworkFee) {
         tx.ethereumNetworkFee = this.evmNetworkFee

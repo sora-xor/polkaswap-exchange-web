@@ -96,6 +96,8 @@ const namespace = 'bridge'
   }
 })
 export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, BridgeHistoryMixin, NetworkFormatterMixin, PaginationSearchMixin) {
+  @Getter networkFees!: any
+
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter('history', { namespace }) history!: Nullable<Array<BridgeHistory>>
   @Getter('restored', { namespace }) restored!: boolean

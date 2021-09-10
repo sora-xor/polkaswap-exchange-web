@@ -45,10 +45,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LPRewardsInfo, Operation } from '@sora-substrate/util'
-import { api, FormattedAmount, FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { FormattedAmount, FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { lazyComponent } from '@/router'
@@ -76,6 +76,7 @@ export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMi
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
   @Getter isLoggedIn!: boolean
+  @Getter networkFees!: any
 
   get liquidityProviderFeeTooltipText (): string {
     return this.t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: this.liquidityProviderFeeValue })
@@ -122,7 +123,7 @@ export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMi
   }
 
   get networkFee (): CodecString {
-    return api.NetworkFee[Operation.Swap]
+    return this.networkFees[Operation.Swap]
   }
 
   get formattedNetworkFee (): string {

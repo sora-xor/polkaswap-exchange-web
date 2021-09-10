@@ -65,8 +65,8 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { KnownSymbols, CodecString, BridgeNetworks, Operation } from '@sora-substrate/util'
-import { api, FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { KnownSymbols, CodecString, BridgeNetworks } from '@sora-substrate/util'
+import { FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -96,6 +96,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   @Getter('asset', { namespace }) asset!: any
   @Getter('amount', { namespace }) amount!: string
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
+  @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
   @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks
   @Action('setTransactionConfirm', { namespace }) setTransactionConfirm
   @Action('setTransactionStep', { namespace }) setTransactionStep
@@ -126,10 +127,6 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
     }
 
     return classes.join(' ')
-  }
-
-  get soraNetworkFee (): CodecString {
-    return api.NetworkFee[Operation.EthBridgeOutgoing]
   }
 
   get formattedSoraNetworkFee (): string {
