@@ -1,21 +1,12 @@
 <template>
   <s-button
-    v-if="isReadyForTransfer"
-    class="moonpay-history-button"
-    size="medium"
-    type="primary"
-    @click="handleClick"
-  >
-    {{ t('moonpay.buttons.transfer') }}
-  </s-button>
-  <s-button
-    v-else
     :class="['moonpay-history-button', { active }]"
-    type="action"
-    :tooltip="t('moonpay.buttons.history')"
+    size="medium"
+    :type="type"
+    :icon="icon"
     @click="handleClick"
   >
-    <s-icon name="time-time-history-24" size="28" />
+    {{ text }}
   </s-button>
 </template>
 
@@ -43,6 +34,18 @@ export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin, Tra
     return !!this.transactionId && !this.confirmationVisibility
   }
 
+  get icon (): string {
+    return this.isReadyForTransfer ? '' : 'time-time-history-24'
+  }
+
+  get type (): string {
+    return this.isReadyForTransfer ? 'primary' : 'tertiary'
+  }
+
+  get text (): string {
+    return this.isReadyForTransfer ? this.t('moonpay.buttons.transfer') : this.t('moonpay.buttons.history')
+  }
+
   async handleClick (): Promise<void> {
     if (this.isReadyForTransfer) {
       await this.setReadyBridgeTransactionId()
@@ -55,8 +58,8 @@ export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin, Tra
 </script>
 
 <style lang="scss">
-.moonpay-history-button.neumorphic.s-action.active {
-  &, &:hover, &:focus, &.focusing {
+.moonpay-history-button.neumorphic.s-tertiary {
+  &.active {
     color: var(--s-color-theme-accent);
     box-shadow: var(--s-shadow-element);
   }
