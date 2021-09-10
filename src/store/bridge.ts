@@ -215,9 +215,9 @@ const getters = {
   evmNetworkFee (state) {
     return state.evmNetworkFee
   },
-  soraNetworkFee (state) {
+  soraNetworkFee (state, getters, rootState, rootGetters) {
     // In direction EVM -> SORA sora network fee is 0, because related extrinsic calls by system automaically
-    return state.isSoraToEvm ? api.NetworkFee[Operation.EthBridgeOutgoing] : ZeroStringValue
+    return state.isSoraToEvm ? rootGetters.networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue
   },
   soraTotal (state) {
     return state.soraTotal
