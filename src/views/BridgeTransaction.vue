@@ -179,7 +179,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory, BridgeNetworks, Operation } from '@sora-substrate/util'
+import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory, BridgeNetworks } from '@sora-substrate/util'
 import { api, getExplorerLink, FormattedAmountMixin, FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
 import { interpret } from 'xstate'
 
@@ -187,7 +187,7 @@ import BridgeMixin from '@/components/mixins/BridgeMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 
 import router, { lazyComponent } from '@/router'
-import { Components, PageNames, EvmSymbol, MetamaskCancellationCode, ZeroStringValue } from '@/consts'
+import { Components, PageNames, EvmSymbol, MetamaskCancellationCode } from '@/consts'
 import { formatAssetSymbol, copyToClipboard, formatDateItem, hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils'
 import { createFSM, EVENTS, SORA_EVM_STATES, EVM_SORA_STATES, STATES } from '@/utils/fsm'
 
@@ -218,6 +218,7 @@ export default class BridgeTransaction extends Mixins(
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
   @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
+  @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean
   @Getter('soraTransactionHash', { namespace }) soraTransactionHash!: string
   @Getter('evmTransactionHash', { namespace }) evmTransactionHash!: string
@@ -452,10 +453,6 @@ export default class BridgeTransaction extends Mixins(
 
   get transactionSecondDate (): string {
     return this.getTransactionDate(!this.isSoraToEvm ? this.soraTransactionDate : this.evmTransactionDate)
-  }
-
-  get soraNetworkFee (): CodecString {
-    return this.isSoraToEvm ? api.NetworkFee[Operation.EthBridgeOutgoing] : ZeroStringValue
   }
 
   get formattedSoraNetworkFee (): string {
