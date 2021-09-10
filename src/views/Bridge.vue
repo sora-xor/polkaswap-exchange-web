@@ -190,7 +190,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { RegisteredAccountAsset, BridgeNetworks, KnownSymbols, FPNumber, CodecString, Operation } from '@sora-substrate/util'
+import { RegisteredAccountAsset, BridgeNetworks, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
 import { api, FormattedAmountMixin, FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import BridgeMixin from '@/components/mixins/BridgeMixin'
@@ -254,6 +254,7 @@ export default class Bridge extends Mixins(
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('amount', { namespace }) amount!: string
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
+  @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString
   @Getter nodeIsConnected!: boolean
 
   @Watch('nodeIsConnected')
@@ -286,10 +287,6 @@ export default class Bridge extends Mixins(
 
   get isZeroAmount (): boolean {
     return +this.amount === 0
-  }
-
-  get soraNetworkFee (): CodecString {
-    return api.NetworkFee[Operation.EthBridgeOutgoing]
   }
 
   get isMaxAvailable (): boolean {
