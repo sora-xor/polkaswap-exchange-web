@@ -21,7 +21,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { NumberFormatterMixin, FormattedAmountMixin, FormattedAmount, FormattedAmountWithFiatValue, FontSizeRate } from '@soramitsu/soraneo-wallet-web'
-import { Asset, FPNumber } from '@sora-substrate/util'
+import { Asset } from '@sora-substrate/util'
 
 import { RewardsAmountHeaderItem } from '@/types/rewards'
 
