@@ -47,7 +47,7 @@ export default class AmountHeader extends Mixins(FormattedAmountMixin, NumberFor
       const fpFiatAmount = this.getFPNumberFiatAmountByFPNumber(fpAmount, item.asset as Asset)
 
       return fpFiatAmount ? result.add(fpFiatAmount) : result
-    }, FPNumber.ZERO)
+    }, this.Zero)
 
     return value.toLocaleString()
   }

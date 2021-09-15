@@ -105,7 +105,7 @@
       <p class="info-line-container__title">{{ t('createPair.pricePool') }}</p>
       <info-line :label="t('addLiquidity.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="formattedPrice" />
       <info-line :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formattedPriceReversed" />
-      <info-line v-if="hasApy" label="APY" :value="apy" />
+      <info-line v-if="strategicBonusApy" :label="t('pool.strategicBonusApy')" :value="strategicBonusApy" />
       <info-line
        :label="t('createPair.networkFee')"
        :label-tooltip="t('networkFeeTooltipText')"
@@ -183,7 +183,6 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
 })
 
 export default class AddLiquidity extends Mixins(LoadingMixin, TokenPairMixin) {
-  @Getter fiatPriceAndApyObject!: any // Wallet
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity
@@ -271,13 +270,13 @@ export default class AddLiquidity extends Mixins(LoadingMixin, TokenPairMixin) {
     return prevPosition
   }
 
-  get hasApy (): boolean {
-    return !!this.fiatPriceAndApyObject[this.secondToken.address]
-  }
-
-  get apy (): string {
-    const apy = this.getFPNumberFromCodec(this.fiatPriceAndApyObject[this.secondToken.address].apy)
-    return `${apy.mul(this.getFPNumber(100)).toLocaleString()}%`
+  get strategicBonusApy (): Nullable<string> {
+    // It won't be in template when not defined
+    const strategicBonusApy = this.fiatPriceAndApyObject[this.secondToken.address]?.strategicBonusApy
+    if (!strategicBonusApy) {
+      return null
+    }
+    return `${this.getFPNumberFromCodec(strategicBonusApy).mul(this.Hundred).toLocaleString()}%`
   }
 
   updatePrices (): void {

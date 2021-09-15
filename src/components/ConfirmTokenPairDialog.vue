@@ -41,7 +41,7 @@
       :asset-symbol="secondToken.symbol"
     />
     <info-line :value="`1 ${secondToken.symbol} = ${formattedPrice}`" :asset-symbol="firstToken.symbol" />
-    <info-line v-if="hasApy" label="APY" :value="apy" />
+    <info-line v-if="strategicBonusApy" :label="t('pool.strategicBonusApy')" :value="strategicBonusApy" />
     <template #footer>
       <s-button
         type="primary"
@@ -57,7 +57,6 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
 import { FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -76,8 +75,6 @@ import { Components } from '@/consts'
   }
 })
 export default class ConfirmTokenPairDialog extends Mixins(FormattedAmountMixin, TranslationMixin, DialogMixin, LoadingMixin) {
-  @Getter fiatPriceAndApyObject!: any // Wallet
-
   @Prop({ type: String, default: '100' }) readonly shareOfPool!: string
   @Prop({ type: Object }) readonly firstToken!: any
   @Prop({ type: Object }) readonly secondToken!: any
@@ -116,13 +113,13 @@ export default class ConfirmTokenPairDialog extends Mixins(FormattedAmountMixin,
     return this.formatStringValue(this.slippageTolerance)
   }
 
-  get hasApy (): boolean {
-    return !!this.fiatPriceAndApyObject[this.secondToken.address]
-  }
-
-  get apy (): string {
-    const apy = this.getFPNumberFromCodec(this.fiatPriceAndApyObject[this.secondToken.address].apy)
-    return `${apy.mul(this.getFPNumber(100)).toLocaleString()}%`
+  get strategicBonusApy (): Nullable<string> {
+    // It won't be in template when not defined
+    const strategicBonusApy = this.fiatPriceAndApyObject[this.secondToken.address]?.strategicBonusApy
+    if (!strategicBonusApy) {
+      return null
+    }
+    return `${this.getFPNumberFromCodec(strategicBonusApy).mul(this.Hundred).toLocaleString()}%`
   }
 
   handleConfirm (): void {
