@@ -104,7 +104,7 @@ const getters = {
     return state.totalSupply || ZeroStringValue
   },
   shareOfPool (state: AddLiquidityState, getters) {
-    const full = new FPNumber(100)
+    const full = FPNumber.HUNDRED
     const minted = FPNumber.fromCodecValue(getters.minted)
     const total = FPNumber.fromCodecValue(getters.totalSupply)
     const existed = FPNumber.fromCodecValue(getters.liquidityInfo?.balance ?? 0)

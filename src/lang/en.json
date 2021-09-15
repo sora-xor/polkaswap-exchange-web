@@ -449,7 +449,8 @@
         "pairTokens": "{pair} Pool Tokens",
         "poolShare": "Your pool share",
         "unknownAsset": "Unknown asset",
-        "description": "When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time."
+        "description": "When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.",
+        "strategicBonusApy": "Strategic Bonus APY"
     },
     "bridge": {
         "title": "HASHI Bridge",
@@ -551,7 +552,9 @@
         "changeAccount": "@:changeAccountText in @:metamask",
         "expectedAddress": "Expected address in @:metamask",
         "title": "Bridge Transaction",
-        "expectedMetaMaskAddress": "Expected address in MetaMask:"
+        "expectedMetaMaskAddress": "Expected address in MetaMask:",
+        "allowToken": "Allow @:appName to use your {tokenSymbol}",
+        "approveToken": "Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest."
     },
     "months": {
         "0": "Jan",
@@ -750,5 +753,48 @@
     "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\">@:helpDialog.privacyPolicy<\/a>",
     "FAQ": "Polkaswap FAQ",
     "connectedAccount": "Connected account",
-    "selectNodeConnected": "Connected to: {chain}"
+    "selectNodeConnected": "Connected to: {chain}",
+    "moonpayText": "MoonPay",
+    "forText": "for",
+    "moonpay": {
+        "notifications": {
+            "success": {
+                "title": "Tokens purchased",
+                "text": "Token purchase is finished. The HASHI bridge transaction will start automatically as soon as the tokens have been received in the connected Ethereum account. It is safe to close this window and continue using Polkaswap. There will be a notification about the bridge transaction when ready."
+            },
+            "supportError": {
+                "title": "Token not supported",
+                "text": "Unfortunately the token purchased via @:moonpayText is not yet supported by the HASHI bridge in Polkaswap. Normally only the supported tokens should be available for purchase via MoonPay in Polkaswap, hence something must have gone wrong somewhere. Please don’t hesitate to let the community know about this case in the <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\">Polkaswap Telegram group<\/a>."
+            },
+            "feeError": {
+                "title": "Not enough ETH for the bridge tx",
+                "text": "Unfortunately the HASHI bridge transaction has failed due to there not being enough ETH to pay for the Ethereum network transation fees. Please add more ETH and try again."
+            },
+            "transactionError": {
+                "title": "Transaction has failed",
+                "text": "Unfortunately it appears that the @:moonpayText transaction has failed. Please try again. For @:moonpayText support go to <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\">https:\/\/support.moonpay.com<\/a>"
+            },
+            "amountError": {
+                "title": "Insufficient balance",
+                "text": "Unfortunately the HASHI bridge transaction has failed due to there not being enough tokens for transaction. Please check your Ethereum account balance and try again."
+            },
+            "accountAddressError": {
+                "title": "Wrong Ethereum account",
+                "text": "Unfortunately, the HASHI bridge transaction failed due to the recipient address of the tokens in the @:moonpayText order does not match your current Ethereum account address. Please switch Ethereum account in extension and try again."
+            }
+        },
+        "buttons": {
+            "buy": "Buy Tokens",
+            "history": "Tx History",
+            "transfer": "Start bridge",
+            "view": "View transaction"
+        },
+        "history": {
+            "title": "Purchase history",
+            "empty": "No data"
+        },
+        "confirmations": {
+            "txReady": "Transaction Ready For Bridge"
+        }
+    }
 }

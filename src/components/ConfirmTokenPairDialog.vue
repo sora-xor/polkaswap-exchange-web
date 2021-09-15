@@ -41,6 +41,7 @@
       :asset-symbol="secondToken.symbol"
     />
     <info-line :value="`1 ${secondToken.symbol} = ${formattedPrice}`" :asset-symbol="firstToken.symbol" />
+    <info-line v-if="strategicBonusApy" :label="t('pool.strategicBonusApy')" :value="strategicBonusApy" />
     <template #footer>
       <s-button
         type="primary"
@@ -110,6 +111,15 @@ export default class ConfirmTokenPairDialog extends Mixins(FormattedAmountMixin,
 
   get formattedSlippageTolerance (): string {
     return this.formatStringValue(this.slippageTolerance)
+  }
+
+  get strategicBonusApy (): Nullable<string> {
+    // It won't be in template when not defined
+    const strategicBonusApy = this.fiatPriceAndApyObject[this.secondToken.address]?.strategicBonusApy
+    if (!strategicBonusApy) {
+      return null
+    }
+    return `${this.getFPNumberFromCodec(strategicBonusApy).mul(this.Hundred).toLocaleString()}%`
   }
 
   handleConfirm (): void {

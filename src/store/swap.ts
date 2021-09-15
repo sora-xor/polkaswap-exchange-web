@@ -130,7 +130,7 @@ const getters = {
 
     const amount = new FPNumber(state.toValue)
     const div = amount.div(withoutImpact)
-    const result = new FPNumber(1).sub(div).mul(new FPNumber(100))
+    const result = new FPNumber(1).sub(div).mul(FPNumber.HUNDRED)
 
     return FPNumber.lte(result, FPNumber.ZERO) ? '0' : FPNumber.ZERO.sub(result).toFixed(2)
   }
