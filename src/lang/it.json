@@ -125,7 +125,7 @@
             "transferable": "Trasferibile",
             "frozen": "Congelato",
             "locked": "- Bloccato",
-            "reserved": " - Riservato",
+            "reserved": "- Riservato",
             "total": "Totale"
         },
         "totalAssetsValue": "Il valore totale del tuo patrimonio:"
@@ -295,7 +295,7 @@
         "title": "Più informazioni",
         "learnMore": "Per saperne di più",
         "network": {
-            "title": "Cos'è @:soraText?",
+            "title": "Cos'è @:(soraText)?",
             "description": "Polkaswap è costruito sulla rete @:soraText e il token @:soraText (XOR) viene utilizzato per gas\/fees e per la fornitura di liquidità su Polkaswap. @:soraText Network consente commissioni ridotte, transazioni più veloci e più semplice finalizzazione del consenso. Si concentra sulla produzione di interoperabilità tra altri ecosistemi blockchain come @:(ethereumText)."
         },
         "polkadot": {
@@ -391,7 +391,7 @@
         "pswap": {
             "title": "PSWAP Tokens",
             "first": "PSWAP è stato creato dalla governance della community votando il suo rilascio. È un token di governance e uno utility token, utilizzato per premiare i liquidity providers su Polkaswap. A differenza della maggior parte degli altri token di ricompensa, PSWAP viene bruciato con le transazioni e la sua supply diminuisce nel tempo.",
-            "second": "Lo {percent} % di ogni swap su Polkaswap viene utilizzato per riacquistare i token PSWAP, che vengono poi bruciati. All'inizio, il 90% dei token PSWAP bruciati viene riemesso per essere allocato ai liquidity providers, ma con il tempo questa percentuale scenderà fino al 35% dopo 4 anni."
+            "second": "Lo {percent}% di ogni swap su Polkaswap viene utilizzato per riacquistare i token PSWAP, che vengono poi bruciati. All'inizio, il 90% dei token PSWAP bruciati viene riemesso per essere allocato ai liquidity providers, ma con il tempo questa percentuale scenderà fino al 35% dopo 4 anni."
         },
         "links": {
             "first": {
@@ -426,7 +426,7 @@
         "priceImpact": "Impatto sul prezzo",
         "priceImpactTooltip": "La differenza tra il prezzo di mercato e il prezzo stimato a causa delle dimensioni dell'operazione.",
         "liquidityProviderFee": "Commissione del Liquidity Provider",
-        "liquidityProviderFeeTooltip": "Una parte di ogni operazione ( {liquidityProviderFee} %) va ai liquidity providers come incentivo.",
+        "liquidityProviderFeeTooltip": "Una parte di ogni operazione ({liquidityProviderFee}%) va ai liquidity providers come incentivo.",
         "networkFee": "@:networkFeeText",
         "pairIsNotCreated": "@:pairIsNotCreated",
         "networkFeeTooltip": "@:networkFeeTooltipText",
@@ -464,7 +464,7 @@
         "connectWallets": "Collega i wallets per visualizzare la rispettiva cronologia delle transazioni.",
         "soraNetworkFee": "@:soraText Network fee",
         "ethereumNetworkFee": "@:ethereumText Network fee",
-        "tooltipValue": "@:coming SoonText",
+        "tooltipValue": "@:comingSoonText",
         "total": "Totale",
         "viewHistory": "Visualizza la cronologia delle transazioni",
         "transactionSubmitted": "Transazione inviata",
@@ -688,19 +688,19 @@
             "failed": "{order} di {total} transazioni non riuscite. @:retryText"
         },
         "signing": {
-            "extension": "l'estensione del browser polkadot {.js}",
+            "extension": "l'estensione del browser polkadot{.js}",
             "accounts": "i tuoi account @:soraText e @:ethereumText rispettivamente"
         },
         "hint": {
             "connectExternalAccount": "Collega un account @:ethereumText per verificare le tue ricompense in PSWAP e VAL disponibili.",
-            "connectAccounts": "Per richiedere le tue ricompense in PSWAP e VAL devi collegare entrambi i tuoi account @:soraText e @:ethereumText.",
+            "connectAccounts": "Per richiedere le tue ricompense in PSWAP e VAL devi collegare entrambi i tuoi account @:soraText e @:(ethereumText).",
             "connectAnotherAccount": "Collega un altro account @:ethereumText per verificare le ricompense in PSWAP e VAL disponibili.",
             "howToClaimRewards": "Per richiedere i tuoi {symbols} devi firmare la {count} {transactions} nell' {destination}. I premi verranno depositati sul tuo account @:(soraText)."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
             "connectExternalWallet": "Connetti @:ethereumText account",
-            "signAndClaim": "Firma e  reclama",
+            "signAndClaim": "Firma e reclama",
             "pendingInternal": "@:soraText transazione in attesa...",
             "pendingExternal": "@:ethereumText transazione in attesa...",
             "retry": "@:retryText",
