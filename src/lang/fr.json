@@ -680,7 +680,7 @@
         "andText": "et",
         "claiming": {
             "pending": "Demande...",
-            "success": "Récompense réclamée avec succès "
+            "success": "Récompense réclamée avec succès"
         },
         "transactions": {
             "confimation": "Confirmez {order} sur {total} transactions...",

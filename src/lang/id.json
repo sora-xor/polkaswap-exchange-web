@@ -688,7 +688,7 @@
             "failed": "{order} dari {total} transaksi gagal. @:retryText"
         },
         "signing": {
-            "extension": "ekstensi browser polkadot {.js}",
+            "extension": "ekstensi browser polkadot{.js}",
             "accounts": "akun @:soraText dan @:ethereumText Anda masing-masing"
         },
         "hint": {
@@ -705,7 +705,7 @@
             "pendingExternal": "@:ethereumText transaksi tertunda...",
             "retry": "@:retryText",
             "checkRewards": "Periksa",
-            "insufficientBalance": "@:tidak mencukupiBalanceText"
+            "insufficientBalance": "@:insufficientBalanceText"
         },
         "notification": {
             "empty": "Tidak ada klaim yang tersedia untuk akun ini"

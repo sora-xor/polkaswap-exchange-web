@@ -93,7 +93,7 @@
         "confirmTitle": "Bekreft transaksjon",
         "confirm": "@:confirmText",
         "errorAddress": "Ugyldig adresse. Kontroller den, og prøv på nytt.",
-        "feeTooltip": "@:nettverkFeeTooltipText",
+        "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Send tokens mellom kontoer på SORA -nettverket",
         "addressWarning": "Tokens vil bli sendt til SORA -adressen nedenfor. Sørg for at mottaker har tilgang til SORA -kjeden for å bruke tokenene:",
         "addressError": "Du kan ikke sende tokens til samme konto du er tilkoblet med."
@@ -695,7 +695,7 @@
             "connectExternalAccount": "Koble til en @:ethereumText konto for å se tilgjengelig PSWAP- og VAL -belønninger.",
             "connectAccounts": "For å kreve PSWAP- og VAL -belønninger må du koble til både @:soraText og @:ethereumText kontoene.",
             "connectAnotherAccount": "Koble til en annen @:ethereumText konto for å se etter tilgjengelige PSWAP og VAL-belønninger.",
-            "howToClaimRewards": "Hvis du vil gjøre krav på {symbols}-belønningene dine, må du signere {count} {transactions} i {destination}. Belønninger vil bli satt inn på din @:soraText-konto."
+            "howToClaimRewards": "Hvis du vil gjøre krav på {symbols}-belønningene dine, må du signere {count} {transactions} i {destination}. Belønninger vil bli satt inn på din @:soraText -konto."
         },
         "action": {
             "connectWallet": "@:connectWalletText",

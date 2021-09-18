@@ -235,7 +235,7 @@
     "confirmTransactionText": "Conferma transazione in {direction}",
     "retryText": "Riprova",
     "networkFeeText": "Fee del network",
-    "networkFeeTooltipText": "La fees vengono utilizzate per garantire la crescita e le prestazioni stabili del sistema @:soraText.",
+    "networkFeeTooltipText": "La fees vengono utilizzate per garantire la crescita e le prestazioni stabili del sistema @:(soraText).",
     "ethNetworkFeeTooltipText": "Tieni presente che le commissioni di rete Ethereum visualizzate su Polkaswap sono solo stime approssimative, puoi vedere l'importo corretto della commissione nel tuo portafoglio Ethereum connesso prima di confermare la transazione.",
     "marketText": "Market",
     "marketAlgorithmText": "Algoritmo di mercato",
@@ -454,7 +454,7 @@
     },
     "bridge": {
         "title": "HASHI Bridge",
-        "info": "Converti i token tra le reti @:soraText e @:ethereumText.",
+        "info": "Converti i token tra le reti @:soraText e @:(ethereumText).",
         "balance": "Saldo",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",

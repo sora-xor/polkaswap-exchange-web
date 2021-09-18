@@ -300,7 +300,7 @@
         },
         "polkadot": {
             "title": "Was ist Polkadot{.js}?",
-            "description": "Die Polkadot {.js} -Erweiterung ist eine für Firefox und Chrome verfügbare Browsererweiterung zur Verwaltung von Konten für Substrate-basierte Chains, einschließlich @:(soraText), Polkadot und Kusama. Du kannst Konten hinzufügen, importieren und exportieren, und Transaktionen oder Extrinsics, die du von autorisierten Websites initiiert hast, signieren."
+            "description": "Die Polkadot{.js} -Erweiterung ist eine für Firefox und Chrome verfügbare Browsererweiterung zur Verwaltung von Konten für Substrate-basierte Chains, einschließlich @:(soraText), Polkadot und Kusama. Du kannst Konten hinzufügen, importieren und exportieren, und Transaktionen oder Extrinsics, die du von autorisierten Websites initiiert hast, signieren."
         }
     },
     "node": {

@@ -683,7 +683,7 @@
             "success": "Reclamado con éxito"
         },
         "transactions": {
-            "confimation": "Confirmar {order} de {total} transacciones ...",
+            "confimation": "Confirmar {order} de {total} transacciones...",
             "success": "En breve recibirás tus recompensas",
             "failed": "{order} de {total} transacciones fallidas. @:retryText"
         },
