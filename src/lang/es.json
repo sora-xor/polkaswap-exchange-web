@@ -229,13 +229,13 @@
     "connectWalletTextTooltip": "Conectar a la Red @:soraText con polkadot{.js}",
     "selectNodeText": "Seleccione nodo",
     "bridgeText": "Puente",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Descargo de responsabilidad<\/span>: Este sitio web es mantenido por la comunidad @:soraText. Antes de continuar utilizando este sitio web, por favor revise el @:polkaswapFaqLink y la documentación, que incluye una explicación detallada sobre el funcionamiento de Polkaswap, así como el @:memorandumLink, y el @:(privacyLink). Estos documentos son cruciales para una experiencia de usuario segura y positiva. Al utilizar Polkaswap, usted reconoce que ha leído y comprendido estos documentos. También reconoce lo siguiente 1) su única responsabilidad por el cumplimiento de todas las leyes que puedan aplicarse a su uso particular de Polkaswap en su jurisdicción legal; 2) su comprensión de que la versión actual de Polkaswap es una versión alfa: no ha sido completamente probada, y algunas funciones pueden no funcionar como se ha diseñado; y 3) su comprensión y aceptación voluntaria de los riesgos que implica el uso de Polkaswap, incluyendo, pero no limitado a, el riesgo de perder tokens. Una vez más, ¡no continúe sin leer el @:polkaswapFaqLink, el @:memorandumLink y el @:privacyLink!",
+    "disclaimer": "<span class=\"app-disclaimer__title\">Descargo de responsabilidad<\/span>: Este sitio web es mantenido por la comunidad @:(soraText). Antes de continuar utilizando este sitio web, por favor revise el @:polkaswapFaqLink y la documentación, que incluye una explicación detallada sobre el funcionamiento de Polkaswap, así como el @:memorandumLink, y el @:(privacyLink). Estos documentos son cruciales para una experiencia de usuario segura y positiva. Al utilizar Polkaswap, usted reconoce que ha leído y comprendido estos documentos. También reconoce lo siguiente 1) su única responsabilidad por el cumplimiento de todas las leyes que puedan aplicarse a su uso particular de Polkaswap en su jurisdicción legal; 2) su comprensión de que la versión actual de Polkaswap es una versión alfa: no ha sido completamente probada, y algunas funciones pueden no funcionar como se ha diseñado; y 3) su comprensión y aceptación voluntaria de los riesgos que implica el uso de Polkaswap, incluyendo, pero no limitado a, el riesgo de perder tokens. Una vez más, ¡no continúe sin leer el @:polkaswapFaqLink, el @:memorandumLink y el @:privacyLink!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
     "poweredBy": "Desarrollado por",
     "confirmTransactionText": "Confirmar transacción en {direction}",
     "retryText": "Reintentar",
     "networkFeeText": "Tarifa de red",
-    "networkFeeTooltipText": "La comisión de la red se utiliza para garantizar el crecimiento y el rendimiento estable del sistema @:soraText.",
+    "networkFeeTooltipText": "La comisión de la red se utiliza para garantizar el crecimiento y el rendimiento estable del sistema @:(soraText).",
     "ethNetworkFeeTooltipText": "Por favor, tenga en cuenta que las tarifas de la red Ethereum mostradas en Polkaswap son sólo estimaciones aproximadas, puede ver la cantidad correcta de la tarifa en su cartera Ethereum conectada antes de confirmar la transacción.",
     "marketText": "Mercado",
     "marketAlgorithmText": "Algoritmo de mercado",
@@ -318,7 +318,7 @@
         }
     },
     "selectNodeDialog": {
-        "title": "Selección de nodos de la Red @:soraText ",
+        "title": "Selección de nodos de la Red @:soraText",
         "addNode": "Añadir nodo personalizado",
         "customNode": "Nodo personalizado",
         "howToSetupOwnNode": "Cómo configurar su propio nodo @:soraText",
@@ -445,7 +445,7 @@
         "addLiquidity": "Añadir Liquidez",
         "removeLiquidity": "Remover Liquidez",
         "createPair": "Crear un par",
-        "pooledToken": "{tokenSymbol} mancomunado",
+        "pooledToken": "{tokenSymbol} Mancomunado",
         "pairTokens": "{pair} Tokens del Fondo común",
         "poolShare": "Su Participación en el Fondo común",
         "unknownAsset": "Activo desconocido",
@@ -454,7 +454,7 @@
     },
     "bridge": {
         "title": "Puente HASHI",
-        "info": "Convierte tokens entre las redes @:soraText y @:ethereumText.",
+        "info": "Convierte tokens entre las redes @:soraText y @:(ethereumText).",
         "balance": "Balance",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
@@ -683,7 +683,7 @@
             "success": "Reclamado con éxito"
         },
         "transactions": {
-            "confimation": "Confirmar {order} de {total} transacciones ...",
+            "confimation": "Confirmar {order} de {total} transacciones...",
             "success": "En breve recibirás tus recompensas",
             "failed": "{order} de {total} transacciones fallidas. @:retryText"
         },
@@ -693,7 +693,7 @@
         },
         "hint": {
             "connectExternalAccount": "Conecta una cuenta @:ethereumText para comprobar las Recompensas PSWAP y VAL disponibles.",
-            "connectAccounts": "Para reclamar tus Recompensas de PSWAP y VAL debes conectar ambas, tus cuentas de @:soraText y @:ethereumText.",
+            "connectAccounts": "Para reclamar tus Recompensas de PSWAP y VAL debes conectar ambas, tus cuentas de @:soraText y @:(ethereumText).",
             "connectAnotherAccount": "Conecta otra cuenta @:ethereumText para comprobar las Recompensas PSWAP y VAL disponibles.",
             "howToClaimRewards": "Para reclamar tus Recompensas de {symbols} necesitas firmar {count} {transactions} en {destination}. Las Recompensas se depositarán en tu cuenta @:(soraText)."
         },
@@ -764,7 +764,7 @@
             },
             "supportError": {
                 "title": "Token no admitido",
-                "text": "Desafortunadamente, el token comprado a través de @:moonpayText aún no es compatible con el puente HASHI en Polkaswap. Normalmente, solo los tokens admitidos deberían estar disponibles para su compra a través de MoonPay en Polkaswap, por lo que algo debe haber salido mal en alguna parte. No dude en informar a la comunidad sobre este caso en el <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> grupo de Telegram Polkaswap <\/a> ."
+                "text": "Desafortunadamente, el token comprado a través de @:moonpayText aún no es compatible con el puente HASHI en Polkaswap. Normalmente, solo los tokens admitidos deberían estar disponibles para su compra a través de MoonPay en Polkaswap, por lo que algo debe haber salido mal en alguna parte. No dude en informar a la comunidad sobre este caso en el <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> grupo de Telegram Polkaswap <\/a>."
             },
             "feeError": {
                 "title": "No hay suficiente ETH para el puente tx",
