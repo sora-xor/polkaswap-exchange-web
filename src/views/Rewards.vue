@@ -26,6 +26,7 @@
                 :item="vestedRewadsGroupItem"
                 :theme="libraryTheme"
                 :disabled="!vestedRewardsAvailable"
+                is-codec-string
               />
               <rewards-amount-table
                 class="rewards-table"
@@ -188,7 +189,7 @@ export default class Rewards extends Mixins(FormattedAmountMixin, WalletConnectM
       type: this.t('rewards.groups.strategic'),
       title: this.t('rewards.claimableAmountDoneVesting'),
       limit: [{
-        amount: FPNumber.fromCodecValue(this.vestedRewards?.limit ?? 0, pswap.decimals).toLocaleString(),
+        amount: FPNumber.fromCodecValue(this.vestedRewards?.limit ?? 0, pswap.decimals).toCodecString(),
         asset: pswap
       }],
       total: {
