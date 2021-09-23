@@ -101,8 +101,7 @@
     "account": {
         "successCopy": "Wallet Adresse wurde in die Zwischenablage kopiert",
         "copy": "Adresse kopieren",
-        "switch": "Konto wechseln",
-        "logout": "Abmelden"
+        "switch": "Konto wechseln"
     },
     "history": {
         "clearHistory": "Verlauf löschen",
@@ -207,7 +206,6 @@
         "total": "Gesamt",
         "from": "Von",
         "to": "An",
-        "viewInPolkascan": "Auf Polkascan ansehen",
         "successCopy": "{value} wurde in die Zwischenablage kopiert",
         "copy": "Kopiere {value}",
         "history": {
@@ -215,7 +213,10 @@
             "submitted": "Transaktion mit einer Gebühr von {fee} {symbol} übermittelt",
             "confirmed": "Transaktion bestätigt"
         },
-        "viewInSorascan": "Auf SORAScan ansehen",
+        "viewIn": {
+            "sorascan": "Auf SORAScan ansehen",
+            "subscan": "Auf Subscan ansehen"
+        },
         "txId": "Transaktions-ID"
     },
     "appName": "Polkaswap",
@@ -351,9 +352,10 @@
     },
     "metamask": "MetaMask",
     "sora": {
-        "Devnet": "@:soraText Devnet",
-        "Testnet": "@:soraText Testnet",
-        "Mainnet": "@:soraText Mainnet"
+        "Dev": "@:soraText Devnet",
+        "Test": "@:soraText Testnet",
+        "Prod": "@:soraText Mainnet",
+        "Stage": "@:soraText Testnet"
     },
     "evm": {
         "main": "Ethereum Mainnet",
@@ -548,7 +550,6 @@
         "newTransaction": "Erstelle eine neue Transaktion",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "viewInSorascan": "Auf SORAScan ansehen",
         "changeAccount": "@:changeAccountText in @:metamask",
         "expectedAddress": "Erwartete Adresse in @:metamask",
         "title": "Bridge-Transaktion",

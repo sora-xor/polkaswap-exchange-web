@@ -354,8 +354,8 @@
     "sora": {
         "Dev": "@:soraText Devnet",
         "Test": "@:soraText Testnet",
-        "Stage": "@:soraText Testnet",
-        "Prod": "@:soraText Mainnet"
+        "Prod": "@:soraText Mainnet",
+        "Stage": "@:soraText Testnet"
     },
     "evm": {
         "main": "Ethereum Mainnet",

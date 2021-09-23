@@ -101,8 +101,7 @@
     "account": {
         "successCopy": "L'adresse du portefeuille est copiée dans le presse-papiers",
         "copy": "Copier l'adresse",
-        "switch": "Changer de compte",
-        "logout": "Déconnexion"
+        "switch": "Changer de compte"
     },
     "history": {
         "clearHistory": "Effacer l'historique",
@@ -207,7 +206,6 @@
         "total": "Total",
         "from": "De",
         "to": "À",
-        "viewInPolkascan": "Visualiser sur Polkascan",
         "successCopy": "{value} est copié dans le presse-papiers",
         "copy": "Copier {value}",
         "history": {
@@ -215,7 +213,10 @@
             "submitted": "Transaction soumise avec des frais de {fee} {symbol}",
             "confirmed": "Transaction confirmée"
         },
-        "viewInSorascan": "Afficher dans SORAScan",
+        "viewIn": {
+            "sorascan": "Afficher dans SORAScan",
+            "subscan": "Visualisez dans Subscan"
+        },
         "txId": "Id de la transaction"
     },
     "appName": "Polkaswap",
@@ -351,9 +352,10 @@
     },
     "metamask": "MetaMask",
     "sora": {
-        "Devnet": "@:soraText Devnet",
-        "Testnet": "@:soraText Testnet",
-        "Mainnet": "@:soraText Mainnet"
+        "Dev": "@:soraText Devnet",
+        "Test": "@:soraText Testnet",
+        "Prod": "@:soraText Mainnet",
+        "Stage": "@:soraText Testnet"
     },
     "evm": {
         "main": "Ethereum Mainnet",
@@ -548,7 +550,6 @@
         "newTransaction": "Créer une nouvelle transaction",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "viewInSorascan": "Afficher dans SORAScan",
         "changeAccount": "@:changeAccountText dans @:metamask",
         "expectedAddress": "Adresse attendue dans @:metamask",
         "title": "Transaction de pont",
