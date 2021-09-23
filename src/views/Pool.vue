@@ -64,7 +64,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { AccountLiquidity, Asset } from '@sora-substrate/util'
-import { FormattedAmountMixin, FormattedAmount, FontSizeRate, FontWeightRate, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -78,13 +78,13 @@ const namespace = 'pool'
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    FormattedAmount,
-    InfoLine
+    FormattedAmount: components.FormattedAmount,
+    InfoLine: components.InfoLine
   }
 })
-export default class Pool extends Mixins(LoadingMixin, FormattedAmountMixin, TranslationMixin) {
-  readonly FontSizeRate = FontSizeRate
-  readonly FontWeightRate = FontWeightRate
+export default class Pool extends Mixins(mixins.FormattedAmountMixin, LoadingMixin, TranslationMixin) {
+  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate
+  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate
 
   // Wallet
   @Getter isLoggedIn!: boolean

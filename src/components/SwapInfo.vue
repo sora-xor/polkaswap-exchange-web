@@ -48,7 +48,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LPRewardsInfo, Operation } from '@sora-substrate/util'
-import { FormattedAmount, FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { components, mixins } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { lazyComponent } from '@/router'
@@ -60,11 +60,11 @@ const namespace = 'swap'
 @Component({
   components: {
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
-    FormattedAmount,
-    InfoLine
+    FormattedAmount: components.FormattedAmount,
+    InfoLine: components.InfoLine
   }
 })
-export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMixin) {
+export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
   @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset
   @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString

@@ -82,7 +82,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
 import { AccountAsset, KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, CodecString, FPNumber } from '@sora-substrate/util'
-import { FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { components, mixins } from '@soramitsu/soraneo-wallet-web'
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
 
 import ethersUtil from '@/utils/ethers-util'
@@ -102,10 +102,10 @@ import TransactionMixin from '@/components/mixins/TransactionMixin'
     TokensRow: lazyComponent(Components.TokensRow),
     RewardsAmountHeader: lazyComponent(Components.RewardsAmountHeader),
     RewardsAmountTable: lazyComponent(Components.RewardsAmountTable),
-    InfoLine
+    InfoLine: components.InfoLine
   }
 })
-export default class Rewards extends Mixins(FormattedAmountMixin, WalletConnectMixin, TransactionMixin) {
+export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletConnectMixin, TransactionMixin) {
   @State(state => state.rewards.fee) fee!: CodecString
   @State(state => state.rewards.feeFetching) feeFetching!: boolean
   @State(state => state.rewards.rewardsFetching) rewardsFetching!: boolean

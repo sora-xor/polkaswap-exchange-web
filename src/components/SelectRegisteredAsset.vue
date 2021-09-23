@@ -104,7 +104,7 @@
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util'
-import { FormattedAmountMixin, FormattedAmountWithFiatValue, FontSizeRate, FontWeightRate } from '@soramitsu/soraneo-wallet-web'
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
@@ -120,12 +120,12 @@ const namespace = 'assets'
 @Component({
   components: {
     DialogBase,
-    FormattedAmountWithFiatValue,
+    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     TokenLogo: lazyComponent(Components.TokenLogo),
     TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
-export default class SelectRegisteredAsset extends Mixins(FormattedAmountMixin, TranslationMixin, SelectAssetMixin, LoadingMixin) {
+export default class SelectRegisteredAsset extends Mixins(mixins.FormattedAmountMixin, TranslationMixin, SelectAssetMixin, LoadingMixin) {
   query = ''
   selectedAsset: Nullable<AccountAsset | RegisteredAccountAsset> = null
   readonly tokenTabs = [
@@ -133,8 +133,8 @@ export default class SelectRegisteredAsset extends Mixins(FormattedAmountMixin, 
     'custom'
   ]
 
-  readonly FontSizeRate = FontSizeRate
-  readonly FontWeightRate = FontWeightRate
+  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate
+  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate
   readonly formattedZeroSymbol = '-'
 
   tabValue = this.tokenTabs[0]

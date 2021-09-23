@@ -69,7 +69,7 @@
 <script lang="ts">
 import { Component, Prop, Mixins } from 'vue-property-decorator'
 import { RewardInfo } from '@sora-substrate/util'
-import { FormattedAmountMixin, FormattedAmount, FormattedAmountWithFiatValue, FontSizeRate } from '@soramitsu/soraneo-wallet-web'
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -77,12 +77,12 @@ import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards'
 
 @Component({
   components: {
-    FormattedAmount,
-    FormattedAmountWithFiatValue
+    FormattedAmount: components.FormattedAmount,
+    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue
   }
 })
-export default class AmountTable extends Mixins(FormattedAmountMixin, TranslationMixin) {
-  readonly FontSizeRate = FontSizeRate
+export default class AmountTable extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
+  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate
 
   @Prop({ default: () => {}, type: Object }) item!: RewardInfoGroup | RewardInfo
   @Prop({ default: true, type: Boolean }) showTable!: boolean

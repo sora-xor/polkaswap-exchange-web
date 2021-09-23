@@ -126,7 +126,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { FPNumber, KnownSymbols, AccountLiquidity, CodecString, Operation } from '@sora-substrate/util'
-import { api, FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { components, mixins } from '@soramitsu/soraneo-wallet-web'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
@@ -146,10 +146,10 @@ const namespace = 'removeLiquidity'
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
-    InfoLine
+    InfoLine: components.InfoLine
   }
 })
-export default class RemoveLiquidity extends Mixins(LoadingMixin, FormattedAmountMixin, TransactionMixin, ConfirmDialogMixin) {
+export default class RemoveLiquidity extends Mixins(mixins.FormattedAmountMixin, TransactionMixin, ConfirmDialogMixin) {
   readonly KnownSymbols = KnownSymbols
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
