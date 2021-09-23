@@ -125,12 +125,11 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { FPNumber, KnownSymbols, AccountLiquidity, CodecString, Operation } from '@sora-substrate/util'
+import { FPNumber, KnownSymbols, AccountLiquidity, CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util'
 import { components, mixins } from '@soramitsu/soraneo-wallet-web'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
-import LoadingMixin from '@/components/mixins/LoadingMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
@@ -153,7 +152,7 @@ export default class RemoveLiquidity extends Mixins(mixins.FormattedAmountMixin,
   readonly KnownSymbols = KnownSymbols
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
-  @Getter networkFees!: any
+  @Getter networkFees!: NetworkFeesObject
 
   @Getter('focusedField', { namespace }) focusedField!: Nullable<string>
   @Getter('liquidity', { namespace }) liquidity!: AccountLiquidity

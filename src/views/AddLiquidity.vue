@@ -187,9 +187,9 @@ export default class AddLiquidity extends Mixins(LoadingMixin, TokenPairMixin) {
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity
 
-  @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
-  @Action('addLiquidity', { namespace }) addLiquidity
-  @Action('resetFocusedField', { namespace }) resetFocusedField
+  @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity!: (params: any) => Promise<void>
+  @Action('addLiquidity', { namespace }) addLiquidity!: AsyncVoidFn
+  @Action('resetFocusedField', { namespace }) resetFocusedField!: AsyncVoidFn
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 

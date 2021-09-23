@@ -1,6 +1,6 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { KnownSymbols, CodecString, Operation } from '@sora-substrate/util'
+import { KnownSymbols, CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util'
 import { mixins } from '@soramitsu/soraneo-wallet-web'
 
 import TransactionMixin from './TransactionMixin'
@@ -29,7 +29,7 @@ const CreateTokenPairMixin = (namespace: string) => {
 
     @Getter slippageTolerance!: string
     @Getter isLoggedIn!: boolean
-    @Getter networkFees!: any
+    @Getter networkFees!: NetworkFeesObject
 
     @Action('setFirstTokenAddress', { namespace }) setFirstTokenAddress
     @Action('setSecondTokenAddress', { namespace }) setSecondTokenAddress
