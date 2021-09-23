@@ -259,12 +259,6 @@ export enum LogoSize {
   LARGE = 'large'
 }
 
-export enum NetworkTypes {
-  Devnet = 'Devnet',
-  Testnet = 'Testnet',
-  Mainnet = 'Mainnet'
-}
-
 export enum EvmSymbol {
   ETH = 'ETH',
   VT = 'VT'
