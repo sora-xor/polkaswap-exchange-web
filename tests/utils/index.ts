@@ -1,7 +1,7 @@
 import { VueConstructor } from 'vue'
 import Vuex from 'vuex'
 import SoramitsuElements, { Message, MessageBox, Notification } from '@soramitsu/soramitsu-js-ui'
-import SoraNeoWalletElements from '@soramitsu/soraneo-wallet-web'
+import Wallet from '@soramitsu/soraneo-wallet-web'
 
 export const TranslationMock = (vue: VueConstructor) =>
   vue.mixin({ name: 'TranslationMixin', methods: { t: jest.fn(), tc: jest.fn() } })
@@ -19,5 +19,5 @@ export const SoramitsuElementsImport = (vue: VueConstructor) => {
 export const WalletImport = (vue: VueConstructor) => {
   vue.use(Vuex)
   const store = new Vuex.Store({ modules: {} })
-  vue.use(SoraNeoWalletElements, { store })
+  vue.use(Wallet, { store })
 }
