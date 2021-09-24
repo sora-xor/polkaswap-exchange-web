@@ -380,8 +380,17 @@ html {
   color: var(--s-color-base-content-primary);
   background-color: var(--s-color-utility-body);
   transition: background-color 500ms linear;
-  .el-loading-mask {
+  .el-loading-mask  {
     background-color: var(--s-color-utility-body);
+    .el-loading-spinner {
+      background-image: url("~@/assets/img/pswap-loader.svg");
+      height: var(--s-size-medium);
+      width: var(--s-size-medium);
+      margin-left: calc(50% - (var(--s-size-medium) / 2));
+      > svg {
+      display: none;
+      }
+    }
   }
 }
 
