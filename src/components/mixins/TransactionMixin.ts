@@ -1,6 +1,6 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { History, TransactionStatus, Operation } from '@sora-substrate/util'
-import { api, NumberFormatterMixin } from '@soramitsu/soraneo-wallet-web'
+import { api, mixins } from '@soramitsu/soraneo-wallet-web'
 import findLast from 'lodash/fp/findLast'
 import { Action } from 'vuex-class'
 
@@ -10,7 +10,7 @@ import TranslationMixin from './TranslationMixin'
 import LoadingMixin from './LoadingMixin'
 
 @Component
-export default class TransactionMixin extends Mixins(NumberFormatterMixin, TranslationMixin, LoadingMixin) {
+export default class TransactionMixin extends Mixins(mixins.NumberFormatterMixin, TranslationMixin, LoadingMixin) {
   private time = 0
 
   transaction: Nullable<History> = null // It's used just for sync errors

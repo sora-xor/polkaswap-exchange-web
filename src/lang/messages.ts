@@ -1,7 +1,7 @@
-import { en as walletEn } from '@soramitsu/soraneo-wallet-web'
+import { en as walletEn, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
 import { Operation, TransactionStatus, RewardingEvents } from '@sora-substrate/util'
 
-import { PageNames, NetworkTypes } from '../consts'
+import { PageNames } from '../consts'
 import { EvmNetworkType } from '../utils/ethers-util'
 
 export default {
@@ -182,9 +182,10 @@ export default {
   },
   metamask: 'MetaMask',
   sora: {
-    [NetworkTypes.Devnet]: '@:soraText Devnet',
-    [NetworkTypes.Testnet]: '@:soraText Testnet',
-    [NetworkTypes.Mainnet]: '@:soraText Mainnet'
+    [WALLET_CONSTS.SoraNetwork.Dev]: '@:soraText Devnet',
+    [WALLET_CONSTS.SoraNetwork.Test]: '@:soraText Testnet',
+    [WALLET_CONSTS.SoraNetwork.Stage]: '@:soraText Testnet',
+    [WALLET_CONSTS.SoraNetwork.Prod]: '@:soraText Mainnet'
   },
   evm: {
     [EvmNetworkType.Mainnet]: 'Ethereum Mainnet',
@@ -361,7 +362,6 @@ export default {
       waitingForConfirmation: 'Waiting for confirmation...'
     },
     wait30Block: 'Please wait 30 block confirmations',
-    viewInSorascan: 'View in SORAScan',
     viewInEtherscan: 'View in Etherscan',
     networkTitle: '{network} transaction',
     transactionHash: 'Transaction hash',

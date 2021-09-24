@@ -43,11 +43,25 @@
                 type="ellipsis"
                 icon="basic-more-vertical-24"
                 placement="bottom-end"
-                @select="(isSoraToEvm ? handleOpenSorascan : handleOpenEtherscan)()"
+                @select="isSoraToEvm ? undefined : handleOpenEtherscan()"
               >
                 <template slot="menu">
-                  <s-dropdown-item class="s-dropdown-menu__item" :disabled="isSoraToEvm && !(soraTxId || soraTxBlockId)">
-                    <span>{{ t(`bridgeTransaction.${isSoraToEvm ? 'viewInSorascan' : 'viewInEtherscan'}`) }}</span>
+                  <template v-if="isSoraToEvm">
+                    <a
+                      v-for="link in soraExpolrerLinks"
+                      :key="link.type"
+                      class="transaction-link"
+                      :href="link.value"
+                      target="_blank"
+                      rel="nofollow noopener"
+                    >
+                      <s-dropdown-item class="s-dropdown-menu__item" :disabled="!(soraTxId || soraTxBlockId)">
+                        {{ t(`transaction.viewIn.${link.type}`) }}
+                      </s-dropdown-item>
+                    </a>
+                  </template>
+                  <s-dropdown-item v-else class="s-dropdown-menu__item">
+                    <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
                   </s-dropdown-item>
                 </template>
               </s-dropdown>
@@ -180,7 +194,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { AccountAsset, RegisteredAccountAsset, KnownSymbols, FPNumber, CodecString, BridgeHistory, BridgeNetworks } from '@sora-substrate/util'
-import { api, getExplorerLink, FormattedAmountMixin, FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { api, components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
 import { interpret } from 'xstate'
 
 import BridgeMixin from '@/components/mixins/BridgeMixin'
@@ -198,16 +212,16 @@ const namespace = 'bridge'
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
-    FormattedAmount,
-    InfoLine
+    FormattedAmount: components.FormattedAmount,
+    InfoLine: components.InfoLine
   }
 })
 export default class BridgeTransaction extends Mixins(
-  FormattedAmountMixin,
+  mixins.FormattedAmountMixin,
   BridgeMixin,
   NetworkFormatterMixin
 ) {
-  @Getter soraNetwork!: string
+  @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
   @Getter('prev', { namespace: 'router' }) prevRoute!: PageNames
 
@@ -518,25 +532,31 @@ export default class BridgeTransaction extends Mixins(
     return `s-icon--network s-icon-${this.isSoraToEvm ? this.evmIcon : 'sora'}`
   }
 
-  private openBlockExplorer (url: string): void {
+  handleOpenEtherscan (): void {
+    const hash = this.isSoraToEvm ? this.transactionToHash : this.transactionFromHash
+    const url = this.getEtherscanLink(hash, true)
     const win = window.open(url, '_blank')
     win && win.focus()
   }
 
-  handleOpenEtherscan (): void {
-    const hash = this.isSoraToEvm ? this.transactionToHash : this.transactionFromHash
-    const url = this.getEtherscanLink(hash, true)
-    this.openBlockExplorer(url)
-  }
-
-  handleOpenSorascan (): void {
+  get soraExpolrerLinks (): Array<WALLET_CONSTS.ExplorerLink> {
+    const baseLinks = getExplorerLinks(this.soraNetwork)
     const txId = this.soraTxId || this.soraTxBlockId
-    const explorerPath = this.soraTxId ? 'transaction' : 'block'
     if (!(this.isSoraToEvm && txId)) {
-      return
+      return []
     }
-    const url = `${getExplorerLink(this.soraNetwork)}/${explorerPath}/${txId}`
-    this.openBlockExplorer(url)
+    if (!this.soraTxId) {
+      return baseLinks.map(({ type, value }) => ({ type, value: `${value}/block/${txId}` }))
+    }
+    return baseLinks.map(({ type, value }) => {
+      const link = { type } as WALLET_CONSTS.ExplorerLink
+      if (type === WALLET_CONSTS.ExplorerType.Sorascan) {
+        link.value = `${value}/transaction/${txId}`
+      } else {
+        link.value = `${value}/extrinsic/${txId}`
+      }
+      return link
+    })
   }
 
   get firstTxHash (): string {
@@ -1015,5 +1035,9 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
     }
   }
   @include status-icon(true);
+}
+.transaction-link {
+  color: inherit;
+  text-decoration: none;
 }
 </style>

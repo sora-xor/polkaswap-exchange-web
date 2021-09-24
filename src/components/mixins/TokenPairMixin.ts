@@ -1,7 +1,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { KnownSymbols, CodecString, Operation } from '@sora-substrate/util'
-import { FormattedAmountMixin } from '@soramitsu/soraneo-wallet-web'
+import { KnownSymbols, CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util'
+import { mixins } from '@soramitsu/soraneo-wallet-web'
 
 import TransactionMixin from './TransactionMixin'
 import LoadingMixin from './LoadingMixin'
@@ -13,7 +13,7 @@ import { getMaxValue, isMaxButtonAvailable, isXorAccountAsset, hasInsufficientBa
 
 const CreateTokenPairMixin = (namespace: string) => {
   @Component
-  class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin, FormattedAmountMixin) {
+  class TokenPairMixin extends Mixins(TransactionMixin, LoadingMixin, ConfirmDialogMixin, mixins.FormattedAmountMixin) {
     readonly KnownSymbols = KnownSymbols
 
     @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
@@ -29,7 +29,7 @@ const CreateTokenPairMixin = (namespace: string) => {
 
     @Getter slippageTolerance!: string
     @Getter isLoggedIn!: boolean
-    @Getter networkFees!: any
+    @Getter networkFees!: NetworkFeesObject
 
     @Action('setFirstTokenAddress', { namespace }) setFirstTokenAddress
     @Action('setSecondTokenAddress', { namespace }) setSecondTokenAddress

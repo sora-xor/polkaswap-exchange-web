@@ -191,7 +191,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { RegisteredAccountAsset, BridgeNetworks, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util'
-import { api, FormattedAmountMixin, FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { components, mixins } from '@soramitsu/soraneo-wallet-web'
 
 import BridgeMixin from '@/components/mixins/BridgeMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
@@ -225,12 +225,12 @@ const namespace = 'bridge'
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
-    FormattedAmount,
-    InfoLine
+    FormattedAmount: components.FormattedAmount,
+    InfoLine: components.InfoLine
   }
 })
 export default class Bridge extends Mixins(
-  FormattedAmountMixin,
+  mixins.FormattedAmountMixin,
   BridgeMixin,
   TranslationMixin,
   NetworkFormatterMixin

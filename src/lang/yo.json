@@ -101,8 +101,7 @@
     "account": {
         "successCopy": "Ti daakọ adirẹsi apamọwọ si agekuru naa",
         "copy": "Da Adirẹsi ko",
-        "switch": "Yi Ifowosi pada",
-        "logout": "Fi ifowosi le"
+        "switch": "Yi Ifowosi pada"
     },
     "history": {
         "clearHistory": "Nu itan kuro",
@@ -207,7 +206,6 @@
         "total": "Lapapọ",
         "from": "Lati",
         "to": "Si",
-        "viewInPolkascan": "Wo ni Polkascan",
         "successCopy": "{value} a ti daako si agekuru naa",
         "copy": "Daakọ {value}",
         "history": {
@@ -215,7 +213,10 @@
             "submitted": "Iṣowo ti a fi silẹ pẹlu owo ti {fee} {symbol}",
             "confirmed": "Iṣowo ti a ti gba"
         },
-        "viewInSorascan": "Wo ni SORAScan",
+        "viewIn": {
+            "sorascan": "Wo ni SORAScan",
+            "subscan": "Wo ni Subscan"
+        },
         "txId": "Id Idunadura"
     },
     "appName": "Polkaswap",
@@ -351,9 +352,10 @@
     },
     "metamask": "MetaMask",
     "sora": {
-        "Devnet": "@:soraText Devnet",
-        "Testnet": "@:soraText Testnet",
-        "Mainnet": "@:soraText Mainnet"
+        "Dev": "@:soraText Devnet",
+        "Test": "@:soraText Testnet",
+        "Prod": "@:soraText Mainnet",
+        "Stage": "@:soraText Testnet"
     },
     "evm": {
         "main": "Ethereum Mainnet",
@@ -548,7 +550,6 @@
         "newTransaction": "Ṣẹda idunadura tuntun",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "viewInSorascan": "Wo ni SORAScan",
         "changeAccount": "@:changeAccountText Inu @:metamask",
         "expectedAddress": "Adirẹsi ti a nireti ni @:metamask",
         "title": "Idunadura Bridge",

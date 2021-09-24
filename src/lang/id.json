@@ -101,8 +101,7 @@
     "account": {
         "successCopy": "Alamat dompet disalin ke clipboard",
         "copy": "Salin alamat",
-        "switch": "Ganti akun",
-        "logout": "Keluar"
+        "switch": "Ganti akun"
     },
     "history": {
         "clearHistory": "Bersihkan riwayat",
@@ -207,7 +206,6 @@
         "total": "Total",
         "from": "Dari",
         "to": "Untuk",
-        "viewInPolkascan": "Lihat di Polkascan",
         "successCopy": "{value} disalin ke clipboard",
         "copy": "Salin {value}",
         "history": {
@@ -215,7 +213,10 @@
             "submitted": "Transaksi diajukan dengan biaya {fee} {symbol}",
             "confirmed": "Transaksi dikonfirmasi"
         },
-        "viewInSorascan": "Lihat di Sorascan",
+        "viewIn": {
+            "sorascan": "Lihat di Sorascan",
+            "subscan": "Lihat di Subscan"
+        },
         "txId": "Id transaksi"
     },
     "appName": "Polkaswap",
@@ -351,9 +352,10 @@
     },
     "metamask": "MetaMask",
     "sora": {
-        "Devnet": "@:soraText Devnet",
-        "Testnet": "@:soraText Testnet",
-        "Mainnet": "@:soraText Mainnet"
+        "Dev": "@:soraText Devnet",
+        "Test": "@:soraText Testnet",
+        "Prod": "@:soraText Mainnet",
+        "Stage": "@:soraText Testnet"
     },
     "evm": {
         "main": "Ethereum Mainnet",
@@ -548,7 +550,6 @@
         "newTransaction": "Buat transaksi baru",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "viewInSorascan": "Lihat di Sorascan",
         "changeAccount": "@:changeAccountText di @:metamask",
         "expectedAddress": "Alamat yang diharapkan di @:metamask",
         "title": "Jembatan Transaksi",

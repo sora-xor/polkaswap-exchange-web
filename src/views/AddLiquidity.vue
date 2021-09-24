@@ -156,7 +156,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { FPNumber, AccountLiquidity, CodecString, KnownAssets, KnownSymbols } from '@sora-substrate/util'
-import { FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { components } from '@soramitsu/soraneo-wallet-web'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -177,8 +177,8 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
-    FormattedAmount,
-    InfoLine
+    FormattedAmount: components.FormattedAmount,
+    InfoLine: components.InfoLine
   }
 })
 
@@ -187,9 +187,9 @@ export default class AddLiquidity extends Mixins(LoadingMixin, TokenPairMixin) {
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity
 
-  @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
-  @Action('addLiquidity', { namespace }) addLiquidity
-  @Action('resetFocusedField', { namespace }) resetFocusedField
+  @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity!: (params: any) => Promise<void>
+  @Action('addLiquidity', { namespace }) addLiquidity!: AsyncVoidFn
+  @Action('resetFocusedField', { namespace }) resetFocusedField!: AsyncVoidFn
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 

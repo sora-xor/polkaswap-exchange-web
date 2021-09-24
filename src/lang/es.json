@@ -101,8 +101,7 @@
     "account": {
         "successCopy": "La dirección de la cartera se ha copiado en el portapapeles",
         "copy": "Copiar dirección",
-        "switch": "Cambiar de cuenta",
-        "logout": "Cerrar sesión"
+        "switch": "Cambiar de cuenta"
     },
     "history": {
         "clearHistory": "Borrar el historial",
@@ -207,7 +206,6 @@
         "total": "Total",
         "from": "Desde",
         "to": "A",
-        "viewInPolkascan": "Ver en Polkascan",
         "successCopy": "{value} es copiado en el portapapeles",
         "copy": "Copiar {value}",
         "history": {
@@ -215,7 +213,10 @@
             "submitted": "Transacción enviada con una comisión de {fee} {symbol}",
             "confirmed": "Transacción confirmada"
         },
-        "viewInSorascan": "Ver en SORAscan",
+        "viewIn": {
+            "sorascan": "Ver en SORAscan",
+            "subscan": "Ver en Subscan"
+        },
         "txId": "ID de transacción"
     },
     "appName": "Polkaswap",
@@ -351,9 +352,10 @@
     },
     "metamask": "MetaMask",
     "sora": {
-        "Devnet": "@:soraText Red de desarrolladores",
-        "Testnet": "@:soraText Red de prueba",
-        "Mainnet": "@:soraText Red principal"
+        "Dev": "@:soraText Red de desarrolladores",
+        "Test": "@:soraText Red de prueba",
+        "Prod": "@:soraText Red principal",
+        "Stage": "@:soraText Red de prueba"
     },
     "evm": {
         "main": "Red principal de Ethereum",
@@ -548,7 +550,6 @@
         "newTransaction": "Crear nueva transacción",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "viewInSorascan": "Ver en SORAscan",
         "changeAccount": "@:changeAccountText en @:metamask",
         "expectedAddress": "Dirección esperada en @:metamask",
         "title": "Transacción puente",
@@ -693,7 +694,7 @@
         },
         "hint": {
             "connectExternalAccount": "Conecta una cuenta @:ethereumText para comprobar las Recompensas PSWAP y VAL disponibles.",
-            "connectAccounts": "Para reclamar tus Recompensas de PSWAP y VAL debes conectar ambas, tus cuentas de @:soraText y @:(ethereumText).",
+            "connectAccounts": "Para reclamar tus Recompensas de PSWAP y VAL debes conectar tus cuentas de @:soraText y @:(ethereumText).",
             "connectAnotherAccount": "Conecta otra cuenta @:ethereumText para comprobar las Recompensas PSWAP y VAL disponibles.",
             "howToClaimRewards": "Para reclamar tus Recompensas de {symbols} necesitas firmar {count} {transactions} en {destination}. Las Recompensas se depositarán en tu cuenta @:(soraText)."
         },

@@ -101,8 +101,7 @@
     "account": {
         "successCopy": "Adres portfela został skopiowany do schowka.",
         "copy": "Kopiuj adres",
-        "switch": "Przełącz konto",
-        "logout": "Wyloguj"
+        "switch": "Przełącz konto"
     },
     "history": {
         "clearHistory": "Wyczyść historię",
@@ -207,7 +206,6 @@
         "total": "Łącznie",
         "from": "Z",
         "to": "Na",
-        "viewInPolkascan": "Pokaż na Polkascanie",
         "successCopy": "{value} skopiowana do schowka.",
         "copy": "Kopiuj {value}",
         "history": {
@@ -215,7 +213,10 @@
             "submitted": "Transakcja została złożona z opłatą w wysokości {fee} {symbol}.",
             "confirmed": "Transakcja potwierdzona"
         },
-        "viewInSorascan": "Pokaż na SORAScanie",
+        "viewIn": {
+            "sorascan": "Pokaż na SORAScanie",
+            "subscan": "Pokaż w Subscanie"
+        },
         "txId": "Identyfikator transakcji"
     },
     "appName": "Polkaswap",
@@ -351,9 +352,10 @@
     },
     "metamask": "MetaMask",
     "sora": {
-        "Devnet": "@:soraText Devnet",
-        "Testnet": "@:soraText Testnet",
-        "Mainnet": "@:soraText Mainnet"
+        "Dev": "@:soraText Devnet",
+        "Test": "@:soraText Testnet",
+        "Prod": "@:soraText Mainnet",
+        "Stage": "@:soraText Testnet"
     },
     "evm": {
         "main": "Ethereum Mainnet",
@@ -548,7 +550,6 @@
         "newTransaction": "Utwórz nową transakcję",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "viewInSorascan": "Pokaż na SORAScanie",
         "changeAccount": "@:changeAccountText w @:metamask",
         "expectedAddress": "Oczekiwany adres w @:metamask",
         "title": "Transakcja mostowa",
@@ -689,13 +690,13 @@
         },
         "signing": {
             "extension": "Rozszerzenie przeglądarki polkadot{.js}",
-            "accounts": "Twoje konta to odpowiednio @:soraText i @:ethereumText"
+            "accounts": "Twoich kont, to odpowiednio @:soraText i @:(ethereumText)."
         },
         "hint": {
             "connectExternalAccount": "Połącz z kontem @:ethereumText, aby sprawdzić dostępne wynagrodzenie PSWAP i VAL.",
             "connectAccounts": "Aby odebrać swoje wynagrodzenie PSWAP i VAL, musisz połączyć się zarówno z kontem @:soraText, jak i @:ethereumText.",
             "connectAnotherAccount": "Połącz z innym kontem @:ethereumText, aby sprawdzić dostępne wynagrodzenie PSWAP i VAL.",
-            "howToClaimRewards": "Aby odebrać swoje wynagrodzenie {symbols}, musisz podpisać {count} {transactions} w {destination}. Wynagrodzenie zostanie wypłacone na Twoje konto @:(soraText)."
+            "howToClaimRewards": "Aby odebrać swoje wynagrodzenie {symbols}, musisz podpisać {count} {transactions} dotyczące {destination}. Wynagrodzenie zostanie wypłacone na Twoje konto @:(soraText)."
         },
         "action": {
             "connectWallet": "@:connectWalletText",

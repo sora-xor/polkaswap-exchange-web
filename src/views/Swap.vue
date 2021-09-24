@@ -137,8 +137,8 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import { api, FormattedAmountMixin, FormattedAmount } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes, LPRewardsInfo, FPNumber, Operation } from '@sora-substrate/util'
+import { api, components, mixins } from '@soramitsu/soraneo-wallet-web'
+import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LiquiditySourceTypes, LPRewardsInfo, FPNumber, Operation, NetworkFeesObject } from '@sora-substrate/util'
 import type { Subscription } from '@polkadot/x-rxjs'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -163,11 +163,11 @@ const namespace = 'swap'
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
-    FormattedAmount
+    FormattedAmount: components.FormattedAmount
   }
 })
-export default class Swap extends Mixins(FormattedAmountMixin, TranslationMixin, LoadingMixin) {
-  @Getter networkFees!: any
+export default class Swap extends Mixins(mixins.FormattedAmountMixin, TranslationMixin, LoadingMixin) {
+  @Getter networkFees!: NetworkFeesObject
   @Getter nodeIsConnected!: boolean
   @Getter isLoggedIn!: boolean
   @Getter slippageTolerance!: string
