@@ -43,7 +43,7 @@
                 type="ellipsis"
                 icon="basic-more-vertical-24"
                 placement="bottom-end"
-                @select="isSoraToEvm ? undefined : handleOpenEtherscan"
+                @select="isSoraToEvm ? undefined : handleOpenEtherscan()"
               >
                 <template slot="menu">
                   <template v-if="isSoraToEvm">
