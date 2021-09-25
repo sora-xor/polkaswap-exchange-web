@@ -99,35 +99,37 @@
         </div>
         <template v-if="connected && nonWhitelistAccountAssets">
           <div class="token-list_text">{{ nonWhitelistAccountAssets.length }} {{ t('selectToken.custom.text') }}</div>
-          <div class="token-list">
-            <div v-for="token in sortedNonWhitelistAccountAssets" @click="selectToken(token)" :key="token.address" class="token-item">
-              <s-col>
-                <s-row flex justify="start" align="middle">
-                  <token-logo :token="token" />
-                  <div class="token-item__info s-flex">
-                    <div class="token-item__symbol">{{ token.symbol }}</div>
-                    <token-address :name="token.name" :symbol="token.symbol" :address="token.address" class="token-item__details" />
-                  </div>
-                </s-row>
-              </s-col>
-              <div v-if="connected" class="token-item__balance-container">
-                <formatted-amount-with-fiat-value
-                  v-if="formatBalance(token) !== formattedZeroSymbol"
-                  value-class="token-item__balance"
-                  :value="formatBalance(token)"
-                  :font-size-rate="FontSizeRate.MEDIUM"
-                  :has-fiat-value="shouldFiatBeShown(token)"
-                  :fiat-value="getFiatBalance(token)"
-                  :fiat-font-size-rate="FontSizeRate.MEDIUM"
-                  :fiat-font-weight-rate="FontWeightRate.MEDIUM"
-                />
-                <span v-else class="token-item__balance">{{ formattedZeroSymbol }}</span>
-              </div>
-              <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
-                <s-icon name="basic-trash-24" />
+          <s-scrollbar v-if="sortedNonWhitelistAccountAssets && sortedNonWhitelistAccountAssets.length > 0" key="filtered" class="token-list-scrollbar">
+            <div class="token-list">
+              <div v-for="token in sortedNonWhitelistAccountAssets" @click="selectToken(token)" :key="token.address" class="token-item">
+                <s-col>
+                  <s-row flex justify="start" align="middle">
+                    <token-logo :token="token" />
+                    <div class="token-item__info s-flex">
+                      <div class="token-item__symbol">{{ token.symbol }}</div>
+                      <token-address :name="token.name" :symbol="token.symbol" :address="token.address" class="token-item__details" />
+                    </div>
+                  </s-row>
+                </s-col>
+                <div v-if="connected" class="token-item__balance-container">
+                  <formatted-amount-with-fiat-value
+                    v-if="formatBalance(token) !== formattedZeroSymbol"
+                    value-class="token-item__balance"
+                    :value="formatBalance(token)"
+                    :font-size-rate="FontSizeRate.MEDIUM"
+                    :has-fiat-value="shouldFiatBeShown(token)"
+                    :fiat-value="getFiatBalance(token)"
+                    :fiat-font-size-rate="FontSizeRate.MEDIUM"
+                    :fiat-font-weight-rate="FontWeightRate.MEDIUM"
+                  />
+                  <span v-else class="token-item__balance">{{ formattedZeroSymbol }}</span>
+                </div>
+                <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
+                  <s-icon name="basic-trash-24" />
+                </div>
               </div>
             </div>
-          </div>
+          </s-scrollbar>
         </template>
       </s-tab>
     </s-tabs>
