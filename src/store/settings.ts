@@ -28,7 +28,8 @@ const types = flow(
     'SET_NETWORK_CHAIN_GENESIS_HASH',
     'SET_SELECT_NODE_DIALOG_VISIBILIY',
     'SET_LANGUAGE',
-    'SET_API_KEYS'
+    'SET_API_KEYS',
+    'SET_FEATURE_FLAGS'
   ]),
   map(x => [x, x]),
   fromPairs
@@ -39,6 +40,7 @@ const types = flow(
 function initialState () {
   return {
     apiKeys: {},
+    featureFlags: {},
     slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
     marketAlgorithm: storage.get('marketAlgorithm') || DefaultMarketAlgorithm,
     transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
@@ -83,6 +85,9 @@ const getters = {
   },
   language (state) {
     return state.language
+  },
+  moonpayEnabled (state) {
+    return !!state.apiKeys.moonpay && !!state.featureFlags.moonpay
   }
 }
 
@@ -139,6 +144,9 @@ const mutations = {
   },
   [types.SET_API_KEYS] (state, keys = {}) {
     state.apiKeys = { ...state.apiKeys, ...keys }
+  },
+  [types.SET_FEATURE_FLAGS] (state, featureFlags = {}) {
+    state.featureFlags = { ...state.featureFlags, ...featureFlags }
   }
 }
 
@@ -332,6 +340,9 @@ const actions = {
   },
   setApiKeys ({ commit }, keys) {
     commit(types.SET_API_KEYS, keys)
+  },
+  setFeatureFlags ({ commit }, featureFlags) {
+    commit(types.SET_FEATURE_FLAGS, featureFlags)
   }
 }
 

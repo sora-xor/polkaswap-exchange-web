@@ -7,7 +7,7 @@
         </s-button>
       </div>
       <div class="header-container">
-        <div v-if="apiKeys.moonpay" class="app-controls app-controls--moonpay s-flex">
+        <div v-if="moonpayEnabled" class="app-controls app-controls--moonpay s-flex">
           <s-button type="tertiary" size="medium" icon="various-atom-24" class="moonpay-button moonpay-button--buy" @click="openMoonpayDialog">
             <span class="moonpay-button-text">{{ t('moonpay.buttons.buy') }}</span>
           </s-button>
@@ -126,9 +126,12 @@
     <help-dialog :visible.sync="showHelpDialog" />
     <select-node-dialog :visible.sync="showSelectNodeDialog" />
     <select-language-dialog :visible.sync="showSelectLanguageDialog" />
-    <moonpay :visible.sync="showMoonpayDialog" />
-    <moonpay-notification :visible.sync="showMoonpayNotification" />
-    <moonpay-confirmation :visible.sync="showMoonpayConfirmation" @confirm="handleMoonpayBridgeConfirm" />
+
+    <template v-if="moonpayEnabled">
+      <moonpay :visible.sync="showMoonpayDialog" />
+      <moonpay-notification :visible.sync="showMoonpayNotification" />
+      <moonpay-confirmation :visible.sync="showMoonpayConfirmation" @confirm="handleMoonpayBridgeConfirm" />
+    </template>
   </s-design-system-provider>
 </template>
 
@@ -193,7 +196,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
 
   switchTheme: AsyncVoidFn = switchTheme
 
-  @State(state => state.settings.apiKeys) apiKeys!: any
+  @State(state => state.settings.featureFlags) featureFlags!: any
   @State(state => state.settings.faucetUrl) faucetUrl!: string
   @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
   @State(state => state.moonpay.dialogVisibility) moonpayDialogVisibility!: boolean
@@ -209,6 +212,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
   @Getter currentRoute!: WALLET_CONSTS.RouteNames
   @Getter chainAndNetworkText!: string
   @Getter language!: Language
+  @Getter moonpayEnabled!: boolean
 
   // Wallet
   @Action navigate!: (options: { name: string; params?: object }) => Promise<void>
@@ -225,6 +229,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
   @Action setFaucetUrl!: (url: string) => Promise<void>
   @Action setLanguage!: (lang: Language) => Promise<void>
   @Action setApiKeys!: (options: any) => Promise<void>
+  @Action setFeatureFlags!: (options: any) => Promise<void>
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>
   @Action('setDialogVisibility', { namespace: 'moonpay' }) setMoonpayDialogVisibility!: (flag: boolean) => Promise<void>
@@ -261,11 +266,12 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
         throw new Error('NETWORK_TYPE is not set')
       }
 
+      await this.setApiKeys(data?.API_KEYS)
+      await this.setFeatureFlags(data?.FEATURE_FLAGS)
       await this.setSoraNetwork(data.NETWORK_TYPE)
       await this.setDefaultNodes(data?.DEFAULT_NETWORKS)
       await this.setSubNetworks(data.SUB_NETWORKS)
       await this.setSmartContracts(data.SUB_NETWORKS)
-      await this.setApiKeys(data?.API_KEYS)
 
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL)
