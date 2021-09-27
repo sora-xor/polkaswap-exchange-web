@@ -581,7 +581,7 @@ export default {
     },
     buttons: {
       buy: 'Buy Tokens',
-      history: 'Tx History',
+      history: 'Purchase History',
       transfer: 'Start bridge',
       view: 'View bridge transaction'
     },

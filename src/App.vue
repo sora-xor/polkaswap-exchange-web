@@ -8,10 +8,10 @@
       </div>
       <div class="header-container">
         <div v-if="apiKeys.moonpay" class="app-controls app-controls--moonpay s-flex">
-          <s-button type="tertiary" size="medium" icon="various-atom-24" @click="openMoonpayDialog">
-            {{ t('moonpay.buttons.buy') }}
+          <s-button type="tertiary" size="medium" icon="various-atom-24" class="moonpay-button moonpay-button--buy" @click="openMoonpayDialog">
+            <span class="moonpay-button-text">{{ t('moonpay.buttons.buy') }}</span>
           </s-button>
-          <moonpay-history-button v-if="isLoggedIn" />
+          <moonpay-history-button v-if="isLoggedIn" class="moonpay-button moonpay-button--history" />
         </div>
         <div class="app-controls s-flex">
           <s-button type="action" class="theme-control s-pressed" @click="switchTheme">
@@ -491,6 +491,32 @@ html {
   }
 }
 
+.moonpay-button {
+  &--buy {
+    max-width: 114px;
+  }
+
+  &--history {
+    max-width: 134px;
+  }
+
+  &-text {
+    display: none;
+    white-space: normal;
+    text-align: left;
+    letter-spacing: var(--s-letter-spacing-small);
+    padding-left: 6px;
+
+    @include large-mobile {
+      display: inline-block;
+    }
+  }
+
+  &:not(.s-action).s-i-position-left > span > i[class^=s-icon-] {
+    margin-right: 0;
+  }
+}
+
 .menu.el-menu {
   .el-menu-item-group__title {
     display: none;
@@ -828,12 +854,12 @@ $account-control-name-max-width: 200px;
 }
 
 .app-controls {
-  &:not(:last-child) {
-    margin-right: $inner-spacing-mini;
+  &:first-child {
+    margin-left: auto;
   }
 
-  &:last-child {
-    margin-left: auto;
+  &:not(:last-child) {
+    margin-right: $inner-spacing-mini;
   }
 
   & > *:not(:last-child) {
@@ -843,6 +869,17 @@ $account-control-name-max-width: 200px;
   .el-button {
     + .el-button {
       margin-left: 0;
+    }
+  }
+
+  @include desktop {
+    margin-left: auto;
+
+    &--moonpay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
   }
 }
@@ -904,15 +941,6 @@ $account-control-name-max-width: 200px;
   &__image {
     width: $sora-logo-width;
     height: $sora-logo-height;
-  }
-}
-
-@include large-desktop {
-  .app-controls--moonpay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
   }
 }
 

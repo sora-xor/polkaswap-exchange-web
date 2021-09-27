@@ -6,7 +6,7 @@
     :icon="icon"
     @click="handleClick"
   >
-    {{ text }}
+    <span class="moonpay-button-text">{{ text }}</span>
   </s-button>
 </template>
 
