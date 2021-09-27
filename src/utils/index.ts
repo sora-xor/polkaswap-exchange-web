@@ -198,7 +198,7 @@ export const preloadFontFace = async (name: string): Promise<void> => {
   }
 }
 
-export const getCssVariableValue = (name: string): any => {
+export const getCssVariableValue = (name: string): string => {
   return getComputedStyle(document.documentElement as any).getPropertyValue(name).trim()
 }
 

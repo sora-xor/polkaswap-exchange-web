@@ -40,7 +40,7 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
   widgetUrl = ''
   transactionsPolling!: Function
 
-  @Getter account
+  @Getter account!: any
   @Getter isLoggedIn!: boolean
   @Getter libraryTheme!: Theme
   @Getter('lastCompletedTransaction', { namespace }) lastCompletedTransaction!: any
@@ -109,6 +109,7 @@ export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletCon
 
     const url = this.createMoonpayWidgetUrl()
 
+    // to force rerender iframe between vdom updates
     setTimeout(() => {
       this.widgetUrl = url
     })

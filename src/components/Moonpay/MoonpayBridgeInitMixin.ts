@@ -23,7 +23,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, L
 
   @Action('setAmount', { namespace: 'bridge' }) setAmount!: (value: string) => Promise<void>
   @Action('getEvmNetworkFee', { namespace: 'bridge' }) getEvmNetworkFee!: AsyncVoidFn
-  @Action('setAssetAddress', { namespace: 'bridge' }) setAssetAddress!: (value: string) => Promise<void>
+  @Action('setAssetAddress', { namespace: 'bridge' }) setAssetAddress!: (address?: string) => Promise<void>
   @Action('setSoraToEvm', { namespace: 'bridge' }) setSoraToEvm!: (value: boolean) => Promise<void>
   @Action('setTransactionConfirm', { namespace: 'bridge' }) setTransactionConfirm!: (value: boolean) => Promise<void>
   @Action('generateHistoryItem', { namespace: 'bridge' }) generateHistoryItem!: (history: any) => Promise<BridgeHistory>

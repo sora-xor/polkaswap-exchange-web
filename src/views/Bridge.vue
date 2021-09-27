@@ -235,8 +235,8 @@ export default class Bridge extends Mixins(
   TranslationMixin,
   NetworkFormatterMixin
 ) {
-  @Action('setSoraToEvm', { namespace }) setSoraToEvm
-  @Action('setAssetAddress', { namespace }) setAssetAddress
+  @Action('setSoraToEvm', { namespace }) setSoraToEvm!: (value: boolean) => Promise<void>
+  @Action('setAssetAddress', { namespace }) setAssetAddress!: (value: string) => Promise<void>
   @Action('setAmount', { namespace }) setAmount
   @Action('resetBridgeForm', { namespace }) resetBridgeForm
   @Action('resetBalanceSubscription', { namespace }) resetBalanceSubscription!: AsyncVoidFn
