@@ -59,9 +59,6 @@ function initialState () {
 const state = initialState()
 
 const getters = {
-  chainAndNetworkText (state, getters, rootState, rootGetters) {
-    return state.node.chain || rootGetters.soraNetwork
-  },
   defaultNodesHashTable (state) {
     return state.defaultNodes.reduce((result, node) => ({ ...result, [node.address]: node }), {})
   },

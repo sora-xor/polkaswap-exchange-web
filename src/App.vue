@@ -196,7 +196,6 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
 
   switchTheme: AsyncVoidFn = switchTheme
 
-  @State(state => state.settings.featureFlags) featureFlags!: any
   @State(state => state.settings.faucetUrl) faucetUrl!: string
   @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
   @State(state => state.moonpay.dialogVisibility) moonpayDialogVisibility!: boolean
@@ -210,7 +209,6 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
   @Getter isLoggedIn!: boolean
   @Getter account!: any
   @Getter currentRoute!: WALLET_CONSTS.RouteNames
-  @Getter chainAndNetworkText!: string
   @Getter language!: Language
   @Getter moonpayEnabled!: boolean
 
