@@ -23,7 +23,7 @@
     "errorText": "Błąd",
     "insufficientBalanceText": "Niewystarczające saldo {tokenSymbol}",
     "unknownErrorText": "BŁĄD Coś poszło nie tak...",
-    "transactionSubmittedText": "Złożono transakcję",
+    "transactionSubmittedText": "Transakcja została złożona.",
     "operations": {
         "Swap": "Zamień",
         "Transfer": "Przelewy",
@@ -101,8 +101,7 @@
     "account": {
         "successCopy": "Adres portfela został skopiowany do schowka.",
         "copy": "Kopiuj adres",
-        "switch": "Przełącz konto",
-        "logout": "Wyloguj"
+        "switch": "Przełącz konto"
     },
     "history": {
         "clearHistory": "Wyczyść historię",
@@ -165,7 +164,7 @@
         "enterSupply": "Podaj podaż tokenów",
         "confirm": "@:confirmText",
         "success": {
-            "title": "Złożono transakcję",
+            "title": "Transakcja została złożona.",
             "desc": "Utwórz token {symbol}"
         },
         "tooltipValue": "@:networkFeeTooltipText",
@@ -207,15 +206,17 @@
         "total": "Łącznie",
         "from": "Z",
         "to": "Na",
-        "viewInPolkascan": "Pokaż na Polkascanie",
         "successCopy": "{value} skopiowana do schowka.",
         "copy": "Kopiuj {value}",
         "history": {
             "created": "Transakcja na kwotę {amount} {symbol} została utworzona.",
-            "submitted": "Transakcja złożona z opłatą w wysokości {fee} {symbol}.",
+            "submitted": "Transakcja została złożona z opłatą w wysokości {fee} {symbol}.",
             "confirmed": "Transakcja potwierdzona"
         },
-        "viewInSorascan": "Pokaż na SORAScanie",
+        "viewIn": {
+            "sorascan": "Pokaż na SORAScanie",
+            "subscan": "Pokaż w Subscanie"
+        },
         "txId": "Identyfikator transakcji"
     },
     "appName": "Polkaswap",
@@ -351,9 +352,10 @@
     },
     "metamask": "MetaMask",
     "sora": {
-        "Devnet": "@:soraText Devnet",
-        "Testnet": "@:soraText Testnet",
-        "Mainnet": "@:soraText Mainnet"
+        "Dev": "@:soraText Devnet",
+        "Test": "@:soraText Testnet",
+        "Prod": "@:soraText Mainnet",
+        "Stage": "@:soraText Testnet"
     },
     "evm": {
         "main": "Ethereum Mainnet",
@@ -411,7 +413,7 @@
         "balance": "Saldo",
         "insufficientBalance": "@:insufficientBalanceText",
         "price": "Cena",
-        "transactionSubmitted": "Złożono transakcję",
+        "transactionSubmitted": "Transakcja została złożona.",
         "transactionMessage": "{firstToken} i {secondToken}",
         "confirm": "Potwierdź",
         "ok": "OK"
@@ -449,7 +451,8 @@
         "pairTokens": "Tokeny puli {pair}",
         "poolShare": "Twój udział w puli",
         "unknownAsset": "Nieznana waluta",
-        "description": "Po dodaniu płynności otrzymasz tokeny puli reprezentujące Twoją pozycję. Tokeny te automatycznie zarabiają na opłatach proporcjonalne do Twojego udziału w puli i mogą zostać wypłacone w dowolnym momencie."
+        "description": "Po dodaniu płynności otrzymasz tokeny puli reprezentujące Twoją pozycję. Tokeny te automatycznie zarabiają na opłatach proporcjonalne do Twojego udziału w puli i mogą zostać wypłacone w dowolnym momencie.",
+        "strategicBonusApy": "APY Premii Strategicznej"
     },
     "bridge": {
         "title": "Most HASHI",
@@ -466,7 +469,7 @@
         "tooltipValue": "@:comingSoonText",
         "total": "Łącznie",
         "viewHistory": "Pokaż historię transakcji",
-        "transactionSubmitted": "Transakcja złożona",
+        "transactionSubmitted": "Transakcja została złożona.",
         "transactionMessage": "{assetA} do {assetB}",
         "notRegisteredAsset": "Waluta {assetSymbol} nie jest zarejestrowana.",
         "selectNetwork": "Wybierz sieć",
@@ -515,7 +518,7 @@
             "failed": "Transakcje {step} nie powiodły się. @:(retryText).",
             "confirm": "Potwierdź drugą z 2 transakcji...",
             "complete": "Ukończono",
-            "convertionComplete": "Konwersja zakończona"
+            "convertionComplete": "Konwersja ukończona"
         },
         "statuses": {
             "waiting": "Oczekiwanie",
@@ -528,7 +531,7 @@
         },
         "wait30Block": "Proszę poczekać, aż 30 bloków zostanie potwierdzonych.",
         "viewInEtherscan": "Pokaż na Etherscanie",
-        "networkTitle": "Transakcja {network}",
+        "networkTitle": "Transakcji {network}",
         "transactionHash": "Skrót transakcji",
         "networkInfo": {
             "status": "Status",
@@ -547,7 +550,6 @@
         "newTransaction": "Utwórz nową transakcję",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "viewInSorascan": "Pokaż na SORAScanie",
         "changeAccount": "@:changeAccountText w @:metamask",
         "expectedAddress": "Oczekiwany adres w @:metamask",
         "title": "Transakcja mostowa",
@@ -667,7 +669,7 @@
         }
     },
     "resultDialog": {
-        "title": "Złożono transakcję",
+        "title": "Transakcja została złożona.",
         "ok": "OK"
     },
     "rewards": {
@@ -688,13 +690,13 @@
         },
         "signing": {
             "extension": "Rozszerzenie przeglądarki polkadot{.js}",
-            "accounts": "Twoje konta to odpowiednio @:soraText i @:ethereumText"
+            "accounts": "Twoich kont, to odpowiednio @:soraText i @:(ethereumText)."
         },
         "hint": {
             "connectExternalAccount": "Połącz z kontem @:ethereumText, aby sprawdzić dostępne wynagrodzenie PSWAP i VAL.",
             "connectAccounts": "Aby odebrać swoje wynagrodzenie PSWAP i VAL, musisz połączyć się zarówno z kontem @:soraText, jak i @:ethereumText.",
             "connectAnotherAccount": "Połącz z innym kontem @:ethereumText, aby sprawdzić dostępne wynagrodzenie PSWAP i VAL.",
-            "howToClaimRewards": "Aby odebrać swoje wynagrodzenie {symbols}, musisz podpisać {count} {transactions} w {destination}. Wynagrodzenie zostanie wypłacone na Twoje konto @:(soraText)."
+            "howToClaimRewards": "Aby odebrać swoje wynagrodzenie {symbols}, musisz podpisać {count} {transactions} dotyczące {destination}. Wynagrodzenie zostanie wypłacone na Twoje konto @:(soraText)."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
@@ -729,7 +731,7 @@
         }
     },
     "provider": {
-        "default": "Dostawca @:ethereumText",
+        "default": "Dostawca usług @:ethereumText",
         "metamask": "@:metamask",
         "messages": {
             "checkExtension": "Rozszerzenie {name} jest zajęte, sprawdź je.",
@@ -759,7 +761,7 @@
         "notifications": {
             "success": {
                 "title": "Zakupione tokeny",
-                "text": "Zakup tokena został zakończony. Transakcja pomostowa HASHI rozpocznie się automatycznie, gdy tylko tokeny zostaną otrzymane na połączonym koncie Ethereum. Bezpiecznie jest zamknąć to okno i kontynuować korzystanie z Polkaswap. Gdy będzie gotowa, pojawi się powiadomienie o transakcji pomostowej."
+                "text": "Zakup tokena został ukończony. Gdy tylko tokeny pojawią się na połączonym koncie Ethereum, transakcja przez most HASHI rozpocznie się automatycznie. Bezpiecznie jest zamknąć to okno i kontynuować korzystanie z Polkaswap. Gdy transakcja mostowa zostanie przygotowana, pojawi się o niej powiadomienie."
             },
             "supportError": {
                 "title": "Token nie jest obsługiwany",

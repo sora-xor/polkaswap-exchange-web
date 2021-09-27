@@ -49,7 +49,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { FPNumber } from '@sora-substrate/util'
-import { NumberFormatterMixin } from '@soramitsu/soraneo-wallet-web'
+import { mixins } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { lazyComponent } from '@/router'
@@ -61,7 +61,7 @@ import { Components } from '@/consts'
     SettingsTabs: lazyComponent(Components.SettingsTabs)
   }
 })
-export default class SlippageTolerance extends Mixins(NumberFormatterMixin, TranslationMixin) {
+export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixin, TranslationMixin) {
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
   readonly SlippageToleranceTabs: Array<object> = [
     '0.1',

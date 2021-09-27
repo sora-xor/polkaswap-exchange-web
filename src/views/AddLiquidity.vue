@@ -105,6 +105,7 @@
       <p class="info-line-container__title">{{ t('createPair.pricePool') }}</p>
       <info-line :label="t('addLiquidity.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="formattedPrice" />
       <info-line :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formattedPriceReversed" />
+      <info-line v-if="strategicBonusApy" :label="t('pool.strategicBonusApy')" :value="strategicBonusApy" />
       <info-line
        :label="t('createPair.networkFee')"
        :label-tooltip="t('networkFeeTooltipText')"
@@ -155,7 +156,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { FPNumber, AccountLiquidity, CodecString, KnownAssets, KnownSymbols } from '@sora-substrate/util'
-import { FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { components } from '@soramitsu/soraneo-wallet-web'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -176,8 +177,8 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
-    FormattedAmount,
-    InfoLine
+    FormattedAmount: components.FormattedAmount,
+    InfoLine: components.InfoLine
   }
 })
 
@@ -186,9 +187,9 @@ export default class AddLiquidity extends Mixins(LoadingMixin, TokenPairMixin) {
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity
 
-  @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity
-  @Action('addLiquidity', { namespace }) addLiquidity
-  @Action('resetFocusedField', { namespace }) resetFocusedField
+  @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity!: (params: any) => Promise<void>
+  @Action('addLiquidity', { namespace }) addLiquidity!: AsyncVoidFn
+  @Action('resetFocusedField', { namespace }) resetFocusedField!: AsyncVoidFn
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG
 
@@ -267,6 +268,15 @@ export default class AddLiquidity extends Mixins(LoadingMixin, TokenPairMixin) {
       return prevPosition.add(new FPNumber(tokenValue))
     }
     return prevPosition
+  }
+
+  get strategicBonusApy (): Nullable<string> {
+    // It won't be in template when not defined
+    const strategicBonusApy = this.fiatPriceAndApyObject[this.secondToken.address]?.strategicBonusApy
+    if (!strategicBonusApy) {
+      return null
+    }
+    return `${this.getFPNumberFromCodec(strategicBonusApy).mul(this.Hundred).toLocaleString()}%`
   }
 
   updatePrices (): void {

@@ -155,7 +155,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
 import { FPNumber, KnownAssets, KnownSymbols } from '@sora-substrate/util'
-import { FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { components } from '@soramitsu/soraneo-wallet-web'
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
 import { lazyComponent } from '@/router'
@@ -173,8 +173,8 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
-    FormattedAmount,
-    InfoLine
+    FormattedAmount: components.FormattedAmount,
+    InfoLine: components.InfoLine
   }
 })
 

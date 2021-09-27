@@ -104,7 +104,7 @@ const getters = {
     return state.totalSupply || ZeroStringValue
   },
   shareOfPool (state: AddLiquidityState, getters) {
-    const full = new FPNumber(100)
+    const full = FPNumber.HUNDRED
     const minted = FPNumber.fromCodecValue(getters.minted)
     const total = FPNumber.fromCodecValue(getters.totalSupply)
     const existed = FPNumber.fromCodecValue(getters.liquidityInfo?.balance ?? 0)
@@ -154,7 +154,7 @@ const mutations = {
     state.minted = ZeroStringValue
     state.totalSupply = ZeroStringValue
   },
-  [types.SET_FOCUSED_FIELD] (state: AddLiquidityState, field: string) {
+  [types.SET_FOCUSED_FIELD] (state: AddLiquidityState, field: Nullable<string>) {
     state.focusedField = field
   },
   [types.CHECK_LIQUIDITY_REQUEST] (state) {},

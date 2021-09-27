@@ -31,9 +31,9 @@
             :value="getPoolShare(liquidityItem.poolShare)"
           />
           <info-line
-            v-if="fiatPriceAndApyObject[liquidityItem.secondAddress]"
-            label="APY"
-            :value="getApy(liquidityItem.secondAddress)"
+            v-if="hasStrategicBonusApy(liquidityItem.secondAddress)"
+            :label="t('pool.strategicBonusApy')"
+            :value="getStrategicBonusApy(liquidityItem.secondAddress)"
           />
           <div class="pool-info--buttons">
             <s-button type="secondary" class="s-typography-button--medium" @click="handleAddLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
@@ -64,7 +64,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { AccountLiquidity, Asset } from '@sora-substrate/util'
-import { FormattedAmountMixin, FormattedAmount, FontSizeRate, FontWeightRate, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -78,17 +78,16 @@ const namespace = 'pool'
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    FormattedAmount,
-    InfoLine
+    FormattedAmount: components.FormattedAmount,
+    InfoLine: components.InfoLine
   }
 })
-export default class Pool extends Mixins(LoadingMixin, FormattedAmountMixin, TranslationMixin) {
-  readonly FontSizeRate = FontSizeRate
-  readonly FontWeightRate = FontWeightRate
+export default class Pool extends Mixins(mixins.FormattedAmountMixin, LoadingMixin, TranslationMixin) {
+  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate
+  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate
 
   // Wallet
   @Getter isLoggedIn!: boolean
-  @Getter fiatPriceAndApyObject!: any
 
   @Getter('assets', { namespace: 'assets' }) assets!: Array<Asset>
   @Getter('accountLiquidity', { namespace }) accountLiquidity!: Array<AccountLiquidity>
@@ -141,9 +140,16 @@ export default class Pool extends Mixins(LoadingMixin, FormattedAmountMixin, Tra
     return `${this.formatStringValue(poolShare)}%`
   }
 
-  getApy (targetAssetAddress: string): string {
-    const apy = this.getFPNumberFromCodec(this.fiatPriceAndApyObject[targetAssetAddress].apy)
-    return `${apy.mul(this.getFPNumber(100)).toLocaleString()}%`
+  hasStrategicBonusApy (targetAssetAddress: string): boolean {
+    return !!this.fiatPriceAndApyObject[targetAssetAddress]?.strategicBonusApy
+  }
+
+  getStrategicBonusApy (targetAssetAddress: string): string {
+    const apy = this.fiatPriceAndApyObject[targetAssetAddress]?.strategicBonusApy
+    if (!apy) {
+      return ''
+    }
+    return `${this.getFPNumberFromCodec(apy).mul(this.Hundred).toLocaleString()}%`
   }
 }
 </script>

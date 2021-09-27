@@ -41,6 +41,7 @@
       :asset-symbol="secondToken.symbol"
     />
     <info-line :value="`1 ${secondToken.symbol} = ${formattedPrice}`" :asset-symbol="firstToken.symbol" />
+    <info-line v-if="strategicBonusApy" :label="t('pool.strategicBonusApy')" :value="strategicBonusApy" />
     <template #footer>
       <s-button
         type="primary"
@@ -56,7 +57,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { components, mixins } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -70,10 +71,10 @@ import { Components } from '@/consts'
     DialogBase,
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    InfoLine
+    InfoLine: components.InfoLine
   }
 })
-export default class ConfirmTokenPairDialog extends Mixins(FormattedAmountMixin, TranslationMixin, DialogMixin, LoadingMixin) {
+export default class ConfirmTokenPairDialog extends Mixins(mixins.FormattedAmountMixin, TranslationMixin, DialogMixin, LoadingMixin) {
   @Prop({ type: String, default: '100' }) readonly shareOfPool!: string
   @Prop({ type: Object }) readonly firstToken!: any
   @Prop({ type: Object }) readonly secondToken!: any
@@ -110,6 +111,15 @@ export default class ConfirmTokenPairDialog extends Mixins(FormattedAmountMixin,
 
   get formattedSlippageTolerance (): string {
     return this.formatStringValue(this.slippageTolerance)
+  }
+
+  get strategicBonusApy (): Nullable<string> {
+    // It won't be in template when not defined
+    const strategicBonusApy = this.fiatPriceAndApyObject[this.secondToken.address]?.strategicBonusApy
+    if (!strategicBonusApy) {
+      return null
+    }
+    return `${this.getFPNumberFromCodec(strategicBonusApy).mul(this.Hundred).toLocaleString()}%`
   }
 
   handleConfirm (): void {

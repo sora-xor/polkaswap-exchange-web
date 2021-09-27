@@ -101,8 +101,7 @@
     "account": {
         "successCopy": "Wallet address is copied to the clipboard",
         "copy": "Copy address",
-        "switch": "Switch account",
-        "logout": "Logout"
+        "switch": "Switch account"
     },
     "history": {
         "clearHistory": "Clear history",
@@ -207,7 +206,6 @@
         "total": "Total",
         "from": "From",
         "to": "To",
-        "viewInPolkascan": "View in Polkascan",
         "successCopy": "{value} is copied to the clipboard",
         "copy": "Copy {value}",
         "history": {
@@ -215,7 +213,10 @@
             "submitted": "Transaction submitted with fee of {fee} {symbol}",
             "confirmed": "Transaction confirmed"
         },
-        "viewInSorascan": "View in SORAScan",
+        "viewIn": {
+            "sorascan": "View in SORAScan",
+            "subscan": "View in Subscan"
+        },
         "txId": "Transaction Id"
     },
     "appName": "Polkaswap",
@@ -351,9 +352,10 @@
     },
     "metamask": "MetaMask",
     "sora": {
-        "Devnet": "@:soraText Devnet",
-        "Testnet": "@:soraText Testnet",
-        "Mainnet": "@:soraText Mainnet"
+        "Dev": "@:soraText Devnet",
+        "Test": "@:soraText Testnet",
+        "Prod": "@:soraText Mainnet",
+        "Stage": "@:soraText Testnet"
     },
     "evm": {
         "main": "Ethereum Mainnet",
@@ -449,7 +451,8 @@
         "pairTokens": "{pair} Pool Tokens",
         "poolShare": "Your pool share",
         "unknownAsset": "Unknown asset",
-        "description": "When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time."
+        "description": "When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.",
+        "strategicBonusApy": "Strategic Bonus APY"
     },
     "bridge": {
         "title": "HASHI Bridge",
@@ -547,7 +550,6 @@
         "newTransaction": "Create new transaction",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "viewInSorascan": "View in SORAScan",
         "changeAccount": "@:changeAccountText in @:metamask",
         "expectedAddress": "Expected address in @:metamask",
         "title": "Bridge Transaction",

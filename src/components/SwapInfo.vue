@@ -47,8 +47,8 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LPRewardsInfo, Operation } from '@sora-substrate/util'
-import { FormattedAmount, FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LPRewardsInfo, Operation, NetworkFeesObject } from '@sora-substrate/util'
+import { components, mixins } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import { lazyComponent } from '@/router'
@@ -60,11 +60,11 @@ const namespace = 'swap'
 @Component({
   components: {
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
-    FormattedAmount,
-    InfoLine
+    FormattedAmount: components.FormattedAmount,
+    InfoLine: components.InfoLine
   }
 })
-export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMixin) {
+export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
   @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset
   @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString
@@ -76,7 +76,7 @@ export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMi
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
   @Getter isLoggedIn!: boolean
-  @Getter networkFees!: any
+  @Getter networkFees!: NetworkFeesObject
 
   get liquidityProviderFeeTooltipText (): string {
     return this.t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: this.liquidityProviderFeeValue })

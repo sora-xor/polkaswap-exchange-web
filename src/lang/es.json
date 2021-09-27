@@ -101,8 +101,7 @@
     "account": {
         "successCopy": "La dirección de la cartera se ha copiado en el portapapeles",
         "copy": "Copiar dirección",
-        "switch": "Cambiar de cuenta",
-        "logout": "Cerrar sesión"
+        "switch": "Cambiar de cuenta"
     },
     "history": {
         "clearHistory": "Borrar el historial",
@@ -207,7 +206,6 @@
         "total": "Total",
         "from": "Desde",
         "to": "A",
-        "viewInPolkascan": "Ver en Polkascan",
         "successCopy": "{value} es copiado en el portapapeles",
         "copy": "Copiar {value}",
         "history": {
@@ -215,7 +213,10 @@
             "submitted": "Transacción enviada con una comisión de {fee} {symbol}",
             "confirmed": "Transacción confirmada"
         },
-        "viewInSorascan": "Ver en SORAscan",
+        "viewIn": {
+            "sorascan": "Ver en SORAscan",
+            "subscan": "Ver en Subscan"
+        },
         "txId": "ID de transacción"
     },
     "appName": "Polkaswap",
@@ -229,13 +230,13 @@
     "connectWalletTextTooltip": "Conectar a la Red @:soraText con polkadot{.js}",
     "selectNodeText": "Seleccione nodo",
     "bridgeText": "Puente",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Descargo de responsabilidad<\/span>: este sitio web es mantenido por la comunidad @:(soraText). Antes de continuar utilizando este sitio web, por favor revise las @:polkaswapFaqLink y la documentación, que incluye una explicación detallada sobre cómo funciona Polkaswap, así como el @:footerMenu.memorandum y el @:(footerMenu.privacy). Estos documentos son cruciales para una experiencia de usuario segura y positiva. Al utilizar Polkaswap, reconoce haber leído y comprendido estos documentos. También reconoce lo siguiente: 1) su exclusiva responsabilidad por el cumplimiento de todas las leyes que puedan aplicarse a su uso particular de Polkaswap en su jurisdicción legal; 2) su comprensión de que la versión actual de Polkaswap es una versión alfa: no se ha probado completamente y es posible que algunas funciones no funcionen según lo diseñado; y 3) su comprensión y aceptación voluntaria de los riesgos involucrados en el uso de Polkaswap, incluido, pero no limitado a, el riesgo de perder tokens. Una vez más, por favor ¡no continúe sin leer las preguntas frecuentes (FAQ), <span>@:footerMenu.memorandum<\/span> <a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\">@:footerMenu.memorandum<\/a> y <span>@:footerMenu.privacy<\/span> <a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\">@:footerMenu.privacy<\/a>!",
+    "disclaimer": "<span class=\"app-disclaimer__title\">Descargo de responsabilidad<\/span>: Este sitio web es mantenido por la comunidad @:(soraText). Antes de continuar utilizando este sitio web, por favor revise el @:polkaswapFaqLink y la documentación, que incluye una explicación detallada sobre el funcionamiento de Polkaswap, así como el @:memorandumLink, y el @:(privacyLink). Estos documentos son cruciales para una experiencia de usuario segura y positiva. Al utilizar Polkaswap, usted reconoce que ha leído y comprendido estos documentos. También reconoce lo siguiente 1) su única responsabilidad por el cumplimiento de todas las leyes que puedan aplicarse a su uso particular de Polkaswap en su jurisdicción legal; 2) su comprensión de que la versión actual de Polkaswap es una versión alfa: no ha sido completamente probada, y algunas funciones pueden no funcionar como se ha diseñado; y 3) su comprensión y aceptación voluntaria de los riesgos que implica el uso de Polkaswap, incluyendo, pero no limitado a, el riesgo de perder tokens. Una vez más, ¡no continúe sin leer el @:polkaswapFaqLink, el @:memorandumLink y el @:privacyLink!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
     "poweredBy": "Desarrollado por",
     "confirmTransactionText": "Confirmar transacción en {direction}",
     "retryText": "Reintentar",
     "networkFeeText": "Tarifa de red",
-    "networkFeeTooltipText": "La comisión de la red se utiliza para garantizar el crecimiento y el rendimiento estable del sistema @:soraText.",
+    "networkFeeTooltipText": "La comisión de la red se utiliza para garantizar el crecimiento y el rendimiento estable del sistema @:(soraText).",
     "ethNetworkFeeTooltipText": "Por favor, tenga en cuenta que las tarifas de la red Ethereum mostradas en Polkaswap son sólo estimaciones aproximadas, puede ver la cantidad correcta de la tarifa en su cartera Ethereum conectada antes de confirmar la transacción.",
     "marketText": "Mercado",
     "marketAlgorithmText": "Algoritmo de mercado",
@@ -318,7 +319,7 @@
         }
     },
     "selectNodeDialog": {
-        "title": "Selección de nodos de la Red @:soraText ",
+        "title": "Selección de nodos de la Red @:soraText",
         "addNode": "Añadir nodo personalizado",
         "customNode": "Nodo personalizado",
         "howToSetupOwnNode": "Cómo configurar su propio nodo @:soraText",
@@ -351,9 +352,10 @@
     },
     "metamask": "MetaMask",
     "sora": {
-        "Devnet": "@:soraText Red de desarrolladores",
-        "Testnet": "@:soraText Red de prueba",
-        "Mainnet": "@:soraText Red principal"
+        "Dev": "@:soraText Red de desarrolladores",
+        "Test": "@:soraText Red de prueba",
+        "Prod": "@:soraText Red principal",
+        "Stage": "@:soraText Red de prueba"
     },
     "evm": {
         "main": "Red principal de Ethereum",
@@ -445,15 +447,16 @@
         "addLiquidity": "Añadir Liquidez",
         "removeLiquidity": "Remover Liquidez",
         "createPair": "Crear un par",
-        "pooledToken": "{tokenSymbol} mancomunado",
+        "pooledToken": "{tokenSymbol} Mancomunado",
         "pairTokens": "{pair} Tokens del Fondo común",
         "poolShare": "Su Participación en el Fondo común",
         "unknownAsset": "Activo desconocido",
-        "description": "Cuando añades Liquidez, recibes Tokens del Fondo común que representan tu posición. Estos Tokens ganan automáticamente comisiones proporcionales a su participación en el fondo común y pueden ser redimidos en cualquier momento."
+        "description": "Cuando añades Liquidez, recibes Tokens del Fondo común que representan tu posición. Estos Tokens ganan automáticamente comisiones proporcionales a su participación en el fondo común y pueden ser redimidos en cualquier momento.",
+        "strategicBonusApy": "Bonificación estratégica APY"
     },
     "bridge": {
         "title": "Puente HASHI",
-        "info": "Convierte tokens entre las redes @:soraText y @:ethereumText.",
+        "info": "Convierte tokens entre las redes @:soraText y @:(ethereumText).",
         "balance": "Balance",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
@@ -547,13 +550,12 @@
         "newTransaction": "Crear nueva transacción",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "viewInSorascan": "Ver en SORAscan",
         "changeAccount": "@:changeAccountText en @:metamask",
         "expectedAddress": "Dirección esperada en @:metamask",
         "title": "Transacción puente",
         "expectedMetaMaskAddress": "Dirección esperada en @:metamask",
-        "allowToken": "",
-        "approveToken": ""
+        "allowToken": "Permitir que @:appName utilice su {tokenSymbol}",
+        "approveToken": "Tenga en cuenta que sólo es necesario aprobar el token una vez. Si su extensión tiene varias solicitudes de aprobación de tokens, asegúrese de confirmar solo la última y rechazar el resto."
     },
     "months": {
         "0": "Enero",
@@ -682,7 +684,7 @@
             "success": "Reclamado con éxito"
         },
         "transactions": {
-            "confimation": "Confirmar {order} de {total} transacciones ...",
+            "confimation": "Confirmar {order} de {total} transacciones...",
             "success": "En breve recibirás tus recompensas",
             "failed": "{order} de {total} transacciones fallidas. @:retryText"
         },
@@ -692,7 +694,7 @@
         },
         "hint": {
             "connectExternalAccount": "Conecta una cuenta @:ethereumText para comprobar las Recompensas PSWAP y VAL disponibles.",
-            "connectAccounts": "Para reclamar tus Recompensas de PSWAP y VAL debes conectar ambas, tus cuentas de @:soraText y @:ethereumText.",
+            "connectAccounts": "Para reclamar tus Recompensas de PSWAP y VAL debes conectar tus cuentas de @:soraText y @:(ethereumText).",
             "connectAnotherAccount": "Conecta otra cuenta @:ethereumText para comprobar las Recompensas PSWAP y VAL disponibles.",
             "howToClaimRewards": "Para reclamar tus Recompensas de {symbols} necesitas firmar {count} {transactions} en {destination}. Las Recompensas se depositarán en tu cuenta @:(soraText)."
         },
@@ -763,7 +765,7 @@
             },
             "supportError": {
                 "title": "Token no admitido",
-                "text": "Desafortunadamente, el token comprado a través de @:moonpayText aún no es compatible con el puente HASHI en Polkaswap. Normalmente, solo los tokens admitidos deberían estar disponibles para su compra a través de MoonPay en Polkaswap, por lo que algo debe haber salido mal en alguna parte. No dude en informar a la comunidad sobre este caso en el <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> grupo de Telegram Polkaswap <\/a> ."
+                "text": "Desafortunadamente, el token comprado a través de @:moonpayText aún no es compatible con el puente HASHI en Polkaswap. Normalmente, solo los tokens admitidos deberían estar disponibles para su compra a través de MoonPay en Polkaswap, por lo que algo debe haber salido mal en alguna parte. No dude en informar a la comunidad sobre este caso en el <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> grupo de Telegram Polkaswap <\/a>."
             },
             "feeError": {
                 "title": "No hay suficiente ETH para el puente tx",
@@ -793,7 +795,7 @@
             "empty": "Sin datos"
         },
         "confirmations": {
-            "txReady": "Transacción lista para puente"
+            "txReady": "Transacción lista para el puente"
         }
     }
 }
