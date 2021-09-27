@@ -583,7 +583,7 @@ export default {
       buy: 'Buy Tokens',
       history: 'Tx History',
       transfer: 'Start bridge',
-      view: 'View transaction'
+      view: 'View bridge transaction'
     },
     history: {
       title: 'Purchase history',

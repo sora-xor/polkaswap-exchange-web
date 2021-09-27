@@ -78,6 +78,7 @@ import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin'
 import MoonpayBridgeInitMixin from '@/components/Moonpay/MoonpayBridgeInitMixin'
 
 import ethersUtil from '@/utils/ethers-util'
+import { MoonpayTransactionStatus } from '@/components/Moonpay/consts'
 import { getCssVariableValue, toQueryString } from '@/utils'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
@@ -164,8 +165,9 @@ export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationS
     const formatCurrencyName = (id: string) => (currenciesById[id]?.code ?? '').toUpperCase()
     const formatCurrencyAmount = (amount: number) => Number.isFinite(amount) ? String(amount) : amount
     const iconStatus = status => {
-      if (status === 'completed') return 'basic-check-mark-24'
-      if (status === 'failed') return 'basic-clear-X-24'
+      if (status === MoonpayTransactionStatus.Completed) return 'basic-check-mark-24'
+      if (status === MoonpayTransactionStatus.Failed) return 'basic-clear-X-24'
+
       return 'basic-more-horizontal-24'
     }
 
@@ -202,11 +204,11 @@ export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationS
   }
 
   get isCompletedTransaction (): boolean {
-    return this.selectedItem?.status === 'completed'
+    return this.selectedItem?.status === MoonpayTransactionStatus.Completed
   }
 
   get externalAccountIsMoonpayRecipient (): boolean {
-    return this.selectedItem?.walletAddress === this.evmAddress
+    return this.selectedItem?.walletAddress?.toLowerCase?.() === this.evmAddress.toLowerCase()
   }
 
   get actionButtonType (): string {

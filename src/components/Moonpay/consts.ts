@@ -6,3 +6,8 @@ export enum MoonpayNotifications {
   SupportError = 'supportError',
   TransactionError = 'transactionError'
 }
+
+export enum MoonpayTransactionStatus {
+  Completed = 'completed',
+  Failed = 'failed'
+}
