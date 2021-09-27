@@ -7,7 +7,7 @@
         </s-button>
       </div>
       <div class="header-container">
-        <div class="app-controls app-controls--moonpay s-flex">
+        <div v-if="apiKeys.moonpay" class="app-controls app-controls--moonpay s-flex">
           <s-button type="tertiary" size="medium" icon="various-atom-24" @click="openMoonpayDialog">
             {{ t('moonpay.buttons.buy') }}
           </s-button>
@@ -193,6 +193,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
 
   switchTheme: AsyncVoidFn = switchTheme
 
+  @State(state => state.settings.apiKeys) apiKeys!: any
   @State(state => state.settings.faucetUrl) faucetUrl!: string
   @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
   @State(state => state.moonpay.dialogVisibility) moonpayDialogVisibility!: boolean

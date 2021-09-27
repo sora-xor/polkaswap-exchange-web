@@ -13,8 +13,6 @@ import { Action, State, Getter } from 'vuex-class'
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
 
 import DialogMixin from '@/components/mixins/DialogMixin'
-import LoadingMixin from '@/components/mixins/LoadingMixin'
-import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import DialogBase from '@/components/DialogBase.vue'
 
 import MoonpayBridgeInitMixin from './MoonpayBridgeInitMixin'
@@ -36,7 +34,7 @@ const namespace = 'moonpay'
     MoonpayWidget: lazyComponent(Components.MoonpayWidget)
   }
 })
-export default class Moonpay extends Mixins(DialogMixin, LoadingMixin, WalletConnectMixin, MoonpayBridgeInitMixin) {
+export default class Moonpay extends Mixins(DialogMixin, MoonpayBridgeInitMixin) {
   widgetUrl = ''
   transactionsPolling!: Function
 

@@ -48,6 +48,10 @@ export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, L
     this.moonpayApi.setNetwork(this.soraNetwork)
   }
 
+  /**
+   * @param transaction moonpay transaction data
+   * @returns string - bridge history item id
+   */
   async checkTxTransferAvailability (transaction): Promise<string> {
     return await this.withLoading(async () => {
       await this.prepareEvmNetwork()
@@ -62,7 +66,6 @@ export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, L
       const isAccountConnected = await ethersUtil.checkAccountIsConnected(ethTransferData.to)
 
       if (!isAccountConnected) {
-        // TODO: show something, we can not transfer token to sora
         throw createError(`Account for transfer is not connected: ${ethTransferData.to}`, MoonpayNotifications.AccountAddressError)
       }
 
@@ -77,9 +80,8 @@ export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, L
       await this.setTransactionConfirm(true)
       await this.setSoraToEvm(false)
       await this.setAssetAddress(registeredAsset.address)
-      // fetching fee & evm balance
+      // fetching fee
       await this.getEvmNetworkFee()
-      // await this.getEvmBalance()
       // check eth fee
       const hasEthForFee = !hasInsufficientEvmNativeTokenForFee(this.evmBalance, this.evmNetworkFee)
 
@@ -91,7 +93,6 @@ export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, L
       const amount = Math.min(Number(maxAmount), Number(ethTransferData.amount))
 
       if (amount <= 0) {
-        // TODO: show something, we can not transfer token to sora
         throw createError('Insufficient amount', MoonpayNotifications.AmountError)
       }
 

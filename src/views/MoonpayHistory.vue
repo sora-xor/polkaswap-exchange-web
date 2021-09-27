@@ -72,7 +72,6 @@ import dayjs from 'dayjs'
 import { WALLET_CONSTS, components } from '@soramitsu/soraneo-wallet-web'
 import { BridgeHistory } from '@sora-substrate/util'
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
 import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin'
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin'
 import MoonpayBridgeInitMixin from '@/components/Moonpay/MoonpayBridgeInitMixin'
@@ -98,7 +97,7 @@ const DetailsView = 'details'
     MoonpayWidget: lazyComponent(Components.MoonpayWidget)
   }
 })
-export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationSearchMixin, MoonpayBridgeInitMixin, BridgeHistoryMixin) {
+export default class MoonpayHistory extends Mixins(PaginationSearchMixin, MoonpayBridgeInitMixin, BridgeHistoryMixin) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate
 
   @State(state => state[namespace].transactions) transactions!: Array<any>
