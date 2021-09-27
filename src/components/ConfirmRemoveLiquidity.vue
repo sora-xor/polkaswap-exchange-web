@@ -49,7 +49,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+import { Getter, State } from 'vuex-class'
 import { components, mixins } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -69,11 +69,12 @@ const namespace = 'removeLiquidity'
   }
 })
 export default class ConfirmRemoveLiquidity extends Mixins(mixins.NumberFormatterMixin, TranslationMixin, DialogMixin, LoadingMixin) {
+  @State(state => state[namespace].liquidityAmount) liquidityAmount!: string
+  @State(state => state[namespace].firstTokenAmount) firstTokenAmount!: string
+  @State(state => state[namespace].secondTokenAmount) secondTokenAmount!: string
+
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
-  @Getter('liquidityAmount', { namespace }) liquidityAmount!: string
-  @Getter('firstTokenAmount', { namespace }) firstTokenAmount!: string
-  @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: string
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
 
   @Getter('price', { namespace: 'prices' }) price!: string | number

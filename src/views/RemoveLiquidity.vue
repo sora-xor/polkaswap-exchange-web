@@ -18,7 +18,7 @@
       >
         <div slot="top" class="amount">{{ t('removeLiquidity.amount') }}</div>
         <div slot="right"><span class="percent">%</span></div>
-        <s-slider slot="bottom" :value="removePartInput" :showTooltip="false" @change="handleRemovePartChange" />
+        <s-slider slot="bottom" class="slider-container" :value="removePartInput" :showTooltip="false" @change="handleRemovePartChange" />
       </s-float-input>
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
       <s-float-input
@@ -124,7 +124,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
+import { Action, Getter, State } from 'vuex-class'
 import { FPNumber, KnownSymbols, AccountLiquidity, CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util'
 import { components, mixins } from '@soramitsu/soraneo-wallet-web'
 
@@ -154,23 +154,24 @@ export default class RemoveLiquidity extends Mixins(mixins.FormattedAmountMixin,
 
   @Getter networkFees!: NetworkFeesObject
 
-  @Getter('focusedField', { namespace }) focusedField!: Nullable<string>
+  @State(state => state[namespace].liquidityAmount) liquidityAmount!: any
+  @State(state => state[namespace].firstTokenAmount) firstTokenAmount!: any
+  @State(state => state[namespace].secondTokenAmount) secondTokenAmount!: any
+  @State(state => state[namespace].removePart) removePart!: any
+  @State(state => state[namespace].focusedField) focusedField!: string
+
   @Getter('liquidity', { namespace }) liquidity!: AccountLiquidity
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
-  @Getter('removePart', { namespace }) removePart!: any
   @Getter('liquidityBalance', { namespace }) liquidityBalance!: CodecString
-  @Getter('liquidityAmount', { namespace }) liquidityAmount!: any
-  @Getter('firstTokenAmount', { namespace }) firstTokenAmount!: any
   @Getter('firstTokenBalance', { namespace }) firstTokenBalance!: CodecString
-  @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
   @Getter('secondTokenBalance', { namespace }) secondTokenBalance!: CodecString
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
 
-  @Action('getLiquidity', { namespace }) getLiquidity
+  @Action('setLiquidity', { namespace }) setLiquidity
   @Action('setRemovePart', { namespace }) setRemovePart
   @Action('setFirstTokenAmount', { namespace }) setFirstTokenAmount
   @Action('setSecondTokenAmount', { namespace }) setSecondTokenAmount
@@ -181,13 +182,40 @@ export default class RemoveLiquidity extends Mixins(mixins.FormattedAmountMixin,
   @Action('getPrices', { namespace: 'prices' }) getPrices
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: AsyncVoidFn
 
+  @Watch('removePart')
+  private removePartChange (newValue): void {
+    this.handleRemovePartChange(newValue)
+  }
+
+  @Watch('liquidity')
+  private liquidityChange (): void {
+    this.updatePrices()
+
+    switch (this.focusedField) {
+      case 'firstTokenAmount':
+      case 'secondTokenAmount': {
+        const isFirstToken = this.focusedField === 'firstTokenAmount'
+        const maxBalance = isFirstToken ? this.firstTokenBalance : this.secondTokenBalance
+        const amount = isFirstToken ? this.firstTokenAmount : this.secondTokenAmount
+
+        const setValue = isFirstToken ? this.setFirstTokenAmount : this.setSecondTokenAmount
+        const value = String(Math.min(+this.getTokenMaxAmount(maxBalance), +amount))
+
+        return setValue(value)
+      }
+      default: {
+        return this.handleRemovePartChange(this.removePart)
+      }
+    }
+  }
+
   removePartInput = 0
   sliderInput: any
   sliderDragButton: any
 
   async mounted (): Promise<void> {
     await this.withParentLoading(async () => {
-      await this.getLiquidity({
+      await this.setLiquidity({
         firstAddress: this.firstTokenAddress,
         secondAddress: this.secondTokenAddress
       })
@@ -253,11 +281,6 @@ export default class RemoveLiquidity extends Mixins(mixins.FormattedAmountMixin,
     return this.formatCodecNumber(this.networkFee)
   }
 
-  @Watch('removePart')
-  removePartChange (newValue): void {
-    this.handleRemovePartChange(newValue)
-  }
-
   handleRemovePartChange (value): void {
     const newValue = parseFloat(value) || 0
     this.removePartInput = newValue > 100 ? 100 : newValue < 0 ? 0 : newValue
@@ -318,6 +341,7 @@ export default class RemoveLiquidity extends Mixins(mixins.FormattedAmountMixin,
   private addListenerToSliderDragButton (): void {
     this.sliderDragButton = this.$el.querySelector('.slider-container .el-slider__button')
     this.sliderInput = this.$el.querySelector('.s-input--remove-part .el-input__inner')
+
     if (this.sliderDragButton) {
       this.sliderDragButton.addEventListener('mousedown', this.focusSliderInput)
     }

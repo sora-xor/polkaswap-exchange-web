@@ -51,8 +51,8 @@ function initialState (): AddLiquidityState {
     secondTokenValue: '',
     secondTokenBalance: null,
     reserve: null,
-    minted: '',
-    totalSupply: '',
+    minted: ZeroStringValue,
+    totalSupply: ZeroStringValue,
     focusedField: null,
     isAvailable: false
   }
