@@ -38,6 +38,7 @@ const types = flow(
     'SET_SORA_TO_EVM',
     'SET_ASSET_ADDRESS',
     'SET_ASSET_BALANCE',
+    'SET_EVM_WAITING_APPROVE_STATE',
     'SET_AMOUNT',
     'SET_TRANSACTION_CONFIRM',
     'SET_SORA_TRANSACTION_HASH',
@@ -193,7 +194,8 @@ function initialState () {
     transactionStep: 1,
     history: [],
     historyItem: null,
-    restored: true
+    restored: true,
+    waitingForApprove: false
   }
 }
 
@@ -260,6 +262,9 @@ const getters = {
   },
   isTxEvmAccount (state, getters, rootState, rootGetters) {
     return !getters.historyItem?.to || getters.historyItem.to === rootGetters['web3/evmAddress']
+  },
+  waitingForApprove (state) {
+    return state.waitingForApprove
   }
 }
 
@@ -275,6 +280,9 @@ const mutations = {
   },
   [types.SET_AMOUNT] (state, amount: string) {
     state.amount = amount
+  },
+  [types.SET_EVM_WAITING_APPROVE_STATE] (state, flag = false) {
+    state.waitingForApprove = flag
   },
   [types.GET_EVM_NETWORK_FEE_REQUEST] (state) {
   },
@@ -741,6 +749,7 @@ const actions = {
       if (!isNativeEvmToken) {
         const allowance = await dispatch('web3/getAllowanceByEvmAddress', { address: asset.externalAddress }, { root: true })
         if (FPNumber.lte(new FPNumber(allowance), new FPNumber(getters.amount))) {
+          commit(types.SET_EVM_WAITING_APPROVE_STATE, true)
           const tokenInstance = new ethers.Contract(
             asset.externalAddress,
             contract[OtherContractType.ERC20].abi,
@@ -753,8 +762,10 @@ const actions = {
           checkEvmNetwork(rootGetters)
           const tx = await tokenInstance.approve(...methodArgs)
           await tx.wait(2)
+          commit(types.SET_EVM_WAITING_APPROVE_STATE, false)
         }
       }
+
       const soraAccountAddress = rootGetters.account.address
       const accountId = await ethersUtil.accountAddressToHex(soraAccountAddress)
       const contractInstance = new ethers.Contract(
@@ -794,6 +805,7 @@ const actions = {
       return tx.hash
     } catch (error) {
       commit(types.SIGN_EVM_TRANSACTION_EVM_SORA_FAILURE)
+      commit(types.SET_EVM_WAITING_APPROVE_STATE, false)
       console.error(error)
       throw error
     }
