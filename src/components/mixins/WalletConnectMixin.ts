@@ -76,7 +76,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     this.isExternalWalletConnecting = true
     try {
       await this.connectExternalAccount({ provider })
-    } catch (error: any) {
+    } catch (error) {
       const name = this.t(getProviderName(provider))
       const key = this.te(error.message)
         ? error.message
