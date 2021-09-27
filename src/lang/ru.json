@@ -101,8 +101,7 @@
     "account": {
         "successCopy": "Адрес кошелька скопирован в буфер обмена",
         "copy": "Копировать адрес",
-        "switch": "Сменить аккаунт",
-        "logout": "Выйти"
+        "switch": "Сменить аккаунт"
     },
     "history": {
         "clearHistory": "Очистить историю",
@@ -207,7 +206,6 @@
         "total": "Всего",
         "from": "От",
         "to": "Кому",
-        "viewInPolkascan": "Посмотреть в Polkascan",
         "successCopy": "{value} скопирована в буфер обмена",
         "copy": "Копировать {value}",
         "history": {
@@ -215,7 +213,10 @@
             "submitted": "Транзакция отправлена с комиссией в размере {fee} {symbol}",
             "confirmed": "Транзакция подтверждена"
         },
-        "viewInSorascan": "Смотреть в SORAScan",
+        "viewIn": {
+            "sorascan": "Смотреть в SORAScan",
+            "subscan": "Смотреть в Subscan"
+        },
         "txId": "ID транзакции"
     },
     "appName": "Polkaswap",
@@ -351,9 +352,10 @@
     },
     "metamask": "MetaMask",
     "sora": {
-        "Devnet": "@:soraText Сеть для разработчиков",
-        "Testnet": "@:soraText Тестовая сеть",
-        "Mainnet": "@:soraText Основная сеть"
+        "Dev": "@:soraText Сеть для разработчиков",
+        "Test": "@:soraText Тестовая сеть",
+        "Prod": "@:soraText Основная сеть",
+        "Stage": "@:soraText Тестовая сеть"
     },
     "evm": {
         "main": "Основная сеть Ethereum",
@@ -449,7 +451,8 @@
         "pairTokens": "{pair} Токены Пула",
         "poolShare": "Ваша доля в пуле",
         "unknownAsset": "Неизвестный актив",
-        "description": "Когда вы добавляете ликвидность, вам выдаются токены пула, представляющие вашу позицию. Эти токены автоматически зарабатывают на комиссиях пула пропорционально вашей доле. Вы можете изъять ликвидность в любое время."
+        "description": "Когда вы добавляете ликвидность, вам выдаются токены пула, представляющие вашу позицию. Эти токены автоматически зарабатывают на комиссиях пула пропорционально вашей доле. Вы можете изъять ликвидность в любое время.",
+        "strategicBonusApy": "Стратегический бонус APY"
     },
     "bridge": {
         "title": "Мост HASHI",
@@ -547,11 +550,12 @@
         "newTransaction": "Создать новую транзакцию",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "viewInSorascan": "Смотреть в SORAScan",
         "changeAccount": "@:changeAccountText в @:metamask",
         "expectedAddress": "Ожидаемый адрес в @:metamask",
         "title": "Транзакция Моста",
-        "expectedMetaMaskAddress": "Ожидаемый адрес в @:metamask"
+        "expectedMetaMaskAddress": "Ожидаемый адрес в @:metamask",
+        "allowToken": "Разрешить @:appName использовать ваши {tokenSymbol}",
+        "approveToken": "Обратите внимание, что подтверждать токен нужно только один раз. Если ваше расширение имеет несколько запросов на утверждение токена, убедитесь, что вы подтвердили только последний из них, а остальные отклонили."
     },
     "months": {
         "0": "Январь",

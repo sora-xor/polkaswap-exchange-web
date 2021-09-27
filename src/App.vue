@@ -135,7 +135,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter, State } from 'vuex-class'
-import { WALLET_CONSTS, WalletAvatar } from '@soramitsu/soraneo-wallet-web'
+import { WALLET_CONSTS, components } from '@soramitsu/soraneo-wallet-web'
 import { History, KnownSymbols, connection } from '@sora-substrate/util'
 import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils'
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
@@ -160,7 +160,7 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
 
 @Component({
   components: {
-    WalletAvatar,
+    WalletAvatar: components.WalletAvatar,
     PolkaswapLogo,
     SoraLogo,
     HelpDialog: lazyComponent(Components.HelpDialog),
@@ -452,6 +452,15 @@ html {
 .app {
   .el-loading-mask {
     background-color: var(--s-color-utility-body);
+    .el-loading-spinner {
+      background-image: url("~@/assets/img/pswap-loader.svg");
+      height: var(--s-size-medium);
+      width: var(--s-size-medium);
+      margin-left: calc(50% - (var(--s-size-medium) / 2));
+      > svg {
+        display: none;
+      }
+    }
   }
 
   &-body-scrollbar, &-sidebar-scrollbar {

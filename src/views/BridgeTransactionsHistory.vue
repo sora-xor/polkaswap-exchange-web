@@ -76,7 +76,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { RegisteredAccountAsset, Operation, BridgeHistory, FPNumber } from '@sora-substrate/util'
+import { RegisteredAccountAsset, Operation, BridgeHistory, FPNumber, NetworkFeesObject } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin'
@@ -96,7 +96,7 @@ const namespace = 'bridge'
   }
 })
 export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, BridgeHistoryMixin, NetworkFormatterMixin, PaginationSearchMixin) {
-  @Getter networkFees!: any
+  @Getter networkFees!: NetworkFeesObject
 
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
   @Getter('history', { namespace }) history!: Nullable<Array<BridgeHistory>>

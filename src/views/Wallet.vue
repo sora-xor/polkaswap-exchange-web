@@ -1,6 +1,6 @@
 <template>
   <div>
-    <sora-neo-wallet
+    <sora-wallet
       v-loading="parentLoading"
       class="container container--wallet"
       @close="handleClose"

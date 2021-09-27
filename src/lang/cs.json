@@ -101,8 +101,7 @@
     "account": {
         "successCopy": "Adresa peněženky je zkopírována do schránky",
         "copy": "Zkopírovat adresu",
-        "switch": "Přepnout na jiný účet",
-        "logout": "Odhlásit se"
+        "switch": "Přepnout na jiný účet"
     },
     "history": {
         "clearHistory": "Vymazat historii",
@@ -207,7 +206,6 @@
         "total": "Celkem",
         "from": "Od",
         "to": "Komu",
-        "viewInPolkascan": "Zobrazit v Polkascan",
         "successCopy": "{value} je zkopírováno do schránky",
         "copy": "Kopírovat {value}",
         "history": {
@@ -215,7 +213,10 @@
             "submitted": "Transakce byla odeslána s poplatkem ve výši {fee} {symbol}",
             "confirmed": "Transakce potvrzena"
         },
-        "viewInSorascan": "Zobrazit v SORAScanu",
+        "viewIn": {
+            "sorascan": "Zobrazit v SORAScanu",
+            "subscan": "Zobrazit v Subscan"
+        },
         "txId": "Id transakce"
     },
     "appName": "Polkaswap",
@@ -351,9 +352,10 @@
     },
     "metamask": "MetaMask",
     "sora": {
-        "Devnet": "@:soraText Devnet",
-        "Testnet": "@:soraText Testnet",
-        "Mainnet": "@:soraText Mainnet"
+        "Dev": "@:soraText Devnet",
+        "Test": "@:soraText Testnet",
+        "Prod": "@:soraText Mainnet",
+        "Stage": "@:soraText Testnet"
     },
     "evm": {
         "main": "Ethereum Mainnet",
@@ -449,7 +451,8 @@
         "pairTokens": "{pair} pool tokeny",
         "poolShare": "Váš podíl z poolu",
         "unknownAsset": "Neznámé aktivum",
-        "description": "Když přidáte likviditu, dostanete pool tokeny představující vaši pozici. Tyto tokeny automaticky získávají poplatky úměrné vašemu podílu z poolu a lze je kdykoli vyměnit zpět za odpovídající likviditu."
+        "description": "Když přidáte likviditu, dostanete pool tokeny představující vaši pozici. Tyto tokeny automaticky získávají poplatky úměrné vašemu podílu z poolu a lze je kdykoli vyměnit zpět za odpovídající likviditu.",
+        "strategicBonusApy": "Strategický bonus APY"
     },
     "bridge": {
         "title": "HASHI Bridge",
@@ -547,11 +550,12 @@
         "newTransaction": "Vytvořit novou transakci",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "viewInSorascan": "Zobrazit v SORAScanu",
         "changeAccount": "@:changeAccountText v @:metamask",
         "expectedAddress": "Očekávaná adresa v @:metamask",
         "title": "Bridge transakce",
-        "expectedMetaMaskAddress": "Očekávaná adresa v MetaMask:"
+        "expectedMetaMaskAddress": "Očekávaná adresa v MetaMask:",
+        "allowToken": "Povolit @:appName používat {tokenSymbol}",
+        "approveToken": "Pamatujte, že je potřeba token schválit pouze jednou. Pokud má vaše rozšíření více žádostí o schválení tokenu, nezapomeňte potvrdit pouze ten poslední a ostatní odmítnout."
     },
     "months": {
         "0": "Leden",

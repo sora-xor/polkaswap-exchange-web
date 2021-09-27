@@ -6,7 +6,6 @@ import ethersUtil from '@/utils/ethers-util'
 import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils'
 import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay'
 import { MoonpayNotifications } from '@/components/Moonpay/consts'
-import { NetworkTypes } from '@/consts'
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
@@ -21,7 +20,6 @@ const createError = (text: string, notification: MoonpayNotifications) => {
 export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, LoadingMixin) {
   @State(state => state.moonpay.api) moonpayApi!: MoonpayApi
   @State(state => state.settings.apiKeys) apiKeys!: any
-  @State(state => state.settings.soraNetwork) soraNetwork!: NetworkTypes
 
   @Action('setAmount', { namespace: 'bridge' }) setAmount!: (value: string) => Promise<void>
   @Action('getEvmNetworkFee', { namespace: 'bridge' }) getEvmNetworkFee!: AsyncVoidFn
@@ -35,6 +33,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, L
   @Action('setNotificationVisibility', { namespace: 'moonpay' }) setNotificationVisibility!: (flag: boolean) => Promise<void>
   @Action('setNotificationKey', { namespace: 'moonpay' }) setNotificationKey!: (key: string) => Promise<void>
 
+  @Getter soraNetwork!: string // wallet
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
   @Getter('evmNetworkFee', { namespace: 'bridge' }) evmNetworkFee!: CodecString
 

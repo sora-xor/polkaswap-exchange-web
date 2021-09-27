@@ -69,7 +69,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Action, State, Getter } from 'vuex-class'
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
 import dayjs from 'dayjs'
-import { FormattedAmount, FontSizeRate } from '@soramitsu/soraneo-wallet-web'
+import { WALLET_CONSTS, components } from '@soramitsu/soraneo-wallet-web'
 import { BridgeHistory } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
@@ -92,13 +92,13 @@ const DetailsView = 'details'
 @Component({
   components: {
     MoonpayLogo,
-    FormattedAmount,
+    FormattedAmount: components.FormattedAmount,
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     MoonpayWidget: lazyComponent(Components.MoonpayWidget)
   }
 })
 export default class MoonpayHistory extends Mixins(TranslationMixin, PaginationSearchMixin, MoonpayBridgeInitMixin, BridgeHistoryMixin) {
-  readonly FontSizeRate = FontSizeRate
+  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate
 
   @State(state => state[namespace].transactions) transactions!: Array<any>
   @State(state => state.settings.language) language!: string

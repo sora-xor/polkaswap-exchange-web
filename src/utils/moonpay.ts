@@ -1,6 +1,6 @@
 import axios from '@/api'
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
 
-import { NetworkTypes } from '@/consts'
 import { toQueryString } from '@/utils'
 
 export interface MoonpayEVMTransferAssetData {
@@ -15,7 +15,7 @@ export class MoonpayApi {
   public soraNetwork = ''
 
   public static getWidgetBaseUrl (soraNetwork: string): string {
-    if (soraNetwork === NetworkTypes.Mainnet) {
+    if (soraNetwork === WALLET_CONSTS.SoraNetwork.Prod) {
       return 'https://buy.moonpay.com'
     }
     return 'https://buy-staging.moonpay.com'

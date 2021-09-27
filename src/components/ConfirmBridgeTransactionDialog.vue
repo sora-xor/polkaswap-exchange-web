@@ -66,7 +66,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { KnownSymbols, CodecString, BridgeNetworks } from '@sora-substrate/util'
-import { FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { components, mixins } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -81,11 +81,11 @@ const namespace = 'bridge'
 @Component({
   components: {
     DialogBase,
-    InfoLine
+    InfoLine: components.InfoLine
   }
 })
 export default class ConfirmBridgeTransactionDialog extends Mixins(
-  FormattedAmountMixin,
+  mixins.FormattedAmountMixin,
   TranslationMixin,
   DialogMixin,
   LoadingMixin,

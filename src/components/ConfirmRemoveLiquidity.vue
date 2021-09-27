@@ -50,7 +50,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import { NumberFormatterMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { components, mixins } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -65,10 +65,10 @@ const namespace = 'removeLiquidity'
   components: {
     DialogBase,
     TokenLogo: lazyComponent(Components.TokenLogo),
-    InfoLine
+    InfoLine: components.InfoLine
   }
 })
-export default class ConfirmRemoveLiquidity extends Mixins(NumberFormatterMixin, TranslationMixin, DialogMixin, LoadingMixin) {
+export default class ConfirmRemoveLiquidity extends Mixins(mixins.NumberFormatterMixin, TranslationMixin, DialogMixin, LoadingMixin) {
   @Getter('firstToken', { namespace }) firstToken!: any
   @Getter('secondToken', { namespace }) secondToken!: any
   @Getter('liquidityAmount', { namespace }) liquidityAmount!: string

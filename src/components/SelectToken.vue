@@ -139,7 +139,7 @@ import first from 'lodash/fp/first'
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { Asset, AccountAsset, isBlacklistAsset } from '@sora-substrate/util'
-import { api, FormattedAmountMixin, FormattedAmountWithFiatValue, FontSizeRate, FontWeightRate } from '@soramitsu/soraneo-wallet-web'
+import { api, mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
@@ -153,21 +153,21 @@ const namespace = 'assets'
 
 @Component({
   components: {
-    FormattedAmountWithFiatValue,
+    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     DialogBase,
     TokenLogo: lazyComponent(Components.TokenLogo),
     TokenAddress: lazyComponent(Components.TokenAddress)
   }
 })
-export default class SelectToken extends Mixins(FormattedAmountMixin, TranslationMixin, SelectAssetMixin, LoadingMixin) {
+export default class SelectToken extends Mixins(mixins.FormattedAmountMixin, TranslationMixin, SelectAssetMixin, LoadingMixin) {
   private readonly formattedZeroSymbol = '-'
   readonly tokenTabs = [
     'assets',
     'custom'
   ]
 
-  readonly FontSizeRate = FontSizeRate
-  readonly FontWeightRate = FontWeightRate
+  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate
+  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate
 
   tabValue = first(this.tokenTabs)
   query = ''

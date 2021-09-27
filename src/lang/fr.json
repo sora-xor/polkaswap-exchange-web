@@ -1,0 +1,801 @@
+{
+    "closeText": "Fermer",
+    "backText": "Précédent",
+    "createWalletText": "Créer un portefeuille",
+    "nameText": "Nom",
+    "nextText": "Suivant",
+    "importText": "Importer",
+    "settingsText": "Paramètres",
+    "addAssetText": "Ajouter un actif",
+    "createTokenText": "Créer un jeton",
+    "comingSoonText": "Bientôt disponible",
+    "successText": "Succès",
+    "warningText": "Attention",
+    "swapText": "Échanger",
+    "searchText": "Rechercher",
+    "cancelText": "Annuler",
+    "saveText": "Sauvegarder",
+    "logoutText": "Se déconnecter",
+    "sendText": "Envoyer",
+    "addressText": "Adresse",
+    "amountText": "Montant",
+    "confirmText": "Confirmer",
+    "errorText": "Erreur",
+    "insufficientBalanceText": "Solde {tokenSymbol} insuffisant",
+    "unknownErrorText": "ERREUR Une erreur s'est produite...",
+    "transactionSubmittedText": "La transaction a été soumise",
+    "operations": {
+        "Swap": "Échanger",
+        "Transfer": "Transférer",
+        "AddLiquidity": "Ajouter de la liquidité",
+        "RemoveLiquidity": "Retirer de la liquidité",
+        "CreatePair": "Créer une paire",
+        "RegisterAsset": "Enregistrer un jeton",
+        "ClaimRewards": "Réclamer mes Récompenses",
+        "andText": "et",
+        "finalized": {
+            "Transfer": "{amount} {symbol} envoyés à {address}",
+            "Swap": "{amount} {symbol} échangés contre {amount2} {symbol2}",
+            "AddLiquidity": "Dépôt de {amount} {symbol} et de {amount2} {symbol2}",
+            "RemoveLiquidity": "Retrait de {amount} {symbol} et de {amount2} {symbol2}",
+            "CreatePair": "Dépôt de {amount} {symbol} et de {amount2} {symbol2}",
+            "RegisterAsset": "Jeton {symbol} enregistré",
+            "ClaimRewards": "Récompense réclamée avec succès {rewards}"
+        },
+        "error": {
+            "Transfer": "Échec de l'envoi de {amount} {symbol} à {address}",
+            "Swap": "Échec de l'échange de {amount} {symbol} contre {amount2} {symbol2}",
+            "AddLiquidity": "Échec du dépôt de {amount} {symbol} et de {amount2} {symbol2}",
+            "RemoveLiquidity": "Échec du retrait de {amount} {symbol} et de {amount2} {symbol2}",
+            "CreatePair": "Échec du dépôt de {amount} {symbol} et de {amount2} {symbol2}",
+            "RegisterAsset": "Échec de l'enregistrement du jeton {symbol}",
+            "ClaimRewards": "Échec de la réclamation des récompenses {rewards}"
+        }
+    },
+    "polkadotjs": {
+        "noExtensions": "Aucune extension Polkadot.js n'a été trouvée. Veuillez l'installer et recharger cette page\n https:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Il semble n’y avoir aucun compte dans votre extension Polkadot.js. Ajoutez un compte et réessayez.",
+        "noAccount": "Erreur de compte Polkadot.js. Veuillez vérifier votre compte dans l'extension Polkadot.js"
+    },
+    "connection": {
+        "title": "Compte réseau SORA",
+        "text": "Connectez vos comptes de réseau SORA ou créez-en de nouveaux avec l'extension de navigateur polkadot{.js} Cette extension vous permet de signer en toute sécurité des transactions et de gérer vos jetons dans le réseau SORA.",
+        "install": "Aucune extension Polkadot.js n'a été trouvée. Veuillez l'installer et <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">recharger<\/a> cette page.<br\/>\n<span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
+        "noPermissions": "Demande d'autorisation rejetée accidentellement? <\/br> Actuellement, l'extension polkadot{.js} n'a pas de gestion des autorisations. Pour contourner ce problème, vous pouvez redémarrer votre navigateur et revisiter cette page pour procéder à l'autorisation.",
+        "noAccounts": "Aucun compte n'a été trouvé dans votre extension de navigateur polkadot{.js} Veuillez ajouter un compte et réessayer.",
+        "selectAccount": "Sélectionnez le compte approprié",
+        "loadingTitle": "En attendant que vous autorisiez l'accès à l'extension Polkadot{.js}",
+        "action": {
+            "install": "Installer l'extension",
+            "learnMore": "En savoir plus",
+            "connect": "Connecter un compte",
+            "refresh": "Rafraîchir"
+        }
+    },
+    "wallet": {
+        "title": "Compte réseau SORA",
+        "WalletAssets": "Actifs",
+        "WalletActivity": "Activité",
+        "addAsset": "@:addAssetText",
+        "createToken": "@:createTokenText"
+    },
+    "walletSend": {
+        "title": "Envoyer",
+        "address": "@:addressText",
+        "amount": "@:amountText",
+        "balance": "Solde",
+        "max": "MAX",
+        "fee": "@:networkFeeText",
+        "enterAddress": "Entrez l'adresse",
+        "badAddress": "Adresse incorrecte",
+        "enterAmount": "Entrez le montant",
+        "badAmount": "@:insufficientBalanceText",
+        "confirmTitle": "Confirmer la transaction",
+        "confirm": "@:confirmText",
+        "errorAddress": "Adresse invalide. Veuillez la vérifier et réessayer.",
+        "feeTooltip": "@:networkFeeTooltipText",
+        "tooltip": "Envoyer des jetons entre des comptes du réseau SORA",
+        "addressWarning": "Les jetons seront envoyés à l'adresse SORA ci-dessous. Assurez-vous que le destinataire peut accéder à la chaîne SORA pour utiliser les jetons:",
+        "addressError": "Vous ne pouvez pas envoyer de jetons au même compte auquel vous êtes actuellement connecté."
+    },
+    "account": {
+        "successCopy": "L'adresse du portefeuille est copiée dans le presse-papiers",
+        "copy": "Copier l'adresse",
+        "switch": "Changer de compte"
+    },
+    "history": {
+        "clearHistory": "Effacer l'historique",
+        "filterPlaceholder": "Filtrer par adresse, symbole, type ou ID de bloc",
+        "empty": "Vos transactions apparaîtront ici",
+        "emptySearch": "Aucune transaction trouvée"
+    },
+    "assets": {
+        "empty": "Il n'y a pas d'actifs",
+        "add": "@:addAssetText",
+        "swap": "@:swapText",
+        "send": "@:sendText",
+        "receive": "@:account.copy",
+        "liquidity": "Ajouter de la liquidité",
+        "bridge": "Pont",
+        "copy": "Copie de l'ID d'actif",
+        "successCopy": "{symbol} ID de l'actif est copié dans le presse-papiers",
+        "copied": "Copié!",
+        "balance": {
+            "transferable": "Transférable",
+            "frozen": "Gelé",
+            "locked": "- Verrouillé",
+            "reserved": "- Réservé",
+            "total": "Total"
+        },
+        "totalAssetsValue": "Valeur total de vos actifs:"
+    },
+    "asset": {
+        "remove": "Retirer l'actif"
+    },
+    "addAsset": {
+        "title": "@:addAssetText",
+        "action": "@:addAssetText",
+        "success": "L'actif a été ajouté avec succès!",
+        "AddAssetSearch": {
+            "title": "@:searchText",
+            "placeholder": "Filtrer par ID d'actif, nom ou symbole"
+        },
+        "AddAssetCustom": {
+            "title": "Actif personnalisé",
+            "addressPlaceholder": "@:addressText",
+            "symbolPlaceholder": "Symbole d'actif"
+        },
+        "empty": "Aucun jeton trouvé",
+        "alreadyAttached": "Le jeton était déjà attaché",
+        "understand": "Je comprends",
+        "warningTitle": "Tradez à vos risques et périls!",
+        "warningMessage": "Tout le monde peut créer un jeton, y compris en créant de fausses versions de jetons existants qui prétendent représenter des projets.\n Si vous achetez ce jeton, vous ne pourrez peut-être pas le revendre.",
+        "approved": "Actif approuvé par la communauté",
+        "unknown": "Source inconnue",
+        "scam": "ARNAQUE",
+        "next": "Suivant"
+    },
+    "createToken": {
+        "title": "@:createTokenText",
+        "desc": "Créer et déployer des ressources personnalisées sur SORA",
+        "action": "@:createTokenText",
+        "enterSymbol": "Entrez le symbole du jeton",
+        "enterName": "Entrez le nom du jeton",
+        "enterSupply": "Saisir l'offre de jeton",
+        "confirm": "@:confirmText",
+        "success": {
+            "title": "Transaction soumise",
+            "desc": "Créer un jeton {symbol}"
+        },
+        "tooltipValue": "@:networkFeeTooltipText",
+        "fee": "@:networkFeeText",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "feeError": "Impossible d'obtenir des frais pour une transaction",
+        "error": "Échec de la création du jeton {symbol}",
+        "tokenSymbol": {
+            "placeholder": "Symbole du jeton",
+            "desc": "Il s'agit d'un identifiant pour le jeton. Vous pouvez utiliser de 1 à 7 caractères pour la sélection."
+        },
+        "tokenName": {
+            "placeholder": "Nom du jeton",
+            "desc": "C'est un nom pour le jeton. Vous pouvez utiliser de 1 à 33 caractères pour la sélection."
+        },
+        "tokenSupply": {
+            "placeholder": "Offre de jetons",
+            "desc": "Vous recevrez ces jetons lors de la création."
+        },
+        "extensibleSupply": {
+            "placeholder": "Approvisionnement extensible",
+            "desc": "Possibilité de miner plus de jetons."
+        }
+    },
+    "transaction": {
+        "title": "Détails de la transaction",
+        "blockId": "Identifiant du bloc",
+        "status": "Statut",
+        "statuses": {
+            "pending": "En cours...",
+            "failed": "La transaction a échoué",
+            "complete": "Complétez"
+        },
+        "errorMessage": "Erreur",
+        "startTime": "Date",
+        "amount": "@:amountText",
+        "amount2": "@:amountText 2",
+        "fee": "Frais de transaction",
+        "total": "Total",
+        "from": "De",
+        "to": "À",
+        "successCopy": "{value} est copié dans le presse-papiers",
+        "copy": "Copier {value}",
+        "history": {
+            "created": "La transaction pour {amount} {symbol} a été créée.",
+            "submitted": "Transaction soumise avec des frais de {fee} {symbol}",
+            "confirmed": "Transaction confirmée"
+        },
+        "viewIn": {
+            "sorascan": "Afficher dans SORAScan",
+            "subscan": "Visualisez dans Subscan"
+        },
+        "txId": "Id de la transaction"
+    },
+    "appName": "Polkaswap",
+    "soraText": "SORA",
+    "ethereumText": "Ethereum",
+    "changeNetworkText": "Changer de réseau dans Metamask",
+    "transactionText": "transaction | transactions",
+    "connectWalletText": "Connecter le compte",
+    "changeAccountText": "Changer de compte",
+    "connectedText": "Connecté",
+    "connectWalletTextTooltip": "Connectez-vous au réseau @:soraText avec polkadot{.js}",
+    "selectNodeText": "Sélectionnez le nœud",
+    "bridgeText": "Pont",
+    "disclaimer": "<span class=\"app-disclaimer__title\">Avertissement<\/span>: ce site Web est maintenu par la communauté @:(soraText). Avant de continuer à utiliser ce site Web, veuillez consulter le @:polkaswapFaqLink et la documentation, qui comprend une explication détaillée du fonctionnement de Polkaswap, ainsi que le @:memorandumLink et le @:(privacyLink). Ces documents sont cruciaux pour une expérience utilisateur sécurisée et positive. En utilisant Polkaswap, vous reconnaissez avoir lu et compris ces documents. Vous reconnaissez également ce qui suit : 1) votre seule responsabilité de vous conformer à toutes les lois qui peuvent s'appliquer à votre utilisation particulière de Polkaswap dans votre juridiction légale ; 2) votre compréhension que la version actuelle de Polkaswap est une version alpha: elle n'a pas été entièrement testée et certaines fonctions peuvent ne pas fonctionner comme prévu; et 3) votre compréhension et votre acceptation volontaire des risques liés à l'utilisation de Polkaswap, y compris, mais sans s'y limiter, le risque de perdre des jetons. Encore une fois, veuillez ne pas continuer sans lire les @:polkaswapFaqLink, @:memorandumLink et @:privacyLink!",
+    "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
+    "poweredBy": "Alimenté par",
+    "confirmTransactionText": "Confirmez la transaction dans {direction}",
+    "retryText": "Réessayer",
+    "networkFeeText": "Frais de réseau",
+    "networkFeeTooltipText": "Les frais de réseau sont utilisés pour assurer la croissance et les performances stables du système @:(soraText).",
+    "ethNetworkFeeTooltipText": "Veuillez noter que les frais de réseau Ethereum affichés sur Polkaswap ne sont que des estimations approximatives, vous pouvez voir le montant exact des frais dans votre portefeuille Ethereum connecté avant de confirmer la transaction.",
+    "marketText": "Marché",
+    "marketAlgorithmText": "Algorithme de marché",
+    "firstPerSecond": "{first} par {second}",
+    "pairIsNotCreated": "La paire de jetons n'est pas créée",
+    "pageTitle": {
+        "Swap": "Échanger",
+        "Pool": "Pool",
+        "Bridge": "@:bridgeText",
+        "About": "À propos",
+        "Stats": "Statistiques",
+        "Support": "Support",
+        "Wallet": "Portefeuille",
+        "CreatePair": "Créer une paire",
+        "AddLiquidity": "Ajouter de la liquidité",
+        "AddLiquidityId": "Ajouter de la liquidité",
+        "RemoveLiquidity": "Retirer de la liquidité",
+        "PageNotFound": "Page introuvable"
+    },
+    "mainMenu": {
+        "Swap": "Échanger",
+        "Pool": "Pool",
+        "Bridge": "@:bridgeText",
+        "Farming": "Farming",
+        "Wallet": "Compte",
+        "Rewards": "Récompenses",
+        "About": "À propos",
+        "Stats": "Statistiques",
+        "Support": "Support",
+        "CreatePair": "Créer une paire",
+        "Tokens": "Jetons"
+    },
+    "social": {
+        "twitter": "Twitter",
+        "telegram": "Telegram",
+        "medium": "Medium",
+        "reddit": "Reddit",
+        "github": "GitHub"
+    },
+    "footerMenu": {
+        "faucet": "Robinet",
+        "github": "GitHub",
+        "sorawiki": "@:soraText Wiki",
+        "memorandum": "Mémorandum et conditions d'utilisation de Polkaswap",
+        "privacy": "Politique de confidentialité"
+    },
+    "helpDialog": {
+        "title": "Aide",
+        "termsOfService": "Conditions d'utilisation",
+        "privacyPolicy": "Politique de confidentialité",
+        "termsOfServiceLink": "https:\/\/www.notion.so\/Polkaswap-Memorandum-and-Terms-of-Services-dc7f815a6d0a497a924832cc9bda17b8",
+        "privacyPolicyLink": "https:\/\/www.notion.so\/Polkaswap-Privacy-Policy-d0f26456f2974f0d94734b19f6e5fc70",
+        "appVersion": "@:appName version",
+        "contactUs": "Nous contacter"
+    },
+    "aboutNetworkDialog": {
+        "title": "À propos",
+        "learnMore": "Pour en savoir plus",
+        "network": {
+            "title": "Qu'est-ce que @:(soraText)?",
+            "description": "Polkaswap est construit sur le réseau @:soraText et le jeton @:soraText (XOR) est utilisé pour le gaz\/les frais et la fourniture de liquidités sur Polkaswap. @:soraText Network permet des frais réduits, des transactions plus rapides et une finalisation de consensus plus simple et se concentre sur l'interopérabilité entre d'autres écosystèmes de blockchain comme @:(ethereumText)."
+        },
+        "polkadot": {
+            "title": "Qu'est-ce que polkadot{.js} ?",
+            "description": "L'extension Polkadot{.js} est une extension de navigateur disponible pour Firefox et Chrome dédiée à la gestion des comptes pour les chaînes basées sur le Substrat, notamment @:(soraText), Polkadot et Kusama. Vous pouvez ajouter, importer et exporter des comptes et signer des transactions ou des éléments extrinsèques que vous avez initiés à partir de sites Web que vous avez autorisés."
+        }
+    },
+    "node": {
+        "errors": {
+            "connection": "Une erreur s'est produite lors de la connexion au nœud\n {address}\n",
+            "network": "Le nœud\n {address}\n vient d'un autre réseau\n",
+            "existing": "Ce nœud est déjà ajouté: '{title}'\n"
+        },
+        "messages": {
+            "connected": "Connexion établie avec nœud\n {address}\n",
+            "selectNode": "Veuillez sélectionner le nœud à connecter dans la liste des nœuds"
+        },
+        "warnings": {
+            "disconnect": "La connexion au nœud a été perdue. Reconnexion..."
+        }
+    },
+    "selectNodeDialog": {
+        "title": "@:soraText Sélection du nœud du réseau",
+        "addNode": "Ajouter un nœud personnalisé",
+        "customNode": "Nœud personnalisé",
+        "howToSetupOwnNode": "Comment configurer votre propre nœud @:soraText",
+        "select": "Sélectionnez",
+        "connected": "Connecté",
+        "selectNodeForEnvironment": "Sélectionnez un nœud pour l'environnement {environnement}:",
+        "nodeTitle": "{chain} hébergé par {name}",
+        "messages": {
+            "emptyName": "Veuillez saisir le nom du nœud",
+            "emptyAddress": "Veuillez saisir l'adresse du nœud",
+            "incorrectProtocol": "L'adresse doit commencer par ws:\/\/ ou wss:\/\/",
+            "incorrectAddress": "Adresse incorrecte"
+        },
+        "updateNode": "Sélectionnez le nœud"
+    },
+    "buttons": {
+        "max": "MAX",
+        "chooseToken": "Choisir le jeton",
+        "chooseAToken": "Choisissez un jeton",
+        "chooseTokens": "Choisir les jetons",
+        "enterAmount": "Entrez le montant"
+    },
+    "transfers": {
+        "from": "De",
+        "to": "À"
+    },
+    "pageNotFound": {
+        "title": "Page introuvable",
+        "body": "404"
+    },
+    "metamask": "MetaMask",
+    "sora": {
+        "Dev": "@:soraText Devnet",
+        "Test": "@:soraText Testnet",
+        "Prod": "@:soraText Mainnet",
+        "Stage": "@:soraText Testnet"
+    },
+    "evm": {
+        "main": "Ethereum Mainnet",
+        "ropsten": "Ethereum Ropsten",
+        "rinkeby": "Ethereum Rinkeby",
+        "kovan": "Ethereum Kovan",
+        "goerli": "Ethereum Goerli",
+        "private": "Volta Testnet",
+        "EWC": "Chaîne Web énergétique"
+    },
+    "providers": {
+        "metamask": "@:metamask"
+    },
+    "about": {
+        "title": "Le DEX pour l'avenir interopérable.",
+        "description": "Échange inter-chaînes d'actifs, création et listing simples de nouveaux actifs, et les échanges les plus simples jamais réalisés. L'avenir interopérable de Polkadot est là et nous sommes aux avant-postes !",
+        "trading": {
+            "title": "Trading plus rapide",
+            "first": "Polkaswap est un protocole AMM-DEX non dépositaire pour l'échange de jetons basé sur le réseau Polkadot, les parachains et les blockchains connectés via des ponts.",
+            "second": "Polkaswap supprime les intermédiaires de confiance et offre la possibilité d'un trading plus rapide",
+            "third": "Polkaswap est un projet communautaire et les développeurs collaborent sur le code open source en utilisant le"
+        },
+        "liquidity": {
+            "title": "Liquidité illimitée",
+            "first": "Polkaswap combine plusieurs sources de liquidité sous un algorithme d'agrégation de liquidité commun, fonctionnant entièrement sur la chaîne, de manière décentralisée et sans recours à des intermédiaries de confiance.",
+            "second": "Lorsque les traders appellent la fonction d'échange, l'algorithme d'agrégation de liquidité remplira les commandes en utilisant les meilleures offres sur toutes les sources de liquidité. Les sources de liquidité peuvent être d'autres DEX, des carnets de commandes ou d'autres sources basées sur des API.",
+            "third": "Parce que Polkaswap est un projet open source, n'importe qui peut ajouter plus de sources de liquidités en contribuant au code de base de Polkaswap."
+        },
+        "swap": {
+            "title": "Échangez n'importe quel jeton",
+            "first": "Allez au-delà des limites des DEX actuels en ajoutant des jetons de l’écosystème Polkadot ainsi que d’autres blockchains.",
+            "second": "Créez, listez et échangez vos propres jetons sur le réseau SORA.",
+            "third": "Notre infrastructure de base utilise Parity Substrate, qui est plus évolutif qu’Ethereum, et n’utilise pas d’exploitation minière coûteuse pour le consensus."
+        },
+        "pswap": {
+            "title": "Jetons PSWAP",
+            "first": "PSWAP a été créé par la gouvernance communautaire en votant sur sa sortie. Il s'agit d'un jeton d'utilité et de gouvernance utilisé pour récompenser les fournisseurs de liquidités sur Polkaswap. Contrairement à la plupart des autres jetons de récompense, PSWAP est brûlé avec les transactions et l'offre diminue au fil du temps.",
+            "second": "Les frais de {percent}% sur chaque échange sur le Polkaswap DEX sont utilisés pour racheter des jetons PSWAP, qui sont ensuite brûlés. Au début, 90% des jetons PSWAP brûlés sont réutilisés pour être alloués aux fournisseurs de liquidités, mais avec le temps, ce pourcentage diminuera à 35% après 4 ans."
+        },
+        "links": {
+            "first": {
+                "title": "Devenez un validateur SORA",
+                "desc": "Sécurisez l'avenir du réseau SORA et des applications décentralisées comme Polkaswap, et gagnez des récompenses en devenant un validateur SORA."
+            },
+            "second": {
+                "title": "Connecter une chaîne à SORA",
+                "desc": "Développez l'économie mondiale décentralisée en connectant davantage de chaînes à SORA et Polkaswap à l'aide du protocole de pont HASHI."
+            }
+        },
+        "network": "Polkaswap est construit sur le réseau SORA, en se concentrant sur l'interopérabilité pour connecter le reste de l'écosystème crypto à Polkadot."
+    },
+    "exchange": {
+        "Swap": "Échanger",
+        "Pool": "Pool",
+        "balance": "Solde",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "price": "Prix",
+        "transactionSubmitted": "Transaction soumise",
+        "transactionMessage": "{firstToken} et {secondToken}",
+        "confirm": "Confirmer",
+        "ok": "OK"
+    },
+    "swap": {
+        "connectWallet": "@:connectWalletText",
+        "estimated": "estimé",
+        "slippageTolerance": "Tolérance pour la différence de prix",
+        "minReceived": "Minimum reçu",
+        "maxSold": "Maximum vendu",
+        "minReceivedTooltip": "Votre transaction sera annulée s'il y a un mouvement de prix important et défavorable avant qu'il ne soit confirmé.",
+        "priceImpact": "Impact sur le prix",
+        "priceImpactTooltip": "La différence entre le prix du marché et le prix estimé en raison de la taille de la transaction.",
+        "liquidityProviderFee": "Frais pour le fournisseur de liquidités",
+        "liquidityProviderFeeTooltip": "Une partie de chaque transaction ({liquidityProviderFee}%) va aux fournisseurs de liquidités à titre d'incitation au protocole.",
+        "networkFee": "@:networkFeeText",
+        "pairIsNotCreated": "@:pairIsNotCreated",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "firstPerSecond": "@:firstPerSecond",
+        "insufficientAmount": "Solde {tokenSymbol} insuffisant",
+        "insufficientLiquidity": "Liquidité insuffisante",
+        "confirmSwap": "Confirmer l'échange",
+        "swapOutputMessage": "Le montant à recevoir est estimé. Vous recevrez au moins {transactionValue} ou la transaction sera annulée.",
+        "rewardsForSwap": "Récompenses stratégiques PSWAP",
+        "swapInputMessage": "Le montant est estimé. Vous vendrez au maximum {transactionValue} ou la transaction sera annulée."
+    },
+    "pool": {
+        "connectWallet": "@:connectWalletText",
+        "connectToWallet": "Connectez un compte pour voir vos liquidités.",
+        "liquidityNotFound": "Aucune liquidité trouvée.",
+        "addLiquidity": "Ajouter",
+        "removeLiquidity": "Retirer",
+        "createPair": "Créer une paire",
+        "pooledToken": "{tokenSymbol} en Pool",
+        "pairTokens": "{pair} jetons de pool",
+        "poolShare": "Votre part du pool",
+        "unknownAsset": "Actif inconnu",
+        "description": "Lorsque vous ajoutez de la liquidité, vous recevez des jetons de pool représentant votre position. Ces jetons rapportent automatiquement des frais proportionnels à votre part du pool et peuvent être réclamés à tout moment.",
+        "strategicBonusApy": "Bonus stratégique APY"
+    },
+    "bridge": {
+        "title": "Pont HASHI",
+        "info": "Convertissez les jetons entre les réseaux @:soraText et @:(ethereumText).",
+        "balance": "Solde",
+        "connectWallet": "@:connectWalletText",
+        "connected": "@:connectedText",
+        "changeAccount": "@:changeAccountText",
+        "changeNetwork": "@:changeNetworkText",
+        "next": "Suivant",
+        "connectWallets": "Connectez les portefeuilles pour afficher l'historique des transactions.",
+        "soraNetworkFee": "@:soraText Frais de réseau",
+        "ethereumNetworkFee": "@:ethereumText Frais de réseau",
+        "tooltipValue": "@:comingSoonText",
+        "total": "Total",
+        "viewHistory": "Afficher l'historique des transactions",
+        "transactionSubmitted": "Transaction soumise",
+        "transactionMessage": "{assetA} pour {assetB}",
+        "notRegisteredAsset": "L'actif {assetSymbol} n'est pas enregistré",
+        "selectNetwork": "Sélectionner un réseau",
+        "networkInfo": "Pont @:soraText Réseau avec:",
+        "ethereum": "@:ethereumText",
+        "energy": "@:evm.EWC"
+    },
+    "selectRegisteredAsset": {
+        "title": "Sélectionnez un jeton",
+        "search": {
+            "title": "Jetons",
+            "placeholder": "Filtrer par ID d'actif, nom ou symbole",
+            "networkLabelSora": "@:soraText Frais de réseau",
+            "networkLabelEthereum": "@:ethereumText jetons de miroir réseau",
+            "emptyListMessage": "Aucun résultat"
+        },
+        "customAsset": {
+            "title": "Personnalisé",
+            "customInfo": "Important! Les jetons personnalisés doivent être enregistrés dans @:(soraText).",
+            "registerToken": "Enregistrer un jeton",
+            "addressPlaceholder": "ID de l'Actif",
+            "symbolPlaceholder": "Symbole du jeton",
+            "empty": "Aucun jeton trouvé",
+            "alreadyAttached": "Le jeton était déjà attaché"
+        }
+    },
+    "confirmBridgeTransactionDialog": {
+        "confirmTransaction": "Confirmez la transaction",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "changeNetwork": "@:changeNetworkText",
+        "metamask": "@:metamask",
+        "sora": "@:soraText",
+        "confirm": "@:confirmTransactionText",
+        "buttonConfirm": "@:confirmText"
+    },
+    "bridgeTransaction": {
+        "details": "{from} pour {to}",
+        "for": "pour",
+        "steps": {
+            "step": "{step} sur 2",
+            "step1": "1er",
+            "step2": "2ème"
+        },
+        "status": {
+            "pending": "{step} transactions en attente...",
+            "failed": "{step} transactions ont échoué. @:(retryText).",
+            "confirm": "Confirmez la 2ème des 2 transactions...",
+            "complete": "Compléter",
+            "convertionComplete": "Conversion terminée"
+        },
+        "statuses": {
+            "waiting": "En attente",
+            "ready": "Prêt",
+            "pending": "En cours",
+            "frozen": "Gelé",
+            "failed": "La transaction a échoué",
+            "done": "Compléter",
+            "waitingForConfirmation": "En attente de confirmation..."
+        },
+        "wait30Block": "Veuillez attendre 30 confirmations de block",
+        "viewInEtherscan": "Afficher dans Etherscan",
+        "networkTitle": "transaction {network}",
+        "transactionHash": "Hash de transaction",
+        "networkInfo": {
+            "status": "Statut",
+            "date": "Date",
+            "amount": "Montant",
+            "transactionFee": "Frais de transaction",
+            "total": "Total"
+        },
+        "successCopy": "Le hash de la transaction est copié dans le presse-papiers",
+        "ethereum": "@:ethereumText",
+        "sora": "@:soraText",
+        "pending": "<span class=\"network-title\"> {network} <\/span> transaction en attente...",
+        "retry": "@:retryText",
+        "metamask": "@:metamask",
+        "confirm": "@:confirmTransactionText",
+        "newTransaction": "Créer une nouvelle transaction",
+        "changeNetwork": "@:changeNetworkText",
+        "connectWallet": "@:connectWalletText",
+        "changeAccount": "@:changeAccountText dans @:metamask",
+        "expectedAddress": "Adresse attendue dans @:metamask",
+        "title": "Transaction de pont",
+        "expectedMetaMaskAddress": "Adresse attendue dans MetaMask:",
+        "allowToken": "Autoriser @:appName à utiliser votre {tokenSymbol}",
+        "approveToken": "Veuillez noter qu'il n'est nécessaire d'approuver le jeton qu'une seule fois. Si votre extension a plusieurs demandes d'approbation de jetons, assurez-vous de ne confirmer que la dernière tout en rejetant le reste."
+    },
+    "months": {
+        "0": "Jan",
+        "1": "Fév",
+        "2": "Mar",
+        "3": "Avr",
+        "4": "Mai",
+        "5": "Juin",
+        "6": "Juil",
+        "7": "Aoû",
+        "8": "Sep",
+        "9": "Oct",
+        "10": "Nov",
+        "11": "Déc"
+    },
+    "bridgeHistory": {
+        "title": "Historique",
+        "showHistory": "Afficher l'historique",
+        "clearHistory": "Effacer l'historique",
+        "empty": "Vos transactions apparaîtront ici.",
+        "filterPlaceholder": "Filtrer par ID d'actif ou symbole",
+        "restoreHistory": "Restaurer l'historique"
+    },
+    "selectToken": {
+        "title": "Sélectionnez un jeton",
+        "searchPlaceholder": "Filtrer par ID d'actif, nom ou symbole",
+        "emptyListMessage": "Aucun résultat",
+        "copy": "Copie de l'ID d'actif",
+        "successCopy": "{symbol} ID de l'actif est copié dans le presse-papiers",
+        "assets": {
+            "title": "Actifs"
+        },
+        "custom": {
+            "title": "Personnalisé",
+            "search": "Saisir l'identifiant de l'actif",
+            "text": "JETONS PERSONNALISÉS",
+            "alreadyAttached": "Ce jeton était déjà attaché",
+            "notFound": "Jeton introuvable"
+        }
+    },
+    "createPair": {
+        "title": "Créer une paire",
+        "deposit": "Déposer",
+        "balance": "Solde",
+        "pricePool": "Prix et frais",
+        "shareOfPool": "Part du pool",
+        "firstPerSecond": "@:firstPerSecond",
+        "firstSecondPoolTokens": "{first} - {second} Pool",
+        "connect": "Connecter le portefeuille",
+        "supply": "Fournir",
+        "yourPosition": "Votre position",
+        "yourPositionEstimated": "Votre position (estimation)",
+        "youWillReceive": "Vous allez recevoir",
+        "remove": "Retirer",
+        "add": "AJOUTER",
+        "ok": "OK",
+        "networkFee": "@:networkFeeText",
+        "alreadyCreated": "La paire de jetons est déjà créée",
+        "firstLiquidityProvider": "Vous êtes le premier fournisseur de liquidité",
+        "firstLiquidityProviderInfo": "Le ratio de jetons que vous ajoutez déterminera le prix de ce pool. <br\/> Une fois que vous êtes satisfait du taux, cliquez sur l'offre pour l'examiner."
+    },
+    "confirmSupply": {
+        "title": "Votre part du pool sera",
+        "outputDescription": "La montant à recevoir est estimé. Si le prix change de plus de {slippageTolerance}%, votre transaction sera annulée.",
+        "poolTokensBurned": "{first}-{second} Jetons de pool brûlés",
+        "price": "Prix"
+    },
+    "addLiquidity": {
+        "title": "Ajouter de la liquidité",
+        "pairIsNotCreated": "@:pairIsNotCreated",
+        "firstPerSecond": "@:firstPerSecond"
+    },
+    "removeLiquidity": {
+        "title": "Retirer de la liquidité",
+        "liquidity": "liquidité",
+        "balance": "Solde",
+        "amount": "Montant",
+        "input": "Entrée",
+        "output": "Sortie",
+        "price": "Prix",
+        "remove": "Retirer",
+        "description": "La suppression des jetons de pool reconvertit votre position en jetons sous-jacents au taux actuel, proportionnel à votre part du pool. Les frais à payer sont inclus dans les montants que vous recevez.",
+        "outputMessage": "Le montant à recevoir est estimé. Si le prix change de plus de {slippageTolerance}%, votre transaction sera annulée.",
+        "confirmTitle": "Vous allez recevoir",
+        "shareOfPool": "Part du pool après transaction"
+    },
+    "dexSettings": {
+        "title": "Paramètres de transaction",
+        "marketAlgorithm": "@.upper:marketAlgorithmText",
+        "marketAlgorithmTooltip": {
+            "main": "- possibilité de choisir entre le marché primaire (TBC), le marché secondaire (XYK) ou un algorithme intelligent combiné pour garantir le meilleur prix pour une transaction donnée."
+        },
+        "slippageTolerance": "TOLÉRANCE DIFFERENCE DE PRIX",
+        "slippageToleranceHint": "Votre transaction sera annulée si le prix change défavorablement de plus de ce pourcentage.",
+        "slippageToleranceValidation": {
+            "warning": "Votre transaction peut échouer",
+            "frontrun": "Votre transaction peut être frontrun",
+            "error": "Entrez un pourcentage de glissement valide"
+        },
+        "custom": "PERSONNALISÉ",
+        "transactionDeadline": "DATE LIMITE DE TRANSACTION",
+        "transactionDeadlineHint": "La transaction sera annulée si elle est en attente depuis plus longtemps.",
+        "nodeAddress": "ADRESSE DU NŒUD",
+        "ip": "IP",
+        "port": "PORT",
+        "min": "MIN",
+        "marketAlgorithms": {
+            "SMART": "<span class=\"algorithm\"> SMART <\/span> garantit le meilleur prix pour toute transaction en combinant uniquement les meilleures options de prix de tous les marchés disponibles. Lorsqu'elle est disponible, la courbe de liaison des jetons ( <span class=\"algorithm\"> TBC <\/span> ) sera utilisée pour la liquidité tant que le prix de l'actif est plus abordable que celui d'autres sources, sur lesquelles le pool <span class=\"algorithm\"> XYK <\/span> est utilisé.",
+            "TBC": "<span class=\"algorithm\"> TBC <\/span> — achat uniquement à partir de la Token Bonding Curve (marché primaire). Il est possible que le prix devienne défavorable par rapport au <span class=\"algorithm\"> XYK <\/span> (marché secondaire), mais la valeur reçue des récompenses acquises pourrait s'avérer beaucoup plus favorable au fil du temps.",
+            "XYK": "<span class=\"algorithm\">XYK<\/span> — achat uniquement sur le pool XYK (marché secondaire). Échange de pool XYK traditionnel."
+        }
+    },
+    "resultDialog": {
+        "title": "Transaction soumise",
+        "ok": "OK"
+    },
+    "rewards": {
+        "title": "Réclamer mes Récompenses",
+        "changeAccount": "@:changeAccountText",
+        "connected": "@:connectedText",
+        "networkFee": "@:networkFeeText",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "andText": "et",
+        "claiming": {
+            "pending": "Demande...",
+            "success": "Récompense réclamée avec succès"
+        },
+        "transactions": {
+            "confimation": "Confirmez {order} sur {total} transactions...",
+            "success": "Vous allez prochainement recevoir vos recompenses",
+            "failed": "{order} des {total} transactions ont échoué. @:retryText"
+        },
+        "signing": {
+            "extension": "L'extension de navigateur polkadot {.js}",
+            "accounts": "vos comptes @:soraText et @:ethereumText respectivement"
+        },
+        "hint": {
+            "connectExternalAccount": "Connectez un compte @:ethereumText pour vérifier les récompenses PSWAP et VAL disponibles.",
+            "connectAccounts": "Pour réclamer vos récompenses PSWAP et VAL, vous devez connecter vos comptes @:soraText et @:ethereumText.",
+            "connectAnotherAccount": "Connectez un autre compte @:ethereumText pour vérifier les récompenses PSWAP et VAL disponibles.",
+            "howToClaimRewards": "Pour réclamer vos récompenses en {symbols} vous devez signer {count} {transactions} dans {destination}. Les récompenses seront déposées sur votre compte @:(soraText)."
+        },
+        "action": {
+            "connectWallet": "@:connectWalletText",
+            "connectExternalWallet": "Connecter le compte @:ethereumText",
+            "signAndClaim": "Signez et réclamez",
+            "pendingInternal": "@:soraText transaction en attente...",
+            "pendingExternal": "@:ethereumText transaction en attente...",
+            "retry": "@:retryText",
+            "checkRewards": "Vérifiez",
+            "insufficientBalance": "@:insufficientBalanceText"
+        },
+        "notification": {
+            "empty": "Aucune réclamation disponible pour ce compte"
+        },
+        "events": {
+            "XorErc20": "XOR ERC-20",
+            "SoraFarmHarvest": "@:(soraText).farm récolte",
+            "NtfAirdrop": "NFT Airdrop",
+            "LiquidityProvision": "Commissions provenant de la mise à disposition de liquidités",
+            "BuyOnBondingCurve": "Achetant depuis la TBC",
+            "NftAirdrop": "NFT Airdrop",
+            "MarketMakerVolume": "Market Making",
+            "LiquidityProvisionFarming": "Farming"
+        },
+        "vested": "Acquis",
+        "forText": "pour",
+        "totalVested": "Récompenses totales",
+        "claimableAmountDoneVesting": "Récompenses réclamables",
+        "groups": {
+            "strategic": "Récompenses stratégiques",
+            "external": "Récompenses pour le compte ethereum connecté"
+        }
+    },
+    "provider": {
+        "default": "@:ethereumText provider",
+        "metamask": "@:metamask",
+        "messages": {
+            "checkExtension": "L'extension {name} est occupée, veuillez la vérifier",
+            "extensionLogin": "Veuillez vous connecter à votre extension {name}",
+            "installExtension": "L'extension {name} est introuvable. Veuillez l'installer! \n\nExtension déjà installée? Veuillez recharger la page",
+            "reloadPage": "Recharger la page"
+        }
+    },
+    "selectLanguageDialog": {
+        "title": "Langue"
+    },
+    "tokens": {
+        "title": "Jetons listés",
+        "symbol": "Symbole",
+        "name": "Nom",
+        "assetId": "ID Actif"
+    },
+    "memorandum": "Note et conditions d'utilisation de Polkaswap",
+    "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\"> @:memorandum <\/a>",
+    "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\"> @:helpDialog.privacyPolicy <\/a>",
+    "FAQ": "FAQ Polkaswap",
+    "connectedAccount": "Compte connecté",
+    "selectNodeConnected": "Connecté à: {chain}",
+    "moonpayText": "MoonPay",
+    "forText": "pour",
+    "moonpay": {
+        "notifications": {
+            "success": {
+                "title": "Jetons achetés",
+                "text": "L'achat du jeton est terminé. La transaction de pont HASHI démarrera automatiquement dès que les jetons auront été reçus sur le compte Ethereum connecté. Vous pouvez fermer cette fenêtre en toute sécurité et continuer à utiliser Polkaswap. Il y aura une notification sur la transaction de pont lorsqu'elle sera prête."
+            },
+            "supportError": {
+                "title": "Jeton introuvable",
+                "text": "Malheureusement, le jeton acheté via @:moonpayText n'est pas encore pris en charge par le pont HASHI de Polkaswap. Normalement, seuls les jetons pris en charge devraient être disponibles à l'achat via MoonPay à Polkaswap, donc quelque chose a dû mal tourner quelque part. N'hésitez pas à informer la communauté de ce cas dans le <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> Groupe de télégrammes Polkaswap <\/a> ."
+            },
+            "feeError": {
+                "title": "Pas assez de fonds pour les frais de minage",
+                "text": "Malheureusement, la transaction de pont HASHI a échoué car il n'y a pas assez d'ETH pour payer les frais de transaction du réseau Ethereum. Veuillez ajouter plus d'ETH et réessayer."
+            },
+            "transactionError": {
+                "title": "La transaction a échoué",
+                "text": "Malheureusement, il semble que la transaction @:moonpayText ait échoué. Veuillez réessayer. Pour l'assistance @:moonpayText, accédez à <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https:\/\/ support.moonpay.com <\/a>"
+            },
+            "amountError": {
+                "title": "Solde insuffisant",
+                "text": "Malheureusement, la transaction de pont HASHI a échoué en raison du manque de jetons pour la transaction. Veuillez vérifier le solde de votre compte Ethereum et réessayer."
+            },
+            "accountAddressError": {
+                "title": "Compte Ethereum erroné",
+                "text": "Malheureusement, la transaction de pont HASHI a échoué car l'adresse du destinataire des jetons dans la commande @:moonpayText ne correspond pas à l'adresse de votre compte Ethereum actuel. Veuillez changer de compte Ethereum en extension et réessayer."
+            }
+        },
+        "buttons": {
+            "buy": "Acheter des jetons",
+            "history": "Historique d'émission",
+            "transfer": "Pont de départ",
+            "view": "Voir l'opération"
+        },
+        "history": {
+            "title": "Historique d'achat",
+            "empty": "Pas de données"
+        },
+        "confirmations": {
+            "txReady": "Transaction prête pour le pont"
+        }
+    }
+}
