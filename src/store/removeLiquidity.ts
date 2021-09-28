@@ -69,23 +69,17 @@ const getters = {
   liquidityDecimals (state: RemoveLiquidityState, getters) {
     return getters.liquidity?.decimals ?? 0
   },
-  firstTokenBalance (state: RemoveLiquidityState, getters) {
-    return getters.liquidity?.firstBalance ?? ZeroStringValue
-  },
-  secondTokenBalance (state: RemoveLiquidityState, getters) {
-    return getters.liquidity?.secondBalance ?? ZeroStringValue
-  },
   firstToken (state: RemoveLiquidityState, getters, rootGetters) {
     return getters.liquidity && rootGetters.assets.assets ? rootGetters.assets.assets.find(t => t.address === getters.liquidity.firstAddress) || {} : {}
   },
   secondToken (state: RemoveLiquidityState, getters, rootGetters) {
     return getters.liquidity && rootGetters.assets.assets ? rootGetters.assets.assets.find(t => t.address === getters.liquidity.secondAddress) || {} : {}
   },
-  firstTokenDecimals (state: RemoveLiquidityState, getters) {
-    return getters.firstToken.decimals || 0
+  firstTokenBalance (state: RemoveLiquidityState, getters) {
+    return getters.liquidity?.firstBalance ?? ZeroStringValue
   },
-  secondTokenDecimals (state: RemoveLiquidityState, getters) {
-    return getters.secondToken.decimals || 0
+  secondTokenBalance (state: RemoveLiquidityState, getters) {
+    return getters.liquidity?.secondBalance ?? ZeroStringValue
   },
   shareOfPool (state: RemoveLiquidityState, getters) {
     const balance = FPNumber.fromCodecValue(getters.liquidityBalance)
@@ -100,45 +94,45 @@ const getters = {
 }
 
 const mutations = {
-  [types.SET_LIQUIDITY_TOKENS_ADDRESSES] (state, { firstAddress, secondAddress }) {
+  [types.SET_LIQUIDITY_TOKENS_ADDRESSES] (state: RemoveLiquidityState, { firstAddress, secondAddress }: { firstAddress: string; secondAddress: string }) {
     state.firstTokenAddress = firstAddress
     state.secondTokenAddress = secondAddress
   },
-  [types.SET_REMOVE_PART] (state, removePart = 0) {
+  [types.SET_REMOVE_PART] (state: RemoveLiquidityState, removePart = 0) {
     state.removePart = removePart
   },
-  [types.SET_LIQUIDITY_AMOUNT] (state, liquidityAmount = '') {
+  [types.SET_LIQUIDITY_AMOUNT] (state: RemoveLiquidityState, liquidityAmount = '') {
     state.liquidityAmount = liquidityAmount
   },
-  [types.SET_FIRST_TOKEN_AMOUNT] (state, firstTokenAmount = '') {
+  [types.SET_FIRST_TOKEN_AMOUNT] (state: RemoveLiquidityState, firstTokenAmount = '') {
     state.firstTokenAmount = firstTokenAmount
   },
-  [types.SET_SECOND_TOKEN_AMOUNT] (state, secondTokenAmount = '') {
+  [types.SET_SECOND_TOKEN_AMOUNT] (state: RemoveLiquidityState, secondTokenAmount = '') {
     state.secondTokenAmount = secondTokenAmount
   },
-  [types.GET_TOTAL_SUPPLY_REQUEST] (state) {
+  [types.GET_TOTAL_SUPPLY_REQUEST] (state: RemoveLiquidityState) {
   },
-  [types.GET_TOTAL_SUPPLY_SUCCESS] (state, totalSupply) {
+  [types.GET_TOTAL_SUPPLY_SUCCESS] (state: RemoveLiquidityState, totalSupply: CodecString) {
     state.totalSupply = totalSupply
   },
-  [types.GET_TOTAL_SUPPLY_FAILURE] (state, error) {
+  [types.GET_TOTAL_SUPPLY_FAILURE] (state: RemoveLiquidityState) {
     state.totalSupply = ZeroStringValue
   },
-  [types.GET_LIQUIDITY_RESERVE_REQUEST] (state) {
+  [types.GET_LIQUIDITY_RESERVE_REQUEST] (state: RemoveLiquidityState) {
   },
-  [types.GET_LIQUIDITY_RESERVE_SUCCESS] (state, { reserveA, reserveB }) {
+  [types.GET_LIQUIDITY_RESERVE_SUCCESS] (state: RemoveLiquidityState, { reserveA, reserveB }) {
     state.reserveA = reserveA
     state.reserveB = reserveB
   },
-  [types.GET_LIQUIDITY_RESERVE_FAILURE] (state, error) {
+  [types.GET_LIQUIDITY_RESERVE_FAILURE] (state: RemoveLiquidityState, error) {
   },
-  [types.SET_FOCUSED_FIELD] (state, field) {
+  [types.SET_FOCUSED_FIELD] (state: RemoveLiquidityState, field: string) {
     state.focusedField = field
   }
 }
 
 const actions = {
-  async setLiquidity ({ commit, dispatch }, { firstAddress, secondAddress }) {
+  async setLiquidity ({ commit, dispatch }, { firstAddress, secondAddress }: { firstAddress: string; secondAddress: string }) {
     try {
       commit(types.SET_LIQUIDITY_TOKENS_ADDRESSES, { firstAddress, secondAddress })
 
@@ -148,7 +142,7 @@ const actions = {
     }
   },
 
-  setRemovePart ({ commit, getters, dispatch, state }, removePart) {
+  setRemovePart ({ commit, getters, dispatch, state }, removePart: number) {
     if (!state.focusedField || state.focusedField === 'removePart') {
       commit(types.SET_FOCUSED_FIELD, 'removePart')
       const part = new FPNumber(Math.round(removePart))
@@ -170,7 +164,7 @@ const actions = {
     }
   },
 
-  setFirstTokenAmount ({ commit, getters, dispatch, state }, firstTokenAmount) {
+  setFirstTokenAmount ({ commit, getters, dispatch, state }, firstTokenAmount: string) {
     if (!state.focusedField || state.focusedField === 'firstTokenAmount') {
       commit(types.SET_FOCUSED_FIELD, 'firstTokenAmount')
       if (firstTokenAmount) {
@@ -187,7 +181,7 @@ const actions = {
       dispatch('getRemoveLiquidityData')
     }
   },
-  setSecondTokenAmount ({ commit, getters, dispatch, state }, secondTokenAmount) {
+  setSecondTokenAmount ({ commit, getters, dispatch, state }, secondTokenAmount: string) {
     if (!state.focusedField || state.focusedField === 'secondTokenAmount') {
       commit(types.SET_FOCUSED_FIELD, 'secondTokenAmount')
       if (secondTokenAmount) {
@@ -205,7 +199,7 @@ const actions = {
     }
   },
 
-  setFocusedField ({ commit }, focusedField) {
+  setFocusedField ({ commit }, focusedField: string) {
     commit(types.SET_FOCUSED_FIELD, focusedField)
   },
 
@@ -242,7 +236,8 @@ const actions = {
 
       commit(types.GET_TOTAL_SUPPLY_SUCCESS, pts)
     } catch (error) {
-      commit(types.GET_TOTAL_SUPPLY_FAILURE, error)
+      console.error(error)
+      commit(types.GET_TOTAL_SUPPLY_FAILURE)
     }
   },
 
