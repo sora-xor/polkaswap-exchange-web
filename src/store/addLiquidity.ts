@@ -4,7 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 import flow from 'lodash/fp/flow'
 import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
-import { KnownAssets, FPNumber, CodecString } from '@sora-substrate/util'
+import { KnownAssets, FPNumber, CodecString, AccountBalance } from '@sora-substrate/util'
 
 import { ZeroStringValue } from '@/consts'
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions'
@@ -35,7 +35,7 @@ interface AddLiquidityState {
   secondTokenAddress: string;
   firstTokenValue: string;
   secondTokenValue: string;
-  secondTokenBalance: any;
+  secondTokenBalance: Nullable<AccountBalance>;
   reserve: Nullable<Array<CodecString>>;
   minted: CodecString;
   totalSupply: CodecString;
@@ -150,7 +150,7 @@ const mutations = {
     state.minted = minted
     state.totalSupply = pts
   },
-  [types.ESTIMATE_MINTED_FAILURE] (state, error) {
+  [types.ESTIMATE_MINTED_FAILURE] (state: AddLiquidityState) {
     state.minted = ZeroStringValue
     state.totalSupply = ZeroStringValue
   },
@@ -233,7 +233,8 @@ const actions = {
         )
         commit(types.ESTIMATE_MINTED_SUCCESS, { minted, pts })
       } catch (error) {
-        commit(types.ESTIMATE_MINTED_FAILURE, error)
+        console.error(error)
+        commit(types.ESTIMATE_MINTED_FAILURE)
       }
     }
   },
@@ -299,7 +300,7 @@ const actions = {
     }
   },
 
-  async setDataFromLiquidity ({ dispatch }, { firstAddress, secondAddress }) {
+  async setDataFromLiquidity ({ dispatch }, { firstAddress, secondAddress }: { firstAddress: string; secondAddress: string }) {
     const findAssetAddress = address => {
       const asset = KnownAssets.get(address) ?? api.accountAssets.find(a => a.address === address)
       return asset?.address ?? ''
