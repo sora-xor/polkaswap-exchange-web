@@ -70,7 +70,7 @@ import DialogMixin from '@/components/mixins/DialogMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import DialogBase from '@/components/DialogBase.vue'
-import { EvmSymbol } from '@/consts'
+import { EvmSymbol, ZeroStringValue } from '@/consts'
 import { formatAssetSymbol } from '@/utils'
 
 const namespace = 'bridge'
@@ -121,7 +121,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   }
 
   get soraNetworkFee (): CodecString {
-    return api.NetworkFee[Operation.EthBridgeOutgoing]
+    return this.isSoraToEvm ? api.NetworkFee[Operation.EthBridgeOutgoing] : ZeroStringValue
   }
 
   get formattedSoraNetworkFee (): string {

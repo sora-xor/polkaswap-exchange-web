@@ -85,7 +85,7 @@ import LoadingMixin from '@/components/mixins/LoadingMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin'
 import router, { lazyComponent } from '@/router'
-import { Components, PageNames } from '@/consts'
+import { Components, PageNames, ZeroStringValue } from '@/consts'
 import { formatAssetSymbol, formatDateItem } from '@/utils'
 import { STATES } from '@/utils/fsm'
 import { bridgeApi } from '@/utils/bridge'
@@ -102,6 +102,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   @Getter('history', { namespace }) history!: Nullable<Array<BridgeHistory>>
   @Getter('restored', { namespace }) restored!: boolean
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString
+  @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean
 
   @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn
   @Action('getRestoredFlag', { namespace }) getRestoredFlag!: AsyncVoidFn
@@ -149,7 +150,7 @@ export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, 
   }
 
   get soraNetworkFee (): CodecString {
-    return api.NetworkFee[Operation.EthBridgeOutgoing]
+    return this.isSoraToEvm ? api.NetworkFee[Operation.EthBridgeOutgoing] : ZeroStringValue
   }
 
   async created (): Promise<void> {

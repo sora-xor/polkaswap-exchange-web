@@ -191,14 +191,14 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { RegisteredAccountAsset, BridgeNetworks, KnownSymbols, FPNumber, CodecString, Operation } from '@sora-substrate/util'
-import { api, FormattedAmountMixin, FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { FormattedAmountMixin, FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
 
 import BridgeMixin from '@/components/mixins/BridgeMixin'
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 
 import router, { lazyComponent } from '@/router'
-import { Components, PageNames, EvmSymbol } from '@/consts'
+import { Components, PageNames, EvmSymbol, ZeroStringValue } from '@/consts'
 import { SubNetwork } from '@/utils/ethers-util'
 import {
   isXorAccountAsset,
@@ -289,7 +289,7 @@ export default class Bridge extends Mixins(
   }
 
   get soraNetworkFee (): CodecString {
-    return api.NetworkFee[Operation.EthBridgeOutgoing]
+    return this.isSoraToEvm ? this.NetworkFeeObj.EthBridgeOutgoing : ZeroStringValue
   }
 
   get isMaxAvailable (): boolean {

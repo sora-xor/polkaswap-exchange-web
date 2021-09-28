@@ -1,5 +1,6 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
+import { api } from '@soramitsu/soraneo-wallet-web'
 
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
@@ -16,11 +17,14 @@ export default class BridgeMixin extends Mixins(LoadingMixin, WalletConnectMixin
   private unwatchEthereum!: any
   blockHeadersSubscriber: ethers.providers.Web3Provider | undefined
 
+  // TODO: 1.6 Will be removed
+  NetworkFeeObj = api.NetworkFee
+
   async mounted (): Promise<void> {
     await this.setEvmNetworkType()
     await this.syncExternalAccountWithAppState()
-    this.getEvmBalance()
-    this.withApi(async () => {
+    await this.getEvmBalance()
+    await this.withApi(async () => {
       this.unwatchEthereum = await ethersUtil.watchEthereum({
         onAccountChange: (addressList: string[]) => {
           if (addressList.length) {
