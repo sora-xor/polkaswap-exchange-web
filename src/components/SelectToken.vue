@@ -308,7 +308,7 @@ export default class SelectToken extends Mixins(mixins.FormattedAmountMixin, Tra
 }
 .token-list-scrollbar {
   @include scrollbar(0, 0);
-  height: 26rem;
+  height: $dialog-scrollbar-normal;
 }
 </style>
 
