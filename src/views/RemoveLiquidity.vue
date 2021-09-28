@@ -188,18 +188,19 @@ export default class RemoveLiquidity extends Mixins(mixins.FormattedAmountMixin,
   }
 
   @Watch('liquidity')
-  private liquidityChange (): void {
+  private liquidityChange (liquidity): void {
     this.updatePrices()
 
     switch (this.focusedField) {
       case 'firstTokenAmount':
       case 'secondTokenAmount': {
         const isFirstToken = this.focusedField === 'firstTokenAmount'
-        const maxBalance = isFirstToken ? this.firstTokenBalance : this.secondTokenBalance
-        const amount = isFirstToken ? this.firstTokenAmount : this.secondTokenAmount
+
+        const balance = Number(this.getTokenMaxAmount(isFirstToken ? this.firstTokenBalance : this.secondTokenBalance))
+        const amount = Number(isFirstToken ? this.firstTokenAmount : this.secondTokenAmount)
 
         const setValue = isFirstToken ? this.setFirstTokenAmount : this.setSecondTokenAmount
-        const value = String(Math.min(+this.getTokenMaxAmount(maxBalance), +amount))
+        const value = String(Number.isFinite(balance) ? Math.min(balance, amount) : amount)
 
         return setValue(value)
       }
