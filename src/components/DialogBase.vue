@@ -5,7 +5,7 @@
     :custom-class="computedCustomClasses"
     :show-close="false"
     v-bind="{
-      width: width || '496px',
+      width,
       borderRadius: 'medium',
       ...$attrs
     }"
@@ -49,6 +49,9 @@ $el-dialog-button-size: var(--s-size-medium);
 .dialog-wrapper {
   #{$el-dialog-class} {
     background: var(--s-color-utility-surface);
+    min-width: $breakpoint-mobile;
+    max-width: 496px;
+    width: 100%;
 
     & > #{$el-dialog-class} {
       &__header {

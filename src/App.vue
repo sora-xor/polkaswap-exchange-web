@@ -1,8 +1,9 @@
 <template>
   <s-design-system-provider :value="libraryDesignSystem" id="app">
     <header class="header">
-      <s-button class="polkaswap-logo" type="link" size="large" @click="goTo(PageNames.Swap)">
-        <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo--tablet"/>
+      <s-button class="polkaswap-menu" type="action" primary icon="basic-more-horizontal-24" @click="toggleMenu"/>
+      <s-button class="polkaswap-logo polkaswap-logo--tablet" type="link" size="large" @click="goTo(PageNames.Swap)">
+        <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo__image"/>
       </s-button>
       <div class="app-controls s-flex">
         <s-button type="action" class="theme-control s-pressed" @click="switchTheme">
@@ -24,8 +25,11 @@
       </div>
     </header>
     <div class="app-main">
-      <s-scrollbar class="app-sidebar-scrollbar">
+      <s-scrollbar :class="['app-menu', 'app-sidebar-scrollbar', { visible: menuVisibility }]" @click.native="handleAppMenuClick">
         <aside class="app-sidebar">
+          <s-button class="polkaswap-logo" type="link" size="large" @click="goTo(PageNames.Swap)">
+            <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo__image" />
+          </s-button>
           <s-menu
             class="menu"
             mode="vertical"
@@ -172,6 +176,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
 
   showHelpDialog = false
   showSelectLanguageDialog = false
+  menuVisibility = false
 
   switchTheme: AsyncVoidFn = switchTheme
 
@@ -322,6 +327,24 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
     }
 
     this.changePage(name)
+    this.closeMenu()
+  }
+
+  toggleMenu (): void {
+    this.menuVisibility = !this.menuVisibility
+  }
+
+  closeMenu (): void {
+    this.menuVisibility = false
+  }
+
+  handleAppMenuClick (e: Event): void {
+    const target = (e.target as any)
+    const sidebar = !!target.closest('.app-sidebar')
+
+    if (!sidebar) {
+      this.closeMenu()
+    }
   }
 
   private changePage (name: PageNames): void {
@@ -371,12 +394,16 @@ html {
   line-height: var(--s-line-height-base);
 }
 
+ul ul {
+  list-style-type: none;
+}
+
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Sora', sans-serif;
   height: 100vh;
-  min-width: 528px;
+  min-width: $breakpoint_mobile;
   color: var(--s-color-base-content-primary);
   background-color: var(--s-color-utility-body);
   transition: background-color 500ms linear;
@@ -614,10 +641,48 @@ $account-control-name-max-width: 200px;
     position: relative;
   }
 
+  &-menu {
+    display: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+
+    @include mobile {
+      position: fixed;
+      background-color: rgba(42, 23, 31, 0.1);
+      backdrop-filter: blur(4px);
+
+      &.visible {
+        display: block;
+      }
+
+      .app-sidebar {
+        max-width: 50%;
+        background-color: var(--s-color-utility-body);
+        padding: $inner-spacing-mini $inner-spacing-medium;
+        filter: drop-shadow(32px 0px 64px rgba(0, 0, 0, 0.1));
+      }
+    }
+
+    @include large-mobile {
+      display: block;
+      position: relative;
+
+      .app-sidebar {
+        max-width: initial;
+      }
+    }
+
+    @include tablet {
+      right: initial;
+    }
+  }
+
   &-sidebar {
     overflow-x: hidden;
-    margin-right: $basic-spacing-small;
-    width: 70px;
     display: flex;
     flex: 1;
     flex-flow: column nowrap;
@@ -625,6 +690,15 @@ $account-control-name-max-width: 200px;
     padding-top: $inner-spacing-small;
     padding-bottom: $inner-spacing-medium;
     border-right: none;
+
+    .polkaswap-logo {
+      width: 172px;
+      height: 46px;
+
+      @include large-mobile {
+        display: none;
+      }
+    }
   }
 
   &-body {
@@ -651,6 +725,7 @@ $account-control-name-max-width: 200px;
   &-content {
     flex: 1;
     margin: auto;
+
     .app-disclaimer {
       margin-left: auto;
       margin-bottom: $inner-spacing-big;
@@ -680,16 +755,24 @@ $account-control-name-max-width: 200px;
 }
 
 .header {
-  $header-box-shadow: 240px 16px 32px -16px;
-  $header-box-shadow-light: #{$header-box-shadow} #e5dce0;
-  $header-box-shadow-dark: #{$header-box-shadow} rgba(73, 32, 103, 0.5);
   display: flex;
   align-items: center;
-  padding: $inner-spacing-mini $inner-spacing-medium;
+  padding: $inner-spacing-mini;
   min-height: $header-height;
-  box-shadow: $header-box-shadow-light;
-  [design-system-theme="dark"] & {
-    box-shadow: $header-box-shadow-dark;
+  position: relative;
+
+  @include tablet {
+    padding: $inner-spacing-mini $inner-spacing-medium;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    height: 1px;
+    bottom: 0;
+    left: $inner-spacing-medium;
+    right: $inner-spacing-medium;
+    background-color: var(--s-color-base-border-secondary);
   }
 }
 
@@ -713,16 +796,34 @@ $account-control-name-max-width: 200px;
   }
   .menu-link-container {
     display: none;
+
+    @include mobile {
+      display: block;
+    }
+
     .el-menu-item {
       white-space: normal;
     }
   }
   .el-menu-item {
-    padding: $inner-spacing-mini $inner-spacing-mini * 2.5;
+    padding-top: $inner-spacing-mini;
+    padding-bottom: $inner-spacing-mini;
+    padding-left: 0 !important;
+    padding-right: 0;
     height: initial;
     font-size: var(--s-font-size-medium);
     font-weight: 300;
     line-height: var(--s-line-height-medium);
+
+    @include large-mobile {
+      padding-left: $inner-spacing-mini !important;
+      padding-right: $inner-spacing-mini;
+    }
+
+    @include tablet {
+      padding-left: $inner-spacing-mini * 2.5 !important;
+      padding-right: $inner-spacing-mini * 2.5;
+    }
 
     &.menu-item--small {
       font-size: var(--s-font-size-extra-mini);
@@ -736,17 +837,44 @@ $account-control-name-max-width: 200px;
 }
 
 .polkaswap-logo {
-  background-image: url('~@/assets/img/pswap.svg');
   background-size: cover;
   width: var(--s-size-medium);
   height: var(--s-size-medium);
   border-radius: 0;
+
   &.el-button {
     padding: 0;
+    margin: 0;
   }
 
   &--tablet {
-    visibility: hidden;
+    display: none;
+    background-image: url('~@/assets/img/pswap.svg');
+
+    @include large-mobile {
+      display: block;
+    }
+
+    @include tablet {
+      margin-bottom: 0;
+      width: 172px;
+      height: 46px;
+      background-image: none;
+    }
+
+    .polkaswap-logo__image {
+      visibility: hidden;
+
+      @include tablet {
+        visibility: visible;
+      }
+    }
+  }
+}
+
+.polkaswap-menu {
+  @include large-mobile {
+    display: none;
   }
 }
 
@@ -824,34 +952,7 @@ $account-control-name-max-width: 200px;
   }
 }
 
-@include large-mobile {
-  $border-image-light: linear-gradient(#FAF4F8, #D5CDD0, #FAF4F8) 30;
-  $border-image-dark: linear-gradient(180deg, rgba(36, 2, 65, 0) 0%, rgba(36, 2, 65, 0.5) 50.45%, rgba(36, 2, 65, 0) 100%) 30;
-  .app-sidebar {
-    overflow-y: auto;
-    margin-right: 0;
-    width: auto;
-    border-right: 1px solid;
-    border-image: $border-image-light;
-    [design-system-theme="dark"] & {
-      border-image: $border-image-dark;
-    }
-  }
-  .menu .menu-link-container {
-    display: block;
-  }
-}
-
 @include tablet {
-  .polkaswap-logo {
-    margin-bottom: 0;
-    width: 172px;
-    height: 46px;
-    background-image: none;
-    &--tablet {
-      visibility: visible;
-    }
-  }
   .app-footer {
     flex-direction: row;
     padding-right: 22px;
