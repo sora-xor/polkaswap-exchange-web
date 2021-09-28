@@ -51,6 +51,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, State } from 'vuex-class'
 import { components, mixins } from '@soramitsu/soraneo-wallet-web'
+import { Asset } from '@sora-substrate/util'
 
 import TranslationMixin from '@/components/mixins/TranslationMixin'
 import DialogMixin from '@/components/mixins/DialogMixin'
@@ -73,12 +74,12 @@ export default class ConfirmRemoveLiquidity extends Mixins(mixins.NumberFormatte
   @State(state => state[namespace].firstTokenAmount) firstTokenAmount!: string
   @State(state => state[namespace].secondTokenAmount) secondTokenAmount!: string
 
-  @Getter('firstToken', { namespace }) firstToken!: any
-  @Getter('secondToken', { namespace }) secondToken!: any
+  @Getter('firstToken', { namespace }) firstToken!: Asset
+  @Getter('secondToken', { namespace }) secondToken!: Asset
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
 
-  @Getter('price', { namespace: 'prices' }) price!: string | number
-  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string | number
+  @Getter('price', { namespace: 'prices' }) price!: string
+  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
 
   @Getter slippageTolerance!: string
 
