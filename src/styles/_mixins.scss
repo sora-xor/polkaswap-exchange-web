@@ -405,6 +405,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 
   .el-dialog {
     overflow: hidden;
+    height: 42rem;
     &__body {
       padding: $inner-spacing-mini 0 $inner-spacing-big !important;
     }

@@ -68,38 +68,38 @@
             </template>
           </s-input>
         </div>
+        <s-scrollbar v-if="sortedNonWhitelistAccountAssets && sortedNonWhitelistAccountAssets.length > 0" key="filtered" class="token-list-scrollbar">
         <div class="asset-select__info" v-if="alreadyAttached">{{ t('selectToken.custom.alreadyAttached') }}</div>
         <div class="asset-select__info" v-else-if="!customAsset && customAddress">{{ t('selectToken.custom.notFound') }}</div>
-        <div class="add-asset-details" v-if="customAsset">
-          <s-card shadow="always" size="small" border-radius="mini">
-            <div class="add-asset-details_asset">
-              <token-logo :token="customAsset" />
-              <div class="asset-description s-flex">
-                <div class="asset-description_symbol">{{ customAsset.symbol }}</div>
-                <token-address :name="customAsset.name" :symbol="customAsset.symbol" :address="customAsset.address" class="asset-description_info" />
-                <s-card size="mini" :status="assetCardStatus">
-                  <div class="asset-nature">{{ assetNatureText }}</div>
-                </s-card>
+          <div class="add-asset-details" v-if="customAsset">
+            <s-card shadow="always" size="small" border-radius="mini">
+              <div class="add-asset-details_asset">
+                <token-logo :token="customAsset" />
+                <div class="asset-description s-flex">
+                  <div class="asset-description_symbol">{{ customAsset.symbol }}</div>
+                  <token-address :name="customAsset.name" :symbol="customAsset.symbol" :address="customAsset.address" class="asset-description_info" />
+                  <s-card size="mini" :status="assetCardStatus">
+                    <div class="asset-nature">{{ assetNatureText }}</div>
+                  </s-card>
+                </div>
               </div>
-            </div>
-          </s-card>
-          <template v-if="connected">
-            <s-card status="warning" shadow="always" pressed class="add-asset-details_text">
-              <div class="p2">{{ t('addAsset.warningTitle') }}</div>
-              <div class="warning-text p4">{{ t('addAsset.warningMessage') }}</div>
             </s-card>
-            <div class="add-asset-details_confirm">
-              <s-switch v-model="isConfirmed" :disabled="loading" />
-              <span>{{ t('addAsset.understand') }}</span>
-            </div>
-            <s-button class="add-asset-details_action s-typography-button--large" type="primary" :disabled="!customAsset || !isConfirmed || loading" @click="handleAddAsset">
-              {{ t('addAsset.action') }}
-            </s-button>
-          </template>
-        </div>
-        <template v-if="connected && nonWhitelistAccountAssets">
-          <div class="token-list_text">{{ nonWhitelistAccountAssets.length }} {{ t('selectToken.custom.text') }}</div>
-          <s-scrollbar v-if="sortedNonWhitelistAccountAssets && sortedNonWhitelistAccountAssets.length > 0" key="filtered" class="token-list-scrollbar">
+            <template v-if="connected">
+              <s-card status="warning" shadow="always" pressed class="add-asset-details_text">
+                <div class="p2">{{ t('addAsset.warningTitle') }}</div>
+                <div class="warning-text p4">{{ t('addAsset.warningMessage') }}</div>
+              </s-card>
+              <div class="add-asset-details_confirm">
+                <s-switch v-model="isConfirmed" :disabled="loading" />
+                <span>{{ t('addAsset.understand') }}</span>
+              </div>
+              <s-button class="add-asset-details_action s-typography-button--large" type="primary" :disabled="!customAsset || !isConfirmed || loading" @click="handleAddAsset">
+                {{ t('addAsset.action') }}
+              </s-button>
+            </template>
+          </div>
+          <template v-if="connected && nonWhitelistAccountAssets">
+            <div class="token-list_text">{{ nonWhitelistAccountAssets.length }} {{ t('selectToken.custom.text') }}</div>
             <div class="token-list">
               <div v-for="token in sortedNonWhitelistAccountAssets" @click="selectToken(token)" :key="token.address" class="token-item">
                 <s-col>
@@ -129,8 +129,8 @@
                 </div>
               </div>
             </div>
-          </s-scrollbar>
-        </template>
+          </template>
+        </s-scrollbar>
       </s-tab>
     </s-tabs>
   </dialog-base>
@@ -307,7 +307,8 @@ export default class SelectToken extends Mixins(mixins.FormattedAmountMixin, Tra
   @include select-asset;
 }
 .token-list-scrollbar {
-  @include scrollbar(0, 0)
+  @include scrollbar(0, 0);
+  height: 26rem;
 }
 </style>
 
