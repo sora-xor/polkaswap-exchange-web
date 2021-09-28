@@ -20,7 +20,7 @@
             </template>
           </s-input>
         </div>
-        <s-scrollbar v-if="filteredWhitelistTokens && filteredWhitelistTokens.length > 0" key="filtered" class="token-list-scrollbar">
+        <s-scrollbar v-if="filteredWhitelistTokens && filteredWhitelistTokens.length" class="token-list-scrollbar">
           <div class="token-list">
             <div v-for="token in filteredWhitelistTokens" @click="selectToken(token)" :key="token.address" class="token-item">
               <s-col>
@@ -68,9 +68,9 @@
             </template>
           </s-input>
         </div>
-        <s-scrollbar v-if="sortedNonWhitelistAccountAssets && sortedNonWhitelistAccountAssets.length > 0" key="filtered" class="token-list-scrollbar">
-        <div class="asset-select__info" v-if="alreadyAttached">{{ t('selectToken.custom.alreadyAttached') }}</div>
-        <div class="asset-select__info" v-else-if="!customAsset && customAddress">{{ t('selectToken.custom.notFound') }}</div>
+        <s-scrollbar v-if="sortedNonWhitelistAccountAssets && sortedNonWhitelistAccountAssets.length" class="token-list-scrollbar">
+          <div class="asset-select__info" v-if="alreadyAttached">{{ t('selectToken.custom.alreadyAttached') }}</div>
+          <div class="asset-select__info" v-else-if="!customAsset && customAddress">{{ t('selectToken.custom.notFound') }}</div>
           <div class="add-asset-details" v-if="customAsset">
             <s-card shadow="always" size="small" border-radius="mini">
               <div class="add-asset-details_asset">
@@ -308,7 +308,6 @@ export default class SelectToken extends Mixins(mixins.FormattedAmountMixin, Tra
 }
 .token-list-scrollbar {
   @include scrollbar(0, 0);
-  height: $dialog-scrollbar-normal;
 }
 </style>
 
