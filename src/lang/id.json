@@ -796,6 +796,9 @@
         },
         "confirmations": {
             "txReady": "Transaksi Siap Untuk Jembatan"
+        },
+        "tooltips": {
+            "transfer": "Token berhasil dibeli!\n Klik untuk memulai transaksi jembatan"
         }
     }
 }

@@ -796,6 +796,9 @@
         },
         "confirmations": {
             "txReady": "Idunadura Ṣetan Fun Afara"
+        },
+        "tooltips": {
+            "transfer": "Awọn ami ti o ra ni aṣeyọri!\n Tẹ lati bẹrẹ iṣowo afara"
         }
     }
 }

@@ -4,6 +4,7 @@
     size="medium"
     :type="type"
     :icon="icon"
+    :tooltip="tooltip"
     @click="handleClick"
   >
     <span class="moonpay-button-text">{{ text }}</span>
@@ -24,7 +25,7 @@ import { PageNames } from '@/consts'
 export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin, TranslationMixin) {
   @State(state => state.moonpay.readyBridgeTransactionId) readyBridgeTransactionId!: string
   @State(state => state.moonpay.confirmationVisibility) confirmationVisibility!: string
-  @Action('setReadyBridgeTransactionId', { namespace: 'moonpay' }) setReadyBridgeTransactionId!: (id?: string) => Promise<void>
+  @Action('setConfirmationVisibility', { namespace: 'moonpay' }) setConfirmationVisibility!: (flag: boolean) => Promise<void>
 
   get active (): boolean {
     return this.$route.name === PageNames.MoonpayHistory
@@ -46,10 +47,13 @@ export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin, Tra
     return this.isReadyForTransfer ? this.t('moonpay.buttons.transfer') : this.t('moonpay.buttons.history')
   }
 
+  get tooltip (): string {
+    return this.isReadyForTransfer ? this.t('moonpay.tooltips.transfer') : ''
+  }
+
   async handleClick (): Promise<void> {
     if (this.isReadyForTransfer) {
-      await this.setReadyBridgeTransactionId()
-      await this.showHistory(this.readyBridgeTransactionId)
+      await this.setConfirmationVisibility(true)
     } else {
       router.push({ name: PageNames.MoonpayHistory })
     }

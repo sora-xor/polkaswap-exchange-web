@@ -796,6 +796,9 @@
         },
         "confirmations": {
             "txReady": "Transactie klaar voor brug"
+        },
+        "tooltips": {
+            "transfer": "Tokens succesvol gekocht!\n Klik om de overbruggingstransactie te starten"
         }
     }
 }

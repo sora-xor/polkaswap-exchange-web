@@ -9,6 +9,23 @@ export interface MoonpayEVMTransferAssetData {
   to: string; // evm address of recipient
 }
 
+export enum MoonpayTransactionStatus {
+  Completed = 'completed',
+  Failed = 'failed'
+}
+
+export interface MoonpayTransaction {
+  id: string;
+  cryptoTransactionId: string;
+  createdAt: string;
+  updatedAt: string;
+  baseCurrencyId: string;
+  baseCurrencyAmount: number;
+  currencyId: string;
+  quoteCurrencyAmount: number;
+  status: MoonpayTransactionStatus;
+}
+
 export class MoonpayApi {
   public static apiUrl = 'https://api.moonpay.com'
   public publicKey = ''

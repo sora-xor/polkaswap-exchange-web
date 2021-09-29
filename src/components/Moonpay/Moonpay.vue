@@ -14,6 +14,7 @@ import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
 
 import DialogMixin from '@/components/mixins/DialogMixin'
 import DialogBase from '@/components/DialogBase.vue'
+import MoonpayLogo from '@/components/logo/Moonpay.vue'
 
 import MoonpayBridgeInitMixin from './MoonpayBridgeInitMixin'
 
@@ -23,7 +24,7 @@ import { lazyComponent } from '@/router'
 import { Components } from '@/consts'
 import { MoonpayNotifications } from '@/components/Moonpay/consts'
 
-import MoonpayLogo from '@/components/logo/Moonpay.vue'
+import type { MoonpayTransaction } from '@/utils/moonpay'
 
 const namespace = 'moonpay'
 
@@ -41,7 +42,7 @@ export default class Moonpay extends Mixins(DialogMixin, MoonpayBridgeInitMixin)
   @Getter account!: any
   @Getter isLoggedIn!: boolean
   @Getter libraryTheme!: Theme
-  @Getter('lastCompletedTransaction', { namespace }) lastCompletedTransaction!: any
+  @Getter('lastCompletedTransaction', { namespace }) lastCompletedTransaction!: MoonpayTransaction
 
   @State(state => state[namespace].api) moonpayApi!: MoonpayApi
   @State(state => state[namespace].pollingTimestamp) pollingTimestamp!: number
@@ -77,7 +78,7 @@ export default class Moonpay extends Mixins(DialogMixin, MoonpayBridgeInitMixin)
   }
 
   @Watch('lastCompletedTransaction')
-  private async handleLastTransaction (transaction, prevTransaction): Promise<void> {
+  private async handleLastTransaction (transaction: MoonpayTransaction, prevTransaction: MoonpayTransaction): Promise<void> {
     if (!transaction || (prevTransaction && prevTransaction.id === transaction.id)) return
 
     await this.prepareBridgeForTransfer(transaction)
@@ -125,7 +126,7 @@ export default class Moonpay extends Mixins(DialogMixin, MoonpayBridgeInitMixin)
     }
   }
 
-  private async prepareBridgeForTransfer (transaction): Promise<void> {
+  private async prepareBridgeForTransfer (transaction: MoonpayTransaction): Promise<void> {
     try {
       this.closeDialog() // DialogMixin
       this.stopPollingMoonpay()

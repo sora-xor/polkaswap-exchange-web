@@ -587,6 +587,9 @@ export default {
       transfer: 'Start bridge',
       view: 'View bridge transaction'
     },
+    tooltips: {
+      transfer: 'Tokens successfully purchased!\nClick to start the bridge transaction'
+    },
     history: {
       title: 'Purchase history',
       empty: 'No data'

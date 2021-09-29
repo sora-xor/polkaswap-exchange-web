@@ -796,6 +796,9 @@
         },
         "confirmations": {
             "txReady": "Transaction prête pour le pont"
+        },
+        "tooltips": {
+            "transfer": "Jetons achetés avec succès!\n Cliquez pour démarrer la transaction de pont"
         }
     }
 }

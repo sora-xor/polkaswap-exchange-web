@@ -796,6 +796,9 @@
         },
         "confirmations": {
             "txReady": "Transazione pronta per il bridge"
+        },
+        "tooltips": {
+            "transfer": "Token acquistati con successo!\n Fare clic per avviare la transazione ponte"
         }
     }
 }

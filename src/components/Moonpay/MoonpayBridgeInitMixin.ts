@@ -10,6 +10,9 @@ import { MoonpayNotifications } from '@/components/Moonpay/consts'
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
 import LoadingMixin from '@/components/mixins/LoadingMixin'
 
+import type { ApiKeysObject } from '@/store/settings'
+import type { MoonpayTransaction } from '@/utils/moonpay'
+
 const createError = (text: string, notification: MoonpayNotifications) => {
   const error = new Error(text)
   error.name = notification
@@ -19,7 +22,7 @@ const createError = (text: string, notification: MoonpayNotifications) => {
 @Component
 export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, LoadingMixin) {
   @State(state => state.moonpay.api) moonpayApi!: MoonpayApi
-  @State(state => state.settings.apiKeys) apiKeys!: any
+  @State(state => state.settings.apiKeys) apiKeys!: ApiKeysObject
 
   @Action('setAmount', { namespace: 'bridge' }) setAmount!: (value: string) => Promise<void>
   @Action('getEvmNetworkFee', { namespace: 'bridge' }) getEvmNetworkFee!: AsyncVoidFn
@@ -28,8 +31,8 @@ export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, L
   @Action('setTransactionConfirm', { namespace: 'bridge' }) setTransactionConfirm!: (value: boolean) => Promise<void>
   @Action('generateHistoryItem', { namespace: 'bridge' }) generateHistoryItem!: (history: any) => Promise<BridgeHistory>
 
-  @Action('getTransactionTranserData', { namespace: 'moonpay' }) getTransactionTranserData!: (tx: any) => Promise<Nullable<MoonpayEVMTransferAssetData>>
-  @Action('findRegisteredAssetByExternalAddress', { namespace: 'moonpay' }) findRegisteredAssetByExternalAddress!: (data: any) => Promise<Nullable<RegisteredAccountAsset>>
+  @Action('getTransactionTranserData', { namespace: 'moonpay' }) getTransactionTranserData!: (hash: string) => Promise<Nullable<MoonpayEVMTransferAssetData>>
+  @Action('findRegisteredAssetByExternalAddress', { namespace: 'moonpay' }) findRegisteredAssetByExternalAddress!: (address: string) => Promise<Nullable<RegisteredAccountAsset>>
   @Action('setNotificationVisibility', { namespace: 'moonpay' }) setNotificationVisibility!: (flag: boolean) => Promise<void>
   @Action('setNotificationKey', { namespace: 'moonpay' }) setNotificationKey!: (key: string) => Promise<void>
 
@@ -52,7 +55,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, L
    * @param transaction moonpay transaction data
    * @returns string - bridge history item id
    */
-  async checkTxTransferAvailability (transaction): Promise<string> {
+  async checkTxTransferAvailability (transaction: MoonpayTransaction): Promise<string> {
     return await this.withLoading(async () => {
       await this.prepareEvmNetwork()
       // get necessary ethereum transaction data

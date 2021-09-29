@@ -502,18 +502,24 @@ html {
 
   &--history {
     max-width: 134px;
+
+    .moonpay-button-text {
+      display: none;
+
+      @include large-mobile {
+        display: inline-block;
+      }
+    }
   }
 
   &-text {
-    display: none;
     white-space: normal;
     text-align: left;
     letter-spacing: var(--s-letter-spacing-small);
-    padding-left: 6px;
+  }
 
-    @include large-mobile {
-      display: inline-block;
-    }
+  & i + &-text {
+    padding-left: 6px;
   }
 
   &:not(.s-action).s-i-position-left > span > i[class^=s-icon-] {

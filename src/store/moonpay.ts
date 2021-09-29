@@ -9,6 +9,7 @@ import { FPNumber, RegisteredAccountAsset } from '@sora-substrate/util'
 import { MoonpayApi, MoonpayEVMTransferAssetData } from '@/utils/moonpay'
 import ethersUtil from '@/utils/ethers-util'
 import { EthAddress } from '@/consts'
+import type { MoonpayTransaction } from '@/utils/moonpay'
 
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -36,7 +37,7 @@ interface MoonpayState {
   notificationKey: string;
   confirmationVisibility: boolean;
   pollingTimestamp: number;
-  transactions: Array<any>;
+  transactions: Array<MoonpayTransaction>;
   transactionsFetching: boolean;
   readyBridgeTransactionId: string;
   currencies: Array<any>;
@@ -98,7 +99,7 @@ const mutations = {
     }
     state.transactionsFetching = true
   },
-  [types.UPDATE_TRANSACTIONS_SUCCESS] (state: MoonpayState, transactions: Array<any>) {
+  [types.UPDATE_TRANSACTIONS_SUCCESS] (state: MoonpayState, transactions: Array<MoonpayTransaction>) {
     state.transactions = [...transactions]
     state.transactionsFetching = false
   },
@@ -160,7 +161,7 @@ const actions = {
     commit(types.UPDATE_TRANSACTIONS_REQUEST, clearTransactions)
 
     try {
-      const transactions = await state.api.getTransactionsByExtId(rootGetters.account.address)
+      const transactions: Array<MoonpayTransaction> = await state.api.getTransactionsByExtId(rootGetters.account.address)
       console.info('Moonpay: user transactions request')
       commit(types.UPDATE_TRANSACTIONS_SUCCESS, transactions)
     } catch (error) {

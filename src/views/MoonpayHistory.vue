@@ -75,14 +75,15 @@ import { BridgeHistory } from '@sora-substrate/util'
 import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin'
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin'
 import MoonpayBridgeInitMixin from '@/components/Moonpay/MoonpayBridgeInitMixin'
+import MoonpayLogo from '@/components/logo/Moonpay.vue'
 
 import ethersUtil from '@/utils/ethers-util'
-import { MoonpayTransactionStatus } from '@/components/Moonpay/consts'
 import { getCssVariableValue, toQueryString } from '@/utils'
 import { Components } from '@/consts'
 import { lazyComponent } from '@/router'
 
-import MoonpayLogo from '@/components/logo/Moonpay.vue'
+import type { MoonpayTransaction } from '@/utils/moonpay'
+import { MoonpayTransactionStatus } from '@/utils/moonpay'
 
 const namespace = 'moonpay'
 
@@ -100,7 +101,7 @@ const DetailsView = 'details'
 export default class MoonpayHistory extends Mixins(PaginationSearchMixin, MoonpayBridgeInitMixin, BridgeHistoryMixin) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate
 
-  @State(state => state[namespace].transactions) transactions!: Array<any>
+  @State(state => state[namespace].transactions) transactions!: Array<MoonpayTransaction>
   @State(state => state.settings.language) language!: string
   @State(state => state.bridge.history) bridgeHistory!: Array<BridgeHistory>
   @Getter libraryTheme!: Theme
@@ -155,7 +156,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
     return this.transactions.length === 0
   }
 
-  get historyItems (): Array<any> {
+  get historyItems (): Array<MoonpayTransaction> {
     return this.getPageItems(this.transactions)
   }
 

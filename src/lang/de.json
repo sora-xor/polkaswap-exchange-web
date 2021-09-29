@@ -124,7 +124,7 @@
             "transferable": "Übertragbar",
             "frozen": "Eingefroren",
             "locked": "- Gesperrt",
-            "reserved": "- Reserviert",
+            "reserved": " Reserviert",
             "total": "Gesamt"
         },
         "totalAssetsValue": "Gesamtwert deiner Assets:"
@@ -444,8 +444,8 @@
         "connectWallet": "@:connectWalletText",
         "connectToWallet": "Verbinde ein Konto, um deine Liquidität zu sehen.",
         "liquidityNotFound": "Keine Liquidität gefunden.",
-        "addLiquidity": "Hinzufügen",
-        "removeLiquidity": "Entfernen",
+        "addLiquidity": "Liquidität hinzufügen",
+        "removeLiquidity": "Liquidität entfernen",
         "createPair": "Erstelle ein Paar",
         "pooledToken": "{tokenSymbol} gepoolt",
         "pairTokens": "{pair} Pool-Token",
@@ -786,9 +786,9 @@
         },
         "buttons": {
             "buy": "Token kaufen",
-            "history": "Transaktionsverlauf",
+            "history": "Kaufhistorie",
             "transfer": "Bridge starten",
-            "view": "Transaktion ansehen"
+            "view": "Bridge-Transaktion ansehen"
         },
         "history": {
             "title": "Kaufhistorie",
@@ -796,6 +796,9 @@
         },
         "confirmations": {
             "txReady": "Transaktion bereit für Bridge"
+        },
+        "tooltips": {
+            "transfer": "Token erfolgreich gekauft!\n Klicken Sie hier, um die Überbrückungstransaktion zu starten"
         }
     }
 }

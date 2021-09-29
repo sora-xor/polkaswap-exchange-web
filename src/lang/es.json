@@ -796,6 +796,9 @@
         },
         "confirmations": {
             "txReady": "Transacción lista para el puente"
+        },
+        "tooltips": {
+            "transfer": "¡Fichas compradas con éxito!\n Haga clic para iniciar la transacción puente"
         }
     }
 }

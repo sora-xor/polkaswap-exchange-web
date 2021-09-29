@@ -13,6 +13,10 @@ import { ConnectToNodeOptions } from '@/types/nodes'
 import { getLocale, getSupportedLocale, setI18nLocale } from '@/lang'
 import { updateFpNumberLocale, updateDocumentTitle } from '@/utils'
 
+export type ApiKeysObject = {
+  [key: string]: string;
+}
+
 const NODE_CONNECTION_TIMEOUT = 60000
 
 const types = flow(
