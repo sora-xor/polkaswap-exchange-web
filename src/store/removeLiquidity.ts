@@ -12,6 +12,7 @@ import { ZeroStringValue } from '@/consts'
 const types = flow(
   flatMap(x => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
+    'SET_LIQUIDITY_TOKENS_ADDRESSES',
     'SET_REMOVE_PART',
     'SET_LIQUIDITY_AMOUNT',
     'SET_FIRST_TOKEN_AMOUNT',
@@ -21,13 +22,13 @@ const types = flow(
   map(x => [x, x]),
   fromPairs
 )([
-  'GET_LIQUIDITY',
   'GET_LIQUIDITY_RESERVE',
   'GET_TOTAL_SUPPLY'
 ])
 
 interface RemoveLiquidityState {
-  liquidity: Nullable<any>;
+  firstTokenAddress: string;
+  secondTokenAddress: string;
   removePart: number;
   liquidityAmount: string;
   firstTokenAmount: string;
@@ -40,7 +41,8 @@ interface RemoveLiquidityState {
 
 function initialState (): RemoveLiquidityState {
   return {
-    liquidity: null,
+    firstTokenAddress: '',
+    secondTokenAddress: '',
     removePart: 0,
     liquidityAmount: '',
     firstTokenAmount: '',
@@ -55,67 +57,34 @@ function initialState (): RemoveLiquidityState {
 const state = initialState()
 
 const getters = {
-  focusedField (state: RemoveLiquidityState) {
-    return state.focusedField
+  liquidity (state: RemoveLiquidityState, getters, rootState, rootGetters) {
+    return rootGetters['pool/accountLiquidity'].find(liquidity =>
+      liquidity.firstAddress === state.firstTokenAddress &&
+      liquidity.secondAddress === state.secondTokenAddress
+    )
   },
-  liquidity (state: RemoveLiquidityState) {
-    return state.liquidity
+  liquidityBalance (state: RemoveLiquidityState, getters) {
+    return getters.liquidity?.balance ?? ZeroStringValue
   },
-  liquidityBalance (state: RemoveLiquidityState) {
-    return state.liquidity?.balance ?? ZeroStringValue
-  },
-  liquidityDecimals (state: RemoveLiquidityState) {
-    return state.liquidity?.decimals ?? 0
-  },
-  firstTokenBalance (state: RemoveLiquidityState) {
-    return state.liquidity?.firstBalance ?? ZeroStringValue
-  },
-  secondTokenBalance (state: RemoveLiquidityState) {
-    return state.liquidity?.secondBalance ?? ZeroStringValue
+  liquidityDecimals (state: RemoveLiquidityState, getters) {
+    return getters.liquidity?.decimals ?? 0
   },
   firstToken (state: RemoveLiquidityState, getters, rootGetters) {
-    return state.liquidity && rootGetters.assets.assets ? rootGetters.assets.assets.find(t => t.address === state.liquidity.firstAddress) || {} : {}
+    return getters.liquidity && rootGetters.assets.assets ? rootGetters.assets.assets.find(t => t.address === getters.liquidity.firstAddress) || {} : {}
   },
   secondToken (state: RemoveLiquidityState, getters, rootGetters) {
-    return state.liquidity && rootGetters.assets.assets ? rootGetters.assets.assets.find(t => t.address === state.liquidity.secondAddress) || {} : {}
+    return getters.liquidity && rootGetters.assets.assets ? rootGetters.assets.assets.find(t => t.address === getters.liquidity.secondAddress) || {} : {}
   },
-  firstTokenDecimals (state: RemoveLiquidityState, getters) {
-    return getters.firstToken.decimals || 0
+  firstTokenBalance (state: RemoveLiquidityState, getters) {
+    return getters.liquidity?.firstBalance ?? ZeroStringValue
   },
-  secondTokenDecimals (state: RemoveLiquidityState, getters) {
-    return getters.secondToken.decimals || 0
-  },
-  firstTokenAddress (state: RemoveLiquidityState, getters) {
-    return getters.firstToken.address || ''
-  },
-  secondTokenAddress (state: RemoveLiquidityState, getters) {
-    return getters.secondToken.address || ''
-  },
-  removePart (state: RemoveLiquidityState) {
-    return state.removePart
-  },
-  liquidityAmount (state: RemoveLiquidityState) {
-    return state.liquidityAmount
-  },
-  firstTokenAmount (state: RemoveLiquidityState) {
-    return state.firstTokenAmount
-  },
-  secondTokenAmount (state: RemoveLiquidityState) {
-    return state.secondTokenAmount
-  },
-  reserveA (state: RemoveLiquidityState) {
-    return state.reserveA
-  },
-  reserveB (state: RemoveLiquidityState) {
-    return state.reserveB
-  },
-  totalSupply (state: RemoveLiquidityState) {
-    return state.totalSupply
+  secondTokenBalance (state: RemoveLiquidityState, getters) {
+    return getters.liquidity?.secondBalance ?? ZeroStringValue
   },
   shareOfPool (state: RemoveLiquidityState, getters) {
     const balance = FPNumber.fromCodecValue(getters.liquidityBalance)
     const removed = new FPNumber(state.liquidityAmount ?? 0)
-    const totalSupply = FPNumber.fromCodecValue(getters.totalSupply)
+    const totalSupply = FPNumber.fromCodecValue(state.totalSupply)
     const totalSupplyAfter = totalSupply.sub(removed)
 
     if (balance.isZero() || totalSupply.isZero() || totalSupplyAfter.isZero()) return ZeroStringValue
@@ -125,62 +94,56 @@ const getters = {
 }
 
 const mutations = {
-  [types.GET_LIQUIDITY_REQUEST] (state) {
+  [types.SET_LIQUIDITY_TOKENS_ADDRESSES] (state: RemoveLiquidityState, { firstAddress, secondAddress }: { firstAddress: string; secondAddress: string }) {
+    state.firstTokenAddress = firstAddress
+    state.secondTokenAddress = secondAddress
   },
-  [types.GET_LIQUIDITY_SUCCESS] (state, liquidity) {
-    state.liquidity = liquidity
-  },
-  [types.GET_LIQUIDITY_FAILURE] (state, error) {
-  },
-  [types.SET_REMOVE_PART] (state, removePart = 0) {
+  [types.SET_REMOVE_PART] (state: RemoveLiquidityState, removePart = 0) {
     state.removePart = removePart
   },
-  [types.SET_LIQUIDITY_AMOUNT] (state, liquidityAmount = '') {
+  [types.SET_LIQUIDITY_AMOUNT] (state: RemoveLiquidityState, liquidityAmount = '') {
     state.liquidityAmount = liquidityAmount
   },
-  [types.SET_FIRST_TOKEN_AMOUNT] (state, firstTokenAmount = '') {
+  [types.SET_FIRST_TOKEN_AMOUNT] (state: RemoveLiquidityState, firstTokenAmount = '') {
     state.firstTokenAmount = firstTokenAmount
   },
-  [types.SET_SECOND_TOKEN_AMOUNT] (state, secondTokenAmount = '') {
+  [types.SET_SECOND_TOKEN_AMOUNT] (state: RemoveLiquidityState, secondTokenAmount = '') {
     state.secondTokenAmount = secondTokenAmount
   },
-  [types.GET_TOTAL_SUPPLY_REQUEST] (state) {
+  [types.GET_TOTAL_SUPPLY_REQUEST] (state: RemoveLiquidityState) {
   },
-  [types.GET_TOTAL_SUPPLY_SUCCESS] (state, totalSupply) {
+  [types.GET_TOTAL_SUPPLY_SUCCESS] (state: RemoveLiquidityState, totalSupply: CodecString) {
     state.totalSupply = totalSupply
   },
-  [types.GET_TOTAL_SUPPLY_FAILURE] (state, error) {
+  [types.GET_TOTAL_SUPPLY_FAILURE] (state: RemoveLiquidityState) {
     state.totalSupply = ZeroStringValue
   },
-  [types.GET_LIQUIDITY_RESERVE_REQUEST] (state) {
+  [types.GET_LIQUIDITY_RESERVE_REQUEST] (state: RemoveLiquidityState) {
   },
-  [types.GET_LIQUIDITY_RESERVE_SUCCESS] (state, { reserveA, reserveB }) {
+  [types.GET_LIQUIDITY_RESERVE_SUCCESS] (state: RemoveLiquidityState, { reserveA, reserveB }) {
     state.reserveA = reserveA
     state.reserveB = reserveB
   },
-  [types.GET_LIQUIDITY_RESERVE_FAILURE] (state, error) {
+  [types.GET_LIQUIDITY_RESERVE_FAILURE] (state: RemoveLiquidityState, error) {
   },
-  [types.SET_FOCUSED_FIELD] (state, field) {
+  [types.SET_FOCUSED_FIELD] (state: RemoveLiquidityState, field: string) {
     state.focusedField = field
   }
 }
 
 const actions = {
-  async getLiquidity ({ commit, dispatch }, { firstAddress, secondAddress }) {
-    commit(types.GET_LIQUIDITY_REQUEST)
-
+  async setLiquidity ({ commit, dispatch }, { firstAddress, secondAddress }: { firstAddress: string; secondAddress: string }) {
     try {
-      const liquidity = api.accountLiquidity.find(liquidity => liquidity.firstAddress === firstAddress && liquidity.secondAddress === secondAddress)
+      commit(types.SET_LIQUIDITY_TOKENS_ADDRESSES, { firstAddress, secondAddress })
 
-      commit(types.GET_LIQUIDITY_SUCCESS, liquidity)
-      dispatch('getRemoveLiquidityData')
+      await dispatch('getRemoveLiquidityData')
     } catch (error) {
-      commit(types.GET_LIQUIDITY_FAILURE)
+      console.error(error)
     }
   },
 
-  setRemovePart ({ commit, getters, dispatch }, removePart) {
-    if (!getters.focusedField || getters.focusedField === 'removePart') {
+  setRemovePart ({ commit, getters, dispatch, state }, removePart: number) {
+    if (!state.focusedField || state.focusedField === 'removePart') {
       commit(types.SET_FOCUSED_FIELD, 'removePart')
       const part = new FPNumber(Math.round(removePart))
 
@@ -201,11 +164,11 @@ const actions = {
     }
   },
 
-  setFirstTokenAmount ({ commit, getters, dispatch }, firstTokenAmount) {
-    if (!getters.focusedField || getters.focusedField === 'firstTokenAmount') {
+  setFirstTokenAmount ({ commit, getters, dispatch, state }, firstTokenAmount: string) {
+    if (!state.focusedField || state.focusedField === 'firstTokenAmount') {
       commit(types.SET_FOCUSED_FIELD, 'firstTokenAmount')
       if (firstTokenAmount) {
-        if (firstTokenAmount !== getters.firstTokenAmount && !Number.isNaN(firstTokenAmount)) {
+        if (!Number.isNaN(firstTokenAmount)) {
           const part = new FPNumber(firstTokenAmount).div(FPNumber.fromCodecValue(getters.firstTokenBalance))
           commit(types.SET_REMOVE_PART, Math.round(part.mul(FPNumber.HUNDRED).toNumber()))
           commit(types.SET_LIQUIDITY_AMOUNT, part.mul(FPNumber.fromCodecValue(getters.liquidityBalance)).toString())
@@ -218,13 +181,12 @@ const actions = {
       dispatch('getRemoveLiquidityData')
     }
   },
-  setSecondTokenAmount ({ commit, getters, dispatch }, secondTokenAmount) {
-    if (!getters.focusedField || getters.focusedField === 'secondTokenAmount') {
+  setSecondTokenAmount ({ commit, getters, dispatch, state }, secondTokenAmount: string) {
+    if (!state.focusedField || state.focusedField === 'secondTokenAmount') {
       commit(types.SET_FOCUSED_FIELD, 'secondTokenAmount')
       if (secondTokenAmount) {
-        if (Number(secondTokenAmount) !== getters.secondTokenAmount && !Number.isNaN(secondTokenAmount)) {
+        if (!Number.isNaN(secondTokenAmount)) {
           const part = new FPNumber(secondTokenAmount).div(FPNumber.fromCodecValue(getters.secondTokenBalance))
-
           commit(types.SET_REMOVE_PART, Math.round(part.mul(FPNumber.HUNDRED).toNumber()))
           commit(types.SET_LIQUIDITY_AMOUNT, part.mul(FPNumber.fromCodecValue(getters.liquidityBalance)).toString())
           commit(types.SET_FIRST_TOKEN_AMOUNT, part.mul(FPNumber.fromCodecValue(getters.firstTokenBalance)).toString())
@@ -233,16 +195,15 @@ const actions = {
       } else {
         commit(types.SET_SECOND_TOKEN_AMOUNT)
       }
-
       dispatch('getRemoveLiquidityData')
     }
   },
 
-  setFocusedField ({ commit }, focusedField) {
+  setFocusedField ({ commit }, focusedField: string) {
     commit(types.SET_FOCUSED_FIELD, focusedField)
   },
 
-  async resetFocusedField ({ commit, dispatch }): Promise<void> {
+  async resetFocusedField ({ dispatch }): Promise<void> {
     await dispatch('setFocusedField', null)
   },
 
@@ -251,42 +212,43 @@ const actions = {
     await dispatch('getTotalSupply')
   }, 500, { leading: true }),
 
-  async getLiquidityReserves ({ commit, getters }) {
+  async getLiquidityReserves ({ commit, state }) {
     try {
       commit(types.GET_LIQUIDITY_RESERVE_REQUEST)
-      const [reserveA, reserveB] = await api.getLiquidityReserves(getters.firstTokenAddress, getters.secondTokenAddress)
+      const [reserveA, reserveB] = await api.getLiquidityReserves(state.firstTokenAddress, state.secondTokenAddress)
       commit(types.GET_LIQUIDITY_RESERVE_SUCCESS, { reserveA, reserveB })
     } catch (error) {
       commit(types.GET_LIQUIDITY_RESERVE_FAILURE, error)
     }
   },
 
-  async getTotalSupply ({ commit, getters }) {
+  async getTotalSupply ({ commit, state }) {
     try {
       commit(types.GET_TOTAL_SUPPLY_REQUEST)
       const [_, pts] = await api.estimatePoolTokensMinted(
-        getters.firstTokenAddress,
-        getters.secondTokenAddress,
-        getters.firstTokenAmount,
-        getters.secondTokenAmount,
-        getters.reserveA,
-        getters.reserveB
+        state.firstTokenAddress,
+        state.secondTokenAddress,
+        state.firstTokenAmount,
+        state.secondTokenAmount,
+        state.reserveA,
+        state.reserveB
       )
 
       commit(types.GET_TOTAL_SUPPLY_SUCCESS, pts)
     } catch (error) {
-      commit(types.GET_TOTAL_SUPPLY_FAILURE, error)
+      console.error(error)
+      commit(types.GET_TOTAL_SUPPLY_FAILURE)
     }
   },
 
-  async removeLiquidity ({ commit, getters, rootGetters }) {
+  async removeLiquidity ({ rootGetters, state }) {
     await api.removeLiquidity(
-      getters.firstTokenAddress,
-      getters.secondTokenAddress,
-      getters.liquidityAmount,
-      getters.reserveA,
-      getters.reserveB,
-      getters.totalSupply,
+      state.firstTokenAddress,
+      state.secondTokenAddress,
+      state.liquidityAmount,
+      state.reserveA,
+      state.reserveB,
+      state.totalSupply,
       rootGetters.slippageTolerance
     )
   },
