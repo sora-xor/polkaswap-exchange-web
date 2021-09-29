@@ -20,7 +20,7 @@
             </template>
           </s-input>
         </div>
-        <s-scrollbar v-if="filteredWhitelistTokens && filteredWhitelistTokens.length > 0" key="filtered" class="token-list-scrollbar">
+        <s-scrollbar v-if="filteredWhitelistTokens.length" class="token-list-scrollbar">
           <div class="token-list">
             <div v-for="token in filteredWhitelistTokens" @click="selectToken(token)" :key="token.address" class="token-item">
               <s-col>
@@ -68,67 +68,69 @@
             </template>
           </s-input>
         </div>
-        <div class="asset-select__info" v-if="alreadyAttached">{{ t('selectToken.custom.alreadyAttached') }}</div>
-        <div class="asset-select__info" v-else-if="!customAsset && customAddress">{{ t('selectToken.custom.notFound') }}</div>
-        <div class="add-asset-details" v-if="customAsset">
-          <s-card shadow="always" size="small" border-radius="mini">
-            <div class="add-asset-details_asset">
-              <token-logo :token="customAsset" />
-              <div class="asset-description s-flex">
-                <div class="asset-description_symbol">{{ customAsset.symbol }}</div>
-                <token-address :name="customAsset.name" :symbol="customAsset.symbol" :address="customAsset.address" class="asset-description_info" />
-                <s-card size="mini" :status="assetCardStatus">
-                  <div class="asset-nature">{{ assetNatureText }}</div>
-                </s-card>
+        <s-scrollbar v-if="sortedNonWhitelistAccountAssets.length" :key="'filtered' + sortedNonWhitelistAccountAssets.length" class="token-list-scrollbar">
+          <div class="asset-select__info" v-if="alreadyAttached">{{ t('selectToken.custom.alreadyAttached') }}</div>
+          <div class="asset-select__info" v-else-if="!customAsset && customAddress">{{ t('selectToken.custom.notFound') }}</div>
+          <div class="add-asset-details" v-if="customAsset">
+            <s-card shadow="always" size="small" border-radius="mini">
+              <div class="add-asset-details_asset">
+                <token-logo :token="customAsset" />
+                <div class="asset-description s-flex">
+                  <div class="asset-description_symbol">{{ customAsset.symbol }}</div>
+                  <token-address :name="customAsset.name" :symbol="customAsset.symbol" :address="customAsset.address" class="asset-description_info" />
+                  <s-card size="mini" :status="assetCardStatus">
+                    <div class="asset-nature">{{ assetNatureText }}</div>
+                  </s-card>
+                </div>
               </div>
-            </div>
-          </s-card>
-          <template v-if="connected">
-            <s-card status="warning" shadow="always" pressed class="add-asset-details_text">
-              <div class="p2">{{ t('addAsset.warningTitle') }}</div>
-              <div class="warning-text p4">{{ t('addAsset.warningMessage') }}</div>
             </s-card>
-            <div class="add-asset-details_confirm">
-              <s-switch v-model="isConfirmed" :disabled="loading" />
-              <span>{{ t('addAsset.understand') }}</span>
-            </div>
-            <s-button class="add-asset-details_action s-typography-button--large" type="primary" :disabled="!customAsset || !isConfirmed || loading" @click="handleAddAsset">
-              {{ t('addAsset.action') }}
-            </s-button>
-          </template>
-        </div>
-        <template v-if="connected && nonWhitelistAccountAssets">
-          <div class="token-list_text">{{ nonWhitelistAccountAssets.length }} {{ t('selectToken.custom.text') }}</div>
-          <div class="token-list">
-            <div v-for="token in sortedNonWhitelistAccountAssets" @click="selectToken(token)" :key="token.address" class="token-item">
-              <s-col>
-                <s-row flex justify="start" align="middle">
-                  <token-logo :token="token" />
-                  <div class="token-item__info s-flex">
-                    <div class="token-item__symbol">{{ token.symbol }}</div>
-                    <token-address :name="token.name" :symbol="token.symbol" :address="token.address" class="token-item__details" />
-                  </div>
-                </s-row>
-              </s-col>
-              <div v-if="connected" class="token-item__balance-container">
-                <formatted-amount-with-fiat-value
-                  v-if="formatBalance(token) !== formattedZeroSymbol"
-                  value-class="token-item__balance"
-                  :value="formatBalance(token)"
-                  :font-size-rate="FontSizeRate.MEDIUM"
-                  :has-fiat-value="shouldFiatBeShown(token)"
-                  :fiat-value="getFiatBalance(token)"
-                  :fiat-font-size-rate="FontSizeRate.MEDIUM"
-                  :fiat-font-weight-rate="FontWeightRate.MEDIUM"
-                />
-                <span v-else class="token-item__balance">{{ formattedZeroSymbol }}</span>
+            <template v-if="connected">
+              <s-card status="warning" shadow="always" pressed class="add-asset-details_text">
+                <div class="p2">{{ t('addAsset.warningTitle') }}</div>
+                <div class="warning-text p4">{{ t('addAsset.warningMessage') }}</div>
+              </s-card>
+              <div class="add-asset-details_confirm">
+                <s-switch v-model="isConfirmed" :disabled="loading" />
+                <span>{{ t('addAsset.understand') }}</span>
               </div>
-              <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
-                <s-icon name="basic-trash-24" />
-              </div>
-            </div>
+              <s-button class="add-asset-details_action s-typography-button--large" type="primary" :disabled="!customAsset || !isConfirmed || loading" @click="handleAddAsset">
+                {{ t('addAsset.action') }}
+              </s-button>
+            </template>
           </div>
-        </template>
+          <template v-if="connected && nonWhitelistAccountAssets">
+            <div class="token-list_text">{{ nonWhitelistAccountAssets.length }} {{ t('selectToken.custom.text') }}</div>
+            <div class="token-list" :class="customAsset && 'token-list--with-input'">
+              <div v-for="token in sortedNonWhitelistAccountAssets" @click="selectToken(token)" :key="token.address" class="token-item">
+                <s-col>
+                  <s-row flex justify="start" align="middle">
+                    <token-logo :token="token" />
+                    <div class="token-item__info s-flex">
+                      <div class="token-item__symbol">{{ token.symbol }}</div>
+                      <token-address :name="token.name" :symbol="token.symbol" :address="token.address" class="token-item__details" />
+                    </div>
+                  </s-row>
+                </s-col>
+                <div v-if="connected" class="token-item__balance-container">
+                  <formatted-amount-with-fiat-value
+                    v-if="formatBalance(token) !== formattedZeroSymbol"
+                    value-class="token-item__balance"
+                    :value="formatBalance(token)"
+                    :font-size-rate="FontSizeRate.MEDIUM"
+                    :has-fiat-value="shouldFiatBeShown(token)"
+                    :fiat-value="getFiatBalance(token)"
+                    :fiat-font-size-rate="FontSizeRate.MEDIUM"
+                    :fiat-font-weight-rate="FontWeightRate.MEDIUM"
+                  />
+                  <span v-else class="token-item__balance">{{ formattedZeroSymbol }}</span>
+                </div>
+                <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
+                  <s-icon name="basic-trash-24" />
+                </div>
+              </div>
+            </div>
+          </template>
+        </s-scrollbar>
       </s-tab>
     </s-tabs>
   </dialog-base>
@@ -338,7 +340,10 @@ export default class SelectToken extends Mixins(mixins.FormattedAmountMixin, Tra
   }
 }
 .token-list {
-  max-height: calc(#{$select-asset-item-height} * 7);
+  max-height: calc(#{$select-asset-item-height} * 6);
+  &--with-input {
+    max-height: calc(#{$select-asset-item-height} * 2);
+  }
 
   &__empty {
     display: flex;
