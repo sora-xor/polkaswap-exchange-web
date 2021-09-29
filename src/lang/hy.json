@@ -274,7 +274,8 @@
         "telegram": "Telegram (Տելեգրամ)",
         "medium": "Միջին",
         "reddit": "Reddit(Րեդդիթ)",
-        "github": "GitHub(Գիթհաբ)"
+        "github": "GitHub(Գիթհաբ)",
+        "wiki": "@:soraText Վիքին"
     },
     "footerMenu": {
         "faucet": "Faucet(Ֆասեթ)",
@@ -796,6 +797,9 @@
         },
         "confirmations": {
             "txReady": "Գործարքը պատրաստ է կամրջի համար"
+        },
+        "tooltips": {
+            "transfer": "Նշանները հաջողությամբ գնվեցին\n Կտտացրեք կամուրջի գործարքը սկսելու համար"
         }
     }
 }

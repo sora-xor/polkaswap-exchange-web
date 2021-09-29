@@ -204,8 +204,8 @@
         "amount2": "@:amountText 2",
         "fee": "Transakční poplatek",
         "total": "Celkem",
-        "from": "Od",
-        "to": "Komu",
+        "from": "Z",
+        "to": "Na",
         "successCopy": "{value} je zkopírováno do schránky",
         "copy": "Kopírovat {value}",
         "history": {
@@ -274,7 +274,8 @@
         "telegram": "Telegram",
         "medium": "Medium",
         "reddit": "Reddit",
-        "github": "GitHub"
+        "github": "GitHub",
+        "wiki": "@:soraText Wiki"
     },
     "footerMenu": {
         "faucet": "Faucet",
@@ -343,8 +344,8 @@
         "enterAmount": "Zadat částku"
     },
     "transfers": {
-        "from": "Od",
-        "to": "Komu"
+        "from": "Z",
+        "to": "Na"
     },
     "pageNotFound": {
         "title": "Stránka nenalezena",
@@ -506,7 +507,7 @@
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
-        "details": "{from} pro {to}",
+        "details": "{from} za {to}",
         "for": " pro ",
         "steps": {
             "step": "{step} ze 2",
@@ -796,6 +797,9 @@
         },
         "confirmations": {
             "txReady": "Transakce připravena pro Bridge"
+        },
+        "tooltips": {
+            "transfer": "Tokeny byly úspěšně zakoupeny!\n Kliknutím spustíte překlenovací transakci"
         }
     }
 }

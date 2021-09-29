@@ -274,7 +274,8 @@
         "telegram": "Telegram",
         "medium": "Medium",
         "reddit": "Reddit",
-        "github": "GitHub"
+        "github": "GitHub",
+        "wiki": "@:soraText Wiki"
     },
     "footerMenu": {
         "faucet": "Robinet",
@@ -796,6 +797,9 @@
         },
         "confirmations": {
             "txReady": "Transaction prête pour le pont"
+        },
+        "tooltips": {
+            "transfer": "Jetons achetés avec succès!\n Cliquez pour démarrer la transaction de pont"
         }
     }
 }

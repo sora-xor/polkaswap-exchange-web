@@ -274,7 +274,8 @@
         "telegram": "Telegram",
         "medium": "Medium",
         "reddit": "Reddit",
-        "github": "GitHub"
+        "github": "GitHub",
+        "wiki": "@:soraText Wiki"
     },
     "footerMenu": {
         "faucet": "Faucet",
@@ -796,6 +797,9 @@
         },
         "confirmations": {
             "txReady": "Transaksjon klar for bro"
+        },
+        "tooltips": {
+            "transfer": "Tokens er kjøpt!\n Klikk for å starte brotransaksjonen"
         }
     }
 }
