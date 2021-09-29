@@ -18,7 +18,7 @@
       >
         <div slot="top" class="amount">{{ t('removeLiquidity.amount') }}</div>
         <div slot="right"><span class="percent">%</span></div>
-        <s-slider slot="bottom" :value="removePartInput" :showTooltip="false" @change="handleRemovePartChange" />
+        <s-slider slot="bottom" class="slider-container" :value="removePartInput" :showTooltip="false" @change="handleRemovePartChange" />
       </s-float-input>
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
       <s-float-input
@@ -124,8 +124,8 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
-import { FPNumber, KnownSymbols, AccountLiquidity, CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util'
+import { Action, Getter, State } from 'vuex-class'
+import { FPNumber, KnownSymbols, AccountLiquidity, CodecString, Operation, NetworkFeesObject, Asset, AccountAsset } from '@sora-substrate/util'
 import { components, mixins } from '@soramitsu/soraneo-wallet-web'
 
 import TransactionMixin from '@/components/mixins/TransactionMixin'
@@ -133,7 +133,7 @@ import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin'
 
 import router, { lazyComponent } from '@/router'
 import { Components, PageNames } from '@/consts'
-import { hasInsufficientXorForFee, formatAssetBalance } from '@/utils'
+import { hasInsufficientXorForFee } from '@/utils'
 
 const namespace = 'removeLiquidity'
 
@@ -154,32 +154,62 @@ export default class RemoveLiquidity extends Mixins(mixins.FormattedAmountMixin,
 
   @Getter networkFees!: NetworkFeesObject
 
-  @Getter('focusedField', { namespace }) focusedField!: Nullable<string>
+  @State(state => state[namespace].liquidityAmount) liquidityAmount!: string
+  @State(state => state[namespace].firstTokenAmount) firstTokenAmount!: string
+  @State(state => state[namespace].secondTokenAmount) secondTokenAmount!: string
+  @State(state => state[namespace].removePart) removePart!: number
+  @State(state => state[namespace].focusedField) focusedField!: string
+
   @Getter('liquidity', { namespace }) liquidity!: AccountLiquidity
-  @Getter('firstToken', { namespace }) firstToken!: any
-  @Getter('secondToken', { namespace }) secondToken!: any
-  @Getter('removePart', { namespace }) removePart!: any
+  @Getter('firstToken', { namespace }) firstToken!: Asset
+  @Getter('secondToken', { namespace }) secondToken!: Asset
   @Getter('liquidityBalance', { namespace }) liquidityBalance!: CodecString
-  @Getter('liquidityAmount', { namespace }) liquidityAmount!: any
-  @Getter('firstTokenAmount', { namespace }) firstTokenAmount!: any
   @Getter('firstTokenBalance', { namespace }) firstTokenBalance!: CodecString
-  @Getter('secondTokenAmount', { namespace }) secondTokenAmount!: any
   @Getter('secondTokenBalance', { namespace }) secondTokenBalance!: CodecString
   @Getter('shareOfPool', { namespace }) shareOfPool!: string
-  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any
+  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset
   @Getter('price', { namespace: 'prices' }) price!: string
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
 
-  @Action('getLiquidity', { namespace }) getLiquidity
-  @Action('setRemovePart', { namespace }) setRemovePart
-  @Action('setFirstTokenAmount', { namespace }) setFirstTokenAmount
-  @Action('setSecondTokenAmount', { namespace }) setSecondTokenAmount
-  @Action('setFocusedField', { namespace }) setFocusedField
-  @Action('resetFocusedField', { namespace }) resetFocusedField
-  @Action('removeLiquidity', { namespace }) removeLiquidity
+  @Action('setLiquidity', { namespace }) setLiquidity!: ({ firstAddress, secondAddress }: { firstAddress: string; secondAddress: string }) => Promise<void>
+  @Action('setRemovePart', { namespace }) setRemovePart!: (removePart: number) => Promise<void>
+  @Action('setFirstTokenAmount', { namespace }) setFirstTokenAmount!: (amount: string) => Promise<void>
+  @Action('setSecondTokenAmount', { namespace }) setSecondTokenAmount!: (amount: string) => Promise<void>
+  @Action('setFocusedField', { namespace }) setFocusedField!: (field: string) => Promise<void>
+  @Action('resetFocusedField', { namespace }) resetFocusedField!: AsyncVoidFn
+  @Action('removeLiquidity', { namespace }) removeLiquidity!: AsyncVoidFn
   @Action('resetData', { namespace }) resetData!: AsyncVoidFn
-  @Action('getPrices', { namespace: 'prices' }) getPrices
+  @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>
   @Action('resetPrices', { namespace: 'prices' }) resetPrices!: AsyncVoidFn
+
+  @Watch('removePart')
+  private removePartChange (newValue: number): void {
+    this.handleRemovePartChange(String(newValue))
+  }
+
+  @Watch('liquidity')
+  private liquidityChange (): void {
+    this.updatePrices()
+
+    switch (this.focusedField) {
+      case 'firstTokenAmount':
+      case 'secondTokenAmount': {
+        const isFirstToken = this.focusedField === 'firstTokenAmount'
+
+        const balance = Number(this.getTokenMaxAmount(isFirstToken ? this.firstTokenBalance : this.secondTokenBalance))
+        const amount = Number(isFirstToken ? this.firstTokenAmount : this.secondTokenAmount)
+
+        const setValue = isFirstToken ? this.setFirstTokenAmount : this.setSecondTokenAmount
+        const value = String(Number.isFinite(balance) ? Math.min(balance, amount) : amount)
+
+        setValue(value)
+        break
+      }
+      default: {
+        this.handleRemovePartChange(String(this.removePart))
+      }
+    }
+  }
 
   removePartInput = 0
   sliderInput: any
@@ -187,7 +217,7 @@ export default class RemoveLiquidity extends Mixins(mixins.FormattedAmountMixin,
 
   async mounted (): Promise<void> {
     await this.withParentLoading(async () => {
-      await this.getLiquidity({
+      await this.setLiquidity({
         firstAddress: this.firstTokenAddress,
         secondAddress: this.secondTokenAddress
       })
@@ -253,14 +283,9 @@ export default class RemoveLiquidity extends Mixins(mixins.FormattedAmountMixin,
     return this.formatCodecNumber(this.networkFee)
   }
 
-  @Watch('removePart')
-  removePartChange (newValue): void {
-    this.handleRemovePartChange(newValue)
-  }
-
-  handleRemovePartChange (value): void {
+  handleRemovePartChange (value: string): void {
     const newValue = parseFloat(value) || 0
-    this.removePartInput = newValue > 100 ? 100 : newValue < 0 ? 0 : newValue
+    this.removePartInput = Math.min(Math.max(newValue, 0), 100)
     this.setRemovePart(this.removePartInput)
   }
 
@@ -271,20 +296,11 @@ export default class RemoveLiquidity extends Mixins(mixins.FormattedAmountMixin,
     }
   }
 
-  getFormattedLiquidityBalance (liquidity: any): string {
-    return formatAssetBalance(liquidity, { parseAsLiquidity: true })
-  }
-
   getTokenMaxAmount (tokenBalance: CodecString, decimals?: number): string | undefined {
     if (!tokenBalance) {
       return undefined
     }
     return this.getStringFromCodec(tokenBalance, decimals)
-  }
-
-  handleLiquidityMaxValue (): void {
-    this.setRemovePart(100)
-    this.handleRemovePartChange(100)
   }
 
   private updatePrices (): void {
@@ -318,6 +334,7 @@ export default class RemoveLiquidity extends Mixins(mixins.FormattedAmountMixin,
   private addListenerToSliderDragButton (): void {
     this.sliderDragButton = this.$el.querySelector('.slider-container .el-slider__button')
     this.sliderInput = this.$el.querySelector('.s-input--remove-part .el-input__inner')
+
     if (this.sliderDragButton) {
       this.sliderDragButton.addEventListener('mousedown', this.focusSliderInput)
     }
