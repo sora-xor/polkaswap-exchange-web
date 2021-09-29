@@ -712,7 +712,6 @@ $account-control-name-max-width: 200px;
   }
 
   &-body {
-    min-width: 464px;
     position: relative;
     display: flex;
     flex: 1;

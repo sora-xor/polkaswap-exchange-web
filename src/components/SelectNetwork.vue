@@ -3,7 +3,6 @@
     :visible.sync="isVisible"
     :title="t('bridge.selectNetwork')"
     class="networks"
-    width="464px"
   >
     <p class="networks-info">{{ t('bridge.networkInfo') }}</p>
     <s-radio-group v-model="selectedNetworkId">

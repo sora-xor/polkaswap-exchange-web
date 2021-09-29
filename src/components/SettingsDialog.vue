@@ -3,7 +3,6 @@
     :visible.sync="isVisible"
     :title="t('dexSettings.title')"
     custom-class="settings"
-    width="464px"
   >
     <market-algorithm />
   </dialog-base>
