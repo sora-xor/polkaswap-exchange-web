@@ -41,10 +41,12 @@ export async function setI18nLocale (lang: Language): Promise<void> {
   const locale = getSupportedLocale(lang) as any
 
   if (!loadedLanguages.includes(locale)) {
+    // transform locale string 'eu-ES' to filename 'eu_ES' like in localise
+    const filename = locale.replace('-', '_')
     const { default: messages } = await import(
       /* webpackChunkName: "lang-[request]" */
       /* webpackMode: "lazy" */
-      `@/lang/${locale}.json`)
+      `@/lang/${filename}.json`)
 
     i18n.setLocaleMessage(locale, messages)
     loadedLanguages.push(locale)
