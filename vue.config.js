@@ -1,32 +1,31 @@
+const webpack = require('webpack');
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+
 module.exports = {
   publicPath: './',
-  chainWebpack: config => {
-    // disable prefetching languages
-    config.plugin('prefetch').tap(options => {
-      if (!options[0].fileBlacklist) options[0].fileBlacklist = []
-      options[0].fileBlacklist.push(/lang-(.)+-json\.js$/)
-      return options
-    })
-  },
-  configureWebpack: config => {
+  configureWebpack: (config) => {
+    config.plugins.push(new NodePolyfillPlugin());
+    // config.plugins.push(new webpack.PrefetchPlugin()); // TODO: add /lang-(.)+-json\.js$/
     // bundle all dependencies from node_modules to vendors
-    config.optimization.splitChunks.cacheGroups.vendors.chunks = 'all'
-    config.optimization.splitChunks.cacheGroups.common.chunks = 'all'
+    config.optimization.splitChunks.cacheGroups.defaultVendors.chunks = 'all'; // TODO: vendors -> defaultVendors
+    config.optimization.splitChunks.cacheGroups.common.chunks = 'all';
     // prepare icons content to unicode
-    config.module.rules.filter(rule => {
-      return rule.test.toString().indexOf('scss') !== -1
-    })
-      .forEach(rule => {
-        rule.oneOf.forEach(oneOfRule => {
-          oneOfRule.use.splice(oneOfRule.use.indexOf(require.resolve('sass-loader')), 0,
-            { loader: require.resolve('css-unicode-loader') })
-        })
+    config.module.rules
+      .filter((rule) => {
+        return rule.test.toString().indexOf('scss') !== -1;
       })
+      .forEach((rule) => {
+        rule.oneOf.forEach((oneOfRule) => {
+          oneOfRule.use.splice(oneOfRule.use.indexOf(require.resolve('sass-loader')), 0, {
+            loader: require.resolve('css-unicode-loader'),
+          });
+        });
+      });
 
     if (process.env.NODE_ENV === 'production') {
-      const buildDateTime = Date.now()
-      config.output.filename = `js/[name].[contenthash:8].${buildDateTime}.js`
-      config.output.chunkFilename = `js/[name].[contenthash:8].${buildDateTime}.js`
+      const buildDateTime = Date.now();
+      config.output.filename = `js/[name].[contenthash:8].${buildDateTime}.js`;
+      config.output.chunkFilename = `js/[name].[contenthash:8].${buildDateTime}.js`;
     }
   },
   css: {
@@ -37,10 +36,10 @@ module.exports = {
           @import "@/styles/_layout.scss";
           @import "@/styles/_mixins.scss";
           @import "@/styles/_typography.scss";
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   productionSourceMap: false,
-  runtimeCompiler: true
-}
+  runtimeCompiler: true,
+};
