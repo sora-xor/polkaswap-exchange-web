@@ -29,12 +29,14 @@
       />
     </s-form-item>
     <s-button
-      :type="buttonType"
       native-type="submit"
       class="node-info-button s-typography-button--large"
+      :type="buttonType"
       :disabled="buttonDisabled"
       :loading="loading"
-    >{{ buttonText }}</s-button>
+    >
+      {{ buttonText }}
+    </s-button>
     <a :href="tutorialLink" class="node-info-button" target="_blank" rel="noreferrer noopener">
       <s-button
         type="tertiary"

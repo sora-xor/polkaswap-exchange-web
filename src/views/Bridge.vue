@@ -164,18 +164,7 @@
         <s-button
           class="el-button--next s-typography-button--large"
           type="primary"
-          :disabled="
-            !isAssetSelected ||
-              !areNetworksConnected ||
-              !isValidNetworkType ||
-              !isAssetSelected ||
-              isZeroAmount ||
-              isInsufficientXorForFee ||
-              isInsufficientEvmNativeTokenForFee ||
-              isInsufficientBalance ||
-              !isRegisteredAsset ||
-              feesFetching
-          "
+          :disabled="isConfirmTxDisabled"
           @click="handleConfirmTransaction"
         >
           <template v-if="!isAssetSelected">
@@ -424,6 +413,21 @@ export default class Bridge extends Mixins(
       return this.EvmSymbol.VT;
     }
     return this.EvmSymbol.ETH;
+  }
+
+  get isConfirmTxDisabled(): boolean {
+    return (
+      !this.isAssetSelected ||
+      !this.areNetworksConnected ||
+      !this.isValidNetworkType ||
+      !this.isAssetSelected ||
+      this.isZeroAmount ||
+      this.isInsufficientXorForFee ||
+      this.isInsufficientEvmNativeTokenForFee ||
+      this.isInsufficientBalance ||
+      !this.isRegisteredAsset ||
+      this.feesFetching
+    );
   }
 
   formatFee(fee: string, formattedFee: string): string {

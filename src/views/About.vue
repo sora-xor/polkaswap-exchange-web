@@ -32,7 +32,9 @@
           class="text"
           target="_blank"
           rel="nofollow noopener"
-        >BSD 4-clause license</a>
+        >
+          BSD 4-clause license
+        </a>
       </p>
       <s-image
         :src="images.about03x"

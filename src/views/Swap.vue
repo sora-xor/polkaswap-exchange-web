@@ -30,9 +30,11 @@
         <div class="input-title">
           <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
           <span
-            class="input-title--uppercase input-title--primary"
             v-if="areTokensSelected && !isZeroToAmount && isExchangeB"
-          >({{ t('swap.estimated') }})</span>
+            class="input-title--uppercase input-title--primary"
+          >
+            ({{ t('swap.estimated') }})
+          </span>
         </div>
         <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="input-value">
           <span class="input-value--uppercase">{{ t('exchange.balance') }}</span>
@@ -93,9 +95,11 @@
         <div class="input-title">
           <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
           <span
-            class="input-title--uppercase input-title--primary"
             v-if="areTokensSelected && !isZeroFromAmount && !isExchangeB"
-          >({{ t('swap.estimated') }})</span>
+            class="input-title--uppercase input-title--primary"
+          >
+            ({{ t('swap.estimated') }})
+          </span>
         </div>
         <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="input-value">
           <span class="input-value--uppercase">{{ t('exchange.balance') }}</span>
@@ -139,19 +143,11 @@
     </s-button>
     <s-button
       v-else
-      type="primary"
-      :disabled="
-        !areTokensSelected ||
-          !isAvailable ||
-          hasZeroAmount ||
-          isInsufficientLiquidity ||
-          isInsufficientAmount ||
-          isInsufficientBalance ||
-          isInsufficientXorForFee
-      "
-      @click="handleConfirmSwap"
-      :loading="isRecountingProcess || isAvailableChecking"
       class="action-button s-typography-button--large"
+      type="primary"
+      :disabled="isConfirmSwapDisabled"
+      :loading="isRecountingProcess || isAvailableChecking"
+      @click="handleConfirmSwap"
     >
       <template v-if="!areTokensSelected">
         {{ t('buttons.chooseTokens') }}
@@ -432,6 +428,18 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
 
   get networkFee(): CodecString {
     return this.networkFees[Operation.Swap];
+  }
+
+  get isConfirmSwapDisabled(): boolean {
+    return (
+      !this.areTokensSelected ||
+      !this.isAvailable ||
+      this.hasZeroAmount ||
+      this.isInsufficientLiquidity ||
+      this.isInsufficientAmount ||
+      this.isInsufficientBalance ||
+      this.isInsufficientXorForFee
+    );
   }
 
   created() {

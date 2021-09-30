@@ -105,7 +105,9 @@
             type="primary"
             :disabled="!(customAddress && customSymbol)"
             @click="handleCustomAssetNext"
-          >{{ t('bridge.next') }}</s-button>
+          >
+            {{ t('bridge.next') }}
+          </s-button>
         </div>
       </s-tab>
     </s-tabs>

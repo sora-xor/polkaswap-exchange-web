@@ -52,7 +52,9 @@
                 <div class="amount-table-subitem">
                   <div class="amount-table-subitem__title">
                     <template v-if="simpleGroup">—</template>
-                    <template v-else-if="formatted.total">{{ t('rewards.totalVested') }} {{ t('rewards.forText') }}</template>
+                    <template v-else-if="formatted.total">
+                      {{ t('rewards.totalVested') }} {{ t('rewards.forText') }}
+                    </template>
                     {{ item.title }}
                   </div>
                   <template v-if="!simpleGroup">
