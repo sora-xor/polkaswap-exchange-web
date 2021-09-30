@@ -60,9 +60,8 @@ import { NodeModel } from './consts';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-const checkAddress =
-  (translate: Function): Function =>
-  (rule, value, callback): void => {
+const checkAddress = (translate: Function): Function => {
+  return (rule, value, callback): void => {
     if (!value) {
       return callback(new Error(translate('selectNodeDialog.messages.emptyAddress')));
     }
@@ -79,6 +78,7 @@ const checkAddress =
 
     callback();
   };
+};
 
 const stripEndingSlash = (str: string): string => (str.charAt(str.length - 1) === '/' ? str.slice(0, -1) : str);
 
