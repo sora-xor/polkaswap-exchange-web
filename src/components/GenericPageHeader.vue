@@ -19,30 +19,30 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 @Component
 export default class GenericPageHeader extends Mixins(TranslationMixin) {
-  @Prop({ default: false, type: Boolean }) readonly hasButtonBack?: boolean
-  @Prop({ default: '', type: String }) readonly title!: string
-  @Prop({ default: '', type: String }) readonly tooltip?: string
-  @Prop({ default: 'right-start', type: String }) readonly tooltipPlacement?: string
+  @Prop({ default: false, type: Boolean }) readonly hasButtonBack?: boolean;
+  @Prop({ default: '', type: String }) readonly title!: string;
+  @Prop({ default: '', type: String }) readonly tooltip?: string;
+  @Prop({ default: 'right-start', type: String }) readonly tooltipPlacement?: string;
 
-  get headerClasses (): string {
-    const baseClass = 'page-header'
-    const classes = [baseClass]
+  get headerClasses(): string {
+    const baseClass = 'page-header';
+    const classes = [baseClass];
 
     if (this.hasButtonBack) {
-      classes.push(`${baseClass}--center`)
+      classes.push(`${baseClass}--center`);
     }
 
-    return classes.join(' ')
+    return classes.join(' ');
   }
 
-  handleBack (): void {
-    this.$emit('back')
+  handleBack(): void {
+    this.$emit('back');
   }
 }
 </script>

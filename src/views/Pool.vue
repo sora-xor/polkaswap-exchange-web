@@ -5,14 +5,30 @@
       <p v-if="!isLoggedIn" class="pool-info-container pool-info-container--empty">
         {{ t('pool.connectToWallet') }}
       </p>
-      <p v-else-if="!accountLiquidity || !accountLiquidity.length || parentLoading" class="pool-info-container pool-info-container--empty">
+      <p
+        v-else-if="!accountLiquidity || !accountLiquidity.length || parentLoading"
+        class="pool-info-container pool-info-container--empty"
+      >
         {{ t('pool.liquidityNotFound') }}
       </p>
       <s-collapse v-else class="pool-list" :borders="true">
-        <s-collapse-item v-for="liquidityItem of accountLiquidity" :key="liquidityItem.address" :name="liquidityItem.address" class="pool-info-container">
+        <s-collapse-item
+          v-for="liquidityItem of accountLiquidity"
+          :key="liquidityItem.address"
+          :name="liquidityItem.address"
+          class="pool-info-container"
+        >
           <template #title>
-            <pair-token-logo :first-token="getAsset(liquidityItem.firstAddress)" :second-token="getAsset(liquidityItem.secondAddress)" size="small" />
-            <h3 class="pool-info-container__title">{{ getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress)) }}</h3>
+            <pair-token-logo
+              :first-token="getAsset(liquidityItem.firstAddress)"
+              :second-token="getAsset(liquidityItem.secondAddress)"
+              size="small"
+            />
+            <h3 class="pool-info-container__title">
+              {{
+                getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress))
+              }}
+            </h3>
           </template>
           <info-line
             :label="t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.firstAddress) })"
@@ -26,20 +42,25 @@
             :fiat-value="getFiatAmountByCodecString(liquidityItem.secondBalance, getAsset(liquidityItem.secondAddress))"
             is-formatted
           />
-          <info-line
-            :label="t('pool.poolShare')"
-            :value="getPoolShare(liquidityItem.poolShare)"
-          />
+          <info-line :label="t('pool.poolShare')" :value="getPoolShare(liquidityItem.poolShare)" />
           <info-line
             v-if="hasStrategicBonusApy(liquidityItem.secondAddress)"
             :label="t('pool.strategicBonusApy')"
             :value="getStrategicBonusApy(liquidityItem.secondAddress)"
           />
           <div class="pool-info--buttons">
-            <s-button type="secondary" class="s-typography-button--medium" @click="handleAddLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
+            <s-button
+              type="secondary"
+              class="s-typography-button--medium"
+              @click="handleAddLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)"
+            >
               {{ t('pool.addLiquidity') }}
             </s-button>
-            <s-button type="secondary" class="s-typography-button--medium" @click="handleRemoveLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)">
+            <s-button
+              type="secondary"
+              class="s-typography-button--medium"
+              @click="handleRemoveLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)"
+            >
               {{ t('pool.removeLiquidity') }}
             </s-button>
           </div>
@@ -47,7 +68,11 @@
       </s-collapse>
     </div>
     <template v-if="isLoggedIn">
-      <s-button class="el-button--add-liquidity s-typography-button--large" type="primary" @click="handleAddLiquidity()">
+      <s-button
+        class="el-button--add-liquidity s-typography-button--large"
+        type="primary"
+        @click="handleAddLiquidity()"
+      >
         {{ t('pool.addLiquidity') }}
       </s-button>
       <s-button class="el-button--create-pair s-typography-button--large" type="secondary" @click="handleCreatePair">
@@ -61,95 +86,95 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import { AccountLiquidity, Asset } from '@sora-substrate/util'
-import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
+import { Component, Mixins } from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
+import { AccountLiquidity, Asset } from '@sora-substrate/util';
+import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
-import LoadingMixin from '@/components/mixins/LoadingMixin'
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import LoadingMixin from '@/components/mixins/LoadingMixin';
 
-import router, { lazyComponent } from '@/router'
-import { Components, PageNames } from '@/consts'
+import router, { lazyComponent } from '@/router';
+import { Components, PageNames } from '@/consts';
 
-const namespace = 'pool'
+const namespace = 'pool';
 
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     FormattedAmount: components.FormattedAmount,
-    InfoLine: components.InfoLine
-  }
+    InfoLine: components.InfoLine,
+  },
 })
 export default class Pool extends Mixins(mixins.FormattedAmountMixin, LoadingMixin, TranslationMixin) {
-  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate
-  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate
+  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
+  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
   // Wallet
-  @Getter isLoggedIn!: boolean
+  @Getter isLoggedIn!: boolean;
 
-  @Getter('assets', { namespace: 'assets' }) assets!: Array<Asset>
-  @Getter('accountLiquidity', { namespace }) accountLiquidity!: Array<AccountLiquidity>
+  @Getter('assets', { namespace: 'assets' }) assets!: Array<Asset>;
+  @Getter('accountLiquidity', { namespace }) accountLiquidity!: Array<AccountLiquidity>;
 
-  getAsset (address): any {
-    return this.assets.find(a => a.address === address)
+  getAsset(address): any {
+    return this.assets.find((a) => a.address === address);
   }
 
-  getAssetSymbol (address): string {
-    const asset = this.assets.find(a => a.address === address)
-    return asset ? asset.symbol : this.t('pool.unknownAsset')
+  getAssetSymbol(address): string {
+    const asset = this.assets.find((a) => a.address === address);
+    return asset ? asset.symbol : this.t('pool.unknownAsset');
   }
 
-  handleAddLiquidity (firstAddress, secondAddress): void {
-    router.push({ name: PageNames.AddLiquidity, params: { firstAddress, secondAddress } })
+  handleAddLiquidity(firstAddress, secondAddress): void {
+    router.push({ name: PageNames.AddLiquidity, params: { firstAddress, secondAddress } });
   }
 
-  handleCreatePair (): void {
-    router.push({ name: PageNames.CreatePair })
+  handleCreatePair(): void {
+    router.push({ name: PageNames.CreatePair });
   }
 
-  handleRemoveLiquidity (firstAddress, secondAddress): void {
-    router.push({ name: PageNames.RemoveLiquidity, params: { firstAddress, secondAddress } })
+  handleRemoveLiquidity(firstAddress, secondAddress): void {
+    router.push({ name: PageNames.RemoveLiquidity, params: { firstAddress, secondAddress } });
   }
 
-  handleConnectWallet (): void {
-    router.push({ name: PageNames.Wallet })
+  handleConnectWallet(): void {
+    router.push({ name: PageNames.Wallet });
   }
 
-  getPairTitle (firstToken, secondToken): string {
+  getPairTitle(firstToken, secondToken): string {
     if (firstToken && secondToken) {
-      return `${firstToken}-${secondToken}`
+      return `${firstToken}-${secondToken}`;
     }
-    return ''
+    return '';
   }
 
-  getFirstBalance (liquidityItem: AccountLiquidity): string {
-    return this.formatCodecNumber(liquidityItem.firstBalance, liquidityItem.decimals)
+  getFirstBalance(liquidityItem: AccountLiquidity): string {
+    return this.formatCodecNumber(liquidityItem.firstBalance, liquidityItem.decimals);
   }
 
-  getSecondBalance (liquidityItem: AccountLiquidity): string {
-    return this.formatCodecNumber(liquidityItem.secondBalance, liquidityItem.decimals)
+  getSecondBalance(liquidityItem: AccountLiquidity): string {
+    return this.formatCodecNumber(liquidityItem.secondBalance, liquidityItem.decimals);
   }
 
-  getBalance (liquidityItem: AccountLiquidity): string {
-    return this.formatCodecNumber(liquidityItem.balance, liquidityItem.decimals)
+  getBalance(liquidityItem: AccountLiquidity): string {
+    return this.formatCodecNumber(liquidityItem.balance, liquidityItem.decimals);
   }
 
-  getPoolShare (poolShare: string): string {
-    return `${this.formatStringValue(poolShare)}%`
+  getPoolShare(poolShare: string): string {
+    return `${this.formatStringValue(poolShare)}%`;
   }
 
-  hasStrategicBonusApy (targetAssetAddress: string): boolean {
-    return !!this.fiatPriceAndApyObject[targetAssetAddress]?.strategicBonusApy
+  hasStrategicBonusApy(targetAssetAddress: string): boolean {
+    return !!this.fiatPriceAndApyObject[targetAssetAddress]?.strategicBonusApy;
   }
 
-  getStrategicBonusApy (targetAssetAddress: string): string {
-    const apy = this.fiatPriceAndApyObject[targetAssetAddress]?.strategicBonusApy
+  getStrategicBonusApy(targetAssetAddress: string): string {
+    const apy = this.fiatPriceAndApyObject[targetAssetAddress]?.strategicBonusApy;
     if (!apy) {
-      return ''
+      return '';
     }
-    return `${this.getFPNumberFromCodec(apy).mul(this.Hundred).toLocaleString()}%`
+    return `${this.getFPNumberFromCodec(apy).mul(this.Hundred).toLocaleString()}%`;
   }
 }
 </script>

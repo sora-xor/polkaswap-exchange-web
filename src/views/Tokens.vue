@@ -13,12 +13,7 @@
         <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleResetSearch" />
       </template>
     </s-input>
-    <s-table
-      :data="tableItems"
-      :highlight-current-row="false"
-      size="small"
-      class="tokens-table"
-    >
+    <s-table :data="tableItems" :highlight-current-row="false" size="small" class="tokens-table">
       <s-table-column label="#" width="48">
         <template #header>
           <span @click="resetSort" :class="['tokens-item-head-index', { active: isDefaultSort }]">#</span>
@@ -57,7 +52,13 @@
             <div class="tokens-item-name">{{ row.name }}</div>
             <div class="tokens-item-address">
               <span>{{ t('soraText') }}:</span>&nbsp;
-              <token-address class="tokens-item-address__value" :show-name="false" :name="row.name" :symbol="row.symbol" :address="row.address" />
+              <token-address
+                class="tokens-item-address__value"
+                :show-name="false"
+                :name="row.name"
+                :symbol="row.symbol"
+                :address="row.address"
+              />
             </div>
           </div>
         </template>
@@ -76,73 +77,73 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import { Asset } from '@sora-substrate/util'
-import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts'
+import { Component, Mixins } from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
+import { Asset } from '@sora-substrate/util';
+import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 
-import { Components } from '@/consts'
-import { lazyComponent } from '@/router'
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 
-import LoadingMixin from '@/components/mixins/LoadingMixin'
-import TranslationMixin from '@/components/mixins/TranslationMixin'
-import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin'
-import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin'
-import SortButton from '@/components/SortButton.vue'
+import LoadingMixin from '@/components/mixins/LoadingMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin';
+import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
+import SortButton from '@/components/SortButton.vue';
 
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     TokenLogo: lazyComponent(Components.TokenLogo),
     TokenAddress: lazyComponent(Components.TokenAddress),
-    SortButton
-  }
+    SortButton,
+  },
 })
 export default class Tokens extends Mixins(LoadingMixin, TranslationMixin, AssetsSearchMixin, PaginationSearchMixin) {
-  @Getter('whitelistAssets', { namespace: 'assets' }) items!: Array<Asset>
+  @Getter('whitelistAssets', { namespace: 'assets' }) items!: Array<Asset>;
 
-  order = ''
-  property = ''
+  order = '';
+  property = '';
 
-  mounted (): void {
-    this.focusSearchInput()
+  mounted(): void {
+    this.focusSearchInput();
   }
 
-  get isDefaultSort (): boolean {
-    return !this.order || !this.property
+  get isDefaultSort(): boolean {
+    return !this.order || !this.property;
   }
 
-  get filteredItems (): Array<Asset> {
-    return this.filterAssetsByQuery(this.items)(this.query) as Array<Asset>
+  get filteredItems(): Array<Asset> {
+    return this.filterAssetsByQuery(this.items)(this.query) as Array<Asset>;
   }
 
-  get sortedItems (): Array<Asset> {
-    if (!this.order || !this.property) return this.filteredItems
+  get sortedItems(): Array<Asset> {
+    if (!this.order || !this.property) return this.filteredItems;
 
-    const isAscending = this.order === SortDirection.ASC
+    const isAscending = this.order === SortDirection.ASC;
 
     return [...this.filteredItems].sort((a, b) => {
-      const aValue = a[this.property]
-      const bValue = b[this.property]
+      const aValue = a[this.property];
+      const bValue = b[this.property];
 
-      if (aValue === bValue) return 0
+      if (aValue === bValue) return 0;
 
-      return (isAscending ? aValue > bValue : aValue < bValue) ? 1 : -1
-    })
+      return (isAscending ? aValue > bValue : aValue < bValue) ? 1 : -1;
+    });
   }
 
-  get tableItems (): Array<Asset> {
-    return this.getPageItems(this.sortedItems)
+  get tableItems(): Array<Asset> {
+    return this.getPageItems(this.sortedItems);
   }
 
-  changeSort ({ order = '', property = '' } = {}): void {
-    this.order = order
-    this.property = property
+  changeSort({ order = '', property = '' } = {}): void {
+    this.order = order;
+    this.property = property;
   }
 
-  resetSort (): void {
-    this.order = ''
-    this.property = ''
+  resetSort(): void {
+    this.order = '';
+    this.property = '';
   }
 }
 </script>
@@ -161,8 +162,10 @@ export default class Tokens extends Mixins(LoadingMixin, TranslationMixin, Asset
     letter-spacing: var(--s-letter-spacing-mini);
   }
 
-  tr, th {
-    &, &:hover {
+  tr,
+  th {
+    &,
+    &:hover {
       background: transparent;
 
       & > td,
@@ -178,8 +181,8 @@ export default class Tokens extends Mixins(LoadingMixin, TranslationMixin, Asset
     }
   }
 
-  [class^="s-icon-"],
-  [class*=" s-icon-"] {
+  [class^='s-icon-'],
+  [class*=' s-icon-'] {
     @include icon-styles;
   }
 
