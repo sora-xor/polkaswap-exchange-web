@@ -1,4 +1,4 @@
-import axios from '@/api';
+import axiosInstance from '@/api';
 
 export const getRpcEndpoint = (wsEndpoint: string): string => {
   // for soramitsu nodes
@@ -16,7 +16,7 @@ export async function fetchRpc(url: string, method: string, params?: any): Promi
   if (!url) return throwError(fetchRpc.name, 'url');
   if (!method) return throwError(fetchRpc.name, 'method');
 
-  const { data } = await axios.post(url, {
+  const { data } = await axiosInstance.post(url, {
     id: 1,
     jsonrpc: '2.0',
     method,

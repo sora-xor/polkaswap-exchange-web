@@ -150,7 +150,7 @@ import {
   LogoSize,
   Language,
 } from '@/consts';
-import axios, { updateBaseUrl } from '@/api';
+import axiosInstance, { updateBaseUrl } from '@/api';
 import router, { lazyComponent } from '@/router';
 import { formatAddress, preloadFontFace } from '@/utils';
 import { getLocale } from '@/lang';
@@ -240,7 +240,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
     await this.setLanguage(getLocale() as any);
 
     await this.withLoading(async () => {
-      const { data } = await axios.get('/env.json');
+      const { data } = await axiosInstance.get('/env.json');
 
       if (!data.NETWORK_TYPE) {
         throw new Error('NETWORK_TYPE is not set');

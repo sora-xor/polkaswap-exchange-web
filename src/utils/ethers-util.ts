@@ -4,7 +4,7 @@ import detectEthereumProvider from '@metamask/detect-provider';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { BridgeNetworks } from '@sora-substrate/util';
 
-import axios from '../api';
+import axiosInstance from '../api';
 import storage from './storage';
 
 type AbiType = 'function' | 'constructor' | 'event' | 'fallback';
@@ -304,7 +304,7 @@ async function getEvmNetworkType(): Promise<string> {
 
 async function readSmartContract(network: ContractNetwork, name: string): Promise<JsonContract | undefined> {
   try {
-    const { data } = await axios.get(`/abi/${network}/${name}`);
+    const { data } = await axiosInstance.get(`/abi/${network}/${name}`);
     return data;
   } catch (error) {
     console.error(error);
