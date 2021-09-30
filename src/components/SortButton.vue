@@ -1,13 +1,13 @@
 <template>
   <div @click="onClick" class="sort-button">
-    <slot/>
+    <slot />
     <s-icon name="arrows-chevron-top-rounded-24" :class="computedClasses" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
-import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts'
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 
 interface SortData {
   order: string;
@@ -16,30 +16,30 @@ interface SortData {
 
 @Component
 export default class SortButton extends Vue {
-  @Prop({ default: '', type: String }) readonly name!: string
-  @Prop({ default: () => ({}), type: Object }) readonly sort!: SortData
+  @Prop({ default: '', type: String }) readonly name!: string;
+  @Prop({ default: () => ({}), type: Object }) readonly sort!: SortData;
 
-  get active (): boolean {
-    return this.name === this.sort.property
+  get active(): boolean {
+    return this.name === this.sort.property;
   }
 
-  get computedClasses (): Array<string> {
-    const base = 'sort-icon'
-    const classes = [base]
+  get computedClasses(): Array<string> {
+    const base = 'sort-icon';
+    const classes = [base];
 
     if (this.active) {
-      classes.push(`${base}--active`)
-      classes.push(`${base}--${this.sort.order}`)
+      classes.push(`${base}--active`);
+      classes.push(`${base}--${this.sort.order}`);
     }
 
-    return classes
+    return classes;
   }
 
-  onClick (): void {
+  onClick(): void {
     this.$emit('change-sort', {
       property: this.name,
-      order: this.sort.order === SortDirection.ASC ? SortDirection.DESC : SortDirection.ASC
-    })
+      order: this.sort.order === SortDirection.ASC ? SortDirection.DESC : SortDirection.ASC,
+    });
   }
 }
 </script>

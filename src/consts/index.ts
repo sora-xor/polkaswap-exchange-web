@@ -1,19 +1,19 @@
-import invert from 'lodash/fp/invert'
-import { LiquiditySourceTypes } from '@sora-substrate/util'
+import invert from 'lodash/fp/invert';
+import { LiquiditySourceTypes } from '@sora-substrate/util';
 
-import pkg from '../../package.json'
-import { KnownBridgeAsset } from '../utils/ethers-util'
+import pkg from '../../package.json';
+import { KnownBridgeAsset } from '../utils/ethers-util';
 
 export const app = {
   version: pkg.version,
   name: 'Polkaswap',
-  email: 'jihoon@tutanota.de'
-}
+  email: 'jihoon@tutanota.de',
+};
 
 export const WalletPermissions = {
   sendAssets: true, // enable 'send' button in assets list
-  swapAssets: false // enable 'swap' button in assets list
-}
+  swapAssets: false, // enable 'swap' button in assets list
+};
 
 export enum Language {
   EN = 'en',
@@ -28,7 +28,7 @@ export enum Language {
   NL = 'nl',
   NO = 'no',
   PL = 'pl',
-  YO = 'yo'
+  YO = 'yo',
 }
 
 export const Languages = [
@@ -44,42 +44,42 @@ export const Languages = [
   { key: Language.PL, value: 'Polish', name: 'Polski' },
   { key: Language.RU, value: 'Russian', name: 'Русский' },
   { key: Language.ES, value: 'Spanish', name: 'Español' },
-  { key: Language.YO, value: 'Yoruba', name: 'Yoruba' }
-]
+  { key: Language.YO, value: 'Yoruba', name: 'Yoruba' },
+];
 
 export const Links = {
   about: {
     sora: 'https://sora.org/',
-    polkadot: 'https://medium.com/polkadot-network/polkadot-js-extension-release-update-3b0d2d87edb8'
+    polkadot: 'https://medium.com/polkadot-network/polkadot-js-extension-release-update-3b0d2d87edb8',
   },
   nodes: {
-    tutorial: 'https://medium.com/sora-xor/how-to-run-a-sora-testnet-node-a4d42a9de1af'
-  }
-}
+    tutorial: 'https://medium.com/sora-xor/how-to-run-a-sora-testnet-node-a4d42a9de1af',
+  },
+};
 
-export const ObjectInit = () => null
+export const ObjectInit = () => null;
 
-export const ZeroStringValue = '0'
+export const ZeroStringValue = '0';
 
-export const MetamaskCancellationCode = 4001
+export const MetamaskCancellationCode = 4001;
 
-export const DefaultSlippageTolerance = '0.5'
+export const DefaultSlippageTolerance = '0.5';
 
 export enum MarketAlgorithms {
   SMART = 'SMART',
   TBC = 'TBC',
-  XYK = 'XYK'
+  XYK = 'XYK',
 }
 
-export const DefaultMarketAlgorithm = MarketAlgorithms.SMART
+export const DefaultMarketAlgorithm = MarketAlgorithms.SMART;
 
 export const LiquiditySourceForMarketAlgorithm = {
   [MarketAlgorithms.SMART]: LiquiditySourceTypes.Default,
   [MarketAlgorithms.TBC]: LiquiditySourceTypes.MulticollateralBondingCurvePool,
-  [MarketAlgorithms.XYK]: LiquiditySourceTypes.XYKPool
-}
+  [MarketAlgorithms.XYK]: LiquiditySourceTypes.XYKPool,
+};
 
-export const MarketAlgorithmForLiquiditySource = invert(LiquiditySourceForMarketAlgorithm)
+export const MarketAlgorithmForLiquiditySource = invert(LiquiditySourceForMarketAlgorithm);
 
 export enum PageNames {
   About = 'About',
@@ -98,7 +98,7 @@ export enum PageNames {
   Bridge = 'Bridge',
   BridgeTransaction = 'BridgeTransaction',
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
-  Tokens = 'Tokens'
+  Tokens = 'Tokens',
 }
 
 export enum Components {
@@ -135,7 +135,7 @@ export enum Components {
   TokenSelectButton = 'Input/TokenSelectButton',
   TokenAddress = 'Input/TokenAddress',
   SelectLanguageDialog = 'SelectLanguageDialog',
-  ValueStatusWrapper = 'ValueStatusWrapper'
+  ValueStatusWrapper = 'ValueStatusWrapper',
 }
 
 interface SidebarMenuItem {
@@ -151,117 +151,110 @@ interface SidebarMenuItemLink extends SidebarMenuItem {
 const MainMenu: Array<SidebarMenuItem> = [
   {
     icon: 'arrows-swap-90-24',
-    title: PageNames.Swap
+    title: PageNames.Swap,
   },
   {
     icon: 'basic-drop-24',
-    title: PageNames.Pool
+    title: PageNames.Pool,
   },
   {
     icon: 'grid-block-distribute-vertically-24',
-    title: PageNames.Bridge
-  }
+    title: PageNames.Bridge,
+  },
   // PSS-570: Hide Farming until icon will be ready
   // {
   //   icon: '',
   //   title: PageNames.Farming,
   //   disabled: true
   // }
-]
+];
 
 const AccountMenu: Array<SidebarMenuItem> = [
   {
     icon: 'finance-wallet-24',
-    title: PageNames.Wallet
+    title: PageNames.Wallet,
   },
   {
     icon: 'basic-circle-star-24',
-    title: PageNames.Rewards
-  }
-]
+    title: PageNames.Rewards,
+  },
+];
 
 const OtherPagesMenu: Array<SidebarMenuItem> = [
   {
     icon: 'various-bone-24',
-    title: PageNames.Tokens
+    title: PageNames.Tokens,
   },
   {
     icon: 'file-file-text-24',
-    title: PageNames.About
-  }
-]
+    title: PageNames.About,
+  },
+];
 
 export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
   {
     icon: 'symbols-twitter-24',
     title: 'twitter',
-    href: 'https://twitter.com/polkaswap'
+    href: 'https://twitter.com/polkaswap',
   },
   {
     icon: 'symbols-telegram-24',
     title: 'telegram',
-    href: 'https://t.me/polkaswap'
+    href: 'https://t.me/polkaswap',
   },
   // TODO: Update this icon name to appropriate one after font fix
   {
     icon: 'symbols-peace-24',
     title: 'medium',
-    href: 'https://medium.com/polkaswap'
+    href: 'https://medium.com/polkaswap',
   },
   // TODO: Update this icon name to appropriate one after font fix
   {
     icon: 'symbols-hash-24',
     title: 'reddit',
-    href: 'https://www.reddit.com/r/Polkaswap'
+    href: 'https://www.reddit.com/r/Polkaswap',
   },
   {
     icon: 'symbols-github-24',
     title: 'github',
-    href: 'https://github.com/sora-xor'
-  }
-]
+    href: 'https://github.com/sora-xor',
+  },
+];
 
 export const FaucetLink: SidebarMenuItemLink = {
   icon: 'software-terminal-24',
-  title: 'faucet'
-}
+  title: 'faucet',
+};
 
-export const SidebarMenuGroups = [
-  MainMenu,
-  AccountMenu,
-  OtherPagesMenu
-]
+export const SidebarMenuGroups = [MainMenu, AccountMenu, OtherPagesMenu];
 
-export const BridgeChildPages = [
-  PageNames.BridgeTransaction,
-  PageNames.BridgeTransactionsHistory
-]
+export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
 
 export enum Topics {
   SwapTokens = 'SwapTokens',
   PassiveEarning = 'PassiveEarning',
   AddLiquidity = 'AddLiquidity',
-  PriceFeeds = 'PriceFeeds'
+  PriceFeeds = 'PriceFeeds',
 }
 
 export const AboutTopics = [
   { title: Topics.SwapTokens, icon: 'arrows-swap-24' },
   { title: Topics.PassiveEarning, icon: 'basic-bar-chart-24' },
   { title: Topics.AddLiquidity, icon: 'basic-drop-24' },
-  { title: Topics.PriceFeeds, icon: 'software-terminal-24' }
-]
+  { title: Topics.PriceFeeds, icon: 'software-terminal-24' },
+];
 
 export enum LogoSize {
   MINI = 'mini',
   SMALL = 'small',
   MEDIUM = 'medium',
   BIG = 'big',
-  LARGE = 'large'
+  LARGE = 'large',
 }
 
 export enum EvmSymbol {
   ETH = 'ETH',
-  VT = 'VT'
+  VT = 'VT',
 }
 
 const gasLimit = {
@@ -270,8 +263,8 @@ const gasLimit = {
   sendEthToSidechain: 50000,
   mintTokensByPeers: 255000,
   receiveByEthereumAssetAddress: 250000,
-  receiveBySidechainAssetId: 255000
-}
+  receiveBySidechainAssetId: 255000,
+};
 /**
  * It's in gwei.
  * Zero index means ETH -> SORA
@@ -284,7 +277,7 @@ export const EthereumGasLimits = [
     VAL: gasLimit.approve + gasLimit.sendERC20ToSidechain,
     PSWAP: gasLimit.approve + gasLimit.sendERC20ToSidechain,
     ETH: gasLimit.sendEthToSidechain,
-    [KnownBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain
+    [KnownBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
   },
   // SORA -> ETH
   {
@@ -292,8 +285,8 @@ export const EthereumGasLimits = [
     VAL: gasLimit.mintTokensByPeers,
     PSWAP: gasLimit.receiveBySidechainAssetId,
     ETH: gasLimit.receiveByEthereumAssetAddress,
-    [KnownBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress
-  }
-]
+    [KnownBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress,
+  },
+];
 
-export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';

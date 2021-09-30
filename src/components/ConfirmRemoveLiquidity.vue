@@ -1,8 +1,5 @@
 <template>
-  <dialog-base
-    :visible.sync="isVisible"
-    :title="t('removeLiquidity.confirmTitle')"
-  >
+  <dialog-base :visible.sync="isVisible" :title="t('removeLiquidity.confirmTitle')">
     <div class="tokens">
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedFromValue }}</span>
@@ -30,10 +27,7 @@
       :value="`1 ${firstToken.symbol} = ${formatStringValue(priceReversed)}`"
       :asset-symbol="secondToken.symbol"
     />
-    <info-line
-      :value="`1 ${secondToken.symbol} = ${formatStringValue(price)}`"
-      :asset-symbol="firstToken.symbol"
-    />
+    <info-line :value="`1 ${secondToken.symbol} = ${formatStringValue(price)}`" :asset-symbol="firstToken.symbol" />
     <template #footer>
       <s-button
         type="primary"
@@ -48,55 +42,60 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import { Getter, State } from 'vuex-class'
-import { components, mixins } from '@soramitsu/soraneo-wallet-web'
-import type { Asset } from '@sora-substrate/util'
+import { Component, Mixins } from 'vue-property-decorator';
+import { Getter, State } from 'vuex-class';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import type { Asset } from '@sora-substrate/util';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
-import DialogMixin from '@/components/mixins/DialogMixin'
-import LoadingMixin from '@/components/mixins/LoadingMixin'
-import DialogBase from '@/components/DialogBase.vue'
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import DialogMixin from '@/components/mixins/DialogMixin';
+import LoadingMixin from '@/components/mixins/LoadingMixin';
+import DialogBase from '@/components/DialogBase.vue';
+import { lazyComponent } from '@/router';
+import { Components } from '@/consts';
 
-const namespace = 'removeLiquidity'
+const namespace = 'removeLiquidity';
 
 @Component({
   components: {
     DialogBase,
     TokenLogo: lazyComponent(Components.TokenLogo),
-    InfoLine: components.InfoLine
-  }
+    InfoLine: components.InfoLine,
+  },
 })
-export default class ConfirmRemoveLiquidity extends Mixins(mixins.NumberFormatterMixin, TranslationMixin, DialogMixin, LoadingMixin) {
-  @State(state => state[namespace].liquidityAmount) liquidityAmount!: string
-  @State(state => state[namespace].firstTokenAmount) firstTokenAmount!: string
-  @State(state => state[namespace].secondTokenAmount) secondTokenAmount!: string
+export default class ConfirmRemoveLiquidity extends Mixins(
+  mixins.NumberFormatterMixin,
+  TranslationMixin,
+  DialogMixin,
+  LoadingMixin
+) {
+  @State((state) => state[namespace].liquidityAmount) liquidityAmount!: string;
+  @State((state) => state[namespace].firstTokenAmount) firstTokenAmount!: string;
+  @State((state) => state[namespace].secondTokenAmount) secondTokenAmount!: string;
 
-  @Getter('firstToken', { namespace }) firstToken!: Asset
-  @Getter('secondToken', { namespace }) secondToken!: Asset
-  @Getter('shareOfPool', { namespace }) shareOfPool!: string
+  @Getter('firstToken', { namespace }) firstToken!: Asset;
+  @Getter('secondToken', { namespace }) secondToken!: Asset;
+  @Getter('shareOfPool', { namespace }) shareOfPool!: string;
 
-  @Getter('price', { namespace: 'prices' }) price!: string
-  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
+  @Getter('price', { namespace: 'prices' }) price!: string;
+  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string;
 
-  @Getter slippageTolerance!: string
+  @Getter slippageTolerance!: string;
 
-  get formattedFromValue (): string {
-    return this.formatStringValue(this.firstTokenAmount)
+  get formattedFromValue(): string {
+    return this.formatStringValue(this.firstTokenAmount);
   }
 
-  get formattedToValue (): string {
-    return this.formatStringValue(this.secondTokenAmount)
+  get formattedToValue(): string {
+    return this.formatStringValue(this.secondTokenAmount);
   }
 
-  get formattedLiquidityValue (): string {
-    return this.formatStringValue(this.liquidityAmount)
+  get formattedLiquidityValue(): string {
+    return this.formatStringValue(this.liquidityAmount);
   }
 
-  handleConfirmRemoveLiquidity (): void {
-    this.$emit('confirm')
+  handleConfirmRemoveLiquidity(): void {
+    this.$emit('confirm');
   }
 }
 </script>

@@ -26,36 +26,39 @@
             <div class="select-node-badge">
               <s-icon v-if="node.connecting" name="el-icon-loading" />
             </div>
-            <s-button class="select-node-details" type="action" alternative icon="arrows-chevron-right-rounded-24" @click="handleNode(node)" />
+            <s-button
+              class="select-node-details"
+              type="action"
+              alternative
+              icon="arrows-chevron-right-rounded-24"
+              @click="handleNode(node)"
+            />
           </div>
         </s-radio>
       </s-radio-group>
     </s-scrollbar>
-    <s-button
-      class="select-node-button s-typography-button--large"
-      @click="handleNode()"
-    >
+    <s-button class="select-node-button s-typography-button--large" @click="handleNode()">
       {{ t('selectNodeDialog.addNode') }}
     </s-button>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator'
+import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator';
 
-import { NodeItem } from '@/types/nodes'
+import { NodeItem } from '@/types/nodes';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 @Component
 export default class SelectNode extends Mixins(TranslationMixin) {
-  @Prop({ default: () => [], type: Array }) nodes!: Array<NodeItem>
-  @Prop({ default: () => {}, type: Function }) handleNode!: (node: NodeItem) => void
-  @Prop({ default: '', type: String }) environment!: string
-  @Prop({ default: false, type: Boolean }) disableSelect!: boolean
+  @Prop({ default: () => [], type: Array }) nodes!: Array<NodeItem>;
+  @Prop({ default: () => {}, type: Function }) handleNode!: (node: NodeItem) => void;
+  @Prop({ default: '', type: String }) environment!: string;
+  @Prop({ default: false, type: Boolean }) disableSelect!: boolean;
 
   @ModelSync('value', 'input', { type: String })
-  readonly currentAddressValue!: string
+  readonly currentAddressValue!: string;
 }
 </script>
 
