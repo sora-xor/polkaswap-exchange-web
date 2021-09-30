@@ -1,13 +1,11 @@
-const webpack = require('webpack');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 
 module.exports = {
   publicPath: './',
   configureWebpack: (config) => {
     config.plugins.push(new NodePolyfillPlugin());
-    // config.plugins.push(new webpack.PrefetchPlugin()); // TODO: add /lang-(.)+-json\.js$/
     // bundle all dependencies from node_modules to vendors
-    config.optimization.splitChunks.cacheGroups.defaultVendors.chunks = 'all'; // TODO: vendors -> defaultVendors
+    config.optimization.splitChunks.cacheGroups.defaultVendors.chunks = 'all';
     config.optimization.splitChunks.cacheGroups.common.chunks = 'all';
     // prepare icons content to unicode
     config.module.rules
