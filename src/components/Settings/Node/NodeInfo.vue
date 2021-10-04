@@ -1,23 +1,49 @@
 <template>
-  <s-form :model="nodeModel" :rules="validationRules" ref="nodeForm" class="node-info s-flex" @submit.native.prevent="submitForm">
+  <s-form
+    :model="nodeModel"
+    :rules="validationRules"
+    ref="nodeForm"
+    class="node-info s-flex"
+    @submit.native.prevent="submitForm"
+  >
     <generic-page-header has-button-back :title="title" @back="handleBack">
       <template v-if="existing && removable">
-        <s-button
-          type="action"
-          icon="basic-trash-24"
-          @click="removeNode(nodeModel)"
-        />
+        <s-button type="action" icon="basic-trash-24" @click="removeNode(nodeModel)" />
       </template>
     </generic-page-header>
     <s-form-item prop="name">
-      <s-input class="node-info-input s-typography-input-field" :placeholder="t('nameText')" v-model="nodeModel.name" :maxlength="128" :disabled="existing && !removable" />
+      <s-input
+        class="node-info-input s-typography-input-field"
+        :placeholder="t('nameText')"
+        v-model="nodeModel.name"
+        :maxlength="128"
+        :disabled="existing && !removable"
+      />
     </s-form-item>
     <s-form-item prop="address">
-      <s-input class="node-info-input s-typography-input-field" :placeholder="t('addressText')" v-model="nodeModel.address" :disabled="existing && !removable" />
+      <s-input
+        class="node-info-input s-typography-input-field"
+        :placeholder="t('addressText')"
+        v-model="nodeModel.address"
+        :disabled="existing && !removable"
+      />
     </s-form-item>
-    <s-button :type="buttonType" native-type="submit" class="node-info-button s-typography-button--large" :disabled="buttonDisabled" :loading="loading">{{ buttonText }}</s-button>
+    <s-button
+      native-type="submit"
+      class="node-info-button s-typography-button--large"
+      :type="buttonType"
+      :disabled="buttonDisabled"
+      :loading="loading"
+    >
+      {{ buttonText }}
+    </s-button>
     <a :href="tutorialLink" class="node-info-button" target="_blank" rel="noreferrer noopener">
-      <s-button type="tertiary" class="node-info-tutorial-button s-typography-button--big" icon="question-circle-16" icon-position="right">
+      <s-button
+        type="tertiary"
+        class="node-info-tutorial-button s-typography-button--big"
+        icon="question-circle-16"
+        icon-position="right"
+      >
         {{ t('selectNodeDialog.howToSetupOwnNode') }}
       </s-button>
     </a>
@@ -25,106 +51,108 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import { lazyComponent } from '@/router'
-import { Components, Links } from '@/consts'
-import { wsRegexp, dnsRegexp, ipv4Regexp } from '@/utils/regexp'
-import { NodeModel } from './consts'
+import { lazyComponent } from '@/router';
+import { Components, Links } from '@/consts';
+import { wsRegexp, dnsRegexp, ipv4Regexp } from '@/utils/regexp';
+import { NodeModel } from './consts';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-const checkAddress = (translate: Function): Function => (rule, value, callback): void => {
-  if (!value) {
-    return callback(new Error(translate('selectNodeDialog.messages.emptyAddress')))
-  }
+const checkAddress = (translate: Function): Function => {
+  return (rule, value, callback): void => {
+    if (!value) {
+      return callback(new Error(translate('selectNodeDialog.messages.emptyAddress')));
+    }
 
-  if (!wsRegexp.test(value)) {
-    return callback(new Error(translate('selectNodeDialog.messages.incorrectProtocol')))
-  }
+    if (!wsRegexp.test(value)) {
+      return callback(new Error(translate('selectNodeDialog.messages.incorrectProtocol')));
+    }
 
-  const address = value.replace(wsRegexp, '')
+    const address = value.replace(wsRegexp, '');
 
-  if (!dnsRegexp.test(address) && !ipv4Regexp.test(address)) {
-    return callback(new Error(translate('selectNodeDialog.messages.incorrectAddress')))
-  }
+    if (!dnsRegexp.test(address) && !ipv4Regexp.test(address)) {
+      return callback(new Error(translate('selectNodeDialog.messages.incorrectAddress')));
+    }
 
-  callback()
-}
+    callback();
+  };
+};
 
-const stripEndingSlash = (str: string): string => str.charAt(str.length - 1) === '/' ? str.slice(0, -1) : str
+const stripEndingSlash = (str: string): string => (str.charAt(str.length - 1) === '/' ? str.slice(0, -1) : str);
 
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    ExternalLink: lazyComponent(Components.ExternalLink)
-  }
+    ExternalLink: lazyComponent(Components.ExternalLink),
+  },
 })
 export default class NodeInfo extends Mixins(TranslationMixin) {
-  @Prop({ default: () => {}, type: Function }) handleBack!: () => void
-  @Prop({ default: () => {}, type: Function }) handleNode!: (node: any, isNewNode: boolean) => void
-  @Prop({ default: () => {}, type: Function }) removeNode!: (node: any) => void
-  @Prop({ default: () => ({}), type: Object }) node!: any
-  @Prop({ default: false, type: Boolean }) existing!: boolean
-  @Prop({ default: false, type: Boolean }) loading!: boolean
-  @Prop({ default: false, type: Boolean }) removable!: boolean
-  @Prop({ default: false, type: Boolean }) connected!: boolean
+  @Prop({ default: () => {}, type: Function }) handleBack!: () => void;
+  @Prop({ default: () => {}, type: Function }) handleNode!: (node: any, isNewNode: boolean) => void;
+  @Prop({ default: () => {}, type: Function }) removeNode!: (node: any) => void;
+  @Prop({ default: () => ({}), type: Object }) node!: any;
+  @Prop({ default: false, type: Boolean }) existing!: boolean;
+  @Prop({ default: false, type: Boolean }) loading!: boolean;
+  @Prop({ default: false, type: Boolean }) removable!: boolean;
+  @Prop({ default: false, type: Boolean }) connected!: boolean;
 
-  readonly tutorialLink = Links.nodes.tutorial
+  readonly tutorialLink = Links.nodes.tutorial;
 
   readonly validationRules = {
-    name: [
-      { required: true, message: this.t('selectNodeDialog.messages.emptyName'), trigger: 'blur' }
-    ],
-    address: [
-      { validator: checkAddress(this.t), trigger: 'blur' }
-    ]
+    name: [{ required: true, message: this.t('selectNodeDialog.messages.emptyName'), trigger: 'blur' }],
+    address: [{ validator: checkAddress(this.t), trigger: 'blur' }],
+  };
+
+  nodeModel: any = { ...NodeModel };
+
+  created(): void {
+    this.nodeModel = Object.keys(NodeModel).reduce(
+      (result, key) => ({
+        ...result,
+        [key]: this.node[key] ?? NodeModel[key],
+      }),
+      {}
+    );
   }
 
-  nodeModel: any = { ...NodeModel }
+  get buttonText(): string {
+    if (!this.existing) return this.t('selectNodeDialog.addNode');
+    if (this.nodeDataChanged) return this.t('selectNodeDialog.updateNode');
+    if (this.connected) return this.t('selectNodeDialog.connected');
 
-  created (): void {
-    this.nodeModel = Object.keys(NodeModel).reduce((result, key) => ({
-      ...result,
-      [key]: this.node[key] ?? NodeModel[key]
-    }), {})
+    return this.t('selectNodeDialog.select');
   }
 
-  get buttonText (): string {
-    if (!this.existing) return this.t('selectNodeDialog.addNode')
-    if (this.nodeDataChanged) return this.t('selectNodeDialog.updateNode')
-    if (this.connected) return this.t('selectNodeDialog.connected')
-
-    return this.t('selectNodeDialog.select')
+  get buttonDisabled(): boolean {
+    return this.connected && !this.nodeDataChanged;
   }
 
-  get buttonDisabled (): boolean {
-    return this.connected && !this.nodeDataChanged
+  get buttonType(): string {
+    return this.nodeDataChanged || !this.existing ? 'primary' : 'tertiary';
   }
 
-  get buttonType (): string {
-    return this.nodeDataChanged || !this.existing ? 'primary' : 'tertiary'
+  get title(): string {
+    return this.existing ? this.node.title : this.t('selectNodeDialog.customNode');
   }
 
-  get title (): string {
-    return this.existing ? this.node.title : this.t('selectNodeDialog.customNode')
+  get nodeDataChanged(): boolean {
+    return this.nodeModel.name !== this.node.name || this.nodeModel.address !== this.node.address;
   }
 
-  get nodeDataChanged (): boolean {
-    return this.nodeModel.name !== this.node.name || this.nodeModel.address !== this.node.address
-  }
-
-  async submitForm (): Promise<void> {
+  async submitForm(): Promise<void> {
     try {
-      await (this.$refs.nodeForm as any).validate()
+      await (this.$refs.nodeForm as any).validate();
 
       const preparedModel = {
         ...this.nodeModel,
-        address: stripEndingSlash(this.nodeModel.address)
-      }
+        address: stripEndingSlash(this.nodeModel.address),
+      };
 
-      this.handleNode(preparedModel, !this.existing || this.nodeDataChanged)
+      this.handleNode(preparedModel, !this.existing || this.nodeDataChanged);
     } catch (error) {
+      console.warn(error);
     }
   }
 }
@@ -139,8 +167,9 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   }
 
   .el-form-item.is-error > .el-form-item__content {
-    & > [class^="s-input"]:not(.s-disabled) {
-      &, &:hover {
+    & > [class^='s-input']:not(.s-disabled) {
+      &,
+      &:hover {
         & .el-input > input {
           background-color: inherit;
         }
@@ -161,7 +190,6 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
     }
   }
 }
-
 </style>
 
 <style lang="scss" scoped>
@@ -174,7 +202,8 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
     width: 100%;
   }
 
-  &-button, &-tutorial-button {
+  &-button,
+  &-tutorial-button {
     width: 100%;
   }
 }

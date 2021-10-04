@@ -1,10 +1,12 @@
 <template>
   <div v-loading="parentLoading" class="container">
-    <generic-page-header has-button-back :title="t('addLiquidity.title')" :tooltip="t('pool.description')" @back="handleBack" />
-    <s-form
-      class="el-form--actions"
-      :show-message="false"
-    >
+    <generic-page-header
+      has-button-back
+      :title="t('addLiquidity.title')"
+      :tooltip="t('pool.description')"
+      @back="handleBack"
+    />
+    <s-form class="el-form--actions" :show-message="false">
       <s-float-input
         class="s-input--token-value"
         size="medium"
@@ -25,17 +27,31 @@
             <span class="input-value--uppercase">{{ t('createPair.balance') }}</span>
             <span class="input-value--primary">{{ getTokenBalance(firstToken) }}</span>
             <formatted-amount v-if="firstTokenPrice" :value="getFiatBalance(firstToken)" is-fiat-value />
-        </div>
+          </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
-          <s-button v-if="isFirstMaxButtonAvailable" class="el-button--max s-typography-button--small" type="primary" alternative size="mini" border-radius="mini" @click="handleMaxValue(firstToken, setFirstTokenValue)">
+          <s-button
+            v-if="isFirstMaxButtonAvailable"
+            class="el-button--max s-typography-button--small"
+            type="primary"
+            alternative
+            size="mini"
+            border-radius="mini"
+            @click="handleMaxValue(firstToken, setFirstTokenValue)"
+          >
             {{ t('buttons.max') }}
           </s-button>
           <token-select-button class="el-button--select-token" :token="firstToken" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
           <formatted-amount v-if="firstToken && firstTokenPrice" :value="fiatFirstAmount" is-fiat-value />
-          <token-address v-if="firstToken" :name="firstToken.name" :symbol="firstToken.symbol" :address="firstToken.address" class="input-value" />
+          <token-address
+            v-if="firstToken"
+            :name="firstToken.name"
+            :symbol="firstToken.symbol"
+            :address="firstToken.address"
+            class="input-value"
+          />
         </div>
       </s-float-input>
       <s-icon class="icon-divider" name="plus-16" />
@@ -59,20 +75,44 @@
             <span class="input-value--uppercase">{{ t('createPair.balance') }}</span>
             <span class="input-value--primary">{{ getTokenBalance(secondToken) }}</span>
             <formatted-amount v-if="secondTokenPrice" :value="getFiatBalance(secondToken)" is-fiat-value />
-        </div>
+          </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
-          <s-button v-if="isSecondMaxButtonAvailable" class="el-button--max s-typography-button--small" type="primary" alternative size="mini" border-radius="mini" @click="handleMaxValue(secondToken, setSecondTokenValue)">
+          <s-button
+            v-if="isSecondMaxButtonAvailable"
+            class="el-button--max s-typography-button--small"
+            type="primary"
+            alternative
+            size="mini"
+            border-radius="mini"
+            @click="handleMaxValue(secondToken, setSecondTokenValue)"
+          >
             {{ t('buttons.max') }}
           </s-button>
-          <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="secondToken" @click="openSelectSecondTokenDialog" />
+          <token-select-button
+            class="el-button--select-token"
+            icon="chevron-down-rounded-16"
+            :token="secondToken"
+            @click="openSelectSecondTokenDialog"
+          />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
           <formatted-amount v-if="secondToken && secondTokenPrice" :value="fiatSecondAmount" is-fiat-value />
-          <token-address v-if="secondToken" :name="secondToken.name" :symbol="secondToken.symbol" :address="secondToken.address" class="input-value" />
+          <token-address
+            v-if="secondToken"
+            :name="secondToken.name"
+            :symbol="secondToken.symbol"
+            :address="secondToken.address"
+            class="input-value"
+          />
         </div>
       </s-float-input>
-      <s-button type="primary" class="action-button s-typography-button--large" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="openConfirmDialog">
+      <s-button
+        type="primary"
+        class="action-button s-typography-button--large"
+        :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable"
+        @click="openConfirmDialog"
+      >
         <template v-if="!areTokensSelected">
           {{ t('buttons.chooseTokens') }}
         </template>
@@ -92,7 +132,10 @@
       <slippage-tolerance class="slippage-tolerance-settings" />
     </s-form>
 
-    <div v-if="areTokensSelected && isAvailable && !isNotFirstLiquidityProvider && emptyAssets" class="info-line-container">
+    <div
+      v-if="areTokensSelected && isAvailable && !isNotFirstLiquidityProvider && emptyAssets"
+      class="info-line-container"
+    >
       <p class="info-line-container__title">{{ t('createPair.firstLiquidityProvider') }}</p>
       <info-line>
         <template #info-line-prefix>
@@ -103,20 +146,29 @@
 
     <div v-if="areTokensSelected && isAvailable && !emptyAssets" class="info-line-container">
       <p class="info-line-container__title">{{ t('createPair.pricePool') }}</p>
-      <info-line :label="t('addLiquidity.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="formattedPrice" />
-      <info-line :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formattedPriceReversed" />
+      <info-line
+        :label="t('addLiquidity.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })"
+        :value="formattedPrice"
+      />
+      <info-line
+        :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })"
+        :value="formattedPriceReversed"
+      />
       <info-line v-if="strategicBonusApy" :label="t('pool.strategicBonusApy')" :value="strategicBonusApy" />
       <info-line
-       :label="t('createPair.networkFee')"
-       :label-tooltip="t('networkFeeTooltipText')"
-       :value="formattedFee"
-       :asset-symbol="KnownSymbols.XOR"
-       :fiat-value="getFiatAmountByCodecString(networkFee)"
-       is-formatted
+        :label="t('createPair.networkFee')"
+        :label-tooltip="t('networkFeeTooltipText')"
+        :value="formattedFee"
+        :asset-symbol="KnownSymbols.XOR"
+        :fiat-value="getFiatAmountByCodecString(networkFee)"
+        is-formatted
       />
     </div>
 
-    <div v-if="areTokensSelected && isAvailable && (!emptyAssets || (liquidityInfo || {}).balance)" class="info-line-container">
+    <div
+      v-if="areTokensSelected && isAvailable && (!emptyAssets || (liquidityInfo || {}).balance)"
+      class="info-line-container"
+    >
       <p class="info-line-container__title">{{ t(`createPair.yourPosition${!emptyAssets ? 'Estimated' : ''}`) }}</p>
       <info-line
         :label="firstToken.symbol"
@@ -133,7 +185,12 @@
       <info-line :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
     </div>
 
-    <select-token :visible.sync="showSelectSecondTokenDialog" :connected="isLoggedIn" :asset="firstToken" @select="setSecondTokenAddress($event.address)" />
+    <select-token
+      :visible.sync="showSelectSecondTokenDialog"
+      :connected="isLoggedIn"
+      :asset="firstToken"
+      @select="setSecondTokenAddress($event.address)"
+    />
 
     <confirm-token-pair-dialog
       :visible.sync="showConfirmDialog"
@@ -153,20 +210,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
-import { FPNumber, AccountLiquidity, CodecString, KnownAssets, KnownSymbols } from '@sora-substrate/util'
-import { components } from '@soramitsu/soraneo-wallet-web'
+import { Component, Mixins } from 'vue-property-decorator';
+import { Action, Getter } from 'vuex-class';
+import { FPNumber, AccountLiquidity, CodecString, KnownAssets, KnownSymbols } from '@sora-substrate/util';
+import { components } from '@soramitsu/soraneo-wallet-web';
 
-import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
-import LoadingMixin from '@/components/mixins/LoadingMixin'
+import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin';
+import LoadingMixin from '@/components/mixins/LoadingMixin';
 
-import router, { lazyComponent } from '@/router'
-import { Components } from '@/consts'
+import router, { lazyComponent } from '@/router';
+import { Components } from '@/consts';
 
-const namespace = 'addLiquidity'
+const namespace = 'addLiquidity';
 
-const TokenPairMixin = CreateTokenPairMixin(namespace)
+const TokenPairMixin = CreateTokenPairMixin(namespace);
 
 @Component({
   components: {
@@ -178,118 +235,117 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
     FormattedAmount: components.FormattedAmount,
-    InfoLine: components.InfoLine
-  }
+    InfoLine: components.InfoLine,
+  },
 })
-
 export default class AddLiquidity extends Mixins(LoadingMixin, TokenPairMixin) {
-  @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean
-  @Getter('shareOfPool', { namespace }) shareOfPool!: string
-  @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity
+  @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean;
+  @Getter('shareOfPool', { namespace }) shareOfPool!: string;
+  @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity;
 
-  @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity!: (params: any) => Promise<void>
-  @Action('addLiquidity', { namespace }) addLiquidity!: AsyncVoidFn
-  @Action('resetFocusedField', { namespace }) resetFocusedField!: AsyncVoidFn
+  @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity!: (params: any) => Promise<void>;
+  @Action('addLiquidity', { namespace }) addLiquidity!: AsyncVoidFn;
+  @Action('resetFocusedField', { namespace }) resetFocusedField!: AsyncVoidFn;
 
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG
+  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
-  async mounted (): Promise<void> {
+  async mounted(): Promise<void> {
     await this.withParentLoading(async () => {
       if (this.firstAddress && this.secondAddress) {
         await this.setDataFromLiquidity({
           firstAddress: this.firstAddress,
-          secondAddress: this.secondAddress
-        })
+          secondAddress: this.secondAddress,
+        });
         // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
         if (!this.liquidityInfo) {
-          return this.handleBack()
+          return this.handleBack();
         }
       } else {
-        await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
+        await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address);
       }
-    })
+    });
   }
 
-  get firstAddress (): string {
-    return router.currentRoute.params.firstAddress
+  get firstAddress(): string {
+    return router.currentRoute.params.firstAddress;
   }
 
-  get secondAddress (): string {
-    return router.currentRoute.params.secondAddress
+  get secondAddress(): string {
+    return router.currentRoute.params.secondAddress;
   }
 
-  get chooseTokenClasses (): string {
-    const buttonClass = 'el-button'
-    const classes = [buttonClass, buttonClass + '--choose-token']
+  get chooseTokenClasses(): string {
+    const buttonClass = 'el-button';
+    const classes = [buttonClass, buttonClass + '--choose-token'];
 
     if (this.secondAddress) {
-      classes.push(`${buttonClass}--disabled`)
+      classes.push(`${buttonClass}--disabled`);
     }
 
-    return classes.join(' ')
+    return classes.join(' ');
   }
 
-  get emptyAssets (): boolean {
+  get emptyAssets(): boolean {
     if (!(this.firstTokenValue || this.secondTokenValue)) {
-      return true
+      return true;
     }
-    const first = new FPNumber(this.firstTokenValue)
-    const second = new FPNumber(this.secondTokenValue)
-    return (first.isNaN() || first.isZero()) || (second.isNaN() || second.isZero())
+    const first = new FPNumber(this.firstTokenValue);
+    const second = new FPNumber(this.secondTokenValue);
+    return first.isNaN() || first.isZero() || second.isNaN() || second.isZero();
   }
 
-  get firstTokenPosition (): FPNumber {
-    return this.getTokenPosition(this.liquidityInfo?.firstBalance, this.firstTokenValue)
+  get firstTokenPosition(): FPNumber {
+    return this.getTokenPosition(this.liquidityInfo?.firstBalance, this.firstTokenValue);
   }
 
-  get secondTokenPosition (): FPNumber {
-    return this.getTokenPosition(this.liquidityInfo?.secondBalance, this.secondTokenValue)
+  get secondTokenPosition(): FPNumber {
+    return this.getTokenPosition(this.liquidityInfo?.secondBalance, this.secondTokenValue);
   }
 
-  get formattedFirstTokenPosition (): string {
-    return this.firstTokenPosition.toLocaleString()
+  get formattedFirstTokenPosition(): string {
+    return this.firstTokenPosition.toLocaleString();
   }
 
-  get formattedSecondTokenPosition (): string {
-    return this.secondTokenPosition.toLocaleString()
+  get formattedSecondTokenPosition(): string {
+    return this.secondTokenPosition.toLocaleString();
   }
 
-  get fiatFirstTokenPosition (): Nullable<string> {
-    return this.getFiatAmountByFPNumber(this.firstTokenPosition, this.firstToken)
+  get fiatFirstTokenPosition(): Nullable<string> {
+    return this.getFiatAmountByFPNumber(this.firstTokenPosition, this.firstToken);
   }
 
-  get fiatSecondTokenPosition (): Nullable<string> {
-    return this.getFiatAmountByFPNumber(this.secondTokenPosition, this.secondToken)
+  get fiatSecondTokenPosition(): Nullable<string> {
+    return this.getFiatAmountByFPNumber(this.secondTokenPosition, this.secondToken);
   }
 
-  getTokenPosition (liquidityInfoBalance: string | undefined, tokenValue: string | CodecString | number): FPNumber {
-    const prevPosition = FPNumber.fromCodecValue(liquidityInfoBalance ?? 0)
+  getTokenPosition(liquidityInfoBalance: string | undefined, tokenValue: string | CodecString | number): FPNumber {
+    const prevPosition = FPNumber.fromCodecValue(liquidityInfoBalance ?? 0);
     if (!this.emptyAssets) {
-      return prevPosition.add(new FPNumber(tokenValue))
+      return prevPosition.add(new FPNumber(tokenValue));
     }
-    return prevPosition
+    return prevPosition;
   }
 
-  get strategicBonusApy (): Nullable<string> {
+  get strategicBonusApy(): Nullable<string> {
     // It won't be in template when not defined
-    const strategicBonusApy = this.fiatPriceAndApyObject[this.secondToken.address]?.strategicBonusApy
+    const strategicBonusApy = this.fiatPriceAndApyObject[this.secondToken.address]?.strategicBonusApy;
     if (!strategicBonusApy) {
-      return null
+      return null;
     }
-    return `${this.getFPNumberFromCodec(strategicBonusApy).mul(this.Hundred).toLocaleString()}%`
+    return `${this.getFPNumberFromCodec(strategicBonusApy).mul(this.Hundred).toLocaleString()}%`;
   }
 
-  updatePrices (): void {
+  updatePrices(): void {
     this.getPrices({
       assetAAddress: this.firstAddress ?? this.firstToken.address,
       assetBAddress: this.secondAddress ?? this.secondToken.address,
       amountA: this.firstTokenValue,
-      amountB: this.secondTokenValue
-    })
+      amountB: this.secondTokenValue,
+    });
   }
 
-  handleConfirmAddLiquidity (): Promise<void> {
-    return this.handleConfirm(this.addLiquidity)
+  handleConfirmAddLiquidity(): Promise<void> {
+    return this.handleConfirm(this.addLiquidity);
   }
 }
 </script>

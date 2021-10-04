@@ -1,85 +1,85 @@
-import { Component, Mixins } from 'vue-property-decorator'
-import { Action } from 'vuex-class'
+import { Component, Mixins } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 
-import LoadingMixin from '@/components/mixins/LoadingMixin'
-import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
-import ethersUtil from '@/utils/ethers-util'
-import { ethers } from 'ethers'
+import LoadingMixin from '@/components/mixins/LoadingMixin';
+import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
+import ethersUtil from '@/utils/ethers-util';
+import { ethers } from 'ethers';
 
 @Component
 export default class BridgeMixin extends Mixins(LoadingMixin, WalletConnectMixin) {
-  @Action('getEvmBalance', { namespace: 'web3' }) getEvmBalance!: AsyncVoidFn
-  @Action('getEvmNetworkFee', { namespace: 'bridge' }) getEvmNetworkFee!: AsyncVoidFn
-  @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets!: AsyncVoidFn
-  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn
+  @Action('getEvmBalance', { namespace: 'web3' }) getEvmBalance!: AsyncVoidFn;
+  @Action('getEvmNetworkFee', { namespace: 'bridge' }) getEvmNetworkFee!: AsyncVoidFn;
+  @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets!: AsyncVoidFn;
+  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn;
 
-  private unwatchEthereum!: any
-  blockHeadersSubscriber: ethers.providers.Web3Provider | undefined
+  private unwatchEthereum!: any;
+  blockHeadersSubscriber: ethers.providers.Web3Provider | undefined;
 
-  async mounted (): Promise<void> {
-    await this.setEvmNetworkType()
-    await this.syncExternalAccountWithAppState()
-    this.getEvmBalance()
+  async mounted(): Promise<void> {
+    await this.setEvmNetworkType();
+    await this.syncExternalAccountWithAppState();
+    this.getEvmBalance();
     this.withApi(async () => {
       this.unwatchEthereum = await ethersUtil.watchEthereum({
         onAccountChange: (addressList: string[]) => {
           if (addressList.length) {
-            this.switchExternalAccount({ address: addressList[0] })
-            this.updateRegisteredAssets()
+            this.switchExternalAccount({ address: addressList[0] });
+            this.updateRegisteredAssets();
           } else {
-            this.disconnectExternalAccount()
+            this.disconnectExternalAccount();
           }
         },
         onNetworkChange: (networkId: string) => {
-          this.setEvmNetworkType(networkId)
-          this.getEvmNetworkFee()
-          this.getRegisteredAssets()
-          this.getEvmBalance() // update only evm balance because assets balances updated during getRegisteredAssets call
+          this.setEvmNetworkType(networkId);
+          this.getEvmNetworkFee();
+          this.getRegisteredAssets();
+          this.getEvmBalance(); // update only evm balance because assets balances updated during getRegisteredAssets call
         },
         onDisconnect: (code: number, reason: string) => {
-          this.disconnectExternalAccount()
-        }
-      })
-      this.subscribeToEvmBlockHeaders()
-    })
+          this.disconnectExternalAccount();
+        },
+      });
+      this.subscribeToEvmBlockHeaders();
+    });
   }
 
-  beforeDestroy (): void {
+  beforeDestroy(): void {
     if (typeof this.unwatchEthereum === 'function') {
-      this.unwatchEthereum()
+      this.unwatchEthereum();
     }
-    this.unsubscribeEvmBlockHeaders()
+    this.unsubscribeEvmBlockHeaders();
   }
 
-  updateExternalBalances (): void {
-    this.getEvmBalance()
-    this.updateRegisteredAssets()
+  updateExternalBalances(): void {
+    this.getEvmBalance();
+    this.updateRegisteredAssets();
   }
 
-  async subscribeToEvmBlockHeaders (): Promise<void> {
+  async subscribeToEvmBlockHeaders(): Promise<void> {
     try {
-      await this.unsubscribeEvmBlockHeaders()
+      await this.unsubscribeEvmBlockHeaders();
 
-      const ethersInstance = await ethersUtil.getEthersInstance()
+      const ethersInstance = await ethersUtil.getEthersInstance();
 
       this.blockHeadersSubscriber = ethersInstance.on('block', (blockNumber) => {
-        this.updateExternalBalances()
-      })
+        this.updateExternalBalances();
+      });
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 
-  unsubscribeEvmBlockHeaders (): Promise<void> {
+  unsubscribeEvmBlockHeaders(): Promise<void> {
     return new Promise((resolve, reject) => {
-      if (!this.blockHeadersSubscriber) return resolve()
+      if (!this.blockHeadersSubscriber) return resolve();
 
       try {
-        this.blockHeadersSubscriber.off('block')
-        resolve()
+        this.blockHeadersSubscriber.off('block');
+        resolve();
       } catch (error) {
-        reject(error)
+        reject(error);
       }
-    })
+    });
   }
 }

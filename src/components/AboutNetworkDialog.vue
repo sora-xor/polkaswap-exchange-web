@@ -1,9 +1,5 @@
 <template>
-  <dialog-base
-    :visible.sync="isVisible"
-    :title="t('aboutNetworkDialog.title')"
-    custom-class="about-network-dialog"
-  >
+  <dialog-base :visible.sync="isVisible" :title="t('aboutNetworkDialog.title')" custom-class="about-network-dialog">
     <div v-for="({ title, description, link }, index) in aboutBlocks" :key="index" class="about-network-block">
       <h4>{{ title }}</h4>
       <p class="p4">{{ description }}</p>
@@ -13,32 +9,35 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator';
 
-import TranslationMixin from './mixins/TranslationMixin'
-import DialogMixin from './mixins/DialogMixin'
-import DialogBase from './DialogBase.vue'
+import TranslationMixin from './mixins/TranslationMixin';
+import DialogMixin from './mixins/DialogMixin';
+import DialogBase from './DialogBase.vue';
 
-import { Components, Links } from '@/consts'
-import { lazyComponent } from '@/router'
+import { Components, Links } from '@/consts';
+import { lazyComponent } from '@/router';
 
 @Component({
   components: {
     DialogBase,
-    ExternalLink: lazyComponent(Components.ExternalLink)
-  }
+    ExternalLink: lazyComponent(Components.ExternalLink),
+  },
 })
 export default class AboutNetworkDialog extends Mixins(TranslationMixin, DialogMixin) {
-  get aboutBlocks (): Array<object> {
-    return [{
-      title: this.t('aboutNetworkDialog.network.title'),
-      description: this.t('aboutNetworkDialog.network.description'),
-      link: Links.about.sora
-    }, {
-      title: this.t('aboutNetworkDialog.polkadot.title'),
-      description: this.t('aboutNetworkDialog.polkadot.description'),
-      link: Links.about.polkadot
-    }]
+  get aboutBlocks(): Array<object> {
+    return [
+      {
+        title: this.t('aboutNetworkDialog.network.title'),
+        description: this.t('aboutNetworkDialog.network.description'),
+        link: Links.about.sora,
+      },
+      {
+        title: this.t('aboutNetworkDialog.polkadot.title'),
+        description: this.t('aboutNetworkDialog.polkadot.description'),
+        link: Links.about.polkadot,
+      },
+    ];
   }
 }
 </script>

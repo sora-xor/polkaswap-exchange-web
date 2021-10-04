@@ -14,20 +14,20 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import { KnownSymbols } from '@sora-substrate/util'
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import { KnownSymbols } from '@sora-substrate/util';
 
-import { lazyComponent } from '@/router'
-import { Components, LogoSize } from '@/consts'
+import { lazyComponent } from '@/router';
+import { Components, LogoSize } from '@/consts';
 
 @Component({
   components: {
-    TokenLogo: lazyComponent(Components.TokenLogo)
-  }
+    TokenLogo: lazyComponent(Components.TokenLogo),
+  },
 })
 export default class TokensRow extends Vue {
-  @Prop({ default: () => [], type: Array }) symbols!: Array<KnownSymbols>
-  @Prop({ default: LogoSize.LARGE, type: String }) readonly size!: LogoSize
+  @Prop({ default: () => [], type: Array }) symbols!: Array<KnownSymbols>;
+  @Prop({ default: LogoSize.LARGE, type: String }) readonly size!: LogoSize;
 }
 </script>
 
