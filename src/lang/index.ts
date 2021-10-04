@@ -19,14 +19,20 @@ const i18n = new VueI18n({
 
 const loadedLanguages: Array<string> = [Language.EN];
 
+const hasLocale = (locale: string) => Object.values(Language).includes(locale as any);
+
 export const getSupportedLocale = (locale: Language): string => {
-  return Object.values(Language).includes(locale as any) ? locale : Language.EN;
+  if (hasLocale(locale)) return locale;
+
+  if (locale.includes('-')) {
+    return getSupportedLocale(first(locale.split('-')) as any);
+  }
+
+  return Language.EN;
 };
 
 export function getLocale(): string {
-  const locale =
-    settingsStorage.get('language') ||
-    (first((navigator.language || (navigator as any).userLanguage).split('-')) as string);
+  const locale = settingsStorage.get('language') || ((navigator.language || (navigator as any).userLanguage) as string);
 
   return getSupportedLocale(locale as any);
 }
@@ -35,10 +41,12 @@ export async function setI18nLocale(lang: Language): Promise<void> {
   const locale = getSupportedLocale(lang) as any;
 
   if (!loadedLanguages.includes(locale)) {
+    // transform locale string 'eu-ES' to filename 'eu_ES' like in localise
+    const filename = locale.replace('-', '_');
     const { default: messages } = await import(
       /* webpackChunkName: "lang-[request]" */
       /* webpackMode: "lazy" */
-      `@/lang/${locale}.json`
+      `@/lang/${filename}.json`
     );
 
     i18n.setLocaleMessage(locale, messages);
