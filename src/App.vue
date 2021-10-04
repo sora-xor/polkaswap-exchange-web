@@ -420,7 +420,6 @@ ul ul {
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Sora', sans-serif;
   height: 100vh;
-  min-width: $breakpoint_mobile;
   color: var(--s-color-base-content-primary);
   background-color: var(--s-color-utility-body);
   transition: background-color 500ms linear;
@@ -679,6 +678,7 @@ $account-control-name-max-width: 200px;
 
         .app-sidebar {
           transform: translateX(0);
+          transition-duration: 0.2s;
         }
       }
 
@@ -687,7 +687,6 @@ $account-control-name-max-width: 200px;
         background-color: var(--s-color-utility-body);
         padding: $inner-spacing-mini $inner-spacing-medium;
         filter: drop-shadow(32px 0px 64px rgba(0, 0, 0, 0.1));
-        transition-duration: 0.2s;
         transform: translateX(-100%);
       }
     }
@@ -762,7 +761,7 @@ $account-control-name-max-width: 200px;
       margin-left: auto;
       margin-bottom: $inner-spacing-big;
       margin-right: auto;
-      width: calc(#{$inner-window-width} - #{$basic-spacing-medium * 2});
+      max-width: calc(#{$inner-window-width} - #{$basic-spacing-medium * 2});
       text-align: justify;
     }
   }
@@ -780,9 +779,7 @@ $account-control-name-max-width: 200px;
     display: flex;
     flex-direction: column-reverse;
     justify-content: flex-end;
-    padding-right: $inner-spacing-large;
-    padding-left: $inner-spacing-large;
-    padding-bottom: $inner-spacing-large;
+    padding: 0 $basic-spacing-medium $basic-spacing-medium;
   }
 }
 
@@ -987,16 +984,9 @@ $account-control-name-max-width: 200px;
 @include tablet {
   .app-footer {
     flex-direction: row;
-    padding-right: 22px;
-    padding-bottom: 20px;
     .app-disclaimer {
       padding-right: $inner-spacing-large;
     }
-  }
-}
-@media screen and (max-width: 460px) {
-  .app-body {
-    margin-left: -10px;
   }
 }
 </style>
