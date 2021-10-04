@@ -6,32 +6,32 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { AccountAsset, Asset } from '@sora-substrate/util'
+import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { AccountAsset, Asset } from '@sora-substrate/util';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
-import { LogoSize, Components, ObjectInit } from '@/consts'
-import { lazyComponent } from '@/router'
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { LogoSize, Components, ObjectInit } from '@/consts';
+import { lazyComponent } from '@/router';
 
 @Component({
   components: {
-    TokenLogo: lazyComponent(Components.TokenLogo)
-  }
+    TokenLogo: lazyComponent(Components.TokenLogo),
+  },
 })
 export default class PairTokenLogo extends Mixins(TranslationMixin) {
-  @Prop({ type: Object, default: ObjectInit }) readonly firstToken!: AccountAsset | Asset
-  @Prop({ type: Object, default: ObjectInit }) readonly secondToken!: AccountAsset | Asset
-  @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize
+  @Prop({ type: Object, default: ObjectInit }) readonly firstToken!: AccountAsset | Asset;
+  @Prop({ type: Object, default: ObjectInit }) readonly secondToken!: AccountAsset | Asset;
+  @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize;
 
-  get computedClasses (): string {
-    const componentClass = 'pair-logo'
-    const classes = [componentClass]
+  get computedClasses(): string {
+    const componentClass = 'pair-logo';
+    const classes = [componentClass];
 
     if (this.size) {
-      classes.push(`${componentClass}--${this.size.toLowerCase()}`)
+      classes.push(`${componentClass}--${this.size.toLowerCase()}`);
     }
 
-    return classes.join(' ')
+    return classes.join(' ');
   }
 }
 </script>

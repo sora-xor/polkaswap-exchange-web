@@ -8,47 +8,47 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import TranslationMixin from '../mixins/TranslationMixin'
+import { Component, Mixins, Prop } from 'vue-property-decorator';
+import TranslationMixin from '../mixins/TranslationMixin';
 
-import { formatAddress, copyToClipboard } from '@/utils'
+import { formatAddress, copyToClipboard } from '@/utils';
 
 @Component
 export default class TokenAddress extends Mixins(TranslationMixin) {
-  @Prop({ default: '', type: String }) readonly name!: string
-  @Prop({ default: '', type: String }) readonly symbol!: string
-  @Prop({ default: '', type: String }) readonly address!: string
-  @Prop({ default: '', type: String }) readonly externalAddress!: string
-  @Prop({ default: false, type: Boolean }) readonly external!: boolean
-  @Prop({ default: true, type: Boolean }) readonly showName!: boolean
+  @Prop({ default: '', type: String }) readonly name!: string;
+  @Prop({ default: '', type: String }) readonly symbol!: string;
+  @Prop({ default: '', type: String }) readonly address!: string;
+  @Prop({ default: '', type: String }) readonly externalAddress!: string;
+  @Prop({ default: false, type: Boolean }) readonly external!: boolean;
+  @Prop({ default: true, type: Boolean }) readonly showName!: boolean;
 
-  get tokenName (): string {
-    return this.name || this.symbol
+  get tokenName(): string {
+    return this.name || this.symbol;
   }
 
-  get tokenAddress (): string {
-    return this.external ? this.externalAddress : this.address
+  get tokenAddress(): string {
+    return this.external ? this.externalAddress : this.address;
   }
 
-  get formattedAddress (): string {
-    return formatAddress(this.tokenAddress, 10)
+  get formattedAddress(): string {
+    return formatAddress(this.tokenAddress, 10);
   }
 
-  async handleCopy (event: Event): Promise<void> {
-    event.stopImmediatePropagation()
+  async handleCopy(event: Event): Promise<void> {
+    event.stopImmediatePropagation();
     try {
-      await copyToClipboard(this.tokenAddress)
+      await copyToClipboard(this.tokenAddress);
       this.$notify({
         message: this.t('selectToken.successCopy', { symbol: this.symbol }),
         type: 'success',
-        title: ''
-      })
+        title: '',
+      });
     } catch (error) {
       this.$notify({
         message: `${this.t('warningText')} ${error}`,
         type: 'warning',
-        title: ''
-      })
+        title: '',
+      });
     }
   }
 }

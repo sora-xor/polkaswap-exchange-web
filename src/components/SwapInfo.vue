@@ -1,6 +1,6 @@
 <template>
   <div class="swap-info-container">
-    <info-line v-for="({ id, label, value }) in priceValues" :key="id" :label="label" :value="value" />
+    <info-line v-for="{ id, label, value } in priceValues" :key="id" :label="label" :value="value" />
     <info-line
       :label="t(`swap.${isExchangeB ? 'maxSold' : 'minReceived'}`)"
       :label-tooltip="t('swap.minReceivedTooltip')"
@@ -9,16 +9,8 @@
       :fiat-value="getFiatAmountByCodecString(minMaxReceived, isExchangeB ? tokenFrom : tokenTo)"
       is-formatted
     />
-    <info-line
-      v-for="(reward, index) in rewardsValues"
-      :key="index"
-      v-bind="reward"
-    />
-    <info-line
-      v-if="hasPriceImpact"
-      :label="t('swap.priceImpact')"
-      :label-tooltip="t('swap.priceImpactTooltip')"
-    >
+    <info-line v-for="(reward, index) in rewardsValues" :key="index" v-bind="reward" />
+    <info-line v-if="hasPriceImpact" :label="t('swap.priceImpact')" :label-tooltip="t('swap.priceImpactTooltip')">
       <value-status-wrapper :value="priceImpact">
         <formatted-amount class="price-impact-value" :value="priceImpactFormatted">%</formatted-amount>
       </value-status-wrapper>
@@ -45,102 +37,110 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LPRewardsInfo, Operation, NetworkFeesObject } from '@sora-substrate/util'
-import { components, mixins } from '@soramitsu/soraneo-wallet-web'
+import { Component, Mixins } from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
+import {
+  KnownAssets,
+  KnownSymbols,
+  CodecString,
+  AccountAsset,
+  LPRewardsInfo,
+  Operation,
+  NetworkFeesObject,
+} from '@sora-substrate/util';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
-import { asZeroValue } from '@/utils'
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { lazyComponent } from '@/router';
+import { Components } from '@/consts';
+import { asZeroValue } from '@/utils';
 
-const namespace = 'swap'
+const namespace = 'swap';
 
 @Component({
   components: {
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     FormattedAmount: components.FormattedAmount,
-    InfoLine: components.InfoLine
-  }
+    InfoLine: components.InfoLine,
+  },
 })
 export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
-  @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset
-  @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset
-  @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString
-  @Getter('isExchangeB', { namespace }) isExchangeB!: boolean
-  @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString
-  @Getter('rewards', { namespace }) rewards!: Array<LPRewardsInfo>
-  @Getter('priceImpact', { namespace }) priceImpact!: string
+  @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset;
+  @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset;
+  @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString;
+  @Getter('isExchangeB', { namespace }) isExchangeB!: boolean;
+  @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString;
+  @Getter('rewards', { namespace }) rewards!: Array<LPRewardsInfo>;
+  @Getter('priceImpact', { namespace }) priceImpact!: string;
 
-  @Getter('price', { namespace: 'prices' }) price!: string
-  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string
-  @Getter isLoggedIn!: boolean
-  @Getter networkFees!: NetworkFeesObject
+  @Getter('price', { namespace: 'prices' }) price!: string;
+  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string;
+  @Getter isLoggedIn!: boolean;
+  @Getter networkFees!: NetworkFeesObject;
 
-  get liquidityProviderFeeTooltipText (): string {
-    return this.t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: this.liquidityProviderFeeValue })
+  get liquidityProviderFeeTooltipText(): string {
+    return this.t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: this.liquidityProviderFeeValue });
   }
 
-  get priceValues (): Array<object> {
-    const fromSymbol = this.tokenFrom?.symbol ?? ''
-    const toSymbol = this.tokenTo?.symbol ?? ''
+  get priceValues(): Array<object> {
+    const fromSymbol = this.tokenFrom?.symbol ?? '';
+    const toSymbol = this.tokenTo?.symbol ?? '';
 
     return [
       {
         id: 'from',
         label: this.t('swap.firstPerSecond', { first: fromSymbol, second: toSymbol }),
-        value: this.formatStringValue(this.price)
+        value: this.formatStringValue(this.price),
       },
       {
         id: 'to',
         label: this.t('swap.firstPerSecond', { first: toSymbol, second: fromSymbol }),
-        value: this.formatStringValue(this.priceReversed)
-      }
-    ]
+        value: this.formatStringValue(this.priceReversed),
+      },
+    ];
   }
 
-  get hasPriceImpact (): boolean {
-    return !asZeroValue(this.priceImpact)
+  get hasPriceImpact(): boolean {
+    return !asZeroValue(this.priceImpact);
   }
 
-  get priceImpactFormatted (): string {
-    return this.formatStringValue(this.priceImpact)
+  get priceImpactFormatted(): string {
+    return this.formatStringValue(this.priceImpact);
   }
 
-  get rewardsValues (): Array<any> {
+  get rewardsValues(): Array<any> {
     return this.rewards.map((reward, index) => {
-      const asset = KnownAssets.get(reward.currency)
-      const value = this.formatCodecNumber(reward.amount)
+      const asset = KnownAssets.get(reward.currency);
+      const value = this.formatCodecNumber(reward.amount);
 
       return {
         value,
         fiatValue: this.getFiatAmountByString(value, asset as AccountAsset),
         assetSymbol: asset?.symbol ?? '',
-        label: index === 0 ? this.t('swap.rewardsForSwap') : ''
-      }
-    })
+        label: index === 0 ? this.t('swap.rewardsForSwap') : '',
+      };
+    });
   }
 
-  get networkFee (): CodecString {
-    return this.networkFees[Operation.Swap]
+  get networkFee(): CodecString {
+    return this.networkFees[Operation.Swap];
   }
 
-  get formattedNetworkFee (): string {
-    return this.formatCodecNumber(this.networkFee)
+  get formattedNetworkFee(): string {
+    return this.formatCodecNumber(this.networkFee);
   }
 
-  get liquidityProviderFeeValue (): string {
-    return this.formatStringValue('0.3')
+  get liquidityProviderFeeValue(): string {
+    return this.formatStringValue('0.3');
   }
 
-  get formattedLiquidityProviderFee (): string {
-    return this.formatCodecNumber(this.liquidityProviderFee)
+  get formattedLiquidityProviderFee(): string {
+    return this.formatCodecNumber(this.liquidityProviderFee);
   }
 
-  get formattedMinMaxReceived (): string {
-    const decimals = (this.isExchangeB ? this.tokenFrom : this.tokenTo)?.decimals
-    return this.formatCodecNumber(this.minMaxReceived, decimals)
+  get formattedMinMaxReceived(): string {
+    const decimals = (this.isExchangeB ? this.tokenFrom : this.tokenTo)?.decimals;
+    return this.formatCodecNumber(this.minMaxReceived, decimals);
   }
 
   // TODO: [Release 2]
@@ -157,12 +157,12 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
   //   return ''
   // }
 
-  get xorSymbol (): string {
-    return ' ' + KnownSymbols.XOR
+  get xorSymbol(): string {
+    return ' ' + KnownSymbols.XOR;
   }
 
-  get getAssetSymbolText (): string {
-    return (this.isExchangeB ? this.tokenFrom : this.tokenTo)?.symbol ?? ''
+  get getAssetSymbolText(): string {
+    return (this.isExchangeB ? this.tokenFrom : this.tokenTo)?.symbol ?? '';
   }
 }
 </script>

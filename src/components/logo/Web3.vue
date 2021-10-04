@@ -1,7 +1,20 @@
 <template>
-<svg version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 150 52" overflow="visible" xml:space="preserve">
-<g>
-<path :fill="textColor" d="M23.6,10.1L0,0.3v2.1l21,8.6c0.4,0.2,0.7,0.7,0.5,1.1c-0.1,0.2-0.3,0.4-0.5,0.5L0,21.4v8.5l12.7-5.2L21,28
+  <svg
+    version="1.2"
+    baseProfile="tiny"
+    id="Layer_1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    x="0px"
+    y="0px"
+    viewBox="0 0 150 52"
+    overflow="visible"
+    xml:space="preserve"
+  >
+    <g>
+      <path
+        :fill="textColor"
+        d="M23.6,10.1L0,0.3v2.1l21,8.6c0.4,0.2,0.7,0.7,0.5,1.1c-0.1,0.2-0.3,0.4-0.5,0.5L0,21.4v8.5l12.7-5.2L21,28
 c0.4,0.2,0.7,0.7,0.5,1.1c0,0,0,0,0,0c-0.1,0.2-0.3,0.4-0.5,0.5L0,38.3v13.4L23.6,42c1.3-0.5,2.1-1.8,2.1-3.1v-8.7
 c0-1.4-0.8-2.6-2.1-3.1l-8.4-3.5l8.4-3.4c1.3-0.5,2.1-1.7,2.1-3.1v-3.8C25.7,11.8,24.9,10.6,23.6,10.1z M45.2,6
 c0.2,0.4,0.7,0.7,1.2,0.6C47.2,6.7,48,6,48,4.7c0-1.2-0.7-1.9-1.6-1.9c-0.5,0-1,0.2-1.2,0.6V2.9h-0.6v4.9h0.6V6z M46.2,3.4
@@ -79,22 +92,22 @@ c1.4,0,2.2-0.5,2.6-1.2c0,0.4,0,0.7,0.1,1.1h1.3c-0.2-1-0.2-1.9-0.2-2.9V34.4z M128
 c-0.9,0-1.5-0.5-1.5-1.2c0-1.1,1.5-1.4,3.9-1.6V35.9z M139.9,31.3c-1,0-2,0.5-2.6,1.4c-0.3-0.8-1-1.4-2.2-1.4c-1,0-1.8,0.5-2.3,1.3
 v-1.2h-1.3v7.7h1.3v-4.2c0-1.6,0.7-2.5,1.9-2.5c1.4,0,1.6,1,1.6,2.2v4.5h1.3v-4.2c0-1.6,0.7-2.5,1.9-2.5c1.4,0,1.6,1,1.6,2.2V39
 h1.3v-4.8C142.4,32.5,141.7,31.3,139.9,31.3z"
-/>
-</g>
-</svg>
+      />
+    </g>
+  </svg>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 @Component
 export default class Web3Logo extends Vue {
-  @Prop({ default: Theme.LIGHT, type: String }) theme!: Theme
+  @Prop({ default: Theme.LIGHT, type: String }) theme!: Theme;
 
-  get textColor (): string {
-    if (this.theme === Theme.DARK) return 'var(--s-color-base-content-tertiary)'
-    return '#A19A9D'
+  get textColor(): string {
+    if (this.theme === Theme.DARK) return 'var(--s-color-base-content-tertiary)';
+    return '#A19A9D';
   }
 }
 </script>

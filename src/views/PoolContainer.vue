@@ -2,69 +2,70 @@
   <router-view
     v-bind="{
       parentLoading: poolLoading,
-      ...$attrs
+      ...$attrs,
     }"
     v-on="$listeners"
   />
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
+import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { Action, Getter } from 'vuex-class';
 
-import LoadingMixin from '@/components/mixins/LoadingMixin'
+import LoadingMixin from '@/components/mixins/LoadingMixin';
 
-const namespace = 'pool'
+const namespace = 'pool';
 
 @Component
 export default class PoolContainer extends Mixins(LoadingMixin) {
-  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn
+  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn;
 
-  @Action('subscribeOnAccountLiquidityList', { namespace }) subscribeOnAccountLiquidityList!: AsyncVoidFn
-  @Action('subscribeOnAccountLiquidityUpdates', { namespace }) subscribeOnAccountLiquidityUpdates!: AsyncVoidFn
-  @Action('unsubscribeAccountLiquidityListAndUpdates', { namespace }) unsubscribeAccountLiquidityListAndUpdates!: AsyncVoidFn
+  @Action('subscribeOnAccountLiquidityList', { namespace }) subscribeOnAccountLiquidityList!: AsyncVoidFn;
+  @Action('subscribeOnAccountLiquidityUpdates', { namespace }) subscribeOnAccountLiquidityUpdates!: AsyncVoidFn;
+  @Action('unsubscribeAccountLiquidityListAndUpdates', { namespace })
+  unsubscribeAccountLiquidityListAndUpdates!: AsyncVoidFn;
 
-  @Getter isLoggedIn!: boolean
-  @Getter nodeIsConnected!: boolean
+  @Getter isLoggedIn!: boolean;
+  @Getter nodeIsConnected!: boolean;
 
   @Watch('isLoggedIn')
   @Watch('nodeIsConnected')
-  private async updateSubscriptions (value: boolean) {
+  private async updateSubscriptions(value: boolean) {
     if (value) {
-      await this.updateLiquiditySubscription()
+      await this.updateLiquiditySubscription();
     } else {
-      await this.unsubscribeAccountLiquidityListAndUpdates()
+      await this.unsubscribeAccountLiquidityListAndUpdates();
     }
   }
 
-  get poolLoading (): boolean {
-    return this.parentLoading || this.loading
+  get poolLoading(): boolean {
+    return this.parentLoading || this.loading;
   }
 
-  async mounted (): Promise<void> {
-    await this.updateLiquiditySubscription()
+  async mounted(): Promise<void> {
+    await this.updateLiquiditySubscription();
   }
 
-  async beforeDestroy (): Promise<void> {
-    await this.unsubscribeAccountLiquidityListAndUpdates()
+  async beforeDestroy(): Promise<void> {
+    await this.unsubscribeAccountLiquidityListAndUpdates();
   }
 
   /**
    * Update liquidity subscriptions & necessary data
    * If this page is loaded first time by url, "watch" & "mounted" call this method
    */
-  private async updateLiquiditySubscription (): Promise<void> {
+  private async updateLiquiditySubscription(): Promise<void> {
     // wait for node connection & wallet init (App.vue)
     await this.withParentLoading(async () => {
       // return if updateLiquiditySubscription is already called by "watch" or "mounted"
-      if (this.loading) return
+      if (this.loading) return;
 
       await this.withLoading(async () => {
-        await this.subscribeOnAccountLiquidityList()
-        await this.subscribeOnAccountLiquidityUpdates()
-        await this.getAssets()
-      })
-    })
+        await this.subscribeOnAccountLiquidityList();
+        await this.subscribeOnAccountLiquidityUpdates();
+        await this.getAssets();
+      });
+    });
   }
 }
 </script>
