@@ -758,9 +758,9 @@ $account-control-name-max-width: 200px;
     margin: auto;
 
     .app-disclaimer {
-      margin-left: auto;
+      margin-left: $basic-spacing-medium;
       margin-bottom: $inner-spacing-big;
-      margin-right: auto;
+      margin-right: $basic-spacing-medium;
       max-width: calc(#{$inner-window-width} - #{$basic-spacing-medium * 2});
       text-align: justify;
     }
