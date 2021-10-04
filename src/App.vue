@@ -1,9 +1,9 @@
 <template>
   <s-design-system-provider :value="libraryDesignSystem" id="app">
     <header class="header">
-      <s-button class="polkaswap-menu" type="action" primary icon="basic-more-horizontal-24" @click="toggleMenu"/>
+      <s-button class="polkaswap-menu" type="action" primary icon="basic-more-horizontal-24" @click="toggleMenu" />
       <s-button class="polkaswap-logo polkaswap-logo--tablet" type="link" size="large" @click="goTo(PageNames.Swap)">
-        <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo__image"/>
+        <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo__image" />
       </s-button>
       <div class="app-controls s-flex">
         <s-button type="action" class="theme-control s-pressed" @click="switchTheme">
@@ -32,7 +32,10 @@
       </div>
     </header>
     <div class="app-main">
-      <s-scrollbar :class="['app-menu', 'app-sidebar-scrollbar', { visible: menuVisibility }]" @click.native="handleAppMenuClick">
+      <s-scrollbar
+        :class="['app-menu', 'app-sidebar-scrollbar', { visible: menuVisibility }]"
+        @click.native="handleAppMenuClick"
+      >
         <aside class="app-sidebar">
           <s-button class="polkaswap-logo" type="link" size="large" @click="goTo(PageNames.Swap)">
             <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo__image" />
@@ -344,16 +347,16 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
     this.closeMenu();
   }
 
-  toggleMenu (): void {
+  toggleMenu(): void {
     this.menuVisibility = !this.menuVisibility;
   }
 
-  closeMenu (): void {
+  closeMenu(): void {
     this.menuVisibility = false;
   }
 
-  handleAppMenuClick (e: Event): void {
-    const target = (e.target as any);
+  handleAppMenuClick(e: Event): void {
+    const target = e.target as any;
     const sidebar = !!target.closest('.app-sidebar');
 
     if (!sidebar) {

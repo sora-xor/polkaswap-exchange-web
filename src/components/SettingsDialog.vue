@@ -1,9 +1,5 @@
 <template>
-  <dialog-base
-    :visible.sync="isVisible"
-    :title="t('dexSettings.title')"
-    custom-class="settings"
-  >
+  <dialog-base :visible.sync="isVisible" :title="t('dexSettings.title')" custom-class="settings">
     <market-algorithm />
   </dialog-base>
 </template>

@@ -217,7 +217,7 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
   {
     icon: 'symbols-peace-24',
     title: 'medium',
-    href: 'https://medium.com/polkaswap'
+    href: 'https://medium.com/polkaswap',
   },
   {
     icon: 'symbols-github-24',
