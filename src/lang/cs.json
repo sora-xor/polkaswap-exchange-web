@@ -204,8 +204,8 @@
         "amount2": "@:amountText 2",
         "fee": "Transakční poplatek",
         "total": "Celkem",
-        "from": "Od",
-        "to": "Komu",
+        "from": "Z",
+        "to": "Na",
         "successCopy": "{value} je zkopírováno do schránky",
         "copy": "Kopírovat {value}",
         "history": {
@@ -274,7 +274,8 @@
         "telegram": "Telegram",
         "medium": "Medium",
         "reddit": "Reddit",
-        "github": "GitHub"
+        "github": "GitHub",
+        "wiki": "@:soraText Wiki"
     },
     "footerMenu": {
         "faucet": "Faucet",
@@ -287,8 +288,8 @@
         "title": "Nápověda",
         "termsOfService": "Smluvní podmínky",
         "privacyPolicy": "Zásady ochrany osobních údajů",
-        "termsOfServiceLink": "https:\/\/www.notion.so\/Polkaswap-Memorandum-and-Terms-of-Services-dc7f815a6d0a497a924832cc9bda17b8",
-        "privacyPolicyLink": "https:\/\/www.notion.so\/Polkaswap-Privacy-Policy-d0f26456f2974f0d94734b19f6e5fc70",
+        "termsOfServiceLink": "https:\/\/wiki.sora.org\/polkaswap\/terms",
+        "privacyPolicyLink": "https:\/\/wiki.sora.org\/polkaswap\/privacy",
         "appVersion": "@:appName verze",
         "contactUs": "Kontaktujte nás"
     },
@@ -296,12 +297,12 @@
         "title": "O projektu",
         "learnMore": "Zjistěte více",
         "network": {
-            "title": "Co je to @:soraText?",
+            "title": "Co je to @:(soraText)?",
             "description": "Polkaswap je postaven na síti @:soraText a token @:soraText (XOR) se používá pro placení gasu\/poplatků a pro poskytování likvidity na Polkaswapu. Síť @:soraText umožňuje snížení poplatků, rychlejší transakce a jednodušší finalizaci konsensu a zaměřuje se na zajištění interoperability napříč ostatními blockchain ekosystémy, jako je @:(ethereumText)."
         },
         "polkadot": {
             "title": "Co je to polkadot{.js}?",
-            "description": "Rozšíření Polkadot{.js} je rozšíření prohlížeče dostupné pro Firefox a Chrome určené pro správu účtů chainů založených na Substrate, včetně @:soraText, Polkadot a Kusama. Můžete přidávat, importovat a exportovat účty a podepisovat transakce nebo extrinsics, které jste zahájili z vámi autorizovaných webů."
+            "description": "Rozšíření Polkadot{.js} je rozšíření prohlížeče dostupné pro Firefox a Chrome určené pro správu účtů blockchainů založených na Substrate, včetně @:(soraText), Polkadot a Kusama. Můžete přidávat, importovat a exportovat účty a podepisovat transakce nebo extrinsics, které jste iniciovali z autorizovaných webových stránek."
         }
     },
     "node": {
@@ -343,8 +344,8 @@
         "enterAmount": "Zadat částku"
     },
     "transfers": {
-        "from": "Od",
-        "to": "Komu"
+        "from": "Z",
+        "to": "Na"
     },
     "pageNotFound": {
         "title": "Stránka nenalezena",
@@ -438,7 +439,7 @@
         "confirmSwap": "Potvrďte výměnu",
         "swapOutputMessage": "Výstup je odhadován. Obdržíte alespoň {transactionValue}, jinak se transakce vrátí zpět.",
         "rewardsForSwap": "Strategické odměny PSWAP",
-        "swapInputMessage": "Vstup je odhadován. Prodáte maximálně {transactionValue} nebo se transakce vrátí."
+        "swapInputMessage": "Vstup je odhadován. Prodáte maximálně {transactionValue}, jinak se transakce vrátí zpět."
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -452,7 +453,7 @@
         "poolShare": "Váš podíl z poolu",
         "unknownAsset": "Neznámé aktivum",
         "description": "Když přidáte likviditu, dostanete pool tokeny představující vaši pozici. Tyto tokeny automaticky získávají poplatky úměrné vašemu podílu z poolu a lze je kdykoli vyměnit zpět za odpovídající likviditu.",
-        "strategicBonusApy": "Strategický bonus APY"
+        "strategicBonusApy": "APY strategického bonusu"
     },
     "bridge": {
         "title": "HASHI Bridge",
@@ -506,7 +507,7 @@
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
-        "details": "{from} pro {to}",
+        "details": "{from} za {to}",
         "for": " pro ",
         "steps": {
             "step": "{step} ze 2",
@@ -515,7 +516,7 @@
         },
         "status": {
             "pending": "{step} čekající transakce...",
-            "failed": "{step} transakce se nezdařily. @:(retryText).",
+            "failed": "{step} transakce se nezdařily. @:( retryText).",
             "confirm": "Potvrďte 2. ze 2 transakcí ...",
             "complete": "Hotovo",
             "convertionComplete": "Převod je dokončen"
@@ -554,8 +555,8 @@
         "expectedAddress": "Očekávaná adresa v @:metamask",
         "title": "Bridge transakce",
         "expectedMetaMaskAddress": "Očekávaná adresa v MetaMask:",
-        "allowToken": "Povolit @:appName používat {tokenSymbol}",
-        "approveToken": "Pamatujte, že je potřeba token schválit pouze jednou. Pokud má vaše rozšíření více žádostí o schválení tokenu, nezapomeňte potvrdit pouze ten poslední a ostatní odmítnout."
+        "allowToken": "Povolit @: appName používat vaše {tokenSymbol}",
+        "approveToken": "Upozorňujeme, že token je nutné schválit pouze jednou. Pokud má vaše rozšíření více žádostí o schválení tokenu, nezapomeňte potvrdit pouze poslední a zbytek odmítnout."
     },
     "months": {
         "0": "Leden",
@@ -600,10 +601,10 @@
         "title": "Vytvořit pár",
         "deposit": "Vklad",
         "balance": "Zůstatek",
-        "pricePool": "Ceny a podíl z poolu",
+        "pricePool": "Ceny a poplatky",
         "shareOfPool": "Podíl z poolu",
         "firstPerSecond": "@:firstPerSecond",
-        "firstSecondPoolTokens": "{first} - {second} Pool tokeny",
+        "firstSecondPoolTokens": "{first}-{second} Pool",
         "connect": "Připojte peněženku",
         "supply": "Dodat",
         "yourPosition": "Vaše pozice",
@@ -696,7 +697,7 @@
             "connectExternalAccount": "Připojte účet @:ethereumText a zkontrolujte dostupné odměny PSWAP a VAL.",
             "connectAccounts": "Pro získání svých PSWAP a VAL odměn musíte připojit oba své účty @:soraText a @:ethereumText.",
             "connectAnotherAccount": "Připojte další účet @:ethereumText a zkontrolujte dostupné odměny PSWAP a VAL.",
-            "howToClaimRewards": "Pro získání své {symbols} odměny musíte podepsat {count} {transactions} v {destination}. Odměny budou připsány na váš účet @:(soraText)."
+            "howToClaimRewards": "Chcete-li si vyzvednout {symbols} odměny, musíte podepsat {count} {transactions} v {destination}. Odměny budou připsány na váš účet @:soraText."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
@@ -760,16 +761,16 @@
     "moonpay": {
         "notifications": {
             "success": {
-                "title": "Žetony zakoupeny",
-                "text": "Nákup tokenu je dokončen. Transakce HASHI bridge se spustí automaticky, jakmile byly tokeny přijaty na připojený účet Ethereum. Toto okno můžete bezpečně zavřít a pokračovat v používání Polkaswap. Až bude připraveno, přijde oznámení o překlenovací transakci."
+                "title": "Tokeny zakoupeny",
+                "text": "Nákup tokenů je dokončen. Transakce HASHI bridge se spustí automaticky, jakmile budou tokeny přijaty na připojený účet Ethereum. Toto okno můžete bezpečně zavřít a pokračovat v používání Polkaswap. Jakmile bude bridge transakce připravena, objeví se oznámení."
             },
             "supportError": {
                 "title": "Token není podporován",
-                "text": "Token zakoupený přes @:moonpayText bohužel most HASHI v Polkaswapu ještě není podporován. Za normálních okolností by měly být k dispozici pouze podporované žetony ke koupi přes MoonPay v Polkaswapu, proto se někde muselo něco pokazit. Neváhejte a informujte komunitu o tomto případu v názvu <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\">Polkaswap Telegram group<\/a>."
+                "text": "Token zakoupený prostřednictvím @:moonpayText bohužel zatím není podporován HASHI bridge v Polkaswap. Za normálních okolností by měly být v Polkaswap k nákupu přes MoonPay k dispozici pouze podporované tokeny, proto musela někde nastat chyba. Neváhejte prosím o tomto případu informovat komunitu v <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\">Polkaswap Telegram group<\/a>."
             },
             "feeError": {
-                "title": "Nedostatek ETH pro most tx",
-                "text": "Překlenovací transakce HASHI bohužel selhala, protože nebylo dost ETH na zaplacení poplatků za přenos sítě Ethereum. Přidejte další ETH a zkuste to znovu."
+                "title": "Nedostatek ETH pro bridge transakci",
+                "text": "Transakce HASHI bridge bohužel selhala, protože nebyl dostatek ETH na zaplacení transakčních poplatků v síti Ethereum. Přidejte prosím více ETH a zkuste to znovu."
             },
             "transactionError": {
                 "title": "Transakce se nezdařila",
@@ -777,25 +778,28 @@
             },
             "amountError": {
                 "title": "Nedostatečný zůstatek",
-                "text": "Transakce mostu HASHI bohužel selhala, protože pro transakci není dostatek tokenů. Zkontrolujte prosím svůj zůstatek na účtu Ethereum a zkuste to znovu."
+                "text": "Transakce HASHI bridge bohužel selhala, protože pro transakci není dostatek tokenů. Zkontrolujte prosím svůj zůstatek na účtu Ethereum a zkuste to znovu."
             },
             "accountAddressError": {
                 "title": "Špatný účet Ethereum",
-                "text": "Překladová transakce HASHI bohužel selhala, protože adresa příjemce tokenů v objednávce @: moonpayText neodpovídá vaší aktuální adrese účtu Ethereum. Přepněte prosím účet Ethereum v rozšíření a zkuste to znovu."
+                "text": "Transakce HASHI bridge bohužel selhala, protože adresa příjemce tokenů v @:moonpayText příkazu neodpovídá vaší aktuální adrese účtu Ethereum. Změňte účet Ethereum v rozšíření a zkuste to znovu prosím."
             }
         },
         "buttons": {
             "buy": "Koupit žetony",
-            "history": "Historie Tx",
-            "transfer": "Startovací most",
-            "view": "Zobrazit transakci"
+            "history": "Historie nákupů",
+            "transfer": "Spustit bridge",
+            "view": "Zobrazit bridge transakci"
         },
         "history": {
             "title": "Historie nákupů",
-            "empty": "Žádná data"
+            "empty": "Žádné údaje"
         },
         "confirmations": {
             "txReady": "Transakce připravena pro Bridge"
+        },
+        "tooltips": {
+            "transfer": "Tokeny byly úspěšně zakoupeny!\nKliknutím spustíte bridge transakci"
         }
     }
 }
