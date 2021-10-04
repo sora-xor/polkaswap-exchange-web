@@ -48,6 +48,6 @@
 
 describe('Swap test', () => {
   test('Temporary test', () => {
-    expect(true).toEqual(true)
-  })
-})
+    expect(true).toEqual(true);
+  });
+});

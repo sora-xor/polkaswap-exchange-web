@@ -9,19 +9,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
-import DialogMixin from '@/components/mixins/DialogMixin'
-import DialogBase from '@/components/DialogBase.vue'
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import DialogMixin from '@/components/mixins/DialogMixin';
+import DialogBase from '@/components/DialogBase.vue';
+import { lazyComponent } from '@/router';
+import { Components } from '@/consts';
 
 @Component({
   components: {
     DialogBase,
-    MarketAlgorithm: lazyComponent(Components.MarketAlgorithm)
-  }
+    MarketAlgorithm: lazyComponent(Components.MarketAlgorithm),
+  },
 })
 export default class SettingsDialog extends Mixins(TranslationMixin, DialogMixin) {}
 </script>

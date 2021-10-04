@@ -1,3 +1,3 @@
-import { api } from '@sora-substrate/util'
+import { api } from '@sora-substrate/util';
 
-export const bridgeApi = api.bridge
+export const bridgeApi = api.bridge;

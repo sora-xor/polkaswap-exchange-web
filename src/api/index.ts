@@ -1,27 +1,25 @@
-import axiosInstance from 'axios'
-import VueRouter from 'vue-router'
+import { axiosInstance } from '@sora-substrate/util';
+import VueRouter from 'vue-router';
 
-export const BASE_URL = process.env.BASE_URL
+export const BASE_URL = process.env.BASE_URL;
 
-const axios = axiosInstance.create()
-
-axios.defaults.headers.common['Cache-Control'] = 'no-cache'
+axiosInstance.defaults.headers.common['Cache-Control'] = 'no-cache';
 
 const detectBaseUrl = (router?: VueRouter): string => {
-  if (BASE_URL) return BASE_URL
+  if (BASE_URL) return BASE_URL;
 
   if (router && router.mode === 'hash') {
-    const { origin, pathname } = window.location
+    const { origin, pathname } = window.location;
 
-    return `${origin}${pathname}`
+    return `${origin}${pathname}`;
   }
 
-  return ''
-}
+  return '';
+};
 
 export const updateBaseUrl = (router: VueRouter): void => {
-  const baseUrl = detectBaseUrl(router)
-  axios.defaults.baseURL = baseUrl
-}
+  const baseUrl = detectBaseUrl(router);
+  axiosInstance.defaults.baseURL = baseUrl;
+};
 
-export default axios
+export default axiosInstance;

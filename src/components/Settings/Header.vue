@@ -15,19 +15,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 @Component
 export default class SettingsHeader extends Mixins(TranslationMixin) {
-  private tooltipScopedSlot = 'tooltip-content'
+  private tooltipScopedSlot = 'tooltip-content';
 
-  @Prop({ type: String, default: '' }) title!: string
-  @Prop({ type: String, default: '' }) tooltip!: string
+  @Prop({ type: String, default: '' }) title!: string;
+  @Prop({ type: String, default: '' }) tooltip!: string;
 
-  get hasTooltipContent (): boolean {
-    return !!this.tooltip || !!this.$scopedSlots[this.tooltipScopedSlot]
+  get hasTooltipContent(): boolean {
+    return !!this.tooltip || !!this.$scopedSlots[this.tooltipScopedSlot];
   }
 }
 </script>

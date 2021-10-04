@@ -17,7 +17,9 @@
         @focus="handleSlippageToleranceOnFocus"
       />
     </div>
-    <div v-if="slippageToleranceValidation" class="slippage-tolerance_validation">{{ t(`dexSettings.slippageToleranceValidation.${slippageToleranceValidation}`) }}</div>
+    <div v-if="slippageToleranceValidation" class="slippage-tolerance_validation">
+      {{ t(`dexSettings.slippageToleranceValidation.${slippageToleranceValidation}`) }}
+    </div>
     <!-- TODO [Release 2]: We'll play with areas below at the next iteration of development -->
     <!-- <div class="transaction-deadline">
       <div class="header">
@@ -46,119 +48,122 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
-import { FPNumber } from '@sora-substrate/util'
-import { mixins } from '@soramitsu/soraneo-wallet-web'
+import { Component, Mixins } from 'vue-property-decorator';
+import { Action, Getter } from 'vuex-class';
+import { FPNumber } from '@sora-substrate/util';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { lazyComponent } from '@/router';
+import { Components } from '@/consts';
 
 @Component({
   components: {
     SettingsHeader: lazyComponent(Components.SettingsHeader),
-    SettingsTabs: lazyComponent(Components.SettingsTabs)
-  }
+    SettingsTabs: lazyComponent(Components.SettingsTabs),
+  },
 })
 export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixin, TranslationMixin) {
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG
-  readonly SlippageToleranceTabs: Array<object> = [
-    '0.1',
-    '0.5',
-    '1'
-  ].map(name => ({ name: String(name), label: `${this.formatStringValue(name)}%` }))
+  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
+  readonly SlippageToleranceTabs: Array<object> = ['0.1', '0.5', '1'].map((name) => ({
+    name: String(name),
+    label: `${this.formatStringValue(name)}%`,
+  }));
 
   readonly slippageToleranceExtremeValues = {
     min: 0.01,
-    max: 10
+    max: 10,
+  };
+
+  slippageToleranceFocused = false;
+
+  @Getter slippageTolerance!: string;
+  @Getter transactionDeadline!: number;
+  @Getter nodeAddress!: { ip: string; port: number };
+  @Action setSlippageTolerance!: (value: string) => Promise<void>;
+  @Action setTransactionDeadline!: any;
+
+  get customSlippageTolerance(): string {
+    const suffix = this.slippageToleranceFocused ? '' : '%';
+
+    return `${this.slippageTolerance}${suffix}`;
   }
 
-  slippageToleranceFocused = false
-
-  @Getter slippageTolerance!: string
-  @Getter transactionDeadline!: number
-  @Getter nodeAddress!: { ip: string; port: number }
-  @Action setSlippageTolerance!: (value: string) => Promise<void>
-  @Action setTransactionDeadline!: any
-
-  get customSlippageTolerance (): string {
-    const suffix = this.slippageToleranceFocused ? '' : '%'
-
-    return `${this.slippageTolerance}${suffix}`
+  set customSlippageTolerance(value: string) {
+    const prepared = this.prepareInputValue(value);
+    this.setSlippageTolerance(prepared);
   }
 
-  set customSlippageTolerance (value: string) {
-    const prepared = this.prepareInputValue(value)
-    this.setSlippageTolerance(prepared)
-  }
-
-  get slippageToleranceClasses (): string {
-    const defaultClass = 'slippage-tolerance'
-    const classes = [defaultClass, 's-flex']
+  get slippageToleranceClasses(): string {
+    const defaultClass = 'slippage-tolerance';
+    const classes = [defaultClass, 's-flex'];
 
     if (this.slippageToleranceValidation) {
-      classes.push(`${defaultClass}--${this.slippageToleranceValidation === 'frontrun' ? 'warning' : this.slippageToleranceValidation}`)
+      classes.push(
+        `${defaultClass}--${
+          this.slippageToleranceValidation === 'frontrun' ? 'warning' : this.slippageToleranceValidation
+        }`
+      );
     }
 
-    return classes.join(' ')
+    return classes.join(' ');
   }
 
-  get isErrorValue (): boolean {
-    const slippageTolerance = Number(this.slippageTolerance)
-    return slippageTolerance < this.slippageToleranceExtremeValues.min || slippageTolerance > this.slippageToleranceExtremeValues.max
+  get isErrorValue(): boolean {
+    const slippageTolerance = Number(this.slippageTolerance);
+    return (
+      slippageTolerance < this.slippageToleranceExtremeValues.min ||
+      slippageTolerance > this.slippageToleranceExtremeValues.max
+    );
   }
 
-  get slippageToleranceValidation (): string {
-    const slippageTolerance = Number(this.slippageTolerance)
+  get slippageToleranceValidation(): string {
+    const slippageTolerance = Number(this.slippageTolerance);
     if (slippageTolerance >= this.slippageToleranceExtremeValues.min && slippageTolerance <= 0.1) {
-      return 'warning'
+      return 'warning';
     }
     if (slippageTolerance >= 5 && slippageTolerance <= this.slippageToleranceExtremeValues.max) {
-      return 'frontrun'
+      return 'frontrun';
     }
     if (this.isErrorValue) {
-      return 'error'
+      return 'error';
     }
-    return ''
+    return '';
   }
 
-  selectTab ({ name }): void {
-    this.setSlippageTolerance(name)
+  selectTab({ name }): void {
+    this.setSlippageTolerance(name);
   }
 
-  prepareInputValue (value): string {
-    let v = value.replace('%', '')
+  prepareInputValue(value): string {
+    let v = value.replace('%', '');
 
     if (v.length) {
       if (v[0] === '0' && v[1] === '0') {
-        v = v.replace(/^0+(?=\d)/, '')
+        v = v.replace(/^0+(?=\d)/, '');
       }
     }
 
-    return v
+    return v;
   }
 
-  handleSlippageToleranceOnBlur (): void {
-    let value = this.slippageTolerance
+  handleSlippageToleranceOnBlur(): void {
+    let value = this.slippageTolerance;
     if (
-      FPNumber.lt(
-        this.getFPNumber(this.slippageTolerance),
-        this.getFPNumber(this.slippageToleranceExtremeValues.min)
-      )
+      FPNumber.lt(this.getFPNumber(this.slippageTolerance), this.getFPNumber(this.slippageToleranceExtremeValues.min))
     ) {
-      value = `${this.slippageToleranceExtremeValues.min}`
+      value = `${this.slippageToleranceExtremeValues.min}`;
     }
-    this.setSlippageTolerance(value)
-    this.slippageToleranceFocused = false
+    this.setSlippageTolerance(value);
+    this.slippageToleranceFocused = false;
   }
 
-  handleSlippageToleranceOnFocus (): void {
-    this.slippageToleranceFocused = true
+  handleSlippageToleranceOnFocus(): void {
+    this.slippageToleranceFocused = true;
   }
 
-  handleSetTransactionDeadline (value: number): void {
-    this.setTransactionDeadline(value)
+  handleSetTransactionDeadline(value: number): void {
+    this.setTransactionDeadline(value);
   }
 }
 </script>
@@ -180,8 +185,9 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
     }
   }
 
-  &--error &-custom_input.s-input .el-input > input  {
-    &, &:focus {
+  &--error &-custom_input.s-input .el-input > input {
+    &,
+    &:focus {
       border-color: var(--s-color-status-error);
     }
   }
@@ -217,10 +223,10 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
     line-height: var(--s-line-height-big);
   }
   &--warning {
-    color: var(--s-color-status-warning)
+    color: var(--s-color-status-warning);
   }
   &--error {
-    color: var(--s-color-status-error)
+    color: var(--s-color-status-error);
   }
 
   .value {

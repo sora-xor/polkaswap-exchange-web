@@ -1,9 +1,5 @@
 <template>
-  <dialog-base
-    :visible.sync="isVisible"
-    :title="t('selectRegisteredAsset.title')"
-    :custom-class="containerClasses"
-  >
+  <dialog-base :visible.sync="isVisible" :title="t('selectRegisteredAsset.title')" :custom-class="containerClasses">
     <s-form-item class="el-form-item--search">
       <s-input
         ref="search"
@@ -25,17 +21,32 @@
         <div class="asset-lists-container">
           <template v-if="hasFilteredAssets">
             <h3 class="network-label">
-              {{ isSoraToEvm ? t('selectRegisteredAsset.search.networkLabelSora') : t('selectRegisteredAsset.search.networkLabelEthereum') }}
+              {{
+                isSoraToEvm
+                  ? t('selectRegisteredAsset.search.networkLabelSora')
+                  : t('selectRegisteredAsset.search.networkLabelEthereum')
+              }}
             </h3>
             <s-scrollbar class="asset-list-scrollbar">
               <div :class="assetListClasses(filteredAssets, !isSoraToEvm)">
-                <div v-for="asset in filteredAssets" :key="asset.address" :set="formattedAssetBalance = formatBalance(asset)" class="asset-item" @click="selectAsset(asset)">
+                <div
+                  v-for="asset in filteredAssets"
+                  :key="asset.address"
+                  :set="(formattedAssetBalance = formatBalance(asset))"
+                  class="asset-item"
+                  @click="selectAsset(asset)"
+                >
                   <s-col>
                     <s-row flex justify="start" align="middle">
                       <token-logo :token="asset" size="big" />
                       <div class="asset-item__info s-flex">
                         <div class="asset-item__symbol">{{ asset.symbol }}</div>
-                        <token-address :name="asset.name || asset.symbol" :symbol="asset.symbol" :address="asset.address" class="asset-item__details" />
+                        <token-address
+                          :name="asset.name || asset.symbol"
+                          :symbol="asset.symbol"
+                          :address="asset.address"
+                          class="asset-item__details"
+                        />
                       </div>
                     </s-row>
                   </s-col>
@@ -66,11 +77,7 @@
         <div class="custom-asset">
           <p class="custom-asset-info">
             {{ t('selectRegisteredAsset.customAsset.customInfo') }}
-            <s-button
-              :tooltip="t('comingSoonText')"
-              type="link"
-              @click="handleRegisterToken"
-            >
+            <s-button :tooltip="t('comingSoonText')" type="link" @click="handleRegisterToken">
               {{ t('selectRegisteredAsset.customAsset.registerToken') }}
             </s-button>
           </p>
@@ -93,7 +100,14 @@
           <div v-if="customAddress && !customSymbol" class="custom-asset-info">
             {{ t(`selectRegisteredAsset.customAsset.${alreadyAttached ? 'alreadyAttached' : 'empty'}`) }}
           </div>
-          <s-button class="s-button--next s-typography-button--large" type="primary" :disabled="!(customAddress && customSymbol)" @click="handleCustomAssetNext">{{ t('bridge.next') }}</s-button>
+          <s-button
+            class="s-button--next s-typography-button--large"
+            type="primary"
+            :disabled="!(customAddress && customSymbol)"
+            @click="handleCustomAssetNext"
+          >
+            {{ t('bridge.next') }}
+          </s-button>
         </div>
       </s-tab>
     </s-tabs>
@@ -101,20 +115,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
-import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util'
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
+import { Action, Getter } from 'vuex-class';
+import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util';
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
-import SelectAssetMixin from '@/components/mixins/SelectAssetMixin'
-import LoadingMixin from '@/components/mixins/LoadingMixin'
-import DialogBase from '@/components/DialogBase.vue'
-import { Components, ObjectInit } from '@/consts'
-import { lazyComponent } from '@/router'
-import { formatAssetBalance } from '@/utils'
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
+import LoadingMixin from '@/components/mixins/LoadingMixin';
+import DialogBase from '@/components/DialogBase.vue';
+import { Components, ObjectInit } from '@/consts';
+import { lazyComponent } from '@/router';
+import { formatAssetBalance } from '@/utils';
 
-const namespace = 'assets'
+const namespace = 'assets';
 
 // TODO: Combine SelectToken & this component
 @Component({
@@ -122,153 +136,156 @@ const namespace = 'assets'
     DialogBase,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     TokenLogo: lazyComponent(Components.TokenLogo),
-    TokenAddress: lazyComponent(Components.TokenAddress)
-  }
+    TokenAddress: lazyComponent(Components.TokenAddress),
+  },
 })
-export default class SelectRegisteredAsset extends Mixins(mixins.FormattedAmountMixin, TranslationMixin, SelectAssetMixin, LoadingMixin) {
-  query = ''
-  selectedAsset: Nullable<AccountAsset | RegisteredAccountAsset> = null
-  readonly tokenTabs = [
-    'tokens',
-    'custom'
-  ]
+export default class SelectRegisteredAsset extends Mixins(
+  mixins.FormattedAmountMixin,
+  TranslationMixin,
+  SelectAssetMixin,
+  LoadingMixin
+) {
+  query = '';
+  selectedAsset: Nullable<AccountAsset | RegisteredAccountAsset> = null;
+  readonly tokenTabs = ['tokens', 'custom'];
 
-  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate
-  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate
-  readonly formattedZeroSymbol = '-'
+  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
+  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
+  readonly formattedZeroSymbol = '-';
 
-  tabValue = this.tokenTabs[0]
-  customAddress = ''
-  customSymbol = ''
-  alreadyAttached = false
-  selectedCustomAsset: Nullable<Asset> = null
+  tabValue = this.tokenTabs[0];
+  customAddress = '';
+  customSymbol = '';
+  alreadyAttached = false;
+  selectedCustomAsset: Nullable<Asset> = null;
 
-  @Prop({ default: ObjectInit, type: Object }) readonly asset!: AccountAsset
+  @Prop({ default: ObjectInit, type: Object }) readonly asset!: AccountAsset;
 
-  @Getter('whitelistAssets', { namespace }) whitelistAssets!: Array<Asset>
-  @Getter('isSoraToEvm', { namespace: 'bridge' }) isSoraToEvm!: boolean
-  @Getter('registeredAssets', { namespace }) registeredAssets!: Array<RegisteredAccountAsset>
-  @Getter accountAssetsAddressTable // Wallet store
+  @Getter('whitelistAssets', { namespace }) whitelistAssets!: Array<Asset>;
+  @Getter('isSoraToEvm', { namespace: 'bridge' }) isSoraToEvm!: boolean;
+  @Getter('registeredAssets', { namespace }) registeredAssets!: Array<RegisteredAccountAsset>;
+  @Getter accountAssetsAddressTable; // Wallet store
 
-  @Action('getCustomAsset', { namespace }) getAsset
+  @Action('getCustomAsset', { namespace }) getAsset;
 
   @Watch('visible')
-  async handleVisibleChangeToFocusSearch (value: boolean): Promise<void> {
-    await this.$nextTick()
+  async handleVisibleChangeToFocusSearch(value: boolean): Promise<void> {
+    await this.$nextTick();
 
-    if (!value) return
+    if (!value) return;
 
-    this.focusSearchInput()
+    this.focusSearchInput();
   }
 
-  get containerClasses (): string {
-    const componentClass = 'asset-select'
-    const classes = [componentClass]
+  get containerClasses(): string {
+    const componentClass = 'asset-select';
+    const classes = [componentClass];
 
     if (this.query) {
-      classes.push(`${componentClass}--search`)
+      classes.push(`${componentClass}--search`);
     }
 
-    return classes.join(' ')
+    return classes.join(' ');
   }
 
-  get assetsList (): Array<RegisteredAccountAsset> {
-    const { registeredAssets: assets, accountAssetsAddressTable, asset: excludeAsset } = this
+  get assetsList(): Array<RegisteredAccountAsset> {
+    const { registeredAssets: assets, accountAssetsAddressTable, asset: excludeAsset } = this;
 
-    return this.getAssetsWithBalances({ assets, accountAssetsAddressTable, excludeAsset })
-      .sort(this.sortByBalance(!this.isSoraToEvm)) as Array<RegisteredAccountAsset>
+    return this.getAssetsWithBalances({ assets, accountAssetsAddressTable, excludeAsset }).sort(
+      this.sortByBalance(!this.isSoraToEvm)
+    ) as Array<RegisteredAccountAsset>;
   }
 
-  get addressSymbol (): string {
-    return this.isSoraToEvm ? 'address' : 'externalAddress'
+  get addressSymbol(): string {
+    return this.isSoraToEvm ? 'address' : 'externalAddress';
   }
 
-  get filteredAssets (): Array<RegisteredAccountAsset> {
-    return this.filterAssetsByQuery(this.assetsList, !this.isSoraToEvm)(this.query) as Array<RegisteredAccountAsset>
+  get filteredAssets(): Array<RegisteredAccountAsset> {
+    return this.filterAssetsByQuery(this.assetsList, !this.isSoraToEvm)(this.query) as Array<RegisteredAccountAsset>;
   }
 
-  get hasFilteredAssets (): boolean {
-    return Array.isArray(this.filteredAssets) && this.filteredAssets.length > 0
+  get hasFilteredAssets(): boolean {
+    return Array.isArray(this.filteredAssets) && this.filteredAssets.length > 0;
   }
 
-  formatBalance (asset?: RegisteredAccountAsset): string {
+  formatBalance(asset?: RegisteredAccountAsset): string {
     return formatAssetBalance(asset, {
       internal: this.isSoraToEvm,
       showZeroBalance: false,
-      formattedZero: this.formattedZeroSymbol
-    })
+      formattedZero: this.formattedZeroSymbol,
+    });
   }
 
-  assetListClasses (filteredAssetsList: Array<RegisteredAccountAsset>, isEthereumAssetsList = false): string {
-    const componentClass = 'asset-list'
-    const classes = [componentClass]
+  assetListClasses(filteredAssetsList: Array<RegisteredAccountAsset>, isEthereumAssetsList = false): string {
+    const componentClass = 'asset-list';
+    const classes = [componentClass];
 
     if (isEthereumAssetsList) {
-      classes.push(`${componentClass}--evm`)
+      classes.push(`${componentClass}--evm`);
     }
     if (filteredAssetsList && filteredAssetsList.length > 6) {
-      classes.push(`${componentClass}--scrollbar`)
+      classes.push(`${componentClass}--scrollbar`);
     }
 
-    return classes.join(' ')
+    return classes.join(' ');
   }
 
-  selectAsset (asset: RegisteredAccountAsset): void {
-    this.selectedAsset = asset
-    this.query = ''
-    this.tabValue = this.tokenTabs[0]
-    this.$emit('select', asset)
-    this.$emit('close')
-    this.isVisible = false
+  selectAsset(asset: RegisteredAccountAsset): void {
+    this.selectedAsset = asset;
+    this.query = '';
+    this.tabValue = this.tokenTabs[0];
+    this.$emit('select', asset);
+    this.$emit('close');
+    this.isVisible = false;
   }
 
-  handleTabClick ({ name }): void {
-    this.tabValue = name
+  handleTabClick({ name }): void {
+    this.tabValue = name;
   }
 
-  handleSearchFocus (): void {
+  handleSearchFocus(): void {
     if (this.tabValue === this.tokenTabs[1]) {
-      this.tabValue = this.tokenTabs[0]
+      this.tabValue = this.tokenTabs[0];
     }
   }
 
-  handleClearSearch (): void {
-    this.query = ''
+  handleClearSearch(): void {
+    this.query = '';
   }
 
-  handleRegisterToken (): void {
+  handleRegisterToken(): void {
     // TODO: Add Register Token component
   }
 
-  async handleCustomAssetSearch (value: string): Promise<void> {
-    this.alreadyAttached = false
+  async handleCustomAssetSearch(value: string): Promise<void> {
+    this.alreadyAttached = false;
     if (!value.trim()) {
-      this.selectedCustomAsset = null
-      this.customSymbol = ''
-      return
+      this.selectedCustomAsset = null;
+      this.customSymbol = '';
+      return;
     }
-    const search = value.trim().toLowerCase()
-    const asset = await this.getAsset({ address: search })
-    if (this.assetsList.find(asset => asset[this.addressSymbol] === search)) {
-      this.selectedCustomAsset = null
-      this.customSymbol = ''
-      this.alreadyAttached = true
-      return
+    const search = value.trim().toLowerCase();
+    const asset = await this.getAsset({ address: search });
+    if (this.assetsList.find((asset) => asset[this.addressSymbol] === search)) {
+      this.selectedCustomAsset = null;
+      this.customSymbol = '';
+      this.alreadyAttached = true;
+      return;
     }
-    this.selectedCustomAsset = asset
+    this.selectedCustomAsset = asset;
     if (this.selectedCustomAsset && this.selectedCustomAsset.symbol) {
-      this.customSymbol = this.selectedCustomAsset.symbol
+      this.customSymbol = this.selectedCustomAsset.symbol;
     } else {
-      this.selectedCustomAsset = null
-      this.customSymbol = ''
+      this.selectedCustomAsset = null;
+      this.customSymbol = '';
     }
   }
 
-  shouldFiatBeShown (asset: RegisteredAccountAsset): boolean {
-    return this.isSoraToEvm && !!this.getAssetFiatPrice(asset)
+  shouldFiatBeShown(asset: RegisteredAccountAsset): boolean {
+    return this.isSoraToEvm && !!this.getAssetFiatPrice(asset);
   }
 
-  handleCustomAssetNext (): void {
+  handleCustomAssetNext(): void {
     // TODO: Should we rename the button to Add Asset?
   }
 }
@@ -334,7 +351,7 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
     display: block;
     height: 70px;
     width: 70px;
-    background: url("~@/assets/img/no-results.svg") center no-repeat;
+    background: url('~@/assets/img/no-results.svg') center no-repeat;
   }
 }
 .custom-asset {

@@ -1,35 +1,33 @@
-import isNil from 'lodash/fp/isNil'
-import { Component, Mixins } from 'vue-property-decorator'
-import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util'
+import isNil from 'lodash/fp/isNil';
+import { Component, Mixins } from 'vue-property-decorator';
+import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util';
 
-import DialogMixin from '@/components/mixins/DialogMixin'
-import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin'
+import DialogMixin from '@/components/mixins/DialogMixin';
+import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin';
 
-import { asZeroValue, getAssetBalance } from '@/utils'
+import { asZeroValue, getAssetBalance } from '@/utils';
 
 @Component
 export default class SelectAsset extends Mixins(DialogMixin, AssetsSearchMixin) {
-  public sortByBalance (external = false) {
-    const isEmpty = (a): boolean => external
-      ? !+a.externalBalance
-      : isNil(a.balance) || !+a.balance.transferable
+  public sortByBalance(external = false) {
+    const isEmpty = (a): boolean => (external ? !+a.externalBalance : isNil(a.balance) || !+a.balance.transferable);
 
     return (a: AccountAsset | RegisteredAccountAsset, b: AccountAsset | RegisteredAccountAsset): number => {
-      const emptyABalance = isEmpty(a)
-      const emptyBBalance = isEmpty(b)
+      const emptyABalance = isEmpty(a);
+      const emptyBBalance = isEmpty(b);
 
-      if (emptyABalance === emptyBBalance) return 0
+      if (emptyABalance === emptyBBalance) return 0;
 
-      return emptyABalance && !emptyBBalance ? 1 : -1
-    }
+      return emptyABalance && !emptyBBalance ? 1 : -1;
+    };
   }
 
-  public getAssetsWithBalances ({
+  public getAssetsWithBalances({
     assets,
     accountAssetsAddressTable,
     notNullBalanceOnly = false,
     accountAssetsOnly = false,
-    excludeAsset
+    excludeAsset,
   }: {
     assets: Array<Asset | RegisteredAccountAsset>;
     accountAssetsAddressTable: any;
@@ -38,22 +36,22 @@ export default class SelectAsset extends Mixins(DialogMixin, AssetsSearchMixin) 
     excludeAsset?: Asset | AccountAsset;
   }): Array<AccountAsset | RegisteredAccountAsset> {
     return assets.reduce((result: Array<AccountAsset>, item) => {
-      if (!item || (excludeAsset && item.address === excludeAsset.address)) return result
+      if (!item || (excludeAsset && item.address === excludeAsset.address)) return result;
 
-      const accountAsset = accountAssetsAddressTable[item.address]
+      const accountAsset = accountAssetsAddressTable[item.address];
 
-      if (accountAssetsOnly && !accountAsset) return result
+      if (accountAssetsOnly && !accountAsset) return result;
 
-      const balance = accountAsset?.balance
+      const balance = accountAsset?.balance;
 
-      if (notNullBalanceOnly && asZeroValue(getAssetBalance(accountAsset))) return result
+      if (notNullBalanceOnly && asZeroValue(getAssetBalance(accountAsset))) return result;
 
       const prepared = {
         ...item,
-        balance
-      }
+        balance,
+      };
 
-      return [...result, prepared]
-    }, [])
+      return [...result, prepared];
+    }, []);
   }
 }
