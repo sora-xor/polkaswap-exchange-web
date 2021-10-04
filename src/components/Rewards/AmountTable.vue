@@ -10,14 +10,27 @@
               <div v-for="(item, index) in formatted.limit" class="amount-table-item__amount" :key="index">
                 <formatted-amount-with-fiat-value
                   value-class="amount-table-value"
-                  :value="isCodecString ? getFPNumberFromCodec(item.amount, item.asset.decimals).toLocaleString() : item.amount"
+                  :value="
+                    isCodecString
+                      ? getFPNumberFromCodec(item.amount, item.asset.decimals).toLocaleString()
+                      : item.amount
+                  "
                   :font-size-rate="FontSizeRate.MEDIUM"
                   :asset-symbol="item.asset.symbol"
-                  :fiat-value="isCodecString ? getFiatAmountByCodecString(item.amount, item.asset) : getFiatAmountByString(item.amount, item.asset)"
+                  :fiat-value="
+                    isCodecString
+                      ? getFiatAmountByCodecString(item.amount, item.asset)
+                      : getFiatAmountByString(item.amount, item.asset)
+                  "
                   :fiat-font-size-rate="FontSizeRate.MEDIUM"
                   with-left-shift
                 >
-                  <s-tooltip v-if="formatted.total && index === 0" popper-class="amount-table-tooltip" placement="right" border-radius="mini">
+                  <s-tooltip
+                    v-if="formatted.total && index === 0"
+                    popper-class="amount-table-tooltip"
+                    placement="right"
+                    border-radius="mini"
+                  >
                     <div slot="content" class="amount-table-tooltip-content">
                       <div>{{ t('rewards.totalVested') }}:</div>
                       <formatted-amount
@@ -39,7 +52,9 @@
                 <div class="amount-table-subitem">
                   <div class="amount-table-subitem__title">
                     <template v-if="simpleGroup">—</template>
-                    <template v-else-if="formatted.total">{{ t('rewards.totalVested') }} {{ t('rewards.forText') }}</template>
+                    <template v-else-if="formatted.total">
+                      {{ t('rewards.totalVested') }} {{ t('rewards.forText') }}
+                    </template>
                     {{ item.title }}
                   </div>
                   <template v-if="!simpleGroup">
@@ -67,54 +82,55 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Mixins } from 'vue-property-decorator'
-import { RewardInfo } from '@sora-substrate/util'
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
+import { Component, Prop, Mixins } from 'vue-property-decorator';
+import { RewardInfo } from '@sora-substrate/util';
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
-import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards'
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards';
 
 @Component({
   components: {
     FormattedAmount: components.FormattedAmount,
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue
-  }
+    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
+  },
 })
 export default class AmountTable extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
-  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate
+  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
-  @Prop({ default: () => {}, type: Object }) item!: RewardInfoGroup | RewardInfo
-  @Prop({ default: true, type: Boolean }) showTable!: boolean
-  @Prop({ default: false, type: Boolean }) simpleGroup!: boolean
-  @Prop({ default: false, type: Boolean }) value!: boolean
-  @Prop({ default: false, type: Boolean }) isCodecString!: boolean
-  @Prop({ default: false, type: Boolean }) disabled!: boolean
-  @Prop({ default: Theme.LIGHT, type: String }) theme!: Theme
+  @Prop({ default: () => {}, type: Object }) item!: RewardInfoGroup | RewardInfo;
+  @Prop({ default: true, type: Boolean }) showTable!: boolean;
+  @Prop({ default: false, type: Boolean }) simpleGroup!: boolean;
+  @Prop({ default: false, type: Boolean }) value!: boolean;
+  @Prop({ default: false, type: Boolean }) isCodecString!: boolean;
+  @Prop({ default: false, type: Boolean }) disabled!: boolean;
+  @Prop({ default: Theme.LIGHT, type: String }) theme!: Theme;
 
-  get innerModel (): any {
-    return this.value
+  get innerModel(): any {
+    return this.value;
   }
 
-  set innerModel (value: any) {
-    this.$emit('input', value)
+  set innerModel(value: any) {
+    this.$emit('input', value);
   }
 
-  get formatted (): RewardsAmountTableItem {
-    return this.formatItem(this.item)
+  get formatted(): RewardsAmountTableItem {
+    return this.formatItem(this.item);
   }
 
-  formatItem (item: RewardInfoGroup | RewardInfo): RewardsAmountTableItem {
-    const toLimit = (amount, asset) => ({ amount, asset })
+  formatItem(item: RewardInfoGroup | RewardInfo): RewardsAmountTableItem {
+    const toLimit = (amount, asset) => ({ amount, asset });
 
-    const key = `rewards.events.${item.type}`
-    const title = this.te(key) ? this.t(key) : item.type
-    const subtitle = 'title' in item ? item.title : ''
-    const total = 'total' in item ? item.total : undefined
-    const rewards = ('rewards' in item) && Array.isArray(item.rewards) ? item.rewards.map(this.formatItem) : []
-    const limit = ('rewards' in item) && Array.isArray(item.rewards)
-      ? (item as RewardInfoGroup).limit
-      : [toLimit((item as RewardInfo).amount, (item as RewardInfo).asset)]
+    const key = `rewards.events.${item.type}`;
+    const title = this.te(key) ? this.t(key) : item.type;
+    const subtitle = 'title' in item ? item.title : '';
+    const total = 'total' in item ? item.total : undefined;
+    const rewards = 'rewards' in item && Array.isArray(item.rewards) ? item.rewards.map(this.formatItem) : [];
+    const limit =
+      'rewards' in item && Array.isArray(item.rewards)
+        ? (item as RewardInfoGroup).limit
+        : [toLimit((item as RewardInfo).amount, (item as RewardInfo).asset)];
 
     return {
       type: item.type,
@@ -122,8 +138,8 @@ export default class AmountTable extends Mixins(mixins.FormattedAmountMixin, Tra
       subtitle,
       limit,
       total,
-      rewards
-    }
+      rewards,
+    };
   }
 }
 </script>
@@ -192,7 +208,7 @@ export default class AmountTable extends Mixins(mixins.FormattedAmountMixin, Tra
   &-tooltip.el-tooltip__popper.neumorphic {
     background-color: var(--s-color-status-success);
 
-    &[x-placement^="right"] .popper__arrow {
+    &[x-placement^='right'] .popper__arrow {
       border-right-color: var(--s-color-status-success);
     }
   }

@@ -12,10 +12,7 @@
           @click="handleClearHistory"
         /> -->
       </generic-page-header>
-      <s-form
-        class="history-form"
-        :show-message="false"
-      >
+      <s-form class="history-form" :show-message="false">
         <s-form-item v-if="history.length" class="history--search">
           <s-input
             v-model="query"
@@ -39,10 +36,18 @@
               <div class="history-item-info">
                 <div class="history-item-title p4">
                   {{ `${formatAmount(item)} ${formatAssetSymbol(item.symbol)}` }}
-                  <i :class="`s-icon--network s-icon-${isOutgoingType(item.type) ? 'sora' : getEvmIcon(item.externalNetwork)}`" />
+                  <i
+                    :class="`s-icon--network s-icon-${
+                      isOutgoingType(item.type) ? 'sora' : getEvmIcon(item.externalNetwork)
+                    }`"
+                  />
                   <span class="history-item-title-separator">{{ t('bridgeTransaction.for') }}</span>
                   {{ `${formatAmount(item)} ${formatAssetSymbol(item.symbol)}` }}
-                  <i :class="`s-icon--network s-icon-${!isOutgoingType(item.type) ? 'sora' : getEvmIcon(item.externalNetwork)}`" />
+                  <i
+                    :class="`s-icon--network s-icon-${
+                      !isOutgoingType(item.type) ? 'sora' : getEvmIcon(item.externalNetwork)
+                    }`"
+                  />
                 </div>
                 <div class="history-item-date">{{ formatDate(item) }}</div>
               </div>
@@ -74,124 +79,139 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
-import { RegisteredAccountAsset, Operation, BridgeHistory, FPNumber, NetworkFeesObject } from '@sora-substrate/util'
+import { Component, Mixins } from 'vue-property-decorator';
+import { Getter, Action } from 'vuex-class';
+import { RegisteredAccountAsset, Operation, BridgeHistory, FPNumber, NetworkFeesObject } from '@sora-substrate/util';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
-import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin'
-import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin'
-import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin'
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
+import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
+import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
 
-import router, { lazyComponent } from '@/router'
-import { Components, PageNames } from '@/consts'
-import { formatAssetSymbol, formatDateItem } from '@/utils'
-import { STATES } from '@/utils/fsm'
+import router, { lazyComponent } from '@/router';
+import { Components, PageNames } from '@/consts';
+import { formatAssetSymbol, formatDateItem } from '@/utils';
+import { STATES } from '@/utils/fsm';
 
-const namespace = 'bridge'
+const namespace = 'bridge';
 
 @Component({
   components: {
-    GenericPageHeader: lazyComponent(Components.GenericPageHeader)
-  }
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+  },
 })
-export default class BridgeTransactionsHistory extends Mixins(TranslationMixin, BridgeHistoryMixin, NetworkFormatterMixin, PaginationSearchMixin) {
-  @Getter networkFees!: NetworkFeesObject
+export default class BridgeTransactionsHistory extends Mixins(
+  TranslationMixin,
+  BridgeHistoryMixin,
+  NetworkFormatterMixin,
+  PaginationSearchMixin
+) {
+  @Getter networkFees!: NetworkFeesObject;
 
-  @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>
-  @Getter('history', { namespace }) history!: Nullable<Array<BridgeHistory>>
-  @Getter('restored', { namespace }) restored!: boolean
+  @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>;
+  @Getter('history', { namespace }) history!: Nullable<Array<BridgeHistory>>;
+  @Getter('restored', { namespace }) restored!: boolean;
 
-  @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn
-  @Action('getRestoredFlag', { namespace }) getRestoredFlag!: AsyncVoidFn
-  @Action('getRestoredHistory', { namespace }) getRestoredHistory!: AsyncVoidFn
-  @Action('clearHistory', { namespace }) clearHistory!: AsyncVoidFn
+  @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn;
+  @Action('getRestoredFlag', { namespace }) getRestoredFlag!: AsyncVoidFn;
+  @Action('getRestoredHistory', { namespace }) getRestoredHistory!: AsyncVoidFn;
+  @Action('clearHistory', { namespace }) clearHistory!: AsyncVoidFn;
 
-  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn
+  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn;
 
-  PageNames = PageNames
-  formatAssetSymbol = formatAssetSymbol
-  formatDateItem = formatDateItem
-  pageAmount = 8 // override PaginationSearchMixin
+  PageNames = PageNames;
+  formatAssetSymbol = formatAssetSymbol;
+  formatDateItem = formatDateItem;
+  pageAmount = 8; // override PaginationSearchMixin
 
-  get filteredHistory (): Array<BridgeHistory> {
-    if (!this.history?.length) return []
+  get filteredHistory(): Array<BridgeHistory> {
+    if (!this.history?.length) return [];
 
     const historyCopy = this.history
-      .filter(item => !!item.transactionStep)
-      .sort((a: BridgeHistory, b: BridgeHistory) => a.startTime && b.startTime ? b.startTime - a.startTime : 0)
+      .filter((item) => !!item.transactionStep)
+      .sort((a: BridgeHistory, b: BridgeHistory) => (a.startTime && b.startTime ? b.startTime - a.startTime : 0));
 
-    return this.getFilteredHistory(historyCopy)
+    return this.getFilteredHistory(historyCopy);
   }
 
-  get hasHistory (): boolean {
-    return this.filteredHistory && this.filteredHistory.length > 0
+  get hasHistory(): boolean {
+    return this.filteredHistory && this.filteredHistory.length > 0;
   }
 
-  get filteredHistoryItems (): Array<BridgeHistory> {
-    return this.getPageItems(this.filteredHistory)
+  get filteredHistoryItems(): Array<BridgeHistory> {
+    return this.getPageItems(this.filteredHistory);
   }
 
-  async created (): Promise<void> {
+  async created(): Promise<void> {
     this.withApi(async () => {
-      await this.updateRegisteredAssets()
-      await this.getRestoredFlag()
-      await this.getHistory()
-    })
+      await this.updateRegisteredAssets();
+      await this.getRestoredFlag();
+      await this.getHistory();
+    });
   }
 
-  getFilteredHistory (history: Array<BridgeHistory>): Array<BridgeHistory> {
+  getFilteredHistory(history: Array<BridgeHistory>): Array<BridgeHistory> {
     if (this.query) {
-      const query = this.query.toLowerCase().trim()
-      return history.filter(item =>
-        `${item.assetAddress}`.toLowerCase().includes(query) ||
-        `${this.registeredAssets.find(asset => asset.address === item.assetAddress)?.externalAddress}`.toLowerCase().includes(query) ||
-        `${formatAssetSymbol(item.symbol)}`.toLowerCase().includes(query) ||
-        `${formatAssetSymbol(item.symbol)}`.toLowerCase().includes(query)
-      )
+      const query = this.query.toLowerCase().trim();
+      return history.filter(
+        (item) =>
+          `${item.assetAddress}`.toLowerCase().includes(query) ||
+          `${this.registeredAssets.find((asset) => asset.address === item.assetAddress)?.externalAddress}`
+            .toLowerCase()
+            .includes(query) ||
+          `${formatAssetSymbol(item.symbol)}`.toLowerCase().includes(query) ||
+          `${formatAssetSymbol(item.symbol)}`.toLowerCase().includes(query)
+      );
     }
 
-    return history
+    return history;
   }
 
-  formatAmount (historyItem: any): string {
-    return historyItem.amount ? new FPNumber(historyItem.amount, this.registeredAssets?.find(asset => asset.address === historyItem.address)?.decimals).toLocaleString() : ''
+  formatAmount(historyItem: any): string {
+    return historyItem.amount
+      ? new FPNumber(
+          historyItem.amount,
+          this.registeredAssets?.find((asset) => asset.address === historyItem.address)?.decimals
+        ).toLocaleString()
+      : '';
   }
 
-  formatDate (response: any): string {
+  formatDate(response: any): string {
     // We use current date if request is failed
-    const date = response && response.startTime ? new Date(response.startTime) : new Date()
-    return `${date.getDate()} ${this.t(`months[${date.getMonth()}]`)} ${date.getFullYear()}, ${formatDateItem(date.getHours())}:${formatDateItem(date.getMinutes())}:${formatDateItem(date.getSeconds())}`
+    const date = response && response.startTime ? new Date(response.startTime) : new Date();
+    return `${date.getDate()} ${this.t(`months[${date.getMonth()}]`)} ${date.getFullYear()}, ${formatDateItem(
+      date.getHours()
+    )}:${formatDateItem(date.getMinutes())}:${formatDateItem(date.getSeconds())}`;
   }
 
-  historyStatusIconClasses (type: Operation, state: STATES): string {
-    const iconClass = 'history-item-icon'
-    const classes = [iconClass]
+  historyStatusIconClasses(type: Operation, state: STATES): string {
+    const iconClass = 'history-item-icon';
+    const classes = [iconClass];
     if ([STATES.SORA_REJECTED, STATES.EVM_REJECTED].includes(state)) {
-      classes.push(`${iconClass}--error`)
-      return classes.join(' ')
+      classes.push(`${iconClass}--error`);
+      return classes.join(' ');
     }
     if (!(this.isOutgoingType(type) ? state === STATES.EVM_COMMITED : state === STATES.SORA_COMMITED)) {
-      classes.push(`${iconClass}--pending`)
-      return classes.join(' ')
+      classes.push(`${iconClass}--pending`);
+      return classes.join(' ');
     }
-    return classes.join(' ')
+    return classes.join(' ');
   }
 
-  async handleClearHistory (): Promise<void> {
-    await this.clearHistory()
+  async handleClearHistory(): Promise<void> {
+    await this.clearHistory();
   }
 
-  async handleRestoreHistory (): Promise<void> {
+  async handleRestoreHistory(): Promise<void> {
     await this.withLoading(async () => {
-      await this.getRestoredHistory()
-      await this.getRestoredFlag()
-      await this.getHistory()
-    })
+      await this.getRestoredHistory();
+      await this.getRestoredFlag();
+      await this.getHistory();
+    });
   }
 
-  handleBack (): void {
-    router.push({ name: PageNames.Bridge })
+  handleBack(): void {
+    router.push({ name: PageNames.Bridge });
   }
 }
 </script>
@@ -300,7 +320,8 @@ $history-item-top-border-height: 1px;
     line-height: var(--s-line-height-big);
     word-break: break-all;
     .s-icon {
-      &-sora, &-eth {
+      &-sora,
+      &-eth {
         position: relative;
         top: 1px;
       }

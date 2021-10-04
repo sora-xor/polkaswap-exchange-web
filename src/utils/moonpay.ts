@@ -1,7 +1,7 @@
-import axios from '@/api'
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
+import axios from '@/api';
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
-import { toQueryString } from '@/utils'
+import { toQueryString } from '@/utils';
 
 export interface MoonpayEVMTransferAssetData {
   amount: string;
@@ -11,7 +11,7 @@ export interface MoonpayEVMTransferAssetData {
 
 export enum MoonpayTransactionStatus {
   Completed = 'completed',
-  Failed = 'failed'
+  Failed = 'failed',
 }
 
 export interface MoonpayTransaction {
@@ -27,68 +27,68 @@ export interface MoonpayTransaction {
 }
 
 export class MoonpayApi {
-  public static apiUrl = 'https://api.moonpay.com'
-  public publicKey = ''
-  public soraNetwork = ''
+  public static apiUrl = 'https://api.moonpay.com';
+  public publicKey = '';
+  public soraNetwork = '';
 
-  public static getWidgetBaseUrl (soraNetwork: string): string {
+  public static getWidgetBaseUrl(soraNetwork: string): string {
     if (soraNetwork === WALLET_CONSTS.SoraNetwork.Prod) {
-      return 'https://buy.moonpay.com'
+      return 'https://buy.moonpay.com';
     }
-    return 'https://buy-staging.moonpay.com'
+    return 'https://buy-staging.moonpay.com';
   }
 
-  get requiredParams () {
+  get requiredParams() {
     return {
-      apiKey: this.publicKey
-    }
+      apiKey: this.publicKey,
+    };
   }
 
-  public createWidgetUrl (queryParams, widgetUrl?: string): string {
-    const baseUrl = widgetUrl || MoonpayApi.getWidgetBaseUrl(this.soraNetwork)
+  public createWidgetUrl(queryParams, widgetUrl?: string): string {
+    const baseUrl = widgetUrl || MoonpayApi.getWidgetBaseUrl(this.soraNetwork);
     const params = {
       ...this.requiredParams,
-      ...queryParams
-    }
-    const query = toQueryString(params)
-    const url = `${baseUrl}?${query}`
+      ...queryParams,
+    };
+    const query = toQueryString(params);
+    const url = `${baseUrl}?${query}`;
 
-    return url
+    return url;
   }
 
-  public setPublicKey (publicKey: string) {
-    this.publicKey = publicKey
+  public setPublicKey(publicKey: string) {
+    this.publicKey = publicKey;
   }
 
-  public setNetwork (soraNetwork: string) {
-    this.soraNetwork = soraNetwork
+  public setNetwork(soraNetwork: string) {
+    this.soraNetwork = soraNetwork;
   }
 
-  public getTransactionById (id: string): Promise<any> {
-    const url = `${MoonpayApi.apiUrl}/v1/transactions/${id}`
-    return this.apiRequest(url)
+  public getTransactionById(id: string): Promise<any> {
+    const url = `${MoonpayApi.apiUrl}/v1/transactions/${id}`;
+    return this.apiRequest(url);
   }
 
-  public getTransactionsByExtId (id: string): Promise<any> {
-    const url = `${MoonpayApi.apiUrl}/v1/transactions/ext/${id}`
-    return this.apiRequest(url)
+  public getTransactionsByExtId(id: string): Promise<any> {
+    const url = `${MoonpayApi.apiUrl}/v1/transactions/ext/${id}`;
+    return this.apiRequest(url);
   }
 
-  public getCurrencies (): Promise<any> {
-    const url = `${MoonpayApi.apiUrl}/v3/currencies`
-    return this.apiRequest(url)
+  public getCurrencies(): Promise<any> {
+    const url = `${MoonpayApi.apiUrl}/v3/currencies`;
+    return this.apiRequest(url);
   }
 
-  private async apiRequest (url: string, params = {}) {
+  private async apiRequest(url: string, params = {}) {
     const options = {
       params: {
         ...this.requiredParams,
-        ...params
-      }
-    }
+        ...params,
+      },
+    };
 
-    const { data } = await axios.get(url, options)
+    const { data } = await axios.get(url, options);
 
-    return data
+    return data;
   }
 }

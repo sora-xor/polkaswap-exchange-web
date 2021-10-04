@@ -1,14 +1,18 @@
 <template>
   <s-design-system-provider :value="libraryDesignSystem" id="app" class="app">
     <header class="header">
-      <div class="app-controls s-flex">
-        <s-button class="polkaswap-logo" type="link" size="large" @click="goTo(PageNames.Swap)">
-          <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo--tablet"/>
-        </s-button>
-      </div>
+      <s-button class="polkaswap-logo" type="link" size="large" @click="goTo(PageNames.Swap)">
+        <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo--tablet" />
+      </s-button>
       <div class="header-container">
         <div v-if="moonpayEnabled" class="app-controls app-controls--moonpay s-flex">
-          <s-button type="tertiary" size="medium" icon="various-atom-24" class="moonpay-button moonpay-button--buy" @click="openMoonpayDialog">
+          <s-button
+            type="tertiary"
+            size="medium"
+            icon="various-atom-24"
+            class="moonpay-button moonpay-button--buy"
+            @click="openMoonpayDialog"
+          >
             <span class="moonpay-button-text">{{ t('moonpay.buttons.buy') }}</span>
           </s-button>
           <moonpay-history-button v-if="isLoggedIn" class="moonpay-button moonpay-button--history" />
@@ -23,11 +27,18 @@
           <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openSelectNodeDialog">
             <token-logo class="node-control__logo" v-bind="nodeLogo" />
           </s-button>
-          <s-button type="tertiary" :class="['account-control', { 's-pressed': isLoggedIn }]" size="medium" :tooltip="accountTooltip" :disabled="loading" @click="goTo(PageNames.Wallet)">
+          <s-button
+            type="tertiary"
+            :class="['account-control', { 's-pressed': isLoggedIn }]"
+            size="medium"
+            :tooltip="accountTooltip"
+            :disabled="loading"
+            @click="goTo(PageNames.Wallet)"
+          >
             <div :class="['account-control-title', { name: isLoggedIn }]">{{ accountInfo }}</div>
             <div class="account-control-icon">
               <s-icon v-if="!isLoggedIn" name="finance-wallet-24" size="28" />
-              <WalletAvatar v-else :address="account.address"/>
+              <WalletAvatar v-else :address="account.address" />
             </div>
           </s-button>
         </div>
@@ -136,30 +147,39 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator'
-import { Action, Getter, State } from 'vuex-class'
-import { WALLET_CONSTS, components } from '@soramitsu/soraneo-wallet-web'
-import { History, KnownSymbols, connection } from '@sora-substrate/util'
-import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils'
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
-import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem'
+import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { Action, Getter, State } from 'vuex-class';
+import { WALLET_CONSTS, components } from '@soramitsu/soraneo-wallet-web';
+import { History, KnownSymbols, connection } from '@sora-substrate/util';
+import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 
-import TransactionMixin from '@/components/mixins/TransactionMixin'
-import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
-import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
-import PolkaswapLogo from '@/components/logo/Polkaswap.vue'
-import SoraLogo from '@/components/logo/Sora.vue'
+import TransactionMixin from '@/components/mixins/TransactionMixin';
+import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
+import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
+import PolkaswapLogo from '@/components/logo/Polkaswap.vue';
+import SoraLogo from '@/components/logo/Sora.vue';
 
-import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize, Language } from '@/consts'
-import axios, { updateBaseUrl } from '@/api'
-import router, { lazyComponent } from '@/router'
-import { formatAddress, preloadFontFace } from '@/utils'
-import { getLocale } from '@/lang'
-import type { ConnectToNodeOptions } from '@/types/nodes'
-import type { SubNetwork } from '@/utils/ethers-util'
+import {
+  PageNames,
+  BridgeChildPages,
+  SidebarMenuGroups,
+  SocialNetworkLinks,
+  FaucetLink,
+  Components,
+  LogoSize,
+  Language,
+} from '@/consts';
+import axiosInstance, { updateBaseUrl } from '@/api';
+import router, { lazyComponent } from '@/router';
+import { formatAddress, preloadFontFace } from '@/utils';
+import { getLocale } from '@/lang';
+import type { ConnectToNodeOptions } from '@/types/nodes';
+import type { SubNetwork } from '@/utils/ethers-util';
 
-const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
-const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
+const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet;
+const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection;
 
 @Component({
   components: {
@@ -174,261 +194,268 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
     Moonpay: lazyComponent(Components.Moonpay),
     MoonpayNotification: lazyComponent(Components.MoonpayNotification),
     MoonpayHistoryButton: lazyComponent(Components.MoonpayHistoryButton),
-    MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation)
-  }
+    MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
+  },
 })
 export default class App extends Mixins(TransactionMixin, NodeErrorMixin, WalletConnectMixin) {
-  readonly nodesFeatureEnabled = true
+  readonly nodesFeatureEnabled = true;
 
-  readonly SidebarMenuGroups = SidebarMenuGroups
-  readonly SocialNetworkLinks = SocialNetworkLinks
-  readonly FaucetLink = FaucetLink
-  readonly PageNames = PageNames
+  readonly SidebarMenuGroups = SidebarMenuGroups;
+  readonly SocialNetworkLinks = SocialNetworkLinks;
+  readonly FaucetLink = FaucetLink;
+  readonly PageNames = PageNames;
 
-  readonly PoolChildPages = [
-    PageNames.AddLiquidity,
-    PageNames.RemoveLiquidity,
-    PageNames.CreatePair
-  ]
+  readonly PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
 
-  showHelpDialog = false
-  showSelectLanguageDialog = false
+  showHelpDialog = false;
+  showSelectLanguageDialog = false;
 
-  switchTheme: AsyncVoidFn = switchTheme
+  switchTheme: AsyncVoidFn = switchTheme;
 
-  @State(state => state.settings.faucetUrl) faucetUrl!: string
-  @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
-  @State(state => state.moonpay.dialogVisibility) moonpayDialogVisibility!: boolean
-  @State(state => state.moonpay.notificationVisibility) moonpayNotificationVisibility!: boolean
-  @State(state => state.moonpay.confirmationVisibility) moonpayConfirmationVisibility!: boolean
+  @State((state) => state.settings.faucetUrl) faucetUrl!: string;
+  @State((state) => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean;
+  @State((state) => state.moonpay.dialogVisibility) moonpayDialogVisibility!: boolean;
+  @State((state) => state.moonpay.notificationVisibility) moonpayNotificationVisibility!: boolean;
+  @State((state) => state.moonpay.confirmationVisibility) moonpayConfirmationVisibility!: boolean;
 
-  @Getter libraryTheme!: Theme
-  @Getter libraryDesignSystem!: DesignSystem
+  @Getter libraryTheme!: Theme;
+  @Getter libraryDesignSystem!: DesignSystem;
 
-  @Getter firstReadyTransaction!: History
-  @Getter isLoggedIn!: boolean
-  @Getter account!: any
-  @Getter currentRoute!: WALLET_CONSTS.RouteNames
-  @Getter language!: Language
-  @Getter moonpayEnabled!: boolean
+  @Getter firstReadyTransaction!: History;
+  @Getter isLoggedIn!: boolean;
+  @Getter account!: any;
+  @Getter currentRoute!: WALLET_CONSTS.RouteNames;
+  @Getter language!: Language;
+  @Getter moonpayEnabled!: boolean;
 
   // Wallet
-  @Action navigate!: (options: { name: string; params?: object }) => Promise<void>
-  @Action resetAccountAssetsSubscription!: AsyncVoidFn
-  @Action trackActiveTransactions!: AsyncVoidFn
-  @Action resetActiveTransactions!: AsyncVoidFn
-  @Action resetFiatPriceAndApySubscription!: AsyncVoidFn
+  @Action navigate!: (options: { name: string; params?: object }) => Promise<void>;
+  @Action resetAccountAssetsSubscription!: AsyncVoidFn;
+  @Action trackActiveTransactions!: AsyncVoidFn;
+  @Action resetActiveTransactions!: AsyncVoidFn;
+  @Action resetFiatPriceAndApySubscription!: AsyncVoidFn;
 
-  @Action updateAccountAssets!: AsyncVoidFn
-  @Action setSoraNetwork!: (networkType: string) => Promise<void> // wallet
-  @Action setDefaultNodes!: (nodes: any) => Promise<void>
-  @Action setNetworkChainGenesisHash!: (hash: string) => Promise<void>
-  @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
-  @Action setFaucetUrl!: (url: string) => Promise<void>
-  @Action setLanguage!: (lang: Language) => Promise<void>
-  @Action setApiKeys!: (options: any) => Promise<void>
-  @Action setFeatureFlags!: (options: any) => Promise<void>
-  @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>
-  @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>
-  @Action('setDialogVisibility', { namespace: 'moonpay' }) setMoonpayDialogVisibility!: (flag: boolean) => Promise<void>
-  @Action('setNotificationVisibility', { namespace: 'moonpay' }) setMoonpayNotificationVisibility!: (flag: boolean) => Promise<void>
-  @Action('setConfirmationVisibility', { namespace: 'moonpay' }) setMoonpayConfirmationVisibility!: (flag: boolean) => Promise<void>
-  @Action('setReadyBridgeTransactionId', { namespace: 'moonpay' }) setReadyBridgeTransactionId!: (id?: string) => Promise<void>
+  @Action updateAccountAssets!: AsyncVoidFn;
+  @Action setSoraNetwork!: (networkType: string) => Promise<void>; // wallet
+  @Action setDefaultNodes!: (nodes: any) => Promise<void>;
+  @Action setNetworkChainGenesisHash!: (hash: string) => Promise<void>;
+  @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
+  @Action setFaucetUrl!: (url: string) => Promise<void>;
+  @Action setLanguage!: (lang: Language) => Promise<void>;
+  @Action setApiKeys!: (options: any) => Promise<void>;
+  @Action setFeatureFlags!: (options: any) => Promise<void>;
+  @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>;
+  @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
+  @Action('setDialogVisibility', { namespace: 'moonpay' }) setMoonpayDialogVisibility!: (
+    flag: boolean
+  ) => Promise<void>;
+
+  @Action('setNotificationVisibility', { namespace: 'moonpay' }) setMoonpayNotificationVisibility!: (
+    flag: boolean
+  ) => Promise<void>;
+
+  @Action('setConfirmationVisibility', { namespace: 'moonpay' }) setMoonpayConfirmationVisibility!: (
+    flag: boolean
+  ) => Promise<void>;
+
+  @Action('setReadyBridgeTransactionId', { namespace: 'moonpay' }) setReadyBridgeTransactionId!: (
+    id?: string
+  ) => Promise<void>;
 
   @Watch('firstReadyTransaction', { deep: true })
-  private handleNotifyAboutTransaction (value: History): void {
-    this.handleChangeTransaction(value)
+  private handleNotifyAboutTransaction(value: History): void {
+    this.handleChangeTransaction(value);
   }
 
   @Watch('nodeIsConnected')
-  private updateConnectionSubsriptions (nodeConnected: boolean): void {
+  private updateConnectionSubsriptions(nodeConnected: boolean): void {
     if (nodeConnected) {
-      this.updateAccountAssets()
+      this.updateAccountAssets();
     } else {
-      this.resetAccountAssetsSubscription()
+      this.resetAccountAssetsSubscription();
     }
   }
 
-  async created () {
+  async created() {
     // element-icons is not common used, but should be visible after network connection lost
-    preloadFontFace('element-icons')
+    preloadFontFace('element-icons');
 
-    updateBaseUrl(router)
+    updateBaseUrl(router);
 
-    await this.setLanguage(getLocale() as any)
+    await this.setLanguage(getLocale() as any);
 
     await this.withLoading(async () => {
-      const { data } = await axios.get('/env.json')
+      const { data } = await axiosInstance.get('/env.json');
 
       if (!data.NETWORK_TYPE) {
-        throw new Error('NETWORK_TYPE is not set')
+        throw new Error('NETWORK_TYPE is not set');
       }
 
-      await this.setApiKeys(data?.API_KEYS)
-      await this.setFeatureFlags(data?.FEATURE_FLAGS)
-      await this.setSoraNetwork(data.NETWORK_TYPE)
-      await this.setDefaultNodes(data?.DEFAULT_NETWORKS)
-      await this.setSubNetworks(data.SUB_NETWORKS)
-      await this.setSmartContracts(data.SUB_NETWORKS)
+      await this.setApiKeys(data?.API_KEYS);
+      await this.setFeatureFlags(data?.FEATURE_FLAGS);
+      await this.setSoraNetwork(data.NETWORK_TYPE);
+      await this.setDefaultNodes(data?.DEFAULT_NETWORKS);
+      await this.setSubNetworks(data.SUB_NETWORKS);
+      await this.setSmartContracts(data.SUB_NETWORKS);
 
       if (data.FAUCET_URL) {
-        this.setFaucetUrl(data.FAUCET_URL)
+        this.setFaucetUrl(data.FAUCET_URL);
       }
       if (data.CHAIN_GENESIS_HASH) {
-        await this.setNetworkChainGenesisHash(data.CHAIN_GENESIS_HASH)
+        await this.setNetworkChainGenesisHash(data.CHAIN_GENESIS_HASH);
       }
 
       // connection to node
-      await this.runAppConnectionToNode()
-    })
+      await this.runAppConnectionToNode();
+    });
 
-    this.trackActiveTransactions()
+    this.trackActiveTransactions();
   }
 
-  get selectedLanguage (): string {
-    return this.language.toUpperCase()
+  get selectedLanguage(): string {
+    return this.language.toUpperCase();
   }
 
-  get showSelectNodeDialog (): boolean {
-    return this.selectNodeDialogVisibility
+  get showSelectNodeDialog(): boolean {
+    return this.selectNodeDialogVisibility;
   }
 
-  set showSelectNodeDialog (flag: boolean) {
-    this.setSelectNodeDialogVisibility(flag)
+  set showSelectNodeDialog(flag: boolean) {
+    this.setSelectNodeDialogVisibility(flag);
   }
 
-  get showMoonpayDialog (): boolean {
-    return this.moonpayDialogVisibility
+  get showMoonpayDialog(): boolean {
+    return this.moonpayDialogVisibility;
   }
 
-  set showMoonpayDialog (flag: boolean) {
-    this.setMoonpayDialogVisibility(flag)
+  set showMoonpayDialog(flag: boolean) {
+    this.setMoonpayDialogVisibility(flag);
   }
 
-  get showMoonpayNotification (): boolean {
-    return this.moonpayNotificationVisibility
+  get showMoonpayNotification(): boolean {
+    return this.moonpayNotificationVisibility;
   }
 
-  set showMoonpayNotification (flag: boolean) {
-    this.setMoonpayNotificationVisibility(flag)
+  set showMoonpayNotification(flag: boolean) {
+    this.setMoonpayNotificationVisibility(flag);
   }
 
-  get showMoonpayConfirmation (): boolean {
-    return this.moonpayConfirmationVisibility
+  get showMoonpayConfirmation(): boolean {
+    return this.moonpayConfirmationVisibility;
   }
 
-  set showMoonpayConfirmation (flag: boolean) {
-    this.setMoonpayConfirmationVisibility(flag)
+  set showMoonpayConfirmation(flag: boolean) {
+    this.setMoonpayConfirmationVisibility(flag);
   }
 
-  get themeIcon (): string {
-    return this.libraryTheme === Theme.LIGHT ? 'various-brightness-low-24' : 'various-moon-24'
+  get themeIcon(): string {
+    return this.libraryTheme === Theme.LIGHT ? 'various-brightness-low-24' : 'various-moon-24';
   }
 
-  get mainMenuActiveColor (): string {
-    return this.libraryTheme === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)'
+  get mainMenuActiveColor(): string {
+    return this.libraryTheme === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)';
   }
 
-  get nodeTooltip (): string {
+  get nodeTooltip(): string {
     if (this.nodeIsConnected) {
-      return this.t('selectNodeConnected', { chain: this.node.chain })
+      return this.t('selectNodeConnected', { chain: this.node.chain });
     }
-    return this.t('selectNodeText')
+    return this.t('selectNodeText');
   }
 
-  get nodeLogo (): any {
+  get nodeLogo(): any {
     return {
       size: LogoSize.MEDIUM,
-      tokenSymbol: KnownSymbols.XOR
-    }
+      tokenSymbol: KnownSymbols.XOR,
+    };
   }
 
-  get isAboutPage (): boolean {
-    return this.$route.name === PageNames.About
+  get isAboutPage(): boolean {
+    return this.$route.name === PageNames.About;
   }
 
-  get accountTooltip (): string {
-    return this.t(`${this.isLoggedIn ? 'connectedAccount' : 'connectWalletTextTooltip'}`)
+  get accountTooltip(): string {
+    return this.t(`${this.isLoggedIn ? 'connectedAccount' : 'connectWalletTextTooltip'}`);
   }
 
-  get accountInfo (): string {
+  get accountInfo(): string {
     if (!this.isLoggedIn) {
-      return this.t('connectWalletText')
+      return this.t('connectWalletText');
     }
-    return this.account.name || formatAddress(this.account.address, 8)
+    return this.account.name || formatAddress(this.account.address, 8);
   }
 
-  async handleMoonpayBridgeConfirm (): Promise<void> {
-    await this.setMoonpayConfirmationVisibility(false)
-    await this.setReadyBridgeTransactionId()
+  async handleMoonpayBridgeConfirm(): Promise<void> {
+    await this.setMoonpayConfirmationVisibility(false);
+    await this.setReadyBridgeTransactionId();
 
-    this.goTo(PageNames.BridgeTransaction)
+    this.goTo(PageNames.BridgeTransaction);
   }
 
-  getCurrentPath (): string {
+  getCurrentPath(): string {
     if (this.PoolChildPages.includes(router.currentRoute.name as PageNames)) {
-      return PageNames.Pool
+      return PageNames.Pool;
     }
     if (BridgeChildPages.includes(router.currentRoute.name as PageNames)) {
-      return PageNames.Bridge
+      return PageNames.Bridge;
     }
-    return router.currentRoute.name as string
+    return router.currentRoute.name as string;
   }
 
-  goTo (name: PageNames): void {
+  goTo(name: PageNames): void {
     if (name === PageNames.Wallet) {
       if (!this.isLoggedIn) {
-        this.navigate({ name: WALLET_CONNECTION_ROUTE })
+        this.navigate({ name: WALLET_CONNECTION_ROUTE });
       } else if (this.currentRoute !== WALLET_DEFAULT_ROUTE) {
-        this.navigate({ name: WALLET_DEFAULT_ROUTE })
+        this.navigate({ name: WALLET_DEFAULT_ROUTE });
       }
     }
 
-    this.changePage(name)
+    this.changePage(name);
   }
 
-  private changePage (name: PageNames): void {
+  private changePage(name: PageNames): void {
     if (router.currentRoute.name === name) {
-      return
+      return;
     }
-    router.push({ name })
+    router.push({ name });
   }
 
-  openHelpDialog (): void {
-    this.showHelpDialog = true
+  openHelpDialog(): void {
+    this.showHelpDialog = true;
   }
 
-  openSelectNodeDialog (): void {
-    this.setSelectNodeDialogVisibility(true)
+  openSelectNodeDialog(): void {
+    this.setSelectNodeDialogVisibility(true);
   }
 
-  openSelectLanguageDialog (): void {
-    this.showSelectLanguageDialog = true
+  openSelectLanguageDialog(): void {
+    this.showSelectLanguageDialog = true;
   }
 
-  async openMoonpayDialog (): Promise<void> {
+  async openMoonpayDialog(): Promise<void> {
     if (!this.isSoraAccountConnected) {
-      return this.connectInternalWallet()
+      return this.connectInternalWallet();
     }
     await this.checkConnectionToExternalAccount(async () => {
-      await this.setMoonpayDialogVisibility(true)
-    })
+      await this.setMoonpayDialogVisibility(true);
+    });
   }
 
-  async beforeDestroy (): Promise<void> {
-    await this.resetFiatPriceAndApySubscription()
-    await this.resetActiveTransactions()
-    await this.resetAccountAssetsSubscription()
-    await connection.close()
+  async beforeDestroy(): Promise<void> {
+    await this.resetFiatPriceAndApySubscription();
+    await this.resetActiveTransactions();
+    await this.resetAccountAssetsSubscription();
+    await connection.close();
   }
 
-  private async runAppConnectionToNode () {
+  private async runAppConnectionToNode() {
     try {
       await this.connectToNode({
         onError: (error) => this.handleNodeError(error, true), // prefer notification on connection success
         onDisconnect: this.handleNodeDisconnect,
-        onReconnect: this.handleNodeReconnect
-      })
+        onReconnect: this.handleNodeReconnect,
+      });
     } catch (error) {
       // we handled error using callback, do nothing
     }
@@ -458,7 +485,7 @@ html {
   .el-loading-mask {
     background-color: var(--s-color-utility-body);
     .el-loading-spinner {
-      background-image: url("~@/assets/img/pswap-loader.svg");
+      background-image: url('~@/assets/img/pswap-loader.svg');
       height: var(--s-size-medium);
       width: var(--s-size-medium);
       margin-left: calc(50% - (var(--s-size-medium) / 2));
@@ -468,7 +495,8 @@ html {
     }
   }
 
-  &-body-scrollbar, &-sidebar-scrollbar {
+  &-body-scrollbar,
+  &-sidebar-scrollbar {
     @include scrollbar;
   }
   &-body {
@@ -490,7 +518,7 @@ html {
   span {
     flex-direction: row-reverse;
   }
-  [class^="s-icon-"] {
+  [class^='s-icon-'] {
     @include icon-styles;
   }
 }
@@ -522,7 +550,7 @@ html {
     padding-left: 6px;
   }
 
-  &:not(.s-action).s-i-position-left > span > i[class^=s-icon-] {
+  &:not(.s-action).s-i-position-left > span > i[class^='s-icon-'] {
     margin-right: 0;
   }
 }
@@ -642,8 +670,9 @@ html {
   flex-direction: column;
   align-items: center;
 
-  $swap-input-class: ".el-input";
-  .s-input--token-value, .s-input-amount {
+  $swap-input-class: '.el-input';
+  .s-input--token-value,
+  .s-input-amount {
     #{$swap-input-class} {
       #{$swap-input-class}__inner {
         padding-top: 0;
@@ -696,8 +725,8 @@ html {
 }
 
 // Icons colors
-.el-tooltip[class*=" s-icon-"],
-.el-button.el-tooltip i[class*=" s-icon-"] {
+.el-tooltip[class*=' s-icon-'],
+.el-button.el-tooltip i[class*=' s-icon-'] {
   @include icon-styles(true);
 }
 i.icon-divider {
@@ -794,7 +823,7 @@ $account-control-name-max-width: 200px;
   padding: $inner-spacing-mini $inner-spacing-medium;
   min-height: $header-height;
   box-shadow: $header-box-shadow-light;
-  [design-system-theme="dark"] & {
+  [design-system-theme='dark'] & {
     box-shadow: $header-box-shadow-dark;
   }
 
@@ -955,16 +984,21 @@ $account-control-name-max-width: 200px;
 }
 
 @include large-mobile {
-  $border-image-light: linear-gradient(#FAF4F8, #D5CDD0, #FAF4F8) 30;
-  $border-image-dark: linear-gradient(180deg, rgba(36, 2, 65, 0) 0%, rgba(36, 2, 65, 0.5) 50.45%, rgba(36, 2, 65, 0) 100%) 30;
-
+  $border-image-light: linear-gradient(#faf4f8, #d5cdd0, #faf4f8) 30;
+  $border-image-dark: linear-gradient(
+      180deg,
+      rgba(36, 2, 65, 0) 0%,
+      rgba(36, 2, 65, 0.5) 50.45%,
+      rgba(36, 2, 65, 0) 100%
+    )
+    30;
   .app-sidebar {
     overflow-y: auto;
     margin-right: 0;
     width: auto;
     border-right: 1px solid;
     border-image: $border-image-light;
-    [design-system-theme="dark"] & {
+    [design-system-theme='dark'] & {
       border-image: $border-image-dark;
     }
   }

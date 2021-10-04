@@ -11,45 +11,42 @@
         />
       </div>
     </template>
-    <formatted-amount
-      is-fiat-value
-      :value="totalFiatValue"
-    />
+    <formatted-amount is-fiat-value :value="totalFiatValue" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
-import { Asset } from '@sora-substrate/util'
+import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Asset } from '@sora-substrate/util';
 
-import { RewardsAmountHeaderItem } from '@/types/rewards'
+import { RewardsAmountHeaderItem } from '@/types/rewards';
 
 @Component({
   components: {
     FormattedAmount: components.FormattedAmount,
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue
-  }
+    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
+  },
 })
 export default class AmountHeader extends Mixins(mixins.FormattedAmountMixin, mixins.NumberFormatterMixin) {
-  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate
+  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
-  @Prop({ default: () => [], type: Array }) items!: Array<RewardsAmountHeaderItem>
+  @Prop({ default: () => [], type: Array }) items!: Array<RewardsAmountHeaderItem>;
 
-  get totalFiatValue (): string {
+  get totalFiatValue(): string {
     const value = this.items.reduce((result, item) => {
-      if (!item.amount || !item.asset) return result
+      if (!item.amount || !item.asset) return result;
 
-      const fpAmount = this.getFPNumber(item.amount)
+      const fpAmount = this.getFPNumber(item.amount);
 
-      if (!fpAmount) return result
+      if (!fpAmount) return result;
 
-      const fpFiatAmount = this.getFPNumberFiatAmountByFPNumber(fpAmount, item.asset as Asset)
+      const fpFiatAmount = this.getFPNumberFiatAmountByFPNumber(fpAmount, item.asset as Asset);
 
-      return fpFiatAmount ? result.add(fpFiatAmount) : result
-    }, this.Zero)
+      return fpFiatAmount ? result.add(fpFiatAmount) : result;
+    }, this.Zero);
 
-    return value.toLocaleString()
+    return value.toLocaleString();
   }
 }
 </script>

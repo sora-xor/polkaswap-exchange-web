@@ -6,12 +6,12 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class ExternalLink extends Vue {
-  @Prop({ default: '', type: String }) title!: string
-  @Prop({ default: '', type: String }) href!: string
+  @Prop({ default: '', type: String }) title!: string;
+  @Prop({ default: '', type: String }) href!: string;
 }
 </script>
 
@@ -25,7 +25,8 @@ export default class ExternalLink extends Vue {
     margin-left: $inner-spacing-mini / 2;
     font-size: 0.75em !important;
 
-    &, &:hover {
+    &,
+    &:hover {
       color: var(--s-color-theme-accent) !important;
     }
   }

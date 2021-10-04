@@ -5,23 +5,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 
 @Component
 export default class MoonpayWidget extends Vue {
-  @Prop({ default: '', type: String }) readonly src!: string
+  @Prop({ default: '', type: String }) readonly src!: string;
 
   @Watch('src', { immediate: true })
-  private onChangeSrc (value) {
+  private onChangeSrc(value) {
     if (value) {
-      this.widgetLoading = true
+      this.widgetLoading = true;
     }
   }
 
-  widgetLoading = false
+  widgetLoading = false;
 
-  onLoadWidget (): void {
-    this.widgetLoading = false
+  onLoadWidget(): void {
+    this.widgetLoading = false;
   }
 }
 </script>

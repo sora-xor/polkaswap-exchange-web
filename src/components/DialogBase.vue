@@ -7,7 +7,7 @@
     v-bind="{
       width: width || '496px',
       borderRadius: 'medium',
-      ...$attrs
+      ...$attrs,
     }"
     class="dialog-wrapper"
   >
@@ -25,23 +25,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import DialogMixin from '@/components/mixins/DialogMixin'
+import DialogMixin from '@/components/mixins/DialogMixin';
 
 @Component
 export default class DialogBase extends Mixins(DialogMixin) {
-  @Prop({ default: '', type: String }) readonly customClass!: string
-  @Prop({ default: '', type: String }) readonly title!: string
-  @Prop({ default: '', type: String }) readonly width!: string
+  @Prop({ default: '', type: String }) readonly customClass!: string;
+  @Prop({ default: '', type: String }) readonly title!: string;
+  @Prop({ default: '', type: String }) readonly width!: string;
 
-  get computedCustomClasses (): string {
-    const cssClasses: Array<string> = []
-    cssClasses.push('neumorphic')
+  get computedCustomClasses(): string {
+    const cssClasses: Array<string> = [];
+    cssClasses.push('neumorphic');
     if (this.customClass) {
-      cssClasses.push(this.customClass)
+      cssClasses.push(this.customClass);
     }
-    return cssClasses.join(' ')
+    return cssClasses.join(' ');
   }
 }
 </script>

@@ -1,13 +1,22 @@
 <template>
   <div class="container" v-loading="parentLoading">
-    <generic-page-header :has-button-back="!isHistoryView" class="page-header-title--moonpay-history" @back="handleBack">
-      <moonpay-logo :theme="libraryTheme" slot="title"/>
+    <generic-page-header
+      :has-button-back="!isHistoryView"
+      class="page-header-title--moonpay-history"
+      @back="handleBack"
+    >
+      <moonpay-logo :theme="libraryTheme" slot="title" />
     </generic-page-header>
     <div class="moonpay-history">
       <template v-if="isHistoryView">
         <div class="moonpay-history-title">{{ t('moonpay.history.title') }}</div>
         <div :class="['moonpay-history-list', { empty: emptyHistory }]" v-loading="loading">
-          <div v-for="item in formattedItems" :key="item.id" class="moonpay-history-item" @click="navigateToDetails(item)">
+          <div
+            v-for="item in formattedItems"
+            :key="item.id"
+            class="moonpay-history-item"
+            @click="navigateToDetails(item)"
+          >
             <div class="moonpay-history-item-data">
               <div class="moonpay-history-item__date">{{ item.formatted.date }}</div>
               <div class="moonpay-history-item__amount">
@@ -18,8 +27,8 @@
                     :font-size-rate="FontSizeRate.MEDIUM"
                     :asset-symbol="item.formatted.crypto"
                   />
-                  <i class="s-icon--network s-icon-eth" />&nbsp;
-                  <span>{{ t('forText') }}</span>&nbsp;
+                  <i class="s-icon--network s-icon-eth" />&nbsp; <span>{{ t('forText') }}</span>
+                  &nbsp;
                 </template>
                 <formatted-amount
                   class="moonpay-history-item-amount"
@@ -65,113 +74,113 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import { Action, State, Getter } from 'vuex-class'
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
-import dayjs from 'dayjs'
-import { WALLET_CONSTS, components } from '@soramitsu/soraneo-wallet-web'
-import { BridgeHistory } from '@sora-substrate/util'
+import { Component, Mixins } from 'vue-property-decorator';
+import { Action, State, Getter } from 'vuex-class';
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import dayjs from 'dayjs';
+import { WALLET_CONSTS, components } from '@soramitsu/soraneo-wallet-web';
+import { BridgeHistory } from '@sora-substrate/util';
 
-import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin'
-import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin'
-import MoonpayBridgeInitMixin from '@/components/Moonpay/MoonpayBridgeInitMixin'
-import MoonpayLogo from '@/components/logo/Moonpay.vue'
+import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
+import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
+import MoonpayBridgeInitMixin from '@/components/Moonpay/MoonpayBridgeInitMixin';
+import MoonpayLogo from '@/components/logo/Moonpay.vue';
 
-import ethersUtil from '@/utils/ethers-util'
-import { getCssVariableValue, toQueryString } from '@/utils'
-import { Components } from '@/consts'
-import { lazyComponent } from '@/router'
+import ethersUtil from '@/utils/ethers-util';
+import { getCssVariableValue, toQueryString } from '@/utils';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 
-import type { MoonpayTransaction } from '@/utils/moonpay'
-import { MoonpayTransactionStatus } from '@/utils/moonpay'
+import type { MoonpayTransaction } from '@/utils/moonpay';
+import { MoonpayTransactionStatus } from '@/utils/moonpay';
 
-const namespace = 'moonpay'
+const namespace = 'moonpay';
 
-const HistoryView = 'history'
-const DetailsView = 'details'
+const HistoryView = 'history';
+const DetailsView = 'details';
 
 @Component({
   components: {
     MoonpayLogo,
     FormattedAmount: components.FormattedAmount,
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    MoonpayWidget: lazyComponent(Components.MoonpayWidget)
-  }
+    MoonpayWidget: lazyComponent(Components.MoonpayWidget),
+  },
 })
 export default class MoonpayHistory extends Mixins(PaginationSearchMixin, MoonpayBridgeInitMixin, BridgeHistoryMixin) {
-  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate
+  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
-  @State(state => state[namespace].transactions) transactions!: Array<MoonpayTransaction>
-  @State(state => state.settings.language) language!: string
-  @State(state => state.bridge.history) bridgeHistory!: Array<BridgeHistory>
-  @Getter libraryTheme!: Theme
-  @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean
-  @Getter('currenciesById', { namespace }) currenciesById!: any
-  @Action('getTransactions', { namespace }) getTransactions!: () => Promise<void>
-  @Action('getCurrencies', { namespace }) getCurrencies!: () => Promise<void>
-  @Action('getHistory', { namespace: 'bridge' }) getHistory!: () => Promise<void>
+  @State((state) => state[namespace].transactions) transactions!: Array<MoonpayTransaction>;
+  @State((state) => state.settings.language) language!: string;
+  @State((state) => state.bridge.history) bridgeHistory!: Array<BridgeHistory>;
+  @Getter libraryTheme!: Theme;
+  @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean;
+  @Getter('currenciesById', { namespace }) currenciesById!: any;
+  @Action('getTransactions', { namespace }) getTransactions!: () => Promise<void>;
+  @Action('getCurrencies', { namespace }) getCurrencies!: () => Promise<void>;
+  @Action('getHistory', { namespace: 'bridge' }) getHistory!: () => Promise<void>;
 
-  private unwatchEthereum!: any
+  private unwatchEthereum!: any;
 
-  pageAmount = 5
-  currentView = HistoryView
-  selectedItem: any = {}
+  pageAmount = 5;
+  currentView = HistoryView;
+  selectedItem: any = {};
 
-  created (): void {
+  created(): void {
     this.withApi(async () => {
-      this.initMoonpayApi() // MoonpayBridgeInitMixin
+      this.initMoonpayApi(); // MoonpayBridgeInitMixin
 
       await Promise.all([
         this.prepareEvmNetwork(), // MoonpayBridgeInitMixin
         this.getTransactions(),
         this.getCurrencies(),
-        this.getHistory()
-      ])
+        this.getHistory(),
+      ]);
 
       this.unwatchEthereum = await ethersUtil.watchEthereum({
         onAccountChange: (addressList: string[]) => {
           if (addressList.length) {
-            this.changeExternalWallet({ address: addressList[0] })
+            this.changeExternalWallet({ address: addressList[0] });
           } else {
-            this.disconnectExternalAccount()
+            this.disconnectExternalAccount();
           }
         },
         onNetworkChange: (networkId: string) => {
-          this.setEvmNetworkType(networkId)
+          this.setEvmNetworkType(networkId);
         },
         onDisconnect: () => {
-          this.disconnectExternalAccount()
-        }
-      })
-    })
+          this.disconnectExternalAccount();
+        },
+      });
+    });
   }
 
-  beforeDestroy (): void {
+  beforeDestroy(): void {
     if (typeof this.unwatchEthereum === 'function') {
-      this.unwatchEthereum()
+      this.unwatchEthereum();
     }
   }
 
-  get emptyHistory (): boolean {
-    return this.transactions.length === 0
+  get emptyHistory(): boolean {
+    return this.transactions.length === 0;
   }
 
-  get historyItems (): Array<MoonpayTransaction> {
-    return this.getPageItems(this.transactions)
+  get historyItems(): Array<MoonpayTransaction> {
+    return this.getPageItems(this.transactions);
   }
 
-  get formattedItems (): Array<any> {
-    const { currenciesById, historyItems } = this
-    const formatCurrencyName = (id: string) => (currenciesById[id]?.code ?? '').toUpperCase()
-    const formatCurrencyAmount = (amount: number) => Number.isFinite(amount) ? String(amount) : amount
-    const iconStatus = status => {
-      if (status === MoonpayTransactionStatus.Completed) return 'basic-check-mark-24'
-      if (status === MoonpayTransactionStatus.Failed) return 'basic-clear-X-24'
+  get formattedItems(): Array<any> {
+    const { currenciesById, historyItems } = this;
+    const formatCurrencyName = (id: string) => (currenciesById[id]?.code ?? '').toUpperCase();
+    const formatCurrencyAmount = (amount: number) => (Number.isFinite(amount) ? String(amount) : amount);
+    const iconStatus = (status) => {
+      if (status === MoonpayTransactionStatus.Completed) return 'basic-check-mark-24';
+      if (status === MoonpayTransactionStatus.Failed) return 'basic-clear-X-24';
 
-      return 'basic-more-horizontal-24'
-    }
+      return 'basic-more-horizontal-24';
+    };
 
-    return historyItems.map(item => {
+    return historyItems.map((item) => {
       return {
         ...item,
         formatted: {
@@ -180,101 +189,98 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
           crypto: formatCurrencyName(item.currencyId),
           cryptoAmount: formatCurrencyAmount(item.quoteCurrencyAmount),
           date: dayjs(item.updatedAt).format('DD.MM.YYYY,HH:mm:ss'),
-          icon: iconStatus(item.status)
-        }
-      }
-    })
+          icon: iconStatus(item.status),
+        },
+      };
+    });
   }
 
-  get detailsWidgetUrl (): string {
-    if (!this.selectedItem.id) return ''
+  get detailsWidgetUrl(): string {
+    if (!this.selectedItem.id) return '';
 
     const query = toQueryString({
       colorCode: getCssVariableValue('--s-color-theme-accent'),
       language: this.language,
-      transactionId: this.selectedItem.id
-    })
-    return `${this.selectedItem.returnUrl}?${query}`
+      transactionId: this.selectedItem.id,
+    });
+    return `${this.selectedItem.returnUrl}?${query}`;
   }
 
-  get bridgeTxToSora (): Nullable<BridgeHistory> {
-    if (!this.selectedItem.id) return undefined
+  get bridgeTxToSora(): Nullable<BridgeHistory> {
+    if (!this.selectedItem.id) return undefined;
 
-    return this.bridgeHistory.find(item => (item as any).payload?.moonpayId === this.selectedItem.id)
+    return this.bridgeHistory.find((item) => (item as any).payload?.moonpayId === this.selectedItem.id);
   }
 
-  get isCompletedTransaction (): boolean {
-    return this.selectedItem?.status === MoonpayTransactionStatus.Completed
+  get isCompletedTransaction(): boolean {
+    return this.selectedItem?.status === MoonpayTransactionStatus.Completed;
   }
 
-  get externalAccountIsMoonpayRecipient (): boolean {
-    return this.selectedItem?.walletAddress?.toLowerCase?.() === this.evmAddress.toLowerCase()
+  get externalAccountIsMoonpayRecipient(): boolean {
+    return this.selectedItem?.walletAddress?.toLowerCase?.() === this.evmAddress.toLowerCase();
   }
 
-  get actionButtonType (): string {
-    return this.bridgeTxToSora ? 'secondary' : 'primary'
+  get actionButtonType(): string {
+    return this.bridgeTxToSora ? 'secondary' : 'primary';
   }
 
-  get actionButtonDisabled (): boolean {
-    if (this.bridgeTxToSora) return false
+  get actionButtonDisabled(): boolean {
+    if (this.bridgeTxToSora) return false;
 
-    return (
-      !this.externalAccountIsMoonpayRecipient ||
-      !this.isValidNetworkType
-    )
+    return !this.externalAccountIsMoonpayRecipient || !this.isValidNetworkType;
   }
 
-  get actionButtonText (): string {
-    if (!this.isExternalAccountConnected) return this.t('connectWalletText')
+  get actionButtonText(): string {
+    if (!this.isExternalAccountConnected) return this.t('connectWalletText');
 
-    if (this.bridgeTxToSora) return this.t('moonpay.buttons.view')
-    if (!this.externalAccountIsMoonpayRecipient) return this.t('bridgeTransaction.changeAccount')
-    if (!this.isValidNetworkType) return this.t('bridgeTransaction.changeNetwork')
+    if (this.bridgeTxToSora) return this.t('moonpay.buttons.view');
+    if (!this.externalAccountIsMoonpayRecipient) return this.t('bridgeTransaction.changeAccount');
+    if (!this.isValidNetworkType) return this.t('bridgeTransaction.changeNetwork');
 
-    return this.t('moonpay.buttons.transfer')
+    return this.t('moonpay.buttons.transfer');
   }
 
-  get isHistoryView (): boolean {
-    return this.currentView === HistoryView
+  get isHistoryView(): boolean {
+    return this.currentView === HistoryView;
   }
 
-  private changeView (view: string): void {
-    this.currentView = view
+  private changeView(view: string): void {
+    this.currentView = view;
   }
 
-  handleBack (): void {
-    this.changeView(HistoryView)
+  handleBack(): void {
+    this.changeView(HistoryView);
   }
 
-  async navigateToDetails (item): Promise<void> {
+  async navigateToDetails(item): Promise<void> {
     try {
       await this.checkConnectionToExternalAccount(() => {
-        this.selectedItem = item
-        this.changeView(DetailsView)
-      })
+        this.selectedItem = item;
+        this.changeView(DetailsView);
+      });
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 
-  async prepareBridgeForTransfer (): Promise<void> {
+  async prepareBridgeForTransfer(): Promise<void> {
     try {
-      await this.checkTxTransferAvailability(this.selectedItem)
+      await this.checkTxTransferAvailability(this.selectedItem);
 
-      this.navigateToBridgeTransaction()
+      this.navigateToBridgeTransaction();
     } catch (error) {
-      await this.handleBridgeInitError(error)
+      await this.handleBridgeInitError(error);
     }
   }
 
-  async handleTransaction (): Promise<void> {
-    if (!this.selectedItem.id) return
+  async handleTransaction(): Promise<void> {
+    if (!this.selectedItem.id) return;
 
     if (this.bridgeTxToSora?.id) {
-      await this.prepareEvmNetwork(this.bridgeTxToSora.externalNetwork) // MoonpayBridgeInitMixin
-      await this.showHistory(this.bridgeTxToSora.id) // BridgeHistoryMixin
+      await this.prepareEvmNetwork(this.bridgeTxToSora.externalNetwork); // MoonpayBridgeInitMixin
+      await this.showHistory(this.bridgeTxToSora.id); // BridgeHistoryMixin
     } else {
-      await this.prepareBridgeForTransfer()
+      await this.prepareBridgeForTransfer();
     }
   }
 }
@@ -337,7 +343,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
     }
 
     &-data {
-      flex: 1
+      flex: 1;
     }
 
     &__date {

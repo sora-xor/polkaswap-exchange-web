@@ -4,5 +4,5 @@ export enum MoonpayNotifications {
   AmountError = 'amountError',
   FeeError = 'feeError',
   SupportError = 'supportError',
-  TransactionError = 'transactionError'
+  TransactionError = 'transactionError',
 }

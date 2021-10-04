@@ -1,128 +1,148 @@
-import { Component, Mixins } from 'vue-property-decorator'
-import { Action, Getter, State } from 'vuex-class'
-import { BridgeNetworks, RegisteredAccountAsset, CodecString, BridgeHistory } from '@sora-substrate/util'
+import { Component, Mixins } from 'vue-property-decorator';
+import { Action, Getter, State } from 'vuex-class';
+import { BridgeNetworks, RegisteredAccountAsset, CodecString, BridgeHistory } from '@sora-substrate/util';
 
-import ethersUtil from '@/utils/ethers-util'
-import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils'
-import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay'
-import { MoonpayNotifications } from '@/components/Moonpay/consts'
+import ethersUtil from '@/utils/ethers-util';
+import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';
+import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay';
+import { MoonpayNotifications } from '@/components/Moonpay/consts';
 
-import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
-import LoadingMixin from '@/components/mixins/LoadingMixin'
+import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
+import LoadingMixin from '@/components/mixins/LoadingMixin';
 
-import type { ApiKeysObject } from '@/store/settings'
-import type { MoonpayTransaction } from '@/utils/moonpay'
+import type { ApiKeysObject } from '@/store/settings';
+import type { MoonpayTransaction } from '@/utils/moonpay';
 
 const createError = (text: string, notification: MoonpayNotifications) => {
-  const error = new Error(text)
-  error.name = notification
-  return error
-}
+  const error = new Error(text);
+  error.name = notification;
+  return error;
+};
 
 @Component
 export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, LoadingMixin) {
-  @State(state => state.moonpay.api) moonpayApi!: MoonpayApi
-  @State(state => state.settings.apiKeys) apiKeys!: ApiKeysObject
+  @State((state) => state.moonpay.api) moonpayApi!: MoonpayApi;
+  @State((state) => state.settings.apiKeys) apiKeys!: ApiKeysObject;
 
-  @Action('setAmount', { namespace: 'bridge' }) setAmount!: (value: string) => Promise<void>
-  @Action('getEvmNetworkFee', { namespace: 'bridge' }) getEvmNetworkFee!: AsyncVoidFn
-  @Action('setAssetAddress', { namespace: 'bridge' }) setAssetAddress!: (address?: string) => Promise<void>
-  @Action('setSoraToEvm', { namespace: 'bridge' }) setSoraToEvm!: (value: boolean) => Promise<void>
-  @Action('setTransactionConfirm', { namespace: 'bridge' }) setTransactionConfirm!: (value: boolean) => Promise<void>
-  @Action('generateHistoryItem', { namespace: 'bridge' }) generateHistoryItem!: (history: any) => Promise<BridgeHistory>
+  @Action('setAmount', { namespace: 'bridge' }) setAmount!: (value: string) => Promise<void>;
+  @Action('getEvmNetworkFee', { namespace: 'bridge' }) getEvmNetworkFee!: AsyncVoidFn;
+  @Action('setAssetAddress', { namespace: 'bridge' }) setAssetAddress!: (address?: string) => Promise<void>;
+  @Action('setSoraToEvm', { namespace: 'bridge' }) setSoraToEvm!: (value: boolean) => Promise<void>;
+  @Action('setTransactionConfirm', { namespace: 'bridge' }) setTransactionConfirm!: (value: boolean) => Promise<void>;
+  @Action('generateHistoryItem', { namespace: 'bridge' }) generateHistoryItem!: (
+    history: any
+  ) => Promise<BridgeHistory>;
 
-  @Action('getTransactionTranserData', { namespace: 'moonpay' }) getTransactionTranserData!: (hash: string) => Promise<Nullable<MoonpayEVMTransferAssetData>>
-  @Action('findRegisteredAssetByExternalAddress', { namespace: 'moonpay' }) findRegisteredAssetByExternalAddress!: (address: string) => Promise<Nullable<RegisteredAccountAsset>>
-  @Action('setNotificationVisibility', { namespace: 'moonpay' }) setNotificationVisibility!: (flag: boolean) => Promise<void>
-  @Action('setNotificationKey', { namespace: 'moonpay' }) setNotificationKey!: (key: string) => Promise<void>
+  @Action('getTransactionTranserData', { namespace: 'moonpay' }) getTransactionTranserData!: (
+    hash: string
+  ) => Promise<Nullable<MoonpayEVMTransferAssetData>>;
 
-  @Getter soraNetwork!: string // wallet
-  @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString
-  @Getter('evmNetworkFee', { namespace: 'bridge' }) evmNetworkFee!: CodecString
+  @Action('findRegisteredAssetByExternalAddress', { namespace: 'moonpay' }) findRegisteredAssetByExternalAddress!: (
+    address: string
+  ) => Promise<Nullable<RegisteredAccountAsset>>;
 
-  async prepareEvmNetwork (networkId = BridgeNetworks.ETH_NETWORK_ID): Promise<void> {
-    await this.setEvmNetwork(networkId) // WalletConnectMixin
-    await this.setEvmNetworkType() // WalletConnectMixin
-    await this.syncExternalAccountWithAppState() // WalletConnectMixin
+  @Action('setNotificationVisibility', { namespace: 'moonpay' }) setNotificationVisibility!: (
+    flag: boolean
+  ) => Promise<void>;
+
+  @Action('setNotificationKey', { namespace: 'moonpay' }) setNotificationKey!: (key: string) => Promise<void>;
+
+  @Getter soraNetwork!: string; // wallet
+  @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString;
+  @Getter('evmNetworkFee', { namespace: 'bridge' }) evmNetworkFee!: CodecString;
+
+  async prepareEvmNetwork(networkId = BridgeNetworks.ETH_NETWORK_ID): Promise<void> {
+    await this.setEvmNetwork(networkId); // WalletConnectMixin
+    await this.setEvmNetworkType(); // WalletConnectMixin
+    await this.syncExternalAccountWithAppState(); // WalletConnectMixin
   }
 
-  initMoonpayApi (): void {
-    this.moonpayApi.setPublicKey(this.apiKeys.moonpay)
-    this.moonpayApi.setNetwork(this.soraNetwork)
+  initMoonpayApi(): void {
+    this.moonpayApi.setPublicKey(this.apiKeys.moonpay);
+    this.moonpayApi.setNetwork(this.soraNetwork);
   }
 
   /**
    * @param transaction moonpay transaction data
    * @returns string - bridge history item id
    */
-  async checkTxTransferAvailability (transaction: MoonpayTransaction): Promise<string> {
+  async checkTxTransferAvailability(transaction: MoonpayTransaction): Promise<string> {
     return await this.withLoading(async () => {
-      await this.prepareEvmNetwork()
+      await this.prepareEvmNetwork();
       // get necessary ethereum transaction data
-      const ethTransferData = await this.getTransactionTranserData(transaction.cryptoTransactionId)
+      const ethTransferData = await this.getTransactionTranserData(transaction.cryptoTransactionId);
 
       if (!ethTransferData) {
-        throw createError(`Cannot fetch transaction data: ${transaction.cryptoTransactionId}`, MoonpayNotifications.TransactionError)
+        throw createError(
+          `Cannot fetch transaction data: ${transaction.cryptoTransactionId}`,
+          MoonpayNotifications.TransactionError
+        );
       }
 
       // check connection to account
-      const isAccountConnected = await ethersUtil.checkAccountIsConnected(ethTransferData.to)
+      const isAccountConnected = await ethersUtil.checkAccountIsConnected(ethTransferData.to);
 
       if (!isAccountConnected) {
-        throw createError(`Account for transfer is not connected: ${ethTransferData.to}`, MoonpayNotifications.AccountAddressError)
+        throw createError(
+          `Account for transfer is not connected: ${ethTransferData.to}`,
+          MoonpayNotifications.AccountAddressError
+        );
       }
 
       // while registered assets updating, evmBalance updating too
-      const registeredAsset = await this.findRegisteredAssetByExternalAddress(ethTransferData.address)
+      const registeredAsset = await this.findRegisteredAssetByExternalAddress(ethTransferData.address);
 
       if (!registeredAsset) {
-        throw createError(`Asset is not registered: ethereum address ${ethTransferData.address}`, MoonpayNotifications.SupportError)
+        throw createError(
+          `Asset is not registered: ethereum address ${ethTransferData.address}`,
+          MoonpayNotifications.SupportError
+        );
       }
 
       // prepare bridge state for fetching fees
-      await this.setTransactionConfirm(true)
-      await this.setSoraToEvm(false)
-      await this.setAssetAddress(registeredAsset.address)
+      await this.setTransactionConfirm(true);
+      await this.setSoraToEvm(false);
+      await this.setAssetAddress(registeredAsset.address);
       // fetching fee
-      await this.getEvmNetworkFee()
+      await this.getEvmNetworkFee();
       // check eth fee
-      const hasEthForFee = !hasInsufficientEvmNativeTokenForFee(this.evmBalance, this.evmNetworkFee)
+      const hasEthForFee = !hasInsufficientEvmNativeTokenForFee(this.evmBalance, this.evmNetworkFee);
 
       if (!hasEthForFee) {
-        throw createError('Insufficient ETH for fee', MoonpayNotifications.FeeError)
+        throw createError('Insufficient ETH for fee', MoonpayNotifications.FeeError);
       }
 
-      const maxAmount = getMaxValue(registeredAsset, this.evmNetworkFee, true) // max balance (minus fee if eth asset)
-      const amount = Math.min(Number(maxAmount), Number(ethTransferData.amount))
+      const maxAmount = getMaxValue(registeredAsset, this.evmNetworkFee, true); // max balance (minus fee if eth asset)
+      const amount = Math.min(Number(maxAmount), Number(ethTransferData.amount));
 
       if (amount <= 0) {
-        throw createError('Insufficient amount', MoonpayNotifications.AmountError)
+        throw createError('Insufficient amount', MoonpayNotifications.AmountError);
       }
 
-      await this.setAmount(String(amount))
+      await this.setAmount(String(amount));
 
       // Create bridge history item
       const historyItem = await this.generateHistoryItem({
         to: ethTransferData.to,
         payload: {
-          moonpayId: transaction.id
-        }
-      })
+          moonpayId: transaction.id,
+        },
+      });
 
-      return historyItem.id
-    })
+      return historyItem.id;
+    });
   }
 
-  async showNotification (key: string): Promise<void> {
-    await this.setNotificationKey(key)
-    await this.setNotificationVisibility(true)
+  async showNotification(key: string): Promise<void> {
+    await this.setNotificationKey(key);
+    await this.setNotificationVisibility(true);
   }
 
-  async handleBridgeInitError (error: Error): Promise<void> {
+  async handleBridgeInitError(error: Error): Promise<void> {
     if (Object.values(MoonpayNotifications).includes(error.name as MoonpayNotifications)) {
-      await this.showNotification(error.name)
+      await this.showNotification(error.name);
     } else {
-      console.error(error)
+      console.error(error);
     }
   }
 }

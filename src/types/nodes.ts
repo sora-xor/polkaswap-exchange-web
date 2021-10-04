@@ -1,4 +1,4 @@
-import { ProviderInterfaceEmitted, ProviderInterfaceEmitCb } from '@polkadot/rpc-provider/types'
+import { ProviderInterfaceEmitted, ProviderInterfaceEmitCb } from '@polkadot/rpc-provider/types';
 
 export interface Node {
   chain: string;
