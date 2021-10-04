@@ -124,7 +124,7 @@
             "transferable": "Übertragbar",
             "frozen": "Eingefroren",
             "locked": "- Gesperrt",
-            "reserved": "- Reserviert",
+            "reserved": " Reserviert",
             "total": "Gesamt"
         },
         "totalAssetsValue": "Gesamtwert deiner Assets:"
@@ -274,7 +274,8 @@
         "telegram": "Telegram",
         "medium": "Medium",
         "reddit": "Reddit",
-        "github": "GitHub"
+        "github": "GitHub",
+        "wiki": "@:soraText Wiki"
     },
     "footerMenu": {
         "faucet": "Faucet",
@@ -287,8 +288,8 @@
         "title": "Hilfe",
         "termsOfService": "Allgemeine Geschäftsbedingungen",
         "privacyPolicy": "Datenschutzbestimmungen",
-        "termsOfServiceLink": "https://wiki.sora.org/polkaswap/terms",
-        "privacyPolicyLink": "https://wiki.sora.org/polkaswap/privacy",
+        "termsOfServiceLink": "https:\/\/wiki.sora.org\/polkaswap\/terms",
+        "privacyPolicyLink": "https:\/\/wiki.sora.org\/polkaswap\/privacy",
         "appVersion": "@:appName Version",
         "contactUs": "Kontaktiere uns"
     },
@@ -444,8 +445,8 @@
         "connectWallet": "@:connectWalletText",
         "connectToWallet": "Verbinde ein Konto, um deine Liquidität zu sehen.",
         "liquidityNotFound": "Keine Liquidität gefunden.",
-        "addLiquidity": "Hinzufügen",
-        "removeLiquidity": "Entfernen",
+        "addLiquidity": "Liquidität hinzufügen",
+        "removeLiquidity": "Liquidität entfernen",
         "createPair": "Erstelle ein Paar",
         "pooledToken": "{tokenSymbol} gepoolt",
         "pairTokens": "{pair} Pool-Token",
@@ -786,9 +787,9 @@
         },
         "buttons": {
             "buy": "Token kaufen",
-            "history": "Transaktionsverlauf",
+            "history": "Kaufhistorie",
             "transfer": "Bridge starten",
-            "view": "Transaktion ansehen"
+            "view": "Bridge-Transaktion ansehen"
         },
         "history": {
             "title": "Kaufhistorie",
@@ -796,6 +797,9 @@
         },
         "confirmations": {
             "txReady": "Transaktion bereit für Bridge"
+        },
+        "tooltips": {
+            "transfer": "Token erfolgreich gekauft!\nKlick hier, um die Bridge-Transaktion zu starten."
         }
     }
 }

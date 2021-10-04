@@ -274,7 +274,8 @@
         "telegram": "Telegram",
         "medium": "Medium",
         "reddit": "Reddit",
-        "github": "GitHub"
+        "github": "GitHub",
+        "wiki": "@:soraText Wiki"
     },
     "footerMenu": {
         "faucet": "Кран",
@@ -287,8 +288,8 @@
         "title": "Помощь",
         "termsOfService": "Условия предоставления услуг",
         "privacyPolicy": "Политика конфиденциальности",
-        "termsOfServiceLink": "https://wiki.sora.org/polkaswap/terms",
-        "privacyPolicyLink": "https://wiki.sora.org/polkaswap/privacy",
+        "termsOfServiceLink": "https:\/\/wiki.sora.org\/polkaswap\/terms",
+        "privacyPolicyLink": "https:\/\/wiki.sora.org\/polkaswap\/privacy",
         "appVersion": "@:appName версия",
         "contactUs": "Свяжитесь с нами"
     },
@@ -788,7 +789,7 @@
             "buy": "Купить токены",
             "history": "История покупок",
             "transfer": "Начать трансфер",
-            "view": "Посмотреть транзакцию"
+            "view": "Посмотреть транзакцию моста"
         },
         "history": {
             "title": "История покупок",
@@ -796,6 +797,9 @@
         },
         "confirmations": {
             "txReady": "Транзакция готова для моста"
+        },
+        "tooltips": {
+            "transfer": "Токены успешно куплены!\n Нажмите, чтобы начать транзакцию моста"
         }
     }
 }
