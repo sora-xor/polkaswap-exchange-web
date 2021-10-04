@@ -661,7 +661,7 @@ $account-control-name-max-width: 200px;
   }
 
   &-menu {
-    display: none;
+    visibility: hidden;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -671,11 +671,15 @@ $account-control-name-max-width: 200px;
 
     @include mobile {
       position: fixed;
-      background-color: rgba(42, 23, 31, 0.1);
-      backdrop-filter: blur(4px);
 
       &.visible {
-        display: block;
+        visibility: visible;
+        background-color: rgba(42, 23, 31, 0.1);
+        backdrop-filter: blur(4px);
+
+        .app-sidebar {
+          transform: translateX(0);
+        }
       }
 
       .app-sidebar {
@@ -683,11 +687,13 @@ $account-control-name-max-width: 200px;
         background-color: var(--s-color-utility-body);
         padding: $inner-spacing-mini $inner-spacing-medium;
         filter: drop-shadow(32px 0px 64px rgba(0, 0, 0, 0.1));
+        transition-duration: 0.2s;
+        transform: translateX(-100%);
       }
     }
 
     @include large-mobile {
-      display: block;
+      visibility: visible;
       position: relative;
 
       .app-sidebar {
