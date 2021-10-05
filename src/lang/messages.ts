@@ -92,9 +92,8 @@ export default {
     title: 'Help',
     termsOfService: 'Terms of Service',
     privacyPolicy: 'Privacy Policy',
-    termsOfServiceLink:
-      'https://www.notion.so/Polkaswap-Memorandum-and-Terms-of-Services-dc7f815a6d0a497a924832cc9bda17b8', // 'https://polkaswap.io/terms',
-    privacyPolicyLink: 'https://www.notion.so/Polkaswap-Privacy-Policy-d0f26456f2974f0d94734b19f6e5fc70', // 'https://polkaswap.io/privacy',
+    termsOfServiceLink: 'https://wiki.sora.org/polkaswap/terms',
+    privacyPolicyLink: 'https://wiki.sora.org/polkaswap/privacy',
     appVersion: '@:appName version',
     contactUs: 'Contact us',
   },
