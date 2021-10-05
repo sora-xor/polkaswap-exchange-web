@@ -28,6 +28,8 @@ import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { delay, isEthereumAddress } from '@/utils';
 import { EthereumGasLimits, MaxUint256, ZeroStringValue } from '@/consts';
 
+import type { Asset } from '@sora-substrate/util';
+
 const SORA_REQUESTS_TIMEOUT = 5 * 1000;
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
@@ -518,23 +520,21 @@ const actions = {
     bridgeApi.clearHistory();
     commit(types.GET_HISTORY_SUCCESS, []);
   },
-  findRegisteredAsset({ commit, getters, rootGetters }) {
+  findRegisteredAsset({ getters, rootGetters }) {
     return rootGetters['assets/registeredAssets'].find((item) => item.address === getters.asset.address);
   },
-  async getEvmNetworkFee({ commit, getters, rootGetters }) {
-    if (!getters.asset || !getters.asset.address) {
-      return;
-    }
+  async getEvmNetworkFee({ commit, getters, rootGetters }, asset?: Asset) {
+    const assetData: Asset | undefined = asset ?? getters.asset;
+
+    if (!assetData?.address) return;
+
     commit(types.GET_EVM_NETWORK_FEE_REQUEST);
     try {
       const ethersInstance = await ethersUtil.getEthersInstance();
       const gasPrice = (await ethersInstance.getGasPrice()).toNumber();
       const registeredAssets = rootGetters.whitelist;
-      const knownAsset =
-        !!KnownAssets.get(getters.asset.address) ||
-        (registeredAssets[getters.asset.address] && getters.asset.symbol === 'ETH');
-      const gasLimit =
-        EthereumGasLimits[+getters.isSoraToEvm][knownAsset ? getters.asset.symbol : KnownBridgeAsset.Other];
+      const knownAsset = !!KnownAssets.get(assetData.address) || registeredAssets[assetData.address]?.symbol === 'ETH';
+      const gasLimit = EthereumGasLimits[+getters.isSoraToEvm][knownAsset ? assetData.symbol : KnownBridgeAsset.Other];
       const fpFee = FPNumber.fromCodecValue(gasPrice).mul(new FPNumber(gasLimit)).toCodecString();
       commit(types.GET_EVM_NETWORK_FEE_SUCCESS, fpFee);
     } catch (error) {

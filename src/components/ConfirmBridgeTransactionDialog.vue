@@ -112,10 +112,6 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
     return this.confirmButtonText || this.t('confirmBridgeTransactionDialog.buttonConfirm');
   }
 
-  get formattedAmount(): string {
-    return this.amount ? this.formatStringValue(this.amount, this.asset?.decimals) : '';
-  }
-
   get assetsClasses(): Array<string> {
     const assetsClass = 'tokens';
     const classes = [assetsClass];
@@ -125,6 +121,10 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
     }
 
     return classes;
+  }
+
+  get formattedAmount(): string {
+    return this.amount ? this.formatStringValue(this.amount, this.asset?.decimals) : '';
   }
 
   get formattedSoraNetworkFee(): string {

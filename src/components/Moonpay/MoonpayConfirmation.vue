@@ -18,13 +18,14 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import MoonpayLogo from '@/components/logo/Moonpay.vue';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 @Component({
   components: {
