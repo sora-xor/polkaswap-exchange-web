@@ -683,7 +683,8 @@ $account-control-name-max-width: 200px;
       }
 
       .app-sidebar {
-        max-width: 50%;
+        width: 50%;
+        min-width: $breakpoint_mobile / 2;
         background-color: var(--s-color-utility-body);
         padding: $inner-spacing-mini $inner-spacing-medium;
         filter: drop-shadow(32px 0px 64px rgba(0, 0, 0, 0.1));
@@ -792,6 +793,11 @@ $account-control-name-max-width: 200px;
 
   @include tablet {
     padding: $inner-spacing-mini $inner-spacing-medium;
+
+    &:after {
+      left: $inner-spacing-medium;
+      right: $inner-spacing-medium;
+    }
   }
 
   &:after {
@@ -799,8 +805,8 @@ $account-control-name-max-width: 200px;
     position: absolute;
     height: 1px;
     bottom: 0;
-    left: $inner-spacing-medium;
-    right: $inner-spacing-medium;
+    left: $inner-spacing-mini;
+    right: $inner-spacing-mini;
     background-color: var(--s-color-base-border-secondary);
   }
 }
@@ -857,10 +863,17 @@ $account-control-name-max-width: 200px;
     &.menu-item--small {
       font-size: var(--s-font-size-extra-mini);
       font-weight: 300;
+      padding: 0;
       letter-spacing: var(--s-letter-spacing-small);
       line-height: var(--s-line-height-medium);
-      padding: 0 13px;
       color: var(--s-color-base-content-secondary);
+
+      @include large-mobile {
+        padding: 0 10px;
+      }
+      @include tablet {
+        padding: 0 13px;
+      }
     }
   }
 }
