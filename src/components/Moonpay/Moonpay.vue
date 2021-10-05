@@ -140,7 +140,7 @@ export default class Moonpay extends Mixins(DialogMixin, MoonpayBridgeInitMixin)
       // show notification what tokens are purchased
       await this.showNotification(MoonpayNotifications.Success);
       // create bridge history item & get it ID
-      const id = await this.checkTxTransferAvailability(transaction); // MoonpayBridgeInitMixin
+      const id = await this.initBridgeForMoonpayTransaction(transaction); // MoonpayBridgeInitMixin
 
       // show notification for transfer to Sora
       await this.setNotificationVisibility(false);

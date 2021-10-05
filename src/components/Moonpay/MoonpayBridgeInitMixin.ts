@@ -1,6 +1,6 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
-import { BridgeNetworks, RegisteredAccountAsset, CodecString, BridgeHistory } from '@sora-substrate/util';
+import { BridgeNetworks, RegisteredAccountAsset, CodecString, BridgeHistory, Operation } from '@sora-substrate/util';
 
 import ethersUtil from '@/utils/ethers-util';
 import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';
@@ -66,7 +66,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(WalletConnectMixin, L
    * @param transaction moonpay transaction data
    * @returns string - bridge history item id
    */
-  async checkTxTransferAvailability(transaction: MoonpayTransaction): Promise<string> {
+  async initBridgeForMoonpayTransaction(transaction: MoonpayTransaction): Promise<string> {
     return await this.withLoading(async () => {
       await this.prepareEvmNetwork();
       // get necessary ethereum transaction data

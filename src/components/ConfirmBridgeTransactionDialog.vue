@@ -11,7 +11,7 @@
         <span class="token-value">{{ formattedAmount }}</span>
         <div v-if="asset" class="token">
           <i class="s-icon--network s-icon-sora" />
-          {{ formatAssetSymbol(asset.symbol) }}
+          {{ tokenSymbol }}
         </div>
       </div>
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
@@ -19,7 +19,7 @@
         <span class="token-value">{{ formattedAmount }}</span>
         <div v-if="asset" class="token token-ethereum">
           <i :class="`s-icon--network s-icon-${getEvmIcon(evmNetwork)}`" />
-          {{ formatAssetSymbol(asset.symbol) }}
+          {{ tokenSymbol }}
         </div>
       </div>
     </div>
@@ -27,7 +27,7 @@
     <info-line
       :label="t('bridge.soraNetworkFee')"
       :label-tooltip="t('networkFeeTooltipText')"
-      :value="formatFee(soraNetworkFee, formattedSoraNetworkFee)"
+      :value="formattedSoraNetworkFee"
       :asset-symbol="KnownSymbols.XOR"
       :fiat-value="getFiatAmountByCodecString(soraNetworkFee)"
       is-formatted
@@ -35,7 +35,7 @@
     <info-line
       :label="t('bridge.ethereumNetworkFee')"
       :label-tooltip="t('ethNetworkFeeTooltipText')"
-      :value="formatFee(evmNetworkFee, formattedEvmNetworkFee)"
+      :value="formattedEvmNetworkFee"
       :asset-symbol="currentEvmTokenSymbol"
       is-formatted
     />
@@ -51,14 +51,14 @@
         type="primary"
         class="s-typography-button--large"
         :loading="loading"
-        :disabled="!isValidNetworkType"
+        :disabled="!isValidNetworkType || isInsufficientBalance"
         @click="handleConfirm"
       >
         <template v-if="!isValidNetworkType">
           {{ t('confirmBridgeTransactionDialog.changeNetwork') }}
         </template>
-        <template v-else-if="isEthereumToSoraConfirmation">
-          {{ t('confirmBridgeTransactionDialog.confirm', { direction: t('confirmBridgeTransactionDialog.sora') }) }}
+        <template v-else-if="isInsufficientBalance">
+          {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol }) }}
         </template>
         <template v-else>
           {{ confirmText }}
@@ -70,7 +70,6 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter, Action } from 'vuex-class';
 import { KnownSymbols, CodecString, BridgeNetworks } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
@@ -79,10 +78,10 @@ import DialogMixin from '@/components/mixins/DialogMixin';
 import LoadingMixin from '@/components/mixins/LoadingMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import DialogBase from '@/components/DialogBase.vue';
-import { EvmSymbol } from '@/consts';
+import { EvmSymbol, ZeroStringValue } from '@/consts';
 import { formatAssetSymbol } from '@/utils';
 
-const namespace = 'bridge';
+import type { Asset } from '@sora-substrate/util';
 
 @Component({
   components: {
@@ -97,24 +96,17 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   LoadingMixin,
   NetworkFormatterMixin
 ) {
-  @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean;
-  @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean;
-  @Getter('asset', { namespace }) asset!: any;
-  @Getter('amount', { namespace }) amount!: string;
-  @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString;
-  @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString;
-  @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks;
-  @Action('setTransactionConfirm', { namespace }) setTransactionConfirm;
-  @Action('setTransactionStep', { namespace }) setTransactionStep;
-
-  // TODO: Check/Ask if the Bridge could have the same errors as other projects
+  @Prop({ default: ZeroStringValue, type: String }) readonly amount!: string;
+  @Prop({ default: undefined, type: Object }) readonly asset!: Asset;
+  @Prop({ default: BridgeNetworks.ETH_NETWORK_ID, type: Number }) readonly evmNetwork!: BridgeNetworks;
+  @Prop({ default: ZeroStringValue, type: String }) readonly evmNetworkFee!: CodecString;
+  @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
+  @Prop({ default: true, type: Boolean }) readonly isValidNetworkType!: boolean;
+  @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly isEthereumToSoraConfirmation!: boolean;
   @Prop({ default: '', type: String }) readonly confirmButtonText!: string;
 
-  EvmSymbol = EvmSymbol;
-  KnownSymbols = KnownSymbols;
-  formatAssetSymbol = formatAssetSymbol;
+  readonly KnownSymbols = KnownSymbols;
 
   get confirmText(): string {
     return this.confirmButtonText || this.t('confirmBridgeTransactionDialog.buttonConfirm');
@@ -124,7 +116,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
     return this.amount ? this.formatStringValue(this.amount, this.asset?.decimals) : '';
   }
 
-  get assetsClasses(): string {
+  get assetsClasses(): Array<string> {
     const assetsClass = 'tokens';
     const classes = [assetsClass];
 
@@ -132,7 +124,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
       classes.push(`${assetsClass}--reverse`);
     }
 
-    return classes.join(' ');
+    return classes;
   }
 
   get formattedSoraNetworkFee(): string {
@@ -143,33 +135,19 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
     return this.formatCodecNumber(this.evmNetworkFee);
   }
 
-  get currentEvmTokenSymbol(): string {
-    if (this.evmNetwork === BridgeNetworks.ENERGY_NETWORK_ID) {
-      return this.EvmSymbol.VT;
-    }
-    return this.EvmSymbol.ETH;
+  get tokenSymbol(): string {
+    return formatAssetSymbol(this.asset?.symbol);
   }
 
-  formatFee(fee: string, formattedFee: string): string {
-    return fee !== '0' ? formattedFee : '0';
+  get currentEvmTokenSymbol(): string {
+    if (this.evmNetwork === BridgeNetworks.ENERGY_NETWORK_ID) {
+      return EvmSymbol.VT;
+    }
+    return EvmSymbol.ETH;
   }
 
   async handleConfirm(): Promise<void> {
-    await this.$emit('checkConfirm');
-    // TODO: Check isInsufficientBalance for both Networks
-    if (this.isInsufficientBalance) {
-      this.$alert(
-        this.t('confirmBridgeTransactionDialog.insufficientBalance', {
-          tokenSymbol: this.asset ? this.asset.symbol : '',
-        }),
-        { title: this.t('errorText') }
-      );
-      this.$emit('confirm');
-    } else {
-      await this.setTransactionConfirm(true);
-      await this.setTransactionStep(1);
-      this.$emit('confirm', true);
-    }
+    this.$emit('confirm', true);
     this.isVisible = false;
   }
 }

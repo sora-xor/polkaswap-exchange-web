@@ -118,6 +118,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
   @Getter('currenciesById', { namespace }) currenciesById!: any;
   @Action('getTransactions', { namespace }) getTransactions!: () => Promise<void>;
   @Action('getCurrencies', { namespace }) getCurrencies!: () => Promise<void>;
+  @Action('setConfirmationVisibility', { namespace }) setConfirmationVisibility!: (flag: boolean) => Promise<void>;
   @Action('getHistory', { namespace: 'bridge' }) getHistory!: () => Promise<void>;
 
   private unwatchEthereum!: any;
@@ -265,9 +266,8 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
 
   async prepareBridgeForTransfer(): Promise<void> {
     try {
-      await this.checkTxTransferAvailability(this.selectedItem);
-
-      this.navigateToBridgeTransaction();
+      await this.initBridgeForMoonpayTransaction(this.selectedItem);
+      await this.setConfirmationVisibility(true);
     } catch (error) {
       await this.handleBridgeInitError(error);
     }

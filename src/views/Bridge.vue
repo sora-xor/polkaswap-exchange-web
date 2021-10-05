@@ -226,7 +226,14 @@
       <!-- <select-network :visible.sync="showSelectNetworkDialog" :value="evmNetwork" :sub-networks="subNetworks" @input="selectNetwork" /> -->
       <confirm-bridge-transaction-dialog
         :visible.sync="showConfirmTransactionDialog"
-        :isInsufficientBalance="isInsufficientBalance"
+        :is-valid-network-type="isValidNetworkType"
+        :is-sora-to-evm="isSoraToEvm"
+        :is-insufficient-balance="isInsufficientBalance"
+        :asset="asset"
+        :amount="amount"
+        :evm-network="evmNetwork"
+        :evm-network-fee="evmNetworkFee"
+        :sora-network-fee="soraNetworkFee"
         @confirm="confirmTransaction"
       />
     </s-form>
@@ -288,6 +295,8 @@ export default class Bridge extends Mixins(
   @Action('resetBridgeForm', { namespace }) resetBridgeForm;
   @Action('resetBalanceSubscription', { namespace }) resetBalanceSubscription!: AsyncVoidFn;
   @Action('updateBalanceSubscription', { namespace }) updateBalanceSubscription!: AsyncVoidFn;
+  @Action('setTransactionConfirm', { namespace }) setTransactionConfirm!: (flag: boolean) => Promise<void>;
+  @Action('setTransactionStep', { namespace }) setTransactionStep!: (step: number) => Promise<void>;
 
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString;
   @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks;
@@ -522,7 +531,9 @@ export default class Bridge extends Mixins(
   async confirmTransaction(isTransactionConfirmed: boolean): Promise<void> {
     if (!isTransactionConfirmed) return;
 
-    await this.checkConnectionToExternalAccount(() => {
+    await this.checkConnectionToExternalAccount(async () => {
+      await this.setTransactionConfirm(true);
+      await this.setTransactionStep(1);
       router.push({ name: PageNames.BridgeTransaction });
     });
   }

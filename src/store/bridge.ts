@@ -542,7 +542,7 @@ const actions = {
       commit(types.GET_EVM_NETWORK_FEE_FAILURE);
     }
   },
-  bridgeDataToHistoryItem({ getters, rootGetters }, { date = Date.now(), step = 1, to = '', ...restParams } = {}) {
+  bridgeDataToHistoryItem({ getters, rootGetters }, { date = Date.now(), step = 1, to = '', ...params } = {}) {
     return {
       type: getters.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
       amount: getters.amount,
@@ -560,7 +560,7 @@ const actions = {
       ethereumNetworkFee: getters.evmNetworkFee,
       externalNetwork: rootGetters['web3/evmNetwork'],
       to: to || rootGetters['web3/evmAddress'],
-      ...restParams,
+      ...params,
     };
   },
   async generateHistoryItem({ getters, dispatch }, playground) {
