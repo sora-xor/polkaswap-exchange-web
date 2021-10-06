@@ -51,7 +51,6 @@ $icon-size: 42px;
 
 .icon-container {
   display: flex;
-  margin-right: $inner-spacing-small;
   padding-left: 1px; // because of inset shadow
   width: $icon-size;
   height: $icon-size;
@@ -63,8 +62,16 @@ $icon-size: 42px;
     @include icon-styles(true);
   }
   & + span {
-    display: none;
     letter-spacing: var(--s-letter-spacing-small);
+    margin-left: $inner-spacing-small;
+
+    @include large-mobile {
+      display: none;
+    }
+
+    @include tablet {
+      display: block;
+    }
   }
   .el-menu-item.is-active & {
     box-shadow: -1px -1px 1px var(--s-shadow-color-dark-light), 1px 1px 3px var(--s-shadow-color-dark),
@@ -74,12 +81,6 @@ $icon-size: 42px;
     margin-right: 0;
     background-color: transparent;
     box-shadow: none;
-  }
-}
-
-@include large-mobile {
-  .icon-container + span {
-    display: block;
   }
 }
 </style>

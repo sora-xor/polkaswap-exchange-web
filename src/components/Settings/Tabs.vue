@@ -22,6 +22,11 @@ export default class SettingsTabs extends Vue {
 .settings-tabs.s-tabs {
   .el-tabs__header {
     margin-bottom: 0;
+    width: 100%;
+  }
+
+  .el-tabs__nav {
+    width: 100%;
   }
 
   .el-tabs__item {

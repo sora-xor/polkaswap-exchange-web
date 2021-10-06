@@ -230,7 +230,7 @@
     "connectWalletTextTooltip": "Conectar a la Red @:soraText con polkadot{.js}",
     "selectNodeText": "Seleccione nodo",
     "bridgeText": "Puente",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Descargo de responsabilidad<\/span>: Este sitio web es mantenido por la comunidad @:(soraText). Antes de continuar utilizando este sitio web, por favor revise el @:polkaswapFaqLink y la documentación, que incluye una explicación detallada sobre el funcionamiento de Polkaswap, así como el @:memorandumLink, y el @:(privacyLink). Estos documentos son cruciales para una experiencia de usuario segura y positiva. Al utilizar Polkaswap, usted reconoce que ha leído y comprendido estos documentos. También reconoce lo siguiente 1) su única responsabilidad por el cumplimiento de todas las leyes que puedan aplicarse a su uso particular de Polkaswap en su jurisdicción legal; 2) su comprensión de que la versión actual de Polkaswap es una versión alfa: no ha sido completamente probada, y algunas funciones pueden no funcionar como se ha diseñado; y 3) su comprensión y aceptación voluntaria de los riesgos que implica el uso de Polkaswap, incluyendo, pero no limitado a, el riesgo de perder tokens. Una vez más, ¡no continúe sin leer el @:polkaswapFaqLink, el @:memorandumLink y el @:privacyLink!",
+    "disclaimer": "<span class=\"app-disclaimer__title\">Descargo de responsabilidad<\/span>: Este sitio web es mantenido por la comunidad @:(soraText). Antes de continuar utilizando este sitio web, por favor revise el @:polkaswapFaqLink y la documentación, que incluye una explicación detallada sobre el funcionamiento de Polkaswap, así como el @:memorandumLink, y el @:(privacyLink). Estos documentos son cruciales para una experiencia de usuario segura y positiva. Al utilizar Polkaswap, usted reconoce que ha leído y comprendido estos documentos. También reconoce lo siguiente 1) su única responsabilidad por el cumplimiento de todas las leyes que puedan aplicarse a su uso particular de Polkaswap en su jurisdicción legal; 2) su comprensión de que la versión actual de Polkaswap es una versión alfa: no ha sido completamente probada, y algunas funciones pueden no funcionar como se ha diseñado; y 3) su comprensión y aceptación voluntaria de los riesgos que implica el uso de Polkaswap, incluyendo, pero no limitado a, el riesgo de perder tokens. Una vez más, ¡por favor no continúe sin leer el @:polkaswapFaqLink, el @:memorandumLink y el @:privacyLink!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
     "poweredBy": "Desarrollado por",
     "confirmTransactionText": "Confirmar transacción en {direction}",
@@ -274,7 +274,8 @@
         "telegram": "Telegram",
         "medium": "Medium",
         "reddit": "Reddit",
-        "github": "GitHub"
+        "github": "GitHub",
+        "wiki": "@:soraText Wiki"
     },
     "footerMenu": {
         "faucet": "Grifo",
@@ -287,8 +288,8 @@
         "title": "Ayuda",
         "termsOfService": "Términos de servicio",
         "privacyPolicy": "Política de privacidad",
-        "termsOfServiceLink": "https:\/\/www.notion.so\/Polkaswap-Memorandum-and-Terms-of-Services-dc7f815a6d0a497a924832cc9bda17b8",
-        "privacyPolicyLink": "https:\/\/www.notion.so\/Polkaswap-Privacy-Policy-d0f26456f2974f0d94734b19f6e5fc70",
+        "termsOfServiceLink": "https:\/\/wiki.sora.org\/polkaswap\/terms",
+        "privacyPolicyLink": "https:\/\/wiki.sora.org\/polkaswap\/privacy",
         "appVersion": "Versión @:appName",
         "contactUs": "Contáctenos"
     },
@@ -786,9 +787,9 @@
         },
         "buttons": {
             "buy": "Comprar Tokens",
-            "history": "Historia de Tx",
+            "history": "Historial de compras",
             "transfer": "Empezar puente",
-            "view": "Ver transacción"
+            "view": "Ver transacción del puente"
         },
         "history": {
             "title": "Historial de compras",
@@ -798,7 +799,7 @@
             "txReady": "Transacción lista para el puente"
         },
         "tooltips": {
-            "transfer": "¡Fichas compradas con éxito!\n Haga clic para iniciar la transacción puente"
+            "transfer": "¡Tokens comprados con éxito!\nHaga clic para iniciar la transacción del puente"
         }
     }
 }

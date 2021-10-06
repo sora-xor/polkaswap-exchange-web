@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="t('bridge.selectNetwork')" class="networks" width="464px">
+  <dialog-base :visible.sync="isVisible" :title="t('bridge.selectNetwork')" class="networks">
     <p class="networks-info">{{ t('bridge.networkInfo') }}</p>
     <s-radio-group v-model="selectedNetworkId">
       <s-radio v-for="network in subNetworks" :key="network.id" :label="network.id" class="network">

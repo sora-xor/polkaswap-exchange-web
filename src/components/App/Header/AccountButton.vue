@@ -53,6 +53,7 @@ $account-control-name-max-width: 200px;
   letter-spacing: var(--s-letter-spacing-small);
 
   &-title {
+    display: none;
     font-size: var(--s-font-size-small);
     max-width: $account-control-name-max-width;
     overflow: hidden;
@@ -61,10 +62,15 @@ $account-control-name-max-width: 200px;
     &.name {
       text-transform: none;
     }
+
+    @include tablet {
+      display: inline-block;
+    }
   }
   &.s-tertiary {
     &.el-button {
       padding-left: $basic-spacing-mini;
+      padding-right: $basic-spacing-mini;
     }
   }
   &-icon {

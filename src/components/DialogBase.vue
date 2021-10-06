@@ -5,7 +5,7 @@
     :custom-class="computedCustomClasses"
     :show-close="false"
     v-bind="{
-      width: width || '496px',
+      width,
       borderRadius: 'medium',
       ...$attrs,
     }"
@@ -49,10 +49,13 @@ export default class DialogBase extends Mixins(DialogMixin) {
 <style lang="scss">
 $el-dialog-class: '.el-dialog';
 $el-dialog-button-size: var(--s-size-medium);
+$el-dialog-max-width: 496px;
 
 .dialog-wrapper {
   #{$el-dialog-class} {
     background: var(--s-color-utility-surface);
+    max-width: $el-dialog-max-width;
+    width: 100%;
 
     & > #{$el-dialog-class} {
       &__header {
