@@ -45,12 +45,12 @@ export default class DialogBase extends Mixins(DialogMixin) {
 <style lang="scss">
 $el-dialog-class: '.el-dialog';
 $el-dialog-button-size: var(--s-size-medium);
+$el-dialog-max-width: 496px;
 
 .dialog-wrapper {
   #{$el-dialog-class} {
     background: var(--s-color-utility-surface);
-    min-width: $breakpoint-mobile;
-    max-width: 496px;
+    max-width: $el-dialog-max-width;
     width: 100%;
 
     & > #{$el-dialog-class} {
