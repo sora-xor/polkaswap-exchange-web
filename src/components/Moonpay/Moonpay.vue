@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="isVisible" class="moonpay-dialog">
+  <dialog-base :visible.sync="visibility" class="moonpay-dialog">
     <template #title>
       <moonpay-logo :theme="libraryTheme" />
     </template>
@@ -12,14 +12,12 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, State, Getter } from 'vuex-class';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
-import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import MoonpayLogo from '@/components/logo/Moonpay.vue';
 
 import MoonpayBridgeInitMixin from './MoonpayBridgeInitMixin';
 
 import { getCssVariableValue } from '@/utils';
-import { MoonpayApi } from '@/utils/moonpay';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { MoonpayNotifications } from '@/components/Moonpay/consts';
@@ -35,7 +33,7 @@ const namespace = 'moonpay';
     MoonpayWidget: lazyComponent(Components.MoonpayWidget),
   },
 })
-export default class Moonpay extends Mixins(DialogMixin, MoonpayBridgeInitMixin) {
+export default class Moonpay extends Mixins(MoonpayBridgeInitMixin) {
   widgetUrl = '';
   transactionsPolling!: Function;
 
@@ -44,19 +42,13 @@ export default class Moonpay extends Mixins(DialogMixin, MoonpayBridgeInitMixin)
   @Getter libraryTheme!: Theme;
   @Getter('lastCompletedTransaction', { namespace }) lastCompletedTransaction!: MoonpayTransaction;
 
-  @State((state) => state[namespace].api) moonpayApi!: MoonpayApi;
   @State((state) => state[namespace].pollingTimestamp) pollingTimestamp!: number;
+  @State((state) => state[namespace].dialogVisibility) dialogVisibility!: boolean;
   @State((state) => state[namespace].notificationVisibility) notificationVisibility!: boolean;
   @State((state) => state.settings.language) language!: string;
 
-  @Action('setConfirmationVisibility', { namespace }) setConfirmationVisibility!: (flag: boolean) => Promise<void>;
-  @Action('setNotificationVisibility', { namespace }) setNotificationVisibility!: (flag: boolean) => Promise<void>;
-  @Action('setNotificationKey', { namespace }) setNotificationKey!: (key: string) => Promise<void>;
+  @Action('setDialogVisibility', { namespace: 'moonpay' }) setDialogVisibility!: (flag: boolean) => Promise<void>;
   @Action('createTransactionsPolling', { namespace }) createTransactionsPolling!: () => Promise<Function>;
-  @Action('setBridgeTransactionData', { namespace: 'moonpay' }) setBridgeTransactionData!: (
-    data?: any,
-    startBridgeButtonVisibility?: boolean // TODO: type
-  ) => Promise<void>;
 
   @Watch('isLoggedIn', { immediate: true })
   private handleLoggedInStateChange(isLoggedIn: boolean): void {
@@ -88,6 +80,14 @@ export default class Moonpay extends Mixins(DialogMixin, MoonpayBridgeInitMixin)
     if (!transaction || (prevTransaction && prevTransaction.id === transaction.id)) return;
 
     await this.prepareBridgeForTransfer(transaction);
+  }
+
+  get visibility(): boolean {
+    return this.dialogVisibility;
+  }
+
+  set visibility(flag: boolean) {
+    this.setDialogVisibility(flag);
   }
 
   async created(): Promise<void> {
@@ -133,23 +133,13 @@ export default class Moonpay extends Mixins(DialogMixin, MoonpayBridgeInitMixin)
   }
 
   private async prepareBridgeForTransfer(transaction: MoonpayTransaction): Promise<void> {
-    try {
-      this.closeDialog(); // DialogMixin
-      this.stopPollingMoonpay();
-      this.updateWidgetUrl();
+    this.setDialogVisibility(false);
+    this.stopPollingMoonpay();
+    this.updateWidgetUrl();
 
-      // show notification what tokens are purchased
-      await this.showNotification(MoonpayNotifications.Success);
-      // create bridge transaction data
-      const bridgeTransactionData = await this.prepareBridgeHistoryItemDataForMoonpayTx(transaction); // MoonpayBridgeInitMixin
-
-      // show notification for transfer to Sora
-      await this.setNotificationVisibility(false);
-      await this.setBridgeTransactionData(bridgeTransactionData, true);
-      await this.setConfirmationVisibility(true);
-    } catch (error) {
-      await this.handleBridgeInitError(error);
-    }
+    // show notification what tokens are purchased
+    await this.showNotification(MoonpayNotifications.Success);
+    await this.prepareMoonpayTxForBridgeTransfer(transaction);
   }
 }
 </script>

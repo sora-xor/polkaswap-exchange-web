@@ -111,18 +111,11 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
 
   @State((state) => state[namespace].transactions) transactions!: Array<MoonpayTransaction>;
   @State((state) => state.settings.language) language!: string;
-  @State((state) => state.bridge.history) bridgeHistory!: Array<BridgeHistory>;
   @Getter libraryTheme!: Theme;
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean;
   @Getter('currenciesById', { namespace }) currenciesById!: any;
   @Action('getTransactions', { namespace }) getTransactions!: () => Promise<void>;
   @Action('getCurrencies', { namespace }) getCurrencies!: () => Promise<void>;
-  @Action('setConfirmationVisibility', { namespace }) setConfirmationVisibility!: (flag: boolean) => Promise<void>;
-  @Action('getHistory', { namespace: 'bridge' }) getHistory!: () => Promise<void>;
-  @Action('setBridgeTransactionData', { namespace: 'moonpay' }) setBridgeTransactionData!: (
-    data?: any, // TODO: type
-    startBridgeButtonVisibility?: boolean
-  ) => Promise<void>;
 
   private unwatchEthereum!: any;
 
@@ -213,7 +206,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
   get bridgeTxToSora(): Nullable<BridgeHistory> {
     if (!this.selectedItem.id) return undefined;
 
-    return this.bridgeHistory.find((item) => (item as any).payload?.moonpayId === this.selectedItem.id);
+    return this.getBridgeHistoryItemByMoonpayId(this.selectedItem.id);
   }
 
   get isCompletedTransaction(): boolean {
@@ -267,16 +260,6 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
     }
   }
 
-  async prepareBridgeForTransfer(): Promise<void> {
-    try {
-      const bridgeTransactionData = await this.prepareBridgeHistoryItemDataForMoonpayTx(this.selectedItem);
-      await this.setBridgeTransactionData(bridgeTransactionData);
-      await this.setConfirmationVisibility(true);
-    } catch (error) {
-      await this.handleBridgeInitError(error);
-    }
-  }
-
   async handleTransaction(): Promise<void> {
     if (!this.selectedItem.id) return;
 
@@ -284,7 +267,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
       await this.prepareEvmNetwork(this.bridgeTxToSora.externalNetwork); // MoonpayBridgeInitMixin
       await this.showHistory(this.bridgeTxToSora.id); // MoonpayBridgeInitMixin
     } else {
-      await this.prepareBridgeForTransfer();
+      await this.prepareMoonpayTxForBridgeTransfer(this.selectedItem);
     }
   }
 }

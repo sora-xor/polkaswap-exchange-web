@@ -1,11 +1,15 @@
 <template>
   <confirm-bridge-transaction-dialog
+    :visible.sync="visibility"
     :confirm-button-text="t('moonpay.buttons.transfer')"
     v-bind="{
       ...modalData,
       ...$attrs,
     }"
-    v-on="$listeners"
+    v-on="{
+      confirm: startBridgeForBridgeTransactionData,
+      ...$listeners,
+    }"
   >
     <template #title>
       <moonpay-logo :theme="libraryTheme" />
@@ -20,16 +24,16 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter, State } from 'vuex-class';
+import { Getter, State, Action } from 'vuex-class';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import MoonpayBridgeInitMixin from '@/components/Moonpay/MoonpayBridgeInitMixin';
 import MoonpayLogo from '@/components/logo/Moonpay.vue';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-import type { Asset, Whitelist } from '@sora-substrate/util';
+import type { Whitelist } from '@sora-substrate/util';
 
 @Component({
   components: {
@@ -37,12 +41,25 @@ import type { Asset, Whitelist } from '@sora-substrate/util';
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
   },
 })
-export default class MoonpayConfirmation extends Mixins(TranslationMixin) {
+export default class MoonpayConfirmation extends Mixins(MoonpayBridgeInitMixin) {
   @State((state) => state.moonpay.bridgeTransactionData) bridgeTransactionData!: any; // TODO: type
+  @State((state) => state.moonpay.confirmationVisibility) confirmationVisibility!: boolean;
 
   @Getter libraryTheme!: Theme;
   @Getter whitelist!: Whitelist;
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean;
+
+  @Action('setConfirmationVisibility', { namespace: 'moonpay' }) setConfirmationVisibility!: (
+    flag: boolean
+  ) => Promise<void>;
+
+  get visibility(): boolean {
+    return this.confirmationVisibility;
+  }
+
+  set visibility(flag: boolean) {
+    this.setConfirmationVisibility(flag);
+  }
 
   get modalData(): any {
     return {

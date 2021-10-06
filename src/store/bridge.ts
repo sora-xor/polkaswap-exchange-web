@@ -540,12 +540,12 @@ const actions = {
       commit(types.GET_EVM_NETWORK_FEE_FAILURE);
     }
   },
-  bridgeDataToHistoryItem({ getters, rootGetters }, { date = Date.now(), step = 1, to = '', ...params } = {}) {
+  bridgeDataToHistoryItem({ getters, rootGetters }, { date = Date.now(), step = 1, payload = {}, ...params } = {}) {
     return {
-      type: getters.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
-      amount: getters.amount,
-      symbol: getters.asset.symbol,
-      assetAddress: getters.asset.address,
+      type: (params as any).type ?? (getters.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming),
+      amount: (params as any).amount ?? getters.amount,
+      symbol: (params as any).symbol ?? getters.asset.symbol,
+      assetAddress: (params as any).assetAddress ?? getters.asset.address,
       startTime: date,
       endTime: date,
       signed: false,
@@ -554,11 +554,11 @@ const actions = {
       hash: '',
       ethereumHash: '',
       transactionState: STATES.INITIAL,
-      soraNetworkFee: getters.soraNetworkFee,
-      ethereumNetworkFee: getters.evmNetworkFee,
+      soraNetworkFee: (params as any).soraNetworkFee ?? getters.soraNetworkFee,
+      ethereumNetworkFee: (params as any).ethereumNetworkFee ?? getters.evmNetworkFee,
       externalNetwork: rootGetters['web3/evmNetwork'],
-      to: to || rootGetters['web3/evmAddress'],
-      ...params,
+      to: (params as any).to ?? rootGetters['web3/evmAddress'],
+      payload,
     };
   },
   async generateHistoryItem({ getters, dispatch }, playground) {

@@ -139,9 +139,9 @@
     <select-language-dialog :visible.sync="showSelectLanguageDialog" />
 
     <template v-if="moonpayEnabled">
-      <moonpay :visible.sync="showMoonpayDialog" />
-      <moonpay-notification :visible.sync="showMoonpayNotification" />
-      <moonpay-confirmation :visible.sync="showMoonpayConfirmation" @confirm="handleMoonpayBridgeConfirm" />
+      <moonpay />
+      <moonpay-notification />
+      <moonpay-confirmation />
     </template>
   </s-design-system-provider>
 </template>
@@ -214,9 +214,6 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
 
   @State((state) => state.settings.faucetUrl) faucetUrl!: string;
   @State((state) => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean;
-  @State((state) => state.moonpay.dialogVisibility) moonpayDialogVisibility!: boolean;
-  @State((state) => state.moonpay.notificationVisibility) moonpayNotificationVisibility!: boolean;
-  @State((state) => state.moonpay.confirmationVisibility) moonpayConfirmationVisibility!: boolean;
 
   @Getter libraryTheme!: Theme;
   @Getter libraryDesignSystem!: DesignSystem;
@@ -248,18 +245,6 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
   @Action('setDialogVisibility', { namespace: 'moonpay' }) setMoonpayDialogVisibility!: (
     flag: boolean
-  ) => Promise<void>;
-
-  @Action('setNotificationVisibility', { namespace: 'moonpay' }) setMoonpayNotificationVisibility!: (
-    flag: boolean
-  ) => Promise<void>;
-
-  @Action('setConfirmationVisibility', { namespace: 'moonpay' }) setMoonpayConfirmationVisibility!: (
-    flag: boolean
-  ) => Promise<void>;
-
-  @Action('setBridgeTransactionData', { namespace: 'moonpay' }) setBridgeTransactionData!: (
-    data?: any // TODO: type
   ) => Promise<void>;
 
   @Watch('firstReadyTransaction', { deep: true })
@@ -324,30 +309,6 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
     this.setSelectNodeDialogVisibility(flag);
   }
 
-  get showMoonpayDialog(): boolean {
-    return this.moonpayDialogVisibility;
-  }
-
-  set showMoonpayDialog(flag: boolean) {
-    this.setMoonpayDialogVisibility(flag);
-  }
-
-  get showMoonpayNotification(): boolean {
-    return this.moonpayNotificationVisibility;
-  }
-
-  set showMoonpayNotification(flag: boolean) {
-    this.setMoonpayNotificationVisibility(flag);
-  }
-
-  get showMoonpayConfirmation(): boolean {
-    return this.moonpayConfirmationVisibility;
-  }
-
-  set showMoonpayConfirmation(flag: boolean) {
-    this.setMoonpayConfirmationVisibility(flag);
-  }
-
   get themeIcon(): string {
     return this.libraryTheme === Theme.LIGHT ? 'various-brightness-low-24' : 'various-moon-24';
   }
@@ -383,13 +344,6 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
       return this.t('connectWalletText');
     }
     return this.account.name || formatAddress(this.account.address, 8);
-  }
-
-  async handleMoonpayBridgeConfirm(): Promise<void> {
-    await this.setMoonpayConfirmationVisibility(false);
-    await this.setBridgeTransactionData();
-
-    this.goTo(PageNames.BridgeTransaction);
   }
 
   getCurrentPath(): string {

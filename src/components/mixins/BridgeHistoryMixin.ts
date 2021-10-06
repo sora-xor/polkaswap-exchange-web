@@ -15,6 +15,10 @@ const namespace = 'bridge';
 export default class BridgeHistoryMixin extends Mixins(LoadingMixin) {
   @Getter networkFees!: NetworkFeesObject;
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString;
+  @Getter('history', { namespace }) bridgeHistory!: Array<BridgeHistory>;
+
+  @Action('getHistory', { namespace }) getHistory!: () => Promise<void>;
+  @Action('generateHistoryItem', { namespace }) generateHistoryItem!: (history: any) => Promise<BridgeHistory>;
 
   @Action('getEvmNetworkFee', { namespace }) getEvmNetworkFee!: AsyncVoidFn;
   @Action('setAmount', { namespace }) setAmount!: (amount: string) => Promise<void>;
