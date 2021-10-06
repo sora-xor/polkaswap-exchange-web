@@ -4,11 +4,13 @@ import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import { ethers } from 'ethers';
-import { FPNumber, RegisteredAccountAsset } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/util';
 
 import { MoonpayApi, MoonpayEVMTransferAssetData } from '@/utils/moonpay';
 import ethersUtil from '@/utils/ethers-util';
 import { EthAddress } from '@/consts';
+
+import type { RegisteredAccountAsset, BridgeHistory } from '@sora-substrate/util';
 import type { MoonpayTransaction } from '@/utils/moonpay';
 
 const types = flow(
@@ -36,7 +38,7 @@ interface MoonpayState {
   pollingTimestamp: number;
   transactions: Array<MoonpayTransaction>;
   transactionsFetching: boolean;
-  bridgeTransactionData: any; // TODO: type
+  bridgeTransactionData: Nullable<BridgeHistory>;
   startBridgeButtonVisibility: boolean;
   currencies: Array<any>;
 }
@@ -94,8 +96,7 @@ const mutations = {
   [types.SET_CONFIRMATION_VISIBILITY](state, flag: boolean) {
     state.confirmationVisibility = flag;
   },
-  // TODO: type
-  [types.SET_BRIDGE_TRANSACTION_DATA](state: MoonpayState, data = null, startBridgeButtonVisibility = false) {
+  [types.SET_BRIDGE_TRANSACTION_DATA](state: MoonpayState, { data = null, startBridgeButtonVisibility = false } = {}) {
     state.bridgeTransactionData = data;
     state.startBridgeButtonVisibility = startBridgeButtonVisibility;
   },
@@ -141,9 +142,8 @@ const actions = {
     commit(types.SET_CONFIRMATION_VISIBILITY, flag);
   },
 
-  // TODO: type
-  setBridgeTransactionData({ commit }, data = null, startBridgeButtonVisibility = false) {
-    commit(types.SET_BRIDGE_TRANSACTION_DATA, data, startBridgeButtonVisibility);
+  setBridgeTransactionData({ commit }, { data = null, startBridgeButtonVisibility = false } = {}) {
+    commit(types.SET_BRIDGE_TRANSACTION_DATA, { data, startBridgeButtonVisibility });
   },
 
   updatePollingTimestamp({ commit }, timestamp = Date.now()) {

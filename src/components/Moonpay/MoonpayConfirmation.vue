@@ -7,7 +7,7 @@
       ...$attrs,
     }"
     v-on="{
-      confirm: startBridgeForBridgeTransactionData,
+      confirm: startBridgeForMoonpayTransaction,
       ...$listeners,
     }"
   >
@@ -33,7 +33,7 @@ import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-import type { Whitelist } from '@sora-substrate/util';
+import type { BridgeHistory, Whitelist } from '@sora-substrate/util';
 
 @Component({
   components: {
@@ -42,7 +42,7 @@ import type { Whitelist } from '@sora-substrate/util';
   },
 })
 export default class MoonpayConfirmation extends Mixins(MoonpayBridgeInitMixin) {
-  @State((state) => state.moonpay.bridgeTransactionData) bridgeTransactionData!: any; // TODO: type
+  @State((state) => state.moonpay.bridgeTransactionData) bridgeTransactionData!: Nullable<BridgeHistory>;
   @State((state) => state.moonpay.confirmationVisibility) confirmationVisibility!: boolean;
 
   @Getter libraryTheme!: Theme;

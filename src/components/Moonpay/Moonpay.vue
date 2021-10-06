@@ -57,7 +57,7 @@ export default class Moonpay extends Mixins(MoonpayBridgeInitMixin) {
     }
   }
 
-  @Watch('isVisible', { immediate: true })
+  @Watch('visibility', { immediate: true })
   private handleVisibleStateChange(visible: boolean): void {
     if (visible && !this.pollingTimestamp) {
       this.startPollingMoonpay();
@@ -139,7 +139,7 @@ export default class Moonpay extends Mixins(MoonpayBridgeInitMixin) {
 
     // show notification what tokens are purchased
     await this.showNotification(MoonpayNotifications.Success);
-    await this.prepareMoonpayTxForBridgeTransfer(transaction);
+    await this.prepareMoonpayTxForBridgeTransfer(transaction, true);
   }
 }
 </script>

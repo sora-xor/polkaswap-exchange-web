@@ -148,7 +148,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
 
   async handleConfirm(): Promise<void> {
     this.$emit('confirm', true);
-    this.isVisible = false;
+    this.closeDialog();
   }
 }
 </script>

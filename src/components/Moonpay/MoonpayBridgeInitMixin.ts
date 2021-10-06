@@ -25,7 +25,7 @@ const createError = (text: string, notification: MoonpayNotifications) => {
 export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, WalletConnectMixin, LoadingMixin) {
   @State((state) => state.moonpay.api) moonpayApi!: MoonpayApi;
   @State((state) => state.settings.apiKeys) apiKeys!: ApiKeysObject;
-  @State((state) => state.moonpay.bridgeTransactionData) bridgeTransactionData!: any; // TODO: type
+  @State((state) => state.moonpay.bridgeTransactionData) bridgeTransactionData!: Nullable<BridgeHistory>;
 
   @Action('getEvmNetworkFee', { namespace: 'web3' }) fetchEvmNetworkFee!: ({
     asset,
@@ -53,10 +53,10 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
 
   @Action('setNotificationKey', { namespace: 'moonpay' }) setNotificationKey!: (key: string) => Promise<void>;
 
-  @Action('setBridgeTransactionData', { namespace: 'moonpay' }) setBridgeTransactionData!: (
-    data?: any,
-    startBridgeButtonVisibility?: boolean // TODO: type
-  ) => Promise<void>;
+  @Action('setBridgeTransactionData', { namespace: 'moonpay' }) setBridgeTransactionData!: (options?: {
+    data: Nullable<BridgeHistory>;
+    startBridgeButtonVisibility: boolean;
+  }) => Promise<void>;
 
   @Getter soraNetwork!: string; // wallet
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString;
@@ -72,10 +72,10 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
     this.moonpayApi.setNetwork(this.soraNetwork);
   }
 
-  async prepareMoonpayTxForBridgeTransfer(tx: MoonpayTransaction): Promise<void> {
+  async prepareMoonpayTxForBridgeTransfer(tx: MoonpayTransaction, startBridgeButtonVisibility = false): Promise<void> {
     try {
-      const bridgeTransactionData = await this.prepareBridgeHistoryItemData(tx);
-      await this.setBridgeTransactionData(bridgeTransactionData);
+      const data = await this.prepareBridgeHistoryItemData(tx);
+      await this.setBridgeTransactionData({ data, startBridgeButtonVisibility });
       await this.setNotificationVisibility(false);
       await this.setConfirmationVisibility(true);
     } catch (error) {
@@ -105,18 +105,19 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
     return this.bridgeHistory.find((item) => item.payload?.moonpayId === moonpayId);
   }
 
-  async startBridgeForBridgeTransactionData(): Promise<void> {
+  async startBridgeForMoonpayTransaction(): Promise<void> {
     const tx = await this.getBridgeMoonpayTransaction();
     await this.showHistory(tx.id as string);
+    await this.setBridgeTransactionData();
   }
 
   /**
    * @param transaction moonpay transaction data
    * @returns string - bridge history item id
    */
-  async prepareBridgeHistoryItemData(transaction: MoonpayTransaction): Promise<any> {
+  async prepareBridgeHistoryItemData(transaction: MoonpayTransaction): Promise<BridgeHistory> {
     return await this.withLoading(async () => {
-      // this is not really good, because we should change evm network to ethereum before fetching transaction data
+      // this is not really good, but we should change evm network to ethereum before fetching transaction data
       await this.prepareEvmNetwork();
       // get necessary ethereum transaction data
       const ethTransferData = await this.getTransactionTranserData(transaction.cryptoTransactionId);
@@ -177,7 +178,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
         payload: {
           moonpayId: transaction.id,
         },
-      };
+      } as BridgeHistory;
     });
   }
 

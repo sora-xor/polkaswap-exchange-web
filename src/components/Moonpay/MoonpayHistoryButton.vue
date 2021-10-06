@@ -21,9 +21,11 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import router from '@/router';
 import { PageNames } from '@/consts';
 
+import type { BridgeHistory } from '@sora-substrate/util';
+
 @Component
 export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin, TranslationMixin) {
-  @State((state) => state.moonpay.bridgeTransactionData) bridgeTransactionData!: any; // TODO: type
+  @State((state) => state.moonpay.bridgeTransactionData) bridgeTransactionData!: Nullable<BridgeHistory>;
   @State((state) => state.moonpay.startBridgeButtonVisibility) startBridgeButtonVisibility!: boolean;
   @Action('setConfirmationVisibility', { namespace: 'moonpay' }) setConfirmationVisibility!: (
     flag: boolean
