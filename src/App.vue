@@ -27,20 +27,7 @@
           <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openSelectNodeDialog">
             <token-logo class="node-control__logo" v-bind="nodeLogo" />
           </s-button>
-          <s-button
-            type="tertiary"
-            :class="['account-control', { 's-pressed': isLoggedIn }]"
-            size="medium"
-            :tooltip="accountTooltip"
-            :disabled="loading"
-            @click="goTo(PageNames.Wallet)"
-          >
-            <div :class="['account-control-title', { name: isLoggedIn }]">{{ accountInfo }}</div>
-            <div class="account-control-icon">
-              <s-icon v-if="!isLoggedIn" name="finance-wallet-24" size="28" />
-              <WalletAvatar v-else :address="account.address" />
-            </div>
-          </s-button>
+          <account-button :disabled="loading" @click="goTo(PageNames.Wallet)" />
         </div>
       </div>
     </header>
@@ -183,9 +170,9 @@ const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection;
 
 @Component({
   components: {
-    WalletAvatar: components.WalletAvatar,
     PolkaswapLogo,
     SoraLogo,
+    AccountButton: lazyComponent(Components.AccountButton),
     HelpDialog: lazyComponent(Components.HelpDialog),
     SidebarItemContent: lazyComponent(Components.SidebarItemContent),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
@@ -219,7 +206,6 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
 
   @Getter firstReadyTransaction!: History;
   @Getter isLoggedIn!: boolean;
-  @Getter account!: any;
   @Getter currentRoute!: WALLET_CONSTS.RouteNames;
   @Getter language!: Language;
   @Getter moonpayEnabled!: boolean;
@@ -322,17 +308,6 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
 
   get isAboutPage(): boolean {
     return this.$route.name === PageNames.About;
-  }
-
-  get accountTooltip(): string {
-    return this.t(`${this.isLoggedIn ? 'connectedAccount' : 'connectWalletTextTooltip'}`);
-  }
-
-  get accountInfo(): string {
-    if (!this.isLoggedIn) {
-      return this.t('connectWalletText');
-    }
-    return this.account.name || formatAddress(this.account.address, 8);
   }
 
   getCurrentPath(): string {
@@ -449,20 +424,6 @@ html {
     &__about &-scrollbar .el-scrollbar__wrap {
       overflow-x: auto;
     }
-  }
-}
-
-.account-control {
-  &-icon {
-    svg circle:first-child {
-      fill: var(--s-color-utility-surface);
-    }
-  }
-  span {
-    flex-direction: row-reverse;
-  }
-  [class^='s-icon-'] {
-    @include icon-styles;
   }
 }
 
@@ -681,7 +642,6 @@ i.icon-divider {
 $header-height: 64px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
-$account-control-name-max-width: 200px;
 
 .app {
   &-main {
@@ -871,37 +831,6 @@ $account-control-name-max-width: 200px;
   .token-logo {
     display: block;
     margin: auto;
-  }
-}
-
-.account-control {
-  letter-spacing: var(--s-letter-spacing-small);
-
-  &-title {
-    font-size: var(--s-font-size-small);
-    max-width: $account-control-name-max-width;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    &.name {
-      text-transform: none;
-    }
-  }
-  &.s-tertiary {
-    &.el-button {
-      padding-left: $basic-spacing-mini;
-    }
-    .account-control-title {
-      margin-left: $basic-spacing-mini;
-    }
-  }
-  &-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--s-size-small);
-    height: var(--s-size-small);
-    overflow: hidden;
-    border-radius: 50%;
   }
 }
 

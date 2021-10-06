@@ -105,6 +105,7 @@ export enum PageNames {
 
 export enum Components {
   GenericPageHeader = 'GenericPageHeader',
+  AccountButton = 'App/Header/AccountButton',
   SwapInfo = 'SwapInfo',
   SelectToken = 'SelectToken',
   TokenLogo = 'TokenLogo',
