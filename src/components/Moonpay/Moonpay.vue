@@ -53,8 +53,9 @@ export default class Moonpay extends Mixins(DialogMixin, MoonpayBridgeInitMixin)
   @Action('setNotificationVisibility', { namespace }) setNotificationVisibility!: (flag: boolean) => Promise<void>;
   @Action('setNotificationKey', { namespace }) setNotificationKey!: (key: string) => Promise<void>;
   @Action('createTransactionsPolling', { namespace }) createTransactionsPolling!: () => Promise<Function>;
-  @Action('setReadyBridgeTransactionId', { namespace: 'moonpay' }) setReadyBridgeTransactionId!: (
-    id?: string
+  @Action('setBridgeTransactionData', { namespace: 'moonpay' }) setBridgeTransactionData!: (
+    data?: any,
+    startBridgeButtonVisibility?: boolean // TODO: type
   ) => Promise<void>;
 
   @Watch('isLoggedIn', { immediate: true })
@@ -139,12 +140,12 @@ export default class Moonpay extends Mixins(DialogMixin, MoonpayBridgeInitMixin)
 
       // show notification what tokens are purchased
       await this.showNotification(MoonpayNotifications.Success);
-      // create bridge history item & get it ID
-      const id = await this.initBridgeForMoonpayTransaction(transaction); // MoonpayBridgeInitMixin
+      // create bridge transaction data
+      const bridgeTransactionData = await this.prepareBridgeHistoryItemDataForMoonpayTx(transaction); // MoonpayBridgeInitMixin
 
       // show notification for transfer to Sora
       await this.setNotificationVisibility(false);
-      await this.setReadyBridgeTransactionId(id);
+      await this.setBridgeTransactionData(bridgeTransactionData, true);
       await this.setConfirmationVisibility(true);
     } catch (error) {
       await this.handleBridgeInitError(error);

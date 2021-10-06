@@ -15,7 +15,6 @@ import {
   Operation,
   BridgeHistory,
   TransactionStatus,
-  KnownAssets,
   CodecString,
 } from '@sora-substrate/util';
 import { api } from '@soramitsu/soraneo-wallet-web';
@@ -26,9 +25,7 @@ import { STATES } from '@/utils/fsm';
 import ethersUtil, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/ethers-util';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { delay, isEthereumAddress } from '@/utils';
-import { EthereumGasLimits, MaxUint256, ZeroStringValue } from '@/consts';
-
-import type { Asset } from '@sora-substrate/util';
+import { MaxUint256, ZeroStringValue } from '@/consts';
 
 const SORA_REQUESTS_TIMEOUT = 5 * 1000;
 
@@ -523,22 +520,23 @@ const actions = {
   findRegisteredAsset({ getters, rootGetters }) {
     return rootGetters['assets/registeredAssets'].find((item) => item.address === getters.asset.address);
   },
-  async getEvmNetworkFee({ commit, getters, rootGetters }, asset?: Asset) {
-    const assetData: Asset | undefined = asset ?? getters.asset;
-
-    if (!assetData?.address) return;
-
+  /**
+   * Fetch EVM Network fee for selected bridge asset
+   * @returns
+   */
+  async getEvmNetworkFee({ dispatch, commit, getters }) {
+    if (!getters.asset || !getters.asset.address) {
+      return;
+    }
     commit(types.GET_EVM_NETWORK_FEE_REQUEST);
     try {
-      const ethersInstance = await ethersUtil.getEthersInstance();
-      const gasPrice = (await ethersInstance.getGasPrice()).toNumber();
-      const registeredAssets = rootGetters.whitelist;
-      const knownAsset = !!KnownAssets.get(assetData.address) || registeredAssets[assetData.address]?.symbol === 'ETH';
-      const gasLimit = EthereumGasLimits[+getters.isSoraToEvm][knownAsset ? assetData.symbol : KnownBridgeAsset.Other];
-      const fpFee = FPNumber.fromCodecValue(gasPrice).mul(new FPNumber(gasLimit)).toCodecString();
+      const fpFee = await dispatch(
+        'web3/getEvmNetworkFee',
+        { asset: getters.asset, isSoraToEvm: getters.isSoraToEvm },
+        { root: true }
+      );
       commit(types.GET_EVM_NETWORK_FEE_SUCCESS, fpFee);
     } catch (error) {
-      console.error(error);
       commit(types.GET_EVM_NETWORK_FEE_FAILURE);
     }
   },

@@ -23,8 +23,8 @@ import { PageNames } from '@/consts';
 
 @Component
 export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin, TranslationMixin) {
-  @State((state) => state.moonpay.readyBridgeTransactionId) readyBridgeTransactionId!: string;
-  @State((state) => state.moonpay.confirmationVisibility) confirmationVisibility!: string;
+  @State((state) => state.moonpay.bridgeTransactionData) bridgeTransactionData!: any; // TODO: type
+  @State((state) => state.moonpay.startBridgeButtonVisibility) startBridgeButtonVisibility!: boolean;
   @Action('setConfirmationVisibility', { namespace: 'moonpay' }) setConfirmationVisibility!: (
     flag: boolean
   ) => Promise<void>;
@@ -34,7 +34,7 @@ export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin, Tra
   }
 
   get isReadyForTransfer(): boolean {
-    return !!this.readyBridgeTransactionId && !this.confirmationVisibility;
+    return this.startBridgeButtonVisibility && !!this.bridgeTransactionData;
   }
 
   get icon(): string {

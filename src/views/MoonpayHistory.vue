@@ -82,7 +82,6 @@ import { WALLET_CONSTS, components } from '@soramitsu/soraneo-wallet-web';
 import { BridgeHistory } from '@sora-substrate/util';
 
 import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
-import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import MoonpayBridgeInitMixin from '@/components/Moonpay/MoonpayBridgeInitMixin';
 import MoonpayLogo from '@/components/logo/Moonpay.vue';
 
@@ -107,7 +106,7 @@ const DetailsView = 'details';
     MoonpayWidget: lazyComponent(Components.MoonpayWidget),
   },
 })
-export default class MoonpayHistory extends Mixins(PaginationSearchMixin, MoonpayBridgeInitMixin, BridgeHistoryMixin) {
+export default class MoonpayHistory extends Mixins(PaginationSearchMixin, MoonpayBridgeInitMixin) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
   @State((state) => state[namespace].transactions) transactions!: Array<MoonpayTransaction>;
@@ -120,6 +119,10 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
   @Action('getCurrencies', { namespace }) getCurrencies!: () => Promise<void>;
   @Action('setConfirmationVisibility', { namespace }) setConfirmationVisibility!: (flag: boolean) => Promise<void>;
   @Action('getHistory', { namespace: 'bridge' }) getHistory!: () => Promise<void>;
+  @Action('setBridgeTransactionData', { namespace: 'moonpay' }) setBridgeTransactionData!: (
+    data?: any, // TODO: type
+    startBridgeButtonVisibility?: boolean
+  ) => Promise<void>;
 
   private unwatchEthereum!: any;
 
@@ -266,7 +269,8 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
 
   async prepareBridgeForTransfer(): Promise<void> {
     try {
-      await this.initBridgeForMoonpayTransaction(this.selectedItem);
+      const bridgeTransactionData = await this.prepareBridgeHistoryItemDataForMoonpayTx(this.selectedItem);
+      await this.setBridgeTransactionData(bridgeTransactionData);
       await this.setConfirmationVisibility(true);
     } catch (error) {
       await this.handleBridgeInitError(error);
@@ -278,7 +282,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
 
     if (this.bridgeTxToSora?.id) {
       await this.prepareEvmNetwork(this.bridgeTxToSora.externalNetwork); // MoonpayBridgeInitMixin
-      await this.showHistory(this.bridgeTxToSora.id); // BridgeHistoryMixin
+      await this.showHistory(this.bridgeTxToSora.id); // MoonpayBridgeInitMixin
     } else {
       await this.prepareBridgeForTransfer();
     }

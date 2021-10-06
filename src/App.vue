@@ -258,8 +258,8 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
     flag: boolean
   ) => Promise<void>;
 
-  @Action('setReadyBridgeTransactionId', { namespace: 'moonpay' }) setReadyBridgeTransactionId!: (
-    id?: string
+  @Action('setBridgeTransactionData', { namespace: 'moonpay' }) setBridgeTransactionData!: (
+    data?: any // TODO: type
   ) => Promise<void>;
 
   @Watch('firstReadyTransaction', { deep: true })
@@ -387,7 +387,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
 
   async handleMoonpayBridgeConfirm(): Promise<void> {
     await this.setMoonpayConfirmationVisibility(false);
-    await this.setReadyBridgeTransactionId();
+    await this.setBridgeTransactionData();
 
     this.goTo(PageNames.BridgeTransaction);
   }

@@ -19,7 +19,7 @@ const types = flow(
     'SET_NOTIFICATION_VISIBILITY',
     'SET_NOTIFICATION_KEY',
     'SET_CONFIRMATION_VISIBILITY',
-    'SET_READY_BRIDGE_TRANSACTION_ID',
+    'SET_BRIDGE_TRANSACTION_DATA',
   ]),
   map((x) => [x, x]),
   fromPairs
@@ -36,7 +36,8 @@ interface MoonpayState {
   pollingTimestamp: number;
   transactions: Array<MoonpayTransaction>;
   transactionsFetching: boolean;
-  readyBridgeTransactionId: string;
+  bridgeTransactionData: any; // TODO: type
+  startBridgeButtonVisibility: boolean;
   currencies: Array<any>;
 }
 
@@ -50,7 +51,8 @@ function initialState(): MoonpayState {
     pollingTimestamp: 0,
     transactions: [],
     transactionsFetching: false,
-    readyBridgeTransactionId: '',
+    bridgeTransactionData: null,
+    startBridgeButtonVisibility: false,
     currencies: [],
   };
 }
@@ -92,8 +94,10 @@ const mutations = {
   [types.SET_CONFIRMATION_VISIBILITY](state, flag: boolean) {
     state.confirmationVisibility = flag;
   },
-  [types.SET_READY_BRIDGE_TRANSACTION_ID](state: MoonpayState, id: string) {
-    state.readyBridgeTransactionId = id;
+  // TODO: type
+  [types.SET_BRIDGE_TRANSACTION_DATA](state: MoonpayState, data = null, startBridgeButtonVisibility = false) {
+    state.bridgeTransactionData = data;
+    state.startBridgeButtonVisibility = startBridgeButtonVisibility;
   },
   [types.UPDATE_TRANSACTIONS_REQUEST](state: MoonpayState, clearTransactions: boolean) {
     if (clearTransactions) {
@@ -137,8 +141,9 @@ const actions = {
     commit(types.SET_CONFIRMATION_VISIBILITY, flag);
   },
 
-  setReadyBridgeTransactionId({ commit }, id = '') {
-    commit(types.SET_READY_BRIDGE_TRANSACTION_ID, id);
+  // TODO: type
+  setBridgeTransactionData({ commit }, data = null, startBridgeButtonVisibility = false) {
+    commit(types.SET_BRIDGE_TRANSACTION_DATA, data, startBridgeButtonVisibility);
   },
 
   updatePollingTimestamp({ commit }, timestamp = Date.now()) {
