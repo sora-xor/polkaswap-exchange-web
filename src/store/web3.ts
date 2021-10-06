@@ -333,7 +333,6 @@ const actions = {
       const registeredAssets = rootGetters.whitelist;
       const ethersInstance = await ethersUtil.getEthersInstance();
       const gasPrice = (await ethersInstance.getGasPrice()).toNumber();
-      console.log(gasPrice);
       const knownAsset = !!KnownAssets.get(asset.address) || registeredAssets[asset.address]?.symbol === 'ETH';
       const gasLimit = EthereumGasLimits[+isSoraToEvm][knownAsset ? asset.symbol : KnownBridgeAsset.Other];
       const fpFee = FPNumber.fromCodecValue(gasPrice).mul(new FPNumber(gasLimit)).toCodecString();

@@ -134,9 +134,9 @@
       </div>
     </div>
 
-    <help-dialog :visible.sync="showHelpDialog" />
-    <select-node-dialog :visible.sync="showSelectNodeDialog" />
+    <select-node-dialog />
     <select-language-dialog :visible.sync="showSelectLanguageDialog" />
+    <!-- <help-dialog :visible.sync="showHelpDialog" /> -->
 
     <template v-if="moonpayEnabled">
       <moonpay />
@@ -207,13 +207,12 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
 
   readonly PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
 
-  showHelpDialog = false;
+  // showHelpDialog = false;
   showSelectLanguageDialog = false;
 
   switchTheme: AsyncVoidFn = switchTheme;
 
   @State((state) => state.settings.faucetUrl) faucetUrl!: string;
-  @State((state) => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean;
 
   @Getter libraryTheme!: Theme;
   @Getter libraryDesignSystem!: DesignSystem;
@@ -243,9 +242,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
   @Action setFeatureFlags!: (options: any) => Promise<void>;
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>;
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
-  @Action('setDialogVisibility', { namespace: 'moonpay' }) setMoonpayDialogVisibility!: (
-    flag: boolean
-  ) => Promise<void>;
+  @Action('setDialogVisibility', { namespace: 'moonpay' }) setMoonpayVisibility!: (flag: boolean) => Promise<void>;
 
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History): void {
@@ -299,14 +296,6 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
 
   get selectedLanguage(): string {
     return this.language.toUpperCase();
-  }
-
-  get showSelectNodeDialog(): boolean {
-    return this.selectNodeDialogVisibility;
-  }
-
-  set showSelectNodeDialog(flag: boolean) {
-    this.setSelectNodeDialogVisibility(flag);
   }
 
   get themeIcon(): string {
@@ -375,9 +364,9 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
     router.push({ name });
   }
 
-  openHelpDialog(): void {
-    this.showHelpDialog = true;
-  }
+  // openHelpDialog(): void {
+  //   this.showHelpDialog = true;
+  // }
 
   openSelectNodeDialog(): void {
     this.setSelectNodeDialogVisibility(true);
@@ -392,7 +381,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
       return this.connectInternalWallet();
     }
     await this.checkConnectionToExternalAccount(async () => {
-      await this.setMoonpayDialogVisibility(true);
+      await this.setMoonpayVisibility(true);
     });
   }
 
