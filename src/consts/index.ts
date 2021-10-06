@@ -12,7 +12,7 @@ export const app = {
 
 export const WalletPermissions = {
   sendAssets: true, // enable 'send' button in assets list
-  swapAssets: false, // enable 'swap' button in assets list
+  swapAssets: true, // enable 'swap' button in assets list
 };
 
 // navigator.language values, f.e. ('es', 'eu-ES')
@@ -194,26 +194,31 @@ const OtherPagesMenu: Array<SidebarMenuItem> = [
 
 export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
   {
-    icon: 'symbols-twitter-24',
-    title: 'twitter',
-    href: 'https://twitter.com/polkaswap',
+    icon: 'symbols-24',
+    title: 'wiki',
+    href: 'https://wiki.sora.org/',
   },
   {
     icon: 'symbols-telegram-24',
     title: 'telegram',
     href: 'https://t.me/polkaswap',
   },
-  // TODO: Update this icon name to appropriate one after font fix
   {
-    icon: 'symbols-peace-24',
-    title: 'medium',
-    href: 'https://medium.com/polkaswap',
+    icon: 'symbols-twitter-24',
+    title: 'twitter',
+    href: 'https://twitter.com/polkaswap',
   },
   // TODO: Update this icon name to appropriate one after font fix
   {
     icon: 'symbols-hash-24',
     title: 'reddit',
     href: 'https://www.reddit.com/r/Polkaswap',
+  },
+  // TODO: Update this icon name to appropriate one after font fix
+  {
+    icon: 'symbols-peace-24',
+    title: 'medium',
+    href: 'https://medium.com/polkaswap',
   },
   {
     icon: 'symbols-github-24',

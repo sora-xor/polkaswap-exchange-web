@@ -76,6 +76,7 @@ export default {
     [PageNames.Tokens]: 'Tokens',
   },
   social: {
+    wiki: '@:soraText Wiki',
     twitter: 'Twitter',
     telegram: 'Telegram',
     medium: 'Medium',

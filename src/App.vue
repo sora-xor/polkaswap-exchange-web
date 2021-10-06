@@ -1,8 +1,9 @@
 <template>
   <s-design-system-provider :value="libraryDesignSystem" id="app">
     <header class="header">
-      <s-button class="polkaswap-logo" type="link" size="large" @click="goTo(PageNames.Swap)">
-        <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo--tablet" />
+      <s-button class="polkaswap-menu" type="action" primary icon="basic-more-horizontal-24" @click="toggleMenu" />
+      <s-button class="polkaswap-logo polkaswap-logo--tablet" type="link" size="large" @click="goTo(PageNames.Swap)">
+        <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo__image" />
       </s-button>
       <div class="app-controls s-flex">
         <s-button type="action" class="theme-control s-pressed" @click="switchTheme">
@@ -31,75 +32,83 @@
       </div>
     </header>
     <div class="app-main">
-      <s-scrollbar class="app-sidebar-scrollbar">
+      <s-scrollbar
+        :class="['app-menu', 'app-sidebar-scrollbar', { visible: menuVisibility }]"
+        @click.native="handleAppMenuClick"
+      >
         <aside class="app-sidebar">
-          <s-menu
-            class="menu"
-            mode="vertical"
-            background-color="transparent"
-            box-shadow="none"
-            text-color="var(--s-color-base-content-primary)"
-            :active-text-color="mainMenuActiveColor"
-            active-hover-color="transparent"
-            :default-active="getCurrentPath()"
-            @select="goTo"
-          >
-            <s-menu-item-group v-for="(group, index) in SidebarMenuGroups" :key="index">
-              <s-menu-item
-                v-for="item in group"
-                :key="item.title"
-                :index="item.title"
-                :disabled="item.disabled"
-                class="menu-item"
-              >
-                <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
-              </s-menu-item>
-            </s-menu-item-group>
-          </s-menu>
+          <s-button class="polkaswap-logo" type="link" size="large" @click="goTo(PageNames.Swap)">
+            <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo__image" />
+          </s-button>
+          <div class="app-sidebar-menu">
+            <s-menu
+              class="menu"
+              mode="vertical"
+              background-color="transparent"
+              box-shadow="none"
+              text-color="var(--s-color-base-content-primary)"
+              :active-text-color="mainMenuActiveColor"
+              active-hover-color="transparent"
+              :default-active="getCurrentPath()"
+              @select="goTo"
+            >
+              <s-menu-item-group v-for="(group, index) in SidebarMenuGroups" :key="index">
+                <s-menu-item
+                  v-for="item in group"
+                  :key="item.title"
+                  :index="item.title"
+                  :disabled="item.disabled"
+                  class="menu-item"
+                >
+                  <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
+                </s-menu-item>
+              </s-menu-item-group>
+            </s-menu>
 
-          <s-menu
-            class="menu"
-            mode="vertical"
-            background-color="transparent"
-            box-shadow="none"
-            text-color="var(--s-color-base-content-tertiary)"
-            active-text-color="var(--s-color-base-content-tertiary)"
-            active-hover-color="transparent"
-          >
-            <s-menu-item-group>
-              <li v-for="item in SocialNetworkLinks" :key="item.title">
-                <sidebar-item-content
-                  :icon="item.icon"
-                  :title="t(`social.${item.title}`)"
-                  :href="item.href"
-                  tag="a"
-                  target="_blank"
-                  rel="nofollow noopener"
+            <s-menu
+              class="menu"
+              mode="vertical"
+              background-color="transparent"
+              box-shadow="none"
+              text-color="var(--s-color-base-content-tertiary)"
+              active-text-color="var(--s-color-base-content-tertiary)"
+              active-hover-color="transparent"
+            >
+              <s-menu-item-group>
+                <li v-for="item in SocialNetworkLinks" :key="item.title">
+                  <sidebar-item-content
+                    :icon="item.icon"
+                    :title="t(`social.${item.title}`)"
+                    :href="item.href"
+                    tag="a"
+                    target="_blank"
+                    rel="nofollow noopener"
+                    class="el-menu-item menu-item--small"
+                  />
+                </li>
+              </s-menu-item-group>
+              <s-menu-item-group>
+                <li v-if="faucetUrl">
+                  <sidebar-item-content
+                    :icon="FaucetLink.icon"
+                    :title="t(`footerMenu.${FaucetLink.title}`)"
+                    :href="faucetUrl"
+                    tag="a"
+                    target="_blank"
+                    rel="nofollow noopener"
+                    class="el-menu-item menu-item--small"
+                  />
+                </li>
+                <!-- <sidebar-item-content
+                  :title="t('footerMenu.help')"
+                  icon="notifications-info-24"
+                  tag="li"
                   class="el-menu-item menu-item--small"
-                />
-              </li>
-            </s-menu-item-group>
-            <s-menu-item-group>
-              <li v-if="faucetUrl">
-                <sidebar-item-content
-                  :icon="FaucetLink.icon"
-                  :title="t(`footerMenu.${FaucetLink.title}`)"
-                  :href="faucetUrl"
-                  tag="a"
-                  target="_blank"
-                  rel="nofollow noopener"
-                  class="el-menu-item menu-item--small"
-                />
-              </li>
-              <!-- <sidebar-item-content
-                :title="t('footerMenu.help')"
-                icon="notifications-info-24"
-                tag="li"
-                class="el-menu-item menu-item--small"
-                @click.native="openHelpDialog"
-              /> -->
-            </s-menu-item-group>
-          </s-menu>
+                  @click.native="openHelpDialog"
+                /> -->
+              </s-menu-item-group>
+            </s-menu>
+          </div>
         </aside>
       </s-scrollbar>
       <div class="app-body" :class="isAboutPage ? 'app-body__about' : ''">
@@ -184,6 +193,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
 
   showHelpDialog = false;
   showSelectLanguageDialog = false;
+  menuVisibility = false;
 
   switchTheme: AsyncVoidFn = switchTheme;
 
@@ -334,6 +344,24 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
     }
 
     this.changePage(name);
+    this.closeMenu();
+  }
+
+  toggleMenu(): void {
+    this.menuVisibility = !this.menuVisibility;
+  }
+
+  closeMenu(): void {
+    this.menuVisibility = false;
+  }
+
+  handleAppMenuClick(e: Event): void {
+    const target = e.target as any;
+    const sidebar = !!target.closest('.app-sidebar');
+
+    if (!sidebar) {
+      this.closeMenu();
+    }
   }
 
   private changePage(name: PageNames): void {
@@ -383,12 +411,15 @@ html {
   line-height: var(--s-line-height-base);
 }
 
+ul ul {
+  list-style-type: none;
+}
+
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Sora', sans-serif;
   height: 100vh;
-  min-width: 528px;
   color: var(--s-color-base-content-primary);
   background-color: var(--s-color-utility-body);
   transition: background-color 500ms linear;
@@ -628,21 +659,82 @@ $account-control-name-max-width: 200px;
     position: relative;
   }
 
+  &-menu {
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+
+    @include mobile {
+      position: fixed;
+
+      &.visible {
+        visibility: visible;
+        background-color: rgba(42, 23, 31, 0.1);
+        backdrop-filter: blur(4px);
+
+        .app-sidebar {
+          transform: translateX(0);
+          transition-duration: 0.2s;
+        }
+      }
+
+      .app-sidebar {
+        width: 50%;
+        min-width: $breakpoint_mobile / 2;
+        background-color: var(--s-color-utility-body);
+        padding: $inner-spacing-mini $inner-spacing-medium;
+        filter: drop-shadow(32px 0px 64px rgba(0, 0, 0, 0.1));
+        transform: translateX(-100%);
+      }
+    }
+
+    @include large-mobile {
+      visibility: visible;
+      position: relative;
+
+      .app-sidebar {
+        max-width: initial;
+      }
+    }
+
+    @include tablet {
+      position: absolute;
+      right: initial;
+    }
+  }
+
   &-sidebar {
     overflow-x: hidden;
-    margin-right: $basic-spacing-small;
-    width: 70px;
     display: flex;
     flex: 1;
     flex-flow: column nowrap;
-    justify-content: space-between;
     padding-top: $inner-spacing-small;
     padding-bottom: $inner-spacing-medium;
     border-right: none;
+
+    &-menu {
+      display: flex;
+      flex: 1;
+      flex-flow: column nowrap;
+      justify-content: space-between;
+    }
+
+    .polkaswap-logo.el-button {
+      width: 172px;
+      height: 46px;
+      margin-bottom: $inner-spacing-big;
+
+      @include large-mobile {
+        display: none;
+      }
+    }
   }
 
   &-body {
-    min-width: 464px;
     position: relative;
     display: flex;
     flex: 1;
@@ -665,11 +757,12 @@ $account-control-name-max-width: 200px;
   &-content {
     flex: 1;
     margin: auto;
+
     .app-disclaimer {
-      margin-left: auto;
+      margin-left: $basic-spacing-medium;
       margin-bottom: $inner-spacing-big;
-      margin-right: auto;
-      width: calc(#{$inner-window-width} - #{$basic-spacing-medium * 2});
+      margin-right: $basic-spacing-medium;
+      max-width: calc(#{$inner-window-width} - #{$basic-spacing-medium * 2});
       text-align: justify;
     }
   }
@@ -687,23 +780,34 @@ $account-control-name-max-width: 200px;
     display: flex;
     flex-direction: column-reverse;
     justify-content: flex-end;
-    padding-right: $inner-spacing-large;
-    padding-left: $inner-spacing-large;
-    padding-bottom: $inner-spacing-large;
+    padding: 0 $basic-spacing-medium $basic-spacing-medium;
   }
 }
 
 .header {
-  $header-box-shadow: 240px 16px 32px -16px;
-  $header-box-shadow-light: #{$header-box-shadow} #e5dce0;
-  $header-box-shadow-dark: #{$header-box-shadow} rgba(73, 32, 103, 0.5);
   display: flex;
   align-items: center;
-  padding: $inner-spacing-mini $inner-spacing-medium;
+  padding: $inner-spacing-mini;
   min-height: $header-height;
-  box-shadow: $header-box-shadow-light;
-  [design-system-theme='dark'] & {
-    box-shadow: $header-box-shadow-dark;
+  position: relative;
+
+  @include tablet {
+    padding: $inner-spacing-mini $inner-spacing-medium;
+
+    &:after {
+      left: $inner-spacing-medium;
+      right: $inner-spacing-medium;
+    }
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    height: 1px;
+    bottom: 0;
+    left: $inner-spacing-mini;
+    right: $inner-spacing-mini;
+    background-color: var(--s-color-base-border-secondary);
   }
 }
 
@@ -727,40 +831,92 @@ $account-control-name-max-width: 200px;
   }
   .menu-link-container {
     display: none;
+
+    @include mobile {
+      display: block;
+    }
+
     .el-menu-item {
       white-space: normal;
     }
   }
   .el-menu-item {
-    padding: $inner-spacing-mini $inner-spacing-mini * 2.5;
+    padding-top: $inner-spacing-mini;
+    padding-bottom: $inner-spacing-mini;
+    padding-left: 0 !important;
+    padding-right: 0;
     height: initial;
     font-size: var(--s-font-size-medium);
     font-weight: 300;
     line-height: var(--s-line-height-medium);
 
+    @include large-mobile {
+      padding-left: $inner-spacing-mini !important;
+      padding-right: $inner-spacing-mini;
+    }
+
+    @include tablet {
+      padding-left: $inner-spacing-mini * 2.5 !important;
+      padding-right: $inner-spacing-mini * 2.5;
+    }
+
     &.menu-item--small {
       font-size: var(--s-font-size-extra-mini);
       font-weight: 300;
+      padding: 0;
       letter-spacing: var(--s-letter-spacing-small);
       line-height: var(--s-line-height-medium);
-      padding: 0 13px;
       color: var(--s-color-base-content-secondary);
+
+      @include large-mobile {
+        padding: 0 10px;
+      }
+      @include tablet {
+        padding: 0 13px;
+      }
     }
   }
 }
 
 .polkaswap-logo {
-  background-image: url('~@/assets/img/pswap.svg');
   background-size: cover;
   width: var(--s-size-medium);
   height: var(--s-size-medium);
   border-radius: 0;
+
   &.el-button {
     padding: 0;
+    margin: 0;
   }
 
   &--tablet {
-    visibility: hidden;
+    display: none;
+    background-image: url('~@/assets/img/pswap.svg');
+
+    @include large-mobile {
+      display: block;
+    }
+
+    @include tablet {
+      margin-bottom: 0;
+      width: 172px;
+      height: 46px;
+      background-image: none;
+    }
+
+    .polkaswap-logo__image {
+      visibility: hidden;
+
+      @include tablet {
+        visibility: visible;
+      }
+    }
+  }
+}
+
+.polkaswap-menu {
+  @include large-mobile {
+    display: none;
   }
 }
 
@@ -838,52 +994,12 @@ $account-control-name-max-width: 200px;
   }
 }
 
-@include large-mobile {
-  $border-image-light: linear-gradient(#faf4f8, #d5cdd0, #faf4f8) 30;
-  $border-image-dark: linear-gradient(
-      180deg,
-      rgba(36, 2, 65, 0) 0%,
-      rgba(36, 2, 65, 0.5) 50.45%,
-      rgba(36, 2, 65, 0) 100%
-    )
-    30;
-  .app-sidebar {
-    overflow-y: auto;
-    margin-right: 0;
-    width: auto;
-    border-right: 1px solid;
-    border-image: $border-image-light;
-    [design-system-theme='dark'] & {
-      border-image: $border-image-dark;
-    }
-  }
-  .menu .menu-link-container {
-    display: block;
-  }
-}
-
 @include tablet {
-  .polkaswap-logo {
-    margin-bottom: 0;
-    width: 172px;
-    height: 46px;
-    background-image: none;
-    &--tablet {
-      visibility: visible;
-    }
-  }
   .app-footer {
     flex-direction: row;
-    padding-right: 22px;
-    padding-bottom: 20px;
     .app-disclaimer {
       padding-right: $inner-spacing-large;
     }
-  }
-}
-@media screen and (max-width: 460px) {
-  .app-body {
-    margin-left: -10px;
   }
 }
 </style>
