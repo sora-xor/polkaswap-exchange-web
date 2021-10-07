@@ -106,6 +106,8 @@ export enum PageNames {
 export enum Components {
   GenericPageHeader = 'GenericPageHeader',
   AccountButton = 'App/Header/AccountButton',
+  AppLogoButton = 'App/Header/AppLogoButton',
+  AppMenu = 'App/Menu/AppMenu',
   SwapInfo = 'SwapInfo',
   SelectToken = 'SelectToken',
   TokenLogo = 'TokenLogo',
@@ -242,6 +244,7 @@ export const FaucetLink: SidebarMenuItemLink = {
 export const SidebarMenuGroups = [MainMenu, AccountMenu, OtherPagesMenu];
 
 export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
+export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
 
 export enum Topics {
   SwapTokens = 'SwapTokens',
