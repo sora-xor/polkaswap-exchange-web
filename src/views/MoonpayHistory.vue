@@ -291,6 +291,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
 
 <style lang="scss" scoped>
 .moonpay-history {
+  position: relative;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;

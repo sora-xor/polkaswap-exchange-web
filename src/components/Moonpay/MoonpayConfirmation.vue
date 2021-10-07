@@ -62,13 +62,15 @@ export default class MoonpayConfirmation extends Mixins(MoonpayBridgeInitMixin) 
   }
 
   get modalData(): any {
+    if (!this.bridgeTransactionData) return {};
+
     return {
       isSoraToEvm: false,
-      amount: this.bridgeTransactionData?.amount,
-      asset: this.whitelist[this.bridgeTransactionData?.assetAddress],
-      evmNetwork: this.bridgeTransactionData?.externalNetwork,
-      evmNetworkFee: this.bridgeTransactionData?.ethereumNetworkFee,
-      soraNetworkFee: this.bridgeTransactionData?.soraNetworkFee,
+      amount: this.bridgeTransactionData.amount,
+      asset: this.whitelist[this.bridgeTransactionData.assetAddress as string],
+      evmNetwork: this.bridgeTransactionData.externalNetwork,
+      evmNetworkFee: this.bridgeTransactionData.ethereumNetworkFee,
+      soraNetworkFee: this.bridgeTransactionData.soraNetworkFee,
       isValidNetworkType: this.isValidNetworkType,
     };
   }
