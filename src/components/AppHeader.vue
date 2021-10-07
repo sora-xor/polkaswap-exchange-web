@@ -1,7 +1,8 @@
 <template>
   <header class="header">
-    <s-button class="polkaswap-logo" type="link" size="large" @click="goTo(PageNames.Swap)">
-      <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo--tablet" />
+    <s-button class="polkaswap-menu" type="action" primary icon="basic-more-horizontal-24" @click="toggleMenu" />
+    <s-button class="polkaswap-logo polkaswap-logo--tablet" type="link" size="large" @click="goTo(PageNames.Swap)">
+      <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo__image" />
     </s-button>
     <div class="app-controls s-flex">
       <s-button type="action" class="theme-control s-pressed" @click="switchTheme">
@@ -118,6 +119,10 @@ export default class AppHeader extends Mixins(TranslationMixin, NodeErrorMixin) 
   openSelectLanguageDialog(): void {
     this.showSelectLanguageDialog = true;
   }
+
+  toggleMenu(): void {
+    this.$emit('toggle-menu');
+  }
 }
 </script>
 
@@ -139,31 +144,87 @@ export default class AppHeader extends Mixins(TranslationMixin, NodeErrorMixin) 
 
 <style lang="scss" scoped>
 $account-control-name-max-width: 200px;
-.header {
-  $header-box-shadow: 240px 16px 32px -16px;
-  $header-box-shadow-light: #{$header-box-shadow} #e5dce0;
-  $header-box-shadow-dark: #{$header-box-shadow} rgba(73, 32, 103, 0.5);
 
-  display: flex;
-  align-items: center;
-  padding: $inner-spacing-mini $inner-spacing-medium;
-  min-height: $header-height;
-  box-shadow: $header-box-shadow-light;
-  [design-system-theme='dark'] & {
-    box-shadow: $header-box-shadow-dark;
+@include polkaswap-logo;
+
+.polkaswap-menu {
+  @include large-mobile {
+    display: none;
   }
 }
-.polkaswap-logo {
-  background-image: url('~@/assets/img/pswap.svg');
-  background-size: cover;
-  width: var(--s-size-medium);
-  height: var(--s-size-medium);
-  border-radius: 0;
-  &.el-button {
-    padding: 0;
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: $inner-spacing-mini;
+  min-height: $header-height;
+  position: relative;
+  @include tablet {
+    padding: $inner-spacing-mini $inner-spacing-medium;
+
+    &:after {
+      left: $inner-spacing-medium;
+      right: $inner-spacing-medium;
+    }
   }
-  &--tablet {
-    visibility: hidden;
+  &:after {
+    content: '';
+    position: absolute;
+    height: 1px;
+    bottom: 0;
+    left: $inner-spacing-mini;
+    right: $inner-spacing-mini;
+    background-color: var(--s-color-base-border-secondary);
+  }
+}
+
+.app-controls {
+  margin-left: auto;
+  & > *:not(:last-child) {
+    margin-right: $inner-spacing-mini;
+  }
+  .el-button {
+    + .el-button {
+      margin-left: 0;
+    }
+  }
+}
+
+.node-control {
+  @include element-size('token-logo', 28px);
+  .token-logo {
+    display: block;
+    margin: auto;
+  }
+}
+
+.account-control {
+  letter-spacing: var(--s-letter-spacing-small);
+  &-title {
+    font-size: var(--s-font-size-small);
+    max-width: $account-control-name-max-width;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    &.name {
+      text-transform: none;
+    }
+  }
+  &.s-tertiary {
+    &.el-button {
+      padding-left: $basic-spacing-mini;
+    }
+    .account-control-title {
+      margin-left: $basic-spacing-mini;
+    }
+  }
+  &-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--s-size-small);
+    height: var(--s-size-small);
+    overflow: hidden;
+    border-radius: 50%;
   }
 }
 </style>
