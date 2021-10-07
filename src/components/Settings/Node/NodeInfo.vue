@@ -55,7 +55,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import { lazyComponent } from '@/router';
 import { Components, Links } from '@/consts';
-import { wsRegexp, dnsRegexp, ipv4Regexp } from '@/utils/regexp';
+import { wsRegexp, dnsPathRegexp, ipv4Regexp } from '@/utils/regexp';
 import { NodeModel } from './consts';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -72,7 +72,7 @@ const checkAddress = (translate: Function): Function => {
 
     const address = value.replace(wsRegexp, '');
 
-    if (!dnsRegexp.test(address) && !ipv4Regexp.test(address)) {
+    if (!dnsPathRegexp.test(address) && !ipv4Regexp.test(address)) {
       return callback(new Error(translate('selectNodeDialog.messages.incorrectAddress')));
     }
 
