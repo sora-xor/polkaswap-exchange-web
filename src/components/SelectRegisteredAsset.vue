@@ -337,7 +337,7 @@ $select-asset-horizontal-spacing: $inner-spacing-big;
   margin-top: $inner-spacing-mini;
 }
 .asset-list {
-  height: calc(#{$select-asset-item-height} * 7);
+  max-height: calc(#{$select-asset-item-height} * 6);
 
   &__empty {
     display: flex;
