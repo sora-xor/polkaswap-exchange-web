@@ -187,7 +187,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 2001; // more than el-loader
+    z-index: 3;
 
     @include mobile {
       position: fixed;
