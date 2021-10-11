@@ -16,12 +16,10 @@
       </value-status-wrapper>
     </info-line>
     <info-line :label="t('swap.route')">
-      <value-status-wrapper>
-        <div v-for="token in swapRoute" class="price-impact-value liquidity-route" :key="token">
-          <span>{{ token }}</span>
-          <s-icon name="el-icon el-icon-arrow-right" />
-        </div>
-      </value-status-wrapper>
+      <div v-for="token in swapRoute" class="price-impact-value liquidity-route" :key="token">
+        <span>{{ token }}</span>
+        <s-icon name="el-icon el-icon-arrow-right" />
+      </div>
     </info-line>
     <info-line
       :label="t('swap.liquidityProviderFee')"
