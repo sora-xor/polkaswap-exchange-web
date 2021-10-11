@@ -5,6 +5,9 @@
       <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo__image" />
     </s-button>
     <div class="app-controls s-flex">
+      <s-button type="action" class="theme-control s-pressed" @click="toggleHideBalance">
+        {{ shouldBalanceBeHidden ? 'H' : 'V' }}
+      </s-button>
       <s-button type="action" class="theme-control s-pressed" @click="switchTheme">
         <s-icon :name="themeIcon" size="28" />
       </s-button>
@@ -37,7 +40,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter, State } from 'vuex-class';
+import { Getter, State, Action } from 'vuex-class';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
@@ -67,9 +70,12 @@ export default class AppHeader extends Mixins(TranslationMixin, NodeErrorMixin) 
 
   @State((state) => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean;
 
+  @Getter shouldBalanceBeHidden!: boolean;
   @Getter libraryTheme!: Theme;
   @Getter isLoggedIn!: boolean;
   @Getter account!: any; // TODO: WALLET ACCOUNT TYPE
+
+  @Action toggleHideBalance!: AsyncVoidFn;
 
   switchTheme: AsyncVoidFn = switchTheme;
   goTo = goTo;
