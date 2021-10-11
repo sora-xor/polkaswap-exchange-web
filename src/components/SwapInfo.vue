@@ -12,8 +12,14 @@
     <info-line v-for="(reward, index) in rewardsValues" :key="index" v-bind="reward" />
     <info-line v-if="hasPriceImpact" :label="t('swap.priceImpact')" :label-tooltip="t('swap.priceImpactTooltip')">
       <value-status-wrapper :value="priceImpact">
-        <formatted-amount class="price-impact-value" :value="priceImpactFormatted">%</formatted-amount>
+        <formatted-amount class="swap-value" :value="priceImpactFormatted">%</formatted-amount>
       </value-status-wrapper>
+    </info-line>
+    <info-line :label="t('swap.route')">
+      <div v-for="token in swapRoute" class="liquidity-route swap-value" :key="token">
+        <span>{{ token }}</span>
+        <s-icon name="el-icon el-icon-arrow-right" />
+      </div>
     </info-line>
     <info-line
       :label="t('swap.liquidityProviderFee')"
@@ -80,6 +86,18 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
 
   get liquidityProviderFeeTooltipText(): string {
     return this.t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: this.liquidityProviderFeeValue });
+  }
+
+  get swapRoute(): Array<string> {
+    const fromToken: string = this.tokenFrom?.symbol ?? '';
+    const toToken: string = this.tokenTo?.symbol ?? '';
+    const xorToken: string = KnownSymbols.XOR;
+
+    if ([fromToken, toToken].includes(xorToken)) {
+      return [fromToken, toToken];
+    }
+
+    return [fromToken, xorToken, toToken];
   }
 
   get priceValues(): Array<object> {
@@ -177,7 +195,11 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
     color: inherit;
   }
 }
-.price-impact-value {
+.swap-value {
   font-weight: 600;
+}
+
+.liquidity-route:last-child .el-icon {
+  display: none;
 }
 </style>

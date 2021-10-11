@@ -439,7 +439,8 @@
         "confirmSwap": "Confirm swap",
         "swapOutputMessage": "Output is estimated. You will receive at least {transactionValue} or the transaction will revert.",
         "rewardsForSwap": "PSWAP Strategic Rewards",
-        "swapInputMessage": "Input is estimated. You will sell maximum {transactionValue} or the transaction will revert."
+        "swapInputMessage": "Input is estimated. You will sell maximum {transactionValue} or the transaction will revert.",
+        "route": "Route"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
