@@ -17,7 +17,7 @@
     </info-line>
     <info-line :label="t('swap.route')">
       <value-status-wrapper>
-        <div v-for="(token, index) in liquidityPoolRoute" class="price-impact-value liquidity-route" :key="index">
+        <div v-for="token in swapRoute" class="price-impact-value liquidity-route" :key="token">
           <span>{{ token }}</span>
           <s-icon name="el-icon el-icon-arrow-right" />
         </div>
@@ -90,12 +90,12 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
     return this.t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: this.liquidityProviderFeeValue });
   }
 
-  get liquidityPoolRoute() {
-    const fromToken = this.tokenFrom.symbol;
-    const toToken = this.tokenTo.symbol;
-    const xorToken = KnownSymbols.XOR;
+  get swapRoute(): Array<string> {
+    const fromToken: string = this.tokenFrom?.symbol ?? '';
+    const toToken: string = this.tokenTo?.symbol ?? '';
+    const xorToken: string = KnownSymbols.XOR;
 
-    if (fromToken === xorToken || toToken === xorToken) {
+    if ([fromToken, toToken].includes(xorToken)) {
       return [fromToken, toToken];
     }
 
