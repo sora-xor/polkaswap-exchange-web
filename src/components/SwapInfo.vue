@@ -15,6 +15,14 @@
         <formatted-amount class="price-impact-value" :value="priceImpactFormatted">%</formatted-amount>
       </value-status-wrapper>
     </info-line>
+    <info-line :label="t('swap.route')">
+      <value-status-wrapper>
+        <div v-for="(token, index) in liquidityPoolRoute" class="price-impact-value liquidity-route" :key="index">
+          <span>{{ token }}</span>
+          <s-icon name="el-icon el-icon-arrow-right" />
+        </div>
+      </value-status-wrapper>
+    </info-line>
     <info-line
       :label="t('swap.liquidityProviderFee')"
       :label-tooltip="liquidityProviderFeeTooltipText"
@@ -80,6 +88,18 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
 
   get liquidityProviderFeeTooltipText(): string {
     return this.t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: this.liquidityProviderFeeValue });
+  }
+
+  get liquidityPoolRoute() {
+    const fromToken = this.tokenFrom.symbol;
+    const toToken = this.tokenTo.symbol;
+    const xorToken = KnownSymbols.XOR;
+
+    if (fromToken === xorToken || toToken === xorToken) {
+      return [fromToken, toToken];
+    }
+
+    return [fromToken, xorToken, toToken];
   }
 
   get priceValues(): Array<object> {
@@ -179,5 +199,9 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
 }
 .price-impact-value {
   font-weight: 600;
+}
+
+.liquidity-route:last-child .el-icon {
+  display: none;
 }
 </style>
