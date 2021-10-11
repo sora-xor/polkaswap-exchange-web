@@ -439,7 +439,8 @@
         "confirmSwap": "Konfirmasi swap",
         "swapOutputMessage": "Keluaran diperkirakan. Anda akan menerima setidaknya {transactionValue} atau transaksi akan dibatalkan.",
         "rewardsForSwap": "Reward Strategis PSWAP",
-        "swapInputMessage": "Masukan diperkirakan. Anda akan menjual maksimum {transactionValue} atau transaksi akan kembali."
+        "swapInputMessage": "Masukan diperkirakan. Anda akan menjual maksimum {transactionValue} atau transaksi akan kembali.",
+        "route": "Rute"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",

@@ -439,7 +439,8 @@
         "confirmSwap": "Swap bevestigen",
         "swapOutputMessage": "De output wordt geschat. U ontvangt minimaal {transactionValue} of de transactie wordt teruggedraaid.",
         "rewardsForSwap": "PSWAP Strategische Beloningen",
-        "swapInputMessage": "Invoer wordt geschat. U verkoopt maximaal {transactionValue} of de transactie wordt teruggedraaid."
+        "swapInputMessage": "Invoer wordt geschat. U verkoopt maximaal {transactionValue} of de transactie wordt teruggedraaid.",
+        "route": "Route"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
