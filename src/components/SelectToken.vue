@@ -40,8 +40,9 @@
               </s-col>
               <div v-if="connected" class="token-item__balance-container">
                 <formatted-amount-with-fiat-value
-                  v-if="formatBalance(token) !== formattedZeroSymbol"
+                  v-if="formatBalance(token) !== FormattedZeroSymbol"
                   value-class="token-item__balance"
+                  value-can-be-hidden
                   :value="formatBalance(token)"
                   :font-size-rate="FontSizeRate.MEDIUM"
                   :has-fiat-value="shouldFiatBeShown(token)"
@@ -49,7 +50,9 @@
                   :fiat-font-size-rate="FontSizeRate.MEDIUM"
                   :fiat-font-weight-rate="FontWeightRate.MEDIUM"
                 />
-                <span v-else class="token-item__balance">{{ formattedZeroSymbol }}</span>
+                <span v-else class="token-item__balance">{{
+                  shouldBalanceBeHidden ? HiddenValue : FormattedZeroSymbol
+                }}</span>
               </div>
             </div>
           </div>
@@ -145,8 +148,9 @@
                 </s-col>
                 <div v-if="connected" class="token-item__balance-container">
                   <formatted-amount-with-fiat-value
-                    v-if="formatBalance(token) !== formattedZeroSymbol"
+                    v-if="formatBalance(token) !== FormattedZeroSymbol"
                     value-class="token-item__balance"
+                    value-can-be-hidden
                     :value="formatBalance(token)"
                     :font-size-rate="FontSizeRate.MEDIUM"
                     :has-fiat-value="shouldFiatBeShown(token)"
@@ -154,7 +158,9 @@
                     :fiat-font-size-rate="FontSizeRate.MEDIUM"
                     :fiat-font-weight-rate="FontWeightRate.MEDIUM"
                   />
-                  <span v-else class="token-item__balance">{{ formattedZeroSymbol }}</span>
+                  <span v-else class="token-item__balance">{{
+                    shouldBalanceBeHidden ? HiddenValue : FormattedZeroSymbol
+                  }}</span>
                 </div>
                 <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
                   <s-icon name="basic-trash-24" />
@@ -199,11 +205,12 @@ export default class SelectToken extends Mixins(
   SelectAssetMixin,
   LoadingMixin
 ) {
-  private readonly formattedZeroSymbol = '-';
+  readonly FormattedZeroSymbol = '-';
   readonly tokenTabs = ['assets', 'custom'];
 
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
+  readonly HiddenValue = WALLET_CONSTS.HiddenValue;
 
   tabValue = first(this.tokenTabs);
   query = '';
@@ -221,6 +228,7 @@ export default class SelectToken extends Mixins(
   @Getter('nonWhitelistAccountAssets', { namespace }) nonWhitelistAccountAssets!: Array<AccountAsset>;
   @Getter('nonWhitelistAssets', { namespace }) nonWhitelistAssets!: Array<Asset>;
   // Wallet store
+  @Getter shouldBalanceBeHidden!: boolean;
   @Getter whitelistIdsBySymbol!: any;
   @Getter accountAssetsAddressTable!: any;
 
@@ -281,7 +289,7 @@ export default class SelectToken extends Mixins(
   formatBalance(token: AccountAsset): string {
     return formatAssetBalance(token, {
       showZeroBalance: false,
-      formattedZero: this.formattedZeroSymbol,
+      formattedZero: this.FormattedZeroSymbol,
     });
   }
 

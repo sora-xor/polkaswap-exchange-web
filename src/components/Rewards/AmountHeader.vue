@@ -4,14 +4,15 @@
       <div :key="asset.symbol" class="amount-block">
         <formatted-amount
           class="amount-block__amount"
+          symbol-as-decimal
+          value-can-be-hidden
           :value="formatStringValue(amount, asset.decimal)"
           :font-size-rate="FontSizeRate.MEDIUM"
           :asset-symbol="asset.symbol"
-          symbol-as-decimal
         />
       </div>
     </template>
-    <formatted-amount is-fiat-value :value="totalFiatValue" />
+    <formatted-amount is-fiat-value value-can-be-hidden :value="totalFiatValue" />
   </div>
 </template>
 

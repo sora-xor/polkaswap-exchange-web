@@ -52,8 +52,9 @@
                   </s-col>
                   <div class="asset-item__balance-container">
                     <formatted-amount-with-fiat-value
-                      v-if="formattedAssetBalance !== formattedZeroSymbol"
+                      v-if="formattedAssetBalance !== FormattedZeroSymbol"
                       value-class="asset-item__balance"
+                      value-can-be-hidden
                       :value="formattedAssetBalance"
                       :font-size-rate="FontSizeRate.MEDIUM"
                       :has-fiat-value="shouldFiatBeShown(asset)"
@@ -61,7 +62,9 @@
                       :fiat-font-size-rate="FontSizeRate.MEDIUM"
                       :fiat-font-weight-rate="FontWeightRate.MEDIUM"
                     />
-                    <span v-else class="asset-item__balance">{{ formattedZeroSymbol }}</span>
+                    <span v-else class="asset-item__balance">{{
+                      shouldBalanceBeHidden ? HiddenValue : FormattedZeroSymbol
+                    }}</span>
                   </div>
                 </div>
               </div>
@@ -151,7 +154,8 @@ export default class SelectRegisteredAsset extends Mixins(
 
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
-  readonly formattedZeroSymbol = '-';
+  readonly FormattedZeroSymbol = '-';
+  readonly HiddenValue = WALLET_CONSTS.HiddenValue;
 
   tabValue = this.tokenTabs[0];
   customAddress = '';
@@ -164,7 +168,9 @@ export default class SelectRegisteredAsset extends Mixins(
   @Getter('whitelistAssets', { namespace }) whitelistAssets!: Array<Asset>;
   @Getter('isSoraToEvm', { namespace: 'bridge' }) isSoraToEvm!: boolean;
   @Getter('registeredAssets', { namespace }) registeredAssets!: Array<RegisteredAccountAsset>;
-  @Getter accountAssetsAddressTable; // Wallet store
+  // Wallet store
+  @Getter accountAssetsAddressTable;
+  @Getter shouldBalanceBeHidden!: boolean;
 
   @Action('getCustomAsset', { namespace }) getAsset;
 
@@ -212,7 +218,7 @@ export default class SelectRegisteredAsset extends Mixins(
     return formatAssetBalance(asset, {
       internal: this.isSoraToEvm,
       showZeroBalance: false,
-      formattedZero: this.formattedZeroSymbol,
+      formattedZero: this.FormattedZeroSymbol,
     });
   }
 
