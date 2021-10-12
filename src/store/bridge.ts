@@ -522,7 +522,6 @@ const actions = {
   },
   /**
    * Fetch EVM Network fee for selected bridge asset
-   * @returns
    */
   async getEvmNetworkFee({ dispatch, commit, getters }) {
     if (!getters.asset || !getters.asset.address) {

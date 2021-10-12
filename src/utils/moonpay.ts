@@ -26,6 +26,15 @@ export interface MoonpayTransaction {
   status: MoonpayTransactionStatus;
 }
 
+export interface MoonpayCurrency {
+  id: string;
+  code: string;
+}
+
+export type MoonpayCurrenciesById = {
+  [key: string]: MoonpayCurrency;
+};
+
 export class MoonpayApi {
   public static apiUrl = 'https://api.moonpay.com';
   public publicKey = '';
@@ -56,30 +65,17 @@ export class MoonpayApi {
     return url;
   }
 
-  public setPublicKey(publicKey: string) {
-    this.publicKey = publicKey;
-  }
-
-  public setNetwork(soraNetwork: string) {
-    this.soraNetwork = soraNetwork;
-  }
-
-  public getTransactionById(id: string): Promise<any> {
-    const url = `${MoonpayApi.apiUrl}/v1/transactions/${id}`;
-    return this.apiRequest(url);
-  }
-
-  public getTransactionsByExtId(id: string): Promise<any> {
+  public getTransactionsByExtId(id: string): Promise<Array<MoonpayTransaction>> {
     const url = `${MoonpayApi.apiUrl}/v1/transactions/ext/${id}`;
     return this.apiRequest(url);
   }
 
-  public getCurrencies(): Promise<any> {
+  public getCurrencies(): Promise<Array<MoonpayCurrency>> {
     const url = `${MoonpayApi.apiUrl}/v3/currencies`;
     return this.apiRequest(url);
   }
 
-  private async apiRequest(url: string, params = {}) {
+  private async apiRequest(url: string, params = {}): Promise<any> {
     const options = {
       params: {
         ...this.requiredParams,

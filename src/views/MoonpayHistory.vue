@@ -76,7 +76,6 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, State, Getter } from 'vuex-class';
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import dayjs from 'dayjs';
 import { WALLET_CONSTS, components } from '@soramitsu/soraneo-wallet-web';
 import { BridgeHistory } from '@sora-substrate/util';
@@ -89,9 +88,10 @@ import ethersUtil from '@/utils/ethers-util';
 import { getCssVariableValue, toQueryString } from '@/utils';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-
-import type { MoonpayTransaction } from '@/utils/moonpay';
 import { MoonpayTransactionStatus } from '@/utils/moonpay';
+
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type { MoonpayTransaction, MoonpayCurrenciesById } from '@/utils/moonpay';
 
 const namespace = 'moonpay';
 
@@ -113,7 +113,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
   @State((state) => state.settings.language) language!: string;
   @Getter libraryTheme!: Theme;
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean;
-  @Getter('currenciesById', { namespace }) currenciesById!: any;
+  @Getter('currenciesById', { namespace }) currenciesById!: MoonpayCurrenciesById;
   @Action('getTransactions', { namespace }) getTransactions!: () => Promise<void>;
   @Action('getCurrencies', { namespace }) getCurrencies!: () => Promise<void>;
 
@@ -290,6 +290,8 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
 </style>
 
 <style lang="scss" scoped>
+$list-item-min-height: 76px;
+
 .moonpay-history {
   position: relative;
   display: flex;
@@ -308,6 +310,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
 
   &-list {
     width: 100%;
+    min-height: $list-item-min-height;
     &.empty {
       text-align: center;
     }
@@ -324,6 +327,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
     font-weight: 300;
     padding: $inner-spacing-mini $inner-spacing-medium;
     margin: 0 -#{$inner-spacing-small};
+    min-height: $list-item-min-height;
 
     &:hover {
       background-color: var(--s-color-base-background-hover);

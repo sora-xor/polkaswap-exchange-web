@@ -45,7 +45,7 @@ export default class BridgeHistoryMixin extends Mixins(LoadingMixin) {
     return this.isOutgoingType(type) ? this.networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
   }
 
-  isOutgoingType(type: string | undefined): boolean {
+  isOutgoingType(type: Nullable<string>): boolean {
     return type !== Operation.EthBridgeIncoming;
   }
 

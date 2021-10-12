@@ -51,7 +51,7 @@
         type="primary"
         class="s-typography-button--large"
         :loading="loading"
-        :disabled="!isValidNetworkType || isInsufficientBalance"
+        :disabled="isConfirmButtonDisabled"
         @click="handleConfirm"
       >
         <template v-if="!isValidNetworkType">
@@ -97,7 +97,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   NetworkFormatterMixin
 ) {
   @Prop({ default: ZeroStringValue, type: String }) readonly amount!: string;
-  @Prop({ default: undefined, type: Object }) readonly asset!: Asset;
+  @Prop({ default: () => undefined, type: Object }) readonly asset!: Nullable<Asset>;
   @Prop({ default: BridgeNetworks.ETH_NETWORK_ID, type: Number }) readonly evmNetwork!: BridgeNetworks;
   @Prop({ default: ZeroStringValue, type: String }) readonly evmNetworkFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
@@ -110,6 +110,10 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
 
   get confirmText(): string {
     return this.confirmButtonText || this.t('confirmBridgeTransactionDialog.buttonConfirm');
+  }
+
+  get isConfirmButtonDisabled(): boolean {
+    return !this.isValidNetworkType || this.isInsufficientBalance;
   }
 
   get assetsClasses(): Array<string> {

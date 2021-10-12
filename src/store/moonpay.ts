@@ -11,7 +11,7 @@ import ethersUtil from '@/utils/ethers-util';
 import { EthAddress } from '@/consts';
 
 import type { RegisteredAccountAsset, BridgeHistory } from '@sora-substrate/util';
-import type { MoonpayTransaction } from '@/utils/moonpay';
+import type { MoonpayTransaction, MoonpayCurrency, MoonpayCurrenciesById } from '@/utils/moonpay';
 
 const types = flow(
   flatMap((x) => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -40,7 +40,7 @@ interface MoonpayState {
   transactionsFetching: boolean;
   bridgeTransactionData: Nullable<BridgeHistory>;
   startBridgeButtonVisibility: boolean;
-  currencies: Array<any>;
+  currencies: Array<MoonpayCurrency>;
 }
 
 function initialState(): MoonpayState {
@@ -62,14 +62,14 @@ function initialState(): MoonpayState {
 const state = initialState();
 
 const getters = {
-  lastCompletedTransaction(state: MoonpayState) {
+  lastCompletedTransaction(state: MoonpayState): Nullable<MoonpayTransaction> {
     if (state.pollingTimestamp === 0) return undefined;
 
     return state.transactions.find(
       (tx) => Date.parse(tx.createdAt) >= state.pollingTimestamp && tx.status === 'completed'
     );
   },
-  currenciesById(state: MoonpayState) {
+  currenciesById(state: MoonpayState): MoonpayCurrenciesById {
     return state.currencies.reduce(
       (result, item) => ({
         ...result,
@@ -154,7 +154,7 @@ const actions = {
     commit(types.GET_CURRENCIES_REQUEST);
 
     try {
-      const currencies = await state.api.getCurrencies();
+      const currencies: Array<MoonpayCurrency> = await state.api.getCurrencies();
       commit(types.GET_CURRENCIES_SUCCESS, currencies);
     } catch (error) {
       console.error(error);

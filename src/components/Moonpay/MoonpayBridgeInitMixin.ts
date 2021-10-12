@@ -68,8 +68,8 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   }
 
   initMoonpayApi(): void {
-    this.moonpayApi.setPublicKey(this.apiKeys.moonpay);
-    this.moonpayApi.setNetwork(this.soraNetwork);
+    this.moonpayApi.publicKey = this.apiKeys.moonpay;
+    this.moonpayApi.soraNetwork = this.soraNetwork;
   }
 
   async prepareMoonpayTxForBridgeTransfer(tx: MoonpayTransaction, startBridgeButtonVisibility = false): Promise<void> {
