@@ -558,7 +558,8 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
       .subscribe(this.onChangeSwapReserves);
   }
 
-  private onChangeSwapReserves() {
+  private onChangeSwapReserves(data) {
+    console.log(data);
     if (!this.isAvailable) {
       this.checkSwap();
       this.updatePairLiquiditySources();
