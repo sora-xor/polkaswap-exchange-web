@@ -801,5 +801,15 @@
         "tooltips": {
             "transfer": "Jetons achetés avec succès!\n Cliquez pour démarrer la transaction de pont"
         }
+    },
+    "recievedText": "Reçu",
+    "light": "Léger",
+    "dark": "Sombre",
+    "headerMenu": {
+        "showBalances": "Afficher les soldes",
+        "hideBalances": "Masquer les soldes",
+        "settings": "Paramètres",
+        "switchTheme": "Passer en mode {theme}",
+        "switchLanguage": "Choisissez la langue"
     }
 }

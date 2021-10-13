@@ -17,7 +17,6 @@
     "saveText": "Save",
     "logoutText": "Log out",
     "sendText": "Send",
-    "recievedText": "Recieved",
     "addressText": "Address",
     "amountText": "Amount",
     "confirmText": "Confirm",
@@ -243,8 +242,6 @@
     "marketAlgorithmText": "Market algorithm",
     "firstPerSecond": "{first} per {second}",
     "pairIsNotCreated": "Token pair isn't created",
-    "light": "Light",
-    "dark": "Dark",
     "pageTitle": {
         "Swap": "Swap",
         "Pool": "Pool",
@@ -271,13 +268,6 @@
         "Support": "Support",
         "CreatePair": "Create Pair",
         "Tokens": "Tokens"
-    },
-    "headerMenu": {
-        "showBalances": "Show Balances",
-        "hideBalances": "Hide Balances",
-        "settings": "Settings",
-        "switchTheme": "Switch to {theme} Mode",
-        "switchLanguage": "Choose Language"
     },
     "social": {
         "twitter": "Twitter",
@@ -811,5 +801,15 @@
         "tooltips": {
             "transfer": "Tokens successfully purchased!\nClick to start the bridge transaction"
         }
+    },
+    "recievedText": "Recieved",
+    "light": "Light",
+    "dark": "Dark",
+    "headerMenu": {
+        "showBalances": "Show Balances",
+        "hideBalances": "Hide Balances",
+        "settings": "Settings",
+        "switchTheme": "Switch to {theme} Mode",
+        "switchLanguage": "Choose Language"
     }
 }

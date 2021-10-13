@@ -801,5 +801,15 @@
         "tooltips": {
             "transfer": "Awọn ami ti o ra ni aṣeyọri!\n Tẹ lati bẹrẹ iṣowo afara"
         }
+    },
+    "recievedText": "Ti gba",
+    "light": "Imọlẹ",
+    "dark": "Dudu",
+    "headerMenu": {
+        "showBalances": "Fihan Awọn iwọntunwọnsi",
+        "hideBalances": "Tọju Awọn iwọntunwọnsi",
+        "settings": "Ètò",
+        "switchTheme": "Yipada si {theme} Ipo",
+        "switchLanguage": "Yan Ede"
     }
 }

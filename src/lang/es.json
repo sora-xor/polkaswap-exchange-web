@@ -801,5 +801,15 @@
         "tooltips": {
             "transfer": "¡Tokens comprados con éxito!\nHaga clic para iniciar la transacción del puente"
         }
+    },
+    "recievedText": "Recibido",
+    "light": "Luz",
+    "dark": "Oscuro",
+    "headerMenu": {
+        "showBalances": "Mostrar saldos",
+        "hideBalances": "Ocultar saldos",
+        "settings": "Ajustes",
+        "switchTheme": "Cambiar a {theme} Modo",
+        "switchLanguage": "Elige lengua"
     }
 }
