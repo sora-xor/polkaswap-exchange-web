@@ -52,6 +52,13 @@ $account-control-name-max-width: 200px;
 .account-control {
   letter-spacing: var(--s-letter-spacing-small);
 
+  &:hover,
+  &:focus {
+    [class^='s-icon-'] {
+      color: var(--s-color-base-content-secondary);
+    }
+  }
+
   &-title {
     display: none;
     font-size: var(--s-font-size-small);
