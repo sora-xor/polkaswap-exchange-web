@@ -50,9 +50,9 @@
                   :fiat-font-size-rate="FontSizeRate.MEDIUM"
                   :fiat-font-weight-rate="FontWeightRate.MEDIUM"
                 />
-                <span v-else class="token-item__balance">{{
-                  shouldBalanceBeHidden ? HiddenValue : FormattedZeroSymbol
-                }}</span>
+                <span v-else class="token-item__balance">
+                  {{ shouldBalanceBeHidden ? HiddenValue : FormattedZeroSymbol }}
+                </span>
               </div>
             </div>
           </div>
@@ -158,9 +158,9 @@
                     :fiat-font-size-rate="FontSizeRate.MEDIUM"
                     :fiat-font-weight-rate="FontWeightRate.MEDIUM"
                   />
-                  <span v-else class="token-item__balance">{{
-                    shouldBalanceBeHidden ? HiddenValue : FormattedZeroSymbol
-                  }}</span>
+                  <span v-else class="token-item__balance">
+                    {{ shouldBalanceBeHidden ? HiddenValue : FormattedZeroSymbol }}
+                  </span>
                 </div>
                 <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
                   <s-icon name="basic-trash-24" />
