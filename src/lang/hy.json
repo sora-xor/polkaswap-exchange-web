@@ -34,7 +34,7 @@
         "ClaimRewards": "Հաստատել Պարգևները",
         "andText": "և",
         "finalized": {
-            "Transfer": "Ուղարկվել է{amount} {symbol} դեպի {address}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2}",
             "AddLiquidity": "Մատակարարված {amount} {symbol} և {amount2} {symbol2}",
             "RemoveLiquidity": "Հեռացված {amount} {symbol} և {amount2} {symbol2}",
@@ -43,7 +43,7 @@
             "ClaimRewards": "Պարգևատրումը հաջողությամբ հաստատված է {rewards}"
         },
         "error": {
-            "Transfer": "Չհաջողվեց ուղարկել {amount} {symbol} դեպի {address}",
+            "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
             "Swap": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2}",
             "AddLiquidity": "Չհաջողվեց մատակարարել {amount} {symbol} եւ {amount2} {symbol2}",
             "RemoveLiquidity": "Չհաջողվեց հեռացնել {amount} {symbol} և {amount2} {symbol2}",
@@ -814,5 +814,6 @@
         "settings": "Կարգավորումներ",
         "switchTheme": "Անցնել {theme} ռեժիմի",
         "switchLanguage": "Ընտրեք Լեզուն"
-    }
+    },
+    "sentText": "Ուղարկված է"
 }

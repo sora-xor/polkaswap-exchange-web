@@ -34,7 +34,7 @@
         "ClaimRewards": "Belohnungen beanspruchen",
         "andText": "und",
         "finalized": {
-            "Transfer": "{amount} {symbol} an {address} gesendet",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "{amount} {symbol} gegen {amount2} {symbol2} getauscht",
             "AddLiquidity": "{amount} {symbol} und {amount2} {symbol2} bereitgestellt",
             "RemoveLiquidity": "{amount} {symbol} und {amount2} {symbol2} entfernt",
@@ -802,7 +802,7 @@
             "txReady": "Transaktion bereit für Bridge"
         },
         "tooltips": {
-            "transfer": "Token erfolgreich gekauft!\nKlick hier, um die Bridge-Transaktion zu starten."
+            "transfer": "Token erfolgreich gekauft!\nKlicke hier, um die Bridge-Transaktion zu starten."
         }
     },
     "recievedText": "Erhalten",
@@ -812,7 +812,8 @@
         "showBalances": "Salden anzeigen",
         "hideBalances": "Salden ausblenden",
         "settings": "Einstellungen",
-        "switchTheme": "Wechseln Sie in den {theme} -Modus",
+        "switchTheme": "Wechseln Sie in den {theme}-Modus",
         "switchLanguage": "Sprache wählen"
-    }
+    },
+    "sentText": "Gesendet"
 }

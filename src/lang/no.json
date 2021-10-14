@@ -34,7 +34,7 @@
         "ClaimRewards": "Gjør krav på belønninger",
         "andText": "og",
         "finalized": {
-            "Transfer": "Sendte {amount} {symbol} til {address}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "Byttet {amount} {symbol} for {amount2} {symbol2}",
             "AddLiquidity": "Levert {amount} {symbol} og {amount2} {symbol2}",
             "RemoveLiquidity": "Fjernet {amount} {symbol} og {amount2} {symbol2}",
@@ -814,5 +814,6 @@
         "settings": "Innstillinger",
         "switchTheme": "Bytt til {theme} -modus",
         "switchLanguage": "Velg språk"
-    }
+    },
+    "sentText": "Sendt"
 }
