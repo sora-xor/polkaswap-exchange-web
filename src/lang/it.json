@@ -34,7 +34,7 @@
         "ClaimRewards": "Richiedi ricompense",
         "andText": "e",
         "finalized": {
-            "Transfer": "Inviato {amount} {symbol} a {address}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "Scambiato {amount} {symbol} con {amount2} {symbol2}",
             "AddLiquidity": "Fornito {amount} {symbol} e {amount2} {symbol2}",
             "RemoveLiquidity": "Rimossi {amount} {symbol} e {amount2} {symbol2}",

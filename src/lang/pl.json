@@ -34,7 +34,7 @@
         "ClaimRewards": "Odbierz wynagrodzenie",
         "andText": "i",
         "finalized": {
-            "Transfer": "Wysłano {amount} {symbol} na {address}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "Zamieniono {amount} {symbol} na {amount2} {symbol2}",
             "AddLiquidity": "Dodano {amount} {symbol} i {amount2} {symbol2}",
             "RemoveLiquidity": "Usunięto {amount} {symbol} i {amount2} {symbol2}",

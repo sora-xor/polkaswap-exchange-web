@@ -34,7 +34,7 @@
         "ClaimRewards": "Belohnungen beanspruchen",
         "andText": "und",
         "finalized": {
-            "Transfer": "{amount} {symbol} an {address} gesendet",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "{amount} {symbol} gegen {amount2} {symbol2} getauscht",
             "AddLiquidity": "{amount} {symbol} und {amount2} {symbol2} bereitgestellt",
             "RemoveLiquidity": "{amount} {symbol} und {amount2} {symbol2} entfernt",

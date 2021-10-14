@@ -34,7 +34,7 @@
         "ClaimRewards": "Beloningen claimen",
         "andText": "en",
         "finalized": {
-            "Transfer": "{bedrag} {symbool} verzonden naar {adres}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "{amount} {symbol} geswapped voor {amount2} {symbol2}",
             "AddLiquidity": "Opgegeven {bedrag} {symbool} en {bedrag2} {symbool2}",
             "RemoveLiquidity": "{bedrag} {symbool} en {bedrag2} {symbool2} werden verwijderd",
@@ -43,7 +43,7 @@
             "ClaimRewards": "Beloning succesvol geclaimd {rewards}"
         },
         "error": {
-            "Transfer": "Kon {amount} {symbol} niet verzenden naar {adres}",
+            "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
             "Swap": "Mislukt om {amount} {symbol} te swappen voor {amount2} {symbol2}",
             "AddLiquidity": "Kon {bedrag} {symbool} en {bedrag2} {symbool2} niet toevoegen",
             "RemoveLiquidity": "Het is niet gelukt om {amount} {symbol} en {amount2} {symbol2}",

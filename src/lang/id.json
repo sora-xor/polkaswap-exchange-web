@@ -34,7 +34,7 @@
         "ClaimRewards": "Klaim Reward",
         "andText": "dan",
         "finalized": {
-            "Transfer": "Terkirim {amount} {symbol} ke {address}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "Telah diswap {amount} {symbol} untuk {amount2} {symbol2}",
             "AddLiquidity": "Disuplai {amount} {symbol} dan {amount2} {symbol2}",
             "RemoveLiquidity": "Dihapus {amount} {symbol} dan {amount2} {symbol2}",

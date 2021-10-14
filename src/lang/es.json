@@ -34,7 +34,7 @@
         "ClaimRewards": "Reclamar Recompensas",
         "andText": "y",
         "finalized": {
-            "Transfer": "Enviado {amount} {symbol} a {address}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "Se intercambió {amount} {symbol} por {amount2} {symbol2}",
             "AddLiquidity": "Se proporcionó {amount} {symbol} y {amount2} {symbol2}",
             "RemoveLiquidity": "Se eliminó {amount} {symbol} y {amount2} {symbol2}",

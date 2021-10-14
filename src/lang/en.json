@@ -34,7 +34,7 @@
         "ClaimRewards": "Claim Rewards",
         "andText": "and",
         "finalized": {
-            "Transfer": "Sent {amount} {symbol} to {address}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "Swapped {amount} {symbol} for {amount2} {symbol2}",
             "AddLiquidity": "Supplied {amount} {symbol} and {amount2} {symbol2}",
             "RemoveLiquidity": "Removed {amount} {symbol} and {amount2} {symbol2}",
@@ -43,7 +43,7 @@
             "ClaimRewards": "Reward claimed successfully {rewards}"
         },
         "error": {
-            "Transfer": "Failed to send {amount} {symbol} to {address}",
+            "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
             "Swap": "Failed to swap {amount} {symbol} for {amount2} {symbol2}",
             "AddLiquidity": "Failed to supply {amount} {symbol} and {amount2} {symbol2}",
             "RemoveLiquidity": "Failed to remove {amount} {symbol} and {amount2} {symbol2}",
