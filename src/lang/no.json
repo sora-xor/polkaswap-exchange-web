@@ -254,7 +254,9 @@
         "AddLiquidity": "Legg til likviditet",
         "AddLiquidityId": "Legg til likviditet",
         "RemoveLiquidity": "Fjern likviditet",
-        "PageNotFound": "Side ikke funnet"
+        "PageNotFound": "Side ikke funnet",
+        "Tokens": "Tokens",
+        "Rewards": "Belønninger"
     },
     "mainMenu": {
         "Swap": "Bytte",
@@ -802,5 +804,15 @@
         "tooltips": {
             "transfer": "Tokens er kjøpt!\n Klikk for å starte brotransaksjonen"
         }
+    },
+    "recievedText": "Tok imot",
+    "light": "Lys",
+    "dark": "Mørk",
+    "headerMenu": {
+        "showBalances": "Vis saldoer",
+        "hideBalances": "Skjul saldoer",
+        "settings": "Innstillinger",
+        "switchTheme": "Bytt til {theme} -modus",
+        "switchLanguage": "Velg språk"
     }
 }

@@ -254,7 +254,9 @@
         "AddLiquidity": "Tambah Likuiditas",
         "AddLiquidityId": "Tambah Likuiditas",
         "RemoveLiquidity": "Hapus Likuiditas",
-        "PageNotFound": "Halaman Tidak Ditemukan"
+        "PageNotFound": "Halaman Tidak Ditemukan",
+        "Tokens": "Token",
+        "Rewards": "Hadiah"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -802,5 +804,15 @@
         "tooltips": {
             "transfer": "Token berhasil dibeli!\n Klik untuk memulai transaksi jembatan"
         }
+    },
+    "recievedText": "Diterima",
+    "light": "Lampu",
+    "dark": "Gelap",
+    "headerMenu": {
+        "showBalances": "Tampilkan Saldo",
+        "hideBalances": "Sembunyikan Saldo",
+        "settings": "Pengaturan",
+        "switchTheme": "Beralih ke Mode {theme}",
+        "switchLanguage": "Pilih bahasa"
     }
 }

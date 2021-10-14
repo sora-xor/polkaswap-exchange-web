@@ -254,7 +254,9 @@
         "AddLiquidity": "Aggiungi liquidità",
         "AddLiquidityId": "Aggiungi liquidità",
         "RemoveLiquidity": "Rimuovi liquidità",
-        "PageNotFound": "Pagina non trovata"
+        "PageNotFound": "Pagina non trovata",
+        "Tokens": "Gettoni",
+        "Rewards": "Ricompense"
     },
     "mainMenu": {
         "Swap": "Scambia",
@@ -802,5 +804,15 @@
         "tooltips": {
             "transfer": "Token acquistati con successo!\n Fare clic per avviare la transazione ponte"
         }
+    },
+    "recievedText": "Ricevuto",
+    "light": "Leggero",
+    "dark": "Buio",
+    "headerMenu": {
+        "showBalances": "Mostra saldi",
+        "hideBalances": "Nascondi saldi",
+        "settings": "Impostazioni",
+        "switchTheme": "Passa alla modalità {theme}",
+        "switchLanguage": "Scegli la lingua"
     }
 }

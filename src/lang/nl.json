@@ -254,7 +254,9 @@
         "AddLiquidity": "Liquiditeit toevoegen",
         "AddLiquidityId": "Liquiditeit toevoegen",
         "RemoveLiquidity": "Liquiditeit verwijderen",
-        "PageNotFound": "Pagina niet gevonden"
+        "PageNotFound": "Pagina niet gevonden",
+        "Tokens": "Tokens",
+        "Rewards": "Beloningen"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -802,5 +804,15 @@
         "tooltips": {
             "transfer": "Tokens succesvol gekocht!\n Klik om de overbruggingstransactie te starten"
         }
+    },
+    "recievedText": "Ontvangen",
+    "light": "Licht",
+    "dark": "Donker",
+    "headerMenu": {
+        "showBalances": "Saldi tonen",
+        "hideBalances": "Saldi verbergen",
+        "settings": "Instellingen",
+        "switchTheme": "Overschakelen naar {theme} -modus",
+        "switchLanguage": "Kies een taal"
     }
 }

@@ -254,7 +254,9 @@
         "AddLiquidity": "Liquidität hinzufügen",
         "AddLiquidityId": "Liquidität hinzufügen",
         "RemoveLiquidity": "Liquidität entfernen",
-        "PageNotFound": "Seite nicht gefunden"
+        "PageNotFound": "Seite nicht gefunden",
+        "Tokens": "Token",
+        "Rewards": "Belohnungen"
     },
     "mainMenu": {
         "Swap": "Tauschen",
@@ -802,5 +804,15 @@
         "tooltips": {
             "transfer": "Token erfolgreich gekauft!\nKlick hier, um die Bridge-Transaktion zu starten."
         }
+    },
+    "recievedText": "Erhalten",
+    "light": "Hell",
+    "dark": "Dunkel",
+    "headerMenu": {
+        "showBalances": "Salden anzeigen",
+        "hideBalances": "Salden ausblenden",
+        "settings": "Einstellungen",
+        "switchTheme": "Wechseln Sie in den {theme} -Modus",
+        "switchLanguage": "Sprache wählen"
     }
 }
