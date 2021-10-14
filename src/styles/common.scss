@@ -7,6 +7,8 @@ $font-weight-600: "wght" 600;
 $font-weight-700: "wght" 700;
 $font-weight-800: "wght" 800;
 
+@include generic-input-lines;
+
 /* Networks Icons */
 $s-icon-sora: "\0041";
 $s-icon-eth: "\0044";

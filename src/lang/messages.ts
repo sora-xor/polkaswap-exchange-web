@@ -1,3 +1,4 @@
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import { en as walletEn, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Operation, TransactionStatus, RewardingEvents } from '@sora-substrate/util';
 
@@ -49,6 +50,8 @@ export default {
   pairIsNotCreated: "Token pair isn't created",
   nameText: 'Name',
   addressText: 'Address',
+  [Theme.LIGHT]: 'Light',
+  [Theme.DARK]: 'Dark',
   pageTitle: {
     [PageNames.Swap]: 'Swap',
     [PageNames.Pool]: 'Pool',
@@ -74,6 +77,13 @@ export default {
     [PageNames.Support]: 'Support',
     [PageNames.CreatePair]: 'Create Pair',
     [PageNames.Tokens]: 'Tokens',
+  },
+  headerMenu: {
+    showBalances: 'Show Balances',
+    hideBalances: 'Hide Balances',
+    settings: 'Settings',
+    switchTheme: 'Switch to {theme} Mode',
+    switchLanguage: 'Choose Language',
   },
   social: {
     wiki: '@:soraText Wiki',

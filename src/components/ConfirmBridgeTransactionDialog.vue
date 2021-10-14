@@ -5,7 +5,7 @@
         <span class="token-value">{{ formattedAmount }}</span>
         <div v-if="asset" class="token">
           <i class="s-icon--network s-icon-sora" />
-          {{ formatAssetSymbol(asset.symbol) }}
+          {{ asset.symbol }}
         </div>
       </div>
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
@@ -13,7 +13,7 @@
         <span class="token-value">{{ formattedAmount }}</span>
         <div v-if="asset" class="token token-ethereum">
           <i :class="`s-icon--network s-icon-${getEvmIcon(evmNetwork)}`" />
-          {{ formatAssetSymbol(asset.symbol) }}
+          {{ asset.symbol }}
         </div>
       </div>
     </div>
@@ -74,7 +74,6 @@ import LoadingMixin from '@/components/mixins/LoadingMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { EvmSymbol } from '@/consts';
-import { formatAssetSymbol } from '@/utils';
 
 const namespace = 'bridge';
 
@@ -105,9 +104,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isEthereumToSoraConfirmation!: boolean;
 
-  EvmSymbol = EvmSymbol;
-  KnownSymbols = KnownSymbols;
-  formatAssetSymbol = formatAssetSymbol;
+  readonly KnownSymbols = KnownSymbols;
 
   get formattedAmount(): string {
     return this.amount ? this.formatStringValue(this.amount, this.asset?.decimals) : '';
@@ -134,9 +131,9 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
 
   get currentEvmTokenSymbol(): string {
     if (this.evmNetwork === BridgeNetworks.ENERGY_NETWORK_ID) {
-      return this.EvmSymbol.VT;
+      return EvmSymbol.VT;
     }
-    return this.EvmSymbol.ETH;
+    return EvmSymbol.ETH;
   }
 
   formatFee(fee: string, formattedFee: string): string {

@@ -104,6 +104,7 @@ export enum PageNames {
 }
 
 export enum Components {
+  AppHeader = 'AppHeader',
   GenericPageHeader = 'GenericPageHeader',
   SwapInfo = 'SwapInfo',
   SelectToken = 'SelectToken',
@@ -122,7 +123,7 @@ export enum Components {
   SelectNodeDialog = 'SelectNodeDialog',
   StatusActionBadge = 'StatusActionBadge',
   ExternalLink = 'ExternalLink',
-  HelpDialog = 'HelpDialog',
+  // HelpDialog = 'HelpDialog',
   AboutNetworkDialog = 'AboutNetworkDialog',
   SidebarItemContent = 'SidebarItemContent',
   SelectNetwork = 'SelectNetwork',
