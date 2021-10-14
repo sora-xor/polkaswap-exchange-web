@@ -254,7 +254,9 @@
         "AddLiquidity": "Liquiditeit toevoegen",
         "AddLiquidityId": "Liquiditeit toevoegen",
         "RemoveLiquidity": "Liquiditeit verwijderen",
-        "PageNotFound": "Pagina niet gevonden"
+        "PageNotFound": "Pagina niet gevonden",
+        "Tokens": "Tokens",
+        "Rewards": "Beloningen"
     },
     "mainMenu": {
         "Swap": "Swap",

@@ -8,6 +8,7 @@ export const app = {
   version: pkg.version,
   name: 'Polkaswap',
   email: 'jihoon@tutanota.de',
+  title: 'Polkaswap — The DEX for the Interoperable Future.',
 };
 
 export const WalletPermissions = {

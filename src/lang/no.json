@@ -254,7 +254,9 @@
         "AddLiquidity": "Legg til likviditet",
         "AddLiquidityId": "Legg til likviditet",
         "RemoveLiquidity": "Fjern likviditet",
-        "PageNotFound": "Side ikke funnet"
+        "PageNotFound": "Side ikke funnet",
+        "Tokens": "Tokens",
+        "Rewards": "Belønninger"
     },
     "mainMenu": {
         "Swap": "Bytte",

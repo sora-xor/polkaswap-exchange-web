@@ -254,7 +254,9 @@
         "AddLiquidity": "Fi liquidity si",
         "AddLiquidityId": "Fi liquidity si",
         "RemoveLiquidity": "Yọ liquidity kuro",
-        "PageNotFound": "A o ri ojuwe"
+        "PageNotFound": "A o ri ojuwe",
+        "Tokens": "Awon Tokini",
+        "Rewards": "Ere"
     },
     "mainMenu": {
         "Swap": "Iŕopo",

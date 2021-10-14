@@ -60,6 +60,8 @@ export default {
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
     [PageNames.Wallet]: 'Wallet',
+    [PageNames.Rewards]: 'Rewards',
+    [PageNames.Tokens]: 'Tokens',
     [PageNames.CreatePair]: 'Create Pair',
     [PageNames.AddLiquidity]: 'Add Liquidity',
     [PageNames.RemoveLiquidity]: 'Remove Liquidity',
@@ -300,6 +302,7 @@ export default {
       'Output is estimated. You will receive at least {transactionValue} or the transaction will revert.',
     rewardsForSwap: 'PSWAP Strategic Rewards',
     swapInputMessage: 'Input is estimated. You will sell maximum {transactionValue} or the transaction will revert.',
+    route: 'Route',
   },
   pool: {
     connectWallet: '@:connectWalletText',

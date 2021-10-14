@@ -254,7 +254,9 @@
         "AddLiquidity": "Tambah Likuiditas",
         "AddLiquidityId": "Tambah Likuiditas",
         "RemoveLiquidity": "Hapus Likuiditas",
-        "PageNotFound": "Halaman Tidak Ditemukan"
+        "PageNotFound": "Halaman Tidak Ditemukan",
+        "Tokens": "Token",
+        "Rewards": "Hadiah"
     },
     "mainMenu": {
         "Swap": "Swap",

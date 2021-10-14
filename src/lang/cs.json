@@ -254,7 +254,9 @@
         "AddLiquidity": "Přidat likviditu",
         "AddLiquidityId": "Přidat likviditu",
         "RemoveLiquidity": "Odebrat likviditu",
-        "PageNotFound": "Stránka nenalezena"
+        "PageNotFound": "Stránka nenalezena",
+        "Tokens": "Tokeny",
+        "Rewards": "Odměny"
     },
     "mainMenu": {
         "Swap": "Swap",
