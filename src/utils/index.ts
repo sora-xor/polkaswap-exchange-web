@@ -135,10 +135,6 @@ export async function delay(ms = 50): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export const formatAssetSymbol = (assetSymbol: Nullable<string>): string => {
-  return assetSymbol ?? '';
-};
-
 export const formatDateItem = (date: number): number | string => {
   return date < 10 ? '0' + date : date;
 };
@@ -197,7 +193,7 @@ export const updateDocumentTitle = (to?: any) => {
   if (page && page.name && i18n.te(`pageTitle.${page.name}`)) {
     document.title = `${i18n.t(`pageTitle.${page.name}`)} - ${app.name}`;
   } else {
-    document.title = app.name;
+    document.title = app.title;
   }
 };
 

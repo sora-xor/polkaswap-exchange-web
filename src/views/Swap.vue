@@ -38,8 +38,13 @@
         </div>
         <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="input-value">
           <span class="input-value--uppercase">{{ t('exchange.balance') }}</span>
-          <span class="input-value--primary">{{ formatBalance(tokenFrom) }}</span>
-          <formatted-amount v-if="tokenFromPrice" :value="getFiatBalance(tokenFrom)" is-fiat-value />
+          <formatted-amount-with-fiat-value
+            value-can-be-hidden
+            with-left-shift
+            value-class="input-value--primary"
+            :value="formatBalance(tokenFrom)"
+            :fiat-value="getFiatBalance(tokenFrom)"
+          />
         </div>
       </div>
       <div slot="right" class="s-flex el-buttons">
@@ -62,7 +67,7 @@
         />
       </div>
       <div slot="bottom" class="input-line input-line--footer">
-        <formatted-amount v-if="tokenFrom && tokenFromPrice" :value="fromFiatAmount" is-fiat-value />
+        <formatted-amount v-if="tokenFrom && tokenFromPrice" is-fiat-value :value="fromFiatAmount" />
         <token-address
           v-if="tokenFrom"
           :name="tokenFrom.name"
@@ -103,8 +108,13 @@
         </div>
         <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="input-value">
           <span class="input-value--uppercase">{{ t('exchange.balance') }}</span>
-          <span class="input-value--primary">{{ formatBalance(tokenTo) }}</span>
-          <formatted-amount v-if="tokenToPrice" :value="getFiatBalance(tokenTo)" is-fiat-value />
+          <formatted-amount-with-fiat-value
+            value-can-be-hidden
+            with-left-shift
+            value-class="input-value--primary"
+            :value="formatBalance(tokenTo)"
+            :fiat-value="getFiatBalance(tokenTo)"
+          />
         </div>
       </div>
       <div slot="right" class="s-flex el-buttons">
@@ -117,7 +127,7 @@
       </div>
       <div slot="bottom" class="input-line input-line--footer">
         <div v-if="tokenTo && tokenToPrice" class="price-difference">
-          <formatted-amount :value="toFiatAmount" is-fiat-value />
+          <formatted-amount is-fiat-value :value="toFiatAmount" />
           <value-status-wrapper :value="fiatDifference" class="price-difference__value">
             (<formatted-amount :value="fiatDifferenceFormatted">%</formatted-amount>)
           </value-status-wrapper>
@@ -237,6 +247,7 @@ const namespace = 'swap';
     TokenAddress: lazyComponent(Components.TokenAddress),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     FormattedAmount: components.FormattedAmount,
+    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
 })
 export default class Swap extends Mixins(mixins.FormattedAmountMixin, TranslationMixin, LoadingMixin) {
@@ -690,7 +701,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
 
 <style lang="scss" scoped>
 .el-form--actions {
-  @include generic-input-lines;
   @include buttons;
   @include full-width-button('action-button');
   @include vertical-divider('el-button--switch-tokens', $inner-spacing-medium);

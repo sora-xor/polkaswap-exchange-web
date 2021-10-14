@@ -1,36 +1,6 @@
 <template>
   <s-design-system-provider :value="libraryDesignSystem" id="app">
-    <header class="header">
-      <s-button class="polkaswap-menu" type="action" primary icon="basic-more-horizontal-24" @click="toggleMenu" />
-      <s-button class="polkaswap-logo polkaswap-logo--tablet" type="link" size="large" @click="goTo(PageNames.Swap)">
-        <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo__image" />
-      </s-button>
-      <div class="app-controls s-flex">
-        <s-button type="action" class="theme-control s-pressed" @click="switchTheme">
-          <s-icon :name="themeIcon" size="28" />
-        </s-button>
-        <s-button type="action" class="lang-control s-pressed" @click="openSelectLanguageDialog">
-          <s-icon name="basic-globe-24" size="28" />
-        </s-button>
-        <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openSelectNodeDialog">
-          <token-logo class="node-control__logo" v-bind="nodeLogo" />
-        </s-button>
-        <s-button
-          type="tertiary"
-          :class="['account-control', { 's-pressed': isLoggedIn }]"
-          size="medium"
-          :tooltip="accountTooltip"
-          :disabled="loading"
-          @click="goTo(PageNames.Wallet)"
-        >
-          <div :class="['account-control-title', { name: isLoggedIn }]">{{ accountInfo }}</div>
-          <div class="account-control-icon">
-            <s-icon v-if="!isLoggedIn" name="finance-wallet-24" size="28" />
-            <WalletAvatar v-else :address="account.address" />
-          </div>
-        </s-button>
-      </div>
-    </header>
+    <app-header :loading="loading" @toggle-menu="toggleMenu" />
     <div class="app-main">
       <s-scrollbar
         :class="['app-menu', 'app-sidebar-scrollbar', { visible: menuVisibility }]"
@@ -129,18 +99,14 @@
       </div>
     </div>
 
-    <help-dialog :visible.sync="showHelpDialog" />
-    <select-node-dialog :visible.sync="showSelectNodeDialog" />
-    <select-language-dialog :visible.sync="showSelectLanguageDialog" />
+    <!-- <help-dialog :visible.sync="showHelpDialog" /> -->
   </s-design-system-provider>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
-import { WALLET_CONSTS, components } from '@soramitsu/soraneo-wallet-web';
-import { History, KnownSymbols, connection } from '@sora-substrate/util';
-import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
+import { History, connection } from '@sora-substrate/util';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 
@@ -156,34 +122,25 @@ import {
   SocialNetworkLinks,
   FaucetLink,
   Components,
-  LogoSize,
   Language,
 } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
-import router, { lazyComponent } from '@/router';
-import { formatAddress, preloadFontFace } from '@/utils';
+import router, { goTo, lazyComponent } from '@/router';
+import { preloadFontFace } from '@/utils';
 import { getLocale } from '@/lang';
 import type { ConnectToNodeOptions } from '@/types/nodes';
 import type { SubNetwork } from '@/utils/ethers-util';
 
-const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet;
-const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection;
-
 @Component({
   components: {
-    WalletAvatar: components.WalletAvatar,
     PolkaswapLogo,
     SoraLogo,
-    HelpDialog: lazyComponent(Components.HelpDialog),
+    AppHeader: lazyComponent(Components.AppHeader),
     SidebarItemContent: lazyComponent(Components.SidebarItemContent),
-    SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
-    SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
-    TokenLogo: lazyComponent(Components.TokenLogo),
+    // HelpDialog: lazyComponent(Components.HelpDialog),
   },
 })
 export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
-  readonly nodesFeatureEnabled = true;
-
   readonly SidebarMenuGroups = SidebarMenuGroups;
   readonly SocialNetworkLinks = SocialNetworkLinks;
   readonly FaucetLink = FaucetLink;
@@ -191,27 +148,17 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
 
   readonly PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
 
-  showHelpDialog = false;
-  showSelectLanguageDialog = false;
   menuVisibility = false;
-
-  switchTheme: AsyncVoidFn = switchTheme;
+  // showHelpDialog = false;
 
   @State((state) => state.settings.faucetUrl) faucetUrl!: string;
   @State((state) => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean;
 
   @Getter libraryTheme!: Theme;
   @Getter libraryDesignSystem!: DesignSystem;
-
   @Getter firstReadyTransaction!: History;
-  @Getter isLoggedIn!: boolean;
-  @Getter account!: any;
-  @Getter currentRoute!: WALLET_CONSTS.RouteNames;
-  @Getter chainAndNetworkText!: string;
-  @Getter language!: Language;
 
   // Wallet
-  @Action navigate!: (options: { name: string; params?: object }) => Promise<void>;
   @Action resetAccountAssetsSubscription!: AsyncVoidFn;
   @Action trackActiveTransactions!: AsyncVoidFn;
   @Action resetActiveTransactions!: AsyncVoidFn;
@@ -275,53 +222,17 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
     this.trackActiveTransactions();
   }
 
-  get selectedLanguage(): string {
-    return this.language.toUpperCase();
-  }
-
-  get showSelectNodeDialog(): boolean {
-    return this.selectNodeDialogVisibility;
-  }
-
-  set showSelectNodeDialog(flag: boolean) {
-    this.setSelectNodeDialogVisibility(flag);
-  }
-
-  get themeIcon(): string {
-    return this.libraryTheme === Theme.LIGHT ? 'various-brightness-low-24' : 'various-moon-24';
-  }
-
   get mainMenuActiveColor(): string {
     return this.libraryTheme === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)';
-  }
-
-  get nodeTooltip(): string {
-    if (this.nodeIsConnected) {
-      return this.t('selectNodeConnected', { chain: this.node.chain });
-    }
-    return this.t('selectNodeText');
-  }
-
-  get nodeLogo(): any {
-    return {
-      size: LogoSize.MEDIUM,
-      tokenSymbol: KnownSymbols.XOR,
-    };
   }
 
   get isAboutPage(): boolean {
     return this.$route.name === PageNames.About;
   }
 
-  get accountTooltip(): string {
-    return this.t(`${this.isLoggedIn ? 'connectedAccount' : 'connectWalletTextTooltip'}`);
-  }
-
-  get accountInfo(): string {
-    if (!this.isLoggedIn) {
-      return this.t('connectWalletText');
-    }
-    return this.account.name || formatAddress(this.account.address, 8);
+  goTo(name: PageNames): void {
+    goTo(name);
+    this.menuVisibility = false;
   }
 
   getCurrentPath(): string {
@@ -332,19 +243,6 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
       return PageNames.Bridge;
     }
     return router.currentRoute.name as string;
-  }
-
-  goTo(name: PageNames): void {
-    if (name === PageNames.Wallet) {
-      if (!this.isLoggedIn) {
-        this.navigate({ name: WALLET_CONNECTION_ROUTE });
-      } else if (this.currentRoute !== WALLET_DEFAULT_ROUTE) {
-        this.navigate({ name: WALLET_DEFAULT_ROUTE });
-      }
-    }
-
-    this.changePage(name);
-    this.closeMenu();
   }
 
   toggleMenu(): void {
@@ -364,24 +262,9 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
     }
   }
 
-  private changePage(name: PageNames): void {
-    if (router.currentRoute.name === name) {
-      return;
-    }
-    router.push({ name });
-  }
-
-  openHelpDialog(): void {
-    this.showHelpDialog = true;
-  }
-
-  openSelectNodeDialog(): void {
-    this.setSelectNodeDialogVisibility(true);
-  }
-
-  openSelectLanguageDialog(): void {
-    this.showSelectLanguageDialog = true;
-  }
+  // openHelpDialog(): void {
+  //   this.showHelpDialog = true;
+  // }
 
   async beforeDestroy(): Promise<void> {
     await this.resetFiatPriceAndApySubscription();
@@ -449,20 +332,6 @@ ul ul {
     &__about &-scrollbar .el-scrollbar__wrap {
       overflow-x: auto;
     }
-  }
-}
-
-.account-control {
-  &-icon {
-    svg circle:first-child {
-      fill: var(--s-color-utility-surface);
-    }
-  }
-  span {
-    flex-direction: row-reverse;
-  }
-  [class^='s-icon-'] {
-    @include icon-styles;
   }
 }
 
@@ -645,10 +514,10 @@ i.icon-divider {
 </style>
 
 <style lang="scss" scoped>
-$header-height: 64px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
-$account-control-name-max-width: 200px;
+
+@include polkaswap-logo;
 
 .app {
   &-main {
@@ -784,33 +653,6 @@ $account-control-name-max-width: 200px;
   }
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  padding: $inner-spacing-mini;
-  min-height: $header-height;
-  position: relative;
-
-  @include tablet {
-    padding: $inner-spacing-mini $inner-spacing-medium;
-
-    &:after {
-      left: $inner-spacing-medium;
-      right: $inner-spacing-medium;
-    }
-  }
-
-  &:after {
-    content: '';
-    position: absolute;
-    height: 1px;
-    bottom: 0;
-    left: $inner-spacing-mini;
-    right: $inner-spacing-mini;
-    background-color: var(--s-color-base-border-secondary);
-  }
-}
-
 .menu {
   padding: 0;
   border-right: none;
@@ -875,101 +717,6 @@ $account-control-name-max-width: 200px;
         padding: 0 13px;
       }
     }
-  }
-}
-
-.polkaswap-logo {
-  background-size: cover;
-  width: var(--s-size-medium);
-  height: var(--s-size-medium);
-  border-radius: 0;
-
-  &.el-button {
-    padding: 0;
-    margin: 0;
-  }
-
-  &--tablet {
-    display: none;
-    background-image: url('~@/assets/img/pswap.svg');
-
-    @include large-mobile {
-      display: block;
-    }
-
-    @include tablet {
-      margin-bottom: 0;
-      width: 172px;
-      height: 46px;
-      background-image: none;
-    }
-
-    .polkaswap-logo__image {
-      visibility: hidden;
-
-      @include tablet {
-        visibility: visible;
-      }
-    }
-  }
-}
-
-.polkaswap-menu {
-  @include large-mobile {
-    display: none;
-  }
-}
-
-.app-controls {
-  margin-left: auto;
-
-  & > *:not(:last-child) {
-    margin-right: $inner-spacing-mini;
-  }
-
-  .el-button {
-    + .el-button {
-      margin-left: 0;
-    }
-  }
-}
-
-.node-control {
-  @include element-size('token-logo', 28px);
-  .token-logo {
-    display: block;
-    margin: auto;
-  }
-}
-
-.account-control {
-  letter-spacing: var(--s-letter-spacing-small);
-
-  &-title {
-    font-size: var(--s-font-size-small);
-    max-width: $account-control-name-max-width;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    &.name {
-      text-transform: none;
-    }
-  }
-  &.s-tertiary {
-    &.el-button {
-      padding-left: $basic-spacing-mini;
-    }
-    .account-control-title {
-      margin-left: $basic-spacing-mini;
-    }
-  }
-  &-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--s-size-small);
-    height: var(--s-size-small);
-    overflow: hidden;
-    border-radius: 50%;
   }
 }
 
