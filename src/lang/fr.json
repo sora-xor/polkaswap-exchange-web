@@ -254,7 +254,9 @@
         "AddLiquidity": "Ajouter de la liquidité",
         "AddLiquidityId": "Ajouter de la liquidité",
         "RemoveLiquidity": "Retirer de la liquidité",
-        "PageNotFound": "Page introuvable"
+        "PageNotFound": "Page introuvable",
+        "Tokens": "Jetons",
+        "Rewards": "Récompenses"
     },
     "mainMenu": {
         "Swap": "Échanger",

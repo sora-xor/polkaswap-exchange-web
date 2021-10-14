@@ -254,7 +254,9 @@
         "AddLiquidity": "Add Liquidity",
         "AddLiquidityId": "Add Liquidity",
         "RemoveLiquidity": "Remove Liquidity",
-        "PageNotFound": "Page Not Found"
+        "PageNotFound": "Page Not Found",
+        "Tokens": "Tokens",
+        "Rewards": "Rewards"
     },
     "mainMenu": {
         "Swap": "Swap",

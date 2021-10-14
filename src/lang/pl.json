@@ -254,7 +254,9 @@
         "AddLiquidity": "Dodawanie płynności",
         "AddLiquidityId": "Dodawanie płynności",
         "RemoveLiquidity": "Usuwanie płynności",
-        "PageNotFound": "Nie znaleziono strony."
+        "PageNotFound": "Nie znaleziono strony.",
+        "Tokens": "Tokeny",
+        "Rewards": "Nagrody"
     },
     "mainMenu": {
         "Swap": "Zamiana",

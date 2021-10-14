@@ -193,7 +193,7 @@ export const updateDocumentTitle = (to?: any) => {
   if (page && page.name && i18n.te(`pageTitle.${page.name}`)) {
     document.title = `${i18n.t(`pageTitle.${page.name}`)} - ${app.name}`;
   } else {
-    document.title = app.name;
+    document.title = app.title;
   }
 };
 

@@ -254,7 +254,9 @@
         "AddLiquidity": "Añadir Liquidez",
         "AddLiquidityId": "Añadir Liquidez",
         "RemoveLiquidity": "Remover Liquidez",
-        "PageNotFound": "Página no encontrada"
+        "PageNotFound": "Página no encontrada",
+        "Tokens": "Tokens",
+        "Rewards": "Recompensas"
     },
     "mainMenu": {
         "Swap": "Intercambio",

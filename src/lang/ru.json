@@ -254,7 +254,9 @@
         "AddLiquidity": "Добавить ликвидность",
         "AddLiquidityId": "Добавить ликвидность",
         "RemoveLiquidity": "Забрать ликвидность",
-        "PageNotFound": "Страница не найдена"
+        "PageNotFound": "Страница не найдена",
+        "Tokens": "Токены",
+        "Rewards": "Награды"
     },
     "mainMenu": {
         "Swap": "Обмен",
