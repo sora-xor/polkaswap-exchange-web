@@ -204,3 +204,15 @@ export const preloadFontFace = async (name: string): Promise<void> => {
     console.error(err);
   }
 };
+
+export const getCssVariableValue = (name: string): string => {
+  return getComputedStyle(document.documentElement as any)
+    .getPropertyValue(name)
+    .trim();
+};
+
+export const toQueryString = (params: any): string => {
+  return Object.entries(params)
+    .map(([key, value]) => `${key}=${encodeURIComponent(value as string)}`)
+    .join('&');
+};

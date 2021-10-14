@@ -273,7 +273,6 @@
     >
       {{ t('bridgeTransaction.newTransaction') }}
     </s-button>
-    <confirm-bridge-transaction-dialog :visible.sync="showConfirmTransactionDialog" @confirm="confirmTransaction" />
   </div>
 </template>
 
@@ -335,7 +334,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   @Getter('evmTransactionHash', { namespace }) evmTransactionHash!: string;
   @Getter('soraTransactionDate', { namespace }) soraTransactionDate!: string;
   @Getter('evmTransactionDate', { namespace }) evmTransactionDate!: string;
-  @Getter('currentTransactionState', { namespace }) currentTransactionState!: STATES;
+  @Getter('currentTransactionState', { namespace }) currentState!: STATES;
   @Getter('initialTransactionState', { namespace }) initialTransactionState!: STATES;
   @Getter('transactionStep', { namespace }) transactionStep!: number;
   @Getter('historyItem', { namespace }) historyItem!: any;
@@ -378,7 +377,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   };
 
   activeTransactionStep: any = [this.transactionSteps.from, this.transactionSteps.to];
-  showConfirmTransactionDialog = false;
 
   get formattedAmount(): string {
     return this.amount && this.asset ? new FPNumber(this.amount, this.asset.decimals).toLocaleString() : '';
@@ -411,10 +409,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
       return this.getFiatAmountByString(this.amount, this.asset);
     }
     return null;
-  }
-
-  get currentState(): STATES {
-    return this.currentTransactionState;
   }
 
   get isTransactionStep1(): boolean {
@@ -706,9 +700,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     const historyItem = this.historyItem ? this.historyItem : await this.generateHistoryItem({ date: Date.now() });
     const machineStates = this.isSoraToEvm ? SORA_EVM_STATES : EVM_SORA_STATES;
     const initialState =
-      this.initialTransactionState === this.currentTransactionState
-        ? this.initialTransactionState
-        : this.currentTransactionState;
+      this.initialTransactionState === this.currentState ? this.initialTransactionState : this.currentState;
     this.sendService = interpret(
       createFSM(
         {
@@ -913,18 +905,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
         this.callSecondTransition();
       }
     });
-  }
-
-  async confirmTransaction(isTransactionConfirmed: boolean) {
-    if (isTransactionConfirmed) {
-      if (this.isTransactionFromFailed || this.isTransactionToFailed) {
-        this.callRetryTransition();
-      } else {
-        if (this.isTransactionStep2) {
-          this.callSecondTransition();
-        }
-      }
-    }
   }
 
   handleBack(): void {

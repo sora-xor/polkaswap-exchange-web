@@ -12,8 +12,12 @@
     class="dialog-wrapper"
   >
     <template #title>
-      <span class="el-dialog__title">{{ title }}</span>
-      <s-button class="el-dialog__close" type="action" icon="x-16" @click="isVisible = false" />
+      <slot name="title">
+        <span class="el-dialog__title">{{ title }}</span>
+      </slot>
+      <slot name="close">
+        <s-button class="el-dialog__close" type="action" icon="x-16" @click="closeDialog" />
+      </slot>
     </template>
     <slot />
     <slot slot="footer" name="footer" />
