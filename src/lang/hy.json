@@ -802,5 +802,15 @@
         "tooltips": {
             "transfer": "Նշանները հաջողությամբ գնվեցին\n Կտտացրեք կամուրջի գործարքը սկսելու համար"
         }
+    },
+    "recievedText": "Ստացվել է",
+    "light": "Լույս",
+    "dark": "Մութ",
+    "headerMenu": {
+        "showBalances": "Showույց տալ հաշվեկշիռները",
+        "hideBalances": "Թաքցնել հավասարակշռությունները",
+        "settings": "Կարգավորումներ",
+        "switchTheme": "Անցնել {theme} ռեժիմի",
+        "switchLanguage": "Ընտրեք Լեզուն"
     }
 }

@@ -51,12 +51,12 @@
             </div>
             <div v-if="isNetworkAConnected && isAssetSelected" class="input-value">
               <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
-              <span class="input-value--uppercase input-value--primary">{{ formatBalance(isSoraToEvm) }}</span>
-              <formatted-amount
-                v-if="asset && isSoraToEvm"
-                :value="getFiatBalance(asset)"
-                is-fiat-value
+              <formatted-amount-with-fiat-value
+                value-can-be-hidden
                 with-left-shift
+                value-class="input-value--primary"
+                :value="formatBalance(isSoraToEvm)"
+                :fiat-value="isSoraToEvm ? getFiatBalance(asset) : undefined"
               />
             </div>
           </div>
@@ -83,8 +83,8 @@
             <div class="input-line input-line--footer">
               <formatted-amount
                 v-if="asset && isSoraToEvm"
-                :value="getFiatAmountByString(amount, asset)"
                 is-fiat-value
+                :value="getFiatAmountByString(amount, asset)"
               />
               <token-address v-if="isAssetSelected" v-bind="asset" :external="!isSoraToEvm" class="input-value" />
             </div>
@@ -124,12 +124,12 @@
             </div>
             <div v-if="isNetworkAConnected && isAssetSelected" class="input-value">
               <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
-              <span class="input-value--uppercase input-value--primary">{{ formatBalance(!isSoraToEvm) }}</span>
-              <formatted-amount
-                v-if="asset && !isSoraToEvm"
-                :value="getFiatBalance(asset)"
-                is-fiat-value
+              <formatted-amount-with-fiat-value
+                value-can-be-hidden
                 with-left-shift
+                value-class="input-value--primary"
+                :value="formatBalance(!isSoraToEvm)"
+                :fiat-value="!isSoraToEvm ? getFiatBalance(asset) : undefined"
               />
             </div>
           </div>
@@ -183,9 +183,7 @@
             {{ t('buttons.enterAmount') }}
           </template>
           <template v-else-if="isInsufficientBalance">
-            {{
-              t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: formatAssetSymbol(assetSymbol) })
-            }}
+            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: assetSymbol }) }}
           </template>
           <template v-else-if="isInsufficientXorForFee">
             {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
@@ -260,7 +258,6 @@ import {
   hasInsufficientXorForFee,
   hasInsufficientEvmNativeTokenForFee,
   getMaxValue,
-  formatAssetSymbol,
   getAssetBalance,
   findAssetInCollection,
   asZeroValue,
@@ -280,6 +277,7 @@ const namespace = 'bridge';
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
     FormattedAmount: components.FormattedAmount,
+    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     InfoLine: components.InfoLine,
   },
 })
@@ -325,7 +323,6 @@ export default class Bridge extends Mixins(
 
   EvmSymbol = EvmSymbol;
   KnownSymbols = KnownSymbols;
-  formatAssetSymbol = formatAssetSymbol;
   isFieldAmountFocused = false;
   showSelectTokenDialog = false;
   showSelectNetworkDialog = false;
@@ -585,7 +582,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
   align-items: center;
   &-content {
     @include bridge-content;
-    @include generic-input-lines;
     @include token-styles;
     @include vertical-divider('s-button--switch', $inner-spacing-medium);
     @include vertical-divider('s-divider-tertiary');

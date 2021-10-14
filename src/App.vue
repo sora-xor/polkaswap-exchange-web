@@ -1,33 +1,6 @@
 <template>
   <s-design-system-provider :value="libraryDesignSystem" id="app" class="app">
-    <header class="header">
-      <s-button class="app-menu-button" type="action" primary icon="basic-more-horizontal-24" @click="toggleMenu" />
-      <app-logo-button class="app-logo--header" responsive :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
-      <div v-if="moonpayEnabled" class="app-controls app-controls--moonpay s-flex">
-        <s-button
-          type="tertiary"
-          size="medium"
-          icon="various-atom-24"
-          class="moonpay-button moonpay-button--buy"
-          @click="openMoonpayDialog"
-        >
-          <span class="moonpay-button-text">{{ t('moonpay.buttons.buy') }}</span>
-        </s-button>
-        <moonpay-history-button v-if="isLoggedIn" class="moonpay-button moonpay-button--history" />
-      </div>
-      <div class="app-controls s-flex">
-        <s-button type="action" class="theme-control s-pressed" @click="switchTheme">
-          <s-icon :name="themeIcon" size="28" />
-        </s-button>
-        <s-button type="action" class="lang-control s-pressed" @click="openSelectLanguageDialog">
-          <s-icon name="basic-globe-24" size="28" />
-        </s-button>
-        <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openSelectNodeDialog">
-          <token-logo class="node-control__logo" v-bind="nodeLogo" />
-        </s-button>
-        <account-button :disabled="loading" @click="goTo(PageNames.Wallet)" />
-      </div>
-    </header>
+    <app-header :loading="loading" @toggle-menu="toggleMenu" />
     <div class="app-main">
       <app-menu @click.native="handleAppMenuClick" :visible="menuVisibility" :on-select="goTo">
         <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
@@ -49,80 +22,47 @@
         </s-scrollbar>
       </div>
     </div>
-
-    <select-node-dialog />
-    <select-language-dialog :visible.sync="showSelectLanguageDialog" />
-
-    <template v-if="moonpayEnabled">
-      <moonpay />
-      <moonpay-notification />
-      <moonpay-confirmation />
-    </template>
   </s-design-system-provider>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { History, KnownSymbols, connection } from '@sora-substrate/util';
-import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
+import { History, connection } from '@sora-substrate/util';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 
 import TransactionMixin from '@/components/mixins/TransactionMixin';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
-import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
-import PolkaswapLogo from '@/components/logo/Polkaswap.vue';
 import SoraLogo from '@/components/logo/Sora.vue';
 
-import { PageNames, Components, LogoSize, Language } from '@/consts';
+import { PageNames, Components, Language } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
-import router, { lazyComponent } from '@/router';
+import router, { goTo, lazyComponent } from '@/router';
 import { preloadFontFace } from '@/utils';
 import { getLocale } from '@/lang';
 import type { ConnectToNodeOptions } from '@/types/nodes';
 import type { SubNetwork } from '@/utils/ethers-util';
 
-const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet;
-const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection;
-
 @Component({
   components: {
-    PolkaswapLogo,
     SoraLogo,
-    AccountButton: lazyComponent(Components.AccountButton),
-    AppLogoButton: lazyComponent(Components.AppLogoButton),
+    AppHeader: lazyComponent(Components.AppHeader),
     AppMenu: lazyComponent(Components.AppMenu),
-    SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
-    SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
-    TokenLogo: lazyComponent(Components.TokenLogo),
-    Moonpay: lazyComponent(Components.Moonpay),
-    MoonpayNotification: lazyComponent(Components.MoonpayNotification),
-    MoonpayHistoryButton: lazyComponent(Components.MoonpayHistoryButton),
-    MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
+    AppLogoButton: lazyComponent(Components.AppLogoButton),
   },
 })
-export default class App extends Mixins(TransactionMixin, NodeErrorMixin, WalletConnectMixin) {
-  readonly nodesFeatureEnabled = true;
+export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
   readonly PageNames = PageNames;
+  readonly PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
 
-  showSelectLanguageDialog = false;
   menuVisibility = false;
-
-  switchTheme: AsyncVoidFn = switchTheme;
 
   @Getter libraryTheme!: Theme;
   @Getter libraryDesignSystem!: DesignSystem;
-
   @Getter firstReadyTransaction!: History;
-  @Getter isLoggedIn!: boolean;
-  @Getter currentRoute!: WALLET_CONSTS.RouteNames;
-  @Getter language!: Language;
-  @Getter moonpayEnabled!: boolean;
 
   // Wallet
-  @Action navigate!: (options: { name: string; params?: object }) => Promise<void>;
   @Action resetAccountAssetsSubscription!: AsyncVoidFn;
   @Action trackActiveTransactions!: AsyncVoidFn;
   @Action resetActiveTransactions!: AsyncVoidFn;
@@ -139,7 +79,6 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
   @Action setFeatureFlags!: (options: any) => Promise<void>;
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>;
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
-  @Action('setDialogVisibility', { namespace: 'moonpay' }) setMoonpayVisibility!: (flag: boolean) => Promise<void>;
 
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History): void {
@@ -191,30 +130,8 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
     this.trackActiveTransactions();
   }
 
-  get selectedLanguage(): string {
-    return this.language.toUpperCase();
-  }
-
-  get themeIcon(): string {
-    return this.libraryTheme === Theme.LIGHT ? 'various-brightness-low-24' : 'various-moon-24';
-  }
-
   get mainMenuActiveColor(): string {
     return this.libraryTheme === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)';
-  }
-
-  get nodeTooltip(): string {
-    if (this.nodeIsConnected) {
-      return this.t('selectNodeConnected', { chain: this.node.chain });
-    }
-    return this.t('selectNodeText');
-  }
-
-  get nodeLogo(): any {
-    return {
-      size: LogoSize.MEDIUM,
-      tokenSymbol: KnownSymbols.XOR,
-    };
   }
 
   get isAboutPage(): boolean {
@@ -222,15 +139,7 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
   }
 
   goTo(name: PageNames): void {
-    if (name === PageNames.Wallet) {
-      if (!this.isLoggedIn) {
-        this.navigate({ name: WALLET_CONNECTION_ROUTE });
-      } else if (this.currentRoute !== WALLET_DEFAULT_ROUTE) {
-        this.navigate({ name: WALLET_DEFAULT_ROUTE });
-      }
-    }
-
-    this.changePage(name);
+    goTo(name);
     this.closeMenu();
   }
 
@@ -249,30 +158,6 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin, Wallet
     if (!sidebar) {
       this.closeMenu();
     }
-  }
-
-  private changePage(name: PageNames): void {
-    if (router.currentRoute.name === name) {
-      return;
-    }
-    router.push({ name });
-  }
-
-  openSelectNodeDialog(): void {
-    this.setSelectNodeDialogVisibility(true);
-  }
-
-  openSelectLanguageDialog(): void {
-    this.showSelectLanguageDialog = true;
-  }
-
-  async openMoonpayDialog(): Promise<void> {
-    if (!this.isSoraAccountConnected) {
-      return this.connectInternalWallet();
-    }
-    await this.checkConnectionToExternalAccount(async () => {
-      await this.setMoonpayVisibility(true);
-    });
   }
 
   async beforeDestroy(): Promise<void> {
@@ -341,43 +226,6 @@ ul ul {
     &__about &-scrollbar .el-scrollbar__wrap {
       overflow-x: auto;
     }
-  }
-}
-
-.moonpay-button {
-  &.el-button.neumorphic.s-medium {
-    padding-left: 9px;
-    padding-right: 9px;
-  }
-
-  &--buy {
-    max-width: 114px;
-  }
-
-  &--history {
-    max-width: 134px;
-
-    .moonpay-button-text {
-      display: none;
-
-      @include large-mobile {
-        display: inline-block;
-      }
-    }
-  }
-
-  &-text {
-    white-space: normal;
-    text-align: left;
-    letter-spacing: var(--s-letter-spacing-small);
-  }
-
-  & i + &-text {
-    padding-left: 6px;
-  }
-
-  &:not(.s-action).s-i-position-left > span > i[class^='s-icon-'] {
-    margin-right: 0;
   }
 }
 
@@ -508,7 +356,6 @@ i.icon-divider {
 </style>
 
 <style lang="scss" scoped>
-$header-height: 64px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
 
@@ -571,91 +418,11 @@ $sora-logo-width: 173.7px;
   }
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  padding: $inner-spacing-mini;
-  min-height: $header-height;
-  position: relative;
+.app-logo--menu {
+  margin-bottom: $inner-spacing-big;
 
-  @include tablet {
-    padding: $inner-spacing-mini $inner-spacing-medium;
-
-    &:after {
-      left: $inner-spacing-medium;
-      right: $inner-spacing-medium;
-    }
-  }
-
-  &:after {
-    content: '';
-    position: absolute;
-    height: 1px;
-    bottom: 0;
-    left: $inner-spacing-mini;
-    right: $inner-spacing-mini;
-    background-color: var(--s-color-base-border-secondary);
-  }
-}
-
-.app-menu-button {
   @include large-mobile {
     display: none;
-  }
-}
-
-.app-logo {
-  &--header {
-    @include mobile {
-      display: none;
-    }
-  }
-  &--menu {
-    margin-bottom: $inner-spacing-big;
-
-    @include large-mobile {
-      display: none;
-    }
-  }
-}
-
-.app-controls {
-  &:not(:last-child) {
-    margin-right: $inner-spacing-mini;
-  }
-
-  & > *:not(:last-child) {
-    margin-right: $inner-spacing-mini;
-  }
-
-  .el-button {
-    + .el-button {
-      margin-left: 0;
-    }
-  }
-
-  @include desktop {
-    margin-left: auto;
-  }
-
-  &--moonpay {
-    margin-left: auto;
-
-    @include desktop {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      margin-right: 0;
-    }
-  }
-}
-
-.node-control {
-  @include element-size('token-logo', 28px);
-  .token-logo {
-    display: block;
-    margin: auto;
   }
 }
 

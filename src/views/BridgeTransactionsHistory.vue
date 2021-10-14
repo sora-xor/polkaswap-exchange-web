@@ -35,14 +35,14 @@
             >
               <div class="history-item-info">
                 <div class="history-item-title p4">
-                  {{ `${formatAmount(item)} ${formatAssetSymbol(item.symbol)}` }}
+                  <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
                   <i
                     :class="`s-icon--network s-icon-${
                       isOutgoingType(item.type) ? 'sora' : getEvmIcon(item.externalNetwork)
                     }`"
                   />
-                  <span class="history-item-title-separator">{{ t('bridgeTransaction.for') }}</span>
-                  {{ `${formatAmount(item)} ${formatAssetSymbol(item.symbol)}` }}
+                  <span class="history-item-title-separator"> {{ t('bridgeTransaction.for') }} </span>
+                  <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
                   <i
                     :class="`s-icon--network s-icon-${
                       !isOutgoingType(item.type) ? 'sora' : getEvmIcon(item.externalNetwork)
@@ -82,6 +82,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
 import { RegisteredAccountAsset, Operation, BridgeHistory, FPNumber, NetworkFeesObject } from '@sora-substrate/util';
+import { components } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
@@ -90,7 +91,7 @@ import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { formatAssetSymbol, formatDateItem } from '@/utils';
+import { formatDateItem } from '@/utils';
 import { STATES } from '@/utils/fsm';
 
 const namespace = 'bridge';
@@ -98,6 +99,7 @@ const namespace = 'bridge';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    FormattedAmount: components.FormattedAmount,
   },
 })
 export default class BridgeTransactionsHistory extends Mixins(
@@ -120,7 +122,6 @@ export default class BridgeTransactionsHistory extends Mixins(
   @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn;
 
   PageNames = PageNames;
-  formatAssetSymbol = formatAssetSymbol;
   formatDateItem = formatDateItem;
   pageAmount = 8; // override PaginationSearchMixin
 
@@ -159,8 +160,7 @@ export default class BridgeTransactionsHistory extends Mixins(
           `${this.registeredAssets.find((asset) => asset.address === item.assetAddress)?.externalAddress}`
             .toLowerCase()
             .includes(query) ||
-          `${formatAssetSymbol(item.symbol)}`.toLowerCase().includes(query) ||
-          `${formatAssetSymbol(item.symbol)}`.toLowerCase().includes(query)
+          `${item.symbol}`.toLowerCase().includes(query)
       );
     }
 
@@ -225,6 +225,8 @@ export default class BridgeTransactionsHistory extends Mixins(
     }
   }
   &-item-title {
+    display: flex;
+    align-items: baseline;
     font-weight: 600;
     letter-spacing: var(--s-letter-spacing-small);
   }
@@ -257,6 +259,7 @@ $history-item-horizontal-space: $inner-spacing-medium;
 $history-item-height: 48px;
 $page-amount: 8;
 $history-item-top-border-height: 1px;
+$separator-margin: calc(var(--s-basic-spacing) / 2);
 .history {
   &--search.el-form-item {
     margin-bottom: $inner-spacing-medium;
@@ -320,6 +323,9 @@ $history-item-top-border-height: 1px;
     line-height: var(--s-line-height-big);
     word-break: break-all;
     .s-icon {
+      &--network {
+        margin-left: $separator-margin;
+      }
       &-sora,
       &-eth {
         position: relative;
@@ -328,6 +334,8 @@ $history-item-top-border-height: 1px;
     }
     &-separator {
       font-weight: normal;
+      margin-left: $separator-margin;
+      margin-right: $separator-margin;
     }
   }
   &-date {

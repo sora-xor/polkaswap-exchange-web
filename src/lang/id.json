@@ -802,5 +802,15 @@
         "tooltips": {
             "transfer": "Token berhasil dibeli!\n Klik untuk memulai transaksi jembatan"
         }
+    },
+    "recievedText": "Diterima",
+    "light": "Lampu",
+    "dark": "Gelap",
+    "headerMenu": {
+        "showBalances": "Tampilkan Saldo",
+        "hideBalances": "Sembunyikan Saldo",
+        "settings": "Pengaturan",
+        "switchTheme": "Beralih ke Mode {theme}",
+        "switchLanguage": "Pilih bahasa"
     }
 }

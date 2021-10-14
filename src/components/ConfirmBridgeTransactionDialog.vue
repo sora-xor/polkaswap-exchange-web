@@ -79,7 +79,6 @@ import LoadingMixin from '@/components/mixins/LoadingMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { EvmSymbol, ZeroStringValue } from '@/consts';
-import { formatAssetSymbol } from '@/utils';
 
 import type { Asset } from '@sora-substrate/util';
 
@@ -140,7 +139,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   }
 
   get tokenSymbol(): string {
-    return formatAssetSymbol(this.asset?.symbol);
+    return this.asset?.symbol || '';
   }
 
   get currentEvmTokenSymbol(): string {

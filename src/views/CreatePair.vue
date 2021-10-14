@@ -24,8 +24,13 @@
           </div>
           <div v-if="isLoggedIn && firstToken" class="input-value">
             <span class="input-value--uppercase">{{ t('createPair.balance') }}</span>
-            <span class="input-value--primary">{{ getTokenBalance(firstToken) }}</span>
-            <formatted-amount v-if="firstTokenPrice" :value="getFiatBalance(firstToken)" is-fiat-value />
+            <formatted-amount-with-fiat-value
+              value-can-be-hidden
+              with-left-shift
+              value-class="input-value--primary"
+              :value="getTokenBalance(firstToken)"
+              :fiat-value="getFiatBalance(firstToken)"
+            />
           </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
@@ -43,7 +48,7 @@
           <token-select-button class="el-button--select-token" :token="firstToken" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <formatted-amount v-if="firstToken && firstTokenPrice" :value="fiatFirstAmount" is-fiat-value />
+          <formatted-amount v-if="firstToken && firstTokenPrice" is-fiat-value :value="fiatFirstAmount" />
           <token-address
             v-if="firstToken"
             :name="firstToken.name"
@@ -71,8 +76,13 @@
           </div>
           <div v-if="isLoggedIn && secondToken" class="input-value">
             <span class="input-value--uppercase">{{ t('createPair.balance') }}</span>
-            <span class="input-value--primary">{{ getTokenBalance(secondToken) }}</span>
-            <formatted-amount v-if="secondTokenPrice" :value="getFiatBalance(secondToken)" is-fiat-value />
+            <formatted-amount-with-fiat-value
+              value-can-be-hidden
+              with-left-shift
+              value-class="input-value--primary"
+              :value="getTokenBalance(secondToken)"
+              :fiat-value="getFiatBalance(secondToken)"
+            />
           </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
@@ -95,7 +105,7 @@
           />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <formatted-amount v-if="secondToken && secondTokenPrice" :value="fiatSecondAmount" is-fiat-value />
+          <formatted-amount v-if="secondToken && secondTokenPrice" is-fiat-value :value="fiatSecondAmount" />
           <token-address
             v-if="secondToken"
             :name="secondToken.name"
@@ -163,16 +173,18 @@
         <div class="info-line-container">
           <p class="info-line-container__title">{{ t('createPair.yourPositionEstimated') }}</p>
           <info-line
+            is-formatted
+            value-can-be-hidden
             :label="firstToken.symbol"
             :value="formattedFirstTokenValue"
             :fiat-value="fiatFirstAmount"
-            is-formatted
           />
           <info-line
+            is-formatted
+            value-can-be-hidden
             :label="secondToken.symbol"
             :value="formattedSecondTokenValue"
             :fiat-value="fiatSecondAmount"
-            is-formatted
           />
           <info-line :label="t('createPair.shareOfPool')" value="100%" />
         </div>
@@ -225,6 +237,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace);
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
     FormattedAmount: components.FormattedAmount,
+    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     InfoLine: components.InfoLine,
   },
 })
@@ -260,7 +273,6 @@ export default class CreatePair extends Mixins(TokenPairMixin) {
 }
 
 .el-form--actions {
-  @include generic-input-lines;
   @include buttons;
   @include full-width-button('action-button');
 }
