@@ -439,7 +439,8 @@
         "confirmSwap": "Potwierdź zamianę",
         "swapOutputMessage": "Wynik jest szacunkowy. Otrzymasz co najmniej {transactionValue} lub transakcja zostanie anulowana.",
         "rewardsForSwap": "Wynagrodzenie strategiczne w PSWAP",
-        "swapInputMessage": "Wprowadzone dane są szacunkowe. Sprzedasz maksymalnie {transactionValue} lub transakcja zostanie anulowana."
+        "swapInputMessage": "Wprowadzone dane są szacunkowe. Sprzedasz maksymalnie {transactionValue} lub transakcja zostanie anulowana.",
+        "route": "Trasa"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",

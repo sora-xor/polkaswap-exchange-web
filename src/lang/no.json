@@ -439,7 +439,8 @@
         "confirmSwap": "Bekreft bytte",
         "swapOutputMessage": "Beløp er estimert. Du vil motta minst {transactionValue} ellers vil transaksjonen gå tilbake.",
         "rewardsForSwap": "Strategiske PSWAP belønninger",
-        "swapInputMessage": "Inndata er estimert. Du vil selge maksimalt {transactionValue} ellers vil transaksjonen gå tilbake."
+        "swapInputMessage": "Inndata er estimert. Du vil selge maksimalt {transactionValue} ellers vil transaksjonen gå tilbake.",
+        "route": "Rute"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
