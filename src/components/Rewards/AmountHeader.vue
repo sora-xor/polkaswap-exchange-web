@@ -26,7 +26,6 @@ import { RewardsAmountHeaderItem } from '@/types/rewards';
 @Component({
   components: {
     FormattedAmount: components.FormattedAmount,
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
 })
 export default class AmountHeader extends Mixins(mixins.FormattedAmountMixin, mixins.NumberFormatterMixin) {
