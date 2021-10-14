@@ -307,6 +307,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 
 @mixin bridge-container {
   max-width: $bridge-width;
+  width: 100%;
 
   .el-loading-mask {
     border-radius: var(--s-border-radius-medium);
@@ -542,37 +543,5 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
   &:hover {
     color: var(--s-color-base-content-secondary);
-  }
-}
-
-@mixin polkaswap-logo {
-  .polkaswap-logo {
-    background-size: cover;
-    width: var(--s-size-medium);
-    height: var(--s-size-medium);
-    border-radius: 0;
-    &.el-button {
-      padding: 0;
-      margin: 0;
-    }
-    &--tablet {
-      display: none;
-      background-image: url('~@/assets/img/pswap.svg');
-      @include large-mobile {
-        display: block;
-      }
-      @include tablet {
-        margin-bottom: 0;
-        width: 172px;
-        height: 46px;
-        background-image: none;
-      }
-      .polkaswap-logo__image {
-        visibility: hidden;
-        @include tablet {
-          visibility: visible;
-        }
-      }
-    }
   }
 }
