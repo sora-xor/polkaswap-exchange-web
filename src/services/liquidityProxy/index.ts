@@ -14,6 +14,7 @@
 // // TBC
 // const INITIAL_PRICE = new FPNumber(634);
 // const PRICE_CHANGE_COEFF = new FPNumber(1337);
+// const SELL_PRICE_COEFF = new FPNumber(0.8);
 
 // const FP_FEE = new FPNumber(1).sub(LP_FEE);
 
@@ -64,25 +65,29 @@
 // };
 
 // // totalSupply - XOR, XSTUSD total supply
-// const tbcBuyFunction = (delta, totalSupply, reserves): FPNumber => {
-//   const fpDelta = new FPNumber(delta);
+// const tbcBuyFunction = (delta: FPNumber, totalSupply, reserves): FPNumber => {
 //   const xstusdIssuance = FPNumber.fromCodecValue(totalSupply[XSTUSD]);
 //   const xorIssuance = FPNumber.fromCodecValue(totalSupply[XOR]);
 //   const xorPrice = FPNumber.fromCodecValue(reserves.prices[XOR]);
 //   const xstXorLiability = xstusdIssuance.div(xorPrice);
 
-//   return (xorIssuance.add(xstXorLiability).add(fpDelta))
+//   return (xorIssuance.add(xstXorLiability).add(delta))
 //     .div(PRICE_CHANGE_COEFF.add(INITIAL_PRICE));
 // };
 
-// const idealReservesReferencePrice = (delta, totalSupply, reserves) => {
-//   const fpDelta = new FPNumber(delta);
+// const tbcSellFunction = (delta: FPNumber, totalSupply, reserves): FPNumber  => {
+//   const buyFunctionResult = tbcBuyFunction(delta, totalSupply, reserves);
+
+//   return  buyFunctionResult.mul(SELL_PRICE_COEFF);
+// }
+
+// const idealReservesReferencePrice = (delta: FPNumber, totalSupply, reserves) => {
 //   const xorIssuance = FPNumber.fromCodecValue(totalSupply[XOR]);
 //   const currentState = tbcBuyFunction(delta, totalSupply, reserves);
 
 //   return (INITIAL_PRICE.add(currentState))
 //     .div(new FPNumber(2))
-//     .mul(xorIssuance.add(fpDelta));
+//     .mul(xorIssuance.add(delta));
 // };
 
 // const actualReservesReferencePrice = (collateralAssetId, reserves) => {
@@ -120,27 +125,51 @@
 //   return new FPNumber(penalty);
 // };
 
-// const tbcSellPrice = (collateralAssetId, amount: FPNumber) => {
-//   //   collateral_supply = free_balance(collateral_asset, reserves_account)
-//   //   xor_price = sell_function(0)
-//   //   collateral_price = reference_price(collateral_asset)
-//   //   xor_supply = collateral_supply * collateral_price / xor_price
-//   //   if amount.is_desired_input()
-//   //     output_collateral = (amount * collateral_supply) / (xor_supply + amount)
-//   //     assert(output_collateral < collateral_supply, "Not enough reserves")
-//   //     return output_collateral
-//   //   else
-//   //     assert(amount < collateral_supply, "Not enough reserves")
-//   //     output_xor = (xor_supply * amount) / (collateral_supply - amount)
-//   //     return output_xor
+// const tbcSellPrice = (collateralAssetId, amount: FPNumber, isDesiredInput, totalSupply, reserves) => {
+//   const collateralSupply = FPNumber.fromCodecValue(reserves.tbc[collateralAssetId]);
+//   const xorPrice = tbcSellFunction(0, totalSupply, reserves);
+//   const collateralPrice = tbcReferencePrice(collateralAssetId, reserves);
+//   const xorSupply = collateralSupply.mul(collateralPrice).div(xorPrice);
+
+//   if (isDesiredInput) {
+//     const outputCollateral = (amount.add(collateralSupply)).div((xorSupply.add(amount)));
+//     if (FPNumber.isGreaterThan(outputCollateral, collateralSupply)) {
+//       console.error("Not enough reserves");
+//     }
+//     return outputCollateral;
+//   } else {
+//     if (FPNumber.isGreaterThan(amount, collateralSupply)) {
+//       console.error("Not enough reserves");
+//     }
+//     const outputXor = (xorSupply.mul(amount)).div((collateralSupply.sub(amount)));
+//     return outputXor;
+//   }
 // };
 
-// const tbcSellPriceWithFee = (collateralAssetId, amount: CodecString, isDesiredInput, totalSupply, reserves) => {
+// const tbcBuyPrice = (collateralAssetId, amount: FPNumber, isDesiredInput, totalSupply, reserves) => {
+//   const currentState = tbcBuyFunction(FPNumber.ZERO, totalSupply, reserves);
+//   const collateralPrice = tbcReferencePrice(collateralAssetId, reserves);
+
 //   if (isDesiredInput) {
-//     const fpAmount = FPNumber.fromCodecValue(amount);
-//     const newFee = TBC_FEE.add(sellPenalty(collateralAssetId, totalSupply, reserves));
-//     const feeAmount = fpAmount.mul(newFee);
-//     const outputAmount = tbcSellPrice(collateralAssetId, fpAmount.sub(feeAmount));
+//     const collateralReferenceIn = collateralPrice.mul(amount);
+//     const underPow = currentState.mul(PRICE_CHANGE_COEFF).mul(new FPNumber(2));
+//     const underSqrt = underPow.mul(underPow).add(SELL_PRICE_COEFF.mul(PRICE_CHANGE_COEFF).mul(collateralReferenceIn));
+//     const xorOut = underSqrt.sqrt().div(new FPNumber(2)).sub(PRICE_CHANGE_COEFF.mul(currentState));
+//     return FPNumber.max(xorOut, FPNumber.ZERO);
+//   } else {
+//     const newState = tbcBuyFunction(amount, totalSupply, reserves);
+//     const collateralReferenceIn = (currentState.add(newState)).div(new FPNumber(2)).mul(amount);
+//     const collateralQuantity = collateralReferenceIn.div(collateralPrice);
+//     return FPNumber.max(collateralQuantity, FPNumber.ZERO);
+//   }
+// };
+
+// const tbcSellPriceWithFee = (collateralAssetId, amount: FPNumber, isDesiredInput, totalSupply, reserves) => {
+//   const newFee = TBC_FEE.add(sellPenalty(collateralAssetId, totalSupply, reserves));
+
+//   if (isDesiredInput) {
+//     const feeAmount = amount.mul(newFee);
+//     const outputAmount = tbcSellPrice(collateralAssetId, amount.sub(feeAmount), isDesiredInput, totalSupply, reserves);
 
 //     return {
 //       input: amount,
@@ -148,28 +177,62 @@
 //       fee: feeAmount.toCodecString()
 //     };
 //   } else {
-//     //   input_amount = sell_price(collateral_asset, amount)
-//     //   new_fee = fee + sell_penalty(collateral_asset)
-//     //   input_amount_with_fee = input_amount / (1 - new_fee)
-//     //   return {
-//     //     input: input_amount_with_fee,
-//     //     output: amount,
-//     //     fee: input_amount_with_fee - input_amount
-//     //   }
+//     const inputAmount = tbcSellPrice(collateralAssetId, amount, isDesiredInput, totalSupply, reserves);
+//     const inputAmountWithFee = inputAmount.div((new FPNumber(1)).sub(newFee));
+
+//     return {
+//       input: inputAmountWithFee.toCodecString(),
+//       output: amount,
+//       fee: inputAmountWithFee.sub(inputAmount).toCodecString()
+//     };
 //   }
 // };
 
-// const tbcQuote = ({ inputAssetId, outputAssetId, amount }) => {
-//   if (inputAssetId === XOR) {
-//     return tbcSellPriceWithFee(output_asset, amount)
+// const tbcBuyPriceWithFee = (collateralAssetId, amount: FPNumber, isDesiredInput, totalSupply, reserves) => {
+//   if (isDesiredInput) {
+//     const outputAmount = tbcBuyPrice(collateralAssetId, amount, isDesiredInput, totalSupply, reserves);
+//     const feeAmount = TBC_FEE.mul(outputAmount);
+//     return {
+//       input: amount.toCodecString(),
+//       ouput: outputAmount.sub(feeAmount).toCodecString(),
+//       fee: feeAmount.toCodecString()
+//     }
 //   } else {
-//     return tbcBuyPriceWithFee(input_asset, amount)
+//     const amountWithFee = amount.div((new FPNumber(1)).sub(TBC_FEE));
+//     const inputAmount = tbcBuyPrice(collateralAssetId, amountWithFee, isDesiredInput, totalSupply, reserves);
+//     return {
+//       input: inputAmount.toCodecString(),
+//       output: amount.toCodecString(),
+//       fee: amountWithFee.sub(amount).toCodecString()
+//     }
+//   }
+// };
+
+// const tbcQuote = ({ inputAssetId, outputAssetId, amount, isDesiredInput, totalSupply, reserves }) => {
+//   if (inputAssetId === XOR) {
+//     return tbcSellPriceWithFee(outputAssetId, amount, isDesiredInput, totalSupply, reserves);
+//   } else {
+//     return tbcBuyPriceWithFee(inputAssetId, amount, isDesiredInput, totalSupply, reserves);
 //   }
 // };
 
 // // XST quote
+// const xstReferencePrice = (assetId, reserves): FPNumber => {
+//   if (assetId === DAI || assetId === XSTUSD) {
+//     return new FPNumber(1);
+//   } else {
+//     const avgPrice = FPNumber.fromCodecValue(reserves.prices[assetId]);
+
+//     if (assetId === XOR) {
+//       return FPNumber.max(avgPrice, new FPNumber(100));
+//     }
+
+//     return avgPrice;
+//   }
+// };
+
 // const xstBuyPrice = (amount: FPNumber, isDesiredInput: boolean, reserves): FPNumber => {
-//   const xorPrice = FPNumber.fromCodecValue(reserves.prices[XOR])
+//   const xorPrice = xstReferencePrice(XOR, reserves);
 
 //   if (isDesiredInput) {
 //     return amount.div(xorPrice);
@@ -179,7 +242,7 @@
 // };
 
 // const xstSellPrice = (amount: FPNumber, isDesiredInput: boolean, reserves): FPNumber => {
-//   const xorPrice = FPNumber.fromCodecValue(reserves.prices[XOR]);
+//   const xorPrice = xstReferencePrice(XOR, reserves);
 
 //   if (isDesiredInput) {
 //     return amount.mul(xorPrice);
@@ -295,13 +358,44 @@
 // };
 
 // // AGGREGATOR
-// const quotePrimaryMarket = ({ inputAssetId, outputAssetId, amount, isDesiredInput, reserves }) => {
+// const quotePrimaryMarket = ({ inputAssetId, outputAssetId, amount, isDesiredInput, totalSupply, reserves }) => {
 //   if ([inputAssetId, outputAssetId].includes(XSTUSD)) {
 //     return xstQuote({ inputAssetId, amount, isDesiredInput, reserves })
 //   } else {
-//     // return tbcQuote(input_asset, output_asset, amount)
+//     return tbcQuote({ inputAssetId, outputAssetId, amount, isDesiredInput, totalSupply, reserves })
 //   }
 // };
+
+// const primaryMarketAmountBuyingXor = (collateralAssetId, amount: FPNumber, isDesiredInput, xorReserve: CodecString, otherReserve: CodecString, totalSupply, reserves) => {
+//   const fpXorReserve = FPNumber.fromCodecValue(xorReserve);
+//   const fpOtherReserve = FPNumber.fromCodecValue(otherReserve);
+
+//   const secondaryPrice = FPNumber.isGreaterThan(fpXorReserve, FPNumber.ZERO)
+//     ? fpOtherReserve.div(fpXorReserve)
+//     : new FPNumber(Infinity);
+
+//   const primaryBuyPrice = collateralAssetId === XSTUSD
+//     ? xstBuyPrice(amount, isDesiredInput, reserves)
+//     : tbcBuyPrice(collateralAssetId, amount, isDesiredInput, totalSupply, reserves);
+
+//   const k = fpXorReserve.mul(fpOtherReserve);
+
+//   const amountSecondary = isDesiredInput
+//     ? ((k.mul(primaryBuyPrice)).sqrt()).sub(fpOtherReserve)
+//     : fpXorReserve.sub((k.div(primaryBuyPrice)).sqrt());
+
+//   if (FPNumber.isLessThan(secondaryPrice, primaryBuyPrice)) {
+//     if (FPNumber.isGreaterThanOrEqualTo(amountSecondary, amount)) {
+//       return FPNumber.ZERO;
+//     } else if (FPNumber.isLessThanOrEqualTo(amountSecondary, FPNumber.ZERO)) {
+//       return amount;
+//     } else {
+//       return amount.sub(amountSecondary);
+//     }
+//   } else {
+//     return amount;
+//   }
+// }
 
 // // ROUTER
 // const isDirectExchange = (inputAssetId: string, outputAssetId: string): boolean => {
