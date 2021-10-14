@@ -264,6 +264,12 @@ const actions = {
     if (getters.tokenFrom?.address && getters.tokenTo?.address) {
       commit(types.CHECK_AVAILABILITY_REQUEST)
       try {
+        // TODO: will be removed
+        const xstUsdAddress = '0x0200080000000000000000000000000000000000000000000000000000000000'
+        if ([getters.tokenFrom.address, getters.tokenTo.address].includes(xstUsdAddress)) {
+          commit(types.CHECK_AVAILABILITY_SUCCESS, true)
+          return
+        }
         const isAvailable = await api.checkSwap(getters.tokenFrom.address, getters.tokenTo.address)
         commit(types.CHECK_AVAILABILITY_SUCCESS, isAvailable)
       } catch (error) {
