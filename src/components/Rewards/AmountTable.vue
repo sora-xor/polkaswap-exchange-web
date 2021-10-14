@@ -10,6 +10,8 @@
               <div v-for="(item, index) in formatted.limit" class="amount-table-item__amount" :key="index">
                 <formatted-amount-with-fiat-value
                   value-class="amount-table-value"
+                  with-left-shift
+                  value-can-be-hidden
                   :value="
                     isCodecString
                       ? getFPNumberFromCodec(item.amount, item.asset.decimals).toLocaleString()
@@ -23,7 +25,6 @@
                       : getFiatAmountByString(item.amount, item.asset)
                   "
                   :fiat-font-size-rate="FontSizeRate.MEDIUM"
-                  with-left-shift
                 >
                   <s-tooltip
                     v-if="formatted.total && index === 0"
@@ -35,10 +36,11 @@
                       <div>{{ t('rewards.totalVested') }}:</div>
                       <formatted-amount
                         class="amount-table-value"
+                        value-can-be-hidden
+                        symbol-as-decimal
                         :value="formatted.total.amount"
                         :font-size-rate="FontSizeRate.MEDIUM"
                         :asset-symbol="formatted.total.asset.symbol"
-                        symbol-as-decimal
                       />
                     </div>
                     <s-icon name="info-16" size="14px" class="amount-table-value-icon" />
@@ -61,12 +63,13 @@
                     <div v-for="(item, index) in item.limit" :key="index" class="amount-table-subitem__row">
                       <formatted-amount-with-fiat-value
                         value-class="amount-table-value"
+                        with-left-shift
+                        value-can-be-hidden
                         :value="formatCodecNumber(item.amount)"
                         :font-size-rate="FontSizeRate.MEDIUM"
                         :asset-symbol="item.asset.symbol"
                         :fiat-value="getFiatAmountByCodecString(item.amount, item.asset)"
                         :fiat-font-size-rate="FontSizeRate.MEDIUM"
-                        with-left-shift
                       />
                     </div>
                   </template>
