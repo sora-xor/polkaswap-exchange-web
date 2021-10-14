@@ -254,7 +254,9 @@
         "AddLiquidity": "Dodawanie płynności",
         "AddLiquidityId": "Dodawanie płynności",
         "RemoveLiquidity": "Usuwanie płynności",
-        "PageNotFound": "Nie znaleziono strony."
+        "PageNotFound": "Nie znaleziono strony.",
+        "Tokens": "Tokeny",
+        "Rewards": "Nagrody"
     },
     "mainMenu": {
         "Swap": "Zamiana",
@@ -802,5 +804,16 @@
         "tooltips": {
             "transfer": "Pomyślnie zakupiono tokeny!\nKliknij, aby rozpocząć transakcję mostową"
         }
-    }
+    },
+    "recievedText": "Otrzymano",
+    "light": "Lekki",
+    "dark": "Ciemny",
+    "headerMenu": {
+        "showBalances": "Pokaż salda",
+        "hideBalances": "Ukryj salda",
+        "settings": "Ustawienia",
+        "switchTheme": "Przełącz na tryb {theme}",
+        "switchLanguage": "Wybierz język"
+    },
+    "sentText": "Wysłano"
 }

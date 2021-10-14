@@ -254,7 +254,9 @@
         "AddLiquidity": "Добавить ликвидность",
         "AddLiquidityId": "Добавить ликвидность",
         "RemoveLiquidity": "Забрать ликвидность",
-        "PageNotFound": "Страница не найдена"
+        "PageNotFound": "Страница не найдена",
+        "Tokens": "Токены",
+        "Rewards": "Награды"
     },
     "mainMenu": {
         "Swap": "Обмен",
@@ -802,5 +804,16 @@
         "tooltips": {
             "transfer": "Токены успешно куплены!\n Нажмите, чтобы начать транзакцию моста"
         }
-    }
+    },
+    "recievedText": "Получено",
+    "light": "Светлый",
+    "dark": "Темный",
+    "headerMenu": {
+        "showBalances": "Показать балансы",
+        "hideBalances": "Скрыть балансы",
+        "settings": "Настройки",
+        "switchTheme": "Перейти в {theme} режим",
+        "switchLanguage": "Изменить язык"
+    },
+    "sentText": "Отправить"
 }

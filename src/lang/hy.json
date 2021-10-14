@@ -254,7 +254,9 @@
         "AddLiquidity": "Ավելացնել իրացվելիություն",
         "AddLiquidityId": "Ավելացնել իրացվելիություն",
         "RemoveLiquidity": "Հեռացնել իրացվելիությունը",
-        "PageNotFound": "Էջը չի գտնվել"
+        "PageNotFound": "Էջը չի գտնվել",
+        "Tokens": "Տոկեններ",
+        "Rewards": "Պարգեւներ"
     },
     "mainMenu": {
         "Swap": "Փոխանակում",
@@ -802,5 +804,16 @@
         "tooltips": {
             "transfer": "Նշանները հաջողությամբ գնվեցին\n Կտտացրեք կամուրջի գործարքը սկսելու համար"
         }
-    }
+    },
+    "recievedText": "Ստացվել է",
+    "light": "Լույս",
+    "dark": "Մութ",
+    "headerMenu": {
+        "showBalances": "Showույց տալ հաշվեկշիռները",
+        "hideBalances": "Թաքցնել հավասարակշռությունները",
+        "settings": "Կարգավորումներ",
+        "switchTheme": "Անցնել {theme} ռեժիմի",
+        "switchLanguage": "Ընտրեք Լեզուն"
+    },
+    "sentText": "Ուղարկված է"
 }

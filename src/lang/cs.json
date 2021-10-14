@@ -254,7 +254,9 @@
         "AddLiquidity": "Přidat likviditu",
         "AddLiquidityId": "Přidat likviditu",
         "RemoveLiquidity": "Odebrat likviditu",
-        "PageNotFound": "Stránka nenalezena"
+        "PageNotFound": "Stránka nenalezena",
+        "Tokens": "Tokeny",
+        "Rewards": "Odměny"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -802,5 +804,16 @@
         "tooltips": {
             "transfer": "Tokeny byly úspěšně zakoupeny!\nKliknutím spustíte bridge transakci"
         }
-    }
+    },
+    "recievedText": "Přijato",
+    "light": "Světlo",
+    "dark": "Temný",
+    "headerMenu": {
+        "showBalances": "Zobrazit zůstatky",
+        "hideBalances": "Skrýt zůstatky",
+        "settings": "Nastavení",
+        "switchTheme": "Přepnout do režimu {theme}",
+        "switchLanguage": "Vyber jazyk"
+    },
+    "sentText": "Odesláno"
 }
