@@ -31,18 +31,20 @@
             </h3>
           </template>
           <info-line
+            is-formatted
+            value-can-be-hidden
             :label="t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.firstAddress) })"
             :value="getFirstBalance(liquidityItem)"
             :fiat-value="getFiatAmountByCodecString(liquidityItem.firstBalance, getAsset(liquidityItem.firstAddress))"
-            is-formatted
           />
           <info-line
+            is-formatted
+            value-can-be-hidden
             :label="t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.secondAddress) })"
             :value="getSecondBalance(liquidityItem)"
             :fiat-value="getFiatAmountByCodecString(liquidityItem.secondBalance, getAsset(liquidityItem.secondAddress))"
-            is-formatted
           />
-          <info-line :label="t('pool.poolShare')" :value="getPoolShare(liquidityItem.poolShare)" />
+          <info-line value-can-be-hidden :label="t('pool.poolShare')" :value="getPoolShare(liquidityItem.poolShare)" />
           <info-line
             v-if="hasStrategicBonusApy(liquidityItem.secondAddress)"
             :label="t('pool.strategicBonusApy')"

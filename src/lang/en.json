@@ -802,5 +802,15 @@
         "tooltips": {
             "transfer": "Tokens successfully purchased!\nClick to start the bridge transaction"
         }
+    },
+    "recievedText": "Recieved",
+    "light": "Light",
+    "dark": "Dark",
+    "headerMenu": {
+        "showBalances": "Show Balances",
+        "hideBalances": "Hide Balances",
+        "settings": "Settings",
+        "switchTheme": "Switch to {theme} Mode",
+        "switchLanguage": "Choose Language"
     }
 }

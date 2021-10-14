@@ -802,5 +802,15 @@
         "tooltips": {
             "transfer": "Pomyślnie zakupiono tokeny!\nKliknij, aby rozpocząć transakcję mostową"
         }
+    },
+    "recievedText": "Otrzymano",
+    "light": "Lekki",
+    "dark": "Ciemny",
+    "headerMenu": {
+        "showBalances": "Pokaż salda",
+        "hideBalances": "Ukryj salda",
+        "settings": "Ustawienia",
+        "switchTheme": "Przełącz na tryb {theme}",
+        "switchLanguage": "Wybierz język"
     }
 }
