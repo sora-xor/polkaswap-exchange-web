@@ -130,10 +130,6 @@ export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
     this.trackActiveTransactions();
   }
 
-  get mainMenuActiveColor(): string {
-    return this.libraryTheme === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)';
-  }
-
   get isAboutPage(): boolean {
     return this.$route.name === PageNames.About;
   }

@@ -104,8 +104,8 @@ export enum PageNames {
 }
 
 export enum Components {
-  AppHeader = 'AppHeader',
   GenericPageHeader = 'GenericPageHeader',
+  AppHeader = 'App/Header/AppHeader',
   AccountButton = 'App/Header/AccountButton',
   AppLogoButton = 'App/Header/AppLogoButton',
   AppMenu = 'App/Menu/AppMenu',

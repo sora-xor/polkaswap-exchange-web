@@ -37,7 +37,7 @@ export default class MoonpayWidget extends Vue {
   display: flex;
   border: none;
   width: 100%;
-  min-height: 574px;
+  min-height: 600px;
   overflow: hidden;
 }
 .widget {

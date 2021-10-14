@@ -15,12 +15,7 @@
       <moonpay-history-button v-if="isLoggedIn" class="moonpay-button moonpay-button--history" />
     </div>
     <div class="app-controls s-flex">
-      <s-button
-        type="action"
-        class="theme-control s-pressed"
-        :tooltip="t(hideBalancesTooltip)"
-        @click="toggleHideBalance"
-      >
+      <s-button type="action" class="theme-control s-pressed" :tooltip="hideBalancesTooltip" @click="toggleHideBalance">
         <s-icon :name="hideBalancesIcon" :size="iconSize" />
       </s-button>
       <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openSelectNodeDialog">
@@ -67,20 +62,18 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter, State, Action } from 'vuex-class';
+import { Getter, Action } from 'vuex-class';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import { KnownSymbols } from '@sora-substrate/util';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import PolkaswapLogo from '@/components/logo/Polkaswap.vue';
 
 import { lazyComponent, goTo } from '@/router';
 import { PageNames, Components, LogoSize } from '@/consts';
-import { formatAddress } from '@/utils';
 
 enum HeaderMenuType {
   Theme = 'theme',
@@ -102,7 +95,7 @@ enum HeaderMenuType {
     MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
   },
 })
-export default class AppHeader extends Mixins(WalletConnectMixin, TranslationMixin, NodeErrorMixin) {
+export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin) {
   readonly PageNames = PageNames;
   readonly iconSize = 28;
   readonly HeaderMenuType = HeaderMenuType;
@@ -148,7 +141,7 @@ export default class AppHeader extends Mixins(WalletConnectMixin, TranslationMix
   }
 
   get hideBalancesTooltip(): string {
-    return `headerMenu.${this.shouldBalanceBeHidden ? 'showBalances' : 'hideBalances'}`;
+    return this.t(`headerMenu.${this.shouldBalanceBeHidden ? 'showBalances' : 'hideBalances'}`);
   }
 
   openSelectNodeDialog(): void {
