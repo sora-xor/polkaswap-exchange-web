@@ -158,7 +158,7 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
 
   get formattedMinMaxReceived(): string {
     const decimals = (this.isExchangeB ? this.tokenFrom : this.tokenTo)?.decimals;
-    return this.formatCodecNumber(this.minMaxReceived, decimals);
+    return this.formatCodecNumber(this.minMaxReceived || '0', decimals);
   }
 
   // TODO: [Release 2]
