@@ -34,7 +34,7 @@
         "ClaimRewards": "Beloningen claimen",
         "andText": "en",
         "finalized": {
-            "Transfer": "{bedrag} {symbool} verzonden naar {adres}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "{amount} {symbol} geswapped voor {amount2} {symbol2}",
             "AddLiquidity": "Opgegeven {bedrag} {symbool} en {bedrag2} {symbool2}",
             "RemoveLiquidity": "{bedrag} {symbool} en {bedrag2} {symbool2} werden verwijderd",
@@ -43,7 +43,7 @@
             "ClaimRewards": "Beloning succesvol geclaimd {rewards}"
         },
         "error": {
-            "Transfer": "Kon {amount} {symbol} niet verzenden naar {adres}",
+            "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
             "Swap": "Mislukt om {amount} {symbol} te swappen voor {amount2} {symbol2}",
             "AddLiquidity": "Kon {bedrag} {symbool} en {bedrag2} {symbool2} niet toevoegen",
             "RemoveLiquidity": "Het is niet gelukt om {amount} {symbol} en {amount2} {symbol2}",
@@ -254,7 +254,9 @@
         "AddLiquidity": "Liquiditeit toevoegen",
         "AddLiquidityId": "Liquiditeit toevoegen",
         "RemoveLiquidity": "Liquiditeit verwijderen",
-        "PageNotFound": "Pagina niet gevonden"
+        "PageNotFound": "Pagina niet gevonden",
+        "Tokens": "Tokens",
+        "Rewards": "Beloningen"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -802,5 +804,16 @@
         "tooltips": {
             "transfer": "Tokens succesvol gekocht!\n Klik om de overbruggingstransactie te starten"
         }
-    }
+    },
+    "recievedText": "Ontvangen",
+    "light": "Licht",
+    "dark": "Donker",
+    "headerMenu": {
+        "showBalances": "Saldi tonen",
+        "hideBalances": "Saldi verbergen",
+        "settings": "Instellingen",
+        "switchTheme": "Overschakelen naar {theme} -modus",
+        "switchLanguage": "Kies een taal"
+    },
+    "sentText": "Verzonden"
 }

@@ -1,13 +1,30 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import { PageNames, BridgeChildPages } from '@/consts';
 import store from '@/store';
 
 Vue.use(VueRouter);
 
-export const lazyComponent = (name: string) => () => import(`@/components/${name}.vue`);
-export const lazyView = (name: string) => () => import(`@/views/${name}.vue`);
+const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet;
+
+const lazyComponent = (name: string) => () => import(`@/components/${name}.vue`);
+const lazyView = (name: string) => () => import(`@/views/${name}.vue`);
+
+function goTo(name: PageNames): void {
+  if (name === PageNames.Wallet) {
+    if (!store.getters.isLoggedIn) {
+      store.dispatch('navigate', { name: WALLET_CONSTS.RouteNames.WalletConnection });
+    } else if (store.getters.currentRoute !== WALLET_DEFAULT_ROUTE) {
+      store.dispatch('navigate', { name: WALLET_DEFAULT_ROUTE });
+    }
+  }
+  if (router.currentRoute.name === name) {
+    return;
+  }
+  router.push({ name });
+}
 
 const routes: Array<RouteConfig> = [
   {
@@ -86,6 +103,12 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.Tokens),
   },
   {
+    path: '/moonpay-history',
+    name: PageNames.MoonpayHistory,
+    component: lazyView(PageNames.MoonpayHistory),
+    meta: { requiresAuth: true },
+  },
+  {
     path: '/stats',
     name: PageNames.Stats,
   },
@@ -129,4 +152,5 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
+export { lazyComponent, lazyView, goTo };
 export default router;

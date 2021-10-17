@@ -34,7 +34,7 @@
         "ClaimRewards": "Réclamer mes Récompenses",
         "andText": "et",
         "finalized": {
-            "Transfer": "{amount} {symbol} envoyés à {address}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "{amount} {symbol} échangés contre {amount2} {symbol2}",
             "AddLiquidity": "Dépôt de {amount} {symbol} et de {amount2} {symbol2}",
             "RemoveLiquidity": "Retrait de {amount} {symbol} et de {amount2} {symbol2}",
@@ -254,7 +254,9 @@
         "AddLiquidity": "Ajouter de la liquidité",
         "AddLiquidityId": "Ajouter de la liquidité",
         "RemoveLiquidity": "Retirer de la liquidité",
-        "PageNotFound": "Page introuvable"
+        "PageNotFound": "Page introuvable",
+        "Tokens": "Jetons",
+        "Rewards": "Récompenses"
     },
     "mainMenu": {
         "Swap": "Échanger",
@@ -802,5 +804,16 @@
         "tooltips": {
             "transfer": "Jetons achetés avec succès!\n Cliquez pour démarrer la transaction de pont"
         }
-    }
+    },
+    "recievedText": "Reçu",
+    "light": "Léger",
+    "dark": "Sombre",
+    "headerMenu": {
+        "showBalances": "Afficher les soldes",
+        "hideBalances": "Masquer les soldes",
+        "settings": "Paramètres",
+        "switchTheme": "Passer en mode {theme}",
+        "switchLanguage": "Choisissez la langue"
+    },
+    "sentText": "Envoyé"
 }

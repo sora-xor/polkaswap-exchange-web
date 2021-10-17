@@ -98,7 +98,12 @@
       </s-float-input>
 
       <div v-if="price || priceReversed || networkFee || shareOfPool" class="info-line-container">
-        <info-line v-if="shareOfPool" :label="t('removeLiquidity.shareOfPool')" :value="`${shareOfPool}%`" />
+        <info-line
+          v-if="shareOfPool"
+          value-can-be-hidden
+          :label="t('removeLiquidity.shareOfPool')"
+          :value="`${shareOfPool}%`"
+        />
         <info-line
           v-if="price || priceReversed"
           :label="t('removeLiquidity.price')"
@@ -397,7 +402,6 @@ export default class RemoveLiquidity extends Mixins(mixins.FormattedAmountMixin,
 
 <style lang="scss" scoped>
 .el-form--actions {
-  @include generic-input-lines;
   @include buttons;
   @include full-width-button('action-button');
 }

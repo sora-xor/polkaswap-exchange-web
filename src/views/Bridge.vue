@@ -51,12 +51,12 @@
             </div>
             <div v-if="isNetworkAConnected && isAssetSelected" class="input-value">
               <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
-              <span class="input-value--uppercase input-value--primary">{{ formatBalance(isSoraToEvm) }}</span>
-              <formatted-amount
-                v-if="asset && isSoraToEvm"
-                :value="getFiatBalance(asset)"
-                is-fiat-value
+              <formatted-amount-with-fiat-value
+                value-can-be-hidden
                 with-left-shift
+                value-class="input-value--primary"
+                :value="formatBalance(isSoraToEvm)"
+                :fiat-value="isSoraToEvm ? getFiatBalance(asset) : undefined"
               />
             </div>
           </div>
@@ -83,8 +83,8 @@
             <div class="input-line input-line--footer">
               <formatted-amount
                 v-if="asset && isSoraToEvm"
-                :value="getFiatAmountByString(amount, asset)"
                 is-fiat-value
+                :value="getFiatAmountByString(amount, asset)"
               />
               <token-address v-if="isAssetSelected" v-bind="asset" :external="!isSoraToEvm" class="input-value" />
             </div>
@@ -124,12 +124,12 @@
             </div>
             <div v-if="isNetworkAConnected && isAssetSelected" class="input-value">
               <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
-              <span class="input-value--uppercase input-value--primary">{{ formatBalance(!isSoraToEvm) }}</span>
-              <formatted-amount
-                v-if="asset && !isSoraToEvm"
-                :value="getFiatBalance(asset)"
-                is-fiat-value
+              <formatted-amount-with-fiat-value
+                value-can-be-hidden
                 with-left-shift
+                value-class="input-value--primary"
+                :value="formatBalance(!isSoraToEvm)"
+                :fiat-value="!isSoraToEvm ? getFiatBalance(asset) : undefined"
               />
             </div>
           </div>
@@ -183,9 +183,7 @@
             {{ t('buttons.enterAmount') }}
           </template>
           <template v-else-if="isInsufficientBalance">
-            {{
-              t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: formatAssetSymbol(assetSymbol) })
-            }}
+            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: assetSymbol }) }}
           </template>
           <template v-else-if="isInsufficientXorForFee">
             {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
@@ -226,7 +224,14 @@
       <!-- <select-network :visible.sync="showSelectNetworkDialog" :value="evmNetwork" :sub-networks="subNetworks" @input="selectNetwork" /> -->
       <confirm-bridge-transaction-dialog
         :visible.sync="showConfirmTransactionDialog"
-        :isInsufficientBalance="isInsufficientBalance"
+        :is-valid-network-type="isValidNetworkType"
+        :is-sora-to-evm="isSoraToEvm"
+        :is-insufficient-balance="isInsufficientBalance"
+        :asset="asset"
+        :amount="amount"
+        :evm-network="evmNetwork"
+        :evm-network-fee="evmNetworkFee"
+        :sora-network-fee="soraNetworkFee"
         @confirm="confirmTransaction"
       />
     </s-form>
@@ -253,7 +258,6 @@ import {
   hasInsufficientXorForFee,
   hasInsufficientEvmNativeTokenForFee,
   getMaxValue,
-  formatAssetSymbol,
   getAssetBalance,
   findAssetInCollection,
   asZeroValue,
@@ -273,6 +277,7 @@ const namespace = 'bridge';
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
     FormattedAmount: components.FormattedAmount,
+    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     InfoLine: components.InfoLine,
   },
 })
@@ -282,13 +287,14 @@ export default class Bridge extends Mixins(
   TranslationMixin,
   NetworkFormatterMixin
 ) {
-  @Action('setSoraToEvm', { namespace }) setSoraToEvm;
-  @Action('setEvmNetwork', { namespace: 'web3' }) setEvmNetwork;
-  @Action('setAssetAddress', { namespace }) setAssetAddress;
+  @Action('setSoraToEvm', { namespace }) setSoraToEvm!: (value: boolean) => Promise<void>;
+  @Action('setAssetAddress', { namespace }) setAssetAddress!: (value: string) => Promise<void>;
   @Action('setAmount', { namespace }) setAmount;
   @Action('resetBridgeForm', { namespace }) resetBridgeForm;
   @Action('resetBalanceSubscription', { namespace }) resetBalanceSubscription!: AsyncVoidFn;
   @Action('updateBalanceSubscription', { namespace }) updateBalanceSubscription!: AsyncVoidFn;
+  @Action('setTransactionConfirm', { namespace }) setTransactionConfirm!: (flag: boolean) => Promise<void>;
+  @Action('setTransactionStep', { namespace }) setTransactionStep!: (step: number) => Promise<void>;
 
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString;
   @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks;
@@ -317,7 +323,6 @@ export default class Bridge extends Mixins(
 
   EvmSymbol = EvmSymbol;
   KnownSymbols = KnownSymbols;
-  formatAssetSymbol = formatAssetSymbol;
   isFieldAmountFocused = false;
   showSelectTokenDialog = false;
   showSelectNetworkDialog = false;
@@ -523,7 +528,9 @@ export default class Bridge extends Mixins(
   async confirmTransaction(isTransactionConfirmed: boolean): Promise<void> {
     if (!isTransactionConfirmed) return;
 
-    await this.checkConnectionToExternalAccount(() => {
+    await this.checkConnectionToExternalAccount(async () => {
+      await this.setTransactionConfirm(true);
+      await this.setTransactionStep(1);
       router.push({ name: PageNames.BridgeTransaction });
     });
   }
@@ -575,7 +582,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
   align-items: center;
   &-content {
     @include bridge-content;
-    @include generic-input-lines;
     @include token-styles;
     @include vertical-divider('s-button--switch', $inner-spacing-medium);
     @include vertical-divider('s-divider-tertiary');

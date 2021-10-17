@@ -8,6 +8,7 @@ export const app = {
   version: pkg.version,
   name: 'Polkaswap',
   email: 'jihoon@tutanota.de',
+  title: 'Polkaswap — The DEX for the Interoperable Future.',
 };
 
 export const WalletPermissions = {
@@ -100,10 +101,15 @@ export enum PageNames {
   BridgeTransaction = 'BridgeTransaction',
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
   Tokens = 'Tokens',
+  MoonpayHistory = 'MoonpayHistory',
 }
 
 export enum Components {
   GenericPageHeader = 'GenericPageHeader',
+  AppHeader = 'App/Header/AppHeader',
+  AccountButton = 'App/Header/AccountButton',
+  AppLogoButton = 'App/Header/AppLogoButton',
+  AppMenu = 'App/Menu/AppMenu',
   SwapInfo = 'SwapInfo',
   SelectToken = 'SelectToken',
   TokenLogo = 'TokenLogo',
@@ -121,7 +127,7 @@ export enum Components {
   SelectNodeDialog = 'SelectNodeDialog',
   StatusActionBadge = 'StatusActionBadge',
   ExternalLink = 'ExternalLink',
-  HelpDialog = 'HelpDialog',
+  // HelpDialog = 'HelpDialog',
   AboutNetworkDialog = 'AboutNetworkDialog',
   SidebarItemContent = 'SidebarItemContent',
   SelectNetwork = 'SelectNetwork',
@@ -137,6 +143,11 @@ export enum Components {
   TokenAddress = 'Input/TokenAddress',
   SelectLanguageDialog = 'SelectLanguageDialog',
   ValueStatusWrapper = 'ValueStatusWrapper',
+  Moonpay = 'Moonpay/Moonpay',
+  MoonpayWidget = 'Moonpay/MoonpayWidget',
+  MoonpayNotification = 'Moonpay/MoonpayNotification',
+  MoonpayConfirmation = 'Moonpay/MoonpayConfirmation',
+  MoonpayHistoryButton = 'Moonpay/MoonpayHistoryButton',
 }
 
 interface SidebarMenuItem {
@@ -235,6 +246,7 @@ export const FaucetLink: SidebarMenuItemLink = {
 export const SidebarMenuGroups = [MainMenu, AccountMenu, OtherPagesMenu];
 
 export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
+export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
 
 export enum Topics {
   SwapTokens = 'SwapTokens',
@@ -296,3 +308,4 @@ export const EthereumGasLimits = [
 ];
 
 export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+export const EthAddress = '0x0000000000000000000000000000000000000000';

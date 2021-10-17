@@ -16,11 +16,21 @@
         <div class="header">
           <div v-loading="isTransactionFromPending || isTransactionToPending" :class="headerIconClasses" />
           <h5 class="header-details">
-            <formatted-amount class="info-line-value" :value="formattedAmount" :asset-symbol="formattedAssetSymbol">
+            <formatted-amount
+              class="info-line-value"
+              value-can-be-hidden
+              :value="formattedAmount"
+              :asset-symbol="assetSymbol"
+            >
               <i :class="firstNetworkIcon" />
             </formatted-amount>
             <span class="header-details-separator">{{ t('bridgeTransaction.for') }}</span>
-            <formatted-amount class="info-line-value" :value="formattedAmount" :asset-symbol="formattedAssetSymbol">
+            <formatted-amount
+              class="info-line-value"
+              value-can-be-hidden
+              :value="formattedAmount"
+              :asset-symbol="assetSymbol"
+            >
               <i :class="secondNetworkIcon" />
             </formatted-amount>
           </h5>
@@ -86,18 +96,19 @@
             <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionFirstDate" />
             <info-line
               v-if="amount"
+              is-formatted
+              value-can-be-hidden
               :label="t('bridgeTransaction.networkInfo.amount')"
               :value="`-${formattedAmount}`"
-              :asset-symbol="formattedAssetSymbol"
+              :asset-symbol="assetSymbol"
               :fiat-value="firstAmountFiatValue"
-              is-formatted
             />
             <info-line
+              is-formatted
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
               :value="isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
               :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol"
               :fiat-value="soraFeeFiatValue"
-              is-formatted
             >
               <template v-if="!isSoraToEvm && formattedEvmNetworkFee" #info-line-value-prefix>
                 <span class="info-line-value-prefix">~</span>
@@ -119,7 +130,7 @@
                 t('bridgeTransaction.changeNetwork')
               }}</template>
               <template v-else-if="isInsufficientBalance">{{
-                t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: formattedAssetSymbol })
+                t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: assetSymbol })
               }}</template>
               <template v-else-if="isInsufficientXorForFee">{{
                 t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: KnownSymbols.XOR })
@@ -129,7 +140,7 @@
               }}</template>
               <template v-else-if="isTransactionFromFailed">{{ t('bridgeTransaction.retry') }}</template>
               <template v-else-if="waitingForApprove">{{
-                t('bridgeTransaction.allowToken', { tokenSymbol: formattedAssetSymbol })
+                t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
               }}</template>
               <span
                 v-else-if="isTransactionFromPending"
@@ -196,11 +207,12 @@
             <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionSecondDate" />
             <info-line
               v-if="amount"
+              is-formatted
+              value-can-be-hidden
               :label="t('bridgeTransaction.networkInfo.amount')"
               :value="formattedAmount"
-              :asset-symbol="formattedAssetSymbol"
+              :asset-symbol="assetSymbol"
               :fiat-value="secondAmountFiatValue"
-              is-formatted
             />
             <info-line
               :label="t('bridgeTransaction.networkInfo.transactionFee')"
@@ -261,7 +273,6 @@
     >
       {{ t('bridgeTransaction.newTransaction') }}
     </s-button>
-    <confirm-bridge-transaction-dialog :visible.sync="showConfirmTransactionDialog" @confirm="confirmTransaction" />
   </div>
 </template>
 
@@ -286,7 +297,6 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames, EvmSymbol, MetamaskCancellationCode } from '@/consts';
 import {
-  formatAssetSymbol,
   copyToClipboard,
   formatDateItem,
   hasInsufficientBalance,
@@ -324,7 +334,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   @Getter('evmTransactionHash', { namespace }) evmTransactionHash!: string;
   @Getter('soraTransactionDate', { namespace }) soraTransactionDate!: string;
   @Getter('evmTransactionDate', { namespace }) evmTransactionDate!: string;
-  @Getter('currentTransactionState', { namespace }) currentTransactionState!: STATES;
+  @Getter('currentTransactionState', { namespace }) currentState!: STATES;
   @Getter('initialTransactionState', { namespace }) initialTransactionState!: STATES;
   @Getter('transactionStep', { namespace }) transactionStep!: number;
   @Getter('historyItem', { namespace }) historyItem!: any;
@@ -367,7 +377,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   };
 
   activeTransactionStep: any = [this.transactionSteps.from, this.transactionSteps.to];
-  showConfirmTransactionDialog = false;
 
   get formattedAmount(): string {
     return this.amount && this.asset ? new FPNumber(this.amount, this.asset.decimals).toLocaleString() : '';
@@ -375,10 +384,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
 
   get assetSymbol(): string {
     return this.asset?.symbol ?? '';
-  }
-
-  get formattedAssetSymbol(): string {
-    return formatAssetSymbol(this.assetSymbol);
   }
 
   get evmIcon(): string {
@@ -404,10 +409,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
       return this.getFiatAmountByString(this.amount, this.asset);
     }
     return null;
-  }
-
-  get currentState(): STATES {
-    return this.currentTransactionState;
   }
 
   get isTransactionStep1(): boolean {
@@ -699,9 +700,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     const historyItem = this.historyItem ? this.historyItem : await this.generateHistoryItem({ date: Date.now() });
     const machineStates = this.isSoraToEvm ? SORA_EVM_STATES : EVM_SORA_STATES;
     const initialState =
-      this.initialTransactionState === this.currentTransactionState
-        ? this.initialTransactionState
-        : this.currentTransactionState;
+      this.initialTransactionState === this.currentState ? this.initialTransactionState : this.currentState;
     this.sendService = interpret(
       createFSM(
         {
@@ -906,18 +905,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
         this.callSecondTransition();
       }
     });
-  }
-
-  async confirmTransaction(isTransactionConfirmed: boolean) {
-    if (isTransactionConfirmed) {
-      if (this.isTransactionFromFailed || this.isTransactionToFailed) {
-        this.callRetryTransition();
-      } else {
-        if (this.isTransactionStep2) {
-          this.callSecondTransition();
-        }
-      }
-    }
   }
 
   handleBack(): void {

@@ -1,5 +1,6 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
+import { BridgeNetworks } from '@sora-substrate/util';
 
 import router from '@/router';
 import { getWalletAddress, formatAddress } from '@/utils';
@@ -49,6 +50,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @Getter('isLoggedIn') isSoraAccountConnected!: boolean;
   @Getter('isExternalAccountConnected', { namespace: 'web3' }) isExternalAccountConnected!: boolean;
 
+  @Action('setEvmNetwork', { namespace: 'web3' }) setEvmNetwork!: (networkId: BridgeNetworks) => Promise<void>;
   @Action('setEvmNetworkType', { namespace: 'web3' }) setEvmNetworkType!: (network?: string) => Promise<void>;
   @Action('connectExternalAccount', { namespace: 'web3' }) connectExternalAccount!: (options) => Promise<void>;
   @Action('switchExternalAccount', { namespace: 'web3' }) switchExternalAccount!: (options) => Promise<void>;

@@ -19,6 +19,10 @@ import { ConnectToNodeOptions } from '@/types/nodes';
 import { getLocale, getSupportedLocale, setI18nLocale } from '@/lang';
 import { updateFpNumberLocale, updateDocumentTitle } from '@/utils';
 
+export type ApiKeysObject = {
+  [key: string]: string;
+};
+
 const NODE_CONNECTION_TIMEOUT = 60000;
 
 const types = flow(
@@ -34,6 +38,8 @@ const types = flow(
     'SET_NETWORK_CHAIN_GENESIS_HASH',
     'SET_SELECT_NODE_DIALOG_VISIBILIY',
     'SET_LANGUAGE',
+    'SET_API_KEYS',
+    'SET_FEATURE_FLAGS',
   ]),
   map((x) => [x, x]),
   fromPairs
@@ -41,6 +47,8 @@ const types = flow(
 
 function initialState() {
   return {
+    apiKeys: {},
+    featureFlags: {},
     slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
     marketAlgorithm: storage.get('marketAlgorithm') || DefaultMarketAlgorithm,
     transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
@@ -59,9 +67,6 @@ function initialState() {
 const state = initialState();
 
 const getters = {
-  chainAndNetworkText(state, getters, rootState, rootGetters) {
-    return state.node.chain || rootGetters.soraNetwork;
-  },
   defaultNodesHashTable(state) {
     return state.defaultNodes.reduce((result, node) => ({ ...result, [node.address]: node }), {});
   },
@@ -85,6 +90,9 @@ const getters = {
   },
   language(state) {
     return state.language;
+  },
+  moonpayEnabled(state) {
+    return !!state.apiKeys.moonpay && !!state.featureFlags.moonpay;
   },
 };
 
@@ -139,6 +147,12 @@ const mutations = {
     state.language = lang;
     settingsStorage.set('language', lang);
   },
+  [types.SET_API_KEYS](state, keys = {}) {
+    state.apiKeys = { ...state.apiKeys, ...keys };
+  },
+  [types.SET_FEATURE_FLAGS](state, featureFlags = {}) {
+    state.featureFlags = { ...state.featureFlags, ...featureFlags };
+  },
 };
 
 const actions = {
@@ -154,9 +168,14 @@ const actions = {
 
       // wallet init & update flow
       if (!isWalletLoaded) {
-        await initWallet({ permissions: WalletPermissions });
-        // TODO [tech]: maybe we should replace it, cuz it executes twice except bridge screens
-        await dispatch('assets/getAssets', undefined, { root: true });
+        try {
+          await initWallet({ permissions: WalletPermissions });
+          // TODO [tech]: maybe we should replace it, cuz it executes twice except bridge screens
+          await dispatch('assets/getAssets', undefined, { root: true });
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
       }
     } catch (error) {
       if (requestedNode && requestedNode.address === state.node.address) {
@@ -319,6 +338,12 @@ const actions = {
     updateDocumentTitle();
     updateFpNumberLocale(locale);
     commit(types.SET_LANGUAGE, locale);
+  },
+  setApiKeys({ commit }, keys) {
+    commit(types.SET_API_KEYS, keys);
+  },
+  setFeatureFlags({ commit }, featureFlags) {
+    commit(types.SET_FEATURE_FLAGS, featureFlags);
   },
 };
 

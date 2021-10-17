@@ -1,6 +1,6 @@
 <template>
   <dialog-base
-    :visible.sync="isVisible"
+    :visible.sync="visibility"
     :before-close="beforeClose"
     :title="t('selectNodeDialog.title')"
     :class="['select-node-dialog', dialogCustomClass]"
@@ -38,9 +38,7 @@ import { NodeModel } from '@/components/Settings/Node/consts';
 import { Node, NodeItem, ConnectToNodeOptions } from '@/types/nodes';
 import { AppHandledError } from '@/utils/error';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import LoadingMixin from '@/components/mixins/LoadingMixin';
-import DialogMixin from '@/components/mixins/DialogMixin';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import DialogBase from './DialogBase.vue';
 
@@ -55,12 +53,13 @@ const NodeInfoView = 'NodeInfoView';
     NodeInfo: lazyComponent(Components.NodeInfo),
   },
 })
-export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMixin, DialogMixin, NodeErrorMixin) {
+export default class SelectNodeDialog extends Mixins(NodeErrorMixin, LoadingMixin) {
   @Getter nodeList!: Array<Node>;
   @Getter soraNetwork!: string; // wallet
   @State((state) => state.settings.defaultNodes) defaultNodes!: Array<Node>;
   @State((state) => state.settings.nodeAddressConnecting) nodeAddressConnecting!: string;
   @State((state) => state.settings.nodeConnectionAllowance) nodeConnectionAllowance!: boolean;
+  @State((state) => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean;
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
   @Action addCustomNode!: (node: Node) => Promise<void>;
   @Action updateCustomNode!: (options: any) => Promise<void>;
@@ -68,6 +67,14 @@ export default class SelectNodeDialog extends Mixins(TranslationMixin, LoadingMi
 
   currentView = NodeListView;
   selectedNode: any = {};
+
+  get visibility(): boolean {
+    return this.selectNodeDialogVisibility;
+  }
+
+  set visibility(flag: boolean) {
+    this.setSelectNodeDialogVisibility(flag);
+  }
 
   get connectedNodeAddress(): string {
     return this.node.address;

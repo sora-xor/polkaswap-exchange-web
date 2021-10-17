@@ -15,7 +15,6 @@ import {
   Operation,
   BridgeHistory,
   TransactionStatus,
-  KnownAssets,
   CodecString,
 } from '@sora-substrate/util';
 import { api } from '@soramitsu/soraneo-wallet-web';
@@ -26,7 +25,7 @@ import { STATES } from '@/utils/fsm';
 import ethersUtil, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/ethers-util';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { delay, isEthereumAddress } from '@/utils';
-import { EthereumGasLimits, MaxUint256, ZeroStringValue } from '@/consts';
+import { MaxUint256, ZeroStringValue } from '@/consts';
 
 const SORA_REQUESTS_TIMEOUT = 5 * 1000;
 
@@ -518,52 +517,54 @@ const actions = {
     bridgeApi.clearHistory();
     commit(types.GET_HISTORY_SUCCESS, []);
   },
-  findRegisteredAsset({ commit, getters, rootGetters }) {
+  findRegisteredAsset({ getters, rootGetters }) {
     return rootGetters['assets/registeredAssets'].find((item) => item.address === getters.asset.address);
   },
-  async getEvmNetworkFee({ commit, getters, rootGetters }) {
+  /**
+   * Fetch EVM Network fee for selected bridge asset
+   */
+  async getEvmNetworkFee({ dispatch, commit, getters }) {
     if (!getters.asset || !getters.asset.address) {
       return;
     }
     commit(types.GET_EVM_NETWORK_FEE_REQUEST);
     try {
-      const ethersInstance = await ethersUtil.getEthersInstance();
-      const gasPrice = (await ethersInstance.getGasPrice()).toNumber();
-      const registeredAssets = rootGetters.whitelist;
-      const knownAsset =
-        !!KnownAssets.get(getters.asset.address) ||
-        (registeredAssets[getters.asset.address] && getters.asset.symbol === 'ETH');
-      const gasLimit =
-        EthereumGasLimits[+getters.isSoraToEvm][knownAsset ? getters.asset.symbol : KnownBridgeAsset.Other];
-      const fpFee = FPNumber.fromCodecValue(gasPrice).mul(new FPNumber(gasLimit)).toCodecString();
+      const fpFee = await dispatch(
+        'web3/getEvmNetworkFee',
+        { asset: getters.asset, isSoraToEvm: getters.isSoraToEvm },
+        { root: true }
+      );
       commit(types.GET_EVM_NETWORK_FEE_SUCCESS, fpFee);
     } catch (error) {
-      console.error(error);
       commit(types.GET_EVM_NETWORK_FEE_FAILURE);
     }
   },
-  async generateHistoryItem({ getters, dispatch, rootGetters }, playground) {
-    await dispatch(
-      'setHistoryItem',
-      bridgeApi.generateHistoryItem({
-        type: getters.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
-        amount: getters.amount,
-        symbol: getters.asset.symbol,
-        assetAddress: getters.asset.address,
-        startTime: playground.date,
-        endTime: playground.date,
-        signed: false,
-        status: '',
-        transactionStep: playground.step,
-        hash: '',
-        ethereumHash: '',
-        transactionState: STATES.INITIAL,
-        soraNetworkFee: getters.soraNetworkFee,
-        ethereumNetworkFee: getters.evmNetworkFee,
-        externalNetwork: rootGetters['web3/evmNetwork'],
-        to: rootGetters['web3/evmAddress'],
-      })
-    );
+  bridgeDataToHistoryItem({ getters, rootGetters }, { date = Date.now(), step = 1, payload = {}, ...params } = {}) {
+    return {
+      type: (params as any).type ?? (getters.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming),
+      amount: (params as any).amount ?? getters.amount,
+      symbol: (params as any).symbol ?? getters.asset.symbol,
+      assetAddress: (params as any).assetAddress ?? getters.asset.address,
+      startTime: date,
+      endTime: date,
+      signed: false,
+      status: '',
+      transactionStep: step,
+      hash: '',
+      ethereumHash: '',
+      transactionState: STATES.INITIAL,
+      soraNetworkFee: (params as any).soraNetworkFee ?? getters.soraNetworkFee,
+      ethereumNetworkFee: (params as any).ethereumNetworkFee ?? getters.evmNetworkFee,
+      externalNetwork: rootGetters['web3/evmNetwork'],
+      to: (params as any).to ?? rootGetters['web3/evmAddress'],
+      payload,
+    };
+  },
+  async generateHistoryItem({ getters, dispatch }, playground) {
+    const historyItem = await dispatch('bridgeDataToHistoryItem', playground);
+
+    await dispatch('setHistoryItem', bridgeApi.generateHistoryItem(historyItem));
+
     return getters.historyItem;
   },
   async updateHistoryParams({ dispatch }, params) {

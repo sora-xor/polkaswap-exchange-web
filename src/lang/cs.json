@@ -34,7 +34,7 @@
         "ClaimRewards": "Nárokovat odměny",
         "andText": "a",
         "finalized": {
-            "Transfer": "Odesláno {amount} {symbol} na {address}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "Proveden swap {amount} {symbol} za {amount2} {symbol2}",
             "AddLiquidity": "Přidáno {amount} {symbol} a {amount2} {symbol2}",
             "RemoveLiquidity": "Odebráno {amount} {symbol} a {amount2} {symbol2}",
@@ -43,7 +43,7 @@
             "ClaimRewards": "Odměna byla úspěšně nárokována {rewards}."
         },
         "error": {
-            "Transfer": "Odeslání {amount} {symbol} na {address} se nezdařilo.",
+            "Transfer": "{action} {amount} {symbol}  {direction} {address} se nezdařilo.",
             "Swap": "Swap {amount} {symbol} za {amount2} {symbol2} se nezdařil.",
             "AddLiquidity": "Přidání {amount} {symbol} a {amount2} {symbol2} se nezdařilo.",
             "RemoveLiquidity": "Odebrání {amount} {symbol} a {amount2} {symbol2} se nezdařilo.",
@@ -254,7 +254,9 @@
         "AddLiquidity": "Přidat likviditu",
         "AddLiquidityId": "Přidat likviditu",
         "RemoveLiquidity": "Odebrat likviditu",
-        "PageNotFound": "Stránka nenalezena"
+        "PageNotFound": "Stránka nenalezena",
+        "Tokens": "Tokeny",
+        "Rewards": "Odměny"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -802,5 +804,16 @@
         "tooltips": {
             "transfer": "Tokeny byly úspěšně zakoupeny!\nKliknutím spustíte bridge transakci"
         }
-    }
+    },
+    "recievedText": "Přijato",
+    "light": "Světlo",
+    "dark": "Temný",
+    "headerMenu": {
+        "showBalances": "Zobrazit zůstatky",
+        "hideBalances": "Skrýt zůstatky",
+        "settings": "Nastavení",
+        "switchTheme": "Přepnout do režimu {theme}",
+        "switchLanguage": "Vyber jazyk"
+    },
+    "sentText": "Odesláno"
 }
