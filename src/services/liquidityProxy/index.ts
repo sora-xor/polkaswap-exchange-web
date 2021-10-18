@@ -732,18 +732,37 @@ const quote = (
         amountWithoutImpact: secondQuoteWithoutImpact,
       };
     } else {
-      // second_quote = quote_single(XOR, output_asset, amount, selected_sources, filter_mode)
-      // first_quote = quote_single(input_asset, XOR, second_quote.amount, selected_sources, filter_mode)
-      // second_quote_without_impact = quote_without_impact_single(XOR, output_asset, second_quote.best_distribution)
-      // ratio_to_actual = second_quote_without_impact / second_quote.amount
-      // # multiply all amounts in first distribution to adjust to second quote without impact:
-      // first_quote_distribution = second_quote.best_distribution.map(|(source, part_amount)| return (source, part_amount * ratio_to_actual))
-      // first_quote_without_impact = quote_without_impact_single(input_asset, XOR, first_quote_distribution )
-      // return {
-      //   amount: first_quote.amount,
-      //   fee: first_quote.fee + second_quote.fee
-      //   amount_without_impact:  first_quote_without_impact
-      // }
+      const secondQuote = quoteSingle(XOR, outputAssetId, amount, isDesiredInput, sources, payload);
+      const firstQuote = quoteSingle(inputAssetId, XOR, secondQuote.amount, isDesiredInput, sources, payload);
+
+      const secondQuoteWithoutImpact = quoteWithoutImpactSingle(
+        XOR,
+        outputAssetId,
+        isDesiredInput,
+        secondQuote.distribution,
+        payload
+      );
+      const ratioToActual = secondQuoteWithoutImpact.div(secondQuote.amount);
+
+      // multiply all amounts in first distribution to adjust to second quote without impact:
+      const firstQuoteDistribution = secondQuote.distribution.map(({ market, amount }) => ({
+        market,
+        amount: amount.mul(ratioToActual),
+      }));
+
+      const firstQuoteWithoutImpact = quoteWithoutImpactSingle(
+        inputAssetId,
+        XOR,
+        isDesiredInput,
+        firstQuoteDistribution,
+        payload
+      );
+
+      return {
+        amount: firstQuote.amount,
+        fee: firstQuote.fee.add(secondQuote.fee),
+        amountWithoutImpact: firstQuoteWithoutImpact,
+      };
     }
   }
 };
