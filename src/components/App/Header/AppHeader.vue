@@ -137,7 +137,7 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
   }
 
   get hideBalancesIcon(): string {
-    return this.shouldBalanceBeHidden ? 'basic-eye-no-24' : 'basic-filterlist-24';
+    return this.shouldBalanceBeHidden ? 'basic-filterlist-24' : 'basic-eye-no-24';
   }
 
   get hideBalancesTooltip(): string {
