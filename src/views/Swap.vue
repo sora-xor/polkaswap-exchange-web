@@ -191,7 +191,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
+import { Action, Getter, State } from 'vuex-class';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import {
   KnownAssets,
@@ -221,6 +221,8 @@ import {
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 
+import { quote } from '@/services/liquidityProxy';
+
 const namespace = 'swap';
 
 @Component({
@@ -236,10 +238,12 @@ const namespace = 'swap';
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
-    FormattedAmount: components.FormattedAmount,
+    FormattedAmount: components.FormattedAmount as any,
   },
 })
 export default class Swap extends Mixins(mixins.FormattedAmountMixin, TranslationMixin, LoadingMixin) {
+  @State((state) => state[namespace].pairLiquiditySources) pairLiquiditySources!: Array<LiquiditySourceTypes>;
+
   @Getter networkFees!: NetworkFeesObject;
   @Getter nodeIsConnected!: boolean;
   @Getter isLoggedIn!: boolean;
@@ -256,6 +260,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes;
   @Getter('pairLiquiditySourcesAvailable', { namespace }) pairLiquiditySourcesAvailable!: boolean;
   @Getter('swapMarketAlgorithm', { namespace }) swapMarketAlgorithm!: string;
+  @Getter('payload', { namespace }) payload!: any; // TODO: type
 
   @Action('setTokenFromAddress', { namespace }) setTokenFromAddress!: (address?: string) => Promise<void>;
   @Action('setTokenToAddress', { namespace }) setTokenToAddress!: (address?: string) => Promise<void>;
@@ -275,6 +280,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   ) => Promise<void>;
 
   @Action('setRewards', { namespace }) setRewards!: (rewards: Array<LPRewardsInfo>) => Promise<void>;
+  @Action('setSubscriptionPayload', { namespace }) setSubscriptionPayload!: (payload) => Promise<void>; // TODO: type
   @Action('resetSubscriptions', { namespace }) resetSubscriptions!: AsyncVoidFn;
   @Action('updateSubscriptions', { namespace }) updateSubscriptions!: AsyncVoidFn;
 
@@ -523,6 +529,25 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
         this.liquiditySource
       );
 
+      const result = quote(
+        this.tokenFrom.address,
+        this.tokenTo.address,
+        value,
+        !this.isExchangeB,
+        [this.liquiditySource].filter(Boolean),
+        this.pairLiquiditySources,
+        this.payload
+      );
+
+      console.log(
+        'amount:',
+        amount,
+        result.amount.toCodecString(),
+        FPNumber.fromCodecValue(amount).div(result.amount).toString()
+      );
+      console.log('fee:', fee, result.fee.toCodecString());
+      console.log('amountWithoutImpact:', amountWithoutImpact, result.amountWithoutImpact.toCodecString());
+
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
       this.setAmountWithoutImpact(amountWithoutImpact);
       this.setLiquidityProviderFee(fee);
@@ -558,8 +583,9 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
       .subscribe(this.onChangeSwapReserves);
   }
 
-  private onChangeSwapReserves(data) {
-    console.log(data);
+  private async onChangeSwapReserves(payload) {
+    await this.setSubscriptionPayload(payload);
+
     if (!this.isAvailable) {
       this.checkSwap();
       this.updatePairLiquiditySources();

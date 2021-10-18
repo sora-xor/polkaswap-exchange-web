@@ -62,13 +62,11 @@ interface LiquiditySourcePriceImpactOptions extends PriceImpactOptions {
 // TBC quote
 
 // not XOR?
-const tbcReferencePrice = (assetId, payload): FPNumber => {
+const tbcReferencePrice = (assetId: string, payload): FPNumber => {
   if (assetId === DAI) {
     return new FPNumber(1);
   } else {
-    return FPNumber.fromCodecValue(payload.reserves.prices[XOR]).div(
-      FPNumber.fromCodecValue(payload.reserves.prices[assetId])
-    );
+    return FPNumber.fromCodecValue(payload.prices[XOR]).div(FPNumber.fromCodecValue(payload.prices[assetId]));
   }
 };
 
@@ -115,7 +113,7 @@ const mapCollateralizedFractionToPenalty = (fraction: number) => {
   }
 };
 
-const sellPenalty = (collateralAssetId, payload): FPNumber => {
+const sellPenalty = (collateralAssetId: string, payload): FPNumber => {
   const idealReservesPrice = idealReservesReferencePrice(FPNumber.ZERO, payload);
   const collateralReservesPrice = actualReservesReferencePrice(collateralAssetId, payload);
 
@@ -129,7 +127,7 @@ const sellPenalty = (collateralAssetId, payload): FPNumber => {
   return new FPNumber(penalty);
 };
 
-const tbcSellPrice = (collateralAssetId, amount: FPNumber, isDesiredInput, payload): FPNumber => {
+const tbcSellPrice = (collateralAssetId: string, amount: FPNumber, isDesiredInput: boolean, payload): FPNumber => {
   const collateralSupply = FPNumber.fromCodecValue(payload.reserves.tbc[collateralAssetId]);
   const xorPrice = tbcSellFunction(FPNumber.ZERO, payload);
   const collateralPrice = tbcReferencePrice(collateralAssetId, payload);
@@ -137,6 +135,7 @@ const tbcSellPrice = (collateralAssetId, amount: FPNumber, isDesiredInput, paylo
 
   if (isDesiredInput) {
     const outputCollateral = amount.add(collateralSupply).div(xorSupply.add(amount));
+
     if (FPNumber.isGreaterThan(outputCollateral, collateralSupply)) {
       console.error('Not enough reserves');
     }
@@ -151,8 +150,11 @@ const tbcSellPrice = (collateralAssetId, amount: FPNumber, isDesiredInput, paylo
 };
 
 const tbcBuyPrice = (collateralAssetId: string, amount: FPNumber, isDesiredInput: boolean, payload): FPNumber => {
+  console.log('tbcBuyPrice');
   const currentState = tbcBuyFunction(FPNumber.ZERO, payload);
   const collateralPrice = tbcReferencePrice(collateralAssetId, payload);
+
+  console.log(collateralPrice.toString(), payload.prices[collateralAssetId], collateralAssetId);
 
   if (isDesiredInput) {
     const collateralReferenceIn = collateralPrice.mul(amount);
@@ -168,7 +170,12 @@ const tbcBuyPrice = (collateralAssetId: string, amount: FPNumber, isDesiredInput
   }
 };
 
-const tbcSellPriceWithFee = (collateralAssetId, amount: FPNumber, isDesiredInput, payload): QuoteResult => {
+const tbcSellPriceWithFee = (
+  collateralAssetId: string,
+  amount: FPNumber,
+  isDesiredInput: boolean,
+  payload
+): QuoteResult => {
   const newFee = TBC_FEE.add(sellPenalty(collateralAssetId, payload));
 
   if (isDesiredInput) {
@@ -202,7 +209,12 @@ const tbcSellPriceWithFee = (collateralAssetId, amount: FPNumber, isDesiredInput
   }
 };
 
-const tbcBuyPriceWithFee = (collateralAssetId, amount: FPNumber, isDesiredInput, payload): QuoteResult => {
+const tbcBuyPriceWithFee = (
+  collateralAssetId: string,
+  amount: FPNumber,
+  isDesiredInput: boolean,
+  payload
+): QuoteResult => {
   if (isDesiredInput) {
     const outputAmount = tbcBuyPrice(collateralAssetId, amount, isDesiredInput, payload);
     const feeAmount = TBC_FEE.mul(outputAmount);
@@ -233,7 +245,13 @@ const tbcBuyPriceWithFee = (collateralAssetId, amount: FPNumber, isDesiredInput,
   }
 };
 
-const tbcQuote = ({ inputAssetId, outputAssetId, amount, isDesiredInput, payload }): QuoteResult => {
+const tbcQuote = (
+  inputAssetId: string,
+  outputAssetId: string,
+  amount: FPNumber,
+  isDesiredInput: boolean,
+  payload
+): QuoteResult => {
   if (inputAssetId === XOR) {
     return tbcSellPriceWithFee(outputAssetId, amount, isDesiredInput, payload);
   } else {
@@ -242,7 +260,7 @@ const tbcQuote = ({ inputAssetId, outputAssetId, amount, isDesiredInput, payload
 };
 
 // XST quote
-const xstReferencePrice = (assetId, payload): FPNumber => {
+const xstReferencePrice = (assetId: string, payload): FPNumber => {
   if (assetId === DAI || assetId === XSTUSD) {
     return new FPNumber(1);
   } else {
@@ -424,14 +442,14 @@ const quotePrimaryMarket = ({
     };
   } else {
     return {
-      result: tbcQuote({ inputAssetId, outputAssetId, amount, isDesiredInput, payload }),
+      result: tbcQuote(inputAssetId, outputAssetId, amount, isDesiredInput, payload),
       market: LiquiditySourceTypes.MulticollateralBondingCurvePool,
     };
   }
 };
 
 const primaryMarketAmountBuyingXor = (
-  collateralAssetId,
+  collateralAssetId: string,
   amount: FPNumber,
   isDesiredInput,
   xorReserve: CodecString,
@@ -470,9 +488,9 @@ const primaryMarketAmountBuyingXor = (
 };
 
 const primaryMarketAmountSellingXor = (
-  collateralAssetId,
+  collateralAssetId: string,
   amount: FPNumber,
-  isDesiredInput,
+  isDesiredInput: boolean,
   xorReserve: CodecString,
   otherReserve: CodecString,
   payload
@@ -524,7 +542,13 @@ const extremum = (isDesiredInput: boolean): FPNumber => {
   }
 };
 
-const smartSplit = (inputAssetId, outputAssetId, amount: FPNumber, isDesiredInput, payload): QuoteResult => {
+const smartSplit = (
+  inputAssetId: string,
+  outputAssetId: string,
+  amount: FPNumber,
+  isDesiredInput: boolean,
+  payload
+): QuoteResult => {
   let bestOutcome: FPNumber = extremum(isDesiredInput);
   let bestFee: FPNumber = FPNumber.ZERO;
   let bestDistribution: Array<any> = [];
@@ -627,7 +651,7 @@ const quoteSingle = (
         return xykQuote(options);
       }
       case LiquiditySourceTypes.MulticollateralBondingCurvePool: {
-        return tbcQuote({ inputAssetId, outputAssetId, amount, isDesiredInput, payload });
+        return tbcQuote(inputAssetId, outputAssetId, amount, isDesiredInput, payload);
       }
       case LiquiditySourceTypes.XSTPool: {
         return xstQuote({ inputAssetId, amount, isDesiredInput, payload });
@@ -672,16 +696,17 @@ const listLiquiditySources = (
   return sources;
 };
 
-const quote = (
+export const quote = (
   inputAssetId: string,
   outputAssetId: string,
-  amount: FPNumber,
+  value: string,
   isDesiredInput: boolean,
   selectedSources: Array<LiquiditySourceTypes>,
   availableSources: Array<LiquiditySourceTypes>,
   payload
 ) => {
   const sources = listLiquiditySources(inputAssetId, outputAssetId, selectedSources, availableSources);
+  const amount = new FPNumber(value);
 
   if (isDirectExchange(inputAssetId, outputAssetId)) {
     const result = quoteSingle(inputAssetId, outputAssetId, amount, isDesiredInput, sources, payload);
@@ -787,6 +812,18 @@ const xykQuoteWithoutImpact = (
   return isDesiredInput ? amount.mul(priceWithFee) : amount.div(priceWithFee);
 };
 
+const tbcBuyPriceNoVolume = (collateralAssetId: string, payload) => {
+  const xorPrice = tbcBuyFunction(FPNumber.ZERO, payload);
+  const collateralPrice = tbcReferencePrice(collateralAssetId, payload);
+  return xorPrice.div(collateralPrice);
+};
+
+const tbcSellPriceNoVolume = (collateralAssetId: string, payload) => {
+  const xorPrice = tbcSellFunction(FPNumber.ZERO, payload);
+  const collateralPrice = tbcReferencePrice(collateralAssetId, payload);
+  return xorPrice.div(collateralPrice);
+};
+
 const tbcQuoteWithoutImpact = (
   inputAssetId: string,
   outputAssetId: string,
@@ -795,24 +832,25 @@ const tbcQuoteWithoutImpact = (
   payload
 ): FPNumber => {
   if (inputAssetId === XOR) {
-    const xorPrice = tbcSellPrice(outputAssetId, amount, isDesiredinput, payload);
+    const xorPrice = tbcSellPriceNoVolume(outputAssetId, payload);
+    const newFee = TBC_FEE.add(sellPenalty(outputAssetId, payload));
 
     if (isDesiredinput) {
-      const feeAmount = TBC_FEE.mul(amount);
+      const feeAmount = newFee.mul(amount);
       const collateralOut = amount.sub(feeAmount).mul(xorPrice);
 
       return collateralOut;
     } else {
       const xorIn = amount.div(xorPrice);
-      const inputAmountWithFee = xorIn.div(new FPNumber(1).sub(TBC_FEE));
+      const inputAmountWithFee = xorIn.div(new FPNumber(1).sub(newFee));
 
       return inputAmountWithFee;
     }
   } else {
-    const xorPrice = tbcBuyPrice(outputAssetId, amount, isDesiredinput, payload);
+    const xorPrice = tbcBuyPriceNoVolume(outputAssetId, payload);
 
     if (isDesiredinput) {
-      const xorOut = amount.mul(xorPrice);
+      const xorOut = amount.div(xorPrice); // CHECK
       const feeAmount = xorOut.mul(TBC_FEE);
 
       return xorOut.sub(feeAmount);

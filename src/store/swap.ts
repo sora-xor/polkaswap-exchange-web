@@ -28,6 +28,7 @@ const types = flow(
     'SET_LIQUIDITY_PROVIDER_FEE',
     'SET_PAIR_LIQUIDITY_SOURCES',
     'SET_REWARDS',
+    'SET_SUBSCRIPTION_PAYLOAD',
     'GET_SWAP_CONFIRM',
     'RESET',
   ]),
@@ -50,6 +51,7 @@ interface SwapState {
   isAvailable: boolean;
   isAvailableChecking: boolean;
   rewards: Array<LPRewardsInfo>;
+  payload: Nullable<any>; // TODO: type
 }
 
 function initialState(): SwapState {
@@ -68,6 +70,7 @@ function initialState(): SwapState {
     isAvailableChecking: false,
     pairLiquiditySources: [],
     rewards: [],
+    payload: null,
   };
 }
 
@@ -114,6 +117,9 @@ const getters = {
   },
   rewards(state: SwapState) {
     return state.rewards;
+  },
+  payload(state: SwapState) {
+    return state.payload;
   },
   isAvailable(state: SwapState) {
     return state.isAvailable;
@@ -197,6 +203,9 @@ const mutations = {
   },
   [types.SET_REWARDS](state: SwapState, rewards: Array<LPRewardsInfo>) {
     state.rewards = [...rewards];
+  },
+  [types.SET_SUBSCRIPTION_PAYLOAD](state: SwapState, payload) {
+    state.payload = payload;
   },
 };
 
@@ -287,6 +296,9 @@ const actions = {
   },
   setRewards({ commit }, rewards: Array<LPRewardsInfo>) {
     commit(types.SET_REWARDS, rewards);
+  },
+  setSubscriptionPayload({ commit }, payload) {
+    commit(types.SET_SUBSCRIPTION_PAYLOAD, payload);
   },
   reset({ commit, dispatch }) {
     dispatch('resetSubscriptions');
