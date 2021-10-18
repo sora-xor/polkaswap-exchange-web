@@ -545,8 +545,13 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
         result.amount.toCodecString(),
         FPNumber.fromCodecValue(amount).div(result.amount).toString()
       );
-      console.log('fee:', fee, result.fee.toCodecString());
-      console.log('amountWithoutImpact:', amountWithoutImpact, result.amountWithoutImpact.toCodecString());
+      console.log('fee:', fee, result.fee.toCodecString(), FPNumber.fromCodecValue(fee).div(result.fee).toString());
+      console.log(
+        'amountWithoutImpact:',
+        amountWithoutImpact,
+        result.amountWithoutImpact.toCodecString(),
+        FPNumber.fromCodecValue(amountWithoutImpact).div(result.amountWithoutImpact).toString()
+      );
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
       this.setAmountWithoutImpact(amountWithoutImpact);
