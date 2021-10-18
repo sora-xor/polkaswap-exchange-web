@@ -12,7 +12,7 @@ const TBC_FEE = new FPNumber(0.003);
 // TBC
 const INITIAL_PRICE = new FPNumber(634);
 const PRICE_CHANGE_COEFF = new FPNumber(1337);
-const SELL_PRICE_COEFF = new FPNumber(8);
+const SELL_PRICE_COEFF = new FPNumber(0.8);
 
 const DAI = '0x0200060000000000000000000000000000000000000000000000000000000000';
 const ETH = '0x0200070000000000000000000000000000000000000000000000000000000000';
@@ -117,7 +117,7 @@ const sellPenalty = (collateralAssetId: string, payload): FPNumber => {
   const collateralReservesPrice = actualReservesReferencePrice(collateralAssetId, payload);
 
   if (collateralReservesPrice.isZero()) {
-    console.warn('Not enough reserves', collateralAssetId);
+    console.warn('sellPenalty: Not enough reserves', collateralAssetId);
     return FPNumber.ZERO;
   }
 
@@ -134,7 +134,7 @@ const tbcSellPrice = (collateralAssetId: string, amount: FPNumber, isDesiredInpu
   const xorSupply = collateralSupply.mul(collateralPrice).div(xorPrice);
 
   if (isDesiredInput) {
-    const outputCollateral = amount.add(collateralSupply).div(xorSupply.add(amount));
+    const outputCollateral = amount.mul(collateralSupply).div(xorSupply.add(amount));
 
     if (FPNumber.isGreaterThan(outputCollateral, collateralSupply)) {
       console.warn('Not enough reserves', collateralAssetId);
@@ -152,14 +152,13 @@ const tbcSellPrice = (collateralAssetId: string, amount: FPNumber, isDesiredInpu
 };
 
 const tbcBuyPrice = (collateralAssetId: string, amount: FPNumber, isDesiredInput: boolean, payload): FPNumber => {
-  console.log('tbcBuyPrice');
   const currentState = tbcBuyFunction(FPNumber.ZERO, payload);
   const collateralPrice = tbcReferencePrice(collateralAssetId, payload);
 
   if (isDesiredInput) {
     const collateralReferenceIn = collateralPrice.mul(amount);
     const underPow = currentState.mul(PRICE_CHANGE_COEFF).mul(new FPNumber(2));
-    const underSqrt = underPow.mul(underPow).add(SELL_PRICE_COEFF.mul(PRICE_CHANGE_COEFF).mul(collateralReferenceIn));
+    const underSqrt = underPow.mul(underPow).add(new FPNumber(8).mul(PRICE_CHANGE_COEFF).mul(collateralReferenceIn));
     const xorOut = underSqrt.sqrt().div(new FPNumber(2)).sub(PRICE_CHANGE_COEFF.mul(currentState));
     return FPNumber.max(xorOut, FPNumber.ZERO);
   } else {
@@ -800,6 +799,9 @@ export const quote = (
         payload
       );
 
+      console.log(firstQuote.distribution);
+      console.log(secondQuote.distribution);
+
       return {
         amount: secondQuote.amount,
         fee: firstQuote.fee.add(secondQuote.fee),
@@ -843,10 +845,11 @@ export const quote = (
 
 // PRICE IMPACT
 const xykQuoteWithoutImpact = (
+  inputReserves: CodecString,
+  outputReserves: CodecString,
   amount: FPNumber,
   isDesiredInput: boolean,
-  inputReserves: CodecString,
-  outputReserves: CodecString
+  isXorInput: boolean
 ) => {
   if ([inputReserves, outputReserves].some(asZeroValue)) {
     return FPNumber.ZERO;
@@ -854,22 +857,41 @@ const xykQuoteWithoutImpact = (
 
   const fpInputReserves = FPNumber.fromCodecValue(inputReserves);
   const fpOutputReserves = FPNumber.fromCodecValue(outputReserves);
-
   const fpPrice = fpOutputReserves.div(fpInputReserves);
-  const priceWithFee = fpPrice.mul(new FPNumber(1).sub(LP_FEE));
 
-  return isDesiredInput ? amount.mul(priceWithFee) : amount.div(priceWithFee);
+  if (isDesiredInput) {
+    if (isXorInput) {
+      const amountWithoutFee = amount.mul(new FPNumber(1).sub(LP_FEE));
+
+      return amountWithoutFee.mul(fpPrice);
+    } else {
+      const amountWithFee = amount.mul(fpPrice);
+
+      return amountWithFee.mul(new FPNumber(1).sub(LP_FEE));
+    }
+  } else {
+    if (isXorInput) {
+      const amountWithoutFee = amount.div(fpPrice);
+
+      return amountWithoutFee.div(new FPNumber(1).sub(LP_FEE));
+    } else {
+      const amountWithFee = amount.div(new FPNumber(1).sub(LP_FEE));
+
+      return amountWithFee.div(fpPrice);
+    }
+  }
 };
 
-const tbcBuyPriceNoVolume = (collateralAssetId: string, payload) => {
+const tbcBuyPriceNoVolume = (collateralAssetId: string, payload): FPNumber => {
   const xorPrice = tbcBuyFunction(FPNumber.ZERO, payload);
   const collateralPrice = tbcReferencePrice(collateralAssetId, payload);
   return xorPrice.div(collateralPrice);
 };
 
-const tbcSellPriceNoVolume = (collateralAssetId: string, payload) => {
+const tbcSellPriceNoVolume = (collateralAssetId: string, payload): FPNumber => {
   const xorPrice = tbcSellFunction(FPNumber.ZERO, payload);
   const collateralPrice = tbcReferencePrice(collateralAssetId, payload);
+
   return xorPrice.div(collateralPrice);
 };
 
@@ -881,13 +903,15 @@ const tbcQuoteWithoutImpact = (
   payload
 ): FPNumber => {
   if (inputAssetId === XOR) {
-    const xorPrice = tbcSellPrice(outputAssetId, amount, isDesiredinput, payload);
-    const newFee = TBC_FEE.add(sellPenalty(outputAssetId, payload));
+    const xorPrice = tbcSellPriceNoVolume(outputAssetId, payload);
+    const penalty = sellPenalty(outputAssetId, payload);
+    const newFee = TBC_FEE.add(penalty);
 
     if (isDesiredinput) {
       const feeAmount = newFee.mul(amount);
       const collateralOut = amount.sub(feeAmount).mul(xorPrice);
 
+      // CHECK WHY 10x larger
       return collateralOut;
     } else {
       const xorIn = amount.div(xorPrice);
@@ -913,6 +937,7 @@ const tbcQuoteWithoutImpact = (
 };
 
 const xstQuoteWithoutImpact = ({ inputAssetId, amount, isDesiredInput, payload }) => {
+  console.log('xstQuoteWithoutImpact');
   // no impact already
   const quoteResult = xstQuote({ inputAssetId, amount, isDesiredInput, payload });
 
@@ -931,7 +956,7 @@ const quoteWithoutImpactSingle = (
 
     if (market === LiquiditySourceTypes.XYKPool) {
       const [inputReserves, outputReserves] = getXykReserves(inputAssetId, payload);
-      const value = xykQuoteWithoutImpact(amount, isDesiredInput, inputReserves, outputReserves);
+      const value = xykQuoteWithoutImpact(inputReserves, outputReserves, amount, isDesiredInput, inputAssetId === XOR);
 
       return result.add(value);
     }
