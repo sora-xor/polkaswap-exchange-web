@@ -11,6 +11,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, State, Getter } from 'vuex-class';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 import DialogBase from '@/components/DialogBase.vue';
 import MoonpayLogo from '@/components/logo/Moonpay.vue';
@@ -37,7 +38,7 @@ export default class Moonpay extends Mixins(MoonpayBridgeInitMixin) {
   widgetUrl = '';
   transactionsPolling!: Function;
 
-  @Getter account!: any;
+  @Getter account!: WALLET_TYPES.Account;
   @Getter isLoggedIn!: boolean;
   @Getter libraryTheme!: Theme;
   @Getter('lastCompletedTransaction', { namespace }) lastCompletedTransaction!: MoonpayTransaction;

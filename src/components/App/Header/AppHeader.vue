@@ -63,7 +63,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import { KnownSymbols } from '@sora-substrate/util';
@@ -105,7 +105,7 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
   @Getter shouldBalanceBeHidden!: boolean;
   @Getter libraryTheme!: Theme;
   @Getter isLoggedIn!: boolean;
-  @Getter account!: any; // TODO: WALLET ACCOUNT TYPE
+  @Getter account!: WALLET_TYPES.Account;
   @Getter moonpayEnabled!: boolean;
 
   @Action toggleHideBalance!: AsyncVoidFn;
