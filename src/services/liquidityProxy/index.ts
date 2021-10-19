@@ -1,4 +1,11 @@
-import { CodecString, LiquiditySourceTypes, FPNumber, KnownAssets, KnownSymbols } from '@sora-substrate/util';
+import {
+  CodecString,
+  LiquiditySourceTypes,
+  FPNumber,
+  KnownAssets,
+  KnownSymbols,
+  MaxTotalSupply,
+} from '@sora-substrate/util';
 import { asZeroValue } from '@/utils';
 
 const XOR = KnownAssets.get(KnownSymbols.XOR).address;
@@ -8,6 +15,7 @@ const VAL = KnownAssets.get(KnownSymbols.VAL).address;
 const LP_FEE = new FPNumber(0.003);
 const XST_FEE = new FPNumber(0.007);
 const TBC_FEE = new FPNumber(0.003);
+const MAX = new FPNumber(MaxTotalSupply);
 
 // TBC
 const INITIAL_PRICE = new FPNumber(634);
@@ -58,8 +66,6 @@ interface LiquiditySourcePriceImpactOptions extends PriceImpactOptions {
 }
 
 // TBC quote
-
-// not XOR?
 const tbcReferencePrice = (assetId: string, payload): FPNumber => {
   if (assetId === DAI) {
     return new FPNumber(1);
@@ -273,6 +279,20 @@ const xstReferencePrice = (assetId: string, payload): FPNumber => {
   }
 };
 
+const xstBuyPriceNoVolume = (syntheticAssetId: string, payload): FPNumber => {
+  const xorPrice = xstReferencePrice(XOR, payload);
+  const syntheticPrice = xstReferencePrice(syntheticAssetId, payload);
+
+  return xorPrice.div(syntheticPrice);
+};
+
+const xstSellPriceNoVolume = (syntheticAssetId: string, payload): FPNumber => {
+  const xorPrice = xstReferencePrice(XOR, payload);
+  const syntheticPrice = xstReferencePrice(syntheticAssetId, payload);
+
+  return xorPrice.div(syntheticPrice);
+};
+
 const xstBuyPrice = (amount: FPNumber, isDesiredInput: boolean, payload): FPNumber => {
   const xorPrice = xstReferencePrice(XOR, payload);
 
@@ -384,9 +404,10 @@ const getXykReserves = (inputAssetId: string, payload) => {
 // x - xor reserve
 // y - other token reserve
 // x_in - desired input amount (xor)
-const xykQuoteA = (x: FPNumber, y: FPNumber, xIn: FPNumber) => {
+const xykQuoteA = (x: FPNumber, y: FPNumber, xIn: FPNumber): QuoteResult => {
   const x1 = xIn.mul(new FPNumber(1).sub(LP_FEE));
   const yOut = x1.mul(y).div(x.add(x1));
+
   return {
     amount: yOut,
     fee: xIn.mul(LP_FEE),
@@ -403,9 +424,10 @@ const xykQuoteA = (x: FPNumber, y: FPNumber, xIn: FPNumber) => {
 // x - other token reserve
 // y - xor reserve
 // x_in - desired input amount (other token)
-const xykQuoteB = (x: FPNumber, y: FPNumber, xIn: FPNumber) => {
+const xykQuoteB = (x: FPNumber, y: FPNumber, xIn: FPNumber): QuoteResult => {
   const y1 = xIn.mul(y).div(x.add(xIn));
   const yOut = y1.mul(new FPNumber(1).sub(LP_FEE));
+
   return {
     amount: yOut,
     fee: y1.sub(yOut),
@@ -422,9 +444,23 @@ const xykQuoteB = (x: FPNumber, y: FPNumber, xIn: FPNumber) => {
 // x - xor reserve
 // y - other token reserve
 // y_out - desired output amount (other token)
-const xykQuoteC = (x: FPNumber, y: FPNumber, yOut: FPNumber) => {
+const xykQuoteC = (x: FPNumber, y: FPNumber, yOut: FPNumber): QuoteResult => {
+  if (FPNumber.isGreaterThanOrEqualTo(yOut, y)) {
+    return {
+      amount: FPNumber.ZERO,
+      fee: FPNumber.ZERO,
+      distribution: [
+        {
+          market: LiquiditySourceTypes.XYKPool,
+          amount: yOut,
+        },
+      ],
+    };
+  }
+
   const x1 = x.mul(yOut).div(y.sub(yOut));
   const xIn = x1.div(new FPNumber(1).sub(LP_FEE));
+
   return {
     amount: xIn,
     fee: xIn.sub(x1),
@@ -441,8 +477,22 @@ const xykQuoteC = (x: FPNumber, y: FPNumber, yOut: FPNumber) => {
 // x - other token reserve
 // y - xor reserve
 // y_out - desired output amount (xor)
-const xykQuoteD = (x: FPNumber, y: FPNumber, yOut: FPNumber) => {
+const xykQuoteD = (x: FPNumber, y: FPNumber, yOut: FPNumber): QuoteResult => {
   const y1 = yOut.div(new FPNumber(1).sub(LP_FEE));
+
+  if (FPNumber.isGreaterThanOrEqualTo(y1, y)) {
+    return {
+      amount: FPNumber.ZERO,
+      fee: FPNumber.ZERO,
+      distribution: [
+        {
+          market: LiquiditySourceTypes.XYKPool,
+          amount: yOut,
+        },
+      ],
+    };
+  }
+
   const xIn = x.mul(y1).div(y.sub(y1));
   return {
     amount: xIn,
@@ -482,17 +532,17 @@ const xykQuote = (
 };
 
 // AGGREGATOR
-const quotePrimaryMarket = ({
-  inputAssetId,
-  outputAssetId,
-  amount,
-  isDesiredInput,
-  payload,
-}): QuotePrimaryMarketResult => {
+const quotePrimaryMarket = (
+  inputAssetId: string,
+  outputAssetId: string,
+  amount: FPNumber,
+  isDesiredInput: boolean,
+  payload
+): QuotePrimaryMarketResult => {
   if ([inputAssetId, outputAssetId].includes(XSTUSD)) {
     return {
       result: xstQuote({ inputAssetId, amount, isDesiredInput, payload }),
-      market: LiquiditySourceTypes.XYKPool,
+      market: LiquiditySourceTypes.XSTPool,
     };
   } else {
     return {
@@ -502,10 +552,11 @@ const quotePrimaryMarket = ({
   }
 };
 
+// xor is output
 const primaryMarketAmountBuyingXor = (
   collateralAssetId: string,
   amount: FPNumber,
-  isDesiredInput,
+  isDesiredInput: boolean,
   xorReserve: CodecString,
   otherReserve: CodecString,
   payload
@@ -513,34 +564,48 @@ const primaryMarketAmountBuyingXor = (
   const fpXorReserve = FPNumber.fromCodecValue(xorReserve);
   const fpOtherReserve = FPNumber.fromCodecValue(otherReserve);
 
-  const secondaryPrice = FPNumber.isGreaterThan(fpXorReserve, FPNumber.ZERO)
-    ? fpOtherReserve.div(fpXorReserve)
-    : new FPNumber(Infinity);
+  const secondaryPrice = FPNumber.isGreaterThan(fpXorReserve, FPNumber.ZERO) ? fpOtherReserve.div(fpXorReserve) : MAX;
 
   const primaryBuyPrice =
     collateralAssetId === XSTUSD
-      ? xstBuyPrice(amount, isDesiredInput, payload)
-      : tbcBuyPrice(collateralAssetId, amount, isDesiredInput, payload);
+      ? xstBuyPriceNoVolume(collateralAssetId, payload)
+      : tbcBuyPriceNoVolume(collateralAssetId, payload);
 
   const k = fpXorReserve.mul(fpOtherReserve);
 
-  const amountSecondary = isDesiredInput
-    ? k.mul(primaryBuyPrice).sqrt().sub(fpOtherReserve)
-    : fpXorReserve.sub(k.div(primaryBuyPrice).sqrt());
+  if (isDesiredInput) {
+    if (FPNumber.isLessThan(secondaryPrice, primaryBuyPrice)) {
+      const amountSecondary = k.mul(primaryBuyPrice).sqrt().sub(fpOtherReserve);
 
-  if (FPNumber.isLessThan(secondaryPrice, primaryBuyPrice)) {
-    if (FPNumber.isGreaterThanOrEqualTo(amountSecondary, amount)) {
-      return FPNumber.ZERO;
-    } else if (FPNumber.isLessThanOrEqualTo(amountSecondary, FPNumber.ZERO)) {
-      return amount;
+      if (FPNumber.isGreaterThanOrEqualTo(amountSecondary, amount)) {
+        return FPNumber.ZERO;
+      } else if (FPNumber.isLessThanOrEqualTo(amountSecondary, FPNumber.ZERO)) {
+        return amount;
+      } else {
+        return amount.sub(amountSecondary);
+      }
     } else {
-      return amount.sub(amountSecondary);
+      return amount;
     }
   } else {
-    return amount;
+    // CHECK too
+    if (FPNumber.isLessThan(secondaryPrice, primaryBuyPrice)) {
+      const amountSecondary = fpXorReserve.sub(k.div(primaryBuyPrice).sqrt());
+
+      if (FPNumber.isGreaterThanOrEqualTo(amountSecondary, amount)) {
+        return FPNumber.ZERO;
+      } else if (FPNumber.isLessThanOrEqualTo(amountSecondary, FPNumber.ZERO)) {
+        return amount;
+      } else {
+        return amount.sub(amountSecondary);
+      }
+    } else {
+      return amount;
+    }
   }
 };
 
+// xor is input
 const primaryMarketAmountSellingXor = (
   collateralAssetId: string,
   amount: FPNumber,
@@ -558,25 +623,40 @@ const primaryMarketAmountSellingXor = (
 
   const primarySellPrice =
     collateralAssetId === XSTUSD
-      ? xstSellPrice(amount, isDesiredInput, payload)
-      : tbcSellPrice(collateralAssetId, amount, isDesiredInput, payload);
+      ? xstSellPriceNoVolume(collateralAssetId, payload)
+      : tbcSellPriceNoVolume(collateralAssetId, payload);
 
   const k = fpXorReserve.mul(fpOtherReserve);
 
-  const amountSecondary = isDesiredInput
-    ? k.div(primarySellPrice).sqrt().div(fpXorReserve)
-    : fpOtherReserve.div(k.mul(primarySellPrice).sqrt());
+  if (isDesiredInput) {
+    if (FPNumber.isGreaterThan(secondaryPrice, primarySellPrice)) {
+      const amountSecondary = k.div(primarySellPrice).sqrt().sub(fpXorReserve);
 
-  if (FPNumber.isGreaterThan(secondaryPrice, primarySellPrice)) {
-    if (FPNumber.isGreaterThan(amountSecondary, amount)) {
-      return FPNumber.ZERO;
-    } else if (FPNumber.isLessThanOrEqualTo(amountSecondary, FPNumber.ZERO)) {
-      return amount;
+      if (FPNumber.isGreaterThan(amountSecondary, amount)) {
+        return FPNumber.ZERO;
+      } else if (FPNumber.isLessThanOrEqualTo(amountSecondary, FPNumber.ZERO)) {
+        return amount;
+      } else {
+        return amount.sub(amountSecondary);
+      }
     } else {
-      return amount.sub(amountSecondary);
+      return amount;
     }
   } else {
-    return amount;
+    // CHECK WTF
+    if (FPNumber.isLessThan(secondaryPrice, primarySellPrice)) {
+      const amountSecondary = fpOtherReserve.sub(k.mul(primarySellPrice).sqrt());
+
+      if (FPNumber.isGreaterThanOrEqualTo(amountSecondary, amount)) {
+        return FPNumber.ZERO;
+      } else if (FPNumber.isLessThanOrEqualTo(amountSecondary, FPNumber.ZERO)) {
+        return amount;
+      } else {
+        return amount.sub(amountSecondary);
+      }
+    } else {
+      return amount;
+    }
   }
 };
 
@@ -592,7 +672,7 @@ const extremum = (isDesiredInput: boolean): FPNumber => {
   if (isDesiredInput) {
     return FPNumber.ZERO;
   } else {
-    return new FPNumber(Infinity);
+    return MAX;
   }
 };
 
@@ -617,15 +697,15 @@ const smartSplit = (
     : primaryMarketAmountBuyingXor(inputAssetId, amount, isDesiredInput, xorReserve, otherReserve, payload);
 
   if (FPNumber.isGreaterThan(primaryAmount, FPNumber.ZERO)) {
-    const { result: outcomePrimary, market: primaryMarket } = quotePrimaryMarket({
+    const { result: outcomePrimary, market: primaryMarket } = quotePrimaryMarket(
       inputAssetId,
       outputAssetId,
-      amount,
+      primaryAmount,
       isDesiredInput,
-      payload,
-    });
+      payload
+    );
 
-    if (FPNumber.isLessThan(outcomePrimary.amount, amount)) {
+    if (FPNumber.isLessThan(primaryAmount, amount)) {
       const outcomeSecondary = xykQuote(
         inputReserves,
         outputReserves,
@@ -661,7 +741,7 @@ const smartSplit = (
   // check xyk only result regardless of split, because it might be better
   const outcomeSecondary = xykQuote(inputReserves, outputReserves, amount, isDesiredInput, isXorInput);
 
-  if (isBetter(isDesiredInput, outcomeSecondary.amount, bestOutcome)) {
+  if (!outcomeSecondary.amount.isZero() && isBetter(isDesiredInput, outcomeSecondary.amount, bestOutcome)) {
     bestOutcome = outcomeSecondary.amount;
     bestFee = outcomeSecondary.fee;
     bestDistribution = [
@@ -799,9 +879,6 @@ export const quote = (
         payload
       );
 
-      console.log(firstQuote.distribution);
-      console.log(secondQuote.distribution);
-
       return {
         amount: secondQuote.amount,
         fee: firstQuote.fee.add(secondQuote.fee),
@@ -911,7 +988,6 @@ const tbcQuoteWithoutImpact = (
       const feeAmount = newFee.mul(amount);
       const collateralOut = amount.sub(feeAmount).mul(xorPrice);
 
-      // CHECK WHY 10x larger
       return collateralOut;
     } else {
       const xorIn = amount.div(xorPrice);
@@ -937,7 +1013,6 @@ const tbcQuoteWithoutImpact = (
 };
 
 const xstQuoteWithoutImpact = ({ inputAssetId, amount, isDesiredInput, payload }) => {
-  console.log('xstQuoteWithoutImpact');
   // no impact already
   const quoteResult = xstQuote({ inputAssetId, amount, isDesiredInput, payload });
 
