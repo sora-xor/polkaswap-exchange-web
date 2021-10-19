@@ -96,7 +96,7 @@ const getters = {
     return state.toValue;
   },
   minMaxReceived(state: SwapState) {
-    return state.minMaxReceived;
+    return state.minMaxReceived || '0';
   },
   isExchangeB(state: SwapState) {
     return state.isExchangeB;
