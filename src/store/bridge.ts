@@ -694,6 +694,7 @@ const actions = {
       );
       checkEvmNetwork(rootGetters);
       const tx: ethers.providers.TransactionResponse = await contractInstance[method](...methodArgs);
+      // start time for evm tx SORA->EVM
       commit(types.SIGN_EVM_TRANSACTION_SORA_EVM_SUCCESS);
       return tx.hash;
     } catch (error) {
@@ -719,6 +720,7 @@ const actions = {
           throw new Error('The transaction was canceled by the user');
         }
       );
+      // end time for evm tx EVM -> SORA
       commit(types.SEND_EVM_TRANSACTION_SORA_EVM_SUCCESS);
     } catch (error) {
       commit(types.SEND_EVM_TRANSACTION_SORA_EVM_FAILURE);
@@ -816,6 +818,7 @@ const actions = {
       const overrides = isNativeEvmToken ? { value: amount } : {};
       checkEvmNetwork(rootGetters);
       const tx: ethers.providers.TransactionResponse = await contractInstance[method](...methodArgs, overrides);
+      // start time for evm EVM -> SORA
       commit(types.SIGN_EVM_TRANSACTION_EVM_SORA_SUCCESS);
       return tx.hash;
     } catch (error) {
@@ -842,6 +845,7 @@ const actions = {
           throw new Error('The transaction was canceled by the user');
         }
       );
+      // end time for evm tx EVM -> SORA
       commit(types.SEND_EVM_TRANSACTION_EVM_SORA_SUCCESS);
     } catch (error) {
       commit(types.SEND_EVM_TRANSACTION_EVM_SORA_FAILURE);
@@ -864,6 +868,8 @@ const actions = {
       // TODO: check it for other types of bridge
       // const transferType = isXorAccountAsset(getters.asset) ? RequestType.TransferXOR : RequestType.Transfer
       // await bridgeApi.requestFromEth(ethereumHash, transferType)
+
+      // start time for SORA tx SORA -> EVM
       commit(types.SIGN_SORA_TRANSACTION_EVM_SORA_SUCCESS);
     } catch (error) {
       commit(types.SIGN_SORA_TRANSACTION_EVM_SORA_FAILURE);
@@ -876,6 +882,7 @@ const actions = {
     commit(types.SEND_SORA_TRANSACTION_EVM_SORA_REQUEST);
     try {
       await waitForRequest(ethereumHash);
+      // end time for SORA tx for EVM -> SORA
       commit(types.SEND_SORA_TRANSACTION_EVM_SORA_SUCCESS);
     } catch (error) {
       commit(types.SEND_SORA_TRANSACTION_EVM_SORA_FAILURE);
