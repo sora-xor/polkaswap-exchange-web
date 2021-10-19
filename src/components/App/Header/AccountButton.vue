@@ -26,7 +26,7 @@ import { formatAddress } from '@/utils';
 
 @Component({
   components: {
-    WalletAvatar: components.WalletAvatar as any,
+    WalletAvatar: components.WalletAvatar,
   },
 })
 export default class AccountButton extends Mixins(TranslationMixin) {
