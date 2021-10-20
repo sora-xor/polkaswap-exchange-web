@@ -554,15 +554,16 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
         'amount:',
         amount,
         result.amount.toCodecString(),
-        FPNumber.fromCodecValue(amount).div(result.amount).toString()
+        FPNumber.fromCodecValue(amount).sub(result.amount).toString()
       );
-      console.log('fee:', fee, result.fee.toCodecString(), FPNumber.fromCodecValue(fee).div(result.fee).toString());
+      console.log('fee:', fee, result.fee.toCodecString(), FPNumber.fromCodecValue(fee).sub(result.fee).toString());
       console.log(
         'amountWithoutImpact:',
         amountWithoutImpact,
         result.amountWithoutImpact.toCodecString(),
-        FPNumber.fromCodecValue(amountWithoutImpact).div(result.amountWithoutImpact).toString()
+        FPNumber.fromCodecValue(amountWithoutImpact).sub(result.amountWithoutImpact).toString()
       );
+      console.log('rewards:', rewards, result.rewards);
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
       this.setAmountWithoutImpact(amountWithoutImpact);
@@ -580,7 +581,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     }
   }
 
-  recountSwapValues = debouncedInputHandler(this.runRecountSwapValues);
+  recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
 
   private cleanSwapReservesSubscription(): void {
     if (!this.liquidityReservesSubscription) {
@@ -595,7 +596,12 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     if (!this.areTokensSelected) return;
 
     this.liquidityReservesSubscription = api
-      .subscribeOnSwapReserves(this.tokenFrom.address, this.tokenTo.address, this.liquiditySource)
+      .subscribeOnSwapReserves(
+        this.tokenFrom.address,
+        this.tokenTo.address,
+        this.pairLiquiditySources,
+        this.liquiditySource
+      )
       .subscribe(this.onChangeSwapReserves);
   }
 

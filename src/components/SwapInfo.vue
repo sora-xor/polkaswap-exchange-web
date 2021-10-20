@@ -93,11 +93,7 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
     const toToken: string = this.tokenTo?.symbol ?? '';
     const xorToken: string = KnownSymbols.XOR;
 
-    if ([fromToken, toToken].includes(xorToken)) {
-      return [fromToken, toToken];
-    }
-
-    return [fromToken, xorToken, toToken];
+    return [...new Set([fromToken, xorToken, toToken])];
   }
 
   get priceValues(): Array<object> {

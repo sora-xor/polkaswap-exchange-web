@@ -5,15 +5,21 @@ import {
   KnownAssets,
   KnownSymbols,
   MaxTotalSupply,
+  RewardReason,
+  LPRewardsInfo,
 } from '@sora-substrate/util';
 
 const XOR = KnownAssets.get(KnownSymbols.XOR).address;
 const PSWAP = KnownAssets.get(KnownSymbols.PSWAP).address;
 const VAL = KnownAssets.get(KnownSymbols.VAL).address;
+const DAI = '0x0200060000000000000000000000000000000000000000000000000000000000';
+const ETH = '0x0200070000000000000000000000000000000000000000000000000000000000';
+const XSTUSD = '0x0200080000000000000000000000000000000000000000000000000000000000';
 
-const LP_FEE = new FPNumber(0.003);
+const XYK_FEE = new FPNumber(0.003);
 const XST_FEE = new FPNumber(0.007);
 const TBC_FEE = new FPNumber(0.003);
+
 const MAX = new FPNumber(MaxTotalSupply);
 
 // TBC
@@ -21,9 +27,10 @@ const INITIAL_PRICE = new FPNumber(634);
 const PRICE_CHANGE_COEFF = new FPNumber(1337);
 const SELL_PRICE_COEFF = new FPNumber(0.8);
 
-const DAI = '0x0200060000000000000000000000000000000000000000000000000000000000';
-const ETH = '0x0200070000000000000000000000000000000000000000000000000000000000';
-const XSTUSD = '0x0200080000000000000000000000000000000000000000000000000000000000';
+// 4 registered - pswap and val which are not incentivized
+const incentivizedCurrenciesNum = new FPNumber(2);
+// 2.5 billion pswap reserved for tbc rewards
+const initialPswapTbcRewardsAmount = new FPNumber(2500000000);
 
 const ASSETS_HAS_XYK_POOL = [XOR, PSWAP, VAL, DAI, ETH];
 
@@ -51,12 +58,14 @@ interface QuoteResult {
   amount: FPNumber;
   fee: FPNumber;
   distribution: Array<Distribution>;
+  rewards: Array<LPRewardsInfo>;
 }
 
 interface LiquidityProxyQuoteResult {
   amount: FPNumber;
   fee: FPNumber;
   amountWithoutImpact: FPNumber;
+  rewards: Array<LPRewardsInfo>;
 }
 
 interface QuotePrimaryMarketResult {
@@ -64,7 +73,27 @@ interface QuotePrimaryMarketResult {
   result: QuoteResult;
 }
 
+// UTILS
 const toFp = (item: CodecString): FPNumber => FPNumber.fromCodecValue(item);
+
+const getXykReservesPositioned = (
+  isXorInput: boolean,
+  reserves: QuotePayload['reserves']['xyk']
+): [CodecString, CodecString] => {
+  if (!isXorInput) {
+    return [reserves[0][1], reserves[0][0]];
+  } else if (reserves.length === 2) {
+    return [reserves[1][0], reserves[1][1]];
+  } else {
+    return [reserves[0][0], reserves[0][1]];
+  }
+};
+
+const getXykReserves = (inputAssetId: string, payload: QuotePayload): [FPNumber, FPNumber] => {
+  const [input, output] = getXykReservesPositioned(inputAssetId === XOR, payload.reserves.xyk);
+
+  return [toFp(input), toFp(output)];
+};
 
 // TBC quote
 const tbcReferencePrice = (assetId: string, payload: QuotePayload): FPNumber => {
@@ -204,6 +233,7 @@ const tbcSellPriceWithFee = (
     return {
       amount: outputAmount,
       fee: feeAmount,
+      rewards: [],
       distribution: [
         {
           market: LiquiditySourceTypes.MulticollateralBondingCurvePool,
@@ -218,6 +248,7 @@ const tbcSellPriceWithFee = (
     return {
       amount: inputAmountWithFee,
       fee: inputAmountWithFee.sub(inputAmount),
+      rewards: [],
       distribution: [
         {
           market: LiquiditySourceTypes.MulticollateralBondingCurvePool,
@@ -238,9 +269,12 @@ const tbcBuyPriceWithFee = (
     const outputAmount = tbcBuyPrice(collateralAssetId, amount, isDesiredInput, payload);
     const feeAmount = TBC_FEE.mul(outputAmount);
     const output = outputAmount.sub(feeAmount);
+    const rewards = checkRewards(collateralAssetId, output, payload);
+
     return {
       amount: output,
       fee: feeAmount,
+      rewards,
       distribution: [
         {
           market: LiquiditySourceTypes.MulticollateralBondingCurvePool,
@@ -251,9 +285,12 @@ const tbcBuyPriceWithFee = (
   } else {
     const amountWithFee = amount.div(new FPNumber(1).sub(TBC_FEE));
     const inputAmount = tbcBuyPrice(collateralAssetId, amountWithFee, isDesiredInput, payload);
+    const rewards = checkRewards(collateralAssetId, amount, payload);
+
     return {
       amount: inputAmount,
       fee: amountWithFee.sub(amount),
+      rewards,
       distribution: [
         {
           market: LiquiditySourceTypes.MulticollateralBondingCurvePool,
@@ -336,6 +373,7 @@ const xstBuyPriceWithFee = (amount: FPNumber, isDesiredInput: boolean, payload: 
     return {
       amount: output,
       fee: feeAmount,
+      rewards: [],
       distribution: [
         {
           market: LiquiditySourceTypes.XSTPool,
@@ -351,6 +389,7 @@ const xstBuyPriceWithFee = (amount: FPNumber, isDesiredInput: boolean, payload: 
     return {
       amount: input,
       fee: amountWithFee.sub(amount),
+      rewards: [],
       distribution: [
         {
           market: LiquiditySourceTypes.XSTPool,
@@ -369,6 +408,7 @@ const xstSellPriceWithFee = (amount: FPNumber, isDesiredInput: boolean, payload:
     return {
       amount: output,
       fee: feeAmount,
+      rewards: [],
       distribution: [
         {
           market: LiquiditySourceTypes.XSTPool,
@@ -383,6 +423,7 @@ const xstSellPriceWithFee = (amount: FPNumber, isDesiredInput: boolean, payload:
     return {
       amount: inputAmountWithFee,
       fee: inputAmountWithFee.sub(inputAmount),
+      rewards: [],
       distribution: [
         {
           market: LiquiditySourceTypes.XSTPool,
@@ -407,29 +448,19 @@ const xstQuote = (
 };
 
 // XYK quote
-const getXykReserves = (inputAssetId: string, payload: QuotePayload): Array<FPNumber> => {
-  const isXorInput = inputAssetId === XOR;
-
-  if (!isXorInput) {
-    return [payload.reserves.xyk[0][1], payload.reserves.xyk[0][0]].map(toFp);
-  } else if (payload.reserves.xyk.length === 2) {
-    return [payload.reserves.xyk[1][0], payload.reserves.xyk[1][1]].map(toFp);
-  } else {
-    return [payload.reserves.xyk[0][0], payload.reserves.xyk[0][1]].map(toFp);
-  }
-};
 
 // input token is xor, user indicates desired input amount
 // x - xor reserve
 // y - other token reserve
 // x_in - desired input amount (xor)
 const xykQuoteA = (x: FPNumber, y: FPNumber, xIn: FPNumber): QuoteResult => {
-  const x1 = xIn.mul(new FPNumber(1).sub(LP_FEE));
+  const x1 = xIn.mul(new FPNumber(1).sub(XYK_FEE));
   const yOut = x1.mul(y).div(x.add(x1));
 
   return {
     amount: yOut,
-    fee: xIn.mul(LP_FEE),
+    fee: xIn.mul(XYK_FEE),
+    rewards: [],
     distribution: [
       {
         market: LiquiditySourceTypes.XYKPool,
@@ -445,11 +476,12 @@ const xykQuoteA = (x: FPNumber, y: FPNumber, xIn: FPNumber): QuoteResult => {
 // x_in - desired input amount (other token)
 const xykQuoteB = (x: FPNumber, y: FPNumber, xIn: FPNumber): QuoteResult => {
   const y1 = xIn.mul(y).div(x.add(xIn));
-  const yOut = y1.mul(new FPNumber(1).sub(LP_FEE));
+  const yOut = y1.mul(new FPNumber(1).sub(XYK_FEE));
 
   return {
     amount: yOut,
     fee: y1.sub(yOut),
+    rewards: [],
     distribution: [
       {
         market: LiquiditySourceTypes.XYKPool,
@@ -468,6 +500,7 @@ const xykQuoteC = (x: FPNumber, y: FPNumber, yOut: FPNumber): QuoteResult => {
     return {
       amount: FPNumber.ZERO,
       fee: FPNumber.ZERO,
+      rewards: [],
       distribution: [
         {
           market: LiquiditySourceTypes.XYKPool,
@@ -478,11 +511,12 @@ const xykQuoteC = (x: FPNumber, y: FPNumber, yOut: FPNumber): QuoteResult => {
   }
 
   const x1 = x.mul(yOut).div(y.sub(yOut));
-  const xIn = x1.div(new FPNumber(1).sub(LP_FEE));
+  const xIn = x1.div(new FPNumber(1).sub(XYK_FEE));
 
   return {
     amount: xIn,
     fee: xIn.sub(x1),
+    rewards: [],
     distribution: [
       {
         market: LiquiditySourceTypes.XYKPool,
@@ -497,12 +531,13 @@ const xykQuoteC = (x: FPNumber, y: FPNumber, yOut: FPNumber): QuoteResult => {
 // y - xor reserve
 // y_out - desired output amount (xor)
 const xykQuoteD = (x: FPNumber, y: FPNumber, yOut: FPNumber): QuoteResult => {
-  const y1 = yOut.div(new FPNumber(1).sub(LP_FEE));
+  const y1 = yOut.div(new FPNumber(1).sub(XYK_FEE));
 
   if (FPNumber.isGreaterThanOrEqualTo(y1, y)) {
     return {
       amount: FPNumber.ZERO,
       fee: FPNumber.ZERO,
+      rewards: [],
       distribution: [
         {
           market: LiquiditySourceTypes.XYKPool,
@@ -517,6 +552,7 @@ const xykQuoteD = (x: FPNumber, y: FPNumber, yOut: FPNumber): QuoteResult => {
   return {
     amount: xIn,
     fee: y1.sub(yOut),
+    rewards: [],
     distribution: [
       {
         market: LiquiditySourceTypes.XYKPool,
@@ -697,6 +733,7 @@ const smartSplit = (
   let bestOutcome: FPNumber = extremum(isDesiredInput);
   let bestFee: FPNumber = FPNumber.ZERO;
   let bestDistribution: Array<any> = [];
+  let bestRewards: Array<LPRewardsInfo> = [];
 
   const isXorInput = inputAssetId === XOR;
   const [inputReserves, outputReserves] = getXykReserves(inputAssetId, payload);
@@ -727,6 +764,7 @@ const smartSplit = (
 
       bestOutcome = outcomePrimary.amount.add(outcomeSecondary.amount);
       bestFee = outcomePrimary.fee.add(outcomeSecondary.fee);
+      bestRewards = [...outcomePrimary.rewards, ...outcomeSecondary.rewards];
       bestDistribution = [
         {
           market: LiquiditySourceTypes.XYKPool,
@@ -740,6 +778,7 @@ const smartSplit = (
     } else {
       bestOutcome = outcomePrimary.amount;
       bestFee = outcomePrimary.fee;
+      bestRewards = outcomePrimary.rewards;
       bestDistribution = [
         {
           market: primaryMarket,
@@ -755,6 +794,7 @@ const smartSplit = (
   if (isBetter(isDesiredInput, outcomeSecondary.amount, bestOutcome)) {
     bestOutcome = outcomeSecondary.amount;
     bestFee = outcomeSecondary.fee;
+    bestRewards = outcomeSecondary.rewards;
     bestDistribution = [
       {
         market: LiquiditySourceTypes.XYKPool,
@@ -766,11 +806,13 @@ const smartSplit = (
   if (FPNumber.isEqualTo(bestOutcome, MAX)) {
     bestOutcome = FPNumber.ZERO;
     bestFee = FPNumber.ZERO;
+    bestRewards = [];
   }
 
   return {
     amount: bestOutcome,
     fee: bestFee,
+    rewards: bestRewards,
     distribution: bestDistribution,
   };
 };
@@ -865,6 +907,7 @@ export const quote = (
     return {
       amount: result.amount,
       fee: result.fee,
+      rewards: result.rewards,
       amountWithoutImpact,
     };
   } else {
@@ -899,6 +942,7 @@ export const quote = (
       return {
         amount: secondQuote.amount,
         fee: firstQuote.fee.add(secondQuote.fee),
+        rewards: [...firstQuote.rewards, ...secondQuote.rewards],
         amountWithoutImpact: secondQuoteWithoutImpact,
       };
     } else {
@@ -932,6 +976,7 @@ export const quote = (
       return {
         amount: firstQuote.amount,
         fee: firstQuote.fee.add(secondQuote.fee),
+        rewards: [...firstQuote.rewards, ...secondQuote.rewards],
         amountWithoutImpact: firstQuoteWithoutImpact,
       };
     }
@@ -954,21 +999,21 @@ const xykQuoteWithoutImpact = (
 
   if (isDesiredInput) {
     if (isXorInput) {
-      const amountWithoutFee = amount.mul(new FPNumber(1).sub(LP_FEE));
+      const amountWithoutFee = amount.mul(new FPNumber(1).sub(XYK_FEE));
 
       return amountWithoutFee.mul(price);
     } else {
       const amountWithFee = amount.mul(price);
 
-      return amountWithFee.mul(new FPNumber(1).sub(LP_FEE));
+      return amountWithFee.mul(new FPNumber(1).sub(XYK_FEE));
     }
   } else {
     if (isXorInput) {
       const amountWithoutFee = amount.div(price);
 
-      return amountWithoutFee.div(new FPNumber(1).sub(LP_FEE));
+      return amountWithoutFee.div(new FPNumber(1).sub(XYK_FEE));
     } else {
-      const amountWithFee = amount.div(new FPNumber(1).sub(LP_FEE));
+      const amountWithFee = amount.div(new FPNumber(1).sub(XYK_FEE));
 
       return amountWithFee.div(price);
     }
@@ -1069,4 +1114,35 @@ const quoteWithoutImpactSingle = (
 
     return result;
   }, FPNumber.ZERO);
+};
+
+// REWARDS
+const checkRewards = (collateralAssetId: string, xorAmount: FPNumber, payload: QuotePayload): Array<LPRewardsInfo> => {
+  if ([PSWAP, VAL].includes(collateralAssetId)) {
+    return [];
+  }
+
+  const idealBefore = idealReservesReferencePrice(FPNumber.ZERO, payload);
+  const idealAfter = idealReservesReferencePrice(xorAmount, payload);
+
+  const actualBefore = actualReservesReferencePrice(collateralAssetId, payload);
+  const unfundedLiabilities = idealBefore.sub(actualBefore);
+
+  const a = unfundedLiabilities.div(idealBefore);
+  const b = unfundedLiabilities.div(idealAfter);
+
+  const mean = a.add(b).div(new FPNumber(2));
+  const amount = a.sub(b).mul(initialPswapTbcRewardsAmount).mul(mean).div(incentivizedCurrenciesNum);
+
+  if (amount.isZero()) {
+    return [];
+  }
+
+  return [
+    {
+      amount: amount.toCodecString(),
+      currency: PSWAP,
+      reason: RewardReason.BuyOnBondingCurve,
+    },
+  ];
 };
