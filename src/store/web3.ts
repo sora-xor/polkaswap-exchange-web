@@ -362,7 +362,7 @@ const actions = {
     let value = ZeroStringValue
     let decimals = 18
     const account = getters.evmAddress
-    if (!account) {
+    if (!(account && getters.isValidNetworkType)) {
       return { value, decimals }
     }
     commit(types.GET_BALANCE_REQUEST)
