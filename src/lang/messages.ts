@@ -1,8 +1,10 @@
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import { en as walletEn, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Operation, TransactionStatus, RewardingEvents } from '@sora-substrate/util';
 
 import { PageNames } from '../consts';
 import { EvmNetworkType } from '../utils/ethers-util';
+import { MoonpayNotifications } from '@/components/Moonpay/consts';
 
 export default {
   // Wallet project keys
@@ -11,6 +13,7 @@ export default {
   appName: 'Polkaswap',
   soraText: 'SORA',
   ethereumText: 'Ethereum',
+  moonpayText: 'MoonPay',
   changeNetworkText: 'Change network in Metamask',
   transactionText: 'transaction | transactions',
   transactionSubmittedText: 'Transaction was submitted',
@@ -49,6 +52,9 @@ export default {
   pairIsNotCreated: "Token pair isn't created",
   nameText: 'Name',
   addressText: 'Address',
+  forText: 'for',
+  [Theme.LIGHT]: 'Light',
+  [Theme.DARK]: 'Dark',
   pageTitle: {
     [PageNames.Swap]: 'Swap',
     [PageNames.Pool]: 'Pool',
@@ -57,6 +63,8 @@ export default {
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
     [PageNames.Wallet]: 'Wallet',
+    [PageNames.Rewards]: 'Rewards',
+    [PageNames.Tokens]: 'Tokens',
     [PageNames.CreatePair]: 'Create Pair',
     [PageNames.AddLiquidity]: 'Add Liquidity',
     [PageNames.RemoveLiquidity]: 'Remove Liquidity',
@@ -74,6 +82,13 @@ export default {
     [PageNames.Support]: 'Support',
     [PageNames.CreatePair]: 'Create Pair',
     [PageNames.Tokens]: 'Tokens',
+  },
+  headerMenu: {
+    showBalances: 'Show Balances',
+    hideBalances: 'Hide Balances',
+    settings: 'Settings',
+    switchTheme: 'Switch to {theme} Mode',
+    switchLanguage: 'Choose Language',
   },
   social: {
     wiki: '@:soraText Wiki',
@@ -166,7 +181,7 @@ export default {
     [Operation.ClaimRewards]: 'Claim Rewards',
     andText: 'and',
     [TransactionStatus.Finalized]: {
-      [Operation.Transfer]: 'Sent {amount} {symbol} to {address}',
+      [Operation.Transfer]: '{action} {amount} {symbol} {direction} {address}',
       [Operation.Swap]: 'Swapped {amount} {symbol} for {amount2} {symbol2}',
       [Operation.AddLiquidity]: 'Supplied {amount} {symbol} and {amount2} {symbol2}',
       [Operation.RemoveLiquidity]: 'Removed {amount} {symbol} and {amount2} {symbol2}',
@@ -290,6 +305,7 @@ export default {
       'Output is estimated. You will receive at least {transactionValue} or the transaction will revert.',
     rewardsForSwap: 'PSWAP Strategic Rewards',
     swapInputMessage: 'Input is estimated. You will sell maximum {transactionValue} or the transaction will revert.',
+    route: 'Route',
   },
   pool: {
     connectWallet: '@:connectWalletText',
@@ -580,6 +596,50 @@ export default {
     groups: {
       strategic: 'Strategic Rewards',
       external: 'Rewards for the connected ethereum account',
+    },
+  },
+  moonpay: {
+    notifications: {
+      [MoonpayNotifications.Success]: {
+        title: 'Tokens purchased',
+        text: 'Token purchase is finished. The HASHI bridge transaction will start automatically as soon as the tokens have been received in the connected Ethereum account. It is safe to close this window and continue using Polkaswap. There will be a notification about the bridge transaction when ready.',
+      },
+      [MoonpayNotifications.SupportError]: {
+        title: 'Token not supported',
+        text: 'Unfortunately the token purchased via @:moonpayText is not yet supported by the HASHI bridge in Polkaswap. Normally only the supported tokens should be available for purchase via @:moonpayText in Polkaswap, hence something must have gone wrong somewhere. Please don’t hesitate to let the community know about this case in the <a class="link" href="https://t.me/polkaswap" target="_blank" rel="nofollow noopener" title="@:appName">Polkaswap Telegram group</a>',
+      },
+      [MoonpayNotifications.FeeError]: {
+        title: 'Not enough ETH for the bridge tx',
+        text: 'Unfortunately the HASHI bridge transaction has failed due to there not being enough ETH to pay for the Ethereum network transation fees. Please add more ETH and try again.',
+      },
+      [MoonpayNotifications.TransactionError]: {
+        title: 'Transaction has failed',
+        text: 'Unfortunately it appears that the @:moonpayText transaction has failed. Please try again. For @:moonpayText support go to <a class="link" href="https://support.moonpay.com" target="_blank" rel="nofollow noopener" title="@:moonpayText">https://support.moonpay.com</a>',
+      },
+      [MoonpayNotifications.AmountError]: {
+        title: 'Insufficient balance',
+        text: 'Unfortunately the HASHI bridge transaction has failed due to there not being enough tokens for transaction. Please check your Ethereum account balance and try again.',
+      },
+      [MoonpayNotifications.AccountAddressError]: {
+        title: 'Wrong Ethereum account',
+        text: 'Unfortunately, the HASHI bridge transaction failed due to the recipient address of the tokens in the @:moonpayText order does not match your current Ethereum account address. Please switch Ethereum account in extension and try again.',
+      },
+    },
+    buttons: {
+      buy: 'Buy Tokens',
+      history: 'Purchase History',
+      transfer: 'Start bridge',
+      view: 'View bridge transaction',
+    },
+    tooltips: {
+      transfer: 'Tokens successfully purchased!\nClick to start the bridge transaction',
+    },
+    history: {
+      title: 'Purchase history',
+      empty: 'No data',
+    },
+    confirmations: {
+      txReady: 'Transaction Ready For Bridge',
     },
   },
   provider: {

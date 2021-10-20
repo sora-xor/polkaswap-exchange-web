@@ -99,7 +99,7 @@ const getters = {
     return state.toValue;
   },
   minMaxReceived(state: SwapState) {
-    return state.minMaxReceived;
+    return state.minMaxReceived || '0';
   },
   isExchangeB(state: SwapState) {
     return state.isExchangeB;
@@ -280,6 +280,13 @@ const actions = {
     if (getters.tokenFrom?.address && getters.tokenTo?.address) {
       commit(types.CHECK_AVAILABILITY_REQUEST);
       try {
+        // TODO [1.6]: will be removed
+        // https://soramitsu.atlassian.net/browse/PW-407
+        const xstUsdAddress = '0x0200080000000000000000000000000000000000000000000000000000000000';
+        if ([getters.tokenFrom.address, getters.tokenTo.address].includes(xstUsdAddress)) {
+          commit(types.CHECK_AVAILABILITY_SUCCESS, true);
+          return;
+        }
         const isAvailable = await api.checkSwap(getters.tokenFrom.address, getters.tokenTo.address);
         commit(types.CHECK_AVAILABILITY_SUCCESS, isAvailable);
       } catch (error) {

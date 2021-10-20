@@ -34,7 +34,7 @@
         "ClaimRewards": "Claim Rewards",
         "andText": "and",
         "finalized": {
-            "Transfer": "Sent {amount} {symbol} to {address}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "Swapped {amount} {symbol} for {amount2} {symbol2}",
             "AddLiquidity": "Supplied {amount} {symbol} and {amount2} {symbol2}",
             "RemoveLiquidity": "Removed {amount} {symbol} and {amount2} {symbol2}",
@@ -43,7 +43,7 @@
             "ClaimRewards": "Reward claimed successfully {rewards}"
         },
         "error": {
-            "Transfer": "Failed to send {amount} {symbol} to {address}",
+            "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
             "Swap": "Failed to swap {amount} {symbol} for {amount2} {symbol2}",
             "AddLiquidity": "Failed to supply {amount} {symbol} and {amount2} {symbol2}",
             "RemoveLiquidity": "Failed to remove {amount} {symbol} and {amount2} {symbol2}",
@@ -254,7 +254,9 @@
         "AddLiquidity": "Add Liquidity",
         "AddLiquidityId": "Add Liquidity",
         "RemoveLiquidity": "Remove Liquidity",
-        "PageNotFound": "Page Not Found"
+        "PageNotFound": "Page Not Found",
+        "Tokens": "Tokens",
+        "Rewards": "Rewards"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -439,7 +441,8 @@
         "confirmSwap": "Confirm swap",
         "swapOutputMessage": "Output is estimated. You will receive at least {transactionValue} or the transaction will revert.",
         "rewardsForSwap": "PSWAP Strategic Rewards",
-        "swapInputMessage": "Input is estimated. You will sell maximum {transactionValue} or the transaction will revert."
+        "swapInputMessage": "Input is estimated. You will sell maximum {transactionValue} or the transaction will revert.",
+        "route": "Route"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -801,5 +804,16 @@
         "tooltips": {
             "transfer": "Tokens successfully purchased!\nClick to start the bridge transaction"
         }
-    }
+    },
+    "recievedText": "Recieved",
+    "light": "Light",
+    "dark": "Dark",
+    "headerMenu": {
+        "showBalances": "Show Balances",
+        "hideBalances": "Hide Balances",
+        "settings": "Settings",
+        "switchTheme": "Switch to {theme} Mode",
+        "switchLanguage": "Choose Language"
+    },
+    "sentText": "Sent"
 }

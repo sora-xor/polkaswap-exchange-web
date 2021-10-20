@@ -34,7 +34,7 @@
         "ClaimRewards": "Belohnungen beanspruchen",
         "andText": "und",
         "finalized": {
-            "Transfer": "{amount} {symbol} an {address} gesendet",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "{amount} {symbol} gegen {amount2} {symbol2} getauscht",
             "AddLiquidity": "{amount} {symbol} und {amount2} {symbol2} bereitgestellt",
             "RemoveLiquidity": "{amount} {symbol} und {amount2} {symbol2} entfernt",
@@ -254,7 +254,9 @@
         "AddLiquidity": "Liquidität hinzufügen",
         "AddLiquidityId": "Liquidität hinzufügen",
         "RemoveLiquidity": "Liquidität entfernen",
-        "PageNotFound": "Seite nicht gefunden"
+        "PageNotFound": "Seite nicht gefunden",
+        "Tokens": "Token",
+        "Rewards": "Belohnungen"
     },
     "mainMenu": {
         "Swap": "Tauschen",
@@ -439,7 +441,8 @@
         "confirmSwap": "Tausch bestätigen",
         "swapOutputMessage": "Die Ausgabe ist geschätzt. Du erhältst mindestens {transactionValue}, ansonsten wird die Transaktion rückgängig gemacht.",
         "rewardsForSwap": "PSWAP strategische Belohnungen",
-        "swapInputMessage": "Die Eingabe wird geschätzt. Du wirst maximal {transactionValue} verkaufen oder die Transaktion wird rückgängig gemacht."
+        "swapInputMessage": "Die Eingabe wird geschätzt. Du wirst maximal {transactionValue} verkaufen oder die Transaktion wird rückgängig gemacht.",
+        "route": "Route"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -799,7 +802,18 @@
             "txReady": "Transaktion bereit für Bridge"
         },
         "tooltips": {
-            "transfer": "Token erfolgreich gekauft!\nKlick hier, um die Bridge-Transaktion zu starten."
+            "transfer": "Token erfolgreich gekauft!\nKlicke hier, um die Bridge-Transaktion zu starten."
         }
-    }
+    },
+    "recievedText": "Erhalten",
+    "light": "Hell",
+    "dark": "Dunkel",
+    "headerMenu": {
+        "showBalances": "Salden anzeigen",
+        "hideBalances": "Salden ausblenden",
+        "settings": "Einstellungen",
+        "switchTheme": "Wechseln Sie in den {theme}-Modus",
+        "switchLanguage": "Sprache wählen"
+    },
+    "sentText": "Gesendet"
 }

@@ -34,7 +34,7 @@
         "ClaimRewards": "Gjør krav på belønninger",
         "andText": "og",
         "finalized": {
-            "Transfer": "Sendte {amount} {symbol} til {address}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "Byttet {amount} {symbol} for {amount2} {symbol2}",
             "AddLiquidity": "Levert {amount} {symbol} og {amount2} {symbol2}",
             "RemoveLiquidity": "Fjernet {amount} {symbol} og {amount2} {symbol2}",
@@ -254,7 +254,9 @@
         "AddLiquidity": "Legg til likviditet",
         "AddLiquidityId": "Legg til likviditet",
         "RemoveLiquidity": "Fjern likviditet",
-        "PageNotFound": "Side ikke funnet"
+        "PageNotFound": "Side ikke funnet",
+        "Tokens": "Tokens",
+        "Rewards": "Belønninger"
     },
     "mainMenu": {
         "Swap": "Bytte",
@@ -439,7 +441,8 @@
         "confirmSwap": "Bekreft bytte",
         "swapOutputMessage": "Beløp er estimert. Du vil motta minst {transactionValue} ellers vil transaksjonen gå tilbake.",
         "rewardsForSwap": "Strategiske PSWAP belønninger",
-        "swapInputMessage": "Inndata er estimert. Du vil selge maksimalt {transactionValue} ellers vil transaksjonen gå tilbake."
+        "swapInputMessage": "Inndata er estimert. Du vil selge maksimalt {transactionValue} ellers vil transaksjonen gå tilbake.",
+        "route": "Rute"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -801,5 +804,16 @@
         "tooltips": {
             "transfer": "Tokens er kjøpt!\n Klikk for å starte brotransaksjonen"
         }
-    }
+    },
+    "recievedText": "Tok imot",
+    "light": "Lys",
+    "dark": "Mørk",
+    "headerMenu": {
+        "showBalances": "Vis saldoer",
+        "hideBalances": "Skjul saldoer",
+        "settings": "Innstillinger",
+        "switchTheme": "Bytt til {theme} -modus",
+        "switchLanguage": "Velg språk"
+    },
+    "sentText": "Sendt"
 }

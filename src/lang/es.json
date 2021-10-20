@@ -34,7 +34,7 @@
         "ClaimRewards": "Reclamar Recompensas",
         "andText": "y",
         "finalized": {
-            "Transfer": "Enviado {amount} {symbol} a {address}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "Se intercambió {amount} {symbol} por {amount2} {symbol2}",
             "AddLiquidity": "Se proporcionó {amount} {symbol} y {amount2} {symbol2}",
             "RemoveLiquidity": "Se eliminó {amount} {symbol} y {amount2} {symbol2}",
@@ -254,7 +254,9 @@
         "AddLiquidity": "Añadir Liquidez",
         "AddLiquidityId": "Añadir Liquidez",
         "RemoveLiquidity": "Remover Liquidez",
-        "PageNotFound": "Página no encontrada"
+        "PageNotFound": "Página no encontrada",
+        "Tokens": "Tokens",
+        "Rewards": "Recompensas"
     },
     "mainMenu": {
         "Swap": "Intercambio",
@@ -439,7 +441,8 @@
         "confirmSwap": "Confirmar el intercambio",
         "swapOutputMessage": "La cantidad de salida es estimada. Recibirá al menos {transactionValue} o la transacción se revertirá.",
         "rewardsForSwap": "Recompensas estratégicas de PSWAP",
-        "swapInputMessage": "La entrada es estimada. Venderá el máximo de {transactionValue} o la transacción se revertirá"
+        "swapInputMessage": "La entrada es estimada. Venderá el máximo de {transactionValue} o la transacción se revertirá",
+        "route": "Ruta"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -801,5 +804,16 @@
         "tooltips": {
             "transfer": "¡Tokens comprados con éxito!\nHaga clic para iniciar la transacción del puente"
         }
-    }
+    },
+    "recievedText": "Recibido",
+    "light": "Luz",
+    "dark": "Oscuro",
+    "headerMenu": {
+        "showBalances": "Mostrar saldos",
+        "hideBalances": "Ocultar saldos",
+        "settings": "Ajustes",
+        "switchTheme": "Cambiar a {theme} Modo",
+        "switchLanguage": "Elige lengua"
+    },
+    "sentText": "Enviado"
 }

@@ -307,6 +307,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 
 @mixin bridge-container {
   max-width: $bridge-width;
+  width: 100%;
 
   .el-loading-mask {
     border-radius: var(--s-border-radius-medium);
@@ -448,7 +449,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
         }
       }
       &__content {
-        min-height: calc(#{$select-asset-item-height} * 7);
+        min-height: calc(#{$select-asset-item-height} * 6);
       }
     }
   }

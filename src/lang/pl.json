@@ -34,7 +34,7 @@
         "ClaimRewards": "Odbierz wynagrodzenie",
         "andText": "i",
         "finalized": {
-            "Transfer": "Wysłano {amount} {symbol} na {address}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "Zamieniono {amount} {symbol} na {amount2} {symbol2}",
             "AddLiquidity": "Dodano {amount} {symbol} i {amount2} {symbol2}",
             "RemoveLiquidity": "Usunięto {amount} {symbol} i {amount2} {symbol2}",
@@ -254,7 +254,9 @@
         "AddLiquidity": "Dodawanie płynności",
         "AddLiquidityId": "Dodawanie płynności",
         "RemoveLiquidity": "Usuwanie płynności",
-        "PageNotFound": "Nie znaleziono strony."
+        "PageNotFound": "Nie znaleziono strony.",
+        "Tokens": "Tokeny",
+        "Rewards": "Nagrody"
     },
     "mainMenu": {
         "Swap": "Zamiana",
@@ -439,7 +441,8 @@
         "confirmSwap": "Potwierdź zamianę",
         "swapOutputMessage": "Wynik jest szacunkowy. Otrzymasz co najmniej {transactionValue} lub transakcja zostanie anulowana.",
         "rewardsForSwap": "Wynagrodzenie strategiczne w PSWAP",
-        "swapInputMessage": "Wprowadzone dane są szacunkowe. Sprzedasz maksymalnie {transactionValue} lub transakcja zostanie anulowana."
+        "swapInputMessage": "Wprowadzone dane są szacunkowe. Sprzedasz maksymalnie {transactionValue} lub transakcja zostanie anulowana.",
+        "route": "Trasa"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -801,5 +804,16 @@
         "tooltips": {
             "transfer": "Pomyślnie zakupiono tokeny!\nKliknij, aby rozpocząć transakcję mostową"
         }
-    }
+    },
+    "recievedText": "Otrzymano",
+    "light": "Lekki",
+    "dark": "Ciemny",
+    "headerMenu": {
+        "showBalances": "Pokaż salda",
+        "hideBalances": "Ukryj salda",
+        "settings": "Ustawienia",
+        "switchTheme": "Przełącz na tryb {theme}",
+        "switchLanguage": "Wybierz język"
+    },
+    "sentText": "Wysłano"
 }

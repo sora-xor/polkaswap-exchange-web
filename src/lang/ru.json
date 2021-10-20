@@ -34,7 +34,7 @@
         "ClaimRewards": "Получить награды",
         "andText": "и",
         "finalized": {
-            "Transfer": "Отправлено {amount} {symbol} на {address}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "Совершен обмен {amount} {symbol} на {amount2} {symbol2}",
             "AddLiquidity": "Поставлено {amount} {symbol} и {amount2} {symbol2}",
             "RemoveLiquidity": "Удалены {amount} {symbol} и {amount2} {symbol2}",
@@ -43,7 +43,7 @@
             "ClaimRewards": "Награды получены успешно {rewards}"
         },
         "error": {
-            "Transfer": "Не удалось отправить {amount} {symbol} на {address}",
+            "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
             "Swap": "Не удалось обменять {amount} {symbol} на {amount2} {symbol2}",
             "AddLiquidity": "Не удалось добавить {amount} {symbol} и {amount2} {symbol2}",
             "RemoveLiquidity": "Не удалось вывести {amount} {symbol} и {amount2} {symbol2}",
@@ -254,7 +254,9 @@
         "AddLiquidity": "Добавить ликвидность",
         "AddLiquidityId": "Добавить ликвидность",
         "RemoveLiquidity": "Забрать ликвидность",
-        "PageNotFound": "Страница не найдена"
+        "PageNotFound": "Страница не найдена",
+        "Tokens": "Токены",
+        "Rewards": "Награды"
     },
     "mainMenu": {
         "Swap": "Обмен",
@@ -439,7 +441,8 @@
         "confirmSwap": "Подтвердить обмен",
         "swapOutputMessage": "Вывод оценён. Вы получите как минимум {transactionValue} или транзакция будет отменена.",
         "rewardsForSwap": "Стратегические вознаграждения PSWAP",
-        "swapInputMessage": "Ввод оценивается. Вы продадите максимум {transactionValue} иначе транзакция будет отменена."
+        "swapInputMessage": "Ввод оценивается. Вы продадите максимум {transactionValue} иначе транзакция будет отменена.",
+        "route": "Маршрут"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -801,5 +804,16 @@
         "tooltips": {
             "transfer": "Токены успешно куплены!\n Нажмите, чтобы начать транзакцию моста"
         }
-    }
+    },
+    "recievedText": "Получено",
+    "light": "Светлый",
+    "dark": "Темный",
+    "headerMenu": {
+        "showBalances": "Показать балансы",
+        "hideBalances": "Скрыть балансы",
+        "settings": "Настройки",
+        "switchTheme": "Перейти в {theme} режим",
+        "switchLanguage": "Изменить язык"
+    },
+    "sentText": "Отправить"
 }
