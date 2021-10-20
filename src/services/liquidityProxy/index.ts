@@ -129,14 +129,14 @@ const tbcSellPrice = (collateralAssetId: string, amount: FPNumber, isDesiredInpu
     const outputCollateral = amount.mul(collateralSupply).div(xorSupply.add(amount));
 
     if (FPNumber.isGreaterThan(outputCollateral, collateralSupply)) {
-      console.warn('Not enough reserves', collateralAssetId);
+      console.warn('tbcSellPrice: Not enough reserves:', collateralAssetId);
       return FPNumber.ZERO;
     }
 
     return outputCollateral;
   } else {
     if (FPNumber.isGreaterThan(amount, collateralSupply)) {
-      console.warn('Not enough reserves', collateralAssetId);
+      console.warn('tbcSellPrice: Not enough reserves:', collateralAssetId);
       return FPNumber.ZERO;
     }
 
@@ -604,7 +604,7 @@ const primaryMarketAmountSellingXor = (
   const primarySellPrice =
     collateralAssetId === XSTUSD
       ? xstSellPriceNoVolume(collateralAssetId, payload)
-      : xstSellPriceNoVolume(collateralAssetId, payload);
+      : tbcSellPriceNoVolume(collateralAssetId, payload);
 
   const k = xorReserve.mul(otherReserve);
 
@@ -623,7 +623,7 @@ const primaryMarketAmountSellingXor = (
       return amount;
     }
   } else {
-    if (FPNumber.isLessThan(secondaryPrice, primarySellPrice)) {
+    if (FPNumber.isGreaterThan(secondaryPrice, primarySellPrice)) {
       const amountSecondary = otherReserve.sub(k.mul(primarySellPrice).sqrt());
 
       if (FPNumber.isGreaterThanOrEqualTo(amountSecondary, amount)) {
@@ -643,7 +643,9 @@ const isBetter = (isDesiredInput: boolean, amountA: FPNumber, amountB: FPNumber)
   if (isDesiredInput) {
     return FPNumber.isGreaterThan(amountA, amountB);
   } else {
-    return FPNumber.isLessThan(amountA, amountB);
+    return (
+      FPNumber.isGreaterThan(amountA, FPNumber.ZERO) && (amountB.isZero() || FPNumber.isLessThan(amountA, amountB))
+    );
   }
 };
 
@@ -720,7 +722,7 @@ const smartSplit = (
   // check xyk only result regardless of split, because it might be better
   const outcomeSecondary = xykQuote(inputReserves, outputReserves, amount, isDesiredInput, isXorInput);
 
-  if (bestOutcome.isZero() || isBetter(isDesiredInput, outcomeSecondary.amount, bestOutcome)) {
+  if (isBetter(isDesiredInput, outcomeSecondary.amount, bestOutcome)) {
     bestOutcome = outcomeSecondary.amount;
     bestFee = outcomeSecondary.fee;
     bestDistribution = [
@@ -729,6 +731,11 @@ const smartSplit = (
         amount,
       },
     ];
+  }
+
+  if (FPNumber.isEqualTo(bestOutcome, MAX)) {
+    bestOutcome = FPNumber.ZERO;
+    bestFee = FPNumber.ZERO;
   }
 
   return {
@@ -1006,7 +1013,7 @@ const quoteWithoutImpactSingle = (
   distribution: Array<Distribution>,
   payload
 ): FPNumber => {
-  return distribution.reduce((result, item, index) => {
+  return distribution.reduce((result, item) => {
     const { market, amount } = item;
 
     if (market === LiquiditySourceTypes.XYKPool) {
