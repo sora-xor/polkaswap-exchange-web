@@ -27,6 +27,21 @@ const XSTUSD = '0x02000800000000000000000000000000000000000000000000000000000000
 
 const ASSETS_HAS_XYK_POOL = [XOR, PSWAP, VAL, DAI, ETH];
 
+type QuotePayload = {
+  reserves: {
+    xyk: Array<[CodecString, CodecString]>;
+    tbc: {
+      [key: string]: CodecString;
+    };
+  };
+  prices: {
+    [key: string]: CodecString;
+  };
+  issuances: {
+    [key: string]: CodecString;
+  };
+};
+
 interface Distribution {
   market: LiquiditySourceTypes;
   amount: FPNumber;
@@ -52,7 +67,7 @@ interface QuotePrimaryMarketResult {
 const toFp = (item: CodecString): FPNumber => FPNumber.fromCodecValue(item);
 
 // TBC quote
-const tbcReferencePrice = (assetId: string, payload): FPNumber => {
+const tbcReferencePrice = (assetId: string, payload: QuotePayload): FPNumber => {
   if (assetId === DAI) {
     return new FPNumber(1);
   } else {
@@ -60,7 +75,7 @@ const tbcReferencePrice = (assetId: string, payload): FPNumber => {
   }
 };
 
-const tbcBuyFunction = (delta: FPNumber, payload): FPNumber => {
+const tbcBuyFunction = (delta: FPNumber, payload: QuotePayload): FPNumber => {
   const xstusdIssuance = FPNumber.fromCodecValue(payload.issuances[XSTUSD]);
   const xorIssuance = FPNumber.fromCodecValue(payload.issuances[XOR]);
   const xorPrice = FPNumber.fromCodecValue(payload.prices[XOR]);
@@ -70,20 +85,20 @@ const tbcBuyFunction = (delta: FPNumber, payload): FPNumber => {
   return xorIssuance.add(xstXorLiability).add(delta).div(PRICE_CHANGE_COEFF).add(INITIAL_PRICE);
 };
 
-const tbcSellFunction = (delta: FPNumber, payload): FPNumber => {
+const tbcSellFunction = (delta: FPNumber, payload: QuotePayload): FPNumber => {
   const buyFunctionResult = tbcBuyFunction(delta, payload);
 
   return buyFunctionResult.mul(SELL_PRICE_COEFF);
 };
 
-const idealReservesReferencePrice = (delta: FPNumber, payload): FPNumber => {
+const idealReservesReferencePrice = (delta: FPNumber, payload: QuotePayload): FPNumber => {
   const xorIssuance = FPNumber.fromCodecValue(payload.issuances[XOR]);
   const currentState = tbcBuyFunction(delta, payload);
 
   return INITIAL_PRICE.add(currentState).div(new FPNumber(2)).mul(xorIssuance.add(delta));
 };
 
-const actualReservesReferencePrice = (collateralAssetId: string, payload): FPNumber => {
+const actualReservesReferencePrice = (collateralAssetId: string, payload: QuotePayload): FPNumber => {
   const reserve = FPNumber.fromCodecValue(payload.reserves.tbc[collateralAssetId]);
   const price = tbcReferencePrice(collateralAssetId, payload);
 
@@ -104,7 +119,7 @@ const mapCollateralizedFractionToPenalty = (fraction: number): number => {
   }
 };
 
-const sellPenalty = (collateralAssetId: string, payload): FPNumber => {
+const sellPenalty = (collateralAssetId: string, payload: QuotePayload): FPNumber => {
   const idealReservesPrice = idealReservesReferencePrice(FPNumber.ZERO, payload);
   const collateralReservesPrice = actualReservesReferencePrice(collateralAssetId, payload);
 
@@ -119,7 +134,12 @@ const sellPenalty = (collateralAssetId: string, payload): FPNumber => {
   return new FPNumber(penalty);
 };
 
-const tbcSellPrice = (collateralAssetId: string, amount: FPNumber, isDesiredInput: boolean, payload): FPNumber => {
+const tbcSellPrice = (
+  collateralAssetId: string,
+  amount: FPNumber,
+  isDesiredInput: boolean,
+  payload: QuotePayload
+): FPNumber => {
   const collateralSupply = FPNumber.fromCodecValue(payload.reserves.tbc[collateralAssetId]);
   const xorPrice = tbcSellFunction(FPNumber.ZERO, payload);
   const collateralPrice = tbcReferencePrice(collateralAssetId, payload);
@@ -146,7 +166,12 @@ const tbcSellPrice = (collateralAssetId: string, amount: FPNumber, isDesiredInpu
   }
 };
 
-const tbcBuyPrice = (collateralAssetId: string, amount: FPNumber, isDesiredInput: boolean, payload): FPNumber => {
+const tbcBuyPrice = (
+  collateralAssetId: string,
+  amount: FPNumber,
+  isDesiredInput: boolean,
+  payload: QuotePayload
+): FPNumber => {
   const currentState = tbcBuyFunction(FPNumber.ZERO, payload);
   const collateralPrice = tbcReferencePrice(collateralAssetId, payload);
 
@@ -168,7 +193,7 @@ const tbcSellPriceWithFee = (
   collateralAssetId: string,
   amount: FPNumber,
   isDesiredInput: boolean,
-  payload
+  payload: QuotePayload
 ): QuoteResult => {
   const newFee = TBC_FEE.add(sellPenalty(collateralAssetId, payload));
 
@@ -207,7 +232,7 @@ const tbcBuyPriceWithFee = (
   collateralAssetId: string,
   amount: FPNumber,
   isDesiredInput: boolean,
-  payload
+  payload: QuotePayload
 ): QuoteResult => {
   if (isDesiredInput) {
     const outputAmount = tbcBuyPrice(collateralAssetId, amount, isDesiredInput, payload);
@@ -244,7 +269,7 @@ const tbcQuote = (
   outputAssetId: string,
   amount: FPNumber,
   isDesiredInput: boolean,
-  payload
+  payload: QuotePayload
 ): QuoteResult => {
   if (inputAssetId === XOR) {
     return tbcSellPriceWithFee(outputAssetId, amount, isDesiredInput, payload);
@@ -254,7 +279,7 @@ const tbcQuote = (
 };
 
 // XST quote
-const xstReferencePrice = (assetId: string, payload): FPNumber => {
+const xstReferencePrice = (assetId: string, payload: QuotePayload): FPNumber => {
   if (assetId === DAI || assetId === XSTUSD) {
     return new FPNumber(1);
   } else {
@@ -268,21 +293,21 @@ const xstReferencePrice = (assetId: string, payload): FPNumber => {
   }
 };
 
-const xstBuyPriceNoVolume = (syntheticAssetId: string, payload): FPNumber => {
+const xstBuyPriceNoVolume = (syntheticAssetId: string, payload: QuotePayload): FPNumber => {
   const xorPrice = xstReferencePrice(XOR, payload);
   const syntheticPrice = xstReferencePrice(syntheticAssetId, payload);
 
   return xorPrice.div(syntheticPrice);
 };
 
-const xstSellPriceNoVolume = (syntheticAssetId: string, payload): FPNumber => {
+const xstSellPriceNoVolume = (syntheticAssetId: string, payload: QuotePayload): FPNumber => {
   const xorPrice = xstReferencePrice(XOR, payload);
   const syntheticPrice = xstReferencePrice(syntheticAssetId, payload);
 
   return xorPrice.div(syntheticPrice);
 };
 
-const xstBuyPrice = (amount: FPNumber, isDesiredInput: boolean, payload): FPNumber => {
+const xstBuyPrice = (amount: FPNumber, isDesiredInput: boolean, payload: QuotePayload): FPNumber => {
   const xorPrice = xstReferencePrice(XOR, payload);
 
   if (isDesiredInput) {
@@ -292,7 +317,7 @@ const xstBuyPrice = (amount: FPNumber, isDesiredInput: boolean, payload): FPNumb
   }
 };
 
-const xstSellPrice = (amount: FPNumber, isDesiredInput: boolean, payload): FPNumber => {
+const xstSellPrice = (amount: FPNumber, isDesiredInput: boolean, payload: QuotePayload): FPNumber => {
   const xorPrice = xstReferencePrice(XOR, payload);
 
   if (isDesiredInput) {
@@ -302,7 +327,7 @@ const xstSellPrice = (amount: FPNumber, isDesiredInput: boolean, payload): FPNum
   }
 };
 
-const xstBuyPriceWithFee = (amount: FPNumber, isDesiredInput: boolean, payload): QuoteResult => {
+const xstBuyPriceWithFee = (amount: FPNumber, isDesiredInput: boolean, payload: QuotePayload): QuoteResult => {
   if (isDesiredInput) {
     const outputAmount = xstBuyPrice(amount, isDesiredInput, payload);
     const feeAmount = XST_FEE.mul(outputAmount);
@@ -336,7 +361,7 @@ const xstBuyPriceWithFee = (amount: FPNumber, isDesiredInput: boolean, payload):
   }
 };
 
-const xstSellPriceWithFee = (amount: FPNumber, isDesiredInput: boolean, payload): QuoteResult => {
+const xstSellPriceWithFee = (amount: FPNumber, isDesiredInput: boolean, payload: QuotePayload): QuoteResult => {
   if (isDesiredInput) {
     const feeAmount = amount.mul(XST_FEE);
     const output = xstSellPrice(amount.sub(feeAmount), isDesiredInput, payload);
@@ -368,7 +393,12 @@ const xstSellPriceWithFee = (amount: FPNumber, isDesiredInput: boolean, payload)
   }
 };
 
-const xstQuote = (inputAssetId: string, amount: FPNumber, isDesiredInput: boolean, payload): QuoteResult => {
+const xstQuote = (
+  inputAssetId: string,
+  amount: FPNumber,
+  isDesiredInput: boolean,
+  payload: QuotePayload
+): QuoteResult => {
   if (inputAssetId === XOR) {
     return xstSellPriceWithFee(amount, isDesiredInput, payload);
   } else {
@@ -377,7 +407,7 @@ const xstQuote = (inputAssetId: string, amount: FPNumber, isDesiredInput: boolea
 };
 
 // XYK quote
-const getXykReserves = (inputAssetId: string, payload): Array<FPNumber> => {
+const getXykReserves = (inputAssetId: string, payload: QuotePayload): Array<FPNumber> => {
   const isXorInput = inputAssetId === XOR;
 
   if (!isXorInput) {
@@ -524,7 +554,7 @@ const quotePrimaryMarket = (
   outputAssetId: string,
   amount: FPNumber,
   isDesiredInput: boolean,
-  payload
+  payload: QuotePayload
 ): QuotePrimaryMarketResult => {
   if ([inputAssetId, outputAssetId].includes(XSTUSD)) {
     return {
@@ -546,7 +576,7 @@ const primaryMarketAmountBuyingXor = (
   isDesiredInput: boolean,
   xorReserve: FPNumber,
   otherReserve: FPNumber,
-  payload
+  payload: QuotePayload
 ): FPNumber => {
   const secondaryPrice = FPNumber.isGreaterThan(xorReserve, FPNumber.ZERO) ? otherReserve.div(xorReserve) : MAX;
 
@@ -595,7 +625,7 @@ const primaryMarketAmountSellingXor = (
   isDesiredInput: boolean,
   xorReserve: FPNumber,
   otherReserve: FPNumber,
-  payload
+  payload: QuotePayload
 ): FPNumber => {
   const secondaryPrice = FPNumber.isGreaterThan(xorReserve, FPNumber.ZERO)
     ? otherReserve.div(xorReserve)
@@ -662,7 +692,7 @@ const smartSplit = (
   outputAssetId: string,
   amount: FPNumber,
   isDesiredInput: boolean,
-  payload
+  payload: QuotePayload
 ): QuoteResult => {
   let bestOutcome: FPNumber = extremum(isDesiredInput);
   let bestFee: FPNumber = FPNumber.ZERO;
@@ -751,7 +781,7 @@ const quoteSingle = (
   amount: FPNumber,
   isDesiredInput: boolean,
   sources: Array<LiquiditySourceTypes>,
-  payload
+  payload: QuotePayload
 ): QuoteResult => {
   if (!sources.length) {
     throw new Error("Path doesn't exist");
@@ -817,7 +847,7 @@ export const quote = (
   isDesiredInput: boolean,
   selectedSources: Array<LiquiditySourceTypes>,
   availableSources: Array<LiquiditySourceTypes>,
-  payload
+  payload: QuotePayload
 ): LiquidityProxyQuoteResult => {
   const sources = listLiquiditySources(inputAssetId, outputAssetId, selectedSources, availableSources);
   const amount = new FPNumber(value);
@@ -945,14 +975,14 @@ const xykQuoteWithoutImpact = (
   }
 };
 
-const tbcBuyPriceNoVolume = (collateralAssetId: string, payload): FPNumber => {
+const tbcBuyPriceNoVolume = (collateralAssetId: string, payload: QuotePayload): FPNumber => {
   const xorPrice = tbcBuyFunction(FPNumber.ZERO, payload);
   const collateralPrice = tbcReferencePrice(collateralAssetId, payload);
 
   return xorPrice.div(collateralPrice);
 };
 
-const tbcSellPriceNoVolume = (collateralAssetId: string, payload): FPNumber => {
+const tbcSellPriceNoVolume = (collateralAssetId: string, payload: QuotePayload): FPNumber => {
   const xorPrice = tbcSellFunction(FPNumber.ZERO, payload);
   const collateralPrice = tbcReferencePrice(collateralAssetId, payload);
 
@@ -964,7 +994,7 @@ const tbcQuoteWithoutImpact = (
   outputAssetId: string,
   amount: FPNumber,
   isDesiredinput: boolean,
-  payload
+  payload: QuotePayload
 ): FPNumber => {
   if (inputAssetId === XOR) {
     const xorPrice = tbcSellPriceNoVolume(outputAssetId, payload);
@@ -999,7 +1029,12 @@ const tbcQuoteWithoutImpact = (
   }
 };
 
-const xstQuoteWithoutImpact = (inputAssetId: string, amount: FPNumber, isDesiredInput: boolean, payload): FPNumber => {
+const xstQuoteWithoutImpact = (
+  inputAssetId: string,
+  amount: FPNumber,
+  isDesiredInput: boolean,
+  payload: QuotePayload
+): FPNumber => {
   // no impact already
   const quoteResult = xstQuote(inputAssetId, amount, isDesiredInput, payload);
 
@@ -1011,7 +1046,7 @@ const quoteWithoutImpactSingle = (
   outputAssetId: string,
   isDesiredInput: boolean,
   distribution: Array<Distribution>,
-  payload
+  payload: QuotePayload
 ): FPNumber => {
   return distribution.reduce((result, item) => {
     const { market, amount } = item;
