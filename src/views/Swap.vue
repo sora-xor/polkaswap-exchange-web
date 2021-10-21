@@ -532,15 +532,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
       this.isRecountingProcess = true;
       this.isInsufficientAmount = false;
 
-      const { amount, fee, rewards, amountWithoutImpact } = await api.getSwapResult(
-        this.tokenFrom.address,
-        this.tokenTo.address,
-        value,
-        this.isExchangeB,
-        this.liquiditySource
-      );
-
-      const result = quote(
+      const { amount, fee, rewards, amountWithoutImpact } = quote(
         this.tokenFrom.address,
         this.tokenTo.address,
         value,
@@ -550,24 +542,9 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
         this.payload
       );
 
-      console.log(
-        'amount:',
-        amount,
-        result.amount.toCodecString(),
-        FPNumber.fromCodecValue(amount).sub(result.amount).toString()
-      );
-      console.log('fee:', fee, result.fee.toCodecString(), FPNumber.fromCodecValue(fee).sub(result.fee).toString());
-      console.log(
-        'amountWithoutImpact:',
-        amountWithoutImpact,
-        result.amountWithoutImpact.toCodecString(),
-        FPNumber.fromCodecValue(amountWithoutImpact).sub(result.amountWithoutImpact).toString()
-      );
-      console.log('rewards:', rewards, result.rewards);
-
-      setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
-      this.setAmountWithoutImpact(amountWithoutImpact);
-      this.setLiquidityProviderFee(fee);
+      setOppositeValue(amount.toString());
+      this.setAmountWithoutImpact(amountWithoutImpact.toCodecString());
+      this.setLiquidityProviderFee(fee.toCodecString());
       this.setRewards(rewards);
 
       await Promise.all([this.calcMinMaxRecieved(), this.updatePrices()]);
