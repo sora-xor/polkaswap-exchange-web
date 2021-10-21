@@ -12,7 +12,7 @@ import {
 
 import router from '@/router';
 import i18n from '@/lang';
-import { app } from '@/consts';
+import { app, ZeroStringValue } from '@/consts';
 
 import storage from './storage';
 
@@ -223,7 +223,9 @@ export const divideAssets = (
   firstAmount: CodecString,
   secondAmount: CodecString,
   reversed = false
-) => {
+): string => {
+  if (!firstAsset || !secondAsset || !firstAmount || !secondAmount) return ZeroStringValue;
+
   const one = new FPNumber(1);
   const firstAmountNum = new FPNumber(firstAmount, firstAsset.decimals);
   const secondAmountNum = new FPNumber(secondAmount, secondAsset.decimals);

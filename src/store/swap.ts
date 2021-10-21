@@ -99,13 +99,9 @@ const getters = {
     return MarketAlgorithmForLiquiditySource[getters.swapLiquiditySource ?? ''];
   },
   price(state: SwapState, getters) {
-    if (!getters.tokenFrom || !getters.tokenTo || !state.fromValue || !state.toValue) return ZeroStringValue;
-
     return divideAssets(getters.tokenFrom, getters.tokenTo, state.fromValue, state.toValue, false);
   },
   priceReversed(state: SwapState, getters) {
-    if (!getters.tokenFrom || !getters.tokenTo || !state.fromValue || !state.toValue) return ZeroStringValue;
-
     return divideAssets(getters.tokenFrom, getters.tokenTo, state.fromValue, state.toValue, true);
   },
   priceImpact(state: SwapState, getters) {
@@ -288,12 +284,19 @@ const actions = {
       }
     }
   },
-  setPairLiquiditySources({ commit, dispatch, rootGetters }, liquiditySources: Array<LiquiditySourceTypes>) {
+  async updatePairLiquiditySources({ commit, dispatch, getters, rootGetters }) {
+    const isPair = !!getters.tokenFrom?.address && !!getters.tokenTo?.address;
+
+    const sources = isPair
+      ? await api.getListEnabledSourcesForPath(getters.tokenFrom?.address, getters.tokenTo?.address)
+      : [];
+
     // reset market algorithm to default, if related liquiditySource is not available
-    if (liquiditySources.length && !liquiditySources.includes(rootGetters.liquiditySource)) {
-      dispatch('setMarketAlgorithm', undefined, { root: true });
+    if (sources.length && !sources.includes(rootGetters.liquiditySource)) {
+      await dispatch('setMarketAlgorithm', undefined, { root: true });
     }
-    commit(types.SET_PAIR_LIQUIDITY_SOURCES, liquiditySources);
+
+    commit(types.SET_PAIR_LIQUIDITY_SOURCES, sources);
   },
   setRewards({ commit }, rewards: Array<LPRewardsInfo>) {
     commit(types.SET_REWARDS, rewards);
