@@ -10,7 +10,7 @@
       is-formatted
     />
     <info-line v-for="(reward, index) in rewardsValues" :key="index" v-bind="reward" />
-    <info-line v-if="hasPriceImpact" :label="t('swap.priceImpact')" :label-tooltip="t('swap.priceImpactTooltip')">
+    <info-line :label="t('swap.priceImpact')" :label-tooltip="t('swap.priceImpactTooltip')">
       <value-status-wrapper :value="priceImpact">
         <formatted-amount class="swap-value" :value="priceImpactFormatted">%</formatted-amount>
       </value-status-wrapper>
@@ -112,10 +112,6 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
         value: this.formatStringValue(this.priceReversed),
       },
     ];
-  }
-
-  get hasPriceImpact(): boolean {
-    return !asZeroValue(this.priceImpact);
   }
 
   get priceImpactFormatted(): string {
