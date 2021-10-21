@@ -216,3 +216,20 @@ export const toQueryString = (params: any): string => {
     .map(([key, value]) => `${key}=${encodeURIComponent(value as string)}`)
     .join('&');
 };
+
+export const divideAssets = (
+  firstAsset: Asset,
+  secondAsset: Asset,
+  firstAmount: CodecString,
+  secondAmount: CodecString,
+  reversed = false
+) => {
+  const one = new FPNumber(1);
+  const firstAmountNum = new FPNumber(firstAmount, firstAsset.decimals);
+  const secondAmountNum = new FPNumber(secondAmount, secondAsset.decimals);
+  const result = !reversed
+    ? firstAmountNum.div(!secondAmountNum.isZero() ? secondAmountNum : one)
+    : secondAmountNum.div(!firstAmountNum.isZero() ? firstAmountNum : one);
+
+  return result.format();
+};

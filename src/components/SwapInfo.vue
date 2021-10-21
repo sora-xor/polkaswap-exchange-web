@@ -44,7 +44,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
+import { Getter, State } from 'vuex-class';
 import {
   KnownAssets,
   KnownSymbols,
@@ -59,7 +59,6 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-import { asZeroValue } from '@/utils';
 
 const namespace = 'swap';
 
@@ -71,18 +70,18 @@ const namespace = 'swap';
   },
 })
 export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
+  @State((state) => state[namespace].liquidityProviderFee) liquidityProviderFee!: CodecString;
+  @State((state) => state[namespace].isExchangeB) isExchangeB!: boolean;
+  @State((state) => state[namespace].rewards) rewards!: Array<LPRewardsInfo>;
+
+  @Getter isLoggedIn!: boolean;
+  @Getter networkFees!: NetworkFeesObject;
   @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset;
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset;
   @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString;
-  @Getter('isExchangeB', { namespace }) isExchangeB!: boolean;
-  @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString;
-  @Getter('rewards', { namespace }) rewards!: Array<LPRewardsInfo>;
   @Getter('priceImpact', { namespace }) priceImpact!: string;
-
-  @Getter('price', { namespace: 'prices' }) price!: string;
-  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string;
-  @Getter isLoggedIn!: boolean;
-  @Getter networkFees!: NetworkFeesObject;
+  @Getter('price', { namespace }) price!: string;
+  @Getter('priceReversed', { namespace }) priceReversed!: string;
 
   get liquidityProviderFeeTooltipText(): string {
     return this.t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: this.liquidityProviderFeeValue });

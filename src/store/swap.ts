@@ -4,10 +4,11 @@ import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import { api } from '@soramitsu/soraneo-wallet-web';
-import { FPNumber, CodecString, LiquiditySourceTypes, LPRewardsInfo } from '@sora-substrate/util';
+import { FPNumber, CodecString, LiquiditySourceTypes, LPRewardsInfo, QuotePayload } from '@sora-substrate/util';
 
 import { MarketAlgorithmForLiquiditySource, ZeroStringValue } from '@/consts';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
+import { divideAssets } from '@/utils';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
@@ -22,7 +23,6 @@ const types = flow(
     'SET_TOKEN_TO_BALANCE',
     'SET_FROM_VALUE',
     'SET_TO_VALUE',
-    'SET_MIN_MAX_RECEIVED',
     'SET_AMOUNT_WITHOUT_IMPACT',
     'SET_EXCHANGE_B',
     'SET_LIQUIDITY_PROVIDER_FEE',
@@ -43,7 +43,6 @@ interface SwapState {
   tokenToBalance: any;
   fromValue: string;
   toValue: string;
-  minMaxReceived: CodecString;
   amountWithoutImpact: CodecString;
   isExchangeB: boolean;
   liquidityProviderFee: CodecString;
@@ -51,7 +50,7 @@ interface SwapState {
   isAvailable: boolean;
   isAvailableChecking: boolean;
   rewards: Array<LPRewardsInfo>;
-  payload: Nullable<any>; // TODO: type
+  payload: Nullable<QuotePayload>;
 }
 
 function initialState(): SwapState {
@@ -62,7 +61,6 @@ function initialState(): SwapState {
     tokenToBalance: null,
     fromValue: '',
     toValue: '',
-    minMaxReceived: '',
     amountWithoutImpact: '',
     isExchangeB: false,
     liquidityProviderFee: '',
@@ -92,40 +90,23 @@ const getters = {
   pairLiquiditySourcesAvailable(state: SwapState) {
     return state.pairLiquiditySources.length !== 0;
   },
-  fromValue(state: SwapState) {
-    return state.fromValue;
-  },
-  toValue(state: SwapState) {
-    return state.toValue;
-  },
-  minMaxReceived(state: SwapState) {
-    return state.minMaxReceived || ZeroStringValue;
-  },
-  isExchangeB(state: SwapState) {
-    return state.isExchangeB;
-  },
-  liquidityProviderFee(state: SwapState) {
-    return state.liquidityProviderFee;
-  },
   swapLiquiditySource(state, getters, rootState, rootGetters) {
     if (!getters.pairLiquiditySourcesAvailable) return undefined;
 
     return rootGetters.liquiditySource;
   },
-  swapMarketAlgorithm(state, getters) {
+  swapMarketAlgorithm(state: SwapState, getters) {
     return MarketAlgorithmForLiquiditySource[getters.swapLiquiditySource ?? ''];
   },
-  rewards(state: SwapState) {
-    return state.rewards;
+  price(state: SwapState, getters) {
+    if (!getters.tokenFrom || !getters.tokenTo || !state.fromValue || !state.toValue) return ZeroStringValue;
+
+    return divideAssets(getters.tokenFrom, getters.tokenTo, state.fromValue, state.toValue, false);
   },
-  payload(state: SwapState) {
-    return state.payload;
-  },
-  isAvailable(state: SwapState) {
-    return state.isAvailable;
-  },
-  isAvailableChecking(state: SwapState) {
-    return state.isAvailableChecking;
+  priceReversed(state: SwapState, getters) {
+    if (!getters.tokenFrom || !getters.tokenTo || !state.fromValue || !state.toValue) return ZeroStringValue;
+
+    return divideAssets(getters.tokenFrom, getters.tokenTo, state.fromValue, state.toValue, true);
   },
   priceImpact(state: SwapState, getters) {
     const { fromValue, toValue, amountWithoutImpact, isExchangeB } = state;
@@ -144,6 +125,20 @@ const getters = {
     const result = new FPNumber(1).sub(impact).mul(FPNumber.HUNDRED);
 
     return FPNumber.lte(result, FPNumber.ZERO) ? ZeroStringValue : FPNumber.ZERO.sub(result).toFixed(2);
+  },
+  minMaxReceived(state: SwapState, getters, rootState, rootGetters) {
+    const { fromValue, toValue, isExchangeB } = state;
+
+    const value = isExchangeB ? fromValue : toValue;
+    const token = isExchangeB ? getters.tokenFrom : getters.tokenTo;
+
+    if (!token || !value) return ZeroStringValue;
+
+    const resultDecimals = token.decimals;
+    const result = new FPNumber(value, resultDecimals);
+    const resultMulSlippage = result.mul(new FPNumber(Number(rootGetters.slippageTolerance) / 100, resultDecimals));
+
+    return (!isExchangeB ? result.sub(resultMulSlippage) : result.add(resultMulSlippage)).toCodecString();
   },
 };
 
@@ -178,9 +173,6 @@ const mutations = {
   },
   [types.SET_TO_VALUE](state: SwapState, toValue: string) {
     state.toValue = toValue;
-  },
-  [types.SET_MIN_MAX_RECEIVED](state: SwapState, minMaxReceived: CodecString) {
-    state.minMaxReceived = minMaxReceived;
   },
   [types.SET_AMOUNT_WITHOUT_IMPACT](state: SwapState, amount: CodecString) {
     state.amountWithoutImpact = amount;
@@ -268,9 +260,6 @@ const actions = {
   },
   setToValue({ commit }, toValue: string | number) {
     commit(types.SET_TO_VALUE, toValue);
-  },
-  setMinMaxReceived({ commit }, minMaxReceived) {
-    commit(types.SET_MIN_MAX_RECEIVED, minMaxReceived);
   },
   setAmountWithoutImpact({ commit }, amount: CodecString) {
     commit(types.SET_AMOUNT_WITHOUT_IMPACT, amount);
