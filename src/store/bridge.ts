@@ -547,6 +547,10 @@ const actions = {
       assetAddress: (params as any).assetAddress ?? getters.asset.address,
       startTime: date,
       endTime: date,
+      soraStartTimestamp: getters.isSoraToEvm ? date : '',
+      soraEndTimestamp: '',
+      evmStartTimestamp: !getters.isSoraToEvm ? date : '',
+      evmEndTimestamp: '',
       signed: false,
       status: '',
       transactionStep: step,
@@ -562,18 +566,29 @@ const actions = {
   },
   async generateHistoryItem({ getters, dispatch }, playground) {
     const historyItem = await dispatch('bridgeDataToHistoryItem', playground);
-
     await dispatch('setHistoryItem', bridgeApi.generateHistoryItem(historyItem));
-
     return getters.historyItem;
   },
-  async updateHistoryParams({ dispatch }, params) {
+  async updateHistoryParams({ state, dispatch }, params) {
     await dispatch('saveHistory', params.tx);
     await dispatch('setHistoryItem', params.tx);
-    if (!params.isEndTimeOnly) {
-      await dispatch('setSoraTransactionDate', params.tx.startTime);
+
+    if (!state.soraTransactionDate) {
+      await dispatch('setSoraTransactionDate', params.tx.soraStartTimestamp);
     }
-    await dispatch('setEvmTransactionDate', params.tx.endTime);
+
+    if (state.soraTransactionDate && params.tx.soraEndTimestamp) {
+      await dispatch('setSoraTransactionDate', params.tx.soraEndTimestamp);
+    }
+
+    if (!state.evmTransactionDate) {
+      await dispatch('setEvmTransactionDate', params.tx.evmStartTimestamp);
+    }
+
+    if (state.evmTransactionDate && params.tx.evmEndTimestamp) {
+      await dispatch('setEvmTransactionDate', params.tx.evmEndTimestamp);
+      bridgeApi.saveHistory(params.tx);
+    }
   },
   async signSoraTransactionSoraToEvm({ commit, getters, rootGetters, dispatch }, { txId }) {
     if (!txId) throw new Error('TX ID cannot be empty!');
@@ -637,6 +652,8 @@ const actions = {
 
     try {
       const request = await waitForApprovedRequest(hash); // If it causes an error, then -> catch -> SORA_REJECTED
+      const historyItem = { ...getters.historyItem, soraEndTimestamp: Date.now() };
+      await dispatch('updateHistoryParams', { tx: historyItem });
 
       // update history item, if it hasn't 'to' field
       if (!getters.historyItem.to) {
@@ -695,6 +712,8 @@ const actions = {
       checkEvmNetwork(rootGetters);
       const tx: ethers.providers.TransactionResponse = await contractInstance[method](...methodArgs);
       commit(types.SIGN_EVM_TRANSACTION_SORA_EVM_SUCCESS);
+      const history = { ...getters.historyItem, evmStartTimestamp: Date.now() };
+      await dispatch('updateHistoryParams', { tx: history });
       return tx.hash;
     } catch (error) {
       commit(types.SIGN_EVM_TRANSACTION_SORA_EVM_FAILURE);
@@ -720,6 +739,9 @@ const actions = {
         }
       );
       commit(types.SEND_EVM_TRANSACTION_SORA_EVM_SUCCESS);
+      const historyItem = { ...getters.historyItem, evmEndTimestamp: Date.now() };
+      await dispatch('updateHistoryParams', { tx: historyItem });
+      bridgeApi.saveHistory(historyItem);
     } catch (error) {
       commit(types.SEND_EVM_TRANSACTION_SORA_EVM_FAILURE);
       throw error;
@@ -849,6 +871,8 @@ const actions = {
     }
   },
   async signSoraTransactionEvmToSora({ commit, getters, dispatch }, { ethereumHash }) {
+    const historyItem = { ...getters.historyItem, evmEndTimestamp: Date.now() };
+    await dispatch('updateHistoryParams', { tx: historyItem });
     if (!ethereumHash) throw new Error('Hash cannot be empty!');
     if (!getters.asset || !getters.asset.address || !getters.amount || getters.isSoraToEvm) {
       return;
@@ -871,11 +895,20 @@ const actions = {
       throw error;
     }
   },
-  async sendSoraTransactionEvmToSora({ commit }, { ethereumHash }) {
+  async sendSoraTransactionEvmToSora({ state, commit, dispatch }, { ethereumHash }) {
+    const historyItem = { ...getters.historyItem, soraStartTimestamp: Date.now() };
+    await dispatch('updateHistoryParams', { tx: historyItem });
+
     if (!ethereumHash) throw new Error('Hash cannot be empty!');
     commit(types.SEND_SORA_TRANSACTION_EVM_SORA_REQUEST);
     try {
       await waitForRequest(ethereumHash);
+      const historyItem = {
+        ...getters.historyItem,
+        soraEndTimestamp: Date.now(),
+        evmEndTimestamp: state.evmTransactionDate,
+      };
+      await dispatch('updateHistoryParams', { tx: historyItem });
       commit(types.SEND_SORA_TRANSACTION_EVM_SORA_SUCCESS);
     } catch (error) {
       commit(types.SEND_SORA_TRANSACTION_EVM_SORA_FAILURE);
