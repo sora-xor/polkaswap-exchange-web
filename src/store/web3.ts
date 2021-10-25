@@ -332,7 +332,7 @@ const actions = {
       const isKnownAsset = !!KnownAssets.get(asset.address);
       const gasLimits = EthereumGasLimits[+isSoraToEvm];
       const gasLimit =
-        isKnownAsset && asset.address in gasLimits ? gasLimits[asset.address] : gasLimits[KnownBridgeAsset.Other];
+        isKnownAsset && asset.symbol in gasLimits ? gasLimits[asset.symbol] : gasLimits[KnownBridgeAsset.Other];
       const fpFee = FPNumber.fromCodecValue(gasPrice).mul(new FPNumber(gasLimit)).toCodecString();
 
       return fpFee;
