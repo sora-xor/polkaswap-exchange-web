@@ -325,16 +325,14 @@ const actions = {
   /**
    * Fetch EVM Network fee for passed asset
    */
-  async getEvmNetworkFee(
-    { rootGetters },
-    { asset, isSoraToEvm }: { asset: Asset; isSoraToEvm: boolean }
-  ): Promise<CodecString> {
+  async getEvmNetworkFee(_, { asset, isSoraToEvm }: { asset: Asset; isSoraToEvm: boolean }): Promise<CodecString> {
     try {
-      const registeredAssets = rootGetters.whitelist;
       const ethersInstance = await ethersUtil.getEthersInstance();
       const gasPrice = (await ethersInstance.getGasPrice()).toNumber();
-      const knownAsset = !!KnownAssets.get(asset.address) || registeredAssets[asset.address]?.symbol === 'ETH';
-      const gasLimit = EthereumGasLimits[+isSoraToEvm][knownAsset ? asset.symbol : KnownBridgeAsset.Other];
+      const isKnownAsset = !!KnownAssets.get(asset.address);
+      const gasLimits = EthereumGasLimits[+isSoraToEvm];
+      const key = isKnownAsset && asset.symbol in gasLimits ? asset.symbol : KnownBridgeAsset.Other;
+      const gasLimit = gasLimits[key];
       const fpFee = FPNumber.fromCodecValue(gasPrice).mul(new FPNumber(gasLimit)).toCodecString();
 
       return fpFee;
