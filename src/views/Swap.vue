@@ -201,7 +201,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
+import { Action, Getter, State } from 'vuex-class';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import {
   KnownAssets,
@@ -251,6 +251,8 @@ const namespace = 'swap';
   },
 })
 export default class Swap extends Mixins(mixins.FormattedAmountMixin, TranslationMixin, LoadingMixin) {
+  @State((state) => state[namespace].pairLiquiditySources) pairLiquiditySources!: Array<LiquiditySourceTypes>;
+
   @Getter networkFees!: NetworkFeesObject;
   @Getter nodeIsConnected!: boolean;
   @Getter isLoggedIn!: boolean;
@@ -565,7 +567,12 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     if (!this.areTokensSelected) return;
 
     this.liquidityReservesSubscription = api
-      .subscribeOnSwapReserves(this.tokenFrom.address, this.tokenTo.address, this.liquiditySource)
+      .subscribeOnSwapReserves(
+        this.tokenFrom.address,
+        this.tokenTo.address,
+        this.pairLiquiditySources,
+        this.liquiditySource
+      )
       .subscribe(this.onChangeSwapReserves);
   }
 

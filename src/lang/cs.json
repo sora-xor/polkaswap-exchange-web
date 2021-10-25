@@ -806,14 +806,14 @@
         }
     },
     "recievedText": "Přijato",
-    "light": "Světlo",
-    "dark": "Temný",
+    "light": "Světlý",
+    "dark": "Tmavý",
     "headerMenu": {
         "showBalances": "Zobrazit zůstatky",
         "hideBalances": "Skrýt zůstatky",
         "settings": "Nastavení",
         "switchTheme": "Přepnout do režimu {theme}",
-        "switchLanguage": "Vyber jazyk"
+        "switchLanguage": "Vybrat jazyk"
     },
     "sentText": "Odesláno"
 }
