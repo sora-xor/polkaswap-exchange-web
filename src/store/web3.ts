@@ -331,8 +331,8 @@ const actions = {
       const gasPrice = (await ethersInstance.getGasPrice()).toNumber();
       const isKnownAsset = !!KnownAssets.get(asset.address);
       const gasLimits = EthereumGasLimits[+isSoraToEvm];
-      const gasLimit =
-        isKnownAsset && asset.symbol in gasLimits ? gasLimits[asset.symbol] : gasLimits[KnownBridgeAsset.Other];
+      const key = isKnownAsset && asset.symbol in gasLimits ? asset.symbol : KnownBridgeAsset.Other;
+      const gasLimit = gasLimits[key];
       const fpFee = FPNumber.fromCodecValue(gasPrice).mul(new FPNumber(gasLimit)).toCodecString();
 
       return fpFee;
