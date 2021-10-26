@@ -23,6 +23,7 @@
                 <template v-if="item.formatted.cryptoAmount">
                   <formatted-amount
                     class="moonpay-history-item-amount"
+                    value-can-be-hidden
                     :value="item.formatted.cryptoAmount"
                     :font-size-rate="FontSizeRate.MEDIUM"
                     :asset-symbol="item.formatted.crypto"
@@ -32,6 +33,7 @@
                 </template>
                 <formatted-amount
                   class="moonpay-history-item-amount"
+                  value-can-be-hidden
                   :value="item.formatted.fiatAmount"
                   :font-size-rate="FontSizeRate.MEDIUM"
                   :asset-symbol="item.formatted.fiat"
@@ -291,6 +293,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
 
 <style lang="scss" scoped>
 $list-item-min-height: 76px;
+$separator-margin: calc(var(--s-basic-spacing) / 2);
 
 .moonpay-history {
   position: relative;
@@ -365,6 +368,10 @@ $list-item-min-height: 76px;
       &.failed {
         color: var(--s-color-status-error);
       }
+    }
+
+    .s-icon--network {
+      margin-left: $separator-margin;
     }
   }
 }
