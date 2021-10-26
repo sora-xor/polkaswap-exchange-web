@@ -166,6 +166,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-weight: 800;
   }
   &--reverse {
     flex-direction: column-reverse;

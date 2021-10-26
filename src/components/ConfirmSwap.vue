@@ -134,6 +134,7 @@ export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-weight: 800;
   }
 }
 .token {
