@@ -129,12 +129,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
     this.withApi(async () => {
       this.initMoonpayApi(); // MoonpayBridgeInitMixin
 
-      await Promise.all([
-        this.prepareEvmNetwork(), // MoonpayBridgeInitMixin
-        this.getTransactions(),
-        this.getCurrencies(),
-        this.getHistory(),
-      ]);
+      await Promise.all([this.getTransactions(), this.getCurrencies(), this.getHistory()]);
 
       this.unwatchEthereum = await ethersUtil.watchEthereum({
         onAccountChange: (addressList: string[]) => {
@@ -253,7 +248,8 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
 
   async navigateToDetails(item): Promise<void> {
     try {
-      await this.checkConnectionToExternalAccount(() => {
+      await this.checkConnectionToExternalAccount(async () => {
+        await this.prepareEvmNetwork(); // MoonpayBridgeInitMixin
         this.selectedItem = item;
         this.changeView(DetailsView);
       });
