@@ -15,7 +15,6 @@
       v-bind="reward"
     />
     <info-line
-      v-if="hasPriceImpact"
       :label="t('swap.priceImpact')"
       :label-tooltip="t('swap.priceImpactTooltip')"
     >
@@ -97,10 +96,6 @@ export default class SwapInfo extends Mixins(FormattedAmountMixin, TranslationMi
         value: this.formatStringValue(this.priceReversed)
       }
     ]
-  }
-
-  get hasPriceImpact (): boolean {
-    return !asZeroValue(this.priceImpact)
   }
 
   get priceImpactFormatted (): string {

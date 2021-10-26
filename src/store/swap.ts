@@ -6,7 +6,7 @@ import concat from 'lodash/fp/concat'
 import { api } from '@soramitsu/soraneo-wallet-web'
 import { FPNumber, CodecString, LiquiditySourceTypes, LPRewardsInfo } from '@sora-substrate/util'
 
-import { MarketAlgorithmForLiquiditySource } from '@/consts'
+import { MarketAlgorithmForLiquiditySource, ZeroStringValue } from '@/consts'
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions'
 import { FpZeroValue } from '@/utils'
 
@@ -97,7 +97,7 @@ const getters = {
     return state.toValue
   },
   minMaxReceived (state: SwapState) {
-    return state.minMaxReceived
+    return state.minMaxReceived || ZeroStringValue
   },
   isExchangeB (state: SwapState) {
     return state.isExchangeB
@@ -123,17 +123,22 @@ const getters = {
     return state.isAvailableChecking
   },
   priceImpact (state: SwapState, getters) {
-    if (!state.toValue || !state.amountWithoutImpact || !getters.tokenTo) return '0'
+    const { fromValue, toValue, amountWithoutImpact, isExchangeB } = state
 
-    const withoutImpact = FPNumber.fromCodecValue(state.amountWithoutImpact, getters.tokenTo.decimals)
+    const token = isExchangeB ? getters.tokenFrom : getters.tokenTo
+    const value = isExchangeB ? fromValue : toValue
 
-    if (withoutImpact.isZero()) return '0'
+    if (!token || !value || !amountWithoutImpact) return ZeroStringValue
 
-    const amount = new FPNumber(state.toValue)
-    const div = amount.div(withoutImpact)
-    const result = new FPNumber(1).sub(div).mul(new FPNumber(100))
+    const withoutImpact = FPNumber.fromCodecValue(amountWithoutImpact, token.decimals)
 
-    return FPNumber.lte(result, FpZeroValue) ? '0' : FpZeroValue.sub(result).toFixed(2)
+    if (withoutImpact.isZero()) return ZeroStringValue
+
+    const amount = new FPNumber(value, token.decimals)
+    const impact = isExchangeB ? withoutImpact.div(amount) : amount.div(withoutImpact)
+    const result = new FPNumber(1).sub(impact).mul(new FPNumber(100))
+
+    return FPNumber.lte(result, FpZeroValue) ? ZeroStringValue : FpZeroValue.sub(result).toFixed(2)
   }
 }
 
