@@ -10,4 +10,4 @@ const exact = exp => `^${exp}$`
 
 export const wsRegexp = new RegExp(exactStart(ws))
 export const dnsPathRegexp = new RegExp(exact(`${dns}${port}?(${segment})*/?`))
-export const ipv4Regexp = new RegExp(exact(`${ipv4}${port}?/?`))
+export const ipv4Regexp = new RegExp(exact(`${ipv4}${port}?(${segment})*/?`))
