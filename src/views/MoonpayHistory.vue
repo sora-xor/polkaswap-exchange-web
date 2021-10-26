@@ -243,6 +243,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
   }
 
   handleBack(): void {
+    this.loading = false;
     this.changeView(HistoryView);
   }
 
