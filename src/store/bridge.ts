@@ -103,7 +103,7 @@ async function waitForEvmTransactionStatus(
       value,
       startBlock: blockOffset,
     });
-  } catch (error) {
+  } catch (error: any) {
     if (error.code === ethers.errors.TRANSACTION_REPLACED) {
       if (error.reason === 'repriced' || error.reason === 'replaced') {
         replaceCallback(error.replacement.hash);

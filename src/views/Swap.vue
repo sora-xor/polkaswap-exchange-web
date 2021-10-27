@@ -542,7 +542,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
       this.setRewards(rewards);
 
       await Promise.all([this.calcMinMaxRecieved(), this.updatePrices()]);
-    } catch (error) {
+    } catch (error: any) {
       resetOppositeValue();
       if (!this.isInsufficientAmountError(oppositeToken.symbol as string, error.message)) {
         throw error;

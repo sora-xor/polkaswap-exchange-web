@@ -14,7 +14,7 @@ export default class ConfirmDialogMixin extends Mixins(TranslationMixin) {
     try {
       await func();
       this.showConfirmDialog = false;
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
       this.$alert(this.t(error.message), { title: this.t('errorText') });
     }

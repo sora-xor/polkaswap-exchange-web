@@ -78,7 +78,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
       await this.setBridgeTransactionData({ data, startBridgeButtonVisibility });
       await this.setNotificationVisibility(false);
       await this.setConfirmationVisibility(true);
-    } catch (error) {
+    } catch (error: any) {
       await this.handleBridgeInitError(error);
     }
   }

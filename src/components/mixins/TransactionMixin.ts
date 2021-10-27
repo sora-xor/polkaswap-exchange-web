@@ -95,7 +95,7 @@ export default class TransactionMixin extends Mixins(mixins.NumberFormatterMixin
         await func();
         await this.getLastTransaction();
         this.$notify({ message: this.t('transactionSubmittedText'), title: '' });
-      } catch (error) {
+      } catch (error: any) {
         const message = this.getMessage(this.transaction as History);
         this.time = 0;
         if (this.transaction) {
