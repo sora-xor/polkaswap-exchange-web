@@ -54,7 +54,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @Action('setEvmNetworkType', { namespace: 'web3' }) setEvmNetworkType!: (network?: string) => Promise<void>;
   @Action('connectExternalAccount', { namespace: 'web3' }) connectExternalAccount!: (options) => Promise<void>;
   @Action('switchExternalAccount', { namespace: 'web3' }) switchExternalAccount!: (options) => Promise<void>;
-  @Action('disconnectExternalAccount', { namespace: 'web3' }) disconnectExternalAccount!: () => Promise<void>;
+  @Action('disconnectExternalAccount', { namespace: 'web3' }) disconnectExternalAccount!: AsyncVoidFn;
 
   getWalletAddress = getWalletAddress;
   formatAddress = formatAddress;

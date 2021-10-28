@@ -116,8 +116,8 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
   @Getter libraryTheme!: Theme;
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean;
   @Getter('currenciesById', { namespace }) currenciesById!: MoonpayCurrenciesById;
-  @Action('getTransactions', { namespace }) getTransactions!: () => Promise<void>;
-  @Action('getCurrencies', { namespace }) getCurrencies!: () => Promise<void>;
+  @Action('getTransactions', { namespace }) getTransactions!: AsyncVoidFn;
+  @Action('getCurrencies', { namespace }) getCurrencies!: AsyncVoidFn;
 
   private unwatchEthereum!: any;
 
