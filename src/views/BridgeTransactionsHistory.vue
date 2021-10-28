@@ -108,13 +108,10 @@ export default class BridgeTransactionsHistory extends Mixins(
   NetworkFormatterMixin,
   PaginationSearchMixin
 ) {
-  @Getter networkFees!: NetworkFeesObject;
-
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>;
   @Getter('history', { namespace }) history!: Nullable<Array<BridgeHistory>>;
   @Getter('restored', { namespace }) restored!: boolean;
 
-  @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn;
   @Action('getRestoredFlag', { namespace }) getRestoredFlag!: AsyncVoidFn;
   @Action('getRestoredHistory', { namespace }) getRestoredHistory!: AsyncVoidFn;
   @Action('clearHistory', { namespace }) clearHistory!: AsyncVoidFn;
