@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Action, Getter, State } from 'vuex-class';
+import { Action, Getter } from 'vuex-class';
 import { History, connection } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';

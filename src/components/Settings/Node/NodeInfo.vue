@@ -91,7 +91,7 @@ const stripEndingSlash = (str: string): string => (str.charAt(str.length - 1) ==
   },
 })
 export default class NodeInfo extends Mixins(TranslationMixin) {
-  @Prop({ default: () => {}, type: Function }) handleBack!: () => void;
+  @Prop({ default: () => {}, type: Function }) handleBack!: VoidFunction;
   @Prop({ default: () => {}, type: Function }) handleNode!: (node: any, isNewNode: boolean) => void;
   @Prop({ default: () => {}, type: Function }) removeNode!: (node: any) => void;
   @Prop({ default: () => ({}), type: Object }) node!: any;
