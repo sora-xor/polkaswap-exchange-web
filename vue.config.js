@@ -29,7 +29,7 @@ module.exports = {
   css: {
     loaderOptions: {
       sass: {
-        prependData: `
+        additionalData: `
           @import "@/styles/_breakpoints.scss";
           @import "@/styles/_layout.scss";
           @import "@/styles/_mixins.scss";
