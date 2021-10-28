@@ -559,7 +559,9 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   get transactionSecondDate(): string {
-    return this.getTransactionDate(!this.isSoraToEvm ? this.soraTransactionDate : this.evmTransactionDate);
+    return (
+      this.getTransactionDate(!this.isSoraToEvm ? this.soraTransactionDate : this.evmTransactionDate) || this.statusTo
+    );
   }
 
   get formattedSoraNetworkFee(): string {
@@ -746,9 +748,16 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     // Subscribe to transition events
     this.sendService
       .onTransition(async (state) => {
+        const { soraStartTimestamp, soraEndTimestamp, evmStartTimestamp, evmEndTimestamp } = this.historyItem;
+        const tx = {
+          ...state.context.history,
+          soraStartTimestamp,
+          soraEndTimestamp,
+          evmStartTimestamp,
+          evmEndTimestamp,
+        };
+        await this.updateHistoryParams({ tx });
         await this.setCurrentTransactionState(state.context.history.transactionState);
-        await this.updateHistoryParams({ tx: state.context.history });
-
         if (
           !state.context.history.hash?.length &&
           !state.context.history.ethereumHash?.length &&
@@ -881,7 +890,8 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
 
   getTransactionDate(transactionDate: string): string {
     // We use current date if request is failed
-    const date = transactionDate ? new Date(transactionDate) : new Date();
+    if (!transactionDate) return '';
+    const date = new Date(transactionDate);
     return `${date.getDate()} ${this.t(`months[${date.getMonth()}]`)} ${date.getFullYear()}, ${formatDateItem(
       date.getHours()
     )}:${formatDateItem(date.getMinutes())}:${formatDateItem(date.getSeconds())}`;
