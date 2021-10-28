@@ -369,6 +369,7 @@ function createFSM(context: Context, states, initialState = STATES.INITIAL) {
           return {
             ...context.history,
             status: BridgeTxStatus.Failed,
+            endTime: Date.now(),
           };
         },
       }),
@@ -377,6 +378,7 @@ function createFSM(context: Context, states, initialState = STATES.INITIAL) {
           return {
             ...context.history,
             status: BridgeTxStatus.Done,
+            endTime: Date.now(),
           };
         },
       }),
