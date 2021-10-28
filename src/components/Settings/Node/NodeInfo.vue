@@ -60,7 +60,9 @@ import { NodeModel } from './consts';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-const checkAddress = (translate: Function): Function => {
+const checkAddress = (
+  translate: TranslationMixin['t']
+): ((rule: unknown, value: Nullable<string>, callback: (error?: Error) => void) => void) => {
   return (rule, value, callback): void => {
     if (!value) {
       return callback(new Error(translate('selectNodeDialog.messages.emptyAddress')));

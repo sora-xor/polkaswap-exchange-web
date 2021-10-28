@@ -9,12 +9,12 @@ import type { AccountLiquidity } from '@sora-substrate/util';
 
 import { delay } from '@/utils';
 
-const waitForAccountPair = async (func: Function): Promise<any> => {
+const waitForAccountPair = async (func: VoidFunction): Promise<any> => {
   if (!api.accountPair) {
     await delay();
     return await waitForAccountPair(func);
   } else {
-    return await func();
+    return func();
   }
 };
 

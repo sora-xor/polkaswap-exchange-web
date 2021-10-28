@@ -113,7 +113,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     }
   }
 
-  async checkConnectionToExternalAccount(func: Function): Promise<void> {
+  async checkConnectionToExternalAccount(func: AsyncVoidFn | VoidFunction): Promise<void> {
     const connected = await ethersUtil.checkAccountIsConnected(this.evmAddress);
 
     if (!connected) {
