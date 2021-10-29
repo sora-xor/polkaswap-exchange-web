@@ -230,6 +230,7 @@ import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 
 import { quote } from '@/services/liquidityProxy';
+import type { QuotePaths } from '@/services/liquidityProxy';
 
 const namespace = 'swap';
 
@@ -251,6 +252,7 @@ const namespace = 'swap';
   },
 })
 export default class Swap extends Mixins(mixins.FormattedAmountMixin, TranslationMixin, LoadingMixin) {
+  @State((state) => state[namespace].paths) paths!: QuotePaths;
   @State((state) => state[namespace].pairLiquiditySources) pairLiquiditySources!: Array<LiquiditySourceTypes>;
   @State((state) => state[namespace].liquidityProviderFee) liquidityProviderFee!: CodecString;
   @State((state) => state[namespace].isAvailable) isAvailable!: boolean;
@@ -282,6 +284,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   @Action('reset', { namespace }) reset!: AsyncVoidFn;
   @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn;
   @Action('updatePairLiquiditySources', { namespace }) updatePairLiquiditySources!: AsyncVoidFn;
+  @Action('updatePaths', { namespace }) updatePaths!: AsyncVoidFn;
 
   @Action('setRewards', { namespace }) setRewards!: (rewards: Array<LPRewardsInfo>) => Promise<void>;
   @Action('setSubscriptionPayload', { namespace }) setSubscriptionPayload!: (payload: QuotePayload) => Promise<void>;
@@ -514,7 +517,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
         value,
         !this.isExchangeB,
         [this.liquiditySource].filter(Boolean),
-        this.pairLiquiditySources,
+        this.paths,
         this.payload
       );
 
@@ -522,7 +525,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
       this.setAmountWithoutImpact(amountWithoutImpact);
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
       resetOppositeValue();
     } finally {
@@ -553,7 +556,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   }
 
   private async checkSwapSources(): Promise<void> {
-    await Promise.all([this.checkSwap(), this.updatePairLiquiditySources()]);
+    await Promise.all([this.checkSwap(), this.updatePairLiquiditySources(), this.updatePaths()]);
   }
 
   private async onChangeSwapReserves(payload: QuotePayload): Promise<void> {
@@ -588,7 +591,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     await this.setTokenFromAddress(toAddress);
     await this.setTokenToAddress(fromAddress);
 
-    await this.updatePairLiquiditySources();
+    await this.checkSwapSources();
 
     if (this.isExchangeB) {
       this.setExchangeB(false);

@@ -17,7 +17,7 @@ export default class BridgeHistoryMixin extends Mixins(LoadingMixin) {
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString;
   @Getter('history', { namespace }) bridgeHistory!: Array<BridgeHistory>;
 
-  @Action('getHistory', { namespace }) getHistory!: () => Promise<void>;
+  @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn;
   @Action('generateHistoryItem', { namespace }) generateHistoryItem!: (history: any) => Promise<BridgeHistory>;
 
   @Action('getEvmNetworkFee', { namespace }) getEvmNetworkFee!: AsyncVoidFn;
@@ -62,6 +62,8 @@ export default class BridgeHistoryMixin extends Mixins(LoadingMixin) {
       await this.setAmount(tx.amount || '0');
       await this.setSoraTransactionHash(tx.hash || '');
       await this.setEvmTransactionHash(tx.ethereumHash || '');
+      await this.setSoraTransactionDate(String(tx[this.isOutgoingType(tx.type) ? 'startTime' : 'endTime']));
+      await this.setEvmTransactionDate(String(tx[!this.isOutgoingType(tx.type) ? 'startTime' : 'endTime']));
 
       const soraNetworkFee = +(tx.soraNetworkFee || 0);
       const evmNetworkFee = +(tx.ethereumNetworkFee || 0);

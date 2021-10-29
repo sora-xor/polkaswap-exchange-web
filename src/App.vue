@@ -27,12 +27,12 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Action, Getter, State } from 'vuex-class';
+import { Action, Getter } from 'vuex-class';
 import { History, connection } from '@sora-substrate/util';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 
-import TransactionMixin from '@/components/mixins/TransactionMixin';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/logo/Sora.vue';
 
@@ -52,7 +52,7 @@ import type { SubNetwork } from '@/utils/ethers-util';
     AppLogoButton: lazyComponent(Components.AppLogoButton),
   },
 })
-export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
+export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
   readonly PageNames = PageNames;
   readonly PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
 

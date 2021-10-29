@@ -36,7 +36,7 @@ const namespace = 'moonpay';
 })
 export default class Moonpay extends Mixins(MoonpayBridgeInitMixin) {
   widgetUrl = '';
-  transactionsPolling!: Function;
+  transactionsPolling!: VoidFunction;
 
   @Getter account!: WALLET_TYPES.Account;
   @Getter isLoggedIn!: boolean;
@@ -49,7 +49,7 @@ export default class Moonpay extends Mixins(MoonpayBridgeInitMixin) {
   @State((state) => state.settings.language) language!: string;
 
   @Action('setDialogVisibility', { namespace: 'moonpay' }) setDialogVisibility!: (flag: boolean) => Promise<void>;
-  @Action('createTransactionsPolling', { namespace }) createTransactionsPolling!: () => Promise<Function>;
+  @Action('createTransactionsPolling', { namespace }) createTransactionsPolling!: () => Promise<VoidFunction>;
 
   @Watch('isLoggedIn', { immediate: true })
   private handleLoggedInStateChange(isLoggedIn: boolean): void {

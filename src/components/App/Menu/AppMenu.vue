@@ -94,7 +94,7 @@ import router, { lazyComponent } from '@/router';
 })
 export default class AppMenu extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean;
-  @Prop({ default: () => {}, type: Function }) readonly onSelect!: () => void;
+  @Prop({ default: () => {}, type: Function }) readonly onSelect!: VoidFunction;
 
   @State((state) => state.settings.faucetUrl) faucetUrl!: string;
   @Getter libraryTheme!: Theme;

@@ -105,6 +105,21 @@ type ethersProvider = ethers.providers.Web3Provider;
 let provider: any = null;
 let ethersInstance: ethersProvider | null = null;
 
+export enum EvmNetwork {
+  Ethereum = 'ethereum',
+  Energy = 'energy',
+}
+
+export enum EvmNetworkType {
+  Mainnet = 'main',
+  Ropsten = 'ropsten',
+  Kovan = 'kovan',
+  Rinkeby = 'rinkeby',
+  Goerli = 'goerli',
+  Private = 'private',
+  EWC = 'EWC',
+}
+
 export interface SubNetwork {
   name: EvmNetwork;
   id: BridgeNetworks;
@@ -156,21 +171,6 @@ interface JsonContract {
       object: string;
     };
   };
-}
-
-export enum EvmNetwork {
-  Ethereum = 'ethereum',
-  Energy = 'energy',
-}
-
-export enum EvmNetworkType {
-  Mainnet = 'main',
-  Ropsten = 'ropsten',
-  Kovan = 'kovan',
-  Rinkeby = 'rinkeby',
-  Goerli = 'goerli',
-  Private = 'private',
-  EWC = 'EWC',
 }
 
 export const EvmNetworkTypeName = {
@@ -239,10 +239,10 @@ async function getEthersInstance(): Promise<ethersProvider> {
 }
 
 async function watchEthereum(cb: {
-  onAccountChange: Function;
-  onNetworkChange: Function;
-  onDisconnect: Function;
-}): Promise<Function> {
+  onAccountChange: (addressList: string[]) => void;
+  onNetworkChange: (networkId: string) => void;
+  onDisconnect: VoidFunction;
+}): Promise<VoidFunction> {
   await getEthersInstance();
 
   const ethereum = (window as any).ethereum;

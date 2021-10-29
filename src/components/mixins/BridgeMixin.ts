@@ -13,7 +13,7 @@ export default class BridgeMixin extends Mixins(LoadingMixin, WalletConnectMixin
   @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets!: AsyncVoidFn;
   @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn;
 
-  private unwatchEthereum!: any;
+  private unwatchEthereum!: VoidFunction;
   blockHeadersSubscriber: ethers.providers.Web3Provider | undefined;
 
   async mounted(): Promise<void> {
@@ -36,7 +36,7 @@ export default class BridgeMixin extends Mixins(LoadingMixin, WalletConnectMixin
           this.getRegisteredAssets();
           this.getEvmBalance(); // update only evm balance because assets balances updated during getRegisteredAssets call
         },
-        onDisconnect: (code: number, reason: string) => {
+        onDisconnect: () => {
           this.disconnectExternalAccount();
         },
       });

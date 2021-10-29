@@ -60,7 +60,9 @@ import { NodeModel } from './consts';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-const checkAddress = (translate: Function): Function => {
+const checkAddress = (
+  translate: TranslationMixin['t']
+): ((rule: unknown, value: Nullable<string>, callback: (error?: Error) => void) => void) => {
   return (rule, value, callback): void => {
     if (!value) {
       return callback(new Error(translate('selectNodeDialog.messages.emptyAddress')));
@@ -89,7 +91,7 @@ const stripEndingSlash = (str: string): string => (str.charAt(str.length - 1) ==
   },
 })
 export default class NodeInfo extends Mixins(TranslationMixin) {
-  @Prop({ default: () => {}, type: Function }) handleBack!: () => void;
+  @Prop({ default: () => {}, type: Function }) handleBack!: VoidFunction;
   @Prop({ default: () => {}, type: Function }) handleNode!: (node: any, isNewNode: boolean) => void;
   @Prop({ default: () => {}, type: Function }) removeNode!: (node: any) => void;
   @Prop({ default: () => ({}), type: Object }) node!: any;

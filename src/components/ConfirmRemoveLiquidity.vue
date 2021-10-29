@@ -110,6 +110,7 @@ export default class ConfirmRemoveLiquidity extends Mixins(
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    font-weight: 800;
   }
 }
 .token {

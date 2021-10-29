@@ -15,9 +15,10 @@ import {
   Language,
 } from '@/consts';
 import { getRpcEndpoint, fetchRpc } from '@/utils/rpc';
-import { ConnectToNodeOptions } from '@/types/nodes';
 import { getLocale, getSupportedLocale, setI18nLocale } from '@/lang';
 import { updateFpNumberLocale, updateDocumentTitle } from '@/utils';
+
+import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 
 export type ApiKeysObject = {
   [key: string]: string;
@@ -211,7 +212,7 @@ const actions = {
       await connection.close();
 
       if (typeof onDisconnect === 'function') {
-        onDisconnect(node);
+        onDisconnect(node as Node);
       }
 
       dispatch('connectToNode', { node, onError, onDisconnect, onReconnect, connectionOptions: { once: false } });
@@ -266,7 +267,7 @@ const actions = {
       }
 
       if (isReconnection && typeof onReconnect === 'function') {
-        onReconnect(node);
+        onReconnect(node as Node);
       }
 
       commit(types.SET_NODE_SUCCESS, node);

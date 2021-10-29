@@ -54,7 +54,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @Action('setEvmNetworkType', { namespace: 'web3' }) setEvmNetworkType!: (network?: string) => Promise<void>;
   @Action('connectExternalAccount', { namespace: 'web3' }) connectExternalAccount!: (options) => Promise<void>;
   @Action('switchExternalAccount', { namespace: 'web3' }) switchExternalAccount!: (options) => Promise<void>;
-  @Action('disconnectExternalAccount', { namespace: 'web3' }) disconnectExternalAccount!: () => Promise<void>;
+  @Action('disconnectExternalAccount', { namespace: 'web3' }) disconnectExternalAccount!: AsyncVoidFn;
 
   getWalletAddress = getWalletAddress;
   formatAddress = formatAddress;
@@ -76,7 +76,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     this.isExternalWalletConnecting = true;
     try {
       await this.connectExternalAccount({ provider });
-    } catch (error) {
+    } catch (error: any) {
       const name = this.t(getProviderName(provider));
       const key = this.te(error.message) ? error.message : handleProviderError(provider, error);
 
@@ -113,7 +113,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     }
   }
 
-  async checkConnectionToExternalAccount(func: Function): Promise<void> {
+  async checkConnectionToExternalAccount(func: AsyncVoidFn | VoidFunction): Promise<void> {
     const connected = await ethersUtil.checkAccountIsConnected(this.evmAddress);
 
     if (!connected) {

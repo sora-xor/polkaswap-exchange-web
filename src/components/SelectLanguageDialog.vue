@@ -58,7 +58,7 @@ export default class SelectLanguageDialog extends Mixins(TranslationMixin, Dialo
     this.setLanguage(value);
   }
 
-  beforeClose(closeFn: Function): void {
+  beforeClose(closeFn: VoidFunction): void {
     closeFn();
   }
 }

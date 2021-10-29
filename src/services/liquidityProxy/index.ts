@@ -34,7 +34,11 @@ const incentivizedCurrenciesNum = new FPNumber(2);
 // 2.5 billion pswap reserved for tbc rewards
 const initialPswapTbcRewardsAmount = new FPNumber(2500000000);
 
-const ASSETS_HAS_XYK_POOL = [XOR, PSWAP, VAL, DAI, ETH];
+const ASSETS_HAS_XYK_POOL = [PSWAP, VAL, DAI, ETH];
+
+export type QuotePaths = {
+  [key: string]: Array<LiquiditySourceTypes>;
+};
 
 interface Distribution {
   market: LiquiditySourceTypes;
@@ -831,9 +835,12 @@ const quoteSingle = (
   outputAssetId: string,
   amount: FPNumber,
   isDesiredInput: boolean,
-  sources: Array<LiquiditySourceTypes>,
+  selectedSources: Array<LiquiditySourceTypes>,
+  paths: QuotePaths,
   payload: QuotePayload
 ): QuoteResult => {
+  const sources = listLiquiditySources(inputAssetId, outputAssetId, selectedSources, paths);
+
   if (!sources.length) {
     throw new Error("Path doesn't exist");
   }
@@ -871,8 +878,16 @@ const quoteSingle = (
 };
 
 // ROUTER
-const isDirectExchange = (inputAssetId: string, outputAssetId: string): boolean => {
+export const isDirectExchange = (inputAssetId: string, outputAssetId: string): boolean => {
   return [inputAssetId, outputAssetId].includes(XOR);
+};
+
+const getNotXor = (inputAssetId: string, outputAssetId: string): string => {
+  return inputAssetId === XOR ? outputAssetId : inputAssetId;
+};
+
+const getAssetPaths = (assetId: string, paths: QuotePaths): Array<LiquiditySourceTypes> => {
+  return paths[assetId] ?? [];
 };
 
 // Backend excluded "XYKPool" as liquidity sources for pairs with ASSETS_HAS_XYK_POOL
@@ -882,14 +897,16 @@ const listLiquiditySources = (
   inputAssetId: string,
   outputAssetId: string,
   selectedSources: Array<LiquiditySourceTypes>,
-  availableSources: Array<LiquiditySourceTypes>
+  paths: QuotePaths
 ): Array<LiquiditySourceTypes> => {
   if (selectedSources.length) return selectedSources;
+  const notXorAsset = getNotXor(inputAssetId, outputAssetId);
+  const assetPaths = getAssetPaths(notXorAsset, paths);
 
-  const uniqueAddresses = new Set([...ASSETS_HAS_XYK_POOL, inputAssetId, outputAssetId]);
+  const uniqueAddresses = new Set([...ASSETS_HAS_XYK_POOL, notXorAsset]);
   const shouldHaveXYK =
-    uniqueAddresses.size === ASSETS_HAS_XYK_POOL.length && !availableSources.includes(LiquiditySourceTypes.XYKPool);
-  const sources = shouldHaveXYK ? [...availableSources, LiquiditySourceTypes.XYKPool] : availableSources;
+    uniqueAddresses.size === ASSETS_HAS_XYK_POOL.length && !assetPaths.includes(LiquiditySourceTypes.XYKPool);
+  const sources = shouldHaveXYK ? [...assetPaths, LiquiditySourceTypes.XYKPool] : assetPaths;
 
   return sources;
 };
@@ -900,14 +917,13 @@ export const quote = (
   value: string,
   isDesiredInput: boolean,
   selectedSources: Array<LiquiditySourceTypes>,
-  availableSources: Array<LiquiditySourceTypes>,
+  paths: QuotePaths,
   payload: QuotePayload
 ): SwapResult => {
-  const sources = listLiquiditySources(inputAssetId, outputAssetId, selectedSources, availableSources);
   const amount = new FPNumber(value);
 
   if (isDirectExchange(inputAssetId, outputAssetId)) {
-    const result = quoteSingle(inputAssetId, outputAssetId, amount, isDesiredInput, sources, payload);
+    const result = quoteSingle(inputAssetId, outputAssetId, amount, isDesiredInput, selectedSources, paths, payload);
     const amountWithoutImpact = quoteWithoutImpactSingle(
       inputAssetId,
       outputAssetId,
@@ -924,8 +940,16 @@ export const quote = (
     };
   } else {
     if (isDesiredInput) {
-      const firstQuote = quoteSingle(inputAssetId, XOR, amount, isDesiredInput, sources, payload);
-      const secondQuote = quoteSingle(XOR, outputAssetId, firstQuote.amount, isDesiredInput, sources, payload);
+      const firstQuote = quoteSingle(inputAssetId, XOR, amount, isDesiredInput, selectedSources, paths, payload);
+      const secondQuote = quoteSingle(
+        XOR,
+        outputAssetId,
+        firstQuote.amount,
+        isDesiredInput,
+        selectedSources,
+        paths,
+        payload
+      );
 
       const firstQuoteWithoutImpact = quoteWithoutImpactSingle(
         inputAssetId,
@@ -958,8 +982,16 @@ export const quote = (
         amountWithoutImpact: secondQuoteWithoutImpact.toCodecString(),
       };
     } else {
-      const secondQuote = quoteSingle(XOR, outputAssetId, amount, isDesiredInput, sources, payload);
-      const firstQuote = quoteSingle(inputAssetId, XOR, secondQuote.amount, isDesiredInput, sources, payload);
+      const secondQuote = quoteSingle(XOR, outputAssetId, amount, isDesiredInput, selectedSources, paths, payload);
+      const firstQuote = quoteSingle(
+        inputAssetId,
+        XOR,
+        secondQuote.amount,
+        isDesiredInput,
+        selectedSources,
+        paths,
+        payload
+      );
 
       const secondQuoteWithoutImpact = quoteWithoutImpactSingle(
         XOR,

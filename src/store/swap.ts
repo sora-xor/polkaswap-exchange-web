@@ -4,11 +4,22 @@ import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import { api } from '@soramitsu/soraneo-wallet-web';
-import { FPNumber, CodecString, LiquiditySourceTypes, LPRewardsInfo, QuotePayload } from '@sora-substrate/util';
+import {
+  FPNumber,
+  CodecString,
+  LiquiditySourceTypes,
+  LPRewardsInfo,
+  QuotePayload,
+  KnownAssets,
+  KnownSymbols,
+} from '@sora-substrate/util';
 
 import { MarketAlgorithmForLiquiditySource, ZeroStringValue } from '@/consts';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { divideAssets } from '@/utils';
+import { isDirectExchange } from '@/services/liquidityProxy';
+
+import type { QuotePaths } from '@/services/liquidityProxy';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
@@ -27,6 +38,7 @@ const types = flow(
     'SET_EXCHANGE_B',
     'SET_LIQUIDITY_PROVIDER_FEE',
     'SET_PAIR_LIQUIDITY_SOURCES',
+    'SET_PATHS',
     'SET_REWARDS',
     'SET_SUBSCRIPTION_PAYLOAD',
     'GET_SWAP_CONFIRM',
@@ -47,6 +59,7 @@ interface SwapState {
   isExchangeB: boolean;
   liquidityProviderFee: CodecString;
   pairLiquiditySources: Array<LiquiditySourceTypes>;
+  paths: QuotePaths;
   isAvailable: boolean;
   isAvailableChecking: boolean;
   rewards: Array<LPRewardsInfo>;
@@ -67,6 +80,7 @@ function initialState(): SwapState {
     isAvailable: false,
     isAvailableChecking: false,
     pairLiquiditySources: [],
+    paths: {},
     rewards: [],
     payload: null,
   };
@@ -194,6 +208,9 @@ const mutations = {
   [types.SET_PAIR_LIQUIDITY_SOURCES](state: SwapState, liquiditySources: Array<LiquiditySourceTypes>) {
     state.pairLiquiditySources = [...liquiditySources];
   },
+  [types.SET_PATHS](state: SwapState, paths: QuotePaths) {
+    state.paths = { ...paths };
+  },
   [types.SET_REWARDS](state: SwapState, rewards: Array<LPRewardsInfo>) {
     state.rewards = [...rewards];
   },
@@ -270,13 +287,6 @@ const actions = {
     if (getters.tokenFrom?.address && getters.tokenTo?.address) {
       commit(types.CHECK_AVAILABILITY_REQUEST);
       try {
-        // TODO [1.6]: will be removed
-        // https://soramitsu.atlassian.net/browse/PW-407
-        const xstUsdAddress = '0x0200080000000000000000000000000000000000000000000000000000000000';
-        if ([getters.tokenFrom.address, getters.tokenTo.address].includes(xstUsdAddress)) {
-          commit(types.CHECK_AVAILABILITY_SUCCESS, true);
-          return;
-        }
         const isAvailable = await api.checkSwap(getters.tokenFrom.address, getters.tokenTo.address);
         commit(types.CHECK_AVAILABILITY_SUCCESS, isAvailable);
       } catch (error) {
@@ -297,6 +307,40 @@ const actions = {
     }
 
     commit(types.SET_PAIR_LIQUIDITY_SOURCES, sources);
+  },
+  async updatePaths({ commit, getters }) {
+    const inputAssetId = getters.tokenFrom?.address;
+    const outputAssetId = getters.tokenTo?.address;
+
+    if (!inputAssetId || !outputAssetId) {
+      commit(types.SET_PATHS, {});
+      return;
+    }
+
+    const xor = KnownAssets.get(KnownSymbols.XOR).address;
+
+    if (isDirectExchange(inputAssetId, outputAssetId)) {
+      const path = await api.getListEnabledSourcesForPath(inputAssetId, outputAssetId);
+      const nonXor = inputAssetId === xor ? outputAssetId : inputAssetId;
+
+      const paths: QuotePaths = {
+        [nonXor]: path,
+      };
+
+      commit(types.SET_PATHS, paths);
+    } else {
+      const [inputPaths, outputPaths] = await Promise.all([
+        api.getListEnabledSourcesForPath(inputAssetId, xor),
+        api.getListEnabledSourcesForPath(xor, outputAssetId),
+      ]);
+
+      const paths: QuotePaths = {
+        [inputAssetId]: inputPaths,
+        [outputAssetId]: outputPaths,
+      };
+
+      commit(types.SET_PATHS, paths);
+    }
   },
   setRewards({ commit }, rewards: Array<LPRewardsInfo>) {
     commit(types.SET_REWARDS, rewards);
