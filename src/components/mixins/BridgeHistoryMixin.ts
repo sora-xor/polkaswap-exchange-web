@@ -17,7 +17,7 @@ export default class BridgeHistoryMixin extends Mixins(LoadingMixin) {
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString;
   @Getter('history', { namespace }) bridgeHistory!: Array<BridgeHistory>;
 
-  @Action('getHistory', { namespace }) getHistory!: () => Promise<void>;
+  @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn;
   @Action('generateHistoryItem', { namespace }) generateHistoryItem!: (history: any) => Promise<BridgeHistory>;
 
   @Action('getEvmNetworkFee', { namespace }) getEvmNetworkFee!: AsyncVoidFn;

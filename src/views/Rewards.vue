@@ -107,7 +107,6 @@ import { groupRewardsByAssetsList } from '@/utils/rewards';
 import { RewardsAmountHeaderItem, RewardInfoGroup } from '@/types/rewards';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
-import TransactionMixin from '@/components/mixins/TransactionMixin';
 
 @Component({
   components: {
@@ -119,7 +118,7 @@ import TransactionMixin from '@/components/mixins/TransactionMixin';
     InfoLine: components.InfoLine,
   },
 })
-export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletConnectMixin, TransactionMixin) {
+export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletConnectMixin, mixins.TransactionMixin) {
   @State((state) => state.rewards.fee) fee!: CodecString;
   @State((state) => state.rewards.feeFetching) feeFetching!: boolean;
   @State((state) => state.rewards.rewardsFetching) rewardsFetching!: boolean;

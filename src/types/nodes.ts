@@ -20,7 +20,7 @@ export interface RunConnectionOptions {
 export interface ConnectToNodeOptions {
   node?: Node;
   connectionOptions?: RunConnectionOptions;
-  onError?: Function;
-  onReconnect?: Function;
-  onDisconnect?: Function;
+  onError?: (error) => void;
+  onReconnect?: (node: Node) => void;
+  onDisconnect?: (node: Node) => void;
 }

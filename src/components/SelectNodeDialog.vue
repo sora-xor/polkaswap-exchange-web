@@ -141,7 +141,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, LoadingMixi
     this.changeView(NodeInfoView);
   }
 
-  beforeClose(closeFn: Function): void {
+  beforeClose(closeFn: VoidFunction): void {
     closeFn();
     this.handleBack();
   }

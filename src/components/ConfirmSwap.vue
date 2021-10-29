@@ -39,10 +39,9 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
-import { api } from '@soramitsu/soraneo-wallet-web';
+import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, AccountAsset, LiquiditySourceTypes } from '@sora-substrate/util';
 
-import TransactionMixin from '@/components/mixins/TransactionMixin';
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { lazyComponent } from '@/router';
@@ -57,7 +56,7 @@ const namespace = 'swap';
     TokenLogo: lazyComponent(Components.TokenLogo),
   },
 })
-export default class ConfirmSwap extends Mixins(TransactionMixin, DialogMixin) {
+export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, DialogMixin) {
   @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset;
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset;
   @Getter('fromValue', { namespace }) fromValue!: string;

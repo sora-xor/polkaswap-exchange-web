@@ -26,7 +26,6 @@
       :label-tooltip="liquidityProviderFeeTooltipText"
       :value="formattedLiquidityProviderFee"
       :asset-symbol="xorSymbol"
-      :fiat-value="getFiatAmountByCodecString(liquidityProviderFee)"
       is-formatted
     />
     <!-- TODO 4 alexnatalia: Show if logged in and have info about Network Fee -->

@@ -1,4 +1,4 @@
-import { RewardInfo, RewardingEvents, CodecString, Asset } from '@sora-substrate/util';
+import { RewardInfo, RewardingEvents, Asset } from '@sora-substrate/util';
 
 export interface RewardsAmountHeaderItem {
   asset: Asset;
