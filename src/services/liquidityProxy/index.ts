@@ -162,7 +162,7 @@ const sellPenalty = (collateralAssetId: string, payload: QuotePayload): FPNumber
   const collateralReservesPrice = actualReservesReferencePrice(collateralAssetId, payload);
 
   if (collateralReservesPrice.isZero()) {
-    throw new Error(`Not enough collateral reserves ${collateralAssetId}`);
+    throw new Error(`TBC: Not enough collateral reserves ${collateralAssetId}`);
   }
 
   const collateralizedFraction = safeDivide(collateralReservesPrice, idealReservesPrice);
@@ -186,13 +186,13 @@ const tbcSellPrice = (
     const outputCollateral = safeDivide(amount.mul(collateralSupply), xorSupply.add(amount));
 
     if (FPNumber.isGreaterThan(outputCollateral, collateralSupply)) {
-      throw new Error(`Not enough collateral reserves ${collateralAssetId}`);
+      throw new Error(`TBC: Not enough collateral reserves ${collateralAssetId}`);
     }
 
     return outputCollateral;
   } else {
     if (FPNumber.isGreaterThan(amount, collateralSupply)) {
-      throw new Error(`Not enough collateral reserves ${collateralAssetId}`);
+      throw new Error(`TBC: Not enough collateral reserves ${collateralAssetId}`);
     }
 
     const outputXor = safeDivide(xorSupply.mul(amount), collateralSupply.sub(amount));

@@ -475,31 +475,35 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     this.setToValue('');
   }
 
-  async handleInputFieldFrom(value: string): Promise<void> {
+  handleInputFieldFrom(value: string, recount = true): void {
     if (!this.areTokensSelected || asZeroValue(value)) {
       this.resetFieldTo();
     }
 
-    if (value !== this.fromValue) {
-      this.setFromValue(value);
-      await this.recountSwapValues();
+    if (value === this.fromValue) return;
+
+    this.setFromValue(value);
+
+    if (recount) {
+      this.recountSwapValues();
     }
   }
 
-  async handleInputFieldTo(value: string): Promise<void> {
+  handleInputFieldTo(value: string, recount = true): void {
     if (!this.areTokensSelected || asZeroValue(value)) {
       this.resetFieldFrom();
     }
 
-    if (value !== this.toValue) {
-      this.setToValue(value);
-      await this.recountSwapValues();
+    if (value === this.toValue) return;
+
+    this.setToValue(value);
+
+    if (recount) {
+      this.recountSwapValues();
     }
   }
 
   private runRecountSwapValues(): void {
-    if (this.isRecountingProcess) return;
-
     const value = this.isExchangeB ? this.toValue : this.fromValue;
     if (!this.areTokensSelected || asZeroValue(value)) return;
 
@@ -508,8 +512,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     const oppositeToken = this.isExchangeB ? this.tokenFrom : this.tokenTo;
 
     try {
-      this.isRecountingProcess = true;
-
       const { amount, fee, rewards, amountWithoutImpact } = quote(
         this.tokenFrom.address,
         this.tokenTo.address,
@@ -563,7 +565,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     this.runRecountSwapValues();
   }
 
-  async handleFocusField(isExchangeB = false): Promise<void> {
+  handleFocusField(isExchangeB = false): void {
     const isZeroValue = isExchangeB ? this.isZeroToAmount : this.isZeroFromAmount;
     const prevFocus = this.isExchangeB;
 
@@ -575,30 +577,31 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     }
 
     if (prevFocus !== this.isExchangeB) {
-      await this.recountSwapValues();
+      this.recountSwapValues();
     }
   }
 
   async handleSwitchTokens(): Promise<void> {
+    this.isRecountingProcess = true;
+
     const [fromAddress, toAddress] = [this.tokenFrom.address, this.tokenTo.address];
 
     await this.setTokenFromAddress(toAddress);
     await this.setTokenToAddress(fromAddress);
-
     await this.checkSwapSources();
 
     if (this.isExchangeB) {
       this.setExchangeB(false);
-      this.handleInputFieldFrom(this.toValue);
+      this.handleInputFieldFrom(this.toValue, false);
     } else {
       this.setExchangeB(true);
-      this.handleInputFieldTo(this.fromValue);
+      this.handleInputFieldTo(this.fromValue, false);
     }
 
     this.subscribeOnSwapReserves();
   }
 
-  async handleMaxValue(): Promise<void> {
+  handleMaxValue(): void {
     this.setExchangeB(false);
 
     const max = getMaxValue(this.tokenFrom, this.networkFee);
