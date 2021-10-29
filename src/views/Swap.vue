@@ -253,7 +253,6 @@ const namespace = 'swap';
 })
 export default class Swap extends Mixins(mixins.FormattedAmountMixin, TranslationMixin, LoadingMixin) {
   @State((state) => state[namespace].paths) paths!: QuotePaths;
-  @State((state) => state[namespace].pairLiquiditySources) pairLiquiditySources!: Array<LiquiditySourceTypes>;
   @State((state) => state[namespace].liquidityProviderFee) liquidityProviderFee!: CodecString;
   @State((state) => state[namespace].isAvailable) isAvailable!: boolean;
   @State((state) => state[namespace].isAvailableChecking) isAvailableChecking!: boolean;
@@ -546,12 +545,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     if (!this.areTokensSelected) return;
 
     this.liquidityReservesSubscription = api
-      .subscribeOnSwapReserves(
-        this.tokenFrom.address,
-        this.tokenTo.address,
-        this.pairLiquiditySources,
-        this.liquiditySource
-      )
+      .subscribeOnSwapReserves(this.tokenFrom.address, this.tokenTo.address, this.liquiditySource)
       .subscribe(this.onChangeSwapReserves);
   }
 
