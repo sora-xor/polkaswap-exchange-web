@@ -15,6 +15,7 @@
       <moonpay-history-button v-if="isLoggedIn" class="moonpay-button moonpay-button--history" />
     </div>
     <div class="app-controls s-flex">
+      <market-maker-countdown />
       <s-button type="action" class="theme-control s-pressed" :tooltip="hideBalancesTooltip" @click="toggleHideBalance">
         <s-icon :name="hideBalancesIcon" :size="iconSize" />
       </s-button>
@@ -86,6 +87,7 @@ enum HeaderMenuType {
     PolkaswapLogo,
     AccountButton: lazyComponent(Components.AccountButton),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
+    MarketMakerCountdown: lazyComponent(Components.MarketMakerCountdown),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
     TokenLogo: lazyComponent(Components.TokenLogo),

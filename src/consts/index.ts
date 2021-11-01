@@ -109,6 +109,7 @@ export enum Components {
   AppHeader = 'App/Header/AppHeader',
   AccountButton = 'App/Header/AccountButton',
   AppLogoButton = 'App/Header/AppLogoButton',
+  MarketMakerCountdown = 'App/Header/MarketMakerCountdown/MarketMakerCountdown',
   AppMenu = 'App/Menu/AppMenu',
   SwapInfo = 'SwapInfo',
   SelectToken = 'SelectToken',

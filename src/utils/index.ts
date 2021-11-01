@@ -9,6 +9,7 @@ import {
   CodecString,
   KnownAssets,
 } from '@sora-substrate/util';
+import { api } from '@soramitsu/soraneo-wallet-web';
 
 import router from '@/router';
 import i18n from '@/lang';
@@ -215,4 +216,13 @@ export const toQueryString = (params: any): string => {
   return Object.entries(params)
     .map(([key, value]) => `${key}=${encodeURIComponent(value as string)}`)
     .join('&');
+};
+
+export const waitForAccountPair = async (func: VoidFunction): Promise<any> => {
+  if (!api.accountPair) {
+    await delay();
+    return await waitForAccountPair(func);
+  } else {
+    return func();
+  }
 };

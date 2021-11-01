@@ -567,12 +567,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     if (!this.areTokensSelected) return;
 
     this.liquidityReservesSubscription = api
-      .subscribeOnSwapReserves(
-        this.tokenFrom.address,
-        this.tokenTo.address,
-        this.pairLiquiditySources,
-        this.liquiditySource
-      )
+      .subscribeOnSwapReserves(this.tokenFrom.address, this.tokenTo.address, this.liquiditySource)
       .subscribe(this.onChangeSwapReserves);
   }
 

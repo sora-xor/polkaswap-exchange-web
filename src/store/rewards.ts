@@ -3,13 +3,16 @@ import flatMap from 'lodash/fp/flatMap';
 import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
-import { api } from '@soramitsu/soraneo-wallet-web';
-import { KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, CodecString } from '@sora-substrate/util';
-import ethersUtil from '@/utils/ethers-util';
-import { RewardsAmountHeaderItem } from '@/types/rewards';
-import { groupRewardsByAssetsList } from '@/utils/rewards';
-import { asZeroValue } from '@/utils';
 import { ethers } from 'ethers';
+import { api } from '@soramitsu/soraneo-wallet-web';
+import { KnownAssets, KnownSymbols } from '@sora-substrate/util';
+import ethersUtil from '@/utils/ethers-util';
+import { groupRewardsByAssetsList } from '@/utils/rewards';
+import { asZeroValue, waitForAccountPair } from '@/utils';
+
+import type { Subscription } from '@polkadot/x-rxjs';
+import type { RewardInfo, RewardsInfo, CodecString, AccountMarketMakerInfo } from '@sora-substrate/util';
+import type { RewardsAmountHeaderItem } from '@/types/rewards';
 
 const types = flow(
   flatMap((x) => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -21,6 +24,9 @@ const types = flow(
     'SET_REWARDS_RECIEVED',
     'SET_SIGNATURE',
     'SET_SELECTED_REWARDS',
+    'SET_ACCOUNT_MARKET_MAKER_INFO',
+    'SET_ACCOUNT_MARKET_MAKER_UPDATES',
+    'RESET_ACCOUNT_MARKET_MAKER_UPDATES',
   ]),
   map((x) => [x, x]),
   fromPairs
@@ -41,6 +47,8 @@ interface RewardsState {
   transactionError: boolean;
   transactionStep: number;
   signature: string;
+  accountMarketMakerInfo: Nullable<AccountMarketMakerInfo>;
+  accountMarketMakerUpdates: Nullable<Subscription>;
 }
 
 function initialState(): RewardsState {
@@ -59,6 +67,8 @@ function initialState(): RewardsState {
     transactionError: false,
     transactionStep: 1,
     signature: '',
+    accountMarketMakerInfo: null,
+    accountMarketMakerUpdates: null,
   };
 }
 
@@ -169,6 +179,19 @@ const mutations = {
     state.selectedInternalRewards = [...internal];
     state.selectedVestedRewards = vested;
   },
+
+  [types.SET_ACCOUNT_MARKET_MAKER_INFO](state: RewardsState, info: Nullable<AccountMarketMakerInfo>) {
+    state.accountMarketMakerInfo = info;
+  },
+  [types.SET_ACCOUNT_MARKET_MAKER_UPDATES](state: RewardsState, subscription: Subscription) {
+    state.accountMarketMakerUpdates = subscription;
+  },
+  [types.RESET_ACCOUNT_MARKET_MAKER_UPDATES](state: RewardsState) {
+    if (state.accountMarketMakerUpdates) {
+      state.accountMarketMakerUpdates.unsubscribe();
+    }
+    state.accountMarketMakerUpdates = null;
+  },
 };
 
 const actions = {
@@ -256,6 +279,25 @@ const actions = {
       commit(types.SET_REWARDS_CLAIMING, false);
       throw error;
     }
+  },
+
+  async subscribeOnAccountMarketMakerInfo({ commit, rootGetters }) {
+    commit(types.RESET_ACCOUNT_MARKET_MAKER_UPDATES);
+
+    if (!rootGetters.isLoggedIn) return;
+
+    await waitForAccountPair(() => {
+      const subscription = api.subscribeOnAccountMarketMakerInfo().subscribe((info) => {
+        commit(types.SET_ACCOUNT_MARKET_MAKER_INFO, info);
+      });
+
+      commit(types.SET_ACCOUNT_MARKET_MAKER_UPDATES, subscription);
+    });
+  },
+
+  unsubscribeAccountMarketMakerInfo({ commit }) {
+    commit(types.RESET_ACCOUNT_MARKET_MAKER_UPDATES);
+    commit(types.SET_ACCOUNT_MARKET_MAKER_INFO, null);
   },
 };
 
