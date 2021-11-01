@@ -11,7 +11,7 @@
             <a
               class="block-number-link"
               :href="soraExplorerLink"
-              title="Subscan"
+              title="SORAScan"
               target="_blank"
               rel="nofollow noopener"
             >
