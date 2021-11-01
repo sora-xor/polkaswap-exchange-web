@@ -7,6 +7,17 @@
       </app-menu>
       <div class="app-body" :class="isAboutPage ? 'app-body__about' : ''">
         <s-scrollbar class="app-body-scrollbar">
+          <div v-if="blockNumber" class="block-number">
+            <a
+              class="block-number-link"
+              :href="soraExplorerLink"
+              title="SORAScan"
+              target="_blank"
+              rel="nofollow noopener"
+            >
+              <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
+            </a>
+          </div>
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
             <p class="app-disclaimer" v-html="t('disclaimer')" />
@@ -28,8 +39,8 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
-import { History, connection } from '@sora-substrate/util';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber, History, connection } from '@sora-substrate/util';
+import { mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 
@@ -58,9 +69,11 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   menuVisibility = false;
 
+  @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @Getter libraryTheme!: Theme;
   @Getter libraryDesignSystem!: DesignSystem;
   @Getter firstReadyTransaction!: History;
+  @Getter blockNumber!: number;
 
   // Wallet
   @Action resetAccountAssetsSubscription!: AsyncVoidFn;
@@ -77,9 +90,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action setLanguage!: (lang: Language) => Promise<void>;
   @Action setApiKeys!: (options: any) => Promise<void>;
   @Action setFeatureFlags!: (options: any) => Promise<void>;
+  @Action setBlockNumber!: () => Promise<void>;
+  @Action resetBlockNumberSubscription!: () => Promise<void>;
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>;
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
-
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History): void {
     this.handleChangeTransaction(value);
@@ -125,6 +139,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       // connection to node
       await this.runAppConnectionToNode();
+      await this.setBlockNumber();
     });
 
     this.trackActiveTransactions();
@@ -132,6 +147,14 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   get isAboutPage(): boolean {
     return this.$route.name === PageNames.About;
+  }
+
+  get blockNumberFormatted(): string {
+    return new FPNumber(this.blockNumber).toLocaleString();
+  }
+
+  get soraExplorerLink(): string {
+    return getExplorerLinks(this.soraNetwork)[0].value;
   }
 
   goTo(name: PageNames): void {
@@ -160,6 +183,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     await this.resetFiatPriceAndApySubscription();
     await this.resetActiveTransactions();
     await this.resetAccountAssetsSubscription();
+    await this.resetBlockNumberSubscription();
     await connection.close();
   }
 
@@ -222,6 +246,32 @@ ul ul {
     &__about &-scrollbar .el-scrollbar__wrap {
       overflow-x: auto;
     }
+  }
+}
+
+.block-number {
+  display: none;
+
+  &-link {
+    display: flex;
+    align-items: center;
+    color: var(--s-color-status-success);
+    font-size: var(--s-font-size-small);
+    text-decoration: none;
+    font-weight: 300;
+    position: absolute;
+    top: 2.5%;
+    right: 0;
+    line-height: 150%;
+    width: 100px;
+  }
+
+  &-icon {
+    background-color: var(--s-color-status-success);
+    border-radius: 50%;
+    height: 9px;
+    width: 9px;
+    margin-right: 2px;
   }
 }
 
@@ -449,6 +499,10 @@ $sora-logo-width: 173.7px;
     .app-disclaimer {
       padding-right: $inner-spacing-large;
     }
+  }
+
+  .block-number {
+    display: block;
   }
 }
 </style>
