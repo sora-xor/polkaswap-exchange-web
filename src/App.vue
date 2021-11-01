@@ -7,6 +7,17 @@
       </app-menu>
       <div class="app-body" :class="isAboutPage ? 'app-body__about' : ''">
         <s-scrollbar class="app-body-scrollbar">
+          <div v-if="blockNumber" class="block-number">
+            <a
+              class="block-number-link"
+              href="https://sora.subscan.io/"
+              title="Subscan"
+              target="_blank"
+              rel="nofollow noopener"
+            >
+              <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
+            </a>
+          </div>
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
             <p class="app-disclaimer" v-html="t('disclaimer')" />
@@ -61,6 +72,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Getter libraryTheme!: Theme;
   @Getter libraryDesignSystem!: DesignSystem;
   @Getter firstReadyTransaction!: History;
+  @Getter blockNumber!: number;
 
   // Wallet
   @Action resetAccountAssetsSubscription!: AsyncVoidFn;
@@ -77,9 +89,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action setLanguage!: (lang: Language) => Promise<void>;
   @Action setApiKeys!: (options: any) => Promise<void>;
   @Action setFeatureFlags!: (options: any) => Promise<void>;
+  @Action setBlockNumber!: () => Promise<void>;
+  @Action resetBlockNumberSubscription!: () => Promise<void>;
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>;
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
-
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History): void {
     this.handleChangeTransaction(value);
@@ -125,6 +138,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       // connection to node
       await this.runAppConnectionToNode();
+      await this.setBlockNumber();
     });
 
     this.trackActiveTransactions();
@@ -132,6 +146,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   get isAboutPage(): boolean {
     return this.$route.name === PageNames.About;
+  }
+
+  get blockNumberFormatted(): string {
+    return this.blockNumber.toLocaleString();
   }
 
   goTo(name: PageNames): void {
@@ -160,6 +178,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     await this.resetFiatPriceAndApySubscription();
     await this.resetActiveTransactions();
     await this.resetAccountAssetsSubscription();
+    await this.resetBlockNumberSubscription();
     await connection.close();
   }
 
@@ -222,6 +241,30 @@ ul ul {
     &__about &-scrollbar .el-scrollbar__wrap {
       overflow-x: auto;
     }
+  }
+}
+
+.block-number {
+  &-link {
+    display: flex;
+    align-items: center;
+    color: var(--s-color-status-success);
+    font-size: var(--s-font-size-small);
+    text-decoration: none;
+    font-weight: 300;
+    position: absolute;
+    top: 2.5%;
+    right: 0;
+    line-height: 150%;
+    width: 100px;
+  }
+
+  &-icon {
+    background-color: var(--s-color-status-success);
+    border-radius: 50%;
+    height: 9px;
+    width: 9px;
+    margin-right: 2px;
   }
 }
 
