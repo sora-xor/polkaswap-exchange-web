@@ -10,7 +10,7 @@
           <div v-if="blockNumber" class="block-number">
             <a
               class="block-number-link"
-              href="https://sora.subscan.io/"
+              :href="soraExplorerLink"
               title="Subscan"
               target="_blank"
               rel="nofollow noopener"
@@ -39,8 +39,8 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
-import { History, connection } from '@sora-substrate/util';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber, History, connection } from '@sora-substrate/util';
+import { mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 
@@ -69,6 +69,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   menuVisibility = false;
 
+  @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @Getter libraryTheme!: Theme;
   @Getter libraryDesignSystem!: DesignSystem;
   @Getter firstReadyTransaction!: History;
@@ -149,7 +150,11 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   get blockNumberFormatted(): string {
-    return this.blockNumber.toLocaleString();
+    return new FPNumber(this.blockNumber).toLocaleString();
+  }
+
+  get soraExplorerLink(): string {
+    return getExplorerLinks(this.soraNetwork)[0].value;
   }
 
   goTo(name: PageNames): void {
@@ -245,6 +250,8 @@ ul ul {
 }
 
 .block-number {
+  display: none;
+
   &-link {
     display: flex;
     align-items: center;
@@ -492,6 +499,10 @@ $sora-logo-width: 173.7px;
     .app-disclaimer {
       padding-right: $inner-spacing-large;
     }
+  }
+
+  .block-number {
+    display: block;
   }
 }
 </style>
