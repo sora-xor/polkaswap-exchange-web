@@ -17,21 +17,12 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import ElProgress from 'element-ui/lib/progress';
 
-@Component({
-  components: {
-    ElProgress,
-  },
-})
+@Component
 export default class Countdown extends Vue {
   @Prop({ default: 0, type: Number }) readonly count!: number;
-  @Prop({ default: 100, type: Number }) readonly total!: number;
+  @Prop({ default: 100, type: Number }) readonly percentage!: number;
   @Prop({ default: '', type: String }) readonly unit!: string;
-
-  get percentage(): number {
-    return Math.floor((100 * this.count) / this.total);
-  }
 }
 </script>
 
