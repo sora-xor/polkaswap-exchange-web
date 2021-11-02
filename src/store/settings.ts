@@ -3,7 +3,7 @@ import flatMap from 'lodash/fp/flatMap';
 import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
-import { connection, isWalletLoaded, initWallet } from '@soramitsu/soraneo-wallet-web';
+import { api, connection, isWalletLoaded, initWallet } from '@soramitsu/soraneo-wallet-web';
 
 import storage, { settingsStorage } from '@/utils/storage';
 import { AppHandledError } from '@/utils/error';
@@ -41,6 +41,9 @@ const types = flow(
     'SET_LANGUAGE',
     'SET_API_KEYS',
     'SET_FEATURE_FLAGS',
+    'SET_BLOCK_NUMBER',
+    'SET_BLOCK_NUMBER_UPDATES',
+    'RESET_BLOCK_NUMBER_UPDATES',
   ]),
   map((x) => [x, x]),
   fromPairs
@@ -62,6 +65,8 @@ function initialState() {
     chainGenesisHash: '',
     faucetUrl: '',
     selectNodeDialogVisibility: false,
+    blockNumber: 0,
+    blockNumberUpdates: null,
   };
 }
 
@@ -94,6 +99,9 @@ const getters = {
   },
   moonpayEnabled(state) {
     return !!state.apiKeys.moonpay && !!state.featureFlags.moonpay;
+  },
+  blockNumber(state): number {
+    return state.blockNumber;
   },
 };
 
@@ -153,6 +161,18 @@ const mutations = {
   },
   [types.SET_FEATURE_FLAGS](state, featureFlags = {}) {
     state.featureFlags = { ...state.featureFlags, ...featureFlags };
+  },
+  [types.SET_BLOCK_NUMBER](state, blockNumber = 0) {
+    state.blockNumber = blockNumber;
+  },
+  [types.SET_BLOCK_NUMBER_UPDATES](state, subscription) {
+    state.blockNumberUpdates = subscription;
+  },
+  [types.RESET_BLOCK_NUMBER_UPDATES](state) {
+    if (state.blockNumberUpdates) {
+      state.blockNumberUpdates.unsubscribe();
+    }
+    state.blockNumberUpdates = null;
   },
 };
 
@@ -345,6 +365,18 @@ const actions = {
   },
   setFeatureFlags({ commit }, featureFlags) {
     commit(types.SET_FEATURE_FLAGS, featureFlags);
+  },
+  setBlockNumber({ commit }) {
+    commit(types.RESET_BLOCK_NUMBER_UPDATES);
+
+    const blockNumberSubscription = api.getSystemBlockNumberObservable().subscribe((blockNumber) => {
+      commit(types.SET_BLOCK_NUMBER, Number(blockNumber));
+    });
+
+    commit(types.SET_BLOCK_NUMBER_UPDATES, blockNumberSubscription);
+  },
+  resetBlockNumberSubscription({ commit }) {
+    commit(types.RESET_BLOCK_NUMBER_UPDATES);
   },
 };
 
