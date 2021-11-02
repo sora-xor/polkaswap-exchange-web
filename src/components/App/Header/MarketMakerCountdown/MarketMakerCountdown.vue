@@ -2,9 +2,10 @@
   <s-tooltip v-if="accountMarketMakerInfo" popper-class="countdown-tooltip" :open-delay="0" :close-delay="500">
     <div slot="content" class="countdown-info">
       <div class="countdown-info-header">
-        <div class="countdown-info-title">Market Maker Countdown</div>
+        <div class="countdown-info-title">{{ t('marketMakerCountdown.title') }}</div>
         <div class="countdown-info-time">
-          <formatted-amount :value="formattedBlocksLeft" />&nbsp;blocks / {{ daysLeft }} days left
+          <formatted-amount :value="formattedBlocksLeft" />&nbsp; {{ t('marketMakerCountdown.blocks') }} /
+          {{ formattedDaysLeft }} {{ t('marketMakerCountdown.daysLeft') }}
         </div>
       </div>
       <el-progress
@@ -17,18 +18,17 @@
         <div class="counter-transactions">
           <span class="counter-transactions__current">{{ accountMarketMakerInfo.count }}</span>
           <span class="counter-transactions__total">&nbsp;/&nbsp;{{ total }}</span>
-          <span class="counter-transactions__unit">TXs</span>
+          <span class="counter-transactions__unit">{{ t('marketMakerCountdown.txs') }}</span>
         </div>
         <div class="counter-volume">
-          <span>MM TX volume</span>
+          <span>{{ t('marketMakerCountdown.volume') }}</span>
           <span class="counter-volume__value"><formatted-amount :value="formattedVolume" integer-only /></span>
         </div>
       </div>
       <s-divider class="countdown-info-divider" type="secondary" />
       <div class="countdown-info-footer">
-        20 million PSWAP / month will be distributed to market makers with at least 500 tx / month valued over 1
-        XOR.&nbsp;
-        <a class="countdown-info-link" target="_blank" rel="nofollow noopener" :href="link">Learn more</a>
+        {{ t('marketMakerCountdown.description') }}&nbsp;
+        <a class="countdown-info-link" target="_blank" rel="nofollow noopener" :href="link">{{ t('learnMoreText') }}</a>
       </div>
     </div>
     <countdown unit="MM" :percentage="transactionsPercentage" :count="accountMarketMakerInfo.count" />
@@ -41,10 +41,15 @@ import { Getter, Action, State } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import Countdown from './Countdown.vue';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { Links, ZeroStringValue } from '@/consts';
 
 import type { AccountMarketMakerInfo } from '@sora-substrate/util';
+
+const REQUIRED_TX_COUNT = 500;
+const BLOCKS_IN_DAY = 14400;
+const BLOCKS_IN_MONTH = BLOCKS_IN_DAY * 30;
 
 @Component({
   components: {
@@ -52,7 +57,7 @@ import type { AccountMarketMakerInfo } from '@sora-substrate/util';
     FormattedAmount: components.FormattedAmount,
   },
 })
-export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterMixin) {
+export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterMixin, TranslationMixin) {
   @Action('subscribeOnAccountMarketMakerInfo', { namespace: 'rewards' })
   subscribeOnAccountMarketMakerInfo!: AsyncVoidFn;
 
@@ -75,9 +80,7 @@ export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterM
     }
   }
 
-  readonly total = 500;
-  readonly blocksInDay = 14400;
-  readonly blocksInMonth = 30 * 14400;
+  readonly total = REQUIRED_TX_COUNT;
   readonly link = Links.marketMaker;
 
   get transactionsPercentage(): number {
@@ -87,15 +90,19 @@ export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterM
   }
 
   get blocksLeft(): number {
-    return this.blocksInMonth - (this.blockNumber % this.blocksInMonth);
+    return BLOCKS_IN_MONTH - (this.blockNumber % BLOCKS_IN_MONTH);
   }
 
   get daysLeft(): number {
-    return Math.round(this.blocksLeft / this.blocksInDay);
+    return Math.floor(this.blocksLeft / BLOCKS_IN_DAY);
   }
 
   get formattedBlocksLeft(): string {
     return this.formatStringValue(String(this.blocksLeft));
+  }
+
+  get formattedDaysLeft(): string {
+    return this.daysLeft === 0 ? '< 1' : String(this.daysLeft);
   }
 
   get formattedVolume(): string {
@@ -146,12 +153,12 @@ export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterM
 
   &-counters {
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
     justify-content: space-between;
     align-items: center;
 
-    & > *:not(:first-child) {
-      margin-left: $inner-spacing-mini;
+    & > *:not(:last-child) {
+      margin-right: $inner-spacing-mini;
     }
   }
 

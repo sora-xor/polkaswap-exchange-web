@@ -813,7 +813,17 @@
         "hideBalances": "Ukryj salda",
         "settings": "Ustawienia",
         "switchTheme": "Przełącz na tryb {theme}",
-        "switchLanguage": "Wybierz język"
+        "switchLanguage": "Wybierz język",
+        "selectNode": "@:selectNodeText"
     },
-    "sentText": "Wysłano"
+    "sentText": "Wysłano",
+    "learnMoreText": "Dowiedz się więcej",
+    "marketMakerCountdown": {
+        "title": "Odliczanie animatora rynku",
+        "blocks": "bloki",
+        "daysLeft": "pozostało dni",
+        "txs": "TX",
+        "volume": "Głośność MM TX",
+        "description": "20 milionów PSWAP \/ miesiąc będzie rozprowadzanych do animatorów rynku z co najmniej 500 tx \/ miesiąc o wartości powyżej 1 XOR."
+    }
 }

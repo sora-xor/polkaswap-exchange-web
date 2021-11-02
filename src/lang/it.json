@@ -813,7 +813,17 @@
         "hideBalances": "Nascondi saldi",
         "settings": "Impostazioni",
         "switchTheme": "Passa alla modalità {theme}",
-        "switchLanguage": "Scegli la lingua"
+        "switchLanguage": "Scegli la lingua",
+        "selectNode": "@:selectNodeText"
     },
-    "sentText": "Inviato"
+    "sentText": "Inviato",
+    "learnMoreText": "Per saperne di più",
+    "marketMakerCountdown": {
+        "title": "Conto alla rovescia Market Maker",
+        "blocks": "blocchi",
+        "daysLeft": "giorni rimasti",
+        "txs": "TX",
+        "volume": "Volume MM TX",
+        "description": "20 milioni di PSWAP\/mese verranno distribuiti ai market maker con almeno 500 tx\/mese valutati oltre 1 XOR."
+    }
 }

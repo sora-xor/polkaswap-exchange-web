@@ -53,6 +53,7 @@ export default {
   nameText: 'Name',
   addressText: 'Address',
   forText: 'for',
+  learnMoreText: 'Learn more',
   [Theme.LIGHT]: 'Light',
   [Theme.DARK]: 'Dark',
   pageTitle: {
@@ -89,6 +90,7 @@ export default {
     settings: 'Settings',
     switchTheme: 'Switch to {theme} Mode',
     switchLanguage: 'Choose Language',
+    selectNode: '@:selectNodeText',
   },
   social: {
     wiki: '@:soraText Wiki',
@@ -114,7 +116,7 @@ export default {
   },
   aboutNetworkDialog: {
     title: 'About',
-    learnMore: 'Learn more',
+    learnMore: '@:learnMoreText',
     network: {
       title: 'What is @:(soraText)?',
       description:
@@ -641,6 +643,15 @@ export default {
     confirmations: {
       txReady: 'Transaction Ready For Bridge',
     },
+  },
+  marketMakerCountdown: {
+    title: 'Market Maker Countdown',
+    blocks: 'blocks',
+    daysLeft: 'days left',
+    txs: 'TXs',
+    volume: 'MM TX volume',
+    description:
+      '20 million PSWAP / month will be distributed to market makers with at least 500 tx / month valued over 1 XOR.',
   },
   provider: {
     default: '@:ethereumText provider',

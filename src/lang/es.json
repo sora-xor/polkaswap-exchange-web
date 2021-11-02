@@ -813,7 +813,17 @@
         "hideBalances": "Ocultar saldos",
         "settings": "Ajustes",
         "switchTheme": "Cambiar a {theme} Modo",
-        "switchLanguage": "Elige lengua"
+        "switchLanguage": "Elige lengua",
+        "selectNode": "@:selectNodeText"
     },
-    "sentText": "Enviado"
+    "sentText": "Enviado",
+    "learnMoreText": "Aprende más",
+    "marketMakerCountdown": {
+        "title": "Cuenta regresiva de Market Maker",
+        "blocks": "bloques",
+        "daysLeft": "días restantes",
+        "txs": "TXs",
+        "volume": "Volumen de TX MM",
+        "description": "Se distribuirán 20 millones de PSWAP \/ mes a los creadores de mercado con al menos 500 tx \/ mes valorados en 1 XOR."
+    }
 }

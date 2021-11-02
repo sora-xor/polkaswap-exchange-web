@@ -37,7 +37,7 @@
         >
           <template #menu>
             <s-dropdown-item class="header-menu__item" icon="symbols-24" :value="HeaderMenuType.Node">
-              {{ t('selectNodeText') }}
+              {{ t('headerMenu.selectNode') }}
             </s-dropdown-item>
             <s-dropdown-item class="header-menu__item" :icon="themeIcon" :value="HeaderMenuType.Theme">
               {{ t('headerMenu.switchTheme', { theme: t(themeTitle) }) }}
