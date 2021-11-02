@@ -67,14 +67,13 @@ import { Getter, Action } from 'vuex-class';
 import { components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-import { KnownSymbols } from '@sora-substrate/util';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import PolkaswapLogo from '@/components/logo/Polkaswap.vue';
 
 import { lazyComponent, goTo } from '@/router';
-import { PageNames, Components, LogoSize } from '@/consts';
+import { PageNames, Components } from '@/consts';
 
 enum HeaderMenuType {
   Node = 'node',
@@ -121,13 +120,6 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
       return this.t('selectNodeConnected', { chain: this.node.chain });
     }
     return this.t('selectNodeText');
-  }
-
-  get nodeLogo(): any {
-    return {
-      size: LogoSize.MEDIUM,
-      tokenSymbol: KnownSymbols.XOR,
-    };
   }
 
   get themeIcon(): string {

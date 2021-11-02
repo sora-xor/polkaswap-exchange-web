@@ -2,8 +2,8 @@
   <div class="countdown">
     <el-progress
       type="circle"
-      :width="38"
-      :stroke-width="2"
+      :width="width"
+      :stroke-width="strokeWidth"
       :percentage="percentage"
       :show-text="false"
       color="white"
@@ -23,6 +23,8 @@ export default class Countdown extends Vue {
   @Prop({ default: 0, type: Number }) readonly count!: number;
   @Prop({ default: 100, type: Number }) readonly percentage!: number;
   @Prop({ default: '', type: String }) readonly unit!: string;
+  @Prop({ default: 38, type: Number }) readonly width!: number;
+  @Prop({ default: 2, type: Number }) readonly strokeWidth!: number;
 }
 </script>
 
