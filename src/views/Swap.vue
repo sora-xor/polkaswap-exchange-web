@@ -200,19 +200,17 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
-import {
-  KnownAssets,
-  KnownSymbols,
-  CodecString,
+import { KnownAssets, KnownSymbols, FPNumber, Operation, quote } from '@sora-substrate/util';
+import type { Subscription } from '@polkadot/x-rxjs';
+import type {
   AccountAsset,
+  CodecString,
   LiquiditySourceTypes,
   LPRewardsInfo,
-  FPNumber,
-  Operation,
   NetworkFeesObject,
+  QuotePaths,
   QuotePayload,
 } from '@sora-substrate/util';
-import type { Subscription } from '@polkadot/x-rxjs';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import LoadingMixin from '@/components/mixins/LoadingMixin';
@@ -228,9 +226,6 @@ import {
 } from '@/utils';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-
-import { quote } from '@/services/liquidityProxy';
-import type { QuotePaths } from '@/services/liquidityProxy';
 
 const namespace = 'swap';
 

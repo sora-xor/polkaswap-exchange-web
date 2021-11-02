@@ -4,22 +4,13 @@ import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import { api } from '@soramitsu/soraneo-wallet-web';
-import {
-  FPNumber,
-  CodecString,
-  LiquiditySourceTypes,
-  LPRewardsInfo,
-  QuotePayload,
-  KnownAssets,
-  KnownSymbols,
-} from '@sora-substrate/util';
+import { FPNumber, KnownAssets, KnownSymbols, isDirectExchange } from '@sora-substrate/util';
 
 import { MarketAlgorithmForLiquiditySource, ZeroStringValue } from '@/consts';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { divideAssets } from '@/utils';
-import { isDirectExchange } from '@/services/liquidityProxy';
 
-import type { QuotePaths } from '@/services/liquidityProxy';
+import type { CodecString, LiquiditySourceTypes, LPRewardsInfo, QuotePaths, QuotePayload } from '@sora-substrate/util';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
