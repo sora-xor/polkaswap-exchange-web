@@ -19,9 +19,6 @@
       <s-button type="action" class="theme-control s-pressed" :tooltip="hideBalancesTooltip" @click="toggleHideBalance">
         <s-icon :name="hideBalancesIcon" :size="iconSize" />
       </s-button>
-      <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openSelectNodeDialog">
-        <token-logo class="node-control__logo" v-bind="nodeLogo" />
-      </s-button>
       <account-button :disabled="loading" @click="goTo(PageNames.Wallet)" />
       <s-button
         type="action"
@@ -39,6 +36,9 @@
           @select="handleSelectHeaderMenu"
         >
           <template #menu>
+            <s-dropdown-item class="header-menu__item" icon="symbols-24" :value="HeaderMenuType.Node">
+              {{ t('selectNodeText') }}
+            </s-dropdown-item>
             <s-dropdown-item class="header-menu__item" :icon="themeIcon" :value="HeaderMenuType.Theme">
               {{ t('headerMenu.switchTheme', { theme: t(themeTitle) }) }}
             </s-dropdown-item>
@@ -77,6 +77,7 @@ import { lazyComponent, goTo } from '@/router';
 import { PageNames, Components, LogoSize } from '@/consts';
 
 enum HeaderMenuType {
+  Node = 'node',
   Theme = 'theme',
   Language = 'language',
 }
@@ -90,7 +91,6 @@ enum HeaderMenuType {
     MarketMakerCountdown: lazyComponent(Components.MarketMakerCountdown),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
-    TokenLogo: lazyComponent(Components.TokenLogo),
     Moonpay: lazyComponent(Components.Moonpay),
     MoonpayNotification: lazyComponent(Components.MoonpayNotification),
     MoonpayHistoryButton: lazyComponent(Components.MoonpayHistoryButton),
@@ -146,10 +146,6 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
     return this.t(`headerMenu.${this.shouldBalanceBeHidden ? 'showBalances' : 'hideBalances'}`);
   }
 
-  openSelectNodeDialog(): void {
-    this.setSelectNodeDialogVisibility(true);
-  }
-
   async openMoonpayDialog(): Promise<void> {
     if (!this.isSoraAccountConnected) {
       return this.connectInternalWallet();
@@ -170,6 +166,9 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 
   handleSelectHeaderMenu(value: HeaderMenuType): void {
     switch (value) {
+      case HeaderMenuType.Node:
+        this.setSelectNodeDialogVisibility(true);
+        break;
       case HeaderMenuType.Theme:
         switchTheme();
         break;
@@ -335,14 +334,6 @@ $icon-size: 28px;
 .app-logo--header {
   @include mobile {
     display: none;
-  }
-}
-
-.node-control {
-  @include element-size('token-logo', 28px);
-  .token-logo {
-    display: block;
-    margin: auto;
   }
 }
 </style>
