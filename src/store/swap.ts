@@ -10,7 +10,14 @@ import { MarketAlgorithmForLiquiditySource, ZeroStringValue } from '@/consts';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { divideAssets } from '@/utils';
 
-import type { CodecString, LiquiditySourceTypes, LPRewardsInfo, QuotePaths, QuotePayload } from '@sora-substrate/util';
+import type {
+  AccountBalance,
+  CodecString,
+  LiquiditySourceTypes,
+  LPRewardsInfo,
+  QuotePaths,
+  QuotePayload,
+} from '@sora-substrate/util';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
@@ -41,9 +48,9 @@ const types = flow(
 
 interface SwapState {
   tokenFromAddress: Nullable<string>;
-  tokenFromBalance: any;
+  tokenFromBalance: Nullable<AccountBalance>;
   tokenToAddress: Nullable<string>;
-  tokenToBalance: any;
+  tokenToBalance: Nullable<AccountBalance>;
   fromValue: string;
   toValue: string;
   amountWithoutImpact: CodecString;
@@ -205,7 +212,7 @@ const mutations = {
   [types.SET_REWARDS](state: SwapState, rewards: Array<LPRewardsInfo>) {
     state.rewards = [...rewards];
   },
-  [types.SET_SUBSCRIPTION_PAYLOAD](state: SwapState, payload) {
+  [types.SET_SUBSCRIPTION_PAYLOAD](state: SwapState, payload: QuotePayload) {
     state.payload = payload;
   },
 };
@@ -336,7 +343,7 @@ const actions = {
   setRewards({ commit }, rewards: Array<LPRewardsInfo>) {
     commit(types.SET_REWARDS, rewards);
   },
-  setSubscriptionPayload({ commit }, payload) {
+  setSubscriptionPayload({ commit }, payload: QuotePayload) {
     commit(types.SET_SUBSCRIPTION_PAYLOAD, payload);
   },
   reset({ commit, dispatch }) {

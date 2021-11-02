@@ -613,7 +613,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     this.showSelectTokenDialog = true;
   }
 
-  async selectToken(token: any): Promise<void> {
+  async selectToken(token: AccountAsset): Promise<void> {
     if (token) {
       if (this.isTokenFromSelected) {
         await this.setTokenFromAddress(token.address);
