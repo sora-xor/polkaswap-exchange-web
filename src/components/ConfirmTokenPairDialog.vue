@@ -64,9 +64,9 @@ import { Components } from '@/consts';
 })
 export default class ConfirmTokenPairDialog extends Mixins(
   mixins.FormattedAmountMixin,
+  mixins.LoadingMixin,
   TranslationMixin,
-  DialogMixin,
-  mixins.LoadingMixin
+  DialogMixin
 ) {
   @Prop({ type: String, default: '100' }) readonly shareOfPool!: string;
   @Prop({ type: Object }) readonly firstToken!: any;

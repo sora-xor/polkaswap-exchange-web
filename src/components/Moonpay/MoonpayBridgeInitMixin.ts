@@ -1,7 +1,6 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
 import { BridgeNetworks, RegisteredAccountAsset, CodecString, Operation } from '@sora-substrate/util';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 import ethersUtil from '@/utils/ethers-util';
 import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';
@@ -22,11 +21,7 @@ const createError = (text: string, notification: MoonpayNotifications) => {
 };
 
 @Component
-export default class MoonpayBridgeInitMixin extends Mixins(
-  BridgeHistoryMixin,
-  WalletConnectMixin,
-  mixins.LoadingMixin
-) {
+export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, WalletConnectMixin) {
   @State((state) => state.moonpay.api) moonpayApi!: MoonpayApi;
   @State((state) => state.settings.apiKeys) apiKeys!: ApiKeysObject;
   @State((state) => state.moonpay.bridgeTransactionData) bridgeTransactionData!: Nullable<BridgeHistory>;

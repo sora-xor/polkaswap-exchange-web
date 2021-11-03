@@ -89,9 +89,9 @@ import type { Asset } from '@sora-substrate/util';
 })
 export default class ConfirmBridgeTransactionDialog extends Mixins(
   mixins.FormattedAmountMixin,
+  mixins.LoadingMixin,
   TranslationMixin,
   DialogMixin,
-  mixins.LoadingMixin,
   NetworkFormatterMixin
 ) {
   @Prop({ default: ZeroStringValue, type: String }) readonly amount!: string;

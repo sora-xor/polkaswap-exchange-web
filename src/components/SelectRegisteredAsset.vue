@@ -143,9 +143,9 @@ const namespace = 'assets';
 })
 export default class SelectRegisteredAsset extends Mixins(
   mixins.FormattedAmountMixin,
+  mixins.LoadingMixin,
   TranslationMixin,
-  SelectAssetMixin,
-  mixins.LoadingMixin
+  SelectAssetMixin
 ) {
   query = '';
   selectedAsset: Nullable<AccountAsset | RegisteredAccountAsset> = null;

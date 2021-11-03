@@ -17,12 +17,7 @@ import {
 
 const CreateTokenPairMixin = (namespace: string) => {
   @Component
-  class TokenPairMixin extends Mixins(
-    mixins.TransactionMixin,
-    mixins.LoadingMixin,
-    ConfirmDialogMixin,
-    mixins.FormattedAmountMixin
-  ) {
+  class TokenPairMixin extends Mixins(mixins.TransactionMixin, mixins.FormattedAmountMixin, ConfirmDialogMixin) {
     readonly KnownSymbols = KnownSymbols;
 
     @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any;

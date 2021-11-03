@@ -192,7 +192,6 @@ const namespace = 'removeLiquidity';
   },
 })
 export default class RemoveLiquidity extends Mixins(
-  mixins.LoadingMixin,
   mixins.FormattedAmountMixin,
   mixins.TransactionMixin,
   ConfirmDialogMixin
