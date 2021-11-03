@@ -213,7 +213,6 @@ import type {
 } from '@sora-substrate/util';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import LoadingMixin from '@/components/mixins/LoadingMixin';
 
 import {
   isMaxButtonAvailable,
@@ -246,7 +245,7 @@ const namespace = 'swap';
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
 })
-export default class Swap extends Mixins(mixins.FormattedAmountMixin, TranslationMixin, LoadingMixin) {
+export default class Swap extends Mixins(mixins.FormattedAmountMixin, TranslationMixin, mixins.LoadingMixin) {
   @State((state) => state[namespace].paths) paths!: QuotePaths;
   @State((state) => state[namespace].liquidityProviderFee) liquidityProviderFee!: CodecString;
   @State((state) => state[namespace].isAvailable) isAvailable!: boolean;
