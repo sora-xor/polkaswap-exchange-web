@@ -22,7 +22,10 @@
         </div>
         <div class="counter-volume">
           <span>{{ t('marketMakerCountdown.volume') }}</span>
-          <span class="counter-volume__value"><formatted-amount :value="formattedVolume" integer-only /></span>
+          <span class="counter-volume__value">
+            <formatted-amount :value="formattedVolume" integer-only />&nbsp;
+            {{ XOR.symbol }}
+          </span>
         </div>
       </div>
       <s-divider class="countdown-info-divider" type="secondary" />
@@ -39,6 +42,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Getter, Action, State } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { XOR } from '@sora-substrate/util';
 
 import Countdown from './Countdown.vue';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -80,6 +84,7 @@ export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterM
     }
   }
 
+  readonly XOR = XOR;
   readonly total = REQUIRED_TX_COUNT;
   readonly link = Links.marketMaker;
 
