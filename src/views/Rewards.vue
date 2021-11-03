@@ -96,14 +96,13 @@ import {
   CodecString,
   FPNumber,
 } from '@sora-substrate/util';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import ethersUtil from '@/utils/ethers-util';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { hasInsufficientXorForFee } from '@/utils';
-import { groupRewardsByAssetsList } from '@/utils/rewards';
 import { RewardsAmountHeaderItem, RewardInfoGroup } from '@/types/rewards';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
@@ -154,8 +153,6 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   }
 
   async created(): Promise<void> {
-    this.loading = true;
-
     await this.withApi(async () => {
       await this.setEvmNetworkType();
       await this.syncExternalAccountWithAppState();

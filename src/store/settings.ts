@@ -3,7 +3,7 @@ import flatMap from 'lodash/fp/flatMap';
 import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
-import { api, connection, isWalletLoaded, initWallet } from '@soramitsu/soraneo-wallet-web';
+import { api, connection, initWallet } from '@soramitsu/soraneo-wallet-web';
 
 import storage, { settingsStorage } from '@/utils/storage';
 import { AppHandledError } from '@/utils/error';
@@ -177,7 +177,7 @@ const mutations = {
 };
 
 const actions = {
-  async connectToNode({ commit, dispatch, state }, options: ConnectToNodeOptions = {}) {
+  async connectToNode({ commit, dispatch, state, rootGetters }, options: ConnectToNodeOptions = {}) {
     if (!state.nodeConnectionAllowance) return;
 
     const { node, onError, ...restOptions } = options;
@@ -188,7 +188,7 @@ const actions = {
       await dispatch('setNode', { node: requestedNode, onError, ...restOptions });
 
       // wallet init & update flow
-      if (!isWalletLoaded) {
+      if (!rootGetters.isWalletLoaded) {
         try {
           await initWallet({ permissions: WalletPermissions });
           // TODO [tech]: maybe we should replace it, cuz it executes twice except bridge screens

@@ -225,10 +225,9 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 import { FPNumber, AccountLiquidity, CodecString, KnownAssets, KnownSymbols } from '@sora-substrate/util';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin';
-import LoadingMixin from '@/components/mixins/LoadingMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components } from '@/consts';
@@ -251,7 +250,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace);
     InfoLine: components.InfoLine,
   },
 })
-export default class AddLiquidity extends Mixins(LoadingMixin, TokenPairMixin) {
+export default class AddLiquidity extends Mixins(mixins.LoadingMixin, TokenPairMixin) {
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean;
   @Getter('shareOfPool', { namespace }) shareOfPool!: string;
   @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity;

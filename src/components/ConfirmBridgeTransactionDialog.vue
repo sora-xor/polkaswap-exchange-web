@@ -75,7 +75,6 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import DialogMixin from '@/components/mixins/DialogMixin';
-import LoadingMixin from '@/components/mixins/LoadingMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { EvmSymbol, ZeroStringValue } from '@/consts';
@@ -92,7 +91,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   mixins.FormattedAmountMixin,
   TranslationMixin,
   DialogMixin,
-  LoadingMixin,
+  mixins.LoadingMixin,
   NetworkFormatterMixin
 ) {
   @Prop({ default: ZeroStringValue, type: String }) readonly amount!: string;

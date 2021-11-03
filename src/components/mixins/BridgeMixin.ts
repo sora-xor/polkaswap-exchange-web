@@ -1,13 +1,13 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 
-import LoadingMixin from '@/components/mixins/LoadingMixin';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import ethersUtil from '@/utils/ethers-util';
 import { ethers } from 'ethers';
 
 @Component
-export default class BridgeMixin extends Mixins(LoadingMixin, WalletConnectMixin) {
+export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
   @Action('getEvmBalance', { namespace: 'web3' }) getEvmBalance!: AsyncVoidFn;
   @Action('getEvmNetworkFee', { namespace: 'bridge' }) getEvmNetworkFee!: AsyncVoidFn;
   @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets!: AsyncVoidFn;

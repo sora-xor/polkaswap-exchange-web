@@ -125,7 +125,6 @@ import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
-import LoadingMixin from '@/components/mixins/LoadingMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
@@ -146,7 +145,7 @@ export default class SelectRegisteredAsset extends Mixins(
   mixins.FormattedAmountMixin,
   TranslationMixin,
   SelectAssetMixin,
-  LoadingMixin
+  mixins.LoadingMixin
 ) {
   query = '';
   selectedAsset: Nullable<AccountAsset | RegisteredAccountAsset> = null;

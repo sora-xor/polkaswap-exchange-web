@@ -173,7 +173,6 @@ import {
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
-import LoadingMixin from '@/components/mixins/LoadingMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
@@ -193,7 +192,7 @@ const namespace = 'removeLiquidity';
   },
 })
 export default class RemoveLiquidity extends Mixins(
-  LoadingMixin,
+  mixins.LoadingMixin,
   mixins.FormattedAmountMixin,
   mixins.TransactionMixin,
   ConfirmDialogMixin
