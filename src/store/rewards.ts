@@ -4,10 +4,9 @@ import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import { ethers } from 'ethers';
-import { api } from '@soramitsu/soraneo-wallet-web';
+import { api, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
 import { KnownAssets, KnownSymbols } from '@sora-substrate/util';
 import ethersUtil from '@/utils/ethers-util';
-import { groupRewardsByAssetsList } from '@/utils/rewards';
 import { asZeroValue, waitForAccountPair } from '@/utils';
 
 import type { Subscription } from '@polkadot/x-rxjs';

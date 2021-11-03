@@ -94,7 +94,6 @@ import { AccountLiquidity, Asset } from '@sora-substrate/util';
 import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import LoadingMixin from '@/components/mixins/LoadingMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
@@ -109,7 +108,7 @@ const namespace = 'pool';
     InfoLine: components.InfoLine,
   },
 })
-export default class Pool extends Mixins(mixins.FormattedAmountMixin, LoadingMixin, TranslationMixin) {
+export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.LoadingMixin, TranslationMixin) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 

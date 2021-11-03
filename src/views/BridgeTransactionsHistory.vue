@@ -81,7 +81,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
-import { RegisteredAccountAsset, Operation, BridgeHistory, FPNumber, NetworkFeesObject } from '@sora-substrate/util';
+import { RegisteredAccountAsset, Operation, BridgeHistory, FPNumber } from '@sora-substrate/util';
 import { components } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';

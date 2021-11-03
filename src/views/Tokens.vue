@@ -80,12 +80,12 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
 import { Asset } from '@sora-substrate/util';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 
-import LoadingMixin from '@/components/mixins/LoadingMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin';
 import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
@@ -99,7 +99,12 @@ import SortButton from '@/components/SortButton.vue';
     SortButton,
   },
 })
-export default class Tokens extends Mixins(LoadingMixin, TranslationMixin, AssetsSearchMixin, PaginationSearchMixin) {
+export default class Tokens extends Mixins(
+  mixins.LoadingMixin,
+  TranslationMixin,
+  AssetsSearchMixin,
+  PaginationSearchMixin
+) {
   @Getter('whitelistAssets', { namespace: 'assets' }) items!: Array<Asset>;
 
   order = '';
