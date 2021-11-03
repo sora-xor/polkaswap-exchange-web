@@ -11,13 +11,12 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
-
-import LoadingMixin from '@/components/mixins/LoadingMixin';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 const namespace = 'pool';
 
 @Component
-export default class PoolContainer extends Mixins(LoadingMixin) {
+export default class PoolContainer extends Mixins(mixins.LoadingMixin) {
   @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn;
 
   @Action('subscribeOnAccountLiquidityList', { namespace }) subscribeOnAccountLiquidityList!: AsyncVoidFn;

@@ -30,6 +30,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 import pick from 'lodash/fp/pick';
 
 import { lazyComponent } from '@/router';
@@ -38,7 +39,6 @@ import { NodeModel } from '@/components/Settings/Node/consts';
 import { Node, NodeItem, ConnectToNodeOptions } from '@/types/nodes';
 import { AppHandledError } from '@/utils/error';
 
-import LoadingMixin from '@/components/mixins/LoadingMixin';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import DialogBase from './DialogBase.vue';
 
@@ -53,7 +53,7 @@ const NodeInfoView = 'NodeInfoView';
     NodeInfo: lazyComponent(Components.NodeInfo),
   },
 })
-export default class SelectNodeDialog extends Mixins(NodeErrorMixin, LoadingMixin) {
+export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.LoadingMixin) {
   @Getter nodeList!: Array<Node>;
   @Getter soraNetwork!: string; // wallet
   @State((state) => state.settings.defaultNodes) defaultNodes!: Array<Node>;

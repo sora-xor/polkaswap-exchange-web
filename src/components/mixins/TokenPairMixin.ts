@@ -3,7 +3,6 @@ import { Action, Getter } from 'vuex-class';
 import { KnownSymbols, CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
-import LoadingMixin from './LoadingMixin';
 import ConfirmDialogMixin from './ConfirmDialogMixin';
 
 import router from '@/router';
@@ -18,12 +17,7 @@ import {
 
 const CreateTokenPairMixin = (namespace: string) => {
   @Component
-  class TokenPairMixin extends Mixins(
-    mixins.TransactionMixin,
-    LoadingMixin,
-    ConfirmDialogMixin,
-    mixins.FormattedAmountMixin
-  ) {
+  class TokenPairMixin extends Mixins(mixins.TransactionMixin, mixins.FormattedAmountMixin, ConfirmDialogMixin) {
     readonly KnownSymbols = KnownSymbols;
 
     @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any;

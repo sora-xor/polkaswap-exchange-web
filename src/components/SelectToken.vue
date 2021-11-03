@@ -183,7 +183,6 @@ import { api, mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-walle
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
-import LoadingMixin from '@/components/mixins/LoadingMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
@@ -203,7 +202,7 @@ export default class SelectToken extends Mixins(
   mixins.FormattedAmountMixin,
   TranslationMixin,
   SelectAssetMixin,
-  LoadingMixin
+  mixins.LoadingMixin
 ) {
   readonly FormattedZeroSymbol = '-';
   readonly tokenTabs = ['assets', 'custom'];

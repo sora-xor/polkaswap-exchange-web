@@ -150,7 +150,6 @@ import { FPNumber } from '@sora-substrate/util';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import LoadingMixin from '@/components/mixins/LoadingMixin';
 
 import Web3Logo from '@/components/logo/Web3.vue';
 
@@ -159,7 +158,7 @@ import Web3Logo from '@/components/logo/Web3.vue';
     Web3Logo,
   },
 })
-export default class About extends Mixins(TranslationMixin, LoadingMixin) {
+export default class About extends Mixins(TranslationMixin) {
   readonly IMAGES = [
     'about02-1.png',
     'about02-2.png',
