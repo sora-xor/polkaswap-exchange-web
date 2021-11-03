@@ -127,6 +127,10 @@ export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterM
   padding: 14px;
   max-width: 288px;
   width: 100%;
+
+  .popper__arrow {
+    display: none;
+  }
 }
 
 .countdown-info-progress .el-progress-bar__outer {
