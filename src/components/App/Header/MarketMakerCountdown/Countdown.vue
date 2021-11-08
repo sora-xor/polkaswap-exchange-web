@@ -37,6 +37,8 @@ export default class Countdown extends Vue {
 <style lang="scss" scoped>
 $coundown-container-padding: 2px;
 $coundown-content-padding: 8px;
+$countdown-box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.1), inset -5px -5px 5px rgba(255, 255, 255, 0.05),
+  inset 1px 1px 10px rgba(41, 0, 71, 0.33);
 
 .countdown {
   cursor: pointer;
@@ -45,8 +47,7 @@ $coundown-content-padding: 8px;
   height: var(--s-size-medium);
   background-color: var(--s-color-theme-accent);
   border-radius: 50%;
-  box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.1), inset -5px -5px 5px rgba(255, 255, 255, 0.05),
-    inset 1px 1px 10px rgba(41, 0, 71, 0.33);
+  box-shadow: $countdown-box-shadow;
   padding: $coundown-container-padding;
   position: relative;
 
