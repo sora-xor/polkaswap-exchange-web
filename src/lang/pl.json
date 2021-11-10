@@ -284,7 +284,8 @@
         "github": "GitHub",
         "sorawiki": "Wiki @:soraText",
         "memorandum": "Memo giełdy Polkaswap oraz Warunki korzystania z usług",
-        "privacy": "Polityka prywatności"
+        "privacy": "Polityka prywatności",
+        "info": "Informacje i społeczność"
     },
     "helpDialog": {
         "title": "Pomoc",

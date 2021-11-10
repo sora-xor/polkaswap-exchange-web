@@ -38,22 +38,23 @@
         >
           <s-menu-item-group>
             <app-info-popper>
-              <li>
-                <sidebar-item-content icon="info-16" title="Info & Community" class="el-menu-item menu-item--small" />
-              </li>
-            </app-info-popper>
-
-            <li v-if="faucetUrl">
               <sidebar-item-content
-                :icon="FaucetLink.icon"
-                :title="t(`footerMenu.${FaucetLink.title}`)"
-                :href="faucetUrl"
-                tag="a"
-                target="_blank"
-                rel="nofollow noopener"
+                icon="info-16"
+                :title="t('footerMenu.info')"
                 class="el-menu-item menu-item--small"
               />
-            </li>
+            </app-info-popper>
+
+            <sidebar-item-content
+              v-if="faucetUrl"
+              :icon="FaucetLink.icon"
+              :title="t(`footerMenu.${FaucetLink.title}`)"
+              :href="faucetUrl"
+              tag="a"
+              target="_blank"
+              rel="nofollow noopener"
+              class="el-menu-item menu-item--small"
+            />
           </s-menu-item-group>
         </s-menu>
       </div>

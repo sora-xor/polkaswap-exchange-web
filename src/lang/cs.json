@@ -284,7 +284,8 @@
         "github": "GitHub",
         "sorawiki": "@:soraText Wiki",
         "memorandum": "Polkaswap Memorandum a Smluvní podmínky",
-        "privacy": "Zásady ochrany osobních údajů"
+        "privacy": "Zásady ochrany osobních údajů",
+        "info": "Informace a komunita"
     },
     "helpDialog": {
         "title": "Nápověda",
