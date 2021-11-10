@@ -37,19 +37,12 @@
           active-hover-color="transparent"
         >
           <s-menu-item-group>
-            <li v-for="item in SocialNetworkLinks" :key="item.title">
-              <sidebar-item-content
-                :icon="item.icon"
-                :title="t(`social.${item.title}`)"
-                :href="item.href"
-                tag="a"
-                target="_blank"
-                rel="nofollow noopener"
-                class="el-menu-item menu-item--small"
-              />
-            </li>
-          </s-menu-item-group>
-          <s-menu-item-group>
+            <app-info-popper>
+              <li>
+                <sidebar-item-content icon="info-16" title="Info & Community" class="el-menu-item menu-item--small" />
+              </li>
+            </app-info-popper>
+
             <li v-if="faucetUrl">
               <sidebar-item-content
                 :icon="FaucetLink.icon"
@@ -89,6 +82,7 @@ import router, { lazyComponent } from '@/router';
 
 @Component({
   components: {
+    AppInfoPopper: lazyComponent(Components.AppInfoPopper),
     SidebarItemContent: lazyComponent(Components.SidebarItemContent),
   },
 })
@@ -143,6 +137,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
         box-shadow: none;
         margin: 0;
         background-color: unset;
+
+        & + span {
+          margin-left: 0;
+        }
       }
     }
 
@@ -233,8 +231,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     display: flex;
     flex: 1;
     flex-flow: column nowrap;
-    padding-top: $inner-spacing-small;
-    padding-bottom: $inner-spacing-medium;
+    padding: $inner-spacing-small 0;
     border-right: none;
 
     &-menu {
@@ -264,17 +261,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       border-radius: 0;
     }
   }
-  .menu-link-container {
-    display: none;
 
-    @include mobile {
-      display: block;
-    }
-
-    .el-menu-item {
-      white-space: normal;
-    }
-  }
   .el-menu-item {
     padding-top: $inner-spacing-mini;
     padding-bottom: $inner-spacing-mini;
@@ -311,7 +298,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
         padding: 0 10px;
       }
       @include tablet {
-        padding: 0 13px;
+        padding: 0 12px;
       }
     }
   }

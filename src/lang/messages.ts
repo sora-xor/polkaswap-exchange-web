@@ -100,6 +100,7 @@ export default {
   },
   footerMenu: {
     faucet: 'Faucet',
+    info: 'Info & Community',
     github: 'GitHub',
     sorawiki: '@:soraText Wiki',
   },
