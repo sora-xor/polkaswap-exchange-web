@@ -36,26 +36,20 @@
           active-text-color="var(--s-color-base-content-tertiary)"
           active-hover-color="transparent"
         >
-          <s-menu-item-group>
-            <app-info-popper>
-              <sidebar-item-content
-                icon="info-16"
-                :title="t('footerMenu.info')"
-                class="el-menu-item menu-item--small"
-              />
-            </app-info-popper>
+          <app-info-popper>
+            <sidebar-item-content icon="info-16" :title="t('footerMenu.info')" class="el-menu-item menu-item--small" />
+          </app-info-popper>
 
-            <sidebar-item-content
-              v-if="faucetUrl"
-              :icon="FaucetLink.icon"
-              :title="t(`footerMenu.${FaucetLink.title}`)"
-              :href="faucetUrl"
-              tag="a"
-              target="_blank"
-              rel="nofollow noopener"
-              class="el-menu-item menu-item--small"
-            />
-          </s-menu-item-group>
+          <sidebar-item-content
+            v-if="faucetUrl"
+            :icon="FaucetLink.icon"
+            :title="t(`footerMenu.${FaucetLink.title}`)"
+            :href="faucetUrl"
+            tag="a"
+            target="_blank"
+            rel="nofollow noopener"
+            class="el-menu-item menu-item--small"
+          />
         </s-menu>
       </div>
     </aside>
@@ -69,15 +63,7 @@ import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import {
-  PageNames,
-  PoolChildPages,
-  BridgeChildPages,
-  SidebarMenuGroups,
-  SocialNetworkLinks,
-  FaucetLink,
-  Components,
-} from '@/consts';
+import { PageNames, PoolChildPages, BridgeChildPages, SidebarMenuGroups, FaucetLink, Components } from '@/consts';
 
 import router, { lazyComponent } from '@/router';
 
@@ -95,7 +81,6 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   @Getter libraryTheme!: Theme;
 
   readonly SidebarMenuGroups = SidebarMenuGroups;
-  readonly SocialNetworkLinks = SocialNetworkLinks;
   readonly FaucetLink = FaucetLink;
 
   get mainMenuActiveColor(): string {
