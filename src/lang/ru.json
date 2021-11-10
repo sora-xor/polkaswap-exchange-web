@@ -813,7 +813,17 @@
         "hideBalances": "Скрыть балансы",
         "settings": "Настройки",
         "switchTheme": "Перейти в {theme} режим",
-        "switchLanguage": "Изменить язык"
+        "switchLanguage": "Изменить язык",
+        "selectNode": "@:selectNodeText"
     },
-    "sentText": "Отправить"
+    "sentText": "Отправить",
+    "learnMoreText": "Узнать больше",
+    "marketMakerCountdown": {
+        "title": "Обратный отсчет маркет-мейкера",
+        "blocks": "блоков",
+        "daysLeft": "осталось дней",
+        "txs": "TXs",
+        "volume": "Объем MM TX",
+        "description": "20 миллионов PSWAP \/ месяц будут распределены среди маркет-мейкеров, имеющих не менее 500 tx \/ месяц с объемом более 1 XOR."
+    }
 }

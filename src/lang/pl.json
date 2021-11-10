@@ -95,7 +95,7 @@
         "errorAddress": "Nieprawidłowy adres. Sprawdź go i spróbuj ponownie.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Wysyłaj tokeny między kontami sieci SORA",
-        "addressWarning": "Tokeny zostaną wysłane na poniższy adres sieci SORA. Upewnij się, czy odbiorca może uzyskać dostęp do sieci SORA, aby korzystać z tokenów:",
+        "addressWarning": "Tokeny zostaną wysłane na poniższy adres w sieci SORA. Upewnij się, czy odbiorca może uzyskać dostęp do sieci SORA, aby korzystać z tokenów:",
         "addressError": "Nie możesz wysyłać tokenów na konto, z którym jesteś teraz właśnie połączony."
     },
     "account": {
@@ -256,7 +256,7 @@
         "RemoveLiquidity": "Usuwanie płynności",
         "PageNotFound": "Nie znaleziono strony.",
         "Tokens": "Tokeny",
-        "Rewards": "Nagrody"
+        "Rewards": "Wynagrodzenie"
     },
     "mainMenu": {
         "Swap": "Zamiana",
@@ -442,7 +442,7 @@
         "swapOutputMessage": "Wynik jest szacunkowy. Otrzymasz co najmniej {transactionValue} lub transakcja zostanie anulowana.",
         "rewardsForSwap": "Wynagrodzenie strategiczne w PSWAP",
         "swapInputMessage": "Wprowadzone dane są szacunkowe. Sprzedasz maksymalnie {transactionValue} lub transakcja zostanie anulowana.",
-        "route": "Trasa"
+        "route": "Kierunek"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -806,14 +806,24 @@
         }
     },
     "recievedText": "Otrzymano",
-    "light": "Lekki",
+    "light": "Jasny",
     "dark": "Ciemny",
     "headerMenu": {
         "showBalances": "Pokaż salda",
         "hideBalances": "Ukryj salda",
         "settings": "Ustawienia",
         "switchTheme": "Przełącz na tryb {theme}",
-        "switchLanguage": "Wybierz język"
+        "switchLanguage": "Wybierz język",
+        "selectNode": "@:selectNodeText"
     },
-    "sentText": "Wysłano"
+    "sentText": "Wysłano",
+    "learnMoreText": "Dowiedz się więcej",
+    "marketMakerCountdown": {
+        "title": "Odliczanie animatora rynku",
+        "blocks": "bloki",
+        "daysLeft": "pozostało dni",
+        "txs": "trans.",
+        "volume": "Wolumen trans. animatora rynku",
+        "description": "20 milionów PSWAP na miesiąc trafi do animatorów rynku z co najmniej 500 trans. na miesiąc o wartości powyżej 1 XOR każda."
+    }
 }

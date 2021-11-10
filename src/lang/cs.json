@@ -813,7 +813,17 @@
         "hideBalances": "Skrýt zůstatky",
         "settings": "Nastavení",
         "switchTheme": "Přepnout do režimu {theme}",
-        "switchLanguage": "Vybrat jazyk"
+        "switchLanguage": "Vybrat jazyk",
+        "selectNode": "@:selectNodeText"
     },
-    "sentText": "Odesláno"
+    "sentText": "Odesláno",
+    "learnMoreText": "Zjistit více",
+    "marketMakerCountdown": {
+        "title": "Odpočítávání Tvůrce trhu",
+        "blocks": "bloky",
+        "daysLeft": "zbývající dny",
+        "txs": "TXs",
+        "volume": "Objem MM TX",
+        "description": "20 milionů PSWAP\/měsíc bude distribuováno tvůrcům trhu s minimálně 500 tx\/měsíc v hodnotě přes 1 XOR."
+    }
 }

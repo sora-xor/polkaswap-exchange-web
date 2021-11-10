@@ -813,7 +813,17 @@
         "hideBalances": "Sembunyikan Saldo",
         "settings": "Pengaturan",
         "switchTheme": "Beralih ke Mode {theme}",
-        "switchLanguage": "Pilih bahasa"
+        "switchLanguage": "Pilih bahasa",
+        "selectNode": "@:selectNodeText"
     },
-    "sentText": "Terkirim"
+    "sentText": "Terkirim",
+    "learnMoreText": "Pelajari lebih lanjut",
+    "marketMakerCountdown": {
+        "title": "Hitung Mundur Pembuat Pasar",
+        "blocks": "blok",
+        "daysLeft": "hari tersisa",
+        "txs": "TXs",
+        "volume": "volume MM TX",
+        "description": "20 juta PSWAP\/bulan akan dibagikan kepada market maker dengan minimal 500 tx\/bulan senilai lebih dari 1 XOR."
+    }
 }
