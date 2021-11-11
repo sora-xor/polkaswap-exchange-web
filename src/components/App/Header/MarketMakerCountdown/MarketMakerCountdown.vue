@@ -1,5 +1,11 @@
 <template>
-  <s-tooltip v-if="accountMarketMakerInfo" popper-class="countdown-tooltip" :open-delay="0" :close-delay="500">
+  <s-tooltip
+    v-if="accountMarketMakerInfo"
+    popper-class="countdown-tooltip"
+    :open-delay="0"
+    :close-delay="500"
+    :show-arrow="false"
+  >
     <div slot="content" class="countdown-info">
       <div class="countdown-info-header">
         <div class="countdown-info-title">{{ t('marketMakerCountdown.title') }}</div>
@@ -127,10 +133,6 @@ export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterM
   padding: 14px;
   max-width: 288px;
   width: 100%;
-
-  .popper__arrow {
-    display: none;
-  }
 }
 
 .countdown-info-progress .el-progress-bar__outer {
