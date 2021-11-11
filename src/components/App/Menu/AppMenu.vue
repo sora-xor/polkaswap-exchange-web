@@ -281,10 +281,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       color: var(--s-color-base-content-secondary);
 
       @include large-mobile {
-        padding: 0 10px;
+        padding: 0 $inner-spacing-mini * 1.25;
       }
       @include tablet {
-        padding: 0 12px;
+        padding: 0 $inner-spacing-small;
       }
     }
   }

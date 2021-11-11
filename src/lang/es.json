@@ -298,7 +298,7 @@
     },
     "aboutNetworkDialog": {
         "title": "Acerca de",
-        "learnMore": "@: learnMoreText",
+        "learnMore": "@:learnMoreText",
         "network": {
             "title": "¿Qué es @:soraText?",
             "description": "Polkaswap está construido sobre la Red @:soraText, y el token @:soraText (XOR) se utiliza para la provisión de gas\/comisiones y liquidez en Polkaswap. La red @:soraText permite reducir las tarifas, agilizar las transacciones y simplificar la finalización del consenso, y se centra en ofrecer interoperabilidad en otros ecosistemas de blockchain como @:(ethereumText)."
@@ -824,7 +824,7 @@
         "blocks": "bloques",
         "daysLeft": "días restantes",
         "txs": "TXs",
-        "volume": "Volumen de Transacciones de  MM",
+        "volume": "Volumen de Transacciones de MM",
         "description": "Se distribuirán 20 millones de PSWAP \/ mes a los creadores de mercado con al menos 500 tx \/ mes valorados en más de 1 XOR."
     }
 }

@@ -105,6 +105,7 @@ $social-link-min-height: 34px;
 
 .app-info {
   line-height: var(--s-line-height-medium);
+  letter-spacing: var(--s-letter-spacing-small);
 
   & > *:not(:last-child) {
     margin-bottom: $inner-spacing-small;
@@ -121,6 +122,13 @@ $social-link-min-height: 34px;
     &:visited {
       text-decoration: none;
       color: inherit;
+    }
+
+    &:hover,
+    &:focus {
+      i {
+        color: var(--s-color-base-content-secondary);
+      }
     }
 
     i {
