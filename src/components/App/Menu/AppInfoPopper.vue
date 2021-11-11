@@ -82,12 +82,15 @@ export default class AppInfoPopper extends Mixins(TranslationMixin, mixins.Loadi
 </script>
 
 <style lang="scss">
+$popper-mix-width: 170px;
+
 .app-info-popper.el-tooltip__popper.neumorphic {
   background: var(--s-color-utility-body);
   border-color: var(--s-color-base-border-secondary);
   box-shadow: var(--s-shadow-dialog);
   color: var(--s-color-base-content-primary);
   padding: $inner-spacing-medium;
+  min-width: $popper-mix-width;
 }
 
 .app-info {
