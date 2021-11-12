@@ -284,7 +284,8 @@
         "github": "GitHub",
         "sorawiki": "@:soraText Wiki",
         "memorandum": "Polkaswap memorandum en servicevoorwaarden",
-        "privacy": "Privacybeleid"
+        "privacy": "Privacybeleid",
+        "info": "Info & Gemeenschap"
     },
     "helpDialog": {
         "title": "Help",
@@ -813,7 +814,17 @@
         "hideBalances": "Saldi verbergen",
         "settings": "Instellingen",
         "switchTheme": "Overschakelen naar {theme} -modus",
-        "switchLanguage": "Kies een taal"
+        "switchLanguage": "Kies een taal",
+        "selectNode": "@:selectNodeText"
     },
-    "sentText": "Verzonden"
+    "sentText": "Verzonden",
+    "learnMoreText": "Kom meer te weten",
+    "marketMakerCountdown": {
+        "title": "Market Maker aftellen",
+        "blocks": "blokken",
+        "daysLeft": "dagen over",
+        "txs": "TX's",
+        "volume": "MM TX-volume",
+        "description": "20 miljoen PSWAP \/ maand zal worden verdeeld onder market makers met ten minste 500 tx \/ maand met een waarde van meer dan 1 XOR."
+    }
 }
