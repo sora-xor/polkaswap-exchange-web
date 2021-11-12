@@ -5,6 +5,7 @@ import router from './router';
 import store from './store';
 import i18n from './lang';
 import { updateDocumentTitle } from './utils';
+import './registerServiceWorker';
 
 import './plugins';
 import './styles';
