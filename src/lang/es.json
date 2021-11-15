@@ -43,7 +43,7 @@
             "ClaimRewards": "{rewards} Recompensa reclamada correctamente"
         },
         "error": {
-            "Transfer": "Fallo al enviar {amount} {symbol} a {address}",
+            "Transfer": "Fallo en {acción} {importe} {símbolo} {dirección} {dirección}",
             "Swap": "Fallo al intercambiar {amount} {symbol} por {amount2} {symbol2}",
             "AddLiquidity": "Fallo al suministrar {amount} {symbol} y {amount2} {symbol2}",
             "RemoveLiquidity": "Fallo al eliminar {amount} {symbol} y {amount2} {symbol2}",
@@ -228,7 +228,7 @@
     "changeAccountText": "Cambiar cuenta",
     "connectedText": "Conectado",
     "connectWalletTextTooltip": "Conectar a la Red @:soraText con polkadot{.js}",
-    "selectNodeText": "Seleccione nodo",
+    "selectNodeText": "Seleccione el nodo de red",
     "bridgeText": "Puente",
     "disclaimer": "<span class=\"app-disclaimer__title\">Descargo de responsabilidad<\/span>: Este sitio web es mantenido por la comunidad @:(soraText). Antes de continuar utilizando este sitio web, por favor revise el @:polkaswapFaqLink y la documentación, que incluye una explicación detallada sobre el funcionamiento de Polkaswap, así como el @:memorandumLink, y el @:(privacyLink). Estos documentos son cruciales para una experiencia de usuario segura y positiva. Al utilizar Polkaswap, usted reconoce que ha leído y comprendido estos documentos. También reconoce lo siguiente 1) su única responsabilidad por el cumplimiento de todas las leyes que puedan aplicarse a su uso particular de Polkaswap en su jurisdicción legal; 2) su comprensión de que la versión actual de Polkaswap es una versión alfa: no ha sido completamente probada, y algunas funciones pueden no funcionar como se ha diseñado; y 3) su comprensión y aceptación voluntaria de los riesgos que implica el uso de Polkaswap, incluyendo, pero no limitado a, el riesgo de perder tokens. Una vez más, ¡por favor no continúe sin leer el @:polkaswapFaqLink, el @:memorandumLink y el @:privacyLink!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
@@ -284,7 +284,8 @@
         "github": "GitHub",
         "sorawiki": "@:soraText Wiki",
         "memorandum": "Memorando y condiciones de servicio de Polkaswap",
-        "privacy": "Política de privacidad"
+        "privacy": "Política de privacidad",
+        "info": "Información y comunidad"
     },
     "helpDialog": {
         "title": "Ayuda",
@@ -297,7 +298,7 @@
     },
     "aboutNetworkDialog": {
         "title": "Acerca de",
-        "learnMore": "Aprende más",
+        "learnMore": "@:learnMoreText",
         "network": {
             "title": "¿Qué es @:soraText?",
             "description": "Polkaswap está construido sobre la Red @:soraText, y el token @:soraText (XOR) se utiliza para la provisión de gas\/comisiones y liquidez en Polkaswap. La red @:soraText permite reducir las tarifas, agilizar las transacciones y simplificar la finalización del consenso, y se centra en ofrecer interoperabilidad en otros ecosistemas de blockchain como @:(ethereumText)."
@@ -812,18 +813,18 @@
         "showBalances": "Mostrar saldos",
         "hideBalances": "Ocultar saldos",
         "settings": "Ajustes",
-        "switchTheme": "Cambiar a {theme} Modo",
-        "switchLanguage": "Elige lengua",
+        "switchTheme": "Cambiar al modo {theme}",
+        "switchLanguage": "Elige lenguaje",
         "selectNode": "@:selectNodeText"
     },
     "sentText": "Enviado",
     "learnMoreText": "Aprende más",
     "marketMakerCountdown": {
-        "title": "Cuenta regresiva de Market Maker",
+        "title": "Cuenta Regresiva del Creador de Mercado",
         "blocks": "bloques",
         "daysLeft": "días restantes",
         "txs": "TXs",
-        "volume": "Volumen de TX MM",
-        "description": "Se distribuirán 20 millones de PSWAP \/ mes a los creadores de mercado con al menos 500 tx \/ mes valorados en 1 XOR."
+        "volume": "Volumen de Transacciones de MM",
+        "description": "Se distribuirán 20 millones de PSWAP \/ mes a los creadores de mercado con al menos 500 tx \/ mes valorados en más de 1 XOR."
     }
 }

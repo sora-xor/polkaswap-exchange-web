@@ -284,7 +284,8 @@
         "github": "GitHub",
         "sorawiki": "@:soraText Wiki",
         "memorandum": "Mémorandum et conditions d'utilisation de Polkaswap",
-        "privacy": "Politique de confidentialité"
+        "privacy": "Politique de confidentialité",
+        "info": "Info & Communauté"
     },
     "helpDialog": {
         "title": "Aide",

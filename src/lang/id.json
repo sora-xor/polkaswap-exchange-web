@@ -284,7 +284,8 @@
         "github": "GitHub",
         "sorawiki": "@:soraText Wiki",
         "memorandum": "Memorandum Polkaswap dan Ketentuan Layanan",
-        "privacy": "Kebijakan Privasi"
+        "privacy": "Kebijakan Privasi",
+        "info": "Info & Komunitas"
     },
     "helpDialog": {
         "title": "Bantuan",

@@ -95,7 +95,7 @@
         "errorAddress": "Nieprawidłowy adres. Sprawdź go i spróbuj ponownie.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Wysyłaj tokeny między kontami sieci SORA",
-        "addressWarning": "Tokeny zostaną wysłane na poniższy adres sieci SORA. Upewnij się, czy odbiorca może uzyskać dostęp do sieci SORA, aby korzystać z tokenów:",
+        "addressWarning": "Tokeny zostaną wysłane na poniższy adres w sieci SORA. Upewnij się, czy odbiorca może uzyskać dostęp do sieci SORA, aby korzystać z tokenów:",
         "addressError": "Nie możesz wysyłać tokenów na konto, z którym jesteś teraz właśnie połączony."
     },
     "account": {
@@ -284,7 +284,8 @@
         "github": "GitHub",
         "sorawiki": "Wiki @:soraText",
         "memorandum": "Memo giełdy Polkaswap oraz Warunki korzystania z usług",
-        "privacy": "Polityka prywatności"
+        "privacy": "Polityka prywatności",
+        "info": "Informacje i społeczność"
     },
     "helpDialog": {
         "title": "Pomoc",
@@ -822,8 +823,8 @@
         "title": "Odliczanie animatora rynku",
         "blocks": "bloki",
         "daysLeft": "pozostało dni",
-        "txs": "TX",
-        "volume": "Głośność MM TX",
-        "description": "20 milionów PSWAP \/ miesiąc będzie rozprowadzanych do animatorów rynku z co najmniej 500 tx \/ miesiąc o wartości powyżej 1 XOR."
+        "txs": "trans.",
+        "volume": "Wolumen trans. animatora rynku",
+        "description": "20 milionów PSWAP na miesiąc trafi do animatorów rynku z co najmniej 500 trans. na miesiąc o wartości powyżej 1 XOR każda."
     }
 }
