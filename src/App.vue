@@ -45,6 +45,7 @@ import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
+import AppUpdateMixin from '@/components/mixins/AppUpdateMixin';
 import SoraLogo from '@/components/logo/Sora.vue';
 
 import { PageNames, Components, Language } from '@/consts';
@@ -63,7 +64,7 @@ import type { SubNetwork } from '@/utils/ethers-util';
     AppLogoButton: lazyComponent(Components.AppLogoButton),
   },
 })
-export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
+export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin, AppUpdateMixin) {
   readonly PageNames = PageNames;
   readonly PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
 
@@ -330,6 +331,12 @@ ul ul {
   &:hover .loader {
     width: 0;
     animation: none;
+  }
+
+  .link {
+    color: inherit;
+    cursor: pointer;
+    text-decoration: underline;
   }
 }
 .el-form--actions {
