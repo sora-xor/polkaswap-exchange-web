@@ -41,12 +41,14 @@ import STableColumn from '@soramitsu/soramitsu-js-ui/lib/components/Table/STable
 import STooltip from '@soramitsu/soramitsu-js-ui/lib/components/Tooltip';
 
 import ElProgress from 'element-ui/lib/progress';
+import ElPopover from 'element-ui/lib/popover';
 
 import store from '@/store';
 
 Vue.use(ElementUIPlugin);
 Vue.use(SoramitsuUIStorePlugin, { store });
 Vue.use(ElProgress);
+Vue.use(ElPopover);
 Vue.use(SButton);
 Vue.use(SCard);
 Vue.use(SCheckbox);

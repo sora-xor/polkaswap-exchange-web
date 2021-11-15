@@ -1,12 +1,13 @@
 <template>
-  <s-tooltip
+  <el-popover
     v-if="accountMarketMakerInfo"
     popper-class="countdown-tooltip"
-    :open-delay="0"
-    :close-delay="500"
-    :show-arrow="false"
+    trigger="click"
+    :visible-arrow="false"
+    @show="disableTooltip(true)"
+    @hide="disableTooltip(false)"
   >
-    <div slot="content" class="countdown-info">
+    <div class="countdown-info">
       <div class="countdown-info-header">
         <div class="countdown-info-title">{{ t('marketMakerCountdown.title') }}</div>
         <div class="countdown-info-time">
@@ -40,8 +41,10 @@
         <a class="countdown-info-link" target="_blank" rel="nofollow noopener" :href="link">{{ t('learnMoreText') }}</a>
       </div>
     </div>
-    <countdown unit="MM" :percentage="transactionsPercentage" :count="accountMarketMakerInfo.count" />
-  </s-tooltip>
+    <s-tooltip slot="reference" :open-delay="0" :content="t('marketMakerCountdown.title')" :disabled="tooltipDisabled">
+      <countdown unit="MM" :percentage="transactionsPercentage" :count="accountMarketMakerInfo.count" />
+    </s-tooltip>
+  </el-popover>
 </template>
 
 <script lang="ts">
@@ -94,6 +97,8 @@ export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterM
   readonly total = REQUIRED_TX_COUNT;
   readonly link = Links.marketMaker;
 
+  tooltipDisabled = false;
+
   get transactionsPercentage(): number {
     if (!this.accountMarketMakerInfo) return 0;
 
@@ -121,11 +126,15 @@ export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterM
 
     return this.formatCodecNumber(this.accountMarketMakerInfo.volume);
   }
+
+  disableTooltip(flag = false): void {
+    this.tooltipDisabled = flag;
+  }
 }
 </script>
 
 <style lang="scss">
-.countdown-tooltip.el-tooltip__popper.neumorphic {
+.countdown-tooltip.el-popover.el-popper {
   background-color: var(--s-color-utility-body);
   border-color: var(--s-color-base-border-secondary);
   border-radius: var(--s-border-radius-mini);
@@ -133,6 +142,7 @@ export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterM
   padding: 14px;
   max-width: 288px;
   width: 100%;
+  font-size: var(--s-font-size-extra-mini);
 }
 
 .countdown-info-progress .el-progress-bar__outer {
