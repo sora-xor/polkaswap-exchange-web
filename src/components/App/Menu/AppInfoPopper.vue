@@ -35,7 +35,7 @@
       </div>
       <div class="app-info__versions">
         <div>{{ app.name }} v{{ app.version }}</div>
-        <div v-if="spec">{{ spec.name }} v{{ spec.version }}</div>
+        <div v-if="specVersion">{{ t('soraText') }} v{{ specVersion }}</div>
       </div>
     </div>
     <template #reference>
@@ -52,26 +52,18 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { app, SocialNetworkLinks } from '@/consts';
 
-type Spec = {
-  name: string;
-  version: number;
-};
-
 @Component
 export default class AppInfoPopper extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   readonly SocialNetworkLinks = SocialNetworkLinks;
   readonly app = app;
 
-  spec: Nullable<Spec> = null;
+  specVersion: Nullable<number> = null;
 
   created(): void {
     this.withApi(() => {
-      const { specName, specVersion } = api.api.consts.system.version;
+      const { specVersion } = api.api.consts.system.version;
 
-      this.spec = {
-        name: String(specName),
-        version: Number(specVersion),
-      };
+      this.specVersion = Number(specVersion);
     });
   }
 }
