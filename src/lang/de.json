@@ -228,7 +228,7 @@
     "changeAccountText": "Konto wechseln",
     "connectedText": "Verbunden",
     "connectWalletTextTooltip": "Verbindung zum @:soraText -Netzwerk mit Polkadot{.js}",
-    "selectNodeText": "Node auswählen",
+    "selectNodeText": "Netzwerkknoten auswählen",
     "bridgeText": "Bridge",
     "disclaimer": "<span class=\"app-disclaimer__title\">Haftungsausschluss<\/span>: Diese Website wird von der @:soraText -Community verwaltet. Bevor du diese Website weiter nutzt, ließ bitte den @:polkaswapFaqLink und die Dokumentation, die eine detaillierte Erklärung zur Funktionsweise von Polkaswap enthält, sowie den @:memorandumLink und @:(privacyLink). Diese Dokumente sind entscheidend für eine sichere und positive Benutzererfahrung. Durch die Nutzung von Polkaswap bestätigst du, dass du diese Dokumente gelesen und verstanden hast. Du erkennst außerdem Folgendes an: 1) Deine alleinige Verantwortung für die Einhaltung aller Gesetze, die für deine spezielle Nutzung von Polkaswap in deiner Rechtsordnung gelten; 2) Dein Verständnis, dass die aktuelle Version von Polkaswap eine Alpha-Version ist: Sie wurde nicht vollständig getestet und einige Funktionen können möglicherweise nicht wie vorgesehen verlaufen; und 3) Dein Verständnis und deine freiwillige Akzeptanz der Risiken, die mit der Verwendung von Polkaswap verbunden sind, einschließlich, aber nicht beschränkt auf das Risiko des Verlustes von Token. Noch einmal: Bitte fahre nicht fort, ohne @:polkaswapFaqLink, @:memorandumLink und @:privacyLink gelesen zu haben!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
@@ -284,7 +284,8 @@
         "github": "GitHub",
         "sorawiki": "@:soraText Wiki",
         "memorandum": "Polkaswap Memorandum und Nutzungsbedingungen",
-        "privacy": "Datenschutzbestimmungen"
+        "privacy": "Datenschutzbestimmungen",
+        "info": "Info & Community"
     },
     "helpDialog": {
         "title": "Hilfe",
@@ -297,7 +298,7 @@
     },
     "aboutNetworkDialog": {
         "title": "Über",
-        "learnMore": "Mehr erfahren",
+        "learnMore": "@:learnMoreText",
         "network": {
             "title": "Was ist @:(soraText)?",
             "description": "Polkaswap ist auf dem @:soraText -Netzwerk aufgebaut, und der @:soraText -Token (XOR) wird für Gas\/Gebühren und Liquiditätsbereitstellung auf Polkaswap verwendet. @:soraText -Netzwerk ermöglicht geringere Gebühren, schnellere Transaktionen und einfachere Konsensabschlüsse und fokussiert sich somit die Bereitstellung der Interoperabilität zwischen anderen Blockchain-Ökosystemen wie @:(ethereumText)."
@@ -813,7 +814,17 @@
         "hideBalances": "Salden ausblenden",
         "settings": "Einstellungen",
         "switchTheme": "Wechseln Sie in den {theme}-Modus",
-        "switchLanguage": "Sprache wählen"
+        "switchLanguage": "Sprache wählen",
+        "selectNode": "@:selectNodeText"
     },
-    "sentText": "Gesendet"
+    "sentText": "Gesendet",
+    "learnMoreText": "Mehr erfahren",
+    "marketMakerCountdown": {
+        "title": "Market Maker Countdown",
+        "blocks": "Blöcke",
+        "daysLeft": "Tage übrig",
+        "txs": "TXs",
+        "volume": "MM TX-Volume",
+        "description": "20 Millionen PSWAP \/ Monat werden an Market Makers mit mindestens 500 tx \/ Monat im Wert von über 1 XOR verteilt."
+    }
 }
