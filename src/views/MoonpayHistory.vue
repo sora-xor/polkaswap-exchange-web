@@ -23,6 +23,7 @@
                 <template v-if="item.formatted.cryptoAmount">
                   <formatted-amount
                     class="moonpay-history-item-amount"
+                    value-can-be-hidden
                     :value="item.formatted.cryptoAmount"
                     :font-size-rate="FontSizeRate.MEDIUM"
                     :asset-symbol="item.formatted.crypto"
@@ -32,6 +33,7 @@
                 </template>
                 <formatted-amount
                   class="moonpay-history-item-amount"
+                  value-can-be-hidden
                   :value="item.formatted.fiatAmount"
                   :font-size-rate="FontSizeRate.MEDIUM"
                   :asset-symbol="item.formatted.fiat"
@@ -114,8 +116,8 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
   @Getter libraryTheme!: Theme;
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean;
   @Getter('currenciesById', { namespace }) currenciesById!: MoonpayCurrenciesById;
-  @Action('getTransactions', { namespace }) getTransactions!: () => Promise<void>;
-  @Action('getCurrencies', { namespace }) getCurrencies!: () => Promise<void>;
+  @Action('getTransactions', { namespace }) getTransactions!: AsyncVoidFn;
+  @Action('getCurrencies', { namespace }) getCurrencies!: AsyncVoidFn;
 
   private unwatchEthereum!: any;
 
@@ -127,12 +129,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
     this.withApi(async () => {
       this.initMoonpayApi(); // MoonpayBridgeInitMixin
 
-      await Promise.all([
-        this.prepareEvmNetwork(), // MoonpayBridgeInitMixin
-        this.getTransactions(),
-        this.getCurrencies(),
-        this.getHistory(),
-      ]);
+      await Promise.all([this.getTransactions(), this.getCurrencies(), this.getHistory()]);
 
       this.unwatchEthereum = await ethersUtil.watchEthereum({
         onAccountChange: (addressList: string[]) => {
@@ -246,12 +243,14 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
   }
 
   handleBack(): void {
+    this.loading = false;
     this.changeView(HistoryView);
   }
 
   async navigateToDetails(item): Promise<void> {
     try {
-      await this.checkConnectionToExternalAccount(() => {
+      await this.checkConnectionToExternalAccount(async () => {
+        await this.prepareEvmNetwork(); // MoonpayBridgeInitMixin
         this.selectedItem = item;
         this.changeView(DetailsView);
       });
@@ -291,6 +290,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
 
 <style lang="scss" scoped>
 $list-item-min-height: 76px;
+$separator-margin: calc(var(--s-basic-spacing) / 2);
 
 .moonpay-history {
   position: relative;
@@ -365,6 +365,10 @@ $list-item-min-height: 76px;
       &.failed {
         color: var(--s-color-status-error);
       }
+    }
+
+    .s-icon--network {
+      margin-left: $separator-margin;
     }
   }
 }

@@ -284,7 +284,8 @@
         "github": "GitHub",
         "sorawiki": "@:soraText Wiki",
         "memorandum": "Polkaswap Memorandum og vilkår for bruk",
-        "privacy": "Personvernerklæring"
+        "privacy": "Personvernerklæring",
+        "info": "Info og fellesskap"
     },
     "helpDialog": {
         "title": "Hjelp",
@@ -813,7 +814,17 @@
         "hideBalances": "Skjul saldoer",
         "settings": "Innstillinger",
         "switchTheme": "Bytt til {theme} -modus",
-        "switchLanguage": "Velg språk"
+        "switchLanguage": "Velg språk",
+        "selectNode": "@:selectNodeText"
     },
-    "sentText": "Sendt"
+    "sentText": "Sendt",
+    "learnMoreText": "Lær mer",
+    "marketMakerCountdown": {
+        "title": "Market Maker Nedtelling",
+        "blocks": "blokker",
+        "daysLeft": "dager igjen",
+        "txs": "TXs",
+        "volume": "MM TX volum",
+        "description": "20 millioner PSWAP \/ måned vil bli distribuert til markedsmakere med minst 500 tx \/ måned verdt over 1 XOR."
+    }
 }

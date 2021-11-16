@@ -172,7 +172,6 @@ import {
 } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
-import TransactionMixin from '@/components/mixins/TransactionMixin';
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 
 import router, { lazyComponent } from '@/router';
@@ -192,7 +191,11 @@ const namespace = 'removeLiquidity';
     InfoLine: components.InfoLine,
   },
 })
-export default class RemoveLiquidity extends Mixins(mixins.FormattedAmountMixin, TransactionMixin, ConfirmDialogMixin) {
+export default class RemoveLiquidity extends Mixins(
+  mixins.FormattedAmountMixin,
+  mixins.TransactionMixin,
+  ConfirmDialogMixin
+) {
   readonly KnownSymbols = KnownSymbols;
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 

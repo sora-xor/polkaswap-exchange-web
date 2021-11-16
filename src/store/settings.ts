@@ -3,7 +3,7 @@ import flatMap from 'lodash/fp/flatMap';
 import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
-import { connection, isWalletLoaded, initWallet } from '@soramitsu/soraneo-wallet-web';
+import { api, connection, initWallet } from '@soramitsu/soraneo-wallet-web';
 
 import storage, { settingsStorage } from '@/utils/storage';
 import { AppHandledError } from '@/utils/error';
@@ -15,9 +15,10 @@ import {
   Language,
 } from '@/consts';
 import { getRpcEndpoint, fetchRpc } from '@/utils/rpc';
-import { ConnectToNodeOptions } from '@/types/nodes';
 import { getLocale, getSupportedLocale, setI18nLocale } from '@/lang';
 import { updateFpNumberLocale, updateDocumentTitle } from '@/utils';
+
+import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 
 export type ApiKeysObject = {
   [key: string]: string;
@@ -40,6 +41,9 @@ const types = flow(
     'SET_LANGUAGE',
     'SET_API_KEYS',
     'SET_FEATURE_FLAGS',
+    'SET_BLOCK_NUMBER',
+    'SET_BLOCK_NUMBER_UPDATES',
+    'RESET_BLOCK_NUMBER_UPDATES',
   ]),
   map((x) => [x, x]),
   fromPairs
@@ -61,6 +65,8 @@ function initialState() {
     chainGenesisHash: '',
     faucetUrl: '',
     selectNodeDialogVisibility: false,
+    blockNumber: 0,
+    blockNumberUpdates: null,
   };
 }
 
@@ -93,6 +99,9 @@ const getters = {
   },
   moonpayEnabled(state) {
     return !!state.apiKeys.moonpay && !!state.featureFlags.moonpay;
+  },
+  blockNumber(state): number {
+    return state.blockNumber;
   },
 };
 
@@ -153,10 +162,22 @@ const mutations = {
   [types.SET_FEATURE_FLAGS](state, featureFlags = {}) {
     state.featureFlags = { ...state.featureFlags, ...featureFlags };
   },
+  [types.SET_BLOCK_NUMBER](state, blockNumber = 0) {
+    state.blockNumber = blockNumber;
+  },
+  [types.SET_BLOCK_NUMBER_UPDATES](state, subscription) {
+    state.blockNumberUpdates = subscription;
+  },
+  [types.RESET_BLOCK_NUMBER_UPDATES](state) {
+    if (state.blockNumberUpdates) {
+      state.blockNumberUpdates.unsubscribe();
+    }
+    state.blockNumberUpdates = null;
+  },
 };
 
 const actions = {
-  async connectToNode({ commit, dispatch, state }, options: ConnectToNodeOptions = {}) {
+  async connectToNode({ commit, dispatch, state, rootGetters }, options: ConnectToNodeOptions = {}) {
     if (!state.nodeConnectionAllowance) return;
 
     const { node, onError, ...restOptions } = options;
@@ -167,7 +188,7 @@ const actions = {
       await dispatch('setNode', { node: requestedNode, onError, ...restOptions });
 
       // wallet init & update flow
-      if (!isWalletLoaded) {
+      if (!rootGetters.isWalletLoaded) {
         try {
           await initWallet({ permissions: WalletPermissions });
           // TODO [tech]: maybe we should replace it, cuz it executes twice except bridge screens
@@ -211,7 +232,7 @@ const actions = {
       await connection.close();
 
       if (typeof onDisconnect === 'function') {
-        onDisconnect(node);
+        onDisconnect(node as Node);
       }
 
       dispatch('connectToNode', { node, onError, onDisconnect, onReconnect, connectionOptions: { once: false } });
@@ -266,7 +287,7 @@ const actions = {
       }
 
       if (isReconnection && typeof onReconnect === 'function') {
-        onReconnect(node);
+        onReconnect(node as Node);
       }
 
       commit(types.SET_NODE_SUCCESS, node);
@@ -344,6 +365,18 @@ const actions = {
   },
   setFeatureFlags({ commit }, featureFlags) {
     commit(types.SET_FEATURE_FLAGS, featureFlags);
+  },
+  setBlockNumber({ commit }) {
+    commit(types.RESET_BLOCK_NUMBER_UPDATES);
+
+    const blockNumberSubscription = api.getSystemBlockNumberObservable().subscribe((blockNumber) => {
+      commit(types.SET_BLOCK_NUMBER, Number(blockNumber));
+    });
+
+    commit(types.SET_BLOCK_NUMBER_UPDATES, blockNumberSubscription);
+  },
+  resetBlockNumberSubscription({ commit }) {
+    commit(types.RESET_BLOCK_NUMBER_UPDATES);
   },
 };
 

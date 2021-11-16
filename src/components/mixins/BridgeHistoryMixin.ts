@@ -1,8 +1,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 import { Operation, CodecString, NetworkFeesObject, BridgeHistory } from '@sora-substrate/util';
-
-import LoadingMixin from '@/components/mixins/LoadingMixin';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 import router from '@/router';
 import { PageNames, ZeroStringValue } from '@/consts';
@@ -12,12 +11,12 @@ import { STATES } from '@/utils/fsm';
 const namespace = 'bridge';
 
 @Component
-export default class BridgeHistoryMixin extends Mixins(LoadingMixin) {
+export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
   @Getter networkFees!: NetworkFeesObject;
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString;
   @Getter('history', { namespace }) bridgeHistory!: Array<BridgeHistory>;
 
-  @Action('getHistory', { namespace }) getHistory!: () => Promise<void>;
+  @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn;
   @Action('generateHistoryItem', { namespace }) generateHistoryItem!: (history: any) => Promise<BridgeHistory>;
 
   @Action('getEvmNetworkFee', { namespace }) getEvmNetworkFee!: AsyncVoidFn;

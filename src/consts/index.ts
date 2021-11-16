@@ -57,6 +57,9 @@ export const Links = {
   nodes: {
     tutorial: 'https://medium.com/sora-xor/how-to-run-a-sora-testnet-node-a4d42a9de1af',
   },
+  marketMaker: 'https://medium.com/polkaswap/pswap-rewards-part-3-polkaswap-market-making-rebates-1856f62ccfaa',
+  terms: 'https://wiki.sora.org/polkaswap/terms',
+  privacy: 'https://wiki.sora.org/polkaswap/privacy',
 };
 
 export const ObjectInit = () => null;
@@ -109,7 +112,9 @@ export enum Components {
   AppHeader = 'App/Header/AppHeader',
   AccountButton = 'App/Header/AccountButton',
   AppLogoButton = 'App/Header/AppLogoButton',
+  MarketMakerCountdown = 'App/Header/MarketMakerCountdown/MarketMakerCountdown',
   AppMenu = 'App/Menu/AppMenu',
+  AppInfoPopper = 'App/Menu/AppInfoPopper',
   SwapInfo = 'SwapInfo',
   SelectToken = 'SelectToken',
   TokenLogo = 'TokenLogo',
@@ -173,19 +178,13 @@ const MainMenu: Array<SidebarMenuItem> = [
     icon: 'grid-block-distribute-vertically-24',
     title: PageNames.Bridge,
   },
-  // PSS-570: Hide Farming until icon will be ready
   // {
-  //   icon: '',
-  //   title: PageNames.Farming,
-  //   disabled: true
-  // }
+  //   icon: 'various-pocket-24',
+  //   title: PageNames.Auctions,
+  // },
 ];
 
 const AccountMenu: Array<SidebarMenuItem> = [
-  {
-    icon: 'finance-wallet-24',
-    title: PageNames.Wallet,
-  },
   {
     icon: 'basic-circle-star-24',
     title: PageNames.Rewards,

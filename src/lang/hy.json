@@ -284,7 +284,8 @@
         "github": "GitHub(Գիթհաբ)",
         "sorawiki": "@:soraText Վիքին",
         "memorandum": "Polkaswap- ի հուշագիր և ծառայությունների մատուցման պայմաններ",
-        "privacy": "Գաղտնիության քաղաքականություն"
+        "privacy": "Գաղտնիության քաղաքականություն",
+        "info": "Ինֆո & Հասարակություն"
     },
     "helpDialog": {
         "title": "Օգնություն",
@@ -813,7 +814,17 @@
         "hideBalances": "Թաքցնել հավասարակշռությունները",
         "settings": "Կարգավորումներ",
         "switchTheme": "Անցնել {theme} ռեժիմի",
-        "switchLanguage": "Ընտրեք Լեզուն"
+        "switchLanguage": "Ընտրեք Լեզուն",
+        "selectNode": "@:selectNodeText"
     },
-    "sentText": "Ուղարկված է"
+    "sentText": "Ուղարկված է",
+    "learnMoreText": "Իմանալ ավելին",
+    "marketMakerCountdown": {
+        "title": "Շուկա ստեղծողի countdown",
+        "blocks": "բլոկներ",
+        "daysLeft": "մնացել են օրեր",
+        "txs": "TX-ներ",
+        "volume": "MM TX ծավալը",
+        "description": "20 միլիոն PSWAP \/ ամիս կտարածվի շուկա ստեղծողներին առնվազն 500 tx \/ ամիս 1 XOR-ից բարձր արժեքով:"
+    }
 }

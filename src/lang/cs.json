@@ -284,7 +284,8 @@
         "github": "GitHub",
         "sorawiki": "@:soraText Wiki",
         "memorandum": "Polkaswap Memorandum a Smluvní podmínky",
-        "privacy": "Zásady ochrany osobních údajů"
+        "privacy": "Zásady ochrany osobních údajů",
+        "info": "Informace a komunita"
     },
     "helpDialog": {
         "title": "Nápověda",
@@ -806,14 +807,24 @@
         }
     },
     "recievedText": "Přijato",
-    "light": "Světlo",
-    "dark": "Temný",
+    "light": "Světlý",
+    "dark": "Tmavý",
     "headerMenu": {
         "showBalances": "Zobrazit zůstatky",
         "hideBalances": "Skrýt zůstatky",
         "settings": "Nastavení",
         "switchTheme": "Přepnout do režimu {theme}",
-        "switchLanguage": "Vyber jazyk"
+        "switchLanguage": "Vybrat jazyk",
+        "selectNode": "@:selectNodeText"
     },
-    "sentText": "Odesláno"
+    "sentText": "Odesláno",
+    "learnMoreText": "Zjistit více",
+    "marketMakerCountdown": {
+        "title": "Odpočítávání Tvůrce trhu",
+        "blocks": "bloky",
+        "daysLeft": "zbývající dny",
+        "txs": "TXs",
+        "volume": "Objem MM TX",
+        "description": "20 milionů PSWAP\/měsíc bude distribuováno tvůrcům trhu s minimálně 500 tx\/měsíc v hodnotě přes 1 XOR."
+    }
 }

@@ -49,7 +49,6 @@ import type { Asset } from '@sora-substrate/util';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import DialogMixin from '@/components/mixins/DialogMixin';
-import LoadingMixin from '@/components/mixins/LoadingMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
@@ -67,7 +66,7 @@ export default class ConfirmRemoveLiquidity extends Mixins(
   mixins.NumberFormatterMixin,
   TranslationMixin,
   DialogMixin,
-  LoadingMixin
+  mixins.LoadingMixin
 ) {
   @State((state) => state[namespace].liquidityAmount) liquidityAmount!: string;
   @State((state) => state[namespace].firstTokenAmount) firstTokenAmount!: string;
@@ -110,6 +109,7 @@ export default class ConfirmRemoveLiquidity extends Mixins(
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    font-weight: 800;
   }
 }
 .token {

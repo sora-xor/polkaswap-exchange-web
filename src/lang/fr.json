@@ -284,7 +284,8 @@
         "github": "GitHub",
         "sorawiki": "@:soraText Wiki",
         "memorandum": "Mémorandum et conditions d'utilisation de Polkaswap",
-        "privacy": "Politique de confidentialité"
+        "privacy": "Politique de confidentialité",
+        "info": "Info & Communauté"
     },
     "helpDialog": {
         "title": "Aide",
@@ -813,7 +814,17 @@
         "hideBalances": "Masquer les soldes",
         "settings": "Paramètres",
         "switchTheme": "Passer en mode {theme}",
-        "switchLanguage": "Choisissez la langue"
+        "switchLanguage": "Choisissez la langue",
+        "selectNode": "@:selectNodeText"
     },
-    "sentText": "Envoyé"
+    "sentText": "Envoyé",
+    "learnMoreText": "En savoir plus",
+    "marketMakerCountdown": {
+        "title": "Compte à rebours market maker",
+        "blocks": "blocs",
+        "daysLeft": "Jours restants",
+        "txs": "TXs",
+        "volume": "MM Volume TX",
+        "description": "20 millions de PSWAP\/mois seront distribués aux teneurs de marché avec au moins 500 tx\/mois valorisés sur 1 XOR."
+    }
 }

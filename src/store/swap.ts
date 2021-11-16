@@ -6,7 +6,7 @@ import concat from 'lodash/fp/concat';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, CodecString, LiquiditySourceTypes, LPRewardsInfo } from '@sora-substrate/util';
 
-import { MarketAlgorithmForLiquiditySource } from '@/consts';
+import { MarketAlgorithmForLiquiditySource, ZeroStringValue } from '@/consts';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
@@ -96,7 +96,7 @@ const getters = {
     return state.toValue;
   },
   minMaxReceived(state: SwapState) {
-    return state.minMaxReceived;
+    return state.minMaxReceived || ZeroStringValue;
   },
   isExchangeB(state: SwapState) {
     return state.isExchangeB;
@@ -122,17 +122,22 @@ const getters = {
     return state.isAvailableChecking;
   },
   priceImpact(state: SwapState, getters) {
-    if (!state.toValue || !state.amountWithoutImpact || !getters.tokenTo) return '0';
+    const { fromValue, toValue, amountWithoutImpact, isExchangeB } = state;
 
-    const withoutImpact = FPNumber.fromCodecValue(state.amountWithoutImpact, getters.tokenTo.decimals);
+    const token = isExchangeB ? getters.tokenFrom : getters.tokenTo;
+    const value = isExchangeB ? fromValue : toValue;
 
-    if (withoutImpact.isZero()) return '0';
+    if (!token || !value || !amountWithoutImpact) return ZeroStringValue;
 
-    const amount = new FPNumber(state.toValue);
-    const div = amount.div(withoutImpact);
-    const result = new FPNumber(1).sub(div).mul(FPNumber.HUNDRED);
+    const withoutImpact = FPNumber.fromCodecValue(amountWithoutImpact, token.decimals);
 
-    return FPNumber.lte(result, FPNumber.ZERO) ? '0' : FPNumber.ZERO.sub(result).toFixed(2);
+    if (withoutImpact.isZero()) return ZeroStringValue;
+
+    const amount = new FPNumber(value, token.decimals);
+    const impact = isExchangeB ? withoutImpact.div(amount) : amount.div(withoutImpact);
+    const result = new FPNumber(1).sub(impact).mul(FPNumber.HUNDRED);
+
+    return FPNumber.lte(result, FPNumber.ZERO) ? ZeroStringValue : FPNumber.ZERO.sub(result).toFixed(2);
   },
 };
 

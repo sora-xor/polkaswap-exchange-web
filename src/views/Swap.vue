@@ -201,7 +201,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
+import { Action, Getter, State } from 'vuex-class';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import {
   KnownAssets,
@@ -217,7 +217,6 @@ import {
 import type { Subscription } from '@polkadot/x-rxjs';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import LoadingMixin from '@/components/mixins/LoadingMixin';
 
 import {
   isMaxButtonAvailable,
@@ -250,7 +249,9 @@ const namespace = 'swap';
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
 })
-export default class Swap extends Mixins(mixins.FormattedAmountMixin, TranslationMixin, LoadingMixin) {
+export default class Swap extends Mixins(mixins.FormattedAmountMixin, TranslationMixin, mixins.LoadingMixin) {
+  @State((state) => state[namespace].pairLiquiditySources) pairLiquiditySources!: Array<LiquiditySourceTypes>;
+
   @Getter networkFees!: NetworkFeesObject;
   @Getter nodeIsConnected!: boolean;
   @Getter isLoggedIn!: boolean;
@@ -540,7 +541,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
       this.setRewards(rewards);
 
       await Promise.all([this.calcMinMaxRecieved(), this.updatePrices()]);
-    } catch (error) {
+    } catch (error: any) {
       resetOppositeValue();
       if (!this.isInsufficientAmountError(oppositeToken.symbol as string, error.message)) {
         throw error;
