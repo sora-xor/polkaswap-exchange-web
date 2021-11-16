@@ -15,11 +15,9 @@
       <moonpay-history-button v-if="isLoggedIn" class="moonpay-button moonpay-button--history" />
     </div>
     <div class="app-controls s-flex">
+      <market-maker-countdown />
       <s-button type="action" class="theme-control s-pressed" :tooltip="hideBalancesTooltip" @click="toggleHideBalance">
         <s-icon :name="hideBalancesIcon" :size="iconSize" />
-      </s-button>
-      <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openSelectNodeDialog">
-        <token-logo class="node-control__logo" v-bind="nodeLogo" />
       </s-button>
       <account-button :disabled="loading" @click="goTo(PageNames.Wallet)" />
       <s-button
@@ -38,6 +36,9 @@
           @select="handleSelectHeaderMenu"
         >
           <template #menu>
+            <s-dropdown-item class="header-menu__item" icon="symbols-24" :value="HeaderMenuType.Node">
+              {{ t('headerMenu.selectNode') }}
+            </s-dropdown-item>
             <s-dropdown-item class="header-menu__item" :icon="themeIcon" :value="HeaderMenuType.Theme">
               {{ t('headerMenu.switchTheme', { theme: t(themeTitle) }) }}
             </s-dropdown-item>
@@ -66,16 +67,16 @@ import { Getter, Action } from 'vuex-class';
 import { components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-import { KnownSymbols } from '@sora-substrate/util';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import PolkaswapLogo from '@/components/logo/Polkaswap.vue';
 
 import { lazyComponent, goTo } from '@/router';
-import { PageNames, Components, LogoSize } from '@/consts';
+import { PageNames, Components } from '@/consts';
 
 enum HeaderMenuType {
+  Node = 'node',
   Theme = 'theme',
   Language = 'language',
 }
@@ -86,9 +87,9 @@ enum HeaderMenuType {
     PolkaswapLogo,
     AccountButton: lazyComponent(Components.AccountButton),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
+    MarketMakerCountdown: lazyComponent(Components.MarketMakerCountdown),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
-    TokenLogo: lazyComponent(Components.TokenLogo),
     Moonpay: lazyComponent(Components.Moonpay),
     MoonpayNotification: lazyComponent(Components.MoonpayNotification),
     MoonpayHistoryButton: lazyComponent(Components.MoonpayHistoryButton),
@@ -121,13 +122,6 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
     return this.t('selectNodeText');
   }
 
-  get nodeLogo(): any {
-    return {
-      size: LogoSize.MEDIUM,
-      tokenSymbol: KnownSymbols.XOR,
-    };
-  }
-
   get themeIcon(): string {
     return this.libraryTheme === Theme.LIGHT ? 'various-moon-24' : 'various-brightness-low-24';
   }
@@ -142,10 +136,6 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 
   get hideBalancesTooltip(): string {
     return this.t(`headerMenu.${this.shouldBalanceBeHidden ? 'showBalances' : 'hideBalances'}`);
-  }
-
-  openSelectNodeDialog(): void {
-    this.setSelectNodeDialogVisibility(true);
   }
 
   async openMoonpayDialog(): Promise<void> {
@@ -168,6 +158,9 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 
   handleSelectHeaderMenu(value: HeaderMenuType): void {
     switch (value) {
+      case HeaderMenuType.Node:
+        this.setSelectNodeDialogVisibility(true);
+        break;
       case HeaderMenuType.Theme:
         switchTheme();
         break;
@@ -333,14 +326,6 @@ $icon-size: 28px;
 .app-logo--header {
   @include mobile {
     display: none;
-  }
-}
-
-.node-control {
-  @include element-size('token-logo', 28px);
-  .token-logo {
-    display: block;
-    margin: auto;
   }
 }
 </style>
