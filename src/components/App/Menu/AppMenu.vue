@@ -138,16 +138,21 @@ export default class AppMenu extends Mixins(TranslationMixin) {
         color: var(--s-color-base-content-tertiary);
       }
     }
-    &:hover:not(.is-active):not(.is-disabled) {
-      i {
-        color: var(--s-color-base-content-secondary) !important;
+    &:not(.is-active):not(.is-disabled) {
+      &:hover,
+      &:focus {
+        i {
+          color: var(--s-color-base-content-secondary) !important;
+        }
       }
     }
     &:active,
     &.is-disabled,
     &.is-active {
-      .icon-container {
-        box-shadow: var(--s-shadow-element);
+      &:not(.menu-item--small) {
+        .icon-container {
+          box-shadow: var(--s-shadow-element);
+        }
       }
     }
     &.is-active {
@@ -157,6 +162,9 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       span {
         font-weight: 400;
       }
+    }
+    &:focus {
+      background-color: unset;
     }
   }
 }

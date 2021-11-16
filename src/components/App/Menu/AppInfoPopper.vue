@@ -1,12 +1,6 @@
 <template>
-  <s-tooltip
-    :open-delay="0"
-    :close-delay="500"
-    :show-arrow="false"
-    placement="top-start"
-    popper-class="app-info-popper"
-  >
-    <div slot="content" class="app-info">
+  <el-popover :visible-arrow="false" placement="top-start" popper-class="app-info-popper" trigger="click">
+    <div class="app-info">
       <div>
         <a
           v-for="item in SocialNetworkLinks"
@@ -41,11 +35,13 @@
       </div>
       <div class="app-info__versions">
         <div>{{ app.name }} v{{ app.version }}</div>
-        <div v-if="spec">{{ spec.name }} v{{ spec.version }}</div>
+        <div v-if="specVersion">{{ t('soraText') }} v{{ specVersion }}</div>
       </div>
     </div>
-    <slot />
-  </s-tooltip>
+    <template #reference>
+      <slot />
+    </template>
+  </el-popover>
 </template>
 
 <script lang="ts">
@@ -56,26 +52,18 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { app, SocialNetworkLinks } from '@/consts';
 
-type Spec = {
-  name: string;
-  version: number;
-};
-
 @Component
 export default class AppInfoPopper extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   readonly SocialNetworkLinks = SocialNetworkLinks;
   readonly app = app;
 
-  spec: Nullable<Spec> = null;
+  specVersion: Nullable<number> = null;
 
   created(): void {
     this.withApi(() => {
-      const { specName, specVersion } = api.api.consts.system.version;
+      const { specVersion } = api.api.consts.system.version;
 
-      this.spec = {
-        name: String(specName),
-        version: Number(specVersion),
-      };
+      this.specVersion = Number(specVersion);
     });
   }
 }
@@ -84,9 +72,10 @@ export default class AppInfoPopper extends Mixins(TranslationMixin, mixins.Loadi
 <style lang="scss">
 $popper-mix-width: 170px;
 
-.app-info-popper.el-tooltip__popper.neumorphic {
+.app-info-popper.el-popover.el-popper {
   background: var(--s-color-utility-body);
   border-color: var(--s-color-base-border-secondary);
+  border-radius: var(--s-border-radius-mini);
   box-shadow: var(--s-shadow-dialog);
   color: var(--s-color-base-content-primary);
   padding: $inner-spacing-medium;
