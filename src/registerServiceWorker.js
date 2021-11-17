@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import { register } from 'register-service-worker';
+import { register, unregister } from 'register-service-worker';
 
 import store from '@/store';
 
@@ -11,8 +11,18 @@ if (process.env.NODE_ENV === 'production') {
         'App is being served from cache by a service worker.\n' + 'For more details, visit https://goo.gl/AFskqB'
       );
     },
-    registered() {
+    registered(registration) {
       console.log('Service worker has been registered.');
+      if (registration.installing) {
+        registration.installing.addEventListener('statechange', (event) => {
+          if (event.target.state === 'redundant') {
+            // redirect to tech page
+            console.log('redirect app to tech page');
+            // unregister service worker
+            unregister();
+          }
+        });
+      }
     },
     cached() {
       console.log('Content has been cached for offline use.');
