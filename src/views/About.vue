@@ -125,14 +125,7 @@
         </div>
       </div>
       <div class="about-network">
-        <s-image
-          :src="images.about08"
-          lazy
-          fit="fill"
-          draggable="false"
-          class="unselectable network-img"
-          style="height: 468px"
-        />
+        <s-image :src="images.about08" lazy fit="fill" draggable="false" class="unselectable network-img" />
         <p class="text">{{ t('about.network') }}</p>
       </div>
     </div>
