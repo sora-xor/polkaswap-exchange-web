@@ -284,7 +284,8 @@
         "github": "GitHub",
         "sorawiki": "@:soraText Wiki",
         "memorandum": "Memorandum Polkaswap ati Awọn ofin lilo",
-        "privacy": "Ofin Asiri"
+        "privacy": "Ofin Asiri",
+        "info": "Alaye & Awujọ"
     },
     "helpDialog": {
         "title": "Iranlowo ",
@@ -813,7 +814,17 @@
         "hideBalances": "Tọju Awọn iwọntunwọnsi",
         "settings": "Ètò",
         "switchTheme": "Yipada si {theme} Ipo",
-        "switchLanguage": "Yan Ede"
+        "switchLanguage": "Yan Ede",
+        "selectNode": "@:selectNodeText"
     },
-    "sentText": "Ti firanṣẹ"
+    "sentText": "Ti firanṣẹ",
+    "learnMoreText": "Kọ ẹkọ si",
+    "marketMakerCountdown": {
+        "title": "Oja Ẹlẹda kika",
+        "blocks": "ohun amorindun",
+        "daysLeft": "ọjọ osi",
+        "txs": "TXs",
+        "volume": "MM TX iwọn didun",
+        "description": "20 million PSWAP \/ osù ni yoo pin si awọn oluṣe ọja pẹlu o kere ju 500 tx \/ osù ti o ni idiyele lori 1 XOR."
+    }
 }

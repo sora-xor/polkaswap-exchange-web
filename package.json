@@ -50,6 +50,7 @@
     "@vue/eslint-config-typescript": "^8.0.0",
     "@vue/test-utils": "^1.2.2",
     "@vue/vue2-jest": "^27.0.0-alpha.2",
+    "babel-plugin-require-context-hook": "^1.0.0",
     "css-unicode-loader": "^1.0.3",
     "eslint": "^7.29.0",
     "eslint-plugin-import": "^2.25.2",

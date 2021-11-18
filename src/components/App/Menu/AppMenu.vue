@@ -36,32 +36,20 @@
           active-text-color="var(--s-color-base-content-tertiary)"
           active-hover-color="transparent"
         >
-          <s-menu-item-group>
-            <li v-for="item in SocialNetworkLinks" :key="item.title">
-              <sidebar-item-content
-                :icon="item.icon"
-                :title="t(`social.${item.title}`)"
-                :href="item.href"
-                tag="a"
-                target="_blank"
-                rel="nofollow noopener"
-                class="el-menu-item menu-item--small"
-              />
-            </li>
-          </s-menu-item-group>
-          <s-menu-item-group>
-            <li v-if="faucetUrl">
-              <sidebar-item-content
-                :icon="FaucetLink.icon"
-                :title="t(`footerMenu.${FaucetLink.title}`)"
-                :href="faucetUrl"
-                tag="a"
-                target="_blank"
-                rel="nofollow noopener"
-                class="el-menu-item menu-item--small"
-              />
-            </li>
-          </s-menu-item-group>
+          <app-info-popper>
+            <sidebar-item-content icon="info-16" :title="t('footerMenu.info')" class="el-menu-item menu-item--small" />
+          </app-info-popper>
+
+          <sidebar-item-content
+            v-if="faucetUrl"
+            :icon="FaucetLink.icon"
+            :title="t(`footerMenu.${FaucetLink.title}`)"
+            :href="faucetUrl"
+            tag="a"
+            target="_blank"
+            rel="nofollow noopener"
+            class="el-menu-item menu-item--small"
+          />
         </s-menu>
       </div>
     </aside>
@@ -75,20 +63,13 @@ import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import {
-  PageNames,
-  PoolChildPages,
-  BridgeChildPages,
-  SidebarMenuGroups,
-  SocialNetworkLinks,
-  FaucetLink,
-  Components,
-} from '@/consts';
+import { PageNames, PoolChildPages, BridgeChildPages, SidebarMenuGroups, FaucetLink, Components } from '@/consts';
 
 import router, { lazyComponent } from '@/router';
 
 @Component({
   components: {
+    AppInfoPopper: lazyComponent(Components.AppInfoPopper),
     SidebarItemContent: lazyComponent(Components.SidebarItemContent),
   },
 })
@@ -100,7 +81,6 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   @Getter libraryTheme!: Theme;
 
   readonly SidebarMenuGroups = SidebarMenuGroups;
-  readonly SocialNetworkLinks = SocialNetworkLinks;
   readonly FaucetLink = FaucetLink;
 
   get mainMenuActiveColor(): string {
@@ -143,6 +123,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
         box-shadow: none;
         margin: 0;
         background-color: unset;
+
+        & + span {
+          margin-left: 0;
+        }
       }
     }
 
@@ -154,16 +138,21 @@ export default class AppMenu extends Mixins(TranslationMixin) {
         color: var(--s-color-base-content-tertiary);
       }
     }
-    &:hover:not(.is-active):not(.is-disabled) {
-      i {
-        color: var(--s-color-base-content-secondary) !important;
+    &:not(.is-active):not(.is-disabled) {
+      &:hover,
+      &:focus {
+        i {
+          color: var(--s-color-base-content-secondary) !important;
+        }
       }
     }
     &:active,
     &.is-disabled,
     &.is-active {
-      .icon-container {
-        box-shadow: var(--s-shadow-element);
+      &:not(.menu-item--small) {
+        .icon-container {
+          box-shadow: var(--s-shadow-element);
+        }
       }
     }
     &.is-active {
@@ -173,6 +162,9 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       span {
         font-weight: 400;
       }
+    }
+    &:focus {
+      background-color: unset;
     }
   }
 }
@@ -233,8 +225,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     display: flex;
     flex: 1;
     flex-flow: column nowrap;
-    padding-top: $inner-spacing-small;
-    padding-bottom: $inner-spacing-medium;
+    padding: $inner-spacing-small 0;
     border-right: none;
 
     &-menu {
@@ -264,17 +255,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       border-radius: 0;
     }
   }
-  .menu-link-container {
-    display: none;
 
-    @include mobile {
-      display: block;
-    }
-
-    .el-menu-item {
-      white-space: normal;
-    }
-  }
   .el-menu-item {
     padding-top: $inner-spacing-mini;
     padding-bottom: $inner-spacing-mini;
@@ -308,10 +289,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       color: var(--s-color-base-content-secondary);
 
       @include large-mobile {
-        padding: 0 10px;
+        padding: 0 $inner-spacing-mini * 1.25;
       }
       @include tablet {
-        padding: 0 13px;
+        padding: 0 $inner-spacing-small;
       }
     }
   }

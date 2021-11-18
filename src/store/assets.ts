@@ -9,6 +9,15 @@ import { bridgeApi } from '@/utils/bridge';
 import { findAssetInCollection } from '@/utils';
 import { ZeroStringValue } from '@/consts';
 
+const DISABLED_ASSETS_FOR_BRIDGE = [
+  '0x0083a6b3fbc6edae06f115c8953ddd7cbfba0b74579d6ea190f96853073b76f4', // USDT
+  '0x000974185b33df1db9beae5df570d68b8db8b517bb3d5c509eea906a81414c91', // OMG
+  '0x00e16b53b05b8a7378f8f3080bef710634f387552b1d1916edc578bda89d49e5', // BAT
+  '0x009749fbd2661866f0151e367365b7c5cc4b2c90070b4f745d0bb84f2ffb3b33', // HT
+  '0x007d998d3d13fbb74078fb58826e3b7bc154004c9cef6f5bccb27da274f02724', // CHSB
+  '0x00d69fbc298e2e27c3deaee4ef0802501e98c338baa11634f08f5c04b9eebdc0', // cUSDC
+];
+
 const types = flow(
   flatMap((x) => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   map((x) => [x, x]),
@@ -134,8 +143,11 @@ const actions = {
   async updateRegisteredAssets({ commit, dispatch }) {
     try {
       const registeredAssets = await bridgeApi.getRegisteredAssets();
+      const enabledRegisteredAssets = registeredAssets.filter(
+        (item) => !DISABLED_ASSETS_FOR_BRIDGE.includes(item.address)
+      );
       const preparedRegisteredAssets = await Promise.all(
-        registeredAssets.map(async (item) => {
+        enabledRegisteredAssets.map(async (item) => {
           const accountAsset = { ...item, externalBalance: ZeroStringValue };
           try {
             if (!accountAsset.externalAddress) {
