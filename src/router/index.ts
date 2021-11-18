@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
-import { PageNames, BridgeChildPages } from '@/consts';
+import { PageNames, BridgeChildPages, LayoutNames } from '@/consts';
 import store from '@/store';
 
 Vue.use(VueRouter);
@@ -11,6 +11,7 @@ const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet;
 
 const lazyComponent = (name: string) => () => import(`@/components/${name}.vue`);
 const lazyView = (name: string) => () => import(`@/views/${name}.vue`);
+const lazyLayout = (name: string) => () => import(`@/layouts/${name}.vue`);
 
 function goTo(name: PageNames): void {
   if (name === PageNames.Wallet) {
@@ -109,6 +110,12 @@ const routes: Array<RouteConfig> = [
     meta: { requiresAuth: true },
   },
   {
+    path: '/technical-work',
+    name: PageNames.TechnicalWork,
+    component: lazyView(PageNames.TechnicalWork),
+    meta: { layout: LayoutNames.Stub },
+  },
+  {
     path: '/stats',
     name: PageNames.Stats,
   },
@@ -152,5 +159,5 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
-export { lazyComponent, lazyView, goTo };
+export { lazyComponent, lazyView, lazyLayout, goTo };
 export default router;

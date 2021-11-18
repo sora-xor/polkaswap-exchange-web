@@ -83,6 +83,11 @@ export const LiquiditySourceForMarketAlgorithm = {
 
 export const MarketAlgorithmForLiquiditySource = invert(LiquiditySourceForMarketAlgorithm);
 
+export enum LayoutNames {
+  App = 'App',
+  Stub = 'Stub',
+}
+
 export enum PageNames {
   About = 'About',
   Swap = 'Swap',
@@ -102,6 +107,7 @@ export enum PageNames {
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
   Tokens = 'Tokens',
   MoonpayHistory = 'MoonpayHistory',
+  TechnicalWork = 'TechnicalWork',
 }
 
 export enum Components {

@@ -1,6 +1,5 @@
 import { setCacheNameDetails } from 'workbox-core';
 import { precacheAndRoute } from 'workbox-precaching';
-// import { setCatchHandler} from 'workbox-routing';
 
 import pkg from '../package.json';
 
@@ -12,7 +11,6 @@ setCacheNameDetails({
 precacheAndRoute(self.__WB_MANIFEST);
 
 self.addEventListener('message', (event) => {
-  console.log('message', event);
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }

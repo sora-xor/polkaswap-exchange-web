@@ -3,6 +3,8 @@
 import { register, unregister } from 'register-service-worker';
 
 import store from '@/store';
+import { goTo } from '@/router';
+import { PageNames } from '@/consts';
 
 if (process.env.NODE_ENV === 'production') {
   register(`${process.env.BASE_URL}service-worker.js`, {
@@ -13,11 +15,13 @@ if (process.env.NODE_ENV === 'production') {
     },
     registered(registration) {
       console.log('Service worker has been registered.');
+
+      // The installation failed, if new service worker has "redundant" state
       if (registration.installing) {
         registration.installing.addEventListener('statechange', (event) => {
           if (event.target.state === 'redundant') {
             // redirect to tech page
-            console.log('redirect app to tech page');
+            goTo(PageNames.TechnicalWork);
             // unregister service worker
             unregister();
           }
