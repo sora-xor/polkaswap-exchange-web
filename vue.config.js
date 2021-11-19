@@ -42,7 +42,6 @@ module.exports = {
   runtimeCompiler: true,
   pwa: {
     name: 'Polkaswap',
-    // workboxPluginMode: 'GenerateSW',
     workboxPluginMode: 'InjectManifest',
     workboxOptions: {
       swSrc: './src/service-worker.js',

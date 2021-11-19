@@ -1,25 +1,14 @@
 <template>
   <div id="app">
-    <component :is="layout">
-      <template v-slot:default="layoutProps">
-        <router-view v-bind="layoutProps" />
-      </template>
-    </component>
+    <router-view />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-import { lazyLayout } from '@/router';
-import { LayoutNames } from '@/consts';
-
 @Component
-export default class App extends Vue {
-  get layout() {
-    return lazyLayout(this.$route.meta?.layout ?? LayoutNames.App);
-  }
-}
+export default class App extends Vue {}
 </script>
 
 <style lang="scss">

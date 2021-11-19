@@ -88,7 +88,6 @@ export const MarketAlgorithmForLiquiditySource = invert(LiquiditySourceForMarket
 
 export enum LayoutNames {
   App = 'App',
-  Stub = 'Stub',
 }
 
 export enum PageNames {

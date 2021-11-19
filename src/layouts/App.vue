@@ -19,7 +19,7 @@
             </a>
           </div>
           <div class="app-content">
-            <slot :parent-loading="loading || !nodeIsConnected" />
+            <router-view :parent-loading="loading || !nodeIsConnected" />
             <p class="app-disclaimer" v-html="t('disclaimer')" />
           </div>
           <footer class="app-footer">
