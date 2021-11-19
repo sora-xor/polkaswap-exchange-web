@@ -1,40 +1,89 @@
 <template>
   <div class="stub">
-    <stub-background class="stub-animation" />
-    <div class="stub-content">
-      <slot />
+    <stub-background class="stub-background" />
+    <div class="stub-main">
+      <div class="stub-content">
+        <app-logo-button class="stub-logo" color="white" />
+        <slot />
+      </div>
+      <div class="stub-footer">
+        <app-powered-by-sora :theme="theme" color="#D5CDD0" />
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
+
 import StubBackground from '@/components/Stub/Background.vue';
 
 @Component({
   components: {
     StubBackground,
+    AppLogoButton: lazyComponent(Components.AppLogoButton),
+    AppPoweredBySora: lazyComponent(Components.AppPoweredBySora),
   },
 })
-export default class StubLayout extends Vue {}
+export default class StubLayout extends Vue {
+  readonly theme = Theme.DARK;
+}
 </script>
 
+<style lang="scss">
+.stub-logo.app-logo .app-logo__image {
+  width: 217px;
+  height: 58px;
+}
+</style>
+
 <style lang="scss" scoped>
+$offset: 48px;
+
 .stub {
   position: relative;
   width: 100%;
   height: 100%;
-}
+  overflow: hidden;
 
-.stub-animation {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
+  &-background,
+  &-main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    height: 100%;
+  }
 
-// .stub-content {
-//  background: conic-gradient(from 60.27deg at 74.46% -61.66%, rgba(242, 153, 133, 0.68) 0deg, #FF3B7B 117.86deg, rgba(169, 69, 209, 0.605193) 168.75deg, rgba(24, 165, 184, 0.2) 220.98deg, rgba(171, 24, 184, 0.25) 297.86deg, rgba(242, 44, 109, 0.38) 360deg);
-// }
+  &-background {
+    z-index: 0;
+  }
+
+  &-main {
+    display: flex;
+    flex-flow: column nowrap;
+    z-index: 1;
+  }
+
+  &-content,
+  &-footer {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &-content {
+    flex: 1;
+  }
+
+  &-footer,
+  &-logo {
+    margin-bottom: $offset;
+  }
+}
 </style>

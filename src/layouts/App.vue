@@ -23,12 +23,7 @@
             <p class="app-disclaimer" v-html="t('disclaimer')" />
           </div>
           <footer class="app-footer">
-            <div class="sora-logo">
-              <span class="sora-logo__title">{{ t('poweredBy') }}</span>
-              <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener">
-                <sora-logo :theme="libraryTheme" />
-              </a>
-            </div>
+            <app-powered-by-sora :theme="libraryTheme" />
           </footer>
         </s-scrollbar>
       </div>
@@ -41,12 +36,11 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 import { FPNumber, History, connection } from '@sora-substrate/util';
 import { mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import AppUpdateMixin from '@/components/mixins/AppUpdateMixin';
-import SoraLogo from '@/components/logo/Sora.vue';
 
 import { PageNames, Components, Language } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
@@ -58,10 +52,10 @@ import type { SubNetwork } from '@/utils/ethers-util';
 
 @Component({
   components: {
-    SoraLogo,
     AppHeader: lazyComponent(Components.AppHeader),
     AppMenu: lazyComponent(Components.AppMenu),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
+    AppPoweredBySora: lazyComponent(Components.AppPoweredBySora),
   },
 })
 export default class AppLayout extends Mixins(mixins.TransactionMixin, NodeErrorMixin, AppUpdateMixin) {
@@ -389,9 +383,6 @@ i.icon-divider {
 </style>
 
 <style lang="scss" scoped>
-$sora-logo-height: 36px;
-$sora-logo-width: 173.7px;
-
 .app {
   &-main {
     display: flex;
@@ -456,27 +447,6 @@ $sora-logo-width: 173.7px;
 
   @include large-mobile {
     display: none;
-  }
-}
-
-.sora-logo {
-  display: flex;
-  align-items: center;
-  align-self: flex-end;
-
-  &__title {
-    text-transform: uppercase;
-    font-weight: 200;
-    color: var(--s-color-base-content-secondary);
-    font-size: 15px;
-    line-height: 16px;
-    margin-right: $basic-spacing;
-    white-space: nowrap;
-  }
-
-  &__image {
-    width: $sora-logo-width;
-    height: $sora-logo-height;
   }
 }
 

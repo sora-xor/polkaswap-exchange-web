@@ -4,6 +4,7 @@
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink"
     viewBox="0 0 1440 937"
+    preserveAspectRatio="xMidYMax slice"
     shape-rendering="geometricPrecision"
     text-rendering="geometricPrecision"
   >

@@ -14,8 +14,10 @@ import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 @Component
 export default class SoraLogo extends Vue {
   @Prop({ default: Theme.LIGHT, type: String }) theme!: Theme;
+  @Prop({ default: '', type: String }) readonly color!: string;
 
   get textColor(): string {
+    if (this.color) return this.color;
     if (this.theme === Theme.DARK) return 'var(--s-color-base-content-tertiary)';
     return '#E3232C';
   }
