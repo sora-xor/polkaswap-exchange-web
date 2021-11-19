@@ -41,7 +41,7 @@
         <a class="countdown-info-link" target="_blank" rel="nofollow noopener" :href="link">{{ t('learnMoreText') }}</a>
       </div>
     </div>
-    <s-tooltip slot="reference" :open-delay="0" :content="t('marketMakerCountdown.title')" :disabled="tooltipDisabled">
+    <s-tooltip slot="reference" :content="t('marketMakerCountdown.title')" :disabled="tooltipDisabled">
       <countdown unit="MM" :percentage="transactionsPercentage" :count="accountMarketMakerInfo.count" />
     </s-tooltip>
   </el-popover>
