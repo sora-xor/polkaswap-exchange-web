@@ -9,7 +9,7 @@
       color="white"
     />
     <div class="countdown-content">
-      <span class="countdown-content__count">{{ count }}</span>
+      <span class="countdown-content__count">{{ formattedCount }}</span>
       <span class="countdown-content__unit">{{ unit }}</span>
     </div>
   </div>
@@ -25,6 +25,12 @@ export default class Countdown extends Vue {
   @Prop({ default: '', type: String }) readonly unit!: string;
   @Prop({ default: 38, type: Number }) readonly width!: number;
   @Prop({ default: 2, type: Number }) readonly strokeWidth!: number;
+
+  get formattedCount(): string {
+    if (this.count < 1000) return String(this.count);
+
+    return `${Math.trunc(this.count / 1000)}K`;
+  }
 }
 </script>
 
@@ -61,16 +67,14 @@ $countdown-box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.1), inset -5px -5px 5px
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
+    justify-content: center;
     color: white;
     line-height: 1;
+    font-size: 10px;
 
     &__count {
       font-weight: 600;
-      font-size: var(--s-font-size-small);
-    }
-
-    &__unit {
-      font-size: var(--s-font-size-extra-mini);
+      font-size: 1.4em;
     }
   }
 }
