@@ -14,9 +14,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
-
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Component, Vue } from 'vue-property-decorator';
 
 import AppLogoButton from '@/components/App/Header/AppLogoButton.vue';
 import AppPoweredBySora from '@/components/App/Footer/PoweredBySora.vue';
@@ -29,11 +27,11 @@ import TechnicalWorkBackground from '@/components/TechnicalWork/Background.vue';
     TechnicalWorkBackground,
   },
 })
-export default class TechnicalWork extends Mixins(TranslationMixin) {}
+export default class TechnicalWork extends Vue {}
 </script>
 
 <style lang="scss">
-.stub-logo.app-logo .app-logo__image {
+.technical-work-logo.app-logo .app-logo__image {
   width: 217px;
   height: 58px;
 }

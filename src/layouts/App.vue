@@ -43,9 +43,8 @@ import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import AppUpdateMixin from '@/components/mixins/AppUpdateMixin';
 
 import { PageNames, Components, Language } from '@/consts';
-import axiosInstance, { updateBaseUrl } from '@/api';
-import router, { goTo, lazyComponent } from '@/router';
-import { preloadFontFace } from '@/utils';
+import axiosInstance from '@/api';
+import { goTo, lazyComponent } from '@/router';
 import { getLocale } from '@/lang';
 import type { ConnectToNodeOptions } from '@/types/nodes';
 import type { SubNetwork } from '@/utils/ethers-util';
@@ -104,11 +103,6 @@ export default class AppLayout extends Mixins(mixins.TransactionMixin, NodeError
   }
 
   async created() {
-    // element-icons is not common used, but should be visible after network connection lost
-    preloadFontFace('element-icons');
-
-    updateBaseUrl(router);
-
     await this.setLanguage(getLocale() as any);
 
     await this.withLoading(async () => {

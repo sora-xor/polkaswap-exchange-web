@@ -44,7 +44,7 @@ const types = flow(
     'SET_BLOCK_NUMBER',
     'SET_BLOCK_NUMBER_UPDATES',
     'RESET_BLOCK_NUMBER_UPDATES',
-    'SET_UPDATE_NOTIFICATION',
+    'SET_APP_UPDATE_CALLBACK',
   ]),
   map((x) => [x, x]),
   fromPairs
@@ -68,7 +68,7 @@ function initialState() {
     selectNodeDialogVisibility: false,
     blockNumber: 0,
     blockNumberUpdates: null,
-    updateNotificationCallback: null,
+    appUpdateCallback: null,
   };
 }
 
@@ -176,8 +176,8 @@ const mutations = {
     }
     state.blockNumberUpdates = null;
   },
-  [types.SET_UPDATE_NOTIFICATION](state, callback: VoidFunction) {
-    state.updateNotificationCallback = callback;
+  [types.SET_APP_UPDATE_CALLBACK](state, callback: VoidFunction) {
+    state.appUpdateCallback = callback;
   },
 };
 
@@ -383,8 +383,8 @@ const actions = {
   resetBlockNumberSubscription({ commit }) {
     commit(types.RESET_BLOCK_NUMBER_UPDATES);
   },
-  setUpdateNotification({ commit }, callback: VoidFunction) {
-    commit(types.SET_UPDATE_NOTIFICATION, callback);
+  setAppUpdateCallback({ commit }, callback: VoidFunction) {
+    commit(types.SET_APP_UPDATE_CALLBACK, callback);
   },
 };
 

@@ -5,9 +5,9 @@ import AppUpdateMessage from '@/components/App/Message/Update.vue';
 
 @Component
 export default class AppUpdateMixin extends Vue {
-  @State((state) => state.settings.updateNotificationCallback) updateNotificationCallback!: Nullable<VoidFunction>;
+  @State((state) => state.settings.appUpdateCallback) appUpdateCallback!: Nullable<VoidFunction>;
 
-  @Watch('updateNotificationCallback')
+  @Watch('appUpdateCallback')
   private updateIsAvailable(): void {
     this.showAppUpdateNotification();
   }
@@ -21,13 +21,13 @@ export default class AppUpdateMixin extends Vue {
   }
 
   showAppUpdateNotification(): void {
-    if (this.updateNotificationCallback) {
+    if (this.appUpdateCallback) {
       const h = this.$createElement;
 
       this.$notify({
         message: h(AppUpdateMessage, {
           props: {
-            refresh: this.updateNotificationCallback,
+            refresh: this.appUpdateCallback,
           },
         }),
         type: 'warning',

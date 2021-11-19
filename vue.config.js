@@ -1,4 +1,5 @@
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+const pkg = require('./package.json');
 
 module.exports = {
   publicPath: './',
@@ -42,6 +43,9 @@ module.exports = {
   runtimeCompiler: true,
   pwa: {
     name: 'Polkaswap',
+    themeColor: '#FFFFFF',
+    assetsVersion: `${pkg.version}-${Date.now()}`,
+    iconPaths: null, // TODO: need to add icons
     workboxPluginMode: 'InjectManifest',
     workboxOptions: {
       swSrc: './src/service-worker.js',

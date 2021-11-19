@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import { register, unregister } from 'register-service-worker';
+import { register } from 'register-service-worker';
 
 import store from '@/store';
 import { goTo } from '@/router';
@@ -23,7 +23,7 @@ if (process.env.NODE_ENV === 'production') {
             // redirect to tech page
             goTo(PageNames.TechnicalWork);
             // unregister service worker
-            unregister();
+            registration.unregister();
           }
         });
       }
@@ -39,7 +39,7 @@ if (process.env.NODE_ENV === 'production') {
 
       const callback = () => registration.waiting.postMessage({ type: 'SKIP_WAITING' });
 
-      store.dispatch('setUpdateNotification', callback);
+      store.dispatch('setAppUpdateCallback', callback);
     },
     offline() {
       console.log('No internet connection found. App is running in offline mode.');

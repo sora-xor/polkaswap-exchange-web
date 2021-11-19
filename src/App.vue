@@ -7,8 +7,18 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
+import router from '@/router';
+import { updateBaseUrl } from '@/api';
+import { preloadFontFace } from '@/utils';
+
 @Component
-export default class App extends Vue {}
+export default class App extends Vue {
+  created(): void {
+    // element-icons is not common used, but should be visible after network connection lost
+    preloadFontFace('element-icons');
+    updateBaseUrl(router);
+  }
+}
 </script>
 
 <style lang="scss">
