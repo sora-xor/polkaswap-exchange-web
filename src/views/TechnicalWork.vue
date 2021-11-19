@@ -45,6 +45,15 @@ $offset: 48px;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background: conic-gradient(
+    from 60.27deg at 74.46% -61.66%,
+    rgba(242, 153, 133, 0.68) 0deg,
+    #ff3b7b 117.86deg,
+    rgba(169, 69, 209, 0.605193) 168.75deg,
+    rgba(24, 165, 184, 0.2) 220.98deg,
+    rgba(171, 24, 184, 0.25) 297.86deg,
+    rgba(242, 44, 109, 0.38) 360deg
+  );
 
   &-background,
   &-main {

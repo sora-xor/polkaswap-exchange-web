@@ -21,6 +21,7 @@ module.exports = {
         });
       });
 
+    // TODO: remove
     if (process.env.NODE_ENV === 'production') {
       const buildDateTime = Date.now();
       config.output.filename = `js/[name].[contenthash:8].${buildDateTime}.js`;
