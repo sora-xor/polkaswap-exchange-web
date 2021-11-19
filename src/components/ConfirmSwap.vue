@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
+import { Getter, State } from 'vuex-class';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, AccountAsset, LiquiditySourceTypes } from '@sora-substrate/util';
 
@@ -57,14 +57,14 @@ const namespace = 'swap';
   },
 })
 export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, DialogMixin) {
-  @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset;
-  @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset;
-  @Getter('fromValue', { namespace }) fromValue!: string;
-  @Getter('toValue', { namespace }) toValue!: string;
-  @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString;
-  @Getter('isExchangeB', { namespace }) isExchangeB!: boolean;
+  @State((state) => state[namespace].fromValue) fromValue!: string;
+  @State((state) => state[namespace].toValue) toValue!: string;
+  @State((state) => state[namespace].isExchangeB) isExchangeB!: boolean;
 
   @Getter slippageTolerance!: string;
+  @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset;
+  @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset;
+  @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString;
   @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes;
 
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
