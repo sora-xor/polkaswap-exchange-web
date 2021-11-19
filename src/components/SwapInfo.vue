@@ -58,7 +58,6 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-import { asZeroValue } from '@/utils';
 
 const namespace = 'swap';
 

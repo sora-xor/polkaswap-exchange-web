@@ -1,0 +1,783 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SwapInfo.vue [With All Set Parameters]: should be rendered correctly 1`] = `
+<div
+  class="swap-info-container"
+>
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol="VAL"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+    
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <!---->
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="liquidity-route swap-value"
+    >
+      <span>
+        XOR
+      </span>
+       
+      <s-icon-stub
+        name="el-icon el-icon-arrow-right"
+      />
+    </div>
+    <div
+      class="liquidity-route swap-value"
+    >
+      <span>
+        VAL
+      </span>
+       
+      <s-icon-stub
+        name="el-icon el-icon-arrow-right"
+      />
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue=""
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue="0.000861"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+</div>
+`;
+
+exports[`SwapInfo.vue [With Empty liquidityProviderFee]: should be rendered correctly 1`] = `
+<div
+  class="swap-info-container"
+>
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol="VAL"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+    
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="value-status-wrapper"
+    >
+      <formatted-amount-stub
+        assetsymbol=""
+        class="swap-value"
+        fontsizerate="normal"
+        fontweightrate="normal"
+        value=""
+      >
+        %
+      </formatted-amount-stub>
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="liquidity-route swap-value"
+    >
+      <span>
+        XOR
+      </span>
+       
+      <s-icon-stub
+        name="el-icon el-icon-arrow-right"
+      />
+    </div>
+    <div
+      class="liquidity-route swap-value"
+    >
+      <span>
+        VAL
+      </span>
+       
+      <s-icon-stub
+        name="el-icon el-icon-arrow-right"
+      />
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue=""
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue="0.000861"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+</div>
+`;
+
+exports[`SwapInfo.vue [With Empty minMaxReceived]: should be rendered correctly 1`] = `
+<div
+  class="swap-info-container"
+>
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol="VAL"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+    
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="value-status-wrapper"
+    >
+      <formatted-amount-stub
+        assetsymbol=""
+        class="swap-value"
+        fontsizerate="normal"
+        fontweightrate="normal"
+        value=""
+      >
+        %
+      </formatted-amount-stub>
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="liquidity-route swap-value"
+    >
+      <span>
+        XOR
+      </span>
+       
+      <s-icon-stub
+        name="el-icon el-icon-arrow-right"
+      />
+    </div>
+    <div
+      class="liquidity-route swap-value"
+    >
+      <span>
+        VAL
+      </span>
+       
+      <s-icon-stub
+        name="el-icon el-icon-arrow-right"
+      />
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue=""
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue="0.000861"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+</div>
+`;
+
+exports[`SwapInfo.vue [With Empty networkFee]: should be rendered correctly 1`] = `
+<div
+  class="swap-info-container"
+>
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol="VAL"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+    
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="value-status-wrapper"
+    >
+      <formatted-amount-stub
+        assetsymbol=""
+        class="swap-value"
+        fontsizerate="normal"
+        fontweightrate="normal"
+        value=""
+      >
+        %
+      </formatted-amount-stub>
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="liquidity-route swap-value"
+    >
+      <span>
+        XOR
+      </span>
+       
+      <s-icon-stub
+        name="el-icon el-icon-arrow-right"
+      />
+    </div>
+    <div
+      class="liquidity-route swap-value"
+    >
+      <span>
+        VAL
+      </span>
+       
+      <s-icon-stub
+        name="el-icon el-icon-arrow-right"
+      />
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue=""
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue="0"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+</div>
+`;
+
+exports[`SwapInfo.vue [With Error priceImpact]: should be rendered correctly 1`] = `
+<div
+  class="swap-info-container"
+>
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol="VAL"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+    
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="value-status-wrapper error"
+    >
+      <formatted-amount-stub
+        assetsymbol=""
+        class="swap-value"
+        fontsizerate="normal"
+        fontweightrate="normal"
+        value=""
+      >
+        %
+      </formatted-amount-stub>
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="liquidity-route swap-value"
+    >
+      <span>
+        XOR
+      </span>
+       
+      <s-icon-stub
+        name="el-icon el-icon-arrow-right"
+      />
+    </div>
+    <div
+      class="liquidity-route swap-value"
+    >
+      <span>
+        VAL
+      </span>
+       
+      <s-icon-stub
+        name="el-icon el-icon-arrow-right"
+      />
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue=""
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue="0.000861"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+</div>
+`;
+
+exports[`SwapInfo.vue [With Logged Out]: should be rendered correctly 1`] = `
+<div
+  class="swap-info-container"
+>
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol="VAL"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+    
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="value-status-wrapper"
+    >
+      <formatted-amount-stub
+        assetsymbol=""
+        class="swap-value"
+        fontsizerate="normal"
+        fontweightrate="normal"
+        value=""
+      >
+        %
+      </formatted-amount-stub>
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="liquidity-route swap-value"
+    >
+      <span>
+        XOR
+      </span>
+       
+      <s-icon-stub
+        name="el-icon el-icon-arrow-right"
+      />
+    </div>
+    <div
+      class="liquidity-route swap-value"
+    >
+      <span>
+        VAL
+      </span>
+       
+      <s-icon-stub
+        name="el-icon el-icon-arrow-right"
+      />
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue=""
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <!---->
+</div>
+`;
+
+exports[`SwapInfo.vue [With Warning priceImpact]: should be rendered correctly 1`] = `
+<div
+  class="swap-info-container"
+>
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol="VAL"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+    
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="value-status-wrapper warning"
+    >
+      <formatted-amount-stub
+        assetsymbol=""
+        class="swap-value"
+        fontsizerate="normal"
+        fontweightrate="normal"
+        value=""
+      >
+        %
+      </formatted-amount-stub>
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="liquidity-route swap-value"
+    >
+      <span>
+        XOR
+      </span>
+       
+      <s-icon-stub
+        name="el-icon el-icon-arrow-right"
+      />
+    </div>
+    <div
+      class="liquidity-route swap-value"
+    >
+      <span>
+        VAL
+      </span>
+       
+      <s-icon-stub
+        name="el-icon el-icon-arrow-right"
+      />
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue=""
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue="0.000861"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+</div>
+`;
+
+exports[`SwapInfo.vue [With isExchangeB]: should be rendered correctly 1`] = `
+<div
+  class="swap-info-container"
+>
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol="XOR"
+    fiatvalue="1.5185185"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+    
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="value-status-wrapper"
+    >
+      <formatted-amount-stub
+        assetsymbol=""
+        class="swap-value"
+        fontsizerate="normal"
+        fontweightrate="normal"
+        value=""
+      >
+        %
+      </formatted-amount-stub>
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="liquidity-route swap-value"
+    >
+      <span>
+        XOR
+      </span>
+       
+      <s-icon-stub
+        name="el-icon el-icon-arrow-right"
+      />
+    </div>
+    <div
+      class="liquidity-route swap-value"
+    >
+      <span>
+        VAL
+      </span>
+       
+      <s-icon-stub
+        name="el-icon el-icon-arrow-right"
+      />
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue=""
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue="0.000861"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value=""
+  />
+</div>
+`;

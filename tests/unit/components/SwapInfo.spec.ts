@@ -1,44 +1,47 @@
-// import { shallowMount, createLocalVue } from '@vue/test-utils'
-// import Vuex from 'vuex'
+import Vuex from 'vuex';
+import { shallowMount } from '@vue/test-utils';
 
-// import SwapInfo from '@/components/SwapInfo.vue'
-// import { slippageTolerance, liquidityProviderFee } from '../../mocks/swap'
-// import { tokens } from '../../mocks/tokens'
-// import { SoramitsuElementsImport, TranslationMock } from '../../utils'
+import SwapInfo from '@/components/SwapInfo.vue';
 
-// const localVue = createLocalVue()
-// localVue.use(Vuex)
-// SoramitsuElementsImport(localVue)
+import { useDescribe, localVue } from '../../utils';
+import { MOCK_SWAP_INFO, MOCK_FIAT_PRICE_AND_APY_OBJECT } from '../../mocks/components/SwapInfo';
 
-// describe('SwapInfo.vue', () => {
-//   let getters
-//   let store
-
-//   beforeEach(() => {
-//     TranslationMock(SwapInfo)
-
-//     getters = {
-//       tokenFrom: () => tokens[0],
-//       tokenTo: () => tokens[1],
-//       toValue: () => 100,
-//       isTokenFromPrice: () => true,
-//       slippageTolerance: () => slippageTolerance,
-//       liquidityProviderFee: () => liquidityProviderFee
-//     }
-
-//     store = new Vuex.Store({
-//       getters
-//     })
-//   })
-
-//   it('should renders correctly', () => {
-//     const wrapper = shallowMount(SwapInfo, { localVue, store })
-//     expect(wrapper.element).toMatchSnapshot()
-//   })
-// })
-
-describe('SwapInfo test', () => {
-  test('Temporary test', () => {
-    expect(true).toEqual(true);
-  });
+useDescribe('SwapInfo.vue', SwapInfo, () => {
+  MOCK_SWAP_INFO.map((item) =>
+    it(`[${item.title}]: should be rendered correctly`, () => {
+      const store = new Vuex.Store({
+        modules: {
+          swap: {
+            namespaced: true,
+            getters: {
+              tokenFrom: () => item.tokenFrom,
+              tokenTo: () => item.tokenTo,
+              minMaxReceived: () => item.minMaxReceived,
+              isExchangeB: () => item.isExchangeB,
+              liquidityProviderFee: () => item.liquidityProviderFee,
+              rewards: () => item.rewards,
+              priceImpact: () => item.priceImpact,
+            },
+          },
+          prices: {
+            namespaced: true,
+            getters: {
+              price: () => item.price,
+              priceReversed: () => item.priceReversed,
+            },
+          },
+        },
+        getters: {
+          fiatPriceAndApyObject: () => MOCK_FIAT_PRICE_AND_APY_OBJECT,
+          isLoggedIn: () => item.isLoggedIn,
+          networkFees: () => item.networkFees,
+        },
+      });
+      const wrapper = shallowMount(SwapInfo, {
+        localVue,
+        store,
+      });
+      expect(wrapper.element).toMatchSnapshot();
+    })
+  );
 });
