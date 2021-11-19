@@ -43,7 +43,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
+import { Getter, State } from 'vuex-class';
 import {
   KnownAssets,
   KnownSymbols,
@@ -69,18 +69,18 @@ const namespace = 'swap';
   },
 })
 export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
+  @State((state) => state[namespace].liquidityProviderFee) liquidityProviderFee!: CodecString;
+  @State((state) => state[namespace].isExchangeB) isExchangeB!: boolean;
+  @State((state) => state[namespace].rewards) rewards!: Array<LPRewardsInfo>;
+
+  @Getter isLoggedIn!: boolean;
+  @Getter networkFees!: NetworkFeesObject;
   @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset;
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset;
   @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString;
-  @Getter('isExchangeB', { namespace }) isExchangeB!: boolean;
-  @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString;
-  @Getter('rewards', { namespace }) rewards!: Array<LPRewardsInfo>;
   @Getter('priceImpact', { namespace }) priceImpact!: string;
-
-  @Getter('price', { namespace: 'prices' }) price!: string;
-  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string;
-  @Getter isLoggedIn!: boolean;
-  @Getter networkFees!: NetworkFeesObject;
+  @Getter('price', { namespace }) price!: string;
+  @Getter('priceReversed', { namespace }) priceReversed!: string;
 
   get liquidityProviderFeeTooltipText(): string {
     return this.t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: this.liquidityProviderFeeValue });
@@ -91,11 +91,7 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
     const toToken: string = this.tokenTo?.symbol ?? '';
     const xorToken: string = KnownSymbols.XOR;
 
-    if ([fromToken, toToken].includes(xorToken)) {
-      return [fromToken, toToken];
-    }
-
-    return [fromToken, xorToken, toToken];
+    return [...new Set([fromToken, xorToken, toToken])];
   }
 
   get priceValues(): Array<object> {

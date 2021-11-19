@@ -146,7 +146,7 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   @Action('getRewards', { namespace: 'rewards' }) getRewards!: (address: string) => Promise<Array<RewardInfo>>;
   @Action('claimRewards', { namespace: 'rewards' }) claimRewards!: (options: any) => Promise<void>;
 
-  private unwatchEthereum!: any;
+  private unwatchEthereum!: VoidFunction;
 
   destroyed(): void {
     this.reset();
