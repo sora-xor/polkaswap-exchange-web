@@ -171,9 +171,6 @@
       <template v-else-if="isAvailable && isInsufficientLiquidity">
         {{ t('swap.insufficientLiquidity') }}
       </template>
-      <template v-else-if="isInsufficientAmount">
-        {{ t('swap.insufficientAmount', { tokenSymbol: insufficientAmountTokenSymbol }) }}
-      </template>
       <template v-else-if="isInsufficientBalance">
         {{ t('exchange.insufficientBalance', { tokenSymbol: tokenFrom.symbol }) }}
       </template>
@@ -203,18 +200,17 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
-import {
-  KnownAssets,
-  KnownSymbols,
-  CodecString,
+import { KnownAssets, KnownSymbols, FPNumber, Operation, quote } from '@sora-substrate/util';
+import type { Subscription } from '@polkadot/x-rxjs';
+import type {
   AccountAsset,
+  CodecString,
   LiquiditySourceTypes,
   LPRewardsInfo,
-  FPNumber,
-  Operation,
   NetworkFeesObject,
+  QuotePaths,
+  QuotePayload,
 } from '@sora-substrate/util';
-import type { Subscription } from '@polkadot/x-rxjs';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
@@ -250,7 +246,14 @@ const namespace = 'swap';
   },
 })
 export default class Swap extends Mixins(mixins.FormattedAmountMixin, TranslationMixin, mixins.LoadingMixin) {
-  @State((state) => state[namespace].pairLiquiditySources) pairLiquiditySources!: Array<LiquiditySourceTypes>;
+  @State((state) => state[namespace].paths) paths!: QuotePaths;
+  @State((state) => state[namespace].liquidityProviderFee) liquidityProviderFee!: CodecString;
+  @State((state) => state[namespace].isAvailable) isAvailable!: boolean;
+  @State((state) => state[namespace].isAvailableChecking) isAvailableChecking!: boolean;
+  @State((state) => state[namespace].isExchangeB) isExchangeB!: boolean;
+  @State((state) => state[namespace].payload) payload!: QuotePayload;
+  @State((state) => state[namespace].fromValue) fromValue!: string;
+  @State((state) => state[namespace].toValue) toValue!: string;
 
   @Getter networkFees!: NetworkFeesObject;
   @Getter nodeIsConnected!: boolean;
@@ -259,12 +262,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
   @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset;
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset;
-  @Getter('fromValue', { namespace }) fromValue!: string;
-  @Getter('toValue', { namespace }) toValue!: string;
-  @Getter('isExchangeB', { namespace }) isExchangeB!: boolean;
-  @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString;
-  @Getter('isAvailable', { namespace }) isAvailable!: boolean;
-  @Getter('isAvailableChecking', { namespace }) isAvailableChecking!: boolean;
   @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes;
   @Getter('pairLiquiditySourcesAvailable', { namespace }) pairLiquiditySourcesAvailable!: boolean;
   @Getter('swapMarketAlgorithm', { namespace }) swapMarketAlgorithm!: string;
@@ -273,27 +270,19 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   @Action('setTokenToAddress', { namespace }) setTokenToAddress!: (address?: string) => Promise<void>;
   @Action('setFromValue', { namespace }) setFromValue!: (value: string) => Promise<void>;
   @Action('setToValue', { namespace }) setToValue!: (value: string) => Promise<void>;
-  @Action('setMinMaxReceived', { namespace }) setMinMaxReceived!: (value: CodecString) => Promise<void>;
   @Action('setAmountWithoutImpact', { namespace }) setAmountWithoutImpact!: (amount: CodecString) => Promise<void>;
   @Action('setExchangeB', { namespace }) setExchangeB!: (isExchangeB: boolean) => Promise<void>;
   @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>;
   @Action('checkSwap', { namespace }) checkSwap!: AsyncVoidFn;
   @Action('reset', { namespace }) reset!: AsyncVoidFn;
-  @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>;
-  @Action('resetPrices', { namespace: 'prices' }) resetPrices!: AsyncVoidFn;
   @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn;
-  @Action('setPairLiquiditySources', { namespace }) setPairLiquiditySources!: (
-    liquiditySources: Array<LiquiditySourceTypes>
-  ) => Promise<void>;
+  @Action('updatePairLiquiditySources', { namespace }) updatePairLiquiditySources!: AsyncVoidFn;
+  @Action('updatePaths', { namespace }) updatePaths!: AsyncVoidFn;
 
   @Action('setRewards', { namespace }) setRewards!: (rewards: Array<LPRewardsInfo>) => Promise<void>;
+  @Action('setSubscriptionPayload', { namespace }) setSubscriptionPayload!: (payload: QuotePayload) => Promise<void>;
   @Action('resetSubscriptions', { namespace }) resetSubscriptions!: AsyncVoidFn;
   @Action('updateSubscriptions', { namespace }) updateSubscriptions!: AsyncVoidFn;
-
-  @Watch('slippageTolerance')
-  private handleSlippageToleranceChange(): void {
-    this.calcMinMaxRecieved();
-  }
 
   @Watch('liquiditySource')
   private handleLiquiditySourceChange(): void {
@@ -320,14 +309,13 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
   KnownSymbols = KnownSymbols;
-  isInsufficientAmount = false;
-  insufficientAmountTokenSymbol = '';
   isTokenFromSelected = false;
   showSettings = false;
   showSelectTokenDialog = false;
   showConfirmSwapDialog = false;
   isRecountingProcess = false;
   liquidityReservesSubscription: Nullable<Subscription> = null;
+  recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
 
   get areTokensSelected(): boolean {
     return !!(this.tokenFrom && this.tokenTo);
@@ -448,7 +436,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
       !this.isAvailable ||
       this.hasZeroAmount ||
       this.isInsufficientLiquidity ||
-      this.isInsufficientAmount ||
       this.isInsufficientBalance ||
       this.isInsufficientXorForFee
     );
@@ -457,19 +444,20 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   created() {
     this.withApi(async () => {
       await this.getAssets();
+
       if (!this.tokenFrom) {
         const xorAddress = KnownAssets.get(KnownSymbols.XOR)?.address;
         await this.setTokenFromAddress(xorAddress);
         await this.setTokenToAddress();
       }
+
       if (this.areTokensSelected) {
-        await this.checkSwap();
+        await this.checkSwapSources();
       }
-      await this.updatePairLiquiditySources();
     });
   }
 
-  formatBalance(token): string {
+  formatBalance(token: AccountAsset): string {
     return formatAssetBalance(token);
   }
 
@@ -481,41 +469,35 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     this.setToValue('');
   }
 
-  async updatePairLiquiditySources(): Promise<void> {
-    const isPair = !!this.tokenFrom?.address && !!this.tokenTo?.address;
-
-    const sources = isPair
-      ? await api.getListEnabledSourcesForPath(this.tokenFrom?.address, this.tokenTo?.address)
-      : [];
-
-    await this.setPairLiquiditySources(sources);
-  }
-
-  async handleInputFieldFrom(value): Promise<any> {
+  handleInputFieldFrom(value: string, recount = true): void {
     if (!this.areTokensSelected || asZeroValue(value)) {
       this.resetFieldTo();
     }
 
-    if (value !== this.fromValue) {
-      this.setFromValue(value);
-      await this.recountSwapValues();
+    if (value === this.fromValue) return;
+
+    this.setFromValue(value);
+
+    if (recount) {
+      this.recountSwapValues();
     }
   }
 
-  async handleInputFieldTo(value): Promise<any> {
+  handleInputFieldTo(value: string, recount = true): void {
     if (!this.areTokensSelected || asZeroValue(value)) {
       this.resetFieldFrom();
     }
 
-    if (value !== this.toValue) {
-      this.setToValue(value);
-      await this.recountSwapValues();
+    if (value === this.toValue) return;
+
+    this.setToValue(value);
+
+    if (recount) {
+      this.recountSwapValues();
     }
   }
 
-  private async runRecountSwapValues(): Promise<void> {
-    if (this.isRecountingProcess) return;
-
+  private runRecountSwapValues(): void {
     const value = this.isExchangeB ? this.toValue : this.fromValue;
     if (!this.areTokensSelected || asZeroValue(value)) return;
 
@@ -524,34 +506,27 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     const oppositeToken = this.isExchangeB ? this.tokenFrom : this.tokenTo;
 
     try {
-      this.isRecountingProcess = true;
-      this.isInsufficientAmount = false;
-
-      const { amount, fee, rewards, amountWithoutImpact } = await api.getSwapResult(
+      const { amount, fee, rewards, amountWithoutImpact } = quote(
         this.tokenFrom.address,
         this.tokenTo.address,
         value,
-        this.isExchangeB,
-        this.liquiditySource
+        !this.isExchangeB,
+        [this.liquiditySource].filter(Boolean),
+        this.paths,
+        this.payload
       );
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
       this.setAmountWithoutImpact(amountWithoutImpact);
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);
-
-      await Promise.all([this.calcMinMaxRecieved(), this.updatePrices()]);
     } catch (error: any) {
+      console.error(error);
       resetOppositeValue();
-      if (!this.isInsufficientAmountError(oppositeToken.symbol as string, error.message)) {
-        throw error;
-      }
     } finally {
       this.isRecountingProcess = false;
     }
   }
-
-  recountSwapValues = debouncedInputHandler(this.runRecountSwapValues);
 
   private cleanSwapReservesSubscription(): void {
     if (!this.liquidityReservesSubscription) {
@@ -570,49 +545,21 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
       .subscribe(this.onChangeSwapReserves);
   }
 
-  private onChangeSwapReserves() {
+  private async checkSwapSources(): Promise<void> {
+    await Promise.all([this.checkSwap(), this.updatePairLiquiditySources(), this.updatePaths()]);
+  }
+
+  private async onChangeSwapReserves(payload: QuotePayload): Promise<void> {
+    await this.setSubscriptionPayload(payload);
+
     if (!this.isAvailable) {
-      this.checkSwap();
-      this.updatePairLiquiditySources();
+      await this.checkSwapSources();
     }
+
     this.runRecountSwapValues();
   }
 
-  private async calcMinMaxRecieved(): Promise<void> {
-    const amount = this.isExchangeB ? this.fromValue : this.toValue;
-    const minMaxReceived = await api.getMinMaxValue(
-      this.tokenFrom?.address,
-      this.tokenTo?.address,
-      amount,
-      this.slippageTolerance,
-      this.isExchangeB
-    );
-
-    this.setMinMaxReceived(minMaxReceived);
-  }
-
-  private async updatePrices(): Promise<void> {
-    if (this.areTokensSelected) {
-      await this.getPrices({
-        assetAAddress: this.tokenFrom.address,
-        assetBAddress: this.tokenTo.address,
-        amountA: this.fromValue,
-        amountB: this.toValue,
-      });
-    }
-  }
-
-  isInsufficientAmountError(tokenSymbol: string, errorMessage): boolean {
-    // TODO: If an input field has too many symbols this is a way to avoid an error, find another approach later
-    if (errorMessage.indexOf('invalid string input for fixed point number') !== -1) {
-      this.isInsufficientAmount = true;
-      this.insufficientAmountTokenSymbol = tokenSymbol;
-      this.resetPrices();
-    }
-    return this.isInsufficientAmount;
-  }
-
-  async handleFocusField(isExchangeB = false): Promise<void> {
+  handleFocusField(isExchangeB = false): void {
     const isZeroValue = isExchangeB ? this.isZeroToAmount : this.isZeroFromAmount;
     const prevFocus = this.isExchangeB;
 
@@ -624,30 +571,31 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     }
 
     if (prevFocus !== this.isExchangeB) {
-      await this.recountSwapValues();
+      this.recountSwapValues();
     }
   }
 
   async handleSwitchTokens(): Promise<void> {
+    this.isRecountingProcess = true;
+
     const [fromAddress, toAddress] = [this.tokenFrom.address, this.tokenTo.address];
 
     await this.setTokenFromAddress(toAddress);
     await this.setTokenToAddress(fromAddress);
-
-    await this.updatePairLiquiditySources();
+    await this.checkSwapSources();
 
     if (this.isExchangeB) {
       this.setExchangeB(false);
-      this.handleInputFieldFrom(this.toValue);
+      this.handleInputFieldFrom(this.toValue, false);
     } else {
       this.setExchangeB(true);
-      this.handleInputFieldTo(this.fromValue);
+      this.handleInputFieldTo(this.fromValue, false);
     }
 
     this.subscribeOnSwapReserves();
   }
 
-  async handleMaxValue(): Promise<void> {
+  handleMaxValue(): void {
     this.setExchangeB(false);
 
     const max = getMaxValue(this.tokenFrom, this.networkFee);
@@ -664,14 +612,16 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     this.showSelectTokenDialog = true;
   }
 
-  async selectToken(token: any): Promise<void> {
+  async selectToken(token: AccountAsset): Promise<void> {
     if (token) {
       if (this.isTokenFromSelected) {
         await this.setTokenFromAddress(token.address);
       } else {
         await this.setTokenToAddress(token.address);
       }
-      await Promise.all([this.checkSwap(), this.updatePairLiquiditySources()]);
+
+      await this.checkSwapSources();
+
       this.subscribeOnSwapReserves();
     }
   }
@@ -684,7 +634,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     if (isSwapConfirmed) {
       this.resetFieldFrom();
       this.resetFieldTo();
-      this.resetPrices();
       await this.setExchangeB(false);
     }
   }

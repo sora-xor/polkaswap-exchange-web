@@ -119,7 +119,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
   @Action('getTransactions', { namespace }) getTransactions!: AsyncVoidFn;
   @Action('getCurrencies', { namespace }) getCurrencies!: AsyncVoidFn;
 
-  private unwatchEthereum!: any;
+  private unwatchEthereum!: VoidFunction;
 
   pageAmount = 5;
   currentView = HistoryView;

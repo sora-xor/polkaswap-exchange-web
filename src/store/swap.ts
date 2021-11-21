@@ -4,10 +4,20 @@ import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import { api } from '@soramitsu/soraneo-wallet-web';
-import { FPNumber, CodecString, LiquiditySourceTypes, LPRewardsInfo } from '@sora-substrate/util';
+import { FPNumber, KnownAssets, KnownSymbols, isDirectExchange } from '@sora-substrate/util';
 
 import { MarketAlgorithmForLiquiditySource, ZeroStringValue } from '@/consts';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
+import { divideAssets } from '@/utils';
+
+import type {
+  AccountBalance,
+  CodecString,
+  LiquiditySourceTypes,
+  LPRewardsInfo,
+  QuotePaths,
+  QuotePayload,
+} from '@sora-substrate/util';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
@@ -22,12 +32,13 @@ const types = flow(
     'SET_TOKEN_TO_BALANCE',
     'SET_FROM_VALUE',
     'SET_TO_VALUE',
-    'SET_MIN_MAX_RECEIVED',
     'SET_AMOUNT_WITHOUT_IMPACT',
     'SET_EXCHANGE_B',
     'SET_LIQUIDITY_PROVIDER_FEE',
     'SET_PAIR_LIQUIDITY_SOURCES',
+    'SET_PATHS',
     'SET_REWARDS',
+    'SET_SUBSCRIPTION_PAYLOAD',
     'GET_SWAP_CONFIRM',
     'RESET',
   ]),
@@ -37,19 +48,20 @@ const types = flow(
 
 interface SwapState {
   tokenFromAddress: Nullable<string>;
-  tokenFromBalance: any;
+  tokenFromBalance: Nullable<AccountBalance>;
   tokenToAddress: Nullable<string>;
-  tokenToBalance: any;
+  tokenToBalance: Nullable<AccountBalance>;
   fromValue: string;
   toValue: string;
-  minMaxReceived: CodecString;
   amountWithoutImpact: CodecString;
   isExchangeB: boolean;
   liquidityProviderFee: CodecString;
   pairLiquiditySources: Array<LiquiditySourceTypes>;
+  paths: QuotePaths;
   isAvailable: boolean;
   isAvailableChecking: boolean;
   rewards: Array<LPRewardsInfo>;
+  payload: Nullable<QuotePayload>;
 }
 
 function initialState(): SwapState {
@@ -60,14 +72,15 @@ function initialState(): SwapState {
     tokenToBalance: null,
     fromValue: '',
     toValue: '',
-    minMaxReceived: '',
     amountWithoutImpact: '',
     isExchangeB: false,
     liquidityProviderFee: '',
     isAvailable: false,
     isAvailableChecking: false,
     pairLiquiditySources: [],
+    paths: {},
     rewards: [],
+    payload: null,
   };
 }
 
@@ -89,37 +102,19 @@ const getters = {
   pairLiquiditySourcesAvailable(state: SwapState) {
     return state.pairLiquiditySources.length !== 0;
   },
-  fromValue(state: SwapState) {
-    return state.fromValue;
-  },
-  toValue(state: SwapState) {
-    return state.toValue;
-  },
-  minMaxReceived(state: SwapState) {
-    return state.minMaxReceived || ZeroStringValue;
-  },
-  isExchangeB(state: SwapState) {
-    return state.isExchangeB;
-  },
-  liquidityProviderFee(state: SwapState) {
-    return state.liquidityProviderFee;
-  },
   swapLiquiditySource(state, getters, rootState, rootGetters) {
     if (!getters.pairLiquiditySourcesAvailable) return undefined;
 
     return rootGetters.liquiditySource;
   },
-  swapMarketAlgorithm(state, getters) {
+  swapMarketAlgorithm(state: SwapState, getters) {
     return MarketAlgorithmForLiquiditySource[getters.swapLiquiditySource ?? ''];
   },
-  rewards(state: SwapState) {
-    return state.rewards;
+  price(state: SwapState, getters) {
+    return divideAssets(getters.tokenFrom, getters.tokenTo, state.fromValue, state.toValue, false);
   },
-  isAvailable(state: SwapState) {
-    return state.isAvailable;
-  },
-  isAvailableChecking(state: SwapState) {
-    return state.isAvailableChecking;
+  priceReversed(state: SwapState, getters) {
+    return divideAssets(getters.tokenFrom, getters.tokenTo, state.fromValue, state.toValue, true);
   },
   priceImpact(state: SwapState, getters) {
     const { fromValue, toValue, amountWithoutImpact, isExchangeB } = state;
@@ -138,6 +133,20 @@ const getters = {
     const result = new FPNumber(1).sub(impact).mul(FPNumber.HUNDRED);
 
     return FPNumber.lte(result, FPNumber.ZERO) ? ZeroStringValue : FPNumber.ZERO.sub(result).toFixed(2);
+  },
+  minMaxReceived(state: SwapState, getters, rootState, rootGetters) {
+    const { fromValue, toValue, isExchangeB } = state;
+
+    const value = isExchangeB ? fromValue : toValue;
+    const token = isExchangeB ? getters.tokenFrom : getters.tokenTo;
+
+    if (!token || !value) return ZeroStringValue;
+
+    const resultDecimals = token.decimals;
+    const result = new FPNumber(value, resultDecimals);
+    const resultMulSlippage = result.mul(new FPNumber(Number(rootGetters.slippageTolerance) / 100, resultDecimals));
+
+    return (!isExchangeB ? result.sub(resultMulSlippage) : result.add(resultMulSlippage)).toCodecString();
   },
 };
 
@@ -173,9 +182,6 @@ const mutations = {
   [types.SET_TO_VALUE](state: SwapState, toValue: string) {
     state.toValue = toValue;
   },
-  [types.SET_MIN_MAX_RECEIVED](state: SwapState, minMaxReceived: CodecString) {
-    state.minMaxReceived = minMaxReceived;
-  },
   [types.SET_AMOUNT_WITHOUT_IMPACT](state: SwapState, amount: CodecString) {
     state.amountWithoutImpact = amount;
   },
@@ -200,8 +206,14 @@ const mutations = {
   [types.SET_PAIR_LIQUIDITY_SOURCES](state: SwapState, liquiditySources: Array<LiquiditySourceTypes>) {
     state.pairLiquiditySources = [...liquiditySources];
   },
+  [types.SET_PATHS](state: SwapState, paths: QuotePaths) {
+    state.paths = { ...paths };
+  },
   [types.SET_REWARDS](state: SwapState, rewards: Array<LPRewardsInfo>) {
     state.rewards = [...rewards];
+  },
+  [types.SET_SUBSCRIPTION_PAYLOAD](state: SwapState, payload: QuotePayload) {
+    state.payload = payload;
   },
 };
 
@@ -260,9 +272,6 @@ const actions = {
   setToValue({ commit }, toValue: string | number) {
     commit(types.SET_TO_VALUE, toValue);
   },
-  setMinMaxReceived({ commit }, minMaxReceived) {
-    commit(types.SET_MIN_MAX_RECEIVED, minMaxReceived);
-  },
   setAmountWithoutImpact({ commit }, amount: CodecString) {
     commit(types.SET_AMOUNT_WITHOUT_IMPACT, amount);
   },
@@ -276,13 +285,6 @@ const actions = {
     if (getters.tokenFrom?.address && getters.tokenTo?.address) {
       commit(types.CHECK_AVAILABILITY_REQUEST);
       try {
-        // TODO [1.6]: will be removed
-        // https://soramitsu.atlassian.net/browse/PW-407
-        const xstUsdAddress = '0x0200080000000000000000000000000000000000000000000000000000000000';
-        if ([getters.tokenFrom.address, getters.tokenTo.address].includes(xstUsdAddress)) {
-          commit(types.CHECK_AVAILABILITY_SUCCESS, true);
-          return;
-        }
         const isAvailable = await api.checkSwap(getters.tokenFrom.address, getters.tokenTo.address);
         commit(types.CHECK_AVAILABILITY_SUCCESS, isAvailable);
       } catch (error) {
@@ -290,15 +292,59 @@ const actions = {
       }
     }
   },
-  setPairLiquiditySources({ commit, dispatch, rootGetters }, liquiditySources: Array<LiquiditySourceTypes>) {
+  async updatePairLiquiditySources({ commit, dispatch, getters, rootGetters }) {
+    const isPair = !!getters.tokenFrom?.address && !!getters.tokenTo?.address;
+
+    const sources = isPair
+      ? await api.getListEnabledSourcesForPath(getters.tokenFrom?.address, getters.tokenTo?.address)
+      : [];
+
     // reset market algorithm to default, if related liquiditySource is not available
-    if (liquiditySources.length && !liquiditySources.includes(rootGetters.liquiditySource)) {
-      dispatch('setMarketAlgorithm', undefined, { root: true });
+    if (sources.length && !sources.includes(rootGetters.liquiditySource)) {
+      await dispatch('setMarketAlgorithm', undefined, { root: true });
     }
-    commit(types.SET_PAIR_LIQUIDITY_SOURCES, liquiditySources);
+
+    commit(types.SET_PAIR_LIQUIDITY_SOURCES, sources);
+  },
+  async updatePaths({ commit, getters }) {
+    const inputAssetId = getters.tokenFrom?.address;
+    const outputAssetId = getters.tokenTo?.address;
+
+    if (!inputAssetId || !outputAssetId) {
+      commit(types.SET_PATHS, {});
+      return;
+    }
+
+    const xor = KnownAssets.get(KnownSymbols.XOR).address;
+
+    if (isDirectExchange(inputAssetId, outputAssetId)) {
+      const path = await api.getListEnabledSourcesForPath(inputAssetId, outputAssetId);
+      const nonXor = inputAssetId === xor ? outputAssetId : inputAssetId;
+
+      const paths: QuotePaths = {
+        [nonXor]: path,
+      };
+
+      commit(types.SET_PATHS, paths);
+    } else {
+      const [inputPaths, outputPaths] = await Promise.all([
+        api.getListEnabledSourcesForPath(inputAssetId, xor),
+        api.getListEnabledSourcesForPath(xor, outputAssetId),
+      ]);
+
+      const paths: QuotePaths = {
+        [inputAssetId]: inputPaths,
+        [outputAssetId]: outputPaths,
+      };
+
+      commit(types.SET_PATHS, paths);
+    }
   },
   setRewards({ commit }, rewards: Array<LPRewardsInfo>) {
     commit(types.SET_REWARDS, rewards);
+  },
+  setSubscriptionPayload({ commit }, payload: QuotePayload) {
+    commit(types.SET_SUBSCRIPTION_PAYLOAD, payload);
   },
   reset({ commit, dispatch }) {
     dispatch('resetSubscriptions');
