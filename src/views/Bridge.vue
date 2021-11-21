@@ -29,7 +29,6 @@
             @click="handleChangeNetwork"
           /> -->
         </generic-page-header>
-
         <s-float-input
           :value="amount"
           :decimals="(asset || {}).externalDecimals"
@@ -234,6 +233,7 @@
         :sora-network-fee="soraNetworkFee"
         @confirm="confirmTransaction"
       />
+      <network-fee-warning-dialog :visible.sync="showWarningFeeDialog" :fee="formattedSoraNetworkFee" />
     </s-form>
     <div v-if="!areNetworksConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div>
   </div>
@@ -242,12 +242,20 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
-import { RegisteredAccountAsset, BridgeNetworks, KnownSymbols, FPNumber, CodecString } from '@sora-substrate/util';
+import {
+  RegisteredAccountAsset,
+  BridgeNetworks,
+  KnownSymbols,
+  FPNumber,
+  CodecString,
+  Operation,
+} from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames, EvmSymbol } from '@/consts';
@@ -274,6 +282,7 @@ const namespace = 'bridge';
     SelectNetwork: lazyComponent(Components.SelectNetwork),
     SelectRegisteredAsset: lazyComponent(Components.SelectRegisteredAsset),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
+    NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
     FormattedAmount: components.FormattedAmount,
@@ -283,9 +292,11 @@ const namespace = 'bridge';
 })
 export default class Bridge extends Mixins(
   mixins.FormattedAmountMixin,
+  mixins.NetworkFeeWarningMixin,
   BridgeMixin,
   TranslationMixin,
-  NetworkFormatterMixin
+  NetworkFormatterMixin,
+  NetworkFeeDialogMixin
 ) {
   @Action('setSoraToEvm', { namespace }) setSoraToEvm!: (value: boolean) => Promise<void>;
   @Action('setAssetAddress', { namespace }) setAssetAddress!: (value: string) => Promise<void>;
@@ -435,6 +446,16 @@ export default class Bridge extends Mixins(
     );
   }
 
+  get isXorSufficientForNextOperation(): boolean {
+    return this.isXorSufficientForNextTx({
+      type: this.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
+      isXorAccountAsset: isXorAccountAsset(this.asset),
+      amount: this.getFPNumber(this.amount).toCodecString(),
+      xorBalance: getAssetBalance(this.tokenXOR),
+      fee: this.soraNetworkFee,
+    });
+  }
+
   formatFee(fee: string, formattedFee: string): string {
     return fee !== '0' ? formattedFee : '0';
   }
@@ -496,6 +517,11 @@ export default class Bridge extends Mixins(
   }
 
   async handleConfirmTransaction(): Promise<void> {
+    if (!this.isXorSufficientForNextOperation) {
+      this.openWarningFeeDialog();
+      await this.waitOnNextTxFailureConfirmation();
+    }
+
     await this.checkConnectionToExternalAccount(() => {
       this.showConfirmTransactionDialog = true;
     });

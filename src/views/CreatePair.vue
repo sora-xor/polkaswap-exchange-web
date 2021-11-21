@@ -119,7 +119,7 @@
         type="primary"
         class="action-button s-typography-button--large"
         :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable"
-        @click="openConfirmDialog"
+        @click="handleCreatePair"
       >
         <template v-if="!areTokensSelected">
           {{ t('buttons.chooseTokens') }}
@@ -211,16 +211,19 @@
       :slippage-tolerance="slippageTolerance"
       @confirm="confirmCreatePair"
     />
+
+    <network-fee-warning-dialog :visible.sync="showWarningFeeDialog" :fee="formattedFee" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
-import { FPNumber, KnownAssets, KnownSymbols } from '@sora-substrate/util';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber, KnownAssets, KnownSymbols, Operation } from '@sora-substrate/util';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin';
+import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
@@ -234,6 +237,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace);
     TokenLogo: lazyComponent(Components.TokenLogo),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
+    NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
     FormattedAmount: components.FormattedAmount,
@@ -241,7 +245,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace);
     InfoLine: components.InfoLine,
   },
 })
-export default class CreatePair extends Mixins(TokenPairMixin) {
+export default class CreatePair extends Mixins(mixins.NetworkFeeWarningMixin, TokenPairMixin, NetworkFeeDialogMixin) {
   @Action('createPair', { namespace }) createPair;
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
@@ -254,10 +258,28 @@ export default class CreatePair extends Mixins(TokenPairMixin) {
     return this.formatStringValue(this.secondTokenValue.toString());
   }
 
+  get isXorSufficientForNextOperation(): boolean {
+    return this.isXorSufficientForNextTx({
+      type: Operation.CreatePair,
+      amount: this.getFPNumber(this.firstTokenValue).toCodecString(),
+      xorBalance: this.getFPNumber(this.getTokenBalance(this.firstToken)).toCodecString(),
+      fee: this.getFPNumber(this.formattedFee).toCodecString(),
+    });
+  }
+
   async created(): Promise<void> {
     await this.withParentLoading(async () => {
       await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address);
     });
+  }
+
+  async handleCreatePair(): Promise<void> {
+    if (!this.isXorSufficientForNextOperation) {
+      this.openWarningFeeDialog();
+      await this.waitOnNextTxFailureConfirmation();
+    }
+
+    this.openConfirmDialog();
   }
 
   confirmCreatePair(): Promise<void> {
