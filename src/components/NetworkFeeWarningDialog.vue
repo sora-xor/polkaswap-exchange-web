@@ -9,7 +9,8 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import DialogBase from './DialogBase.vue';
 import DialogMixin from './mixins/DialogMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import TranslationMixin from './mixins/TranslationMixin';
+
 @Component({
   components: {
     DialogBase,
@@ -19,7 +20,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 export default class NetworkFeeWarningDialog extends Mixins(DialogMixin, TranslationMixin) {
   @Prop({ type: String }) readonly fee!: string;
 
-  async handleConfirm(): Promise<void> {
+  handleConfirm(): void {
     this.closeDialog();
   }
 }
