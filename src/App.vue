@@ -90,7 +90,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action setLanguage!: (lang: Language) => Promise<void>;
   @Action setApiKeys!: (options: any) => Promise<void>;
   @Action setFeatureFlags!: (options: any) => Promise<void>;
-  @Action setBlockNumber!: () => Promise<void>;
   @Action resetBlockNumberSubscription!: () => Promise<void>;
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>;
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
