@@ -139,7 +139,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       // connection to node
       await this.runAppConnectionToNode();
-      await this.setBlockNumber();
     });
 
     this.trackActiveTransactions();
