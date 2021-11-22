@@ -826,5 +826,11 @@
         "txs": "trans.",
         "volume": "Wolumen trans. animatora rynku",
         "description": "20 milionów PSWAP na miesiąc trafi do animatorów rynku z co najmniej 500 trans. na miesiąc o wartości powyżej 1 XOR każda."
+    },
+    "confirmNextTxFailure": {
+        "header": "Uwaga",
+        "info": "Twoje saldo XOR będzie mniejsze niż {fee} XOR po tej transakcji. Nie będziesz w stanie zapłacić opłaty sieciowej za kolejną transakcję.",
+        "payoff": "Będziesz musiał użyć Bridge, aby uzyskać XOR z innych sieci, wysłać XOR z innego konta SORA lub zamienić dowolny inny token już na Twoim koncie na XOR.",
+        "button": "Tak, rozumiem ryzyko"
     }
 }

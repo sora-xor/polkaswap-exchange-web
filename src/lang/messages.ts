@@ -654,6 +654,13 @@ export default {
     description:
       '20 million PSWAP / month will be distributed to market makers with at least 500 tx / month valued over 1 XOR.',
   },
+  confirmNextTxFailure: {
+    header: 'Attention',
+    info: 'Your XOR balance will be less than {fee} XOR after this transaction. You won’t be able to pay for the network fee for another transaction.',
+    payoff:
+      'You would have to use the Bridge to get XOR from other networks, get sent XOR from another SORA account, or swap any other token already in your account into XOR.',
+    button: 'Yes, I understand the risk',
+  },
   provider: {
     default: '@:ethereumText provider',
     metamask: '@:metamask',

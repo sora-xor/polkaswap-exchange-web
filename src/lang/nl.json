@@ -826,5 +826,11 @@
         "txs": "TX's",
         "volume": "MM TX-volume",
         "description": "20 miljoen PSWAP \/ maand zal worden verdeeld onder market makers met ten minste 500 tx \/ maand met een waarde van meer dan 1 XOR."
+    },
+    "confirmNextTxFailure": {
+        "header": "Aandacht",
+        "info": "Uw XOR-saldo zal na deze transactie {fee} U kunt de netwerkkosten voor een andere transactie niet betalen.",
+        "payoff": "Je zou de Bridge moeten gebruiken om XOR van andere netwerken te krijgen, XOR van een ander SORA-account te ontvangen, of een ander token dat al in je account staat om te wisselen naar XOR.",
+        "button": "Ja, ik begrijp het risico"
     }
 }

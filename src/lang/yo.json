@@ -826,5 +826,11 @@
         "txs": "TXs",
         "volume": "MM TX iwọn didun",
         "description": "20 million PSWAP \/ osù ni yoo pin si awọn oluṣe ọja pẹlu o kere ju 500 tx \/ osù ti o ni idiyele lori 1 XOR."
+    },
+    "confirmNextTxFailure": {
+        "header": "Ifarabalẹ",
+        "info": "Iwọntunwọnsi XOR rẹ yoo kere si {fee} XOR lẹhin iṣowo yii. Iwọ kii yoo ni anfani lati sanwo fun ọya nẹtiwọki fun iṣowo miiran.",
+        "payoff": "Iwọ yoo ni lati lo Afara lati gba XOR lati awọn nẹtiwọọki miiran, firanṣẹ XOR lati akọọlẹ SORA miiran, tabi paarọ eyikeyi ami-ami miiran tẹlẹ ninu akọọlẹ rẹ sinu XOR.",
+        "button": "Bẹẹni, Mo loye ewu naa"
     }
 }

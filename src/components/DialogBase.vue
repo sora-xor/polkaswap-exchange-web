@@ -15,7 +15,7 @@
       <slot name="title">
         <span class="el-dialog__title">{{ title }}</span>
       </slot>
-      <slot name="close">
+      <slot v-if="showCloseButton" name="close">
         <s-button class="el-dialog__close" type="action" icon="x-16" @click="closeDialog" />
       </slot>
     </template>
@@ -34,6 +34,7 @@ export default class DialogBase extends Mixins(DialogMixin) {
   @Prop({ default: '', type: String }) readonly customClass!: string;
   @Prop({ default: '', type: String }) readonly title!: string;
   @Prop({ default: '', type: String }) readonly width!: string;
+  @Prop({ default: true, type: Boolean }) readonly showCloseButton!: boolean;
 
   get computedCustomClasses(): string {
     const cssClasses: Array<string> = [];
