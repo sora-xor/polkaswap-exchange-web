@@ -501,13 +501,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
-@mixin slippage-tolerance-tabs {
-  flex: 1;
-  font-size: var(--s-font-size-medium);
-  font-weight: 400 !important;
-  text-align: center;
-}
-
 @mixin radio-title {
   font-size: var(--s-font-size-medium);
   font-weight: 600;

@@ -1,20 +1,6 @@
 <template>
   <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
-    <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
-      <status-action-badge>
-        <template #label>{{ t('marketText') }}:</template>
-        <template #value>{{ swapMarketAlgorithm }}</template>
-        <template #action>
-          <s-button
-            class="el-button--settings"
-            type="action"
-            icon="basic-settings-24"
-            :disabled="!pairLiquiditySourcesAvailable"
-            @click="openSettingsDialog"
-          />
-        </template>
-      </status-action-badge>
-    </generic-page-header>
+    <generic-page-header class="page-header--swap" :title="t('exchange.Swap')" />
     <s-float-input
       class="s-input--token-value"
       size="medium"
@@ -141,7 +127,6 @@
         />
       </div>
     </s-float-input>
-    <slippage-tolerance class="slippage-tolerance-settings" />
     <swap-info v-if="areTokensSelected && !hasZeroAmount" class="info-line-container" />
     <s-button
       v-if="!isLoggedIn"
@@ -192,7 +177,6 @@
       :isInsufficientBalance="isInsufficientBalance"
       @confirm="confirmSwap"
     />
-    <settings-dialog :visible.sync="showSettings" />
   </s-form>
 </template>
 
@@ -231,13 +215,10 @@ const namespace = 'swap';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    SettingsDialog: lazyComponent(Components.SettingsDialog),
-    SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     SwapInfo: lazyComponent(Components.SwapInfo),
     TokenLogo: lazyComponent(Components.TokenLogo),
     SelectToken: lazyComponent(Components.SelectToken),
     ConfirmSwap: lazyComponent(Components.ConfirmSwap),
-    StatusActionBadge: lazyComponent(Components.StatusActionBadge),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
@@ -264,7 +245,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset;
   @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes;
   @Getter('pairLiquiditySourcesAvailable', { namespace }) pairLiquiditySourcesAvailable!: boolean;
-  @Getter('swapMarketAlgorithm', { namespace }) swapMarketAlgorithm!: string;
 
   @Action('setTokenFromAddress', { namespace }) setTokenFromAddress!: (address?: string) => Promise<void>;
   @Action('setTokenToAddress', { namespace }) setTokenToAddress!: (address?: string) => Promise<void>;
@@ -310,7 +290,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
   KnownSymbols = KnownSymbols;
   isTokenFromSelected = false;
-  showSettings = false;
   showSelectTokenDialog = false;
   showConfirmSwapDialog = false;
   isRecountingProcess = false;
@@ -636,10 +615,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
       this.resetFieldTo();
       await this.setExchangeB(false);
     }
-  }
-
-  openSettingsDialog(): void {
-    this.showSettings = true;
   }
 
   destroyed(): void {

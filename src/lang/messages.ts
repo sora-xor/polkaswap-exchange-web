@@ -4,7 +4,6 @@ import { Operation, TransactionStatus, RewardingEvents } from '@sora-substrate/u
 
 import { PageNames } from '../consts';
 import { EvmNetworkType } from '../utils/ethers-util';
-import { MoonpayNotifications } from '@/components/Moonpay/consts';
 
 export default {
   // Wallet project keys
@@ -58,31 +57,11 @@ export default {
   [Theme.DARK]: 'Dark',
   pageTitle: {
     [PageNames.Swap]: 'Swap',
-    [PageNames.Pool]: 'Pool',
-    [PageNames.Bridge]: '@:bridgeText',
-    [PageNames.About]: 'About',
-    [PageNames.Stats]: 'Stats',
-    [PageNames.Support]: 'Support',
     [PageNames.Wallet]: 'Wallet',
-    [PageNames.Rewards]: 'Rewards',
-    [PageNames.Tokens]: 'Tokens',
-    [PageNames.CreatePair]: 'Create Pair',
-    [PageNames.AddLiquidity]: 'Add Liquidity',
-    [PageNames.RemoveLiquidity]: 'Remove Liquidity',
-    [PageNames.PageNotFound]: 'Page Not Found',
   },
   mainMenu: {
     [PageNames.Swap]: 'Swap',
-    [PageNames.Pool]: 'Pool',
-    [PageNames.Bridge]: '@:bridgeText',
-    [PageNames.Farming]: 'Farming',
     [PageNames.Wallet]: 'Account',
-    [PageNames.Rewards]: 'Rewards',
-    [PageNames.About]: 'About',
-    [PageNames.Stats]: 'Stats',
-    [PageNames.Support]: 'Support',
-    [PageNames.CreatePair]: 'Create Pair',
-    [PageNames.Tokens]: 'Tokens',
   },
   headerMenu: {
     showBalances: 'Show Balances',
@@ -275,7 +254,6 @@ export default {
   },
   exchange: {
     [PageNames.Swap]: 'Swap',
-    [PageNames.Pool]: 'Pool',
     balance: 'Balance',
     insufficientBalance: '@:insufficientBalanceText',
     price: 'Price',
@@ -600,59 +578,6 @@ export default {
       strategic: 'Strategic Rewards',
       external: 'Rewards for the connected ethereum account',
     },
-  },
-  moonpay: {
-    notifications: {
-      [MoonpayNotifications.Success]: {
-        title: 'Tokens purchased',
-        text: 'Token purchase is finished. The HASHI bridge transaction will start automatically as soon as the tokens have been received in the connected Ethereum account. It is safe to close this window and continue using Polkaswap. There will be a notification about the bridge transaction when ready.',
-      },
-      [MoonpayNotifications.SupportError]: {
-        title: 'Token not supported',
-        text: 'Unfortunately the token purchased via @:moonpayText is not yet supported by the HASHI bridge in Polkaswap. Normally only the supported tokens should be available for purchase via @:moonpayText in Polkaswap, hence something must have gone wrong somewhere. Please don’t hesitate to let the community know about this case in the <a class="link" href="https://t.me/polkaswap" target="_blank" rel="nofollow noopener" title="@:appName">Polkaswap Telegram group</a>',
-      },
-      [MoonpayNotifications.FeeError]: {
-        title: 'Not enough ETH for the bridge tx',
-        text: 'Unfortunately the HASHI bridge transaction has failed due to there not being enough ETH to pay for the Ethereum network transation fees. Please add more ETH and try again.',
-      },
-      [MoonpayNotifications.TransactionError]: {
-        title: 'Transaction has failed',
-        text: 'Unfortunately it appears that the @:moonpayText transaction has failed. Please try again. For @:moonpayText support go to <a class="link" href="https://support.moonpay.com" target="_blank" rel="nofollow noopener" title="@:moonpayText">https://support.moonpay.com</a>',
-      },
-      [MoonpayNotifications.AmountError]: {
-        title: 'Insufficient balance',
-        text: 'Unfortunately the HASHI bridge transaction has failed due to there not being enough tokens for transaction. Please check your Ethereum account balance and try again.',
-      },
-      [MoonpayNotifications.AccountAddressError]: {
-        title: 'Wrong Ethereum account',
-        text: 'Unfortunately, the HASHI bridge transaction failed due to the recipient address of the tokens in the @:moonpayText order does not match your current Ethereum account address. Please switch Ethereum account in extension and try again.',
-      },
-    },
-    buttons: {
-      buy: 'Buy Tokens',
-      history: 'Purchase History',
-      transfer: 'Start bridge',
-      view: 'View bridge transaction',
-    },
-    tooltips: {
-      transfer: 'Tokens successfully purchased!\nClick to start the bridge transaction',
-    },
-    history: {
-      title: 'Purchase history',
-      empty: 'No data',
-    },
-    confirmations: {
-      txReady: 'Transaction Ready For Bridge',
-    },
-  },
-  marketMakerCountdown: {
-    title: 'Market Maker Countdown',
-    blocks: 'blocks',
-    daysLeft: 'days left',
-    txs: 'TXs',
-    volume: 'MM TX volume',
-    description:
-      '20 million PSWAP / month will be distributed to market makers with at least 500 tx / month valued over 1 XOR.',
   },
   provider: {
     default: '@:ethereumText provider',

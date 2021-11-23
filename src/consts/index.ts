@@ -12,8 +12,8 @@ export const app = {
 };
 
 export const WalletPermissions = {
-  sendAssets: true, // enable 'send' button in assets list
-  swapAssets: true, // enable 'swap' button in assets list
+  sendAssets: false, // enable 'send' button in assets list
+  swapAssets: false, // enable 'swap' button in assets list
 };
 
 // navigator.language values, f.e. ('es', 'eu-ES')
@@ -87,24 +87,8 @@ export const LiquiditySourceForMarketAlgorithm = {
 export const MarketAlgorithmForLiquiditySource = invert(LiquiditySourceForMarketAlgorithm);
 
 export enum PageNames {
-  About = 'About',
   Swap = 'Swap',
-  Pool = 'Pool',
-  Stats = 'Stats',
-  Support = 'Support',
   Wallet = 'Wallet',
-  PoolContainer = 'PoolContainer',
-  CreatePair = 'CreatePair',
-  AddLiquidity = 'AddLiquidity',
-  RemoveLiquidity = 'RemoveLiquidity',
-  Farming = 'Farming',
-  Rewards = 'Rewards',
-  PageNotFound = 'PageNotFound',
-  Bridge = 'Bridge',
-  BridgeTransaction = 'BridgeTransaction',
-  BridgeTransactionsHistory = 'BridgeTransactionsHistory',
-  Tokens = 'Tokens',
-  MoonpayHistory = 'MoonpayHistory',
 }
 
 export enum Components {
@@ -112,9 +96,6 @@ export enum Components {
   AppHeader = 'App/Header/AppHeader',
   AccountButton = 'App/Header/AccountButton',
   AppLogoButton = 'App/Header/AppLogoButton',
-  MarketMakerCountdown = 'App/Header/MarketMakerCountdown/MarketMakerCountdown',
-  AppMenu = 'App/Menu/AppMenu',
-  AppInfoPopper = 'App/Menu/AppInfoPopper',
   SwapInfo = 'SwapInfo',
   SelectToken = 'SelectToken',
   TokenLogo = 'TokenLogo',
@@ -122,130 +103,17 @@ export enum Components {
   ConfirmSwap = 'ConfirmSwap',
   ConfirmRemoveLiquidity = 'ConfirmRemoveLiquidity',
   ConfirmTokenPairDialog = 'ConfirmTokenPairDialog',
-  SettingsDialog = 'SettingsDialog',
-  SettingsHeader = 'Settings/Header',
-  SettingsTabs = 'Settings/Tabs',
-  SlippageTolerance = 'Settings/SlippageTolerance',
-  MarketAlgorithm = 'Settings/MarketAlgorithm',
   SelectNode = 'Settings/Node/SelectNode',
   NodeInfo = 'Settings/Node/NodeInfo',
   SelectNodeDialog = 'SelectNodeDialog',
-  StatusActionBadge = 'StatusActionBadge',
   ExternalLink = 'ExternalLink',
-  // HelpDialog = 'HelpDialog',
   AboutNetworkDialog = 'AboutNetworkDialog',
   SidebarItemContent = 'SidebarItemContent',
-  SelectNetwork = 'SelectNetwork',
-  SelectRegisteredAsset = 'SelectRegisteredAsset',
-  ConfirmBridgeTransactionDialog = 'ConfirmBridgeTransactionDialog',
-  BridgeTransaction = 'BridgeTransaction',
-  BridgeTransactionsHistory = 'BridgeTransactionsHistory',
-  GradientBox = 'Rewards/GradientBox',
-  TokensRow = 'Rewards/TokensRow',
-  RewardsAmountHeader = 'Rewards/AmountHeader',
-  RewardsAmountTable = 'Rewards/AmountTable',
   TokenSelectButton = 'Input/TokenSelectButton',
   TokenAddress = 'Input/TokenAddress',
   SelectLanguageDialog = 'SelectLanguageDialog',
   ValueStatusWrapper = 'ValueStatusWrapper',
-  Moonpay = 'Moonpay/Moonpay',
-  MoonpayWidget = 'Moonpay/MoonpayWidget',
-  MoonpayNotification = 'Moonpay/MoonpayNotification',
-  MoonpayConfirmation = 'Moonpay/MoonpayConfirmation',
-  MoonpayHistoryButton = 'Moonpay/MoonpayHistoryButton',
 }
-
-interface SidebarMenuItem {
-  icon: string;
-  title: string;
-  disabled?: boolean;
-}
-
-interface SidebarMenuItemLink extends SidebarMenuItem {
-  href?: string;
-}
-
-const MainMenu: Array<SidebarMenuItem> = [
-  {
-    icon: 'arrows-swap-90-24',
-    title: PageNames.Swap,
-  },
-  {
-    icon: 'basic-drop-24',
-    title: PageNames.Pool,
-  },
-  {
-    icon: 'grid-block-distribute-vertically-24',
-    title: PageNames.Bridge,
-  },
-  // {
-  //   icon: 'various-pocket-24',
-  //   title: PageNames.Auctions,
-  // },
-];
-
-const AccountMenu: Array<SidebarMenuItem> = [
-  {
-    icon: 'basic-circle-star-24',
-    title: PageNames.Rewards,
-  },
-];
-
-const OtherPagesMenu: Array<SidebarMenuItem> = [
-  {
-    icon: 'various-bone-24',
-    title: PageNames.Tokens,
-  },
-  {
-    icon: 'file-file-text-24',
-    title: PageNames.About,
-  },
-];
-
-export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
-  {
-    icon: 'symbols-24',
-    title: 'wiki',
-    href: 'https://wiki.sora.org/',
-  },
-  {
-    icon: 'symbols-telegram-24',
-    title: 'telegram',
-    href: 'https://t.me/polkaswap',
-  },
-  {
-    icon: 'symbols-twitter-24',
-    title: 'twitter',
-    href: 'https://twitter.com/polkaswap',
-  },
-  // TODO: Update this icon name to appropriate one after font fix
-  {
-    icon: 'symbols-hash-24',
-    title: 'reddit',
-    href: 'https://www.reddit.com/r/Polkaswap',
-  },
-  // TODO: Update this icon name to appropriate one after font fix
-  {
-    icon: 'symbols-peace-24',
-    title: 'medium',
-    href: 'https://medium.com/polkaswap',
-  },
-  {
-    icon: 'symbols-github-24',
-    title: 'github',
-    href: 'https://github.com/sora-xor',
-  },
-];
-
-export const FaucetLink: SidebarMenuItemLink = {
-  icon: 'software-terminal-24',
-  title: 'faucet',
-};
-
-export const SidebarMenuGroups = [MainMenu, AccountMenu, OtherPagesMenu];
-
-export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
-export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
 
 export enum Topics {
   SwapTokens = 'SwapTokens',

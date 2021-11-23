@@ -1,24 +1,8 @@
 <template>
   <header class="header">
-    <s-button class="app-menu-button" type="action" primary icon="basic-more-horizontal-24" @click="toggleMenu" />
+    <s-button class="app-menu-button" type="action" primary icon="basic-more-horizontal-24" />
     <app-logo-button class="app-logo--header" responsive :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
-    <div v-if="moonpayEnabled" class="app-controls app-controls--moonpay s-flex">
-      <s-button
-        type="tertiary"
-        size="medium"
-        icon="various-atom-24"
-        class="moonpay-button moonpay-button--buy"
-        @click="openMoonpayDialog"
-      >
-        <span class="moonpay-button-text">{{ t('moonpay.buttons.buy') }}</span>
-      </s-button>
-      <moonpay-history-button v-if="isLoggedIn" class="moonpay-button moonpay-button--history" />
-    </div>
     <div class="app-controls s-flex">
-      <market-maker-countdown />
-      <s-button type="action" class="theme-control s-pressed" :tooltip="hideBalancesTooltip" @click="toggleHideBalance">
-        <s-icon :name="hideBalancesIcon" :size="iconSize" />
-      </s-button>
       <account-button :disabled="loading" @click="goTo(PageNames.Wallet)" />
       <s-button
         type="action"
@@ -51,13 +35,6 @@
     </div>
 
     <select-node-dialog />
-    <select-language-dialog :visible.sync="showSelectLanguageDialog" />
-
-    <template v-if="moonpayEnabled">
-      <moonpay />
-      <moonpay-notification />
-      <moonpay-confirmation />
-    </template>
   </header>
 </template>
 
@@ -87,13 +64,7 @@ enum HeaderMenuType {
     PolkaswapLogo,
     AccountButton: lazyComponent(Components.AccountButton),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
-    MarketMakerCountdown: lazyComponent(Components.MarketMakerCountdown),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
-    SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
-    Moonpay: lazyComponent(Components.Moonpay),
-    MoonpayNotification: lazyComponent(Components.MoonpayNotification),
-    MoonpayHistoryButton: lazyComponent(Components.MoonpayHistoryButton),
-    MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
   },
 })
 export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin) {
@@ -107,10 +78,6 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
   @Getter libraryTheme!: Theme;
   @Getter isLoggedIn!: boolean;
   @Getter account!: WALLET_TYPES.Account;
-  @Getter moonpayEnabled!: boolean;
-
-  @Action toggleHideBalance!: AsyncVoidFn;
-  @Action('setDialogVisibility', { namespace: 'moonpay' }) setMoonpayVisibility!: (flag: boolean) => Promise<void>;
 
   goTo = goTo;
   showSelectLanguageDialog = false;
@@ -128,27 +95,6 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 
   get themeTitle(): string {
     return this.libraryTheme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT;
-  }
-
-  get hideBalancesIcon(): string {
-    return this.shouldBalanceBeHidden ? 'basic-filterlist-24' : 'basic-eye-no-24';
-  }
-
-  get hideBalancesTooltip(): string {
-    return this.t(`headerMenu.${this.shouldBalanceBeHidden ? 'showBalances' : 'hideBalances'}`);
-  }
-
-  async openMoonpayDialog(): Promise<void> {
-    if (!this.isSoraAccountConnected) {
-      return this.connectInternalWallet();
-    }
-    await this.checkConnectionToExternalAccount(async () => {
-      await this.setMoonpayVisibility(true);
-    });
-  }
-
-  toggleMenu(): void {
-    this.$emit('toggle-menu');
   }
 
   handleClickHeaderMenu(): void {
@@ -220,43 +166,6 @@ $icon-size: 28px;
     }
   }
 }
-
-.moonpay-button {
-  &.el-button.neumorphic.s-medium {
-    padding-left: 9px;
-    padding-right: 9px;
-  }
-
-  &--buy {
-    max-width: 114px;
-  }
-
-  &--history {
-    max-width: 134px;
-
-    .moonpay-button-text {
-      display: none;
-
-      @include large-mobile {
-        display: inline-block;
-      }
-    }
-  }
-
-  &-text {
-    white-space: normal;
-    text-align: left;
-    letter-spacing: var(--s-letter-spacing-small);
-  }
-
-  & i + &-text {
-    padding-left: 6px;
-  }
-
-  &:not(.s-action).s-i-position-left > span > i[class^='s-icon-'] {
-    margin-right: 0;
-  }
-}
 </style>
 
 <style lang="scss" scoped>
@@ -302,18 +211,6 @@ $icon-size: 28px;
 
   @include desktop {
     margin-left: auto;
-  }
-
-  &--moonpay {
-    margin-left: auto;
-
-    @include desktop {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      margin-right: 0;
-    }
   }
 }
 

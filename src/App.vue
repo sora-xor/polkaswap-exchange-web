@@ -1,35 +1,12 @@
 <template>
   <s-design-system-provider :value="libraryDesignSystem" id="app" class="app">
-    <app-header :loading="loading" @toggle-menu="toggleMenu" />
+    <app-header :loading="loading" />
     <div class="app-main">
-      <app-menu @click.native="handleAppMenuClick" :visible="menuVisibility" :on-select="goTo">
-        <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
-      </app-menu>
-      <div class="app-body" :class="isAboutPage ? 'app-body__about' : ''">
+      <div class="app-body">
         <s-scrollbar class="app-body-scrollbar">
-          <div v-if="blockNumber" class="block-number">
-            <a
-              class="block-number-link"
-              :href="soraExplorerLink"
-              title="SORAScan"
-              target="_blank"
-              rel="nofollow noopener"
-            >
-              <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
-            </a>
-          </div>
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
-            <p class="app-disclaimer" v-html="t('disclaimer')" />
           </div>
-          <footer class="app-footer">
-            <div class="sora-logo">
-              <span class="sora-logo__title">{{ t('poweredBy') }}</span>
-              <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener">
-                <sora-logo :theme="libraryTheme" />
-              </a>
-            </div>
-          </footer>
         </s-scrollbar>
       </div>
     </div>
@@ -39,8 +16,8 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
-import { FPNumber, History, connection } from '@sora-substrate/util';
-import { mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { History, connection } from '@sora-substrate/util';
+import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 
@@ -59,21 +36,16 @@ import type { SubNetwork } from '@/utils/ethers-util';
   components: {
     SoraLogo,
     AppHeader: lazyComponent(Components.AppHeader),
-    AppMenu: lazyComponent(Components.AppMenu),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
   },
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
   readonly PageNames = PageNames;
-  readonly PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
-
-  menuVisibility = false;
 
   @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @Getter libraryTheme!: Theme;
   @Getter libraryDesignSystem!: DesignSystem;
   @Getter firstReadyTransaction!: History;
-  @Getter blockNumber!: number;
 
   // Wallet
   @Action resetAccountAssetsSubscription!: AsyncVoidFn;
@@ -90,8 +62,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action setLanguage!: (lang: Language) => Promise<void>;
   @Action setApiKeys!: (options: any) => Promise<void>;
   @Action setFeatureFlags!: (options: any) => Promise<void>;
-  @Action setBlockNumber!: () => Promise<void>;
-  @Action resetBlockNumberSubscription!: () => Promise<void>;
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>;
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
   @Watch('firstReadyTransaction', { deep: true })
@@ -139,51 +109,19 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       // connection to node
       await this.runAppConnectionToNode();
-      await this.setBlockNumber();
     });
 
     this.trackActiveTransactions();
   }
 
-  get isAboutPage(): boolean {
-    return this.$route.name === PageNames.About;
-  }
-
-  get blockNumberFormatted(): string {
-    return new FPNumber(this.blockNumber).toLocaleString();
-  }
-
-  get soraExplorerLink(): string {
-    return getExplorerLinks(this.soraNetwork)[0].value;
-  }
-
   goTo(name: PageNames): void {
     goTo(name);
-    this.closeMenu();
-  }
-
-  toggleMenu(): void {
-    this.menuVisibility = !this.menuVisibility;
-  }
-
-  closeMenu(): void {
-    this.menuVisibility = false;
-  }
-
-  handleAppMenuClick(e: Event): void {
-    const target = e.target as any;
-    const sidebar = !!target.closest('.app-sidebar');
-
-    if (!sidebar) {
-      this.closeMenu();
-    }
   }
 
   async beforeDestroy(): Promise<void> {
     await this.resetFiatPriceAndApySubscription();
     await this.resetActiveTransactions();
     await this.resetAccountAssetsSubscription();
-    await this.resetBlockNumberSubscription();
     await connection.close();
   }
 
@@ -246,32 +184,6 @@ ul ul {
     &__about &-scrollbar .el-scrollbar__wrap {
       overflow-x: auto;
     }
-  }
-}
-
-.block-number {
-  display: none;
-
-  &-link {
-    display: flex;
-    align-items: center;
-    color: var(--s-color-status-success);
-    font-size: var(--s-font-size-small);
-    text-decoration: none;
-    font-weight: 300;
-    position: absolute;
-    top: 2.5%;
-    right: 0;
-    line-height: 150%;
-    width: 100px;
-  }
-
-  &-icon {
-    background-color: var(--s-color-status-success);
-    border-radius: 50%;
-    height: 9px;
-    width: 9px;
-    margin-right: 2px;
   }
 }
 
@@ -376,11 +288,6 @@ ul ul {
     border-radius: var(--s-border-radius-medium);
   }
 }
-.app-disclaimer {
-  &__title {
-    color: var(--s-color-theme-accent);
-  }
-}
 
 .link {
   color: var(--s-color-base-content-primary);
@@ -419,48 +326,11 @@ $sora-logo-width: 173.7px;
     display: flex;
     flex: 1;
     flex-flow: column nowrap;
-    &__about {
-      .app-content .app-disclaimer {
-        min-width: 800px;
-        width: 100%;
-        max-width: 900px;
-        padding: 0 20px;
-        margin: 0 auto 120px;
-      }
-      .app-footer {
-        min-width: 800px;
-        justify-content: center;
-      }
-    }
   }
 
   &-content {
     flex: 1;
     margin: auto;
-
-    .app-disclaimer {
-      margin-left: $basic-spacing-medium;
-      margin-bottom: $inner-spacing-big;
-      margin-right: $basic-spacing-medium;
-      max-width: calc(#{$inner-window-width} - #{$basic-spacing-medium * 2});
-      text-align: justify;
-    }
-  }
-
-  &-disclaimer {
-    margin-top: $basic-spacing-medium;
-    font-size: var(--s-font-size-extra-mini);
-    font-weight: 300;
-    line-height: var(--s-line-height-extra-small);
-    letter-spacing: var(--s-letter-spacing-small);
-    color: var(--s-color-base-content-secondary);
-  }
-
-  &-footer {
-    display: flex;
-    flex-direction: column-reverse;
-    justify-content: flex-end;
-    padding: 0 $basic-spacing-medium $basic-spacing-medium;
   }
 }
 
@@ -490,19 +360,6 @@ $sora-logo-width: 173.7px;
   &__image {
     width: $sora-logo-width;
     height: $sora-logo-height;
-  }
-}
-
-@include tablet {
-  .app-footer {
-    flex-direction: row;
-    .app-disclaimer {
-      padding-right: $inner-spacing-large;
-    }
-  }
-
-  .block-number {
-    display: block;
   }
 }
 </style>

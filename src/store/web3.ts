@@ -6,11 +6,9 @@ import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
 import { FPNumber, BridgeNetworks, KnownAssets } from '@sora-substrate/util';
 
-import { bridgeApi } from '@/utils/bridge';
 import ethersUtil, {
   ABI,
   Contract,
-  EvmNetworkTypeName,
   KnownBridgeAsset,
   ContractNetwork,
   SubNetwork,
@@ -31,7 +29,6 @@ const types = flow(
     'SET_EVM_BALANCE',
     'SET_DEFAULT_NETWORK_TYPE',
     'SET_SUB_NETWORKS',
-    'SET_ENV_NETWORK',
   ]),
   map((x) => [x, x]),
   fromPairs
@@ -136,12 +133,6 @@ const mutations = {
   },
   [types.SWITCH_EVM_WALLET_FAILURE]() {},
 
-  [types.SET_NETWORK_TYPE_REQUEST]() {},
-  [types.SET_NETWORK_TYPE_SUCCESS](state, networkType) {
-    state.networkType = networkType;
-  },
-  [types.SET_NETWORK_TYPE_FAILURE]() {},
-
   [types.SET_DEFAULT_NETWORK_TYPE](state, networkType) {
     state.defaultNetworkType = networkType;
   },
@@ -149,16 +140,6 @@ const mutations = {
   [types.SET_SUB_NETWORKS](state, networks) {
     state.subNetworks = networks;
   },
-
-  [types.SET_ENV_NETWORK](state, network) {
-    state.evmNetwork = network;
-  },
-
-  [types.SET_NETWORK_TYPE_REQUEST]() {},
-  [types.SET_NETWORK_TYPE_SUCCESS](state, network) {
-    state.networkType = network;
-  },
-  [types.SET_NETWORK_TYPE_FAILURE]() {},
 
   [types.DISCONNECT_EVM_WALLET_REQUEST]() {},
   [types.DISCONNECT_EVM_WALLET_SUCCESS](state) {
@@ -240,27 +221,9 @@ const actions = {
     commit(types.SET_SUB_NETWORKS, subNetworks);
   },
 
-  async setEvmNetwork({ commit, dispatch }, networkId: BridgeNetworks) {
-    bridgeApi.externalNetwork = networkId;
-    await dispatch('setDefaultNetworkType', networkId);
-    commit(types.SET_ENV_NETWORK, networkId);
-  },
-
   async setDefaultNetworkType({ commit, getters }, networkId: BridgeNetworks) {
     const network: SubNetwork | undefined = getters.subNetworks.find((network: SubNetwork) => network.id === networkId);
     commit(types.SET_DEFAULT_NETWORK_TYPE, network?.defaultType);
-  },
-
-  async setEvmNetworkType({ commit }, network) {
-    commit(types.SET_NETWORK_TYPE_REQUEST);
-    try {
-      const networkType = network ? EvmNetworkTypeName[network] : await ethersUtil.getEvmNetworkType();
-      ethersUtil.storeEvmNetworkType(networkType);
-      commit(types.SET_NETWORK_TYPE_SUCCESS, networkType);
-    } catch (error) {
-      commit(types.SET_NETWORK_TYPE_FAILURE);
-      throw error;
-    }
   },
 
   async disconnectExternalAccount({ commit }) {
