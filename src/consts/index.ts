@@ -145,6 +145,7 @@ export enum Components {
   SelectNetwork = 'SelectNetwork',
   SelectRegisteredAsset = 'SelectRegisteredAsset',
   ConfirmBridgeTransactionDialog = 'ConfirmBridgeTransactionDialog',
+  NetworkFeeWarningDialog = 'NetworkFeeWarningDialog',
   BridgeTransaction = 'BridgeTransaction',
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
   GradientBox = 'Rewards/GradientBox',

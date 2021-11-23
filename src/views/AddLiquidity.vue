@@ -121,7 +121,7 @@
         type="primary"
         class="action-button s-typography-button--large"
         :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable"
-        @click="openConfirmDialog"
+        @click="handleAddLiquidity"
       >
         <template v-if="!areTokensSelected">
           {{ t('buttons.chooseTokens') }}
@@ -218,16 +218,19 @@
       :slippage-tolerance="slippageTolerance"
       @confirm="handleConfirmAddLiquidity"
     />
+
+    <network-fee-warning-dialog :visible.sync="showWarningFeeDialog" :fee="formattedFee" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
-import { FPNumber, AccountLiquidity, CodecString, KnownAssets, KnownSymbols } from '@sora-substrate/util';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber, AccountLiquidity, CodecString, KnownAssets, KnownSymbols, Operation } from '@sora-substrate/util';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin';
+import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components } from '@/consts';
@@ -243,6 +246,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace);
     TokenLogo: lazyComponent(Components.TokenLogo),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
+    NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
     FormattedAmount: components.FormattedAmount,
@@ -250,7 +254,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace);
     InfoLine: components.InfoLine,
   },
 })
-export default class AddLiquidity extends Mixins(TokenPairMixin) {
+export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, TokenPairMixin, NetworkFeeDialogMixin) {
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean;
   @Getter('shareOfPool', { namespace }) shareOfPool!: string;
   @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity;
@@ -347,6 +351,15 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
     return `${this.getFPNumberFromCodec(strategicBonusApy).mul(this.Hundred).toLocaleString()}%`;
   }
 
+  get isXorSufficientForNextOperation(): boolean {
+    return this.isXorSufficientForNextTx({
+      type: Operation.AddLiquidity,
+      amount: this.getFPNumber(this.firstTokenValue).toCodecString(),
+      xorBalance: this.getFPNumber(this.getTokenBalance(this.firstToken)).toCodecString(),
+      fee: this.networkFee,
+    });
+  }
+
   updatePrices(): void {
     this.getPrices({
       assetAAddress: this.firstAddress ?? this.firstToken.address,
@@ -354,6 +367,15 @@ export default class AddLiquidity extends Mixins(TokenPairMixin) {
       amountA: this.firstTokenValue,
       amountB: this.secondTokenValue,
     });
+  }
+
+  async handleAddLiquidity(): Promise<void> {
+    if (!this.isXorSufficientForNextOperation) {
+      this.openWarningFeeDialog();
+      await this.waitOnNextTxFailureConfirmation();
+    }
+
+    this.openConfirmDialog();
   }
 
   handleConfirmAddLiquidity(): Promise<void> {

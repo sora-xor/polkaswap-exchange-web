@@ -826,5 +826,11 @@
         "txs": "TXs",
         "volume": "Volumen de Transacciones de MM",
         "description": "Se distribuirán 20 millones de PSWAP \/ mes a los creadores de mercado con al menos 500 tx \/ mes valorados en más de 1 XOR."
+    },
+    "confirmNextTxFailure": {
+        "header": "Atención",
+        "info": "Su saldo de XOR será inferior a {fee} XOR después de esta transacción. No podrá pagar la tarifa de red para otra transacción.",
+        "payoff": "Tendría que usar el Bridge para obtener XOR de otras redes, recibir XOR de otra cuenta SORA o intercambiar cualquier otro token que ya esté en su cuenta por XOR.",
+        "button": "Si, entiendo el riesgo"
     }
 }
