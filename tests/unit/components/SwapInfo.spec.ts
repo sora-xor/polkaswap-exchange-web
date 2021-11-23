@@ -29,10 +29,12 @@ useDescribe('SwapInfo.vue', SwapInfo, () => {
         modules: {
           swap: {
             namespaced: true,
+            state: {
+              liquidityProviderFee: item.liquidityProviderFee,
+              isExchangeB: item.isExchangeB,
+              rewards: item.rewards,
+            },
             getters: {
-              liquidityProviderFee: () => item.liquidityProviderFee,
-              isExchangeB: () => item.isExchangeB,
-              rewards: () => item.rewards,
               tokenFrom: () => item.tokenFrom,
               tokenTo: () => item.tokenTo,
               minMaxReceived: () => item.minMaxReceived,

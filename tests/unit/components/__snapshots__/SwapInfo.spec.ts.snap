@@ -51,7 +51,7 @@ exports[`SwapInfo.vue [With All Set Parameters]: should be rendered correctly 1`
     isformatted="true"
     label=""
     labeltooltip=""
-    value="NaN"
+    value="0.003"
   />
    
   <info-line-stub
@@ -205,7 +205,7 @@ exports[`SwapInfo.vue [With Empty minMaxReceived]: should be rendered correctly 
     isformatted="true"
     label=""
     labeltooltip=""
-    value="NaN"
+    value="0.003"
   />
    
   <info-line-stub
@@ -282,7 +282,7 @@ exports[`SwapInfo.vue [With Empty networkFee]: should be rendered correctly 1`] 
     isformatted="true"
     label=""
     labeltooltip=""
-    value="NaN"
+    value="0.003"
   />
    
   <info-line-stub
@@ -359,7 +359,7 @@ exports[`SwapInfo.vue [With Error priceImpact]: should be rendered correctly 1`]
     isformatted="true"
     label=""
     labeltooltip=""
-    value="NaN"
+    value="0.003"
   />
    
   <info-line-stub
@@ -436,7 +436,7 @@ exports[`SwapInfo.vue [With Logged Out]: should be rendered correctly 1`] = `
     isformatted="true"
     label=""
     labeltooltip=""
-    value="NaN"
+    value="0.003"
   />
    
   <!---->
@@ -469,7 +469,15 @@ exports[`SwapInfo.vue [With Rewards]: should be rendered correctly 1`] = `
     labeltooltip=""
     value="1.2345678"
   />
-    
+   
+  <info-line-stub
+    assetsymbol="XOR"
+    fiatvalue="1.23"
+    label=""
+    labeltooltip=""
+    value="1"
+  />
+   
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
@@ -506,7 +514,7 @@ exports[`SwapInfo.vue [With Rewards]: should be rendered correctly 1`] = `
     isformatted="true"
     label=""
     labeltooltip=""
-    value="NaN"
+    value="0.003"
   />
    
   <info-line-stub
@@ -583,7 +591,7 @@ exports[`SwapInfo.vue [With Warning priceImpact]: should be rendered correctly 1
     isformatted="true"
     label=""
     labeltooltip=""
-    value="NaN"
+    value="0.003"
   />
    
   <info-line-stub
@@ -617,7 +625,8 @@ exports[`SwapInfo.vue [With isExchangeB]: should be rendered correctly 1`] = `
   />
    
   <info-line-stub
-    assetsymbol="VAL"
+    assetsymbol="XOR"
+    fiatvalue="1.5185185"
     isformatted="true"
     label=""
     labeltooltip=""
@@ -660,7 +669,7 @@ exports[`SwapInfo.vue [With isExchangeB]: should be rendered correctly 1`] = `
     isformatted="true"
     label=""
     labeltooltip=""
-    value="NaN"
+    value="0.003"
   />
    
   <info-line-stub
