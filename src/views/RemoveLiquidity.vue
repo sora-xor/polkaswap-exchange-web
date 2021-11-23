@@ -131,7 +131,7 @@
         class="action-button s-typography-button--large"
         border-radius="small"
         :disabled="isEmptyAmount || isInsufficientBalance || isInsufficientXorForFee"
-        @click="openConfirmDialog"
+        @click="handleRemoveLiquidity"
       >
         <template v-if="isEmptyAmount">
           {{ t('buttons.enterAmount') }}
@@ -154,6 +154,8 @@
       :parent-loading="parentLoading"
       @confirm="handleConfirmRemoveLiquidity"
     />
+
+    <network-fee-warning-dialog :visible.sync="showWarningFeeDialog" :fee="formattedFee" />
   </div>
 </template>
 
@@ -173,10 +175,11 @@ import {
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
+import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { hasInsufficientXorForFee } from '@/utils';
+import { hasInsufficientXorForFee, getAssetBalance } from '@/utils';
 
 const namespace = 'removeLiquidity';
 
@@ -186,15 +189,18 @@ const namespace = 'removeLiquidity';
     TokenLogo: lazyComponent(Components.TokenLogo),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity),
+    NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
     InfoLine: components.InfoLine,
   },
 })
 export default class RemoveLiquidity extends Mixins(
+  mixins.NetworkFeeWarningMixin,
   mixins.FormattedAmountMixin,
   mixins.TransactionMixin,
-  ConfirmDialogMixin
+  ConfirmDialogMixin,
+  NetworkFeeDialogMixin
 ) {
   readonly KnownSymbols = KnownSymbols;
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
@@ -338,6 +344,14 @@ export default class RemoveLiquidity extends Mixins(
     return this.formatCodecNumber(this.networkFee);
   }
 
+  get isXorSufficientForNextOperation(): boolean {
+    return this.isXorSufficientForNextTx({
+      type: Operation.RemoveLiquidity,
+      xorBalance: getAssetBalance(this.tokenXOR),
+      fee: this.networkFee,
+    });
+  }
+
   handleRemovePartChange(value: string): void {
     const newValue = parseFloat(value) || 0;
     this.removePartInput = Math.min(Math.max(newValue, 0), 100);
@@ -384,6 +398,15 @@ export default class RemoveLiquidity extends Mixins(
     if (router.currentRoute.name === PageNames.RemoveLiquidity) {
       router.push({ name: PageNames.Pool });
     }
+  }
+
+  async handleRemoveLiquidity(): Promise<void> {
+    if (!this.isXorSufficientForNextOperation) {
+      this.openWarningFeeDialog();
+      await this.waitOnNextTxFailureConfirmation();
+    }
+
+    this.openConfirmDialog();
   }
 
   private addListenerToSliderDragButton(): void {
