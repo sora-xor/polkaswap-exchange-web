@@ -14,8 +14,12 @@ Vue.config.productionTip = false;
 Vue.config.devtools = process.env.NODE_ENV === 'development';
 
 router.beforeEach((to, from, next): void => {
-  updateDocumentTitle(to);
-  next();
+  try {
+    updateDocumentTitle(to);
+    next();
+  } catch (error) {
+    console.error('router error', error);
+  }
 });
 
 new Vue({
