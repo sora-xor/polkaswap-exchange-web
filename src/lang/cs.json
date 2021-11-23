@@ -826,5 +826,11 @@
         "txs": "TXs",
         "volume": "Objem MM TX",
         "description": "20 milionů PSWAP\/měsíc bude distribuováno tvůrcům trhu s minimálně 500 tx\/měsíc v hodnotě přes 1 XOR."
+    },
+    "confirmNextTxFailure": {
+        "header": "Pozornost",
+        "info": "Váš zůstatek XOR bude po této transakci {fee} Nebudete moci platit za síťový poplatek za další transakci.",
+        "payoff": "Budete muset použít Bridge k získání XOR z jiných sítí, k odeslání XOR z jiného účtu SORA nebo k výměně jakéhokoli jiného tokenu, který již máte na účtu, za XOR.",
+        "button": "Ano, chápu riziko"
     }
 }
