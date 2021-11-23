@@ -2,7 +2,6 @@ import Vue, { VueConstructor } from 'vue';
 import Vuex from 'vuex';
 import { createLocalVue } from '@vue/test-utils';
 import SoramitsuElements, { Message, MessageBox, Notification } from '@soramitsu/soramitsu-js-ui';
-import { createLocalVue } from '@vue/test-utils';
 import Wallet from '@soramitsu/soraneo-wallet-web';
 
 export const localVue = createLocalVue();
