@@ -10,15 +10,6 @@ localVue.use(Vuex);
 export const TranslationMock = (vue: VueConstructor) =>
   vue.mixin({ name: 'TranslationMixin', methods: { t: jest.fn(), tc: jest.fn() } });
 
-export const NumberFormatterMixin = (vue: VueConstructor) =>
-  vue.mixin({
-    name: 'NumberFormatterMixin',
-    methods: {
-      formatStringValue: jest.fn(),
-      formatCodecNumber: jest.fn(),
-    },
-  });
-
 export const SoramitsuElementsImport = (vue: VueConstructor) => {
   vue.use(Vuex);
   const store = new Vuex.Store({ modules: {} });
@@ -40,7 +31,6 @@ export const useDescribe = (name: string, component: VueConstructor<Vue>, fn: je
     beforeAll(() => {
       SoramitsuElementsImport(localVue);
       TranslationMock(component);
-      NumberFormatterMixin(component);
     });
     fn();
   });

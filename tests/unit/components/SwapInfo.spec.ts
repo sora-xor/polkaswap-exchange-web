@@ -1,10 +1,26 @@
+import { VueConstructor } from 'vue';
 import Vuex from 'vuex';
 import { shallowMount } from '@vue/test-utils';
 
 import SwapInfo from '@/components/SwapInfo.vue';
 
-import { useDescribe, localVue } from '../../utils';
+import { SoramitsuElementsImport, localVue, TranslationMock } from '../../utils';
 import { MOCK_SWAP_INFO, MOCK_FIAT_PRICE_AND_APY_OBJECT } from '../../mocks/components/SwapInfo';
+
+const NumberFormatterMixin = (vue: VueConstructor) => vue.mixin({ name: 'NumberFormatterMixin' });
+
+const FormattedAmountMixin = (vue: VueConstructor) => vue.mixin({ name: 'FormattedAmountMixin' });
+
+export const useDescribe = (name: string, component: VueConstructor<Vue>, fn: jest.EmptyFunction) =>
+  describe(name, () => {
+    beforeAll(() => {
+      SoramitsuElementsImport(localVue);
+      TranslationMock(component);
+      NumberFormatterMixin(component);
+      FormattedAmountMixin(component);
+    });
+    fn();
+  });
 
 useDescribe('SwapInfo.vue', SwapInfo, () => {
   MOCK_SWAP_INFO.map((item) =>
@@ -14,20 +30,15 @@ useDescribe('SwapInfo.vue', SwapInfo, () => {
           swap: {
             namespaced: true,
             getters: {
+              liquidityProviderFee: () => item.liquidityProviderFee,
+              isExchangeB: () => item.isExchangeB,
+              rewards: () => item.rewards,
               tokenFrom: () => item.tokenFrom,
               tokenTo: () => item.tokenTo,
               minMaxReceived: () => item.minMaxReceived,
-              isExchangeB: () => item.isExchangeB,
-              liquidityProviderFee: () => item.liquidityProviderFee,
-              rewards: () => item.rewards,
               priceImpact: () => item.priceImpact,
-            },
-          },
-          prices: {
-            namespaced: true,
-            getters: {
-              price: () => item.price,
               priceReversed: () => item.priceReversed,
+              price: () => item.price,
             },
           },
         },

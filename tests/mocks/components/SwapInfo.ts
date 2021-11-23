@@ -1,4 +1,11 @@
-import { CodecString, AccountAsset, LPRewardsInfo, NetworkFeesObject } from '@sora-substrate/util';
+import {
+  CodecString,
+  AccountAsset,
+  LPRewardsInfo,
+  KnownSymbols,
+  RewardReason,
+  NetworkFeesObject,
+} from '@sora-substrate/util';
 
 import { MOCK_ACCOUNT_ASSETS } from '../tokens';
 
@@ -78,6 +85,26 @@ export const MOCK_SWAP_INFO: Array<SwapInfo> = [
     isExchangeB: false,
     liquidityProviderFee: '',
     rewards: [],
+    priceImpact: '-0.1',
+    price: '0.4',
+    priceReversed: '2.2',
+    isLoggedIn: true,
+    networkFees: NETWORK_FEES as NetworkFeesObject,
+  },
+  {
+    title: 'With Rewards',
+    tokenFrom: MOCK_ACCOUNT_ASSETS[0],
+    tokenTo: MOCK_ACCOUNT_ASSETS[1],
+    minMaxReceived: '1234567890123456789',
+    isExchangeB: false,
+    liquidityProviderFee: '3000000000000000',
+    rewards: [
+      {
+        amount: '1000000000000000000',
+        currency: KnownSymbols.XOR,
+        reason: RewardReason.Unspecified,
+      },
+    ],
     priceImpact: '-0.1',
     price: '0.4',
     priceReversed: '2.2',
