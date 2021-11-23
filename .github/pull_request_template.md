@@ -1,13 +1,10 @@
 # Task
 
-[PSS-XXXX]: Title.
+[PW-XXXX]: Title.
 
 ## Changes
 
 1. Description.
 
-## Author
 
-Signed-off-by: name <name@gmail.com>
-
-[PSS-XXXX]: https://soramitsu.atlassian.net/browse/PSS-XXXX
+[PW-XXXX]: https://soramitsu.atlassian.net/browse/PW-XXXX
