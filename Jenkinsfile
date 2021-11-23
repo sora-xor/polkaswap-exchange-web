@@ -1,8 +1,9 @@
 @Library('jenkins-library') _
 
 def pipeline = new org.js.AppPipeline(steps: this,
-    dockerImageName: 'polkaswap/exchange-web',
+    dockerImageName: 'noir/exchange-web',
     buildDockerImage: 'docker.soramitsu.co.jp/build-tools/node:14-ubuntu',
-    dockerRegistryCred: 'bot-polkaswap-rw',
-    pushToIPFS: true)
+    dockerRegistryCred: 'bot-noir-rw',
+    pushToIPFS: true,
+    dockerImageTags: ['noir-exchange':'latest'])
 pipeline.runPipeline()
