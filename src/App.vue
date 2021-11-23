@@ -1,13 +1,19 @@
 <template>
-  <s-design-system-provider :value="libraryDesignSystem" id="app" class="app">
-    <app-header :loading="loading" />
-    <div class="app-main">
-      <div class="app-body">
-        <s-scrollbar class="app-body-scrollbar">
-          <div class="app-content">
-            <router-view :parent-loading="loading || !nodeIsConnected" />
-          </div>
-        </s-scrollbar>
+  <s-design-system-provider :value="libraryDesignSystem" id="app" class="page">
+    <img src="/img/greed.png" loading="lazy" alt="" class="greed-img" />
+    <img src="/img/float-img-left.png" loading="lazy" alt="" class="float-img-left" />
+
+    <img src="/img/float-img-right.png" loading="lazy" alt="" class="float-img-right" />
+
+    <app-header />
+
+    <router-view :parent-loading="loading || !nodeIsConnected" />
+
+    <div class="footer-circles">
+      <div class="circle-1">
+        <div class="circle-2">
+          <div class="circle-3"></div>
+        </div>
       </div>
     </div>
   </s-design-system-provider>
@@ -156,8 +162,92 @@ ul ul {
   font-family: 'Sora', sans-serif;
   height: 100vh;
   color: var(--s-color-base-content-primary);
-  background-color: var(--s-color-utility-body);
   transition: background-color 500ms linear;
+}
+
+.page {
+  background-image: url('../public/img/noise-07-small.png'), linear-gradient(292.85deg, #110b1f 11.91%, #1938db 120.54%);
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.page .greed-img {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  -webkit-transform: translate(-50%, -10px);
+  transform: translate(-50%, -10px);
+  pointer-events: none;
+}
+
+.page .float-img-left {
+  position: absolute;
+  left: 0;
+  top: 20%;
+  pointer-events: none;
+}
+
+.page .float-img-right {
+  position: absolute;
+  right: 0;
+  top: 20%;
+  pointer-events: none;
+}
+
+[data-aoe] {
+  -webkit-animation-duration: 0.7s;
+  animation-duration: 0.7s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-name: unset;
+  animation-name: unset;
+  opacity: 0;
+}
+
+.footer-circles {
+  width: 1012px;
+  height: 1012px;
+  border-radius: 100%;
+  background-image: linear-gradient(181.38deg, #6822fc 1.18%, rgba(87, 77, 156, 0) 46.6%);
+  padding: 70px;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  -webkit-transform: translate(-50%, 50%);
+  transform: translate(-50%, 50%);
+  pointer-events: none;
+}
+
+.footer-circles .circle-1 {
+  border: 2px solid;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  border-top: 2px solid #ff9ae9;
+  border-left: hidden;
+  border-right: hidden;
+  border-bottom: hidden;
+}
+
+.footer-circles .circle-2 {
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  background-image: linear-gradient(177.68deg, #0a0613 1.94%, rgba(14, 11, 36, 0) 50.08%);
+  padding: 48px;
+}
+
+.footer-circles .circle-3 {
+  border: 2px solid;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  border-top: 2px solid #ff9ae9;
+  border-left: hidden;
+  border-right: hidden;
+  border-bottom: hidden;
+  opacity: 0.3;
 }
 
 .app {
@@ -331,35 +421,6 @@ $sora-logo-width: 173.7px;
   &-content {
     flex: 1;
     margin: auto;
-  }
-}
-
-.app-logo--menu {
-  margin-bottom: $inner-spacing-big;
-
-  @include large-mobile {
-    display: none;
-  }
-}
-
-.sora-logo {
-  display: flex;
-  align-items: center;
-  align-self: flex-end;
-
-  &__title {
-    text-transform: uppercase;
-    font-weight: 200;
-    color: var(--s-color-base-content-secondary);
-    font-size: 15px;
-    line-height: 16px;
-    margin-right: $basic-spacing;
-    white-space: nowrap;
-  }
-
-  &__image {
-    width: $sora-logo-width;
-    height: $sora-logo-height;
   }
 }
 </style>
