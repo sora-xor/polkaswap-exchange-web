@@ -263,6 +263,8 @@ const actions = {
 
       console.info('Connected to node', connection.endpoint);
 
+      await dispatch('setBlockNumber');
+
       const nodeChainGenesisHash = connection.api.genesisHash.toHex();
 
       // if connected node is custom node, we should check genesis hash
