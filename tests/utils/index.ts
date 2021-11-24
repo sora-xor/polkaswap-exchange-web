@@ -1,7 +1,11 @@
-import { VueConstructor } from 'vue';
+import Vue, { VueConstructor } from 'vue';
 import Vuex from 'vuex';
+import { createLocalVue } from '@vue/test-utils';
 import SoramitsuElements, { Message, MessageBox, Notification } from '@soramitsu/soramitsu-js-ui';
 import Wallet from '@soramitsu/soraneo-wallet-web';
+
+export const localVue = createLocalVue();
+localVue.use(Vuex);
 
 export const TranslationMock = (vue: VueConstructor) =>
   vue.mixin({ name: 'TranslationMixin', methods: { t: jest.fn(), tc: jest.fn() } });
@@ -21,3 +25,12 @@ export const WalletImport = (vue: VueConstructor) => {
   const store = new Vuex.Store({ modules: {} });
   vue.use(Wallet, { store });
 };
+
+export const useDescribe = (name: string, component: VueConstructor<Vue>, fn: jest.EmptyFunction) =>
+  describe(name, () => {
+    beforeAll(() => {
+      SoramitsuElementsImport(localVue);
+      TranslationMock(component);
+    });
+    fn();
+  });

@@ -1,0 +1,684 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SwapInfo.vue [With All Set Parameters]: should be rendered correctly 1`] = `
+<div
+  class="swap-info-container"
+>
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value="0.4"
+  />
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value="2.2"
+  />
+   
+  <info-line-stub
+    assetsymbol="VAL"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="1.2345678"
+  />
+    
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <!---->
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue=""
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="0.003"
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue="0.000861"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="0.0007"
+  />
+</div>
+`;
+
+exports[`SwapInfo.vue [With Empty liquidityProviderFee]: should be rendered correctly 1`] = `
+<div
+  class="swap-info-container"
+>
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value="0.4"
+  />
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value="2.2"
+  />
+   
+  <info-line-stub
+    assetsymbol="VAL"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="1.2345678"
+  />
+    
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="value-status-wrapper"
+    >
+      <formatted-amount-stub
+        assetsymbol=""
+        class="swap-value"
+        fontsizerate="normal"
+        fontweightrate="normal"
+        value="-0.1"
+      >
+        %
+      </formatted-amount-stub>
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue=""
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="NaN"
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue="0.000861"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="0.0007"
+  />
+</div>
+`;
+
+exports[`SwapInfo.vue [With Empty minMaxReceived]: should be rendered correctly 1`] = `
+<div
+  class="swap-info-container"
+>
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value="0.4"
+  />
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value="2.2"
+  />
+   
+  <info-line-stub
+    assetsymbol="VAL"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="NaN"
+  />
+    
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="value-status-wrapper"
+    >
+      <formatted-amount-stub
+        assetsymbol=""
+        class="swap-value"
+        fontsizerate="normal"
+        fontweightrate="normal"
+        value="-0.1"
+      >
+        %
+      </formatted-amount-stub>
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue=""
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="0.003"
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue="0.000861"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="0.0007"
+  />
+</div>
+`;
+
+exports[`SwapInfo.vue [With Empty networkFee]: should be rendered correctly 1`] = `
+<div
+  class="swap-info-container"
+>
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value="0.4"
+  />
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value="2.2"
+  />
+   
+  <info-line-stub
+    assetsymbol="VAL"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="1.2345678"
+  />
+    
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="value-status-wrapper"
+    >
+      <formatted-amount-stub
+        assetsymbol=""
+        class="swap-value"
+        fontsizerate="normal"
+        fontweightrate="normal"
+        value="-0.1"
+      >
+        %
+      </formatted-amount-stub>
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue=""
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="0.003"
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue="0"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="NaN"
+  />
+</div>
+`;
+
+exports[`SwapInfo.vue [With Error priceImpact]: should be rendered correctly 1`] = `
+<div
+  class="swap-info-container"
+>
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value="0.4"
+  />
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value="2.2"
+  />
+   
+  <info-line-stub
+    assetsymbol="VAL"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="1.2345678"
+  />
+    
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="value-status-wrapper error"
+    >
+      <formatted-amount-stub
+        assetsymbol=""
+        class="swap-value"
+        fontsizerate="normal"
+        fontweightrate="normal"
+        value="-10"
+      >
+        %
+      </formatted-amount-stub>
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue=""
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="0.003"
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue="0.000861"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="0.0007"
+  />
+</div>
+`;
+
+exports[`SwapInfo.vue [With Logged Out]: should be rendered correctly 1`] = `
+<div
+  class="swap-info-container"
+>
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value="0.4"
+  />
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value="2.2"
+  />
+   
+  <info-line-stub
+    assetsymbol="VAL"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="1.2345678"
+  />
+    
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="value-status-wrapper"
+    >
+      <formatted-amount-stub
+        assetsymbol=""
+        class="swap-value"
+        fontsizerate="normal"
+        fontweightrate="normal"
+        value="-0.1"
+      >
+        %
+      </formatted-amount-stub>
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue=""
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="0.003"
+  />
+   
+  <!---->
+</div>
+`;
+
+exports[`SwapInfo.vue [With Rewards]: should be rendered correctly 1`] = `
+<div
+  class="swap-info-container"
+>
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value="0.4"
+  />
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value="2.2"
+  />
+   
+  <info-line-stub
+    assetsymbol="VAL"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="1.2345678"
+  />
+   
+  <info-line-stub
+    assetsymbol="XOR"
+    fiatvalue="1.23"
+    label=""
+    labeltooltip=""
+    value="1"
+  />
+   
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="value-status-wrapper"
+    >
+      <formatted-amount-stub
+        assetsymbol=""
+        class="swap-value"
+        fontsizerate="normal"
+        fontweightrate="normal"
+        value="-0.1"
+      >
+        %
+      </formatted-amount-stub>
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue=""
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="0.003"
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue="0.000861"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="0.0007"
+  />
+</div>
+`;
+
+exports[`SwapInfo.vue [With Warning priceImpact]: should be rendered correctly 1`] = `
+<div
+  class="swap-info-container"
+>
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value="0.4"
+  />
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value="2.2"
+  />
+   
+  <info-line-stub
+    assetsymbol="VAL"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="1.2345678"
+  />
+    
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="value-status-wrapper warning"
+    >
+      <formatted-amount-stub
+        assetsymbol=""
+        class="swap-value"
+        fontsizerate="normal"
+        fontweightrate="normal"
+        value="-1.8"
+      >
+        %
+      </formatted-amount-stub>
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue=""
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="0.003"
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue="0.000861"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="0.0007"
+  />
+</div>
+`;
+
+exports[`SwapInfo.vue [With isExchangeB]: should be rendered correctly 1`] = `
+<div
+  class="swap-info-container"
+>
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value="0.4"
+  />
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value="2.2"
+  />
+   
+  <info-line-stub
+    assetsymbol="XOR"
+    fiatvalue="1.5185185"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="1.2345678"
+  />
+    
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  >
+    <div
+      class="value-status-wrapper"
+    >
+      <formatted-amount-stub
+        assetsymbol=""
+        class="swap-value"
+        fontsizerate="normal"
+        fontweightrate="normal"
+        value="-0.1"
+      >
+        %
+      </formatted-amount-stub>
+    </div>
+  </info-line-stub>
+   
+  <info-line-stub
+    assetsymbol=""
+    fiatvalue=""
+    label=""
+    labeltooltip=""
+    value=""
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue=""
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="0.003"
+  />
+   
+  <info-line-stub
+    assetsymbol=" XOR"
+    fiatvalue="0.000861"
+    isformatted="true"
+    label=""
+    labeltooltip=""
+    value="0.0007"
+  />
+</div>
+`;
