@@ -51,8 +51,25 @@ button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-m
   opacity: 1 !important;
 }
 
-.container.container--wallet {
+.wallet-dialog {
   backdrop-filter: blur(100px);
+
+  > .el-card {
+    &__header {
+      padding-top: 0;
+      padding-right: 0;
+      padding-left: 0;
+    }
+    &__body {
+      padding: $inner-spacing-medium 0 0;
+    }
+  }
+  .history .history-items {
+    padding: 0 $inner-spacing-mini;
+  }
+  .s-icon-basic-check-mark-24 {
+    @include icon-styles;
+  }
 
   .s-tabs .el-tabs__item {
     background-color: unset !important;
@@ -105,6 +122,7 @@ button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-m
 html,
 body {
   scroll-behavior: smooth;
+  font-family: 'Sora', sans-serif;
 }
 
 html,

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <sora-wallet v-loading="parentLoading" class="container container--wallet" @close="handleClose" />
+    <sora-wallet v-loading="parentLoading" class="container--wallet" @close="handleClose" />
   </div>
 </template>
 

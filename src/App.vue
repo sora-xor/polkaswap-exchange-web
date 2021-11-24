@@ -22,8 +22,7 @@
 
     <div class="wrap-cart"></div>
 
-    <noir-dialog :visible.sync="showWallet"> 123123 </noir-dialog>
-
+    <wallet-dialog :visible.sync="showWallet" />
     <select-node-dialog />
   </s-design-system-provider>
 </template>
@@ -49,7 +48,7 @@ import type { ConnectToNodeOptions } from '@/types/nodes';
     SoraLogo,
     AppHeader: lazyComponent(Components.AppHeader),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
-    NoirDialog: lazyComponent(Components.NoirDialog),
+    WalletDialog: lazyComponent(Components.WalletDialog),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
   },
 })
@@ -122,8 +121,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   openWallet() {
-    this.setSelectNodeDialogVisibility(true);
-    // this.showWallet = true;
+    // this.setSelectNodeDialogVisibility(true);
+    this.showWallet = true;
   }
 
   async beforeDestroy(): Promise<void> {
