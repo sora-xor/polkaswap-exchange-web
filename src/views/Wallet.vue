@@ -1,12 +1,6 @@
 <template>
   <div>
-    <sora-wallet
-      v-loading="parentLoading"
-      class="container container--wallet"
-      @close="handleClose"
-      @learn-more="openAboutNetworkDialog"
-    />
-    <about-network-dialog :visible.sync="showAboutNetworkDialog" />
+    <sora-wallet v-loading="parentLoading" class="container container--wallet" @close="handleClose" />
   </div>
 </template>
 
@@ -18,22 +12,12 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import router, { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
-@Component({
-  components: {
-    AboutNetworkDialog: lazyComponent(Components.AboutNetworkDialog),
-  },
-})
+@Component
 export default class Wallet extends Mixins(TranslationMixin) {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean;
 
-  showAboutNetworkDialog = false;
-
   handleClose(): void {
     router.back();
-  }
-
-  openAboutNetworkDialog(): void {
-    this.showAboutNetworkDialog = true;
   }
 }
 </script>

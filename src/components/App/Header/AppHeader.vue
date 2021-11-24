@@ -2,14 +2,10 @@
   <header class="header" id="header">
     <div class="header-container">
       <div class="header__wrap-logo">
-        <a href="#" class="logo">
+        <router-link to="/" class="logo">
           <img src="img/logo.png" loading="lazy" alt="" class="logo__img" />
           <span class="logo__text">NOIR</span>
-        </a>
-      </div>
-
-      <div class="header__wrap-btn">
-        <button class="btn btn-empty">CONNECT WALLET</button>
+        </router-link>
       </div>
 
       <div class="header__wrap-redeemed">
@@ -19,10 +15,10 @@
           <img src="img/fire.png" loading="lazy" alt="" class="redeem__img" />
           <div class="redeem__text"><span class="color-pink">198</span> <span>Redeemed</span></div>
         </div>
+
+        <account-button class="account-btn" @click="openWallet" />
       </div>
     </div>
-
-    <select-node-dialog />
   </header>
 </template>
 
@@ -30,44 +26,28 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
 import { components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
-import PolkaswapLogo from '@/components/logo/Polkaswap.vue';
 
-import { lazyComponent, goTo } from '@/router';
+import { lazyComponent } from '@/router';
 import { PageNames, Components } from '@/consts';
-
-enum HeaderMenuType {
-  Node = 'node',
-  Theme = 'theme',
-  Language = 'language',
-}
 
 @Component({
   components: {
     WalletAvatar: components.WalletAvatar as any,
-    PolkaswapLogo,
     AccountButton: lazyComponent(Components.AccountButton),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
-    SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
   },
 })
 export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin) {
   readonly PageNames = PageNames;
-  readonly iconSize = 28;
-  readonly HeaderMenuType = HeaderMenuType;
 
   @Prop({ type: Boolean, default: false }) readonly loading!: boolean;
+  @Prop({ type: Function, default: () => {} }) readonly openWallet!: VoidFunction;
 
-  @Getter shouldBalanceBeHidden!: boolean;
-  @Getter libraryTheme!: Theme;
   @Getter isLoggedIn!: boolean;
   @Getter account!: WALLET_TYPES.Account;
-
-  goTo = goTo;
 }
 </script>
 
@@ -89,9 +69,13 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
   }
 
   &__wrap-redeemed {
+    display: flex;
     position: relative;
-    width: 25%;
     text-align: right;
+
+    .redeem + .account-btn {
+      margin-left: 40px;
+    }
   }
 
   .header-container {

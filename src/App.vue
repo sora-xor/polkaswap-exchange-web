@@ -1,21 +1,30 @@
 <template>
   <s-design-system-provider :value="libraryDesignSystem" id="app" class="page">
     <img src="/img/greed.png" loading="lazy" alt="" class="greed-img" />
-    <img src="/img/float-img-left.png" loading="lazy" alt="" class="float-img-left" />
 
-    <img src="/img/float-img-right.png" loading="lazy" alt="" class="float-img-right" />
+    <app-header :open-wallet="openWallet" />
 
-    <app-header />
+    <div class="wrap-floats">
+      <img src="img/float-img-left.png" loading="lazy" alt="" class="float-img-left" />
 
-    <router-view :parent-loading="loading || !nodeIsConnected" />
+      <img src="img/float-img-right.png" loading="lazy" alt="" class="float-img-right" />
 
-    <div class="footer-circles">
-      <div class="circle-1">
-        <div class="circle-2">
-          <div class="circle-3"></div>
+      <div class="footer-circles">
+        <div class="circle-1">
+          <div class="circle-2">
+            <div class="circle-3"></div>
+          </div>
         </div>
       </div>
+
+      <div class="blur-circle-3"></div>
     </div>
+
+    <div class="wrap-cart"></div>
+
+    <noir-dialog :visible.sync="showWallet"> 123123 </noir-dialog>
+
+    <select-node-dialog />
   </s-design-system-provider>
 </template>
 
@@ -24,7 +33,6 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 import { History, connection } from '@sora-substrate/util';
 import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
@@ -32,24 +40,25 @@ import SoraLogo from '@/components/logo/Sora.vue';
 
 import { PageNames, Components, Language } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
-import router, { goTo, lazyComponent } from '@/router';
+import router, { lazyComponent } from '@/router';
 import { preloadFontFace } from '@/utils';
-import { getLocale } from '@/lang';
 import type { ConnectToNodeOptions } from '@/types/nodes';
-import type { SubNetwork } from '@/utils/ethers-util';
 
 @Component({
   components: {
     SoraLogo,
     AppHeader: lazyComponent(Components.AppHeader),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
+    NoirDialog: lazyComponent(Components.NoirDialog),
+    SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
   },
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
   readonly PageNames = PageNames;
 
+  showWallet = false;
+
   @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
-  @Getter libraryTheme!: Theme;
   @Getter libraryDesignSystem!: DesignSystem;
   @Getter firstReadyTransaction!: History;
 
@@ -66,10 +75,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
   @Action setFaucetUrl!: (url: string) => Promise<void>;
   @Action setLanguage!: (lang: Language) => Promise<void>;
-  @Action setApiKeys!: (options: any) => Promise<void>;
-  @Action setFeatureFlags!: (options: any) => Promise<void>;
-  @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>;
-  @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History): void {
     this.handleChangeTransaction(value);
@@ -90,7 +95,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
     updateBaseUrl(router);
 
-    await this.setLanguage(getLocale() as any);
+    await this.setLanguage(Language.EN);
 
     await this.withLoading(async () => {
       const { data } = await axiosInstance.get('/env.json');
@@ -99,12 +104,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
         throw new Error('NETWORK_TYPE is not set');
       }
 
-      await this.setApiKeys(data?.API_KEYS);
-      await this.setFeatureFlags(data?.FEATURE_FLAGS);
       await this.setSoraNetwork(data.NETWORK_TYPE);
       await this.setDefaultNodes(data?.DEFAULT_NETWORKS);
-      await this.setSubNetworks(data.SUB_NETWORKS);
-      await this.setSmartContracts(data.SUB_NETWORKS);
 
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL);
@@ -120,8 +121,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     this.trackActiveTransactions();
   }
 
-  goTo(name: PageNames): void {
-    goTo(name);
+  openWallet() {
+    this.setSelectNodeDialogVisibility(true);
+    // this.showWallet = true;
   }
 
   async beforeDestroy(): Promise<void> {
@@ -146,25 +148,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 </script>
 
 <style lang="scss">
-html {
-  overflow-y: hidden;
-  font-size: var(--s-font-size-small);
-  line-height: var(--s-line-height-base);
-}
-
-ul ul {
-  list-style-type: none;
-}
-
-#app {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: 'Sora', sans-serif;
-  height: 100vh;
-  color: var(--s-color-base-content-primary);
-  transition: background-color 500ms linear;
-}
-
 .page {
   background-image: url('../public/img/noise-07-small.png'), linear-gradient(292.85deg, #110b1f 11.91%, #1938db 120.54%);
   min-height: 100vh;
@@ -173,26 +156,47 @@ ul ul {
 }
 
 .page .greed-img {
+  left: 50%;
+  pointer-events: none;
   position: absolute;
   top: 0;
-  left: 50%;
-  -webkit-transform: translate(-50%, -10px);
   transform: translate(-50%, -10px);
-  pointer-events: none;
 }
 
 .page .float-img-left {
-  position: absolute;
   left: 0;
-  top: 20%;
   pointer-events: none;
+  position: absolute;
+  top: 11.5%;
+}
+
+@media screen and (max-width: 640px) {
+  .page .float-img-left {
+    transform: translate(-42%, -6%);
+  }
 }
 
 .page .float-img-right {
+  pointer-events: none;
   position: absolute;
   right: 0;
-  top: 20%;
+  top: 20.5%;
+}
+
+@media screen and (max-width: 640px) {
+  .page .float-img-right {
+    transform: translate(60%, 23%);
+  }
+}
+
+.wrap-floats {
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  overflow: hidden;
   pointer-events: none;
+  position: absolute;
+  width: 100%;
 }
 
 [data-aoe] {
@@ -250,6 +254,20 @@ ul ul {
   opacity: 0.3;
 }
 
+.wrap-cart {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 260px 0 150px 0;
+  position: relative;
+}
+
+@media screen and (max-width: 640px) {
+  .wrap-cart {
+    padding: 204px 0 70px 0;
+  }
+}
+
 .app {
   .el-loading-mask {
     background-color: var(--s-color-utility-body);
@@ -261,18 +279,6 @@ ul ul {
       > svg {
         display: none;
       }
-    }
-  }
-
-  &-body-scrollbar {
-    @include scrollbar;
-  }
-  &-body {
-    &-scrollbar {
-      flex: 1;
-    }
-    &__about &-scrollbar .el-scrollbar__wrap {
-      overflow-x: auto;
     }
   }
 }
@@ -334,6 +340,7 @@ ul ul {
     animation: none;
   }
 }
+
 .el-form--actions {
   display: flex;
   flex-direction: column;
@@ -395,32 +402,5 @@ ul ul {
 }
 i.icon-divider {
   @include icon-styles;
-}
-</style>
-
-<style lang="scss" scoped>
-$sora-logo-height: 36px;
-$sora-logo-width: 173.7px;
-
-.app {
-  &-main {
-    display: flex;
-    align-items: stretch;
-    overflow: hidden;
-    height: calc(100vh - #{$header-height});
-    position: relative;
-  }
-
-  &-body {
-    position: relative;
-    display: flex;
-    flex: 1;
-    flex-flow: column nowrap;
-  }
-
-  &-content {
-    flex: 1;
-    margin: auto;
-  }
 }
 </style>

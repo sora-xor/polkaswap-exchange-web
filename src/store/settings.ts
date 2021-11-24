@@ -39,8 +39,6 @@ const types = flow(
     'SET_NETWORK_CHAIN_GENESIS_HASH',
     'SET_SELECT_NODE_DIALOG_VISIBILIY',
     'SET_LANGUAGE',
-    'SET_API_KEYS',
-    'SET_FEATURE_FLAGS',
   ]),
   map((x) => [x, x]),
   fromPairs
@@ -144,12 +142,6 @@ const mutations = {
   [types.SET_LANGUAGE](state, lang: Language) {
     state.language = lang;
     settingsStorage.set('language', lang);
-  },
-  [types.SET_API_KEYS](state, keys = {}) {
-    state.apiKeys = { ...state.apiKeys, ...keys };
-  },
-  [types.SET_FEATURE_FLAGS](state, featureFlags = {}) {
-    state.featureFlags = { ...state.featureFlags, ...featureFlags };
   },
 };
 
@@ -336,12 +328,6 @@ const actions = {
     updateDocumentTitle();
     updateFpNumberLocale(locale);
     commit(types.SET_LANGUAGE, locale);
-  },
-  setApiKeys({ commit }, keys) {
-    commit(types.SET_API_KEYS, keys);
-  },
-  setFeatureFlags({ commit }, featureFlags) {
-    commit(types.SET_FEATURE_FLAGS, featureFlags);
   },
 };
 

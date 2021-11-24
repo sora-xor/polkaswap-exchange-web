@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import { setDesignSystem, setTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
 
 import ElementUIPlugin, { Message, MessageBox, Notification } from '@soramitsu/soramitsu-js-ui/lib/plugins/elementUI';
@@ -103,5 +104,5 @@ Vue.prototype.$notify = ({ message, type }) => {
   current.appendChild(el);
 };
 
-setTheme();
+setTheme(Theme.LIGHT);
 setDesignSystem(DesignSystem.NEUMORPHIC);

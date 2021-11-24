@@ -12,6 +12,9 @@ export const app = {
 };
 
 export const WalletPermissions = {
+  addAssets: false,
+  createAssets: false,
+  showAssetDetails: false,
   sendAssets: false, // enable 'send' button in assets list
   swapAssets: false, // enable 'swap' button in assets list
 };
@@ -107,8 +110,7 @@ export enum Components {
   NodeInfo = 'Settings/Node/NodeInfo',
   SelectNodeDialog = 'SelectNodeDialog',
   ExternalLink = 'ExternalLink',
-  AboutNetworkDialog = 'AboutNetworkDialog',
-  SidebarItemContent = 'SidebarItemContent',
+  NoirDialog = 'NoirDialog',
   TokenSelectButton = 'Input/TokenSelectButton',
   TokenAddress = 'Input/TokenAddress',
   SelectLanguageDialog = 'SelectLanguageDialog',

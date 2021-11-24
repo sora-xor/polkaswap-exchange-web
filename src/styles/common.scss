@@ -9,45 +9,6 @@ $font-weight-800: "wght" 800;
 
 @include generic-input-lines;
 
-/* Networks Icons */
-$s-icon-sora: "\0041";
-$s-icon-eth: "\0044";
-$s-icon-energy: "\0048";
-.s-icon-sora {
-  &:before {
-    content: $s-icon-sora;
-  }
-}
-.s-icon-eth {
-  &:before {
-    content: $s-icon-eth;
-  }
-}
-[design-system-theme="light"] {
-  .s-icon--network.s-icon {
-    &-sora {
-      &, &:hover {
-        color: #E3232C !important;
-      }
-    }
-    &-eth {
-      &, &:hover {
-        color: #627EEA !important;
-      }
-    }
-  }
-}
-.s-icon-energy {
-  &.s-icon--network {
-    &, &:hover {
-      color: #a566ff !important;
-    }
-  }
-  &:before {
-    content: $s-icon-energy;
-  }
-}
-
 /*________________________________________COMMON LAYOUT________________________________________*/
 h3 {
   text-transform: capitalize;
@@ -68,8 +29,6 @@ span.el-pagination__total { padding: 0 8px; }
 
 /* FORMS */
 div.history-item-operation { color: var(--s-color-theme-accent-hover) !important; }
-div.transaction-row_key { text-transform: uppercase; }
-div.transaction-row_value{ color: var(--s-color-base-content-quaternary) !important; font-weight: 600; }
 
 i.el-notification__icon.el-icon-success, i.el-notification__icon.el-icon-success:hover {
   color: var(--s-color-status-success) !important;
@@ -79,18 +38,197 @@ button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-m
   font-size: var(--s-icon-font-size-mini) !important;
 }
 
-span.sora-logo__title,
-h3.base-title_text,
-h3.page-header-title,
-span.el-dialog__title,
-h3.network-label,
-p.app-disclaimer,
-span.el-pagination__total,
-div.el-tabs__item {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+// WALLET OVERRIDES
+.account-avatar {
+  border: none !important;
+
+  svg circle:first-child {
+    fill: transparent !important;
+  }
+}
+
+.formatted-amount__prefix {
+  opacity: 1 !important;
+}
+
+.container.container--wallet {
+  backdrop-filter: blur(100px);
+
+  .s-tabs .el-tabs__item {
+    background-color: unset !important;
+    font-size: 15px !important;
+    font-weight: normal !important;
+    line-height: 18px !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  .wallet-assets {
+    .total-fiat-values {
+      background: rgba(0, 0, 0, 0.2);
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05), inset 0px 0px 25px rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(100px);
+      border-radius: 35px;
+      height: 64px;
+      align-items: center !important;
+
+      & + .wallet-assets-item_divider {
+        display: none !important;
+      }
+
+      &__title {
+        font-size: 12px;
+        line-height: 14px;
+        letter-spacing: 0.05em;
+        color: var(--s-color-base-content-secondary);
+        text-transform: none !important;
+      }
+
+      .formatted-amount--fiat-value {
+        color: var(--s-color-base-content-quaternary) !important;
+      }
+    }
+  }
+
+  .wallet-assets-item .asset-info {
+    color: var(--s-color-base-content-secondary) !important;
+  }
+
+  .el-form-item.history--search {
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05), inset 0px 0px 25px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(100px);
+    border-radius: 35px;
+  }
+}
+
+// NOIR STYLES
+html,
+body {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+}
+
+body {
+  background-color: #1938db;
+}
+
+
+.btn {
+  align-items: center;
+  backdrop-filter: blur(15px);
+  border-radius: 25px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  font-size: 15px;
+  font-weight: 700;
+  height: 66px;
+  justify-content: center;
+  letter-spacing: 0.05em;
+  line-height: 18px;
+  min-width: 192px;
+  padding: 6px;
+  position: relative;
+  transition: color 0.3s, background-color 0.3s, transform 0.3s;
+}
+
+@media screen and (max-width: 640px) {
+  .btn {
+    font-size: 10px;
+    height: 50px;
+    min-width: 100px;
+    padding: 6px 34px;
+  }
+}
+
+.btn__bg {
+  left: 50%;
+  max-height: 100%;
+  max-width: 100%;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  transform: translate(-50%, 0);
+  transition: opacity 0.3s;
+  width: 98%;
+}
+
+.btn__text {
+  position: relative;
+  z-index: 2;
+}
+
+.btn:hover .btn__bg {
+  opacity: 0;
+}
+
+.btn-fill {
+  background-image: linear-gradient(96.89deg, #ff9ae9 1.55%, #bf57ff 95.41%);
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.05), inset 0px 4px 25px rgba(0, 0, 0, 0.25);
+}
+
+.btn-empty {
+  background-image: linear-gradient(121.81deg, #ff9ae9 -338.87%, rgba(255, 154, 233, 0) 96.82%);
+  background-color: transparent;
+  border: 2px solid #ff9ae9;
+  box-shadow: inset 0px 4px 25px rgba(0, 0, 0, 0.1);
+}
+
+.btn-empty:hover {
+  background-color: rgba(255, 154, 233, 0.3);
+}
+
+.btn-close {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(25px);
+  border-radius: 25px;
+  border: none;
+  min-width: initial;
+  width: 135px;
+}
+
+.cart {
+  background-image: url("../../public/img/noise-07-small.png"), linear-gradient(0deg, rgba(154, 237, 255, 0.1) 0%, rgba(154, 237, 255, 0.1) 100%);
+  backdrop-filter: blur(100px);
+  background-color: rgba(154, 237, 255, 0.1);
+  border-radius: 35px;
+  box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  max-width: 504px;
+  position: relative;
+  width: 100%;
+  z-index: 3;
+}
+
+.cart__stroke {
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.cart__bg-1 {
+  backdrop-filter: blur(45px);
+  background-image: inherit;
+  border-radius: inherit;
+  box-shadow: inherit;
+  height: 95%;
+  left: 50%;
+  opacity: 0.78;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  transform: translate(-50%, -28px);
+  width: calc(100% + 60px);
+  z-index: -1;
 }

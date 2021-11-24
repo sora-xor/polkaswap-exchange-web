@@ -1,53 +1,69 @@
 $s-color-brand-day: #A19A9D; // 0d0248
 // Primary theme colors
-$s-color-theme-accent: #F8087B; // NEU bright pink fluro
-$s-color-theme-accent-hover: #F754A3; // NEU pale quartz pink
-$s-color-theme-accent-pressed: #bf065f;
-$s-color-theme-accent-focused: #ab0555;
+$s-color-theme-accent: #FF9AE9 !default;
+$s-color-theme-accent-hover: #FF9AE9 !default;
+$s-color-theme-accent-pressed: #FF9AE9 !default; // ????
+$s-color-theme-accent-focused: #FF9AE9 !default; // ????
 // Secondary theme colors
-$s-color-theme-secondary: #44E5B2;
-$s-color-theme-secondary-hover: #24DAA0;
-$s-color-theme-secondary-pressed: #24DAA0;
-$s-color-theme-secondary-focused: #24DAA0;
+$s-color-theme-secondary: #88F8FF !default;
+$s-color-theme-secondary-hover: #88F8FF !default;
+$s-color-theme-secondary-pressed: #88F8FF !default; // ????
+$s-color-theme-secondary-focused: #88F8FF !default; // ????
 // Base content colors
-$s-color-base-content-primary: #2A171F;
-$s-color-base-content-secondary: #A19A9D;
-$s-color-base-content-tertiary: #D5CDD0;
-$s-color-base-content-quaternary: #75787b;
+$s-color-base-content-primary: rgba(255, 255, 255, 1) !default;
+$s-color-base-content-secondary: rgba(255, 255, 255, 0.3) !default;
+$s-color-base-content-tertiary: rgba(255, 255, 255, 0.2) !default;
+$s-color-base-content-quaternary: #FF9AE9 !default; // ????
 // Base misc colors
-$s-color-base-background: #FAF4F8;
-$s-color-base-border-primary: #F7F3F4;
-$s-color-base-border-secondary: #EDE4E7;
-$s-color-base-background-hover: #F7F3F4;
-$s-color-base-disabled: #FDF7FB;
-$s-color-base-on-disabled: #A19A9D;
-$s-color-base-on-accent: #FFFFFF;
+$s-color-base-background: transparent !default;
+$s-color-base-dark-background: #492067 !default; // not used
+$s-color-base-border-primary: #693D81 !default; // ????
+$s-color-base-border-secondary: rgba(255, 255, 255, 0.2) !default;
+$s-color-base-background-hover: transparent !default; // ????
+$s-color-base-disabled: rgba(#391057, .5) !default; // ????
+$s-color-base-on-disabled: #5D2F73 !default; // ????
+$s-color-base-on-accent: #391057 !default;
 // Utility colors
-$s-color-utility-body: #F7F3F4;
-$s-color-utility-surface: #FDF7FB;
-$s-color-utility-overlay: rgba(42, 23, 31, 0.1);
+$s-color-utility-body: transparent !default;
+$s-color-utility-surface: rgba(253, 154, 255, 0.05) !default;
+$s-color-utility-overlay: rgba(41, 0, 71, 0.9) !default;
 // Status colors
-$s-color-status-success: #34AD87;
-$s-color-status-warning: #479AEF;
-$s-color-status-error: #F754A3;
-$s-color-status-success-background: #B9EBDB;
-$s-color-status-warning-background: #C6E2FF;
-$s-color-status-error-background: #FFD8EB;
+$s-color-status-success: #34AD87 !default;
+$s-color-status-warning: #479AEF !default;
+$s-color-status-error: #F754A3 !default;
+$s-color-status-success-background: #34AD87 !default;
+$s-color-status-warning-background: #479AEF !default;
+$s-color-status-error-background: #F754A3 !default;
 // Fiat colors
-$s-color-fiat-value: rgba(71, 154, 239, 1) !default;
+$s-color-fiat-value: #FFFFFF !default;
 $s-color-rewards: #c0e2ff !default;
-// Sizes
-$s-size-mini: 24px;
-$s-size-small: 32px;
-$s-size-medium: 42px;
-$s-size-big: 58px;
-// Shadows
+// Shadow
+// dark variations
+$s-shadow-color-dark: rgba(41, 0, 71, 0.33);
+$s-shadow-color-dark-lighten: rgba(155, 111, 165, 0.25);
+$s-shadow-color-dark-light: rgba(155, 111, 165, 0.1);
+// light variations
+$s-shadow-color-light: rgba(255, 255, 255, 1);
+$s-shadow-color-light-darken: rgba(255, 255, 255, 0.1);
+$s-shadow-color-light-dark: rgba(255, 255, 255, 0.05);
+// another variations
+$s-shadow-color-primary: #391057;
+$s-shadow-color-secondary: #9B6FA5;
+// element shadows
+$s-shadow-element: 1px 1px 2px var(--s-shadow-color-light-darken), inset -5px -5px 5px var(--s-shadow-color-light-dark), inset 1px 1px 10px var(--s-shadow-color-dark);
+$s-shadow-element-pressed: -5px -5px 10px var(--s-shadow-color-dark-lighten), 2px 2px 15px var(--s-color-base-background), inset 1px 1px 2px var(--s-shadow-color-dark-lighten);
+$s-shadow-dialog: none;
 $s-shadow-surface: 1px 1px 5px var(--s-shadow-color-dark), inset 1px 1px 1px var(--s-shadow-color-dark);
 $s-shadow-tooltip: 0px 1px 4px rgba(13, 2, 72, 0.35);
 $s-shadow-tab: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1); // 0px 1px 1px rgba(0, 0, 0, 0.1);
 $s-shadow-dropdown: 0px 4px 8px rgba(19, 19, 19, 0.15);
 $s-shadow-mobile-tap-bar: 0px -4px 8px rgba(19, 19, 19, 0.15);
 $s-shadow-mobile-side-menu: -4px 4px 8px rgba(19, 19, 19, 0.15);
+// Sizes
+$s-size-mini: 24px;
+$s-size-small: 32px;
+$s-size-medium: 42px;
+$s-size-big: 66px;
 // Border Radius
 $s-border-radius-base: 16px;
 $s-border-radius-mini: $s-border-radius-base;

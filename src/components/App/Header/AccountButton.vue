@@ -1,18 +1,10 @@
 <template>
-  <s-button
-    type="tertiary"
-    size="medium"
-    :class="['account-control', { 's-pressed': isLoggedIn }]"
-    :tooltip="accountTooltip"
-    v-bind="$attrs"
-    v-on="$listeners"
-  >
-    <div class="account-control-icon">
-      <s-icon v-if="!isLoggedIn" name="finance-wallet-24" size="28" />
-      <WalletAvatar v-else :address="account.address" />
+  <button class="btn btn-empty account-control" v-bind="$attrs" v-on="$listeners">
+    <div v-if="isLoggedIn" class="account-control-icon">
+      <WalletAvatar :address="account.address" />
     </div>
     <div :class="['account-control-title', { name: isLoggedIn }]">{{ accountInfo }}</div>
-  </s-button>
+  </button>
 </template>
 
 <script lang="ts">
@@ -32,10 +24,6 @@ import { formatAddress } from '@/utils';
 export default class AccountButton extends Mixins(TranslationMixin) {
   @Getter account!: WALLET_TYPES.Account;
   @Getter isLoggedIn!: boolean;
-
-  get accountTooltip(): string {
-    return this.t(`${this.isLoggedIn ? 'connectedAccount' : 'connectWalletTextTooltip'}`);
-  }
 
   get accountInfo(): string {
     if (!this.isLoggedIn) {
@@ -74,12 +62,7 @@ $account-control-name-max-width: 200px;
       display: inline-block;
     }
   }
-  &.s-tertiary {
-    &.el-button {
-      padding-left: $basic-spacing-mini;
-      padding-right: $basic-spacing-mini;
-    }
-  }
+
   &-icon {
     display: flex;
     align-items: center;
@@ -90,12 +73,8 @@ $account-control-name-max-width: 200px;
     border-radius: 50%;
 
     svg circle:first-child {
-      fill: var(--s-color-utility-surface);
+      fill: transparent;
     }
-  }
-
-  [class^='s-icon-'] {
-    @include icon-styles;
   }
 }
 </style>

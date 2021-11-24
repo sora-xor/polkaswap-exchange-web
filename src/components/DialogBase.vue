@@ -11,16 +11,17 @@
     }"
     class="dialog-wrapper"
   >
-    <template #title>
-      <slot name="title">
-        <span class="el-dialog__title">{{ title }}</span>
-      </slot>
-      <slot name="close">
-        <s-button class="el-dialog__close" type="action" icon="x-16" @click="closeDialog" />
-      </slot>
-    </template>
-    <slot />
-    <slot slot="footer" name="footer" />
+    <div class="cart">
+      <div class="cart__bg-1"></div>
+      <img src="img/stroke-img.png" loading="lazy" alt="" class="cart__stroke" />
+      <button class="btn btn-close el-dialog__close" @click="closeDialog">
+        <s-icon name="x-16" size="16" class="el-dialog__close-icon" />
+        Close
+      </button>
+      <div class="dialog-content">
+        <slot />
+      </div>
+    </div>
   </s-dialog>
 </template>
 
@@ -49,50 +50,36 @@ export default class DialogBase extends Mixins(DialogMixin) {
 <style lang="scss">
 $el-dialog-class: '.el-dialog';
 $el-dialog-button-size: var(--s-size-medium);
-$el-dialog-max-width: 496px;
+$el-dialog-max-width: 464px;
 
 .dialog-wrapper {
   #{$el-dialog-class} {
-    background: var(--s-color-utility-surface);
     max-width: $el-dialog-max-width;
     width: 100%;
 
     & > #{$el-dialog-class} {
       &__header {
-        padding: $inner-spacing-big $inner-spacing-big $inner-spacing-mini;
+        display: none !important;
       }
       &__body {
-        padding: $inner-spacing-mini $inner-spacing-big;
-      }
-      &__footer {
-        padding: $inner-spacing-mini $inner-spacing-big $inner-spacing-big;
-      }
-    }
+        position: relative;
+        padding: 0;
 
-    #{$el-dialog-class}__header {
-      display: inline-flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
+        #{$el-dialog-class}__close {
+          position: absolute;
+          color: var(--s-color-base-content-primary);
+          top: -48px;
+          right: -48px;
 
-      #{$el-dialog-class}__title {
-        font-size: var(--s-heading3-font-size);
-        font-weight: 300 !important;
-        line-height: var(--s-line-height-small);
-        letter-spacing: var(--s-letter-spacing-mini);
-      }
-
-      #{$el-dialog-class}__close {
-        i {
-          font-size: var(--s-icon-font-size-big) !important;
+          &-icon {
+            margin-right: 18px;
+            color: #ff9ae9;
+          }
         }
-      }
-    }
 
-    #{$el-dialog-class}__footer {
-      .el-button {
-        padding: $inner-spacing-mini;
-        width: 100%;
+        .dialog-content {
+          padding: $inner-spacing-big;
+        }
       }
     }
   }
