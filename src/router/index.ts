@@ -26,26 +26,7 @@ function goTo(name: PageNames): void {
   router.push({ name });
 }
 
-const routes: Array<RouteConfig> = [
-  {
-    path: '/',
-    redirect: '/swap',
-  },
-  {
-    path: '/swap',
-    name: PageNames.Swap,
-    component: lazyView(PageNames.Swap),
-  },
-  {
-    path: '/wallet',
-    name: PageNames.Wallet,
-    component: lazyView(PageNames.Wallet),
-  },
-  {
-    path: '*',
-    redirect: '/swap',
-  },
-];
+const routes: Array<RouteConfig> = [];
 
 const router = new VueRouter({
   mode: 'hash',

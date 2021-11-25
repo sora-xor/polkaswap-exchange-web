@@ -20,7 +20,9 @@
       <div class="blur-circle-3"></div>
     </div>
 
-    <div class="wrap-cart"></div>
+    <div class="wrap-cart">
+      <cart :buy="handleBuy" :sell="handleSell" :redeem="handleRedeem" />
+    </div>
 
     <wallet-dialog :visible.sync="showWallet" />
     <select-node-dialog />
@@ -35,7 +37,6 @@ import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
-import SoraLogo from '@/components/logo/Sora.vue';
 
 import { PageNames, Components, Language } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
@@ -45,9 +46,8 @@ import type { ConnectToNodeOptions } from '@/types/nodes';
 
 @Component({
   components: {
-    SoraLogo,
     AppHeader: lazyComponent(Components.AppHeader),
-    AppLogoButton: lazyComponent(Components.AppLogoButton),
+    Cart: lazyComponent(Components.Cart),
     WalletDialog: lazyComponent(Components.WalletDialog),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
   },
@@ -57,6 +57,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   showWallet = false;
 
+  @Getter isLoggedIn!: boolean;
   @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @Getter libraryDesignSystem!: DesignSystem;
   @Getter firstReadyTransaction!: History;
@@ -120,8 +121,33 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     this.trackActiveTransactions();
   }
 
-  openWallet() {
-    // this.setSelectNodeDialogVisibility(true);
+  handleBuy(): void {
+    this.checkAuth(() => {
+      console.log('handle Buy');
+    });
+  }
+
+  handleSell(): void {
+    this.checkAuth(() => {
+      console.log('handle Sell');
+    });
+  }
+
+  handleRedeem(): void {
+    this.checkAuth(() => {
+      console.log('handle Redeem');
+    });
+  }
+
+  checkAuth(func: VoidFunction): void {
+    if (!this.isLoggedIn) {
+      this.openWallet();
+    } else {
+      func();
+    }
+  }
+
+  openWallet(): void {
     this.showWallet = true;
   }
 
@@ -147,126 +173,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 </script>
 
 <style lang="scss">
-.page {
-  background-image: url('../public/img/noise-07-small.png'), linear-gradient(292.85deg, #110b1f 11.91%, #1938db 120.54%);
-  min-height: 100vh;
-  position: relative;
-  overflow: hidden;
-}
-
-.page .greed-img {
-  left: 50%;
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-  transform: translate(-50%, -10px);
-}
-
-.page .float-img-left {
-  left: 0;
-  pointer-events: none;
-  position: absolute;
-  top: 11.5%;
-}
-
-@media screen and (max-width: 640px) {
-  .page .float-img-left {
-    transform: translate(-42%, -6%);
-  }
-}
-
-.page .float-img-right {
-  pointer-events: none;
-  position: absolute;
-  right: 0;
-  top: 20.5%;
-}
-
-@media screen and (max-width: 640px) {
-  .page .float-img-right {
-    transform: translate(60%, 23%);
-  }
-}
-
-.wrap-floats {
-  bottom: 0;
-  height: 100%;
-  left: 0;
-  overflow: hidden;
-  pointer-events: none;
-  position: absolute;
-  width: 100%;
-}
-
-[data-aoe] {
-  -webkit-animation-duration: 0.7s;
-  animation-duration: 0.7s;
-  -webkit-animation-fill-mode: forwards;
-  animation-fill-mode: forwards;
-  -webkit-animation-name: unset;
-  animation-name: unset;
-  opacity: 0;
-}
-
-.footer-circles {
-  width: 1012px;
-  height: 1012px;
-  border-radius: 100%;
-  background-image: linear-gradient(181.38deg, #6822fc 1.18%, rgba(87, 77, 156, 0) 46.6%);
-  padding: 70px;
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  -webkit-transform: translate(-50%, 50%);
-  transform: translate(-50%, 50%);
-  pointer-events: none;
-}
-
-.footer-circles .circle-1 {
-  border: 2px solid;
-  width: 100%;
-  height: 100%;
-  border-radius: 100%;
-  border-top: 2px solid #ff9ae9;
-  border-left: hidden;
-  border-right: hidden;
-  border-bottom: hidden;
-}
-
-.footer-circles .circle-2 {
-  width: 100%;
-  height: 100%;
-  border-radius: 100%;
-  background-image: linear-gradient(177.68deg, #0a0613 1.94%, rgba(14, 11, 36, 0) 50.08%);
-  padding: 48px;
-}
-
-.footer-circles .circle-3 {
-  border: 2px solid;
-  width: 100%;
-  height: 100%;
-  border-radius: 100%;
-  border-top: 2px solid #ff9ae9;
-  border-left: hidden;
-  border-right: hidden;
-  border-bottom: hidden;
-  opacity: 0.3;
-}
-
-.wrap-cart {
-  display: flex;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 260px 0 150px 0;
-  position: relative;
-}
-
-@media screen and (max-width: 640px) {
-  .wrap-cart {
-    padding: 204px 0 70px 0;
-  }
-}
-
 .app {
   .el-loading-mask {
     background-color: var(--s-color-utility-body);
@@ -378,20 +284,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 }
 
-.container {
-  @include container-styles;
-  .el-loading-mask {
-    border-radius: var(--s-border-radius-medium);
-  }
-}
-
 .link {
   color: var(--s-color-base-content-primary);
-}
-
-// Disabled button large typography
-.s-typography-button--large.is-disabled {
-  font-size: var(--s-font-size-medium) !important;
 }
 
 // Icons colors

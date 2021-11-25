@@ -109,17 +109,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
-@mixin container-styles {
-  margin: $inner-spacing-big auto 0;
-  padding: $inner-spacing-big $inner-spacing-big $inner-spacing-mini * 4;
-  min-height: $inner-window-height;
-  max-width: $inner-window-width;
-  background-color: var(--s-color-utility-surface);
-  border-radius: var(--s-border-radius-medium);
-  box-shadow: var(--s-shadow-dialog);
-  color: var(--s-color-base-content-primary);
-}
-
 @mixin text-ellipsis {
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -303,21 +292,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       border: none;
     }
   }
-}
-
-@mixin bridge-container {
-  max-width: $bridge-width;
-  width: 100%;
-
-  .el-loading-mask {
-    border-radius: var(--s-border-radius-medium);
-  }
-}
-
-@mixin bridge-content ($min-height: 400px) {
-  min-height: $min-height;
-  margin-top: $basic-spacing * 2;
-  width: 100%;
 }
 
 @mixin input-font-styles {

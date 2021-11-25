@@ -1,6 +1,6 @@
 <template>
   <header class="header" id="header">
-    <div class="header-container">
+    <div class="container">
       <div class="header__wrap-logo">
         <router-link to="/" class="logo">
           <img src="img/logo.png" loading="lazy" alt="" class="logo__img" />
@@ -52,94 +52,7 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 </script>
 
 <style lang="scss" scoped>
-.header {
-  position: absolute;
-  left: 0;
-  top: 80px;
-  width: 100%;
-  z-index: 5;
-
-  &__wrap-logo {
-    position: relative;
-    width: 25%;
-  }
-
-  &__wrap-btn {
-    position: relative;
-  }
-
-  &__wrap-redeemed {
-    display: flex;
-    position: relative;
-    text-align: right;
-
-    .redeem + .account-btn {
-      margin-left: 40px;
-    }
-  }
-
-  .header-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-}
-
-.header-container {
-  margin: 0 auto;
-  max-width: 1574px;
-  position: relative;
-  width: 100%;
-}
-
-@media screen and (max-width: 1600px) {
-  .header-container {
-    max-width: calc(100% - 32px);
-  }
-}
-
-@media screen and (max-width: 1050px) {
-  .header-container {
-    max-width: calc(100% - 32px);
-  }
-}
-
-@media screen and (max-width: 640px) {
-  .header-container {
-    max-width: calc(100% - 20px);
-  }
-}
-
-.logo {
-  text-decoration: none;
-  color: #ffffff;
-  display: inline-flex;
-  align-items: center;
-
-  &:hover {
-    text-decoration: none;
-  }
-
-  &__img {
-    margin: 0 8px 0 0;
-  }
-
-  &__text {
-    position: relative;
-  }
-}
-
-.redeem {
-  display: inline-flex;
-  position: relative;
-  align-items: center;
-
-  &__img {
-    margin: -5px 15px 0 0;
-  }
-
-  &__text {
-    position: relative;
-  }
+.account-btn {
+  margin-left: 48px;
 }
 </style>

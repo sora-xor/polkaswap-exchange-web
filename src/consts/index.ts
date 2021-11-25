@@ -115,6 +115,8 @@ export enum Components {
   TokenAddress = 'Input/TokenAddress',
   SelectLanguageDialog = 'SelectLanguageDialog',
   ValueStatusWrapper = 'ValueStatusWrapper',
+  // NOIR
+  Cart = 'Noir/Cart',
 }
 
 export enum Topics {
