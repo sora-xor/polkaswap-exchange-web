@@ -73,6 +73,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
   @Action setFaucetUrl!: (url: string) => Promise<void>;
   @Action setLanguage!: (lang: Language) => Promise<void>;
+  @Action('noir/subscribeOnRedemptionDataUpdates') subscribeOnRedemptionDataUpdates!: AsyncVoidFn;
+  @Action('noir/resetRedemptionDataSubscription') resetRedemptionDataSubscription!: AsyncVoidFn;
+
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History): void {
     this.handleChangeTransaction(value);
@@ -117,12 +120,14 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     });
 
     this.trackActiveTransactions();
+    this.subscribeOnRedemptionDataUpdates();
   }
 
   async beforeDestroy(): Promise<void> {
     await this.resetFiatPriceAndApySubscription();
     await this.resetActiveTransactions();
     await this.resetAccountAssetsSubscription();
+    await this.resetRedemptionDataSubscription();
     await connection.close();
   }
 

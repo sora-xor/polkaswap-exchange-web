@@ -13,7 +13,9 @@
 
         <div class="redeem">
           <img src="img/fire.png" loading="lazy" alt="" class="redeem__img" />
-          <div class="redeem__text"><span class="color-pink">198</span> <span>Redeemed</span></div>
+          <div class="redeem__text">
+            <span class="color-pink">{{ totalRedeemed }}</span> <span>Redeemed</span>
+          </div>
         </div>
 
         <account-button class="account-btn" @click="openWallet" />
@@ -45,6 +47,8 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 
   @Getter isLoggedIn!: boolean;
   @Getter account!: WALLET_TYPES.Account;
+
+  @Getter('noir/totalRedeemed') totalRedeemed!: number;
 
   @Action setWalletDialogVisibility!: (flag: boolean) => void;
 

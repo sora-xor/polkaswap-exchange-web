@@ -46,9 +46,9 @@
         </div>
 
         <div class="available">
-          <span class="available__current">21</span>
+          <span class="available__current">{{ availableForRedemption }}</span>
           /
-          <span class="available__max">302</span>
+          <span class="available__max">{{ total }}</span>
           Available
         </div>
       </div>
@@ -131,6 +131,9 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset;
   @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes;
   @Getter('pairLiquiditySourcesAvailable', { namespace }) pairLiquiditySourcesAvailable!: boolean;
+
+  @Getter('noir/total') total!: number;
+  @Getter('noir/availableForRedemption') availableForRedemption!: number;
 
   @Action('setTokenFromAddress', { namespace }) setTokenFromAddress!: (address?: string) => Promise<void>;
   @Action('setTokenToAddress', { namespace }) setTokenToAddress!: (address?: string) => Promise<void>;
