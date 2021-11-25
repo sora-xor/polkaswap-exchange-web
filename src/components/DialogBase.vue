@@ -18,7 +18,9 @@
         <s-icon name="x-16" size="16" class="el-dialog__close-icon" />
         Close
       </button>
-      <slot />
+      <div class="dialog-content">
+        <slot />
+      </div>
     </div>
   </s-dialog>
 </template>
@@ -68,11 +70,16 @@ $el-dialog-max-width: 464px;
           color: var(--s-color-base-content-primary);
           top: -48px;
           right: -48px;
+          z-index: 1;
 
           &-icon {
             margin-right: 18px;
             color: #ff9ae9;
           }
+        }
+
+        .dialog-content {
+          padding: 24px;
         }
       }
     }

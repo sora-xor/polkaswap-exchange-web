@@ -1,10 +1,10 @@
 <template>
-  <button class="btn btn-empty account-control" v-bind="$attrs" v-on="$listeners">
+  <s-button type="secondary" size="big" class="btn account-control" v-bind="$attrs" v-on="$listeners">
     <div v-if="isLoggedIn" class="account-control-icon">
       <WalletAvatar :address="account.address" />
     </div>
     <div :class="['account-control-title', { name: isLoggedIn }]">{{ accountInfo }}</div>
-  </button>
+  </s-button>
 </template>
 
 <script lang="ts">

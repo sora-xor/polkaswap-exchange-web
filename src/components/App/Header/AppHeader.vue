@@ -31,7 +31,7 @@ import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 
 import { lazyComponent } from '@/router';
-import { PageNames, Components } from '@/consts';
+import { Components } from '@/consts';
 
 @Component({
   components: {
@@ -41,8 +41,6 @@ import { PageNames, Components } from '@/consts';
   },
 })
 export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin) {
-  readonly PageNames = PageNames;
-
   @Prop({ type: Boolean, default: false }) readonly loading!: boolean;
   @Prop({ type: Function, default: () => {} }) readonly openWallet!: VoidFunction;
 

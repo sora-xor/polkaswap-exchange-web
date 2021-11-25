@@ -2,7 +2,6 @@ import invert from 'lodash/fp/invert';
 import { LiquiditySourceTypes } from '@sora-substrate/util';
 
 import pkg from '../../package.json';
-import { KnownBridgeAsset } from '../utils/ethers-util';
 
 export const app = {
   version: pkg.version,
@@ -22,35 +21,9 @@ export const WalletPermissions = {
 // navigator.language values, f.e. ('es', 'eu-ES')
 export enum Language {
   EN = 'en',
-  RU = 'ru',
-  CS = 'cs',
-  DE = 'de',
-  ES = 'es',
-  FR = 'fr',
-  HY = 'hy',
-  ID = 'id',
-  IT = 'it',
-  NL = 'nl',
-  NO = 'no',
-  PL = 'pl',
-  YO = 'yo',
 }
 
-export const Languages = [
-  { key: Language.EN, value: 'English', name: 'English (UK)' },
-  { key: Language.HY, value: 'Armenian', name: 'հայերեն' },
-  { key: Language.CS, value: 'Czech', name: 'Čeština' },
-  { key: Language.NL, value: 'Dutch', name: 'Nederlands' },
-  { key: Language.FR, value: 'French', name: 'Français' },
-  { key: Language.DE, value: 'German', name: 'Deutsch' },
-  { key: Language.ID, value: 'Indonesian', name: 'bahasa Indonesia' },
-  { key: Language.IT, value: 'Italian', name: 'Italiano' },
-  { key: Language.NO, value: 'Norwegian', name: 'Norsk' },
-  { key: Language.PL, value: 'Polish', name: 'Polski' },
-  { key: Language.RU, value: 'Russian', name: 'Русский' },
-  { key: Language.ES, value: 'Spanish', name: 'Español' },
-  { key: Language.YO, value: 'Yoruba', name: 'Yoruba' },
-];
+export const Languages = [{ key: Language.EN, value: 'English', name: 'English (UK)' }];
 
 export const Links = {
   about: {
@@ -119,20 +92,6 @@ export enum Components {
   Cart = 'Noir/Cart',
 }
 
-export enum Topics {
-  SwapTokens = 'SwapTokens',
-  PassiveEarning = 'PassiveEarning',
-  AddLiquidity = 'AddLiquidity',
-  PriceFeeds = 'PriceFeeds',
-}
-
-export const AboutTopics = [
-  { title: Topics.SwapTokens, icon: 'arrows-swap-24' },
-  { title: Topics.PassiveEarning, icon: 'basic-bar-chart-24' },
-  { title: Topics.AddLiquidity, icon: 'basic-drop-24' },
-  { title: Topics.PriceFeeds, icon: 'software-terminal-24' },
-];
-
 export enum LogoSize {
   MINI = 'mini',
   SMALL = 'small',
@@ -141,42 +100,4 @@ export enum LogoSize {
   LARGE = 'large',
 }
 
-export enum EvmSymbol {
-  ETH = 'ETH',
-  VT = 'VT',
-}
-
-const gasLimit = {
-  approve: 70000,
-  sendERC20ToSidechain: 86000,
-  sendEthToSidechain: 50000,
-  mintTokensByPeers: 255000,
-  receiveByEthereumAssetAddress: 250000,
-  receiveBySidechainAssetId: 255000,
-};
-/**
- * It's in gwei.
- * Zero index means ETH -> SORA
- * First index means SORA -> ETH
- */
-export const EthereumGasLimits = [
-  // ETH -> SORA
-  {
-    XOR: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    VAL: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    PSWAP: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    ETH: gasLimit.sendEthToSidechain,
-    [KnownBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-  },
-  // SORA -> ETH
-  {
-    XOR: gasLimit.mintTokensByPeers,
-    VAL: gasLimit.mintTokensByPeers,
-    PSWAP: gasLimit.receiveBySidechainAssetId,
-    ETH: gasLimit.receiveByEthereumAssetAddress,
-    [KnownBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress,
-  },
-];
-
-export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
-export const EthAddress = '0x0000000000000000000000000000000000000000';
+export const NOIR_TOKEN_ADDRESS = '0x0200040000000000000000000000000000000000000000000000000000000000';

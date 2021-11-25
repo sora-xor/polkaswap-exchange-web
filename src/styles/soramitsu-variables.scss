@@ -22,7 +22,7 @@ $s-color-base-border-secondary: rgba(255, 255, 255, 0.2) !default;
 $s-color-base-background-hover: transparent !default; // ????
 $s-color-base-disabled: rgba(#391057, .5) !default; // ????
 $s-color-base-on-disabled: #5D2F73 !default; // ????
-$s-color-base-on-accent: #391057 !default;
+$s-color-base-on-accent: #FFFFFF !default;
 // Utility colors
 $s-color-utility-body: transparent !default;
 $s-color-utility-surface: rgba(253, 154, 255, 0.05) !default;
@@ -84,7 +84,21 @@ $s-font-feature-settings-card-title: normal;
 $s-font-feature-settings-input: normal;
 $s-font-feature-settings-button: normal;
 // Transition
-$s-transition-default: all 0.125s ease-in-out;
+$s-transition-default: color 0.3s, background-color 0.3s, transform 0.3s;
+
+// Noir primary Button
+$neu-button-primary-border-width: 0px;
+$neu-button-primary-background-color: url('../../public/img/btn-bg-1.png'), linear-gradient(96.89deg, #ff9ae9 1.55%, #bf57ff 95.41%);
+$neu-button-primary-background-color-hover: linear-gradient(96.89deg, #ff9ae9 1.55%, #bf57ff 95.41%);
+$neu-button-primary-background-color-pressed: $neu-button-primary-background-color;
+$neu-button-primary-box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.05), inset 0px 4px 25px rgba(0, 0, 0, 0.25);
+$neu-button-primary-box-shadow-hover: $neu-button-primary-box-shadow;
+// Noir Secondary Button
+$neu-button-secondary-border-width: 2px;
+$neu-button-secondary-border-color: #FF9AE9;
+$neu-button-secondary-background-color: transparent linear-gradient(121.81deg, #FF9AE9 -338.87%, rgba(255, 154, 233, 0) 96.82%);
+$neu-button-secondary-background-color-active: rgba(255, 154, 233, 0.3) linear-gradient(121.81deg, #FF9AE9 -338.87%, rgba(255, 154, 233, 0) 96.82%);
+$neu-button-secondary-box-shadow: inset 0px 4px 25px rgba(0, 0, 0, 0.1);
 
 @import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";
 

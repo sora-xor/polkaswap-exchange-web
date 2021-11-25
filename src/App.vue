@@ -38,7 +38,7 @@ import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 
-import { PageNames, Components, Language } from '@/consts';
+import { Components, Language } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
 import router, { lazyComponent } from '@/router';
 import { preloadFontFace } from '@/utils';
@@ -53,8 +53,6 @@ import type { ConnectToNodeOptions } from '@/types/nodes';
   },
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
-  readonly PageNames = PageNames;
-
   showWallet = false;
 
   @Getter isLoggedIn!: boolean;
@@ -148,6 +146,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   openWallet(): void {
+    // this.setSelectNodeDialogVisibility(true);
     this.showWallet = true;
   }
 

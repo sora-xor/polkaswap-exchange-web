@@ -33,6 +33,16 @@ button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-m
   font-size: var(--s-icon-font-size-mini) !important;
 }
 
+// Button
+.el-button + .el-button {
+  margin-left: 0px !important;
+}
+
+.el-button.neumorphic {
+  text-transform: none !important;
+  // transition: color 0.3s, background-color 0.3s, transform 0.3s !important;
+}
+
 // WALLET OVERRIDES
 .account-avatar {
   border: none !important;
@@ -305,47 +315,6 @@ a:hover {
     min-width: 100px;
     padding: 6px 34px;
   }
-}
-
-.btn__bg {
-  left: 50%;
-  max-height: 100%;
-  max-width: 100%;
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-  -webkit-transform: translate(-50%, 0);
-          transform: translate(-50%, 0);
-  -webkit-transition: opacity 0.3s;
-  transition: opacity 0.3s;
-  width: 98%;
-}
-
-.btn__text {
-  position: relative;
-  z-index: 2;
-}
-
-.btn:hover .btn__bg {
-  opacity: 0;
-}
-
-.btn-fill {
-  background-image: linear-gradient(96.89deg, #ff9ae9 1.55%, #bf57ff 95.41%);
-  -webkit-box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.05), inset 0px 4px 25px rgba(0, 0, 0, 0.25);
-          box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.05), inset 0px 4px 25px rgba(0, 0, 0, 0.25);
-}
-
-.btn-empty {
-  background-image: linear-gradient(121.81deg, #ff9ae9 -338.87%, rgba(255, 154, 233, 0) 96.82%);
-  background-color: transparent;
-  border: 2px solid #ff9ae9;
-  -webkit-box-shadow: inset 0px 4px 25px rgba(0, 0, 0, 0.1);
-          box-shadow: inset 0px 4px 25px rgba(0, 0, 0, 0.1);
-}
-
-.btn-empty:hover {
-  background-color: rgba(255, 154, 233, 0.3);
 }
 
 .t-t-u {
