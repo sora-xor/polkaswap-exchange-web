@@ -188,16 +188,6 @@ export const updateFpNumberLocale = (locale: string): void => {
   FPNumber.DELIMITERS_CONFIG.decimal = Number(1.2).toLocaleString(locale).substring(1, 2);
 };
 
-export const updateDocumentTitle = (to?: any) => {
-  const page = to ?? router.currentRoute;
-
-  if (page && page.name && i18n.te(`pageTitle.${page.name}`)) {
-    document.title = `${i18n.t(`pageTitle.${page.name}`)} - ${app.name}`;
-  } else {
-    document.title = app.title;
-  }
-};
-
 export const preloadFontFace = async (name: string): Promise<void> => {
   try {
     await (document as any).fonts.load(`1em ${name}`);

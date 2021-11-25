@@ -16,7 +16,7 @@ import {
 } from '@/consts';
 import { getRpcEndpoint, fetchRpc } from '@/utils/rpc';
 import { getLocale, getSupportedLocale, setI18nLocale } from '@/lang';
-import { updateFpNumberLocale, updateDocumentTitle } from '@/utils';
+import { updateFpNumberLocale } from '@/utils';
 
 import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 
@@ -31,13 +31,13 @@ const types = flow(
   concat([
     'SET_SLIPPAGE_TOLERANCE',
     'SET_MARKET_ALGORITHM',
-    'SET_TRANSACTION_DEADLINE',
     'SET_FAUCET_URL',
     'SET_DEFAULT_NODES',
     'SET_CUSTOM_NODES',
     'RESET_NODE',
     'SET_NETWORK_CHAIN_GENESIS_HASH',
     'SET_SELECT_NODE_DIALOG_VISIBILIY',
+    'SET_WALLET_DIALOG_VISIBILITY',
     'SET_LANGUAGE',
   ]),
   map((x) => [x, x]),
@@ -50,7 +50,6 @@ function initialState() {
     featureFlags: {},
     slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
     marketAlgorithm: storage.get('marketAlgorithm') || DefaultMarketAlgorithm,
-    transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
     node: JSON.parse(settingsStorage.get('node')) || {},
     language: getLocale(),
     defaultNodes: [],
@@ -60,6 +59,7 @@ function initialState() {
     chainGenesisHash: '',
     faucetUrl: '',
     selectNodeDialogVisibility: false,
+    walletDialogVisibility: false,
   };
 }
 
@@ -80,9 +80,6 @@ const getters = {
   },
   slippageTolerance(state) {
     return state.slippageTolerance;
-  },
-  transactionDeadline(state) {
-    return state.transactionDeadline;
   },
   liquiditySource(state) {
     return LiquiditySourceForMarketAlgorithm[state.marketAlgorithm];
@@ -129,15 +126,14 @@ const mutations = {
     state.marketAlgorithm = value;
     storage.set('marketAlgorithm', value);
   },
-  [types.SET_TRANSACTION_DEADLINE](state, value) {
-    state.transactionDeadline = value;
-    storage.set('transactionDeadline', value);
-  },
   [types.SET_FAUCET_URL](state, url) {
     state.faucetUrl = url;
   },
   [types.SET_SELECT_NODE_DIALOG_VISIBILIY](state, flag) {
     state.selectNodeDialogVisibility = flag;
+  },
+  [types.SET_WALLET_DIALOG_VISIBILITY](state, flag) {
+    state.walletDialogVisibility = flag;
   },
   [types.SET_LANGUAGE](state, lang: Language) {
     state.language = lang;
@@ -313,19 +309,18 @@ const actions = {
   setMarketAlgorithm({ commit }, value = DefaultMarketAlgorithm) {
     commit(types.SET_MARKET_ALGORITHM, value);
   },
-  setTransactionDeadline({ commit }, value) {
-    commit(types.SET_TRANSACTION_DEADLINE, Number(value));
-  },
   setFaucetUrl({ commit }, url) {
     commit(types.SET_FAUCET_URL, url);
   },
   setSelectNodeDialogVisibility({ commit }, flag: boolean) {
     commit(types.SET_SELECT_NODE_DIALOG_VISIBILIY, flag);
   },
+  setWalletDialogVisibility({ commit }, flag: boolean) {
+    commit(types.SET_WALLET_DIALOG_VISIBILITY, flag);
+  },
   async setLanguage({ commit }, lang: Language) {
     const locale = getSupportedLocale(lang);
     await setI18nLocale(locale as any);
-    updateDocumentTitle();
     updateFpNumberLocale(locale);
     commit(types.SET_LANGUAGE, locale);
   },

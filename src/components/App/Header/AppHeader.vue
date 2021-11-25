@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
+import { Getter, Action } from 'vuex-class';
 import { components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
@@ -42,10 +42,15 @@ import { Components } from '@/consts';
 })
 export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin) {
   @Prop({ type: Boolean, default: false }) readonly loading!: boolean;
-  @Prop({ type: Function, default: () => {} }) readonly openWallet!: VoidFunction;
 
   @Getter isLoggedIn!: boolean;
   @Getter account!: WALLET_TYPES.Account;
+
+  @Action setWalletDialogVisibility!: (flag: boolean) => void;
+
+  openWallet(): void {
+    this.setWalletDialogVisibility(true);
+  }
 }
 </script>
 

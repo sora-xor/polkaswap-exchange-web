@@ -2,7 +2,7 @@
   <s-design-system-provider :value="libraryDesignSystem" id="app" class="page">
     <img src="/img/greed.png" loading="lazy" alt="" class="greed-img" />
 
-    <app-header :open-wallet="openWallet" />
+    <app-header />
 
     <div class="wrap-floats">
       <img src="img/float-img-left.png" loading="lazy" alt="" class="float-img-left" />
@@ -21,7 +21,7 @@
     </div>
 
     <div class="wrap-cart">
-      <cart :buy="handleBuy" :sell="handleSell" :redeem="handleRedeem" />
+      <cart />
     </div>
 
     <wallet-dialog :visible.sync="showWallet" />
@@ -117,37 +117,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     });
 
     this.trackActiveTransactions();
-  }
-
-  handleBuy(): void {
-    this.checkAuth(() => {
-      console.log('handle Buy');
-    });
-  }
-
-  handleSell(): void {
-    this.checkAuth(() => {
-      console.log('handle Sell');
-    });
-  }
-
-  handleRedeem(): void {
-    this.checkAuth(() => {
-      console.log('handle Redeem');
-    });
-  }
-
-  checkAuth(func: VoidFunction): void {
-    if (!this.isLoggedIn) {
-      this.openWallet();
-    } else {
-      func();
-    }
-  }
-
-  openWallet(): void {
-    // this.setSelectNodeDialogVisibility(true);
-    this.showWallet = true;
   }
 
   async beforeDestroy(): Promise<void> {

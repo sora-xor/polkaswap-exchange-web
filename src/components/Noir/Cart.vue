@@ -41,9 +41,8 @@
       </div>
 
       <div class="cart__row cart__row-price">
-        <div class="price">
-          <span>$90018</span><span class="price__after-dot">.04</span>
-          <span class="color-pink">USD</span>
+        <div v-if="tokenToPrice" class="price">
+          <formatted-amount is-fiat-value :value="tokenToPrice" asset-symbol="USD" />
         </div>
 
         <div class="available">
@@ -248,12 +247,12 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     return FPNumber.lte(fpAmount, this.Zero);
   }
 
-  get tokenFromPrice(): Nullable<CodecString> {
-    return this.tokenFrom ? this.getAssetFiatPrice(this.tokenFrom) : null;
+  get tokenFromPrice(): Nullable<string> {
+    return this.tokenFrom ? this.getFiatAmount('1', this.tokenFrom) : null;
   }
 
-  get tokenToPrice(): Nullable<CodecString> {
-    return this.tokenTo ? this.getAssetFiatPrice(this.tokenTo) : null;
+  get tokenToPrice(): Nullable<string> {
+    return this.tokenTo ? this.getFiatAmount('1', this.tokenTo) : null;
   }
 
   get networkFee(): CodecString {
@@ -466,42 +465,13 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
 }
 </script>
 
-<style lang="scss" scoped>
-.el-form--actions {
-  @include buttons;
-  @include full-width-button('action-button');
-  @include vertical-divider('el-button--switch-tokens', $inner-spacing-medium);
-}
-
-.el-button.neumorphic.s-action:disabled {
-  &,
-  &:hover {
-    &.el-button--switch-tokens.loading {
-      border-color: transparent;
-      box-shadow: var(--s-shadow-element-pressed);
-    }
+<style lang="scss">
+.price {
+  .formatted-amount--fiat-value {
+    font-weight: 700 !important;
   }
-}
-
-.page-header--swap {
-  justify-content: space-between;
-  align-items: center;
-}
-.price-difference {
-  display: flex;
-  align-items: center;
-
-  & > * {
-    flex-shrink: 0;
-  }
-
-  &__value {
-    font-weight: 600;
-    font-size: var(--s-font-size-small);
-
-    & > span {
-      padding-right: 2px;
-    }
+  .formatted-amount__symbol {
+    color: var(--s-color-theme-accent);
   }
 }
 </style>
