@@ -42,8 +42,6 @@ export const ObjectInit = () => null;
 
 export const ZeroStringValue = '0';
 
-export const MetamaskCancellationCode = 4001;
-
 export const DefaultSlippageTolerance = '0.5';
 
 export enum MarketAlgorithms {
@@ -100,4 +98,7 @@ export enum LogoSize {
   LARGE = 'large',
 }
 
+// TODO: [NOIR_TOKEN]
 export const NOIR_TOKEN_ADDRESS = '0x0200040000000000000000000000000000000000000000000000000000000000';
+// TODO: [NOIR_ADDRESS]
+export const NOIR_ADDRESS_ID = 'cnW1pm3hDysWLCD4xvQAKFmW9QPjMG5zmnRxBpc6hd3P7CWP3';

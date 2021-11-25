@@ -3,7 +3,6 @@ import { en as walletEn, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Operation, TransactionStatus, RewardingEvents } from '@sora-substrate/util';
 
 import { PageNames } from '../consts';
-import { EvmNetworkType } from '../utils/ethers-util';
 
 export default {
   // Wallet project keys
@@ -191,15 +190,6 @@ export default {
     [WALLET_CONSTS.SoraNetwork.Test]: '@:soraText Testnet',
     [WALLET_CONSTS.SoraNetwork.Stage]: '@:soraText Testnet',
     [WALLET_CONSTS.SoraNetwork.Prod]: '@:soraText Mainnet',
-  },
-  evm: {
-    [EvmNetworkType.Mainnet]: 'Ethereum Mainnet',
-    [EvmNetworkType.Ropsten]: 'Ethereum Ropsten',
-    [EvmNetworkType.Rinkeby]: 'Ethereum Rinkeby',
-    [EvmNetworkType.Kovan]: 'Ethereum Kovan',
-    [EvmNetworkType.Goerli]: 'Ethereum Goerli',
-    [EvmNetworkType.Private]: 'Volta Testnet',
-    [EvmNetworkType.EWC]: 'Energy Web Chain',
   },
   providers: {
     metamask: '@:metamask',
