@@ -539,7 +539,7 @@ a:hover {
 }
 
 .cart__spacer {
-  height: 210px;
+  height: 170px;
 }
 
 @media screen and (max-width: 640px) {
@@ -578,6 +578,19 @@ a:hover {
 
 .cart__row {
   position: relative;
+}
+
+.cart__row--input-field {
+  margin-bottom: 24px;
+}
+
+.cart__row--swap-prices {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  font-size: 15px;
+  line-height: 18px;
+  margin-bottom: 24px;
 }
 
 .cart__row-price {
@@ -719,7 +732,7 @@ a:hover {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
-  margin-bottom: 24px;
+  margin-top: 40px;
 }
 
 @media screen and (max-width: 640px) {
@@ -745,6 +758,7 @@ a:hover {
   font-weight: 600;
   line-height: 20px;
   opacity: 0.3;
+  text-align: right;
 }
 
 .cart .available__current {

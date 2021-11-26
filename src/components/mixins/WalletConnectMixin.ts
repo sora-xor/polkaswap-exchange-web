@@ -1,15 +1,15 @@
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
+import { Getter, Action } from 'vuex-class';
 
-import router from '@/router';
 import { getWalletAddress, formatAddress } from '@/utils';
-import { PageNames } from '@/consts';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 @Component
 export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @Getter('isLoggedIn') isSoraAccountConnected!: boolean;
+
+  @Action setWalletDialogVisibility!: (flag: boolean) => void;
 
   getWalletAddress = getWalletAddress;
   formatAddress = formatAddress;
@@ -19,6 +19,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   }
 
   connectInternalWallet(): void {
-    router.push({ name: PageNames.Wallet });
+    this.setWalletDialogVisibility(true);
   }
 }

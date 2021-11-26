@@ -18,7 +18,7 @@
           </div>
         </div>
 
-        <account-button class="account-btn" @click="openWallet" />
+        <account-button class="account-btn" :disabled="loading" @click="connectInternalWallet" />
       </div>
     </div>
   </header>
@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter, Action } from 'vuex-class';
+import { Getter } from 'vuex-class';
 import { components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
@@ -49,12 +49,6 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
   @Getter account!: WALLET_TYPES.Account;
 
   @Getter('noir/totalRedeemed') totalRedeemed!: number;
-
-  @Action setWalletDialogVisibility!: (flag: boolean) => void;
-
-  openWallet(): void {
-    this.setWalletDialogVisibility(true);
-  }
 }
 </script>
 

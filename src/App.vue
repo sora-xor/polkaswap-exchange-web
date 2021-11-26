@@ -2,7 +2,7 @@
   <s-design-system-provider :value="libraryDesignSystem" id="app" class="page">
     <img src="/img/greed.png" loading="lazy" alt="" class="greed-img" />
 
-    <app-header />
+    <app-header :loading="loading" />
 
     <div class="wrap-floats">
       <img src="img/float-img-left.png" loading="lazy" alt="" class="float-img-left" />

@@ -10,11 +10,6 @@
       is-formatted
     />
     <info-line v-for="(reward, index) in rewardsValues" :key="index" v-bind="reward" />
-    <info-line :label="t('swap.priceImpact')" :label-tooltip="t('swap.priceImpactTooltip')">
-      <value-status-wrapper :value="priceImpact">
-        <formatted-amount class="swap-value" :value="priceImpactFormatted">%</formatted-amount>
-      </value-status-wrapper>
-    </info-line>
     <info-line :label="t('swap.route')">
       <div v-for="token in swapRoute" class="liquidity-route swap-value" :key="token">
         <span>{{ token }}</span>
@@ -78,7 +73,6 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
   @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset;
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset;
   @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString;
-  @Getter('priceImpact', { namespace }) priceImpact!: string;
   @Getter('price', { namespace }) price!: string;
   @Getter('priceReversed', { namespace }) priceReversed!: string;
 
@@ -110,10 +104,6 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
         value: this.formatStringValue(this.priceReversed),
       },
     ];
-  }
-
-  get priceImpactFormatted(): string {
-    return this.formatStringValue(this.priceImpact);
   }
 
   get rewardsValues(): Array<any> {
@@ -150,20 +140,6 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
     const decimals = (this.isExchangeB ? this.tokenFrom : this.tokenTo)?.decimals;
     return this.formatCodecNumber(this.minMaxReceived, decimals);
   }
-
-  // TODO: [Release 2]
-  // get priceImpact (): string {
-  //   return '0'
-  // }
-  // get priceImpactClass (): string {
-  //   if (+this.priceImpact > 0) {
-  //     return 'price-impact-positive'
-  //   }
-  //   if (+this.priceImpact < 0) {
-  //     return 'price-impact-negative'
-  //   }
-  //   return ''
-  // }
 
   get xorSymbol(): string {
     return ' ' + KnownSymbols.XOR;

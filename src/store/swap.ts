@@ -10,14 +10,7 @@ import { MarketAlgorithmForLiquiditySource, ZeroStringValue } from '@/consts';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { divideAssets } from '@/utils';
 
-import type {
-  AccountBalance,
-  CodecString,
-  LiquiditySourceTypes,
-  LPRewardsInfo,
-  QuotePaths,
-  QuotePayload,
-} from '@sora-substrate/util';
+import type { AccountBalance, CodecString, LiquiditySourceTypes, QuotePaths, QuotePayload } from '@sora-substrate/util';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
@@ -31,13 +24,12 @@ const types = flow(
     'SET_TOKEN_FROM_BALANCE',
     'SET_TOKEN_TO_BALANCE',
     'SET_FROM_VALUE',
+    'SET_FROM_VALUE_REVERSED',
     'SET_TO_VALUE',
-    'SET_AMOUNT_WITHOUT_IMPACT',
     'SET_EXCHANGE_B',
     'SET_LIQUIDITY_PROVIDER_FEE',
     'SET_PAIR_LIQUIDITY_SOURCES',
     'SET_PATHS',
-    'SET_REWARDS',
     'SET_SUBSCRIPTION_PAYLOAD',
     'GET_SWAP_CONFIRM',
     'RESET',
@@ -52,15 +44,14 @@ interface SwapState {
   tokenToAddress: Nullable<string>;
   tokenToBalance: Nullable<AccountBalance>;
   fromValue: string;
+  fromValueReversed: string;
   toValue: string;
-  amountWithoutImpact: CodecString;
   isExchangeB: boolean;
   liquidityProviderFee: CodecString;
   pairLiquiditySources: Array<LiquiditySourceTypes>;
   paths: QuotePaths;
   isAvailable: boolean;
   isAvailableChecking: boolean;
-  rewards: Array<LPRewardsInfo>;
   payload: Nullable<QuotePayload>;
 }
 
@@ -70,16 +61,15 @@ function initialState(): SwapState {
     tokenToAddress: '',
     tokenFromBalance: null,
     tokenToBalance: null,
-    fromValue: '',
+    fromValue: '', // buy price
+    fromValueReversed: '', // sell price
     toValue: '',
-    amountWithoutImpact: '',
     isExchangeB: false,
     liquidityProviderFee: '',
     isAvailable: false,
     isAvailableChecking: false,
     pairLiquiditySources: [],
     paths: {},
-    rewards: [],
     payload: null,
   };
 }
@@ -115,24 +105,6 @@ const getters = {
   },
   priceReversed(state: SwapState, getters) {
     return divideAssets(getters.tokenFrom, getters.tokenTo, state.fromValue, state.toValue, true);
-  },
-  priceImpact(state: SwapState, getters) {
-    const { fromValue, toValue, amountWithoutImpact, isExchangeB } = state;
-
-    const token = isExchangeB ? getters.tokenFrom : getters.tokenTo;
-    const value = isExchangeB ? fromValue : toValue;
-
-    if (!token || !value || !amountWithoutImpact) return ZeroStringValue;
-
-    const withoutImpact = FPNumber.fromCodecValue(amountWithoutImpact, token.decimals);
-
-    if (withoutImpact.isZero()) return ZeroStringValue;
-
-    const amount = new FPNumber(value, token.decimals);
-    const impact = isExchangeB ? withoutImpact.div(amount) : amount.div(withoutImpact);
-    const result = new FPNumber(1).sub(impact).mul(FPNumber.HUNDRED);
-
-    return FPNumber.lte(result, FPNumber.ZERO) ? ZeroStringValue : FPNumber.ZERO.sub(result).toFixed(2);
   },
   minMaxReceived(state: SwapState, getters, rootState, rootGetters) {
     const { fromValue, toValue, isExchangeB } = state;
@@ -179,11 +151,11 @@ const mutations = {
   [types.SET_FROM_VALUE](state: SwapState, fromValue: string) {
     state.fromValue = fromValue;
   },
+  [types.SET_FROM_VALUE_REVERSED](state: SwapState, fromValue: string) {
+    state.fromValueReversed = fromValue;
+  },
   [types.SET_TO_VALUE](state: SwapState, toValue: string) {
     state.toValue = toValue;
-  },
-  [types.SET_AMOUNT_WITHOUT_IMPACT](state: SwapState, amount: CodecString) {
-    state.amountWithoutImpact = amount;
   },
   [types.SET_EXCHANGE_B](state: SwapState, isExchangeB: boolean) {
     state.isExchangeB = isExchangeB;
@@ -208,9 +180,6 @@ const mutations = {
   },
   [types.SET_PATHS](state: SwapState, paths: QuotePaths) {
     state.paths = { ...paths };
-  },
-  [types.SET_REWARDS](state: SwapState, rewards: Array<LPRewardsInfo>) {
-    state.rewards = [...rewards];
   },
   [types.SET_SUBSCRIPTION_PAYLOAD](state: SwapState, payload: QuotePayload) {
     state.payload = payload;
@@ -269,11 +238,11 @@ const actions = {
   setFromValue({ commit }, fromValue: string | number) {
     commit(types.SET_FROM_VALUE, fromValue);
   },
+  setFromValueReversed({ commit }, fromValue: string | number) {
+    commit(types.SET_FROM_VALUE_REVERSED, fromValue);
+  },
   setToValue({ commit }, toValue: string | number) {
     commit(types.SET_TO_VALUE, toValue);
-  },
-  setAmountWithoutImpact({ commit }, amount: CodecString) {
-    commit(types.SET_AMOUNT_WITHOUT_IMPACT, amount);
   },
   setExchangeB({ commit }, flag: boolean) {
     commit(types.SET_EXCHANGE_B, flag);
@@ -339,9 +308,6 @@ const actions = {
 
       commit(types.SET_PATHS, paths);
     }
-  },
-  setRewards({ commit }, rewards: Array<LPRewardsInfo>) {
-    commit(types.SET_REWARDS, rewards);
   },
   setSubscriptionPayload({ commit }, payload: QuotePayload) {
     commit(types.SET_SUBSCRIPTION_PAYLOAD, payload);
