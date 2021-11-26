@@ -70,12 +70,8 @@ export enum Components {
   AppHeader = 'App/Header/AppHeader',
   AccountButton = 'App/Header/AccountButton',
   AppLogoButton = 'App/Header/AppLogoButton',
-  SwapInfo = 'SwapInfo',
-  SelectToken = 'SelectToken',
   TokenLogo = 'TokenLogo',
   PairTokenLogo = 'PairTokenLogo',
-  ConfirmSwap = 'ConfirmSwap',
-  ConfirmRemoveLiquidity = 'ConfirmRemoveLiquidity',
   ConfirmTokenPairDialog = 'ConfirmTokenPairDialog',
   SelectNode = 'Settings/Node/SelectNode',
   NodeInfo = 'Settings/Node/NodeInfo',
@@ -85,11 +81,11 @@ export enum Components {
   TokenSelectButton = 'Input/TokenSelectButton',
   TokenAddress = 'Input/TokenAddress',
   SelectLanguageDialog = 'SelectLanguageDialog',
-  ValueStatusWrapper = 'ValueStatusWrapper',
   // NOIR
   Cart = 'Noir/Cart',
   CountInput = 'Noir/CountInput',
   RedeemDialog = 'Noir/RedeemDialog',
+  CongratulationsDialog = 'Noir/CongratulationsDialog',
 }
 
 export enum LogoSize {

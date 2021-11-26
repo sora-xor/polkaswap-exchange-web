@@ -26,6 +26,7 @@
 
     <wallet-dialog />
     <redeem-dialog />
+    <congratulations-dialog />
     <select-node-dialog />
   </s-design-system-provider>
 </template>
@@ -52,6 +53,7 @@ import type { ConnectToNodeOptions } from '@/types/nodes';
     WalletDialog: lazyComponent(Components.WalletDialog),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
     RedeemDialog: lazyComponent(Components.RedeemDialog),
+    CongratulationsDialog: lazyComponent(Components.CongratulationsDialog),
   },
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {

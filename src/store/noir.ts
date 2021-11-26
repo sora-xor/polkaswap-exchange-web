@@ -13,7 +13,12 @@ const FIFTEEN_MINUTES = 15 * 60 * 1000;
 
 const types = flow(
   flatMap((x) => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
-  concat(['RESET_REDEMPTION_DATA_SUBSCRIPTION', 'SET_REDEEM_DIALOG_VISIBILITY', 'SET_AGREEMENT']),
+  concat([
+    'RESET_REDEMPTION_DATA_SUBSCRIPTION',
+    'SET_REDEEM_DIALOG_VISIBILITY',
+    'SET_CONGRATULATIONS_DIALOG_VISIBILITY',
+    'SET_AGREEMENT',
+  ]),
   map((x) => [x, x]),
   fromPairs
 )(['GET_REDEMPTION_DATA']);
@@ -24,6 +29,7 @@ interface NoirState {
   availableForRedemption: number;
   redemptionSubscription: Nullable<NodeJS.Timer>;
   redeemDialogVisibility: boolean;
+  congratulationsDialogVisibility: boolean;
   agreementSigned: boolean;
 }
 
@@ -34,6 +40,7 @@ function initialState(): NoirState {
     availableForRedemption: 0,
     redemptionSubscription: null,
     redeemDialogVisibility: false,
+    congratulationsDialogVisibility: false,
     agreementSigned: Boolean(noirStorage.get('agreement')) || false,
   };
 }
@@ -85,6 +92,10 @@ const mutations = {
     state.redeemDialogVisibility = flag;
   },
 
+  [types.SET_CONGRATULATIONS_DIALOG_VISIBILITY](state: NoirState, flag: boolean) {
+    state.congratulationsDialogVisibility = flag;
+  },
+
   [types.SET_AGREEMENT](state: NoirState, flag: boolean) {
     state.agreementSigned = flag;
     noirStorage.set('agreement', flag);
@@ -113,7 +124,7 @@ const actions = {
       commit(types.GET_REDEMPTION_DATA_FAILURE);
     }
   },
-  subscribeOnRedemptionDataUpdates({ commit, dispatch, state }) {
+  subscribeOnRedemptionDataUpdates({ dispatch, state }) {
     dispatch('getRedemptionData');
     state.redemptionSubscription = setInterval(() => {
       dispatch('getRedemptionData');
@@ -127,8 +138,18 @@ const actions = {
     commit(types.SET_REDEEM_DIALOG_VISIBILITY, flag);
   },
 
+  setCongratulationsDialogVisibility({ commit }, flag: boolean) {
+    commit(types.SET_CONGRATULATIONS_DIALOG_VISIBILITY, flag);
+  },
+
   setAgreement({ commit }, flag: boolean) {
     commit(types.SET_AGREEMENT, flag);
+  },
+
+  async redeem({ dispatch }, count: number) {
+    await api.transfer(NOIR_TOKEN_ADDRESS, NOIR_ADDRESS_ID, count);
+
+    await dispatch('setCongratulationsDialogVisibility', true);
   },
 };
 

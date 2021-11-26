@@ -51,11 +51,6 @@
           CONFIRM
         </s-button>
       </template>
-
-      <template v-else>
-        <!-- Congratulations -->
-        <s-button type="secondary" size="big" class="btn w-100" @click="handleStep()"> Close </s-button>
-      </template>
     </div>
   </dialog-base>
 </template>
@@ -64,20 +59,20 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Action, State, Getter } from 'vuex-class';
 import { Operation } from '@sora-substrate/util';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 import type { AccountAsset, CodecString, NetworkFeesObject } from '@sora-substrate/util';
 
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 
 import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
+import { Components, NOIR_TOKEN_ADDRESS, NOIR_ADDRESS_ID } from '@/consts';
 import { getMaxValue } from '@/utils';
 
 enum Steps {
   Agreement = 'agreement',
   SelectCount = 'count',
   AddressForm = 'form',
-  Congratulations = 'congratilations',
 }
 
 @Component({
@@ -86,7 +81,7 @@ enum Steps {
     CountInput: lazyComponent(Components.CountInput),
   },
 })
-export default class RedeemDialog extends Mixins(DialogMixin) {
+export default class RedeemDialog extends Mixins(DialogMixin, mixins.TransactionMixin) {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean;
 
   @State((state) => state.noir.redeemDialogVisibility) redeemDialogVisibility!: boolean;
@@ -97,6 +92,7 @@ export default class RedeemDialog extends Mixins(DialogMixin) {
 
   @Action('setRedeemDialogVisibility', { namespace: 'noir' }) setVisibility!: (flag: boolean) => Promise<void>;
   @Action('setAgreement', { namespace: 'noir' }) setAgreement!: (flag: boolean) => Promise<void>;
+  @Action('redeem', { namespace: 'noir' }) redeem!: (count: number) => Promise<void>;
 
   Steps = Steps;
   currentStep = Steps.Agreement;
@@ -110,7 +106,7 @@ export default class RedeemDialog extends Mixins(DialogMixin) {
 
   set visibility(flag: boolean) {
     this.setVisibility(flag);
-    this.setInitialStep();
+    this.reset();
   }
 
   get max(): number {
@@ -123,13 +119,15 @@ export default class RedeemDialog extends Mixins(DialogMixin) {
     return this.networkFees[Operation.Transfer];
   }
 
-  setInitialStep(): void {
+  reset(): void {
+    this.redeemedCount = 1;
+
     if (this.agreementSigned) {
       this.currentStep = Steps.SelectCount;
     }
   }
 
-  handleStep(step: Steps): void {
+  async handleStep(step: Steps): Promise<void> {
     switch (step) {
       case Steps.Agreement: {
         this.setAgreement(true);
@@ -141,15 +139,25 @@ export default class RedeemDialog extends Mixins(DialogMixin) {
         break;
       }
       case Steps.AddressForm: {
-        this.currentStep = Steps.Congratulations;
+        await this.transfer();
         break;
       }
       default: {
         // close dialog
-        this.setRedeemDialogVisibility(false);
+        this.visibility = false;
         break;
       }
     }
+  }
+
+  async transfer() {
+    try {
+      await this.withNotifications(async () => await this.redeem(this.redeemedCount));
+    } catch (error) {
+      console.error(error);
+    }
+
+    this.visibility = false;
   }
 }
 </script>

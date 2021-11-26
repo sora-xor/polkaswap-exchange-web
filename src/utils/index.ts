@@ -67,8 +67,6 @@ const getMaxBalance = (
 ): FPNumber => {
   const balance = getAssetBalance(asset, { internal: !isExternalBalance, parseAsLiquidity });
 
-  console.log(balance);
-
   if (asZeroValue(balance)) return FPNumber.ZERO;
 
   let fpResult = FPNumber.fromCodecValue(balance, asset.decimals);
@@ -79,7 +77,6 @@ const getMaxBalance = (
       (isExternalBalance && isEthereumAddress((asset as RegisteredAccountAsset).externalAddress)))
   ) {
     const fpFee = FPNumber.fromCodecValue(fee, asset.decimals);
-    console.log(fpFee);
     fpResult = fpResult.sub(fpFee);
   }
 
