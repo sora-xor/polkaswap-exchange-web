@@ -551,7 +551,7 @@ a:hover {
 .cart__line {
   background: #ffffff;
   height: 1px;
-  margin-bottom: 26px;
+  margin-bottom: 20px;
   opacity: 0.2;
   width: 100%;
 }
@@ -630,7 +630,7 @@ a:hover {
           justify-content: space-between;
 }
 
-.cart__row-btns .btn {
+.cart__row-btns .btn:not(:first-child) {
   margin-top: 16px;
 }
 

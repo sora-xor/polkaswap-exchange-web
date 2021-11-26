@@ -20,7 +20,7 @@
       <div class="blur-circle-3"></div>
     </div>
 
-    <div class="wrap-cart">
+    <div class="wrap-cart app-main">
       <cart />
     </div>
 
@@ -78,6 +78,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History): void {
+    console.log('handleChangeTransaction', value);
     this.handleChangeTransaction(value);
   }
 
@@ -175,7 +176,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background: var(--s-color-utility-surface);
+      background: var(--s-color-base-content-primary);
       flex-shrink: 0;
       &:before {
         position: absolute;
@@ -185,14 +186,14 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
     &__content {
       margin-top: 0;
-      color: var(--s-color-utility-surface);
+      color: var(--s-color-base-content-primary);
       text-align: left;
     }
     &__closeBtn {
       top: $inner-spacing-medium;
-      color: var(--s-color-utility-surface);
+      color: var(--s-color-base-content-primary);
       &:hover {
-        color: var(--s-color-utility-surface);
+        color: var(--s-color-base-content-primary);
       }
     }
   }

@@ -85,7 +85,7 @@
         <template v-if="isLoggedIn">
           <s-button type="primary" size="big" class="btn w-100" :disabled="buyDisabled" @click="buy">BUY</s-button>
           <s-button type="secondary" size="big" class="btn" :disabled="sellDisabled" @click="sell">Sell</s-button>
-          <s-button type="secondary" size="big" class="btn" @click="redeem">Redeem</s-button>
+          <s-button type="secondary" size="big" class="btn" :disabled="redeemDisabled" @click="redeem">Redeem</s-button>
         </template>
         <s-button v-else type="primary" size="big" class="btn w-100" @click="connectInternalWallet">Connect Wallet</s-button>
       </div>
@@ -110,13 +110,7 @@ import type {
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 
-import {
-  hasInsufficientBalance,
-  hasInsufficientXorForFee,
-  asZeroValue,
-  formatAssetBalance,
-  debouncedInputHandler,
-} from '@/utils';
+import { hasInsufficientBalance, asZeroValue, formatAssetBalance, debouncedInputHandler } from '@/utils';
 import { lazyComponent } from '@/router';
 import { Components, NOIR_TOKEN_ADDRESS } from '@/consts';
 
@@ -130,7 +124,7 @@ const namespace = 'swap';
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
 })
-export default class Swap extends Mixins(mixins.FormattedAmountMixin, WalletConnectMixin, mixins.LoadingMixin) {
+export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.TransactionMixin, WalletConnectMixin) {
   @State((state) => state[namespace].paths) paths!: QuotePaths;
   @State((state) => state[namespace].isAvailable) isAvailable!: boolean;
   @State((state) => state[namespace].isAvailableChecking) isAvailableChecking!: boolean;
@@ -192,7 +186,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, WalletConn
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
   KnownSymbols = KnownSymbols;
-  isRecountingProcess = false;
   liquidityReservesSubscription: Nullable<Subscription> = null;
   recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
 
@@ -224,10 +217,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, WalletConn
     return this.toValue && this.tokenTo ? this.getFiatAmountByString(this.toValue, this.tokenTo) || '0' : '0';
   }
 
-  get isXorOutputSwap(): boolean {
-    return this.tokenTo?.address === KnownAssets.get(KnownSymbols.XOR)?.address;
-  }
-
   get preparedForSwap(): boolean {
     return this.isLoggedIn && this.areTokensSelected;
   }
@@ -237,38 +226,23 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, WalletConn
   }
 
   get buyDisabled(): boolean {
-    return this.preparedForSwap && hasInsufficientBalance(this.tokenFrom, this.fromValue, this.networkFee);
+    return this.preparedForSwap && hasInsufficientBalance(this.tokenFrom, this.fromValue, this.swapNetworkFee);
   }
 
   get sellDisabled(): boolean {
-    return this.preparedForSwap && hasInsufficientBalance(this.tokenTo, this.toValue, this.networkFee);
+    return this.preparedForSwap && hasInsufficientBalance(this.tokenTo, this.toValue, this.swapNetworkFee);
   }
 
-  get isInsufficientXorForFee(): boolean {
-    const isInsufficientXorForFee =
-      this.preparedForSwap && hasInsufficientXorForFee(this.tokenXOR, this.networkFee, this.isXorOutputSwap);
-    if (isInsufficientXorForFee || !this.isXorOutputSwap) {
-      return isInsufficientXorForFee;
-    }
-    // It's required for XOR output without XOR or with XOR balance < network fee
-    const xorBalance = this.getFPNumberFromCodec(this.tokenXOR.balance.transferable, this.tokenXOR.decimals);
-    const fpNetworkFee = this.getFPNumberFromCodec(this.networkFee, this.tokenXOR.decimals).sub(xorBalance);
-    const fpAmount = this.getFPNumber(this.toValue, this.tokenXOR.decimals).sub(
-      FPNumber.gt(fpNetworkFee, this.Zero) ? fpNetworkFee : this.Zero
-    );
-    return FPNumber.lte(fpAmount, this.Zero);
+  get redeemDisabled(): boolean {
+    return this.preparedForSwap && hasInsufficientBalance(this.tokenTo, this.toValue, this.transferNetworkFee);
   }
 
-  get tokenFromPrice(): Nullable<CodecString> {
-    return this.tokenFrom ? this.getAssetFiatPrice(this.tokenFrom) : null;
-  }
-
-  get tokenToPrice(): Nullable<CodecString> {
-    return this.tokenTo ? this.getAssetFiatPrice(this.tokenTo) : null;
-  }
-
-  get networkFee(): CodecString {
+  get swapNetworkFee(): CodecString {
     return this.networkFees[Operation.Swap];
+  }
+
+  get transferNetworkFee(): CodecString {
+    return this.networkFees[Operation.Transfer];
   }
 
   created() {
@@ -322,8 +296,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, WalletConn
     } catch (error: any) {
       console.error(error);
       this.resetFieldFrom();
-    } finally {
-      this.isRecountingProcess = false;
     }
   }
 
@@ -361,14 +333,17 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, WalletConn
   // noir nethods
   async buy(): Promise<void> {
     try {
-      await api.swap(
-        this.tokenFrom.address, // XOR
-        this.tokenTo.address, // NOIR
-        this.fromValue,
-        this.toValue,
-        this.slippageTolerance,
-        true,
-        this.liquiditySource
+      await this.withNotifications(
+        async () =>
+          await api.swap(
+            this.tokenFrom.address, // XOR
+            this.tokenTo.address, // NOIR
+            this.fromValue,
+            this.toValue,
+            this.slippageTolerance,
+            true,
+            this.liquiditySource
+          )
       );
     } catch (error) {
       console.error(error);
@@ -377,14 +352,17 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, WalletConn
 
   async sell(): Promise<void> {
     try {
-      await api.swap(
-        this.tokenTo.address, // NOIR
-        this.tokenFrom.address, // XOR
-        this.toValue,
-        this.fromValueReversed,
-        this.slippageTolerance,
-        false,
-        this.liquiditySource
+      await this.withNotifications(
+        async () =>
+          await api.swap(
+            this.tokenTo.address, // NOIR
+            this.tokenFrom.address, // XOR
+            this.toValue,
+            this.fromValueReversed,
+            this.slippageTolerance,
+            false,
+            this.liquiditySource
+          )
       );
     } catch (error) {
       console.error(error);
@@ -406,7 +384,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, WalletConn
   async increaseCount(): Promise<void> {
     const value = Number(this.toValue);
 
-    if (value === this.availableForRedemption) return;
+    if (value === this.total) return;
 
     await this.setToValue(String(value + 1));
 
