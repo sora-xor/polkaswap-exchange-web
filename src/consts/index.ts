@@ -88,6 +88,7 @@ export enum Components {
   ValueStatusWrapper = 'ValueStatusWrapper',
   // NOIR
   Cart = 'Noir/Cart',
+  CountInput = 'Noir/CountInput',
   RedeemDialog = 'Noir/RedeemDialog',
 }
 

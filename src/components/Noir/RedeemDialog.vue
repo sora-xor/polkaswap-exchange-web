@@ -1,10 +1,10 @@
 <template>
-  <dialog-base :visible.sync="visibility" :before-close="beforeClose" custom-class="redeem-dialog-wrapper">
-    <div class="redeem">
+  <dialog-base :visible.sync="visibility" custom-class="redeem-dialog-wrapper">
+    <div :class="['redeem-dialog', currentStep]">
       <template v-if="currentStep === Steps.Agreement">
-        <div class="redeem-title">Redeem</div>
-        <div class="redeem-subtitle">Terms of service agreement<br />November 18,2021</div>
-        <div class="redeem-text">
+        <div class="redeem-dialog-title">Redeem</div>
+        <div class="redeem-dialog-subtitle">Terms of service agreement<br />November 18,2021</div>
+        <div class="redeem-dialog-text">
           <p>
             1. The Sale of Alcoholic Beverages<br />
             The Company does not sell alcohol to persons under the age of 21. By using this site you are representing
@@ -21,19 +21,25 @@
             -Australia
           </p>
         </div>
-        <div class="redeem-check">
-          <s-checkbox v-model="agreementSigned" size="big">I Agree</s-checkbox>
+        <div class="redeem-dialog-check">
+          <s-checkbox v-model="agreementModel" size="big">I Agree</s-checkbox>
         </div>
         <s-button
           type="primary"
           size="big"
           class="btn w-100"
-          :disabled="!agreementSigned"
+          :disabled="!agreementModel"
           @click="handleStep(Steps.Agreement)"
         >Continue</s-button>
       </template>
 
       <template v-else-if="currentStep === Steps.SelectCount">
+        <div class="redeem-dialog-subtitle">You must have a balance greater than 1 NOIR to redeem.</div>
+
+        <count-input v-model="redeemedCount" :min="1" :max="max" />
+
+        <div class="redeem-dialog-text">How many Noir would you like to redeem at this time?</div>
+
         <s-button type="secondary" size="big" class="btn w-100" @click="handleStep(Steps.SelectCount)">
           Redeem
         </s-button>
@@ -56,51 +62,77 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Action, State } from 'vuex-class';
+import { Action, State, Getter } from 'vuex-class';
+import { Operation } from '@sora-substrate/util';
+import type { AccountAsset, CodecString, NetworkFeesObject } from '@sora-substrate/util';
 
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 
+import { lazyComponent } from '@/router';
+import { Components } from '@/consts';
+import { getMaxValue } from '@/utils';
+
 enum Steps {
-  Agreement = 'Agreement',
-  SelectCount = 'SelectCount',
-  AddressForm = 'AddressForm',
-  Congratulations = 'Congratulations',
+  Agreement = 'agreement',
+  SelectCount = 'count',
+  AddressForm = 'form',
+  Congratulations = 'congratilations',
 }
 
 @Component({
   components: {
     DialogBase,
+    CountInput: lazyComponent(Components.CountInput),
   },
 })
 export default class RedeemDialog extends Mixins(DialogMixin) {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean;
 
   @State((state) => state.noir.redeemDialogVisibility) redeemDialogVisibility!: boolean;
-  @Action('setRedeemDialogVisibility', { namespace: 'noir' }) setRedeemDialogVisibility!: (
-    flag: boolean
-  ) => Promise<void>;
+  @State((state) => state.noir.agreementSigned) agreementSigned!: boolean;
 
-  agreementSigned = false;
+  @Getter networkFees!: NetworkFeesObject;
+  @Getter('tokenTo', { namespace: 'swap' }) token!: AccountAsset;
+
+  @Action('setRedeemDialogVisibility', { namespace: 'noir' }) setVisibility!: (flag: boolean) => Promise<void>;
+  @Action('setAgreement', { namespace: 'noir' }) setAgreement!: (flag: boolean) => Promise<void>;
 
   Steps = Steps;
   currentStep = Steps.Agreement;
+
+  agreementModel = false;
+  redeemedCount = 1;
 
   get visibility(): boolean {
     return this.redeemDialogVisibility;
   }
 
   set visibility(flag: boolean) {
-    this.setRedeemDialogVisibility(flag);
+    this.setVisibility(flag);
+    this.setInitialStep();
   }
 
-  beforeClose(): void {
-    this.currentStep = Steps.Agreement;
+  get max(): number {
+    if (!this.token) return 0;
+
+    return Math.floor(+getMaxValue(this.token, this.transferNetworkFee));
+  }
+
+  get transferNetworkFee(): CodecString {
+    return this.networkFees[Operation.Transfer];
+  }
+
+  setInitialStep(): void {
+    if (this.agreementSigned) {
+      this.currentStep = Steps.SelectCount;
+    }
   }
 
   handleStep(step: Steps): void {
     switch (step) {
       case Steps.Agreement: {
+        this.setAgreement(true);
         this.currentStep = Steps.SelectCount;
         break;
       }
@@ -126,21 +158,25 @@ export default class RedeemDialog extends Mixins(DialogMixin) {
 .redeem-dialog-wrapper.dialog-wrapper .el-dialog > .el-dialog__body .dialog-content {
   padding: 48px 54px;
 }
+</style>
 
-.redeem {
+<style lang="scss" scoped>
+$base: '.redeem-dialog';
+
+#{$base} {
   display: flex;
   flex-flow: column nowrap;
-  justify-content: center;
+  align-items: center;
 
   &-title {
     font-size: 27px;
     line-height: 40px;
+    text-align: center;
   }
 
   &-subtitle {
     font-size: 12px;
     line-height: 20px;
-    margin: 14px 0 26px;
     text-align: center;
   }
 
@@ -151,6 +187,31 @@ export default class RedeemDialog extends Mixins(DialogMixin) {
 
     p + p {
       margin-top: 20px;
+    }
+  }
+
+  &.agreement {
+    #{$base} {
+      &-subtitle {
+        margin: 14px 0 26px;
+      }
+    }
+  }
+
+  &.count {
+    #{$base} {
+      &-subtitle {
+        font-size: 15px;
+        line-height: 25px;
+        max-width: 260px;
+        margin-bottom: 40px;
+      }
+
+      &-text {
+        margin: 40px 0;
+        max-width: 205px;
+        text-align: center;
+      }
     }
   }
 }

@@ -7,11 +7,13 @@ import { SubqueryExplorerService, api } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, FPNumber, XOR } from '@sora-substrate/util';
 import { NOIR_TOKEN_ADDRESS, NOIR_ADDRESS_ID } from '@/consts';
 
+import { noirStorage } from '@/utils/storage';
+
 const FIFTEEN_MINUTES = 15 * 60 * 1000;
 
 const types = flow(
   flatMap((x) => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
-  concat(['RESET_REDEMPTION_DATA_SUBSCRIPTION', 'SET_REDEEM_DIALOG_VISIBILITY']),
+  concat(['RESET_REDEMPTION_DATA_SUBSCRIPTION', 'SET_REDEEM_DIALOG_VISIBILITY', 'SET_AGREEMENT']),
   map((x) => [x, x]),
   fromPairs
 )(['GET_REDEMPTION_DATA']);
@@ -22,6 +24,7 @@ interface NoirState {
   availableForRedemption: number;
   redemptionSubscription: Nullable<NodeJS.Timer>;
   redeemDialogVisibility: boolean;
+  agreementSigned: boolean;
 }
 
 function initialState(): NoirState {
@@ -31,6 +34,7 @@ function initialState(): NoirState {
     availableForRedemption: 0,
     redemptionSubscription: null,
     redeemDialogVisibility: false,
+    agreementSigned: Boolean(noirStorage.get('agreement')) || false,
   };
 }
 
@@ -80,6 +84,11 @@ const mutations = {
   [types.SET_REDEEM_DIALOG_VISIBILITY](state: NoirState, flag: boolean) {
     state.redeemDialogVisibility = flag;
   },
+
+  [types.SET_AGREEMENT](state: NoirState, flag: boolean) {
+    state.agreementSigned = flag;
+    noirStorage.set('agreement', flag);
+  },
 };
 
 const actions = {
@@ -116,6 +125,10 @@ const actions = {
 
   setRedeemDialogVisibility({ commit }, flag: boolean) {
     commit(types.SET_REDEEM_DIALOG_VISIBILITY, flag);
+  },
+
+  setAgreement({ commit }, flag: boolean) {
+    commit(types.SET_AGREEMENT, flag);
   },
 };
 

@@ -365,12 +365,8 @@ a:hover {
 }
 
 .redeem {
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
+  display: flex;
+  align-items: center;
   position: relative;
 }
 
@@ -1094,6 +1090,7 @@ a:hover {
 }
 
 .header__wrap-redeemed {
+  display: flex;
   position: relative;
   text-align: right;
 }

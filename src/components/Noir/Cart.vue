@@ -39,11 +39,7 @@
           <span class="pricing-stats__text">Dynamic Pricing Stats</span>
         </div>
 
-        <div v-else class="count-input">
-          <button class="count-input__btn" @click="decreaseCount">-</button>
-          <span class="count-input__value">{{ toValue }}</span>
-          <button class="count-input__btn" @click="increaseCount">+</button>
-        </div>
+        <count-input v-else v-model="selectedCount" :min="1" :max="total" />
       </div>
 
       <div class="cart__row cart__row-price">
@@ -120,6 +116,7 @@ const namespace = 'swap';
   components: {
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
+    CountInput: lazyComponent(Components.CountInput),
   },
 })
 export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.TransactionMixin, WalletConnectMixin) {
@@ -192,6 +189,15 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
   recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
 
   redeemDialogVisibility = false;
+
+  get selectedCount(): number {
+    return Number(this.toValue);
+  }
+
+  set selectedCount(value: number) {
+    this.setToValue(String(value));
+    this.runRecountSwapValues();
+  }
 
   get areTokensSelected(): boolean {
     return !!(this.tokenFrom && this.tokenTo);
@@ -377,26 +383,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
     await this.setRedeemDialogVisibility(true);
   }
 
-  async decreaseCount(): Promise<void> {
-    const value = Number(this.toValue);
-
-    if (value === 1) return;
-
-    await this.setToValue(String(value - 1));
-
-    this.runRecountSwapValues();
-  }
-
-  async increaseCount(): Promise<void> {
-    const value = Number(this.toValue);
-
-    if (value === this.total) return;
-
-    await this.setToValue(String(value + 1));
-
-    this.runRecountSwapValues();
-  }
-
   destroyed(): void {
     this.reset();
     this.cleanSwapReservesSubscription();
@@ -427,33 +413,5 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
   flex-flow: row nowrap;
   justify-content: space-between;
   width: 100%;
-}
-
-.count-input {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 172px;
-  height: 58px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(25px);
-  border-radius: 15px;
-  color: #ffffff;
-  font-size: 15px;
-  line-height: 18px;
-
-  &__btn {
-    width: 40px;
-    height: 100%;
-    color: #ffffff;
-
-    &:first-child {
-      border-right: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    &:last-child {
-      border-left: 1px solid rgba(255, 255, 255, 0.2);
-    }
-  }
 }
 </style>
