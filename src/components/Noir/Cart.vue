@@ -238,7 +238,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
   }
 
   get redeemDisabled(): boolean {
-    return this.preparedForSwap && hasInsufficientBalance(this.tokenTo, this.toValue, this.transferNetworkFee);
+    return this.preparedForSwap && hasInsufficientBalance(this.tokenTo, '1', this.transferNetworkFee);
   }
 
   get swapNetworkFee(): CodecString {
