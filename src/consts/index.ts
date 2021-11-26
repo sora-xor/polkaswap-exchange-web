@@ -88,6 +88,7 @@ export enum Components {
   ValueStatusWrapper = 'ValueStatusWrapper',
   // NOIR
   Cart = 'Noir/Cart',
+  RedeemDialog = 'Noir/RedeemDialog',
 }
 
 export enum LogoSize {

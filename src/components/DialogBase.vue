@@ -11,16 +11,13 @@
     }"
     class="dialog-wrapper"
   >
-    <div class="cart">
-      <div class="cart__bg-1"></div>
-      <img src="img/stroke-img.png" loading="lazy" alt="" class="cart__stroke" />
-      <button class="btn btn-close el-dialog__close" @click="closeDialog">
-        <s-icon name="x-16" size="16" class="el-dialog__close-icon" />
-        Close
-      </button>
-      <div class="dialog-content">
-        <slot />
-      </div>
+    <img src="img/stroke-img.png" loading="lazy" alt="" class="cart__stroke" />
+    <button class="btn btn-close el-dialog__close" @click="closeDialog">
+      <s-icon name="x-16" size="16" class="el-dialog__close-icon" />
+      Close
+    </button>
+    <div class="dialog-content">
+      <slot />
     </div>
   </s-dialog>
 </template>
@@ -54,8 +51,13 @@ $el-dialog-max-width: 464px;
 
 .dialog-wrapper {
   #{$el-dialog-class} {
+    background: url('../../public/img/noise-07-small.png'),
+      linear-gradient(0deg, rgba(154, 237, 255, 0.1) 0%, rgba(154, 237, 255, 0.1) 100%);
+    box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(100px);
     max-width: $el-dialog-max-width;
     width: 100%;
+    z-index: 3;
 
     & > #{$el-dialog-class} {
       &__header {

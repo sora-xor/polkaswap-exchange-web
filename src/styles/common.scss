@@ -640,7 +640,7 @@ a:hover {
   }
 }
 
-.cart .cart__bg-1 {
+.cart__bg-1 {
   -webkit-backdrop-filter: blur(45px);
           backdrop-filter: blur(45px);
   background-image: inherit;
@@ -660,7 +660,7 @@ a:hover {
 }
 
 @media screen and (max-width: 640px) {
-  .cart .cart__bg-1 {
+  .cart__bg-1 {
     width: calc(100% + 70px);
   }
 }

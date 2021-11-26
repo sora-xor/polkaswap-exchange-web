@@ -118,8 +118,6 @@ const namespace = 'swap';
 
 @Component({
   components: {
-    TokenLogo: lazyComponent(Components.TokenLogo),
-    ConfirmSwap: lazyComponent(Components.ConfirmSwap),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
@@ -161,6 +159,10 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
   @Action('resetSubscriptions', { namespace }) resetSubscriptions!: AsyncVoidFn;
   @Action('updateSubscriptions', { namespace }) updateSubscriptions!: AsyncVoidFn;
 
+  @Action('setRedeemDialogVisibility', { namespace: 'noir' }) setRedeemDialogVisibility!: (
+    flag: boolean
+  ) => Promise<void>;
+
   @Watch('liquiditySource')
   private handleLiquiditySourceChange(): void {
     this.subscribeOnSwapReserves();
@@ -188,6 +190,8 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
   KnownSymbols = KnownSymbols;
   liquidityReservesSubscription: Nullable<Subscription> = null;
   recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
+
+  redeemDialogVisibility = false;
 
   get areTokensSelected(): boolean {
     return !!(this.tokenFrom && this.tokenTo);
@@ -369,7 +373,9 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
     }
   }
 
-  redeem(): void {}
+  async redeem(): Promise<void> {
+    await this.setRedeemDialogVisibility(true);
+  }
 
   async decreaseCount(): Promise<void> {
     const value = Number(this.toValue);

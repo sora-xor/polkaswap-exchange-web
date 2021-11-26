@@ -11,7 +11,7 @@ const FIFTEEN_MINUTES = 15 * 60 * 1000;
 
 const types = flow(
   flatMap((x) => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
-  concat(['RESET_REDEMPTION_DATA_SUBSCRIPTION']),
+  concat(['RESET_REDEMPTION_DATA_SUBSCRIPTION', 'SET_REDEEM_DIALOG_VISIBILITY']),
   map((x) => [x, x]),
   fromPairs
 )(['GET_REDEMPTION_DATA']);
@@ -21,6 +21,7 @@ interface NoirState {
   total: number;
   availableForRedemption: number;
   redemptionSubscription: Nullable<NodeJS.Timer>;
+  redeemDialogVisibility: boolean;
 }
 
 function initialState(): NoirState {
@@ -29,6 +30,7 @@ function initialState(): NoirState {
     total: 0,
     availableForRedemption: 0,
     redemptionSubscription: null,
+    redeemDialogVisibility: false,
   };
 }
 
@@ -74,6 +76,10 @@ const mutations = {
       state.redemptionSubscription = null;
     }
   },
+
+  [types.SET_REDEEM_DIALOG_VISIBILITY](state: NoirState, flag: boolean) {
+    state.redeemDialogVisibility = flag;
+  },
 };
 
 const actions = {
@@ -106,6 +112,10 @@ const actions = {
   },
   resetRedemptionDataSubscription({ commit }) {
     commit(types.RESET_REDEMPTION_DATA_SUBSCRIPTION);
+  },
+
+  setRedeemDialogVisibility({ commit }, flag: boolean) {
+    commit(types.SET_REDEEM_DIALOG_VISIBILITY, flag);
   },
 };
 

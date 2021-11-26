@@ -24,7 +24,8 @@
       <cart />
     </div>
 
-    <wallet-dialog :visible.sync="showWallet" />
+    <wallet-dialog />
+    <redeem-dialog />
     <select-node-dialog />
   </s-design-system-provider>
 </template>
@@ -50,11 +51,10 @@ import type { ConnectToNodeOptions } from '@/types/nodes';
     Cart: lazyComponent(Components.Cart),
     WalletDialog: lazyComponent(Components.WalletDialog),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
+    RedeemDialog: lazyComponent(Components.RedeemDialog),
   },
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
-  showWallet = false;
-
   @Getter isLoggedIn!: boolean;
   @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @Getter libraryDesignSystem!: DesignSystem;
@@ -78,7 +78,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History): void {
-    console.log('handleChangeTransaction', value);
     this.handleChangeTransaction(value);
   }
 

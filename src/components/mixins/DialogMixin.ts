@@ -2,7 +2,7 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 
 @Component
 export default class DialogMixin extends Vue {
-  @Prop({ type: Boolean, default: false, required: true }) readonly visible!: boolean;
+  @Prop({ type: Boolean, default: false }) readonly visible!: boolean;
 
   isVisible = false;
 
