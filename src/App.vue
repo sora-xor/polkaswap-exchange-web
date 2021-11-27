@@ -88,8 +88,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   private updateConnectionSubsriptions(nodeConnected: boolean): void {
     if (nodeConnected) {
       this.updateAccountAssets();
+      this.subscribeOnRedemptionDataUpdates();
     } else {
       this.resetAccountAssetsSubscription();
+      this.resetRedemptionDataSubscription();
     }
   }
 
@@ -121,16 +123,15 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       // connection to node
       await this.runAppConnectionToNode();
     });
+
     this.prepareWalletForNoir();
     this.trackActiveTransactions();
-    this.subscribeOnRedemptionDataUpdates();
   }
 
   async beforeDestroy(): Promise<void> {
     await this.resetFiatPriceAndApySubscription();
     await this.resetActiveTransactions();
     await this.resetAccountAssetsSubscription();
-    await this.resetRedemptionDataSubscription();
     await connection.close();
   }
 
