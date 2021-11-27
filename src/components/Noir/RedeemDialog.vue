@@ -48,10 +48,31 @@
       </template>
 
       <template v-else-if="currentStep === Steps.AddressForm">
-        <s-input placeholder="Name" v-model="form.name" />
-        <s-input placeholder="Address" type="textarea" v-model="form.address" />
-        <s-input placeholder="Email" v-model="form.email" />
-        <s-input placeholder="Phone" v-model="form.phone" />
+        <div class="redeem-dialog-title">DHL Shipping Info</div>
+        <div class="redeem-dialog-text">
+          If you wish to arrange for pickup, storage, or courier service, it is fine to leave just an email.
+        </div>
+
+        <div class="redeem-dialog-form">
+          <s-input placeholder="Name" v-model="form.name" />
+          <s-input placeholder="Address" type="textarea" v-model="form.address" />
+          <s-input placeholder="Email" v-model="form.email" />
+          <s-input placeholder="Phone" v-model="form.phone" />
+        </div>
+
+        <div class="redeem-dialog-table">
+          <div class="redeem-dialog-row">
+            <div class="redeem-dialog-cell">NOIR Redeemed</div>
+            <div class="redeem-dialog-cell redeem-dialog-cell--value">{{ redeemedCount }} NOIR</div>
+          </div>
+          <div class="redeem-dialog-row">
+            <div class="redeem-dialog-cell">XOR Transaction fee</div>
+            <div class="redeem-dialog-cell redeem-dialog-cell--value">
+              {{ formatCodecNumber(transferNetworkFee) }} XOR
+            </div>
+          </div>
+        </div>
+
         <s-button
           type="primary"
           size="big"
@@ -61,6 +82,10 @@
         >
           CONFIRM
         </s-button>
+
+        <div class="redeem-dialog-text">
+          Acknowledge that I am over 21 years of age and am not acting in violation of my country's laws.
+        </div>
       </template>
     </div>
   </dialog-base>
@@ -93,7 +118,7 @@ enum Steps {
     CountInput: lazyComponent(Components.CountInput),
   },
 })
-export default class RedeemDialog extends Mixins(DialogMixin, mixins.TransactionMixin) {
+export default class RedeemDialog extends Mixins(DialogMixin, mixins.TransactionMixin, mixins.NumberFormatterMixin) {
   @State((state) => state.noir.redeemDialogVisibility) redeemDialogVisibility!: boolean;
   @State((state) => state.noir.agreementSigned) agreementSigned!: boolean;
 
@@ -190,6 +215,15 @@ export default class RedeemDialog extends Mixins(DialogMixin, mixins.Transaction
 .redeem-dialog-wrapper.dialog-wrapper .el-dialog > .el-dialog__body .dialog-content {
   padding: 48px 54px;
 }
+
+.redeem-dialog-form {
+  .s-input {
+    border-radius: 0px !important;
+    border-bottom: 1px solid #fff !important;
+    padding: 18px 0px !important;
+    height: 70px !important;
+  }
+}
 </style>
 
 <style lang="scss" scoped>
@@ -222,6 +256,37 @@ $base: '.redeem-dialog';
     }
   }
 
+  &-form {
+    width: 100%;
+  }
+
+  &-table {
+    width: 100%;
+    font-size: 12px;
+    line-height: 14.4px;
+  }
+
+  &-row {
+    display: flex;
+    align-items: center;
+
+    & + & {
+      margin-top: 15px;
+    }
+  }
+
+  &-cell {
+    width: 50%;
+    padding: 0 10px;
+    text-align: right;
+    white-space: nowrap;
+
+    &--value {
+      text-align: left;
+      color: var(--s-color-theme-accent);
+    }
+  }
+
   &.agreement {
     #{$base} {
       &-subtitle {
@@ -242,6 +307,18 @@ $base: '.redeem-dialog';
       &-text {
         margin: 40px 0;
         max-width: 205px;
+        text-align: center;
+      }
+    }
+  }
+
+  &.form {
+    & > *:not(:last-child) {
+      margin-bottom: 20px;
+    }
+
+    #{$base} {
+      &-text {
         text-align: center;
       }
     }
