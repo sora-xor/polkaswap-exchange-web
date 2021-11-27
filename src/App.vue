@@ -253,6 +253,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 }
 
 .el-message-box {
+  background-color: var(--s-color-brand-day) !important;
   border-radius: var(--s-border-radius-small) !important;
 
   &__message {
