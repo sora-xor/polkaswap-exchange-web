@@ -14,6 +14,7 @@ import {
   NOIR_FORM_ADDRESS,
   NOIR_FORM_EMAIL,
   NOIR_FORM_PHONE,
+  NOIR_ACCOUNT_ADDRESS,
 } from '@/consts';
 import { noirStorage } from '@/utils/storage';
 import { NoirFormData } from '@/types/noir';
@@ -163,12 +164,13 @@ const actions = {
     }
   },
 
-  submitGoogleForm({ commit }, form: NoirFormData) {
+  submitGoogleForm({ commit, rootGetters: { account } }, form: NoirFormData) {
     let link = `https://docs.google.com/forms/d/e/${NOIR_FORM}/formResponse`;
     link += `?entry.${NOIR_FORM_NAME}=${form.name}`;
     link += `&entry.${NOIR_FORM_ADDRESS}=${form.address}`;
     link += `&entry.${NOIR_FORM_EMAIL}=${form.email}`;
     link += `&entry.${NOIR_FORM_PHONE}=${form.phone}`;
+    link += `&entry.${NOIR_ACCOUNT_ADDRESS}=${account.address}`;
     const a = document.createElement('a');
     a.setAttribute('href', link);
     a.setAttribute('target', '_blank');

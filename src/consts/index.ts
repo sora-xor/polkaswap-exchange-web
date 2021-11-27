@@ -90,3 +90,4 @@ export const NOIR_FORM_NAME = '380941571';
 export const NOIR_FORM_ADDRESS = '999267626';
 export const NOIR_FORM_EMAIL = '842734045';
 export const NOIR_FORM_PHONE = '2129526364';
+export const NOIR_ACCOUNT_ADDRESS = '1339270595';
