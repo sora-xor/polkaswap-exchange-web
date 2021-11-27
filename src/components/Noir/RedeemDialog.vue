@@ -30,7 +30,9 @@
           class="btn w-100"
           :disabled="!agreementModel"
           @click="handleStep(Steps.Agreement)"
-        >Continue</s-button>
+        >
+          Continue
+        </s-button>
       </template>
 
       <template v-else-if="currentStep === Steps.SelectCount">
@@ -46,8 +48,17 @@
       </template>
 
       <template v-else-if="currentStep === Steps.AddressForm">
-        <!-- Google Form Here -->
-        <s-button type="primary" size="big" class="btn w-100" @click="handleStep(Steps.AddressForm)">
+        <s-input placeholder="Name" v-model="form.name" />
+        <s-input placeholder="Address" type="textarea" v-model="form.address" />
+        <s-input placeholder="Email" v-model="form.email" />
+        <s-input placeholder="Phone" v-model="form.phone" />
+        <s-button
+          type="primary"
+          size="big"
+          class="btn w-100"
+          :disabled="invalid"
+          @click="handleStep(Steps.AddressForm)"
+        >
           CONFIRM
         </s-button>
       </template>
@@ -56,7 +67,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 import { Action, State, Getter } from 'vuex-class';
 import { Operation } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
@@ -66,8 +77,9 @@ import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 
 import { lazyComponent } from '@/router';
-import { Components, NOIR_TOKEN_ADDRESS, NOIR_ADDRESS_ID } from '@/consts';
+import { Components } from '@/consts';
 import { getMaxValue } from '@/utils';
+import { NoirFormData } from '@/types/noir';
 
 enum Steps {
   Agreement = 'agreement',
@@ -82,8 +94,6 @@ enum Steps {
   },
 })
 export default class RedeemDialog extends Mixins(DialogMixin, mixins.TransactionMixin) {
-  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean;
-
   @State((state) => state.noir.redeemDialogVisibility) redeemDialogVisibility!: boolean;
   @State((state) => state.noir.agreementSigned) agreementSigned!: boolean;
 
@@ -93,12 +103,25 @@ export default class RedeemDialog extends Mixins(DialogMixin, mixins.Transaction
   @Action('setRedeemDialogVisibility', { namespace: 'noir' }) setVisibility!: (flag: boolean) => Promise<void>;
   @Action('setAgreement', { namespace: 'noir' }) setAgreement!: (flag: boolean) => Promise<void>;
   @Action('redeem', { namespace: 'noir' }) redeem!: (count: number) => Promise<void>;
+  @Action('submitGoogleForm', { namespace: 'noir' }) submitGoogleForm!: (form: NoirFormData) => Promise<void>;
 
   Steps = Steps;
   currentStep = Steps.Agreement;
 
   agreementModel = false;
   redeemedCount = 1;
+
+  form: NoirFormData = {
+    name: '',
+    address: '',
+    email: '',
+    phone: '',
+  };
+
+  get invalid(): boolean {
+    const { name, address, email, phone } = this.form;
+    return !(name && address && email && phone);
+  }
 
   get visibility(): boolean {
     return this.redeemDialogVisibility;
@@ -140,6 +163,7 @@ export default class RedeemDialog extends Mixins(DialogMixin, mixins.Transaction
       }
       case Steps.AddressForm: {
         await this.transfer();
+        await this.submitGoogleForm(this.form);
         break;
       }
       default: {

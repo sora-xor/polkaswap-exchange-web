@@ -83,7 +83,9 @@
           <s-button type="secondary" size="big" class="btn" :disabled="sellDisabled" @click="sell">Sell</s-button>
           <s-button type="secondary" size="big" class="btn" :disabled="redeemDisabled" @click="redeem">Redeem</s-button>
         </template>
-        <s-button v-else type="primary" size="big" class="btn w-100" @click="connectInternalWallet">Connect Wallet</s-button>
+        <s-button v-else type="primary" size="big" class="btn w-100" @click="connectInternalWallet">
+          Connect Wallet
+        </s-button>
       </div>
     </div>
   </div>
@@ -236,7 +238,10 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
   }
 
   get buyDisabled(): boolean {
-    return this.preparedForSwap && hasInsufficientBalance(this.tokenFrom, this.fromValue, this.swapNetworkFee);
+    return (
+      (this.preparedForSwap && hasInsufficientBalance(this.tokenFrom, this.fromValue, this.swapNetworkFee)) ||
+      this.selectedCount > this.availableForRedemption
+    );
   }
 
   get sellDisabled(): boolean {

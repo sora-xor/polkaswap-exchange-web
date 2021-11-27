@@ -5,9 +5,18 @@ import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import { SubqueryExplorerService, api } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, FPNumber, XOR } from '@sora-substrate/util';
-import { NOIR_TOKEN_ADDRESS, NOIR_ADDRESS_ID } from '@/consts';
 
+import {
+  NOIR_TOKEN_ADDRESS,
+  NOIR_ADDRESS_ID,
+  NOIR_FORM,
+  NOIR_FORM_NAME,
+  NOIR_FORM_ADDRESS,
+  NOIR_FORM_EMAIL,
+  NOIR_FORM_PHONE,
+} from '@/consts';
 import { noirStorage } from '@/utils/storage';
+import { NoirFormData } from '@/types/noir';
 
 const FIFTEEN_MINUTES = 15 * 60 * 1000;
 
@@ -144,6 +153,27 @@ const actions = {
 
   setAgreement({ commit }, flag: boolean) {
     commit(types.SET_AGREEMENT, flag);
+  },
+
+  prepareWalletForNoir({ commit }) {
+    const usedAssetIds = [XOR.address, NOIR_TOKEN_ADDRESS];
+    const unusedAssets = api.accountAssets.filter(({ address }) => !usedAssetIds.includes(address));
+    for (const asset of unusedAssets) {
+      api.removeAsset(asset.address);
+    }
+  },
+
+  submitGoogleForm({ commit }, form: NoirFormData) {
+    let link = `https://docs.google.com/forms/d/e/${NOIR_FORM}/formResponse`;
+    link += `?entry.${NOIR_FORM_NAME}=${form.name}`;
+    link += `&entry.${NOIR_FORM_ADDRESS}=${form.address}`;
+    link += `&entry.${NOIR_FORM_EMAIL}=${form.email}`;
+    link += `&entry.${NOIR_FORM_PHONE}=${form.phone}`;
+    const a = document.createElement('a');
+    a.setAttribute('href', link);
+    a.setAttribute('target', '_blank');
+    a.click();
+    a.remove();
   },
 
   async redeem({ dispatch }, count: number) {

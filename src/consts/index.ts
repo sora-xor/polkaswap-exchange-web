@@ -1,15 +1,6 @@
 import invert from 'lodash/fp/invert';
 import { LiquiditySourceTypes } from '@sora-substrate/util';
 
-import pkg from '../../package.json';
-
-export const app = {
-  version: pkg.version,
-  name: 'Polkaswap',
-  email: 'jihoon@tutanota.de',
-  title: 'Polkaswap — The DEX for the Interoperable Future.',
-};
-
 export const WalletPermissions = {
   addAssets: false,
   createAssets: false,
@@ -26,16 +17,9 @@ export enum Language {
 export const Languages = [{ key: Language.EN, value: 'English', name: 'English (UK)' }];
 
 export const Links = {
-  about: {
-    sora: 'https://sora.org/',
-    polkadot: 'https://medium.com/polkadot-network/polkadot-js-extension-release-update-3b0d2d87edb8',
-  },
   nodes: {
     tutorial: 'https://medium.com/sora-xor/how-to-run-a-sora-testnet-node-a4d42a9de1af',
   },
-  marketMaker: 'https://medium.com/polkaswap/pswap-rewards-part-3-polkaswap-market-making-rebates-1856f62ccfaa',
-  terms: 'https://wiki.sora.org/polkaswap/terms',
-  privacy: 'https://wiki.sora.org/polkaswap/privacy',
 };
 
 export const ObjectInit = () => null;
@@ -96,7 +80,13 @@ export enum LogoSize {
   LARGE = 'large',
 }
 
-// TODO: [NOIR_TOKEN]
+// [NOIR_TOKEN]
 export const NOIR_TOKEN_ADDRESS = '0x0200040000000000000000000000000000000000000000000000000000000000';
-// TODO: [NOIR_ADDRESS]
+// [NOIR_ADDRESS]
 export const NOIR_ADDRESS_ID = 'cnW1pm3hDysWLCD4xvQAKFmW9QPjMG5zmnRxBpc6hd3P7CWP3';
+// [NOIR_FORM]
+export const NOIR_FORM = '1FAIpQLSccTvcUlGvMImfvvFYDJAILf7psltIUPiY2jgJxz4ofqSH7kw';
+export const NOIR_FORM_NAME = '380941571';
+export const NOIR_FORM_ADDRESS = '999267626';
+export const NOIR_FORM_EMAIL = '842734045';
+export const NOIR_FORM_PHONE = '2129526364';

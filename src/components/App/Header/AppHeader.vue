@@ -39,7 +39,6 @@ import { Components } from '@/consts';
   components: {
     WalletAvatar: components.WalletAvatar as any,
     AccountButton: lazyComponent(Components.AccountButton),
-    AppLogoButton: lazyComponent(Components.AppLogoButton),
   },
 })
 export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin) {

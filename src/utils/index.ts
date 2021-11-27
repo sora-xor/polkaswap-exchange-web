@@ -11,9 +11,7 @@ import {
 } from '@sora-substrate/util';
 import { api } from '@soramitsu/soraneo-wallet-web';
 
-import router from '@/router';
-import i18n from '@/lang';
-import { app, ZeroStringValue } from '@/consts';
+import { ZeroStringValue } from '@/consts';
 
 import storage from './storage';
 
