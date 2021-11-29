@@ -24,13 +24,7 @@
         <div class="redeem-dialog-check">
           <s-checkbox v-model="agreementModel" size="big">I Agree</s-checkbox>
         </div>
-        <s-button
-          type="primary"
-          size="big"
-          class="btn w-100"
-          :disabled="!agreementModel"
-          @click="handleStep(Steps.Agreement)"
-        >
+        <s-button type="primary" size="big" class="btn w-100" :disabled="!agreementModel" @click="handleAgreement">
           Continue
         </s-button>
       </template>
@@ -42,50 +36,50 @@
 
         <div class="redeem-dialog-text">How many Noir would you like to redeem at this time?</div>
 
-        <s-button type="secondary" size="big" class="btn w-100" @click="handleStep(Steps.SelectCount)">
-          Redeem
-        </s-button>
+        <s-button type="secondary" size="big" class="btn w-100" @click="handleCount"> Redeem </s-button>
       </template>
 
       <template v-else-if="currentStep === Steps.AddressForm">
-        <div class="redeem-dialog-title">DHL Shipping Info</div>
-        <div class="redeem-dialog-text">
-          If you wish to arrange for pickup, storage, or courier service, it is fine to leave just an email.
-        </div>
-
-        <div class="redeem-dialog-form">
-          <s-input placeholder="Name" v-model="form.name" />
-          <s-input placeholder="Address" type="textarea" v-model="form.address" />
-          <s-input placeholder="Email" v-model="form.email" />
-          <s-input placeholder="Phone" v-model="form.phone" />
-        </div>
-
-        <div class="redeem-dialog-table">
-          <div class="redeem-dialog-row">
-            <div class="redeem-dialog-cell">NOIR Redeemed</div>
-            <div class="redeem-dialog-cell redeem-dialog-cell--value">{{ redeemedCount }} NOIR</div>
+        <s-form :model="form" :rules="validationRules" ref="form" @submit.native.prevent="submitForm">
+          <div class="redeem-dialog-title">DHL Shipping Info</div>
+          <div class="redeem-dialog-text">
+            If you wish to arrange for pickup, storage, or courier service, it is fine to leave just an email.
           </div>
-          <div class="redeem-dialog-row">
-            <div class="redeem-dialog-cell">XOR Transaction fee</div>
-            <div class="redeem-dialog-cell redeem-dialog-cell--value">
-              {{ formatCodecNumber(transferNetworkFee) }} XOR
+
+          <div class="redeem-dialog-form">
+            <s-form-item prop="name">
+              <s-input placeholder="Name" v-model="form.name" />
+            </s-form-item>
+            <s-form-item prop="address">
+              <s-input placeholder="Address" type="textarea" v-model="form.address" />
+            </s-form-item>
+            <s-form-item prop="email">
+              <s-input placeholder="Email" v-model="form.email" />
+            </s-form-item>
+            <s-form-item prop="phone">
+              <s-input placeholder="Phone" v-model="form.phone" />
+            </s-form-item>
+          </div>
+
+          <div class="redeem-dialog-table">
+            <div class="redeem-dialog-row">
+              <div class="redeem-dialog-cell">NOIR Redeemed</div>
+              <div class="redeem-dialog-cell redeem-dialog-cell--value">{{ redeemedCount }} NOIR</div>
+            </div>
+            <div class="redeem-dialog-row">
+              <div class="redeem-dialog-cell">XOR Transaction fee</div>
+              <div class="redeem-dialog-cell redeem-dialog-cell--value">
+                {{ formatCodecNumber(transferNetworkFee) }} XOR
+              </div>
             </div>
           </div>
-        </div>
 
-        <s-button
-          type="primary"
-          size="big"
-          class="btn w-100"
-          :disabled="invalid"
-          @click="handleStep(Steps.AddressForm)"
-        >
-          CONFIRM
-        </s-button>
+          <s-button native-type="submit" type="primary" size="big" class="btn w-100"> CONFIRM </s-button>
 
-        <div class="redeem-dialog-text">
-          Acknowledge that I am over 21 years of age and am not acting in violation of my country's laws.
-        </div>
+          <div class="redeem-dialog-text">
+            Acknowledge that I am over 21 years of age and am not acting in violation of my country's laws.
+          </div>
+        </s-form>
       </template>
     </div>
   </dialog-base>
@@ -129,6 +123,35 @@ export default class RedeemDialog extends Mixins(DialogMixin, mixins.Transaction
   @Action('setAgreement', { namespace: 'noir' }) setAgreement!: (flag: boolean) => Promise<void>;
   @Action('redeem', { namespace: 'noir' }) redeem!: (count: number) => Promise<void>;
   @Action('submitGoogleForm', { namespace: 'noir' }) submitGoogleForm!: (form: NoirFormData) => Promise<void>;
+
+  readonly validationRules = {
+    name: [{ required: true, message: 'Name is required', trigger: 'blur' }],
+    address: [{ required: true, message: 'Address is required', trigger: 'blur' }],
+    email: [
+      {
+        required: true,
+        trigger: 'blur',
+        validator: (rule, value, callback) => {
+          if (!/^\S+@\S+\.\S+$/.test(value)) {
+            return callback(new Error('Email address is invalid'));
+          }
+          callback();
+        },
+      },
+    ],
+    phone: [
+      {
+        required: true,
+        trigger: 'blur',
+        validator: (rule, value, callback) => {
+          if (!/^\+?[0-9]+$/.test(value)) {
+            return callback(new Error('Phone number is invalid'));
+          }
+          callback();
+        },
+      },
+    ],
+  };
 
   Steps = Steps;
   currentStep = Steps.Agreement;
@@ -175,27 +198,22 @@ export default class RedeemDialog extends Mixins(DialogMixin, mixins.Transaction
     }
   }
 
-  async handleStep(step: Steps): Promise<void> {
-    switch (step) {
-      case Steps.Agreement: {
-        this.setAgreement(true);
-        this.currentStep = Steps.SelectCount;
-        break;
-      }
-      case Steps.SelectCount: {
-        this.currentStep = Steps.AddressForm;
-        break;
-      }
-      case Steps.AddressForm: {
-        await this.transfer();
-        await this.submitGoogleForm(this.form);
-        break;
-      }
-      default: {
-        // close dialog
-        this.visibility = false;
-        break;
-      }
+  handleAgreement(): void {
+    this.setAgreement(true);
+    this.currentStep = Steps.SelectCount;
+  }
+
+  handleCount(): void {
+    this.currentStep = Steps.AddressForm;
+  }
+
+  async submitForm(): Promise<void> {
+    try {
+      await (this.$refs.form as any).validate();
+      await this.transfer();
+      await this.submitGoogleForm(this.form);
+    } catch (error) {
+      console.warn(error);
     }
   }
 
@@ -313,7 +331,7 @@ $base: '.redeem-dialog';
   }
 
   &.form {
-    & > *:not(:last-child) {
+    .el-form > *:not(:last-child) {
       margin-bottom: 20px;
     }
 

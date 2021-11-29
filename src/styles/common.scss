@@ -43,6 +43,23 @@ button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-m
   // transition: color 0.3s, background-color 0.3s, transform 0.3s !important;
 }
 
+// FORM
+.el-form-item.is-error {
+  .s-icon-status-error {
+    display: none !important;
+  }
+
+  & > .el-form-item__content {
+    & > [class^="s-input"]:not(.s-disabled) {
+      background-color: inherit !important;
+    }
+
+    & > .el-form-item__error {
+      padding-left: 0px !important;
+    }
+  }
+}
+
 // WALLET OVERRIDES
 .account-avatar {
   border: none !important;
