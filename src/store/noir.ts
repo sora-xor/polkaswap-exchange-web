@@ -67,6 +67,14 @@ const getters = {
   availableForRedemption(state: NoirState) {
     return state.availableForRedemption;
   },
+  xorBalance(state: NoirState, getters, rootState, rootGetters) {
+    const token = rootGetters['assets/getAssetDataByAddress'](XOR.address);
+    return token.balance.transferable;
+  },
+  noirBalance(state: NoirState, getters, rootState, rootGetters) {
+    const token = rootGetters['assets/getAssetDataByAddress'](NOIR_TOKEN_ADDRESS);
+    return token.balance.transferable;
+  },
 };
 
 interface RedemptionData {

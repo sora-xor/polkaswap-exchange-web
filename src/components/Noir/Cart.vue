@@ -55,18 +55,38 @@
         </div>
       </div>
 
-      <div v-if="tokenFrom" class="cart__row cart__row--swap-prices">
-        <div class="swap-price">
+      <div v-if="isLoggedIn" class="cart__row cart__row--info">
+        <div class="swap-info-line">
+          <span>XOR balance:</span>
+          <formatted-amount :value="formattedXorBalance" :asset-symbol="tokenFrom.symbol" />
+        </div>
+        <div class="swap-info-line">
+          <span>NOIR balance:</span>
+          <formatted-amount :value="formattedNoirBalance" :asset-symbol="tokenTo.symbol" />
+        </div>
+      </div>
+
+      <div class="cart__line"></div>
+
+      <div v-if="tokenFrom" class="cart__row cart__row--info">
+        <div class="swap-info-line">
           <span>Buy for:</span>
           <formatted-amount :value="formatStringValue(fromValue)" :asset-symbol="tokenFrom.symbol" />
         </div>
-        <div class="swap-price">
+        <div class="swap-info-line">
           <span>Sell for:</span>
           <formatted-amount :value="formatStringValue(fromValueReversed)" :asset-symbol="tokenFrom.symbol" />
         </div>
       </div>
 
       <div class="cart__line"></div>
+
+      <div v-if="tokenFrom" class="cart__row cart__row--info">
+        <div class="swap-info-line">
+          <span>Network fee:</span>
+          <formatted-amount :value="formattedSwapNetworkFee" :asset-symbol="tokenFrom.symbol" />
+        </div>
+      </div>
 
       <div class="cart__row">
         <div v-if="!isLoggedIn" class="cart__description">
@@ -134,7 +154,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
   @Getter nodeIsConnected!: boolean;
   @Getter isLoggedIn!: boolean;
   @Getter slippageTolerance!: string;
-  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
   @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset;
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset;
   @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes;
@@ -142,6 +161,8 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
 
   @Getter('noir/total') total!: number;
   @Getter('noir/availableForRedemption') availableForRedemption!: number;
+  @Getter('noir/xorBalance') xorBalance!: CodecString;
+  @Getter('noir/noirBalance') noirBalance!: CodecString;
 
   @Action('setTokenFromAddress', { namespace }) setTokenFromAddress!: (address?: string) => Promise<void>;
   @Action('setTokenToAddress', { namespace }) setTokenToAddress!: (address?: string) => Promise<void>;
@@ -191,6 +212,14 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
   recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
 
   redeemDialogVisibility = false;
+
+  get formattedXorBalance(): string {
+    return this.formatCodecNumber(this.xorBalance);
+  }
+
+  get formattedNoirBalance(): string {
+    return this.formatCodecNumber(this.noirBalance);
+  }
 
   get selectedCount(): number {
     return Number(this.toValue);
@@ -254,6 +283,10 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
 
   get swapNetworkFee(): CodecString {
     return this.networkFees[Operation.Swap];
+  }
+
+  get formattedSwapNetworkFee(): string {
+    return this.formatCodecNumber(this.swapNetworkFee);
   }
 
   get transferNetworkFee(): CodecString {
@@ -413,7 +446,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
   }
 }
 
-.swap-price {
+.swap-info-line {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;

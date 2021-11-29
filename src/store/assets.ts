@@ -37,11 +37,6 @@ const getters = {
   nonWhitelistAccountAssets(state, getters, rootState, rootGetters) {
     return rootGetters.accountAssets.filter((asset) => !isWhitelistAsset(asset, rootGetters.whitelist));
   },
-  tokenXOR(state, getters, rootState, rootGetters) {
-    const token = KnownAssets.get(KnownSymbols.XOR);
-
-    return rootGetters['assets/getAssetDataByAddress'](token?.address);
-  },
   registeredAssets(state) {
     return state.registeredAssets;
   },
