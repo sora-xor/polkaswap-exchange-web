@@ -77,7 +77,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action setLanguage!: (lang: Language) => Promise<void>;
   @Action('noir/subscribeOnRedemptionDataUpdates') subscribeOnRedemptionDataUpdates!: AsyncVoidFn;
   @Action('noir/resetRedemptionDataSubscription') resetRedemptionDataSubscription!: AsyncVoidFn;
-  @Action('noir/prepareWalletForNoir') prepareWalletForNoir!: AsyncVoidFn;
 
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History): void {
@@ -124,7 +123,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       await this.runAppConnectionToNode();
     });
 
-    this.prepareWalletForNoir();
     this.trackActiveTransactions();
   }
 

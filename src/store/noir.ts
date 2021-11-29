@@ -156,14 +156,6 @@ const actions = {
     commit(types.SET_AGREEMENT, flag);
   },
 
-  prepareWalletForNoir({ commit }) {
-    const usedAssetIds = [XOR.address, NOIR_TOKEN_ADDRESS];
-    const unusedAssets = api.accountAssets.filter(({ address }) => !usedAssetIds.includes(address));
-    for (const asset of unusedAssets) {
-      api.removeAsset(asset.address);
-    }
-  },
-
   submitGoogleForm({ commit, rootGetters: { account } }, form: NoirFormData) {
     let link = `https://docs.google.com/forms/d/e/${NOIR_FORM}/formResponse`;
     link += `?entry.${NOIR_FORM_NAME}=${encodeURIComponent(form.name)}`;

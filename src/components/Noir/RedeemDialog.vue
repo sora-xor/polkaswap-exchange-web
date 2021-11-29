@@ -166,11 +166,6 @@ export default class RedeemDialog extends Mixins(DialogMixin, mixins.Transaction
     phone: '',
   };
 
-  get invalid(): boolean {
-    const { name, address, email, phone } = this.form;
-    return !(name && address && email && phone);
-  }
-
   get visibility(): boolean {
     return this.redeemDialogVisibility;
   }
