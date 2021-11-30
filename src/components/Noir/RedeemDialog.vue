@@ -122,7 +122,16 @@
           </div>
 
           <div class="cart__row m-b-12">
-            <s-button native-type="submit" type="primary" size="big" class="btn w-100">CONFIRM</s-button>
+            <s-button
+              native-type="submit"
+              type="primary"
+              size="big"
+              class="btn w-100"
+              :disabled="isInsufficientXorForFee"
+            >
+              <template v-if="isInsufficientXorForFee"> INSUFFICIENT XOR BALANCE </template>
+              <template v-else> CONFIRM </template>
+            </s-button>
           </div>
 
           <div class="cart-row t-a-c text-1">
@@ -148,7 +157,7 @@ import DialogBase from '@/components/DialogBase.vue';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-import { getMaxValue } from '@/utils';
+import { getMaxValue, hasInsufficientXorForFee } from '@/utils';
 import { NoirFormData } from '@/types/noir';
 
 enum Steps {
@@ -169,6 +178,7 @@ export default class RedeemDialog extends Mixins(DialogMixin, mixins.Transaction
 
   @Getter networkFees!: NetworkFeesObject;
   @Getter('tokenTo', { namespace: 'swap' }) token!: AccountAsset;
+  @Getter('tokenFrom', { namespace: 'swap' }) tokenFrom!: AccountAsset;
 
   @Action('setRedeemDialogVisibility', { namespace: 'noir' }) setVisibility!: (flag: boolean) => Promise<void>;
   @Action('setAgreement', { namespace: 'noir' }) setAgreement!: (flag: boolean) => Promise<void>;
@@ -234,6 +244,10 @@ export default class RedeemDialog extends Mixins(DialogMixin, mixins.Transaction
 
   get transferNetworkFee(): CodecString {
     return this.networkFees[Operation.Transfer];
+  }
+
+  get isInsufficientXorForFee(): boolean {
+    return hasInsufficientXorForFee(this.tokenFrom, this.transferNetworkFee);
   }
 
   reset(): void {
