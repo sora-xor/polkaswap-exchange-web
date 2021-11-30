@@ -1,4 +1,6 @@
 import { Vue, Component } from 'vue-property-decorator';
+import { State } from 'vuex-class';
+import dayjs from 'dayjs';
 
 const OrdinalRules = {
   en: (v) => {
@@ -18,6 +20,8 @@ const OrdinalRules = {
 
 @Component
 export default class TranslationMixin extends Vue {
+  @State((state) => state.settings.language) language!: string;
+
   t(key: string, values?: any): string {
     return this.$root.$t(key, values) as string;
   }
@@ -32,5 +36,9 @@ export default class TranslationMixin extends Vue {
 
   tOrdinal(n) {
     return OrdinalRules[this.$i18n.locale]?.(n) ?? n;
+  }
+
+  getDate(date) {
+    return dayjs(date).locale(this.language);
   }
 }

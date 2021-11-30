@@ -112,7 +112,6 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
   @State((state) => state[namespace].transactions) transactions!: Array<MoonpayTransaction>;
-  @State((state) => state.settings.language) language!: string;
   @Getter libraryTheme!: Theme;
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean;
   @Getter('currenciesById', { namespace }) currenciesById!: MoonpayCurrenciesById;
@@ -164,7 +163,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
   }
 
   get formattedItems(): Array<any> {
-    const { currenciesById, historyItems } = this;
+    const { currenciesById, historyItems, getDate } = this;
     const formatCurrencyName = (id: string) => (currenciesById[id]?.code ?? '').toUpperCase();
     const formatCurrencyAmount = (amount: number) => (Number.isFinite(amount) ? String(amount) : amount);
     const iconStatus = (status) => {
@@ -182,7 +181,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
           fiatAmount: formatCurrencyAmount(item.baseCurrencyAmount),
           crypto: formatCurrencyName(item.currencyId),
           cryptoAmount: formatCurrencyAmount(item.quoteCurrencyAmount),
-          date: dayjs(item.updatedAt).format('DD.MM.YYYY,HH:mm:ss'),
+          date: getDate(item.updatedAt).format('ll LTS'),
           icon: iconStatus(item.status),
         },
       };
