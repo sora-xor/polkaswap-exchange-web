@@ -1,25 +1,21 @@
 <template>
   <header class="header" id="header">
     <div class="container">
-      <div class="header__wrap-logo">
-        <router-link to="/" class="logo">
-          <img src="img/logo.png" loading="lazy" alt="" class="logo__img" />
-          <span class="logo__text">NOIR</span>
-        </router-link>
-      </div>
+      <div class="circle-blured-1"></div>
 
-      <div class="header__wrap-redeemed">
-        <div class="circle-blured-1"></div>
+      <router-link to="/" class="logo">
+        <img src="img/logo.png" loading="lazy" alt="" class="logo__img" />
+        <span class="logo__text">NOIR</span>
+      </router-link>
 
-        <div class="redeem">
-          <img src="img/fire.png" loading="lazy" alt="" class="redeem__img" />
-          <div class="redeem__text">
-            <span class="color-pink">{{ totalRedeemed }}</span> <span>Redeemed</span>
-          </div>
+      <div class="redeem">
+        <img src="img/fire.png" loading="lazy" alt="" class="redeem__img" />
+        <div class="redeem__text">
+          <span class="color-pink">{{ totalRedeemed }}</span> <span>Redeemed</span>
         </div>
-
-        <account-button class="account-btn" :disabled="loading" @click="connectInternalWallet" />
       </div>
+
+      <account-button class="account-btn" :disabled="loading" @click="connectInternalWallet" />
     </div>
   </header>
 </template>

@@ -69,11 +69,11 @@ const getters = {
   },
   xorBalance(state: NoirState, getters, rootState, rootGetters) {
     const token = rootGetters['assets/getAssetDataByAddress'](XOR.address);
-    return token.balance.transferable;
+    return token?.balance?.transferable || '0';
   },
   noirBalance(state: NoirState, getters, rootState, rootGetters) {
     const token = rootGetters['assets/getAssetDataByAddress'](NOIR_TOKEN_ADDRESS);
-    return token.balance.transferable;
+    return token?.balance?.transferable || '0';
   },
 };
 

@@ -9,20 +9,18 @@
 
     <img src="img/cart-float-img.png" loading="lazy" alt="" class="cart__float-img" />
 
-    <img src="img/stroke-img.png" loading="lazy" alt="" class="cart__stroke" />
-
-    <div class="cart__corner corner">
-      <div class="corner__inner">
-        <div class="corner__circle">
-          <img src="img/corner-circle-stroke.png" loading="lazy" alt="" class="corner__circle-stroke first" />
-          <img src="img/corner-circle-stroke.png" loading="lazy" alt="" class="corner__circle-stroke second" />
+    <div class="cart__content">
+      <div class="cart__corner corner">
+        <div class="corner__inner">
+          <div class="corner__circle">
+            <img src="img/corner-circle-stroke.png" loading="lazy" alt="" class="corner__circle-stroke first" />
+            <img src="img/corner-circle-stroke.png" loading="lazy" alt="" class="corner__circle-stroke second" />
+          </div>
         </div>
+
+        <img src="img/bottle.png" loading="lazy" alt="" class="corner__bottle-img" />
       </div>
 
-      <img src="img/bottle.png" loading="lazy" alt="" class="corner__bottle-img" />
-    </div>
-
-    <div class="cart__content">
       <div class="cart__row">
         <div class="cart__currency">$NOIR</div>
       </div>
@@ -31,15 +29,22 @@
         <div class="cart__title">New Moon Edition <span class="color-pink">1</span></div>
       </div>
 
-      <div class="cart__spacer"></div>
+      <div :class="[isLoggedIn ? 'cart__spacer-2' : 'cart__spacer']"></div>
 
-      <div class="cart__row cart__row--input-field">
-        <div v-if="!isLoggedIn" class="pricing-stats">
-          <div class="qwest pricing-stats__qwest">?</div>
+      <div v-if="!isLoggedIn" class="cart__row">
+        <div class="pricing-stats">
+          <div
+            class="qwest pricing-stats__qwest"
+            data-text="Dynamic Pricing Stats Dynamic Pricing Stats Dynamic Pricing Stats"
+          >
+            ?
+          </div>
           <span class="pricing-stats__text">Dynamic Pricing Stats</span>
         </div>
+      </div>
 
-        <count-input v-else v-model="selectedCount" :min="1" :max="total" />
+      <div v-else class="cart__row m-b-36">
+        <count-input v-model="selectedCount" :min="1" :max="total" />
       </div>
 
       <div class="cart__row cart__row-price">
@@ -55,47 +60,54 @@
         </div>
       </div>
 
-      <div v-if="isLoggedIn" class="cart__row cart__row--info">
-        <div class="swap-info-line">
-          <span>XOR balance:</span>
-          <formatted-amount :value="formattedXorBalance" :asset-symbol="tokenFrom.symbol" />
-        </div>
-        <div class="swap-info-line">
-          <span>NOIR balance:</span>
-          <formatted-amount :value="formattedNoirBalance" :asset-symbol="tokenTo.symbol" />
-        </div>
-      </div>
+      <template v-if="isLoggedIn && tokenFrom && tokenTo">
+        <table class="text-title-1 w-100 m-b-20">
+          <tr>
+            <td class="opacity-03">XOR Balance</td>
+            <td class="t-a-r">{{ formattedXorBalance }} XOR</td>
+          </tr>
 
-      <div class="cart__line"></div>
+          <tr>
+            <td class="opacity-03">NOIR Balance</td>
+            <td class="t-a-r">{{ formattedNoirBalance }} NOIR</td>
+          </tr>
+        </table>
 
-      <div v-if="tokenFrom" class="cart__row cart__row--info">
-        <div class="swap-info-line">
-          <span>Buy for:</span>
-          <formatted-amount :value="formatStringValue(fromValue)" :asset-symbol="tokenFrom.symbol" />
-        </div>
-        <div class="swap-info-line">
-          <span>Sell for:</span>
-          <formatted-amount :value="formatStringValue(fromValueReversed)" :asset-symbol="tokenFrom.symbol" />
-        </div>
-      </div>
+        <div class="cart__line m-b-20"></div>
 
-      <div class="cart__line"></div>
+        <table v-if="tokenFrom" class="text-title-1 w-100 m-b-20">
+          <tr>
+            <td class="opacity-03">Buy For:</td>
+            <td class="t-a-r">{{ formatStringValue(fromValue) }} XOR</td>
+          </tr>
+          <tr>
+            <td class="opacity-03">Sell For:</td>
+            <td class="t-a-r">{{ formatStringValue(fromValueReversed) }} XOR</td>
+          </tr>
+        </table>
 
-      <div v-if="tokenFrom" class="cart__row cart__row--info">
-        <div class="swap-info-line">
-          <span>Network fee:</span>
-          <formatted-amount :value="formattedSwapNetworkFee" :asset-symbol="tokenFrom.symbol" />
-        </div>
-      </div>
+        <div class="cart__line m-b-20"></div>
 
-      <div class="cart__row">
-        <div v-if="!isLoggedIn" class="cart__description">
-          Buy and sell the first phygital wine with digital currency.
-          <br />
-          Delivered on demand worldwide.
-          <a href="#"> Learn more</a>
+        <table v-if="tokenFrom" class="text-title-1 w-100 m-b-20">
+          <tr>
+            <td class="opacity-03">Network fee:</td>
+            <td class="t-a-r">{{ formattedSwapNetworkFee }} XOR</td>
+          </tr>
+        </table>
+      </template>
+
+      <template v-else>
+        <div class="cart__line m-b-26"></div>
+
+        <div class="cart__row">
+          <div class="cart__description">
+            Buy and sell the first phygital wine with digital currency.
+            <br />
+            Delivered on demand worldwide.
+            <a href="#"> Learn more</a>
+          </div>
         </div>
-      </div>
+      </template>
 
       <div class="cart__row-btns">
         <template v-if="isLoggedIn">
@@ -446,10 +458,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
   }
 }
 
-.swap-info-line {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  width: 100%;
+.cart .available {
+  text-align: right;
 }
 </style>

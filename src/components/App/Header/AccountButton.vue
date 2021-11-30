@@ -27,7 +27,7 @@ export default class AccountButton extends Mixins(TranslationMixin) {
 
   get accountInfo(): string {
     if (!this.isLoggedIn) {
-      return this.t('connectWalletText');
+      return 'CONNECT WALLET';
     }
     return this.account.name || formatAddress(this.account.address, 8);
   }

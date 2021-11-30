@@ -1,23 +1,12 @@
 <template>
   <s-design-system-provider :value="libraryDesignSystem" id="app" class="page">
-    <img src="/img/greed.png" loading="lazy" alt="" class="greed-img" />
+    <img src="/img/greed.png" alt="" class="greed-img" />
 
     <app-header :loading="loading" />
 
     <div class="wrap-floats">
-      <img src="img/float-img-left.png" loading="lazy" alt="" class="float-img-left" />
-
-      <img src="img/float-img-right.png" loading="lazy" alt="" class="float-img-right" />
-
-      <div class="footer-circles">
-        <div class="circle-1">
-          <div class="circle-2">
-            <div class="circle-3"></div>
-          </div>
-        </div>
-      </div>
-
       <div class="blur-circle-3"></div>
+      <div class="new-circle"></div>
     </div>
 
     <div class="wrap-cart app-main">
