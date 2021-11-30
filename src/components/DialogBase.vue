@@ -6,18 +6,23 @@
     :show-close="false"
     v-bind="{
       width,
-      borderRadius: 'medium',
       ...$attrs,
     }"
     class="dialog-wrapper"
   >
-    <img src="img/stroke-img.png" loading="lazy" alt="" class="cart__stroke" />
-    <button class="btn btn-close el-dialog__close" @click="closeDialog">
-      <s-icon name="x-16" size="16" class="el-dialog__close-icon" />
-      Close
-    </button>
-    <div class="dialog-content">
-      <slot />
+    <div class="cart">
+      <div class="cart__bg-1"></div>
+      <img src="img/cloud-pink.png" loading="lazy" alt="" class="cloud-pink" />
+      <img src="img/cloud-perple.png" loading="lazy" alt="" class="cloud-perple" />
+      <div class="blur-circle-1"></div>
+      <div class="blur-circle-2"></div>
+      <div class="cart__content">
+        <button class="popup__close" @click="closeDialog">
+          <img src="img/close.png" loading="lazy" alt="" class="popup__close-img" />
+          <span class="popup__close-text">Close</span>
+        </button>
+        <slot />
+      </div>
     </div>
   </s-dialog>
 </template>
@@ -47,16 +52,14 @@ export default class DialogBase extends Mixins(DialogMixin) {
 <style lang="scss">
 $el-dialog-class: '.el-dialog';
 $el-dialog-button-size: var(--s-size-medium);
-$el-dialog-max-width: 464px;
+$el-dialog-max-width: 504px;
 
 .dialog-wrapper {
   #{$el-dialog-class} {
-    background: url('../../public/img/noise-07-small.png'),
-      linear-gradient(0deg, rgba(154, 237, 255, 0.1) 0%, rgba(154, 237, 255, 0.1) 100%);
-    box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.05);
-    backdrop-filter: blur(100px);
     max-width: $el-dialog-max-width;
     width: 100%;
+    border-radius: none !important;
+    background: transparent !important;
     z-index: 3;
 
     & > #{$el-dialog-class} {
@@ -78,10 +81,6 @@ $el-dialog-max-width: 464px;
             margin-right: 18px;
             color: #ff9ae9;
           }
-        }
-
-        .dialog-content {
-          padding: 24px;
         }
       }
     }

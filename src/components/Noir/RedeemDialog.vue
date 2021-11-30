@@ -2,82 +2,133 @@
   <dialog-base :visible.sync="visibility" custom-class="redeem-dialog-wrapper">
     <div :class="['redeem-dialog', currentStep]">
       <template v-if="currentStep === Steps.Agreement">
-        <div class="redeem-dialog-title">Redeem</div>
-        <div class="redeem-dialog-subtitle">Terms of service agreement<br />November 18,2021</div>
-        <div class="redeem-dialog-text">
-          <p>
-            1. The Sale of Alcoholic Beverages<br />
-            The Company does not sell alcohol to persons under the age of 21. By using this site you are representing
-            that you are over the age of 21. The Company makes every effort to ensure that alcoholic beverages are not
-            delivered to anyone who is under the age of 21. By using this site you are representing that the person
-            receiving a shipment of alcoholic beverages from the Company is over the age of 21.
-          </p>
-          <p>
-            2. Eligible Countries for Direct Shipment<br />
-            This list is current as of November, 2021. This list may change at any time, so please make sure that your
-            country is eligible for shipment. It may be possible for other arrangements to occur. Please see point 5
-            below. If your country is not listed below, please contact our service email to enquire.<br />
-            -Argentina<br />
-            -Australia
-          </p>
+        <div class="cart__row m-b-14">
+          <div class="h3 t-a-c p-t-14">Redeem</div>
         </div>
-        <div class="redeem-dialog-check">
-          <s-checkbox v-model="agreementModel" size="big">I Agree</s-checkbox>
+
+        <div class="cart__row text-2 t-a-c m-b-16">
+          Terms of service agreement
+          <br />
+          November 18,2021
         </div>
-        <s-button type="primary" size="big" class="btn w-100" :disabled="!agreementModel" @click="handleAgreement">
-          Continue
-        </s-button>
+
+        <div class="cart__row m-b-26 text-1">
+          <s-scrollbar class="custom-scroll">
+            <div class="max-h-300">
+              <p>
+                1. The Sale of Alcoholic Beverages The Company does not sell alcohol to persons under the age of 21. By
+                using this site you are representing that you are over the age of 21. The Company makes every effort to
+                ensure that alcoholic beverages are not delivered to anyone who is under the age of 21. By using this
+                site you are representing that the person receiving a shipment of alcoholic beverages from the Company
+                is over the age of 21.
+              </p>
+
+              <p>
+                2. Eligible Countries for Direct Shipment This list is current as of November, 2021. This list may
+                change at any time, so please make sure that your country is eligible for shipment. It may be possible
+                for other arrangements to occur. Please see point 5 below. If your country is not listed below, please
+                contact our service email to enquire.
+                <br />
+                -Argentina
+                <br />
+                -Australia
+              </p>
+            </div>
+          </s-scrollbar>
+        </div>
+
+        <div class="cart__row m-b-32 df-jcc">
+          <label class="checkbox">
+            <input class="checkbox__input" type="checkbox" name="" id="" v-model="agreementModel" />
+
+            <div class="checkbox__pseudo">
+              <img src="img/ok.png" class="checkbox__ok-img" loading="lazy" alt="" />
+            </div>
+
+            <div class="checkbox__descr">
+              <div class="vl"></div>
+              <div class="text-title-1 checkbox__text">I Agree</div>
+            </div>
+          </label>
+        </div>
+
+        <div class="cart__row">
+          <s-button type="primary" size="big" class="btn w-100" :disabled="!agreementModel" @click="handleAgreement">
+            Continue
+          </s-button>
+        </div>
       </template>
 
       <template v-else-if="currentStep === Steps.SelectCount">
-        <div class="redeem-dialog-subtitle">You must have a balance greater than 1 NOIR to redeem.</div>
+        <div class="cart__row text-title-1 p-t-20 t-a-c m-b-46">
+          You must have a balance greater
+          <br />
+          than 1 NOIR to redeem.
+        </div>
 
-        <count-input v-model="redeemedCount" :min="1" :max="max" />
+        <div class="cart__row m-b-36">
+          <big-counter v-model="redeemedCount" :min="1" :max="max" />
+        </div>
 
-        <div class="redeem-dialog-text">How many Noir would you like to redeem at this time?</div>
+        <div class="cart__row text-1 t-a-c m-b-38">
+          How many Noir would you like to
+          <br />
+          redeem at this time?
+        </div>
 
-        <s-button type="secondary" size="big" class="btn w-100" @click="handleCount"> Redeem </s-button>
+        <div class="cart__row">
+          <s-button type="secondary" size="big" class="btn w-100" @click="handleCount">Redeem</s-button>
+        </div>
       </template>
 
       <template v-else-if="currentStep === Steps.AddressForm">
         <s-form :model="form" :rules="validationRules" ref="form" @submit.native.prevent="submitForm">
-          <div class="redeem-dialog-title">DHL Shipping Info</div>
-          <div class="redeem-dialog-text">
-            If you wish to arrange for pickup, storage, or courier service, it is fine to leave just an email.
+          <div class="cart__row m-b-20">
+            <div class="h3 t-a-c">DHL Shipping Info</div>
           </div>
 
-          <div class="redeem-dialog-form">
+          <div class="cart-row t-a-c m-b-20 text-1">
+            If you wish to arrange for pickup, storage, or
+            <br />
+            courier service, it is fine to leave just an email.
+          </div>
+
+          <div class="cart__row m-b-20">
             <s-form-item prop="name">
-              <s-input placeholder="Name" v-model="form.name" />
+              <s-input placeholder="Name" size="medium" v-model="form.name" />
             </s-form-item>
             <s-form-item prop="address">
-              <s-input placeholder="Address" type="textarea" v-model="form.address" />
+              <s-input placeholder="Address" size="medium" type="textarea" v-model="form.address" />
             </s-form-item>
             <s-form-item prop="email">
-              <s-input placeholder="Email" v-model="form.email" />
+              <s-input placeholder="Email" size="medium" v-model="form.email" />
             </s-form-item>
             <s-form-item prop="phone">
-              <s-input placeholder="Phone" v-model="form.phone" />
+              <s-input placeholder="Phone" size="medium" v-model="form.phone" />
             </s-form-item>
           </div>
 
-          <div class="redeem-dialog-table">
-            <div class="redeem-dialog-row">
-              <div class="redeem-dialog-cell">NOIR Redeemed</div>
-              <div class="redeem-dialog-cell redeem-dialog-cell--value">{{ redeemedCount }} NOIR</div>
-            </div>
-            <div class="redeem-dialog-row">
-              <div class="redeem-dialog-cell">XOR Transaction fee</div>
-              <div class="redeem-dialog-cell redeem-dialog-cell--value">
-                {{ formatCodecNumber(transferNetworkFee) }} XOR
-              </div>
-            </div>
+          <div class="cart__row df-jcc m-b-20">
+            <table class="table">
+              <tr>
+                <td class="t-a-r text-2 p-r-20">NOIR Redeemed</td>
+                <td class="text-title-1 color-pink">{{ redeemedCount }} NOIR</td>
+              </tr>
+              <tr>
+                <td class="t-a-r text-2 p-r-20">XOR Transaction fee</td>
+                <td class="text-title-1 color-pink">{{ formatCodecNumber(transferNetworkFee) }} XOR</td>
+              </tr>
+            </table>
           </div>
 
-          <s-button native-type="submit" type="primary" size="big" class="btn w-100"> CONFIRM </s-button>
+          <div class="cart__row m-b-12">
+            <s-button native-type="submit" type="primary" size="big" class="btn w-100">CONFIRM</s-button>
+          </div>
 
-          <div class="redeem-dialog-text">
-            Acknowledge that I am over 21 years of age and am not acting in violation of my country's laws.
+          <div class="cart-row t-a-c text-1">
+            Acknowledge that I am over 21 years of age and
+            <br />
+            I am not acting in violation of my country's laws.
           </div>
         </s-form>
       </template>
@@ -109,7 +160,7 @@ enum Steps {
 @Component({
   components: {
     DialogBase,
-    CountInput: lazyComponent(Components.CountInput),
+    BigCounter: lazyComponent(Components.BigCounter),
   },
 })
 export default class RedeemDialog extends Mixins(DialogMixin, mixins.TransactionMixin, mixins.NumberFormatterMixin) {
@@ -225,116 +276,7 @@ export default class RedeemDialog extends Mixins(DialogMixin, mixins.Transaction
 </script>
 
 <style lang="scss">
-.redeem-dialog-wrapper.dialog-wrapper .el-dialog > .el-dialog__body .dialog-content {
-  padding: 48px 54px;
-}
-
-.redeem-dialog-form {
-  .s-input {
-    border-radius: 0px !important;
-    border-bottom: 1px solid #fff !important;
-    padding: 18px 0px !important;
-    height: 70px !important;
-  }
-}
-</style>
-
-<style lang="scss" scoped>
-$base: '.redeem-dialog';
-
-#{$base} {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-
-  &-title {
-    font-size: 27px;
-    line-height: 40px;
-    text-align: center;
-  }
-
-  &-subtitle {
-    font-size: 12px;
-    line-height: 20px;
-    text-align: center;
-  }
-
-  &-text {
-    font-size: 12px;
-    line-height: 20px;
-    color: var(--s-color-base-content-secondary);
-
-    p + p {
-      margin-top: 20px;
-    }
-  }
-
-  &-form {
-    width: 100%;
-  }
-
-  &-table {
-    width: 100%;
-    font-size: 12px;
-    line-height: 14.4px;
-  }
-
-  &-row {
-    display: flex;
-    align-items: center;
-
-    & + & {
-      margin-top: 15px;
-    }
-  }
-
-  &-cell {
-    width: 50%;
-    padding: 0 10px;
-    text-align: right;
-    white-space: nowrap;
-
-    &--value {
-      text-align: left;
-      color: var(--s-color-theme-accent);
-    }
-  }
-
-  &.agreement {
-    #{$base} {
-      &-subtitle {
-        margin: 14px 0 26px;
-      }
-    }
-  }
-
-  &.count {
-    #{$base} {
-      &-subtitle {
-        font-size: 15px;
-        line-height: 25px;
-        max-width: 260px;
-        margin-bottom: 40px;
-      }
-
-      &-text {
-        margin: 40px 0;
-        max-width: 205px;
-        text-align: center;
-      }
-    }
-  }
-
-  &.form {
-    .el-form > *:not(:last-child) {
-      margin-bottom: 20px;
-    }
-
-    #{$base} {
-      &-text {
-        text-align: center;
-      }
-    }
-  }
+.custom-scroll {
+  @include scrollbar();
 }
 </style>
