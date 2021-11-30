@@ -5,6 +5,14 @@
  * 1. Correct the line height in all browsers.
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
+.user-select-pointer-events-none {
+  pointer-events: none;
+  -moz-user-select: none;
+   -ms-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 html {
   line-height: 1.15;
   /* 1 */
@@ -1830,7 +1838,7 @@ a:hover {
   -webkit-animation: cloud 20s linear 0s infinite forwards;
           animation: cloud 20s linear 0s infinite forwards;
   left: -240px;
-  pointer-events: none;
+  @extend .user-select-pointer-events-none;
   position: absolute;
   top: -70px;
   z-index: -2;
@@ -1840,7 +1848,7 @@ a:hover {
   -webkit-animation: cloud 20s ease-out 0s infinite alternate;
           animation: cloud 20s ease-out 0s infinite alternate;
   left: 20px;
-  pointer-events: none;
+  @extend .user-select-pointer-events-none;
   position: absolute;
   top: 50px;
   z-index: -2;
@@ -2008,6 +2016,7 @@ a:hover {
 
 .cart .corner__circle-stroke {
   position: absolute;
+  @extend .user-select-pointer-events-none;
 }
 
 .cart .corner__circle-stroke.first {
@@ -2021,6 +2030,7 @@ a:hover {
 }
 
 .cart .corner__bottle-img {
+  @extend .user-select-pointer-events-none;
   left: 50%;
   position: absolute;
   top: 50%;
@@ -2555,11 +2565,7 @@ a:hover {
 }
 
 [data-simplebar].simplebar-dragging .simplebar-content {
-  pointer-events: none;
-  -moz-user-select: none;
-   -ms-user-select: none;
-       user-select: none;
-  -webkit-user-select: none;
+  @extend .user-select-pointer-events-none;
 }
 
 [data-simplebar].simplebar-dragging .simplebar-track {
