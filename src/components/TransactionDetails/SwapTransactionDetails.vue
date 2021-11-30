@@ -1,5 +1,5 @@
 <template>
-  <transaction-details>
+  <component :is="infoOnly ? 'div' : 'transaction-details'">
     <div class="swap-info-container">
       <info-line v-for="{ id, label, value } in priceValues" :key="id" :label="label" :value="value" />
       <info-line
@@ -19,7 +19,7 @@
       <info-line :label="t('swap.route')">
         <div v-for="token in swapRoute" class="liquidity-route swap-value" :key="token">
           <span>{{ token }}</span>
-          <s-icon name="el-icon el-icon-arrow-right" />
+          <s-icon name="el-icon el-icon-arrow-right route-icon" />
         </div>
       </info-line>
       <info-line
@@ -29,7 +29,6 @@
         :asset-symbol="xorSymbol"
         is-formatted
       />
-      <!-- TODO 4 alexnatalia: Show if logged in and have info about Network Fee -->
       <info-line
         v-if="isLoggedIn"
         :label="t('swap.networkFee')"
@@ -40,11 +39,11 @@
         is-formatted
       />
     </div>
-  </transaction-details>
+  </component>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter, State } from 'vuex-class';
 import {
   KnownAssets,
@@ -71,7 +70,7 @@ const namespace = 'swap';
     InfoLine: components.InfoLine,
   },
 })
-export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
+export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
   @State((state) => state[namespace].liquidityProviderFee) liquidityProviderFee!: CodecString;
   @State((state) => state[namespace].isExchangeB) isExchangeB!: boolean;
   @State((state) => state[namespace].rewards) rewards!: Array<LPRewardsInfo>;
@@ -84,6 +83,8 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
   @Getter('priceImpact', { namespace }) priceImpact!: string;
   @Getter('price', { namespace }) price!: string;
   @Getter('priceReversed', { namespace }) priceReversed!: string;
+
+  @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
 
   get liquidityProviderFeeTooltipText(): string {
     return this.t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: this.liquidityProviderFeeValue });
@@ -154,20 +155,6 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
     return this.formatCodecNumber(this.minMaxReceived, decimals);
   }
 
-  // TODO: [Release 2]
-  // get priceImpact (): string {
-  //   return '0'
-  // }
-  // get priceImpactClass (): string {
-  //   if (+this.priceImpact > 0) {
-  //     return 'price-impact-positive'
-  //   }
-  //   if (+this.priceImpact < 0) {
-  //     return 'price-impact-negative'
-  //   }
-  //   return ''
-  // }
-
   get xorSymbol(): string {
     return ' ' + KnownSymbols.XOR;
   }
@@ -178,7 +165,7 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @include info-line;
 .swap-info {
   &-value.el-button {
@@ -192,7 +179,13 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
   font-weight: 600;
 }
 
+.route-icon {
+  color: var(--s-color-base-content-primary) !important;
+  font-size: 13px !important;
+  margin: 0 !important;
+}
+
 .liquidity-route:last-child .el-icon {
-  display: none;
+  display: none !important;
 }
 </style>

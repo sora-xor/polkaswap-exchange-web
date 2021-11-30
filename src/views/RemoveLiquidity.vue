@@ -97,7 +97,7 @@
         </div>
       </s-float-input>
 
-      <div v-if="price || priceReversed || networkFee || shareOfPool" class="info-line-container">
+      <!-- <div v-if="price || priceReversed || networkFee || shareOfPool" class="info-line-container">
         <info-line
           v-if="shareOfPool"
           value-can-be-hidden
@@ -124,7 +124,7 @@
           :fiat-value="getFiatAmountByCodecString(networkFee)"
           is-formatted
         />
-      </div>
+      </div> -->
 
       <s-button
         type="primary"
@@ -147,6 +147,12 @@
         </template>
       </s-button>
       <slippage-tolerance class="slippage-tolerance-settings" />
+
+      <remove-liquidity-transaction-details
+        class="info-line-container"
+        v-if="price || priceReversed || networkFee || shareOfPool"
+        :infoOnly="false"
+      ></remove-liquidity-transaction-details>
     </s-form>
 
     <confirm-remove-liquidity
@@ -190,6 +196,7 @@ const namespace = 'removeLiquidity';
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
+    RemoveLiquidityTransactionDetails: lazyComponent(Components.RemoveLiquidityTransactionDetails),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
     InfoLine: components.InfoLine,
@@ -219,9 +226,9 @@ export default class RemoveLiquidity extends Mixins(
   @Getter('liquidityBalance', { namespace }) liquidityBalance!: CodecString;
   @Getter('firstTokenBalance', { namespace }) firstTokenBalance!: CodecString;
   @Getter('secondTokenBalance', { namespace }) secondTokenBalance!: CodecString;
-  @Getter('shareOfPool', { namespace }) shareOfPool!: string;
+  @Getter('shareOfPool', { namespace }) shareOfPool!: string; // remove
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
-  @Getter('price', { namespace: 'prices' }) price!: string;
+  @Getter('price', { namespace: 'prices' }) price!: string; // remove
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string;
 
   @Action('setLiquidity', { namespace }) setLiquidity!: ({

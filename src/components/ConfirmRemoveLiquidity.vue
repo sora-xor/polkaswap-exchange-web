@@ -21,13 +21,7 @@
       {{ t('removeLiquidity.outputMessage', { slippageTolerance: formatStringValue(`${slippageTolerance}`) }) }}
     </p>
     <s-divider />
-    <info-line :label="t('removeLiquidity.shareOfPool')" :value="`${shareOfPool}%`" />
-    <info-line
-      :label="t('removeLiquidity.price')"
-      :value="`1 ${firstToken.symbol} = ${formatStringValue(priceReversed)}`"
-      :asset-symbol="secondToken.symbol"
-    />
-    <info-line :value="`1 ${secondToken.symbol} = ${formatStringValue(price)}`" :asset-symbol="firstToken.symbol" />
+    <remove-liquidity-transaction-details />
     <template #footer>
       <s-button
         type="primary"
@@ -59,6 +53,7 @@ const namespace = 'removeLiquidity';
   components: {
     DialogBase,
     TokenLogo: lazyComponent(Components.TokenLogo),
+    RemoveLiquidityTransactionDetails: lazyComponent(Components.RemoveLiquidityTransactionDetails),
     InfoLine: components.InfoLine,
   },
 })

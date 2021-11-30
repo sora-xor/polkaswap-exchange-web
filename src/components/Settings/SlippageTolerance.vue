@@ -1,7 +1,12 @@
 <template>
   <div :class="slippageToleranceClasses">
     <div class="slippage-tolerance-default">
-      <settings-header :title="t('dexSettings.slippageTolerance')" :tooltip="t('dexSettings.slippageToleranceHint')" />
+      <info-line
+        :label="t('dexSettings.slippageTolerance')"
+        :label-tooltip="t('dexSettings.slippageToleranceHint')"
+        :value="String('0.5%')"
+      />
+
       <settings-tabs :value="String(slippageTolerance)" :tabs="SlippageToleranceTabs" @click="selectTab" />
     </div>
     <div class="slippage-tolerance-custom">
@@ -51,7 +56,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 import { FPNumber } from '@sora-substrate/util';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { lazyComponent } from '@/router';
@@ -61,6 +66,7 @@ import { Components } from '@/consts';
   components: {
     SettingsHeader: lazyComponent(Components.SettingsHeader),
     SettingsTabs: lazyComponent(Components.SettingsTabs),
+    InfoLine: components.InfoLine,
   },
 })
 export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixin, TranslationMixin) {
