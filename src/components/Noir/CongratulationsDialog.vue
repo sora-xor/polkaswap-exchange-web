@@ -39,6 +39,8 @@ import { Action, State } from 'vuex-class';
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 
+import confetti from './confetti.js';
+
 @Component({
   components: {
     DialogBase,
@@ -56,6 +58,28 @@ export default class CongratulationsDialog extends Mixins(DialogMixin) {
 
   set visibility(flag: boolean) {
     this.setVisibility(flag);
+  }
+
+  confetti: any = null;
+
+  mounted(): void {
+    this.$watch('visibility', (flag) => {
+      this.updateConfetti(flag);
+    });
+  }
+
+  async updateConfetti(flag: boolean): Promise<void> {
+    if (!this.confetti) {
+      this.confetti = confetti();
+    }
+
+    await this.$nextTick();
+
+    if (flag) {
+      this.confetti.run();
+    } else {
+      this.confetti.stop();
+    }
   }
 }
 </script>
