@@ -44,35 +44,37 @@ button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-m
 }
 
 // FORM
-.el-form-item {
-  .s-input {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 0px !important;
-    padding-left: 0px !important;
-    padding-right: 0px !important;
-    transition: border-color 0.3s;
-
-    &:hover, &.s-focused {
-      border-bottom-color: rgba(255, 255, 255, 1);
-    }
-
-    &.s-size-medium {
-      min-height: 52px !important;
-    }
-  }
-
-  &.is-error {
-    .s-icon-status-error {
-      display: none !important;
-    }
+.redeem-dialog form {
+  .el-form-item {
+    .s-input {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 0px !important;
+      padding-left: 0px !important;
+      padding-right: 0px !important;
+      transition: border-color 0.3s;
   
-    & > .el-form-item__content {
-      & > [class^="s-input"]:not(.s-disabled) {
-        background-color: inherit !important;
+      &:hover, &.s-focused {
+        border-bottom-color: rgba(255, 255, 255, 1);
       }
   
-      & > .el-form-item__error {
-        padding-left: 0px !important;
+      &.s-size-medium {
+        min-height: 52px !important;
+      }
+    }
+  
+    &.is-error {
+      .s-icon-status-error {
+        display: none !important;
+      }
+    
+      & > .el-form-item__content {
+        & > [class^="s-input"]:not(.s-disabled) {
+          background-color: inherit !important;
+        }
+    
+        & > .el-form-item__error {
+          padding-left: 0px !important;
+        }
       }
     }
   }
@@ -100,6 +102,10 @@ button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-m
 
 .wallet-dialog {
   backdrop-filter: blur(100px);
+
+  &.base {
+    width: 100% !important;
+  }
 
   > .el-card {
     &__header {

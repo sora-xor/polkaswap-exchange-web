@@ -783,6 +783,7 @@ button:active {
 a {
   color: #ff9ae9;
   text-decoration: none;
+  cursor: pointer;
 }
 
 a:hover {
@@ -942,22 +943,18 @@ a:hover {
 
 .max-h-200 {
   max-height: 200px;
-  overflow-y: auto;
 }
 
 .max-h-250 {
   max-height: 250px;
-  overflow-y: auto;
 }
 
 .max-h-300 {
   max-height: 300px;
-  // overflow-y: auto;
 }
 
 .max-h-350 {
   max-height: 350px;
-  overflow-y: auto;
 }
 
 .max-w-300 {

@@ -274,9 +274,3 @@ export default class RedeemDialog extends Mixins(DialogMixin, mixins.Transaction
   }
 }
 </script>
-
-<style lang="scss">
-.custom-scroll {
-  @include scrollbar();
-}
-</style>

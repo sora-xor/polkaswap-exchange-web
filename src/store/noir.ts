@@ -25,6 +25,7 @@ const types = flow(
   flatMap((x) => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
     'RESET_REDEMPTION_DATA_SUBSCRIPTION',
+    'SET_EDITION_DIALOG_VISIBILITY',
     'SET_REDEEM_DIALOG_VISIBILITY',
     'SET_CONGRATULATIONS_DIALOG_VISIBILITY',
     'SET_AGREEMENT',
@@ -38,6 +39,7 @@ interface NoirState {
   total: number;
   availableForRedemption: number;
   redemptionSubscription: Nullable<NodeJS.Timer>;
+  editionDialogVisibility: boolean;
   redeemDialogVisibility: boolean;
   congratulationsDialogVisibility: boolean;
   agreementSigned: boolean;
@@ -49,6 +51,7 @@ function initialState(): NoirState {
     total: 0,
     availableForRedemption: 0,
     redemptionSubscription: null,
+    editionDialogVisibility: false,
     redeemDialogVisibility: false,
     congratulationsDialogVisibility: false,
     agreementSigned: Boolean(noirStorage.get('agreement')) || false,
@@ -110,6 +113,10 @@ const mutations = {
     state.redeemDialogVisibility = flag;
   },
 
+  [types.SET_EDITION_DIALOG_VISIBILITY](state: NoirState, flag: boolean) {
+    state.editionDialogVisibility = flag;
+  },
+
   [types.SET_CONGRATULATIONS_DIALOG_VISIBILITY](state: NoirState, flag: boolean) {
     state.congratulationsDialogVisibility = flag;
   },
@@ -150,6 +157,10 @@ const actions = {
   },
   resetRedemptionDataSubscription({ commit }) {
     commit(types.RESET_REDEMPTION_DATA_SUBSCRIPTION);
+  },
+
+  setEditionDialogVisibility({ commit }, flag: boolean) {
+    commit(types.SET_EDITION_DIALOG_VISIBILITY, flag);
   },
 
   setRedeemDialogVisibility({ commit }, flag: boolean) {

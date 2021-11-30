@@ -69,6 +69,7 @@ export enum Components {
   Cart = 'Noir/Cart',
   CountInput = 'Noir/CountInput',
   BigCounter = 'Noir/BigCounter',
+  EditionDialog = 'Noir/EditionDialog',
   RedeemDialog = 'Noir/RedeemDialog',
   CongratulationsDialog = 'Noir/CongratulationsDialog',
 }

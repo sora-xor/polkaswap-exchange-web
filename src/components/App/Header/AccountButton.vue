@@ -38,8 +38,6 @@ export default class AccountButton extends Mixins(TranslationMixin) {
 $account-control-name-max-width: 200px;
 
 .account-control {
-  letter-spacing: var(--s-letter-spacing-small);
-
   &:hover,
   &:focus {
     [class^='s-icon-'] {

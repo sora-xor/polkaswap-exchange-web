@@ -33,7 +33,7 @@ export default class WalletDialog extends Mixins(DialogMixin) {
 </script>
 
 <style lang="scss">
-.wallet-dialog-wrapper.dialog-wrapper .el-dialog > .el-dialog__body .dialog-content {
+.wallet-dialog-wrapper.dialog-wrapper .el-dialog > .el-dialog__body .cart__content {
   padding: 0;
 }
 </style>

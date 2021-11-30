@@ -14,6 +14,7 @@
     </div>
 
     <wallet-dialog />
+    <edition-dialog />
     <redeem-dialog />
     <congratulations-dialog />
     <select-node-dialog />
@@ -41,6 +42,7 @@ import type { ConnectToNodeOptions } from '@/types/nodes';
     Cart: lazyComponent(Components.Cart),
     WalletDialog: lazyComponent(Components.WalletDialog),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
+    EditionDialog: lazyComponent(Components.EditionDialog),
     RedeemDialog: lazyComponent(Components.RedeemDialog),
     CongratulationsDialog: lazyComponent(Components.CongratulationsDialog),
   },
@@ -260,5 +262,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 }
 i.icon-divider {
   @include icon-styles;
+}
+
+// Scrollbar
+.custom-scroll {
+  @include scrollbar();
 }
 </style>

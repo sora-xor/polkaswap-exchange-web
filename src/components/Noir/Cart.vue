@@ -104,7 +104,7 @@
             Buy and sell the first phygital wine with digital currency.
             <br />
             Delivered on demand worldwide.
-            <a href="#"> Learn more</a>
+            <a class="color-pink" @click="openEditionDialog">Learn more</a>
           </div>
         </div>
       </template>
@@ -192,6 +192,10 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
   @Action('updateSubscriptions', { namespace }) updateSubscriptions!: AsyncVoidFn;
 
   @Action('setRedeemDialogVisibility', { namespace: 'noir' }) setRedeemDialogVisibility!: (
+    flag: boolean
+  ) => Promise<void>;
+
+  @Action('setEditionDialogVisibility', { namespace: 'noir' }) setEditionDialogVisibility!: (
     flag: boolean
   ) => Promise<void>;
 
@@ -431,6 +435,10 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
 
   async redeem(): Promise<void> {
     await this.setRedeemDialogVisibility(true);
+  }
+
+  async openEditionDialog(): Promise<void> {
+    await this.setEditionDialogVisibility(true);
   }
 
   destroyed(): void {
