@@ -53,7 +53,7 @@ function initialState(): NoirState {
     redemptionSubscription: null,
     editionDialogVisibility: false,
     redeemDialogVisibility: false,
-    congratulationsDialogVisibility: false,
+    congratulationsDialogVisibility: true,
     agreementSigned: Boolean(noirStorage.get('agreement')) || false,
   };
 }
