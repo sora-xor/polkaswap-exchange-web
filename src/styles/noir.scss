@@ -2733,6 +2733,7 @@ a:hover {
 .big-counter__number {
   opacity: 0;
   text-align: center;
+  white-space: nowrap;
   -webkit-transform: translate(0, 0);
           transform: translate(0, 0);
 }
