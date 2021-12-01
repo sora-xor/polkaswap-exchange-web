@@ -1,15 +1,11 @@
 import first from 'lodash/fp/first';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
-import dayjs from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Language } from '@/consts';
 import { settingsStorage } from '@/utils/storage';
 
 import en from './en.json';
-
-dayjs.extend(localizedFormat);
 
 Vue.use(VueI18n);
 
@@ -41,24 +37,35 @@ export function getLocale(): string {
   return getSupportedLocale(locale as any);
 }
 
-// export async function setDayJsLocale(lang: Language): Promise<void> {
+export async function setDayJsLocale(lang: Language): Promise<void> {
+  const locale = getSupportedLocale(lang);
+  const code = first(locale.split('-')) as string;
 
-// }
+  try {
+    // importing dayjs locale file automatically runs `dayjs.locale(code)`
+    // "webpackInclude" - optimization to exclude unused files from "chunk-vendors"
+    await import(
+      /* webpackInclude: /(en|ru|cs|de|es|fr|hy|id|it|nl|no|pl|yo)\.js$/ */
+      /* webpackChunkName: "dayjs-locale-[request]" */
+      /* webpackMode: "lazy" */
+      `dayjs/locale/${code}.js`
+    );
+  } catch (error) {
+    console.warn(`[dayjs]: unsupported locale "${code}"`, error);
+  }
+}
 
 export async function setI18nLocale(lang: Language): Promise<void> {
   const locale = getSupportedLocale(lang) as any;
 
   if (!loadedLanguages.includes(locale)) {
     // transform locale string 'eu-ES' to filename 'eu_ES' like in localise
-    const code = first(locale.split('-')) as string;
     const filename = locale.replace('-', '_');
     const { default: messages } = await import(
       /* webpackChunkName: "lang-[request]" */
       /* webpackMode: "lazy" */
       `@/lang/${filename}.json`
     );
-
-    await import(`dayjs/locale/${code}.js`);
 
     i18n.setLocaleMessage(locale, messages);
     loadedLanguages.push(locale);

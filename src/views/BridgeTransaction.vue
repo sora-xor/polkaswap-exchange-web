@@ -298,7 +298,6 @@ import router, { lazyComponent } from '@/router';
 import { Components, PageNames, EvmSymbol, MetamaskCancellationCode } from '@/consts';
 import {
   copyToClipboard,
-  formatDateItem,
   hasInsufficientBalance,
   hasInsufficientXorForFee,
   hasInsufficientEvmNativeTokenForFee,
@@ -882,9 +881,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   getTransactionDate(transactionDate: string): string {
     // We use current date if request is failed
     const date = transactionDate ? new Date(transactionDate) : new Date();
-    return `${date.getDate()} ${this.t(`months[${date.getMonth()}]`)} ${date.getFullYear()}, ${formatDateItem(
-      date.getHours()
-    )}:${formatDateItem(date.getMinutes())}:${formatDateItem(date.getSeconds())}`;
+    return this.formatDate(date.getTime());
   }
 
   async handleSendTransactionFrom(withAutoRetry = true): Promise<void> {
