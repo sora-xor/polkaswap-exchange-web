@@ -406,7 +406,7 @@
             },
             "second": {
                 "title": "Połącz łańcuch z SORĄ",
-                "desc": "Rozwijaj zdecentralizowaną gospodarkę światową, łącząc kolejne łańcuchy do SORY i Polkaswap za pomocą protokołu mostu HASHI."
+                "desc": "Rozwijaj zdecentralizowaną gospodarkę światową, łącząc kolejne łańcuchy z SORĄ i Polkaswap za pomocą protokołu mostu HASHI."
             }
         },
         "network": "Polkaswap jest zbudowana na sieci SORA, zorientowanej na interoperacyjność, aby połączyć resztę ekosystemu kryptowalut z siecią Polkadot."
@@ -555,26 +555,12 @@
         "newTransaction": "Utwórz nową transakcję",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "changeAccount": "@:changeAccountText w @:metamask",
+        "changeAccount": "@:changeAccountText w portfelu @:metamask",
         "expectedAddress": "Spodziewany adres w @:metamask",
         "title": "Transakcja mostowa",
         "expectedMetaMaskAddress": "Przewidywany adres w @:metamask",
         "allowToken": "Zezwól @:appName na użycie Twojego {tokenSymbol}",
         "approveToken": "Pamiętaj, że wystarczy raz zatwierdzić token. Jeśli Twoje rozszerzenie otrzymuje wiele żądań o zatwierdzenie tokena, pamiętaj, by potwierdzić tylko ostatnią, a pozostałe odrzucić."
-    },
-    "months": {
-        "0": "STY",
-        "1": "LUT",
-        "2": "MAR",
-        "3": "KWI",
-        "4": "MAJ",
-        "5": "CZE",
-        "6": "LIP",
-        "7": "SIE",
-        "8": "WRZ",
-        "9": "PAŹ",
-        "10": "LIS",
-        "11": "GRU"
     },
     "bridgeHistory": {
         "title": "Historia",
@@ -829,8 +815,8 @@
     },
     "confirmNextTxFailure": {
         "header": "Uwaga",
-        "info": "Twoje saldo XOR będzie mniejsze niż {fee} XOR po tej transakcji. Nie będziesz w stanie zapłacić opłaty sieciowej za kolejną transakcję.",
-        "payoff": "Będziesz musiał użyć Bridge, aby uzyskać XOR z innych sieci, wysłać XOR z innego konta SORA lub zamienić dowolny inny token już na Twoim koncie na XOR.",
-        "button": "Tak, rozumiem ryzyko"
+        "info": "Po tej transakcji Twoje saldo XOR będzie mniejsze niż {fee} XOR. Nie będziesz w stanie zapłacić opłaty sieciowej za kolejną transakcję.",
+        "payoff": "Będziesz musiał użyć mostu, aby uzyskać XOR z innych sieci, wysłać XOR z innego konta sieci SORA lub zamienić dowolny token, znajdujący się już na Twoim koncie, na XOR.",
+        "button": "Tak, rozumiem ryzyko."
     }
 }
