@@ -175,24 +175,8 @@ const actions = {
     commit(types.SET_AGREEMENT, flag);
   },
 
-  submitGoogleForm({ commit, rootGetters: { account } }, form: NoirFormData) {
-    let link = `https://docs.google.com/forms/d/e/${NOIR_FORM}/formResponse`;
-    link += `?entry.${NOIR_FORM_NAME}=${encodeURIComponent(form.name)}`;
-    link += `&entry.${NOIR_FORM_ADDRESS}=${encodeURIComponent(form.address)}`;
-    link += `&entry.${NOIR_FORM_EMAIL}=${encodeURIComponent(form.email)}`;
-    link += `&entry.${NOIR_FORM_PHONE}=${encodeURIComponent(form.phone)}`;
-    link += `&entry.${NOIR_ACCOUNT_ADDRESS}=${encodeURIComponent(account.address)}`;
-    const a = document.createElement('a');
-    a.setAttribute('href', link);
-    a.setAttribute('target', '_blank');
-    a.click();
-    a.remove();
-  },
-
   async redeem({ dispatch }, count: number) {
     await api.transfer(NOIR_TOKEN_ADDRESS, NOIR_ADDRESS_ID, count);
-
-    await dispatch('setCongratulationsDialogVisibility', true);
   },
 };
 

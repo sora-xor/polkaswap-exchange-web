@@ -81,8 +81,8 @@
         </div>
       </template>
 
-      <template v-else-if="currentStep === Steps.AddressForm">
-        <s-form :model="form" :rules="validationRules" ref="form" @submit.native.prevent="submitForm">
+      <template v-else-if="isFormVisible">
+        <s-form :model="form" :rules="validationRules" ref="form" @submit.native.prevent="submitTransaction">
           <div class="cart__row m-b-20">
             <div class="h3 t-a-c">DHL Shipping Info</div>
           </div>
@@ -123,6 +123,7 @@
 
           <div class="cart__row m-b-12">
             <s-button
+              v-if="currentStep === Steps.ConfirmTx"
               native-type="submit"
               type="primary"
               size="big"
@@ -132,6 +133,16 @@
               <template v-if="isInsufficientXorForFee"> INSUFFICIENT XOR BALANCE </template>
               <template v-else> CONFIRM </template>
             </s-button>
+            <a
+              v-else
+              class="btn w-100"
+              :href="googleFormLink"
+              target="_blank"
+              rel="nofollow noopener"
+              @click="handleSubmitGoogleForm"
+            >
+              <s-button type="primary" size="big" class="btn w-100">SUBMIT FORM</s-button>
+            </a>
           </div>
 
           <div class="cart-row t-a-c text-1">
@@ -156,13 +167,22 @@ import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 
 import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
+import {
+  Components,
+  NOIR_ACCOUNT_ADDRESS,
+  NOIR_FORM,
+  NOIR_FORM_ADDRESS,
+  NOIR_FORM_EMAIL,
+  NOIR_FORM_NAME,
+  NOIR_FORM_PHONE,
+} from '@/consts';
 import { getMaxValue, hasInsufficientXorForFee } from '@/utils';
 import { NoirFormData } from '@/types/noir';
 
 enum Steps {
   Agreement = 'agreement',
   SelectCount = 'count',
+  ConfirmTx = 'confirm-tx',
   AddressForm = 'form',
 }
 
@@ -183,7 +203,9 @@ export default class RedeemDialog extends Mixins(DialogMixin, mixins.Transaction
   @Action('setRedeemDialogVisibility', { namespace: 'noir' }) setVisibility!: (flag: boolean) => Promise<void>;
   @Action('setAgreement', { namespace: 'noir' }) setAgreement!: (flag: boolean) => Promise<void>;
   @Action('redeem', { namespace: 'noir' }) redeem!: (count: number) => Promise<void>;
-  @Action('submitGoogleForm', { namespace: 'noir' }) submitGoogleForm!: (form: NoirFormData) => Promise<void>;
+  @Action('setCongratulationsDialogVisibility', { namespace: 'noir' }) setCongratulationsDialogVisibility!: (
+    flag: boolean
+  ) => Promise<void>;
 
   readonly validationRules = {
     name: [{ required: true, message: 'Name is required', trigger: 'blur' }],
@@ -227,6 +249,20 @@ export default class RedeemDialog extends Mixins(DialogMixin, mixins.Transaction
     phone: '',
   };
 
+  get isFormVisible(): boolean {
+    return [Steps.ConfirmTx, Steps.AddressForm].includes(this.currentStep);
+  }
+
+  get googleFormLink(): string {
+    let link = `https://docs.google.com/forms/d/e/${NOIR_FORM}/formResponse`;
+    link += `?entry.${NOIR_FORM_NAME}=${encodeURIComponent(this.form.name)}`;
+    link += `&entry.${NOIR_FORM_ADDRESS}=${encodeURIComponent(this.form.address)}`;
+    link += `&entry.${NOIR_FORM_EMAIL}=${encodeURIComponent(this.form.email)}`;
+    link += `&entry.${NOIR_FORM_PHONE}=${encodeURIComponent(this.form.phone)}`;
+    link += `&entry.${NOIR_ACCOUNT_ADDRESS}=${encodeURIComponent(this.account.address)}`;
+    return link;
+  }
+
   get visibility(): boolean {
     return this.redeemDialogVisibility;
   }
@@ -264,17 +300,22 @@ export default class RedeemDialog extends Mixins(DialogMixin, mixins.Transaction
   }
 
   handleCount(): void {
-    this.currentStep = Steps.AddressForm;
+    this.currentStep = Steps.ConfirmTx;
   }
 
-  async submitForm(): Promise<void> {
+  async submitTransaction(): Promise<void> {
     try {
       await (this.$refs.form as any).validate();
       await this.transfer();
-      await this.submitGoogleForm(this.form);
+      this.currentStep = Steps.AddressForm;
     } catch (error) {
       console.warn(error);
     }
+  }
+
+  handleSubmitGoogleForm(): void {
+    this.visibility = false;
+    this.setCongratulationsDialogVisibility(true);
   }
 
   async transfer() {
@@ -283,8 +324,6 @@ export default class RedeemDialog extends Mixins(DialogMixin, mixins.Transaction
     } catch (error) {
       console.error(error);
     }
-
-    this.visibility = false;
   }
 }
 </script>
