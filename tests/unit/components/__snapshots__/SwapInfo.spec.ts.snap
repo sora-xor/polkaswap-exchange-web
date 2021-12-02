@@ -7,14 +7,14 @@ exports[`SwapInfo.vue [With All Set Parameters]: should be rendered correctly 1`
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="{first} per {second}"
     labeltooltip=""
     value="0.4"
   />
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="{first} per {second}"
     labeltooltip=""
     value="2.2"
   />
@@ -22,16 +22,16 @@ exports[`SwapInfo.vue [With All Set Parameters]: should be rendered correctly 1`
   <info-line-stub
     assetsymbol="VAL"
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Minimum Received"
+    labeltooltip="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed."
     value="1.2345678"
   />
     
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
-    labeltooltip=""
+    label="Price Impact"
+    labeltooltip="The difference between the market price and estimated price due to trade size."
     value=""
   >
     <!---->
@@ -40,7 +40,7 @@ exports[`SwapInfo.vue [With All Set Parameters]: should be rendered correctly 1`
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="Route"
     labeltooltip=""
     value=""
   />
@@ -49,8 +49,8 @@ exports[`SwapInfo.vue [With All Set Parameters]: should be rendered correctly 1`
     assetsymbol=" XOR"
     fiatvalue=""
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Liquidity Provider Fee"
+    labeltooltip="A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive."
     value="0.003"
   />
    
@@ -58,8 +58,8 @@ exports[`SwapInfo.vue [With All Set Parameters]: should be rendered correctly 1`
     assetsymbol=" XOR"
     fiatvalue="0.000861"
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Network Fee"
+    labeltooltip="Network fee is used to ensure SORA system's growth and stable performance."
     value="0.0007"
   />
 </div>
@@ -72,14 +72,14 @@ exports[`SwapInfo.vue [With Empty liquidityProviderFee]: should be rendered corr
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="{first} per {second}"
     labeltooltip=""
     value="0.4"
   />
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="{first} per {second}"
     labeltooltip=""
     value="2.2"
   />
@@ -87,16 +87,16 @@ exports[`SwapInfo.vue [With Empty liquidityProviderFee]: should be rendered corr
   <info-line-stub
     assetsymbol="VAL"
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Minimum Received"
+    labeltooltip="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed."
     value="1.2345678"
   />
     
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
-    labeltooltip=""
+    label="Price Impact"
+    labeltooltip="The difference between the market price and estimated price due to trade size."
     value=""
   >
     <div
@@ -117,7 +117,7 @@ exports[`SwapInfo.vue [With Empty liquidityProviderFee]: should be rendered corr
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="Route"
     labeltooltip=""
     value=""
   />
@@ -126,8 +126,8 @@ exports[`SwapInfo.vue [With Empty liquidityProviderFee]: should be rendered corr
     assetsymbol=" XOR"
     fiatvalue=""
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Liquidity Provider Fee"
+    labeltooltip="A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive."
     value="NaN"
   />
    
@@ -135,8 +135,8 @@ exports[`SwapInfo.vue [With Empty liquidityProviderFee]: should be rendered corr
     assetsymbol=" XOR"
     fiatvalue="0.000861"
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Network Fee"
+    labeltooltip="Network fee is used to ensure SORA system's growth and stable performance."
     value="0.0007"
   />
 </div>
@@ -149,14 +149,14 @@ exports[`SwapInfo.vue [With Empty minMaxReceived]: should be rendered correctly 
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="{first} per {second}"
     labeltooltip=""
     value="0.4"
   />
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="{first} per {second}"
     labeltooltip=""
     value="2.2"
   />
@@ -164,16 +164,16 @@ exports[`SwapInfo.vue [With Empty minMaxReceived]: should be rendered correctly 
   <info-line-stub
     assetsymbol="VAL"
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Minimum Received"
+    labeltooltip="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed."
     value="NaN"
   />
     
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
-    labeltooltip=""
+    label="Price Impact"
+    labeltooltip="The difference between the market price and estimated price due to trade size."
     value=""
   >
     <div
@@ -194,7 +194,7 @@ exports[`SwapInfo.vue [With Empty minMaxReceived]: should be rendered correctly 
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="Route"
     labeltooltip=""
     value=""
   />
@@ -203,8 +203,8 @@ exports[`SwapInfo.vue [With Empty minMaxReceived]: should be rendered correctly 
     assetsymbol=" XOR"
     fiatvalue=""
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Liquidity Provider Fee"
+    labeltooltip="A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive."
     value="0.003"
   />
    
@@ -212,8 +212,8 @@ exports[`SwapInfo.vue [With Empty minMaxReceived]: should be rendered correctly 
     assetsymbol=" XOR"
     fiatvalue="0.000861"
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Network Fee"
+    labeltooltip="Network fee is used to ensure SORA system's growth and stable performance."
     value="0.0007"
   />
 </div>
@@ -226,14 +226,14 @@ exports[`SwapInfo.vue [With Empty networkFee]: should be rendered correctly 1`] 
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="{first} per {second}"
     labeltooltip=""
     value="0.4"
   />
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="{first} per {second}"
     labeltooltip=""
     value="2.2"
   />
@@ -241,16 +241,16 @@ exports[`SwapInfo.vue [With Empty networkFee]: should be rendered correctly 1`] 
   <info-line-stub
     assetsymbol="VAL"
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Minimum Received"
+    labeltooltip="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed."
     value="1.2345678"
   />
     
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
-    labeltooltip=""
+    label="Price Impact"
+    labeltooltip="The difference between the market price and estimated price due to trade size."
     value=""
   >
     <div
@@ -271,7 +271,7 @@ exports[`SwapInfo.vue [With Empty networkFee]: should be rendered correctly 1`] 
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="Route"
     labeltooltip=""
     value=""
   />
@@ -280,8 +280,8 @@ exports[`SwapInfo.vue [With Empty networkFee]: should be rendered correctly 1`] 
     assetsymbol=" XOR"
     fiatvalue=""
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Liquidity Provider Fee"
+    labeltooltip="A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive."
     value="0.003"
   />
    
@@ -289,8 +289,8 @@ exports[`SwapInfo.vue [With Empty networkFee]: should be rendered correctly 1`] 
     assetsymbol=" XOR"
     fiatvalue="0"
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Network Fee"
+    labeltooltip="Network fee is used to ensure SORA system's growth and stable performance."
     value="NaN"
   />
 </div>
@@ -303,14 +303,14 @@ exports[`SwapInfo.vue [With Error priceImpact]: should be rendered correctly 1`]
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="{first} per {second}"
     labeltooltip=""
     value="0.4"
   />
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="{first} per {second}"
     labeltooltip=""
     value="2.2"
   />
@@ -318,16 +318,16 @@ exports[`SwapInfo.vue [With Error priceImpact]: should be rendered correctly 1`]
   <info-line-stub
     assetsymbol="VAL"
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Minimum Received"
+    labeltooltip="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed."
     value="1.2345678"
   />
     
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
-    labeltooltip=""
+    label="Price Impact"
+    labeltooltip="The difference between the market price and estimated price due to trade size."
     value=""
   >
     <div
@@ -348,7 +348,7 @@ exports[`SwapInfo.vue [With Error priceImpact]: should be rendered correctly 1`]
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="Route"
     labeltooltip=""
     value=""
   />
@@ -357,8 +357,8 @@ exports[`SwapInfo.vue [With Error priceImpact]: should be rendered correctly 1`]
     assetsymbol=" XOR"
     fiatvalue=""
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Liquidity Provider Fee"
+    labeltooltip="A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive."
     value="0.003"
   />
    
@@ -366,8 +366,8 @@ exports[`SwapInfo.vue [With Error priceImpact]: should be rendered correctly 1`]
     assetsymbol=" XOR"
     fiatvalue="0.000861"
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Network Fee"
+    labeltooltip="Network fee is used to ensure SORA system's growth and stable performance."
     value="0.0007"
   />
 </div>
@@ -380,14 +380,14 @@ exports[`SwapInfo.vue [With Logged Out]: should be rendered correctly 1`] = `
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="{first} per {second}"
     labeltooltip=""
     value="0.4"
   />
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="{first} per {second}"
     labeltooltip=""
     value="2.2"
   />
@@ -395,16 +395,16 @@ exports[`SwapInfo.vue [With Logged Out]: should be rendered correctly 1`] = `
   <info-line-stub
     assetsymbol="VAL"
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Minimum Received"
+    labeltooltip="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed."
     value="1.2345678"
   />
     
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
-    labeltooltip=""
+    label="Price Impact"
+    labeltooltip="The difference between the market price and estimated price due to trade size."
     value=""
   >
     <div
@@ -425,7 +425,7 @@ exports[`SwapInfo.vue [With Logged Out]: should be rendered correctly 1`] = `
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="Route"
     labeltooltip=""
     value=""
   />
@@ -434,8 +434,8 @@ exports[`SwapInfo.vue [With Logged Out]: should be rendered correctly 1`] = `
     assetsymbol=" XOR"
     fiatvalue=""
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Liquidity Provider Fee"
+    labeltooltip="A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive."
     value="0.003"
   />
    
@@ -450,14 +450,14 @@ exports[`SwapInfo.vue [With Rewards]: should be rendered correctly 1`] = `
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="{first} per {second}"
     labeltooltip=""
     value="0.4"
   />
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="{first} per {second}"
     labeltooltip=""
     value="2.2"
   />
@@ -465,15 +465,15 @@ exports[`SwapInfo.vue [With Rewards]: should be rendered correctly 1`] = `
   <info-line-stub
     assetsymbol="VAL"
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Minimum Received"
+    labeltooltip="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed."
     value="1.2345678"
   />
    
   <info-line-stub
     assetsymbol="XOR"
     fiatvalue="1.23"
-    label=""
+    label="PSWAP Strategic Rewards"
     labeltooltip=""
     value="1"
   />
@@ -481,8 +481,8 @@ exports[`SwapInfo.vue [With Rewards]: should be rendered correctly 1`] = `
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
-    labeltooltip=""
+    label="Price Impact"
+    labeltooltip="The difference between the market price and estimated price due to trade size."
     value=""
   >
     <div
@@ -503,7 +503,7 @@ exports[`SwapInfo.vue [With Rewards]: should be rendered correctly 1`] = `
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="Route"
     labeltooltip=""
     value=""
   />
@@ -512,8 +512,8 @@ exports[`SwapInfo.vue [With Rewards]: should be rendered correctly 1`] = `
     assetsymbol=" XOR"
     fiatvalue=""
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Liquidity Provider Fee"
+    labeltooltip="A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive."
     value="0.003"
   />
    
@@ -521,8 +521,8 @@ exports[`SwapInfo.vue [With Rewards]: should be rendered correctly 1`] = `
     assetsymbol=" XOR"
     fiatvalue="0.000861"
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Network Fee"
+    labeltooltip="Network fee is used to ensure SORA system's growth and stable performance."
     value="0.0007"
   />
 </div>
@@ -535,14 +535,14 @@ exports[`SwapInfo.vue [With Warning priceImpact]: should be rendered correctly 1
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="{first} per {second}"
     labeltooltip=""
     value="0.4"
   />
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="{first} per {second}"
     labeltooltip=""
     value="2.2"
   />
@@ -550,16 +550,16 @@ exports[`SwapInfo.vue [With Warning priceImpact]: should be rendered correctly 1
   <info-line-stub
     assetsymbol="VAL"
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Minimum Received"
+    labeltooltip="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed."
     value="1.2345678"
   />
     
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
-    labeltooltip=""
+    label="Price Impact"
+    labeltooltip="The difference between the market price and estimated price due to trade size."
     value=""
   >
     <div
@@ -580,7 +580,7 @@ exports[`SwapInfo.vue [With Warning priceImpact]: should be rendered correctly 1
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="Route"
     labeltooltip=""
     value=""
   />
@@ -589,8 +589,8 @@ exports[`SwapInfo.vue [With Warning priceImpact]: should be rendered correctly 1
     assetsymbol=" XOR"
     fiatvalue=""
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Liquidity Provider Fee"
+    labeltooltip="A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive."
     value="0.003"
   />
    
@@ -598,8 +598,8 @@ exports[`SwapInfo.vue [With Warning priceImpact]: should be rendered correctly 1
     assetsymbol=" XOR"
     fiatvalue="0.000861"
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Network Fee"
+    labeltooltip="Network fee is used to ensure SORA system's growth and stable performance."
     value="0.0007"
   />
 </div>
@@ -612,14 +612,14 @@ exports[`SwapInfo.vue [With isExchangeB]: should be rendered correctly 1`] = `
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="{first} per {second}"
     labeltooltip=""
     value="0.4"
   />
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="{first} per {second}"
     labeltooltip=""
     value="2.2"
   />
@@ -628,16 +628,16 @@ exports[`SwapInfo.vue [With isExchangeB]: should be rendered correctly 1`] = `
     assetsymbol="XOR"
     fiatvalue="1.5185185"
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Maximum Sold"
+    labeltooltip="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed."
     value="1.2345678"
   />
     
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
-    labeltooltip=""
+    label="Price Impact"
+    labeltooltip="The difference between the market price and estimated price due to trade size."
     value=""
   >
     <div
@@ -658,7 +658,7 @@ exports[`SwapInfo.vue [With isExchangeB]: should be rendered correctly 1`] = `
   <info-line-stub
     assetsymbol=""
     fiatvalue=""
-    label=""
+    label="Route"
     labeltooltip=""
     value=""
   />
@@ -667,8 +667,8 @@ exports[`SwapInfo.vue [With isExchangeB]: should be rendered correctly 1`] = `
     assetsymbol=" XOR"
     fiatvalue=""
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Liquidity Provider Fee"
+    labeltooltip="A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive."
     value="0.003"
   />
    
@@ -676,8 +676,8 @@ exports[`SwapInfo.vue [With isExchangeB]: should be rendered correctly 1`] = `
     assetsymbol=" XOR"
     fiatvalue="0.000861"
     isformatted="true"
-    label=""
-    labeltooltip=""
+    label="Network Fee"
+    labeltooltip="Network fee is used to ensure SORA system's growth and stable performance."
     value="0.0007"
   />
 </div>
