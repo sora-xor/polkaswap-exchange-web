@@ -3,12 +3,13 @@ import Vuex from 'vuex';
 import { createLocalVue } from '@vue/test-utils';
 import SoramitsuElements, { Message, MessageBox, Notification } from '@soramitsu/soramitsu-js-ui';
 import Wallet from '@soramitsu/soraneo-wallet-web';
+import i18n from '../../src/lang';
 
 export const localVue = createLocalVue();
 localVue.use(Vuex);
 
 export const TranslationMock = (vue: VueConstructor) =>
-  vue.mixin({ name: 'TranslationMixin', methods: { t: jest.fn(), tc: jest.fn() } });
+  vue.mixin({ name: 'TranslationMixin', methods: { t: (msg) => i18n.t(msg), tc: jest.fn() } });
 
 export const SoramitsuElementsImport = (vue: VueConstructor) => {
   vue.use(Vuex);
