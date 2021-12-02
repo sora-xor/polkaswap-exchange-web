@@ -78,7 +78,6 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, State, Getter } from 'vuex-class';
-import dayjs from 'dayjs';
 import { WALLET_CONSTS, components } from '@soramitsu/soraneo-wallet-web';
 import { BridgeHistory } from '@sora-substrate/util';
 
@@ -112,7 +111,6 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
   @State((state) => state[namespace].transactions) transactions!: Array<MoonpayTransaction>;
-  @State((state) => state.settings.language) language!: string;
   @Getter libraryTheme!: Theme;
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean;
   @Getter('currenciesById', { namespace }) currenciesById!: MoonpayCurrenciesById;
@@ -164,7 +162,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
   }
 
   get formattedItems(): Array<any> {
-    const { currenciesById, historyItems } = this;
+    const { currenciesById, historyItems, formatDate } = this;
     const formatCurrencyName = (id: string) => (currenciesById[id]?.code ?? '').toUpperCase();
     const formatCurrencyAmount = (amount: number) => (Number.isFinite(amount) ? String(amount) : amount);
     const iconStatus = (status) => {
@@ -182,7 +180,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
           fiatAmount: formatCurrencyAmount(item.baseCurrencyAmount),
           crypto: formatCurrencyName(item.currencyId),
           cryptoAmount: formatCurrencyAmount(item.quoteCurrencyAmount),
-          date: dayjs(item.updatedAt).format('DD.MM.YYYY,HH:mm:ss'),
+          date: formatDate(new Date(item.updatedAt).getTime()),
           icon: iconStatus(item.status),
         },
       };

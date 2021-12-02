@@ -562,20 +562,6 @@
         "allowToken": "Consenti a @:appName di utilizzare il tuo {tokenSymbol}",
         "approveToken": "Tieni presente che è necessario approvare il token solo una volta. Se la tua estensione ha più richieste di approvazione di token, assicurati di confermare solo l'ultima mentre rifiuti le altre."
     },
-    "months": {
-        "0": "Jan",
-        "1": "Feb",
-        "2": "Mar",
-        "3": "Apr",
-        "4": "Maggio",
-        "5": "Giu",
-        "6": "Lug",
-        "7": "Ago",
-        "8": "Sep",
-        "9": "Ott",
-        "10": "Nov",
-        "11": "Dic"
-    },
     "bridgeHistory": {
         "title": "Cronologia",
         "showHistory": "Mostra cronologia",

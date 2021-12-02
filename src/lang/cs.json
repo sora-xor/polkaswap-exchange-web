@@ -562,20 +562,6 @@
         "allowToken": "Povolit @: appName používat vaše {tokenSymbol}",
         "approveToken": "Upozorňujeme, že token je nutné schválit pouze jednou. Pokud má vaše rozšíření více žádostí o schválení tokenu, nezapomeňte potvrdit pouze poslední a zbytek odmítnout."
     },
-    "months": {
-        "0": "Leden",
-        "1": "Únor",
-        "2": "Březen",
-        "3": "Duben",
-        "4": "Květen",
-        "5": "Červen",
-        "6": "Červenec",
-        "7": "Srpen",
-        "8": "Září",
-        "9": "Říjen",
-        "10": "Listopad",
-        "11": "Prosinec"
-    },
     "bridgeHistory": {
         "title": "Historie",
         "showHistory": "Zobrazit historii",
