@@ -5,21 +5,13 @@ import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import isEmpty from 'lodash/fp/isEmpty';
 import intersection from 'lodash/fp/intersection';
-import { api } from '@soramitsu/soraneo-wallet-web';
-import { FPNumber, isDirectExchange, XOR } from '@sora-substrate/util';
+import { FPNumber, isDirectExchange, XOR, KnownAssets, KnownSymbols, LiquiditySourceTypes } from '@sora-substrate/util';
 
 import { MarketAlgorithmForLiquiditySource, ZeroStringValue } from '@/consts';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { divideAssets } from '@/utils';
 
-import type {
-  AccountBalance,
-  CodecString,
-  LiquiditySourceTypes,
-  LPRewardsInfo,
-  QuotePaths,
-  QuotePayload,
-} from '@sora-substrate/util';
+import type { AccountBalance, CodecString, LPRewardsInfo, QuotePaths, QuotePayload } from '@sora-substrate/util';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
@@ -81,6 +73,26 @@ function initialState(): SwapState {
     payload: null,
   };
 }
+
+const getSources = (payload: QuotePayload, address: string, isInput = true): Array<LiquiditySourceTypes> => {
+  const xst = KnownAssets.get(KnownSymbols.XSTUSD).address;
+  const rules = {
+    [LiquiditySourceTypes.MulticollateralBondingCurvePool]: (payload: QuotePayload) =>
+      !!Number(payload.reserves.tbc[address]),
+    [LiquiditySourceTypes.XYKPool]: (payload: QuotePayload) =>
+      payload.reserves.xyk[address].every((tokenReserve) => !!Number(tokenReserve)),
+    [LiquiditySourceTypes.XSTPool]: (payload: QuotePayload) =>
+      address === xst && !!Number(payload.issuances[isInput ? XOR.address : address]),
+  };
+
+  return Object.entries(rules).reduce((acc: LiquiditySourceTypes[], entry) => {
+    const [source, rule] = entry;
+    if (rule(payload)) {
+      acc.push(source as LiquiditySourceTypes);
+    }
+    return acc;
+  }, []);
+};
 
 const state = initialState();
 
@@ -270,6 +282,9 @@ const actions = {
   setLiquidityProviderFee({ commit }, liquidityProviderFee: string) {
     commit(types.SET_LIQUIDITY_PROVIDER_FEE, liquidityProviderFee);
   },
+  setRewards({ commit }, rewards: Array<LPRewardsInfo>) {
+    commit(types.SET_REWARDS, rewards);
+  },
 
   async checkMarketAlgorithmUpdate({ dispatch, rootGetters, state }) {
     // reset market algorithm to default, if related liquiditySource is not available
@@ -278,7 +293,7 @@ const actions = {
     }
   },
 
-  async updatePaths({ commit, dispatch, getters }) {
+  updatePaths({ commit, getters, state }) {
     const inputAssetId = getters.tokenFrom?.address;
     const outputAssetId = getters.tokenTo?.address;
     const quotePaths: QuotePaths = {};
@@ -289,16 +304,16 @@ const actions = {
         const xor = XOR.address;
 
         if (isDirectExchange(inputAssetId, outputAssetId)) {
-          const path = await api.getListEnabledSourcesForPath(inputAssetId, outputAssetId);
           const nonXor = inputAssetId === xor ? outputAssetId : inputAssetId;
+          const path = getSources(state.payload, nonXor);
 
           quotePaths[nonXor] = path;
           pairLiquiditySources.push(...path);
         } else {
-          const [inputPaths, outputPaths] = await Promise.all([
-            api.getListEnabledSourcesForPath(inputAssetId, xor),
-            api.getListEnabledSourcesForPath(xor, outputAssetId),
-          ]);
+          const [inputPaths, outputPaths] = [
+            getSources(state.payload, inputAssetId, true),
+            getSources(state.payload, outputAssetId, false),
+          ];
 
           quotePaths[inputAssetId] = inputPaths;
           quotePaths[outputAssetId] = outputPaths;
@@ -308,19 +323,17 @@ const actions = {
 
       commit(types.SET_PATHS, quotePaths);
       commit(types.SET_PAIR_LIQUIDITY_SOURCES, pairLiquiditySources);
-
-      await dispatch('checkMarketAlgorithmUpdate');
     } catch (error) {
       console.error(error);
       commit(types.SET_PATHS, {});
       commit(types.SET_PAIR_LIQUIDITY_SOURCES, []);
     }
   },
-  setRewards({ commit }, rewards: Array<LPRewardsInfo>) {
-    commit(types.SET_REWARDS, rewards);
-  },
-  setSubscriptionPayload({ commit }, payload: QuotePayload) {
+
+  async setSubscriptionPayload({ commit, dispatch }, payload: QuotePayload) {
     commit(types.SET_SUBSCRIPTION_PAYLOAD, payload);
+    await dispatch('updatePaths');
+    await dispatch('checkMarketAlgorithmUpdate');
   },
   reset({ commit, dispatch }) {
     dispatch('resetSubscriptions');

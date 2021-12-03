@@ -272,7 +272,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>;
   @Action('reset', { namespace }) reset!: AsyncVoidFn;
   @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn;
-  @Action('updatePaths', { namespace }) updatePaths!: AsyncVoidFn;
 
   @Action('setRewards', { namespace }) setRewards!: (rewards: Array<LPRewardsInfo>) => Promise<void>;
   @Action('setSubscriptionPayload', { namespace }) setSubscriptionPayload!: (payload: QuotePayload) => Promise<void>;
@@ -443,10 +442,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
         await this.setTokenFromAddress(XOR.address);
         await this.setTokenToAddress();
       }
-
-      if (this.areTokensSelected) {
-        await this.updatePaths();
-      }
     });
   }
 
@@ -539,10 +534,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   private async onChangeSwapReserves(payload: QuotePayload): Promise<void> {
     await this.setSubscriptionPayload(payload);
 
-    if (!this.isAvailable) {
-      await this.updatePaths();
-    }
-
     this.runRecountSwapValues();
   }
 
@@ -567,14 +558,13 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
 
     await this.setTokenFromAddress(toAddress);
     await this.setTokenToAddress(fromAddress);
-    await this.updatePaths();
 
     if (this.isExchangeB) {
       this.setExchangeB(false);
-      this.handleInputFieldFrom(this.toValue, false);
+      this.handleInputFieldFrom(this.toValue);
     } else {
       this.setExchangeB(true);
-      this.handleInputFieldTo(this.fromValue, false);
+      this.handleInputFieldTo(this.fromValue);
     }
 
     this.subscribeOnSwapReserves();
@@ -604,8 +594,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
       } else {
         await this.setTokenToAddress(token.address);
       }
-
-      await this.updatePaths();
 
       this.subscribeOnSwapReserves();
     }
