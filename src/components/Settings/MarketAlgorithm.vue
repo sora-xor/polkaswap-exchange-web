@@ -32,13 +32,18 @@ export default class MarketAlgorithm extends Mixins(TranslationMixin) {
   @State((state) => state.swap.pairLiquiditySources) liquiditySources!: Array<LiquiditySourceTypes>;
   @Action('setMarketAlgorithm') setMarketAlgorithm!: (name: string) => Promise<void>;
 
+  // implementation of backend hack, to show only primary market sources
+  get primarySources(): Array<LiquiditySourceTypes> {
+    return this.liquiditySources.filter((source) => source !== LiquiditySourceTypes.XYKPool);
+  }
+
   get marketAlgorithms(): Array<MarketAlgorithms> {
     const items = Object.keys(LiquiditySourceForMarketAlgorithm) as Array<MarketAlgorithms>;
 
     return items.filter((marketAlgorithm) => {
       const liquiditySource = LiquiditySourceForMarketAlgorithm[marketAlgorithm];
 
-      return marketAlgorithm === MarketAlgorithms.SMART || this.liquiditySources.includes(liquiditySource);
+      return marketAlgorithm === MarketAlgorithms.SMART || this.primarySources.includes(liquiditySource);
     });
   }
 
