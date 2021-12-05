@@ -117,6 +117,7 @@
           />
         </div>
       </s-float-input>
+      <slippage-tolerance class="slippage-tolerance-settings" />
       <s-button
         type="primary"
         class="action-button s-typography-button--large"
@@ -139,10 +140,12 @@
           {{ t('createPair.supply') }}
         </template>
       </s-button>
-      <slippage-tolerance class="slippage-tolerance-settings" />
+      <add-liquidity-transaction-details
+        v-if="areTokensSelected && isAvailable"
+        :infoOnly="false"
+        class="info-line-container"
+      ></add-liquidity-transaction-details>
     </s-form>
-
-    <add-liquidity-transaction-details v-if="areTokensSelected" :infoOnly="false"></add-liquidity-transaction-details>
 
     <select-token
       :visible.sync="showSelectSecondTokenDialog"

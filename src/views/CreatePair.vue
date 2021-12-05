@@ -115,6 +115,7 @@
           />
         </div>
       </s-float-input>
+      <slippage-tolerance class="slippage-tolerance-settings" />
       <s-button
         type="primary"
         class="action-button s-typography-button--large"
@@ -137,7 +138,6 @@
           {{ t('createPair.supply') }}
         </template>
       </s-button>
-      <slippage-tolerance class="slippage-tolerance-settings" />
     </s-form>
 
     <template v-if="areTokensSelected && isAvailable">
@@ -149,46 +149,7 @@
           </template>
         </info-line>
       </div>
-      <template v-else>
-        <div class="info-line-container">
-          <p class="info-line-container__title">{{ t('createPair.pricePool') }}</p>
-          <info-line
-            :label="t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })"
-            :value="formattedPrice"
-          />
-          <info-line
-            :label="t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })"
-            :value="formattedPriceReversed"
-          />
-          <info-line
-            :label="t('createPair.networkFee')"
-            :label-tooltip="t('networkFeeTooltipText')"
-            :value="formattedFee"
-            :asset-symbol="KnownSymbols.XOR"
-            :fiat-value="getFiatAmountByCodecString(networkFee)"
-            is-formatted
-          />
-        </div>
-
-        <div class="info-line-container">
-          <p class="info-line-container__title">{{ t('createPair.yourPositionEstimated') }}</p>
-          <info-line
-            is-formatted
-            value-can-be-hidden
-            :label="firstToken.symbol"
-            :value="formattedFirstTokenValue"
-            :fiat-value="fiatFirstAmount"
-          />
-          <info-line
-            is-formatted
-            value-can-be-hidden
-            :label="secondToken.symbol"
-            :value="formattedSecondTokenValue"
-            :fiat-value="fiatSecondAmount"
-          />
-          <info-line :label="t('createPair.shareOfPool')" value="100%" />
-        </div>
-      </template>
+      <create-pair-transaction-details v-else :infoOnly="false" />
     </template>
 
     <select-token
@@ -238,6 +199,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace);
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
+    CreatePairTransactionDetails: lazyComponent(Components.CreatePairTransactionDetails),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
     FormattedAmount: components.FormattedAmount,

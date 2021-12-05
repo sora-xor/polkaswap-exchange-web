@@ -1,5 +1,5 @@
 <template>
-  <component :is="infoOnly ? 'div' : 'transaction-details'" class="remove-liquidity-info">
+  <component :is="infoOnly ? 'div' : 'transaction-details'" class="info-line-container">
     <info-line
       v-if="shareOfPool"
       value-can-be-hidden
@@ -33,16 +33,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
 
-import {
-  FPNumber,
-  KnownSymbols,
-  AccountLiquidity,
-  CodecString,
-  Operation,
-  NetworkFeesObject,
-  Asset,
-  AccountAsset,
-} from '@sora-substrate/util';
+import { KnownSymbols, CodecString, Operation, NetworkFeesObject, Asset } from '@sora-substrate/util';
 
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import TranslationMixin from '../mixins/TranslationMixin';
@@ -76,15 +67,3 @@ export default class RemoveLiquidityTransactionDetails extends Mixins(mixins.For
   }
 }
 </script>
-
-<style lang="scss">
-.remove-liquidity-info {
-  .el-collapse.neumorphic .el-icon-arrow-right {
-    height: 17px !important;
-  }
-
-  .el-collapse-item__header .el-icon-arrow-right.is-active {
-    height: 15px !important;
-  }
-}
-</style>

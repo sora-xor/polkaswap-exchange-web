@@ -159,6 +159,7 @@ export enum Components {
   AddLiquidityTransactionDetails = 'TransactionDetails/AddLiquidityTransactionDetails',
   RemoveLiquidityTransactionDetails = 'TransactionDetails/RemoveLiquidityTransactionDetails',
   BridgeTransactionDetails = 'TransactionDetails/BridgeTransactionDetails',
+  CreatePairTransactionDetails = 'TransactionDetails/CreatePairTransactionDetails',
 }
 
 interface SidebarMenuItem {

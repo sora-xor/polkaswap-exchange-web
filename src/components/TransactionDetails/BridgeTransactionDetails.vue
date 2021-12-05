@@ -1,5 +1,5 @@
 <template>
-  <component :is="infoOnly ? 'div' : 'transaction-details'" class="bridge-transaction-info">
+  <component :is="infoOnly ? 'div' : 'transaction-details'">
     <info-line
       :label="t('bridge.soraNetworkFee')"
       :label-tooltip="t('networkFeeTooltipText')"
@@ -66,15 +66,3 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
   }
 }
 </script>
-
-<style lang="scss">
-.bridge-transaction-info {
-  .el-collapse.neumorphic .el-icon-arrow-right {
-    height: 16px !important;
-  }
-
-  .el-collapse-item__header .el-icon-arrow-right.is-active {
-    height: 15px !important;
-  }
-}
-</style>

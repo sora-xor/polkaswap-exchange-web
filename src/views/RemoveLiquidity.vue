@@ -125,7 +125,7 @@
           is-formatted
         />
       </div> -->
-
+      <slippage-tolerance class="slippage-tolerance-settings" />
       <s-button
         type="primary"
         class="action-button s-typography-button--large"
@@ -146,7 +146,6 @@
           {{ t('removeLiquidity.remove') }}
         </template>
       </s-button>
-      <slippage-tolerance class="slippage-tolerance-settings" />
 
       <remove-liquidity-transaction-details
         class="info-line-container"

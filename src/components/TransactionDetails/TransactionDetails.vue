@@ -68,5 +68,9 @@ export default class TransactionDetails extends Vue {}
     display: flex;
     justify-content: center;
   }
+
+  .info-line .el-tooltip {
+    margin-bottom: 4px !important;
+  }
 }
 </style>

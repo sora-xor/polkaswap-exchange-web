@@ -181,7 +181,7 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
 
 .route-icon {
   color: var(--s-color-base-content-primary) !important;
-  font-size: 13px !important;
+  font-size: 12px !important;
   margin: 0 !important;
 }
 
