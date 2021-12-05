@@ -46,7 +46,6 @@ export default class Moonpay extends Mixins(MoonpayBridgeInitMixin) {
   @State((state) => state[namespace].pollingTimestamp) pollingTimestamp!: number;
   @State((state) => state[namespace].dialogVisibility) dialogVisibility!: boolean;
   @State((state) => state[namespace].notificationVisibility) notificationVisibility!: boolean;
-  @State((state) => state.settings.language) language!: string;
 
   @Action('setDialogVisibility', { namespace: 'moonpay' }) setDialogVisibility!: (flag: boolean) => Promise<void>;
   @Action('createTransactionsPolling', { namespace }) createTransactionsPolling!: () => Promise<VoidFunction>;

@@ -7,7 +7,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit",
+    "test:unit": "vue-cli-service test:unit --silent",
     "test:e2e": "vue-cli-service test:e2e",
     "test:all": "yarn test:unit",
     "lint": "vue-cli-service lint",
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@metamask/detect-provider": "^1.2.0",
-    "@soramitsu/soraneo-wallet-web": "1.6.26",
+    "@soramitsu/soraneo-wallet-web": "1.6.33",
     "@walletconnect/web3-provider": "^1.6.6",
     "core-js": "^3.6.4",
     "ethers": "^5.3.1",

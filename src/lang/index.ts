@@ -37,6 +37,24 @@ export function getLocale(): string {
   return getSupportedLocale(locale as any);
 }
 
+export async function setDayJsLocale(lang: Language): Promise<void> {
+  const locale = getSupportedLocale(lang);
+  const code = first(locale.split('-')) as string;
+
+  try {
+    // importing dayjs locale file automatically runs `dayjs.locale(code)`
+    // "webpackInclude" - optimization to exclude unused files from "chunk-vendors"
+    await import(
+      /* webpackInclude: /(en|ru|cs|de|es|fr|hy|id|it|nl|no|pl|yo)\.js$/ */
+      /* webpackChunkName: "dayjs-locale-[request]" */
+      /* webpackMode: "lazy" */
+      `dayjs/locale/${code}.js`
+    );
+  } catch (error) {
+    console.warn(`[dayjs]: unsupported locale "${code}"`, error);
+  }
+}
+
 export async function setI18nLocale(lang: Language): Promise<void> {
   const locale = getSupportedLocale(lang) as any;
 

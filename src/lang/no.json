@@ -562,20 +562,6 @@
         "allowToken": "Tillat @:appName å bruke {tokenSymbol}",
         "approveToken": "Vær oppmerksom på at det bare er nødvendig å godkjenne tokenet én gang. Hvis utvidelsen din har flere forespørsler om godkjenning av token, må du bare bekrefte den siste mens du avviser resten."
     },
-    "months": {
-        "0": "Jan",
-        "1": "Feb",
-        "2": "Mar",
-        "3": "Apr",
-        "4": "Mai",
-        "5": "Jun",
-        "6": "Jul",
-        "7": "Aug",
-        "8": "Sep",
-        "9": "Okt",
-        "10": "Nov",
-        "11": "Des"
-    },
     "bridgeHistory": {
         "title": "Historie",
         "showHistory": "Vis historikk",

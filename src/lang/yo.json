@@ -562,20 +562,6 @@
         "allowToken": "Gba @:appName lati lo {tokenSymbol}",
         "approveToken": "Jọwọ ṣe akiyesi pe o nilo lati fọwọsi ami (tokini)-ẹri lẹẹkan. Ti itẹsiwaju rẹ ba ni awọn ibeere ifọwọsi ọpọ, rii daju lati jẹrisi ọkan ti o kẹhin lakoko ti o kọ iyoku."
     },
-    "months": {
-        "0": "Oṣu Kini",
-        "1": "Oṣu Keji",
-        "2": "Osu Keta",
-        "3": "Oṣu Kẹrin",
-        "4": "Osu karun",
-        "5": "Oṣu kefa",
-        "6": "Oṣu keje",
-        "7": "Oṣu Kẹjo",
-        "8": "Oṣu Kẹsan",
-        "9": "Oṣu Kẹwa",
-        "10": "Oṣu kọkanla",
-        "11": "Oṣu kejila"
-    },
     "bridgeHistory": {
         "title": "Itan-akọọlẹ",
         "showHistory": "Ṣe afihan itan-akọọlẹ",
