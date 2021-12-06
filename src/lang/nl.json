@@ -34,7 +34,7 @@
         "ClaimRewards": "Beloningen claimen",
         "andText": "en",
         "finalized": {
-            "Transfer": "{bedrag} {symbool} verzonden naar {adres}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "{amount} {symbol} geswapped voor {amount2} {symbol2}",
             "AddLiquidity": "Opgegeven {bedrag} {symbool} en {bedrag2} {symbool2}",
             "RemoveLiquidity": "{bedrag} {symbool} en {bedrag2} {symbool2} werden verwijderd",
@@ -43,11 +43,11 @@
             "ClaimRewards": "Beloning succesvol geclaimd {rewards}"
         },
         "error": {
-            "Transfer": "Kon {amount} {symbol} niet verzenden naar {adres}",
+            "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
             "Swap": "Mislukt om {amount} {symbol} te swappen voor {amount2} {symbol2}",
-            "AddLiquidity": "Kon {bedrag} {symbool} en {bedrag2} {symbool2} niet leveren",
+            "AddLiquidity": "Kon {bedrag} {symbool} en {bedrag2} {symbool2} niet toevoegen",
             "RemoveLiquidity": "Het is niet gelukt om {amount} {symbol} en {amount2} {symbol2}",
-            "CreatePair": "Kon {bedrag} {symbool} en {bedrag2} {symbool2} niet leveren",
+            "CreatePair": "Kon {bedrag} {symbool} en {bedrag2} {symbool2} niet toevoegen",
             "RegisterAsset": "Mislukt om {symbool} asset te registreren",
             "ClaimRewards": "Kan geen beloningen claimen {beloningen}"
         }
@@ -94,15 +94,14 @@
         "confirm": "@:confirmText",
         "errorAddress": "Ongeldig adres. Controleer het en probeer het opnieuw.",
         "feeTooltip": "@:networkFeeTooltipText",
-        "tooltip": "Verzend tokens tussen SORA-netwerk accounts",
-        "addressWarning": "Tokens worden naar het onderstaande SORA-adres gestuurd. Zorg ervoor dat de ontvanger toegang heeft tot de SORA-keten om de tokens te gebruiken:",
+        "tooltip": "Verzend tokens tussen accounts op het  SORA-netwerk",
+        "addressWarning": "Tokens worden naar het onderstaande SORA-adres gestuurd. Zorg ervoor dat de ontvanger toegang heeft tot de SORA-chain om de tokens te gebruiken:",
         "addressError": "U kunt geen tokens verzenden naar hetzelfde account waarmee u momenteel bent verbonden."
     },
     "account": {
         "successCopy": "Wallet-adres werd gekopieerd naar het klembord",
         "copy": "Adres kopiëren",
-        "switch": "Van account wisselen",
-        "logout": "Logout"
+        "switch": "Van account wisselen"
     },
     "history": {
         "clearHistory": "Geschiedenis wissen",
@@ -207,7 +206,6 @@
         "total": "Totaal",
         "from": "Van",
         "to": "Naar",
-        "viewInPolkascan": "Bekijk in Polkascan",
         "successCopy": "{value} werd naar het klembord gekopieerd",
         "copy": "Kopieer {value}",
         "history": {
@@ -215,7 +213,10 @@
             "submitted": "Transactie ingediend met vergoeding van {vergoeding} {symbool}",
             "confirmed": "Transactie bevestigd"
         },
-        "viewInSorascan": "Bekijk in Sorascan",
+        "viewIn": {
+            "sorascan": "Bekijk in Sorascan",
+            "subscan": "Bekijk in Subscan"
+        },
         "txId": "Transactie ID"
     },
     "appName": "Polkaswap",
@@ -253,7 +254,9 @@
         "AddLiquidity": "Liquiditeit toevoegen",
         "AddLiquidityId": "Liquiditeit toevoegen",
         "RemoveLiquidity": "Liquiditeit verwijderen",
-        "PageNotFound": "Pagina niet gevonden"
+        "PageNotFound": "Pagina niet gevonden",
+        "Tokens": "Tokens",
+        "Rewards": "Beloningen"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -273,21 +276,23 @@
         "telegram": "Telegram",
         "medium": "Medium",
         "reddit": "Reddit",
-        "github": "GitHub"
+        "github": "GitHub",
+        "wiki": "@:soraText Wiki"
     },
     "footerMenu": {
         "faucet": "Faucet",
         "github": "GitHub",
         "sorawiki": "@:soraText Wiki",
         "memorandum": "Polkaswap memorandum en servicevoorwaarden",
-        "privacy": "Privacybeleid"
+        "privacy": "Privacybeleid",
+        "info": "Info & Gemeenschap"
     },
     "helpDialog": {
         "title": "Help",
         "termsOfService": "Servicevoorwaarden",
         "privacyPolicy": "Privacybeleid",
-        "termsOfServiceLink": "https:\/\/www.notion.so\/Polkaswap-Memorandum-and-Terms-of-Services-dc7f815a6d0a497a924832cc9bda17b8",
-        "privacyPolicyLink": "https:\/\/www.notion.so\/Polkaswap-Privacy-Policy-d0f26456f2974f0d94734b19f6e5fc70",
+        "termsOfServiceLink": "https:\/\/wiki.sora.org\/polkaswap\/terms",
+        "privacyPolicyLink": "https:\/\/wiki.sora.org\/polkaswap\/privacy",
         "appVersion": "@:appName versie",
         "contactUs": "Contacteer ons"
     },
@@ -332,7 +337,7 @@
             "incorrectProtocol": "Het adres moet beginnen met ws:\/\/ of wss:\/\/",
             "incorrectAddress": "Onjuist adres"
         },
-        "updateNode": "Knooppunt bijwerken"
+        "updateNode": "Node bijwerken"
     },
     "buttons": {
         "max": "MAX",
@@ -351,9 +356,10 @@
     },
     "metamask": "MetaMask",
     "sora": {
-        "Devnet": "@:soraText Devnet",
-        "Testnet": "@:soraText Testnet",
-        "Mainnet": "@:soraText Mainnet"
+        "Dev": "@:soraText Devnet",
+        "Test": "@:soraText Testnet",
+        "Prod": "@:soraText Mainnet",
+        "Stage": "@:soraText Testnet"
     },
     "evm": {
         "main": "Ethereum Mainnet",
@@ -436,7 +442,8 @@
         "confirmSwap": "Swap bevestigen",
         "swapOutputMessage": "De output wordt geschat. U ontvangt minimaal {transactionValue} of de transactie wordt teruggedraaid.",
         "rewardsForSwap": "PSWAP Strategische Beloningen",
-        "swapInputMessage": "Invoer wordt geschat. U verkoopt maximaal {transactionValue} of de transactie wordt teruggedraaid."
+        "swapInputMessage": "Invoer wordt geschat. U verkoopt maximaal {transactionValue} of de transactie wordt teruggedraaid.",
+        "route": "Route"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -449,7 +456,8 @@
         "pairTokens": "{Pair} Pool Tokens",
         "poolShare": "Uw aandeel in de pool",
         "unknownAsset": "Onbekend asset",
-        "description": "Wanneer u liquiditeit toevoegt, krijgt u pooltokens die uw positie vertegenwoordigen. Deze tokens verdienen automatisch vergoedingen die evenredig zijn aan uw aandeel in de pool en kunnen op elk moment worden ingewisseld."
+        "description": "Wanneer u liquiditeit toevoegt, krijgt u pooltokens die uw positie vertegenwoordigen. Deze tokens verdienen automatisch vergoedingen die evenredig zijn aan uw aandeel in de pool en kunnen op elk moment worden ingewisseld.",
+        "strategicBonusApy": "Strategische Bonus APY"
     },
     "bridge": {
         "title": "HASHI Brug",
@@ -547,25 +555,12 @@
         "newTransaction": "Nieuwe transactie aanmaken",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "viewInSorascan": "Bekijk in Sorascan",
         "changeAccount": "@:changeAccountText in @:metamask",
         "expectedAddress": "Verwacht adres in @:metamask",
         "title": "Bridge-transactie",
-        "expectedMetaMaskAddress": "Verwacht adres in Metamask:"
-    },
-    "months": {
-        "0": "Jan",
-        "1": "Feb",
-        "2": "Mar",
-        "3": "Apr",
-        "4": "Mei",
-        "5": "Jun",
-        "6": "Jul",
-        "7": "Aug",
-        "8": "Sep",
-        "9": "Okt",
-        "10": "Nov",
-        "11": "Dec"
+        "expectedMetaMaskAddress": "Verwacht adres in Metamask:",
+        "allowToken": "Sta @:appName toe om je {tokenSymbol}",
+        "approveToken": "Houd er rekening mee dat het slechts één keer nodig is om de token goed te keuren. Als uw extensie meerdere goedkeuringsverzoeken voor tokens heeft, moet u ervoor zorgen dat u alleen de laatste bevestigt en de rest afwijst."
     },
     "bridgeHistory": {
         "title": "Geschiedenis",
@@ -586,7 +581,7 @@
         },
         "custom": {
             "title": "Aangepast",
-            "search": "Zoeken op asset-ID",
+            "search": "Invoer activum ID",
             "text": "AANGEPASTE TOKENS",
             "alreadyAttached": "Deze token was al gehecht",
             "notFound": "Token niet gevonden"
@@ -601,7 +596,7 @@
         "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{eerste}-{tweede} Pool tokens",
         "connect": "wallet verbinden",
-        "supply": "Voorraad",
+        "supply": "Toevoegen",
         "yourPosition": "Uw positie",
         "yourPositionEstimated": "Uw positie (geschat)",
         "youWillReceive": "U ontvangt",
@@ -748,5 +743,80 @@
     "memorandum": "Polkaswap memorandum en servicevoorwaarden",
     "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\"> @:memorandum <\/a>",
     "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\"> @:helpDialog.privacyPolicy <\/a>",
-    "FAQ": "Polkaswap FAQ"
+    "FAQ": "Polkaswap FAQ",
+    "connectedAccount": "Verbonden account",
+    "selectNodeConnected": "Verbonden met: {chain}",
+    "moonpayText": "MoonPay",
+    "forText": "voor",
+    "moonpay": {
+        "notifications": {
+            "success": {
+                "title": "Tokens gekocht",
+                "text": "Tokenaankoop is voltooid. De HASHI-bridgetransactie start automatisch zodra de tokens zijn ontvangen op het gekoppelde Ethereum-account. Het is veilig om dit venster te sluiten en Polkaswap te blijven gebruiken. Er komt een melding over de overbruggingstransactie wanneer deze gereed is."
+            },
+            "supportError": {
+                "title": "Token niet ondersteund",
+                "text": "Helaas wordt het token gekocht via @:moonpayText nog niet ondersteund door de HASHI-brug in Polkaswap. Normaal gesproken zouden alleen de ondersteunde tokens beschikbaar moeten zijn voor aankoop via MoonPay in Polkaswap, dus er moet ergens iets mis zijn gegaan. Aarzel niet om de community op de hoogte te stellen van deze zaak in de <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> Polkaswap Telegram-groep <\/a> ."
+            },
+            "feeError": {
+                "title": "Niet genoeg ETH voor de bridge tx",
+                "text": "Helaas is de HASHI-brugtransactie mislukt omdat er niet genoeg ETH is om de transactiekosten van het Ethereum-netwerk te betalen. Voeg meer ETH toe en probeer het opnieuw."
+            },
+            "transactionError": {
+                "title": "Transactie is mislukt",
+                "text": "Helaas blijkt dat de @:moonpayText transactie is mislukt. Probeer het opnieuw. Ga voor @:moonpayText ondersteuning naar <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https:\/\/ support.moonpay.com <\/a>"
+            },
+            "amountError": {
+                "title": "Onvoldoende balans",
+                "text": "Helaas is de HASHI-brugtransactie mislukt omdat er niet genoeg tokens zijn voor de transactie. Controleer uw Ethereum-accountsaldo en probeer het opnieuw."
+            },
+            "accountAddressError": {
+                "title": "Verkeerd Ethereum-account",
+                "text": "Helaas is de HASHI-brugtransactie mislukt omdat het adres van de ontvanger van de tokens in de @:moonpayText bestelling niet overeenkomt met uw huidige Ethereum-accountadres. Schakel het Ethereum-account in extensie en probeer het opnieuw."
+            }
+        },
+        "buttons": {
+            "buy": "Tokens kopen",
+            "history": "Aankoopgeschiedenis",
+            "transfer": "Brug starten",
+            "view": "Bridgetransactie transactie bekijken"
+        },
+        "history": {
+            "title": "Aankoop geschiedenis",
+            "empty": "Geen informatie"
+        },
+        "confirmations": {
+            "txReady": "Transactie klaar voor brug"
+        },
+        "tooltips": {
+            "transfer": "Tokens succesvol gekocht!\n Klik om de overbruggingstransactie te starten"
+        }
+    },
+    "recievedText": "Ontvangen",
+    "light": "Licht",
+    "dark": "Donker",
+    "headerMenu": {
+        "showBalances": "Saldi tonen",
+        "hideBalances": "Saldi verbergen",
+        "settings": "Instellingen",
+        "switchTheme": "Overschakelen naar {theme} -modus",
+        "switchLanguage": "Kies een taal",
+        "selectNode": "@:selectNodeText"
+    },
+    "sentText": "Verzonden",
+    "learnMoreText": "Kom meer te weten",
+    "marketMakerCountdown": {
+        "title": "Market Maker aftellen",
+        "blocks": "blokken",
+        "daysLeft": "dagen over",
+        "txs": "TX's",
+        "volume": "MM TX-volume",
+        "description": "20 miljoen PSWAP \/ maand zal worden verdeeld onder market makers met ten minste 500 tx \/ maand met een waarde van meer dan 1 XOR."
+    },
+    "confirmNextTxFailure": {
+        "header": "Aandacht",
+        "info": "Uw XOR-saldo zal na deze transactie {fee} U kunt de netwerkkosten voor een andere transactie niet betalen.",
+        "payoff": "Je zou de Bridge moeten gebruiken om XOR van andere netwerken te krijgen, XOR van een ander SORA-account te ontvangen, of een ander token dat al in je account staat om te wisselen naar XOR.",
+        "button": "Ja, ik begrijp het risico"
+    }
 }

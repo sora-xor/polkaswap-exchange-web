@@ -1,18 +1,8 @@
 <template>
-  <dialog-base
-    :visible.sync="isVisible"
-    :title="t('bridge.selectNetwork')"
-    class="networks"
-    width="464px"
-  >
+  <dialog-base :visible.sync="isVisible" :title="t('bridge.selectNetwork')" class="networks">
     <p class="networks-info">{{ t('bridge.networkInfo') }}</p>
     <s-radio-group v-model="selectedNetworkId">
-      <s-radio
-        v-for="network in subNetworks"
-        :key="network.id"
-        :label="network.id"
-        class="network"
-      >
+      <s-radio v-for="network in subNetworks" :key="network.id" :label="network.id" class="network">
         <span class="network-name">{{ t(`bridge.${network.name}`) }}</span>
         <token-logo :tokenSymbol="network.symbol" />
       </s-radio>
@@ -21,25 +11,25 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator'
+import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
-import DialogMixin from '@/components/mixins/DialogMixin'
-import DialogBase from '@/components/DialogBase.vue'
-import { Components } from '@/consts'
-import { lazyComponent } from '@/router'
-import { SubNetwork } from '@/utils/ethers-util'
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import DialogMixin from '@/components/mixins/DialogMixin';
+import DialogBase from '@/components/DialogBase.vue';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
+import { SubNetwork } from '@/utils/ethers-util';
 
 @Component({
   components: {
     DialogBase,
-    TokenLogo: lazyComponent(Components.TokenLogo)
-  }
+    TokenLogo: lazyComponent(Components.TokenLogo),
+  },
 })
 export default class SelectNetwork extends Mixins(TranslationMixin, DialogMixin) {
-  @Prop({ default: () => [], type: Array }) subNetworks!: Array<SubNetwork>
+  @Prop({ default: () => [], type: Array }) subNetworks!: Array<SubNetwork>;
   @ModelSync('value', 'input', { type: Number })
-  readonly selectedNetworkId!: number
+  readonly selectedNetworkId!: number;
 }
 </script>
 

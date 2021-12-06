@@ -1,44 +1,60 @@
-// import { shallowMount, createLocalVue } from '@vue/test-utils'
-// import Vuex from 'vuex'
+import { VueConstructor } from 'vue';
+import Vuex from 'vuex';
+import { shallowMount } from '@vue/test-utils';
 
-// import SwapInfo from '@/components/SwapInfo.vue'
-// import { slippageTolerance, liquidityProviderFee } from '../../mocks/swap'
-// import { tokens } from '../../mocks/tokens'
-// import { SoramitsuElementsImport, TranslationMock } from '../../utils'
+import SwapInfo from '@/components/SwapInfo.vue';
 
-// const localVue = createLocalVue()
-// localVue.use(Vuex)
-// SoramitsuElementsImport(localVue)
+import { SoramitsuElementsImport, localVue, TranslationMock } from '../../utils';
+import { MOCK_SWAP_INFO, MOCK_FIAT_PRICE_AND_APY_OBJECT } from '../../mocks/components/SwapInfo';
 
-// describe('SwapInfo.vue', () => {
-//   let getters
-//   let store
+const NumberFormatterMixin = (vue: VueConstructor) => vue.mixin({ name: 'NumberFormatterMixin' });
 
-//   beforeEach(() => {
-//     TranslationMock(SwapInfo)
+const FormattedAmountMixin = (vue: VueConstructor) => vue.mixin({ name: 'FormattedAmountMixin' });
 
-//     getters = {
-//       tokenFrom: () => tokens[0],
-//       tokenTo: () => tokens[1],
-//       toValue: () => 100,
-//       isTokenFromPrice: () => true,
-//       slippageTolerance: () => slippageTolerance,
-//       liquidityProviderFee: () => liquidityProviderFee
-//     }
+export const useDescribe = (name: string, component: VueConstructor<Vue>, fn: jest.EmptyFunction) =>
+  describe(name, () => {
+    beforeAll(() => {
+      SoramitsuElementsImport(localVue);
+      TranslationMock(component);
+      NumberFormatterMixin(component);
+      FormattedAmountMixin(component);
+    });
+    fn();
+  });
 
-//     store = new Vuex.Store({
-//       getters
-//     })
-//   })
-
-//   it('should renders correctly', () => {
-//     const wrapper = shallowMount(SwapInfo, { localVue, store })
-//     expect(wrapper.element).toMatchSnapshot()
-//   })
-// })
-
-describe('SwapInfo test', () => {
-  test('Temporary test', () => {
-    expect(true).toEqual(true)
-  })
-})
+useDescribe('SwapInfo.vue', SwapInfo, () => {
+  MOCK_SWAP_INFO.map((item) =>
+    it(`[${item.title}]: should be rendered correctly`, () => {
+      const store = new Vuex.Store({
+        modules: {
+          swap: {
+            namespaced: true,
+            state: {
+              liquidityProviderFee: item.liquidityProviderFee,
+              isExchangeB: item.isExchangeB,
+              rewards: item.rewards,
+            },
+            getters: {
+              tokenFrom: () => item.tokenFrom,
+              tokenTo: () => item.tokenTo,
+              minMaxReceived: () => item.minMaxReceived,
+              priceImpact: () => item.priceImpact,
+              priceReversed: () => item.priceReversed,
+              price: () => item.price,
+            },
+          },
+        },
+        getters: {
+          fiatPriceAndApyObject: () => MOCK_FIAT_PRICE_AND_APY_OBJECT,
+          isLoggedIn: () => item.isLoggedIn,
+          networkFees: () => item.networkFees,
+        },
+      });
+      const wrapper = shallowMount(SwapInfo, {
+        localVue,
+        store,
+      });
+      expect(wrapper.element).toMatchSnapshot();
+    })
+  );
+});

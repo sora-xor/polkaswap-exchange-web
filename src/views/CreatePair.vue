@@ -1,10 +1,12 @@
 <template>
-  <div v-loading="parentLoading || loading" class="container">
-    <generic-page-header has-button-back :title="t('createPair.title')" :tooltip="t('pool.description')" @back="handleBack" />
-    <s-form
-      class="el-form--actions"
-      :show-message="false"
-    >
+  <div v-loading="parentLoading" class="container">
+    <generic-page-header
+      has-button-back
+      :title="t('createPair.title')"
+      :tooltip="t('pool.description')"
+      @back="handleBack"
+    />
+    <s-form class="el-form--actions" :show-message="false">
       <s-float-input
         class="s-input--token-value"
         size="medium"
@@ -22,19 +24,38 @@
           </div>
           <div v-if="isLoggedIn && firstToken" class="input-value">
             <span class="input-value--uppercase">{{ t('createPair.balance') }}</span>
-            <span class="input-value--primary">{{ getTokenBalance(firstToken) }}</span>
-            <formatted-amount v-if="firstTokenPrice" :value="getFiatBalance(firstToken)" is-fiat-value />
+            <formatted-amount-with-fiat-value
+              value-can-be-hidden
+              with-left-shift
+              value-class="input-value--primary"
+              :value="getTokenBalance(firstToken)"
+              :fiat-value="getFiatBalance(firstToken)"
+            />
           </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
-          <s-button v-if="isAvailable && isFirstMaxButtonAvailable" class="el-button--max s-typography-button--small" type="primary" alternative size="mini" border-radius="mini" @click="handleMaxValue(firstToken, setFirstTokenValue)">
+          <s-button
+            v-if="isAvailable && isFirstMaxButtonAvailable"
+            class="el-button--max s-typography-button--small"
+            type="primary"
+            alternative
+            size="mini"
+            border-radius="mini"
+            @click="handleMaxValue(firstToken, setFirstTokenValue)"
+          >
             {{ t('buttons.max') }}
           </s-button>
           <token-select-button class="el-button--select-token" :token="firstToken" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <formatted-amount v-if="firstToken && firstTokenPrice" :value="fiatFirstAmount" is-fiat-value />
-          <token-address v-if="firstToken" :name="firstToken.name" :symbol="firstToken.symbol" :address="firstToken.address" class="input-value" />
+          <formatted-amount v-if="firstToken && firstTokenPrice" is-fiat-value :value="fiatFirstAmount" />
+          <token-address
+            v-if="firstToken"
+            :name="firstToken.name"
+            :symbol="firstToken.symbol"
+            :address="firstToken.address"
+            class="input-value"
+          />
         </div>
       </s-float-input>
       <s-icon class="icon-divider" name="plus-16" />
@@ -55,22 +76,51 @@
           </div>
           <div v-if="isLoggedIn && secondToken" class="input-value">
             <span class="input-value--uppercase">{{ t('createPair.balance') }}</span>
-            <span class="input-value--primary">{{ getTokenBalance(secondToken) }}</span>
-            <formatted-amount v-if="secondTokenPrice" :value="getFiatBalance(secondToken)" is-fiat-value />
+            <formatted-amount-with-fiat-value
+              value-can-be-hidden
+              with-left-shift
+              value-class="input-value--primary"
+              :value="getTokenBalance(secondToken)"
+              :fiat-value="getFiatBalance(secondToken)"
+            />
           </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
-          <s-button v-if="isAvailable && isSecondMaxButtonAvailable" class="el-button--max s-typography-button--small" type="primary" alternative size="mini" border-radius="mini" @click="handleMaxValue(secondToken, setSecondTokenValue)">
+          <s-button
+            v-if="isAvailable && isSecondMaxButtonAvailable"
+            class="el-button--max s-typography-button--small"
+            type="primary"
+            alternative
+            size="mini"
+            border-radius="mini"
+            @click="handleMaxValue(secondToken, setSecondTokenValue)"
+          >
             {{ t('buttons.max') }}
           </s-button>
-          <token-select-button class="el-button--select-token" icon="chevron-down-rounded-16" :token="secondToken" @click="openSelectSecondTokenDialog" />
+          <token-select-button
+            class="el-button--select-token"
+            icon="chevron-down-rounded-16"
+            :token="secondToken"
+            @click="openSelectSecondTokenDialog"
+          />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <formatted-amount v-if="secondToken && secondTokenPrice" :value="fiatSecondAmount" is-fiat-value />
-          <token-address v-if="secondToken" :name="secondToken.name" :symbol="secondToken.symbol" :address="secondToken.address" class="input-value" />
+          <formatted-amount v-if="secondToken && secondTokenPrice" is-fiat-value :value="fiatSecondAmount" />
+          <token-address
+            v-if="secondToken"
+            :name="secondToken.name"
+            :symbol="secondToken.symbol"
+            :address="secondToken.address"
+            class="input-value"
+          />
         </div>
       </s-float-input>
-      <s-button type="primary" class="action-button s-typography-button--large" :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable" @click="openConfirmDialog">
+      <s-button
+        type="primary"
+        class="action-button s-typography-button--large"
+        :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable"
+        @click="handleCreatePair"
+      >
         <template v-if="!areTokensSelected">
           {{ t('buttons.chooseTokens') }}
         </template>
@@ -102,8 +152,14 @@
       <template v-else>
         <div class="info-line-container">
           <p class="info-line-container__title">{{ t('createPair.pricePool') }}</p>
-          <info-line :label="t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })" :value="formattedPrice" />
-          <info-line :label="t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })" :value="formattedPriceReversed" />
+          <info-line
+            :label="t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })"
+            :value="formattedPrice"
+          />
+          <info-line
+            :label="t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })"
+            :value="formattedPriceReversed"
+          />
           <info-line
             :label="t('createPair.networkFee')"
             :label-tooltip="t('networkFeeTooltipText')"
@@ -117,27 +173,34 @@
         <div class="info-line-container">
           <p class="info-line-container__title">{{ t('createPair.yourPositionEstimated') }}</p>
           <info-line
+            is-formatted
+            value-can-be-hidden
             :label="firstToken.symbol"
             :value="formattedFirstTokenValue"
             :fiat-value="fiatFirstAmount"
-            is-formatted
           />
           <info-line
+            is-formatted
+            value-can-be-hidden
             :label="secondToken.symbol"
             :value="formattedSecondTokenValue"
             :fiat-value="fiatSecondAmount"
-            is-formatted
           />
           <info-line :label="t('createPair.shareOfPool')" value="100%" />
         </div>
       </template>
     </template>
 
-    <select-token :visible.sync="showSelectSecondTokenDialog" :connected="isLoggedIn" :asset="firstToken" @select="setSecondTokenAddress($event.address)" />
+    <select-token
+      :visible.sync="showSelectSecondTokenDialog"
+      :connected="isLoggedIn"
+      :asset="firstToken"
+      @select="setSecondTokenAddress($event.address)"
+    />
 
     <confirm-token-pair-dialog
       :visible.sync="showConfirmDialog"
-      :parent-loading="loading"
+      :parent-loading="parentLoading"
       :first-token="firstToken"
       :second-token="secondToken"
       :first-token-value="firstTokenValue"
@@ -148,21 +211,24 @@
       :slippage-tolerance="slippageTolerance"
       @confirm="confirmCreatePair"
     />
+
+    <network-fee-warning-dialog :visible.sync="showWarningFeeDialog" :fee="formattedFee" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import { Action } from 'vuex-class'
-import { FPNumber, KnownAssets, KnownSymbols } from '@sora-substrate/util'
-import { FormattedAmount, InfoLine } from '@soramitsu/soraneo-wallet-web'
+import { Component, Mixins } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
+import { FPNumber, KnownAssets, KnownSymbols, Operation } from '@sora-substrate/util';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
-import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin'
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
+import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin';
+import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
+import { lazyComponent } from '@/router';
+import { Components } from '@/consts';
 
-const namespace = 'createPair'
-const TokenPairMixin = CreateTokenPairMixin(namespace)
+const namespace = 'createPair';
+const TokenPairMixin = CreateTokenPairMixin(namespace);
 
 @Component({
   components: {
@@ -171,35 +237,53 @@ const TokenPairMixin = CreateTokenPairMixin(namespace)
     TokenLogo: lazyComponent(Components.TokenLogo),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
+    NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
-    FormattedAmount,
-    InfoLine
-  }
+    FormattedAmount: components.FormattedAmount,
+    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
+    InfoLine: components.InfoLine,
+  },
 })
+export default class CreatePair extends Mixins(mixins.NetworkFeeWarningMixin, TokenPairMixin, NetworkFeeDialogMixin) {
+  @Action('createPair', { namespace }) createPair;
 
-export default class CreatePair extends Mixins(TokenPairMixin) {
-  @Action('createPair', { namespace }) createPair
+  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG
-
-  get formattedFirstTokenValue (): string {
-    return this.formatStringValue(this.firstTokenValue.toString())
+  get formattedFirstTokenValue(): string {
+    return this.formatStringValue(this.firstTokenValue.toString());
   }
 
-  get formattedSecondTokenValue (): string {
-    return this.formatStringValue(this.secondTokenValue.toString())
+  get formattedSecondTokenValue(): string {
+    return this.formatStringValue(this.secondTokenValue.toString());
   }
 
-  async created (): Promise<void> {
-    await this.withApi(async () => {
-      await this.getAssets()
-      await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address)
-    })
+  get isXorSufficientForNextOperation(): boolean {
+    return this.isXorSufficientForNextTx({
+      type: Operation.CreatePair,
+      amount: this.getFPNumber(this.firstTokenValue).toCodecString(),
+      xorBalance: this.getFPNumber(this.getTokenBalance(this.firstToken)).toCodecString(),
+      fee: this.getFPNumber(this.formattedFee).toCodecString(),
+    });
   }
 
-  confirmCreatePair (): Promise<void> {
-    return this.handleConfirm(this.createPair)
+  async created(): Promise<void> {
+    await this.withParentLoading(async () => {
+      await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address);
+    });
+  }
+
+  async handleCreatePair(): Promise<void> {
+    if (!this.isXorSufficientForNextOperation) {
+      this.openWarningFeeDialog();
+      await this.waitOnNextTxFailureConfirmation();
+    }
+
+    this.openConfirmDialog();
+  }
+
+  confirmCreatePair(): Promise<void> {
+    return this.handleConfirm(this.createPair);
   }
 }
 </script>
@@ -211,7 +295,6 @@ export default class CreatePair extends Mixins(TokenPairMixin) {
 }
 
 .el-form--actions {
-  @include generic-input-lines;
   @include buttons;
   @include full-width-button('action-button');
 }

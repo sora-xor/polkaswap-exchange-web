@@ -1,22 +1,22 @@
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 @Component
 export default class ConfirmDialogMixin extends Mixins(TranslationMixin) {
-  showConfirmDialog = false
+  showConfirmDialog = false;
 
-  openConfirmDialog (): void {
-    this.showConfirmDialog = true
+  openConfirmDialog(): void {
+    this.showConfirmDialog = true;
   }
 
-  async handleConfirmDialog (func: () => Promise<void>): Promise<void> {
+  async handleConfirmDialog(func: AsyncVoidFn): Promise<void> {
     try {
-      await func()
-      this.showConfirmDialog = false
-    } catch (error) {
-      console.error(error)
-      this.$alert(this.t(error.message), { title: this.t('errorText') })
+      await func();
+      this.showConfirmDialog = false;
+    } catch (error: any) {
+      console.error(error);
+      this.$alert(this.t(error.message), { title: this.t('errorText') });
     }
   }
 }

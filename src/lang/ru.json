@@ -34,7 +34,7 @@
         "ClaimRewards": "Получить награды",
         "andText": "и",
         "finalized": {
-            "Transfer": "Отправлено {amount} {symbol} на {address}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "Совершен обмен {amount} {symbol} на {amount2} {symbol2}",
             "AddLiquidity": "Поставлено {amount} {symbol} и {amount2} {symbol2}",
             "RemoveLiquidity": "Удалены {amount} {symbol} и {amount2} {symbol2}",
@@ -43,7 +43,7 @@
             "ClaimRewards": "Награды получены успешно {rewards}"
         },
         "error": {
-            "Transfer": "Не удалось отправить {amount} {symbol} на {address}",
+            "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
             "Swap": "Не удалось обменять {amount} {symbol} на {amount2} {symbol2}",
             "AddLiquidity": "Не удалось добавить {amount} {symbol} и {amount2} {symbol2}",
             "RemoveLiquidity": "Не удалось вывести {amount} {symbol} и {amount2} {symbol2}",
@@ -101,8 +101,7 @@
     "account": {
         "successCopy": "Адрес кошелька скопирован в буфер обмена",
         "copy": "Копировать адрес",
-        "switch": "Сменить аккаунт",
-        "logout": "Выйти"
+        "switch": "Сменить аккаунт"
     },
     "history": {
         "clearHistory": "Очистить историю",
@@ -207,7 +206,6 @@
         "total": "Всего",
         "from": "От",
         "to": "Кому",
-        "viewInPolkascan": "Посмотреть в Polkascan",
         "successCopy": "{value} скопирована в буфер обмена",
         "copy": "Копировать {value}",
         "history": {
@@ -215,7 +213,10 @@
             "submitted": "Транзакция отправлена с комиссией в размере {fee} {symbol}",
             "confirmed": "Транзакция подтверждена"
         },
-        "viewInSorascan": "Смотреть в SORAScan",
+        "viewIn": {
+            "sorascan": "Смотреть в SORAScan",
+            "subscan": "Смотреть в Subscan"
+        },
         "txId": "ID транзакции"
     },
     "appName": "Polkaswap",
@@ -253,7 +254,9 @@
         "AddLiquidity": "Добавить ликвидность",
         "AddLiquidityId": "Добавить ликвидность",
         "RemoveLiquidity": "Забрать ликвидность",
-        "PageNotFound": "Страница не найдена"
+        "PageNotFound": "Страница не найдена",
+        "Tokens": "Токены",
+        "Rewards": "Награды"
     },
     "mainMenu": {
         "Swap": "Обмен",
@@ -273,21 +276,23 @@
         "telegram": "Telegram",
         "medium": "Medium",
         "reddit": "Reddit",
-        "github": "GitHub"
+        "github": "GitHub",
+        "wiki": "@:soraText Wiki"
     },
     "footerMenu": {
         "faucet": "Кран",
         "github": "GitHub",
         "sorawiki": "@:soraText Wiki",
         "memorandum": "Меморандум и условия предоставления услуг Polkaswap",
-        "privacy": "Политика конфиденциальности"
+        "privacy": "Политика конфиденциальности",
+        "info": "Инфо и сообщество"
     },
     "helpDialog": {
         "title": "Помощь",
         "termsOfService": "Условия предоставления услуг",
         "privacyPolicy": "Политика конфиденциальности",
-        "termsOfServiceLink": "https:\/\/www.notion.so\/Polkaswap-Memorandum-and-Terms-of-Services-dc7f815a6d0a497a924832cc9bda17b8",
-        "privacyPolicyLink": "https:\/\/www.notion.so\/Polkaswap-Privacy-Policy-d0f26456f2974f0d94734b19f6e5fc70",
+        "termsOfServiceLink": "https:\/\/wiki.sora.org\/polkaswap\/terms",
+        "privacyPolicyLink": "https:\/\/wiki.sora.org\/polkaswap\/privacy",
         "appVersion": "@:appName версия",
         "contactUs": "Свяжитесь с нами"
     },
@@ -351,9 +356,10 @@
     },
     "metamask": "MetaMask",
     "sora": {
-        "Devnet": "@:soraText Сеть для разработчиков",
-        "Testnet": "@:soraText Тестовая сеть",
-        "Mainnet": "@:soraText Основная сеть"
+        "Dev": "@:soraText Сеть для разработчиков",
+        "Test": "@:soraText Тестовая сеть",
+        "Prod": "@:soraText Основная сеть",
+        "Stage": "@:soraText Тестовая сеть"
     },
     "evm": {
         "main": "Основная сеть Ethereum",
@@ -436,7 +442,8 @@
         "confirmSwap": "Подтвердить обмен",
         "swapOutputMessage": "Вывод оценён. Вы получите как минимум {transactionValue} или транзакция будет отменена.",
         "rewardsForSwap": "Стратегические вознаграждения PSWAP",
-        "swapInputMessage": "Ввод оценивается. Вы продадите максимум {transactionValue} иначе транзакция будет отменена."
+        "swapInputMessage": "Ввод оценивается. Вы продадите максимум {transactionValue} иначе транзакция будет отменена.",
+        "route": "Маршрут"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -449,7 +456,8 @@
         "pairTokens": "{pair} Токены Пула",
         "poolShare": "Ваша доля в пуле",
         "unknownAsset": "Неизвестный актив",
-        "description": "Когда вы добавляете ликвидность, вам выдаются токены пула, представляющие вашу позицию. Эти токены автоматически зарабатывают на комиссиях пула пропорционально вашей доле. Вы можете изъять ликвидность в любое время."
+        "description": "Когда вы добавляете ликвидность, вам выдаются токены пула, представляющие вашу позицию. Эти токены автоматически зарабатывают на комиссиях пула пропорционально вашей доле. Вы можете изъять ликвидность в любое время.",
+        "strategicBonusApy": "Стратегический бонус APY"
     },
     "bridge": {
         "title": "Мост HASHI",
@@ -547,25 +555,12 @@
         "newTransaction": "Создать новую транзакцию",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "viewInSorascan": "Смотреть в SORAScan",
         "changeAccount": "@:changeAccountText в @:metamask",
         "expectedAddress": "Ожидаемый адрес в @:metamask",
         "title": "Транзакция Моста",
-        "expectedMetaMaskAddress": "Ожидаемый адрес в @:metamask"
-    },
-    "months": {
-        "0": "Январь",
-        "1": "Февраль",
-        "2": "Март",
-        "3": "Апрель",
-        "4": "Май",
-        "5": "Июнь",
-        "6": "Июль",
-        "7": "Август",
-        "8": "Сентябрь",
-        "9": "Октябрь",
-        "10": "Ноябрь",
-        "11": "Декабрь"
+        "expectedMetaMaskAddress": "Ожидаемый адрес в @:metamask",
+        "allowToken": "Разрешить @:appName использовать ваши {tokenSymbol}",
+        "approveToken": "Обратите внимание, что подтверждать токен нужно только один раз. Если ваше расширение имеет несколько запросов на утверждение токена, убедитесь, что вы подтвердили только последний из них, а остальные отклонили."
     },
     "bridgeHistory": {
         "title": "История",
@@ -586,7 +581,7 @@
         },
         "custom": {
             "title": "Кастомный",
-            "search": "Поиск по ID актива",
+            "search": "Введите ID актива",
             "text": "ПЕРСОНАЛИЗИРОВАННЫЕ ТОКЕНЫ",
             "alreadyAttached": "Этот токен уже добавлен",
             "notFound": "Токен не найден"
@@ -692,7 +687,7 @@
             "connectExternalAccount": "Подключите аккаунт @:ethereumText, чтобы проверить наличие доступных наград PSWAP и VAL.",
             "connectAccounts": "Для получения наград PSWAP и VAL необходимо подключить оба аккаунта @:soraText и @:ethereumText.",
             "connectAnotherAccount": "Подключите другой аккаунт @:ethereumText, чтобы проверить наличие доступных наград PSWAP и VAL.",
-            "howToClaimRewards": "Чтобы получить Ваше {symbols} вознаграждение, Вы должны войти {count} {transactions} в {destination}. Вознаграждения будут перечислены на ваш счет @:soraText."
+            "howToClaimRewards": "Чтобы получить Ваше {symbols} вознаграждение, Вы должны войти {count} {transactions} в {destination}. Вознаграждения будут перечислены на ваш счет @:(soraText)."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
@@ -748,5 +743,80 @@
     "memorandum": "Меморандум Polkaswap и Условия предоставления услуг",
     "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\">@:memorandum<\/a>",
     "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\">@:helpDialog.privacyPolicy<\/a>",
-    "FAQ": "Polkaswap FAQ"
+    "FAQ": "Polkaswap FAQ",
+    "connectedAccount": "Подключенный аккаунт",
+    "selectNodeConnected": "Подключено к: {chain}",
+    "moonpayText": "MoonPay",
+    "forText": "за",
+    "moonpay": {
+        "notifications": {
+            "success": {
+                "title": "Токены куплены",
+                "text": "Покупка токенов завершена. Транзакция моста HASHI начнется автоматически, как только токены будут получены на подключенный счет Ethereum. Можно закрыть это окно и продолжить использование Polkaswap. Когда транзакция моста будет готова, появится уведомление о ней."
+            },
+            "supportError": {
+                "title": "Токен не поддерживается",
+                "text": "К сожалению, токен, приобретенный через @:moonpayText, еще не поддерживается мостом HASHI в Polkaswap. Обычно только поддерживаемые токены должны быть доступны для покупки через MoonPay в Polkaswap, следовательно, где-то что-то пошло не так. Не стесняйтесь сообщить сообществу об этом случае в <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> группу Polkaswap в Telegram <\/a> ."
+            },
+            "feeError": {
+                "title": "Недостаточно ETH для транзакции по мосту",
+                "text": "К сожалению, транзакция моста HASHI потерпела неудачу из-за того, что не было достаточного количества ETH для оплаты комиссии за транзакцию в сети Ethereum. Добавьте еще ETH и повторите попытку."
+            },
+            "transactionError": {
+                "title": "Транзакция не удалась",
+                "text": "К сожалению, похоже, что транзакция @:moonpayText не удалась. Повторите попытку. Для поддержки @:moonpayText перейдите по ссылке <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\">https:\/\/support.moonpay.com<\/a>"
+            },
+            "amountError": {
+                "title": "Недостаточный баланс",
+                "text": "К сожалению, транзакция моста HASHI не прошла из-за недостаточного количества токенов для транзакции. Пожалуйста, проверьте баланс вашего аккаунта Ethereum и повторите попытку."
+            },
+            "accountAddressError": {
+                "title": "Неверный Ethereum аккаунт",
+                "text": "К сожалению, транзакция моста HASHI не удалась из-за того, что адрес получателя токенов в заказе @:moonpayText не соответствует вашему текущему адресу учетной записи Ethereum. Пожалуйста, переключите учетную запись Ethereum в расширении и повторите попытку."
+            }
+        },
+        "buttons": {
+            "buy": "Купить токены",
+            "history": "История покупок",
+            "transfer": "Начать трансфер",
+            "view": "Посмотреть транзакцию моста"
+        },
+        "history": {
+            "title": "История покупок",
+            "empty": "Нет данных"
+        },
+        "confirmations": {
+            "txReady": "Транзакция готова для моста"
+        },
+        "tooltips": {
+            "transfer": "Токены успешно куплены!\n Нажмите, чтобы начать транзакцию моста"
+        }
+    },
+    "recievedText": "Получено",
+    "light": "Светлый",
+    "dark": "Темный",
+    "headerMenu": {
+        "showBalances": "Показать балансы",
+        "hideBalances": "Скрыть балансы",
+        "settings": "Настройки",
+        "switchTheme": "Перейти в {theme} режим",
+        "switchLanguage": "Изменить язык",
+        "selectNode": "@:selectNodeText"
+    },
+    "sentText": "Отправить",
+    "learnMoreText": "Узнать больше",
+    "marketMakerCountdown": {
+        "title": "Обратный отсчет маркет-мейкера",
+        "blocks": "блоков",
+        "daysLeft": "осталось дней",
+        "txs": "TXs",
+        "volume": "Объем MM TX",
+        "description": "20 миллионов PSWAP \/ месяц будут распределены среди маркет-мейкеров, имеющих не менее 500 tx \/ месяц с объемом более 1 XOR."
+    },
+    "confirmNextTxFailure": {
+        "header": "Внимание",
+        "info": "После этой транзакции ваш баланс XOR будет меньше {fee} Вы не сможете оплатить сетевую комиссию за другую транзакцию.",
+        "payoff": "Вам нужно будет использовать мост, чтобы получить XOR из других сетей, получить отправку XOR из другой учетной записи SORA или заменить любой другой токен, уже находящийся в вашей учетной записи, на XOR.",
+        "button": "Да, я понимаю риск"
+    }
 }

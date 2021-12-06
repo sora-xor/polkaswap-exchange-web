@@ -1,88 +1,157 @@
 <template>
   <div class="layout about">
     <div class="content">
-      <s-image :src="images.hero" lazy fit="cover" draggable="false" class="unselectable" style="max-width: 1040px; height: 585px;" />
-      <p class="gradient main" style="line-height:1;margin-top:-60px;margin-bottom:10px;">{{ t('about.title') }}</p>
+      <s-image
+        :src="images.hero"
+        lazy
+        fit="cover"
+        draggable="false"
+        class="unselectable"
+        style="max-width: 1040px; height: 585px"
+      />
+      <p class="gradient main" style="line-height: 1; margin-top: -60px; margin-bottom: 10px">{{ t('about.title') }}</p>
       <p class="text">{{ t('about.description') }}</p>
-      <s-image :src="images.about02x" lazy fit="cover" draggable="false" class="unselectable" style="width: 75%; height: auto; margin-top: 120px; height: 343px;" />
+      <s-image
+        :src="images.about02x"
+        lazy
+        fit="cover"
+        draggable="false"
+        class="unselectable"
+        style="width: 75%; height: auto; margin-top: 120px; height: 343px"
+      />
       <p class="gradient trading">{{ t('about.trading.title') }}</p>
-      <p class="text" style="margin-top:15px;">{{ t('about.trading.first') }}</p>
-      <s-image :src="images.about02_1" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px;" />
+      <p class="text" style="margin-top: 15px">{{ t('about.trading.first') }}</p>
+      <s-image :src="images.about02_1" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px" />
       <p class="text">{{ t('about.trading.second') }}</p>
-      <s-image :src="images.about02_2" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px;" />
-      <p class="text">{{ t('about.trading.third') }}
-        <a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_(original_%22BSD_License%22)" title="BSD 4-clause license" class="text" target="_blank" rel="nofollow noopener">BSD 4-clause license</a>
+      <s-image :src="images.about02_2" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px" />
+      <p class="text">
+        {{ t('about.trading.third') }}
+        <a
+          href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_(original_%22BSD_License%22)"
+          title="BSD 4-clause license"
+          class="text"
+          target="_blank"
+          rel="nofollow noopener"
+        >
+          BSD 4-clause license
+        </a>
       </p>
-      <s-image :src="images.about03x" lazy fit="cover" draggable="false" class="unselectable" style="width: 75%; margin-top: 120px; height: 343px;" />
+      <s-image
+        :src="images.about03x"
+        lazy
+        fit="cover"
+        draggable="false"
+        class="unselectable"
+        style="width: 75%; margin-top: 120px; height: 343px"
+      />
       <p class="gradient liquidity">{{ t('about.liquidity.title') }}</p>
-      <p class="text" style="margin-top:15px;">{{ t('about.liquidity.first') }}</p>
-      <s-image :src="images.about03_1" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px;" />
+      <p class="text" style="margin-top: 15px">{{ t('about.liquidity.first') }}</p>
+      <s-image :src="images.about03_1" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px" />
       <p class="text">{{ t('about.liquidity.second') }}</p>
-      <s-image :src="images.about03_2" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px;" />
+      <s-image :src="images.about03_2" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px" />
       <p class="text">{{ t('about.liquidity.third') }}</p>
 
-      <s-image :src="images.about04x" lazy fit="cover" draggable="false" class="unselectable" style="width: 75%; margin-top: 120px; height: 366px;" />
+      <s-image
+        :src="images.about04x"
+        lazy
+        fit="cover"
+        draggable="false"
+        class="unselectable"
+        style="width: 75%; margin-top: 120px; height: 366px"
+      />
       <p class="gradient swap">{{ t('about.swap.title') }}</p>
-      <p class="text" style="margin-top:15px;">{{ t('about.swap.first') }}</p>
-      <s-image :src="images.about04_1" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px;" />
+      <p class="text" style="margin-top: 15px">{{ t('about.swap.first') }}</p>
+      <s-image :src="images.about04_1" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px" />
       <p class="text">{{ t('about.swap.second') }}</p>
-      <s-image :src="images.about04_2" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px;" />
+      <s-image :src="images.about04_2" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px" />
       <p class="text">{{ t('about.swap.third') }}</p>
 
-      <s-image :src="images.about05x" lazy fit="cover" draggable="false" class="unselectable" style="width: 75%; margin-top: 120px; height: 366px;" />
+      <s-image
+        :src="images.about05x"
+        lazy
+        fit="cover"
+        draggable="false"
+        class="unselectable"
+        style="width: 75%; margin-top: 120px; height: 366px"
+      />
       <p class="gradient pswap">{{ t('about.pswap.title') }}</p>
-      <p class="text" >{{ t('about.pswap.first') }}</p>
-      <s-image :src="images.about05_1" lazy draggable="false" class="unselectable bubble-icon" style="height: 281px;" />
-      <p class="text" style="margin-bottom:120px;">{{ t('about.pswap.second', { percent : feePercent }) }}</p>
+      <p class="text">{{ t('about.pswap.first') }}</p>
+      <s-image :src="images.about05_1" lazy draggable="false" class="unselectable bubble-icon" style="height: 281px" />
+      <p class="text" style="margin-bottom: 120px">{{ t('about.pswap.second', { percent: feePercent }) }}</p>
 
-      <div class="about-video" style="margin-bottom:120px;">
-        <a href="http://sora.org/pswap-soft-launch-video" target="_blank" rel="nofollow noopener" style="text-align: center;">
-          <s-image :src="images.about06" lazy fit="cover" draggable="false" class="unselectable preview" style="width: 672px; height: 378px;" />
+      <div class="about-video" style="margin-bottom: 120px">
+        <a
+          href="http://sora.org/pswap-soft-launch-video"
+          target="_blank"
+          rel="nofollow noopener"
+          style="text-align: center"
+        >
+          <s-image
+            :src="images.about06"
+            lazy
+            fit="cover"
+            draggable="false"
+            class="unselectable preview"
+            style="width: 672px; height: 378px"
+          />
         </a>
       </div>
-      <div class="about-links" style="margin-bottom:120px;">
-        <div class="about-links-part" style="text-align:left;">
-          <s-image :src="images.about07_1" lazy fit="fill" draggable="false" class="unselectable icon" style="height: 49px;" />
-          <span class="title">{{ t('about.links.first.title') }}<img :src="images.about07_3" class="link"></span>
+      <div class="about-links" style="margin-bottom: 120px">
+        <div class="about-links-part" style="text-align: left">
+          <s-image
+            :src="images.about07_1"
+            lazy
+            fit="fill"
+            draggable="false"
+            class="unselectable icon"
+            style="height: 49px"
+          />
+          <span class="title">{{ t('about.links.first.title') }}<img :src="images.about07_3" class="link" /></span>
           <p class="text">{{ t('about.links.first.desc') }}</p>
           <a class="link-mask" href="https://sora.org/validator" target="_blank" rel="nofollow noopener" />
         </div>
-        <div class="about-links-part" style="text-align:left;">
-          <s-image :src="images.about07_2" lazy fit="fill" draggable="false" class="unselectable icon" style="height: 49px;" />
-          <span class="title">{{ t('about.links.second.title') }}<img :src="images.about07_3" class="link"></span>
+        <div class="about-links-part" style="text-align: left">
+          <s-image
+            :src="images.about07_2"
+            lazy
+            fit="fill"
+            draggable="false"
+            class="unselectable icon"
+            style="height: 49px"
+          />
+          <span class="title">{{ t('about.links.second.title') }}<img :src="images.about07_3" class="link" /></span>
           <p class="text">{{ t('about.links.second.desc') }}</p>
           <a class="link-mask" href="https://sora.org" target="_blank" rel="nofollow noopener" />
         </div>
       </div>
       <div class="about-network">
-        <s-image :src="images.about08" lazy fit="fill" draggable="false" class="unselectable network-img" style="height: 468px;" />
+        <s-image :src="images.about08" lazy fit="fill" draggable="false" class="unselectable network-img" />
         <p class="text">{{ t('about.network') }}</p>
       </div>
     </div>
     <footer class="app-footer">
-      <web-3-logo :theme="libraryTheme" draggable="false" class="web3 unselectable"/>
+      <web-3-logo :theme="libraryTheme" draggable="false" class="web3 unselectable" />
       <div class="hr" />
     </footer>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import { FPNumber } from '@sora-substrate/util'
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
+import { Component, Mixins } from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
+import { FPNumber } from '@sora-substrate/util';
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
-import LoadingMixin from '@/components/mixins/LoadingMixin'
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import Web3Logo from '@/components/logo/Web3.vue'
+import Web3Logo from '@/components/logo/Web3.vue';
 
 @Component({
   components: {
-    Web3Logo
-  }
+    Web3Logo,
+  },
 })
-export default class About extends Mixins(TranslationMixin, LoadingMixin) {
+export default class About extends Mixins(TranslationMixin) {
   readonly IMAGES = [
     'about02-1.png',
     'about02-2.png',
@@ -100,24 +169,24 @@ export default class About extends Mixins(TranslationMixin, LoadingMixin) {
     'about07-2.png',
     'about07-3.png',
     'about08.png',
-    'hero.png'
+    'hero.png',
   ].reduce((result: any, name) => {
-    const key = name.split('.')[0].replace('-', '_')
+    const key = name.split('.')[0].replace('-', '_');
 
     return {
       dark: { ...result.dark, [key]: `/about/${name === 'about06.png' ? 'shared' : 'dark'}/${name}` },
-      light: { ...result.light, [key]: `/about/${name === 'about06.png' ? 'shared' : 'light'}/${name}` }
-    }
-  }, {})
+      light: { ...result.light, [key]: `/about/${name === 'about06.png' ? 'shared' : 'light'}/${name}` },
+    };
+  }, {});
 
-  @Getter libraryTheme!: Theme
+  @Getter libraryTheme!: Theme;
 
-  get images (): Array<any> {
-    return this.IMAGES[this.libraryTheme]
+  get images(): Array<any> {
+    return this.IMAGES[this.libraryTheme];
   }
 
-  get feePercent (): string {
-    return new FPNumber('0.3').toLocaleString()
+  get feePercent(): string {
+    return new FPNumber('0.3').toLocaleString();
   }
 }
 </script>
@@ -139,7 +208,7 @@ export default class About extends Mixins(TranslationMixin, LoadingMixin) {
 
 <style lang="scss" scoped>
 @mixin backgroundImageWidth {
-  &>:first-child {
+  & > :first-child {
     width: 80%;
     min-width: 800px;
   }
@@ -179,7 +248,7 @@ export default class About extends Mixins(TranslationMixin, LoadingMixin) {
   display: flex;
   align-items: center;
 
-  &>:first-child {
+  & > :first-child {
     max-width: 120px;
   }
 
@@ -434,7 +503,7 @@ export default class About extends Mixins(TranslationMixin, LoadingMixin) {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
     gap: 0px 5rem;
-    grid-template-areas: ". .";
+    grid-template-areas: '. .';
     &-part {
       display: flex;
       flex-direction: column;
@@ -444,12 +513,19 @@ export default class About extends Mixins(TranslationMixin, LoadingMixin) {
       &:after {
         content: '';
         margin-top: 20px;
-        background: linear-gradient(80.38deg, #FFD9E5 14.49%, rgba(242, 153, 133, 0.68) 38.03%, rgba(239, 20, 92, 0.38) 61.35%, rgba(171, 24, 184, 0.25) 79.98%, rgba(24, 174, 184, 0.2) 85.51%);
+        background: linear-gradient(
+          80.38deg,
+          #ffd9e5 14.49%,
+          rgba(242, 153, 133, 0.68) 38.03%,
+          rgba(239, 20, 92, 0.38) 61.35%,
+          rgba(171, 24, 184, 0.25) 79.98%,
+          rgba(24, 174, 184, 0.2) 85.51%
+        );
         height: 1px;
       }
 
       .icon {
-        width: 50px
+        width: 50px;
       }
       .title {
         font-family: Sora;
@@ -462,7 +538,7 @@ export default class About extends Mixins(TranslationMixin, LoadingMixin) {
 
         padding: 10px 0;
 
-        color: #D5CDD0;
+        color: #d5cdd0;
 
         .link {
           width: 12px;
@@ -524,8 +600,12 @@ export default class About extends Mixins(TranslationMixin, LoadingMixin) {
   }
 }
 
-.content p { max-width: 640px;}
-.content .s-image.bubble-icon { margin: -60px; }
+.content p {
+  max-width: 640px;
+}
+.content .s-image.bubble-icon {
+  margin: -60px;
+}
 
 .app-footer {
   display: flex;
@@ -534,7 +614,14 @@ export default class About extends Mixins(TranslationMixin, LoadingMixin) {
 
   .hr {
     height: 1px;
-    background: linear-gradient(80.38deg, #FFD9E5 14.49%, rgba(242, 153, 133, 0.68) 38.03%, rgba(239, 20, 92, 0.38) 61.35%, rgba(171, 24, 184, 0.25) 79.98%, rgba(24, 174, 184, 0.2) 85.51%);
+    background: linear-gradient(
+      80.38deg,
+      #ffd9e5 14.49%,
+      rgba(242, 153, 133, 0.68) 38.03%,
+      rgba(239, 20, 92, 0.38) 61.35%,
+      rgba(171, 24, 184, 0.25) 79.98%,
+      rgba(24, 174, 184, 0.2) 85.51%
+    );
     max-width: 900px;
     min-width: 760px;
     width: 100%;
@@ -556,8 +643,10 @@ export default class About extends Mixins(TranslationMixin, LoadingMixin) {
       &.main {
         font-size: 55px;
       }
-      &.trading, &.liquidity,
-      &.swap, &.pswap {
+      &.trading,
+      &.liquidity,
+      &.swap,
+      &.pswap {
         font-size: 36px;
       }
     }
@@ -573,27 +662,60 @@ export default class About extends Mixins(TranslationMixin, LoadingMixin) {
 
   &.main {
     font-size: 58px;
-    background: linear-gradient(79.7deg, rgba(242, 153, 133, 0.68) 5.55%, #FF3B7B 55.23%, rgba(24, 165, 184, 0.2) 98.71%, rgba(171, 24, 184, 0.25) 131.11%, rgba(242, 44, 109, 0.38) 157.31%);
+    background: linear-gradient(
+      79.7deg,
+      rgba(242, 153, 133, 0.68) 5.55%,
+      #ff3b7b 55.23%,
+      rgba(24, 165, 184, 0.2) 98.71%,
+      rgba(171, 24, 184, 0.25) 131.11%,
+      rgba(242, 44, 109, 0.38) 157.31%
+    );
     @include gradientBackground;
   }
   &.trading {
     font-size: 46px;
-    background: linear-gradient(72.2deg, rgba(242, 44, 109, 0.38) 0%, #FF3B7B 32.74%, rgba(24, 165, 184, 0.2) 61.38%, rgba(171, 24, 184, 0.25) 82.74%, rgba(242, 153, 133, 0.68) 100%);
+    background: linear-gradient(
+      72.2deg,
+      rgba(242, 44, 109, 0.38) 0%,
+      #ff3b7b 32.74%,
+      rgba(24, 165, 184, 0.2) 61.38%,
+      rgba(171, 24, 184, 0.25) 82.74%,
+      rgba(242, 153, 133, 0.68) 100%
+    );
     @include gradientBackground;
   }
   &.liquidity {
     font-size: 46px;
-    background: linear-gradient(80.38deg, #FFD9E5 14.49%, rgba(242, 153, 133, 0.68) 38.03%, rgba(239, 20, 92, 0.38) 61.35%, rgba(171, 24, 184, 0.25) 79.98%, rgba(24, 174, 184, 0.2) 85.51%);
+    background: linear-gradient(
+      80.38deg,
+      #ffd9e5 14.49%,
+      rgba(242, 153, 133, 0.68) 38.03%,
+      rgba(239, 20, 92, 0.38) 61.35%,
+      rgba(171, 24, 184, 0.25) 79.98%,
+      rgba(24, 174, 184, 0.2) 85.51%
+    );
     @include gradientBackground;
   }
   &.swap {
     font-size: 46px;
-    background: linear-gradient(72.2deg, rgba(242, 44, 109, 0.38) 0%, #FF3B7B 32.74%, rgba(24, 165, 184, 0.2) 61.38%, rgba(171, 24, 184, 0.25) 82.74%, rgba(242, 153, 133, 0.68) 100%);
+    background: linear-gradient(
+      72.2deg,
+      rgba(242, 44, 109, 0.38) 0%,
+      #ff3b7b 32.74%,
+      rgba(24, 165, 184, 0.2) 61.38%,
+      rgba(171, 24, 184, 0.25) 82.74%,
+      rgba(242, 153, 133, 0.68) 100%
+    );
     @include gradientBackground;
   }
   &.pswap {
     font-size: 46px;
-    background: linear-gradient(98.89deg, rgba(237, 20, 91, 0.75) 24.73%, rgba(86, 3, 48, 0.75) 71.56%, rgba(113, 24, 184, 0.75) 90.08%);
+    background: linear-gradient(
+      98.89deg,
+      rgba(237, 20, 91, 0.75) 24.73%,
+      rgba(86, 3, 48, 0.75) 71.56%,
+      rgba(113, 24, 184, 0.75) 90.08%
+    );
     @include gradientBackground;
   }
 

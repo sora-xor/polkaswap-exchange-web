@@ -26,6 +26,7 @@
                 :item="vestedRewadsGroupItem"
                 :theme="libraryTheme"
                 :disabled="!vestedRewardsAvailable"
+                is-codec-string
               />
               <rewards-amount-table
                 class="rewards-table"
@@ -41,7 +42,12 @@
                     <span>{{ formatAddress(evmAddress, 8) }}</span>
                     <span>{{ t('rewards.connected') }}</span>
                   </div>
-                  <s-button v-else class="rewards-connect-button" type="tertiary" @click="connectExternalAccountProcess">
+                  <s-button
+                    v-else
+                    class="rewards-connect-button"
+                    type="tertiary"
+                    @click="connectExternalAccountProcess"
+                  >
                     {{ t('rewards.action.connectExternalWallet') }}
                   </s-button>
                   <div v-if="externalRewardsHintText" class="rewards-footer-hint">{{ externalRewardsHintText }}</div>
@@ -79,21 +85,27 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import { Action, Getter, State } from 'vuex-class'
-import { AccountAsset, KnownAssets, KnownSymbols, RewardInfo, RewardsInfo, CodecString, FPNumber } from '@sora-substrate/util'
-import { FormattedAmountMixin, InfoLine } from '@soramitsu/soraneo-wallet-web'
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
+import { Component, Mixins } from 'vue-property-decorator';
+import { Action, Getter, State } from 'vuex-class';
+import {
+  AccountAsset,
+  KnownAssets,
+  KnownSymbols,
+  RewardInfo,
+  RewardsInfo,
+  CodecString,
+  FPNumber,
+} from '@sora-substrate/util';
+import { components, mixins, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
-import ethersUtil from '@/utils/ethers-util'
-import { lazyComponent } from '@/router'
-import { Components } from '@/consts'
-import { hasInsufficientXorForFee } from '@/utils'
-import { groupRewardsByAssetsList } from '@/utils/rewards'
-import { RewardsAmountHeaderItem, RewardInfoGroup } from '@/types/rewards'
+import ethersUtil from '@/utils/ethers-util';
+import { lazyComponent } from '@/router';
+import { Components } from '@/consts';
+import { hasInsufficientXorForFee } from '@/utils';
+import { RewardsAmountHeaderItem, RewardInfoGroup } from '@/types/rewards';
 
-import WalletConnectMixin from '@/components/mixins/WalletConnectMixin'
-import TransactionMixin from '@/components/mixins/TransactionMixin'
+import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 
 @Component({
   components: {
@@ -102,272 +114,268 @@ import TransactionMixin from '@/components/mixins/TransactionMixin'
     TokensRow: lazyComponent(Components.TokensRow),
     RewardsAmountHeader: lazyComponent(Components.RewardsAmountHeader),
     RewardsAmountTable: lazyComponent(Components.RewardsAmountTable),
-    InfoLine
-  }
+    InfoLine: components.InfoLine,
+  },
 })
-export default class Rewards extends Mixins(FormattedAmountMixin, WalletConnectMixin, TransactionMixin) {
-  @State(state => state.rewards.fee) fee!: CodecString
-  @State(state => state.rewards.feeFetching) feeFetching!: boolean
-  @State(state => state.rewards.rewardsFetching) rewardsFetching!: boolean
-  @State(state => state.rewards.rewardsClaiming) rewardsClaiming!: boolean
-  @State(state => state.rewards.rewardsRecieved) rewardsRecieved!: boolean
-  @State(state => state.rewards.transactionError) transactionError!: boolean
-  @State(state => state.rewards.transactionStep) transactionStep!: number
+export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletConnectMixin, mixins.TransactionMixin) {
+  @State((state) => state.rewards.fee) fee!: CodecString;
+  @State((state) => state.rewards.feeFetching) feeFetching!: boolean;
+  @State((state) => state.rewards.rewardsFetching) rewardsFetching!: boolean;
+  @State((state) => state.rewards.rewardsClaiming) rewardsClaiming!: boolean;
+  @State((state) => state.rewards.rewardsRecieved) rewardsRecieved!: boolean;
+  @State((state) => state.rewards.transactionError) transactionError!: boolean;
+  @State((state) => state.rewards.transactionStep) transactionStep!: number;
 
-  @State(state => state.rewards.internalRewards) internalRewards!: Array<RewardInfo>
-  @State(state => state.rewards.externalRewards) externalRewards!: Array<RewardInfo>
-  @State(state => state.rewards.vestedRewards) vestedRewards!: Nullable<RewardsInfo>
-  @State(state => state.rewards.selectedVestedRewards) selectedVestedRewards!: Nullable<RewardsInfo>
-  @State(state => state.rewards.selectedInternalRewards) selectedInternalRewards!: Array<RewardInfo>
-  @State(state => state.rewards.selectedExternalRewards) selectedExternalRewards!: Array<RewardInfo>
+  @State((state) => state.rewards.internalRewards) internalRewards!: Array<RewardInfo>;
+  @State((state) => state.rewards.externalRewards) externalRewards!: Array<RewardInfo>;
+  @State((state) => state.rewards.vestedRewards) vestedRewards!: Nullable<RewardsInfo>;
+  @State((state) => state.rewards.selectedVestedRewards) selectedVestedRewards!: Nullable<RewardsInfo>;
+  @State((state) => state.rewards.selectedInternalRewards) selectedInternalRewards!: Array<RewardInfo>;
+  @State((state) => state.rewards.selectedExternalRewards) selectedExternalRewards!: Array<RewardInfo>;
 
-  @Getter libraryTheme!: Theme
-  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset
-  @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean
-  @Getter('vestedRewardsAvailable', { namespace: 'rewards' }) vestedRewardsAvailable!: boolean
-  @Getter('externalRewardsAvailable', { namespace: 'rewards' }) externalRewardsAvailable!: boolean
-  @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardsAmountHeaderItem>
-  @Getter('transactionStepsCount', { namespace: 'rewards' }) transactionStepsCount!: number
+  @Getter libraryTheme!: Theme;
+  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
+  @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean;
+  @Getter('vestedRewardsAvailable', { namespace: 'rewards' }) vestedRewardsAvailable!: boolean;
+  @Getter('externalRewardsAvailable', { namespace: 'rewards' }) externalRewardsAvailable!: boolean;
+  @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardsAmountHeaderItem>;
+  @Getter('transactionStepsCount', { namespace: 'rewards' }) transactionStepsCount!: number;
 
-  @Action('reset', { namespace: 'rewards' }) reset!: AsyncVoidFn
-  @Action('setSelectedRewards', { namespace: 'rewards' }) setSelectedRewards!: (params: any) => Promise<void>
-  @Action('getRewards', { namespace: 'rewards' }) getRewards!: (address: string) => Promise<Array<RewardInfo>>
-  @Action('claimRewards', { namespace: 'rewards' }) claimRewards!: (options: any) => Promise<void>
+  @Action('reset', { namespace: 'rewards' }) reset!: AsyncVoidFn;
+  @Action('setSelectedRewards', { namespace: 'rewards' }) setSelectedRewards!: (params: any) => Promise<void>;
+  @Action('getRewards', { namespace: 'rewards' }) getRewards!: (address: string) => Promise<Array<RewardInfo>>;
+  @Action('claimRewards', { namespace: 'rewards' }) claimRewards!: (options: any) => Promise<void>;
 
-  private unwatchEthereum!: any
+  private unwatchEthereum!: VoidFunction;
 
-  destroyed (): void {
-    this.reset()
+  destroyed(): void {
+    this.reset();
   }
 
-  async created (): Promise<void> {
-    this.loading = true
-
+  async created(): Promise<void> {
     await this.withApi(async () => {
-      await this.setEvmNetworkType()
-      await this.syncExternalAccountWithAppState()
-      await this.checkAccountRewards()
+      await this.setEvmNetworkType();
+      await this.syncExternalAccountWithAppState();
+      await this.checkAccountRewards();
 
       this.unwatchEthereum = await ethersUtil.watchEthereum({
         onAccountChange: (addressList: string[]) => {
           if (addressList.length) {
-            this.changeExternalAccountProcess({ address: addressList[0] })
+            this.changeExternalAccountProcess({ address: addressList[0] });
           } else {
-            this.disconnectExternalAccountProcess()
+            this.disconnectExternalAccountProcess();
           }
         },
         onNetworkChange: (networkId: string) => {
-          this.setEvmNetworkType(networkId)
+          this.setEvmNetworkType(networkId);
         },
         onDisconnect: () => {
-          this.disconnectExternalAccountProcess()
-        }
-      })
-    })
+          this.disconnectExternalAccountProcess();
+        },
+      });
+    });
   }
 
-  beforeDestroy (): void {
+  beforeDestroy(): void {
     if (typeof this.unwatchEthereum === 'function') {
-      this.unwatchEthereum()
+      this.unwatchEthereum();
     }
   }
 
-  get externalRewardsGroupItem (): RewardInfoGroup {
+  get externalRewardsGroupItem(): RewardInfoGroup {
     return {
       type: this.t('rewards.groups.external'),
       limit: groupRewardsByAssetsList(this.externalRewards),
-      rewards: this.externalRewards
-    }
+      rewards: this.externalRewards,
+    };
   }
 
-  get vestedRewadsGroupItem (): RewardInfoGroup {
-    const rewards = this.vestedRewards?.rewards ?? []
-    const pswap = KnownAssets.get(KnownSymbols.PSWAP)
+  get vestedRewadsGroupItem(): RewardInfoGroup {
+    const rewards = this.vestedRewards?.rewards ?? [];
+    const pswap = KnownAssets.get(KnownSymbols.PSWAP);
 
     return {
       type: this.t('rewards.groups.strategic'),
       title: this.t('rewards.claimableAmountDoneVesting'),
-      limit: [{
-        amount: FPNumber.fromCodecValue(this.vestedRewards?.limit ?? 0, pswap.decimals).toLocaleString(),
-        asset: pswap
-      }],
+      limit: [
+        {
+          amount: FPNumber.fromCodecValue(this.vestedRewards?.limit ?? 0, pswap.decimals).toCodecString(),
+          asset: pswap,
+        },
+      ],
       total: {
         amount: FPNumber.fromCodecValue(this.vestedRewards?.total ?? 0, pswap.decimals).toLocaleString(),
-        asset: pswap
+        asset: pswap,
       },
-      rewards
-    }
+      rewards,
+    };
   }
 
-  get selectedInternalRewardsModel (): boolean {
-    return this.selectedInternalRewards.length !== 0
+  get selectedInternalRewardsModel(): boolean {
+    return this.selectedInternalRewards.length !== 0;
   }
 
-  set selectedInternalRewardsModel (flag: boolean) {
-    const internal = flag ? this.internalRewards : []
-    this.setSelectedRewards({ internal, external: this.selectedExternalRewards, vested: this.selectedVestedRewards })
+  set selectedInternalRewardsModel(flag: boolean) {
+    const internal = flag ? this.internalRewards : [];
+    this.setSelectedRewards({ internal, external: this.selectedExternalRewards, vested: this.selectedVestedRewards });
   }
 
-  get selectedExternalRewardsModel (): boolean {
-    return this.selectedExternalRewards.length !== 0
+  get selectedExternalRewardsModel(): boolean {
+    return this.selectedExternalRewards.length !== 0;
   }
 
-  set selectedExternalRewardsModel (flag: boolean) {
-    const external = flag ? this.externalRewards : []
-    this.setSelectedRewards({ internal: this.selectedInternalRewards, external, vested: this.selectedVestedRewards })
+  set selectedExternalRewardsModel(flag: boolean) {
+    const external = flag ? this.externalRewards : [];
+    this.setSelectedRewards({ internal: this.selectedInternalRewards, external, vested: this.selectedVestedRewards });
   }
 
-  get selectedVestedRewardsModel (): boolean {
-    return this.vestedRewardsAvailable && this.selectedVestedRewards !== null
+  get selectedVestedRewardsModel(): boolean {
+    return this.vestedRewardsAvailable && this.selectedVestedRewards !== null;
   }
 
-  set selectedVestedRewardsModel (flag: boolean) {
-    const vested = flag && this.vestedRewards ? this.vestedRewards : null
-    this.setSelectedRewards({ internal: this.selectedInternalRewards, external: this.selectedExternalRewards, vested })
+  set selectedVestedRewardsModel(flag: boolean) {
+    const vested = flag && this.vestedRewards ? this.vestedRewards : null;
+    this.setSelectedRewards({ internal: this.selectedInternalRewards, external: this.selectedExternalRewards, vested });
   }
 
-  get isInsufficientBalance (): boolean {
-    return hasInsufficientXorForFee(this.tokenXOR, this.fee)
+  get isInsufficientBalance(): boolean {
+    return hasInsufficientXorForFee(this.tokenXOR, this.fee);
   }
 
-  get feeInfo (): object {
+  get feeInfo(): object {
     return {
       label: this.t('rewards.networkFee'),
       labelTooltip: this.t('rewards.networkFeeTooltip'),
       value: this.formatCodecNumber(this.fee),
-      assetSymbol: KnownSymbols.XOR
-    }
+      assetSymbol: KnownSymbols.XOR,
+    };
   }
 
-  get claimingInProgressOrFinished (): boolean {
-    return this.rewardsClaiming || this.transactionError || this.rewardsRecieved
+  get claimingInProgressOrFinished(): boolean {
+    return this.rewardsClaiming || this.transactionError || this.rewardsRecieved;
   }
 
-  get claimingStatusMessage (): string {
-    return this.rewardsRecieved ? this.t('rewards.claiming.success') : this.t('rewards.claiming.pending')
+  get claimingStatusMessage(): string {
+    return this.rewardsRecieved ? this.t('rewards.claiming.success') : this.t('rewards.claiming.pending');
   }
 
-  get transactionStatusMessage (): string {
+  get transactionStatusMessage(): string {
     if (this.rewardsRecieved) {
-      return this.t('rewards.transactions.success')
+      return this.t('rewards.transactions.success');
     }
 
-    const order = this.tOrdinal(this.transactionStep)
-    const translationKey = this.transactionError ? 'rewards.transactions.failed' : 'rewards.transactions.confimation'
+    const order = this.tOrdinal(this.transactionStep);
+    const translationKey = this.transactionError ? 'rewards.transactions.failed' : 'rewards.transactions.confimation';
 
-    return this.t(translationKey, { order, total: this.transactionStepsCount })
+    return this.t(translationKey, { order, total: this.transactionStepsCount });
   }
 
-  get rewardTokenSymbols (): Array<KnownSymbols> {
-    return this.rewardsByAssetsList.map(item => item.asset.symbol as KnownSymbols)
+  get rewardTokenSymbols(): Array<KnownSymbols> {
+    return this.rewardsByAssetsList.map((item) => item.asset.symbol as KnownSymbols);
   }
 
-  get gradientSymbol (): string {
-    return this.rewardTokenSymbols.length === 1 ? this.rewardTokenSymbols[0] : ''
+  get gradientSymbol(): string {
+    return this.rewardTokenSymbols.length === 1 ? this.rewardTokenSymbols[0] : '';
   }
 
-  get hintText (): string {
-    if (!this.isSoraAccountConnected) return this.t('rewards.hint.connectAccounts')
+  get hintText(): string {
+    if (!this.isSoraAccountConnected) return this.t('rewards.hint.connectAccounts');
     if (this.rewardsAvailable) {
-      const symbols = this.rewardTokenSymbols.join(` ${this.t('rewards.andText')} `)
-      const transactions = this.tc('transactionText', this.transactionStepsCount)
-      const count = this.transactionStepsCount > 1
-        ? this.transactionStepsCount
-        : ''
-      const destination = this.transactionStepsCount > 1
-        ? this.t('rewards.signing.accounts')
-        : this.t('rewards.signing.extension')
+      const symbols = this.rewardTokenSymbols.join(` ${this.t('rewards.andText')} `);
+      const transactions = this.tc('transactionText', this.transactionStepsCount);
+      const count = this.transactionStepsCount > 1 ? this.transactionStepsCount : '';
+      const destination =
+        this.transactionStepsCount > 1 ? this.t('rewards.signing.accounts') : this.t('rewards.signing.extension');
 
-      return this.t('rewards.hint.howToClaimRewards', { symbols, transactions, count, destination })
+      return this.t('rewards.hint.howToClaimRewards', { symbols, transactions, count, destination });
     }
-    return ''
+    return '';
   }
 
-  get externalRewardsHintText (): string {
-    if (!this.isExternalAccountConnected) return this.t('rewards.hint.connectExternalAccount')
-    if (!this.externalRewardsAvailable) return this.t('rewards.hint.connectAnotherAccount')
-    return ''
+  get externalRewardsHintText(): string {
+    if (!this.isExternalAccountConnected) return this.t('rewards.hint.connectExternalAccount');
+    if (!this.externalRewardsAvailable) return this.t('rewards.hint.connectAnotherAccount');
+    return '';
   }
 
-  get actionButtonText (): string {
-    if (this.actionButtonLoading) return ''
-    if (!this.isSoraAccountConnected) return this.t('rewards.action.connectWallet')
-    if (this.transactionError) return this.t('rewards.action.retry')
-    if (!this.rewardsAvailable) return this.t('rewards.action.checkRewards')
-    if (this.isInsufficientBalance) return this.t('rewards.action.insufficientBalance', { tokenSymbol: KnownSymbols.XOR })
-    if (!this.rewardsClaiming) return this.t('rewards.action.signAndClaim')
-    if (this.externalRewardsAvailable && this.transactionStep === 1) return this.t('rewards.action.pendingExternal')
-    if (!this.externalRewardsAvailable || this.transactionStep === 2) return this.t('rewards.action.pendingInternal')
-    return ''
+  get actionButtonText(): string {
+    if (this.actionButtonLoading) return '';
+    if (!this.isSoraAccountConnected) return this.t('rewards.action.connectWallet');
+    if (this.transactionError) return this.t('rewards.action.retry');
+    if (!this.rewardsAvailable) return this.t('rewards.action.checkRewards');
+    if (this.isInsufficientBalance)
+      return this.t('rewards.action.insufficientBalance', { tokenSymbol: KnownSymbols.XOR });
+    if (!this.rewardsClaiming) return this.t('rewards.action.signAndClaim');
+    if (this.externalRewardsAvailable && this.transactionStep === 1) return this.t('rewards.action.pendingExternal');
+    if (!this.externalRewardsAvailable || this.transactionStep === 2) return this.t('rewards.action.pendingInternal');
+    return '';
   }
 
-  get actionButtonLoading (): boolean {
-    return this.rewardsFetching || this.feeFetching
+  get actionButtonLoading(): boolean {
+    return this.rewardsFetching || this.feeFetching;
   }
 
-  get actionButtonDisabled (): boolean {
-    return this.rewardsClaiming || (this.rewardsAvailable && this.isInsufficientBalance)
+  get actionButtonDisabled(): boolean {
+    return this.rewardsClaiming || (this.rewardsAvailable && this.isInsufficientBalance);
   }
 
-  async handleAction (): Promise<void> {
+  async handleAction(): Promise<void> {
     if (!this.isSoraAccountConnected) {
-      return this.connectInternalWallet()
+      return this.connectInternalWallet();
     }
     if (!this.rewardsAvailable) {
-      return await this.checkAccountRewards(true)
+      return await this.checkAccountRewards(true);
     }
     if (this.rewardsAvailable) {
-      return await this.claimRewardsProcess()
+      return await this.claimRewardsProcess();
     }
   }
 
-  private async checkAccountRewards (showNotification = false): Promise<void> {
+  private async checkAccountRewards(showNotification = false): Promise<void> {
     if (this.isSoraAccountConnected) {
-      await this.getRewardsProcess(showNotification)
+      await this.getRewardsProcess(showNotification);
     }
   }
 
-  private async getRewardsProcess (showNotification = false): Promise<void> {
-    await this.getRewards(this.evmAddress)
+  private async getRewardsProcess(showNotification = false): Promise<void> {
+    await this.getRewards(this.evmAddress);
 
     if (!this.rewardsAvailable && showNotification) {
       this.$notify({
         message: this.t('rewards.notification.empty'),
-        title: ''
-      })
+        title: '',
+      });
     }
   }
 
-  async connectExternalAccountProcess (): Promise<void> {
-    await this.connectExternalWallet()
-    await this.checkAccountRewards()
+  async connectExternalAccountProcess(): Promise<void> {
+    await this.connectExternalWallet();
+    await this.checkAccountRewards();
   }
 
-  private async disconnectExternalAccountProcess (): Promise<void> {
-    this.disconnectExternalAccount()
-    await this.checkAccountRewards()
+  private async disconnectExternalAccountProcess(): Promise<void> {
+    this.disconnectExternalAccount();
+    await this.checkAccountRewards();
   }
 
-  private async changeExternalAccountProcess (options?: any): Promise<void> {
-    await this.changeExternalWallet(options)
-    await this.checkAccountRewards()
+  private async changeExternalAccountProcess(options?: any): Promise<void> {
+    await this.changeExternalWallet(options);
+    await this.checkAccountRewards();
   }
 
-  private async claimRewardsProcess (): Promise<void> {
-    const internalAddress = this.getWalletAddress()
-    const externalAddress = this.evmAddress
+  private async claimRewardsProcess(): Promise<void> {
+    const internalAddress = this.getWalletAddress();
+    const externalAddress = this.evmAddress;
 
-    if (!internalAddress) return
+    if (!internalAddress) return;
 
     if (externalAddress) {
-      const isConnected = await ethersUtil.checkAccountIsConnected(externalAddress)
+      const isConnected = await ethersUtil.checkAccountIsConnected(externalAddress);
 
-      if (!isConnected) return
+      if (!isConnected) return;
     }
 
-    await this.withNotifications(
-      async () => await this.claimRewards({ internalAddress, externalAddress })
-    )
+    await this.withNotifications(async () => await this.claimRewards({ internalAddress, externalAddress }));
   }
 }
 </script>
@@ -385,7 +393,7 @@ export default class Rewards extends Mixins(FormattedAmountMixin, WalletConnectM
   top: $inner-spacing-mini;
 }
 .rewards-connect-button.el-button.neumorphic.s-tertiary {
-  [design-system-theme="light"] & {
+  [design-system-theme='light'] & {
     box-shadow: none;
   }
 }

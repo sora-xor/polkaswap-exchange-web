@@ -1,11 +1,11 @@
-import { ethers } from 'ethers'
-import WalletConnectProvider from '@walletconnect/web3-provider'
-import detectEthereumProvider from '@metamask/detect-provider'
-import { decodeAddress } from '@polkadot/util-crypto'
-import { BridgeNetworks } from '@sora-substrate/util'
+import { ethers } from 'ethers';
+import WalletConnectProvider from '@walletconnect/web3-provider';
+import detectEthereumProvider from '@metamask/detect-provider';
+import { decodeAddress } from '@polkadot/util-crypto';
+import { BridgeNetworks } from '@sora-substrate/util';
 
-import axios from '../api'
-import storage from './storage'
+import axiosInstance from '../api';
+import storage from './storage';
 
 type AbiType = 'function' | 'constructor' | 'event' | 'fallback';
 type StateMutabilityType = 'pure' | 'view' | 'nonpayable' | 'payable';
@@ -42,20 +42,24 @@ export const ABI = {
     // balanceOf
     {
       constant: true,
-      inputs: [{
-        internalType: 'address',
-        name: 'who',
-        type: 'address'
-      }],
+      inputs: [
+        {
+          internalType: 'address',
+          name: 'who',
+          type: 'address',
+        },
+      ],
       name: 'balanceOf',
-      outputs: [{
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }],
+      outputs: [
+        {
+          internalType: 'uint256',
+          name: '',
+          type: 'uint256',
+        },
+      ],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     // decimals
     {
@@ -63,8 +67,8 @@ export const ABI = {
       inputs: [],
       name: 'decimals',
       outputs: [{ name: '', type: 'uint8' }],
-      type: 'function'
-    }
+      type: 'function',
+    },
   ],
   allowance: [
     {
@@ -73,33 +77,48 @@ export const ABI = {
         {
           internalType: 'address',
           name: 'owner',
-          type: 'address'
+          type: 'address',
         },
         {
           internalType: 'address',
           name: 'spender',
-          type: 'address'
-        }
+          type: 'address',
+        },
       ],
       name: 'allowance',
       outputs: [
         {
           internalType: 'uint256',
           name: '',
-          type: 'uint256'
-        }
+          type: 'uint256',
+        },
       ],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
-    }
-  ]
+      type: 'function',
+    },
+  ],
+};
+
+type ethersProvider = ethers.providers.Web3Provider;
+
+let provider: any = null;
+let ethersInstance: ethersProvider | null = null;
+
+export enum EvmNetwork {
+  Ethereum = 'ethereum',
+  Energy = 'energy',
 }
 
-type ethersProvider = ethers.providers.Web3Provider
-
-let provider: any = null
-let ethersInstance: ethersProvider | null = null
+export enum EvmNetworkType {
+  Mainnet = 'main',
+  Ropsten = 'ropsten',
+  Kovan = 'kovan',
+  Rinkeby = 'rinkeby',
+  Goerli = 'goerli',
+  Private = 'private',
+  EWC = 'EWC',
+}
 
 export interface SubNetwork {
   name: EvmNetwork;
@@ -117,27 +136,27 @@ export interface SubNetwork {
 export enum KnownBridgeAsset {
   VAL = 'VAL',
   XOR = 'XOR',
-  Other = 'OTHER'
+  Other = 'OTHER',
 }
 
 export enum ContractNetwork {
   Ethereum = 'ethereum',
-  Other = 'other'
+  Other = 'other',
 }
 
 export enum Contract {
   Internal = 'internal',
-  Other = 'other'
+  Other = 'other',
 }
 
 export enum OtherContractType {
   Bridge = 'BRIDGE',
-  ERC20 = 'ERC20'
+  ERC20 = 'ERC20',
 }
 
 export enum Provider {
   Metamask,
-  WalletConnect
+  WalletConnect,
 }
 
 interface ConnectOptions {
@@ -154,163 +173,146 @@ interface JsonContract {
   };
 }
 
-export enum EvmNetwork {
-  Ethereum = 'ethereum',
-  Energy = 'energy'
-}
-
-export enum EvmNetworkType {
-  Mainnet = 'main',
-  Ropsten = 'ropsten',
-  Kovan = 'kovan',
-  Rinkeby = 'rinkeby',
-  Goerli = 'goerli',
-  Private = 'private',
-  EWC = 'EWC'
-}
-
 export const EvmNetworkTypeName = {
   '0x1': EvmNetworkType.Mainnet,
   '0x3': EvmNetworkType.Ropsten,
   '0x2a': EvmNetworkType.Kovan,
   '0x4': EvmNetworkType.Rinkeby,
   '0x5': EvmNetworkType.Goerli,
-  '0x12047': EvmNetworkType.Private
-}
+  '0x12047': EvmNetworkType.Private,
+};
 
-async function onConnect (options: ConnectOptions): Promise<string> {
+async function onConnect(options: ConnectOptions): Promise<string> {
   if (options.provider === Provider.Metamask) {
-    return onConnectMetamask()
+    return onConnectMetamask();
   } else {
-    return onConnectWallet(options.url)
+    return onConnectWallet(options.url);
   }
 }
 
-async function onConnectMetamask (): Promise<string> {
-  provider = await detectEthereumProvider({ timeout: 0 }) as any
+async function onConnectMetamask(): Promise<string> {
+  provider = (await detectEthereumProvider({ timeout: 0 })) as any;
   if (!provider) {
-    throw new Error('provider.messages.installExtension')
+    throw new Error('provider.messages.installExtension');
   }
-  return getAccount()
+  return getAccount();
 }
 
-async function onConnectWallet (url = 'https://cloudflare-eth.com'): Promise<string> {
+async function onConnectWallet(url = 'https://cloudflare-eth.com'): Promise<string> {
   provider = new WalletConnectProvider({
-    rpc: { 1: url }
-  })
-  await provider.enable()
-  return getAccount()
+    rpc: { 1: url },
+  });
+  await provider.enable();
+  return getAccount();
 }
 
-async function getAccount (): Promise<string> {
-  const ethersInstance = await getEthersInstance()
-  await ethersInstance.send('eth_requestAccounts', [])
-  const account = ethersInstance.getSigner()
-  return account.getAddress()
+async function getAccount(): Promise<string> {
+  const ethersInstance = await getEthersInstance();
+  await ethersInstance.send('eth_requestAccounts', []);
+  const account = ethersInstance.getSigner();
+  return account.getAddress();
 }
 
 // TODO: remove this check, when MetaMask issue will be resolved
 // https://github.com/MetaMask/metamask-extension/issues/10368
-async function checkAccountIsConnected (address: string): Promise<boolean> {
-  if (!address) return false
+async function checkAccountIsConnected(address: string): Promise<boolean> {
+  if (!address) return false;
 
-  const currentAccount = await getAccount()
+  const currentAccount = await getAccount();
 
   // TODO: check why sometimes currentAccount !== address with the same account
-  return !!currentAccount && currentAccount.toLowerCase() === address.toLowerCase()
+  return !!currentAccount && currentAccount.toLowerCase() === address.toLowerCase();
 }
 
-async function getEthersInstance (): Promise<ethersProvider> {
+async function getEthersInstance(): Promise<ethersProvider> {
   if (!provider) {
-    provider = await detectEthereumProvider({ timeout: 0 }) as any
+    provider = (await detectEthereumProvider({ timeout: 0 })) as any;
   }
   if (!provider) {
-    throw new Error('No ethereum provider instance!')
+    throw new Error('No ethereum provider instance!');
   }
   if (!ethersInstance) {
     // 'any' - because ethers throws errors after network switch
-    ethersInstance = new ethers.providers.Web3Provider(provider, 'any')
+    ethersInstance = new ethers.providers.Web3Provider(provider, 'any');
   }
-  return ethersInstance
+  return ethersInstance;
 }
 
-async function watchEthereum (cb: {
-  onAccountChange: Function;
-  onNetworkChange: Function;
-  onDisconnect: Function;
-}): Promise<Function> {
-  await getEthersInstance()
+async function watchEthereum(cb: {
+  onAccountChange: (addressList: string[]) => void;
+  onNetworkChange: (networkId: string) => void;
+  onDisconnect: VoidFunction;
+}): Promise<VoidFunction> {
+  await getEthersInstance();
 
-  const ethereum = (window as any).ethereum
+  const ethereum = (window as any).ethereum;
 
   if (ethereum) {
-    ethereum.on('accountsChanged', cb.onAccountChange)
-    ethereum.on('chainChanged', cb.onNetworkChange)
-    ethereum.on('disconnect', cb.onDisconnect)
+    ethereum.on('accountsChanged', cb.onAccountChange);
+    ethereum.on('chainChanged', cb.onNetworkChange);
+    ethereum.on('disconnect', cb.onDisconnect);
   }
 
-  return function disconnect () {
+  return function disconnect() {
     if (ethereum) {
-      ethereum.removeListener('accountsChanged', cb.onAccountChange)
-      ethereum.removeListener('chainChanged', cb.onNetworkChange)
-      ethereum.removeListener('disconnect', cb.onDisconnect)
+      ethereum.removeListener('accountsChanged', cb.onAccountChange);
+      ethereum.removeListener('chainChanged', cb.onNetworkChange);
+      ethereum.removeListener('disconnect', cb.onDisconnect);
     }
-  }
+  };
 }
 
-function storeEvmUserAddress (address: string): void {
-  storage.set('evmAddress', address)
+function storeEvmUserAddress(address: string): void {
+  storage.set('evmAddress', address);
 }
 
-function getEvmUserAddress (): string {
-  return storage.get('evmAddress') || ''
+function getEvmUserAddress(): string {
+  return storage.get('evmAddress') || '';
 }
 
-function removeEvmUserAddress (): void {
-  storage.remove('evmAddress')
+function removeEvmUserAddress(): void {
+  storage.remove('evmAddress');
 }
 
-function storeEvmNetworkType (network: string): void {
-  storage.set('evmNetworkType', EvmNetworkTypeName[network] || network)
+function storeEvmNetworkType(network: string): void {
+  storage.set('evmNetworkType', EvmNetworkTypeName[network] || network);
 }
 
-function getEvmNetworkTypeFromStorage (): string {
+function getEvmNetworkTypeFromStorage(): string {
   // return storage.get('evmNetworkType') || '' TODO: [1.5] return it back after 1.4 release to mainnet
-  let evmNetworkType = storage.get('evmNetworkType') || ''
+  let evmNetworkType = storage.get('evmNetworkType') || '';
   if (evmNetworkType === 'homestead') {
-    evmNetworkType = 'main'
+    evmNetworkType = 'main';
   }
-  return evmNetworkType
+  return evmNetworkType;
 }
 
-function removeEvmNetworkType (): void {
-  storage.remove('evmNetworkType')
+function removeEvmNetworkType(): void {
+  storage.remove('evmNetworkType');
 }
 
-async function getEvmNetworkType (): Promise<string> {
-  const networkType = getEvmNetworkTypeFromStorage()
+async function getEvmNetworkType(): Promise<string> {
+  const networkType = getEvmNetworkTypeFromStorage();
   if (!networkType || networkType === 'undefined') {
-    const ethersInstance = await getEthersInstance()
-    const network = await ethersInstance.getNetwork()
-    const networkType = ethers.utils.hexValue(network.chainId)
-    return EvmNetworkTypeName[networkType]
+    const ethersInstance = await getEthersInstance();
+    const network = await ethersInstance.getNetwork();
+    const networkType = ethers.utils.hexValue(network.chainId);
+    return EvmNetworkTypeName[networkType];
   }
-  return networkType
+  return networkType;
 }
 
-async function readSmartContract (network: ContractNetwork, name: string): Promise<JsonContract | undefined> {
+async function readSmartContract(network: ContractNetwork, name: string): Promise<JsonContract | undefined> {
   try {
-    const { data } = await axios.get(`/abi/${network}/${name}`)
-    return data
+    const { data } = await axiosInstance.get(`/abi/${network}/${name}`);
+    return data;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
 
-async function accountAddressToHex (address: string): Promise<string> {
-  return ethers.utils.hexlify(
-    Array.from(decodeAddress(address).values())
-  )
+async function accountAddressToHex(address: string): Promise<string> {
+  return ethers.utils.hexlify(Array.from(decodeAddress(address).values()));
 }
 
 export default {
@@ -327,5 +329,5 @@ export default {
   removeEvmUserAddress,
   watchEthereum,
   readSmartContract,
-  accountAddressToHex
-}
+  accountAddressToHex,
+};

@@ -8,7 +8,7 @@ export const liquidities = [
     firstTokenPrice: 50,
     secondTokenPrice: 10,
     firstTokenAmount: 10,
-    secondTokenAmount: 50
+    secondTokenAmount: 50,
   },
   {
     id: 2,
@@ -19,6 +19,6 @@ export const liquidities = [
     firstTokenPrice: 5,
     secondTokenPrice: 1,
     firstTokenAmount: 1,
-    secondTokenAmount: 5
-  }
-]
+    secondTokenAmount: 5,
+  },
+];

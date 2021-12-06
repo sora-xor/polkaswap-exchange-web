@@ -1,102 +1,23 @@
 <template>
-  <s-design-system-provider :value="libraryDesignSystem" id="app">
-    <header class="header">
-      <s-button class="polkaswap-logo" type="link" size="large" @click="goTo(PageNames.Swap)">
-        <polkaswap-logo :theme="libraryTheme" class="polkaswap-logo--tablet"/>
-      </s-button>
-      <div class="app-controls s-flex">
-        <s-button type="action" class="theme-control s-pressed" @click="switchTheme">
-          <s-icon :name="themeIcon" size="28" />
-        </s-button>
-        <s-button type="action" class="lang-control s-pressed" @click="openSelectLanguageDialog">
-          <s-icon name="basic-globe-24" size="28" />
-        </s-button>
-        <s-button type="action" class="node-control s-pressed" :tooltip="t('selectNodeText')" @click="openSelectNodeDialog">
-          <token-logo class="node-control__logo" v-bind="nodeLogo" />
-        </s-button>
-        <s-button type="tertiary" :class="['account-control', { 's-pressed': isLoggedIn }]" size="medium" :tooltip="t('connectWalletTextTooltip')" :disabled="loading" @click="goTo(PageNames.Wallet)">
-          <div :class="['account-control-title', { name: isLoggedIn }]">{{ accountInfo }}</div>
-          <div class="account-control-icon">
-            <s-icon v-if="!isLoggedIn" name="finance-wallet-24" size="28" />
-            <WalletAvatar v-else :address="account.address"/>
-          </div>
-        </s-button>
-      </div>
-    </header>
+  <s-design-system-provider :value="libraryDesignSystem" id="app" class="app">
+    <app-header :loading="loading" @toggle-menu="toggleMenu" />
     <div class="app-main">
-      <s-scrollbar class="app-sidebar-scrollbar">
-        <aside class="app-sidebar">
-          <s-menu
-            class="menu"
-            mode="vertical"
-            background-color="transparent"
-            box-shadow="none"
-            text-color="var(--s-color-base-content-primary)"
-            :active-text-color="mainMenuActiveColor"
-            active-hover-color="transparent"
-            :default-active="getCurrentPath()"
-            @select="goTo"
-          >
-            <s-menu-item-group v-for="(group, index) in SidebarMenuGroups" :key="index">
-              <s-menu-item
-                v-for="item in group"
-                :key="item.title"
-                :index="item.title"
-                :disabled="item.disabled"
-                class="menu-item"
-              >
-                <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
-              </s-menu-item>
-            </s-menu-item-group>
-          </s-menu>
-
-          <s-menu
-            class="menu"
-            mode="vertical"
-            background-color="transparent"
-            box-shadow="none"
-            text-color="var(--s-color-base-content-tertiary)"
-            active-text-color="var(--s-color-base-content-tertiary)"
-            active-hover-color="transparent"
-          >
-            <s-menu-item-group>
-              <li v-for="item in SocialNetworkLinks" :key="item.title">
-                <sidebar-item-content
-                  :icon="item.icon"
-                  :title="t(`social.${item.title}`)"
-                  :href="item.href"
-                  tag="a"
-                  target="_blank"
-                  rel="nofollow noopener"
-                  class="el-menu-item menu-item--small"
-                />
-              </li>
-            </s-menu-item-group>
-            <s-menu-item-group>
-              <li v-if="faucetUrl">
-                <sidebar-item-content
-                  :icon="FaucetLink.icon"
-                  :title="t(`footerMenu.${FaucetLink.title}`)"
-                  :href="faucetUrl"
-                  tag="a"
-                  target="_blank"
-                  rel="nofollow noopener"
-                  class="el-menu-item menu-item--small"
-                />
-              </li>
-              <!-- <sidebar-item-content
-                :title="t('footerMenu.help')"
-                icon="notifications-info-24"
-                tag="li"
-                class="el-menu-item menu-item--small"
-                @click.native="openHelpDialog"
-              /> -->
-            </s-menu-item-group>
-          </s-menu>
-        </aside>
-      </s-scrollbar>
+      <app-menu @click.native="handleAppMenuClick" :visible="menuVisibility" :on-select="goTo">
+        <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
+      </app-menu>
       <div class="app-body" :class="isAboutPage ? 'app-body__about' : ''">
         <s-scrollbar class="app-body-scrollbar">
+          <div v-if="blockNumber" class="block-number">
+            <a
+              class="block-number-link"
+              :href="soraExplorerLink"
+              title="SORAScan"
+              target="_blank"
+              rel="nofollow noopener"
+            >
+              <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
+            </a>
+          </div>
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
             <p class="app-disclaimer" v-html="t('disclaimer')" />
@@ -112,229 +33,167 @@
         </s-scrollbar>
       </div>
     </div>
-
-    <help-dialog :visible.sync="showHelpDialog" />
-    <select-node-dialog :visible.sync="showSelectNodeDialog" />
-    <select-language-dialog :visible.sync="showSelectLanguageDialog" />
   </s-design-system-provider>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator'
-import { Action, Getter, State } from 'vuex-class'
-import { WALLET_CONSTS, WalletAvatar, updateAccountAssetsSubscription } from '@soramitsu/soraneo-wallet-web'
-import { History, KnownSymbols } from '@sora-substrate/util'
-import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils'
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme'
-import DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem'
-import PolkaswapLogo from './components/logo/Polkaswap.vue'
-import SoraLogo from './components/logo/Sora.vue'
+import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { Action, Getter } from 'vuex-class';
+import { FPNumber, History, connection } from '@sora-substrate/util';
+import { mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 
-import { PageNames, BridgeChildPages, SidebarMenuGroups, SocialNetworkLinks, FaucetLink, Components, LogoSize, Language } from '@/consts'
+import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
+import SoraLogo from '@/components/logo/Sora.vue';
 
-import TransactionMixin from '@/components/mixins/TransactionMixin'
-import NodeErrorMixin from '@/components/mixins/NodeErrorMixin'
-
-import axios, { updateBaseUrl } from '@/api'
-import router, { lazyComponent } from '@/router'
-import { formatAddress, disconnectWallet, preloadFontFace } from '@/utils'
-import { ConnectToNodeOptions } from '@/types/nodes'
-import { getLocale } from '@/lang'
-import { SubNetwork } from '@/utils/ethers-util'
-
-const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet
-const WALLET_CONNECTION_ROUTE = WALLET_CONSTS.RouteNames.WalletConnection
+import { PageNames, Components, Language } from '@/consts';
+import axiosInstance, { updateBaseUrl } from '@/api';
+import router, { goTo, lazyComponent } from '@/router';
+import { preloadFontFace } from '@/utils';
+import { getLocale } from '@/lang';
+import type { ConnectToNodeOptions } from '@/types/nodes';
+import type { SubNetwork } from '@/utils/ethers-util';
 
 @Component({
   components: {
-    WalletAvatar,
-    PolkaswapLogo,
     SoraLogo,
-    HelpDialog: lazyComponent(Components.HelpDialog),
-    SidebarItemContent: lazyComponent(Components.SidebarItemContent),
-    SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
-    SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
-    TokenLogo: lazyComponent(Components.TokenLogo)
-  }
+    AppHeader: lazyComponent(Components.AppHeader),
+    AppMenu: lazyComponent(Components.AppMenu),
+    AppLogoButton: lazyComponent(Components.AppLogoButton),
+  },
 })
-export default class App extends Mixins(TransactionMixin, NodeErrorMixin) {
-  readonly nodesFeatureEnabled = true
+export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
+  readonly PageNames = PageNames;
+  readonly PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
 
-  readonly SidebarMenuGroups = SidebarMenuGroups
-  readonly SocialNetworkLinks = SocialNetworkLinks
-  readonly FaucetLink = FaucetLink
-  readonly PageNames = PageNames
+  menuVisibility = false;
 
-  readonly PoolChildPages = [
-    PageNames.AddLiquidity,
-    PageNames.AddLiquidityId,
-    PageNames.RemoveLiquidity,
-    PageNames.CreatePair
-  ]
+  @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
+  @Getter libraryTheme!: Theme;
+  @Getter libraryDesignSystem!: DesignSystem;
+  @Getter firstReadyTransaction!: History;
+  @Getter blockNumber!: number;
 
-  showHelpDialog = false
-  showSelectLanguageDialog = false
+  // Wallet
+  @Action resetAccountAssetsSubscription!: AsyncVoidFn;
+  @Action trackActiveTransactions!: AsyncVoidFn;
+  @Action resetActiveTransactions!: AsyncVoidFn;
+  @Action resetRuntimeVersionSubscription!: AsyncVoidFn;
+  @Action resetFiatPriceAndApySubscription!: AsyncVoidFn;
 
-  switchTheme: AsyncVoidFn = switchTheme
-
-  @State(state => state.settings.faucetUrl) faucetUrl!: string
-  @State(state => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean
-
-  @Getter libraryTheme!: Theme
-  @Getter libraryDesignSystem!: DesignSystem
-
-  @Getter firstReadyTransaction!: any
-  @Getter isLoggedIn!: boolean
-  @Getter account!: any
-  @Getter currentRoute!: WALLET_CONSTS.RouteNames
-  @Getter chainAndNetworkText!: string
-  @Getter nodeIsConnected!: boolean
-  @Getter language!: Language
-
-  @Action navigate // Wallet
-  @Action updateAccountAssets!: AsyncVoidFn
-  @Action trackActiveTransactions!: AsyncVoidFn
-  @Action setSoraNetwork!: (data: any) => Promise<void>
-  @Action setDefaultNodes!: (nodes: any) => Promise<void>
-  @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>
-  @Action setFaucetUrl!: (url: string) => void
-  @Action setLanguage!: (lang: Language) => Promise<void>
-  @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>
-  @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>
-
+  @Action updateAccountAssets!: AsyncVoidFn;
+  @Action setSoraNetwork!: (networkType: string) => Promise<void>; // wallet
+  @Action setDefaultNodes!: (nodes: any) => Promise<void>;
+  @Action setNetworkChainGenesisHash!: (hash: string) => Promise<void>;
+  @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
+  @Action setFaucetUrl!: (url: string) => Promise<void>;
+  @Action setLanguage!: (lang: Language) => Promise<void>;
+  @Action setApiKeys!: (options: any) => Promise<void>;
+  @Action setFeatureFlags!: (options: any) => Promise<void>;
+  @Action resetBlockNumberSubscription!: () => Promise<void>;
+  @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>;
+  @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
   @Watch('firstReadyTransaction', { deep: true })
-  private handleNotifyAboutTransaction (value: History): void {
-    this.handleChangeTransaction(value)
+  private handleNotifyAboutTransaction(value: History): void {
+    this.handleChangeTransaction(value);
   }
 
   @Watch('nodeIsConnected')
-  private updateConnectionSubsriptions (nodeConnected: boolean) {
+  private updateConnectionSubsriptions(nodeConnected: boolean): void {
     if (nodeConnected) {
-      this.updateAccountAssets()
+      this.updateAccountAssets();
     } else {
-      if (updateAccountAssetsSubscription) {
-        updateAccountAssetsSubscription.unsubscribe()
-      }
+      this.resetAccountAssetsSubscription();
     }
   }
 
-  async created () {
+  async created() {
     // element-icons is not common used, but should be visible after network connection lost
-    preloadFontFace('element-icons')
+    preloadFontFace('element-icons');
 
-    updateBaseUrl(router)
+    updateBaseUrl(router);
 
-    await this.setLanguage(getLocale() as any)
+    await this.setLanguage(getLocale() as any);
 
     await this.withLoading(async () => {
-      const { data } = await axios.get('/env.json')
+      const { data } = await axiosInstance.get('/env.json');
 
-      await this.setSoraNetwork(data)
-      await this.setDefaultNodes(data?.DEFAULT_NETWORKS)
-      await this.setSubNetworks(data.SUB_NETWORKS)
-      await this.setSmartContracts(data.SUB_NETWORKS)
+      if (!data.NETWORK_TYPE) {
+        throw new Error('NETWORK_TYPE is not set');
+      }
+
+      await this.setApiKeys(data?.API_KEYS);
+      await this.setFeatureFlags(data?.FEATURE_FLAGS);
+      await this.setSoraNetwork(data.NETWORK_TYPE);
+      await this.setDefaultNodes(data?.DEFAULT_NETWORKS);
+      await this.setSubNetworks(data.SUB_NETWORKS);
+      await this.setSmartContracts(data.SUB_NETWORKS);
 
       if (data.FAUCET_URL) {
-        this.setFaucetUrl(data.FAUCET_URL)
+        this.setFaucetUrl(data.FAUCET_URL);
+      }
+      if (data.CHAIN_GENESIS_HASH) {
+        await this.setNetworkChainGenesisHash(data.CHAIN_GENESIS_HASH);
       }
 
       // connection to node
-      await this.runAppConnectionToNode()
-    })
+      await this.runAppConnectionToNode();
+    });
 
-    this.trackActiveTransactions()
+    this.trackActiveTransactions();
   }
 
-  get selectedLanguage (): string {
-    return this.language.toUpperCase()
+  get isAboutPage(): boolean {
+    return this.$route.name === PageNames.About;
   }
 
-  get showSelectNodeDialog (): boolean {
-    return this.selectNodeDialogVisibility
+  get blockNumberFormatted(): string {
+    return new FPNumber(this.blockNumber).toLocaleString();
   }
 
-  set showSelectNodeDialog (flag: boolean) {
-    this.setSelectNodeDialogVisibility(flag)
+  get soraExplorerLink(): string {
+    return getExplorerLinks(this.soraNetwork)[0].value;
   }
 
-  get themeIcon (): string {
-    return this.libraryTheme === Theme.LIGHT ? 'various-brightness-low-24' : 'various-moon-24'
+  goTo(name: PageNames): void {
+    goTo(name);
+    this.closeMenu();
   }
 
-  get mainMenuActiveColor (): string {
-    return this.libraryTheme === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)'
+  toggleMenu(): void {
+    this.menuVisibility = !this.menuVisibility;
   }
 
-  get nodeLogo (): any {
-    return {
-      size: LogoSize.MEDIUM,
-      tokenSymbol: KnownSymbols.XOR
+  closeMenu(): void {
+    this.menuVisibility = false;
+  }
+
+  handleAppMenuClick(e: Event): void {
+    const target = e.target as any;
+    const sidebar = !!target.closest('.app-sidebar');
+
+    if (!sidebar) {
+      this.closeMenu();
     }
   }
 
-  get isAboutPage (): boolean {
-    return this.$route.name === PageNames.About
+  async beforeDestroy(): Promise<void> {
+    await this.resetFiatPriceAndApySubscription();
+    await this.resetActiveTransactions();
+    await this.resetAccountAssetsSubscription();
+    await this.resetRuntimeVersionSubscription();
+    await this.resetBlockNumberSubscription();
+    await connection.close();
   }
 
-  get accountInfo (): string {
-    if (!this.isLoggedIn) {
-      return this.t('connectWalletText')
-    }
-    return this.account.name || formatAddress(this.account.address, 8)
-  }
-
-  getCurrentPath (): string {
-    if (this.PoolChildPages.includes(router.currentRoute.name as PageNames)) {
-      return PageNames.Pool
-    }
-    if (BridgeChildPages.includes(router.currentRoute.name as PageNames)) {
-      return PageNames.Bridge
-    }
-    return router.currentRoute.name as string
-  }
-
-  goTo (name: PageNames): void {
-    if (name === PageNames.Wallet) {
-      if (!this.isLoggedIn) {
-        this.navigate({ name: WALLET_CONNECTION_ROUTE })
-      } else if (this.currentRoute !== WALLET_DEFAULT_ROUTE) {
-        this.navigate({ name: WALLET_DEFAULT_ROUTE })
-      }
-    }
-
-    this.changePage(name)
-  }
-
-  private changePage (name: PageNames): void {
-    if (router.currentRoute.name === name) {
-      return
-    }
-    router.push({ name })
-  }
-
-  openHelpDialog (): void {
-    this.showHelpDialog = true
-  }
-
-  openSelectNodeDialog (): void {
-    this.setSelectNodeDialogVisibility(true)
-  }
-
-  openSelectLanguageDialog (): void {
-    this.showSelectLanguageDialog = true
-  }
-
-  destroyed (): void {
-    disconnectWallet()
-  }
-
-  private async runAppConnectionToNode () {
+  private async runAppConnectionToNode() {
     try {
       await this.connectToNode({
         onError: (error) => this.handleNodeError(error, true), // prefer notification on connection success
         onDisconnect: this.handleNodeDisconnect,
-        onReconnect: this.handleNodeReconnect
-      })
+        onReconnect: this.handleNodeReconnect,
+      });
     } catch (error) {
       // we handled error using callback, do nothing
     }
@@ -349,22 +208,35 @@ html {
   line-height: var(--s-line-height-base);
 }
 
+ul ul {
+  list-style-type: none;
+}
+
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Sora', sans-serif;
   height: 100vh;
-  min-width: 528px;
   color: var(--s-color-base-content-primary);
   background-color: var(--s-color-utility-body);
   transition: background-color 500ms linear;
-  .el-loading-mask {
-    background-color: var(--s-color-utility-body);
-  }
 }
 
 .app {
-  &-body-scrollbar, &-sidebar-scrollbar {
+  .el-loading-mask {
+    background-color: var(--s-color-utility-body);
+    .el-loading-spinner {
+      background-image: url('~@/assets/img/pswap-loader.svg');
+      height: var(--s-size-medium);
+      width: var(--s-size-medium);
+      margin-left: calc(50% - (var(--s-size-medium) / 2));
+      > svg {
+        display: none;
+      }
+    }
+  }
+
+  &-body-scrollbar {
     @include scrollbar;
   }
   &-body {
@@ -377,67 +249,29 @@ html {
   }
 }
 
-.account-control {
+.block-number {
+  display: none;
+
+  &-link {
+    display: flex;
+    align-items: center;
+    color: var(--s-color-status-success);
+    font-size: var(--s-font-size-small);
+    text-decoration: none;
+    font-weight: 300;
+    position: absolute;
+    top: 2.5%;
+    right: 0;
+    line-height: 150%;
+    width: 100px;
+  }
+
   &-icon {
-    svg circle:first-child {
-      fill: var(--s-color-utility-surface);
-    }
-  }
-  span {
-    flex-direction: row-reverse;
-  }
-}
-
-.menu.el-menu {
-  .el-menu-item-group__title {
-    display: none;
-  }
-
-  &:not(.el-menu--horizontal) > :not(:last-child) {
-    margin-bottom: 0;
-  }
-
-  .el-menu-item {
-    .icon-container {
-      box-shadow: var(--s-shadow-element-pressed);
-    }
-
-    &.menu-item--small {
-      .icon-container {
-        box-shadow: none;
-        margin: 0;
-        background-color: unset;
-      }
-    }
-
-    &.is-disabled {
-      opacity: 1;
-      color: var(--s-color-base-content-secondary) !important;
-
-      i {
-        color: var(--s-color-base-content-tertiary);
-      }
-    }
-    &:hover:not(.is-active):not(.is-disabled) {
-      i {
-        color: var(--s-color-base-content-secondary) !important;
-      }
-    }
-    &:active,
-    &.is-disabled,
-    &.is-active {
-      .icon-container {
-        box-shadow: var(--s-shadow-element);
-      }
-    }
-    &.is-active {
-      i {
-        color: var(--s-color-theme-accent) !important;
-      }
-      span {
-        font-weight: 400;
-      }
-    }
+    background-color: var(--s-color-status-success);
+    border-radius: 50%;
+    height: 9px;
+    width: 9px;
+    margin-right: 2px;
   }
 }
 
@@ -503,8 +337,9 @@ html {
   flex-direction: column;
   align-items: center;
 
-  $swap-input-class: ".el-input";
-  .s-input--token-value, .s-input-amount {
+  $swap-input-class: '.el-input';
+  .s-input--token-value,
+  .s-input-amount {
     #{$swap-input-class} {
       #{$swap-input-class}__inner {
         padding-top: 0;
@@ -545,22 +380,30 @@ html {
   &__title {
     color: var(--s-color-theme-accent);
   }
-  .link {
-    color: var(--s-color-base-content-primary);
-  }
+}
+
+.link {
+  color: var(--s-color-base-content-primary);
 }
 
 // Disabled button large typography
 .s-typography-button--large.is-disabled {
   font-size: var(--s-font-size-medium) !important;
 }
+
+// Icons colors
+.el-tooltip[class*=' s-icon-'],
+.el-button.el-tooltip i[class*=' s-icon-'] {
+  @include icon-styles(true);
+}
+i.icon-divider {
+  @include icon-styles;
+}
 </style>
 
 <style lang="scss" scoped>
-$header-height: 64px;
 $sora-logo-height: 36px;
 $sora-logo-width: 173.7px;
-$account-control-name-max-width: 200px;
 
 .app {
   &-main {
@@ -571,21 +414,7 @@ $account-control-name-max-width: 200px;
     position: relative;
   }
 
-  &-sidebar {
-    overflow-x: hidden;
-    margin-right: $basic-spacing-small;
-    width: 70px;
-    display: flex;
-    flex: 1;
-    flex-flow: column nowrap;
-    justify-content: space-between;
-    padding-top: $inner-spacing-small;
-    padding-bottom: $inner-spacing-medium;
-    border-right: none;
-  }
-
   &-body {
-    min-width: 464px;
     position: relative;
     display: flex;
     flex: 1;
@@ -608,11 +437,12 @@ $account-control-name-max-width: 200px;
   &-content {
     flex: 1;
     margin: auto;
+
     .app-disclaimer {
-      margin-left: auto;
+      margin-left: $basic-spacing-medium;
       margin-bottom: $inner-spacing-big;
-      margin-right: auto;
-      width: calc(#{$inner-window-width} - #{$basic-spacing-medium * 2});
+      margin-right: $basic-spacing-medium;
+      max-width: calc(#{$inner-window-width} - #{$basic-spacing-medium * 2});
       text-align: justify;
     }
   }
@@ -630,133 +460,15 @@ $account-control-name-max-width: 200px;
     display: flex;
     flex-direction: column-reverse;
     justify-content: flex-end;
-    padding-right: $inner-spacing-large;
-    padding-left: $inner-spacing-large;
-    padding-bottom: $inner-spacing-large;
+    padding: 0 $basic-spacing-medium $basic-spacing-medium;
   }
 }
 
-.header {
-  $header-box-shadow: 240px 16px 32px -16px;
-  $header-box-shadow-light: #{$header-box-shadow} #e5dce0;
-  $header-box-shadow-dark: #{$header-box-shadow} rgba(73, 32, 103, 0.5);
-  display: flex;
-  align-items: center;
-  padding: $inner-spacing-mini $inner-spacing-medium;
-  min-height: $header-height;
-  box-shadow: $header-box-shadow-light;
-  [design-system-theme="dark"] & {
-    box-shadow: $header-box-shadow-dark;
-  }
-}
+.app-logo--menu {
+  margin-bottom: $inner-spacing-big;
 
-.menu {
-  padding: 0;
-  border-right: none;
-
-  & + .menu {
-    margin-top: $inner-spacing-small;
-  }
-
-  &.s-menu {
-    border-bottom: none;
-
-    .el-menu-item {
-      margin-right: 0;
-      margin-bottom: 0;
-      border: none;
-      border-radius: 0;
-    }
-  }
-  .menu-link-container {
+  @include large-mobile {
     display: none;
-    .el-menu-item {
-      white-space: normal;
-    }
-  }
-  .el-menu-item {
-    padding: $inner-spacing-mini $inner-spacing-mini * 2.5;
-    height: initial;
-    font-size: var(--s-font-size-medium);
-    font-weight: 300;
-    line-height: var(--s-line-height-medium);
-
-    &.menu-item--small {
-      font-size: var(--s-font-size-extra-mini);
-      font-weight: 300;
-      letter-spacing: var(--s-letter-spacing-small);
-      line-height: var(--s-line-height-medium);
-      padding: 0 13px;
-      color: var(--s-color-base-content-secondary);
-    }
-  }
-}
-
-.polkaswap-logo {
-  background-image: url('~@/assets/img/pswap.svg');
-  background-size: cover;
-  width: var(--s-size-medium);
-  height: var(--s-size-medium);
-  border-radius: 0;
-  &.el-button {
-    padding: 0;
-  }
-
-  &--tablet {
-    visibility: hidden;
-  }
-}
-
-.app-controls {
-  margin-left: auto;
-
-  & > *:not(:last-child) {
-    margin-right: $inner-spacing-mini;
-  }
-
-  .el-button {
-    + .el-button {
-      margin-left: 0;
-    }
-  }
-}
-
-.node-control {
-  @include element-size('token-logo', 28px);
-  .token-logo {
-    display: block;
-    margin: auto;
-  }
-}
-
-.account-control {
-  letter-spacing: var(--s-letter-spacing-small);
-
-  &-title {
-    font-size: var(--s-font-size-small);
-    max-width: $account-control-name-max-width;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    &.name {
-      text-transform: none;
-    }
-  }
-  &.s-tertiary {
-    &.el-button {
-      padding-left: $basic-spacing-mini;
-    }
-    .account-control-title {
-      margin-left: $basic-spacing-mini;
-    }
-  }
-  &-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--s-size-small);
-    height: var(--s-size-small);
-    overflow: hidden;
-    border-radius: 50%;
   }
 }
 
@@ -781,46 +493,16 @@ $account-control-name-max-width: 200px;
   }
 }
 
-@include large-mobile {
-  $border-image-light: linear-gradient(#FAF4F8, #D5CDD0, #FAF4F8) 30;
-  $border-image-dark: linear-gradient(180deg, rgba(36, 2, 65, 0) 0%, rgba(36, 2, 65, 0.5) 50.45%, rgba(36, 2, 65, 0) 100%) 30;
-  .app-sidebar {
-    overflow-y: auto;
-    margin-right: 0;
-    width: auto;
-    border-right: 1px solid;
-    border-image: $border-image-light;
-    [design-system-theme="dark"] & {
-      border-image: $border-image-dark;
-    }
-  }
-  .menu .menu-link-container {
-    display: block;
-  }
-}
-
 @include tablet {
-  .polkaswap-logo {
-    margin-bottom: 0;
-    width: 172px;
-    height: 46px;
-    background-image: none;
-    &--tablet {
-      visibility: visible;
-    }
-  }
   .app-footer {
     flex-direction: row;
-    padding-right: 22px;
-    padding-bottom: 20px;
     .app-disclaimer {
       padding-right: $inner-spacing-large;
     }
   }
-}
-@media screen and (max-width: 460px) {
-  .app-body {
-    margin-left: -10px;
+
+  .block-number {
+    display: block;
   }
 }
 </style>

@@ -1,3 +1,3 @@
-import './normalize.css'
-import './soramitsu-variables.scss'
-import './overrides.scss'
+import './normalize.css';
+import './soramitsu-variables.scss';
+import './common.scss';

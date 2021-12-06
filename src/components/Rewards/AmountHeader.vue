@@ -2,36 +2,52 @@
   <div class="amount-header">
     <template v-for="{ asset, amount } in items">
       <div :key="asset.symbol" class="amount-block">
-        <formatted-amount-with-fiat-value
-          value-class="amount-block__amount"
+        <formatted-amount
+          class="amount-block__amount"
+          symbol-as-decimal
+          value-can-be-hidden
           :value="formatStringValue(amount, asset.decimal)"
           :font-size-rate="FontSizeRate.MEDIUM"
           :asset-symbol="asset.symbol"
-          :fiat-value="getFiatAmountByString(amount, asset)"
-          :fiat-font-size-rate="FontSizeRate.MEDIUM"
-          symbol-as-decimal
-          with-left-shift
         />
       </div>
     </template>
+    <formatted-amount is-fiat-value value-can-be-hidden :value="totalFiatValue" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { FormattedAmountMixin, FormattedAmountWithFiatValue, FontSizeRate } from '@soramitsu/soraneo-wallet-web'
+import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Asset } from '@sora-substrate/util';
 
-import { RewardsAmountHeaderItem } from '@/types/rewards'
+import { RewardsAmountHeaderItem } from '@/types/rewards';
 
 @Component({
   components: {
-    FormattedAmountWithFiatValue
-  }
+    FormattedAmount: components.FormattedAmount,
+  },
 })
-export default class AmountHeader extends Mixins(FormattedAmountMixin) {
-  readonly FontSizeRate = FontSizeRate
+export default class AmountHeader extends Mixins(mixins.FormattedAmountMixin, mixins.NumberFormatterMixin) {
+  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
-  @Prop({ default: () => [], type: Array }) items!: Array<RewardsAmountHeaderItem>
+  @Prop({ default: () => [], type: Array }) items!: Array<RewardsAmountHeaderItem>;
+
+  get totalFiatValue(): string {
+    const value = this.items.reduce((result, item) => {
+      if (!item.amount || !item.asset) return result;
+
+      const fpAmount = this.getFPNumber(item.amount);
+
+      if (!fpAmount) return result;
+
+      const fpFiatAmount = this.getFPNumberFiatAmountByFPNumber(fpAmount, item.asset as Asset);
+
+      return fpFiatAmount ? result.add(fpFiatAmount) : result;
+    }, this.Zero);
+
+    return value.toLocaleString();
+  }
 }
 </script>
 
