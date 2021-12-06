@@ -102,7 +102,7 @@ export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterM
   get transactionsPercentage(): number {
     if (!this.accountMarketMakerInfo) return 0;
 
-    return Math.floor((100 * this.accountMarketMakerInfo.count) / this.total);
+    return Math.min(Math.floor((100 * this.accountMarketMakerInfo.count) / this.total), 100);
   }
 
   get blocksLeft(): number {
@@ -157,6 +157,7 @@ export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterM
   font-weight: 400;
   line-height: var(--s-line-height-medium);
   letter-spacing: var(--s-letter-spacing-small);
+  word-break: keep-all;
 
   & > *:not(:last-child) {
     margin-bottom: $inner-spacing-mini;
