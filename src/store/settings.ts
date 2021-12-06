@@ -15,7 +15,7 @@ import {
   Language,
 } from '@/consts';
 import { getRpcEndpoint, fetchRpc } from '@/utils/rpc';
-import { getLocale, getSupportedLocale, setI18nLocale } from '@/lang';
+import { getLocale, getSupportedLocale, setI18nLocale, setDayJsLocale } from '@/lang';
 import { updateFpNumberLocale, updateDocumentTitle } from '@/utils';
 
 import type { ConnectToNodeOptions, Node } from '@/types/nodes';
@@ -268,6 +268,8 @@ const actions = {
 
       console.info('Connected to node', connection.endpoint);
 
+      await dispatch('setBlockNumber');
+
       const nodeChainGenesisHash = connection.api.genesisHash.toHex();
 
       // if connected node is custom node, we should check genesis hash
@@ -360,6 +362,9 @@ const actions = {
   },
   async setLanguage({ commit }, lang: Language) {
     const locale = getSupportedLocale(lang);
+    // we should import dayjs locale first, then i18n
+    // because i18n.locale is dependency for dayjs
+    await setDayJsLocale(locale as any);
     await setI18nLocale(locale as any);
     updateDocumentTitle();
     updateFpNumberLocale(locale);

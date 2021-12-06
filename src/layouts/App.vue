@@ -73,6 +73,7 @@ export default class AppLayout extends Mixins(mixins.TransactionMixin, NodeError
   @Action resetAccountAssetsSubscription!: AsyncVoidFn;
   @Action trackActiveTransactions!: AsyncVoidFn;
   @Action resetActiveTransactions!: AsyncVoidFn;
+  @Action resetRuntimeVersionSubscription!: AsyncVoidFn;
   @Action resetFiatPriceAndApySubscription!: AsyncVoidFn;
 
   @Action updateAccountAssets!: AsyncVoidFn;
@@ -128,7 +129,6 @@ export default class AppLayout extends Mixins(mixins.TransactionMixin, NodeError
 
       // connection to node
       await this.runAppConnectionToNode();
-      await this.setBlockNumber();
     });
 
     this.trackActiveTransactions();
@@ -172,6 +172,7 @@ export default class AppLayout extends Mixins(mixins.TransactionMixin, NodeError
     await this.resetFiatPriceAndApySubscription();
     await this.resetActiveTransactions();
     await this.resetAccountAssetsSubscription();
+    await this.resetRuntimeVersionSubscription();
     await this.resetBlockNumberSubscription();
     await connection.close();
   }

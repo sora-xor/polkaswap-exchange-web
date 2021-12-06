@@ -562,20 +562,6 @@
         "allowToken": "Erlaube @:appName, deine {tokenSymbol} zu verwenden",
         "approveToken": "Bitte beachte, dass du den Token nur einmal genehmigen musst. Wenn deine Erweiterung mehrere Token-Genehmigungsanfragen hat, stell bitte sicher, dass du nur die Letzte bestätigst und die Übrigen ablehnst."
     },
-    "months": {
-        "0": "Jan.",
-        "1": "Feb.",
-        "2": "März",
-        "3": "April",
-        "4": "Mai",
-        "5": "Juni",
-        "6": "Jul.",
-        "7": "Aug.",
-        "8": "Sep.",
-        "9": "Okt.",
-        "10": "Nov.",
-        "11": "Dez."
-    },
     "bridgeHistory": {
         "title": "Verlauf",
         "showHistory": "Verlauf anzeigen",

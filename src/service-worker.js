@@ -1,5 +1,5 @@
 import { setCacheNameDetails } from 'workbox-core';
-import { precacheAndRoute, PrecacheController } from 'workbox-precaching';
+import { PrecacheController } from 'workbox-precaching';
 
 import pkg from '../package.json';
 
@@ -7,8 +7,6 @@ setCacheNameDetails({
   prefix: pkg.name,
   suffix: pkg.version,
 });
-
-// precacheAndRoute(self.__WB_MANIFEST);
 
 const precacheController = new PrecacheController();
 const { cacheName } = precacheController.strategy;
