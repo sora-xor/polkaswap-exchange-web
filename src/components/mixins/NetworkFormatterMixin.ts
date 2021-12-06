@@ -1,41 +1,41 @@
-import { Vue, Component } from 'vue-property-decorator'
-import { BridgeNetworks } from '@sora-substrate/util'
+import { Vue, Component } from 'vue-property-decorator';
+import { BridgeNetworks } from '@sora-substrate/util';
 
-import store from '@/store'
+import store from '@/store';
 
-import { EvmNetworkType } from '@/utils/ethers-util'
+import { EvmNetworkType } from '@/utils/ethers-util';
 
 @Component
 export default class NetworkFormatterMixin extends Vue {
-  formatNetwork (isSora: boolean, isDefaultNetworkType = false): string {
+  formatNetwork(isSora: boolean, isDefaultNetworkType = false): string {
     if (isSora) {
-      return `sora.${store.getters.soraNetwork}`
+      return `sora.${store.getters.soraNetwork}`;
     }
 
-    const network = store.getters[`web3/${isDefaultNetworkType ? 'defaultNetworkType' : 'networkType'}`]
+    const network = store.getters[`web3/${isDefaultNetworkType ? 'defaultNetworkType' : 'networkType'}`];
     if (!network) {
-      return ''
+      return '';
     }
 
-    return `evm.${network}`
+    return `evm.${network}`;
   }
 
-  getEvmIcon (externalNetwork: BridgeNetworks): string {
+  getEvmIcon(externalNetwork: BridgeNetworks): string {
     if (externalNetwork === BridgeNetworks.ENERGY_NETWORK_ID) {
-      return 'energy'
+      return 'energy';
     }
-    return 'eth'
+    return 'eth';
   }
 
-  getEtherscanLink (hash: string, isDefaultNetworkType = false): string {
-    const defaultNetworkType = store.getters['web3/defaultNetworkType']
-    const networkType = store.getters['web3/networkType']
+  getEtherscanLink(hash: string, isDefaultNetworkType = false): string {
+    const defaultNetworkType = store.getters['web3/defaultNetworkType'];
+    const networkType = store.getters['web3/networkType'];
 
-    const network = isDefaultNetworkType ? defaultNetworkType : networkType
+    const network = isDefaultNetworkType ? defaultNetworkType : networkType;
     // TODO: Generate the link for Energy Web Chain
     if (!(network && hash) || network === EvmNetworkType.Private) {
-      return ''
+      return '';
     }
-    return `https://${network !== EvmNetworkType.Mainnet ? network + '.' : ''}etherscan.io/tx/${hash}`
+    return `https://${network !== EvmNetworkType.Mainnet ? network + '.' : ''}etherscan.io/tx/${hash}`;
   }
 }

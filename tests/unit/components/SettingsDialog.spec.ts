@@ -1,32 +1,30 @@
 // import { shallowMount, createLocalVue } from '@vue/test-utils'
 // import Vuex from 'vuex'
 
-// import Pool from '@/components/Pool.vue'
-// import { tokens } from '../../mocks/tokens'
+// import Settings from '@/components/Settings.vue'
 // import { SoramitsuElementsImport, TranslationMock } from '../../utils'
 
 // const localVue = createLocalVue()
 // localVue.use(Vuex)
 // SoramitsuElementsImport(localVue)
 
-// describe('Pool.vue', () => {
+// describe('Settings.vue', () => {
 //   let actions
 //   let getters
 //   let store
 
 //   beforeEach(() => {
-//     TranslationMock(Pool)
+//     TranslationMock(Settings)
 
 //     actions = {
-//       getLiquidity: jest.fn()
+//       setSlippageTolerance: jest.fn(),
+//       setTransactionDeadline: jest.fn()
 //     }
 
 //     getters = {
-//       liquidity: () => false,
-//       firstToken: () => tokens[0],
-//       secondToken: () => tokens[1],
-//       firstTokenValue: () => 100,
-//       secondTokenValue: () => 45.4545
+//       slippageTolerance: () => 0.5,
+//       transactionDeadline: () => 20,
+//       nodeAddress: () => ({ ip: '123.123.1.2', port: 2323 })
 //     }
 
 //     store = new Vuex.Store({
@@ -36,13 +34,19 @@
 //   })
 
 //   it('should renders correctly', () => {
-//     const wrapper = shallowMount(Pool, { localVue, store })
+//     const wrapper = shallowMount(Settings, {
+//       localVue,
+//       store,
+//       propsData: {
+//         visible: true
+//       }
+//     })
 //     expect(wrapper.element).toMatchSnapshot()
 //   })
 // })
 
-describe('Pool test', () => {
+describe('Settings test', () => {
   test('Temporary test', () => {
-    expect(true).toEqual(true)
-  })
-})
+    expect(true).toEqual(true);
+  });
+});

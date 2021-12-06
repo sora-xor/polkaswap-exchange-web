@@ -34,7 +34,7 @@
         "ClaimRewards": "Հաստատել Պարգևները",
         "andText": "և",
         "finalized": {
-            "Transfer": "Ուղարկվել է{amount} {symbol} դեպի {address}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2}",
             "AddLiquidity": "Մատակարարված {amount} {symbol} և {amount2} {symbol2}",
             "RemoveLiquidity": "Հեռացված {amount} {symbol} և {amount2} {symbol2}",
@@ -43,7 +43,7 @@
             "ClaimRewards": "Պարգևատրումը հաջողությամբ հաստատված է {rewards}"
         },
         "error": {
-            "Transfer": "Չհաջողվեց ուղարկել {amount} {symbol} դեպի {address}",
+            "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
             "Swap": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2}",
             "AddLiquidity": "Չհաջողվեց մատակարարել {amount} {symbol} եւ {amount2} {symbol2}",
             "RemoveLiquidity": "Չհաջողվեց հեռացնել {amount} {symbol} և {amount2} {symbol2}",
@@ -101,8 +101,7 @@
     "account": {
         "successCopy": "Դրամապանակի հասցեն պատճենվում է սեղմատախտակին",
         "copy": "Պատճենել հասցեն",
-        "switch": "Փոխել հաշիվը",
-        "logout": "Դուրս գալ"
+        "switch": "Փոխել հաշիվը"
     },
     "history": {
         "clearHistory": "Մաքրել պատմությունը",
@@ -207,7 +206,6 @@
         "total": "Ընդհանուր",
         "from": "Սկսած",
         "to": "Դեպի",
-        "viewInPolkascan": "Դիտել Polkascan- ում",
         "successCopy": "{value} ը պատճենված է սեղմատախտակին",
         "copy": "Պատճենել {value}",
         "history": {
@@ -215,7 +213,10 @@
             "submitted": "Գործարքը ներկայացվել է {fee} {symbol} վճարով",
             "confirmed": "Գործարքը հաստատված է"
         },
-        "viewInSorascan": "Դիտել SORAScan- ում",
+        "viewIn": {
+            "sorascan": "Դիտել SORAScan- ում",
+            "subscan": "Դիտել Subscan- ում"
+        },
         "txId": "Գործարքի ID"
     },
     "appName": "Polkaswap (Փոլքասվափ)",
@@ -253,7 +254,9 @@
         "AddLiquidity": "Ավելացնել իրացվելիություն",
         "AddLiquidityId": "Ավելացնել իրացվելիություն",
         "RemoveLiquidity": "Հեռացնել իրացվելիությունը",
-        "PageNotFound": "Էջը չի գտնվել"
+        "PageNotFound": "Էջը չի գտնվել",
+        "Tokens": "Տոկեններ",
+        "Rewards": "Պարգեւներ"
     },
     "mainMenu": {
         "Swap": "Փոխանակում",
@@ -273,21 +276,23 @@
         "telegram": "Telegram (Տելեգրամ)",
         "medium": "Միջին",
         "reddit": "Reddit(Րեդդիթ)",
-        "github": "GitHub(Գիթհաբ)"
+        "github": "GitHub(Գիթհաբ)",
+        "wiki": "@:soraText Վիքին"
     },
     "footerMenu": {
         "faucet": "Faucet(Ֆասեթ)",
         "github": "GitHub(Գիթհաբ)",
         "sorawiki": "@:soraText Վիքին",
         "memorandum": "Polkaswap- ի հուշագիր և ծառայությունների մատուցման պայմաններ",
-        "privacy": "Գաղտնիության քաղաքականություն"
+        "privacy": "Գաղտնիության քաղաքականություն",
+        "info": "Ինֆո & Հասարակություն"
     },
     "helpDialog": {
         "title": "Օգնություն",
         "termsOfService": "Սպասարկման պայմաններ",
         "privacyPolicy": "Գաղտնիության քաղաքականություն",
-        "termsOfServiceLink": "https:\/\/www.notion.so\/Polkaswap-Memorandum-and-Terms-of-Service-dc7f815a6d0a497a924832cc9bda17b8",
-        "privacyPolicyLink": "https:\/\/www.notion.so\/Polkaswap-Privacy-Policy-d0f26456f2974f0d94734b19f6e5fc70",
+        "termsOfServiceLink": "https:\/\/wiki.sora.org\/polkaswap\/terms",
+        "privacyPolicyLink": "https:\/\/wiki.sora.org\/polkaswap\/privacy",
         "appVersion": "@:appName տարբերակը",
         "contactUs": "Կապվեք մեզ հետ"
     },
@@ -351,9 +356,10 @@
     },
     "metamask": "MetaMask",
     "sora": {
-        "Devnet": "@:soraText Դեվնեթ",
-        "Testnet": "@:soraText Թեսթնեթ",
-        "Mainnet": "@:soraText Մայնեթ"
+        "Dev": "@:soraText Դեվնեթ",
+        "Test": "@:soraText Թեսթնեթ",
+        "Prod": "@:soraText Մայնեթ",
+        "Stage": "@:soraText Թեսթնեթ"
     },
     "evm": {
         "main": "Էթերիում Մայննեթ",
@@ -436,20 +442,22 @@
         "confirmSwap": "Հաստատեք փոխանակումը",
         "swapOutputMessage": "Արդյունքը գնահատվում է: Դուք կստանաք առնվազն {transactionValue} կամ գործարքը կվերականգնվի:",
         "rewardsForSwap": "PSWAP ստրատեգիական պարգևատրումներ",
-        "swapInputMessage": "Արդյունքը գնահատվում է: Դուք կստանաք առնվազն {transactionValue} կամ գործարքը կվերականգնվի:"
+        "swapInputMessage": "Արդյունքը գնահատվում է: Դուք կստանաք առնվազն {transactionValue} կամ գործարքը կվերականգնվի:",
+        "route": "Երթուղի"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
         "connectToWallet": "Միացեք դրամապանակին ՝ ձեր իրացվելիությունն ավելացնելու և դիտելու համար:",
         "liquidityNotFound": "Իրացվելիություն չի հայտնաբերվել:",
-        "addLiquidity": "Ավելացնել իրացվելիություն",
-        "removeLiquidity": "Հեռացնել իրացվելիությունը",
+        "addLiquidity": "Ավելացնել",
+        "removeLiquidity": "Հեռացնել",
         "createPair": "Զույգ կազմել",
         "pooledToken": "վերապահված",
         "pairTokens": "{pair} պահուստային տոկեններ",
         "poolShare": "Ձեր պահուստի բաժինը",
         "unknownAsset": "Անհայտ ակտիվ",
-        "description": "Երբ իրացվելիություն եք ավելացնում, ձեզ տրվում են ձեր դիրքը ներկայացնող պահուստային տոկեններ: Այս տոկեններն ավտոմատ կերպով գումար են կուտակում ՝ համամասնորեն պահուստի ձեր մասնաբաժնին և կարող են մարվել ցանկացած պահի:"
+        "description": "Երբ իրացվելիություն եք ավելացնում, ձեզ տրվում են ձեր դիրքը ներկայացնող պահուստային տոկեններ: Այս տոկեններն ավտոմատ կերպով գումար են կուտակում ՝ համամասնորեն պահուստի ձեր մասնաբաժնին և կարող են մարվել ցանկացած պահի:",
+        "strategicBonusApy": "Ռազմավարական բոնուս APY"
     },
     "bridge": {
         "title": "ՀԱՇԻ կամուրջ",
@@ -547,25 +555,12 @@
         "newTransaction": "Ստեղծել նոր գործարք",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "viewInSorascan": "Դիտել SORAScan- ում",
         "changeAccount": "@:changeAccountText in @:metamask",
         "expectedAddress": "Սպասվող հասցե @հասցեում ՝ @:metamask",
         "title": "Կամուրջի գործարք",
-        "expectedMetaMaskAddress": "Սպասվող հասցե @հասցեում ՝ @:metamask"
-    },
-    "months": {
-        "0": "Հունվար",
-        "1": "Փետրվար",
-        "2": "Մարտ",
-        "3": "Ապրիլ",
-        "4": "Մայիս",
-        "5": "Հունիս",
-        "6": "Հուլիս",
-        "7": "Օգոստոս",
-        "8": "Սեպտեմբեր ",
-        "9": "Հոկտեմբեր",
-        "10": "Նոյեմբեր",
-        "11": "Դեկտեմբեր"
+        "expectedMetaMaskAddress": "Սպասվող հասցե @հասցեում ՝ @:metamask",
+        "allowToken": "Թույլ տվեք @:appName ին օգտագործել ձեր {tokenSymbol}",
+        "approveToken": "Խնդրում ենք նկատի ունենալ, որ անհրաժեշտ է միայն մեկ անգամ հաստատել նշանը: Եթե ձեր ընդլայնումն ունի նշանների հաստատման բազմաթիվ խնդրանքներ, համոզվեք, որ միայն վերջինը հաստատեք ՝ մնացածը մերժելով:"
     },
     "bridgeHistory": {
         "title": "Պատմություն",
@@ -586,7 +581,7 @@
         },
         "custom": {
             "title": "Հատուկ",
-            "search": "Որոնում Asset ID-ի կողմից",
+            "search": "Մուտքագրեք ակտիվի ID",
             "text": "ՀԱՏՈՒԿ ՏՈԿԵՆՆԵՐ ",
             "alreadyAttached": "Այս տոկենն արդեն ամրակցված էր",
             "notFound": "Տոկենը չի գտնվել"
@@ -748,5 +743,80 @@
     "memorandum": "Polkaswap- ի հուշագիր և ծառայությունների մատուցման պայմաններ",
     "memorandumLink": "@:memorandum",
     "privacyLink": "@:helpDialog.privacyPolicy",
-    "FAQ": "Polkaswap ՀՏՀ"
+    "FAQ": "Polkaswap ՀՏՀ",
+    "connectedAccount": "Միացված հաշիվ",
+    "selectNodeConnected": "Միացված է ՝ {chain}",
+    "moonpayText": "MoonPay",
+    "forText": "համար",
+    "moonpay": {
+        "notifications": {
+            "success": {
+                "title": "Գնված նշաններ",
+                "text": "Տոկենի գնումն ավարտված է: HASHI կամուրջի գործարքը կսկսվի ավտոմատ կերպով, հենց որ միացված Էթերիումի հաշվի մեջ ստացվել են նշանները: Անվտանգ է փակել այս պատուհանը եւ շարունակել օգտագործել Polkaswap. Կամրջի գործարքի մասին ծանուցում կլինի, երբ պատրաստ լինի:"
+            },
+            "supportError": {
+                "title": "Նշանը չի աջակցվում",
+                "text": "Ցավոք, @:moonpayText-ի միջոցով գնված նշանը դեռեւս չի աջակցվում Պոլկասվափի HASHI կամրջով: Սովորաբար միայն աջակցվող նշանները պետք է մատչելի լինեն Պոլկասվափի MoonPay-ի միջոցով գնելու համար, ուստի ինչ-որ բան պետք է որ ինչ-որ տեղ սխալ լիներ։ Խնդրում ենք չվարանել համայնքին տեղեկացնել այս դեպքի մասին <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\">Polkaswap Telegram group<\/a>."
+            },
+            "feeError": {
+                "title": "Կամրջի համար tx բավարար ETH չէ",
+                "text": "Ցավոք, HASHI կամուրջի գործարքը ձախողվել է, քանի որ բավականաչափ ETH չկար Ethereum ցանցի տրանսլյացիայի ծախսերը վճարելու համար: Խնդրում ենք ավելացնել ավելին ETH եւ կրկին փորձել:"
+            },
+            "transactionError": {
+                "title": "Գործարքը ձախողվեց",
+                "text": "Ցավոք, երեւում է, որ @:moonpayText գործարքը ձախողվել է: Խնդրում եմ նորից փորձեք: @:moonpayText-ի աջակցության համար անցեք <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\">https:\/\/support.moonpay.com<\/a>"
+            },
+            "amountError": {
+                "title": "Անբավարար մնացորդ",
+                "text": "Ցավոք, HASHI կամրջի գործարքը ձախողվել է, քանի որ գործարքի համար բավարար նշաններ չկան: Խնդրում ենք ստուգել ձեր Ethereum հաշվի հաշվեկշիռը եւ կրկին փորձել:"
+            },
+            "accountAddressError": {
+                "title": "Սխալ Ethereum հաշիվ",
+                "text": "Ցավոք, HASHI կամրջի գործարքը ձախողվեց @:moonpayText պատվերի նշանը ստացողի հասցեի պատճառով, որը չի համապատասխանում ձեր ընթացիկ Ethereum հաշվի հասցեին: Խնդրում ենք երկարացման դեպքում փոխել Ethereum հաշիվը եւ կրկին փորձել:"
+            }
+        },
+        "buttons": {
+            "buy": "Գնեք խորհրդանիշներ",
+            "history": "Tx Պատմություն",
+            "transfer": "Սկսել կամուրջը",
+            "view": "Դիտել գործարքը"
+        },
+        "history": {
+            "title": "Գնումների պատմություն",
+            "empty": "Տվյալներ չկան"
+        },
+        "confirmations": {
+            "txReady": "Գործարքը պատրաստ է կամրջի համար"
+        },
+        "tooltips": {
+            "transfer": "Նշանները հաջողությամբ գնվեցին\n Կտտացրեք կամուրջի գործարքը սկսելու համար"
+        }
+    },
+    "recievedText": "Ստացվել է",
+    "light": "Լույս",
+    "dark": "Մութ",
+    "headerMenu": {
+        "showBalances": "Showույց տալ հաշվեկշիռները",
+        "hideBalances": "Թաքցնել հավասարակշռությունները",
+        "settings": "Կարգավորումներ",
+        "switchTheme": "Անցնել {theme} ռեժիմի",
+        "switchLanguage": "Ընտրեք Լեզուն",
+        "selectNode": "@:selectNodeText"
+    },
+    "sentText": "Ուղարկված է",
+    "learnMoreText": "Իմանալ ավելին",
+    "marketMakerCountdown": {
+        "title": "Շուկա ստեղծողի countdown",
+        "blocks": "բլոկներ",
+        "daysLeft": "մնացել են օրեր",
+        "txs": "TX-ներ",
+        "volume": "MM TX ծավալը",
+        "description": "20 միլիոն PSWAP \/ ամիս կտարածվի շուկա ստեղծողներին առնվազն 500 tx \/ ամիս 1 XOR-ից բարձր արժեքով:"
+    },
+    "confirmNextTxFailure": {
+        "header": "Ուշադրություն",
+        "info": "Այս գործարքից հետո ձեր XOR մնացորդը կլինի {fee} Դուք չեք կարողանա վճարել ցանցի վճարը մեկ այլ գործարքի համար:",
+        "payoff": "Դուք պետք է օգտագործեք Bridge-ը XOR-ը այլ ցանցերից ստանալու, XOR-ի ուղարկված մեկ այլ SORA հաշվից կամ ձեր հաշվում եղած ցանկացած այլ նշան XOR-ով փոխելու համար:",
+        "button": "Այո, ես հասկանում եմ ռիսկը"
+    }
 }

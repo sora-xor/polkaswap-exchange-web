@@ -6,8 +6,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import TranslationMixin from '@/components/mixins/TranslationMixin'
+import { Component, Mixins } from 'vue-property-decorator';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 @Component
 export default class PageNotFound extends Mixins(TranslationMixin) {}
@@ -20,7 +20,7 @@ export default class PageNotFound extends Mixins(TranslationMixin) {}
   justify-content: center;
   text-align: center;
   h2 {
-    margin-top: .25em;
+    margin-top: 0.25em;
     font-size: 3rem;
     color: var(--s-color-theme-accent);
   }

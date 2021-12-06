@@ -5,15 +5,19 @@
     :custom-class="computedCustomClasses"
     :show-close="false"
     v-bind="{
-      width: width || '496px',
+      width,
       borderRadius: 'medium',
-      ...$attrs
+      ...$attrs,
     }"
     class="dialog-wrapper"
   >
     <template #title>
-      <span class="el-dialog__title">{{ title }}</span>
-      <s-button class="el-dialog__close" type="action" icon="x-16" @click="isVisible = false" />
+      <slot name="title">
+        <span class="el-dialog__title">{{ title }}</span>
+      </slot>
+      <slot v-if="showCloseButton" name="close">
+        <s-button class="el-dialog__close" type="action" icon="x-16" @click="closeDialog" />
+      </slot>
     </template>
     <slot />
     <slot slot="footer" name="footer" />
@@ -21,23 +25,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import DialogMixin from '@/components/mixins/DialogMixin'
+import DialogMixin from '@/components/mixins/DialogMixin';
 
 @Component
 export default class DialogBase extends Mixins(DialogMixin) {
-  @Prop({ default: '', type: String }) readonly customClass!: string
-  @Prop({ default: '', type: String }) readonly title!: string
-  @Prop({ default: '', type: String }) readonly width!: string
+  @Prop({ default: '', type: String }) readonly customClass!: string;
+  @Prop({ default: '', type: String }) readonly title!: string;
+  @Prop({ default: '', type: String }) readonly width!: string;
+  @Prop({ default: true, type: Boolean }) readonly showCloseButton!: boolean;
 
-  get computedCustomClasses (): string {
-    const cssClasses: Array<string> = []
-    cssClasses.push('neumorphic')
+  get computedCustomClasses(): string {
+    const cssClasses: Array<string> = [];
+    cssClasses.push('neumorphic');
     if (this.customClass) {
-      cssClasses.push(this.customClass)
+      cssClasses.push(this.customClass);
     }
-    return cssClasses.join(' ')
+    return cssClasses.join(' ');
   }
 }
 </script>
@@ -45,10 +50,13 @@ export default class DialogBase extends Mixins(DialogMixin) {
 <style lang="scss">
 $el-dialog-class: '.el-dialog';
 $el-dialog-button-size: var(--s-size-medium);
+$el-dialog-max-width: 496px;
 
 .dialog-wrapper {
   #{$el-dialog-class} {
     background: var(--s-color-utility-surface);
+    max-width: $el-dialog-max-width;
+    width: 100%;
 
     & > #{$el-dialog-class} {
       &__header {

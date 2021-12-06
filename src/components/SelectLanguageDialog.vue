@@ -30,36 +30,35 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
+import { Component, Mixins } from 'vue-property-decorator';
+import { Action, Getter } from 'vuex-class';
 
-import { Language, Languages } from '@/consts'
+import { Language, Languages } from '@/consts';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin'
-import DialogMixin from '@/components/mixins/DialogMixin'
-import DialogBase from './DialogBase.vue'
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import DialogMixin from '@/components/mixins/DialogMixin';
+import DialogBase from './DialogBase.vue';
 
 @Component({
   components: {
-    DialogBase
-  }
+    DialogBase,
+  },
 })
 export default class SelectLanguageDialog extends Mixins(TranslationMixin, DialogMixin) {
-  readonly languages = Languages
+  readonly languages = Languages;
 
-  @Getter language!: Language
-  @Action setLanguage!: (lang: Language) => Promise<void>
+  @Action setLanguage!: (lang: Language) => Promise<void>;
 
-  get selectedLang (): Language {
-    return this.language
+  get selectedLang(): Language {
+    return this.language as Language;
   }
 
-  set selectedLang (value: Language) {
-    this.setLanguage(value)
+  set selectedLang(value: Language) {
+    this.setLanguage(value);
   }
 
-  beforeClose (closeFn: Function): void {
-    closeFn()
+  beforeClose(closeFn: VoidFunction): void {
+    closeFn();
   }
 }
 </script>
@@ -82,7 +81,8 @@ export default class SelectLanguageDialog extends Mixins(TranslationMixin, Dialo
 $item-height: 66px;
 $list-items: 7;
 
-.select-language-list, .select-language-item {
+.select-language-list,
+.select-language-item {
   flex-direction: column;
 }
 .select-language-list {

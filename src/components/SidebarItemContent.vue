@@ -8,25 +8,25 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import TranslationMixin from './mixins/TranslationMixin'
+import TranslationMixin from './mixins/TranslationMixin';
 
 @Component
 export default class SidebarItemContent extends Mixins(TranslationMixin) {
-  @Prop({ default: '', type: String }) readonly icon!: string
-  @Prop({ default: '', type: String }) readonly title!: string
-  @Prop({ default: 'div', type: String }) readonly tag!: string
+  @Prop({ default: '', type: String }) readonly icon!: string;
+  @Prop({ default: '', type: String }) readonly title!: string;
+  @Prop({ default: 'div', type: String }) readonly tag!: string;
 
-  get classes (): Array<string> {
-    const base = 'sidebar-item-content'
-    const classes = [base]
+  get classes(): Array<string> {
+    const base = 'sidebar-item-content';
+    const classes = [base];
 
     if (this.tag === 'a') {
-      classes.push(`${base}--link`)
+      classes.push(`${base}--link`);
     }
 
-    return classes
+    return classes;
   }
 }
 </script>
@@ -39,7 +39,10 @@ $icon-size: 42px;
   align-items: center;
 
   &--link {
-    &, &:hover, &:focus, &:visited {
+    &,
+    &:hover,
+    &:focus,
+    &:visited {
       text-decoration: none;
       color: inherit;
     }
@@ -48,7 +51,6 @@ $icon-size: 42px;
 
 .icon-container {
   display: flex;
-  margin-right: $inner-spacing-small;
   padding-left: 1px; // because of inset shadow
   width: $icon-size;
   height: $icon-size;
@@ -57,24 +59,28 @@ $icon-size: 42px;
   transition: var(--s-transition-default);
   > i {
     margin: auto;
+    @include icon-styles(true);
   }
   & + span {
-    display: none;
     letter-spacing: var(--s-letter-spacing-small);
+    margin-left: $inner-spacing-small;
+
+    @include large-mobile {
+      display: none;
+    }
+
+    @include tablet {
+      display: block;
+    }
   }
   .el-menu-item.is-active & {
-    box-shadow: -1px -1px 1px var(--s-shadow-color-dark-light), 1px 1px 3px var(--s-shadow-color-dark), inset 1px 1px 2px var(--s-shadow-color-light-dark);
+    box-shadow: -1px -1px 1px var(--s-shadow-color-dark-light), 1px 1px 3px var(--s-shadow-color-dark),
+      inset 1px 1px 2px var(--s-shadow-color-light-dark);
   }
   .menu-item--small & {
     margin-right: 0;
     background-color: transparent;
     box-shadow: none;
-  }
-}
-
-@include large-mobile {
-  .icon-container + span {
-    display: block;
   }
 }
 </style>

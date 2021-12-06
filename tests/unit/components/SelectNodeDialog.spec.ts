@@ -1,7 +1,7 @@
 // import { shallowMount, createLocalVue } from '@vue/test-utils'
 // import Vuex from 'vuex'
 
-// import Swap from '@/components/Swap.vue'
+// import ResultDialog from '@/components/ResultDialog.vue'
 // import { tokens } from '../../mocks/tokens'
 // import { SoramitsuElementsImport, TranslationMock } from '../../utils'
 
@@ -9,25 +9,14 @@
 // localVue.use(Vuex)
 // SoramitsuElementsImport(localVue)
 
-// describe('Swap.vue', () => {
-//   let actions
+// describe('ResultDialog.vue', () => {
 //   let getters
 //   let store
 
 //   beforeEach(() => {
-//     TranslationMock(Swap)
-
-//     actions = {
-//       connectWallet: jest.fn(),
-//       setTokenFrom: jest.fn(),
-//       setTokenTo: jest.fn(),
-//       setFromValue: jest.fn(),
-//       setToValue: jest.fn(),
-//       setTokenFromPrice: jest.fn()
-//     }
+//     TranslationMock(ResultDialog)
 
 //     getters = {
-//       isWalletConnected: () => false,
 //       tokenFrom: () => tokens[0],
 //       tokenTo: () => tokens[1],
 //       fromValue: () => 100,
@@ -35,19 +24,25 @@
 //     }
 
 //     store = new Vuex.Store({
-//       actions,
 //       getters
 //     })
 //   })
 
 //   it('should renders correctly', () => {
-//     const wrapper = shallowMount(Swap, { localVue, store })
+//     const wrapper = shallowMount(ResultDialog, {
+//       localVue,
+//       store,
+//       propsData: {
+//         visible: true,
+//         title: 'Transaction submitted'
+//       }
+//     })
 //     expect(wrapper.element).toMatchSnapshot()
 //   })
 // })
 
-describe('Swap test', () => {
+describe('ResultDialog test', () => {
   test('Temporary test', () => {
-    expect(true).toEqual(true)
-  })
-})
+    expect(true).toEqual(true);
+  });
+});

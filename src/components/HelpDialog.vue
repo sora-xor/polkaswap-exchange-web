@@ -1,15 +1,8 @@
 <template>
-  <dialog-base
-    :visible.sync="isVisible"
-    :title="t('helpDialog.title')"
-  >
+  <dialog-base :visible.sync="isVisible" :title="t('helpDialog.title')">
     <div class="help-block help-links">
       <div v-for="(link, index) in links" :key="index">
-        <a
-          class="help-links-item"
-          :href="link.url"
-          target="_blank"
-        >
+        <a class="help-links-item" :href="link.url" target="_blank">
           <span>{{ link.title }}</span>
           <s-icon name="external-link-16" />
         </a>
@@ -17,11 +10,9 @@
       </div>
     </div>
     <div class="help-information">
+      <div class="help-block">{{ t('helpDialog.appVersion') }} {{ appVersion }}</div>
       <div class="help-block">
-        {{ t('helpDialog.appVersion') }} {{ appVersion }}
-      </div>
-      <div class="help-block">
-        {{ t('helpDialog.contactUs') }}<br>
+        {{ t('helpDialog.contactUs') }}<br />
         {{ appEmail }}
       </div>
     </div>
@@ -29,33 +20,33 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator';
 
-import TranslationMixin from './mixins/TranslationMixin'
-import DialogMixin from './mixins/DialogMixin'
-import DialogBase from './DialogBase.vue'
+import TranslationMixin from './mixins/TranslationMixin';
+import DialogMixin from './mixins/DialogMixin';
+import DialogBase from './DialogBase.vue';
 
-import { app } from '@/consts'
+import { app } from '@/consts';
 
 @Component({
   components: {
-    DialogBase
-  }
+    DialogBase,
+  },
 })
 export default class HelpDialog extends Mixins(TranslationMixin, DialogMixin) {
-  readonly appVersion = app.version
-  readonly appEmail = app.email
+  readonly appVersion = app.version;
+  readonly appEmail = app.email;
 
   readonly links = [
     {
       title: this.t('helpDialog.termsOfService'),
-      url: this.t('helpDialog.termsOfServiceLink')
+      url: this.t('helpDialog.termsOfServiceLink'),
     },
     {
       title: this.t('helpDialog.privacyPolicy'),
-      url: this.t('helpDialog.privacyPolicyLink')
-    }
-  ]
+      url: this.t('helpDialog.privacyPolicyLink'),
+    },
+  ];
 }
 </script>
 
