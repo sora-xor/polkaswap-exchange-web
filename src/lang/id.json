@@ -562,20 +562,6 @@
         "allowToken": "Izinkan @:appName untuk menggunakan {tokenSymbol}",
         "approveToken": "Harap dicatat bahwa itu hanya diperlukan untuk menyetujui token sekali. Jika ekstensi Anda memiliki beberapa permintaan persetujuan token, pastikan untuk hanya mengonfirmasi yang terakhir sambil menolak sisanya."
     },
-    "months": {
-        "0": "Jan",
-        "1": "Feb",
-        "2": "Mar",
-        "3": "Apr",
-        "4": "Mei",
-        "5": "Jun",
-        "6": "Jul",
-        "7": "Agu",
-        "8": "Sep",
-        "9": "Okt",
-        "10": "Nov",
-        "11": "Des"
-    },
     "bridgeHistory": {
         "title": "Riwayat",
         "showHistory": "Tampilkan riwayat",

@@ -562,20 +562,6 @@
         "allowToken": "Sta @:appName toe om je {tokenSymbol}",
         "approveToken": "Houd er rekening mee dat het slechts één keer nodig is om de token goed te keuren. Als uw extensie meerdere goedkeuringsverzoeken voor tokens heeft, moet u ervoor zorgen dat u alleen de laatste bevestigt en de rest afwijst."
     },
-    "months": {
-        "0": "Jan",
-        "1": "Feb",
-        "2": "Mar",
-        "3": "Apr",
-        "4": "Mei",
-        "5": "Jun",
-        "6": "Jul",
-        "7": "Aug",
-        "8": "Sep",
-        "9": "Okt",
-        "10": "Nov",
-        "11": "Dec"
-    },
     "bridgeHistory": {
         "title": "Geschiedenis",
         "showHistory": "Toon geschiedenis",

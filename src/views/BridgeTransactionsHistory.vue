@@ -49,7 +49,7 @@
                     }`"
                   />
                 </div>
-                <div class="history-item-date">{{ formatDate(item) }}</div>
+                <div class="history-item-date">{{ formatHistoryDate(item) }}</div>
               </div>
               <div :class="historyStatusIconClasses(item.type, item.transactionState)" />
             </div>
@@ -91,7 +91,6 @@ import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { formatDateItem } from '@/utils';
 import { STATES } from '@/utils/fsm';
 
 const namespace = 'bridge';
@@ -119,7 +118,6 @@ export default class BridgeTransactionsHistory extends Mixins(
   @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn;
 
   PageNames = PageNames;
-  formatDateItem = formatDateItem;
   pageAmount = 8; // override PaginationSearchMixin
 
   get filteredHistory(): Array<BridgeHistory> {
@@ -173,12 +171,10 @@ export default class BridgeTransactionsHistory extends Mixins(
       : '';
   }
 
-  formatDate(response: any): string {
+  formatHistoryDate(response: any): string {
     // We use current date if request is failed
     const date = response && response.startTime ? new Date(response.startTime) : new Date();
-    return `${date.getDate()} ${this.t(`months[${date.getMonth()}]`)} ${date.getFullYear()}, ${formatDateItem(
-      date.getHours()
-    )}:${formatDateItem(date.getMinutes())}:${formatDateItem(date.getSeconds())}`;
+    return this.formatDate(date.getTime());
   }
 
   historyStatusIconClasses(type: Operation, state: STATES): string {

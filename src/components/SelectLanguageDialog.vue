@@ -47,11 +47,10 @@ import DialogBase from './DialogBase.vue';
 export default class SelectLanguageDialog extends Mixins(TranslationMixin, DialogMixin) {
   readonly languages = Languages;
 
-  @Getter language!: Language;
   @Action setLanguage!: (lang: Language) => Promise<void>;
 
   get selectedLang(): Language {
-    return this.language;
+    return this.language as Language;
   }
 
   set selectedLang(value: Language) {

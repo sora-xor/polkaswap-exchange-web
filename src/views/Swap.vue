@@ -79,10 +79,9 @@
     </s-float-input>
     <s-button
       class="el-button--switch-tokens"
-      :class="{ loading: isRecountingProcess }"
       type="action"
       icon="arrows-swap-90-24"
-      :disabled="!areTokensSelected || isRecountingProcess"
+      :disabled="!areTokensSelected"
       @click="handleSwitchTokens"
     />
     <s-float-input
@@ -156,7 +155,6 @@
       class="action-button s-typography-button--large"
       type="primary"
       :disabled="isConfirmSwapDisabled"
-      :loading="isRecountingProcess || isAvailableChecking"
       @click="handleConfirmSwap"
     >
       <template v-if="!areTokensSelected">
@@ -200,7 +198,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { KnownAssets, KnownSymbols, FPNumber, Operation, quote } from '@sora-substrate/util';
+import { KnownSymbols, FPNumber, Operation, quote, XOR } from '@sora-substrate/util';
 import type { Subscription } from '@polkadot/x-rxjs';
 import type {
   AccountAsset,
@@ -248,8 +246,6 @@ const namespace = 'swap';
 export default class Swap extends Mixins(mixins.FormattedAmountMixin, TranslationMixin, mixins.LoadingMixin) {
   @State((state) => state[namespace].paths) paths!: QuotePaths;
   @State((state) => state[namespace].liquidityProviderFee) liquidityProviderFee!: CodecString;
-  @State((state) => state[namespace].isAvailable) isAvailable!: boolean;
-  @State((state) => state[namespace].isAvailableChecking) isAvailableChecking!: boolean;
   @State((state) => state[namespace].isExchangeB) isExchangeB!: boolean;
   @State((state) => state[namespace].payload) payload!: QuotePayload;
   @State((state) => state[namespace].fromValue) fromValue!: string;
@@ -262,6 +258,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
   @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset;
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset;
+  @Getter('isAvailable', { namespace }) isAvailable!: boolean;
   @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes;
   @Getter('pairLiquiditySourcesAvailable', { namespace }) pairLiquiditySourcesAvailable!: boolean;
   @Getter('swapMarketAlgorithm', { namespace }) swapMarketAlgorithm!: string;
@@ -273,11 +270,8 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   @Action('setAmountWithoutImpact', { namespace }) setAmountWithoutImpact!: (amount: CodecString) => Promise<void>;
   @Action('setExchangeB', { namespace }) setExchangeB!: (isExchangeB: boolean) => Promise<void>;
   @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>;
-  @Action('checkSwap', { namespace }) checkSwap!: AsyncVoidFn;
   @Action('reset', { namespace }) reset!: AsyncVoidFn;
   @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn;
-  @Action('updatePairLiquiditySources', { namespace }) updatePairLiquiditySources!: AsyncVoidFn;
-  @Action('updatePaths', { namespace }) updatePaths!: AsyncVoidFn;
 
   @Action('setRewards', { namespace }) setRewards!: (rewards: Array<LPRewardsInfo>) => Promise<void>;
   @Action('setSubscriptionPayload', { namespace }) setSubscriptionPayload!: (payload: QuotePayload) => Promise<void>;
@@ -313,7 +307,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   showSettings = false;
   showSelectTokenDialog = false;
   showConfirmSwapDialog = false;
-  isRecountingProcess = false;
   liquidityReservesSubscription: Nullable<Subscription> = null;
   recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
 
@@ -363,11 +356,11 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   }
 
   get fiatDifferenceFormatted(): string {
-    return new FPNumber(this.fiatDifference).toLocaleString();
+    return this.formatStringValue(this.fiatDifference);
   }
 
   get isXorOutputSwap(): boolean {
-    return this.tokenTo?.address === KnownAssets.get(KnownSymbols.XOR)?.address;
+    return this.tokenTo?.address === XOR.address;
   }
 
   get isMaxSwapAvailable(): boolean {
@@ -446,13 +439,8 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
       await this.getAssets();
 
       if (!this.tokenFrom) {
-        const xorAddress = KnownAssets.get(KnownSymbols.XOR)?.address;
-        await this.setTokenFromAddress(xorAddress);
+        await this.setTokenFromAddress(XOR.address);
         await this.setTokenToAddress();
-      }
-
-      if (this.areTokensSelected) {
-        await this.checkSwapSources();
       }
     });
   }
@@ -523,8 +511,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     } catch (error: any) {
       console.error(error);
       resetOppositeValue();
-    } finally {
-      this.isRecountingProcess = false;
     }
   }
 
@@ -545,16 +531,8 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
       .subscribe(this.onChangeSwapReserves);
   }
 
-  private async checkSwapSources(): Promise<void> {
-    await Promise.all([this.checkSwap(), this.updatePairLiquiditySources(), this.updatePaths()]);
-  }
-
   private async onChangeSwapReserves(payload: QuotePayload): Promise<void> {
     await this.setSubscriptionPayload(payload);
-
-    if (!this.isAvailable) {
-      await this.checkSwapSources();
-    }
 
     this.runRecountSwapValues();
   }
@@ -576,20 +554,17 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   }
 
   async handleSwitchTokens(): Promise<void> {
-    this.isRecountingProcess = true;
-
     const [fromAddress, toAddress] = [this.tokenFrom.address, this.tokenTo.address];
 
     await this.setTokenFromAddress(toAddress);
     await this.setTokenToAddress(fromAddress);
-    await this.checkSwapSources();
 
     if (this.isExchangeB) {
       this.setExchangeB(false);
-      this.handleInputFieldFrom(this.toValue, false);
+      this.handleInputFieldFrom(this.toValue);
     } else {
       this.setExchangeB(true);
-      this.handleInputFieldTo(this.fromValue, false);
+      this.handleInputFieldTo(this.fromValue);
     }
 
     this.subscribeOnSwapReserves();
@@ -619,8 +594,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
       } else {
         await this.setTokenToAddress(token.address);
       }
-
-      await this.checkSwapSources();
 
       this.subscribeOnSwapReserves();
     }

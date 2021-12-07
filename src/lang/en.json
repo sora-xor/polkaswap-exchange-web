@@ -571,20 +571,6 @@
         "allowToken": "Allow @:appName to use your {tokenSymbol}",
         "approveToken": "Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest."
     },
-    "months": {
-        "0": "Jan",
-        "1": "Feb",
-        "2": "Mar",
-        "3": "Apr",
-        "4": "May",
-        "5": "Jun",
-        "6": "Jul",
-        "7": "Aug",
-        "8": "Sep",
-        "9": "Oct",
-        "10": "Nov",
-        "11": "Dec"
-    },
     "bridgeHistory": {
         "title": "History",
         "showHistory": "Show history",
