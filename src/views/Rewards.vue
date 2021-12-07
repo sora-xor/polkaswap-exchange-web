@@ -1,6 +1,5 @@
 <template>
-  <div v-loading="parentLoading" class="container rewards">
-    <generic-page-header :title="t('rewards.title')" />
+  <div v-loading="parentLoading" class="rewards">
     <div class="rewards-content" v-loading="!parentLoading && loading">
       <gradient-box class="rewards-block" :symbol="gradientSymbol">
         <div :class="['rewards-box', libraryTheme]">
@@ -400,8 +399,6 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
 </style>
 
 <style lang="scss" scoped>
-$hint-font-size: 13px;
-
 .rewards {
   &-block {
     & + & {
@@ -438,15 +435,6 @@ $hint-font-size: 13px;
     }
   }
 
-  &-hint {
-    font-size: $hint-font-size;
-    font-weight: 300;
-    line-height: var(--s-line-height-base);
-    color: var(--s-color-base-content-primary);
-    padding: 0 46px;
-    text-align: center;
-  }
-
   &-amount {
     width: 100%;
 
@@ -460,18 +448,14 @@ $hint-font-size: 13px;
     }
   }
 
+  @include rewards-hint(46px, true);
+
   &-footer {
     & > *:not(:last-child) {
       margin-bottom: $inner-spacing-small;
     }
 
-    &-hint {
-      padding: 0 $inner-spacing-medium;
-      font-size: $hint-font-size;
-      font-weight: 300;
-      line-height: var(--s-line-height-base);
-      text-align: center;
-    }
+    @include rewards-hint();
   }
 
   &-account {

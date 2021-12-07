@@ -455,6 +455,26 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
+@mixin page-header-title($withHover: false) {
+  font-size: var(--s-heading3-font-size);
+  font-weight: 300 !important;
+  text-transform: capitalize;
+  letter-spacing: var(--s-letter-spacing-mini);
+}
+
+@mixin rewards-hint($horizontalPadding: $inner-spacing-medium, $withColor: false) {
+  &-hint {
+    font-size: 13px;
+    font-weight: 300;
+    line-height: var(--s-line-height-base);
+    padding: 0 $horizontalPadding;
+    text-align: center;
+    @if $withColor == true {
+      color: var(--s-color-base-content-primary);
+    }
+  }
+}
+
 @mixin collapse-items {
   $collapse-icon-height: 36px;
 

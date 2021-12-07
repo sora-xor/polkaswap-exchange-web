@@ -78,10 +78,9 @@ $title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
     }
   }
   &-title {
+    @include page-header-title;
     color: var(--s-color-base-content-primary);
     line-height: $tooltip-area-height;
-    font-weight: 300;
-    letter-spacing: var(--s-letter-spacing-mini);
     & + .el-button {
       right: 0;
       &--settings {

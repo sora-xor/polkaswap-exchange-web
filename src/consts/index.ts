@@ -99,6 +99,10 @@ export enum PageNames {
   RemoveLiquidity = 'RemoveLiquidity',
   Farming = 'Farming',
   Rewards = 'Rewards',
+  RewardsTabs = 'RewardsTabs',
+  ReferralProgram = 'ReferralProgram',
+  ReferralBonding = 'ReferralBonding',
+  ReferralUnbonding = 'ReferralUnbonding',
   PageNotFound = 'PageNotFound',
   Bridge = 'Bridge',
   BridgeTransaction = 'BridgeTransaction',
@@ -145,6 +149,7 @@ export enum Components {
   TokensRow = 'Rewards/TokensRow',
   RewardsAmountHeader = 'Rewards/AmountHeader',
   RewardsAmountTable = 'Rewards/AmountTable',
+  ReferralsConfirmBonding = 'Referrals/ConfirmBonding',
   TokenSelectButton = 'Input/TokenSelectButton',
   TokenAddress = 'Input/TokenAddress',
   SelectLanguageDialog = 'SelectLanguageDialog',
@@ -154,6 +159,11 @@ export enum Components {
   MoonpayNotification = 'Moonpay/MoonpayNotification',
   MoonpayConfirmation = 'Moonpay/MoonpayConfirmation',
   MoonpayHistoryButton = 'Moonpay/MoonpayHistoryButton',
+}
+
+export enum RewardsTabsItems {
+  Rewards = 'Rewards',
+  ReferralProgram = 'ReferralProgram',
 }
 
 interface SidebarMenuItem {

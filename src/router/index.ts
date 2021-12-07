@@ -95,7 +95,23 @@ const routes: Array<RouteConfig> = [
   {
     path: '/rewards',
     name: PageNames.Rewards,
-    component: lazyView(PageNames.Rewards),
+    component: lazyView(PageNames.RewardsTabs),
+  },
+  {
+    path: '/referrals-bond',
+    name: PageNames.ReferralBonding,
+    component: lazyView(PageNames.ReferralBonding),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/referrals-unbond',
+    name: PageNames.ReferralUnbonding,
+    component: lazyView(PageNames.ReferralBonding),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/tokens',

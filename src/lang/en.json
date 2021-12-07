@@ -32,6 +32,9 @@
         "CreatePair": "Create Pair",
         "RegisterAsset": "Register Asset",
         "ClaimRewards": "Claim Rewards",
+        "ReferralReserveXor": "Bond XOR",
+        "ReferralUnreserveXor": "Unbond XOR",
+        "ReferralSetInvitedUser": "Set Referral",
         "andText": "and",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
@@ -40,7 +43,10 @@
             "RemoveLiquidity": "Removed {amount} {symbol} and {amount2} {symbol2}",
             "CreatePair": "Supplied {amount} {symbol} and {amount2} {symbol2}",
             "RegisterAsset": "Registered {symbol} asset",
-            "ClaimRewards": "Reward claimed successfully {rewards}"
+            "ClaimRewards": "Reward claimed successfully {rewards}",
+            "ReferralReserveXor": "Bonded XOR successfully",
+            "ReferralUnreserveXor": "Unbonded XOR successfully",
+            "ReferralSetInvitedUser": "Set Referral"
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
@@ -49,7 +55,10 @@
             "RemoveLiquidity": "Failed to remove {amount} {symbol} and {amount2} {symbol2}",
             "CreatePair": "Failed to supply {amount} {symbol} and {amount2} {symbol2}",
             "RegisterAsset": "Failed to register {symbol} asset",
-            "ClaimRewards": "Failed to claim rewards {rewards}"
+            "ClaimRewards": "Failed to claim rewards {rewards}",
+            "ReferralReserveXor": "Failed to bond XOR",
+            "ReferralUnreserveXor": "Failed to unbonded XOR",
+            "ReferralSetInvitedUser": "Failed to set referral"
         }
     },
     "polkadotjs": {
@@ -678,7 +687,8 @@
         "ok": "OK"
     },
     "rewards": {
-        "title": "Claim Rewards",
+        "Rewards": "Rewards",
+        "ReferralProgram": "@:referralProgram.title",
         "changeAccount": "@:changeAccountText",
         "connected": "@:connectedText",
         "networkFee": "@:networkFeeText",
@@ -832,5 +842,40 @@
         "info": "Your XOR balance will be less than {fee} XOR after this transaction. You won’t be able to pay for the network fee for another transaction.",
         "payoff": "You would have to use the Bridge to get XOR from other networks, get sent XOR from another SORA account, or swap any other token already in your account into XOR.",
         "button": "Yes, I understand the risk"
+    },
+    "referralProgram": {
+        "title": "Referral Program",
+        "connectAccount": "To invite users you need to connect your @:soraText account.",
+        "bondedXOR": "XOR Bonded",
+        "referralsNumber": "{number} referrals",
+        "learnMore": "Learn more",
+        "preview": "Invite new users and get 10% from their transaction fees.<br />To start, bond any amount of XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:learnMore\">@:learnMore</a>",
+        "deposit": "Deposit",
+        "balance": "Balance",
+        "networkFee": "@:networkFeeText",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "action": {
+          "connectWallet": "@:connectWalletText",
+          "empty": "Enter amount of {tokenSymbol}",
+          "startInviting": "Bond {tokenSymbol} to start inviting",
+          "bondMore": "Bond More",
+          "bond": "Bond",
+          "unbond": "Unbond",
+          "copyLink": "Copy link"
+        },
+        "transactionDetails": "Transaction Details",
+        "receivedRewards": "Received rewards",
+        "invitationLink": "Invitation link",
+        "successCopy": "Referral link is copied to the clipboard",
+        "bondTitle": "Bond XOR",
+        "unbondTitle": "Unbond XOR",
+        "confirm": {
+            "text": "Confirm",
+            "bond": "Confirm bond",
+            "unbond": "Confirm unbond",
+            "bondText": "You will bond <span class=\"transaction-number\">{xorValue}</span> XOR to invite users.",
+            "unbondText": "You will unbond <span class=\"transaction-number\">{xorValue}</span> XOR."
+        }
     }
 }
