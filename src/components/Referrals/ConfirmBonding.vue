@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO: Add tooltip when the text will be added -->
   <dialog-base
     :visible.sync="isVisible"
     :title="t(`referralProgram.confirm.${isBond ? 'bond' : 'unbond'}`)"
@@ -13,10 +14,6 @@
         </div>
       </div>
     </div>
-    <p
-      class="transaction-message"
-      v-html="t(`referralProgram.confirm.${isBond ? 'bond' : 'unbond'}Text`, { xorValue: formattedXorValue })"
-    />
     <s-divider />
     <info-line
       :label="t('referralProgram.networkFee')"
@@ -93,10 +90,11 @@ export default class ConfirmBonding extends Mixins(mixins.TransactionMixin, mixi
 
 <style lang="scss">
 .dialog--confirm-bond {
-  .transaction-number {
-    color: var(--s-color-base-content-primary);
-    font-weight: 600;
-    word-break: break-all;
+  .el-dialog > .el-dialog__body {
+    padding-bottom: calc(#{$inner-spacing-mini} / 2);
+  }
+  .el-divider {
+    margin-bottom: $inner-spacing-mini;
   }
 }
 </style>
@@ -128,9 +126,7 @@ export default class ConfirmBonding extends Mixins(mixins.TransactionMixin, mixi
     flex-shrink: 0;
   }
 }
-.transaction-message {
-  margin-top: $inner-spacing-mini;
-  color: var(--s-color-base-content-primary);
-  line-height: var(--s-line-height-big);
+.info-line {
+  border-bottom: none;
 }
 </style>

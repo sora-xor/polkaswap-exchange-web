@@ -475,7 +475,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
-@mixin collapse-items {
+@mixin collapse-items($withBottomMargin: true) {
   $collapse-icon-height: 36px;
 
   .el-collapse-item {
@@ -492,10 +492,11 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     &.is-active {
       background: var(--s-color-base-background);
     }
-    &:last-child {
-      margin-bottom: 0;
+    @if $withBottomMargin == true {
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
-
     &__header,
     &__wrap {
       border-bottom: none;

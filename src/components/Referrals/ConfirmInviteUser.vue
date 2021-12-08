@@ -1,6 +1,6 @@
 <template>
   <dialog-base :visible.sync="isVisible" :show-close-button="false" custom-class="dialog--confirm-invite-user">
-    <div class="invite-user-icon"><s-icon name="lock-16" size="24px" /></div>
+    <div class="invite-user-icon" />
     <p class="invite-user-ititle">{{ t('referralProgram.confirm.inviteTitle') }}</p>
     <p class="invite-user-description">{{ t('referralProgram.confirm.inviteDescription') }}</p>
     <template #footer>
@@ -50,10 +50,13 @@ $invite-user-icon-size: 64px;
     margin-bottom: $inner-spacing-medium;
     height: #{$invite-user-icon-size};
     width: #{$invite-user-icon-size};
-    background-color: var(--s-color-status-error);
     display: flex;
     justify-content: center;
     align-items: center;
+    background: var(--s-color-status-error) url('~@/assets/img/link-icon.svg') 50% 50% no-repeat;
+    [design-system-theme='dark'] & {
+      background-image: url('~@/assets/img/link-icon-dark.svg');
+    }
   }
   &-icon,
   &-lock {

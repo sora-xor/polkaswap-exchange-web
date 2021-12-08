@@ -686,7 +686,8 @@ export default {
     connectAccount: 'To invite users you need to connect your @:soraText account.',
     bondedXOR: 'XOR Bonded',
     referralsNumber: '{number} referrals',
-    learnMore: 'Learn more',
+    startInviting:
+      'To start inviting, bond any amount of XOR. <a class="link" href="#" target="_blank" rel="nofollow noopener">@:learnMoreText</a>',
     preview:
       'Invite new users and get 10% from their transaction fees.<br />To start, bond any amount of XOR. <a href="#" target="_blank" rel="nofollow noopener" class="link" title="@:learnMore">@:learnMore</a>',
     deposit: 'Deposit',
@@ -714,8 +715,6 @@ export default {
       text: '@:confirmText',
       bond: 'Confirm bond',
       unbond: 'Confirm unbond',
-      bondText: 'You will bond <span class="transaction-number">{xorValue}</span> XOR to invite users.',
-      unbondText: 'You will unbond <span class="transaction-number">{xorValue}</span> XOR.',
       inviteTitle: 'You’ve been invited to Polkaswap by a referral',
       inviteDescription:
         'When you’ll pay a fee for transaction, 10% will go to your referral. It’s completely free of charge.',

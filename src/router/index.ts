@@ -98,7 +98,7 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.RewardsTabs),
   },
   {
-    path: '/referrals-bond',
+    path: '/referral-bond',
     name: PageNames.ReferralBonding,
     component: lazyView(PageNames.ReferralBonding),
     meta: {
@@ -106,12 +106,16 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
-    path: '/referrals-unbond',
+    path: '/referral-unbond',
     name: PageNames.ReferralUnbonding,
     component: lazyView(PageNames.ReferralBonding),
     meta: {
       requiresAuth: true,
     },
+  },
+  {
+    path: '/referrer/:referrerAddress?',
+    meta: { requiresAuth: true },
   },
   {
     path: '/tokens',

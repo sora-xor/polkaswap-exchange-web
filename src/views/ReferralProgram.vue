@@ -9,14 +9,15 @@
           value-can-be-hidden
           :font-size-rate="FontSizeRate.MEDIUM"
           symbol-as-decimal
-          :value="'12345.6789'"
+          :value="rewards"
           :asset-symbol="xorSymbol"
         />
         <formatted-amount
           is-fiat-value
           value-can-be-hidden
           :font-size-rate="FontSizeRate.MEDIUM"
-          :value="'12345.6789'"
+          :value="rewards"
+          is-formatted
         />
       </div>
       <s-collapse :borders="true">
@@ -42,18 +43,31 @@
             </s-button>
           </div>
         </s-collapse-item>
-        <s-collapse-item class="invited-users-container" name="invitedUsers">
+        <s-collapse-item :class="invitedUsersClasses" name="invitedUsers">
           <template #title>
-            <!-- TODO: Change icon -->
-            <token-logo class="token-logo" :token="tokenXOR" />
+            <span class="invited-users-icon" />
             <h3 class="invited-users-collapse-title">
               {{ t('referralProgram.referralsNumber', { number: invitedUsersNumber }) }}
             </h3>
           </template>
-          <info-line v-for="invitedUser in invitedUsers" :key="invitedUser" :label="invitedUser.toString()" />
+          <info-line
+            v-for="invitedUser in invitedUsers"
+            :key="invitedUser.toString()"
+            :label="invitedUser.toString()"
+            :value="getInvitedUserReward(invitedUser.toString())"
+            :assetSymbol="xorSymbol"
+            :fiatValue="getInvitedUserReward(invitedUser.toString())"
+            is-formatted
+          />
         </s-collapse-item>
       </s-collapse>
-      <s-card shadow="always" size="small" border-radius="medium" class="referral-link-container">
+      <s-card
+        v-if="referralLink.isVisible"
+        class="referral-link-container"
+        shadow="always"
+        size="small"
+        border-radius="medium"
+      >
         <div class="referral-link-details">
           <div class="referral-link-label">{{ t('referralProgram.invitationLink') }}</div>
           <div class="referral-link" v-html="referralLink.label" />
@@ -63,6 +77,11 @@
           <s-icon name="copy-16" size="16" />
         </s-button>
       </s-card>
+      <p
+        v-else
+        class="referral-program-hint referral-program-hint--connected"
+        v-html="t('referralProgram.startInviting')"
+      />
     </template>
     <template v-else>
       <p class="referral-program-hint" v-html="t('referralProgram.connectAccount')" />
@@ -104,6 +123,7 @@ export default class ReferralProgram extends Mixins(
   mixins.LoadingMixin,
   mixins.TransactionMixin,
   mixins.FormattedAmountMixin,
+  mixins.ReferralRewardsMixin,
   WalletConnectMixin
 ) {
   readonly LogoSize = LogoSize;
@@ -113,6 +133,14 @@ export default class ReferralProgram extends Mixins(
 
   @Action('getInvitedUsers', { namespace }) getInvitedUsers!: (referralId: string) => Promise<void>;
   @Action('setBound', { namespace }) setBound!: (isBond: boolean) => Promise<void>;
+
+  get rewards(): string {
+    return this.referralRewards?.rewards.toLocaleString() || '0';
+  }
+
+  get invitedUserRewards(): any {
+    return this.referralRewards?.invitedUserRewards;
+  }
 
   get bondedXOR(): string {
     return this.tokenXOR?.balance?.bonded || '';
@@ -126,11 +154,22 @@ export default class ReferralProgram extends Mixins(
     return this.invitedUsers.length;
   }
 
+  get invitedUsersClasses(): Array<string> {
+    const baseClass = 'invited-users-container';
+    const cssClasses: Array<string> = [baseClass];
+    if (!this.invitedUsersNumber) {
+      cssClasses.push('is-active');
+      cssClasses.push(`${baseClass}--empty`);
+    }
+    return cssClasses;
+  }
+
   get referralLink(): any {
     const polkaswapLink = 'Polkaswap.io';
     return {
-      href: `https://${polkaswapLink.toLowerCase()}/${this.account.address}`,
-      label: `<span class="referral-link-address">${polkaswapLink}/</span>${this.account.address}`,
+      href: `https://${polkaswapLink.toLowerCase()}/referrer/${this.account.address}`,
+      label: `<span class="referral-link-address">${polkaswapLink}/</span>referrer/${this.account.address}`,
+      isVisible: +this.bondedXOR > 0,
     };
   }
 
@@ -138,8 +177,13 @@ export default class ReferralProgram extends Mixins(
     this.withApi(async () => {
       if (this.isSoraAccountConnected) {
         await this.getInvitedUsers(this.account.address);
+        await this.getReferralRewards();
       }
     });
+  }
+
+  getInvitedUserReward(invitedUser: string): string {
+    return this.invitedUserRewards[invitedUser]?.rewards?.toLocaleString() || '0';
   }
 
   async handleConnect(): Promise<void> {
@@ -174,11 +218,17 @@ export default class ReferralProgram extends Mixins(
 </script>
 
 <style lang="scss">
+$referral-collapse-icon-size: 36px;
 .referral-program {
-  @include collapse-items;
+  @include collapse-items(false);
   margin-top: $inner-spacing-mini;
   .el-collapse-item__content {
     padding-bottom: 0;
+  }
+  @include element-size('token-logo--medium', $referral-collapse-icon-size);
+  @include element-size('invited-users-icon', $referral-collapse-icon-size);
+  &-hint--connected .link {
+    color: var(--s-color-theme-accent);
   }
 }
 .bonded,
@@ -190,6 +240,10 @@ export default class ReferralProgram extends Mixins(
     letter-spacing: var(--s-letter-spacing-small);
     font-weight: 700;
   }
+  &-icon {
+    background: url('~@/assets/img/invited-users.svg') 50% 50% no-repeat;
+    border-radius: 50%;
+  }
 }
 .bonded-container {
   margin-top: $inner-spacing-medium;
@@ -198,13 +252,21 @@ export default class ReferralProgram extends Mixins(
   }
 }
 .invited-users-container {
+  &--empty.is-active {
+    .el-collapse-item__header {
+      cursor: default;
+    }
+    .el-collapse-item__arrow {
+      display: none;
+    }
+  }
   .info-line {
     &:last-child {
       margin-bottom: $inner-spacing-medium;
     }
     &-label {
       margin-right: 0 !important;
-      width: 100%;
+      width: 125px;
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -243,6 +305,10 @@ export default class ReferralProgram extends Mixins(
   @include buttons;
   @include full-width-button('connect-button');
   @include rewards-hint(46px, true);
+  &-hint--connected {
+    padding-right: 0;
+    padding-left: 0;
+  }
 }
 
 .rewards {
@@ -293,7 +359,6 @@ export default class ReferralProgram extends Mixins(
   font-size: var(--s-font-size-medium);
   line-height: var(--s-line-height-medium);
   &-container {
-    margin-top: $inner-spacing-medium;
     text-overflow: ellipsis;
   }
   &-details {

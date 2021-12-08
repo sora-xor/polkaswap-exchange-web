@@ -69,11 +69,11 @@
         <template v-if="hasZeroAmount">
           {{ t('buttons.enterAmount') }}
         </template>
-        <template v-else-if="isBondedBalance && isInsufficientBondedXor">
-          {{ t('referralProgram.insufficientBondedBalance') }}
-        </template>
         <template v-else-if="isInsufficientXorForFee">
           {{ t('referralProgram.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
+        </template>
+        <template v-else-if="isBondedBalance && isInsufficientBondedXor">
+          {{ t('referralProgram.insufficientBondedBalance') }}
         </template>
         <template v-else>
           {{ t(`referralProgram.action.${isBond ? 'bond' : 'unbond'}`) }}
