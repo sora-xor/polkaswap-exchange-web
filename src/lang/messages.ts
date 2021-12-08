@@ -694,6 +694,7 @@ export default {
     networkFee: '@:networkFeeText',
     networkFeeTooltip: '@:networkFeeTooltipText',
     insufficientBalance: '@:insufficientBalanceText',
+    insufficientBondedBalance: 'Insufficient bonded balance',
     action: {
       connectWallet: '@:connectWalletText',
       empty: 'Enter amount of {tokenSymbol}',
@@ -715,6 +716,11 @@ export default {
       unbond: 'Confirm unbond',
       bondText: 'You will bond <span class="transaction-number">{xorValue}</span> XOR to invite users.',
       unbondText: 'You will unbond <span class="transaction-number">{xorValue}</span> XOR.',
+      inviteTitle: 'You’ve been invited to Polkaswap by a referral',
+      inviteDescription:
+        'When you’ll pay a fee for transaction, 10% will go to your referral. It’s completely free of charge.',
+      signInvitation: 'Sign approval transaction',
+      freeOfCharge: 'This action is free of charge',
     },
   },
 };

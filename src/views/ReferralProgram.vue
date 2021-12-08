@@ -10,7 +10,7 @@
           :font-size-rate="FontSizeRate.MEDIUM"
           symbol-as-decimal
           :value="'12345.6789'"
-          :asset-symbol="tokenXOR.symbol"
+          :asset-symbol="xorSymbol"
         />
         <formatted-amount
           is-fiat-value
@@ -82,7 +82,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { AccountAsset } from '@sora-substrate/util';
+import { AccountAsset, KnownSymbols } from '@sora-substrate/util';
 
 import router, { lazyComponent, lazyView } from '@/router';
 import { PageNames, Components, LogoSize } from '@/consts';
@@ -109,15 +109,17 @@ export default class ReferralProgram extends Mixins(
   readonly LogoSize = LogoSize;
 
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
-  @Getter('referral', { namespace }) referral!: string;
   @Getter('invitedUsers', { namespace }) invitedUsers!: Array<string>;
 
-  @Action('getReferral', { namespace }) getReferral!: (invitedUserId: string) => Promise<void>;
   @Action('getInvitedUsers', { namespace }) getInvitedUsers!: (referralId: string) => Promise<void>;
   @Action('setBound', { namespace }) setBound!: (isBond: boolean) => Promise<void>;
 
   get bondedXOR(): string {
     return this.tokenXOR?.balance?.bonded || '';
+  }
+
+  get xorSymbol(): string {
+    return KnownSymbols.XOR;
   }
 
   get invitedUsersNumber(): number {
@@ -135,7 +137,6 @@ export default class ReferralProgram extends Mixins(
   created() {
     this.withApi(async () => {
       if (this.isSoraAccountConnected) {
-        await this.getReferral('cnWRhrPhqeZBaR7LgWPMQLytum7AngL5TL9VPscmy2SRT2Ktv');
         await this.getInvitedUsers(this.account.address);
       }
     });
@@ -149,7 +150,7 @@ export default class ReferralProgram extends Mixins(
 
   handleBonding(isBond: boolean): void {
     this.setBound(!!isBond);
-    router.push({ name: PageNames.ReferralBonding });
+    router.push({ name: isBond ? PageNames.ReferralBonding : PageNames.ReferralUnbonding });
   }
 
   async handleCopyAddress(event: Event): Promise<void> {
@@ -214,6 +215,18 @@ export default class ReferralProgram extends Mixins(
     .el-card__body {
       display: flex;
       align-items: center;
+    }
+    .el-button.neumorphic {
+      border-color: var(--s-color-theme-accent);
+      &:hover,
+      &:focus,
+      &.focusing {
+        border-color: var(--s-color-theme-accent-hover);
+      }
+      &:active,
+      &.s-pressed {
+        border-color: var(--s-color-theme-accent-pressed);
+      }
     }
     .s-icon-copy-16 {
       margin-left: calc(#{$inner-spacing-small} / 2);

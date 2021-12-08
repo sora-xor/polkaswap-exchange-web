@@ -15,7 +15,7 @@
     </div>
     <p
       class="transaction-message"
-      v-html="t(`referralProgram.confirm.${isBond ? 'bond' : 'unbond'}Text`, { xorValue })"
+      v-html="t(`referralProgram.confirm.${isBond ? 'bond' : 'unbond'}Text`, { xorValue: formattedXorValue })"
     />
     <s-divider />
     <info-line

@@ -33,6 +33,7 @@
         </s-scrollbar>
       </div>
     </div>
+    <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" @confirm="confirmInviteUser" />
   </s-design-system-provider>
 </template>
 
@@ -61,6 +62,7 @@ import type { SubNetwork } from '@/utils/ethers-util';
     AppHeader: lazyComponent(Components.AppHeader),
     AppMenu: lazyComponent(Components.AppMenu),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
+    ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
   },
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
@@ -68,12 +70,15 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   readonly PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
 
   menuVisibility = false;
+  showConfirmInviteUser = false;
 
   @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @Getter libraryTheme!: Theme;
   @Getter libraryDesignSystem!: DesignSystem;
   @Getter firstReadyTransaction!: History;
   @Getter blockNumber!: number;
+  @Getter('isLoggedIn') isSoraAccountConnected!: boolean;
+  @Getter('referral', { namespace: 'referrals' }) referral!: string;
 
   // Wallet
   @Action resetAccountAssetsSubscription!: AsyncVoidFn;
@@ -94,6 +99,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action resetBlockNumberSubscription!: () => Promise<void>;
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>;
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
+  @Action('getReferral', { namespace: 'referrals' }) getReferral!: (invitedUserId: string) => Promise<void>;
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History): void {
     this.handleChangeTransaction(value);
@@ -139,6 +145,13 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       // connection to node
       await this.runAppConnectionToNode();
+
+      if (this.isSoraAccountConnected) {
+        await this.getReferral(this.account.address);
+        if (!this.referral) {
+          this.handleConfirmInviteUser();
+        }
+      }
     });
 
     this.trackActiveTransactions();
@@ -175,6 +188,16 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
     if (!sidebar) {
       this.closeMenu();
+    }
+  }
+
+  handleConfirmInviteUser(): void {
+    this.showConfirmInviteUser = true;
+  }
+
+  async confirmInviteUser(isInviteUserConfirmed: boolean): Promise<void> {
+    if (isInviteUserConfirmed) {
+      // TODO: Clean storage referral value here
     }
   }
 

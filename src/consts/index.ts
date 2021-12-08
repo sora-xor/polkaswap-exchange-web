@@ -150,6 +150,7 @@ export enum Components {
   RewardsAmountHeader = 'Rewards/AmountHeader',
   RewardsAmountTable = 'Rewards/AmountTable',
   ReferralsConfirmBonding = 'Referrals/ConfirmBonding',
+  ReferralsConfirmInviteUser = 'Referrals/ConfirmInviteUser',
   TokenSelectButton = 'Input/TokenSelectButton',
   TokenAddress = 'Input/TokenAddress',
   SelectLanguageDialog = 'SelectLanguageDialog',

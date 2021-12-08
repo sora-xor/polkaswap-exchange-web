@@ -20,17 +20,18 @@
       >
         <div slot="top" class="input-line">
           <div class="input-title">
-            <span class="input-title--uppercase input-title--primary">{{ t('referralProgram.deposit') }}</span>
+            <span class="input-title--uppercase input-title--primary">
+              {{ t(`referralProgram.${isBond ? 'deposit' : 'action.unbond'}`) }}
+            </span>
           </div>
           <div v-if="tokenXOR && tokenXOR.balance" class="input-value">
             <span class="input-value--uppercase">{{ t('referralProgram.balance') }}</span>
-            <!-- TODO: Should we show bonded balance instead of all balance? -->
             <formatted-amount-with-fiat-value
               value-can-be-hidden
               with-left-shift
               value-class="input-value--primary"
-              :value="formatBalance(tokenXOR)"
-              :fiat-value="getFiatBalance(tokenXOR)"
+              :value="xorBalance"
+              :fiat-value="fiatXorBalance"
             />
           </div>
         </div>
@@ -46,12 +47,7 @@
           >
             {{ t('buttons.max') }}
           </s-button>
-          <token-select-button
-            class="el-button--select-token"
-            icon="chevron-down-rounded-16"
-            :token="tokenXOR"
-            disabled
-          />
+          <token-select-button class="el-button--select-token" :token="tokenXOR" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
           <formatted-amount v-if="tokenXOR && tokenXorPrice" is-fiat-value :value="tokenXorFiatAmount" />
@@ -72,6 +68,9 @@
       >
         <template v-if="hasZeroAmount">
           {{ t('buttons.enterAmount') }}
+        </template>
+        <template v-else-if="isBondedBalance && isInsufficientBondedXor">
+          {{ t('referralProgram.insufficientBondedBalance') }}
         </template>
         <template v-else-if="isInsufficientXorForFee">
           {{ t('referralProgram.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
@@ -142,8 +141,24 @@ export default class ReferralBonding extends Mixins(
     return !!this.tokenXOR;
   }
 
+  get isBondedBalance(): boolean {
+    return !this.isBond;
+  }
+
   get xorSymbol(): string {
     return ' ' + KnownSymbols.XOR;
+  }
+
+  get bondedXOR(): string {
+    return this.tokenXOR?.balance?.bonded || '';
+  }
+
+  get xorBalance(): Nullable<string> {
+    return formatAssetBalance(this.tokenXOR, { isBondedBalance: this.isBondedBalance });
+  }
+
+  get fiatXorBalance(): Nullable<string> {
+    return this.isBond ? this.getFiatBalance(this.tokenXOR) : this.getFiatAmountByCodecString(this.bondedXOR);
   }
 
   get hasZeroAmount(): boolean {
@@ -161,11 +176,26 @@ export default class ReferralBonding extends Mixins(
     if (this.fpNumberNetworkFee.isZero()) {
       return false;
     }
+    if (this.isBondedBalance) {
+      return (
+        !FPNumber.eq(this.getFPNumberFromCodec(this.tokenXOR.balance.bonded, decimals), FPNumber.ZERO) &&
+        FPNumber.gt(balance, this.fpNumberNetworkFee)
+      );
+    }
     return !FPNumber.eq(this.fpNumberNetworkFee, balance.sub(amount)) && FPNumber.gt(balance, this.fpNumberNetworkFee);
   }
 
+  get isInsufficientBondedXor(): boolean {
+    return !!hasInsufficientBalance(this.tokenXOR, this.xorValue, this.networkFee, false, this.isBondedBalance);
+  }
+
   get isInsufficientXorForFee(): boolean {
-    // TODO 4 alexnatalia: Check unbond value case
+    if (this.isBondedBalance) {
+      return FPNumber.gt(
+        this.fpNumberNetworkFee,
+        this.getFPNumberFromCodec(this.tokenXOR.balance.transferable, this.tokenXOR.decimals)
+      );
+    }
     return !!hasInsufficientBalance(this.tokenXOR, this.xorValue, this.networkFee);
   }
 
@@ -186,11 +216,7 @@ export default class ReferralBonding extends Mixins(
   }
 
   get isConfirmBondDisabled(): boolean {
-    return !this.isTokenXorSet || this.hasZeroAmount || this.isInsufficientXorForFee;
-  }
-
-  formatBalance(token: AccountAsset): string {
-    return formatAssetBalance(token);
+    return !this.isTokenXorSet || this.hasZeroAmount || this.isInsufficientXorForFee || this.isInsufficientBondedXor;
   }
 
   handleInputXor(value: string): void {
@@ -199,7 +225,7 @@ export default class ReferralBonding extends Mixins(
   }
 
   handleMaxValue(): void {
-    this.handleInputXor(getMaxValue(this.tokenXOR, this.networkFee));
+    this.handleInputXor(getMaxValue(this.tokenXOR, this.networkFee, false, this.isBondedBalance));
   }
 
   handleConfirmBond(): void {

@@ -63,9 +63,10 @@ const getMaxBalance = (
   asset: AccountAsset | RegisteredAccountAsset | AccountLiquidity,
   fee: CodecString,
   isExternalBalance = false,
-  parseAsLiquidity = false
+  parseAsLiquidity = false,
+  isBondedBalance = false
 ): FPNumber => {
-  const balance = getAssetBalance(asset, { internal: !isExternalBalance, parseAsLiquidity });
+  const balance = getAssetBalance(asset, { internal: !isExternalBalance, parseAsLiquidity, isBondedBalance });
 
   if (asZeroValue(balance)) return FPNumber.ZERO;
 
@@ -74,7 +75,8 @@ const getMaxBalance = (
   if (
     !asZeroValue(fee) &&
     ((!isExternalBalance && isXorAccountAsset(asset)) ||
-      (isExternalBalance && isEthereumAddress((asset as RegisteredAccountAsset).externalAddress)))
+      (isExternalBalance && isEthereumAddress((asset as RegisteredAccountAsset).externalAddress))) &&
+    !isBondedBalance
   ) {
     const fpFee = FPNumber.fromCodecValue(fee, asset.decimals);
     fpResult = fpResult.sub(fpFee);
@@ -86,19 +88,21 @@ const getMaxBalance = (
 export const getMaxValue = (
   asset: AccountAsset | RegisteredAccountAsset,
   fee: CodecString,
-  isExternalBalance = false
+  isExternalBalance = false,
+  isBondedBalance = false
 ): string => {
-  return getMaxBalance(asset, fee, isExternalBalance).toString();
+  return getMaxBalance(asset, fee, isExternalBalance, false, isBondedBalance).toString();
 };
 
 export const hasInsufficientBalance = (
   asset: AccountAsset | RegisteredAccountAsset,
   amount: string | number,
   fee: CodecString,
-  isExternalBalance = false
+  isExternalBalance = false,
+  isBondedBalance = false
 ): boolean => {
   const fpAmount = new FPNumber(amount, asset.decimals);
-  const fpMaxBalance = getMaxBalance(asset, fee, isExternalBalance);
+  const fpMaxBalance = getMaxBalance(asset, fee, isExternalBalance, false, isBondedBalance);
 
   return FPNumber.lt(fpMaxBalance, fpAmount);
 };
@@ -140,7 +144,10 @@ export const asZeroValue = (value: any): boolean => {
   return !Number.isFinite(+value) || +value === 0;
 };
 
-export const getAssetBalance = (asset: any, { internal = true, parseAsLiquidity = false } = {}) => {
+export const getAssetBalance = (
+  asset: any,
+  { internal = true, parseAsLiquidity = false, isBondedBalance = false } = {}
+) => {
   if (!internal) {
     return asset?.externalBalance;
   }
@@ -149,16 +156,26 @@ export const getAssetBalance = (asset: any, { internal = true, parseAsLiquidity 
     return asset?.balance;
   }
 
+  if (isBondedBalance) {
+    return asset?.balance?.bonded;
+  }
+
   return asset?.balance?.transferable;
 };
 
 export const formatAssetBalance = (
   asset: any,
-  { internal = true, parseAsLiquidity = false, formattedZero = '', showZeroBalance = true } = {}
+  {
+    internal = true,
+    parseAsLiquidity = false,
+    formattedZero = '',
+    showZeroBalance = true,
+    isBondedBalance = false,
+  } = {}
 ): string => {
   if (!asset) return formattedZero;
 
-  const balance = getAssetBalance(asset, { internal, parseAsLiquidity });
+  const balance = getAssetBalance(asset, { internal, parseAsLiquidity, isBondedBalance });
 
   if (!balance || (!showZeroBalance && asZeroValue(balance))) return formattedZero;
 
