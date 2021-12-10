@@ -1,4 +1,5 @@
 import map from 'lodash/fp/map';
+import omit from 'lodash/fp/omit';
 import flatMap from 'lodash/fp/flatMap';
 import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
@@ -123,7 +124,7 @@ const getters = {
 
 const mutations = {
   [types.RESET](state: RewardsState) {
-    const s = initialState();
+    const s = omit(['accountMarketMakerUpdates', 'accountMarketMakerInfo'], initialState());
 
     Object.keys(s).forEach((key) => {
       state[key] = s[key];

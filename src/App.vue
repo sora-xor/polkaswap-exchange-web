@@ -91,7 +91,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action setLanguage!: (lang: Language) => Promise<void>;
   @Action setApiKeys!: (options: any) => Promise<void>;
   @Action setFeatureFlags!: (options: any) => Promise<void>;
-  @Action resetBlockNumberSubscription!: () => Promise<void>;
+  @Action resetBlockNumberSubscription!: AsyncVoidFn;
+  @Action('unsubscribeAccountMarketMakerInfo', { namespace: 'rewards' }) unsubscribeMarketMakerInfo!: AsyncVoidFn;
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>;
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
   @Watch('firstReadyTransaction', { deep: true })
@@ -184,6 +185,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     await this.resetAccountAssetsSubscription();
     await this.resetRuntimeVersionSubscription();
     await this.resetBlockNumberSubscription();
+    await this.unsubscribeMarketMakerInfo();
     await connection.close();
   }
 
