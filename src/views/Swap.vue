@@ -643,10 +643,13 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     this.showSettings = true;
   }
 
-  destroyed(): void {
-    this.reset();
+  beforeDestroy(): void {
     this.cleanEnabledAssetsSubscription();
     this.cleanSwapReservesSubscription();
+  }
+
+  destroyed(): void {
+    this.reset();
   }
 }
 </script>
