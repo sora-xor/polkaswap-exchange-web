@@ -187,6 +187,10 @@ const MainMenu: Array<SidebarMenuItem> = [
 
 const AccountMenu: Array<SidebarMenuItem> = [
   {
+    icon: 'finance-wallet-24',
+    title: PageNames.Wallet,
+  },
+  {
     icon: 'basic-circle-star-24',
     title: PageNames.Rewards,
   },
