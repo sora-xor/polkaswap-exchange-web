@@ -245,9 +245,6 @@ ul ul {
     &-scrollbar {
       flex: 1;
     }
-    &__about &-scrollbar .el-scrollbar__wrap {
-      overflow-x: auto;
-    }
   }
 }
 
@@ -422,6 +419,8 @@ $sora-logo-width: 173.7px;
     flex: 1;
     flex-flow: column nowrap;
     &__about {
+      overflow: hidden;
+
       .app-content .app-disclaimer {
         min-width: 800px;
         width: 100%;

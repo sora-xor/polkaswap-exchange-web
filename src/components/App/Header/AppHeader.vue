@@ -318,6 +318,8 @@ $icon-size: 28px;
 }
 
 .app-menu-button {
+  flex-shrink: 0;
+
   @include large-mobile {
     display: none;
   }
