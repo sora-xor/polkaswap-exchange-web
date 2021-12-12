@@ -279,8 +279,8 @@ $icon-size: 28px;
     position: absolute;
     height: 1px;
     bottom: 0;
-    left: $inner-spacing-mini;
-    right: $inner-spacing-mini;
+    left: 0;
+    right: 0;
     background-color: var(--s-color-base-border-secondary);
   }
 }
