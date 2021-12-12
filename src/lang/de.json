@@ -776,7 +776,7 @@
             }
         },
         "buttons": {
-            "buy": "Token kaufen",
+            "buy": "Kaufen",
             "history": "Kaufhistorie",
             "transfer": "Bridge starten",
             "view": "Bridge-Transaktion ansehen"

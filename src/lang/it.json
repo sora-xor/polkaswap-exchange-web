@@ -793,8 +793,8 @@
         }
     },
     "recievedText": "Ricevuto",
-    "light": "Leggero",
-    "dark": "Buio",
+    "light": "Light",
+    "dark": "Dark",
     "headerMenu": {
         "showBalances": "Mostra saldi",
         "hideBalances": "Nascondi saldi",

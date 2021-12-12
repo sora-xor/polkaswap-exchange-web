@@ -776,13 +776,13 @@
             }
         },
         "buttons": {
-            "buy": "Kjøp polletter",
-            "history": "Tx historie",
+            "buy": "Kjøp Tokens",
+            "history": "Kjøpshistorikk",
             "transfer": "Start broen",
             "view": "Se transaksjonen"
         },
         "history": {
-            "title": "Kjøpshistorie",
+            "title": "Kjøpshistorikk",
             "empty": "Ingen data"
         },
         "confirmations": {

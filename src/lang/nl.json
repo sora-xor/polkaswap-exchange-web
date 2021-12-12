@@ -375,7 +375,7 @@
     },
     "about": {
         "title": "De DEX voor de interoperabele toekomst.",
-        "description": "Cross-chain uitwisseling van assets, eenvoudige creatie en notering van nieuwe assets en de gemakkelijkste swaps ooit. De interoperabele toekomst van Polkadot is hier en wij lopen voorop!",
+        "description": "Cross-chain uitwisseling van assets, eenvoudige creatie en notering van nieuwe assets en de gemakkelijkste swaps beschikbaar. De interoperabele toekomst van Polkadot is hier en wij lopen voorop!",
         "trading": {
             "title": "Sneller traden",
             "first": "Polkaswap is een non-custodial, cross-chain AMM DEX-protocol voor het swappen van tokens op basis van Polkadot- en Kusama relay chains, Polkadot- en Kusama parachains en blockchains die rechtstreeks zijn verbonden via bruggen.",
@@ -405,8 +405,8 @@
                 "desc": "Beveilig de toekomst van het SORA-netwerk en gedecentraliseerde apps zoals Polkaswap, en verdien terwijl beloningen door een SORA-validator te worden."
             },
             "second": {
-                "title": "Verbind een ketting met SORA",
-                "desc": "Laat de gedecentraliseerde wereldeconomie groeien door meer chains te verbinden met SORA en Polkaswap met behulp van het HASHI-brugprotocol."
+                "title": "Verbind een chain met SORA",
+                "desc": "Laat de gedecentraliseerde wereldeconomie groeien door meer chains te verbinden met SORA en Polkaswap met behulp van het HASHI bridge protocol."
             }
         },
         "network": "Polkaswap is gebouwd op het SORA-netwerk, gericht op interoperabiliteit om de rest van het crypto-ecosysteem te verbinden met Polkadot."
@@ -560,7 +560,7 @@
         "title": "Bridge-transactie",
         "expectedMetaMaskAddress": "Verwacht adres in Metamask:",
         "allowToken": "Sta @:appName toe om je {tokenSymbol}",
-        "approveToken": "Houd er rekening mee dat het slechts één keer nodig is om de token goed te keuren. Als uw extensie meerdere goedkeuringsverzoeken voor tokens heeft, moet u ervoor zorgen dat u alleen de laatste bevestigt en de rest afwijst."
+        "approveToken": "Houd er rekening mee dat het slechts één keer nodig is om het token goed te keuren. Als uw extensie meerdere goedkeuringsverzoeken voor tokens heeft, moet u ervoor zorgen dat u alleen de laatste bevestigt en de rest afwijst."
     },
     "bridgeHistory": {
         "title": "Geschiedenis",
@@ -776,8 +776,8 @@
             }
         },
         "buttons": {
-            "buy": "Tokens kopen",
-            "history": "Aankoopgeschiedenis",
+            "buy": "Kopen",
+            "history": "Geschiedenis",
             "transfer": "Brug starten",
             "view": "Bridgetransactie transactie bekijken"
         },
@@ -789,7 +789,7 @@
             "txReady": "Transactie klaar voor brug"
         },
         "tooltips": {
-            "transfer": "Tokens succesvol gekocht!\n Klik om de overbruggingstransactie te starten"
+            "transfer": "Tokens succesvol gekocht!\n Klik om de bridge transactie te starten"
         }
     },
     "recievedText": "Ontvangen",
