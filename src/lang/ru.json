@@ -596,7 +596,7 @@
         "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{first} - {second} Токены пула",
         "connect": "Подключить кошелек",
-        "supply": "Количество",
+        "supply": "Добавить",
         "yourPosition": "Ваша позиция",
         "yourPositionEstimated": "Ваша позиция (предполагаемая)",
         "youWillReceive": "Вы получите",
