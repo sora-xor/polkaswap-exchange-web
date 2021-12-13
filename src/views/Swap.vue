@@ -391,13 +391,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   }
 
   get isInsufficientLiquidity(): boolean {
-    return (
-      this.isAvailable &&
-      this.preparedForSwap &&
-      !this.areZeroAmounts &&
-      this.hasZeroAmount &&
-      asZeroValue(this.liquidityProviderFee)
-    );
+    return this.isAvailable && this.preparedForSwap && !this.areZeroAmounts && this.hasZeroAmount;
   }
 
   get isInsufficientBalance(): boolean {
