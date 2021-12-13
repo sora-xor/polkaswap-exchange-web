@@ -236,7 +236,7 @@
     "confirmTransactionText": "Bevestig transactie in {richting}",
     "retryText": "Probeer opnieuw",
     "networkFeeText": "Netwerkvergoeding",
-    "networkFeeTooltipText": "Netwerkvergoeding wordt gebruikt om de groei en stabiele prestaties van het @:soraText-systeem te garanderen.",
+    "networkFeeTooltipText": "Netwerkvergoeding wordt gebruikt om de groei en stabiele prestaties van het @:(soraText)-systeem te garanderen.",
     "ethNetworkFeeTooltipText": "Houd er rekening mee dat de Ethereum-netwerkkosten die worden weergegeven op Polkaswap slechts ruwe schattingen zijn, u kunt het juiste bedrag in uw verbonden Ethereum-wallet zien voordat u de transactie bevestigt.",
     "marketText": "Markt",
     "marketAlgorithmText": "Markt algoritme",
