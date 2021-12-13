@@ -1,7 +1,6 @@
 <template>
   <a class="external-link p4" :href="href" target="_blank" rel="nofollow noopener">
     <span>{{ title }}</span>
-    <s-icon class="external-link__icon" name="external-link-16" />
   </a>
 </template>
 
