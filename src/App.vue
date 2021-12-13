@@ -5,7 +5,7 @@
       <app-menu @click.native="handleAppMenuClick" :visible="menuVisibility" :on-select="goTo">
         <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
       </app-menu>
-      <div class="app-body" :class="isAboutPage ? 'app-body__about' : ''">
+      <div class="app-body" :class="{ 'app-body__about': isAboutPage }">
         <s-scrollbar class="app-body-scrollbar">
           <div v-if="blockNumber" class="block-number">
             <a
