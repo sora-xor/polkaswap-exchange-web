@@ -300,12 +300,12 @@
         "title": "O giełdzie",
         "learnMore": "Dowiedz się więcej",
         "network": {
-            "title": "Czym jest @:(soraText)?",
+            "title": "Czym jest @:soraText?",
             "description": "Polkaswap jest zbudowana na sieci @:soraText, a token @:soraText (XOR) służy do dostarczania gazu\/opłat oraz płynności. Sieć @:soraText pozwala na obniżenie opłat, szybsze transakcje i prostsze osiąganie konsensusu oraz koncentruje się na zapewnieniu interoperacyjności z innymi ekosystemami technologii blockchain, takimi jak @:(ethereumText)."
         },
         "polkadot": {
             "title": "Czym jest polkadot{.js}?",
-            "description": "Polkadot{.js} to rozszerzenie przeglądarki dostępne dla Firefoksa i Chrome, przeznaczone do zarządzania kontami w sieciach opartych na platformie Substrate, w tym @:(soraText), Polkadot i Kusama. Konta można dodawać, importować i eksportować oraz podpisywać transakcje lub dane zewnętrzne inicjowane z autoryzowanych przez Ciebie witryn."
+            "description": "Polkadot{.js} to rozszerzenie przeglądarki dostępne dla Firefoksa i Chrome, przeznaczone do zarządzania kontami w sieciach opartych na platformie Substrate, w tym @:soraText, Polkadot i Kusama. Konta można dodawać, importować i eksportować oraz podpisywać transakcje lub dane zewnętrzne inicjowane z autoryzowanych przez Ciebie witryn."
         }
     },
     "node": {
@@ -687,7 +687,7 @@
             "connectExternalAccount": "Połącz z kontem @:ethereumText, aby sprawdzić dostępne wynagrodzenie w PSWAP i VAL.",
             "connectAccounts": "Aby odebrać swoje wynagrodzenie w PSWAP i VAL, musisz połączyć zarówno konto @:soraText, jak i @:(ethereumText).",
             "connectAnotherAccount": "Połącz z innym kontem @:ethereumText, aby sprawdzić dostępne wynagrodzenie w PSWAP i VAL.",
-            "howToClaimRewards": "Aby odebrać swoje wynagrodzenie {symbols}, musisz podpisać {count} {transactions} dotyczące {destination}. Wynagrodzenie zostanie wypłacone na Twoje konto @:soraText."
+            "howToClaimRewards": "Aby odebrać swoje wynagrodzenie {symbols}, musisz podpisać {count} {transactions} dotyczące {destination}. Wynagrodzenie zostanie wypłacone na Twoje konto @:(soraText)."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
