@@ -300,7 +300,7 @@
         "title": "About",
         "learnMore": "@:learnMoreText",
         "network": {
-            "title": "What is @:(soraText)?",
+            "title": "What is @:soraText?",
             "description": "Polkaswap is built on top of the @:soraText Network, and the @:soraText token (XOR) is used for gas\/fees and liquidity provision on Polkaswap. @:soraText Network allows for reduced fees, faster transactions and simpler consensus finalization and is focused on delivering interoperability across other blockchain ecosystems like @:(ethereumText)."
         },
         "polkadot": {

@@ -300,12 +300,12 @@
         "title": "À propos",
         "learnMore": "Pour en savoir plus",
         "network": {
-            "title": "Qu'est-ce que @:(soraText)?",
+            "title": "Qu'est-ce que @:soraText?",
             "description": "Polkaswap est construit sur le réseau @:soraText et le jeton @:soraText (XOR) est utilisé pour le gaz\/les frais et la fourniture de liquidités sur Polkaswap. @:soraText Network permet des frais réduits, des transactions plus rapides et une finalisation de consensus plus simple et se concentre sur l'interopérabilité entre d'autres écosystèmes de blockchain comme @:(ethereumText)."
         },
         "polkadot": {
             "title": "Qu'est-ce que polkadot{.js} ?",
-            "description": "L'extension Polkadot{.js} est une extension de navigateur disponible pour Firefox et Chrome dédiée à la gestion des comptes pour les chaînes basées sur le Substrat, notamment @:(soraText), Polkadot et Kusama. Vous pouvez ajouter, importer et exporter des comptes et signer des transactions ou des éléments extrinsèques que vous avez initiés à partir de sites Web que vous avez autorisés."
+            "description": "L'extension Polkadot{.js} est une extension de navigateur disponible pour Firefox et Chrome dédiée à la gestion des comptes pour les chaînes basées sur le Substrat, notamment @:soraText, Polkadot et Kusama. Vous pouvez ajouter, importer et exporter des comptes et signer des transactions ou des éléments extrinsèques que vous avez initiés à partir de sites Web que vous avez autorisés."
         }
     },
     "node": {

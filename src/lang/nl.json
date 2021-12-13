@@ -304,7 +304,7 @@
             "description": "Polkaswap is gebouwd bovenop het @:soraText Netwerk, en het @:soraText token (XOR) wordt gebruikt voor gas\/vergoedingen en liquiditeitsverschaffing op Polkaswap. @:soraText Network maakt lagere vergoedingen, snellere transacties en eenvoudigere consensus finalisatie mogelijk en is gericht op het leveren van interoperabiliteit over andere blockchain ecosystemen zoals @:(ethereumText)."
         },
         "polkadot": {
-            "title": "Wat is polkadot {.js} ?",
+            "title": "Wat is polkadot {.js}?",
             "description": "Polkadot{.js} extensie is een browser extensie beschikbaar voor Firefox en Chrome gewijd aan het beheer van accounts voor Substrate-gebaseerde chains, waaronder @:soraText, Polkadot en Kusama. U kunt accounts toevoegen, importeren en exporteren en transacties of extrinsics ondertekenen die u hebt geïnitieerd vanaf websites die u hebt geautoriseerd."
         }
     },
