@@ -461,7 +461,7 @@
     },
     "bridge": {
         "title": "HASHI Bridge",
-        "info": "Převeďte tokeny mezi sítěmi @:soraText a @:ethereumText.",
+        "info": "Převeďte tokeny mezi sítěmi @:soraText a @:(ethereumText).",
         "balance": "Zůstatek",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
