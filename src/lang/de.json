@@ -493,7 +493,7 @@
         },
         "customAsset": {
             "title": "Benutzerdefiniert",
-            "customInfo": "Wichtig! Benutzerdefinierte Token müssen in @:(soraText) registriert sein.",
+            "customInfo": "Wichtig! Benutzerdefinierte Token müssen in @:soraText registriert sein.",
             "registerToken": "Token registrieren",
             "addressPlaceholder": "Asset-ID",
             "symbolPlaceholder": "Token Symbol",
