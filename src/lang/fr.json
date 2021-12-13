@@ -685,7 +685,7 @@
         },
         "hint": {
             "connectExternalAccount": "Connectez un compte @:ethereumText pour vérifier les récompenses PSWAP et VAL disponibles.",
-            "connectAccounts": "Pour réclamer vos récompenses PSWAP et VAL, vous devez connecter vos comptes @:soraText et @:ethereumText.",
+            "connectAccounts": "Pour réclamer vos récompenses PSWAP et VAL, vous devez connecter vos comptes @:soraText et @:(ethereumText).",
             "connectAnotherAccount": "Connectez un autre compte @:ethereumText pour vérifier les récompenses PSWAP et VAL disponibles.",
             "howToClaimRewards": "Pour réclamer vos récompenses en {symbols} vous devez signer {count} {transactions} dans {destination}. Les récompenses seront déposées sur votre compte @:(soraText)."
         },

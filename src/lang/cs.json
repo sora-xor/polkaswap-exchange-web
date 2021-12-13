@@ -687,7 +687,7 @@
             "connectExternalAccount": "Připojte účet @:ethereumText a zkontrolujte dostupné odměny PSWAP a VAL.",
             "connectAccounts": "Pro získání svých PSWAP a VAL odměn musíte připojit oba své účty @:soraText a @:(ethereumText).",
             "connectAnotherAccount": "Připojte další účet @:ethereumText a zkontrolujte dostupné odměny PSWAP a VAL.",
-            "howToClaimRewards": "Chcete-li si vyzvednout {symbols} odměny, musíte podepsat {count} {transactions} v {destination}. Odměny budou připsány na váš účet @:soraText."
+            "howToClaimRewards": "Chcete-li si vyzvednout {symbols} odměny, musíte podepsat {count} {transactions} v {destination}. Odměny budou připsány na váš účet @:(soraText)."
         },
         "action": {
             "connectWallet": "@:connectWalletText",

@@ -681,12 +681,12 @@
         },
         "signing": {
             "extension": "polkadot{.js} browser extensie",
-            "accounts": "uw respectievelijke @:soraText- en @:ethereumText-accounts"
+            "accounts": "uw respectievelijke @:(soraText)-en @:(ethereumText)-accounts"
         },
         "hint": {
-            "connectExternalAccount": "Verbind een @:ethereumText-account om te controleren op beschikbare PSWAP- en VAL-beloningen.",
-            "connectAccounts": "Om je PSWAP- en VAL-beloningen te claimen, moet je zowel je @:soraText- als @:ethereumText-accounts verbinden.",
-            "connectAnotherAccount": "Verbind een ander @:ethereumText-account om te controleren op beschikbare PSWAP- en VAL-beloningen.",
+            "connectExternalAccount": "Verbind een @:(ethereumText)-account om te controleren op beschikbare PSWAP- en VAL-beloningen.",
+            "connectAccounts": "Om je PSWAP- en VAL-beloningen te claimen, moet je zowel je @:(soraText)-als @:(ethereumText)-accounts verbinden.",
+            "connectAnotherAccount": "Verbind een ander @:(ethereumText)-account om te controleren op beschikbare PSWAP- en VAL-beloningen.",
             "howToClaimRewards": "Om je {symbolen} beloningen te claimen moet je {telling} {transacties} in {bestemming} tekenen. Beloningen zullen worden gestort op uw @:soraText account."
         },
         "action": {
