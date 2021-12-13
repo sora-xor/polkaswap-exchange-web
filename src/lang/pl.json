@@ -230,13 +230,13 @@
     "connectWalletTextTooltip": "Połącz się z siecią @:soraText za pomocą polkadot{.js}",
     "selectNodeText": "Wybierz węzeł",
     "bridgeText": "Most",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Zastrzeżenie<\/span>: Niniejsza strona internetowa jest prowadzona przez społeczność @:soraText. Zanim zaczniesz korzystać z tej witryny, zapoznaj się z @:polkaswapFaqLink i dokumentacją, która zawiera szczegółowe wyjaśnienia dotyczące działania giełdy Polkaswap, a także z @:memorandumLink oraz @:(privacylink). Dokumenty te mają kluczowe znaczenie dla bezpiecznego i komfortowego użytkowania. Korzystając z Polkaswap, potwierdzasz, że przeczytałeś(-łaś) i rozumiesz przedstawione dokumenty. Potwierdzasz również, co następuje: 1) ponosisz wyłączną odpowiedzialność związaną z przestrzeganiem wszystkich przepisów, które mogą mieć zastosowanie do korzystania z Polkaswap w Twojej jurysdykcji; 2) rozumiesz, że aktualna wersja Polkaswap jest wersją alfa: nie została w pełni przetestowana, a niektóre jej funkcje mogą nie działać zgodnie z przeznaczeniem; oraz że 3) rozumiesz i dobrowolnie akceptujesz ryzyko związane z korzystaniem z Polkaswap, w tym między innymi ryzyko utraty tokenów. Przypominamy raz jeszcze: zanim zaczniesz korzystać z witryny, przeczytaj @:polkaswapFaqLink, @:memorandumLink oraz @:privacyLink!",
+    "disclaimer": "<span class=\"app-disclaimer__title\">Zastrzeżenie<\/span>: Niniejsza strona internetowa jest prowadzona przez społeczność @:(soraText). Zanim zaczniesz korzystać z tej witryny, zapoznaj się z @:polkaswapFaqLink i dokumentacją, która zawiera szczegółowe wyjaśnienia dotyczące działania giełdy Polkaswap, a także z @:memorandumLink oraz @:(privacylink). Dokumenty te mają kluczowe znaczenie dla bezpiecznego i komfortowego użytkowania. Korzystając z Polkaswap, potwierdzasz, że przeczytałeś(-łaś) i rozumiesz przedstawione dokumenty. Potwierdzasz również, co następuje: 1) ponosisz wyłączną odpowiedzialność związaną z przestrzeganiem wszystkich przepisów, które mogą mieć zastosowanie do korzystania z Polkaswap w Twojej jurysdykcji; 2) rozumiesz, że aktualna wersja Polkaswap jest wersją alfa: nie została w pełni przetestowana, a niektóre jej funkcje mogą nie działać zgodnie z przeznaczeniem; oraz że 3) rozumiesz i dobrowolnie akceptujesz ryzyko związane z korzystaniem z Polkaswap, w tym między innymi ryzyko utraty tokenów. Przypominamy raz jeszcze: zanim zaczniesz korzystać z witryny, przeczytaj @:polkaswapFaqLink, @:memorandumLink oraz @:privacyLink!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
     "poweredBy": "Technologia:",
     "confirmTransactionText": "Potwierdź transakcję w {direction}",
     "retryText": "Spróbuj ponownie",
     "networkFeeText": "Opłata sieciowa",
-    "networkFeeTooltipText": "Opłata sieciowa służy zapewnieniu rozwoju i stabilności systemu @:soraText.",
+    "networkFeeTooltipText": "Opłata sieciowa służy zapewnieniu rozwoju i stabilności systemu @:(soraText).",
     "ethNetworkFeeTooltipText": "Należy mieć na uwadze, że opłaty w sieci Ethereum pokazywane na Polkaswap to jedynie przybliżone oszacowanie. Przed potwierdzeniem transakcji można zobaczyć prawidłową kwotę opłaty w połączonym portfelu Ethereum.",
     "marketText": "Rynek",
     "marketAlgorithmText": "Algorytm rynkowy",
@@ -461,7 +461,7 @@
     },
     "bridge": {
         "title": "Most HASHI",
-        "info": "Konwertuj tokeny między sieciami @:soraText i @:ethereumText.",
+        "info": "Konwertuj tokeny między sieciami @:soraText i @:(ethereumText).",
         "balance": "Saldo",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
@@ -681,11 +681,11 @@
         },
         "signing": {
             "extension": "Rozszerzenie przeglądarki polkadot{.js}",
-            "accounts": "Twoich kont, to odpowiednio @:soraText i @:ethereumText."
+            "accounts": "Twoich kont, to odpowiednio @:soraText i @:(ethereumText)."
         },
         "hint": {
             "connectExternalAccount": "Połącz z kontem @:ethereumText, aby sprawdzić dostępne wynagrodzenie w PSWAP i VAL.",
-            "connectAccounts": "Aby odebrać swoje wynagrodzenie w PSWAP i VAL, musisz połączyć zarówno konto @:soraText, jak i @:ethereumText.",
+            "connectAccounts": "Aby odebrać swoje wynagrodzenie w PSWAP i VAL, musisz połączyć zarówno konto @:soraText, jak i @:(ethereumText).",
             "connectAnotherAccount": "Połącz z innym kontem @:ethereumText, aby sprawdzić dostępne wynagrodzenie w PSWAP i VAL.",
             "howToClaimRewards": "Aby odebrać swoje wynagrodzenie {symbols}, musisz podpisać {count} {transactions} dotyczące {destination}. Wynagrodzenie zostanie wypłacone na Twoje konto @:soraText."
         },

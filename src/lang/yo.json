@@ -461,7 +461,7 @@
     },
     "bridge": {
         "title": "Afara HASHI",
-        "info": "Yi awọn token pada laarin awọn nẹtiwọọki @:soraText ati @:ethereumText.",
+        "info": "Yi awọn token pada laarin awọn nẹtiwọọki @:soraText ati @:(ethereumText).",
         "balance": "Iśeku",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
