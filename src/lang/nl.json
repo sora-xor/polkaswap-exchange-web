@@ -461,7 +461,7 @@
     },
     "bridge": {
         "title": "HASHI Brug",
-        "info": "Converteer tokens tussen de @:soraText- en @:ethereumText-netwerken.",
+        "info": "Converteer tokens tussen de @:(soraText)-en @:(ethereumText)-netwerken.",
         "balance": "Saldo",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
