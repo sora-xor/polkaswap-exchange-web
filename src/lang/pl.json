@@ -21,8 +21,8 @@
     "amountText": "Kwota",
     "confirmText": "Potwierdź",
     "errorText": "Błąd",
-    "insufficientBalanceText": "Niewystarczające saldo {tokenSymbol}",
-    "unknownErrorText": "BŁĄD Coś poszło nie tak...",
+    "insufficientBalanceText": "Niewystarczające saldo w {tokenSymbol}",
+    "unknownErrorText": "BŁĄD. Coś poszło nie tak...",
     "transactionSubmittedText": "Transakcja została złożona.",
     "operations": {
         "Swap": "Zamień",
@@ -59,7 +59,7 @@
     },
     "connection": {
         "title": "Konto sieci SORA",
-        "text": "Połącz swoje konta sieci SORA lub utwórz nowe za pomocą rozszerzenia przeglądarki polkadot{.js}. To rozszerzenie umożliwia bezpieczne podpisywanie transakcji i zarządzanie zasobami w sieci SORA.",
+        "text": "Podłącz swoje konta sieci SORA lub utwórz nowe za pomocą rozszerzenia przeglądarki polkadot{.js}. To rozszerzenie umożliwia bezpieczne podpisywanie transakcji i zarządzanie zasobami w sieci SORA.",
         "install": "Nie znaleziono rozszerzenia polkadot.js. Zainstaluj je i <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">odśwież<\/a> stronę.<br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
         "noPermissions": "Przypadkowo odrzuciłeś(-łaś) prośbę o pozwolenie? <\/br> Rozszerzenie polkadot{.js} nie posiada obecnie zarządzania uprawnieniami. Aby obejść ten problem, możesz restartować przeglądarkę i ponownie odwiedzić tę stronę w celu kontynuowania autoryzacji.",
         "noAccounts": "W Twoim rozszerzeniu przeglądarki polkadot{.js} nie znaleziono konta. Dodaj konto i spróbuj ponownie.",
@@ -237,13 +237,13 @@
     "retryText": "Spróbuj ponownie",
     "networkFeeText": "Opłata sieciowa",
     "networkFeeTooltipText": "Opłata sieciowa służy zapewnieniu rozwoju i stabilności systemu @:(soraText).",
-    "ethNetworkFeeTooltipText": "Należy mieć na uwadze, że opłaty w sieci Ethereum pokazywane na Polkaswap to jedynie przybliżone oszacowanie. Przed potwierdzeniem transakcji można zobaczyć prawidłową kwotę opłaty w połączonym portfelu Ethereum.",
+    "ethNetworkFeeTooltipText": "Należy mieć na uwadze, że opłaty w sieci Ethereum widoczne na Polkaswap to jedynie przybliżone oszacowanie. Przed potwierdzeniem transakcji można zobaczyć prawidłową kwotę opłaty w podłączonym portfelu sieci Ethereum.",
     "marketText": "Rynek",
     "marketAlgorithmText": "Algorytm rynkowy",
     "firstPerSecond": "{first} za {second}",
     "pairIsNotCreated": "Para tokenów nie została utworzona.",
     "pageTitle": {
-        "Swap": "Zamiana",
+        "Swap": "Wymiana",
         "Pool": "Pula",
         "Bridge": "@:bridgeText",
         "About": "O giełdzie",
@@ -259,7 +259,7 @@
         "Rewards": "Wynagrodzenie"
     },
     "mainMenu": {
-        "Swap": "Zamiana",
+        "Swap": "Wymiana",
         "Pool": "Pula",
         "Bridge": "@:bridgeText",
         "Farming": "Farming",
@@ -277,13 +277,13 @@
         "medium": "Medium",
         "reddit": "Reddit",
         "github": "GitHub",
-        "wiki": "Wiki @:soraText"
+        "wiki": "@:soraText Wiki"
     },
     "footerMenu": {
         "faucet": "Kranik",
         "github": "GitHub",
         "sorawiki": "Wiki @:soraText",
-        "memorandum": "Memo giełdy Polkaswap oraz Warunki korzystania z usług",
+        "memorandum": "Memo giełdy Polkaswap i Warunki korzystania z usług",
         "privacy": "Polityka prywatności",
         "info": "Informacje i społeczność"
     },
@@ -326,10 +326,10 @@
         "title": "Wybór węzła sieci @:soraText",
         "addNode": "Dodaj niestandardowy węzeł",
         "customNode": "Węzeł niestandardowy",
-        "howToSetupOwnNode": "Jak skonfigurować własny węzeł @:soraText",
+        "howToSetupOwnNode": "Jak skonfigurować własny węzeł sieci @:soraText",
         "select": "Wybierz",
         "connected": "Połączono",
-        "selectNodeForEnvironment": "Wybierz węzeł dla {environment} środowiska:",
+        "selectNodeForEnvironment": "Wybierz węzeł dla środowiska {environment}:",
         "nodeTitle": "{chain} hostowany przez {name}",
         "messages": {
             "emptyName": "Wprowadź nazwę węzła",
@@ -386,18 +386,18 @@
             "title": "Nieograniczona płynność",
             "first": "Polkaswap łączy wiele źródeł płynności w ramach wspólnego algorytmu agregacji płynności, działając całkowicie on-chain, w sposób bezpowierniczy i zdecentralizowany.",
             "second": "Podczas gdy traderzy korzystają z funkcji wymiany, algorytm agregacji płynności wypełnia zlecenia, wykorzystując najlepsze oferty ze wszystkich dostępnych źródeł płynności. Źródłami płynności mogą być inne DEX-y [zdecentralizowane giełdy], księgi zamówień lub inne źródła oparte na API [interfejs programistyczny aplikacji].",
-            "third": "Ponieważ Polkaswap jest projektem typu open-source, każdy może dodać więcej źródeł płynności, wnosząc wkład do bazy kodu tejże giełdy."
+            "third": "Ponieważ Polkaswap jest projektem typu open-source, każdy może dodać więcej źródeł płynności, wnosząc wkład do bazy kodu giełdy."
         },
         "swap": {
             "title": "Zamień dowolny token",
-            "first": "Wyjdź poza ograniczenia obecnych DEX-ów, dodając tokeny z ekosystemu Polkadot, a także innych blockchainów.",
+            "first": "Wyjdź poza ograniczenia obecnych DEX-ów, dodając tokeny ekosystemu Polkadot, a także innych blockchainów.",
             "second": "Twórz, wprowadzaj i handluj własnymi tokenami w sieci SORA.",
             "third": "Nasza podstawowa infrastruktura wykorzystuje Parity Substrate, który jest bardziej skalowalny niż Ethereum i nie wykorzystuje kosztownego górnictwa dla osiągnięcia konsensusu."
         },
         "pswap": {
             "title": "Tokeny PSWAP",
-            "first": "PSWAP powstał w wyniku głosowania społeczności nad jego wydaniem. Jest to token użytkowy i zarządzający, służący do wynagradzania dostarczycieli płynności na giełdzie Polkaswap. W przeciwieństwie do większości innych tokenów wynagrodzeniowych PSWAP jest spalany w transakcjach, co zmniejsza jego podaż.",
-            "second": "Opłata w wysokości {percent}% od każdej zamiany na giełdzie Polkaswap DEX jest przeznaczana na odkupienie tokenów PSWAP, które są następnie spalane. Początkowo 90% spalonych tokenów PSWAP jest ponownie wybijane w celu alokacji dla dostarczycieli płynności, ale z czasem ten odsetek będzie się zmniejszał do 35% w ciągu 4 lat."
+            "first": "PSWAP powstał w wyniku głosowania społeczności nad jego wydaniem. Jest to token użytkowy i zarządzający, służący do wynagradzania dostarczycieli płynności na giełdzie Polkaswap. W przeciwieństwie do większości innych tokenów wynagrodzeniowych, PSWAP jest spalany w transakcjach, co zmniejsza jego podaż.",
+            "second": "Opłata w wysokości {percent}% od każdej wymiany na giełdzie Polkaswap DEX jest przeznaczana na odkupienie tokenów PSWAP, które są następnie spalane. Początkowo 90% spalonych tokenów PSWAP jest wybijane ponownie w celu alokacji dla dostarczycieli płynności, ale z czasem ten odsetek będzie się zmniejszał do 35% w ciągu 4 lat."
         },
         "links": {
             "first": {
@@ -437,7 +437,7 @@
         "pairIsNotCreated": "@:pairIsNotCreated",
         "networkFeeTooltip": "@:networkFeeTooltipText",
         "firstPerSecond": "@:firstPerSecond",
-        "insufficientAmount": "Niewystarczająca kwota {tokenSymbol}",
+        "insufficientAmount": "Niewystarczająca kwota w {tokenSymbol}",
         "insufficientLiquidity": "Niewystarczająca płynność",
         "confirmSwap": "Potwierdź zamianę",
         "swapOutputMessage": "Wynik jest szacunkowy. Otrzymasz co najmniej {transactionValue} lub transakcja zostanie anulowana.",
@@ -478,7 +478,7 @@
         "transactionMessage": "{assetA} do {assetB}",
         "notRegisteredAsset": "Waluta {assetSymbol} nie jest zarejestrowana.",
         "selectNetwork": "Wybierz sieć",
-        "networkInfo": "Połącz mostem sieć @:soraText z:",
+        "networkInfo": "Połącz za pomocą mostu sieć @:soraText z:",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC"
     },
@@ -596,7 +596,7 @@
         "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "Pula {first}-{second}",
         "connect": "Połącz z portfelem",
-        "supply": "Podaż",
+        "supply": "Dodaj",
         "yourPosition": "Twoja pozycja",
         "yourPositionEstimated": "Twoja pozycja (szacunkowa)",
         "youWillReceive": "Otrzymasz",
@@ -687,7 +687,7 @@
             "connectExternalAccount": "Połącz z kontem @:ethereumText, aby sprawdzić dostępne wynagrodzenie w PSWAP i VAL.",
             "connectAccounts": "Aby odebrać swoje wynagrodzenie w PSWAP i VAL, musisz połączyć zarówno konto @:soraText, jak i @:(ethereumText).",
             "connectAnotherAccount": "Połącz z innym kontem @:ethereumText, aby sprawdzić dostępne wynagrodzenie w PSWAP i VAL.",
-            "howToClaimRewards": "Aby odebrać swoje wynagrodzenie {symbols}, musisz podpisać {count} {transactions} dotyczące {destination}. Wynagrodzenie zostanie wypłacone na Twoje konto @:(soraText)."
+            "howToClaimRewards": "Aby odebrać swoje wynagrodzenie w {symbols}, musisz podpisać {count} {transactions} dotyczące {destination}. Wynagrodzenie zostanie wypłacone na Twoje konto @:(soraText)."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
@@ -718,7 +718,7 @@
         "claimableAmountDoneVesting": "Przysługujące wynagrodzenie dostępne do wypłaty",
         "groups": {
             "strategic": "Wynagrodzenie strategiczne",
-            "external": "Wynagrodzenie dla połączonego konta Ethereum"
+            "external": "Wynagrodzenie dla podłączonego konta Ethereum"
         }
     },
     "provider": {
@@ -744,7 +744,7 @@
     "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\">@:memorandum<\/a>",
     "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\">@:helpDialog.privacyPolicy<\/a>",
     "FAQ": "Polkaswap FAQ",
-    "connectedAccount": "Połączone konto",
+    "connectedAccount": "Podłączone konto",
     "selectNodeConnected": "Połączono z: {chain}",
     "moonpayText": "MoonPay",
     "forText": "za",
@@ -752,7 +752,7 @@
         "notifications": {
             "success": {
                 "title": "Tokeny zostały zakupione.",
-                "text": "Zakup tokena został ukończony. Gdy tylko tokeny pojawią się na połączonym koncie Ethereum, transakcja przez most HASHI rozpocznie się automatycznie. Bezpiecznie jest zamknąć to okno i kontynuować korzystanie z Polkaswap. Gdy transakcja mostowa zostanie przygotowana, pojawi się o niej powiadomienie."
+                "text": "Zakup tokena został ukończony. Gdy tylko tokeny pojawią się na podłączonym koncie Ethereum, transakcja przez most HASHI rozpocznie się automatycznie. Bezpiecznie jest zamknąć to okno i kontynuować korzystanie z Polkaswap. Gdy transakcja mostowa zostanie przygotowana, pojawi się o niej powiadomienie."
             },
             "supportError": {
                 "title": "Token nie jest obsługiwany.",
@@ -806,12 +806,12 @@
     "sentText": "Wysłano",
     "learnMoreText": "Dowiedz się więcej",
     "marketMakerCountdown": {
-        "title": "Odliczanie animatora rynku",
-        "blocks": "bloki",
+        "title": "Odliczanie dla animatora rynku",
+        "blocks": "bloków",
         "daysLeft": "pozostało dni",
-        "txs": "trans.",
-        "volume": "Wolumen trans. animatora rynku",
-        "description": "20 milionów PSWAP na miesiąc trafi do animatorów rynku z co najmniej 500 trans. na miesiąc o wartości powyżej 1 XOR każda."
+        "txs": "transakcji",
+        "volume": "Wolumen transakcji animatora rynku",
+        "description": "20 milionów PSWAP na miesiąc trafi do animatorów rynku z co najmniej 500 transakcjami na miesiąc o wartości powyżej 1 XOR każda."
     },
     "confirmNextTxFailure": {
         "header": "Uwaga",
