@@ -26,7 +26,12 @@
                   "
                   :fiat-font-size-rate="FontSizeRate.MEDIUM"
                 >
-                  <el-popover popper-class="amount-table-tooltip" placement="right" trigger="hover">
+                  <el-popover
+                    v-if="formatted.total && index === 0"
+                    popper-class="amount-table-tooltip"
+                    placement="right"
+                    trigger="hover"
+                  >
                     <div class="amount-table-tooltip-content">
                       <div>{{ t('rewards.totalVested') }}:</div>
                       <formatted-amount
