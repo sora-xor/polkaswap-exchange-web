@@ -11,7 +11,14 @@ import { MarketAlgorithmForLiquiditySource, ZeroStringValue } from '@/consts';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { divideAssets } from '@/utils';
 
-import type { AccountBalance, CodecString, LPRewardsInfo, QuotePaths, QuotePayload } from '@sora-substrate/util';
+import type {
+  AccountBalance,
+  CodecString,
+  LPRewardsInfo,
+  QuotePaths,
+  QuotePayload,
+  PrimaryMarketsEnabledAssets,
+} from '@sora-substrate/util';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
@@ -33,6 +40,7 @@ const types = flow(
     'SET_PATHS',
     'SET_REWARDS',
     'SET_SUBSCRIPTION_PAYLOAD',
+    'SET_PRIMARY_MARKETS_ENABLED_ASSETS',
     'GET_SWAP_CONFIRM',
     'RESET',
   ]),
@@ -52,6 +60,7 @@ interface SwapState {
   liquidityProviderFee: CodecString;
   pairLiquiditySources: Array<LiquiditySourceTypes>;
   paths: QuotePaths;
+  enabledAssets: PrimaryMarketsEnabledAssets;
   rewards: Array<LPRewardsInfo>;
   payload: Nullable<QuotePayload>;
 }
@@ -69,25 +78,26 @@ function initialState(): SwapState {
     liquidityProviderFee: '',
     pairLiquiditySources: [],
     paths: {},
+    enabledAssets: {},
     rewards: [],
     payload: null,
   };
 }
 
-const getSources = (payload: QuotePayload, address: string, isInput = true): Array<LiquiditySourceTypes> => {
-  const xst = KnownAssets.get(KnownSymbols.XSTUSD).address;
+const getSources = (
+  address: string,
+  payload: QuotePayload,
+  enabledAssets: PrimaryMarketsEnabledAssets
+): Array<LiquiditySourceTypes> => {
   const rules = {
-    [LiquiditySourceTypes.MulticollateralBondingCurvePool]: (payload: QuotePayload) =>
-      !!Number(payload.reserves.tbc[address]),
-    [LiquiditySourceTypes.XYKPool]: (payload: QuotePayload) =>
-      payload.reserves.xyk[address].every((tokenReserve) => !!Number(tokenReserve)),
-    [LiquiditySourceTypes.XSTPool]: (payload: QuotePayload) =>
-      address === xst && !!Number(payload.issuances[isInput ? XOR.address : address]),
+    [LiquiditySourceTypes.MulticollateralBondingCurvePool]: () => enabledAssets.tbc.includes(address),
+    [LiquiditySourceTypes.XYKPool]: () => payload.reserves.xyk[address].every((tokenReserve) => !!Number(tokenReserve)),
+    [LiquiditySourceTypes.XSTPool]: () => enabledAssets.xst.includes(address),
   };
 
   return Object.entries(rules).reduce((acc: LiquiditySourceTypes[], entry) => {
     const [source, rule] = entry;
-    if (rule(payload)) {
+    if (rule()) {
       acc.push(source as LiquiditySourceTypes);
     }
     return acc;
@@ -109,11 +119,11 @@ const getters = {
 
     return balance ? { ...token, balance } : token;
   },
-  pairLiquiditySourcesAvailable(state: SwapState) {
-    return state.pairLiquiditySources.length !== 0;
+  marketAlgorithmsAvailable(state: SwapState) {
+    return state.pairLiquiditySources.length > 1;
   },
   swapLiquiditySource(state, getters, rootState, rootGetters) {
-    if (!getters.pairLiquiditySourcesAvailable || !rootGetters.liquiditySource) return undefined;
+    if (!getters.marketAlgorithmsAvailable || !rootGetters.liquiditySource) return undefined;
 
     return rootGetters.liquiditySource;
   },
@@ -210,6 +220,9 @@ const mutations = {
   [types.SET_PATHS](state: SwapState, paths: QuotePaths) {
     state.paths = { ...paths };
   },
+  [types.SET_PRIMARY_MARKETS_ENABLED_ASSETS](state: SwapState, assets: PrimaryMarketsEnabledAssets) {
+    state.enabledAssets = { ...assets };
+  },
   [types.SET_REWARDS](state: SwapState, rewards: Array<LPRewardsInfo>) {
     state.rewards = [...rewards];
   },
@@ -305,14 +318,14 @@ const actions = {
 
         if (isDirectExchange(inputAssetId, outputAssetId)) {
           const nonXor = inputAssetId === xor ? outputAssetId : inputAssetId;
-          const path = getSources(state.payload, nonXor);
+          const path = getSources(nonXor, state.payload, state.enabledAssets);
 
           quotePaths[nonXor] = path;
           pairLiquiditySources.push(...path);
         } else {
           const [inputPaths, outputPaths] = [
-            getSources(state.payload, inputAssetId, true),
-            getSources(state.payload, outputAssetId, false),
+            getSources(inputAssetId, state.payload, state.enabledAssets),
+            getSources(outputAssetId, state.payload, state.enabledAssets),
           ];
 
           quotePaths[inputAssetId] = inputPaths;
@@ -335,6 +348,11 @@ const actions = {
     await dispatch('updatePaths');
     await dispatch('checkMarketAlgorithmUpdate');
   },
+
+  async setPrimaryMarketsEnabledAssets({ commit }, assets: PrimaryMarketsEnabledAssets) {
+    commit(types.SET_PRIMARY_MARKETS_ENABLED_ASSETS, assets);
+  },
+
   reset({ commit, dispatch }) {
     dispatch('resetSubscriptions');
     commit(types.RESET);

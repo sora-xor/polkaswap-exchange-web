@@ -173,6 +173,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 <style lang="scss" scoped>
 .app {
   &-menu {
+    flex-shrink: 0;
     visibility: hidden;
     position: absolute;
     top: 0;
