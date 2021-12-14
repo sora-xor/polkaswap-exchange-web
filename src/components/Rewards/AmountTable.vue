@@ -168,7 +168,7 @@ export default class AmountTable extends Mixins(mixins.FormattedAmountMixin, Tra
       & .el-checkbox__inner {
         border-radius: 6px !important;
         &:after {
-          left: 4px;
+          left: 6px;
         }
       }
       &:not(.is-checked) {
