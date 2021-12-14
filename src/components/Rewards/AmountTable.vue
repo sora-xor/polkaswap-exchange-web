@@ -167,8 +167,22 @@ export default class AmountTable extends Mixins(mixins.FormattedAmountMixin, Tra
     &__input {
       & .el-checkbox__inner {
         border-radius: 6px !important;
+
         &:after {
-          left: 6px;
+          content: '\ea1c';
+          color: white;
+          font-family: 'soramitsu-icons';
+          border: none;
+          transform: rotate(0) scaleY(0);
+          left: 2px;
+          top: 2px;
+        }
+      }
+      &.is-checked {
+        & .el-checkbox__inner {
+          &:after {
+            transform: rotate(0) scaleY(1);
+          }
         }
       }
       &:not(.is-checked) {
