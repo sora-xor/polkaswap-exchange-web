@@ -127,7 +127,8 @@
             "reserved": " – Zarezerwowano",
             "total": "Łącznie"
         },
-        "totalAssetsValue": "Twoja łączna wartość walut:"
+        "totalAssetsValue": "Twoja łączna wartość walut:",
+        "details": "Szczegóły"
     },
     "asset": {
         "remove": "Usuń walutę"

@@ -127,7 +127,8 @@
             "reserved": " Reserviert",
             "total": "Gesamt"
         },
-        "totalAssetsValue": "Gesamtwert deiner Assets:"
+        "totalAssetsValue": "Gesamtwert deiner Assets:",
+        "details": "Einzelheiten"
     },
     "asset": {
         "remove": "Asset entfernen"

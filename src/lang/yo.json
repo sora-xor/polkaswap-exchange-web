@@ -127,7 +127,8 @@
             "reserved": "- Ni ipamọ",
             "total": "Lapapọ"
         },
-        "totalAssetsValue": "Iye awọn ohun -ini rẹ lapapọ:"
+        "totalAssetsValue": "Iye awọn ohun -ini rẹ lapapọ:",
+        "details": "Awọn alaye"
     },
     "asset": {
         "remove": "Yọ dukia kuro"

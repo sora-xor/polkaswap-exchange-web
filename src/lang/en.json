@@ -127,7 +127,8 @@
             "reserved": " - Reserved",
             "total": "Total"
         },
-        "totalAssetsValue": "Your total assets value:"
+        "totalAssetsValue": "Your total assets value:",
+        "details": "Details"
     },
     "asset": {
         "remove": "Remove asset"

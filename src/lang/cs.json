@@ -127,7 +127,8 @@
             "reserved": " - Rezervováno",
             "total": "Celkem"
         },
-        "totalAssetsValue": "Celková hodnota vašich aktiv:"
+        "totalAssetsValue": "Celková hodnota vašich aktiv:",
+        "details": "Podrobnosti"
     },
     "asset": {
         "remove": "Odebrat aktivum"
