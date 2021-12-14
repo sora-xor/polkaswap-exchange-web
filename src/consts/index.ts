@@ -16,7 +16,9 @@ export const WalletPermissions = {
   swapAssets: true, // enable 'swap' button in assets list
 };
 
-// navigator.language values, f.e. ('es', 'eu-ES')
+/**
+ * `navigator.language` values, f.e. ('es', 'eu-ES')
+ */
 export enum Language {
   EN = 'en',
   RU = 'ru',
@@ -193,6 +195,10 @@ const MainMenu: Array<SidebarMenuItem> = [
 ];
 
 const AccountMenu: Array<SidebarMenuItem> = [
+  {
+    icon: 'finance-wallet-24',
+    title: PageNames.Wallet,
+  },
   {
     icon: 'basic-circle-star-24',
     title: PageNames.Rewards,

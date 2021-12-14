@@ -5,7 +5,7 @@
       <app-menu @click.native="handleAppMenuClick" :visible="menuVisibility" :on-select="goTo">
         <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
       </app-menu>
-      <div class="app-body" :class="isAboutPage ? 'app-body__about' : ''">
+      <div class="app-body" :class="{ 'app-body__about': isAboutPage }">
         <s-scrollbar class="app-body-scrollbar">
           <div v-if="blockNumber" class="block-number">
             <a
@@ -87,6 +87,7 @@ export default class AppLayout extends Mixins(mixins.TransactionMixin, NodeError
   @Action setFeatureFlags!: (options: any) => Promise<void>;
   @Action setBlockNumber!: () => Promise<void>;
   @Action resetBlockNumberSubscription!: () => Promise<void>;
+  @Action('unsubscribeAccountMarketMakerInfo', { namespace: 'rewards' }) unsubscribeMarketMakerInfo!: AsyncVoidFn;
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>;
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
   @Watch('firstReadyTransaction', { deep: true })
@@ -174,6 +175,7 @@ export default class AppLayout extends Mixins(mixins.TransactionMixin, NodeError
     await this.resetAccountAssetsSubscription();
     await this.resetRuntimeVersionSubscription();
     await this.resetBlockNumberSubscription();
+    await this.unsubscribeMarketMakerInfo();
     await connection.close();
   }
 
