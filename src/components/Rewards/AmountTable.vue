@@ -26,13 +26,13 @@
                   "
                   :fiat-font-size-rate="FontSizeRate.MEDIUM"
                 >
-                  <s-tooltip
+                  <el-popover
                     v-if="formatted.total && index === 0"
                     popper-class="amount-table-tooltip"
                     placement="right"
-                    border-radius="mini"
+                    trigger="hover"
                   >
-                    <div slot="content" class="amount-table-tooltip-content">
+                    <div class="amount-table-tooltip-content">
                       <div>{{ t('rewards.totalVested') }}:</div>
                       <formatted-amount
                         class="amount-table-value"
@@ -43,8 +43,8 @@
                         :asset-symbol="formatted.total.asset.symbol"
                       />
                     </div>
-                    <s-icon name="info-16" size="14px" class="amount-table-value-icon" />
-                  </s-tooltip>
+                    <s-icon slot="reference" name="info-16" size="14px" class="amount-table-value-icon" />
+                  </el-popover>
                 </formatted-amount-with-fiat-value>
               </div>
             </div>
@@ -167,8 +167,22 @@ export default class AmountTable extends Mixins(mixins.FormattedAmountMixin, Tra
     &__input {
       & .el-checkbox__inner {
         border-radius: 6px !important;
+
         &:after {
-          left: 4px;
+          content: '\ea1c';
+          color: white;
+          font-family: 'soramitsu-icons';
+          border: none;
+          transform: rotate(0) scaleY(0);
+          left: 2px;
+          top: 2px;
+        }
+      }
+      &.is-checked {
+        & .el-checkbox__inner {
+          &:after {
+            transform: rotate(0) scaleY(1);
+          }
         }
       }
       &:not(.is-checked) {
@@ -208,11 +222,18 @@ export default class AmountTable extends Mixins(mixins.FormattedAmountMixin, Tra
     }
   }
 
-  &-tooltip.el-tooltip__popper.neumorphic {
+  &-tooltip.el-popover.el-popper {
+    border-color: var(--s-color-base-border-secondary);
+    border-radius: var(--s-border-radius-mini);
+    box-shadow: var(--s-shadow-dialog);
     background-color: var(--s-color-status-success);
+    padding: $inner-spacing-mini $inner-spacing-small;
 
     &[x-placement^='right'] .popper__arrow {
-      border-right-color: var(--s-color-status-success);
+      border-right-color: var(--s-color-base-border-secondary);
+      &:after {
+        border-right-color: var(--s-color-status-success);
+      }
     }
   }
 
