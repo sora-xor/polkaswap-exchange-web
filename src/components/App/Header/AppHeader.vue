@@ -266,14 +266,6 @@ $icon-size: 28px;
   padding: $inner-spacing-mini;
   min-height: $header-height;
   position: relative;
-  @include tablet {
-    padding: $inner-spacing-mini $inner-spacing-medium;
-
-    &:after {
-      left: $inner-spacing-medium;
-      right: $inner-spacing-medium;
-    }
-  }
   &:after {
     content: '';
     position: absolute;
@@ -282,6 +274,14 @@ $icon-size: 28px;
     left: $inner-spacing-mini;
     right: $inner-spacing-mini;
     background-color: var(--s-color-base-border-secondary);
+  }
+  @include tablet {
+    padding: $inner-spacing-mini $inner-spacing-medium;
+
+    &:after {
+      left: $inner-spacing-medium;
+      right: $inner-spacing-medium;
+    }
   }
 }
 
