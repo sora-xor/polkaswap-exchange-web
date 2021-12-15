@@ -221,7 +221,7 @@
 
     <network-fee-warning-dialog
       :visible.sync="showWarningFeeDialog"
-      :fee="formattedFee"
+      :fee="removeLiquidityFormattedFee"
       @confirm="confirmNetworkFeeWariningDialog"
     />
   </div>
@@ -353,6 +353,10 @@ export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, 
       return null;
     }
     return `${this.getFPNumberFromCodec(strategicBonusApy).mul(this.Hundred).toLocaleString()}%`;
+  }
+
+  get removeLiquidityFormattedFee(): string {
+    return this.formatCodecNumber(this.networkFees.RemoveLiquidity);
   }
 
   get isXorSufficientForNextOperation(): boolean {
