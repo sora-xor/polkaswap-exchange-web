@@ -127,7 +127,8 @@
             "reserved": "- Réservé",
             "total": "Total"
         },
-        "totalAssetsValue": "Valeur total de vos actifs:"
+        "totalAssetsValue": "Valeur total de vos actifs:",
+        "details": "Détails"
     },
     "asset": {
         "remove": "Retirer l'actif"
