@@ -28,7 +28,7 @@
               value-can-be-hidden
               with-left-shift
               value-class="input-value--primary"
-              :value="getTokenBalance(firstToken)"
+              :value="getFormattedTokenBalance(firstToken)"
               :fiat-value="getFiatBalance(firstToken)"
             />
           </div>
@@ -80,7 +80,7 @@
               value-can-be-hidden
               with-left-shift
               value-class="input-value--primary"
-              :value="getTokenBalance(secondToken)"
+              :value="getFormattedTokenBalance(secondToken)"
               :fiat-value="getFiatBalance(secondToken)"
             />
           </div>
@@ -212,7 +212,11 @@
       @confirm="confirmCreatePair"
     />
 
-    <network-fee-warning-dialog :visible.sync="showWarningFeeDialog" :fee="formattedFee" />
+    <network-fee-warning-dialog
+      :visible.sync="showWarningFeeDialog"
+      :fee="formattedFee"
+      @confirm="confirmNetworkFeeWariningDialog"
+    />
   </div>
 </template>
 
@@ -261,9 +265,8 @@ export default class CreatePair extends Mixins(mixins.NetworkFeeWarningMixin, To
   get isXorSufficientForNextOperation(): boolean {
     return this.isXorSufficientForNextTx({
       type: Operation.CreatePair,
-      amount: this.getFPNumber(this.firstTokenValue).toCodecString(),
-      xorBalance: this.getFPNumber(this.getTokenBalance(this.firstToken)).toCodecString(),
-      fee: this.getFPNumber(this.formattedFee).toCodecString(),
+      amount: this.getFPNumber(this.firstTokenValue),
+      xorBalance: this.getFPNumberFromCodec(this.getTokenBalance(this.firstToken)),
     });
   }
 
@@ -277,8 +280,11 @@ export default class CreatePair extends Mixins(mixins.NetworkFeeWarningMixin, To
     if (!this.isXorSufficientForNextOperation) {
       this.openWarningFeeDialog();
       await this.waitOnNextTxFailureConfirmation();
+      if (!this.isWarningFeeDialogConfirmed) {
+        return;
+      }
+      this.isWarningFeeDialogConfirmed = false;
     }
-
     this.openConfirmDialog();
   }
 
