@@ -127,7 +127,8 @@
             "reserved": "- Dicadangkan",
             "total": "Total"
         },
-        "totalAssetsValue": "Nilai total aset Anda:"
+        "totalAssetsValue": "Nilai total aset Anda:",
+        "details": "Rincian"
     },
     "asset": {
         "remove": "Hapus aset"

@@ -13,6 +13,7 @@ import {
   isXorAccountAsset,
   hasInsufficientBalance,
   formatAssetBalance,
+  getAssetBalance,
 } from '@/utils';
 
 const CreateTokenPairMixin = (namespace: string) => {
@@ -168,7 +169,11 @@ const CreateTokenPairMixin = (namespace: string) => {
       });
     }
 
-    getTokenBalance(token: any): string {
+    getTokenBalance(token: any): CodecString {
+      return getAssetBalance(token);
+    }
+
+    getFormattedTokenBalance(token: any): string {
       return formatAssetBalance(token);
     }
 

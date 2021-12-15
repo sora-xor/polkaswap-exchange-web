@@ -127,7 +127,8 @@
             "reserved": " - Gereserveerd",
             "total": "Totaal"
         },
-        "totalAssetsValue": "Totale waarde van bezittingen:"
+        "totalAssetsValue": "Totale waarde van bezittingen:",
+        "details": "Details"
     },
     "asset": {
         "remove": "Asset verwijderen"

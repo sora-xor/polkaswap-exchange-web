@@ -155,7 +155,11 @@
       @confirm="handleConfirmRemoveLiquidity"
     />
 
-    <network-fee-warning-dialog :visible.sync="showWarningFeeDialog" :fee="formattedFee" />
+    <network-fee-warning-dialog
+      :visible.sync="showWarningFeeDialog"
+      :fee="formattedFee"
+      @confirm="confirmNetworkFeeWariningDialog"
+    />
   </div>
 </template>
 
@@ -204,8 +208,6 @@ export default class RemoveLiquidity extends Mixins(
 ) {
   readonly KnownSymbols = KnownSymbols;
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
-
-  @Getter networkFees!: NetworkFeesObject;
 
   @State((state) => state[namespace].liquidityAmount) liquidityAmount!: string;
   @State((state) => state[namespace].firstTokenAmount) firstTokenAmount!: string;
@@ -345,10 +347,10 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   get isXorSufficientForNextOperation(): boolean {
+    const firstTokenAmount = this.getFPNumber(this.firstTokenAmount);
     return this.isXorSufficientForNextTx({
       type: Operation.RemoveLiquidity,
-      xorBalance: getAssetBalance(this.tokenXOR),
-      fee: this.networkFee,
+      xorBalance: this.getFPNumberFromCodec(getAssetBalance(this.tokenXOR)).add(firstTokenAmount),
     });
   }
 
@@ -404,8 +406,11 @@ export default class RemoveLiquidity extends Mixins(
     if (!this.isXorSufficientForNextOperation) {
       this.openWarningFeeDialog();
       await this.waitOnNextTxFailureConfirmation();
+      if (!this.isWarningFeeDialogConfirmed) {
+        return;
+      }
+      this.isWarningFeeDialogConfirmed = false;
     }
-
     this.openConfirmDialog();
   }
 
