@@ -29,7 +29,7 @@
               value-can-be-hidden
               with-left-shift
               value-class="input-value--primary"
-              :value="getTokenBalance(firstToken)"
+              :value="getFormattedTokenBalance(firstToken)"
               :fiat-value="getFiatBalance(firstToken)"
             />
           </div>
@@ -82,7 +82,7 @@
               value-can-be-hidden
               with-left-shift
               value-class="input-value--primary"
-              :value="getTokenBalance(secondToken)"
+              :value="getFormattedTokenBalance(secondToken)"
               :fiat-value="getFiatBalance(secondToken)"
             />
           </div>
@@ -219,7 +219,11 @@
       @confirm="handleConfirmAddLiquidity"
     />
 
-    <network-fee-warning-dialog :visible.sync="showWarningFeeDialog" :fee="formattedFee" />
+    <network-fee-warning-dialog
+      :visible.sync="showWarningFeeDialog"
+      :fee="removeLiquidityFormattedFee"
+      @confirm="confirmNetworkFeeWariningDialog"
+    />
   </div>
 </template>
 
@@ -351,12 +355,15 @@ export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, 
     return `${this.getFPNumberFromCodec(strategicBonusApy).mul(this.Hundred).toLocaleString()}%`;
   }
 
+  get removeLiquidityFormattedFee(): string {
+    return this.formatCodecNumber(this.networkFees.RemoveLiquidity);
+  }
+
   get isXorSufficientForNextOperation(): boolean {
     return this.isXorSufficientForNextTx({
       type: Operation.AddLiquidity,
-      amount: this.getFPNumber(this.firstTokenValue).toCodecString(),
-      xorBalance: this.getFPNumber(this.getTokenBalance(this.firstToken)).toCodecString(),
-      fee: this.networkFee,
+      amount: this.getFPNumber(this.firstTokenValue),
+      xorBalance: this.getFPNumberFromCodec(this.getTokenBalance(this.firstToken)),
     });
   }
 
@@ -373,8 +380,11 @@ export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, 
     if (!this.isXorSufficientForNextOperation) {
       this.openWarningFeeDialog();
       await this.waitOnNextTxFailureConfirmation();
+      if (!this.isWarningFeeDialogConfirmed) {
+        return;
+      }
+      this.isWarningFeeDialogConfirmed = false;
     }
-
     this.openConfirmDialog();
   }
 

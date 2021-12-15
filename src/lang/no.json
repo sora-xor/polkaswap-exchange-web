@@ -127,7 +127,8 @@
             "reserved": "- Reservert",
             "total": "Totalt"
         },
-        "totalAssetsValue": "Totalverdi aktiva:"
+        "totalAssetsValue": "Totalverdi aktiva:",
+        "details": "Detaljer"
     },
     "asset": {
         "remove": "Fjern aktiva"
