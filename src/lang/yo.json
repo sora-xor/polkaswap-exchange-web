@@ -777,7 +777,7 @@
             }
         },
         "buttons": {
-            "buy": "Ra Awọn Tokini",
+            "buy": "Ra Tokini",
             "history": "Itan Tx",
             "transfer": "Bẹrẹ afara",
             "view": "Wo idunadura"
@@ -819,5 +819,6 @@
         "info": "Iwọntunwọnsi XOR rẹ yoo kere si {fee} XOR lẹhin iṣowo yii. Iwọ kii yoo ni anfani lati sanwo fun ọya nẹtiwọki fun iṣowo miiran.",
         "payoff": "Iwọ yoo ni lati lo Afara lati gba XOR lati awọn nẹtiwọọki miiran, firanṣẹ XOR lati akọọlẹ SORA miiran, tabi paarọ eyikeyi ami-ami miiran tẹlẹ ninu akọọlẹ rẹ sinu XOR.",
         "button": "Bẹẹni, Mo loye ewu naa"
-    }
+    },
+    "blockNumberText": "Àkọsílẹ nọmba"
 }

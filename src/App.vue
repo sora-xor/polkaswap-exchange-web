@@ -8,15 +8,11 @@
       <div class="app-body" :class="{ 'app-body__about': isAboutPage }">
         <s-scrollbar class="app-body-scrollbar">
           <div v-if="blockNumber" class="block-number">
-            <a
-              class="block-number-link"
-              :href="soraExplorerLink"
-              title="SORAScan"
-              target="_blank"
-              rel="nofollow noopener"
-            >
-              <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
-            </a>
+            <s-tooltip :content="t('blockNumberText')" placement="bottom">
+              <a class="block-number-link" :href="soraExplorerLink" target="_blank" rel="nofollow noopener">
+                <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
+              </a>
+            </s-tooltip>
           </div>
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
@@ -255,21 +251,22 @@ ul ul {
     display: flex;
     align-items: center;
     color: var(--s-color-status-success);
-    font-size: var(--s-font-size-small);
+    font-size: var(--s-font-size-extra-mini);
     text-decoration: none;
     font-weight: 300;
     position: absolute;
-    top: 2.5%;
-    right: 0;
+    top: 10px;
+    right: 24px;
     line-height: 150%;
-    width: 100px;
   }
 
   &-icon {
+    $block-icon-size: 7px;
+
     background-color: var(--s-color-status-success);
     border-radius: 50%;
-    height: 9px;
-    width: 9px;
+    height: $block-icon-size;
+    width: $block-icon-size;
     margin-right: 2px;
   }
 }

@@ -5,9 +5,14 @@ import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import isEmpty from 'lodash/fp/isEmpty';
 import intersection from 'lodash/fp/intersection';
-import { FPNumber, isDirectExchange, XOR, KnownAssets, KnownSymbols, LiquiditySourceTypes } from '@sora-substrate/util';
+import { FPNumber, isDirectExchange, XOR, LiquiditySourceTypes } from '@sora-substrate/util';
 
-import { MarketAlgorithmForLiquiditySource, ZeroStringValue } from '@/consts';
+import {
+  MarketAlgorithms,
+  MarketAlgorithmForLiquiditySource,
+  LiquiditySourceForMarketAlgorithm,
+  ZeroStringValue,
+} from '@/consts';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { divideAssets } from '@/utils';
 
@@ -119,8 +124,20 @@ const getters = {
 
     return balance ? { ...token, balance } : token;
   },
-  marketAlgorithmsAvailable(state: SwapState) {
-    return state.pairLiquiditySources.length > 1;
+  marketAlgorithms(state: SwapState) {
+    // implementation of backend hack, to show only primary market sources
+    const primarySources = state.pairLiquiditySources.filter((source) => source !== LiquiditySourceTypes.XYKPool);
+
+    const items = Object.keys(LiquiditySourceForMarketAlgorithm) as Array<MarketAlgorithms>;
+
+    return items.filter((marketAlgorithm) => {
+      const liquiditySource = LiquiditySourceForMarketAlgorithm[marketAlgorithm];
+
+      return marketAlgorithm === MarketAlgorithms.SMART || primarySources.includes(liquiditySource);
+    });
+  },
+  marketAlgorithmsAvailable(state: SwapState, getters) {
+    return getters.marketAlgorithms.length > 1;
   },
   swapLiquiditySource(state, getters, rootState, rootGetters) {
     if (!getters.marketAlgorithmsAvailable || !rootGetters.liquiditySource) return undefined;
