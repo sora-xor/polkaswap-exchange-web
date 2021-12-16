@@ -34,6 +34,10 @@ button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-m
 }
 
 // Button
+.el-button span {
+  font-weight: 400 !important;
+}
+
 .el-button + .el-button {
   margin-left: 0px !important;
 }

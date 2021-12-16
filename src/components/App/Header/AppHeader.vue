@@ -4,8 +4,7 @@
       <div class="circle-blured-1"></div>
 
       <router-link to="/" class="logo">
-        <img src="img/logo.png" loading="lazy" alt="" class="logo__img" />
-        <span class="logo__text">NOIR</span>
+        <img src="img/logo.svg" width="54" height="50" loading="lazy" alt="" class="logo__img" />
       </router-link>
 
       <div class="redeem">

@@ -1,0 +1,35 @@
+@font-face {
+  font-family: 'Bon Vivant Family Serif';
+  src: url('BonVivantSerif.eot');
+  src: local('Bon Vivant Family Serif'), local('BonVivantSerif'),
+    url('BonVivantSerif.eot?#iefix') format('embedded-opentype'),
+    url('BonVivantSerif.woff2') format('woff2'),
+    url('BonVivantSerif.woff') format('woff'),
+    url('BonVivantSerif.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Bon Vivant Family Serif';
+  src: url('BonVivantSerifBold.eot');
+  src: local('Bon Vivant Family Serif Bold'), local('BonVivantSerifBold'),
+    url('BonVivantSerifBold.eot?#iefix') format('embedded-opentype'),
+    url('BonVivantSerifBold.woff2') format('woff2'),
+    url('BonVivantSerifBold.woff') format('woff'),
+    url('BonVivantSerifBold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Bon Vivant Family Script';
+  src: url('BonVivant-Regular.eot');
+  src: local('Bon Vivant Family Script'), local('BonVivant-Regular'),
+    url('BonVivant-Regular.eot?#iefix') format('embedded-opentype'),
+    url('BonVivant-Regular.woff2') format('woff2'),
+    url('BonVivant-Regular.woff') format('woff'),
+    url('BonVivant-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
