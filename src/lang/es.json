@@ -819,5 +819,6 @@
         "info": "Su saldo de XOR será inferior a {fee} XOR después de esta transacción. No podrá pagar la tarifa de red para otra transacción.",
         "payoff": "Tendrías que utilizar el Puente para obtener XOR de otras redes, conseguir que te envíen XOR desde otra cuenta SORA, o cambiar cualquier otro token que ya tengas en tu cuenta por XOR.",
         "button": "Si, entiendo el riesgo"
-    }
+    },
+    "blockNumberText": "Número de bloque"
 }

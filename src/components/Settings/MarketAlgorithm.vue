@@ -12,14 +12,14 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, State } from 'vuex-class';
-import { LiquiditySourceTypes } from '@sora-substrate/util';
+import { Action, State, Getter } from 'vuex-class';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { lazyComponent } from '@/router';
-import { Components, MarketAlgorithms, LiquiditySourceForMarketAlgorithm } from '@/consts';
-import { TabItem } from '@/types/tabs';
+import { Components, MarketAlgorithms } from '@/consts';
+
+import type { TabItem } from '@/types/tabs';
 
 @Component({
   components: {
@@ -29,23 +29,8 @@ import { TabItem } from '@/types/tabs';
 })
 export default class MarketAlgorithm extends Mixins(TranslationMixin) {
   @State((state) => state.settings.marketAlgorithm) marketAlgorithm!: MarketAlgorithms;
-  @State((state) => state.swap.pairLiquiditySources) liquiditySources!: Array<LiquiditySourceTypes>;
+  @Getter('marketAlgorithms', { namespace: 'swap' }) marketAlgorithms!: Array<MarketAlgorithms>;
   @Action('setMarketAlgorithm') setMarketAlgorithm!: (name: string) => Promise<void>;
-
-  // implementation of backend hack, to show only primary market sources
-  get primarySources(): Array<LiquiditySourceTypes> {
-    return this.liquiditySources.filter((source) => source !== LiquiditySourceTypes.XYKPool);
-  }
-
-  get marketAlgorithms(): Array<MarketAlgorithms> {
-    const items = Object.keys(LiquiditySourceForMarketAlgorithm) as Array<MarketAlgorithms>;
-
-    return items.filter((marketAlgorithm) => {
-      const liquiditySource = LiquiditySourceForMarketAlgorithm[marketAlgorithm];
-
-      return marketAlgorithm === MarketAlgorithms.SMART || this.primarySources.includes(liquiditySource);
-    });
-  }
 
   get marketAlgorithmTabs(): Array<TabItem> {
     return this.marketAlgorithms.map((name) => ({
