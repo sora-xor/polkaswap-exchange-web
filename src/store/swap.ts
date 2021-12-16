@@ -3,14 +3,26 @@ import flatMap from 'lodash/fp/flatMap';
 import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
-import { api } from '@soramitsu/soraneo-wallet-web';
-import { FPNumber, KnownAssets, KnownSymbols, isDirectExchange } from '@sora-substrate/util';
+import isEmpty from 'lodash/fp/isEmpty';
+import intersection from 'lodash/fp/intersection';
+import { FPNumber, isDirectExchange, XOR, LiquiditySourceTypes } from '@sora-substrate/util';
 
-import { MarketAlgorithmForLiquiditySource, ZeroStringValue } from '@/consts';
+import {
+  MarketAlgorithms,
+  MarketAlgorithmForLiquiditySource,
+  LiquiditySourceForMarketAlgorithm,
+  ZeroStringValue,
+} from '@/consts';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { divideAssets } from '@/utils';
 
-import type { AccountBalance, CodecString, LiquiditySourceTypes, QuotePaths, QuotePayload } from '@sora-substrate/util';
+import type {
+  AccountBalance,
+  CodecString,
+  QuotePaths,
+  QuotePayload,
+  PrimaryMarketsEnabledAssets,
+} from '@sora-substrate/util';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
@@ -31,12 +43,13 @@ const types = flow(
     'SET_PAIR_LIQUIDITY_SOURCES',
     'SET_PATHS',
     'SET_SUBSCRIPTION_PAYLOAD',
+    'SET_PRIMARY_MARKETS_ENABLED_ASSETS',
     'GET_SWAP_CONFIRM',
     'RESET',
   ]),
   map((x) => [x, x]),
   fromPairs
-)(['CHECK_AVAILABILITY']);
+)([]);
 
 interface SwapState {
   tokenFromAddress: Nullable<string>;
@@ -50,8 +63,7 @@ interface SwapState {
   liquidityProviderFee: CodecString;
   pairLiquiditySources: Array<LiquiditySourceTypes>;
   paths: QuotePaths;
-  isAvailable: boolean;
-  isAvailableChecking: boolean;
+  enabledAssets: PrimaryMarketsEnabledAssets;
   payload: Nullable<QuotePayload>;
 }
 
@@ -66,13 +78,32 @@ function initialState(): SwapState {
     toValue: '',
     isExchangeB: false,
     liquidityProviderFee: '',
-    isAvailable: false,
-    isAvailableChecking: false,
     pairLiquiditySources: [],
     paths: {},
+    enabledAssets: {},
     payload: null,
   };
 }
+
+const getSources = (
+  address: string,
+  payload: QuotePayload,
+  enabledAssets: PrimaryMarketsEnabledAssets
+): Array<LiquiditySourceTypes> => {
+  const rules = {
+    [LiquiditySourceTypes.MulticollateralBondingCurvePool]: () => enabledAssets.tbc.includes(address),
+    [LiquiditySourceTypes.XYKPool]: () => payload.reserves.xyk[address].every((tokenReserve) => !!Number(tokenReserve)),
+    [LiquiditySourceTypes.XSTPool]: () => enabledAssets.xst.includes(address),
+  };
+
+  return Object.entries(rules).reduce((acc: LiquiditySourceTypes[], entry) => {
+    const [source, rule] = entry;
+    if (rule()) {
+      acc.push(source as LiquiditySourceTypes);
+    }
+    return acc;
+  }, []);
+};
 
 const state = initialState();
 
@@ -89,13 +120,28 @@ const getters = {
 
     return balance ? { ...token, balance } : token;
   },
-  pairLiquiditySourcesAvailable(state: SwapState) {
-    return state.pairLiquiditySources.length !== 0;
+  marketAlgorithms(state: SwapState) {
+    // implementation of backend hack, to show only primary market sources
+    const primarySources = state.pairLiquiditySources.filter((source) => source !== LiquiditySourceTypes.XYKPool);
+
+    const items = Object.keys(LiquiditySourceForMarketAlgorithm) as Array<MarketAlgorithms>;
+
+    return items.filter((marketAlgorithm) => {
+      const liquiditySource = LiquiditySourceForMarketAlgorithm[marketAlgorithm];
+
+      return marketAlgorithm === MarketAlgorithms.SMART || primarySources.includes(liquiditySource);
+    });
+  },
+  marketAlgorithmsAvailable(state: SwapState, getters) {
+    return getters.marketAlgorithms.length > 1;
   },
   swapLiquiditySource(state, getters, rootState, rootGetters) {
-    if (!getters.pairLiquiditySourcesAvailable) return undefined;
+    if (!getters.marketAlgorithmsAvailable || !rootGetters.liquiditySource) return undefined;
 
     return rootGetters.liquiditySource;
+  },
+  isAvailable(state: SwapState) {
+    return !isEmpty(state.paths) && Object.values(state.paths).every((paths) => !isEmpty(paths));
   },
   swapMarketAlgorithm(state: SwapState, getters) {
     return MarketAlgorithmForLiquiditySource[getters.swapLiquiditySource ?? ''];
@@ -163,23 +209,14 @@ const mutations = {
   [types.SET_LIQUIDITY_PROVIDER_FEE](state: SwapState, liquidityProviderFee: CodecString) {
     state.liquidityProviderFee = liquidityProviderFee;
   },
-  [types.CHECK_AVAILABILITY_REQUEST](state: SwapState) {
-    state.isAvailable = false;
-    state.isAvailableChecking = true;
-  },
-  [types.CHECK_AVAILABILITY_SUCCESS](state: SwapState, isAvailable: boolean) {
-    state.isAvailable = isAvailable;
-    state.isAvailableChecking = false;
-  },
-  [types.CHECK_AVAILABILITY_FAILURE](state: SwapState) {
-    state.isAvailable = false;
-    state.isAvailableChecking = false;
-  },
   [types.SET_PAIR_LIQUIDITY_SOURCES](state: SwapState, liquiditySources: Array<LiquiditySourceTypes>) {
     state.pairLiquiditySources = [...liquiditySources];
   },
   [types.SET_PATHS](state: SwapState, paths: QuotePaths) {
     state.paths = { ...paths };
+  },
+  [types.SET_PRIMARY_MARKETS_ENABLED_ASSETS](state: SwapState, assets: PrimaryMarketsEnabledAssets) {
+    state.enabledAssets = { ...assets };
   },
   [types.SET_SUBSCRIPTION_PAYLOAD](state: SwapState, payload: QuotePayload) {
     state.payload = payload;
@@ -250,68 +287,61 @@ const actions = {
   setLiquidityProviderFee({ commit }, liquidityProviderFee: string) {
     commit(types.SET_LIQUIDITY_PROVIDER_FEE, liquidityProviderFee);
   },
-  async checkSwap({ commit, getters }) {
-    if (getters.tokenFrom?.address && getters.tokenTo?.address) {
-      commit(types.CHECK_AVAILABILITY_REQUEST);
-      try {
-        const isAvailable = await api.checkSwap(getters.tokenFrom.address, getters.tokenTo.address);
-        commit(types.CHECK_AVAILABILITY_SUCCESS, isAvailable);
-      } catch (error) {
-        commit(types.CHECK_AVAILABILITY_FAILURE, error);
-      }
-    }
-  },
-  async updatePairLiquiditySources({ commit, dispatch, getters, rootGetters }) {
-    const isPair = !!getters.tokenFrom?.address && !!getters.tokenTo?.address;
 
-    const sources = isPair
-      ? await api.getListEnabledSourcesForPath(getters.tokenFrom?.address, getters.tokenTo?.address)
-      : [];
-
+  async checkMarketAlgorithmUpdate({ dispatch, rootGetters, state }) {
     // reset market algorithm to default, if related liquiditySource is not available
-    if (sources.length && !sources.includes(rootGetters.liquiditySource)) {
+    if (state.pairLiquiditySources.length && !state.pairLiquiditySources.includes(rootGetters.liquiditySource)) {
       await dispatch('setMarketAlgorithm', undefined, { root: true });
     }
-
-    commit(types.SET_PAIR_LIQUIDITY_SOURCES, sources);
   },
-  async updatePaths({ commit, getters }) {
+
+  updatePaths({ commit, getters, state }) {
     const inputAssetId = getters.tokenFrom?.address;
     const outputAssetId = getters.tokenTo?.address;
+    const quotePaths: QuotePaths = {};
+    const pairLiquiditySources: Array<LiquiditySourceTypes> = [];
 
-    if (!inputAssetId || !outputAssetId) {
+    try {
+      if (inputAssetId && outputAssetId) {
+        const xor = XOR.address;
+
+        if (isDirectExchange(inputAssetId, outputAssetId)) {
+          const nonXor = inputAssetId === xor ? outputAssetId : inputAssetId;
+          const path = getSources(nonXor, state.payload, state.enabledAssets);
+
+          quotePaths[nonXor] = path;
+          pairLiquiditySources.push(...path);
+        } else {
+          const [inputPaths, outputPaths] = [
+            getSources(inputAssetId, state.payload, state.enabledAssets),
+            getSources(outputAssetId, state.payload, state.enabledAssets),
+          ];
+
+          quotePaths[inputAssetId] = inputPaths;
+          quotePaths[outputAssetId] = outputPaths;
+          pairLiquiditySources.push(...intersection(inputPaths, outputPaths));
+        }
+      }
+
+      commit(types.SET_PATHS, quotePaths);
+      commit(types.SET_PAIR_LIQUIDITY_SOURCES, pairLiquiditySources);
+    } catch (error) {
+      console.error(error);
       commit(types.SET_PATHS, {});
-      return;
-    }
-
-    const xor = KnownAssets.get(KnownSymbols.XOR).address;
-
-    if (isDirectExchange(inputAssetId, outputAssetId)) {
-      const path = await api.getListEnabledSourcesForPath(inputAssetId, outputAssetId);
-      const nonXor = inputAssetId === xor ? outputAssetId : inputAssetId;
-
-      const paths: QuotePaths = {
-        [nonXor]: path,
-      };
-
-      commit(types.SET_PATHS, paths);
-    } else {
-      const [inputPaths, outputPaths] = await Promise.all([
-        api.getListEnabledSourcesForPath(inputAssetId, xor),
-        api.getListEnabledSourcesForPath(xor, outputAssetId),
-      ]);
-
-      const paths: QuotePaths = {
-        [inputAssetId]: inputPaths,
-        [outputAssetId]: outputPaths,
-      };
-
-      commit(types.SET_PATHS, paths);
+      commit(types.SET_PAIR_LIQUIDITY_SOURCES, []);
     }
   },
-  setSubscriptionPayload({ commit }, payload: QuotePayload) {
+
+  async setSubscriptionPayload({ commit, dispatch }, payload: QuotePayload) {
     commit(types.SET_SUBSCRIPTION_PAYLOAD, payload);
+    await dispatch('updatePaths');
+    await dispatch('checkMarketAlgorithmUpdate');
   },
+
+  async setPrimaryMarketsEnabledAssets({ commit }, assets: PrimaryMarketsEnabledAssets) {
+    commit(types.SET_PRIMARY_MARKETS_ENABLED_ASSETS, assets);
+  },
+
   reset({ commit, dispatch }) {
     dispatch('resetSubscriptions');
     commit(types.RESET);

@@ -134,10 +134,6 @@ export async function delay(ms = 50): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export const formatDateItem = (date: number): number | string => {
-  return date < 10 ? '0' + date : date;
-};
-
 export const asZeroValue = (value: any): boolean => {
   return !Number.isFinite(+value) || +value === 0;
 };

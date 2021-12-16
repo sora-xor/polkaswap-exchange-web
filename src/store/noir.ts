@@ -37,7 +37,6 @@ const types = flow(
 interface NoirState {
   totalRedeemed: number;
   total: number;
-  availableForRedemption: number;
   redemptionSubscription: Nullable<NodeJS.Timer>;
   editionDialogVisibility: boolean;
   redeemDialogVisibility: boolean;
@@ -49,7 +48,6 @@ function initialState(): NoirState {
   return {
     totalRedeemed: 0,
     total: 0,
-    availableForRedemption: 0,
     redemptionSubscription: null,
     editionDialogVisibility: false,
     redeemDialogVisibility: false,
@@ -66,9 +64,6 @@ const getters = {
   },
   total(state: NoirState) {
     return state.total;
-  },
-  availableForRedemption(state: NoirState) {
-    return state.availableForRedemption;
   },
   xorBalance(state: NoirState, getters, rootState, rootGetters) {
     const token = rootGetters['assets/getAssetDataByAddress'](XOR.address);
@@ -91,7 +86,6 @@ const mutations = {
 
   [types.GET_REDEMPTION_DATA_SUCCESS](state: NoirState, params: RedemptionData) {
     state.totalRedeemed = params.totalRedeemed;
-    state.availableForRedemption = FPNumber.fromCodecValue(params.noirReserve).toNumber(0);
     const totalRedeemedFP = FPNumber.fromCodecValue(params.totalRedeemed);
     state.total = params.noirTotalSupply.sub(totalRedeemedFP).toNumber(0);
   },
@@ -99,7 +93,6 @@ const mutations = {
   [types.GET_REDEMPTION_DATA_FAILURE](state: NoirState) {
     state.totalRedeemed = 0;
     state.total = 0;
-    state.availableForRedemption = 0;
   },
 
   [types.RESET_REDEMPTION_DATA_SUBSCRIPTION](state: NoirState) {

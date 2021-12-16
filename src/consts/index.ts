@@ -9,7 +9,9 @@ export const WalletPermissions = {
   swapAssets: false, // enable 'swap' button in assets list
 };
 
-// navigator.language values, f.e. ('es', 'eu-ES')
+/**
+ * `navigator.language` values, f.e. ('es', 'eu-ES')
+ */
 export enum Language {
   EN = 'en',
 }

@@ -34,7 +34,7 @@ export default {
   polkaswapFaqLink:
     '<a class="link" href="https://wiki.sora.org/polkaswap/polkaswap-faq" target="_blank" rel="nofollow noopener" title="@:FAQ">@:FAQ</a>',
   disclaimer:
-    '<span class="app-disclaimer__title">Disclaimer</span>: This website is maintained by the @:soraText community. Before continuing to use this website, please review the @:polkaswapFaqLink and documentation, which includes a detailed explanation on how Polkaswap works, as well as the @:memorandumLink, and @:(privacyLink). These documents are crucial to a secure and positive user experience. By using Polkaswap, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of Polkaswap in your legal jurisdiction; 2) your understanding that the current version of Polkaswap is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using Polkaswap, including, but not limited to, the risk of losing tokens. Once more, please do not continue without reading the @:polkaswapFaqLink, @:memorandumLink, and @:privacyLink!',
+    '<span class="app-disclaimer__title">Disclaimer</span>: This website is maintained by the @:soraText community. Before continuing to use this website, please review the @:polkaswapFaqLink and documentation, which includes a detailed explanation on how Polkaswap works, as well as the @:memorandumLink, and @:(privacyLink). These documents are crucial to a secure and positive user experience. By using Polkaswap, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of Polkaswap in your legal jurisdiction; 2) your understanding that the current version of Polkaswap is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using Polkaswap, including, but not limited to, the risk of losing tokens. Please do not continue without reading the @:polkaswapFaqLink, @:memorandumLink, @:privacyLink!',
   poweredBy: 'Powered by',
   confirmText: 'Confirm',
   confirmTransactionText: 'Confirm transaction in {direction}',
@@ -97,14 +97,14 @@ export default {
     title: 'About',
     learnMore: '@:learnMoreText',
     network: {
-      title: 'What is @:(soraText)?',
+      title: 'What is @:soraText?',
       description:
         'Polkaswap is built on top of the @:soraText Network, and the @:soraText token (XOR) is used for gas/fees and liquidity provision on Polkaswap. @:soraText Network allows for reduced fees, faster transactions and simpler consensus finalization and is focused on delivering interoperability across other blockchain ecosystems like @:(ethereumText).',
     },
     polkadot: {
       title: 'What is polkadot{.js}?',
       description:
-        'Polkadot{.js} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including @:(soraText), Polkadot and Kusama. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized.',
+        'Polkadot{.js} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including @:soraText, Polkadot and Kusama. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized.',
     },
   },
   node: {
@@ -397,7 +397,6 @@ export default {
     approveToken:
       'Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest.',
   },
-  months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   bridgeHistory: {
     title: 'History',
     showHistory: 'Show history',
@@ -568,6 +567,13 @@ export default {
       strategic: 'Strategic Rewards',
       external: 'Rewards for the connected ethereum account',
     },
+  },
+  confirmNextTxFailure: {
+    header: 'Attention',
+    info: 'Your XOR balance will be less than {fee} XOR after this transaction. You won’t be able to pay for the network fee for another transaction.',
+    payoff:
+      'You would have to use the Bridge to get XOR from other networks, get sent XOR from another SORA account, or swap any other token already in your account into XOR.',
+    button: 'Yes, I understand the risk',
   },
   provider: {
     default: '@:ethereumText provider',

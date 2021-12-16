@@ -15,7 +15,7 @@ import {
   Language,
 } from '@/consts';
 import { getRpcEndpoint, fetchRpc } from '@/utils/rpc';
-import { getLocale, getSupportedLocale, setI18nLocale } from '@/lang';
+import { getLocale, getSupportedLocale, setI18nLocale, setDayJsLocale } from '@/lang';
 import { updateFpNumberLocale } from '@/utils';
 
 import type { ConnectToNodeOptions, Node } from '@/types/nodes';
@@ -320,6 +320,9 @@ const actions = {
   },
   async setLanguage({ commit }, lang: Language) {
     const locale = getSupportedLocale(lang);
+    // we should import dayjs locale first, then i18n
+    // because i18n.locale is dependency for dayjs
+    await setDayJsLocale(locale as any);
     await setI18nLocale(locale as any);
     updateFpNumberLocale(locale);
     commit(types.SET_LANGUAGE, locale);
