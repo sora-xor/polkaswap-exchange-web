@@ -349,7 +349,7 @@
     },
     "transfers": {
         "from": "Z",
-        "to": "Do"
+        "to": "Na"
     },
     "pageNotFound": {
         "title": "Nie znaleziono strony.",
@@ -593,7 +593,7 @@
         "deposit": "Depozyt",
         "balance": "Saldo",
         "pricePool": "Ceny i opłaty",
-        "shareOfPool": "Udział puli",
+        "shareOfPool": "Udział w puli",
         "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "Pula {first}-{second}",
         "connect": "Połącz z portfelem",
@@ -621,7 +621,7 @@
         "firstPerSecond": "@:firstPerSecond"
     },
     "removeLiquidity": {
-        "title": "Usuń płynność",
+        "title": "Usuwanie płynności",
         "liquidity": "Płynność",
         "balance": "Saldo",
         "amount": "Kwota",
@@ -632,7 +632,7 @@
         "description": "Usunięcie tokenów puli przelicza Twoją pozycję z powrotem na tokeny bazowe po aktualnym kursie, proporcjonalnym do Twojego udziału w puli. Naliczone opłaty są wliczone w kwotę, którą otrzymasz.",
         "outputMessage": "Wynik jest szacunkowy. Jeśli cena zmieni się o więcej niż {slippageTolerance}%, Twoja transakcja zostanie anulowana.",
         "confirmTitle": "Otrzymasz",
-        "shareOfPool": "Udział puli po transakcji"
+        "shareOfPool": "Udział w puli po transakcji"
     },
     "dexSettings": {
         "title": "Ustawienia transakcji",
@@ -645,7 +645,7 @@
         "slippageToleranceValidation": {
             "warning": "Twoja transakcja może się nie powieść.",
             "frontrun": "To może być transakcja typu front-run.",
-            "error": "Wprowadź tolerowaną wartość procentową poślizgu."
+            "error": "Wprowadź tolerowalną wartość procentową poślizgu."
         },
         "custom": "WŁASNE USTAWIENIA",
         "transactionDeadline": "OSTATECZNY TERMIN TRANSAKCJI",
@@ -682,7 +682,7 @@
         },
         "signing": {
             "extension": "Rozszerzenie przeglądarki polkadot{.js}",
-            "accounts": "Twoich kont, to odpowiednio @:soraText i @:(ethereumText)."
+            "accounts": "Twoich kont, to odpowiednio @:soraText i @:ethereumText"
         },
         "hint": {
             "connectExternalAccount": "Połącz z kontem @:ethereumText, aby sprawdzić dostępne wynagrodzenie w PSWAP i VAL.",
@@ -707,7 +707,7 @@
             "XorErc20": "XOR ERC-20",
             "SoraFarmHarvest": "Zbiory @:(soraText).farm",
             "NtfAirdrop": "Zrzut NFT",
-            "LiquidityProvision": "Opłaty uzyskane z tytułu zapewnienia płynności",
+            "LiquidityProvision": "Opłaty uzyskane z tytułu zapewniania płynności",
             "BuyOnBondingCurve": "Zakup z TBC",
             "NftAirdrop": "Zrzut NFT",
             "MarketMakerVolume": "Animacja rynku",

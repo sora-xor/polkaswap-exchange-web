@@ -187,7 +187,7 @@
         },
         "extensibleSupply": {
             "placeholder": "Uitbreidbaar aanbod",
-            "desc": "Mogelijkheid om meer tokens te slaan."
+            "desc": "Mogelijkheid om meer tokens te munten."
         }
     },
     "transaction": {
@@ -286,7 +286,7 @@
         "sorawiki": "@:soraText Wiki",
         "memorandum": "Polkaswap memorandum en servicevoorwaarden",
         "privacy": "Privacybeleid",
-        "info": "Info & Gemeenschap"
+        "info": "Info & Community"
     },
     "helpDialog": {
         "title": "Help",
@@ -306,7 +306,7 @@
         },
         "polkadot": {
             "title": "Wat is polkadot {.js}?",
-            "description": "Polkadot{.js} extensie is een browser extensie beschikbaar voor Firefox en Chrome gewijd aan het beheer van accounts voor Substrate-gebaseerde chains, waaronder @:soraText, Polkadot en Kusama. U kunt accounts toevoegen, importeren en exporteren en transacties of extrinsics ondertekenen die u hebt geïnitieerd vanaf websites die u hebt geautoriseerd."
+            "description": "Polkadot{.js} extensie is een browser extensie beschikbaar voor Firefox en Chrome die gewijd is aan het beheer van accounts voor Substrate-gebaseerde chains, waaronder @:soraText, Polkadot en Kusama. U kunt accounts toevoegen, importeren en exporteren en transacties of extrinsics ondertekenen die u hebt geïnitieerd vanaf websites die u hebt geautoriseerd."
         }
     },
     "node": {
@@ -592,7 +592,7 @@
         "title": "Maak een paar",
         "deposit": "Storting",
         "balance": "Saldo",
-        "pricePool": "Prijzen en aandeel in de pool",
+        "pricePool": "Prijzen en vergoedingen",
         "shareOfPool": "Aandeel van de pool",
         "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{eerste}-{tweede} Pool tokens",
@@ -610,7 +610,7 @@
         "firstLiquidityProviderInfo": "De verhouding van de tokens die u toevoegt zal de prijs van deze pool bepalen.<br\/>Zodra u tevreden bent met de koers klikt u op leveren om te herzien."
     },
     "confirmSupply": {
-        "title": "U ontvangt",
+        "title": "Jouw aandeel in de pool bedraagt",
         "outputDescription": "De output wordt geschat. Als de prijs meer dan {slippageTolerance} % verandert, wordt uw transactie teruggedraaid.",
         "poolTokensBurned": "{\\a6}-{\\a6} Pool Tokens Verbrand",
         "price": "Prijs"
@@ -809,14 +809,14 @@
     "marketMakerCountdown": {
         "title": "Market Maker aftellen",
         "blocks": "blokken",
-        "daysLeft": "dagen over",
+        "daysLeft": "resterende dagen",
         "txs": "TX's",
         "volume": "MM TX-volume",
         "description": "20 miljoen PSWAP \/ maand zal worden verdeeld onder market makers met ten minste 500 tx \/ maand met een waarde van meer dan 1 XOR."
     },
     "confirmNextTxFailure": {
         "header": "Aandacht",
-        "info": "Uw XOR-saldo zal na deze transactie {fee} U kunt de netwerkkosten voor een andere transactie niet betalen.",
+        "info": "Uw XOR saldo zal lager zijn dan {fee} XOR na deze transactie. U zult niet in staat zijn om de netwerkvergoeding voor een andere transactie te betalen.",
         "payoff": "Je zou de Bridge moeten gebruiken om XOR van andere netwerken te krijgen, XOR van een ander SORA-account te ontvangen, of een ander token dat al in je account staat om te wisselen naar XOR.",
         "button": "Ja, ik begrijp het risico"
     }
