@@ -806,6 +806,7 @@
     },
     "sentText": "Sent",
     "learnMoreText": "Learn more",
+    "blockNumberText": "Block number",
     "marketMakerCountdown": {
         "title": "Market Maker Countdown",
         "blocks": "blocks",
