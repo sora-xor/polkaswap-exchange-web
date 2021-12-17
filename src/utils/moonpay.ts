@@ -65,14 +65,26 @@ export class MoonpayApi {
     return url;
   }
 
-  public getTransactionsByExtId(id: string): Promise<Array<MoonpayTransaction>> {
-    const url = `${MoonpayApi.apiUrl}/v1/transactions/ext/${id}`;
-    return this.apiRequest(url);
+  public async getTransactionsByExtId(id: string): Promise<Array<MoonpayTransaction>> {
+    try {
+      const url = `${MoonpayApi.apiUrl}/v1/transactions/ext/${id}`;
+      const transactions = await this.apiRequest(url);
+
+      return transactions;
+    } catch (error) {
+      return [];
+    }
   }
 
-  public getCurrencies(): Promise<Array<MoonpayCurrency>> {
-    const url = `${MoonpayApi.apiUrl}/v3/currencies`;
-    return this.apiRequest(url);
+  public async getCurrencies(): Promise<Array<MoonpayCurrency>> {
+    try {
+      const url = `${MoonpayApi.apiUrl}/v3/currencies`;
+      const currencies = await this.apiRequest(url);
+
+      return currencies;
+    } catch (error) {
+      return [];
+    }
   }
 
   private async apiRequest(url: string, params = {}): Promise<any> {
