@@ -127,7 +127,8 @@
             "reserved": " - Rezervováno",
             "total": "Celkem"
         },
-        "totalAssetsValue": "Celková hodnota vašich aktiv:"
+        "totalAssetsValue": "Celková hodnota vašich aktiv:",
+        "details": "Podrobnosti"
     },
     "asset": {
         "remove": "Odebrat aktivum"
@@ -230,13 +231,13 @@
     "connectWalletTextTooltip": "Připojte se k síti @:soraText pomocí polkadot{.js}",
     "selectNodeText": "Vyberte node",
     "bridgeText": "Bridge",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Disclaimer \/ Zřeknutí se odpovědnosti<\/span>: Tento web spravuje komunita @:soraText. Před dalším používáním tohoto webu, si prosím prostudujte @:polkaswapFaqLink a dokumentaci, která obsahuje podrobné vysvětlení toho, jak Polkaswap funguje, a také @:memorandumLink a @:privacyLink. Tyto dokumenty jsou zásadní pro bezpečnou a pozitivní uživatelskou zkušenost. Používáním Polkaswap potvrzujete, že jste si tyto dokumenty přečetli a porozuměli jim. Rovněž berete na vědomí následující: 1) svou výhradní odpovědnost za soulad se všemi zákony, které se mohou vztahovat na vaše konkrétní použití Polkaswap ve vaší právní jurisdikci; 2) chápete, že aktuální verze Polkaswap je alfa verzí: nebyla plně otestována a některé funkce nemusí fungovat tak, jak byly navrženy; a 3) vaše porozumění a dobrovolné přijetí rizik spojených s používáním Polkaswap, mimo jiné včetně rizika ztráty tokenů. Ještě jednou vás žádáme, abyste nepokračovali bez přečtení @:polkaswapFaqLink, @:memorandumLink, a @:privacyLink!",
+    "disclaimer": "<span class=\"app-disclaimer__title\">Disclaimer \/ Zřeknutí se odpovědnosti<\/span>: Tento web spravuje komunita @:(soraText). Před dalším používáním tohoto webu, si prosím prostudujte @:polkaswapFaqLink a dokumentaci, která obsahuje podrobné vysvětlení toho, jak Polkaswap funguje, a také @:memorandumLink a @:(privacyLink). Tyto dokumenty jsou zásadní pro bezpečnou a pozitivní uživatelskou zkušenost. Používáním Polkaswap potvrzujete, že jste si tyto dokumenty přečetli a porozuměli jim. Rovněž berete na vědomí následující: 1) svou výhradní odpovědnost za soulad se všemi zákony, které se mohou vztahovat na vaše konkrétní použití Polkaswap ve vaší právní jurisdikci; 2) chápete, že aktuální verze Polkaswap je alfa verzí: nebyla plně otestována a některé funkce nemusí fungovat tak, jak byly navrženy; a 3) vaše porozumění a dobrovolné přijetí rizik spojených s používáním Polkaswap, mimo jiné včetně rizika ztráty tokenů. Ještě jednou vás žádáme, abyste nepokračovali bez přečtení @:polkaswapFaqLink, @:memorandumLink, a @:privacyLink!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
     "poweredBy": "Běží na",
     "confirmTransactionText": "Potvrďte transakci ve {direction}",
     "retryText": "Zkuste znovu",
     "networkFeeText": "Síťový poplatek",
-    "networkFeeTooltipText": "Síťový poplatek slouží k zajištění růstu a stabilního výkonu systému @:soraText.",
+    "networkFeeTooltipText": "Síťový poplatek slouží k zajištění růstu a stabilního výkonu systému @:(soraText).",
     "ethNetworkFeeTooltipText": "Nezapomeňte prosím, že poplatky sítě Ethereum zobrazené na Polkaswap jsou pouze hrubé odhady, správnou výši poplatku si můžete prohlédnout ve vaší připojené Ethereum peněžence před potvrzením transakce.",
     "marketText": "Trh",
     "marketAlgorithmText": "Algoritmus trhu",
@@ -300,12 +301,12 @@
         "title": "O projektu",
         "learnMore": "Zjistěte více",
         "network": {
-            "title": "Co je to @:(soraText)?",
+            "title": "Co je to @:soraText?",
             "description": "Polkaswap je postaven na síti @:soraText a token @:soraText (XOR) se používá pro placení gasu\/poplatků a pro poskytování likvidity na Polkaswapu. Síť @:soraText umožňuje snížení poplatků, rychlejší transakce a jednodušší finalizaci konsensu a zaměřuje se na zajištění interoperability napříč ostatními blockchain ekosystémy, jako je @:(ethereumText)."
         },
         "polkadot": {
             "title": "Co je to polkadot{.js}?",
-            "description": "Rozšíření Polkadot{.js} je rozšíření prohlížeče dostupné pro Firefox a Chrome určené pro správu účtů blockchainů založených na Substrate, včetně @:(soraText), Polkadot a Kusama. Můžete přidávat, importovat a exportovat účty a podepisovat transakce nebo extrinsics, které jste iniciovali z autorizovaných webových stránek."
+            "description": "Rozšíření Polkadot{.js} je rozšíření prohlížeče dostupné pro Firefox a Chrome určené pro správu účtů blockchainů založených na Substrate, včetně @:soraText, Polkadot a Kusama. Můžete přidávat, importovat a exportovat účty a podepisovat transakce nebo extrinsics, které jste iniciovali z autorizovaných webových stránek."
         }
     },
     "node": {
@@ -461,7 +462,7 @@
     },
     "bridge": {
         "title": "HASHI Bridge",
-        "info": "Převeďte tokeny mezi sítěmi @:soraText a @:ethereumText.",
+        "info": "Převeďte tokeny mezi sítěmi @:soraText a @:(ethereumText).",
         "balance": "Zůstatek",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
@@ -685,9 +686,9 @@
         },
         "hint": {
             "connectExternalAccount": "Připojte účet @:ethereumText a zkontrolujte dostupné odměny PSWAP a VAL.",
-            "connectAccounts": "Pro získání svých PSWAP a VAL odměn musíte připojit oba své účty @:soraText a @:ethereumText.",
+            "connectAccounts": "Pro získání svých PSWAP a VAL odměn musíte připojit oba své účty @:soraText a @:(ethereumText).",
             "connectAnotherAccount": "Připojte další účet @:ethereumText a zkontrolujte dostupné odměny PSWAP a VAL.",
-            "howToClaimRewards": "Chcete-li si vyzvednout {symbols} odměny, musíte podepsat {count} {transactions} v {destination}. Odměny budou připsány na váš účet @:soraText."
+            "howToClaimRewards": "Chcete-li si vyzvednout {symbols} odměny, musíte podepsat {count} {transactions} v {destination}. Odměny budou připsány na váš účet @:(soraText)."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
@@ -818,5 +819,6 @@
         "info": "Váš zůstatek XOR bude po této transakci {fee} Nebudete moci platit za síťový poplatek za další transakci.",
         "payoff": "Budete muset použít Bridge k získání XOR z jiných sítí, k odeslání XOR z jiného účtu SORA nebo k výměně jakéhokoli jiného tokenu, který již máte na účtu, za XOR.",
         "button": "Ano, chápu riziko"
-    }
+    },
+    "blockNumberText": "Číslo bloku"
 }
