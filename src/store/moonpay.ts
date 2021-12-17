@@ -27,7 +27,7 @@ const types = flow(
   fromPairs
 )(['UPDATE_TRANSACTIONS', 'GET_CURRENCIES']);
 
-const POLLING_INTERVAL = 5 * 1000;
+const POLLING_INTERVAL = 15 * 1000;
 
 interface MoonpayState {
   api: MoonpayApi;
