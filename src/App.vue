@@ -77,6 +77,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Getter libraryDesignSystem!: DesignSystem;
   @Getter firstReadyTransaction!: History;
   @Getter blockNumber!: number;
+  @Getter storageReferral!: string;
   @Getter('isLoggedIn') isSoraAccountConnected!: boolean;
   @Getter('referral', { namespace: 'referrals' }) referral!: string;
 
@@ -97,6 +98,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action setApiKeys!: (options: any) => Promise<void>;
   @Action setFeatureFlags!: (options: any) => Promise<void>;
   @Action resetBlockNumberSubscription!: () => Promise<void>;
+  @Action setReferral!: (value: string) => Promise<void>;
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>;
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
   @Action('getReferral', { namespace: 'referrals' }) getReferral!: (invitedUserId: string) => Promise<void>;
@@ -148,7 +150,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       if (this.isSoraAccountConnected) {
         await this.getReferral(this.account.address);
-        if (!this.referral) {
+        if (this.referral || this.referral === this.account.address) {
+          this.setReferral('');
+        } else {
           this.handleConfirmInviteUser();
         }
       }
@@ -197,7 +201,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   async confirmInviteUser(isInviteUserConfirmed: boolean): Promise<void> {
     if (isInviteUserConfirmed) {
-      // TODO: Clean storage referral value here
+      this.setReferral('');
     }
   }
 

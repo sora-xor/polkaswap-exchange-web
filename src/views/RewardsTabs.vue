@@ -18,7 +18,7 @@ import { Getter } from 'vuex-class';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { PageNames, RewardsTabsItems } from '@/consts';
-import { lazyView } from '@/router';
+import router, { lazyView } from '@/router';
 
 @Component({
   components: {
@@ -29,18 +29,11 @@ import { lazyView } from '@/router';
 export default class RewardsTabs extends Mixins(TranslationMixin) {
   readonly RewardsTabsItems = RewardsTabsItems;
 
-  @Getter currentRouteParams!: any;
   @Getter('prev', { namespace: 'router' }) prevRoute!: PageNames;
 
   currentTab: RewardsTabsItems = RewardsTabsItems.Rewards;
 
-  mounted() {
-    if (this.currentRouteParams.currentTab) {
-      this.currentTab = this.currentRouteParams.currentTab;
-    }
-  }
-
-  async created(): Promise<void> {
+  created(): void {
     if ([PageNames.ReferralBonding, PageNames.ReferralUnbonding].includes(this.prevRoute)) {
       this.currentTab = RewardsTabsItems.ReferralProgram;
     }
@@ -48,6 +41,9 @@ export default class RewardsTabs extends Mixins(TranslationMixin) {
 
   handleChangeTab(value: RewardsTabsItems): void {
     this.currentTab = value;
+    router.push({
+      name: this.currentTab === RewardsTabsItems.Rewards ? PageNames.Rewards : PageNames.Referral,
+    });
   }
 }
 </script>

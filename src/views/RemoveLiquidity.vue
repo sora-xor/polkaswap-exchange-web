@@ -205,8 +205,6 @@ export default class RemoveLiquidity extends Mixins(
   readonly KnownSymbols = KnownSymbols;
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
-  @Getter networkFees!: NetworkFeesObject;
-
   @State((state) => state[namespace].liquidityAmount) liquidityAmount!: string;
   @State((state) => state[namespace].firstTokenAmount) firstTokenAmount!: string;
   @State((state) => state[namespace].secondTokenAmount) secondTokenAmount!: string;

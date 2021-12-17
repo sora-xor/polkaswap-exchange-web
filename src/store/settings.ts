@@ -44,6 +44,7 @@ const types = flow(
     'SET_BLOCK_NUMBER',
     'SET_BLOCK_NUMBER_UPDATES',
     'RESET_BLOCK_NUMBER_UPDATES',
+    'SET_REFERRAL',
   ]),
   map((x) => [x, x]),
   fromPairs
@@ -67,6 +68,7 @@ function initialState() {
     selectNodeDialogVisibility: false,
     blockNumber: 0,
     blockNumberUpdates: null,
+    storageReferral: storage.get('storageReferral') || '',
   };
 }
 
@@ -102,6 +104,9 @@ const getters = {
   },
   blockNumber(state): number {
     return state.blockNumber;
+  },
+  storageReferral(state): number {
+    return state.storageReferral;
   },
 };
 
@@ -173,6 +178,10 @@ const mutations = {
       state.blockNumberUpdates.unsubscribe();
     }
     state.blockNumberUpdates = null;
+  },
+  [types.SET_REFERRAL](state, value) {
+    state.storageReferral = value;
+    storage.set('storageReferral', value);
   },
 };
 
@@ -348,6 +357,9 @@ const actions = {
   },
   setTransactionDeadline({ commit }, value) {
     commit(types.SET_TRANSACTION_DEADLINE, Number(value));
+  },
+  setReferral({ commit }, value) {
+    commit(types.SET_REFERRAL, value);
   },
   setFaucetUrl({ commit }, url) {
     commit(types.SET_FAUCET_URL, url);

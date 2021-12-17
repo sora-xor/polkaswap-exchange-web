@@ -4,7 +4,7 @@
     <p class="invite-user-ititle">{{ t('referralProgram.confirm.inviteTitle') }}</p>
     <p class="invite-user-description">{{ t('referralProgram.confirm.inviteDescription') }}</p>
     <template #footer>
-      <s-button type="primary" class="s-typography-button--large" :disabled="loading" @click="handleConfirmBonding">
+      <s-button type="primary" class="s-typography-button--large" :disabled="loading" @click="handleConfirmInviteUser">
         {{ t('referralProgram.confirm.signInvitation') }}
       </s-button>
       <div class="invite-user-free-charge">
@@ -17,6 +17,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import DialogMixin from '@/components/mixins/DialogMixin';
@@ -26,11 +27,11 @@ import DialogBase from '@/components/DialogBase.vue';
   components: { DialogBase },
 })
 export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, DialogMixin) {
-  async handleConfirmBonding(): Promise<void> {
+  @Getter storageReferral!: string;
+
+  async handleConfirmInviteUser(): Promise<void> {
     try {
-      await this.withNotifications(
-        async () => await api.setInvitedUser('cnUoizELoPeeUwosXuYFUW2jJCnbrrfMUtdNtyAsa48FHQxPA')
-      );
+      await this.withNotifications(async () => await api.setInvitedUser(this.storageReferral));
       this.$emit('confirm', true);
     } catch (error) {
       this.$emit('confirm');

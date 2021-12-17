@@ -99,6 +99,7 @@ export enum PageNames {
   RemoveLiquidity = 'RemoveLiquidity',
   Farming = 'Farming',
   Rewards = 'Rewards',
+  Referral = 'Referral',
   RewardsTabs = 'RewardsTabs',
   ReferralProgram = 'ReferralProgram',
   ReferralBonding = 'ReferralBonding',

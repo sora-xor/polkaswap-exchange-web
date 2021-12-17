@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { api } from '@sora-substrate/util';
 
 import { PageNames, BridgeChildPages } from '@/consts';
 import store from '@/store';
@@ -98,7 +99,7 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.RewardsTabs),
   },
   {
-    path: '/referral-bond',
+    path: '/referral/bond',
     name: PageNames.ReferralBonding,
     component: lazyView(PageNames.ReferralBonding),
     meta: {
@@ -106,7 +107,7 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
-    path: '/referral-unbond',
+    path: '/referral/unbond',
     name: PageNames.ReferralUnbonding,
     component: lazyView(PageNames.ReferralBonding),
     meta: {
@@ -114,8 +115,19 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
-    path: '/referrer/:referrerAddress?',
-    meta: { requiresAuth: true },
+    path: '/referral',
+    name: PageNames.Referral,
+    component: lazyView(PageNames.RewardsTabs),
+    meta: { isReferralProgram: true },
+    children: [
+      {
+        path: ':referralAddress?',
+        meta: {
+          isInvitationRoute: true,
+          requiresAuth: true,
+        },
+      },
+    ],
   },
   {
     path: '/tokens',
@@ -152,6 +164,16 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const prev = from.name;
+  if (to.matched.some((record) => record.meta.isInvitationRoute)) {
+    if (api.validateAddress(to.params.referralAddress)) {
+      store.dispatch('setReferral', to.params.referralAddress);
+    }
+    if (store.getters.isLoggedIn) {
+      next({ name: PageNames.Rewards });
+      store.dispatch('router/setRoute', { prev, current: PageNames.Rewards });
+      return;
+    }
+  }
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (
       BridgeChildPages.includes(to.name as PageNames) &&

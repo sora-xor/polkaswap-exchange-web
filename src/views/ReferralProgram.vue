@@ -167,13 +167,13 @@ export default class ReferralProgram extends Mixins(
   get referralLink(): any {
     const polkaswapLink = 'Polkaswap.io';
     return {
-      href: `https://${polkaswapLink.toLowerCase()}/referrer/${this.account.address}`,
-      label: `<span class="referral-link-address">${polkaswapLink}/</span>referrer/${this.account.address}`,
+      href: `https://${polkaswapLink.toLowerCase()}/referral/${this.account.address}`,
+      label: `<span class="referral-link-address">${polkaswapLink}/</span>referral/${this.account.address}`,
       isVisible: +this.bondedXOR > 0,
     };
   }
 
-  created() {
+  async created(): Promise<void> {
     this.withApi(async () => {
       if (this.isSoraAccountConnected) {
         await this.getInvitedUsers(this.account.address);
