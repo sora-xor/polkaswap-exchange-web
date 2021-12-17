@@ -1760,39 +1760,39 @@
   resolved "https://registry.yarnpkg.com/@soda/get-current-script/-/get-current-script-1.0.2.tgz#a53515db25d8038374381b73af20bb4f2e508d87"
   integrity sha512-T7VNNlYVM1SgQ+VsMYhnDkcGmWhQdL0bDyGm5TlQ3GBXnJscEClUUOKduWTmm2zCnvNLC1hc3JpuXjs/nFOc5w==
 
-"@sora-substrate/api-derive@^1.6.24":
-  version "1.6.24"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/api-derive/-/api-derive-1.6.24.tgz#66609bf7f35c51c521dc198a69f1c47bb5240569"
-  integrity sha512-/V+vuU0Dj9zVa8F74a9YYmoMgtFLGuiR/n0nwCLXyPbDeb1dJlBKh/u/rJCj9cCu26jljrb4q2664k9GmSZTnQ==
+"@sora-substrate/api-derive@^1.6.31":
+  version "1.6.31"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/api-derive/-/api-derive-1.6.31.tgz#9db86b6549513ad5a93459b1630e4b128fbc6c7b"
+  integrity sha512-V/xs4sKpYToDANPCcd6qpD65AR2hBUP1eHQT5ATxjWdHz9VhIhya5Uj+0gdtM0s9s0W3ihZOxYiSTjhXlwjiwA==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@polkadot/api-derive" "^4.10.1"
-    "@sora-substrate/types" "^1.6.24"
+    "@sora-substrate/types" "^1.6.31"
     rxjs "^6.5.5"
 
-"@sora-substrate/api@^1.6.24":
-  version "1.6.24"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.6.24.tgz#8e8dc91c17163a60d9d8e72d2e645c40f76acb38"
-  integrity sha512-z6Ik2qSaY5itpjE9bPnlzDjf0/m4tNbLafZm+3AQNkAF9d6OPVo8D7hX9Lw9HfBjnlBubGSPKC95WDQccwpKNQ==
+"@sora-substrate/api@^1.6.31":
+  version "1.6.31"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.6.31.tgz#f3834929d2dc4ee5f08541f38585859b447ded76"
+  integrity sha512-tbUO1cXa9LTYhvF6nPppuXmZ2fDVAIwgHEfHiyAp8Zuxdwjje+wr7AhG3iCiKeuu4zD9cOmI+bLCDBoUn+awLQ==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@open-web3/orml-api-derive" "^0.8.2-9"
     "@polkadot/api" "^4.10.1"
     "@polkadot/rpc-core" "^4.10.1"
-    "@sora-substrate/api-derive" "^1.6.24"
-    "@sora-substrate/types" "^1.6.24"
+    "@sora-substrate/api-derive" "^1.6.31"
+    "@sora-substrate/types" "^1.6.31"
 
-"@sora-substrate/type-definitions@^1.6.24":
-  version "1.6.24"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.6.24.tgz#b0671be4c05f216b25e9c7bc57f476e70b9f4bd9"
-  integrity sha512-MGbmC9e6Wre3LZvxnhUw/JYM8eqfXxuVYGI7H9swmvFiYgGfSPV+Qluob6q/tgjQLvmNsRQGe4XRG6CbQFvmtA==
+"@sora-substrate/type-definitions@^1.6.31":
+  version "1.6.31"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.6.31.tgz#5d26fb24c3e62acf4b8ac8a8c3241394de6d6452"
+  integrity sha512-FGUgXLe1VGyrTzEI9IBc5yMI+gxPSwm+gxebJ+JoXXiI73FDXFsBuxPH4J1tl+w9dXanTElP6PpzstQDBkNIPQ==
   dependencies:
     "@open-web3/orml-type-definitions" "^0.9.4-35"
 
-"@sora-substrate/types@^1.6.24":
-  version "1.6.24"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.6.24.tgz#73d6301408e83db81c73410fc80e4de1223b0fa7"
-  integrity sha512-SzflZElxOMw93gHMkTexTTsszlFf/PjR8Y2T4Gh+BK2DOt6BwEZ70vhxo24P6oXkYR4brHiKw/qTSjB7A+7SSg==
+"@sora-substrate/types@^1.6.31":
+  version "1.6.31"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.6.31.tgz#d7e5d1637aa6b5a71d196703670e4b6c94eb7efb"
+  integrity sha512-C3i2HMpFex6iGsSyVdgpkn4mrDgQdHEvXKPK+AS4x2ykLydcstzp+lqnQA9LWh0qkv/dEYv7B9fP9XFugEMydw==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@open-web3/api-mobx" "^0.8.2-9"
@@ -1800,24 +1800,24 @@
     "@polkadot/api" "^4.10.1"
     "@polkadot/typegen" "^4.10.1"
     "@polkadot/types" "^4.10.1"
-    "@sora-substrate/type-definitions" "^1.6.24"
+    "@sora-substrate/type-definitions" "^1.6.31"
 
-"@sora-substrate/util@1.6.24":
-  version "1.6.24"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.6.24.tgz#45b66f55eb364a88dd5105d9ddb1f7fd5175b3cd"
-  integrity sha512-QnoXbADpNBThsPgL9oQ31daMIybRqkZzd6n3FP7tmRXt7cfkgL05r2YV678Xyve8NASfbMqvJ0cbJf6a+WvUDg==
+"@sora-substrate/util@1.6.31":
+  version "1.6.31"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.6.31.tgz#a1ab2f22c3f0bdedf3690ff4ad98a2d412de4495"
+  integrity sha512-wswodAJb2Mlx7yeocZ1hDvOiJVsKh5ba3+8lfRWgX3FhRQixIYgOXGtMefVJMKrNAxIeFhtgHJAsnzOSY69HCA==
   dependencies:
     "@polkadot/ui-keyring" "^0.77.1"
-    "@sora-substrate/api" "^1.6.24"
+    "@sora-substrate/api" "^1.6.31"
     axios "^0.21.1"
     bignumber.js "^9.0.1"
     crypto-js "^4.0.0"
     lodash "^4.17.15"
 
-"@soramitsu/soramitsu-js-ui@^1.0.22":
-  version "1.0.22"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-1.0.22.tgz#36027c9ff89b4ff8b0e924bea0f9df907216347c"
-  integrity sha512-3S+YP4Ba4F+Rd91NJA/1TIDJD6j7w674myZOF7nhDgkbAr7vsLjsxHKMXbJVP8D3+z08imgFkaMO60irNwUjKA==
+"@soramitsu/soramitsu-js-ui@^1.0.23":
+  version "1.0.24"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-1.0.24.tgz#bd06ada9e86ce3b4034db26c263193601a13091f"
+  integrity sha512-hZeweyCzDDbmo1UP8+VndJDFXrW1cxpUgXNXhSx9cI63G4oBXl1gx7MkPfjlfu9kSbQ5BeCFLeQWOVt2YswhJw==
   dependencies:
     core-js "^3.6.4"
     element-resize-detector "^1.2.1"
@@ -1832,15 +1832,15 @@
     vuex "^3.1.3"
     vuex-class "^0.3.2"
 
-"@soramitsu/soraneo-wallet-web@1.6.30":
-  version "1.6.30"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.6.30.tgz#b98fe6dd9a9065f652d834b8e0c2cc6458c4fc16"
-  integrity sha512-PA3vKjt4ez1JguaHcWIGHpV7KzYWC9O8ep8td4GmzHDpFHiPUBJt7bMP2ZPnjX3zQGCyEvV1AqXDrqwCqVB7Yw==
+"@soramitsu/soraneo-wallet-web@1.6.41":
+  version "1.6.41"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.6.41.tgz#91a0548c629d637fd72d2b6539d50394138e04d1"
+  integrity sha512-1XGuKGGJkZg2DbjTdKttLHuTQgLMcVvGzIYXMAaVZQSGArmfIE9nsUrqjO9lbgSR7uFneQzwZa5kmAJqvYmXaA==
   dependencies:
     "@polkadot/extension-dapp" "^0.35.0-beta.35"
     "@polkadot/vue-identicon" "^0.72.1"
-    "@sora-substrate/util" "1.6.24"
-    "@soramitsu/soramitsu-js-ui" "^1.0.22"
+    "@sora-substrate/util" "1.6.31"
+    "@soramitsu/soramitsu-js-ui" "^1.0.23"
     core-js "^3.6.4"
     dayjs "^1.10.5"
     lodash "^4.17.21"
