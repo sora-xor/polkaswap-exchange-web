@@ -57,7 +57,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action resetAccountAssetsSubscription!: AsyncVoidFn;
   @Action trackActiveTransactions!: AsyncVoidFn;
   @Action resetActiveTransactions!: AsyncVoidFn;
-  @Action resetRuntimeVersionSubscription!: AsyncVoidFn;
   @Action resetFiatPriceAndApySubscription!: AsyncVoidFn;
 
   @Action updateAccountAssets!: AsyncVoidFn;
@@ -122,7 +121,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     await this.resetFiatPriceAndApySubscription();
     await this.resetActiveTransactions();
     await this.resetAccountAssetsSubscription();
-    await this.resetRuntimeVersionSubscription();
     await connection.close();
   }
 
