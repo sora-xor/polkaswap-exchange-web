@@ -177,7 +177,7 @@ export default class ReferralProgram extends Mixins(
     this.withApi(async () => {
       if (this.isSoraAccountConnected) {
         await this.getInvitedUsers(this.account.address);
-        await this.getReferralRewards();
+        await this.getAccountReferralRewards();
       }
     });
   }
