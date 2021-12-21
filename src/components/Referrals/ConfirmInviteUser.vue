@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
+import { Getter, Action } from 'vuex-class';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import DialogMixin from '@/components/mixins/DialogMixin';
@@ -29,6 +29,8 @@ import DialogBase from '@/components/DialogBase.vue';
 export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, DialogMixin) {
   @Getter storageReferral!: string;
 
+  @Action setReferral!: (value: string) => Promise<void>;
+
   async handleConfirmInviteUser(): Promise<void> {
     try {
       await this.withNotifications(async () => await api.setInvitedUser(this.storageReferral));
@@ -36,6 +38,7 @@ export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, D
     } catch (error) {
       this.$emit('confirm');
     }
+    this.setReferral('');
     this.isVisible = false;
   }
 }

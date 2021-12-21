@@ -29,7 +29,7 @@
         </s-scrollbar>
       </div>
     </div>
-    <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" @confirm="confirmInviteUser" />
+    <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" />
   </s-design-system-provider>
 </template>
 
@@ -113,6 +113,29 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
+  @Watch('isSoraAccountConnected')
+  private async confirmInviteUser(isSoraConnected: boolean): Promise<void> {
+    if (isSoraConnected) {
+      await this.confirmInvititation();
+    }
+  }
+
+  @Watch('storageReferral')
+  private async confirmInviteUser1(storageReferralValue: string): Promise<void> {
+    if (this.isSoraAccountConnected && storageReferralValue.length) {
+      await this.confirmInvititation();
+    }
+  }
+
+  async confirmInvititation(): Promise<void> {
+    await this.getReferral(this.account.address);
+    if (this.referral || this.storageReferral === this.account.address) {
+      this.setReferral('');
+    } else if (this.storageReferral) {
+      this.showConfirmInviteUser = true;
+    }
+  }
+
   async created() {
     // element-icons is not common used, but should be visible after network connection lost
     preloadFontFace('element-icons');
@@ -144,15 +167,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       // connection to node
       await this.runAppConnectionToNode();
-
-      if (this.isSoraAccountConnected) {
-        await this.getReferral(this.account.address);
-        if (this.referral || this.referral === this.account.address) {
-          this.setReferral('');
-        } else {
-          this.handleConfirmInviteUser();
-        }
-      }
     });
 
     this.trackActiveTransactions();
@@ -189,16 +203,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
     if (!sidebar) {
       this.closeMenu();
-    }
-  }
-
-  handleConfirmInviteUser(): void {
-    this.showConfirmInviteUser = true;
-  }
-
-  async confirmInviteUser(isInviteUserConfirmed: boolean): Promise<void> {
-    if (isInviteUserConfirmed) {
-      this.setReferral('');
     }
   }
 

@@ -30,11 +30,15 @@ export default class RewardsTabs extends Mixins(TranslationMixin) {
   readonly RewardsTabsItems = RewardsTabsItems;
 
   @Getter('prev', { namespace: 'router' }) prevRoute!: PageNames;
+  @Getter('current', { namespace: 'router' }) currentRoute!: PageNames;
 
   currentTab: RewardsTabsItems = RewardsTabsItems.Rewards;
 
   created(): void {
-    if ([PageNames.ReferralBonding, PageNames.ReferralUnbonding].includes(this.prevRoute)) {
+    if (
+      [PageNames.ReferralBonding, PageNames.ReferralUnbonding].includes(this.prevRoute) ||
+      PageNames.Referral === this.currentRoute
+    ) {
       this.currentTab = RewardsTabsItems.ReferralProgram;
     }
   }

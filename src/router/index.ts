@@ -169,8 +169,8 @@ router.beforeEach((to, from, next) => {
       store.dispatch('setReferral', to.params.referralAddress);
     }
     if (store.getters.isLoggedIn) {
-      next({ name: PageNames.Rewards });
-      store.dispatch('router/setRoute', { prev, current: PageNames.Rewards });
+      next({ name: PageNames.Referral });
+      store.dispatch('router/setRoute', { prev, current: PageNames.Referral });
       return;
     }
   }
