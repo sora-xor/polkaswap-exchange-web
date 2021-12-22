@@ -149,7 +149,7 @@
           </template>
         </info-line>
       </div>
-      <create-pair-transaction-details v-else :infoOnly="false" />
+      <create-pair-transaction-details v-else :info-only="false" />
     </template>
 
     <select-token

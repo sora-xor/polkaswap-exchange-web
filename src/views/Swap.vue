@@ -181,7 +181,7 @@
     <swap-transaction-details
       v-if="areTokensSelected && !hasZeroAmount"
       class="info-line-container"
-      :infoOnly="false"
+      :info-only="false"
     />
     <select-token
       :visible.sync="showSelectTokenDialog"
@@ -245,7 +245,6 @@ const namespace = 'swap';
     TokenAddress: lazyComponent(Components.TokenAddress),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
-    InfoLine: components.InfoLine,
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },

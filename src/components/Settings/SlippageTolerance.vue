@@ -160,7 +160,7 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
     this.setTransactionDeadline(value);
   }
 
-  handleCollapseChange() {
+  handleCollapseChange(): void {
     this.slippageToleranceOpened = !this.slippageToleranceOpened;
   }
 }

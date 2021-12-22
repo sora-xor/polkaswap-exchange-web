@@ -142,7 +142,7 @@
       </s-button>
       <add-liquidity-transaction-details
         v-if="areTokensSelected && isAvailable"
-        :infoOnly="false"
+        :info-only="false"
         class="info-line-container"
       ></add-liquidity-transaction-details>
     </s-form>
@@ -253,6 +253,10 @@ export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, 
     }
 
     return classes.join(' ');
+  }
+
+  get removeLiquidityFormattedFee(): string {
+    return this.formatCodecNumber(this.networkFees.RemoveLiquidity);
   }
 
   get isXorSufficientForNextOperation(): boolean {

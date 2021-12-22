@@ -104,6 +104,8 @@ export default class AddLiquidityTransactionDetails extends Mixins(TranslationMi
   }
 
   get formattedFirstTokenPosition(): string {
+    console.log(`liquidityInfo`, this.liquidityInfo);
+    console.log(`emptyAssets`, this.emptyAssets);
     return this.firstTokenPosition.toLocaleString();
   }
 

@@ -197,7 +197,7 @@
         <bridge-transaction-details
           v-if="areNetworksConnected && !isZeroAmount && isRegisteredAsset"
           class="info-line-container"
-          :infoOnly="false"
+          :info-only="false"
         ></bridge-transaction-details>
       </s-card>
       <select-registered-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
@@ -406,11 +406,6 @@ export default class Bridge extends Mixins(
     return this.formatCodecNumber(this.soraNetworkFee);
   }
 
-  // remove
-  get formattedEvmNetworkFee(): string {
-    return this.formatCodecNumber(this.evmNetworkFee);
-  }
-
   get currentEvmTokenSymbol(): string {
     if (this.evmNetwork === BridgeNetworks.ENERGY_NETWORK_ID) {
       return this.EvmSymbol.VT;
@@ -440,11 +435,6 @@ export default class Bridge extends Mixins(
       amount: this.getFPNumber(this.amount),
       xorBalance: this.getFPNumberFromCodec(getAssetBalance(this.tokenXOR)),
     });
-  }
-
-  // remove
-  formatFee(fee: string, formattedFee: string): string {
-    return fee !== '0' ? formattedFee : '0';
   }
 
   formatBalance(isSora = true): string {
