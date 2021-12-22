@@ -40,7 +40,10 @@
             "RemoveLiquidity": "Se eliminó {amount} {symbol} y {amount2} {symbol2}",
             "CreatePair": "Se proporcionó {amount} {symbol} y {amount2} {symbol2}",
             "RegisterAsset": "Activo {symbol} registrado",
-            "ClaimRewards": "{rewards} Recompensa reclamada correctamente"
+            "ClaimRewards": "{rewards} Recompensa reclamada correctamente",
+            "ReferralReserveXor": "XOR enlazado con éxito",
+            "ReferralUnreserveXor": "XOR sin vincular con éxito",
+            "ReferralSetInvitedUser": "La referencia se estableció correctamente"
         },
         "error": {
             "Transfer": "Fallo en {acción} {importe} {símbolo} {dirección} {dirección}",
@@ -49,8 +52,14 @@
             "RemoveLiquidity": "Fallo al eliminar {amount} {symbol} y {amount2} {symbol2}",
             "CreatePair": "Fallo al suministrar {amount} {symbol} y {amount2} {symbol2}",
             "RegisterAsset": "Fallo al registrar el Activo {symbol}",
-            "ClaimRewards": "Fallo al reclamar Recompensas {rewards}"
-        }
+            "ClaimRewards": "Fallo al reclamar Recompensas {rewards}",
+            "ReferralReserveXor": "Error al vincular XOR",
+            "ReferralUnreserveXor": "Error al desvincular XOR",
+            "ReferralSetInvitedUser": "Error al establecer la referencia"
+        },
+        "ReferralReserveXor": "Enlace XOR",
+        "ReferralUnreserveXor": "Desunir XOR",
+        "ReferralSetInvitedUser": "Establecer referencia"
     },
     "polkadotjs": {
         "noExtensions": "No se encontró la extensión Polkadot.js. Por favor instálela y vuelva a cargar esta página.\n https:\/\/polkadot.js.org\/extension\/",
@@ -231,7 +240,7 @@
     "connectWalletTextTooltip": "Conectar a la Red @:soraText con polkadot{.js}",
     "selectNodeText": "Seleccione el nodo de red",
     "bridgeText": "Puente",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Descargo de responsabilidad<\/span>: Este sitio web es mantenido por la comunidad @:(soraText). Antes de continuar utilizando este sitio web, por favor revise el @:polkaswapFaqLink y la documentación, que incluye una explicación detallada sobre el funcionamiento de Polkaswap, así como el @:memorandumLink, y el @:(privacyLink). Estos documentos son cruciales para una experiencia de usuario segura y positiva. Al utilizar Polkaswap, usted reconoce que ha leído y comprendido estos documentos. También reconoce lo siguiente 1) su única responsabilidad por el cumplimiento de todas las leyes que puedan aplicarse a su uso particular de Polkaswap en su jurisdicción legal; 2) su comprensión de que la versión actual de Polkaswap es una versión alfa: no ha sido completamente probada, y algunas funciones pueden no funcionar como se ha diseñado; y 3) su comprensión y aceptación voluntaria de los riesgos que implica el uso de Polkaswap, incluyendo, pero no limitado a, el riesgo de perder tokens. Una vez más, ¡por favor no continúe sin leer el @:polkaswapFaqLink, el @:memorandumLink y el @:privacyLink!",
+    "disclaimer": "<span class=\"app-disclaimer__title\">Aviso legal<\/span>: Este sitio web es mantenido por la comunidad @:(soraText). Antes de continuar utilizando este sitio web, por favor revise el @:polkaswapFaqLink y la documentación, que incluye una explicación detallada sobre el funcionamiento de Polkaswap, así como el @:memorandumLink, y el @:(privacyLink). Estos documentos son cruciales para una experiencia de usuario segura y positiva. Al utilizar Polkaswap, usted reconoce que ha leído y comprendido estos documentos. También reconoce lo siguiente 1) su única responsabilidad por el cumplimiento de todas las leyes que puedan aplicarse a su uso particular de Polkaswap en su jurisdicción legal; 2) su comprensión de que la versión actual de Polkaswap es una versión alfa: no ha sido completamente probada, y algunas funciones pueden no funcionar como se ha diseñado; y 3) su comprensión y aceptación voluntaria de los riesgos que implica el uso de Polkaswap, incluyendo, pero no limitado a, el riesgo de perder tokens. Una vez más, ¡por favor no continúe sin leer el @:polkaswapFaqLink, el @:memorandumLink y el @:privacyLink!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
     "poweredBy": "Desarrollado por",
     "confirmTransactionText": "Confirmar transacción en {direction}",
@@ -720,7 +729,9 @@
         "groups": {
             "strategic": "Recompensas estratégicas",
             "external": "Recompensas para la cuenta de Ethereum conectada"
-        }
+        },
+        "Rewards": "Recompensas",
+        "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
         "default": "@:ethereumText proveedor",
@@ -820,5 +831,43 @@
         "payoff": "Tendrías que utilizar el Puente para obtener XOR de otras redes, conseguir que te envíen XOR desde otra cuenta SORA, o cambiar cualquier otro token que ya tengas en tu cuenta por XOR.",
         "button": "Si, entiendo el riesgo"
     },
-    "blockNumberText": "Número de bloque"
+    "blockNumberText": "Número de bloque",
+    "referralProgram": {
+        "title": "Programa de Referencia",
+        "connectAccount": "Para invitar a usuarios, debe conectar su cuenta SORA.",
+        "bondedXOR": "XOR Vinculado",
+        "referralsNumber": "{number} referencias",
+        "startInviting": "Para comenzar a invitar, vincule cualquier cantidad de XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Más información<\/a>",
+        "preview": "Invite a nuevos usuarios y obtenga el 10% de sus tarifas de transacción.<br \/>Para comenzar, vincule cualquier cantidad de XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Más información<\/a>",
+        "deposit": "Depositar",
+        "balance": "Equilibrio",
+        "networkFee": "@:networkFeeText",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "insufficientBondedBalance": "Insuficiente balance de bonos",
+        "action": {
+            "connectWallet": "@:connectWalletText",
+            "empty": "Ingrese la cantidad de {tokenSymbol}",
+            "startInviting": "Vincula {tokenSymbol} para comenzar a invitar",
+            "bondMore": "Vinculación Más",
+            "bond": "Vinculación",
+            "unbond": "Desvinculación",
+            "copyLink": "Copiar enlace"
+        },
+        "transactionDetails": "Detalles de la transacción",
+        "receivedRewards": "Recompensas recibidas",
+        "invitationLink": "Enlace de invitación",
+        "successCopy": "El enlace de referencia se copia en el portapapeles.",
+        "bondTitle": "Enlace XOR",
+        "unbondTitle": "Desunir XOR",
+        "confirm": {
+            "text": "Confirmar",
+            "bond": "Confirmar fianza",
+            "unbond": "Confirmar desvinculación",
+            "inviteTitle": "Has sido invitado a Polkaswap por una recomendación",
+            "inviteDescription": "Cuando pague una tarifa por la transacción, el 10% se destinará a su referencia. Es completamente gratuito.",
+            "signInvitation": "Firmar la transacción de aprobación",
+            "freeOfCharge": "Esta acción es gratuita"
+        }
+    }
 }

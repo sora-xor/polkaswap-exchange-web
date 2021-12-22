@@ -40,7 +40,10 @@
             "RemoveLiquidity": "Удалены {amount} {symbol} и {amount2} {symbol2}",
             "CreatePair": "Поставлено {amount} {symbol} и {amount2} {symbol2}",
             "RegisterAsset": "Зарегистрирован актив {symbol}",
-            "ClaimRewards": "Награды получены успешно {rewards}"
+            "ClaimRewards": "Награды получены успешно {rewards}",
+            "ReferralReserveXor": "XOR успешно зарезервированы",
+            "ReferralUnreserveXor": "XOR успешно выведены из резерва",
+            "ReferralSetInvitedUser": "Реферал успешно установлен"
         },
         "error": {
             "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
@@ -49,8 +52,14 @@
             "RemoveLiquidity": "Не удалось вывести {amount} {symbol} и {amount2} {symbol2}",
             "CreatePair": "Не удалось добавить {amount} {symbol} и {amount2} {symbol2}",
             "RegisterAsset": "Не удалось зарегистрировать {symbol} актив",
-            "ClaimRewards": "Не удалось получить вознаграждения {rewards}"
-        }
+            "ClaimRewards": "Не удалось получить вознаграждения {rewards}",
+            "ReferralReserveXor": "Не удалось зарезервировать XOR",
+            "ReferralUnreserveXor": "Не удалось вывести XOR из резерва",
+            "ReferralSetInvitedUser": "Не удалось установить реферала"
+        },
+        "ReferralReserveXor": "Зарезервировать XOR",
+        "ReferralUnreserveXor": "Вывести XOR из резерва",
+        "ReferralSetInvitedUser": "Установить реферала"
     },
     "polkadotjs": {
         "noExtensions": "Расширение Polkadot.js не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",
@@ -720,7 +729,9 @@
         "groups": {
             "strategic": "Стратегические вознаграждения",
             "external": "Вознаграждения за подключенный аккаунт Ethereum"
-        }
+        },
+        "Rewards": "Награды",
+        "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
         "default": "@:ethereumText провайдер",
@@ -820,5 +831,43 @@
         "payoff": "Вам нужно будет использовать мост, чтобы получить XOR из других сетей, получить отправку XOR из другой учетной записи SORA или заменить любой другой токен, уже находящийся в вашей учетной записи, на XOR.",
         "button": "Да, я понимаю риск"
     },
-    "blockNumberText": "Номер блока"
+    "blockNumberText": "Номер блока",
+    "referralProgram": {
+        "title": "Реферальная программа",
+        "connectAccount": "Для приглашения пользователей необходимо подключить учетную запись SORA.",
+        "bondedXOR": "XOR Зарезервировано",
+        "referralsNumber": "{number} рефералов",
+        "startInviting": "Чтобы начать приглашать, зарезервируйте любое количество XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Узнайте больше<\/a>",
+        "preview": "Приглашайте новых пользователей и получайте 10% от их транзакционных сборов.<br \/>Чтобы начать, зарезервируйте любую сумму XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Узнать больше<\/a>",
+        "deposit": "Пополнить",
+        "balance": "Баланс",
+        "networkFee": "@:networkFeeText",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "insufficientBondedBalance": "Недостаточный зарезервированный баланс",
+        "action": {
+            "connectWallet": "@:connectWalletText",
+            "empty": "Введите сумму {tokenSymbol}",
+            "startInviting": "Зарезервируйте {tokenSymbol}, чтобы начать приглашать",
+            "bondMore": "Зарезервировать еще",
+            "bond": "Зарезервировать",
+            "unbond": "Вывести из резерва",
+            "copyLink": "Копировать ссылку"
+        },
+        "transactionDetails": "Детали Транзакции",
+        "receivedRewards": "Полученные награды",
+        "invitationLink": "Ссылка для приглашения",
+        "successCopy": "Реферальная ссылка скопирована в буфер обмена",
+        "bondTitle": "Зарезервировать XOR",
+        "unbondTitle": "Вывести XOR из резерва",
+        "confirm": {
+            "text": "Подтвердить",
+            "bond": "Подтвердить резерв",
+            "unbond": "Подтвердить вывод из резерва",
+            "inviteTitle": "Вы были приглашены в Polkaswap рефералом",
+            "inviteDescription": "При оплате комиссии за транзакцию, 10% достанется вашему рефералу. Это совершенно бесплатно.",
+            "signInvitation": "Подписать транзакцию",
+            "freeOfCharge": "Данная транзакция бесплатна"
+        }
+    }
 }

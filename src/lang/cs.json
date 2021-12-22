@@ -40,7 +40,10 @@
             "RemoveLiquidity": "Odebráno {amount} {symbol} a {amount2} {symbol2}",
             "CreatePair": "Vytvořeno {amount} {symbol} a {amount2} {symbol2}",
             "RegisterAsset": "Registrované aktivum {symbol}",
-            "ClaimRewards": "Odměna byla úspěšně nárokována {rewards}."
+            "ClaimRewards": "Odměna byla úspěšně nárokována {rewards}.",
+            "ReferralReserveXor": "Úspěšně svázaný XOR",
+            "ReferralUnreserveXor": "Úspěšně odpojeno XOR",
+            "ReferralSetInvitedUser": "Odkaz je úspěšně nastaven"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol}  {direction} {address} se nezdařilo.",
@@ -49,8 +52,14 @@
             "RemoveLiquidity": "Odebrání {amount} {symbol} a {amount2} {symbol2} se nezdařilo.",
             "CreatePair": "Vytvoření {amount} {symbol} a {amount2} {symbol2} se nezdařilo.",
             "RegisterAsset": "Nepodařilo se zaregistrovat aktivum {symbol}",
-            "ClaimRewards": "Nepodařilo se získat odměny {rewards}"
-        }
+            "ClaimRewards": "Nepodařilo se získat odměny {rewards}",
+            "ReferralReserveXor": "Svázání XOR se nezdařilo",
+            "ReferralUnreserveXor": "Odpojení XOR se nezdařilo",
+            "ReferralSetInvitedUser": "Nepodařilo se nastavit odkaz"
+        },
+        "ReferralReserveXor": "Svázat XOR",
+        "ReferralUnreserveXor": "Zrušit vazbu XOR",
+        "ReferralSetInvitedUser": "Nastavit odkaz"
     },
     "polkadotjs": {
         "noExtensions": "Nebylo nalezeno žádné rozšíření Polkadot.js. Nainstalujte si jej prosím a znovu načtěte tuto stránku\n https:\/\/polkadot.js.org\/extension\/",
@@ -720,7 +729,9 @@
         "groups": {
             "strategic": "Strategické odměny",
             "external": "Odměny za připojený účet ethereum"
-        }
+        },
+        "Rewards": "Odměny",
+        "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
         "default": "@:ethereumText poskytovatel",
@@ -820,5 +831,43 @@
         "payoff": "Budete muset použít Bridge k získání XOR z jiných sítí, k odeslání XOR z jiného účtu SORA nebo k výměně jakéhokoli jiného tokenu, který již máte na účtu, za XOR.",
         "button": "Ano, chápu riziko"
     },
-    "blockNumberText": "Číslo bloku"
+    "blockNumberText": "Číslo bloku",
+    "referralProgram": {
+        "title": "Náborový program",
+        "connectAccount": "Chcete-li pozvat uživatele, musíte připojit svůj účet SORA.",
+        "bondedXOR": "XOR Vázaný",
+        "referralsNumber": "{number} doporučení",
+        "startInviting": "Chcete-li začít zvát, spojte libovolné množství XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Další informace<\/a>",
+        "preview": "Pozvěte nové uživatele a získejte 10% z jejich transakčních poplatků.<br \/>Chcete-li začít, spojte jakoukoli částku XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Další informace<\/a>",
+        "deposit": "Vklad",
+        "balance": "Zůstatek",
+        "networkFee": "@:networkFeeText",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "insufficientBondedBalance": "Nedostatečná vázaná rovnováha",
+        "action": {
+            "connectWallet": "@:connectWalletText",
+            "empty": "Zadejte částku {tokenSymbol}",
+            "startInviting": "Svázat {tokenSymbol} začít pozvat",
+            "bondMore": "Svázat Více",
+            "bond": "Svázat",
+            "unbond": "Zrušit vazbu",
+            "copyLink": "Kopírovat odkaz"
+        },
+        "transactionDetails": "Detaily transakce",
+        "receivedRewards": "Přijaté odměny",
+        "invitationLink": "Odkaz na pozvánku",
+        "successCopy": "Odkaz na doporučení se zkopíruje do schránky",
+        "bondTitle": "Svázat XOR",
+        "unbondTitle": "Zrušit vazbu XOR",
+        "confirm": {
+            "text": "Potvrdit",
+            "bond": "Potvrďte svázat",
+            "unbond": "Potvrďte zrušit vazbu",
+            "inviteTitle": "Byli jste pozváni do Polkaswap doporučením",
+            "inviteDescription": "Když zaplatíte poplatek za transakci, 10 % půjde na vaše doporučení. Je to zcela zdarma.",
+            "signInvitation": "Podepsat schvalovací transakci",
+            "freeOfCharge": "Tato akce je bezplatná"
+        }
+    }
 }

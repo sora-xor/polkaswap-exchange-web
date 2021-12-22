@@ -40,7 +40,10 @@
             "RemoveLiquidity": "Usunięto {amount} {symbol} i {amount2} {symbol2}",
             "CreatePair": "Dodano {amount} {symbol} i {amount2} {symbol2}",
             "RegisterAsset": "Zarejestrowana waluta {symbol}",
-            "ClaimRewards": "Wynagrodzenie odebrane pomyślnie {rewards}."
+            "ClaimRewards": "Wynagrodzenie odebrane pomyślnie {rewards}.",
+            "ReferralReserveXor": "Pomyślnie związał XOR",
+            "ReferralUnreserveXor": "Pomyślnie niezwiązany XOR",
+            "ReferralSetInvitedUser": "Polecenie zostało pomyślnie ustawione"
         },
         "error": {
             "Transfer": "Nie udało się wysłać {amount} {symbol} na {address}.",
@@ -49,8 +52,14 @@
             "RemoveLiquidity": "Nie udało się usunąć {amount} {symbol} i {amount2} {symbol2}.",
             "CreatePair": "Nie udało się dodać {amount} {symbol} i {amount2} {symbol2}.",
             "RegisterAsset": "Nie udało się zarejestrować waluty {symbol}.",
-            "ClaimRewards": "Nie udało się odebrać wynagrodzenia {rewards}."
-        }
+            "ClaimRewards": "Nie udało się odebrać wynagrodzenia {rewards}.",
+            "ReferralReserveXor": "Nie udało się powiązać XOR",
+            "ReferralUnreserveXor": "Nie udało się odłączyć XOR",
+            "ReferralSetInvitedUser": "Nie udało się ustawić skierowania"
+        },
+        "ReferralReserveXor": "Obligacja XOR",
+        "ReferralUnreserveXor": "Odłącz XOR",
+        "ReferralSetInvitedUser": "Ustaw polecenie"
     },
     "polkadotjs": {
         "noExtensions": "Nie znaleziono rozszerzenia polkadot.js. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -720,7 +729,9 @@
         "groups": {
             "strategic": "Wynagrodzenie strategiczne",
             "external": "Wynagrodzenie dla podłączonego konta Ethereum"
-        }
+        },
+        "Rewards": "Wynagrodzenie",
+        "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
         "default": "Dostawca usług @:ethereumText",
@@ -820,5 +831,43 @@
         "payoff": "Będziesz musiał użyć mostu, aby uzyskać XOR z innych sieci, wysłać XOR z innego konta sieci SORA lub zamienić dowolny token, znajdujący się już na Twoim koncie, na XOR.",
         "button": "Tak, rozumiem ryzyko."
     },
-    "blockNumberText": "Numer bloku"
+    "blockNumberText": "Numer bloku",
+    "referralProgram": {
+        "title": "Program Polecający",
+        "connectAccount": "Aby zaprosić użytkowników, musisz połączyć swoje konto SORA.",
+        "bondedXOR": "XOR Wiązanie",
+        "referralsNumber": "{number} poleconych",
+        "startInviting": "Aby zacząć zapraszać, zwiąż dowolną ilość XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Dowiedz się więcej<\/a>",
+        "preview": "Zaproś nowych użytkowników i otrzymaj 10% z ich opłat transakcyjnych.<br \/>Aby rozpocząć, połącz dowolną kwotę XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Dowiedz się więcej<\/a>",
+        "deposit": "Depozyt",
+        "balance": "Saldo",
+        "networkFee": "@:networkFeeText",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "insufficientBondedBalance": "Niewystarczająca równowaga wiązania",
+        "action": {
+            "connectWallet": "@:connectWalletText",
+            "empty": "Wpisz kwotę {tokenSymbol}",
+            "startInviting": "Obligacja {tokenSymbol}, aby rozpocząć zapraszanie",
+            "bondMore": "Wiązanie Więcej",
+            "bond": "Więź",
+            "unbond": "Niezwiązany",
+            "copyLink": "Skopiuj link"
+        },
+        "transactionDetails": "Szczegóły transakcji",
+        "receivedRewards": "Otrzymane wynagrodzenie",
+        "invitationLink": "Link do zaproszenia",
+        "successCopy": "Link polecający jest kopiowany do schowka",
+        "bondTitle": "Obligacja XOR",
+        "unbondTitle": "Odłącz XOR",
+        "confirm": {
+            "text": "Potwierdź",
+            "bond": "Potwierdź więź",
+            "unbond": "Potwierdź zwolnienie",
+            "inviteTitle": "Zostałeś zaproszony do Polkaswap przez poleconego",
+            "inviteDescription": "Kiedy zapłacisz opłatę za transakcję, 10% trafi do Twojego poleconego. Jest całkowicie bezpłatny.",
+            "signInvitation": "Podpisz transakcję zatwierdzania",
+            "freeOfCharge": "Ta akcja jest bezpłatna"
+        }
+    }
 }

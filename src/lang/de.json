@@ -40,7 +40,10 @@
             "RemoveLiquidity": "{amount} {symbol} und {amount2} {symbol2} entfernt",
             "CreatePair": "{amount} {symbol} und {amount2} {symbol2} bereitgestellt",
             "RegisterAsset": "Registriertes {symbol} Asset",
-            "ClaimRewards": "Belohnung erfolgreich beansprucht {rewards}"
+            "ClaimRewards": "Belohnung erfolgreich beansprucht {rewards}",
+            "ReferralReserveXor": "Gebundenes XOR erfolgreich",
+            "ReferralUnreserveXor": "Ungebundenes XOR erfolgreich",
+            "ReferralSetInvitedUser": "Überweisung ist erfolgreich eingestellt"
         },
         "error": {
             "Transfer": "Senden von {amount} {symbol} an {address} fehlgeschlagen",
@@ -49,8 +52,14 @@
             "RemoveLiquidity": "Fehler beim Entfernen von {amount} {symbol} und {amount2} {symbol2}",
             "CreatePair": "Fehler bei der Bereitstellung von {amount} {symbol} und {amount2} {symbol2}",
             "RegisterAsset": "Fehler beim Registrieren des {symbol} -Assets",
-            "ClaimRewards": "Belohnungen konnten nicht beansprucht werden {rewards}"
-        }
+            "ClaimRewards": "Belohnungen konnten nicht beansprucht werden {rewards}",
+            "ReferralReserveXor": "XOR-Bindung fehlgeschlagen",
+            "ReferralUnreserveXor": "Die Bindung von XOR konnte nicht aufgehoben werden",
+            "ReferralSetInvitedUser": "Verweisung konnte nicht eingestellt werden"
+        },
+        "ReferralReserveXor": "Bindung XOR",
+        "ReferralUnreserveXor": "Ungebundene XOR",
+        "ReferralSetInvitedUser": "Verweis einstellen"
     },
     "polkadotjs": {
         "noExtensions": "Es wurde keine Polkadot.js-Erweiterung gefunden. Bitte installiere sie und lade diese Seite erneut\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -720,7 +729,9 @@
         "groups": {
             "strategic": "Strategische Belohnungen",
             "external": "Belohnungen für das verbundene Ethereum-Konto"
-        }
+        },
+        "Rewards": "Belohnungen",
+        "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
         "default": "@:ethereumText Anbieter",
@@ -820,5 +831,43 @@
         "payoff": "Sie müssten die Bridge verwenden, um XOR von anderen Netzwerken zu erhalten, XOR von einem anderen SORA-Konto gesendet zu bekommen oder einen anderen Token, der sich bereits in Ihrem Konto befindet, in XOR einzutauschen.",
         "button": "Ja, ich verstehe das Risiko"
     },
-    "blockNumberText": "Blocknummer"
+    "blockNumberText": "Blocknummer",
+    "referralProgram": {
+        "title": "Empfehlungsprogramm",
+        "connectAccount": "Um Benutzer einzuladen, müssen Sie Ihr SORA-Konto verbinden.",
+        "bondedXOR": "XOR Bonded",
+        "referralsNumber": "{number} Empfehlungen",
+        "startInviting": "Um mit der Einladung zu beginnen, binden Sie eine beliebige Menge an XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Mehr erfahren<\/a>",
+        "preview": "Laden Sie neue Benutzer ein und erhalten Sie 10% von ihren Transaktionsgebühren.<br \/>Anleihen Sie zunächst einen beliebigen XOR-Betrag. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Mehr erfahren<\/a>",
+        "deposit": "Einzahlung",
+        "balance": "Saldo",
+        "networkFee": "@:networkFeeText",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "insufficientBondedBalance": "Unzureichendes gebundenes Gleichgewicht",
+        "action": {
+            "connectWallet": "@:connectWalletText",
+            "empty": "Geben Sie den Betrag von {tokenSymbol}",
+            "startInviting": "Binden Sie {tokenSymbol} an, um mit der Einladung zu beginnen",
+            "bondMore": "Bond Mehr",
+            "bond": "Anleihe",
+            "unbond": "Ungebunden",
+            "copyLink": "Link kopieren"
+        },
+        "transactionDetails": "Transaktionsdetails",
+        "receivedRewards": "Erhaltene Belohnungen",
+        "invitationLink": "Einladungs-Link",
+        "successCopy": "Verweislink wird in die Zwischenablage kopiert",
+        "bondTitle": "Bindung XOR",
+        "unbondTitle": "Ungebundene XOR",
+        "confirm": {
+            "text": "Bestätigen",
+            "bond": "Anleihe bestätigen",
+            "unbond": "Aufhebung der Bindung bestätigen",
+            "inviteTitle": "Sie wurden von einer Empfehlung zu Polkaswap eingeladen",
+            "inviteDescription": "Wenn Sie eine Transaktionsgebühr zahlen, gehen 10 % an Ihre Empfehlung. Es ist völlig kostenlos.",
+            "signInvitation": "Genehmigungstransaktion unterschreiben",
+            "freeOfCharge": "Diese Aktion ist kostenlos"
+        }
+    }
 }

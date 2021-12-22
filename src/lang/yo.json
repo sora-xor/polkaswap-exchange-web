@@ -40,7 +40,10 @@
             "RemoveLiquidity": "Ti yọ {amount} {symbol} ati {amount2} {symbol2}",
             "CreatePair": "Ti pese {amount} {symbol} ati {amount2} {symbol2}",
             "RegisterAsset": "Dukia {symbol} Tati foruko e sile",
-            "ClaimRewards": "A ti gba ere ni aseyori {rewards}"
+            "ClaimRewards": "A ti gba ere ni aseyori {rewards}",
+            "ReferralReserveXor": "XOR ti sopọ ni aṣeyọri",
+            "ReferralUnreserveXor": "XOR ti ko ni asopọ ni aṣeyọri",
+            "ReferralSetInvitedUser": "Itọkasi ti ṣeto ni aṣeyọri"
         },
         "error": {
             "Transfer": "Kuna lati fi {amount} {symbol} ranṣẹ si {address}",
@@ -49,8 +52,14 @@
             "RemoveLiquidity": "Kuna lati yọ {amount} {symbol} ati {amount2} {symbol2}",
             "CreatePair": "Kuna lati pese {amount} {symbol} ati {amount2} {symbol2}",
             "RegisterAsset": "Kuna lati forukọsilẹ {symbol} dukia",
-            "ClaimRewards": "Kuna lati beere awọn ere {rewards}"
-        }
+            "ClaimRewards": "Kuna lati beere awọn ere {rewards}",
+            "ReferralReserveXor": "Ti kuna lati ṣopọ mọ XOR",
+            "ReferralUnreserveXor": "O kuna lati yọkuro XOR",
+            "ReferralSetInvitedUser": "Kuna lati ṣeto itọkasi"
+        },
+        "ReferralReserveXor": "Iwe adehun XOR",
+        "ReferralUnreserveXor": "Yọ XOR kuro",
+        "ReferralSetInvitedUser": "Ṣeto itọkasi"
     },
     "polkadotjs": {
         "noExtensions": "A ko rii itẹsiwaju Polkadot.js. Jọwọ fi sii ki o tun gbe oju-iwe yii pada\n https:\/\/polkadot.js.org\/extension\/",
@@ -720,7 +729,9 @@
         "groups": {
             "strategic": "Ere Awọn ilana",
             "external": "Awọn ere fun iroyin ethereum ti a sopọ"
-        }
+        },
+        "Rewards": "Ere",
+        "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
         "default": "@:ethereumText olupese",
@@ -820,5 +831,43 @@
         "payoff": "Iwọ yoo ni lati lo Afara lati gba XOR lati awọn nẹtiwọọki miiran, firanṣẹ XOR lati akọọlẹ SORA miiran, tabi paarọ eyikeyi ami-ami miiran tẹlẹ ninu akọọlẹ rẹ sinu XOR.",
         "button": "Bẹẹni, Mo loye ewu naa"
     },
-    "blockNumberText": "Àkọsílẹ nọmba"
+    "blockNumberText": "Àkọsílẹ nọmba",
+    "referralProgram": {
+        "title": "Eto ifiwepe",
+        "connectAccount": "Lati pe awọn olumulo o nilo lati so akọọlẹ SORA rẹ pọ.",
+        "bondedXOR": "XOR ti o ni asopọ",
+        "referralsNumber": "awọn itọkasi {number}",
+        "startInviting": "Lati bẹrẹ pipe si, di eyikeyi iye ti XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\"> Kọ ẹkọ diẹ sii <\/a>",
+        "preview": "Pe awọn olumulo titun ati gba 10% lati awọn idiyele idunadura wọn. <br \/> Lati bẹrẹ, di eyikeyi iye ti XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Kọ ẹkọ diẹ sii <\/a>",
+        "deposit": "Idogo",
+        "balance": "Iwontunwonsi",
+        "networkFee": "@:networkFeeText",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "insufficientBondedBalance": "Aini iwọntunwọnsi ti o darapọ mọ",
+        "action": {
+            "connectWallet": "@:connectWalletText",
+            "empty": "Tẹ iye {tokenSymbol}",
+            "startInviting": "Dipọ {tokenSymbol} lati bẹrẹ pipe si",
+            "bondMore": "Dipọ Die",
+            "bond": "Dipọ",
+            "unbond": "Yọọ",
+            "copyLink": "Daakọ ọna asopọ"
+        },
+        "transactionDetails": "Idunadura Awọn alaye",
+        "receivedRewards": "Awọn ere ti o gba",
+        "invitationLink": "Ọna asopọ ifiwepe",
+        "successCopy": "Ọna asopọ itọkasi jẹ daakọ si agekuru agekuru",
+        "bondTitle": "Dipọ XOR",
+        "unbondTitle": "Yọ XOR kuro",
+        "confirm": {
+            "text": "Jẹrisi",
+            "bond": "Jẹrisi dipọ",
+            "unbond": "Jẹrisi yiyọ kuro",
+            "inviteTitle": "O ti pe ọ si Polkaswap nipasẹ itọkasi kan",
+            "inviteDescription": "Nigbati o ba san owo fun idunadura, 10% yoo lọ si itọkasi rẹ. O jẹ ọfẹ ọfẹ.",
+            "signInvitation": "Wole idunadura alakosile",
+            "freeOfCharge": "Iṣe yii jẹ ọfẹ"
+        }
+    }
 }
