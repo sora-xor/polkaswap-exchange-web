@@ -5,18 +5,14 @@
       <app-menu @click.native="handleAppMenuClick" :visible="menuVisibility" :on-select="goTo">
         <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
       </app-menu>
-      <div class="app-body" :class="isAboutPage ? 'app-body__about' : ''">
+      <div class="app-body" :class="{ 'app-body__about': isAboutPage }">
         <s-scrollbar class="app-body-scrollbar">
           <div v-if="blockNumber" class="block-number">
-            <a
-              class="block-number-link"
-              :href="soraExplorerLink"
-              title="SORAScan"
-              target="_blank"
-              rel="nofollow noopener"
-            >
-              <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
-            </a>
+            <s-tooltip :content="t('blockNumberText')" placement="bottom">
+              <a class="block-number-link" :href="soraExplorerLink" target="_blank" rel="nofollow noopener">
+                <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
+              </a>
+            </s-tooltip>
           </div>
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
@@ -91,7 +87,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action setLanguage!: (lang: Language) => Promise<void>;
   @Action setApiKeys!: (options: any) => Promise<void>;
   @Action setFeatureFlags!: (options: any) => Promise<void>;
-  @Action resetBlockNumberSubscription!: () => Promise<void>;
+  @Action resetBlockNumberSubscription!: AsyncVoidFn;
+  @Action('unsubscribeAccountMarketMakerInfo', { namespace: 'rewards' }) unsubscribeMarketMakerInfo!: AsyncVoidFn;
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>;
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
   @Watch('firstReadyTransaction', { deep: true })
@@ -184,6 +181,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     await this.resetAccountAssetsSubscription();
     await this.resetRuntimeVersionSubscription();
     await this.resetBlockNumberSubscription();
+    await this.unsubscribeMarketMakerInfo();
     await connection.close();
   }
 
@@ -243,9 +241,6 @@ ul ul {
     &-scrollbar {
       flex: 1;
     }
-    &__about &-scrollbar .el-scrollbar__wrap {
-      overflow-x: auto;
-    }
   }
 }
 
@@ -256,21 +251,22 @@ ul ul {
     display: flex;
     align-items: center;
     color: var(--s-color-status-success);
-    font-size: var(--s-font-size-small);
+    font-size: var(--s-font-size-extra-mini);
     text-decoration: none;
     font-weight: 300;
     position: absolute;
-    top: 2.5%;
-    right: 0;
+    top: 10px;
+    right: 24px;
     line-height: 150%;
-    width: 100px;
   }
 
   &-icon {
+    $block-icon-size: 7px;
+
     background-color: var(--s-color-status-success);
     border-radius: 50%;
-    height: 9px;
-    width: 9px;
+    height: $block-icon-size;
+    width: $block-icon-size;
     margin-right: 2px;
   }
 }
@@ -420,6 +416,8 @@ $sora-logo-width: 173.7px;
     flex: 1;
     flex-flow: column nowrap;
     &__about {
+      overflow: hidden;
+
       .app-content .app-disclaimer {
         min-width: 800px;
         width: 100%;

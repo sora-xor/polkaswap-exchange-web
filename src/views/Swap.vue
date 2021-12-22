@@ -9,7 +9,7 @@
             class="el-button--settings"
             type="action"
             icon="basic-settings-24"
-            :disabled="!pairLiquiditySourcesAvailable"
+            :disabled="!marketAlgorithmsAvailable"
             @click="openSettingsDialog"
           />
         </template>
@@ -165,7 +165,7 @@
       <template v-else-if="areZeroAmounts">
         {{ t('buttons.enterAmount') }}
       </template>
-      <template v-else-if="isAvailable && isInsufficientLiquidity">
+      <template v-else-if="isInsufficientLiquidity">
         {{ t('swap.insufficientLiquidity') }}
       </template>
       <template v-else-if="isInsufficientBalance">
@@ -212,6 +212,7 @@ import type {
   NetworkFeesObject,
   QuotePaths,
   QuotePayload,
+  PrimaryMarketsEnabledAssets,
 } from '@sora-substrate/util';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -266,7 +267,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset;
   @Getter('isAvailable', { namespace }) isAvailable!: boolean;
   @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes;
-  @Getter('pairLiquiditySourcesAvailable', { namespace }) pairLiquiditySourcesAvailable!: boolean;
+  @Getter('marketAlgorithmsAvailable', { namespace }) marketAlgorithmsAvailable!: boolean;
   @Getter('swapMarketAlgorithm', { namespace }) swapMarketAlgorithm!: string;
 
   @Action('setTokenFromAddress', { namespace }) setTokenFromAddress!: (address?: string) => Promise<void>;
@@ -278,6 +279,10 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>;
   @Action('reset', { namespace }) reset!: AsyncVoidFn;
   @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn;
+
+  @Action('setPrimaryMarketsEnabledAssets', { namespace }) setPrimaryMarketsEnabledAssets!: (
+    assets: PrimaryMarketsEnabledAssets
+  ) => Promise<void>;
 
   @Action('setRewards', { namespace }) setRewards!: (rewards: Array<LPRewardsInfo>) => Promise<void>;
   @Action('setSubscriptionPayload', { namespace }) setSubscriptionPayload!: (payload: QuotePayload) => Promise<void>;
@@ -300,9 +305,11 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   private updateConnectionSubsriptions(nodeConnected: boolean) {
     if (nodeConnected) {
       this.updateSubscriptions();
+      this.subscribeOnEnabledAssets();
       this.subscribeOnSwapReserves();
     } else {
       this.resetSubscriptions();
+      this.cleanEnabledAssetsSubscription();
       this.cleanSwapReservesSubscription();
     }
   }
@@ -314,6 +321,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   showSelectTokenDialog = false;
   showConfirmSwapDialog = false;
   liquidityReservesSubscription: Nullable<Subscription> = null;
+  enabledAssetsSubscription: Nullable<Subscription> = null;
   recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
 
   get areTokensSelected(): boolean {
@@ -389,13 +397,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   }
 
   get isInsufficientLiquidity(): boolean {
-    return (
-      this.isAvailable &&
-      this.preparedForSwap &&
-      !this.areZeroAmounts &&
-      this.hasZeroAmount &&
-      asZeroValue(this.liquidityProviderFee)
-    );
+    return this.isAvailable && this.preparedForSwap && !this.areZeroAmounts && this.hasZeroAmount;
   }
 
   get isInsufficientBalance(): boolean {
@@ -433,7 +435,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     return (
       !this.areTokensSelected ||
       !this.isAvailable ||
-      this.hasZeroAmount ||
+      this.areZeroAmounts ||
       this.isInsufficientLiquidity ||
       this.isInsufficientBalance ||
       this.isInsufficientXorForFee
@@ -447,6 +449,10 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
       if (!this.tokenFrom) {
         await this.setTokenFromAddress(XOR.address);
         await this.setTokenToAddress();
+      }
+
+      if (!this.enabledAssetsSubscription) {
+        this.subscribeOnEnabledAssets();
       }
     });
   }
@@ -518,6 +524,22 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
       console.error(error);
       resetOppositeValue();
     }
+  }
+
+  private cleanEnabledAssetsSubscription(): void {
+    if (!this.enabledAssetsSubscription) {
+      return;
+    }
+    this.enabledAssetsSubscription.unsubscribe();
+    this.enabledAssetsSubscription = null;
+  }
+
+  private subscribeOnEnabledAssets(): void {
+    this.cleanEnabledAssetsSubscription();
+
+    this.enabledAssetsSubscription = api
+      .subscribeOnPrimaryMarketsEnabledAssets()
+      .subscribe(this.setPrimaryMarketsEnabledAssets);
   }
 
   private cleanSwapReservesSubscription(): void {
@@ -621,9 +643,13 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     this.showSettings = true;
   }
 
+  beforeDestroy(): void {
+    this.cleanEnabledAssetsSubscription();
+    this.cleanSwapReservesSubscription();
+  }
+
   destroyed(): void {
     this.reset();
-    this.cleanSwapReservesSubscription();
   }
 }
 </script>

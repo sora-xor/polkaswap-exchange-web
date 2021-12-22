@@ -127,7 +127,8 @@
             "reserved": " - Gereserveerd",
             "total": "Totaal"
         },
-        "totalAssetsValue": "Totale waarde van bezittingen:"
+        "totalAssetsValue": "Totale waarde van bezittingen:",
+        "details": "Details"
     },
     "asset": {
         "remove": "Asset verwijderen"
@@ -186,7 +187,7 @@
         },
         "extensibleSupply": {
             "placeholder": "Uitbreidbaar aanbod",
-            "desc": "Mogelijkheid om meer tokens te slaan."
+            "desc": "Mogelijkheid om meer tokens te munten."
         }
     },
     "transaction": {
@@ -230,13 +231,13 @@
     "connectWalletTextTooltip": "Maak verbinding met @:soraText Network met polkadot {.js}",
     "selectNodeText": "Selecteer node",
     "bridgeText": "Brug",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Disclaimer<\/span>: Deze website wordt onderhouden door de @:soraText community. Voordat u doorgaat met het gebruiken van deze website, dient u de @:polkaswapFaqLink en documentatie te lezen, die een gedetailleerde uitleg bevat over hoe Polkaswap werkt, evenals de @:footerMenu.memorandum en @:(footerMenu.privacy). Deze documenten zijn cruciaal voor een veilige en positieve gebruikerservaring. Door Polkaswap te gebruiken, erkent u deze documenten te hebben gelezen en begrepen. U erkent ook het volgende: 1) uw enige verantwoordelijkheid voor de naleving van alle wetten die van toepassing kunnen zijn op uw specifieke gebruik van Polkaswap in uw rechtsgebied; 2) uw begrip dat de huidige versie van Polkaswap een alfaversie is: deze is niet volledig getest en sommige functies werken mogelijk niet zoals bedoeld; en 3) uw begrip en vrijwillige aanvaarding van de risico's die verbonden zijn aan het gebruik van Polkaswap, inclusief, maar niet beperkt tot, het risico van verlies van tokens. Nogmaals, ga alsjeblieft niet verder zonder de FAQ te lezen, <span> @:footerMenu.memorandum <\/span> <a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\"> @:footerMenu.memorandum <\/a> en <span> @:footerMenu.privacy <\/span> <a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\"> @:footerMenu.privacy <\/a> !",
+    "disclaimer": "<span class=\"app-disclaimer__title\"> Disclaimer <\/span> : Deze website wordt onderhouden door de @:(soraText)-gemeenschap. Voordat u doorgaat met het gebruiken van deze website, dient u de @:polkaswapFaqLink en documentatie te lezen, die een gedetailleerde uitleg bevat over hoe Polkaswap werkt, evenals de @:memorandumLink en @:(privacyLink). Deze documenten zijn cruciaal voor een veilige en positieve gebruikerservaring. Door Polkaswap te gebruiken, erkent u deze documenten te hebben gelezen en begrepen. U erkent ook het volgende: 1) uw enige verantwoordelijkheid voor de naleving van alle wetten die van toepassing kunnen zijn op uw specifieke gebruik van Polkaswap in uw rechtsgebied; 2) uw begrip dat de huidige versie van Polkaswap een alfaversie is: deze is niet volledig getest en sommige functies werken mogelijk niet zoals bedoeld; en 3) uw begrip en vrijwillige aanvaarding van de risico's die verbonden zijn aan het gebruik van Polkaswap, inclusief, maar niet beperkt tot, het risico van verlies van tokens. Ga alsjeblieft niet verder zonder de @:polkaswapFaqLink, @:memorandumLink, @:privacyLink!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"Polkaswap FAQ\">Polkaswap FAQ<\/a>",
     "poweredBy": "Powered by",
     "confirmTransactionText": "Bevestig transactie in {richting}",
     "retryText": "Probeer opnieuw",
     "networkFeeText": "Netwerkvergoeding",
-    "networkFeeTooltipText": "Netwerkvergoeding wordt gebruikt om de groei en stabiele prestaties van het @:soraText-systeem te garanderen.",
+    "networkFeeTooltipText": "Netwerkvergoeding wordt gebruikt om de groei en stabiele prestaties van het @:(soraText)-systeem te garanderen.",
     "ethNetworkFeeTooltipText": "Houd er rekening mee dat de Ethereum-netwerkkosten die worden weergegeven op Polkaswap slechts ruwe schattingen zijn, u kunt het juiste bedrag in uw verbonden Ethereum-wallet zien voordat u de transactie bevestigt.",
     "marketText": "Markt",
     "marketAlgorithmText": "Markt algoritme",
@@ -285,7 +286,7 @@
         "sorawiki": "@:soraText Wiki",
         "memorandum": "Polkaswap memorandum en servicevoorwaarden",
         "privacy": "Privacybeleid",
-        "info": "Info & Gemeenschap"
+        "info": "Info & Community"
     },
     "helpDialog": {
         "title": "Help",
@@ -304,8 +305,8 @@
             "description": "Polkaswap is gebouwd bovenop het @:soraText Netwerk, en het @:soraText token (XOR) wordt gebruikt voor gas\/vergoedingen en liquiditeitsverschaffing op Polkaswap. @:soraText Network maakt lagere vergoedingen, snellere transacties en eenvoudigere consensus finalisatie mogelijk en is gericht op het leveren van interoperabiliteit over andere blockchain ecosystemen zoals @:(ethereumText)."
         },
         "polkadot": {
-            "title": "Wat is polkadot {.js} ?",
-            "description": "Polkadot{.js} extensie is een browser extensie beschikbaar voor Firefox en Chrome gewijd aan het beheer van accounts voor Substrate-gebaseerde chains, waaronder @:soraText, Polkadot en Kusama. U kunt accounts toevoegen, importeren en exporteren en transacties of extrinsics ondertekenen die u hebt geïnitieerd vanaf websites die u hebt geautoriseerd."
+            "title": "Wat is polkadot {.js}?",
+            "description": "Polkadot{.js} extensie is een browser extensie beschikbaar voor Firefox en Chrome die gewijd is aan het beheer van accounts voor Substrate-gebaseerde chains, waaronder @:soraText, Polkadot en Kusama. U kunt accounts toevoegen, importeren en exporteren en transacties of extrinsics ondertekenen die u hebt geïnitieerd vanaf websites die u hebt geautoriseerd."
         }
     },
     "node": {
@@ -375,7 +376,7 @@
     },
     "about": {
         "title": "De DEX voor de interoperabele toekomst.",
-        "description": "Cross-chain uitwisseling van assets, eenvoudige creatie en notering van nieuwe assets en de gemakkelijkste swaps ooit. De interoperabele toekomst van Polkadot is hier en wij lopen voorop!",
+        "description": "Cross-chain uitwisseling van assets, eenvoudige creatie en notering van nieuwe assets en de gemakkelijkste swaps beschikbaar. De interoperabele toekomst van Polkadot is hier en wij lopen voorop!",
         "trading": {
             "title": "Sneller traden",
             "first": "Polkaswap is een non-custodial, cross-chain AMM DEX-protocol voor het swappen van tokens op basis van Polkadot- en Kusama relay chains, Polkadot- en Kusama parachains en blockchains die rechtstreeks zijn verbonden via bruggen.",
@@ -405,8 +406,8 @@
                 "desc": "Beveilig de toekomst van het SORA-netwerk en gedecentraliseerde apps zoals Polkaswap, en verdien terwijl beloningen door een SORA-validator te worden."
             },
             "second": {
-                "title": "Verbind een ketting met SORA",
-                "desc": "Laat de gedecentraliseerde wereldeconomie groeien door meer chains te verbinden met SORA en Polkaswap met behulp van het HASHI-brugprotocol."
+                "title": "Verbind een chain met SORA",
+                "desc": "Laat de gedecentraliseerde wereldeconomie groeien door meer chains te verbinden met SORA en Polkaswap met behulp van het HASHI bridge protocol."
             }
         },
         "network": "Polkaswap is gebouwd op het SORA-netwerk, gericht op interoperabiliteit om de rest van het crypto-ecosysteem te verbinden met Polkadot."
@@ -461,7 +462,7 @@
     },
     "bridge": {
         "title": "HASHI Brug",
-        "info": "Converteer tokens tussen de @:soraText- en @:ethereumText-netwerken.",
+        "info": "Converteer tokens tussen de @:(soraText)-en @:(ethereumText)-netwerken.",
         "balance": "Saldo",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
@@ -560,7 +561,7 @@
         "title": "Bridge-transactie",
         "expectedMetaMaskAddress": "Verwacht adres in Metamask:",
         "allowToken": "Sta @:appName toe om je {tokenSymbol}",
-        "approveToken": "Houd er rekening mee dat het slechts één keer nodig is om de token goed te keuren. Als uw extensie meerdere goedkeuringsverzoeken voor tokens heeft, moet u ervoor zorgen dat u alleen de laatste bevestigt en de rest afwijst."
+        "approveToken": "Houd er rekening mee dat het slechts één keer nodig is om het token goed te keuren. Als uw extensie meerdere goedkeuringsverzoeken voor tokens heeft, moet u ervoor zorgen dat u alleen de laatste bevestigt en de rest afwijst."
     },
     "bridgeHistory": {
         "title": "Geschiedenis",
@@ -591,7 +592,7 @@
         "title": "Maak een paar",
         "deposit": "Storting",
         "balance": "Saldo",
-        "pricePool": "Prijzen en aandeel in de pool",
+        "pricePool": "Prijzen en vergoedingen",
         "shareOfPool": "Aandeel van de pool",
         "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{eerste}-{tweede} Pool tokens",
@@ -609,7 +610,7 @@
         "firstLiquidityProviderInfo": "De verhouding van de tokens die u toevoegt zal de prijs van deze pool bepalen.<br\/>Zodra u tevreden bent met de koers klikt u op leveren om te herzien."
     },
     "confirmSupply": {
-        "title": "U ontvangt",
+        "title": "Jouw aandeel in de pool bedraagt",
         "outputDescription": "De output wordt geschat. Als de prijs meer dan {slippageTolerance} % verandert, wordt uw transactie teruggedraaid.",
         "poolTokensBurned": "{\\a6}-{\\a6} Pool Tokens Verbrand",
         "price": "Prijs"
@@ -681,12 +682,12 @@
         },
         "signing": {
             "extension": "polkadot{.js} browser extensie",
-            "accounts": "uw respectievelijke @:soraText- en @:ethereumText-accounts"
+            "accounts": "uw respectievelijke @:(soraText)-en @:(ethereumText)-accounts"
         },
         "hint": {
-            "connectExternalAccount": "Verbind een @:ethereumText-account om te controleren op beschikbare PSWAP- en VAL-beloningen.",
-            "connectAccounts": "Om je PSWAP- en VAL-beloningen te claimen, moet je zowel je @:soraText- als @:ethereumText-accounts verbinden.",
-            "connectAnotherAccount": "Verbind een ander @:ethereumText-account om te controleren op beschikbare PSWAP- en VAL-beloningen.",
+            "connectExternalAccount": "Verbind een @:(ethereumText)-account om te controleren op beschikbare PSWAP- en VAL-beloningen.",
+            "connectAccounts": "Om je PSWAP- en VAL-beloningen te claimen, moet je zowel je @:(soraText)-als @:(ethereumText)-accounts verbinden.",
+            "connectAnotherAccount": "Verbind een ander @:(ethereumText)-account om te controleren op beschikbare PSWAP- en VAL-beloningen.",
             "howToClaimRewards": "Om je {symbolen} beloningen te claimen moet je {telling} {transacties} in {bestemming} tekenen. Beloningen zullen worden gestort op uw @:soraText account."
         },
         "action": {
@@ -776,8 +777,8 @@
             }
         },
         "buttons": {
-            "buy": "Tokens kopen",
-            "history": "Aankoopgeschiedenis",
+            "buy": "Kopen",
+            "history": "Geschiedenis",
             "transfer": "Brug starten",
             "view": "Bridgetransactie transactie bekijken"
         },
@@ -789,7 +790,7 @@
             "txReady": "Transactie klaar voor brug"
         },
         "tooltips": {
-            "transfer": "Tokens succesvol gekocht!\n Klik om de overbruggingstransactie te starten"
+            "transfer": "Tokens succesvol gekocht!\n Klik om de bridge transactie te starten"
         }
     },
     "recievedText": "Ontvangen",
@@ -808,15 +809,16 @@
     "marketMakerCountdown": {
         "title": "Market Maker aftellen",
         "blocks": "blokken",
-        "daysLeft": "dagen over",
+        "daysLeft": "resterende dagen",
         "txs": "TX's",
         "volume": "MM TX-volume",
         "description": "20 miljoen PSWAP \/ maand zal worden verdeeld onder market makers met ten minste 500 tx \/ maand met een waarde van meer dan 1 XOR."
     },
     "confirmNextTxFailure": {
         "header": "Aandacht",
-        "info": "Uw XOR-saldo zal na deze transactie {fee} U kunt de netwerkkosten voor een andere transactie niet betalen.",
+        "info": "Uw XOR saldo zal lager zijn dan {fee} XOR na deze transactie. U zult niet in staat zijn om de netwerkvergoeding voor een andere transactie te betalen.",
         "payoff": "Je zou de Bridge moeten gebruiken om XOR van andere netwerken te krijgen, XOR van een ander SORA-account te ontvangen, of een ander token dat al in je account staat om te wisselen naar XOR.",
         "button": "Ja, ik begrijp het risico"
-    }
+    },
+    "blockNumberText": "Bloknummer"
 }

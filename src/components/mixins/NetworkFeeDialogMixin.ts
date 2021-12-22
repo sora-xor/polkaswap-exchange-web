@@ -4,6 +4,11 @@ import { delay } from '@/utils';
 @Component
 export default class NetworkFeeDialogMixin extends Vue {
   showWarningFeeDialog = false;
+  isWarningFeeDialogConfirmed = false;
+
+  confirmNetworkFeeWariningDialog(): void {
+    this.isWarningFeeDialogConfirmed = true;
+  }
 
   openWarningFeeDialog(): void {
     this.showWarningFeeDialog = true;

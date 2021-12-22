@@ -214,7 +214,11 @@
         :sora-network-fee="soraNetworkFee"
         @confirm="confirmTransaction"
       />
-      <network-fee-warning-dialog :visible.sync="showWarningFeeDialog" :fee="formattedSoraNetworkFee" />
+      <network-fee-warning-dialog
+        :visible.sync="showWarningFeeDialog"
+        :fee="formattedSoraNetworkFee"
+        @confirm="confirmNetworkFeeWariningDialog"
+      />
     </s-form>
     <div v-if="!areNetworksConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div>
   </div>
@@ -433,9 +437,8 @@ export default class Bridge extends Mixins(
     return this.isXorSufficientForNextTx({
       type: this.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
       isXorAccountAsset: isXorAccountAsset(this.asset),
-      amount: this.getFPNumber(this.amount).toCodecString(),
-      xorBalance: getAssetBalance(this.tokenXOR),
-      fee: this.soraNetworkFee,
+      amount: this.getFPNumber(this.amount),
+      xorBalance: this.getFPNumberFromCodec(getAssetBalance(this.tokenXOR)),
     });
   }
 
@@ -504,6 +507,10 @@ export default class Bridge extends Mixins(
     if (!this.isXorSufficientForNextOperation) {
       this.openWarningFeeDialog();
       await this.waitOnNextTxFailureConfirmation();
+      if (!this.isWarningFeeDialogConfirmed) {
+        return;
+      }
+      this.isWarningFeeDialogConfirmed = false;
     }
 
     await this.checkConnectionToExternalAccount(() => {

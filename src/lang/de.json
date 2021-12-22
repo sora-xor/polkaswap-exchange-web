@@ -127,7 +127,8 @@
             "reserved": " Reserviert",
             "total": "Gesamt"
         },
-        "totalAssetsValue": "Gesamtwert deiner Assets:"
+        "totalAssetsValue": "Gesamtwert deiner Assets:",
+        "details": "Einzelheiten"
     },
     "asset": {
         "remove": "Asset entfernen"
@@ -300,12 +301,12 @@
         "title": "Über",
         "learnMore": "@:learnMoreText",
         "network": {
-            "title": "Was ist @:(soraText)?",
+            "title": "Was ist @:soraText?",
             "description": "Polkaswap ist auf dem @:soraText -Netzwerk aufgebaut, und der @:soraText -Token (XOR) wird für Gas\/Gebühren und Liquiditätsbereitstellung auf Polkaswap verwendet. @:soraText -Netzwerk ermöglicht geringere Gebühren, schnellere Transaktionen und einfachere Konsensabschlüsse und fokussiert sich somit die Bereitstellung der Interoperabilität zwischen anderen Blockchain-Ökosystemen wie @:(ethereumText)."
         },
         "polkadot": {
             "title": "Was ist Polkadot{.js}?",
-            "description": "Die Polkadot{.js} -Erweiterung ist eine für Firefox und Chrome verfügbare Browsererweiterung zur Verwaltung von Konten für Substrate-basierte Chains, einschließlich @:(soraText), Polkadot und Kusama. Du kannst Konten hinzufügen, importieren und exportieren, und Transaktionen oder Extrinsics, die du von autorisierten Websites initiiert hast, signieren."
+            "description": "Die Polkadot{.js} -Erweiterung ist eine für Firefox und Chrome verfügbare Browsererweiterung zur Verwaltung von Konten für Substrate-basierte Chains, einschließlich @:soraText, Polkadot und Kusama. Du kannst Konten hinzufügen, importieren und exportieren, und Transaktionen oder Extrinsics, die du von autorisierten Websites initiiert hast, signieren."
         }
     },
     "node": {
@@ -493,7 +494,7 @@
         },
         "customAsset": {
             "title": "Benutzerdefiniert",
-            "customInfo": "Wichtig! Benutzerdefinierte Token müssen in @:(soraText) registriert sein.",
+            "customInfo": "Wichtig! Benutzerdefinierte Token müssen in @:soraText registriert sein.",
             "registerToken": "Token registrieren",
             "addressPlaceholder": "Asset-ID",
             "symbolPlaceholder": "Token Symbol",
@@ -776,7 +777,7 @@
             }
         },
         "buttons": {
-            "buy": "Token kaufen",
+            "buy": "Kaufen",
             "history": "Kaufhistorie",
             "transfer": "Bridge starten",
             "view": "Bridge-Transaktion ansehen"
@@ -818,5 +819,6 @@
         "info": "Ihr XOR-Guthaben beträgt nach dieser Transaktion {fee} Sie können die Netzwerkgebühr für eine andere Transaktion nicht bezahlen.",
         "payoff": "Sie müssten die Bridge verwenden, um XOR von anderen Netzwerken zu erhalten, XOR von einem anderen SORA-Konto gesendet zu bekommen oder einen anderen Token, der sich bereits in Ihrem Konto befindet, in XOR einzutauschen.",
         "button": "Ja, ich verstehe das Risiko"
-    }
+    },
+    "blockNumberText": "Blocknummer"
 }

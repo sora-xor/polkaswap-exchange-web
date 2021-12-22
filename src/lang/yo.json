@@ -127,7 +127,8 @@
             "reserved": "- Ni ipamọ",
             "total": "Lapapọ"
         },
-        "totalAssetsValue": "Iye awọn ohun -ini rẹ lapapọ:"
+        "totalAssetsValue": "Iye awọn ohun -ini rẹ lapapọ:",
+        "details": "Awọn alaye"
     },
     "asset": {
         "remove": "Yọ dukia kuro"
@@ -230,7 +231,7 @@
     "connectWalletTextTooltip": "Sopọ si Nẹtiwọọki @:soraText pẹlu polkadot {.js}",
     "selectNodeText": "Yan ipade",
     "bridgeText": "Afara",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Akiyesi<\/span>: Oju opo wẹẹbu yii ni itọju nipasẹ agbegbe @:(soraText). Ṣaaju ki o to tẹsiwaju lati lo oju opo wẹẹbu yii, jọwọ ṣe atunyẹwo @:polkaswapFaqLink ati iwe, eyiti o ni alaye alaye lori bi Polkaswap ṣe n ṣiṣẹ, ati pẹlu @:footerMenu.memorandum, ati @:(footerMenu.privacy). Awọn iwe aṣẹ wọnyi jẹ pataki si aabo olumulo ati aabo olumulo. Nipa lilo Polkaswap, o gba pe o ti ka ati loye awọn iwe wọnyi. O tun gba eleyi: Ikini)  ojuṣe rẹ nikan fun ibamu pẹlu gbogbo awọn ofin ti o le kan si lilo rẹ pato ti Polkaswap ni aṣẹ ofin rẹ; Ikeji)  oye rẹ pe ẹya lọwọlọwọ ti Polkaswap jẹ ẹya alpha: ko ti ni idanwo ni kikun, ati pe awọn iṣẹ kan le ma ṣe bi a ti ṣe apẹrẹ; ati Iketa)  oye rẹ ati gbigba iyọọda ti awọn eewu ti o wa ninu lilo Polkaswap, pẹlu, ṣugbọn kii ṣe opin si, eewu ti awọn ami tokini  padanu. Lẹẹkan si, jọwọ maṣe tẹsiwaju laisi kika Awọn ibeere, <span> @:footerMenu.memorandum <\/span> <a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\"> @:footerMenu.memorandum <\/a> , ati <span> @:footerMenu.privacy <\/span> <a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link link--mobile\"> @:footerMenu.privacy <\/a>!",
+    "disclaimer": "<span class=\"app-disclaimer__title\">Akiyesi<\/span>: Oju opo wẹẹbu yii ni itọju nipasẹ agbegbe @:(soraText). Ṣaaju ki o to tẹsiwaju lati lo oju opo wẹẹbu yii, jọwọ ṣe atunyẹwo @:polkaswapFaqLink ati iwe, eyiti o ni alaye alaye lori bi Polkaswap ṣe n ṣiṣẹ, ati pẹlu @:memorandumLink, ati @:(privacyLink). Awọn iwe aṣẹ wọnyi jẹ pataki si aabo olumulo ati aabo olumulo. Nipa lilo Polkaswap, o gba pe o ti ka ati loye awọn iwe wọnyi. O tun gba eleyi: Ikini)  ojuṣe rẹ nikan fun ibamu pẹlu gbogbo awọn ofin ti o le kan si lilo rẹ pato ti Polkaswap ni aṣẹ ofin rẹ; Ikeji)  oye rẹ pe ẹya lọwọlọwọ ti Polkaswap jẹ ẹya alpha: ko ti ni idanwo ni kikun, ati pe awọn iṣẹ kan le ma ṣe bi a ti ṣe apẹrẹ; ati Iketa)  oye rẹ ati gbigba iyọọda ti awọn eewu ti o wa ninu lilo Polkaswap, pẹlu, ṣugbọn kii ṣe opin si, eewu ti awọn ami tokini  padanu. Lẹẹkan si, jọwọ maṣe tẹsiwaju laisi kika @:polkaswapFaqLink, @:memorandumLink, @:privacyLink!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"Polkaswap FAQ\">Polkaswap FAQ<\/a>",
     "poweredBy": "Itileyin lati",
     "confirmTransactionText": "Jẹrisi iṣowo ni {direction}",
@@ -461,7 +462,7 @@
     },
     "bridge": {
         "title": "Afara HASHI",
-        "info": "Yi awọn token pada laarin awọn nẹtiwọọki @:soraText ati @:ethereumText.",
+        "info": "Yi awọn token pada laarin awọn nẹtiwọọki @:soraText ati @:(ethereumText).",
         "balance": "Iśeku",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
@@ -776,7 +777,7 @@
             }
         },
         "buttons": {
-            "buy": "Ra Awọn Tokini",
+            "buy": "Ra Tokini",
             "history": "Itan Tx",
             "transfer": "Bẹrẹ afara",
             "view": "Wo idunadura"
@@ -818,5 +819,6 @@
         "info": "Iwọntunwọnsi XOR rẹ yoo kere si {fee} XOR lẹhin iṣowo yii. Iwọ kii yoo ni anfani lati sanwo fun ọya nẹtiwọki fun iṣowo miiran.",
         "payoff": "Iwọ yoo ni lati lo Afara lati gba XOR lati awọn nẹtiwọọki miiran, firanṣẹ XOR lati akọọlẹ SORA miiran, tabi paarọ eyikeyi ami-ami miiran tẹlẹ ninu akọọlẹ rẹ sinu XOR.",
         "button": "Bẹẹni, Mo loye ewu naa"
-    }
+    },
+    "blockNumberText": "Àkọsílẹ nọmba"
 }
