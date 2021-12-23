@@ -241,7 +241,8 @@ $referral-collapse-icon-size: 36px;
     font-weight: 700;
   }
   &-icon {
-    background: url('~@/assets/img/invited-users.svg') 50% 50% no-repeat;
+    // background: url('~@/assets/img/invited-users.svg') 50% 50% no-repeat;
+    background-color: var(--s-color-base-content-tertiary);
     border-radius: 50%;
   }
 }

@@ -6,8 +6,6 @@
       @back="handleBack"
     />
     <s-form class="el-form--actions" :show-message="false">
-      <!-- TODO 4 alexnatalia: Ask about this stuff -->
-      <!-- <p class="bonding-preview" v-html="t('referralProgram.preview')" /> -->
       <s-float-input
         class="s-input--token-value"
         size="medium"
@@ -79,7 +77,6 @@
           {{ t(`referralProgram.action.${isBond ? 'bond' : 'unbond'}`) }}
         </template>
       </s-button>
-      <!-- TODO: Move Fee info line to appropriate area -->
       <info-line
         :label="t('referralProgram.networkFee')"
         :label-tooltip="t('referralProgram.networkFeeTooltip')"

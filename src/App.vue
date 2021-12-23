@@ -114,14 +114,14 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   @Watch('isSoraAccountConnected')
-  private async confirmInviteUser(isSoraConnected: boolean): Promise<void> {
+  private async confirmInviteUserIfConnected(isSoraConnected: boolean): Promise<void> {
     if (isSoraConnected) {
       await this.confirmInvititation();
     }
   }
 
   @Watch('storageReferral')
-  private async confirmInviteUser1(storageReferralValue: string): Promise<void> {
+  private async confirmInviteUserIfHasStorage(storageReferralValue: string): Promise<void> {
     if (this.isSoraAccountConnected && storageReferralValue.length) {
       await this.confirmInvititation();
     }
