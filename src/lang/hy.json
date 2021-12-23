@@ -40,7 +40,10 @@
             "RemoveLiquidity": "Հեռացված {amount} {symbol} և {amount2} {symbol2}",
             "CreatePair": "Մատակարարված {amount} {symbol} և {amount2} {symbol2}",
             "RegisterAsset": "Գրանցված է {symbol} ակտիվ",
-            "ClaimRewards": "Պարգևատրումը հաջողությամբ հաստատված է {rewards}"
+            "ClaimRewards": "Պարգևատրումը հաջողությամբ հաստատված է {rewards}",
+            "ReferralReserveXor": "XOR-ը հաջողությամբ կապակցվեց",
+            "ReferralUnreserveXor": "XOR-ը հաջողությամբ ունբոնդ",
+            "ReferralSetInvitedUser": "Հղումը դրվում է հաջողությամբ"
         },
         "error": {
             "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
@@ -49,8 +52,14 @@
             "RemoveLiquidity": "Չհաջողվեց հեռացնել {amount} {symbol} և {amount2} {symbol2}",
             "CreatePair": "Չհաջողվեց մատակարարել {amount} {symbol} եւ {amount2} {symbol2}",
             "RegisterAsset": "Չհաջողվեց գրանցել {symbol} ակտիվը",
-            "ClaimRewards": "Չհաջողվեց հաստատել պարգեւատրումները {rewards}"
-        }
+            "ClaimRewards": "Չհաջողվեց հաստատել պարգեւատրումները {rewards}",
+            "ReferralReserveXor": "Չհաջողվեց կապել XOR-ը",
+            "ReferralUnreserveXor": "Ունբոնդ Ձախողվել է XOR-ը",
+            "ReferralSetInvitedUser": "Չհաջողվեց սահմանել ուղղորդում"
+        },
+        "ReferralReserveXor": "Բոնդ XOR",
+        "ReferralUnreserveXor": "Ունբոնդ XOR",
+        "ReferralSetInvitedUser": "Սահմանել ուղղորդում"
     },
     "polkadotjs": {
         "noExtensions": "Polkadot.js- ի ոչ մի ընդլայնում չի գտնվել: Տեղադրեք և վերաբեռնեք այս էջը\n https:\/\/polkadot.js.org\/extension\/",
@@ -720,7 +729,9 @@
         "groups": {
             "strategic": "PSWAP ստրատեգիական պարգևատրումներ",
             "external": "Պարգևատրումներ կապված ethereum հաշվի համար"
-        }
+        },
+        "Rewards": "Պարգեւներ",
+        "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
         "default": "@:ethereumText մատակարար",
@@ -777,7 +788,7 @@
             }
         },
         "buttons": {
-            "buy": "Գնեք խորհրդանիշներ",
+            "buy": "Գնել",
             "history": "Tx Պատմություն",
             "transfer": "Սկսել կամուրջը",
             "view": "Դիտել գործարքը"
@@ -820,5 +831,44 @@
         "payoff": "Դուք պետք է օգտագործեք Bridge-ը XOR-ը այլ ցանցերից ստանալու, XOR-ի ուղարկված մեկ այլ SORA հաշվից կամ ձեր հաշվում եղած ցանկացած այլ նշան XOR-ով փոխելու համար:",
         "button": "Այո, ես հասկանում եմ ռիսկը"
     },
-    "blockNumberText": "Արգելափակման համարը"
+    "blockNumberText": "Արգելափակման համարը",
+    "referralProgram": {
+        "title": "Ուղղորդման ծրագիր",
+        "connectAccount": "Օգտագործողներին հրավիրելու համար անհրաժեշտ է միացնել ձեր SORA հաշիվը:",
+        "bondedXOR": "XOR Խճճված",
+        "referralsNumber": "{number} ուղղորդումներ",
+        "startInviting": "Հրավիրելը սկսելու համար կապեք XOR-ի ցանկացած քանակություն: <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\"> Իմացեք ավելին <\/a>",
+        "preview": "Հրավիրեք նոր օգտվողներ և ստացեք 10% նրանց գործարքների վճարներից: <br \/> Սկսելու համար կապեք XOR-ի ցանկացած քանակություն: <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Իմացեք ավելին <\/a>",
+        "deposit": "Ավանդ",
+        "balance": "Բալանս",
+        "networkFee": "@:networkFeeText",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "insufficientBondedBalance": "Պարտատոմսերի անբավարար մնացորդ",
+        "action": {
+            "connectWallet": "@:connectWalletText",
+            "empty": "Մուտքագրեք {tokenSymbol}",
+            "startInviting": "Բոնդ {tokenSymbol} ՝ հրավիրելը սկսելու համար",
+            "bondMore": "Բոնդ Ավելին",
+            "bond": "Բոնդ",
+            "unbond": "Ունբոնդ",
+            "copyLink": "Պատճենել հղումը"
+        },
+        "transactionDetails": "Գործարքի պարամետրերը",
+        "receivedRewards": "Ստացել է պարգևներ",
+        "invitationLink": "Հրավերի հղում",
+        "successCopy": "Հղման հղումը պատճենված է",
+        "bondTitle": "Բոնդ XOR",
+        "unbondTitle": "Ունբոնդ XOR",
+        "confirm": {
+            "text": "Հաստատել",
+            "bond": "Հաստատել պարտատոմ",
+            "unbond": "Հաստատել չպարտատոմսը",
+            "inviteTitle": "Դուք հրավիրվել եք Պոլկասվապի մոտ՝ հղումով",
+            "inviteDescription": "Երբ գործարքի համար վճար կվճարեք, 10%-ը կգնա ձեր ուղղորդմանը: Դա լիովին անվճար է:",
+            "signInvitation": "Ստորագրեք հաստատման գործարքը",
+            "freeOfCharge": "Այս գործողությունը անվճար է"
+        }
+    },
+    "transactionDetailsText": "Գործարքի մանրամասները"
 }

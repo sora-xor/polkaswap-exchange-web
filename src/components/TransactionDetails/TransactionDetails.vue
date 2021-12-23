@@ -3,7 +3,7 @@
     <s-collapse>
       <s-collapse-item>
         <template #title>
-          <span>transaction details</span>
+          <span>{{ t('transactionDetailsText') }}</span>
         </template>
         <slot></slot>
       </s-collapse-item>
@@ -12,10 +12,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
+import TranslationMixin from '../mixins/TranslationMixin';
 
 @Component
-export default class TransactionDetails extends Vue {}
+export default class TransactionDetails extends Mixins(TranslationMixin) {}
 </script>
 
 <style lang="scss">

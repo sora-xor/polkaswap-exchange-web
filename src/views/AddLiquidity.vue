@@ -144,7 +144,7 @@
         v-if="areTokensSelected && isAvailable && (!emptyAssets || (liquidityInfo || {}).balance)"
         :info-only="false"
         class="info-line-container"
-      ></add-liquidity-transaction-details>
+      />
     </s-form>
 
     <select-token
@@ -265,15 +265,6 @@ export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, 
       amount: this.getFPNumber(this.firstTokenValue),
       xorBalance: this.getFPNumberFromCodec(this.getTokenBalance(this.firstToken)),
     });
-  }
-
-  get emptyAssets(): boolean {
-    if (!(this.firstTokenValue || this.secondTokenValue)) {
-      return true;
-    }
-    const first = new FPNumber(this.firstTokenValue);
-    const second = new FPNumber(this.secondTokenValue);
-    return first.isNaN() || first.isZero() || second.isNaN() || second.isZero();
   }
 
   updatePrices(): void {

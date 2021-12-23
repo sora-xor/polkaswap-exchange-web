@@ -40,7 +40,10 @@
             "RemoveLiquidity": "Rimossi {amount} {symbol} e {amount2} {symbol2}",
             "CreatePair": "Fornito {amount} {symbol} e {amount2} {symbol2}",
             "RegisterAsset": "Asset registrato {simbolo}",
-            "ClaimRewards": "Ricompensa richiesta con successo {rewards}"
+            "ClaimRewards": "Ricompensa richiesta con successo {rewards}",
+            "ReferralReserveXor": "XOR legato con successo",
+            "ReferralUnreserveXor": "XOR non legato con successo",
+            "ReferralSetInvitedUser": "Il referral è impostato correttamente"
         },
         "error": {
             "Transfer": "Impossibile inviare {amount} {symbol} a {address}",
@@ -49,8 +52,14 @@
             "RemoveLiquidity": "Impossibile rimuovere {amount} {symbol} e {amount2} {symbol2}",
             "CreatePair": "Impossibile fornire {amount} {symbol} e {amount2} {symbol2}",
             "RegisterAsset": "Impossibile registrare la risorsa {symbol}",
-            "ClaimRewards": "Impossibile richiedere i premi {rewards}"
-        }
+            "ClaimRewards": "Impossibile richiedere i premi {rewards}",
+            "ReferralReserveXor": "Fallito il legame XOR",
+            "ReferralUnreserveXor": "Impossibile disaggregare XOR",
+            "ReferralSetInvitedUser": "Impossibile impostare il rinvio"
+        },
+        "ReferralReserveXor": "Legame XOR",
+        "ReferralUnreserveXor": "Svincola XOR",
+        "ReferralSetInvitedUser": "Imposta referral"
     },
     "polkadotjs": {
         "noExtensions": "Nessuna estensione Polkadot.js trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -720,7 +729,9 @@
         "groups": {
             "strategic": "Strategic Rewards",
             "external": "Ricompense per l'account ethereum connesso"
-        }
+        },
+        "Rewards": "Ricompense",
+        "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
         "default": "@:ethereumText provider",
@@ -820,5 +831,44 @@
         "payoff": "Dovresti usare il Bridge per ottenere XOR da altre reti, ricevere XOR da un altro account SORA o scambiare qualsiasi altro token già presente nel tuo account in XOR.",
         "button": "Sì, capisco il rischio"
     },
-    "blockNumberText": "Numero di blocco"
+    "blockNumberText": "Numero di blocco",
+    "referralProgram": {
+        "title": "Programma di riferimento",
+        "connectAccount": "Per invitare gli utenti è necessario collegare il tuo account SORA.",
+        "bondedXOR": "XOR legato",
+        "referralsNumber": "{number} referenze",
+        "startInviting": "Per iniziare a invitare, legare qualsiasi quantità di XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Per saperne di più<\/a>",
+        "preview": "Invita nuovi utenti e ottieni il 10% dalle loro commissioni di transazione.<br \/>Per iniziare, lega qualsiasi quantità di XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Per saperne di più<\/a>",
+        "deposit": "Deposita",
+        "balance": "Bilancia",
+        "networkFee": "@:networkFeeText",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "insufficientBondedBalance": "Equilibrio vincolato insufficiente",
+        "action": {
+            "connectWallet": "@:connectWalletText",
+            "empty": "Inserisci l'importo di {tokenSymbol}",
+            "startInviting": "Prenota {tokenSymbol} per iniziare a invitare",
+            "bondMore": "Legare di più",
+            "bond": "Riserva",
+            "unbond": "Separare",
+            "copyLink": "Copia link"
+        },
+        "transactionDetails": "Dettagli di Transazione",
+        "receivedRewards": "Ricompense ricevute",
+        "invitationLink": "Link all'invito",
+        "successCopy": "Il link di riferimento è stato copiato negli appunti",
+        "bondTitle": "Legame XOR",
+        "unbondTitle": "Svincola XOR",
+        "confirm": {
+            "text": "Conferma",
+            "bond": "Conferma legame",
+            "unbond": "Confermare lo scollegamento",
+            "inviteTitle": "Sei stato invitato a Polkaswap da un referral",
+            "inviteDescription": "Quando pagherai una tassa per la transazione, il 10% andrà al tuo referral. È completamente gratuito.",
+            "signInvitation": "Firma la transazione di approvazione",
+            "freeOfCharge": "Questa azione è gratuita"
+        }
+    },
+    "transactionDetailsText": "Dettagli di Transazione"
 }

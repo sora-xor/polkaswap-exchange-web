@@ -1,6 +1,6 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
-import { KnownSymbols, CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util';
+import { KnownSymbols, CodecString, Operation, NetworkFeesObject, FPNumber } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 import ConfirmDialogMixin from './ConfirmDialogMixin';
@@ -124,6 +124,15 @@ const CreateTokenPairMixin = (namespace: string) => {
         // TODO: [Release 2] Add check for pair without XOR
       }
       return false;
+    }
+
+    get emptyAssets(): boolean {
+      if (!(this.firstTokenValue || this.secondTokenValue)) {
+        return true;
+      }
+      const first = new FPNumber(this.firstTokenValue);
+      const second = new FPNumber(this.secondTokenValue);
+      return first.isNaN() || first.isZero() || second.isNaN() || second.isZero();
     }
 
     get firstTokenPrice(): Nullable<CodecString> {

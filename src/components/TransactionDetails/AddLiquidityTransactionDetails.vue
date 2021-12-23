@@ -33,10 +33,7 @@
       />
     </div>
 
-    <div
-      v-if="areTokensSelected && isAvailable && (!emptyAssets || (liquidityInfo || {}).balance)"
-      class="info-line-container"
-    >
+    <div class="info-line-container">
       <p class="info-line-container__title">{{ t(`createPair.yourPosition${!emptyAssets ? 'Estimated' : ''}`) }}</p>
       <info-line
         is-formatted
@@ -117,15 +114,6 @@ export default class AddLiquidityTransactionDetails extends Mixins(TranslationMi
 
   get fiatSecondTokenPosition(): Nullable<string> {
     return this.getFiatAmountByFPNumber(this.secondTokenPosition, this.secondToken);
-  }
-
-  get emptyAssets(): boolean {
-    if (!(this.firstTokenValue || this.secondTokenValue)) {
-      return true;
-    }
-    const first = new FPNumber(this.firstTokenValue);
-    const second = new FPNumber(this.secondTokenValue);
-    return first.isNaN() || first.isZero() || second.isNaN() || second.isZero();
   }
 
   getTokenPosition(liquidityInfoBalance: string | undefined, tokenValue: string | CodecString | number): FPNumber {
