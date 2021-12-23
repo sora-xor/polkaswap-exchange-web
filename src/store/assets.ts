@@ -2,7 +2,7 @@ import map from 'lodash/fp/map';
 import flatMap from 'lodash/fp/flatMap';
 import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
-import { KnownAssets, KnownSymbols, Asset, RegisteredAccountAsset, isWhitelistAsset } from '@sora-substrate/util';
+import { Asset, RegisteredAccountAsset, isWhitelistAsset, XOR } from '@sora-substrate/util';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { bridgeApi } from '@/utils/bridge';
 
@@ -49,9 +49,7 @@ const getters = {
     return rootGetters.accountAssets.filter((asset) => !isWhitelistAsset(asset, rootGetters.whitelist));
   },
   tokenXOR(state, getters, rootState, rootGetters) {
-    const token = KnownAssets.get(KnownSymbols.XOR);
-
-    return rootGetters['assets/getAssetDataByAddress'](token?.address);
+    return rootGetters['assets/getAssetDataByAddress'](XOR.address);
   },
   registeredAssets(state) {
     return state.registeredAssets;

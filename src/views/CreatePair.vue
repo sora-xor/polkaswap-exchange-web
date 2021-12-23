@@ -184,7 +184,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
-import { FPNumber, KnownAssets, KnownSymbols, Operation } from '@sora-substrate/util';
+import { FPNumber, Operation, XOR } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin';
@@ -234,7 +234,7 @@ export default class CreatePair extends Mixins(mixins.NetworkFeeWarningMixin, To
 
   async created(): Promise<void> {
     await this.withParentLoading(async () => {
-      await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address);
+      await this.setFirstTokenAddress(XOR.address);
     });
   }
 

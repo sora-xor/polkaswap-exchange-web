@@ -180,7 +180,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
-import { FPNumber, AccountLiquidity, CodecString, KnownAssets, KnownSymbols, Operation } from '@sora-substrate/util';
+import { FPNumber, AccountLiquidity, Operation, XOR } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin';
@@ -231,7 +231,7 @@ export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, 
           return this.handleBack();
         }
       } else {
-        await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address);
+        await this.setFirstTokenAddress(XOR.address);
       }
     });
   }
