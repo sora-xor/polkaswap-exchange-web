@@ -167,6 +167,9 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
 </script>
 
 <style lang="scss">
+.slippage-tolerance .s-flex {
+  margin-top: 0px !important;
+}
 .slippage-tolerance {
   &-custom_input.s-input {
     min-height: var(--s-size-small);
@@ -217,6 +220,10 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
     &:hover {
       cursor: pointer !important;
     }
+  }
+
+  .el-collapse-item__header {
+    height: 36px;
   }
 
   .el-collapse-item__header .el-icon-arrow-right.is-active {
