@@ -57,7 +57,7 @@ const CreateTokenPairMixin = (namespace: string) => {
     showSelectSecondTokenDialog = false;
     insufficientBalanceTokenSymbol = '';
 
-    destroyed(): void {
+    onDestroyed(): void {
       const params = router.currentRoute.params;
       this.resetPrices();
       this.resetData(params?.assetBAddress && params?.assetBAddress);

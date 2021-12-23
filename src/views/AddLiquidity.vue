@@ -291,6 +291,10 @@ export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, 
   handleConfirmAddLiquidity(): Promise<void> {
     return this.handleConfirm(this.addLiquidity);
   }
+
+  destroyed(): void {
+    this.onDestroyed();
+  }
 }
 </script>
 

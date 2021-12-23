@@ -253,6 +253,10 @@ export default class CreatePair extends Mixins(mixins.NetworkFeeWarningMixin, To
   confirmCreatePair(): Promise<void> {
     return this.handleConfirm(this.createPair);
   }
+
+  destroyed(): void {
+    this.onDestroyed();
+  }
 }
 </script>
 
