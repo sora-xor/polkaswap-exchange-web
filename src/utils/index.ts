@@ -4,10 +4,9 @@ import {
   AccountAsset,
   RegisteredAccountAsset,
   AccountLiquidity,
-  KnownSymbols,
   FPNumber,
   CodecString,
-  KnownAssets,
+  XOR,
 } from '@sora-substrate/util';
 import { api } from '@soramitsu/soraneo-wallet-web';
 
@@ -30,7 +29,7 @@ export const formatAddress = (address: string, length = address.length / 2): str
 };
 
 export const isXorAccountAsset = (asset: Asset | AccountAsset | RegisteredAccountAsset | AccountLiquidity): boolean => {
-  return asset ? asset.address === KnownAssets.get(KnownSymbols.XOR).address : false;
+  return asset ? asset.address === XOR.address : false;
 };
 
 export const isEthereumAddress = (address: string): boolean => {

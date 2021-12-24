@@ -40,7 +40,10 @@
             "RemoveLiquidity": "Removed {amount} {symbol} and {amount2} {symbol2}",
             "CreatePair": "Supplied {amount} {symbol} and {amount2} {symbol2}",
             "RegisterAsset": "Registered {symbol} asset",
-            "ClaimRewards": "Reward claimed successfully {rewards}"
+            "ClaimRewards": "Reward claimed successfully {rewards}",
+            "ReferralReserveXor": "Bonded XOR successfully",
+            "ReferralUnreserveXor": "Unbonded XOR successfully",
+            "ReferralSetInvitedUser": "Referral is set successfully"
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
@@ -49,8 +52,14 @@
             "RemoveLiquidity": "Failed to remove {amount} {symbol} and {amount2} {symbol2}",
             "CreatePair": "Failed to supply {amount} {symbol} and {amount2} {symbol2}",
             "RegisterAsset": "Failed to register {symbol} asset",
-            "ClaimRewards": "Failed to claim rewards {rewards}"
-        }
+            "ClaimRewards": "Failed to claim rewards {rewards}",
+            "ReferralReserveXor": "Failed to bond XOR",
+            "ReferralUnreserveXor": "Failed to unbond XOR",
+            "ReferralSetInvitedUser": "Failed to set referral"
+        },
+        "ReferralReserveXor": "Bond XOR",
+        "ReferralUnreserveXor": "Unbond XOR",
+        "ReferralSetInvitedUser": "Set Referral"
     },
     "polkadotjs": {
         "noExtensions": "No Polkadot.js extension was found. Please install it and reload this page\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -720,7 +729,9 @@
         "groups": {
             "strategic": "Strategic Rewards",
             "external": "Rewards for the connected ethereum account"
-        }
+        },
+        "Rewards": "Rewards",
+        "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
         "default": "@:ethereumText provider",
@@ -820,5 +831,44 @@
         "payoff": "You would have to use the Bridge to get XOR from other networks, get sent XOR from another SORA account, or swap any other token already in your account into XOR.",
         "button": "Yes, I understand the risk"
     },
-    "blockNumberText": "Block number"
+    "blockNumberText": "Block number",
+    "referralProgram": {
+        "title": "Referral Program",
+        "connectAccount": "To invite users you need to connect your SORA account.",
+        "bondedXOR": "XOR Bonded",
+        "referralsNumber": "{number} referrals",
+        "startInviting": "To start inviting, bond any amount of XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Learn more<\/a>",
+        "preview": "Invite new users and get 10% from their transaction fees.<br \/>To start, bond any amount of XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
+        "deposit": "Deposit",
+        "balance": "Balance",
+        "networkFee": "@:networkFeeText",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "insufficientBondedBalance": "Insufficient bonded balance",
+        "action": {
+            "connectWallet": "@:connectWalletText",
+            "empty": "Enter amount of {tokenSymbol}",
+            "startInviting": "Bond {tokenSymbol} to start inviting",
+            "bondMore": "Bond More",
+            "bond": "Bond",
+            "unbond": "Unbond",
+            "copyLink": "Copy link"
+        },
+        "transactionDetails": "Transaction Details",
+        "receivedRewards": "Received rewards",
+        "invitationLink": "Invitation link",
+        "successCopy": "Referral link is copied to the clipboard",
+        "bondTitle": "Bond XOR",
+        "unbondTitle": "Unbond XOR",
+        "confirm": {
+            "text": "Confirm",
+            "bond": "Confirm bond",
+            "unbond": "Confirm unbond",
+            "inviteTitle": "You’ve been invited to Polkaswap by a referral",
+            "inviteDescription": "When you’ll pay a fee for transaction, 10% will go to your referral. It’s completely free of charge.",
+            "signInvitation": "Sign approval transaction",
+            "freeOfCharge": "This action is free of charge"
+        }
+    },
+    "transactionDetailsText": "Transaction Details"
 }

@@ -24,28 +24,7 @@
       </div>
     </div>
     <s-divider class="s-divider--dialog" />
-    <info-line
-      :label="t('bridge.soraNetworkFee')"
-      :label-tooltip="t('networkFeeTooltipText')"
-      :value="formattedSoraNetworkFee"
-      :asset-symbol="KnownSymbols.XOR"
-      :fiat-value="getFiatAmountByCodecString(soraNetworkFee)"
-      is-formatted
-    />
-    <info-line
-      :label="t('bridge.ethereumNetworkFee')"
-      :label-tooltip="t('ethNetworkFeeTooltipText')"
-      :value="formattedEvmNetworkFee"
-      :asset-symbol="currentEvmTokenSymbol"
-      is-formatted
-    />
-    <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
-    <!-- <info-line
-      :label="t('bridge.total')"
-      :label-tooltip="t('bridge.tooltipValue')"
-      :value="`~${soraTotal}`"
-      :asset-symbol="KnownSymbols.XOR"
-    /> -->
+    <bridge-transaction-details />
     <template #footer>
       <s-button
         type="primary"
@@ -77,7 +56,8 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import DialogMixin from '@/components/mixins/DialogMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import DialogBase from '@/components/DialogBase.vue';
-import { EvmSymbol, ZeroStringValue } from '@/consts';
+import { EvmSymbol, ZeroStringValue, Components } from '@/consts';
+import { lazyComponent } from '@/router';
 
 import type { Asset } from '@sora-substrate/util';
 
@@ -85,6 +65,7 @@ import type { Asset } from '@sora-substrate/util';
   components: {
     DialogBase,
     InfoLine: components.InfoLine,
+    BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
   },
 })
 export default class ConfirmBridgeTransactionDialog extends Mixins(

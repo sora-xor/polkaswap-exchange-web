@@ -40,7 +40,10 @@
             "RemoveLiquidity": "Dihapus {amount} {symbol} dan {amount2} {symbol2}",
             "CreatePair": "Disuplai {amount} {symbol} dan {amount2} {symbol2}",
             "RegisterAsset": "Aset {symbol} terdaftar",
-            "ClaimRewards": "Reward berhasil diklaim {rewards}"
+            "ClaimRewards": "Reward berhasil diklaim {rewards}",
+            "ReferralReserveXor": "Terikat XOR dengan sukses",
+            "ReferralUnreserveXor": "XOR tidak terikat berhasil",
+            "ReferralSetInvitedUser": "Referensi berhasil disetel"
         },
         "error": {
             "Transfer": "Gagal mengirim {amount} {symbol} ke {address}",
@@ -49,8 +52,14 @@
             "RemoveLiquidity": "Gagal menghapus {amount} {symbol} dan {amount2} {symbol2}",
             "CreatePair": "Gagal menyuplai {amount} {symbol} dan {amount2} {symbol2}",
             "RegisterAsset": "Gagal mendaftarkan aset {symbol}",
-            "ClaimRewards": "Gagal mengklaim reward {rewards}"
-        }
+            "ClaimRewards": "Gagal mengklaim reward {rewards}",
+            "ReferralReserveXor": "Gagal mengikat XOR",
+            "ReferralUnreserveXor": "Gagal melepaskan ikatan XOR",
+            "ReferralSetInvitedUser": "Gagal menyetel rujukan"
+        },
+        "ReferralReserveXor": "Ikatan XOR",
+        "ReferralUnreserveXor": "Lepaskan ikatan XOR",
+        "ReferralSetInvitedUser": "Tetapkan Rujukan"
     },
     "polkadotjs": {
         "noExtensions": "Tidak ada ekstensi Polkadot.js yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",
@@ -720,7 +729,9 @@
         "groups": {
             "strategic": "Imbalan Strategis",
             "external": "Hadiah untuk akun ethereum yang terhubung"
-        }
+        },
+        "Rewards": "Hadiah",
+        "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
         "default": "@:ethereumText penyedia",
@@ -820,5 +831,44 @@
         "payoff": "Anda harus menggunakan Bridge untuk mendapatkan XOR dari jaringan lain, mengirim XOR dari akun SORA lain, atau menukar token lain yang sudah ada di akun Anda ke XOR.",
         "button": "Ya, saya mengerti risikonya"
     },
-    "blockNumberText": "Nomor blok"
+    "blockNumberText": "Nomor blok",
+    "referralProgram": {
+        "title": "Program Rujukan",
+        "connectAccount": "Untuk mengundang pengguna, Anda perlu menghubungkan akun SORA Anda.",
+        "bondedXOR": "Ikatan XOR",
+        "referralsNumber": "{number} rujukan",
+        "startInviting": "Untuk mulai mengundang, ikat sejumlah XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\"> Pelajari lebih lanjut <\/a>",
+        "preview": "Undang pengguna baru dan dapatkan 10% dari biaya transaksi mereka.<br \/>Untuk mulai, beri obligasi dalam jumlah XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
+        "deposit": "Deposit",
+        "balance": "Saldo",
+        "networkFee": "@:networkFeeText",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "insufficientBondedBalance": "Saldo terikat tidak mencukupi",
+        "action": {
+            "connectWallet": "@:connectWalletText",
+            "empty": "Masukkan jumlah {tokenSymbol}",
+            "startInviting": "Ikatan {tokenSymbol} untuk mulai mengundang",
+            "bondMore": "Ikatan Lebih Banyak",
+            "bond": "Ikatan",
+            "unbond": "Tidak terikat",
+            "copyLink": "Salin link"
+        },
+        "transactionDetails": "Rincian transaksi",
+        "receivedRewards": "Hadiah yang diterima",
+        "invitationLink": "Link undangan",
+        "successCopy": "Tautan rujukan disalin ke papan klip",
+        "bondTitle": "Ikatan XOR",
+        "unbondTitle": "Lepaskan ikatan XOR",
+        "confirm": {
+            "text": "Konfirmasi",
+            "bond": "Konfirmasi ikatan",
+            "unbond": "Konfirmasi pelepasan ikatan",
+            "inviteTitle": "Anda telah diundang ke Polkaswap oleh referensi",
+            "inviteDescription": "Ketika Anda akan membayar biaya untuk transaksi, 10% akan masuk ke referral Anda. Ini benar-benar gratis.",
+            "signInvitation": "Menandatangani transaksi persetujuan",
+            "freeOfCharge": "Tindakan ini tidak dipungut biaya"
+        }
+    },
+    "transactionDetailsText": "Detil transaksi"
 }
