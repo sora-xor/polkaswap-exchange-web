@@ -201,6 +201,7 @@ import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { KnownSymbols, FPNumber, Operation, quote, XOR } from '@sora-substrate/util';
 import type { Subscription } from '@polkadot/x-rxjs';
 import type {
+  Asset,
   AccountAsset,
   CodecString,
   LiquiditySourceTypes,
@@ -501,8 +502,8 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
 
     try {
       const { amount, fee, rewards, amountWithoutImpact } = quote(
-        this.tokenFrom.address,
-        this.tokenTo.address,
+        this.tokenFrom as Asset,
+        this.tokenTo as Asset,
         value,
         !this.isExchangeB,
         [this.liquiditySource].filter(Boolean),
@@ -510,7 +511,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
         this.payload
       );
 
-      setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
+      setOppositeValue(this.getStringFromCodec(amount));
       this.setAmountWithoutImpact(amountWithoutImpact);
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);
