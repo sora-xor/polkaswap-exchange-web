@@ -1,5 +1,5 @@
 <template>
-  <component :is="infoOnly ? 'div' : 'transaction-details'" class="info-line-container">
+  <transaction-details :info-only="infoOnly" class="info-line-container">
     <info-line
       v-if="shareOfPool"
       value-can-be-hidden
@@ -26,7 +26,7 @@
       :fiat-value="getFiatAmountByCodecString(networkFee)"
       is-formatted
     />
-  </component>
+  </transaction-details>
 </template>
 
 <script lang="ts">

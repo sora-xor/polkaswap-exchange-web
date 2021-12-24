@@ -1,5 +1,5 @@
 <template>
-  <component :is="infoOnly ? 'div' : 'transaction-details'" class="info-line-container">
+  <transaction-details :info-only="infoOnly" class="info-line-container">
     <div
       v-if="areTokensSelected && isAvailable && !isNotFirstLiquidityProvider && emptyAssets"
       class="info-line-container"
@@ -51,7 +51,7 @@
       />
       <info-line value-can-be-hidden :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
     </div>
-  </component>
+  </transaction-details>
 </template>
 
 <script lang="ts">

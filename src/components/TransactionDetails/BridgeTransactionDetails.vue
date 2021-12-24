@@ -1,5 +1,5 @@
 <template>
-  <component :is="infoOnly ? 'div' : 'transaction-details'">
+  <transaction-details :info-only="infoOnly">
     <info-line
       :label="t('bridge.soraNetworkFee')"
       :label-tooltip="t('networkFeeTooltipText')"
@@ -15,7 +15,7 @@
       :asset-symbol="currentEvmTokenSymbol"
       is-formatted
     />
-  </component>
+  </transaction-details>
 </template>
 
 <script lang="ts">
