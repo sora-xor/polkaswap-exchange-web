@@ -1,5 +1,5 @@
 <template>
-  <component :is="infoOnly ? 'div' : 'transaction-details'" class="info-line-container">
+  <transaction-details :info-only="infoOnly" class="info-line-container">
     <div class="info-line-container">
       <p class="info-line-container__title">{{ t('createPair.pricePool') }}</p>
       <info-line
@@ -38,7 +38,7 @@
       />
       <info-line :label="t('createPair.shareOfPool')" value="100%" />
     </div>
-  </component>
+  </transaction-details>
 </template>
 
 <script lang="ts">

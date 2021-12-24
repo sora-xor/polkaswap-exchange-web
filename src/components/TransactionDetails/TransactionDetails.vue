@@ -1,5 +1,8 @@
 <template>
-  <div class="transaction-details-wrapper">
+  <div v-if="infoOnly">
+    <slot />
+  </div>
+  <div v-else class="transaction-details-wrapper">
     <s-collapse>
       <s-collapse-item>
         <template #title>
@@ -12,11 +15,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 import TranslationMixin from '../mixins/TranslationMixin';
 
 @Component
-export default class TransactionDetails extends Mixins(TranslationMixin) {}
+export default class TransactionDetails extends Mixins(TranslationMixin) {
+  @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
+}
 </script>
 
 <style lang="scss">

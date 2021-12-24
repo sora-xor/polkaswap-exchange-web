@@ -1,5 +1,5 @@
 <template>
-  <component :is="infoOnly ? 'div' : 'transaction-details'">
+  <transaction-details :info-only="infoOnly">
     <div class="swap-info-container">
       <info-line v-for="{ id, label, value } in priceValues" :key="id" :label="label" :value="value" />
       <info-line
@@ -39,7 +39,7 @@
         is-formatted
       />
     </div>
-  </component>
+  </transaction-details>
 </template>
 
 <script lang="ts">
