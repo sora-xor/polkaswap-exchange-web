@@ -22,6 +22,7 @@ export default class NetworkFeeWarningDialog extends Mixins(DialogMixin, Transla
 
   handleConfirm(): void {
     this.closeDialog();
+    this.$emit('confirm');
   }
 }
 </script>

@@ -127,7 +127,8 @@
             "reserved": "- Réservé",
             "total": "Total"
         },
-        "totalAssetsValue": "Valeur total de vos actifs:"
+        "totalAssetsValue": "Valeur total de vos actifs:",
+        "details": "Détails"
     },
     "asset": {
         "remove": "Retirer l'actif"
@@ -818,5 +819,6 @@
         "info": "Votre solde XOR sera inférieur à {fee} XOR après cette transaction. Vous ne pourrez pas payer les frais de réseau pour une autre transaction.",
         "payoff": "Vous devrez utiliser le pont pour obtenir XOR d'autres réseaux, recevoir XOR d'un autre compte SORA ou échanger tout autre jeton déjà présent dans votre compte en XOR.",
         "button": "Oui, je comprends le risque"
-    }
+    },
+    "blockNumberText": "Numéro de bloc"
 }

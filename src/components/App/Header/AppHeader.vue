@@ -16,8 +16,8 @@
     </div>
     <div class="app-controls s-flex">
       <market-maker-countdown />
-      <s-button type="action" class="theme-control s-pressed" :tooltip="hideBalancesTooltip" @click="toggleHideBalance">
-        <s-icon :name="hideBalancesIcon" :size="iconSize" />
+      <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openNodeSelectionDialog">
+        <token-logo class="node-control__logo" v-bind="nodeLogo" />
       </s-button>
       <account-button :disabled="loading" @click="goTo(PageNames.Wallet)" />
       <s-button
@@ -36,8 +36,8 @@
           @select="handleSelectHeaderMenu"
         >
           <template #menu>
-            <s-dropdown-item class="header-menu__item" icon="symbols-24" :value="HeaderMenuType.Node">
-              {{ t('headerMenu.selectNode') }}
+            <s-dropdown-item class="header-menu__item" :icon="hideBalancesIcon" :value="HeaderMenuType.HideBalances">
+              {{ hideBalancesText }}
             </s-dropdown-item>
             <s-dropdown-item class="header-menu__item" :icon="themeIcon" :value="HeaderMenuType.Theme">
               {{ t('headerMenu.switchTheme', { theme: t(themeTitle) }) }}
@@ -64,6 +64,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
+import { KnownSymbols } from '@sora-substrate/util';
 import { components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
@@ -73,10 +74,10 @@ import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import PolkaswapLogo from '@/components/logo/Polkaswap.vue';
 
 import { lazyComponent, goTo } from '@/router';
-import { PageNames, Components } from '@/consts';
+import { PageNames, Components, LogoSize } from '@/consts';
 
 enum HeaderMenuType {
-  Node = 'node',
+  HideBalances = 'hide-balances',
   Theme = 'theme',
   Language = 'language',
 }
@@ -94,6 +95,7 @@ enum HeaderMenuType {
     MoonpayNotification: lazyComponent(Components.MoonpayNotification),
     MoonpayHistoryButton: lazyComponent(Components.MoonpayHistoryButton),
     MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
+    TokenLogo: lazyComponent(Components.TokenLogo),
   },
 })
 export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin) {
@@ -122,6 +124,13 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
     return this.t('selectNodeText');
   }
 
+  get nodeLogo() {
+    return {
+      size: LogoSize.MEDIUM,
+      tokenSymbol: KnownSymbols.XOR,
+    };
+  }
+
   get themeIcon(): string {
     return this.libraryTheme === Theme.LIGHT ? 'various-moon-24' : 'various-brightness-low-24';
   }
@@ -131,11 +140,15 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
   }
 
   get hideBalancesIcon(): string {
-    return this.shouldBalanceBeHidden ? 'basic-filterlist-24' : 'basic-eye-no-24';
+    return this.shouldBalanceBeHidden ? 'basic-eye-no-24' : 'basic-filterlist-24';
   }
 
-  get hideBalancesTooltip(): string {
+  get hideBalancesText(): string {
     return this.t(`headerMenu.${this.shouldBalanceBeHidden ? 'showBalances' : 'hideBalances'}`);
+  }
+
+  openNodeSelectionDialog(): void {
+    this.setSelectNodeDialogVisibility(true);
   }
 
   async openMoonpayDialog(): Promise<void> {
@@ -158,8 +171,8 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 
   handleSelectHeaderMenu(value: HeaderMenuType): void {
     switch (value) {
-      case HeaderMenuType.Node:
-        this.setSelectNodeDialogVisibility(true);
+      case HeaderMenuType.HideBalances:
+        this.toggleHideBalance();
         break;
       case HeaderMenuType.Theme:
         switchTheme();
@@ -266,14 +279,6 @@ $icon-size: 28px;
   padding: $inner-spacing-mini;
   min-height: $header-height;
   position: relative;
-  @include tablet {
-    padding: $inner-spacing-mini $inner-spacing-medium;
-
-    &:after {
-      left: $inner-spacing-medium;
-      right: $inner-spacing-medium;
-    }
-  }
   &:after {
     content: '';
     position: absolute;
@@ -282,6 +287,14 @@ $icon-size: 28px;
     left: $inner-spacing-mini;
     right: $inner-spacing-mini;
     background-color: var(--s-color-base-border-secondary);
+  }
+  @include tablet {
+    padding: $inner-spacing-mini $inner-spacing-medium;
+
+    &:after {
+      left: $inner-spacing-medium;
+      right: $inner-spacing-medium;
+    }
   }
 }
 
@@ -292,6 +305,14 @@ $icon-size: 28px;
 
   & > *:not(:last-child) {
     margin-right: $inner-spacing-mini;
+  }
+
+  .node-control {
+    @include element-size('token-logo', 28px);
+    &__logo {
+      display: block;
+      margin: auto;
+    }
   }
 
   .el-button {

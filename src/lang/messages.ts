@@ -54,6 +54,7 @@ export default {
   addressText: 'Address',
   forText: 'for',
   learnMoreText: 'Learn more',
+  blockNumberText: 'Block number',
   [Theme.LIGHT]: 'Light',
   [Theme.DARK]: 'Dark',
   pageTitle: {
