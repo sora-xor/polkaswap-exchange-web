@@ -187,13 +187,13 @@ import { Action } from 'vuex-class';
 import { FPNumber, Operation, XOR } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
-import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin';
+import TokenPairMixinInstance from '@/components/mixins/TokenPairMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
 const namespace = 'createPair';
-const TokenPairMixin = CreateTokenPairMixin(namespace);
+const TokenPairMixin = TokenPairMixinInstance(namespace);
 
 @Component({
   components: {
@@ -252,10 +252,6 @@ export default class CreatePair extends Mixins(mixins.NetworkFeeWarningMixin, To
 
   confirmCreatePair(): Promise<void> {
     return this.handleConfirm(this.createPair);
-  }
-
-  destroyed(): void {
-    this.onDestroyed();
   }
 }
 </script>

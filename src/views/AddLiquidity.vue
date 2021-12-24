@@ -183,7 +183,7 @@ import { Action, Getter } from 'vuex-class';
 import { FPNumber, AccountLiquidity, Operation, XOR } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
-import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin';
+import TokenPairMixinInstance from '@/components/mixins/TokenPairMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 
 import router, { lazyComponent } from '@/router';
@@ -191,7 +191,7 @@ import { Components } from '@/consts';
 
 const namespace = 'addLiquidity';
 
-const TokenPairMixin = CreateTokenPairMixin(namespace);
+const TokenPairMixin = TokenPairMixinInstance(namespace);
 
 @Component({
   components: {
@@ -290,10 +290,6 @@ export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, 
 
   handleConfirmAddLiquidity(): Promise<void> {
     return this.handleConfirm(this.addLiquidity);
-  }
-
-  destroyed(): void {
-    this.onDestroyed();
   }
 }
 </script>

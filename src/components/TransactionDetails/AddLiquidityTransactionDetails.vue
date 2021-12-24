@@ -60,7 +60,7 @@ import { Getter } from 'vuex-class';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { AccountLiquidity, FPNumber, CodecString } from '@sora-substrate/util';
 
-import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin';
+import BaseTokenPairMixinInstance from '../mixins/BaseTokenPairMixin';
 import TranslationMixin from '../mixins/TranslationMixin';
 
 import { lazyComponent } from '@/router';
@@ -68,7 +68,7 @@ import { Components } from '@/consts';
 
 const namespace = 'addLiquidity';
 
-const TokenPairMixin = CreateTokenPairMixin(namespace);
+const BaseTokenPairMixin = BaseTokenPairMixinInstance(namespace);
 
 @Component({
   components: {
@@ -76,7 +76,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace);
     TransactionDetails: lazyComponent(Components.TransactionDetails),
   },
 })
-export default class AddLiquidityTransactionDetails extends Mixins(TranslationMixin, TokenPairMixin) {
+export default class AddLiquidityTransactionDetails extends Mixins(TranslationMixin, BaseTokenPairMixin) {
   @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean;
   @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity;
   @Getter('shareOfPool', { namespace }) shareOfPool!: string;
