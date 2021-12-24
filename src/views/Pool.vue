@@ -155,7 +155,7 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
   }
 
   getSecondBalance(liquidityItem: AccountLiquidity): string {
-    return this.formatCodecNumber(liquidityItem.secondBalance, liquidityItem.decimals);
+    return this.formatCodecNumber(liquidityItem.secondBalance, liquidityItem.decimals2);
   }
 
   getBalance(liquidityItem: AccountLiquidity): string {
