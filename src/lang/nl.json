@@ -869,5 +869,6 @@
             "signInvitation": "Goedkeuringstransactie ondertekenen",
             "freeOfCharge": "Deze actie is gratis"
         }
-    }
+    },
+    "transactionDetailsText": "Transactie Details"
 }

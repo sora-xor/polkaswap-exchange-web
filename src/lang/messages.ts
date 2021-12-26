@@ -55,6 +55,7 @@ export default {
   forText: 'for',
   learnMoreText: 'Learn more',
   blockNumberText: 'Block number',
+  transactionDetailsText: 'Transaction Details',
   [Theme.LIGHT]: 'Light',
   [Theme.DARK]: 'Dark',
   pageTitle: {

@@ -869,5 +869,6 @@
             "signInvitation": "Подписать транзакцию",
             "freeOfCharge": "Данная транзакция бесплатна"
         }
-    }
+    },
+    "transactionDetailsText": "Детали транзакции"
 }

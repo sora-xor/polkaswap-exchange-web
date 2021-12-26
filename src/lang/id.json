@@ -869,5 +869,6 @@
             "signInvitation": "Menandatangani transaksi persetujuan",
             "freeOfCharge": "Tindakan ini tidak dipungut biaya"
         }
-    }
+    },
+    "transactionDetailsText": "Detil transaksi"
 }

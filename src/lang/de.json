@@ -869,5 +869,6 @@
             "signInvitation": "Genehmigungstransaktion unterschreiben",
             "freeOfCharge": "Diese Aktion ist kostenlos"
         }
-    }
+    },
+    "transactionDetailsText": "Transaktionsdetails"
 }

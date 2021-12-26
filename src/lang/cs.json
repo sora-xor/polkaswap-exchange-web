@@ -869,5 +869,6 @@
             "signInvitation": "Podepsat schvalovací transakci",
             "freeOfCharge": "Tato akce je bezplatná"
         }
-    }
+    },
+    "transactionDetailsText": "Detaily transakce"
 }

@@ -869,5 +869,6 @@
             "signInvitation": "Signer godkjenningstransaksjonen",
             "freeOfCharge": "Denne handlingen er gratis"
         }
-    }
+    },
+    "transactionDetailsText": "Transaksjonsdetaljer"
 }

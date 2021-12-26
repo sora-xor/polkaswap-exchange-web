@@ -869,5 +869,6 @@
             "signInvitation": "Ստորագրեք հաստատման գործարքը",
             "freeOfCharge": "Այս գործողությունը անվճար է"
         }
-    }
+    },
+    "transactionDetailsText": "Գործարքի մանրամասները"
 }

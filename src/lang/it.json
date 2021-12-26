@@ -869,5 +869,6 @@
             "signInvitation": "Firma la transazione di approvazione",
             "freeOfCharge": "Questa azione è gratuita"
         }
-    }
+    },
+    "transactionDetailsText": "Dettagli di Transazione"
 }

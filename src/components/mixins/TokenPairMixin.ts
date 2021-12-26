@@ -1,9 +1,10 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
-import { KnownSymbols, CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import type { CodecString } from '@sora-substrate/util';
 
 import ConfirmDialogMixin from './ConfirmDialogMixin';
+import BaseTokenPairMixinInstance from './BaseTokenPairMixin';
 
 import router from '@/router';
 import { PageNames } from '@/consts';
@@ -16,25 +17,17 @@ import {
   getAssetBalance,
 } from '@/utils';
 
-const CreateTokenPairMixin = (namespace: string) => {
+const TokenPairMixinInstance = (namespace: string) => {
+  const BaseTokenPairMixin = BaseTokenPairMixinInstance(namespace);
+
   @Component
-  class TokenPairMixin extends Mixins(mixins.TransactionMixin, mixins.FormattedAmountMixin, ConfirmDialogMixin) {
-    readonly KnownSymbols = KnownSymbols;
-
+  class TokenPairMixin extends Mixins(mixins.TransactionMixin, BaseTokenPairMixin, ConfirmDialogMixin) {
     @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any;
-    @Getter('firstToken', { namespace }) firstToken!: any;
-    @Getter('secondToken', { namespace }) secondToken!: any;
-    @Getter('firstTokenValue', { namespace }) firstTokenValue!: string;
-    @Getter('secondTokenValue', { namespace }) secondTokenValue!: string;
 
-    @Getter('isAvailable', { namespace }) isAvailable!: boolean;
     @Getter('minted', { namespace }) minted!: CodecString;
-    @Getter('price', { namespace: 'prices' }) price!: string;
-    @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string;
 
     @Getter slippageTolerance!: string;
     @Getter isLoggedIn!: boolean;
-    @Getter networkFees!: NetworkFeesObject;
 
     @Action('setFirstTokenAddress', { namespace }) setFirstTokenAddress;
     @Action('setSecondTokenAddress', { namespace }) setSecondTokenAddress;
@@ -65,18 +58,6 @@ const CreateTokenPairMixin = (namespace: string) => {
 
     get formattedMinted(): string {
       return this.formatCodecNumber(this.minted);
-    }
-
-    get networkFee(): CodecString {
-      return this.networkFees[Operation[namespace.charAt(0).toUpperCase() + namespace.slice(1)]];
-    }
-
-    get formattedFee(): string {
-      return this.formatCodecNumber(this.networkFee);
-    }
-
-    get areTokensSelected(): boolean {
-      return this.firstToken && this.secondToken;
     }
 
     get isEmptyBalance(): boolean {
@@ -134,22 +115,6 @@ const CreateTokenPairMixin = (namespace: string) => {
       return this.getAssetFiatPrice(this.secondToken);
     }
 
-    get fiatFirstAmount(): Nullable<string> {
-      return this.getFiatAmount(this.firstTokenValue, this.firstToken);
-    }
-
-    get fiatSecondAmount(): Nullable<string> {
-      return this.getFiatAmount(this.secondTokenValue, this.secondToken);
-    }
-
-    get formattedPrice(): string {
-      return this.formatStringValue(this.price);
-    }
-
-    get formattedPriceReversed(): string {
-      return this.formatStringValue(this.priceReversed);
-    }
-
     async handleMaxValue(token: any, setValue: (v: any) => void): Promise<void> {
       setValue(getMaxValue(token, this.networkFee));
       this.updatePrices();
@@ -196,4 +161,4 @@ const CreateTokenPairMixin = (namespace: string) => {
   return TokenPairMixin;
 };
 
-export default CreateTokenPairMixin;
+export default TokenPairMixinInstance;
