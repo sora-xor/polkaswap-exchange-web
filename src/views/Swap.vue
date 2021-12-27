@@ -498,6 +498,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
 
     const setOppositeValue = this.isExchangeB ? this.setFromValue : this.setToValue;
     const resetOppositeValue = this.isExchangeB ? this.resetFieldFrom : this.resetFieldTo;
+    const oppositeToken = this.isExchangeB ? this.tokenFrom : this.tokenTo;
 
     try {
       const { amount, fee, rewards, amountWithoutImpact } = quote(
@@ -510,7 +511,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
         this.payload
       );
 
-      setOppositeValue(this.getStringFromCodec(amount));
+      setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
       this.setAmountWithoutImpact(amountWithoutImpact);
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);

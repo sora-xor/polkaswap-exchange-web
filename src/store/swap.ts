@@ -164,11 +164,11 @@ const getters = {
 
     if (!token || !value || !amountWithoutImpact) return ZeroStringValue;
 
-    const withoutImpact = FPNumber.fromCodecValue(amountWithoutImpact, token.decimals);
+    const withoutImpact = FPNumber.fromCodecValue(amountWithoutImpact);
 
     if (withoutImpact.isZero()) return ZeroStringValue;
 
-    const amount = new FPNumber(value, token.decimals);
+    const amount = FPNumber.fromCodecValue(new FPNumber(value, token.decimals).toCodecString());
     const impact = isExchangeB ? withoutImpact.div(amount) : amount.div(withoutImpact);
     const result = new FPNumber(1).sub(impact).mul(FPNumber.HUNDRED);
 
