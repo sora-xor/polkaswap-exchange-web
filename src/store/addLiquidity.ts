@@ -243,8 +243,8 @@ const actions = {
         commit(
           types.SET_SECOND_TOKEN_VALUE,
           new FPNumber(value)
-            .mul(FPNumber.fromCodecValue(getters.reserveB))
-            .div(FPNumber.fromCodecValue(getters.reserveA))
+            .mul(FPNumber.fromCodecValue(getters.reserveB, getters.secondToken.decimals))
+            .div(FPNumber.fromCodecValue(getters.reserveA, getters.firstToken.decimals))
             .toString()
         );
       }
@@ -265,8 +265,8 @@ const actions = {
         commit(
           types.SET_FIRST_TOKEN_VALUE,
           new FPNumber(value)
-            .mul(FPNumber.fromCodecValue(getters.reserveA))
-            .div(FPNumber.fromCodecValue(getters.reserveB))
+            .mul(FPNumber.fromCodecValue(getters.reserveA, getters.firstToken.decimals))
+            .div(FPNumber.fromCodecValue(getters.reserveB, getters.secondToken.decimals))
             .toString()
         );
       }
