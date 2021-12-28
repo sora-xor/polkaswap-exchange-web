@@ -27,6 +27,10 @@ function goTo(name: PageNames): void {
   router.push({ name });
 }
 
+function showTechnicalWork(): void {
+  goTo(PageNames.TechnicalWork);
+}
+
 const routes: Array<RouteConfig> = [
   {
     path: '/technical-work',
@@ -161,5 +165,5 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
-export { lazyComponent, lazyView, lazyLayout, goTo };
+export { lazyComponent, lazyView, lazyLayout, goTo, showTechnicalWork };
 export default router;

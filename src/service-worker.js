@@ -45,8 +45,6 @@ self.addEventListener('fetch', (e) => {
       .then((response) => {
         if (response) return response;
 
-        console.log('fetch', e.request.url);
-
         return fetch(e.request)
           .then((response) =>
             caches.open(cacheName).then((cache) => {

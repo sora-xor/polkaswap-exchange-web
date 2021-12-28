@@ -3,7 +3,7 @@
     <technical-work-background class="technical-work-background" />
     <div class="technical-work-main">
       <div class="technical-work-content">
-        <app-logo-button class="technical-work-logo" color="white" />
+        <app-logo-button class="technical-work-logo" color="white" @click="navigateToApp" />
         <div class="technical-work-title">Technical Work in Progress</div>
       </div>
       <div class="technical-work-footer">
@@ -20,6 +20,9 @@ import AppLogoButton from '@/components/App/Header/AppLogoButton.vue';
 import AppPoweredBySora from '@/components/App/Footer/PoweredBySora.vue';
 import TechnicalWorkBackground from '@/components/TechnicalWork/Background.vue';
 
+import { goTo } from '@/router';
+import { PageNames } from '@/consts';
+
 @Component({
   components: {
     AppLogoButton,
@@ -27,7 +30,11 @@ import TechnicalWorkBackground from '@/components/TechnicalWork/Background.vue';
     TechnicalWorkBackground,
   },
 })
-export default class TechnicalWork extends Vue {}
+export default class TechnicalWork extends Vue {
+  navigateToApp(): void {
+    goTo(PageNames.Swap);
+  }
+}
 </script>
 
 <style lang="scss">

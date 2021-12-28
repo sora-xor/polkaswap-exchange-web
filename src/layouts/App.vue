@@ -38,12 +38,10 @@ import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import AppUpdateMixin from '@/components/mixins/AppUpdateMixin';
 
-import { PageNames, Components, Language } from '@/consts';
-import axiosInstance from '@/api';
+import { PageNames, Components } from '@/consts';
 import { goTo, lazyComponent } from '@/router';
-import { getLocale } from '@/lang';
+
 import type { ConnectToNodeOptions } from '@/types/nodes';
-import type { SubNetwork } from '@/utils/ethers-util';
 
 @Component({
   components: {
@@ -66,26 +64,20 @@ export default class AppLayout extends Mixins(mixins.TransactionMixin, NodeError
   @Getter blockNumber!: number;
 
   // Wallet
+  @Action updateAccountAssets!: AsyncVoidFn;
   @Action resetAccountAssetsSubscription!: AsyncVoidFn;
   @Action trackActiveTransactions!: AsyncVoidFn;
   @Action resetActiveTransactions!: AsyncVoidFn;
+  @Action subscribeOnRuntimeVersion!: AsyncVoidFn;
   @Action resetRuntimeVersionSubscription!: AsyncVoidFn;
   @Action resetFiatPriceAndApySubscription!: AsyncVoidFn;
 
-  @Action updateAccountAssets!: AsyncVoidFn;
-  @Action setSoraNetwork!: (networkType: string) => Promise<void>; // wallet
-  @Action setDefaultNodes!: (nodes: any) => Promise<void>;
-  @Action setNetworkChainGenesisHash!: (hash: string) => Promise<void>;
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
-  @Action setFaucetUrl!: (url: string) => Promise<void>;
-  @Action setLanguage!: (lang: Language) => Promise<void>;
-  @Action setApiKeys!: (options: any) => Promise<void>;
-  @Action setFeatureFlags!: (options: any) => Promise<void>;
-  @Action setBlockNumber!: () => Promise<void>;
+  @Action subscribeOnBlockNumber!: () => Promise<void>;
   @Action resetBlockNumberSubscription!: () => Promise<void>;
+
   @Action('unsubscribeAccountMarketMakerInfo', { namespace: 'rewards' }) unsubscribeMarketMakerInfo!: AsyncVoidFn;
-  @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>;
-  @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
+
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History): void {
     this.handleChangeTransaction(value);
@@ -94,37 +86,18 @@ export default class AppLayout extends Mixins(mixins.TransactionMixin, NodeError
   @Watch('nodeIsConnected')
   private updateConnectionSubsriptions(nodeConnected: boolean): void {
     if (nodeConnected) {
+      this.subscribeOnRuntimeVersion();
+      this.subscribeOnBlockNumber();
       this.updateAccountAssets();
     } else {
       this.resetAccountAssetsSubscription();
+      this.resetBlockNumberSubscription();
+      this.resetRuntimeVersionSubscription();
     }
   }
 
-  async created() {
-    await this.setLanguage(getLocale() as any);
-
-    await this.withLoading(async () => {
-      const { data } = await axiosInstance.get('/env.json');
-
-      if (!data.NETWORK_TYPE) {
-        throw new Error('NETWORK_TYPE is not set');
-      }
-
-      await this.setApiKeys(data?.API_KEYS);
-      await this.setFeatureFlags(data?.FEATURE_FLAGS);
-      await this.setSoraNetwork(data.NETWORK_TYPE);
-      await this.setDefaultNodes(data?.DEFAULT_NETWORKS);
-      await this.setSubNetworks(data.SUB_NETWORKS);
-      await this.setSmartContracts(data.SUB_NETWORKS);
-
-      if (data.FAUCET_URL) {
-        this.setFaucetUrl(data.FAUCET_URL);
-      }
-      if (data.CHAIN_GENESIS_HASH) {
-        await this.setNetworkChainGenesisHash(data.CHAIN_GENESIS_HASH);
-      }
-
-      // connection to node
+  async created(): Promise<void> {
+    await this.withParentLoading(async () => {
       await this.runAppConnectionToNode();
     });
 
@@ -169,8 +142,8 @@ export default class AppLayout extends Mixins(mixins.TransactionMixin, NodeError
     await this.resetFiatPriceAndApySubscription();
     await this.resetActiveTransactions();
     await this.resetAccountAssetsSubscription();
-    await this.resetRuntimeVersionSubscription();
     await this.resetBlockNumberSubscription();
+    await this.resetRuntimeVersionSubscription();
     await this.unsubscribeMarketMakerInfo();
     await connection.close();
   }

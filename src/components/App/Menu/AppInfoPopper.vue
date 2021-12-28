@@ -35,7 +35,7 @@
       </div>
       <div class="app-info__versions">
         <div>{{ app.name }} v{{ app.version }}</div>
-        <div v-if="specVersion">{{ t('soraText') }} v{{ specVersion }}</div>
+        <div v-if="runtimeVersion">{{ t('soraText') }} v{{ runtimeVersion }}</div>
       </div>
     </div>
     <template #reference>
@@ -46,7 +46,8 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { api, mixins } from '@soramitsu/soraneo-wallet-web';
+import { State } from 'vuex-class';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
@@ -54,18 +55,10 @@ import { app, SocialNetworkLinks } from '@/consts';
 
 @Component
 export default class AppInfoPopper extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+  @State((state) => state.Settings.runtimeVersion) runtimeVersion!: number; // wallet
+
   readonly SocialNetworkLinks = SocialNetworkLinks;
   readonly app = app;
-
-  specVersion: Nullable<number> = null;
-
-  created(): void {
-    this.withApi(() => {
-      const { specVersion } = api.api.consts.system.version;
-
-      this.specVersion = Number(specVersion);
-    });
-  }
 }
 </script>
 

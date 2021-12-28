@@ -3,8 +3,7 @@
 import { register } from 'register-service-worker';
 
 import store from '@/store';
-import { goTo } from '@/router';
-import { PageNames } from '@/consts';
+import { showTechnicalWork } from '@/router';
 
 if (process.env.NODE_ENV === 'production') {
   register(`${process.env.BASE_URL}service-worker.js`, {
@@ -21,7 +20,7 @@ if (process.env.NODE_ENV === 'production') {
         registration.installing.addEventListener('statechange', (event) => {
           if (event.target.state === 'redundant') {
             // redirect to tech page
-            goTo(PageNames.TechnicalWork);
+            showTechnicalWork();
             // unregister service worker
             registration.unregister();
           }

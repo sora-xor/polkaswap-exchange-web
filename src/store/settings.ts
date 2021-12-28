@@ -45,6 +45,8 @@ const types = flow(
     'SET_BLOCK_NUMBER_UPDATES',
     'RESET_BLOCK_NUMBER_UPDATES',
     'SET_APP_UPDATE_CALLBACK',
+    'SET_REQUIRED_RUNTIME_VERSION',
+    'SET_CURRENT_SPEC_VERSION',
   ]),
   map((x) => [x, x]),
   fromPairs
@@ -69,6 +71,8 @@ function initialState() {
     blockNumber: 0,
     blockNumberUpdates: null,
     appUpdateCallback: null,
+    // sora substrate spec version
+    requiredRuntimeVersion: 0,
   };
 }
 
@@ -104,6 +108,15 @@ const getters = {
   },
   blockNumber(state): number {
     return state.blockNumber;
+  },
+  // returns false, if runtime version is lower than set in env.json
+  runtimeVersionCompability(state, getters, rootState, rootGetters): boolean {
+    const networkV = rootState.Settings.runtimeVersion; // wallet
+    const appV = state.requiredRuntimeVersion;
+
+    if (!appV || !getters.nodeIsConnected || !rootGetters.isWalletLoaded) return true;
+
+    return appV <= networkV;
   },
 };
 
@@ -179,10 +192,13 @@ const mutations = {
   [types.SET_APP_UPDATE_CALLBACK](state, callback: VoidFunction) {
     state.appUpdateCallback = callback;
   },
+  [types.SET_REQUIRED_RUNTIME_VERSION](state, version: number) {
+    state.requiredRuntimeVersion = version;
+  },
 };
 
 const actions = {
-  async connectToNode({ commit, dispatch, state, rootGetters }, options: ConnectToNodeOptions = {}) {
+  async connectToNode({ commit, dispatch, state, getters, rootGetters }, options: ConnectToNodeOptions = {}) {
     if (!state.nodeConnectionAllowance) return;
 
     const { node, onError, ...restOptions } = options;
@@ -193,7 +209,7 @@ const actions = {
       await dispatch('setNode', { node: requestedNode, onError, ...restOptions });
 
       // wallet init & update flow
-      if (!rootGetters.isWalletLoaded) {
+      if (!rootGetters.isWalletLoaded && getters.runtimeVersionCompability) {
         try {
           await initWallet({ permissions: WalletPermissions });
           // TODO [tech]: maybe we should replace it, cuz it executes twice except bridge screens
@@ -267,8 +283,6 @@ const actions = {
       if (connectingNodeChanged()) return;
 
       console.info('Connected to node', connection.endpoint);
-
-      await dispatch('setBlockNumber');
 
       const nodeChainGenesisHash = connection.api.genesisHash.toHex();
 
@@ -376,7 +390,7 @@ const actions = {
   setFeatureFlags({ commit }, featureFlags) {
     commit(types.SET_FEATURE_FLAGS, featureFlags);
   },
-  setBlockNumber({ commit }) {
+  subscribeOnBlockNumber({ commit }) {
     commit(types.RESET_BLOCK_NUMBER_UPDATES);
 
     const blockNumberSubscription = api.getSystemBlockNumberObservable().subscribe((blockNumber) => {
@@ -390,6 +404,9 @@ const actions = {
   },
   setAppUpdateCallback({ commit }, callback: VoidFunction) {
     commit(types.SET_APP_UPDATE_CALLBACK, callback);
+  },
+  setRequiredRuntimeVersion({ commit }, version: number) {
+    commit(types.SET_REQUIRED_RUNTIME_VERSION, version);
   },
 };
 
