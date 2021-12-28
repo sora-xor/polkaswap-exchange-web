@@ -163,6 +163,12 @@ export enum Components {
   MoonpayNotification = 'Moonpay/MoonpayNotification',
   MoonpayConfirmation = 'Moonpay/MoonpayConfirmation',
   MoonpayHistoryButton = 'Moonpay/MoonpayHistoryButton',
+  TransactionDetails = 'TransactionDetails/TransactionDetails',
+  SwapTransactionDetails = 'TransactionDetails/SwapTransactionDetails',
+  AddLiquidityTransactionDetails = 'TransactionDetails/AddLiquidityTransactionDetails',
+  RemoveLiquidityTransactionDetails = 'TransactionDetails/RemoveLiquidityTransactionDetails',
+  BridgeTransactionDetails = 'TransactionDetails/BridgeTransactionDetails',
+  CreatePairTransactionDetails = 'TransactionDetails/CreatePairTransactionDetails',
 }
 
 interface SidebarMenuItem {
