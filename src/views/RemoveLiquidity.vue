@@ -37,7 +37,7 @@
         :decimals="(firstToken || {}).decimals"
         has-locale-string
         :delimiters="delimiters"
-        :max="getTokenMaxAmount(firstTokenBalance)"
+        :max="getTokenMaxAmount(firstTokenBalance, (firstToken || {}).decimals)"
         @input="handleTokenChange($event, setFirstTokenAmount)"
         @focus="setFocusedField('firstTokenAmount')"
         @blur="resetFocusedField"
@@ -72,7 +72,7 @@
         :decimals="(secondToken || {}).decimals"
         has-locale-string
         :delimiters="delimiters"
-        :max="getTokenMaxAmount(secondTokenBalance)"
+        :max="getTokenMaxAmount(secondTokenBalance, (secondToken || {}).decimals)"
         @input="handleTokenChange($event, setSecondTokenAmount)"
         @focus="setFocusedField('secondTokenAmount')"
         @blur="resetFocusedField"
@@ -290,8 +290,8 @@ export default class RemoveLiquidity extends Mixins(
 
   get isInsufficientBalance(): boolean {
     const balance = this.getFPNumberFromCodec(this.liquidityBalance);
-    const firstTokenBalance = this.getFPNumberFromCodec(this.firstTokenBalance);
-    const secondTokenBalance = this.getFPNumberFromCodec(this.secondTokenBalance);
+    const firstTokenBalance = this.getFPNumberFromCodec(this.firstTokenBalance, this.firstToken.decimals);
+    const secondTokenBalance = this.getFPNumberFromCodec(this.secondTokenBalance, this.secondToken.decimals);
     const amount = this.getFPNumber(this.liquidityAmount);
     const firstTokenAmount = this.getFPNumber(this.firstTokenAmount);
     const secondTokenAmount = this.getFPNumber(this.secondTokenAmount);
@@ -353,8 +353,8 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   private updatePrices(): void {
-    const firstTokenBalance = this.getFPNumberFromCodec(this.firstTokenBalance);
-    const secondTokenBalance = this.getFPNumberFromCodec(this.secondTokenBalance);
+    const firstTokenBalance = this.getFPNumberFromCodec(this.firstTokenBalance, this.firstToken.decimals);
+    const secondTokenBalance = this.getFPNumberFromCodec(this.secondTokenBalance, this.secondToken.decimals);
     this.getPrices({
       assetAAddress: this.firstTokenAddress ?? this.firstToken.address,
       assetBAddress: this.secondTokenAddress ?? this.secondToken.address,
