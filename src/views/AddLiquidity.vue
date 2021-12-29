@@ -117,6 +117,7 @@
           />
         </div>
       </s-float-input>
+      <slippage-tolerance class="slippage-tolerance-settings" />
       <s-button
         type="primary"
         class="action-button s-typography-button--large"
@@ -139,63 +140,12 @@
           {{ t('createPair.supply') }}
         </template>
       </s-button>
-      <slippage-tolerance class="slippage-tolerance-settings" />
+      <add-liquidity-transaction-details
+        v-if="areTokensSelected && isAvailable && (!emptyAssets || (liquidityInfo || {}).balance)"
+        :info-only="false"
+        class="info-line-container"
+      />
     </s-form>
-
-    <div
-      v-if="areTokensSelected && isAvailable && !isNotFirstLiquidityProvider && emptyAssets"
-      class="info-line-container"
-    >
-      <p class="info-line-container__title">{{ t('createPair.firstLiquidityProvider') }}</p>
-      <info-line>
-        <template #info-line-prefix>
-          <p class="info-line--first-liquidity" v-html="t('createPair.firstLiquidityProviderInfo')" />
-        </template>
-      </info-line>
-    </div>
-
-    <div v-if="areTokensSelected && isAvailable && !emptyAssets" class="info-line-container">
-      <p class="info-line-container__title">{{ t('createPair.pricePool') }}</p>
-      <info-line
-        :label="t('addLiquidity.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })"
-        :value="formattedPrice"
-      />
-      <info-line
-        :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })"
-        :value="formattedPriceReversed"
-      />
-      <info-line v-if="strategicBonusApy" :label="t('pool.strategicBonusApy')" :value="strategicBonusApy" />
-      <info-line
-        is-formatted
-        :label="t('createPair.networkFee')"
-        :label-tooltip="t('networkFeeTooltipText')"
-        :value="formattedFee"
-        :asset-symbol="KnownSymbols.XOR"
-        :fiat-value="getFiatAmountByCodecString(networkFee)"
-      />
-    </div>
-
-    <div
-      v-if="areTokensSelected && isAvailable && (!emptyAssets || (liquidityInfo || {}).balance)"
-      class="info-line-container"
-    >
-      <p class="info-line-container__title">{{ t(`createPair.yourPosition${!emptyAssets ? 'Estimated' : ''}`) }}</p>
-      <info-line
-        is-formatted
-        value-can-be-hidden
-        :label="firstToken.symbol"
-        :value="formattedFirstTokenPosition"
-        :fiat-value="fiatFirstTokenPosition"
-      />
-      <info-line
-        is-formatted
-        value-can-be-hidden
-        :label="secondToken.symbol"
-        :value="formattedSecondTokenPosition"
-        :fiat-value="fiatSecondTokenPosition"
-      />
-      <info-line value-can-be-hidden :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
-    </div>
 
     <select-token
       :visible.sync="showSelectSecondTokenDialog"
@@ -230,10 +180,10 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
-import { FPNumber, AccountLiquidity, CodecString, KnownAssets, KnownSymbols, Operation } from '@sora-substrate/util';
+import { FPNumber, AccountLiquidity, Operation, XOR } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
-import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin';
+import TokenPairMixinInstance from '@/components/mixins/TokenPairMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 
 import router, { lazyComponent } from '@/router';
@@ -241,7 +191,7 @@ import { Components } from '@/consts';
 
 const namespace = 'addLiquidity';
 
-const TokenPairMixin = CreateTokenPairMixin(namespace);
+const TokenPairMixin = TokenPairMixinInstance(namespace);
 
 @Component({
   components: {
@@ -253,13 +203,13 @@ const TokenPairMixin = CreateTokenPairMixin(namespace);
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
+    AddLiquidityTransactionDetails: lazyComponent(Components.AddLiquidityTransactionDetails),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     InfoLine: components.InfoLine,
   },
 })
 export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, TokenPairMixin, NetworkFeeDialogMixin) {
-  @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean;
   @Getter('shareOfPool', { namespace }) shareOfPool!: string;
   @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity;
 
@@ -281,7 +231,7 @@ export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, 
           return this.handleBack();
         }
       } else {
-        await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address);
+        await this.setFirstTokenAddress(XOR.address);
       }
     });
   }
@@ -303,60 +253,6 @@ export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, 
     }
 
     return classes.join(' ');
-  }
-
-  get emptyAssets(): boolean {
-    if (!(this.firstTokenValue || this.secondTokenValue)) {
-      return true;
-    }
-    const first = new FPNumber(this.firstTokenValue);
-    const second = new FPNumber(this.secondTokenValue);
-    return first.isNaN() || first.isZero() || second.isNaN() || second.isZero();
-  }
-
-  get firstTokenPosition(): FPNumber {
-    return this.getTokenPosition(this.liquidityInfo?.firstBalance, this.firstTokenValue, this.firstToken.decimals);
-  }
-
-  get secondTokenPosition(): FPNumber {
-    return this.getTokenPosition(this.liquidityInfo?.secondBalance, this.secondTokenValue, this.secondToken.decimals);
-  }
-
-  get formattedFirstTokenPosition(): string {
-    return this.firstTokenPosition.toLocaleString();
-  }
-
-  get formattedSecondTokenPosition(): string {
-    return this.secondTokenPosition.toLocaleString();
-  }
-
-  get fiatFirstTokenPosition(): Nullable<string> {
-    return this.getFiatAmountByFPNumber(this.firstTokenPosition, this.firstToken);
-  }
-
-  get fiatSecondTokenPosition(): Nullable<string> {
-    return this.getFiatAmountByFPNumber(this.secondTokenPosition, this.secondToken);
-  }
-
-  getTokenPosition(
-    liquidityInfoBalance: string | undefined,
-    tokenValue: string | CodecString | number,
-    decimals: number
-  ): FPNumber {
-    const prevPosition = FPNumber.fromCodecValue(liquidityInfoBalance ?? 0, decimals);
-    if (!this.emptyAssets) {
-      return prevPosition.add(new FPNumber(tokenValue, decimals));
-    }
-    return prevPosition;
-  }
-
-  get strategicBonusApy(): Nullable<string> {
-    // It won't be in template when not defined
-    const strategicBonusApy = this.fiatPriceAndApyObject[this.secondToken.address]?.strategicBonusApy;
-    if (!strategicBonusApy) {
-      return null;
-    }
-    return `${this.getFPNumberFromCodec(strategicBonusApy).mul(this.Hundred).toLocaleString()}%`;
   }
 
   get removeLiquidityFormattedFee(): string {

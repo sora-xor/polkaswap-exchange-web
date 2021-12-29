@@ -141,7 +141,6 @@
       </div>
     </s-float-input>
     <slippage-tolerance class="slippage-tolerance-settings" />
-    <swap-info v-if="areTokensSelected && !hasZeroAmount" class="info-line-container" />
     <s-button
       v-if="!isLoggedIn"
       type="primary"
@@ -179,6 +178,11 @@
         {{ t('exchange.Swap') }}
       </template>
     </s-button>
+    <swap-transaction-details
+      v-if="areTokensSelected && !hasZeroAmount"
+      class="info-line-container"
+      :info-only="false"
+    />
     <select-token
       :visible.sync="showSelectTokenDialog"
       :connected="isLoggedIn"
@@ -241,6 +245,7 @@ const namespace = 'swap';
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
+    SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },

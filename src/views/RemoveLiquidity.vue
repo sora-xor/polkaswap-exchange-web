@@ -97,35 +97,7 @@
         </div>
       </s-float-input>
 
-      <div v-if="price || priceReversed || networkFee || shareOfPool" class="info-line-container">
-        <info-line
-          v-if="shareOfPool"
-          value-can-be-hidden
-          :label="t('removeLiquidity.shareOfPool')"
-          :value="`${shareOfPool}%`"
-        />
-        <info-line
-          v-if="price || priceReversed"
-          :label="t('removeLiquidity.price')"
-          :value="`1 ${firstToken.symbol} = ${formatStringValue(priceReversed)}`"
-          :asset-symbol="secondToken.symbol"
-        />
-        <info-line
-          v-if="price || priceReversed"
-          :value="`1 ${secondToken.symbol} = ${formatStringValue(price)}`"
-          :asset-symbol="firstToken.symbol"
-        />
-        <info-line
-          v-if="networkFee"
-          :label="t('createPair.networkFee')"
-          :label-tooltip="t('networkFeeTooltipText')"
-          :value="formattedFee"
-          :asset-symbol="KnownSymbols.XOR"
-          :fiat-value="getFiatAmountByCodecString(networkFee)"
-          is-formatted
-        />
-      </div>
-
+      <slippage-tolerance class="slippage-tolerance-settings" />
       <s-button
         type="primary"
         class="action-button s-typography-button--large"
@@ -146,7 +118,12 @@
           {{ t('removeLiquidity.remove') }}
         </template>
       </s-button>
-      <slippage-tolerance class="slippage-tolerance-settings" />
+
+      <remove-liquidity-transaction-details
+        class="info-line-container"
+        v-if="price || priceReversed || networkFee || shareOfPool"
+        :info-only="false"
+      ></remove-liquidity-transaction-details>
     </s-form>
 
     <confirm-remove-liquidity
@@ -194,6 +171,7 @@ const namespace = 'removeLiquidity';
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
+    RemoveLiquidityTransactionDetails: lazyComponent(Components.RemoveLiquidityTransactionDetails),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
     InfoLine: components.InfoLine,

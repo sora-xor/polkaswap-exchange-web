@@ -27,7 +27,7 @@
       "
     />
     <s-divider />
-    <swap-info />
+    <swap-transaction-details />
     <template #footer>
       <s-button type="primary" class="s-typography-button--large" :disabled="loading" @click="handleConfirmSwap">
         {{ t('exchange.confirm') }}
@@ -54,6 +54,7 @@ const namespace = 'swap';
     DialogBase,
     SwapInfo: lazyComponent(Components.SwapInfo),
     TokenLogo: lazyComponent(Components.TokenLogo),
+    SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
   },
 })
 export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, DialogMixin) {

@@ -40,7 +40,10 @@
             "RemoveLiquidity": "Retrait de {amount} {symbol} et de {amount2} {symbol2}",
             "CreatePair": "Dépôt de {amount} {symbol} et de {amount2} {symbol2}",
             "RegisterAsset": "Jeton {symbol} enregistré",
-            "ClaimRewards": "Récompense réclamée avec succès {rewards}"
+            "ClaimRewards": "Récompense réclamée avec succès {rewards}",
+            "ReferralReserveXor": "XOR lié avec succès",
+            "ReferralUnreserveXor": "XOR avec succès délié",
+            "ReferralSetInvitedUser": "La référence est définie avec succès"
         },
         "error": {
             "Transfer": "Échec de l'envoi de {amount} {symbol} à {address}",
@@ -49,8 +52,14 @@
             "RemoveLiquidity": "Échec du retrait de {amount} {symbol} et de {amount2} {symbol2}",
             "CreatePair": "Échec du dépôt de {amount} {symbol} et de {amount2} {symbol2}",
             "RegisterAsset": "Échec de l'enregistrement du jeton {symbol}",
-            "ClaimRewards": "Échec de la réclamation des récompenses {rewards}"
-        }
+            "ClaimRewards": "Échec de la réclamation des récompenses {rewards}",
+            "ReferralReserveXor": "Échec de la liaison XOR",
+            "ReferralUnreserveXor": "Échec de la dissociation XOR",
+            "ReferralSetInvitedUser": "Échec de la définition de la référence"
+        },
+        "ReferralReserveXor": "Lier XOR",
+        "ReferralUnreserveXor": "Délier XOR",
+        "ReferralSetInvitedUser": "Définir la référence"
     },
     "polkadotjs": {
         "noExtensions": "Aucune extension Polkadot.js n'a été trouvée. Veuillez l'installer et recharger cette page\n https:\/\/polkadot.js.org\/extension\/",
@@ -720,7 +729,9 @@
         "groups": {
             "strategic": "Récompenses stratégiques",
             "external": "Récompenses pour le compte ethereum connecté"
-        }
+        },
+        "Rewards": "Récompenses",
+        "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
         "default": "@:ethereumText provider",
@@ -820,5 +831,44 @@
         "payoff": "Vous devrez utiliser le pont pour obtenir XOR d'autres réseaux, recevoir XOR d'un autre compte SORA ou échanger tout autre jeton déjà présent dans votre compte en XOR.",
         "button": "Oui, je comprends le risque"
     },
-    "blockNumberText": "Numéro de bloc"
+    "blockNumberText": "Numéro de bloc",
+    "referralProgram": {
+        "title": "Programme de référence",
+        "connectAccount": "Pour inviter des utilisateurs, vous devez connecter votre compte SORA.",
+        "bondedXOR": "XOR Vérouillé",
+        "referralsNumber": "{number} références",
+        "startInviting": "Pour commencer à inviter, liez n’importe quelle quantité de XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">En savoir plus<\/a>",
+        "preview": "Invitez de nouveaux utilisateurs et obtenez 10% de leurs frais de transaction. <br \/> Pour commencer, collez n'importe quel montant de XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> En savoir plus <\/a>",
+        "deposit": "Déposer",
+        "balance": "Solde",
+        "networkFee": "@:networkFeeText",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "insufficientBondedBalance": "Solde obligataire insuffisant",
+        "action": {
+            "connectWallet": "@:connectWalletText",
+            "empty": "Entrez le montant de {tokenSymbol}",
+            "startInviting": "Bond {tokenSymbol} pour commencer à inviter",
+            "bondMore": "Lier Plus",
+            "bond": "Lier",
+            "unbond": "Délier",
+            "copyLink": "Copier le lien"
+        },
+        "transactionDetails": "Détails de la Transaction",
+        "receivedRewards": "Récompenses reçues",
+        "invitationLink": "Lien d'invitation",
+        "successCopy": "Le lien de parrainage est copié dans le presse-papiers",
+        "bondTitle": "Lier XOR",
+        "unbondTitle": "Délier XOR",
+        "confirm": {
+            "text": "Confirmer",
+            "bond": "Confirmer le lien",
+            "unbond": "Confirmer la dissociation",
+            "inviteTitle": "Vous avez été invité à Polkaswap par une référence",
+            "inviteDescription": "Lorsque vous paierez des frais de transaction, 10 % iront à votre filleul. C'est totalement gratuit.",
+            "signInvitation": "Signer la transaction d'approbation",
+            "freeOfCharge": "Cette action est gratuite"
+        }
+    },
+    "transactionDetailsText": "Détails de la transaction"
 }

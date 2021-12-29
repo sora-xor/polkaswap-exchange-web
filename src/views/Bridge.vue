@@ -194,30 +194,11 @@
             {{ t('bridge.next') }}
           </template>
         </s-button>
-        <div v-if="areNetworksConnected && !isZeroAmount && isRegisteredAsset" class="info-line-container">
-          <info-line
-            :label="t('bridge.soraNetworkFee')"
-            :label-tooltip="t('networkFeeTooltipText')"
-            :value="formatFee(soraNetworkFee, formattedSoraNetworkFee)"
-            :asset-symbol="KnownSymbols.XOR"
-            :fiat-value="getFiatAmountByCodecString(soraNetworkFee)"
-            is-formatted
-          />
-          <info-line
-            :label="t('bridge.ethereumNetworkFee')"
-            :label-tooltip="t('ethNetworkFeeTooltipText')"
-            :value="formatFee(evmNetworkFee, formattedEvmNetworkFee)"
-            :asset-symbol="currentEvmTokenSymbol"
-            is-formatted
-          />
-          <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
-          <!-- <info-line
-            :label="t('bridge.total')"
-            :label-tooltip="t('bridge.tooltipValue')"
-            :value="`~${soraTotal}`"
-            :asset-symbol="KnownSymbols.XOR"
-          /> -->
-        </div>
+        <bridge-transaction-details
+          v-if="areNetworksConnected && !isZeroAmount && isRegisteredAsset"
+          class="info-line-container"
+          :info-only="false"
+        ></bridge-transaction-details>
       </s-card>
       <select-registered-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
       <!-- <select-network :visible.sync="showSelectNetworkDialog" :value="evmNetwork" :sub-networks="subNetworks" @input="selectNetwork" /> -->
@@ -287,6 +268,7 @@ const namespace = 'bridge';
     SelectRegisteredAsset: lazyComponent(Components.SelectRegisteredAsset),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
+    BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
     FormattedAmount: components.FormattedAmount,
@@ -424,10 +406,6 @@ export default class Bridge extends Mixins(
     return this.formatCodecNumber(this.soraNetworkFee);
   }
 
-  get formattedEvmNetworkFee(): string {
-    return this.formatCodecNumber(this.evmNetworkFee);
-  }
-
   get currentEvmTokenSymbol(): string {
     if (this.evmNetwork === BridgeNetworks.ENERGY_NETWORK_ID) {
       return this.EvmSymbol.VT;
@@ -457,10 +435,6 @@ export default class Bridge extends Mixins(
       amount: this.getFPNumber(this.amount),
       xorBalance: this.getFPNumberFromCodec(getAssetBalance(this.tokenXOR)),
     });
-  }
-
-  formatFee(fee: string, formattedFee: string): string {
-    return fee !== '0' ? formattedFee : '0';
   }
 
   formatBalance(isSora = true): string {
