@@ -160,11 +160,17 @@ const actions = {
         );
         commit(
           types.SET_FIRST_TOKEN_AMOUNT,
-          part.div(hundred).mul(FPNumber.fromCodecValue(getters.firstTokenBalance)).toString()
+          part
+            .div(hundred)
+            .mul(FPNumber.fromCodecValue(getters.firstTokenBalance, getters.firstToken.decimals))
+            .toString()
         );
         commit(
           types.SET_SECOND_TOKEN_AMOUNT,
-          part.div(hundred).mul(FPNumber.fromCodecValue(getters.secondTokenBalance)).toString()
+          part
+            .div(hundred)
+            .mul(FPNumber.fromCodecValue(getters.secondTokenBalance, getters.secondToken.decimals))
+            .toString()
         );
       } else {
         commit(types.SET_REMOVE_PART);
@@ -182,13 +188,15 @@ const actions = {
       commit(types.SET_FOCUSED_FIELD, 'firstTokenAmount');
       if (firstTokenAmount) {
         if (!Number.isNaN(firstTokenAmount)) {
-          const part = new FPNumber(firstTokenAmount).div(FPNumber.fromCodecValue(getters.firstTokenBalance));
+          const part = new FPNumber(firstTokenAmount).div(
+            FPNumber.fromCodecValue(getters.firstTokenBalance, getters.firstToken.decimals)
+          );
           commit(types.SET_REMOVE_PART, Math.round(part.mul(FPNumber.HUNDRED).toNumber()));
           commit(types.SET_LIQUIDITY_AMOUNT, part.mul(FPNumber.fromCodecValue(getters.liquidityBalance)).toString());
           commit(types.SET_FIRST_TOKEN_AMOUNT, firstTokenAmount);
           commit(
             types.SET_SECOND_TOKEN_AMOUNT,
-            part.mul(FPNumber.fromCodecValue(getters.secondTokenBalance)).toString()
+            part.mul(FPNumber.fromCodecValue(getters.secondTokenBalance, getters.secondToken.decimals)).toString()
           );
         }
       } else {
@@ -202,10 +210,15 @@ const actions = {
       commit(types.SET_FOCUSED_FIELD, 'secondTokenAmount');
       if (secondTokenAmount) {
         if (!Number.isNaN(secondTokenAmount)) {
-          const part = new FPNumber(secondTokenAmount).div(FPNumber.fromCodecValue(getters.secondTokenBalance));
+          const part = new FPNumber(secondTokenAmount).div(
+            FPNumber.fromCodecValue(getters.secondTokenBalance, getters.secondToken.decimals)
+          );
           commit(types.SET_REMOVE_PART, Math.round(part.mul(FPNumber.HUNDRED).toNumber()));
           commit(types.SET_LIQUIDITY_AMOUNT, part.mul(FPNumber.fromCodecValue(getters.liquidityBalance)).toString());
-          commit(types.SET_FIRST_TOKEN_AMOUNT, part.mul(FPNumber.fromCodecValue(getters.firstTokenBalance)).toString());
+          commit(
+            types.SET_FIRST_TOKEN_AMOUNT,
+            part.mul(FPNumber.fromCodecValue(getters.firstTokenBalance, getters.firstToken.decimals)).toString()
+          );
           commit(types.SET_SECOND_TOKEN_AMOUNT, secondTokenAmount);
         }
       } else {

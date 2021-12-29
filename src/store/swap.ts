@@ -60,7 +60,7 @@ interface SwapState {
   tokenToBalance: Nullable<AccountBalance>;
   fromValue: string;
   toValue: string;
-  amountWithoutImpact: CodecString;
+  amountWithoutImpact: string;
   isExchangeB: boolean;
   liquidityProviderFee: CodecString;
   pairLiquiditySources: Array<LiquiditySourceTypes>;
@@ -164,11 +164,11 @@ const getters = {
 
     if (!token || !value || !amountWithoutImpact) return ZeroStringValue;
 
-    const withoutImpact = FPNumber.fromCodecValue(amountWithoutImpact);
+    const withoutImpact = new FPNumber(amountWithoutImpact);
 
     if (withoutImpact.isZero()) return ZeroStringValue;
 
-    const amount = FPNumber.fromCodecValue(new FPNumber(value, token.decimals).toCodecString());
+    const amount = new FPNumber(value);
     const impact = isExchangeB ? withoutImpact.div(amount) : amount.div(withoutImpact);
     const result = new FPNumber(1).sub(impact).mul(FPNumber.HUNDRED);
 
@@ -222,7 +222,7 @@ const mutations = {
   [types.SET_TO_VALUE](state: SwapState, toValue: string) {
     state.toValue = toValue;
   },
-  [types.SET_AMOUNT_WITHOUT_IMPACT](state: SwapState, amount: CodecString) {
+  [types.SET_AMOUNT_WITHOUT_IMPACT](state: SwapState, amount: string) {
     state.amountWithoutImpact = amount;
   },
   [types.SET_EXCHANGE_B](state: SwapState, isExchangeB: boolean) {
@@ -303,7 +303,7 @@ const actions = {
   setToValue({ commit }, toValue: string | number) {
     commit(types.SET_TO_VALUE, toValue);
   },
-  setAmountWithoutImpact({ commit }, amount: CodecString) {
+  setAmountWithoutImpact({ commit }, amount: string) {
     commit(types.SET_AMOUNT_WITHOUT_IMPACT, amount);
   },
   setExchangeB({ commit }, flag: boolean) {

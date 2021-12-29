@@ -512,7 +512,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
       );
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
-      this.setAmountWithoutImpact(amountWithoutImpact);
+      this.setAmountWithoutImpact(this.getStringFromCodec(amountWithoutImpact, oppositeToken.decimals));
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);
     } catch (error: any) {
