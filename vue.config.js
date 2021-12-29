@@ -46,7 +46,16 @@ module.exports = {
     name: 'Polkaswap',
     themeColor: '#FFFFFF',
     assetsVersion: `${pkg.version}-${Date.now()}`,
-    iconPaths: null, // TODO: need to add icons
+    manifestOptions: {
+      icons: [36, 48, 72, 96, 144, 192].map((size) => ({
+        src: `./img/icons/android-icon-${size}x${size}.png`,
+        sizes: `${size}x${size}`,
+        type: 'image/png',
+      })),
+    },
+    iconPaths: {
+      maskIcon: null,
+    }, // TODO: need to add icons
     workboxPluginMode: 'InjectManifest',
     workboxOptions: {
       swSrc: './src/service-worker.js',
