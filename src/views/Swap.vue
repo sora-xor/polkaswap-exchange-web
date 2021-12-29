@@ -449,10 +449,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
         await this.setTokenFromAddress(XOR.address);
         await this.setTokenToAddress();
       }
-
-      if (!this.enabledAssetsSubscription) {
-        this.subscribeOnEnabledAssets();
-      }
     });
   }
 

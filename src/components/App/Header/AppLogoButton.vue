@@ -1,6 +1,6 @@
 <template>
   <s-button :class="['app-logo', { responsive }]" type="link" size="large" v-on="$listeners">
-    <polkaswap-logo :theme="theme" class="app-logo__image" />
+    <polkaswap-logo :theme="theme" :color="color" class="app-logo__image" />
   </s-button>
 </template>
 
@@ -16,19 +16,15 @@ import PolkaswapLogo from '@/components/logo/Polkaswap.vue';
   },
 })
 export default class AppLogoButton extends Vue {
-  @Prop({ default: Theme.LIGHT, type: String }) theme!: Theme;
-  @Prop({ default: false, type: Boolean }) responsive!: boolean;
+  @Prop({ default: Theme.LIGHT, type: String }) readonly theme!: Theme;
+  @Prop({ default: '', type: String }) readonly color!: string;
+  @Prop({ default: false, type: Boolean }) readonly responsive!: boolean;
 }
 </script>
 
 <style lang="scss" scoped>
-$logo-full-width: 172px;
-$logo-full-height: 46px;
-
 .app-logo {
   background-size: cover;
-  width: $logo-full-width;
-  height: $logo-full-height;
   border-radius: 0;
 
   &.el-button {
@@ -45,8 +41,8 @@ $logo-full-height: 46px;
 
     @include tablet {
       background-image: none;
-      width: $logo-full-width;
-      height: $logo-full-height;
+      width: initial;
+      height: initial;
     }
 
     .app-logo__image {

@@ -1,4 +1,5 @@
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+const pkg = require('./package.json');
 
 module.exports = {
   publicPath: './',
@@ -20,6 +21,7 @@ module.exports = {
         });
       });
 
+    // TODO: remove
     if (process.env.NODE_ENV === 'production') {
       const buildDateTime = Date.now();
       config.output.filename = `js/[name].[contenthash:8].${buildDateTime}.js`;
@@ -40,4 +42,25 @@ module.exports = {
   },
   productionSourceMap: false,
   runtimeCompiler: true,
+  pwa: {
+    name: 'Polkaswap',
+    themeColor: '#FFFFFF',
+    assetsVersion: `${pkg.version}-${Date.now()}`,
+    manifestOptions: {
+      icons: [36, 48, 72, 96, 144, 192].map((size) => ({
+        src: `./img/icons/android-icon-${size}x${size}.png`,
+        sizes: `${size}x${size}`,
+        type: 'image/png',
+      })),
+    },
+    iconPaths: {
+      maskIcon: null,
+    }, // TODO: need to add icons
+    workboxPluginMode: 'InjectManifest',
+    workboxOptions: {
+      swSrc: './src/service-worker.js',
+      maximumFileSizeToCacheInBytes: 0,
+      exclude: [/^(whitelist|env)\.json$/],
+    },
+  },
 };

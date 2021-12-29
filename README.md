@@ -25,6 +25,8 @@ There is `public/env.json` file which contains `BASE_API_URL` and `DEFAULT_NETWO
 
 `CHAIN_GENESIS_HASH` should be defined for 'prod' & 'stage' environments, to not polling nodes for getting it (because genesis hash for these env's not changing).
 
+`NETWORK_RUNTIME_VERSION` this is the `specVersion` of substrate network with which the application is compatible. If the connected network has a version less than specified in this parameter, the maintenance page will be shown
+
 ## Project setup
 ```
 yarn install

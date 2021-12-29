@@ -86,11 +86,11 @@ Vue.use(STooltip);
 Vue.prototype.$prompt = MessageBox.prompt;
 Vue.prototype.$alert = MessageBox.alert;
 Vue.prototype.$message = Message;
-Vue.prototype.$notify = ({ message, type }) => {
+Vue.prototype.$notify = ({ message, type, duration = 4500 }) => {
   Notification({
     message,
     title: '',
-    duration: 4500, // If is will be changed you should change animation duration as well
+    duration, // If is will be changed you should change animation duration as well
     type,
     customClass: 'sora s-flex',
   });
@@ -98,9 +98,12 @@ Vue.prototype.$notify = ({ message, type }) => {
   const current = elements[elements.length - 1];
   const appContent = document.getElementsByClassName('app-main').item(0) as Element;
   appContent.appendChild(current);
-  const el = document.createElement('div');
-  el.className = 'loader';
-  current.appendChild(el);
+
+  if (duration) {
+    const el = document.createElement('div');
+    el.className = 'loader';
+    current.appendChild(el);
+  }
 };
 
 setTheme();

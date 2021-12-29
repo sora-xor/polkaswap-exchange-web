@@ -9,9 +9,9 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit --silent",
     "test:e2e": "vue-cli-service test:e2e",
-    "test:all": "yarn test:unit",
     "lint": "vue-cli-service lint",
-    "generate-lang-json": "ts-node ./scripts/generateLocaleJson.ts"
+    "generate-lang-json": "ts-node ./scripts/generateLocaleJson.ts",
+    "test:all": "yarn test:unit"
   },
   "dependencies": {
     "@metamask/detect-provider": "^1.2.0",
@@ -20,6 +20,7 @@
     "core-js": "^3.6.4",
     "ethers": "^5.3.1",
     "lodash": "^4.17.21",
+    "register-service-worker": "^1.7.2",
     "vue": "^2.6.14",
     "vue-class-component": "^7.2.6",
     "vue-i18n": "^8.11.2",
@@ -39,6 +40,7 @@
     "@vue/cli-plugin-babel": "^5.0.0-beta.4",
     "@vue/cli-plugin-e2e-cypress": "^5.0.0-beta.4",
     "@vue/cli-plugin-eslint": "^5.0.0-beta.4",
+    "@vue/cli-plugin-pwa": "^5.0.0-rc.0",
     "@vue/cli-plugin-router": "^5.0.0-beta.4",
     "@vue/cli-plugin-typescript": "^5.0.0-beta.4",
     "@vue/cli-plugin-unit-jest": "^5.0.0-beta.4",
@@ -72,6 +74,7 @@
   "gitHooks": {
     "pre-commit": "lint-staged"
   },
+  "license": "Apache-2.0",
   "lint-staged": {
     "*.{js,jsx,vue,ts,tsx}": [
       "vue-cli-service lint",
