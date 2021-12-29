@@ -20,8 +20,8 @@ import AppLogoButton from '@/components/App/Header/AppLogoButton.vue';
 import AppPoweredBySora from '@/components/App/Footer/PoweredBySora.vue';
 import TechnicalWorkBackground from '@/components/TechnicalWork/Background.vue';
 
-import { goTo } from '@/router';
-import { PageNames } from '@/consts';
+import { detectBaseUrl } from '@/api';
+import router from '@/router';
 
 @Component({
   components: {
@@ -31,8 +31,10 @@ import { PageNames } from '@/consts';
   },
 })
 export default class TechnicalWork extends Vue {
+  // load main page again
   navigateToApp(): void {
-    goTo(PageNames.Swap);
+    const baseUrl = detectBaseUrl(router);
+    window.location.assign(baseUrl);
   }
 }
 </script>

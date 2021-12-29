@@ -109,14 +109,13 @@ const getters = {
   blockNumber(state): number {
     return state.blockNumber;
   },
-  // returns false, if runtime version is lower than set in env.json
   runtimeVersionCompability(state, getters, rootState, rootGetters): boolean {
-    const networkV = rootState.Settings.runtimeVersion; // wallet
-    const appV = state.requiredRuntimeVersion;
+    const runtimeVersion = rootState.Settings.runtimeVersion; // wallet
+    const requiredVersion = state.requiredRuntimeVersion;
 
-    if (!appV || !getters.nodeIsConnected || !rootGetters.isWalletLoaded) return true;
+    if (!requiredVersion || !getters.nodeIsConnected || !rootGetters.isWalletLoaded) return true;
 
-    return appV <= networkV;
+    return requiredVersion <= runtimeVersion;
   },
 };
 
