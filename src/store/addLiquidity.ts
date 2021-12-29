@@ -240,13 +240,14 @@ const actions = {
       if (!value) {
         commit(types.SET_SECOND_TOKEN_VALUE, '');
       } else if (getters.isNotFirstLiquidityProvider) {
-        commit(
-          types.SET_SECOND_TOKEN_VALUE,
-          new FPNumber(value)
-            .mul(FPNumber.fromCodecValue(getters.reserveB, getters.secondToken.decimals))
-            .div(FPNumber.fromCodecValue(getters.reserveA, getters.firstToken.decimals))
-            .toString()
-        );
+        const codec = new FPNumber(value, getters.firstToken.decimals)
+          .mul(FPNumber.fromCodecValue(getters.reserveB))
+          .div(FPNumber.fromCodecValue(getters.reserveA))
+          .toCodecString();
+
+        const result = FPNumber.fromCodecValue(codec, getters.secondToken.decimals).toString();
+
+        commit(types.SET_SECOND_TOKEN_VALUE, result);
       }
 
       dispatch('estimateMinted');
@@ -262,13 +263,14 @@ const actions = {
       if (!value) {
         commit(types.SET_FIRST_TOKEN_VALUE, '');
       } else if (getters.isNotFirstLiquidityProvider) {
-        commit(
-          types.SET_FIRST_TOKEN_VALUE,
-          new FPNumber(value)
-            .mul(FPNumber.fromCodecValue(getters.reserveA, getters.firstToken.decimals))
-            .div(FPNumber.fromCodecValue(getters.reserveB, getters.secondToken.decimals))
-            .toString()
-        );
+        const codec = new FPNumber(value, getters.secondToken.decimals)
+          .mul(FPNumber.fromCodecValue(getters.reserveA))
+          .div(FPNumber.fromCodecValue(getters.reserveB))
+          .toCodecString();
+
+        const result = FPNumber.fromCodecValue(codec, getters.firstToken.decimals).toString();
+
+        commit(types.SET_FIRST_TOKEN_VALUE, result);
       }
 
       dispatch('estimateMinted');
