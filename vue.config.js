@@ -51,6 +51,7 @@ module.exports = {
     workboxOptions: {
       swSrc: './src/service-worker.js',
       maximumFileSizeToCacheInBytes: 0,
+      exclude: [/^(whitelist|env)\.json$/],
     },
   },
 };
