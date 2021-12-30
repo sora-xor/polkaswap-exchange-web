@@ -85,13 +85,5 @@ export default class CreatePairTransactionDetails extends Mixins(TranslationMixi
   get formattedSecondTokenValue(): string {
     return this.formatStringValue(this.secondTokenValue.toString());
   }
-
-  getTokenPosition(liquidityInfoBalance: string | undefined, tokenValue: string | CodecString | number): FPNumber {
-    const prevPosition = FPNumber.fromCodecValue(liquidityInfoBalance ?? 0);
-    if (!this.emptyAssets) {
-      return prevPosition.add(new FPNumber(tokenValue));
-    }
-    return prevPosition;
-  }
 }
 </script>

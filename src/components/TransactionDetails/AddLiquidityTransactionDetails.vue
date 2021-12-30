@@ -84,11 +84,11 @@ export default class AddLiquidityTransactionDetails extends Mixins(TranslationMi
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
 
   get firstTokenPosition(): FPNumber {
-    return this.getTokenPosition(this.liquidityInfo?.firstBalance, this.firstTokenValue);
+    return this.getTokenPosition(this.liquidityInfo?.firstBalance, this.firstTokenValue, this.firstToken.decimals);
   }
 
   get secondTokenPosition(): FPNumber {
-    return this.getTokenPosition(this.liquidityInfo?.secondBalance, this.secondTokenValue);
+    return this.getTokenPosition(this.liquidityInfo?.secondBalance, this.secondTokenValue, this.secondToken.decimals);
   }
 
   get strategicBonusApy(): Nullable<string> {
@@ -116,10 +116,14 @@ export default class AddLiquidityTransactionDetails extends Mixins(TranslationMi
     return this.getFiatAmountByFPNumber(this.secondTokenPosition, this.secondToken);
   }
 
-  getTokenPosition(liquidityInfoBalance: string | undefined, tokenValue: string | CodecString | number): FPNumber {
-    const prevPosition = FPNumber.fromCodecValue(liquidityInfoBalance ?? 0);
+  getTokenPosition(
+    liquidityInfoBalance: string | undefined,
+    tokenValue: string | CodecString | number,
+    decimals: number
+  ): FPNumber {
+    const prevPosition = FPNumber.fromCodecValue(liquidityInfoBalance ?? 0, decimals);
     if (!this.emptyAssets) {
-      return prevPosition.add(new FPNumber(tokenValue));
+      return prevPosition.add(new FPNumber(tokenValue, decimals));
     }
     return prevPosition;
   }
