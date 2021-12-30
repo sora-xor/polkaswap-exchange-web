@@ -2109,39 +2109,39 @@
   resolved "https://registry.yarnpkg.com/@soda/get-current-script/-/get-current-script-1.0.2.tgz#a53515db25d8038374381b73af20bb4f2e508d87"
   integrity sha512-T7VNNlYVM1SgQ+VsMYhnDkcGmWhQdL0bDyGm5TlQ3GBXnJscEClUUOKduWTmm2zCnvNLC1hc3JpuXjs/nFOc5w==
 
-"@sora-substrate/api-derive@^1.6.31":
-  version "1.6.31"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/api-derive/-/api-derive-1.6.31.tgz#9db86b6549513ad5a93459b1630e4b128fbc6c7b"
-  integrity sha512-V/xs4sKpYToDANPCcd6qpD65AR2hBUP1eHQT5ATxjWdHz9VhIhya5Uj+0gdtM0s9s0W3ihZOxYiSTjhXlwjiwA==
+"@sora-substrate/api-derive@^1.6.33":
+  version "1.6.33"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/api-derive/-/api-derive-1.6.33.tgz#69b6aade6d7fe8adcadab8d70328aa0c0dedd086"
+  integrity sha512-41rSB7O7eowLbw612Pvc6ldv48zI2H47Q7LTmcRrc4xddL6MEKRI13ptE3B3kv5+ZnqZ34X34atfuDnS6/aAag==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@polkadot/api-derive" "^4.10.1"
-    "@sora-substrate/types" "^1.6.31"
+    "@sora-substrate/types" "^1.6.33"
     rxjs "^6.5.5"
 
 "@sora-substrate/api@^1.6.31":
-  version "1.6.31"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.6.31.tgz#f3834929d2dc4ee5f08541f38585859b447ded76"
-  integrity sha512-tbUO1cXa9LTYhvF6nPppuXmZ2fDVAIwgHEfHiyAp8Zuxdwjje+wr7AhG3iCiKeuu4zD9cOmI+bLCDBoUn+awLQ==
+  version "1.6.33"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.6.33.tgz#1c2c3523d25a11709ecded38d4ceecf936ecf525"
+  integrity sha512-ipghNMEP76sc3/kGS4VBqiHuyHrWQQTPN3uI456EZNWNIt+ZLGaqI6JIwohzRN6OSAarX7pWpbLVtaao0SurmA==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@open-web3/orml-api-derive" "^0.8.2-9"
     "@polkadot/api" "^4.10.1"
     "@polkadot/rpc-core" "^4.10.1"
-    "@sora-substrate/api-derive" "^1.6.31"
-    "@sora-substrate/types" "^1.6.31"
+    "@sora-substrate/api-derive" "^1.6.33"
+    "@sora-substrate/types" "^1.6.33"
 
-"@sora-substrate/type-definitions@^1.6.31":
-  version "1.6.31"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.6.31.tgz#5d26fb24c3e62acf4b8ac8a8c3241394de6d6452"
-  integrity sha512-FGUgXLe1VGyrTzEI9IBc5yMI+gxPSwm+gxebJ+JoXXiI73FDXFsBuxPH4J1tl+w9dXanTElP6PpzstQDBkNIPQ==
+"@sora-substrate/type-definitions@^1.6.33":
+  version "1.6.33"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.6.33.tgz#bd3873e3ce6d0688104d4aa1858ec6f4b4ba3633"
+  integrity sha512-LLcilN7AOI2ppCVmXl5eX2qRpBiGV2R97unrRSJDQkhF4Z9ncoJyKltozLf2mTFAcczyWmfZJ9Kkqr496nQrTA==
   dependencies:
     "@open-web3/orml-type-definitions" "^0.9.4-35"
 
-"@sora-substrate/types@^1.6.31":
-  version "1.6.31"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.6.31.tgz#d7e5d1637aa6b5a71d196703670e4b6c94eb7efb"
-  integrity sha512-C3i2HMpFex6iGsSyVdgpkn4mrDgQdHEvXKPK+AS4x2ykLydcstzp+lqnQA9LWh0qkv/dEYv7B9fP9XFugEMydw==
+"@sora-substrate/types@^1.6.33":
+  version "1.6.33"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.6.33.tgz#e44911261861ef27d13ef05010a2d253ec5f7f6f"
+  integrity sha512-vjejdYu+PsqwjHq5T9ugCxj2dDbkiafW4JW9+LgYLsQwCqMW9VEAgL5AVydslXimR/ckJMnsoIwsF4j7PvNuHg==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@open-web3/api-mobx" "^0.8.2-9"
@@ -2149,7 +2149,7 @@
     "@polkadot/api" "^4.10.1"
     "@polkadot/typegen" "^4.10.1"
     "@polkadot/types" "^4.10.1"
-    "@sora-substrate/type-definitions" "^1.6.31"
+    "@sora-substrate/type-definitions" "^1.6.33"
 
 "@sora-substrate/util@1.6.31":
   version "1.6.31"
