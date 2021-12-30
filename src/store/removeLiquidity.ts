@@ -204,7 +204,6 @@ const actions = {
     }
   },
   setSecondTokenAmount({ commit, getters, dispatch, state }, secondTokenAmount: string) {
-    console.log('secondTokenAmount', secondTokenAmount);
     if (!state.focusedField || state.focusedField === 'secondTokenAmount') {
       commit(types.SET_FOCUSED_FIELD, 'secondTokenAmount');
       if (secondTokenAmount) {
