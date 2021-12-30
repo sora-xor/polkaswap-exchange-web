@@ -31,7 +31,7 @@
         </generic-page-header>
         <s-float-input
           :value="amount"
-          :decimals="(asset || {}).externalDecimals"
+          :decimals="getDecimals(isSoraToEvm)"
           :delimiters="delimiters"
           :max="getMax((asset || {}).address)"
           :class="inputClasses"
@@ -107,7 +107,7 @@
 
         <s-float-input
           :value="amount"
-          :decimals="(asset || {}).externalDecimals"
+          :decimals="getDecimals(!isSoraToEvm)"
           :delimiters="delimiters"
           :max="getMax((asset || {}).address)"
           :class="inputClasses"
@@ -463,6 +463,13 @@ export default class Bridge extends Mixins(
     return fee !== '0' ? formattedFee : '0';
   }
 
+  getDecimals(isSora = true): number | undefined {
+    if (!this.asset) {
+      return undefined;
+    }
+    return isSora ? this.asset.decimals : this.asset.externalDecimals;
+  }
+
   formatBalance(isSora = true): string {
     if (!this.isRegisteredAsset) {
       return '-';
@@ -471,7 +478,7 @@ export default class Bridge extends Mixins(
     if (!balance) {
       return '-';
     }
-    const decimals = isSora ? this.asset.decimals : undefined;
+    const decimals = this.getDecimals(isSora);
     return this.formatCodecNumber(balance, decimals);
   }
 
