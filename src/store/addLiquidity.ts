@@ -240,14 +240,13 @@ const actions = {
       if (!value) {
         commit(types.SET_SECOND_TOKEN_VALUE, '');
       } else if (getters.isNotFirstLiquidityProvider) {
-        const codec = new FPNumber(value, getters.firstToken.decimals)
-          .mul(FPNumber.fromCodecValue(getters.reserveB))
-          .div(FPNumber.fromCodecValue(getters.reserveA))
-          .toCodecString();
+        const amount = FPNumber.fromCodecValue(new FPNumber(value, getters.firstToken.decimals).toCodecString());
+        const reserveA = FPNumber.fromCodecValue(getters.reserveA);
+        const reserveB = FPNumber.fromCodecValue(getters.reserveB);
+        const result = amount.mul(reserveB).div(reserveA);
+        const formatted = FPNumber.fromCodecValue(result.toCodecString(), getters.secondToken.decimals).toString();
 
-        const result = FPNumber.fromCodecValue(codec, getters.secondToken.decimals).toString();
-
-        commit(types.SET_SECOND_TOKEN_VALUE, result);
+        commit(types.SET_SECOND_TOKEN_VALUE, formatted);
       }
 
       dispatch('estimateMinted');
@@ -263,14 +262,13 @@ const actions = {
       if (!value) {
         commit(types.SET_FIRST_TOKEN_VALUE, '');
       } else if (getters.isNotFirstLiquidityProvider) {
-        const codec = new FPNumber(value, getters.secondToken.decimals)
-          .mul(FPNumber.fromCodecValue(getters.reserveA))
-          .div(FPNumber.fromCodecValue(getters.reserveB))
-          .toCodecString();
+        const amount = FPNumber.fromCodecValue(new FPNumber(value, getters.secondToken.decimals).toCodecString());
+        const reserveA = FPNumber.fromCodecValue(getters.reserveA);
+        const reserveB = FPNumber.fromCodecValue(getters.reserveB);
+        const result = reserveA.div(reserveB).mul(amount);
+        const formatted = FPNumber.fromCodecValue(result.toCodecString(), getters.firstToken.decimals).toString();
 
-        const result = FPNumber.fromCodecValue(codec, getters.firstToken.decimals).toString();
-
-        commit(types.SET_FIRST_TOKEN_VALUE, result);
+        commit(types.SET_FIRST_TOKEN_VALUE, formatted);
       }
 
       dispatch('estimateMinted');
