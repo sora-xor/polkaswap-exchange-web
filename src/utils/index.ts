@@ -60,23 +60,24 @@ export const isMaxButtonAvailable = (
 };
 
 const getMaxBalance = (
-  asset: AccountAsset | RegisteredAccountAsset | AccountLiquidity,
+  asset: AccountAsset | RegisteredAccountAsset | AccountLiquidity, // TODO: [Release 1.7] fix RegisteredAccountAsset
   fee: CodecString,
   isExternalBalance = false,
   parseAsLiquidity = false
 ): FPNumber => {
   const balance = getAssetBalance(asset, { internal: !isExternalBalance, parseAsLiquidity });
+  const decimals: number = asset[isExternalBalance ? 'externalDecimals' : 'decimals'];
 
   if (asZeroValue(balance)) return FPNumber.ZERO;
 
-  let fpResult = FPNumber.fromCodecValue(balance, asset.decimals);
+  let fpResult = FPNumber.fromCodecValue(balance, decimals);
 
   if (
     !asZeroValue(fee) &&
     ((!isExternalBalance && isXorAccountAsset(asset)) ||
       (isExternalBalance && isEthereumAddress((asset as RegisteredAccountAsset).externalAddress)))
   ) {
-    const fpFee = FPNumber.fromCodecValue(fee, asset.decimals);
+    const fpFee = FPNumber.fromCodecValue(fee);
     fpResult = fpResult.sub(fpFee);
   }
 
