@@ -240,11 +240,11 @@ const actions = {
       if (!value) {
         commit(types.SET_SECOND_TOKEN_VALUE, '');
       } else if (getters.isNotFirstLiquidityProvider) {
-        const amount = FPNumber.fromCodecValue(new FPNumber(value, getters.firstToken.decimals).toCodecString());
-        const reserveA = FPNumber.fromCodecValue(getters.reserveA);
-        const reserveB = FPNumber.fromCodecValue(getters.reserveB);
+        const amount = new FPNumber(value, getters.firstToken.decimals);
+        const reserveA = FPNumber.fromCodecValue(getters.reserveA, getters.firstToken.decimals);
+        const reserveB = FPNumber.fromCodecValue(getters.reserveB, getters.secondToken.decimals);
         const result = amount.mul(reserveB).div(reserveA);
-        const formatted = FPNumber.fromCodecValue(result.toCodecString(), getters.secondToken.decimals).toString();
+        const formatted = result.toFixed(getters.secondToken.decimals);
 
         commit(types.SET_SECOND_TOKEN_VALUE, formatted);
       }
@@ -262,11 +262,11 @@ const actions = {
       if (!value) {
         commit(types.SET_FIRST_TOKEN_VALUE, '');
       } else if (getters.isNotFirstLiquidityProvider) {
-        const amount = FPNumber.fromCodecValue(new FPNumber(value, getters.secondToken.decimals).toCodecString());
-        const reserveA = FPNumber.fromCodecValue(getters.reserveA);
-        const reserveB = FPNumber.fromCodecValue(getters.reserveB);
+        const amount = new FPNumber(value, getters.secondToken.decimals);
+        const reserveA = FPNumber.fromCodecValue(getters.reserveA, getters.firstToken.decimals);
+        const reserveB = FPNumber.fromCodecValue(getters.reserveB, getters.secondToken.decimals);
         const result = reserveA.div(reserveB).mul(amount);
-        const formatted = FPNumber.fromCodecValue(result.toCodecString(), getters.firstToken.decimals).toString();
+        const formatted = result.toFixed(getters.firstToken.decimals);
 
         commit(types.SET_FIRST_TOKEN_VALUE, formatted);
       }
