@@ -4,7 +4,7 @@ import flatMap from 'lodash/fp/flatMap';
 import concat from 'lodash/fp/concat';
 import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
-import { FPNumber, BridgeNetworks, KnownAssets } from '@sora-substrate/util';
+import { FPNumber, BridgeNetworks } from '@sora-substrate/util';
 
 import { bridgeApi } from '@/utils/bridge';
 import ethersUtil, {
@@ -16,11 +16,9 @@ import ethersUtil, {
   SubNetwork,
   OtherContractType,
 } from '@/utils/ethers-util';
-import { ZeroStringValue, EthereumGasLimits } from '@/consts';
+import { ZeroStringValue } from '@/consts';
 import { isEthereumAddress } from '@/utils';
 import { ethers } from 'ethers';
-
-import type { Asset, CodecString } from '@sora-substrate/util';
 
 const types = flow(
   flatMap((x) => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -320,26 +318,6 @@ const actions = {
       address: { OTHER: network.CONTRACTS.OTHER.MASTER },
       contracts: { OTHER: { BRIDGE, ERC20 } },
     });
-  },
-
-  /**
-   * Fetch EVM Network fee for passed asset
-   */
-  async getEvmNetworkFee(_, { asset, isSoraToEvm }: { asset: Asset; isSoraToEvm: boolean }): Promise<CodecString> {
-    try {
-      const ethersInstance = await ethersUtil.getEthersInstance();
-      const gasPrice = (await ethersInstance.getGasPrice()).toNumber();
-      const isKnownAsset = !!KnownAssets.get(asset.address);
-      const gasLimits = EthereumGasLimits[+isSoraToEvm];
-      const key = isKnownAsset && asset.symbol in gasLimits ? asset.symbol : KnownBridgeAsset.Other;
-      const gasLimit = gasLimits[key];
-      const fpFee = FPNumber.fromCodecValue(gasPrice).mul(new FPNumber(gasLimit)).toCodecString();
-
-      return fpFee;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
   },
 
   async getEvmBalance({ commit, getters }) {

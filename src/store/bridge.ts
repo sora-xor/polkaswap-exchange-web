@@ -261,7 +261,10 @@ const getters = {
     return state.restored;
   },
   isTxEvmAccount(state, getters, rootState, rootGetters) {
-    return !getters.historyItem?.to || getters.historyItem.to === rootGetters['web3/evmAddress'];
+    const historyAddress = getters.historyItem?.to;
+    const currentAddress = rootGetters['web3/evmAddress'];
+
+    return !historyAddress || ethersUtil.addressesAreEqual(historyAddress, currentAddress);
   },
   waitingForApprove(state) {
     return state.waitingForApprove;
@@ -506,9 +509,6 @@ const actions = {
   setHistoryItem({ commit }, historyItem: Nullable<BridgeHistory>) {
     commit(types.SET_HISTORY_ITEM, historyItem);
   },
-  saveHistory({ commit }, history: BridgeHistory) {
-    api.saveHistory(history);
-  },
   removeHistoryById({ commit }, id: string) {
     if (!id.length) return;
     bridgeApi.removeHistory(id);
@@ -523,18 +523,14 @@ const actions = {
   /**
    * Fetch EVM Network fee for selected bridge asset
    */
-  async getEvmNetworkFee({ dispatch, commit, getters }) {
+  async getEvmNetworkFee({ commit, getters }) {
     if (!getters.asset || !getters.asset.address) {
       return;
     }
     commit(types.GET_EVM_NETWORK_FEE_REQUEST);
     try {
-      const fpFee = await dispatch(
-        'web3/getEvmNetworkFee',
-        { asset: getters.asset, isSoraToEvm: getters.isSoraToEvm },
-        { root: true }
-      );
-      commit(types.GET_EVM_NETWORK_FEE_SUCCESS, fpFee);
+      const fee = await ethersUtil.fetchEvmNetworkFee(getters.asset.address, getters.isSoraToEvm);
+      commit(types.GET_EVM_NETWORK_FEE_SUCCESS, fee);
     } catch (error) {
       commit(types.GET_EVM_NETWORK_FEE_FAILURE);
     }
@@ -568,7 +564,7 @@ const actions = {
     return getters.historyItem;
   },
   async updateHistoryParams({ dispatch }, params) {
-    await dispatch('saveHistory', params.tx);
+    bridgeApi.saveHistory(params.tx);
     await dispatch('setHistoryItem', params.tx);
     if (!params.isEndTimeOnly) {
       await dispatch('setSoraTransactionDate', params.tx.startTime);
