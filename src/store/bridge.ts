@@ -181,8 +181,6 @@ function initialState() {
     assetAddress: '',
     assetBalance: null,
     amount: '',
-    soraTotal: ZeroStringValue,
-    evmTotal: ZeroStringValue,
     evmNetworkFee: ZeroStringValue,
     isTransactionConfirmed: false,
     soraTransactionHash: '',
@@ -220,12 +218,6 @@ const getters = {
   soraNetworkFee(state, getters, rootState, rootGetters) {
     // In direction EVM -> SORA sora network fee is 0, because related extrinsic calls by system automaically
     return state.isSoraToEvm ? rootGetters.networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
-  },
-  soraTotal(state) {
-    return state.soraTotal;
-  },
-  evmTotal(state) {
-    return state.evmTotal;
   },
   isTransactionConfirmed(state) {
     return state.isTransactionConfirmed;
