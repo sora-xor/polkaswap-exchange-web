@@ -1,13 +1,22 @@
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action } from 'vuex-class';
+import { Action, Getter } from 'vuex-class';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { BridgeNetworks, CodecString } from '@sora-substrate/util';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import ethersUtil from '@/utils/ethers-util';
 import { ethers } from 'ethers';
+import { EvmSymbol } from '@/consts';
 
 @Component
 export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
+  @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean;
+  @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks;
+  @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString;
+  @Getter('isSoraToEvm', { namespace: 'bridge' }) isSoraToEvm!: boolean;
+  @Getter('soraNetworkFee', { namespace: 'bridge' }) soraNetworkFee!: CodecString;
+  @Getter('evmNetworkFee', { namespace: 'bridge' }) evmNetworkFee!: CodecString;
+
   @Action('getEvmBalance', { namespace: 'web3' }) getEvmBalance!: AsyncVoidFn;
   @Action('getEvmNetworkFee', { namespace: 'bridge' }) getEvmNetworkFee!: AsyncVoidFn;
   @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets!: AsyncVoidFn;
@@ -49,6 +58,13 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
       this.unwatchEthereum();
     }
     this.unsubscribeEvmBlockHeaders();
+  }
+
+  get evmTokenSymbol(): string {
+    if (this.evmNetwork === BridgeNetworks.ENERGY_NETWORK_ID) {
+      return EvmSymbol.VT;
+    }
+    return EvmSymbol.ETH;
   }
 
   updateExternalBalances(): void {

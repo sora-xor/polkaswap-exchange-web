@@ -295,7 +295,7 @@ import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 
 import router, { lazyComponent } from '@/router';
-import { Components, PageNames, EvmSymbol, MetamaskCancellationCode } from '@/consts';
+import { Components, PageNames, MetamaskCancellationCode } from '@/consts';
 import {
   copyToClipboard,
   hasInsufficientBalance,
@@ -317,17 +317,11 @@ const namespace = 'bridge';
 })
 export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixin, BridgeMixin, NetworkFormatterMixin) {
   @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
-  @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean;
   @Getter('prev', { namespace: 'router' }) prevRoute!: PageNames;
 
-  @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean;
   @Getter('asset', { namespace }) asset!: Nullable<AccountAsset | RegisteredAccountAsset>;
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any;
   @Getter('amount', { namespace }) amount!: string;
-  @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString;
-  @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks;
-  @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString;
-  @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString;
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean;
   @Getter('soraTransactionHash', { namespace }) soraTransactionHash!: string;
   @Getter('evmTransactionHash', { namespace }) evmTransactionHash!: string;
@@ -361,7 +355,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash;
   @Action('setEvmTransactionHash', { namespace }) setEvmTransactionHash;
 
-  EvmSymbol = EvmSymbol;
   KnownSymbols = KnownSymbols;
   STATES = STATES;
 
@@ -456,12 +449,10 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     }
 
     if (this.isTransactionStep2) {
-      if (this.isTransactionFromCompleted && !this.isTransferCompleted) {
-        classes.push(`${iconClass}--wait`);
-        return classes.join(' ');
-      }
       if (this.isTransferCompleted) {
         classes.push(`${iconClass}--success`);
+      } else if (this.isTransactionFromCompleted) {
+        classes.push(`${iconClass}--wait`);
       }
     }
 
@@ -595,13 +586,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
       this.evmBalance,
       this.historyItem?.ethereumNetworkFee ?? this.evmNetworkFee
     );
-  }
-
-  get evmTokenSymbol(): string {
-    if (this.evmNetwork === BridgeNetworks.ENERGY_NETWORK_ID) {
-      return this.EvmSymbol.VT;
-    }
-    return this.EvmSymbol.ETH;
   }
 
   get isFirstConfirmationButtonDisabled(): boolean {
@@ -820,7 +804,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     const classes = [container];
     if (hasMenuDropdown) {
       classes.push(`${container}--with-dropdown`);
-      return classes.join(' ');
     }
     return classes.join(' ');
   }

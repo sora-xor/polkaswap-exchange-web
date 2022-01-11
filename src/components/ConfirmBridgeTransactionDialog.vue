@@ -24,7 +24,11 @@
       </div>
     </div>
     <s-divider class="s-divider--dialog" />
-    <bridge-transaction-details />
+    <bridge-transaction-details
+      :evm-token-symbol="evmTokenSymbol"
+      :evm-network-fee="evmNetworkFee"
+      :sora-network-fee="soraNetworkFee"
+    />
     <template #footer>
       <s-button
         type="primary"
@@ -49,7 +53,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { KnownSymbols, CodecString, BridgeNetworks } from '@sora-substrate/util';
+import { BridgeNetworks } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -59,7 +63,7 @@ import DialogBase from '@/components/DialogBase.vue';
 import { EvmSymbol, ZeroStringValue, Components } from '@/consts';
 import { lazyComponent } from '@/router';
 
-import type { Asset } from '@sora-substrate/util';
+import type { Asset, CodecString } from '@sora-substrate/util';
 
 @Component({
   components: {
@@ -78,14 +82,13 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   @Prop({ default: ZeroStringValue, type: String }) readonly amount!: string;
   @Prop({ default: () => undefined, type: Object }) readonly asset!: Nullable<Asset>;
   @Prop({ default: BridgeNetworks.ETH_NETWORK_ID, type: Number }) readonly evmNetwork!: BridgeNetworks;
+  @Prop({ default: EvmSymbol.ETH, type: String }) readonly evmTokenSymbol!: string;
   @Prop({ default: ZeroStringValue, type: String }) readonly evmNetworkFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
   @Prop({ default: true, type: Boolean }) readonly isValidNetworkType!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
   @Prop({ default: '', type: String }) readonly confirmButtonText!: string;
-
-  readonly KnownSymbols = KnownSymbols;
 
   get confirmText(): string {
     return this.confirmButtonText || this.t('confirmBridgeTransactionDialog.buttonConfirm');
@@ -120,13 +123,6 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
 
   get tokenSymbol(): string {
     return this.asset?.symbol || '';
-  }
-
-  get currentEvmTokenSymbol(): string {
-    if (this.evmNetwork === BridgeNetworks.ENERGY_NETWORK_ID) {
-      return EvmSymbol.VT;
-    }
-    return EvmSymbol.ETH;
   }
 
   async handleConfirm(): Promise<void> {

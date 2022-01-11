@@ -188,7 +188,7 @@
             {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
           </template>
           <template v-else-if="isInsufficientEvmNativeTokenForFee">
-            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: currentEvmTokenSymbol }) }}
+            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: evmTokenSymbol }) }}
           </template>
           <template v-else>
             {{ t('bridge.next') }}
@@ -198,7 +198,10 @@
           v-if="areNetworksConnected && !isZeroAmount && isRegisteredAsset"
           class="info-line-container"
           :info-only="false"
-        ></bridge-transaction-details>
+          :evm-token-symbol="evmTokenSymbol"
+          :evm-network-fee="evmNetworkFee"
+          :sora-network-fee="soraNetworkFee"
+        />
       </s-card>
       <select-registered-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
       <!-- <select-network :visible.sync="showSelectNetworkDialog" :value="evmNetwork" :sub-networks="subNetworks" @input="selectNetwork" /> -->
@@ -209,6 +212,7 @@
         :is-insufficient-balance="isInsufficientBalance"
         :asset="asset"
         :amount="amount"
+        :evm-token-symbol="evmTokenSymbol"
         :evm-network="evmNetwork"
         :evm-network-fee="evmNetworkFee"
         :sora-network-fee="soraNetworkFee"
@@ -243,7 +247,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 
 import router, { lazyComponent } from '@/router';
-import { Components, PageNames, EvmSymbol } from '@/consts';
+import { Components, PageNames } from '@/consts';
 import { SubNetwork } from '@/utils/ethers-util';
 import {
   isXorAccountAsset,
@@ -293,18 +297,12 @@ export default class Bridge extends Mixins(
   @Action('setTransactionConfirm', { namespace }) setTransactionConfirm!: (flag: boolean) => Promise<void>;
   @Action('setTransactionStep', { namespace }) setTransactionStep!: (step: number) => Promise<void>;
 
-  @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString;
-  @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks;
   @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<SubNetwork>;
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean;
-  @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean;
-  @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean;
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>;
   @Getter('asset', { namespace }) asset!: any;
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any;
   @Getter('amount', { namespace }) amount!: string;
-  @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString;
-  @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString;
   @Getter nodeIsConnected!: boolean;
 
   @Watch('nodeIsConnected')
@@ -318,7 +316,6 @@ export default class Bridge extends Mixins(
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
-  EvmSymbol = EvmSymbol;
   KnownSymbols = KnownSymbols;
   isFieldAmountFocused = false;
   showSelectTokenDialog = false;
@@ -404,13 +401,6 @@ export default class Bridge extends Mixins(
 
   get formattedSoraNetworkFee(): string {
     return this.formatCodecNumber(this.soraNetworkFee);
-  }
-
-  get currentEvmTokenSymbol(): string {
-    if (this.evmNetwork === BridgeNetworks.ENERGY_NETWORK_ID) {
-      return this.EvmSymbol.VT;
-    }
-    return this.EvmSymbol.ETH;
   }
 
   get isConfirmTxDisabled(): boolean {
