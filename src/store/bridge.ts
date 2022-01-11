@@ -209,6 +209,9 @@ const getters = {
 
     return balance ? { ...token, balance } : token;
   },
+  isRegisteredAsset(state, getters) {
+    return !!getters.asset?.externalAddress;
+  },
   amount(state) {
     return state.amount;
   },
@@ -509,9 +512,6 @@ const actions = {
     bridgeApi.clearHistory();
     commit(types.GET_HISTORY_SUCCESS, []);
   },
-  findRegisteredAsset({ getters, rootGetters }) {
-    return rootGetters['assets/registeredAssets'].find((item) => item.address === getters.asset.address);
-  },
   /**
    * Fetch EVM Network fee for selected bridge asset
    */
@@ -565,18 +565,20 @@ const actions = {
   },
   async signSoraTransactionSoraToEvm({ commit, getters, rootGetters, dispatch }, { txId }) {
     if (!txId) throw new Error('TX ID cannot be empty!');
-    if (!getters.asset || !getters.asset.address || !getters.amount || !getters.isSoraToEvm) {
+    if (
+      !getters.asset ||
+      !getters.asset.address ||
+      !getters.isRegisteredAsset ||
+      !getters.amount ||
+      !getters.isSoraToEvm
+    ) {
       return;
     }
-    const asset = await dispatch('findRegisteredAsset');
-    // asset should be registered for now
-    if (!asset) {
-      return;
-    }
+
     commit(types.SIGN_SORA_TRANSACTION_SORA_EVM_REQUEST);
     try {
       const evmAccount = rootGetters['web3/evmAddress'];
-      await bridgeApi.transferToEth(asset, evmAccount, getters.amount, txId);
+      await bridgeApi.transferToEth(getters.asset, evmAccount, getters.amount, txId);
       commit(types.SIGN_SORA_TRANSACTION_SORA_EVM_SUCCESS);
     } catch (error) {
       commit(types.SIGN_SORA_TRANSACTION_SORA_EVM_FAILURE);
@@ -609,14 +611,16 @@ const actions = {
     //     commit(types.SEND_ETH_TRANSACTION_SORA_ETH_SUCCESS)
     //   }
     // }
-    if (!getters.asset || !getters.asset.address || !getters.amount || !getters.isSoraToEvm) {
+    if (
+      !getters.asset ||
+      !getters.asset.address ||
+      !getters.isRegisteredAsset ||
+      !getters.amount ||
+      !getters.isSoraToEvm
+    ) {
       return;
     }
-    const asset = await dispatch('findRegisteredAsset');
-    // asset should be registered for now
-    if (!asset) {
-      return;
-    }
+
     commit(types.SIGN_EVM_TRANSACTION_SORA_EVM_REQUEST);
     if (getters.evmTransactionHash) {
       commit(types.SIGN_EVM_TRANSACTION_SORA_EVM_SUCCESS);
@@ -658,9 +662,9 @@ const actions = {
         : 'receiveBySidechainAssetId';
       const methodArgs = [
         isEthereumChain || request.currencyType === BridgeCurrencyType.TokenAddress
-          ? asset.externalAddress // address tokenAddress OR
-          : asset.address, // bytes32 assetId
-        new FPNumber(getters.amount, asset.externalDecimals).toCodecString(), // uint256 amount
+          ? getters.asset.externalAddress // address tokenAddress OR
+          : getters.asset.address, // bytes32 assetId
+        new FPNumber(getters.amount, getters.asset.externalDecimals).toCodecString(), // uint256 amount
         evmAccount, // address beneficiary
       ];
       methodArgs.push(
@@ -715,7 +719,13 @@ const actions = {
   },
 
   async signEvmTransactionEvmToSora({ commit, getters, rootGetters, dispatch }) {
-    if (!getters.asset || !getters.asset.address || !getters.amount || getters.isSoraToEvm) {
+    if (
+      !getters.asset ||
+      !getters.asset.address ||
+      !getters.isRegisteredAsset ||
+      !getters.amount ||
+      getters.isSoraToEvm
+    ) {
       return;
     }
     checkEvmNetwork(rootGetters);
@@ -727,11 +737,7 @@ const actions = {
     //     commit(types.SEND_ETH_TRANSACTION_ETH_SORA_SUCCESS)
     //   }
     // }
-    const asset = await dispatch('findRegisteredAsset');
-    // asset should be registered for now (ERC-20 tokens flow)
-    if (!asset) {
-      return;
-    }
+
     commit(types.SIGN_EVM_TRANSACTION_EVM_SORA_REQUEST);
 
     try {
@@ -744,19 +750,19 @@ const actions = {
       }
       const ethersInstance = await ethersUtil.getEthersInstance();
       const contractAddress = rootGetters['web3/contractAddress'](KnownBridgeAsset.Other);
-      const isNativeEvmToken = isEthereumAddress(asset.externalAddress);
+      const isNativeEvmToken = isEthereumAddress(getters.asset.externalAddress);
 
       // don't check allowance for native EVM token
       if (!isNativeEvmToken) {
         const allowance = await dispatch(
           'web3/getAllowanceByEvmAddress',
-          { address: asset.externalAddress },
+          { address: getters.asset.externalAddress },
           { root: true }
         );
         if (FPNumber.lte(new FPNumber(allowance), new FPNumber(getters.amount))) {
           commit(types.SET_EVM_WAITING_APPROVE_STATE, true);
           const tokenInstance = new ethers.Contract(
-            asset.externalAddress,
+            getters.asset.externalAddress,
             contract[OtherContractType.ERC20].abi,
             ethersInstance.getSigner()
           );
@@ -782,7 +788,11 @@ const actions = {
       const decimals = isNativeEvmToken
         ? undefined
         : await (async () => {
-            const tokenInstance = new ethers.Contract(asset.externalAddress, ABI.balance, ethersInstance.getSigner());
+            const tokenInstance = new ethers.Contract(
+              getters.asset.externalAddress,
+              ABI.balance,
+              ethersInstance.getSigner()
+            );
             const decimals = await tokenInstance.decimals();
 
             return +decimals;
@@ -798,7 +808,7 @@ const actions = {
         : [
             accountId, // bytes32 to
             amount, // uint256 amount
-            asset.externalAddress, // address tokenAddress
+            getters.asset.externalAddress, // address tokenAddress
           ];
 
       const overrides = isNativeEvmToken ? { value: amount } : {};
@@ -836,16 +846,19 @@ const actions = {
       throw error;
     }
   },
+
   async signSoraTransactionEvmToSora({ commit, getters, dispatch }, { ethereumHash }) {
     if (!ethereumHash) throw new Error('Hash cannot be empty!');
-    if (!getters.asset || !getters.asset.address || !getters.amount || getters.isSoraToEvm) {
+    if (
+      !getters.asset ||
+      !getters.asset.address ||
+      !getters.isRegisteredAsset ||
+      !getters.amount ||
+      getters.isSoraToEvm
+    ) {
       return;
     }
-    const asset = await dispatch('findRegisteredAsset');
-    // asset should be registered for now
-    if (!asset) {
-      return;
-    }
+
     commit(types.SIGN_SORA_TRANSACTION_EVM_SORA_REQUEST);
 
     try {
@@ -859,6 +872,7 @@ const actions = {
       throw error;
     }
   },
+
   async sendSoraTransactionEvmToSora({ commit }, { ethereumHash }) {
     if (!ethereumHash) throw new Error('Hash cannot be empty!');
     commit(types.SEND_SORA_TRANSACTION_EVM_SORA_REQUEST);

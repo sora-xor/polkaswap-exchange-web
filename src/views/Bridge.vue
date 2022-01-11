@@ -231,14 +231,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
-import {
-  RegisteredAccountAsset,
-  BridgeNetworks,
-  KnownSymbols,
-  FPNumber,
-  CodecString,
-  Operation,
-} from '@sora-substrate/util';
+import { KnownSymbols, FPNumber, Operation } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
@@ -256,7 +249,6 @@ import {
   hasInsufficientEvmNativeTokenForFee,
   getMaxValue,
   getAssetBalance,
-  findAssetInCollection,
   asZeroValue,
   isEthereumAddress,
 } from '@/utils';
@@ -298,11 +290,7 @@ export default class Bridge extends Mixins(
   @Action('setTransactionStep', { namespace }) setTransactionStep!: (step: number) => Promise<void>;
 
   @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<SubNetwork>;
-  @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean;
-  @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>;
-  @Getter('asset', { namespace }) asset!: any;
-  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any;
-  @Getter('amount', { namespace }) amount!: string;
+  @Getter('isRegisteredAsset', { namespace }) isRegisteredAsset!: boolean;
   @Getter nodeIsConnected!: boolean;
 
   @Watch('nodeIsConnected')
@@ -389,10 +377,6 @@ export default class Bridge extends Mixins(
 
   get isAssetSelected(): boolean {
     return !!this.asset;
-  }
-
-  get isRegisteredAsset(): boolean {
-    return !!findAssetInCollection(this.asset, this.registeredAssets);
   }
 
   get assetSymbol(): string {

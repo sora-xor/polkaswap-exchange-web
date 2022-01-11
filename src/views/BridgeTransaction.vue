@@ -279,15 +279,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
-import {
-  AccountAsset,
-  RegisteredAccountAsset,
-  KnownSymbols,
-  FPNumber,
-  CodecString,
-  BridgeHistory,
-  BridgeNetworks,
-} from '@sora-substrate/util';
+import { KnownSymbols, FPNumber, BridgeHistory } from '@sora-substrate/util';
 import { api, components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { interpret } from 'xstate';
 
@@ -319,9 +311,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @Getter('prev', { namespace: 'router' }) prevRoute!: PageNames;
 
-  @Getter('asset', { namespace }) asset!: Nullable<AccountAsset | RegisteredAccountAsset>;
-  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any;
-  @Getter('amount', { namespace }) amount!: string;
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean;
   @Getter('soraTransactionHash', { namespace }) soraTransactionHash!: string;
   @Getter('evmTransactionHash', { namespace }) evmTransactionHash!: string;
