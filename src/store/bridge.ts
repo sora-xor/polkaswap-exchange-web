@@ -182,6 +182,7 @@ function initialState() {
     assetBalance: null,
     amount: '',
     evmNetworkFee: ZeroStringValue,
+    evmNetworkFeeFetching: false,
     isTransactionConfirmed: false,
     soraTransactionHash: '',
     evmTransactionHash: '',
@@ -282,12 +283,16 @@ const mutations = {
   [types.SET_EVM_WAITING_APPROVE_STATE](state, flag = false) {
     state.waitingForApprove = flag;
   },
-  [types.GET_EVM_NETWORK_FEE_REQUEST](state) {},
+  [types.GET_EVM_NETWORK_FEE_REQUEST](state) {
+    state.evmNetworkFeeFetching = true;
+  },
   [types.GET_EVM_NETWORK_FEE_SUCCESS](state, fee: CodecString) {
     state.evmNetworkFee = fee;
+    state.evmNetworkFeeFetching = false;
   },
   [types.GET_EVM_NETWORK_FEE_FAILURE](state) {
     state.evmNetworkFee = ZeroStringValue;
+    state.evmNetworkFeeFetching = false;
   },
   [types.SET_TRANSACTION_CONFIRM](state, isTransactionConfirmed: boolean) {
     state.isTransactionConfirmed = isTransactionConfirmed;
@@ -563,7 +568,7 @@ const actions = {
     }
     await dispatch('setEvmTransactionDate', params.tx.endTime);
   },
-  async signSoraTransactionSoraToEvm({ commit, getters, rootGetters, dispatch }, { txId }) {
+  async signSoraTransactionSoraToEvm({ commit, getters, rootGetters }, { txId }) {
     if (!txId) throw new Error('TX ID cannot be empty!');
     if (
       !getters.asset ||

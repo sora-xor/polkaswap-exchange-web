@@ -13,11 +13,8 @@ export default class NetworkFormatterMixin extends Vue {
     }
 
     const network = store.getters[`web3/${isDefaultNetworkType ? 'defaultNetworkType' : 'networkType'}`];
-    if (!network) {
-      return '';
-    }
 
-    return `evm.${network}`;
+    return network ? `evm.${network}` : '';
   }
 
   getEvmIcon(externalNetwork: BridgeNetworks): string {

@@ -34,18 +34,16 @@
           :decimals="getDecimals(isSoraToEvm)"
           :delimiters="delimiters"
           :max="getMax((asset || {}).address)"
-          :class="inputClasses"
           :disabled="!areNetworksConnected || !isAssetSelected"
+          class="s-input--token-value"
           has-locale-string
           size="medium"
           @input="setAmount"
-          @focus="handleFocus"
-          @blur="handleBlur"
         >
           <div slot="top" class="input-line">
             <div class="input-title">
               <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
-              <span class="input-title--network">{{ getBridgeItemTitle() }}</span>
+              <span class="input-title--network">{{ getBridgeItemTitle(isSoraToEvm) }}</span>
               <i :class="`s-icon-${isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
             </div>
             <div v-if="isNetworkAConnected && isAssetSelected" class="input-value">
@@ -110,7 +108,7 @@
           :decimals="getDecimals(!isSoraToEvm)"
           :delimiters="delimiters"
           :max="getMax((asset || {}).address)"
-          :class="inputClasses"
+          class="s-input--token-value"
           has-locale-string
           size="medium"
           disabled
@@ -118,7 +116,7 @@
           <div slot="top" class="input-line">
             <div class="input-title" @click="handleChangeNetwork">
               <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
-              <span class="input-title--network">{{ getBridgeItemTitle(true) }}</span>
+              <span class="input-title--network">{{ getBridgeItemTitle(!isSoraToEvm) }}</span>
               <i :class="`s-icon-${!isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
             </div>
             <div v-if="isNetworkAConnected && isAssetSelected" class="input-value">
@@ -230,7 +228,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
+import { Action, Getter, State } from 'vuex-class';
 import { KnownSymbols, FPNumber, Operation } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
@@ -280,6 +278,8 @@ export default class Bridge extends Mixins(
   NetworkFormatterMixin,
   NetworkFeeDialogMixin
 ) {
+  @State((state) => state[namespace].evmNetworkFeeFetching) evmNetworkFeeFetching!: boolean;
+
   @Action('setSoraToEvm', { namespace }) setSoraToEvm!: (value: boolean) => Promise<void>;
   @Action('setAssetAddress', { namespace }) setAssetAddress!: (value: string) => Promise<void>;
   @Action('setAmount', { namespace }) setAmount;
@@ -305,11 +305,9 @@ export default class Bridge extends Mixins(
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
   KnownSymbols = KnownSymbols;
-  isFieldAmountFocused = false;
   showSelectTokenDialog = false;
   showSelectNetworkDialog = false;
   showConfirmTransactionDialog = false;
-  feesFetching = false;
 
   get isNetworkAConnected() {
     return this.isSoraToEvm ? this.isSoraAccountConnected : this.isExternalAccountConnected;
@@ -364,17 +362,6 @@ export default class Bridge extends Mixins(
     );
   }
 
-  get inputClasses(): string {
-    const inputClass = 's-input-amount';
-    const classes = [inputClass];
-
-    if (!this.isZeroAmount) {
-      classes.push(`${inputClass}--filled`);
-    }
-
-    return classes.join(' ');
-  }
-
   get isAssetSelected(): boolean {
     return !!this.asset;
   }
@@ -398,7 +385,7 @@ export default class Bridge extends Mixins(
       this.isInsufficientEvmNativeTokenForFee ||
       this.isInsufficientBalance ||
       !this.isRegisteredAsset ||
-      this.feesFetching
+      this.evmNetworkFeeFetching
     );
   }
 
@@ -431,7 +418,7 @@ export default class Bridge extends Mixins(
   }
 
   async onEvmNetworkChange(network: number): Promise<void> {
-    await Promise.all([this.setEvmNetwork(network), this.getRegisteredAssets(), this.getNetworkFees()]);
+    await Promise.all([this.setEvmNetwork(network), this.getRegisteredAssets(), this.getEvmNetworkFee()]);
   }
 
   created(): void {
@@ -446,24 +433,13 @@ export default class Bridge extends Mixins(
     this.resetBalanceSubscription();
   }
 
-  getBridgeItemTitle(isBTitle = false): string {
-    if (this.isSoraToEvm) {
-      return this.t(this.formatNetwork(!isBTitle));
-    }
-    return this.t(this.formatNetwork(isBTitle));
-  }
-
-  handleBlur(): void {
-    this.isFieldAmountFocused = false;
-  }
-
-  handleFocus(): void {
-    this.isFieldAmountFocused = true;
+  getBridgeItemTitle(isSoraNetwork = false): string {
+    return this.t(this.formatNetwork(isSoraNetwork));
   }
 
   async handleSwitchItems(): Promise<void> {
     this.setSoraToEvm(!this.isSoraToEvm);
-    await this.getNetworkFees();
+    await this.getEvmNetworkFee();
   }
 
   handleMaxValue(): void {
@@ -509,7 +485,7 @@ export default class Bridge extends Mixins(
   async selectAsset(selectedAsset: any): Promise<void> {
     if (selectedAsset) {
       await this.setAssetAddress(selectedAsset?.address ?? '');
-      await this.getNetworkFees();
+      await this.getEvmNetworkFee();
     }
   }
 
@@ -521,14 +497,6 @@ export default class Bridge extends Mixins(
       await this.setTransactionStep(1);
       router.push({ name: PageNames.BridgeTransaction });
     });
-  }
-
-  private async getNetworkFees(): Promise<void> {
-    if (this.isRegisteredAsset) {
-      this.feesFetching = true;
-      await this.getEvmNetworkFee();
-      this.feesFetching = false;
-    }
   }
 }
 </script>

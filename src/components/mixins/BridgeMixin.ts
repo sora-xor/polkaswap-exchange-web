@@ -85,6 +85,7 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
 
       this.blockHeadersSubscriber = ethersInstance.on('block', (blockNumber) => {
         this.updateExternalBalances();
+        this.getEvmNetworkFee();
       });
     } catch (error) {
       console.error(error);

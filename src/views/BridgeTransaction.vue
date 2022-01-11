@@ -338,7 +338,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   @Action('sendSoraTransactionEvmToSora', { namespace }) sendSoraTransactionEvmToSora;
   @Action('sendEvmTransactionEvmToSora', { namespace }) sendEvmTransactionEvmToSora;
 
-  @Action('generateHistoryItem', { namespace }) generateHistoryItem!: ({ date: Date }) => Promise<BridgeHistory>;
+  @Action('generateHistoryItem', { namespace }) generateHistoryItem!: () => Promise<BridgeHistory>;
   @Action('updateHistoryParams', { namespace }) updateHistoryParams;
   @Action('removeHistoryById', { namespace }) removeHistoryById;
   @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash;
@@ -669,7 +669,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
 
   async initializeTransactionStateMachine() {
     // Create state machine and interpret it
-    const historyItem = this.historyItem ? this.historyItem : await this.generateHistoryItem({ date: Date.now() });
+    const historyItem = this.historyItem ? this.historyItem : await this.generateHistoryItem();
     const machineStates = this.isSoraToEvm ? SORA_EVM_STATES : EVM_SORA_STATES;
     const initialState =
       this.initialTransactionState === this.currentState ? this.initialTransactionState : this.currentState;
