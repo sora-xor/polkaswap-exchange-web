@@ -312,19 +312,17 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   @Getter('prev', { namespace: 'router' }) prevRoute!: PageNames;
 
   @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean;
-  @Getter('soraTransactionHash', { namespace }) soraTransactionHash!: string;
-  @Getter('evmTransactionHash', { namespace }) evmTransactionHash!: string;
-  @Getter('soraTransactionDate', { namespace }) soraTransactionDate!: string;
-  @Getter('evmTransactionDate', { namespace }) evmTransactionDate!: string;
+  @Getter('transactionFromHash', { namespace }) transactionFromHash!: string;
+  @Getter('transactionToHash', { namespace }) transactionToHash!: string;
+  @Getter('transactionFromDate', { namespace }) transactionFromDate!: string;
+  @Getter('transactionToDate', { namespace }) transactionToDate!: string;
+
   @Getter('currentTransactionState', { namespace }) currentState!: STATES;
-  @Getter('initialTransactionState', { namespace }) initialTransactionState!: STATES;
   @Getter('transactionStep', { namespace }) transactionStep!: number;
   @Getter('historyItem', { namespace }) historyItem!: any;
   @Getter('isTxEvmAccount', { namespace }) isTxEvmAccount!: boolean;
   @Getter('waitingForApprove', { namespace }) waitingForApprove!: boolean;
 
-  @Action('setCurrentTransactionState', { namespace }) setCurrentTransactionState;
-  @Action('setInitialTransactionState', { namespace }) setInitialTransactionState;
   @Action('setTransactionStep', { namespace }) setTransactionStep;
   @Action('setHistoryItem', { namespace }) setHistoryItem;
 
@@ -341,8 +339,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   @Action('generateHistoryItem', { namespace }) generateHistoryItem!: () => Promise<BridgeHistory>;
   @Action('updateHistoryParams', { namespace }) updateHistoryParams;
   @Action('removeHistoryById', { namespace }) removeHistoryById;
-  @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash;
-  @Action('setEvmTransactionHash', { namespace }) setEvmTransactionHash;
 
   KnownSymbols = KnownSymbols;
   STATES = STATES;
@@ -423,6 +419,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   get isTransferCompleted(): boolean {
     const isTransactionCompleted =
       this.currentState === (!this.isSoraToEvm ? STATES.SORA_COMMITED : STATES.EVM_COMMITED);
+    // TODO: remove side effect
     if (isTransactionCompleted) {
       this.activeTransactionStep = null;
     }
@@ -519,26 +516,12 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     return this.historyItem.blockId || api.bridge.getHistory(this.historyItem.id)?.blockId;
   }
 
-  get transactionFromHash(): string {
-    if (this.isSoraToEvm) {
-      return this.soraTransactionHash;
-    }
-    return this.evmTransactionHash;
-  }
-
-  get transactionToHash(): string {
-    if (!this.isSoraToEvm) {
-      return this.soraTransactionHash;
-    }
-    return this.evmTransactionHash;
-  }
-
   get transactionFirstDate(): string {
-    return this.getTransactionDate(this.isSoraToEvm ? this.soraTransactionDate : this.evmTransactionDate);
+    return this.formatTransactionDate(this.transactionFromDate);
   }
 
   get transactionSecondDate(): string {
-    return this.getTransactionDate(!this.isSoraToEvm ? this.soraTransactionDate : this.evmTransactionDate);
+    return this.formatTransactionDate(this.transactionToDate);
   }
 
   get formattedSoraNetworkFee(): string {
@@ -659,7 +642,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   async beforeDestroy(): Promise<void> {
-    this.setInitialTransactionState(STATES.INITIAL);
     this.setTransactionStep(1);
     this.setHistoryItem(null);
     if (this.sendService) {
@@ -671,8 +653,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     // Create state machine and interpret it
     const historyItem = this.historyItem ? this.historyItem : await this.generateHistoryItem();
     const machineStates = this.isSoraToEvm ? SORA_EVM_STATES : EVM_SORA_STATES;
-    const initialState =
-      this.initialTransactionState === this.currentState ? this.initialTransactionState : this.currentState;
+    const initialState = this.currentState;
     this.sendService = interpret(
       createFSM(
         {
@@ -718,8 +699,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     // Subscribe to transition events
     this.sendService
       .onTransition(async (state) => {
-        await this.setCurrentTransactionState(state.context.history.transactionState);
-        await this.updateHistoryParams({ tx: state.context.history });
+        await this.updateHistoryParams(state.context.history);
 
         if (
           !state.context.history.hash?.length &&
@@ -729,13 +709,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
           if (state.event.data?.message.includes('Cancelled') || state.event.data?.code === MetamaskCancellationCode) {
             await this.removeHistoryById(state.context.history.id);
           }
-        }
-
-        if (state.context.history.hash && !this.soraTransactionHash.length) {
-          await this.setSoraTransactionHash(state.context.history.hash);
-        }
-        if (state.context.history.ethereumHash && !this.evmTransactionHash.length) {
-          await this.setEvmTransactionHash(state.context.history.ethereumHash);
         }
 
         if (
@@ -850,7 +823,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     return this.getFailedClass(true);
   }
 
-  getTransactionDate(transactionDate: string): string {
+  formatTransactionDate(transactionDate: string): string {
     // We use current date if request is failed
     const date = transactionDate ? new Date(transactionDate) : new Date();
     return this.formatDate(date.getTime());

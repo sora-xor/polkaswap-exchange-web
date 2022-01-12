@@ -24,18 +24,8 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
   @Action('setAssetAddress', { namespace }) setAssetAddress!: (address?: string) => Promise<void>;
   @Action('setSoraToEvm', { namespace }) setSoraToEvm!: (value: boolean) => Promise<void>;
   @Action('setTransactionConfirm', { namespace }) setTransactionConfirm!: (value: boolean) => Promise<void>;
-  @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash!: (
-    soraTransactionHash: string
-  ) => Promise<void>;
 
-  @Action('setEvmTransactionHash', { namespace }) setEvmTransactionHash!: (evmTransactionHash: string) => Promise<void>;
-  @Action('setSoraTransactionDate', { namespace }) setSoraTransactionDate!: (
-    soraTransactionDate: string
-  ) => Promise<void>;
-
-  @Action('setEvmTransactionDate', { namespace }) setEvmTransactionDate!: (evmTransactionDate: string) => Promise<void>;
   @Action('setEvmNetworkFee', { namespace }) setEvmNetworkFee!: (evmNetworkFee: CodecString) => Promise<void>;
-  @Action('setCurrentTransactionState', { namespace }) setCurrentTransactionState!: (state: STATES) => Promise<void>;
   @Action('setTransactionStep', { namespace }) setTransactionStep!: (step: number) => Promise<void>;
   @Action('setHistoryItem', { namespace }) setHistoryItem!: (historyItem: BridgeHistory) => Promise<void>;
 
@@ -75,13 +65,9 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
       await this.setSoraToEvm(isSoraToEvm);
       await this.setAssetAddress(assetAddress);
       await this.setAmount(tx.amount || '0');
-      await this.setSoraTransactionHash(tx.hash || '');
-      await this.setEvmTransactionHash(tx.ethereumHash || '');
-      await this.setSoraTransactionDate(String(tx[isSoraToEvm ? 'startTime' : 'endTime']));
-      await this.setEvmTransactionDate(String(tx[!isSoraToEvm ? 'startTime' : 'endTime']));
       await this.setEvmNetworkFee(String(tx.ethereumNetworkFee));
+      // TODO: remove
       await this.setTransactionStep(tx.transactionStep || 1);
-      await this.setCurrentTransactionState(tx.transactionState as STATES);
       await this.setHistoryItem(tx);
 
       this.navigateToBridgeTransaction();

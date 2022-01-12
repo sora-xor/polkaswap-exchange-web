@@ -366,19 +366,21 @@ function createFSM(context: Context, states, initialState = STATES.INITIAL) {
       }),
       [ACTIONS.SET_BRIDGE_STATUS_FAILURE]: assign({
         history: (context) => {
+          const statusChanged = context.history.status !== BridgeTxStatus.Failed;
           return {
             ...context.history,
             status: BridgeTxStatus.Failed,
-            endTime: Date.now(),
+            endTime: statusChanged ? Date.now() : context.history.endTime,
           };
         },
       }),
       [ACTIONS.SET_BRIDGE_STATUS_DONE]: assign({
         history: (context) => {
+          const statusChanged = context.history.status !== BridgeTxStatus.Done;
           return {
             ...context.history,
             status: BridgeTxStatus.Done,
-            endTime: Date.now(),
+            endTime: statusChanged ? Date.now() : context.history.endTime,
           };
         },
       }),

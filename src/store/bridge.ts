@@ -40,12 +40,6 @@ const types = flow(
     'SET_EVM_WAITING_APPROVE_STATE',
     'SET_AMOUNT',
     'SET_TRANSACTION_CONFIRM',
-    'SET_SORA_TRANSACTION_HASH',
-    'SET_SORA_TRANSACTION_DATE',
-    'SET_EVM_TRANSACTION_HASH',
-    'SET_EVM_TRANSACTION_DATE',
-    'SET_INITIAL_TRANSACTION_STATE',
-    'SET_CURRENT_TRANSACTION_STATE',
     'SET_TRANSACTION_STEP',
     'SET_HISTORY_ITEM',
   ]),
@@ -184,12 +178,6 @@ function initialState() {
     evmNetworkFee: ZeroStringValue,
     evmNetworkFeeFetching: false,
     isTransactionConfirmed: false,
-    soraTransactionHash: '',
-    evmTransactionHash: '',
-    soraTransactionDate: '',
-    evmTransactionDate: '',
-    initialTransactionState: STATES.INITIAL,
-    currentTransactionState: STATES.INITIAL,
     transactionStep: 1,
     history: [],
     historyItem: null,
@@ -226,23 +214,25 @@ const getters = {
   isTransactionConfirmed(state) {
     return state.isTransactionConfirmed;
   },
-  soraTransactionHash(state) {
-    return state.soraTransactionHash;
+  transactionFromHash(state) {
+    const { historyItem: tx, isSoraToEvm } = state;
+    return (isSoraToEvm ? tx?.hash : tx?.ethereumHash) ?? '';
   },
-  evmTransactionHash(state) {
-    return state.evmTransactionHash;
+  transactionToHash(state) {
+    const { historyItem: tx, isSoraToEvm } = state;
+    return (!isSoraToEvm ? tx?.hash : tx?.ethereumHash) ?? '';
   },
-  soraTransactionDate(state) {
-    return state.soraTransactionDate;
+  transactionFromDate(state) {
+    const { historyItem: tx, isSoraToEvm } = state;
+    return (isSoraToEvm ? tx?.startTime : tx?.endTime) ?? '';
   },
-  evmTransactionDate(state) {
-    return state.evmTransactionDate;
-  },
-  initialTransactionState(state) {
-    return state.initialTransactionState;
+  transactionToDate(state) {
+    const { historyItem: tx, isSoraToEvm } = state;
+    return (!isSoraToEvm ? tx?.startTime : tx?.endTime) ?? '';
   },
   currentTransactionState(state) {
-    return state.currentTransactionState;
+    const { historyItem: tx } = state;
+    return tx?.transactionState ?? STATES.INITIAL;
   },
   transactionStep(state) {
     return state.transactionStep;
@@ -296,24 +286,6 @@ const mutations = {
   },
   [types.SET_TRANSACTION_CONFIRM](state, isTransactionConfirmed: boolean) {
     state.isTransactionConfirmed = isTransactionConfirmed;
-  },
-  [types.SET_SORA_TRANSACTION_HASH](state, soraTransactionHash: string) {
-    state.soraTransactionHash = soraTransactionHash;
-  },
-  [types.SET_EVM_TRANSACTION_HASH](state, evmTransactionHash: string) {
-    state.evmTransactionHash = evmTransactionHash;
-  },
-  [types.SET_SORA_TRANSACTION_DATE](state, soraTransactionDate: string) {
-    state.soraTransactionDate = soraTransactionDate;
-  },
-  [types.SET_EVM_TRANSACTION_DATE](state, evmTransactionDate: string) {
-    state.evmTransactionDate = evmTransactionDate;
-  },
-  [types.SET_CURRENT_TRANSACTION_STATE](state, currentTransactionState: STATES) {
-    state.currentTransactionState = currentTransactionState;
-  },
-  [types.SET_INITIAL_TRANSACTION_STATE](state, initialTransactionState: STATES) {
-    state.initialTransactionState = initialTransactionState;
   },
   [types.SET_TRANSACTION_STEP](state, transactionStep: number) {
     state.transactionStep = transactionStep;
@@ -385,24 +357,6 @@ const actions = {
   setTransactionConfirm({ commit }, isTransactionConfirmed: boolean) {
     commit(types.SET_TRANSACTION_CONFIRM, isTransactionConfirmed);
   },
-  setSoraTransactionHash({ commit }, soraTransactionHash: string) {
-    commit(types.SET_SORA_TRANSACTION_HASH, soraTransactionHash);
-  },
-  setEvmTransactionHash({ commit }, evmTransactionHash: string) {
-    commit(types.SET_EVM_TRANSACTION_HASH, evmTransactionHash);
-  },
-  setSoraTransactionDate({ commit }, soraTransactionDate: string) {
-    commit(types.SET_SORA_TRANSACTION_DATE, soraTransactionDate);
-  },
-  setEvmTransactionDate({ commit }, evmTransactionDate: string) {
-    commit(types.SET_EVM_TRANSACTION_DATE, evmTransactionDate);
-  },
-  setCurrentTransactionState({ commit }, currentTransactionState: STATES) {
-    commit(types.SET_CURRENT_TRANSACTION_STATE, currentTransactionState);
-  },
-  setInitialTransactionState({ commit }, initialTransactionState: STATES) {
-    commit(types.SET_INITIAL_TRANSACTION_STATE, initialTransactionState);
-  },
   setTransactionStep({ commit }, transactionStep: number) {
     commit(types.SET_TRANSACTION_STEP, transactionStep);
   },
@@ -414,11 +368,6 @@ const actions = {
     dispatch('setAmount', '');
     dispatch('setSoraToEvm', true);
     dispatch('setTransactionConfirm', false);
-    dispatch('setCurrentTransactionState', STATES.INITIAL);
-    dispatch('setSoraTransactionDate', '');
-    dispatch('setSoraTransactionHash', '');
-    dispatch('setEvmTransactionDate', '');
-    dispatch('setEvmTransactionHash', '');
   },
   resetBalanceSubscription({ commit }) {
     balanceSubscriptions.remove('asset', { updateBalance: (balance) => commit(types.SET_ASSET_BALANCE, balance) });
@@ -561,13 +510,11 @@ const actions = {
     return getters.historyItem;
   },
   async updateHistoryParams({ dispatch }, params) {
-    bridgeApi.saveHistory(params.tx);
-    await dispatch('setHistoryItem', params.tx);
-    if (!params.isEndTimeOnly) {
-      await dispatch('setSoraTransactionDate', params.tx.startTime);
-    }
-    await dispatch('setEvmTransactionDate', params.tx.endTime);
+    bridgeApi.saveHistory(params);
+
+    await dispatch('setHistoryItem', params);
   },
+
   async signSoraTransactionSoraToEvm({ commit, getters, rootGetters }, { txId }) {
     if (!txId) throw new Error('TX ID cannot be empty!');
     if (
@@ -581,6 +528,7 @@ const actions = {
     }
 
     commit(types.SIGN_SORA_TRANSACTION_SORA_EVM_REQUEST);
+
     try {
       const evmAccount = rootGetters['web3/evmAddress'];
       await bridgeApi.transferToEth(getters.asset, evmAccount, getters.amount, txId);
@@ -590,6 +538,7 @@ const actions = {
       throw error;
     }
   },
+
   async sendSoraTransactionSoraToEvm({ commit }, { txId }) {
     if (!txId) throw new Error('TX ID cannot be empty!');
     commit(types.SEND_SORA_TRANSACTION_SORA_EVM_REQUEST);
@@ -605,6 +554,7 @@ const actions = {
       throw error;
     }
   },
+
   async signEvmTransactionSoraToEvm({ commit, getters, rootGetters, dispatch }, { hash }) {
     if (!hash) throw new Error('TX ID cannot be empty!');
     checkEvmNetwork(rootGetters);
@@ -627,9 +577,10 @@ const actions = {
     }
 
     commit(types.SIGN_EVM_TRANSACTION_SORA_EVM_REQUEST);
-    if (getters.evmTransactionHash) {
+
+    if (getters.transactionToHash) {
       commit(types.SIGN_EVM_TRANSACTION_SORA_EVM_SUCCESS);
-      return getters.evmTransactionHash;
+      return getters.transactionToHash;
     }
 
     try {
@@ -638,7 +589,7 @@ const actions = {
       // update history item, if it hasn't 'to' field
       if (!getters.historyItem.to) {
         const tx = { ...getters.historyItem, to: request.to };
-        dispatch('updateHistoryParams', { tx });
+        dispatch('updateHistoryParams', tx);
       }
       if (!getters.isTxEvmAccount) {
         throw new Error(`Change account in MetaMask to ${request.to}`);
@@ -698,6 +649,7 @@ const actions = {
       throw error;
     }
   },
+
   async sendEvmTransactionSoraToEvm({ commit, getters, dispatch }, { ethereumHash }) {
     // TODO: Change args to tx due to new data flow
     if (!ethereumHash) throw new Error('Hash cannot be empty!');
@@ -706,10 +658,8 @@ const actions = {
       await waitForEvmTransactionStatus(
         ethereumHash,
         (hash: string) => {
-          const history = getters.historyItem;
-          history.ethereumHash = hash;
-          dispatch('updateHistoryParams', { tx: history });
-          dispatch('setEvmTransactionHash', { hash });
+          const tx = { ...getters.historyItem, ethereumHash: hash };
+          dispatch('updateHistoryParams', tx);
           dispatch('sendEvmTransactionSoraToEvm', { ethereumHash: hash });
         },
         () => {
@@ -828,6 +778,7 @@ const actions = {
       throw error;
     }
   },
+
   async sendEvmTransactionEvmToSora({ commit, getters, dispatch }, { ethereumHash }) {
     if (!ethereumHash) throw new Error('Hash cannot be empty!');
     commit(types.SEND_EVM_TRANSACTION_EVM_SORA_REQUEST);
@@ -835,10 +786,8 @@ const actions = {
       await waitForEvmTransactionStatus(
         ethereumHash,
         (hash: string) => {
-          const history = getters.historyItem;
-          history.ethereumHash = hash;
-          dispatch('updateHistoryParams', { tx: history });
-          dispatch('setEvmTransactionHash', { hash });
+          const tx = { ...getters.historyItem, ethereumHash: hash };
+          dispatch('updateHistoryParams', tx);
           dispatch('sendEvmTransactionSoraToEvm', { ethereumHash: hash });
         },
         () => {
@@ -852,7 +801,7 @@ const actions = {
     }
   },
 
-  async signSoraTransactionEvmToSora({ commit, getters, dispatch }, { ethereumHash }) {
+  async signSoraTransactionEvmToSora({ commit, getters }, { ethereumHash }) {
     if (!ethereumHash) throw new Error('Hash cannot be empty!');
     if (
       !getters.asset ||
@@ -889,6 +838,12 @@ const actions = {
       console.error(error);
       throw error;
     }
+  },
+
+  async changeState({ commit, state, dispatch }, nextState: STATES) {
+    // if (state.isSoraToEvm) {
+    // } else {
+    // }
   },
 };
 
