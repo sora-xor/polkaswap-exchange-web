@@ -120,7 +120,6 @@ export const handleBridgeTransaction = async (store) => {
           await store.dispatch('updateHistoryParams', {
             transactionState: STATES.EVM_SUBMITTED,
             transactionStep: 2,
-            signed: false,
           });
         };
 
@@ -145,6 +144,7 @@ export const handleBridgeTransaction = async (store) => {
         const handler = async (store) => {
           await store.dispatch('updateHistoryParams', {
             transactionState: STATES.EVM_PENDING,
+            signed: false,
           });
 
           if (!store.state.historyItem.signed) {
