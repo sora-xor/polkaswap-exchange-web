@@ -36,7 +36,7 @@
           </h5>
           <p class="header-status">{{ headerStatus }}</p>
         </div>
-        <s-collapse borders :value="activeTransactionStep">
+        <s-collapse borders :value="activeCollapseItems">
           <s-collapse-item :name="transactionSteps.from">
             <template #title>
               <div class="network-info-title">
@@ -114,8 +114,6 @@
                 <span class="info-line-value-prefix">~</span>
               </template>
             </info-line>
-            <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
-            <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol" /> -->
             <s-button
               v-if="isTransactionStep1"
               type="primary"
@@ -225,8 +223,6 @@
                 <span class="info-line-value-prefix">~</span>
               </template>
             </info-line>
-            <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
-            <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="!isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol" /> -->
             <s-button
               v-if="isTransactionStep2 && !isTransferCompleted"
               type="primary"
@@ -296,6 +292,8 @@ import {
 } from '@/utils';
 import { createFSM, EVENTS, SORA_EVM_STATES, EVM_SORA_STATES, STATES } from '@/utils/fsm';
 
+import type { CodecString } from '@sora-substrate/util';
+
 const FORMATTED_HASH_LENGTH = 24;
 const namespace = 'bridge';
 
@@ -340,7 +338,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   @Action('removeHistoryById', { namespace }) removeHistoryById;
 
   KnownSymbols = KnownSymbols;
-  STATES = STATES;
 
   callFirstTransition = () => {};
   callSecondTransition = () => {};
@@ -366,9 +363,17 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     return this.getEvmIcon(this.evmNetwork);
   }
 
+  get txSoraNetworkFee(): CodecString {
+    return this.historyItem?.soraNetworkFee ?? this.soraNetworkFee;
+  }
+
+  get txEvmNetworkFee(): CodecString {
+    return this.historyItem?.ethereumNetworkFee ?? this.evmNetworkFee;
+  }
+
   get soraFeeFiatValue(): Nullable<string> {
     if (this.isSoraToEvm) {
-      return this.getFiatAmountByCodecString(this.historyItem?.soraNetworkFee || this.soraNetworkFee);
+      return this.getFiatAmountByCodecString(this.txSoraNetworkFee);
     }
     return null;
   }
@@ -416,13 +421,18 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   get isTransferCompleted(): boolean {
-    const isTransactionCompleted =
-      this.currentState === (!this.isSoraToEvm ? STATES.SORA_COMMITED : STATES.EVM_COMMITED);
-    // TODO: remove side effect
-    if (isTransactionCompleted) {
-      this.activeTransactionStep = null;
+    return this.currentState === (!this.isSoraToEvm ? STATES.SORA_COMMITED : STATES.EVM_COMMITED);
+  }
+
+  get activeCollapseItems(): Array<string> {
+    if (this.isTransferCompleted) {
+      return [];
     }
-    return isTransactionCompleted;
+    if (this.isTransactionFromCompleted) {
+      return [this.transactionSteps.to];
+    }
+
+    return [this.transactionSteps.from, this.transactionSteps.to];
   }
 
   get headerIconClasses(): string {
@@ -467,10 +477,10 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
       return this.t('bridgeTransaction.statuses.waiting') + '...';
     }
     if (this.isTransactionStep1) {
-      if (this.currentState === (this.isSoraToEvm ? STATES.SORA_PENDING : STATES.EVM_PENDING)) {
+      if (this.isTransactionFromPending) {
         return this.t('bridgeTransaction.statuses.pending') + '...';
       }
-      if (this.currentState === (this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED)) {
+      if (this.isTransactionFromFailed) {
         return this.t('bridgeTransaction.statuses.failed');
       }
     }
@@ -481,14 +491,14 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     if (!this.currentState || !this.isTransactionFromCompleted) {
       return this.t('bridgeTransaction.statuses.waiting') + '...';
     }
-    if (this.currentState === (!this.isSoraToEvm ? STATES.SORA_PENDING : STATES.EVM_PENDING)) {
+    if (this.isTransactionToPending) {
       const message = this.t('bridgeTransaction.statuses.pending') + '...';
       if (this.isSoraToEvm) {
         return message;
       }
       return `${message} (${this.t('bridgeTransaction.wait30Block')})`;
     }
-    if (this.currentState === (!this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED)) {
+    if (this.isTransactionToFailed) {
       return this.t('bridgeTransaction.statuses.failed');
     }
     if (this.isTransferCompleted) {
@@ -524,24 +534,22 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   get formattedSoraNetworkFee(): string {
-    return this.getStringFromCodec(this.historyItem?.soraNetworkFee || this.soraNetworkFee, this.tokenXOR?.decimals);
+    return this.getStringFromCodec(this.txSoraNetworkFee, this.tokenXOR?.decimals);
   }
 
   get soraNetworkFeeFiatValue(): Nullable<string> {
     if (this.isSoraToEvm) {
       return null;
     }
-    return this.getFiatAmountByCodecString(this.historyItem?.soraNetworkFee || this.soraNetworkFee);
+    return this.getFiatAmountByCodecString(this.txSoraNetworkFee);
   }
 
   get formattedEvmNetworkFee(): string {
-    return this.getFPNumberFromCodec(this.historyItem?.ethereumNetworkFee ?? this.evmNetworkFee).toLocaleString();
+    return this.formatCodecNumber(this.txEvmNetworkFee);
   }
 
   get isInsufficientBalance(): boolean {
-    const fee = this.isSoraToEvm
-      ? this.historyItem?.soraNetworkFee ?? this.soraNetworkFee
-      : this.historyItem?.ethereumNetworkFee ?? this.evmNetworkFee;
+    const fee = this.isSoraToEvm ? this.txSoraNetworkFee : this.txEvmNetworkFee;
 
     if (!this.asset || !this.amount || !fee) return false;
 
@@ -549,14 +557,11 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   get isInsufficientXorForFee(): boolean {
-    return hasInsufficientXorForFee(this.tokenXOR, this.historyItem?.soraNetworkFee ?? this.soraNetworkFee);
+    return hasInsufficientXorForFee(this.tokenXOR, this.txSoraNetworkFee);
   }
 
   get isInsufficientEvmNativeTokenForFee(): boolean {
-    return hasInsufficientEvmNativeTokenForFee(
-      this.evmBalance,
-      this.historyItem?.ethereumNetworkFee ?? this.evmNetworkFee
-    );
+    return hasInsufficientEvmNativeTokenForFee(this.evmBalance, this.txEvmNetworkFee);
   }
 
   get isFirstConfirmationButtonDisabled(): boolean {
@@ -713,22 +718,17 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
           (machineStates === SORA_EVM_STATES && state.value === STATES.SORA_COMMITED) ||
           (machineStates === EVM_SORA_STATES && state.value === STATES.EVM_COMMITED)
         ) {
-          await this.setFromTransactionCompleted();
           this.callSecondTransition();
         }
       })
       .start();
   }
 
-  setFromTransactionCompleted() {
-    this.activeTransactionStep = this.transactionSteps.to;
-  }
-
   private getTxIconStatusClasses(isSecondTransaction?: boolean): string {
     const iconClass = 'network-info-icon';
     const classes = [iconClass];
     if (isSecondTransaction) {
-      if (this.currentState === (!this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED)) {
+      if (this.isTransactionToFailed) {
         classes.push(`${iconClass}--error`);
         return classes.join(' ');
       }
@@ -737,7 +737,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
         return classes.join(' ');
       }
     } else {
-      if (this.currentState === (this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED)) {
+      if (this.isTransactionFromFailed) {
         classes.push(`${iconClass}--error`);
         return classes.join(' ');
       }
@@ -803,13 +803,9 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
 
   private getFailedClass(isSecondTransaction?: boolean): string {
     if (!isSecondTransaction) {
-      return this.currentState === (this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED)
-        ? 'info-line--error'
-        : '';
+      return this.isTransactionFromFailed ? 'info-line--error' : '';
     }
-    return this.currentState === (!this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED)
-      ? 'info-line--error'
-      : '';
+    return this.isTransactionToFailed ? 'info-line--error' : '';
   }
 
   get failedClassStep1(): string {
