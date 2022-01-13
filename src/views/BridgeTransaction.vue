@@ -37,7 +37,7 @@
           <p class="header-status">{{ headerStatus }}</p>
         </div>
         <s-collapse borders :value="activeCollapseItems">
-          <s-collapse-item :name="transactionSteps.from">
+          <s-collapse-item :name="collapseItems.from">
             <template #title>
               <div class="network-info-title">
                 <h3>
@@ -115,7 +115,7 @@
               </template>
             </info-line>
             <s-button
-              v-if="isTransactionStep1"
+              v-if="!isTransactionFromCompleted"
               type="primary"
               class="s-typograhy-button--big"
               :disabled="isFirstConfirmationButtonDisabled"
@@ -159,7 +159,7 @@
               {{ t('bridgeTransaction.approveToken') }}
             </div>
           </s-collapse-item>
-          <s-collapse-item :name="transactionSteps.to">
+          <s-collapse-item :name="collapseItems.to">
             <template #title>
               <div class="network-info-title">
                 <h3>
@@ -169,14 +169,14 @@
                     })}`
                   }}
                 </h3>
-                <span v-if="isTransactionStep2" :class="secondTxIconStatusClasses" />
+                <span v-if="isTransactionFromCompleted" :class="secondTxIconStatusClasses" />
               </div>
             </template>
             <div v-if="isSoraToEvm && !isTxEvmAccount" class="transaction-error">
               <span class="transaction-error__title">{{ t('bridgeTransaction.expectedMetaMaskAddress') }}</span>
               <span class="transaction-error__value">{{ transactionEvmAddress }}</span>
             </div>
-            <div v-if="isTransactionStep2 && transactionToHash" :class="secondTxHashContainerClasses">
+            <div v-if="isTransactionFromCompleted && transactionToHash" :class="secondTxHashContainerClasses">
               <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="secondTxHash" readonly />
               <s-button
                 class="s-button--hash-copy"
@@ -224,7 +224,7 @@
               </template>
             </info-line>
             <s-button
-              v-if="isTransactionStep2 && !isTransferCompleted"
+              v-if="isTransactionFromCompleted && !isTransactionToCompleted"
               type="primary"
               class="s-typograhy-button--big"
               :disabled="isSecondConfirmationButtonDisabled"
@@ -262,7 +262,7 @@
       </template>
     </div>
     <s-button
-      v-if="isInitRequestCompleted && isTransferCompleted"
+      v-if="isInitRequestCompleted && isTransactionToCompleted"
       class="s-typography-button--large"
       type="secondary"
       @click="handleCreateTransaction"
@@ -315,8 +315,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   @Getter('transactionFromDate', { namespace }) transactionFromDate!: string;
   @Getter('transactionToDate', { namespace }) transactionToDate!: string;
 
-  @Getter('currentTransactionState', { namespace }) currentState!: STATES;
-  @Getter('transactionStep', { namespace }) transactionStep!: number;
+  @Getter('currentState', { namespace }) currentState!: STATES;
   @Getter('historyItem', { namespace }) historyItem!: any;
   @Getter('isTxEvmAccount', { namespace }) isTxEvmAccount!: boolean;
   @Getter('waitingForApprove', { namespace }) waitingForApprove!: boolean;
@@ -337,19 +336,17 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   @Action('updateHistoryParams', { namespace }) updateHistoryParams;
   @Action('removeHistoryById', { namespace }) removeHistoryById;
 
-  KnownSymbols = KnownSymbols;
+  readonly KnownSymbols = KnownSymbols;
+  readonly collapseItems = {
+    from: 'step-from',
+    to: 'step-to',
+  };
 
   callFirstTransition = () => {};
   callSecondTransition = () => {};
   callRetryTransition = () => {};
   sendService: any = null;
   isInitRequestCompleted = false;
-  transactionSteps = {
-    from: 'step-from',
-    to: 'step-to',
-  };
-
-  activeTransactionStep: any = [this.transactionSteps.from, this.transactionSteps.to];
 
   get formattedAmount(): string {
     return this.amount && this.asset ? new FPNumber(this.amount, this.asset.decimals).toLocaleString() : '';
@@ -392,12 +389,8 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     return null;
   }
 
-  get isTransactionStep1(): boolean {
-    return this.transactionStep === 1;
-  }
-
-  get isTransactionStep2(): boolean {
-    return this.transactionStep === 2;
+  get isTransferStarted(): boolean {
+    return this.currentState !== STATES.INITIAL;
   }
 
   get isTransactionFromPending(): boolean {
@@ -417,22 +410,26 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   get isTransactionFromCompleted(): boolean {
-    return !this.isTransactionStep1;
+    return this.isTransferStarted && !this.isTransactionFromPending && !this.isTransactionFromFailed;
   }
 
-  get isTransferCompleted(): boolean {
+  get isTransactionToCompleted(): boolean {
     return this.currentState === (!this.isSoraToEvm ? STATES.SORA_COMMITED : STATES.EVM_COMMITED);
   }
 
+  get transactionStep(): number {
+    return this.isTransactionFromCompleted ? 2 : 1;
+  }
+
   get activeCollapseItems(): Array<string> {
-    if (this.isTransferCompleted) {
+    if (this.isTransactionToCompleted) {
       return [];
     }
     if (this.isTransactionFromCompleted) {
-      return [this.transactionSteps.to];
+      return [this.collapseItems.to];
     }
 
-    return [this.transactionSteps.from, this.transactionSteps.to];
+    return [this.collapseItems.from, this.collapseItems.to];
   }
 
   get headerIconClasses(): string {
@@ -441,14 +438,10 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
 
     if (this.isTransactionFromFailed || this.isTransactionToFailed) {
       classes.push(`${iconClass}--error`);
-    }
-
-    if (this.isTransactionStep2) {
-      if (this.isTransferCompleted) {
-        classes.push(`${iconClass}--success`);
-      } else if (this.isTransactionFromCompleted) {
-        classes.push(`${iconClass}--wait`);
-      }
+    } else if (this.isTransactionToCompleted) {
+      classes.push(`${iconClass}--success`);
+    } else if (this.isTransactionFromCompleted) {
+      classes.push(`${iconClass}--wait`);
     }
 
     return classes.join(' ');
@@ -466,29 +459,28 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     if (this.isTransactionFromFailed || this.isTransactionToFailed) {
       return this.t('bridgeTransaction.status.failed', failedAndPendingParams);
     }
-    if (this.isTransferCompleted) {
+    if (this.isTransactionToCompleted) {
       return this.t('bridgeTransaction.status.convertionComplete');
     }
     return this.t('bridgeTransaction.status.confirm');
   }
 
   get statusFrom(): string {
-    if (!this.currentState) {
-      return this.t('bridgeTransaction.statuses.waiting') + '...';
+    if (this.isTransactionFromPending) {
+      return this.t('bridgeTransaction.statuses.pending') + '...';
     }
-    if (this.isTransactionStep1) {
-      if (this.isTransactionFromPending) {
-        return this.t('bridgeTransaction.statuses.pending') + '...';
-      }
-      if (this.isTransactionFromFailed) {
-        return this.t('bridgeTransaction.statuses.failed');
-      }
+    if (this.isTransactionFromFailed) {
+      return this.t('bridgeTransaction.statuses.failed');
     }
-    return this.t('bridgeTransaction.statuses.done');
+    if (this.isTransactionFromCompleted) {
+      return this.t('bridgeTransaction.statuses.done');
+    }
+
+    return this.t('bridgeTransaction.statuses.waiting') + '...';
   }
 
   get statusTo(): string {
-    if (!this.currentState || !this.isTransactionFromCompleted) {
+    if (!this.isTransactionFromCompleted) {
       return this.t('bridgeTransaction.statuses.waiting') + '...';
     }
     if (this.isTransactionToPending) {
@@ -501,7 +493,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     if (this.isTransactionToFailed) {
       return this.t('bridgeTransaction.statuses.failed');
     }
-    if (this.isTransferCompleted) {
+    if (this.isTransactionToCompleted) {
       return this.t('bridgeTransaction.statuses.done');
     }
     return this.t('bridgeTransaction.statuses.waitingForConfirmation');
@@ -567,7 +559,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   get isFirstConfirmationButtonDisabled(): boolean {
     return (
       !(this.isSoraToEvm || this.isValidNetworkType) ||
-      this.currentState === STATES.INITIAL ||
+      !this.isTransferStarted ||
       this.isInsufficientBalance ||
       this.isInsufficientXorForFee ||
       this.isInsufficientEvmNativeTokenForFee ||
@@ -727,26 +719,17 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   private getTxIconStatusClasses(isSecondTransaction?: boolean): string {
     const iconClass = 'network-info-icon';
     const classes = [iconClass];
-    if (isSecondTransaction) {
-      if (this.isTransactionToFailed) {
-        classes.push(`${iconClass}--error`);
-        return classes.join(' ');
-      }
-      if (this.isTransferCompleted) {
-        classes.push(`${iconClass}--success`);
-        return classes.join(' ');
-      }
+    const isError = isSecondTransaction ? this.isTransactionToFailed : this.isTransactionFromFailed;
+    const isCompleted = isSecondTransaction ? this.isTransactionToCompleted : this.isTransactionFromCompleted;
+
+    if (isError) {
+      classes.push(`${iconClass}--error`);
+    } else if (isCompleted) {
+      classes.push(`${iconClass}--success`);
     } else {
-      if (this.isTransactionFromFailed) {
-        classes.push(`${iconClass}--error`);
-        return classes.join(' ');
-      }
-      if (this.isTransactionFromCompleted) {
-        classes.push(`${iconClass}--success`);
-        return classes.join(' ');
-      }
+      classes.push(`${iconClass}--pending`);
     }
-    classes.push(`${iconClass}--pending`);
+
     return classes.join(' ');
   }
 
@@ -801,22 +784,19 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     }
   }
 
-  private getFailedClass(isSecondTransaction?: boolean): string {
-    if (!isSecondTransaction) {
-      return this.isTransactionFromFailed ? 'info-line--error' : '';
-    }
-    return this.isTransactionToFailed ? 'info-line--error' : '';
-  }
-
   get failedClassStep1(): string {
-    return this.getFailedClass();
+    return this.getFailedClass(this.isTransactionFromFailed);
   }
 
   get failedClassStep2(): string {
-    return this.getFailedClass(true);
+    return this.getFailedClass(this.isTransactionToFailed);
   }
 
-  formatTransactionDate(transactionDate: string): string {
+  private getFailedClass(transactionFailed?: boolean): string {
+    return transactionFailed ? 'info-line--error' : '';
+  }
+
+  private formatTransactionDate(transactionDate: string): string {
     // We use current date if request is failed
     const date = transactionDate ? new Date(transactionDate) : new Date();
     return this.formatDate(date.getTime());

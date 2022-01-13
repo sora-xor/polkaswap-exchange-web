@@ -123,9 +123,9 @@ export default class BridgeTransactionsHistory extends Mixins(
   get filteredHistory(): Array<BridgeHistory> {
     if (!this.history?.length) return [];
 
-    const historyCopy = this.history
-      .filter((item) => !!item.transactionStep)
-      .sort((a: BridgeHistory, b: BridgeHistory) => (a.startTime && b.startTime ? b.startTime - a.startTime : 0));
+    const historyCopy = [...this.history].sort((a: BridgeHistory, b: BridgeHistory) =>
+      a.startTime && b.startTime ? b.startTime - a.startTime : 0
+    );
 
     return this.getFilteredHistory(historyCopy);
   }
@@ -173,8 +173,7 @@ export default class BridgeTransactionsHistory extends Mixins(
 
   formatHistoryDate(response: any): string {
     // We use current date if request is failed
-    const date = response && response.startTime ? new Date(response.startTime) : new Date();
-    return this.formatDate(date.getTime());
+    return this.formatDate(response?.startTime ?? Date.now());
   }
 
   historyStatusIconClasses(type: Operation, state: STATES): string {

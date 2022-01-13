@@ -228,13 +228,9 @@ const getters = {
     const { historyItem: tx, isSoraToEvm } = state;
     return (!isSoraToEvm ? tx?.startTime : tx?.endTime) ?? '';
   },
-  currentTransactionState(state) {
+  currentState(state) {
     const { historyItem: tx } = state;
     return tx?.transactionState ?? STATES.INITIAL;
-  },
-  transactionStep(state) {
-    const { historyItem: tx } = state;
-    return tx?.transactionStep ?? 1;
   },
   history(state) {
     return state.history;
