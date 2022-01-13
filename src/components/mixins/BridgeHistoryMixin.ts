@@ -26,7 +26,6 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
   @Action('setTransactionConfirm', { namespace }) setTransactionConfirm!: (value: boolean) => Promise<void>;
 
   @Action('setEvmNetworkFee', { namespace }) setEvmNetworkFee!: (evmNetworkFee: CodecString) => Promise<void>;
-  @Action('setTransactionStep', { namespace }) setTransactionStep!: (step: number) => Promise<void>;
   @Action('setHistoryItem', { namespace }) setHistoryItem!: (historyItem: BridgeHistory) => Promise<void>;
 
   getSoraNetworkFee(type: Operation): CodecString {
@@ -66,8 +65,6 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
       await this.setAssetAddress(assetAddress);
       await this.setAmount(tx.amount || '0');
       await this.setEvmNetworkFee(String(tx.ethereumNetworkFee));
-      // TODO: remove
-      await this.setTransactionStep(tx.transactionStep || 1);
       await this.setHistoryItem(tx);
 
       this.navigateToBridgeTransaction();

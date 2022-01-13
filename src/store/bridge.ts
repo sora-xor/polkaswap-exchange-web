@@ -40,7 +40,6 @@ const types = flow(
     'SET_EVM_WAITING_APPROVE_STATE',
     'SET_AMOUNT',
     'SET_TRANSACTION_CONFIRM',
-    'SET_TRANSACTION_STEP',
     'SET_HISTORY_ITEM',
   ]),
   map((x) => [x, x]),
@@ -178,7 +177,6 @@ function initialState() {
     evmNetworkFee: ZeroStringValue,
     evmNetworkFeeFetching: false,
     isTransactionConfirmed: false,
-    transactionStep: 1,
     history: [],
     historyItem: null,
     restored: true,
@@ -235,7 +233,8 @@ const getters = {
     return tx?.transactionState ?? STATES.INITIAL;
   },
   transactionStep(state) {
-    return state.transactionStep;
+    const { historyItem: tx } = state;
+    return tx?.transactionStep ?? 1;
   },
   history(state) {
     return state.history;
@@ -286,9 +285,6 @@ const mutations = {
   },
   [types.SET_TRANSACTION_CONFIRM](state, isTransactionConfirmed: boolean) {
     state.isTransactionConfirmed = isTransactionConfirmed;
-  },
-  [types.SET_TRANSACTION_STEP](state, transactionStep: number) {
-    state.transactionStep = transactionStep;
   },
   [types.GET_HISTORY_REQUEST](state) {
     state.history = null;
@@ -356,9 +352,6 @@ const actions = {
   },
   setTransactionConfirm({ commit }, isTransactionConfirmed: boolean) {
     commit(types.SET_TRANSACTION_CONFIRM, isTransactionConfirmed);
-  },
-  setTransactionStep({ commit }, transactionStep: number) {
-    commit(types.SET_TRANSACTION_STEP, transactionStep);
   },
   resetBridgeForm({ dispatch }, withAddress = false) {
     dispatch('resetBalanceSubscription');

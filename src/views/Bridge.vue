@@ -287,7 +287,6 @@ export default class Bridge extends Mixins(
   @Action('resetBalanceSubscription', { namespace }) resetBalanceSubscription!: AsyncVoidFn;
   @Action('updateBalanceSubscription', { namespace }) updateBalanceSubscription!: AsyncVoidFn;
   @Action('setTransactionConfirm', { namespace }) setTransactionConfirm!: (flag: boolean) => Promise<void>;
-  @Action('setTransactionStep', { namespace }) setTransactionStep!: (step: number) => Promise<void>;
 
   @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<SubNetwork>;
   @Getter('isRegisteredAsset', { namespace }) isRegisteredAsset!: boolean;
@@ -494,7 +493,6 @@ export default class Bridge extends Mixins(
 
     await this.checkConnectionToExternalAccount(async () => {
       await this.setTransactionConfirm(true);
-      await this.setTransactionStep(1);
       router.push({ name: PageNames.BridgeTransaction });
     });
   }

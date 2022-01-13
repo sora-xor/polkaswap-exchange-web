@@ -323,7 +323,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   @Getter('isTxEvmAccount', { namespace }) isTxEvmAccount!: boolean;
   @Getter('waitingForApprove', { namespace }) waitingForApprove!: boolean;
 
-  @Action('setTransactionStep', { namespace }) setTransactionStep;
   @Action('setHistoryItem', { namespace }) setHistoryItem;
 
   @Action('signSoraTransactionSoraToEvm', { namespace }) signSoraTransactionSoraToEvm;
@@ -642,7 +641,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   async beforeDestroy(): Promise<void> {
-    this.setTransactionStep(1);
     this.setHistoryItem(null);
     if (this.sendService) {
       this.sendService.stop();
@@ -723,7 +721,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   setFromTransactionCompleted() {
-    this.setTransactionStep(2);
     this.activeTransactionStep = this.transactionSteps.to;
   }
 
