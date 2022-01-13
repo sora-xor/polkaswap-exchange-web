@@ -20,7 +20,7 @@ import {
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 
-import { bridgeApi } from '@/utils/bridge';
+import { bridgeApi, handleBridgeTransaction } from '@/utils/bridge';
 import { STATES } from '@/utils/fsm';
 import ethersUtil, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/ethers-util';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
@@ -470,6 +470,7 @@ const actions = {
       commit(types.GET_EVM_NETWORK_FEE_FAILURE);
     }
   },
+
   bridgeDataToHistoryItem({ getters, rootGetters }, { date = Date.now(), step = 1, payload = {}, ...params } = {}) {
     return {
       type: (params as any).type ?? (getters.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming),
@@ -498,10 +499,12 @@ const actions = {
 
     return getters.historyItem;
   },
-  async updateHistoryParams({ dispatch }, params) {
-    bridgeApi.saveHistory(params);
+  async updateHistoryParams({ dispatch, state }, params = {}) {
+    const tx = { ...state.historyItem, ...params };
 
-    await dispatch('setHistoryItem', params);
+    bridgeApi.saveHistory(tx);
+
+    await dispatch('setHistoryItem', tx);
   },
 
   async signSoraTransactionSoraToEvm({ commit, getters, rootGetters }, { txId }) {
@@ -577,9 +580,9 @@ const actions = {
 
       // update history item, if it hasn't 'to' field
       if (!getters.historyItem.to) {
-        const tx = { ...getters.historyItem, to: request.to };
-        dispatch('updateHistoryParams', tx);
+        dispatch('updateHistoryParams', { to: request.to });
       }
+
       if (!getters.isTxEvmAccount) {
         throw new Error(`Change account in MetaMask to ${request.to}`);
       }
@@ -639,7 +642,7 @@ const actions = {
     }
   },
 
-  async sendEvmTransactionSoraToEvm({ commit, getters, dispatch }, { ethereumHash }) {
+  async sendEvmTransactionSoraToEvm({ commit, dispatch }, { ethereumHash }) {
     // TODO: Change args to tx due to new data flow
     if (!ethereumHash) throw new Error('Hash cannot be empty!');
     commit(types.SEND_EVM_TRANSACTION_SORA_EVM_REQUEST);
@@ -647,8 +650,7 @@ const actions = {
       await waitForEvmTransactionStatus(
         ethereumHash,
         (hash: string) => {
-          const tx = { ...getters.historyItem, ethereumHash: hash };
-          dispatch('updateHistoryParams', tx);
+          dispatch('updateHistoryParams', { ethereumHash: hash });
           dispatch('sendEvmTransactionSoraToEvm', { ethereumHash: hash });
         },
         () => {
@@ -768,15 +770,14 @@ const actions = {
     }
   },
 
-  async sendEvmTransactionEvmToSora({ commit, getters, dispatch }, { ethereumHash }) {
+  async sendEvmTransactionEvmToSora({ commit, dispatch }, { ethereumHash }) {
     if (!ethereumHash) throw new Error('Hash cannot be empty!');
     commit(types.SEND_EVM_TRANSACTION_EVM_SORA_REQUEST);
     try {
       await waitForEvmTransactionStatus(
         ethereumHash,
         (hash: string) => {
-          const tx = { ...getters.historyItem, ethereumHash: hash };
-          dispatch('updateHistoryParams', tx);
+          dispatch('updateHistoryParams', { ethereumHash: hash });
           dispatch('sendEvmTransactionSoraToEvm', { ethereumHash: hash });
         },
         () => {
@@ -829,10 +830,8 @@ const actions = {
     }
   },
 
-  async changeState({ commit, state, dispatch }, nextState: STATES) {
-    // if (state.isSoraToEvm) {
-    // } else {
-    // }
+  async handleEthereumTransaction(context) {
+    await handleBridgeTransaction(context);
   },
 };
 

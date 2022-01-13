@@ -1,8 +1,7 @@
 <template>
-  <div v-loading="!isInitRequestCompleted" class="container transaction-container">
+  <div class="container transaction-container">
     <generic-page-header has-button-back :title="t('bridgeTransaction.title')" @back="handleBack">
       <s-button
-        v-if="isInitRequestCompleted"
         class="el-button--history"
         type="action"
         icon="time-time-history-24"
@@ -12,257 +11,251 @@
       />
     </generic-page-header>
     <div class="transaction-content">
-      <template v-if="isInitRequestCompleted">
-        <div class="header">
-          <div v-loading="isTransactionFromPending || isTransactionToPending" :class="headerIconClasses" />
-          <h5 class="header-details">
-            <formatted-amount
-              class="info-line-value"
-              value-can-be-hidden
-              :value="formattedAmount"
-              :asset-symbol="assetSymbol"
-            >
-              <i :class="firstNetworkIcon" />
-            </formatted-amount>
-            <span class="header-details-separator">{{ t('bridgeTransaction.for') }}</span>
-            <formatted-amount
-              class="info-line-value"
-              value-can-be-hidden
-              :value="formattedAmount"
-              :asset-symbol="assetSymbol"
-            >
-              <i :class="secondNetworkIcon" />
-            </formatted-amount>
-          </h5>
-          <p class="header-status">{{ headerStatus }}</p>
-        </div>
-        <s-collapse borders :value="activeCollapseItems">
-          <s-collapse-item :name="collapseItems.from">
-            <template #title>
-              <div class="network-info-title">
-                <h3>
-                  {{
-                    `${t('bridgeTransaction.steps.step', { step: '1' })} ${t('bridgeTransaction.networkTitle', {
-                      network: formattedNetworkStep1,
-                    })}`
-                  }}
-                </h3>
-                <span :class="firstTxIconStatusClasses" />
-              </div>
-            </template>
-            <div v-if="transactionFromHash" :class="firstTxHashContainerClasses">
-              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="firstTxHash" readonly />
-              <s-button
-                class="s-button--hash-copy"
-                type="action"
-                alternative
-                icon="basic-copy-24"
-                @click="handleCopyTransactionHash(transactionFromHash)"
-              />
-              <s-dropdown
-                class="s-dropdown--hash-menu"
-                borderRadius="mini"
-                type="ellipsis"
-                icon="basic-more-vertical-24"
-                placement="bottom-end"
-                @select="isSoraToEvm ? undefined : handleOpenEtherscan()"
-              >
-                <template slot="menu">
-                  <template v-if="isSoraToEvm">
-                    <a
-                      v-for="link in soraExpolrerLinks"
-                      :key="link.type"
-                      class="transaction-link"
-                      :href="link.value"
-                      target="_blank"
-                      rel="nofollow noopener"
-                    >
-                      <s-dropdown-item class="s-dropdown-menu__item" :disabled="!(soraTxId || soraTxBlockId)">
-                        {{ t(`transaction.viewIn.${link.type}`) }}
-                      </s-dropdown-item>
-                    </a>
-                  </template>
-                  <s-dropdown-item v-else class="s-dropdown-menu__item">
-                    <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
-                  </s-dropdown-item>
-                </template>
-              </s-dropdown>
+      <div class="header">
+        <div v-loading="isTransactionFromPending || isTransactionToPending" :class="headerIconClasses" />
+        <h5 class="header-details">
+          <formatted-amount
+            class="info-line-value"
+            value-can-be-hidden
+            :value="formattedAmount"
+            :asset-symbol="assetSymbol"
+          >
+            <i :class="firstNetworkIcon" />
+          </formatted-amount>
+          <span class="header-details-separator">{{ t('bridgeTransaction.for') }}</span>
+          <formatted-amount
+            class="info-line-value"
+            value-can-be-hidden
+            :value="formattedAmount"
+            :asset-symbol="assetSymbol"
+          >
+            <i :class="secondNetworkIcon" />
+          </formatted-amount>
+        </h5>
+        <p class="header-status">{{ headerStatus }}</p>
+      </div>
+      <s-collapse borders :value="activeCollapseItems">
+        <s-collapse-item :name="collapseItems.from">
+          <template #title>
+            <div class="network-info-title">
+              <h3>
+                {{
+                  `${t('bridgeTransaction.steps.step', { step: '1' })} ${t('bridgeTransaction.networkTitle', {
+                    network: formattedNetworkStep1,
+                  })}`
+                }}
+              </h3>
+              <span :class="firstTxIconStatusClasses" />
             </div>
-            <info-line
-              :class="failedClassStep1"
-              :label="t('bridgeTransaction.networkInfo.status')"
-              :value="statusFrom"
-            />
-            <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionFirstDate" />
-            <info-line
-              v-if="amount"
-              is-formatted
-              value-can-be-hidden
-              :label="t('bridgeTransaction.networkInfo.amount')"
-              :value="`-${formattedAmount}`"
-              :asset-symbol="assetSymbol"
-              :fiat-value="firstAmountFiatValue"
-            />
-            <info-line
-              is-formatted
-              :label="t('bridgeTransaction.networkInfo.transactionFee')"
-              :value="isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
-              :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol"
-              :fiat-value="soraFeeFiatValue"
-            >
-              <template v-if="!isSoraToEvm && formattedEvmNetworkFee" #info-line-value-prefix>
-                <span class="info-line-value-prefix">~</span>
-              </template>
-            </info-line>
+          </template>
+          <div v-if="transactionFromHash" :class="firstTxHashContainerClasses">
+            <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="firstTxHash" readonly />
             <s-button
-              v-if="!isTransactionFromCompleted"
-              type="primary"
-              class="s-typograhy-button--big"
-              :disabled="isFirstConfirmationButtonDisabled"
-              @click="handleSendTransactionFrom"
+              class="s-button--hash-copy"
+              type="action"
+              alternative
+              icon="basic-copy-24"
+              @click="handleCopyTransactionHash(transactionFromHash)"
+            />
+            <s-dropdown
+              class="s-dropdown--hash-menu"
+              borderRadius="mini"
+              type="ellipsis"
+              icon="basic-more-vertical-24"
+              placement="bottom-end"
+              @select="isSoraToEvm ? undefined : handleOpenEtherscan()"
             >
-              <template v-if="!(isSoraToEvm || isExternalAccountConnected)">{{
-                t('bridgeTransaction.connectWallet')
-              }}</template>
-              <template v-else-if="!(isSoraToEvm || isValidNetworkType)">{{
-                t('bridgeTransaction.changeNetwork')
-              }}</template>
-              <template v-else-if="isInsufficientBalance">{{
-                t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: assetSymbol })
-              }}</template>
-              <template v-else-if="isInsufficientXorForFee">{{
-                t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: KnownSymbols.XOR })
-              }}</template>
-              <template v-else-if="isInsufficientEvmNativeTokenForFee">{{
-                t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: evmTokenSymbol })
-              }}</template>
-              <template v-else-if="isTransactionFromFailed">{{ t('bridgeTransaction.retry') }}</template>
-              <template v-else-if="waitingForApprove">{{
-                t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
-              }}</template>
-              <span
-                v-else-if="isTransactionFromPending"
-                v-html="
-                  t('bridgeTransaction.pending', {
-                    network: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'ethereum'}`),
-                  })
-                "
-              />
-              <template v-else>{{
-                t('bridgeTransaction.confirm', {
-                  direction: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'metamask'}`),
+              <template slot="menu">
+                <template v-if="isSoraToEvm">
+                  <a
+                    v-for="link in soraExpolrerLinks"
+                    :key="link.type"
+                    class="transaction-link"
+                    :href="link.value"
+                    target="_blank"
+                    rel="nofollow noopener"
+                  >
+                    <s-dropdown-item class="s-dropdown-menu__item" :disabled="!(soraTxId || soraTxBlockId)">
+                      {{ t(`transaction.viewIn.${link.type}`) }}
+                    </s-dropdown-item>
+                  </a>
+                </template>
+                <s-dropdown-item v-else class="s-dropdown-menu__item">
+                  <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
+                </s-dropdown-item>
+              </template>
+            </s-dropdown>
+          </div>
+          <info-line :class="failedClassStep1" :label="t('bridgeTransaction.networkInfo.status')" :value="statusFrom" />
+          <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionFirstDate" />
+          <info-line
+            v-if="amount"
+            is-formatted
+            value-can-be-hidden
+            :label="t('bridgeTransaction.networkInfo.amount')"
+            :value="`-${formattedAmount}`"
+            :asset-symbol="assetSymbol"
+            :fiat-value="firstAmountFiatValue"
+          />
+          <info-line
+            is-formatted
+            :label="t('bridgeTransaction.networkInfo.transactionFee')"
+            :value="isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
+            :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol"
+            :fiat-value="soraFeeFiatValue"
+          >
+            <template v-if="!isSoraToEvm && formattedEvmNetworkFee" #info-line-value-prefix>
+              <span class="info-line-value-prefix">~</span>
+            </template>
+          </info-line>
+          <s-button
+            v-if="!isTransactionFromCompleted"
+            type="primary"
+            class="s-typograhy-button--big"
+            :disabled="isFirstConfirmationButtonDisabled"
+            @click="handleTransaction"
+          >
+            <template v-if="!(isSoraToEvm || isExternalAccountConnected)">{{
+              t('bridgeTransaction.connectWallet')
+            }}</template>
+            <template v-else-if="!(isSoraToEvm || isValidNetworkType)">{{
+              t('bridgeTransaction.changeNetwork')
+            }}</template>
+            <template v-else-if="isInsufficientBalance">{{
+              t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: assetSymbol })
+            }}</template>
+            <template v-else-if="isInsufficientXorForFee">{{
+              t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: KnownSymbols.XOR })
+            }}</template>
+            <template v-else-if="isInsufficientEvmNativeTokenForFee">{{
+              t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: evmTokenSymbol })
+            }}</template>
+            <template v-else-if="isTransactionFromFailed">{{ t('bridgeTransaction.retry') }}</template>
+            <template v-else-if="waitingForApprove">{{
+              t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
+            }}</template>
+            <span
+              v-else-if="isTransactionFromPending"
+              v-html="
+                t('bridgeTransaction.pending', {
+                  network: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'ethereum'}`),
                 })
-              }}</template>
-            </s-button>
+              "
+            />
+            <template v-else>{{
+              t('bridgeTransaction.confirm', {
+                direction: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'metamask'}`),
+              })
+            }}</template>
+          </s-button>
 
-            <div v-if="waitingForApprove" class="transaction-approval-text">
-              {{ t('bridgeTransaction.approveToken') }}
+          <div v-if="waitingForApprove" class="transaction-approval-text">
+            {{ t('bridgeTransaction.approveToken') }}
+          </div>
+        </s-collapse-item>
+        <s-collapse-item :name="collapseItems.to">
+          <template #title>
+            <div class="network-info-title">
+              <h3>
+                {{
+                  `${t('bridgeTransaction.steps.step', { step: '2' })} ${t('bridgeTransaction.networkTitle', {
+                    network: formattedNetworkStep2,
+                  })}`
+                }}
+              </h3>
+              <span v-if="isTransactionFromCompleted" :class="secondTxIconStatusClasses" />
             </div>
-          </s-collapse-item>
-          <s-collapse-item :name="collapseItems.to">
-            <template #title>
-              <div class="network-info-title">
-                <h3>
-                  {{
-                    `${t('bridgeTransaction.steps.step', { step: '2' })} ${t('bridgeTransaction.networkTitle', {
-                      network: formattedNetworkStep2,
-                    })}`
-                  }}
-                </h3>
-                <span v-if="isTransactionFromCompleted" :class="secondTxIconStatusClasses" />
-              </div>
-            </template>
-            <div v-if="isSoraToEvm && !isTxEvmAccount" class="transaction-error">
-              <span class="transaction-error__title">{{ t('bridgeTransaction.expectedMetaMaskAddress') }}</span>
-              <span class="transaction-error__value">{{ transactionEvmAddress }}</span>
-            </div>
-            <div v-if="isTransactionFromCompleted && transactionToHash" :class="secondTxHashContainerClasses">
-              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="secondTxHash" readonly />
-              <s-button
-                class="s-button--hash-copy"
-                type="action"
-                alternative
-                icon="basic-copy-24"
-                @click="handleCopyTransactionHash(transactionToHash)"
-              />
-              <s-dropdown
-                v-if="isSoraToEvm"
-                class="s-dropdown--hash-menu"
-                borderRadius="mini"
-                type="ellipsis"
-                icon="basic-more-vertical-24"
-                placement="bottom-end"
-                @select="handleOpenEtherscan"
-              >
-                <template slot="menu">
-                  <s-dropdown-item class="s-dropdown-menu__item">
-                    <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
-                  </s-dropdown-item>
-                </template>
-              </s-dropdown>
-            </div>
-            <info-line :class="failedClassStep2" :label="t('bridgeTransaction.networkInfo.status')" :value="statusTo" />
-            <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionSecondDate" />
-            <info-line
-              v-if="amount"
-              is-formatted
-              value-can-be-hidden
-              :label="t('bridgeTransaction.networkInfo.amount')"
-              :value="formattedAmount"
-              :asset-symbol="assetSymbol"
-              :fiat-value="secondAmountFiatValue"
-            />
-            <info-line
-              :label="t('bridgeTransaction.networkInfo.transactionFee')"
-              :value="!isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
-              :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol"
-              :fiat-value="soraNetworkFeeFiatValue"
-              is-formatted
-            >
-              <template v-if="isSoraToEvm && formattedEvmNetworkFee" #info-line-value-prefix>
-                <span class="info-line-value-prefix">~</span>
-              </template>
-            </info-line>
+          </template>
+          <div v-if="isSoraToEvm && !isTxEvmAccount" class="transaction-error">
+            <span class="transaction-error__title">{{ t('bridgeTransaction.expectedMetaMaskAddress') }}</span>
+            <span class="transaction-error__value">{{ transactionEvmAddress }}</span>
+          </div>
+          <div v-if="isTransactionFromCompleted && transactionToHash" :class="secondTxHashContainerClasses">
+            <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="secondTxHash" readonly />
             <s-button
-              v-if="isTransactionFromCompleted && !isTransactionToCompleted"
-              type="primary"
-              class="s-typograhy-button--big"
-              :disabled="isSecondConfirmationButtonDisabled"
-              @click="handleSendTransactionTo"
+              class="s-button--hash-copy"
+              type="action"
+              alternative
+              icon="basic-copy-24"
+              @click="handleCopyTransactionHash(transactionToHash)"
+            />
+            <s-dropdown
+              v-if="isSoraToEvm"
+              class="s-dropdown--hash-menu"
+              borderRadius="mini"
+              type="ellipsis"
+              icon="basic-more-vertical-24"
+              placement="bottom-end"
+              @select="handleOpenEtherscan"
             >
-              <template v-if="isSoraToEvm && !isExternalAccountConnected">{{
-                t('bridgeTransaction.connectWallet')
-              }}</template>
-              <template v-else-if="isSoraToEvm && !isTxEvmAccount">{{ t('bridgeTransaction.changeAccount') }}</template>
-              <template v-else-if="isSoraToEvm && !isValidNetworkType">{{
-                t('bridgeTransaction.changeNetwork')
-              }}</template>
-              <span
-                v-else-if="isTransactionToPending"
-                v-html="
-                  t('bridgeTransaction.pending', {
-                    network: t(`bridgeTransaction.${!isSoraToEvm ? 'sora' : 'ethereum'}`),
-                  })
-                "
-              />
-              <template v-else-if="isSoraToEvm ? isInsufficientEvmNativeTokenForFee : isInsufficientXorForFee">{{
-                t('confirmBridgeTransactionDialog.insufficientBalance', {
-                  tokenSymbol: isSoraToEvm ? evmTokenSymbol : KnownSymbols.XOR,
+              <template slot="menu">
+                <s-dropdown-item class="s-dropdown-menu__item">
+                  <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
+                </s-dropdown-item>
+              </template>
+            </s-dropdown>
+          </div>
+          <info-line :class="failedClassStep2" :label="t('bridgeTransaction.networkInfo.status')" :value="statusTo" />
+          <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionSecondDate" />
+          <info-line
+            v-if="amount"
+            is-formatted
+            value-can-be-hidden
+            :label="t('bridgeTransaction.networkInfo.amount')"
+            :value="formattedAmount"
+            :asset-symbol="assetSymbol"
+            :fiat-value="secondAmountFiatValue"
+          />
+          <info-line
+            :label="t('bridgeTransaction.networkInfo.transactionFee')"
+            :value="!isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
+            :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol"
+            :fiat-value="soraNetworkFeeFiatValue"
+            is-formatted
+          >
+            <template v-if="isSoraToEvm && formattedEvmNetworkFee" #info-line-value-prefix>
+              <span class="info-line-value-prefix">~</span>
+            </template>
+          </info-line>
+          <s-button
+            v-if="isTransactionFromCompleted && !isTransactionToCompleted"
+            type="primary"
+            class="s-typograhy-button--big"
+            :disabled="isSecondConfirmationButtonDisabled"
+            @click="handleTransaction"
+          >
+            <template v-if="isSoraToEvm && !isExternalAccountConnected">{{
+              t('bridgeTransaction.connectWallet')
+            }}</template>
+            <template v-else-if="isSoraToEvm && !isTxEvmAccount">{{ t('bridgeTransaction.changeAccount') }}</template>
+            <template v-else-if="isSoraToEvm && !isValidNetworkType">{{
+              t('bridgeTransaction.changeNetwork')
+            }}</template>
+            <span
+              v-else-if="isTransactionToPending"
+              v-html="
+                t('bridgeTransaction.pending', {
+                  network: t(`bridgeTransaction.${!isSoraToEvm ? 'sora' : 'ethereum'}`),
                 })
-              }}</template>
-              <template v-else-if="isTransactionToFailed">{{ t('bridgeTransaction.retry') }}</template>
-              <template v-else>{{
-                t('bridgeTransaction.confirm', {
-                  direction: t(`bridgeTransaction.${!isSoraToEvm ? 'sora' : 'metamask'}`),
-                })
-              }}</template>
-            </s-button>
-          </s-collapse-item>
-        </s-collapse>
-      </template>
+              "
+            />
+            <template v-else-if="isSoraToEvm ? isInsufficientEvmNativeTokenForFee : isInsufficientXorForFee">{{
+              t('confirmBridgeTransactionDialog.insufficientBalance', {
+                tokenSymbol: isSoraToEvm ? evmTokenSymbol : KnownSymbols.XOR,
+              })
+            }}</template>
+            <template v-else-if="isTransactionToFailed">{{ t('bridgeTransaction.retry') }}</template>
+            <template v-else>{{
+              t('bridgeTransaction.confirm', {
+                direction: t(`bridgeTransaction.${!isSoraToEvm ? 'sora' : 'metamask'}`),
+              })
+            }}</template>
+          </s-button>
+        </s-collapse-item>
+      </s-collapse>
     </div>
     <s-button
-      v-if="isInitRequestCompleted && isTransactionToCompleted"
+      v-if="isTransactionToCompleted"
       class="s-typography-button--large"
       type="secondary"
       @click="handleCreateTransaction"
@@ -277,7 +270,6 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
 import { KnownSymbols, FPNumber, BridgeHistory } from '@sora-substrate/util';
 import { api, components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { interpret } from 'xstate';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
@@ -290,7 +282,7 @@ import {
   hasInsufficientXorForFee,
   hasInsufficientEvmNativeTokenForFee,
 } from '@/utils';
-import { createFSM, EVENTS, SORA_EVM_STATES, EVM_SORA_STATES, STATES } from '@/utils/fsm';
+import { STATES } from '@/utils/fsm';
 
 import type { CodecString } from '@sora-substrate/util';
 
@@ -336,17 +328,13 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   @Action('updateHistoryParams', { namespace }) updateHistoryParams;
   @Action('removeHistoryById', { namespace }) removeHistoryById;
 
+  @Action('handleEthereumTransaction', { namespace }) handleEthereumTransaction;
+
   readonly KnownSymbols = KnownSymbols;
   readonly collapseItems = {
     from: 'step-from',
     to: 'step-to',
   };
-
-  callFirstTransition = () => {};
-  callSecondTransition = () => {};
-  callRetryTransition = () => {};
-  sendService: any = null;
-  isInitRequestCompleted = false;
 
   get formattedAmount(): string {
     return this.amount && this.asset ? new FPNumber(this.amount, this.asset.decimals).toLocaleString() : '';
@@ -631,89 +619,19 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
       router.push({ name: PageNames.Bridge });
       return;
     }
-    this.initializeTransactionStateMachine();
-    this.isInitRequestCompleted = true;
-    const withAutoRetry = this.prevRoute !== PageNames.BridgeTransactionsHistory;
-    await this.handleSendTransactionFrom(withAutoRetry);
+
+    if (!this.historyItem) {
+      await this.generateHistoryItem();
+    }
+
+    const withAutoStart = this.prevRoute === PageNames.Bridge;
+
+    await this.handleTransaction(withAutoStart);
   }
 
   async beforeDestroy(): Promise<void> {
+    // TODO: multi bridge
     this.setHistoryItem(null);
-    if (this.sendService) {
-      this.sendService.stop();
-    }
-  }
-
-  async initializeTransactionStateMachine() {
-    // Create state machine and interpret it
-    const historyItem = this.historyItem ? this.historyItem : await this.generateHistoryItem();
-    const machineStates = this.isSoraToEvm ? SORA_EVM_STATES : EVM_SORA_STATES;
-    const initialState = this.currentState;
-    this.sendService = interpret(
-      createFSM(
-        {
-          history: historyItem,
-          SORA_EVM: {
-            sora: {
-              sign: this.signSoraTransactionSoraToEvm,
-              send: this.sendSoraTransactionSoraToEvm,
-            },
-            evm: {
-              sign: this.signEvmTransactionSoraToEvm,
-              send: this.sendEvmTransactionSoraToEvm,
-            },
-          },
-          EVM_SORA: {
-            sora: {
-              sign: this.signSoraTransactionEvmToSora,
-              send: this.sendSoraTransactionEvmToSora,
-            },
-            evm: {
-              sign: this.signEvmTransactionEvmToSora,
-              send: this.sendEvmTransactionEvmToSora,
-            },
-          },
-        },
-        machineStates,
-        initialState
-      )
-    );
-
-    this.callFirstTransition = () =>
-      machineStates === SORA_EVM_STATES
-        ? this.sendService.send(EVENTS.SEND_SORA)
-        : this.sendService.send(EVENTS.SEND_EVM);
-
-    this.callSecondTransition = () =>
-      machineStates === SORA_EVM_STATES
-        ? this.sendService.send(EVENTS.SEND_EVM)
-        : this.sendService.send(EVENTS.SEND_SORA);
-
-    this.callRetryTransition = () => this.sendService.send(EVENTS.RETRY);
-
-    // Subscribe to transition events
-    this.sendService
-      .onTransition(async (state) => {
-        await this.updateHistoryParams(state.context.history);
-
-        if (
-          !state.context.history.hash?.length &&
-          !state.context.history.ethereumHash?.length &&
-          [STATES.SORA_REJECTED, STATES.EVM_REJECTED].includes(state.value)
-        ) {
-          if (state.event.data?.message.includes('Cancelled') || state.event.data?.code === MetamaskCancellationCode) {
-            await this.removeHistoryById(state.context.history.id);
-          }
-        }
-
-        if (
-          (machineStates === SORA_EVM_STATES && state.value === STATES.SORA_COMMITED) ||
-          (machineStates === EVM_SORA_STATES && state.value === STATES.EVM_COMMITED)
-        ) {
-          this.callSecondTransition();
-        }
-      })
-      .start();
   }
 
   private getTxIconStatusClasses(isSecondTransaction?: boolean): string {
@@ -802,22 +720,10 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     return this.formatDate(date.getTime());
   }
 
-  async handleSendTransactionFrom(withAutoRetry = true): Promise<void> {
-    await this.checkConnectionToExternalAccount(() => {
-      if (this.isTransactionFromFailed && withAutoRetry) {
-        this.callRetryTransition();
-      } else {
-        this.callFirstTransition();
-      }
-    });
-  }
-
-  async handleSendTransactionTo(): Promise<void> {
-    await this.checkConnectionToExternalAccount(() => {
-      if (this.isTransactionToFailed) {
-        this.callRetryTransition();
-      } else {
-        this.callSecondTransition();
+  async handleTransaction(withAutoStart = false): Promise<void> {
+    await this.checkConnectionToExternalAccount(async () => {
+      if (withAutoStart) {
+        await this.handleEthereumTransaction();
       }
     });
   }
