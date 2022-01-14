@@ -252,6 +252,8 @@ import {
 } from '@/utils';
 import { bridgeApi } from '@/utils/bridge';
 
+import type { BridgeHistory } from '@sora-substrate/util';
+
 const namespace = 'bridge';
 
 @Component({
@@ -286,7 +288,7 @@ export default class Bridge extends Mixins(
   @Action('resetBridgeForm', { namespace }) resetBridgeForm;
   @Action('resetBalanceSubscription', { namespace }) resetBalanceSubscription!: AsyncVoidFn;
   @Action('updateBalanceSubscription', { namespace }) updateBalanceSubscription!: AsyncVoidFn;
-  @Action('setTransactionConfirm', { namespace }) setTransactionConfirm!: (flag: boolean) => Promise<void>;
+  @Action('generateHistoryItem', { namespace }) generateHistoryItem!: (history?: any) => Promise<BridgeHistory>;
 
   @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<SubNetwork>;
   @Getter('isRegisteredAsset', { namespace }) isRegisteredAsset!: boolean;
@@ -492,7 +494,8 @@ export default class Bridge extends Mixins(
     if (!isTransactionConfirmed) return;
 
     await this.checkConnectionToExternalAccount(async () => {
-      await this.setTransactionConfirm(true);
+      // create new history item
+      await this.generateHistoryItem();
       router.push({ name: PageNames.BridgeTransaction });
     });
   }

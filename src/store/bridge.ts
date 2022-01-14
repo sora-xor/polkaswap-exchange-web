@@ -20,8 +20,7 @@ import {
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 
-import { bridgeApi, handleBridgeTransaction } from '@/utils/bridge';
-import { STATES } from '@/utils/fsm';
+import { bridgeApi, handleBridgeTransaction, STATES } from '@/utils/bridge';
 import ethersUtil, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/ethers-util';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { delay, isEthereumAddress } from '@/utils';
@@ -39,7 +38,6 @@ const types = flow(
     'SET_ASSET_BALANCE',
     'SET_EVM_WAITING_APPROVE_STATE',
     'SET_AMOUNT',
-    'SET_TRANSACTION_CONFIRM',
     'SET_HISTORY_ITEM',
   ]),
   map((x) => [x, x]),
@@ -176,7 +174,6 @@ function initialState() {
     amount: '',
     evmNetworkFee: ZeroStringValue,
     evmNetworkFeeFetching: false,
-    isTransactionConfirmed: false,
     history: [],
     historyItem: null,
     restored: true,
@@ -208,9 +205,6 @@ const getters = {
   soraNetworkFee(state, getters, rootState, rootGetters) {
     // In direction EVM -> SORA sora network fee is 0, because related extrinsic calls by system automaically
     return state.isSoraToEvm ? rootGetters.networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
-  },
-  isTransactionConfirmed(state) {
-    return state.isTransactionConfirmed;
   },
   transactionFromHash(state) {
     const { historyItem: tx, isSoraToEvm } = state;
@@ -279,9 +273,6 @@ const mutations = {
     state.evmNetworkFee = ZeroStringValue;
     state.evmNetworkFeeFetching = false;
   },
-  [types.SET_TRANSACTION_CONFIRM](state, isTransactionConfirmed: boolean) {
-    state.isTransactionConfirmed = isTransactionConfirmed;
-  },
   [types.GET_HISTORY_REQUEST](state) {
     state.history = null;
   },
@@ -346,9 +337,6 @@ const actions = {
   setEvmNetworkFee({ commit }, evmNetworkFee: CodecString) {
     commit(types.GET_EVM_NETWORK_FEE_SUCCESS, evmNetworkFee);
   },
-  setTransactionConfirm({ commit }, isTransactionConfirmed: boolean) {
-    commit(types.SET_TRANSACTION_CONFIRM, isTransactionConfirmed);
-  },
   resetBridgeForm({ dispatch }, withAddress = false) {
     dispatch('resetBalanceSubscription');
     if (!withAddress) {
@@ -356,7 +344,6 @@ const actions = {
     }
     dispatch('setAmount', '');
     dispatch('setSoraToEvm', true);
-    dispatch('setTransactionConfirm', false);
   },
   resetBalanceSubscription({ commit }) {
     balanceSubscriptions.remove('asset', { updateBalance: (balance) => commit(types.SET_ASSET_BALANCE, balance) });

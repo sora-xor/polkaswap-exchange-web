@@ -91,7 +91,7 @@ import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { STATES } from '@/utils/fsm';
+import { STATES } from '@/utils/bridge';
 
 const namespace = 'bridge';
 

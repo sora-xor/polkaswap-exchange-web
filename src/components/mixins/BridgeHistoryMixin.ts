@@ -6,7 +6,6 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import router from '@/router';
 import { PageNames, ZeroStringValue } from '@/consts';
 import { bridgeApi } from '@/utils/bridge';
-import { STATES } from '@/utils/fsm';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { BridgeHistory, CodecString } from '@sora-substrate/util';
@@ -19,11 +18,10 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
   @Getter('history', { namespace }) bridgeHistory!: Array<BridgeHistory>;
 
   @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn;
-  @Action('generateHistoryItem', { namespace }) generateHistoryItem!: (history: any) => Promise<BridgeHistory>;
+  @Action('generateHistoryItem', { namespace }) generateHistoryItem!: (history?: any) => Promise<BridgeHistory>;
   @Action('setAmount', { namespace }) setAmount!: (amount: string) => Promise<void>;
   @Action('setAssetAddress', { namespace }) setAssetAddress!: (address?: string) => Promise<void>;
   @Action('setSoraToEvm', { namespace }) setSoraToEvm!: (value: boolean) => Promise<void>;
-  @Action('setTransactionConfirm', { namespace }) setTransactionConfirm!: (value: boolean) => Promise<void>;
 
   @Action('setEvmNetworkFee', { namespace }) setEvmNetworkFee!: (evmNetworkFee: CodecString) => Promise<void>;
   @Action('setHistoryItem', { namespace }) setHistoryItem!: (historyItem: BridgeHistory) => Promise<void>;
@@ -41,6 +39,7 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
       const tx = bridgeApi.getHistory(id);
 
       if (!tx) {
+        // TODO: check why not navigate to prev route?
         router.push({ name: PageNames.BridgeTransaction });
         return;
       }
@@ -60,7 +59,6 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
         bridgeApi.saveHistory(tx);
       }
 
-      await this.setTransactionConfirm(true);
       await this.setSoraToEvm(isSoraToEvm);
       await this.setAssetAddress(assetAddress);
       await this.setAmount(tx.amount || '0');

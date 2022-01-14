@@ -264,7 +264,7 @@
       v-if="isTransactionToCompleted"
       class="s-typography-button--large"
       type="secondary"
-      @click="handleCreateTransaction"
+      @click="navigateToBridge"
     >
       {{ t('bridgeTransaction.newTransaction') }}
     </s-button>
@@ -274,23 +274,23 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
-import { KnownSymbols, FPNumber, BridgeHistory } from '@sora-substrate/util';
+import { KnownSymbols, FPNumber } from '@sora-substrate/util';
 import { api, components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 
 import router, { lazyComponent } from '@/router';
-import { Components, PageNames, MetamaskCancellationCode } from '@/consts';
+import { Components, PageNames } from '@/consts';
 import {
   copyToClipboard,
   hasInsufficientBalance,
   hasInsufficientXorForFee,
   hasInsufficientEvmNativeTokenForFee,
 } from '@/utils';
-import { STATES } from '@/utils/fsm';
+import { STATES } from '@/utils/bridge';
 
-import type { CodecString } from '@sora-substrate/util';
+import type { CodecString, BridgeHistory } from '@sora-substrate/util';
 
 const FORMATTED_HASH_LENGTH = 24;
 const namespace = 'bridge';
@@ -307,33 +307,17 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @Getter('prev', { namespace: 'router' }) prevRoute!: PageNames;
 
-  @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean;
   @Getter('transactionFromHash', { namespace }) transactionFromHash!: string;
   @Getter('transactionToHash', { namespace }) transactionToHash!: string;
   @Getter('transactionFromDate', { namespace }) transactionFromDate!: string;
   @Getter('transactionToDate', { namespace }) transactionToDate!: string;
 
   @Getter('currentState', { namespace }) currentState!: STATES;
-  @Getter('historyItem', { namespace }) historyItem!: any;
+  @Getter('historyItem', { namespace }) historyItem!: BridgeHistory;
   @Getter('isTxEvmAccount', { namespace }) isTxEvmAccount!: boolean;
   @Getter('waitingForApprove', { namespace }) waitingForApprove!: boolean;
 
   @Action('setHistoryItem', { namespace }) setHistoryItem;
-
-  @Action('signSoraTransactionSoraToEvm', { namespace }) signSoraTransactionSoraToEvm;
-  @Action('signEvmTransactionSoraToEvm', { namespace }) signEvmTransactionSoraToEvm;
-  @Action('sendSoraTransactionSoraToEvm', { namespace }) sendSoraTransactionSoraToEvm;
-  @Action('sendEvmTransactionSoraToEvm', { namespace }) sendEvmTransactionSoraToEvm;
-
-  @Action('signSoraTransactionEvmToSora', { namespace }) signSoraTransactionEvmToSora;
-  @Action('signEvmTransactionEvmToSora', { namespace }) signEvmTransactionEvmToSora;
-  @Action('sendSoraTransactionEvmToSora', { namespace }) sendSoraTransactionEvmToSora;
-  @Action('sendEvmTransactionEvmToSora', { namespace }) sendEvmTransactionEvmToSora;
-
-  @Action('generateHistoryItem', { namespace }) generateHistoryItem!: () => Promise<BridgeHistory>;
-  @Action('updateHistoryParams', { namespace }) updateHistoryParams;
-  @Action('removeHistoryById', { namespace }) removeHistoryById;
-
   @Action('handleEthereumTransaction', { namespace }) handleEthereumTransaction;
 
   readonly KnownSymbols = KnownSymbols;
@@ -616,18 +600,14 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     router.push({ name: PageNames.BridgeTransactionsHistory });
   }
 
-  handleCreateTransaction(): void {
+  navigateToBridge(): void {
     router.push({ name: PageNames.Bridge });
   }
 
   async created(): Promise<void> {
-    if (!this.isTransactionConfirmed) {
-      router.push({ name: PageNames.Bridge });
-      return;
-    }
-
     if (!this.historyItem) {
-      await this.generateHistoryItem();
+      this.navigateToBridge();
+      return;
     }
 
     const withAutoStart = this.prevRoute === PageNames.Bridge;

@@ -1,7 +1,18 @@
 import { api, BridgeTxStatus, Operation } from '@sora-substrate/util';
-import { STATES } from '@/utils/fsm';
 
 export const bridgeApi = api.bridge;
+
+export enum STATES {
+  INITIAL = 'INITIAL',
+  SORA_SUBMITTED = 'SORA_SUBMITTED',
+  SORA_PENDING = 'SORA_PENDING',
+  SORA_REJECTED = 'SORA_REJECTED',
+  SORA_COMMITED = 'SORA_COMMITED',
+  EVM_SUBMITTED = 'EVM_SUBMITTED',
+  EVM_PENDING = 'EVM_PENDING',
+  EVM_REJECTED = 'EVM_REJECTED',
+  EVM_COMMITED = 'EVM_COMMITED',
+}
 
 type HandleTransactionPayload = {
   store: any;
@@ -13,8 +24,9 @@ type HandleTransactionPayload = {
 
 const handleTransactionState = async ({ store, status, nextState, rejectState, handler }: HandleTransactionPayload) => {
   console.log('handleTransactionState', status, nextState, rejectState);
+  const { historyItem } = store.state;
   try {
-    if (store.state.historyItem.status === BridgeTxStatus.Done) return;
+    if (historyItem.status === BridgeTxStatus.Done) return;
 
     await store.dispatch('updateHistoryParams', { status });
 
@@ -27,26 +39,22 @@ const handleTransactionState = async ({ store, status, nextState, rejectState, h
     handleBridgeTransaction(store);
   } catch (error) {
     console.error(error);
-    const wasInFailedStatus = store.state.historyItem.status === BridgeTxStatus.Failed;
+
+    const unsigned = !historyItem.hash && !historyItem.ethereumHash;
+    const failed = historyItem.status === BridgeTxStatus.Failed;
 
     await store.dispatch('updateHistoryParams', {
       status: BridgeTxStatus.Failed,
       transactionState: rejectState,
-      endTime: wasInFailedStatus ? store.state.historyItem.endTime : Date.now(),
+      endTime: failed ? store.state.historyItem.endTime : Date.now(),
     });
+
+    if (unsigned) {
+      await store.dispatch('removeHistoryById', historyItem.id);
+    }
   }
 };
 
-// TODO: remove history by id
-// if (
-//   !state.context.history.hash?.length &&
-//   !state.context.history.ethereumHash?.length &&
-//   [STATES.SORA_REJECTED, STATES.EVM_REJECTED].includes(state.value)
-// ) {
-//   if (state.event.data?.message.includes('Cancelled') || state.event.data?.code === MetamaskCancellationCode) {
-//     await this.removeHistoryById(state.context.history.id);
-//   }
-// }
 export const handleBridgeTransaction = async (store) => {
   console.log('handleBridgeTransaction');
 
