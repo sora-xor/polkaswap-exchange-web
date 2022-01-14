@@ -280,6 +280,8 @@ export default class Bridge extends Mixins(
   NetworkFormatterMixin,
   NetworkFeeDialogMixin
 ) {
+  @State((state) => state[namespace].amount) amount!: string;
+  @State((state) => state[namespace].isSoraToEvm) isSoraToEvm!: boolean;
   @State((state) => state[namespace].evmNetworkFeeFetching) evmNetworkFeeFetching!: boolean;
 
   @Action('setSoraToEvm', { namespace }) setSoraToEvm!: (value: boolean) => Promise<void>;
@@ -288,7 +290,9 @@ export default class Bridge extends Mixins(
   @Action('resetBridgeForm', { namespace }) resetBridgeForm;
   @Action('resetBalanceSubscription', { namespace }) resetBalanceSubscription!: AsyncVoidFn;
   @Action('updateBalanceSubscription', { namespace }) updateBalanceSubscription!: AsyncVoidFn;
+
   @Action('generateHistoryItem', { namespace }) generateHistoryItem!: (history?: any) => Promise<BridgeHistory>;
+  @Action('setHistoryItem', { namespace }) setHistoryItem!: (id: string) => Promise<void>;
 
   @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<SubNetwork>;
   @Getter('isRegisteredAsset', { namespace }) isRegisteredAsset!: boolean;
@@ -495,7 +499,8 @@ export default class Bridge extends Mixins(
 
     await this.checkConnectionToExternalAccount(async () => {
       // create new history item
-      await this.generateHistoryItem();
+      const tx = await this.generateHistoryItem();
+      await this.setHistoryItem(tx.id as string);
       router.push({ name: PageNames.BridgeTransaction });
     });
   }

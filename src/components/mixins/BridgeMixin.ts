@@ -15,12 +15,10 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean;
   @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks;
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString;
-  @Getter('isSoraToEvm', { namespace: 'bridge' }) isSoraToEvm!: boolean;
   @Getter('soraNetworkFee', { namespace: 'bridge' }) soraNetworkFee!: CodecString;
   @Getter('evmNetworkFee', { namespace: 'bridge' }) evmNetworkFee!: CodecString;
   @Getter('asset', { namespace: 'bridge' }) asset!: any;
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any;
-  @Getter('amount', { namespace: 'bridge' }) amount!: string;
 
   @Action('getEvmBalance', { namespace: 'web3' }) getEvmBalance!: AsyncVoidFn;
   @Action('getEvmNetworkFee', { namespace: 'bridge' }) getEvmNetworkFee!: AsyncVoidFn;

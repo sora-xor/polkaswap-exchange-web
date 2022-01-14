@@ -163,7 +163,7 @@ function initialState() {
     evmNetworkFee: ZeroStringValue,
     evmNetworkFeeFetching: false,
     history: [],
-    historyItem: null,
+    historyId: '',
     restored: true,
     waitingForApprove: false,
   };
@@ -172,9 +172,6 @@ function initialState() {
 const state = initialState();
 
 const getters = {
-  isSoraToEvm(state) {
-    return state.isSoraToEvm;
-  },
   asset(state, getters, rootState, rootGetters) {
     const token = rootGetters['assets/getAssetDataByAddress'](state.assetAddress);
     const balance = state.assetBalance;
@@ -194,31 +191,17 @@ const getters = {
     // In direction EVM -> SORA sora network fee is 0, because related extrinsic calls by system automaically
     return state.isSoraToEvm ? rootGetters.networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
   },
-  transactionFromHash(state) {
-    const { historyItem: tx, isSoraToEvm } = state;
-    return (isSoraToEvm ? tx?.hash : tx?.ethereumHash) ?? '';
-  },
-  transactionToHash(state) {
-    const { historyItem: tx, isSoraToEvm } = state;
-    return (!isSoraToEvm ? tx?.hash : tx?.ethereumHash) ?? '';
-  },
-  transactionFromDate(state) {
-    const { historyItem: tx, isSoraToEvm } = state;
-    return (isSoraToEvm ? tx?.startTime : tx?.endTime) ?? '';
-  },
-  transactionToDate(state) {
-    const { historyItem: tx, isSoraToEvm } = state;
-    return (!isSoraToEvm ? tx?.startTime : tx?.endTime) ?? '';
-  },
-  currentState(state) {
-    const { historyItem: tx } = state;
+  currentState(state, getters) {
+    const { historyItem: tx } = getters;
     return tx?.transactionState ?? STATES.INITIAL;
   },
   history(state) {
     return state.history;
   },
   historyItem(state) {
-    return state.historyItem;
+    if (!state.historyId) return null;
+
+    return state.history.find((item) => item.id === state.historyId) ?? null;
   },
   restored(state) {
     return state.restored;
@@ -279,8 +262,8 @@ const mutations = {
   [types.GET_RESTORED_FLAG_FAILURE](state) {
     state.restored = false;
   },
-  [types.SET_HISTORY_ITEM](state, historyItem: Nullable<BridgeHistory>) {
-    state.historyItem = historyItem;
+  [types.SET_HISTORY_ITEM](state, historyId = '') {
+    state.historyId = historyId;
   },
 };
 
@@ -383,13 +366,16 @@ const actions = {
       }
     });
   },
-  setHistoryItem({ commit }, historyItem: Nullable<BridgeHistory>) {
-    commit(types.SET_HISTORY_ITEM, historyItem);
+
+  setHistoryItem({ commit }, historyId = '') {
+    commit(types.SET_HISTORY_ITEM, historyId);
   },
+
   removeHistoryById({ commit }, id: string) {
     if (!id.length) return;
     bridgeApi.removeHistory(id);
   },
+
   clearHistory({ commit }) {
     bridgeApi.clearHistory();
     commit(types.GET_HISTORY_SUCCESS, []);
@@ -397,22 +383,25 @@ const actions = {
   /**
    * Fetch EVM Network fee for selected bridge asset
    */
-  async getEvmNetworkFee({ commit, getters }) {
+  async getEvmNetworkFee({ commit, getters, state }) {
     if (!getters.asset || !getters.asset.address) {
       return;
     }
     commit(types.GET_EVM_NETWORK_FEE_REQUEST);
     try {
-      const fee = await ethersUtil.fetchEvmNetworkFee(getters.asset.address, getters.isSoraToEvm);
+      const fee = await ethersUtil.fetchEvmNetworkFee(getters.asset.address, state.isSoraToEvm);
       commit(types.GET_EVM_NETWORK_FEE_SUCCESS, fee);
     } catch (error) {
       commit(types.GET_EVM_NETWORK_FEE_FAILURE);
     }
   },
 
-  bridgeDataToHistoryItem({ getters, rootGetters }, { date = Date.now(), step = 1, payload = {}, ...params } = {}) {
+  bridgeDataToHistoryItem(
+    { getters, rootGetters, state },
+    { date = Date.now(), step = 1, payload = {}, ...params } = {}
+  ) {
     return {
-      type: (params as any).type ?? (getters.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming),
+      type: (params as any).type ?? (state.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming),
       amount: (params as any).amount ?? getters.amount,
       symbol: (params as any).symbol ?? getters.asset.symbol,
       assetAddress: (params as any).assetAddress ?? getters.asset.address,
@@ -432,31 +421,26 @@ const actions = {
     };
   },
 
-  async generateHistoryItem({ getters, dispatch }, playground) {
-    const historyItem = await dispatch('bridgeDataToHistoryItem', playground);
+  async generateHistoryItem({ dispatch }, playground) {
+    const historyData = await dispatch('bridgeDataToHistoryItem', playground);
+    const historyItem = bridgeApi.generateHistoryItem(historyData);
 
-    await dispatch('setHistoryItem', bridgeApi.generateHistoryItem(historyItem));
+    if (!historyItem) {
+      throw new Error('[Bridge]: "generateHistoryItem" failed');
+    }
 
-    return getters.historyItem;
+    return historyItem;
   },
 
-  async updateHistoryParams({ dispatch, state }, params = {}) {
-    const tx = { ...state.historyItem, ...params };
+  async updateHistoryParams({ dispatch }, params: BridgeHistory) {
+    bridgeApi.saveHistory(params);
 
-    bridgeApi.saveHistory(tx);
-
-    await dispatch('setHistoryItem', tx);
+    await dispatch('getHistory');
   },
 
   async signSoraTransactionSoraToEvm({ getters, rootGetters }, { txId }) {
     if (!txId) throw new Error('TX ID cannot be empty!');
-    if (
-      !getters.asset ||
-      !getters.asset.address ||
-      !getters.isRegisteredAsset ||
-      !getters.amount ||
-      !getters.isSoraToEvm
-    ) {
+    if (!getters.asset || !getters.asset.address || !getters.isRegisteredAsset || !getters.amount) {
       return;
     }
 
@@ -488,13 +472,7 @@ const actions = {
     //     commit(types.SEND_ETH_TRANSACTION_SORA_ETH_SUCCESS)
     //   }
     // }
-    if (
-      !getters.asset ||
-      !getters.asset.address ||
-      !getters.isRegisteredAsset ||
-      !getters.amount ||
-      !getters.isSoraToEvm
-    ) {
+    if (!getters.asset || !getters.asset.address || !getters.isRegisteredAsset || !getters.amount) {
       return;
     }
 
@@ -506,7 +484,7 @@ const actions = {
 
     // update history item, if it hasn't 'to' field
     if (!getters.historyItem.to) {
-      dispatch('updateHistoryParams', { to: request.to });
+      dispatch('updateHistoryParams', { ...getters.historyItem, to: request.to });
     }
 
     if (!getters.isTxEvmAccount) {
@@ -564,14 +542,14 @@ const actions = {
     return tx.hash;
   },
 
-  async sendEvmTransactionSoraToEvm({ dispatch }, { ethereumHash }) {
+  async sendEvmTransactionSoraToEvm({ dispatch, getters }, { ethereumHash }) {
     // TODO: Change args to tx due to new data flow
     if (!ethereumHash) throw new Error('Hash cannot be empty!');
 
     await waitForEvmTransactionStatus(
       ethereumHash,
       (ethereumHash: string) => {
-        dispatch('updateHistoryParams', { ethereumHash });
+        dispatch('updateHistoryParams', { ...getters.historyItem, ethereumHash });
         dispatch('sendEvmTransactionSoraToEvm', { ethereumHash });
       },
       () => {
@@ -581,13 +559,7 @@ const actions = {
   },
 
   async signEvmTransactionEvmToSora({ commit, getters, rootGetters, dispatch }) {
-    if (
-      !getters.asset ||
-      !getters.asset.address ||
-      !getters.isRegisteredAsset ||
-      !getters.amount ||
-      getters.isSoraToEvm
-    ) {
+    if (!getters.asset || !getters.asset.address || !getters.isRegisteredAsset || !getters.amount) {
       return;
     }
     checkEvmNetwork(rootGetters);
@@ -682,13 +654,13 @@ const actions = {
     }
   },
 
-  async sendEvmTransactionEvmToSora({ commit, dispatch }, { ethereumHash }) {
+  async sendEvmTransactionEvmToSora({ dispatch, getters }, { ethereumHash }) {
     if (!ethereumHash) throw new Error('Hash cannot be empty!');
 
     await waitForEvmTransactionStatus(
       ethereumHash,
       (ethereumHash: string) => {
-        dispatch('updateHistoryParams', { ethereumHash });
+        dispatch('updateHistoryParams', { ...getters.historyItem, ethereumHash });
         dispatch('sendEvmTransactionSoraToEvm', { ethereumHash });
       },
       () => {
@@ -699,13 +671,7 @@ const actions = {
 
   async signSoraTransactionEvmToSora({ getters }, { ethereumHash }) {
     if (!ethereumHash) throw new Error('Hash cannot be empty!');
-    if (
-      !getters.asset ||
-      !getters.asset.address ||
-      !getters.isRegisteredAsset ||
-      !getters.amount ||
-      getters.isSoraToEvm
-    ) {
+    if (!getters.asset || !getters.asset.address || !getters.isRegisteredAsset || !getters.amount) {
       return;
     }
 

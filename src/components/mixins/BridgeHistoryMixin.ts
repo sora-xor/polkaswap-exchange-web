@@ -15,7 +15,7 @@ const namespace = 'bridge';
 @Component
 export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
   @Getter networkFees!: NetworkFeesObject;
-  @Getter('history', { namespace }) bridgeHistory!: Array<BridgeHistory>;
+  @Getter('history', { namespace }) history!: Array<BridgeHistory>;
 
   @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn;
   @Action('generateHistoryItem', { namespace }) generateHistoryItem!: (history?: any) => Promise<BridgeHistory>;
@@ -24,7 +24,7 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
   @Action('setSoraToEvm', { namespace }) setSoraToEvm!: (value: boolean) => Promise<void>;
 
   @Action('setEvmNetworkFee', { namespace }) setEvmNetworkFee!: (evmNetworkFee: CodecString) => Promise<void>;
-  @Action('setHistoryItem', { namespace }) setHistoryItem!: (historyItem: BridgeHistory) => Promise<void>;
+  @Action('setHistoryItem', { namespace }) setHistoryItem!: (id: string) => Promise<void>;
 
   getSoraNetworkFee(type: Operation): CodecString {
     return this.isOutgoingType(type) ? this.networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
@@ -38,7 +38,7 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
     await this.withLoading(async () => {
       const tx = bridgeApi.getHistory(id);
 
-      if (!tx) {
+      if (!tx || !tx.id) {
         // TODO: check why not navigate to prev route?
         router.push({ name: PageNames.BridgeTransaction });
         return;
@@ -59,11 +59,13 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
         bridgeApi.saveHistory(tx);
       }
 
+      // TODO: remove this bridge form setters
       await this.setSoraToEvm(isSoraToEvm);
       await this.setAssetAddress(assetAddress);
       await this.setAmount(tx.amount || '0');
       await this.setEvmNetworkFee(String(tx.ethereumNetworkFee));
-      await this.setHistoryItem(tx);
+
+      await this.setHistoryItem(tx.id);
 
       this.navigateToBridgeTransaction();
     });

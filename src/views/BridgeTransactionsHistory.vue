@@ -82,7 +82,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
 import { BridgeTxStatus } from '@sora-substrate/util';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
@@ -106,10 +106,10 @@ export default class BridgeTransactionsHistory extends Mixins(
   TranslationMixin,
   BridgeHistoryMixin,
   NetworkFormatterMixin,
-  PaginationSearchMixin
+  PaginationSearchMixin,
+  mixins.NumberFormatterMixin
 ) {
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>;
-  @Getter('history', { namespace }) history!: Nullable<Array<BridgeHistory>>;
   @Getter('restored', { namespace }) restored!: boolean;
 
   @Action('getRestoredFlag', { namespace }) getRestoredFlag!: AsyncVoidFn;

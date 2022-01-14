@@ -274,7 +274,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
-import { KnownSymbols } from '@sora-substrate/util';
+import { KnownSymbols, Operation } from '@sora-substrate/util';
 import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
@@ -288,7 +288,7 @@ import {
   hasInsufficientXorForFee,
   hasInsufficientEvmNativeTokenForFee,
 } from '@/utils';
-import { bridgeApi, STATES } from '@/utils/bridge';
+import { bridgeApi, STATES, isOutgoingTransaction } from '@/utils/bridge';
 
 import type { CodecString, BridgeHistory } from '@sora-substrate/util';
 
@@ -307,17 +307,10 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @Getter('prev', { namespace: 'router' }) prevRoute!: PageNames;
 
-  @Getter('transactionFromHash', { namespace }) transactionFromHash!: string;
-  @Getter('transactionToHash', { namespace }) transactionToHash!: string;
-  @Getter('transactionFromDate', { namespace }) transactionFromDate!: string;
-  @Getter('transactionToDate', { namespace }) transactionToDate!: string;
-
-  @Getter('currentState', { namespace }) currentState!: STATES;
   @Getter('historyItem', { namespace }) historyItem!: BridgeHistory;
   @Getter('isTxEvmAccount', { namespace }) isTxEvmAccount!: boolean;
   @Getter('waitingForApprove', { namespace }) waitingForApprove!: boolean;
 
-  @Action('setHistoryItem', { namespace }) setHistoryItem;
   @Action('handleEthereumTransaction', { namespace }) handleEthereumTransaction;
 
   readonly KnownSymbols = KnownSymbols;
@@ -325,6 +318,14 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     from: 'step-from',
     to: 'step-to',
   };
+
+  get amount(): string {
+    return this.historyItem?.amount ?? '';
+  }
+
+  get isSoraToEvm(): boolean {
+    return isOutgoingTransaction(this.historyItem);
+  }
 
   get formattedAmount(): string {
     return this.amount && this.asset ? this.formatStringValue(this.amount, this.asset.decimals) : '';
@@ -346,6 +347,22 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     return this.historyItem?.ethereumNetworkFee ?? this.evmNetworkFee;
   }
 
+  get transactionFromHash(): string {
+    return (this.isSoraToEvm ? this.historyItem?.hash : this.historyItem?.ethereumHash) ?? '';
+  }
+
+  get transactionToHash(): string {
+    return (!this.isSoraToEvm ? this.historyItem?.hash : this.historyItem?.ethereumHash) ?? '';
+  }
+
+  get transactionFromDate(): number | string {
+    return (this.isSoraToEvm ? this.historyItem?.startTime : this.historyItem?.endTime) ?? '';
+  }
+
+  get transactionToDate(): number | string {
+    return (!this.isSoraToEvm ? this.historyItem?.startTime : this.historyItem?.endTime) ?? '';
+  }
+
   get soraFeeFiatValue(): Nullable<string> {
     if (this.isSoraToEvm) {
       return this.getFiatAmountByCodecString(this.txSoraNetworkFee);
@@ -365,6 +382,10 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
       return this.getFiatAmountByString(this.amount, this.asset);
     }
     return null;
+  }
+
+  get currentState(): string {
+    return this.historyItem.transactionState ?? STATES.INITIAL;
   }
 
   get isTransferStarted(): boolean {
@@ -496,11 +517,11 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   get transactionFirstDate(): string {
-    return this.formatTransactionDate(this.transactionFromDate);
+    return this.formatTransactionDate(this.transactionFromDate as string);
   }
 
   get transactionSecondDate(): string {
-    return this.formatTransactionDate(this.transactionToDate);
+    return this.formatTransactionDate(this.transactionToDate as string);
   }
 
   get formattedSoraNetworkFee(): string {
@@ -604,6 +625,8 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     router.push({ name: PageNames.Bridge });
   }
 
+  // TODO: multi transactions support
+  // TODO: update ethrereumNetworkFee for real value after eth part completes
   async created(): Promise<void> {
     if (!this.historyItem) {
       this.navigateToBridge();
@@ -613,12 +636,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     const withAutoStart = this.prevRoute === PageNames.Bridge;
 
     await this.handleTransaction(withAutoStart);
-  }
-
-  async beforeDestroy(): Promise<void> {
-    // TODO: multi transactions support
-    // TODO: update ethrereumNetworkFee for real value after eth part completes
-    this.setHistoryItem(null);
   }
 
   private getTxIconStatusClasses(isSecondTransaction?: boolean): string {
