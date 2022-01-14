@@ -569,9 +569,9 @@ const actions = {
 
     await waitForEvmTransactionStatus(
       ethereumHash,
-      (hash: string) => {
-        dispatch('updateHistoryParams', { ethereumHash: hash });
-        dispatch('sendEvmTransactionSoraToEvm', { ethereumHash: hash });
+      (ethereumHash: string) => {
+        dispatch('updateHistoryParams', { ethereumHash });
+        dispatch('sendEvmTransactionSoraToEvm', { ethereumHash });
       },
       () => {
         throw new Error('The transaction was canceled by the user');
@@ -686,9 +686,9 @@ const actions = {
 
     await waitForEvmTransactionStatus(
       ethereumHash,
-      (hash: string) => {
-        dispatch('updateHistoryParams', { ethereumHash: hash });
-        dispatch('sendEvmTransactionSoraToEvm', { ethereumHash: hash });
+      (ethereumHash: string) => {
+        dispatch('updateHistoryParams', { ethereumHash });
+        dispatch('sendEvmTransactionSoraToEvm', { ethereumHash });
       },
       () => {
         throw new Error('The transaction was canceled by the user');
@@ -696,7 +696,7 @@ const actions = {
     );
   },
 
-  async signSoraTransactionEvmToSora({ commit, getters }, { ethereumHash }) {
+  async signSoraTransactionEvmToSora({ getters }, { ethereumHash }) {
     if (!ethereumHash) throw new Error('Hash cannot be empty!');
     if (
       !getters.asset ||
