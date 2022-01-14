@@ -275,7 +275,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
 import { KnownSymbols, FPNumber } from '@sora-substrate/util';
-import { api, components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
@@ -288,7 +288,7 @@ import {
   hasInsufficientXorForFee,
   hasInsufficientEvmNativeTokenForFee,
 } from '@/utils';
-import { STATES } from '@/utils/bridge';
+import { bridgeApi, STATES } from '@/utils/bridge';
 
 import type { CodecString, BridgeHistory } from '@sora-substrate/util';
 
@@ -485,14 +485,14 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     if (!this.historyItem?.id) {
       return null;
     }
-    return this.historyItem.txId || api.bridge.getHistory(this.historyItem.id)?.txId;
+    return this.historyItem.txId || bridgeApi.getHistory(this.historyItem.id)?.txId;
   }
 
   get soraTxBlockId(): Nullable<string> {
     if (!this.historyItem?.id) {
       return null;
     }
-    return this.historyItem.blockId || api.bridge.getHistory(this.historyItem.id)?.blockId;
+    return this.historyItem.blockId || bridgeApi.getHistory(this.historyItem.id)?.blockId;
   }
 
   get transactionFirstDate(): string {
