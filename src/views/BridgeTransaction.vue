@@ -274,7 +274,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
-import { KnownSymbols, FPNumber } from '@sora-substrate/util';
+import { KnownSymbols } from '@sora-substrate/util';
 import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
@@ -327,7 +327,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   };
 
   get formattedAmount(): string {
-    return this.amount && this.asset ? new FPNumber(this.amount, this.asset.decimals).toLocaleString() : '';
+    return this.amount && this.asset ? this.formatStringValue(this.amount, this.asset.decimals) : '';
   }
 
   get assetSymbol(): string {

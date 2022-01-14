@@ -51,7 +51,7 @@
                 </div>
                 <div class="history-item-date">{{ formatHistoryDate(item) }}</div>
               </div>
-              <div :class="historyStatusIconClasses(item.type, item.transactionState)" />
+              <div :class="historyStatusIconClasses(item.status)" />
             </div>
           </template>
           <p v-else class="history-empty p4">{{ t('bridgeHistory.empty') }}</p>
@@ -81,7 +81,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
-import { RegisteredAccountAsset, Operation, BridgeHistory, FPNumber } from '@sora-substrate/util';
+import { BridgeTxStatus } from '@sora-substrate/util';
 import { components } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -91,7 +91,8 @@ import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { STATES } from '@/utils/bridge';
+
+import type { BridgeHistory, RegisteredAccountAsset } from '@sora-substrate/util';
 
 const namespace = 'bridge';
 
@@ -163,12 +164,11 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
 
   formatAmount(historyItem: any): string {
-    return historyItem.amount
-      ? new FPNumber(
-          historyItem.amount,
-          this.registeredAssets?.find((asset) => asset.address === historyItem.address)?.decimals
-        ).toLocaleString()
-      : '';
+    if (!historyItem.amount) return '';
+
+    const decimals = this.registeredAssets?.find((asset) => asset.address === historyItem.address)?.decimals;
+
+    return this.formatStringValue(historyItem.amount, decimals);
   }
 
   formatHistoryDate(response: any): string {
@@ -176,17 +176,16 @@ export default class BridgeTransactionsHistory extends Mixins(
     return this.formatDate(response?.startTime ?? Date.now());
   }
 
-  historyStatusIconClasses(type: Operation, state: STATES): string {
+  historyStatusIconClasses(status: BridgeTxStatus): string {
     const iconClass = 'history-item-icon';
     const classes = [iconClass];
-    if ([STATES.SORA_REJECTED, STATES.EVM_REJECTED].includes(state)) {
+
+    if (status === BridgeTxStatus.Failed) {
       classes.push(`${iconClass}--error`);
-      return classes.join(' ');
-    }
-    if (!(this.isOutgoingType(type) ? state === STATES.EVM_COMMITED : state === STATES.SORA_COMMITED)) {
+    } else if (status === BridgeTxStatus.Pending) {
       classes.push(`${iconClass}--pending`);
-      return classes.join(' ');
     }
+
     return classes.join(' ');
   }
 

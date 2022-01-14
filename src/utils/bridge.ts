@@ -16,19 +16,25 @@ export enum STATES {
 
 type HandleTransactionPayload = {
   store: any;
-  status: BridgeTxStatus;
+  status?: BridgeTxStatus;
   nextState: STATES;
   rejectState: STATES;
   handler?: (store: any) => Promise<void>;
 };
 
-const handleTransactionState = async ({ store, status, nextState, rejectState, handler }: HandleTransactionPayload) => {
-  console.log('handleTransactionState', status, nextState, rejectState);
+const handleTransactionState = async ({
+  store,
+  status = BridgeTxStatus.Pending,
+  nextState,
+  rejectState,
+  handler,
+}: HandleTransactionPayload) => {
   const { historyItem } = store.state;
   try {
     if (historyItem.status === BridgeTxStatus.Done) return;
-
-    await store.dispatch('updateHistoryParams', { status });
+    if (historyItem.status !== status) {
+      await store.dispatch('updateHistoryParams', { status });
+    }
 
     if (typeof handler === 'function') {
       await handler(store);
@@ -40,8 +46,8 @@ const handleTransactionState = async ({ store, status, nextState, rejectState, h
   } catch (error) {
     console.error(error);
 
-    const unsigned = !historyItem.hash && !historyItem.ethereumHash;
     const failed = historyItem.status === BridgeTxStatus.Failed;
+    const unsigned = !historyItem.hash && !historyItem.ethereumHash;
 
     await store.dispatch('updateHistoryParams', {
       status: BridgeTxStatus.Failed,
@@ -64,6 +70,8 @@ export const handleBridgeTransaction = async (store) => {
     await handleEthBridgeOutgoingTxState(transactionState, store);
   } else if (type === Operation.EthBridgeIncoming) {
     await handleEthBridgeIncomingTxState(transactionState, store);
+  } else {
+    throw new Error(`[Bridge]: Unsupported operation '${type}'`);
   }
 };
 
@@ -72,7 +80,6 @@ const handleEthBridgeOutgoingTxState = async (transactionState, store) => {
     case STATES.INITIAL: {
       return await handleTransactionState({
         store,
-        status: BridgeTxStatus.Pending,
         nextState: STATES.SORA_SUBMITTED,
         rejectState: STATES.SORA_REJECTED,
       });
@@ -96,7 +103,6 @@ const handleEthBridgeOutgoingTxState = async (transactionState, store) => {
 
       return await handleTransactionState({
         store,
-        status: BridgeTxStatus.Pending,
         nextState: STATES.SORA_PENDING,
         rejectState: STATES.SORA_REJECTED,
         handler,
@@ -117,7 +123,6 @@ const handleEthBridgeOutgoingTxState = async (transactionState, store) => {
 
       return await handleTransactionState({
         store,
-        status: BridgeTxStatus.Pending,
         nextState: STATES.SORA_COMMITED,
         rejectState: STATES.SORA_REJECTED,
         handler,
@@ -133,7 +138,6 @@ const handleEthBridgeOutgoingTxState = async (transactionState, store) => {
 
       return await handleTransactionState({
         store,
-        status: BridgeTxStatus.Pending,
         nextState: STATES.EVM_SUBMITTED,
         rejectState: STATES.SORA_REJECTED,
         handler,
@@ -143,7 +147,6 @@ const handleEthBridgeOutgoingTxState = async (transactionState, store) => {
     case STATES.SORA_REJECTED:
       return await handleTransactionState({
         store,
-        status: BridgeTxStatus.Pending,
         nextState: STATES.SORA_SUBMITTED,
         rejectState: STATES.SORA_REJECTED,
       });
@@ -169,7 +172,6 @@ const handleEthBridgeOutgoingTxState = async (transactionState, store) => {
 
       return await handleTransactionState({
         store,
-        status: BridgeTxStatus.Pending,
         nextState: STATES.EVM_PENDING,
         rejectState: STATES.EVM_REJECTED,
         handler,
@@ -185,7 +187,6 @@ const handleEthBridgeOutgoingTxState = async (transactionState, store) => {
 
       return await handleTransactionState({
         store,
-        status: BridgeTxStatus.Pending,
         nextState: STATES.EVM_COMMITED,
         rejectState: STATES.EVM_REJECTED,
         handler,
@@ -211,7 +212,6 @@ const handleEthBridgeOutgoingTxState = async (transactionState, store) => {
     case STATES.EVM_REJECTED: {
       return await handleTransactionState({
         store,
-        status: BridgeTxStatus.Pending,
         nextState: STATES.EVM_SUBMITTED,
         rejectState: STATES.EVM_REJECTED,
       });
@@ -224,7 +224,6 @@ const handleEthBridgeIncomingTxState = async (transactionState, store) => {
     case STATES.INITIAL: {
       return await handleTransactionState({
         store,
-        status: BridgeTxStatus.Pending,
         nextState: STATES.EVM_SUBMITTED,
         rejectState: STATES.EVM_REJECTED,
       });
@@ -248,7 +247,6 @@ const handleEthBridgeIncomingTxState = async (transactionState, store) => {
 
       return await handleTransactionState({
         store,
-        status: BridgeTxStatus.Pending,
         nextState: STATES.EVM_PENDING,
         rejectState: STATES.EVM_REJECTED,
         handler,
@@ -264,7 +262,6 @@ const handleEthBridgeIncomingTxState = async (transactionState, store) => {
 
       return await handleTransactionState({
         store,
-        status: BridgeTxStatus.Pending,
         nextState: STATES.EVM_COMMITED,
         rejectState: STATES.EVM_REJECTED,
         handler,
@@ -280,7 +277,6 @@ const handleEthBridgeIncomingTxState = async (transactionState, store) => {
 
       return await handleTransactionState({
         store,
-        status: BridgeTxStatus.Pending,
         nextState: STATES.SORA_SUBMITTED,
         rejectState: STATES.EVM_REJECTED,
         handler,
@@ -290,7 +286,6 @@ const handleEthBridgeIncomingTxState = async (transactionState, store) => {
     case STATES.EVM_REJECTED: {
       return await handleTransactionState({
         store,
-        status: BridgeTxStatus.Pending,
         nextState: STATES.EVM_SUBMITTED,
         rejectState: STATES.EVM_REJECTED,
       });
@@ -317,7 +312,6 @@ const handleEthBridgeIncomingTxState = async (transactionState, store) => {
 
       return await handleTransactionState({
         store,
-        status: BridgeTxStatus.Pending,
         nextState: STATES.SORA_PENDING,
         rejectState: STATES.SORA_REJECTED,
         handler,
@@ -333,7 +327,6 @@ const handleEthBridgeIncomingTxState = async (transactionState, store) => {
 
       return await handleTransactionState({
         store,
-        status: BridgeTxStatus.Pending,
         nextState: STATES.SORA_COMMITED,
         rejectState: STATES.SORA_REJECTED,
         handler,
@@ -353,6 +346,14 @@ const handleEthBridgeIncomingTxState = async (transactionState, store) => {
         nextState: STATES.SORA_COMMITED,
         rejectState: STATES.SORA_REJECTED,
         handler,
+      });
+    }
+
+    case STATES.SORA_REJECTED: {
+      return await handleTransactionState({
+        store,
+        nextState: STATES.SORA_SUBMITTED,
+        rejectState: STATES.SORA_REJECTED,
       });
     }
   }

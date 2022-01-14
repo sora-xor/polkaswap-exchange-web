@@ -103,6 +103,7 @@ interface EthLogData {
   ethHash: string;
 }
 const topic = '0x0ce781a18c10c8289803c7c4cfd532d797113c4b41c9701ffad7d0a632ac555b';
+
 async function getEthUserTXs(contracts: Array<string>): Promise<Array<EthLogData>> {
   const ethersInstance = await ethersUtil.getEthersInstance();
   const getLogs = (address: string) =>
@@ -447,7 +448,7 @@ const actions = {
     await dispatch('setHistoryItem', tx);
   },
 
-  async signSoraTransactionSoraToEvm({ commit, getters, rootGetters }, { txId }) {
+  async signSoraTransactionSoraToEvm({ getters, rootGetters }, { txId }) {
     if (!txId) throw new Error('TX ID cannot be empty!');
     if (
       !getters.asset ||
@@ -476,7 +477,7 @@ const actions = {
     return tx;
   },
 
-  async signEvmTransactionSoraToEvm({ commit, getters, rootGetters, dispatch }, { hash }) {
+  async signEvmTransactionSoraToEvm({ getters, rootGetters, dispatch }, { hash }) {
     if (!hash) throw new Error('TX ID cannot be empty!');
     checkEvmNetwork(rootGetters);
     // TODO: Check the status of TX if it was already sent
@@ -563,7 +564,7 @@ const actions = {
     return tx.hash;
   },
 
-  async sendEvmTransactionSoraToEvm({ commit, dispatch }, { ethereumHash }) {
+  async sendEvmTransactionSoraToEvm({ dispatch }, { ethereumHash }) {
     // TODO: Change args to tx due to new data flow
     if (!ethereumHash) throw new Error('Hash cannot be empty!');
 
@@ -718,14 +719,10 @@ const actions = {
     }
   },
 
-  async sendSoraTransactionEvmToSora({ commit }, { ethereumHash }) {
+  async sendSoraTransactionEvmToSora(_, { ethereumHash }) {
     if (!ethereumHash) throw new Error('Hash cannot be empty!');
-    try {
-      await waitForRequest(ethereumHash);
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+
+    await waitForRequest(ethereumHash);
   },
 
   async handleEthereumTransaction(context) {
