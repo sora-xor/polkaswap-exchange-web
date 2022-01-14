@@ -52,11 +52,12 @@
           </template>
           <info-line
             v-for="invitedUser in invitedUsers"
+            value-can-be-hidden
             :key="invitedUser.toString()"
             :label="invitedUser.toString()"
             :value="getInvitedUserReward(invitedUser.toString())"
-            :assetSymbol="xorSymbol"
-            :fiatValue="getInvitedUserReward(invitedUser.toString())"
+            :asset-symbol="xorSymbol"
+            :fiat-value="getFiatAmountByCodecString(getInvitedUserReward(invitedUser.toString()))"
             is-formatted
           />
         </s-collapse-item>
@@ -183,7 +184,10 @@ export default class ReferralProgram extends Mixins(
   }
 
   getInvitedUserReward(invitedUser: string): string {
-    return this.invitedUserRewards[invitedUser]?.rewards?.toLocaleString() || '0';
+    if (this.invitedUserRewards[invitedUser]) {
+      return this.formatCodecNumber(this.invitedUserRewards[invitedUser]?.rewards);
+    }
+    return this.formatCodecNumber('0');
   }
 
   async handleConnect(): Promise<void> {
@@ -358,6 +362,7 @@ $referral-collapse-icon-size: 36px;
   overflow: hidden;
   font-size: var(--s-font-size-medium);
   line-height: var(--s-line-height-medium);
+  white-space: nowrap;
   &-container {
     text-overflow: ellipsis;
   }

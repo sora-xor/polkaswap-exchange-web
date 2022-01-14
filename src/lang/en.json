@@ -216,6 +216,7 @@
         "total": "Total",
         "from": "From",
         "to": "To",
+        "referral": "Referral",
         "successCopy": "{value} is copied to the clipboard",
         "copy": "Copy {value}",
         "history": {
