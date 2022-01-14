@@ -6,7 +6,6 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import router from '@/router';
 import { PageNames, ZeroStringValue } from '@/consts';
 import { bridgeApi } from '@/utils/bridge';
-import ethersUtil from '@/utils/ethers-util';
 
 import type { BridgeHistory, CodecString } from '@sora-substrate/util';
 
@@ -19,11 +18,7 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
 
   @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn;
   @Action('generateHistoryItem', { namespace }) generateHistoryItem!: (history?: any) => Promise<BridgeHistory>;
-  @Action('setAmount', { namespace }) setAmount!: (amount: string) => Promise<void>;
   @Action('setAssetAddress', { namespace }) setAssetAddress!: (address?: string) => Promise<void>;
-  @Action('setSoraToEvm', { namespace }) setSoraToEvm!: (value: boolean) => Promise<void>;
-
-  @Action('setEvmNetworkFee', { namespace }) setEvmNetworkFee!: (evmNetworkFee: CodecString) => Promise<void>;
   @Action('setHistoryItem', { namespace }) setHistoryItem!: (id: string) => Promise<void>;
 
   getSoraNetworkFee(type: Operation): CodecString {
@@ -44,26 +39,8 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
         return;
       }
 
-      const isSoraToEvm = this.isOutgoingType(tx.type);
-      const assetAddress = tx.assetAddress;
-      const soraNetworkFee = +(tx.soraNetworkFee || 0);
-      const evmNetworkFee = +(tx.ethereumNetworkFee || 0);
-
-      if (!soraNetworkFee) {
-        tx.soraNetworkFee = this.getSoraNetworkFee(tx.type);
-      }
-      if (!evmNetworkFee) {
-        tx.ethereumNetworkFee = await ethersUtil.fetchEvmNetworkFee(assetAddress as string, isSoraToEvm);
-      }
-      if (!(soraNetworkFee && evmNetworkFee)) {
-        bridgeApi.saveHistory(tx);
-      }
-
-      // TODO: remove this bridge form setters
-      await this.setSoraToEvm(isSoraToEvm);
-      await this.setAssetAddress(assetAddress);
-      await this.setAmount(tx.amount || '0');
-      await this.setEvmNetworkFee(String(tx.ethereumNetworkFee));
+      // TODO: remove
+      await this.setAssetAddress(tx.assetAddress);
 
       await this.setHistoryItem(tx.id);
 

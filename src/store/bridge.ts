@@ -191,10 +191,6 @@ const getters = {
     // In direction EVM -> SORA sora network fee is 0, because related extrinsic calls by system automaically
     return state.isSoraToEvm ? rootGetters.networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
   },
-  currentState(state, getters) {
-    const { historyItem: tx } = getters;
-    return tx?.transactionState ?? STATES.INITIAL;
-  },
   history(state) {
     return state.history;
   },
@@ -203,17 +199,11 @@ const getters = {
 
     return state.history.find((item) => item.id === state.historyId) ?? null;
   },
-  restored(state) {
-    return state.restored;
-  },
   isTxEvmAccount(state, getters, rootState, rootGetters) {
     const historyAddress = getters.historyItem?.to;
     const currentAddress = rootGetters['web3/evmAddress'];
 
     return !historyAddress || ethersUtil.addressesAreEqual(historyAddress, currentAddress);
-  },
-  waitingForApprove(state) {
-    return state.waitingForApprove;
   },
 };
 
@@ -429,6 +419,8 @@ const actions = {
       throw new Error('[Bridge]: "generateHistoryItem" failed');
     }
 
+    await dispatch('getHistory');
+
     return historyItem;
   },
 
@@ -542,15 +534,16 @@ const actions = {
     return tx.hash;
   },
 
-  async sendEvmTransactionSoraToEvm({ dispatch, getters }, { ethereumHash }) {
+  async sendEvmTransactionSoraToEvm({ dispatch }, transaction: BridgeHistory) {
     // TODO: Change args to tx due to new data flow
-    if (!ethereumHash) throw new Error('Hash cannot be empty!');
+    if (!transaction.ethereumHash) throw new Error('Hash cannot be empty!');
 
     await waitForEvmTransactionStatus(
-      ethereumHash,
+      transaction.ethereumHash,
       (ethereumHash: string) => {
-        dispatch('updateHistoryParams', { ...getters.historyItem, ethereumHash });
-        dispatch('sendEvmTransactionSoraToEvm', { ethereumHash });
+        const tx = { ...transaction, ethereumHash };
+        dispatch('updateHistoryParams', tx);
+        dispatch('sendEvmTransactionSoraToEvm', tx);
       },
       () => {
         throw new Error('The transaction was canceled by the user');
@@ -654,14 +647,16 @@ const actions = {
     }
   },
 
-  async sendEvmTransactionEvmToSora({ dispatch, getters }, { ethereumHash }) {
-    if (!ethereumHash) throw new Error('Hash cannot be empty!');
+  async sendEvmTransactionEvmToSora({ dispatch }, transaction: BridgeHistory) {
+    console.log(transaction);
+    if (!transaction.ethereumHash) throw new Error('Hash cannot be empty!');
 
     await waitForEvmTransactionStatus(
-      ethereumHash,
+      transaction.ethereumHash,
       (ethereumHash: string) => {
-        dispatch('updateHistoryParams', { ...getters.historyItem, ethereumHash });
-        dispatch('sendEvmTransactionSoraToEvm', { ethereumHash });
+        const tx = { ...transaction, ethereumHash };
+        dispatch('updateHistoryParams', tx);
+        dispatch('sendEvmTransactionEvmToSora', tx);
       },
       () => {
         throw new Error('The transaction was canceled by the user');
@@ -669,11 +664,8 @@ const actions = {
     );
   },
 
-  async signSoraTransactionEvmToSora({ getters }, { ethereumHash }) {
-    if (!ethereumHash) throw new Error('Hash cannot be empty!');
-    if (!getters.asset || !getters.asset.address || !getters.isRegisteredAsset || !getters.amount) {
-      return;
-    }
+  async signSoraTransactionEvmToSora(_, transaction: BridgeHistory) {
+    if (!transaction.ethereumHash) throw new Error('Hash cannot be empty!');
 
     try {
       // TODO: check it for other types of bridge
@@ -685,10 +677,10 @@ const actions = {
     }
   },
 
-  async sendSoraTransactionEvmToSora(_, { ethereumHash }) {
-    if (!ethereumHash) throw new Error('Hash cannot be empty!');
+  async sendSoraTransactionEvmToSora(_, transaction: BridgeHistory) {
+    if (!transaction.ethereumHash) throw new Error('Hash cannot be empty!');
 
-    await waitForRequest(ethereumHash);
+    await waitForRequest(transaction.ethereumHash);
   },
 
   async handleEthereumTransaction(context) {

@@ -273,8 +273,8 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter, Action } from 'vuex-class';
-import { KnownSymbols, Operation } from '@sora-substrate/util';
+import { Getter, Action, State } from 'vuex-class';
+import { KnownSymbols } from '@sora-substrate/util';
 import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
@@ -304,12 +304,12 @@ const namespace = 'bridge';
   },
 })
 export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixin, BridgeMixin, NetworkFormatterMixin) {
+  @State((state) => state[namespace].waitingForApprove) waitingForApprove!: boolean;
+
   @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @Getter('prev', { namespace: 'router' }) prevRoute!: PageNames;
-
   @Getter('historyItem', { namespace }) historyItem!: BridgeHistory;
   @Getter('isTxEvmAccount', { namespace }) isTxEvmAccount!: boolean;
-  @Getter('waitingForApprove', { namespace }) waitingForApprove!: boolean;
 
   @Action('handleEthereumTransaction', { namespace }) handleEthereumTransaction;
 
@@ -385,7 +385,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   get currentState(): string {
-    return this.historyItem.transactionState ?? STATES.INITIAL;
+    return this.historyItem?.transactionState ?? STATES.INITIAL;
   }
 
   get isTransferStarted(): boolean {

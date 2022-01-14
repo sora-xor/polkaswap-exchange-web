@@ -4,7 +4,7 @@ import type { BridgeHistory } from '@sora-substrate/util';
 export const bridgeApi = api.bridge;
 
 export const isOutgoingTransaction = (tx: BridgeHistory) => {
-  return tx.type === Operation.EthBridgeOutgoing;
+  return tx?.type === Operation.EthBridgeOutgoing;
 };
 
 export enum STATES {
@@ -34,40 +34,39 @@ const handleTransactionState = async ({
   rejectState,
   handler,
 }: HandleTransactionPayload) => {
-  const { historyItem } = store.getters;
-
   try {
-    if (historyItem.status === BridgeTxStatus.Done) return;
-    if (historyItem.status !== status) {
-      await store.dispatch('updateHistoryParams', { ...historyItem, status });
+    if (store.getters.historyItem.status === BridgeTxStatus.Done) return;
+    if (store.getters.historyItem.status !== status) {
+      await store.dispatch('updateHistoryParams', { ...store.getters.historyItem, status });
     }
 
     if (typeof handler === 'function') {
       await handler(store);
     }
 
-    await store.dispatch('updateHistoryParams', { ...historyItem, transactionState: nextState });
+    await store.dispatch('updateHistoryParams', { ...store.getters.historyItem, transactionState: nextState });
 
     handleBridgeTransaction(store);
   } catch (error) {
     console.error(error);
 
-    const failed = historyItem.status === BridgeTxStatus.Failed;
-    const unsigned = !historyItem.hash && !historyItem.ethereumHash;
+    const failed = store.getters.historyItem.status === BridgeTxStatus.Failed;
+    const unsigned = !store.getters.historyItem.hash && !store.getters.historyItem.ethereumHash;
 
     await store.dispatch('updateHistoryParams', {
-      ...historyItem,
+      ...store.getters.historyItem,
       status: BridgeTxStatus.Failed,
       transactionState: rejectState,
-      endTime: failed ? historyItem.endTime : Date.now(),
+      endTime: failed ? store.getters.historyItem.endTime : Date.now(),
     });
 
     if (unsigned) {
-      await store.dispatch('removeHistoryById', historyItem.id);
+      await store.dispatch('removeHistoryById', store.getters.historyItem.id);
     }
   }
 };
 
+// TODO: remove store
 export const handleBridgeTransaction = async (store) => {
   if (!store.getters.historyItem) return;
 
@@ -120,9 +119,7 @@ const handleEthBridgeOutgoingTxState = async (transactionState, store) => {
 
     case STATES.SORA_PENDING: {
       const handler = async (store) => {
-        const { to, hash } = await store.dispatch('sendSoraTransactionSoraToEvm', {
-          txId: store.getters.historyItem.id,
-        });
+        const { to, hash } = await store.dispatch('sendSoraTransactionSoraToEvm', store.getters.historyItem);
 
         await store.dispatch('updateHistoryParams', {
           ...store.getters.historyItem,
@@ -193,9 +190,7 @@ const handleEthBridgeOutgoingTxState = async (transactionState, store) => {
 
     case STATES.EVM_PENDING: {
       const handler = async (store) => {
-        await store.dispatch('sendEvmTransactionSoraToEvm', {
-          ethereumHash: store.getters.historyItem.ethereumHash,
-        });
+        await store.dispatch('sendEvmTransactionSoraToEvm', store.getters.historyItem);
       };
 
       return await handleTransactionState({
@@ -246,6 +241,7 @@ const handleEthBridgeIncomingTxState = async (transactionState, store) => {
     case STATES.EVM_SUBMITTED: {
       const handler = async (store) => {
         await store.dispatch('updateHistoryParams', {
+          ...store.getters.historyItem,
           transactionState: STATES.EVM_PENDING,
         });
 
@@ -257,6 +253,8 @@ const handleEthBridgeIncomingTxState = async (transactionState, store) => {
             ethereumHash,
             signed: true,
           });
+
+          console.log('EVM_SUBMITTED');
         }
       };
 
@@ -270,9 +268,7 @@ const handleEthBridgeIncomingTxState = async (transactionState, store) => {
 
     case STATES.EVM_PENDING: {
       const handler = async (store) => {
-        await store.dispatch('sendEvmTransactionEvmToSora', {
-          ethereumHash: store.getters.historyItem.ethereumHash,
-        });
+        await store.dispatch('sendEvmTransactionEvmToSora', store.getters.historyItem);
       };
 
       return await handleTransactionState({
@@ -317,9 +313,7 @@ const handleEthBridgeIncomingTxState = async (transactionState, store) => {
         });
 
         if (!store.getters.historyItem.signed) {
-          await store.dispatch('signSoraTransactionEvmToSora', {
-            ethereumHash: store.getters.historyItem.ethereumHash,
-          });
+          await store.dispatch('signSoraTransactionEvmToSora', store.getters.historyItem);
 
           await store.dispatch('updateHistoryParams', {
             ...store.getters.historyItem,
@@ -338,9 +332,7 @@ const handleEthBridgeIncomingTxState = async (transactionState, store) => {
 
     case STATES.SORA_PENDING: {
       const handler = async () => {
-        await store.dispatch('sendSoraTransactionEvmToSora', {
-          ethereumHash: store.getters.historyItem.ethereumHash,
-        });
+        await store.dispatch('sendSoraTransactionEvmToSora', store.getters.historyItem);
       };
 
       return await handleTransactionState({
