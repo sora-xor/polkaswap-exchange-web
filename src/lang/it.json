@@ -279,7 +279,8 @@
         "Stats": "Statistiche",
         "Support": "Supporto",
         "CreatePair": "Crea una pair",
-        "Tokens": "Tokens"
+        "Tokens": "Tokens",
+        "KYC": "KYC"
     },
     "social": {
         "twitter": "Twitter",
@@ -870,5 +871,22 @@
             "freeOfCharge": "Questa azione è gratuita"
         }
     },
-    "transactionDetailsText": "Dettagli di Transazione"
+    "transactionDetailsText": "Dettagli di Transazione",
+    "kyc": {
+        "title": "KYC Data",
+        "form": {
+            "name": "Name",
+            "surname": "Surname",
+            "country": "Citizenship",
+            "address": "Residential Address",
+            "dob": "Date of Birth",
+            "id": "ID Number"
+        },
+        "notification": {
+            "saved": "KYC Data successfully saved",
+            "reset": "KYC Data cleared"
+        },
+        "save": "Save",
+        "reset": "Reset"
+    }
 }

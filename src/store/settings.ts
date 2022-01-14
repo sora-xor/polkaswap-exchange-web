@@ -44,6 +44,7 @@ const types = flow(
     'SET_BLOCK_NUMBER',
     'SET_BLOCK_NUMBER_UPDATES',
     'RESET_BLOCK_NUMBER_UPDATES',
+    'SET_KYC_DATA',
   ]),
   map((x) => [x, x]),
   fromPairs
@@ -67,6 +68,7 @@ function initialState() {
     selectNodeDialogVisibility: false,
     blockNumber: 0,
     blockNumberUpdates: null,
+    kycData: {},
   };
 }
 
@@ -173,6 +175,9 @@ const mutations = {
       state.blockNumberUpdates.unsubscribe();
     }
     state.blockNumberUpdates = null;
+  },
+  [types.SET_KYC_DATA](state, data) {
+    state.kycData = { ...data };
   },
 };
 
@@ -382,6 +387,32 @@ const actions = {
   },
   resetBlockNumberSubscription({ commit }) {
     commit(types.RESET_BLOCK_NUMBER_UPDATES);
+  },
+
+  getKYCData({ commit }) {
+    let data: any;
+    // const storage = (api as any).accountStorage
+    const storage = localStorage;
+
+    if (storage) {
+      // data = JSON.parse(storage.get('kyc')) || {}
+      data = JSON.parse(storage.getItem('kyc') ?? '') || {};
+    } else {
+      data = {};
+    }
+
+    commit(types.SET_KYC_DATA, data);
+  },
+  setKycData({ commit }, data) {
+    // const storage = (api as any).accountStorage
+    const storage = localStorage;
+
+    if (storage) {
+      // storage.set('kyc', JSON.stringify(data))
+      storage.setItem('kyc', JSON.stringify(data));
+    }
+
+    commit(types.SET_KYC_DATA, data);
   },
 };
 

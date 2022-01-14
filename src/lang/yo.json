@@ -279,7 +279,8 @@
         "Stats": "Iṣiro",
         "Support": "Atilẹyin",
         "CreatePair": "Ṣẹda Pair",
-        "Tokens": "Awọn Tokini"
+        "Tokens": "Awọn Tokini",
+        "KYC": "KYC"
     },
     "social": {
         "twitter": "Twitter",
@@ -870,5 +871,22 @@
             "freeOfCharge": "Iṣe yii jẹ ọfẹ"
         }
     },
-    "transactionDetailsText": "Idunadura Awọn alaye"
+    "transactionDetailsText": "Idunadura Awọn alaye",
+    "kyc": {
+        "title": "KYC Data",
+        "form": {
+            "name": "Name",
+            "surname": "Surname",
+            "country": "Citizenship",
+            "address": "Residential Address",
+            "dob": "Date of Birth",
+            "id": "ID Number"
+        },
+        "notification": {
+            "saved": "KYC Data successfully saved",
+            "reset": "KYC Data cleared"
+        },
+        "save": "Save",
+        "reset": "Reset"
+    }
 }

@@ -117,6 +117,11 @@ const routes: Array<RouteConfig> = [
     name: PageNames.Support,
   },
   {
+    path: '/kyc',
+    name: PageNames.KYC,
+    component: lazyView(PageNames.KYC),
+  },
+  {
     path: '*',
     redirect: '/swap',
     // TODO: Turn on redirect to PageNotFound

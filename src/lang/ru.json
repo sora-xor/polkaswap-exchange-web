@@ -279,7 +279,8 @@
         "Stats": "Статистика",
         "Support": "Поддержка",
         "CreatePair": "Создать пару",
-        "Tokens": "Токены"
+        "Tokens": "Токены",
+        "KYC": "KYC"
     },
     "social": {
         "twitter": "Twitter",
@@ -870,5 +871,22 @@
             "freeOfCharge": "Данная транзакция бесплатна"
         }
     },
-    "transactionDetailsText": "Детали транзакции"
+    "transactionDetailsText": "Детали транзакции",
+    "kyc": {
+        "title": "KYC Data",
+        "form": {
+            "name": "Name",
+            "surname": "Surname",
+            "country": "Citizenship",
+            "address": "Residential Address",
+            "dob": "Date of Birth",
+            "id": "ID Number"
+        },
+        "notification": {
+            "saved": "KYC Data successfully saved",
+            "reset": "KYC Data cleared"
+        },
+        "save": "Save",
+        "reset": "Reset"
+    }
 }
