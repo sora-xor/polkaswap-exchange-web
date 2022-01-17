@@ -6,7 +6,6 @@ import concat from 'lodash/fp/concat';
 import flatten from 'lodash/fp/flatten';
 import {
   FPNumber,
-  BridgeApprovedRequest,
   BridgeCurrencyType,
   BridgeNetworks,
   BridgeTxStatus,
@@ -18,13 +17,11 @@ import {
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 
-import { bridgeApi, handleBridgeTransaction, STATES } from '@/utils/bridge';
+import { bridgeApi, handleBridgeTransaction, STATES, waitForApprovedRequest } from '@/utils/bridge';
 import ethersUtil, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/ethers-util';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
-import { delay, isEthereumAddress } from '@/utils';
+import { isEthereumAddress } from '@/utils';
 import { MaxUint256, ZeroStringValue } from '@/consts';
-
-const SORA_REQUESTS_TIMEOUT = 5 * 1000;
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
@@ -43,23 +40,6 @@ const types = flow(
   map((x) => [x, x]),
   fromPairs
 )(['GET_HISTORY', 'GET_RESTORED_FLAG', 'GET_EVM_NETWORK_FEE']);
-
-async function waitForApprovedRequest(hash: string): Promise<BridgeApprovedRequest> {
-  const approvedRequest = await bridgeApi.getApprovedRequest(hash);
-  if (approvedRequest) {
-    return approvedRequest;
-  }
-  const request = await bridgeApi.getRequest(hash);
-
-  if (request && [BridgeTxStatus.Failed, BridgeTxStatus.Frozen].includes(request.status)) {
-    // Set SORA_REJECTED
-    throw new Error('Transaction was failed or canceled');
-  }
-
-  await delay(SORA_REQUESTS_TIMEOUT);
-  return await waitForApprovedRequest(hash);
-  // Sora Pending
-}
 
 function checkEvmNetwork(rootGetters): void {
   if (!rootGetters['web3/isValidNetworkType']) {
@@ -300,11 +280,6 @@ const actions = {
 
   setHistoryItem({ commit }, historyId = '') {
     commit(types.SET_HISTORY_ITEM, historyId);
-  },
-
-  removeHistoryById({ commit }, id: string) {
-    if (!id.length) return;
-    bridgeApi.removeHistory(id);
   },
 
   clearHistory({ commit }) {

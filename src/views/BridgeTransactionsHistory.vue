@@ -183,7 +183,9 @@ export default class BridgeTransactionsHistory extends Mixins(
 
     if (status === BridgeTxStatus.Failed) {
       classes.push(`${iconClass}--error`);
-    } else if (status === BridgeTxStatus.Pending) {
+    } else if (status === BridgeTxStatus.Done) {
+      return classes.join(' ');
+    } else {
       classes.push(`${iconClass}--pending`);
     }
 

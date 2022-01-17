@@ -1,120 +1,26 @@
-import { api, BridgeTxStatus, Operation, TransactionStatus } from '@sora-substrate/util';
-import type { BridgeHistory, BridgeApprovedRequest, BridgeRequest } from '@sora-substrate/util';
-import { ethers } from 'ethers';
+import { BridgeTxStatus, Operation } from '@sora-substrate/util';
 import ethersUtil from '@/utils/ethers-util';
 
-import { delay } from '@/utils';
 import store from '@/store';
 
+import { bridgeApi } from './api';
 import { STATES } from './types';
-import type { HandleTransactionPayload, BridgeTransactionHandler } from './types';
+import {
+  getTransaction,
+  waitForRequest,
+  waitForApprovedRequest,
+  waitForExtrinsicFinalization,
+  waitForEvmTransactionStatus,
+} from './utils';
 
-const bridgeApi = api.bridge;
-const SORA_REQUESTS_TIMEOUT = 5 * 1000;
+import type { BridgeHistory } from '@sora-substrate/util';
+import type { HandleTransactionPayload, BridgeTransactionHandler } from './types';
 
 const updateTransactionParams = async (id: string, params = {}) => {
   const tx = getTransaction(id);
   bridgeApi.saveHistory({ ...tx, ...params });
 
   await store.dispatch('bridge/getHistory');
-};
-
-const getTransaction = (id: string) => {
-  const tx = bridgeApi.getHistory(id);
-
-  if (!tx) throw new Error(`[Bridge]: Transaction is not exists: ${id}`);
-
-  return tx;
-};
-
-// UTIL FUNCTIONS
-const isOutgoingTransaction = (tx: BridgeHistory) => {
-  return tx?.type === Operation.EthBridgeOutgoing;
-};
-
-const waitForApprovedRequest = async (hash: string): Promise<BridgeApprovedRequest> => {
-  const approvedRequest = await bridgeApi.getApprovedRequest(hash);
-
-  if (approvedRequest) {
-    return approvedRequest;
-  }
-
-  const request = await bridgeApi.getRequest(hash);
-
-  if (request && [BridgeTxStatus.Failed, BridgeTxStatus.Frozen].includes(request.status)) {
-    // Set SORA_REJECTED
-    throw new Error('Transaction was failed or canceled');
-  }
-
-  await delay(SORA_REQUESTS_TIMEOUT);
-
-  return await waitForApprovedRequest(hash);
-};
-
-const waitForExtrinsicFinalization = async (id: string): Promise<BridgeHistory> => {
-  const tx = getTransaction(id);
-
-  if (
-    tx &&
-    [TransactionStatus.Error, TransactionStatus.Invalid, TransactionStatus.Usurped].includes(
-      tx.status as TransactionStatus
-    )
-  ) {
-    // TODO: maybe it's better to display a message about this errors from tx.errorMessage
-    throw new Error(tx.errorMessage);
-  }
-  if (tx.status !== TransactionStatus.Finalized) {
-    await delay(250);
-    return await waitForExtrinsicFinalization(id);
-  }
-  return tx;
-};
-
-const waitForRequest = async (hash: string): Promise<BridgeRequest> => {
-  await delay(SORA_REQUESTS_TIMEOUT);
-  const request = await bridgeApi.getRequest(hash);
-  if (!request) {
-    return await waitForRequest(hash);
-  }
-  switch (request.status) {
-    case BridgeTxStatus.Failed:
-    case BridgeTxStatus.Frozen:
-      throw new Error('Transaction was failed or canceled');
-    case BridgeTxStatus.Done:
-      return request;
-  }
-  return await waitForRequest(hash);
-};
-
-const waitForEvmTransactionStatus = async (
-  hash: string,
-  replaceCallback: (hash: string) => any,
-  cancelCallback: (hash: string) => any
-) => {
-  const ethersInstance = await ethersUtil.getEthersInstance();
-  try {
-    const confirmations = 5;
-    const timeout = 0;
-    const currentBlock = await ethersInstance.getBlockNumber();
-    const blockOffset = currentBlock - 20;
-    const { data, from, nonce, to, value } = await ethersInstance.getTransaction(hash);
-    await ethersInstance._waitForTransaction(hash, confirmations, timeout, {
-      data,
-      from,
-      nonce,
-      to: to ?? '',
-      value,
-      startBlock: blockOffset,
-    });
-  } catch (error: any) {
-    if (error.code === ethers.errors.TRANSACTION_REPLACED) {
-      if (error.reason === 'repriced' || error.reason === 'replaced') {
-        replaceCallback(error.replacement.hash);
-      } else if (error.reason === 'canceled') {
-        cancelCallback(error.replacement.hash);
-      }
-    }
-  }
 };
 
 const waitForEvmTransaction = async (id: string) => {
@@ -457,4 +363,6 @@ const handleBridgeTransaction = async (id: string) => {
   await process(transaction, handler);
 };
 
-export { STATES, isOutgoingTransaction, handleBridgeTransaction, bridgeApi };
+export { handleBridgeTransaction, bridgeApi };
+export * from './utils';
+export * from './types';
