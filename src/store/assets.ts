@@ -40,12 +40,15 @@ const getters = {
     return state.assets;
   },
   whitelistAssets(state, getters, rootState, rootGetters) {
+    // TODO: [ARCH] api.assets.isWhitelist
     return state.assets.filter((asset) => isWhitelistAsset(asset, rootGetters.whitelist));
   },
   nonWhitelistAssets(state, getters, rootState, rootGetters) {
+    // TODO: [ARCH] api.assets.isWhitelist
     return state.assets.filter((asset) => !isWhitelistAsset(asset, rootGetters.whitelist));
   },
   nonWhitelistAccountAssets(state, getters, rootState, rootGetters) {
+    // TODO: [ARCH] api.assets.isWhitelist
     return rootGetters.accountAssets.filter((asset) => !isWhitelistAsset(asset, rootGetters.whitelist));
   },
   tokenXOR(state, getters, rootState, rootGetters) {
@@ -116,6 +119,7 @@ const actions = {
   async getAssets({ commit, rootGetters: { whitelist } }) {
     commit(types.GET_ASSETS_LIST_REQUEST);
     try {
+      // TODO: [ARCH] api.assets.getAssets
       const assets = await api.getAssets(whitelist);
 
       commit(types.GET_ASSETS_LIST_SUCCESS, assets);
@@ -126,6 +130,7 @@ const actions = {
   async getAsset({ commit }, { address }) {
     commit(types.GET_ASSET_REQUEST);
     try {
+      // TODO: [ARCH] api.assets.getAssets
       const assets = await api.getAssets();
       const asset = assets.find((asset) => asset.address === address);
       commit(types.GET_ASSET_SUCCESS);

@@ -75,6 +75,7 @@ const actions = {
     if (!rootGetters.isLoggedIn) return;
 
     await waitForAccountPair(() => {
+      // TODO: [ARCH] api.poolXyk.getUserPoolsSubscription()
       const userPoolsSubscription = api.getUserPoolsSubscription();
       commit(types.SET_ACCOUNT_LIQUIDITY_LIST, userPoolsSubscription);
     });
@@ -85,7 +86,9 @@ const actions = {
     if (!rootGetters.isLoggedIn) return;
 
     await waitForAccountPair(() => {
+      // TODO: [ARCH] api.poolXyk.updated
       const liquidityUpdatedSubscription = api.liquidityUpdated.subscribe(() => {
+        // TODO: [ARCH] api.poolXyk.accountLiquidity
         commit(types.SET_ACCOUNT_LIQUIDITY, api.accountLiquidity);
       });
 
@@ -96,6 +99,7 @@ const actions = {
     commit(types.RESET_ACCOUNT_LIQUIDITY_LIST);
     commit(types.RESET_ACCOUNT_LIQUIDITY_UPDATES);
     commit(types.SET_ACCOUNT_LIQUIDITY, []); // reset account liquidity
+    // TODO: [ARCH] api.poolXyk.unsubscribeFromAllUpdates
     api.unsubscribeFromAllLiquidityUpdates();
   },
 };

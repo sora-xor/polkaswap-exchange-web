@@ -211,6 +211,7 @@ const actions = {
   async getNetworkFee({ commit, getters }) {
     commit(types.GET_FEE_REQUEST);
     try {
+      // TODO: [ARCH] api.rewards.getNetworkFee(getters.claimableRewards)
       const fee = await api.getClaimRewardsNetworkFee(getters.claimableRewards);
       commit(types.GET_FEE_SUCCESS, fee);
     } catch (error) {
@@ -222,8 +223,11 @@ const actions = {
   async getRewards({ commit, dispatch, getters }, address) {
     commit(types.GET_REWARDS_REQUEST);
     try {
+      // TODO: [ARCH] api.rewards.checkLiquidityProvision()
       const internal = await api.checkLiquidityProvisionRewards();
+      // TODO: [ARCH] api.rewards.checkVested()
       const vested = await api.checkVestedRewards();
+      // TODO: [ARCH] api.rewards.checkForExternalAccount(address)
       const external = address ? await api.checkExternalAccountRewards(address) : [];
 
       commit(types.GET_REWARDS_SUCCESS, { internal, external, vested });
@@ -265,6 +269,7 @@ const actions = {
         commit(types.SET_TRANSACTION_STEP, 2);
       }
       if (!externalRewardsSelected || (state.transactionStep === 2 && state.signature)) {
+        // TODO: [ARCH] api.rewards.claim(...)
         await api.claimRewards(claimableRewards, state.signature, state.fee, externalAddress);
 
         // update ui to success state if user not changed external account
@@ -287,6 +292,7 @@ const actions = {
     if (!rootGetters.isLoggedIn) return;
 
     await waitForAccountPair(() => {
+      // TODO: [ARCH] api.rewards.subscribeOnAccountMarketMakerInfo()
       const subscription = api.subscribeOnAccountMarketMakerInfo().subscribe((info) => {
         commit(types.SET_ACCOUNT_MARKET_MAKER_INFO, info);
       });

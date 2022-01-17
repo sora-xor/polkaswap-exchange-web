@@ -308,6 +308,7 @@ export default class SelectToken extends Mixins(
     if (!this.customAsset) {
       return '';
     }
+    // TODO: [ARCH] api.assets.isBlacklist(...)
     const isBlacklist = isBlacklistAsset(this.customAsset, this.whitelistIdsBySymbol);
     if (isBlacklist) {
       return this.t('addAsset.scam');
@@ -341,6 +342,7 @@ export default class SelectToken extends Mixins(
 
   handleRemoveCustomAsset(asset: Asset, event: Event): void {
     event.stopImmediatePropagation();
+    // TODO: [ARCH] api.assets.removeAsset
     api.removeAsset(asset.address);
     if (this.customAddress) {
       this.searchCustomAsset();

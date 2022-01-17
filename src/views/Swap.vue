@@ -505,6 +505,15 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     const oppositeToken = this.isExchangeB ? this.tokenFrom : this.tokenTo;
 
     try {
+      // TODO: [ARCH] api.swap.getResult(
+      //   this.tokenFrom,
+      //   this.tokenTo,
+      //   value,
+      //   this.isExchangeB,
+      //   [this.liquiditySource].filter(Boolean),
+      //   this.paths,
+      //   this.payload
+      // )
       const { amount, fee, rewards, amountWithoutImpact } = quote(
         this.tokenFrom.address,
         this.tokenTo.address,
@@ -535,7 +544,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
 
   private subscribeOnEnabledAssets(): void {
     this.cleanEnabledAssetsSubscription();
-
+    // TODO: [ARCH] api.swap.subscribeOnPrimaryMarketsEnabledAssets()
     this.enabledAssetsSubscription = api
       .subscribeOnPrimaryMarketsEnabledAssets()
       .subscribe(this.setPrimaryMarketsEnabledAssets);
@@ -552,7 +561,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   private subscribeOnSwapReserves(): void {
     this.cleanSwapReservesSubscription();
     if (!this.areTokensSelected) return;
-
+    // TODO: [ARCH] api.swap.subscribeOnReserves(...)
     this.liquidityReservesSubscription = api
       .subscribeOnSwapReserves(this.tokenFrom.address, this.tokenTo.address, this.liquiditySource)
       .subscribe(this.onChangeSwapReserves);

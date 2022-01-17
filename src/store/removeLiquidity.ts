@@ -235,6 +235,7 @@ const actions = {
   async getLiquidityReserves({ commit, state }) {
     try {
       commit(types.GET_LIQUIDITY_RESERVE_REQUEST);
+      // TODO: [ARCH] api.poolXyk.getReserves(...)
       const [reserveA, reserveB] = await api.getLiquidityReserves(state.firstTokenAddress, state.secondTokenAddress);
       commit(types.GET_LIQUIDITY_RESERVE_SUCCESS, { reserveA, reserveB });
     } catch (error) {
@@ -262,6 +263,8 @@ const actions = {
   },
 
   async removeLiquidity({ rootGetters, state }) {
+    // TODO: [ARCH] check getters.first & secondToken
+    // api.poolXyk.remove(getters.first, secondToken, ...)
     await api.removeLiquidity(
       state.firstTokenAddress,
       state.secondTokenAddress,

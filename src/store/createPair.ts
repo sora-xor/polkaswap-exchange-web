@@ -128,6 +128,7 @@ const actions = {
     if (getters.firstToken && getters.secondToken) {
       commit(types.CHECK_LIQUIDITY_REQUEST);
       try {
+        // TODO: [ARCH] api.poolXyk.check(...)
         const exists = await api.checkLiquidity(getters.firstToken.address, getters.secondToken.address);
         commit(types.CHECK_LIQUIDITY_SUCCESS, !exists);
         dispatch('estimateMinted');
@@ -174,6 +175,7 @@ const actions = {
   async createPair({ commit, getters, rootGetters }) {
     commit(types.CREATE_PAIR_REQUEST);
     try {
+      // TODO: [ARCH] api.poolXyk.create(getters.firstToken, getters.secondToken, ...)
       await api.createPair(
         getters.firstToken.address,
         getters.secondToken.address,

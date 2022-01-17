@@ -89,6 +89,7 @@ function initialState(): SwapState {
   };
 }
 
+// TODO [ARCH]: remove
 const getSources = (
   address: string,
   payload: QuotePayload,
@@ -158,7 +159,7 @@ const getters = {
   },
   priceImpact(state: SwapState, getters) {
     const { fromValue, toValue, amountWithoutImpact, isExchangeB } = state;
-
+    // TODO [ARCH]: api.swap.getPriceImpact(getters.tokenFrom, getters.tokenTo, fromValue, toValue, amountWithoutImpact, isExchangeB)
     const token = isExchangeB ? getters.tokenFrom : getters.tokenTo;
     const value = isExchangeB ? fromValue : toValue;
 
@@ -176,7 +177,7 @@ const getters = {
   },
   minMaxReceived(state: SwapState, getters, rootState, rootGetters) {
     const { fromValue, toValue, isExchangeB } = state;
-
+    // TODO [ARCH]: api.swap.getMinMaxValue(getters.tokenFrom, getters.tokenTo, fromValue, toValue, isExchangeB, rootGetters.slippageTolerance)
     const value = isExchangeB ? fromValue : toValue;
     const token = isExchangeB ? getters.tokenFrom : getters.tokenTo;
 
@@ -326,6 +327,7 @@ const actions = {
   updatePaths({ commit, getters, state }) {
     const inputAssetId = getters.tokenFrom?.address;
     const outputAssetId = getters.tokenTo?.address;
+    // TODO [ARCH]: api.swap.getPathsAndPairLiquiditySources(inputAssetId, outputAssetId, state.payload, state.enabledAssets)
     const quotePaths: QuotePaths = {};
     const pairLiquiditySources: Array<LiquiditySourceTypes> = [];
 

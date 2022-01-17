@@ -8,6 +8,7 @@ export class TokenBalanceSubscriptions {
   }
 
   add(key: string, { updateBalance, token }): void {
+    // TODO: [ARCH] api.assets.getAssetBalanceObservable
     const subscription = api.getAssetBalanceObservable(token).subscribe((balance) => updateBalance(balance));
     this.subscriptions.set(key, subscription);
   }

@@ -16,6 +16,7 @@ useDescribe('TokenLogo.vue', TokenLogo, () => {
           whitelist: () => {
             return { '0x0200000000000000000000000000000000000000000000000000000000000000': MOCK_WHITELIST_ITEM };
           },
+          // TODO: [ARCH] api.assets.getWhitelistIdsBySymbol
           whitelistIdsBySymbol: () => getWhitelistIdsBySymbol([MOCK_WHITELIST_ITEM]),
         },
       });

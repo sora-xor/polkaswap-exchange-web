@@ -92,6 +92,7 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, DialogM
       this.$emit('confirm');
     } else {
       try {
+        // TODO: [ARCH] api.swap.execute(this.tokenFrom, this.tokenTo, ...)
         await this.withNotifications(
           async () =>
             await api.swap(

@@ -213,11 +213,12 @@ export const toQueryString = (params: any): string => {
     .join('&');
 };
 
+// TODO: [ARCH] remove and use api.divideAssets
 export const divideAssets = (
   firstAsset: Asset,
   secondAsset: Asset,
-  firstAmount: CodecString,
-  secondAmount: CodecString,
+  firstAmount: string,
+  secondAmount: string,
   reversed = false
 ): string => {
   if (!firstAsset || !secondAsset || !firstAmount || !secondAmount) return ZeroStringValue;

@@ -186,6 +186,7 @@ const actions = {
     if (getters.firstToken && getters.secondToken) {
       commit(types.GET_RESERVE_REQUEST);
       try {
+        // TODO: [ARCH] api.poolXyk.getReserves(...)
         const reserve = await api.getLiquidityReserves(getters.firstToken?.address, getters.secondToken?.address);
         commit(types.GET_RESERVE_SUCCESS, reserve);
 
@@ -200,6 +201,7 @@ const actions = {
     if (getters.firstToken && getters.secondToken) {
       commit(types.CHECK_LIQUIDITY_REQUEST);
       try {
+        // TODO: [ARCH] api.poolXyk.check(...)
         const isAvailable = await api.checkLiquidity(getters.firstToken?.address, getters.secondToken?.address);
         commit(types.CHECK_LIQUIDITY_SUCCESS, isAvailable);
 
@@ -278,6 +280,7 @@ const actions = {
   async addLiquidity({ commit, getters, rootGetters }) {
     commit(types.ADD_LIQUIDITY_REQUEST);
     try {
+      // TODO: [ARCH] api.poolXyk.add(getters.firstToken, getters.secondToken, ...)
       const result = await api.addLiquidity(
         getters.firstToken?.address,
         getters.secondToken?.address,
