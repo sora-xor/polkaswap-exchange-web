@@ -4,11 +4,10 @@ import { ethers } from 'ethers';
 import ethersUtil from '@/utils/ethers-util';
 
 import { delay } from '@/utils';
+import store from '@/store';
 
 import { STATES } from './types';
-import type { HandleTransactionPayload } from './types';
-
-import store from '@/store';
+import type { HandleTransactionPayload, BridgeTransactionHandler } from './types';
 
 const bridgeApi = api.bridge;
 const SORA_REQUESTS_TIMEOUT = 5 * 1000;
@@ -27,10 +26,6 @@ const getTransaction = (id: string) => {
 
   return tx;
 };
-
-// const getAsset = (address: string) => {
-
-// };
 
 // UTIL FUNCTIONS
 const isOutgoingTransaction = (tx: BridgeHistory) => {
@@ -158,12 +153,10 @@ const handleTransactionState = async (
     }
 
     await updateTransactionParams(id, { transactionState: nextState });
-
-    handleBridgeTransaction(id);
   } catch (error) {
     console.error(error);
-    const transaction = getTransaction(id);
 
+    const transaction = getTransaction(id);
     const failed = transaction.status === BridgeTxStatus.Failed;
     const unsigned = !transaction.hash && !transaction.ethereumHash;
 
@@ -179,21 +172,7 @@ const handleTransactionState = async (
   }
 };
 
-const handleBridgeTransaction = async (id: string) => {
-  const transaction = getTransaction(id);
-
-  const { type } = transaction;
-
-  if (type === Operation.EthBridgeOutgoing) {
-    await handleEthBridgeOutgoingTxState(transaction);
-  } else if (type === Operation.EthBridgeIncoming) {
-    await handleEthBridgeIncomingTxState(transaction);
-  } else {
-    throw new Error(`[Bridge]: Unsupported operation '${type}'`);
-  }
-};
-
-const handleEthBridgeOutgoingTxState = async (transaction: BridgeHistory) => {
+const handleEthBridgeOutgoingTxState: BridgeTransactionHandler = async (transaction: BridgeHistory) => {
   if (!transaction.id) throw new Error('TX ID cannot be empty');
 
   switch (transaction.transactionState) {
@@ -216,7 +195,11 @@ const handleEthBridgeOutgoingTxState = async (transaction: BridgeHistory) => {
 
           if (!tx.amount) throw new Error('[Bridge]: TX amount cannot be empty');
 
-          await bridgeApi.transferToEth(store.getters['bridge/asset'], evmAccount, tx.amount, tx.id);
+          const asset = store.getters['assets/getAssetDataByAddress'](tx.assetAddress);
+
+          if (!asset || !asset.externalAddress) throw new Error(`Asset not registered: ${tx.assetAddress}`);
+
+          await bridgeApi.transferToEth(asset, evmAccount, tx.amount, tx.id);
 
           await updateTransactionParams(id, { signed: true });
         }
@@ -323,7 +306,7 @@ const handleEthBridgeOutgoingTxState = async (transaction: BridgeHistory) => {
   }
 };
 
-const handleEthBridgeIncomingTxState = async (transaction: BridgeHistory) => {
+const handleEthBridgeIncomingTxState: BridgeTransactionHandler = async (transaction: BridgeHistory) => {
   if (!transaction.id) throw new Error('TX ID cannot be empty');
 
   switch (transaction.transactionState) {
@@ -446,6 +429,32 @@ const handleEthBridgeIncomingTxState = async (transaction: BridgeHistory) => {
       });
     }
   }
+};
+
+const BridgeTransactionHandlers = {
+  [Operation.EthBridgeOutgoing]: handleEthBridgeOutgoingTxState,
+  [Operation.EthBridgeIncoming]: handleEthBridgeIncomingTxState,
+};
+
+const process = async (transaction: BridgeHistory, handler: BridgeTransactionHandler) => {
+  await handler(transaction);
+
+  const tx = getTransaction(transaction.id as string);
+
+  if (![BridgeTxStatus.Done, BridgeTxStatus.Failed].includes(tx.status as BridgeTxStatus)) {
+    await process(tx, handler);
+  }
+};
+
+const handleBridgeTransaction = async (id: string) => {
+  const transaction = getTransaction(id);
+
+  const { type } = transaction;
+  const handler = BridgeTransactionHandlers[type];
+
+  if (!handler) throw new Error(`[Bridge]: Unsupported operation '${type}'`);
+
+  await process(transaction, handler);
 };
 
 export { STATES, isOutgoingTransaction, handleBridgeTransaction, bridgeApi };

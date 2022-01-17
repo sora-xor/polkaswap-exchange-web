@@ -1,4 +1,4 @@
-import type { BridgeTxStatus } from '@sora-substrate/util';
+import type { BridgeTxStatus, BridgeHistory } from '@sora-substrate/util';
 
 export enum STATES {
   INITIAL = 'INITIAL',
@@ -16,5 +16,7 @@ export type HandleTransactionPayload = {
   status?: BridgeTxStatus;
   nextState: STATES;
   rejectState: STATES;
-  handler?: (store: any) => Promise<void>;
+  handler?: (id: string) => Promise<void>;
 };
+
+export type BridgeTransactionHandler = (transaction: BridgeHistory) => Promise<void>;
