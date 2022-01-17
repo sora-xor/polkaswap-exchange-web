@@ -305,19 +305,26 @@ const namespace = 'bridge';
 })
 export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixin, BridgeMixin, NetworkFormatterMixin) {
   @State((state) => state[namespace].waitingForApprove) waitingForApprove!: boolean;
+  @State((state) => state[namespace].inProgressIds) inProgressIds!: any;
 
   @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @Getter('prev', { namespace: 'router' }) prevRoute!: PageNames;
   @Getter('historyItem', { namespace }) historyItem!: BridgeHistory;
   @Getter('isTxEvmAccount', { namespace }) isTxEvmAccount!: boolean;
 
-  @Action('handleEthereumTransaction', { namespace }) handleEthereumTransaction;
+  @Action('handleBridgeTx', { namespace }) handleBridgeTx;
 
   readonly KnownSymbols = KnownSymbols;
   readonly collapseItems = {
     from: 'step-from',
     to: 'step-to',
   };
+
+  get txInProcess(): boolean {
+    if (!this.historyItem?.id) return false;
+
+    return this.historyItem.id in this.inProgressIds;
+  }
 
   get amount(): string {
     return this.historyItem?.amount ?? '';
@@ -633,7 +640,9 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
       return;
     }
 
-    const withAutoStart = this.prevRoute === PageNames.Bridge;
+    const withAutoStart =
+      this.prevRoute === PageNames.Bridge ||
+      (!this.txInProcess && (this.isTransactionFromPending || this.isTransactionToPending));
 
     await this.handleTransaction(withAutoStart);
   }
@@ -727,7 +736,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   async handleTransaction(withAutoStart = false): Promise<void> {
     await this.checkConnectionToExternalAccount(async () => {
       if (withAutoStart) {
-        await this.handleEthereumTransaction();
+        await this.handleBridgeTx(this.historyItem.id);
       }
     });
   }

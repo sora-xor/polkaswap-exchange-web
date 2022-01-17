@@ -33,15 +33,7 @@ const types = flow(
   ]),
   map((x) => [x, x]),
   fromPairs
-)([
-  'CONNECT_EVM_WALLET',
-  'SWITCH_EVM_WALLET',
-  'SET_NETWORK_TYPE',
-  'DISCONNECT_EVM_WALLET',
-  'GET_BALANCE',
-  'GET_EVM_TOKEN_ADDRESS',
-  'GET_ALLOWANCE',
-]);
+)(['CONNECT_EVM_WALLET', 'SWITCH_EVM_WALLET', 'SET_NETWORK_TYPE', 'DISCONNECT_EVM_WALLET']);
 
 function initialState() {
   return {
@@ -152,12 +144,6 @@ const mutations = {
     state.evmNetwork = network;
   },
 
-  [types.SET_NETWORK_TYPE_REQUEST]() {},
-  [types.SET_NETWORK_TYPE_SUCCESS](state, network) {
-    state.networkType = network;
-  },
-  [types.SET_NETWORK_TYPE_FAILURE]() {},
-
   [types.DISCONNECT_EVM_WALLET_REQUEST]() {},
   [types.DISCONNECT_EVM_WALLET_SUCCESS](state) {
     state.evmAddress = '';
@@ -189,18 +175,6 @@ const mutations = {
   [types.SET_EVM_BALANCE](state, balance) {
     state.evmBalance = balance;
   },
-
-  [types.GET_BALANCE_REQUEST](state) {},
-  [types.GET_BALANCE_SUCCESS](state) {},
-  [types.GET_BALANCE_FAILURE](state) {},
-
-  [types.GET_EVM_TOKEN_ADDRESS_REQUEST](state) {},
-  [types.GET_EVM_TOKEN_ADDRESS_SUCCESS](state) {},
-  [types.GET_EVM_TOKEN_ADDRESS_FAILURE](state) {},
-
-  [types.GET_ALLOWANCE_REQUEST](state) {},
-  [types.GET_ALLOWANCE_SUCCESS](state) {},
-  [types.GET_ALLOWANCE_FAILURE](state) {},
 };
 
 const actions = {
@@ -339,14 +313,13 @@ const actions = {
     return value;
   },
 
-  async getBalanceByEvmAddress({ commit, getters, dispatch }, { address }) {
+  async getBalanceByEvmAddress({ getters, dispatch }, { address }) {
     let value = ZeroStringValue;
     let decimals = 18;
     const account = getters.evmAddress;
     if (!account) {
       return { value, decimals };
     }
-    commit(types.GET_BALANCE_REQUEST);
     try {
       const ethersInstance = await ethersUtil.getEthersInstance();
       const isNativeEvmToken = isEthereumAddress(address);
@@ -359,19 +332,16 @@ const actions = {
         decimals = await tokenInstance.decimals();
         value = FPNumber.fromCodecValue(balance._hex, +decimals).toCodecString();
       }
-      commit(types.GET_BALANCE_SUCCESS);
     } catch (error) {
       console.error(`There was a problem with "${address}" token registration flow`, error);
-      commit(types.GET_BALANCE_FAILURE);
     }
 
     return { value, decimals };
   },
-  async getEvmTokenAddressByAssetId({ commit, getters }, { address }) {
-    commit(types.GET_EVM_TOKEN_ADDRESS_REQUEST);
+
+  async getEvmTokenAddressByAssetId({ getters }, { address }) {
     try {
       if (!address) {
-        commit(types.GET_EVM_TOKEN_ADDRESS_SUCCESS);
         return '';
       }
       const ethersInstance = await ethersUtil.getEthersInstance();
@@ -380,16 +350,14 @@ const actions = {
       const contractInstance = new ethers.Contract(contractAddress, contractAbi, ethersInstance.getSigner());
       const methodArgs = [address];
       const externalAddress = await contractInstance._sidechainTokens(...methodArgs);
-      commit(types.GET_EVM_TOKEN_ADDRESS_SUCCESS);
       return externalAddress;
     } catch (error) {
       console.error(error);
-      commit(types.GET_EVM_TOKEN_ADDRESS_FAILURE);
       return '';
     }
   },
-  async getAllowanceByEvmAddress({ commit, getters }, { address }) {
-    commit(types.GET_ALLOWANCE_REQUEST);
+
+  async getAllowanceByEvmAddress({ getters }, { address }) {
     try {
       const contractAddress = getters.contractAddress(KnownBridgeAsset.Other);
       const ethersInstance = await ethersUtil.getEthersInstance();
@@ -397,11 +365,9 @@ const actions = {
       const account = getters.evmAddress;
       const methodArgs = [account, contractAddress];
       const allowance = await tokenInstance.allowance(...methodArgs);
-      commit(types.GET_ALLOWANCE_SUCCESS);
       return FPNumber.fromCodecValue(allowance._hex).toString();
     } catch (error) {
       console.error(error);
-      commit(types.GET_ALLOWANCE_FAILURE);
       throw error;
     }
   },
