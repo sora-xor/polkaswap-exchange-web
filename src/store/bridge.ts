@@ -408,7 +408,14 @@ const actions = {
 
     const transaction: ethers.providers.TransactionResponse = await contractInstance[method](...methodArgs);
 
-    return transaction.hash;
+    const fee = transaction.gasPrice
+      ? ethersUtil.calcEvmFee(transaction.gasPrice.toNumber(), transaction.gasLimit.toNumber())
+      : undefined;
+
+    return {
+      hash: transaction.hash,
+      fee,
+    };
   },
 
   async signEvmTransactionEvmToSora({ commit, rootGetters, dispatch }, id: string) {
@@ -492,12 +499,22 @@ const actions = {
           ];
 
       const overrides = isNativeEvmToken ? { value: amount } : {};
+
       checkEvmNetwork(rootGetters);
+
       const transaction: ethers.providers.TransactionResponse = await contractInstance[method](
         ...methodArgs,
         overrides
       );
-      return transaction.hash;
+
+      const fee = transaction.gasPrice
+        ? ethersUtil.calcEvmFee(transaction.gasPrice.toNumber(), transaction.gasLimit.toNumber())
+        : undefined;
+
+      return {
+        hash: transaction.hash,
+        fee,
+      };
     } catch (error) {
       commit(types.SET_EVM_WAITING_APPROVE_STATE, false);
       console.error(error);

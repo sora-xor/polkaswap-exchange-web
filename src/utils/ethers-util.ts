@@ -317,13 +317,24 @@ async function fetchEvmNetworkFee(address: string, isSoraToEvm: boolean): Promis
     const gasLimits = EthereumGasLimits[+isSoraToEvm];
     const key = address in gasLimits ? address : KnownBridgeAsset.Other;
     const gasLimit = gasLimits[key];
-    const fpFee = FPNumber.fromCodecValue(gasPrice).mul(new FPNumber(gasLimit)).toCodecString();
+    const fee = calcEvmFee(gasPrice, gasLimit);
 
-    return fpFee;
+    return fee;
   } catch (error) {
     console.error(error);
     throw error;
   }
+}
+
+function calcEvmFee(gasPrice: number, gasAmount: number) {
+  return FPNumber.fromCodecValue(gasPrice).mul(new FPNumber(gasAmount)).toCodecString();
+}
+
+async function getEvmTransactionReceipt(hash: string): Promise<ethers.providers.TransactionReceipt> {
+  const ethersInstance = await getEthersInstance();
+  const tx = await ethersInstance.getTransactionReceipt(hash);
+
+  return tx;
 }
 
 async function readSmartContract(network: ContractNetwork, name: string): Promise<JsonContract | undefined> {
@@ -356,4 +367,6 @@ export default {
   accountAddressToHex,
   addressesAreEqual,
   fetchEvmNetworkFee,
+  calcEvmFee,
+  getEvmTransactionReceipt,
 };

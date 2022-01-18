@@ -47,8 +47,6 @@ const handleTransactionState = async (
   try {
     const transaction = getTransaction(id);
 
-    console.log('handleTransactionState', transaction.transactionState, nextState);
-
     if (transaction.status === BridgeTxStatus.Done) return;
     if (status && transaction.status !== status) {
       await updateTransactionParams(id, { status });
@@ -164,9 +162,13 @@ const handleEthBridgeOutgoingTxState: BridgeTransactionHandler = async (transact
         const tx = getTransaction(id);
 
         if (!tx.signed) {
-          const ethereumHash = await store.dispatch('bridge/signEvmTransactionSoraToEvm', id);
+          const { hash: ethereumHash, fee } = await store.dispatch('bridge/signEvmTransactionSoraToEvm', id);
 
-          await updateTransactionParams(id, { ethereumHash, signed: true });
+          await updateTransactionParams(id, {
+            ethereumHash,
+            ethereumNetworkFee: fee ?? tx.ethereumNetworkFee,
+            signed: true,
+          });
         }
       };
 
@@ -181,6 +183,12 @@ const handleEthBridgeOutgoingTxState: BridgeTransactionHandler = async (transact
     case STATES.EVM_PENDING: {
       const handler = async (id: string) => {
         await waitForEvmTransaction(id);
+
+        const tx = getTransaction(id);
+        const { effectiveGasPrice, gasUsed } = await ethersUtil.getEvmTransactionReceipt(tx.ethereumHash as string);
+        const ethereumNetworkFee = ethersUtil.calcEvmFee(effectiveGasPrice.toNumber(), gasUsed.toNumber());
+
+        await updateTransactionParams(id, { ethereumNetworkFee });
       };
 
       return await handleTransactionState(transaction.id, {
@@ -231,9 +239,13 @@ const handleEthBridgeIncomingTxState: BridgeTransactionHandler = async (transact
         const tx = getTransaction(id);
 
         if (!tx.signed) {
-          const ethereumHash = await store.dispatch('bridge/signEvmTransactionEvmToSora', id);
+          const { hash: ethereumHash, fee } = await store.dispatch('bridge/signEvmTransactionEvmToSora', id);
 
-          await updateTransactionParams(id, { ethereumHash, signed: true });
+          await updateTransactionParams(id, {
+            ethereumHash,
+            ethereumNetworkFee: fee ?? tx.ethereumNetworkFee,
+            signed: true,
+          });
         }
       };
 
@@ -248,6 +260,12 @@ const handleEthBridgeIncomingTxState: BridgeTransactionHandler = async (transact
     case STATES.EVM_PENDING: {
       const handler = async (id: string) => {
         await waitForEvmTransaction(id);
+
+        const tx = getTransaction(id);
+        const { effectiveGasPrice, gasUsed } = await ethersUtil.getEvmTransactionReceipt(tx.ethereumHash as string);
+        const ethereumNetworkFee = ethersUtil.calcEvmFee(effectiveGasPrice.toNumber(), gasUsed.toNumber());
+
+        await updateTransactionParams(id, { ethereumNetworkFee });
       };
 
       return await handleTransactionState(transaction.id, {
