@@ -40,6 +40,41 @@ const waitForEvmTransaction = async (id: string) => {
   );
 };
 
+// common handlers
+const createEvmTxSignHandler = (signFn: (id: string) => any) => async (id: string) => {
+  await updateTransactionParams(id, { transactionState: STATES.EVM_PENDING, signed: false });
+
+  const tx = getTransaction(id);
+
+  if (!tx.signed) {
+    const { hash: ethereumHash, fee } = await signFn(id);
+
+    await updateTransactionParams(id, {
+      ethereumHash,
+      ethereumNetworkFee: fee ?? tx.ethereumNetworkFee,
+      signed: true,
+    });
+  }
+};
+
+const evmTxPendingHandler = async (id: string) => {
+  await waitForEvmTransaction(id);
+
+  const tx = getTransaction(id);
+  const { effectiveGasPrice, gasUsed } = await ethersUtil.getEvmTransactionReceipt(tx.ethereumHash as string);
+  const ethereumNetworkFee = ethersUtil.calcEvmFee(effectiveGasPrice.toNumber(), gasUsed.toNumber());
+
+  await updateTransactionParams(id, { ethereumNetworkFee });
+};
+
+const updateTxTransactionStep = async (id: string) => {
+  await updateTransactionParams(id, { transactionStep: 2 });
+};
+
+const updateTxEndTime = async (id: string) => {
+  await updateTransactionParams(id, { endTime: Date.now() });
+};
+
 const handleTransactionState = async (
   id: string,
   { status, nextState, rejectState, handler }: HandleTransactionPayload
@@ -138,14 +173,10 @@ const handleEthBridgeOutgoingTxState: BridgeTransactionHandler = async (transact
     }
 
     case STATES.SORA_COMMITED: {
-      const handler = async (id: string) => {
-        await updateTransactionParams(id, { transactionStep: 2 });
-      };
-
       return await handleTransactionState(transaction.id, {
         nextState: STATES.EVM_SUBMITTED,
         rejectState: STATES.SORA_REJECTED,
-        handler,
+        handler: updateTxTransactionStep,
       });
     }
 
@@ -156,58 +187,30 @@ const handleEthBridgeOutgoingTxState: BridgeTransactionHandler = async (transact
       });
 
     case STATES.EVM_SUBMITTED: {
-      const handler = async (id: string) => {
-        await updateTransactionParams(id, { transactionState: STATES.EVM_PENDING, signed: false });
-
-        const tx = getTransaction(id);
-
-        if (!tx.signed) {
-          const { hash: ethereumHash, fee } = await store.dispatch('bridge/signEvmTransactionSoraToEvm', id);
-
-          await updateTransactionParams(id, {
-            ethereumHash,
-            ethereumNetworkFee: fee ?? tx.ethereumNetworkFee,
-            signed: true,
-          });
-        }
-      };
+      const signFn = (id: string) => store.dispatch('bridge/signEvmTransactionSoraToEvm', id);
 
       return await handleTransactionState(transaction.id, {
         status: BridgeTxStatus.Pending,
         nextState: STATES.EVM_PENDING,
         rejectState: STATES.EVM_REJECTED,
-        handler,
+        handler: createEvmTxSignHandler(signFn),
       });
     }
 
     case STATES.EVM_PENDING: {
-      const handler = async (id: string) => {
-        await waitForEvmTransaction(id);
-
-        const tx = getTransaction(id);
-        const { effectiveGasPrice, gasUsed } = await ethersUtil.getEvmTransactionReceipt(tx.ethereumHash as string);
-        const ethereumNetworkFee = ethersUtil.calcEvmFee(effectiveGasPrice.toNumber(), gasUsed.toNumber());
-
-        await updateTransactionParams(id, { ethereumNetworkFee });
-      };
-
       return await handleTransactionState(transaction.id, {
         nextState: STATES.EVM_COMMITED,
         rejectState: STATES.EVM_REJECTED,
-        handler,
+        handler: evmTxPendingHandler,
       });
     }
 
     case STATES.EVM_COMMITED: {
-      const handler = async (id: string) => {
-        await updateTransactionParams(id, { endTime: Date.now() });
-      };
-
       return await handleTransactionState(transaction.id, {
         status: BridgeTxStatus.Done,
         nextState: STATES.EVM_COMMITED,
         rejectState: STATES.EVM_REJECTED,
-        handler,
+        handler: updateTxEndTime,
       });
     }
 
@@ -233,57 +236,29 @@ const handleEthBridgeIncomingTxState: BridgeTransactionHandler = async (transact
     }
 
     case STATES.EVM_SUBMITTED: {
-      const handler = async (id: string) => {
-        await updateTransactionParams(id, { transactionState: STATES.EVM_PENDING });
-
-        const tx = getTransaction(id);
-
-        if (!tx.signed) {
-          const { hash: ethereumHash, fee } = await store.dispatch('bridge/signEvmTransactionEvmToSora', id);
-
-          await updateTransactionParams(id, {
-            ethereumHash,
-            ethereumNetworkFee: fee ?? tx.ethereumNetworkFee,
-            signed: true,
-          });
-        }
-      };
+      const signFn = (id: string) => store.dispatch('bridge/signEvmTransactionEvmToSora', id);
 
       return await handleTransactionState(transaction.id, {
         status: BridgeTxStatus.Pending,
         nextState: STATES.EVM_PENDING,
         rejectState: STATES.EVM_REJECTED,
-        handler,
+        handler: createEvmTxSignHandler(signFn),
       });
     }
 
     case STATES.EVM_PENDING: {
-      const handler = async (id: string) => {
-        await waitForEvmTransaction(id);
-
-        const tx = getTransaction(id);
-        const { effectiveGasPrice, gasUsed } = await ethersUtil.getEvmTransactionReceipt(tx.ethereumHash as string);
-        const ethereumNetworkFee = ethersUtil.calcEvmFee(effectiveGasPrice.toNumber(), gasUsed.toNumber());
-
-        await updateTransactionParams(id, { ethereumNetworkFee });
-      };
-
       return await handleTransactionState(transaction.id, {
         nextState: STATES.EVM_COMMITED,
         rejectState: STATES.EVM_REJECTED,
-        handler,
+        handler: evmTxPendingHandler,
       });
     }
 
     case STATES.EVM_COMMITED: {
-      const handler = async (id: string) => {
-        await updateTransactionParams(id, { transactionStep: 2 });
-      };
-
       return await handleTransactionState(transaction.id, {
         nextState: STATES.SORA_SUBMITTED,
         rejectState: STATES.EVM_REJECTED,
-        handler,
+        handler: updateTxTransactionStep,
       });
     }
 
@@ -334,15 +309,11 @@ const handleEthBridgeIncomingTxState: BridgeTransactionHandler = async (transact
     }
 
     case STATES.SORA_COMMITED: {
-      const handler = async (id) => {
-        await updateTransactionParams(id, { endTime: Date.now() });
-      };
-
       return await handleTransactionState(transaction.id, {
         status: BridgeTxStatus.Done,
         nextState: STATES.SORA_COMMITED,
         rejectState: STATES.SORA_REJECTED,
-        handler,
+        handler: updateTxEndTime,
       });
     }
 
