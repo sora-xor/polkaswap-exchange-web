@@ -17,7 +17,7 @@ import {
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 
-import { bridgeApi, handleBridgeTransaction, STATES, waitForApprovedRequest } from '@/utils/bridge';
+import { bridgeApi, Bridge, STATES, waitForApprovedRequest } from '@/utils/bridge';
 import ethersUtil, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/ethers-util';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { isEthereumAddress } from '@/utils';
@@ -531,7 +531,7 @@ const actions = {
   async handleBridgeTx({ commit }, id: string) {
     commit(types.ADD_TX_ID_IN_PROGRESS, id);
 
-    await handleBridgeTransaction(id);
+    await Bridge.handleTransaction(id);
 
     commit(types.REMOVE_TX_ID_FROM_PROGRESS, id);
   },

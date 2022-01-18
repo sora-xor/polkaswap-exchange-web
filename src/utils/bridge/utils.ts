@@ -18,6 +18,11 @@ export const getTransaction = (id: string): BridgeHistory => {
   return tx;
 };
 
+export const updateHistoryParams = async (id: string, params = {}) => {
+  const tx = getTransaction(id);
+  bridgeApi.saveHistory({ ...tx, ...params });
+};
+
 export const isOutgoingTransaction = (tx: BridgeHistory): boolean => {
   return tx?.type === Operation.EthBridgeOutgoing;
 };
@@ -108,4 +113,21 @@ export const waitForEvmTransactionStatus = async (
       }
     }
   }
+};
+
+export const waitForEvmTransaction = async (id: string) => {
+  const transaction = getTransaction(id);
+
+  if (!transaction.ethereumHash) throw new Error('Hash cannot be empty!');
+
+  await waitForEvmTransactionStatus(
+    transaction.ethereumHash,
+    (ethereumHash: string) => {
+      updateHistoryParams(id, { ethereumHash });
+      waitForEvmTransaction(id);
+    },
+    () => {
+      throw new Error('The transaction was canceled by the user');
+    }
+  );
 };
