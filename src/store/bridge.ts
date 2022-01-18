@@ -31,11 +31,12 @@ const types = flow(
     'SET_SORA_TO_EVM',
     'SET_ASSET_ADDRESS',
     'SET_ASSET_BALANCE',
-    'SET_EVM_WAITING_APPROVE_STATE',
     'SET_AMOUNT',
     'SET_HISTORY_ITEM',
     'ADD_TX_ID_IN_PROGRESS',
+    'ADD_TX_ID_IN_APPROVE',
     'REMOVE_TX_ID_FROM_PROGRESS',
+    'REMOVE_TX_ID_FROM_APPROVE',
   ]),
   map((x) => [x, x]),
   fromPairs
@@ -76,7 +77,7 @@ function initialState() {
     history: [],
     historyId: '',
     restored: true,
-    waitingForApprove: false,
+    waitingForApprove: {},
     inProgressIds: {},
   };
 }
@@ -132,9 +133,6 @@ const mutations = {
   [types.SET_AMOUNT](state, amount: string) {
     state.amount = amount;
   },
-  [types.SET_EVM_WAITING_APPROVE_STATE](state, flag = false) {
-    state.waitingForApprove = flag;
-  },
   [types.GET_EVM_NETWORK_FEE_REQUEST](state) {
     state.evmNetworkFeeFetching = true;
   },
@@ -172,6 +170,15 @@ const mutations = {
   },
   [types.REMOVE_TX_ID_FROM_PROGRESS](state, id: string) {
     state.inProgressIds = Object.entries(state.inProgressIds).reduce((acc, [key, value]) => {
+      if (key === id) return acc;
+      return { ...acc, [key]: value };
+    }, {});
+  },
+  [types.ADD_TX_ID_IN_APPROVE](state, id: string) {
+    state.waitingForApprove = { ...state.waitingForApprove, [id]: true };
+  },
+  [types.REMOVE_TX_ID_FROM_APPROVE](state, id: string) {
+    state.waitingForApprove = Object.entries(state.waitingForApprove).reduce((acc, [key, value]) => {
       if (key === id) return acc;
       return { ...acc, [key]: value };
     }, {});
@@ -435,10 +442,9 @@ const actions = {
       const contract = rootGetters['web3/contractAbi'](KnownBridgeAsset.Other);
       const evmAccount = rootGetters['web3/evmAddress'];
       const isExternalAccountConnected = await ethersUtil.checkAccountIsConnected(evmAccount);
-      if (!isExternalAccountConnected) {
-        await dispatch('web3/disconnectExternalAccount', {}, { root: true });
-        throw new Error('Connect account in Metamask');
-      }
+
+      if (!isExternalAccountConnected) throw new Error('Connect account in Metamask');
+
       const ethersInstance = await ethersUtil.getEthersInstance();
       const contractAddress = rootGetters['web3/contractAddress'](KnownBridgeAsset.Other);
       const isNativeEvmToken = isEthereumAddress(asset.externalAddress);
@@ -451,7 +457,7 @@ const actions = {
           { root: true }
         );
         if (FPNumber.lte(new FPNumber(allowance), new FPNumber(tx.amount))) {
-          commit(types.SET_EVM_WAITING_APPROVE_STATE, true);
+          commit(types.ADD_TX_ID_IN_APPROVE, tx.id);
           const tokenInstance = new ethers.Contract(
             asset.externalAddress,
             contract[OtherContractType.ERC20].abi,
@@ -462,9 +468,9 @@ const actions = {
             MaxUint256, // uint256 amount
           ];
           checkEvmNetwork(rootGetters);
-          const tx = await tokenInstance.approve(...methodArgs);
-          await tx.wait(2);
-          commit(types.SET_EVM_WAITING_APPROVE_STATE, false);
+          const transaction = await tokenInstance.approve(...methodArgs);
+          await transaction.wait(2);
+          commit(types.REMOVE_TX_ID_FROM_APPROVE, tx.id);
         }
       }
 
@@ -516,7 +522,7 @@ const actions = {
         fee,
       };
     } catch (error) {
-      commit(types.SET_EVM_WAITING_APPROVE_STATE, false);
+      commit(types.REMOVE_TX_ID_FROM_APPROVE, tx.id);
       console.error(error);
       throw error;
     }

@@ -8,7 +8,7 @@ import ethersUtil from '@/utils/ethers-util';
 
 import type { BridgeHistory, BridgeApprovedRequest, BridgeRequest } from '@sora-substrate/util';
 
-const SORA_REQUESTS_TIMEOUT = 5 * 1000;
+const SORA_REQUESTS_TIMEOUT = 6 * 1000; // Block production time
 
 export const getTransaction = (id: string): BridgeHistory => {
   const tx = bridgeApi.getHistory(id);
@@ -41,18 +41,20 @@ export const waitForApprovedRequest = async (hash: string): Promise<BridgeApprov
 };
 
 export const waitForRequest = async (hash: string): Promise<BridgeRequest> => {
-  await delay(SORA_REQUESTS_TIMEOUT);
   const request = await bridgeApi.getRequest(hash);
-  if (!request) {
-    return await waitForRequest(hash);
+
+  if (request) {
+    switch (request.status) {
+      case BridgeTxStatus.Failed:
+      case BridgeTxStatus.Frozen:
+        throw new Error('Transaction was failed or canceled');
+      case BridgeTxStatus.Done:
+        return request;
+    }
   }
-  switch (request.status) {
-    case BridgeTxStatus.Failed:
-    case BridgeTxStatus.Frozen:
-      throw new Error('Transaction was failed or canceled');
-    case BridgeTxStatus.Done:
-      return request;
-  }
+
+  await delay(SORA_REQUESTS_TIMEOUT);
+
   return await waitForRequest(hash);
 };
 
@@ -68,11 +70,13 @@ export const waitForExtrinsicFinalization = async (id: string): Promise<BridgeHi
     // TODO: maybe it's better to display a message about this errors from tx.errorMessage
     throw new Error(tx.errorMessage);
   }
-  if (tx.status !== TransactionStatus.Finalized) {
-    await delay(250);
-    return await waitForExtrinsicFinalization(id);
+  if (tx.status === TransactionStatus.Finalized) {
+    return tx;
   }
-  return tx;
+
+  await delay(250);
+
+  return await waitForExtrinsicFinalization(id);
 };
 
 export const waitForEvmTransactionStatus = async (

@@ -136,7 +136,7 @@
                 t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: evmTokenSymbol })
               }}</template>
               <template v-else-if="isTransactionFromFailed">{{ t('bridgeTransaction.retry') }}</template>
-              <template v-else-if="waitingForApprove">{{
+              <template v-else-if="txWaitingForApprove">{{
                 t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
               }}</template>
               <span
@@ -154,7 +154,7 @@
               }}</template>
             </s-button>
 
-            <div v-if="waitingForApprove" class="transaction-approval-text">
+            <div v-if="txWaitingForApprove" class="transaction-approval-text">
               {{ t('bridgeTransaction.approveToken') }}
             </div>
           </s-collapse-item>
@@ -290,7 +290,7 @@ import {
 } from '@/utils';
 import { bridgeApi, STATES, isOutgoingTransaction } from '@/utils/bridge';
 
-import type { CodecString, BridgeHistory } from '@sora-substrate/util';
+import type { CodecString, BridgeHistory, RegisteredAccountAsset } from '@sora-substrate/util';
 
 const FORMATTED_HASH_LENGTH = 24;
 const namespace = 'bridge';
@@ -304,11 +304,15 @@ const namespace = 'bridge';
   },
 })
 export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixin, BridgeMixin, NetworkFormatterMixin) {
-  @State((state) => state[namespace].waitingForApprove) waitingForApprove!: boolean;
+  @State((state) => state[namespace].waitingForApprove) waitingForApprove!: any;
   @State((state) => state[namespace].inProgressIds) inProgressIds!: any;
 
   @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @Getter('prev', { namespace: 'router' }) prevRoute!: PageNames;
+  @Getter('getAssetDataByAddress', { namespace: 'assets' }) getAssetDataByAddress!: (
+    address: string
+  ) => RegisteredAccountAsset;
+
   @Getter('historyItem', { namespace }) historyItem!: BridgeHistory;
   @Getter('isTxEvmAccount', { namespace }) isTxEvmAccount!: boolean;
 
@@ -326,8 +330,20 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     return this.historyItem.id in this.inProgressIds;
   }
 
+  get txWaitingForApprove(): boolean {
+    if (!this.historyItem?.id) return false;
+
+    return this.historyItem.id in this.waitingForApprove;
+  }
+
   get amount(): string {
     return this.historyItem?.amount ?? '';
+  }
+
+  get asset(): Nullable<RegisteredAccountAsset> {
+    if (!this.historyItem?.assetAddress) return null;
+
+    return this.getAssetDataByAddress(this.historyItem.assetAddress);
   }
 
   get isSoraToEvm(): boolean {
@@ -632,8 +648,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     router.push({ name: PageNames.Bridge });
   }
 
-  // TODO: multi transactions support
-  // TODO: update ethrereumNetworkFee for real value after eth part completes
   async created(): Promise<void> {
     if (!this.historyItem) {
       this.navigateToBridge();
@@ -641,10 +655,17 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     }
 
     const withAutoStart =
-      this.prevRoute === PageNames.Bridge ||
-      (!this.txInProcess && (this.isTransactionFromPending || this.isTransactionToPending));
+      !this.txInProcess && (!this.isTransferStarted || this.isTransactionFromPending || this.isTransactionToPending);
 
     await this.handleTransaction(withAutoStart);
+  }
+
+  beforeDestroy(): void {
+    const id = this.historyItem.id;
+
+    if (id && !this.txInProcess && !this.transactionFromHash && !this.transactionToHash) {
+      bridgeApi.removeHistory(id);
+    }
   }
 
   private getTxIconStatusClasses(isSecondTransaction?: boolean): string {

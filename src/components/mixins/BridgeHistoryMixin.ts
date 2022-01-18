@@ -14,11 +14,11 @@ const namespace = 'bridge';
 @Component
 export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
   @Getter networkFees!: NetworkFeesObject;
+  @Getter('prev', { namespace: 'router' }) prevRoute!: PageNames;
   @Getter('history', { namespace }) history!: Array<BridgeHistory>;
 
   @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn;
   @Action('generateHistoryItem', { namespace }) generateHistoryItem!: (history?: any) => Promise<BridgeHistory>;
-  @Action('setAssetAddress', { namespace }) setAssetAddress!: (address?: string) => Promise<void>;
   @Action('setHistoryItem', { namespace }) setHistoryItem!: (id: string) => Promise<void>;
 
   getSoraNetworkFee(type: Operation): CodecString {
@@ -34,21 +34,20 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
       const tx = bridgeApi.getHistory(id);
 
       if (!tx || !tx.id) {
-        // TODO: check why not navigate to prev route?
-        router.push({ name: PageNames.BridgeTransaction });
-        return;
+        this.handleBack();
+      } else {
+        await this.setHistoryItem(tx.id);
+
+        this.navigateToBridgeTransaction();
       }
-
-      // TODO: remove
-      await this.setAssetAddress(tx.assetAddress);
-
-      await this.setHistoryItem(tx.id);
-
-      this.navigateToBridgeTransaction();
     });
   }
 
   navigateToBridgeTransaction(): void {
     router.push({ name: PageNames.BridgeTransaction });
+  }
+
+  handleBack(): void {
+    router.push({ name: this.prevRoute });
   }
 }

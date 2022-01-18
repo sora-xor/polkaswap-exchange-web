@@ -178,7 +178,7 @@ const mutations = {
 };
 
 const actions = {
-  async connectExternalAccount({ commit, getters, dispatch }, { provider }) {
+  async connectExternalAccount({ commit, dispatch }, { provider }) {
     commit(types.CONNECT_EVM_WALLET_REQUEST);
     try {
       const address = await ethersUtil.onConnect({ provider });
@@ -247,7 +247,7 @@ const actions = {
     }
   },
 
-  async setSmartContracts({ commit, dispatch }, subNetworks: Array<SubNetwork>) {
+  async setSmartContracts({ dispatch }, subNetworks: Array<SubNetwork>) {
     for (const network of subNetworks) {
       switch (network.id) {
         case BridgeNetworks.ETH_NETWORK_ID:

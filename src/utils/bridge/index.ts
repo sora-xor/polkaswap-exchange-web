@@ -97,17 +97,12 @@ const handleTransactionState = async (
 
     const transaction = getTransaction(id);
     const failed = transaction.status === BridgeTxStatus.Failed;
-    const unsigned = !transaction.hash && !transaction.ethereumHash;
 
     await updateTransactionParams(id, {
       status: BridgeTxStatus.Failed,
       transactionState: rejectState,
       endTime: failed ? transaction.endTime : Date.now(),
     });
-
-    if (unsigned) {
-      bridgeApi.removeHistory(id);
-    }
   }
 };
 

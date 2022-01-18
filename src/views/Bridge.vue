@@ -295,6 +295,7 @@ export default class Bridge extends Mixins(
   @Action('setHistoryItem', { namespace }) setHistoryItem!: (id: string) => Promise<void>;
 
   @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<SubNetwork>;
+  @Getter('asset', { namespace }) asset!: any;
   @Getter('isRegisteredAsset', { namespace }) isRegisteredAsset!: boolean;
   @Getter nodeIsConnected!: boolean;
 
