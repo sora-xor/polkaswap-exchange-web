@@ -182,6 +182,7 @@ const handleEthBridgeOutgoingTxState: BridgeTransactionHandler = async (transact
 
     case STATES.SORA_REJECTED:
       return await handleTransactionState(transaction.id, {
+        status: BridgeTxStatus.Pending,
         nextState: STATES.SORA_SUBMITTED,
         rejectState: STATES.SORA_REJECTED,
       });
@@ -216,6 +217,7 @@ const handleEthBridgeOutgoingTxState: BridgeTransactionHandler = async (transact
 
     case STATES.EVM_REJECTED: {
       return await handleTransactionState(transaction.id, {
+        status: BridgeTxStatus.Pending,
         nextState: STATES.EVM_SUBMITTED,
         rejectState: STATES.EVM_REJECTED,
       });
@@ -264,13 +266,14 @@ const handleEthBridgeIncomingTxState: BridgeTransactionHandler = async (transact
 
     case STATES.EVM_REJECTED: {
       return await handleTransactionState(transaction.id, {
+        status: BridgeTxStatus.Pending,
         nextState: STATES.EVM_SUBMITTED,
         rejectState: STATES.EVM_REJECTED,
       });
     }
 
     case STATES.SORA_SUBMITTED: {
-      const handler = async (id) => {
+      const handler = async (id: string) => {
         await updateTransactionParams(id, { transactionState: STATES.SORA_PENDING, signed: false });
 
         const tx = getTransaction(id);
@@ -293,7 +296,7 @@ const handleEthBridgeIncomingTxState: BridgeTransactionHandler = async (transact
     }
 
     case STATES.SORA_PENDING: {
-      const handler = async (id) => {
+      const handler = async (id: string) => {
         const tx = getTransaction(id);
 
         if (!tx.ethereumHash) throw new Error('Hash cannot be empty!');
@@ -319,6 +322,7 @@ const handleEthBridgeIncomingTxState: BridgeTransactionHandler = async (transact
 
     case STATES.SORA_REJECTED: {
       return await handleTransactionState(transaction.id, {
+        status: BridgeTxStatus.Pending,
         nextState: STATES.SORA_SUBMITTED,
         rejectState: STATES.SORA_REJECTED,
       });
