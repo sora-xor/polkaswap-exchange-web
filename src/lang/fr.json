@@ -279,7 +279,8 @@
         "Stats": "Statistiques",
         "Support": "Support",
         "CreatePair": "Créer une paire",
-        "Tokens": "Jetons"
+        "Tokens": "Jetons",
+        "Send": "Send"
     },
     "social": {
         "twitter": "Twitter",
@@ -431,6 +432,20 @@
         "transactionMessage": "{firstToken} et {secondToken}",
         "confirm": "Confirmer",
         "ok": "OK"
+    },
+    "send": {
+        "Exchange": "Exchange",
+        "Send": "Send",
+        "Pool": "Pool",
+        "balance": "Balance",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "price": "Price",
+        "transactionSubmitted": "Transaction submitted",
+        "transactionMessage": "{firstToken} and {secondToken}",
+        "confirm": "Confirm",
+        "ok": "OK",
+        "exchange": "Exchange",
+        "exchangeAndSend": "Exchange & Send"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",

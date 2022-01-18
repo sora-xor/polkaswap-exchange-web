@@ -25,6 +25,8 @@ import type {
   PrimaryMarketsEnabledAssets,
 } from '@sora-substrate/util';
 
+import { api } from '@soramitsu/soraneo-wallet-web';
+
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
 const types = flow(
@@ -48,10 +50,12 @@ const types = flow(
     'SET_PRIMARY_MARKETS_ENABLED_ASSETS',
     'GET_SWAP_CONFIRM',
     'RESET',
+    'SET_NETWORK_FEE',
+    'SET_MIN_MAX_RECEIVED',
   ]),
   map((x) => [x, x]),
   fromPairs
-)([]);
+)(['CHECK_AVAILABILITY']);
 
 interface SwapState {
   tokenFromAddress: Nullable<string>;
@@ -68,6 +72,10 @@ interface SwapState {
   enabledAssets: PrimaryMarketsEnabledAssets;
   rewards: Array<LPRewardsInfo>;
   payload: Nullable<QuotePayload>;
+  minMaxReceived: CodecString;
+  networkFee: CodecString;
+  isAvailable: boolean;
+  isAvailableChecking: boolean;
 }
 
 function initialState(): SwapState {
@@ -86,6 +94,10 @@ function initialState(): SwapState {
     enabledAssets: {},
     rewards: [],
     payload: null,
+    minMaxReceived: '',
+    networkFee: '',
+    isAvailable: false,
+    isAvailableChecking: false,
   };
 }
 
@@ -188,6 +200,33 @@ const getters = {
 
     return (!isExchangeB ? result.sub(resultMulSlippage) : result.add(resultMulSlippage)).toCodecString();
   },
+  fromValue(state: SwapState) {
+    return state.fromValue;
+  },
+  toValue(state: SwapState) {
+    return state.toValue;
+  },
+  isExchangeB(state: SwapState) {
+    return state.isExchangeB;
+  },
+  networkFee(state: SwapState) {
+    return state.networkFee;
+  },
+  liquidityProviderFee(state: SwapState) {
+    return state.liquidityProviderFee;
+  },
+  isAvailableChecking(state: SwapState) {
+    return state.isAvailableChecking;
+  },
+  isAvailableSend(state: SwapState) {
+    return state.isAvailable;
+  },
+  pairLiquiditySourcesAvailable(state: SwapState) {
+    return state.pairLiquiditySources.length !== 0;
+  },
+  rewards(state: SwapState) {
+    return state.rewards;
+  },
 };
 
 const mutations = {
@@ -222,6 +261,9 @@ const mutations = {
   [types.SET_TO_VALUE](state: SwapState, toValue: string) {
     state.toValue = toValue;
   },
+  [types.SET_MIN_MAX_RECEIVED](state: SwapState, minMaxReceived: CodecString) {
+    state.minMaxReceived = minMaxReceived;
+  },
   [types.SET_AMOUNT_WITHOUT_IMPACT](state: SwapState, amount: CodecString) {
     state.amountWithoutImpact = amount;
   },
@@ -245,6 +287,24 @@ const mutations = {
   },
   [types.SET_SUBSCRIPTION_PAYLOAD](state: SwapState, payload: QuotePayload) {
     state.payload = payload;
+  },
+  [types.SET_NETWORK_FEE](state: SwapState, networkFee: CodecString) {
+    state.networkFee = networkFee;
+  },
+  [types.CHECK_AVAILABILITY_REQUEST](state: SwapState) {
+    console.log('CHECK_AVAILABILITY_REQUEST');
+    state.isAvailable = false;
+    state.isAvailableChecking = true;
+  },
+  [types.CHECK_AVAILABILITY_SUCCESS](state: SwapState, isAvailable: boolean) {
+    console.log(isAvailable, 'CHECK_AVAILABILITY_SUCCESS');
+    state.isAvailable = isAvailable;
+    state.isAvailableChecking = false;
+  },
+  [types.CHECK_AVAILABILITY_FAILURE](state: SwapState) {
+    console.log('CHECK_AVAILABILITY_FAILURE');
+    state.isAvailable = false;
+    state.isAvailableChecking = false;
   },
 };
 
@@ -303,6 +363,9 @@ const actions = {
   setToValue({ commit }, toValue: string | number) {
     commit(types.SET_TO_VALUE, toValue);
   },
+  setMinMaxReceived({ commit }, minMaxReceived) {
+    commit(types.SET_MIN_MAX_RECEIVED, minMaxReceived);
+  },
   setAmountWithoutImpact({ commit }, amount: CodecString) {
     commit(types.SET_AMOUNT_WITHOUT_IMPACT, amount);
   },
@@ -315,11 +378,25 @@ const actions = {
   setRewards({ commit }, rewards: Array<LPRewardsInfo>) {
     commit(types.SET_REWARDS, rewards);
   },
+  setNetworkFee({ commit }, networkFee: string) {
+    commit(types.SET_NETWORK_FEE, networkFee);
+  },
 
   async checkMarketAlgorithmUpdate({ dispatch, rootGetters, state }) {
     // reset market algorithm to default, if related liquiditySource is not available
     if (state.pairLiquiditySources.length && !state.pairLiquiditySources.includes(rootGetters.liquiditySource)) {
       await dispatch('setMarketAlgorithm', undefined, { root: true });
+    }
+  },
+  async checkSwap({ commit, getters }) {
+    if (getters.tokenFrom?.address && getters.tokenTo?.address) {
+      commit(types.CHECK_AVAILABILITY_REQUEST);
+      try {
+        const isAvailable = await api.checkSwap(getters.tokenFrom.address, getters.tokenTo.address);
+        commit(types.CHECK_AVAILABILITY_SUCCESS, isAvailable);
+      } catch (error) {
+        commit(types.CHECK_AVAILABILITY_FAILURE, error);
+      }
     }
   },
 
@@ -381,6 +458,13 @@ const actions = {
   updateSubscriptions({ dispatch }) {
     dispatch('updateTokenFromSubscription');
     dispatch('updateTokenToSubscription');
+  },
+  setPairLiquiditySources({ commit, dispatch, rootGetters }, liquiditySources: Array<LiquiditySourceTypes>) {
+    // reset market algorithm to default, if related liquiditySource is not available
+    if (liquiditySources.length && !liquiditySources.includes(rootGetters.liquiditySource)) {
+      dispatch('setMarketAlgorithm', undefined, { root: true });
+    }
+    commit(types.SET_PAIR_LIQUIDITY_SOURCES, liquiditySources);
   },
 };
 

@@ -279,7 +279,8 @@
         "Stats": "Iṣiro",
         "Support": "Atilẹyin",
         "CreatePair": "Ṣẹda Pair",
-        "Tokens": "Awọn Tokini"
+        "Tokens": "Awọn Tokini",
+        "Send": "Send"
     },
     "social": {
         "twitter": "Twitter",
@@ -431,6 +432,20 @@
         "transactionMessage": "{firstToken} ati {secondToken}",
         "confirm": "Jẹrisi",
         "ok": "O DARA"
+    },
+    "send": {
+        "Exchange": "Exchange",
+        "Send": "Send",
+        "Pool": "Pool",
+        "balance": "Balance",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "price": "Price",
+        "transactionSubmitted": "Transaction submitted",
+        "transactionMessage": "{firstToken} and {secondToken}",
+        "confirm": "Confirm",
+        "ok": "OK",
+        "exchange": "Exchange",
+        "exchangeAndSend": "Exchange & Send"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",

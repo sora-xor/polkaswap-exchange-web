@@ -279,7 +279,8 @@
         "Stats": "Statistik",
         "Support": "Dukungan",
         "CreatePair": "Buat Pair",
-        "Tokens": "Token"
+        "Tokens": "Token",
+        "Send": "Send"
     },
     "social": {
         "twitter": "Twitter",
@@ -431,6 +432,20 @@
         "transactionMessage": "{firstToken} dan {secondToken}",
         "confirm": "Konfirmasi",
         "ok": "Oke"
+    },
+    "send": {
+        "Exchange": "Exchange",
+        "Send": "Send",
+        "Pool": "Pool",
+        "balance": "Balance",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "price": "Price",
+        "transactionSubmitted": "Transaction submitted",
+        "transactionMessage": "{firstToken} and {secondToken}",
+        "confirm": "Confirm",
+        "ok": "OK",
+        "exchange": "Exchange",
+        "exchangeAndSend": "Exchange & Send"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",

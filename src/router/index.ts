@@ -47,6 +47,11 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.Wallet),
   },
   {
+    path: '/send',
+    name: PageNames.Send,
+    component: lazyView(PageNames.Send),
+  },
+  {
     path: '/bridge',
     name: PageNames.Bridge,
     component: lazyView(PageNames.Bridge),

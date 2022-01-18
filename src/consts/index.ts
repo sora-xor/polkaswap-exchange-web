@@ -107,6 +107,7 @@ export enum PageNames {
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
   Tokens = 'Tokens',
   MoonpayHistory = 'MoonpayHistory',
+  Send = 'Send',
 }
 
 export enum Components {
@@ -162,6 +163,8 @@ export enum Components {
   RemoveLiquidityTransactionDetails = 'TransactionDetails/RemoveLiquidityTransactionDetails',
   BridgeTransactionDetails = 'TransactionDetails/BridgeTransactionDetails',
   CreatePairTransactionDetails = 'TransactionDetails/CreatePairTransactionDetails',
+  ConfirmSend = 'ConfirmSend',
+  InfoLine = 'InfoLine',
 }
 
 interface SidebarMenuItem {
@@ -178,6 +181,10 @@ const MainMenu: Array<SidebarMenuItem> = [
   {
     icon: 'arrows-swap-90-24',
     title: PageNames.Swap,
+  },
+  {
+    icon: 'finance-send-24',
+    title: PageNames.Send,
   },
   {
     icon: 'basic-drop-24',
@@ -285,6 +292,11 @@ export enum LogoSize {
 export enum EvmSymbol {
   ETH = 'ETH',
   VT = 'VT',
+}
+
+export enum InfoTooltipPosition {
+  LEFT = 'left',
+  RIGHT = 'right',
 }
 
 const gasLimit = {

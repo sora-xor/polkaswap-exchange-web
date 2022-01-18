@@ -1,0 +1,144 @@
+<template>
+  <dialog-base :visible.sync="isVisible" :title="t('swap.confirmSend')" custom-class="dialog--confirm-swap">
+    <div class="tokens">
+      <div class="tokens-info-container">
+        <span class="token-value">{{ formattedFromValue }}</span>
+        <div v-if="tokenFrom" class="token">
+          <token-logo :token="tokenFrom" />
+          {{ tokenFrom.symbol }}
+        </div>
+      </div>
+    </div>
+    <div class="confirm">
+      <div class="confirm-from">{{ from }}</div>
+      <s-icon name="arrows-arrow-bottom-24" />
+      <div class="confirm-to">{{ to }}</div>
+    </div>
+    <s-divider />
+    <info-line
+      :label="t('swap.networkFee')"
+      :tooltip-content="t('swap.networkFeeTooltip')"
+      :value="formattedNetworkFee"
+      :asset-symbol="KnownSymbols.XOR"
+    />
+    <template #footer>
+      <s-button type="primary" class="s-typography-button--large" :disabled="loading" @click="handleConfirmSwap">
+        {{ t('exchange.confirm') }}
+      </s-button>
+    </template>
+  </dialog-base>
+</template>
+
+<script lang="ts">
+import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
+import { api, mixins } from '@soramitsu/soraneo-wallet-web';
+import { AccountAsset, KnownSymbols, CodecString } from '@sora-substrate/util';
+
+// import TransactionMixin from '@/components/mixins/TransactionMixin'
+import DialogMixin from '@/components/mixins/DialogMixin';
+import DialogBase from '@/components/DialogBase.vue';
+import { lazyComponent } from '@/router';
+import { Components } from '@/consts';
+
+const namespace = 'swap';
+
+@Component({
+  components: {
+    DialogBase,
+    InfoLine: lazyComponent(Components.InfoLine),
+    TokenLogo: lazyComponent(Components.TokenLogo),
+  },
+})
+export default class ConfirmSend extends Mixins(mixins.TransactionMixin, DialogMixin) {
+  @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset;
+  @Getter('fromValue', { namespace }) fromValue!: string;
+  @Getter('networkFee', { namespace }) networkFee!: CodecString;
+
+  @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
+  @Prop({ default: '', type: String }) readonly from!: string;
+  @Prop({ default: '', type: String }) readonly to!: string;
+
+  KnownSymbols = KnownSymbols;
+
+  get formattedFromValue(): string {
+    return this.formatStringValue(this.fromValue, this.tokenFrom?.decimals);
+  }
+
+  get formattedNetworkFee(): string {
+    return this.formatCodecNumber(this.networkFee);
+  }
+
+  async handleConfirmSwap(): Promise<void> {
+    if (this.isInsufficientBalance) {
+      this.$alert(
+        this.t('exchange.insufficientBalance', { tokenSymbol: this.tokenFrom ? this.tokenFrom.symbol : '' }),
+        { title: this.t('errorText') }
+      );
+      this.$emit('confirm');
+    } else {
+      try {
+        await this.withNotifications(async () => await api.transfer(this.tokenFrom.address, this.to, this.fromValue));
+        this.$emit('confirm', true);
+      } catch (error) {
+        this.$emit('confirm');
+      }
+    }
+    this.isVisible = false;
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.tokens {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--s-heading2-font-size);
+  line-height: var(--s-line-height-small);
+  margin-bottom: $inner-spacing-medium;
+
+  &-info-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+.token {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  white-space: nowrap;
+  &-value {
+    margin-right: $inner-spacing-medium;
+  }
+  &-logo {
+    display: block;
+    margin-right: $inner-spacing-medium;
+    flex-shrink: 0;
+  }
+}
+.transaction-message {
+  margin-top: $inner-spacing-mini;
+  color: var(--s-color-base-content-primary);
+  line-height: var(--s-line-height-big);
+}
+.confirm {
+  &-from {
+    margin-bottom: $inner-spacing-mini;
+  }
+
+  &-to {
+    margin-top: $inner-spacing-mini;
+  }
+
+  &-from,
+  &-to {
+    font-size: var(--s-font-size-mini);
+    font-weight: 500;
+    line-height: var(--s-line-height-small);
+  }
+}
+
+@include vertical-divider;
+@include vertical-divider('el-divider', $inner-spacing-medium);
+</style>
