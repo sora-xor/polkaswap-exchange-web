@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
+import { Action } from 'vuex-class';
 
 import { Language, Languages } from '@/consts';
 

@@ -4,7 +4,11 @@ import flatMap from 'lodash/fp/flatMap';
 import concat from 'lodash/fp/concat';
 import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
-import { FPNumber, BridgeNetworks, KnownAssets } from '@sora-substrate/util';
+import { ethers } from 'ethers';
+import { FPNumber, BridgeNetworks } from '@sora-substrate/util';
+import { KnownAssets } from '@sora-substrate/util/build/assets/consts';
+import type { CodecString } from '@sora-substrate/util';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 import { bridgeApi } from '@/utils/bridge';
 import ethersUtil, {
@@ -18,9 +22,6 @@ import ethersUtil, {
 } from '@/utils/ethers-util';
 import { ZeroStringValue, EthereumGasLimits } from '@/consts';
 import { isEthereumAddress } from '@/utils';
-import { ethers } from 'ethers';
-
-import type { Asset, CodecString } from '@sora-substrate/util';
 
 const types = flow(
   flatMap((x) => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),

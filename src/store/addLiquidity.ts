@@ -4,7 +4,9 @@ import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import { api } from '@soramitsu/soraneo-wallet-web';
-import { KnownAssets, FPNumber, CodecString, AccountBalance } from '@sora-substrate/util';
+import { FPNumber, CodecString } from '@sora-substrate/util';
+import { KnownAssets } from '@sora-substrate/util/build/assets/consts';
+import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 import { ZeroStringValue } from '@/consts';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
@@ -186,8 +188,8 @@ const actions = {
     if (getters.firstToken && getters.secondToken) {
       commit(types.GET_RESERVE_REQUEST);
       try {
-        // TODO: [ARCH] api.poolXyk.getReserves(...)
-        const reserve = await api.getLiquidityReserves(getters.firstToken?.address, getters.secondToken?.address);
+        const { firstToken, secondToken } = getters;
+        const reserve = await api.poolXyk.getReserves(firstToken?.address, secondToken?.address);
         commit(types.GET_RESERVE_SUCCESS, reserve);
 
         dispatch('estimateMinted');
@@ -201,8 +203,8 @@ const actions = {
     if (getters.firstToken && getters.secondToken) {
       commit(types.CHECK_LIQUIDITY_REQUEST);
       try {
-        // TODO: [ARCH] api.poolXyk.check(...)
-        const isAvailable = await api.checkLiquidity(getters.firstToken?.address, getters.secondToken?.address);
+        const { firstToken, secondToken } = getters;
+        const isAvailable = await api.poolXyk.check(firstToken?.address, secondToken?.address);
         commit(types.CHECK_LIQUIDITY_SUCCESS, isAvailable);
 
         await dispatch('checkReserve');
@@ -217,9 +219,9 @@ const actions = {
       commit(types.ESTIMATE_MINTED_REQUEST);
 
       try {
-        const [minted, pts] = await api.estimatePoolTokensMinted(
-          getters.firstToken.address,
-          getters.secondToken.address,
+        const [minted, pts] = await api.poolXyk.estimatePoolTokensMinted(
+          getters.firstToken,
+          getters.secondToken,
           getters.firstTokenValue,
           getters.secondTokenValue,
           getters.reserveA,
@@ -280,10 +282,9 @@ const actions = {
   async addLiquidity({ commit, getters, rootGetters }) {
     commit(types.ADD_LIQUIDITY_REQUEST);
     try {
-      // TODO: [ARCH] api.poolXyk.add(getters.firstToken, getters.secondToken, ...)
-      const result = await api.addLiquidity(
-        getters.firstToken?.address,
-        getters.secondToken?.address,
+      const result = await api.poolXyk.add(
+        getters.firstToken,
+        getters.secondToken,
         getters.firstTokenValue,
         getters.secondTokenValue,
         rootGetters.slippageTolerance
@@ -300,7 +301,7 @@ const actions = {
     { firstAddress, secondAddress }: { firstAddress: string; secondAddress: string }
   ) {
     const findAssetAddress = (address) => {
-      const asset = KnownAssets.get(address) ?? api.accountAssets.find((a) => a.address === address);
+      const asset = KnownAssets.get(address) ?? api.assets.accountAssets.find((a) => a.address === address);
       return asset?.address ?? '';
     };
 

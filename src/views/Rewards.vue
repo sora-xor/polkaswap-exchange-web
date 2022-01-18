@@ -87,17 +87,12 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
-import {
-  AccountAsset,
-  KnownAssets,
-  KnownSymbols,
-  RewardInfo,
-  RewardsInfo,
-  CodecString,
-  FPNumber,
-} from '@sora-substrate/util';
 import { components, mixins, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import { CodecString, FPNumber } from '@sora-substrate/util';
+import { KnownAssets, KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import ethersUtil from '@/utils/ethers-util';
 import { lazyComponent } from '@/router';

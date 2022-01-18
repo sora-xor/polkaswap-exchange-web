@@ -178,8 +178,8 @@
 import first from 'lodash/fp/first';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
-import { Asset, AccountAsset, isBlacklistAsset } from '@sora-substrate/util';
 import { api, mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
@@ -308,8 +308,7 @@ export default class SelectToken extends Mixins(
     if (!this.customAsset) {
       return '';
     }
-    // TODO: [ARCH] api.assets.isBlacklist(...)
-    const isBlacklist = isBlacklistAsset(this.customAsset, this.whitelistIdsBySymbol);
+    const isBlacklist = api.assets.isBlacklist(this.customAsset, this.whitelistIdsBySymbol);
     if (isBlacklist) {
       return this.t('addAsset.scam');
     }
@@ -340,10 +339,9 @@ export default class SelectToken extends Mixins(
     this.resetCustomAssetFields();
   }
 
-  handleRemoveCustomAsset(asset: Asset, event: Event): void {
+  handleRemoveCustomAsset(asset: AccountAsset, event: Event): void {
     event.stopImmediatePropagation();
-    // TODO: [ARCH] api.assets.removeAsset
-    api.removeAsset(asset.address);
+    api.assets.removeAsset(asset.address);
     if (this.customAddress) {
       this.searchCustomAsset();
     }

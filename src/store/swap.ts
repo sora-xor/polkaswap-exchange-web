@@ -4,26 +4,15 @@ import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import isEmpty from 'lodash/fp/isEmpty';
-import intersection from 'lodash/fp/intersection';
-import { FPNumber, isDirectExchange, XOR, LiquiditySourceTypes } from '@sora-substrate/util';
+import { api } from '@soramitsu/soraneo-wallet-web';
+import { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
+import type { CodecString } from '@sora-substrate/util';
+import type { QuotePaths, QuotePayload, PrimaryMarketsEnabledAssets } from '@sora-substrate/util/build/swap/types';
+import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
+import type { LPRewardsInfo } from '@sora-substrate/util/build/rewards/types';
 
-import {
-  MarketAlgorithms,
-  MarketAlgorithmForLiquiditySource,
-  LiquiditySourceForMarketAlgorithm,
-  ZeroStringValue,
-} from '@/consts';
+import { MarketAlgorithms, MarketAlgorithmForLiquiditySource, LiquiditySourceForMarketAlgorithm } from '@/consts';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
-import { divideAssets } from '@/utils';
-
-import type {
-  AccountBalance,
-  CodecString,
-  LPRewardsInfo,
-  QuotePaths,
-  QuotePayload,
-  PrimaryMarketsEnabledAssets,
-} from '@sora-substrate/util';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
@@ -89,27 +78,6 @@ function initialState(): SwapState {
   };
 }
 
-// TODO [ARCH]: remove
-const getSources = (
-  address: string,
-  payload: QuotePayload,
-  enabledAssets: PrimaryMarketsEnabledAssets
-): Array<LiquiditySourceTypes> => {
-  const rules = {
-    [LiquiditySourceTypes.MulticollateralBondingCurvePool]: () => enabledAssets.tbc.includes(address),
-    [LiquiditySourceTypes.XYKPool]: () => payload.reserves.xyk[address].every((tokenReserve) => !!Number(tokenReserve)),
-    [LiquiditySourceTypes.XSTPool]: () => enabledAssets.xst.includes(address),
-  };
-
-  return Object.entries(rules).reduce((acc: LiquiditySourceTypes[], entry) => {
-    const [source, rule] = entry;
-    if (rule()) {
-      acc.push(source as LiquiditySourceTypes);
-    }
-    return acc;
-  }, []);
-};
-
 const state = initialState();
 
 const getters = {
@@ -152,42 +120,32 @@ const getters = {
     return MarketAlgorithmForLiquiditySource[getters.swapLiquiditySource ?? ''];
   },
   price(state: SwapState, getters) {
-    return divideAssets(getters.tokenFrom, getters.tokenTo, state.fromValue, state.toValue, false);
+    return api.divideAssets(getters.tokenFrom, getters.tokenTo, state.fromValue, state.toValue, false);
   },
   priceReversed(state: SwapState, getters) {
-    return divideAssets(getters.tokenFrom, getters.tokenTo, state.fromValue, state.toValue, true);
+    return api.divideAssets(getters.tokenFrom, getters.tokenTo, state.fromValue, state.toValue, true);
   },
   priceImpact(state: SwapState, getters) {
     const { fromValue, toValue, amountWithoutImpact, isExchangeB } = state;
-    // TODO [ARCH]: api.swap.getPriceImpact(getters.tokenFrom, getters.tokenTo, fromValue, toValue, amountWithoutImpact, isExchangeB)
-    const token = isExchangeB ? getters.tokenFrom : getters.tokenTo;
-    const value = isExchangeB ? fromValue : toValue;
-
-    if (!token || !value || !amountWithoutImpact) return ZeroStringValue;
-
-    const withoutImpact = FPNumber.fromCodecValue(amountWithoutImpact, token.decimals);
-
-    if (withoutImpact.isZero()) return ZeroStringValue;
-
-    const amount = new FPNumber(value, token.decimals);
-    const impact = isExchangeB ? withoutImpact.div(amount) : amount.div(withoutImpact);
-    const result = new FPNumber(1).sub(impact).mul(FPNumber.HUNDRED);
-
-    return FPNumber.lte(result, FPNumber.ZERO) ? ZeroStringValue : FPNumber.ZERO.sub(result).toFixed(2);
+    return api.swap.getPriceImpact(
+      getters.tokenFrom,
+      getters.tokenTo,
+      fromValue,
+      toValue,
+      amountWithoutImpact,
+      isExchangeB
+    );
   },
   minMaxReceived(state: SwapState, getters, rootState, rootGetters) {
     const { fromValue, toValue, isExchangeB } = state;
-    // TODO [ARCH]: api.swap.getMinMaxValue(getters.tokenFrom, getters.tokenTo, fromValue, toValue, isExchangeB, rootGetters.slippageTolerance)
-    const value = isExchangeB ? fromValue : toValue;
-    const token = isExchangeB ? getters.tokenFrom : getters.tokenTo;
-
-    if (!token || !value) return ZeroStringValue;
-
-    const resultDecimals = token.decimals;
-    const result = new FPNumber(value, resultDecimals);
-    const resultMulSlippage = result.mul(new FPNumber(Number(rootGetters.slippageTolerance) / 100, resultDecimals));
-
-    return (!isExchangeB ? result.sub(resultMulSlippage) : result.add(resultMulSlippage)).toCodecString();
+    return api.swap.getMinMaxValue(
+      getters.tokenFrom,
+      getters.tokenTo,
+      fromValue,
+      toValue,
+      isExchangeB,
+      rootGetters.slippageTolerance
+    );
   },
 };
 
@@ -327,39 +285,16 @@ const actions = {
   updatePaths({ commit, getters, state }) {
     const inputAssetId = getters.tokenFrom?.address;
     const outputAssetId = getters.tokenTo?.address;
-    // TODO [ARCH]: api.swap.getPathsAndPairLiquiditySources(inputAssetId, outputAssetId, state.payload, state.enabledAssets)
-    const quotePaths: QuotePaths = {};
-    const pairLiquiditySources: Array<LiquiditySourceTypes> = [];
 
-    try {
-      if (inputAssetId && outputAssetId) {
-        const xor = XOR.address;
+    const { paths, liquiditySources } = api.swap.getPathsAndPairLiquiditySources(
+      inputAssetId,
+      outputAssetId,
+      state.payload,
+      state.enabledAssets
+    );
 
-        if (isDirectExchange(inputAssetId, outputAssetId)) {
-          const nonXor = inputAssetId === xor ? outputAssetId : inputAssetId;
-          const path = getSources(nonXor, state.payload, state.enabledAssets);
-
-          quotePaths[nonXor] = path;
-          pairLiquiditySources.push(...path);
-        } else {
-          const [inputPaths, outputPaths] = [
-            getSources(inputAssetId, state.payload, state.enabledAssets),
-            getSources(outputAssetId, state.payload, state.enabledAssets),
-          ];
-
-          quotePaths[inputAssetId] = inputPaths;
-          quotePaths[outputAssetId] = outputPaths;
-          pairLiquiditySources.push(...intersection(inputPaths, outputPaths));
-        }
-      }
-
-      commit(types.SET_PATHS, quotePaths);
-      commit(types.SET_PAIR_LIQUIDITY_SOURCES, pairLiquiditySources);
-    } catch (error) {
-      console.error(error);
-      commit(types.SET_PATHS, {});
-      commit(types.SET_PAIR_LIQUIDITY_SOURCES, []);
-    }
+    commit(types.SET_PATHS, paths);
+    commit(types.SET_PAIR_LIQUIDITY_SOURCES, liquiditySources);
   },
 
   async setSubscriptionPayload({ commit, dispatch }, payload: QuotePayload) {

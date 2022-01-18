@@ -2,7 +2,6 @@ import { Vue, Component } from 'vue-property-decorator';
 import { BridgeNetworks } from '@sora-substrate/util';
 
 import store from '@/store';
-
 import { EvmNetworkType } from '@/utils/ethers-util';
 
 @Component

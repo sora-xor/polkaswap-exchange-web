@@ -2,10 +2,12 @@ import map from 'lodash/fp/map';
 import flatMap from 'lodash/fp/flatMap';
 import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
-import { Asset, RegisteredAccountAsset, isWhitelistAsset, XOR } from '@sora-substrate/util';
 import { api } from '@soramitsu/soraneo-wallet-web';
-import { bridgeApi } from '@/utils/bridge';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
+import type { RegisteredAccountAsset } from '@sora-substrate/util';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
+import { bridgeApi } from '@/utils/bridge';
 import { findAssetInCollection } from '@/utils';
 import { ZeroStringValue } from '@/consts';
 
@@ -40,16 +42,13 @@ const getters = {
     return state.assets;
   },
   whitelistAssets(state, getters, rootState, rootGetters) {
-    // TODO: [ARCH] api.assets.isWhitelist
-    return state.assets.filter((asset) => isWhitelistAsset(asset, rootGetters.whitelist));
+    return state.assets.filter((asset) => api.assets.isWhitelist(asset, rootGetters.whitelist));
   },
   nonWhitelistAssets(state, getters, rootState, rootGetters) {
-    // TODO: [ARCH] api.assets.isWhitelist
-    return state.assets.filter((asset) => !isWhitelistAsset(asset, rootGetters.whitelist));
+    return state.assets.filter((asset) => !api.assets.isWhitelist(asset, rootGetters.whitelist));
   },
   nonWhitelistAccountAssets(state, getters, rootState, rootGetters) {
-    // TODO: [ARCH] api.assets.isWhitelist
-    return rootGetters.accountAssets.filter((asset) => !isWhitelistAsset(asset, rootGetters.whitelist));
+    return rootGetters.accountAssets.filter((asset) => !api.assets.isWhitelist(asset, rootGetters.whitelist));
   },
   tokenXOR(state, getters, rootState, rootGetters) {
     return rootGetters['assets/getAssetDataByAddress'](XOR.address);
@@ -119,8 +118,7 @@ const actions = {
   async getAssets({ commit, rootGetters: { whitelist } }) {
     commit(types.GET_ASSETS_LIST_REQUEST);
     try {
-      // TODO: [ARCH] api.assets.getAssets
-      const assets = await api.getAssets(whitelist);
+      const assets = await api.assets.getAssets(whitelist);
 
       commit(types.GET_ASSETS_LIST_SUCCESS, assets);
     } catch (error) {
@@ -130,8 +128,7 @@ const actions = {
   async getAsset({ commit }, { address }) {
     commit(types.GET_ASSET_REQUEST);
     try {
-      // TODO: [ARCH] api.assets.getAssets
-      const assets = await api.getAssets();
+      const assets = await api.assets.getAssets();
       const asset = assets.find((asset) => asset.address === address);
       commit(types.GET_ASSET_SUCCESS);
       return asset;

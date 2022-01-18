@@ -14,7 +14,7 @@
         :label="t('createPair.networkFee')"
         :label-tooltip="t('networkFeeTooltipText')"
         :value="formattedFee"
-        :asset-symbol="KnownSymbols.XOR"
+        :asset-symbol="XOR_SYMBOL"
         :fiat-value="getFiatAmountByCodecString(networkFee)"
         is-formatted
       />
