@@ -17,7 +17,7 @@ import {
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 
-import { bridgeApi, Bridge, STATES, waitForApprovedRequest } from '@/utils/bridge';
+import { bridgeApi, appBridge, STATES, waitForApprovedRequest } from '@/utils/bridge';
 import ethersUtil, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/ethers-util';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { isEthereumAddress } from '@/utils';
@@ -272,7 +272,6 @@ const actions = {
           assetAddress: transaction.soraAssetAddress,
           startTime: time,
           endTime: ethLogData ? time : undefined,
-          signed: !!ethLogData,
           status: ethLogData ? BridgeTxStatus.Done : BridgeTxStatus.Failed,
           transactionStep: 2,
           hash: transaction.hash,
@@ -320,7 +319,6 @@ const actions = {
       assetAddress: (params as any).assetAddress ?? getters.asset.address,
       startTime: date,
       endTime: date,
-      signed: false,
       status: '',
       transactionStep: step,
       hash: '',
@@ -531,7 +529,7 @@ const actions = {
   async handleBridgeTx({ commit }, id: string) {
     commit(types.ADD_TX_ID_IN_PROGRESS, id);
 
-    await Bridge.handleTransaction(id);
+    await appBridge.handleTransaction(id);
 
     commit(types.REMOVE_TX_ID_FROM_PROGRESS, id);
   },

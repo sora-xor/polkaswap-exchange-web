@@ -288,7 +288,7 @@ import {
   hasInsufficientXorForFee,
   hasInsufficientEvmNativeTokenForFee,
 } from '@/utils';
-import { bridgeApi, STATES, isOutgoingTransaction } from '@/utils/bridge';
+import { bridgeApi, STATES, isOutgoingTransaction, isUnsignedBridgeTransaction } from '@/utils/bridge';
 
 import type { CodecString, BridgeHistory, RegisteredAccountAsset } from '@sora-substrate/util';
 
@@ -661,10 +661,10 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   beforeDestroy(): void {
-    const id = this.historyItem.id;
+    const tx = { ...this.historyItem };
 
-    if (id && !this.txInProcess && !this.transactionFromHash && !this.transactionToHash) {
-      bridgeApi.removeHistory(id);
+    if (tx.id && !this.txInProcess && isUnsignedBridgeTransaction(tx)) {
+      bridgeApi.removeHistory(tx.id);
     }
   }
 

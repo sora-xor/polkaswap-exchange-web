@@ -1,4 +1,4 @@
-import { Operation, BridgeTxStatus, TransactionStatus } from '@sora-substrate/util';
+import { Operation, BridgeTxStatus } from '@sora-substrate/util';
 import { ethers } from 'ethers';
 
 import { bridgeApi } from './api';
@@ -9,6 +9,16 @@ import ethersUtil from '@/utils/ethers-util';
 import type { BridgeHistory, BridgeApprovedRequest, BridgeRequest } from '@sora-substrate/util';
 
 const SORA_REQUESTS_TIMEOUT = 6 * 1000; // Block production time
+
+export const isUnsignedBridgeTransaction = (tx: BridgeHistory): boolean => {
+  if (tx.type === Operation.EthBridgeOutgoing) {
+    return !tx.blockId;
+  } else if (tx.type === Operation.EthBridgeIncoming) {
+    return !tx.ethereumHash;
+  } else {
+    return true;
+  }
+};
 
 export const getTransaction = (id: string): BridgeHistory => {
   const tx = bridgeApi.getHistory(id);
@@ -63,25 +73,47 @@ export const waitForRequest = async (hash: string): Promise<BridgeRequest> => {
   return await waitForRequest(hash);
 };
 
-export const waitForExtrinsicFinalization = async (id: string): Promise<BridgeHistory> => {
+export const waitForSoraTransactionHash = async (id: string): Promise<string> => {
   const tx = getTransaction(id);
 
-  if (
-    tx &&
-    [TransactionStatus.Error, TransactionStatus.Invalid, TransactionStatus.Usurped].includes(
-      tx.status as TransactionStatus
-    )
-  ) {
-    // TODO: maybe it's better to display a message about this errors from tx.errorMessage
-    throw new Error(tx.errorMessage);
-  }
-  if (tx.status === TransactionStatus.Finalized) {
-    return tx;
+  if (tx.hash) return tx.hash;
+
+  const signedBlock = await bridgeApi.api.rpc.chain.getBlock(tx.blockId);
+
+  if (signedBlock.block?.extrinsics) {
+    const blockEvents = await bridgeApi.api.query.system.events.at(tx.blockId as string);
+
+    const extrinsicIndex = signedBlock.block.extrinsics.findIndex((item) => {
+      const {
+        signer,
+        method: { method, section },
+      } = item;
+
+      return signer.toString() === tx.from && method === 'transferToSidechain' && section === 'ethBridge';
+    });
+
+    if (!Number.isFinite(extrinsicIndex)) throw new Error('[Bridge]: Transaction was failed');
+
+    const event = blockEvents.find(
+      ({ phase, event }) =>
+        phase.isApplyExtrinsic &&
+        phase.asApplyExtrinsic.eq(extrinsicIndex) &&
+        event.section === 'ethBridge' &&
+        event.method === 'RequestRegistered'
+    );
+
+    if (!event) {
+      throw new Error('[Bridge]: Transaction was failed');
+    }
+
+    const hash = event.event.data[0].toString();
+
+    return hash;
   }
 
-  await delay(250);
+  await delay(SORA_REQUESTS_TIMEOUT);
 
-  return await waitForExtrinsicFinalization(id);
+  return await waitForSoraTransactionHash(id);
 };
 
 export const waitForEvmTransactionStatus = async (

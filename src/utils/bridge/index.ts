@@ -10,18 +10,49 @@ import {
   updateHistoryParams,
   waitForRequest,
   waitForApprovedRequest,
-  waitForExtrinsicFinalization,
+  waitForSoraTransactionHash,
   waitForEvmTransaction,
 } from './utils';
 
-import type { BridgeHistory } from '@sora-substrate/util';
-import type { HandleTransactionPayload, BridgeTransactionHandler } from './types';
+import type { BridgeHistory, RegisteredAsset } from '@sora-substrate/util';
+import type { HandleTransactionPayload } from './types';
+
+type SignedEvmTxResult = {
+  hash: string;
+  fee?: string;
+};
+
+type SignEvm = (id: string) => Promise<SignedEvmTxResult>;
+type GetAssetByAddress = (address: string) => RegisteredAsset;
+
+interface BridgeCommonOptions {
+  updateHistory: AsyncVoidFn;
+  getAssetByAddress: GetAssetByAddress;
+}
+
+interface BridgeOptions extends BridgeCommonOptions {
+  sign: {
+    [Operation.EthBridgeOutgoing]: SignEvm;
+    [Operation.EthBridgeIncoming]: SignEvm;
+  };
+}
+
+interface BridgeReducerOptions extends BridgeCommonOptions {
+  signEvm: SignEvm;
+}
 
 class BridgeTransactionStateHandler {
-  static async handleState(
-    id: string,
-    { status, nextState, rejectState, handler }: HandleTransactionPayload
-  ): Promise<void> {
+  protected readonly signEvm!: SignEvm;
+  protected readonly updateHistory!: AsyncVoidFn;
+  protected readonly getAssetByAddress!: GetAssetByAddress;
+
+  constructor({ signEvm, updateHistory, getAssetByAddress }: BridgeReducerOptions) {
+    this.signEvm = signEvm;
+    this.updateHistory = updateHistory;
+    this.getAssetByAddress = getAssetByAddress;
+  }
+
+  async handleState(id: string, { status, nextState, rejectState, handler }: HandleTransactionPayload): Promise<void> {
     try {
       const transaction = getTransaction(id);
 
@@ -49,21 +80,21 @@ class BridgeTransactionStateHandler {
     }
   }
 
-  static async updateTransactionParams(id: string, params = {}) {
+  async updateTransactionParams(id: string, params = {}): Promise<void> {
     updateHistoryParams(id, params);
 
-    await store.dispatch('bridge/getHistory');
+    await this.updateHistory();
   }
 
-  static async onComplete(id: string): Promise<void> {
+  async onComplete(id: string): Promise<void> {
     await this.updateTransactionParams(id, { endTime: Date.now() });
   }
 
-  static async updateTransactionStep(id: string): Promise<void> {
+  async updateTransactionStep(id: string): Promise<void> {
     await this.updateTransactionParams(id, { transactionStep: 2 });
   }
 
-  static async onEvmPending(id: string): Promise<void> {
+  async onEvmPending(id: string): Promise<void> {
     await waitForEvmTransaction(id);
 
     const tx = getTransaction(id);
@@ -73,29 +104,24 @@ class BridgeTransactionStateHandler {
     await this.updateTransactionParams(id, { ethereumNetworkFee });
   }
 
-  static async onEvmSubmitted(id: string, { signEvm }): Promise<void> {
-    await this.updateTransactionParams(id, { transactionState: STATES.EVM_PENDING, signed: false });
+  async onEvmSubmitted(id: string): Promise<void> {
+    await this.updateTransactionParams(id, { transactionState: STATES.EVM_PENDING });
 
     const tx = getTransaction(id);
 
-    if (!tx.signed) {
-      const { hash: ethereumHash, fee } = await signEvm(id);
+    if (!tx.ethereumHash) {
+      const { hash: ethereumHash, fee } = await this.signEvm(id);
 
       await this.updateTransactionParams(id, {
         ethereumHash,
         ethereumNetworkFee: fee ?? tx.ethereumNetworkFee,
-        signed: true,
       });
     }
   }
 }
 
 class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
-  static async signEvm(id: string): Promise<void> {
-    return await store.dispatch('bridge/signEvmTransactionSoraToEvm', id);
-  }
-
-  static async changeState(transaction: BridgeHistory): Promise<void> {
+  async changeState(transaction: BridgeHistory): Promise<void> {
     if (!transaction.id) throw new Error('TX ID cannot be empty');
 
     switch (transaction.transactionState) {
@@ -108,51 +134,45 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
       }
 
       case STATES.SORA_SUBMITTED: {
-        const handler = async (id: string) => {
-          await this.updateTransactionParams(id, { transactionState: STATES.SORA_PENDING });
-
-          const tx = getTransaction(id);
-
-          if (!tx.signed) {
-            const evmAccount = await ethersUtil.getAccount();
-
-            if (!tx.amount) throw new Error('[Bridge]: TX amount cannot be empty');
-
-            const asset = store.getters['assets/getAssetDataByAddress'](tx.assetAddress);
-
-            if (!asset || !asset.externalAddress) throw new Error(`Asset not registered: ${tx.assetAddress}`);
-
-            await bridgeApi.transferToEth(asset, evmAccount, tx.amount, tx.id);
-
-            await this.updateTransactionParams(id, { signed: true });
-          }
-        };
-
         return await this.handleState(transaction.id, {
           status: BridgeTxStatus.Pending,
           nextState: STATES.SORA_PENDING,
           rejectState: STATES.SORA_REJECTED,
-          handler,
+          handler: async (id: string) => {
+            await this.updateTransactionParams(id, { transactionState: STATES.SORA_PENDING });
+
+            const { blockId, to, amount, assetAddress } = getTransaction(id);
+
+            if (!amount) throw new Error('[Bridge]: TX "amount" cannot be empty');
+            if (!assetAddress) throw new Error('[Bridge]: TX "assetAddress" cannot be empty');
+            if (!to) throw new Error('[Bridge]: TX "to" cannot be empty');
+
+            const asset = this.getAssetByAddress(assetAddress);
+
+            if (!asset || !asset.externalAddress)
+              throw new Error(`[Bridge]: TX asset is not registered: ${assetAddress}`);
+
+            // signed sora transaction has to be in block chain
+            if (!blockId) {
+              await bridgeApi.transferToEth(asset, to, amount, id);
+            }
+          },
         });
       }
 
       case STATES.SORA_PENDING: {
-        const handler = async (id: string) => {
-          const tx = await waitForExtrinsicFinalization(id);
-
-          await this.updateTransactionParams(id, tx);
-
-          if (!tx.hash) throw new Error('[Bridge]: TX hash cannot be empty');
-
-          const { to, hash } = await waitForApprovedRequest(tx.hash);
-
-          await this.updateTransactionParams(id, { to, hash });
-        };
-
         return await this.handleState(transaction.id, {
           nextState: STATES.SORA_COMMITED,
           rejectState: STATES.SORA_REJECTED,
-          handler,
+          handler: async (id: string) => {
+            const hash = await waitForSoraTransactionHash(id);
+
+            await this.updateTransactionParams(id, { hash });
+
+            const { to } = await waitForApprovedRequest(hash);
+
+            await this.updateTransactionParams(id, { to });
+          },
         });
       }
 
@@ -160,7 +180,7 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
         return await this.handleState(transaction.id, {
           nextState: STATES.EVM_SUBMITTED,
           rejectState: STATES.SORA_REJECTED,
-          handler: this.updateTransactionStep,
+          handler: async (id: string) => await this.updateTransactionStep(id),
         });
       }
 
@@ -176,7 +196,7 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
           status: BridgeTxStatus.Pending,
           nextState: STATES.EVM_PENDING,
           rejectState: STATES.EVM_REJECTED,
-          handler: (id) => this.onEvmSubmitted(id, { signEvm: this.signEvm }),
+          handler: async (id: string) => await this.onEvmSubmitted(id),
         });
       }
 
@@ -184,7 +204,7 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
         return await this.handleState(transaction.id, {
           nextState: STATES.EVM_COMMITED,
           rejectState: STATES.EVM_REJECTED,
-          handler: this.onEvmPending,
+          handler: async (id: string) => await this.onEvmPending(id),
         });
       }
 
@@ -193,7 +213,7 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
           status: BridgeTxStatus.Done,
           nextState: STATES.EVM_COMMITED,
           rejectState: STATES.EVM_REJECTED,
-          handler: this.onComplete,
+          handler: async (id: string) => await this.onComplete(id),
         });
       }
 
@@ -209,11 +229,7 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
 }
 
 class EthBridgeIncomingStateReducer extends BridgeTransactionStateHandler {
-  static async signEvm(id: string): Promise<void> {
-    return await store.dispatch('bridge/signEvmTransactionEvmToSora', id);
-  }
-
-  static async changeState(transaction: BridgeHistory): Promise<void> {
+  async changeState(transaction: BridgeHistory): Promise<void> {
     if (!transaction.id) throw new Error('TX ID cannot be empty');
 
     switch (transaction.transactionState) {
@@ -230,7 +246,7 @@ class EthBridgeIncomingStateReducer extends BridgeTransactionStateHandler {
           status: BridgeTxStatus.Pending,
           nextState: STATES.EVM_PENDING,
           rejectState: STATES.EVM_REJECTED,
-          handler: (id) => this.onEvmSubmitted(id, { signEvm: this.signEvm }),
+          handler: async (id: string) => await this.onEvmSubmitted(id),
         });
       }
 
@@ -238,7 +254,7 @@ class EthBridgeIncomingStateReducer extends BridgeTransactionStateHandler {
         return await this.handleState(transaction.id, {
           nextState: STATES.EVM_COMMITED,
           rejectState: STATES.EVM_REJECTED,
-          handler: this.onEvmPending,
+          handler: async (id: string) => await this.onEvmPending(id),
         });
       }
 
@@ -246,7 +262,7 @@ class EthBridgeIncomingStateReducer extends BridgeTransactionStateHandler {
         return await this.handleState(transaction.id, {
           nextState: STATES.SORA_SUBMITTED,
           rejectState: STATES.EVM_REJECTED,
-          handler: this.updateTransactionStep,
+          handler: async (id: string) => await this.updateTransactionStep(id),
         });
       }
 
@@ -259,41 +275,24 @@ class EthBridgeIncomingStateReducer extends BridgeTransactionStateHandler {
       }
 
       case STATES.SORA_SUBMITTED: {
-        const handler = async (id: string) => {
-          await this.updateTransactionParams(id, { transactionState: STATES.SORA_PENDING, signed: false });
-
-          const tx = getTransaction(id);
-
-          if (!tx.signed) {
-            // TODO: check it for other types of bridge
-            // const transferType = isXorAccountAsset(getters.asset) ? RequestType.TransferXOR : RequestType.Transfer
-            // await bridgeApi.requestFromEth(ethereumHash, transferType)
-
-            await this.updateTransactionParams(id, { signed: true });
-          }
-        };
-
         return await this.handleState(transaction.id, {
           status: BridgeTxStatus.Pending,
           nextState: STATES.SORA_PENDING,
           rejectState: STATES.SORA_REJECTED,
-          handler,
         });
       }
 
       case STATES.SORA_PENDING: {
-        const handler = async (id: string) => {
-          const tx = getTransaction(id);
-
-          if (!tx.ethereumHash) throw new Error('Hash cannot be empty!');
-
-          await waitForRequest(tx.ethereumHash);
-        };
-
         return await this.handleState(transaction.id, {
           nextState: STATES.SORA_COMMITED,
           rejectState: STATES.SORA_REJECTED,
-          handler,
+          handler: async (id: string) => {
+            const tx = getTransaction(id);
+
+            if (!tx.ethereumHash) throw new Error('Hash cannot be empty!');
+
+            await waitForRequest(tx.ethereumHash);
+          },
         });
       }
 
@@ -302,7 +301,7 @@ class EthBridgeIncomingStateReducer extends BridgeTransactionStateHandler {
           status: BridgeTxStatus.Done,
           nextState: STATES.SORA_COMMITED,
           rejectState: STATES.SORA_REJECTED,
-          handler: this.onComplete,
+          handler: async (id: string) => await this.onComplete(id),
         });
       }
 
@@ -317,36 +316,66 @@ class EthBridgeIncomingStateReducer extends BridgeTransactionStateHandler {
   }
 }
 
+type BridgeReducer = EthBridgeOutgoingStateReducer | EthBridgeIncomingStateReducer;
+
+type BridgeReducers = {
+  [Operation.EthBridgeOutgoing]: BridgeReducer;
+  [Operation.EthBridgeIncoming]: BridgeReducer;
+};
+
 class Bridge {
-  static readonly TX_TYPE_REDUCERS = {
+  protected reducers!: BridgeReducers;
+
+  static readonly OPERATION_REDUCERS = {
     [Operation.EthBridgeOutgoing]: EthBridgeOutgoingStateReducer,
     [Operation.EthBridgeIncoming]: EthBridgeIncomingStateReducer,
   };
 
-  static async handleTransaction(id: string) {
+  constructor({ sign, ...rest }: BridgeOptions) {
+    this.reducers = Object.entries(Bridge.OPERATION_REDUCERS).reduce((acc, [operation, Reducer]) => {
+      if (!(operation in acc)) {
+        const reducer = new Reducer({ ...rest, signEvm: sign[operation] });
+
+        acc[operation] = reducer;
+      }
+      return acc;
+    }, {} as BridgeReducers);
+  }
+
+  async handleTransaction(id: string) {
     const transaction = getTransaction(id);
 
     const { type } = transaction;
-    const reducer = this.TX_TYPE_REDUCERS[type];
 
-    if (!reducer) throw new Error(`[Bridge]: Unsupported operation '${type}'`);
+    if (!(type in this.reducers)) {
+      throw new Error(`[Bridge]: Unsupported operation '${type}'`);
+    }
 
-    const handler = reducer.changeState;
+    const reducer = this.reducers[type];
 
-    await this.process(transaction, handler);
+    await this.process(transaction, reducer);
   }
 
-  private static async process(transaction: BridgeHistory, handler: BridgeTransactionHandler) {
-    await handler(transaction);
+  private async process(transaction: BridgeHistory, reducer: BridgeReducer) {
+    await reducer.changeState(transaction);
 
     const tx = getTransaction(transaction.id as string);
 
     if (![BridgeTxStatus.Done, BridgeTxStatus.Failed].includes(tx.status as BridgeTxStatus)) {
-      await this.process(tx, handler);
+      await this.process(tx, reducer);
     }
   }
 }
 
-export { bridgeApi, Bridge };
+const appBridge = new Bridge({
+  sign: {
+    [Operation.EthBridgeIncoming]: (id: string) => store.dispatch('bridge/signEvmTransactionEvmToSora', id),
+    [Operation.EthBridgeOutgoing]: (id: string) => store.dispatch('bridge/signEvmTransactionSoraToEvm', id),
+  },
+  updateHistory: () => store.dispatch('bridge/getHistory'),
+  getAssetByAddress: (address: string) => store.getters['assets/getAssetDataByAddress'](address),
+});
+
+export { bridgeApi, appBridge };
 export * from './utils';
 export * from './types';
