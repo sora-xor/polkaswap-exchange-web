@@ -10,7 +10,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, State, Getter } from 'vuex-class';
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 import DialogBase from '@/components/DialogBase.vue';

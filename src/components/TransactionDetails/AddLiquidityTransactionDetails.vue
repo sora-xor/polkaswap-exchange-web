@@ -28,7 +28,7 @@
         :label="t('createPair.networkFee')"
         :label-tooltip="t('networkFeeTooltipText')"
         :value="formattedFee"
-        :asset-symbol="KnownSymbols.XOR"
+        :asset-symbol="XOR_SYMBOL"
         :fiat-value="getFiatAmountByCodecString(networkFee)"
       />
     </div>
@@ -58,7 +58,8 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
 import { components } from '@soramitsu/soraneo-wallet-web';
-import { AccountLiquidity, FPNumber, CodecString } from '@sora-substrate/util';
+import { FPNumber, CodecString } from '@sora-substrate/util';
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 import BaseTokenPairMixinInstance from '../mixins/BaseTokenPairMixin';
 import TranslationMixin from '../mixins/TranslationMixin';

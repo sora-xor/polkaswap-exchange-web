@@ -4,7 +4,7 @@ import { State, Action, Getter } from 'vuex-class';
 import TranslationMixin from './TranslationMixin';
 import { AppHandledError } from '@/utils/error';
 import { delay } from '@/utils';
-import { Node } from '@/types/nodes';
+import type { Node } from '@/types/nodes';
 
 @Component
 export default class NodeErrorMixin extends Mixins(TranslationMixin) {

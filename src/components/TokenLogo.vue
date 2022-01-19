@@ -5,7 +5,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
-import { Asset, AccountAsset, Whitelist } from '@sora-substrate/util';
+import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { LogoSize, ObjectInit } from '@/consts';

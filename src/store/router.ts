@@ -3,7 +3,7 @@ import fromPairs from 'lodash/fp/fromPairs';
 import concat from 'lodash/fp/concat';
 import flow from 'lodash/fp/flow';
 
-import { PageNames } from '@/consts';
+import type { PageNames } from '@/consts';
 
 const types = flow(
   concat(['SET_ROUTE']),

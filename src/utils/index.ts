@@ -1,18 +1,13 @@
 import debounce from 'lodash/debounce';
-import {
-  Asset,
-  AccountAsset,
-  RegisteredAccountAsset,
-  AccountLiquidity,
-  FPNumber,
-  CodecString,
-  XOR,
-} from '@sora-substrate/util';
 import { api } from '@soramitsu/soraneo-wallet-web';
+import { RegisteredAccountAsset, FPNumber, CodecString } from '@sora-substrate/util';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
+import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 import router from '@/router';
 import i18n from '@/lang';
-import { app, ZeroStringValue } from '@/consts';
+import { app } from '@/consts';
 
 import storage from './storage';
 
@@ -212,25 +207,6 @@ export const toQueryString = (params: any): string => {
   return Object.entries(params)
     .map(([key, value]) => `${key}=${encodeURIComponent(value as string)}`)
     .join('&');
-};
-
-export const divideAssets = (
-  firstAsset: Asset,
-  secondAsset: Asset,
-  firstAmount: CodecString,
-  secondAmount: CodecString,
-  reversed = false
-): string => {
-  if (!firstAsset || !secondAsset || !firstAmount || !secondAmount) return ZeroStringValue;
-
-  const one = new FPNumber(1);
-  const firstAmountNum = new FPNumber(firstAmount, firstAsset.decimals);
-  const secondAmountNum = new FPNumber(secondAmount, secondAsset.decimals);
-  const result = !reversed
-    ? firstAmountNum.div(!secondAmountNum.isZero() ? secondAmountNum : one)
-    : secondAmountNum.div(!firstAmountNum.isZero() ? firstAmountNum : one);
-
-  return result.format();
 };
 
 export const waitForAccountPair = async (func: VoidFunction): Promise<any> => {

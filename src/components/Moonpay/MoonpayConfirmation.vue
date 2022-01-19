@@ -33,7 +33,7 @@ import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-import type { Whitelist } from '@sora-substrate/util';
+import type { Whitelist } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {

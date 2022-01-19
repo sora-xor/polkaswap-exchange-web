@@ -4,7 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import { api } from '@soramitsu/soraneo-wallet-web';
-import { CodecString, Operation } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
 
 import { ZeroStringValue } from '@/consts';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
@@ -128,7 +128,7 @@ const actions = {
     if (getters.firstToken && getters.secondToken) {
       commit(types.CHECK_LIQUIDITY_REQUEST);
       try {
-        const exists = await api.checkLiquidity(getters.firstToken.address, getters.secondToken.address);
+        const exists = await api.poolXyk.check(getters.firstToken.address, getters.secondToken.address);
         commit(types.CHECK_LIQUIDITY_SUCCESS, !exists);
         dispatch('estimateMinted');
       } catch (error) {
@@ -138,19 +138,15 @@ const actions = {
   },
 
   async estimateMinted({ commit, getters }) {
-    if (
-      getters.firstToken?.address &&
-      getters.secondToken?.address &&
-      getters.firstTokenValue &&
-      getters.secondTokenValue
-    ) {
+    const { firstToken, secondToken, firstTokenValue, secondTokenValue } = getters;
+    if (firstToken && secondToken && firstTokenValue && secondTokenValue) {
       commit(types.ESTIMATE_MINTED_REQUEST);
       try {
-        const [minted] = await api.estimatePoolTokensMinted(
-          getters.firstToken.address,
-          getters.secondToken.address,
-          getters.firstTokenValue,
-          getters.secondTokenValue,
+        const [minted] = await api.poolXyk.estimatePoolTokensMinted(
+          firstToken,
+          secondToken,
+          firstTokenValue,
+          secondTokenValue,
           ZeroStringValue,
           ZeroStringValue
         );
@@ -174,9 +170,9 @@ const actions = {
   async createPair({ commit, getters, rootGetters }) {
     commit(types.CREATE_PAIR_REQUEST);
     try {
-      await api.createPair(
-        getters.firstToken.address,
-        getters.secondToken.address,
+      await api.poolXyk.create(
+        getters.firstToken,
+        getters.secondToken,
         getters.firstTokenValue,
         getters.secondTokenValue,
         rootGetters.slippageTolerance

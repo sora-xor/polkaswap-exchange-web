@@ -1,4 +1,6 @@
-import { AccountAsset, KnownSymbols, FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/util';
+import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 export const tokens = [
   {
@@ -47,6 +49,7 @@ export const MOCK_ACCOUNT_ASSETS: Array<AccountAsset> = [
       reserved: '0',
       frozen: '0',
       locked: '0',
+      bonded: '0',
     },
   },
   {
@@ -60,6 +63,7 @@ export const MOCK_ACCOUNT_ASSETS: Array<AccountAsset> = [
       reserved: '0',
       frozen: '0',
       locked: '0',
+      bonded: '0',
     },
   },
   {
@@ -73,6 +77,7 @@ export const MOCK_ACCOUNT_ASSETS: Array<AccountAsset> = [
       reserved: '0',
       frozen: '0',
       locked: '0',
+      bonded: '0',
     },
   },
 ];

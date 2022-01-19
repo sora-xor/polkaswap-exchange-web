@@ -22,7 +22,7 @@
       :label="t('createPair.networkFee')"
       :label-tooltip="t('networkFeeTooltipText')"
       :value="formattedFee"
-      :asset-symbol="KnownSymbols.XOR"
+      :asset-symbol="XOR_SYMBOL"
       :fiat-value="getFiatAmountByCodecString(networkFee)"
       is-formatted
     />
@@ -32,8 +32,9 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
-
-import { KnownSymbols, CodecString, Operation, NetworkFeesObject, Asset } from '@sora-substrate/util';
+import { CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import TranslationMixin from '../mixins/TranslationMixin';
@@ -47,6 +48,8 @@ const namespace = 'removeLiquidity';
   components: { InfoLine: components.InfoLine, TransactionDetails: lazyComponent(Components.TransactionDetails) },
 })
 export default class RemoveLiquidityTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
+  readonly XOR_SYMBOL = XOR.symbol;
+
   @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string;
   @Getter('price', { namespace: 'prices' }) price!: string;
   @Getter('shareOfPool', { namespace }) shareOfPool!: string;
@@ -55,8 +58,6 @@ export default class RemoveLiquidityTransactionDetails extends Mixins(mixins.For
   @Getter networkFees!: NetworkFeesObject;
 
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
-
-  KnownSymbols = KnownSymbols;
 
   get networkFee(): CodecString {
     return this.networkFees[Operation.RemoveLiquidity];

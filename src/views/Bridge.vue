@@ -227,15 +227,9 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
-import {
-  RegisteredAccountAsset,
-  BridgeNetworks,
-  KnownSymbols,
-  FPNumber,
-  CodecString,
-  Operation,
-} from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { RegisteredAccountAsset, BridgeNetworks, FPNumber, CodecString, Operation } from '@sora-substrate/util';
+import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
@@ -244,7 +238,6 @@ import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames, EvmSymbol } from '@/consts';
-import { SubNetwork } from '@/utils/ethers-util';
 import {
   isXorAccountAsset,
   hasInsufficientBalance,
@@ -257,6 +250,7 @@ import {
   isEthereumAddress,
 } from '@/utils';
 import { bridgeApi } from '@/utils/bridge';
+import type { SubNetwork } from '@/utils/ethers-util';
 
 const namespace = 'bridge';
 
