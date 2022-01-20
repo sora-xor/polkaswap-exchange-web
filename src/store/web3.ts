@@ -4,6 +4,7 @@ import flatMap from 'lodash/fp/flatMap';
 import concat from 'lodash/fp/concat';
 import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
+import { ethers } from 'ethers';
 import { FPNumber, BridgeNetworks } from '@sora-substrate/util';
 
 import { bridgeApi } from '@/utils/bridge';
@@ -18,7 +19,6 @@ import ethersUtil, {
 } from '@/utils/ethers-util';
 import { ZeroStringValue } from '@/consts';
 import { isEthereumAddress } from '@/utils';
-import { ethers } from 'ethers';
 
 const types = flow(
   flatMap((x) => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),

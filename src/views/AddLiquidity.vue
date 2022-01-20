@@ -180,8 +180,10 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
-import { FPNumber, AccountLiquidity, Operation, XOR } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber, Operation } from '@sora-substrate/util';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 import TokenPairMixinInstance from '@/components/mixins/TokenPairMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';

@@ -1,8 +1,7 @@
 import omit from 'lodash/fp/omit';
 import Vuex from 'vuex';
 import { shallowMount } from '@vue/test-utils';
-
-import { getWhitelistIdsBySymbol } from '@sora-substrate/util';
+import { api } from '@soramitsu/soraneo-wallet-web';
 
 import TokenLogo from '@/components/TokenLogo.vue';
 import { useDescribe, localVue } from '../../utils';
@@ -16,7 +15,7 @@ useDescribe('TokenLogo.vue', TokenLogo, () => {
           whitelist: () => {
             return { '0x0200000000000000000000000000000000000000000000000000000000000000': MOCK_WHITELIST_ITEM };
           },
-          whitelistIdsBySymbol: () => getWhitelistIdsBySymbol([MOCK_WHITELIST_ITEM]),
+          whitelistIdsBySymbol: () => api.assets.getWhitelistIdsBySymbol([MOCK_WHITELIST_ITEM]),
         },
       });
       const propsData = omit(['title'], item);

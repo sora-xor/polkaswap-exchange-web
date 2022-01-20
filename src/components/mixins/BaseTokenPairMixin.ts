@@ -1,12 +1,13 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
-import { FPNumber, CodecString, Operation, NetworkFeesObject, KnownSymbols } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber, CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 const BaseTokenPairMixinInstance = (namespace: string) => {
   @Component
   class BaseTokenPairMixin extends Mixins(mixins.TranslationMixin, mixins.FormattedAmountMixin) {
-    readonly KnownSymbols = KnownSymbols;
+    readonly XOR_SYMBOL = XOR.symbol;
 
     @Getter networkFees!: NetworkFeesObject;
 

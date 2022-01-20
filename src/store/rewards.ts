@@ -6,12 +6,13 @@ import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import { ethers } from 'ethers';
 import { api, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
-import { KnownAssets, KnownSymbols } from '@sora-substrate/util';
+import { KnownAssets, KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import type { Subscription } from '@polkadot/x-rxjs';
+import type { CodecString } from '@sora-substrate/util';
+import type { RewardInfo, RewardsInfo, AccountMarketMakerInfo } from '@sora-substrate/util/build/rewards/types';
+
 import ethersUtil from '@/utils/ethers-util';
 import { asZeroValue, waitForAccountPair } from '@/utils';
-
-import type { Subscription } from '@polkadot/x-rxjs';
-import type { RewardInfo, RewardsInfo, CodecString, AccountMarketMakerInfo } from '@sora-substrate/util';
 import type { RewardsAmountHeaderItem } from '@/types/rewards';
 
 const types = flow(
@@ -211,7 +212,7 @@ const actions = {
   async getNetworkFee({ commit, getters }) {
     commit(types.GET_FEE_REQUEST);
     try {
-      const fee = await api.getClaimRewardsNetworkFee(getters.claimableRewards);
+      const fee = await api.rewards.getNetworkFee(getters.claimableRewards);
       commit(types.GET_FEE_SUCCESS, fee);
     } catch (error) {
       console.error(error);
@@ -222,9 +223,9 @@ const actions = {
   async getRewards({ commit, dispatch, getters }, address) {
     commit(types.GET_REWARDS_REQUEST);
     try {
-      const internal = await api.checkLiquidityProvisionRewards();
-      const vested = await api.checkVestedRewards();
-      const external = address ? await api.checkExternalAccountRewards(address) : [];
+      const internal = await api.rewards.checkLiquidityProvision();
+      const vested = await api.rewards.checkVested();
+      const external = address ? await api.rewards.checkForExternalAccount(address) : [];
 
       commit(types.GET_REWARDS_SUCCESS, { internal, external, vested });
 
@@ -265,7 +266,7 @@ const actions = {
         commit(types.SET_TRANSACTION_STEP, 2);
       }
       if (!externalRewardsSelected || (state.transactionStep === 2 && state.signature)) {
-        await api.claimRewards(claimableRewards, state.signature, state.fee, externalAddress);
+        await api.rewards.claim(claimableRewards, state.signature, state.fee, externalAddress);
 
         // update ui to success state if user not changed external account
         if (rootGetters['web3/evmAddress'] === externalAddress) {
@@ -287,7 +288,7 @@ const actions = {
     if (!rootGetters.isLoggedIn) return;
 
     await waitForAccountPair(() => {
-      const subscription = api.subscribeOnAccountMarketMakerInfo().subscribe((info) => {
+      const subscription = api.rewards.subscribeOnAccountMarketMakerInfo().subscribe((info) => {
         commit(types.SET_ACCOUNT_MARKET_MAKER_INFO, info);
       });
 

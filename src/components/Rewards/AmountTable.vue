@@ -86,9 +86,9 @@
 
 <script lang="ts">
 import { Component, Prop, Mixins } from 'vue-property-decorator';
-import { RewardInfo } from '@sora-substrate/util';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type { RewardInfo } from '@sora-substrate/util/build/rewards/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards';

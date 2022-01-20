@@ -1,6 +1,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
-import { BridgeNetworks, RegisteredAccountAsset, CodecString, Operation } from '@sora-substrate/util';
+import { BridgeNetworks, Operation } from '@sora-substrate/util';
+import type { BridgeHistory, CodecString, RegisteredAccountAsset } from '@sora-substrate/util';
 
 import ethersUtil from '@/utils/ethers-util';
 import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';
@@ -10,7 +11,6 @@ import { MoonpayNotifications } from '@/components/Moonpay/consts';
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 
-import type { BridgeHistory } from '@sora-substrate/util';
 import type { ApiKeysObject } from '@/store/settings';
 import type { MoonpayTransaction } from '@/utils/moonpay';
 

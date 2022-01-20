@@ -53,8 +53,9 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { BridgeNetworks } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { CodecString, BridgeNetworks } from '@sora-substrate/util';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import DialogMixin from '@/components/mixins/DialogMixin';
@@ -62,8 +63,6 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { EvmSymbol, ZeroStringValue, Components } from '@/consts';
 import { lazyComponent } from '@/router';
-
-import type { Asset, CodecString } from '@sora-substrate/util';
 
 @Component({
   components: {

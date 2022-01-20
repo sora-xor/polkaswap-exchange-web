@@ -1,4 +1,5 @@
 import { Vue, Component } from 'vue-property-decorator';
+
 import { delay } from '@/utils';
 
 @Component

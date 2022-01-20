@@ -1,14 +1,13 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
+import { ethers } from 'ethers';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { BridgeNetworks } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import ethersUtil from '@/utils/ethers-util';
-import { ethers } from 'ethers';
 import { EvmSymbol } from '@/consts';
-
-import type { CodecString } from '@sora-substrate/util';
 
 @Component
 export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {

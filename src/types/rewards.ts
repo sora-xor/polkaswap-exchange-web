@@ -1,4 +1,6 @@
-import { RewardInfo, RewardingEvents, Asset } from '@sora-substrate/util';
+import type { RewardingEvents } from '@sora-substrate/util/build/rewards/consts';
+import type { RewardInfo } from '@sora-substrate/util/build/rewards/types';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 export interface RewardsAmountHeaderItem {
   asset: Asset;

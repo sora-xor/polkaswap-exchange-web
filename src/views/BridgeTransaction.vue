@@ -274,8 +274,9 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter, Action, State } from 'vuex-class';
-import { KnownSymbols } from '@sora-substrate/util';
 import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import type { CodecString, BridgeHistory, RegisteredAccountAsset } from '@sora-substrate/util';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
@@ -289,8 +290,6 @@ import {
   hasInsufficientEvmNativeTokenForFee,
 } from '@/utils';
 import { bridgeApi, STATES, isOutgoingTransaction, isUnsignedBridgeTransaction } from '@/utils/bridge';
-
-import type { CodecString, BridgeHistory, RegisteredAccountAsset } from '@sora-substrate/util';
 
 const FORMATTED_HASH_LENGTH = 24;
 const namespace = 'bridge';

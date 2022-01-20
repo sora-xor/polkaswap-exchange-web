@@ -90,8 +90,9 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
-import { AccountLiquidity, Asset } from '@sora-substrate/util';
 import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
@@ -127,7 +128,9 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
     return asset ? asset.symbol : this.t('pool.unknownAsset');
   }
 
-  handleAddLiquidity(firstAddress, secondAddress): void {
+  handleAddLiquidity(first?: string, second?: string): void {
+    const firstAddress = first || '';
+    const secondAddress = second || '';
     router.push({ name: PageNames.AddLiquidity, params: { firstAddress, secondAddress } });
   }
 
