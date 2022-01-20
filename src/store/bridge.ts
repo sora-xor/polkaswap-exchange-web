@@ -4,6 +4,7 @@ import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import flatten from 'lodash/fp/flatten';
+import omit from 'lodash/fp/omit';
 import {
   FPNumber,
   BridgeCurrencyType,
@@ -169,19 +170,13 @@ const mutations = {
     state.inProgressIds = { ...state.inProgressIds, [id]: true };
   },
   [types.REMOVE_TX_ID_FROM_PROGRESS](state, id: string) {
-    state.inProgressIds = Object.entries(state.inProgressIds).reduce((acc, [key, value]) => {
-      if (key === id) return acc;
-      return { ...acc, [key]: value };
-    }, {});
+    state.inProgressIds = omit([id], state.inProgressIds);
   },
   [types.ADD_TX_ID_IN_APPROVE](state, id: string) {
     state.waitingForApprove = { ...state.waitingForApprove, [id]: true };
   },
   [types.REMOVE_TX_ID_FROM_APPROVE](state, id: string) {
-    state.waitingForApprove = Object.entries(state.waitingForApprove).reduce((acc, [key, value]) => {
-      if (key === id) return acc;
-      return { ...acc, [key]: value };
-    }, {});
+    state.waitingForApprove = omit([id], state.waitingForApprove);
   },
 };
 

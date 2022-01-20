@@ -118,7 +118,7 @@
               type="primary"
               class="s-typograhy-button--big"
               :disabled="isFirstConfirmationButtonDisabled"
-              @click="handleTransaction"
+              @click="handleTransaction()"
             >
               <template v-if="!(isSoraToEvm || isExternalAccountConnected)">{{
                 t('bridgeTransaction.connectWallet')
@@ -227,7 +227,7 @@
               type="primary"
               class="s-typograhy-button--big"
               :disabled="isSecondConfirmationButtonDisabled"
-              @click="handleTransaction"
+              @click="handleTransaction()"
             >
               <template v-if="isSoraToEvm && !isExternalAccountConnected">{{
                 t('bridgeTransaction.connectWallet')
@@ -315,7 +315,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   @Getter('historyItem', { namespace }) historyItem!: BridgeHistory;
   @Getter('isTxEvmAccount', { namespace }) isTxEvmAccount!: boolean;
 
-  @Action('handleBridgeTx', { namespace }) handleBridgeTx;
+  @Action('handleBridgeTx', { namespace }) handleBridgeTx!: (id: string) => Promise<void>;
 
   readonly KnownSymbols = KnownSymbols;
   readonly collapseItems = {
@@ -439,7 +439,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   get transactionStep(): number {
-    return this.isTransactionFromCompleted ? 2 : 1;
+    return this.historyItem?.transactionStep ?? 1;
   }
 
   get activeCollapseItems(): Array<string> {
@@ -753,9 +753,9 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     return this.formatDate(date.getTime());
   }
 
-  async handleTransaction(withAutoStart = false): Promise<void> {
+  async handleTransaction(withAutoStart = true): Promise<void> {
     await this.checkConnectionToExternalAccount(async () => {
-      if (withAutoStart) {
+      if (withAutoStart && this.historyItem.id) {
         await this.handleBridgeTx(this.historyItem.id);
       }
     });
