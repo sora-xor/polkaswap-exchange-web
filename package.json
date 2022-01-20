@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "private": true,
   "author": "jihoon@tutanota.de <jihoon@tutanota.de>",
-  "main": "background.js",
+  "main": "index.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
