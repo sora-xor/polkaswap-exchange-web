@@ -365,7 +365,8 @@ const actions = {
     updateFpNumberLocale(locale);
     commit(types.SET_LANGUAGE, locale);
   },
-  setApiKeys({ commit }, keys) {
+  setApiKeys({ commit, dispatch }, keys) {
+    dispatch('settings/setNftStorageKey', keys.nftStorage, { root: true });
     commit(types.SET_API_KEYS, keys);
   },
   setFeatureFlags({ commit }, featureFlags) {

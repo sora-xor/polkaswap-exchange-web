@@ -80,7 +80,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @Action updateAccountAssets!: AsyncVoidFn;
   @Action setSoraNetwork!: (networkType: string) => Promise<void>; // wallet
-  @Action setNftStorageKey!: (apiKey: string) => Promise<void>; // wallet
   @Action setDefaultNodes!: (nodes: any) => Promise<void>;
   @Action setNetworkChainGenesisHash!: (hash: string) => Promise<void>;
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
@@ -122,7 +121,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       }
 
       await this.setApiKeys(data?.API_KEYS);
-      await this.setNftStorageKey(data?.API_KEYS.nftStorage);
       await this.setFeatureFlags(data?.FEATURE_FLAGS);
       await this.setSoraNetwork(data.NETWORK_TYPE);
       await this.setDefaultNodes(data?.DEFAULT_NETWORKS);
