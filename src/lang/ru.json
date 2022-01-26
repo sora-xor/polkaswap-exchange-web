@@ -197,7 +197,40 @@
         "extensibleSupply": {
             "placeholder": "Увеличиваемая эмиссия",
             "desc": "Возможность выпустить больше токенов."
-        }
+        },
+        "titleCommon": "Создать",
+        "confirmTokenTitleCommon": "Создать токен",
+        "confirmTokenTitleNFT": "Создать NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Предоставить контент",
+        "selectLocalFile": "Выберите локальный файл",
+        "CreateSimpleToken": "Токен",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Источник",
+                "value": "Локальные файлы"
+            },
+            "link": {
+                "placeholder": "Введите ссылку...",
+                "placeholderShort": "Ссылка",
+                "copyLink": "Копировать ссылку"
+            },
+            "image": {
+                "placeholderNoImage": "Загрузите файл, введя ссылку или выбрав из локального хранилища.",
+                "placeholderBadSource": "Нет изображения",
+                "placeholderBadSourceAddition": "или оно ещё не загружено в IPFS"
+            },
+            "supply": {
+                "placeholder": "Количество токенов",
+                "desc": "Количество NFT, которое вы собираетесь получить.",
+                "quantity": "Количество"
+            },
+            "description": {
+                "placeholder": "Описание"
+            }
+        },
+        "enterTokenDescription": "Введите описание"
     },
     "transaction": {
         "title": "Детали транзакции",
@@ -870,5 +903,6 @@
             "freeOfCharge": "Данная транзакция бесплатна"
         }
     },
-    "transactionDetailsText": "Детали транзакции"
+    "transactionDetailsText": "Детали транзакции",
+    "createTokenTextNFT": "Создать NFT"
 }

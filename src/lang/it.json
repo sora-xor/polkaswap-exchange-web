@@ -197,7 +197,40 @@
         "extensibleSupply": {
             "placeholder": "Supply estensibile",
             "desc": "Possibilità di coniare più tokens."
-        }
+        },
+        "titleCommon": "Creare",
+        "confirmTokenTitleCommon": "Crea token",
+        "confirmTokenTitleNFT": "Crea NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Fornisci contenuti",
+        "selectLocalFile": "Seleziona file locale",
+        "CreateSimpleToken": "Token",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Fonte",
+                "value": "File locali"
+            },
+            "link": {
+                "placeholder": "Inserisci qui il link...",
+                "placeholderShort": "Collegamento",
+                "copyLink": "Copia link"
+            },
+            "image": {
+                "placeholderNoImage": "Carica il file inserendo un collegamento o scegliendo dalla memoria locale",
+                "placeholderBadSource": "Non c'è immagine",
+                "placeholderBadSourceAddition": "oppure non è ancora stato caricato su IPFS"
+            },
+            "supply": {
+                "placeholder": "Supply del token",
+                "desc": "Quantità di NFT che otterrai.",
+                "quantity": "Quantità"
+            },
+            "description": {
+                "placeholder": "Descrizione"
+            }
+        },
+        "enterTokenDescription": "Inserisci la descrizione"
     },
     "transaction": {
         "title": "Dettagli della transazione",
@@ -870,5 +903,6 @@
             "freeOfCharge": "Questa azione è gratuita"
         }
     },
-    "transactionDetailsText": "Dettagli di Transazione"
+    "transactionDetailsText": "Dettagli di Transazione",
+    "createTokenTextNFT": "Crea NFT"
 }

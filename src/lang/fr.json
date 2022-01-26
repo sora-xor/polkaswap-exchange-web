@@ -197,7 +197,40 @@
         "extensibleSupply": {
             "placeholder": "Approvisionnement extensible",
             "desc": "Possibilité de miner plus de jetons."
-        }
+        },
+        "titleCommon": "Créer",
+        "confirmTokenTitleCommon": "Créer un jeton",
+        "confirmTokenTitleNFT": "Créer NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Fournir du contenu",
+        "selectLocalFile": "Sélectionnez le fichier local",
+        "CreateSimpleToken": "Token",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "La source",
+                "value": "Fichiers locaux"
+            },
+            "link": {
+                "placeholder": "Entrez le lien ici...",
+                "placeholderShort": "Lien",
+                "copyLink": "Copier le lien"
+            },
+            "image": {
+                "placeholderNoImage": "Téléchargez le fichier en saisissant un lien ou en choisissant dans le stockage local",
+                "placeholderBadSource": "Il n'y a pas d'image",
+                "placeholderBadSourceAddition": "ou il n'est pas encore téléchargé sur IPFS"
+            },
+            "supply": {
+                "placeholder": "Offre de jetons",
+                "desc": "Quantité de NFT que vous allez obtenir.",
+                "quantity": "Quantité"
+            },
+            "description": {
+                "placeholder": "Description"
+            }
+        },
+        "enterTokenDescription": "Entrez la description"
     },
     "transaction": {
         "title": "Détails de la transaction",
@@ -870,5 +903,6 @@
             "freeOfCharge": "Cette action est gratuite"
         }
     },
-    "transactionDetailsText": "Détails de la transaction"
+    "transactionDetailsText": "Détails de la transaction",
+    "createTokenTextNFT": "Créer NFT"
 }

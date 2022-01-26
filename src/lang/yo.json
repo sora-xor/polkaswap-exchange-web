@@ -197,7 +197,40 @@
         "extensibleSupply": {
             "placeholder": "Ipese Extensible",
             "desc": "Agbara lati mint awọn token diẹ sii."
-        }
+        },
+        "titleCommon": "Ṣẹda",
+        "confirmTokenTitleCommon": "Ṣẹda Tokini",
+        "confirmTokenTitleNFT": "Ṣẹda NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Pese akoonu",
+        "selectLocalFile": "Yan faili agbegbe",
+        "CreateSimpleToken": "Àmi",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Orisun",
+                "value": "Awọn faili agbegbe"
+            },
+            "link": {
+                "placeholder": "Tẹ ọna asopọ sii nibi...",
+                "placeholderShort": "Ọna asopọ",
+                "copyLink": "Daakọ ọna asopọ"
+            },
+            "image": {
+                "placeholderNoImage": "Ṣe igbasilẹ faili naa nipa titẹ ọna asopọ kan tabi yiyan lati ibi ipamọ agbegbe",
+                "placeholderBadSource": "Ko si aworan",
+                "placeholderBadSourceAddition": "tabi ko ti gbejade si IPFS sibẹsibẹ"
+            },
+            "supply": {
+                "placeholder": "Ipese Tokini",
+                "desc": "Iye awọn NFT ti iwọ yoo gba.",
+                "quantity": "Opoiye"
+            },
+            "description": {
+                "placeholder": "Apejuwe"
+            }
+        },
+        "enterTokenDescription": "Tẹ apejuwe sii"
     },
     "transaction": {
         "title": "Awọn alaye iṣowo",
@@ -870,5 +903,6 @@
             "freeOfCharge": "Iṣe yii jẹ ọfẹ"
         }
     },
-    "transactionDetailsText": "Idunadura Awọn alaye"
+    "transactionDetailsText": "Idunadura Awọn alaye",
+    "createTokenTextNFT": "Ṣẹda NFT"
 }
