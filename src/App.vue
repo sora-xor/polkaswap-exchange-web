@@ -77,15 +77,15 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action resetActiveTransactions!: AsyncVoidFn;
   @Action resetRuntimeVersionSubscription!: AsyncVoidFn;
   @Action resetFiatPriceAndApySubscription!: AsyncVoidFn;
+  @Action setSoraNetwork!: (networkType: string) => Promise<void>;
+  @Action setApiKeys!: (options: any) => Promise<void>;
 
   @Action updateAccountAssets!: AsyncVoidFn;
-  @Action setSoraNetwork!: (networkType: string) => Promise<void>; // wallet
   @Action setDefaultNodes!: (nodes: any) => Promise<void>;
   @Action setNetworkChainGenesisHash!: (hash: string) => Promise<void>;
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
   @Action setFaucetUrl!: (url: string) => Promise<void>;
   @Action setLanguage!: (lang: Language) => Promise<void>;
-  @Action setApiKeys!: (options: any) => Promise<void>;
   @Action setFeatureFlags!: (options: any) => Promise<void>;
   @Action resetBlockNumberSubscription!: AsyncVoidFn;
   @Action('unsubscribeAccountMarketMakerInfo', { namespace: 'rewards' }) unsubscribeMarketMakerInfo!: AsyncVoidFn;
