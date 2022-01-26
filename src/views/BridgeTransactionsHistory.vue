@@ -365,6 +365,7 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
   }
   &-status {
     display: flex;
+    align-items: center;
     margin-left: auto;
     max-width: 25%;
 
