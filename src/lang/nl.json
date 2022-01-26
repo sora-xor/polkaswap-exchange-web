@@ -197,6 +197,38 @@
         "extensibleSupply": {
             "placeholder": "Uitbreidbaar aanbod",
             "desc": "Mogelijkheid om meer tokens te munten."
+        },
+        "titleCommon": "Creëren",
+        "confirmTokenTitleCommon": "Token maken",
+        "confirmTokenTitleNFT": "NFT maken",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Inhoud bieden",
+        "selectLocalFile": "Selecteer lokaal bestand",
+        "CreateSimpleToken": "Token",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Bron",
+                "value": "Lokale bestanden"
+            },
+            "link": {
+                "placeholder": "Vul hier de link in...",
+                "placeholderShort": "Koppeling",
+                "copyLink": "Kopieer link"
+            },
+            "image": {
+                "placeholderNoImage": "Upload het bestand door een link in te voeren of te kiezen uit lokale opslag",
+                "placeholderBadSource": "Er is geen afbeelding",
+                "placeholderBadSourceAddition": "of het is nog niet geüpload naar IPFS"
+            },
+            "supply": {
+                "placeholder": "Tokenvoorraad",
+                "desc": "Het aantal NFT's dat u gaat krijgen.",
+                "quantity": "Hoeveelheid"
+            },
+            "description": {
+                "placeholder": "Omschrijving"
+            }
         }
     },
     "transaction": {
@@ -870,5 +902,6 @@
             "freeOfCharge": "Deze actie is gratis"
         }
     },
-    "transactionDetailsText": "Transactie Details"
+    "transactionDetailsText": "Transactie Details",
+    "createTokenTextNFT": "NFT maken"
 }
