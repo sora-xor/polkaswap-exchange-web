@@ -197,6 +197,38 @@
         "extensibleSupply": {
             "placeholder": "Rozšiřitelná nabídka",
             "desc": "Možnost tisknout více tokenů."
+        },
+        "titleCommon": "Vytvořit",
+        "confirmTokenTitleCommon": "Vytvořit token",
+        "confirmTokenTitleNFT": "Vytvořte NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Poskytujte obsah",
+        "selectLocalFile": "Vyberte místní soubor",
+        "CreateSimpleToken": "Žeton",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Zdroj",
+                "value": "Místní soubory"
+            },
+            "link": {
+                "placeholder": "Zde zadejte odkaz...",
+                "placeholderShort": "Odkaz",
+                "copyLink": "Kopírovat odkaz"
+            },
+            "image": {
+                "placeholderNoImage": "Nahrajte soubor zadáním odkazu nebo výběrem z místního úložiště",
+                "placeholderBadSource": "Není tam žádný obrázek",
+                "placeholderBadSourceAddition": "nebo ještě není nahráno do IPFS"
+            },
+            "supply": {
+                "placeholder": "Množství tokenů",
+                "desc": "Množství NFT, které získáte.",
+                "quantity": "Množství"
+            },
+            "description": {
+                "placeholder": "Popis"
+            }
         }
     },
     "transaction": {
@@ -870,5 +902,6 @@
             "freeOfCharge": "Tato akce je bezplatná"
         }
     },
-    "transactionDetailsText": "Detaily transakce"
+    "transactionDetailsText": "Detaily transakce",
+    "createTokenTextNFT": "Vytvořte NFT"
 }
