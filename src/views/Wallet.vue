@@ -106,6 +106,27 @@ export default class Wallet extends Mixins(TranslationMixin) {
     }
     &__body {
       padding: $inner-spacing-medium 0 0;
+
+      .preview-image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: $inner-spacing-small;
+        &__content {
+          object-fit: cover;
+          border-radius: calc(var(--s-border-radius-mini) * 0.75);
+        }
+        &__icon {
+          color: var(--s-color-base-content-tertiary);
+          font-size: 32px !important;
+          margin-bottom: $basic-spacing;
+        }
+        .placeholder {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+      }
     }
   }
   .history .history-items {
