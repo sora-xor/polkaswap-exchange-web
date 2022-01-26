@@ -229,7 +229,8 @@
             "description": {
                 "placeholder": "Описание"
             }
-        }
+        },
+        "enterTokenDescription": "Введите описание"
     },
     "transaction": {
         "title": "Детали транзакции",
@@ -610,7 +611,8 @@
         "clearHistory": "Очистить историю",
         "empty": "Здесь появится Ваша транзакция",
         "filterPlaceholder": "Фильтр по ID актива или символу тикера",
-        "restoreHistory": "Восстановить историю"
+        "restoreHistory": "Восстановить историю",
+        "statusAction": "Требуется действие"
     },
     "selectToken": {
         "title": "Выберите токен",

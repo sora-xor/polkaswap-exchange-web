@@ -366,6 +366,7 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
   &-status {
     display: flex;
     margin-left: auto;
+    max-width: 25%;
 
     &--success {
       color: var(--s-color-status-success);
@@ -384,7 +385,6 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
       text-transform: uppercase;
       font-size: 10px;
       line-height: var(--s-line-height-reset);
-      max-width: var(--s-size-medium);
       text-align: right;
     }
 

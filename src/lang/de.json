@@ -229,7 +229,8 @@
             "description": {
                 "placeholder": "Beschreibung"
             }
-        }
+        },
+        "enterTokenDescription": "Beschreibung eingeben"
     },
     "transaction": {
         "title": "Transaktionsdetails",
@@ -610,7 +611,8 @@
         "clearHistory": "Verlauf löschen",
         "empty": "Deine Transaktionen werden hier angezeigt.",
         "filterPlaceholder": "Filter nach Asset-ID oder Ticker-Symbol",
-        "restoreHistory": "Verlauf wiederherstellen"
+        "restoreHistory": "Verlauf wiederherstellen",
+        "statusAction": "Handlungsbedarf"
     },
     "selectToken": {
         "title": "Wähle ein Token",

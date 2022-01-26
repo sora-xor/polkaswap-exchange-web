@@ -229,7 +229,8 @@
             "description": {
                 "placeholder": "Description"
             }
-        }
+        },
+        "enterTokenDescription": "Enter description"
     },
     "transaction": {
         "title": "Transaction details",

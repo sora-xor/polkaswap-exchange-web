@@ -229,7 +229,8 @@
             "description": {
                 "placeholder": "Popis"
             }
-        }
+        },
+        "enterTokenDescription": "Zadejte popis"
     },
     "transaction": {
         "title": "Detaily transakce",
@@ -610,7 +611,8 @@
         "clearHistory": "Vymazat historii",
         "empty": "Zde se zobrazí vaše transakce.",
         "filterPlaceholder": "Filtrování podle ID aktiva nebo jeho tickeru",
-        "restoreHistory": "Obnovit historii"
+        "restoreHistory": "Obnovit historii",
+        "statusAction": "Je nutná akce"
     },
     "selectToken": {
         "title": "Vyberte token",

@@ -229,7 +229,8 @@
             "description": {
                 "placeholder": "Omschrijving"
             }
-        }
+        },
+        "enterTokenDescription": "Voer beschrijving in"
     },
     "transaction": {
         "title": "Transactiegegevens",
@@ -610,7 +611,8 @@
         "clearHistory": "Geschiedenis wissen",
         "empty": "Uw transacties zullen hier verschijnen.",
         "filterPlaceholder": "Filter op Asset-ID of Tickersymbool",
-        "restoreHistory": "Geschiedenis herstellen"
+        "restoreHistory": "Geschiedenis herstellen",
+        "statusAction": "Actie nodig"
     },
     "selectToken": {
         "title": "Kies een token",

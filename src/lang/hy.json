@@ -229,7 +229,8 @@
             "description": {
                 "placeholder": "Նկարագրություն"
             }
-        }
+        },
+        "enterTokenDescription": "Մուտքագրեք նկարագրությունը"
     },
     "transaction": {
         "title": "Գործարքի պարամետրերը",
@@ -610,7 +611,8 @@
         "clearHistory": "Մաքրել պատմությունը",
         "empty": "Ձեր գործարքները կհայտնվեն այստեղ:",
         "filterPlaceholder": "Ֆիլտր ըստ Ակտիվի ID-ի, Անվան կամ Նշիչի սիմվոլի",
-        "restoreHistory": "Վերականգնել պատմությունը"
+        "restoreHistory": "Վերականգնել պատմությունը",
+        "statusAction": "Գործողություն է անհրաժեշտ"
     },
     "selectToken": {
         "title": "Ընտրեք տոկեն",

@@ -229,7 +229,8 @@
             "description": {
                 "placeholder": "Opis"
             }
-        }
+        },
+        "enterTokenDescription": "Wpisz opis"
     },
     "transaction": {
         "title": "Szczegóły transakcji",
@@ -610,7 +611,8 @@
         "clearHistory": "Wyczyść historię",
         "empty": "Twoje transakcje pojawią się tutaj.",
         "filterPlaceholder": "Filtruj według identyfikatora waluty lub symbolu giełdowego",
-        "restoreHistory": "Przywróć historię"
+        "restoreHistory": "Przywróć historię",
+        "statusAction": "Potrzebne działanie"
     },
     "selectToken": {
         "title": "Wybierz token",
