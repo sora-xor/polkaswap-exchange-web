@@ -237,7 +237,7 @@ const actions = {
     }
   },
   // TODO: Need to restore transactions for all networks
-  async getRestoredHistory({ commit, getters, rootGetters }) {
+  async getRestoredHistory({ getters, rootGetters }) {
     api.restored = true;
     const hashes = await bridgeApi.getAccountRequests();
     if (!hashes?.length) {

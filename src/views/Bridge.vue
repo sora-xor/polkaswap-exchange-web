@@ -293,7 +293,7 @@ export default class Bridge extends Mixins(
   @Action('updateBalanceSubscription', { namespace }) updateBalanceSubscription!: AsyncVoidFn;
 
   @Action('generateHistoryItem', { namespace }) generateHistoryItem!: (history?: any) => Promise<BridgeHistory>;
-  @Action('setHistoryItem', { namespace }) setHistoryItem!: (id: string) => Promise<void>;
+  @Action('setHistoryItem', { namespace }) setHistoryItem!: (id?: string) => Promise<void>;
 
   @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<SubNetwork>;
   @Getter('asset', { namespace }) asset!: any;

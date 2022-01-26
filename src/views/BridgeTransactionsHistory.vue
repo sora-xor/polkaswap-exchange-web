@@ -51,7 +51,10 @@
                 </div>
                 <div class="history-item-date">{{ formatHistoryDate(item) }}</div>
               </div>
-              <div :class="historyStatusIconClasses(item.status)" />
+              <div :class="historyStatusClasses(item)">
+                <div class="history-item-status-text">{{ historyStatusText(item) }}</div>
+                <s-icon class="history-item-status-icon" :name="historyStatusIconName(item)" size="16" />
+              </div>
             </div>
           </template>
           <p v-else class="history-empty p4">{{ t('bridgeHistory.empty') }}</p>
@@ -91,6 +94,7 @@ import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
+import { isUnsignedToPart } from '@/utils/bridge';
 
 import type { BridgeHistory, RegisteredAccountAsset } from '@sora-substrate/util';
 
@@ -177,19 +181,41 @@ export default class BridgeTransactionsHistory extends Mixins(
     return this.formatDate(response?.startTime ?? Date.now());
   }
 
-  historyStatusIconClasses(status: BridgeTxStatus): string {
-    const iconClass = 'history-item-icon';
+  historyStatusClasses(item: BridgeHistory): string {
+    const iconClass = 'history-item-status';
     const classes = [iconClass];
 
-    if (status === BridgeTxStatus.Failed) {
+    if (item.status === BridgeTxStatus.Failed && isUnsignedToPart(item)) {
+      classes.push(`${iconClass}--warning`);
+    } else if (item.status === BridgeTxStatus.Failed) {
       classes.push(`${iconClass}--error`);
-    } else if (status === BridgeTxStatus.Done) {
-      return classes.join(' ');
+    } else if (item.status === BridgeTxStatus.Done) {
+      classes.push(`${iconClass}--success`);
     } else {
       classes.push(`${iconClass}--pending`);
     }
 
     return classes.join(' ');
+  }
+
+  historyStatusIconName(item: BridgeHistory): string {
+    if (item.status === BridgeTxStatus.Failed && isUnsignedToPart(item)) {
+      return 'notifications-alert-triangle-24';
+    } else if (item.status === BridgeTxStatus.Failed) {
+      return 'basic-clear-X-24';
+    } else if (item.status === BridgeTxStatus.Done) {
+      return 'basic-check-marks-24';
+    } else {
+      return 'time-time-24';
+    }
+  }
+
+  historyStatusText(item: BridgeHistory): string {
+    if (item.status === BridgeTxStatus.Failed && isUnsignedToPart(item)) {
+      return this.t('bridgeHistory.statusAction');
+    } else {
+      return '';
+    }
   }
 
   async handleClearHistory(): Promise<void> {
@@ -280,10 +306,11 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
 @include search-item('history--search');
 .history-item {
   display: flex;
+  align-items: center;
   margin-right: -#{$inner-spacing-small};
   margin-left: -#{$inner-spacing-small};
   min-height: $history-item-height;
-  padding: $inner-spacing-mini $inner-spacing-big;
+  padding: $inner-spacing-mini $inner-spacing-medium;
   border-radius: var(--s-border-radius-small);
 
   &:not(:first-child) {
@@ -336,13 +363,39 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
     color: var(--s-color-base-content-secondary);
     line-height: var(--s-line-height-mini);
   }
-  @include status-icon(true);
-  &-icon {
-    flex-shrink: 0;
-    align-self: flex-start;
-    margin-top: $inner-spacing-mini / 2;
-    margin-right: $inner-spacing-mini;
+  &-status {
+    display: flex;
     margin-left: auto;
+
+    &--success {
+      color: var(--s-color-status-success);
+    }
+    &--error {
+      color: var(--s-color-status-error);
+    }
+    &--warning {
+      color: var(--s-color-status-warning);
+    }
+    &--pending {
+      color: var(--s-color-base-content-secondary);
+    }
+
+    &-text {
+      text-transform: uppercase;
+      font-size: 10px;
+      line-height: var(--s-line-height-reset);
+      max-width: var(--s-size-medium);
+      text-align: right;
+    }
+
+    &-icon {
+      flex-shrink: 0;
+      color: inherit;
+    }
+
+    &-text + &-icon {
+      margin-left: $inner-spacing-mini / 2;
+    }
   }
 }
 .el-pagination {

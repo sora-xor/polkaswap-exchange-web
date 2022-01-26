@@ -10,11 +10,21 @@ import type { BridgeHistory, BridgeApprovedRequest, BridgeRequest } from '@sora-
 
 const SORA_REQUESTS_TIMEOUT = 6 * 1000; // Block production time
 
-export const isUnsignedBridgeTransaction = (tx: BridgeHistory): boolean => {
+export const isUnsignedFromPart = (tx: BridgeHistory): boolean => {
   if (tx.type === Operation.EthBridgeOutgoing) {
     return !tx.blockId;
   } else if (tx.type === Operation.EthBridgeIncoming) {
     return !tx.ethereumHash;
+  } else {
+    return true;
+  }
+};
+
+export const isUnsignedToPart = (tx: BridgeHistory): boolean => {
+  if (tx.type === Operation.EthBridgeOutgoing) {
+    return !tx.ethereumHash;
+  } else if (tx.type === Operation.EthBridgeIncoming) {
+    return false;
   } else {
     return true;
   }

@@ -92,7 +92,7 @@
               :label="t('bridgeTransaction.networkInfo.status')"
               :value="statusFrom"
             />
-            <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionFirstDate" />
+            <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionFromDate" />
             <info-line
               v-if="amount"
               is-formatted
@@ -201,7 +201,7 @@
               </s-dropdown>
             </div>
             <info-line :class="failedClassStep2" :label="t('bridgeTransaction.networkInfo.status')" :value="statusTo" />
-            <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionSecondDate" />
+            <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionToDate" />
             <info-line
               v-if="amount"
               is-formatted
@@ -289,7 +289,7 @@ import {
   hasInsufficientXorForFee,
   hasInsufficientEvmNativeTokenForFee,
 } from '@/utils';
-import { bridgeApi, STATES, isOutgoingTransaction, isUnsignedBridgeTransaction } from '@/utils/bridge';
+import { bridgeApi, STATES, isOutgoingTransaction, isUnsignedFromPart } from '@/utils/bridge';
 
 const FORMATTED_HASH_LENGTH = 24;
 const namespace = 'bridge';
@@ -316,6 +316,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   @Getter('isTxEvmAccount', { namespace }) isTxEvmAccount!: boolean;
 
   @Action('handleBridgeTx', { namespace }) handleBridgeTx!: (id: string) => Promise<void>;
+  @Action('setHistoryItem', { namespace }) setHistoryItem!: (id?: string) => Promise<void>;
 
   readonly KnownSymbols = KnownSymbols;
   readonly collapseItems = {
@@ -377,12 +378,12 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     return (!this.isSoraToEvm ? this.historyItem?.hash : this.historyItem?.ethereumHash) ?? '';
   }
 
-  get transactionFromDate(): number | string {
-    return (this.isSoraToEvm ? this.historyItem?.startTime : this.historyItem?.endTime) ?? '';
+  get transactionFromDate(): string {
+    return this.formatTransactionDate(this.historyItem?.startTime);
   }
 
-  get transactionToDate(): number | string {
-    return (!this.isSoraToEvm ? this.historyItem?.startTime : this.historyItem?.endTime) ?? '';
+  get transactionToDate(): string {
+    return this.formatTransactionDate(this.historyItem?.endTime);
   }
 
   get soraFeeFiatValue(): Nullable<string> {
@@ -538,14 +539,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     return this.historyItem.blockId || bridgeApi.getHistory(this.historyItem.id)?.blockId;
   }
 
-  get transactionFirstDate(): string {
-    return this.formatTransactionDate(this.transactionFromDate as string);
-  }
-
-  get transactionSecondDate(): string {
-    return this.formatTransactionDate(this.transactionToDate as string);
-  }
-
   get formattedSoraNetworkFee(): string {
     return this.getStringFromCodec(this.txSoraNetworkFee, this.tokenXOR?.decimals);
   }
@@ -662,9 +655,12 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   beforeDestroy(): void {
     const tx = { ...this.historyItem };
 
-    if (tx.id && !this.txInProcess && isUnsignedBridgeTransaction(tx)) {
+    if (tx.id && !this.txInProcess && isUnsignedFromPart(tx)) {
       bridgeApi.removeHistory(tx.id);
     }
+
+    // reset active history item
+    this.setHistoryItem();
   }
 
   private getTxIconStatusClasses(isSecondTransaction?: boolean): string {
@@ -747,7 +743,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     return transactionFailed ? 'info-line--error' : '';
   }
 
-  private formatTransactionDate(transactionDate: string): string {
+  private formatTransactionDate(transactionDate?: number): string {
     // We use current date if request is failed
     const date = transactionDate ? new Date(transactionDate) : new Date();
     return this.formatDate(date.getTime());

@@ -24,10 +24,12 @@ type SignedEvmTxResult = {
 
 type SignEvm = (id: string) => Promise<SignedEvmTxResult>;
 type GetAssetByAddress = (address: string) => RegisteredAsset;
+type GetActiveHistoryItem = () => Nullable<BridgeHistory>;
 
 interface BridgeCommonOptions {
   updateHistory: AsyncVoidFn;
   getAssetByAddress: GetAssetByAddress;
+  getActiveHistoryItem: GetActiveHistoryItem;
 }
 
 interface BridgeOptions extends BridgeCommonOptions {
@@ -45,11 +47,13 @@ class BridgeTransactionStateHandler {
   protected readonly signEvm!: SignEvm;
   protected readonly updateHistory!: AsyncVoidFn;
   protected readonly getAssetByAddress!: GetAssetByAddress;
+  protected readonly getActiveHistoryItem!: GetActiveHistoryItem;
 
-  constructor({ signEvm, updateHistory, getAssetByAddress }: BridgeReducerOptions) {
+  constructor({ signEvm, updateHistory, getAssetByAddress, getActiveHistoryItem }: BridgeReducerOptions) {
     this.signEvm = signEvm;
     this.updateHistory = updateHistory;
     this.getAssetByAddress = getAssetByAddress;
+    this.getActiveHistoryItem = getActiveHistoryItem;
   }
 
   async handleState(id: string, { status, nextState, rejectState, handler }: HandleTransactionPayload): Promise<void> {
@@ -94,6 +98,14 @@ class BridgeTransactionStateHandler {
     await this.updateTransactionParams(id, { transactionStep: 2 });
   }
 
+  async beforeSubmit(id: string): Promise<void> {
+    const activeHistoryItem = this.getActiveHistoryItem();
+
+    if (!activeHistoryItem || activeHistoryItem.id !== id) {
+      throw new Error(`[Bridge]: Transaction ${id} stopped, user should sign transaction in ui`);
+    }
+  }
+
   async onEvmPending(id: string): Promise<void> {
     await waitForEvmTransaction(id);
 
@@ -110,6 +122,8 @@ class BridgeTransactionStateHandler {
     const tx = getTransaction(id);
 
     if (!tx.ethereumHash) {
+      await this.beforeSubmit(id);
+
       const { hash: ethereumHash, fee } = await this.signEvm(id);
 
       await this.updateTransactionParams(id, {
@@ -139,6 +153,7 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
           nextState: STATES.SORA_PENDING,
           rejectState: STATES.SORA_REJECTED,
           handler: async (id: string) => {
+            await this.beforeSubmit(id);
             await this.updateTransactionParams(id, { transactionState: STATES.SORA_PENDING });
 
             const { blockId, to, amount, assetAddress } = getTransaction(id);
@@ -374,6 +389,7 @@ const appBridge = new Bridge({
   },
   updateHistory: () => store.dispatch('bridge/getHistory'),
   getAssetByAddress: (address: string) => store.getters['assets/getAssetDataByAddress'](address),
+  getActiveHistoryItem: () => store.getters['bridge/historyItem'],
 });
 
 export { bridgeApi, appBridge };
