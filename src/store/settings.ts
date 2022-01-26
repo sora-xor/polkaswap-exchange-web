@@ -91,8 +91,8 @@ const getters = {
   language(state) {
     return state.language;
   },
-  moonpayApiKey(state, getters, rootState) {
-    return rootState.apiKeys.moonpay;
+  moonpayApiKey(state, getters, rootState, rootGetters) {
+    return rootState.Settings.apiKeys.moonpay;
   },
   moonpayEnabled(state, getters) {
     return !!getters.moonpayApiKey && !!state.featureFlags.moonpay;
