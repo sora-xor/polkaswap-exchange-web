@@ -197,6 +197,38 @@
         "extensibleSupply": {
             "placeholder": "Rozszerzalna podaż",
             "desc": "Możliwość wybicia większej liczby tokenów."
+        },
+        "titleCommon": "",
+        "confirmTokenTitleCommon": "Utwórz token",
+        "confirmTokenTitleNFT": "Utwórz NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Podaj treść",
+        "selectLocalFile": "Wybierz plik lokalny",
+        "CreateSimpleToken": "Token",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Źródło",
+                "value": "Pliki lokalne"
+            },
+            "link": {
+                "placeholder": "Wpisz link tutaj...",
+                "placeholderShort": "Połączyć",
+                "copyLink": "Kopiuj link"
+            },
+            "image": {
+                "placeholderNoImage": "Prześlij plik, wprowadzając link lub wybierając z lokalnej pamięci",
+                "placeholderBadSource": "Nie ma obrazu",
+                "placeholderBadSourceAddition": "lub nie jest jeszcze załadowany do IPFS"
+            },
+            "supply": {
+                "placeholder": "Podaż tokenów",
+                "desc": "Ilość NFT, którą dostaniesz.",
+                "quantity": "Ilość"
+            },
+            "description": {
+                "placeholder": "Opis"
+            }
         }
     },
     "transaction": {
@@ -858,7 +890,7 @@
         "receivedRewards": "Otrzymane wynagrodzenie",
         "invitationLink": "Link polecający",
         "successCopy": "Link polecający został skopiowany do schowka.",
-        "bondTitle": "Obligacja XOR",
+        "bondTitle": "Utwórz rezerwy XOR",
         "unbondTitle": "Odłącz XOR",
         "confirm": {
             "text": "Potwierdź",
@@ -870,5 +902,6 @@
             "freeOfCharge": "Ta transakcja nie jest obciążona żadnymi kosztami."
         }
     },
-    "transactionDetailsText": "Szczegóły transakcji"
+    "transactionDetailsText": "Szczegóły transakcji",
+    "createTokenTextNFT": "Utwórz NFT"
 }

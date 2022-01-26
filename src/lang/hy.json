@@ -197,6 +197,38 @@
         "extensibleSupply": {
             "placeholder": "Ընդարձակվող մատակարարում",
             "desc": "Ավելի շատ նշաններ հատելու ունակություն:"
+        },
+        "titleCommon": "Ստեղծել",
+        "confirmTokenTitleCommon": "Ստեղծեք նշան",
+        "confirmTokenTitleNFT": "Ստեղծեք NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Տրամադրել բովանդակություն",
+        "selectLocalFile": "Ընտրեք տեղական ֆայլը",
+        "CreateSimpleToken": "Նշան",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Աղբյուր",
+                "value": "Տեղական ֆայլեր"
+            },
+            "link": {
+                "placeholder": "Մուտքագրեք հղումը այստեղ...",
+                "placeholderShort": "Հղում",
+                "copyLink": "Պատճենել հղումը"
+            },
+            "image": {
+                "placeholderNoImage": "Վերբեռնեք ֆայլը՝ մուտքագրելով հղում կամ ընտրելով տեղական պահեստից",
+                "placeholderBadSource": "Պատկեր չկա",
+                "placeholderBadSourceAddition": "կամ այն դեռ վերբեռնված չէ IPFS-ում"
+            },
+            "supply": {
+                "placeholder": "Տոկենի մատակարարում",
+                "desc": "NFT-ների քանակը, որոնք դուք պատրաստվում եք ստանալ:",
+                "quantity": "Քանակ"
+            },
+            "description": {
+                "placeholder": "Նկարագրություն"
+            }
         }
     },
     "transaction": {
@@ -870,5 +902,6 @@
             "freeOfCharge": "Այս գործողությունը անվճար է"
         }
     },
-    "transactionDetailsText": "Գործարքի մանրամասները"
+    "transactionDetailsText": "Գործարքի մանրամասները",
+    "createTokenTextNFT": "Ստեղծեք NFT"
 }
