@@ -13,10 +13,11 @@
             <template v-if="!claimingInProgressOrFinished">
               <rewards-amount-table
                 class="rewards-table"
-                v-if="internalRewards.length"
+                v-if="internalRewards"
                 v-model="selectedInternalRewardsModel"
-                :item="internalRewards[0]"
+                :item="internalRewards"
                 :theme="libraryTheme"
+                :disabled="!internalRewardsAvailable"
                 is-codec-string
               />
               <rewards-amount-table
@@ -125,12 +126,13 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   @State((state) => state.rewards.externalRewards) externalRewards!: Array<RewardInfo>;
   @State((state) => state.rewards.vestedRewards) vestedRewards!: Nullable<RewardsInfo>;
   @State((state) => state.rewards.selectedVestedRewards) selectedVestedRewards!: Nullable<RewardsInfo>;
-  @State((state) => state.rewards.selectedInternalRewards) selectedInternalRewards!: Array<RewardInfo>;
+  @State((state) => state.rewards.selectedInternalRewards) selectedInternalRewards!: Nullable<RewardInfo>;
   @State((state) => state.rewards.selectedExternalRewards) selectedExternalRewards!: Array<RewardInfo>;
 
   @Getter libraryTheme!: Theme;
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
   @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean;
+  @Getter('internalRewardsAvailable', { namespace: 'rewards' }) internalRewardsAvailable!: boolean;
   @Getter('vestedRewardsAvailable', { namespace: 'rewards' }) vestedRewardsAvailable!: boolean;
   @Getter('externalRewardsAvailable', { namespace: 'rewards' }) externalRewardsAvailable!: boolean;
   @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardsAmountHeaderItem>;
@@ -207,11 +209,11 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   }
 
   get selectedInternalRewardsModel(): boolean {
-    return this.selectedInternalRewards.length !== 0;
+    return this.internalRewardsAvailable && this.selectedInternalRewards !== null;
   }
 
   set selectedInternalRewardsModel(flag: boolean) {
-    const internal = flag ? this.internalRewards : [];
+    const internal = flag && this.internalRewards ? this.internalRewards : null;
     this.setSelectedRewards({ internal, external: this.selectedExternalRewards, vested: this.selectedVestedRewards });
   }
 

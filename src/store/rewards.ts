@@ -38,8 +38,8 @@ interface RewardsState {
   feeFetching: boolean;
   externalRewards: Array<RewardInfo>;
   selectedExternalRewards: Array<RewardInfo>;
-  internalRewards: Array<RewardInfo>;
-  selectedInternalRewards: Array<RewardInfo>;
+  internalRewards: Nullable<RewardInfo>;
+  selectedInternalRewards: Nullable<RewardInfo>;
   vestedRewards: Nullable<RewardsInfo>;
   selectedVestedRewards: Nullable<RewardsInfo>;
   rewardsFetching: boolean;
@@ -57,11 +57,11 @@ function initialState(): RewardsState {
     fee: '',
     feeFetching: false,
     externalRewards: [],
-    selectedExternalRewards: [],
-    internalRewards: [],
-    selectedInternalRewards: [],
+    internalRewards: null,
     vestedRewards: null,
     selectedVestedRewards: null,
+    selectedInternalRewards: null,
+    selectedExternalRewards: [],
     rewardsFetching: false,
     rewardsClaiming: false,
     rewardsRecieved: false,
@@ -77,10 +77,11 @@ const state = initialState();
 
 const getters = {
   claimableRewards(state: RewardsState): Array<RewardInfo | RewardsInfo> {
-    const buffer: Array<RewardInfo | RewardsInfo> = [
-      ...state.selectedInternalRewards,
-      ...state.selectedExternalRewards,
-    ];
+    const buffer: Array<RewardInfo | RewardsInfo> = [...state.selectedExternalRewards];
+
+    if (state.selectedInternalRewards) {
+      buffer.push(state.selectedInternalRewards);
+    }
 
     if (state.selectedVestedRewards) {
       buffer.push(state.selectedVestedRewards);
@@ -90,6 +91,9 @@ const getters = {
   },
   rewardsAvailable(_, getters): boolean {
     return getters.claimableRewards.length !== 0;
+  },
+  internalRewardsAvailable(state: RewardsState): boolean {
+    return !asZeroValue(state.internalRewards?.amount);
   },
   vestedRewardsAvailable(state: RewardsState): boolean {
     return !asZeroValue(state.vestedRewards?.limit);
@@ -151,14 +155,14 @@ const mutations = {
   [types.GET_REWARDS_REQUEST](state: RewardsState) {
     state.rewardsFetching = true;
   },
-  [types.GET_REWARDS_SUCCESS](state: RewardsState, { internal = [], external = [], vested = null } = {}) {
+  [types.GET_REWARDS_SUCCESS](state: RewardsState, { internal = null, external = [], vested = null } = {}) {
     state.internalRewards = internal;
     state.externalRewards = external;
     state.vestedRewards = vested;
     state.rewardsFetching = false;
   },
   [types.GET_REWARDS_FAILURE](state: RewardsState) {
-    state.internalRewards = [];
+    state.internalRewards = null;
     state.externalRewards = [];
     state.vestedRewards = null;
     state.rewardsFetching = false;
@@ -175,9 +179,9 @@ const mutations = {
     state.feeFetching = false;
   },
 
-  [types.SET_SELECTED_REWARDS](state: RewardsState, { internal = [], external = [], vested = null } = {}) {
+  [types.SET_SELECTED_REWARDS](state: RewardsState, { internal = null, external = [], vested = null } = {}) {
     state.selectedExternalRewards = [...external];
-    state.selectedInternalRewards = [...internal];
+    state.selectedInternalRewards = internal;
     state.selectedVestedRewards = vested;
   },
 
@@ -231,7 +235,7 @@ const actions = {
 
       // select all rewards by default
       await dispatch('setSelectedRewards', {
-        internal,
+        internal: getters.internalRewardsAvailable ? internal : null,
         external,
         vested: getters.vestedRewardsAvailable ? vested : null,
       });
