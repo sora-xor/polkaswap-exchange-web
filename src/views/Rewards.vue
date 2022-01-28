@@ -13,6 +13,7 @@
             <template v-if="!claimingInProgressOrFinished">
               <rewards-amount-table
                 class="rewards-table"
+                v-if="internalRewards"
                 v-model="selectedInternalRewardsModel"
                 :item="internalRewards"
                 :theme="libraryTheme"
