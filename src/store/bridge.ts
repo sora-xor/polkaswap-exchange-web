@@ -158,7 +158,7 @@ async function waitForExtrinsicFinalization(id?: string): Promise<BridgeHistory>
     console.error("Can't find history id");
     throw new Error('History id error');
   }
-  const tx = bridgeApi.getHistory(id);
+  const tx = bridgeApi.getHistory(id) as BridgeHistory;
   if (
     tx &&
     [TransactionStatus.Error, TransactionStatus.Invalid, TransactionStatus.Usurped].includes(
@@ -436,7 +436,7 @@ const actions = {
   async getHistory({ commit }) {
     commit(types.GET_HISTORY_REQUEST);
     try {
-      commit(types.GET_HISTORY_SUCCESS, bridgeApi.accountHistory);
+      commit(types.GET_HISTORY_SUCCESS, bridgeApi.historyList);
     } catch (error) {
       commit(types.GET_HISTORY_FAILURE);
       throw error;
