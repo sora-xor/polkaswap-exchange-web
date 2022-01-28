@@ -229,7 +229,8 @@
             "description": {
                 "placeholder": "Deskripsi"
             }
-        }
+        },
+        "enterTokenDescription": "Masukkan deskripsi"
     },
     "transaction": {
         "title": "Rincian transaksi",
@@ -610,7 +611,8 @@
         "clearHistory": "Bersihkan riwayat",
         "empty": "Transaksi Anda akan muncul di sini.",
         "filterPlaceholder": "Filter menurut ID Aset atau Simbol Ticker",
-        "restoreHistory": "Pulihkan riwayat"
+        "restoreHistory": "Pulihkan riwayat",
+        "statusAction": "Diperlukan tindakan"
     },
     "selectToken": {
         "title": "Pilih token",

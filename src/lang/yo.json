@@ -229,7 +229,8 @@
             "description": {
                 "placeholder": "Apejuwe"
             }
-        }
+        },
+        "enterTokenDescription": "Tẹ apejuwe sii"
     },
     "transaction": {
         "title": "Awọn alaye iṣowo",
@@ -610,7 +611,8 @@
         "clearHistory": "Nu itan kuro",
         "empty": "Awọn iṣowo rẹ yoo han nibi.",
         "filterPlaceholder": "Àlẹmọ nipasẹ Idanimo dukia tabi Aami Ticker",
-        "restoreHistory": "Mu itan pada"
+        "restoreHistory": "Mu itan pada",
+        "statusAction": "Ti nilo igbese"
     },
     "selectToken": {
         "title": "Yan Tokini kan",

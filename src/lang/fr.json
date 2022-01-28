@@ -229,7 +229,8 @@
             "description": {
                 "placeholder": "Description"
             }
-        }
+        },
+        "enterTokenDescription": "Entrez la description"
     },
     "transaction": {
         "title": "Détails de la transaction",
@@ -610,7 +611,8 @@
         "clearHistory": "Effacer l'historique",
         "empty": "Vos transactions apparaîtront ici.",
         "filterPlaceholder": "Filtrer par ID d'actif ou symbole",
-        "restoreHistory": "Restaurer l'historique"
+        "restoreHistory": "Restaurer l'historique",
+        "statusAction": "Action nécessaire"
     },
     "selectToken": {
         "title": "Sélectionnez un jeton",
