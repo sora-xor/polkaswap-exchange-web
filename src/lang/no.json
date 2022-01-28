@@ -229,7 +229,8 @@
             "description": {
                 "placeholder": "Beskrivelse"
             }
-        }
+        },
+        "enterTokenDescription": "Skriv inn beskrivelse"
     },
     "transaction": {
         "title": "Transaksjonsdetaljer",
@@ -610,7 +611,8 @@
         "clearHistory": "Slett historikk",
         "empty": "Transaksjonene dine vises her.",
         "filterPlaceholder": "Filtrer etter Aktivum ID, Navn eller Ticker symbol",
-        "restoreHistory": "Gjenopprett historikk"
+        "restoreHistory": "Gjenopprett historikk",
+        "statusAction": "Handling nødvendig"
     },
     "selectToken": {
         "title": "Velg token",

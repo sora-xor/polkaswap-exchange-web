@@ -229,7 +229,8 @@
             "description": {
                 "placeholder": "Descrizione"
             }
-        }
+        },
+        "enterTokenDescription": "Inserisci la descrizione"
     },
     "transaction": {
         "title": "Dettagli della transazione",
@@ -610,7 +611,8 @@
         "clearHistory": "Cancellare la cronologia",
         "empty": "Le tue transazioni appariranno qui.",
         "filterPlaceholder": "Filtra per Asset ID o Simbolo Ticker",
-        "restoreHistory": "Ripristina la cronologia"
+        "restoreHistory": "Ripristina la cronologia",
+        "statusAction": "Azione necessaria"
     },
     "selectToken": {
         "title": "Seleziona un token",
