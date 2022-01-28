@@ -13,7 +13,6 @@
             <template v-if="!claimingInProgressOrFinished">
               <rewards-amount-table
                 class="rewards-table"
-                v-if="internalRewards"
                 v-model="selectedInternalRewardsModel"
                 :item="internalRewards"
                 :theme="libraryTheme"
@@ -22,7 +21,6 @@
               />
               <rewards-amount-table
                 class="rewards-table"
-                v-if="vestedRewards"
                 v-model="selectedVestedRewardsModel"
                 :item="vestedRewadsGroupItem"
                 :theme="libraryTheme"
@@ -122,9 +120,9 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   @State((state) => state.rewards.transactionError) transactionError!: boolean;
   @State((state) => state.rewards.transactionStep) transactionStep!: number;
 
-  @State((state) => state.rewards.internalRewards) internalRewards!: Array<RewardInfo>;
+  @State((state) => state.rewards.internalRewards) internalRewards!: RewardInfo;
   @State((state) => state.rewards.externalRewards) externalRewards!: Array<RewardInfo>;
-  @State((state) => state.rewards.vestedRewards) vestedRewards!: Nullable<RewardsInfo>;
+  @State((state) => state.rewards.vestedRewards) vestedRewards!: RewardsInfo;
   @State((state) => state.rewards.selectedVestedRewards) selectedVestedRewards!: Nullable<RewardsInfo>;
   @State((state) => state.rewards.selectedInternalRewards) selectedInternalRewards!: Nullable<RewardInfo>;
   @State((state) => state.rewards.selectedExternalRewards) selectedExternalRewards!: Array<RewardInfo>;
@@ -213,7 +211,7 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   }
 
   set selectedInternalRewardsModel(flag: boolean) {
-    const internal = flag && this.internalRewards ? this.internalRewards : null;
+    const internal = flag ? this.internalRewards : null;
     this.setSelectedRewards({ internal, external: this.selectedExternalRewards, vested: this.selectedVestedRewards });
   }
 
@@ -231,7 +229,7 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   }
 
   set selectedVestedRewardsModel(flag: boolean) {
-    const vested = flag && this.vestedRewards ? this.vestedRewards : null;
+    const vested = flag ? this.vestedRewards : null;
     this.setSelectedRewards({ internal: this.selectedInternalRewards, external: this.selectedExternalRewards, vested });
   }
 
@@ -397,8 +395,6 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
 </style>
 
 <style lang="scss" scoped>
-$hint-font-size: 13px;
-
 .rewards {
   &-block {
     & + & {
@@ -436,7 +432,7 @@ $hint-font-size: 13px;
   }
 
   &-hint {
-    font-size: $hint-font-size;
+    font-size: var(--s-font-size-extra-small);
     font-weight: 300;
     line-height: var(--s-line-height-base);
     color: var(--s-color-base-content-primary);
@@ -464,7 +460,7 @@ $hint-font-size: 13px;
 
     &-hint {
       padding: 0 $inner-spacing-medium;
-      font-size: $hint-font-size;
+      font-size: var(--s-font-size-extra-small);
       font-weight: 300;
       line-height: var(--s-line-height-base);
       text-align: center;

@@ -227,9 +227,11 @@ const actions = {
   async getRewards({ commit, dispatch, getters }, address) {
     commit(types.GET_REWARDS_REQUEST);
     try {
-      const internal = await api.rewards.checkLiquidityProvision();
-      const vested = await api.rewards.checkVested();
-      const external = address ? await api.rewards.checkForExternalAccount(address) : [];
+      const [internal, vested, external] = await Promise.all([
+        api.rewards.checkLiquidityProvision(),
+        api.rewards.checkVested(),
+        address ? await api.rewards.checkForExternalAccount(address) : [],
+      ]);
 
       commit(types.GET_REWARDS_SUCCESS, { internal, external, vested });
 
