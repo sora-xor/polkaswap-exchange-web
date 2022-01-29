@@ -80,7 +80,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action setSoraNetwork!: (networkType: string) => Promise<void>;
   @Action setApiKeys!: (options: any) => Promise<void>;
 
-  @Action updateAccountAssets!: AsyncVoidFn;
+  @Action subscribeOnAccountAssets!: AsyncVoidFn;
   @Action setDefaultNodes!: (nodes: any) => Promise<void>;
   @Action setNetworkChainGenesisHash!: (hash: string) => Promise<void>;
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
@@ -99,7 +99,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Watch('nodeIsConnected')
   private updateConnectionSubsriptions(nodeConnected: boolean): void {
     if (nodeConnected) {
-      this.updateAccountAssets();
+      this.subscribeOnAccountAssets();
     } else {
       this.resetAccountAssetsSubscription();
     }

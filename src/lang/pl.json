@@ -230,7 +230,7 @@
                 "placeholder": "Opis"
             }
         },
-        "enterTokenDescription": "Wpisz opis"
+        "enterTokenDescription": "Wprowadź opis"
     },
     "transaction": {
         "title": "Szczegóły transakcji",

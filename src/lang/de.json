@@ -7,7 +7,7 @@
     "importText": "Importieren",
     "settingsText": "Einstellungen",
     "addAssetText": "Asset hinzufügen",
-    "createTokenText": "Token erstellen",
+    "createTokenText": "Erstellen",
     "comingSoonText": "Demnächst verfügbar",
     "successText": "Erfolgreich abgelaufen",
     "warningText": "Warnung",
@@ -202,7 +202,7 @@
         "confirmTokenTitleCommon": "Token erstellen",
         "confirmTokenTitleNFT": "NFT erstellen",
         "actionNFT": "@:createTokenTextNFT",
-        "provideContent": "Inhalte bereitstellen",
+        "provideContent": "Inhalt bereitstellen",
         "selectLocalFile": "Lokale Datei auswählen",
         "CreateSimpleToken": "Token",
         "CreateNftToken": "NFT",
@@ -213,11 +213,11 @@
             },
             "link": {
                 "placeholder": "Link hier eingeben...",
-                "placeholderShort": "Verknüpfung",
+                "placeholderShort": "Link",
                 "copyLink": "Link kopieren"
             },
             "image": {
-                "placeholderNoImage": "Laden Sie die Datei hoch, indem Sie entweder einen Link eingeben oder aus dem lokalen Speicher auswählen",
+                "placeholderNoImage": "Lade die Datei hoch, indem du entweder einen Link eingibst oder aus dem lokalen Speicher auswählst",
                 "placeholderBadSource": "Es gibt kein Bild",
                 "placeholderBadSourceAddition": "oder es wurde noch nicht auf IPFS hochgeladen"
             },

@@ -31,7 +31,7 @@ export const isUnsignedToPart = (tx: BridgeHistory): boolean => {
 };
 
 export const getTransaction = (id: string): BridgeHistory => {
-  const tx = bridgeApi.getHistory(id);
+  const tx = bridgeApi.getHistory(id) as BridgeHistory;
 
   if (!tx) throw new Error(`[Bridge]: Transaction is not exists: ${id}`);
 

@@ -266,7 +266,7 @@
     "soraText": "SORA",
     "ethereumText": "Ethereum",
     "changeNetworkText": "Сменить сеть в Metamask",
-    "transactionText": "транзакция | транзакции",
+    "transactionText": "транзакцию | транзакции",
     "connectWalletText": "Подключить аккаунт",
     "changeAccountText": "Сменить аккаунт",
     "connectedText": "Подключено",
@@ -724,14 +724,14 @@
             "failed": "{order} из {total} транзакции не удались. @:retryText"
         },
         "signing": {
-            "extension": "расширение для браузера polkadot {.js}",
-            "accounts": "Ваши учетные записи @:soraText и @:ethereumText соответственно"
+            "extension": "расширении для браузера polkadot {.js}",
+            "accounts": "Ваших учетных записях @:soraText и @:ethereumText соответственно"
         },
         "hint": {
             "connectExternalAccount": "Подключите аккаунт @:ethereumText, чтобы проверить наличие доступных наград PSWAP и VAL.",
             "connectAccounts": "Для получения наград PSWAP и VAL необходимо подключить оба аккаунта @:soraText и @:(ethereumText).",
             "connectAnotherAccount": "Подключите другой аккаунт @:ethereumText, чтобы проверить наличие доступных наград PSWAP и VAL.",
-            "howToClaimRewards": "Чтобы получить Ваше {symbols} вознаграждение, Вы должны войти {count} {transactions} в {destination}. Вознаграждения будут перечислены на ваш счет @:(soraText)."
+            "howToClaimRewards": "Чтобы получить Ваши {symbols} вознаграждения, Вы должны подписать {count} {transactions} в {destination}. Вознаграждения будут перечислены на ваш счет @:(soraText)."
         },
         "action": {
             "connectWallet": "@:connectWalletText",

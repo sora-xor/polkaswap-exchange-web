@@ -221,7 +221,7 @@ const actions = {
   async getHistory({ commit }) {
     commit(types.GET_HISTORY_REQUEST);
     try {
-      commit(types.GET_HISTORY_SUCCESS, bridgeApi.accountHistory);
+      commit(types.GET_HISTORY_SUCCESS, bridgeApi.historyList);
     } catch (error) {
       commit(types.GET_HISTORY_FAILURE);
       throw error;
@@ -341,7 +341,7 @@ const actions = {
   },
 
   async signEvmTransactionSoraToEvm({ getters, rootGetters }, id: string) {
-    const tx = bridgeApi.getHistory(id);
+    const tx = bridgeApi.getHistory(id) as BridgeHistory;
 
     if (!tx || !tx.hash) throw new Error('TX ID cannot be empty!');
     if (!tx.amount) throw new Error('TX amount cannot be empty!');

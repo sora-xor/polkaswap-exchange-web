@@ -31,7 +31,7 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
 
   async showHistory(id: string): Promise<void> {
     await this.withLoading(async () => {
-      const tx = bridgeApi.getHistory(id);
+      const tx = bridgeApi.getHistory(id) as BridgeHistory;
 
       if (!tx || !tx.id) {
         this.handleBack();
