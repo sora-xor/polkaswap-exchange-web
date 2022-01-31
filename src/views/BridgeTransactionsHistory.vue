@@ -384,7 +384,7 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
 
     &-text {
       text-transform: uppercase;
-      font-size: 10px;
+      font-size: $s-heading3-caps-font-size;
       line-height: var(--s-line-height-reset);
       text-align: right;
     }

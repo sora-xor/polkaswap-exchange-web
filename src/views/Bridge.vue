@@ -561,7 +561,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       }
       i {
         margin-top: 1px;
-        font-size: 10px;
+        font-size: $s-heading3-caps-font-size;
         @include icon-styles;
       }
     }
