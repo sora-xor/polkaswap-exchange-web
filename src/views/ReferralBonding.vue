@@ -94,8 +94,10 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { KnownSymbols, FPNumber, Operation } from '@sora-substrate/util';
-import type { AccountAsset, CodecString, NetworkFeesObject } from '@sora-substrate/util';
+import { FPNumber, Operation } from '@sora-substrate/util';
+import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
@@ -131,7 +133,6 @@ export default class ReferralBonding extends Mixins(
   @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn;
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
-  KnownSymbols = KnownSymbols;
   showConfirmBondDialog = false;
 
   get isTokenXorSet(): boolean {
@@ -143,7 +144,7 @@ export default class ReferralBonding extends Mixins(
   }
 
   get xorSymbol(): string {
-    return ' ' + KnownSymbols.XOR;
+    return ` ${KnownSymbols.XOR}`;
   }
 
   get bondedXOR(): string {

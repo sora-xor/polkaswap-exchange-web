@@ -33,7 +33,7 @@ export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, D
 
   async handleConfirmInviteUser(): Promise<void> {
     try {
-      await this.withNotifications(async () => await api.setInvitedUser(this.storageReferral));
+      await this.withNotifications(async () => await api.referralSystem.setInvitedUser(this.storageReferral));
       this.$emit('confirm', true);
     } catch (error) {
       this.$emit('confirm');

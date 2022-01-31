@@ -35,7 +35,9 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter, State } from 'vuex-class';
 import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { AccountAsset, Operation, KnownSymbols, CodecString, NetworkFeesObject } from '@sora-substrate/util';
+import { Operation, CodecString, NetworkFeesObject } from '@sora-substrate/util';
+import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
@@ -77,7 +79,9 @@ export default class ConfirmBonding extends Mixins(mixins.TransactionMixin, mixi
   async handleConfirmBonding(): Promise<void> {
     try {
       await this.withNotifications(async () =>
-        (await this.isBond) ? api.reserveXor(this.xorValue) : api.unreserveXor(this.xorValue)
+        (await this.isBond)
+          ? api.referralSystem.reserveXor(this.xorValue)
+          : api.referralSystem.unreserveXor(this.xorValue)
       );
       this.$emit('confirm', true);
     } catch (error) {

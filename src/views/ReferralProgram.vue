@@ -102,7 +102,8 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { AccountAsset, KnownSymbols } from '@sora-substrate/util';
+import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import router, { lazyComponent, lazyView } from '@/router';
 import { PageNames, Components, LogoSize } from '@/consts';
