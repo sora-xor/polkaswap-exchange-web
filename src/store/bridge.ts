@@ -353,7 +353,7 @@ const actions = {
 
     checkEvmNetwork(rootGetters);
 
-    const request = await waitForApprovedRequest(tx.hash); // If it causes an error, then -> catch -> SORA_REJECTED
+    const request = await waitForApprovedRequest(tx); // If it causes an error, then -> catch -> SORA_REJECTED
 
     if (!getters.isTxEvmAccount) {
       throw new Error(`Change account in MetaMask to ${request.to}`);

@@ -1,5 +1,7 @@
 import { Operation, BridgeTxStatus } from '@sora-substrate/util';
 import { ethers } from 'ethers';
+import { combineLatest } from '@polkadot/x-rxjs';
+import { map } from '@polkadot/x-rxjs/operators';
 
 import { bridgeApi } from './api';
 
@@ -47,40 +49,63 @@ export const isOutgoingTransaction = (tx: BridgeHistory): boolean => {
   return tx?.type === Operation.EthBridgeOutgoing;
 };
 
-export const waitForApprovedRequest = async (hash: string): Promise<BridgeApprovedRequest> => {
-  const approvedRequest = await bridgeApi.getApprovedRequest(hash);
+export const waitForApprovedRequest = async (tx: BridgeHistory): Promise<BridgeApprovedRequest> => {
+  if (!tx.hash) throw new Error(`[Bridge]: Tx hash cannot be empty`);
+  if (!Number.isFinite(tx.externalNetwork))
+    throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} recieved`);
 
-  if (approvedRequest) {
-    return approvedRequest;
-  }
+  return new Promise<void>((resolve, reject) => {
+    const subscription = bridgeApi.apiRx.query.ethBridge
+      .requestStatuses(tx.externalNetwork, tx.hash)
+      .subscribe((data) => {
+        const status = data.toHuman() as BridgeTxStatus;
 
-  const request = await bridgeApi.getRequest(hash);
-
-  if (request && [BridgeTxStatus.Failed, BridgeTxStatus.Frozen].includes(request.status)) {
-    throw new Error('Transaction was failed or canceled');
-  }
-
-  await delay(SORA_REQUESTS_TIMEOUT);
-
-  return await waitForApprovedRequest(hash);
+        if ([BridgeTxStatus.Failed, BridgeTxStatus.Frozen].includes(status)) {
+          subscription.unsubscribe();
+          reject(new Error('Transaction was failed or canceled'));
+        } else if (status === BridgeTxStatus.Ready && subscription) {
+          subscription.unsubscribe();
+          resolve();
+        }
+      });
+  }).then(() => bridgeApi.getApprovedRequest(tx.hash as string));
 };
 
-export const waitForRequest = async (hash: string): Promise<BridgeRequest> => {
-  const request = await bridgeApi.getRequest(hash);
+export const waitForRequest = async (tx: BridgeHistory): Promise<BridgeRequest> => {
+  if (!tx.ethereumHash) throw new Error('[Bridge]: ethereumHash cannot be empty!');
+  if (!Number.isFinite(tx.externalNetwork))
+    throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} recieved`);
 
-  if (request) {
-    switch (request.status) {
-      case BridgeTxStatus.Failed:
-      case BridgeTxStatus.Frozen:
-        throw new Error('Transaction was failed or canceled');
-      case BridgeTxStatus.Done:
-        return request;
-    }
-  }
+  const requestData = bridgeApi.apiRx.query.ethBridge
+    .requests(tx.externalNetwork, tx.ethereumHash)
+    .pipe(map((data) => data.toJSON()));
+  const requestStatus = bridgeApi.apiRx.query.ethBridge
+    .requestStatuses(tx.externalNetwork, tx.ethereumHash)
+    .pipe(map((data) => data.toHuman()));
 
-  await delay(SORA_REQUESTS_TIMEOUT);
+  const requestSubscription = combineLatest([requestData, requestStatus]).pipe(
+    map(([data, status]) => {
+      return data ? (bridgeApi as any).formatRequest([data, status]) : null;
+    })
+  );
 
-  return await waitForRequest(hash);
+  return new Promise((resolve, reject) => {
+    const subscription = requestSubscription.subscribe((request) => {
+      if (request) {
+        switch (request.status) {
+          case BridgeTxStatus.Failed:
+          case BridgeTxStatus.Frozen:
+            subscription.unsubscribe();
+            reject(new Error('[Bridge]: Transaction was failed or canceled'));
+            break;
+          case BridgeTxStatus.Done:
+            subscription.unsubscribe();
+            resolve(request);
+            break;
+        }
+      }
+    });
+  });
 };
 
 export const waitForSoraTransactionHash = async (id: string): Promise<string> => {
@@ -160,7 +185,7 @@ export const waitForEvmTransactionStatus = async (
 export const waitForEvmTransaction = async (id: string) => {
   const transaction = getTransaction(id);
 
-  if (!transaction.ethereumHash) throw new Error('Hash cannot be empty!');
+  if (!transaction.ethereumHash) throw new Error('[Bridge]: ethereumHash cannot be empty!');
 
   await waitForEvmTransactionStatus(
     transaction.ethereumHash,
@@ -169,7 +194,7 @@ export const waitForEvmTransaction = async (id: string) => {
       waitForEvmTransaction(id);
     },
     () => {
-      throw new Error('The transaction was canceled by the user');
+      throw new Error('[Bridge]: The transaction was canceled by the user');
     }
   );
 };
