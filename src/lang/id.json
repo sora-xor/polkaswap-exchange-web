@@ -197,7 +197,40 @@
         "extensibleSupply": {
             "placeholder": "Suplai yang dapat diperluas",
             "desc": "Kemampuan untuk mencetak lebih banyak token."
-        }
+        },
+        "titleCommon": "Membuat",
+        "confirmTokenTitleCommon": "Buat Token",
+        "confirmTokenTitleNFT": "Buat NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Menyediakan konten",
+        "selectLocalFile": "Pilih file lokal",
+        "CreateSimpleToken": "Token",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Sumber",
+                "value": "File lokal"
+            },
+            "link": {
+                "placeholder": "Masukkan tautan di sini...",
+                "placeholderShort": "Tautan",
+                "copyLink": "Salin link"
+            },
+            "image": {
+                "placeholderNoImage": "Unggah file dengan memasukkan tautan atau memilih dari penyimpanan lokal",
+                "placeholderBadSource": "Tidak ada gambar",
+                "placeholderBadSourceAddition": "atau belum diupload ke IPFS"
+            },
+            "supply": {
+                "placeholder": "Suplai Token",
+                "desc": "Jumlah NFT yang akan Anda dapatkan.",
+                "quantity": "Kuantitas"
+            },
+            "description": {
+                "placeholder": "Deskripsi"
+            }
+        },
+        "enterTokenDescription": "Masukkan deskripsi"
     },
     "transaction": {
         "title": "Rincian transaksi",
@@ -578,7 +611,8 @@
         "clearHistory": "Bersihkan riwayat",
         "empty": "Transaksi Anda akan muncul di sini.",
         "filterPlaceholder": "Filter menurut ID Aset atau Simbol Ticker",
-        "restoreHistory": "Pulihkan riwayat"
+        "restoreHistory": "Pulihkan riwayat",
+        "statusAction": "Diperlukan tindakan"
     },
     "selectToken": {
         "title": "Pilih token",
@@ -870,5 +904,6 @@
             "freeOfCharge": "Tindakan ini tidak dipungut biaya"
         }
     },
-    "transactionDetailsText": "Detil transaksi"
+    "transactionDetailsText": "Detil transaksi",
+    "createTokenTextNFT": "Buat NFT"
 }

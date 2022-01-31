@@ -16,7 +16,8 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Asset, AccountAsset } from '@sora-substrate/util';
+import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
+
 import TranslationMixin from '../mixins/TranslationMixin';
 
 import { lazyComponent } from '@/router';

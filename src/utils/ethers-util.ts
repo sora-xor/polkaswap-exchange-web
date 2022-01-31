@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import detectEthereumProvider from '@metamask/detect-provider';
 import { decodeAddress } from '@polkadot/util-crypto';
-import { BridgeNetworks } from '@sora-substrate/util';
+import type { BridgeNetworks } from '@sora-substrate/util';
 
 import axiosInstance from '../api';
 import storage from './storage';

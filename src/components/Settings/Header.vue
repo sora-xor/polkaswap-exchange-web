@@ -21,7 +21,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 @Component
 export default class SettingsHeader extends Mixins(TranslationMixin) {
-  private tooltipScopedSlot = 'tooltip-content';
+  readonly tooltipScopedSlot = 'tooltip-content';
 
   @Prop({ type: String, default: '' }) title!: string;
   @Prop({ type: String, default: '' }) tooltip!: string;

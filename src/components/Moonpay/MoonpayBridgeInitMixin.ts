@@ -1,6 +1,8 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
 import { BridgeNetworks, RegisteredAccountAsset, CodecString, Operation } from '@sora-substrate/util';
+import type { BridgeHistory } from '@sora-substrate/util';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 import ethersUtil from '@/utils/ethers-util';
 import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';
@@ -10,8 +12,6 @@ import { MoonpayNotifications } from '@/components/Moonpay/consts';
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 
-import type { Asset, BridgeHistory } from '@sora-substrate/util';
-import type { ApiKeysObject } from '@/store/settings';
 import type { MoonpayTransaction } from '@/utils/moonpay';
 
 const createError = (text: string, notification: MoonpayNotifications) => {
@@ -23,7 +23,6 @@ const createError = (text: string, notification: MoonpayNotifications) => {
 @Component
 export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, WalletConnectMixin) {
   @State((state) => state.moonpay.api) moonpayApi!: MoonpayApi;
-  @State((state) => state.settings.apiKeys) apiKeys!: ApiKeysObject;
   @State((state) => state.moonpay.bridgeTransactionData) bridgeTransactionData!: Nullable<BridgeHistory>;
 
   @Action('getEvmNetworkFee', { namespace: 'web3' }) fetchEvmNetworkFee!: ({
@@ -59,6 +58,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
 
   @Getter soraNetwork!: string; // wallet
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString;
+  @Getter moonpayApiKey!: string;
 
   async prepareEvmNetwork(networkId = BridgeNetworks.ETH_NETWORK_ID): Promise<void> {
     await this.setEvmNetwork(networkId); // WalletConnectMixin
@@ -67,7 +67,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   }
 
   initMoonpayApi(): void {
-    this.moonpayApi.publicKey = this.apiKeys.moonpay;
+    this.moonpayApi.publicKey = this.moonpayApiKey;
     this.moonpayApi.soraNetwork = this.soraNetwork;
   }
 

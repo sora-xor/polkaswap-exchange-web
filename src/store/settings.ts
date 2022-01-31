@@ -20,10 +20,6 @@ import { updateFpNumberLocale, updateDocumentTitle } from '@/utils';
 
 import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 
-export type ApiKeysObject = {
-  [key: string]: string;
-};
-
 const NODE_CONNECTION_TIMEOUT = 60000;
 
 const types = flow(
@@ -39,7 +35,6 @@ const types = flow(
     'SET_NETWORK_CHAIN_GENESIS_HASH',
     'SET_SELECT_NODE_DIALOG_VISIBILIY',
     'SET_LANGUAGE',
-    'SET_API_KEYS',
     'SET_FEATURE_FLAGS',
     'SET_BLOCK_NUMBER',
     'SET_BLOCK_NUMBER_UPDATES',
@@ -52,7 +47,6 @@ const types = flow(
 
 function initialState() {
   return {
-    apiKeys: {},
     featureFlags: {},
     slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
     marketAlgorithm: storage.get('marketAlgorithm') || DefaultMarketAlgorithm,
@@ -99,8 +93,11 @@ const getters = {
   language(state) {
     return state.language;
   },
-  moonpayEnabled(state) {
-    return !!state.apiKeys.moonpay && !!state.featureFlags.moonpay;
+  moonpayApiKey(state, getters, rootState, rootGetters) {
+    return rootState.Settings.apiKeys.moonpay;
+  },
+  moonpayEnabled(state, getters) {
+    return !!getters.moonpayApiKey && !!state.featureFlags.moonpay;
   },
   blockNumber(state): number {
     return state.blockNumber;
@@ -160,9 +157,6 @@ const mutations = {
   [types.SET_LANGUAGE](state, lang: Language) {
     state.language = lang;
     settingsStorage.set('language', lang);
-  },
-  [types.SET_API_KEYS](state, keys = {}) {
-    state.apiKeys = { ...state.apiKeys, ...keys };
   },
   [types.SET_FEATURE_FLAGS](state, featureFlags = {}) {
     state.featureFlags = { ...state.featureFlags, ...featureFlags };
@@ -376,9 +370,6 @@ const actions = {
     updateDocumentTitle();
     updateFpNumberLocale(locale);
     commit(types.SET_LANGUAGE, locale);
-  },
-  setApiKeys({ commit }, keys) {
-    commit(types.SET_API_KEYS, keys);
   },
   setFeatureFlags({ commit }, featureFlags) {
     commit(types.SET_FEATURE_FLAGS, featureFlags);

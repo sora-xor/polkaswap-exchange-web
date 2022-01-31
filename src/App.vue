@@ -83,15 +83,15 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action resetActiveTransactions!: AsyncVoidFn;
   @Action resetRuntimeVersionSubscription!: AsyncVoidFn;
   @Action resetFiatPriceAndApySubscription!: AsyncVoidFn;
+  @Action setSoraNetwork!: (networkType: string) => Promise<void>;
+  @Action setApiKeys!: (options: any) => Promise<void>;
 
-  @Action updateAccountAssets!: AsyncVoidFn;
-  @Action setSoraNetwork!: (networkType: string) => Promise<void>; // wallet
+  @Action subscribeOnAccountAssets!: AsyncVoidFn;
   @Action setDefaultNodes!: (nodes: any) => Promise<void>;
   @Action setNetworkChainGenesisHash!: (hash: string) => Promise<void>;
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
   @Action setFaucetUrl!: (url: string) => Promise<void>;
   @Action setLanguage!: (lang: Language) => Promise<void>;
-  @Action setApiKeys!: (options: any) => Promise<void>;
   @Action setFeatureFlags!: (options: any) => Promise<void>;
   @Action setReferral!: (value: string) => Promise<void>;
   @Action resetBlockNumberSubscription!: AsyncVoidFn;
@@ -107,7 +107,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Watch('nodeIsConnected')
   private updateConnectionSubsriptions(nodeConnected: boolean): void {
     if (nodeConnected) {
-      this.updateAccountAssets();
+      // after app load, the first connection to the node occurs before the wallet is loaded
+      if (this.isWalletLoaded) {
+        this.subscribeOnAccountAssets();
+      }
     } else {
       this.resetAccountAssetsSubscription();
     }

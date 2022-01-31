@@ -12,15 +12,15 @@
             <template v-if="!claimingInProgressOrFinished">
               <rewards-amount-table
                 class="rewards-table"
-                v-if="internalRewards.length"
+                v-if="internalRewards"
                 v-model="selectedInternalRewardsModel"
-                :item="internalRewards[0]"
+                :item="internalRewards"
                 :theme="libraryTheme"
+                :disabled="!internalRewardsAvailable"
                 is-codec-string
               />
               <rewards-amount-table
                 class="rewards-table"
-                v-if="vestedRewards"
                 v-model="selectedVestedRewardsModel"
                 :item="vestedRewadsGroupItem"
                 :theme="libraryTheme"
@@ -86,17 +86,12 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
-import {
-  AccountAsset,
-  KnownAssets,
-  KnownSymbols,
-  RewardInfo,
-  RewardsInfo,
-  CodecString,
-  FPNumber,
-} from '@sora-substrate/util';
 import { components, mixins, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import { CodecString, FPNumber } from '@sora-substrate/util';
+import { KnownAssets, KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import ethersUtil from '@/utils/ethers-util';
 import { lazyComponent } from '@/router';
@@ -125,16 +120,17 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   @State((state) => state.rewards.transactionError) transactionError!: boolean;
   @State((state) => state.rewards.transactionStep) transactionStep!: number;
 
-  @State((state) => state.rewards.internalRewards) internalRewards!: Array<RewardInfo>;
+  @State((state) => state.rewards.internalRewards) internalRewards!: RewardInfo;
   @State((state) => state.rewards.externalRewards) externalRewards!: Array<RewardInfo>;
-  @State((state) => state.rewards.vestedRewards) vestedRewards!: Nullable<RewardsInfo>;
+  @State((state) => state.rewards.vestedRewards) vestedRewards!: RewardsInfo;
   @State((state) => state.rewards.selectedVestedRewards) selectedVestedRewards!: Nullable<RewardsInfo>;
-  @State((state) => state.rewards.selectedInternalRewards) selectedInternalRewards!: Array<RewardInfo>;
+  @State((state) => state.rewards.selectedInternalRewards) selectedInternalRewards!: Nullable<RewardInfo>;
   @State((state) => state.rewards.selectedExternalRewards) selectedExternalRewards!: Array<RewardInfo>;
 
   @Getter libraryTheme!: Theme;
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
   @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean;
+  @Getter('internalRewardsAvailable', { namespace: 'rewards' }) internalRewardsAvailable!: boolean;
   @Getter('vestedRewardsAvailable', { namespace: 'rewards' }) vestedRewardsAvailable!: boolean;
   @Getter('externalRewardsAvailable', { namespace: 'rewards' }) externalRewardsAvailable!: boolean;
   @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardsAmountHeaderItem>;
@@ -211,11 +207,11 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   }
 
   get selectedInternalRewardsModel(): boolean {
-    return this.selectedInternalRewards.length !== 0;
+    return this.internalRewardsAvailable && this.selectedInternalRewards !== null;
   }
 
   set selectedInternalRewardsModel(flag: boolean) {
-    const internal = flag ? this.internalRewards : [];
+    const internal = flag ? this.internalRewards : null;
     this.setSelectedRewards({ internal, external: this.selectedExternalRewards, vested: this.selectedVestedRewards });
   }
 
@@ -233,7 +229,7 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   }
 
   set selectedVestedRewardsModel(flag: boolean) {
-    const vested = flag && this.vestedRewards ? this.vestedRewards : null;
+    const vested = flag ? this.vestedRewards : null;
     this.setSelectedRewards({ internal: this.selectedInternalRewards, external: this.selectedExternalRewards, vested });
   }
 
@@ -455,7 +451,13 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
       margin-bottom: $inner-spacing-small;
     }
 
-    @include rewards-hint();
+    &-hint {
+      padding: 0 $inner-spacing-medium;
+      font-size: var(--s-font-size-extra-small);
+      font-weight: 300;
+      line-height: var(--s-line-height-base);
+      text-align: center;
+    }
   }
 
   &-account {

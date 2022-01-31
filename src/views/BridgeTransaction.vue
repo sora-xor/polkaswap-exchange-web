@@ -279,17 +279,11 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
-import {
-  AccountAsset,
-  RegisteredAccountAsset,
-  KnownSymbols,
-  FPNumber,
-  CodecString,
-  BridgeHistory,
-  BridgeNetworks,
-} from '@sora-substrate/util';
 import { api, components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { interpret } from 'xstate';
+import { RegisteredAccountAsset, FPNumber, CodecString, BridgeHistory, BridgeNetworks } from '@sora-substrate/util';
+import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
