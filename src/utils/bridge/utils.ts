@@ -49,25 +49,26 @@ export const isOutgoingTransaction = (tx: BridgeHistory): boolean => {
   return tx?.type === Operation.EthBridgeOutgoing;
 };
 
+const getStatusSubscription = (externalNetwork, hash) =>
+  bridgeApi.apiRx.query.ethBridge.requestStatuses(externalNetwork, hash).pipe(map((data) => data.toHuman()));
+const getRequestDataSubscription = (externalNetwork, hash) =>
+  bridgeApi.apiRx.query.ethBridge.requests(externalNetwork, hash).pipe(map((data) => data.toJSON()));
+
 export const waitForApprovedRequest = async (tx: BridgeHistory): Promise<BridgeApprovedRequest> => {
   if (!tx.hash) throw new Error(`[Bridge]: Tx hash cannot be empty`);
   if (!Number.isFinite(tx.externalNetwork))
     throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} recieved`);
 
   return new Promise<void>((resolve, reject) => {
-    const subscription = bridgeApi.apiRx.query.ethBridge
-      .requestStatuses(tx.externalNetwork, tx.hash)
-      .subscribe((data) => {
-        const status = data.toHuman() as BridgeTxStatus;
-
-        if ([BridgeTxStatus.Failed, BridgeTxStatus.Frozen].includes(status)) {
-          subscription.unsubscribe();
-          reject(new Error('Transaction was failed or canceled'));
-        } else if (status === BridgeTxStatus.Ready && subscription) {
-          subscription.unsubscribe();
-          resolve();
-        }
-      });
+    const subscription = getStatusSubscription(tx.externalNetwork, tx.hash).subscribe((status) => {
+      if ([BridgeTxStatus.Failed, BridgeTxStatus.Frozen].includes(status as BridgeTxStatus)) {
+        if (subscription) subscription.unsubscribe();
+        reject(new Error('Transaction was failed or canceled'));
+      } else if (status === BridgeTxStatus.Ready) {
+        if (subscription) subscription.unsubscribe();
+        resolve();
+      }
+    });
   }).then(() => bridgeApi.getApprovedRequest(tx.hash as string));
 };
 
@@ -76,12 +77,8 @@ export const waitForRequest = async (tx: BridgeHistory): Promise<BridgeRequest> 
   if (!Number.isFinite(tx.externalNetwork))
     throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} recieved`);
 
-  const requestData = bridgeApi.apiRx.query.ethBridge
-    .requests(tx.externalNetwork, tx.ethereumHash)
-    .pipe(map((data) => data.toJSON()));
-  const requestStatus = bridgeApi.apiRx.query.ethBridge
-    .requestStatuses(tx.externalNetwork, tx.ethereumHash)
-    .pipe(map((data) => data.toHuman()));
+  const requestData = getRequestDataSubscription(tx.externalNetwork, tx.ethereumHash);
+  const requestStatus = getStatusSubscription(tx.externalNetwork, tx.ethereumHash);
 
   const requestSubscription = combineLatest([requestData, requestStatus]).pipe(
     map(([data, status]) => {
@@ -95,11 +92,11 @@ export const waitForRequest = async (tx: BridgeHistory): Promise<BridgeRequest> 
         switch (request.status) {
           case BridgeTxStatus.Failed:
           case BridgeTxStatus.Frozen:
-            subscription.unsubscribe();
+            if (subscription) subscription.unsubscribe();
             reject(new Error('[Bridge]: Transaction was failed or canceled'));
             break;
           case BridgeTxStatus.Done:
-            subscription.unsubscribe();
+            if (subscription) subscription.unsubscribe();
             resolve(request);
             break;
         }
