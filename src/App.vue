@@ -99,7 +99,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Watch('nodeIsConnected')
   private updateConnectionSubsriptions(nodeConnected: boolean): void {
     if (nodeConnected) {
-      // after app loaded, first connection occurs earlier, than wallet loaded
+      // after app load, the first connection to the node occurs before the wallet is loaded
       if (this.isWalletLoaded) {
         this.subscribeOnAccountAssets();
       }
