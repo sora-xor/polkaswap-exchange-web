@@ -155,7 +155,7 @@ export const waitForEvmTransactionStatus = async (
 ) => {
   const ethersInstance = await ethersUtil.getEthersInstance();
   try {
-    const confirmations = 5;
+    const confirmations = 1;
     const timeout = 0;
     const currentBlock = await ethersInstance.getBlockNumber();
     const blockOffset = currentBlock - 20;

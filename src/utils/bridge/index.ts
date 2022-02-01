@@ -110,10 +110,14 @@ class BridgeTransactionStateHandler {
     await waitForEvmTransaction(id);
 
     const tx = getTransaction(id);
-    const { effectiveGasPrice, gasUsed } = await ethersUtil.getEvmTransactionReceipt(tx.ethereumHash as string);
+    const {
+      effectiveGasPrice,
+      gasUsed,
+      blockNumber: blockHeight,
+    } = await ethersUtil.getEvmTransactionReceipt(tx.ethereumHash as string);
     const ethereumNetworkFee = ethersUtil.calcEvmFee(effectiveGasPrice.toNumber(), gasUsed.toNumber());
-
-    await this.updateTransactionParams(id, { ethereumNetworkFee });
+    // In BridgeHistory 'blockHeight' will store evm block number
+    await this.updateTransactionParams(id, { ethereumNetworkFee, blockHeight });
   }
 
   async onEvmSubmitted(id: string): Promise<void> {
