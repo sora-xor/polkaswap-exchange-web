@@ -236,6 +236,9 @@
               <template v-else-if="isSoraToEvm && !isValidNetworkType">{{
                 t('bridgeTransaction.changeNetwork')
               }}</template>
+              <template v-else-if="comfirmationBlocksLeft">
+                {{ t('bridgeTransaction.blocksLeft', { count: comfirmationBlocksLeft }) }}
+              </template>
               <span
                 v-else-if="isTransactionToPending"
                 v-html="
@@ -712,6 +715,15 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
 
   get formattedNetworkStep2(): string {
     return this.t(this.formatNetwork(!this.isSoraToEvm, true));
+  }
+
+  get comfirmationBlocksLeft(): number {
+    if (this.isSoraToEvm || !this.isTransactionToPending || !this.historyItem?.blockHeight || !this.evmBlockNumber)
+      return 0;
+
+    const blocksLeft = +this.historyItem.blockHeight + 30 - this.evmBlockNumber;
+
+    return Math.max(blocksLeft, 0);
   }
 
   async handleCopyTransactionHash(hash: string): Promise<void> {

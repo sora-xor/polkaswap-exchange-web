@@ -23,6 +23,7 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets!: AsyncVoidFn;
   @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn;
 
+  public evmBlockNumber = 0;
   private unwatchEthereum!: VoidFunction;
   blockHeadersSubscriber: ethers.providers.Web3Provider | undefined;
 
@@ -79,7 +80,9 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
 
       const ethersInstance = await ethersUtil.getEthersInstance();
 
+      this.evmBlockNumber = await ethersInstance.getBlockNumber();
       this.blockHeadersSubscriber = ethersInstance.on('block', (blockNumber) => {
+        this.evmBlockNumber = blockNumber;
         this.updateExternalBalances();
         this.getEvmNetworkFee();
       });
