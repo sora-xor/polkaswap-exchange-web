@@ -1,6 +1,6 @@
 <template>
   <s-button :class="['app-logo', { responsive }]" type="link" size="large" v-on="$listeners">
-    <polkaswap-logo :theme="theme" class="app-logo__image" />
+    <adar-logo :theme="theme" class="app-logo__image" />
   </s-button>
 </template>
 
@@ -8,11 +8,11 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
-import PolkaswapLogo from '@/components/logo/Polkaswap.vue';
+import AdarLogo from '@/components/logo/Adar.vue';
 
 @Component({
   components: {
-    PolkaswapLogo,
+    AdarLogo,
   },
 })
 export default class AppLogoButton extends Vue {

@@ -14,40 +14,34 @@
       </s-button>
       <moonpay-history-button v-if="isLoggedIn" class="moonpay-button moonpay-button--history" />
     </div>
-    <div class="app-controls s-flex">
-      <market-maker-countdown />
-      <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openNodeSelectionDialog">
-        <token-logo class="node-control__logo" v-bind="nodeLogo" />
+    <div class="app-controls app-controls--settings-panel s-flex">
+      <!-- <market-maker-countdown /> -->
+      <s-button type="action" class="setting" :tooltip="nodeTooltip" @click="openNodeSelectionDialog">
+        <token-logo class="setting__logo" v-bind="nodeLogo" />
       </s-button>
       <account-button :disabled="loading" @click="goTo(PageNames.Wallet)" />
       <s-button
         type="action"
-        class="settings-control s-pressed"
-        :tooltip="t('headerMenu.settings')"
-        @click="handleClickHeaderMenu"
-      >
-        <s-dropdown
-          ref="headerMenu"
-          class="header-menu__button"
-          popper-class="header-menu"
-          icon="grid-block-align-left-24"
-          type="ellipsis"
-          placement="bottom-start"
-          @select="handleSelectHeaderMenu"
-        >
-          <template #menu>
-            <s-dropdown-item class="header-menu__item" :icon="hideBalancesIcon" :value="HeaderMenuType.HideBalances">
-              {{ hideBalancesText }}
-            </s-dropdown-item>
-            <s-dropdown-item class="header-menu__item" :icon="themeIcon" :value="HeaderMenuType.Theme">
-              {{ t('headerMenu.switchTheme', { theme: t(themeTitle) }) }}
-            </s-dropdown-item>
-            <s-dropdown-item class="header-menu__item" icon="basic-globe-24" :value="HeaderMenuType.Language">
-              {{ t('headerMenu.switchLanguage') }}
-            </s-dropdown-item>
-          </template>
-        </s-dropdown>
-      </s-button>
+        class="setting"
+        :tooltip="t('headerMenu.switchTheme', { theme: t(themeTitle) })"
+        :icon="themeIcon"
+        size="medium"
+        @click="handleSwitchTheme"
+      />
+      <s-button
+        type="action"
+        class="setting"
+        :tooltip="t('headerMenu.switchLanguage')"
+        :icon="'basic-globe-24'"
+        @click="showSelectLanguageDialog = true"
+      />
+      <s-button
+        type="action"
+        class="setting"
+        :tooltip="hideBalancesText"
+        :icon="hideBalancesIcon"
+        @click="toggleHideBalance"
+      />
     </div>
 
     <select-node-dialog />
@@ -182,6 +176,10 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
         break;
     }
   }
+
+  handleSwitchTheme(): void {
+    switchTheme();
+  }
 }
 </script>
 
@@ -242,6 +240,7 @@ $icon-size: 28px;
 
   &--buy {
     max-width: 114px;
+    border-right: 1px solid var(--s-color-base-content-tertiary) !important;
   }
 
   &--history {
@@ -273,6 +272,9 @@ $icon-size: 28px;
 </style>
 
 <style lang="scss" scoped>
+$app-controls-filter: drop-shadow(-5px -5px 5px rgba(152, 240, 224, 0.2))
+  drop-shadow(1px 1px 25px rgba(159, 93, 244, 0.25));
+$app-controls-shadow: inset 1px 1px 10px #ffffff;
 .header {
   display: flex;
   align-items: center;
@@ -304,10 +306,18 @@ $icon-size: 28px;
   }
 
   & > *:not(:last-child) {
-    margin-right: $inner-spacing-mini;
+    // margin-right: $inner-spacing-mini;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
   }
 
-  .node-control {
+  & > *:not(:first-child) {
+    // margin-right: $inner-spacing-mini;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .setting {
     @include element-size('token-logo', 28px);
     &__logo {
       display: block;
@@ -327,6 +337,13 @@ $icon-size: 28px;
 
   &--moonpay {
     margin-left: auto;
+    box-shadow: $app-controls-shadow;
+    filter: $app-controls-filter;
+    border-radius: var(--s-border-radius-small);
+
+    & > * {
+      box-shadow: none !important;
+    }
 
     @include desktop {
       position: absolute;
@@ -334,6 +351,20 @@ $icon-size: 28px;
       left: 50%;
       transform: translate(-50%, -50%);
       margin-right: 0;
+    }
+  }
+
+  &--settings-panel {
+    box-shadow: $app-controls-shadow;
+    filter: $app-controls-filter;
+    border-radius: var(--s-border-radius-small);
+
+    & > *:not(:last-child) {
+      border-right: 1px solid var(--s-color-base-content-tertiary) !important;
+    }
+
+    & > * {
+      box-shadow: none !important;
     }
   }
 }
