@@ -249,7 +249,6 @@
         "total": "Total",
         "from": "From",
         "to": "To",
-        "referrer": "Referrer",
         "successCopy": "{value} is copied to the clipboard",
         "copy": "Copy {value}",
         "history": {
@@ -261,7 +260,8 @@
             "sorascan": "View in SORAScan",
             "subscan": "View in Subscan"
         },
-        "txId": "Transaction Id"
+        "txId": "Transaction Id",
+        "referrer": "Referrer"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",

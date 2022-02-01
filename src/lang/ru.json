@@ -260,7 +260,8 @@
             "sorascan": "Смотреть в SORAScan",
             "subscan": "Смотреть в Subscan"
         },
-        "txId": "ID транзакции"
+        "txId": "ID транзакции",
+        "referrer": "Реферер"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -898,9 +899,9 @@
             "text": "Подтвердить",
             "bond": "Подтвердить резерв",
             "unbond": "Подтвердить вывод из резерва",
-            "inviteTitle": "Вы были приглашены в Polkaswap рефералом",
+            "inviteTitle": "Вас пригласили в Polkaswap",
             "inviteDescription": "При оплате комиссии за транзакцию, 10% достанется вашему рефералу. Это совершенно бесплатно.",
-            "signInvitation": "Подписать транзакцию",
+            "signInvitation": "Подписать",
             "freeOfCharge": "Данная транзакция бесплатна"
         }
     },

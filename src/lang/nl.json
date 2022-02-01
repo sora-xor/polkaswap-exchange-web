@@ -260,7 +260,8 @@
             "sorascan": "Bekijk in Sorascan",
             "subscan": "Bekijk in Subscan"
         },
-        "txId": "Transactie ID"
+        "txId": "Transactie ID",
+        "referrer": "Verwijzer"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -898,9 +899,9 @@
             "text": "Bevestigen",
             "bond": "Bevestig obligatie",
             "unbond": "Ontbinding bevestigen",
-            "inviteTitle": "U bent uitgenodigd voor Polkaswap door een verwijzing",
-            "inviteDescription": "Wanneer u transactiekosten betaalt, gaat 10% naar uw verwijzing. Het is helemaal gratis.",
-            "signInvitation": "Goedkeuringstransactie ondertekenen",
+            "inviteTitle": "Je bent uitgenodigd voor Polkaswap",
+            "inviteDescription": "Voor elke transactie gaat 10% van de vergoeding naar uw verwijzer, zonder extra kosten voor u.",
+            "signInvitation": "Goedkeuren",
             "freeOfCharge": "Deze actie is gratis"
         }
     },

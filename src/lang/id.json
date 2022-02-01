@@ -260,7 +260,8 @@
             "sorascan": "Lihat di Sorascan",
             "subscan": "Lihat di Subscan"
         },
-        "txId": "Id transaksi"
+        "txId": "Id transaksi",
+        "referrer": "Perujuk"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -898,9 +899,9 @@
             "text": "Konfirmasi",
             "bond": "Konfirmasi ikatan",
             "unbond": "Konfirmasi pelepasan ikatan",
-            "inviteTitle": "Anda telah diundang ke Polkaswap oleh referensi",
-            "inviteDescription": "Ketika Anda akan membayar biaya untuk transaksi, 10% akan masuk ke referral Anda. Ini benar-benar gratis.",
-            "signInvitation": "Menandatangani transaksi persetujuan",
+            "inviteTitle": "Anda telah diundang ke Polkaswap",
+            "inviteDescription": "Untuk setiap transaksi, 10% dari biaya akan masuk ke perujuk Anda, tanpa biaya tambahan apa pun kepada Anda.",
+            "signInvitation": "Menyetujui",
             "freeOfCharge": "Tindakan ini tidak dipungut biaya"
         }
     },

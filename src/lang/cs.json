@@ -260,7 +260,8 @@
             "sorascan": "Zobrazit v SORAScanu",
             "subscan": "Zobrazit v Subscan"
         },
-        "txId": "Id transakce"
+        "txId": "Id transakce",
+        "referrer": "Referrer"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -898,9 +899,9 @@
             "text": "Potvrdit",
             "bond": "Potvrďte svázat",
             "unbond": "Potvrďte zrušit vazbu",
-            "inviteTitle": "Byli jste pozváni do Polkaswap doporučením",
-            "inviteDescription": "Když zaplatíte poplatek za transakci, 10 % půjde na vaše doporučení. Je to zcela zdarma.",
-            "signInvitation": "Podepsat schvalovací transakci",
+            "inviteTitle": "Byli jste pozváni na Polkaswap",
+            "inviteDescription": "Za každou transakci připadne 10% z poplatku vašemu doporučujícímu subjektu, aniž by vám byly účtovány další náklady.",
+            "signInvitation": "Schvalovat",
             "freeOfCharge": "Tato akce je bezplatná"
         }
     },

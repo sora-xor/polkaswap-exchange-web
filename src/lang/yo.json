@@ -260,7 +260,8 @@
             "sorascan": "Wo ni SORAScan",
             "subscan": "Wo ni Subscan"
         },
-        "txId": "Id Idunadura"
+        "txId": "Id Idunadura",
+        "referrer": "Atọkasi"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -899,8 +900,8 @@
             "bond": "Jẹrisi dipọ",
             "unbond": "Jẹrisi yiyọ kuro",
             "inviteTitle": "O ti pe ọ si Polkaswap nipasẹ itọkasi kan",
-            "inviteDescription": "Nigbati o ba san owo fun idunadura, 10% yoo lọ si itọkasi rẹ. O jẹ ọfẹ ọfẹ.",
-            "signInvitation": "Wole idunadura alakosile",
+            "inviteDescription": "Fun gbogbo iṣowo, 10% ti owo naa yoo lọ si olutọka rẹ, laisi idiyele eyikeyi fun ọ.",
+            "signInvitation": "Fi ọwọ si",
             "freeOfCharge": "Iṣe yii jẹ ọfẹ"
         }
     },

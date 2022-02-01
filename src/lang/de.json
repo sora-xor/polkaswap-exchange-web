@@ -260,7 +260,8 @@
             "sorascan": "Auf SORAScan ansehen",
             "subscan": "Auf Subscan ansehen"
         },
-        "txId": "Transaktions-ID"
+        "txId": "Transaktions-ID",
+        "referrer": "Referrer"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -898,9 +899,9 @@
             "text": "Bestätigen",
             "bond": "Bonden bestätigen",
             "unbond": "Unbonden bestätigen",
-            "inviteTitle": "Du bist durch eine Empfehlung zu Polkaswap eingeladen worden",
-            "inviteDescription": "Wenn du eine Transaktionsgebühr zahlst, gehen 10 % an deinen Partner. Dies ist völlig kostenfrei.",
-            "signInvitation": "Genehmigungstransaktion unterschreiben",
+            "inviteTitle": "Sie wurden zu Polkaswap eingeladen",
+            "inviteDescription": "Für jede Transaktion gehen 10% der Gebühr an Ihren Referrer, ohne dass Ihnen zusätzliche Kosten entstehen.",
+            "signInvitation": "Genehmigen",
             "freeOfCharge": "Diese Aktion ist kostenfrei"
         }
     },

@@ -260,7 +260,8 @@
             "sorascan": "Visualizza su Sorascan",
             "subscan": "Visualizza in Subscan"
         },
-        "txId": "ID della transazione\n"
+        "txId": "ID della transazione\n",
+        "referrer": "Referente"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -898,9 +899,9 @@
             "text": "Conferma",
             "bond": "Conferma legame",
             "unbond": "Confermare lo scollegamento",
-            "inviteTitle": "Sei stato invitato a Polkaswap da un referral",
-            "inviteDescription": "Quando pagherai una tassa per la transazione, il 10% andrà al tuo referral. È completamente gratuito.",
-            "signInvitation": "Firma la transazione di approvazione",
+            "inviteTitle": "Sei stato invitato a Polkaswap",
+            "inviteDescription": "Per ogni transazione, il 10% della commissione andrà al tuo referrer, senza alcun costo aggiuntivo per te.",
+            "signInvitation": "Approvare",
             "freeOfCharge": "Questa azione è gratuita"
         }
     },

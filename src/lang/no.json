@@ -260,7 +260,8 @@
             "sorascan": "Vis i SORAScan",
             "subscan": "Vis i Subscan"
         },
-        "txId": "Transaksjons ID"
+        "txId": "Transaksjons ID",
+        "referrer": "Henviser"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -898,9 +899,9 @@
             "text": "Bekrefte",
             "bond": "Bekreft obligasjon",
             "unbond": "Bekreft frigjøring",
-            "inviteTitle": "Du har blitt invitert til Polkaswap med en henvisning",
-            "inviteDescription": "Når du betaler et gebyr for transaksjonen, vil 10% gå til henvisningen din. Det er helt gratis.",
-            "signInvitation": "Signer godkjenningstransaksjonen",
+            "inviteTitle": "Du har blitt invitert til Polkaswap",
+            "inviteDescription": "For hver transaksjon vil 10% av gebyret gå til din henvisning, uten ekstra kostnad for deg.",
+            "signInvitation": "Vedta",
             "freeOfCharge": "Denne handlingen er gratis"
         }
     },
