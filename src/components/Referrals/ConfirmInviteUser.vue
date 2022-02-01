@@ -1,6 +1,8 @@
 <template>
   <dialog-base :visible.sync="isVisible" :show-close-button="false" custom-class="dialog--confirm-invite-user">
-    <div class="invite-user-icon" />
+    <div class="invite-user-icon">
+      <s-icon name="file-file-text-24" size="40px" />
+    </div>
     <p class="invite-user-ititle">{{ t('referralProgram.confirm.inviteTitle') }}</p>
     <p class="invite-user-description">{{ t('referralProgram.confirm.inviteDescription') }}</p>
     <template #footer>
@@ -8,7 +10,7 @@
         {{ t('referralProgram.confirm.signInvitation') }}
       </s-button>
       <div class="invite-user-free-charge">
-        <div class="invite-user-lock"><s-icon name="lock-16" size="12px" /></div>
+        <s-icon class="invite-user-info" name="chevron-down-rounded-16" size="14px" />
         <span>{{ t('referralProgram.confirm.freeOfCharge') }}</span>
       </div>
     </template>
@@ -57,15 +59,9 @@ $invite-user-icon-size: 64px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: var(--s-color-status-error) url('~@/assets/img/link-icon.svg') 50% 50% no-repeat;
-    [design-system-theme='dark'] & {
-      background-image: url('~@/assets/img/link-icon-dark.svg');
-    }
-  }
-  &-icon,
-  &-lock {
+    background-color: var(--s-color-status-error);
     border-radius: 50%;
-    .s-icon-lock-16 {
+    .s-icon-file-file-text-24 {
       color: var(--s-color-base-on-accent);
     }
   }
@@ -76,31 +72,26 @@ $invite-user-icon-size: 64px;
     font-weight: 300;
   }
   &-ititle {
-    margin-bottom: $inner-spacing-medium;
+    margin-bottom: $inner-spacing-small;
     font-size: var(--s-heading3-font-size);
     line-height: var(--s-line-height-small);
     letter-spacing: var(--s-letter-spacing-mini);
-    padding-right: var(--s-size-big);
-    padding-left: var(--s-size-big);
   }
   &-description,
   &-free-charge {
     font-size: var(--s-font-size-small);
     line-height: var(--s-line-height-medium);
     letter-spacing: var(--s-letter-spacing-small);
-    padding-right: $inner-spacing-medium;
-    padding-left: $inner-spacing-medium;
   }
   &-free-charge {
     margin-top: $inner-spacing-small;
     display: flex;
     justify-content: center;
   }
-  &-lock {
-    height: var(--s-icon-font-size-medium);
-    width: var(--s-icon-font-size-medium);
+  &-info.s-icon-chevron-down-rounded-16 {
     margin-right: calc(#{$inner-spacing-small} / 2);
-    background-color: var(--s-color-theme-accent);
+    line-height: var(--s-line-height-medium);
+    color: var(--s-color-status-warning);
   }
 }
 </style>

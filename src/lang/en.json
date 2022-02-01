@@ -249,7 +249,7 @@
         "total": "Total",
         "from": "From",
         "to": "To",
-        "referral": "Referral",
+        "referrer": "Referrer",
         "successCopy": "{value} is copied to the clipboard",
         "copy": "Copy {value}",
         "history": {
@@ -899,9 +899,9 @@
             "text": "Confirm",
             "bond": "Confirm bond",
             "unbond": "Confirm unbond",
-            "inviteTitle": "You’ve been invited to Polkaswap by a referral",
-            "inviteDescription": "When you’ll pay a fee for transaction, 10% will go to your referral. It’s completely free of charge.",
-            "signInvitation": "Sign approval transaction",
+            "inviteTitle": "You have been invited to Polkaswap",
+            "inviteDescription": "For every transaction, 10% of the fee will go to your referrer, without any extra cost to you.",
+            "signInvitation": "Approve",
             "freeOfCharge": "This action is free of charge"
         }
     },
