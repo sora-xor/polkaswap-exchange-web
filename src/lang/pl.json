@@ -41,8 +41,8 @@
             "CreatePair": "Dodano {amount} {symbol} i {amount2} {symbol2}",
             "RegisterAsset": "Zarejestrowana waluta {symbol}",
             "ClaimRewards": "Wynagrodzenie odebrane pomyślnie {rewards}.",
-            "ReferralReserveXor": "Pomyślnie związał XOR",
-            "ReferralUnreserveXor": "Pomyślnie niezwiązany XOR",
+            "ReferralReserveXor": "Rezerwy w XOR zostały pomyślnie utworzone",
+            "ReferralUnreserveXor": "Rezerwy w XOR zostały pomyślnie uwolnione",
             "ReferralSetInvitedUser": "Polecenie zostało pomyślnie ustawione"
         },
         "error": {
@@ -53,12 +53,12 @@
             "CreatePair": "Nie udało się dodać {amount} {symbol} i {amount2} {symbol2}.",
             "RegisterAsset": "Nie udało się zarejestrować waluty {symbol}.",
             "ClaimRewards": "Nie udało się odebrać wynagrodzenia {rewards}.",
-            "ReferralReserveXor": "Nie udało się powiązać XOR",
-            "ReferralUnreserveXor": "Nie udało się odłączyć XOR",
+            "ReferralReserveXor": "Nie udało się utworzyć rezerw w XOR",
+            "ReferralUnreserveXor": "Nie udało się uwolnić rezerw w XOR",
             "ReferralSetInvitedUser": "Nie udało się ustawić polecenia"
         },
-        "ReferralReserveXor": "Obligacja XOR",
-        "ReferralUnreserveXor": "Odłącz XOR",
+        "ReferralReserveXor": "Utwórz rezerwy w XOR",
+        "ReferralUnreserveXor": "Uwolnij rezerwy w XOR",
         "ReferralSetInvitedUser": "Ustaw polecenie"
     },
     "polkadotjs": {
@@ -69,7 +69,7 @@
     "connection": {
         "title": "Konto sieci SORA",
         "text": "Podłącz swoje konta sieci SORA lub utwórz nowe za pomocą rozszerzenia przeglądarki polkadot{.js}. To rozszerzenie umożliwia bezpieczne podpisywanie transakcji i zarządzanie zasobami w sieci SORA.",
-        "install": "Nie znaleziono rozszerzenia polkadot.js. Zainstaluj je i <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">odśwież<\/a> stronę.<br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
+        "install": "Nie znaleziono rozszerzenia polkadot.js. Zainstaluj je i <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">odśwież<\/a> stronę<br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>.",
         "noPermissions": "Przypadkowo odrzuciłeś(-łaś) prośbę o pozwolenie? <\/br> Rozszerzenie polkadot{.js} nie posiada obecnie zarządzania uprawnieniami. Aby obejść ten problem, możesz restartować przeglądarkę i ponownie odwiedzić tę stronę w celu kontynuowania autoryzacji.",
         "noAccounts": "W Twoim rozszerzeniu przeglądarki polkadot{.js} nie znaleziono konta. Dodaj konto i spróbuj ponownie.",
         "selectAccount": "Wybierz konto, na którym chcesz pracować",
@@ -104,7 +104,7 @@
         "errorAddress": "Nieprawidłowy adres. Sprawdź go i spróbuj ponownie.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Wysyłaj tokeny między kontami sieci SORA",
-        "addressWarning": "Tokeny zostaną wysłane na poniższy adres w sieci SORA. Upewnij się, czy odbiorca może uzyskać dostęp do sieci SORA, aby korzystać z tokenów:",
+        "addressWarning": "Tokeny zostaną wysłane na poniższy adres sieci SORA. Upewnij się, czy odbiorca może uzyskać dostęp do sieci SORA, aby korzystać z tokenów:",
         "addressError": "Nie możesz wysyłać tokenów na konto, które jest teraz właśnie podłączone."
     },
     "account": {
@@ -198,9 +198,9 @@
             "placeholder": "Rozszerzalna podaż",
             "desc": "Możliwość wybicia większej liczby tokenów."
         },
-        "titleCommon": "",
+        "titleCommon": "Utwórz",
         "confirmTokenTitleCommon": "Utwórz token",
-        "confirmTokenTitleNFT": "Utwórz NFT",
+        "confirmTokenTitleNFT": "Utwórz token NFT",
         "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Podaj treść",
         "selectLocalFile": "Wybierz plik lokalny",
@@ -212,18 +212,18 @@
                 "value": "Pliki lokalne"
             },
             "link": {
-                "placeholder": "Wpisz link tutaj...",
-                "placeholderShort": "Połączyć",
+                "placeholder": "Tutaj wprowadź link...",
+                "placeholderShort": "Link",
                 "copyLink": "Kopiuj link"
             },
             "image": {
-                "placeholderNoImage": "Prześlij plik, wprowadzając link lub wybierając z lokalnej pamięci",
-                "placeholderBadSource": "Nie ma obrazu",
+                "placeholderNoImage": "Prześlij plik, wprowadzając link lub wybierając go z lokalnego magazynu danych.",
+                "placeholderBadSource": "Brak obrazu",
                 "placeholderBadSourceAddition": "lub nie jest jeszcze załadowany do IPFS"
             },
             "supply": {
                 "placeholder": "Podaż tokenów",
-                "desc": "Ilość NFT, którą dostaniesz.",
+                "desc": "Ilość tokenów NFT, którą otrzymasz.",
                 "quantity": "Ilość"
             },
             "description": {
@@ -260,7 +260,8 @@
             "sorascan": "Pokaż w SORAScanie",
             "subscan": "Pokaż w Subscanie"
         },
-        "txId": "Identyfikator transakcji"
+        "txId": "Identyfikator transakcji",
+        "referrer": "Polecający"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -603,7 +604,8 @@
         "title": "Transakcja mostowa",
         "expectedMetaMaskAddress": "Oczekiwany adres w portfelu MetaMask:",
         "allowToken": "Zezwól @:appName na użycie Twojego {tokenSymbol}",
-        "approveToken": "Pamiętaj, że wystarczy raz zatwierdzić token. Jeśli Twoje rozszerzenie otrzymuje wiele żądań o zatwierdzenie tokena, pamiętaj, by potwierdzić tylko ostatnią, a pozostałe odrzucić."
+        "approveToken": "Pamiętaj, że wystarczy raz zatwierdzić token. Jeśli Twoje rozszerzenie otrzymuje wiele żądań o zatwierdzenie tokena, pamiętaj, by potwierdzić tylko ostatnią, a pozostałe odrzucić.",
+        "blocksLeft": "{count} bloków..."
     },
     "bridgeHistory": {
         "title": "Historia",
@@ -861,7 +863,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Uwaga",
-        "info": "Po tej transakcji Twoje saldo XOR będzie mniejsze niż {fee} XOR. Nie będziesz w stanie uiścić opłaty sieciowej za kolejną transakcję.",
+        "info": "Po tej transakcji Twoje saldo w walucie XOR będzie mniejsze niż {fee} XOR. Nie będziesz w stanie uiścić opłaty sieciowej za kolejną transakcję.",
         "payoff": "Będziesz musiał użyć mostu, aby uzyskać XOR z innych sieci, wysłać XOR z innego konta sieci SORA lub zamienić dowolny token, znajdujący się już na Twoim koncie, na XOR.",
         "button": "Tak, rozumiem ryzyko."
     },
@@ -869,23 +871,23 @@
     "referralProgram": {
         "title": "Program polecający",
         "connectAccount": "Aby zaprosić użytkowników, musisz podłączyć swoje konto sieci SORA.",
-        "bondedXOR": "XOR Wiązanie",
+        "bondedXOR": "Utworzono rezerwy w XOR",
         "referralsNumber": "{number} zaproszonych",
-        "startInviting": "Aby zacząć zapraszać, zwiąż dowolną ilość XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Dowiedz się więcej<\/a>",
-        "preview": "Zaproś nowych użytkowników i otrzymaj 10% z ich opłat transakcyjnych.<br \/>Aby rozpocząć, połącz dowolną kwotę XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Dowiedz się więcej<\/a>",
+        "startInviting": "Aby zacząć zapraszanie, utwórz rezerwy w dowolnej kwocie waluty XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Dowiedz się więcej.<\/a>",
+        "preview": "Zaproś nowych użytkowników, by otrzymać 10% z ich opłat transakcyjnych.<br \/>Aby rozpocząć, utwórz rezerwy w dowolnej kwocie waluty XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Dowiedz się więcej.<\/a>",
         "deposit": "Deponuj",
         "balance": "Saldo",
         "networkFee": "@:networkFeeText",
         "networkFeeTooltip": "@:networkFeeTooltipText",
         "insufficientBalance": "@:insufficientBalanceText",
-        "insufficientBondedBalance": "Niewystarczająca równowaga wiązania",
+        "insufficientBondedBalance": "Niewystarczające rezerwy",
         "action": {
             "connectWallet": "@:connectWalletText",
             "empty": "Wprowadź kwotę {tokenSymbol}",
-            "startInviting": "Obligacja {tokenSymbol}, aby rozpocząć zapraszanie",
-            "bondMore": "Wiązanie Więcej",
-            "bond": "Więź",
-            "unbond": "Niezwiązany",
+            "startInviting": "Utwórz rezerwy w walucie {tokenSymbol}, aby rozpocząć zapraszanie.",
+            "bondMore": "Utwórz więcej rezerw",
+            "bond": "Utwórz rezerwy",
+            "unbond": "Uwolnij rezerwy",
             "copyLink": "Kopiuj link"
         },
         "transactionDetails": "Szczegóły transakcji",
@@ -893,14 +895,14 @@
         "invitationLink": "Link polecający",
         "successCopy": "Link polecający został skopiowany do schowka.",
         "bondTitle": "Utwórz rezerwy XOR",
-        "unbondTitle": "Odłącz XOR",
+        "unbondTitle": "Uwolnij rezerwy w walucie XOR",
         "confirm": {
             "text": "Potwierdź",
-            "bond": "Potwierdź więź",
+            "bond": "Potwierdź utworzenie rezerw",
             "unbond": "Potwierdź ",
-            "inviteTitle": "Zostałeś zaproszony do giełdy Polkaswap przez osobę polecającą.",
-            "inviteDescription": "Zawsze, kiedy będziesz uiszczał opłatę transakcyjną, 10% z niej trafi do osoby polecającej. Ta aktywność nie jest to obciążona żadnymi kosztami.",
-            "signInvitation": "Podpisz transakcję zatwierdzenia",
+            "inviteTitle": "Zostałeś zaproszony do Polkaswap",
+            "inviteDescription": "Za każdą transakcję 10% opłaty trafi do Twojego polecającego, bez żadnych dodatkowych kosztów dla Ciebie.",
+            "signInvitation": "Zatwierdzić",
             "freeOfCharge": "Ta transakcja nie jest obciążona żadnymi kosztami."
         }
     },

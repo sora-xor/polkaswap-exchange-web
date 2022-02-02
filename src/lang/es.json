@@ -7,7 +7,7 @@
     "importText": "Importar",
     "settingsText": "Ajustes",
     "addAssetText": "Añadir Activo",
-    "createTokenText": "Crear token",
+    "createTokenText": "Crear",
     "comingSoonText": "Próximamente",
     "successText": "Éxito",
     "warningText": "Advertencia",
@@ -199,7 +199,7 @@
             "desc": "habilidad de acuñar más Tokens."
         },
         "titleCommon": "Crear",
-        "confirmTokenTitleCommon": "Crear ficha",
+        "confirmTokenTitleCommon": "Crear token",
         "confirmTokenTitleNFT": "Crear NFT",
         "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Proporcionar contenido",
@@ -260,7 +260,8 @@
             "sorascan": "Ver en SORAscan",
             "subscan": "Ver en Subscan"
         },
-        "txId": "ID de transacción"
+        "txId": "ID de transacción",
+        "referrer": "Referente"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -603,7 +604,8 @@
         "title": "Transacción puente",
         "expectedMetaMaskAddress": "Dirección esperada en @:metamask",
         "allowToken": "Permitir que @:appName utilice su {tokenSymbol}",
-        "approveToken": "Tenga en cuenta que sólo es necesario aprobar el token una vez. Si su extensión tiene varias solicitudes de aprobación de tokens, asegúrese de confirmar solo la última y rechazar el resto."
+        "approveToken": "Tenga en cuenta que sólo es necesario aprobar el token una vez. Si su extensión tiene varias solicitudes de aprobación de tokens, asegúrese de confirmar solo la última y rechazar el resto.",
+        "blocksLeft": "{count} bloques..."
     },
     "bridgeHistory": {
         "title": "Historial",
@@ -612,7 +614,7 @@
         "empty": "Sus transacciones aparecerán aquí.",
         "filterPlaceholder": "Filtrar por ID del Activo o el símbolo bursátil (ticker)",
         "restoreHistory": "Restaurar historial",
-        "statusAction": "Accion necesaria"
+        "statusAction": "Acción necesaria"
     },
     "selectToken": {
         "title": "Seleccione un token",
@@ -898,9 +900,9 @@
             "text": "Confirmar",
             "bond": "Confirmar vinculación",
             "unbond": "Confirmar desvinculación",
-            "inviteTitle": "Has sido invitado a Polkaswap por una recomendación",
-            "inviteDescription": "Cuando pague una tarifa por la transacción, el 10% se destinará a su referencia. Es completamente gratuito.",
-            "signInvitation": "Firmar la transacción de aprobación",
+            "inviteTitle": "Has sido invitado a Polkaswap",
+            "inviteDescription": "Por cada transacción, el 10% de la tarifa se destinará a su referente, sin ningún costo adicional para usted.",
+            "signInvitation": "Aprobar",
             "freeOfCharge": "Esta acción es gratuita"
         }
     },

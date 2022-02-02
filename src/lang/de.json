@@ -260,7 +260,8 @@
             "sorascan": "Auf SORAScan ansehen",
             "subscan": "Auf Subscan ansehen"
         },
-        "txId": "Transaktions-ID"
+        "txId": "Transaktions-ID",
+        "referrer": "Referrer"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -603,7 +604,8 @@
         "title": "Bridge-Transaktion",
         "expectedMetaMaskAddress": "In MetaMask erwartete Adresse:",
         "allowToken": "Erlaube @:appName, deine {tokenSymbol} zu verwenden",
-        "approveToken": "Bitte beachte, dass du den Token nur einmal genehmigen musst. Wenn deine Erweiterung mehrere Token-Genehmigungsanfragen hat, stell bitte sicher, dass du nur die Letzte bestätigst und die Übrigen ablehnst."
+        "approveToken": "Bitte beachte, dass du den Token nur einmal genehmigen musst. Wenn deine Erweiterung mehrere Token-Genehmigungsanfragen hat, stell bitte sicher, dass du nur die Letzte bestätigst und die Übrigen ablehnst.",
+        "blocksLeft": "{count} Blöcke übrig..."
     },
     "bridgeHistory": {
         "title": "Verlauf",
@@ -898,9 +900,9 @@
             "text": "Bestätigen",
             "bond": "Bonden bestätigen",
             "unbond": "Unbonden bestätigen",
-            "inviteTitle": "Du bist durch eine Empfehlung zu Polkaswap eingeladen worden",
-            "inviteDescription": "Wenn du eine Transaktionsgebühr zahlst, gehen 10 % an deinen Partner. Dies ist völlig kostenfrei.",
-            "signInvitation": "Genehmigungstransaktion unterschreiben",
+            "inviteTitle": "Du wurdest zu Polkaswap eingeladen",
+            "inviteDescription": "Für jede Transaktion gehen 10% der Gebühr an deinen Referrer, ohne dass dir zusätzliche Kosten entstehen.",
+            "signInvitation": "Genehmigen",
             "freeOfCharge": "Diese Aktion ist kostenfrei"
         }
     },
