@@ -197,7 +197,40 @@
         "extensibleSupply": {
             "placeholder": "Utvidbar forsyning",
             "desc": "Evne til å lage flere tokens."
-        }
+        },
+        "titleCommon": "Skape",
+        "confirmTokenTitleCommon": "Opprett token",
+        "confirmTokenTitleNFT": "Lag NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Gi innhold",
+        "selectLocalFile": "Velg lokal fil",
+        "CreateSimpleToken": "Token",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Kilde",
+                "value": "Lokale filer"
+            },
+            "link": {
+                "placeholder": "Skriv inn link her...",
+                "placeholderShort": "Link",
+                "copyLink": "Kopier link"
+            },
+            "image": {
+                "placeholderNoImage": "Last opp filen ved enten å skrive inn en lenke eller velge fra lokal lagring",
+                "placeholderBadSource": "Det er ikke noe bilde",
+                "placeholderBadSourceAddition": "eller det er ikke lastet opp til IPFS ennå"
+            },
+            "supply": {
+                "placeholder": "Token forsyning",
+                "desc": "Antall NFT-er du kommer til å få.",
+                "quantity": "Mengde"
+            },
+            "description": {
+                "placeholder": "Beskrivelse"
+            }
+        },
+        "enterTokenDescription": "Skriv inn beskrivelse"
     },
     "transaction": {
         "title": "Transaksjonsdetaljer",
@@ -578,7 +611,8 @@
         "clearHistory": "Slett historikk",
         "empty": "Transaksjonene dine vises her.",
         "filterPlaceholder": "Filtrer etter Aktivum ID, Navn eller Ticker symbol",
-        "restoreHistory": "Gjenopprett historikk"
+        "restoreHistory": "Gjenopprett historikk",
+        "statusAction": "Handling nødvendig"
     },
     "selectToken": {
         "title": "Velg token",
@@ -870,5 +904,6 @@
             "freeOfCharge": "Denne handlingen er gratis"
         }
     },
-    "transactionDetailsText": "Transaksjonsdetaljer"
+    "transactionDetailsText": "Transaksjonsdetaljer",
+    "createTokenTextNFT": "Lag NFT"
 }

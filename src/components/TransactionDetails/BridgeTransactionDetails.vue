@@ -4,7 +4,7 @@
       :label="t('bridge.soraNetworkFee')"
       :label-tooltip="t('networkFeeTooltipText')"
       :value="formatFee(soraNetworkFee, formattedSoraNetworkFee)"
-      :asset-symbol="KnownSymbols.XOR"
+      :asset-symbol="XOR_SYMBOL"
       :fiat-value="getFiatAmountByCodecString(soraNetworkFee)"
       is-formatted
     />
@@ -21,7 +21,8 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
-import { KnownSymbols, CodecString, BridgeNetworks } from '@sora-substrate/util';
+import { CodecString, BridgeNetworks } from '@sora-substrate/util';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -37,14 +38,14 @@ const namespace = 'bridge';
   },
 })
 export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
+  readonly EvmSymbol = EvmSymbol;
+  readonly XOR_SYMBOL = XOR.symbol;
+
   @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString;
   @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString;
   @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks;
 
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
-
-  EvmSymbol = EvmSymbol;
-  KnownSymbols = KnownSymbols;
 
   get formattedSoraNetworkFee(): string {
     return this.formatCodecNumber(this.soraNetworkFee);

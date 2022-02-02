@@ -7,7 +7,7 @@
     "importText": "Import",
     "settingsText": "Settings",
     "addAssetText": "Add asset",
-    "createTokenText": "Create token",
+    "createTokenText": "Create",
     "comingSoonText": "Coming Soon",
     "successText": "Success",
     "warningText": "Warning",
@@ -197,7 +197,40 @@
         "extensibleSupply": {
             "placeholder": "Extensible supply",
             "desc": "Ability to mint more tokens."
-        }
+        },
+        "titleCommon": "Create",
+        "confirmTokenTitleCommon": "Create Token",
+        "confirmTokenTitleNFT": "Create NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Provide content",
+        "selectLocalFile": "Select local file",
+        "CreateSimpleToken": "Token",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Source",
+                "value": "Local files"
+            },
+            "link": {
+                "placeholder": "Enter link here...",
+                "placeholderShort": "Link",
+                "copyLink": "Copy link"
+            },
+            "image": {
+                "placeholderNoImage": "Upload the file by either entering a link or choosing from local storage",
+                "placeholderBadSource": "There’s no image",
+                "placeholderBadSourceAddition": "or it’s not uploaded to IPFS yet"
+            },
+            "supply": {
+                "placeholder": "Token supply",
+                "desc": "Amount of NFTs you’re going to get.",
+                "quantity": "Quantity"
+            },
+            "description": {
+                "placeholder": "Description"
+            }
+        },
+        "enterTokenDescription": "Enter description"
     },
     "transaction": {
         "title": "Transaction details",
@@ -578,7 +611,8 @@
         "clearHistory": "Clear history",
         "empty": "Your transactions will appear here.",
         "filterPlaceholder": "Filter by Asset ID or Ticker Symbol",
-        "restoreHistory": "Restore history"
+        "restoreHistory": "Restore history",
+        "statusAction": "Action Needed"
     },
     "selectToken": {
         "title": "Select a token",
@@ -870,5 +904,6 @@
             "freeOfCharge": "This action is free of charge"
         }
     },
-    "transactionDetailsText": "Transaction Details"
+    "transactionDetailsText": "Transaction Details",
+    "createTokenTextNFT": "Create NFT"
 }

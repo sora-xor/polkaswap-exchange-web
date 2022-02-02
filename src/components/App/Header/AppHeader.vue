@@ -64,7 +64,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
-import { KnownSymbols } from '@sora-substrate/util';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
@@ -127,7 +127,7 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
   get nodeLogo() {
     return {
       size: LogoSize.MEDIUM,
-      tokenSymbol: KnownSymbols.XOR,
+      tokenSymbol: XOR.symbol,
     };
   }
 

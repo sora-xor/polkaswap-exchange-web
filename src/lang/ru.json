@@ -197,7 +197,40 @@
         "extensibleSupply": {
             "placeholder": "Увеличиваемая эмиссия",
             "desc": "Возможность выпустить больше токенов."
-        }
+        },
+        "titleCommon": "Создать",
+        "confirmTokenTitleCommon": "Создать токен",
+        "confirmTokenTitleNFT": "Создать NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Предоставить контент",
+        "selectLocalFile": "Выберите локальный файл",
+        "CreateSimpleToken": "Токен",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Источник",
+                "value": "Локальные файлы"
+            },
+            "link": {
+                "placeholder": "Введите ссылку...",
+                "placeholderShort": "Ссылка",
+                "copyLink": "Копировать ссылку"
+            },
+            "image": {
+                "placeholderNoImage": "Загрузите файл, введя ссылку или выбрав из локального хранилища.",
+                "placeholderBadSource": "Нет изображения",
+                "placeholderBadSourceAddition": "или оно ещё не загружено в IPFS"
+            },
+            "supply": {
+                "placeholder": "Количество токенов",
+                "desc": "Количество NFT, которое вы собираетесь получить.",
+                "quantity": "Количество"
+            },
+            "description": {
+                "placeholder": "Описание"
+            }
+        },
+        "enterTokenDescription": "Введите описание"
     },
     "transaction": {
         "title": "Детали транзакции",
@@ -233,7 +266,7 @@
     "soraText": "SORA",
     "ethereumText": "Ethereum",
     "changeNetworkText": "Сменить сеть в Metamask",
-    "transactionText": "транзакция | транзакции",
+    "transactionText": "транзакцию | транзакции",
     "connectWalletText": "Подключить аккаунт",
     "changeAccountText": "Сменить аккаунт",
     "connectedText": "Подключено",
@@ -578,7 +611,8 @@
         "clearHistory": "Очистить историю",
         "empty": "Здесь появится Ваша транзакция",
         "filterPlaceholder": "Фильтр по ID актива или символу тикера",
-        "restoreHistory": "Восстановить историю"
+        "restoreHistory": "Восстановить историю",
+        "statusAction": "Требуется действие"
     },
     "selectToken": {
         "title": "Выберите токен",
@@ -690,14 +724,14 @@
             "failed": "{order} из {total} транзакции не удались. @:retryText"
         },
         "signing": {
-            "extension": "расширение для браузера polkadot {.js}",
-            "accounts": "Ваши учетные записи @:soraText и @:ethereumText соответственно"
+            "extension": "расширении для браузера polkadot {.js}",
+            "accounts": "Ваших учетных записях @:soraText и @:ethereumText соответственно"
         },
         "hint": {
             "connectExternalAccount": "Подключите аккаунт @:ethereumText, чтобы проверить наличие доступных наград PSWAP и VAL.",
             "connectAccounts": "Для получения наград PSWAP и VAL необходимо подключить оба аккаунта @:soraText и @:(ethereumText).",
             "connectAnotherAccount": "Подключите другой аккаунт @:ethereumText, чтобы проверить наличие доступных наград PSWAP и VAL.",
-            "howToClaimRewards": "Чтобы получить Ваше {symbols} вознаграждение, Вы должны войти {count} {transactions} в {destination}. Вознаграждения будут перечислены на ваш счет @:(soraText)."
+            "howToClaimRewards": "Чтобы получить Ваши {symbols} вознаграждения, Вы должны подписать {count} {transactions} в {destination}. Вознаграждения будут перечислены на ваш счет @:(soraText)."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
@@ -870,5 +904,6 @@
             "freeOfCharge": "Данная транзакция бесплатна"
         }
     },
-    "transactionDetailsText": "Детали транзакции"
+    "transactionDetailsText": "Детали транзакции",
+    "createTokenTextNFT": "Создать NFT"
 }
