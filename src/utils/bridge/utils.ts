@@ -1,7 +1,5 @@
 import { Operation, BridgeTxStatus } from '@sora-substrate/util';
 import { ethers } from 'ethers';
-import { combineLatest } from '@polkadot/x-rxjs';
-import { map } from '@polkadot/x-rxjs/operators';
 
 import { bridgeApi } from './api';
 
@@ -49,26 +47,27 @@ export const isOutgoingTransaction = (tx: BridgeHistory): boolean => {
   return tx?.type === Operation.EthBridgeOutgoing;
 };
 
-const getStatusSubscription = (externalNetwork, hash) =>
-  bridgeApi.apiRx.query.ethBridge.requestStatuses(externalNetwork, hash).pipe(map((data) => data.toHuman()));
-const getRequestDataSubscription = (externalNetwork, hash) =>
-  bridgeApi.apiRx.query.ethBridge.requests(externalNetwork, hash).pipe(map((data) => data.toJSON()));
-
 export const waitForApprovedRequest = async (tx: BridgeHistory): Promise<BridgeApprovedRequest> => {
   if (!tx.hash) throw new Error(`[Bridge]: Tx hash cannot be empty`);
   if (!Number.isFinite(tx.externalNetwork))
     throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} recieved`);
 
   return new Promise<void>((resolve, reject) => {
-    const subscription = getStatusSubscription(tx.externalNetwork, tx.hash).subscribe((status) => {
-      if ([BridgeTxStatus.Failed, BridgeTxStatus.Frozen].includes(status as BridgeTxStatus)) {
-        if (subscription) subscription.unsubscribe();
-        reject(new Error('Transaction was failed or canceled'));
-      } else if (status === BridgeTxStatus.Ready) {
-        if (subscription) subscription.unsubscribe();
-        resolve();
-      }
-    });
+    const subscription = bridgeApi
+      .subscribeOnRequestStatus(tx.externalNetwork as number, tx.hash as string)
+      .subscribe((status) => {
+        switch (status) {
+          case BridgeTxStatus.Failed:
+          case BridgeTxStatus.Frozen:
+            if (subscription) subscription.unsubscribe();
+            reject(new Error('[Bridge]: Transaction was failed or canceled'));
+            break;
+          case BridgeTxStatus.Ready:
+            if (subscription) subscription.unsubscribe();
+            resolve();
+            break;
+        }
+      });
   }).then(() => bridgeApi.getApprovedRequest(tx.hash as string));
 };
 
@@ -77,31 +76,24 @@ export const waitForRequest = async (tx: BridgeHistory): Promise<BridgeRequest> 
   if (!Number.isFinite(tx.externalNetwork))
     throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} recieved`);
 
-  const requestData = getRequestDataSubscription(tx.externalNetwork, tx.ethereumHash);
-  const requestStatus = getStatusSubscription(tx.externalNetwork, tx.ethereumHash);
-
-  const requestSubscription = combineLatest([requestData, requestStatus]).pipe(
-    map(([data, status]) => {
-      return data ? (bridgeApi as any).formatRequest([data, status]) : null;
-    })
-  );
-
   return new Promise((resolve, reject) => {
-    const subscription = requestSubscription.subscribe((request) => {
-      if (request) {
-        switch (request.status) {
-          case BridgeTxStatus.Failed:
-          case BridgeTxStatus.Frozen:
-            if (subscription) subscription.unsubscribe();
-            reject(new Error('[Bridge]: Transaction was failed or canceled'));
-            break;
-          case BridgeTxStatus.Done:
-            if (subscription) subscription.unsubscribe();
-            resolve(request);
-            break;
+    const subscription = bridgeApi
+      .subscribeOnRequest(tx.externalNetwork as number, tx.ethereumHash as string)
+      .subscribe((request) => {
+        if (request) {
+          switch (request.status) {
+            case BridgeTxStatus.Failed:
+            case BridgeTxStatus.Frozen:
+              if (subscription) subscription.unsubscribe();
+              reject(new Error('[Bridge]: Transaction was failed or canceled'));
+              break;
+            case BridgeTxStatus.Done:
+              if (subscription) subscription.unsubscribe();
+              resolve(request);
+              break;
+          }
         }
-      }
-    });
+      });
   });
 };
 
