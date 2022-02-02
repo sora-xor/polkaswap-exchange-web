@@ -253,7 +253,7 @@ import {
 import { bridgeApi } from '@/utils/bridge';
 import type { SubNetwork } from '@/utils/ethers-util';
 
-import type { BridgeHistory } from '@sora-substrate/util';
+import type { BridgeHistory, CodecString } from '@sora-substrate/util';
 
 const namespace = 'bridge';
 

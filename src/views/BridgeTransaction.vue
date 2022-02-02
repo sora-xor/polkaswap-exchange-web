@@ -59,6 +59,7 @@
                 @click="handleCopyTransactionHash(transactionFromHash)"
               />
               <s-dropdown
+                v-if="(isSoraToEvm && soraExpolrerLinks.length) || !isSoraToEvm"
                 class="s-dropdown--hash-menu"
                 borderRadius="mini"
                 type="ellipsis"
@@ -68,20 +69,18 @@
               >
                 <template slot="menu">
                   <template v-if="isSoraToEvm">
-                    <template v-if="soraExpolrerLinks.length">
-                      <a
-                        v-for="link in soraExpolrerLinks"
-                        :key="link.type"
-                        class="transaction-link"
-                        :href="link.value"
-                        target="_blank"
-                        rel="nofollow noopener"
-                      >
-                        <s-dropdown-item class="s-dropdown-menu__item" :disabled="!(soraTxId || soraTxBlockId)">
-                          {{ t(`transaction.viewIn.${link.type}`) }}
-                        </s-dropdown-item>
-                      </a>
-                    </template>
+                    <a
+                      v-for="link in soraExpolrerLinks"
+                      :key="link.type"
+                      class="transaction-link"
+                      :href="link.value"
+                      target="_blank"
+                      rel="nofollow noopener"
+                    >
+                      <s-dropdown-item class="s-dropdown-menu__item" :disabled="!(soraTxId || soraTxBlockId)">
+                        {{ t(`transaction.viewIn.${link.type}`) }}
+                      </s-dropdown-item>
+                    </a>
                   </template>
                   <s-dropdown-item v-else class="s-dropdown-menu__item">
                     <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
@@ -281,7 +280,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { Getter, Action, State } from 'vuex-class';
 import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import type { CodecString, BridgeHistory, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { CodecString, BridgeHistory, RegisteredAccountAsset, BridgeNetworks } from '@sora-substrate/util';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
@@ -364,7 +363,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   get evmIcon(): string {
-    return this.getEvmIcon(this.evmNetwork);
+    return this.getEvmIcon(this.historyItem?.externalNetwork as BridgeNetworks);
   }
 
   get txSoraNetworkFee(): CodecString {

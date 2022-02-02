@@ -1,5 +1,5 @@
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
+import { Action, Getter, State } from 'vuex-class';
 import { ethers } from 'ethers';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { BridgeNetworks } from '@sora-substrate/util';
@@ -11,11 +11,12 @@ import { EvmSymbol } from '@/consts';
 
 @Component
 export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
+  @State((state) => state.bridge.evmNetworkFee) evmNetworkFee!: CodecString;
+
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean;
   @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks;
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString;
   @Getter('soraNetworkFee', { namespace: 'bridge' }) soraNetworkFee!: CodecString;
-  @Getter('evmNetworkFee', { namespace: 'bridge' }) evmNetworkFee!: CodecString;
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any;
 
   @Action('getEvmBalance', { namespace: 'web3' }) getEvmBalance!: AsyncVoidFn;
@@ -31,6 +32,7 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
     await this.setEvmNetworkType();
     await this.syncExternalAccountWithAppState();
     this.getEvmBalance();
+    this.getEvmNetworkFee();
     this.withApi(async () => {
       this.unwatchEthereum = await ethersUtil.watchEthereum({
         onAccountChange: (addressList: string[]) => {
