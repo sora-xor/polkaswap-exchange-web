@@ -250,10 +250,9 @@ import {
   asZeroValue,
   isEthereumAddress,
 } from '@/utils';
-import { bridgeApi } from '@/utils/bridge';
-import type { SubNetwork } from '@/utils/ethers-util';
 
-import type { BridgeHistory, CodecString } from '@sora-substrate/util';
+import type { SubNetwork } from '@/utils/ethers-util';
+import type { BridgeHistory } from '@sora-substrate/util';
 
 const namespace = 'bridge';
 
@@ -424,16 +423,9 @@ export default class Bridge extends Mixins(
     return this.formatCodecNumber(balance, decimals);
   }
 
-  async onEvmNetworkChange(network: number): Promise<void> {
-    await Promise.all([this.setEvmNetwork(network), this.getRegisteredAssets(), this.getEvmNetworkFee()]);
-  }
-
   created(): void {
     // we should reset data only on created, because it's used on another bridge views
     this.resetBridgeForm(!!router.currentRoute.params?.address);
-    this.withApi(async () => {
-      await this.onEvmNetworkChange(bridgeApi.externalNetwork);
-    });
   }
 
   destroyed(): void {
@@ -445,7 +437,7 @@ export default class Bridge extends Mixins(
   }
 
   async handleSwitchItems(): Promise<void> {
-    this.setSoraToEvm(!this.isSoraToEvm);
+    await this.setSoraToEvm(!this.isSoraToEvm);
     await this.getEvmNetworkFee();
   }
 

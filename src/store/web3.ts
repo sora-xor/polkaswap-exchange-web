@@ -178,30 +178,24 @@ const mutations = {
 };
 
 const actions = {
-  async connectExternalAccount({ commit, dispatch }, { provider }) {
+  async connectExternalAccount({ commit }, { provider }) {
     commit(types.CONNECT_EVM_WALLET_REQUEST);
     try {
       const address = await ethersUtil.onConnect({ provider });
       ethersUtil.storeEvmUserAddress(address);
       commit(types.CONNECT_EVM_WALLET_SUCCESS, address);
-
-      // get ethereum balance
-      await dispatch('getEvmBalance');
     } catch (error) {
       commit(types.CONNECT_EVM_WALLET_FAILURE);
       throw error;
     }
   },
 
-  async switchExternalAccount({ commit, dispatch }, { address = '' } = {}) {
+  async switchExternalAccount({ commit }, { address = '' } = {}) {
     commit(types.SWITCH_EVM_WALLET_REQUEST);
     try {
       ethersUtil.removeEvmUserAddress();
       ethersUtil.storeEvmUserAddress(address);
       commit(types.SWITCH_EVM_WALLET_SUCCESS, address);
-
-      // get ethereum balance
-      await dispatch('getEvmBalance');
     } catch (error) {
       commit(types.SWITCH_EVM_WALLET_FAILURE);
       throw error;

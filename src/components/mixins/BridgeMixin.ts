@@ -7,6 +7,7 @@ import type { CodecString } from '@sora-substrate/util';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import ethersUtil from '@/utils/ethers-util';
+import { bridgeApi } from '@/utils/bridge';
 import { EvmSymbol } from '@/consts';
 
 @Component
@@ -29,25 +30,22 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   blockHeadersSubscriber: ethers.providers.Web3Provider | undefined;
 
   async mounted(): Promise<void> {
-    await this.setEvmNetworkType();
     await this.syncExternalAccountWithAppState();
-    this.getEvmBalance();
-    this.getEvmNetworkFee();
+
     this.withApi(async () => {
+      await this.onEvmNetworkChange(bridgeApi.externalNetwork);
+
       this.unwatchEthereum = await ethersUtil.watchEthereum({
         onAccountChange: (addressList: string[]) => {
           if (addressList.length) {
             this.switchExternalAccount({ address: addressList[0] });
-            this.updateRegisteredAssets();
+            this.updateExternalBalances();
           } else {
             this.disconnectExternalAccount();
           }
         },
-        onNetworkChange: (networkId: string) => {
-          this.setEvmNetworkType(networkId);
-          this.getEvmNetworkFee();
-          this.getRegisteredAssets();
-          this.getEvmBalance(); // update only evm balance because assets balances updated during getRegisteredAssets call
+        onNetworkChange: (networkHex: string) => {
+          this.onEvmNetworkTypeChange(networkHex);
         },
         onDisconnect: () => {
           this.disconnectExternalAccount();
@@ -74,6 +72,20 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   updateExternalBalances(): void {
     this.getEvmBalance();
     this.updateRegisteredAssets();
+  }
+
+  async onEvmNetworkChange(networkId: number): Promise<void> {
+    await this.setEvmNetwork(networkId);
+    await this.onEvmNetworkTypeChange();
+  }
+
+  async onEvmNetworkTypeChange(networkHex?: string) {
+    await Promise.all([
+      this.setEvmNetworkType(networkHex),
+      this.getRegisteredAssets(),
+      this.getEvmNetworkFee(),
+      this.getEvmBalance(),
+    ]);
   }
 
   async subscribeToEvmBlockHeaders(): Promise<void> {
