@@ -12,7 +12,7 @@ const SORA_REQUESTS_TIMEOUT = 6 * 1000; // Block production time
 
 export const isUnsignedFromPart = (tx: BridgeHistory): boolean => {
   if (tx.type === Operation.EthBridgeOutgoing) {
-    return !tx.blockId;
+    return !tx.blockId && !tx.txId && !tx.hash;
   } else if (tx.type === Operation.EthBridgeIncoming) {
     return !tx.ethereumHash;
   } else {

@@ -68,18 +68,20 @@
               >
                 <template slot="menu">
                   <template v-if="isSoraToEvm">
-                    <a
-                      v-for="link in soraExpolrerLinks"
-                      :key="link.type"
-                      class="transaction-link"
-                      :href="link.value"
-                      target="_blank"
-                      rel="nofollow noopener"
-                    >
-                      <s-dropdown-item class="s-dropdown-menu__item" :disabled="!(soraTxId || soraTxBlockId)">
-                        {{ t(`transaction.viewIn.${link.type}`) }}
-                      </s-dropdown-item>
-                    </a>
+                    <template v-if="soraExpolrerLinks.length">
+                      <a
+                        v-for="link in soraExpolrerLinks"
+                        :key="link.type"
+                        class="transaction-link"
+                        :href="link.value"
+                        target="_blank"
+                        rel="nofollow noopener"
+                      >
+                        <s-dropdown-item class="s-dropdown-menu__item" :disabled="!(soraTxId || soraTxBlockId)">
+                          {{ t(`transaction.viewIn.${link.type}`) }}
+                        </s-dropdown-item>
+                      </a>
+                    </template>
                   </template>
                   <s-dropdown-item v-else class="s-dropdown-menu__item">
                     <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
@@ -532,14 +534,14 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     if (!this.historyItem?.id) {
       return null;
     }
-    return this.historyItem.txId || bridgeApi.getHistory(this.historyItem.id)?.txId;
+    return this.historyItem.txId;
   }
 
   get soraTxBlockId(): Nullable<string> {
     if (!this.historyItem?.id) {
       return null;
     }
-    return this.historyItem.blockId || bridgeApi.getHistory(this.historyItem.id)?.blockId;
+    return this.historyItem.blockId;
   }
 
   get formattedSoraNetworkFee(): string {

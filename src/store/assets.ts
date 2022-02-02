@@ -30,7 +30,7 @@ function initialState() {
   return {
     assets: [],
     registeredAssets: [],
-    customAssets: [],
+    registeredAssetsFetching: false,
   };
 }
 
@@ -104,13 +104,15 @@ const mutations = {
   [types.GET_ASSET_FAILURE](state) {},
 
   [types.GET_REGISTERED_ASSETS_REQUEST](state) {
-    state.registeredAssets = [];
+    state.registeredAssetsFetching = true;
   },
   [types.GET_REGISTERED_ASSETS_SUCCESS](state, registeredAssets: Array<RegisteredAccountAsset>) {
     state.registeredAssets = registeredAssets;
+    state.registeredAssetsFetching = false;
   },
   [types.GET_REGISTERED_ASSETS_FAILURE](state) {
     state.registeredAssets = [];
+    state.registeredAssetsFetching = false;
   },
 };
 
@@ -137,11 +139,15 @@ const actions = {
     }
   },
   async getRegisteredAssets({ commit, dispatch }) {
-    commit(types.GET_REGISTERED_ASSETS_REQUEST);
+    commit(types.GET_REGISTERED_ASSETS_FAILURE);
     await dispatch('updateRegisteredAssets');
   },
-  async updateRegisteredAssets({ commit, dispatch }) {
+  async updateRegisteredAssets({ commit, dispatch, state }) {
     try {
+      if (state.registeredAssetsFetching) return;
+
+      commit(types.GET_REGISTERED_ASSETS_REQUEST);
+
       const registeredAssets = await bridgeApi.getRegisteredAssets();
       const enabledRegisteredAssets = registeredAssets.filter(
         (item) => !DISABLED_ASSETS_FOR_BRIDGE.includes(item.address)
@@ -149,14 +155,14 @@ const actions = {
       const preparedRegisteredAssets = await Promise.all(
         enabledRegisteredAssets.map(async (item) => {
           const accountAsset = { ...item, externalBalance: ZeroStringValue };
+
           try {
             if (!accountAsset.externalAddress) {
-              const externalAddress = await dispatch(
+              accountAsset.externalAddress = await dispatch(
                 'web3/getEvmTokenAddressByAssetId',
                 { address: item.address },
                 { root: true }
               );
-              accountAsset.externalAddress = externalAddress;
             }
             if (accountAsset.externalAddress) {
               const { value, decimals } = await dispatch(
@@ -165,6 +171,7 @@ const actions = {
                 { root: true }
               );
               accountAsset.externalBalance = value;
+
               if (!accountAsset.externalDecimals) {
                 accountAsset.externalDecimals = decimals;
               }
