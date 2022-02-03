@@ -3,7 +3,7 @@ import { Action, Getter } from 'vuex-class';
 import { ethers } from 'ethers';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { BridgeNetworks } from '@sora-substrate/util';
-import type { CodecString } from '@sora-substrate/util';
+import type { CodecString, RegisteredAccountAsset, RegisteredAsset } from '@sora-substrate/util';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import ethersUtil from '@/utils/ethers-util';
@@ -16,7 +16,7 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString;
   @Getter('soraNetworkFee', { namespace: 'bridge' }) soraNetworkFee!: CodecString;
   @Getter('evmNetworkFee', { namespace: 'bridge' }) evmNetworkFee!: CodecString;
-  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any;
+  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: RegisteredAsset & RegisteredAccountAsset;
 
   @Action('getEvmBalance', { namespace: 'web3' }) getEvmBalance!: AsyncVoidFn;
   @Action('getEvmNetworkFee', { namespace: 'bridge' }) getEvmNetworkFee!: AsyncVoidFn;
