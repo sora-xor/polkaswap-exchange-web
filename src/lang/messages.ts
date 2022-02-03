@@ -439,6 +439,7 @@ export default {
     empty: 'Your transactions will appear here.',
     filterPlaceholder: 'Filter by Asset ID or Ticker Symbol',
     restoreHistory: 'Restore history',
+    statusAction: 'Action Needed',
   },
   selectToken: {
     title: 'Select a token',
