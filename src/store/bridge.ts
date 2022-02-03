@@ -12,11 +12,10 @@ import {
   BridgeTxStatus,
   BridgeDirection,
   Operation,
-  BridgeHistory,
-  CodecString,
 } from '@sora-substrate/util';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
+import type { BridgeHistory, CodecString } from '@sora-substrate/util';
 
 import { bridgeApi, appBridge, STATES, waitForApprovedRequest } from '@/utils/bridge';
 import ethersUtil, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/ethers-util';
