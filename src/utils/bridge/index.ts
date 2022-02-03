@@ -397,5 +397,5 @@ const appBridge = new Bridge({
 });
 
 export { bridgeApi, appBridge };
-export * from './utils';
 export * from './types';
+export * from './utils';
