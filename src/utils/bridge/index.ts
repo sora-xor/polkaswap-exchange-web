@@ -8,7 +8,7 @@ import { STATES } from './types';
 import {
   getTransaction,
   updateHistoryParams,
-  waitForRequest,
+  waitForIncomingRequest,
   waitForApprovedRequest,
   waitForSoraTransactionHash,
   waitForEvmTransaction,
@@ -309,8 +309,8 @@ class EthBridgeIncomingStateReducer extends BridgeTransactionStateHandler {
           rejectState: STATES.SORA_REJECTED,
           handler: async (id: string) => {
             const tx = getTransaction(id);
-
-            await waitForRequest(tx);
+            const { hash, blockId } = await waitForIncomingRequest(tx);
+            await this.updateTransactionParams(id, { hash, blockId });
           },
         });
       }

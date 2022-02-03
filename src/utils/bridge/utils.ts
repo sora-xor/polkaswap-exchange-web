@@ -6,7 +6,7 @@ import { bridgeApi } from './api';
 import { delay } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
 
-import type { BridgeHistory, BridgeApprovedRequest, BridgeRequest } from '@sora-substrate/util';
+import type { BridgeHistory, BridgeApprovedRequest } from '@sora-substrate/util';
 
 const SORA_REQUESTS_TIMEOUT = 6 * 1000; // Block production time
 
@@ -71,12 +71,12 @@ export const waitForApprovedRequest = async (tx: BridgeHistory): Promise<BridgeA
   }).then(() => bridgeApi.getApprovedRequest(tx.hash as string));
 };
 
-export const waitForRequest = async (tx: BridgeHistory): Promise<BridgeRequest> => {
+export const waitForIncomingRequest = async (tx: BridgeHistory): Promise<{ hash: string; blockId: string }> => {
   if (!tx.ethereumHash) throw new Error('[Bridge]: ethereumHash cannot be empty!');
   if (!Number.isFinite(tx.externalNetwork))
     throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} recieved`);
 
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     const subscription = bridgeApi
       .subscribeOnRequest(tx.externalNetwork as number, tx.ethereumHash as string)
       .subscribe((request) => {
@@ -89,11 +89,22 @@ export const waitForRequest = async (tx: BridgeHistory): Promise<BridgeRequest> 
               break;
             case BridgeTxStatus.Done:
               if (subscription) subscription.unsubscribe();
-              resolve(request);
+              resolve();
               break;
           }
         }
       });
+  }).then(async () => {
+    // TODO: move to js-lib
+    const soraHash = (
+      await bridgeApi.api.query.ethBridge.loadToIncomingRequestHash(tx.externalNetwork, tx.ethereumHash)
+    ).toString();
+    const soraBlockNumber = +(
+      await bridgeApi.api.query.ethBridge.requestSubmissionHeight(tx.externalNetwork, tx.ethereumHash)
+    ).toString();
+    const soraBlockHash = (await bridgeApi.api.rpc.chain.getBlockHash(soraBlockNumber)).toString();
+
+    return { hash: soraHash, blockId: soraBlockHash };
   });
 };
 

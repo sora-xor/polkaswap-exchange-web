@@ -186,16 +186,30 @@
                 @click="handleCopyTransactionHash(transactionToHash)"
               />
               <s-dropdown
-                v-if="isSoraToEvm"
+                v-if="(!isSoraToEvm && soraExpolrerLinks.length) || isSoraToEvm"
                 class="s-dropdown--hash-menu"
                 borderRadius="mini"
                 type="ellipsis"
                 icon="basic-more-vertical-24"
                 placement="bottom-end"
-                @select="handleOpenEtherscan"
+                @select="!isSoraToEvm ? undefined : handleOpenEtherscan()"
               >
                 <template slot="menu">
-                  <s-dropdown-item class="s-dropdown-menu__item">
+                  <template v-if="!isSoraToEvm">
+                    <a
+                      v-for="link in soraExpolrerLinks"
+                      :key="link.type"
+                      class="transaction-link"
+                      :href="link.value"
+                      target="_blank"
+                      rel="nofollow noopener"
+                    >
+                      <s-dropdown-item class="s-dropdown-menu__item" :disabled="!(soraTxId || soraTxBlockId)">
+                        {{ t(`transaction.viewIn.${link.type}`) }}
+                      </s-dropdown-item>
+                    </a>
+                  </template>
+                  <s-dropdown-item v-else class="s-dropdown-menu__item">
                     <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
                   </s-dropdown-item>
                 </template>
@@ -611,7 +625,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   get soraExpolrerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
     const baseLinks = getExplorerLinks(this.soraNetwork);
     const txId = this.soraTxId || this.soraTxBlockId;
-    if (!(this.isSoraToEvm && txId)) {
+    if (!txId) {
       return [];
     }
     if (!this.soraTxId) {
@@ -707,7 +721,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
 
   get secondTxHashContainerClasses(): string {
     // cuz we don't show SORA tx for ETH->SORA flow
-    return this.getHashContainerClasses(this.isSoraToEvm);
+    return this.getHashContainerClasses();
   }
 
   get formattedNetworkStep1(): string {
