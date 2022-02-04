@@ -158,6 +158,12 @@ export const getAssetBalance = (
   return asset?.balance?.transferable;
 };
 
+export const getAssetDecimals = (asset: any, { internal = true } = {}): number | undefined => {
+  if (!asset) return undefined;
+
+  return internal ? asset.decimals : asset.externalDecimals;
+};
+
 export const formatAssetBalance = (
   asset: any,
   {
@@ -174,7 +180,9 @@ export const formatAssetBalance = (
 
   if (!balance || (!showZeroBalance && asZeroValue(balance))) return formattedZero;
 
-  return FPNumber.fromCodecValue(balance, asset.decimals).toLocaleString();
+  const decimals = getAssetDecimals(asset, { internal });
+
+  return FPNumber.fromCodecValue(balance, decimals).toLocaleString();
 };
 
 export const findAssetInCollection = (asset, collection) => {

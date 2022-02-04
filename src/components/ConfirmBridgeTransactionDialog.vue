@@ -24,7 +24,11 @@
       </div>
     </div>
     <s-divider class="s-divider--dialog" />
-    <bridge-transaction-details />
+    <bridge-transaction-details
+      :evm-token-symbol="evmTokenSymbol"
+      :evm-network-fee="evmNetworkFee"
+      :sora-network-fee="soraNetworkFee"
+    />
     <template #footer>
       <s-button
         type="primary"
@@ -77,6 +81,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   @Prop({ default: ZeroStringValue, type: String }) readonly amount!: string;
   @Prop({ default: () => undefined, type: Object }) readonly asset!: Nullable<Asset>;
   @Prop({ default: BridgeNetworks.ETH_NETWORK_ID, type: Number }) readonly evmNetwork!: BridgeNetworks;
+  @Prop({ default: EvmSymbol.ETH, type: String }) readonly evmTokenSymbol!: string;
   @Prop({ default: ZeroStringValue, type: String }) readonly evmNetworkFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
   @Prop({ default: true, type: Boolean }) readonly isValidNetworkType!: boolean;
@@ -117,13 +122,6 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
 
   get tokenSymbol(): string {
     return this.asset?.symbol || '';
-  }
-
-  get currentEvmTokenSymbol(): string {
-    if (this.evmNetwork === BridgeNetworks.ENERGY_NETWORK_ID) {
-      return EvmSymbol.VT;
-    }
-    return EvmSymbol.ETH;
   }
 
   async handleConfirm(): Promise<void> {

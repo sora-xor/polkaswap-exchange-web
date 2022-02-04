@@ -1,4 +1,5 @@
 import invert from 'lodash/fp/invert';
+import { KnownAssets, KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
 
 import pkg from '../../package.json';
@@ -315,18 +316,18 @@ const gasLimit = {
 export const EthereumGasLimits = [
   // ETH -> SORA
   {
-    XOR: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    VAL: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    PSWAP: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    ETH: gasLimit.sendEthToSidechain,
+    [XOR.address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+    [KnownAssets.get(KnownSymbols.VAL).address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+    [KnownAssets.get(KnownSymbols.PSWAP).address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+    [KnownAssets.get(KnownSymbols.ETH).address]: gasLimit.sendEthToSidechain,
     [KnownBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
   },
   // SORA -> ETH
   {
-    XOR: gasLimit.mintTokensByPeers,
-    VAL: gasLimit.mintTokensByPeers,
-    PSWAP: gasLimit.receiveBySidechainAssetId,
-    ETH: gasLimit.receiveByEthereumAssetAddress,
+    [XOR.address]: gasLimit.mintTokensByPeers,
+    [KnownAssets.get(KnownSymbols.VAL).address]: gasLimit.mintTokensByPeers,
+    [KnownAssets.get(KnownSymbols.PSWAP).address]: gasLimit.receiveBySidechainAssetId,
+    [KnownAssets.get(KnownSymbols.ETH).address]: gasLimit.receiveByEthereumAssetAddress,
     [KnownBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress,
   },
 ];
