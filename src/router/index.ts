@@ -166,7 +166,7 @@ router.beforeEach((to, from, next) => {
   const prev = from.name;
   if (to.matched.some((record) => record.meta.isInvitationRoute)) {
     if (api.validateAddress(to.params.referralAddress)) {
-      store.dispatch('setReferral', to.params.referralAddress);
+      store.dispatch('referrals/setReferral', to.params.referralAddress);
     }
     if (store.getters.isLoggedIn) {
       next({ name: PageNames.Referral });

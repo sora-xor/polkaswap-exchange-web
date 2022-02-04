@@ -73,8 +73,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Getter libraryDesignSystem!: DesignSystem;
   @Getter firstReadyTransaction!: History;
   @Getter blockNumber!: number;
-  @Getter storageReferral!: string;
   @Getter('isLoggedIn') isSoraAccountConnected!: boolean;
+  @Getter('storageReferral', { namespace: 'referrals' }) storageReferral!: string;
   @Getter('referral', { namespace: 'referrals' }) referral!: string;
 
   // Wallet
@@ -93,12 +93,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action setFaucetUrl!: (url: string) => Promise<void>;
   @Action setLanguage!: (lang: Language) => Promise<void>;
   @Action setFeatureFlags!: (options: any) => Promise<void>;
-  @Action setReferral!: (value: string) => Promise<void>;
   @Action resetBlockNumberSubscription!: AsyncVoidFn;
   @Action('unsubscribeAccountMarketMakerInfo', { namespace: 'rewards' }) unsubscribeMarketMakerInfo!: AsyncVoidFn;
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>;
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
   @Action('getReferral', { namespace: 'referrals' }) getReferral!: (invitedUserId: string) => Promise<void>;
+  @Action('setReferral', { namespace: 'referrals' }) setReferral!: (value: string) => Promise<void>;
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History): void {
     this.handleChangeTransaction(value);
@@ -123,9 +123,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
-  @Watch('storageReferral')
+  @Watch('storageReferral', { immediate: true })
   private async confirmInviteUserIfHasStorage(storageReferralValue: string): Promise<void> {
-    if (this.isSoraAccountConnected && storageReferralValue.length) {
+    if (this.isSoraAccountConnected && storageReferralValue?.length) {
       await this.confirmInvititation();
     }
   }

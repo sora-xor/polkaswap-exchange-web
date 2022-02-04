@@ -167,10 +167,11 @@ export default class ReferralProgram extends Mixins(
   }
 
   get referralLink(): any {
-    const polkaswapLink = 'Polkaswap.io';
+    const polkaswapLink = window.location.origin;
+    const routerMode = router.mode === 'hash' ? '#/' : '';
     return {
-      href: `https://${polkaswapLink.toLowerCase()}/referral/${this.account.address}`,
-      label: `<span class="referral-link-address">${polkaswapLink}/</span>referral/${this.account.address}`,
+      href: `${polkaswapLink.toLowerCase()}/${routerMode}referral/${this.account.address}`,
+      label: `<span class="referral-link-address">${polkaswapLink}/</span>${routerMode}referral/${this.account.address}`,
       isVisible: +this.bondedXOR > 0,
     };
   }

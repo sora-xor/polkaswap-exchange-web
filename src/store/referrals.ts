@@ -5,9 +5,11 @@ import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import { api } from '@soramitsu/soraneo-wallet-web';
 
+import storage from '@/utils/storage';
+
 const types = flow(
   flatMap((x) => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
-  concat(['SET_BOND', 'SET_XOR_VALUE']),
+  concat(['SET_BOND', 'SET_XOR_VALUE', 'SET_REFERRAL']),
   map((x) => [x, x]),
   fromPairs
 )(['GET_REFERRAL', 'GET_INVITED_USERS']);
@@ -17,6 +19,7 @@ interface ReferralsState {
   invitedUsers: Array<string>;
   isBond: boolean;
   xorValue: string;
+  storageReferral: string;
 }
 
 function initialState(): ReferralsState {
@@ -25,6 +28,7 @@ function initialState(): ReferralsState {
     invitedUsers: [],
     isBond: true,
     xorValue: '',
+    storageReferral: storage.get('storageReferral') || '',
   };
 }
 
@@ -39,6 +43,9 @@ const getters = {
   },
   isBond(state: ReferralsState) {
     return state.isBond;
+  },
+  storageReferral(state: ReferralsState) {
+    return state.storageReferral;
   },
 };
 
@@ -70,6 +77,11 @@ const mutations = {
   [types.SET_XOR_VALUE](state: ReferralsState, xorValue: string) {
     state.xorValue = xorValue;
   },
+
+  [types.SET_REFERRAL](state: ReferralsState, value: string) {
+    state.storageReferral = value;
+    storage.set('storageReferral', value);
+  },
 };
 
 const actions = {
@@ -96,6 +108,9 @@ const actions = {
   },
   setXorValue({ commit }, xorValue: string) {
     commit(types.SET_XOR_VALUE, xorValue);
+  },
+  setReferral({ commit }, value: string) {
+    commit(types.SET_REFERRAL, value);
   },
 };
 

@@ -10,7 +10,7 @@
         {{ t('referralProgram.confirm.signInvitation') }}
       </s-button>
       <div class="invite-user-free-charge">
-        <s-icon class="invite-user-info" name="chevron-down-rounded-16" size="14px" />
+        <s-icon class="invite-user-info" name="basic-check-mark-24" size="10px" />
         <span>{{ t('referralProgram.confirm.freeOfCharge') }}</span>
       </div>
     </template>
@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 
@@ -29,9 +29,9 @@ import DialogBase from '@/components/DialogBase.vue';
   components: { DialogBase },
 })
 export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, DialogMixin) {
-  @Getter storageReferral!: string;
+  @Getter('storageReferral', { namespace: 'referrals' }) storageReferral!: string;
 
-  @Action setReferral!: (value: string) => Promise<void>;
+  @Action('setReferral', { namespace: 'referrals' }) setReferral!: (value: string) => Promise<void>;
 
   async handleConfirmInviteUser(): Promise<void> {
     try {
@@ -40,8 +40,14 @@ export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, D
     } catch (error) {
       this.$emit('confirm');
     }
-    this.setReferral('');
     this.isVisible = false;
+  }
+
+  @Watch('isVisible')
+  private async isDialogVisible(isVisible: boolean): Promise<void> {
+    if (!isVisible && this.storageReferral) {
+      this.setReferral('');
+    }
   }
 }
 </script>
@@ -88,9 +94,9 @@ $invite-user-icon-size: 64px;
     display: flex;
     justify-content: center;
   }
-  &-info.s-icon-chevron-down-rounded-16 {
+  &-info.s-icon-basic-check-mark-24 {
     margin-right: calc(#{$inner-spacing-small} / 2);
-    line-height: var(--s-line-height-medium);
+    line-height: var(--s-line-height-big);
     color: var(--s-color-status-warning);
   }
 }

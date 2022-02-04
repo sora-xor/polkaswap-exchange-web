@@ -173,8 +173,8 @@ export enum Components {
 }
 
 export enum RewardsTabsItems {
-  Rewards = 'Rewards',
-  ReferralProgram = 'ReferralProgram',
+  Rewards = PageNames.Rewards,
+  ReferralProgram = PageNames.ReferralProgram,
 }
 
 interface SidebarMenuItem {
