@@ -12,6 +12,7 @@ import {
   waitForApprovedRequest,
   waitForSoraTransactionHash,
   waitForEvmTransaction,
+  getEvmTxRecieptByHash,
 } from './utils';
 
 import type { BridgeHistory, RegisteredAsset } from '@sora-substrate/util';
@@ -110,12 +111,7 @@ class BridgeTransactionStateHandler {
     await waitForEvmTransaction(id);
 
     const tx = getTransaction(id);
-    const {
-      effectiveGasPrice,
-      gasUsed,
-      blockNumber: blockHeight,
-    } = await ethersUtil.getEvmTransactionReceipt(tx.ethereumHash as string);
-    const ethereumNetworkFee = ethersUtil.calcEvmFee(effectiveGasPrice.toNumber(), gasUsed.toNumber());
+    const { ethereumNetworkFee, blockHeight } = await getEvmTxRecieptByHash(tx.ethereumHash as string);
     // In BridgeHistory 'blockHeight' will store evm block number
     await this.updateTransactionParams(id, { ethereumNetworkFee, blockHeight });
   }
