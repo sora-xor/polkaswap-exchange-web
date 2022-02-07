@@ -102,6 +102,11 @@ export enum PageNames {
   RemoveLiquidity = 'RemoveLiquidity',
   Farming = 'Farming',
   Rewards = 'Rewards',
+  Referral = 'Referral',
+  RewardsTabs = 'RewardsTabs',
+  ReferralProgram = 'ReferralProgram',
+  ReferralBonding = 'ReferralBonding',
+  ReferralUnbonding = 'ReferralUnbonding',
   PageNotFound = 'PageNotFound',
   Bridge = 'Bridge',
   BridgeTransaction = 'BridgeTransaction',
@@ -148,6 +153,8 @@ export enum Components {
   TokensRow = 'Rewards/TokensRow',
   RewardsAmountHeader = 'Rewards/AmountHeader',
   RewardsAmountTable = 'Rewards/AmountTable',
+  ReferralsConfirmBonding = 'Referrals/ConfirmBonding',
+  ReferralsConfirmInviteUser = 'Referrals/ConfirmInviteUser',
   TokenSelectButton = 'Input/TokenSelectButton',
   TokenAddress = 'Input/TokenAddress',
   SelectLanguageDialog = 'SelectLanguageDialog',
@@ -163,6 +170,11 @@ export enum Components {
   RemoveLiquidityTransactionDetails = 'TransactionDetails/RemoveLiquidityTransactionDetails',
   BridgeTransactionDetails = 'TransactionDetails/BridgeTransactionDetails',
   CreatePairTransactionDetails = 'TransactionDetails/CreatePairTransactionDetails',
+}
+
+export enum RewardsTabsItems {
+  Rewards = PageNames.Rewards,
+  ReferralProgram = PageNames.ReferralProgram,
 }
 
 interface SidebarMenuItem {

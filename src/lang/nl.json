@@ -260,7 +260,8 @@
             "sorascan": "Bekijk in Sorascan",
             "subscan": "Bekijk in Subscan"
         },
-        "txId": "Transactie ID"
+        "txId": "Transactie ID",
+        "referrer": "Verwijzer"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -603,7 +604,8 @@
         "title": "Bridge-transactie",
         "expectedMetaMaskAddress": "Verwacht adres in Metamask:",
         "allowToken": "Sta @:appName toe om je {tokenSymbol}",
-        "approveToken": "Houd er rekening mee dat het slechts één keer nodig is om het token goed te keuren. Als uw extensie meerdere goedkeuringsverzoeken voor tokens heeft, moet u ervoor zorgen dat u alleen de laatste bevestigt en de rest afwijst."
+        "approveToken": "Houd er rekening mee dat het slechts één keer nodig is om het token goed te keuren. Als uw extensie meerdere goedkeuringsverzoeken voor tokens heeft, moet u ervoor zorgen dat u alleen de laatste bevestigt en de rest afwijst.",
+        "blocksLeft": "{count} blokken over..."
     },
     "bridgeHistory": {
         "title": "Geschiedenis",
@@ -871,7 +873,7 @@
         "connectAccount": "Om gebruikers uit te nodigen, moet u uw SORA-account koppelen.",
         "bondedXOR": "XOR Gebonden",
         "referralsNumber": "{number} verwijzingen",
-        "startInviting": "Om te beginnen met uitnodigen, bond een willekeurige hoeveelheid XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Meer informatie<\/a>",
+        "startInviting": "Bind een willekeurig bedrag aan XOR om uit te nodigen.",
         "preview": "Nodig nieuwe gebruikers uit en ontvang 10% van hun transactiekosten.<br \/>Om te beginnen, borg elk bedrag van XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Meer informatie<\/a>",
         "deposit": "Storting",
         "balance": "Saldo",
@@ -898,9 +900,9 @@
             "text": "Bevestigen",
             "bond": "Bevestig obligatie",
             "unbond": "Ontbinding bevestigen",
-            "inviteTitle": "U bent uitgenodigd voor Polkaswap door een verwijzing",
-            "inviteDescription": "Wanneer u transactiekosten betaalt, gaat 10% naar uw verwijzing. Het is helemaal gratis.",
-            "signInvitation": "Goedkeuringstransactie ondertekenen",
+            "inviteTitle": "Je bent uitgenodigd voor Polkaswap",
+            "inviteDescription": "Voor elke transactie gaat 10% van de vergoeding naar uw verwijzer, zonder extra kosten voor u.",
+            "signInvitation": "Goedkeuren",
             "freeOfCharge": "Deze actie is gratis"
         }
     },

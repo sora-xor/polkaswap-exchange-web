@@ -7,7 +7,7 @@
     "importText": "Importovat",
     "settingsText": "Nastavení",
     "addAssetText": "Přidat aktivum",
-    "createTokenText": "Vytvořit token",
+    "createTokenText": "Vytvořit",
     "comingSoonText": "Již brzy",
     "successText": "Úspěch",
     "warningText": "Varování",
@@ -41,9 +41,9 @@
             "CreatePair": "Vytvořeno {amount} {symbol} a {amount2} {symbol2}",
             "RegisterAsset": "Registrované aktivum {symbol}",
             "ClaimRewards": "Odměna byla úspěšně nárokována {rewards}.",
-            "ReferralReserveXor": "Úspěšně svázaný XOR",
-            "ReferralUnreserveXor": "Úspěšně odpojeno XOR",
-            "ReferralSetInvitedUser": "Odkaz je úspěšně nastaven"
+            "ReferralReserveXor": "Vazba XOR byla úspěšná",
+            "ReferralUnreserveXor": "Zrušení vazby XOR bylo úspěšné",
+            "ReferralSetInvitedUser": "Doporučení bylo úspěšně nastaveno"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol}  {direction} {address} se nezdařilo.",
@@ -53,11 +53,11 @@
             "CreatePair": "Vytvoření {amount} {symbol} a {amount2} {symbol2} se nezdařilo.",
             "RegisterAsset": "Nepodařilo se zaregistrovat aktivum {symbol}",
             "ClaimRewards": "Nepodařilo se získat odměny {rewards}",
-            "ReferralReserveXor": "Svázání XOR se nezdařilo",
-            "ReferralUnreserveXor": "Odpojení XOR se nezdařilo",
-            "ReferralSetInvitedUser": "Nepodařilo se nastavit odkaz"
+            "ReferralReserveXor": "Vazba XOR se nezdařila",
+            "ReferralUnreserveXor": "Nepodařilo se zrušit vazbu XOR",
+            "ReferralSetInvitedUser": "Nepodařilo se nastavit doporučení"
         },
-        "ReferralReserveXor": "Svázat XOR",
+        "ReferralReserveXor": "Vázat XOR",
         "ReferralUnreserveXor": "Zrušit vazbu XOR",
         "ReferralSetInvitedUser": "Nastavit odkaz"
     },
@@ -200,11 +200,11 @@
         },
         "titleCommon": "Vytvořit",
         "confirmTokenTitleCommon": "Vytvořit token",
-        "confirmTokenTitleNFT": "Vytvořte NFT",
+        "confirmTokenTitleNFT": "Vytvořit NFT",
         "actionNFT": "@:createTokenTextNFT",
-        "provideContent": "Poskytujte obsah",
+        "provideContent": "Poskytněte obsah",
         "selectLocalFile": "Vyberte místní soubor",
-        "CreateSimpleToken": "Žeton",
+        "CreateSimpleToken": "Token",
         "CreateNftToken": "NFT",
         "nft": {
             "source": {
@@ -260,7 +260,8 @@
             "sorascan": "Zobrazit v SORAScanu",
             "subscan": "Zobrazit v Subscan"
         },
-        "txId": "Id transakce"
+        "txId": "Id transakce",
+        "referrer": "Doporučitel"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -271,7 +272,7 @@
     "changeAccountText": "Změnit účet",
     "connectedText": "Připojeno",
     "connectWalletTextTooltip": "Připojte se k síti @:soraText pomocí polkadot{.js}",
-    "selectNodeText": "Vyberte node",
+    "selectNodeText": "Vyberte síťový node",
     "bridgeText": "Bridge",
     "disclaimer": "<span class=\"app-disclaimer__title\">Disclaimer \/ Zřeknutí se odpovědnosti<\/span>: Tento web spravuje komunita @:(soraText). Před dalším používáním tohoto webu, si prosím prostudujte @:polkaswapFaqLink a dokumentaci, která obsahuje podrobné vysvětlení toho, jak Polkaswap funguje, a také @:memorandumLink a @:(privacyLink). Tyto dokumenty jsou zásadní pro bezpečnou a pozitivní uživatelskou zkušenost. Používáním Polkaswap potvrzujete, že jste si tyto dokumenty přečetli a porozuměli jim. Rovněž berete na vědomí následující: 1) svou výhradní odpovědnost za soulad se všemi zákony, které se mohou vztahovat na vaše konkrétní použití Polkaswap ve vaší právní jurisdikci; 2) chápete, že aktuální verze Polkaswap je alfa verzí: nebyla plně otestována a některé funkce nemusí fungovat tak, jak byly navrženy; a 3) vaše porozumění a dobrovolné přijetí rizik spojených s používáním Polkaswap, mimo jiné včetně rizika ztráty tokenů. Ještě jednou vás žádáme, abyste nepokračovali bez přečtení @:polkaswapFaqLink, @:memorandumLink, a @:privacyLink!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
@@ -341,7 +342,7 @@
     },
     "aboutNetworkDialog": {
         "title": "O projektu",
-        "learnMore": "Zjistěte více",
+        "learnMore": "@:learnMoreText",
         "network": {
             "title": "Co je to @:soraText?",
             "description": "Polkaswap je postaven na síti @:soraText a token @:soraText (XOR) se používá pro placení gasu\/poplatků a pro poskytování likvidity na Polkaswapu. Síť @:soraText umožňuje snížení poplatků, rychlejší transakce a jednodušší finalizaci konsensu a zaměřuje se na zajištění interoperability napříč ostatními blockchain ekosystémy, jako je @:(ethereumText)."
@@ -603,7 +604,8 @@
         "title": "Bridge transakce",
         "expectedMetaMaskAddress": "Očekávaná adresa v MetaMask:",
         "allowToken": "Povolit @: appName používat vaše {tokenSymbol}",
-        "approveToken": "Upozorňujeme, že token je nutné schválit pouze jednou. Pokud má vaše rozšíření více žádostí o schválení tokenu, nezapomeňte potvrdit pouze poslední a zbytek odmítnout."
+        "approveToken": "Upozorňujeme, že token je nutné schválit pouze jednou. Pokud má vaše rozšíření více žádostí o schválení tokenu, nezapomeňte potvrdit pouze poslední a zbytek odmítnout.",
+        "blocksLeft": "Zbývá {count} bloků..."
     },
     "bridgeHistory": {
         "title": "Historie",
@@ -822,7 +824,7 @@
             }
         },
         "buttons": {
-            "buy": "Koupit žetony",
+            "buy": "Koupit tokeny",
             "history": "Historie nákupů",
             "transfer": "Spustit bridge",
             "view": "Zobrazit bridge transakci"
@@ -852,39 +854,39 @@
     "sentText": "Odesláno",
     "learnMoreText": "Zjistit více",
     "marketMakerCountdown": {
-        "title": "Odpočítávání Tvůrce trhu",
+        "title": "Market Maker odpočet",
         "blocks": "bloky",
-        "daysLeft": "zbývající dny",
+        "daysLeft": "dny zbývají",
         "txs": "TXs",
         "volume": "Objem MM TX",
-        "description": "20 milionů PSWAP\/měsíc bude distribuováno tvůrcům trhu s minimálně 500 tx\/měsíc v hodnotě přes 1 XOR."
+        "description": "20 milionů PSWAP \/ měsíc bude rozděleno market makerům s alespoň 500 tx \/ měsíc v hodnotě nad 1 XOR."
     },
     "confirmNextTxFailure": {
-        "header": "Pozornost",
-        "info": "Váš zůstatek XOR bude po této transakci {fee} Nebudete moci platit za síťový poplatek za další transakci.",
-        "payoff": "Budete muset použít Bridge k získání XOR z jiných sítí, k odeslání XOR z jiného účtu SORA nebo k výměně jakéhokoli jiného tokenu, který již máte na účtu, za XOR.",
+        "header": "Pozor",
+        "info": "Váš zůstatek XOR bude po této transakci nižší než {fee} XOR. Nebudete moci platit za síťový poplatek za další transakci.",
+        "payoff": "Budete muset použít Bridge k získání XOR z jiných sítí, zaslat si XOR z jiného účtu SORA, nebo provést swap jakéhokoli jiného tokenu, který již máte na účtu, za XOR.",
         "button": "Ano, chápu riziko"
     },
     "blockNumberText": "Číslo bloku",
     "referralProgram": {
-        "title": "Náborový program",
+        "title": "Program doporučení",
         "connectAccount": "Chcete-li pozvat uživatele, musíte připojit svůj účet SORA.",
-        "bondedXOR": "XOR Vázaný",
+        "bondedXOR": "Vázané XOR",
         "referralsNumber": "{number} doporučení",
-        "startInviting": "Chcete-li začít zvát, spojte libovolné množství XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Další informace<\/a>",
-        "preview": "Pozvěte nové uživatele a získejte 10% z jejich transakčních poplatků.<br \/>Chcete-li začít, spojte jakoukoli částku XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Další informace<\/a>",
+        "startInviting": "Chcete-li začít zvát, spojte libovolné množství XOR.",
+        "preview": "Pozvěte nové uživatele a získejte 10 % z jejich transakčních poplatků.<br \/>Pro začátek se zavažte libovolnou částkou XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Zjistěte více<\/a>",
         "deposit": "Vklad",
         "balance": "Zůstatek",
         "networkFee": "@:networkFeeText",
         "networkFeeTooltip": "@:networkFeeTooltipText",
         "insufficientBalance": "@:insufficientBalanceText",
-        "insufficientBondedBalance": "Nedostatečná vázaná rovnováha",
+        "insufficientBondedBalance": "Vázaná částka je nedostatečná",
         "action": {
             "connectWallet": "@:connectWalletText",
-            "empty": "Zadejte částku {tokenSymbol}",
-            "startInviting": "Svázat {tokenSymbol} začít pozvat",
-            "bondMore": "Svázat Více",
-            "bond": "Svázat",
+            "empty": "Zadejte množství {tokenSymbol}",
+            "startInviting": "Vázat {tokenSymbol} pro rozesílání pozvánek",
+            "bondMore": "Vázat více",
+            "bond": "Vázat",
             "unbond": "Zrušit vazbu",
             "copyLink": "Kopírovat odkaz"
         },
@@ -892,15 +894,15 @@
         "receivedRewards": "Přijaté odměny",
         "invitationLink": "Odkaz na pozvánku",
         "successCopy": "Odkaz na doporučení se zkopíruje do schránky",
-        "bondTitle": "Svázat XOR",
+        "bondTitle": "Vázat XOR",
         "unbondTitle": "Zrušit vazbu XOR",
         "confirm": {
             "text": "Potvrdit",
-            "bond": "Potvrďte svázat",
-            "unbond": "Potvrďte zrušit vazbu",
-            "inviteTitle": "Byli jste pozváni do Polkaswap doporučením",
-            "inviteDescription": "Když zaplatíte poplatek za transakci, 10 % půjde na vaše doporučení. Je to zcela zdarma.",
-            "signInvitation": "Podepsat schvalovací transakci",
+            "bond": "Potvrďte vazbu",
+            "unbond": "Potvrďte zrušení vazby",
+            "inviteTitle": "Byli jste pozváni na Polkaswap",
+            "inviteDescription": "Za každou transakci obdrží váš doporučitel 10 % z poplatku, aniž byste museli platit jakékoli další náklady.",
+            "signInvitation": "Schválit",
             "freeOfCharge": "Tato akce je bezplatná"
         }
     },

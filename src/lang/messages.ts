@@ -3,7 +3,7 @@ import { en as walletEn, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Operation, TransactionStatus } from '@sora-substrate/util';
 import { RewardingEvents } from '@sora-substrate/util/build/rewards/consts';
 
-import { PageNames } from '../consts';
+import { PageNames, RewardsTabsItems } from '../consts';
 import { EvmNetworkType } from '../utils/ethers-util';
 import { MoonpayNotifications } from '@/components/Moonpay/consts';
 
@@ -185,6 +185,9 @@ export default {
     [Operation.CreatePair]: 'Create Pair',
     [Operation.RegisterAsset]: 'Register Asset',
     [Operation.ClaimRewards]: 'Claim Rewards',
+    [Operation.ReferralReserveXor]: 'Bond XOR',
+    [Operation.ReferralUnreserveXor]: 'Unbond XOR',
+    [Operation.ReferralSetInvitedUser]: 'Set Referral',
     andText: 'and',
     [TransactionStatus.Finalized]: {
       [Operation.Transfer]: '{action} {amount} {symbol} {direction} {address}',
@@ -194,6 +197,9 @@ export default {
       [Operation.CreatePair]: 'Supplied {amount} {symbol} and {amount2} {symbol2}',
       [Operation.RegisterAsset]: 'Registered {symbol} asset',
       [Operation.ClaimRewards]: 'Reward claimed successfully {rewards}',
+      [Operation.ReferralReserveXor]: 'Bonded XOR successfully',
+      [Operation.ReferralUnreserveXor]: 'Unbonded XOR successfully',
+      [Operation.ReferralSetInvitedUser]: 'Set Referral',
     },
     [TransactionStatus.Error]: {
       [Operation.Transfer]: 'Failed to send {amount} {symbol} to {address}',
@@ -203,6 +209,9 @@ export default {
       [Operation.CreatePair]: 'Failed to supply {amount} {symbol} and {amount2} {symbol2}',
       [Operation.RegisterAsset]: 'Failed to register {symbol} asset',
       [Operation.ClaimRewards]: 'Failed to claim rewards {rewards}',
+      [Operation.ReferralReserveXor]: 'Failed to bond XOR',
+      [Operation.ReferralUnreserveXor]: 'Failed to unbonded XOR',
+      [Operation.ReferralSetInvitedUser]: 'Failed to set referral',
     },
   },
   pageNotFound: {
@@ -547,7 +556,8 @@ export default {
     ok: 'OK',
   },
   rewards: {
-    title: 'Claim Rewards',
+    [RewardsTabsItems.Rewards]: 'Rewards',
+    [RewardsTabsItems.ReferralProgram]: '@:referralProgram.title',
     changeAccount: '@:changeAccountText',
     connected: '@:connectedText',
     networkFee: '@:networkFeeText',
@@ -673,6 +683,46 @@ export default {
       installExtension:
         '{name} extension is not found. Please install it!\n\nAlready installed extension? Please reload the page',
       reloadPage: 'Reload page',
+    },
+  },
+  referralProgram: {
+    title: 'Referral Program',
+    connectAccount: 'To invite users you need to connect your SORA account.',
+    bondedXOR: 'XOR Bonded',
+    referralsNumber: '{number} referrals',
+    startInviting: 'To start inviting, bond any amount of XOR.',
+    preview:
+      'Invite new users and get 10% from their transaction fees.<br />To start, bond any amount of XOR. <a href="#" target="_blank" rel="nofollow noopener" class="link" title="Learn more">Learn more</a>',
+    deposit: 'Deposit',
+    balance: 'Balance',
+    networkFee: '@:networkFeeText',
+    networkFeeTooltip: '@:networkFeeTooltipText',
+    insufficientBalance: '@:insufficientBalanceText',
+    insufficientBondedBalance: 'Insufficient bonded balance',
+    action: {
+      connectWallet: '@:connectWalletText',
+      empty: 'Enter amount of {tokenSymbol}',
+      startInviting: 'Bond {tokenSymbol} to start inviting',
+      bondMore: 'Bond More',
+      bond: 'Bond',
+      unbond: 'Unbond',
+      copyLink: 'Copy link',
+    },
+    transactionDetails: 'Transaction Details',
+    receivedRewards: 'Received rewards',
+    invitationLink: 'Invitation link',
+    successCopy: 'Referral link is copied to the clipboard',
+    bondTitle: 'Bond XOR',
+    unbondTitle: 'Unbond XOR',
+    confirm: {
+      text: '@:confirmText',
+      bond: 'Confirm bond',
+      unbond: 'Confirm unbond',
+      inviteTitle: 'You’ve been invited to Polkaswap by a referral',
+      inviteDescription:
+        'When you’ll pay a fee for transaction, 10% will go to your referral. It’s completely free of charge.',
+      signInvitation: 'Sign approval transaction',
+      freeOfCharge: 'This action is free of charge',
     },
   },
 };

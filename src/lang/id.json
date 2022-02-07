@@ -260,7 +260,8 @@
             "sorascan": "Lihat di Sorascan",
             "subscan": "Lihat di Subscan"
         },
-        "txId": "Id transaksi"
+        "txId": "Id transaksi",
+        "referrer": "Perujuk"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -603,7 +604,8 @@
         "title": "Jembatan Transaksi",
         "expectedMetaMaskAddress": "Alamat yang diharapkan di metamask",
         "allowToken": "Izinkan @:appName untuk menggunakan {tokenSymbol}",
-        "approveToken": "Harap dicatat bahwa itu hanya diperlukan untuk menyetujui token sekali. Jika ekstensi Anda memiliki beberapa permintaan persetujuan token, pastikan untuk hanya mengonfirmasi yang terakhir sambil menolak sisanya."
+        "approveToken": "Harap dicatat bahwa itu hanya diperlukan untuk menyetujui token sekali. Jika ekstensi Anda memiliki beberapa permintaan persetujuan token, pastikan untuk hanya mengonfirmasi yang terakhir sambil menolak sisanya.",
+        "blocksLeft": "{count} blok kiri..."
     },
     "bridgeHistory": {
         "title": "Riwayat",
@@ -871,7 +873,7 @@
         "connectAccount": "Untuk mengundang pengguna, Anda perlu menghubungkan akun SORA Anda.",
         "bondedXOR": "Ikatan XOR",
         "referralsNumber": "{number} rujukan",
-        "startInviting": "Untuk mulai mengundang, ikat sejumlah XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\"> Pelajari lebih lanjut <\/a>",
+        "startInviting": "Untuk mulai mengundang, ikat sejumlah XOR.",
         "preview": "Undang pengguna baru dan dapatkan 10% dari biaya transaksi mereka.<br \/>Untuk mulai, beri obligasi dalam jumlah XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
         "deposit": "Deposit",
         "balance": "Saldo",
@@ -898,9 +900,9 @@
             "text": "Konfirmasi",
             "bond": "Konfirmasi ikatan",
             "unbond": "Konfirmasi pelepasan ikatan",
-            "inviteTitle": "Anda telah diundang ke Polkaswap oleh referensi",
-            "inviteDescription": "Ketika Anda akan membayar biaya untuk transaksi, 10% akan masuk ke referral Anda. Ini benar-benar gratis.",
-            "signInvitation": "Menandatangani transaksi persetujuan",
+            "inviteTitle": "Anda telah diundang ke Polkaswap",
+            "inviteDescription": "Untuk setiap transaksi, 10% dari biaya akan masuk ke perujuk Anda, tanpa biaya tambahan apa pun kepada Anda.",
+            "signInvitation": "Menyetujui",
             "freeOfCharge": "Tindakan ini tidak dipungut biaya"
         }
     },

@@ -260,7 +260,8 @@
             "sorascan": "View in SORAScan",
             "subscan": "View in Subscan"
         },
-        "txId": "Transaction Id"
+        "txId": "Transaction Id",
+        "referrer": "Referrer"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -603,7 +604,8 @@
         "title": "Bridge Transaction",
         "expectedMetaMaskAddress": "Expected address in MetaMask:",
         "allowToken": "Allow @:appName to use your {tokenSymbol}",
-        "approveToken": "Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest."
+        "approveToken": "Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest.",
+        "blocksLeft": "{count} blocks left..."
     },
     "bridgeHistory": {
         "title": "History",
@@ -871,7 +873,7 @@
         "connectAccount": "To invite users you need to connect your SORA account.",
         "bondedXOR": "XOR Bonded",
         "referralsNumber": "{number} referrals",
-        "startInviting": "To start inviting, bond any amount of XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Learn more<\/a>",
+        "startInviting": "To start inviting, bond any amount of XOR.",
         "preview": "Invite new users and get 10% from their transaction fees.<br \/>To start, bond any amount of XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
         "deposit": "Deposit",
         "balance": "Balance",
@@ -898,9 +900,9 @@
             "text": "Confirm",
             "bond": "Confirm bond",
             "unbond": "Confirm unbond",
-            "inviteTitle": "You’ve been invited to Polkaswap by a referral",
-            "inviteDescription": "When you’ll pay a fee for transaction, 10% will go to your referral. It’s completely free of charge.",
-            "signInvitation": "Sign approval transaction",
+            "inviteTitle": "You have been invited to Polkaswap",
+            "inviteDescription": "For every transaction, 10% of the fee will go to your referrer, without any extra cost to you.",
+            "signInvitation": "Approve",
             "freeOfCharge": "This action is free of charge"
         }
     },
