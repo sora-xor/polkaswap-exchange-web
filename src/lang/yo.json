@@ -604,7 +604,8 @@
         "title": "Idunadura Bridge",
         "expectedMetaMaskAddress": "Adirẹsi ti a nireti ni @:metamask",
         "allowToken": "Gba @:appName lati lo {tokenSymbol}",
-        "approveToken": "Jọwọ ṣe akiyesi pe o nilo lati fọwọsi ami (tokini)-ẹri lẹẹkan. Ti itẹsiwaju rẹ ba ni awọn ibeere ifọwọsi ọpọ, rii daju lati jẹrisi ọkan ti o kẹhin lakoko ti o kọ iyoku."
+        "approveToken": "Jọwọ ṣe akiyesi pe o nilo lati fọwọsi ami (tokini)-ẹri lẹẹkan. Ti itẹsiwaju rẹ ba ni awọn ibeere ifọwọsi ọpọ, rii daju lati jẹrisi ọkan ti o kẹhin lakoko ti o kọ iyoku.",
+        "blocksLeft": "{count} osi..."
     },
     "bridgeHistory": {
         "title": "Itan-akọọlẹ",
@@ -872,7 +873,7 @@
         "connectAccount": "Lati pe awọn olumulo o nilo lati so akọọlẹ SORA rẹ pọ.",
         "bondedXOR": "XOR ti o ni asopọ",
         "referralsNumber": "awọn itọkasi {number}",
-        "startInviting": "Lati bẹrẹ pipe si, di eyikeyi iye ti XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\"> Kọ ẹkọ diẹ sii <\/a>",
+        "startInviting": "Lati bẹrẹ pipe si, di eyikeyi iye ti XOR.",
         "preview": "Pe awọn olumulo titun ati gba 10% lati awọn idiyele idunadura wọn. <br \/> Lati bẹrẹ, di eyikeyi iye ti XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Kọ ẹkọ diẹ sii <\/a>",
         "deposit": "Idogo",
         "balance": "Iwontunwonsi",

@@ -604,7 +604,8 @@
         "title": "Transazione sul Bridge",
         "expectedMetaMaskAddress": "Indirizzo previsto in @:metamask",
         "allowToken": "Consenti a @:appName di utilizzare il tuo {tokenSymbol}",
-        "approveToken": "Tieni presente che è necessario approvare il token solo una volta. Se la tua estensione ha più richieste di approvazione di token, assicurati di confermare solo l'ultima mentre rifiuti le altre."
+        "approveToken": "Tieni presente che è necessario approvare il token solo una volta. Se la tua estensione ha più richieste di approvazione di token, assicurati di confermare solo l'ultima mentre rifiuti le altre.",
+        "blocksLeft": "{count} blocchi rimasti..."
     },
     "bridgeHistory": {
         "title": "Cronologia",
@@ -872,7 +873,7 @@
         "connectAccount": "Per invitare gli utenti è necessario collegare il tuo account SORA.",
         "bondedXOR": "XOR legato",
         "referralsNumber": "{number} referenze",
-        "startInviting": "Per iniziare a invitare, legare qualsiasi quantità di XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Per saperne di più<\/a>",
+        "startInviting": "Per iniziare a invitare, vincola qualsiasi importo di XOR.",
         "preview": "Invita nuovi utenti e ottieni il 10% dalle loro commissioni di transazione.<br \/>Per iniziare, lega qualsiasi quantità di XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Per saperne di più<\/a>",
         "deposit": "Deposita",
         "balance": "Bilancia",

@@ -107,6 +107,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import router, { lazyComponent, lazyView } from '@/router';
 import { PageNames, Components, LogoSize } from '@/consts';
+import { detectBaseUrl } from '@/api';
 import { copyToClipboard } from '@/utils';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
@@ -167,11 +168,10 @@ export default class ReferralProgram extends Mixins(
   }
 
   get referralLink(): any {
-    const polkaswapLink = window.location.origin;
     const routerMode = router.mode === 'hash' ? '#/' : '';
     return {
-      href: `${polkaswapLink.toLowerCase()}/${routerMode}referral/${this.account.address}`,
-      label: `<span class="referral-link-address">${polkaswapLink}/</span>${routerMode}referral/${this.account.address}`,
+      href: `${detectBaseUrl(router)}${routerMode}referral/${this.account.address}`,
+      label: `<span class="referral-link-address">Polkaswap.io/</span>${routerMode}referral/${this.account.address}`,
       isVisible: +this.bondedXOR > 0,
     };
   }

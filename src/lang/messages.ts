@@ -690,8 +690,7 @@ export default {
     connectAccount: 'To invite users you need to connect your SORA account.',
     bondedXOR: 'XOR Bonded',
     referralsNumber: '{number} referrals',
-    startInviting:
-      'To start inviting, bond any amount of XOR. <a class="link" href="#" target="_blank" rel="nofollow noopener">Learn more</a>',
+    startInviting: 'To start inviting, bond any amount of XOR.',
     preview:
       'Invite new users and get 10% from their transaction fees.<br />To start, bond any amount of XOR. <a href="#" target="_blank" rel="nofollow noopener" class="link" title="Learn more">Learn more</a>',
     deposit: 'Deposit',

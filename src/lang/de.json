@@ -604,7 +604,8 @@
         "title": "Bridge-Transaktion",
         "expectedMetaMaskAddress": "In MetaMask erwartete Adresse:",
         "allowToken": "Erlaube @:appName, deine {tokenSymbol} zu verwenden",
-        "approveToken": "Bitte beachte, dass du den Token nur einmal genehmigen musst. Wenn deine Erweiterung mehrere Token-Genehmigungsanfragen hat, stell bitte sicher, dass du nur die Letzte bestätigst und die Übrigen ablehnst."
+        "approveToken": "Bitte beachte, dass du den Token nur einmal genehmigen musst. Wenn deine Erweiterung mehrere Token-Genehmigungsanfragen hat, stell bitte sicher, dass du nur die Letzte bestätigst und die Übrigen ablehnst.",
+        "blocksLeft": "{count} Blöcke übrig..."
     },
     "bridgeHistory": {
         "title": "Verlauf",
@@ -872,7 +873,7 @@
         "connectAccount": "Um Benutzer einzuladen, musst du dein SORA-Konto verbinden.",
         "bondedXOR": "XOR gebonded",
         "referralsNumber": "{number} Empfehlungen",
-        "startInviting": "Um mit der Einladung zu beginnen, bonde eine beliebige Menge an XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Mehr erfahren<\/a>",
+        "startInviting": "Um mit dem Einladen zu beginnen, verbinden Sie eine beliebige Menge XOR.",
         "preview": "Lade neue Nutzer ein und erhalte 10% von deren Transaktionsgebühren.<br \/>Um zu beginnen, bonde eine beliebige Menge an XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Mehr erfahren<\/a>",
         "deposit": "Einzahlung",
         "balance": "Saldo",
@@ -899,8 +900,8 @@
             "text": "Bestätigen",
             "bond": "Bonden bestätigen",
             "unbond": "Unbonden bestätigen",
-            "inviteTitle": "Sie wurden zu Polkaswap eingeladen",
-            "inviteDescription": "Für jede Transaktion gehen 10% der Gebühr an Ihren Referrer, ohne dass Ihnen zusätzliche Kosten entstehen.",
+            "inviteTitle": "Du wurdest zu Polkaswap eingeladen",
+            "inviteDescription": "Für jede Transaktion gehen 10% der Gebühr an deinen Referrer, ohne dass dir zusätzliche Kosten entstehen.",
             "signInvitation": "Genehmigen",
             "freeOfCharge": "Diese Aktion ist kostenfrei"
         }

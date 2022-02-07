@@ -604,7 +604,8 @@
         "title": "Transakcja mostowa",
         "expectedMetaMaskAddress": "Oczekiwany adres w portfelu MetaMask:",
         "allowToken": "Zezwól @:appName na użycie Twojego {tokenSymbol}",
-        "approveToken": "Pamiętaj, że wystarczy raz zatwierdzić token. Jeśli Twoje rozszerzenie otrzymuje wiele żądań o zatwierdzenie tokena, pamiętaj, by potwierdzić tylko ostatnią, a pozostałe odrzucić."
+        "approveToken": "Pamiętaj, że wystarczy raz zatwierdzić token. Jeśli Twoje rozszerzenie otrzymuje wiele żądań o zatwierdzenie tokena, pamiętaj, by potwierdzić tylko ostatnią, a pozostałe odrzucić.",
+        "blocksLeft": "{count} bloków..."
     },
     "bridgeHistory": {
         "title": "Historia",
@@ -872,7 +873,7 @@
         "connectAccount": "Aby zaprosić użytkowników, musisz podłączyć swoje konto sieci SORA.",
         "bondedXOR": "Utworzono rezerwy w XOR",
         "referralsNumber": "{number} zaproszonych",
-        "startInviting": "Aby zacząć zapraszanie, utwórz rezerwy w dowolnej kwocie waluty XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Dowiedz się więcej.<\/a>",
+        "startInviting": "Aby zacząć zapraszać, zwiąż dowolną ilość XOR.",
         "preview": "Zaproś nowych użytkowników, by otrzymać 10% z ich opłat transakcyjnych.<br \/>Aby rozpocząć, utwórz rezerwy w dowolnej kwocie waluty XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Dowiedz się więcej.<\/a>",
         "deposit": "Deponuj",
         "balance": "Saldo",
