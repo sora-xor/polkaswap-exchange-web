@@ -12,7 +12,7 @@
       :label="t('bridge.ethereumNetworkFee')"
       :label-tooltip="t('ethNetworkFeeTooltipText')"
       :value="formatFee(evmNetworkFee, formattedEvmNetworkFee)"
-      :asset-symbol="currentEvmTokenSymbol"
+      :asset-symbol="evmTokenSymbol"
       is-formatted
     />
   </transaction-details>
@@ -20,16 +20,13 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
-import { CodecString, BridgeNetworks } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
+import type { CodecString } from '@sora-substrate/util';
 
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { lazyComponent } from '@/router';
-import { Components, EvmSymbol } from '@/consts';
-
-const namespace = 'bridge';
+import { Components, EvmSymbol, ZeroStringValue } from '@/consts';
 
 @Component({
   components: {
@@ -41,29 +38,21 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
   readonly EvmSymbol = EvmSymbol;
   readonly XOR_SYMBOL = XOR.symbol;
 
-  @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString;
-  @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString;
-  @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks;
-
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
+  @Prop({ default: EvmSymbol.ETH, type: String }) readonly evmTokenSymbol!: string;
+  @Prop({ default: ZeroStringValue, type: String }) readonly evmNetworkFee!: CodecString;
+  @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
 
   get formattedSoraNetworkFee(): string {
     return this.formatCodecNumber(this.soraNetworkFee);
   }
 
-  get currentEvmTokenSymbol(): string {
-    if (this.evmNetwork === BridgeNetworks.ENERGY_NETWORK_ID) {
-      return this.EvmSymbol.VT;
-    }
-    return this.EvmSymbol.ETH;
+  get formattedEvmNetworkFee(): string {
+    return this.formatCodecNumber(this.evmNetworkFee);
   }
 
   formatFee(fee: string, formattedFee: string): string {
-    return fee !== '0' ? formattedFee : '0';
-  }
-
-  get formattedEvmNetworkFee(): string {
-    return this.formatCodecNumber(this.evmNetworkFee);
+    return fee !== ZeroStringValue ? formattedFee : ZeroStringValue;
   }
 }
 </script>
