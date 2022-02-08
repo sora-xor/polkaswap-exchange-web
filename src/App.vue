@@ -29,6 +29,7 @@
         </s-scrollbar>
       </div>
     </div>
+    <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" />
   </s-design-system-provider>
 </template>
 
@@ -57,6 +58,7 @@ import type { SubNetwork } from '@/utils/ethers-util';
     AppHeader: lazyComponent(Components.AppHeader),
     AppMenu: lazyComponent(Components.AppMenu),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
+    ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
   },
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
@@ -64,12 +66,16 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   readonly PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
 
   menuVisibility = false;
+  showConfirmInviteUser = false;
 
   @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @Getter libraryTheme!: Theme;
   @Getter libraryDesignSystem!: DesignSystem;
   @Getter firstReadyTransaction!: History;
   @Getter blockNumber!: number;
+  @Getter('isLoggedIn') isSoraAccountConnected!: boolean;
+  @Getter('storageReferral', { namespace: 'referrals' }) storageReferral!: string;
+  @Getter('referral', { namespace: 'referrals' }) referral!: string;
 
   // Wallet
   @Action resetAccountAssetsSubscription!: AsyncVoidFn;
@@ -91,6 +97,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action('unsubscribeAccountMarketMakerInfo', { namespace: 'rewards' }) unsubscribeMarketMakerInfo!: AsyncVoidFn;
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>;
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
+  @Action('getReferral', { namespace: 'referrals' }) getReferral!: (invitedUserId: string) => Promise<void>;
+  @Action('setReferral', { namespace: 'referrals' }) setReferral!: (value: string) => Promise<void>;
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History): void {
     this.handleChangeTransaction(value);
@@ -105,6 +113,29 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       }
     } else {
       this.resetAccountAssetsSubscription();
+    }
+  }
+
+  @Watch('isSoraAccountConnected')
+  private async confirmInviteUserIfConnected(isSoraConnected: boolean): Promise<void> {
+    if (isSoraConnected) {
+      await this.confirmInvititation();
+    }
+  }
+
+  @Watch('storageReferral', { immediate: true })
+  private async confirmInviteUserIfHasStorage(storageReferralValue: string): Promise<void> {
+    if (this.isSoraAccountConnected && storageReferralValue?.length) {
+      await this.confirmInvititation();
+    }
+  }
+
+  async confirmInvititation(): Promise<void> {
+    await this.getReferral(this.account.address);
+    if (this.referral || this.storageReferral === this.account.address) {
+      this.setReferral('');
+    } else if (this.storageReferral) {
+      this.showConfirmInviteUser = true;
     }
   }
 

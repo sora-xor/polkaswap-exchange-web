@@ -605,7 +605,7 @@
         "expectedMetaMaskAddress": "Dirección esperada en @:metamask",
         "allowToken": "Permitir que @:appName utilice su {tokenSymbol}",
         "approveToken": "Tenga en cuenta que sólo es necesario aprobar el token una vez. Si su extensión tiene varias solicitudes de aprobación de tokens, asegúrese de confirmar solo la última y rechazar el resto.",
-        "blocksLeft": "{count} bloques..."
+        "blocksLeft": "{count} bloques faltantes"
     },
     "bridgeHistory": {
         "title": "Historial",
@@ -873,7 +873,7 @@
         "connectAccount": "Para invitar a usuarios, debe conectar su cuenta SORA.",
         "bondedXOR": "XOR Vinculado",
         "referralsNumber": "{number} referencias",
-        "startInviting": "Para comenzar a invitar, vincule cualquier cantidad de XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Más información<\/a>",
+        "startInviting": "Para comenzar a invitar, vincule cualquier cantidad de XOR.",
         "preview": "Invite a nuevos usuarios y obtenga el 10% de sus tarifas de transacción.<br \/>Para comenzar, vincule cualquier cantidad de XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Más información<\/a>",
         "deposit": "Depositar",
         "balance": "balance",

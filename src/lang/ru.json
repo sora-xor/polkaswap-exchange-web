@@ -873,7 +873,7 @@
         "connectAccount": "Для приглашения пользователей необходимо подключить учетную запись SORA.",
         "bondedXOR": "XOR Зарезервировано",
         "referralsNumber": "{number} рефералов",
-        "startInviting": "Чтобы начать приглашать, зарезервируйте любое количество XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Узнайте больше<\/a>",
+        "startInviting": "Чтобы начать приглашать, внесите любое количество XOR.",
         "preview": "Приглашайте новых пользователей и получайте 10% от их транзакционных сборов.<br \/>Чтобы начать, зарезервируйте любую сумму XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Узнать больше<\/a>",
         "deposit": "Пополнить",
         "balance": "Баланс",

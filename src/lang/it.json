@@ -873,7 +873,7 @@
         "connectAccount": "Per invitare gli utenti è necessario collegare il tuo account SORA.",
         "bondedXOR": "XOR legato",
         "referralsNumber": "{number} referenze",
-        "startInviting": "Per iniziare a invitare, legare qualsiasi quantità di XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Per saperne di più<\/a>",
+        "startInviting": "Per iniziare a invitare, vincola qualsiasi importo di XOR.",
         "preview": "Invita nuovi utenti e ottieni il 10% dalle loro commissioni di transazione.<br \/>Per iniziare, lega qualsiasi quantità di XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Per saperne di più<\/a>",
         "deposit": "Deposita",
         "balance": "Bilancia",
