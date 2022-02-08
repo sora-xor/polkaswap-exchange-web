@@ -12,11 +12,11 @@ import {
   BridgeTxStatus,
   BridgeDirection,
   Operation,
-  BridgeRequest,
 } from '@sora-substrate/util';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
-import type { BridgeHistory, CodecString } from '@sora-substrate/util';
+import type { BigNumber } from 'ethers';
+import type { BridgeHistory, BridgeRequest, CodecString } from '@sora-substrate/util';
 
 import {
   bridgeApi,
@@ -66,7 +66,7 @@ interface EthLogData {
 }
 
 interface IncomingEthLogData extends EthLogData {
-  amount: string;
+  amount: BigNumber;
   destination: string; // encoded sora account address
   token: string; // sora asset external address
 }
@@ -313,14 +313,14 @@ const actions = {
     const accountId = await ethersUtil.accountAddressToHex(soraAccountAddress);
 
     const accountIncomingLogData = incomingEthLogs.reduce<IncomingEthLogData[]>((buffer, log) => {
-      const decoded = inter.decodeEventLog('Deposit', log.data, [incomingTopic]);
+      const { amount, destination, token } = inter.decodeEventLog('Deposit', log.data, [incomingTopic]);
 
-      if (decoded.destination === accountId) {
+      if (destination === accountId) {
         buffer.push({
           ...log,
-          destination: decoded.destination,
-          amount: new FPNumber(decoded.amount).toString(),
-          token: decoded.token,
+          destination,
+          amount,
+          token,
         });
       }
       return buffer;
@@ -337,7 +337,7 @@ const actions = {
           // if sora network started after evm transaction
           if (evmTimestamp < soraStartedAt) return;
 
-          const { transactionHash: ethereumHash, amount, token: externalAddress, blockNumber } = log;
+          const { transactionHash: ethereumHash, amount: bnAmount, token: externalAddress, blockNumber } = log;
 
           const type = Operation.EthBridgeIncoming;
           const from = soraAccountAddress;
@@ -347,6 +347,8 @@ const actions = {
           );
           const assetAddress = asset?.address ?? '';
           const symbol = asset?.symbol ?? '';
+          const decimals = asset?.externalDecimals ?? 18;
+          const amount = new FPNumber(bnAmount as any, decimals).toString();
 
           const recieptData = await getEvmTxRecieptByHash(ethereumHash);
 
