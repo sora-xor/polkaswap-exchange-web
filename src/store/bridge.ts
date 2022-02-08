@@ -260,6 +260,7 @@ const actions = {
     const soraAccountAddress = rootGetters.account.address;
     const externalNetwork = BridgeNetworks.ETH_NETWORK_ID;
 
+    // genesis block hasn't timestamp, so take it from 1st
     const firstSoraBlockHash = (await bridgeApi.api.rpc.chain.getBlockHash(1)).toString();
     const soraStartedAt = await getBlockTimestamp(firstSoraBlockHash);
 
@@ -267,7 +268,10 @@ const actions = {
     const accountRequests = ((await bridgeApi.api.query.ethBridge.accountRequests(soraAccountAddress)).toJSON() ||
       []) as Array<AccountRequest>;
 
-    // 3 types of hashes: sora outgoing hash, ethereum incoming hash, sora incoming hash
+    // 3 types of hashes:
+    // [BridgeDirection.Outgoing] - sora hash;
+    // [BridgeDirection.LoadIncoming] - ethereum hash;
+    // [BridgeDirection.Incoming] - sora hash;
     const hashes = accountRequests.map(([externalNetwork, hash]) => hash);
 
     const requestsData = await bridgeApi.getRequests(hashes);
@@ -330,6 +334,7 @@ const actions = {
 
           const evmTimestamp = (await ethersUtil.getBlock(log.blockNumber)).timestamp * 1000;
 
+          // if sora network started after evm transaction
           if (evmTimestamp < soraStartedAt) return;
 
           const { transactionHash: ethereumHash, amount, token: externalAddress, blockNumber } = log;

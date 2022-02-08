@@ -217,15 +217,19 @@ export const getBlockTimestamp = async (blockHash: string): Promise<number> => {
 
 export const getEvmTxRecieptByHash = async (
   ethereumHash: string
-): Promise<{ ethereumNetworkFee: string; blockHeight: number; from: string }> => {
-  const {
-    from,
-    effectiveGasPrice,
-    gasUsed,
-    blockNumber: blockHeight,
-  } = await ethersUtil.getEvmTransactionReceipt(ethereumHash);
+): Promise<{ ethereumNetworkFee: string; blockHeight: number; from: string } | null> => {
+  try {
+    const {
+      from,
+      effectiveGasPrice,
+      gasUsed,
+      blockNumber: blockHeight,
+    } = await ethersUtil.getEvmTransactionReceipt(ethereumHash);
 
-  const ethereumNetworkFee = ethersUtil.calcEvmFee(effectiveGasPrice.toNumber(), gasUsed.toNumber());
+    const ethereumNetworkFee = ethersUtil.calcEvmFee(effectiveGasPrice.toNumber(), gasUsed.toNumber());
 
-  return { ethereumNetworkFee, blockHeight, from };
+    return { ethereumNetworkFee, blockHeight, from };
+  } catch (error) {
+    return null;
+  }
 };

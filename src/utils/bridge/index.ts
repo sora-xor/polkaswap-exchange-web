@@ -111,7 +111,13 @@ class BridgeTransactionStateHandler {
     await waitForEvmTransaction(id);
 
     const tx = getTransaction(id);
-    const { ethereumNetworkFee, blockHeight } = await getEvmTxRecieptByHash(tx.ethereumHash as string);
+    const { ethereumNetworkFee, blockHeight } = (await getEvmTxRecieptByHash(tx.ethereumHash as string)) || {};
+
+    if (!ethereumNetworkFee || !blockHeight) {
+      await this.updateTransactionParams(id, { ethereumHash: undefined, ethereumNetworkFee: undefined });
+      throw new Error(`[Bridge]: Ethereum transaction not found, hash: ${tx.ethereumHash}. 'ethereumHash' is reset`);
+    }
+
     // In BridgeHistory 'blockHeight' will store evm block number
     await this.updateTransactionParams(id, { ethereumNetworkFee, blockHeight });
   }
