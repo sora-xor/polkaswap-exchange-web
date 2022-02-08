@@ -892,6 +892,8 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
 </style>
 
 <style lang="scss" scoped>
+$network-title-max-width: 250px;
+
 .transaction {
   &-container {
     flex-direction: column;
@@ -995,14 +997,18 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
   &-title {
     display: flex;
     align-items: baseline;
+    padding-right: $inner-spacing-mini;
+    padding-left: $inner-spacing-mini;
+
     h3 {
-      padding-right: $inner-spacing-mini;
-      padding-left: $inner-spacing-mini;
+      margin-right: $inner-spacing-mini;
       font-size: var(--s-font-size-small);
       line-height: var(--s-line-height-reset);
       font-weight: 600;
       letter-spacing: var(--s-letter-spacing-small);
       text-transform: inherit;
+      text-align: left;
+      max-width: $network-title-max-width;
     }
   }
   @include status-icon(true);
