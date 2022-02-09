@@ -1,5 +1,5 @@
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
+import { Action, Getter, State } from 'vuex-class';
 import { Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
@@ -13,13 +13,16 @@ const namespace = 'bridge';
 
 @Component
 export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
+  @State((state) => state[namespace].history) history!: Array<BridgeHistory>;
+
   @Getter networkFees!: NetworkFeesObject;
   @Getter('prev', { namespace: 'router' }) prevRoute!: PageNames;
-  @Getter('history', { namespace }) history!: Array<BridgeHistory>;
 
   @Action('getHistory', { namespace }) getHistory!: AsyncVoidFn;
   @Action('generateHistoryItem', { namespace }) generateHistoryItem!: (history?: any) => Promise<BridgeHistory>;
   @Action('setHistoryItem', { namespace }) setHistoryItem!: (id: string) => Promise<void>;
+  @Action('setAssetAddress', { namespace }) setAssetAddress!: (address?: string) => Promise<void>;
+  @Action('setSoraToEvm', { namespace }) setSoraToEvm!: (value: boolean) => Promise<void>;
 
   getSoraNetworkFee(type: Operation): CodecString {
     return this.isOutgoingType(type) ? this.networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
@@ -36,6 +39,10 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
       if (!tx || !tx.id) {
         this.handleBack();
       } else {
+        // to display actual fees in BridgeTransaction
+        await this.setSoraToEvm(this.isOutgoingType(tx.type));
+        await this.setAssetAddress(tx.assetAddress);
+
         await this.setHistoryItem(tx.id);
 
         this.navigateToBridgeTransaction();

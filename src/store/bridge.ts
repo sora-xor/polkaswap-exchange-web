@@ -12,11 +12,10 @@ import {
   BridgeTxStatus,
   BridgeDirection,
   Operation,
-  BridgeHistory,
-  CodecString,
 } from '@sora-substrate/util';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
+import type { BridgeHistory, CodecString } from '@sora-substrate/util';
 
 import { bridgeApi, appBridge, STATES, waitForApprovedRequest } from '@/utils/bridge';
 import ethersUtil, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/ethers-util';
@@ -95,18 +94,9 @@ const getters = {
   isRegisteredAsset(state, getters) {
     return !!getters.asset?.externalAddress;
   },
-  amount(state) {
-    return state.amount;
-  },
-  evmNetworkFee(state) {
-    return state.evmNetworkFee;
-  },
   soraNetworkFee(state, getters, rootState, rootGetters) {
     // In direction EVM -> SORA sora network fee is 0, because related extrinsic calls by system automaically
     return state.isSoraToEvm ? rootGetters.networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
-  },
-  history(state) {
-    return state.history;
   },
   historyItem(state) {
     if (!state.historyId) return null;
@@ -237,7 +227,7 @@ const actions = {
     }
   },
   // TODO: Need to restore transactions for all networks
-  async getRestoredHistory({ getters, rootGetters }) {
+  async getRestoredHistory({ state, rootGetters }) {
     api.restored = true;
     const hashes = await bridgeApi.getAccountRequests();
     if (!hashes?.length) {
@@ -250,7 +240,7 @@ const actions = {
     const contracts = Object.values(KnownBridgeAsset).map<string>((key) => rootGetters['web3/contractAddress'](key));
     const ethLogs = await getEthUserTXs(contracts);
     transactions.forEach((transaction) => {
-      const history = getters.history;
+      const history = state.history;
       if (!history.length || !history.find((item) => item.hash === transaction.hash)) {
         const direction =
           transaction.direction === BridgeDirection.Outgoing
@@ -309,7 +299,7 @@ const actions = {
   ) {
     return {
       type: (params as any).type ?? (state.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming),
-      amount: (params as any).amount ?? getters.amount,
+      amount: (params as any).amount ?? state.amount,
       symbol: (params as any).symbol ?? getters.asset.symbol,
       assetAddress: (params as any).assetAddress ?? getters.asset.address,
       startTime: date,
@@ -320,7 +310,7 @@ const actions = {
       ethereumHash: '',
       transactionState: STATES.INITIAL,
       soraNetworkFee: (params as any).soraNetworkFee ?? getters.soraNetworkFee,
-      ethereumNetworkFee: (params as any).ethereumNetworkFee ?? getters.evmNetworkFee,
+      ethereumNetworkFee: (params as any).ethereumNetworkFee ?? state.evmNetworkFee,
       externalNetwork: rootGetters['web3/evmNetwork'],
       to: (params as any).to ?? rootGetters['web3/evmAddress'],
       payload,
@@ -353,7 +343,7 @@ const actions = {
 
     checkEvmNetwork(rootGetters);
 
-    const request = await waitForApprovedRequest(tx.hash); // If it causes an error, then -> catch -> SORA_REJECTED
+    const request = await waitForApprovedRequest(tx); // If it causes an error, then -> catch -> SORA_REJECTED
 
     if (!getters.isTxEvmAccount) {
       throw new Error(`Change account in MetaMask to ${request.to}`);

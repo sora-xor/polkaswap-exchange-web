@@ -8,7 +8,7 @@ import { STATES } from './types';
 import {
   getTransaction,
   updateHistoryParams,
-  waitForRequest,
+  waitForIncomingRequest,
   waitForApprovedRequest,
   waitForSoraTransactionHash,
   waitForEvmTransaction,
@@ -110,10 +110,14 @@ class BridgeTransactionStateHandler {
     await waitForEvmTransaction(id);
 
     const tx = getTransaction(id);
-    const { effectiveGasPrice, gasUsed } = await ethersUtil.getEvmTransactionReceipt(tx.ethereumHash as string);
+    const {
+      effectiveGasPrice,
+      gasUsed,
+      blockNumber: blockHeight,
+    } = await ethersUtil.getEvmTransactionReceipt(tx.ethereumHash as string);
     const ethereumNetworkFee = ethersUtil.calcEvmFee(effectiveGasPrice.toNumber(), gasUsed.toNumber());
-
-    await this.updateTransactionParams(id, { ethereumNetworkFee });
+    // In BridgeHistory 'blockHeight' will store evm block number
+    await this.updateTransactionParams(id, { ethereumNetworkFee, blockHeight });
   }
 
   async onEvmSubmitted(id: string): Promise<void> {
@@ -136,7 +140,7 @@ class BridgeTransactionStateHandler {
 
 class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
   async changeState(transaction: BridgeHistory): Promise<void> {
-    if (!transaction.id) throw new Error('TX ID cannot be empty');
+    if (!transaction.id) throw new Error('[Bridge]: TX ID cannot be empty');
 
     switch (transaction.transactionState) {
       case STATES.INITIAL: {
@@ -184,7 +188,9 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
 
             await this.updateTransactionParams(id, { hash });
 
-            const { to } = await waitForApprovedRequest(hash);
+            const tx = getTransaction(id);
+
+            const { to } = await waitForApprovedRequest(tx);
 
             await this.updateTransactionParams(id, { to });
           },
@@ -245,7 +251,7 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
 
 class EthBridgeIncomingStateReducer extends BridgeTransactionStateHandler {
   async changeState(transaction: BridgeHistory): Promise<void> {
-    if (!transaction.id) throw new Error('TX ID cannot be empty');
+    if (!transaction.id) throw new Error('[Bridge]: TX ID cannot be empty');
 
     switch (transaction.transactionState) {
       case STATES.INITIAL: {
@@ -303,10 +309,8 @@ class EthBridgeIncomingStateReducer extends BridgeTransactionStateHandler {
           rejectState: STATES.SORA_REJECTED,
           handler: async (id: string) => {
             const tx = getTransaction(id);
-
-            if (!tx.ethereumHash) throw new Error('Hash cannot be empty!');
-
-            await waitForRequest(tx.ethereumHash);
+            const { hash, blockId } = await waitForIncomingRequest(tx);
+            await this.updateTransactionParams(id, { hash, blockId });
           },
         });
       }
@@ -393,5 +397,5 @@ const appBridge = new Bridge({
 });
 
 export { bridgeApi, appBridge };
-export * from './utils';
 export * from './types';
+export * from './utils';

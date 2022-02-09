@@ -1,5 +1,5 @@
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
+import { Action, Getter, State } from 'vuex-class';
 import { ethers } from 'ethers';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { BridgeNetworks } from '@sora-substrate/util';
@@ -7,15 +7,17 @@ import type { CodecString, RegisteredAccountAsset, RegisteredAsset } from '@sora
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import ethersUtil from '@/utils/ethers-util';
+import { bridgeApi } from '@/utils/bridge';
 import { EvmSymbol } from '@/consts';
 
 @Component
 export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
+  @State((state) => state.bridge.evmNetworkFee) evmNetworkFee!: CodecString;
+
   @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean;
   @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks;
   @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString;
   @Getter('soraNetworkFee', { namespace: 'bridge' }) soraNetworkFee!: CodecString;
-  @Getter('evmNetworkFee', { namespace: 'bridge' }) evmNetworkFee!: CodecString;
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: RegisteredAsset & RegisteredAccountAsset;
 
   @Action('getEvmBalance', { namespace: 'web3' }) getEvmBalance!: AsyncVoidFn;
@@ -23,28 +25,27 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets!: AsyncVoidFn;
   @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn;
 
+  public evmBlockNumber = 0;
   private unwatchEthereum!: VoidFunction;
   blockHeadersSubscriber: ethers.providers.Web3Provider | undefined;
 
   async mounted(): Promise<void> {
-    await this.setEvmNetworkType();
     await this.syncExternalAccountWithAppState();
-    this.getEvmBalance();
+
     this.withApi(async () => {
+      await this.onEvmNetworkChange(bridgeApi.externalNetwork);
+
       this.unwatchEthereum = await ethersUtil.watchEthereum({
         onAccountChange: (addressList: string[]) => {
           if (addressList.length) {
             this.switchExternalAccount({ address: addressList[0] });
-            this.updateRegisteredAssets();
+            this.updateExternalBalances();
           } else {
             this.disconnectExternalAccount();
           }
         },
-        onNetworkChange: (networkId: string) => {
-          this.setEvmNetworkType(networkId);
-          this.getEvmNetworkFee();
-          this.getRegisteredAssets();
-          this.getEvmBalance(); // update only evm balance because assets balances updated during getRegisteredAssets call
+        onNetworkChange: (networkHex: string) => {
+          this.onEvmNetworkTypeChange(networkHex);
         },
         onDisconnect: () => {
           this.disconnectExternalAccount();
@@ -73,13 +74,29 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
     this.updateRegisteredAssets();
   }
 
+  async onEvmNetworkChange(networkId: number): Promise<void> {
+    await this.setEvmNetwork(networkId);
+    await this.onEvmNetworkTypeChange();
+  }
+
+  async onEvmNetworkTypeChange(networkHex?: string) {
+    await Promise.all([
+      this.setEvmNetworkType(networkHex),
+      this.getRegisteredAssets(),
+      this.getEvmNetworkFee(),
+      this.getEvmBalance(),
+    ]);
+  }
+
   async subscribeToEvmBlockHeaders(): Promise<void> {
     try {
       await this.unsubscribeEvmBlockHeaders();
 
       const ethersInstance = await ethersUtil.getEthersInstance();
 
+      this.evmBlockNumber = await ethersInstance.getBlockNumber();
       this.blockHeadersSubscriber = ethersInstance.on('block', (blockNumber) => {
+        this.evmBlockNumber = blockNumber;
         this.updateExternalBalances();
         this.getEvmNetworkFee();
       });

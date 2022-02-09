@@ -59,6 +59,7 @@
                 @click="handleCopyTransactionHash(transactionFromHash)"
               />
               <s-dropdown
+                v-if="(isSoraToEvm && soraExpolrerLinks.length) || !isSoraToEvm"
                 class="s-dropdown--hash-menu"
                 borderRadius="mini"
                 type="ellipsis"
@@ -185,16 +186,30 @@
                 @click="handleCopyTransactionHash(transactionToHash)"
               />
               <s-dropdown
-                v-if="isSoraToEvm"
+                v-if="(!isSoraToEvm && soraExpolrerLinks.length) || isSoraToEvm"
                 class="s-dropdown--hash-menu"
                 borderRadius="mini"
                 type="ellipsis"
                 icon="basic-more-vertical-24"
                 placement="bottom-end"
-                @select="handleOpenEtherscan"
+                @select="!isSoraToEvm ? undefined : handleOpenEtherscan()"
               >
                 <template slot="menu">
-                  <s-dropdown-item class="s-dropdown-menu__item">
+                  <template v-if="!isSoraToEvm">
+                    <a
+                      v-for="link in soraExpolrerLinks"
+                      :key="link.type"
+                      class="transaction-link"
+                      :href="link.value"
+                      target="_blank"
+                      rel="nofollow noopener"
+                    >
+                      <s-dropdown-item class="s-dropdown-menu__item" :disabled="!(soraTxId || soraTxBlockId)">
+                        {{ t(`transaction.viewIn.${link.type}`) }}
+                      </s-dropdown-item>
+                    </a>
+                  </template>
+                  <s-dropdown-item v-else class="s-dropdown-menu__item">
                     <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
                   </s-dropdown-item>
                 </template>
@@ -236,6 +251,9 @@
               <template v-else-if="isSoraToEvm && !isValidNetworkType">{{
                 t('bridgeTransaction.changeNetwork')
               }}</template>
+              <template v-else-if="comfirmationBlocksLeft">
+                {{ t('bridgeTransaction.blocksLeft', { count: comfirmationBlocksLeft }) }}
+              </template>
               <span
                 v-else-if="isTransactionToPending"
                 v-html="
@@ -276,7 +294,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { Getter, Action, State } from 'vuex-class';
 import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import type { CodecString, BridgeHistory, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { CodecString, BridgeHistory, RegisteredAccountAsset, BridgeNetworks } from '@sora-substrate/util';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
@@ -359,7 +377,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   get evmIcon(): string {
-    return this.getEvmIcon(this.evmNetwork);
+    return this.getEvmIcon(this.historyItem?.externalNetwork as BridgeNetworks);
   }
 
   get txSoraNetworkFee(): CodecString {
@@ -529,14 +547,14 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     if (!this.historyItem?.id) {
       return null;
     }
-    return this.historyItem.txId || bridgeApi.getHistory(this.historyItem.id)?.txId;
+    return this.historyItem.txId;
   }
 
   get soraTxBlockId(): Nullable<string> {
     if (!this.historyItem?.id) {
       return null;
     }
-    return this.historyItem.blockId || bridgeApi.getHistory(this.historyItem.id)?.blockId;
+    return this.historyItem.blockId;
   }
 
   get formattedSoraNetworkFee(): string {
@@ -607,7 +625,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   get soraExpolrerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
     const baseLinks = getExplorerLinks(this.soraNetwork);
     const txId = this.soraTxId || this.soraTxBlockId;
-    if (!(this.isSoraToEvm && txId)) {
+    if (!txId) {
       return [];
     }
     if (!this.soraTxId) {
@@ -703,7 +721,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
 
   get secondTxHashContainerClasses(): string {
     // cuz we don't show SORA tx for ETH->SORA flow
-    return this.getHashContainerClasses(this.isSoraToEvm);
+    return this.getHashContainerClasses();
   }
 
   get formattedNetworkStep1(): string {
@@ -712,6 +730,15 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
 
   get formattedNetworkStep2(): string {
     return this.t(this.formatNetwork(!this.isSoraToEvm, true));
+  }
+
+  get comfirmationBlocksLeft(): number {
+    if (this.isSoraToEvm || !this.isTransactionToPending || !this.historyItem?.blockHeight || !this.evmBlockNumber)
+      return 0;
+
+    const blocksLeft = +this.historyItem.blockHeight + 30 - this.evmBlockNumber;
+
+    return Math.max(blocksLeft, 0);
   }
 
   async handleCopyTransactionHash(hash: string): Promise<void> {
