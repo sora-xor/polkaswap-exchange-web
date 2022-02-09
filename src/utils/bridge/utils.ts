@@ -155,6 +155,8 @@ export const waitForEvmTransactionStatus = async (
 ) => {
   const ethersInstance = await ethersUtil.getEthersInstance();
   try {
+    // the confirmations value was reduced from 5 to 1
+    // since after the block release, we can be sure that the transaction is completed
     const confirmations = 1;
     const timeout = 0;
     const currentBlock = await ethersInstance.getBlockNumber();
