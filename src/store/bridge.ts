@@ -66,6 +66,7 @@ interface EthLogData {
 
 // Withdrawal (bytes32 txHash)
 const outgoingTopic = '0x0ce781a18c10c8289803c7c4cfd532d797113c4b41c9701ffad7d0a632ac555b';
+const etherscanApiKey = 'VW1ZTJ2ZFR8TUR5AQRHKX6DAWQ2FBB1UEA';
 const ethStartBlock = 8371261;
 
 async function getEthUserTXs(contracts: Array<string>, topic: string, blockHash: string): Promise<Array<EthLogData>> {
@@ -254,7 +255,7 @@ const actions = {
     const contracts = Object.values(KnownBridgeAsset).map<string>((key) => rootGetters['web3/contractAddress'](key));
     const ethersInstance = await ethersUtil.getEthersInstance();
     const network = await ethersInstance.getNetwork();
-    const etherscanInstance = new ethers.providers.EtherscanProvider(network);
+    const etherscanInstance = new ethers.providers.EtherscanProvider(network, etherscanApiKey);
 
     // all account requests registered in chain
     const accountRequests = ((await bridgeApi.api.query.ethBridge.accountRequests(soraAccountAddress)).toJSON() ||
@@ -292,37 +293,39 @@ const actions = {
     const ethAccountTransactions = {};
     const ethBlockLogs = {};
 
-    const findOutgoingEthTxBySoraHash = async (address: string, hash: string) => {
-      const transactions = ethAccountTransactions[address];
-
-      for (const transaction of transactions) {
-        const log = ethBlockLogs[transaction.blockHash]?.find((item) => item.data === hash);
-
-        if (log) return transaction;
+    const getAccountTransactions = async (address: string): Promise<Array<ethers.providers.TransactionResponse>> => {
+      if (!ethAccountTransactions[address]) {
+        ethAccountTransactions[address] = etherscanInstance.getHistory(address, ethStartBlock).then((history) => {
+          return history.filter((tx) => !!tx.to && contracts.includes(tx.to.toLowerCase()));
+        });
       }
-
-      return null;
+      return await ethAccountTransactions[address];
     };
 
-    for (const transaction of Object.values<BridgeRequest>(requestsMap[BridgeDirection.Outgoing])) {
-      const address = transaction.to as string;
-
-      if (!ethAccountTransactions[address]) {
-        const history = await etherscanInstance.getHistory(address, ethStartBlock);
-        const filtered = history.filter((tx) => !!tx.to && contracts.includes(tx.to.toLowerCase()));
-
-        for (const tx of filtered) {
-          const blockHash = tx.blockHash as string;
-          const contract = tx.to as string;
-
-          if (!ethBlockLogs[blockHash]) {
-            ethBlockLogs[blockHash] = await getEthUserTXs([contract], outgoingTopic, blockHash);
-          }
-        }
-
-        ethAccountTransactions[address] = filtered;
+    const getBlockLogs = async (blockHash: string, contract: string): Promise<Array<EthLogData>> => {
+      if (!ethBlockLogs[blockHash]) {
+        ethBlockLogs[blockHash] = getEthUserTXs([contract], outgoingTopic, blockHash);
       }
-    }
+      return await ethBlockLogs[blockHash];
+    };
+
+    const findOutgoingEthTxBySoraHash = async (
+      address: string,
+      hash: string
+    ): Promise<ethers.providers.TransactionResponse | null> => {
+      const transactions = await getAccountTransactions(address);
+      try {
+        return await Promise.any(
+          transactions.map(async (tx) => {
+            const logs = await getBlockLogs(tx.blockHash as string, tx.to as string);
+            if (!logs.find((item) => item.data === hash)) throw new Error();
+            return tx;
+          })
+        );
+      } catch (error) {
+        return null;
+      }
+    };
 
     const history = bridgeApi.historyList as Array<BridgeHistory>;
 
