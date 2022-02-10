@@ -324,7 +324,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   @State((state) => state[namespace].waitingForApprove) waitingForApprove!: any;
   @State((state) => state[namespace].inProgressIds) inProgressIds!: any;
 
-  @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @Getter('prev', { namespace: 'router' }) prevRoute!: PageNames;
   @Getter('getAssetDataByAddress', { namespace: 'assets' }) getAssetDataByAddress!: (
     address: string
