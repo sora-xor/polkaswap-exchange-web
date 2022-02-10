@@ -25,7 +25,7 @@
             </template>
           </s-input>
         </s-form-item>
-        <div v-loading="loading" class="history-items">
+        <div class="history-items">
           <template v-if="hasHistory">
             <div
               class="history-item"
@@ -72,7 +72,8 @@
       <s-button
         v-if="!restored"
         class="s-button--restore s-typography-button--large"
-        :disabled="loading || !isValidNetworkType"
+        :disabled="!isValidNetworkType"
+        :loading="historyRestoration"
         @click="handleRestoreHistory"
       >
         <template v-if="!isValidNetworkType">
@@ -121,6 +122,7 @@ export default class BridgeTransactionsHistory extends Mixins(
   mixins.NumberFormatterMixin
 ) {
   @State((state) => state[namespace].restored) restored!: boolean;
+  @State((state) => state[namespace].historyRestoration) historyRestoration!: boolean;
 
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>;
 
@@ -227,11 +229,8 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
 
   async handleRestoreHistory(): Promise<void> {
-    await this.withLoading(async () => {
-      await this.getRestoredHistory();
-      await this.getRestoredFlag();
-      await this.getHistory();
-    });
+    await this.getRestoredHistory();
+    await this.getRestoredFlag();
   }
 
   handleBack(): void {
@@ -346,7 +345,8 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
   }
   &-title {
     line-height: var(--s-line-height-big);
-    word-break: break-all;
+    white-space: nowrap;
+
     .s-icon {
       &--network {
         margin-left: $separator-margin;
