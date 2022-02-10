@@ -67,7 +67,6 @@ interface EthLogData {
 
 // Withdrawal (bytes32 txHash)
 const outgoingTopic = '0x0ce781a18c10c8289803c7c4cfd532d797113c4b41c9701ffad7d0a632ac555b';
-const etherscanApiKey = 'VW1ZTJ2ZFR8TUR5AQRHKX6DAWQ2FBB1UEA';
 
 const getStartBlock = (chainId: number) => {
   return (
@@ -263,15 +262,17 @@ const actions = {
     }
   },
   // TODO: Need to restore transactions for all networks
-  async getRestoredHistory({ rootGetters }) {
+  async getRestoredHistory({ rootGetters, rootState }) {
     // api.restored = true;
 
     const soraAccountAddress = rootGetters.account.address;
     const externalNetwork = BridgeNetworks.ETH_NETWORK_ID;
     const contracts = Object.values(KnownBridgeAsset).map<string>((key) => rootGetters['web3/contractAddress'](key));
+    const registeredAssets = rootGetters['assets/registeredAssets'];
     const ethersInstance = await ethersUtil.getEthersInstance();
     const network = await ethersInstance.getNetwork();
     const ethStartBlock = getStartBlock(network.chainId);
+    const etherscanApiKey = rootState.Settings.apiKeys?.etherscan;
     const etherscanInstance = new ethers.providers.EtherscanProvider(network, etherscanApiKey);
     // get sora network start time to filter eth transactions by timestamp
     const soraStartBlockHash = (await bridgeApi.api.rpc.chain.getBlockHash(1)).toString();
@@ -367,7 +368,7 @@ const actions = {
           const assetAddress = transaction.soraAssetAddress as string;
           const type = Operation.EthBridgeIncoming;
           const from = soraAccountAddress;
-          const symbol = rootGetters['assets/registeredAssets'].find((item) => item.address === assetAddress)?.symbol;
+          const symbol = registeredAssets.find((item) => item.address === assetAddress)?.symbol;
           const soraNetworkFee = ZeroStringValue;
           const blockId = await getSoraBlockHashByRequestHash(externalNetwork, ethereumHash);
           const soraTimestamp = await getBlockTimestamp(blockId);
@@ -419,7 +420,7 @@ const actions = {
           const hash = transaction.hash as string;
           const soraStatus = transaction.status;
           const assetAddress = transaction.soraAssetAddress as string;
-          const symbol = rootGetters['assets/registeredAssets'].find((item) => item.address === assetAddress)?.symbol;
+          const symbol = registeredAssets.find((item) => item.address === assetAddress)?.symbol;
           const soraNetworkFee = rootGetters.networkFees[Operation.EthBridgeOutgoing];
           const soraPartCompleted = soraStatus === BridgeTxStatus.Ready;
           const transactionStep = soraPartCompleted ? 2 : 1;
