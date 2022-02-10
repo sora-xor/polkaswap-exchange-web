@@ -67,7 +67,14 @@ interface EthLogData {
 // Withdrawal (bytes32 txHash)
 const outgoingTopic = '0x0ce781a18c10c8289803c7c4cfd532d797113c4b41c9701ffad7d0a632ac555b';
 const etherscanApiKey = 'VW1ZTJ2ZFR8TUR5AQRHKX6DAWQ2FBB1UEA';
-const ethStartBlock = 8371261;
+
+const getStartBlock = (chainId: number) => {
+  return (
+    {
+      1: 12322912, // main
+    }[chainId] || 8371261
+  ); // rinkeby
+};
 
 async function getEthUserTXs(contracts: Array<string>, topic: string, blockHash: string): Promise<Array<EthLogData>> {
   const ethersInstance = await ethersUtil.getEthersInstance();
@@ -255,7 +262,11 @@ const actions = {
     const contracts = Object.values(KnownBridgeAsset).map<string>((key) => rootGetters['web3/contractAddress'](key));
     const ethersInstance = await ethersUtil.getEthersInstance();
     const network = await ethersInstance.getNetwork();
+    const ethStartBlock = getStartBlock(network.chainId);
     const etherscanInstance = new ethers.providers.EtherscanProvider(network, etherscanApiKey);
+    // get sora network start time to filter eth transactions by timestamp
+    const soraStartBlockHash = (await bridgeApi.api.rpc.chain.getBlockHash(1)).toString();
+    const soraStartTimestamp = await getBlockTimestamp(soraStartBlockHash);
 
     // all account requests registered in chain
     const accountRequests = ((await bridgeApi.api.query.ethBridge.accountRequests(soraAccountAddress)).toJSON() ||
@@ -266,14 +277,15 @@ const actions = {
     // [BridgeDirection.LoadIncoming] - ethereum hash;
     // [BridgeDirection.Incoming] - sora hash;
     const hashes = accountRequests.map(([externalNetwork, hash]) => hash);
-
-    const requestsData = await bridgeApi.getRequests(hashes);
+    const requests = await bridgeApi.getRequests(hashes);
 
     // create requests map by request hash
     const requestsMap = hashes.reduce<any>(
       (buffer, hash, index) => {
-        const tx = requestsData[index];
+        const tx = requests[index];
 
+        // mapping [BridgeDirection.Incoming], [BridgeDirection.Outgoing] requests
+        // [BridgeDirection.LoadIncoming] requests are skipped because [BridgeDirection.Incoming] contains more data
         if (tx.direction === BridgeDirection.Incoming && tx.hash !== hash) {
           // key: evm hash, value: sora hash
           buffer[BridgeDirection.Incoming][tx.hash] = { ...tx, hash };
@@ -296,7 +308,13 @@ const actions = {
     const getAccountTransactions = async (address: string): Promise<Array<ethers.providers.TransactionResponse>> => {
       if (!ethAccountTransactions[address]) {
         ethAccountTransactions[address] = etherscanInstance.getHistory(address, ethStartBlock).then((history) => {
-          return history.filter((tx) => !!tx.to && contracts.includes(tx.to.toLowerCase()));
+          return history.filter(
+            (tx) =>
+              !!tx.timestamp &&
+              !!tx.to &&
+              soraStartTimestamp <= +tx.timestamp * 1000 &&
+              contracts.includes(tx.to.toLowerCase())
+          );
         });
       }
       return await ethAccountTransactions[address];
@@ -403,10 +421,8 @@ const actions = {
           const ethereumHash = ethTx ? ethTx.hash : '';
           const blockHeight = ethTx ? String(ethTx.blockNumber) : undefined;
           const evmTimestamp = ethTx?.timestamp ? ethTx.timestamp * 1000 : Date.now();
-          const ethereumNetworkFee =
-            ethTx?.gasPrice && ethTx?.gasLimit
-              ? ethersUtil.calcEvmFee(ethTx.gasPrice.toNumber(), ethTx.gasLimit.toNumber())
-              : undefined;
+          const recieptData = ethereumHash ? await getEvmTxRecieptByHash(ethereumHash) : undefined;
+          const ethereumNetworkFee = recieptData?.ethereumNetworkFee;
 
           const transactionState = ethereumHash
             ? STATES.EVM_COMMITED
