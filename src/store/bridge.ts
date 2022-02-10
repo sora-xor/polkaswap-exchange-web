@@ -291,7 +291,8 @@ const actions = {
     // [BridgeDirection.Outgoing] - sora hash;
     // [BridgeDirection.LoadIncoming] - ethereum hash;
     // [BridgeDirection.Incoming] - sora hash;
-    const hashes = accountRequests.map(([externalNetwork, hash]) => hash);
+    // reverse hashes, to restore history in time desc order
+    const hashes = accountRequests.map(([externalNetwork, hash]) => hash).reverse();
     // bridgeApi.getRequests return maximum 50 results
     const requestsChunks = chunk(50)(hashes);
     const requests = flatten(await Promise.all(requestsChunks.map((chunk) => bridgeApi.getRequests(chunk))));

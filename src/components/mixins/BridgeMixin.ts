@@ -1,5 +1,5 @@
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, Getter, State } from 'vuex-class';
+import { Getter, State } from 'vuex-class';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { BridgeNetworks } from '@sora-substrate/util';
 import type { CodecString, RegisteredAccountAsset, RegisteredAsset } from '@sora-substrate/util';
