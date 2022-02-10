@@ -27,7 +27,6 @@ const types = flow(
     'SET_ETHEREUM_SMART_CONTRACTS',
     'SET_ENERGY_SMART_CONTRACTS',
     'SET_EVM_BALANCE',
-    'SET_DEFAULT_NETWORK_TYPE',
     'SET_SUB_NETWORKS',
     'SET_ENV_NETWORK',
   ]),
@@ -40,9 +39,8 @@ function initialState() {
     evmAddress: ethersUtil.getEvmUserAddress(),
     evmBalance: ZeroStringValue,
     networkType: ethersUtil.getEvmNetworkTypeFromStorage(),
-    defaultNetworkType: BridgeNetworks.ETH_NETWORK_ID,
     subNetworks: [],
-    evmNetwork: 0,
+    evmNetwork: BridgeNetworks.ETH_NETWORK_ID,
     contractAddress: {
       [BridgeNetworks.ETH_NETWORK_ID]: {
         XOR: '',
@@ -81,30 +79,21 @@ const getters = {
   evmAddress(state) {
     return state.evmAddress;
   },
-  evmBalance(state) {
-    return state.evmBalance;
-  },
-  networkType(state) {
-    return state.networkType;
-  },
   defaultNetworkType(state) {
-    return state.defaultNetworkType;
-  },
-  subNetworks(state) {
-    return state.subNetworks;
+    return state.subNetworks?.find((network) => network.id === state.evmNetwork)?.defaultType;
   },
   evmNetwork(state) {
     return state.evmNetwork;
   },
-  isValidNetworkType(state) {
-    return state.networkType === state.defaultNetworkType;
+  isValidNetworkType(state, getters) {
+    return state.networkType === getters.defaultNetworkType;
   },
 };
 
 const mutations = {
   [types.RESET](state) {
     // we shouldn't reset networks, setted from env & contracts
-    const networkSettingsKeys = ['defaultNetworkType', 'contractAddress', 'subNetworks', 'smartContracts'];
+    const networkSettingsKeys = ['contractAddress', 'subNetworks', 'smartContracts'];
     const s = initialState();
 
     Object.keys(s)
@@ -131,10 +120,6 @@ const mutations = {
     state.networkType = networkType;
   },
   [types.SET_NETWORK_TYPE_FAILURE]() {},
-
-  [types.SET_DEFAULT_NETWORK_TYPE](state, networkType) {
-    state.defaultNetworkType = networkType;
-  },
 
   [types.SET_SUB_NETWORKS](state, networks) {
     state.subNetworks = networks;
@@ -206,15 +191,9 @@ const actions = {
     commit(types.SET_SUB_NETWORKS, subNetworks);
   },
 
-  async setEvmNetwork({ commit, dispatch }, networkId: BridgeNetworks) {
+  async setEvmNetwork({ commit }, networkId: BridgeNetworks) {
     bridgeApi.externalNetwork = networkId;
-    await dispatch('setDefaultNetworkType', networkId);
     commit(types.SET_ENV_NETWORK, networkId);
-  },
-
-  async setDefaultNetworkType({ commit, getters }, networkId: BridgeNetworks) {
-    const network: SubNetwork | undefined = getters.subNetworks.find((network: SubNetwork) => network.id === networkId);
-    commit(types.SET_DEFAULT_NETWORK_TYPE, network?.defaultType);
   },
 
   async setEvmNetworkType({ commit }, network) {

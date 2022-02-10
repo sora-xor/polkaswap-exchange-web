@@ -280,6 +280,7 @@ export default class Bridge extends Mixins(
   NetworkFormatterMixin,
   NetworkFeeDialogMixin
 ) {
+  @State((state) => state.web3.subNetworks) subNetworks!: Array<SubNetwork>;
   @State((state) => state[namespace].amount) amount!: string;
   @State((state) => state[namespace].isSoraToEvm) isSoraToEvm!: boolean;
   @State((state) => state[namespace].evmNetworkFeeFetching) evmNetworkFeeFetching!: boolean;
@@ -290,11 +291,11 @@ export default class Bridge extends Mixins(
   @Action('resetBridgeForm', { namespace }) resetBridgeForm;
   @Action('resetBalanceSubscription', { namespace }) resetBalanceSubscription!: AsyncVoidFn;
   @Action('updateBalanceSubscription', { namespace }) updateBalanceSubscription!: AsyncVoidFn;
+  @Action('getEvmNetworkFee', { namespace }) getEvmNetworkFee!: AsyncVoidFn;
 
   @Action('generateHistoryItem', { namespace }) generateHistoryItem!: (history?: any) => Promise<BridgeHistory>;
   @Action('setHistoryItem', { namespace }) setHistoryItem!: (id?: string) => Promise<void>;
 
-  @Getter('subNetworks', { namespace: 'web3' }) subNetworks!: Array<SubNetwork>;
   @Getter('asset', { namespace }) asset!: any;
   @Getter('isRegisteredAsset', { namespace }) isRegisteredAsset!: boolean;
   @Getter nodeIsConnected!: boolean;
@@ -478,7 +479,7 @@ export default class Bridge extends Mixins(
 
   async selectNetwork(network: number): Promise<void> {
     this.showSelectNetworkDialog = false;
-    await this.onEvmNetworkChange(network);
+    await this.setEvmNetwork(network);
   }
 
   async selectAsset(selectedAsset: any): Promise<void> {
