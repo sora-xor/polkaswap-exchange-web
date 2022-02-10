@@ -664,10 +664,12 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
       return;
     }
 
-    const withAutoStart =
-      !this.txInProcess && (!this.isTransferStarted || this.isTransactionFromPending || this.isTransactionToPending);
+    await this.withParentLoading(async () => {
+      const withAutoStart =
+        !this.txInProcess && (!this.isTransferStarted || this.isTransactionFromPending || this.isTransactionToPending);
 
-    await this.handleTransaction(withAutoStart);
+      await this.handleTransaction(withAutoStart);
+    });
   }
 
   beforeDestroy(): void {

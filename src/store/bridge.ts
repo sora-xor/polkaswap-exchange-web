@@ -41,6 +41,7 @@ const types = flow(
     'SET_ASSET_BALANCE',
     'SET_AMOUNT',
     'SET_HISTORY_ITEM',
+    'SET_EVM_BLOCK_NUMBER',
     'ADD_TX_ID_IN_PROGRESS',
     'ADD_TX_ID_IN_APPROVE',
     'REMOVE_TX_ID_FROM_PROGRESS',
@@ -101,6 +102,7 @@ function initialState() {
     amount: '',
     evmNetworkFee: ZeroStringValue,
     evmNetworkFeeFetching: false,
+    evmBlockNumber: 0,
     history: [],
     historyId: '',
     restored: true,
@@ -195,6 +197,9 @@ const mutations = {
   [types.REMOVE_TX_ID_FROM_APPROVE](state, id: string) {
     state.waitingForApprove = omit([id], state.waitingForApprove);
   },
+  [types.SET_EVM_BLOCK_NUMBER](state, blockNumber: number) {
+    state.evmBlockNumber = blockNumber;
+  },
 };
 
 const actions = {
@@ -234,6 +239,10 @@ const actions = {
     ) {
       balanceSubscriptions.add('asset', { updateBalance, token: getters.asset });
     }
+  },
+  async updateEvmBlockNumber({ commit }, value?: number) {
+    const blockNumber = value ?? (await (await ethersUtil.getEthersInstance()).getBlockNumber());
+    commit(types.SET_EVM_BLOCK_NUMBER, blockNumber);
   },
   async getHistory({ commit }) {
     commit(types.GET_HISTORY_REQUEST);
@@ -302,8 +311,8 @@ const actions = {
       }
     );
 
-    const ethAccountTransactions = {};
-    const ethBlockLogs = {};
+    const ethBlockLogs: { [key: string]: Promise<EthLogData[]> } = {};
+    const ethAccountTransactions: { [key: string]: Promise<ethers.providers.TransactionResponse[]> } = {};
 
     const getAccountTransactions = async (address: string): Promise<Array<ethers.providers.TransactionResponse>> => {
       if (!ethAccountTransactions[address]) {
@@ -320,7 +329,7 @@ const actions = {
       return await ethAccountTransactions[address];
     };
 
-    const getBlockLogs = async (blockHash: string, contract: string): Promise<Array<EthLogData>> => {
+    const getBlockLogs = async (blockHash: string, contract: string): Promise<EthLogData[]> => {
       if (!ethBlockLogs[blockHash]) {
         ethBlockLogs[blockHash] = getEthUserTXs([contract], outgoingTopic, blockHash);
       }

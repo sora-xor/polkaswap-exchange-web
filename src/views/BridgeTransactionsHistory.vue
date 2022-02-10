@@ -72,10 +72,15 @@
       <s-button
         v-if="!restored"
         class="s-button--restore s-typography-button--large"
-        :disabled="loading"
+        :disabled="loading || !isValidNetworkType"
         @click="handleRestoreHistory"
       >
-        {{ t('bridgeHistory.restoreHistory') }}
+        <template v-if="!isValidNetworkType">
+          {{ t('bridge.changeNetwork') }}
+        </template>
+        <template v-else>
+          {{ t('bridgeHistory.restoreHistory') }}
+        </template>
       </s-button>
     </s-card>
   </div>
@@ -88,6 +93,7 @@ import { BridgeTxStatus } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
@@ -108,6 +114,7 @@ const namespace = 'bridge';
 })
 export default class BridgeTransactionsHistory extends Mixins(
   TranslationMixin,
+  BridgeMixin,
   BridgeHistoryMixin,
   NetworkFormatterMixin,
   PaginationSearchMixin,
@@ -120,8 +127,6 @@ export default class BridgeTransactionsHistory extends Mixins(
   @Action('getRestoredFlag', { namespace }) getRestoredFlag!: AsyncVoidFn;
   @Action('getRestoredHistory', { namespace }) getRestoredHistory!: AsyncVoidFn;
   @Action('clearHistory', { namespace }) clearHistory!: AsyncVoidFn;
-
-  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn;
 
   PageNames = PageNames;
   pageAmount = 8; // override PaginationSearchMixin
@@ -145,8 +150,7 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
 
   async created(): Promise<void> {
-    this.withApi(async () => {
-      await this.updateRegisteredAssets();
+    await this.withParentLoading(async () => {
       await this.getRestoredFlag();
       await this.getHistory();
     });
