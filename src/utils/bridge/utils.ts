@@ -1,5 +1,6 @@
 import { Operation, BridgeTxStatus } from '@sora-substrate/util';
 import { ethers } from 'ethers';
+import type { Subscription } from 'rxjs';
 
 import { bridgeApi } from './api';
 
@@ -52,23 +53,27 @@ export const waitForApprovedRequest = async (tx: BridgeHistory): Promise<BridgeA
   if (!Number.isFinite(tx.externalNetwork))
     throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} recieved`);
 
-  return new Promise<void>((resolve, reject) => {
-    const subscription = bridgeApi
+  let subscription!: Subscription;
+
+  await new Promise<void>((resolve, reject) => {
+    subscription = bridgeApi
       .subscribeOnRequestStatus(tx.externalNetwork as number, tx.hash as string)
       .subscribe((status) => {
         switch (status) {
           case BridgeTxStatus.Failed:
           case BridgeTxStatus.Frozen:
-            if (subscription) subscription.unsubscribe();
             reject(new Error('[Bridge]: Transaction was failed or canceled'));
             break;
           case BridgeTxStatus.Ready:
-            if (subscription) subscription.unsubscribe();
             resolve();
             break;
         }
       });
-  }).then(() => bridgeApi.getApprovedRequest(tx.hash as string));
+  });
+
+  subscription.unsubscribe();
+
+  return bridgeApi.getApprovedRequest(tx.hash as string);
 };
 
 export const waitForIncomingRequest = async (tx: BridgeHistory): Promise<{ hash: string; blockId: string }> => {
@@ -76,33 +81,34 @@ export const waitForIncomingRequest = async (tx: BridgeHistory): Promise<{ hash:
   if (!Number.isFinite(tx.externalNetwork))
     throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} recieved`);
 
-  return new Promise<void>((resolve, reject) => {
-    const subscription = bridgeApi
+  let subscription!: Subscription;
+
+  await new Promise<void>((resolve, reject) => {
+    subscription = bridgeApi
       .subscribeOnRequest(tx.externalNetwork as number, tx.ethereumHash as string)
       .subscribe((request) => {
         if (request) {
           switch (request.status) {
             case BridgeTxStatus.Failed:
             case BridgeTxStatus.Frozen:
-              if (subscription) subscription.unsubscribe();
               reject(new Error('[Bridge]: Transaction was failed or canceled'));
               break;
             case BridgeTxStatus.Done:
-              if (subscription) subscription.unsubscribe();
               resolve();
               break;
           }
         }
       });
-  }).then(async () => {
-    // TODO: move to js-lib
-    const soraHash = (
-      await bridgeApi.api.query.ethBridge.loadToIncomingRequestHash(tx.externalNetwork, tx.ethereumHash)
-    ).toString();
-    const soraBlockHash = await getSoraBlockHashByRequestHash(tx.externalNetwork as number, tx.ethereumHash as string);
-
-    return { hash: soraHash, blockId: soraBlockHash };
   });
+
+  subscription.unsubscribe();
+  // TODO: move to js-lib
+  const soraHash = (
+    await bridgeApi.api.query.ethBridge.loadToIncomingRequestHash(tx.externalNetwork, tx.ethereumHash)
+  ).toString();
+  const soraBlockHash = await getSoraBlockHashByRequestHash(tx.externalNetwork as number, tx.ethereumHash as string);
+
+  return { hash: soraHash, blockId: soraBlockHash };
 };
 
 export const waitForSoraTransactionHash = async (id: string): Promise<string> => {
