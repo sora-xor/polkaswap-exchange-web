@@ -127,8 +127,8 @@ const TokenPairMixinInstance = (namespace: string) => {
 
     updatePrices(): void {
       this.getPrices({
-        assetAAddress: this.firstToken.address,
-        assetBAddress: this.secondToken.address,
+        assetAAddress: this.firstToken?.address,
+        assetBAddress: this.secondToken?.address,
         amountA: this.firstTokenValue,
         amountB: this.secondTokenValue,
       });
