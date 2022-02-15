@@ -54,12 +54,19 @@
             v-for="invitedUser in invitedUsers"
             value-can-be-hidden
             :key="invitedUser.toString()"
-            :label="invitedUser.toString()"
             :value="getInvitedUserReward(invitedUser.toString())"
             :asset-symbol="xorSymbol"
             :fiat-value="getFiatAmountByCodecString(getInvitedUserReward(invitedUser.toString()))"
             is-formatted
-          />
+          >
+            <template #info-line-prefix>
+              <s-tooltip :content="t('account.copy')">
+                <span class="info-line-address" @click="handleCopyAddress($event)">
+                  {{ formatRereffalAddress(invitedUser.toString()) }}
+                </span>
+              </s-tooltip>
+            </template>
+          </info-line>
         </s-collapse-item>
       </s-collapse>
       <s-card
@@ -185,6 +192,10 @@ export default class ReferralProgram extends Mixins(
     });
   }
 
+  formatRereffalAddress(invitedUser: string): string {
+    return this.formatAddress(invitedUser, 12);
+  }
+
   getInvitedUserReward(invitedUser: string): string {
     if (this.invitedUserRewards[invitedUser]) {
       return this.formatCodecNumber(this.invitedUserRewards[invitedUser]?.rewards);
@@ -270,11 +281,8 @@ $referral-collapse-icon-size: 36px;
     &:last-child {
       margin-bottom: $inner-spacing-medium;
     }
-    &-label {
-      margin-right: 0 !important;
-      width: 125px;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    &-address {
+      cursor: pointer;
     }
   }
 }

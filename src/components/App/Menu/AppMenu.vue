@@ -63,7 +63,15 @@ import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import { PageNames, PoolChildPages, BridgeChildPages, SidebarMenuGroups, FaucetLink, Components } from '@/consts';
+import {
+  PageNames,
+  PoolChildPages,
+  BridgeChildPages,
+  RewardsChildPages,
+  SidebarMenuGroups,
+  FaucetLink,
+  Components,
+} from '@/consts';
 
 import router, { lazyComponent } from '@/router';
 
@@ -93,6 +101,9 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     }
     if (BridgeChildPages.includes(router.currentRoute.name as PageNames)) {
       return PageNames.Bridge;
+    }
+    if (RewardsChildPages.includes(router.currentRoute.name as PageNames)) {
+      return PageNames.Rewards;
     }
     return router.currentRoute.name as string;
   }
