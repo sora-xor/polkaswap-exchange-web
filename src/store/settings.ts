@@ -185,8 +185,6 @@ const actions = {
       if (!rootGetters.isWalletLoaded) {
         try {
           await initWallet({ permissions: WalletPermissions });
-          // TODO [tech]: maybe we should replace it, cuz it executes twice except bridge screens
-          await dispatch('assets/getAssets', undefined, { root: true });
         } catch (error) {
           console.error(error);
           throw error;
@@ -365,7 +363,7 @@ const actions = {
   setBlockNumber({ commit }) {
     commit(types.RESET_BLOCK_NUMBER_UPDATES);
 
-    const blockNumberSubscription = api.getSystemBlockNumberObservable().subscribe((blockNumber) => {
+    const blockNumberSubscription = api.system.getBlockNumberObservable().subscribe((blockNumber) => {
       commit(types.SET_BLOCK_NUMBER, Number(blockNumber));
     });
 

@@ -130,7 +130,6 @@ export default class ReferralBonding extends Mixins(
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
 
   @Action('setXorValue', { namespace }) setXorValue!: (xorValue: string) => Promise<void>;
-  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn;
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
   showConfirmBondDialog = false;

@@ -115,8 +115,8 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
 
   // Wallet
   @Getter isLoggedIn!: boolean;
+  @Getter assets!: Array<Asset>;
 
-  @Getter('assets', { namespace: 'assets' }) assets!: Array<Asset>;
   @Getter('accountLiquidity', { namespace }) accountLiquidity!: Array<AccountLiquidity>;
 
   getAsset(address): any {

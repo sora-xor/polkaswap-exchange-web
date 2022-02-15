@@ -170,6 +170,7 @@ export default class SelectRegisteredAsset extends Mixins(
   @Getter('whitelistAssets', { namespace }) whitelistAssets!: Array<Asset>;
   @Getter('registeredAssets', { namespace }) registeredAssets!: Array<RegisteredAccountAsset>;
   // Wallet store
+  @Getter assets!: Array<Asset>;
   @Getter accountAssetsAddressTable;
   @Getter shouldBalanceBeHidden!: boolean;
 
@@ -272,7 +273,7 @@ export default class SelectRegisteredAsset extends Mixins(
       return;
     }
     const search = value.trim().toLowerCase();
-    const asset = await this.getAsset({ address: search });
+    const asset = this.assets.find((asset) => asset.address === search);
     if (this.assetsList.find((asset) => asset[this.addressSymbol] === search)) {
       this.selectedCustomAsset = null;
       this.customSymbol = '';

@@ -273,7 +273,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   @Action('setExchangeB', { namespace }) setExchangeB!: (isExchangeB: boolean) => Promise<void>;
   @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>;
   @Action('reset', { namespace }) reset!: AsyncVoidFn;
-  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn;
 
   @Action('setPrimaryMarketsEnabledAssets', { namespace }) setPrimaryMarketsEnabledAssets!: (
     assets: PrimaryMarketsEnabledAssets
@@ -439,8 +438,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
 
   created() {
     this.withApi(async () => {
-      await this.getAssets();
-
       if (!this.tokenFrom) {
         await this.setTokenFromAddress(XOR.address);
         await this.setTokenToAddress();
