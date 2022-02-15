@@ -38,8 +38,6 @@ const TokenPairMixinInstance = (namespace: string) => {
     @Action('getPrices', { namespace: 'prices' }) getPrices;
     @Action('resetPrices', { namespace: 'prices' }) resetPrices;
 
-    @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn;
-
     @Watch('isLoggedIn')
     private handleLoggedInStateChange(isLoggedIn: boolean, wasLoggedIn: boolean): void {
       if (wasLoggedIn && !isLoggedIn) {

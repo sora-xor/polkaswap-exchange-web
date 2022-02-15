@@ -17,8 +17,6 @@ const namespace = 'pool';
 
 @Component
 export default class PoolContainer extends Mixins(mixins.LoadingMixin) {
-  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn;
-
   @Action('subscribeOnAccountLiquidityList', { namespace }) subscribeOnAccountLiquidityList!: AsyncVoidFn;
   @Action('subscribeOnAccountLiquidityUpdates', { namespace }) subscribeOnAccountLiquidityUpdates!: AsyncVoidFn;
   @Action('unsubscribeAccountLiquidityListAndUpdates', { namespace })
@@ -62,7 +60,6 @@ export default class PoolContainer extends Mixins(mixins.LoadingMixin) {
       await this.withLoading(async () => {
         await this.subscribeOnAccountLiquidityList();
         await this.subscribeOnAccountLiquidityUpdates();
-        await this.getAssets();
       });
     });
   }
