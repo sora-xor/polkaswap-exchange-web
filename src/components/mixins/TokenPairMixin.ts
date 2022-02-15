@@ -38,8 +38,6 @@ const TokenPairMixinInstance = (namespace: string) => {
     @Action('getPrices', { namespace: 'prices' }) getPrices;
     @Action('resetPrices', { namespace: 'prices' }) resetPrices;
 
-    @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn;
-
     @Watch('isLoggedIn')
     private handleLoggedInStateChange(isLoggedIn: boolean, wasLoggedIn: boolean): void {
       if (wasLoggedIn && !isLoggedIn) {
@@ -127,8 +125,8 @@ const TokenPairMixinInstance = (namespace: string) => {
 
     updatePrices(): void {
       this.getPrices({
-        assetAAddress: this.firstToken.address,
-        assetBAddress: this.secondToken.address,
+        assetAAddress: this.firstToken?.address,
+        assetBAddress: this.secondToken?.address,
         amountA: this.firstTokenValue,
         amountB: this.secondTokenValue,
       });

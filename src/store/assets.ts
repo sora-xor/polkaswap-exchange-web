@@ -5,7 +5,6 @@ import flow from 'lodash/fp/flow';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { RegisteredAccountAsset } from '@sora-substrate/util';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 import { bridgeApi } from '@/utils/bridge';
 import { findAssetInCollection } from '@/utils';
@@ -24,11 +23,10 @@ const types = flow(
   flatMap((x) => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   map((x) => [x, x]),
   fromPairs
-)(['GET_ASSETS_LIST', 'GET_ASSET', 'GET_ACCOUNT_ASSETS', 'GET_REGISTERED_ASSETS']);
+)(['GET_REGISTERED_ASSETS']);
 
 function initialState() {
   return {
-    assets: [],
     registeredAssets: [],
     registeredAssetsFetching: false,
   };
@@ -37,15 +35,11 @@ function initialState() {
 const state = initialState();
 
 const getters = {
-  // list of all assets
-  assets(state) {
-    return state.assets;
-  },
   whitelistAssets(state, getters, rootState, rootGetters) {
-    return state.assets.filter((asset) => api.assets.isWhitelist(asset, rootGetters.whitelist));
+    return rootGetters.assets.filter((asset) => api.assets.isWhitelist(asset, rootGetters.whitelist));
   },
   nonWhitelistAssets(state, getters, rootState, rootGetters) {
-    return state.assets.filter((asset) => !api.assets.isWhitelist(asset, rootGetters.whitelist));
+    return rootGetters.assets.filter((asset) => !api.assets.isWhitelist(asset, rootGetters.whitelist));
   },
   nonWhitelistAccountAssets(state, getters, rootState, rootGetters) {
     return rootGetters.accountAssets.filter((asset) => !api.assets.isWhitelist(asset, rootGetters.whitelist));
@@ -57,8 +51,8 @@ const getters = {
     return state.registeredAssets;
   },
   assetsDataTable(state, getters, rootState, rootGetters) {
-    const { accountAssetsAddressTable } = rootGetters;
-    const { assets, registeredAssets } = state;
+    const { assets, accountAssetsAddressTable } = rootGetters;
+    const { registeredAssets } = state;
 
     return assets.reduce((result, asset) => {
       const { externalAddress, externalBalance, externalDecimals } =
@@ -89,20 +83,6 @@ const getters = {
 };
 
 const mutations = {
-  [types.GET_ASSETS_LIST_REQUEST](state) {
-    state.assets = [];
-  },
-  [types.GET_ASSETS_LIST_SUCCESS](state, assets: Array<Asset>) {
-    state.assets = assets;
-  },
-  [types.GET_ASSETS_LIST_FAILURE](state) {
-    state.assets = [];
-  },
-
-  [types.GET_ASSET_REQUEST](state) {},
-  [types.GET_ASSET_SUCCESS](state) {},
-  [types.GET_ASSET_FAILURE](state) {},
-
   [types.GET_REGISTERED_ASSETS_REQUEST](state) {
     state.registeredAssetsFetching = true;
   },
@@ -117,27 +97,6 @@ const mutations = {
 };
 
 const actions = {
-  async getAssets({ commit, rootGetters: { whitelist } }) {
-    commit(types.GET_ASSETS_LIST_REQUEST);
-    try {
-      const assets = await api.assets.getAssets(whitelist);
-
-      commit(types.GET_ASSETS_LIST_SUCCESS, assets);
-    } catch (error) {
-      commit(types.GET_ASSETS_LIST_FAILURE);
-    }
-  },
-  async getAsset({ commit }, { address }) {
-    commit(types.GET_ASSET_REQUEST);
-    try {
-      const assets = await api.assets.getAssets();
-      const asset = assets.find((asset) => asset.address === address);
-      commit(types.GET_ASSET_SUCCESS);
-      return asset;
-    } catch (error) {
-      commit(types.GET_ASSET_FAILURE);
-    }
-  },
   async getRegisteredAssets({ commit, dispatch }) {
     commit(types.GET_REGISTERED_ASSETS_FAILURE);
     await dispatch('updateRegisteredAssets');

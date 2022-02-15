@@ -37,7 +37,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 import { FPNumber, History, connection } from '@sora-substrate/util';
-import { mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { mixins, getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 
@@ -78,15 +78,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Getter('referral', { namespace: 'referrals' }) referral!: string;
 
   // Wallet
-  @Action resetAccountAssetsSubscription!: AsyncVoidFn;
-  @Action trackActiveTransactions!: AsyncVoidFn;
-  @Action resetActiveTransactions!: AsyncVoidFn;
-  @Action resetRuntimeVersionSubscription!: AsyncVoidFn;
-  @Action resetFiatPriceAndApySubscription!: AsyncVoidFn;
+  @Action activateNetwokSubscriptions!: AsyncVoidFn;
+  @Action resetNetworkSubscriptions!: AsyncVoidFn;
+  @Action resetInternalSubscriptions!: AsyncVoidFn;
   @Action setSoraNetwork!: (networkType: string) => Promise<void>;
-  @Action setApiKeys!: (options: any) => Promise<void>;
+  @Action setApiKeys!: (options: WALLET_TYPES.ApiKeysObject) => Promise<void>;
 
-  @Action subscribeOnAccountAssets!: AsyncVoidFn;
   @Action setDefaultNodes!: (nodes: any) => Promise<void>;
   @Action setNetworkChainGenesisHash!: (hash: string) => Promise<void>;
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
@@ -109,10 +106,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     if (nodeConnected) {
       // after app load, the first connection to the node occurs before the wallet is loaded
       if (this.isWalletLoaded) {
-        this.subscribeOnAccountAssets();
+        this.activateNetwokSubscriptions();
       }
     } else {
-      this.resetAccountAssetsSubscription();
+      this.resetNetworkSubscriptions();
     }
   }
 
@@ -171,8 +168,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       // connection to node
       await this.runAppConnectionToNode();
     });
-
-    this.trackActiveTransactions();
   }
 
   get isAboutPage(): boolean {
@@ -210,10 +205,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   async beforeDestroy(): Promise<void> {
-    await this.resetFiatPriceAndApySubscription();
-    await this.resetActiveTransactions();
-    await this.resetAccountAssetsSubscription();
-    await this.resetRuntimeVersionSubscription();
+    await this.resetInternalSubscriptions();
+    await this.resetNetworkSubscriptions();
     await this.resetBlockNumberSubscription();
     await this.unsubscribeMarketMakerInfo();
     await connection.close();

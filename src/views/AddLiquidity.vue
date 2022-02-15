@@ -269,15 +269,6 @@ export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, 
     });
   }
 
-  updatePrices(): void {
-    this.getPrices({
-      assetAAddress: this.firstAddress ?? this.firstToken.address,
-      assetBAddress: this.secondAddress ?? this.secondToken.address,
-      amountA: this.firstTokenValue,
-      amountB: this.secondTokenValue,
-    });
-  }
-
   async handleAddLiquidity(): Promise<void> {
     if (!this.isXorSufficientForNextOperation) {
       this.openWarningFeeDialog();

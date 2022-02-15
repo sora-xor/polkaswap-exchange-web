@@ -66,14 +66,14 @@ const getters = {
   liquidityDecimals(state: RemoveLiquidityState, getters) {
     return getters.liquidity?.decimals ?? 0;
   },
-  firstToken(state: RemoveLiquidityState, getters, rootGetters) {
-    return getters.liquidity && rootGetters.assets.assets
-      ? rootGetters.assets.assets.find((t) => t.address === getters.liquidity.firstAddress) || {}
+  firstToken(state: RemoveLiquidityState, getters, rootState, rootGetters) {
+    return getters.liquidity && rootGetters.assets
+      ? rootGetters.assets.find((t) => t.address === getters.liquidity.firstAddress) || {}
       : {};
   },
-  secondToken(state: RemoveLiquidityState, getters, rootGetters) {
-    return getters.liquidity && rootGetters.assets.assets
-      ? rootGetters.assets.assets.find((t) => t.address === getters.liquidity.secondAddress) || {}
+  secondToken(state: RemoveLiquidityState, getters, rootState, rootGetters) {
+    return getters.liquidity && rootGetters.assets
+      ? rootGetters.assets.find((t) => t.address === getters.liquidity.secondAddress) || {}
       : {};
   },
   firstTokenBalance(state: RemoveLiquidityState, getters) {
