@@ -155,3 +155,49 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   }
 }
 </script>
+
+<style lang="scss">
+$icon-size: 28px;
+
+.header-menu {
+  $dropdown-background: var(--s-color-utility-body);
+  $dropdown-margin: 24px;
+  $dropdown-item-line-height: 42px;
+
+  &.el-dropdown-menu.el-popper {
+    margin-top: $dropdown-margin;
+    background-color: $dropdown-background;
+    border-color: var(--s-color-base-border-secondary);
+    .popper__arrow {
+      display: none;
+    }
+  }
+  &__button i {
+    font-size: $icon-size !important; // cuz font-size is inline style
+  }
+  &__item.el-dropdown-menu__item {
+    line-height: $dropdown-item-line-height;
+    font-weight: 300;
+    font-size: var(--s-font-size-small);
+    letter-spacing: var(--s-letter-spacing-small);
+    font-feature-settings: 'case' on;
+    color: var(--s-color-base-content-secondary);
+    display: flex;
+    align-items: center;
+    i {
+      color: var(--s-color-base-content-tertiary);
+      font-size: $icon-size;
+    }
+    &:not(.is-disabled) {
+      &:hover,
+      &:focus {
+        background-color: transparent;
+        &,
+        i {
+          color: var(--s-color-base-content-secondary);
+        }
+      }
+    }
+  }
+}
+</style>
