@@ -903,7 +903,10 @@
             "inviteTitle": "Byli jste pozváni na Polkaswap",
             "inviteDescription": "Za každou transakci obdrží váš doporučitel 10 % z poplatku, aniž byste museli platit jakékoli další náklady.",
             "signInvitation": "Schválit",
-            "freeOfCharge": "Tato akce je bezplatná"
+            "freeOfCharge": "Tato akce je bezplatná",
+            "hasReferrerTitle": "Již jste nastavili svého referrera",
+            "hasReferrerDescription": "Bohužel můžete nastavit pouze jeden",
+            "ok": "OK"
         }
     },
     "transactionDetailsText": "Detaily transakce",

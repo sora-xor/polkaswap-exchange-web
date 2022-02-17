@@ -903,7 +903,10 @@
             "inviteTitle": "Je bent uitgenodigd voor Polkaswap",
             "inviteDescription": "Voor elke transactie gaat 10% van de vergoeding naar uw verwijzer, zonder extra kosten voor u.",
             "signInvitation": "Goedkeuren",
-            "freeOfCharge": "Deze actie is gratis"
+            "freeOfCharge": "Deze actie is gratis",
+            "hasReferrerTitle": "Je hebt je verwijzer al ingesteld",
+            "hasReferrerDescription": "Helaas kun je er maar één instellen",
+            "ok": "OK"
         }
     },
     "transactionDetailsText": "Transactie Details",
