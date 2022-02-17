@@ -57,12 +57,14 @@ enum HeaderMenuType {
   Language = 'language',
 }
 
+const BREAKPOINT = 1440;
+
 @Component
 export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   readonly iconSize = 28;
   readonly HeaderMenuType = HeaderMenuType;
   // $breakpoint_large-desktop: 1440px;
-  private readonly mediaQueryList = window.matchMedia('(min-width: 1440px)');
+  private readonly mediaQueryList = window.matchMedia(`(min-width: ${BREAKPOINT}px;)`);
 
   @Getter libraryTheme!: Theme;
   @Getter shouldBalanceBeHidden!: boolean;
@@ -70,7 +72,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @Action toggleHideBalance!: AsyncVoidFn;
   @Action setSelectLanguageDialogVisibility!: (flag: boolean) => Promise<void>;
 
-  isLargeDesktop = false;
+  isLargeDesktop = window.innerWidth >= BREAKPOINT;
 
   get headerMenuItems() {
     return [
