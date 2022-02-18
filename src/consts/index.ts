@@ -273,6 +273,12 @@ export const SidebarMenuGroups = [MainMenu, AccountMenu, OtherPagesMenu];
 
 export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
 export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
+export const RewardsChildPages = [
+  PageNames.Rewards,
+  PageNames.Referral,
+  PageNames.ReferralBonding,
+  PageNames.ReferralUnbonding,
+];
 
 export enum Topics {
   SwapTokens = 'SwapTokens',

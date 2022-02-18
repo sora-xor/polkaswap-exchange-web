@@ -129,10 +129,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   async confirmInvititation(): Promise<void> {
     await this.getReferral(this.account.address);
-    if (this.referral || this.storageReferral === this.account.address) {
-      this.setReferral('');
-    } else if (this.storageReferral) {
-      this.showConfirmInviteUser = true;
+    if (this.storageReferral) {
+      if (this.storageReferral === this.account.address) {
+        this.setReferral('');
+      } else {
+        this.showConfirmInviteUser = true;
+      }
     }
   }
 

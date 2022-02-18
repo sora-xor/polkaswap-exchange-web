@@ -496,7 +496,7 @@
         "addLiquidity": "Añadir Liquidez",
         "removeLiquidity": "Remover Liquidez",
         "createPair": "Crear un par",
-        "pooledToken": "{tokenSymbol} Mancomunado",
+        "pooledToken": "{tokenSymbol} Suministrado",
         "pairTokens": "{pair} Tokens del Fondo común",
         "poolShare": "Su Participación en el Fondo común",
         "unknownAsset": "Activo desconocido",
@@ -903,7 +903,10 @@
             "inviteTitle": "Has sido invitado a Polkaswap",
             "inviteDescription": "Por cada transacción, el 10% de la tarifa se destinará a su referente, sin ningún costo adicional para usted.",
             "signInvitation": "Aprobar",
-            "freeOfCharge": "Esta acción es gratuita"
+            "freeOfCharge": "Esta acción es gratuita",
+            "hasReferrerTitle": "Ya ha configurado su referencia",
+            "hasReferrerDescription": "Desafortunadamente, solo puedes configurar uno",
+            "ok": "OK"
         }
     },
     "transactionDetailsText": "Detalles de la transacción",

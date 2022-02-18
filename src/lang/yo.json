@@ -903,7 +903,10 @@
             "inviteTitle": "O ti pe ọ si Polkaswap nipasẹ itọkasi kan",
             "inviteDescription": "Fun gbogbo iṣowo, 10% ti owo naa yoo lọ si olutọka rẹ, laisi idiyele eyikeyi fun ọ.",
             "signInvitation": "Fi ọwọ si",
-            "freeOfCharge": "Iṣe yii jẹ ọfẹ"
+            "freeOfCharge": "Iṣe yii jẹ ọfẹ",
+            "hasReferrerTitle": "O ti ṣeto olutọka rẹ tẹlẹ",
+            "hasReferrerDescription": "Laanu, o le ṣeto ọkan nikan",
+            "ok": "O DARA"
         }
     },
     "transactionDetailsText": "Idunadura Awọn alaye",

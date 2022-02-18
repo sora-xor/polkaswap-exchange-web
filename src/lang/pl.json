@@ -43,7 +43,7 @@
             "ClaimRewards": "Wynagrodzenie odebrane pomyślnie {rewards}.",
             "ReferralReserveXor": "Rezerwy w XOR zostały pomyślnie utworzone",
             "ReferralUnreserveXor": "Rezerwy w XOR zostały pomyślnie uwolnione",
-            "ReferralSetInvitedUser": "Polecenie zostało pomyślnie ustawione"
+            "ReferralSetInvitedUser": "Kod polecający został pomyślnie utworzony."
         },
         "error": {
             "Transfer": "Nie udało się {action} {amount} {symbol} {direction} {address}",
@@ -55,11 +55,11 @@
             "ClaimRewards": "Nie udało się odebrać wynagrodzenia {rewards}.",
             "ReferralReserveXor": "Nie udało się utworzyć rezerw w XOR",
             "ReferralUnreserveXor": "Nie udało się uwolnić rezerw w XOR",
-            "ReferralSetInvitedUser": "Nie udało się ustawić polecenia"
+            "ReferralSetInvitedUser": "Nie udało się utworzyć kodu polecającego."
         },
         "ReferralReserveXor": "Utwórz rezerwy w XOR",
         "ReferralUnreserveXor": "Uwolnij rezerwy w XOR",
-        "ReferralSetInvitedUser": "Ustaw polecenie"
+        "ReferralSetInvitedUser": "Utwórz kod polecający"
     },
     "polkadotjs": {
         "noExtensions": "Nie znaleziono rozszerzenia polkadot.js. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -501,7 +501,7 @@
         "poolShare": "Twój udział w puli",
         "unknownAsset": "Nieznana waluta",
         "description": "Po dodaniu płynności otrzymasz tokeny puli reprezentujące Twoją pozycję. Tokeny te automatycznie zarabiają na opłatach proporcjonalne do Twojego udziału w puli i mogą zostać wypłacone w dowolnym momencie.",
-        "strategicBonusApy": "Procentowa roczna stopa dochodu premii strategicznej"
+        "strategicBonusApy": "Procentowa roczna stopa dochodu bonusu strategicznego"
     },
     "bridge": {
         "title": "Most HASHI",
@@ -815,8 +815,8 @@
                 "text": "Niestety, wygląda na to, że transakcja @:moonpayText nie powiodła się. Spróbuj ponownie. Aby uzyskać pomoc od @:moonpayText, przejdź do <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\">https:\/\/support.moonpay.com<\/a>"
             },
             "amountError": {
-                "title": "Niewystarczająca ilość środków",
-                "text": "Niestety, transakcja przez most HASHI nie powiodła się z powodu braku wystarczającej liczby tokenów dla przeprowadzenia transakcji. Sprawdź saldo swojego konta Ethereum i spróbuj ponownie."
+                "title": "Niewystarczające saldo",
+                "text": "Niestety, transakcja przez most HASHI nie powiodła się z powodu braku wystarczającej liczby tokenów dla przeprowadzenia transakcji. Sprawdź saldo swojego konta sieci Ethereum i spróbuj ponownie."
             },
             "accountAddressError": {
                 "title": "Niewłaściwe konto sieci Ethereum",
@@ -902,8 +902,11 @@
             "unbond": "Potwierdź ",
             "inviteTitle": "Zostałeś zaproszony do Polkaswap",
             "inviteDescription": "Za każdą transakcję 10% opłaty trafi do Twojego polecającego, bez żadnych dodatkowych kosztów dla Ciebie.",
-            "signInvitation": "Zatwierdzić",
-            "freeOfCharge": "Ta transakcja nie jest obciążona żadnymi kosztami."
+            "signInvitation": "Przyjmij",
+            "freeOfCharge": "Ta transakcja nie jest obciążona żadnymi kosztami.",
+            "hasReferrerTitle": "Ustawiłeś już swoją osobę polecającą",
+            "hasReferrerDescription": "Niestety możesz ustawić tylko jeden",
+            "ok": "OK"
         }
     },
     "transactionDetailsText": "Szczegóły transakcji",
