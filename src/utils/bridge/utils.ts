@@ -3,11 +3,12 @@ import { ethers } from 'ethers';
 import type { Subscription } from 'rxjs';
 
 import { bridgeApi } from './api';
+import { SubqueryExplorerService, historyElementsFilter, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 import { delay } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
 
-import type { BridgeHistory, BridgeApprovedRequest } from '@sora-substrate/util';
+import type { BridgeHistory, BridgeApprovedRequest, BridgeNetworks } from '@sora-substrate/util';
 
 const SORA_REQUESTS_TIMEOUT = 6 * 1000; // Block production time
 
@@ -103,9 +104,7 @@ export const waitForIncomingRequest = async (tx: BridgeHistory): Promise<{ hash:
 
   subscription.unsubscribe();
   // TODO: move to js-lib
-  const soraHash = (
-    await bridgeApi.api.query.ethBridge.loadToIncomingRequestHash(tx.externalNetwork, tx.ethereumHash)
-  ).toString();
+  const soraHash = await getSoraHashByEthereumHash(tx.externalNetwork as BridgeNetworks, tx.ethereumHash as string);
   const soraBlockHash = await getSoraBlockHashByRequestHash(tx.externalNetwork as number, tx.ethereumHash as string);
 
   return { hash: soraHash, blockId: soraBlockHash };
@@ -204,6 +203,10 @@ export const waitForEvmTransaction = async (id: string) => {
   );
 };
 
+export const getSoraHashByEthereumHash = async (networkId: BridgeNetworks, ethereumHash: string): Promise<string> => {
+  return (await bridgeApi.api.query.ethBridge.loadToIncomingRequestHash(networkId, ethereumHash)).toString();
+};
+
 export const getSoraBlockHashByRequestHash = async (
   externalNetworkId: number,
   requestHash: string
@@ -240,4 +243,14 @@ export const getEvmTxRecieptByHash = async (
   } catch (error) {
     return null;
   }
+};
+
+export const getAccountEthBridgeHistoryElements = async (address: string): Promise<SUBQUERY_TYPES.HistoryElement[]> => {
+  const operations = [Operation.EthBridgeOutgoing, Operation.EthBridgeIncoming];
+  const filter = historyElementsFilter({ address, operations });
+  const variables = { filter };
+  const { edges } = await SubqueryExplorerService.getAccountTransactions(variables);
+  const history = edges.map((edge) => edge.node);
+
+  return history as SUBQUERY_TYPES.HistoryElement[];
 };
