@@ -1,6 +1,6 @@
 <template>
   <dialog-base :visible.sync="isVisible" :show-close-button="false" custom-class="dialog--confirm-invite-user">
-    <div :class="`invite-user-icon${hasReferrer ? ' invite-user-icon--error' : ''}`">
+    <div :class="computedIconClasses">
       <s-icon v-if="!hasReferrer" name="file-file-text-24" size="40px" />
     </div>
     <p class="invite-user-title">
@@ -45,6 +45,14 @@ export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, D
 
   get hasReferrer(): boolean {
     return !!this.referral;
+  }
+
+  get computedIconClasses(): Array<string> {
+    const cssClasses: Array<string> = ['invite-user-icon'];
+    if (this.hasReferrer) {
+      cssClasses.push('invite-user-icon--error');
+    }
+    return cssClasses;
   }
 
   async handleConfirmInviteUser(): Promise<void> {
