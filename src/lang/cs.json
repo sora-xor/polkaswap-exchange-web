@@ -869,7 +869,7 @@
     },
     "blockNumberText": "Číslo bloku",
     "referralProgram": {
-        "title": "Program doporučení",
+        "title": "Referral Program",
         "connectAccount": "Chcete-li pozvat uživatele, musíte připojit svůj účet SORA.",
         "bondedXOR": "Vázané XOR",
         "referralsNumber": "{number} doporučení",

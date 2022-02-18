@@ -869,7 +869,7 @@
     },
     "blockNumberText": "Bloknummer",
     "referralProgram": {
-        "title": "Verwijzingsprogramma",
+        "title": "Referral Program",
         "connectAccount": "Om gebruikers uit te nodigen, moet u uw SORA-account koppelen.",
         "bondedXOR": "XOR Gebonden",
         "referralsNumber": "{number} verwijzingen",

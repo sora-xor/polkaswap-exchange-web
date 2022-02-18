@@ -885,7 +885,7 @@
             "connectWallet": "@:connectWalletText",
             "empty": "Masukkan jumlah {tokenSymbol}",
             "startInviting": "Ikatan {tokenSymbol} untuk mulai mengundang",
-            "bondMore": "Ikatan Lebih Banyak",
+            "bondMore": "Bond More",
             "bond": "Ikatan",
             "unbond": "Tidak terikat",
             "copyLink": "Salin link"

@@ -869,7 +869,7 @@
     },
     "blockNumberText": "Blocknummer",
     "referralProgram": {
-        "title": "Empfehlungsprogramm",
+        "title": "Referral Program",
         "connectAccount": "Um Benutzer einzuladen, musst du dein SORA-Konto verbinden.",
         "bondedXOR": "XOR gebonded",
         "referralsNumber": "{number} Empfehlungen",
@@ -904,8 +904,8 @@
             "inviteDescription": "Für jede Transaktion gehen 10% der Gebühr an deinen Referrer, ohne dass dir zusätzliche Kosten entstehen.",
             "signInvitation": "Genehmigen",
             "freeOfCharge": "Diese Aktion ist kostenfrei",
-            "hasReferrerTitle": "Sie haben Ihren Referrer bereits festgelegt",
-            "hasReferrerDescription": "Leider kann man nur einen einstellen",
+            "hasReferrerTitle": "Du hast deinen Referrer bereits festgelegt",
+            "hasReferrerDescription": "Leider kann man nur einen festlegen",
             "ok": "OK"
         }
     },

@@ -869,7 +869,7 @@
     },
     "blockNumberText": "Blokknummer",
     "referralProgram": {
-        "title": "Henvisningprogram",
+        "title": "Referral Program",
         "connectAccount": "For å invitere brukere må du koble til SORA-kontoen din.",
         "bondedXOR": "XOR Bundet",
         "referralsNumber": "{number}-henvisninger",

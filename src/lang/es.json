@@ -869,7 +869,7 @@
     },
     "blockNumberText": "Número de bloque",
     "referralProgram": {
-        "title": "Programa de referencia",
+        "title": "Referral Program",
         "connectAccount": "Para invitar a usuarios, debe conectar su cuenta SORA.",
         "bondedXOR": "XOR Vinculado",
         "referralsNumber": "{number} referencias",
