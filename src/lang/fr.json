@@ -903,7 +903,10 @@
             "inviteTitle": "Vous avez été invité à Polkaswap",
             "inviteDescription": "Pour chaque transaction, 10% des frais iront à votre parrain, sans frais supplémentaires pour vous.",
             "signInvitation": "Approuver",
-            "freeOfCharge": "Cette action est gratuite"
+            "freeOfCharge": "Cette action est gratuite",
+            "hasReferrerTitle": "Vous avez déjà défini votre référent",
+            "hasReferrerDescription": "Malheureusement, vous ne pouvez définir qu'un seul",
+            "ok": "OK"
         }
     },
     "transactionDetailsText": "Détails de la transaction",

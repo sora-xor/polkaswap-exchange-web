@@ -232,6 +232,7 @@ export default class ReferralBonding extends Mixins(
   async confirmBond(isBondConfirmed: boolean): Promise<void> {
     if (isBondConfirmed) {
       this.setXorValue('');
+      this.handleBack();
     }
   }
 

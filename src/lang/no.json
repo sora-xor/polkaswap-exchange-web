@@ -903,7 +903,10 @@
             "inviteTitle": "Du har blitt invitert til Polkaswap",
             "inviteDescription": "For hver transaksjon vil 10% av gebyret gå til din henvisning, uten ekstra kostnad for deg.",
             "signInvitation": "Vedta",
-            "freeOfCharge": "Denne handlingen er gratis"
+            "freeOfCharge": "Denne handlingen er gratis",
+            "hasReferrerTitle": "Du har allerede angitt henvisningsadressen din",
+            "hasReferrerDescription": "Dessverre kan du bare angi én",
+            "ok": "OK"
         }
     },
     "transactionDetailsText": "Transaksjonsdetaljer",

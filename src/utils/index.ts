@@ -60,7 +60,7 @@ const getMaxBalance = (
   parseAsLiquidity = false,
   isBondedBalance = false
 ): FPNumber => {
-  const balance = getAssetBalance(asset, { internal: !isExternalBalance, parseAsLiquidity });
+  const balance = getAssetBalance(asset, { internal: !isExternalBalance, parseAsLiquidity, isBondedBalance });
   const decimals: number = asset[isExternalBalance ? 'externalDecimals' : 'decimals'];
 
   if (asZeroValue(balance)) return FPNumber.ZERO;

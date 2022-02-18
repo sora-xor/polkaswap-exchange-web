@@ -903,7 +903,10 @@
             "inviteTitle": "You have been invited to Polkaswap",
             "inviteDescription": "For every transaction, 10% of the fee will go to your referrer, without any extra cost to you.",
             "signInvitation": "Approve",
-            "freeOfCharge": "This action is free of charge"
+            "freeOfCharge": "This action is free of charge",
+            "hasReferrerTitle": "You’ve already set your referrer",
+            "hasReferrerDescription": "Unfortunately, you can only set one",
+            "ok": "OK"
         }
     },
     "transactionDetailsText": "Transaction Details",
