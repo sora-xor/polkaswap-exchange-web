@@ -220,12 +220,6 @@ export const getSoraBlockHashByRequestHash = async (
   return soraBlockHash;
 };
 
-export const getBlockTimestamp = async (blockHash: string): Promise<number> => {
-  const timestamp = (await bridgeApi.api.query.timestamp.now.at(blockHash)).toNumber();
-
-  return timestamp;
-};
-
 export const getEvmTxRecieptByHash = async (
   ethereumHash: string
 ): Promise<{ ethereumNetworkFee: string; blockHeight: number; from: string } | null> => {
