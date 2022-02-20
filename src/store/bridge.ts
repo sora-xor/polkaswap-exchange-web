@@ -277,29 +277,38 @@ const actions = {
     // get sora network start time to filter eth transactions by timestamp
     const soraStartBlockHash = (await bridgeApi.api.rpc.chain.getBlockHash(1)).toString();
     const soraStartTimestamp = await getBlockTimestamp(soraStartBlockHash);
-    const ethBlockLogs: { [key: string]: Promise<EthLogData[]> } = {};
-    const ethAccountTransactions: { [key: string]: Promise<ethers.providers.TransactionResponse[]> } = {};
+    // ethereum data
+    const ethBlockLogsMap: { [key: string]: Promise<EthLogData[]> } = {};
+    const ethAccountTransactionsMap: { [key: string]: Promise<ethers.providers.TransactionResponse[]> } = {};
+    const ethTransactionsMap: { [key: string]: ethers.providers.TransactionResponse } = {};
 
     const getAccountTransactions = async (address: string): Promise<Array<ethers.providers.TransactionResponse>> => {
-      if (!ethAccountTransactions[address]) {
-        ethAccountTransactions[address] = etherscanInstance.getHistory(address, ethStartBlock).then((history) => {
-          return history.filter(
-            (tx) =>
+      if (!ethAccountTransactionsMap[address]) {
+        ethAccountTransactionsMap[address] = etherscanInstance.getHistory(address, ethStartBlock).then((history) => {
+          return history.reduce<ethers.providers.TransactionResponse[]>((buffer, tx) => {
+            const matches =
               !!tx.timestamp &&
               !!tx.to &&
               soraStartTimestamp <= +tx.timestamp * 1000 &&
-              contracts.includes(tx.to.toLowerCase())
-          );
+              contracts.includes(tx.to.toLowerCase());
+
+            if (matches) {
+              buffer.push(tx);
+              ethTransactionsMap[tx.hash] = tx;
+            }
+
+            return buffer;
+          }, []);
         });
       }
-      return await ethAccountTransactions[address];
+      return await ethAccountTransactionsMap[address];
     };
 
     const getBlockLogs = async (blockHash: string, contract: string): Promise<EthLogData[]> => {
-      if (!ethBlockLogs[blockHash]) {
-        ethBlockLogs[blockHash] = getEthUserTXs([contract], outgoingTopic, blockHash);
+      if (!ethBlockLogsMap[blockHash]) {
+        ethBlockLogsMap[blockHash] = getEthUserTXs([contract], outgoingTopic, blockHash);
       }
-      return await ethBlockLogs[blockHash];
+      return await ethBlockLogsMap[blockHash];
     };
 
     const findOutgoingEthTxBySoraHash = async (
@@ -320,36 +329,41 @@ const actions = {
       }
     };
 
-    const transactions = await getAccountEthBridgeHistoryElements(soraAccountAddress);
+    const findIncomingEthTxByEthereumHash = async (
+      ethereumHash: string
+    ): Promise<ethers.providers.TransactionResponse> => {
+      return ethTransactionsMap[ethereumHash] || (await ethersUtil.getEvmTransaction(ethereumHash));
+    };
+
+    const historyElements = await getAccountEthBridgeHistoryElements(soraAccountAddress);
 
     // Bridge history restoration process
     // Show transaction in history after processing
-    for (const transaction of transactions) {
+    for (const historyElement of historyElements) {
       const type =
-        transaction.module === SUBQUERY_TYPES.ModuleNames.BridgeMultisig
+        historyElement.module === SUBQUERY_TYPES.ModuleNames.BridgeMultisig
           ? Operation.EthBridgeIncoming
           : Operation.EthBridgeOutgoing;
       const isOutgoing = isOutgoingTransaction({ type });
-      const transactionData = transaction.data as SUBQUERY_TYPES.HistoryElementEthBridgeOutgoing &
+      const historyElementData = historyElement.data as SUBQUERY_TYPES.HistoryElementEthBridgeOutgoing &
         SUBQUERY_TYPES.HistoryElementEthBridgeIncoming;
-      const requestHash = transactionData.requestHash;
+      const requestHash = historyElementData.requestHash;
 
-      if (
-        state.history.find((item: BridgeHistory) =>
-          isOutgoing ? item.hash === requestHash : item.ethereumHash === requestHash
-        )
-      )
-        return;
+      const historyItem = state.history.find((item: BridgeHistory) =>
+        isOutgoing ? item.hash === requestHash : item.ethereumHash === requestHash
+      );
+
+      if (historyItem) continue;
 
       const hash = isOutgoing ? requestHash : await getSoraHashByEthereumHash(externalNetwork, requestHash);
-      const amount = transactionData.amount;
-      const assetAddress = transactionData.assetId;
+      const amount = historyElementData.amount;
+      const assetAddress = historyElementData.assetId;
       const from = soraAccountAddress;
       const symbol = rootGetters['assets/assetsDataTable'][assetAddress]?.symbol;
-      const blockId = transaction.blockHash;
-      const txId = transaction.id;
+      const blockId = historyElement.blockHash;
+      const txId = historyElement.id;
       const soraNetworkFee = isOutgoing ? rootGetters.networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
-      const soraTimestamp = transaction.timestamp * 1000;
+      const soraTimestamp = historyElement.timestamp * 1000;
       const soraPartCompleted =
         !isOutgoing ||
         (await bridgeApi.api.query.ethBridge.requestStatuses(externalNetwork, hash)).toString() ===
@@ -357,13 +371,13 @@ const actions = {
       const transactionStep = soraPartCompleted ? 2 : 1;
 
       const ethereumTx = isOutgoing
-        ? await findOutgoingEthTxBySoraHash(transactionData.sidechainAddress, hash)
-        : await ethersUtil.getEvmTransaction(requestHash);
+        ? await findOutgoingEthTxBySoraHash(historyElementData.sidechainAddress, hash)
+        : await findIncomingEthTxByEthereumHash(requestHash);
 
       const ethereumHash = ethereumTx?.hash ?? '';
       const recieptData = await getEvmTxRecieptByHash(ethereumHash);
 
-      const to = isOutgoing ? transactionData.sidechainAddress : recieptData?.from;
+      const to = isOutgoing ? historyElementData.sidechainAddress : recieptData?.from;
       const ethereumNetworkFee = recieptData?.ethereumNetworkFee;
       const blockHeight = ethereumTx ? String(ethereumTx.blockNumber) : undefined;
       const evmTimestamp = ethereumTx?.timestamp ? ethereumTx.timestamp * 1000 : Date.now();
