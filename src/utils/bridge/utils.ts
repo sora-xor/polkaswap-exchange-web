@@ -14,7 +14,7 @@ const SORA_REQUESTS_TIMEOUT = 6 * 1000; // Block production time
 
 export const isUnsignedFromPart = (tx: BridgeHistory): boolean => {
   if (tx.type === Operation.EthBridgeOutgoing) {
-    return !tx.blockId && !tx.txId && !tx.hash;
+    return !tx.blockId && !tx.txId;
   } else if (tx.type === Operation.EthBridgeIncoming) {
     return !tx.ethereumHash;
   } else {
@@ -30,6 +30,12 @@ export const isUnsignedToPart = (tx: BridgeHistory): boolean => {
   } else {
     return true;
   }
+};
+
+export const isRejectedForeverFromPart = (tx: BridgeHistory): boolean => {
+  const requestError = tx.type === Operation.EthBridgeOutgoing ? !tx.hash : false;
+
+  return !isUnsignedFromPart(tx) && requestError;
 };
 
 export const getTransaction = (id: string): BridgeHistory => {

@@ -271,7 +271,7 @@ const actions = {
       const contracts = Object.values(KnownBridgeAsset).map<string>((key) => rootGetters['web3/contractAddress'](key));
       // ethereum data
       const ethBlockLogsMap: { [key: string]: Promise<EthLogData[]> } = {};
-      const ethAccountTransactionsMap: { [key: string]: Promise<ethers.providers.TransactionResponse[]> } = {};
+      const ethAccountTransactionsMap: { [key: string]: ethers.providers.TransactionResponse[] } = {};
       const ethTransactionsMap: { [key: string]: ethers.providers.TransactionResponse } = {};
       /// etherscan
       const ethersInstance = await ethersUtil.getEthersInstance();
@@ -280,29 +280,41 @@ const actions = {
       const etherscanInstance = new ethers.providers.EtherscanProvider(network, etherscanApiKey);
       // find eth start block using the last historyElement
       const ethStartTimestamp = last(historyElements)?.timestamp as number;
-      const ethStartBlock = await etherscanInstance.fetch('block', {
-        action: 'getblocknobytime',
-        timestamp: ethStartTimestamp,
-        closest: 'before',
-      });
+
+      const getEthStartBlock = (() => {
+        let ethStartBlock = 0;
+
+        return async (): Promise<number> => {
+          if (!ethStartBlock) {
+            ethStartBlock = +(await etherscanInstance.fetch('block', {
+              action: 'getblocknobytime',
+              timestamp: ethStartTimestamp,
+              closest: 'before',
+            }));
+          }
+          return ethStartBlock;
+        };
+      })();
 
       const getAccountTransactions = async (address: string): Promise<Array<ethers.providers.TransactionResponse>> => {
-        if (!ethAccountTransactionsMap[address]) {
-          ethAccountTransactionsMap[address] = etherscanInstance.getHistory(address, ethStartBlock).then((history) => {
-            return history.reduce<ethers.providers.TransactionResponse[]>((buffer, tx) => {
-              const matches = !!tx.to && contracts.includes(tx.to.toLowerCase());
+        const key = address.toLowerCase();
 
-              if (matches) {
-                buffer.push(tx);
-                ethTransactionsMap[tx.hash] = tx;
-              }
+        if (!ethAccountTransactionsMap[key]) {
+          const ethStartBlock = await getEthStartBlock();
+          const history = await etherscanInstance.getHistory(address, ethStartBlock);
+          const filtered = history.reduce<ethers.providers.TransactionResponse[]>((buffer, tx) => {
+            if (!!tx.to && contracts.includes(tx.to.toLowerCase())) {
+              buffer.push(tx);
+              ethTransactionsMap[tx.hash] = tx;
+            }
 
-              return buffer;
-            }, []);
-          });
+            return buffer;
+          }, []);
+
+          ethAccountTransactionsMap[key] = filtered;
         }
 
-        return await ethAccountTransactionsMap[address];
+        return ethAccountTransactionsMap[key];
       };
 
       const getBlockLogs = async (blockHash: string, contract: string): Promise<EthLogData[]> => {
@@ -316,7 +328,10 @@ const actions = {
         address: string,
         hash: string
       ): Promise<ethers.providers.TransactionResponse | null> => {
+        if (!address || !hash) return null;
+
         const transactions = await getAccountTransactions(address);
+
         try {
           return await Promise.any(
             transactions.map(async (tx) => {
@@ -365,7 +380,7 @@ const actions = {
         const soraTimestamp = historyElement.timestamp * 1000;
         const soraPartCompleted =
           !isOutgoing ||
-          (await bridgeApi.api.query.ethBridge.requestStatuses(externalNetwork, hash)).toString() ===
+          (!!hash && (await bridgeApi.api.query.ethBridge.requestStatuses(externalNetwork, hash))).toString() ===
             BridgeTxStatus.Ready;
         const transactionStep = soraPartCompleted ? 2 : 1;
 
@@ -374,7 +389,7 @@ const actions = {
           : await findIncomingEthTxByEthereumHash(requestHash);
 
         const ethereumHash = ethereumTx?.hash ?? '';
-        const recieptData = await getEvmTxRecieptByHash(ethereumHash);
+        const recieptData = ethereumHash ? await getEvmTxRecieptByHash(ethereumHash) : null;
 
         const to = isOutgoing ? historyElementData.sidechainAddress : recieptData?.from;
         const ethereumNetworkFee = recieptData?.ethereumNetworkFee;
@@ -388,7 +403,9 @@ const actions = {
             ? STATES.EVM_COMMITED
             : soraPartCompleted
             ? STATES.EVM_REJECTED
-            : STATES.SORA_PENDING
+            : hash
+            ? STATES.SORA_PENDING
+            : STATES.SORA_SUBMITTED
           : STATES.SORA_COMMITED;
 
         const status = isOutgoing
@@ -396,7 +413,9 @@ const actions = {
             ? BridgeTxStatus.Done
             : soraPartCompleted
             ? BridgeTxStatus.Failed
-            : BridgeTxStatus.Pending
+            : hash
+            ? BridgeTxStatus.Pending
+            : BridgeTxStatus.Failed
           : BridgeTxStatus.Done;
 
         bridgeApi.generateHistoryItem({

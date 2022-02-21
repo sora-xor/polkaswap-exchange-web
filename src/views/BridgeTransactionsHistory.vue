@@ -101,7 +101,7 @@ import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { isUnsignedToPart } from '@/utils/bridge';
+import { isUnsignedToPart, isRejectedForeverFromPart } from '@/utils/bridge';
 
 import type { BridgeHistory, RegisteredAccountAsset } from '@sora-substrate/util';
 
@@ -187,11 +187,15 @@ export default class BridgeTransactionsHistory extends Mixins(
     return this.formatDate(response?.startTime ?? Date.now());
   }
 
+  isWaitingForAction(tx: BridgeHistory): boolean {
+    return tx.status === BridgeTxStatus.Failed && !isRejectedForeverFromPart(tx) && isUnsignedToPart(tx);
+  }
+
   historyStatusClasses(item: BridgeHistory): string {
     const iconClass = 'history-item-status';
     const classes = [iconClass];
 
-    if (item.status === BridgeTxStatus.Failed && isUnsignedToPart(item)) {
+    if (this.isWaitingForAction(item)) {
       classes.push(`${iconClass}--warning`);
     } else if (item.status === BridgeTxStatus.Failed) {
       classes.push(`${iconClass}--error`);
@@ -205,7 +209,7 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
 
   historyStatusIconName(item: BridgeHistory): string {
-    if (item.status === BridgeTxStatus.Failed && isUnsignedToPart(item)) {
+    if (this.isWaitingForAction(item)) {
       return 'notifications-alert-triangle-24';
     } else if (item.status === BridgeTxStatus.Failed) {
       return 'basic-clear-X-24';
@@ -217,7 +221,7 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
 
   historyStatusText(item: BridgeHistory): string {
-    if (item.status === BridgeTxStatus.Failed && isUnsignedToPart(item)) {
+    if (this.isWaitingForAction(item)) {
       return this.t('bridgeHistory.statusAction');
     } else {
       return '';
