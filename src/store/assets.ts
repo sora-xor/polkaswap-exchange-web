@@ -5,6 +5,7 @@ import flow from 'lodash/fp/flow';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { RegisteredAccountAsset } from '@sora-substrate/util';
+import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 
 import { bridgeApi } from '@/utils/bridge';
 import { findAssetInCollection } from '@/utils';
@@ -36,13 +37,25 @@ const state = initialState();
 
 const getters = {
   whitelistAssets(state, getters, rootState, rootGetters) {
-    return rootGetters.assets.filter((asset) => api.assets.isWhitelist(asset, rootGetters.whitelist));
+    return rootGetters.assets.filter((asset: Asset) => api.assets.isWhitelist(asset, rootGetters.whitelist));
   },
   nonWhitelistAssets(state, getters, rootState, rootGetters) {
-    return rootGetters.assets.filter((asset) => !api.assets.isWhitelist(asset, rootGetters.whitelist));
+    return rootGetters.assets.filter((asset: Asset) => !api.assets.isWhitelist(asset, rootGetters.whitelist));
+  },
+  nonWhitelistDivisibleAssets(state, getters, rootState, rootGetters) {
+    return rootGetters.assets.filter(
+      (asset: Asset) => !api.assets.isWhitelist(asset, rootGetters.whitelist) && asset.decimals
+    );
   },
   nonWhitelistAccountAssets(state, getters, rootState, rootGetters) {
-    return rootGetters.accountAssets.filter((asset) => !api.assets.isWhitelist(asset, rootGetters.whitelist));
+    return rootGetters.accountAssets.filter(
+      (asset: AccountAsset) => !api.assets.isWhitelist(asset, rootGetters.whitelist)
+    );
+  },
+  nonWhitelistDivisibleAccountAssets(state, getters, rootState, rootGetters) {
+    return rootGetters.accountAssets.filter(
+      (asset: AccountAsset) => !api.assets.isWhitelist(asset, rootGetters.whitelist) && asset.decimals
+    );
   },
   tokenXOR(state, getters, rootState, rootGetters) {
     return rootGetters['assets/getAssetDataByAddress'](XOR.address);
