@@ -53,18 +53,14 @@ function checkEvmNetwork(rootGetters): void {
   }
 }
 
-type AccountRequest = [number, string];
-
-interface EthLogData {
-  data: string;
-  transactionHash: string;
-  blockNumber: number;
-}
-
 // Withdrawal (bytes32 txHash)
 const outgoingTopic = '0x0ce781a18c10c8289803c7c4cfd532d797113c4b41c9701ffad7d0a632ac555b';
 
-async function getEthUserTXs(contracts: Array<string>, topic: string, blockHash: string): Promise<Array<EthLogData>> {
+async function getLogsMap(
+  contracts: Array<string>,
+  topic: string,
+  blockHash: string
+): Promise<{ [key: string]: boolean }> {
   const ethersInstance = await ethersUtil.getEthersInstance();
   const getLogs = (address: string) =>
     ethersInstance.getLogs({
@@ -72,13 +68,13 @@ async function getEthUserTXs(contracts: Array<string>, topic: string, blockHash:
       blockHash,
       address,
     });
+
   const logs = flatten(await Promise.all(contracts.map((contract) => getLogs(contract))));
 
-  return logs.map<EthLogData>(({ blockNumber, data, transactionHash }) => ({
-    blockNumber,
-    data,
-    transactionHash,
-  }));
+  return logs.reduce((buffer, { data }) => {
+    buffer[data] = true;
+    return buffer;
+  }, {});
 }
 
 function initialState() {
@@ -262,17 +258,13 @@ const actions = {
       const soraAccountAddress = rootGetters.account.address;
       const historyElements = await getAccountEthBridgeHistoryElements(soraAccountAddress);
 
-      if (!historyElements.length) {
-        commit(types.SET_HISTORY_RESTORATION, false);
-        return;
-      }
+      if (!historyElements.length) return;
 
       const externalNetwork = BridgeNetworks.ETH_NETWORK_ID;
       const contracts = Object.values(KnownBridgeAsset).map<string>((key) => rootGetters['web3/contractAddress'](key));
       // ethereum data
-      const ethBlockLogsMap: { [key: string]: Promise<EthLogData[]> } = {};
-      const ethAccountTransactionsMap: { [key: string]: ethers.providers.TransactionResponse[] } = {};
-      const ethTransactionsMap: { [key: string]: ethers.providers.TransactionResponse } = {};
+      const ethBlockLogsMap: { [key: string]: Promise<{ [key: string]: boolean }> } = {};
+      const ethAccountTransactionsMap: { [key: string]: { [key: string]: ethers.providers.TransactionResponse } } = {};
       /// etherscan
       const ethersInstance = await ethersUtil.getEthersInstance();
       const network = await ethersInstance.getNetwork();
@@ -296,20 +288,21 @@ const actions = {
         };
       })();
 
-      const getAccountTransactions = async (address: string): Promise<Array<ethers.providers.TransactionResponse>> => {
+      const getAccountTransactions = async (
+        address: string
+      ): Promise<{ [key: string]: ethers.providers.TransactionResponse }> => {
         const key = address.toLowerCase();
 
         if (!ethAccountTransactionsMap[key]) {
           const ethStartBlock = await getEthStartBlock();
           const history = await etherscanInstance.getHistory(address, ethStartBlock);
-          const filtered = history.reduce<ethers.providers.TransactionResponse[]>((buffer, tx) => {
+          const filtered = history.reduce<{ [key: string]: ethers.providers.TransactionResponse }>((buffer, tx) => {
             if (!!tx.to && contracts.includes(tx.to.toLowerCase())) {
-              buffer.push(tx);
-              ethTransactionsMap[tx.hash] = tx;
+              buffer[tx.hash] = tx;
             }
 
             return buffer;
-          }, []);
+          }, {});
 
           ethAccountTransactionsMap[key] = filtered;
         }
@@ -317,9 +310,9 @@ const actions = {
         return ethAccountTransactionsMap[key];
       };
 
-      const getBlockLogs = async (blockHash: string, contract: string): Promise<EthLogData[]> => {
+      const getBlockLogsMap = async (blockHash: string, contract: string): Promise<{ [key: string]: boolean }> => {
         if (!ethBlockLogsMap[blockHash]) {
-          ethBlockLogsMap[blockHash] = getEthUserTXs([contract], outgoingTopic, blockHash);
+          ethBlockLogsMap[blockHash] = getLogsMap([contract], outgoingTopic, blockHash);
         }
         return await ethBlockLogsMap[blockHash];
       };
@@ -334,10 +327,10 @@ const actions = {
 
         try {
           return await Promise.any(
-            transactions.map(async (tx) => {
-              const logs = await getBlockLogs(tx.blockHash as string, tx.to as string);
-              if (!logs.find((item) => item.data === hash)) throw new Error();
-              return tx;
+            Object.values(transactions).map(async (tx) => {
+              const logsMap = await getBlockLogsMap(tx.blockHash as string, tx.to as string);
+              if (hash in logsMap) return tx;
+              throw new Error();
             })
           );
         } catch (error) {
@@ -348,7 +341,13 @@ const actions = {
       const findIncomingEthTxByEthereumHash = async (
         ethereumHash: string
       ): Promise<ethers.providers.TransactionResponse> => {
-        return ethTransactionsMap[ethereumHash] || (await ethersUtil.getEvmTransaction(ethereumHash));
+        for (const address in ethAccountTransactionsMap) {
+          if (ethereumHash in ethAccountTransactionsMap[address]) {
+            return ethAccountTransactionsMap[address][ethereumHash];
+          }
+        }
+
+        return await ethersUtil.getEvmTransaction(ethereumHash);
       };
 
       // Bridge history restoration process
