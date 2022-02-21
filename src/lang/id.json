@@ -903,7 +903,10 @@
             "inviteTitle": "Anda telah diundang ke Polkaswap",
             "inviteDescription": "Untuk setiap transaksi, 10% dari biaya akan masuk ke perujuk Anda, tanpa biaya tambahan apa pun kepada Anda.",
             "signInvitation": "Menyetujui",
-            "freeOfCharge": "Tindakan ini tidak dipungut biaya"
+            "freeOfCharge": "Tindakan ini tidak dipungut biaya",
+            "hasReferrerTitle": "Anda telah menetapkan perujuk Anda",
+            "hasReferrerDescription": "Sayangnya, Anda hanya dapat mengatur satu",
+            "ok": "Oke"
         }
     },
     "transactionDetailsText": "Detil transaksi",

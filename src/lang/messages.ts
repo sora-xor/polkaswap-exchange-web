@@ -719,11 +719,14 @@ export default {
       text: '@:confirmText',
       bond: 'Confirm bond',
       unbond: 'Confirm unbond',
-      inviteTitle: 'You’ve been invited to Polkaswap by a referral',
+      inviteTitle: 'You have been invited to Polkaswap',
       inviteDescription:
-        'When you’ll pay a fee for transaction, 10% will go to your referral. It’s completely free of charge.',
-      signInvitation: 'Sign approval transaction',
+        'For every transaction, 10% of the fee will go to your referrer, without any extra cost to you.',
+      signInvitation: 'Approve',
       freeOfCharge: 'This action is free of charge',
+      hasReferrerTitle: 'You’ve already set your referrer',
+      hasReferrerDescription: 'Unfortunately, you can only set one',
+      ok: 'OK',
     },
   },
 };

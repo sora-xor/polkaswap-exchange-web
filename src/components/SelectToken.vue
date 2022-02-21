@@ -341,7 +341,7 @@ export default class SelectToken extends Mixins(
 
   handleRemoveCustomAsset(asset: AccountAsset, event: Event): void {
     event.stopImmediatePropagation();
-    api.assets.removeAsset(asset.address);
+    api.assets.removeAccountAsset(asset.address);
     if (this.customAddress) {
       this.searchCustomAsset();
     }

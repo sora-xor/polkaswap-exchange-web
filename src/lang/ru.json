@@ -903,7 +903,10 @@
             "inviteTitle": "Вас пригласили в Polkaswap",
             "inviteDescription": "При оплате комиссии за транзакцию, 10% достанется вашему рефералу. Это совершенно бесплатно.",
             "signInvitation": "Подписать",
-            "freeOfCharge": "Данная транзакция бесплатна"
+            "freeOfCharge": "Данная транзакция бесплатна",
+            "hasReferrerTitle": "Вы уже установили реферера",
+            "hasReferrerDescription": "К сожалению, вы можете установить только одного реферрера",
+            "ok": "OK"
         }
     },
     "transactionDetailsText": "Детали транзакции",

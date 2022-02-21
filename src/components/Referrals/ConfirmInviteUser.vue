@@ -1,15 +1,24 @@
 <template>
   <dialog-base :visible.sync="isVisible" :show-close-button="false" custom-class="dialog--confirm-invite-user">
-    <div class="invite-user-icon">
-      <s-icon name="file-file-text-24" size="40px" />
+    <div :class="computedIconClasses">
+      <s-icon v-if="!hasReferrer" name="file-file-text-24" size="40px" />
     </div>
-    <p class="invite-user-ititle">{{ t('referralProgram.confirm.inviteTitle') }}</p>
-    <p class="invite-user-description">{{ t('referralProgram.confirm.inviteDescription') }}</p>
+    <p class="invite-user-title">
+      {{ t(`referralProgram.confirm.${hasReferrer ? 'hasReferrer' : 'invite'}Title`) }}
+    </p>
+    <p class="invite-user-description">
+      {{ t(`referralProgram.confirm.${hasReferrer ? 'hasReferrer' : 'invite'}Description`) }}
+    </p>
     <template #footer>
-      <s-button type="primary" class="s-typography-button--large" :disabled="loading" @click="handleConfirmInviteUser">
-        {{ t('referralProgram.confirm.signInvitation') }}
+      <s-button
+        class="s-typography-button--large"
+        :type="hasReferrer ? 'secondary' : 'primary'"
+        :disabled="loading"
+        @click="handleConfirmInviteUser"
+      >
+        {{ t(`referralProgram.confirm.${hasReferrer ? 'ok' : 'signInvitation'}`) }}
       </s-button>
-      <div class="invite-user-free-charge">
+      <div v-if="!hasReferrer" class="invite-user-free-charge">
         <s-icon class="invite-user-info" name="basic-check-mark-24" size="10px" />
         <span>{{ t('referralProgram.confirm.freeOfCharge') }}</span>
       </div>
@@ -29,16 +38,31 @@ import DialogBase from '@/components/DialogBase.vue';
   components: { DialogBase },
 })
 export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, DialogMixin) {
+  @Getter('referral', { namespace: 'referrals' }) referral!: string;
   @Getter('storageReferral', { namespace: 'referrals' }) storageReferral!: string;
 
   @Action('setReferral', { namespace: 'referrals' }) setReferral!: (value: string) => Promise<void>;
 
+  get hasReferrer(): boolean {
+    return !!this.referral;
+  }
+
+  get computedIconClasses(): Array<string> {
+    const cssClasses: Array<string> = ['invite-user-icon'];
+    if (this.hasReferrer) {
+      cssClasses.push('invite-user-icon--error');
+    }
+    return cssClasses;
+  }
+
   async handleConfirmInviteUser(): Promise<void> {
-    try {
-      await this.withNotifications(async () => await api.referralSystem.setInvitedUser(this.storageReferral));
-      this.$emit('confirm', true);
-    } catch (error) {
-      this.$emit('confirm');
+    if (!this.hasReferrer) {
+      try {
+        await this.withNotifications(async () => await api.referralSystem.setInvitedUser(this.storageReferral));
+        this.$emit('confirm', true);
+      } catch (error) {
+        this.$emit('confirm');
+      }
     }
     this.isVisible = false;
   }
@@ -70,14 +94,18 @@ $invite-user-icon-size: 64px;
     .s-icon-file-file-text-24 {
       color: var(--s-color-base-on-accent);
     }
+    &--error {
+      background: url('~@/assets/img/referrer-error.svg') no-repeat;
+      border-radius: 0;
+    }
   }
-  &-ititle,
+  &-title,
   &-description,
   &-free-charge {
     text-align: center;
     font-weight: 300;
   }
-  &-ititle {
+  &-title {
     margin-bottom: $inner-spacing-small;
     font-size: var(--s-heading3-font-size);
     line-height: var(--s-line-height-small);
