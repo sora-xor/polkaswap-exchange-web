@@ -134,7 +134,8 @@
             "frozen": "Заморожено",
             "locked": "- Заблокировано",
             "reserved": " - Зарезервировано",
-            "total": "Всего"
+            "total": "Всего",
+            "bonded": "В обеспечении"
         },
         "totalAssetsValue": "Общая стоимость ваших активов:",
         "details": "Детали"
@@ -261,7 +262,8 @@
             "subscan": "Смотреть в Subscan"
         },
         "txId": "ID транзакции",
-        "referrer": "Реферер"
+        "referrer": "Реферер",
+        "referral": "Реферал"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",

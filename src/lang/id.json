@@ -134,7 +134,8 @@
             "frozen": "Dibekukan",
             "locked": "- Terkunci",
             "reserved": "- Dicadangkan",
-            "total": "Total"
+            "total": "Total",
+            "bonded": "Berikat"
         },
         "totalAssetsValue": "Nilai total aset Anda:",
         "details": "Rincian"
@@ -261,7 +262,8 @@
             "subscan": "Lihat di Subscan"
         },
         "txId": "Id transaksi",
-        "referrer": "Perujuk"
+        "referrer": "Perujuk",
+        "referral": "Rujukan"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",

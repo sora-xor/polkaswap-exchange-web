@@ -134,7 +134,8 @@
             "frozen": "Congelado",
             "locked": "- Bloqueado",
             "reserved": "- Reservado",
-            "total": "Total"
+            "total": "Total",
+            "bonded": "Garantizado"
         },
         "totalAssetsValue": "El valor total de sus activos:",
         "details": "Detalles"
@@ -261,7 +262,8 @@
             "subscan": "Ver en Subscan"
         },
         "txId": "ID de transacción",
-        "referrer": "Referente"
+        "referrer": "Referente",
+        "referral": "Referencia"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",

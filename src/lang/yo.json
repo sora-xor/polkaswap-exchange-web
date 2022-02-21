@@ -134,7 +134,8 @@
             "frozen": "Fisi itimole",
             "locked": "- Ti tiipa",
             "reserved": "- Ni ipamọ",
-            "total": "Lapapọ"
+            "total": "Lapapọ",
+            "bonded": "Ti so pọ"
         },
         "totalAssetsValue": "Iye awọn ohun -ini rẹ lapapọ:",
         "details": "Awọn alaye"
@@ -261,7 +262,8 @@
             "subscan": "Wo ni Subscan"
         },
         "txId": "Id Idunadura",
-        "referrer": "Atọkasi"
+        "referrer": "Atọkasi",
+        "referral": "Ifiranṣẹ"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",

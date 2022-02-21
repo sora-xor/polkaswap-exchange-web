@@ -134,7 +134,8 @@
             "frozen": "Zmrazené",
             "locked": "- Zamčeno",
             "reserved": " - Rezervováno",
-            "total": "Celkem"
+            "total": "Celkem",
+            "bonded": "Lepené"
         },
         "totalAssetsValue": "Celková hodnota vašich aktiv:",
         "details": "Podrobnosti"
@@ -261,7 +262,8 @@
             "subscan": "Zobrazit v Subscan"
         },
         "txId": "Id transakce",
-        "referrer": "Doporučitel"
+        "referrer": "Doporučitel",
+        "referral": "Doporučení"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",

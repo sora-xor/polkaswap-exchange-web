@@ -134,7 +134,8 @@
             "frozen": "Zamrożono",
             "locked": " – Zablokowano",
             "reserved": " – Zarezerwowano",
-            "total": "Łącznie"
+            "total": "Łącznie",
+            "bonded": "Stakowane"
         },
         "totalAssetsValue": "Twoja łączna wartość walut:",
         "details": "Szczegóły"
@@ -261,7 +262,8 @@
             "subscan": "Pokaż w Subscanie"
         },
         "txId": "Identyfikator transakcji",
-        "referrer": "Osoba polecająca"
+        "referrer": "Osoba polecająca",
+        "referral": "Polecenie"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
