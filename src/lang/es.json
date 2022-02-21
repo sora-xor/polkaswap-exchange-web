@@ -496,7 +496,7 @@
         "addLiquidity": "Añadir Liquidez",
         "removeLiquidity": "Remover Liquidez",
         "createPair": "Crear un par",
-        "pooledToken": "{tokenSymbol} Suministrado",
+        "pooledToken": "{símbolo de ficha} Agrupado",
         "pairTokens": "{pair} Tokens del Fondo común",
         "poolShare": "Su Participación en el Fondo común",
         "unknownAsset": "Activo desconocido",
@@ -904,7 +904,7 @@
             "inviteDescription": "Por cada transacción, el 10% de la tarifa se destinará a su referente, sin ningún costo adicional para usted.",
             "signInvitation": "Aprobar",
             "freeOfCharge": "Esta acción es gratuita",
-            "hasReferrerTitle": "Ya ha configurado su referencia",
+            "hasReferrerTitle": "Ya has configurado tu referente",
             "hasReferrerDescription": "Desafortunadamente, solo puedes configurar uno",
             "ok": "OK"
         }

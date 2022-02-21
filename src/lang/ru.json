@@ -869,9 +869,9 @@
     },
     "blockNumberText": "Номер блока",
     "referralProgram": {
-        "title": "Реферальная программа",
+        "title": "Рефералы",
         "connectAccount": "Для приглашения пользователей необходимо подключить учетную запись SORA.",
-        "bondedXOR": "XOR Зарезервировано",
+        "bondedXOR": "XOR зарезервировано",
         "referralsNumber": "{number} рефералов",
         "startInviting": "Чтобы начать приглашать, внесите любое количество XOR.",
         "preview": "Приглашайте новых пользователей и получайте 10% от их транзакционных сборов.<br \/>Чтобы начать, зарезервируйте любую сумму XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Узнать больше<\/a>",
@@ -885,9 +885,9 @@
             "connectWallet": "@:connectWalletText",
             "empty": "Введите сумму {tokenSymbol}",
             "startInviting": "Зарезервируйте {tokenSymbol}, чтобы начать приглашать",
-            "bondMore": "Зарезервировать еще",
-            "bond": "Зарезервировать",
-            "unbond": "Вывести из резерва",
+            "bondMore": "Внести еще",
+            "bond": "Внести",
+            "unbond": "Вывести",
             "copyLink": "Копировать ссылку"
         },
         "transactionDetails": "Детали Транзакции",
@@ -905,7 +905,7 @@
             "signInvitation": "Подписать",
             "freeOfCharge": "Данная транзакция бесплатна",
             "hasReferrerTitle": "Вы уже установили реферера",
-            "hasReferrerDescription": "К сожалению, вы можете установить только одного реферрера",
+            "hasReferrerDescription": "К сожалению, вы можете установить только одного реферера",
             "ok": "OK"
         }
     },
