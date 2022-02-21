@@ -1,5 +1,5 @@
 <template>
-  <s-scrollbar :class="['app-menu', 'app-sidebar-scrollbar', { visible }]">
+  <s-scrollbar class="app-menu app-sidebar-scrollbar" :class="{ visible, 'app-menu__about': isAboutPageOpened }">
     <aside class="app-sidebar">
       <slot name="head"></slot>
       <div class="app-sidebar-menu">
@@ -83,6 +83,7 @@ import router, { lazyComponent } from '@/router';
 })
 export default class AppMenu extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly isAboutPageOpened!: boolean;
   @Prop({ default: () => {}, type: Function }) readonly onSelect!: VoidFunction;
 
   @State((state) => state.settings.faucetUrl) faucetUrl!: string;
@@ -229,6 +230,12 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     @include tablet {
       position: absolute;
       right: initial;
+    }
+
+    &__about {
+      @include tablet {
+        position: relative;
+      }
     }
   }
 
