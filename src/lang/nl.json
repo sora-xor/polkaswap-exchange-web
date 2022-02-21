@@ -132,8 +132,8 @@
         "balance": {
             "transferable": "Overdraagbaar",
             "frozen": "Bevroren",
-            "locked": " - Vergrendeld",
-            "reserved": " - Gereserveerd",
+            "locked": "- Vergrendeld",
+            "reserved": "- Gereserveerd",
             "total": "Totaal",
             "bonded": "- Gebonden"
         },
