@@ -135,7 +135,7 @@
             "locked": "- Terkunci",
             "reserved": "- Dicadangkan",
             "total": "Total",
-            "bonded": "Berikat"
+            "bonded": "- Berikat"
         },
         "totalAssetsValue": "Nilai total aset Anda:",
         "details": "Rincian"

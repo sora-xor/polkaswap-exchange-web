@@ -135,7 +135,7 @@
             "locked": " - Locked",
             "reserved": " - Reserved",
             "total": "Total",
-            "bonded": "Bonded"
+            "bonded": "- Bonded"
         },
         "totalAssetsValue": "Your total assets value:",
         "details": "Details"

@@ -135,7 +135,7 @@
             "locked": "- Bloqueado",
             "reserved": "- Reservado",
             "total": "Total",
-            "bonded": "Garantizado"
+            "bonded": "- Garantizado"
         },
         "totalAssetsValue": "El valor total de sus activos:",
         "details": "Detalles"

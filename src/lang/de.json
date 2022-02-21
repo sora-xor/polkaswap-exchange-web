@@ -135,7 +135,7 @@
             "locked": "- Gesperrt",
             "reserved": " Reserviert",
             "total": "Gesamt",
-            "bonded": "Gebunden"
+            "bonded": "- Gebunden"
         },
         "totalAssetsValue": "Gesamtwert deiner Assets:",
         "details": "Details"
