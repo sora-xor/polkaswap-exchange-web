@@ -69,27 +69,13 @@
           @next-click="handleNextClick"
         />
       </s-form>
-      <s-button
-        v-if="!restored"
-        class="s-button--restore s-typography-button--large"
-        :disabled="!isValidNetworkType"
-        :loading="historyRestoration"
-        @click="handleRestoreHistory"
-      >
-        <template v-if="!isValidNetworkType">
-          {{ t('bridge.changeNetwork') }}
-        </template>
-        <template v-else>
-          {{ t('bridgeHistory.restoreHistory') }}
-        </template>
-      </s-button>
     </s-card>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter, Action, State } from 'vuex-class';
+import { Getter, Action } from 'vuex-class';
 import { BridgeTxStatus } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
@@ -121,12 +107,8 @@ export default class BridgeTransactionsHistory extends Mixins(
   PaginationSearchMixin,
   mixins.NumberFormatterMixin
 ) {
-  @State((state) => state[namespace].restored) restored!: boolean;
-  @State((state) => state[namespace].historyRestoration) historyRestoration!: boolean;
-
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>;
 
-  @Action('getRestoredFlag', { namespace }) getRestoredFlag!: AsyncVoidFn;
   @Action('getRestoredHistory', { namespace }) getRestoredHistory!: AsyncVoidFn;
   @Action('clearHistory', { namespace }) clearHistory!: AsyncVoidFn;
 
@@ -153,8 +135,8 @@ export default class BridgeTransactionsHistory extends Mixins(
 
   async created(): Promise<void> {
     await this.withParentLoading(async () => {
-      await this.getRestoredFlag();
       await this.getHistory();
+      await this.getRestoredHistory();
     });
   }
 
@@ -230,11 +212,6 @@ export default class BridgeTransactionsHistory extends Mixins(
 
   async handleClearHistory(): Promise<void> {
     await this.clearHistory();
-  }
-
-  async handleRestoreHistory(): Promise<void> {
-    await this.getRestoredHistory();
-    await this.getRestoredFlag();
   }
 
   handleBack(): void {

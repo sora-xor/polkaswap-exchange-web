@@ -45,7 +45,7 @@ const types = flow(
   ]),
   map((x) => [x, x]),
   fromPairs
-)(['GET_HISTORY', 'GET_RESTORED_FLAG', 'GET_EVM_NETWORK_FEE']);
+)(['GET_HISTORY', 'GET_EVM_NETWORK_FEE']);
 
 function checkEvmNetwork(rootGetters): void {
   if (!rootGetters['web3/isValidNetworkType']) {
@@ -89,7 +89,6 @@ function initialState() {
     history: [],
     historyId: '',
     historyRestoration: false,
-    restored: true,
     waitingForApprove: {},
     inProgressIds: {},
   };
@@ -156,15 +155,6 @@ const mutations = {
   },
   [types.GET_HISTORY_FAILURE](state) {
     state.history = null;
-  },
-  [types.GET_RESTORED_FLAG_REQUEST](state) {
-    state.restored = false;
-  },
-  [types.GET_RESTORED_FLAG_SUCCESS](state, restored: boolean) {
-    state.restored = restored;
-  },
-  [types.GET_RESTORED_FLAG_FAILURE](state) {
-    state.restored = false;
   },
   [types.SET_HISTORY_ITEM](state, historyId = '') {
     state.historyId = historyId;
@@ -237,15 +227,6 @@ const actions = {
       commit(types.GET_HISTORY_SUCCESS, bridgeApi.historyList);
     } catch (error) {
       commit(types.GET_HISTORY_FAILURE);
-      throw error;
-    }
-  },
-  async getRestoredFlag({ commit }) {
-    commit(types.GET_RESTORED_FLAG_REQUEST);
-    try {
-      commit(types.GET_RESTORED_FLAG_SUCCESS, api.restored);
-    } catch (error) {
-      commit(types.GET_RESTORED_FLAG_FAILURE);
       throw error;
     }
   },
