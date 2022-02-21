@@ -498,7 +498,7 @@
         "addLiquidity": "Añadir Liquidez",
         "removeLiquidity": "Remover Liquidez",
         "createPair": "Crear un par",
-        "pooledToken": "{símbolo de ficha} Agrupado",
+        "pooledToken": "{tokenSymbol} Agrupado",
         "pairTokens": "{pair} Tokens del Fondo común",
         "poolShare": "Su Participación en el Fondo común",
         "unknownAsset": "Activo desconocido",
