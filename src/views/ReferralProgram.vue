@@ -13,6 +13,7 @@
           :asset-symbol="xorSymbol"
         />
         <formatted-amount
+          v-if="xorTokenPrice"
           is-fiat-value
           value-can-be-hidden
           :font-size-rate="FontSizeRate.MEDIUM"
@@ -109,6 +110,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import type { CodecString } from '@sora-substrate/util';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
@@ -146,6 +148,10 @@ export default class ReferralProgram extends Mixins(
 
   get rewards(): string {
     return this.referralRewards?.rewards.toLocaleString() || '0';
+  }
+
+  get xorTokenPrice(): Nullable<CodecString> {
+    return this.getAssetFiatPrice(this.tokenXOR);
   }
 
   get invitedUserRewards(): any {
