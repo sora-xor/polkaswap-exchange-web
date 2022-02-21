@@ -15,7 +15,7 @@
             </template>
           </s-input>
         </s-form-item>
-        <div class="history-items" v-loading="historyLoading">
+        <div class="history-items">
           <template v-if="hasHistory">
             <div
               class="history-item"
@@ -65,7 +65,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter, Action, State } from 'vuex-class';
+import { Getter, Action } from 'vuex-class';
 import { BridgeTxStatus } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
@@ -97,11 +97,9 @@ export default class BridgeTransactionsHistory extends Mixins(
   PaginationSearchMixin,
   mixins.NumberFormatterMixin
 ) {
-  @State((state) => state[namespace].historyLoading) historyLoading!: boolean;
-
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>;
 
-  @Action('getRestoredHistory', { namespace }) getRestoredHistory!: AsyncVoidFn;
+  @Action('updateHistory', { namespace }) updateHistory!: AsyncVoidFn;
 
   PageNames = PageNames;
   pageAmount = 8; // override PaginationSearchMixin
@@ -127,7 +125,7 @@ export default class BridgeTransactionsHistory extends Mixins(
   async created(): Promise<void> {
     await this.withParentLoading(async () => {
       await this.getHistory();
-      await this.getRestoredHistory();
+      await this.updateHistory();
     });
   }
 

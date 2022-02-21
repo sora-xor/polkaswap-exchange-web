@@ -3,7 +3,6 @@ import { ethers } from 'ethers';
 import type { Subscription } from 'rxjs';
 
 import { bridgeApi } from './api';
-import { SubqueryExplorerService, historyElementsFilter, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 import { delay } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
@@ -243,17 +242,4 @@ export const getEvmTxRecieptByHash = async (
   } catch (error) {
     return null;
   }
-};
-
-export const getAccountEthBridgeHistoryElements = async (
-  address: string,
-  timestamp = 0
-): Promise<SUBQUERY_TYPES.HistoryElement[]> => {
-  const operations = [Operation.EthBridgeOutgoing, Operation.EthBridgeIncoming];
-  const filter = historyElementsFilter({ address, operations, timestamp });
-  const variables = { filter };
-  const { edges } = await SubqueryExplorerService.getAccountTransactions(variables);
-  const history = edges.map((edge) => edge.node);
-
-  return history as SUBQUERY_TYPES.HistoryElement[];
 };
