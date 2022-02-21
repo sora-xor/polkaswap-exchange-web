@@ -224,8 +224,8 @@ export default class SelectToken extends Mixins(
   @Prop({ default: false, type: Boolean }) readonly notNullBalanceOnly!: boolean;
 
   @Getter('whitelistAssets', { namespace }) whitelistAssets!: Array<Asset>;
-  @Getter('nonWhitelistAccountAssets', { namespace }) nonWhitelistAccountAssets!: Array<AccountAsset>;
-  @Getter('nonWhitelistAssets', { namespace }) nonWhitelistAssets!: Array<Asset>;
+  @Getter('nonWhitelistDivisibleAccountAssets', { namespace }) nonWhitelistAccountAssets!: Array<AccountAsset>;
+  @Getter('nonWhitelistDivisibleAssets', { namespace }) nonWhitelistAssets!: Array<Asset>;
   // Wallet store
   @Getter shouldBalanceBeHidden!: boolean;
   @Getter whitelistIdsBySymbol!: any;
@@ -341,7 +341,7 @@ export default class SelectToken extends Mixins(
 
   handleRemoveCustomAsset(asset: AccountAsset, event: Event): void {
     event.stopImmediatePropagation();
-    api.assets.removeAsset(asset.address);
+    api.assets.removeAccountAsset(asset.address);
     if (this.customAddress) {
       this.searchCustomAsset();
     }
