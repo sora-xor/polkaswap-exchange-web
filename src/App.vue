@@ -2,12 +2,17 @@
   <s-design-system-provider :value="libraryDesignSystem" id="app" class="app">
     <app-header :loading="loading" @toggle-menu="toggleMenu" />
     <div class="app-main">
-      <app-menu @click.native="handleAppMenuClick" :visible="menuVisibility" :on-select="goTo">
+      <app-menu
+        :visible="menuVisibility"
+        :on-select="goTo"
+        :is-about-page-opened="isAboutPage"
+        @click.native="handleAppMenuClick"
+      >
         <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
       </app-menu>
       <div class="app-body" :class="{ 'app-body__about': isAboutPage }">
         <s-scrollbar class="app-body-scrollbar">
-          <div v-if="blockNumber" class="block-number">
+          <div v-if="blockNumber && !isAboutPage" class="block-number">
             <s-tooltip :content="t('blockNumberText')" placement="bottom">
               <a class="block-number-link" :href="soraExplorerLink" target="_blank" rel="nofollow noopener">
                 <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
