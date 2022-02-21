@@ -202,16 +202,16 @@ const actions = {
     commit(types.SET_HISTORY_LOADING, true);
 
     const etherscanApiKey = rootState.Settings.apiKeys?.etherscan;
-    const contracts = Object.values(KnownBridgeAsset).map<string>((key) => rootGetters['web3/contractAddress'](key));
+    const bridgeHistory = new EthBridgeHistory(etherscanApiKey);
 
-    const bridgeHistory = new EthBridgeHistory(etherscanApiKey, contracts);
-    const soraAccountAddress = rootGetters.account.address;
-    const assetsTable = rootGetters['assets/assetsDataTable'];
+    const address = rootGetters.account.address;
+    const assets = rootGetters['assets/assetsDataTable'];
     const networkFees = rootGetters.networkFees;
+    const contracts = Object.values(KnownBridgeAsset).map<string>((key) => rootGetters['web3/contractAddress'](key));
     const updateCallback = () => dispatch('getHistory');
 
     await bridgeHistory.init();
-    await bridgeHistory.updateAccountHistory(soraAccountAddress, assetsTable, networkFees, updateCallback);
+    await bridgeHistory.updateAccountHistory(address, assets, networkFees, contracts, updateCallback);
 
     commit(types.SET_HISTORY_LOADING, false);
   },

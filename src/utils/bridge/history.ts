@@ -11,27 +11,34 @@ import { STATES } from './types';
 import { isOutgoingTransaction, getSoraHashByEthereumHash, getEvmTxRecieptByHash } from './utils';
 import { ZeroStringValue } from '@/consts';
 
-import type { BridgeHistory } from '@sora-substrate/util';
+import type { BridgeHistory, NetworkFeesObject, RegisteredAccountAsset, RegisteredAsset } from '@sora-substrate/util';
+
+type DataMap<T> = {
+  [key: string]: T;
+};
+
+type EthLogsMap = DataMap<boolean>;
+type EthTransactionsMap = DataMap<ethers.providers.TransactionResponse>;
+type HistoryElement = SUBQUERY_TYPES.HistoryElement;
+type HistoryElementData = SUBQUERY_TYPES.HistoryElementEthBridgeOutgoing &
+  SUBQUERY_TYPES.HistoryElementEthBridgeIncoming;
 
 export class EthBridgeHistory {
   private readonly externalNetwork = BridgeNetworks.ETH_NETWORK_ID;
 
-  private ethAccountTransactionsMap: { [key: string]: { [key: string]: ethers.providers.TransactionResponse } } = {};
-  private ethBlockLogsMap: { [key: string]: Promise<{ [key: string]: boolean }> } = {};
+  private ethAccountTransactionsMap: DataMap<EthTransactionsMap> = {};
+  private ethBlockLogsMap: DataMap<Promise<EthLogsMap>> = {};
 
   private ethStartBlock = 0;
   private ethStartTimestamp = 0;
-  private etherscanInstance!: ethers.providers.EtherscanProvider;
-
-  private contracts!: string[];
   private etherscanApiKey!: string;
+  private etherscanInstance!: ethers.providers.EtherscanProvider;
 
   // Withdrawal (bytes32 txHash)
   public readonly outgoingTopic = '0x0ce781a18c10c8289803c7c4cfd532d797113c4b41c9701ffad7d0a632ac555b';
 
-  constructor(etherscanApiKey: string, contracts: string[]) {
+  constructor(etherscanApiKey: string) {
     this.etherscanApiKey = etherscanApiKey;
-    this.contracts = contracts;
   }
 
   public get historySyncTimestamp(): number {
@@ -60,16 +67,14 @@ export class EthBridgeHistory {
     return this.ethStartBlock;
   }
 
-  private async getAccountTransactions(
-    address: string
-  ): Promise<{ [key: string]: ethers.providers.TransactionResponse }> {
+  public async getEthAccountTransactions(address: string, contracts?: string[]): Promise<EthTransactionsMap> {
     const key = address.toLowerCase();
 
     if (!this.ethAccountTransactionsMap[key]) {
       const ethStartBlock = await this.getEthStartBlock();
       const history = await this.etherscanInstance.getHistory(address, ethStartBlock);
-      const filtered = history.reduce<{ [key: string]: ethers.providers.TransactionResponse }>((buffer, tx) => {
-        if (!!tx.to && this.contracts.includes(tx.to.toLowerCase())) {
+      const filtered = history.reduce<EthTransactionsMap>((buffer, tx) => {
+        if (!contracts || (!!tx.to && contracts.includes(tx.to.toLowerCase()))) {
           buffer[tx.hash] = tx;
         }
 
@@ -82,14 +87,14 @@ export class EthBridgeHistory {
     return this.ethAccountTransactionsMap[key];
   }
 
-  private async getBlockLogsMap(blockHash: string, contract: string): Promise<{ [key: string]: boolean }> {
+  private async getBlockLogsMap(blockHash: string, contract: string): Promise<EthLogsMap> {
     if (!this.ethBlockLogsMap[blockHash]) {
       this.ethBlockLogsMap[blockHash] = this.getLogsMap([contract], this.outgoingTopic, blockHash);
     }
     return await this.ethBlockLogsMap[blockHash];
   }
 
-  private async getLogsMap(contracts: string[], topic: string, blockHash: string): Promise<{ [key: string]: boolean }> {
+  private async getLogsMap(contracts: string[], topic: string, blockHash: string): Promise<EthLogsMap> {
     const ethersInstance = await ethersUtil.getEthersInstance();
     const getLogs = (address: string) =>
       ethersInstance.getLogs({
@@ -108,11 +113,12 @@ export class EthBridgeHistory {
 
   public async findEthTxBySoraHash(
     address: string,
-    hash: string
+    hash: string,
+    contracts?: string[]
   ): Promise<ethers.providers.TransactionResponse | null> {
     if (!address || !hash) return null;
 
-    const transactions = await this.getAccountTransactions(address);
+    const transactions = await this.getEthAccountTransactions(address, contracts);
 
     try {
       return await Promise.any(
@@ -137,24 +143,25 @@ export class EthBridgeHistory {
     return await ethersUtil.getEvmTransaction(ethereumHash);
   }
 
-  public async fetchHistoryElements(address: string, timestamp = 0): Promise<SUBQUERY_TYPES.HistoryElement[]> {
+  public async fetchHistoryElements(address: string, timestamp = 0): Promise<HistoryElement[]> {
     const operations = [Operation.EthBridgeOutgoing, Operation.EthBridgeIncoming];
     const filter = historyElementsFilter({ address, operations, timestamp });
     const variables = { filter };
     const { edges } = await SubqueryExplorerService.getAccountTransactions(variables);
     const history = edges.map((edge) => edge.node);
 
-    return history as SUBQUERY_TYPES.HistoryElement[];
+    return history as HistoryElement[];
   }
 
   public async updateAccountHistory(
-    accountAddress: string,
-    assetsTable,
-    networkFees,
-    updateCallback: AsyncVoidFn
+    address: string,
+    assets: { [key: string]: RegisteredAccountAsset & RegisteredAsset },
+    networkFees: NetworkFeesObject,
+    contracts?: string[],
+    updateCallback?: AsyncVoidFn
   ): Promise<void> {
     const currentHistory = bridgeApi.historyList as BridgeHistory[];
-    const historyElements = await this.fetchHistoryElements(accountAddress, this.historySyncTimestamp);
+    const historyElements = await this.fetchHistoryElements(address, this.historySyncTimestamp);
 
     if (!historyElements.length) return;
 
@@ -169,8 +176,7 @@ export class EthBridgeHistory {
           ? Operation.EthBridgeIncoming
           : Operation.EthBridgeOutgoing;
       const isOutgoing = isOutgoingTransaction({ type });
-      const historyElementData = historyElement.data as SUBQUERY_TYPES.HistoryElementEthBridgeOutgoing &
-        SUBQUERY_TYPES.HistoryElementEthBridgeIncoming;
+      const historyElementData = historyElement.data as HistoryElementData;
       const requestHash = historyElementData.requestHash;
 
       const historyItem = currentHistory.find((item: BridgeHistory) =>
@@ -182,8 +188,8 @@ export class EthBridgeHistory {
       const hash = isOutgoing ? requestHash : await getSoraHashByEthereumHash(this.externalNetwork, requestHash);
       const amount = historyElementData.amount;
       const assetAddress = historyElementData.assetId;
-      const from = accountAddress;
-      const symbol = assetsTable[assetAddress]?.symbol;
+      const from = address;
+      const symbol = assets[assetAddress]?.symbol;
       const blockId = historyElement.blockHash;
       const txId = historyElement.id;
       const soraNetworkFee = isOutgoing ? networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
@@ -195,7 +201,7 @@ export class EthBridgeHistory {
       const transactionStep = soraPartCompleted ? 2 : 1;
 
       const ethereumTx = isOutgoing
-        ? await this.findEthTxBySoraHash(historyElementData.sidechainAddress, hash)
+        ? await this.findEthTxBySoraHash(historyElementData.sidechainAddress, hash, contracts)
         : await this.findEthTxByEthereumHash(requestHash);
 
       const ethereumHash = ethereumTx?.hash ?? '';
@@ -250,9 +256,7 @@ export class EthBridgeHistory {
         to,
       });
 
-      if (updateCallback) {
-        await updateCallback();
-      }
+      await updateCallback?.();
     }
 
     this.historySyncTimestamp = historySyncTimestampUpdated;
