@@ -34,6 +34,7 @@ const types = flow(
     'RESET_NODE',
     'SET_NETWORK_CHAIN_GENESIS_HASH',
     'SET_SELECT_NODE_DIALOG_VISIBILIY',
+    'SET_SELECT_LANGUAGE_DIALOG_VISIBILIY',
     'SET_LANGUAGE',
     'SET_FEATURE_FLAGS',
     'SET_BLOCK_NUMBER',
@@ -59,6 +60,7 @@ function initialState() {
     chainGenesisHash: '',
     faucetUrl: '',
     selectNodeDialogVisibility: false,
+    selectLanguageDialogVisibility: false,
     blockNumber: 0,
     blockNumberUpdates: null,
   };
@@ -146,8 +148,11 @@ const mutations = {
   [types.SET_FAUCET_URL](state, url) {
     state.faucetUrl = url;
   },
-  [types.SET_SELECT_NODE_DIALOG_VISIBILIY](state, flag) {
+  [types.SET_SELECT_NODE_DIALOG_VISIBILIY](state, flag: boolean) {
     state.selectNodeDialogVisibility = flag;
+  },
+  [types.SET_SELECT_LANGUAGE_DIALOG_VISIBILIY](state, flag: boolean) {
+    state.selectLanguageDialogVisibility = flag;
   },
   [types.SET_LANGUAGE](state, lang: Language) {
     state.language = lang;
@@ -346,6 +351,9 @@ const actions = {
   },
   setSelectNodeDialogVisibility({ commit }, flag: boolean) {
     commit(types.SET_SELECT_NODE_DIALOG_VISIBILIY, flag);
+  },
+  setSelectLanguageDialogVisibility({ commit }, flag: boolean) {
+    commit(types.SET_SELECT_LANGUAGE_DIALOG_VISIBILIY, flag);
   },
   async setLanguage({ commit }, lang: Language) {
     const locale = getSupportedLocale(lang);
