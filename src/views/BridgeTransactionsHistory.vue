@@ -1,17 +1,7 @@
 <template>
   <div class="history-container">
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="always" primary>
-      <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
-        <!-- <s-button
-          class="base-title_settings"
-          type="action"
-          icon="basic-trash-24"
-          :disabled="!hasHistory"
-          :tooltip="t('bridgeHistory.clearHistory')"
-          tooltip-placement="bottom-end"
-          @click="handleClearHistory"
-        /> -->
-      </generic-page-header>
+      <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack" />
       <s-form class="history-form" :show-message="false">
         <s-form-item v-if="history.length" class="history--search">
           <s-input
@@ -25,7 +15,7 @@
             </template>
           </s-input>
         </s-form-item>
-        <div class="history-items">
+        <div class="history-items" v-loading="historyLoading">
           <template v-if="hasHistory">
             <div
               class="history-item"
@@ -75,7 +65,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter, Action } from 'vuex-class';
+import { Getter, Action, State } from 'vuex-class';
 import { BridgeTxStatus } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
@@ -107,10 +97,11 @@ export default class BridgeTransactionsHistory extends Mixins(
   PaginationSearchMixin,
   mixins.NumberFormatterMixin
 ) {
+  @State((state) => state[namespace].historyLoading) historyLoading!: boolean;
+
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>;
 
   @Action('getRestoredHistory', { namespace }) getRestoredHistory!: AsyncVoidFn;
-  @Action('clearHistory', { namespace }) clearHistory!: AsyncVoidFn;
 
   PageNames = PageNames;
   pageAmount = 8; // override PaginationSearchMixin
@@ -208,10 +199,6 @@ export default class BridgeTransactionsHistory extends Mixins(
     } else {
       return '';
     }
-  }
-
-  async handleClearHistory(): Promise<void> {
-    await this.clearHistory();
   }
 
   handleBack(): void {

@@ -245,9 +245,12 @@ export const getEvmTxRecieptByHash = async (
   }
 };
 
-export const getAccountEthBridgeHistoryElements = async (address: string): Promise<SUBQUERY_TYPES.HistoryElement[]> => {
+export const getAccountEthBridgeHistoryElements = async (
+  address: string,
+  timestamp = 0
+): Promise<SUBQUERY_TYPES.HistoryElement[]> => {
   const operations = [Operation.EthBridgeOutgoing, Operation.EthBridgeIncoming];
-  const filter = historyElementsFilter({ address, operations });
+  const filter = historyElementsFilter({ address, operations, timestamp });
   const variables = { filter };
   const { edges } = await SubqueryExplorerService.getAccountTransactions(variables);
   const history = edges.map((edge) => edge.node);
