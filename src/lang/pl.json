@@ -57,7 +57,7 @@
             "ReferralUnreserveXor": "Nie udało się uwolnić rezerw w walucie XOR.",
             "ReferralSetInvitedUser": "Nie udało się utworzyć kodu polecającego."
         },
-        "ReferralReserveXor": "Utwórz rezerwy w walucie XOR.",
+        "ReferralReserveXor": "Utwórz rezerwy XOR",
         "ReferralUnreserveXor": "Uwolnij rezerwy w walucie XOR.",
         "ReferralSetInvitedUser": "Utwórz kod polecający"
     },
@@ -896,7 +896,7 @@
         "receivedRewards": "Otrzymane wynagrodzenie",
         "invitationLink": "Link polecający",
         "successCopy": "Link polecający został skopiowany do schowka.",
-        "bondTitle": "Utwórz rezerwy w walucie XOR",
+        "bondTitle": "Utwórz rezerwy XOR",
         "unbondTitle": "Uwolnij rezerwy w walucie XOR",
         "confirm": {
             "text": "Potwierdź",
