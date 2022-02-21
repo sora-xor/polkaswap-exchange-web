@@ -897,7 +897,7 @@
         "invitationLink": "Link polecający",
         "successCopy": "Link polecający został skopiowany do schowka.",
         "bondTitle": "Utwórz rezerwy XOR",
-        "unbondTitle": "Uwolnij rezerwy w walucie XOR",
+        "unbondTitle": "Uwolnij rezerwy XOR",
         "confirm": {
             "text": "Potwierdź",
             "bond": "Potwierdź utworzenie rezerw",
