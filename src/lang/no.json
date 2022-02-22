@@ -210,17 +210,19 @@
         "nft": {
             "source": {
                 "label": "Kilde",
-                "value": "Lokale filer"
+                "value": "Lokale filer",
+                "limit": "Velg en annen fil"
             },
             "link": {
-                "placeholder": "Skriv inn link her...",
-                "placeholderShort": "Link",
-                "copyLink": "Kopier link"
+                "placeholder": "IPFS-kobling",
+                "copyLink": "Kopier link",
+                "tooltip": "IPFS er et distribuert system for lagring og tilgang til filer, som gjør det mulig å få tilgang til filer fra mange steder som ikke administreres av én organisasjon."
             },
             "image": {
                 "placeholderNoImage": "Last opp filen ved enten å skrive inn en lenke eller velge fra lokal lagring",
-                "placeholderBadSource": "Det er ikke noe bilde",
-                "placeholderBadSourceAddition": "eller det er ikke lastet opp til IPFS ennå"
+                "placeholderBadSource": "Filen kunne ikke behandles",
+                "placeholderBadSourceAddition": "eller det er ikke lastet opp til IPFS ennå",
+                "placeholderFileLimit": "Filstørrelsen overskrider grensen på {value} mb"
             },
             "supply": {
                 "placeholder": "Token forsyning",
@@ -231,7 +233,11 @@
                 "placeholder": "Beskrivelse"
             }
         },
-        "enterTokenDescription": "Skriv inn beskrivelse"
+        "enterTokenDescription": "Skriv inn beskrivelse",
+        "divisible": {
+            "placeholder": "Delelig",
+            "desc": "NFTs evne til å dele opp i brøkdeler. Likviditetsavsetning fungerer kun med delbare eiendeler"
+        }
     },
     "transaction": {
         "title": "Transaksjonsdetaljer",

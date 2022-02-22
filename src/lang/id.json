@@ -210,17 +210,19 @@
         "nft": {
             "source": {
                 "label": "Sumber",
-                "value": "File lokal"
+                "value": "File lokal",
+                "limit": "Pilih file lain"
             },
             "link": {
-                "placeholder": "Masukkan tautan di sini...",
-                "placeholderShort": "Tautan",
-                "copyLink": "Salin link"
+                "placeholder": "Tautan IPFS",
+                "copyLink": "Salin link",
+                "tooltip": "IPFS adalah sistem terdistribusi untuk menyimpan dan mengakses file, memungkinkan untuk mengakses file dari banyak lokasi yang tidak dikelola oleh satu organisasi."
             },
             "image": {
                 "placeholderNoImage": "Unggah file dengan memasukkan tautan atau memilih dari penyimpanan lokal",
-                "placeholderBadSource": "Tidak ada gambar",
-                "placeholderBadSourceAddition": "atau belum diupload ke IPFS"
+                "placeholderBadSource": "File gagal diproses",
+                "placeholderBadSourceAddition": "atau belum diupload ke IPFS",
+                "placeholderFileLimit": "Ukuran file melebihi batas {value} mb"
             },
             "supply": {
                 "placeholder": "Suplai Token",
@@ -231,7 +233,11 @@
                 "placeholder": "Deskripsi"
             }
         },
-        "enterTokenDescription": "Masukkan deskripsi"
+        "enterTokenDescription": "Masukkan deskripsi",
+        "divisible": {
+            "placeholder": "Terbagi",
+            "desc": "Kemampuan NFT untuk membagi menjadi bagian-bagian pecahan. Penyediaan likuiditas hanya berfungsi dengan aset yang dapat dibagi"
+        }
     },
     "transaction": {
         "title": "Rincian transaksi",

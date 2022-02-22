@@ -210,17 +210,19 @@
         "nft": {
             "source": {
                 "label": "Orisun",
-                "value": "Awọn faili agbegbe"
+                "value": "Awọn faili agbegbe",
+                "limit": "Yan faili miiran"
             },
             "link": {
-                "placeholder": "Tẹ ọna asopọ sii nibi...",
-                "placeholderShort": "Ọna asopọ",
-                "copyLink": "Daakọ ọna asopọ"
+                "placeholder": "IPFS ọna asopọ",
+                "copyLink": "Daakọ ọna asopọ",
+                "tooltip": "IPFS jẹ eto pinpin fun titoju ati iwọle si awọn faili, ṣiṣe ki o ṣee ṣe lati wọle si awọn faili lati ọpọlọpọ awọn ipo ti ko ni iṣakoso nipasẹ ajọ kan."
             },
             "image": {
                 "placeholderNoImage": "Ṣe igbasilẹ faili naa nipa titẹ ọna asopọ kan tabi yiyan lati ibi ipamọ agbegbe",
-                "placeholderBadSource": "Ko si aworan",
-                "placeholderBadSourceAddition": "tabi ko ti gbejade si IPFS sibẹsibẹ"
+                "placeholderBadSource": "Faili naa kuna lati ṣiṣẹ",
+                "placeholderBadSourceAddition": "tabi ko ti gbejade si IPFS sibẹsibẹ",
+                "placeholderFileLimit": "Iwọn faili naa kọja opin ti {value} mb"
             },
             "supply": {
                 "placeholder": "Ipese Tokini",
@@ -231,7 +233,11 @@
                 "placeholder": "Apejuwe"
             }
         },
-        "enterTokenDescription": "Tẹ apejuwe sii"
+        "enterTokenDescription": "Tẹ apejuwe sii",
+        "divisible": {
+            "placeholder": "Pinpin",
+            "desc": "Agbara NFT lati pin si awọn apakan ida. Ipese olomi nikan ṣiṣẹ pẹlu awọn ohun-ini pinpin"
+        }
     },
     "transaction": {
         "title": "Awọn alaye iṣowo",

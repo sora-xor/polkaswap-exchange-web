@@ -210,17 +210,19 @@
         "nft": {
             "source": {
                 "label": "Fonte",
-                "value": "File locali"
+                "value": "File locali",
+                "limit": "Scegli un altro file"
             },
             "link": {
-                "placeholder": "Inserisci qui il link...",
-                "placeholderShort": "Collegamento",
-                "copyLink": "Copia link"
+                "placeholder": "Collegamento IPFS",
+                "copyLink": "Copia link",
+                "tooltip": "IPFS è un sistema distribuito per l'archiviazione e l'accesso ai file, che consente di accedere ai file da molte posizioni che non sono gestite da un'organizzazione."
             },
             "image": {
                 "placeholderNoImage": "Carica il file inserendo un collegamento o scegliendo dalla memoria locale",
-                "placeholderBadSource": "Non c'è immagine",
-                "placeholderBadSourceAddition": "oppure non è ancora stato caricato su IPFS"
+                "placeholderBadSource": "Impossibile elaborare il file",
+                "placeholderBadSourceAddition": "oppure non è ancora stato caricato su IPFS",
+                "placeholderFileLimit": "La dimensione del file supera il limite di {value} mb"
             },
             "supply": {
                 "placeholder": "Supply del token",
@@ -231,7 +233,11 @@
                 "placeholder": "Descrizione"
             }
         },
-        "enterTokenDescription": "Inserisci la descrizione"
+        "enterTokenDescription": "Inserisci la descrizione",
+        "divisible": {
+            "placeholder": "Divisibile",
+            "desc": "Capacità di NFT di dividere in parti frazionarie. L'approvvigionamento di liquidità funziona solo con attività divisibili"
+        }
     },
     "transaction": {
         "title": "Dettagli della transazione",

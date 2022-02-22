@@ -210,17 +210,19 @@
         "nft": {
             "source": {
                 "label": "Источник",
-                "value": "Локальные файлы"
+                "value": "Локальные файлы",
+                "limit": "Выбрать другой файл"
             },
             "link": {
-                "placeholder": "Введите ссылку...",
-                "placeholderShort": "Ссылка",
-                "copyLink": "Копировать ссылку"
+                "placeholder": "Ссылка IPFS",
+                "copyLink": "Копировать ссылку",
+                "tooltip": "IPFS — это распределенная система для хранения файлов и доступа к ним, позволяющая получать доступ к файлам из многих мест, которые не управляются одной организацией."
             },
             "image": {
                 "placeholderNoImage": "Загрузите файл, введя ссылку или выбрав из локального хранилища.",
-                "placeholderBadSource": "Нет изображения",
-                "placeholderBadSourceAddition": "или оно ещё не загружено в IPFS"
+                "placeholderBadSource": "Файл не удалось обработать",
+                "placeholderBadSourceAddition": "или оно ещё не загружено в IPFS",
+                "placeholderFileLimit": "Размер файла превышает ограничение в {value}мб."
             },
             "supply": {
                 "placeholder": "Количество токенов",
@@ -231,7 +233,11 @@
                 "placeholder": "Описание"
             }
         },
-        "enterTokenDescription": "Введите описание"
+        "enterTokenDescription": "Введите описание",
+        "divisible": {
+            "placeholder": "Делимый",
+            "desc": "Способность NFT делиться на дробные части. Предоставление ликвидности работает только с делимыми активами"
+        }
     },
     "transaction": {
         "title": "Детали транзакции",

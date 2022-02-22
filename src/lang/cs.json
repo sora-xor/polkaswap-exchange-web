@@ -210,17 +210,19 @@
         "nft": {
             "source": {
                 "label": "Zdroj",
-                "value": "Místní soubory"
+                "value": "Místní soubory",
+                "limit": "Vyberte jiný soubor"
             },
             "link": {
-                "placeholder": "Zde zadejte odkaz...",
-                "placeholderShort": "Odkaz",
-                "copyLink": "Kopírovat odkaz"
+                "placeholder": "odkaz IPFS",
+                "copyLink": "Kopírovat odkaz",
+                "tooltip": "IPFS je distribuovaný systém pro ukládání a přístup k souborům, který umožňuje přístup k souborům z mnoha míst, která nejsou spravována jednou organizací."
             },
             "image": {
                 "placeholderNoImage": "Nahrajte soubor zadáním odkazu nebo výběrem z místního úložiště",
-                "placeholderBadSource": "Není tam žádný obrázek",
-                "placeholderBadSourceAddition": "nebo ještě není nahráno do IPFS"
+                "placeholderBadSource": "Soubor se nepodařilo zpracovat",
+                "placeholderBadSourceAddition": "nebo ještě není nahráno do IPFS",
+                "placeholderFileLimit": "Velikost souboru přesahuje limit {value} MB"
             },
             "supply": {
                 "placeholder": "Množství tokenů",
@@ -231,7 +233,11 @@
                 "placeholder": "Popis"
             }
         },
-        "enterTokenDescription": "Zadejte popis"
+        "enterTokenDescription": "Zadejte popis",
+        "divisible": {
+            "placeholder": "Dělitelný",
+            "desc": "Schopnost NFT dělit se na dílčí části. Opravné položky likvidity fungují pouze u dělitelných aktiv"
+        }
     },
     "transaction": {
         "title": "Detaily transakce",
