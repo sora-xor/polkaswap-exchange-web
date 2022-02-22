@@ -73,7 +73,6 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
@@ -94,7 +93,7 @@ export default class BridgeTransactionsHistory extends Mixins(
   BridgeMixin,
   BridgeHistoryMixin,
   NetworkFormatterMixin,
-  PaginationSearchMixin,
+  mixins.PaginationSearchMixin,
   mixins.NumberFormatterMixin
 ) {
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>;
@@ -201,6 +200,11 @@ export default class BridgeTransactionsHistory extends Mixins(
 
   handleBack(): void {
     router.push({ name: PageNames.Bridge });
+  }
+
+  handleResetSearch(): void {
+    this.resetPage();
+    this.resetSearch();
   }
 }
 </script>
