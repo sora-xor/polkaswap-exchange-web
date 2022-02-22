@@ -331,6 +331,13 @@ function calcEvmFee(gasPrice: number, gasAmount: number) {
   return FPNumber.fromCodecValue(gasPrice).mul(new FPNumber(gasAmount)).toCodecString();
 }
 
+async function getEvmTransaction(hash: string): Promise<ethers.providers.TransactionResponse> {
+  const ethersInstance = await getEthersInstance();
+  const tx = await ethersInstance.getTransaction(hash);
+
+  return tx;
+}
+
 async function getEvmTransactionReceipt(hash: string): Promise<ethers.providers.TransactionReceipt> {
   const ethersInstance = await getEthersInstance();
   const tx = await ethersInstance.getTransactionReceipt(hash);
@@ -376,6 +383,7 @@ export default {
   addressesAreEqual,
   fetchEvmNetworkFee,
   calcEvmFee,
+  getEvmTransaction,
   getEvmTransactionReceipt,
   getBlock,
 };

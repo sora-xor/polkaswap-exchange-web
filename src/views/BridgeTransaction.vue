@@ -307,7 +307,13 @@ import {
   hasInsufficientXorForFee,
   hasInsufficientEvmNativeTokenForFee,
 } from '@/utils';
-import { bridgeApi, STATES, isOutgoingTransaction, isUnsignedFromPart } from '@/utils/bridge';
+import {
+  bridgeApi,
+  STATES,
+  isOutgoingTransaction,
+  isUnsignedFromPart,
+  isRejectedForeverFromPart,
+} from '@/utils/bridge';
 
 const FORMATTED_HASH_LENGTH = 24;
 const namespace = 'bridge';
@@ -442,6 +448,10 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
 
   get isTransactionFromFailed(): boolean {
     return this.currentState === (this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED);
+  }
+
+  get isTransactionFromRejected(): boolean {
+    return this.isTransactionFromFailed && isRejectedForeverFromPart(this.historyItem);
   }
 
   get isTransactionToFailed(): boolean {
@@ -594,7 +604,8 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
       this.isInsufficientBalance ||
       this.isInsufficientXorForFee ||
       this.isInsufficientEvmNativeTokenForFee ||
-      this.isTransactionFromPending
+      this.isTransactionFromPending ||
+      this.isTransactionFromRejected
     );
   }
 

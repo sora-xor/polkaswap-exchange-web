@@ -7,13 +7,13 @@ import { bridgeApi } from './api';
 import { delay } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
 
-import type { BridgeHistory, BridgeApprovedRequest } from '@sora-substrate/util';
+import type { BridgeHistory, BridgeApprovedRequest, BridgeNetworks } from '@sora-substrate/util';
 
 const SORA_REQUESTS_TIMEOUT = 6 * 1000; // Block production time
 
 export const isUnsignedFromPart = (tx: BridgeHistory): boolean => {
   if (tx.type === Operation.EthBridgeOutgoing) {
-    return !tx.blockId && !tx.txId && !tx.hash;
+    return !tx.blockId && !tx.txId;
   } else if (tx.type === Operation.EthBridgeIncoming) {
     return !tx.ethereumHash;
   } else {
@@ -29,6 +29,12 @@ export const isUnsignedToPart = (tx: BridgeHistory): boolean => {
   } else {
     return true;
   }
+};
+
+export const isRejectedForeverFromPart = (tx: BridgeHistory): boolean => {
+  const requestError = tx.type === Operation.EthBridgeOutgoing ? !tx.hash : false;
+
+  return !isUnsignedFromPart(tx) && requestError;
 };
 
 export const getTransaction = (id: string): BridgeHistory => {
@@ -103,9 +109,7 @@ export const waitForIncomingRequest = async (tx: BridgeHistory): Promise<{ hash:
 
   subscription.unsubscribe();
   // TODO: move to js-lib
-  const soraHash = (
-    await bridgeApi.api.query.ethBridge.loadToIncomingRequestHash(tx.externalNetwork, tx.ethereumHash)
-  ).toString();
+  const soraHash = await getSoraHashByEthereumHash(tx.externalNetwork as BridgeNetworks, tx.ethereumHash as string);
   const soraBlockHash = await getSoraBlockHashByRequestHash(tx.externalNetwork as number, tx.ethereumHash as string);
 
   return { hash: soraHash, blockId: soraBlockHash };
@@ -204,6 +208,10 @@ export const waitForEvmTransaction = async (id: string) => {
   );
 };
 
+export const getSoraHashByEthereumHash = async (networkId: BridgeNetworks, ethereumHash: string): Promise<string> => {
+  return (await bridgeApi.api.query.ethBridge.loadToIncomingRequestHash(networkId, ethereumHash)).toString();
+};
+
 export const getSoraBlockHashByRequestHash = async (
   externalNetworkId: number,
   requestHash: string
@@ -215,12 +223,6 @@ export const getSoraBlockHashByRequestHash = async (
   const soraBlockHash = (await bridgeApi.api.rpc.chain.getBlockHash(soraBlockNumber)).toString();
 
   return soraBlockHash;
-};
-
-export const getBlockTimestamp = async (blockHash: string): Promise<number> => {
-  const timestamp = (await bridgeApi.api.query.timestamp.now.at(blockHash)).toNumber();
-
-  return timestamp;
 };
 
 export const getEvmTxRecieptByHash = async (

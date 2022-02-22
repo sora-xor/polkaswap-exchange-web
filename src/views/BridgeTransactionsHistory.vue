@@ -1,17 +1,7 @@
 <template>
   <div class="history-container">
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="always" primary>
-      <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
-        <!-- <s-button
-          class="base-title_settings"
-          type="action"
-          icon="basic-trash-24"
-          :disabled="!hasHistory"
-          :tooltip="t('bridgeHistory.clearHistory')"
-          tooltip-placement="bottom-end"
-          @click="handleClearHistory"
-        /> -->
-      </generic-page-header>
+      <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack" />
       <s-form class="history-form" :show-message="false">
         <s-form-item v-if="history.length" class="history--search">
           <s-input
@@ -69,27 +59,13 @@
           @next-click="handleNextClick"
         />
       </s-form>
-      <s-button
-        v-if="!restored"
-        class="s-button--restore s-typography-button--large"
-        :disabled="!isValidNetworkType"
-        :loading="historyRestoration"
-        @click="handleRestoreHistory"
-      >
-        <template v-if="!isValidNetworkType">
-          {{ t('bridge.changeNetwork') }}
-        </template>
-        <template v-else>
-          {{ t('bridgeHistory.restoreHistory') }}
-        </template>
-      </s-button>
     </s-card>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter, Action, State } from 'vuex-class';
+import { Getter, Action } from 'vuex-class';
 import { BridgeTxStatus } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
@@ -101,7 +77,7 @@ import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { isUnsignedToPart } from '@/utils/bridge';
+import { isUnsignedToPart, isRejectedForeverFromPart } from '@/utils/bridge';
 
 import type { BridgeHistory, RegisteredAccountAsset } from '@sora-substrate/util';
 
@@ -121,14 +97,9 @@ export default class BridgeTransactionsHistory extends Mixins(
   PaginationSearchMixin,
   mixins.NumberFormatterMixin
 ) {
-  @State((state) => state[namespace].restored) restored!: boolean;
-  @State((state) => state[namespace].historyRestoration) historyRestoration!: boolean;
-
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>;
 
-  @Action('getRestoredFlag', { namespace }) getRestoredFlag!: AsyncVoidFn;
-  @Action('getRestoredHistory', { namespace }) getRestoredHistory!: AsyncVoidFn;
-  @Action('clearHistory', { namespace }) clearHistory!: AsyncVoidFn;
+  @Action('updateHistory', { namespace }) updateHistory!: AsyncVoidFn;
 
   PageNames = PageNames;
   pageAmount = 8; // override PaginationSearchMixin
@@ -153,8 +124,8 @@ export default class BridgeTransactionsHistory extends Mixins(
 
   async created(): Promise<void> {
     await this.withParentLoading(async () => {
-      await this.getRestoredFlag();
       await this.getHistory();
+      await this.updateHistory();
     });
   }
 
@@ -187,11 +158,15 @@ export default class BridgeTransactionsHistory extends Mixins(
     return this.formatDate(response?.startTime ?? Date.now());
   }
 
+  isWaitingForAction(tx: BridgeHistory): boolean {
+    return tx.status === BridgeTxStatus.Failed && !isRejectedForeverFromPart(tx) && isUnsignedToPart(tx);
+  }
+
   historyStatusClasses(item: BridgeHistory): string {
     const iconClass = 'history-item-status';
     const classes = [iconClass];
 
-    if (item.status === BridgeTxStatus.Failed && isUnsignedToPart(item)) {
+    if (this.isWaitingForAction(item)) {
       classes.push(`${iconClass}--warning`);
     } else if (item.status === BridgeTxStatus.Failed) {
       classes.push(`${iconClass}--error`);
@@ -205,7 +180,7 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
 
   historyStatusIconName(item: BridgeHistory): string {
-    if (item.status === BridgeTxStatus.Failed && isUnsignedToPart(item)) {
+    if (this.isWaitingForAction(item)) {
       return 'notifications-alert-triangle-24';
     } else if (item.status === BridgeTxStatus.Failed) {
       return 'basic-clear-X-24';
@@ -217,20 +192,11 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
 
   historyStatusText(item: BridgeHistory): string {
-    if (item.status === BridgeTxStatus.Failed && isUnsignedToPart(item)) {
+    if (this.isWaitingForAction(item)) {
       return this.t('bridgeHistory.statusAction');
     } else {
       return '';
     }
-  }
-
-  async handleClearHistory(): Promise<void> {
-    await this.clearHistory();
-  }
-
-  async handleRestoreHistory(): Promise<void> {
-    await this.getRestoredHistory();
-    await this.getRestoredFlag();
   }
 
   handleBack(): void {

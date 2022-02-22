@@ -401,3 +401,4 @@ const appBridge = new Bridge({
 export { bridgeApi, appBridge };
 export * from './types';
 export * from './utils';
+export * from './history';
