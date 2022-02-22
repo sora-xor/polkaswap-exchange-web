@@ -134,7 +134,8 @@
             "frozen": "Congelado",
             "locked": "- Bloqueado",
             "reserved": "- Reservado",
-            "total": "Total"
+            "total": "Total",
+            "bonded": "- Vinculado"
         },
         "totalAssetsValue": "El valor total de sus activos:",
         "details": "Detalles"
@@ -261,7 +262,8 @@
             "subscan": "Ver en Subscan"
         },
         "txId": "ID de transacción",
-        "referrer": "Referente"
+        "referrer": "Referente",
+        "referral": "Referencia"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -496,7 +498,7 @@
         "addLiquidity": "Añadir Liquidez",
         "removeLiquidity": "Remover Liquidez",
         "createPair": "Crear un par",
-        "pooledToken": "{tokenSymbol} Suministrado",
+        "pooledToken": "{tokenSymbol} Agrupado",
         "pairTokens": "{pair} Tokens del Fondo común",
         "poolShare": "Su Participación en el Fondo común",
         "unknownAsset": "Activo desconocido",
@@ -869,7 +871,7 @@
     },
     "blockNumberText": "Número de bloque",
     "referralProgram": {
-        "title": "Programa de referencia",
+        "title": "Referral Program",
         "connectAccount": "Para invitar a usuarios, debe conectar su cuenta SORA.",
         "bondedXOR": "XOR Vinculado",
         "referralsNumber": "{number} referencias",
@@ -904,7 +906,7 @@
             "inviteDescription": "Por cada transacción, el 10% de la tarifa se destinará a su referente, sin ningún costo adicional para usted.",
             "signInvitation": "Aprobar",
             "freeOfCharge": "Esta acción es gratuita",
-            "hasReferrerTitle": "Ya ha configurado su referencia",
+            "hasReferrerTitle": "Ya has configurado tu referente",
             "hasReferrerDescription": "Desafortunadamente, solo puedes configurar uno",
             "ok": "OK"
         }

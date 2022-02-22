@@ -133,8 +133,9 @@
             "transferable": "Převoditelné",
             "frozen": "Zmrazené",
             "locked": "- Zamčeno",
-            "reserved": " - Rezervováno",
-            "total": "Celkem"
+            "reserved": "- Rezervováno",
+            "total": "Celkem",
+            "bonded": "- Lepené"
         },
         "totalAssetsValue": "Celková hodnota vašich aktiv:",
         "details": "Podrobnosti"
@@ -261,7 +262,8 @@
             "subscan": "Zobrazit v Subscan"
         },
         "txId": "Id transakce",
-        "referrer": "Doporučitel"
+        "referrer": "Doporučitel",
+        "referral": "Doporučení"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -869,7 +871,7 @@
     },
     "blockNumberText": "Číslo bloku",
     "referralProgram": {
-        "title": "Program doporučení",
+        "title": "Referral Program",
         "connectAccount": "Chcete-li pozvat uživatele, musíte připojit svůj účet SORA.",
         "bondedXOR": "Vázané XOR",
         "referralsNumber": "{number} doporučení",
