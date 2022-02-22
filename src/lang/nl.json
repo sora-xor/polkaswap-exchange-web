@@ -210,17 +210,19 @@
         "nft": {
             "source": {
                 "label": "Bron",
-                "value": "Lokale bestanden"
+                "value": "Lokale bestanden",
+                "limit": "Kies een ander bestand"
             },
             "link": {
-                "placeholder": "Vul hier de link in...",
-                "placeholderShort": "Koppeling",
-                "copyLink": "Kopieer link"
+                "placeholder": "IPFS-link",
+                "copyLink": "Kopieer link",
+                "tooltip": "IPFS is een gedistribueerd systeem voor het opslaan en openen van bestanden, waardoor het mogelijk is om toegang te krijgen tot bestanden vanaf veel locaties die niet door één organisatie worden beheerd."
             },
             "image": {
                 "placeholderNoImage": "Upload het bestand door een link in te voeren of te kiezen uit lokale opslag",
-                "placeholderBadSource": "Er is geen afbeelding",
-                "placeholderBadSourceAddition": "of het is nog niet geüpload naar IPFS"
+                "placeholderBadSource": "Het bestand kan niet worden verwerkt",
+                "placeholderBadSourceAddition": "of het is nog niet geüpload naar IPFS",
+                "placeholderFileLimit": "De bestandsgrootte overschrijdt de limiet van {value} mb"
             },
             "supply": {
                 "placeholder": "Tokenvoorraad",
@@ -231,7 +233,11 @@
                 "placeholder": "Omschrijving"
             }
         },
-        "enterTokenDescription": "Voer beschrijving in"
+        "enterTokenDescription": "Voer beschrijving in",
+        "divisible": {
+            "placeholder": "Deelbaar",
+            "desc": "Mogelijkheid van NFT om te verdelen in fractionele delen. Liquiditeitsvoorziening werkt alleen met deelbare activa"
+        }
     },
     "transaction": {
         "title": "Transactiegegevens",
