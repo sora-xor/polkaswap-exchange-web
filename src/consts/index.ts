@@ -119,6 +119,7 @@ export enum PageNames {
 export enum Components {
   GenericPageHeader = 'GenericPageHeader',
   AppHeader = 'App/Header/AppHeader',
+  AppHeaderMenu = 'App/Header/AppHeaderMenu',
   AccountButton = 'App/Header/AccountButton',
   AppLogoButton = 'App/Header/AppLogoButton',
   MarketMakerCountdown = 'App/Header/MarketMakerCountdown/MarketMakerCountdown',

@@ -197,8 +197,8 @@ export default class ReferralProgram extends Mixins(
   }
 
   getInvitedUserReward(invitedUser: string): string {
-    if (this.invitedUserRewards[invitedUser]) {
-      return this.formatCodecNumber(this.invitedUserRewards[invitedUser]?.rewards);
+    if (this.invitedUserRewards[invitedUser]?.rewards) {
+      return this.formatCodecNumber(this.invitedUserRewards[invitedUser].rewards.toCodecString());
     }
     return this.formatCodecNumber('0');
   }
