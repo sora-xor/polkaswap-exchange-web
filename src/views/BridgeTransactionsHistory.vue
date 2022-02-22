@@ -25,7 +25,7 @@
             </template>
           </s-input>
         </s-form-item>
-        <div v-loading="loading" class="history-items">
+        <div class="history-items">
           <template v-if="hasHistory">
             <div
               class="history-item"
@@ -72,10 +72,16 @@
       <s-button
         v-if="!restored"
         class="s-button--restore s-typography-button--large"
-        :disabled="loading"
+        :disabled="!isValidNetworkType"
+        :loading="historyRestoration"
         @click="handleRestoreHistory"
       >
-        {{ t('bridgeHistory.restoreHistory') }}
+        <template v-if="!isValidNetworkType">
+          {{ t('bridge.changeNetwork') }}
+        </template>
+        <template v-else>
+          {{ t('bridgeHistory.restoreHistory') }}
+        </template>
       </s-button>
     </s-card>
   </div>
@@ -88,6 +94,7 @@ import { BridgeTxStatus } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
@@ -108,20 +115,20 @@ const namespace = 'bridge';
 })
 export default class BridgeTransactionsHistory extends Mixins(
   TranslationMixin,
+  BridgeMixin,
   BridgeHistoryMixin,
   NetworkFormatterMixin,
   PaginationSearchMixin,
   mixins.NumberFormatterMixin
 ) {
   @State((state) => state[namespace].restored) restored!: boolean;
+  @State((state) => state[namespace].historyRestoration) historyRestoration!: boolean;
 
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>;
 
   @Action('getRestoredFlag', { namespace }) getRestoredFlag!: AsyncVoidFn;
   @Action('getRestoredHistory', { namespace }) getRestoredHistory!: AsyncVoidFn;
   @Action('clearHistory', { namespace }) clearHistory!: AsyncVoidFn;
-
-  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn;
 
   PageNames = PageNames;
   pageAmount = 8; // override PaginationSearchMixin
@@ -145,8 +152,7 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
 
   async created(): Promise<void> {
-    this.withApi(async () => {
-      await this.updateRegisteredAssets();
+    await this.withParentLoading(async () => {
       await this.getRestoredFlag();
       await this.getHistory();
     });
@@ -223,11 +229,8 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
 
   async handleRestoreHistory(): Promise<void> {
-    await this.withLoading(async () => {
-      await this.getRestoredHistory();
-      await this.getRestoredFlag();
-      await this.getHistory();
-    });
+    await this.getRestoredHistory();
+    await this.getRestoredFlag();
   }
 
   handleBack(): void {
@@ -342,7 +345,8 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
   }
   &-title {
     line-height: var(--s-line-height-big);
-    word-break: break-all;
+    white-space: nowrap;
+
     .s-icon {
       &--network {
         margin-left: $separator-margin;

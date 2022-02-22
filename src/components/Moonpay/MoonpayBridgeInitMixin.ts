@@ -23,6 +23,7 @@ const createError = (text: string, notification: MoonpayNotifications) => {
 export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, WalletConnectMixin) {
   @State((state) => state.moonpay.api) moonpayApi!: MoonpayApi;
   @State((state) => state.moonpay.bridgeTransactionData) bridgeTransactionData!: Nullable<BridgeHistory>;
+  @State((state) => state.web3.evmBalance) evmBalance!: CodecString;
 
   @Action('getTransactionTranserData', { namespace: 'moonpay' }) getTransactionTranserData!: (
     hash: string
@@ -48,7 +49,6 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   }) => Promise<void>;
 
   @Getter soraNetwork!: string; // wallet
-  @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString;
   @Getter moonpayApiKey!: string;
 
   async prepareEvmNetwork(networkId = BridgeNetworks.ETH_NETWORK_ID): Promise<void> {
