@@ -132,9 +132,10 @@
         "balance": {
             "transferable": "Overdraagbaar",
             "frozen": "Bevroren",
-            "locked": " - Vergrendeld",
-            "reserved": " - Gereserveerd",
-            "total": "Totaal"
+            "locked": "- Vergrendeld",
+            "reserved": "- Gereserveerd",
+            "total": "Totaal",
+            "bonded": "- Gebonden"
         },
         "totalAssetsValue": "Totale waarde van bezittingen:",
         "details": "Details"
@@ -261,7 +262,8 @@
             "subscan": "Bekijk in Subscan"
         },
         "txId": "Transactie ID",
-        "referrer": "Verwijzer"
+        "referrer": "Verwijzer",
+        "referral": "Verwijzing"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -869,7 +871,7 @@
     },
     "blockNumberText": "Bloknummer",
     "referralProgram": {
-        "title": "Verwijzingsprogramma",
+        "title": "Referral Program",
         "connectAccount": "Om gebruikers uit te nodigen, moet u uw SORA-account koppelen.",
         "bondedXOR": "XOR Gebonden",
         "referralsNumber": "{number} verwijzingen",

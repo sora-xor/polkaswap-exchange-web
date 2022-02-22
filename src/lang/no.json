@@ -134,7 +134,8 @@
             "frozen": "Fryst",
             "locked": "- Låst",
             "reserved": "- Reservert",
-            "total": "Totalt"
+            "total": "Totalt",
+            "bonded": "- Bundet"
         },
         "totalAssetsValue": "Totalverdi aktiva:",
         "details": "Detaljer"
@@ -261,7 +262,8 @@
             "subscan": "Vis i Subscan"
         },
         "txId": "Transaksjons ID",
-        "referrer": "Henviser"
+        "referrer": "Henviser",
+        "referral": "Henvisning"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -869,7 +871,7 @@
     },
     "blockNumberText": "Blokknummer",
     "referralProgram": {
-        "title": "Henvisningprogram",
+        "title": "Referral Program",
         "connectAccount": "For å invitere brukere må du koble til SORA-kontoen din.",
         "bondedXOR": "XOR Bundet",
         "referralsNumber": "{number}-henvisninger",

@@ -133,8 +133,9 @@
             "transferable": "Übertragbar",
             "frozen": "Eingefroren",
             "locked": "- Gesperrt",
-            "reserved": " Reserviert",
-            "total": "Gesamt"
+            "reserved": "- Reserviert",
+            "total": "Gesamt",
+            "bonded": "- Gebunden"
         },
         "totalAssetsValue": "Gesamtwert deiner Assets:",
         "details": "Details"
@@ -261,7 +262,8 @@
             "subscan": "Auf Subscan ansehen"
         },
         "txId": "Transaktions-ID",
-        "referrer": "Referrer"
+        "referrer": "Referrer",
+        "referral": "Verweisung"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -869,7 +871,7 @@
     },
     "blockNumberText": "Blocknummer",
     "referralProgram": {
-        "title": "Empfehlungsprogramm",
+        "title": "Referral Program",
         "connectAccount": "Um Benutzer einzuladen, musst du dein SORA-Konto verbinden.",
         "bondedXOR": "XOR gebonded",
         "referralsNumber": "{number} Empfehlungen",
@@ -904,8 +906,8 @@
             "inviteDescription": "Für jede Transaktion gehen 10% der Gebühr an deinen Referrer, ohne dass dir zusätzliche Kosten entstehen.",
             "signInvitation": "Genehmigen",
             "freeOfCharge": "Diese Aktion ist kostenfrei",
-            "hasReferrerTitle": "Sie haben Ihren Referrer bereits festgelegt",
-            "hasReferrerDescription": "Leider kann man nur einen einstellen",
+            "hasReferrerTitle": "Du hast deinen Referrer bereits festgelegt",
+            "hasReferrerDescription": "Leider kann man nur einen festlegen",
             "ok": "OK"
         }
     },

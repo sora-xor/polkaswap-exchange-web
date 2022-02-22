@@ -134,7 +134,8 @@
             "frozen": "Սառեցված է",
             "locked": "- կողպված է",
             "reserved": "- վերապահված է",
-            "total": "Ընդհանուր"
+            "total": "Ընդհանուր",
+            "bonded": "- Խճճված"
         },
         "totalAssetsValue": "Ձեր ակտիվների ընդհանուր արժեքը.",
         "details": "Մանրամասներ"
@@ -261,7 +262,8 @@
             "subscan": "Դիտել Subscan- ում"
         },
         "txId": "Գործարքի ID",
-        "referrer": "Ուղղորդող"
+        "referrer": "Ուղղորդող",
+        "referral": "Ուղղորդում"
     },
     "appName": "Polkaswap (Փոլքասվափ)",
     "soraText": "Սորա",

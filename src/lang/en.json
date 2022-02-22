@@ -132,9 +132,10 @@
         "balance": {
             "transferable": "Transferable",
             "frozen": "Frozen",
-            "locked": " - Locked",
-            "reserved": " - Reserved",
-            "total": "Total"
+            "locked": "- Locked",
+            "reserved": "- Reserved",
+            "total": "Total",
+            "bonded": "- Bonded"
         },
         "totalAssetsValue": "Your total assets value:",
         "details": "Details"
@@ -261,7 +262,8 @@
             "subscan": "View in Subscan"
         },
         "txId": "Transaction Id",
-        "referrer": "Referrer"
+        "referrer": "Referrer",
+        "referral": "Referral"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",

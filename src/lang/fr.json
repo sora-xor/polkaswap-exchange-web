@@ -134,7 +134,8 @@
             "frozen": "Gelé",
             "locked": "- Verrouillé",
             "reserved": "- Réservé",
-            "total": "Total"
+            "total": "Total",
+            "bonded": "- Lié"
         },
         "totalAssetsValue": "Valeur total de vos actifs:",
         "details": "Détails"
@@ -261,7 +262,8 @@
             "subscan": "Visualisez dans Subscan"
         },
         "txId": "Id de la transaction",
-        "referrer": "Référent"
+        "referrer": "Référent",
+        "referral": "Référence"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -869,7 +871,7 @@
     },
     "blockNumberText": "Numéro de bloc",
     "referralProgram": {
-        "title": "Programme de référence",
+        "title": "Références",
         "connectAccount": "Pour inviter des utilisateurs, vous devez connecter votre compte SORA.",
         "bondedXOR": "XOR Vérouillé",
         "referralsNumber": "{number} références",
