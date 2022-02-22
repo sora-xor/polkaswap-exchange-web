@@ -210,17 +210,19 @@
         "nft": {
             "source": {
                 "label": "Źródło",
-                "value": "Pliki lokalne"
+                "value": "Pliki lokalne",
+                "limit": "Wybierz inny plik"
             },
             "link": {
-                "placeholder": "Tutaj wprowadź link...",
-                "placeholderShort": "Link",
-                "copyLink": "Kopiuj link"
+                "placeholder": "Łącze IPFS",
+                "copyLink": "Kopiuj link",
+                "tooltip": "IPFS to rozproszony system przechowywania i uzyskiwania dostępu do plików, umożliwiający dostęp do plików z wielu lokalizacji, które nie są zarządzane przez jedną organizację."
             },
             "image": {
                 "placeholderNoImage": "Prześlij plik, wprowadzając link lub wybierając go z lokalnego magazynu danych.",
-                "placeholderBadSource": "Brak obrazu",
-                "placeholderBadSourceAddition": "lub nie został on jeszcze załadowany do systemu IPFS"
+                "placeholderBadSource": "Nie udało się przetworzyć pliku",
+                "placeholderBadSourceAddition": "lub nie został on jeszcze załadowany do systemu IPFS",
+                "placeholderFileLimit": "Rozmiar pliku przekracza limit {value} mb"
             },
             "supply": {
                 "placeholder": "Podaż tokenów",
@@ -231,7 +233,11 @@
                 "placeholder": "Opis"
             }
         },
-        "enterTokenDescription": "Wprowadź opis"
+        "enterTokenDescription": "Wprowadź opis",
+        "divisible": {
+            "placeholder": "Podzielny",
+            "desc": "Zdolność NFT do podziału na części ułamkowe. Zapewnienie płynności działa tylko w przypadku aktywów podzielnych"
+        }
     },
     "transaction": {
         "title": "Szczegóły transakcji",

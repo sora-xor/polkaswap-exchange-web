@@ -210,17 +210,19 @@
         "nft": {
             "source": {
                 "label": "Quelle",
-                "value": "Lokale Dateien"
+                "value": "Lokale Dateien",
+                "limit": "Wählen Sie eine andere Datei"
             },
             "link": {
-                "placeholder": "Link hier eingeben...",
-                "placeholderShort": "Link",
-                "copyLink": "Link kopieren"
+                "placeholder": "IPFS-Link",
+                "copyLink": "Link kopieren",
+                "tooltip": "IPFS ist ein verteiltes System zum Speichern und Zugreifen auf Dateien, das den Zugriff auf Dateien von vielen Standorten aus ermöglicht, die nicht von einer Organisation verwaltet werden."
             },
             "image": {
                 "placeholderNoImage": "Lade die Datei hoch, indem du entweder einen Link eingibst oder aus dem lokalen Speicher auswählst",
-                "placeholderBadSource": "Es gibt kein Bild",
-                "placeholderBadSourceAddition": "oder es wurde noch nicht auf IPFS hochgeladen"
+                "placeholderBadSource": "Die Datei konnte nicht verarbeitet werden",
+                "placeholderBadSourceAddition": "oder es wurde noch nicht auf IPFS hochgeladen",
+                "placeholderFileLimit": "Die Dateigröße überschreitet das Limit von {value} MB"
             },
             "supply": {
                 "placeholder": "Token Vorrat",
@@ -231,7 +233,11 @@
                 "placeholder": "Beschreibung"
             }
         },
-        "enterTokenDescription": "Beschreibung eingeben"
+        "enterTokenDescription": "Beschreibung eingeben",
+        "divisible": {
+            "placeholder": "Teilbar",
+            "desc": "Fähigkeit von NFT, in Bruchteile zu unterteilen. Liquiditätsvorsorge funktioniert nur mit teilbaren Vermögenswerten"
+        }
     },
     "transaction": {
         "title": "Transaktionsdetails",

@@ -210,17 +210,19 @@
         "nft": {
             "source": {
                 "label": "La source",
-                "value": "Fichiers locaux"
+                "value": "Fichiers locaux",
+                "limit": "Choisissez un autre fichier"
             },
             "link": {
-                "placeholder": "Entrez le lien ici...",
-                "placeholderShort": "Lien",
-                "copyLink": "Copier le lien"
+                "placeholder": "Lien IPFS",
+                "copyLink": "Copier le lien",
+                "tooltip": "IPFS est un système distribué de stockage et d'accès aux fichiers, permettant d'accéder aux fichiers à partir de nombreux emplacements qui ne sont pas gérés par une seule organisation."
             },
             "image": {
                 "placeholderNoImage": "Téléchargez le fichier en saisissant un lien ou en choisissant dans le stockage local",
-                "placeholderBadSource": "Il n'y a pas d'image",
-                "placeholderBadSourceAddition": "ou il n'est pas encore téléchargé sur IPFS"
+                "placeholderBadSource": "Le fichier n'a pas pu être traité",
+                "placeholderBadSourceAddition": "ou il n'est pas encore téléchargé sur IPFS",
+                "placeholderFileLimit": "La taille du fichier dépasse la limite de {value} Mo"
             },
             "supply": {
                 "placeholder": "Offre de jetons",
@@ -231,7 +233,11 @@
                 "placeholder": "Description"
             }
         },
-        "enterTokenDescription": "Entrez la description"
+        "enterTokenDescription": "Entrez la description",
+        "divisible": {
+            "placeholder": "Divisible",
+            "desc": "Capacité de NFT à se diviser en parties fractionnaires. Le provisionnement de liquidité ne fonctionne qu'avec des actifs divisibles"
+        }
     },
     "transaction": {
         "title": "Détails de la transaction",
