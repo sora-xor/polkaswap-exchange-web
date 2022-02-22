@@ -28,10 +28,10 @@
 </template>
 
 <script lang="ts">
+import pick from 'lodash/fp/pick';
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import pick from 'lodash/fp/pick';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';

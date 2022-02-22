@@ -1,49 +1,37 @@
 <template>
-  <div :class="slippageToleranceClasses">
-    <div class="slippage-tolerance-default">
-      <settings-header :title="t('dexSettings.slippageTolerance')" :tooltip="t('dexSettings.slippageToleranceHint')" />
-      <settings-tabs :value="String(slippageTolerance)" :tabs="SlippageToleranceTabs" @click="selectTab" />
-    </div>
-    <div class="slippage-tolerance-custom">
-      <s-float-input
-        class="slippage-tolerance-custom_input"
-        size="small"
-        :decimals="2"
-        has-locale-string
-        :delimiters="delimiters"
-        :max="slippageToleranceExtremeValues.max"
-        v-model="customSlippageTolerance"
-        @blur="handleSlippageToleranceOnBlur"
-        @focus="handleSlippageToleranceOnFocus"
-      />
-    </div>
-    <div v-if="slippageToleranceValidation" class="slippage-tolerance_validation">
-      {{ t(`dexSettings.slippageToleranceValidation.${slippageToleranceValidation}`) }}
-    </div>
-    <!-- TODO [Release 2]: We'll play with areas below at the next iteration of development -->
-    <!-- <div class="transaction-deadline">
-      <div class="header">
-        {{ t('dexSettings.transactionDeadline') }}
-        <s-tooltip popper-class="info-tooltip" border-radius="mini" :content="t('dexSettings.transactionDeadlineHint')" theme="light" placement="right-start" animation="none" :show-arrow="false">
-          <s-icon class="header-hint" name="info-16" />
-        </s-tooltip>
-      </div>
-      <div class="value">
-        <div class="value-container">{{ transactionDeadline }} {{ t('dexSettings.min') }}</div>
-        <s-slider class="value-slider" :value="transactionDeadline" :showTooltip="false" @input="handleSetTransactionDeadline" />
-      </div>
-    </div> -->
-    <!-- <div class="node-address">
-      <div class="header">{{ t('dexSettings.nodeAddress') }}</div>
-      <div class="value">
-        <div class="value-container">
-          <span class="value-container_label">{{ t('dexSettings.ip') }} </span>{{ nodeAddress.ip }}
+  <div class="slippage-tolerance" :class="computedClasses">
+    <s-collapse @change="handleCollapseChange">
+      <s-collapse-item>
+        <template #title>
+          <info-line
+            :label="t('dexSettings.slippageTolerance')"
+            :label-tooltip="t('dexSettings.slippageToleranceHint')"
+            :value="customSlippageTolerance"
+          />
+        </template>
+        <div :class="slippageToleranceClasses">
+          <div class="slippage-tolerance-default">
+            <settings-tabs :value="String(slippageTolerance)" :tabs="SlippageToleranceTabs" @click="selectTab" />
+          </div>
+          <div class="slippage-tolerance-custom">
+            <s-float-input
+              class="slippage-tolerance-custom_input"
+              size="small"
+              :decimals="2"
+              has-locale-string
+              :delimiters="delimiters"
+              :max="slippageToleranceExtremeValues.max"
+              v-model="customSlippageTolerance"
+              @blur="handleSlippageToleranceOnBlur"
+              @focus="handleSlippageToleranceOnFocus"
+            />
+          </div>
+          <div v-if="slippageToleranceValidation" class="slippage-tolerance_validation">
+            {{ t(`dexSettings.slippageToleranceValidation.${slippageToleranceValidation}`) }}
+          </div>
         </div>
-        <div class="value-container">
-          <span class="value-container_label">{{ t('dexSettings.port') }} </span>#{{ nodeAddress.port }}
-        </div>
-      </div>
-    </div> -->
+      </s-collapse-item>
+    </s-collapse>
   </div>
 </template>
 
@@ -51,7 +39,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 import { FPNumber } from '@sora-substrate/util';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { lazyComponent } from '@/router';
@@ -59,8 +47,8 @@ import { Components } from '@/consts';
 
 @Component({
   components: {
-    SettingsHeader: lazyComponent(Components.SettingsHeader),
     SettingsTabs: lazyComponent(Components.SettingsTabs),
+    InfoLine: components.InfoLine,
   },
 })
 export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixin, TranslationMixin) {
@@ -76,6 +64,7 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
   };
 
   slippageToleranceFocused = false;
+  slippageToleranceOpened = true;
 
   @Getter slippageTolerance!: string;
   @Getter transactionDeadline!: number;
@@ -107,6 +96,11 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
     }
 
     return classes.join(' ');
+  }
+
+  get computedClasses(): string {
+    if (this.slippageToleranceOpened) return 'is-collapsed';
+    return '';
   }
 
   get isErrorValue(): boolean {
@@ -165,10 +159,17 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
   handleSetTransactionDeadline(value: number): void {
     this.setTransactionDeadline(value);
   }
+
+  handleCollapseChange(): void {
+    this.slippageToleranceOpened = !this.slippageToleranceOpened;
+  }
 }
 </script>
 
 <style lang="scss">
+.slippage-tolerance .s-flex {
+  margin-top: 0px !important;
+}
 .slippage-tolerance {
   &-custom_input.s-input {
     min-height: var(--s-size-small);
@@ -197,14 +198,68 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
   }
 
   .el-form--actions & {
-    margin-top: $inner-spacing-medium;
+    margin-top: $inner-spacing-mini;
+  }
+
+  .el-collapse.neumorphic .el-icon-arrow-right {
+    all: initial;
+    * {
+      all: unset;
+    }
+
+    transition: transform 0.3s;
+
+    margin-left: 6px;
+    height: 15px !important;
+    width: 15.8px !important;
+
+    background-color: var(--s-color-base-content-tertiary);
+    color: var(--s-color-base-on-accent) !important;
+    border-radius: var(--s-border-radius-medium);
+
+    &:hover {
+      cursor: pointer !important;
+    }
+  }
+
+  .el-collapse-item__header {
+    height: 36px;
+  }
+
+  .el-collapse-item__header .el-icon-arrow-right.is-active {
+    transform: scale(1, -1);
+    transition: transform 0.3s;
+  }
+
+  .el-collapse-item__content {
+    padding: 0 !important;
+    margin-bottom: $inner-spacing-mini;
+  }
+
+  .el-collapse--item .is-active .el-collapse {
+    background: none;
+  }
+
+  .info-line {
+    font-size: 14px !important;
+    line-height: 2.5 !important;
+    font-weight: 300;
+    border: none !important;
+
+    &-value {
+      color: var(--s-color-theme-accent);
+    }
+
+    .el-tooltip {
+      margin-bottom: 2px;
+    }
   }
 }
 </style>
 
 <style lang="scss" scoped>
 .slippage-tolerance {
-  display: flex;
+  width: 100%;
   flex-wrap: wrap;
   align-items: flex-end;
 
@@ -260,5 +315,9 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
       flex: 2;
     }
   }
+}
+
+.is-collapsed .el-collapse {
+  background: linear-gradient(0deg, var(--s-color-base-border-secondary) 1px, transparent 1px);
 }
 </style>

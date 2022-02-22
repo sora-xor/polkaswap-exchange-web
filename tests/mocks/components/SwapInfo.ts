@@ -1,11 +1,8 @@
-import {
-  CodecString,
-  AccountAsset,
-  LPRewardsInfo,
-  KnownSymbols,
-  RewardReason,
-  NetworkFeesObject,
-} from '@sora-substrate/util';
+import { CodecString, NetworkFeesObject } from '@sora-substrate/util';
+import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import { RewardReason } from '@sora-substrate/util/build/rewards/consts';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { LPRewardsInfo } from '@sora-substrate/util/build/rewards/types';
 
 import { MOCK_ACCOUNT_ASSETS } from '../tokens';
 

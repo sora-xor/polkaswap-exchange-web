@@ -40,7 +40,10 @@
             "RemoveLiquidity": "Rimossi {amount} {symbol} e {amount2} {symbol2}",
             "CreatePair": "Fornito {amount} {symbol} e {amount2} {symbol2}",
             "RegisterAsset": "Asset registrato {simbolo}",
-            "ClaimRewards": "Ricompensa richiesta con successo {rewards}"
+            "ClaimRewards": "Ricompensa richiesta con successo {rewards}",
+            "ReferralReserveXor": "XOR legato con successo",
+            "ReferralUnreserveXor": "XOR non legato con successo",
+            "ReferralSetInvitedUser": "Il referral è impostato correttamente"
         },
         "error": {
             "Transfer": "Impossibile inviare {amount} {symbol} a {address}",
@@ -49,8 +52,14 @@
             "RemoveLiquidity": "Impossibile rimuovere {amount} {symbol} e {amount2} {symbol2}",
             "CreatePair": "Impossibile fornire {amount} {symbol} e {amount2} {symbol2}",
             "RegisterAsset": "Impossibile registrare la risorsa {symbol}",
-            "ClaimRewards": "Impossibile richiedere i premi {rewards}"
-        }
+            "ClaimRewards": "Impossibile richiedere i premi {rewards}",
+            "ReferralReserveXor": "Fallito il legame XOR",
+            "ReferralUnreserveXor": "Impossibile disaggregare XOR",
+            "ReferralSetInvitedUser": "Impossibile impostare il rinvio"
+        },
+        "ReferralReserveXor": "Legame XOR",
+        "ReferralUnreserveXor": "Svincola XOR",
+        "ReferralSetInvitedUser": "Imposta referral"
     },
     "polkadotjs": {
         "noExtensions": "Nessuna estensione Polkadot.js trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -125,7 +134,8 @@
             "frozen": "Congelato",
             "locked": "- Bloccato",
             "reserved": "- Riservato",
-            "total": "Totale"
+            "total": "Totale",
+            "bonded": "- Legato"
         },
         "totalAssetsValue": "Il valore totale del tuo patrimonio:",
         "details": "Dettagli"
@@ -188,6 +198,45 @@
         "extensibleSupply": {
             "placeholder": "Supply estensibile",
             "desc": "Possibilità di coniare più tokens."
+        },
+        "titleCommon": "Creare",
+        "confirmTokenTitleCommon": "Crea token",
+        "confirmTokenTitleNFT": "Crea NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Fornisci contenuti",
+        "selectLocalFile": "Seleziona file locale",
+        "CreateSimpleToken": "Token",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Fonte",
+                "value": "File locali",
+                "limit": "Scegli un altro file"
+            },
+            "link": {
+                "placeholder": "Collegamento IPFS",
+                "copyLink": "Copia link",
+                "tooltip": "IPFS è un sistema distribuito per l'archiviazione e l'accesso ai file, che consente di accedere ai file da molte posizioni che non sono gestite da un'organizzazione."
+            },
+            "image": {
+                "placeholderNoImage": "Carica il file inserendo un collegamento o scegliendo dalla memoria locale",
+                "placeholderBadSource": "Impossibile elaborare il file",
+                "placeholderBadSourceAddition": "oppure non è ancora stato caricato su IPFS",
+                "placeholderFileLimit": "La dimensione del file supera il limite di {value} mb"
+            },
+            "supply": {
+                "placeholder": "Supply del token",
+                "desc": "Quantità di NFT che otterrai.",
+                "quantity": "Quantità"
+            },
+            "description": {
+                "placeholder": "Descrizione"
+            }
+        },
+        "enterTokenDescription": "Inserisci la descrizione",
+        "divisible": {
+            "placeholder": "Divisibile",
+            "desc": "Capacità di NFT di dividere in parti frazionarie. L'approvvigionamento di liquidità funziona solo con attività divisibili"
         }
     },
     "transaction": {
@@ -218,7 +267,9 @@
             "sorascan": "Visualizza su Sorascan",
             "subscan": "Visualizza in Subscan"
         },
-        "txId": "ID della transazione\n"
+        "txId": "ID della transazione\n",
+        "referrer": "Referente",
+        "referral": "Referral"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -561,7 +612,8 @@
         "title": "Transazione sul Bridge",
         "expectedMetaMaskAddress": "Indirizzo previsto in @:metamask",
         "allowToken": "Consenti a @:appName di utilizzare il tuo {tokenSymbol}",
-        "approveToken": "Tieni presente che è necessario approvare il token solo una volta. Se la tua estensione ha più richieste di approvazione di token, assicurati di confermare solo l'ultima mentre rifiuti le altre."
+        "approveToken": "Tieni presente che è necessario approvare il token solo una volta. Se la tua estensione ha più richieste di approvazione di token, assicurati di confermare solo l'ultima mentre rifiuti le altre.",
+        "blocksLeft": "{count} blocchi rimasti..."
     },
     "bridgeHistory": {
         "title": "Cronologia",
@@ -569,7 +621,8 @@
         "clearHistory": "Cancellare la cronologia",
         "empty": "Le tue transazioni appariranno qui.",
         "filterPlaceholder": "Filtra per Asset ID o Simbolo Ticker",
-        "restoreHistory": "Ripristina la cronologia"
+        "restoreHistory": "Ripristina la cronologia",
+        "statusAction": "Azione necessaria"
     },
     "selectToken": {
         "title": "Seleziona un token",
@@ -720,7 +773,9 @@
         "groups": {
             "strategic": "Strategic Rewards",
             "external": "Ricompense per l'account ethereum connesso"
-        }
+        },
+        "Rewards": "Ricompense",
+        "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
         "default": "@:ethereumText provider",
@@ -820,5 +875,48 @@
         "payoff": "Dovresti usare il Bridge per ottenere XOR da altre reti, ricevere XOR da un altro account SORA o scambiare qualsiasi altro token già presente nel tuo account in XOR.",
         "button": "Sì, capisco il rischio"
     },
-    "blockNumberText": "Numero di blocco"
+    "blockNumberText": "Numero di blocco",
+    "referralProgram": {
+        "title": "Referral",
+        "connectAccount": "Per invitare gli utenti è necessario collegare il tuo account SORA.",
+        "bondedXOR": "XOR legato",
+        "referralsNumber": "{number} referenze",
+        "startInviting": "Per iniziare a invitare, vincola qualsiasi importo di XOR.",
+        "preview": "Invita nuovi utenti e ottieni il 10% dalle loro commissioni di transazione.<br \/>Per iniziare, lega qualsiasi quantità di XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Per saperne di più<\/a>",
+        "deposit": "Deposita",
+        "balance": "Bilancia",
+        "networkFee": "@:networkFeeText",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "insufficientBondedBalance": "Equilibrio vincolato insufficiente",
+        "action": {
+            "connectWallet": "@:connectWalletText",
+            "empty": "Inserisci l'importo di {tokenSymbol}",
+            "startInviting": "Prenota {tokenSymbol} per iniziare a invitare",
+            "bondMore": "Legare di più",
+            "bond": "Riserva",
+            "unbond": "Separare",
+            "copyLink": "Copia link"
+        },
+        "transactionDetails": "Dettagli di Transazione",
+        "receivedRewards": "Ricompense ricevute",
+        "invitationLink": "Link all'invito",
+        "successCopy": "Il link di riferimento è stato copiato negli appunti",
+        "bondTitle": "Legame XOR",
+        "unbondTitle": "Svincola XOR",
+        "confirm": {
+            "text": "Conferma",
+            "bond": "Conferma legame",
+            "unbond": "Confermare lo scollegamento",
+            "inviteTitle": "Sei stato invitato a Polkaswap",
+            "inviteDescription": "Per ogni transazione, il 10% della commissione andrà al tuo referrer, senza alcun costo aggiuntivo per te.",
+            "signInvitation": "Approvare",
+            "freeOfCharge": "Questa azione è gratuita",
+            "hasReferrerTitle": "Hai già impostato il tuo referrer",
+            "hasReferrerDescription": "Sfortunatamente, puoi impostarne solo uno",
+            "ok": "OK"
+        }
+    },
+    "transactionDetailsText": "Dettagli di Transazione",
+    "createTokenTextNFT": "Crea NFT"
 }

@@ -40,7 +40,10 @@
             "RemoveLiquidity": "Удалены {amount} {symbol} и {amount2} {symbol2}",
             "CreatePair": "Поставлено {amount} {symbol} и {amount2} {symbol2}",
             "RegisterAsset": "Зарегистрирован актив {symbol}",
-            "ClaimRewards": "Награды получены успешно {rewards}"
+            "ClaimRewards": "Награды получены успешно {rewards}",
+            "ReferralReserveXor": "XOR успешно зарезервированы",
+            "ReferralUnreserveXor": "XOR успешно выведены из резерва",
+            "ReferralSetInvitedUser": "Реферал успешно установлен"
         },
         "error": {
             "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
@@ -49,8 +52,14 @@
             "RemoveLiquidity": "Не удалось вывести {amount} {symbol} и {amount2} {symbol2}",
             "CreatePair": "Не удалось добавить {amount} {symbol} и {amount2} {symbol2}",
             "RegisterAsset": "Не удалось зарегистрировать {symbol} актив",
-            "ClaimRewards": "Не удалось получить вознаграждения {rewards}"
-        }
+            "ClaimRewards": "Не удалось получить вознаграждения {rewards}",
+            "ReferralReserveXor": "Не удалось зарезервировать XOR",
+            "ReferralUnreserveXor": "Не удалось вывести XOR из резерва",
+            "ReferralSetInvitedUser": "Не удалось установить реферала"
+        },
+        "ReferralReserveXor": "Зарезервировать XOR",
+        "ReferralUnreserveXor": "Вывести XOR из резерва",
+        "ReferralSetInvitedUser": "Установить реферала"
     },
     "polkadotjs": {
         "noExtensions": "Расширение Polkadot.js не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",
@@ -124,8 +133,9 @@
             "transferable": "Доступны к отправке",
             "frozen": "Заморожено",
             "locked": "- Заблокировано",
-            "reserved": " - Зарезервировано",
-            "total": "Всего"
+            "reserved": "- Зарезервировано",
+            "total": "Всего",
+            "bonded": "- В обеспечении"
         },
         "totalAssetsValue": "Общая стоимость ваших активов:",
         "details": "Детали"
@@ -188,6 +198,45 @@
         "extensibleSupply": {
             "placeholder": "Увеличиваемая эмиссия",
             "desc": "Возможность выпустить больше токенов."
+        },
+        "titleCommon": "Создать",
+        "confirmTokenTitleCommon": "Создать токен",
+        "confirmTokenTitleNFT": "Создать NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Предоставить контент",
+        "selectLocalFile": "Выберите локальный файл",
+        "CreateSimpleToken": "Токен",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Источник",
+                "value": "Локальные файлы",
+                "limit": "Выбрать другой файл"
+            },
+            "link": {
+                "placeholder": "Ссылка IPFS",
+                "copyLink": "Копировать ссылку",
+                "tooltip": "IPFS — это распределенная система для хранения файлов и доступа к ним, позволяющая получать доступ к файлам из многих мест, которые не управляются одной организацией."
+            },
+            "image": {
+                "placeholderNoImage": "Загрузите файл, введя ссылку или выбрав из локального хранилища.",
+                "placeholderBadSource": "Файл не удалось обработать",
+                "placeholderBadSourceAddition": "или оно ещё не загружено в IPFS",
+                "placeholderFileLimit": "Размер файла превышает ограничение в {value}мб."
+            },
+            "supply": {
+                "placeholder": "Количество токенов",
+                "desc": "Количество NFT, которое вы собираетесь получить.",
+                "quantity": "Количество"
+            },
+            "description": {
+                "placeholder": "Описание"
+            }
+        },
+        "enterTokenDescription": "Введите описание",
+        "divisible": {
+            "placeholder": "Делимый",
+            "desc": "Способность NFT делиться на дробные части. Предоставление ликвидности работает только с делимыми активами"
         }
     },
     "transaction": {
@@ -218,13 +267,15 @@
             "sorascan": "Смотреть в SORAScan",
             "subscan": "Смотреть в Subscan"
         },
-        "txId": "ID транзакции"
+        "txId": "ID транзакции",
+        "referrer": "Реферер",
+        "referral": "Реферал"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
     "ethereumText": "Ethereum",
     "changeNetworkText": "Сменить сеть в Metamask",
-    "transactionText": "транзакция | транзакции",
+    "transactionText": "транзакцию | транзакции",
     "connectWalletText": "Подключить аккаунт",
     "changeAccountText": "Сменить аккаунт",
     "connectedText": "Подключено",
@@ -561,7 +612,8 @@
         "title": "Транзакция Моста",
         "expectedMetaMaskAddress": "Ожидаемый адрес в @:metamask",
         "allowToken": "Разрешить @:appName использовать ваши {tokenSymbol}",
-        "approveToken": "Обратите внимание, что подтверждать токен нужно только один раз. Если ваше расширение имеет несколько запросов на утверждение токена, убедитесь, что вы подтвердили только последний из них, а остальные отклонили."
+        "approveToken": "Обратите внимание, что подтверждать токен нужно только один раз. Если ваше расширение имеет несколько запросов на утверждение токена, убедитесь, что вы подтвердили только последний из них, а остальные отклонили.",
+        "blocksLeft": "{count} блоков осталось..."
     },
     "bridgeHistory": {
         "title": "История",
@@ -569,7 +621,8 @@
         "clearHistory": "Очистить историю",
         "empty": "Здесь появится Ваша транзакция",
         "filterPlaceholder": "Фильтр по ID актива или символу тикера",
-        "restoreHistory": "Восстановить историю"
+        "restoreHistory": "Восстановить историю",
+        "statusAction": "Требуется действие"
     },
     "selectToken": {
         "title": "Выберите токен",
@@ -681,14 +734,14 @@
             "failed": "{order} из {total} транзакции не удались. @:retryText"
         },
         "signing": {
-            "extension": "расширение для браузера polkadot {.js}",
-            "accounts": "Ваши учетные записи @:soraText и @:ethereumText соответственно"
+            "extension": "расширении для браузера polkadot {.js}",
+            "accounts": "Ваших учетных записях @:soraText и @:ethereumText соответственно"
         },
         "hint": {
             "connectExternalAccount": "Подключите аккаунт @:ethereumText, чтобы проверить наличие доступных наград PSWAP и VAL.",
             "connectAccounts": "Для получения наград PSWAP и VAL необходимо подключить оба аккаунта @:soraText и @:(ethereumText).",
             "connectAnotherAccount": "Подключите другой аккаунт @:ethereumText, чтобы проверить наличие доступных наград PSWAP и VAL.",
-            "howToClaimRewards": "Чтобы получить Ваше {symbols} вознаграждение, Вы должны войти {count} {transactions} в {destination}. Вознаграждения будут перечислены на ваш счет @:(soraText)."
+            "howToClaimRewards": "Чтобы получить Ваши {symbols} вознаграждения, Вы должны подписать {count} {transactions} в {destination}. Вознаграждения будут перечислены на ваш счет @:(soraText)."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
@@ -720,7 +773,9 @@
         "groups": {
             "strategic": "Стратегические вознаграждения",
             "external": "Вознаграждения за подключенный аккаунт Ethereum"
-        }
+        },
+        "Rewards": "Награды",
+        "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
         "default": "@:ethereumText провайдер",
@@ -820,5 +875,48 @@
         "payoff": "Вам нужно будет использовать мост, чтобы получить XOR из других сетей, получить отправку XOR из другой учетной записи SORA или заменить любой другой токен, уже находящийся в вашей учетной записи, на XOR.",
         "button": "Да, я понимаю риск"
     },
-    "blockNumberText": "Номер блока"
+    "blockNumberText": "Номер блока",
+    "referralProgram": {
+        "title": "Рефералы",
+        "connectAccount": "Для приглашения пользователей необходимо подключить учетную запись SORA.",
+        "bondedXOR": "XOR зарезервировано",
+        "referralsNumber": "{number} рефералов",
+        "startInviting": "Чтобы начать приглашать, внесите любое количество XOR.",
+        "preview": "Приглашайте новых пользователей и получайте 10% от их транзакционных сборов.<br \/>Чтобы начать, зарезервируйте любую сумму XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Узнать больше<\/a>",
+        "deposit": "Пополнить",
+        "balance": "Баланс",
+        "networkFee": "@:networkFeeText",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "insufficientBondedBalance": "Недостаточный зарезервированный баланс",
+        "action": {
+            "connectWallet": "@:connectWalletText",
+            "empty": "Введите сумму {tokenSymbol}",
+            "startInviting": "Зарезервируйте {tokenSymbol}, чтобы начать приглашать",
+            "bondMore": "Внести еще",
+            "bond": "Внести",
+            "unbond": "Вывести",
+            "copyLink": "Копировать ссылку"
+        },
+        "transactionDetails": "Детали Транзакции",
+        "receivedRewards": "Полученные награды",
+        "invitationLink": "Ссылка для приглашения",
+        "successCopy": "Реферальная ссылка скопирована в буфер обмена",
+        "bondTitle": "Зарезервировать XOR",
+        "unbondTitle": "Вывести XOR из резерва",
+        "confirm": {
+            "text": "Подтвердить",
+            "bond": "Подтвердить резерв",
+            "unbond": "Подтвердить вывод из резерва",
+            "inviteTitle": "Вас пригласили в Polkaswap",
+            "inviteDescription": "При оплате комиссии за транзакцию, 10% достанется вашему рефералу. Это совершенно бесплатно.",
+            "signInvitation": "Подписать",
+            "freeOfCharge": "Данная транзакция бесплатна",
+            "hasReferrerTitle": "Вы уже установили реферера",
+            "hasReferrerDescription": "К сожалению, вы можете установить только одного реферера",
+            "ok": "OK"
+        }
+    },
+    "transactionDetailsText": "Детали транзакции",
+    "createTokenTextNFT": "Создать NFT"
 }

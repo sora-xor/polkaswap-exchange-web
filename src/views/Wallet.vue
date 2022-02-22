@@ -16,7 +16,8 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
-import { AccountAsset, KnownAssets, KnownSymbols } from '@sora-substrate/util';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
@@ -70,7 +71,7 @@ export default class Wallet extends Mixins(TranslationMixin) {
       router.push({ name: PageNames.AddLiquidity });
       return;
     }
-    const assetAAddress = KnownAssets.get(KnownSymbols.XOR).address;
+    const assetAAddress = XOR.address;
     const assetBAddress = asset.address;
     const params = { assetAAddress, assetBAddress };
     await this.setAddliquidityAssetA(assetAAddress);
