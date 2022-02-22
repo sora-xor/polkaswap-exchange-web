@@ -106,10 +106,7 @@ export const waitForIncomingRequest = async (tx: BridgeHistory): Promise<{ hash:
   const soraHash = (
     await bridgeApi.api.query.ethBridge.loadToIncomingRequestHash(tx.externalNetwork, tx.ethereumHash)
   ).toString();
-  const soraBlockNumber = +(
-    await bridgeApi.api.query.ethBridge.requestSubmissionHeight(tx.externalNetwork, tx.ethereumHash)
-  ).toString();
-  const soraBlockHash = (await bridgeApi.api.rpc.chain.getBlockHash(soraBlockNumber)).toString();
+  const soraBlockHash = await getSoraBlockHashByRequestHash(tx.externalNetwork as number, tx.ethereumHash as string);
 
   return { hash: soraHash, blockId: soraBlockHash };
 };
@@ -205,4 +202,42 @@ export const waitForEvmTransaction = async (id: string) => {
       throw new Error('[Bridge]: The transaction was canceled by the user');
     }
   );
+};
+
+export const getSoraBlockHashByRequestHash = async (
+  externalNetworkId: number,
+  requestHash: string
+): Promise<string> => {
+  const soraBlockNumber = +(
+    await bridgeApi.api.query.ethBridge.requestSubmissionHeight(externalNetworkId, requestHash)
+  ).toString();
+
+  const soraBlockHash = (await bridgeApi.api.rpc.chain.getBlockHash(soraBlockNumber)).toString();
+
+  return soraBlockHash;
+};
+
+export const getBlockTimestamp = async (blockHash: string): Promise<number> => {
+  const timestamp = (await bridgeApi.api.query.timestamp.now.at(blockHash)).toNumber();
+
+  return timestamp;
+};
+
+export const getEvmTxRecieptByHash = async (
+  ethereumHash: string
+): Promise<{ ethereumNetworkFee: string; blockHeight: number; from: string } | null> => {
+  try {
+    const {
+      from,
+      effectiveGasPrice,
+      gasUsed,
+      blockNumber: blockHeight,
+    } = await ethersUtil.getEvmTransactionReceipt(ethereumHash);
+
+    const ethereumNetworkFee = ethersUtil.calcEvmFee(effectiveGasPrice.toNumber(), gasUsed.toNumber());
+
+    return { ethereumNetworkFee, blockHeight, from };
+  } catch (error) {
+    return null;
+  }
 };

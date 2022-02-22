@@ -49,20 +49,26 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/bridge',
-    name: PageNames.Bridge,
-    component: lazyView(PageNames.Bridge),
-  },
-  {
-    path: '/bridge/transaction',
-    name: PageNames.BridgeTransaction,
-    component: lazyView(PageNames.BridgeTransaction),
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/bridge/history',
-    name: PageNames.BridgeTransactionsHistory,
-    component: lazyView(PageNames.BridgeTransactionsHistory),
-    meta: { requiresAuth: true },
+    component: lazyView(PageNames.BridgeContainer),
+    children: [
+      {
+        path: '',
+        name: PageNames.Bridge,
+        component: lazyView(PageNames.Bridge),
+      },
+      {
+        path: 'history',
+        name: PageNames.BridgeTransactionsHistory,
+        component: lazyView(PageNames.BridgeTransactionsHistory),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'transaction',
+        name: PageNames.BridgeTransaction,
+        component: lazyView(PageNames.BridgeTransaction),
+        meta: { requiresAuth: true },
+      },
+    ],
   },
   {
     path: '/pool',

@@ -5,6 +5,7 @@ import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import flatten from 'lodash/fp/flatten';
 import omit from 'lodash/fp/omit';
+import chunk from 'lodash/fp/chunk';
 import {
   FPNumber,
   BridgeCurrencyType,
@@ -15,9 +16,17 @@ import {
 } from '@sora-substrate/util';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
-import type { BridgeHistory, CodecString } from '@sora-substrate/util';
+import type { BridgeHistory, BridgeRequest, CodecString } from '@sora-substrate/util';
 
-import { bridgeApi, appBridge, STATES, waitForApprovedRequest } from '@/utils/bridge';
+import {
+  bridgeApi,
+  appBridge,
+  STATES,
+  waitForApprovedRequest,
+  getSoraBlockHashByRequestHash,
+  getEvmTxRecieptByHash,
+  getBlockTimestamp,
+} from '@/utils/bridge';
 import ethersUtil, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/ethers-util';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { isEthereumAddress } from '@/utils';
@@ -33,6 +42,8 @@ const types = flow(
     'SET_ASSET_BALANCE',
     'SET_AMOUNT',
     'SET_HISTORY_ITEM',
+    'SET_HISTORY_RESTORATION',
+    'SET_EVM_BLOCK_NUMBER',
     'ADD_TX_ID_IN_PROGRESS',
     'ADD_TX_ID_IN_APPROVE',
     'REMOVE_TX_ID_FROM_PROGRESS',
@@ -48,22 +59,40 @@ function checkEvmNetwork(rootGetters): void {
   }
 }
 
-interface EthLogData {
-  soraHash: string;
-  ethHash: string;
-}
-const topic = '0x0ce781a18c10c8289803c7c4cfd532d797113c4b41c9701ffad7d0a632ac555b';
+type AccountRequest = [number, string];
 
-async function getEthUserTXs(contracts: Array<string>): Promise<Array<EthLogData>> {
+interface EthLogData {
+  data: string;
+  transactionHash: string;
+  blockNumber: number;
+}
+
+// Withdrawal (bytes32 txHash)
+const outgoingTopic = '0x0ce781a18c10c8289803c7c4cfd532d797113c4b41c9701ffad7d0a632ac555b';
+
+const getStartBlock = (chainId: number) => {
+  return (
+    {
+      1: 12322912, // main
+    }[chainId] || 8371261
+  ); // rinkeby
+};
+
+async function getEthUserTXs(contracts: Array<string>, topic: string, blockHash: string): Promise<Array<EthLogData>> {
   const ethersInstance = await ethersUtil.getEthersInstance();
   const getLogs = (address: string) =>
     ethersInstance.getLogs({
       topics: [topic],
-      fromBlock: 8371261,
+      blockHash,
       address,
     });
   const logs = flatten(await Promise.all(contracts.map((contract) => getLogs(contract))));
-  return logs.map<EthLogData>((log) => ({ ethHash: log.transactionHash, soraHash: log.data }));
+
+  return logs.map<EthLogData>(({ blockNumber, data, transactionHash }) => ({
+    blockNumber,
+    data,
+    transactionHash,
+  }));
 }
 
 function initialState() {
@@ -74,8 +103,10 @@ function initialState() {
     amount: '',
     evmNetworkFee: ZeroStringValue,
     evmNetworkFeeFetching: false,
+    evmBlockNumber: 0,
     history: [],
     historyId: '',
+    historyRestoration: false,
     restored: true,
     waitingForApprove: {},
     inProgressIds: {},
@@ -168,6 +199,12 @@ const mutations = {
   [types.REMOVE_TX_ID_FROM_APPROVE](state, id: string) {
     state.waitingForApprove = omit([id], state.waitingForApprove);
   },
+  [types.SET_EVM_BLOCK_NUMBER](state, blockNumber: number) {
+    state.evmBlockNumber = blockNumber;
+  },
+  [types.SET_HISTORY_RESTORATION](state, flag: boolean) {
+    state.historyRestoration = flag;
+  },
 };
 
 const actions = {
@@ -208,6 +245,10 @@ const actions = {
       balanceSubscriptions.add('asset', { updateBalance, token: getters.asset });
     }
   },
+  async updateEvmBlockNumber({ commit }, value?: number) {
+    const blockNumber = value ?? (await (await ethersUtil.getEthersInstance()).getBlockNumber());
+    commit(types.SET_EVM_BLOCK_NUMBER, blockNumber);
+  },
   async getHistory({ commit }) {
     commit(types.GET_HISTORY_REQUEST);
     try {
@@ -227,46 +268,206 @@ const actions = {
     }
   },
   // TODO: Need to restore transactions for all networks
-  async getRestoredHistory({ state, rootGetters }) {
-    api.restored = true;
-    const hashes = await bridgeApi.getAccountRequests();
-    if (!hashes?.length) {
-      return;
-    }
-    const transactions = await bridgeApi.getRequests(hashes);
-    if (!transactions?.length) {
-      return;
-    }
+  async getRestoredHistory({ rootGetters, rootState, state, dispatch, commit }) {
+    commit(types.SET_HISTORY_RESTORATION, true);
+
+    const soraAccountAddress = rootGetters.account.address;
+    const externalNetwork = BridgeNetworks.ETH_NETWORK_ID;
     const contracts = Object.values(KnownBridgeAsset).map<string>((key) => rootGetters['web3/contractAddress'](key));
-    const ethLogs = await getEthUserTXs(contracts);
-    transactions.forEach((transaction) => {
-      const history = state.history;
-      if (!history.length || !history.find((item) => item.hash === transaction.hash)) {
-        const direction =
-          transaction.direction === BridgeDirection.Outgoing
-            ? Operation.EthBridgeOutgoing
-            : Operation.EthBridgeIncoming;
-        const ethLogData = ethLogs.find((logData) => logData.soraHash === transaction.hash);
-        const time = Date.now();
-        bridgeApi.generateHistoryItem({
-          type: direction,
-          from: transaction.from,
-          amount: transaction.amount,
-          symbol: rootGetters['assets/registeredAssets'].find((item) => item.address === transaction.soraAssetAddress)
-            ?.symbol,
-          assetAddress: transaction.soraAssetAddress,
-          startTime: time,
-          endTime: ethLogData ? time : undefined,
-          status: ethLogData ? BridgeTxStatus.Done : BridgeTxStatus.Failed,
-          transactionStep: 2,
-          hash: transaction.hash,
-          ethereumHash: ethLogData ? ethLogData.ethHash : '',
-          transactionState: ethLogData ? STATES.EVM_COMMITED : STATES.EVM_REJECTED,
-          externalNetwork: BridgeNetworks.ETH_NETWORK_ID,
-          to: transaction.to,
+    const ethersInstance = await ethersUtil.getEthersInstance();
+    const network = await ethersInstance.getNetwork();
+    const ethStartBlock = getStartBlock(network.chainId);
+    const etherscanApiKey = rootState.Settings.apiKeys?.etherscan;
+    const etherscanInstance = new ethers.providers.EtherscanProvider(network, etherscanApiKey);
+    // get sora network start time to filter eth transactions by timestamp
+    const soraStartBlockHash = (await bridgeApi.api.rpc.chain.getBlockHash(1)).toString();
+    const soraStartTimestamp = await getBlockTimestamp(soraStartBlockHash);
+
+    // all account requests registered in chain
+    const accountRequests = ((await bridgeApi.api.query.ethBridge.accountRequests(soraAccountAddress)).toJSON() ||
+      []) as Array<AccountRequest>;
+
+    // 3 types of hashes:
+    // [BridgeDirection.Outgoing] - sora hash;
+    // [BridgeDirection.LoadIncoming] - ethereum hash;
+    // [BridgeDirection.Incoming] - sora hash;
+    // reverse hashes, to restore history in time desc order
+    const hashes = accountRequests.map(([externalNetwork, hash]) => hash).reverse();
+    // bridgeApi.getRequests return maximum 50 results
+    const requestsChunks = chunk(50)(hashes);
+    const requests = flatten(await Promise.all(requestsChunks.map((chunk) => bridgeApi.getRequests(chunk))));
+    const requestsEntries = hashes.reduce<any>((buffer, hash, index) => {
+      const tx = requests[index];
+      // mapping [BridgeDirection.Incoming], [BridgeDirection.Outgoing] requests
+      // [BridgeDirection.LoadIncoming] requests are skipped because [BridgeDirection.Incoming] contains more data
+      if (tx.direction === BridgeDirection.Incoming && tx.hash !== hash) {
+        // key: evm hash, value: sora hash
+        buffer.push([tx.hash, { ...tx, hash }]);
+      } else if (tx.direction === BridgeDirection.Outgoing) {
+        // key: sora hash, value: sora hash
+        buffer.push([hash, tx]);
+      }
+      return buffer;
+    }, []);
+
+    const ethBlockLogs: { [key: string]: Promise<EthLogData[]> } = {};
+    const ethAccountTransactions: { [key: string]: Promise<ethers.providers.TransactionResponse[]> } = {};
+
+    const getAccountTransactions = async (address: string): Promise<Array<ethers.providers.TransactionResponse>> => {
+      if (!ethAccountTransactions[address]) {
+        ethAccountTransactions[address] = etherscanInstance.getHistory(address, ethStartBlock).then((history) => {
+          return history.filter(
+            (tx) =>
+              !!tx.timestamp &&
+              !!tx.to &&
+              soraStartTimestamp <= +tx.timestamp * 1000 &&
+              contracts.includes(tx.to.toLowerCase())
+          );
         });
       }
-    });
+      return await ethAccountTransactions[address];
+    };
+
+    const getBlockLogs = async (blockHash: string, contract: string): Promise<EthLogData[]> => {
+      if (!ethBlockLogs[blockHash]) {
+        ethBlockLogs[blockHash] = getEthUserTXs([contract], outgoingTopic, blockHash);
+      }
+      return await ethBlockLogs[blockHash];
+    };
+
+    const findOutgoingEthTxBySoraHash = async (
+      address: string,
+      hash: string
+    ): Promise<ethers.providers.TransactionResponse | null> => {
+      const transactions = await getAccountTransactions(address);
+      try {
+        return await Promise.any(
+          transactions.map(async (tx) => {
+            const logs = await getBlockLogs(tx.blockHash as string, tx.to as string);
+            if (!logs.find((item) => item.data === hash)) throw new Error();
+            return tx;
+          })
+        );
+      } catch (error) {
+        return null;
+      }
+    };
+
+    const restoreIncomingHistory = async (ethereumHash: string, transaction: BridgeRequest) => {
+      if (state.history.find((item: BridgeHistory) => item.ethereumHash === ethereumHash)) return;
+
+      const hash = transaction.hash;
+      const amount = transaction.amount as string;
+      const assetAddress = transaction.soraAssetAddress as string;
+      const type = Operation.EthBridgeIncoming;
+      const from = soraAccountAddress;
+      const symbol = rootGetters['assets/assetsDataTable'][assetAddress]?.symbol;
+      const soraNetworkFee = ZeroStringValue;
+      const blockId = await getSoraBlockHashByRequestHash(externalNetwork, ethereumHash);
+      const soraTimestamp = await getBlockTimestamp(blockId);
+      const transactionState = STATES.SORA_COMMITED;
+      const status = BridgeTxStatus.Done;
+      const recieptData = await getEvmTxRecieptByHash(ethereumHash);
+      const to = recieptData?.from;
+      const ethereumNetworkFee = recieptData?.ethereumNetworkFee;
+      const blockHeight = recieptData?.blockHeight ? String(recieptData.blockHeight) : undefined;
+      const evmTimestamp = blockHeight ? (await ethersUtil.getBlock(+blockHeight)).timestamp * 1000 : Date.now();
+      const [startTime, endTime] = [evmTimestamp, soraTimestamp];
+
+      bridgeApi.generateHistoryItem({
+        type,
+        blockId,
+        blockHeight,
+        from,
+        amount,
+        symbol,
+        assetAddress,
+        startTime,
+        endTime,
+        status,
+        transactionStep: 2,
+        hash,
+        ethereumHash,
+        soraNetworkFee,
+        ethereumNetworkFee,
+        transactionState,
+        externalNetwork,
+        to,
+      });
+    };
+
+    const restoreOutgoingHistory = async (hash: string, transaction: BridgeRequest) => {
+      if (state.history.find((item: BridgeHistory) => item.hash === transaction.hash)) return;
+
+      const type = Operation.EthBridgeOutgoing;
+      const from = soraAccountAddress;
+      const to = transaction.to as string;
+      const amount = transaction.amount as string;
+      const soraStatus = transaction.status;
+      const assetAddress = transaction.soraAssetAddress as string;
+      const symbol = rootGetters['assets/assetsDataTable'][assetAddress]?.symbol;
+      const soraNetworkFee = rootGetters.networkFees[Operation.EthBridgeOutgoing];
+      const soraPartCompleted = soraStatus === BridgeTxStatus.Ready;
+      const transactionStep = soraPartCompleted ? 2 : 1;
+      const blockId = await getSoraBlockHashByRequestHash(externalNetwork, hash);
+      const soraTimestamp = await getBlockTimestamp(blockId);
+
+      const ethTx = await findOutgoingEthTxBySoraHash(to, hash);
+      const ethereumHash = ethTx ? ethTx.hash : '';
+      const blockHeight = ethTx ? String(ethTx.blockNumber) : undefined;
+      const evmTimestamp = ethTx?.timestamp ? ethTx.timestamp * 1000 : Date.now();
+      const recieptData = ethereumHash ? await getEvmTxRecieptByHash(ethereumHash) : undefined;
+      const ethereumNetworkFee = recieptData?.ethereumNetworkFee;
+
+      const transactionState = ethereumHash
+        ? STATES.EVM_COMMITED
+        : soraPartCompleted
+        ? STATES.EVM_REJECTED
+        : STATES.SORA_PENDING;
+
+      const status = ethereumHash
+        ? BridgeTxStatus.Done
+        : soraPartCompleted
+        ? BridgeTxStatus.Failed
+        : BridgeTxStatus.Pending;
+
+      const [startTime, endTime] = [soraTimestamp, evmTimestamp];
+
+      bridgeApi.generateHistoryItem({
+        type,
+        blockId,
+        blockHeight,
+        from,
+        amount,
+        symbol,
+        assetAddress,
+        startTime,
+        endTime,
+        status,
+        transactionStep,
+        hash,
+        ethereumHash,
+        soraNetworkFee,
+        ethereumNetworkFee,
+        transactionState,
+        externalNetwork,
+        to,
+      });
+    };
+
+    // Bridge history restoration process
+    // Show transaction in history after processing
+    for (const [requestHash, transaction] of requestsEntries) {
+      if (transaction.direction === BridgeDirection.Outgoing) {
+        await restoreOutgoingHistory(requestHash, transaction);
+      } else {
+        await restoreIncomingHistory(requestHash, transaction);
+      }
+      await dispatch('getHistory');
+    }
+
+    api.restored = true;
+    commit(types.SET_HISTORY_RESTORATION, false);
   },
 
   setHistoryItem({ commit }, historyId = '') {

@@ -324,7 +324,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   @State((state) => state[namespace].waitingForApprove) waitingForApprove!: any;
   @State((state) => state[namespace].inProgressIds) inProgressIds!: any;
 
-  @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @Getter('prev', { namespace: 'router' }) prevRoute!: PageNames;
   @Getter('getAssetDataByAddress', { namespace: 'assets' }) getAssetDataByAddress!: (
     address: string
@@ -664,10 +663,12 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
       return;
     }
 
-    const withAutoStart =
-      !this.txInProcess && (!this.isTransferStarted || this.isTransactionFromPending || this.isTransactionToPending);
+    await this.withParentLoading(async () => {
+      const withAutoStart =
+        !this.txInProcess && (!this.isTransferStarted || this.isTransactionFromPending || this.isTransactionToPending);
 
-    await this.handleTransaction(withAutoStart);
+      await this.handleTransaction(withAutoStart);
+    });
   }
 
   beforeDestroy(): void {
@@ -892,6 +893,8 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
 </style>
 
 <style lang="scss" scoped>
+$network-title-max-width: 250px;
+
 .transaction {
   &-container {
     flex-direction: column;
@@ -995,14 +998,18 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
   &-title {
     display: flex;
     align-items: baseline;
+    padding-right: $inner-spacing-mini;
+    padding-left: $inner-spacing-mini;
+
     h3 {
-      padding-right: $inner-spacing-mini;
-      padding-left: $inner-spacing-mini;
+      margin-right: $inner-spacing-mini;
       font-size: var(--s-font-size-small);
       line-height: var(--s-line-height-reset);
       font-weight: 600;
       letter-spacing: var(--s-letter-spacing-small);
       text-transform: inherit;
+      text-align: left;
+      max-width: $network-title-max-width;
     }
   }
   @include status-icon(true);

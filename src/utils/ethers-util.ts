@@ -338,6 +338,13 @@ async function getEvmTransactionReceipt(hash: string): Promise<ethers.providers.
   return tx;
 }
 
+async function getBlock(number: number): Promise<ethers.providers.Block> {
+  const ethersInstance = await getEthersInstance();
+  const block = await ethersInstance.getBlock(number);
+
+  return block;
+}
+
 async function readSmartContract(network: ContractNetwork, name: string): Promise<JsonContract | undefined> {
   try {
     const { data } = await axiosInstance.get(`/abi/${network}/${name}`);
@@ -370,4 +377,5 @@ export default {
   fetchEvmNetworkFee,
   calcEvmFee,
   getEvmTransactionReceipt,
+  getBlock,
 };
