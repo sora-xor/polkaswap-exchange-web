@@ -206,7 +206,7 @@
         "provideContent": "Podaj treść",
         "selectLocalFile": "Wybierz plik lokalny",
         "CreateSimpleToken": "Token",
-        "CreateNftToken": "Token NFT",
+        "CreateNftToken": "NFT",
         "nft": {
             "source": {
                 "label": "Źródło",
@@ -843,8 +843,8 @@
         }
     },
     "recievedText": "Otrzymano",
-    "light": "jasny",
-    "dark": "ciemny",
+    "light": "Jasny",
+    "dark": "Ciemny",
     "headerMenu": {
         "showBalances": "Pokaż salda",
         "hideBalances": "Ukryj salda",
