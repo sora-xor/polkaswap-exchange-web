@@ -1,6 +1,7 @@
 import isNil from 'lodash/fp/isNil';
 import { Component, Mixins } from 'vue-property-decorator';
-import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util';
+import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import DialogMixin from '@/components/mixins/DialogMixin';
 import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin';

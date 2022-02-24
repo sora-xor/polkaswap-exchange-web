@@ -1,8 +1,7 @@
 <template>
-  <div v-loading="!isInitRequestCompleted" class="container transaction-container">
+  <div class="container transaction-container">
     <generic-page-header has-button-back :title="t('bridgeTransaction.title')" @back="handleBack">
       <s-button
-        v-if="isInitRequestCompleted"
         class="el-button--history"
         type="action"
         icon="time-time-history-24"
@@ -12,7 +11,7 @@
       />
     </generic-page-header>
     <div class="transaction-content">
-      <template v-if="isInitRequestCompleted">
+      <template>
         <div class="header">
           <div v-loading="isTransactionFromPending || isTransactionToPending" :class="headerIconClasses" />
           <h5 class="header-details">
@@ -36,8 +35,8 @@
           </h5>
           <p class="header-status">{{ headerStatus }}</p>
         </div>
-        <s-collapse borders :value="activeTransactionStep">
-          <s-collapse-item :name="transactionSteps.from">
+        <s-collapse borders :value="activeCollapseItems">
+          <s-collapse-item :name="collapseItems.from">
             <template #title>
               <div class="network-info-title">
                 <h3>
@@ -60,6 +59,7 @@
                 @click="handleCopyTransactionHash(transactionFromHash)"
               />
               <s-dropdown
+                v-if="(isSoraToEvm && soraExpolrerLinks.length) || !isSoraToEvm"
                 class="s-dropdown--hash-menu"
                 borderRadius="mini"
                 type="ellipsis"
@@ -93,7 +93,7 @@
               :label="t('bridgeTransaction.networkInfo.status')"
               :value="statusFrom"
             />
-            <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionFirstDate" />
+            <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionFromDate" />
             <info-line
               v-if="amount"
               is-formatted
@@ -114,14 +114,12 @@
                 <span class="info-line-value-prefix">~</span>
               </template>
             </info-line>
-            <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
-            <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol" /> -->
             <s-button
-              v-if="isTransactionStep1"
+              v-if="!isTransactionFromCompleted"
               type="primary"
               class="s-typograhy-button--big"
               :disabled="isFirstConfirmationButtonDisabled"
-              @click="handleSendTransactionFrom"
+              @click="handleTransaction()"
             >
               <template v-if="!(isSoraToEvm || isExternalAccountConnected)">{{
                 t('bridgeTransaction.connectWallet')
@@ -139,7 +137,7 @@
                 t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: evmTokenSymbol })
               }}</template>
               <template v-else-if="isTransactionFromFailed">{{ t('bridgeTransaction.retry') }}</template>
-              <template v-else-if="waitingForApprove">{{
+              <template v-else-if="txWaitingForApprove">{{
                 t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
               }}</template>
               <span
@@ -157,11 +155,11 @@
               }}</template>
             </s-button>
 
-            <div v-if="waitingForApprove" class="transaction-approval-text">
+            <div v-if="txWaitingForApprove" class="transaction-approval-text">
               {{ t('bridgeTransaction.approveToken') }}
             </div>
           </s-collapse-item>
-          <s-collapse-item :name="transactionSteps.to">
+          <s-collapse-item :name="collapseItems.to">
             <template #title>
               <div class="network-info-title">
                 <h3>
@@ -171,14 +169,14 @@
                     })}`
                   }}
                 </h3>
-                <span v-if="isTransactionStep2" :class="secondTxIconStatusClasses" />
+                <span v-if="isTransactionFromCompleted" :class="secondTxIconStatusClasses" />
               </div>
             </template>
             <div v-if="isSoraToEvm && !isTxEvmAccount" class="transaction-error">
               <span class="transaction-error__title">{{ t('bridgeTransaction.expectedMetaMaskAddress') }}</span>
               <span class="transaction-error__value">{{ transactionEvmAddress }}</span>
             </div>
-            <div v-if="isTransactionStep2 && transactionToHash" :class="secondTxHashContainerClasses">
+            <div v-if="isTransactionFromCompleted && transactionToHash" :class="secondTxHashContainerClasses">
               <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="secondTxHash" readonly />
               <s-button
                 class="s-button--hash-copy"
@@ -188,23 +186,37 @@
                 @click="handleCopyTransactionHash(transactionToHash)"
               />
               <s-dropdown
-                v-if="isSoraToEvm"
+                v-if="(!isSoraToEvm && soraExpolrerLinks.length) || isSoraToEvm"
                 class="s-dropdown--hash-menu"
                 borderRadius="mini"
                 type="ellipsis"
                 icon="basic-more-vertical-24"
                 placement="bottom-end"
-                @select="handleOpenEtherscan"
+                @select="!isSoraToEvm ? undefined : handleOpenEtherscan()"
               >
                 <template slot="menu">
-                  <s-dropdown-item class="s-dropdown-menu__item">
+                  <template v-if="!isSoraToEvm">
+                    <a
+                      v-for="link in soraExpolrerLinks"
+                      :key="link.type"
+                      class="transaction-link"
+                      :href="link.value"
+                      target="_blank"
+                      rel="nofollow noopener"
+                    >
+                      <s-dropdown-item class="s-dropdown-menu__item" :disabled="!(soraTxId || soraTxBlockId)">
+                        {{ t(`transaction.viewIn.${link.type}`) }}
+                      </s-dropdown-item>
+                    </a>
+                  </template>
+                  <s-dropdown-item v-else class="s-dropdown-menu__item">
                     <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
                   </s-dropdown-item>
                 </template>
               </s-dropdown>
             </div>
             <info-line :class="failedClassStep2" :label="t('bridgeTransaction.networkInfo.status')" :value="statusTo" />
-            <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionSecondDate" />
+            <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionToDate" />
             <info-line
               v-if="amount"
               is-formatted
@@ -225,14 +237,12 @@
                 <span class="info-line-value-prefix">~</span>
               </template>
             </info-line>
-            <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
-            <!-- <info-line :label="t('bridgeTransaction.networkInfo.total')" :value="!isSoraToEvm ? formattedSoraNetworkFee : ethereumNetworkFee" :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol" /> -->
             <s-button
-              v-if="isTransactionStep2 && !isTransferCompleted"
+              v-if="isTransactionFromCompleted && !isTransactionToCompleted"
               type="primary"
               class="s-typograhy-button--big"
               :disabled="isSecondConfirmationButtonDisabled"
-              @click="handleSendTransactionTo"
+              @click="handleTransaction()"
             >
               <template v-if="isSoraToEvm && !isExternalAccountConnected">{{
                 t('bridgeTransaction.connectWallet')
@@ -241,6 +251,9 @@
               <template v-else-if="isSoraToEvm && !isValidNetworkType">{{
                 t('bridgeTransaction.changeNetwork')
               }}</template>
+              <template v-else-if="comfirmationBlocksLeft">
+                {{ t('bridgeTransaction.blocksLeft', { count: comfirmationBlocksLeft }) }}
+              </template>
               <span
                 v-else-if="isTransactionToPending"
                 v-html="
@@ -266,10 +279,10 @@
       </template>
     </div>
     <s-button
-      v-if="isInitRequestCompleted && isTransferCompleted"
+      v-if="isTransactionToCompleted"
       class="s-typography-button--large"
       type="secondary"
-      @click="handleCreateTransaction"
+      @click="navigateToBridge"
     >
       {{ t('bridgeTransaction.newTransaction') }}
     </s-button>
@@ -278,31 +291,29 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter, Action } from 'vuex-class';
-import {
-  AccountAsset,
-  RegisteredAccountAsset,
-  KnownSymbols,
-  FPNumber,
-  CodecString,
-  BridgeHistory,
-  BridgeNetworks,
-} from '@sora-substrate/util';
-import { api, components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { interpret } from 'xstate';
+import { Getter, Action, State } from 'vuex-class';
+import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import type { CodecString, BridgeHistory, RegisteredAccountAsset, BridgeNetworks } from '@sora-substrate/util';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 
 import router, { lazyComponent } from '@/router';
-import { Components, PageNames, EvmSymbol, MetamaskCancellationCode } from '@/consts';
+import { Components, PageNames } from '@/consts';
 import {
   copyToClipboard,
   hasInsufficientBalance,
   hasInsufficientXorForFee,
   hasInsufficientEvmNativeTokenForFee,
 } from '@/utils';
-import { createFSM, EVENTS, SORA_EVM_STATES, EVM_SORA_STATES, STATES } from '@/utils/fsm';
+import {
+  bridgeApi,
+  STATES,
+  isOutgoingTransaction,
+  isUnsignedFromPart,
+  isRejectedForeverFromPart,
+} from '@/utils/bridge';
 
 const FORMATTED_HASH_LENGTH = 24;
 const namespace = 'bridge';
@@ -316,69 +327,54 @@ const namespace = 'bridge';
   },
 })
 export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixin, BridgeMixin, NetworkFormatterMixin) {
-  @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
-  @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean;
+  @State((state) => state[namespace].waitingForApprove) waitingForApprove!: any;
+  @State((state) => state[namespace].inProgressIds) inProgressIds!: any;
+
   @Getter('prev', { namespace: 'router' }) prevRoute!: PageNames;
+  @Getter('getAssetDataByAddress', { namespace: 'assets' }) getAssetDataByAddress!: (
+    address: string
+  ) => RegisteredAccountAsset;
 
-  @Getter('isSoraToEvm', { namespace }) isSoraToEvm!: boolean;
-  @Getter('asset', { namespace }) asset!: Nullable<AccountAsset | RegisteredAccountAsset>;
-  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any;
-  @Getter('amount', { namespace }) amount!: string;
-  @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString;
-  @Getter('evmNetwork', { namespace: 'web3' }) evmNetwork!: BridgeNetworks;
-  @Getter('evmNetworkFee', { namespace }) evmNetworkFee!: CodecString;
-  @Getter('soraNetworkFee', { namespace }) soraNetworkFee!: CodecString;
-  @Getter('isTransactionConfirmed', { namespace }) isTransactionConfirmed!: boolean;
-  @Getter('soraTransactionHash', { namespace }) soraTransactionHash!: string;
-  @Getter('evmTransactionHash', { namespace }) evmTransactionHash!: string;
-  @Getter('soraTransactionDate', { namespace }) soraTransactionDate!: string;
-  @Getter('evmTransactionDate', { namespace }) evmTransactionDate!: string;
-  @Getter('currentTransactionState', { namespace }) currentState!: STATES;
-  @Getter('initialTransactionState', { namespace }) initialTransactionState!: STATES;
-  @Getter('transactionStep', { namespace }) transactionStep!: number;
-  @Getter('historyItem', { namespace }) historyItem!: any;
+  @Getter('historyItem', { namespace }) historyItem!: BridgeHistory;
   @Getter('isTxEvmAccount', { namespace }) isTxEvmAccount!: boolean;
-  @Getter('waitingForApprove', { namespace }) waitingForApprove!: boolean;
 
-  @Action('setCurrentTransactionState', { namespace }) setCurrentTransactionState;
-  @Action('setInitialTransactionState', { namespace }) setInitialTransactionState;
-  @Action('setTransactionStep', { namespace }) setTransactionStep;
-  @Action('setHistoryItem', { namespace }) setHistoryItem;
+  @Action('handleBridgeTx', { namespace }) handleBridgeTx!: (id: string) => Promise<void>;
+  @Action('setHistoryItem', { namespace }) setHistoryItem!: (id?: string) => Promise<void>;
 
-  @Action('signSoraTransactionSoraToEvm', { namespace }) signSoraTransactionSoraToEvm;
-  @Action('signEvmTransactionSoraToEvm', { namespace }) signEvmTransactionSoraToEvm;
-  @Action('sendSoraTransactionSoraToEvm', { namespace }) sendSoraTransactionSoraToEvm;
-  @Action('sendEvmTransactionSoraToEvm', { namespace }) sendEvmTransactionSoraToEvm;
-
-  @Action('signSoraTransactionEvmToSora', { namespace }) signSoraTransactionEvmToSora;
-  @Action('signEvmTransactionEvmToSora', { namespace }) signEvmTransactionEvmToSora;
-  @Action('sendSoraTransactionEvmToSora', { namespace }) sendSoraTransactionEvmToSora;
-  @Action('sendEvmTransactionEvmToSora', { namespace }) sendEvmTransactionEvmToSora;
-
-  @Action('generateHistoryItem', { namespace }) generateHistoryItem!: ({ date: Date }) => Promise<BridgeHistory>;
-  @Action('updateHistoryParams', { namespace }) updateHistoryParams;
-  @Action('removeHistoryById', { namespace }) removeHistoryById;
-  @Action('setSoraTransactionHash', { namespace }) setSoraTransactionHash;
-  @Action('setEvmTransactionHash', { namespace }) setEvmTransactionHash;
-
-  EvmSymbol = EvmSymbol;
-  KnownSymbols = KnownSymbols;
-  STATES = STATES;
-
-  callFirstTransition = () => {};
-  callSecondTransition = () => {};
-  callRetryTransition = () => {};
-  sendService: any = null;
-  isInitRequestCompleted = false;
-  transactionSteps = {
+  readonly KnownSymbols = KnownSymbols;
+  readonly collapseItems = {
     from: 'step-from',
     to: 'step-to',
   };
 
-  activeTransactionStep: any = [this.transactionSteps.from, this.transactionSteps.to];
+  get txInProcess(): boolean {
+    if (!this.historyItem?.id) return false;
+
+    return this.historyItem.id in this.inProgressIds;
+  }
+
+  get txWaitingForApprove(): boolean {
+    if (!this.historyItem?.id) return false;
+
+    return this.historyItem.id in this.waitingForApprove;
+  }
+
+  get amount(): string {
+    return this.historyItem?.amount ?? '';
+  }
+
+  get asset(): Nullable<RegisteredAccountAsset> {
+    if (!this.historyItem?.assetAddress) return null;
+
+    return this.getAssetDataByAddress(this.historyItem.assetAddress);
+  }
+
+  get isSoraToEvm(): boolean {
+    return isOutgoingTransaction(this.historyItem);
+  }
 
   get formattedAmount(): string {
-    return this.amount && this.asset ? new FPNumber(this.amount, this.asset.decimals).toLocaleString() : '';
+    return this.amount && this.asset ? this.formatStringValue(this.amount, this.asset.decimals) : '';
   }
 
   get assetSymbol(): string {
@@ -386,12 +382,36 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   get evmIcon(): string {
-    return this.getEvmIcon(this.evmNetwork);
+    return this.getEvmIcon(this.historyItem?.externalNetwork as BridgeNetworks);
+  }
+
+  get txSoraNetworkFee(): CodecString {
+    return this.historyItem?.soraNetworkFee ?? this.soraNetworkFee;
+  }
+
+  get txEvmNetworkFee(): CodecString {
+    return this.historyItem?.ethereumNetworkFee ?? this.evmNetworkFee;
+  }
+
+  get transactionFromHash(): string {
+    return (this.isSoraToEvm ? this.historyItem?.hash : this.historyItem?.ethereumHash) ?? '';
+  }
+
+  get transactionToHash(): string {
+    return (!this.isSoraToEvm ? this.historyItem?.hash : this.historyItem?.ethereumHash) ?? '';
+  }
+
+  get transactionFromDate(): string {
+    return this.formatTransactionDate(this.historyItem?.startTime);
+  }
+
+  get transactionToDate(): string {
+    return this.formatTransactionDate(this.historyItem?.endTime);
   }
 
   get soraFeeFiatValue(): Nullable<string> {
     if (this.isSoraToEvm) {
-      return this.getFiatAmountByCodecString(this.historyItem?.soraNetworkFee || this.soraNetworkFee);
+      return this.getFiatAmountByCodecString(this.txSoraNetworkFee);
     }
     return null;
   }
@@ -410,12 +430,12 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     return null;
   }
 
-  get isTransactionStep1(): boolean {
-    return this.transactionStep === 1;
+  get currentState(): string {
+    return this.historyItem?.transactionState ?? STATES.INITIAL;
   }
 
-  get isTransactionStep2(): boolean {
-    return this.transactionStep === 2;
+  get isTransferStarted(): boolean {
+    return this.currentState !== STATES.INITIAL;
   }
 
   get isTransactionFromPending(): boolean {
@@ -430,21 +450,35 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     return this.currentState === (this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED);
   }
 
+  get isTransactionFromRejected(): boolean {
+    return this.isTransactionFromFailed && isRejectedForeverFromPart(this.historyItem);
+  }
+
   get isTransactionToFailed(): boolean {
     return this.currentState === (!this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED);
   }
 
   get isTransactionFromCompleted(): boolean {
-    return !this.isTransactionStep1;
+    return this.isTransferStarted && !this.isTransactionFromPending && !this.isTransactionFromFailed;
   }
 
-  get isTransferCompleted(): boolean {
-    const isTransactionCompleted =
-      this.currentState === (!this.isSoraToEvm ? STATES.SORA_COMMITED : STATES.EVM_COMMITED);
-    if (isTransactionCompleted) {
-      this.activeTransactionStep = null;
+  get isTransactionToCompleted(): boolean {
+    return this.currentState === (!this.isSoraToEvm ? STATES.SORA_COMMITED : STATES.EVM_COMMITED);
+  }
+
+  get transactionStep(): number {
+    return this.historyItem?.transactionStep ?? 1;
+  }
+
+  get activeCollapseItems(): Array<string> {
+    if (this.isTransactionToCompleted) {
+      return [];
     }
-    return isTransactionCompleted;
+    if (this.isTransactionFromCompleted) {
+      return [this.collapseItems.to];
+    }
+
+    return [this.collapseItems.from, this.collapseItems.to];
   }
 
   get headerIconClasses(): string {
@@ -453,16 +487,10 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
 
     if (this.isTransactionFromFailed || this.isTransactionToFailed) {
       classes.push(`${iconClass}--error`);
-    }
-
-    if (this.isTransactionStep2) {
-      if (this.isTransactionFromCompleted && !this.isTransferCompleted) {
-        classes.push(`${iconClass}--wait`);
-        return classes.join(' ');
-      }
-      if (this.isTransferCompleted) {
-        classes.push(`${iconClass}--success`);
-      }
+    } else if (this.isTransactionToCompleted) {
+      classes.push(`${iconClass}--success`);
+    } else if (this.isTransactionFromCompleted) {
+      classes.push(`${iconClass}--wait`);
     }
 
     return classes.join(' ');
@@ -480,42 +508,41 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     if (this.isTransactionFromFailed || this.isTransactionToFailed) {
       return this.t('bridgeTransaction.status.failed', failedAndPendingParams);
     }
-    if (this.isTransferCompleted) {
+    if (this.isTransactionToCompleted) {
       return this.t('bridgeTransaction.status.convertionComplete');
     }
     return this.t('bridgeTransaction.status.confirm');
   }
 
   get statusFrom(): string {
-    if (!this.currentState) {
-      return this.t('bridgeTransaction.statuses.waiting') + '...';
+    if (this.isTransactionFromPending) {
+      return this.t('bridgeTransaction.statuses.pending') + '...';
     }
-    if (this.isTransactionStep1) {
-      if (this.currentState === (this.isSoraToEvm ? STATES.SORA_PENDING : STATES.EVM_PENDING)) {
-        return this.t('bridgeTransaction.statuses.pending') + '...';
-      }
-      if (this.currentState === (this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED)) {
-        return this.t('bridgeTransaction.statuses.failed');
-      }
+    if (this.isTransactionFromFailed) {
+      return this.t('bridgeTransaction.statuses.failed');
     }
-    return this.t('bridgeTransaction.statuses.done');
+    if (this.isTransactionFromCompleted) {
+      return this.t('bridgeTransaction.statuses.done');
+    }
+
+    return this.t('bridgeTransaction.statuses.waiting') + '...';
   }
 
   get statusTo(): string {
-    if (!this.currentState || !this.isTransactionFromCompleted) {
+    if (!this.isTransactionFromCompleted) {
       return this.t('bridgeTransaction.statuses.waiting') + '...';
     }
-    if (this.currentState === (!this.isSoraToEvm ? STATES.SORA_PENDING : STATES.EVM_PENDING)) {
+    if (this.isTransactionToPending) {
       const message = this.t('bridgeTransaction.statuses.pending') + '...';
       if (this.isSoraToEvm) {
         return message;
       }
       return `${message} (${this.t('bridgeTransaction.wait30Block')})`;
     }
-    if (this.currentState === (!this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED)) {
+    if (this.isTransactionToFailed) {
       return this.t('bridgeTransaction.statuses.failed');
     }
-    if (this.isTransferCompleted) {
+    if (this.isTransactionToCompleted) {
       return this.t('bridgeTransaction.statuses.done');
     }
     return this.t('bridgeTransaction.statuses.waitingForConfirmation');
@@ -529,57 +556,33 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     if (!this.historyItem?.id) {
       return null;
     }
-    return this.historyItem.txId || api.bridge.getHistory(this.historyItem.id)?.txId;
+    return this.historyItem.txId;
   }
 
   get soraTxBlockId(): Nullable<string> {
     if (!this.historyItem?.id) {
       return null;
     }
-    return this.historyItem.blockId || api.bridge.getHistory(this.historyItem.id)?.blockId;
-  }
-
-  get transactionFromHash(): string {
-    if (this.isSoraToEvm) {
-      return this.soraTransactionHash;
-    }
-    return this.evmTransactionHash;
-  }
-
-  get transactionToHash(): string {
-    if (!this.isSoraToEvm) {
-      return this.soraTransactionHash;
-    }
-    return this.evmTransactionHash;
-  }
-
-  get transactionFirstDate(): string {
-    return this.getTransactionDate(this.isSoraToEvm ? this.soraTransactionDate : this.evmTransactionDate);
-  }
-
-  get transactionSecondDate(): string {
-    return this.getTransactionDate(!this.isSoraToEvm ? this.soraTransactionDate : this.evmTransactionDate);
+    return this.historyItem.blockId;
   }
 
   get formattedSoraNetworkFee(): string {
-    return this.getStringFromCodec(this.historyItem?.soraNetworkFee || this.soraNetworkFee, this.tokenXOR?.decimals);
+    return this.getStringFromCodec(this.txSoraNetworkFee, this.tokenXOR?.decimals);
   }
 
   get soraNetworkFeeFiatValue(): Nullable<string> {
     if (this.isSoraToEvm) {
       return null;
     }
-    return this.getFiatAmountByCodecString(this.historyItem?.soraNetworkFee || this.soraNetworkFee);
+    return this.getFiatAmountByCodecString(this.txSoraNetworkFee);
   }
 
   get formattedEvmNetworkFee(): string {
-    return this.getFPNumberFromCodec(this.historyItem?.ethereumNetworkFee ?? this.evmNetworkFee).toLocaleString();
+    return this.formatCodecNumber(this.txEvmNetworkFee);
   }
 
   get isInsufficientBalance(): boolean {
-    const fee = this.isSoraToEvm
-      ? this.historyItem?.soraNetworkFee ?? this.soraNetworkFee
-      : this.historyItem?.ethereumNetworkFee ?? this.evmNetworkFee;
+    const fee = this.isSoraToEvm ? this.txSoraNetworkFee : this.txEvmNetworkFee;
 
     if (!this.asset || !this.amount || !fee) return false;
 
@@ -587,31 +590,22 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   get isInsufficientXorForFee(): boolean {
-    return hasInsufficientXorForFee(this.tokenXOR, this.historyItem?.soraNetworkFee ?? this.soraNetworkFee);
+    return hasInsufficientXorForFee(this.tokenXOR, this.txSoraNetworkFee);
   }
 
   get isInsufficientEvmNativeTokenForFee(): boolean {
-    return hasInsufficientEvmNativeTokenForFee(
-      this.evmBalance,
-      this.historyItem?.ethereumNetworkFee ?? this.evmNetworkFee
-    );
-  }
-
-  get evmTokenSymbol(): string {
-    if (this.evmNetwork === BridgeNetworks.ENERGY_NETWORK_ID) {
-      return this.EvmSymbol.VT;
-    }
-    return this.EvmSymbol.ETH;
+    return hasInsufficientEvmNativeTokenForFee(this.evmBalance, this.txEvmNetworkFee);
   }
 
   get isFirstConfirmationButtonDisabled(): boolean {
     return (
       !(this.isSoraToEvm || this.isValidNetworkType) ||
-      this.currentState === STATES.INITIAL ||
+      !this.isTransferStarted ||
       this.isInsufficientBalance ||
       this.isInsufficientXorForFee ||
       this.isInsufficientEvmNativeTokenForFee ||
-      this.isTransactionFromPending
+      this.isTransactionFromPending ||
+      this.isTransactionFromRejected
     );
   }
 
@@ -641,7 +635,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   get soraExpolrerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
     const baseLinks = getExplorerLinks(this.soraNetwork);
     const txId = this.soraTxId || this.soraTxBlockId;
-    if (!(this.isSoraToEvm && txId)) {
+    if (!txId) {
       return [];
     }
     if (!this.soraTxId) {
@@ -670,140 +664,49 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     router.push({ name: PageNames.BridgeTransactionsHistory });
   }
 
-  handleCreateTransaction(): void {
+  navigateToBridge(): void {
     router.push({ name: PageNames.Bridge });
   }
 
   async created(): Promise<void> {
-    if (!this.isTransactionConfirmed) {
-      router.push({ name: PageNames.Bridge });
+    if (!this.historyItem) {
+      this.navigateToBridge();
       return;
     }
-    this.initializeTransactionStateMachine();
-    this.isInitRequestCompleted = true;
-    const withAutoRetry = this.prevRoute !== PageNames.BridgeTransactionsHistory;
-    await this.handleSendTransactionFrom(withAutoRetry);
+
+    await this.withParentLoading(async () => {
+      const withAutoStart =
+        !this.txInProcess && (!this.isTransferStarted || this.isTransactionFromPending || this.isTransactionToPending);
+
+      await this.handleTransaction(withAutoStart);
+    });
   }
 
-  async beforeDestroy(): Promise<void> {
-    this.setInitialTransactionState(STATES.INITIAL);
-    this.setTransactionStep(1);
-    this.setHistoryItem(null);
-    if (this.sendService) {
-      this.sendService.stop();
+  beforeDestroy(): void {
+    const tx = { ...this.historyItem };
+
+    if (tx.id && !this.txInProcess && isUnsignedFromPart(tx)) {
+      bridgeApi.removeHistory(tx.id);
     }
-  }
 
-  async initializeTransactionStateMachine() {
-    // Create state machine and interpret it
-    const historyItem = this.historyItem ? this.historyItem : await this.generateHistoryItem({ date: Date.now() });
-    const machineStates = this.isSoraToEvm ? SORA_EVM_STATES : EVM_SORA_STATES;
-    const initialState =
-      this.initialTransactionState === this.currentState ? this.initialTransactionState : this.currentState;
-    this.sendService = interpret(
-      createFSM(
-        {
-          history: historyItem,
-          SORA_EVM: {
-            sora: {
-              sign: this.signSoraTransactionSoraToEvm,
-              send: this.sendSoraTransactionSoraToEvm,
-            },
-            evm: {
-              sign: this.signEvmTransactionSoraToEvm,
-              send: this.sendEvmTransactionSoraToEvm,
-            },
-          },
-          EVM_SORA: {
-            sora: {
-              sign: this.signSoraTransactionEvmToSora,
-              send: this.sendSoraTransactionEvmToSora,
-            },
-            evm: {
-              sign: this.signEvmTransactionEvmToSora,
-              send: this.sendEvmTransactionEvmToSora,
-            },
-          },
-        },
-        machineStates,
-        initialState
-      )
-    );
-
-    this.callFirstTransition = () =>
-      machineStates === SORA_EVM_STATES
-        ? this.sendService.send(EVENTS.SEND_SORA)
-        : this.sendService.send(EVENTS.SEND_EVM);
-
-    this.callSecondTransition = () =>
-      machineStates === SORA_EVM_STATES
-        ? this.sendService.send(EVENTS.SEND_EVM)
-        : this.sendService.send(EVENTS.SEND_SORA);
-
-    this.callRetryTransition = () => this.sendService.send(EVENTS.RETRY);
-
-    // Subscribe to transition events
-    this.sendService
-      .onTransition(async (state) => {
-        await this.setCurrentTransactionState(state.context.history.transactionState);
-        await this.updateHistoryParams({ tx: state.context.history });
-
-        if (
-          !state.context.history.hash?.length &&
-          !state.context.history.ethereumHash?.length &&
-          [STATES.SORA_REJECTED, STATES.EVM_REJECTED].includes(state.value)
-        ) {
-          if (state.event.data?.message.includes('Cancelled') || state.event.data?.code === MetamaskCancellationCode) {
-            await this.removeHistoryById(state.context.history.id);
-          }
-        }
-
-        if (state.context.history.hash && !this.soraTransactionHash.length) {
-          await this.setSoraTransactionHash(state.context.history.hash);
-        }
-        if (state.context.history.ethereumHash && !this.evmTransactionHash.length) {
-          await this.setEvmTransactionHash(state.context.history.ethereumHash);
-        }
-
-        if (
-          (machineStates === SORA_EVM_STATES && state.value === STATES.SORA_COMMITED) ||
-          (machineStates === EVM_SORA_STATES && state.value === STATES.EVM_COMMITED)
-        ) {
-          await this.setFromTransactionCompleted();
-          this.callSecondTransition();
-        }
-      })
-      .start();
-  }
-
-  setFromTransactionCompleted() {
-    this.setTransactionStep(2);
-    this.activeTransactionStep = this.transactionSteps.to;
+    // reset active history item
+    this.setHistoryItem();
   }
 
   private getTxIconStatusClasses(isSecondTransaction?: boolean): string {
     const iconClass = 'network-info-icon';
     const classes = [iconClass];
-    if (isSecondTransaction) {
-      if (this.currentState === (!this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED)) {
-        classes.push(`${iconClass}--error`);
-        return classes.join(' ');
-      }
-      if (this.isTransferCompleted) {
-        classes.push(`${iconClass}--success`);
-        return classes.join(' ');
-      }
+    const isError = isSecondTransaction ? this.isTransactionToFailed : this.isTransactionFromFailed;
+    const isCompleted = isSecondTransaction ? this.isTransactionToCompleted : this.isTransactionFromCompleted;
+
+    if (isError) {
+      classes.push(`${iconClass}--error`);
+    } else if (isCompleted) {
+      classes.push(`${iconClass}--success`);
     } else {
-      if (this.currentState === (this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED)) {
-        classes.push(`${iconClass}--error`);
-        return classes.join(' ');
-      }
-      if (this.isTransactionFromCompleted) {
-        classes.push(`${iconClass}--success`);
-        return classes.join(' ');
-      }
+      classes.push(`${iconClass}--pending`);
     }
-    classes.push(`${iconClass}--pending`);
+
     return classes.join(' ');
   }
 
@@ -820,7 +723,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     const classes = [container];
     if (hasMenuDropdown) {
       classes.push(`${container}--with-dropdown`);
-      return classes.join(' ');
     }
     return classes.join(' ');
   }
@@ -831,7 +733,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
 
   get secondTxHashContainerClasses(): string {
     // cuz we don't show SORA tx for ETH->SORA flow
-    return this.getHashContainerClasses(this.isSoraToEvm);
+    return this.getHashContainerClasses();
   }
 
   get formattedNetworkStep1(): string {
@@ -840,6 +742,15 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
 
   get formattedNetworkStep2(): string {
     return this.t(this.formatNetwork(!this.isSoraToEvm, true));
+  }
+
+  get comfirmationBlocksLeft(): number {
+    if (this.isSoraToEvm || !this.isTransactionToPending || !this.historyItem?.blockHeight || !this.evmBlockNumber)
+      return 0;
+
+    const blocksLeft = +this.historyItem.blockHeight + 30 - this.evmBlockNumber;
+
+    return Math.max(blocksLeft, 0);
   }
 
   async handleCopyTransactionHash(hash: string): Promise<void> {
@@ -859,47 +770,28 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     }
   }
 
-  private getFailedClass(isSecondTransaction?: boolean): string {
-    if (!isSecondTransaction) {
-      return this.currentState === (this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED)
-        ? 'info-line--error'
-        : '';
-    }
-    return this.currentState === (!this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED)
-      ? 'info-line--error'
-      : '';
-  }
-
   get failedClassStep1(): string {
-    return this.getFailedClass();
+    return this.getFailedClass(this.isTransactionFromFailed);
   }
 
   get failedClassStep2(): string {
-    return this.getFailedClass(true);
+    return this.getFailedClass(this.isTransactionToFailed);
   }
 
-  getTransactionDate(transactionDate: string): string {
+  private getFailedClass(transactionFailed?: boolean): string {
+    return transactionFailed ? 'info-line--error' : '';
+  }
+
+  private formatTransactionDate(transactionDate?: number): string {
     // We use current date if request is failed
     const date = transactionDate ? new Date(transactionDate) : new Date();
     return this.formatDate(date.getTime());
   }
 
-  async handleSendTransactionFrom(withAutoRetry = true): Promise<void> {
-    await this.checkConnectionToExternalAccount(() => {
-      if (this.isTransactionFromFailed && withAutoRetry) {
-        this.callRetryTransition();
-      } else {
-        this.callFirstTransition();
-      }
-    });
-  }
-
-  async handleSendTransactionTo(): Promise<void> {
-    await this.checkConnectionToExternalAccount(() => {
-      if (this.isTransactionToFailed) {
-        this.callRetryTransition();
-      } else {
-        this.callSecondTransition();
+  async handleTransaction(withAutoStart = true): Promise<void> {
+    await this.checkConnectionToExternalAccount(async () => {
+      if (withAutoStart && this.historyItem.id) {
+        await this.handleBridgeTx(this.historyItem.id);
       }
     });
   }
@@ -1012,6 +904,8 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
 </style>
 
 <style lang="scss" scoped>
+$network-title-max-width: 250px;
+
 .transaction {
   &-container {
     flex-direction: column;
@@ -1115,14 +1009,18 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
   &-title {
     display: flex;
     align-items: baseline;
+    padding-right: $inner-spacing-mini;
+    padding-left: $inner-spacing-mini;
+
     h3 {
-      padding-right: $inner-spacing-mini;
-      padding-left: $inner-spacing-mini;
+      margin-right: $inner-spacing-mini;
       font-size: var(--s-font-size-small);
       line-height: var(--s-line-height-reset);
       font-weight: 600;
       letter-spacing: var(--s-letter-spacing-small);
       text-transform: inherit;
+      text-align: left;
+      max-width: $network-title-max-width;
     }
   }
   @include status-icon(true);

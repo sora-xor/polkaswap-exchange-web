@@ -24,28 +24,11 @@
       </div>
     </div>
     <s-divider class="s-divider--dialog" />
-    <info-line
-      :label="t('bridge.soraNetworkFee')"
-      :label-tooltip="t('networkFeeTooltipText')"
-      :value="formattedSoraNetworkFee"
-      :asset-symbol="KnownSymbols.XOR"
-      :fiat-value="getFiatAmountByCodecString(soraNetworkFee)"
-      is-formatted
+    <bridge-transaction-details
+      :evm-token-symbol="evmTokenSymbol"
+      :evm-network-fee="evmNetworkFee"
+      :sora-network-fee="soraNetworkFee"
     />
-    <info-line
-      :label="t('bridge.ethereumNetworkFee')"
-      :label-tooltip="t('ethNetworkFeeTooltipText')"
-      :value="formattedEvmNetworkFee"
-      :asset-symbol="currentEvmTokenSymbol"
-      is-formatted
-    />
-    <!-- TODO: We don't need this block right now. How we should calculate the total? What for a case with not XOR asset (We can't just add it to soraNetworkFee as usual)? -->
-    <!-- <info-line
-      :label="t('bridge.total')"
-      :label-tooltip="t('bridge.tooltipValue')"
-      :value="`~${soraTotal}`"
-      :asset-symbol="KnownSymbols.XOR"
-    /> -->
     <template #footer>
       <s-button
         type="primary"
@@ -70,21 +53,22 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { KnownSymbols, CodecString, BridgeNetworks } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { CodecString, BridgeNetworks } from '@sora-substrate/util';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import DialogMixin from '@/components/mixins/DialogMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import DialogBase from '@/components/DialogBase.vue';
-import { EvmSymbol, ZeroStringValue } from '@/consts';
-
-import type { Asset } from '@sora-substrate/util';
+import { EvmSymbol, ZeroStringValue, Components } from '@/consts';
+import { lazyComponent } from '@/router';
 
 @Component({
   components: {
     DialogBase,
     InfoLine: components.InfoLine,
+    BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
   },
 })
 export default class ConfirmBridgeTransactionDialog extends Mixins(
@@ -97,14 +81,13 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   @Prop({ default: ZeroStringValue, type: String }) readonly amount!: string;
   @Prop({ default: () => undefined, type: Object }) readonly asset!: Nullable<Asset>;
   @Prop({ default: BridgeNetworks.ETH_NETWORK_ID, type: Number }) readonly evmNetwork!: BridgeNetworks;
+  @Prop({ default: EvmSymbol.ETH, type: String }) readonly evmTokenSymbol!: string;
   @Prop({ default: ZeroStringValue, type: String }) readonly evmNetworkFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
   @Prop({ default: true, type: Boolean }) readonly isValidNetworkType!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
   @Prop({ default: '', type: String }) readonly confirmButtonText!: string;
-
-  readonly KnownSymbols = KnownSymbols;
 
   get confirmText(): string {
     return this.confirmButtonText || this.t('confirmBridgeTransactionDialog.buttonConfirm');
@@ -139,13 +122,6 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
 
   get tokenSymbol(): string {
     return this.asset?.symbol || '';
-  }
-
-  get currentEvmTokenSymbol(): string {
-    if (this.evmNetwork === BridgeNetworks.ENERGY_NETWORK_ID) {
-      return EvmSymbol.VT;
-    }
-    return EvmSymbol.ETH;
   }
 
   async handleConfirm(): Promise<void> {

@@ -59,8 +59,20 @@ const actions = {
       commit(types.GET_PRICE_REVERSED_REQUEST);
       try {
         const [price, priceReversed] = await Promise.all([
-          api.divideAssets(payload.assetAAddress, payload.assetBAddress, payload.amountA, payload.amountB, false),
-          api.divideAssets(payload.assetAAddress, payload.assetBAddress, payload.amountA, payload.amountB, true),
+          api.divideAssetsByAssetIds(
+            payload.assetAAddress,
+            payload.assetBAddress,
+            payload.amountA,
+            payload.amountB,
+            false
+          ),
+          api.divideAssetsByAssetIds(
+            payload.assetAAddress,
+            payload.assetBAddress,
+            payload.amountA,
+            payload.amountB,
+            true
+          ),
         ]);
 
         commit(types.GET_PRICE_SUCCESS, price);

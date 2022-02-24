@@ -115,6 +115,7 @@
           />
         </div>
       </s-float-input>
+      <slippage-tolerance class="slippage-tolerance-settings" />
       <s-button
         type="primary"
         class="action-button s-typography-button--large"
@@ -137,7 +138,6 @@
           {{ t('createPair.supply') }}
         </template>
       </s-button>
-      <slippage-tolerance class="slippage-tolerance-settings" />
     </s-form>
 
     <template v-if="areTokensSelected && isAvailable">
@@ -149,46 +149,7 @@
           </template>
         </info-line>
       </div>
-      <template v-else>
-        <div class="info-line-container">
-          <p class="info-line-container__title">{{ t('createPair.pricePool') }}</p>
-          <info-line
-            :label="t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })"
-            :value="formattedPrice"
-          />
-          <info-line
-            :label="t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })"
-            :value="formattedPriceReversed"
-          />
-          <info-line
-            :label="t('createPair.networkFee')"
-            :label-tooltip="t('networkFeeTooltipText')"
-            :value="formattedFee"
-            :asset-symbol="KnownSymbols.XOR"
-            :fiat-value="getFiatAmountByCodecString(networkFee)"
-            is-formatted
-          />
-        </div>
-
-        <div class="info-line-container">
-          <p class="info-line-container__title">{{ t('createPair.yourPositionEstimated') }}</p>
-          <info-line
-            is-formatted
-            value-can-be-hidden
-            :label="firstToken.symbol"
-            :value="formattedFirstTokenValue"
-            :fiat-value="fiatFirstAmount"
-          />
-          <info-line
-            is-formatted
-            value-can-be-hidden
-            :label="secondToken.symbol"
-            :value="formattedSecondTokenValue"
-            :fiat-value="fiatSecondAmount"
-          />
-          <info-line :label="t('createPair.shareOfPool')" value="100%" />
-        </div>
-      </template>
+      <create-pair-transaction-details v-else :info-only="false" />
     </template>
 
     <select-token
@@ -223,16 +184,17 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
-import { FPNumber, KnownAssets, KnownSymbols, Operation } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber, Operation } from '@sora-substrate/util';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 
-import CreateTokenPairMixin from '@/components/mixins/TokenPairMixin';
+import TokenPairMixinInstance from '@/components/mixins/TokenPairMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
 const namespace = 'createPair';
-const TokenPairMixin = CreateTokenPairMixin(namespace);
+const TokenPairMixin = TokenPairMixinInstance(namespace);
 
 @Component({
   components: {
@@ -242,6 +204,7 @@ const TokenPairMixin = CreateTokenPairMixin(namespace);
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
+    CreatePairTransactionDetails: lazyComponent(Components.CreatePairTransactionDetails),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
     FormattedAmount: components.FormattedAmount,
@@ -272,7 +235,7 @@ export default class CreatePair extends Mixins(mixins.NetworkFeeWarningMixin, To
 
   async created(): Promise<void> {
     await this.withParentLoading(async () => {
-      await this.setFirstTokenAddress(KnownAssets.get(KnownSymbols.XOR).address);
+      await this.setFirstTokenAddress(XOR.address);
     });
   }
 

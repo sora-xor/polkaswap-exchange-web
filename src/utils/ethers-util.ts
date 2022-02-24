@@ -2,10 +2,12 @@ import { ethers } from 'ethers';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import detectEthereumProvider from '@metamask/detect-provider';
 import { decodeAddress } from '@polkadot/util-crypto';
-import { BridgeNetworks } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/util';
+import type { BridgeNetworks, CodecString } from '@sora-substrate/util';
 
 import axiosInstance from '../api';
 import storage from './storage';
+import { EthereumGasLimits } from '@/consts';
 
 type AbiType = 'function' | 'constructor' | 'event' | 'fallback';
 type StateMutabilityType = 'pure' | 'view' | 'nonpayable' | 'payable';
@@ -221,7 +223,11 @@ async function checkAccountIsConnected(address: string): Promise<boolean> {
   const currentAccount = await getAccount();
 
   // TODO: check why sometimes currentAccount !== address with the same account
-  return !!currentAccount && currentAccount.toLowerCase() === address.toLowerCase();
+  return !!currentAccount && addressesAreEqual(currentAccount, address);
+}
+
+function addressesAreEqual(a: string, b: string): boolean {
+  return a.toLowerCase() === b.toLowerCase();
 }
 
 async function getEthersInstance(): Promise<ethersProvider> {
@@ -302,6 +308,50 @@ async function getEvmNetworkType(): Promise<string> {
   return networkType;
 }
 
+/**
+ * Fetch EVM Network fee for passed asset address
+ */
+async function fetchEvmNetworkFee(address: string, isSoraToEvm: boolean): Promise<CodecString> {
+  try {
+    const ethersInstance = await getEthersInstance();
+    const gasPrice = (await ethersInstance.getGasPrice()).toNumber();
+    const gasLimits = EthereumGasLimits[+isSoraToEvm];
+    const key = address in gasLimits ? address : KnownBridgeAsset.Other;
+    const gasLimit = gasLimits[key];
+    const fee = calcEvmFee(gasPrice, gasLimit);
+
+    return fee;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+function calcEvmFee(gasPrice: number, gasAmount: number) {
+  return FPNumber.fromCodecValue(gasPrice).mul(new FPNumber(gasAmount)).toCodecString();
+}
+
+async function getEvmTransaction(hash: string): Promise<ethers.providers.TransactionResponse> {
+  const ethersInstance = await getEthersInstance();
+  const tx = await ethersInstance.getTransaction(hash);
+
+  return tx;
+}
+
+async function getEvmTransactionReceipt(hash: string): Promise<ethers.providers.TransactionReceipt> {
+  const ethersInstance = await getEthersInstance();
+  const tx = await ethersInstance.getTransactionReceipt(hash);
+
+  return tx;
+}
+
+async function getBlock(number: number): Promise<ethers.providers.Block> {
+  const ethersInstance = await getEthersInstance();
+  const block = await ethersInstance.getBlock(number);
+
+  return block;
+}
+
 async function readSmartContract(network: ContractNetwork, name: string): Promise<JsonContract | undefined> {
   try {
     const { data } = await axiosInstance.get(`/abi/${network}/${name}`);
@@ -330,4 +380,10 @@ export default {
   watchEthereum,
   readSmartContract,
   accountAddressToHex,
+  addressesAreEqual,
+  fetchEvmNetworkFee,
+  calcEvmFee,
+  getEvmTransaction,
+  getEvmTransactionReceipt,
+  getBlock,
 };

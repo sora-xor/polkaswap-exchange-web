@@ -1,6 +1,6 @@
 <template>
   <dialog-base
-    :visible.sync="isVisible"
+    :visible.sync="visibility"
     :before-close="beforeClose"
     :title="t('selectLanguageDialog.title')"
     class="select-language-dialog"
@@ -31,12 +31,11 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
+import { Action, State } from 'vuex-class';
 
 import { Language, Languages } from '@/consts';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from './DialogBase.vue';
 
 @Component({
@@ -44,10 +43,21 @@ import DialogBase from './DialogBase.vue';
     DialogBase,
   },
 })
-export default class SelectLanguageDialog extends Mixins(TranslationMixin, DialogMixin) {
+export default class SelectLanguageDialog extends Mixins(TranslationMixin) {
   readonly languages = Languages;
 
+  @State((state) => state.settings.selectLanguageDialogVisibility) selectLanguageDialogVisibility!: boolean;
+
   @Action setLanguage!: (lang: Language) => Promise<void>;
+  @Action setSelectLanguageDialogVisibility!: (flag: boolean) => Promise<void>;
+
+  get visibility(): boolean {
+    return this.selectLanguageDialogVisibility;
+  }
+
+  set visibility(flag: boolean) {
+    this.setSelectLanguageDialogVisibility(flag);
+  }
 
   get selectedLang(): Language {
     return this.language as Language;
