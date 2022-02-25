@@ -18,7 +18,7 @@
       >
         <template #menu>
           <s-dropdown-item
-            v-for="{ value, icon, text } in headerMenuItems"
+            v-for="{ value, icon, text } in dropdownHeaderMenuItems"
             :key="value"
             class="header-menu__item"
             :icon="icon"
@@ -49,6 +49,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
+
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 enum HeaderMenuType {
@@ -78,32 +79,20 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
   isLargeDesktop = window.innerWidth >= BREAKPOINT;
 
+  private updateLargeDesktopFlag(e: MediaQueryListEvent): void {
+    this.isLargeDesktop = e.matches;
+  }
+
   get mediaQueryList(): MediaQueryList {
     return window.matchMedia(`(min-width: ${BREAKPOINT}px)`);
   }
 
-  get headerMenuItems(): MenuItem[] {
-    return [
-      {
-        value: HeaderMenuType.HideBalances,
-        icon: this.hideBalancesIcon,
-        text: this.hideBalancesText,
-      },
-      {
-        value: HeaderMenuType.Theme,
-        icon: this.themeIcon,
-        text: this.themeText,
-      },
-      {
-        value: HeaderMenuType.Language,
-        icon: 'basic-globe-24',
-        text: this.t('headerMenu.switchLanguage'),
-      },
-    ];
-  }
-
-  get themeIcon(): string {
-    return this.libraryTheme === Theme.LIGHT ? 'various-moon-24' : 'various-brightness-low-24';
+  private getThemeIcon(isDropdown = false): string {
+    if (isDropdown) {
+      return this.libraryTheme === Theme.LIGHT ? 'various-moon-24' : 'various-brightness-low-24';
+    } else {
+      return this.libraryTheme === Theme.LIGHT ? 'various-brightness-low-24' : 'various-moon-24';
+    }
   }
 
   get themeTitle(): string {
@@ -115,12 +104,44 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
     return this.t('headerMenu.switchTheme', { theme });
   }
 
-  get hideBalancesIcon(): string {
-    return this.shouldBalanceBeHidden ? 'basic-eye-no-24' : 'basic-filterlist-24';
+  private getHideBalancesIcon(isDropdown = false): string {
+    if (isDropdown) {
+      return this.shouldBalanceBeHidden ? 'basic-eye-no-24' : 'basic-filterlist-24';
+    } else {
+      return this.shouldBalanceBeHidden ? 'basic-filterlist-24' : 'basic-eye-no-24';
+    }
   }
 
   get hideBalancesText(): string {
     return this.t(`headerMenu.${this.shouldBalanceBeHidden ? 'showBalances' : 'hideBalances'}`);
+  }
+
+  private getHeaderMenuItems(isDropdown = false): Array<MenuItem> {
+    return [
+      {
+        value: HeaderMenuType.HideBalances,
+        icon: this.getHideBalancesIcon(isDropdown),
+        text: this.hideBalancesText,
+      },
+      {
+        value: HeaderMenuType.Theme,
+        icon: this.getThemeIcon(isDropdown),
+        text: this.themeText,
+      },
+      {
+        value: HeaderMenuType.Language,
+        icon: 'basic-globe-24',
+        text: this.t('headerMenu.switchLanguage'),
+      },
+    ];
+  }
+
+  get headerMenuItems(): Array<MenuItem> {
+    return this.getHeaderMenuItems();
+  }
+
+  get dropdownHeaderMenuItems(): Array<MenuItem> {
+    return this.getHeaderMenuItems(true);
   }
 
   mounted(): void {
@@ -129,10 +150,6 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
   beforeDestroy(): void {
     this.mediaQueryList.removeEventListener('change', this.updateLargeDesktopFlag);
-  }
-
-  private updateLargeDesktopFlag(e: MediaQueryListEvent): void {
-    this.isLargeDesktop = e.matches;
   }
 
   handleClickHeaderMenu(): void {
