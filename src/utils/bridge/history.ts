@@ -17,6 +17,10 @@ type DataMap<T> = {
   [key: string]: T;
 };
 
+type TimestampMap<T> = {
+  [key: number]: T;
+};
+
 type EthLogsMap = DataMap<boolean>;
 type EthTransactionsMap = DataMap<ethers.providers.TransactionResponse>;
 type HistoryElement = SUBQUERY_TYPES.HistoryElement;
@@ -28,9 +32,8 @@ export class EthBridgeHistory {
 
   private ethAccountTransactionsMap: DataMap<EthTransactionsMap> = {};
   private ethBlockLogsMap: DataMap<Promise<EthLogsMap>> = {};
+  private ethStartBlock: TimestampMap<number> = {};
 
-  private ethStartBlock = 0;
-  private ethStartTimestamp = 0;
   private etherscanApiKey!: string;
   private etherscanInstance!: ethers.providers.EtherscanProvider;
 
@@ -56,22 +59,26 @@ export class EthBridgeHistory {
     this.etherscanInstance = new ethers.providers.EtherscanProvider(network, this.etherscanApiKey);
   }
 
-  private async getEthStartBlock() {
-    if (!this.ethStartBlock) {
-      this.ethStartBlock = +(await this.etherscanInstance.fetch('block', {
+  private async getEthStartBlock(timestamp: number) {
+    if (!this.ethStartBlock[timestamp]) {
+      this.ethStartBlock[timestamp] = +(await this.etherscanInstance.fetch('block', {
         action: 'getblocknobytime',
-        timestamp: this.ethStartTimestamp,
         closest: 'before',
+        timestamp,
       }));
     }
-    return this.ethStartBlock;
+    return this.ethStartBlock[timestamp];
   }
 
-  public async getEthAccountTransactions(address: string, contracts?: string[]): Promise<EthTransactionsMap> {
+  public async getEthAccountTransactions(
+    address: string,
+    fromTimestamp: number,
+    contracts?: string[]
+  ): Promise<EthTransactionsMap> {
     const key = address.toLowerCase();
 
     if (!this.ethAccountTransactionsMap[key]) {
-      const ethStartBlock = await this.getEthStartBlock();
+      const ethStartBlock = await this.getEthStartBlock(fromTimestamp);
       const history = await this.etherscanInstance.getHistory(address, ethStartBlock);
       const filtered = history.reduce<EthTransactionsMap>((buffer, tx) => {
         if (!contracts || (!!tx.to && contracts.includes(tx.to.toLowerCase()))) {
@@ -114,11 +121,12 @@ export class EthBridgeHistory {
   public async findEthTxBySoraHash(
     address: string,
     hash: string,
+    fromTimestamp: number,
     contracts?: string[]
   ): Promise<ethers.providers.TransactionResponse | null> {
     if (!address || !hash) return null;
 
-    const transactions = await this.getEthAccountTransactions(address, contracts);
+    const transactions = await this.getEthAccountTransactions(address, fromTimestamp, contracts);
 
     try {
       return await Promise.any(
@@ -167,7 +175,7 @@ export class EthBridgeHistory {
 
     const { externalNetwork } = this;
 
-    this.ethStartTimestamp = last(historyElements)?.timestamp as number;
+    const fromTimestamp = last(historyElements)?.timestamp as number;
     const historySyncTimestampUpdated = first(historyElements)?.timestamp as number;
 
     for (const historyElement of historyElements) {
@@ -201,7 +209,7 @@ export class EthBridgeHistory {
       const transactionStep = soraPartCompleted ? 2 : 1;
 
       const ethereumTx = isOutgoing
-        ? await this.findEthTxBySoraHash(historyElementData.sidechainAddress, hash, contracts)
+        ? await this.findEthTxBySoraHash(historyElementData.sidechainAddress, hash, fromTimestamp, contracts)
         : await this.findEthTxByEthereumHash(requestHash);
 
       const ethereumHash = ethereumTx?.hash ?? '';
