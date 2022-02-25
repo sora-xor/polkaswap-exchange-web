@@ -196,24 +196,30 @@ const actions = {
   },
 
   // TODO: Need to restore transactions for all networks
-  async updateHistory({ rootGetters, rootState, state, dispatch, commit }) {
+  async updateHistory({ rootGetters, state, dispatch, commit }) {
     if (state.historyLoading) return;
 
     commit(types.SET_HISTORY_LOADING, true);
 
-    const etherscanApiKey = rootState.Settings.apiKeys?.etherscan;
-    const bridgeHistory = new EthBridgeHistory(etherscanApiKey);
-
+    const bridgeHistory = await dispatch('getBridgeHistoryInstance');
     const address = rootGetters.account.address;
     const assets = rootGetters['assets/assetsDataTable'];
     const networkFees = rootGetters.networkFees;
     const contracts = Object.values(KnownBridgeAsset).map<string>((key) => rootGetters['web3/contractAddress'](key));
     const updateCallback = () => dispatch('getHistory');
 
-    await bridgeHistory.init();
     await bridgeHistory.updateAccountHistory(address, assets, networkFees, contracts, updateCallback);
 
     commit(types.SET_HISTORY_LOADING, false);
+  },
+
+  async getBridgeHistoryInstance({ rootState }) {
+    const etherscanApiKey = rootState.Settings.apiKeys?.etherscan;
+    const bridgeHistory = new EthBridgeHistory(etherscanApiKey);
+
+    await bridgeHistory.init();
+
+    return bridgeHistory;
   },
 
   setHistoryItem({ commit }, historyId = '') {
