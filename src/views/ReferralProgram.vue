@@ -262,6 +262,17 @@ $referral-collapse-icon-size: 36px;
 .referral-program {
   @include collapse-items(false);
   margin-top: $inner-spacing-mini;
+  &.el-loading-parent--relative {
+    .el-collapse-item,
+    .el-collapse-item__header {
+      box-shadow: none;
+    }
+  }
+  .el-loading-mask {
+    margin-right: auto;
+    margin-left: auto;
+    width: calc(100% - #{$inner-spacing-big} * 2);
+  }
   .el-collapse-item__content {
     padding-bottom: 0;
   }
