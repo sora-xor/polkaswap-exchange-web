@@ -1,5 +1,5 @@
 import { BridgeTxStatus, Operation } from '@sora-substrate/util';
-import ethersUtil from '@/utils/ethers-util';
+import { ethers } from 'ethers';
 
 import store from '@/store';
 
@@ -17,6 +17,7 @@ import {
 
 import type { BridgeHistory, RegisteredAsset } from '@sora-substrate/util';
 import type { HandleTransactionPayload } from './types';
+import type { EthBridgeHistory } from './history';
 
 type SignedEvmTxResult = {
   hash: string;
@@ -26,11 +27,13 @@ type SignedEvmTxResult = {
 type SignEvm = (id: string) => Promise<SignedEvmTxResult>;
 type GetAssetByAddress = (address: string) => RegisteredAsset;
 type GetActiveHistoryItem = () => Nullable<BridgeHistory>;
+type GetBridgeHistoryInstance = () => Promise<EthBridgeHistory>;
 
 interface BridgeCommonOptions {
   updateHistory: AsyncVoidFn;
   getAssetByAddress: GetAssetByAddress;
   getActiveHistoryItem: GetActiveHistoryItem;
+  getBridgeHistoryInstance: GetBridgeHistoryInstance;
 }
 
 interface BridgeOptions extends BridgeCommonOptions {
@@ -49,12 +52,20 @@ class BridgeTransactionStateHandler {
   protected readonly updateHistory!: AsyncVoidFn;
   protected readonly getAssetByAddress!: GetAssetByAddress;
   protected readonly getActiveHistoryItem!: GetActiveHistoryItem;
+  protected readonly getBridgeHistoryInstance!: GetBridgeHistoryInstance;
 
-  constructor({ signEvm, updateHistory, getAssetByAddress, getActiveHistoryItem }: BridgeReducerOptions) {
+  constructor({
+    signEvm,
+    updateHistory,
+    getAssetByAddress,
+    getActiveHistoryItem,
+    getBridgeHistoryInstance,
+  }: BridgeReducerOptions) {
     this.signEvm = signEvm;
     this.updateHistory = updateHistory;
     this.getAssetByAddress = getAssetByAddress;
     this.getActiveHistoryItem = getActiveHistoryItem;
+    this.getBridgeHistoryInstance = getBridgeHistoryInstance;
   }
 
   async handleState(id: string, { status, nextState, rejectState, handler }: HandleTransactionPayload): Promise<void> {
@@ -130,12 +141,31 @@ class BridgeTransactionStateHandler {
     if (!tx.ethereumHash) {
       await this.beforeSubmit(id);
 
-      const { hash: ethereumHash, fee } = await this.signEvm(id);
+      try {
+        const { hash: ethereumHash, fee } = await this.signEvm(id);
 
-      await this.updateTransactionParams(id, {
-        ethereumHash,
-        ethereumNetworkFee: fee ?? tx.ethereumNetworkFee,
-      });
+        await this.updateTransactionParams(id, {
+          ethereumHash,
+          ethereumNetworkFee: fee ?? tx.ethereumNetworkFee,
+        });
+      } catch (error: any) {
+        // maybe transaction already completed, try to restore ethereum transaction hash
+        if (error.code === ethers.errors.UNPREDICTABLE_GAS_LIMIT) {
+          const { to, hash, startTime } = tx;
+          const bridgeHistory = await this.getBridgeHistoryInstance();
+          const transaction = await bridgeHistory.findEthTxBySoraHash(
+            to as string,
+            hash as string,
+            (startTime as number) / 1000
+          );
+
+          if (transaction) {
+            await this.updateTransactionParams(id, { ethereumHash: transaction.hash });
+            return;
+          }
+        }
+        throw error;
+      }
     }
   }
 }
@@ -396,6 +426,7 @@ const appBridge = new Bridge({
   updateHistory: () => store.dispatch('bridge/getHistory'),
   getAssetByAddress: (address: string) => store.getters['assets/getAssetDataByAddress'](address),
   getActiveHistoryItem: () => store.getters['bridge/historyItem'],
+  getBridgeHistoryInstance: () => store.dispatch('bridge/getBridgeHistoryInstance'),
 });
 
 export { bridgeApi, appBridge };
