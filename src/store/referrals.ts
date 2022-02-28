@@ -1,22 +1,33 @@
 import map from 'lodash/fp/map';
+import omit from 'lodash/fp/omit';
 import flatMap from 'lodash/fp/flatMap';
 import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import { api } from '@soramitsu/soraneo-wallet-web';
+import type { Subscription } from '@polkadot/x-rxjs';
 
 import storage from '@/utils/storage';
 
 const types = flow(
   flatMap((x) => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
-  concat(['SET_BOND', 'SET_XOR_VALUE', 'SET_REFERRAL']),
+  concat([
+    'SET_BOND',
+    'SET_XOR_VALUE',
+    'SET_REFERRAL',
+    'SET_INVITED_USERS_INFO',
+    'SET_INVITED_USERS_UPDATES',
+    'RESET_INVITED_USERS_UPDATES',
+    'RESET_INVITED_USERS_SUBSCRIPTION',
+  ]),
   map((x) => [x, x]),
   fromPairs
-)(['GET_REFERRAL', 'GET_INVITED_USERS']);
+)(['GET_REFERRAL']);
 
 interface ReferralsState {
   referral: string;
-  invitedUsers: Array<string>;
+  invitedUsers: Nullable<Array<string>>;
+  invitedUsersUpdates: Nullable<Subscription>;
   isBond: boolean;
   xorValue: string;
   storageReferral: string;
@@ -25,7 +36,8 @@ interface ReferralsState {
 function initialState(): ReferralsState {
   return {
     referral: '',
-    invitedUsers: [],
+    invitedUsers: null,
+    invitedUsersUpdates: null,
     isBond: true,
     xorValue: '',
     storageReferral: storage.get('storageReferral') || '',
@@ -60,14 +72,25 @@ const mutations = {
     state.referral = '';
   },
 
-  [types.GET_INVITED_USERS_REQUEST](state: ReferralsState) {
-    state.invitedUsers = [];
+  [types.SET_INVITED_USERS_INFO](state: ReferralsState, info: Nullable<Array<string>>) {
+    state.invitedUsers = info;
   },
-  [types.GET_INVITED_USERS_SUCCESS](state: ReferralsState, invitedUsers: Array<string>) {
-    state.invitedUsers = invitedUsers;
+  [types.SET_INVITED_USERS_UPDATES](state: ReferralsState, subscription: Subscription) {
+    state.invitedUsersUpdates = subscription;
   },
-  [types.GET_INVITED_USERS_FAILURE](state: ReferralsState) {
-    state.invitedUsers = [];
+  [types.RESET_INVITED_USERS_UPDATES](state: ReferralsState) {
+    if (state.invitedUsersUpdates) {
+      state.invitedUsersUpdates.unsubscribe();
+    }
+    state.invitedUsersUpdates = null;
+  },
+
+  [types.RESET_INVITED_USERS_SUBSCRIPTION](state: ReferralsState) {
+    const s = omit(['invitedUsers', 'invitedUsersUpdates'], initialState());
+
+    Object.keys(s).forEach((key) => {
+      state[key] = s[key];
+    });
   },
 
   [types.SET_BOND](state: ReferralsState, isBond: boolean) {
@@ -94,14 +117,23 @@ const actions = {
       commit(types.GET_REFERRAL_FAILURE);
     }
   },
-  async getInvitedUsers({ commit }, referralId: string) {
-    commit(types.GET_INVITED_USERS_REQUEST);
-    try {
-      const invitedUsers = await api.referralSystem.getInvitedUsers(referralId);
-      commit(types.GET_INVITED_USERS_SUCCESS, invitedUsers);
-    } catch (error) {
-      commit(types.GET_INVITED_USERS_FAILURE);
-    }
+  async subscribeInvitedUsers({ commit, rootGetters }, referrerId: string) {
+    commit(types.RESET_INVITED_USERS_UPDATES);
+
+    if (!rootGetters.isLoggedIn) return;
+
+    const invitedUsersSubscription = api.referralSystem.subscribeOnInvitedUsers(referrerId).subscribe((info) => {
+      commit(types.SET_INVITED_USERS_INFO, info);
+    });
+
+    commit(types.SET_ACCOUNT_MARKET_MAKER_UPDATES, invitedUsersSubscription);
+  },
+  unsubscribeInvitedUsers({ commit }) {
+    commit(types.RESET_INVITED_USERS_UPDATES);
+    commit(types.SET_INVITED_USERS_INFO, null);
+  },
+  resetInvitedUsersSubscription({ commit }) {
+    commit(types.RESET_INVITED_USERS_SUBSCRIPTION);
   },
   setBound({ commit }, isBound: boolean) {
     commit(types.SET_BOND, isBound);
