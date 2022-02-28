@@ -126,7 +126,7 @@ const actions = {
       commit(types.SET_INVITED_USERS_INFO, info);
     });
 
-    commit(types.SET_ACCOUNT_MARKET_MAKER_UPDATES, invitedUsersSubscription);
+    commit(types.SET_INVITED_USERS_UPDATES, invitedUsersSubscription);
   },
   unsubscribeInvitedUsers({ commit }) {
     commit(types.RESET_INVITED_USERS_UPDATES);

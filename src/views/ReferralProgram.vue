@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="parentLoading" class="referral-program">
+  <div v-loading="loading" class="referral-program">
     <template v-if="isSoraAccountConnected">
       <div class="rewards-container">
         <span class="rewards-title">{{ t('referralProgram.receivedRewards') }}</span>
@@ -150,7 +150,6 @@ export default class ReferralProgram extends Mixins(
   @Action('unsubscribeInvitedUsers', { namespace }) unsubscribeInvitedUsers!: AsyncVoidFn;
   @Action('setBound', { namespace }) setBound!: (isBond: boolean) => Promise<void>;
 
-  @Watch('isLoggedIn')
   @Watch('isSoraAccountConnected')
   private async updateSubscriptions(value: boolean) {
     if (value) {
