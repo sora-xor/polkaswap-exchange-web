@@ -78,10 +78,11 @@ export default class ConfirmBonding extends Mixins(mixins.TransactionMixin, mixi
 
   async handleConfirmBonding(): Promise<void> {
     try {
-      await this.withNotifications(async () =>
-        (await this.isBond)
-          ? api.referralSystem.reserveXor(this.xorValue)
-          : api.referralSystem.unreserveXor(this.xorValue)
+      await this.withNotifications(
+        async () =>
+          await (this.isBond
+            ? api.referralSystem.reserveXor(this.xorValue)
+            : api.referralSystem.unreserveXor(this.xorValue))
       );
       this.$emit('confirm', true);
     } catch (error) {
